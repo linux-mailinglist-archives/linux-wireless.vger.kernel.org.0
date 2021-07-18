@@ -2,92 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71DCC3CC81F
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jul 2021 09:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D34593CC831
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jul 2021 10:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230307AbhGRH45 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Jul 2021 03:56:57 -0400
-Received: from mout.gmx.net ([212.227.15.15]:55591 "EHLO mout.gmx.net"
+        id S230461AbhGRIpr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Jul 2021 04:45:47 -0400
+Received: from mout.gmx.net ([212.227.17.20]:53709 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229578AbhGRH44 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Jul 2021 03:56:56 -0400
+        id S229578AbhGRIpq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 18 Jul 2021 04:45:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1626594818;
-        bh=sSf1sanoNyOf1s8ToImMPkw6H4e74dn8eSrq/chg8Q0=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=QkiEAqWbOy8TBkMzD6dJ6iOxmbJNklBnmN5fmO5auXc39bOBUZNmCiMMq6BzSe3SL
-         JHlnNQq3lUG0HnHZh3kFx69V2wfElMn+LWVlmRU9AMyXD6X98DNztXI7iYaFJD8WVU
-         AzgwOEPvZWB6eThd5AW+lSxBnGfy2WPJ8pLOBjwM=
+        s=badeba3b8450; t=1626597751;
+        bh=XY/zxOCbvhlZeJ1i99rhW5BbBx5vSJgiyjkWBXkdUaQ=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=K/RzuUhT0vSBhVnAMlPPn6+ZyVTTYLjvsEB1KU/J0t+8K3U6h46hDL6e0XNUBJBDK
+         z5G9e/O8tW6yxF/mvz09ndIPw1M+Ezld0UqZkk30uun4WlZCZF8VSL1r8CleCzzryN
+         CDSExAnvyRUr95DHckR1RawSWKHGGUq9SPWQ8FY0=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from titan ([83.52.228.41]) by mail.gmx.net (mrgmx005
- [212.227.17.184]) with ESMTPSA (Nemesis) id 1MSbxD-1lgVh247tR-00Swiu; Sun, 18
- Jul 2021 09:53:38 +0200
-Date:   Sun, 18 Jul 2021 09:53:24 +0200
+Received: from localhost.localdomain ([83.52.228.41]) by mail.gmx.net
+ (mrgmx105 [212.227.17.174]) with ESMTPSA (Nemesis) id
+ 1MRCOK-1lk5i72TjA-00NC76; Sun, 18 Jul 2021 10:42:31 +0200
 From:   Len Baker <len.baker@gmx.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Len Baker <len.baker@gmx.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+To:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Len Baker <len.baker@gmx.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Brian Norris <briannorris@chromium.org>,
         Pkshih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] rtw88: Fix out-of-bounds write
-Message-ID: <20210718075324.GA3118@titan>
-References: <20210716155311.5570-1-len.baker@gmx.com>
- <YPG/8F7yYLm3vAlG@kroah.com>
- <20210717133343.GA2009@titan>
- <YPMUfbDh3jnV8hRZ@kroah.com>
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3] rtw88: Remove unnecessary check code
+Date:   Sun, 18 Jul 2021 10:42:02 +0200
+Message-Id: <20210718084202.5118-1-len.baker@gmx.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YPMUfbDh3jnV8hRZ@kroah.com>
-X-Provags-ID: V03:K1:JhNSeBGs0zGSWWl5J6a1ocVLtAtD6Ugtat/wFNLVSUgDhgjxb5V
- 88TXcSkGduQlfyCmZIXMllL7WXSwL0iYJIw/HRkeXLaGkZt9TQA+F3lTwKSJ4PMEDZUBFVP
- FLriM5kbh8nenUg/RbsZH/EMXmeLuR5QD+0VVHlH2ej/P0J6aGKh1GeARjfWvPk9GjpaUWZ
- eYTCYljvuLwUa/GHZ3XOQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:3Gsqx7Fsm5s=:SUyH/zdppSSWWeT2atMcIU
- OJoajrmk7YOGbQc4atP37nheeL7mYoA/rCw2itbYprFYuOIOcvpG/uhtrhqt513ABup1wKihj
- aywtvxmPXkr3HjbD71jtoMaOUgwhUXTI5LrPGWV4Siatim/zgF8hBWSHRu8g6c1yvvzNScnvh
- YYCPLWk10iETYJ/pwWnqMfuKcyOje5409Q9Ck6AjL2vBqO57s4+UoewIdxxqxMC45D3W5Lt7e
- VtKnvWLaF0Ps68uSJZCH9fVBnj/YCZiePUTQWekXwDQPLq1IcF3Kmdvg8uDr2GotLf/cveiQF
- bhrtwI4IWT4vf94erqhnwMlGaQU83owU/+ynUZ7D1dQ3LNRaRe0v5R9OVrfBGIU+lquSqoJZ2
- 2Hkc/US8xqD46BAuvLgnfkP6/Br4TR0gRmqjwZo/4K1n8Ore8Ktn22a7N3bNp6W1/yAft7pTv
- otxrm/PtOb4jz4nebcLPeMb9nnspC1IqzzUApN8fRlNDvWriLbUpcUQsLFIHe3bFe6zjN9Q2K
- i35EiwD0le+aP45iaJkjeTZdWx4M+9Ft/edoIxSZ8FUEgE4hU7D9XDtDHUTG4nFK0FBe1n3Qf
- Kn+JuTihguTNaAQKz2LTYfsoUldZviCz6Fp6x+oqIKvN28tJ+jTb/v8w2BLF7TH0C9CGT6LYY
- 5KfLkwW5ou/BlZaXuL5z9+LzkDG98Yy/5fwoJ6Ucdv4NJA5iQwEaVVjC8ISNuy8iwLLY8n0KT
- lgBUBZWe+5h1TsGTKQobDbr8GdJT4hfTJtBZggyeU4KxkxjXZUNBCMjNtr6Yr7p5NzKxjVG5V
- y9o3DPzhuMhzAGWYRXXvUxiBLvfPsEPqEhn9EpnxJ78iQXBRGdlUsB0v03ZTWqKo/VgTXezPb
- GBWLKKnCn73OkJx6dAvP6h7sNXz4GZmbRMMqWMUlI9TgZx1dZcF78z7vYBTsTQkBta1YybX+m
- r3TDnmq8PAqjpYrI71CT+2KPP9xwak5lehy9uMSpkrPRAI52Vfzf2q6vpY86wy2MYiavE7gXA
- kvSO+HJ1k7SBrkgIMHEqRprmy8Yo6tqvQgh51nhH4lOhk0ClsilVBKuDJ1OTRn/FSJvTKSEob
- npgU56hW0Zg+ALy5mwXTqA/H3bqcmxIq9de
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:dynWGx0R5esUpEZg1Xw1+W/TNAzgd/+x0YhsmKEb5KZq1uEUpvg
+ XEj0rBZESb0bX9Wm7YC9mFW3kwgO4/3ZfscEGPi80CunbpX3SFGteSWzVz2DC+qge9b6eap
+ 0UoKzwXe71hyNtXeoKA+9xtH5hjmbTU7ARseNb/RYw7X03UZtsBOg9DCTqLDn9hhNpRKmud
+ Fut9w+m3OPoXFznqr3f9Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3DfUG/U4EK8=:vl30PAveMCYFIoZulZernQ
+ hmTVARfIkWsX0DoDNtcaJF42ZsWQL+L7/Jrxo5sL7GBjtSgV67TgieNnm0chCt71RmiA6gbnW
+ lWIaUR0E80WPxzgDEoHNKMTvkS5qSUYUOYjDzFmmMxtPcwxyP8hC+4fjldVYPIqZZcQaNPygn
+ XJQdKaHdYwdYHnjvSRh3l+iszQzrExJ96+Vc3SZrtjtU94++C+/xeQe2RNACxn24aN7GLIvB5
+ GVZzO+j6ijSTAQ6y2mNfSzQ5YszCH15HEFbuoG7ESxMJnAVn/tO1td+fdUp1zDTAuEEgofdsh
+ +CZ92IZalHrUAiHyZMUsTmCIq3FDBbqvRkxtC5bYzQv2ZN71p/jctBdL7jA+exH1ZGdJ8Co84
+ kIXItjJsUz8yhDag4WbxUb8kxV7BG9RZPSOw2lWIjn8fsDeYFTnlgTiyxutpVne0EXvIpbeaU
+ LEa9axJXl5zxzc5M+ISR1CTaoKRTu+iF80KTPoLTyRR2HxDPdwwXNMZLk+NZ4vyZYTU+7M8Rr
+ fxKZMY+0r0Ahhj4QmLhldg6NyLSzjSF4mCKgLh7yCkGOQ2hXL4LxTypdSB3R/ORU0v3iix5Ve
+ JZRy7w+Eb/Ht+OGoV2X6YgCDjaYyRIab5fzM10UlspofBfSIAI7EEyxu/pSZgPqLPhamsuqYs
+ cSWZsN3ZtVSE9UzWSEdAmGdUw19GsYLp/5OXNsQTq7MCK4z5M6JkH/tjYRfCNj8jx1pyKiStF
+ sT4er+PDaSYVzSVATUfkseSLeL1QCgNChlXEaq/k0GD1yfsvkHumRI8/fbTW+go+bFQDYI8ld
+ SOq1209YGl5AQLn394rYzgMzhMWO5VThvZXHiPgyvhvpRb/nz9TTFaRSFW9DiD00/LPzjlf+A
+ k24W/c16tRZ5qc9gJFxiC5xNK2rKUrqe737ibvTGJCSJmn0y4XCSiLWnbePK+F2hu41EmF4Ra
+ 9I0yO1GAW9TC4klAH7RMlvJcY/QzIELz6oDSvlXIBmjvX/wCLAQfYO8P1eMLdmJY7jYCVvk32
+ Fvj5S39je9rnFpqAgeZxcQZIZovilLe3GTwJ6PejSEzukCOo+uxy7YWFSGAofGpd/xW16nlvm
+ 4Kojw2vOsQQekTzOHs/QlqYoeUSaLgzPMYM
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jul 17, 2021 at 07:33:49PM +0200, Greg KH wrote:
-> On Sat, Jul 17, 2021 at 03:33:43PM +0200, Len Baker wrote:
-> > Another question: If this can never happen should I include the "Fixes=
-" tag,
-> > "Addresses-Coverity-ID" tag and Cc to stable?
->
-> If it can never happen, why have this check at all?
->
-> Looks like a Coverity false positive?
+The rtw_pci_init_rx_ring function is only ever called with a fixed
+constant or RTK_MAX_RX_DESC_NUM for the "len" argument. Since this
+constant is defined as 512, the "if (len > TRX_BD_IDX_MASK)" check
+can never happen (TRX_BD_IDX_MASK is defined as GENMASK(11, 0) or in
+other words as 4095).
 
-Ok, then I will remove the check and I will send a patch for review.
+So, remove this check.
 
->
-> thanks,
->
-> greg k-h
+Signed-off-by: Len Baker <len.baker@gmx.com>
+=2D--
+Changelog v1 -> v2
+- Remove the macro ARRAY_SIZE from the for loop (Pkshih, Brian Norris).
+- Add a new check for the len variable (Pkshih, Brian Norris).
 
-Regards,
-Len
+Changelog v2 -> v3
+- Change the subject of the patch.
+- Remove the "if" check statement (Greg KH)
+- Remove the "Fixes" tag, "Addresses-Coverity-ID" tag and Cc to stable.
+
+The previous versions can be found at:
+
+v1
+https://lore.kernel.org/lkml/20210711141634.6133-1-len.baker@gmx.com/
+
+v2
+https://lore.kernel.org/lkml/20210716155311.5570-1-len.baker@gmx.com/
+
+ drivers/net/wireless/realtek/rtw88/pci.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wirele=
+ss/realtek/rtw88/pci.c
+index e7d17ab8f113..f17e7146f20f 100644
+=2D-- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -268,11 +268,6 @@ static int rtw_pci_init_rx_ring(struct rtw_dev *rtwde=
+v,
+ 	int i, allocated;
+ 	int ret =3D 0;
+
+-	if (len > TRX_BD_IDX_MASK) {
+-		rtw_err(rtwdev, "len %d exceeds maximum RX entries\n", len);
+-		return -EINVAL;
+-	}
+-
+ 	head =3D dma_alloc_coherent(&pdev->dev, ring_sz, &dma, GFP_KERNEL);
+ 	if (!head) {
+ 		rtw_err(rtwdev, "failed to allocate rx ring\n");
+=2D-
+2.25.1
+
