@@ -2,109 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBC333CCDA7
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jul 2021 07:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 783D53CCDEC
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jul 2021 08:30:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233626AbhGSFzO convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Jul 2021 01:55:14 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:56574 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbhGSFzN (ORCPT
+        id S233580AbhGSGdc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Jul 2021 02:33:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35506 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233048AbhGSGdc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Jul 2021 01:55:13 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16J5q2Hv9029644, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16J5q2Hv9029644
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 19 Jul 2021 13:52:02 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 19 Jul 2021 13:52:01 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 19 Jul 2021 13:52:01 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91]) by
- RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91%5]) with mapi id
- 15.01.2106.013; Mon, 19 Jul 2021 13:52:01 +0800
-From:   Pkshih <pkshih@realtek.com>
+        Mon, 19 Jul 2021 02:33:32 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 485C9C061762;
+        Sun, 18 Jul 2021 23:30:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=LY5CK1r0/hjsqY17xf0eUdo8D9KcHjidZGqfXP+fN/Y=;
+        t=1626676233; x=1627885833; b=K6SH53/9xDU+0DkCI4/OcTZ/rHSSe7cqFOwfd2q+2cqsRVA
+        vZpHgN5AMo3Knlp2fhqU52RISVdFMwURfcpzmQkycypuHGVUHrJ91M3Mm7VBWnlVBKjWxOHDdSFqS
+        P6fJUPA/bC2TVdoPG1oWDFPg0a7NWKEql73yMKaAsAdMYfiGBlxX7h3lWRum0QyAAwdkUAYx0w3RE
+        KbbO6vyUPTpIsNcd4hmbmRbxju+eRemuBJlUVtp0BQlnZ7pCgNIKgb//SLbv4ZiKO0zSt9pGlXocL
+        YRTnu4tEFZOXGOhc//zfeSINDHTo5EiMKaO3o7YaQJ6P+l91EzM9wl2avi8NEWXQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1m5MnM-004Fmu-7W; Mon, 19 Jul 2021 08:30:28 +0200
+Message-ID: <5c43c41de4bdfd2412d5f2feadffc309243ed134.camel@sipsolutions.net>
+Subject: Re: [PATCH RFC v1 1/7] mac80211: Add stations iterator where the
+ iterator function may sleep
+From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-wireless@vger.kernel.org
+Cc:     tony0620emma@gmail.com, kvalo@codeaurora.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         Neo Jou <neojou@gmail.com>,
         Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: RE: [PATCH RFC v1 0/7] rtw88: prepare locking for SDIO support
-Thread-Topic: [PATCH RFC v1 0/7] rtw88: prepare locking for SDIO support
-Thread-Index: AQHXe0wk6jb0WXKpqUOtgfYNe/k5BatJzIYQ
-Date:   Mon, 19 Jul 2021 05:52:01 +0000
-Message-ID: <11f077c7612a4f33bbcd4fbd6a2e9ac3@realtek.com>
+Date:   Mon, 19 Jul 2021 08:30:26 +0200
+In-Reply-To: <20210717204057.67495-2-martin.blumenstingl@googlemail.com>
 References: <20210717204057.67495-1-martin.blumenstingl@googlemail.com>
-In-Reply-To: <20210717204057.67495-1-martin.blumenstingl@googlemail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/7/19_=3F=3F_01:06:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+         <20210717204057.67495-2-martin.blumenstingl@googlemail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 07/19/2021 05:41:27
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 165067 [Jul 18 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 448 448 71fb1b37213ce9a885768d4012c46ac449c77b17
-X-KSE-AntiSpam-Info: {Tracking_from_exist}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/19/2021 05:43:00
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+> 
+> +/**
+> + * ieee80211_iterate_stations_atomic - iterate stations
 
-> -----Original Message-----
-> From: Martin Blumenstingl [mailto:martin.blumenstingl@googlemail.com]
-> Sent: Sunday, July 18, 2021 4:41 AM
-> To: linux-wireless@vger.kernel.org
-> Cc: tony0620emma@gmail.com; kvalo@codeaurora.org; johannes@sipsolutions.net; netdev@vger.kernel.org;
-> linux-kernel@vger.kernel.org; Neo Jou; Jernej Skrabec; Martin Blumenstingl
-> Subject: [PATCH RFC v1 0/7] rtw88: prepare locking for SDIO support
+Copy/paste issue, as PK pointed out too.
+
+> + *
+> + * This function iterates over all stations associated with a given
+> + * hardware that are currently uploaded to the driver and calls the callback
+> + * function for them.
+> + * This function allows the iterator function to sleep, when the iterator
+> + * function is atomic @ieee80211_iterate_stations_atomic can be used.
 > 
 
-[...]
+I have no real objections to this, but I think you should carefully
+document something like "the driver must not call this with a lock held
+that it can also take in response to callbacks from mac80211, and it
+must not call this within callbacks made by mac80211" or something like
+that, because both of those things are going to cause deadlocks.
 
-I have reviewed patchset v1. But, please wait a moment before sending v2 to see
-if other experts have better suggestions. 
-
---
-Ping-Ke
+johannes
 
