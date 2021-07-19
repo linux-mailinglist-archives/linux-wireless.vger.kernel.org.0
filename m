@@ -2,96 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E15AA3CD4A5
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jul 2021 14:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C2853CD4C0
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jul 2021 14:31:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236845AbhGSLll (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Jul 2021 07:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49398 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236747AbhGSLll (ORCPT
+        id S236491AbhGSLvC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Jul 2021 07:51:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:56629 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231290AbhGSLvB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Jul 2021 07:41:41 -0400
-Received: from out1.migadu.com (out1.migadu.com [IPv6:2001:41d0:2:863f::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F290C061574;
-        Mon, 19 Jul 2021 04:38:08 -0700 (PDT)
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1626697338;
+        Mon, 19 Jul 2021 07:51:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1626697901;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=vu7b9z6fy5eQBUVOgQ3fNILEElmkneJNf7Gu+XNQsCQ=;
-        b=LQ5iMGMce0BId8ZMN7GgvooaWIunoMl/2GnrFI1IIUAAoHPMpbmv9VNM5KaK1BYEVGRAjZ
-        avv9n3OxxFGZcet/s319LB5suQIH7knhvA/ZwBCSvYBhGeeWpHRg+EuBLRghNiZ4TNsOaX
-        /QFW3BVPxKWugNiVVwBwGbhNM0fqSK0=
-From:   Yajun Deng <yajun.deng@linux.dev>
-To:     davem@davemloft.net, kuba@kernel.org, roopa@nvidia.com,
-        nikolay@nvidia.com, yoshfuji@linux-ipv6.org, dsahern@kernel.org,
-        courmisch@gmail.com, jhs@mojatatu.com, xiyou.wangcong@gmail.com,
-        jiri@resnulli.us, johannes@sipsolutions.net
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bridge@lists.linux-foundation.org,
-        linux-decnet-user@lists.sourceforge.net,
-        linux-wireless@vger.kernel.org, Yajun Deng <yajun.deng@linux.dev>
-Subject: [PATCH 0/4] Remove rtnetlink_send() in rtnetlink
-Date:   Mon, 19 Jul 2021 20:21:54 +0800
-Message-Id: <20210719122158.5037-1-yajun.deng@linux.dev>
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zJ3gtglIGncKRCxVqidJX6ON/dIC6SE6P45IMrzaQ9M=;
+        b=Jo46AymPbckqN+7DAie42MkYb18WLy1rV7qZJYW4m9lgdjKwApY+LjyXXaKoA7Y224dmBf
+        z+/fPI7Lg/cnHhtN1VHiWuYVFlmo3YhEEDtKMfJyCMsI/1So9DzoQxPBwdiX55c/V2R9Lj
+        W0ZY4mYahI8305QORfCV3DjrA2LpBzU=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-557-f3r4GBtvNS232fdjEm2h8A-1; Mon, 19 Jul 2021 08:31:39 -0400
+X-MC-Unique: f3r4GBtvNS232fdjEm2h8A-1
+Received: by mail-ed1-f69.google.com with SMTP id v4-20020a50a4440000b02903ab1f22e1dcso9224518edb.23
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Jul 2021 05:31:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=zJ3gtglIGncKRCxVqidJX6ON/dIC6SE6P45IMrzaQ9M=;
+        b=XFMwYNNoqGbpNsnqhgAG8H053946TKe9lbUnasaC0kGYg9VSeLWV4J7FnNRz41I/CY
+         HHZWRfRcRTX5+o81oOR/rmDssmbLwyN2truwGhQOjnEx2VnGmgm1FKItyqYx8FjCPHA8
+         OqHmHTIA1IzRsPC8WePkp72ZWWSDYey/tx7uMTvZbDaR5mWX5jzBMQkYFpAOypHOp5iL
+         rm1JyLXRVsjwGZrj++vKxkFROY9SFjTmGBs4q8IZvJPJwmJgP1JgMHxK3dAE70vYh4C7
+         2ZGIR+QuVgQYtNYtX70tUDi9vb7z3PQLmrqfIcwEWtvBp+AyM3ONAl/a4jeFn99WdPvX
+         y2rg==
+X-Gm-Message-State: AOAM531uwcwpAcFt3ByBEDsFW1Pavbqgw+Jqs3b79OJp2A88n1IssOAn
+        AFmtEN4ml3jpcknq+GZewbZ4fCNVVqThaM/s268JPxgDznOOwoSRsRMDWcPUeCQ/grdlqia5lWF
+        t1mLjSmk55K55xJbnTwlpRpEckIs=
+X-Received: by 2002:a05:6402:3482:: with SMTP id v2mr34242900edc.116.1626697898361;
+        Mon, 19 Jul 2021 05:31:38 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw5BemfyYCelXujZKVUw9YdHA2Y0jtswqGQdChSu4++2hb53MKvOnIr9zTizXweRuvbyBVgXg==
+X-Received: by 2002:a05:6402:3482:: with SMTP id v2mr34242876edc.116.1626697898181;
+        Mon, 19 Jul 2021 05:31:38 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id a5sm7678070edj.20.2021.07.19.05.31.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jul 2021 05:31:37 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 3F4B2180065; Mon, 19 Jul 2021 14:31:36 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH] mac80211: include <linux/rbtree.h>
+In-Reply-To: <20210715180234.512d64dee655.Ia51c29a9fb1e651e06bc00eabec90974103d333e@changeid>
+References: <20210715180234.512d64dee655.Ia51c29a9fb1e651e06bc00eabec90974103d333e@changeid>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Mon, 19 Jul 2021 14:31:36 +0200
+Message-ID: <8735sav61j.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Migadu-Auth-User: yajun.deng@linux.dev
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-rtnetlink_send() is similar to rtnl_notify(), there is no need for two 
-functions to do the same thing. we can remove rtnetlink_send() and 
-modify rtnl_notify() to adapt more case.
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-Patch1: remove rtnetlink_send() modify rtnl_notify() to adapt 
-more case in rtnetlink.
-Path2,Patch3: Adjustment parameters in rtnl_notify().
-Path4: rtnetlink_send() already removed, use rtnl_notify() instead 
-of rtnetlink_send().
+> From: Johannes Berg <johannes.berg@intel.com>
+>
+> This is needed for the rbtree, and we shouldn't just rely
+> on it getting included somewhere implicitly. Include it
+> explicitly.
+>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-Yajun Deng (4):
-  rtnetlink: remove rtnetlink_send() in rtnetlink
-  net: Adjustment parameters in rtnl_notify()
-  vxlan: Adjustment parameters in rtnl_notify()
-  net/sched: use rtnl_notify() instead of rtnetlink_send()
+Does this need a Fixes: tag?
 
- drivers/net/vxlan.c       |  2 +-
- include/linux/rtnetlink.h |  7 +++----
- include/net/netlink.h     |  5 ++---
- net/bridge/br_fdb.c       |  2 +-
- net/bridge/br_mdb.c       |  4 ++--
- net/bridge/br_netlink.c   |  2 +-
- net/bridge/br_vlan.c      |  2 +-
- net/core/fib_rules.c      |  2 +-
- net/core/neighbour.c      |  2 +-
- net/core/net_namespace.c  |  2 +-
- net/core/rtnetlink.c      | 27 ++++++++-------------------
- net/dcb/dcbnl.c           |  2 +-
- net/decnet/dn_dev.c       |  2 +-
- net/decnet/dn_table.c     |  2 +-
- net/ipv4/devinet.c        |  4 ++--
- net/ipv4/fib_semantics.c  |  2 +-
- net/ipv4/fib_trie.c       |  2 +-
- net/ipv4/ipmr.c           |  4 ++--
- net/ipv4/nexthop.c        |  4 ++--
- net/ipv6/addrconf.c       |  8 ++++----
- net/ipv6/ip6mr.c          |  4 ++--
- net/ipv6/ndisc.c          |  2 +-
- net/ipv6/route.c          |  9 +++++----
- net/mpls/af_mpls.c        |  4 ++--
- net/phonet/pn_netlink.c   |  4 ++--
- net/sched/act_api.c       | 13 ++++++-------
- net/sched/cls_api.c       | 14 +++++++-------
- net/sched/sch_api.c       | 13 ++++++-------
- net/wireless/wext-core.c  |  2 +-
- 29 files changed, 69 insertions(+), 83 deletions(-)
-
--- 
-2.32.0
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
