@@ -2,117 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FFD93CD444
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jul 2021 14:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E15AA3CD4A5
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jul 2021 14:22:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236396AbhGSLVX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Jul 2021 07:21:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44412 "EHLO
+        id S236845AbhGSLll (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Jul 2021 07:41:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230493AbhGSLVW (ORCPT
+        with ESMTP id S236747AbhGSLll (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Jul 2021 07:21:22 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9917C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Jul 2021 04:16:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=7+LS3y5wbzz6LyqpW5/kCC11RLc/TklJi8Xzn16wtwY=; t=1626696122; x=1627905722; 
-        b=K9URTtWGL35vqzKDrZFddCMUECQFoY6rRPcALBrjoBb6gp1rIuwYQYRRI5hNswl2hjO30sBOFbk
-        s7KRsqe3/cmGa4Fp8lq1w2Rt9QEqLA6SUXRLREnKnOoHZ6dbbXQQzBMNxapspLiEWyBzSi6nsP93i
-        2CRfYNtynKSuz/CmfWbCDI1MlGzWJ7uAxn9tWdevWtGVi1wBP6N31QMciBAthq6hvyF4pJQGaLpLK
-        ajpCjNqLUMlwQ+3UP7ljoF55RpuhcjClQCenSt8nhzJ3Q2hzKgg5y9r+Kpak85lmN6Nr/HQ1zeB5k
-        0OwCRHOTyvJVnd8cgogFM0wx+fbrUb23qqZQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1m5RyC-004Lkt-1X; Mon, 19 Jul 2021 14:02:00 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.14] iwlwifi: pnvm: accept multiple HW-type TLVs
-Date:   Mon, 19 Jul 2021 14:01:56 +0200
-Message-Id: <20210719140154.a6a86e903035.Ic0b1b75c45d386698859f251518e8a5144431938@changeid>
-X-Mailer: git-send-email 2.31.1
+        Mon, 19 Jul 2021 07:41:41 -0400
+Received: from out1.migadu.com (out1.migadu.com [IPv6:2001:41d0:2:863f::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F290C061574;
+        Mon, 19 Jul 2021 04:38:08 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1626697338;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=vu7b9z6fy5eQBUVOgQ3fNILEElmkneJNf7Gu+XNQsCQ=;
+        b=LQ5iMGMce0BId8ZMN7GgvooaWIunoMl/2GnrFI1IIUAAoHPMpbmv9VNM5KaK1BYEVGRAjZ
+        avv9n3OxxFGZcet/s319LB5suQIH7knhvA/ZwBCSvYBhGeeWpHRg+EuBLRghNiZ4TNsOaX
+        /QFW3BVPxKWugNiVVwBwGbhNM0fqSK0=
+From:   Yajun Deng <yajun.deng@linux.dev>
+To:     davem@davemloft.net, kuba@kernel.org, roopa@nvidia.com,
+        nikolay@nvidia.com, yoshfuji@linux-ipv6.org, dsahern@kernel.org,
+        courmisch@gmail.com, jhs@mojatatu.com, xiyou.wangcong@gmail.com,
+        jiri@resnulli.us, johannes@sipsolutions.net
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bridge@lists.linux-foundation.org,
+        linux-decnet-user@lists.sourceforge.net,
+        linux-wireless@vger.kernel.org, Yajun Deng <yajun.deng@linux.dev>
+Subject: [PATCH 0/4] Remove rtnetlink_send() in rtnetlink
+Date:   Mon, 19 Jul 2021 20:21:54 +0800
+Message-Id: <20210719122158.5037-1-yajun.deng@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Migadu-Auth-User: yajun.deng@linux.dev
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+rtnetlink_send() is similar to rtnl_notify(), there is no need for two 
+functions to do the same thing. we can remove rtnetlink_send() and 
+modify rtnl_notify() to adapt more case.
 
-Some products (So) may have two different types of products
-with different mac-type that are otherwise equivalent, and
-have the same PNVM data, so the PNVM file will contain two
-(or perhaps later more) HW-type TLVs. Accept the file and
-use the data section that contains any matching entry.
+Patch1: remove rtnetlink_send() modify rtnl_notify() to adapt 
+more case in rtnetlink.
+Path2,Patch3: Adjustment parameters in rtnl_notify().
+Path4: rtnetlink_send() already removed, use rtnl_notify() instead 
+of rtnetlink_send().
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 25 +++++++++++++-------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+Yajun Deng (4):
+  rtnetlink: remove rtnetlink_send() in rtnetlink
+  net: Adjustment parameters in rtnl_notify()
+  vxlan: Adjustment parameters in rtnl_notify()
+  net/sched: use rtnl_notify() instead of rtnetlink_send()
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-index 2403490cbc26..b4b1f75b9c2a 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-@@ -37,6 +37,7 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
- 	u32 sha1 = 0;
- 	u16 mac_type = 0, rf_id = 0;
- 	u8 *pnvm_data = NULL, *tmp;
-+	bool hw_match = false;
- 	u32 size = 0;
- 	int ret;
- 
-@@ -83,6 +84,9 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
- 				break;
- 			}
- 
-+			if (hw_match)
-+				break;
-+
- 			mac_type = le16_to_cpup((__le16 *)data);
- 			rf_id = le16_to_cpup((__le16 *)(data + sizeof(__le16)));
- 
-@@ -90,15 +94,9 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
- 				     "Got IWL_UCODE_TLV_HW_TYPE mac_type 0x%0x rf_id 0x%0x\n",
- 				     mac_type, rf_id);
- 
--			if (mac_type != CSR_HW_REV_TYPE(trans->hw_rev) ||
--			    rf_id != CSR_HW_RFID_TYPE(trans->hw_rf_id)) {
--				IWL_DEBUG_FW(trans,
--					     "HW mismatch, skipping PNVM section, mac_type 0x%0x, rf_id 0x%0x.\n",
--					     CSR_HW_REV_TYPE(trans->hw_rev), trans->hw_rf_id);
--				ret = -ENOENT;
--				goto out;
--			}
--
-+			if (mac_type == CSR_HW_REV_TYPE(trans->hw_rev) &&
-+			    rf_id == CSR_HW_RFID_TYPE(trans->hw_rf_id))
-+				hw_match = true;
- 			break;
- 		case IWL_UCODE_TLV_SEC_RT: {
- 			struct iwl_pnvm_section *section = (void *)data;
-@@ -149,6 +147,15 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
- 	}
- 
- done:
-+	if (!hw_match) {
-+		IWL_DEBUG_FW(trans,
-+			     "HW mismatch, skipping PNVM section (need mac_type 0x%x rf_id 0x%x)\n",
-+			     CSR_HW_REV_TYPE(trans->hw_rev),
-+			     CSR_HW_RFID_TYPE(trans->hw_rf_id));
-+		ret = -ENOENT;
-+		goto out;
-+	}
-+
- 	if (!size) {
- 		IWL_DEBUG_FW(trans, "Empty PNVM, skipping.\n");
- 		ret = -ENOENT;
+ drivers/net/vxlan.c       |  2 +-
+ include/linux/rtnetlink.h |  7 +++----
+ include/net/netlink.h     |  5 ++---
+ net/bridge/br_fdb.c       |  2 +-
+ net/bridge/br_mdb.c       |  4 ++--
+ net/bridge/br_netlink.c   |  2 +-
+ net/bridge/br_vlan.c      |  2 +-
+ net/core/fib_rules.c      |  2 +-
+ net/core/neighbour.c      |  2 +-
+ net/core/net_namespace.c  |  2 +-
+ net/core/rtnetlink.c      | 27 ++++++++-------------------
+ net/dcb/dcbnl.c           |  2 +-
+ net/decnet/dn_dev.c       |  2 +-
+ net/decnet/dn_table.c     |  2 +-
+ net/ipv4/devinet.c        |  4 ++--
+ net/ipv4/fib_semantics.c  |  2 +-
+ net/ipv4/fib_trie.c       |  2 +-
+ net/ipv4/ipmr.c           |  4 ++--
+ net/ipv4/nexthop.c        |  4 ++--
+ net/ipv6/addrconf.c       |  8 ++++----
+ net/ipv6/ip6mr.c          |  4 ++--
+ net/ipv6/ndisc.c          |  2 +-
+ net/ipv6/route.c          |  9 +++++----
+ net/mpls/af_mpls.c        |  4 ++--
+ net/phonet/pn_netlink.c   |  4 ++--
+ net/sched/act_api.c       | 13 ++++++-------
+ net/sched/cls_api.c       | 14 +++++++-------
+ net/sched/sch_api.c       | 13 ++++++-------
+ net/wireless/wext-core.c  |  2 +-
+ 29 files changed, 69 insertions(+), 83 deletions(-)
+
 -- 
-2.31.1
+2.32.0
 
