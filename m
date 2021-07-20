@@ -2,63 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B2013CF846
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jul 2021 12:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC4893CF9FD
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jul 2021 15:01:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237692AbhGTKFt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jul 2021 06:05:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34986 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237614AbhGTKEP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jul 2021 06:04:15 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4748B6120F;
-        Tue, 20 Jul 2021 10:44:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626777876;
-        bh=J4am9/bVVh/y4DpPyboBO49mcaLQLuHHpQ8U9G74tLM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GLafNpJFthhFofmm7KYcXWxJZ8kEW8iN5MLI/SE2NA6r0HtLmmoBpV3HURGhRWnbB
-         h6r+J2co8OCnH11uB16ZdOSHJOGqPmb5HH5LSSWzXzyqihDtvF96i1U7AgVwiygyb4
-         JatBw+Zkksw1rKKxRhKSpcpca4soppvBHGoEEnRIY8AiTa9+YiQuhwO77EWeLYNAKc
-         dBewllbngb1F4G1CR/PUXrUfKoGCUh1DGhTkRHgAQ+TDf7+cVJ3tvm42aME8I2PpbU
-         lNdTCWUx6ZppCbkV8I7jExAG+jM7w/jQZ8q0Evspkip4O+uwDChCr3rl1Wks0ViBu6
-         5G8TV2uXPUOUg==
-Date:   Tue, 20 Jul 2021 12:44:27 +0200
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Yajun Deng <yajun.deng@linux.dev>
-Cc:     davem@davemloft.net, roopa@nvidia.com, nikolay@nvidia.com,
-        yoshfuji@linux-ipv6.org, dsahern@kernel.org, courmisch@gmail.com,
-        jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us,
-        johannes@sipsolutions.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bridge@lists.linux-foundation.org,
-        linux-decnet-user@lists.sourceforge.net,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 0/4] Remove rtnetlink_send() in rtnetlink
-Message-ID: <20210720124427.6b4e05a8@cakuba>
-In-Reply-To: <20210719122158.5037-1-yajun.deng@linux.dev>
-References: <20210719122158.5037-1-yajun.deng@linux.dev>
+        id S232186AbhGTMUv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jul 2021 08:20:51 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:53686 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231272AbhGTMUq (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 20 Jul 2021 08:20:46 -0400
+X-UUID: 7f4a4e7192674ba9b2b1e1b7f2031bd8-20210720
+X-UUID: 7f4a4e7192674ba9b2b1e1b7f2031bd8-20210720
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1830024767; Tue, 20 Jul 2021 21:01:22 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 20 Jul 2021 21:01:20 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 20 Jul 2021 21:01:20 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7915: switch proper tx arbiter mode in testmode
+Date:   Tue, 20 Jul 2021 21:00:13 +0800
+Message-ID: <20210720130014.23572-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 19 Jul 2021 20:21:54 +0800, Yajun Deng wrote:
-> rtnetlink_send() is similar to rtnl_notify(), there is no need for two 
-> functions to do the same thing. we can remove rtnetlink_send() and 
-> modify rtnl_notify() to adapt more case.
->
-> Patch1: remove rtnetlink_send() modify rtnl_notify() to adapt 
-> more case in rtnetlink.
-> Path2,Patch3: Adjustment parameters in rtnl_notify().
-> Path4: rtnetlink_send() already removed, use rtnl_notify() instead 
-> of rtnetlink_send().
+Switch proper tx arbiter mode during testmode tx to prevent from
+entering the flow of normal tx in FW.
+Also, testmode SU and MU tx need to use different arbiter mode.
 
-You can't break compilation in between patches. Each step of the series
-(each patch) must be self-contained, build, and work correctly.
-Otherwise bisection becomes a nightmare.
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  1 +
+ .../wireless/mediatek/mt76/mt7915/testmode.c  | 29 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7915/testmode.h  | 10 +++++++
+ 3 files changed, 40 insertions(+)
 
-Please also post series as a thread (patches in reply to the cover
-letter), it seems that patchwork did not group the patches correctly
-here.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index baa27da..02b98e9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -278,6 +278,7 @@ enum {
+ 	MCU_EXT_CMD_SCS_CTRL = 0x82,
+ 	MCU_EXT_CMD_FW_DBG_CTRL = 0x95,
+ 	MCU_EXT_CMD_SET_RDD_TH = 0x9d,
++	MCU_EXT_CMD_MURU_CTRL = 0x9f,
+ 	MCU_EXT_CMD_SET_SPR = 0xa8,
+ 	MCU_EXT_CMD_GROUP_PRE_CAL_INFO = 0xab,
+ 	MCU_EXT_CMD_DPD_PRE_CAL_INFO = 0xac,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+index b220b33..00dcc46 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+@@ -165,6 +165,28 @@ mt7915_tm_set_slot_time(struct mt7915_phy *phy, u8 slot_time, u8 sifs)
+ 				 sizeof(req), false);
+ }
+ 
++static int
++mt7915_tm_set_tam_arb(struct mt7915_phy *phy, bool enable, bool mu)
++{
++	struct mt7915_dev *dev = phy->dev;
++	struct {
++		__le32 cmd;
++		u8 op_mode;
++	} __packed req = {
++		.cmd = cpu_to_le32(MURU_SET_ARB_OP_MODE),
++	};
++
++	if (!enable)
++		req.op_mode = TAM_ARB_OP_MODE_NORMAL;
++	else if (mu)
++		req.op_mode = TAM_ARB_OP_MODE_TEST;
++	else
++		req.op_mode = TAM_ARB_OP_MODE_FORCE_SU;
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(MURU_CTRL), &req,
++				 sizeof(req), false);
++}
++
+ static int
+ mt7915_tm_set_wmm_qid(struct mt7915_dev *dev, u8 qid, u8 aifs, u8 cw_min,
+ 		      u16 cw_max, u16 txop)
+@@ -397,6 +419,10 @@ mt7915_tm_init(struct mt7915_phy *phy, bool en)
+ 	mt7915_tm_set_trx(phy, TM_MAC_TXRX, !en);
+ 
+ 	mt7915_mcu_add_bss_info(phy, phy->monitor_vif, en);
++	mt7915_mcu_add_sta(dev, phy->monitor_vif, NULL, en);
++
++	if (!en)
++		mt7915_tm_set_tam_arb(phy, en, 0);
+ }
+ 
+ static void
+@@ -438,6 +464,9 @@ mt7915_tm_set_tx_frames(struct mt7915_phy *phy, bool en)
+ 		}
+ 	}
+ 
++	mt7915_tm_set_tam_arb(phy, en,
++			      td->tx_rate_mode == MT76_TM_TX_MODE_HE_MU);
++
+ 	/* if all three params are set, duty_cycle will be ignored */
+ 	if (duty_cycle && tx_time && !ipg) {
+ 		ipg = tx_time * 100 / duty_cycle - tx_time;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h
+index 397a6b5..107f0cf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h
+@@ -96,4 +96,14 @@ enum {
+ 	RF_OPER_WIFI_SPECTRUM,
+ };
+ 
++enum {
++	TAM_ARB_OP_MODE_NORMAL = 1,
++	TAM_ARB_OP_MODE_TEST,
++	TAM_ARB_OP_MODE_FORCE_SU = 5,
++};
++
++enum {
++	MURU_SET_ARB_OP_MODE = 14,
++};
++
+ #endif
+-- 
+2.25.1
+
