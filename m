@@ -2,124 +2,254 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFC3F3D0416
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jul 2021 23:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E59293D04B7
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jul 2021 00:38:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229729AbhGTVJh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jul 2021 17:09:37 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:46690 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232359AbhGTVJH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jul 2021 17:09:07 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1626817785; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=6pzFGEDvqBEmnGYB5qUOd0LsVvfzg+I3RubpomLBkZs=; b=afaVHm62I7R4rbVZqt8dxzRZw5DSYjTGH2UNSJDdSh157eaik3ZtaMvtighqUjmZvVjDjFLY
- rQH3SWlwU3eWxH4J31mrNT5hF+j46y3qG/9QxR1G3HusWnPdDvtC0aRx2RPU4YYOA0dBk2SY
- StVzrFZFVsNv+kl/TkIZM0kZPkM=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 60f744f225e566327881293f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 20 Jul 2021 21:49:38
- GMT
-Sender: jouni=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 609FEC4338A; Tue, 20 Jul 2021 21:49:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from jouni.codeaurora.org (85-76-67-217-nat.elisa-mobile.fi [85.76.67.217])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: jouni)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 76032C43460;
-        Tue, 20 Jul 2021 21:49:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 76032C43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jouni@codeaurora.org
-From:   Jouni Malinen <jouni@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Seevalamuthu Mariappan <seevalam@codeaurora.org>,
-        Ritesh Singh <ritesi@codeaurora.org>,
-        Jouni Malinen <jouni@codeaurora.org>
-Subject: [PATCH 3/3] ath11k: Align bss_chan_info structure with firmware
-Date:   Wed, 21 Jul 2021 00:49:22 +0300
-Message-Id: <20210720214922.118078-3-jouni@codeaurora.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210720214922.118078-1-jouni@codeaurora.org>
-References: <20210720214922.118078-1-jouni@codeaurora.org>
+        id S229816AbhGTV5w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jul 2021 17:57:52 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:39942 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229604AbhGTV5w (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 20 Jul 2021 17:57:52 -0400
+X-UUID: 978dab0bcb7a4f1486d4219dbb59bf32-20210721
+X-UUID: 978dab0bcb7a4f1486d4219dbb59bf32-20210721
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 2054642541; Wed, 21 Jul 2021 06:38:25 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 21 Jul 2021 06:38:23 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 21 Jul 2021 06:38:23 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: add support for setting mcast rate
+Date:   Wed, 21 Jul 2021 06:38:22 +0800
+Message-ID: <541360d219d6443b39f37f1806d563563233ca34.1626820535.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Seevalamuthu Mariappan <seevalam@codeaurora.org>
+Mesh and ad-hoc interfaces allow users to set mcast rate through
+NL80211_ATTR_MCAST_RATE, so rework mt76_default_basic_rate() to
+adapt that.
 
-pdev_id in structure 'wmi_pdev_bss_chan_info_event' is wrongly placed
-at the beginning. This causes invalid values in survey dump. Hence, align
-the structure with the firmware.
-
-Note: The firmware releases follow this order since the feature was
-implemented. Also, it is not changing across the branches including
-QCA6390.
-
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-01228-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Ritesh Singh <ritesi@codeaurora.org>
-Signed-off-by: Seevalamuthu Mariappan <seevalam@codeaurora.org>
-Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 1 +
- drivers/net/wireless/ath/ath11k/wmi.h | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c |  8 +++----
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  2 +-
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 24 +++++++++++++------
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 24 +++++++++++++------
+ 4 files changed, 39 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index a53783229520..e3d11a0a7b7c 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -1339,6 +1339,7 @@ int ath11k_wmi_pdev_bss_chan_info_request(struct ath11k *ar,
- 				     WMI_TAG_PDEV_BSS_CHAN_INFO_REQUEST) |
- 			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
- 	cmd->req_type = type;
-+	cmd->pdev_id = ar->pdev->pdev_id;
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index d9a724a0f15e..4c11ffcfa901 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1337,16 +1337,16 @@ mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
+ }
+ EXPORT_SYMBOL_GPL(mt76_init_queue);
  
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
- 		   "WMI bss chan info req type %d\n", type);
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 78849f0255fa..799b3bd96a27 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -2962,6 +2962,7 @@ struct wmi_pdev_bss_chan_info_req_cmd {
- 	u32 tlv_header;
- 	/* ref wmi_bss_chan_info_req_type */
- 	u32 req_type;
-+	u32 pdev_id;
- } __packed;
+-u16 mt76_default_basic_rate(struct mt76_phy *phy, struct ieee80211_vif *vif)
++u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx)
+ {
+-	int i = ffs(vif->bss_conf.basic_rates) - 1, offset = 0;
++	int offset = 0;
+ 	struct ieee80211_rate *rate;
  
- struct wmi_ap_ps_peer_cmd {
-@@ -4058,7 +4059,6 @@ struct wmi_vdev_stopped_event {
- } __packed;
+ 	if (phy->chandef.chan->band == NL80211_BAND_5GHZ)
+ 		offset = 4;
  
- struct wmi_pdev_bss_chan_info_event {
--	u32 pdev_id;
- 	u32 freq;	/* Units in MHz */
- 	u32 noise_floor;	/* units are dBm */
- 	/* rx clear - how often the channel was unused */
-@@ -4076,6 +4076,7 @@ struct wmi_pdev_bss_chan_info_event {
- 	/*rx_cycle cnt for my bss in 64bits format */
- 	u32 rx_bss_cycle_count_low;
- 	u32 rx_bss_cycle_count_high;
-+	u32 pdev_id;
- } __packed;
+-	rate = &mt76_rates[offset + i];
++	rate = &mt76_rates[offset + rateidx];
  
- #define WMI_VDEV_INSTALL_KEY_COMPL_STATUS_SUCCESS 0
+ 	return rate->hw_value;
+ }
+-EXPORT_SYMBOL_GPL(mt76_default_basic_rate);
++EXPORT_SYMBOL_GPL(mt76_calculate_default_rate);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 0322847f554c..53949a365fdd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -883,7 +883,7 @@ int mt76_get_of_eeprom(struct mt76_dev *dev, void *data, int offset, int len);
+ struct mt76_queue *
+ mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
+ 		int ring_base);
+-u16 mt76_default_basic_rate(struct mt76_phy *phy, struct ieee80211_vif *vif);
++u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx);
+ static inline int mt76_init_tx_queue(struct mt76_phy *phy, int qid, int idx,
+ 				     int n_desc, int ring_base)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 1c6f066de2dd..dfc5ea2cf7d0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -904,17 +904,19 @@ mt7915_mac_write_txwi_8023(struct mt7915_dev *dev, __le32 *txwi,
+ 
+ static void
+ mt7915_mac_write_txwi_80211(struct mt7915_dev *dev, __le32 *txwi,
+-			    struct sk_buff *skb, struct ieee80211_key_conf *key)
++			    struct sk_buff *skb, struct ieee80211_key_conf *key,
++			    bool *mcast)
+ {
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+-	bool multicast = is_multicast_ether_addr(hdr->addr1);
+ 	u8 tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
+ 	__le16 fc = hdr->frame_control;
+ 	u8 fc_type, fc_stype;
+ 	u32 val;
+ 
++	*mcast = is_multicast_ether_addr(hdr->addr1);
++
+ 	if (ieee80211_is_action(fc) &&
+ 	    mgmt->u.action.category == WLAN_CATEGORY_BACK &&
+ 	    mgmt->u.action.u.addba_req.action_code == WLAN_ACTION_ADDBA_REQ) {
+@@ -940,15 +942,15 @@ mt7915_mac_write_txwi_80211(struct mt7915_dev *dev, __le32 *txwi,
+ 
+ 	val = FIELD_PREP(MT_TXD2_FRAME_TYPE, fc_type) |
+ 	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype) |
+-	      FIELD_PREP(MT_TXD2_MULTICAST, multicast);
++	      FIELD_PREP(MT_TXD2_MULTICAST, *mcast);
+ 
+-	if (key && multicast && ieee80211_is_robust_mgmt_frame(skb) &&
++	if (key && *mcast && ieee80211_is_robust_mgmt_frame(skb) &&
+ 	    key->cipher == WLAN_CIPHER_SUITE_AES_CMAC) {
+ 		val |= MT_TXD2_BIP;
+ 		txwi[3] &= ~cpu_to_le32(MT_TXD3_PROTECT_FRAME);
+ 	}
+ 
+-	if (!ieee80211_is_data(fc) || multicast ||
++	if (!ieee80211_is_data(fc) || *mcast ||
+ 	    info->flags & IEEE80211_TX_CTL_USE_MINRATE)
+ 		val |= MT_TXD2_FIX_RATE;
+ 
+@@ -989,6 +991,7 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
+ 	bool ext_phy = info->hw_queue & MT_TX_HW_QUEUE_EXT_PHY;
+ 	u8 p_fmt, q_idx, omac_idx = 0, wmm_idx = 0;
+ 	bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
++	bool mcast = false;
+ 	u16 tx_count = 15;
+ 	u32 val;
+ 
+@@ -1051,15 +1054,22 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
+ 	if (is_8023)
+ 		mt7915_mac_write_txwi_8023(dev, txwi, skb, wcid);
+ 	else
+-		mt7915_mac_write_txwi_80211(dev, txwi, skb, key);
++		mt7915_mac_write_txwi_80211(dev, txwi, skb, key, &mcast);
+ 
+ 	if (txwi[2] & cpu_to_le32(MT_TXD2_FIX_RATE)) {
++		u8 band = mphy->chandef.chan->band;
++		int rateidx, mcast_rate = vif->bss_conf.mcast_rate[band];
+ 		u16 rate, mode;
+ 
+ 		/* hardware won't add HTC for mgmt/ctrl frame */
+ 		txwi[2] |= cpu_to_le32(MT_TXD2_HTC_VLD);
+ 
+-		rate = mt76_default_basic_rate(mphy, vif);
++		if (mcast && mcast_rate > 0)
++			rateidx = mcast_rate - 1;
++		else
++			rateidx = ffs(vif->bss_conf.basic_rates) - 1;
++
++		rate = mt76_calculate_default_rate(mphy, rateidx);
+ 		mode = rate >> 8;
+ 		rate &= GENMASK(7, 0);
+ 		rate |= FIELD_PREP(MT_TX_RATE_MODE, mode);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index b326525e4b65..2ae594f539e2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -658,17 +658,19 @@ mt7921_mac_write_txwi_8023(struct mt7921_dev *dev, __le32 *txwi,
+ 
+ static void
+ mt7921_mac_write_txwi_80211(struct mt7921_dev *dev, __le32 *txwi,
+-			    struct sk_buff *skb, struct ieee80211_key_conf *key)
++			    struct sk_buff *skb, struct ieee80211_key_conf *key,
++			    bool *mcast)
+ {
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+-	bool multicast = is_multicast_ether_addr(hdr->addr1);
+ 	u8 tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
+ 	__le16 fc = hdr->frame_control;
+ 	u8 fc_type, fc_stype;
+ 	u32 val;
+ 
++	*mcast = is_multicast_ether_addr(hdr->addr1);
++
+ 	if (ieee80211_is_action(fc) &&
+ 	    mgmt->u.action.category == WLAN_CATEGORY_BACK &&
+ 	    mgmt->u.action.u.addba_req.action_code == WLAN_ACTION_ADDBA_REQ) {
+@@ -694,15 +696,15 @@ mt7921_mac_write_txwi_80211(struct mt7921_dev *dev, __le32 *txwi,
+ 
+ 	val = FIELD_PREP(MT_TXD2_FRAME_TYPE, fc_type) |
+ 	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype) |
+-	      FIELD_PREP(MT_TXD2_MULTICAST, multicast);
++	      FIELD_PREP(MT_TXD2_MULTICAST, *mcast);
+ 
+-	if (key && multicast && ieee80211_is_robust_mgmt_frame(skb) &&
++	if (key && *mcast && ieee80211_is_robust_mgmt_frame(skb) &&
+ 	    key->cipher == WLAN_CIPHER_SUITE_AES_CMAC) {
+ 		val |= MT_TXD2_BIP;
+ 		txwi[3] &= ~cpu_to_le32(MT_TXD3_PROTECT_FRAME);
+ 	}
+ 
+-	if (!ieee80211_is_data(fc) || multicast ||
++	if (!ieee80211_is_data(fc) || *mcast ||
+ 	    info->flags & IEEE80211_TX_CTL_USE_MINRATE)
+ 		val |= MT_TXD2_FIX_RATE;
+ 
+@@ -759,6 +761,7 @@ void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
+ 	struct mt76_phy *mphy = &dev->mphy;
+ 	u8 p_fmt, q_idx, omac_idx = 0, wmm_idx = 0;
+ 	bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
++	bool mcast = false;
+ 	u16 tx_count = 15;
+ 	u32 val;
+ 
+@@ -808,15 +811,22 @@ void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
+ 	if (is_8023)
+ 		mt7921_mac_write_txwi_8023(dev, txwi, skb, wcid);
+ 	else
+-		mt7921_mac_write_txwi_80211(dev, txwi, skb, key);
++		mt7921_mac_write_txwi_80211(dev, txwi, skb, key, &mcast);
+ 
+ 	if (txwi[2] & cpu_to_le32(MT_TXD2_FIX_RATE)) {
++		u8 band = mphy->chandef.chan->band;
++		int rateidx, mcast_rate = vif->bss_conf.mcast_rate[band];
+ 		u16 rate, mode;
+ 
+ 		/* hardware won't add HTC for mgmt/ctrl frame */
+ 		txwi[2] |= cpu_to_le32(MT_TXD2_HTC_VLD);
+ 
+-		rate = mt76_default_basic_rate(mphy, vif);
++		if (mcast && mcast_rate > 0)
++			rateidx = mcast_rate - 1;
++		else
++			rateidx = ffs(vif->bss_conf.basic_rates) - 1;
++
++		rate = mt76_calculate_default_rate(mphy, rateidx);
+ 		mode = rate >> 8;
+ 		rate &= GENMASK(7, 0);
+ 		rate |= FIELD_PREP(MT_TX_RATE_MODE, mode);
 -- 
-2.25.1
+2.29.2
 
