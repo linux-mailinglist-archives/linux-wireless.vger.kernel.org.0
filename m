@@ -2,103 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAAAA3CF23B
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jul 2021 04:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCC543CF4FA
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jul 2021 09:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237979AbhGTCL2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Jul 2021 22:11:28 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:44478 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S244286AbhGTCJG (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Jul 2021 22:09:06 -0400
-X-UUID: d7f1daa3109d4e218e6a62960256a8ad-20210720
-X-UUID: d7f1daa3109d4e218e6a62960256a8ad-20210720
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 923929611; Tue, 20 Jul 2021 10:49:28 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 20 Jul 2021 10:49:27 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 20 Jul 2021 10:49:27 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Bo Jiao <bo.jiao@mediatek.com>
-Subject: [PATCH v2] mt76: mt7915: fix potential overflow of eeprom page index
-Date:   Tue, 20 Jul 2021 10:48:32 +0800
-Message-ID: <20210720024832.20265-1-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+        id S242250AbhGTGVK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jul 2021 02:21:10 -0400
+Received: from m12-14.163.com ([220.181.12.14]:60175 "EHLO m12-14.163.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243192AbhGTGUb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 20 Jul 2021 02:20:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=EFHAEyeznjaRByha1I
+        PeNQQ59dwCgkZn4Fm5w0k6liM=; b=AbFQ/rGcALzxH/YA8QEpkHnUt+e489Dd9V
+        82z8VcpZUFZlNK1PTEfeulp+0/ebdZcefmwTfZUMcqaYHPgpLzYLAmxefgE7p+B8
+        ebX1Y9hdw6oS8exjl26pazPxUwHc7gzq2bQiHdg0jhUv0TzuIIpWWH0NxU8tTfox
+        K+oj5d5Ec=
+Received: from wengjianfeng.ccdomain.com (unknown [218.17.89.92])
+        by smtp10 (Coremail) with SMTP id DsCowAAnOcOSdPZgzix+Bw--.36571S2;
+        Tue, 20 Jul 2021 15:00:36 +0800 (CST)
+From:   samirweng1979 <samirweng1979@163.com>
+To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        wengjianfeng <wengjianfeng@yulong.com>
+Subject: [PATCH] rtl8xxxu: remove unnecessary labels
+Date:   Tue, 20 Jul 2021 15:00:40 +0800
+Message-Id: <20210720070040.20840-1-samirweng1979@163.com>
+X-Mailer: git-send-email 2.15.0.windows.1
+X-CM-TRANSID: DsCowAAnOcOSdPZgzix+Bw--.36571S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uw4kuFW8WF43Gw48XrWkZwb_yoW8AF4Upr
+        ZrC3yYkr1rJr1IqFW7J3WqvF1fu3WSyr97WFZrtw1Sqan3Zrn5WF1q9r9Yyr40gFykJFya
+        qrWDtrsrGa13KrDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07bjc_-UUUUU=
+X-Originating-IP: [218.17.89.92]
+X-CM-SenderInfo: pvdpx25zhqwiqzxzqiywtou0bp/1tbiERTVsV7+4Gp4+AAAsL
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If total eeprom size is divisible by per-page size, the i in for loop
-will exceed max page index, which happens in our newer chipset.
+From: wengjianfeng <wengjianfeng@yulong.com>
 
-Fixes: 26f18380e6ca ("mt76: mt7915: add support for flash mode")
-Signed-off-by: Bo Jiao <bo.jiao@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Reported-by: kernel test robot <lkp@intel.com>
+Simplify the code by removing unnecessary labels and returning directly.
+
+Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
 ---
-v2: fix warning reported by kernel test robot
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-	drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3407:22: warning: use
-	of logical '&&' with constant operand [-Wconstant-logical-operand]
-	if (i == total - 1 && MT7915_EEPROM_SIZE % PER_PAGE_SIZE)
-			^  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 91efa9b..69b6796 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3392,20 +3392,20 @@ int mt7915_mcu_set_chan_info(struct mt7915_phy *phy, int cmd)
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
+index 4f93f88..3fd14e6 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
+@@ -256,10 +256,8 @@ static int rtl8723a_emu_to_active(struct rtl8xxxu_priv *priv)
+ 		udelay(10);
+ 	}
  
- static int mt7915_mcu_set_eeprom_flash(struct mt7915_dev *dev)
- {
--#define TOTAL_PAGE_MASK		GENMASK(7, 5)
-+#define MAX_PAGE_IDX_MASK	GENMASK(7, 5)
- #define PAGE_IDX_MASK		GENMASK(4, 2)
- #define PER_PAGE_SIZE		0x400
- 	struct mt7915_mcu_eeprom req = { .buffer_mode = EE_MODE_BUFFER };
--	u8 total = MT7915_EEPROM_SIZE / PER_PAGE_SIZE;
-+	u8 total = DIV_ROUND_UP(MT7915_EEPROM_SIZE, PER_PAGE_SIZE);
- 	u8 *eep = (u8 *)dev->mt76.eeprom.data;
- 	int eep_len;
- 	int i;
+-	if (!count) {
+-		ret = -EBUSY;
+-		goto exit;
+-	}
++	if (!count)
++		return -EBUSY;
  
--	for (i = 0; i <= total; i++, eep += eep_len) {
-+	for (i = 0; i < total; i++, eep += eep_len) {
- 		struct sk_buff *skb;
- 		int ret;
+ 	/* We should be able to optimize the following three entries into one */
  
--		if (i == total)
-+		if (i == total - 1 && !!(MT7915_EEPROM_SIZE % PER_PAGE_SIZE))
- 			eep_len = MT7915_EEPROM_SIZE % PER_PAGE_SIZE;
- 		else
- 			eep_len = PER_PAGE_SIZE;
-@@ -3415,7 +3415,7 @@ static int mt7915_mcu_set_eeprom_flash(struct mt7915_dev *dev)
- 		if (!skb)
- 			return -ENOMEM;
+@@ -292,10 +290,8 @@ static int rtl8723a_emu_to_active(struct rtl8xxxu_priv *priv)
+ 		udelay(10);
+ 	}
  
--		req.format = FIELD_PREP(TOTAL_PAGE_MASK, total) |
-+		req.format = FIELD_PREP(MAX_PAGE_IDX_MASK, total - 1) |
- 			     FIELD_PREP(PAGE_IDX_MASK, i) | EE_FORMAT_WHOLE;
- 		req.len = cpu_to_le16(eep_len);
+-	if (!count) {
+-		ret = -EBUSY;
+-		goto exit;
+-	}
++	if (!count)
++		return -EBUSY;
+ 
+ 	/* 0x4C[23] = 0x4E[7] = 1, switch DPDT_SEL_P output from WL BB */
+ 	/*
+@@ -307,7 +303,6 @@ static int rtl8723a_emu_to_active(struct rtl8xxxu_priv *priv)
+ 	val8 &= ~LEDCFG2_DPDT_SELECT;
+ 	rtl8xxxu_write8(priv, REG_LEDCFG2, val8);
+ 
+-exit:
+ 	return ret;
+ }
+ 
+@@ -327,7 +322,7 @@ static int rtl8723au_power_on(struct rtl8xxxu_priv *priv)
+ 
+ 	ret = rtl8723a_emu_to_active(priv);
+ 	if (ret)
+-		goto exit;
++		return ret;
+ 
+ 	/*
+ 	 * 0x0004[19] = 1, reset 8051
+@@ -353,7 +348,7 @@ static int rtl8723au_power_on(struct rtl8xxxu_priv *priv)
+ 	val32 &= ~(BIT(28) | BIT(29) | BIT(30));
+ 	val32 |= (0x06 << 28);
+ 	rtl8xxxu_write32(priv, REG_EFUSE_CTRL, val32);
+-exit:
++
+ 	return ret;
+ }
  
 -- 
-2.25.1
+1.9.1
 
