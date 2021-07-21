@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65FA03D11B4
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jul 2021 16:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D4963D11BB
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jul 2021 16:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239254AbhGUOO6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Jul 2021 10:14:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33766 "EHLO
+        id S239386AbhGUOQj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Jul 2021 10:16:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238570AbhGUOOx (ORCPT
+        with ESMTP id S239284AbhGUOQi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Jul 2021 10:14:53 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B4EFC061575
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jul 2021 07:55:29 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id g19so3611842ybe.11
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jul 2021 07:55:29 -0700 (PDT)
+        Wed, 21 Jul 2021 10:16:38 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98C26C061575
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Jul 2021 07:57:14 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id a16so3641346ybt.8
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Jul 2021 07:57:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=UmsZjPxH8FFxWnaoHfCAeuJj3SPZVHDgTz7Y67PjsJw=;
-        b=qXF6UC97hj/Wdh0m7Ge7VrRo7v5oDgIagVPIcGwkl6aYfGtlUBoH0bjq5p0rab6BHV
-         O0oIHlRv2xsyWiv5e1xtyHCI3oLvjsY21U12zc5hyt3fda8T/DOCh1MPb8YaiEjR16PC
-         1TbcahEnGdE4ZQm5gXEKtaTeDdGTcvKdqKT84/muCwiNPeXTGjWSWcCSodfo4V2Sk9Ou
-         6AsvUrGseF8ehUL9LCRrbMrkg5+kfp/1zqWon2vd1LZjKB2/hZoWc7anhyY/ymuRDKGf
-         PwlHRWyWNACm5bQEl0yuWNR09FG9VXQf9H3lDdpPhTWqDF2bt2RFIYQKNPb8QcbupQz/
-         AnaA==
+        bh=8dnBbcqLM6HFKu6k8qAqy2NQB4jOc43AcKD5Q4tuTwU=;
+        b=qtul2um0szTmZOrPf5ZtuQbmcQZtU3yRmrBHzN+qQXo33H0NRsvh8PdsZKhUDw9UWJ
+         wFWvM6r0OS4Uy4TxtvZCVkmqvomMeViBkYJSSFgEcF06qbV6sq6YV/r3+L3SejEREHBd
+         MKT4K5i/AV/sor77UmWPivsB9NxJ8nKB4FCu7F47Ho6cZJVN8pCC+buyZVx5v632jUHT
+         m2mrFTwNgXjWj389tZSgKwDBtNXXIYfsLh8tMV88kxfl5aqYMsND8ND2e9s9n33fgiEy
+         LVoN0RSCjv6jBxPkLVOvM1M+aQa11lIe0+4JJ/AeUzKoeS98dhY7ztzESlFsPcvxeQF4
+         IkaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=UmsZjPxH8FFxWnaoHfCAeuJj3SPZVHDgTz7Y67PjsJw=;
-        b=rvqIm2iiUjPyhsi3POMjXotsYUcwtH5wcfZtrl3XtGd6X0uOPv1zo5gsYhF2kT+Hcb
-         C82fAcmKh1ipq3gJhB5xS7onYOMYBU9ndalv2Kdjt8YiZE7l5eMd+7jJjDSF00uJzVsN
-         KvvjJsheVll7ZbD9trVAiaH2rybqv3UR+L8XaCB0LE242e2mv6lesQctXsMwvmqugX5g
-         z63XiAgLJQ6NV6saZDEbZZlkexeu3vDt7L4lKmOROeRtC7iz5jgu+b8w9goAP1raOBC+
-         h0opzgfliB6a+cKQ3qbkywkehh3zXCY4D1k/a95joXt6xJ0kWRLWJn8ZzvE3+ljEveIk
-         T8Pw==
-X-Gm-Message-State: AOAM5308ZROHTU6thlPw41c1TaiU7nmLBfv6n/0Ecz0fg8Tf3WoOsgPR
-        oO1oPEYGLT5pXYqZzNULP5Il4f1ovsGZfWlHxR034rN1n896f/jb5/k=
-X-Google-Smtp-Source: ABdhPJzPZ8Qh2c7vwCZx686Si7TVtVkWpZaSsQdxQQpi+yWhWjDizc/ffGknaUmOg5L1zJBTR5XgnL/amZUVOHZwCzY=
-X-Received: by 2002:a25:7394:: with SMTP id o142mr47934092ybc.220.1626879328309;
- Wed, 21 Jul 2021 07:55:28 -0700 (PDT)
+        bh=8dnBbcqLM6HFKu6k8qAqy2NQB4jOc43AcKD5Q4tuTwU=;
+        b=DlhMwXui+8bymZORx6IMd/DYWWFjPP2RYLRFIDbUOid8Kg0Vo3di6M79eRf/+eQ7QF
+         cCvKXavVIdsRAP3lKM4pLv5OlnkfMl8/heduq6NcIzCOK7S+0PVI45rERQ8rRv/DVuIf
+         DI6MgL+9WhAJ0n4L/9ozuOwioCFPjzjhPyxnWQ4aCBZ/JSBRNrYhkIUqUB+RDsmCzv+f
+         10WrsUm3mfHYJHSyGB2DQosMvGvkbz04HKix7QgUZg/1Q3h8Nem8HjiFa8v+z4zt/g9t
+         un+TkZ/BJwvBpGz1z/uxSzlsjydr7djwBOzhccQwGA8tt8Yh/BN4rDSCgg1lNwFhP+Fq
+         GtZw==
+X-Gm-Message-State: AOAM531VKXaHBU7T/q2lUimHSP6HdOKJkYEGHfXoP63rjmI3m7Yl/51a
+        8ASk0AmU7kRPw7KI0gT1cQqvrNi56NnrLAm/DB4=
+X-Google-Smtp-Source: ABdhPJzSN3c+ljWxyX/DF3VpwJv1Wfr2ewgV+eAW6D89dBeRWpR8XgA2sEaVf4HeKYQrcSq6WrU4DVAuuZHcsIqy8Zs=
+X-Received: by 2002:a25:b3c9:: with SMTP id x9mr45357692ybf.514.1626879433781;
+ Wed, 21 Jul 2021 07:57:13 -0700 (PDT)
 MIME-Version: 1.0
 References: <CANB4YXTf0DhJfL6kPa26ZCzj8FRwwdw_enGROzL-zXuWGyrwOQ@mail.gmail.com>
  <CANB4YXRtyvgu946rL=gxaRqhXja1qfBQ+DSYfiMvYcax7o45EQ@mail.gmail.com> <YPgvMph+3vRbrol3@ubuntu-x1>
 In-Reply-To: <YPgvMph+3vRbrol3@ubuntu-x1>
 From:   Timo Witte <timo.witte@gmail.com>
-Date:   Wed, 21 Jul 2021 16:55:17 +0200
-Message-ID: <CANB4YXRcr=XM00r_mz2ejAfuYwHMibffOcxNiDP=acpmFUchMA@mail.gmail.com>
+Date:   Wed, 21 Jul 2021 16:57:03 +0200
+Message-ID: <CANB4YXSDuYndC26KPkV+XqPkowbN54MMceuj7MNaxh+EwLN4kw@mail.gmail.com>
 Subject: Re: wireless-regdb: Update regulatory rules for Germany (DE) on 6GHz
 To:     Seth Forshee <sforshee@kernel.org>
 Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
@@ -59,6 +59,11 @@ Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
+
+From f9a99269b00f961e40024632c7b831c615bfa392 Mon Sep 17 00:00:00 2001
+From: Timo Witte <timo.witte@gmail.com>
+Date: Wed, 21 Jul 2021 16:51:40 +0200
+Subject: [PATCH] add wifi6e for germany
 
 Signed-off-by: Timo Witte <timo.witte@gmail.com>
 ---
@@ -84,7 +89,7 @@ ekommunikation/Unternehmen_Institutionen/Frequenzen/Allgemeinzuteilungen/20=
 +# including Wireless Local Area Networks=E2=80=9C))
 +# https://www.bundesnetzagentur.de/SharedDocs/Downloads/DE/Sachgebiete/Tel=
 ekommunikation/Unternehmen_Institutionen/Frequenzen/Allgemeinzuteilungen/Mo=
-bilfunkDectWlanCBFunk/v>
+bilfunkDectWlanCBFunk/vfg552021WLAN6GHz.pdf
  country DE: DFS-ETSI
         (2400 - 2483.5 @ 40), (100 mW)
         (5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=3DETSI
