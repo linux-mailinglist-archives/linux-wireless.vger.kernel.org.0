@@ -2,132 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A70513D11F2
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jul 2021 17:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFFE73D125D
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jul 2021 17:27:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239413AbhGUO1P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Jul 2021 10:27:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58896 "EHLO mail.kernel.org"
+        id S239857AbhGUOqt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Jul 2021 10:46:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35676 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239021AbhGUO1O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Jul 2021 10:27:14 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0795A60FE9;
-        Wed, 21 Jul 2021 15:07:47 +0000 (UTC)
+        id S238948AbhGUOqt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 21 Jul 2021 10:46:49 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 811A561019;
+        Wed, 21 Jul 2021 15:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626880071;
-        bh=CohVxwuDisL11y0VTlPi65KYI3TaQeWuxldXen3M5sg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=uzxaFRjrHeoZnGWliZY4qiD5WImC1kwJEK+DEsojPYsYt4ghnLHJGO2g12/4Pfz8A
-         t7DXoip/4x5NlJ0PVCcf4In0/m+fVcR5Xpf5ji7bAG65ZqeAbLoYjok/vXwDDsVLb5
-         /cAvzD+otHDHdg7UoOlUrkRJvRyUANq6+KfWtmLwAAJ8uxO2WK9ZTeQvzWeo9Ji/lA
-         NbpkNcjSKhyEftbOnMMDSRq2nviUHzNPfnIirSddM/vkYuRzlVmKoUPfLcD5hhdJYI
-         4OLP55IHOTYFYzsHiAiOx42K/4bSYAT7ZRJ9LdZLEuVbcIP+o5CMPoPa1//9+L4Te5
-         +Q7Ih4NOMUk2Q==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Ryder Lee <ryder.lee@mediatek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>,
-        Xing Song <xing.song@mediatek.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mt76: fix enum type mismatch
-Date:   Wed, 21 Jul 2021 17:06:56 +0200
-Message-Id: <20210721150745.1914829-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
+        s=k20201202; t=1626881245;
+        bh=FovSolxcVGt/fjQOdmy+qNXac3fTl6SVUqKqhibP1Tg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=M0UI4LFFgQr/oKV6fL/BhKMs18WximT6fBz178IZ1b2PXdvLSvmhqYXl9wGKcaBwK
+         M3Yyh5bTwL0D9nBOi/UHbrb3/mlZMjrBDazNTvuCJya7UfWsD41o8Y5xYnwWeyALyq
+         sEuR0lLpH3bdBKorU2QS0F52rnX/pACwOHjbGrjKbr2xBg23YimvqYTFAyIe/9/9zd
+         tG5I0HPpugwiC1W+NvFOLzdbSesCvDXOPNpL5IJqFb5mVMzx/MmXOffjXbGGBJGMxi
+         tIgnXZpphxj/9qlJRMtJAK48USiolNd/rmKQvdyHye1NckvCusgIZo8RiIwwr9QrXl
+         NiJSNGVGVNxyQ==
+Date:   Wed, 21 Jul 2021 10:27:24 -0500
+From:   Seth Forshee <sforshee@kernel.org>
+To:     Timo Witte <timo.witte@gmail.com>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: wireless-regdb: Update regulatory rules for Germany (DE) on 6GHz
+Message-ID: <YPg83HXFIXDAEFx1@ubuntu-x1>
+References: <CANB4YXTf0DhJfL6kPa26ZCzj8FRwwdw_enGROzL-zXuWGyrwOQ@mail.gmail.com>
+ <CANB4YXRtyvgu946rL=gxaRqhXja1qfBQ+DSYfiMvYcax7o45EQ@mail.gmail.com>
+ <YPgvMph+3vRbrol3@ubuntu-x1>
+ <CANB4YXSDuYndC26KPkV+XqPkowbN54MMceuj7MNaxh+EwLN4kw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANB4YXSDuYndC26KPkV+XqPkowbN54MMceuj7MNaxh+EwLN4kw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Wed, Jul 21, 2021 at 04:57:03PM +0200, Timo Witte wrote:
+> From f9a99269b00f961e40024632c7b831c615bfa392 Mon Sep 17 00:00:00 2001
+> From: Timo Witte <timo.witte@gmail.com>
+> Date: Wed, 21 Jul 2021 16:51:40 +0200
+> Subject: [PATCH] add wifi6e for germany
+> 
+> Signed-off-by: Timo Witte <timo.witte@gmail.com>
+> ---
+>  db.txt | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/db.txt b/db.txt
+> index 1e5ed03..411b7ac 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -448,6 +448,12 @@ country CZ: DFS-ETSI
+>  # Bereich 57 GHz - 66 GHz für Funkanwendungen für weitbandige
+>  # Datenübertragungssysteme; „Multiple Gigabit WAS/RLAN Systems (MGWS)“).
+>  # https://www.bundesnetzagentur.de/SharedDocs/Downloads/DE/Sachgebiete/Telekommunikation/Unternehmen_Institutionen/Frequenzen/Allgemeinzuteilungen/2011_08_MGWS_pdf.pdf
+> +#
+> +# Allocation for the WiFi 6E Band (Allgemeinzuteilung von Frequenzen im
+> +# Bereich 5945 MHz - 6425 MHz für drahtlose Zugangssysteme,
+> +# einschließlich lokaler Funknetze WAS/WLAN („Wireless Access Systems
+> +# including Wireless Local Area Networks“))
+> +# https://www.bundesnetzagentur.de/SharedDocs/Downloads/DE/Sachgebiete/Telekommunikation/Unternehmen_Institutionen/Frequenzen/Allgemeinzuteilungen/MobilfunkDectWlanCBFunk/vfg552021WLAN6GHz.pdf
+>  country DE: DFS-ETSI
+>         (2400 - 2483.5 @ 40), (100 mW)
+>         (5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+> @@ -455,6 +461,10 @@ country DE: DFS-ETSI
+>         (5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+>         # short range devices (ETSI EN 300 440-1)
+>         (5725 - 5875 @ 80), (25 mW)
+> +       # WiFi 6E
+> +       (5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+> +       # WiFi 6E Short range (Outdoor allowed)
+> +       (5945 - 6425 @ 160), (25 mW), AUTO-BW, wmmrule=ETSI
 
-There is no 'NONE' version of 'enum mcu_cipher_type', and returning
-'MT_CIPHER_NONE' causes a warning:
+Unfortunately the kernel doesn't support multiple rules for a given
+range with differing flags. Currently it is necessary to specify either
+the indoor power limit with NO-OUTDOOR or the outdoor power limit, but
+not both.
 
-drivers/net/wireless/mediatek/mt76/mt7921/mcu.c: In function 'mt7921_mcu_get_cipher':
-drivers/net/wireless/mediatek/mt76/mt7921/mcu.c:114:24: error: implicit conversion from 'enum mt76_cipher_type' to 'enum mcu_cipher_type' [-Werror=enum-conversion]
-  114 |                 return MT_CIPHER_NONE;
-      |                        ^~~~~~~~~~~~~~
-
-Add the missing MCU_CIPHER_NONE defintion that fits in here with
-the same value.
-
-Fixes: c368362c36d3 ("mt76: fix iv and CCMP header insertion")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-This problem currently exists in 5.14-rc2, please ignore my patch
-if a fix is already queued up elsewhere.
----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.h | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.h | 3 ++-
- 4 files changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 863aa18b3024..43960770a9af 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -111,7 +111,7 @@ mt7915_mcu_get_cipher(int cipher)
- 	case WLAN_CIPHER_SUITE_SMS4:
- 		return MCU_CIPHER_WAPI;
- 	default:
--		return MT_CIPHER_NONE;
-+		return MCU_CIPHER_NONE;
- 	}
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index edd3ba3a0c2d..e68a562cc5b4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -1073,7 +1073,8 @@ enum {
- };
- 
- enum mcu_cipher_type {
--	MCU_CIPHER_WEP40 = 1,
-+	MCU_CIPHER_NONE = 0,
-+	MCU_CIPHER_WEP40,
- 	MCU_CIPHER_WEP104,
- 	MCU_CIPHER_WEP128,
- 	MCU_CIPHER_TKIP,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index cd690c64f65b..9fbaacc67cfa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -111,7 +111,7 @@ mt7921_mcu_get_cipher(int cipher)
- 	case WLAN_CIPHER_SUITE_SMS4:
- 		return MCU_CIPHER_WAPI;
- 	default:
--		return MT_CIPHER_NONE;
-+		return MCU_CIPHER_NONE;
- 	}
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-index d76cf8f8dfdf..de3c091f6736 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-@@ -199,7 +199,8 @@ struct sta_rec_sec {
- } __packed;
- 
- enum mcu_cipher_type {
--	MCU_CIPHER_WEP40 = 1,
-+	MCU_CIPHER_NONE = 0,
-+	MCU_CIPHER_WEP40,
- 	MCU_CIPHER_WEP104,
- 	MCU_CIPHER_WEP128,
- 	MCU_CIPHER_TKIP,
--- 
-2.29.2
-
+Thanks,
+Seth
