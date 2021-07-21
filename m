@@ -2,147 +2,188 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF7E73D0FA8
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jul 2021 15:39:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E06D3D10A6
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jul 2021 16:05:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238185AbhGUM6v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Jul 2021 08:58:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43386 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238337AbhGUM5H (ORCPT
+        id S239015AbhGUNYs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Jul 2021 09:24:48 -0400
+Received: from new4-smtp.messagingengine.com ([66.111.4.230]:40083 "EHLO
+        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238984AbhGUNYs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Jul 2021 08:57:07 -0400
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C63C061574;
-        Wed, 21 Jul 2021 06:37:09 -0700 (PDT)
-Received: by mail-qk1-x730.google.com with SMTP id q15so2053477qkm.8;
-        Wed, 21 Jul 2021 06:37:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=uh01RhYYBX/9cJeTpZ4herRqCYgg+c5yWd7RJP1vPE4=;
-        b=ttPcGi41ChO5jWh67Rq2CEwXuAdMhJZawaeNETBMgEuClYxQgk9xjiRYl+d2b3KvLc
-         CbracepViCUfG7fdHaJxDYWbxVsyDAnbdkyIitxTTUhvSEwSST5ank4/BhMtQsSfDbLW
-         V3rPCA2trJSHl+I6Hgsbfeft/rSklrqmnx8vnuV58iQavmrTdNa6IWEwsXslXfoSP60+
-         YCtBIomio9al5fBDKGf+C0OasZQN6K2Nr0UfukVjJTlvHhIf7933CTmzBLGyKnD0U49i
-         NK+u2+SNKAsRKhLoxF19E7toNJb5PFEnYFK24n8OAvMgF0gPKCdWYzV1iTSBpLezB7o5
-         gKig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=uh01RhYYBX/9cJeTpZ4herRqCYgg+c5yWd7RJP1vPE4=;
-        b=dzKUtuFdIBPUkGPIZg66Ykb9+wHScFTJtHe8aii0AzA9fyQadG+/AXZtsrPZLmHgbk
-         CR84RJSb//e3grJc3FvUpTIwFXjmdrDf/dc71RZfM2Fj9NHUVNsSyPMaAPLjfuNlnXM2
-         Hpq8vz8EBQELjZH1K+axpV/TdcqS9kXlY4MkcExxDpUt0ubHaJimbLdvjXQ0qO1Gcr3G
-         pAKPB59bMOR0cy0rlPRYuFSYuaWtYLq3ATZesLOHGkQ6rV7uFBkprA5GcmUWaAvlKtQA
-         K6sMJttmsjxKFOe8rCLybo1JBlR2CxGdIsVJb3aXTaTz/efH3xP1Yzbl1dQ9dtkYAQia
-         Kd1g==
-X-Gm-Message-State: AOAM531f/346JWe0YgbVhyJygZ82/D/iMw/tGlgtpQq/fcgHUoKHc67D
-        MP65o+HDti2u+FUwC63/cWY=
-X-Google-Smtp-Source: ABdhPJxyxcuUQq7+7lE+19VBeIl+gcagTSt9CBIWFUpKrnYFkf+yg0Tn031PfZiwNaPHNJwyiangEw==
-X-Received: by 2002:a05:620a:1305:: with SMTP id o5mr17697082qkj.213.1626874628846;
-        Wed, 21 Jul 2021 06:37:08 -0700 (PDT)
-Received: from ?IPv6:2620:10d:c0a8:1102::1444? ([2620:10d:c091:480::1:8307])
-        by smtp.gmail.com with ESMTPSA id c11sm9046470qth.29.2021.07.21.06.37.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jul 2021 06:37:08 -0700 (PDT)
-From:   Jes Sorensen <jes.sorensen@gmail.com>
-X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: Re: [PATCH] rtl8xxxu: remove unnecessary labels
-To:     samirweng1979 <samirweng1979@163.com>, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        wengjianfeng <wengjianfeng@yulong.com>
-References: <20210720070040.20840-1-samirweng1979@163.com>
-Message-ID: <eb5393c9-77d5-37f1-e9e8-67795958c9e6@gmail.com>
-Date:   Wed, 21 Jul 2021 09:37:07 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        Wed, 21 Jul 2021 09:24:48 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 6171A580490;
+        Wed, 21 Jul 2021 10:05:24 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Wed, 21 Jul 2021 10:05:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
+        from:to:cc:subject:date:message-id:in-reply-to:references
+        :mime-version:content-transfer-encoding; s=fm3; bh=BbpD5un6hz/Cp
+        pNPwZ3yWte9SCm7D64rp4YLYcyvMok=; b=QrsofyIqW14lIPCrOhOku+sLO5QDP
+        lm2aYVxZjgY2aFb/0azh1VJdwJJspzSN1bCv2XRiGhyHg5aRWWT+5QTgrr8GnqjN
+        TlHeAuZzNSrgHQ7I1t39mcafrdesnuCvSELmsLYzR8hMggIG7iLZd3rUXdBya4Mj
+        6EQGAMNo1WuS6j9tRlayHknlLg0MRcw0xdiKPAaELyXTxNi4/7iuebgXkyYnMWeh
+        1mrszPPQBNqGciVRgHBd9awGZPUDjt3pb12lfn/v5D87zTzzycvKvP3P8qMY0Ru5
+        2RcHv1La4e+Mz7dUsulp4TSP1z5lQWfh9uEEj7kpCODAmUf0KjVhx5Ibg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :in-reply-to:message-id:mime-version:references:subject:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm3; bh=BbpD5un6hz/CppNPwZ3yWte9SCm7D64rp4YLYcyvMok=; b=Pcfb2cwu
+        LL6qv8TdIXG56kO2StSfGS62a59irjInRNlRMP6vatPXLMBCLFsHZBNLngqga9bh
+        kzgk7rWScdSG3IVmiy+Va4vpmaLpcRaMLvh6/D58pdzDCF2ObXfruQsE1RJP1Dxc
+        omqZqm7+sq2zYBA+fV34TghXVVw3/L/bo7SZxMet2xQTHUUssgVDbir/jjsIxSZi
+        JjX1K5xpAGGAQuoE44dKASmon4wPmxYv3nal6eRy4cYlHBvuWHp9XvnTB+Y+Jc3u
+        vloA25Vu0UwlEXN3zfoNN7GYo4D+9XpL9QxknixBfvlCOEPQSQ4cWVpr/ls8anDL
+        1I9i2T1KOKiH3g==
+X-ME-Sender: <xms:pCn4YIXGOFlkpMCQXOODe1zPAFO-8YOziyBuxEu8LnkfWECQZ9yGGA>
+    <xme:pCn4YMkgGqByfA7QD3Sx2U176QsUFjCehkLvkxsfP2_vPBE8-KqgcNV-IKBNZmnsH
+    8k1iN1RYRSFwlgMhbc>
+X-ME-Received: <xmr:pCn4YMbjQCPL-lLPxKEA4IBLcdmZbu8d1lGfToMQ0PJyGyLUYpt3TK8-Ea9XKFcMnYvY66i2sv5Oqc7rtJgcrvID2UG6MMZV1ADi>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrfeeggdeijecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenog
+    evohgrshhtrghlqdfhgeduvddqtddvucdludehtddmnecujfgurhephffvufffkffojghf
+    ggfgsedtkeertdertddtnecuhfhrohhmpeforgigihhmvgcutfhiphgrrhguuceomhgrgi
+    himhgvsegtvghrnhhordhtvggthheqnecuggftrfgrthhtvghrnhepveejieejtdevgfff
+    gfejuefggfeutdelteekgeetueeftddutddtgfffhffgueffnecuffhomhgrihhnpeguvg
+    hvihgtvghtrhgvvgdrohhrghenucevlhhushhtvghrufhiiigvpeegnecurfgrrhgrmhep
+    mhgrihhlfhhrohhmpehmrgigihhmvgestggvrhhnohdrthgvtghh
+X-ME-Proxy: <xmx:pCn4YHVLsEI934yTM7JQ1cWbCTQQW6Orqqc1BPF21Wh8PlIvCye_yA>
+    <xmx:pCn4YCkD-wpEQZAZyzbL9mxHUUthi51iIMuW84Sq2JnvBq5FCsWVZw>
+    <xmx:pCn4YMfKaSpU-g6XM8HqwESoxiRj7lMZ9sKuIjRDrIeeQ3QSh9PS0g>
+    <xmx:pCn4YN_EvEVtksfjk6OnWSuCGFGeldClltfa3D5ewTcQ1pqe0OttNg>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 Jul 2021 10:05:23 -0400 (EDT)
+From:   Maxime Ripard <maxime@cerno.tech>
+To:     Chen-Yu Tsai <wens@csie.org>, Maxime Ripard <maxime@cerno.tech>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-sunxi@googlegroups.com,
+        "David S. Miller" <davem@davemloft.net>,
+        de Goede <hdegoede@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH 27/54] dt-bindings: net: wireless: Convert ESP ESP8089 binding to a schema
+Date:   Wed, 21 Jul 2021 16:03:57 +0200
+Message-Id: <20210721140424.725744-28-maxime@cerno.tech>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210721140424.725744-1-maxime@cerno.tech>
+References: <20210721140424.725744-1-maxime@cerno.tech>
 MIME-Version: 1.0
-In-Reply-To: <20210720070040.20840-1-samirweng1979@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/20/21 3:00 AM, samirweng1979 wrote:
-> From: wengjianfeng <wengjianfeng@yulong.com>
-> 
-> Simplify the code by removing unnecessary labels and returning directly.
-> 
-> Signed-off-by: wengjianfeng <wengjianfeng@yulong.com>
-> ---
->  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c | 17 ++++++-----------
->  1 file changed, 6 insertions(+), 11 deletions(-)
+The ESP8089 Wireless Chip is supported by Linux (through an out-of-tree
+driver) thanks to its device tree binding.
 
-NACK
+Now that we have the DT validation in place, let's convert the device
+tree bindings for that driver over to a YAML schema.
 
-Using gotos to have a unified exit path keeps the code cleaner and makes
-it easier to ensure locking is correct where applicable.
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: de Goede <hdegoede@redhat.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+---
+ .../bindings/net/wireless/esp,esp8089.txt     | 30 -------------
+ .../bindings/net/wireless/esp,esp8089.yaml    | 43 +++++++++++++++++++
+ 2 files changed, 43 insertions(+), 30 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/net/wireless/esp,esp8089.txt
+ create mode 100644 Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml
 
-Jes
-
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-> index 4f93f88..3fd14e6 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-> @@ -256,10 +256,8 @@ static int rtl8723a_emu_to_active(struct rtl8xxxu_priv *priv)
->  		udelay(10);
->  	}
->  
-> -	if (!count) {
-> -		ret = -EBUSY;
-> -		goto exit;
-> -	}
-> +	if (!count)
-> +		return -EBUSY;
->  
->  	/* We should be able to optimize the following three entries into one */
->  
-> @@ -292,10 +290,8 @@ static int rtl8723a_emu_to_active(struct rtl8xxxu_priv *priv)
->  		udelay(10);
->  	}
->  
-> -	if (!count) {
-> -		ret = -EBUSY;
-> -		goto exit;
-> -	}
-> +	if (!count)
-> +		return3RGD9F -EBUSY;
->  
->  	/* 0x4C[23] = 0x4E[7] = 1, switch DPDT_SEL_P output from WL BB */
->  	/*
-> @@ -307,7 +303,6 @@ static int rtl8723a_emu_to_active(struct rtl8xxxu_priv *priv)
->  	val8 &= ~LEDCFG2_DPDT_SELECT;
->  	rtl8xxxu_write8(priv, REG_LEDCFG2, val8);
->  
-> -exit:
->  	return ret;
->  }
->  
-> @@ -327,7 +322,7 @@ static int rtl8723au_power_on(struct rtl8xxxu_priv *priv)
->  
->  	ret = rtl8723a_emu_to_active(priv);
->  	if (ret)
-> -		goto exit;
-> +		return ret;
->  
->  	/*
->  	 * 0x0004[19] = 1, reset 8051
-> @@ -353,7 +348,7 @@ static int rtl8723au_power_on(struct rtl8xxxu_priv *priv)
->  	val32 &= ~(BIT(28) | BIT(29) | BIT(30));
->  	val32 |= (0x06 << 28);
->  	rtl8xxxu_write32(priv, REG_EFUSE_CTRL, val32);
-> -exit:
-> +
->  	return ret;
->  }
->  
-> 
+diff --git a/Documentation/devicetree/bindings/net/wireless/esp,esp8089.txt b/Documentation/devicetree/bindings/net/wireless/esp,esp8089.txt
+deleted file mode 100644
+index 6830c4786f8a..000000000000
+--- a/Documentation/devicetree/bindings/net/wireless/esp,esp8089.txt
++++ /dev/null
+@@ -1,30 +0,0 @@
+-Espressif ESP8089 wireless SDIO devices
+-
+-This node provides properties for controlling the ESP8089 wireless device.
+-The node is expected to be specified as a child node to the SDIO controller
+-that connects the device to the system.
+-
+-Required properties:
+-
+- - compatible : Should be "esp,esp8089".
+-
+-Optional properties:
+- - esp,crystal-26M-en: Integer value for the crystal_26M_en firmware parameter
+-
+-Example:
+-
+-&mmc1 {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-
+-	vmmc-supply = <&reg_dldo1>;
+-	mmc-pwrseq = <&wifi_pwrseq>;
+-	bus-width = <4>;
+-	non-removable;
+-
+-	esp8089: sdio_wifi@1 {
+-		compatible = "esp,esp8089";
+-		reg = <1>;
+-		esp,crystal-26M-en = <2>;
+-	};
+-};
+diff --git a/Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml b/Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml
+new file mode 100644
+index 000000000000..284ef45add99
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml
+@@ -0,0 +1,43 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/wireless/esp,esp8089.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Espressif ESP8089 Device Tree Bindings
++
++maintainers:
++  - Hans de Goede <hdegoede@redhat.com>
++
++properties:
++  compatible:
++    const: esp,esp8089
++
++  reg:
++    maxItems: 1
++
++  esp,crystal-26M-en:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: >
++      Value for the crystal_26M_en firmware parameter
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++      mmc {
++          #address-cells = <1>;
++          #size-cells = <0>;
++
++          wifi@1 {
++              compatible = "esp,esp8089";
++              reg = <1>;
++              esp,crystal-26M-en = <2>;
++          };
++      };
++
++...
+-- 
+2.31.1
 
