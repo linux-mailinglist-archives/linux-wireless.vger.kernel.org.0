@@ -2,195 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB003D0694
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jul 2021 04:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2E463D0753
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jul 2021 05:20:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230162AbhGUBXW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jul 2021 21:23:22 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:58718 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230015AbhGUBXW (ORCPT
+        id S231781AbhGUCjf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jul 2021 22:39:35 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:36886 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231404AbhGUCjf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jul 2021 21:23:22 -0400
-X-UUID: 297e07e7a37f4066a060450bc1ad0527-20210721
-X-UUID: 297e07e7a37f4066a060450bc1ad0527-20210721
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2095337607; Wed, 21 Jul 2021 10:03:54 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 21 Jul 2021 10:03:53 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 21 Jul 2021 10:03:53 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2] mt76: add support for setting mcast rate
-Date:   Wed, 21 Jul 2021 10:03:52 +0800
-Message-ID: <ce20005ec6b94814e3428cfe495f6a1d787084ba.1626832670.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Tue, 20 Jul 2021 22:39:35 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16L3K57q8012246, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16L3K57q8012246
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 21 Jul 2021 11:20:05 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 21 Jul 2021 11:20:04 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 21 Jul 2021 11:20:03 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91]) by
+ RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91%5]) with mapi id
+ 15.01.2106.013; Wed, 21 Jul 2021 11:20:03 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Brian Norris <briannorris@chromium.org>
+CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH v4 09/19] rtw89: add pci files
+Thread-Topic: [PATCH v4 09/19] rtw89: add pci files
+Thread-Index: AQHXPM4t4237yjXWkE2au/031Uoa26sMOfeAgAJeNoCAC1QVAIAK1bHggAjpL6CAHPMoAIABA19g
+Date:   Wed, 21 Jul 2021 03:20:03 +0000
+Message-ID: <bc549c7ad1a3475fbae814a2efb9ca7d@realtek.com>
+References: <20210429080149.7068-1-pkshih@realtek.com>
+ <20210429080149.7068-10-pkshih@realtek.com> <YMFzAZUysQ5HxZlK@google.com>
+ <45dd7da687a444d5acbc13eb67dcee97@realtek.com>
+ <CA+ASDXP1aY5Mm14GDA_qPK7+7Jri2xAMZ3fYiVrhur7N5EO0mQ@mail.gmail.com>
+ <db26751dfb02499093829a6aeecadb61@realtek.com>
+ <CA+ASDXO7SfuAsLhLU9hn4bANL5oTizwoYh5ifi2Wi-Mr-7zMDQ@mail.gmail.com>
+In-Reply-To: <CA+ASDXO7SfuAsLhLU9hn4bANL5oTizwoYh5ifi2Wi-Mr-7zMDQ@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.146]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzcvMjEg5LiK5Y2IIDAxOjA3OjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 07/21/2021 02:54:37
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 165154 [Jul 21 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 448 448 71fb1b37213ce9a885768d4012c46ac449c77b17
+X-KSE-AntiSpam-Info: {Tracking_from_exist}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 07/21/2021 02:56:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Mesh and ad-hoc interfaces allow users to set mcast rate through
-NL80211_ATTR_MCAST_RATE, so rework mt76_default_basic_rate() to
-adapt that.
-
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c |  8 +++----
- drivers/net/wireless/mediatek/mt76/mt76.h     |  2 +-
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 24 +++++++++++++------
- .../net/wireless/mediatek/mt76/mt7921/mac.c   |  3 ++-
- 4 files changed, 24 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index d9a724a0f15e..4c11ffcfa901 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1337,16 +1337,16 @@ mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
- }
- EXPORT_SYMBOL_GPL(mt76_init_queue);
- 
--u16 mt76_default_basic_rate(struct mt76_phy *phy, struct ieee80211_vif *vif)
-+u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx)
- {
--	int i = ffs(vif->bss_conf.basic_rates) - 1, offset = 0;
-+	int offset = 0;
- 	struct ieee80211_rate *rate;
- 
- 	if (phy->chandef.chan->band == NL80211_BAND_5GHZ)
- 		offset = 4;
- 
--	rate = &mt76_rates[offset + i];
-+	rate = &mt76_rates[offset + rateidx];
- 
- 	return rate->hw_value;
- }
--EXPORT_SYMBOL_GPL(mt76_default_basic_rate);
-+EXPORT_SYMBOL_GPL(mt76_calculate_default_rate);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 0322847f554c..53949a365fdd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -883,7 +883,7 @@ int mt76_get_of_eeprom(struct mt76_dev *dev, void *data, int offset, int len);
- struct mt76_queue *
- mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
- 		int ring_base);
--u16 mt76_default_basic_rate(struct mt76_phy *phy, struct ieee80211_vif *vif);
-+u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx);
- static inline int mt76_init_tx_queue(struct mt76_phy *phy, int qid, int idx,
- 				     int n_desc, int ring_base)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 1c6f066de2dd..dfc5ea2cf7d0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -904,17 +904,19 @@ mt7915_mac_write_txwi_8023(struct mt7915_dev *dev, __le32 *txwi,
- 
- static void
- mt7915_mac_write_txwi_80211(struct mt7915_dev *dev, __le32 *txwi,
--			    struct sk_buff *skb, struct ieee80211_key_conf *key)
-+			    struct sk_buff *skb, struct ieee80211_key_conf *key,
-+			    bool *mcast)
- {
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
--	bool multicast = is_multicast_ether_addr(hdr->addr1);
- 	u8 tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
- 	__le16 fc = hdr->frame_control;
- 	u8 fc_type, fc_stype;
- 	u32 val;
- 
-+	*mcast = is_multicast_ether_addr(hdr->addr1);
-+
- 	if (ieee80211_is_action(fc) &&
- 	    mgmt->u.action.category == WLAN_CATEGORY_BACK &&
- 	    mgmt->u.action.u.addba_req.action_code == WLAN_ACTION_ADDBA_REQ) {
-@@ -940,15 +942,15 @@ mt7915_mac_write_txwi_80211(struct mt7915_dev *dev, __le32 *txwi,
- 
- 	val = FIELD_PREP(MT_TXD2_FRAME_TYPE, fc_type) |
- 	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype) |
--	      FIELD_PREP(MT_TXD2_MULTICAST, multicast);
-+	      FIELD_PREP(MT_TXD2_MULTICAST, *mcast);
- 
--	if (key && multicast && ieee80211_is_robust_mgmt_frame(skb) &&
-+	if (key && *mcast && ieee80211_is_robust_mgmt_frame(skb) &&
- 	    key->cipher == WLAN_CIPHER_SUITE_AES_CMAC) {
- 		val |= MT_TXD2_BIP;
- 		txwi[3] &= ~cpu_to_le32(MT_TXD3_PROTECT_FRAME);
- 	}
- 
--	if (!ieee80211_is_data(fc) || multicast ||
-+	if (!ieee80211_is_data(fc) || *mcast ||
- 	    info->flags & IEEE80211_TX_CTL_USE_MINRATE)
- 		val |= MT_TXD2_FIX_RATE;
- 
-@@ -989,6 +991,7 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 	bool ext_phy = info->hw_queue & MT_TX_HW_QUEUE_EXT_PHY;
- 	u8 p_fmt, q_idx, omac_idx = 0, wmm_idx = 0;
- 	bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
-+	bool mcast = false;
- 	u16 tx_count = 15;
- 	u32 val;
- 
-@@ -1051,15 +1054,22 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 	if (is_8023)
- 		mt7915_mac_write_txwi_8023(dev, txwi, skb, wcid);
- 	else
--		mt7915_mac_write_txwi_80211(dev, txwi, skb, key);
-+		mt7915_mac_write_txwi_80211(dev, txwi, skb, key, &mcast);
- 
- 	if (txwi[2] & cpu_to_le32(MT_TXD2_FIX_RATE)) {
-+		u8 band = mphy->chandef.chan->band;
-+		int rateidx, mcast_rate = vif->bss_conf.mcast_rate[band];
- 		u16 rate, mode;
- 
- 		/* hardware won't add HTC for mgmt/ctrl frame */
- 		txwi[2] |= cpu_to_le32(MT_TXD2_HTC_VLD);
- 
--		rate = mt76_default_basic_rate(mphy, vif);
-+		if (mcast && mcast_rate > 0)
-+			rateidx = mcast_rate - 1;
-+		else
-+			rateidx = ffs(vif->bss_conf.basic_rates) - 1;
-+
-+		rate = mt76_calculate_default_rate(mphy, rateidx);
- 		mode = rate >> 8;
- 		rate &= GENMASK(7, 0);
- 		rate |= FIELD_PREP(MT_TX_RATE_MODE, mode);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index b326525e4b65..65fd744fec48 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -811,12 +811,13 @@ void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
- 		mt7921_mac_write_txwi_80211(dev, txwi, skb, key);
- 
- 	if (txwi[2] & cpu_to_le32(MT_TXD2_FIX_RATE)) {
-+		int rateidx = ffs(vif->bss_conf.basic_rates) - 1;
- 		u16 rate, mode;
- 
- 		/* hardware won't add HTC for mgmt/ctrl frame */
- 		txwi[2] |= cpu_to_le32(MT_TXD2_HTC_VLD);
- 
--		rate = mt76_default_basic_rate(mphy, vif);
-+		rate = mt76_calculate_default_rate(mphy, rateidx);
- 		mode = rate >> 8;
- 		rate &= GENMASK(7, 0);
- 		rate |= FIELD_PREP(MT_TX_RATE_MODE, mode);
--- 
-2.29.2
-
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEJyaWFuIE5vcnJpcyBbbWFp
+bHRvOmJyaWFubm9ycmlzQGNocm9taXVtLm9yZ10NCj4gU2VudDogVHVlc2RheSwgSnVseSAyMCwg
+MjAyMSAyOjUxIEFNDQo+IFRvOiBQa3NoaWgNCj4gQ2M6IGt2YWxvQGNvZGVhdXJvcmEub3JnOyBs
+aW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2NCAw
+OS8xOV0gcnR3ODk6IGFkZCBwY2kgZmlsZXMNCj4gDQo+IChMYXRlIHJlc3BvbnNlKQ0KPiANCj4g
+T24gV2VkLCBKdW4gMzAsIDIwMjEgYXQgNTo0NyBQTSBQa3NoaWggPHBrc2hpaEByZWFsdGVrLmNv
+bT4gd3JvdGU6DQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gRnJvbTog
+UGtzaGloDQo+IA0KPiA+ID4gSSByZWFkIElSUSBoYW5kbGVyIG9mIHJ0dzg4IHRoYXQgbG9va3Mg
+bXVjaCBzaW1wbGVyLCBhbmQgSSBwaWN0dXJlIHRoZQ0KPiA+ID4gbmV3IGZsb3c6DQo+ID4gPg0K
+PiA+ID4gaW50X2hhbmRsZXIgICAgICAgICAgICAgaW50X3RocmVhZGZuICAgICAgICAgICAgICBu
+YXBpX3BvbGwNCj4gPiA+IC0tLS0tLS0tLS0tICAgICAgICAgICAgIC0tLS0tLS0tLS0tLSAgICAg
+ICAgICAgICAgLS0tLS0tLS0tDQo+ID4gPiAgICAgfA0KPiA+ID4gICAgIHwNCj4gPiA+ICAgICB8
+IDEpIGRpcy4gaW50cg0KPiA+ID4gICAgIG8gICAgICAgICAgICAgICAgICAgICAgfA0KPiA+ID4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAyKSByZWFkIGludGVycnVwdCBzdGF0dXMgbG9j
+YWxseQ0KPiA+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAzKSBkbyBUWCByZWNsYWlt
+DQo+ID4gPiAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDQpIGNoZWNrIGlmIFJYPw0KPiA+
+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgfCA1KSByZS1lbmFibGUgaW50cg0KPiA+ID4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAoUlggaXMgb3B0aW9uYWwpDQo+ID4gPiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8IDYpIHNjaGVkdWxlX25hcGkNCj4gPiA+ICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHwgICAgKGlmIFJYKQ0KPiA+ID4gICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgOiA+Pj4tLS0tLS0tLS0tLS0tLS0tLS0tKyA3KSAodGFza2xldCBzdGFydCBp
+bW1lZGlhdGVseSkNCj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIDogICAgICAgICAg
+ICAgICAgICAgICAgIHwNCj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIDogICAgICAg
+ICAgICAgICAgICAgICAgIHwgOCkgc2V0ICdkb2luZyBSWCcgZmxhZw0KPiA+ID4gICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgOiAgICAgICAgICAgICAgICAgICAgICAgfCA5KSBkbyBSWCB0aGlu
+Z3MNCj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIDogICAgICAgICAgICAgICAgICAg
+ICAgIHwgMTApIGNsZWFyICdkb2luZyBSWCcgZmxhZw0KPiA+ID4gICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgOiAgICAgICAgICAgICAgICAgICAgICAgfCAxMSkgcmUtZW5hYmxlIGludHIgb2Yg
+UlgNCj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIDogICAgICAgICAgICAgICAgICAg
+ICAgIHwNCj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIDogPDw8LS0tLS0tLS0tLS0t
+LS0tLS0tLW8NCj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIDoNCj4gPiA+ICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIG8NCj4gPiA+DQo+ID4gPiBTdGVwIDIpIHJlYWQgYW5kIGNs
+ZWFyIGludGVycnVwdCBzdGF0dXMgd2l0aCBzcGluX2xvY2tfaXJxc2F2ZSwgYW5kIHVzZSBsb2Nh
+bA0KPiA+ID4gdmFyaWFibGVzIHRvIHNhdmUgdGhlIHN0YXR1cy4gVGhlbiwgdGhlIHN0YXR1cyB3
+aWxsIGJlIGNvcnJlY3QsIGV2ZW4gbW9yZQ0KPiA+ID4gaW50ZXJydXB0cyBhcmUgdHJpZ2dlcmVk
+Lg0KPiA+ID4NCj4gPiA+IFN0ZXAgOCkvMTApIGFkZCBhICdkb2luZyBSWCcgZmxhZyB3ZSBkb24n
+dCBlbmFibGUgUlggaW50ZXJydXB0IGluIHRoaXMgcGVyaW9kLCBzbw0KPiA+ID4gc3RlcCA1KSB3
+aWxsIG5vdCBtYWtlIGEgbWlzdGFrZSB0byBlbmFibGUgUlggaW50ZXJydXB0IGltcHJvcGVybHku
+DQo+IA0KPiBCVFcsIEkgdGhpbmsgeW91IG1pZ2h0IGJlIHBvaW50aW5nIG91dCBhIHNvcnQgb2Yg
+YnVnIHdpdGggcnR3ODggLS0gYQ0KPiBub24tUlggaW50ZXJydXB0IG1pZ2h0IGNhdXNlIFJYIGlu
+dGVycnVwdHMgdG8gZ2V0IHJlLWVuYWJsZWQgaW4gdGhlDQo+IG1pZHN0IG9mIHdoYXQncyAqc3Vw
+cG9zZWQqIHRvIGJlIGEgTkFQSSBwb2xsLiBJdCdzIG5vdCBhIGZhdGFsDQo+IGZ1bmN0aW9uYWwg
+cHJvYmxlbSBvciBhbnl0aGluZywgYnV0IGl0IGRvZXMgbWVhbiB3ZSBtaWdodCBnZXQgZXhjZXNz
+DQo+IFJYIGludGVycnVwdHMsIHdoaWNoIGNhbiBkZWZlYXQgdGhlIHB1cnBvc2Ugb2YgcG9sbGlu
+Zy4gSSBzdXBwb3NlIHRoZQ0KPiBpbXBhY3Qgb2Ygc3VjaCBhIGJ1ZyBkZXBlbmRzIG9uIGhvdyBm
+cmVxdWVudGx5IHdlJ3JlIHJlY2VpdmluZyBvdGhlcg0KPiBpbnRlcnJ1cHRzIChzYXksIEgyQz8p
+Lg0KDQpJbmRlZWQuIFdlIG5lZWQgdG8gYWRkIGEgJ2RvaW5nIFJYJyBmbGFnIHRvIHJ0dzg4LiBJ
+IGhhdmUgYW5vdGhlciB0aGlua2luZywNCndoaWNoIGRvZXNuJ3QgdXNlIHRoaXMgZmxhZywgdG8g
+cmVmaW5lIHJ0dzg5LCBhbmQgSSdtIHdvcmtpbmcgb24gaXQuDQpJZiBpdCB3b3JrcyB3ZWxsLCBJ
+IGNhbiBhcHBseSBpdCB0byBydHc4OC4NCg0KaW50X2hhbmRsZXIgICAgICAgICAgICAgaW50X3Ro
+cmVhZGZuICAgICAgICAgICAgICBuYXBpX3BvbGwNCi0tLS0tLS0tLS0tICAgICAgICAgICAgIC0t
+LS0tLS0tLS0tLSAgICAgICAgICAgICAgLS0tLS0tLS0tDQogICAgfA0KICAgIHwNCiAgICB8IDEp
+IGRpcy4gaW50cg0KICAgIG8gICAgICAgICAgICAgICAgICAgICAgfA0KICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgfCAyKSByZWFkIGludGVycnVwdCBzdGF0dXMgbG9jYWxseQ0KICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgfCAzKSBkbyB1bmxpa2VseSB0aGluZ3MNCiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHwgNCkgc2NoZWR1bGVfbmFwaQ0KICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgOiA+Pj4tLS0tLS0tLS0tLS0tLS0tLS0t
+KyA1KSAodGFza2xldCBzdGFydCBpbW1lZGlhdGVseSkNCiAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIDogICAgICAgICAgICAgICAgICAgICAgIHwNCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+IDogICAgICAgICAgICAgICAgICAgICAgIHwgNikgZG8gVFggY29tcGxldGlvbiB0aGluZ3MNCiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIDogICAgICAgICAgICAgICAgICAgICAgIHwgNykgZG8g
+UlggdGhpbmdzDQogICAgICAgICAgICAgICAgICAgICAgICAgICA6ICAgICAgICAgICAgICAgICAg
+ICAgICB8IA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgOiAgICAgICAgICAgICAgICAgICAg
+ICAgfCA4KSByZS1lbmFibGUgaW50cg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgOiAgICAg
+ICAgICAgICAgICAgICAgICAgfA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgOiA8PDwtLS0t
+LS0tLS0tLS0tLS0tLS0tbw0KICAgICAgICAgICAgICAgICAgICAgICAgICAgOg0KICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgbw0KDQpJIGRvbid0IGNoYW5nZSB0aGUgam9icyBvZiB0aGUgaW50
+X2hhbmRsZXIuIFRoZSBpbnRfdGhyZWFkIHJlYWRzIGludGVycnVwdCBzdGF0dXMNCmFuZCBzY2hl
+ZHVsZXMgTkFQSSB1bmNvbmRpdGlvbmFsbHksIGJlY2F1c2Ugb25seSB1bmxpa2VseSB0aGluZ3Mg
+cmVzaWRlIGluIHRoaXMNCmZ1bmN0aW9uLCBhbmQgdGhlIFRYIGNvbXBsZXRpb24gYW5kIFJYIHRo
+aW5ncyBhcmUgZG9uZSBieSBuYXBpX3BvbGwuDQpGaW5hbGx5LCB0aGUgbmFwaV9wb2xsIHJlLWVu
+YWJsZSBpbnRlcnJ1cHQgYWZ0ZXIgaXQgZG9lcyBhbGwgdGhpbmdzLg0KDQpUaGluZ3MgSSdtIHdv
+cnJpZWQgYXJlIHRoZSBsYXRlbmN5IG9mIFJYIGFuZCBUWCBjb21wbGV0aW9uLCBhbmQgZXh0cmEg
+cG9sbGluZyBJTy4NClRoZSBsYXRlbmN5IGFmZmVjdHMgcGVyZm9ybWFuY2UsIHNvIEknbGwgbWVh
+c3VyZSBpdC4gQWxzbywgSSdsbCBleGFtaW5lIHRpbWUgY29zdA0Kb2YgcG9sbGluZyBJTywgYW5k
+IGNvbXBhcmUgdGhlIGNvdW50IG9mIHBvbGxpbmcgSU8gYmVmb3JlL2FmdGVyIHRoaXMgY2hhbmdl
+Lg0KDQpJIGhvcGUgSSBjYW4gZmluaXNoIHRoaXMgd29yayBiZWZvcmUgdjYuDQoNCi0tDQpQaW5n
+LUtlDQoNCg==
