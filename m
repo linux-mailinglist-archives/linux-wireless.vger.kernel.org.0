@@ -2,96 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE9A63D220A
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jul 2021 12:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 219673D2250
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jul 2021 12:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231582AbhGVJke (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Jul 2021 05:40:34 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:20867 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231571AbhGVJkd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Jul 2021 05:40:33 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1626949268; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=sEI8O3MRZYX32rujGHdALGWFcR20l7QSJ0dWH7WlTls=; b=FCVgh1MrjdLdpFRHbZWeGg4/zPwiuoIsZYSjg8ppEmEOxbcSnyhTn8k9WQExwntYf1C3IerN
- 1MlntG7f+CXyDWMJJlEU3zBrh4ImXnNBstPeCdeOuKptdYQ/AlMbX2WG2v/H06jwaQWFB/MS
- W4R0dxx/tOKZ08epDCoqSkJz5xE=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 60f946934815712f3a2f8d9d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 22 Jul 2021 10:21:07
- GMT
-Sender: jouni=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2A2B9C43460; Thu, 22 Jul 2021 10:21:07 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from jouni.codeaurora.org (85-76-67-217-nat.elisa-mobile.fi [85.76.67.217])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: jouni)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 730A5C433D3;
-        Thu, 22 Jul 2021 10:21:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 730A5C433D3
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jouni@codeaurora.org
-From:   Jouni Malinen <jouni@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Jouni Malinen <jouni@codeaurora.org>
-Subject: [PATCH 3/3] ath11k: fix survey dump collection in 6 GHz
-Date:   Thu, 22 Jul 2021 13:20:54 +0300
-Message-Id: <20210722102054.43419-3-jouni@codeaurora.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210722102054.43419-1-jouni@codeaurora.org>
-References: <20210722102054.43419-1-jouni@codeaurora.org>
+        id S231579AbhGVKOb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Jul 2021 06:14:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36028 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231453AbhGVKOb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 22 Jul 2021 06:14:31 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 10ACB60FF2;
+        Thu, 22 Jul 2021 10:55:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626951306;
+        bh=BJ6APhf3RzDbaRx9MSskmKukvlPphUZjkNXAiCLjq4U=;
+        h=From:To:Cc:Subject:Date:From;
+        b=tJS6H2raoggEzh/mOaRoAOyvnEvMH57PAQXqTQ7G1iQeQk6jp5JoZOjYupmVbzTt4
+         LrObS2Rf0tmov1bl59+wmqC+UO0vcN4IdgI9b6v5T90iNWgxV/NIjoaRqZaHBUy2n+
+         hx98jCTyUah9HfLz927v588OnDw5qI0POpV1Y3dCx61TN7ua+H+eVG1S/bzZ3Skd+T
+         HcybZomMzitJHpskL8JFWx6PACzq++Lajp5pJUTBPTKWb4uXCpIaevB7mLRSxU9xIq
+         qFdJfU8S8F1FM8ukEPBSH4FztIYCngfZ90hqEQ8lzov4WXOknIAgEYeRO/mxVVwX51
+         4M6PBGbiocQAA==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Jiri Slaby <jirislaby@kernel.org>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Bob Copeland <me@bobcopeland.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ath5k: fix building with LEDS=m
+Date:   Thu, 22 Jul 2021 12:54:46 +0200
+Message-Id: <20210722105501.1000781-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-When ath11k receives survey request, choose the 6 GHz band when enabled.
-Without this, survey request does not include any 6 GHz band results,
-thereby causing auto channel selection to fail.
+Randconfig builds still show a failure for the ath5k driver,
+similar to the one that was fixed for ath9k earlier:
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1-01386-QCAHKSWPL_SILICONZ-1
+WARNING: unmet direct dependencies detected for MAC80211_LEDS
+  Depends on [n]: NET [=y] && WIRELESS [=y] && MAC80211 [=y] && (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=MAC80211 [=y])
+  Selected by [m]:
+  - ATH5K [=m] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_ATH [=y] && (PCI [=y] || ATH25) && MAC80211 [=y]
+net/mac80211/led.c: In function 'ieee80211_alloc_led_names':
+net/mac80211/led.c:34:22: error: 'struct led_trigger' has no member named 'name'
+   34 |         local->rx_led.name = kasprintf(GFP_KERNEL, "%srx",
+      |                      ^
 
-Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+Copying the same logic from my ath9k patch makes this one work
+as well.
+
+Alternatively, we could just drop the 'select' from both ath5k and
+ath9k.
+
+Fixes: b64acb28da83 ("ath9k: fix build error with LEDS_CLASS=m")
+Fixes: 72cdab808714 ("ath9k: Do not select MAC80211_LEDS by default")
+Fixes: 3a078876caee ("ath5k: convert LED code to use mac80211 triggers")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/ath/ath5k/Kconfig | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 56120407bfdd..133ecb351365 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -7073,7 +7073,13 @@ static int ath11k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
- 
- 	if (!sband)
- 		sband = hw->wiphy->bands[NL80211_BAND_5GHZ];
-+	if (sband && idx >= sband->n_channels) {
-+		idx -= sband->n_channels;
-+		sband = NULL;
-+	}
- 
-+	if (!sband)
-+		sband = hw->wiphy->bands[NL80211_BAND_6GHZ];
- 	if (!sband || idx >= sband->n_channels) {
- 		ret = -ENOENT;
- 		goto exit;
+diff --git a/drivers/net/wireless/ath/ath5k/Kconfig b/drivers/net/wireless/ath/ath5k/Kconfig
+index f35cd8de228e..6914b37bb0fb 100644
+--- a/drivers/net/wireless/ath/ath5k/Kconfig
++++ b/drivers/net/wireless/ath/ath5k/Kconfig
+@@ -3,9 +3,7 @@ config ATH5K
+ 	tristate "Atheros 5xxx wireless cards support"
+ 	depends on (PCI || ATH25) && MAC80211
+ 	select ATH_COMMON
+-	select MAC80211_LEDS
+-	select LEDS_CLASS
+-	select NEW_LEDS
++	select MAC80211_LEDS if LEDS_CLASS=y || LEDS_CLASS=MAC80211
+ 	select ATH5K_AHB if ATH25
+ 	select ATH5K_PCI if !ATH25
+ 	help
 -- 
-2.25.1
+2.29.2
 
