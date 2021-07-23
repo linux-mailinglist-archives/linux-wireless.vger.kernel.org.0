@@ -2,109 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 679AF3D37B5
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jul 2021 11:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D269C3D37BC
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jul 2021 11:31:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232231AbhGWIul (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Jul 2021 04:50:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51254 "EHLO
+        id S231340AbhGWIvX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Jul 2021 04:51:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229949AbhGWIul (ORCPT
+        with ESMTP id S229949AbhGWIvW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Jul 2021 04:50:41 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E20FC061575;
-        Fri, 23 Jul 2021 02:31:14 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id h10so933543edv.8;
-        Fri, 23 Jul 2021 02:31:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ao2RnG7ISGLnAa4hG4vDQIREJNPq/pTbnRjpX9KH6vY=;
-        b=FS8hYJMt0WhpUPxRpcq7UOVN0vy83RBinj5w0q65KdLgaiDpl/Guqj2usyZdTeY1TC
-         OjIiw8+Tw7y571dJ5uHAvzqioHPYPXb8JwZUBB+bV4CS6H1xF78pUZqOUKQe+e7ej86H
-         SK+mLKCmfxVGmDUFNgx1ICeFuu5DflY3PepgZXPERNWIP2oTj3xdydKO5p8UHwAkCuSO
-         gPqat8PgATLyYL1T2IAps4QnWkAPlJROIXAkfEkkXqG6u7qHj4su33FcINeDXjCXP4d/
-         OGRtF7Zmf5EwAitlUpUWsnJE8nME9s8PRzdLhyEk9SQ5qjOWDmraMQrg1SKngF2AVKyE
-         tVeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ao2RnG7ISGLnAa4hG4vDQIREJNPq/pTbnRjpX9KH6vY=;
-        b=ub3qmQRuIMVUfAN+X9aiBsEdYFVW7CnrHK5ojyTv2aOx8SLUfqh0ny1TjPo3I1U2ei
-         FTSoOR2STIUyT06hRr6uajrY9pQEGMhslytUNUfGM4ZzAPRykVjrcrR7P+gcNWHIbrxf
-         A1k70xNyptMzWvmM8EQRriy7sgDv0cfbyyReYBOGs5iYkcX9OG093ZQj9iU5Cx+ax+7u
-         jQjdIe6iLE51zMbm3CNcasTX+qZeEyxMs5uPHhbqPB4JwpyyRZ0pc7i1QP28NktF39I3
-         4V73xyFwQvy3EEsqjsThen+zxXI1IcB4c6LK2zrMy01xM9U5TyvfIWN1+zDa8CmPNgHZ
-         RMtA==
-X-Gm-Message-State: AOAM532hPcHx/PAAZ8a41X18aQQumcOh9xfljhAM9Nz8bhi5Qx8EpyrY
-        0apYGjVkXflMlAYJr1FRjLvp49c5nVXL8mfWEdg=
-X-Google-Smtp-Source: ABdhPJwmxxSBbdDMkBKBpbzgA6W119m/cttuRzaIzPul/alqvQSBQq9M5HNGMLSUCWRTCrpakiINtxNtwwqjMLKlBHQ=
-X-Received: by 2002:a05:6402:1c10:: with SMTP id ck16mr4375755edb.339.1627032672678;
- Fri, 23 Jul 2021 02:31:12 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210723050919.1910964-1-mudongliangabcd@gmail.com>
- <d2b0f847dbf6b6d1e585ef8de1d9d367f8d9fd3b.camel@sipsolutions.net>
- <CAD-N9QWDNvo_3bdB=8edyYWvEV=b-66Tx-P6_7JGgrSYshDh0A@mail.gmail.com> <11ba299b812212a07fe3631b7be0e8b8fd5fb569.camel@sipsolutions.net>
-In-Reply-To: <11ba299b812212a07fe3631b7be0e8b8fd5fb569.camel@sipsolutions.net>
-From:   Dongliang Mu <mudongliangabcd@gmail.com>
-Date:   Fri, 23 Jul 2021 17:30:46 +0800
-Message-ID: <CAD-N9QWRNyZnnDQ3XTQ_SAWNEgiMCJV+5Z69eHtRVcxYtXcM+A@mail.gmail.com>
-Subject: Re: [PATCH] cfg80211: free the object allocated in wiphy_apply_custom_regulatory
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Ilan Peer <ilan.peer@intel.com>,
-        syzbot+1638e7c770eef6b6c0d0@syzkaller.appspotmail.com,
-        linux-wireless@vger.kernel.org,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>
+        Fri, 23 Jul 2021 04:51:22 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DD74C061575
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Jul 2021 02:31:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=voNm+gIsmwqVVu27WaakVbNq8OWb2raQX0celWSaJ8o=;
+        t=1627032716; x=1628242316; b=ALFpEjxQV1DesDCJTSoyrGtGJVm4Ck18I+PxN5E04o8y7DE
+        s5LoUxqq+1MiS3OZsy/B9QtF42Sj0x/yGcU/Hz8UXoYoPaJbWhxFKXmoYbtl9NeQ/c6rLZ03kXPeU
+        NPoac5J9fovh5QHCAtyXsxAhoy2mbkDvMYMZflu3U57nAG0pA1D5sEWbDG0lpar+1U1muAdA34ZUG
+        aJXFPKYQFpuKVDGfSkyk6sw6y3xQFBP8U8BVLnFR2AX8Ndqgzz2A8fPva5TgrtMzAghijn+8stgJg
+        /S7gcHDViyMppSoo67n1PxJLGPyclA/q4P6sz/1H+3JYxGIJiEqXrhNNktfrLOCA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1m6rUX-000UAl-QV; Fri, 23 Jul 2021 11:31:52 +0200
+Message-ID: <a8c4be501b85bcfe478d9597f4d6f90b2887c57c.camel@sipsolutions.net>
+Subject: Re: [PATCH 6/9] mac80211: add definition for transmit power
+ envelope element
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <wgong@codeaurora.org>, ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 23 Jul 2021 11:31:51 +0200
+In-Reply-To: <20210517201932.8860-7-wgong@codeaurora.org> (sfid-20210517_222029_289940_80C21857)
+References: <20210517201932.8860-1-wgong@codeaurora.org>
+         <20210517201932.8860-7-wgong@codeaurora.org>
+         (sfid-20210517_222029_289940_80C21857)
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jul 23, 2021 at 5:18 PM Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> On Fri, 2021-07-23 at 17:13 +0800, Dongliang Mu wrote:
-> > On Fri, Jul 23, 2021 at 4:37 PM Johannes Berg <johannes@sipsolutions.net> wrote:
-> > >
-> > > On Fri, 2021-07-23 at 13:09 +0800, Dongliang Mu wrote:
-> > > > The commit beee24695157 ("cfg80211: Save the regulatory domain when
-> > > > setting custom regulatory") forgets to free the newly allocated regd
-> > > > object.
-> > >
-> > > Not really? It's not forgetting it, it just saves it?
-> >
-> > Yes, it saves the regd object in the function wiphy_apply_custom_regulatory.
->
-> Right.
->
-> > But its parent function - mac80211_hwsim_new_radio forgets to free
-> > this object when the ieee80211_register_hw fails.
->
-> But why is this specific to mac80211-hwsim?
->
-> Any other code calling wiphy_apply_custom_regulatory() and then failing
-> the subsequent wiphy_register() or otherwise calling wiphy_free() will
-> run into the same situation.
->
-> So why wouldn't we free this in wiphy_free(), if it exists?
->
+On Mon, 2021-05-17 at 16:19 -0400, Wen Gong wrote:
+> 
+> 
+> +#define IEEE80211_TPE_MAX_IE_COUNT	8
 
-Hi Johannes,
+Is this actually a spec limit?
 
-if zhao in the thread is right, we don't need to add this free
-operation to wiphy_free().
+johannes
 
-What we should do is to only handle regd in the error handling code of
-mac80211_hwsim_new_radio. This will not affect other users of
-mac80211-hwsim. Any idea?
-
-> johannes
->
