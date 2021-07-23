@@ -2,177 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DBA13D318A
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jul 2021 04:19:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D04C53D33EB
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jul 2021 07:09:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233178AbhGWBjM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Jul 2021 21:39:12 -0400
-Received: from h4.fbrelay.privateemail.com ([131.153.2.45]:52898 "EHLO
-        h4.fbrelay.privateemail.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233165AbhGWBjF (ORCPT
+        id S229852AbhGWE3M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Jul 2021 00:29:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47738 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229698AbhGWE3L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Jul 2021 21:39:05 -0400
-Received: from MTA-07-3.privateemail.com (mta-07-1.privateemail.com [198.54.122.57])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id BC51F809AB;
-        Thu, 22 Jul 2021 22:19:38 -0400 (EDT)
-Received: from mta-07.privateemail.com (localhost [127.0.0.1])
-        by mta-07.privateemail.com (Postfix) with ESMTP id E48F7180022C;
-        Thu, 22 Jul 2021 22:19:36 -0400 (EDT)
-Received: from [192.168.0.46] (unknown [10.20.151.229])
-        by mta-07.privateemail.com (Postfix) with ESMTPA id B77F51800225;
-        Thu, 22 Jul 2021 22:19:35 -0400 (EDT)
-Date:   Thu, 22 Jul 2021 22:19:29 -0400
-From:   Hamza Mahfooz <someguy@effective-light.com>
-Subject: Re: [PATCH] iwlwifi: remove redundant calls to unlikely()
-To:     linux-kernel@vger.kernel.org
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Fri, 23 Jul 2021 00:29:11 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BADEC061575;
+        Thu, 22 Jul 2021 22:09:45 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id f1so1900994plt.7;
+        Thu, 22 Jul 2021 22:09:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=PH147XuCWyb6h3MTkLRYNAK5eXqhCfzzFLL0PdUER9M=;
+        b=u+TQD/HHf+RGmWW2Eo+Bg0J0+rKaYoZSUaRklxLTVgr6ecH123Vki37uyvvDDQ/ZDC
+         3xsfcSk5oTX8+v3xbifKToSCfyfWVFuah/cKT5oZ2roERRD+FR4O8ZDQbAMghJXKqFAV
+         pyOUB8hC5+H+kfbOwGdHZrmjm8eTraCtlGkL/a8dqRa6swmwOLOcLabxqaCHgg+E605C
+         eY38aRwleVJsac6lXdqMdB1YlOyUuUunnvU+v/zavTaKSx7njtHWM5+qiLETs8HqRlyM
+         kf0zZv1xIjxgYmzE3HetFwJHkNfT6uvhMXer+hqMFGwVfMvOVAk7zJyuQg89RH9LBYN8
+         TCvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=PH147XuCWyb6h3MTkLRYNAK5eXqhCfzzFLL0PdUER9M=;
+        b=YIbs7MiqRwcooXaY2Z7utx3muS8jSsB6vJe1LVw6yJr5DwTRScCZjjA7PP3IL8r8yW
+         rFOVKZ1wr5jyA/TcgUDdAekWWgpQq9JEumaPevC4DlC8es0KWkUDPGJKBWigYNcoaAvq
+         j6fdh8TO+JCfSSB/06s07AJEflacWChKlzcmtH3uZ0qoEwFnR3UBAg7/WBm9j51+oXAQ
+         ASFjx5M7wDaNffqTNOVWm8RXqiYTCQgYOl+86Qzw1RQ+y6XfpDz5CwHFoIYn2j2NDubl
+         6CwMA0ESO1GyqS+/xFVMSZ0gf4h2uc2b793wkk3LLd1z0iuy5BgWK6Assu7kCONhwttz
+         GZQQ==
+X-Gm-Message-State: AOAM530PPeRhFzEhVjwDuUAdxlr18T1RN+ZKnpMcWTrzCbZzDAUxtc+w
+        6wfmJWPGQHI+bBTGdsDGXrI=
+X-Google-Smtp-Source: ABdhPJxZi4QW2uiefQyknp3u4VnPLC6l95TEgpMpYcsGOoYx7Q5jBBz91jAOB88oF+BoR4HvsK//zw==
+X-Received: by 2002:a17:902:ed95:b029:ee:aa46:547a with SMTP id e21-20020a170902ed95b02900eeaa46547amr2511805plj.27.1627016984441;
+        Thu, 22 Jul 2021 22:09:44 -0700 (PDT)
+Received: from localhost.localdomain ([154.16.166.166])
+        by smtp.gmail.com with ESMTPSA id s193sm32917483pfc.183.2021.07.22.22.09.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jul 2021 22:09:43 -0700 (PDT)
+From:   Dongliang Mu <mudongliangabcd@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Message-Id: <HGEOWQ.C5TX9LKEOOL4@effective-light.com>
-In-Reply-To: <20210623184546.14769-1-someguy@effective-light.com>
-References: <20210623184546.14769-1-someguy@effective-light.com>
-X-Mailer: geary/40.0
+        Luca Coelho <luciano.coelho@intel.com>,
+        Ilan Peer <ilan.peer@intel.com>
+Cc:     Dongliang Mu <mudongliangabcd@gmail.com>,
+        syzbot+1638e7c770eef6b6c0d0@syzkaller.appspotmail.com,
+        Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] cfg80211: free the object allocated in wiphy_apply_custom_regulatory
+Date:   Fri, 23 Jul 2021 13:09:14 +0800
+Message-Id: <20210723050919.1910964-1-mudongliangabcd@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ping
+The commit beee24695157 ("cfg80211: Save the regulatory domain when
+setting custom regulatory") forgets to free the newly allocated regd
+object.
 
-On Wed, Jun 23 2021 at 02:45:46 PM -0400, Hamza Mahfooz 
-<someguy@effective-light.com> wrote:
-> As per commit a7f3d3d3600c ("dma-mapping: add unlikely hint to error 
-> path
-> in dma_mapping_error"), dma_mapping_error now internally calls 
-> unlikely(),
-> so we don't need to call it directly anymore.
-> 
-> Signed-off-by: Hamza Mahfooz <someguy@effective-light.com>
-> ---
->  drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 10 +++++-----
->  drivers/net/wireless/intel/iwlwifi/queue/tx.c | 10 +++++-----
->  2 files changed, 10 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c 
-> b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-> index 4f6c187eed69..3bf56d30f741 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-> @@ -1253,7 +1253,7 @@ static int iwl_fill_data_tbs(struct iwl_trans 
-> *trans, struct sk_buff *skb,
->  		dma_addr_t tb_phys = dma_map_single(trans->dev,
->  						    skb->data + hdr_len,
->  						    head_tb_len, DMA_TO_DEVICE);
-> -		if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
-> +		if (dma_mapping_error(trans->dev, tb_phys))
->  			return -EINVAL;
->  		trace_iwlwifi_dev_tx_tb(trans->dev, skb, skb->data + hdr_len,
->  					tb_phys, head_tb_len);
-> @@ -1272,7 +1272,7 @@ static int iwl_fill_data_tbs(struct iwl_trans 
-> *trans, struct sk_buff *skb,
->  		tb_phys = skb_frag_dma_map(trans->dev, frag, 0,
->  					   skb_frag_size(frag), DMA_TO_DEVICE);
-> 
-> -		if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
-> +		if (dma_mapping_error(trans->dev, tb_phys))
->  			return -EINVAL;
->  		trace_iwlwifi_dev_tx_tb(trans->dev, skb, skb_frag_address(frag),
->  					tb_phys, skb_frag_size(frag));
-> @@ -1380,7 +1380,7 @@ static int iwl_fill_data_tbs_amsdu(struct 
-> iwl_trans *trans, struct sk_buff *skb,
->  		hdr_tb_len = hdr_page->pos - start_hdr;
->  		hdr_tb_phys = dma_map_single(trans->dev, start_hdr,
->  					     hdr_tb_len, DMA_TO_DEVICE);
-> -		if (unlikely(dma_mapping_error(trans->dev, hdr_tb_phys)))
-> +		if (dma_mapping_error(trans->dev, hdr_tb_phys))
->  			return -EINVAL;
->  		iwl_pcie_txq_build_tfd(trans, txq, hdr_tb_phys,
->  				       hdr_tb_len, false);
-> @@ -1400,7 +1400,7 @@ static int iwl_fill_data_tbs_amsdu(struct 
-> iwl_trans *trans, struct sk_buff *skb,
-> 
->  			tb_phys = dma_map_single(trans->dev, tso.data,
->  						 size, DMA_TO_DEVICE);
-> -			if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
-> +			if (dma_mapping_error(trans->dev, tb_phys))
->  				return -EINVAL;
-> 
->  			iwl_pcie_txq_build_tfd(trans, txq, tb_phys,
-> @@ -1551,7 +1551,7 @@ int iwl_trans_pcie_tx(struct iwl_trans *trans, 
-> struct sk_buff *skb,
->  	/* map the data for TB1 */
->  	tb1_addr = ((u8 *)&dev_cmd->hdr) + IWL_FIRST_TB_SIZE;
->  	tb1_phys = dma_map_single(trans->dev, tb1_addr, tb1_len, 
-> DMA_TO_DEVICE);
-> -	if (unlikely(dma_mapping_error(trans->dev, tb1_phys)))
-> +	if (dma_mapping_error(trans->dev, tb1_phys))
->  		goto out_err;
->  	iwl_pcie_txq_build_tfd(trans, txq, tb1_phys, tb1_len, false);
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c 
-> b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-> index 451b06069350..2b409fb33c99 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-> @@ -211,7 +211,7 @@ static int iwl_txq_gen2_set_tb_with_wa(struct 
-> iwl_trans *trans,
->  	struct page *page;
->  	int ret;
-> 
-> -	if (unlikely(dma_mapping_error(trans->dev, phys)))
-> +	if (dma_mapping_error(trans->dev, phys))
->  		return -ENOMEM;
-> 
->  	if (likely(!iwl_txq_crosses_4g_boundary(phys, len))) {
-> @@ -251,7 +251,7 @@ static int iwl_txq_gen2_set_tb_with_wa(struct 
-> iwl_trans *trans,
-> 
->  	phys = dma_map_single(trans->dev, page_address(page), len,
->  			      DMA_TO_DEVICE);
-> -	if (unlikely(dma_mapping_error(trans->dev, phys)))
-> +	if (dma_mapping_error(trans->dev, phys))
->  		return -ENOMEM;
->  	ret = iwl_txq_gen2_set_tb(trans, tfd, phys, len);
->  	if (ret < 0) {
-> @@ -405,7 +405,7 @@ static int iwl_txq_gen2_build_amsdu(struct 
-> iwl_trans *trans,
->  		tb_len = hdr_page->pos - start_hdr;
->  		tb_phys = dma_map_single(trans->dev, start_hdr,
->  					 tb_len, DMA_TO_DEVICE);
-> -		if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
-> +		if (dma_mapping_error(trans->dev, tb_phys))
->  			goto out_err;
->  		/*
->  		 * No need for _with_wa, this is from the TSO page and
-> @@ -487,7 +487,7 @@ iwl_tfh_tfd *iwl_txq_gen2_build_tx_amsdu(struct 
-> iwl_trans *trans,
->  	/* map the data for TB1 */
->  	tb1_addr = ((u8 *)&dev_cmd->hdr) + IWL_FIRST_TB_SIZE;
->  	tb_phys = dma_map_single(trans->dev, tb1_addr, len, DMA_TO_DEVICE);
-> -	if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
-> +	if (dma_mapping_error(trans->dev, tb_phys))
->  		goto out_err;
->  	/*
->  	 * No need for _with_wa(), we ensure (via alignment) that the data
-> @@ -582,7 +582,7 @@ iwl_tfh_tfd *iwl_txq_gen2_build_tx(struct 
-> iwl_trans *trans,
->  	/* map the data for TB1 */
->  	tb1_addr = ((u8 *)&dev_cmd->hdr) + IWL_FIRST_TB_SIZE;
->  	tb_phys = dma_map_single(trans->dev, tb1_addr, tb1_len, 
-> DMA_TO_DEVICE);
-> -	if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
-> +	if (dma_mapping_error(trans->dev, tb_phys))
->  		goto out_err;
->  	/*
->  	 * No need for _with_wa(), we ensure (via alignment) that the data
-> --
-> 2.32.0
-> 
+Fix this by freeing the regd object in the error handling code and
+deletion function - mac80211_hwsim_del_radio.
 
+Reported-by: syzbot+1638e7c770eef6b6c0d0@syzkaller.appspotmail.com
+Fixes: beee24695157 ("cfg80211: Save the regulatory domain when setting custom regulatory")
+Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
+---
+ drivers/net/wireless/mac80211_hwsim.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index ffa894f7312a..20b870af6356 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -3404,6 +3404,8 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 	debugfs_remove_recursive(data->debugfs);
+ 	ieee80211_unregister_hw(data->hw);
+ failed_hw:
++	if (param->regd)
++		kfree_rcu(get_wiphy_regdom(data->hw->wiphy));
+ 	device_release_driver(data->dev);
+ failed_bind:
+ 	device_unregister(data->dev);
+@@ -3454,6 +3456,8 @@ static void mac80211_hwsim_del_radio(struct mac80211_hwsim_data *data,
+ {
+ 	hwsim_mcast_del_radio(data->idx, hwname, info);
+ 	debugfs_remove_recursive(data->debugfs);
++	if (data->regd)
++		kfree_rcu(get_wiphy_regdom(data->hw->wiphy));
+ 	ieee80211_unregister_hw(data->hw);
+ 	device_release_driver(data->dev);
+ 	device_unregister(data->dev);
+-- 
+2.25.1
 
