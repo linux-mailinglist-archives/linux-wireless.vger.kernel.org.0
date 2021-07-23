@@ -2,82 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B2883D3D20
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jul 2021 18:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A407A3D427F
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jul 2021 23:58:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230392AbhGWP0i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Jul 2021 11:26:38 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.52]:38334 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229655AbhGWP0h (ORCPT
+        id S232531AbhGWVSL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Jul 2021 17:18:11 -0400
+Received: from mail-io1-f51.google.com ([209.85.166.51]:44832 "EHLO
+        mail-io1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231724AbhGWVSK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Jul 2021 11:26:37 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.132])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 1F1EB1C006E;
-        Fri, 23 Jul 2021 16:07:10 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id E724750007D;
-        Fri, 23 Jul 2021 16:07:09 +0000 (UTC)
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id F2B8913C340;
-        Fri, 23 Jul 2021 09:06:36 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com F2B8913C340
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1627056397;
-        bh=3Bh+q8ysjWIhMaXB7TFJuyYqlIc4Vno4/+eMzxvGXXM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JO+Pr/e15nn6Fpuwhbp7/S+IM21X+fDmxZTEIxqNWhtZ9hqpSmy3hkAti9o5DF5oJ
-         UO77QyubxQmsrR1c3eV1wJYxoRD/mzJUh2CUabcOjrvnsjsW81+6+OHlfORTnhzLKo
-         EFeU8Pom/oOXpuTehkoTnjy3Tzxt+cKVqw7P7sgI=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v3 11/11] mt76: mt7915: add a missing HT flag for GI parsing
-Date:   Fri, 23 Jul 2021 09:06:23 -0700
-Message-Id: <20210723160623.14709-11-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210723160623.14709-1-greearb@candelatech.com>
-References: <20210723160623.14709-1-greearb@candelatech.com>
+        Fri, 23 Jul 2021 17:18:10 -0400
+Received: by mail-io1-f51.google.com with SMTP id l18so4194569ioh.11;
+        Fri, 23 Jul 2021 14:58:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=rn0D9YZmS4dIDgwz9LM0MRw67SMXWydvFAqo/h3XxAo=;
+        b=toPa08c0BW+Q2uMbAWldlstIIGsn9i9cuHY+hFy1qfM5mKoAZkj0kck8jatO1Xfq4R
+         /s3uwoq3KFhKEYljjEcpGvU9KxU5P/IPmbOEYFaLfMnfbn9gpjUcCQVWauK5GbkfYRDF
+         nSjgOfjWDuuPXeVVI6b02V6AaKTYluUs4SoLCyD1PpBTosg6mY7xfAuFefwd3CsD9jGx
+         J4LAqum6sS+BZ3d/jsiwcKG/BBPJLZ6AZX8ZTrEFWSMnoGlOvYXa9RQhQ2wUlL3DEyIb
+         cfP2lXiy1UUiw3E7DJqyblH50qdWMzHLPw9H7zIp6ANpzVbnK2DZqOj2hxmg/DDzjHk+
+         CIpA==
+X-Gm-Message-State: AOAM533gFfgsr3Wv4tF7TZOinbGByCAyxNHwMF69mjwDMHHcugVjWOZQ
+        GAXv3Anwbee9d2zJgYpstg==
+X-Google-Smtp-Source: ABdhPJxGJE4Wklmx1ER1d4Hgaz7zeN3q1caED/CmWtADyXgg7rqD+OmKyt2TmoqDEL8YVeChFWkiiw==
+X-Received: by 2002:a6b:f813:: with SMTP id o19mr5353976ioh.49.1627077522624;
+        Fri, 23 Jul 2021 14:58:42 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id l11sm19553084ios.8.2021.07.23.14.58.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Jul 2021 14:58:42 -0700 (PDT)
+Received: (nullmailer pid 2666846 invoked by uid 1000);
+        Fri, 23 Jul 2021 21:58:39 -0000
+Date:   Fri, 23 Jul 2021 15:58:39 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Maxime Ripard <maxime@cerno.tech>
+Cc:     Rob Herring <robh+dt@kernel.org>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        de Goede <hdegoede@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-sunxi@googlegroups.com,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Chen-Yu Tsai <wens@csie.org>
+Subject: Re: [PATCH 27/54] dt-bindings: net: wireless: Convert ESP ESP8089
+ binding to a schema
+Message-ID: <20210723215839.GA2666790@robh.at.kernel.org>
+References: <20210721140424.725744-1-maxime@cerno.tech>
+ <20210721140424.725744-28-maxime@cerno.tech>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1627056430-KZ9ldtQMxTtB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210721140424.725744-28-maxime@cerno.tech>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ryder Lee <ryder.lee@mediatek.com>
+On Wed, 21 Jul 2021 16:03:57 +0200, Maxime Ripard wrote:
+> The ESP8089 Wireless Chip is supported by Linux (through an out-of-tree
+> driver) thanks to its device tree binding.
+> 
+> Now that we have the DT validation in place, let's convert the device
+> tree bindings for that driver over to a YAML schema.
+> 
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: de Goede <hdegoede@redhat.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+> ---
+>  .../bindings/net/wireless/esp,esp8089.txt     | 30 -------------
+>  .../bindings/net/wireless/esp,esp8089.yaml    | 43 +++++++++++++++++++
+>  2 files changed, 43 insertions(+), 30 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/net/wireless/esp,esp8089.txt
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml
+> 
 
-The previous commit missed a HT flag.
-
-Fixes: 14b220c07188 ("mt76: mt7915: report tx rate directly from tx status")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index bef116445119..77620404ab7a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -215,7 +215,8 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
- 
- 			rate->he_gi = (val & (0x3 << offs)) >> offs;
- 			msta->wcid.rate_he_gi = rate->he_gi; /* cache for later */
--		} else if (rate->flags & RATE_INFO_FLAGS_VHT_MCS) {
-+		} else if (rate->flags &
-+			   (RATE_INFO_FLAGS_VHT_MCS | RATE_INFO_FLAGS_MCS)) {
- 			if (val & BIT(12 + bw)) {
- 				rate->flags |= RATE_INFO_FLAGS_SHORT_GI;
- 				msta->wcid.rate_short_gi = 1;
-@@ -224,7 +225,6 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
- 				msta->wcid.rate_short_gi = 0;
- 			}
- 		}
--		/* TODO:  Deal with HT_MCS */
- 	}
- 
- 	rcu_read_unlock();
--- 
-2.20.1
-
+Reviewed-by: Rob Herring <robh@kernel.org>
