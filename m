@@ -2,196 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 726B83D2F59
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jul 2021 23:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DBA13D318A
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jul 2021 04:19:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231597AbhGVVHo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Jul 2021 17:07:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47352 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231336AbhGVVHn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Jul 2021 17:07:43 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 08E0360EB4;
-        Thu, 22 Jul 2021 21:48:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626990498;
-        bh=KExz7Aqrl42Dc7vTF7gDStieypjEF1ImKqIj0Fzr5AY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GmJOs9auvWOmLriPArRpRUbOTMeUHd4DVMwTav0WIYlGvFD7hsbRuu8F+EjaVoshP
-         rufvpPMlPBwPEgu/W2GLRm3B7H4w1OR47edvHkdkc7Bw91OpqZOgzcjk2tQ4qNns4N
-         doNmPHzf2NCqDAKvsY6n+Rs3t6NUqw93v5k4XwesdOUhNhRaZOs5jzFwSrpzbAuAt9
-         gVUOiwPjrLNegGezL0guKM3hY3S5v4nTwLfHR+mZVkFFWddQouMVAeTBCQpNRo4SFT
-         /qPbwfXH/H2uPKD45Q9K1PXLwmBaYaqHd1Hm73CmkKdu9KZDXdqTzcTMmLq8zo8zaa
-         6zvTsM9QZTWUg==
-Date:   Thu, 22 Jul 2021 23:48:13 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     greearb@candelatech.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v3 4/8] mt76 - mt7915: Add tx mu/su counters to mib
-Message-ID: <YPnnnYKHG19St0yK@lore-desk>
-References: <20210722202504.6180-1-greearb@candelatech.com>
- <20210722202504.6180-4-greearb@candelatech.com>
+        id S233178AbhGWBjM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Jul 2021 21:39:12 -0400
+Received: from h4.fbrelay.privateemail.com ([131.153.2.45]:52898 "EHLO
+        h4.fbrelay.privateemail.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233165AbhGWBjF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 22 Jul 2021 21:39:05 -0400
+Received: from MTA-07-3.privateemail.com (mta-07-1.privateemail.com [198.54.122.57])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id BC51F809AB;
+        Thu, 22 Jul 2021 22:19:38 -0400 (EDT)
+Received: from mta-07.privateemail.com (localhost [127.0.0.1])
+        by mta-07.privateemail.com (Postfix) with ESMTP id E48F7180022C;
+        Thu, 22 Jul 2021 22:19:36 -0400 (EDT)
+Received: from [192.168.0.46] (unknown [10.20.151.229])
+        by mta-07.privateemail.com (Postfix) with ESMTPA id B77F51800225;
+        Thu, 22 Jul 2021 22:19:35 -0400 (EDT)
+Date:   Thu, 22 Jul 2021 22:19:29 -0400
+From:   Hamza Mahfooz <someguy@effective-light.com>
+Subject: Re: [PATCH] iwlwifi: remove redundant calls to unlikely()
+To:     linux-kernel@vger.kernel.org
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Message-Id: <HGEOWQ.C5TX9LKEOOL4@effective-light.com>
+In-Reply-To: <20210623184546.14769-1-someguy@effective-light.com>
+References: <20210623184546.14769-1-someguy@effective-light.com>
+X-Mailer: geary/40.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="MypwgkCErZPm6EVd"
-Content-Disposition: inline
-In-Reply-To: <20210722202504.6180-4-greearb@candelatech.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+ping
 
---MypwgkCErZPm6EVd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Jul 22, greearb@candelatech.com wrote:
-> From: Ben Greear <greearb@candelatech.com>
->=20
-> These counters are clear-on-read, so we need to accumulate
-> them in the update_stats poll logic, and read the accumulated
-> values instead of directly doing register reads when reporting
-> to debugfs and ethtool stats.
->=20
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
+On Wed, Jun 23 2021 at 02:45:46 PM -0400, Hamza Mahfooz 
+<someguy@effective-light.com> wrote:
+> As per commit a7f3d3d3600c ("dma-mapping: add unlikely hint to error 
+> path
+> in dma_mapping_error"), dma_mapping_error now internally calls 
+> unlikely(),
+> so we don't need to call it directly anymore.
+> 
+> Signed-off-by: Hamza Mahfooz <someguy@effective-light.com>
 > ---
->  .../wireless/mediatek/mt76/mt7915/debugfs.c   | 33 ++++++++-----------
->  .../net/wireless/mediatek/mt76/mt7915/mac.c   | 13 +++++++-
->  .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 +++
->  3 files changed, 29 insertions(+), 21 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/driver=
-s/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> index ad400ddf36c3..759899c44583 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> @@ -152,6 +152,7 @@ mt7915_txbf_stat_read_phy(struct mt7915_phy *phy, str=
-uct seq_file *s)
->  		"BW20", "BW40", "BW80", "BW160"
->  	};
->  	int cnt;
-> +	struct mib_stats *mib =3D &phy->mib;
-> =20
->  	if (!phy)
->  		return;
-> @@ -187,15 +188,13 @@ mt7915_txbf_stat_read_phy(struct mt7915_phy *phy, s=
-truct seq_file *s)
->  		   FIELD_GET(MT_ETBF_TX_FB_TRI, cnt));
-> =20
->  	/* Tx SU & MU counters */
-> -	cnt =3D mt76_rr(dev, MT_MIB_SDR34(ext_phy));
-> -	seq_printf(s, "Tx multi-user Beamforming counts: %ld\n",
-> -		   FIELD_GET(MT_MIB_MU_BF_TX_CNT, cnt));
-> -	cnt =3D mt76_rr(dev, MT_MIB_DR8(ext_phy));
-> -	seq_printf(s, "Tx multi-user MPDU counts: %d\n", cnt);
-> -	cnt =3D mt76_rr(dev, MT_MIB_DR9(ext_phy));
-> -	seq_printf(s, "Tx multi-user successful MPDU counts: %d\n", cnt);
-> -	cnt =3D mt76_rr(dev, MT_MIB_DR11(ext_phy));
-> -	seq_printf(s, "Tx single-user successful MPDU counts: %d\n", cnt);
-> +	seq_printf(s, "Tx multi-user Beamforming counts: %d\n",
-> +		   mib->tx_bf_cnt);
-> +	seq_printf(s, "Tx multi-user MPDU counts: %d\n", mib->tx_mu_mpdu_cnt);
-> +	seq_printf(s, "Tx multi-user successful MPDU counts: %d\n",
-> +		   mib->tx_mu_successful_mpdu_cnt);
-> +	seq_printf(s, "Tx single-user successful MPDU counts: %d\n",
-> +		   mib->tx_su_successful_mpdu_cnt);
-> =20
->  	seq_puts(s, "\n");
->  }
-> @@ -488,6 +487,7 @@ void mt7915_debug_get_et_stats(struct ieee80211_hw *h=
-w,
->  	struct mt7915_sta *msta;
->  	struct mt7915_sta_stats *mstats;
->  	bool found_sta =3D false;
-> +	struct mib_stats *mib =3D &phy->mib;
-> =20
->  	/* See mt7915_ampdu_stat_read_phy, etc */
->  	bool ext_phy =3D phy !=3D &dev->phy;
-> @@ -527,17 +527,10 @@ void mt7915_debug_get_et_stats(struct ieee80211_hw =
-*hw,
->  	data[ei++] =3D FIELD_GET(MT_ETBF_TX_FB_TRI, cnt);
-> =20
->  	/* Tx SU & MU counters */
-> -	cnt =3D mt76_rr(dev, MT_MIB_SDR34(ext_phy));
-> -	data[ei++] =3D FIELD_GET(MT_MIB_MU_BF_TX_CNT, cnt);
-> -
-> -	cnt =3D mt76_rr(dev, MT_MIB_DR8(ext_phy));
-> -	data[ei++] =3D cnt;
-> -
-> -	cnt =3D mt76_rr(dev, MT_MIB_DR9(ext_phy));
-> -	data[ei++] =3D cnt; /* MU MPDU SUccessful */
-> -
-> -	cnt =3D mt76_rr(dev, MT_MIB_DR11(ext_phy));
-> -	data[ei++] =3D cnt; /* SU MPDU successful */
-> +	data[ei++] =3D mib->tx_bf_cnt;
-> +	data[ei++] =3D mib->tx_mu_mpdu_cnt;
-> +	data[ei++] =3D mib->tx_mu_successful_mpdu_cnt;
-> +	data[ei++] =3D mib->tx_su_successful_mpdu_cnt;
-> =20
->  	/* TODO:  External phy too?? */
-> =20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7915/mac.c
-> index 3a10e14fbd50..23540ba5da97 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-> @@ -1880,10 +1880,21 @@ mt7915_mac_update_stats(struct mt7915_phy *phy)
->  	struct mt7915_dev *dev =3D phy->dev;
->  	struct mib_stats *mib =3D &phy->mib;
->  	bool ext_phy =3D phy !=3D &dev->phy;
-> -	int i, aggr0, aggr1;
-> +	int i, aggr0, aggr1, cnt;
-> =20
->  	mib->fcs_err_cnt +=3D mt76_get_field(dev, MT_MIB_SDR3(ext_phy),
->  					   MT_MIB_SDR3_FCS_ERR_MASK);
-> +	cnt =3D mt76_rr(dev, MT_MIB_SDR34(ext_phy));
-> +	mib->tx_bf_cnt +=3D FIELD_GET(MT_MIB_MU_BF_TX_CNT, cnt);
-> +
-> +	cnt =3D mt76_rr(dev, MT_MIB_DR8(ext_phy));
-> +	mib->tx_mu_mpdu_cnt +=3D cnt;
-> +
-> +	cnt =3D mt76_rr(dev, MT_MIB_DR9(ext_phy));
-> +	mib->tx_mu_successful_mpdu_cnt +=3D cnt;
-> +
-> +	cnt =3D mt76_rr(dev, MT_MIB_DR11(ext_phy));
-> +	mib->tx_su_successful_mpdu_cnt +=3D cnt;
-> =20
->  	aggr0 =3D ext_phy ? ARRAY_SIZE(dev->mt76.aggr_stats) / 2 : 0;
->  	for (i =3D 0, aggr1 =3D aggr0 + 4; i < 4; i++) {
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers=
-/net/wireless/mediatek/mt76/mt7915/mt7915.h
-> index ff944d1cf527..c5d0f2331b6f 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-> @@ -116,6 +116,10 @@ struct mib_stats {
->  	u32 rts_cnt;
->  	u32 rts_retries_cnt;
->  	u32 ba_miss_cnt;
-> +	u32 tx_bf_cnt;
-> +	u32 tx_mu_mpdu_cnt;
-> +	u32 tx_mu_successful_mpdu_cnt;
-> +	u32 tx_su_successful_mpdu_cnt;
+>  drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 10 +++++-----
+>  drivers/net/wireless/intel/iwlwifi/queue/tx.c | 10 +++++-----
+>  2 files changed, 10 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c 
+> b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+> index 4f6c187eed69..3bf56d30f741 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+> @@ -1253,7 +1253,7 @@ static int iwl_fill_data_tbs(struct iwl_trans 
+> *trans, struct sk_buff *skb,
+>  		dma_addr_t tb_phys = dma_map_single(trans->dev,
+>  						    skb->data + hdr_len,
+>  						    head_tb_len, DMA_TO_DEVICE);
+> -		if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
+> +		if (dma_mapping_error(trans->dev, tb_phys))
+>  			return -EINVAL;
+>  		trace_iwlwifi_dev_tx_tb(trans->dev, skb, skb->data + hdr_len,
+>  					tb_phys, head_tb_len);
+> @@ -1272,7 +1272,7 @@ static int iwl_fill_data_tbs(struct iwl_trans 
+> *trans, struct sk_buff *skb,
+>  		tb_phys = skb_frag_dma_map(trans->dev, frag, 0,
+>  					   skb_frag_size(frag), DMA_TO_DEVICE);
+> 
+> -		if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
+> +		if (dma_mapping_error(trans->dev, tb_phys))
+>  			return -EINVAL;
+>  		trace_iwlwifi_dev_tx_tb(trans->dev, skb, skb_frag_address(frag),
+>  					tb_phys, skb_frag_size(frag));
+> @@ -1380,7 +1380,7 @@ static int iwl_fill_data_tbs_amsdu(struct 
+> iwl_trans *trans, struct sk_buff *skb,
+>  		hdr_tb_len = hdr_page->pos - start_hdr;
+>  		hdr_tb_phys = dma_map_single(trans->dev, start_hdr,
+>  					     hdr_tb_len, DMA_TO_DEVICE);
+> -		if (unlikely(dma_mapping_error(trans->dev, hdr_tb_phys)))
+> +		if (dma_mapping_error(trans->dev, hdr_tb_phys))
+>  			return -EINVAL;
+>  		iwl_pcie_txq_build_tfd(trans, txq, hdr_tb_phys,
+>  				       hdr_tb_len, false);
+> @@ -1400,7 +1400,7 @@ static int iwl_fill_data_tbs_amsdu(struct 
+> iwl_trans *trans, struct sk_buff *skb,
+> 
+>  			tb_phys = dma_map_single(trans->dev, tso.data,
+>  						 size, DMA_TO_DEVICE);
+> -			if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
+> +			if (dma_mapping_error(trans->dev, tb_phys))
+>  				return -EINVAL;
+> 
+>  			iwl_pcie_txq_build_tfd(trans, txq, tb_phys,
+> @@ -1551,7 +1551,7 @@ int iwl_trans_pcie_tx(struct iwl_trans *trans, 
+> struct sk_buff *skb,
+>  	/* map the data for TB1 */
+>  	tb1_addr = ((u8 *)&dev_cmd->hdr) + IWL_FIRST_TB_SIZE;
+>  	tb1_phys = dma_map_single(trans->dev, tb1_addr, tb1_len, 
+> DMA_TO_DEVICE);
+> -	if (unlikely(dma_mapping_error(trans->dev, tb1_phys)))
+> +	if (dma_mapping_error(trans->dev, tb1_phys))
+>  		goto out_err;
+>  	iwl_pcie_txq_build_tfd(trans, txq, tb1_phys, tb1_len, false);
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c 
+> b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+> index 451b06069350..2b409fb33c99 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+> @@ -211,7 +211,7 @@ static int iwl_txq_gen2_set_tb_with_wa(struct 
+> iwl_trans *trans,
+>  	struct page *page;
+>  	int ret;
+> 
+> -	if (unlikely(dma_mapping_error(trans->dev, phys)))
+> +	if (dma_mapping_error(trans->dev, phys))
+>  		return -ENOMEM;
+> 
+>  	if (likely(!iwl_txq_crosses_4g_boundary(phys, len))) {
+> @@ -251,7 +251,7 @@ static int iwl_txq_gen2_set_tb_with_wa(struct 
+> iwl_trans *trans,
+> 
+>  	phys = dma_map_single(trans->dev, page_address(page), len,
+>  			      DMA_TO_DEVICE);
+> -	if (unlikely(dma_mapping_error(trans->dev, phys)))
+> +	if (dma_mapping_error(trans->dev, phys))
+>  		return -ENOMEM;
+>  	ret = iwl_txq_gen2_set_tb(trans, tfd, phys, len);
+>  	if (ret < 0) {
+> @@ -405,7 +405,7 @@ static int iwl_txq_gen2_build_amsdu(struct 
+> iwl_trans *trans,
+>  		tb_len = hdr_page->pos - start_hdr;
+>  		tb_phys = dma_map_single(trans->dev, start_hdr,
+>  					 tb_len, DMA_TO_DEVICE);
+> -		if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
+> +		if (dma_mapping_error(trans->dev, tb_phys))
+>  			goto out_err;
+>  		/*
+>  		 * No need for _with_wa, this is from the TSO page and
+> @@ -487,7 +487,7 @@ iwl_tfh_tfd *iwl_txq_gen2_build_tx_amsdu(struct 
+> iwl_trans *trans,
+>  	/* map the data for TB1 */
+>  	tb1_addr = ((u8 *)&dev_cmd->hdr) + IWL_FIRST_TB_SIZE;
+>  	tb_phys = dma_map_single(trans->dev, tb1_addr, len, DMA_TO_DEVICE);
+> -	if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
+> +	if (dma_mapping_error(trans->dev, tb_phys))
+>  		goto out_err;
+>  	/*
+>  	 * No need for _with_wa(), we ensure (via alignment) that the data
+> @@ -582,7 +582,7 @@ iwl_tfh_tfd *iwl_txq_gen2_build_tx(struct 
+> iwl_trans *trans,
+>  	/* map the data for TB1 */
+>  	tb1_addr = ((u8 *)&dev_cmd->hdr) + IWL_FIRST_TB_SIZE;
+>  	tb_phys = dma_map_single(trans->dev, tb1_addr, tb1_len, 
+> DMA_TO_DEVICE);
+> -	if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
+> +	if (dma_mapping_error(trans->dev, tb_phys))
+>  		goto out_err;
+>  	/*
+>  	 * No need for _with_wa(), we ensure (via alignment) that the data
+> --
+> 2.32.0
+> 
 
-nit:
-s/tx_mu_successful*/tx_mu_acked*/
 
->  	/* Add more stats here, updated from mac_update_stats */
->  };
-> =20
-> --=20
-> 2.20.1
->=20
-
---MypwgkCErZPm6EVd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYPnnmwAKCRA6cBh0uS2t
-rHa8AQCBz5b7Ruauel3En8opB2zwi8gOA0LcXB9gffb1lvyOMAD8Cc2fwy5PbHi4
-aibrAv4HyxLpaYgqdp0qGO5glVJvwQM=
-=YKlr
------END PGP SIGNATURE-----
-
---MypwgkCErZPm6EVd--
