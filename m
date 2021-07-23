@@ -2,99 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CBDB3D37C8
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jul 2021 11:36:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 423593D37CE
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jul 2021 11:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231195AbhGWIzf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Jul 2021 04:55:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52410 "EHLO
+        id S230478AbhGWI5f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Jul 2021 04:57:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230438AbhGWIze (ORCPT
+        with ESMTP id S230397AbhGWI5e (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Jul 2021 04:55:34 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8289C061575;
-        Fri, 23 Jul 2021 02:36:07 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id hg12-20020a17090b300cb02901736d9d2218so3004080pjb.1;
-        Fri, 23 Jul 2021 02:36:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=ZTe2QhZNvjeunOdwndEKdmKEetZXSNLWlRKdUTF8nEA=;
-        b=noix7vBVUY0miC7zY6X47bnNSgos9y1DtT1DWKJwZfTTL96A3vHc2zzH9oNyR+Ymlo
-         4EwOUM1d91Tz4WtVSCASMVAkOfG2GXxWrpq72WKIsR+nE2PZlDsQbJ+Au/W/ICuZroZx
-         SLjVlomLADXPZmHCSoa2grT/cZArhJ8aa+6utp8LGeFnSUi8uIvscpmk1qrREtyNDnRI
-         BA9mG3NMJ16FrQ7Hdj97cCjb5Apx98W1Vq0omPxd0U8pI3fgeoF9V7vJ+w8SSJI3J4pB
-         LhvV/rVHaAIC9A8bSz6cqgwHrvCB0K4vvEX1928Eu4TCWUsgUzQ9OCMbuHxUgadmoTeN
-         1SWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=ZTe2QhZNvjeunOdwndEKdmKEetZXSNLWlRKdUTF8nEA=;
-        b=YebfRpgcV2FOWFjwInvtDvOdej+bki3kFkJdkYwXJd7DvxKebI8l3WGOOie8ZUkOuD
-         gZMXzv4hf2ZPQXfof4oawNo1jxXrAQyYWd59V/ZpdvuP9Q5A2FB+jgXuRUyRfq0im4zQ
-         Q58ffSkwAG3m8UPe1X/ecSqBWScYDIKjr89EPe77b9R2kA9KTUn//L/vmvnY91/ElhWX
-         fePsqmPzTPTvYbFgW3qr8nAgb2thLmJGoqnW/RmeqTT8Dcnm6yABeDocQnVixnLfntnv
-         Zjb5i2ZgOHzr4pE3ipWXEghHiFFYvjR0lar5Ofi0A5uiXq2SHcboexUhGJyf/a8CvjVS
-         4I/A==
-X-Gm-Message-State: AOAM533L8RNqPO5RJZ6fft0wrZC1mc51aS/MdxZ7/a9ibBQQ7dLysE92
-        XXGDC+quDZc3GGO4hxAJ8rxlgZlYjCvLyeBNXZU=
-X-Google-Smtp-Source: ABdhPJx+9QoaAOcl/XoijfUaFdofNEePpqRuK0qvS5sdRzbvrBU3oIu8OFMTpje/RJ0CaWK4OC/zLQ==
-X-Received: by 2002:a62:8c52:0:b029:335:a9bc:47e1 with SMTP id m79-20020a628c520000b0290335a9bc47e1mr3630701pfd.11.1627032966912;
-        Fri, 23 Jul 2021 02:36:06 -0700 (PDT)
-Received: from [10.12.169.24] (5e.8a.38a9.ip4.static.sl-reverse.com. [169.56.138.94])
-        by smtp.gmail.com with ESMTPSA id s36sm22703766pgl.8.2021.07.23.02.36.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Jul 2021 02:36:06 -0700 (PDT)
-Subject: Re: [PATCH] cfg80211: free the object allocated in
- wiphy_apply_custom_regulatory
-To:     Dongliang Mu <mudongliangabcd@gmail.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Ilan Peer <ilan.peer@intel.com>,
-        syzbot+1638e7c770eef6b6c0d0@syzkaller.appspotmail.com,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org,
-        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-References: <20210723050919.1910964-1-mudongliangabcd@gmail.com>
- <6fa2aecc-ab64-894d-77c2-0a19b524cc03@gmail.com>
- <CAD-N9QXO4bX6SzMNir0fin0wVAZYhsS8-triiWPjY+Rz2WCy1w@mail.gmail.com>
-From:   xiaoqiang zhao <zhaoxiaoqiang007@gmail.com>
-Message-ID: <2e9e6fa7-a405-088d-3b4c-da62b85f3fc6@gmail.com>
-Date:   Fri, 23 Jul 2021 17:36:02 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+        Fri, 23 Jul 2021 04:57:34 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74FFCC061575
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Jul 2021 02:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=eUVyJTsXca/APXODLERsMKrpqSYREs/lN68WW+NlIgk=;
+        t=1627033088; x=1628242688; b=AW6j+6cfN8El4MxcoiUNv4Rm6nZL5gGTRCxcBZtCDqAJhI8
+        4V/gbNDTV5AOoMypmigCCDaFWjOfHBtTBC2S4QLkHLZRZCVp7a4T3x72XZszhUMUCuBSUnaeNgs79
+        OifehwbmZ36HhSGr3M+Ouhgn2Qs51SsU205aWacAyB7w95riDdAWaBFrDuSE9WoZUEwvlPWRu7m+X
+        D+75eBjV92mqP3G5Mu7whcT60Xt9IZ2eD4XlW3o4TJpCZ25sshrcDAvzKj4RCBNfC5W+plvvrs3M0
+        elVylFSRS33LzIOPRw35z29BbeBtkDe4s1IqDsb/h2l2Vwdu4p+eZBxmoFAlI5Zw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1m6raW-000UP2-Rq; Fri, 23 Jul 2021 11:38:03 +0200
+Message-ID: <d9491db4ece67ac78eb39a1078b91a106770fbb0.camel@sipsolutions.net>
+Subject: Re: [PATCH 9/9] mac80211: save transmit power envelope element and
+ power constraint
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <wgong@codeaurora.org>, ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 23 Jul 2021 11:38:02 +0200
+In-Reply-To: <20210517201932.8860-10-wgong@codeaurora.org> (sfid-20210517_222034_029448_A9A89D57)
+References: <20210517201932.8860-1-wgong@codeaurora.org>
+         <20210517201932.8860-10-wgong@codeaurora.org>
+         (sfid-20210517_222034_029448_A9A89D57)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-In-Reply-To: <CAD-N9QXO4bX6SzMNir0fin0wVAZYhsS8-triiWPjY+Rz2WCy1w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-在 2021/7/23 17:25, Dongliang Mu 写道:
-> Can you point out the concrete code releasing regd? Maybe the link to elixir.
+On Mon, 2021-05-17 at 16:19 -0400, Wen Gong wrote:
 > 
->>>       ieee80211_unregister_hw(data->hw);
->>>       device_release_driver(data->dev);
->>>       device_unregister(data->dev);
->>>
+> +		if (is_6ghz) {
+> +			struct ieee802_11_elems elems;
+> +			struct ieee80211_bss_conf *bss_conf;
+> +			u8 i, n;
+> +
+> +			ieee802_11_parse_elems(ies->data, ies->len, false, &elems,
+> +					       NULL, NULL);
+> +			bss_conf = &sdata->vif.bss_conf;
+> +			bss_conf->pwr_reduction = 0;
+> +			if (elems.pwr_constr_elem)
+> +				bss_conf->pwr_reduction = *elems.pwr_constr_elem;
+> +
+> +			memset(bss_conf->tx_pwr_env, 0, sizeof(bss_conf->tx_pwr_env));
+> +			bss_conf->tx_pwr_env_num = elems.tx_pwr_env_num;
+> +			n = min_t(u8, elems.tx_pwr_env_num,
+> +				  ARRAY_SIZE(elems.tx_pwr_env));
 
-call graph seems like this:
+If anything, that min_t would make sense only if you were actually using
+ARRAY_SIZE(bss_conf->tx_pwr_env), but like this it's quite pointless,
+just checking again if the element parsing was internally consistent?
 
-ieee80211_unregister_hw
-(https://elixir.bootlin.com/linux/v5.14-rc2/source/net/mac80211/main.c#L1368)
-	wiphy_unregister
-(https://elixir.bootlin.com/linux/v5.14-rc2/source/net/wireless/core.c#L1011)
-		wiphy_regulatory_deregister
-(https://elixir.bootlin.com/linux/v5.14-rc2/source/net/wireless/reg.c#L4057)
-			rcu_free_regdom
+I'd probably remove it and throw in a
+
+	BUILD_BUG_ON(ARRAY_SIZE(bss_conf->tx_pwr_env) !=
+                     ARRAY_SIZE(elems.tx_pwr_env));
+
+instead.
+
+> +			for (i = 0; i < n; i++)
+> +				memcpy(&bss_conf->tx_pwr_env[i], elems.tx_pwr_env[i],
+> +				       elems.tx_pwr_env_len[i]);
+
+You also never validated that the element wasn't too long!
+
+
+If you connect to 6 Ghz with this, and then again to another AP that
+doesn't, you'll have it stuck at the old values. You need to reset at
+some point (during disconnect).
+
+And then two more questions:
+
+1) Could this information change? Should we track it in beacons?
+
+2) Should we at least check it again from the protected beacon or such
+after association, so we don't blindly trust the probe response or
+beacon (received during scan, not validated) at least when BIGTK is in
+use?
+
+johannes
 
