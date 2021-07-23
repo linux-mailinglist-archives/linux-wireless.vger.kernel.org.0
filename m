@@ -2,103 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E60E3D380A
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jul 2021 11:50:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33D4A3D383D
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jul 2021 12:00:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231304AbhGWJJk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Jul 2021 05:09:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55754 "EHLO
+        id S231256AbhGWJTh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Jul 2021 05:19:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230478AbhGWJJj (ORCPT
+        with ESMTP id S231309AbhGWJTe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Jul 2021 05:09:39 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56C2C061575;
-        Fri, 23 Jul 2021 02:50:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=dL6vntKK9ZYtJOzmgbsbR2Qryum7c+XUwkgh92aExVU=; t=1627033812; x=1628243412; 
-        b=dUOhOjhBRbRn40UjCPNV6Pck7X/ICo2KXv2IPoYWnzuXNEyLf3hq8rJz5d4wucIHYe8sopApP5S
-        639Npk1wdfIkwCTmZkXDExqL2ZxSAEi4f19sMiTkSslTLCgtI7Qa5vyovA+6AqcqemdEktYPlhd46
-        Hp6OV2oviYTEr9FhRCmV7ur9IuH1zVK2KERAWK0JiXEd+9n3uWKwuM1x9QOM/uci5yNL8mYVAZ1E9
-        X9d7vIamYS99tudrsKbUSf8Ad/MycvsdiWX09czdbIKyn1VbWVtYpl3DsEO1x78NnZkKkz9F4Z/IR
-        C4eSlTKKDcqp2hUDvoBHbfJRkDUB3uZGAzGw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1m6rmG-000Uhx-As; Fri, 23 Jul 2021 11:50:11 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211 2021-07-23
-Date:   Fri, 23 Jul 2021 11:50:06 +0200
-Message-Id: <20210723095007.19246-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.31.1
+        Fri, 23 Jul 2021 05:19:34 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A0F5C061575;
+        Fri, 23 Jul 2021 03:00:07 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id m24so997460edp.12;
+        Fri, 23 Jul 2021 03:00:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZpV/vhONNALORyd7/Lzj0LakU5S+Xd5zMk4SZvs6RU4=;
+        b=C3gTWjAIVXsJ4l7MrNGFHWpm+9NAtWTyOYv1gLDC2Is/bpbyYO31SXCbabv0iIItbv
+         DWS6UpYh+hAYbrO+H2hp/7BxPtBtjX3CVJpBGNuBZsjNbZDlpOGoM1NEcjv0I6nlFUIk
+         hh+eUrgUM+y6uEeLV9/Cwqv/TtZoqxrCD7KzzyAk7d5I31yGpkjPWAf0CSFBEBd5izHo
+         gqr4dLVkDNskq6a40gGnSOVpvOcaM9zuCHvkQ7cYX0el5EL2tpYJlTSvBWnn5vTC3h4n
+         kM+aVZJ6Qdf+j9TGk2iccKz5VWt4nbUbFLnqr3B1WxvHLrC3mv1VkCq3RlCf10ggCJb3
+         IF5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZpV/vhONNALORyd7/Lzj0LakU5S+Xd5zMk4SZvs6RU4=;
+        b=XNotwsh2TjhnPw5pRs4OlCRc7U74c4SjArTLH9FdJrWlLcIU1LZhaCcFNBjuAMLbTv
+         26PBbKCp9AtKREWeEK6CYIA9sDbpfm37pIggZFmwFvA8CshITCofgHkF6Iv2VxEOuZj0
+         NvdfFurVNfKMOxWXi1tFIwx/AbyIS8tSTNlSfLHJowLoV5pStOPCKLC5gzZGPsnTQWzc
+         umqvHs/ucQaCd7I5s4zzYedxys47frb/f7MuV2EXaSSIcLUo6YABtxCD3VuL2abf7wSv
+         FVzI6wXk4aOjIWgnGdD0mSYJ8GuZuCaN558VDbXfECUGAMIAWGnj0H53pOwdNOOuu2oQ
+         Z6xw==
+X-Gm-Message-State: AOAM533b5vojx+TCba3NTi6+qVp1z/2bWWSXMdrS0dvhbd2C1Ud/yh+Q
+        oNowZEdGlbyr2KHzcpd3acy0/wne9TX0m7b1MdU=
+X-Google-Smtp-Source: ABdhPJwmJ5S6cM321VniOs3i8XtSQTT+mmPx00cCX2ciWS4LDxVGR9JZeJeFJ8g6TDTiNcVVhr/9AYLYFdyrKl9UIvs=
+X-Received: by 2002:a05:6402:2228:: with SMTP id cr8mr4644804edb.309.1627034405768;
+ Fri, 23 Jul 2021 03:00:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210723050919.1910964-1-mudongliangabcd@gmail.com>
+ <d2b0f847dbf6b6d1e585ef8de1d9d367f8d9fd3b.camel@sipsolutions.net>
+ <CAD-N9QWDNvo_3bdB=8edyYWvEV=b-66Tx-P6_7JGgrSYshDh0A@mail.gmail.com>
+ <11ba299b812212a07fe3631b7be0e8b8fd5fb569.camel@sipsolutions.net>
+ <CAD-N9QWRNyZnnDQ3XTQ_SAWNEgiMCJV+5Z69eHtRVcxYtXcM+A@mail.gmail.com> <e549fbb09d7c618762996aca4242c2ae50f85a5c.camel@sipsolutions.net>
+In-Reply-To: <e549fbb09d7c618762996aca4242c2ae50f85a5c.camel@sipsolutions.net>
+From:   Dongliang Mu <mudongliangabcd@gmail.com>
+Date:   Fri, 23 Jul 2021 17:59:39 +0800
+Message-ID: <CAD-N9QV02fnr8LLSwxTuyevYgkL_2aicO2b_7uZ46s6BGKaTmw@mail.gmail.com>
+Subject: Re: [PATCH] cfg80211: free the object allocated in wiphy_apply_custom_regulatory
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Ilan Peer <ilan.peer@intel.com>,
+        syzbot+1638e7c770eef6b6c0d0@syzkaller.appspotmail.com,
+        linux-wireless@vger.kernel.org,
+        "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Fri, Jul 23, 2021 at 5:42 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> Hi,
+>
+> On Fri, 2021-07-23 at 17:30 +0800, Dongliang Mu wrote:
+> > if zhao in the thread is right, we don't need to add this free
+> > operation to wiphy_free().
+>
+> Actually, no, that statement is not true.
+>
+> All that zhao claimed was that the free happens correctly during
+> unregister (or later), and that is indeed true, since it happens from
+>
+> ieee80211_unregister_hw()
+>  -> wiphy_unregister()
+>  -> wiphy_regulatory_deregister()
+>
 
-For 5.14, we only have a couple of fixes for now.
+Thanks for your explanation. Now the situation is more clear.
 
-Please pull and let me know if there's any problem.
+>
+> However, syzbot of course is also correct. Abstracting a bit and
+> ignoring mac80211, the problem is that here we assign it before
+> wiphy_register(), then wiphy_register() doesn't get called or fails, and
+> therefore we don't call wiphy_unregister(), only wiphy_free().
 
-Thanks,
-johannes
+Yes, you're right. In this case, wiphy_register is not called. We
+should not call wiphy_unregister() to clean up anything.
 
+>
+> Hence the leak.
+>
+> But you can also easily see from that description that it's not related
+> to hwsim - we should add a secondary round of cleanups in wiphy_free()
+> or even move the call to wiphy_regulatory_deregister() into
+> wiphy_free(), we need to look what else this does to see if we can move
+> it or not.
 
+I agree to move the cleanup operation of regd to wiphy_free API.
+That's the partial functionability of this function.
 
-The following changes since commit 9f42f674a89200d4f465a7db6070e079f3c6145f:
-
-  Merge tag 'arm64-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux (2021-07-22 10:38:19 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2021-07-23
-
-for you to fetch changes up to f9a5c358c8d26fed0cc45f2afc64633d4ba21dff:
-
-  cfg80211: Fix possible memory leak in function cfg80211_bss_update (2021-07-23 10:38:18 +0200)
-
-----------------------------------------------------------------
-Couple of fixes:
- * fix aggregation on mesh
- * fix late enabling of 4-addr mode
- * leave monitor SKBs with some headroom
- * limit band information for old applications
- * fix virt-wifi WARN_ON
- * fix memory leak in cfg80211 BSS list maintenance
-
-----------------------------------------------------------------
-Felix Fietkau (2):
-      mac80211: fix starting aggregation sessions on mesh interfaces
-      mac80211: fix enabling 4-address mode on a sta vif after assoc
-
-Johan Almbladh (1):
-      mac80211: Do not strip skb headroom on monitor frames
-
-Johannes Berg (1):
-      nl80211: limit band information in non-split data
-
-Matteo Croce (1):
-      virt_wifi: fix error on connect
-
-Nguyen Dinh Phi (1):
-      cfg80211: Fix possible memory leak in function cfg80211_bss_update
-
- drivers/net/wireless/virt_wifi.c | 52 ++++++++++++++++++++++--------------
- net/mac80211/cfg.c               | 19 ++++++++++++++
- net/mac80211/ieee80211_i.h       |  2 ++
- net/mac80211/mlme.c              |  4 +--
- net/mac80211/rx.c                |  3 ++-
- net/mac80211/tx.c                | 57 ++++++++++++++++++++++------------------
- net/wireless/nl80211.c           |  5 +++-
- net/wireless/scan.c              |  6 ++---
- 8 files changed, 95 insertions(+), 53 deletions(-)
-
+>
+> johannes
+>
