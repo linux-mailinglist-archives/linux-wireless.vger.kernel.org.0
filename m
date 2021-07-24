@@ -2,240 +2,227 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 005E93D47A9
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Jul 2021 14:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EC8B3D47AB
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Jul 2021 14:37:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234263AbhGXL4L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 24 Jul 2021 07:56:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37660 "EHLO mail.kernel.org"
+        id S234307AbhGXL4z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 24 Jul 2021 07:56:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37888 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234297AbhGXL4E (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 24 Jul 2021 07:56:04 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 737D360F35;
-        Sat, 24 Jul 2021 12:36:36 +0000 (UTC)
+        id S231511AbhGXL4y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 24 Jul 2021 07:56:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0A23960ED7;
+        Sat, 24 Jul 2021 12:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627130196;
-        bh=WvfTI2sW3aYwC2FcnnHA7MuHajJ00PtTzaRjFqCvN3Q=;
+        s=k20201202; t=1627130246;
+        bh=tPcZUEuuLUXyCaRiPbZzFytNuI96/etv5qcLqN+1iPE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qmPyr77NdMgn8fwFy7BGUmItq3JcSi0Fz2ttVhgaYwdabZrSu2fdG0Q2xzyaUNuZu
-         NEklIyM7T/NxoIzNqjo0mml6rFOD28/mlGkDVo2gKps4lsLfdxrGVyAGDOwoRTUlsP
-         fwG9r6uFhZtJ1BsOPpEKTHOKhycs/lbmKGJCb/3qj0+rURMqlzsHc3m7HkQ9+nHz20
-         1cAxuDMxVshebiqLXeQVbBY+UlvFE+KhWYGeAPSKyfb2ixPiI/sZLl+r8tSPoBoY4o
-         llst+bXHfCYMype/iloWP7/mwpBu1t3J9oEGCFfO8zInw8jXSviKxTY6VgS2ssSi75
-         jdOaQEwyN9I8Q==
-Date:   Sat, 24 Jul 2021 14:36:32 +0200
+        b=Io+2gUk5A2rR9EdOjIrDvs6UAq0AUA1Q5P/i+bLQAH3bA8AOC73/WSBVnvWNDfsa7
+         ji/gDOF0Z8INhXQN2FbA3BJ1fwHVRzk0Ucc4wRXfnTh/V5JEO7fCqd1bNSUjrqBoe6
+         1YYWa9eAGoCkawZWTAaMdCfCnlDKOOQAsh1LUNan/MYnXOPeger8nBEHXDf0vgijUR
+         BayZh3N1fGUAr/bXhIY3emD7OHH8QnjSemFVh4D2r6e7ixxU/FFsGfR/3R1E5MzRNy
+         fpAw9I77+U6OToIZHQ2N6QL2OV2jRtUw6EmjZHSP/pHqKA0G01EgYTHGOIz4WSFHZE
+         8QddhD5amr0Aw==
+Date:   Sat, 24 Jul 2021 14:37:21 +0200
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     greearb@candelatech.com
 Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v4 1/8] mt76 - mt7915: Add ethtool stats support.
-Message-ID: <YPwJUGtBZxNi4RxM@lore-desk>
+Subject: Re: [PATCH v4 3/8] mt76 - mt7915: Add some per-station tx stats to
+ ethtool.
+Message-ID: <YPwJgX/Po9/+RUWA@lore-desk>
 References: <20210723154627.10078-1-greearb@candelatech.com>
+ <20210723154627.10078-3-greearb@candelatech.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="+ELMjiBTrzO+Raky"
+        protocol="application/pgp-signature"; boundary="qdDvLNad3YLrm0Gl"
 Content-Disposition: inline
-In-Reply-To: <20210723154627.10078-1-greearb@candelatech.com>
+In-Reply-To: <20210723154627.10078-3-greearb@candelatech.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---+ELMjiBTrzO+Raky
+--qdDvLNad3YLrm0Gl
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 > From: Ben Greear <greearb@candelatech.com>
 >=20
-> This exposes some tx-path stats to the ethtool API, so that
-> ethtool -S wlanX provides some more useful info.
+> The tx status callback is not called for every frame, so
+> those specific counters under-count, but at least they give
+> some idea of what is going on.
 >=20
 > Signed-off-by: Ben Greear <greearb@candelatech.com>
 > ---
-> =20
-> v4: move ethtool code to main.c
->   Re-work the 2/8 patch per review.
->   Did not try to refactor the station walk per comments on 3/8, I saw
->   no clean way to do that.
->=20
-> .../net/wireless/mediatek/mt76/mt7915/main.c  | 136 ++++++++++++++++++
->  1 file changed, 136 insertions(+)
+>  .../net/wireless/mediatek/mt76/mt7915/main.c  | 116 +++++++++++++++++-
+>  1 file changed, 110 insertions(+), 6 deletions(-)
 >=20
 > diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/n=
 et/wireless/mediatek/mt76/mt7915/main.c
-> index 48b5e2051bad..d0288fe2abdf 100644
+> index d0288fe2abdf..de083008663e 100644
 > --- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
 > +++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-> @@ -1028,6 +1028,139 @@ static void mt7915_sta_set_decap_offload(struct i=
-eee80211_hw *hw,
->  	mt7915_mcu_sta_update_hdr_trans(dev, vif, sta);
->  }
+> @@ -1068,6 +1068,35 @@ static const char mt7915_gstrings_stats[][ETH_GSTR=
+ING_LEN] =3D {
+>  	"tx_msdu_pack_6",
+>  	"tx_msdu_pack_7",
+>  	"tx_msdu_pack_8",
+> +	/* per vif counters */
+> +	"v_tx_mpdu_attempts",
+> +	"v_tx_mpdu_fail",
+> +	"v_tx_mpdu_retry",
+> +	"v_tx_mode_cck",
+> +	"v_tx_mode_ofdm",
+> +	"v_tx_mode_ht",
+> +	"v_tx_mode_ht_gf",
+> +	"v_tx_mode_vht",
+> +	"v_tx_mode_he_su",
+> +	"v_tx_mode_he_ext_su",
+> +	"v_tx_mode_he_tb",
+> +	"v_tx_mode_he_mu",
+> +	"v_tx_bw_20",
+> +	"v_tx_bw_40",
+> +	"v_tx_bw_80",
+> +	"v_tx_bw_160",
+> +	"v_tx_mcs_0",
+> +	"v_tx_mcs_1",
+> +	"v_tx_mcs_2",
+> +	"v_tx_mcs_3",
+> +	"v_tx_mcs_4",
+> +	"v_tx_mcs_5",
+> +	"v_tx_mcs_6",
+> +	"v_tx_mcs_7",
+> +	"v_tx_mcs_8",
+> +	"v_tx_mcs_9",
+> +	"v_tx_mcs_10",
+> +	"v_tx_mcs_11",
+>  };
 > =20
-> +static const char mt7915_gstrings_stats[][ETH_GSTRING_LEN] =3D {
-> +	"tx_ampdu_len:0-1",
-> +	"tx_ampdu_len:2-10",
-> +	"tx_ampdu_len:11-19",
-> +	"tx_ampdu_len:20-28",
-> +	"tx_ampdu_len:29-37",
-> +	"tx_ampdu_len:38-46",
-> +	"tx_ampdu_len:47-55",
-> +	"tx_ampdu_len:56-79",
-> +	"tx_ampdu_len:80-103",
-> +	"tx_ampdu_len:104-127",
-> +	"tx_ampdu_len:128-151",
-> +	"tx_ampdu_len:152-175",
-> +	"tx_ampdu_len:176-199",
-> +	"tx_ampdu_len:200-223",
-> +	"tx_ampdu_len:224-247",
-> +	"ba_miss_count",
-> +	"tx_beamformer_ppdu_iBF",
-> +	"tx_beamformer_ppdu_eBF",
-> +	"tx_beamformer_rx_feedback_all",
-> +	"tx_beamformer_rx_feedback_he",
-> +	"tx_beamformer_rx_feedback_vht",
-> +	"tx_beamformer_rx_feedback_ht",
-> +	"tx_beamformer_rx_feedback_bw", /* zero based idx: 20, 40, 80, 160 */
-> +	"tx_beamformer_rx_feedback_nc",
-> +	"tx_beamformer_rx_feedback_nr",
-> +	"tx_beamformee_ok_feedback_pkts",
-> +	"tx_beamformee_feedback_trig",
-> +	"tx_mu_beamforming",
-> +	"tx_mu_mpdu",
-> +	"tx_mu_successful_mpdu",
-> +	"tx_su_successful_mpdu",
-> +	"tx_msdu_pack_1",
-> +	"tx_msdu_pack_2",
-> +	"tx_msdu_pack_3",
-> +	"tx_msdu_pack_4",
-> +	"tx_msdu_pack_5",
-> +	"tx_msdu_pack_6",
-> +	"tx_msdu_pack_7",
-> +	"tx_msdu_pack_8",
-> +};
+>  #define MT7915_SSTATS_LEN ARRAY_SIZE(mt7915_gstrings_stats)
+> @@ -1097,14 +1126,15 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
+>  {
+>  	struct mt7915_dev *dev =3D mt7915_hw_dev(hw);
+>  	struct mt7915_phy *phy =3D mt7915_hw_phy(hw);
+> -
+> -	/* TODO:  These are mostly dev-wide stats at this point.
+> -	 *  Get some per-vif stats?
+> -	 */
+> +	struct mt7915_vif *mvif =3D (struct mt7915_vif *)vif->drv_priv;
+> +	struct mt76_wcid *wcid;
+> +	struct mt7915_sta *msta;
+> +	struct mt7915_sta_stats *mstats;
+> +	bool found_sta =3D false;
+> =20
+>  	/* See mt7915_ampdu_stat_read_phy, etc */
+>  	bool ext_phy =3D phy !=3D &dev->phy;
+> -	int i, n, cnt;
+> +	int i, j, n, cnt, next_ei;
+>  	int ei =3D 0;
+> =20
+>  	if (!phy)
+> @@ -1158,7 +1188,81 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
+>  	for (i =3D 0; i < 8; i++)
+>  		data[ei++] =3D mt76_rr(dev,  MT_PLE_AMSDU_PACK_MSDU_CNT(i));
+> =20
+> -	WARN_ON(ei !=3D MT7915_SSTATS_LEN);
+> +	/* Add values for all stations owned by this vif */
 > +
-> +#define MT7915_SSTATS_LEN ARRAY_SIZE(mt7915_gstrings_stats)
+> +	/* See mt76_get_min_avr_rssi for example of how to find all sta
+> +	 * for a vif
+> +	 */
+> +	local_bh_disable();
+> +	rcu_read_lock();
 > +
-> +/* Ethtool related API */
-> +void mt7915_get_et_strings(struct ieee80211_hw *hw,
-> +			   struct ieee80211_vif *vif,
-> +			   u32 sset, u8 *data)
+> +	next_ei =3D ei;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(dev->mt76.wcid_mask); i++) {
+> +		u32 mask =3D dev->mt76.wcid_mask[i];
+> +		u32 phy_mask =3D dev->mt76.wcid_phy_mask[i];
+> +		int q;
+> +
+> +		if (!mask)
+> +			continue;
+> +
+> +		for (j =3D i * 32; mask; j++, mask >>=3D 1, phy_mask >>=3D 1) {
+> +			if (!(mask & 1))
+> +				continue;
+> +
+> +			if (!!(phy_mask & 1) !=3D ext_phy)
+> +				continue;
+> +
+> +			wcid =3D rcu_dereference(dev->mt76.wcid[j]);
+> +			if (!wcid)
+> +				continue;
 
-please make them static
+I think you can use ieee80211_iterate_stations_atomic() here
 
 Regards,
 Lorenzo
 
-> +{
-> +	if (sset =3D=3D ETH_SS_STATS)
-> +		memcpy(data, *mt7915_gstrings_stats,
-> +		       sizeof(mt7915_gstrings_stats));
-> +}
 > +
-> +int mt7915_get_et_sset_count(struct ieee80211_hw *hw,
-> +			     struct ieee80211_vif *vif, int sset)
-> +{
-> +	if (sset =3D=3D ETH_SS_STATS)
-> +		return MT7915_SSTATS_LEN;
+> +			msta =3D container_of(wcid, struct mt7915_sta, wcid);
 > +
-> +	return 0;
-> +}
+> +			if (msta->vif !=3D mvif)
+> +				continue;
 > +
-> +void mt7915_get_et_stats(struct ieee80211_hw *hw,
-> +			 struct ieee80211_vif *vif,
-> +			 struct ethtool_stats *stats, u64 *data)
-> +{
-> +	struct mt7915_dev *dev =3D mt7915_hw_dev(hw);
-> +	struct mt7915_phy *phy =3D mt7915_hw_phy(hw);
+> +			ei =3D next_ei;
+> +			mstats =3D &msta->stats;
+> +			data[ei++] +=3D mstats->tx_mpdu_attempts;
+> +			data[ei++] +=3D mstats->tx_mpdu_fail;
+> +			data[ei++] +=3D mstats->tx_mpdu_retry;
+> +			data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_CCK];
+> +			data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_OFDM];
+> +			data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HT];
+> +			data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HT_GF];
+> +			data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_VHT];
+> +			data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HE_SU];
+> +			data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HE_EXT_SU];
+> +			data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HE_TB];
+> +			data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HE_MU];
 > +
-> +	/* TODO:  These are mostly dev-wide stats at this point.
-> +	 *  Get some per-vif stats?
+> +			for (q =3D 0; q < ARRAY_SIZE(mstats->tx_bw); q++)
+> +				data[ei++] +=3D mstats->tx_bw[q];
+> +
+> +			for (q =3D 0; q < 12; q++)
+> +				data[ei++] +=3D mstats->tx_mcs[q];
+> +			found_sta =3D true;
+> +		}
+> +	}
+> +
+> +	rcu_read_unlock();
+> +	local_bh_enable();
+> +
+> +	/* If we have no stations above, then we will not have filled out
+> +	 * the STA stats.  Zero those stats.
 > +	 */
+> +	if (!found_sta) {
+> +		int q;
 > +
-> +	/* See mt7915_ampdu_stat_read_phy, etc */
-> +	bool ext_phy =3D phy !=3D &dev->phy;
-> +	int i, n, cnt;
-> +	int ei =3D 0;
+> +		for (q =3D 0; q < 28; q++)
+> +			data[ei++] =3D 0;
+> +	}
 > +
-> +	if (!phy)
-> +		return;
-> +
-> +	/* Tx ampdu stat */
-> +	n =3D ext_phy ? ARRAY_SIZE(dev->mt76.aggr_stats) / 2 : 0;
-> +	for (i =3D 0; i < 15 /*ARRAY_SIZE(bound)*/; i++)
-> +		data[ei++] =3D dev->mt76.aggr_stats[i + n];
-> +
-> +	data[ei++] =3D phy->mib.ba_miss_cnt;
-> +
-> +	/* Tx Beamformer monitor */
-> +	cnt =3D mt76_rr(dev, MT_ETBF_TX_APP_CNT(ext_phy));
-> +	data[ei++] =3D FIELD_GET(MT_ETBF_TX_IBF_CNT, cnt);
-> +	data[ei++] =3D FIELD_GET(MT_ETBF_TX_EBF_CNT, cnt);
-> +
-> +	/* Tx Beamformer Rx feedback monitor */
-> +	cnt =3D mt76_rr(dev, MT_ETBF_RX_FB_CNT(ext_phy));
-> +	data[ei++] =3D FIELD_GET(MT_ETBF_RX_FB_ALL, cnt);
-> +	data[ei++] =3D FIELD_GET(MT_ETBF_RX_FB_HE, cnt);
-> +	data[ei++] =3D FIELD_GET(MT_ETBF_RX_FB_VHT, cnt);
-> +	data[ei++] =3D FIELD_GET(MT_ETBF_RX_FB_HT, cnt);
-> +
-> +	cnt =3D mt76_rr(dev, MT_ETBF_RX_FB_CONT(ext_phy));
-> +	data[ei++] =3D FIELD_GET(MT_ETBF_RX_FB_BW, cnt);
-> +	data[ei++] =3D FIELD_GET(MT_ETBF_RX_FB_NC, cnt);
-> +	data[ei++] =3D FIELD_GET(MT_ETBF_RX_FB_NR, cnt);
-> +
-> +	/* Tx Beamformee Rx NDPA & Tx feedback report */
-> +	cnt =3D mt76_rr(dev, MT_ETBF_TX_NDP_BFRP(ext_phy));
-> +	data[ei++] =3D FIELD_GET(MT_ETBF_TX_FB_CPL, cnt);
-> +	data[ei++] =3D FIELD_GET(MT_ETBF_TX_FB_TRI, cnt);
-> +
-> +	/* Tx SU & MU counters */
-> +	cnt =3D mt76_rr(dev, MT_MIB_SDR34(ext_phy));
-> +	data[ei++] =3D FIELD_GET(MT_MIB_MU_BF_TX_CNT, cnt);
-> +
-> +	cnt =3D mt76_rr(dev, MT_MIB_DR8(ext_phy));
-> +	data[ei++] =3D cnt;
-> +
-> +	cnt =3D mt76_rr(dev, MT_MIB_DR9(ext_phy));
-> +	data[ei++] =3D cnt; /* MU MPDU SUccessful */
-> +
-> +	cnt =3D mt76_rr(dev, MT_MIB_DR11(ext_phy));
-> +	data[ei++] =3D cnt; /* SU MPDU successful */
-> +
-> +	/* TODO:  External phy too?? */
-> +
-> +	/* Tx amsdu info (pack-count histogram) */
-> +	for (i =3D 0; i < 8; i++)
-> +		data[ei++] =3D mt76_rr(dev,  MT_PLE_AMSDU_PACK_MSDU_CNT(i));
-> +
-> +	WARN_ON(ei !=3D MT7915_SSTATS_LEN);
-> +}
-> +
+> +	if (ei !=3D MT7915_SSTATS_LEN) {
+> +		pr_err("ei: %d  MT7915_SSTATS_LEN: %d", ei, (int)(MT7915_SSTATS_LEN));
+> +		WARN_ON_ONCE(ei !=3D MT7915_SSTATS_LEN);
+> +	}
+>  }
+> =20
 >  const struct ieee80211_ops mt7915_ops =3D {
->  	.tx =3D mt7915_tx,
->  	.start =3D mt7915_start,
-> @@ -1052,6 +1185,9 @@ const struct ieee80211_ops mt7915_ops =3D {
->  	.get_txpower =3D mt76_get_txpower,
->  	.channel_switch_beacon =3D mt7915_channel_switch_beacon,
->  	.get_stats =3D mt7915_get_stats,
-> +	.get_et_sset_count =3D mt7915_get_et_sset_count,
-> +	.get_et_stats =3D mt7915_get_et_stats,
-> +	.get_et_strings =3D mt7915_get_et_strings,
->  	.get_tsf =3D mt7915_get_tsf,
->  	.set_tsf =3D mt7915_set_tsf,
->  	.offset_tsf =3D mt7915_offset_tsf,
 > --=20
 > 2.20.1
 >=20
 
---+ELMjiBTrzO+Raky
+--qdDvLNad3YLrm0Gl
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYPwJTQAKCRA6cBh0uS2t
-rC3KAPoDeOOYi6nuCmqI+PHawRVuvy5pYEed6Jw2yHjzl99QvgD7B6KQPu9BGoW+
-jcwCKyKMl/PGAFrRRbttCDzEr1AKgQQ=
-=o98a
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYPwJfwAKCRA6cBh0uS2t
+rLZcAP9nGJBLHPDUWw7Dl+/TIKy4wBVwgX8YEXhVNtTOgzvsfQEAhKkulXDk+BPq
+MWvGwcGeCEY8I4Ez5NFvd7CYBFpeKAQ=
+=PvAP
 -----END PGP SIGNATURE-----
 
---+ELMjiBTrzO+Raky--
+--qdDvLNad3YLrm0Gl--
