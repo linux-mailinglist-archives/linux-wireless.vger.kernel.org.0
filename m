@@ -2,94 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFAF93D4CAA
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jul 2021 10:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F38F3D4FB0
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jul 2021 21:47:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230316AbhGYHtk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 25 Jul 2021 03:49:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58668 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230187AbhGYHtg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 25 Jul 2021 03:49:36 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 3FF7960F36;
-        Sun, 25 Jul 2021 08:30:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627201807;
-        bh=kWq+odkjUKr//WsfcVOjmRqt7NylznG1toenFU/dwqc=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=jcnybYhFO5FAbtyth/iTC4MIldHyv4WZG49R4/Slq2q+yhXOssx+8p+zy+CGj/Vvi
-         vp93CqFxwtU2Ia2gt9w6l9EQZNz5plgOPsv0lY9GKhmf7nek6u5MpG6rjj2oWAMzMs
-         wBbmfbLeT2jE+8E6ZEl/l6IWC1X+vdbyNaW4KGryAhXzJlpzyOTiKUgr1fmb6xFIr4
-         iQNXkA2c4LE8t3aWTho0K6f0BMuTVpmm0KjEK+LCd/OKYG6FMZX3JkyNAtt9XpOKTX
-         A6KtFUclIAM+q+gP2p6QxnuegY5y4PQ5nxJlD70Grv2IoEniLbX4CD0Ju1SM/2JQxD
-         uiNJav8VoJDsQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 395AB60A39;
-        Sun, 25 Jul 2021 08:30:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S231400AbhGYTGc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 25 Jul 2021 15:06:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60086 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230116AbhGYTGc (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 25 Jul 2021 15:06:32 -0400
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF429C061757;
+        Sun, 25 Jul 2021 12:47:00 -0700 (PDT)
+Received: by mail-ot1-x333.google.com with SMTP id z6-20020a9d24860000b02904d14e47202cso7869147ota.4;
+        Sun, 25 Jul 2021 12:47:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=VeZWPhsf+UxEhhOjwlwIVeUOu2AI3fn4qRU/WSvFopQ=;
+        b=qFSeiaLrU2hQGry4BAWsunWWxW3JeMucElv2gemNGYWBDARmoVcrZylwDmpjWqCp9f
+         O/p7h80N2k7YsasIufiLCJFh77GVnZrlBm0eh59QRIy7rMOX0cK01UAm90OH7lnZKt/i
+         ruDtwgFAV34OeRVK/f00TEOUJrkGcYlstPjhIMeAP1riDhaj/OuWtGNRNl/oKOXqPNO9
+         29WyTDpMCHwEnumuXOGFgr4lvkUmXGVvoVhKu0isa+5Qy1XObzp77YRb+UvjRpsWHxPP
+         T8iOITAcuE7zq3LTSC9Tz+Nfta71/L7XCXMYTdT9YwjH9pX3zq/RdZMDk3StpCU77jl+
+         j42A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=VeZWPhsf+UxEhhOjwlwIVeUOu2AI3fn4qRU/WSvFopQ=;
+        b=kIM/dCcIfSfWPDMhiWsps/ceZbGWlC5tdheBY4mnyZUFQUAUP/akvJLOFfCpY0BEkM
+         NN/KniY6EiLUoA67Me8if07WwqLPn3zckAqbOdkrAK2bFbRZ48tE5oppA4V6yAEP9yEb
+         m+Wu3Eu9Wv5E4WOd4QjWwDRe5lmFWOwRBUm7x5xJl1qLw0Bs9/Dqfn3fJtMvXdrRNMr6
+         29UavwLT6BTwN3Q8SZfOIt1hJS74ZnSqIHae9bISauoF2aN/7XgtpU4GiT4tM6nGWfhX
+         wShRNPkfSdmdSoEG/XR6xlxxQ9wbg3FJg3yTePMDuhYG9qJqbO+FBcmcvl29J8H9VYLl
+         TlOg==
+X-Gm-Message-State: AOAM531177q1ziKQOc7XVsQef7BBMnkGZfLmSn+jxv9LkN1duS+8i9On
+        bnymXAz+vqqNPkbY9+9EzbhH7gA1phE=
+X-Google-Smtp-Source: ABdhPJwwWW+Vr+4VCWALaqrlSdJB5raI2ZBVlZZzHg3aEJ/ZWKJNilDcx8dKKs7pRnf9DilSWLBNug==
+X-Received: by 2002:a9d:7982:: with SMTP id h2mr9036623otm.291.1627242419881;
+        Sun, 25 Jul 2021 12:46:59 -0700 (PDT)
+Received: from 2603-8090-2005-39b3-0000-0000-0000-100a.res6.spectrum.com (2603-8090-2005-39b3-0000-0000-0000-100a.res6.spectrum.com. [2603:8090:2005:39b3::100a])
+        by smtp.gmail.com with ESMTPSA id s8sm5751923oie.43.2021.07.25.12.46.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 25 Jul 2021 12:46:59 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: [PATCH] wireless: rtl8187: replace udev with usb_get_dev()
+To:     htl10@users.sourceforge.net,
+        Herton Ronaldo Krzesinski <herton@canonical.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, gregkh@linuxfoundation.org,
+        Salah Triki <salah.triki@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210724183457.GA470005@pc>
+ <53895498.1259278.1627160074135@mail.yahoo.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <e761905b-0449-9463-c3ab-923aff36e4df@lwfinger.net>
+Date:   Sun, 25 Jul 2021 14:46:57 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
+In-Reply-To: <53895498.1259278.1627160074135@mail.yahoo.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 00/12] nfc: constify data structures
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162720180723.26018.5160938905220111429.git-patchwork-notify@kernel.org>
-Date:   Sun, 25 Jul 2021 08:30:07 +0000
-References: <20210724214743.121884-1-krzysztof.kozlowski@canonical.com>
-In-Reply-To: <20210724214743.121884-1-krzysztof.kozlowski@canonical.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     charles.gorand@effinnov.com, k.opasiak@samsung.com,
-        mgreer@animalcreek.com, bongsu.jeon@samsung.com,
-        davem@davemloft.net, kuba@kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
-
-This series was applied to netdev/net-next.git (refs/heads/master):
-
-On Sat, 24 Jul 2021 23:47:31 +0200 you wrote:
-> Hi,
+On 7/24/21 3:54 PM, Hin-Tak Leung wrote:
 > 
-> Constify pointers to several data structures which are not modified by
-> NFC core or by drivers to make it slightly safer.  No functional impact
-> expected.
 > 
-> Best regards,
-> Krzysztof
+> On Saturday, 24 July 2021, 19:35:12 BST, Salah Triki <salah.triki@gmail.com> wrote:
 > 
-> [...]
+> 
+>  > Replace udev with usb_get_dev() in order to make code cleaner.
+> 
+>  > Signed-off-by: Salah Triki <salah.triki@gmail.com>
+>  > ---
+>  > drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 4 +---
+>  > 1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+>  > diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c 
+> b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+>  > index eb68b2d3caa1..30bb3c2b8407 100644
+>  > --- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+>  > +++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+>  > @@ -1455,9 +1455,7 @@ static int rtl8187_probe(struct usb_interface *intf,
+> 
+>  >     SET_IEEE80211_DEV(dev, &intf->dev);
+>  >     usb_set_intfdata(intf, dev);
+>  > -    priv->udev = udev;
+>  > -
+>  > -    usb_get_dev(udev);
+>  > +    priv->udev = usb_get_dev(udev);
+> 
+>  >     skb_queue_head_init(&priv->rx_queue);
+> 
+>  > --
+>  > 2.25.1
+> 
+> It is not cleaner - the change is not functionally equivalent. Before the 
+> change, the reference count is increased after the assignment; and after the 
+> change, before the assignment. So my question is, does the reference count 
+> increasing a little earlier matters? What can go wrong between very short time 
+> where the reference count increases, and priv->udev not yet assigned? I think 
+> there might be a race condition where the probbe function is called very shortly 
+> twice.
+> Especially if the time of running the reference count function is non-trivial.
+> 
+> Larry, what do you think?
 
-Here is the summary with links:
-  - [01/12] nfc: constify payload argument in nci_send_cmd()
-    https://git.kernel.org/netdev/net-next/c/48d5440393d3
-  - [02/12] nfc: constify nci_ops
-    https://git.kernel.org/netdev/net-next/c/b9c28286d8f1
-  - [03/12] nfc: s3fwrn5: constify nci_ops
-    https://git.kernel.org/netdev/net-next/c/d08ba0fdeaba
-  - [04/12] nfc: constify nci_driver_ops (prop_ops and core_ops)
-    https://git.kernel.org/netdev/net-next/c/cb8caa3c6c04
-  - [05/12] nfc: constify nfc_phy_ops
-    https://git.kernel.org/netdev/net-next/c/7a5e98daf6bd
-  - [06/12] nfc: st21nfca: constify file-scope arrays
-    https://git.kernel.org/netdev/net-next/c/0f20ae9bb96b
-  - [07/12] nfc: constify pointer to nfc_vendor_cmd
-    https://git.kernel.org/netdev/net-next/c/15944ad2e5a1
-  - [08/12] nfc: constify nfc_hci_gate
-    https://git.kernel.org/netdev/net-next/c/5f3e63933793
-  - [09/12] nfc: constify nfc_ops
-    https://git.kernel.org/netdev/net-next/c/f6c802a726ae
-  - [10/12] nfc: constify nfc_hci_ops
-    https://git.kernel.org/netdev/net-next/c/094c45c84d79
-  - [11/12] nfc: constify nfc_llc_ops
-    https://git.kernel.org/netdev/net-next/c/49545357bf7e
-  - [12/12] nfc: constify nfc_digital_ops
-    https://git.kernel.org/netdev/net-next/c/7186aac9c22d
+My belief was that probe routines were called in order, which was confirmed by 
+GregKH. As a result, there can be no race condition, and the order of setting 
+the reference count does not matter. On the other hand, the current code is not 
+misleading, nor unclear. Why should it be changed?
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+NACK on the patch.
 
+Larry
 
