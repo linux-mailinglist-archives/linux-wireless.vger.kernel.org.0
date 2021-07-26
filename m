@@ -2,150 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE0AD3D5436
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jul 2021 09:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70E8A3D54AD
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jul 2021 09:55:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232594AbhGZGmh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Jul 2021 02:42:37 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:50639 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232547AbhGZGmf (ORCPT
+        id S231874AbhGZHNm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Jul 2021 03:13:42 -0400
+Received: from lpdvsmtp10.broadcom.com ([192.19.11.229]:54854 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231725AbhGZHNl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Jul 2021 02:42:35 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16Q7MrAyA012249, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16Q7MrAyA012249
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 26 Jul 2021 15:22:53 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 26 Jul 2021 15:22:52 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 26 Jul 2021 15:22:52 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91]) by
- RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91%5]) with mapi id
- 15.01.2106.013; Mon, 26 Jul 2021 15:22:52 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Johannes Berg <johannes@sipsolutions.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Neo Jou <neojou@gmail.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: RE: [PATCH RFC v1 3/7] rtw88: Use rtw_iterate_stas where the iterator reads or writes registers
-Thread-Topic: [PATCH RFC v1 3/7] rtw88: Use rtw_iterate_stas where the
- iterator reads or writes registers
-Thread-Index: AQHXe0w27utvvM4sPUiWb+/Kz/RL76tJU/0AgAptqICAASD5kA==
-Date:   Mon, 26 Jul 2021 07:22:52 +0000
-Message-ID: <981001e2981346ada4dcc08558b87a18@realtek.com>
-References: <20210717204057.67495-1-martin.blumenstingl@googlemail.com>
- <20210717204057.67495-4-martin.blumenstingl@googlemail.com>
- <27d8246ef3c9755b3e6e908188ca36f7b0fab3fc.camel@sipsolutions.net>
- <CAFBinCAzoPmtvH1Wn9dY4pFsERQ5N+0xXRG=UB1eEGe_qTf+6w@mail.gmail.com>
-In-Reply-To: <CAFBinCAzoPmtvH1Wn9dY4pFsERQ5N+0xXRG=UB1eEGe_qTf+6w@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzcvMjYg5LiK5Y2IIDA2OjAwOjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Mon, 26 Jul 2021 03:13:41 -0400
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id F1ABEA5;
+        Mon, 26 Jul 2021 00:54:09 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com F1ABEA5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1627286050;
+        bh=HJ5nsDnJITC00V1X0DUyUcupZe7VHTkb2LGU3xhIHh8=;
+        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
+        b=BFgi1UNCh9177dcZcO1VT9ITEi4Em/NKQzvCiO/JQeyGOYwExTMbBdcQu3OVEnt9p
+         UJHWSbU7UXMHF2jUn02jn7o/GqCd+wM3c9zRj50ap77oRwDFOP1TSlzy3OdTF6MCtR
+         iO4uBjIkpsYi5+SGEFQxdiXap3o70lNLDY7Lez3c=
+Received: from [10.176.68.80] (unknown [10.176.68.80])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 1E4C91874BD;
+        Mon, 26 Jul 2021 00:54:08 -0700 (PDT)
+Subject: Re: Current mainline brcmfmac reports error on supposedly supported
+ ap6256 chip
+To:     Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
+References: <CB0AA0D2-A8F3-4217-A3C1-E14D7E9FF11E@gmail.com>
+ <17ad94781a0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <6F6333F3-0BDB-48AF-B445-723958ABA8C9@gmail.com>
+ <be6c2b7f-2c85-59fb-3013-d0590c487c51@broadcom.com>
+ <53E7119F-D158-4EF0-940C-D0AA59C23CF6@gmail.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Ondrej Jirman <megous@megous.com>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <3da7f271-0c5c-50de-375a-a8c67ca127f5@broadcom.com>
+Date:   Mon, 26 Jul 2021 09:54:07 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 07/26/2021 07:01:19
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 165231 [Jul 26 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 449 449 5db59deca4a4f5e6ea34a93b13bc730e229092f4
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/26/2021 07:04:00
+In-Reply-To: <53E7119F-D158-4EF0-940C-D0AA59C23CF6@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IE1hcnRpbiBCbHVtZW5zdGlu
-Z2wgW21haWx0bzptYXJ0aW4uYmx1bWVuc3RpbmdsQGdvb2dsZW1haWwuY29tXQ0KPiBTZW50OiBN
-b25kYXksIEp1bHkgMjYsIDIwMjEgNTo1MSBBTQ0KPiBUbzogSm9oYW5uZXMgQmVyZzsgUGtzaGlo
-DQo+IENjOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7IHRvbnkwNjIwZW1tYUBnbWFp
-bC5jb207IGt2YWxvQGNvZGVhdXJvcmEub3JnOw0KPiBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBs
-aW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBOZW8gSm91OyBKZXJuZWogU2tyYWJlYw0KPiBT
-dWJqZWN0OiBSZTogW1BBVENIIFJGQyB2MSAzLzddIHJ0dzg4OiBVc2UgcnR3X2l0ZXJhdGVfc3Rh
-cyB3aGVyZSB0aGUgaXRlcmF0b3IgcmVhZHMgb3Igd3JpdGVzIHJlZ2lzdGVycw0KPiANCj4gSGkg
-Sm9oYW5uZXMsIEhpIFBpbmctS2UsDQo+IA0KPiBPbiBNb24sIEp1bCAxOSwgMjAyMSBhdCA4OjM2
-IEFNIEpvaGFubmVzIEJlcmcgPGpvaGFubmVzQHNpcHNvbHV0aW9ucy5uZXQ+IHdyb3RlOg0KPiA+
-DQo+ID4gT24gU2F0LCAyMDIxLTA3LTE3IGF0IDIyOjQwICswMjAwLCBNYXJ0aW4gQmx1bWVuc3Rp
-bmdsIHdyb3RlOg0KPiA+ID4NCj4gPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnR3ODgvbWFjODAyMTEuYw0KPiA+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydHc4OC9tYWM4MDIxMS5jDQo+ID4gPiBAQCAtNzIxLDcgKzcyMSw3IEBAIHN0YXRpYyB2
-b2lkIHJ0d19yYV9tYXNrX2luZm9fdXBkYXRlKHN0cnVjdCBydHdfZGV2ICpydHdkZXYsDQo+ID4g
-PiAgICAgICBicl9kYXRhLnJ0d2RldiA9IHJ0d2RldjsNCj4gPiA+ICAgICAgIGJyX2RhdGEudmlm
-ID0gdmlmOw0KPiA+ID4gICAgICAgYnJfZGF0YS5tYXNrID0gbWFzazsNCj4gPiA+IC0gICAgIHJ0
-d19pdGVyYXRlX3N0YXNfYXRvbWljKHJ0d2RldiwgcnR3X3JhX21hc2tfaW5mb191cGRhdGVfaXRl
-ciwgJmJyX2RhdGEpOw0KPiA+ID4gKyAgICAgcnR3X2l0ZXJhdGVfc3RhcyhydHdkZXYsIHJ0d19y
-YV9tYXNrX2luZm9fdXBkYXRlX2l0ZXIsICZicl9kYXRhKTsNCj4gPg0KPiA+IEFuZCB0aGVuIHlv
-dSBwcmV0dHkgbXVjaCBpbW1lZGlhdGVseSBicmVhayB0aGF0IGludmFyaWFudCBoZXJlLCBuYW1l
-bHkNCj4gPiB0aGF0IHlvdSdyZSBjYWxsaW5nIHRoaXMgd2l0aGluIHRoZSBzZXRfYml0cmF0ZV9t
-YXNrKCkgbWV0aG9kIGNhbGxlZCBieQ0KPiA+IG1hYzgwMjExLg0KPiB5b3UgYXJlIHJpZ2h0LCBJ
-IHdhcyBub3QgYXdhcmUgb2YgdGhpcw0KPiANCj4gPiBUaGF0J3Mgbm90IGFjdHVhbGx5IGZ1bmRh
-bWVudGFsbHkgYnJva2VuIHRvZGF5LCBidXQgaXQgZG9lcyAqc2V2ZXJlbHkqDQo+ID4gcmVzdHJp
-Y3Qgd2hhdCB3ZSBjYW4gZG8gaW4gbWFjODAyMTEgd3J0LiBsb2NraW5nLCBhbmQgSSByZWFsbHkg
-ZG9uJ3QNCj4gPiB3YW50IHRvIGtlZXAgdGhlIGRvemVuIG9yIHNvIGxvY2tzIGZvcmV2ZXIsIHRo
-aXMgbmVlZHMgc2ltcGxpZmljYXRpb24NCj4gPiBiZWNhdXNlIGNsZWFybHkgd2UgZG9uJ3QgZXZl
-biBrbm93IHdoYXQgc2hvdWxkIGJlIHVuZGVyIHdoYXQgbG9jay4NCj4gVG8gbWUgaXQncyBhbHNv
-IG5vdCBjbGVhciB3aGF0IHRoZSBnb2FsIG9mIHRoZSB3aG9sZSBsb2NraW5nIGlzLg0KPiBUaGUg
-bG9jayBpbiBpZWVlODAyMTFfaXRlcmF0ZV9zdGF0aW9uc19hdG9taWMgaXMgb2J2aW91c2x5IGZv
-ciB0aGUNCj4gbWFjODAyMTEtaW50ZXJuYWwgc3RhdGUtbWFjaGluZQ0KPiBCdXQgSSAqYmVsaWV2
-ZSogdGhhdCB0aGVyZSdzIGEgc2Vjb25kIHB1cnBvc2UgKHJ0dzg4IHNwZWNpZmljKSAtDQo+IGhl
-cmUncyBteSB1bmRlcnN0YW5kaW5nIG9mIHRoYXQgcGFydDoNCj4gLSBydHdfc3RhX2luZm8gY29u
-dGFpbnMgYSAibWFjX2lkIiB3aGljaCBpcyBhbiBpZGVudGlmaWVyIGZvciBhDQo+IHNwZWNpZmlj
-IHN0YXRpb24gdXNlZCBieSB0aGUgcnR3ODggZHJpdmVyIGFuZCBpcyBzaGFyZWQgd2l0aCB0aGUN
-Cj4gZmlybXdhcmUNCj4gLSBydHdfb3BzX3N0YV97YWRkLHJlbW92ZX0gdXNlcyBydHdkZXYtPm11
-dGV4IHRvIHByb3RlY3QgdGhlIHJ0dzg4DQo+IHNpZGUgb2YgdGhpcyAibWFjX2lkIiBpZGVudGlm
-aWVyDQo+IC0gKGZvciBzb21lIHJlYXNvbiBydHdfdXBkYXRlX3N0YV9pbmZvIGRvZXNuJ3QgdXNl
-IHJ0d2Rldi0+bXV0ZXgpDQoNCkkgYW0gdGhpbmtpbmcgcnR3ODggbmVlZHMgdG8gbWFpbnRhaW4g
-c3RhIGFuZCB2aWYgbGlzdHMgaXRzZWxmLCBhbmQNCnRoZXNlIGxpc3RzIGFyZSBhbHNvIHByb3Rl
-Y3RlZCBieSBydHdkZXYtPm11dGV4LiBXaGVuIHJ0dzg4IHdhbnRzIHRvDQppdGVyYXRlIGFsbCBz
-dGEvdmlmLCBpdCBob2xkcyBydHdkZXYtPm11dGV4IHRvIGRvIGxpc3RfZm9yX2VhY2hfZW50cnku
-DQpObyBuZWVkIHRvIGhvbGQgbWFjODAyMTEgbG9ja3MuDQoNCj4gDQo+IFNvIG5vdyBJIGFtIHdv
-bmRlcmluZyBpZiB0aGUgaWVlZTgwMjExX2l0ZXJhdGVfc3RhdGlvbnNfYXRvbWljIGxvY2sgaXMN
-Cj4gYWxzbyB1c2VkIHRvIHByb3RlY3QgYW55IG1vZGlmaWNhdGlvbnMgdG8gcnR3X3N0YV9pbmZv
-Lg0KPiBQaW5nLUtlLCBJIGFtIHdvbmRlcmluZyBpZiB0aGUgYXR0YWNoZWQgcGF0Y2ggKHVudGVz
-dGVkIC0gdG8gYmV0dGVyDQo+IGRlbW9uc3RyYXRlIHdoYXQgSSB3YW50IHRvIHNheSkgd291bGQ6
-DQo+IC0gYWxsb3cgdXMgdG8gbW92ZSB0aGUgcmVnaXN0ZXIgd3JpdGUgb3V0c2lkZSBvZg0KPiBp
-ZWVlODAyMTFfaXRlcmF0ZV9zdGF0aW9uc19hdG9taWMNCj4gLSBtZWFuIHdlIGNhbiBrZWVwIGll
-ZWU4MDIxMV9pdGVyYXRlX3N0YXRpb25zX2F0b21pYyAoaW5zdGVhZCBvZiB0aGUNCj4gbm9uLWF0
-b21pYyB2YXJpYW50KQ0KPiAtIHByb3RlY3QgdGhlIGNvZGUgbWFuYWdpbmcgdGhlICJtYWNfaWQi
-IHdpdGggcnR3ZGV2LT5tdXRleCBjb25zaXN0ZW50bHkNCg0KSSB0aGluayB5b3VyIGF0dGFjaGVk
-IHBhdGNoIGNhbiB3b3JrIHdlbGwuDQoNCj4gDQo+ID4gVGhlIG90aGVyIGNhc2VzIGxvb2sgT0ss
-IGl0J3MgYmVpbmcgY2FsbGVkIGZyb20gb3V0c2lkZSBjb250ZXh0cw0KPiA+ICh3b3dsYW4sIGV0
-Yy4pDQo+IFRoYW5rcyBmb3IgcmV2aWV3aW5nIHRoaXMgSm9oYW5uZXMhDQo+IA0KDQotLQ0KUGlu
-Zy1LZQ0KDQoNCg==
++ linux-wireless, + Ondrej (who added support for 4345 rev 9)
+
+On 7/25/2021 12:16 AM, Piotr Oniszczuk wrote:
+> 
+> 
+>> Wiadomość napisana przez Arend van Spriel <arend.vanspriel@broadcom.com> w dniu 24.07.2021, o godz. 23:20:
+>>
+>>
+>> I am not so sure what is going on so maybe you can apply the patch below and see what comes out.
+>>
+>> Regards,
+>> Arend
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+>> index 4faab0170ffa..71fb34753528 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+>> @@ -691,9 +691,11 @@ static u32 brcmf_chip_tcm_ramsize(struct brcmf_core_priv *cr4)
+>>         nbb = (corecap & ARMCR4_TCBBNB_MASK) >> ARMCR4_TCBBNB_SHIFT;
+>>         totb = nab + nbb;
+>>
+>> +       brcmf_err("corecap %x nab %u nbb %u\n", corecap, nab, nbb);
+>>         for (idx = 0; idx < totb; idx++) {
+>>                 brcmf_chip_core_write32(cr4, ARMCR4_BANKIDX, idx);
+>>                 bxinfo = brcmf_chip_core_read32(cr4, ARMCR4_BANKINFO);
+>> +               brcmf_err("[%3u] %08x\n", idx, bxinfo);
+>>                 memsize += ((bxinfo & ARMCR4_BSZ_MASK) + 1) * ARMCR4_BSZ_MULT;
+>>         }
+>>
+>>
+> 
+> Arend
+> 
+> Pls find dmesg output with patch:
+> 
+> [  121.226458] brcmfmac: brcmfmac_module_init No platform data available.
+> [  121.227955] brcmfmac: brcmf_sdio_probe Enter
+> [  121.232119] brcmfmac: F1 signature read @0x18000000=0x15294345
+> [  121.237659] brcmfmac: brcmf_chip_recognition found AXI chip: BCM4345/9
+> [  121.245832] brcmfmac: brcmf_chip_cores_check  [1 ] core 0x800:51 base 0x18000000 wrap 0x18100000
+> [  121.252695] brcmfmac: brcmf_chip_cores_check  [2 ] core 0x812:54 base 0x18001000 wrap 0x18101000
+> [  121.261363] brcmfmac: brcmf_chip_cores_check  [3 ] core 0x83e:9  base 0x18002000 wrap 0x18102000
+> [  121.270071] brcmfmac: brcmf_chip_cores_check  [4 ] core 0x83c:14 base 0x18003000 wrap 0x18103000
+> [  121.278783] brcmfmac: brcmf_chip_cores_check  [5 ] core 0x829:21 base 0x18004000 wrap 0x18104000
+> [  121.287508] brcmfmac: brcmf_chip_cores_check  [6 ] core 0x135:0  base 0x00000000 wrap 0x18107000
+> [  121.296206] brcmfmac: brcmf_chip_cores_check  [7 ] core 0x240:0  base 0x00000000 wrap 0x00000000
+> [  121.304917] brcmfmac: brcmf_chip_set_passive Enter
+> [  121.312079] brcmfmac: brcmf_chip_tcm_ramsize: corecap 0 nab 0 nbb 0
+
+Well. That explains the fact that RAM size ends up being zero. I want to 
+be sure the ARM CR4 core is up so can you retry using the patch below. 
+It is just getting bit more info, no fix.
+
+Regards,
+Arend
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c 
+b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+index 4faab0170ffa..b829ad2f3865 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+@@ -691,9 +691,12 @@ static u32 brcmf_chip_tcm_ramsize(struct 
+brcmf_core_priv *cr4)
+         nbb = (corecap & ARMCR4_TCBBNB_MASK) >> ARMCR4_TCBBNB_SHIFT;
+         totb = nab + nbb;
+
++       brcmf_err("up %d corecap %x nab %u nbb %u\n",
++               brcmf_chip_iscoreup(&cr4->pub), corecap, nab, nbb);
+         for (idx = 0; idx < totb; idx++) {
+                 brcmf_chip_core_write32(cr4, ARMCR4_BANKIDX, idx);
+                 bxinfo = brcmf_chip_core_read32(cr4, ARMCR4_BANKINFO);
++               brcmf_err("[%3u] %08x\n", idx, bxinfo);
+                 memsize += ((bxinfo & ARMCR4_BSZ_MASK) + 1) * 
+ARMCR4_BSZ_MULT;
+         }
+
