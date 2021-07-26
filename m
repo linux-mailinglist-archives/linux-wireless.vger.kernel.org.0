@@ -2,213 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 791C63D56E2
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jul 2021 11:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A7EC3D58E4
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jul 2021 13:56:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233130AbhGZJNb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Jul 2021 05:13:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50658 "EHLO
+        id S233640AbhGZLPn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Jul 2021 07:15:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232940AbhGZJNb (ORCPT
+        with ESMTP id S233522AbhGZLPm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Jul 2021 05:13:31 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 850C5C061757
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Jul 2021 02:53:57 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id f18so14360496lfu.10
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Jul 2021 02:53:57 -0700 (PDT)
+        Mon, 26 Jul 2021 07:15:42 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96E27C061757;
+        Mon, 26 Jul 2021 04:56:11 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id c11so11204766plg.11;
+        Mon, 26 Jul 2021 04:56:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=OiX3w7SGEmf89ZnPLPLfkWiVuRSZ9+n7IB/TlS12A1s=;
-        b=sHqpAe5sP87trHU35SbMwGZkMQTXs/0uQXIhl/xFGhhrL9DwRaI3+EsW3HlCn7KcOQ
-         yiqoH9ih+1qWZNSkHWddQHFsiYbgS85WwEuFI97Scy+PNfPAGTWJ5NskdKLvyixfg40M
-         HTTZiI2DeOAPFlbupFUwxFce/+46CLULBd9xN9drT9LQPt5Baf16bF/2W+Z7duwbmAYY
-         BHd5B7U90dq3Rq5BBJ4twJX4+ZQJ3Cd/die2rWIV9bq7+wtrx0J3UJg4vDOda+Gebtp7
-         SUpBCFdin3kufP0IJQLquGKJJM1BesFSHRRYCWU9z5xbLeRJCoy43oB5hLDqy38NGoe1
-         tMGQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Br3Rygrceikh+egpBafkuMHhS17q8AtpKYbcy30kWyk=;
+        b=X3yX6J3IcdR1vyvYidVE9wtrepuqM3yzkOdsiOh169BEiDq9tuM9R/Jc9o0jn4eFS+
+         g/PsiKVRKOVIvfjjMn/gKPt6moMCe+e0szrD4BBUtDzZK3c7X7KRw8I0zoCDDjzYBAML
+         eUUKRiFjWoyGqsYLYwcb/1hchc4O1Daq+cHNbwNzxl0bS2X4pRb1/JO0eWo4/qf6ZWtJ
+         zd4nYhiSIygMaGUJNvO8b0/Soq4wtKuAz2JMLeavZxwviVa5RUnY4eMvv36vHmthCXz1
+         neQhn608epsSE6LNB0AvTs3bW1+qz9WsH9jVmkx9MWEk4WkliRp+4zKQlaSHxiwV48fI
+         CRwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=OiX3w7SGEmf89ZnPLPLfkWiVuRSZ9+n7IB/TlS12A1s=;
-        b=d6EkQmHrYVi4UCE1ktwEdecvFQ7WRJGQPkbQafwo23wdcY2XjhhnngCDjJ64DMXAUy
-         uPVl18K4J5c8mtXDP7AgDJKnXEifV45jQnt2tyx6y2shTDgDUNvMKomLkQqlOljA+u7n
-         M04XSVt8fDyJnFrLuPvHylw/kc6ogEWJfxh5982iL4LH3ORCG+fV2jzw2RnNbZdgby2+
-         DEjLkwfxY3iAaZn4IJ3a7wQlAxPdO0pCZaszo9YVU6fULzrQ705NKByTkbzp0rnONg6v
-         yP8SOTPPLLYD1NsqWXF5193+mFNwcVNPN5aaN/AUOQHOt8/qXnNKqzUtxW/9UUb8SfHp
-         fiqA==
-X-Gm-Message-State: AOAM53213+EurtIWE8tHC0m+UAT2SDbobhmXX12y0H3JXeXWCq/KDr6+
-        k0dXOHi1tp47zSbkrohLipg=
-X-Google-Smtp-Source: ABdhPJys/fDEIj7ufi3Ot5uZGvaogP2SAIId+NaTWfPZnagiyAOb1naHt+JXxHr+smYOGhocyXlanw==
-X-Received: by 2002:a05:6512:3d89:: with SMTP id k9mr12024269lfv.574.1627293235931;
-        Mon, 26 Jul 2021 02:53:55 -0700 (PDT)
-Received: from smtpclient.apple (84-10-202-70.dynamic.chello.pl. [84.10.202.70])
-        by smtp.gmail.com with ESMTPSA id v5sm1872267lfa.143.2021.07.26.02.53.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 26 Jul 2021 02:53:55 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
-Subject: Re: Current mainline brcmfmac reports error on supposedly supported
- ap6256 chip
-From:   Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
-In-Reply-To: <3da7f271-0c5c-50de-375a-a8c67ca127f5@broadcom.com>
-Date:   Mon, 26 Jul 2021 11:53:51 +0200
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ondrej Jirman <megous@megous.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1CB17353-D253-4133-8D56-304B4B652AE5@gmail.com>
-References: <CB0AA0D2-A8F3-4217-A3C1-E14D7E9FF11E@gmail.com>
- <17ad94781a0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <6F6333F3-0BDB-48AF-B445-723958ABA8C9@gmail.com>
- <be6c2b7f-2c85-59fb-3013-d0590c487c51@broadcom.com>
- <53E7119F-D158-4EF0-940C-D0AA59C23CF6@gmail.com>
- <3da7f271-0c5c-50de-375a-a8c67ca127f5@broadcom.com>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-X-Mailer: Apple Mail (2.3654.120.0.1.13)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Br3Rygrceikh+egpBafkuMHhS17q8AtpKYbcy30kWyk=;
+        b=i1gxKHWTZJm83uI02RDJWpIHGmG86i0jCsWRxp5K9liPihoPmVLUfn+jcJOm4LJQLi
+         GLYUz17txWg4TITOWW5GLWjNRLlUwzU+la58DWdDsJk5fKRLScJ88nqkdYOQedbspnkE
+         t0o6weHKaYhFJxZkGz3B4UeuLRBtzeejtr752opaN5Ia5mi9NF56z2UKfmjyZ7NkDR+o
+         +Smq9e7l0sHix09An4cQOoz1/FfACYYar7bqHkfOCo5/mmMOKg0Z4y6mYiy9RA1JZe9Q
+         v08KqtlmWiXbe9O1qbGUuDQ0GzsWs4Y39AEDlC1RgBBmPtTMDgdlHqlNzkRg1fKddFXD
+         iePg==
+X-Gm-Message-State: AOAM532yV2FacQGkufocnjaPhj2kGUYAarInMdpA4FDg9RdxKY2Jdloz
+        kb6nXVTfzkREV40e8TX8XpQ=
+X-Google-Smtp-Source: ABdhPJwDN5wtGtCN3P4WD8+NZSNySaC38fQiBrQXnw2ubEtNTrcgJ8YyT5qEIZc9o+TG1TONyE5Wvg==
+X-Received: by 2002:a63:2bcf:: with SMTP id r198mr7687025pgr.373.1627300571013;
+        Mon, 26 Jul 2021 04:56:11 -0700 (PDT)
+Received: from localhost.localdomain ([154.16.166.171])
+        by smtp.gmail.com with ESMTPSA id b22sm13720541pjq.37.2021.07.26.04.56.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jul 2021 04:56:10 -0700 (PDT)
+From:   Dongliang Mu <mudongliangabcd@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Luis R. Rodriguez" <lrodriguez@atheros.com>,
+        "John W. Linville" <linville@tuxdriver.com>
+Cc:     Dongliang Mu <mudongliangabcd@gmail.com>,
+        syzbot+1638e7c770eef6b6c0d0@syzkaller.appspotmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] net: wireless: move the deallocation of regulatory domain to wiphy_free
+Date:   Mon, 26 Jul 2021 19:55:53 +0800
+Message-Id: <20210726115554.2258657-1-mudongliangabcd@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arend,
+If wiphy_register fails or does not get called, which leads to
+that, ieee80211_register_hw returns with an error. Then the error
+handling code of mac80211_hwsim_new_radio does not free wiphy->regd.
+Note that, the free stack trace of wiphy->regd is as follows:
 
-pls find dmesg with extra prints you proposed:
+ieee80211_unregister_hw()
+  -> wiphy_unregister()
+    -> wiphy_regulatory_deregister()
+      -> rcu_free_regdom()
 
-[  144.634234] brcmfmac: brcmfmac_module_init No platform data =
-available.
-[  144.638974] brcmfmac: brcmf_sdio_probe Enter
-[  144.643057] brcmfmac: F1 signature read @0x18000000=3D0x15294345
-[  144.648718] brcmfmac: brcmf_chip_recognition found AXI chip: =
-BCM4345/9
-[  144.656662] brcmfmac: brcmf_chip_cores_check  [1 ] core 0x800:51 base =
-0x18000000 wrap 0x18100000
-[  144.663690] brcmfmac: brcmf_chip_cores_check  [2 ] core 0x812:54 base =
-0x18001000 wrap 0x18101000
-[  144.672346] brcmfmac: brcmf_chip_cores_check  [3 ] core 0x83e:9  base =
-0x18002000 wrap 0x18102000
-[  144.681031] brcmfmac: brcmf_chip_cores_check  [4 ] core 0x83c:14 base =
-0x18003000 wrap 0x18103000
-[  144.689683] brcmfmac: brcmf_chip_cores_check  [5 ] core 0x829:21 base =
-0x18004000 wrap 0x18104000
-[  144.698365] brcmfmac: brcmf_chip_cores_check  [6 ] core 0x135:0  base =
-0x00000000 wrap 0x18107000
-[  144.707019] brcmfmac: brcmf_chip_cores_check  [7 ] core 0x240:0  base =
-0x00000000 wrap 0x00000000
-[  144.715678] brcmfmac: brcmf_chip_set_passive Enter
-[  144.722499] brcmfmac: brcmf_chip_tcm_ramsize: up 0 corecap 0 nab 0 =
-nbb 0
-[  144.727030] brcmfmac: brcmf_chip_get_raminfo RAM: base=3D0x198000 =
-size=3D0 (0x0) sr=3D0 (0x0)
-[  144.734989] brcmfmac: brcmf_chip_get_raminfo: RAM size is =
-undetermined
-[  144.741450] brcmfmac: brcmf_sdio_probe_attach: brcmf_chip_attach =
-failed!
-[  144.748099] brcmfmac: brcmf_sdio_probe: brcmf_sdio_probe_attach =
-failed
-[  144.754610] brcmfmac: brcmf_sdio_remove Enter
-[  144.758869] brcmfmac: brcmf_detach Enter
-[  144.762804] brcmfmac: brcmf_sdio_remove Disconnected
-[  144.767760] brcmfmac: brcmf_ops_sdio_probe: F2 error, probe failed =
--19...
-[  144.774615] usbcore: registered new interface driver brcmfmac
+Fix this by moving the free operation of regd from wiphy_unregister to
+wiphy_free.
 
+Reported-by: syzbot+1638e7c770eef6b6c0d0@syzkaller.appspotmail.com
+Fixes: 3e0c3ff36c4c ("cfg80211: allow multiple driver regulatory_hints()")
+Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
+---
+ net/wireless/core.c | 3 +++
+ net/wireless/reg.c  | 9 +++++----
+ net/wireless/reg.h  | 1 +
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
-DT i'm using: https://pastebin.com/yHAb6gn3
-
-
-
-> Wiadomo=C5=9B=C4=87 napisana przez Arend van Spriel =
-<arend.vanspriel@broadcom.com> w dniu 26.07.2021, o godz. 09:54:
->=20
-> + linux-wireless, + Ondrej (who added support for 4345 rev 9)
->=20
-> On 7/25/2021 12:16 AM, Piotr Oniszczuk wrote:
->>> Wiadomo=C5=9B=C4=87 napisana przez Arend van Spriel =
-<arend.vanspriel@broadcom.com> w dniu 24.07.2021, o godz. 23:20:
->>>=20
->>>=20
->>> I am not so sure what is going on so maybe you can apply the patch =
-below and see what comes out.
->>>=20
->>> Regards,
->>> Arend
->>>=20
->>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c =
-b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
->>> index 4faab0170ffa..71fb34753528 100644
->>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
->>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
->>> @@ -691,9 +691,11 @@ static u32 brcmf_chip_tcm_ramsize(struct =
-brcmf_core_priv *cr4)
->>>        nbb =3D (corecap & ARMCR4_TCBBNB_MASK) >> =
-ARMCR4_TCBBNB_SHIFT;
->>>        totb =3D nab + nbb;
->>>=20
->>> +       brcmf_err("corecap %x nab %u nbb %u\n", corecap, nab, nbb);
->>>        for (idx =3D 0; idx < totb; idx++) {
->>>                brcmf_chip_core_write32(cr4, ARMCR4_BANKIDX, idx);
->>>                bxinfo =3D brcmf_chip_core_read32(cr4, =
-ARMCR4_BANKINFO);
->>> +               brcmf_err("[%3u] %08x\n", idx, bxinfo);
->>>                memsize +=3D ((bxinfo & ARMCR4_BSZ_MASK) + 1) * =
-ARMCR4_BSZ_MULT;
->>>        }
->>>=20
->>>=20
->> Arend
->> Pls find dmesg output with patch:
->> [  121.226458] brcmfmac: brcmfmac_module_init No platform data =
-available.
->> [  121.227955] brcmfmac: brcmf_sdio_probe Enter
->> [  121.232119] brcmfmac: F1 signature read @0x18000000=3D0x15294345
->> [  121.237659] brcmfmac: brcmf_chip_recognition found AXI chip: =
-BCM4345/9
->> [  121.245832] brcmfmac: brcmf_chip_cores_check  [1 ] core 0x800:51 =
-base 0x18000000 wrap 0x18100000
->> [  121.252695] brcmfmac: brcmf_chip_cores_check  [2 ] core 0x812:54 =
-base 0x18001000 wrap 0x18101000
->> [  121.261363] brcmfmac: brcmf_chip_cores_check  [3 ] core 0x83e:9  =
-base 0x18002000 wrap 0x18102000
->> [  121.270071] brcmfmac: brcmf_chip_cores_check  [4 ] core 0x83c:14 =
-base 0x18003000 wrap 0x18103000
->> [  121.278783] brcmfmac: brcmf_chip_cores_check  [5 ] core 0x829:21 =
-base 0x18004000 wrap 0x18104000
->> [  121.287508] brcmfmac: brcmf_chip_cores_check  [6 ] core 0x135:0  =
-base 0x00000000 wrap 0x18107000
->> [  121.296206] brcmfmac: brcmf_chip_cores_check  [7 ] core 0x240:0  =
-base 0x00000000 wrap 0x00000000
->> [  121.304917] brcmfmac: brcmf_chip_set_passive Enter
->> [  121.312079] brcmfmac: brcmf_chip_tcm_ramsize: corecap 0 nab 0 nbb =
-0
->=20
-> Well. That explains the fact that RAM size ends up being zero. I want =
-to be sure the ARM CR4 core is up so can you retry using the patch =
-below. It is just getting bit more info, no fix.
->=20
-> Regards,
-> Arend
->=20
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c =
-b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-> index 4faab0170ffa..b829ad2f3865 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-> @@ -691,9 +691,12 @@ static u32 brcmf_chip_tcm_ramsize(struct =
-brcmf_core_priv *cr4)
->        nbb =3D (corecap & ARMCR4_TCBBNB_MASK) >> ARMCR4_TCBBNB_SHIFT;
->        totb =3D nab + nbb;
->=20
-> +       brcmf_err("up %d corecap %x nab %u nbb %u\n",
-> +               brcmf_chip_iscoreup(&cr4->pub), corecap, nab, nbb);
->        for (idx =3D 0; idx < totb; idx++) {
->                brcmf_chip_core_write32(cr4, ARMCR4_BANKIDX, idx);
->                bxinfo =3D brcmf_chip_core_read32(cr4, =
-ARMCR4_BANKINFO);
-> +               brcmf_err("[%3u] %08x\n", idx, bxinfo);
->                memsize +=3D ((bxinfo & ARMCR4_BSZ_MASK) + 1) * =
-ARMCR4_BSZ_MULT;
->        }
->=20
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 03323121ca50..2cc2bdddc9e8 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1085,6 +1085,9 @@ void cfg80211_dev_free(struct cfg80211_registered_device *rdev)
+ 
+ void wiphy_free(struct wiphy *wiphy)
+ {
++	rcu_free_regdom(get_wiphy_regdom(wiphy));
++	RCU_INIT_POINTER(wiphy->regd, NULL);
++
+ 	put_device(&wiphy->dev);
+ }
+ EXPORT_SYMBOL(wiphy_free);
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index c2d0ff7f089f..246f882e0021 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -196,12 +196,16 @@ enum nl80211_dfs_regions reg_get_dfs_region(struct wiphy *wiphy)
+ 	return regd->dfs_region;
+ }
+ 
+-static void rcu_free_regdom(const struct ieee80211_regdomain *r)
++/*
++ * Free the regulatory domain associated with the wiphy
++ */
++void rcu_free_regdom(const struct ieee80211_regdomain *r)
+ {
+ 	if (!r)
+ 		return;
+ 	kfree_rcu((struct ieee80211_regdomain *)r, rcu_head);
+ }
++EXPORT_SYMBOL(rcu_free_regdom);
+ 
+ static struct regulatory_request *get_last_request(void)
+ {
+@@ -4064,9 +4068,6 @@ void wiphy_regulatory_deregister(struct wiphy *wiphy)
+ 	if (!reg_dev_ignore_cell_hint(wiphy))
+ 		reg_num_devs_support_basehint--;
+ 
+-	rcu_free_regdom(get_wiphy_regdom(wiphy));
+-	RCU_INIT_POINTER(wiphy->regd, NULL);
+-
+ 	if (lr)
+ 		request_wiphy = wiphy_idx_to_wiphy(lr->wiphy_idx);
+ 
+diff --git a/net/wireless/reg.h b/net/wireless/reg.h
+index f3707f729024..03de4e5ece85 100644
+--- a/net/wireless/reg.h
++++ b/net/wireless/reg.h
+@@ -32,6 +32,7 @@ bool reg_is_valid_request(const char *alpha2);
+ bool is_world_regdom(const char *alpha2);
+ bool reg_supported_dfs_region(enum nl80211_dfs_regions dfs_region);
+ enum nl80211_dfs_regions reg_get_dfs_region(struct wiphy *wiphy);
++void rcu_free_regdom(const struct ieee80211_regdomain *r);
+ 
+ int regulatory_hint_user(const char *alpha2,
+ 			 enum nl80211_user_reg_hint_type user_reg_hint_type);
+-- 
+2.25.1
 
