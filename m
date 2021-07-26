@@ -2,116 +2,220 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 540503D5BD5
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jul 2021 16:38:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AACE53D65CA
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jul 2021 19:30:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234586AbhGZN55 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 26 Jul 2021 09:57:57 -0400
-Received: from mail-io1-f69.google.com ([209.85.166.69]:38522 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234201AbhGZN54 (ORCPT
+        id S235960AbhGZQtl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 26 Jul 2021 12:49:41 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.48]:41544 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237773AbhGZQth (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 26 Jul 2021 09:57:56 -0400
-Received: by mail-io1-f69.google.com with SMTP id z17-20020a0566022051b0290528db19d5b3so8761882iod.5
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Jul 2021 07:38:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=rh2WebIAL7rAkd4Y7+OUKTcKX8jr6+sYkZ+Orf4DiGA=;
-        b=teHAg2we7X313gtJHvKJDxGcyUBoRv5ReDke1vtKl3y/9X43SHQkqFxlarOQ6I3GsH
-         sfPy7gciu2QH1f2jHPIyks8RVCh/sfAGS6CgzncqRKPJUHYfn5DFh5qpCuGykNQdaolF
-         GsPLLlW4Lr6kccCw1r3hTm6hLKXIWBgK8aXEoxUxBv6BOx6unqzOxXfzX97ChNqeLc5v
-         B3RXpugqUWOn+S5q3b6qfM2fFN4biBZQJl7nTxemQL+Fhsf5FEDBUTP8lui952+swJ+k
-         eRKGFLvXuCOPWwyf9xN70j29wFVuuCX4D4yKjDxh34rnJ2aBzVnpBHilcvWpp4iRcYIS
-         oqJw==
-X-Gm-Message-State: AOAM531wjAhcRR26bM+zIyQB83b/6XtmHmIei5y/0Cs7U1gJYMe+I8H0
-        r9UvZzUS+I4JKzcYD3ZFm++kB12C75jGVOlNHpR7Fh8ajQyy
-X-Google-Smtp-Source: ABdhPJwr8jbbv1L9zecIIjUiPDqhnjQ2FHQEXeJdrDY3mtA9+2iaBxbNRaQM6uiqjzF7YSgqqRoZSDXVR4wpf2fHKwUGZIp3tmbt
+        Mon, 26 Jul 2021 12:49:37 -0400
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.120])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 148DC1A006A
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Jul 2021 17:30:05 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id DCF9A340066
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Jul 2021 17:30:04 +0000 (UTC)
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 2939B13C2B3;
+        Mon, 26 Jul 2021 10:30:04 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 2939B13C2B3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1627320604;
+        bh=4BA6JDVqwi0oSJAVbPpEj56ZGQD4Iy1ab/Bh+LWqC+k=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ocG2EqMseZjXNvDyhnGAmEgP2z72nelqZPo3K2qNGAvTAsD3Hj1cUVHcG6S7o/S6T
+         /WvVpGULUYu318LiqOwWpIfNYRbwVB2QQfk07E0+GPrU8lRsrmVRYXvPjlyu1m2gBn
+         ZojtsNQzPgLuPsG9hHj1vtErVFPAAc4EsCohskpA=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH v5 1/7] mt76 - mt7915: Add ethtool stats support.
+Date:   Mon, 26 Jul 2021 10:29:54 -0700
+Message-Id: <20210726173000.23807-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-Received: by 2002:a92:d2c2:: with SMTP id w2mr13584853ilg.256.1627310305172;
- Mon, 26 Jul 2021 07:38:25 -0700 (PDT)
-Date:   Mon, 26 Jul 2021 07:38:25 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000ade97e05c807b40f@google.com>
-Subject: [syzbot] general protection fault in hwsim_exit_net
-From:   syzbot <syzbot+78dd535cdc52a06948f7@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-MDID: 1627320605-5Gy5-GcYCTQY
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+From: Ben Greear <greearb@candelatech.com>
 
-syzbot found the following issue on:
+This exposes some tx-path stats to the ethtool API, so that
+ethtool -S wlanX provides some more useful info.
 
-HEAD commit:    3d5895cd3517 Merge tag 's390-5.14-3' of git://git.kernel.o..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=107699a6300000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7273c75708b55890
-dashboard link: https://syzkaller.appspot.com/bug?extid=78dd535cdc52a06948f7
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.1
-userspace arch: i386
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+78dd535cdc52a06948f7@syzkaller.appspotmail.com
-
-general protection fault, probably for non-canonical address 0xdffffc00000000df: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x00000000000006f8-0x00000000000006ff]
-CPU: 0 PID: 19531 Comm: kworker/u4:5 Not tainted 5.14.0-rc2-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: netns cleanup_net
-RIP: 0010:read_pnet include/net/net_namespace.h:325 [inline]
-RIP: 0010:wiphy_net include/net/cfg80211.h:5107 [inline]
-RIP: 0010:hwsim_exit_net+0x160/0xca0 drivers/net/wireless/mac80211_hwsim.c:4201
-Code: 8b 73 18 49 8d 7e 40 48 89 f8 48 c1 e8 03 80 3c 28 00 0f 85 2a 0a 00 00 4d 8b 76 40 49 8d be f8 06 00 00 48 89 f8 48 c1 e8 03 <80> 3c 28 00 0f 85 04 0a 00 00 48 8b 44 24 08 49 3b 86 f8 06 00 00
-RSP: 0018:ffffc9000ad5fb18 EFLAGS: 00010202
-RAX: 00000000000000df RBX: ffff888000173260 RCX: 0000000000000000
-RDX: ffff88806c08d4c0 RSI: ffffffff8532af70 RDI: 00000000000006f8
-RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000003
-R10: fffff520015abf55 R11: 0000000000086088 R12: ffff888151b83260
-R13: ffff888000173260 R14: 0000000000000000 R15: fffffbfff18ef7dc
-FS:  0000000000000000(0000) GS:ffff8880b9c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000090d52c5 CR3: 000000006769c000 CR4: 00000000001526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- ops_exit_list+0xb0/0x160 net/core/net_namespace.c:175
- cleanup_net+0x4ea/0xb10 net/core/net_namespace.c:595
- process_one_work+0x98d/0x1630 kernel/workqueue.c:2276
- worker_thread+0x658/0x11f0 kernel/workqueue.c:2422
- kthread+0x3e5/0x4d0 kernel/kthread.c:319
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
-Modules linked in:
----[ end trace a4f6519c3ad068a3 ]---
-RIP: 0010:read_pnet include/net/net_namespace.h:325 [inline]
-RIP: 0010:wiphy_net include/net/cfg80211.h:5107 [inline]
-RIP: 0010:hwsim_exit_net+0x160/0xca0 drivers/net/wireless/mac80211_hwsim.c:4201
-Code: 8b 73 18 49 8d 7e 40 48 89 f8 48 c1 e8 03 80 3c 28 00 0f 85 2a 0a 00 00 4d 8b 76 40 49 8d be f8 06 00 00 48 89 f8 48 c1 e8 03 <80> 3c 28 00 0f 85 04 0a 00 00 48 8b 44 24 08 49 3b 86 f8 06 00 00
-RSP: 0018:ffffc9000ad5fb18 EFLAGS: 00010202
-RAX: 00000000000000df RBX: ffff888000173260 RCX: 0000000000000000
-RDX: ffff88806c08d4c0 RSI: ffffffff8532af70 RDI: 00000000000006f8
-RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000003
-R10: fffff520015abf55 R11: 0000000000086088 R12: ffff888151b83260
-R13: ffff888000173260 R14: 0000000000000000 R15: fffffbfff18ef7dc
-FS:  0000000000000000(0000) GS:ffff8880b9c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000090d52c5 CR3: 000000006769c000 CR4: 00000000001526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-
+Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+v5:  Use ieee80211_iterate_stations_atomic
+     Remove use of pr_info, use dev_info instead.
+     Merge patch 4 and 5
+
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 139 ++++++++++++++++++
+ 1 file changed, 139 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 48b5e2051bad..994f84e9d7aa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1028,6 +1028,142 @@ static void mt7915_sta_set_decap_offload(struct ieee80211_hw *hw,
+ 	mt7915_mcu_sta_update_hdr_trans(dev, vif, sta);
+ }
+ 
++static const char mt7915_gstrings_stats[][ETH_GSTRING_LEN] = {
++	"tx_ampdu_len:0-1",
++	"tx_ampdu_len:2-10",
++	"tx_ampdu_len:11-19",
++	"tx_ampdu_len:20-28",
++	"tx_ampdu_len:29-37",
++	"tx_ampdu_len:38-46",
++	"tx_ampdu_len:47-55",
++	"tx_ampdu_len:56-79",
++	"tx_ampdu_len:80-103",
++	"tx_ampdu_len:104-127",
++	"tx_ampdu_len:128-151",
++	"tx_ampdu_len:152-175",
++	"tx_ampdu_len:176-199",
++	"tx_ampdu_len:200-223",
++	"tx_ampdu_len:224-247",
++	"ba_miss_count",
++	"tx_beamformer_ppdu_iBF",
++	"tx_beamformer_ppdu_eBF",
++	"tx_beamformer_rx_feedback_all",
++	"tx_beamformer_rx_feedback_he",
++	"tx_beamformer_rx_feedback_vht",
++	"tx_beamformer_rx_feedback_ht",
++	"tx_beamformer_rx_feedback_bw", /* zero based idx: 20, 40, 80, 160 */
++	"tx_beamformer_rx_feedback_nc",
++	"tx_beamformer_rx_feedback_nr",
++	"tx_beamformee_ok_feedback_pkts",
++	"tx_beamformee_feedback_trig",
++	"tx_mu_beamforming",
++	"tx_mu_mpdu",
++	"tx_mu_successful_mpdu",
++	"tx_su_successful_mpdu",
++	"tx_msdu_pack_1",
++	"tx_msdu_pack_2",
++	"tx_msdu_pack_3",
++	"tx_msdu_pack_4",
++	"tx_msdu_pack_5",
++	"tx_msdu_pack_6",
++	"tx_msdu_pack_7",
++	"tx_msdu_pack_8",
++};
++
++#define MT7915_SSTATS_LEN ARRAY_SIZE(mt7915_gstrings_stats)
++
++/* Ethtool related API */
++static
++void mt7915_get_et_strings(struct ieee80211_hw *hw,
++			   struct ieee80211_vif *vif,
++			   u32 sset, u8 *data)
++{
++	if (sset == ETH_SS_STATS)
++		memcpy(data, *mt7915_gstrings_stats,
++		       sizeof(mt7915_gstrings_stats));
++}
++
++static
++int mt7915_get_et_sset_count(struct ieee80211_hw *hw,
++			     struct ieee80211_vif *vif, int sset)
++{
++	if (sset == ETH_SS_STATS)
++		return MT7915_SSTATS_LEN;
++
++	return 0;
++}
++
++static
++void mt7915_get_et_stats(struct ieee80211_hw *hw,
++			 struct ieee80211_vif *vif,
++			 struct ethtool_stats *stats, u64 *data)
++{
++	struct mt7915_dev *dev = mt7915_hw_dev(hw);
++	struct mt7915_phy *phy = mt7915_hw_phy(hw);
++
++	/* TODO:  These are mostly dev-wide stats at this point.
++	 *  Get some per-vif stats?
++	 */
++
++	/* See mt7915_ampdu_stat_read_phy, etc */
++	bool ext_phy = phy != &dev->phy;
++	int i, n, cnt;
++	int ei = 0;
++
++	if (!phy)
++		return;
++
++	/* Tx ampdu stat */
++	n = ext_phy ? ARRAY_SIZE(dev->mt76.aggr_stats) / 2 : 0;
++	for (i = 0; i < 15 /*ARRAY_SIZE(bound)*/; i++)
++		data[ei++] = dev->mt76.aggr_stats[i + n];
++
++	data[ei++] = phy->mib.ba_miss_cnt;
++
++	/* Tx Beamformer monitor */
++	cnt = mt76_rr(dev, MT_ETBF_TX_APP_CNT(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_TX_IBF_CNT, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_TX_EBF_CNT, cnt);
++
++	/* Tx Beamformer Rx feedback monitor */
++	cnt = mt76_rr(dev, MT_ETBF_RX_FB_CNT(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_ALL, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_HE, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_VHT, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_HT, cnt);
++
++	cnt = mt76_rr(dev, MT_ETBF_RX_FB_CONT(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_BW, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_NC, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_NR, cnt);
++
++	/* Tx Beamformee Rx NDPA & Tx feedback report */
++	cnt = mt76_rr(dev, MT_ETBF_TX_NDP_BFRP(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_TX_FB_CPL, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_TX_FB_TRI, cnt);
++
++	/* Tx SU & MU counters */
++	cnt = mt76_rr(dev, MT_MIB_SDR34(ext_phy));
++	data[ei++] = FIELD_GET(MT_MIB_MU_BF_TX_CNT, cnt);
++
++	cnt = mt76_rr(dev, MT_MIB_DR8(ext_phy));
++	data[ei++] = cnt;
++
++	cnt = mt76_rr(dev, MT_MIB_DR9(ext_phy));
++	data[ei++] = cnt; /* MU MPDU SUccessful */
++
++	cnt = mt76_rr(dev, MT_MIB_DR11(ext_phy));
++	data[ei++] = cnt; /* SU MPDU successful */
++
++	/* TODO:  External phy too?? */
++
++	/* Tx amsdu info (pack-count histogram) */
++	for (i = 0; i < 8; i++)
++		data[ei++] = mt76_rr(dev,  MT_PLE_AMSDU_PACK_MSDU_CNT(i));
++
++	WARN_ON(ei != MT7915_SSTATS_LEN);
++}
++
+ const struct ieee80211_ops mt7915_ops = {
+ 	.tx = mt7915_tx,
+ 	.start = mt7915_start,
+@@ -1052,6 +1188,9 @@ const struct ieee80211_ops mt7915_ops = {
+ 	.get_txpower = mt76_get_txpower,
+ 	.channel_switch_beacon = mt7915_channel_switch_beacon,
+ 	.get_stats = mt7915_get_stats,
++	.get_et_sset_count = mt7915_get_et_sset_count,
++	.get_et_stats = mt7915_get_et_stats,
++	.get_et_strings = mt7915_get_et_strings,
+ 	.get_tsf = mt7915_get_tsf,
+ 	.set_tsf = mt7915_set_tsf,
+ 	.offset_tsf = mt7915_offset_tsf,
+-- 
+2.20.1
+
