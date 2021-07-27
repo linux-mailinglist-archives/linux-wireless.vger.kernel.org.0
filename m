@@ -2,112 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD6013D7057
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 09:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43F983D724E
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 11:47:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235675AbhG0HY5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 03:24:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35720 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235558AbhG0HY5 (ORCPT
+        id S235963AbhG0JrU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 05:47:20 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:51532 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S235897AbhG0JrS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jul 2021 03:24:57 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C9DAC061757;
-        Tue, 27 Jul 2021 00:24:57 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id r23so11538892lji.3;
-        Tue, 27 Jul 2021 00:24:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=806cL16Fyf0R0k5TtItiv7yjEE5s8rfxhJRcoiiIZI8=;
-        b=IlLAneyGPnlS2hQN1TxR9M7nnWMmWAD1IoNw4jgl31gbP7Gl190ID+c/vecid0UgVP
-         rHuV3s+pQbmbdofWpD0qZIuRom+AAe+awhfC+K3B3VW1jB8gMqWNetalT7HHDphLFSvQ
-         vIS9uVGw1quoLziome9XnRNyemE0hh5rOW9MjS4/sdmNr+tkeGsPKnev0k/Lw5G8izg+
-         +XeM49Q+bfViNvVissj0Hc5lmsUP/6hrKt8peDfVsCVTsDaUBBlZw1z+nsT2KjiExem9
-         KIKhqmX+v9Us//v6HnxqfgyraGbxeHA4LP5iKeXuBfJPW8Ka8whi9dpsTv/0/+iw2z7j
-         6epA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=806cL16Fyf0R0k5TtItiv7yjEE5s8rfxhJRcoiiIZI8=;
-        b=rYbyEyb9V5NvVUvQK7Es3pzKsJhCMspPaSxX5cTI0gaM/2v3eoU5AzSLAcRz2IwMby
-         QOk/2ldeaxddNX1JgQK1afPx2I3FVQtdBsgtkAGsFsUeQaoJhzaFmmyygPOv3Mz2E1PP
-         inYxXeMSOJIeKls7aJcnYLkqmNMYYifktZXFbP1WfLiwWWNtpvzJWo5ndG8N7GSyPPbi
-         cu2oUHJZ1QZU6yzlY5UqEs6hbaAAAdw3ngAK5q0j4vG5bGmcCi/nRNft8K/yrJWoSeKo
-         lyJLGx6zEWxr8g/5GPtfdpaWyG9zol3ZqSHrOuTxPZb/fw955ygf1vAOaEemBIE0XeVu
-         aQ5g==
-X-Gm-Message-State: AOAM532UBcHMl78AFhMTgg90Oq0GeYZzCcGXH/AoPiMJWlc5lmeqdgdu
-        9uSRBT/jBHs0JdjYsEgFVxjAdaSN4WEdupG7u90=
-X-Google-Smtp-Source: ABdhPJz4WJIBAWirCiA0eXtKDaYKDtSOS2yB31Q6aqWl9Xz4r7OCQJKBWBs1xFcyQImVOBYnnwsWdGlPFN0dMI7PEW4=
-X-Received: by 2002:a2e:901a:: with SMTP id h26mr14390354ljg.218.1627370695895;
- Tue, 27 Jul 2021 00:24:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210709084351.2087311-1-mudongliangabcd@gmail.com>
-In-Reply-To: <20210709084351.2087311-1-mudongliangabcd@gmail.com>
-From:   Julian Calaby <julian.calaby@gmail.com>
-Date:   Tue, 27 Jul 2021 17:24:44 +1000
-Message-ID: <CAGRGNgUNnf=62xnFE4zUiVJ+n6NyGjFUmdR2JChbRkhsDSy0Yw@mail.gmail.com>
-Subject: Re: [PATCH] ath9k: hif_usb: fix memory leak in ath9k_hif_usb_firmware_cb
-To:     Dongliang Mu <mudongliangabcd@gmail.com>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Brooke Basile <brookebasile@gmail.com>,
-        syzbot+6692c72009680f7c4eb2@syzkaller.appspotmail.com,
+        Tue, 27 Jul 2021 05:47:18 -0400
+X-UUID: 7fe3245be51148abb7acb9cff82d7985-20210727
+X-UUID: 7fe3245be51148abb7acb9cff82d7985-20210727
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 396707370; Tue, 27 Jul 2021 17:47:17 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs02n1.mediatek.inc (172.21.101.77) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 27 Jul 2021 17:47:15 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 27 Jul 2021 17:47:15 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Jimmy Hu <Jimmy.Hu@mediatek.com>, <jemele@google.com>,
+        <yenlinlai@google.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH] mt76: mt7921: fix dma hang in rmmod
+Date:   Tue, 27 Jul 2021 17:47:09 +0800
+Message-ID: <0e68058a8c7c4948b9ad6b80d23a03726aecf4c2.1627378293.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dongliang,
+From: Deren Wu <deren.wu@mediatek.com>
 
-(Drive-by review, I know almost nothing about the code in question)
+The dma would be broken after rmmod flow. There are two different
+cases causing this issue.
+1. dma access without privilege.
+2. hw access sequence borken by another context.
 
-On Fri, Jul 9, 2021 at 6:47 PM Dongliang Mu <mudongliangabcd@gmail.com> wrote:
->
-> The commit 03fb92a432ea ("ath9k: hif_usb: fix race condition between
-> usb_get_urb() and usb_kill_anchored_urbs()") adds three usb_get_urb
-> in ath9k_hif_usb_dealloc_tx_urbs and usb_free_urb.
->
-> Fix this bug by adding corresponding usb_free_urb in
-> ath9k_hif_usb_dealloc_tx_urbs other and hif_usb_stop.
->
-> Reported-by: syzbot+6692c72009680f7c4eb2@syzkaller.appspotmail.com
-> Fixes: 03fb92a432ea ("ath9k: hif_usb: fix race condition between usb_get_urb() and usb_kill_anchored_urbs()")
-> Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
-> ---
->  drivers/net/wireless/ath/ath9k/hif_usb.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-> index 860da13bfb6a..bda91ff3289b 100644
-> --- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-> +++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-> @@ -457,6 +457,7 @@ static void hif_usb_stop(void *hif_handle)
->                 usb_kill_urb(tx_buf->urb);
->                 list_del(&tx_buf->list);
->                 usb_free_urb(tx_buf->urb);
-> +               usb_free_urb(tx_buf->urb);
+This patch handle both cases to avoid hw crash.
 
-Ok, so if I'm reading this correctly, before the first usb_free_urb()
-call, we have two references to the urb at tx_buf->urb.
+Fixes: 2b9ea5a8cf1bd ("mt76: mt7921: add mt7921_dma_cleanup in mt7921_unregister_device")
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Why?
-
-Isn't the better fix here to detangle why there's more than one
-reference to it and resolve it that way? This looks like a hack to fix
-something much more fundamentally broken.
-
-Thanks,
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 49725caca7ed..1f37e64b6038 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -266,10 +266,20 @@ int mt7921_register_device(struct mt7921_dev *dev)
+ 
+ void mt7921_unregister_device(struct mt7921_dev *dev)
+ {
++	int i;
++	struct mt76_connac_pm *pm = &dev->pm;
++
+ 	mt76_unregister_device(&dev->mt76);
++	mt76_for_each_q_rx(&dev->mt76, i)
++		napi_disable(&dev->mt76.napi[i]);
++	cancel_delayed_work_sync(&pm->ps_work);
++	cancel_work_sync(&pm->wake_work);
++
+ 	mt7921_tx_token_put(dev);
++	mt7921_mcu_drv_pmctrl(dev);
+ 	mt7921_dma_cleanup(dev);
+ 	mt7921_mcu_exit(dev);
++	mt7921_mcu_fw_pmctrl(dev);
+ 
+ 	tasklet_disable(&dev->irq_tasklet);
+ 	mt76_free_device(&dev->mt76);
 -- 
-Julian Calaby
+2.25.1
 
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
