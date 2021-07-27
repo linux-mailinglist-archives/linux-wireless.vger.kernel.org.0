@@ -2,128 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18C803D838A
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 00:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E0443D840E
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 01:31:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232376AbhG0W7a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 18:59:30 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:45976 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232827AbhG0W7W (ORCPT
+        id S233491AbhG0XbI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 19:31:08 -0400
+Received: from mail-pl1-f177.google.com ([209.85.214.177]:35355 "EHLO
+        mail-pl1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232745AbhG0XbI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jul 2021 18:59:22 -0400
-X-UUID: eaab0206780947719879ba3d7699a363-20210728
-X-UUID: eaab0206780947719879ba3d7699a363-20210728
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 201437277; Wed, 28 Jul 2021 06:59:20 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 28 Jul 2021 06:59:19 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 28 Jul 2021 06:59:19 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <jemele@google.com>, <yenlinlai@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH 2/2] mt76: connac: add support maximum regulatory Tx power
-Date:   Wed, 28 Jul 2021 06:59:17 +0800
-Message-ID: <1627426757-14811-2-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1627426757-14811-1-git-send-email-sean.wang@mediatek.com>
-References: <1627426757-14811-1-git-send-email-sean.wang@mediatek.com>
+        Tue, 27 Jul 2021 19:31:08 -0400
+Received: by mail-pl1-f177.google.com with SMTP id f13so440557plj.2;
+        Tue, 27 Jul 2021 16:31:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=cfNumURh2GjYDfPowtmTPayG3eiC6vg99u71kmeqTyM=;
+        b=P4HQ5+Qmq+0csMAsEg9nhirA44nQPKj6isxmK94eq8Gdqr/TXHQADqlWvUzrCr0eHG
+         5mC/8fdAp1zsISBAQmzzkYoKjXQAp2GE+CaXd+HOc4C0lktHXgdg8Dc+lnOhNxGzCnPN
+         Eg0TAB05T+5Y18lYA8ofHhhbm2GpQIGbewxLzcoa/l8mVrU2cDE1FgH2YKDzZHPwJVIw
+         IlNeLO+omVC2/s6HtnGZSDrqd7rPF6zVC9Eq1ZfVBEN8LCsKsmWFzQG5198eNHMRl/lT
+         Ufde+Y27nYfDbp+jzayTCfNynJVzQCvUU+P7fJKRvk4yYToqgrz3EX+0A3tT6k5Ij04z
+         tSfg==
+X-Gm-Message-State: AOAM533ynIv4XmZhecCMMNBF+578d5x4pIjL/AHWHJdA4EGdFp3qPau0
+        /8+dbVrhNdLjVLfGXB0KV5M=
+X-Google-Smtp-Source: ABdhPJxjlXDVaN8+tg1bxudbyKmetnxeWdVqGkL064ebMKIBrwhnuUBgPMqLVVo86W/q+KmaVUhOyQ==
+X-Received: by 2002:a17:902:8493:b029:12c:552f:1fb1 with SMTP id c19-20020a1709028493b029012c552f1fb1mr2088759plo.26.1627428666440;
+        Tue, 27 Jul 2021 16:31:06 -0700 (PDT)
+Received: from ?IPv6:2620:0:1000:2004:f8ef:f6a:11cc:887d? ([2620:0:1000:2004:f8ef:f6a:11cc:887d])
+        by smtp.gmail.com with ESMTPSA id j12sm4695249pfj.208.2021.07.27.16.31.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jul 2021 16:31:05 -0700 (PDT)
+Subject: Re: [PATCH 33/64] lib: Introduce CONFIG_TEST_MEMCPY
+To:     Kees Cook <keescook@chromium.org>, linux-hardening@vger.kernel.org
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Keith Packard <keithpac@amazon.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
+References: <20210727205855.411487-1-keescook@chromium.org>
+ <20210727205855.411487-34-keescook@chromium.org>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <9827144a-dacf-61dc-d554-6c69434708de@acm.org>
+Date:   Tue, 27 Jul 2021 16:31:03 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+In-Reply-To: <20210727205855.411487-34-keescook@chromium.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: YN Chen <YN.Chen@mediatek.com>
+On 7/27/21 1:58 PM, Kees Cook wrote:
+> +static int __init test_memcpy_init(void)
+> +{
+> +	int err = 0;
+> +
+> +	err |= test_memcpy();
+> +	err |= test_memmove();
+> +	err |= test_memset();
+> +
+> +	if (err) {
+> +		pr_warn("FAIL!\n");
+> +		err = -EINVAL;
+> +	} else {
+> +		pr_info("all tests passed\n");
+> +	}
+> +
+> +	return err;
+> +}
+> +
+> +static void __exit test_memcpy_exit(void)
+> +{ }
+> +
+> +module_init(test_memcpy_init);
+> +module_exit(test_memcpy_exit);
+> +MODULE_LICENSE("GPL");
 
-Consider .max_reg_power in struct ieee80211_channel to limit the
-maximum power the wireless device allowed to transmit on the
-corresponding channel according to the regulatory domain.
+Has it been considered to implement this test using the Kunit framework?
 
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: YN Chen <YN.Chen@mediatek.com>
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 43 ++++++++++++++++++-
- 1 file changed, 41 insertions(+), 2 deletions(-)
+Thanks,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index d71393b1c5e6..84f42ce12626 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1773,6 +1773,43 @@ static s8 mt76_connac_get_sar_power(struct mt76_phy *phy,
- 	return target_power;
- }
- 
-+static s8 mt76_connac_get_ch_power(struct mt76_phy *phy,
-+				   struct ieee80211_channel *chan,
-+				   s8 target_power)
-+{
-+	struct mt76_dev *dev = phy->dev;
-+	struct ieee80211_supported_band *sband;
-+	int i;
-+
-+	switch (chan->band) {
-+	case NL80211_BAND_2GHZ:
-+		sband = &phy->sband_2g.sband;
-+		break;
-+	case NL80211_BAND_5GHZ:
-+		sband = &phy->sband_5g.sband;
-+		break;
-+	default:
-+		return target_power;
-+	}
-+
-+	for (i = 0; i < sband->n_channels; i++) {
-+		struct ieee80211_channel *ch = &sband->channels[i];
-+
-+		if (ch->hw_value == chan->hw_value) {
-+			if (!(ch->flags & IEEE80211_CHAN_DISABLED)) {
-+				int power = 2 * ch->max_reg_power;
-+
-+				if (power > 127 || power < -127)
-+					power = 127;
-+				target_power = min_t(s8, power, target_power);
-+			}
-+			break;
-+		}
-+	}
-+
-+	return target_power;
-+}
-+
- static int
- mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
- 				  enum nl80211_band band)
-@@ -1840,10 +1877,12 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
- 				.hw_value = ch_list[idx],
- 				.band = band,
- 			};
--			s8 sar_power;
-+			s8 reg_power, sar_power;
- 
-+			reg_power = mt76_connac_get_ch_power(phy, &chan,
-+							     tx_power);
- 			sar_power = mt76_connac_get_sar_power(phy, &chan,
--							      tx_power);
-+							      reg_power);
- 
- 			mt76_get_rate_power_limits(phy, &chan, &limits,
- 						   sar_power);
--- 
-2.25.1
+Bart.
+
 
