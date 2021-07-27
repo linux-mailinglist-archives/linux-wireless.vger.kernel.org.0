@@ -2,54 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A4E13D8210
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 23:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 430033D82F2
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 00:30:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232422AbhG0Vr2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 17:47:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37100 "EHLO
+        id S232500AbhG0Waw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 18:30:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232105AbhG0Vr0 (ORCPT
+        with ESMTP id S232198AbhG0Wav (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jul 2021 17:47:26 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E65DC0613D3
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 14:47:25 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id i10so153001pla.3
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 14:47:25 -0700 (PDT)
+        Tue, 27 Jul 2021 18:30:51 -0400
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CBF4C061757;
+        Tue, 27 Jul 2021 15:30:48 -0700 (PDT)
+Received: by mail-oi1-x232.google.com with SMTP id t128so1259414oig.1;
+        Tue, 27 Jul 2021 15:30:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=RmWu5L4XF1JSf6SMuIfCAjF4w7lZ2j3Pm51HCxVaooA=;
-        b=kT5nbH7QT643iQGqVSJxPNGwwBlfdxw5cCyQX6gaBzOcqz4ajIPGMOczsYHolmn62d
-         eW8ICZNFrJ1d3HiFUcApnGkXgvWlWnUUGLsdAOvKSLOBSwaj/BB+s0Fa9Bal55XOCrIt
-         E/hihwg5GtX2PF8wCIvqM4CT8+GGunjYl5M0k=
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=TM+0hfl782kZ94bU2+mpLOzzj7zbvQhOg+LQO69XhJk=;
+        b=OnZ0m3U6tk3aCgWWTpT1MeD5/y+cwwRGzbM1zoIOCsQa4Vm9x21ssaUT8KnrIx+bhB
+         Wa4U8xGQ285YoMNgnePTt2oCAcFoa8EIx3hrP27YcLLsbYrem2nEpOrbnmPnPX0ir/Ic
+         V51k/BxJeVFK/eNOf91oJ90M75vlYzafc5fjuq+9/rO8ZtxNzXPK1thYL0Dwh0Tn2olv
+         SivSSSssPuoXELYpGRGeF7OTsoxb6Cx0zu/1/SiPhOUEi34dJjExAZbJyPC9Z46LMBVp
+         AhzMesAzkabVEr5OAd/P4rBe8czDEUBkikopbW0OPFtJ2NPn2COjgAV4AOGkH4MMFPaQ
+         1nfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RmWu5L4XF1JSf6SMuIfCAjF4w7lZ2j3Pm51HCxVaooA=;
-        b=NqtIV0j94REUJIeCGVL7PPDVPhtqOu6xt5xUmCQIFhAQx3r7n+NipabP+1DFBT/EMt
-         QaYBe+sKgOwI8vZJ7QxSrCavoCQ3Yk6J1qhNFx/MF//mgY559gdfB5Ks9Igp8VrJdiOi
-         i9GPsp8YCBuKq1/5i3WeVY9+LBCKDAFZjF56WpA5o37Jbp3PYK4J1bl3jWHSteM+Phpn
-         ifvvI3qRQqhIlL+dN12898Jd0bF23yQKNgQFoWnfJyfqCdRGiHcIYCItI5NxaFT1ULJf
-         pvjdSddgs/flOhbWg/KC9fZuJ4YSLWcn7W0b7GHQPvQbbq6x5TXpoD51kEPeverSK9ju
-         0tzg==
-X-Gm-Message-State: AOAM530JAJNOftOJ5YDnFAIO1S1aplcS78pnrH3MjgGhooKKEoILe23u
-        61eCmWqed8Wyg5HV0UbFE1+pTw==
-X-Google-Smtp-Source: ABdhPJwYpkbqYJB6T9w906hSU82h1v3vr+z3zO2Lp7j72zPJyvd83IHc+CMakx8xlv5Jq50O8i9yVw==
-X-Received: by 2002:a17:902:a513:b029:11a:9be6:f1b9 with SMTP id s19-20020a170902a513b029011a9be6f1b9mr20025348plq.55.1627422444596;
-        Tue, 27 Jul 2021 14:47:24 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id t37sm4805774pfg.14.2021.07.27.14.47.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jul 2021 14:47:23 -0700 (PDT)
-Date:   Tue, 27 Jul 2021 14:47:22 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     linux-hardening@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=TM+0hfl782kZ94bU2+mpLOzzj7zbvQhOg+LQO69XhJk=;
+        b=GNatqslYyovwt59XqOC+19IUTiuOic4t7U9leDpu70u8DHHyk7c1UilrR4HBNBTo6Z
+         9T1Hp2dG5uVGshXJbpWMRr5wK3/4HrVDhDp5fKPcINh8HpTAtD9/mm0azc+MI6dmIvaF
+         U6M5M/WjFerrFko2cYXh4V/d4VpA+3O11dPrr6kCCtcbawArcBFsKABfCoPsBiT5vFwG
+         EArKoeF+njCVDw/hcrsC+674BLEI42mvaqWJiffCmBAA1wgWCb0H2cXtyT4NBMxMgfw+
+         FWjCci+TqGbUl3Sofm5UOoHGzOxxyRm+fbpErne9ptpLK+u/P7uIo0qrdVkKWbNT31DX
+         TLVw==
+X-Gm-Message-State: AOAM532ykbS4Vz9X0JCEgXxHLm68W32LcyRQpKImA1SBLn9gxEkTDH2j
+        KkAdS9PCTPU/0kidMVXQT34=
+X-Google-Smtp-Source: ABdhPJz1wrwXjwcPUI1kIk1ky0ig9jrAicZ/h11+lv2H2/uL4SXlKLhoPqS89RPsBt2E7Mkq8bcgCQ==
+X-Received: by 2002:aca:d505:: with SMTP id m5mr4174267oig.5.1627425047828;
+        Tue, 27 Jul 2021 15:30:47 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
+        by smtp.gmail.com with ESMTPSA id c16sm783982otd.18.2021.07.27.15.30.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jul 2021 15:30:46 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Subject: Re: [PATCH 07/64] staging: rtl8192e: Use struct_group() for memcpy()
+ region
+To:     Kees Cook <keescook@chromium.org>, linux-hardening@vger.kernel.org
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Keith Packard <keithpac@amazon.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -57,71 +61,45 @@ Cc:     linux-hardening@vger.kernel.org,
         netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
         linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
-Subject: Re: [PATCH 31/64] fortify: Explicitly disable Clang support
-Message-ID: <202107271434.039A9777@keescook>
 References: <20210727205855.411487-1-keescook@chromium.org>
- <20210727205855.411487-32-keescook@chromium.org>
- <da989ffc-da64-33a2-581e-6920eb7ebd2d@kernel.org>
+ <20210727205855.411487-8-keescook@chromium.org>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <fa3a9a2f-b611-7fe4-9359-88fa51239765@lwfinger.net>
+Date:   Tue, 27 Jul 2021 17:30:45 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <da989ffc-da64-33a2-581e-6920eb7ebd2d@kernel.org>
+In-Reply-To: <20210727205855.411487-8-keescook@chromium.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jul 27, 2021 at 02:18:58PM -0700, Nathan Chancellor wrote:
-> On 7/27/2021 1:58 PM, Kees Cook wrote:
-> > Clang has never correctly compiled the FORTIFY_SOURCE defenses due to
-> > a couple bugs:
-> > 
-> > 	Eliding inlines with matching __builtin_* names
-> > 	https://bugs.llvm.org/show_bug.cgi?id=50322
-> > 
-> > 	Incorrect __builtin_constant_p() of some globals
-> > 	https://bugs.llvm.org/show_bug.cgi?id=41459
-> > 
-> > In the process of making improvements to the FORTIFY_SOURCE defenses, the
-> > first (silent) bug (coincidentally) becomes worked around, but exposes
-> > the latter which breaks the build. As such, Clang must not be used with
-> > CONFIG_FORTIFY_SOURCE until at least latter bug is fixed (in Clang 13),
-> > and the fortify routines have been rearranged.
-> > 
-> > Update the Kconfig to reflect the reality of the current situation.
-> > 
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> >   security/Kconfig | 3 +++
-> >   1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/security/Kconfig b/security/Kconfig
-> > index 0ced7fd33e4d..8f0e675e70a4 100644
-> > --- a/security/Kconfig
-> > +++ b/security/Kconfig
-> > @@ -191,6 +191,9 @@ config HARDENED_USERCOPY_PAGESPAN
-> >   config FORTIFY_SOURCE
-> >   	bool "Harden common str/mem functions against buffer overflows"
-> >   	depends on ARCH_HAS_FORTIFY_SOURCE
-> > +	# https://bugs.llvm.org/show_bug.cgi?id=50322
-> > +	# https://bugs.llvm.org/show_bug.cgi?id=41459
-> > +	depends on !CONFIG_CC_IS_CLANG
+On 7/27/21 3:57 PM, Kees Cook wrote:
+> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> field bounds checking for memcpy(), memmove(), and memset(), avoid
+> intentionally writing across neighboring fields.
 > 
-> Should be !CC_IS_CLANG, Kconfig is hard :)
-
-/me shakes fist at sky
-
-Thank you! Fixed locally. :)
-
--Kees
-
+> Use struct_group() around members addr1, addr2, and addr3 in struct
+> rtllib_hdr_4addr, and members qui, qui_type, qui_subtype, version,
+> and ac_info in struct rtllib_qos_information_element, so they can be
+> referenced together. This will allow memcpy() and sizeof() to more easily
+> reason about sizes, improve readability, and avoid future warnings about
+> writing beyond the end of addr1 and qui.
 > 
-> >   	help
-> >   	  Detect overflows of buffers in common string and memory functions
-> >   	  where the compiler can determine and validate the buffer sizes.
-> > 
+> "pahole" shows no size nor member offset changes to struct
+> rtllib_hdr_4addr nor struct rtllib_qos_information_element. "objdump -d"
+> shows no meaningful object code changes (i.e. only source line number
+> induced differences and optimizations).
 > 
-> Cheers,
-> Nathan
+> Signed-off-by: Kees Cook<keescook@chromium.org>
 
--- 
-Kees Cook
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
+
+Looks good.
+
+Larry
+
