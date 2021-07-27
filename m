@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CFB43D8185
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 23:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A74D43D8171
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 23:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235386AbhG0VTH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 17:19:07 -0400
+        id S234711AbhG0VST (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 17:18:19 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233132AbhG0VQ4 (ORCPT
+        with ESMTP id S233522AbhG0VQ6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jul 2021 17:16:56 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFED2C06179F
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 14:16:55 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id u9-20020a17090a1f09b029017554809f35so6661247pja.5
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 14:16:55 -0700 (PDT)
+        Tue, 27 Jul 2021 17:16:58 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF66FC06179E
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 14:16:57 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id q2so20505plr.11
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 14:16:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=DGTay7iAWSyVSQKDJdUkixgvUstnCPUf4gCx6hmeZFg=;
-        b=dNYQWvNnvzIA2X1XyugwcYlkkWjvJM3Vr3U1hCAtNIdHPOPlyGNYt6+nUriTVJE1MY
-         iZgmYH0qJz+aQ+mXI12gMaGW3TxvwmtxZIYqXUw/22X3My9fPAG+Pxwau+0K9PSBrncN
-         iFPA2Fm2fkDwZ73RqhbPCUL3LZE0YvDxxcwSY=
+        bh=as474LhSy42cHKge7Gy2Fn1oqutkW78m6VkSl3HByJE=;
+        b=lSOk/hBBmMlB1rYWTRaPXPIkKi/CxdsLOHI3vbEi2GSoFn58wsWtYlaoOfqvPj59dt
+         ooaVxGQyHEHZnH0A70oChu8vvpJt9DQZz91T5V7lJ7/jvA+gX2vgTxoF4L8nNLo3A1bm
+         hHNtGTPTcV/mXDEkppwsVuEpgI+3vO6Y1uBxk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=DGTay7iAWSyVSQKDJdUkixgvUstnCPUf4gCx6hmeZFg=;
-        b=LZuwlAuvMxPaCzRTm3Nx3n+N6T4pK9FtuQcqKGtgNvfv6NOOImpj6QZeKSFg+fZc26
-         6SMF5Gf5tlTKaGsyufCUWUFpteP7g9mYromXJPtyk/ttyYl2Hmp9ohIOf0nJOla77rog
-         nsZBf6+uikuLL4TLD/Ct/hnA2FTyP6XCG1Y9b9XbwA8mmxMK2pTfr8RrMS4n5hZovU6p
-         tBnzot/JTWqAclsUufsPS0UnPQx9ElqHh+UN70/fhUdbhpjSAEQtYBuCj3qbOEksQ4m/
-         6fbcqgpZf0Z1hdLiabYfkwwYL9de8uP5XEipluyCK95U5hvFc2hTfOtCs3RiZHZcWo5E
-         WJVw==
-X-Gm-Message-State: AOAM533jjREYPH0jsSGxW0BIA67d7DTmDEuKnx8SHR2jmBTqug+4UHPo
-        9S4H0YuVtsuXhXAaK45oxmr3Vw==
-X-Google-Smtp-Source: ABdhPJy6DyjMlXCxT3T2XebScQyyxEXTMu8TCjUAq1vEYKkzbYwWyNRsUTrVbClktjUGmOBVunhffg==
-X-Received: by 2002:a65:64c4:: with SMTP id t4mr25559293pgv.222.1627420615303;
-        Tue, 27 Jul 2021 14:16:55 -0700 (PDT)
+        bh=as474LhSy42cHKge7Gy2Fn1oqutkW78m6VkSl3HByJE=;
+        b=FqWIElLR/BcH8wEr8CeJyqILQMLGnit1LKbpgn1yNbRL7LpqUjVtv0ZA2iqrJZCYY3
+         YIuxAMcb/GU4ZvBvFVd/FhzHa+dWrZsYLcSsh9YUEEM4ieYrNlbMRkBLKID2sozHwrBi
+         ocJpkHLQnWjwYYgtkzbOG7olRvvcLREzPtJNGStx4QE/cMwlTfgB824OJKUG3DDir1Zv
+         TXYU+qHL7oGWdJZXo7HwgJCs8WZf/eEwHJ/x0SAvDifj+ARScQlAflsaO+3UVOwsy08D
+         2RWCz6lp3mvOJUMvLhfu1ivrsofR3B47mvufaUy/9ejsFoM2Y3aOck6ymCQ2JW1eKoPd
+         ApIw==
+X-Gm-Message-State: AOAM530XrgVCcJ3hRZYsmFhERrGEFpbp+M9Q/9nSoGjcI/cPF6e1T75S
+        V7EqazZhH9YTTNR7zp+6h/1vdA==
+X-Google-Smtp-Source: ABdhPJxGaEK/7GM0+vAKulISQNQ8zNmBoY4IggEYKPysQEG+1vegv9sBaDZhhkPzUiJxyIhOdVgTMQ==
+X-Received: by 2002:a17:90b:4a4d:: with SMTP id lb13mr6031654pjb.221.1627420617450;
+        Tue, 27 Jul 2021 14:16:57 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id j187sm4758930pfb.132.2021.07.27.14.16.51
+        by smtp.gmail.com with ESMTPSA id q19sm5028194pgj.17.2021.07.27.14.16.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 27 Jul 2021 14:16:54 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
@@ -56,14 +56,14 @@ Cc:     Kees Cook <keescook@chromium.org>,
         netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
         linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
-Subject: [PATCH 45/64] intel_th: msu: Use memset_after() for clearing hw header
-Date:   Tue, 27 Jul 2021 13:58:36 -0700
-Message-Id: <20210727205855.411487-46-keescook@chromium.org>
+Subject: [PATCH 46/64] IB/mthca: Use memset_after() for clearing mpt_entry
+Date:   Tue, 27 Jul 2021 13:58:37 -0700
+Message-Id: <20210727205855.411487-47-keescook@chromium.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210727205855.411487-1-keescook@chromium.org>
 References: <20210727205855.411487-1-keescook@chromium.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1172; h=from:subject; bh=4YDV077FmH9lemmMexWp8eMo9bjnp2d96nCsgVn4crc=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhAHOK9ttF+ksljVKBeZVm/usaI00laWjD4Unf8h1d eoh1+beJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYQBzigAKCRCJcvTf3G3AJhvxD/ 0XZptAWWII5Sd1eI6hMq+jc4oUfLp5M5OPVb2emcgAAU0hAdSFxWDSUreT7263Ke3iOrhK498DJ36F DFKeXG2Kgg+H8VsBs/8iBRv3fcGi9/Ws4R5EVR3wO8T1tGxps7guCF9Qt6VBQ1s4MJ6uP1WduVwPNZ ZlByIdd7bbTAOVP0DQkaoixkgPdZnttNUp6Rr9N82rM1ej3G08+KapIFaiYMmhQSc7X5eCVxNKiziy OaiXcQBIN39iFbSTkPqmGWB/O8O9gN3mx3NTI/59TdmWDsSIEA0nZvbfdngpv2IWvghbSAnYrPfRoP PgSUX4wsUmyVbVKlsPRTFFnPc//4u4ziXfaO+NBESwrPcAmCy46pnKciUhYP1HH9VEi+ZCFb+SruMD MadjaGn2+3NdXFhWFV8895TTZ9u2+OKWtOQfqo11ynnlTm/DCGHvWB/AFn/6JdmHikaEpmcDR35+C+ Egf9o3kqDZ/B2qBqmcNmBMEV+0x48LZBOC/a5eqPn2bWsV9AJA1QV8ZZ/okfq56/5BwWZsW3rb5Jgy w2lr+ZeijJNIcye0PRUUdx3g1rzpx5+DXlN5Ntxi5rE5nrCFrcdyM6t9z+TbSBsR3Gd5kdMjV62eDG arvpuLcVrVwUegzp+aFtKOIzZCN084P4qbo3Isqj7ayth3CARHq/kmH7pGPQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1125; h=from:subject; bh=EIIm+0VdwQ9IH2XMV6ts5pIWwaxyRwboIG5815tF7+o=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhAHOKarr4bIPgvwWH2qKkwLe6/q8cDAlBzD3bLA24 ll85FGeJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYQBzigAKCRCJcvTf3G3AJvwwEA ChEYdVEvOlY6ZSSDwSK+GqTMcoJtHYXIXerlg3cv7Z5B/nj+4tsVkjpbbg6qYJ7G6Wn5LCRzlLTF/B JEQNK1K018MnLFUCnQdrWeHhqOML4Z+QY9330qvih8kbryLwUmmPm8tMDr8k7xeqODqXV0ysJUPb2N xVAh/ldKgMIWN0SIEK4b/AeC9lC2gYUHs0M9ufsvUwE/w7u4/dJRXGEtfOnpjbz9EiJRevDyOxG/L7 5kQTjyY65fkZSD9d3DQYA0of/YGF5vIAzSb90hB4BR+6elYWhMJodLf6s9scmQdVrWhXQ4dVg6J+8M ycSHtAUfvV0kejqMCcI904M9g4jJuniybmlBLuzSIsi21ELju85L/7B9KiYaqlPgChXogQSPXNk5Kd 54beIYuu1Fd49rYR1R8WtEoklJaIrmJSkYaEDaYgFR3e7sXiui1Lo6/7QEjLjklWuNupXgY7d+KgBw oCFrVzGvwPnUGDQnGEfR2OxN6HzTznt5SuyVEVOZkOSmgu5uS6ad9csIugS5srvBjmEQQuXMfiCcAe FRY7ypPn9oUPWMah/ykVuPdD7cmvKT/OghOEHP/qza9WeqolkQBPyj4t9m6qBq2lsFMVjj3xVeXXM2 +eC9JXnzHZx87wkFYpcVJstfzhif8T3qljrVvmM3fY2NknXhqRg98uBOWpsQ==
 X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -80,28 +80,23 @@ of zeroing through the end of the struct.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/hwtracing/intel_th/msu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/infiniband/hw/mthca/mthca_mr.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hwtracing/intel_th/msu.c b/drivers/hwtracing/intel_th/msu.c
-index 432ade0842f6..f3e266b0756c 100644
---- a/drivers/hwtracing/intel_th/msu.c
-+++ b/drivers/hwtracing/intel_th/msu.c
-@@ -658,13 +658,11 @@ static void msc_buffer_clear_hw_header(struct msc *msc)
+diff --git a/drivers/infiniband/hw/mthca/mthca_mr.c b/drivers/infiniband/hw/mthca/mthca_mr.c
+index ce0e0867e488..64adba5c067d 100644
+--- a/drivers/infiniband/hw/mthca/mthca_mr.c
++++ b/drivers/infiniband/hw/mthca/mthca_mr.c
+@@ -469,8 +469,7 @@ int mthca_mr_alloc(struct mthca_dev *dev, u32 pd, int buffer_size_shift,
+ 	mpt_entry->start     = cpu_to_be64(iova);
+ 	mpt_entry->length    = cpu_to_be64(total_size);
  
- 	list_for_each_entry(win, &msc->win_list, entry) {
- 		unsigned int blk;
--		size_t hw_sz = sizeof(struct msc_block_desc) -
--			offsetof(struct msc_block_desc, hw_tag);
+-	memset(&mpt_entry->lkey, 0,
+-	       sizeof *mpt_entry - offsetof(struct mthca_mpt_entry, lkey));
++	memset_after(mpt_entry, 0, length);
  
- 		for_each_sg(win->sgt->sgl, sg, win->nr_segs, blk) {
- 			struct msc_block_desc *bdesc = sg_virt(sg);
- 
--			memset(&bdesc->hw_tag, 0, hw_sz);
-+			memset_after(bdesc, 0, res0);
- 		}
- 	}
- }
+ 	if (mr->mtt)
+ 		mpt_entry->mtt_seg =
 -- 
 2.30.2
 
