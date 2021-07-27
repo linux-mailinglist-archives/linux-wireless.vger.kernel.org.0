@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 331DB3D802A
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 23:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99F633D8024
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 23:00:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234569AbhG0VAe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 17:00:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54054 "EHLO
+        id S234513AbhG0VAc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 17:00:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232457AbhG0U7P (ORCPT
+        with ESMTP id S232378AbhG0U7P (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 27 Jul 2021 16:59:15 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 714C3C061369
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 13:59:11 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id l19so1888310pjz.0
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 13:59:11 -0700 (PDT)
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3070C061368
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 13:59:10 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id a4-20020a17090aa504b0290176a0d2b67aso6632706pjq.2
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 13:59:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=QDdnY+YZl5Kj4vlDFYwtmRw0qFCH7bvuzf5iZ5S7r+8=;
-        b=Ky1aXIwN1k41XNVRUwHMb6gd8jWZQFtJbLhgYFrZRI/tEfjurJ/VltSyM8tcEHx7PU
-         0hed7yoPtFdsfCcNmpZtry+48YfXQD9RicNrcpeyhhFCOPPT1fCJV/zFbOiKnPbf/PYX
-         Cl3z+nnp3Cgm7D+0MY0+hinI4DYe7xo2z+8ZI=
+        bh=FMXWh89VZYemVKOC1nOMHXOf0EkNJ7d1gpgnv25tUVA=;
+        b=VRjvQdRR4aWGRSvNdQEtPfrWzojFlNd/kN7JaBE0aAlIVG9EG9aSiA5zFyLXywoXt3
+         +qqqc4cni+Gj9eLUu/BZwo+sCP7HeCZeq91ihwiuys76/CIV8Ybwd80dGbzhsPOcK3Na
+         Vv6raW0jAps59OM68d7PMk4c9UpnIfccBTXeg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=QDdnY+YZl5Kj4vlDFYwtmRw0qFCH7bvuzf5iZ5S7r+8=;
-        b=ixjwBELevfEco1KmskVe+UEhvP+MTuFpNcHAUIOBHTbgM+xBuJOMhd//hlt3DfU6Wy
-         nqh3KTdOPJG0LIKl4dFvTl4ovw7VvOdTD68G5yVjnINhjWkOAnIXi0lBr2fR/G2P6EC9
-         a9ce+ZBfNjZGCmoVE6LUZk5z7HkWFSleaXxQ8+DjbEVD6G7t0DI9G3pPbXs58foehCfn
-         NlaxppEun10+eJkmMAIfgxfVwyAtOlZ5RfgNUfnnyMt4uRmDFpUdUxwaqr5SzmOK0pjd
-         oZT8VkOlqnYgRvIrlvpNmWM0kDhumPBsnxXMHDYbdmqYyL2bk9hNhAlP3qTGsAmz3L5A
-         Ufcw==
-X-Gm-Message-State: AOAM531XtfLdnNHgxrz8/yZ2v5xqAapjfA3W7Zl3mjwp3BBo/aFpezG0
-        06wtLhdUrJr2+Thy0s1knoR8qQ==
-X-Google-Smtp-Source: ABdhPJzSgpKelqVCgUS+uWdh9X6zo2G6UcQ1toddE+js+YzGJwbaJ49IIj997nZ3+Sx8eXpefD//mQ==
-X-Received: by 2002:a17:90b:4016:: with SMTP id ie22mr20891551pjb.68.1627419551082;
-        Tue, 27 Jul 2021 13:59:11 -0700 (PDT)
+        bh=FMXWh89VZYemVKOC1nOMHXOf0EkNJ7d1gpgnv25tUVA=;
+        b=GXXDhW27msZdVsYBrknRNxcfS2/t594GB0bvBDOrCL5wyE1EWkdI+vHzmgJXHzH+gD
+         vLy7FAU+XRbTU37L8e+l/5GgT/Fu9+Vjzcjh1pl881K/W58//n5gvXLWuByrzA2RhCOR
+         n1y7nRJ1xFU08B4JZ5GsgjjxCCcUHEKk/ARsztJtylSqn1phz08CWN+7UV3QjsDjVIHx
+         kfHBXHipsHLceKCjH9r+F+qiL9AFvoe+9diaypbZJi5Mg9GwAl0qG0dQEjcDn2rv8URG
+         cD/m4y57goSQK5rc/G8FmkngyyDvCWkYxEcXVuGInGgqlr4QdRblfJQJIn/ibybHpVDJ
+         8GlA==
+X-Gm-Message-State: AOAM5311RRbE9j7ieUGvyIkf5ZA5vy+UBqyacm5wZpOxEWPK2JGT4CVj
+        ioewCrAH6w1grZR5ebBnWAeGfw==
+X-Google-Smtp-Source: ABdhPJzSeSwp5iNUhGXFiFamEkbeo056S644ilZ1zvFJzJMMaOdru3STU1CRfSSuOGy0ZoKVoFjAMw==
+X-Received: by 2002:a17:902:ce86:b029:12b:b41b:2e68 with SMTP id f6-20020a170902ce86b029012bb41b2e68mr20161809plg.1.1627419550186;
+        Tue, 27 Jul 2021 13:59:10 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id w23sm4741144pfc.60.2021.07.27.13.59.05
+        by smtp.gmail.com with ESMTPSA id f3sm4853027pfk.206.2021.07.27.13.59.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 27 Jul 2021 13:59:08 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
@@ -56,14 +56,14 @@ Cc:     Kees Cook <keescook@chromium.org>,
         netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
         linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
-Subject: [PATCH 12/64] mwl8k: Use struct_group() for memcpy() region
-Date:   Tue, 27 Jul 2021 13:58:03 -0700
-Message-Id: <20210727205855.411487-13-keescook@chromium.org>
+Subject: [PATCH 13/64] libertas: Use struct_group() for memcpy() region
+Date:   Tue, 27 Jul 2021 13:58:04 -0700
+Message-Id: <20210727205855.411487-14-keescook@chromium.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210727205855.411487-1-keescook@chromium.org>
 References: <20210727205855.411487-1-keescook@chromium.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1790; h=from:subject; bh=oMSi3M1NOKgRYRJy6VWRMVEHsL86zQNiB3Lk1k+Xi3A=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhAHOCT3IlQZfHOrT/8AVoJNmOyRzR+nRudQyIVPi9 N+VgYJGJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYQBzggAKCRCJcvTf3G3AJvUtD/ 0VbZh1+apSqCt8UVVwcwz2SVJuqIVyUnd519aTLQ4I0CWMg8ghFTFnOrvuarCaRIX9zFlryZ3tW+jX TMbwvZJ2ASxTPhSxhEfUL3QjPZrscW1XTamKCXRYrFlctVtUxvJxBanAbD684+pmZo0R/nRcYbYP4L IaH2t5hZmvXcLZRQNyAWwGbdKj5zwyQ23qv/nPVNIDcAqdEm3B1gePnEkp/AsshevL2Rz+m/fA/waN DoEtXkNfhfzWoBpKH83gEDokctcvbaP61CQNZaHqbrHd42zmm2Oc/L/stpbIFWa1W2nh9aTJnw2eN4 2nGcQV7d5s0ULa0BhMCoAn0It3bg3KRnOhK037W8DLo8xFDdcqrxT2qzTKD2J5OaeXZHiNPwPbqUFX h/rZBBfQpN75s58FT+3GvmfMf0Y3Hv3frdpG1OXwpfoLVNK+i9yfiGVN69Ddw4Vdy4v/ae2+T+RY3I BVx0+IUN5Kq5oxAJN8czvd3TMtxtYody0FwrPyZ7k/WqBEg6tfrvE6hNlpKZnEjPkmVUZchWsXtBld c8xMtYaeMn/Q+ACu7/A1Y37jNDWcrPB3t/Vt7rmllooif7lGJWBfAoYlw+trqmygT+AGb1sFup/d90 nRs6XYpT6hUE8tDXo21HFYgvJz1bZdvxgX5sz4WXpYQlhqmDB5NJxHOXSm8A==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2740; h=from:subject; bh=aefCoJhV9lyPmgKpvdOWTp1eHgAAy3wtBLWPOfGvPCw=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhAHODxcQA7hFiK/M9yqFXiZTlrkWV9wESsqNUkUC3 ENS25TmJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYQBzgwAKCRCJcvTf3G3AJuWXD/ 9EEbIRmE0Sf3w/qtDGyQLeiBdvitwed0MqGCR54+cy4POmCGJEXkXMe+UsA2tUg7eala8PPngaqDKo 0ERL1ewBHx4UD7R+AEvkOFXcZagB1d42rFbOcpPOwrftFS6pqkon4FdosW0+MyMEf2BnIg95MZ48pZ 0dyeZPhVPj/CifetiJMIUTfVMkOMyMFLrj4I1QaTdWSnw1H4W62BrhGDAQc0wtIpxRE3GRSS+57J5X fda42m/AefAnCJ25BDnCSuL0nNlmXnB10fFKxeWoEU48gScMVd36kIeusvAI4E8KSAHUIX/SsSfg4B C6cdu9pXjtZk6na7YL3clAWf2vJ0C5dLpU7vyJPM1wtNB90psbKGHH8XsK/Wi5Hiz48C37rTTkjItG tWxOfN33ZRWxmjHBixtvVsX+hOU3m3jebrGd1IBvwiRCt1lQFTvO8wTdpkLEdT/hBZ37SfUrP7i2CN h/zVNAg6ocxkPF5UNjetoviDaRQ6L+oQKTilzpJlOBKdctAfQ7AqO0hQ5/FkXTjkMxSrVzFGsjpZaa uoeBKt0sZu+bCO/t4+qslxRaHXCvklEy7nB6J3q5w8GbuK2nmOkzeGHgppPq7LknjTN298gn73rfUn 3C7Wt5tq8d4a2uxndbXu1sQkSynV2tVH5+7XlKmxnZyCRO6ToCcX/c2fNkoQ==
 X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -74,48 +74,67 @@ In preparation for FORTIFY_SOURCE performing compile-time and run-time
 field bounds checking for memcpy(), memmove(), and memset(), avoid
 intentionally writing across neighboring fields.
 
-Use struct_group() in struct mwl8k_cmd_set_key around members
-key_material, tkip_tx_mic_key, and tkip_rx_mic_key so they can be
-referenced together. This will allow memcpy() and sizeof() to more easily
-reason about sizes, improve readability, and avoid future warnings about
-writing beyond the end of key_material.
+Use struct_group() in struct txpd around members tx_dest_addr_high
+and tx_dest_addr_low so they can be referenced together. This will
+allow memcpy() and sizeof() to more easily reason about sizes, improve
+readability, and avoid future warnings about writing beyond the end
+of queue_id.
 
-"pahole" shows no size nor member offset changes to struct
-mwl8k_cmd_set_key. "objdump -d" shows no object code changes.
+"pahole" shows no size nor member offset changes to struct txpd.
+"objdump -d" shows no object code changes.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/net/wireless/marvell/mwl8k.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/wireless/marvell/libertas/host.h | 10 ++++++----
+ drivers/net/wireless/marvell/libertas/tx.c   |  5 +++--
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index 3bf6571f4149..a29277d5f9da 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -4225,9 +4225,11 @@ struct mwl8k_cmd_set_key {
- 	__le32 key_info;
- 	__le32 key_id;
- 	__le16 key_len;
--	__u8 key_material[MAX_ENCR_KEY_LENGTH];
--	__u8 tkip_tx_mic_key[MIC_KEY_LENGTH];
--	__u8 tkip_rx_mic_key[MIC_KEY_LENGTH];
-+	struct {
-+			__u8 key_material[MAX_ENCR_KEY_LENGTH];
-+			__u8 tkip_tx_mic_key[MIC_KEY_LENGTH];
-+			__u8 tkip_rx_mic_key[MIC_KEY_LENGTH];
-+	} tkip;
- 	__le16 tkip_rsc_low;
- 	__le32 tkip_rsc_high;
- 	__le16 tkip_tsc_low;
-@@ -4375,7 +4377,7 @@ static int mwl8k_cmd_encryption_set_key(struct ieee80211_hw *hw,
- 		goto done;
+diff --git a/drivers/net/wireless/marvell/libertas/host.h b/drivers/net/wireless/marvell/libertas/host.h
+index dfa22468b14a..af96bdba3b2b 100644
+--- a/drivers/net/wireless/marvell/libertas/host.h
++++ b/drivers/net/wireless/marvell/libertas/host.h
+@@ -308,10 +308,12 @@ struct txpd {
+ 	__le32 tx_packet_location;
+ 	/* Tx packet length */
+ 	__le16 tx_packet_length;
+-	/* First 2 byte of destination MAC address */
+-	u8 tx_dest_addr_high[2];
+-	/* Last 4 byte of destination MAC address */
+-	u8 tx_dest_addr_low[4];
++	struct_group(tx_dest_addr,
++		/* First 2 byte of destination MAC address */
++		u8 tx_dest_addr_high[2];
++		/* Last 4 byte of destination MAC address */
++		u8 tx_dest_addr_low[4];
++	);
+ 	/* Pkt Priority */
+ 	u8 priority;
+ 	/* Pkt Trasnit Power control */
+diff --git a/drivers/net/wireless/marvell/libertas/tx.c b/drivers/net/wireless/marvell/libertas/tx.c
+index aeb481740df6..27304a98787d 100644
+--- a/drivers/net/wireless/marvell/libertas/tx.c
++++ b/drivers/net/wireless/marvell/libertas/tx.c
+@@ -113,6 +113,7 @@ netdev_tx_t lbs_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	p802x_hdr = skb->data;
+ 	pkt_len = skb->len;
+ 
++	BUILD_BUG_ON(sizeof(txpd->tx_dest_addr) != ETH_ALEN);
+ 	if (priv->wdev->iftype == NL80211_IFTYPE_MONITOR) {
+ 		struct tx_radiotap_hdr *rtap_hdr = (void *)skb->data;
+ 
+@@ -124,10 +125,10 @@ netdev_tx_t lbs_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		pkt_len -= sizeof(*rtap_hdr);
+ 
+ 		/* copy destination address from 802.11 header */
+-		memcpy(txpd->tx_dest_addr_high, p802x_hdr + 4, ETH_ALEN);
++		memcpy(&txpd->tx_dest_addr, p802x_hdr + 4, ETH_ALEN);
+ 	} else {
+ 		/* copy destination address from 802.3 header */
+-		memcpy(txpd->tx_dest_addr_high, p802x_hdr, ETH_ALEN);
++		memcpy(&txpd->tx_dest_addr, p802x_hdr, ETH_ALEN);
  	}
  
--	memcpy(cmd->key_material, key->key, keymlen);
-+	memcpy(&cmd->tkip, key->key, keymlen);
- 	cmd->action = cpu_to_le32(action);
- 
- 	rc = mwl8k_post_pervif_cmd(hw, vif, &cmd->header);
+ 	txpd->tx_packet_length = cpu_to_le16(pkt_len);
 -- 
 2.30.2
 
