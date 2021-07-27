@@ -2,130 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5242F3D774A
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 15:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD6D33D7D43
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 20:16:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237079AbhG0NrS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 09:47:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47130 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237077AbhG0Nql (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jul 2021 09:46:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 49FD061AA9;
-        Tue, 27 Jul 2021 13:46:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627393592;
-        bh=3OUbVD/hQ6DdwiZR/3TAtMQ+KmPu+QhinUU9bz4wEsc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aOM5oATCu5rffTbyDTRISycXVtiHAv82wEjvd4tKLczDQDccEBbS9MG/f1Je29hjj
-         6GEMsg5gvi/w09mrFZQSdNWkujyapIs27ou0mKt4h1luUkQtqBF7nNMYQeNCcO3NOi
-         imxzw6djZ49Oim1qc5XSuEHfkjQKo4nSEED5pTYtnDB+Kv/7SU4cATAleSU9gLJLI7
-         fN10KNQPlEqBKpljEwKRi4w6qoevT25F3PIofXuTsofU3RpXB9gSKBZxqoS0Yxfzam
-         IBQA1vQElhHQspVnw0+0ffWCcEp+sgntfG3F2fbvezJn5x8Dt1juscZfJk2jjOfSgk
-         3PSR6XdauoJ0A==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     netdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH net-next v3 19/31] airo: use ndo_siocdevprivate
-Date:   Tue, 27 Jul 2021 15:45:05 +0200
-Message-Id: <20210727134517.1384504-20-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210727134517.1384504-1-arnd@kernel.org>
-References: <20210727134517.1384504-1-arnd@kernel.org>
+        id S231905AbhG0SQa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 14:16:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45226 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230435AbhG0SQa (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 27 Jul 2021 14:16:30 -0400
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2914C061757
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 11:16:29 -0700 (PDT)
+Received: by mail-oi1-x22c.google.com with SMTP id a19so344166oiw.6
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 11:16:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Vco8IpmvI6e4OgtXcayTW8PQqRayAHHPZ/9BbWzucA4=;
+        b=KN7/6VIjU3/F+4L3/EZyEx+FP90Tprwrv0m8vVXi0CnormS05ojsXWgodoDjclStRp
+         v/rpN6F23Yvjn1GdoYiP+07pe7wyKSbASEi3wA4Yjn12db1j57L2AK/nB9edsXDJ0oph
+         c2q6vRz4lc9woO8aP3+5WrZpsIHK5vJY5GbXc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Vco8IpmvI6e4OgtXcayTW8PQqRayAHHPZ/9BbWzucA4=;
+        b=Y1xAVA+2BK/z2Yjfuq27RSvksxqSNAs4yOkKjqDIq9NUe5ZTVGeQUfVZakA41kYdiP
+         8YwxrzcBbfckilQ5gn5o57BE+OSK+ALti3kfoLPAUIw8tCFPeCFJTUI1N+1J7W/PI2XY
+         fZWSi1zhZ4QonNkiS50FXBBPt953j1mnyU2uG1uZjfpWCVVkLBBaqtvar2fdMiqIUlEo
+         pNOOcerEwekmqzrU2/Q6DmpMx3ZwU90PWzlYWUl3FRyCT/nVSJPf2E/cvNEB6wv4FQ/W
+         HfXwJU9F76jxhDWls+ZVWF/jbykccY3qlcTtIT9178xJ+ALIdOvHJB2xCW7WGpJxuvVB
+         flEw==
+X-Gm-Message-State: AOAM533pBitUwExrbt9gH8WCRolPA9X+NKDiy9KKGIWHb9QWfdqkt/O5
+        zXEdYJ8eJDS41puVyQeaCEkPrlIJH6087g==
+X-Google-Smtp-Source: ABdhPJxll0h7rILm8+Gj9u4fSP4WyA3M2+6/110Mhc3WU5BpsK2JQLZC2RdaK9D3rQzqBQ5G00te6A==
+X-Received: by 2002:aca:d406:: with SMTP id l6mr3698762oig.7.1627409784585;
+        Tue, 27 Jul 2021 11:16:24 -0700 (PDT)
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com. [209.85.167.180])
+        by smtp.gmail.com with ESMTPSA id i16sm666814oie.5.2021.07.27.11.16.22
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jul 2021 11:16:23 -0700 (PDT)
+Received: by mail-oi1-f180.google.com with SMTP id o20so304946oiw.12
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 11:16:22 -0700 (PDT)
+X-Received: by 2002:aca:304f:: with SMTP id w76mr3634238oiw.77.1627409782401;
+ Tue, 27 Jul 2021 11:16:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210718084202.5118-1-len.baker@gmx.com> <87eebkgt8t.fsf@codeaurora.org>
+In-Reply-To: <87eebkgt8t.fsf@codeaurora.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Tue, 27 Jul 2021 11:16:11 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXNm_aKAJcJVCx45VqAXTgXjfOju7xZPa_3MAvBzn2r7_w@mail.gmail.com>
+Message-ID: <CA+ASDXNm_aKAJcJVCx45VqAXTgXjfOju7xZPa_3MAvBzn2r7_w@mail.gmail.com>
+Subject: Re: [PATCH v3] rtw88: Remove unnecessary check code
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Len Baker <len.baker@gmx.com>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Pkshih <pkshih@realtek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Mon, Jul 26, 2021 at 11:34 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Len Baker <len.baker@gmx.com> writes:
+>
+> > The rtw_pci_init_rx_ring function is only ever called with a fixed
+> > constant or RTK_MAX_RX_DESC_NUM for the "len" argument. Since this
+> > constant is defined as 512, the "if (len > TRX_BD_IDX_MASK)" check
+> > can never happen (TRX_BD_IDX_MASK is defined as GENMASK(11, 0) or in
+> > other words as 4095).
+> >
+> > So, remove this check.
+> >
+> > Signed-off-by: Len Baker <len.baker@gmx.com>
+>
+> Are everyone ok with this version?
 
-The airo driver overloads SIOCDEVPRIVATE ioctls with another
-set based on SIOCIWFIRSTPRIV. Only the first ones actually
-work (also in compat mode) as the others do not get passed
-down any more.
+I suppose? I'm not really sure where the line should be drawn on
+excessive bounds checking, false warnings from otherwise quite useful
+static analysis tools, etc., but I suppose it doesn't make much sense
+to add additional excess bounds checks just to quiet Coverity.
 
-Change it over to ndo_siocdevprivate for clarification.
+It might be nice to include the true motivation in the patch
+description though, which is: "this also quiets a false warning from
+Coverity".
 
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: linux-wireless@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/net/wireless/cisco/airo.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+Anyway, feel free to pick one of these:
 
-diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
-index fd37d4d2983b..65dd8cff1b01 100644
---- a/drivers/net/wireless/cisco/airo.c
-+++ b/drivers/net/wireless/cisco/airo.c
-@@ -1144,7 +1144,7 @@ static int waitbusy(struct airo_info *ai);
- static irqreturn_t airo_interrupt(int irq, void* dev_id);
- static int airo_thread(void *data);
- static void timer_func(struct net_device *dev);
--static int airo_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
-+static int airo_siocdevprivate(struct net_device *dev, struct ifreq *rq, void __user *, int cmd);
- static struct iw_statistics *airo_get_wireless_stats(struct net_device *dev);
- #ifdef CISCO_EXT
- static int readrids(struct net_device *dev, aironet_ioctl *comp);
-@@ -2664,7 +2664,7 @@ static const struct net_device_ops airo11_netdev_ops = {
- 	.ndo_start_xmit 	= airo_start_xmit11,
- 	.ndo_get_stats 		= airo_get_stats,
- 	.ndo_set_mac_address	= airo_set_mac_address,
--	.ndo_do_ioctl		= airo_ioctl,
-+	.ndo_siocdevprivate	= airo_siocdevprivate,
- };
- 
- static void wifi_setup(struct net_device *dev)
-@@ -2764,7 +2764,7 @@ static const struct net_device_ops airo_netdev_ops = {
- 	.ndo_get_stats		= airo_get_stats,
- 	.ndo_set_rx_mode	= airo_set_multicast_list,
- 	.ndo_set_mac_address	= airo_set_mac_address,
--	.ndo_do_ioctl		= airo_ioctl,
-+	.ndo_siocdevprivate	= airo_siocdevprivate,
- 	.ndo_validate_addr	= eth_validate_addr,
- };
- 
-@@ -2775,7 +2775,7 @@ static const struct net_device_ops mpi_netdev_ops = {
- 	.ndo_get_stats		= airo_get_stats,
- 	.ndo_set_rx_mode	= airo_set_multicast_list,
- 	.ndo_set_mac_address	= airo_set_mac_address,
--	.ndo_do_ioctl		= airo_ioctl,
-+	.ndo_siocdevprivate	= airo_siocdevprivate,
- 	.ndo_validate_addr	= eth_validate_addr,
- };
- 
-@@ -7661,7 +7661,8 @@ static const struct iw_handler_def	airo_handler_def =
-  * Javier Achirica did a great job of merging code from the unnamed CISCO
-  * developer that added support for flashing the card.
-  */
--static int airo_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
-+static int airo_siocdevprivate(struct net_device *dev, struct ifreq *rq,
-+			       void __user *data, int cmd)
- {
- 	int rc = 0;
- 	struct airo_info *ai = dev->ml_priv;
-@@ -7678,7 +7679,7 @@ static int airo_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
- 	{
- 		int val = AIROMAGIC;
- 		aironet_ioctl com;
--		if (copy_from_user(&com, rq->ifr_data, sizeof(com)))
-+		if (copy_from_user(&com, data, sizeof(com)))
- 			rc = -EFAULT;
- 		else if (copy_to_user(com.data, (char *)&val, sizeof(val)))
- 			rc = -EFAULT;
-@@ -7694,7 +7695,7 @@ static int airo_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
- 		 */
- 	{
- 		aironet_ioctl com;
--		if (copy_from_user(&com, rq->ifr_data, sizeof(com))) {
-+		if (copy_from_user(&com, data, sizeof(com))) {
- 			rc = -EFAULT;
- 			break;
- 		}
--- 
-2.29.2
+Shrug-by: Brian Norris <briannorris@chromium.org>
 
+or
+
+Reviewed-by: Brian Norris <briannorris@chromium.org>
