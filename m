@@ -2,134 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6CEF3D7E25
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 20:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DE713D7EC8
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 22:00:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231616AbhG0S6D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 14:58:03 -0400
-Received: from sonic304-22.consmr.mail.ir2.yahoo.com ([77.238.179.147]:34236
-        "EHLO sonic304-22.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230249AbhG0S6C (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jul 2021 14:58:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1627412281; bh=6hU2ULlWyMYV2mKH2ObUN+H/LxyhPSxjeSU/Kks8ODQ=; h=Date:From:Reply-To:To:Cc:Subject:References:From:Subject:Reply-To; b=pPlXHxH/Ivg+cfAuWY2dTQpJT1ZHFqtYtba8FajVns34PnMIiTeYTNcaa9qHbHAZJAl5Bf3jN2zLEDTfqQbhP6oJFps1+M2g8Udq3WLYgQ6J+YA4gFLmCJLOPXdNz/gQAI+BogYhGtt58bGMov7U83FHKYYg+ZahTSDtZlOmiv7Og66OTV81F57RkqWiaBURxqVE2uwJwVW/nhl2/S/K8VbhYMw3faaONk6HkZ5ygg/mgmgWsRk5YfyZ7Iz9CI9AmoQLR7rvwNtKLiUb3QDweqcbf+CAktAE4QEUxcMs71TUHVeegJKF+Z1nN3U1+4Yl0JRN08PrmAM4pA4OvotZiQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1627412281; bh=iXf1Tvb86Uo4EHCPcDxQVueIPMsytKqtnQvCNsy9EZv=; h=X-Sonic-MF:Date:From:To:Subject:From:Subject; b=QD99amrpUIEz2D8jjk36ELYxUkH47ztLLvqF8KLLcyJrxHnom+bTyyGdA/LuoN/Lv3L00Fs9QJGEHp1+5O4dwUFbSgJP7aniM8BdYWtgaDIDpxTXpbtakXp8pT0ZCj8YsdkRdfvv52Iw0lQqP5TOcZcF5e6CTQxc+j23lxvNY0Z8Iml+uveUblKgIL8hcHwHGqi5Lo2fRpqStshbpRly3ypMYoNLuVu/gjQK5MG5apkV2FVFRVM7VdZC58p+BeNt1kaiAs3mEBNRWwohZ3ckDC5gR0NocrC3iyKa1ZqsdV/DOH91HE9BFwcd/e5TUh3jF7CWxOIMP/pEjOV7utzk9A==
-X-YMail-OSG: AOolPz0VM1nSe.y5fPp2AT7MjegTq0xVH3SCfc8V0hP.yDDyQieNRn5GEixTgrj
- 2tccDCArENXpGJtM0RJ5FKEtle_Gci1M9oQQs2HBdVnfPU5.0o0TcZnU1SwnAs1W7rcBysC_xq4e
- CcqR2YWCRb7lzH6s1VjLHpnGo4HS8jDizH4GLYTN9z_z2CJJOYHi.M8L3qr6Oe6kTNu2o8Rf_.Rt
- 9vxemgYM1gkr4Tk92yWg3jLu4tHMeFhIiy4t44mmhSKrWQWDsMepAYdKSUtkNekOjtZCzF4Vz47T
- x5WNscuhseq69s_k.vdRf1ABxxxReQzTKJoikINgBh0sNVdbaj.X7qczWrIi.BsNF8ZZlYnrAdIE
- naomj.94ADSkfESu4u5zd6ZAtdWkVqXzkvO2RGq9WlEmiK.GVDnTOJwtHCWALeqM62sACgtUT9CT
- I2rgFo.MDNJRgtle3eGcmJv4CICn61yPhZe25q60MbTOk0jTJ4JbDGRK_22CnA_WRONGkxWQVf0y
- Z13rWN1J25l9vkNritrm6nNxyrKrYmeBvn_sUuC1YG6YAx922ir05OYMVv4VO7Hu_hhKj5DoXPn_
- JagCPtfb4W4HpmKfY55nNQOmdtykwtvd51XikWaW6MIi0qMhBesGOg4c5JQg_Z6MKs2lFQm5ui36
- Ttr43lWtJsHMXR1N7Fk4I98xakcOVzGLmFVTQZnl2beY9PHsNhJf2WEES1Qd6RBjky_w3qR8FNnP
- PbFm34O4wxqVp7Gq.XWDYX4Nly7jSQbYGyO61KfkrnDU9uSFNhGtXyZN0H288A5skjTMtWRkdeGn
- G6ebuSbzbAPqlZVtLk0kG3oUXjolANuF4ppHMIAPPVvRPNa78L0cStNa.JN.Sp9TNAAiOYdPpqX8
- PjDmbbg7LvnPb2pWVq.DnzGDrR87X1jq0Vr2UDWpQZYV4_n1t3.hiPoZnm7z8xpA6tC0ILWAJl0p
- s8ulx1KUvxma8JwAa_qszO1Jsz2C9rl_lJ3CiDoxtNpJ6AI0HZULpXb6WTILT3Gj0o9EXefkKS9I
- pomAd6t2kloI5d1m5RtsBLwRW9qsWCzisI33MxnMLrZlyhlbNf16cV41Ox1GjL8.jqb5iW2efkoj
- Q5Ql4FD6999AjFD.uZjTfImabj7DYPX4WwIEce8IZkBQ6IUxxJRXyAS5GjRQ4zYRDPaee.3QlMY3
- kTUHgEnEroXDsJHq1Zpf.4LiS34soPYZ0dsZwc3n9UlFhz3C9zwlc61U11tutKtzKflEnrP29jCX
- zHfHK7esIQFGmCArHX7JkTPNtd_IT2x3nlXngm1VOTRyOINl9CaExABK6Z8IYwDZhj_A77Zx5BRS
- GuCv.t5P40ag3J0VgOVCM_iQh.JhGfcgxj96rFxhYXQ.2nqOpPbMoGGaSW2.h9TxI8HrBKZnQatX
- d76JBExqX1r1OSmRxjXF4QUok1pzE193H9GIu7ZHNDaC05c.uV4T01Pc6epnGl0KBt6C6_AlFjwC
- HADQrcDyONdxHM_hW2wHpQovksAVQhPcXZCbzjLAhwMPOC4aoi7CcxPhKIsv7esvljMC3gXPsnGz
- .w0pCQOMe7WrA8DNdWuEaVnPPLG2qFv4G02BdzyB9NcOMcw5r2SU12AOoFhEZBDooM3i7YaIv2xO
- u6ptA5NhuGDA_pxC5KNCA80JAfC5wD25.DkXNWnTVDdfvUtj2Qo6e7RBmeEXh3L61wByjYZRyiB0
- sv7N5KM_E4Yx.zIoWyKmPb2W6zJoVB33Oc9dFcKZwwhwbPc3tNm1.TlTp2ouLyI8RDqk.YtwXAy6
- zHelitb6GUPES9IeJFHQPtp4zf59f1yt_0aMGESMyXVaBl4QRKDkIifkHt_kffHH1zl2Bbcq.tQA
- Aq788vXtzyTlIIKiKmghrMOjLngR7ugo2fXqmoHiZEq_KhTYU68JcB5dPtJK519yO3KFQa38IIuF
- Urfh9zte0IYrV0E4eAs3vHsfZPEI0kmz9tE0wIXlmD6rlLjH3WQU6___.GOj2FDBIvioqaSCft9K
- SvDgsip1jOmvjpg6sSNZILppUBy.UxiqSxFyOxXD3IVHQtSimjytg2eq1G5Kc_kVG1ySwx6O2f7U
- g_n50oSf3gjsGtlfg1s5_UxXdd9ip3GpzJ9I863vMuAViDmCOtd6ev702TJw9kOS2G59pl1F187K
- QKtiSfH6o9ZxbFgSercDzkPUmRikFKQX.RQGch3fPe1Ngwr4iRNPwnPQm_qeGtXKBWWCZBzHpA9Y
- wTnClL0xt6hRXeRUu2oAvZ_1hQxJnD4Bqh6d2X1RSXpF_v1gFhwmDkIXh4O3P_3ehgKwnTJ2J9Tp
- 9cLRf_Wh7RIJD2kJodRWqAU94we1FLLzmg6SZ30ihjhE70rROmvdxEmeF0ezpne3jdkx2PaqYY1b
- RVxni0ZDIOPPa9k9kip5xA0hYDY_4K94CoV.adi9ydbaVudY3PhQ5DbKW4CArcReIfOZLKJMK.Ld
- lh0U6vrbMZr8_P3qOEAlc3fJ22zZTo8stDj2WFjm94r2RkphSJssGozfjPmD4ifP2VAcTszc23qD
- aMjruldFmIaF8xzqjLbgihkHhMFknBgAGnN7SK9qEv48NOo81ic9OTPSsW__52YmWV67IHzg8FTJ
- l73c8roJ1pbvL9uXsbYTO93NiFy2tBRad0TYdSf6s2u4UPSk_Y3mbYLY1kMuJqcxyj_75xaED..I
- nm.wnca1Z6IO80n7JXwmYT6ASfOn.XNEcN4UGuqQOkXSbnEJIRWiHIckTz04fp8yZSWa0.poeMSl
- RZooKLKelZlSXI4Hi4B.kgMlu4rNxrlpl4hqjL3RgqA8GpG2oGuhW2DblzPOa2HKRH8dSehwxYdK
- h4ZL9zHL3OINslyf1eyIQa0GTNna0AJwAfbyyz73SuM_E9eP2Vdf2b4xL2zyvXr5ioGFZJqxlZGv
- SXCzsPBwJNidvOcxDC0VJZK7vl5m9sjuo9K2t.ND8Vu3NwnxZ
-X-Sonic-MF: <htl10@users.sourceforge.net>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ir2.yahoo.com with HTTP; Tue, 27 Jul 2021 18:58:01 +0000
-Date:   Tue, 27 Jul 2021 18:57:56 +0000 (UTC)
-From:   Hin-Tak Leung <htl10@users.sourceforge.net>
-Reply-To: htl10@users.sourceforge.net
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Herton Ronaldo Krzesinski <herton@canonical.com>,
-        Larry Finger <larry.finger@lwfinger.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, gregkh@linuxfoundation.org,
-        Salah Triki <salah.triki@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Message-ID: <1490129435.403938.1627412276697@mail.yahoo.com>
-Subject: Re: [PATCH] wireless: rtl8187: replace udev with usb_get_dev()
+        id S232067AbhG0UAV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 16:00:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40750 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231204AbhG0UAO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 27 Jul 2021 16:00:14 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id ED0CF60FA0;
+        Tue, 27 Jul 2021 20:00:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627416014;
+        bh=7gbluUXqRRDrRRn0YT85HoIea0afHl4fXkBq3wS8myc=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=ZuKh0QZIr0bo4IkkVxJ+KGIS7CN6C3qN0vMjFXehfb5lPWADe0PwPwsnk1qMM5vvO
+         HlWCTVM4ZzSaJEPtmoNUa1vsliz463WcrdCQN1lkHHswUKgaNNtq29styVqu3BjN7r
+         JYjOpWXSrkVvfQxj9Ek6rU+aJOXdBkncGx3bb9Y1mzLSX2u2tkkakG1hfNRYcUUq4e
+         inTy+HHa8/MPQbmrfH3/IPLKgDL9lIMIjHc7+pUM2DHjS9wtjN7iT01LHakbA2lpny
+         sQF0HUZcKsDMvVwqgSaSNCqv1JR5iOvrYNY91Aq7W+oxmNXRaUF211VLnU6VOI+NyL
+         UUZx8tXVJZbzw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id E1C38609CC;
+        Tue, 27 Jul 2021 20:00:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1490129435.403938.1627412276697.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.18749 YMailNodin
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v3 00/31] ndo_ioctl rework
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162741601391.17427.11630081272562695042.git-patchwork-notify@kernel.org>
+Date:   Tue, 27 Jul 2021 20:00:13 +0000
+References: <20210727134517.1384504-1-arnd@kernel.org>
+In-Reply-To: <20210727134517.1384504-1-arnd@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, arnd@arndb.de,
+        j.vosburgh@gmail.com, vfalico@gmail.com, andy@greyhouse.net,
+        rajur@chelsio.com, t.sailer@alumni.ethz.ch, jreuter@yaina.de,
+        jpr@f6fbb.org, jes@trained-monkey.org, khc@pm.waw.pl,
+        kevin.curtis@farsite.co.uk, qiang.zhao@nxp.com, ms@dev.tdt.de,
+        kvalo@codeaurora.org, j@w1.fi, jwi@linux.ibm.com,
+        kgraul@linux.ibm.com, yoshfuji@linux-ipv6.org, dsahern@kernel.org,
+        roopa@nvidia.com, nikolay@nvidia.com, steffen.klassert@secunet.com,
+        herbert@gondor.apana.org.au, courmisch@gmail.com, andrew@lunn.ch,
+        hch@lst.de, linux-parisc@vger.kernel.org,
+        linux-hams@vger.kernel.org, linux-hippi@sunsite.dk,
+        linux-ppp@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-x25@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-s390@vger.kernel.org, bridge@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> > On Saturday, 24 July 2021, 19:35:12 BST, Salah Triki <salah.triki@gmail.com> wrote:
-> >
-> >> Replace udev with usb_get_dev() in order to make code cleaner.
-> >
-> >> Signed-off-by: Salah Triki <salah.triki@gmail.com>
+Hello:
 
-Nacked-by: Hin-Tak Leung <htl10@users.sourceforge.net>
+This series was applied to netdev/net-next.git (refs/heads/master):
 
-Seeing as the change does not add any value.
+On Tue, 27 Jul 2021 15:44:46 +0200 you wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> This series is a follow-up to the series for removing
+> compat_alloc_user_space() and copy_in_user() that has now
+> been merged.
+> 
+> I wanted to be sure I address all the ways that 'struct ifreq' is used
+> in device drivers through .ndo_do_ioctl, originally to prove that
+> my approach of changing the struct definition was correct, but then
+> I discarded that approach and went on anyway.
+> 
+> [...]
 
-> >> ---
-> >> drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 4 +---
-> >> 1 file changed, 1 insertion(+), 3 deletions(-)
-> >
-> >> diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-> > b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-> >> index eb68b2d3caa1..30bb3c2b8407 100644
-> >> --- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-> >> +++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-> >> @@ -1455,9 +1455,7 @@ static int rtl8187_probe(struct usb_interface *intf,
-> >
-> >>    SET_IEEE80211_DEV(dev, &intf->dev);
-> >>    usb_set_intfdata(intf, dev);
-> >> -    priv->udev = udev;
-> >> -
-> >> -    usb_get_dev(udev);
-> >> +    priv->udev = usb_get_dev(udev);
-> >
-> >>    skb_queue_head_init(&priv->rx_queue);
-> >
-> >> -- 
-> >> 2.25.1
-> >
-> > It is not cleaner - the change is not functionally equivalent. Before
-> > the change, the reference count is increased after the assignment; and
-> > after the change, before the assignment. So my question is, does the
-> > reference count increasing a little earlier matters? What can go wrong
-> > between very short time where the reference count increases, and
-> > priv->udev not yet assigned? I think there might be a race condition
-> > where the probbe function is called very shortly twice. Especially if
-> > the time of running the reference count function is non-trivial.
-> >
-> > Larry, what do you think?
+Here is the summary with links:
+  - [net-next,v3,01/31] net: split out SIOCDEVPRIVATE handling from dev_ioctl
+    https://git.kernel.org/netdev/net-next/c/b9067f5dc4a0
+  - [net-next,v3,02/31] staging: rtlwifi: use siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/89939e890605
+  - [net-next,v3,03/31] staging: wlan-ng: use siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/3343c49a959d
+  - [net-next,v3,04/31] hostap: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/3f3fa5340745
+  - [net-next,v3,05/31] bridge: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/561d8352818f
+  - [net-next,v3,06/31] phonet: use siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/4747c1a8bc50
+  - [net-next,v3,07/31] tulip: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/029a4fef6b22
+  - [net-next,v3,08/31] bonding: use siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/232ec98ec35d
+  - [net-next,v3,09/31] appletalk: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/dbecb011eb78
+  - [net-next,v3,10/31] hamachi: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/99b78a37a371
+  - [net-next,v3,11/31] tehuti: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/32d05468c462
+  - [net-next,v3,12/31] eql: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/d92f7b59d32b
+  - [net-next,v3,13/31] fddi: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/043393d8b478
+  - [net-next,v3,14/31] net: usb: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/ef1b5b0c30bc
+  - [net-next,v3,15/31] slip/plip: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/76b5878cffab
+  - [net-next,v3,16/31] qeth: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/18787eeebd71
+  - [net-next,v3,17/31] cxgb3: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/ebb4a911e09a
+  - [net-next,v3,18/31] hamradio: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/25ec92fbdd23
+  - [net-next,v3,19/31] airo: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/ae6af0120dda
+  - [net-next,v3,20/31] ip_tunnel: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/3e7a1c7c561e
+  - [net-next,v3,21/31] hippi: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/81a68110a22a
+  - [net-next,v3,22/31] sb1000: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/cc0aa831a0d9
+  - [net-next,v3,23/31] ppp: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/34f7cac07c4e
+  - [net-next,v3,24/31] wan: use ndo_siocdevprivate
+    https://git.kernel.org/netdev/net-next/c/73d74f61a559
+  - [net-next,v3,25/31] wan: cosa: remove dead cosa_net_ioctl() function
+    https://git.kernel.org/netdev/net-next/c/8fb75b79cd98
+  - [net-next,v3,26/31] dev_ioctl: pass SIOCDEVPRIVATE data separately
+    https://git.kernel.org/netdev/net-next/c/a554bf96b49d
+  - [net-next,v3,27/31] dev_ioctl: split out ndo_eth_ioctl
+    https://git.kernel.org/netdev/net-next/c/a76053707dbf
+  - [net-next,v3,28/31] net: split out ndo_siowandev ioctl
+    https://git.kernel.org/netdev/net-next/c/ad7eab2ab014
+  - [net-next,v3,29/31] net: socket: return changed ifreq from SIOCDEVPRIVATE
+    https://git.kernel.org/netdev/net-next/c/88fc023f7de2
+  - [net-next,v3,30/31] net: bridge: move bridge ioctls out of .ndo_do_ioctl
+    https://git.kernel.org/netdev/net-next/c/ad2f99aedf8f
+  - [net-next,v3,31/31] net: bonding: move ioctl handling to private ndo operation
+    https://git.kernel.org/netdev/net-next/c/3d9d00bd1885
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-> BTW, please don't use HTML in emails. Our lists drop all HTML mail (and
-for a good reason).
-
-Yes, sorry about that (I got a few bounces). Yahoo (where this is coming from) seems to make it quite hard to send plain non-html e-mails. See if this one gets through.
-
-
-> -- 
-> https://patchwork.kernel.org/project/linux-wireless/list/
-
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
