@@ -2,164 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F25693D728A
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 12:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC37D3D7508
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jul 2021 14:26:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236079AbhG0KF2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 06:05:28 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:37648 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236063AbhG0KF1 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jul 2021 06:05:27 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16RA5MEu8009366, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16RA5MEu8009366
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 27 Jul 2021 18:05:22 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Tue, 27 Jul 2021 18:05:20 +0800
-Received: from localhost (172.16.21.11) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Tue, 27 Jul
- 2021 18:05:20 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>
-Subject: [PATCH] rtw88: 8822ce: set CLKREQ# signal to low during suspend
-Date:   Tue, 27 Jul 2021 18:05:03 +0800
-Message-ID: <20210727100503.31626-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        id S236453AbhG0M0x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 08:26:53 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:32320 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231945AbhG0M0x (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 27 Jul 2021 08:26:53 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1627388813; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=Q6hAM6vysUdsneiXBqcVC/h93AYOHGPjOJpOhDCKNt0=; b=pCxrMPpV+aaGvpvbw1apMeYgyS7lI2y0DOhNjdVtDwSvPo887QAZ5i2KcsDJyWzGKsMDT680
+ dZXtqyMRfiA0PGZTWjXDtE8Z7hAx0cYbCxeF/8iBPRUrL+wjjh8gJOrKvaQaN1CGw+vut/Af
+ KaVvV/ebtRSV+hWlhyEb1dY4zrg=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 60fffb6e1dd16c87888e8e95 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 27 Jul 2021 12:26:22
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 34AC4C433F1; Tue, 27 Jul 2021 12:26:21 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id ECF58C433F1;
+        Tue, 27 Jul 2021 12:26:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ECF58C433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Julian Calaby <julian.calaby@gmail.com>
+Cc:     Dongliang Mu <mudongliangabcd@gmail.com>,
+        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Brooke Basile <brookebasile@gmail.com>,
+        syzbot+6692c72009680f7c4eb2@syzkaller.appspotmail.com,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ath9k: hif_usb: fix memory leak in ath9k_hif_usb_firmware_cb
+References: <20210709084351.2087311-1-mudongliangabcd@gmail.com>
+        <CAGRGNgUNnf=62xnFE4zUiVJ+n6NyGjFUmdR2JChbRkhsDSy0Yw@mail.gmail.com>
+Date:   Tue, 27 Jul 2021 15:26:14 +0300
+In-Reply-To: <CAGRGNgUNnf=62xnFE4zUiVJ+n6NyGjFUmdR2JChbRkhsDSy0Yw@mail.gmail.com>
+        (Julian Calaby's message of "Tue, 27 Jul 2021 17:24:44 +1000")
+Message-ID: <877dhcgcyh.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.21.11]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/27/2021 09:43:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzcvMjcgpFekyCAwNjowMDowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 07/27/2021 09:51:29
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 165266 [Jul 27 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 449 449 5db59deca4a4f5e6ea34a93b13bc730e229092f4
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/27/2021 09:54:00
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chin-Yen Lee <timlee@realtek.com>
+Julian Calaby <julian.calaby@gmail.com> writes:
 
-We find the power sequence of system suspend flow don't meet
-the criteria when using 8822CE-VR chip by rfe-type 6, because the
-reference clock form host is sometimes late. To avoid the behavoir,
-we keep CLKREQ# signal to low during suspend to make sure the reference
-clock arrival in time.
+> Hi Dongliang,
+>
+> (Drive-by review, I know almost nothing about the code in question)
+>
+> On Fri, Jul 9, 2021 at 6:47 PM Dongliang Mu <mudongliangabcd@gmail.com> wrote:
+>>
+>> The commit 03fb92a432ea ("ath9k: hif_usb: fix race condition between
+>> usb_get_urb() and usb_kill_anchored_urbs()") adds three usb_get_urb
+>> in ath9k_hif_usb_dealloc_tx_urbs and usb_free_urb.
+>>
+>> Fix this bug by adding corresponding usb_free_urb in
+>> ath9k_hif_usb_dealloc_tx_urbs other and hif_usb_stop.
+>>
+>> Reported-by: syzbot+6692c72009680f7c4eb2@syzkaller.appspotmail.com
+>> Fixes: 03fb92a432ea ("ath9k: hif_usb: fix race condition between usb_get_urb() and usb_kill_anchored_urbs()")
+>> Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
+>> ---
+>>  drivers/net/wireless/ath/ath9k/hif_usb.c | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+>> index 860da13bfb6a..bda91ff3289b 100644
+>> --- a/drivers/net/wireless/ath/ath9k/hif_usb.c
+>> +++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+>> @@ -457,6 +457,7 @@ static void hif_usb_stop(void *hif_handle)
+>>                 usb_kill_urb(tx_buf->urb);
+>>                 list_del(&tx_buf->list);
+>>                 usb_free_urb(tx_buf->urb);
+>> +               usb_free_urb(tx_buf->urb);
+>
+> Ok, so if I'm reading this correctly, before the first usb_free_urb()
+> call, we have two references to the urb at tx_buf->urb.
+>
+> Why?
+>
+> Isn't the better fix here to detangle why there's more than one
+> reference to it and resolve it that way? This looks like a hack to fix
+> something much more fundamentally broken.
 
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/pci.c | 33 ++++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/pci.h |  1 +
- 2 files changed, 34 insertions(+)
+Yeah, this looks very suspicious.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index e7d17ab8f113..0f95a9555aea 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1359,6 +1359,25 @@ static void rtw_pci_clkreq_set(struct rtw_dev *rtwdev, bool enable)
- 	rtw_dbi_write8(rtwdev, RTK_PCIE_LINK_CFG, value);
- }
- 
-+static void rtw_pci_clkreq_pad_low(struct rtw_dev *rtwdev, bool enable)
-+{
-+	u8 value;
-+	int ret;
-+
-+	ret = rtw_dbi_read8(rtwdev, RTK_PCIE_LINK_CFG, &value);
-+	if (ret) {
-+		rtw_err(rtwdev, "failed to read CLKREQ_L1, ret=%d", ret);
-+		return;
-+	}
-+
-+	if (enable)
-+		value &= ~BIT_CLKREQ_N_PAD;
-+	else
-+		value |= BIT_CLKREQ_N_PAD;
-+
-+	rtw_dbi_write8(rtwdev, RTK_PCIE_LINK_CFG, value);
-+}
-+
- static void rtw_pci_aspm_set(struct rtw_dev *rtwdev, bool enable)
- {
- 	u8 value;
-@@ -1500,11 +1519,25 @@ static void rtw_pci_phy_cfg(struct rtw_dev *rtwdev)
- 
- static int __maybe_unused rtw_pci_suspend(struct device *dev)
- {
-+	struct ieee80211_hw *hw = dev_get_drvdata(dev);
-+	struct rtw_dev *rtwdev = hw->priv;
-+	struct rtw_chip_info *chip = rtwdev->chip;
-+	struct rtw_efuse *efuse = &rtwdev->efuse;
-+
-+	if (chip->id == RTW_CHIP_TYPE_8822C && efuse->rfe_option == 6)
-+		rtw_pci_clkreq_pad_low(rtwdev, true);
- 	return 0;
- }
- 
- static int __maybe_unused rtw_pci_resume(struct device *dev)
- {
-+	struct ieee80211_hw *hw = dev_get_drvdata(dev);
-+	struct rtw_dev *rtwdev = hw->priv;
-+	struct rtw_chip_info *chip = rtwdev->chip;
-+	struct rtw_efuse *efuse = &rtwdev->efuse;
-+
-+	if (chip->id == RTW_CHIP_TYPE_8822C && efuse->rfe_option == 6)
-+		rtw_pci_clkreq_pad_low(rtwdev, false);
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.h b/drivers/net/wireless/realtek/rtw88/pci.h
-index 0ffae887527a..66f78eb7757c 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.h
-+++ b/drivers/net/wireless/realtek/rtw88/pci.h
-@@ -37,6 +37,7 @@
- #define RTK_PCIE_LINK_CFG	0x0719
- #define BIT_CLKREQ_SW_EN	BIT(4)
- #define BIT_L1_SW_EN		BIT(3)
-+#define BIT_CLKREQ_N_PAD	BIT(0)
- #define RTK_PCIE_CLKDLY_CTRL	0x0725
- 
- #define BIT_PCI_BCNQ_FLAG	BIT(4)
+One more thing: also the patch should be tested with real hardware. I'm
+worried that people are just trying to fix a syzbot warning and not
+really considering how it works in real life. That's why I'm extra
+careful with syzbot patches for wireless drivers.
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
