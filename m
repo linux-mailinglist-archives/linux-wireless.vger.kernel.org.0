@@ -2,157 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D12283D8596
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 03:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51FE13D85A0
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 03:48:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234624AbhG1BoU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 21:44:20 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:55226 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234673AbhG1BoQ (ORCPT
+        id S233170AbhG1Br7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 21:47:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34934 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233149AbhG1Br6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jul 2021 21:44:16 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16S1iA2E1031142, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16S1iA2E1031142
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 28 Jul 2021 09:44:10 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Wed, 28 Jul 2021 09:44:09 +0800
-Received: from localhost (172.16.21.11) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 28 Jul
- 2021 09:44:09 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>
-Subject: [PATCH v2 5/5] rtw88: wow: fix size access error of probe request
-Date:   Wed, 28 Jul 2021 09:43:35 +0800
-Message-ID: <20210728014335.8785-6-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210728014335.8785-1-pkshih@realtek.com>
-References: <20210728014335.8785-1-pkshih@realtek.com>
+        Tue, 27 Jul 2021 21:47:58 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6298C061757
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 18:47:54 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id k4-20020a17090a5144b02901731c776526so7584048pjm.4
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 18:47:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=b56RRYUTS03XICd8fA2qtUp0AUHb/enzxmkYpgfS6mQ=;
+        b=ULjzXag2fzn2MWAevsHkfU4DGFB83/xCN+ou320ileQKhfcFiIwDmgHT0hK27d/5iw
+         aNtiwfHcnzUz/xRfQqPTbZdf0v2T5DXdLqH/Iy6jeYelvl6kJqyubEE42ujmpxUqJ1M0
+         SVR6MaUBv4nshnxF8am0wiGk1RDsc7Bz3+0xU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=b56RRYUTS03XICd8fA2qtUp0AUHb/enzxmkYpgfS6mQ=;
+        b=t6IF0ci8d7NLIMlGBWoKSFFlZNdwrpdNFlprBcMkCqH/C3A0mplbD33jplhfYU9Wgq
+         941/Jds4ZFJfre8EvpISRK/ftF/a8k6lHzTvKROTicGKV0Bvd0h4azeiyppa8Rz4Z+n/
+         Zzja8AgWJwFLl/iRTfwNUFoHnWZjcQhtpGnpSUsS87ZvF1Bq9NZN4VQVfAKOETV5lurN
+         f4yy7FPvv9R9LZGwap1vqqgLPB3bmqA5q4totrLbnaPOtb7NDpr3PryqVD7PGVojBGRD
+         dp9YokY7BlnMVUCJbRN3dq3az7pm35yHOaKyyveLpxpIThbPDhJ27hnA4vUGiiJCwz32
+         IkPA==
+X-Gm-Message-State: AOAM531s3nzslPmZpPXbqHz6GjocOpFx0ZKFzBLge+FOMYdPURHNGoEa
+        ojWvTLEhYYgzt/u1MzyroJ4Tjg==
+X-Google-Smtp-Source: ABdhPJyGB/6+ELpL7U8c35faYsf4tmgVzMMY5WlBhkjlASqfxpvlVrk6N7mC99D5xk5Tp/+QyE2xNw==
+X-Received: by 2002:a17:90a:8c8a:: with SMTP id b10mr15819262pjo.23.1627436874109;
+        Tue, 27 Jul 2021 18:47:54 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id 30sm5933732pgq.31.2021.07.27.18.47.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jul 2021 18:47:53 -0700 (PDT)
+Date:   Tue, 27 Jul 2021 18:47:52 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     linux-hardening@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Keith Packard <keithpac@amazon.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
+Subject: Re: [PATCH 34/64] fortify: Detect struct member overflows in
+ memcpy() at compile-time
+Message-ID: <202107271830.3DB03F3CF@keescook>
+References: <20210727205855.411487-1-keescook@chromium.org>
+ <20210727205855.411487-35-keescook@chromium.org>
+ <CAKwvOdknit8DtWaFvLupmNEebjbwVa6R3xiGc2D4AqB_6+i52g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.21.11]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/28/2021 01:31:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzcvMjcgpFWkyCAwNzo0MjowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 07/28/2021 01:28:11
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 165288 [Jul 28 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 449 449 5db59deca4a4f5e6ea34a93b13bc730e229092f4
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 07/28/2021 01:31:00
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKwvOdknit8DtWaFvLupmNEebjbwVa6R3xiGc2D4AqB_6+i52g@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chin-Yen Lee <timlee@realtek.com>
+On Tue, Jul 27, 2021 at 03:43:27PM -0700, Nick Desaulniers wrote:
+> On Tue, Jul 27, 2021 at 2:17 PM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > To accelerate the review of potential run-time false positives, it's
+> > also worth noting that it is possible to partially automate checking
+> > by examining memcpy() buffer argument fields to see if they have
+> > a neighboring. It is reasonable to expect that the vast majority of
+> 
+> a neighboring...field?
 
-Current flow will lead to null ptr access because of trying
-to get the size of freed probe-request packets. We store the
-information of packet size into rsvd page instead and also fix
-the size error issue, which will cause unstable behavoir of
-sending probe request by wow firmware.
+Whoops, sorry, this should say "array member". I've fixed this to read:
 
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/fw.c | 8 ++++++--
- drivers/net/wireless/realtek/rtw88/fw.h | 1 +
- 2 files changed, 7 insertions(+), 2 deletions(-)
+  To accelerate the review of potential run-time false positives, it's
+  also worth noting that it is possible to partially automate checking
+  by examining the memcpy() buffer argument to check for the destination
+  struct member having a neighboring array member. It is reasonable to
+  expect that the vast majority of run-time false positives would look like
+  the already evaluated and fixed compile-time false positives, where the
+  most common pattern is neighboring arrays. (And, FWIW, several of the
+  compile-time fixes were actual bugs.)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 3bfa5ecc0053..e6399519584b 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -819,7 +819,7 @@ static u16 rtw_get_rsvd_page_probe_req_size(struct rtw_dev *rtwdev,
- 			continue;
- 		if ((!ssid && !rsvd_pkt->ssid) ||
- 		    rtw_ssid_equal(rsvd_pkt->ssid, ssid))
--			size = rsvd_pkt->skb->len;
-+			size = rsvd_pkt->probe_req_size;
- 	}
- 
- 	return size;
-@@ -1047,6 +1047,8 @@ static struct sk_buff *rtw_get_rsvd_page_skb(struct ieee80211_hw *hw,
- 							 ssid->ssid_len, 0);
- 		else
- 			skb_new = ieee80211_probereq_get(hw, vif->addr, NULL, 0, 0);
-+		if (skb_new)
-+			rsvd_pkt->probe_req_size = (u16)skb_new->len;
- 		break;
- 	case RSVD_NLO_INFO:
- 		skb_new = rtw_nlo_info_get(hw);
-@@ -1643,6 +1645,7 @@ int rtw_fw_dump_fifo(struct rtw_dev *rtwdev, u8 fifo_sel, u32 addr, u32 size,
- static void __rtw_fw_update_pkt(struct rtw_dev *rtwdev, u8 pkt_id, u16 size,
- 				u8 location)
- {
-+	struct rtw_chip_info *chip = rtwdev->chip;
- 	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
- 	u16 total_size = H2C_PKT_HDR_SIZE + H2C_PKT_UPDATE_PKT_LEN;
- 
-@@ -1653,6 +1656,7 @@ static void __rtw_fw_update_pkt(struct rtw_dev *rtwdev, u8 pkt_id, u16 size,
- 	UPDATE_PKT_SET_LOCATION(h2c_pkt, location);
- 
- 	/* include txdesc size */
-+	size += chip->tx_pkt_desc_sz;
- 	UPDATE_PKT_SET_SIZE(h2c_pkt, size);
- 
- 	rtw_fw_send_h2c_packet(rtwdev, h2c_pkt);
-@@ -1662,7 +1666,7 @@ void rtw_fw_update_pkt_probe_req(struct rtw_dev *rtwdev,
- 				 struct cfg80211_ssid *ssid)
- {
- 	u8 loc;
--	u32 size;
-+	u16 size;
- 
- 	loc = rtw_get_rsvd_page_probe_req_location(rtwdev, ssid);
- 	if (!loc) {
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
-index a8a7162fbe64..a3a28ac6f1de 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.h
-+++ b/drivers/net/wireless/realtek/rtw88/fw.h
-@@ -147,6 +147,7 @@ struct rtw_rsvd_page {
- 	u8 page;
- 	bool add_txdesc;
- 	struct cfg80211_ssid *ssid;
-+	u16 probe_req_size;
- };
- 
- enum rtw_keep_alive_pkt_type {
+> > diff --git a/include/linux/fortify-string.h b/include/linux/fortify-string.h
+> > index 7e67d02764db..5e79e626172b 100644
+> > --- a/include/linux/fortify-string.h
+> > +++ b/include/linux/fortify-string.h
+> > @@ -2,13 +2,17 @@
+> >  #ifndef _LINUX_FORTIFY_STRING_H_
+> >  #define _LINUX_FORTIFY_STRING_H_
+> >
+> > +#include <linux/bug.h>
+> 
+> What are you using from linux/bug.h here?
+
+Thanks; yes, that should have been added in patch 64, when the WARN_ONCE()
+use is introduced:
+https://lore.kernel.org/lkml/20210727205855.411487-65-keescook@chromium.org/
+
+> > [...]
+> > +#define __fortify_memcpy_chk(p, q, size, p_size, q_size,               \
+> > +                            p_size_field, q_size_field, op) ({         \
+> > +       size_t __fortify_size = (size_t)(size);                         \
+> > +       fortify_memcpy_chk(__fortify_size, p_size, q_size,              \
+> > +                          p_size_field, q_size_field, #op);            \
+> > +       __underlying_##op(p, q, __fortify_size);                        \
+> > +})
+> > +
+> > +/*
+> > + * __builtin_object_size() must be captured here to avoid evaluating argument
+> > + * side-effects further into the macro layers.
+> > + */
+> > +#define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                 \
+> > +               __builtin_object_size(p, 0), __builtin_object_size(q, 0), \
+> > +               __builtin_object_size(p, 1), __builtin_object_size(q, 1), \
+> > +               memcpy)
+> 
+> Are there other macro expansion sites for `__fortify_memcpy_chk`,
+> perhaps later in this series? I don't understand why `memcpy` is
+> passed as `func` to `fortify_panic()` rather than continuing to use
+> `__func__`?
+
+Yes, memmove() follows exactly the same pattern. Rather than refactoring
+the declaration in that patch, this felt cleaner.
+https://lore.kernel.org/lkml/20210727205855.411487-36-keescook@chromium.org/
+
+> > [...]
+> >   * @count: The number of bytes to copy
+> >   * @pad: Character to use for padding if space is left in destination.
+> >   */
+> > -static inline void memcpy_and_pad(void *dest, size_t dest_len,
+> > -                                 const void *src, size_t count, int pad)
+> > +static __always_inline void memcpy_and_pad(void *dest, size_t dest_len,
+> > +                                          const void *src, size_t count,
+> > +                                          int pad)
+> 
+> Why __always_inline here?
+
+Without it, we run the risk of it being made out of line, and
+potentially losing access to the __builtin_object_size() checking of
+arguments. Though given some of the Clang bugs, it's possible this needs
+to be strictly converted into a macro.
+
+> > [...]
+> >  #ifdef CONFIG_FORTIFY_SOURCE
+> > +/* These are placeholders for fortify compile-time warnings. */
+> > +void __read_overflow2_field(void) { }
+> > +EXPORT_SYMBOL(__read_overflow2_field);
+> > +void __write_overflow_field(void) { }
+> > +EXPORT_SYMBOL(__write_overflow_field);
+> > +
+> 
+> Don't we rely on these being undefined for Clang to produce a linkage
+> failure (until https://reviews.llvm.org/D106030 has landed)?  By
+> providing a symbol definition we can link against, I don't think
+> __compiletime_{warning|error} will warn at all with Clang?
+
+This was intentional because I explicitly do not want to break the build
+for new warnings, and there is no way currently for Clang to _warn_
+(rather than fail to link). This could be adjusted to break only Clang's
+builds, but at this point, it seemed best.
+
+> > [...]
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +#define TEST   \
+> > +       memcpy(instance.buf, large, sizeof(instance.buf) + 1)
+> > +
+> > +#include "test_fortify.h"
+> > --
+> 
+> I haven't read the whole series yet, but I assume test_fortify.h was
+> provided earlier in the series?
+
+Yup, it's part of the compile-time tests in patch 32:
+https://lore.kernel.org/lkml/20210727205855.411487-33-keescook@chromium.org/
+
+-Kees
+
 -- 
-2.25.1
-
+Kees Cook
