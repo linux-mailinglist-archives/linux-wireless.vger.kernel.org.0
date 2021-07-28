@@ -2,108 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89DA83D8CB1
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 13:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7D3D3D8E09
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 14:42:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235217AbhG1LYH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Jul 2021 07:24:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52498 "EHLO
+        id S235029AbhG1MmR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Jul 2021 08:42:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234639AbhG1LYG (ORCPT
+        with ESMTP id S234759AbhG1MmM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Jul 2021 07:24:06 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4CC4C061765
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Jul 2021 04:24:04 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id n6so2619786ljp.9
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Jul 2021 04:24:04 -0700 (PDT)
+        Wed, 28 Jul 2021 08:42:12 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 301B7C061764
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Jul 2021 05:42:10 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id j2so2954230edp.11
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Jul 2021 05:42:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Wg+3/RRWhlXAdTdGrz6ZDOoqwDjAalfDgSMGfZRFy7c=;
-        b=MqB2oQJrWErl4M3jysGVniDJ4xARTYUEk892vt+CXTsOghQBHfw+ROqpA+FWeMfNAw
-         99HiHQl9pgCodpNZVcjBeusKVj1g8kcdEIy/ZsV7LY738G0Iid6EaBW2zhaAmZdiUtKc
-         pOnrw2np1M0KCLNrhvFVpkrx8b6JNzJx5ukHc=
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=oZoJVjBidnvPVFvMpPWZppXKGeyyaDUB3Ugu5JUsoak=;
+        b=gQbJNMOzQxj/cx77JoMR1ilsH09lf1bG5VH0AB5z05esI2K1er+bjsV1lnl/nUMXsG
+         gIfn3Fw47zK//2u1SaCrmkC1BN0xLAZxPTwlQSAFNp2LMQ1E+66Rtdmws3nrImX3SZNv
+         PKj2UXtpucv56YtHneflFZmT1c3MiGX2GmucHOnffRz5Sn9cwmNGkr1aU04p3PdUEwni
+         MPiLWq0ALxBvOIoDriwihfz7U12LdDpnDDV6uCVvoHlHJgZ96QVqCWRrl6lXXvxMgQPs
+         xXcVjULbKcmMd2xv6BTdwmBRkuUhZ4WSdxgCHVw6Btx+yCZ1bd8FzSl+n2dSufJ4nA89
+         uYLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Wg+3/RRWhlXAdTdGrz6ZDOoqwDjAalfDgSMGfZRFy7c=;
-        b=j2T+twXAEdTJl2vpTPS/qvbRHU7q2U6iUhGodxEh33BlOei9LxItDfoL09tkSbPEhI
-         D2e5BVPc3zMHDhRgU9nfvYwyAAT4+tmk9N6eQILtcgsP0Eg13m51Fjv6O154hw58qXGK
-         CmlkXahHLgvgGiKmxPWCwOF9JpYElKSLPliku0I7r31Btb4lNwGsCjiKP/T/2p2lPYOk
-         2fUse1YmV5eEKMqwcrkVpCvfDph0Sy3lQRCJYJ9DIjEgqklvBHIIrt/C+yfgDocneKy0
-         51r4u9vIYhngTFMBKnsQjGP+JUPOl7vqdkJ83TiHHn8F6YUHTLCBw62o46eAQ1WMv/bj
-         0VvQ==
-X-Gm-Message-State: AOAM533BhnGbQxr4lRBrKBMZNjHx5zna3TyM4cwWj24+2vGtYj6/q+0b
-        9Tz4Yfk43mBGzkUM+8iPjG5faA==
-X-Google-Smtp-Source: ABdhPJzbJpuLwTQcj/uhUJ1FDab/S8wsNFZGfZq+HhHIgh+eTtqaebX9Ee+tEB7aFHczhnUT7I/eLg==
-X-Received: by 2002:a05:651c:124f:: with SMTP id h15mr18566268ljh.4.1627471443108;
-        Wed, 28 Jul 2021 04:24:03 -0700 (PDT)
-Received: from [172.16.11.1] ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id f14sm494569ljj.116.2021.07.28.04.24.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Jul 2021 04:24:02 -0700 (PDT)
-Subject: Re: [PATCH 62/64] netlink: Avoid false-positive memcpy() warning
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kees Cook <keescook@chromium.org>
-Cc:     linux-hardening@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Keith Packard <keithpac@amazon.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
-References: <20210727205855.411487-1-keescook@chromium.org>
- <20210727205855.411487-63-keescook@chromium.org> <YQDv+oG7ok0T1L+r@kroah.com>
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <d7251d92-150b-5346-6237-52afc154bb00@rasmusvillemoes.dk>
-Date:   Wed, 28 Jul 2021 13:24:01 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=oZoJVjBidnvPVFvMpPWZppXKGeyyaDUB3Ugu5JUsoak=;
+        b=OH2U5KcwzlhFrw3hQ5C5U993kwZX7bmsFwkg/moRH/ycR0WOtDKCApvXnVjqE3bLgm
+         kjuWQ0xzq6/e2yObHqDtGGdrgF5ZjGYPn7GHKxcFJISlJvWGTI4UhLZXRpivmU0xkrQS
+         RafdQBlhxxIWQYS4OQz3bYTyFbz3AxeU/xkX5AN8mtuvwdqtqWFvq1fcoV5Gtb7sXp+k
+         HzhizY+h8BBu+kHR5ANus+Csj862X1DQqybQCiWdaqka01kHdAqceuMPe0xmPFzIdmJ3
+         E/Akk/ECgOnJTkG/z+9B3QwVcb8XX1IowsfaSgP4a9STMN72Y/qEv5Yx/xmU1I90Mor1
+         j3KQ==
+X-Gm-Message-State: AOAM532fg5b8x6TGwjA8G5OgJle6Lr5jzqmg9iqOcnjToJAJJ94CTLi+
+        omLxu6kruIdFUxRc8BANbC0iAjjeKOxHtm9rNpiCHGXMW11CzA==
+X-Google-Smtp-Source: ABdhPJwHy6FoXRYQQUOs1CyeO/S/PlWCL8oJuUNfaBk+9wibOoqZGmJSffC4DlQHUvD2KBzQfDrjcimLRgL5ytyo5jI=
+X-Received: by 2002:aa7:cd71:: with SMTP id ca17mr13560353edb.58.1627476128609;
+ Wed, 28 Jul 2021 05:42:08 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YQDv+oG7ok0T1L+r@kroah.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Reply-To: mrsdaniella.kyle@yandex.com
+Sender: luitesamson@gmail.com
+Received: by 2002:ab4:9988:0:0:0:0:0 with HTTP; Wed, 28 Jul 2021 05:42:08
+ -0700 (PDT)
+From:   Mrs Daniella Kyle <mrsdaniellakyle6@gmail.com>
+Date:   Wed, 28 Jul 2021 05:42:08 -0700
+X-Google-Sender-Auth: ffqEREWc_oVTGDs06UtzuX8H6nc
+Message-ID: <CAOXn9EO0xzLPALu0QKfvTWcrJG14pVWWmW8Ebe903bk0tmrnVA@mail.gmail.com>
+Subject: ATM Visa card compensation, Thanks for your past effort
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 28/07/2021 07.49, Greg Kroah-Hartman wrote:
-> On Tue, Jul 27, 2021 at 01:58:53PM -0700, Kees Cook wrote:
->> In preparation for FORTIFY_SOURCE performing compile-time and run-time
->> field bounds checking for memcpy(), memmove(), and memset(), avoid
->> intentionally writing across neighboring fields.
->>
->> Add a flexible array member to mark the end of struct nlmsghdr, and
->> split the memcpy() to avoid false positive memcpy() warning:
->>
->> memcpy: detected field-spanning write (size 32) of single field (size 16)
->>
->> Signed-off-by: Kees Cook <keescook@chromium.org>
->> ---
->>  include/uapi/linux/netlink.h | 1 +
->>  net/netlink/af_netlink.c     | 4 +++-
->>  2 files changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/uapi/linux/netlink.h b/include/uapi/linux/netlink.h
->> index 4c0cde075c27..ddeaa748df5e 100644
->> --- a/include/uapi/linux/netlink.h
->> +++ b/include/uapi/linux/netlink.h
->> @@ -47,6 +47,7 @@ struct nlmsghdr {
->>  	__u16		nlmsg_flags;	/* Additional flags */
->>  	__u32		nlmsg_seq;	/* Sequence number */
->>  	__u32		nlmsg_pid;	/* Sending process port ID */
->> +	__u8		contents[];
-> 
-> Is this ok to change a public, userspace visable, structure?
+Hi,
 
-At least it should keep using a nlmsg_ prefix for consistency and reduce
-risk of collision with somebody having defined an object-like contents
-macro. But there's no guarantees in any case, of course.
+Good Day, This message may actually come to you as surprises today, To
+be very honest with you, It is a joyful moment for me and my family
+right now, so therefore am using this opportunity to inform you that
+have successfully move to Vietnam where am currently living with my
+business partner who assisted me to complete the transfer, but due to
+the willingness and acceptance you showed during my pain have decided
+to willingly compensated you and show my gratitude to you with these
+sum of $950,000.00 Nine Hundred and fifty Thousand US Dollars).
 
-Rasmus
+I want you to accept this amount it=E2=80=99s from the bottom of my heart,
+have issued the check and instructed the bank to roll the fund on a
+master card for security reasons, you can use the card to withdraw
+money from any ATM machine worldwide with a maximum of US$10,000 per
+day.
+
+My bank account manager said you can receive the card and use it
+anywhere in this global world. Go ahead contact the Global ATM
+Alliance directly with this below information. Email Address: .....
+maastercarddeptme20@yahoo.com
+
+ Name: ........... ....... Global Alliance Burkina Faso
+Office Address; ...... 01BP 23 Rue Des Grands Moulins.Ouagadougou, Burkina =
+Faso
+Email Address: ..... [maastercarddeptme20@yahoo.com]
+Name of Manager In charge: Mrs Zoure Gueratou
+
+Presently, I am very busy here in Vietnam because of the investment
+projects which I and my new partner are having at hand, I have given
+instructions to the ATM Visa card office on your behalf to release the
+ATM card which I gave to you as compensation. Therefore feel free and
+get in touch with her and she will send the card and the pin code to
+you in your location in order for you to start withdrawing the
+compensation money without delay.
+
+My family wishes you best of luck in whatever business you shall
+invest this money into. Kindly let me know as soon you received the
+card together with the pin code.
+
+Thank you
+Yours Sincerely
+Daniela Angelo Kyle
