@@ -2,152 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ABFE3D85AA
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 03:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 508BA3D85AE
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 03:52:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233401AbhG1Bui (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 21:50:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35556 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233426AbhG1Buh (ORCPT
+        id S233191AbhG1Bwl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 21:52:41 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:56421 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233172AbhG1Bwl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jul 2021 21:50:37 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 779ECC061757
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 18:50:35 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id o44-20020a17090a0a2fb0290176ca3e5a2fso1978853pjo.1
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jul 2021 18:50:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Uxwg9y2D5FscAC8WTII8k+Fl1MaCKaIyqWX2425pbwg=;
-        b=LrIioahOxuG0Yy87ee4V5QkSIPXjkcKgctqXOSVmOvUvbl3AGJicrLW+CgQjr1Drb9
-         2+LoeVSx6hMKWQ3vNE2BnohqbgXg5IYeiV7M4xOT5JsYW83C6ivu5hTcWryqGo7UZRdo
-         H7BcuPUaJ6KHTDmRelDadDBO+fGgawogS5vN8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Uxwg9y2D5FscAC8WTII8k+Fl1MaCKaIyqWX2425pbwg=;
-        b=E5PxbxjG/2GStatQyqPrmZvgCeod1OffhEnadrJTw2uEnzyhTWKO45q0a09pFk9N6I
-         Cbo3+POOgG15R66x8DD2y9ylm86ALWIB2n4k+vwXaTHOAGdyXP0G0RKWoDSF5b4qZSep
-         kEJ/9ZF7T2jgEUviwF4XSKDr0NMfa4RHBcHBOaxsynrq8UmigfEHkt8zK69n8LQqAZSf
-         ubgElzKWET0LgdPrny/lUQb7cx5Ae2GoT3okibQSqJwjsQuS/q9Pssm3M9Qd0aEFkkG9
-         5JktBefyy2h0CgRjAK+XSn+1kkExksfguFHx3gFDYbYP6OVXaV9jQcOEcX6MHF0NWHeX
-         8laA==
-X-Gm-Message-State: AOAM530xGis/Z+y45SGtqFccpRJac5xd5McDR/Hs9SRePpQ0oZLj9fUx
-        VXibN0r5gqug7WbY/YqCQ1h3kg==
-X-Google-Smtp-Source: ABdhPJyheVx5T5IFdDGIlFJGMqu67VgDnTIUx7vGl5lFj0tDG77pOvHSTj72nmspZwOompBVxs+mRA==
-X-Received: by 2002:a17:90a:bb0d:: with SMTP id u13mr25562521pjr.88.1627437035064;
-        Tue, 27 Jul 2021 18:50:35 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id s193sm5105347pfc.183.2021.07.27.18.50.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jul 2021 18:50:34 -0700 (PDT)
-Date:   Tue, 27 Jul 2021 18:50:33 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     linux-hardening@vger.kernel.org,
-        Keith Packard <keithpac@amazon.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
-Subject: Re: [PATCH 01/64] media: omap3isp: Extract struct group for memcpy()
- region
-Message-ID: <202107271849.00A81539B@keescook>
-References: <20210727205855.411487-1-keescook@chromium.org>
- <20210727205855.411487-2-keescook@chromium.org>
- <20210728005546.GA35706@embeddedor>
+        Tue, 27 Jul 2021 21:52:41 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16S1qOXJ1001018, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16S1qOXJ1001018
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 28 Jul 2021 09:52:24 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 28 Jul 2021 09:52:22 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 28 Jul 2021 09:52:22 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91]) by
+ RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91%5]) with mapi id
+ 15.01.2106.013; Wed, 28 Jul 2021 09:52:22 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     kernel test robot <lkp@intel.com>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+CC:     "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Timlee <timlee@realtek.com>
+Subject: RE: [PATCH 3/4] rtw88: wow: report wow reason through mac80211 api
+Thread-Topic: [PATCH 3/4] rtw88: wow: report wow reason through mac80211 api
+Thread-Index: AQHXgs50ScP7mMNnIky6rgj1HURcV6tXCieAgACWN3A=
+Date:   Wed, 28 Jul 2021 01:52:22 +0000
+Message-ID: <c8741e12d6b8499895a5da97ee08c26f@realtek.com>
+References: <20210727100046.30116-4-pkshih@realtek.com>
+ <202107280846.9pimJdSE-lkp@intel.com>
+In-Reply-To: <202107280846.9pimJdSE-lkp@intel.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.146]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/7/27_=3F=3F_07:42:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210728005546.GA35706@embeddedor>
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 07/28/2021 01:38:15
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 165288 [Jul 28 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 449 449 5db59deca4a4f5e6ea34a93b13bc730e229092f4
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: git-scm.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;github.com:7.1.1;127.0.0.199:7.1.2;lore.kernel.org:7.1.1;raw.githubusercontent.com:7.1.1;git.kernel.org:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 07/28/2021 01:41:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jul 27, 2021 at 07:55:46PM -0500, Gustavo A. R. Silva wrote:
-> On Tue, Jul 27, 2021 at 01:57:52PM -0700, Kees Cook wrote:
-> > In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> > field bounds checking for memcpy(), memmove(), and memset(), avoid
-> > intentionally writing across neighboring fields.  Wrap the target region
-> > in a common named structure. This additionally fixes a theoretical
-> > misalignment of the copy (since the size of "buf" changes between 64-bit
-> > and 32-bit, but this is likely never built for 64-bit).
-> > 
-> > FWIW, I think this code is totally broken on 64-bit (which appears to
-> > not be a "real" build configuration): it would either always fail (with
-> > an uninitialized data->buf_size) or would cause corruption in userspace
-> > due to the copy_to_user() in the call path against an uninitialized
-> > data->buf value:
-> > 
-> > omap3isp_stat_request_statistics_time32(...)
-> >     struct omap3isp_stat_data data64;
-> >     ...
-> >     omap3isp_stat_request_statistics(stat, &data64);
-> > 
-> > int omap3isp_stat_request_statistics(struct ispstat *stat,
-> >                                      struct omap3isp_stat_data *data)
-> >     ...
-> >     buf = isp_stat_buf_get(stat, data);
-> > 
-> > static struct ispstat_buffer *isp_stat_buf_get(struct ispstat *stat,
-> >                                                struct omap3isp_stat_data *data)
-> > ...
-> >     if (buf->buf_size > data->buf_size) {
-> >             ...
-> >             return ERR_PTR(-EINVAL);
-> >     }
-> >     ...
-> >     rval = copy_to_user(data->buf,
-> >                         buf->virt_addr,
-> >                         buf->buf_size);
-> > 
-> > Regardless, additionally initialize data64 to be zero-filled to avoid
-> > undefined behavior.
-> > 
-> > Fixes: 378e3f81cb56 ("media: omap3isp: support 64-bit version of omap3isp_stat_data")
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> >  drivers/media/platform/omap3isp/ispstat.c |  5 +--
-> >  include/uapi/linux/omap3isp.h             | 44 +++++++++++++++++------
-> >  2 files changed, 36 insertions(+), 13 deletions(-)
-> > 
-> > diff --git a/drivers/media/platform/omap3isp/ispstat.c b/drivers/media/platform/omap3isp/ispstat.c
-> > index 5b9b57f4d9bf..ea8222fed38e 100644
-> > --- a/drivers/media/platform/omap3isp/ispstat.c
-> > +++ b/drivers/media/platform/omap3isp/ispstat.c
-> > @@ -512,7 +512,7 @@ int omap3isp_stat_request_statistics(struct ispstat *stat,
-> >  int omap3isp_stat_request_statistics_time32(struct ispstat *stat,
-> >  					struct omap3isp_stat_data_time32 *data)
-> >  {
-> > -	struct omap3isp_stat_data data64;
-> > +	struct omap3isp_stat_data data64 = { };
-> >  	int ret;
-> >  
-> >  	ret = omap3isp_stat_request_statistics(stat, &data64);
-> > @@ -521,7 +521,8 @@ int omap3isp_stat_request_statistics_time32(struct ispstat *stat,
-> >  
-> >  	data->ts.tv_sec = data64.ts.tv_sec;
-> >  	data->ts.tv_usec = data64.ts.tv_usec;
-> > -	memcpy(&data->buf, &data64.buf, sizeof(*data) - sizeof(data->ts));
-> > +	data->buf = (uintptr_t)data64.buf;
-> > +	memcpy(&data->frame, &data64.buf, sizeof(data->frame));
-> 
-> I think this should be:
-> 
-> 	memcpy(..., &data64.frame, ...);
-> 
-> instead.
 
-Whoops; thanks! This is what I get for temporarily silencing the
-read-overflow warnings. :)
+> -----Original Message-----
+> From: kernel test robot [mailto:lkp@intel.com]
+> Sent: Wednesday, July 28, 2021 8:53 AM
+> To: Pkshih; tony0620emma@gmail.com; kvalo@codeaurora.org
+> Cc: kbuild-all@lists.01.org; linux-wireless@vger.kernel.org; Timlee
+> Subject: Re: [PATCH 3/4] rtw88: wow: report wow reason through mac80211 api
+> 
+> Hi Ping-Ke,
+> 
+> Thank you for the patch! Yet something to improve:
+> 
+> [auto build test ERROR on wireless-drivers-next/master]
+> [also build test ERROR on v5.14-rc3 next-20210727]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:
+> https://github.com/0day-ci/linux/commits/Ping-Ke-Shih/rtw88-fix-WoWLAN-function-and-report-reason-
+> to-mac80211/20210727-180221
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+> config: parisc-allyesconfig (attached as .config)
+> compiler: hppa-linux-gcc (GCC) 10.3.0
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O
+> ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://github.com/0day-ci/linux/commit/97da528a8da3f33ccd9f58ed43d008b51c6d19d9
+>         git remote add linux-review https://github.com/0day-ci/linux
+>         git fetch --no-tags linux-review
+> Ping-Ke-Shih/rtw88-fix-WoWLAN-function-and-report-reason-to-mac80211/20210727-180221
+>         git checkout 97da528a8da3f33ccd9f58ed43d008b51c6d19d9
+>         # save the attached .config to linux build tree
+>         mkdir build_dir
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-10.3.0 make.cross O=build_dir ARCH=parisc
+> SHELL=/bin/bash
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    hppa-linux-ld: drivers/net/wireless/realtek/rtw88/wow.o: in function
+> `rtw_wow_show_wakeup_reason':
+> >> (.text+0x6c4): undefined reference to `ieee80211_report_wowlan_wakeup'
+> >> hppa-linux-ld: (.text+0x6e0): undefined reference to `ieee80211_report_wowlan_wakeup'
+> 
 
--Kees
+Without CONFIG_PM, we don't need to build drivers/net/wireless/realtek/rtw88/wow.c.
+Fix this by [1].
 
--- 
-Kees Cook
+[1] https://lore.kernel.org/linux-wireless/20210728014335.8785-1-pkshih@realtek.com/T/#t
+
+Ping-Ke
+
