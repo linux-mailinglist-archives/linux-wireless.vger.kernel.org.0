@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D5F33D95F0
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 21:18:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18C903D9605
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 21:26:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231195AbhG1TR7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Jul 2021 15:17:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49848 "EHLO
+        id S231154AbhG1T0a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Jul 2021 15:26:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbhG1TR7 (ORCPT
+        with ESMTP id S229690AbhG1T0a (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Jul 2021 15:17:59 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1401C061757;
-        Wed, 28 Jul 2021 12:17:56 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id i10so3919934pla.3;
-        Wed, 28 Jul 2021 12:17:56 -0700 (PDT)
+        Wed, 28 Jul 2021 15:26:30 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C377C061757;
+        Wed, 28 Jul 2021 12:26:27 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id g23-20020a17090a5797b02901765d605e14so5586462pji.5;
+        Wed, 28 Jul 2021 12:26:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
         bh=tlSkpJrxofz4KLJFo6IpJsCRmIFL97VN126VaWV4qiw=;
-        b=JNLEAf2mMXwo4aCgKs24hotp8eBbsf0ahKXCR0Y85l0p7adULjYvjPyieQZpVbS/N4
-         b739qfW8zD6kZiI2vgm2CTpEMPL5cQip1EvVPGMIl83vjjbPCjXMjq9VxFeLLrIclxOZ
-         cCAkcakrjT1od6kWSGW5qfrfuSACjhqUMgx26FQfJA3IwIW6qtXyGxWxBGtzQEowYnJ/
-         zP82CfhIFZS5F7btTUyrQi8KlYBGTbPgfiU75vpmGej++V4qp7Hxio+g0fxtCLb1an/7
-         AMlRuBCXVFRQ6K0KeEFagO0tXO+hfCg8W/yYEBxckGx2xYXr9RqL9j/mh4mxcL7SJwJD
-         dXZQ==
+        b=jIg2mC1/DGImRz3PHpmlqT7eLIBfAG8bnO8n/qKq9ND/F7HfetxYndGjMT1UT4vkMA
+         HaP7ybr96J1uYuyrYpmR7jcH9izgDE+a3LSJcfi6rBo0c5xvduwGP6uK5ZV7Sbtcn2Tg
+         3/6bTX7g6XfiUXkT+tzknTbi6F3Z+q7UV1RS08OBt0/gXEl1tvhsiFRC2NtP4uLkmQz6
+         fKHem3bxSOiOowbu7VNOVuoEmCGxTmgJdPytz6ODrWjFhzYGtHiQrLV/B8RRJLT+7B1F
+         Mp0W0tKSjgB0TNKXhjRmM9flD9wJBE6EY3v5XwReil5ErPYFjbWVNhyvgox+K3KYvxUi
+         /SRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
         bh=tlSkpJrxofz4KLJFo6IpJsCRmIFL97VN126VaWV4qiw=;
-        b=HlC+mYO/1zuialFh+VkOdCQUIClYFvJCuBnPdhTRme7fx1uGXr7b0T+a2XHmwDh6QR
-         AmJwwz7GM104RvagmYlrfEkJ9oZA4RH1k7E25iYgdqFvYvV7Nm5vZyEeTiTpCFo+QOJj
-         h95IIyUA+yVlSN3OyekcojnySaITDYiR3u4N2bIB3pxov5mTkGFr4lfa/YKtoge5gtVv
-         q91+bjU737d/VDBYMwVVqZD//LtPh+ZJgdj0cOIxVkXO+iPGDJu5EEBBsmpQ/5NMtFkR
-         3HAWdHpZAkqCVGEeSWIsw26RQ5XgcoAy2H6kFU4boZ+DtEAsgVAvNc1DzUKp35x9mXtR
-         FRjw==
-X-Gm-Message-State: AOAM531RkfIaSUQ9S4cfI9GjjLSAyeKtiWRQ/ywAZvfrRkihbeqXc7Y6
-        25DWdTcABR7rpZhcebkVsWY=
-X-Google-Smtp-Source: ABdhPJzz1hnYQmfSfPANLOLr9Ck2OfELKiyvpZ7Caoj/2kq9puuPWuV06r6sJYJbsrIBfg1NTYu2lg==
-X-Received: by 2002:a17:902:7247:b029:12c:48a2:cc2c with SMTP id c7-20020a1709027247b029012c48a2cc2cmr1151819pll.31.1627499876116;
-        Wed, 28 Jul 2021 12:17:56 -0700 (PDT)
+        b=P7KjMLMCp1qjRgva0ks3+Fh2tBJQs7uirP6EOKNkkrWe8sxj6gk6YkvxYq6Ku1PKdg
+         qjug5Yq7PqWeDkhsmMkfwtXFX6zfYeWEgw3N4N5MZ39KYEd04+gkG5Q70OMwCgH4LG+H
+         AGEwRdOz9ZKYqhqYXoqCIHoxkSo78aBWDpl1wpYGRSdVKlGZPxzPQn8wbkWWnGO3E8t0
+         9o6tTIWAz5APZ1ugGw2BXoCxxew4JWntuP0talnhO2HxM5ZeRWsDq9oYfuEiYRRo3Sqf
+         Om7dcirtEYcAFJcFSKVhJOqT7cNx1UNYvWS9fAGgqP78GPvFtTA+qtpo3htcl5z1rSl9
+         ZLZQ==
+X-Gm-Message-State: AOAM531Qq2Y15HwIfKW8caMZYA6D1F9vnSI32TchrvqJsnQ2fxt4NOv3
+        OGyc8kPv6HYKcZD1HDeVVqk=
+X-Google-Smtp-Source: ABdhPJybhrs86OwDT9S6CH/ON+qQJ6YcWgPrjWd9MiaEbHudhatgNC9w/i8nBMQXyEwa9+ZAh/va0w==
+X-Received: by 2002:a17:90b:3b4e:: with SMTP id ot14mr11145950pjb.50.1627500386852;
+        Wed, 28 Jul 2021 12:26:26 -0700 (PDT)
 Received: from novachrono.. ([223.236.188.83])
-        by smtp.gmail.com with ESMTPSA id d14sm5827671pjc.0.2021.07.28.12.17.53
+        by smtp.gmail.com with ESMTPSA id c23sm795130pfo.174.2021.07.28.12.26.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jul 2021 12:17:55 -0700 (PDT)
+        Wed, 28 Jul 2021 12:26:26 -0700 (PDT)
 From:   Rajat Asthana <rajatasthana4@gmail.com>
 To:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
         davem@davemloft.net, kuba@kernel.org,
@@ -55,11 +55,11 @@ To:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
         linux-kernel@vger.kernel.org
 Cc:     Rajat Asthana <rajatasthana4@gmail.com>
 Subject: [PATCH v2] ath9k_htc: Add a missing spin_lock_init()
-Date:   Thu, 29 Jul 2021 00:47:19 +0530
-Message-Id: <20210728191719.17856-1-rajatasthana4@gmail.com>
+Date:   Thu, 29 Jul 2021 00:55:33 +0530
+Message-Id: <20210728192533.18727-1-rajatasthana4@gmail.com>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <38fa8cc-c9c4-66c1-e2ee-fe02caa7ef63@gmail.com>
-References: <38fa8cc-c9c4-66c1-e2ee-fe02caa7ef63@gmail.com>
+In-Reply-To: <738fa8cc-c9c4-66c1-e2ee-fe02caa7ef63@gmail.com>
+References: <738fa8cc-c9c4-66c1-e2ee-fe02caa7ef63@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
