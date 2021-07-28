@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A18613D917E
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 17:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 898963D9180
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 17:04:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237029AbhG1PCO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Jul 2021 11:02:14 -0400
+        id S235586AbhG1PEm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Jul 2021 11:04:42 -0400
 Received: from so254-9.mailgun.net ([198.61.254.9]:27986 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236793AbhG1PCM (ORCPT
+        with ESMTP id S237157AbhG1PCm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Jul 2021 11:02:12 -0400
+        Wed, 28 Jul 2021 11:02:42 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1627484531; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1627484561; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=0ogchPPoXVekrsAknWNGbOLioVmqs/GiMPoAAGeXCjg=;
- b=n2fV7zvUUd4nG7LK2yX4oZRl2/9Ska2TWHFOo+Net7bM4WXuOcV17yBT4odetMg1tzfQvVT/
- 7KyTZoLrEKYBa1j84gZsBQc4BxXowFatHz/C06p8CPALvi4v0LqHA3/YsXsC6yFmpaYJ9vpV
- /C7AwUiffPXd7Kgoyn90IxkdNsc=
+ Content-Type: Sender; bh=NE4Uf2LzvBa7qL1Cs7t6CG96ltNpdf3BjEAB2BHvn9U=;
+ b=Aw54OS4755Obn/4p9hnQj259k5IlPGx7M3DJtQ/0oBDjZqWTlOMVd5JaTF6bpTT0PhU+DYcE
+ Qt3CRVPXGUSRgJagGbr0p+jnF5y4xlu16959A3aFVXVPQOW4fvpx9YCkN0ozsm4TrOKOisyr
+ FOhyqf9gI7WepEsIzdEG3HDy20U=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 61017139290ea35ee6ac07d1 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 28 Jul 2021 15:01:13
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 6101715d9771b05b24601f18 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 28 Jul 2021 15:01:49
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2119BC4360C; Wed, 28 Jul 2021 15:01:12 +0000 (UTC)
+        id E9447C4338A; Wed, 28 Jul 2021 15:01:48 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,46 +40,44 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2BF2AC433D3;
-        Wed, 28 Jul 2021 15:01:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2BF2AC433D3
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4CC8FC433F1;
+        Wed, 28 Jul 2021 15:01:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4CC8FC433F1
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 5.14] iwlwifi: pnvm: accept multiple HW-type TLVs
+Subject: Re: [PATCH 5.14 1/2] iwlwifi: add new SoF with JF devices
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210719140154.a6a86e903035.Ic0b1b75c45d386698859f251518e8a5144431938@changeid>
-References: <20210719140154.a6a86e903035.Ic0b1b75c45d386698859f251518e8a5144431938@changeid>
+In-Reply-To: <20210719144523.0545d8964ff2.I3498879d8c184e42b1578a64aa7b7c99a18b75fb@changeid>
+References: <20210719144523.0545d8964ff2.I3498879d8c184e42b1578a64aa7b7c99a18b75fb@changeid>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>
+        Yaara Baruch <yaara.baruch@intel.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210728150112.2119BC4360C@smtp.codeaurora.org>
-Date:   Wed, 28 Jul 2021 15:01:12 +0000 (UTC)
+Message-Id: <20210728150148.E9447C4338A@smtp.codeaurora.org>
+Date:   Wed, 28 Jul 2021 15:01:48 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Johannes Berg <johannes@sipsolutions.net> wrote:
 
-> From: Johannes Berg <johannes.berg@intel.com>
+> From: Yaara Baruch <yaara.baruch@intel.com>
 > 
-> Some products (So) may have two different types of products
-> with different mac-type that are otherwise equivalent, and
-> have the same PNVM data, so the PNVM file will contain two
-> (or perhaps later more) HW-type TLVs. Accept the file and
-> use the data section that contains any matching entry.
+> Add new SoF JF devices to the driver.
 > 
+> Signed-off-by: Yaara Baruch <yaara.baruch@intel.com>
 > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-Patch applied to wireless-drivers.git, thanks.
+2 patches applied to wireless-drivers.git, thanks.
 
-0f673c16c850 iwlwifi: pnvm: accept multiple HW-type TLVs
+a5bf1d4434b9 iwlwifi: add new SoF with JF devices
+891332f697e1 iwlwifi: add new so-jf devices
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210719140154.a6a86e903035.Ic0b1b75c45d386698859f251518e8a5144431938@changeid/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210719144523.0545d8964ff2.I3498879d8c184e42b1578a64aa7b7c99a18b75fb@changeid/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
