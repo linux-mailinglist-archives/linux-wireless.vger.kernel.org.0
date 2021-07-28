@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E7E83D8593
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 03:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85C923D8594
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 03:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234625AbhG1BoP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 21:44:15 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:55218 "EHLO
+        id S234727AbhG1BoR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 21:44:17 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:55221 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234438AbhG1BoN (ORCPT
+        with ESMTP id S234533AbhG1BoO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jul 2021 21:44:13 -0400
+        Tue, 27 Jul 2021 21:44:14 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16S1i7FP1031120, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16S1i8bbD031133, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16S1i7FP1031120
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16S1i8bbD031133
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 28 Jul 2021 09:44:07 +0800
+        Wed, 28 Jul 2021 09:44:08 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Wed, 28 Jul 2021 09:44:06 +0800
+ 15.1.2106.2; Wed, 28 Jul 2021 09:44:07 +0800
 Received: from localhost (172.16.21.11) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 28 Jul
- 2021 09:44:06 +0800
+ 2021 09:44:07 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>
-Subject: [PATCH v2 2/5] rtw88: refine the setting of rsvd pages for different firmware
-Date:   Wed, 28 Jul 2021 09:43:32 +0800
-Message-ID: <20210728014335.8785-3-pkshih@realtek.com>
+Subject: [PATCH v2 3/5] rtw88: wow: build wow function only if CONFIG_PM is on
+Date:   Wed, 28 Jul 2021 09:43:33 +0800
+Message-ID: <20210728014335.8785-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210728014335.8785-1-pkshih@realtek.com>
 References: <20210728014335.8785-1-pkshih@realtek.com>
@@ -79,94 +79,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chin-Yen Lee <timlee@realtek.com>
+The kernel test robot reports undefined reference after we report wakeup
+reason to mac80211. This is because CONFIG_PM is not defined in the testing
+configuration file. In fact, functions within wow.c are used if CONFIG_PM
+is defined, so use CONFIG_PM to decide whether we build this file or not.
 
-The original setting of rsvd pages is compilcated and lead to
-error for connecting to AP after resuming from pno mode.
-We refine the setting based on different firmware and the link state
-to avoid it.
+The reported messages are:
+   hppa-linux-ld: drivers/net/wireless/realtek/rtw88/wow.o: in function `rtw_wow_show_wakeup_reason':
+>> (.text+0x6c4): undefined reference to `ieee80211_report_wowlan_wakeup'
+>> hppa-linux-ld: (.text+0x6e0): undefined reference to `ieee80211_report_wowlan_wakeup'
 
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/wow.c | 40 ++++++++++--------------
- 1 file changed, 17 insertions(+), 23 deletions(-)
+ drivers/net/wireless/realtek/rtw88/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/wow.c b/drivers/net/wireless/realtek/rtw88/wow.c
-index bdccfa70dddc..23ae7dcd92f7 100644
---- a/drivers/net/wireless/realtek/rtw88/wow.c
-+++ b/drivers/net/wireless/realtek/rtw88/wow.c
-@@ -443,37 +443,31 @@ static void rtw_wow_fw_media_status(struct rtw_dev *rtwdev, bool connect)
- 	rtw_iterate_stas_atomic(rtwdev, rtw_wow_fw_media_status_iter, &data);
- }
+diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
+index c0e4b111c8b4..73d6807a8cdf 100644
+--- a/drivers/net/wireless/realtek/rtw88/Makefile
++++ b/drivers/net/wireless/realtek/rtw88/Makefile
+@@ -15,9 +15,9 @@ rtw88_core-y += main.o \
+ 	   ps.o \
+ 	   sec.o \
+ 	   bf.o \
+-	   wow.o \
+ 	   regd.o
  
--static void rtw_wow_config_pno_rsvd_page(struct rtw_dev *rtwdev,
--					 struct rtw_vif *rtwvif)
-+static int rtw_wow_config_wow_fw_rsvd_page(struct rtw_dev *rtwdev)
- {
--	rtw_add_rsvd_page_pno(rtwdev, rtwvif);
--}
--
--static void rtw_wow_config_linked_rsvd_page(struct rtw_dev *rtwdev,
--					   struct rtw_vif *rtwvif)
--{
--	rtw_add_rsvd_page_sta(rtwdev, rtwvif);
--}
-+	struct ieee80211_vif *wow_vif = rtwdev->wow.wow_vif;
-+	struct rtw_vif *rtwvif = (struct rtw_vif *)wow_vif->drv_priv;
++rtw88_core-$(CONFIG_PM) += wow.o
  
--static void rtw_wow_config_rsvd_page(struct rtw_dev *rtwdev,
--				     struct rtw_vif *rtwvif)
--{
- 	rtw_remove_rsvd_page(rtwdev, rtwvif);
- 
--	if (rtw_wow_mgd_linked(rtwdev)) {
--		rtw_wow_config_linked_rsvd_page(rtwdev, rtwvif);
--	} else if (test_bit(RTW_FLAG_WOWLAN, rtwdev->flags) &&
--		   rtw_wow_no_link(rtwdev)) {
--		rtw_wow_config_pno_rsvd_page(rtwdev, rtwvif);
--	}
-+	if (rtw_wow_no_link(rtwdev))
-+		rtw_add_rsvd_page_pno(rtwdev, rtwvif);
-+	else
-+		rtw_add_rsvd_page_sta(rtwdev, rtwvif);
-+
-+	return rtw_fw_download_rsvd_page(rtwdev);
- }
- 
--static int rtw_wow_dl_fw_rsvd_page(struct rtw_dev *rtwdev)
-+static int rtw_wow_config_normal_fw_rsvd_page(struct rtw_dev *rtwdev)
- {
- 	struct ieee80211_vif *wow_vif = rtwdev->wow.wow_vif;
- 	struct rtw_vif *rtwvif = (struct rtw_vif *)wow_vif->drv_priv;
- 
--	rtw_wow_config_rsvd_page(rtwdev, rtwvif);
-+	rtw_remove_rsvd_page(rtwdev, rtwvif);
-+	rtw_add_rsvd_page_sta(rtwdev, rtwvif);
-+
-+	if (rtw_wow_no_link(rtwdev))
-+		return 0;
- 
- 	return rtw_fw_download_rsvd_page(rtwdev);
- }
-@@ -671,7 +665,7 @@ static int rtw_wow_enable(struct rtw_dev *rtwdev)
- 
- 	set_bit(RTW_FLAG_WOWLAN, rtwdev->flags);
- 
--	ret = rtw_wow_dl_fw_rsvd_page(rtwdev);
-+	ret = rtw_wow_config_wow_fw_rsvd_page(rtwdev);
- 	if (ret) {
- 		rtw_err(rtwdev, "failed to download wowlan rsvd page\n");
- 		goto error;
-@@ -744,7 +738,7 @@ static int rtw_wow_disable(struct rtw_dev *rtwdev)
- 		goto out;
- 	}
- 
--	ret = rtw_wow_dl_fw_rsvd_page(rtwdev);
-+	ret = rtw_wow_config_normal_fw_rsvd_page(rtwdev);
- 	if (ret)
- 		rtw_err(rtwdev, "failed to download normal rsvd page\n");
- 
+ obj-$(CONFIG_RTW88_8822B)	+= rtw88_8822b.o
+ rtw88_8822b-objs		:= rtw8822b.o rtw8822b_table.o
 -- 
 2.25.1
 
