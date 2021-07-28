@@ -2,82 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 898963D9180
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 17:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D4393D948E
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 19:51:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235586AbhG1PEm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 28 Jul 2021 11:04:42 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:27986 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237157AbhG1PCm (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 28 Jul 2021 11:02:42 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1627484561; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=NE4Uf2LzvBa7qL1Cs7t6CG96ltNpdf3BjEAB2BHvn9U=;
- b=Aw54OS4755Obn/4p9hnQj259k5IlPGx7M3DJtQ/0oBDjZqWTlOMVd5JaTF6bpTT0PhU+DYcE
- Qt3CRVPXGUSRgJagGbr0p+jnF5y4xlu16959A3aFVXVPQOW4fvpx9YCkN0ozsm4TrOKOisyr
- FOhyqf9gI7WepEsIzdEG3HDy20U=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 6101715d9771b05b24601f18 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 28 Jul 2021 15:01:49
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E9447C4338A; Wed, 28 Jul 2021 15:01:48 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4CC8FC433F1;
-        Wed, 28 Jul 2021 15:01:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4CC8FC433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S229635AbhG1Ru7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 28 Jul 2021 13:50:59 -0400
+Received: from mout.gmx.net ([212.227.15.19]:55433 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229542AbhG1Ru7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 28 Jul 2021 13:50:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1627494638;
+        bh=HdN6h2fW3WfZHWgGPBI7mjVQZDP7OyMfQXIZoK6GEzw=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=XV2dRQupPsQVTtuRAZ2PXGCe/kQAEHyNb3HeiKf9hEUEYz69RI+xrX9fxTsh3nNZl
+         kscnRJxj3LF3BEOQFZPstdCpOvecdhu2/FtHUYvfpj++GSMdWA2iO8UhffPlAe7PrV
+         7G6eXxWJhaDS6MVR4lmXyMi577TmpFYh/I5zTIg8=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from titan ([79.150.72.99]) by mail.gmx.net (mrgmx005
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1MQe9s-1mWVUO09g6-00NmVN; Wed, 28
+ Jul 2021 19:50:38 +0200
+Date:   Wed, 28 Jul 2021 19:50:34 +0200
+From:   Len Baker <len.baker@gmx.com>
+To:     Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Len Baker <len.baker@gmx.com>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Pkshih <pkshih@realtek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] rtw88: Remove unnecessary check code
+Message-ID: <20210728175034.GB4275@titan>
+References: <20210718084202.5118-1-len.baker@gmx.com>
+ <87eebkgt8t.fsf@codeaurora.org>
+ <CA+ASDXNm_aKAJcJVCx45VqAXTgXjfOju7xZPa_3MAvBzn2r7_w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 5.14 1/2] iwlwifi: add new SoF with JF devices
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210719144523.0545d8964ff2.I3498879d8c184e42b1578a64aa7b7c99a18b75fb@changeid>
-References: <20210719144523.0545d8964ff2.I3498879d8c184e42b1578a64aa7b7c99a18b75fb@changeid>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Yaara Baruch <yaara.baruch@intel.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210728150148.E9447C4338A@smtp.codeaurora.org>
-Date:   Wed, 28 Jul 2021 15:01:48 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+ASDXNm_aKAJcJVCx45VqAXTgXjfOju7xZPa_3MAvBzn2r7_w@mail.gmail.com>
+X-Provags-ID: V03:K1:m3es4IjJjHnlwV3k/7t9iM/XxBCGcLyPyBg3DW8V1vxM6xLECSG
+ Sta/V5gh2x8sAw8POckKtqcS31swsOeEYn0I5Izx/CXKxHZMEwloOwoGg0AExqwMyAUpkxE
+ sLMxLXHuN0CE1jJdHmuBShyUYgMRQt5tQe8fFPERel1qZCYsSqmi8JklKSeB+iU5d/bkahS
+ b6ZUxq9o/Yr9AgzdHWPTg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ZrGT3jKiEMg=:uo2hzSTNyBJuQdhBUgGHaI
+ Fj45LhRuME4XfYeb8eWC2lRo1mHeX1OmwFaPAhh2bjWCnAY7vnlm8ySen/lMFWc0jVTrAzvPn
+ YE/Ku7u4xMusDk3ctkhUwp3Csv5XZunU3jaK9cPwbWBWUznE5LbOV9lex2xHWdRjdFMIqdXJn
+ jbvsVkaDKrqdLtT8Fq8EWcWHaFJpDqI0ddm6hqnDWIYsh0umV4PBQJxVv4/wqLCuuIfE8JROA
+ bOCgJ2T7v36ODqNZw8TTGIfg2/ImrW1YwrgRAQPKdJ3zWb/tM+aTKlQIlDZO6p7Owd/LVVkaY
+ RuBrx4ot5U9ejrmNW2Mt4E5QB8Jb/xVnmPh8+U5LAL4jk9ccBVd739aJfsrcLjuttgrp/p3Mq
+ JfiQfxyogLievHRWe7LqlYF1aIfR+EeLdiw0IaOyhgjkfBIQin1STRcemixOOGNxhZbGMSn0W
+ SVQiwTgACYZC/nBcHXUTapZHhDKtsxzef2GCyBOshAVTyuVBMENfnvVmne5GkvM7mKWVOlW6G
+ dh3P28/WVVAQx4ZMitlar7dYIoH+kWTxy6bNh5jKLU0PMHYo5nQqG8Ip6NQm09AUoKPyGFd9v
+ hjN8dcnmqvstU1ZRhIyhCQbtqNoHbivMTp+ZgzA+DUwq8myb48QebaA49V2m4NfqUsY/dShWf
+ +EeoOKHS1QBe11/lIIx6VfK6iIn9gsHznbBN3JAabrHgwdwi39Hd5n+L5PchMJD7jEu7eujHU
+ Wkqt02ujuX0dyNUY2pGagcnEM/lbC2yhRcCqUxespSKDlruz6G1ogvq2w0ADGGVfiDULIyAnd
+ kGpYJhJVLL6pUEg3vuWl46i29FvMVmtBQ/00T8zNsmO1RF2KJZrKJZfx9s2juFmvciNTWawxp
+ Z1AlEvl2CxittZr3Ggku/Ft5iTl0ke+niY3T7jwWIf93lYzd3zOS/2xq2fH3Grj5+0Wchc1H1
+ p8ElWAJRFC8T1SmjMaOnmjQbUeagVkCTGgd1yt69wMYmaPikdGYuAocIl70wqnEedPwoAP2cS
+ 8YOYei53Yq5Iwzx0NPnL0P3MAPausYAXMKMT+NLprltW76ZbDRhs12lfjw+i/GN1nydrzzBSz
+ 75F655Eo78zB3dQLVmtqWb4tK1Euq+vTvgt
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> wrote:
+On Tue, Jul 27, 2021 at 11:16:11AM -0700, Brian Norris wrote:
+> On Mon, Jul 26, 2021 at 11:34 PM Kalle Valo <kvalo@codeaurora.org> wrote=
+:
+> >
+> > Len Baker <len.baker@gmx.com> writes:
+> >
+> > > The rtw_pci_init_rx_ring function is only ever called with a fixed
+> > > constant or RTK_MAX_RX_DESC_NUM for the "len" argument. Since this
+> > > constant is defined as 512, the "if (len > TRX_BD_IDX_MASK)" check
+> > > can never happen (TRX_BD_IDX_MASK is defined as GENMASK(11, 0) or in
+> > > other words as 4095).
+> > >
+> > > So, remove this check.
+> > >
+> > > Signed-off-by: Len Baker <len.baker@gmx.com>
+> >
+> > Are everyone ok with this version?
+>
+> I suppose? I'm not really sure where the line should be drawn on
+> excessive bounds checking, false warnings from otherwise quite useful
+> static analysis tools, etc., but I suppose it doesn't make much sense
+> to add additional excess bounds checks just to quiet Coverity.
+>
+> It might be nice to include the true motivation in the patch
+> description though, which is: "this also quiets a false warning from
+> Coverity".
 
-> From: Yaara Baruch <yaara.baruch@intel.com>
-> 
-> Add new SoF JF devices to the driver.
-> 
-> Signed-off-by: Yaara Baruch <yaara.baruch@intel.com>
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Ok, I will send a new version with the commit changelog updated.
 
-2 patches applied to wireless-drivers.git, thanks.
+>
+> Anyway, feel free to pick one of these:
+>
+> Shrug-by: Brian Norris <briannorris@chromium.org>
+>
+> or
+>
+> Reviewed-by: Brian Norris <briannorris@chromium.org>
 
-a5bf1d4434b9 iwlwifi: add new SoF with JF devices
-891332f697e1 iwlwifi: add new so-jf devices
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210719144523.0545d8964ff2.I3498879d8c184e42b1578a64aa7b7c99a18b75fb@changeid/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Thanks,
+Len
