@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85C923D8594
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 03:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46D6D3D8595
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jul 2021 03:44:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234727AbhG1BoR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 27 Jul 2021 21:44:17 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:55221 "EHLO
+        id S234640AbhG1BoT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 27 Jul 2021 21:44:19 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:55224 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234533AbhG1BoO (ORCPT
+        with ESMTP id S234624AbhG1BoP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 27 Jul 2021 21:44:14 -0400
+        Tue, 27 Jul 2021 21:44:15 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16S1i8bbD031133, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 16S1i9jpD031138, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16S1i8bbD031133
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 16S1i9jpD031138
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 28 Jul 2021 09:44:08 +0800
+        Wed, 28 Jul 2021 09:44:09 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Wed, 28 Jul 2021 09:44:07 +0800
+ 15.1.2106.2; Wed, 28 Jul 2021 09:44:08 +0800
 Received: from localhost (172.16.21.11) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 28 Jul
- 2021 09:44:07 +0800
+ 2021 09:44:08 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>
-Subject: [PATCH v2 3/5] rtw88: wow: build wow function only if CONFIG_PM is on
-Date:   Wed, 28 Jul 2021 09:43:33 +0800
-Message-ID: <20210728014335.8785-4-pkshih@realtek.com>
+Subject: [PATCH v2 4/5] rtw88: wow: report wow reason through mac80211 api
+Date:   Wed, 28 Jul 2021 09:43:34 +0800
+Message-ID: <20210728014335.8785-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210728014335.8785-1-pkshih@realtek.com>
 References: <20210728014335.8785-1-pkshih@realtek.com>
@@ -79,37 +79,85 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The kernel test robot reports undefined reference after we report wakeup
-reason to mac80211. This is because CONFIG_PM is not defined in the testing
-configuration file. In fact, functions within wow.c are used if CONFIG_PM
-is defined, so use CONFIG_PM to decide whether we build this file or not.
+From: Chin-Yen Lee <timlee@realtek.com>
 
-The reported messages are:
-   hppa-linux-ld: drivers/net/wireless/realtek/rtw88/wow.o: in function `rtw_wow_show_wakeup_reason':
->> (.text+0x6c4): undefined reference to `ieee80211_report_wowlan_wakeup'
->> hppa-linux-ld: (.text+0x6e0): undefined reference to `ieee80211_report_wowlan_wakeup'
+After waking up from WoWLAN, call ieee80211_report_wowlan_wakeup
+function call to report wakeup reason to userspace via nl80211.
 
-Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/wow.c | 46 +++++++++++++++++++-----
+ 1 file changed, 37 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
-index c0e4b111c8b4..73d6807a8cdf 100644
---- a/drivers/net/wireless/realtek/rtw88/Makefile
-+++ b/drivers/net/wireless/realtek/rtw88/Makefile
-@@ -15,9 +15,9 @@ rtw88_core-y += main.o \
- 	   ps.o \
- 	   sec.o \
- 	   bf.o \
--	   wow.o \
- 	   regd.o
+diff --git a/drivers/net/wireless/realtek/rtw88/wow.c b/drivers/net/wireless/realtek/rtw88/wow.c
+index 23ae7dcd92f7..89dc595094d5 100644
+--- a/drivers/net/wireless/realtek/rtw88/wow.c
++++ b/drivers/net/wireless/realtek/rtw88/wow.c
+@@ -12,26 +12,54 @@
  
-+rtw88_core-$(CONFIG_PM) += wow.o
+ static void rtw_wow_show_wakeup_reason(struct rtw_dev *rtwdev)
+ {
++	struct cfg80211_wowlan_nd_info nd_info;
++	struct cfg80211_wowlan_wakeup wakeup = {
++		.pattern_idx = -1,
++	};
+ 	u8 reason;
  
- obj-$(CONFIG_RTW88_8822B)	+= rtw88_8822b.o
- rtw88_8822b-objs		:= rtw8822b.o rtw8822b_table.o
+ 	reason = rtw_read8(rtwdev, REG_WOWLAN_WAKE_REASON);
+ 
+-	if (reason == RTW_WOW_RSN_RX_DEAUTH)
++	switch (reason) {
++	case RTW_WOW_RSN_RX_DEAUTH:
++		wakeup.disconnect = true;
+ 		rtw_dbg(rtwdev, RTW_DBG_WOW, "WOW: Rx deauth\n");
+-	else if (reason == RTW_WOW_RSN_DISCONNECT)
++		break;
++	case RTW_WOW_RSN_DISCONNECT:
++		wakeup.disconnect = true;
+ 		rtw_dbg(rtwdev, RTW_DBG_WOW, "WOW: AP is off\n");
+-	else if (reason == RTW_WOW_RSN_RX_MAGIC_PKT)
++		break;
++	case RTW_WOW_RSN_RX_MAGIC_PKT:
++		wakeup.magic_pkt = true;
+ 		rtw_dbg(rtwdev, RTW_DBG_WOW, "WOW: Rx magic packet\n");
+-	else if (reason == RTW_WOW_RSN_RX_GTK_REKEY)
++		break;
++	case RTW_WOW_RSN_RX_GTK_REKEY:
++		wakeup.gtk_rekey_failure = true;
+ 		rtw_dbg(rtwdev, RTW_DBG_WOW, "WOW: Rx gtk rekey\n");
+-	else if (reason == RTW_WOW_RSN_RX_PTK_REKEY)
+-		rtw_dbg(rtwdev, RTW_DBG_WOW, "WOW: Rx ptk rekey\n");
+-	else if (reason == RTW_WOW_RSN_RX_PATTERN_MATCH)
++		break;
++	case RTW_WOW_RSN_RX_PATTERN_MATCH:
++		/* Current firmware and driver don't report pattern index
++		 * Use pattern_idx to 0 defaultly.
++		 */
++		wakeup.pattern_idx = 0;
+ 		rtw_dbg(rtwdev, RTW_DBG_WOW, "WOW: Rx pattern match packet\n");
+-	else if (reason == RTW_WOW_RSN_RX_NLO)
++		break;
++	case RTW_WOW_RSN_RX_NLO:
++		/* Current firmware and driver don't report ssid index.
++		 * Use 0 for n_matches based on its comment.
++		 */
++		nd_info.n_matches = 0;
++		wakeup.net_detect = &nd_info;
+ 		rtw_dbg(rtwdev, RTW_DBG_WOW, "Rx NLO\n");
+-	else
++		break;
++	default:
+ 		rtw_warn(rtwdev, "Unknown wakeup reason %x\n", reason);
++		ieee80211_report_wowlan_wakeup(rtwdev->wow.wow_vif, NULL,
++					       GFP_KERNEL);
++		return;
++	}
++	ieee80211_report_wowlan_wakeup(rtwdev->wow.wow_vif, &wakeup,
++				       GFP_KERNEL);
+ }
+ 
+ static void rtw_wow_pattern_write_cam(struct rtw_dev *rtwdev, u8 addr,
 -- 
 2.25.1
 
