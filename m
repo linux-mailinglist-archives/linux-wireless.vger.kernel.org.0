@@ -2,122 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFDCD3DA11D
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jul 2021 12:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6598E3DA130
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jul 2021 12:40:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235954AbhG2Kea (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Jul 2021 06:34:30 -0400
-Received: from new1-smtp.messagingengine.com ([66.111.4.221]:35095 "EHLO
-        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232054AbhG2Ke3 (ORCPT
+        id S235796AbhG2Kki (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Jul 2021 06:40:38 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:47684
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233273AbhG2Kkh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Jul 2021 06:34:29 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.nyi.internal (Postfix) with ESMTP id BF350580CD8;
-        Thu, 29 Jul 2021 06:34:26 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Thu, 29 Jul 2021 06:34:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=rZVUw9pgoUdhW+JWJZ3Hk75t5pQ
-        SA6lpVEQ51FpxcxI=; b=Q27O/Jk/qRHVQGN6GeFY+jRt2URH60oKQYPW/A5hIkk
-        mjQEJMTLuiKPDUwNoxKheQ4tX4IBrL9HBjOf8A2DUkLmuL4TEqk8ivC72/Q06jN3
-        eE9f0NaUtcqnosZLQVLtcxneRxfn4iAJM95DiPHgmrqMAz2scB8VtdyT1ijSUNQC
-        JUPRcr1tDBVACDz7cNCRalJCFIWK0g0akcGKInArTJD86nYIYjlBjX6+7IfTCW9a
-        25GVIfidIbP6KVgoAsUUsWGoxMz0cE4sbnAv3cXQeCl/Qwjw/56ddwSyyEUctpXA
-        dG3XjSqIY+eHZmN8RwWZEQ/wEhmdz0PV0uv4xu7oQbw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=rZVUw9
-        pgoUdhW+JWJZ3Hk75t5pQSA6lpVEQ51FpxcxI=; b=V1c69sO71JXrJpZlvn/kDd
-        2kSL2ND06sF4SdtQKX0hpYQ3TorQn/1dIIQJkfY0ZJl3ibr2LZ+QrIhUvVERJCfJ
-        9BPOV8FxiSpgCsS3ck1OR9cqdjnxxODq+4NQlbDKQlqV3ma0pwpVUHBVqYOyiaT5
-        zrYBpHaW0rMZkBgKzgGHpzK7wkIbrhNCJY/EGiRFYc0+CGBuN98ePs3qe8OXdTIB
-        vAmxWVXJ61003OMYlTpyQus9UPdhkh7DQ7JesL35wazvyHjVAf88nYfsfz0MjM2Y
-        1w/yfzHOvrdHciPUhFI4Enm3UygRNjJQpb7yEh3YHtDTPi0J5W0Wt3GjDclsxxbQ
-        ==
-X-ME-Sender: <xms:MYQCYTwUs5t13gEbuWaW2ydmCBCYzp1K7G0duvYUQNrFTQSueKLPqw>
-    <xme:MYQCYbShsyZFgX8c0Y4Gzag6awCW9Q8WmwA-BNO3AiBQjIghHBp9HmAfdi1FKpkgt
-    kQ3SnFln1GgjA>
-X-ME-Received: <xmr:MYQCYdXpE_-Q5v-eY_ci5--tHpR734sQ3SYizU7JjEyvpC_EQ8KC6dDSIQBIv3CdRbe313Z2xdW7Hrhx_e2b6t0zNNoYtu61>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrhedugddvudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecunecujfgurhepfffhvffukfhfgggtuggjsehttdortd
-    dttddvnecuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeen
-    ucggtffrrghtthgvrhhnpedvfeeggeehudevuedvffdvtdevffeukedvheduuefhveegue
-    dvhfetveduheejffenucffohhmrghinhepsghsshdrnhgvthenucevlhhushhtvghrufhi
-    iigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:MYQCYdhZzwriJ1isIAdiN-xrP4pgHYbJRYxOeMWp1_TBZOk31nCuZQ>
-    <xmx:MYQCYVAVZUQaN3GkbKzfzxkaZN3Yu0hff7PSPnhMyE7NN-688JRiaQ>
-    <xmx:MYQCYWKP1nb-Sfr2D-Txg4-mKd0_XgVot4ZjJwpYTR4Fb61h4-3o1w>
-    <xmx:MoQCYdaaT1JR38lvWKFbniN8ojnxOke75PwZ3wrYsEmLdmP-jp8hbA>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 29 Jul 2021 06:34:25 -0400 (EDT)
-Date:   Thu, 29 Jul 2021 12:34:22 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Nguyen Dinh Phi <phind.uet@gmail.com>
-Cc:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org
-Subject: Re: [PATCH V2] cfg80211: Fix possible memory leak in function
- cfg80211_bss_update
-Message-ID: <YQKELjKuAQsjmpLY@kroah.com>
-References: <20210628132334.851095-1-phind.uet@gmail.com>
+        Thu, 29 Jul 2021 06:40:37 -0400
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPS id E28013F110
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Jul 2021 10:40:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1627555233;
+        bh=U5ZMYZkwqc8RmbQysqq1OTMd/Wgw4WsrTPEA4vYur0c=;
+        h=From:To:Subject:Date:Message-Id:MIME-Version;
+        b=a3YPY3vYsKli7a7OqllP817DBrBPZwa7ng3bBFMBl/U1emu09C+a4XJ+/FUjGz2bw
+         nsdLbmSUgTohopPTT2wajAk1iatWcBwh/vEJUvhSFu9JcAWg6DpxMs04OHnYrKsvhH
+         zGHgBkXT8S6Z3Ed5w0uljGUcqVRPynivowlaNFRdOFTpudkyjtQF8zMdz5w3lfC1Ga
+         sk6xKE4XLH2jYdIKfFBJitYPFovJcUWyl8IDxMslxe1INiMQ9sVv4XHG7rBDOpXe1q
+         Eh/Iqk3wv9g7cjLWOcDWc7rz7NjO4ezhp3t7ohEh2vb/DWT+z3U5kALlnbw0ieV0t1
+         n5Zorq4HVyjTw==
+Received: by mail-ed1-f72.google.com with SMTP id cm18-20020a0564020c92b02903bc7f21d540so1303212edb.13
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Jul 2021 03:40:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=U5ZMYZkwqc8RmbQysqq1OTMd/Wgw4WsrTPEA4vYur0c=;
+        b=iNqbPtwxKm4krXQZmpLVm5m8llZg/WHAn8TA0ruWGE5iPMuk185a+HJUJp36FSgK59
+         fLYfyTbugaIpyIA+GvnBv9Pwh33NMbkYQCmnUg/a3JTq72ic5E4tf3QgpJ0OKum+WXbd
+         /+WRSlRuXBdZRfe4JnG2OuuKWLh1Z8YALZVlHKC2MOvb70ms/TqRIT5veqMNm+MWI6tK
+         eViYZq3E5JfjH2PwSgncGlqTtKaUExzYAMkWQYtW0DwdrrUOv6WYA0INS1cTSpwxNC3b
+         YxOCl8f2UONLJqh6xrzpwOqUdGtruJbhmFOeydEFmDHYDreyJ8hkLKLsgpHZ/zZ5n8Tt
+         xkhA==
+X-Gm-Message-State: AOAM532QfAy306K1IEfcjWYhkbiftnMXVlatgCFV5Gx+a9JLqx15P2LH
+        k1r+bMVpIyNksx57gdDR0MnXmaEh2xAqt4MG831hovZURS5ZgYJKZw620EHx/CmIvvJAMbkHOex
+        E5Gc5LwMJEsjCn+7f0K3DEuY0eAgqAookgdMYBWVmnFjr
+X-Received: by 2002:a05:6402:278e:: with SMTP id b14mr5191729ede.277.1627555233654;
+        Thu, 29 Jul 2021 03:40:33 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw0zzZMt4FRxj6/pkKudrZrKtAC8UcrWt1V+5uDuEVakkenlwbpg5EabX2DWunH4RtcpYeAvw==
+X-Received: by 2002:a05:6402:278e:: with SMTP id b14mr5191710ede.277.1627555233472;
+        Thu, 29 Jul 2021 03:40:33 -0700 (PDT)
+Received: from localhost.localdomain ([86.32.47.9])
+        by smtp.gmail.com with ESMTPSA id c14sm824475ejb.78.2021.07.29.03.40.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jul 2021 03:40:32 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Mark Greer <mgreer@animalcreek.com>,
+        Bongsu Jeon <bongsu.jeon@samsung.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-nfc@lists.01.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH 00/12] nfc: constify, continued (part 2)
+Date:   Thu, 29 Jul 2021 12:40:10 +0200
+Message-Id: <20210729104022.47761-1-krzysztof.kozlowski@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210628132334.851095-1-phind.uet@gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jun 28, 2021 at 09:23:34PM +0800, Nguyen Dinh Phi wrote:
-> When we exceed the limit of BSS entries, this function will free the
-> new entry, however, at this time, it is the last door to access the
-> inputed ies, so these ies will be unreferenced objects and cause memory
-> leak.
-> Therefore we should free its ies before deallocating the new entry, beside
-> of dropping it from hidden_list.
-> 
-> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
-> ---
-> V2:	- Add subsystem to the subject line.
-> 	- Use bss_ref_put function for better clean-up dynamically allocated
-> 	cfg80211_internal_bss objects. It helps to clean relative hidden_bss.
-> 
->  net/wireless/scan.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-> index f03c7ac8e184..7897b1478c3c 100644
-> --- a/net/wireless/scan.c
-> +++ b/net/wireless/scan.c
-> @@ -1754,16 +1754,14 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
->  			 * be grouped with this beacon for updates ...
->  			 */
->  			if (!cfg80211_combine_bsses(rdev, new)) {
-> -				kfree(new);
-> +				bss_ref_put(rdev, new);
->  				goto drop;
->  			}
->  		}
-> 
->  		if (rdev->bss_entries >= bss_entries_limit &&
->  		    !cfg80211_bss_expire_oldest(rdev)) {
-> -			if (!list_empty(&new->hidden_list))
-> -				list_del(&new->hidden_list);
-> -			kfree(new);
-> +			bss_ref_put(rdev, new);
->  			goto drop;
->  		}
-> 
-> --
-> 2.25.1
+Hi,
 
-Did this change get lost somewhere?
+On top of:
+nfc: constify pointed data
+https://lore.kernel.org/lkml/20210726145224.146006-1-krzysztof.kozlowski@canonical.com/
 
-thanks,
+Best regards,
+Krzysztof
 
-greg k-h
+
+Krzysztof Kozlowski (12):
+  nfc: constify passed nfc_dev
+  nfc: mei_phy: constify buffer passed to mei_nfc_send()
+  nfc: port100: constify several pointers
+  nfc: trf7970a: constify several pointers
+  nfc: virtual_ncidev: constify pointer to nfc_dev
+  nfc: nfcsim: constify drvdata (struct nfcsim)
+  nfc: fdp: drop unneeded cast for printing firmware size in dev_dbg()
+  nfc: fdp: use unsigned int as loop iterator
+  nfc: fdp: constify several pointers
+  nfc: microread: constify several pointers
+  nfc: mrvl: constify several pointers
+  nfc: mrvl: constify static nfcmrvl_if_ops
+
+ drivers/nfc/fdp/fdp.c             | 27 +++++++++++-----------
+ drivers/nfc/fdp/fdp.h             |  2 +-
+ drivers/nfc/fdp/i2c.c             |  6 ++---
+ drivers/nfc/mei_phy.c             |  2 +-
+ drivers/nfc/microread/i2c.c       |  2 +-
+ drivers/nfc/microread/microread.c |  4 ++--
+ drivers/nfc/microread/microread.h |  2 +-
+ drivers/nfc/nfcmrvl/fw_dnld.c     | 16 +++++++------
+ drivers/nfc/nfcmrvl/i2c.c         |  4 ++--
+ drivers/nfc/nfcmrvl/main.c        |  4 ++--
+ drivers/nfc/nfcmrvl/nfcmrvl.h     |  6 ++---
+ drivers/nfc/nfcmrvl/spi.c         |  6 ++---
+ drivers/nfc/nfcmrvl/uart.c        |  4 ++--
+ drivers/nfc/nfcmrvl/usb.c         |  2 +-
+ drivers/nfc/nfcsim.c              |  2 +-
+ drivers/nfc/port100.c             | 37 +++++++++++++++++--------------
+ drivers/nfc/trf7970a.c            | 17 +++++++-------
+ drivers/nfc/virtual_ncidev.c      |  2 +-
+ include/net/nfc/nfc.h             |  4 ++--
+ 19 files changed, 78 insertions(+), 71 deletions(-)
+
+-- 
+2.27.0
+
