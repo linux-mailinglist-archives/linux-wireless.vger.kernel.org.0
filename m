@@ -2,144 +2,246 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABA3D3DA2AB
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jul 2021 13:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F0E3DA2E2
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jul 2021 14:11:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235506AbhG2L6k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Jul 2021 07:58:40 -0400
-Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:39398
-        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235324AbhG2L6j (ORCPT
+        id S236745AbhG2MLg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Jul 2021 08:11:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235169AbhG2MLf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Jul 2021 07:58:39 -0400
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPS id 8AADE3F22C
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Jul 2021 11:58:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1627559915;
-        bh=mJegt6nAKectUckt+rbFcl6x63P1a1GPjk8ahj5YQQU=;
-        h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type;
-        b=bQGamwfephWaMoWpVCkkn6eCMN3KZaBoWqWicZ/qbKALsfgq4hHLFVuaMtxQWYAe6
-         /SoeM+AKnrhtCw2Izm17aHvKnl1DeKyE39GgEIdY1DKgxYWcAe2hBKDjPE0Lgz4BWp
-         w28yBjEQOLTe14gTT4MVxOGq2cahZs3scRYruWtIWCiHxQq4zZPtQCp/gf5xed38ru
-         0Pi4Y6uqp779oBX/W+n7BelGsVbD6+ubLDIRvE+E9ArgKmalQ0vbqLSULXFFmfj3gi
-         eCG7jKJpRw0Hn05NSmjREt6ODJPb1YsR8ETYYs3Eirrk8fssajqcvSVPS2XEyXIPpq
-         ANnjJ6G20RQwg==
-Received: by mail-ej1-f72.google.com with SMTP id a19-20020a1709063e93b0290551ea218ea2so1901441ejj.5
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Jul 2021 04:58:35 -0700 (PDT)
+        Thu, 29 Jul 2021 08:11:35 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E76BC0613C1
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Jul 2021 05:11:31 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id r2so6689931wrl.1
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Jul 2021 05:11:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=8Nz6vB9p8A0wBJs6kkDYFIrrTzDZDT+uS9XB0IAUyko=;
+        b=IX9QYptYV6st0L1XmOo2+ZVTD1czWMC0yv2A0wEKs5uhoKxyG1M8hYGFid/Rc9caoJ
+         g3s8uihSolFDNGNVDmh/KcSkUnjuvxHUSlZem764aZk2d9p45qyVKzkwnR65zmpbIjwe
+         oixk5YiEQMSk6egRcnGh8U5DvdkvMLdRPa8MA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=mJegt6nAKectUckt+rbFcl6x63P1a1GPjk8ahj5YQQU=;
-        b=l8wod72w0VQZdYT2Zv7a7m7rznEbFLQKKkYV5vRNPQoLfYKtdNkBXdrvh0FXYZUuLR
-         b/tmef568iRinF2ExwaPaT9B3piiK427B54h06BI9urPszcEg3LwUkAOD+oDAKFTi0r8
-         fa4ARcXdkZxK9yNv+kAoYqetCSWaHcLlC/qxCIV1R8amSz6Cnqh34C5/c8wZ5X2SvLA8
-         Qr/veHNGkTmUsJWXMNyNKClCwToSHDnEtp+YnRQZmQ4oCOpxwQJ3Q4fBkTfE4PIv//SC
-         Dxk2f9YbkT9CUg+0bi+c09IkY/GNWULA4WKIPuxDmEEcYI/mGdw+LcL/Si+2VHHewr5N
-         0fUw==
-X-Gm-Message-State: AOAM53080qUuyAvHUY0tNqThz8NFJ1Ht/pE8wuawVCNMMLmQ4bMYSIIE
-        UyShInumrPYkZD4F70vx/R/wxlUpzzoSdlZH9wcU6pKOOL4gmoLafw66V//d0X1IljiwAUNjnyo
-        Hty04UtZ7/0MzYjHhvVlRXBA3cl+0xf/Wz1Pige9KBBxL
-X-Received: by 2002:a17:906:c085:: with SMTP id f5mr4338570ejz.250.1627559914474;
-        Thu, 29 Jul 2021 04:58:34 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzv4BAiKXa3/y/e8C9RanIKpgbXJfSN4+8ZZEBon9lao+WKG0BTNjyji29VQ1OsQPbAi6/DMw==
-X-Received: by 2002:a17:906:c085:: with SMTP id f5mr4338563ejz.250.1627559914327;
-        Thu, 29 Jul 2021 04:58:34 -0700 (PDT)
-Received: from [192.168.8.102] ([86.32.47.9])
-        by smtp.gmail.com with ESMTPSA id n11sm908803ejg.111.2021.07.29.04.58.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Jul 2021 04:58:33 -0700 (PDT)
-Subject: Re: [PATCH 00/12] nfc: constify, continued (part 2)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     patchwork-bot+netdevbpf@kernel.org, davem@davemloft.net
-Cc:     mgreer@animalcreek.com, bongsu.jeon@samsung.com, kuba@kernel.org,
-        linux-nfc@lists.01.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-References: <20210729104022.47761-1-krzysztof.kozlowski@canonical.com>
- <162755820704.26856.6157999905884570707.git-patchwork-notify@kernel.org>
- <7b0ae615-dcdc-251e-4067-959b31c28159@canonical.com>
-Message-ID: <f3521001-58f3-8c6c-5b07-9dd8dae0cba8@canonical.com>
-Date:   Thu, 29 Jul 2021 13:58:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=8Nz6vB9p8A0wBJs6kkDYFIrrTzDZDT+uS9XB0IAUyko=;
+        b=ZHNUc5O5TBWhMalgqjPXIkPSWPgOFky6IWcK2BJvWrtgzHBz8xxutxo6QC9srqNwgy
+         EjF6fZzPJ2y50JqMG6V9DQK6kWGHB68BQDcuDz/bml1bycgagPXLKLsFtjy4pv8Ztvpj
+         hB8y0p0bNpIfJiNDsCeDdziZnV0yBzpURwiwoOo3r1la0VDhywI21oE6/GhfmH5h4kuK
+         MXzIhjBpDuHGaISchGHBgktRJfgAaKluzDQ+afbpml3hRwB54qAcFmmY1oTQhQIudhfd
+         iyGbT3wBXa3BOWyK390CwVYJTrttU+uwxapDUsHxZcwUFeK9lgUyJAHh4S8t73ekHB6k
+         Sk/Q==
+X-Gm-Message-State: AOAM530yeOOgcbETv/QgeC3slViaSm5M8/xWNm9mOJ1i6QEY+mmXiacC
+        VGyRxSXjJY/pHTsQZvU2y967fA==
+X-Google-Smtp-Source: ABdhPJyxNFOOp917FBlh8xg1Ee/DiYPVZ7Er8zzOKotZZKyVJ/yUFb4NW2JEu0Us3Suihgl1chkn3Q==
+X-Received: by 2002:a5d:4e91:: with SMTP id e17mr4462754wru.7.1627560689971;
+        Thu, 29 Jul 2021 05:11:29 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id a14sm3323850wrf.97.2021.07.29.05.11.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jul 2021 05:11:29 -0700 (PDT)
+Date:   Thu, 29 Jul 2021 14:11:27 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Kees Cook <keescook@chromium.org>, linux-kbuild@vger.kernel.org,
+        netdev@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-block@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Keith Packard <keithpac@amazon.com>,
+        linux-hardening@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 25/64] drm/mga/mga_ioc32: Use struct_group() for memcpy()
+ region
+Message-ID: <YQKa76A6XuFqgM03@phenom.ffwll.local>
+Mail-Followup-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kees Cook <keescook@chromium.org>, linux-kbuild@vger.kernel.org,
+        netdev@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-block@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Keith Packard <keithpac@amazon.com>,
+        linux-hardening@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <20210727205855.411487-1-keescook@chromium.org>
+ <20210727205855.411487-26-keescook@chromium.org>
+ <YQDxmEYfppJ4wAmD@kroah.com>
 MIME-Version: 1.0
-In-Reply-To: <7b0ae615-dcdc-251e-4067-959b31c28159@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YQDxmEYfppJ4wAmD@kroah.com>
+X-Operating-System: Linux phenom 5.10.0-7-amd64 
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 29/07/2021 13:35, Krzysztof Kozlowski wrote:
-> On 29/07/2021 13:30, patchwork-bot+netdevbpf@kernel.org wrote:
->> Hello:
->>
->> This series was applied to netdev/net-next.git (refs/heads/master):
->>
->> On Thu, 29 Jul 2021 12:40:10 +0200 you wrote:
->>> Hi,
->>>
->>> On top of:
->>> nfc: constify pointed data
->>> https://lore.kernel.org/lkml/20210726145224.146006-1-krzysztof.kozlowski@canonical.com/
->>>
->>> Best regards,
->>> Krzysztof
->>>
->>> [...]
->>
->> Here is the summary with links:
->>   - [01/12] nfc: constify passed nfc_dev
->>     https://git.kernel.org/netdev/net-next/c/dd8987a394c0
->>   - [02/12] nfc: mei_phy: constify buffer passed to mei_nfc_send()
->>     https://git.kernel.org/netdev/net-next/c/894a6e158633
->>   - [03/12] nfc: port100: constify several pointers
->>     https://git.kernel.org/netdev/net-next/c/9a4af01c35a5
->>   - [04/12] nfc: trf7970a: constify several pointers
->>     https://git.kernel.org/netdev/net-next/c/ea050c5ee74a
->>   - [05/12] nfc: virtual_ncidev: constify pointer to nfc_dev
->>     https://git.kernel.org/netdev/net-next/c/83428dbbac51
->>   - [06/12] nfc: nfcsim: constify drvdata (struct nfcsim)
->>     https://git.kernel.org/netdev/net-next/c/582fdc98adc8
->>   - [07/12] nfc: fdp: drop unneeded cast for printing firmware size in dev_dbg()
->>     https://git.kernel.org/netdev/net-next/c/6c755b1d2511
->>   - [08/12] nfc: fdp: use unsigned int as loop iterator
->>     https://git.kernel.org/netdev/net-next/c/c3e26b6dc1b4
->>   - [09/12] nfc: fdp: constify several pointers
->>     https://git.kernel.org/netdev/net-next/c/3d463dd5023b
->>   - [10/12] nfc: microread: constify several pointers
->>     https://git.kernel.org/netdev/net-next/c/a751449f8b47
->>   - [11/12] nfc: mrvl: constify several pointers
->>     https://git.kernel.org/netdev/net-next/c/fe53159fe3e0
+On Wed, Jul 28, 2021 at 07:56:40AM +0200, Greg Kroah-Hartman wrote:
+> On Tue, Jul 27, 2021 at 01:58:16PM -0700, Kees Cook wrote:
+> > In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> > field bounds checking for memcpy(), memmove(), and memset(), avoid
+> > intentionally writing across neighboring fields.
+> > 
+> > Use struct_group() in struct drm32_mga_init around members chipset, sgram,
+> > maccess, fb_cpp, front_offset, front_pitch, back_offset, back_pitch,
+> > depth_cpp, depth_offset, depth_pitch, texture_offset, and texture_size,
+> > so they can be referenced together. This will allow memcpy() and sizeof()
+> > to more easily reason about sizes, improve readability, and avoid future
+> > warnings about writing beyond the end of chipset.
+> > 
+> > "pahole" shows no size nor member offset changes to struct drm32_mga_init.
+> > "objdump -d" shows no meaningful object code changes (i.e. only source
+> > line number induced differences and optimizations).
+> > 
+> > Note that since this includes a UAPI header, struct_group() has been
+> > explicitly redefined local to the header.
+> > 
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > ---
+> >  drivers/gpu/drm/mga/mga_ioc32.c | 30 ++++++++++++++------------
+> >  include/uapi/drm/mga_drm.h      | 37 ++++++++++++++++++++++++---------
+> >  2 files changed, 44 insertions(+), 23 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/mga/mga_ioc32.c b/drivers/gpu/drm/mga/mga_ioc32.c
+> > index 4fd4de16cd32..fbd0329dbd4f 100644
+> > --- a/drivers/gpu/drm/mga/mga_ioc32.c
+> > +++ b/drivers/gpu/drm/mga/mga_ioc32.c
+> > @@ -38,16 +38,21 @@
+> >  typedef struct drm32_mga_init {
+> >  	int func;
+> >  	u32 sarea_priv_offset;
+> > -	int chipset;
+> > -	int sgram;
+> > -	unsigned int maccess;
+> > -	unsigned int fb_cpp;
+> > -	unsigned int front_offset, front_pitch;
+> > -	unsigned int back_offset, back_pitch;
+> > -	unsigned int depth_cpp;
+> > -	unsigned int depth_offset, depth_pitch;
+> > -	unsigned int texture_offset[MGA_NR_TEX_HEAPS];
+> > -	unsigned int texture_size[MGA_NR_TEX_HEAPS];
+> > +	struct_group(always32bit,
+> > +		int chipset;
+> > +		int sgram;
+> > +		unsigned int maccess;
+> > +		unsigned int fb_cpp;
+> > +		unsigned int front_offset;
+> > +		unsigned int front_pitch;
+> > +		unsigned int back_offset;
+> > +		unsigned int back_pitch;
+> > +		unsigned int depth_cpp;
+> > +		unsigned int depth_offset;
+> > +		unsigned int depth_pitch;
+> > +		unsigned int texture_offset[MGA_NR_TEX_HEAPS];
+> > +		unsigned int texture_size[MGA_NR_TEX_HEAPS];
+> > +	);
+> >  	u32 fb_offset;
+> >  	u32 mmio_offset;
+> >  	u32 status_offset;
+> > @@ -67,9 +72,8 @@ static int compat_mga_init(struct file *file, unsigned int cmd,
+> >  
+> >  	init.func = init32.func;
+> >  	init.sarea_priv_offset = init32.sarea_priv_offset;
+> > -	memcpy(&init.chipset, &init32.chipset,
+> > -		offsetof(drm_mga_init_t, fb_offset) -
+> > -		offsetof(drm_mga_init_t, chipset));
+> > +	memcpy(&init.always32bit, &init32.always32bit,
+> > +	       sizeof(init32.always32bit));
+> >  	init.fb_offset = init32.fb_offset;
+> >  	init.mmio_offset = init32.mmio_offset;
+> >  	init.status_offset = init32.status_offset;
+> > diff --git a/include/uapi/drm/mga_drm.h b/include/uapi/drm/mga_drm.h
+> > index 8c4337548ab5..61612e5ecab2 100644
+> > --- a/include/uapi/drm/mga_drm.h
+> > +++ b/include/uapi/drm/mga_drm.h
+> > @@ -265,6 +265,16 @@ typedef struct _drm_mga_sarea {
+> >  #define DRM_IOCTL_MGA_WAIT_FENCE    DRM_IOWR(DRM_COMMAND_BASE + DRM_MGA_WAIT_FENCE, __u32)
+> >  #define DRM_IOCTL_MGA_DMA_BOOTSTRAP DRM_IOWR(DRM_COMMAND_BASE + DRM_MGA_DMA_BOOTSTRAP, drm_mga_dma_bootstrap_t)
+> >  
+> > +#define __struct_group(name, fields) \
+> > +	union { \
+> > +		struct { \
+> > +			fields \
+> > +		}; \
+> > +		struct { \
+> > +			fields \
+> > +		} name; \
+> > +	}
+> > +
+> >  typedef struct _drm_mga_warp_index {
+> >  	int installed;
+> >  	unsigned long phys_addr;
+> > @@ -279,20 +289,25 @@ typedef struct drm_mga_init {
+> >  
+> >  	unsigned long sarea_priv_offset;
+> >  
+> > -	int chipset;
+> > -	int sgram;
+> > +	__struct_group(always32bit,
+> > +		int chipset;
+> > +		int sgram;
+> >  
+> > -	unsigned int maccess;
+> > +		unsigned int maccess;
+> >  
+> > -	unsigned int fb_cpp;
+> > -	unsigned int front_offset, front_pitch;
+> > -	unsigned int back_offset, back_pitch;
+> > +		unsigned int fb_cpp;
+> > +		unsigned int front_offset;
+> > +		unsigned int front_pitch;
+> > +		unsigned int back_offset;
+> > +		unsigned int back_pitch;
+> >  
+> > -	unsigned int depth_cpp;
+> > -	unsigned int depth_offset, depth_pitch;
+> > +		unsigned int depth_cpp;
+> > +		unsigned int depth_offset;
+> > +		unsigned int depth_pitch;
+> >  
+> > -	unsigned int texture_offset[MGA_NR_TEX_HEAPS];
+> > -	unsigned int texture_size[MGA_NR_TEX_HEAPS];
+> > +		unsigned int texture_offset[MGA_NR_TEX_HEAPS];
+> > +		unsigned int texture_size[MGA_NR_TEX_HEAPS];
+> > +	);
+> >  
+> >  	unsigned long fb_offset;
+> >  	unsigned long mmio_offset;
+> > @@ -302,6 +317,8 @@ typedef struct drm_mga_init {
+> >  	unsigned long buffers_offset;
+> >  } drm_mga_init_t;
+> >  
+> > +#undef __struct_group
+> > +
 > 
-> Oh, folks, too fast :)
+> Why can you use __struct_group in this uapi header, but not the
+> networking one?
+
+If there's others, maybe we can stuff the uapi __struct_group into
+linux/types.h where all the other __ uapi types hang out?
+
+Anyway mga is very dead, I don't anyone cares.
+
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+
+I'm assuming this goes in through a topic pull from you?
+
+I'll leave the drm/amd one to figure out between you and Alex.
+-Daniel
+
 > 
-> Sorry for the mess, but the patch 11/12 has one const which is wrong
-> (I sent an email for it) and this should be on top of my
-> previous set:
-> https://lore.kernel.org/lkml/20210726145224.146006-1-krzysztof.kozlowski@canonical.com/
-> which I think you did not take in.
+> thanks,
 > 
-> I am not sure if it compiles cleanly without the one above.
+> greg k-h
 
-Hi David,
-
-This fails because of missing patchset above:
-../drivers/nfc/fdp/fdp.c: In function ‘fdp_nci_set_production_data’:
-../drivers/nfc/fdp/fdp.c:116:60: warning: passing argument 4 of
-‘nci_prop_cmd’ discards ‘const’ qualifier from pointer target type
-[-Wdiscarded-qualifiers]
-  116 |  return nci_prop_cmd(ndev, NCI_OP_PROP_SET_PDATA_OID, len, data);
-
-It also has one issue in patch 11/12. Can you drop this from
-net-dev/master? I can send a v2 of both patchsets combined.
-
-Best regards,
-Krzysztof
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
