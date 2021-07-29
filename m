@@ -2,246 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11F0E3DA2E2
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jul 2021 14:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 162003DA823
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jul 2021 18:00:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236745AbhG2MLg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Jul 2021 08:11:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55826 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235169AbhG2MLf (ORCPT
+        id S238258AbhG2P7N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Jul 2021 11:59:13 -0400
+Received: from out2-smtp.messagingengine.com ([66.111.4.26]:36213 "EHLO
+        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238036AbhG2P6L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Jul 2021 08:11:35 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E76BC0613C1
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Jul 2021 05:11:31 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id r2so6689931wrl.1
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Jul 2021 05:11:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=8Nz6vB9p8A0wBJs6kkDYFIrrTzDZDT+uS9XB0IAUyko=;
-        b=IX9QYptYV6st0L1XmOo2+ZVTD1czWMC0yv2A0wEKs5uhoKxyG1M8hYGFid/Rc9caoJ
-         g3s8uihSolFDNGNVDmh/KcSkUnjuvxHUSlZem764aZk2d9p45qyVKzkwnR65zmpbIjwe
-         oixk5YiEQMSk6egRcnGh8U5DvdkvMLdRPa8MA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=8Nz6vB9p8A0wBJs6kkDYFIrrTzDZDT+uS9XB0IAUyko=;
-        b=ZHNUc5O5TBWhMalgqjPXIkPSWPgOFky6IWcK2BJvWrtgzHBz8xxutxo6QC9srqNwgy
-         EjF6fZzPJ2y50JqMG6V9DQK6kWGHB68BQDcuDz/bml1bycgagPXLKLsFtjy4pv8Ztvpj
-         hB8y0p0bNpIfJiNDsCeDdziZnV0yBzpURwiwoOo3r1la0VDhywI21oE6/GhfmH5h4kuK
-         MXzIhjBpDuHGaISchGHBgktRJfgAaKluzDQ+afbpml3hRwB54qAcFmmY1oTQhQIudhfd
-         iyGbT3wBXa3BOWyK390CwVYJTrttU+uwxapDUsHxZcwUFeK9lgUyJAHh4S8t73ekHB6k
-         Sk/Q==
-X-Gm-Message-State: AOAM530yeOOgcbETv/QgeC3slViaSm5M8/xWNm9mOJ1i6QEY+mmXiacC
-        VGyRxSXjJY/pHTsQZvU2y967fA==
-X-Google-Smtp-Source: ABdhPJyxNFOOp917FBlh8xg1Ee/DiYPVZ7Er8zzOKotZZKyVJ/yUFb4NW2JEu0Us3Suihgl1chkn3Q==
-X-Received: by 2002:a5d:4e91:: with SMTP id e17mr4462754wru.7.1627560689971;
-        Thu, 29 Jul 2021 05:11:29 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id a14sm3323850wrf.97.2021.07.29.05.11.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jul 2021 05:11:29 -0700 (PDT)
-Date:   Thu, 29 Jul 2021 14:11:27 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Kees Cook <keescook@chromium.org>, linux-kbuild@vger.kernel.org,
-        netdev@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-block@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Keith Packard <keithpac@amazon.com>,
-        linux-hardening@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 25/64] drm/mga/mga_ioc32: Use struct_group() for memcpy()
- region
-Message-ID: <YQKa76A6XuFqgM03@phenom.ffwll.local>
-Mail-Followup-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kees Cook <keescook@chromium.org>, linux-kbuild@vger.kernel.org,
-        netdev@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-block@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Keith Packard <keithpac@amazon.com>,
-        linux-hardening@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <20210727205855.411487-1-keescook@chromium.org>
- <20210727205855.411487-26-keescook@chromium.org>
- <YQDxmEYfppJ4wAmD@kroah.com>
+        Thu, 29 Jul 2021 11:58:11 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id E69D45C010E;
+        Thu, 29 Jul 2021 11:58:03 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Thu, 29 Jul 2021 11:58:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=animalcreek.com;
+         h=date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm3; bh=ahTGRcGEE9+wIDNP0Z6gvlwNfNO
+        vXtR62+7G1xOUlpo=; b=dAjdr+TgHnv2Eba/RgVsG3XsqoPIBieIN8+ypHOme+f
+        HzIHhd3w1egvJStE/G9hosh7PIJxB1rUBB3oFWte2hd+R8MieCZjTSw7ErvStI0O
+        LuemMP8129pCo995OvxlryEMjCZylKH3AdD2CXXeX6j2HRhfWLS5a+ltRC/AfNZ9
+        pNqqsC4Foxtkw9ROn6KFNZJGEp333EM8X0xv+LwM95Z5HiNe17MOU5BmcWnzEIen
+        i7/7PytUdQbIrSob75Xl9KvGaUsh/fEBSUz7X/ElDFX3KoWtYqoloKUL3m+P3oRH
+        v9ZW5LNjLNAl7TKzHvGeyXnD8mLzBhqtn4Nh9o2BOZQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=ahTGRc
+        GEE9+wIDNP0Z6gvlwNfNOvXtR62+7G1xOUlpo=; b=VsurHzvl5huQ9dXpK1Uo6+
+        0LgCrkdHNO2LaFY/a2jfAFxaBSVsK9GseP+KnGyXhZoR8LmdAktTvYhRHzYxtIvZ
+        OGYGRv10va2f+2PZl/k9D01ud9j6xG2yT2niOU23wQLS3Qsg9DREx5OG9y/ecu05
+        qt6VEihXQZQ4eeREx043VMiooD7ANtt38o3fWR51NtWTazqu1utG0vNdbUhV8e2Y
+        sLO6wkZPkhUB7JA1mxxw1uhRlDQWu1mcKslCyIGKkwzeWpfjWl0OWI9ePxKJKoNh
+        FT4A2uJO5aOd2pILX9DiiW1X0OriUTqU/DAQY1Y7K5hO1OUO0fMYhGFAFjj5S8dw
+        ==
+X-ME-Sender: <xms:C9ACYWHCx_vM9SpHKf7IQ8Mb1P734ae9_TsiLtAYNN75bcE_k4Ch4Q>
+    <xme:C9ACYXUFE0QNXCHmwAonFsHW7KEqHVum95V7oxlBYz2UdzZovOMmhoMKOaPWdgB5P
+    VR8Mgn2CQdu7YYOpA>
+X-ME-Received: <xmr:C9ACYQLJPIihb5KG6S9ccCE1aEOcO7doSAJdBTh7cfPRr2mwfBGC_2N-ZydhxriT5jKRlfB538ednSwNx8ucvjz0-3dZ6Id2CebnUfo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrheefgdehtdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujghosehttdertddttddvnecuhfhrohhmpeforghrkhcu
+    ifhrvggvrhcuoehmghhrvggvrhesrghnihhmrghltghrvggvkhdrtghomheqnecuggftrf
+    grthhtvghrnhepieeugfdutdefiedtvdfftedufedvjeehgfevveefudfgjeffgeeiteet
+    jedufffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epmhhgrhgvvghrsegrnhhimhgrlhgtrhgvvghkrdgtohhm
+X-ME-Proxy: <xmx:C9ACYQHONO11FiGHu5ER7cLbFxopPx78wEJTZgZzLcn-kMnazxzFRQ>
+    <xmx:C9ACYcVgwHPmJQqekfcZzE3IJjtrZ_yHyzipFw4ciyRNXkjs8nxOuA>
+    <xmx:C9ACYTPOXKyo9ah6Xcc77nFAtR34dCN4hTP8IG_o7Y5fLdeO-8awOQ>
+    <xmx:C9ACYfHWTLoJN7XD9sXBe53u6jN_WhM0U3Zu_DD_j5uKqJmzpGS-BQ>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 29 Jul 2021 11:58:03 -0400 (EDT)
+Received: by blue.animalcreek.com (Postfix, from userid 1000)
+        id 6508C1360232; Thu, 29 Jul 2021 08:58:02 -0700 (MST)
+Date:   Thu, 29 Jul 2021 08:58:02 -0700
+From:   Mark Greer <mgreer@animalcreek.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Cc:     Mark Greer <mgreer@animalcreek.com>,
+        Bongsu Jeon <bongsu.jeon@samsung.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-nfc@lists.01.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 04/12] nfc: trf7970a: constify several pointers
+Message-ID: <20210729155802.GA242073@animalcreek.com>
+References: <20210729104022.47761-1-krzysztof.kozlowski@canonical.com>
+ <20210729104022.47761-5-krzysztof.kozlowski@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YQDxmEYfppJ4wAmD@kroah.com>
-X-Operating-System: Linux phenom 5.10.0-7-amd64 
+In-Reply-To: <20210729104022.47761-5-krzysztof.kozlowski@canonical.com>
+Organization: Animal Creek Technologies, Inc.
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jul 28, 2021 at 07:56:40AM +0200, Greg Kroah-Hartman wrote:
-> On Tue, Jul 27, 2021 at 01:58:16PM -0700, Kees Cook wrote:
-> > In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> > field bounds checking for memcpy(), memmove(), and memset(), avoid
-> > intentionally writing across neighboring fields.
-> > 
-> > Use struct_group() in struct drm32_mga_init around members chipset, sgram,
-> > maccess, fb_cpp, front_offset, front_pitch, back_offset, back_pitch,
-> > depth_cpp, depth_offset, depth_pitch, texture_offset, and texture_size,
-> > so they can be referenced together. This will allow memcpy() and sizeof()
-> > to more easily reason about sizes, improve readability, and avoid future
-> > warnings about writing beyond the end of chipset.
-> > 
-> > "pahole" shows no size nor member offset changes to struct drm32_mga_init.
-> > "objdump -d" shows no meaningful object code changes (i.e. only source
-> > line number induced differences and optimizations).
-> > 
-> > Note that since this includes a UAPI header, struct_group() has been
-> > explicitly redefined local to the header.
-> > 
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> >  drivers/gpu/drm/mga/mga_ioc32.c | 30 ++++++++++++++------------
-> >  include/uapi/drm/mga_drm.h      | 37 ++++++++++++++++++++++++---------
-> >  2 files changed, 44 insertions(+), 23 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/mga/mga_ioc32.c b/drivers/gpu/drm/mga/mga_ioc32.c
-> > index 4fd4de16cd32..fbd0329dbd4f 100644
-> > --- a/drivers/gpu/drm/mga/mga_ioc32.c
-> > +++ b/drivers/gpu/drm/mga/mga_ioc32.c
-> > @@ -38,16 +38,21 @@
-> >  typedef struct drm32_mga_init {
-> >  	int func;
-> >  	u32 sarea_priv_offset;
-> > -	int chipset;
-> > -	int sgram;
-> > -	unsigned int maccess;
-> > -	unsigned int fb_cpp;
-> > -	unsigned int front_offset, front_pitch;
-> > -	unsigned int back_offset, back_pitch;
-> > -	unsigned int depth_cpp;
-> > -	unsigned int depth_offset, depth_pitch;
-> > -	unsigned int texture_offset[MGA_NR_TEX_HEAPS];
-> > -	unsigned int texture_size[MGA_NR_TEX_HEAPS];
-> > +	struct_group(always32bit,
-> > +		int chipset;
-> > +		int sgram;
-> > +		unsigned int maccess;
-> > +		unsigned int fb_cpp;
-> > +		unsigned int front_offset;
-> > +		unsigned int front_pitch;
-> > +		unsigned int back_offset;
-> > +		unsigned int back_pitch;
-> > +		unsigned int depth_cpp;
-> > +		unsigned int depth_offset;
-> > +		unsigned int depth_pitch;
-> > +		unsigned int texture_offset[MGA_NR_TEX_HEAPS];
-> > +		unsigned int texture_size[MGA_NR_TEX_HEAPS];
-> > +	);
-> >  	u32 fb_offset;
-> >  	u32 mmio_offset;
-> >  	u32 status_offset;
-> > @@ -67,9 +72,8 @@ static int compat_mga_init(struct file *file, unsigned int cmd,
-> >  
-> >  	init.func = init32.func;
-> >  	init.sarea_priv_offset = init32.sarea_priv_offset;
-> > -	memcpy(&init.chipset, &init32.chipset,
-> > -		offsetof(drm_mga_init_t, fb_offset) -
-> > -		offsetof(drm_mga_init_t, chipset));
-> > +	memcpy(&init.always32bit, &init32.always32bit,
-> > +	       sizeof(init32.always32bit));
-> >  	init.fb_offset = init32.fb_offset;
-> >  	init.mmio_offset = init32.mmio_offset;
-> >  	init.status_offset = init32.status_offset;
-> > diff --git a/include/uapi/drm/mga_drm.h b/include/uapi/drm/mga_drm.h
-> > index 8c4337548ab5..61612e5ecab2 100644
-> > --- a/include/uapi/drm/mga_drm.h
-> > +++ b/include/uapi/drm/mga_drm.h
-> > @@ -265,6 +265,16 @@ typedef struct _drm_mga_sarea {
-> >  #define DRM_IOCTL_MGA_WAIT_FENCE    DRM_IOWR(DRM_COMMAND_BASE + DRM_MGA_WAIT_FENCE, __u32)
-> >  #define DRM_IOCTL_MGA_DMA_BOOTSTRAP DRM_IOWR(DRM_COMMAND_BASE + DRM_MGA_DMA_BOOTSTRAP, drm_mga_dma_bootstrap_t)
-> >  
-> > +#define __struct_group(name, fields) \
-> > +	union { \
-> > +		struct { \
-> > +			fields \
-> > +		}; \
-> > +		struct { \
-> > +			fields \
-> > +		} name; \
-> > +	}
-> > +
-> >  typedef struct _drm_mga_warp_index {
-> >  	int installed;
-> >  	unsigned long phys_addr;
-> > @@ -279,20 +289,25 @@ typedef struct drm_mga_init {
-> >  
-> >  	unsigned long sarea_priv_offset;
-> >  
-> > -	int chipset;
-> > -	int sgram;
-> > +	__struct_group(always32bit,
-> > +		int chipset;
-> > +		int sgram;
-> >  
-> > -	unsigned int maccess;
-> > +		unsigned int maccess;
-> >  
-> > -	unsigned int fb_cpp;
-> > -	unsigned int front_offset, front_pitch;
-> > -	unsigned int back_offset, back_pitch;
-> > +		unsigned int fb_cpp;
-> > +		unsigned int front_offset;
-> > +		unsigned int front_pitch;
-> > +		unsigned int back_offset;
-> > +		unsigned int back_pitch;
-> >  
-> > -	unsigned int depth_cpp;
-> > -	unsigned int depth_offset, depth_pitch;
-> > +		unsigned int depth_cpp;
-> > +		unsigned int depth_offset;
-> > +		unsigned int depth_pitch;
-> >  
-> > -	unsigned int texture_offset[MGA_NR_TEX_HEAPS];
-> > -	unsigned int texture_size[MGA_NR_TEX_HEAPS];
-> > +		unsigned int texture_offset[MGA_NR_TEX_HEAPS];
-> > +		unsigned int texture_size[MGA_NR_TEX_HEAPS];
-> > +	);
-> >  
-> >  	unsigned long fb_offset;
-> >  	unsigned long mmio_offset;
-> > @@ -302,6 +317,8 @@ typedef struct drm_mga_init {
-> >  	unsigned long buffers_offset;
-> >  } drm_mga_init_t;
-> >  
-> > +#undef __struct_group
-> > +
+On Thu, Jul 29, 2021 at 12:40:14PM +0200, Krzysztof Kozlowski wrote:
+> Several functions do not modify pointed data so arguments and local
+> variables can be const for correctness and safety.
 > 
-> Why can you use __struct_group in this uapi header, but not the
-> networking one?
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> ---
+>  drivers/nfc/trf7970a.c | 17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
 
-If there's others, maybe we can stuff the uapi __struct_group into
-linux/types.h where all the other __ uapi types hang out?
-
-Anyway mga is very dead, I don't anyone cares.
-
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-
-I'm assuming this goes in through a topic pull from you?
-
-I'll leave the drm/amd one to figure out between you and Alex.
--Daniel
-
-> 
-> thanks,
-> 
-> greg k-h
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Acked-by: Mark Greer <mgreer@animalcreek.com>
