@@ -2,126 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D07E3DABF6
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jul 2021 21:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 408693DADD0
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jul 2021 22:39:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229773AbhG2TmZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Jul 2021 15:42:25 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:46019 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229606AbhG2TmZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Jul 2021 15:42:25 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1627587741; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=oj9aoRDqvxYQKmFYD9c0RSHhaUvfuUqLJJKlhAbD4BE=; b=ks9sjIE/2CRBlCQEtzDiXdaORZgF0BBt9nlB7BNb9pTtTadxnruCeMNvNIEvFoCw9LBZB0Xl
- azD/WviM4v0zQFtwqW15/C7SRXjlZdEyFDrONkw6rMW2afiwT+ykcGZ/ANCUc3iUGVJ44tvr
- 4KTzaNDPhoVCGoVhdXvkDaWoPkQ=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 61030487e81205dd0adc581e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 29 Jul 2021 19:41:59
- GMT
-Sender: msinada=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 84645C4338A; Thu, 29 Jul 2021 19:41:59 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from msinada-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: msinada)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 72901C433F1;
-        Thu, 29 Jul 2021 19:41:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 72901C433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=msinada@codeaurora.org
-From:   Muna Sinada <msinada@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Muna Sinada <msinada@codeaurora.org>
-Subject: [PATCH v2] nl80211: Add HE UL MU fixed rate setting
-Date:   Thu, 29 Jul 2021 12:41:41 -0700
-Message-Id: <1627587701-13134-1-git-send-email-msinada@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S233555AbhG2Ujl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 29 Jul 2021 16:39:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39288 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233254AbhG2Ujc (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 29 Jul 2021 16:39:32 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FF3FC06179B
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Jul 2021 13:39:28 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m9Cmx-0000F8-Gi; Thu, 29 Jul 2021 22:37:55 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m9Cml-0003d6-RY; Thu, 29 Jul 2021 22:37:43 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m9Cml-0004Ht-Nr; Thu, 29 Jul 2021 22:37:43 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>, kernel@pengutronix.de,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-pci@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell Currey <ruscur@russell.cc>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Michael Buesch <m@bues.ch>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Fiona Trahe <fiona.trahe@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Wojciech Ziemba <wojciech.ziemba@intel.com>,
+        Alexander Duyck <alexanderduyck@fb.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-crypto@vger.kernel.org, qat-linux@intel.com,
+        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
+        netdev@vger.kernel.org, oss-drivers@corigine.com,
+        xen-devel@lists.xenproject.org, linux-usb@vger.kernel.org
+Subject: [PATCH v1 0/5] PCI: Drop duplicated tracking of a pci_dev's bound driver
+Date:   Thu, 29 Jul 2021 22:37:35 +0200
+Message-Id: <20210729203740.1377045-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds nl80211 definitions, policies and parsing code required
-to pass HE UL MU fixed rate settings.
+Hello,
 
-Signed-off-by: Muna Sinada <msinada@codeaurora.org>
----
- include/net/cfg80211.h       | 1 +
- include/uapi/linux/nl80211.h | 2 ++
- net/wireless/nl80211.c       | 9 +++++++++
- 3 files changed, 12 insertions(+)
+struct pci_dev tracks the bound pci driver twice. This series is about
+removing this duplication.
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 161cdf7df1a0..6aa10479a2ce 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -694,6 +694,7 @@ struct cfg80211_bitrate_mask {
- 		enum nl80211_txrate_gi gi;
- 		enum nl80211_he_gi he_gi;
- 		enum nl80211_he_ltf he_ltf;
-+		u16 he_ul_mcs[NL80211_HE_NSS_MAX];
- 	} control[NUM_NL80211_BANDS];
- };
- 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index db474994fa73..db40b34eec06 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4839,6 +4839,7 @@ enum nl80211_key_attributes {
-  *	see &struct nl80211_txrate_he
-  * @NL80211_TXRATE_HE_GI: configure HE GI, 0.8us, 1.6us and 3.2us.
-  * @NL80211_TXRATE_HE_LTF: configure HE LTF, 1XLTF, 2XLTF and 4XLTF.
-+ * @NL80211_TXRATE_HE_UL: HE MCS rates of connected HE STA for uplink traffic.
-  * @__NL80211_TXRATE_AFTER_LAST: internal
-  * @NL80211_TXRATE_MAX: highest TX rate attribute
-  */
-@@ -4851,6 +4852,7 @@ enum nl80211_tx_rate_attributes {
- 	NL80211_TXRATE_HE,
- 	NL80211_TXRATE_HE_GI,
- 	NL80211_TXRATE_HE_LTF,
-+	NL80211_TXRATE_HE_UL,
- 
- 	/* keep last */
- 	__NL80211_TXRATE_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 50eb405b0690..e3ed33940185 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -384,6 +384,7 @@ static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
- 	[NL80211_TXRATE_HE_LTF] = NLA_POLICY_RANGE(NLA_U8,
- 						   NL80211_RATE_INFO_HE_1XLTF,
- 						   NL80211_RATE_INFO_HE_4XLTF),
-+	[NL80211_TXRATE_HE_UL] = NLA_POLICY_EXACT_LEN(sizeof(struct nl80211_txrate_he)),
- };
- 
- static const struct nla_policy
-@@ -4869,6 +4870,14 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
- 		if (tb[NL80211_TXRATE_HE_LTF])
- 			mask->control[band].he_ltf =
- 				nla_get_u8(tb[NL80211_TXRATE_HE_LTF]);
-+		if (tb[NL80211_TXRATE_HE_UL] &&
-+		    !he_set_mcs_mask(info, wdev, sband,
-+				     nla_data(tb[NL80211_TXRATE_HE_UL]),
-+				     mask->control[band].he_ul_mcs)) {
-+			NL_SET_ERR_MSG(info->extack,
-+					    "Unable to build HE mcs mask");
-+			return -EINVAL;
-+		}
- 
- 		if (mask->control[band].legacy == 0) {
- 			/* don't allow empty legacy rates if HT, VHT or HE
+The first two patches are just cleanups. The third patch introduces a
+wrapper that abstracts access to struct pci_dev->driver. In the next
+patch (hopefully) all users are converted to use the new wrapper and
+finally the fifth patch removes the duplication.
+
+Note this series is only build tested (allmodconfig on several
+architectures).
+
+I'm open to restructure this series if this simplifies things. E.g. the
+use of the new wrapper in drivers/pci could be squashed into the patch
+introducing the wrapper. Patch 4 could be split by maintainer tree or
+squashed into patch 3 completely.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (5):
+  PCI: Simplify pci_device_remove()
+  PCI: Drop useless check from pci_device_probe()
+  PCI: Provide wrapper to access a pci_dev's bound driver
+  PCI: Adapt all code locations to not use struct pci_dev::driver
+    directly
+  PCI: Drop duplicated tracking of a pci_dev's bound driver
+
+ arch/powerpc/include/asm/ppc-pci.h            |  3 +-
+ arch/powerpc/kernel/eeh_driver.c              | 12 +++--
+ arch/x86/events/intel/uncore.c                |  2 +-
+ arch/x86/kernel/probe_roms.c                  |  2 +-
+ drivers/bcma/host_pci.c                       |  6 ++-
+ drivers/crypto/hisilicon/qm.c                 |  2 +-
+ drivers/crypto/qat/qat_common/adf_aer.c       |  2 +-
+ drivers/message/fusion/mptbase.c              |  4 +-
+ drivers/misc/cxl/guest.c                      | 21 ++++----
+ drivers/misc/cxl/pci.c                        | 25 ++++++----
+ .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  3 +-
+ .../ethernet/marvell/prestera/prestera_pci.c  |  2 +-
+ drivers/net/ethernet/mellanox/mlxsw/pci.c     |  2 +-
+ .../ethernet/netronome/nfp/nfp_net_ethtool.c  |  2 +-
+ drivers/pci/iov.c                             | 23 +++++----
+ drivers/pci/pci-driver.c                      | 48 +++++++++----------
+ drivers/pci/pci.c                             | 10 ++--
+ drivers/pci/pcie/err.c                        | 35 +++++++-------
+ drivers/pci/xen-pcifront.c                    |  4 +-
+ drivers/ssb/pcihost_wrapper.c                 |  7 ++-
+ drivers/usb/host/xhci-pci.c                   |  3 +-
+ include/linux/pci.h                           |  2 +-
+ 22 files changed, 121 insertions(+), 99 deletions(-)
+
+
+base-commit: 2734d6c1b1a089fb593ef6a23d4b70903526fe0c
 -- 
-2.7.4
+2.30.2
 
