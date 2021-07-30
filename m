@@ -2,102 +2,179 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0316E3DBDD7
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jul 2021 19:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 751F53DBDED
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jul 2021 19:49:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230243AbhG3RiM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Jul 2021 13:38:12 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.164]:40358 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229773AbhG3RiL (ORCPT
+        id S230229AbhG3Rtu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Jul 2021 13:49:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37824 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230199AbhG3Rtu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Jul 2021 13:38:11 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.165])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 004B9A0068
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 17:38:06 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id CF4979C006F
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 17:38:05 +0000 (UTC)
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 22B0F13C2B1;
-        Fri, 30 Jul 2021 10:38:05 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 22B0F13C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1627666685;
-        bh=m2rAGlQnRhPQQf7QvJeAjXR2JoU8PlhOxkNjPLqyK9Q=;
-        h=From:To:Cc:Subject:Date:From;
-        b=nLKqM/60M81yawgxO7wNwm5OZP3xKi+h+iUi7V/uhmTdbmYKHCZOq9iVNnaXukWrf
-         9PGIDTk+V6Xy3XzR9l5ThFKfnTI2R3WQ70ej7UaGApYuu7wR8Bf/lXWRd3vgasWzQB
-         0imy4qrUzuwbzwyuz+b/mnFYXmx+NZiNSltCoNm0=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH v2] mt76: mt7915:  Fix hwmon temp sensor mem use-after-free.
-Date:   Fri, 30 Jul 2021 10:38:03 -0700
-Message-Id: <20210730173803.24358-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
+        Fri, 30 Jul 2021 13:49:50 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F1EBC061765
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 10:49:45 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m9Wcc-00064T-I3; Fri, 30 Jul 2021 19:48:34 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m9WcO-0005qH-Ky; Fri, 30 Jul 2021 19:48:20 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m9WcO-00079n-I5; Fri, 30 Jul 2021 19:48:20 +0200
+Date:   Fri, 30 Jul 2021 19:48:20 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Alexander Duyck <alexanderduyck@fb.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        oss-drivers@corigine.com, Oliver O'Halloran <oohall@gmail.com>,
+        Russell Currey <ruscur@russell.cc>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        linux-perf-users@vger.kernel.org,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        linux-scsi@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        Ido Schimmel <idosch@nvidia.com>, x86@kernel.org,
+        qat-linux@intel.com,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Fiona Trahe <fiona.trahe@intel.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, Michael Buesch <m@bues.ch>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Juergen Gross <jgross@suse.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        xen-devel@lists.xenproject.org, Vadym Kochan <vkochan@marvell.com>,
+        MPT-FusionLinux.pdl@broadcom.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org,
+        Wojciech Ziemba <wojciech.ziemba@intel.com>,
+        linux-kernel@vger.kernel.org, Taras Chornyi <tchornyi@marvell.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
+        netdev@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v1 0/5] PCI: Drop duplicated tracking of a pci_dev's
+ bound driver
+Message-ID: <20210730174820.i6ycjyvyzxcxwxsc@pengutronix.de>
+References: <20210729203740.1377045-1-u.kleine-koenig@pengutronix.de>
+ <YQOy/OTvY66igEoe@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-MDID: 1627666686-Idy_gj740ooM
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="t5ueb7xyetl6m7j3"
+Content-Disposition: inline
+In-Reply-To: <YQOy/OTvY66igEoe@smile.fi.intel.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
 
-Without this change, garbage is seen in the hwmon name
-and sensors output for mt7915 is garbled.
+--t5ueb7xyetl6m7j3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-With the change:
+Hi Andy,
 
-mt7915-pci-1400
-Adapter: PCI adapter
-temp1:        +49.0°C
+On Fri, Jul 30, 2021 at 11:06:20AM +0300, Andy Shevchenko wrote:
+> On Thu, Jul 29, 2021 at 10:37:35PM +0200, Uwe Kleine-K=F6nig wrote:
+> > struct pci_dev tracks the bound pci driver twice. This series is about
+> > removing this duplication.
+> >=20
+> > The first two patches are just cleanups. The third patch introduces a
+> > wrapper that abstracts access to struct pci_dev->driver. In the next
+> > patch (hopefully) all users are converted to use the new wrapper and
+> > finally the fifth patch removes the duplication.
+> >=20
+> > Note this series is only build tested (allmodconfig on several
+> > architectures).
+> >=20
+> > I'm open to restructure this series if this simplifies things. E.g. the
+> > use of the new wrapper in drivers/pci could be squashed into the patch
+> > introducing the wrapper. Patch 4 could be split by maintainer tree or
+> > squashed into patch 3 completely.
+>=20
+> I see only patch 4 and this cover letter...
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
-v2:  Take ext-phy into account
-   and do similar logic for the cooling device logic.
+The full series is available at
 
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+	https://lore.kernel.org/linux-pci/20210729203740.1377045-1-u.kleine-koenig=
+@pengutronix.de/
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 192e3e190ce1..944b74a807a7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -132,8 +132,18 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
- 	struct wiphy *wiphy = phy->mt76->hw->wiphy;
- 	struct thermal_cooling_device *cdev;
- 	struct device *hwmon;
--
--	cdev = thermal_cooling_device_register(wiphy_name(wiphy), phy,
-+	struct mt7915_dev *dev = phy->dev;
-+	bool ext_phy = phy != &dev->phy;
-+	static const char *prefix_ext = "mt7915_ext";
-+	static const char *prefix = "mt7915";
-+	const char *my_prefix;
-+
-+	if (ext_phy)
-+		my_prefix = prefix_ext;
-+	else
-+		my_prefix = prefix;
-+
-+	cdev = thermal_cooling_device_register(my_prefix, phy,
- 					       &mt7915_thermal_ops);
- 	if (!IS_ERR(cdev)) {
- 		if (sysfs_create_link(&wiphy->dev.kobj, &cdev->device.kobj,
-@@ -147,7 +157,7 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
- 		return 0;
- 
- 	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev,
--						       wiphy_name(wiphy), phy,
-+						       my_prefix, phy,
- 						       mt7915_hwmon_groups);
- 	if (IS_ERR(hwmon))
- 		return PTR_ERR(hwmon);
--- 
-2.20.1
+All patches but #4 only touch drivers/pci/ (and include/linux/pci.h) and
+it seemed excessive to me to send all patches to all people. It seems at
+least for you I balanced this wrongly. The short version is that patch
+#3 introduces
 
+	+#define pci_driver_of_dev(pdev) ((pdev)->driver)
+
+which allows to do the stuff done in patch #4 and then patch #5 does
+
+	-#define pci_driver_of_dev(pdev) ((pdev)->driver)
+	+#define pci_driver_of_dev(pdev) ((pdev)->dev.driver ? to_pci_driver((pdev=
+)->dev.driver) : NULL)
+
+plus some cleanups.
+
+If you want I can send you a bounce (or you try
+
+	b4 am 20210729203740.1377045-1-u.kleine-koenig@pengutronix.de
+
+).
+
+Best regards and thanks for caring,
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--t5ueb7xyetl6m7j3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmEEO2EACgkQwfwUeK3K
+7AkOCgf/UKvRbSIrjjdKl0HWJofJEfaXlbATSgBausmxV/dcXsg1sLkhkpTN66bG
+WmAdhFN03Vtx3jHKeYtgo3x8g39nfYT4NmlYTNumgxTow6TESnJxbYewE3i0alrR
+Jv0JvBFhUaXj++XetOVHn9f5/t7o5NL/XSF5DTwQM8lZ5skmA2+XXea8lU0IFufZ
+uTi0XA3G5BNhyU6RiehvnN59J6QCN3CIVqajOrZbqf33jiiyCTDf2tEqCYRbv1vJ
+zqt7zYp05RtUaqNKe9oH4N4UFCdChrjZlFP7w7gyqM6Jh/wOSERlVdpocf0BGClR
+W6o7YIB7QFf+ByIxy6hIBeXnaPaDFQ==
+=oi24
+-----END PGP SIGNATURE-----
+
+--t5ueb7xyetl6m7j3--
