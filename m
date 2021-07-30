@@ -2,103 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30CF53DBDFE
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jul 2021 19:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0DE63DBE38
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jul 2021 20:16:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230229AbhG3R6b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Jul 2021 13:58:31 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:51578 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229921AbhG3R6a (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Jul 2021 13:58:30 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1627667905; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=pcX06MqcSw9/apMXsA6DluESiB7193aiqpxewaeCpcA=; b=RfkYIR03Q5IYUmF5hzS/qGY+TJHhJfe5NcX1vG4cu5n5qqetyboY0U6GNAHSv1A7AMDMTTh8
- 6mr3fl9sS6XYgaMPNAvgxlPSnwJyPb1jx6P79YUEr2872nf+ENEDghygYGUMFTPxaR1oZG3z
- RgsimGDSfXgftNX6++3nW8IOr1s=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 61043db838fa9bfe9c7b1ff3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 30 Jul 2021 17:58:16
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 73393C4323A; Fri, 30 Jul 2021 17:58:15 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E5C35C433F1;
-        Fri, 30 Jul 2021 17:58:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E5C35C433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        phone-devel@vger.kernel.org, newbyte@disroot.org,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: Re: [PATCH] brcmfmac: firmware: Allow per-board firmware binaries
-References: <20210711231659.255479-1-linus.walleij@linaro.org>
-        <CACRpkdagx71ZnOYt7M7PZFkW4UgD-9a_7+ZsMjowaWJmZrCsUQ@mail.gmail.com>
-Date:   Fri, 30 Jul 2021 20:58:07 +0300
-In-Reply-To: <CACRpkdagx71ZnOYt7M7PZFkW4UgD-9a_7+ZsMjowaWJmZrCsUQ@mail.gmail.com>
-        (Linus Walleij's message of "Fri, 30 Jul 2021 11:21:40 +0200")
-Message-ID: <8735rvfzv4.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S230335AbhG3SQ5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Jul 2021 14:16:57 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:34586 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229921AbhG3SQ4 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 30 Jul 2021 14:16:56 -0400
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 16UI3vac158050;
+        Fri, 30 Jul 2021 14:16:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=47G+jOd9ft2urcdZVKEMDZ0W/umlhqgBNQoiaG8/OGA=;
+ b=MmozcAgtOxadFvhaSECQH4KmhgbRBg6VyWpLGX3FBtuagYmylENTaCuWR82/lNNfbPpb
+ QJfiSQgTNSifUbi1oVVndx/rCdy1H/7S36oM4XhiUuN6IJWZ4ET3XDtCHkLDrST4RH2Q
+ tfqKq/UxjHBu283tFp8IYQLePZmishK2Pp7/eqmxo/jF+F6+zIgYh5gToNqnRQvrrJqB
+ NdbqtuiUus2teB5vKekm+w2HUPdFxhIKsaFDV0GC/ahvpW0zOlV8wJK3W/evsEIJdfgA
+ qNLn333UfVsJWG6qEWqW49xmDlQ0rue3LB9jgqXzYZOC9Y7WOKP6EQ15gy09U5EidObu ag== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3a4p568pj3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Jul 2021 14:16:34 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+        by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16UI75qd019316;
+        Fri, 30 Jul 2021 18:16:33 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
+        by ppma03dal.us.ibm.com with ESMTP id 3a235u95p7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Jul 2021 18:16:33 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
+        by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 16UIGWiZ34472428
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 30 Jul 2021 18:16:32 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 75B7D28060;
+        Fri, 30 Jul 2021 18:16:32 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6A40028059;
+        Fri, 30 Jul 2021 18:16:29 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.160.21.31])
+        by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+        Fri, 30 Jul 2021 18:16:29 +0000 (GMT)
+Subject: Re: [PATCH 36/64] scsi: ibmvscsi: Avoid multi-field memset() overflow
+ by aiming at srp
+To:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Kees Cook <keescook@chromium.org>
+Cc:     linux-hardening@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Keith Packard <keithpac@amazon.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Brian King <brking@linux.vnet.ibm.com>
+References: <20210727205855.411487-1-keescook@chromium.org>
+ <20210727205855.411487-37-keescook@chromium.org>
+ <yq135rzp79c.fsf@ca-mkp.ca.oracle.com>
+From:   Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <6eae8434-e9a7-aa74-628b-b515b3695359@linux.ibm.com>
+Date:   Fri, 30 Jul 2021 11:16:28 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <yq135rzp79c.fsf@ca-mkp.ca.oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: gc5JE-Gvwp4LjpvIX5-GdEcqjSPid7w2
+X-Proofpoint-GUID: gc5JE-Gvwp4LjpvIX5-GdEcqjSPid7w2
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-07-30_11:2021-07-30,2021-07-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 priorityscore=1501 spamscore=0 malwarescore=0
+ impostorscore=0 mlxscore=0 clxscore=1011 adultscore=0 bulkscore=0
+ phishscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2107140000 definitions=main-2107300121
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Linus Walleij <linus.walleij@linaro.org> writes:
-
-> On Mon, Jul 12, 2021 at 1:19 AM Linus Walleij <linus.walleij@linaro.org> wrote:
->
->> After some crashes in the 3D engine (!) on the Samsung GT-I8530
->> it turns out that the main firmware file can be device dependent,
->> something that was previously only handled for the NVRAM
->> parameter file.
+On 7/27/21 6:39 PM, Martin K. Petersen wrote:
+> 
+> Kees,
+> 
+>> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+>> field bounds checking for memset(), avoid intentionally writing across
+>> neighboring fields.
 >>
->> Rewrite the code a bit so we can a per-board suffixed firmware
->> binary as well, if this does not exist we fall back to the
->> canonical firmware name.
+>> Instead of writing beyond the end of evt_struct->iu.srp.cmd, target the
+>> upper union (evt_struct->iu.srp) instead, as that's what is being wiped.
 >>
->> Example: a 4330 device with the OF board compatible is
->> "samsung,gavini". We will first try
->> "brcmfmac4330-sdio.samsung,gavini.bin" then "brcmfmac4330-sdio.bin"
->> if that does not work.
+>> Signed-off-by: Kees Cook <keescook@chromium.org>
+> 
+> Orthogonal to your change, it wasn't immediately obvious to me that
+> SRP_MAX_IU_LEN was the correct length to use for an srp_cmd. However, I
+> traversed the nested unions and it does look OK.
+> 
+> For good measure I copied Tyrel and Brian.
+
+LGTM
+
+Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+
+> 
+> Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
+> 
+>> ---
+>>  drivers/scsi/ibmvscsi/ibmvscsi.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
 >>
->> Cc: phone-devel@vger.kernel.org
->> Cc: newbyte@disroot.org
->> Cc: Stephan Gerhold <stephan@gerhold.net>
->> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
->
-> Who can pick this up by the way?
->
-> The patch is in active use in PostmarketOS and work fine there.
->
-> Kalle?
+>> diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
+>> index e6a3eaaa57d9..7e8beb42d2d3 100644
+>> --- a/drivers/scsi/ibmvscsi/ibmvscsi.c
+>> +++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
+>> @@ -1055,8 +1055,8 @@ static int ibmvscsi_queuecommand_lck(struct scsi_cmnd *cmnd,
+>>  		return SCSI_MLQUEUE_HOST_BUSY;
+>>  
+>>  	/* Set up the actual SRP IU */
+>> +	memset(&evt_struct->iu.srp, 0x00, SRP_MAX_IU_LEN);
+>>  	srp_cmd = &evt_struct->iu.srp.cmd;
+>> -	memset(srp_cmd, 0x00, SRP_MAX_IU_LEN);
+>>  	srp_cmd->opcode = SRP_CMD;
+>>  	memcpy(srp_cmd->cdb, cmnd->cmnd, sizeof(srp_cmd->cdb));
+>>  	int_to_scsilun(lun, &srp_cmd->lun);
+> 
 
-Yes, if the patch is ok I can take it to wireless-drivers-next.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
