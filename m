@@ -2,96 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B63693DB5CD
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jul 2021 11:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 164743DB5DA
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jul 2021 11:26:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238154AbhG3JV6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Jul 2021 05:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47516 "EHLO
+        id S238207AbhG3J0I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Jul 2021 05:26:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230359AbhG3JV6 (ORCPT
+        with ESMTP id S230359AbhG3J0H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Jul 2021 05:21:58 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A00E8C0613C1
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 02:21:53 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id b21so11401093ljo.13
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 02:21:53 -0700 (PDT)
+        Fri, 30 Jul 2021 05:26:07 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 955FBC0613D5
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 02:26:01 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id r2so10478279wrl.1
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 02:26:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bmtL6Vdjj5k5RGhRsWd7cHDELGFIW5xujPHpB/57Xq0=;
-        b=oi2jkH6IJzCgg7/px7n5c9sFzHTbgl/hIrUfZRqkZkhjxCd4HJqpAu+75C21pN1dtZ
-         31klCJqnzmIGiLEYW5u+1SlikxFCoE+zGhMYXuX7UTN/jYjLYk1R1vVVO8jCONH3euaI
-         vBidPXiIM9YdMH1vbWdTc3qVgjJ5z1N4cERjTqprqtzcQzW7QFePZfN1fuD2C5NHkxxZ
-         e/BvwyBk15PXK+zfQH1mZAaE22j7NEEoIcbiJnG1XeI6BBWv7/TYhL2uxxXhc4H+gmHi
-         iCXggk30PkOT029DBAif0P5mPbC2TriwlGmHGGbNPBEyti5yb6nJeCIHWAweGKnKOxRD
-         kwMQ==
+        d=linbit-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=AkuGs7W3jKofUPHLtLFgYg9f4YA+eRGF5if/gTr/VXg=;
+        b=lylUtumRYNonwKmsPvuJom3wxBHkLf4anhWQaqkh04Z4ai4zZJd08vdZ7peV9SRpsh
+         8kDAxoMFjhA4/LA7o2la5MrwwsntBQgGjb0I1dUZFTJHnBuxsue7dB41Zed6v8YvFnQx
+         EtWmNPzKWs0OwoVonXjeCSLzamGDsOrch7MlE+WtH/ppN38tQ4p8HLRgifhRRjoPlQkI
+         e7dhso1fixnA6ExwMDoIvam1wge26Ggl97vNBtGlzBzaYUrpPxGPV5UmfIV5g4S/Vge/
+         4ukVRSa4etHYaDGK4EAFlKuotQCFXCnz8HEMRP8pLWuHCS1V7/wsG8+TQIpv8pIama72
+         IoVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bmtL6Vdjj5k5RGhRsWd7cHDELGFIW5xujPHpB/57Xq0=;
-        b=sheCtOvI1P7M1wUbeh3jIDKoJDPZUSdQnyL6sfV423l7gpylfdhI4GwO6kbBGa1lTh
-         irRZeTVv3RAFv+oEDEonEZVp6sogdARSdcWBNrGlNdM/BlfUtZif2I+W5CG6LTXkYA1C
-         obexMeuTQyz76uffEk4M0h1vBJDGtM6LmBSZQxz7g3vqaVyw1Vrs8M5BreFv+ARN5dhy
-         smVLCwWTBFBxS9Ru4K/2fl365Hu1h5JrgA17bGTHND7LraTbRpRkdmPVlRmQA63e08lz
-         exlJDVomN2m1TfM+elbkKmhNbHn8mrgZKWENN5GG8UKS83+gAOMLKHx4R+TOP0+FUAZS
-         aW9Q==
-X-Gm-Message-State: AOAM533XTDd6unRGhOWOoGPQpZV5CJV5TMRe+Cr3JVAMIPsmrwdQRVAY
-        deACS+jc9dMgmQIa/pUaE833dPuZHLMtRzABIQV+AA==
-X-Google-Smtp-Source: ABdhPJzInc6eePs7o0CSdISwDcn4+dULVaH2OFG6AcqlL1J6KswAUFVurHtlSyYUxQLVqRbD1ZA/7hXPNhl/Jq3CgKc=
-X-Received: by 2002:a2e:888f:: with SMTP id k15mr1079779lji.326.1627636912056;
- Fri, 30 Jul 2021 02:21:52 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=AkuGs7W3jKofUPHLtLFgYg9f4YA+eRGF5if/gTr/VXg=;
+        b=QbyicGvito/nP3Hd0YOwF6OskZl926PkaOcJkPJGA48yxVoHqAewMtCER8Ti8ySIWP
+         CaPr/HKgKfXlMPg3hLmLVfht6Yf2VBJk10gLLbgw9Xh6B0jxCUYTUyhQyB4ceYnhSto+
+         VhZZ3Stq1WQmz+TWyPEtTi7GE817kk9MQfN6bjAZu1aTioE2AOTCZoncSnRWp0iDgw6J
+         BUOtTs8SOcOkGybdJTOzw6S49g6IpgGBUN/KGI0F/oOfVl9cu+TJKhvbtdVMmjL9IHr4
+         y4bzkJzIktpWherULzHYwOsCf768PXxs3bYWQI3Byd8PsTzyrmlyE070n0OgsXTCAmzy
+         RSaw==
+X-Gm-Message-State: AOAM532Z3tYhpFATe8DA3Tz7Dx5G1QEwE/Q2GkaVjkros0g1/UUNM0UK
+        uUSX06N/PYml4y4St3ria0wh1A==
+X-Google-Smtp-Source: ABdhPJzeDirH6vZRgzsjdA+6SGrdUfGDvYu5Q0o7XkuF8nVr9uoOebNL2C+zT2PnMdIeL/CWiOquwA==
+X-Received: by 2002:a5d:6448:: with SMTP id d8mr1920645wrw.295.1627637160119;
+        Fri, 30 Jul 2021 02:26:00 -0700 (PDT)
+Received: from grappa.linbit (62-99-137-214.static.upcbusiness.at. [62.99.137.214])
+        by smtp.gmail.com with ESMTPSA id v15sm1259298wmj.39.2021.07.30.02.25.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jul 2021 02:25:59 -0700 (PDT)
+Date:   Fri, 30 Jul 2021 11:25:57 +0200
+From:   Lars Ellenberg <lars.ellenberg@linbit.com>
+To:     Bart Van Assche <bvanassche@acm.org>
+Cc:     Kees Cook <keescook@chromium.org>, linux-hardening@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Keith Packard <keithpac@amazon.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
+Subject: Re: [PATCH 48/64] drbd: Use struct_group() to zero algs
+Message-ID: <20210730092557.GC909654@grappa.linbit>
+Mail-Followup-To: Bart Van Assche <bvanassche@acm.org>,
+        Kees Cook <keescook@chromium.org>, linux-hardening@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Keith Packard <keithpac@amazon.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
+References: <20210727205855.411487-1-keescook@chromium.org>
+ <20210727205855.411487-49-keescook@chromium.org>
+ <1cc74e5e-8d28-6da4-244e-861eac075ca2@acm.org>
+ <202107291845.1E1528D@keescook>
+ <0d71917d-967f-beaa-d83e-a60fa254627c@acm.org>
 MIME-Version: 1.0
-References: <20210711231659.255479-1-linus.walleij@linaro.org>
-In-Reply-To: <20210711231659.255479-1-linus.walleij@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 30 Jul 2021 11:21:40 +0200
-Message-ID: <CACRpkdagx71ZnOYt7M7PZFkW4UgD-9a_7+ZsMjowaWJmZrCsUQ@mail.gmail.com>
-Subject: Re: [PATCH] brcmfmac: firmware: Allow per-board firmware binaries
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        phone-devel@vger.kernel.org, newbyte@disroot.org,
-        Stephan Gerhold <stephan@gerhold.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0d71917d-967f-beaa-d83e-a60fa254627c@acm.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jul 12, 2021 at 1:19 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+On Thu, Jul 29, 2021 at 07:57:47PM -0700, Bart Van Assche wrote:
+> On 7/29/21 7:31 PM, Kees Cook wrote:
+> > On Wed, Jul 28, 2021 at 02:45:55PM -0700, Bart Van Assche wrote:
+> >> On 7/27/21 1:58 PM, Kees Cook wrote:
+> >>> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> >>> field bounds checking for memset(), avoid intentionally writing across
+> >>> neighboring fields.
+> >>>
+> >>> Add a struct_group() for the algs so that memset() can correctly reason
+> >>> about the size.
+> >>>
+> >>> Signed-off-by: Kees Cook <keescook@chromium.org>
+> >>> ---
+> >>>   drivers/block/drbd/drbd_main.c     | 3 ++-
+> >>>   drivers/block/drbd/drbd_protocol.h | 6 ++++--
+> >>>   drivers/block/drbd/drbd_receiver.c | 3 ++-
+> >>>   3 files changed, 8 insertions(+), 4 deletions(-)
+> >>>
+> >>> diff --git a/drivers/block/drbd/drbd_main.c b/drivers/block/drbd/drbd_main.c
+> >>> index 55234a558e98..b824679cfcb2 100644
+> >>> --- a/drivers/block/drbd/drbd_main.c
+> >>> +++ b/drivers/block/drbd/drbd_main.c
+> >>> @@ -729,7 +729,8 @@ int drbd_send_sync_param(struct drbd_peer_device *peer_device)
+> >>>   	cmd = apv >= 89 ? P_SYNC_PARAM89 : P_SYNC_PARAM;
+> >>>   	/* initialize verify_alg and csums_alg */
+> >>> -	memset(p->verify_alg, 0, 2 * SHARED_SECRET_MAX);
+> >>> +	BUILD_BUG_ON(sizeof(p->algs) != 2 * SHARED_SECRET_MAX);
+> >>> +	memset(&p->algs, 0, sizeof(p->algs));
+> >>>   	if (get_ldev(peer_device->device)) {
+> >>>   		dc = rcu_dereference(peer_device->device->ldev->disk_conf);
+> >>> diff --git a/drivers/block/drbd/drbd_protocol.h b/drivers/block/drbd/drbd_protocol.h
+> >>> index dea59c92ecc1..a882b65ab5d2 100644
+> >>> --- a/drivers/block/drbd/drbd_protocol.h
+> >>> +++ b/drivers/block/drbd/drbd_protocol.h
+> >>> @@ -283,8 +283,10 @@ struct p_rs_param_89 {
+> >>>   struct p_rs_param_95 {
+> >>>   	u32 resync_rate;
+> >>> -	char verify_alg[SHARED_SECRET_MAX];
+> >>> -	char csums_alg[SHARED_SECRET_MAX];
+> >>> +	struct_group(algs,
+> >>> +		char verify_alg[SHARED_SECRET_MAX];
+> >>> +		char csums_alg[SHARED_SECRET_MAX];
+> >>> +	);
+> >>>   	u32 c_plan_ahead;
+> >>>   	u32 c_delay_target;
+> >>>   	u32 c_fill_target;
+> >>> diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
+> >>> index 1f740e42e457..6df2539e215b 100644
+> >>> --- a/drivers/block/drbd/drbd_receiver.c
+> >>> +++ b/drivers/block/drbd/drbd_receiver.c
+> >>> @@ -3921,7 +3921,8 @@ static int receive_SyncParam(struct drbd_connection *connection, struct packet_i
+> >>>   	/* initialize verify_alg and csums_alg */
+> >>>   	p = pi->data;
+> >>> -	memset(p->verify_alg, 0, 2 * SHARED_SECRET_MAX);
+> >>> +	BUILD_BUG_ON(sizeof(p->algs) != 2 * SHARED_SECRET_MAX);
+> >>> +	memset(&p->algs, 0, sizeof(p->algs));
+> >>
+> >> Using struct_group() introduces complexity. Has it been considered not to
+> >> modify struct p_rs_param_95 and instead to use two memset() calls instead of
+> >> one (one memset() call per member)?
+> > 
+> > I went this direction because using two memset()s (or memcpy()s in other
+> > patches) changes the machine code. It's not much of a change, but it
+> > seems easier to justify "no binary changes" via the use of struct_group().
+> > 
+> > If splitting the memset() is preferred, I can totally do that instead.
+> > :)
+> 
+> I don't have a strong opinion about this. Lars, do you want to comment
+> on this patch?
 
-> After some crashes in the 3D engine (!) on the Samsung GT-I8530
-> it turns out that the main firmware file can be device dependent,
-> something that was previously only handled for the NVRAM
-> parameter file.
->
-> Rewrite the code a bit so we can a per-board suffixed firmware
-> binary as well, if this does not exist we fall back to the
-> canonical firmware name.
->
-> Example: a 4330 device with the OF board compatible is
-> "samsung,gavini". We will first try
-> "brcmfmac4330-sdio.samsung,gavini.bin" then "brcmfmac4330-sdio.bin"
-> if that does not work.
->
-> Cc: phone-devel@vger.kernel.org
-> Cc: newbyte@disroot.org
-> Cc: Stephan Gerhold <stephan@gerhold.net>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-Who can pick this up by the way?
+Fine either way. "no binary changes" sounds good ;-)
 
-The patch is in active use in PostmarketOS and work fine there.
+Thanks,
+    Lars
 
-Kalle?
-
-Yours,
-Linus Walleij
