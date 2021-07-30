@@ -2,139 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F4E03DB197
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jul 2021 04:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB5053DB2A6
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jul 2021 07:15:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230117AbhG3C5y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 29 Jul 2021 22:57:54 -0400
-Received: from mail-pj1-f50.google.com ([209.85.216.50]:46801 "EHLO
-        mail-pj1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229750AbhG3C5y (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 29 Jul 2021 22:57:54 -0400
-Received: by mail-pj1-f50.google.com with SMTP id g23-20020a17090a5797b02901765d605e14so12333777pji.5;
-        Thu, 29 Jul 2021 19:57:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=SFzRUhN6YLmKo+jXursxkunKR479Zn0dAlkG5jiWhjw=;
-        b=GPrLuhOBMMS7jqmzLpbbFbhKeWqOe6NxZh70ZESsM7lnWcv8AaFJifJoeyqgj+Vx88
-         WQPWTWJqjrXqME2dj2VIZCoS4wbWRxP6+yvO+5w7s6N4mW4Ny/1+82zH6vsDjlSQK45t
-         /CSbU4YcLrs58w039Dk/uHmnjk7fYKDdbYI6y3JpQv/zpiFFHBvWDo5q2ns0diNwSAv2
-         PlTfTu5cDBPPX1M/eD//bTa1B5DkvbrxMXB7cTVZ9zNe/Rol5WrniB90Qd+Vb7tjAZxZ
-         nk64cHwfYBcPbKGrHfXM6ITtUpMQa5RM7nvtQWAMjixzGwhdrhbHnEwd4yV9aGMZsngp
-         r2ZQ==
-X-Gm-Message-State: AOAM532nQzvhllMSJLiZ0w7pDnohtNDoi9lmaOM9rLZnK3zzUf1vtwNB
-        0cvJn/ZpFmjDBVSjGZ+jmNw=
-X-Google-Smtp-Source: ABdhPJzldFKnrfj3e7CDNRZJLltOGnPwYmMzIK1MKjkK0sFTGZWcKCldhGHbW6FmNfgZHfM78rnouA==
-X-Received: by 2002:a17:90a:c092:: with SMTP id o18mr691992pjs.3.1627613869863;
-        Thu, 29 Jul 2021 19:57:49 -0700 (PDT)
-Received: from ?IPv6:2601:647:4000:d7:3f66:df55:a341:f79d? ([2601:647:4000:d7:3f66:df55:a341:f79d])
-        by smtp.gmail.com with ESMTPSA id c15sm221003pfl.181.2021.07.29.19.57.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Jul 2021 19:57:49 -0700 (PDT)
-Subject: Re: [PATCH 48/64] drbd: Use struct_group() to zero algs
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-hardening@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Keith Packard <keithpac@amazon.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Lars Ellenberg <lars.ellenberg@linbit.com>
-References: <20210727205855.411487-1-keescook@chromium.org>
- <20210727205855.411487-49-keescook@chromium.org>
- <1cc74e5e-8d28-6da4-244e-861eac075ca2@acm.org>
- <202107291845.1E1528D@keescook>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <0d71917d-967f-beaa-d83e-a60fa254627c@acm.org>
-Date:   Thu, 29 Jul 2021 19:57:47 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S237096AbhG3FPL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Jul 2021 01:15:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47414 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234928AbhG3FPH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 30 Jul 2021 01:15:07 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6AAA660F9B;
+        Fri, 30 Jul 2021 05:14:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1627622098;
+        bh=Rd0qV6oPrMRK9x5RQHEA0i4kdEU0U+RcVzNm4XOeux8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=T6hObKQmOk4AFgIpQT4y2Zsi4Q75SgNjFNnS8pRLR4KFvnEyagvEfbTCdxstRLsYG
+         rjTcpLBlDG/oVJ8lnaqbcwXAZTVT9l8C6Cy6bhh3Fo+ilPrCNthbqlfZm24+7rNODV
+         PAMI7xMjSKfCoNPXlo3uccVRt1pE46rn5PvW/dE4=
+Date:   Fri, 30 Jul 2021 07:14:55 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        kernel@pengutronix.de, linux-pci@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell Currey <ruscur@russell.cc>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Michael Buesch <m@bues.ch>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Fiona Trahe <fiona.trahe@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Wojciech Ziemba <wojciech.ziemba@intel.com>,
+        Alexander Duyck <alexanderduyck@fb.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-crypto@vger.kernel.org, qat-linux@intel.com,
+        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
+        netdev@vger.kernel.org, oss-drivers@corigine.com,
+        xen-devel@lists.xenproject.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH v1 0/5] PCI: Drop duplicated tracking of a pci_dev's
+ bound driver
+Message-ID: <YQOKz0l6aaU8PGLV@kroah.com>
+References: <20210729203740.1377045-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <202107291845.1E1528D@keescook>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210729203740.1377045-1-u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 7/29/21 7:31 PM, Kees Cook wrote:
-> On Wed, Jul 28, 2021 at 02:45:55PM -0700, Bart Van Assche wrote:
->> On 7/27/21 1:58 PM, Kees Cook wrote:
->>> In preparation for FORTIFY_SOURCE performing compile-time and run-time
->>> field bounds checking for memset(), avoid intentionally writing across
->>> neighboring fields.
->>>
->>> Add a struct_group() for the algs so that memset() can correctly reason
->>> about the size.
->>>
->>> Signed-off-by: Kees Cook <keescook@chromium.org>
->>> ---
->>>   drivers/block/drbd/drbd_main.c     | 3 ++-
->>>   drivers/block/drbd/drbd_protocol.h | 6 ++++--
->>>   drivers/block/drbd/drbd_receiver.c | 3 ++-
->>>   3 files changed, 8 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/block/drbd/drbd_main.c b/drivers/block/drbd/drbd_main.c
->>> index 55234a558e98..b824679cfcb2 100644
->>> --- a/drivers/block/drbd/drbd_main.c
->>> +++ b/drivers/block/drbd/drbd_main.c
->>> @@ -729,7 +729,8 @@ int drbd_send_sync_param(struct drbd_peer_device *peer_device)
->>>   	cmd = apv >= 89 ? P_SYNC_PARAM89 : P_SYNC_PARAM;
->>>   	/* initialize verify_alg and csums_alg */
->>> -	memset(p->verify_alg, 0, 2 * SHARED_SECRET_MAX);
->>> +	BUILD_BUG_ON(sizeof(p->algs) != 2 * SHARED_SECRET_MAX);
->>> +	memset(&p->algs, 0, sizeof(p->algs));
->>>   	if (get_ldev(peer_device->device)) {
->>>   		dc = rcu_dereference(peer_device->device->ldev->disk_conf);
->>> diff --git a/drivers/block/drbd/drbd_protocol.h b/drivers/block/drbd/drbd_protocol.h
->>> index dea59c92ecc1..a882b65ab5d2 100644
->>> --- a/drivers/block/drbd/drbd_protocol.h
->>> +++ b/drivers/block/drbd/drbd_protocol.h
->>> @@ -283,8 +283,10 @@ struct p_rs_param_89 {
->>>   struct p_rs_param_95 {
->>>   	u32 resync_rate;
->>> -	char verify_alg[SHARED_SECRET_MAX];
->>> -	char csums_alg[SHARED_SECRET_MAX];
->>> +	struct_group(algs,
->>> +		char verify_alg[SHARED_SECRET_MAX];
->>> +		char csums_alg[SHARED_SECRET_MAX];
->>> +	);
->>>   	u32 c_plan_ahead;
->>>   	u32 c_delay_target;
->>>   	u32 c_fill_target;
->>> diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
->>> index 1f740e42e457..6df2539e215b 100644
->>> --- a/drivers/block/drbd/drbd_receiver.c
->>> +++ b/drivers/block/drbd/drbd_receiver.c
->>> @@ -3921,7 +3921,8 @@ static int receive_SyncParam(struct drbd_connection *connection, struct packet_i
->>>   	/* initialize verify_alg and csums_alg */
->>>   	p = pi->data;
->>> -	memset(p->verify_alg, 0, 2 * SHARED_SECRET_MAX);
->>> +	BUILD_BUG_ON(sizeof(p->algs) != 2 * SHARED_SECRET_MAX);
->>> +	memset(&p->algs, 0, sizeof(p->algs));
->>
->> Using struct_group() introduces complexity. Has it been considered not to
->> modify struct p_rs_param_95 and instead to use two memset() calls instead of
->> one (one memset() call per member)?
+On Thu, Jul 29, 2021 at 10:37:35PM +0200, Uwe Kleine-König wrote:
+> Hello,
 > 
-> I went this direction because using two memset()s (or memcpy()s in other
-> patches) changes the machine code. It's not much of a change, but it
-> seems easier to justify "no binary changes" via the use of struct_group().
+> struct pci_dev tracks the bound pci driver twice. This series is about
+> removing this duplication.
 > 
-> If splitting the memset() is preferred, I can totally do that instead.
-> :)
+> The first two patches are just cleanups. The third patch introduces a
+> wrapper that abstracts access to struct pci_dev->driver. In the next
+> patch (hopefully) all users are converted to use the new wrapper and
+> finally the fifth patch removes the duplication.
+> 
+> Note this series is only build tested (allmodconfig on several
+> architectures).
+> 
+> I'm open to restructure this series if this simplifies things. E.g. the
+> use of the new wrapper in drivers/pci could be squashed into the patch
+> introducing the wrapper. Patch 4 could be split by maintainer tree or
+> squashed into patch 3 completely.
+> 
+> Best regards
+> Uwe
+> 
+> Uwe Kleine-König (5):
+>   PCI: Simplify pci_device_remove()
+>   PCI: Drop useless check from pci_device_probe()
+>   PCI: Provide wrapper to access a pci_dev's bound driver
+>   PCI: Adapt all code locations to not use struct pci_dev::driver
+>     directly
+>   PCI: Drop duplicated tracking of a pci_dev's bound driver
 
-I don't have a strong opinion about this. Lars, do you want to comment
-on this patch?
+Other than my objection to patch 5/5 lack of changelog, looks sane to
+me:
 
-Thanks,
-
-Bart.
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
