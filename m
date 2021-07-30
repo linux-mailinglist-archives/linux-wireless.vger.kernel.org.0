@@ -2,145 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D13E3DB762
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jul 2021 12:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 338733DBC61
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jul 2021 17:32:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238511AbhG3KsR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Jul 2021 06:48:17 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:22510 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238487AbhG3KsQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Jul 2021 06:48:16 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1627642092; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=KPA3LodHkc04ZU8j2SDJLqtUxvbS2oNhwgR78eyJ3QI=;
- b=k3v/T5hY6k+tcca9AOwsKCHTLiErDJbhbDRqKeYJLxi2B6B9BrcJQwpm3HVpr+lhxqeogtsV
- TF9HNKdrMqwhx5ilXYnRMN92GGzIW3MuXNb62L5QZ2bonFAF39BN5uxn9gmC3avSn8KPrva3
- P9S7LlN6md/mJ2b5+boHFADZGzc=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 6103d8d817c2b4047d5f16fc (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 30 Jul 2021 10:47:52
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 600A0C4360C; Fri, 30 Jul 2021 10:47:51 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 967B8C43460;
-        Fri, 30 Jul 2021 10:47:50 +0000 (UTC)
+        id S239583AbhG3PcX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Jul 2021 11:32:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58046 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239514AbhG3PcW (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 30 Jul 2021 11:32:22 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D8BC061765
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 08:32:16 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id l17so12942914ljn.2
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 08:32:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cuMBivazXPSSSnLg5TVHL25KvD4e4AyXmAdQoyFf5fI=;
+        b=V0takgq4CkvNar1Q60JxHbTt1cqvFsAT2Ql1xCcWDlliF/9fK1Tk6u2NKjLJFi2NsP
+         OtAUbjW/Hk6YTr3ZTfouOa43d0DCv4/nxXOIFvMh2o9s/LUtXhmtgHgxqNBlfkoO+0Ox
+         d1GAjEOyAM0plTITbZ2w6WFa49Z5MRcmaq85CbQLNYZrVs9T1wQ8UUGFYid/G6OviM1d
+         OMFu6dCu79GrtbGkEZtfmLAS5L0sYxR0jmS86rEcpL2kD9pJaHk0tbVbZ7ZyxkbmW+U+
+         QcVQ4cI0n7yRxCSYVdO9PPaLX284Bky+u6/vpPnImSqzkgKcHLw7rJHQ0RyOSVMQVUfP
+         ZxKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cuMBivazXPSSSnLg5TVHL25KvD4e4AyXmAdQoyFf5fI=;
+        b=mm+S5azCganGHhct/YeAwILZH29nmmFruFJCvKHUK+8oEkxPevkQZje5Y/4Ya9D8KF
+         fhp7JFgzdWPGosJsmZpHfOFrzMpodLt4Tjoz2yvRt9ij0fWb00aFAap5KKot4X/XLCsd
+         sNEGUefRYIVD4RsGlGB6ntSO5EkrR1ivw685laFnkCskyNdi2FONJnVubr6lvPTFZjfL
+         NtuVOBnPO5AiI1na42iBYxrAVNAIY9oHfHkRdf97MLCHM6mi27pVHmTHgFbo7JUimH6U
+         6GDzEdCDZfkkyayhKTwYzJySgTk+Hx4OAOgIQ0DeeUOlWdwqIJZL+jcxf9xJA7Zarvoa
+         wBXA==
+X-Gm-Message-State: AOAM532UkZIEG1poVyPQND4jfcDqbACxHbzMK5lYcUS+RmU9Y+v3EuRQ
+        MtlIP/NE3avGlrthzdv+Ah2YAldf/NJ5YmY3xe9o7g==
+X-Google-Smtp-Source: ABdhPJzhoAUM4a6+aRW2w5iC66nC+BulVEtoEK+XmW3hkTpBTQktpdSzzUsKFLM2RILR3UqcvgdkDUL260mhYjHoyJw=
+X-Received: by 2002:a2e:a911:: with SMTP id j17mr2005145ljq.341.1627659134322;
+ Fri, 30 Jul 2021 08:32:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 30 Jul 2021 18:47:50 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 9/9] mac80211: save transmit power envelope element and
- power constraint
-In-Reply-To: <d9491db4ece67ac78eb39a1078b91a106770fbb0.camel@sipsolutions.net>
-References: <20210517201932.8860-1-wgong@codeaurora.org>
- <20210517201932.8860-10-wgong@codeaurora.org>
- (sfid-20210517_222034_029448_A9A89D57)
- <d9491db4ece67ac78eb39a1078b91a106770fbb0.camel@sipsolutions.net>
-Message-ID: <1126f8d996e895ae048092b3f8aad19b@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+References: <20210727205855.411487-1-keescook@chromium.org>
+ <20210727205855.411487-49-keescook@chromium.org> <1cc74e5e-8d28-6da4-244e-861eac075ca2@acm.org>
+ <202107291845.1E1528D@keescook>
+In-Reply-To: <202107291845.1E1528D@keescook>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Fri, 30 Jul 2021 08:32:03 -0700
+Message-ID: <CAKwvOdn+G6y3_=YZgp51cL64XW=VGgt7C0Vt0ARZOkezPTn5WQ@mail.gmail.com>
+Subject: Re: [PATCH 48/64] drbd: Use struct_group() to zero algs
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Bart Van Assche <bvanassche@acm.org>,
+        linux-hardening@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Keith Packard <keithpac@amazon.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-07-23 17:38, Johannes Berg wrote:
-> On Mon, 2021-05-17 at 16:19 -0400, Wen Gong wrote:
->> 
->> +		if (is_6ghz) {
->> +			struct ieee802_11_elems elems;
->> +			struct ieee80211_bss_conf *bss_conf;
->> +			u8 i, n;
->> +
->> +			ieee802_11_parse_elems(ies->data, ies->len, false, &elems,
->> +					       NULL, NULL);
->> +			bss_conf = &sdata->vif.bss_conf;
->> +			bss_conf->pwr_reduction = 0;
->> +			if (elems.pwr_constr_elem)
->> +				bss_conf->pwr_reduction = *elems.pwr_constr_elem;
->> +
->> +			memset(bss_conf->tx_pwr_env, 0, sizeof(bss_conf->tx_pwr_env));
->> +			bss_conf->tx_pwr_env_num = elems.tx_pwr_env_num;
->> +			n = min_t(u8, elems.tx_pwr_env_num,
->> +				  ARRAY_SIZE(elems.tx_pwr_env));
-> 
-> If anything, that min_t would make sense only if you were actually 
-> using
-> ARRAY_SIZE(bss_conf->tx_pwr_env), but like this it's quite pointless,
-> just checking again if the element parsing was internally consistent?
-> 
-> I'd probably remove it and throw in a
-> 
-> 	BUILD_BUG_ON(ARRAY_SIZE(bss_conf->tx_pwr_env) !=
->                      ARRAY_SIZE(elems.tx_pwr_env));
-> 
-> instead.
-> 
->> +			for (i = 0; i < n; i++)
->> +				memcpy(&bss_conf->tx_pwr_env[i], elems.tx_pwr_env[i],
->> +				       elems.tx_pwr_env_len[i]);
-> 
-> You also never validated that the element wasn't too long!
-> 
-will change it.
-> 
-> If you connect to 6 Ghz with this, and then again to another AP that
-> doesn't, you'll have it stuck at the old values. You need to reset at
-> some point (during disconnect).
-> 
-will change to reset it in ieee80211_prep_channel outside is_6ghz{}.
-Then it will be reset for each connection.
-> And then two more questions:
-> 
-> 1) Could this information change? Should we track it in beacons?
-> 
+On Thu, Jul 29, 2021 at 7:31 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> On Wed, Jul 28, 2021 at 02:45:55PM -0700, Bart Van Assche wrote:
+> > On 7/27/21 1:58 PM, Kees Cook wrote:
+> > > In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> > > field bounds checking for memset(), avoid intentionally writing across
+> > > neighboring fields.
+> > >
+> > > Add a struct_group() for the algs so that memset() can correctly reason
+> > > about the size.
+> > >
+> > > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > > ---
+> > >   drivers/block/drbd/drbd_main.c     | 3 ++-
+> > >   drivers/block/drbd/drbd_protocol.h | 6 ++++--
+> > >   drivers/block/drbd/drbd_receiver.c | 3 ++-
+> > >   3 files changed, 8 insertions(+), 4 deletions(-)
+> > >
+> > > diff --git a/drivers/block/drbd/drbd_main.c b/drivers/block/drbd/drbd_main.c
+> > > index 55234a558e98..b824679cfcb2 100644
+> > > --- a/drivers/block/drbd/drbd_main.c
+> > > +++ b/drivers/block/drbd/drbd_main.c
+> > > @@ -729,7 +729,8 @@ int drbd_send_sync_param(struct drbd_peer_device *peer_device)
+> > >     cmd = apv >= 89 ? P_SYNC_PARAM89 : P_SYNC_PARAM;
+> > >     /* initialize verify_alg and csums_alg */
+> > > -   memset(p->verify_alg, 0, 2 * SHARED_SECRET_MAX);
+> > > +   BUILD_BUG_ON(sizeof(p->algs) != 2 * SHARED_SECRET_MAX);
+> > > +   memset(&p->algs, 0, sizeof(p->algs));
+> > >     if (get_ldev(peer_device->device)) {
+> > >             dc = rcu_dereference(peer_device->device->ldev->disk_conf);
+> > > diff --git a/drivers/block/drbd/drbd_protocol.h b/drivers/block/drbd/drbd_protocol.h
+> > > index dea59c92ecc1..a882b65ab5d2 100644
+> > > --- a/drivers/block/drbd/drbd_protocol.h
+> > > +++ b/drivers/block/drbd/drbd_protocol.h
+> > > @@ -283,8 +283,10 @@ struct p_rs_param_89 {
+> > >   struct p_rs_param_95 {
+> > >     u32 resync_rate;
+> > > -   char verify_alg[SHARED_SECRET_MAX];
+> > > -   char csums_alg[SHARED_SECRET_MAX];
+> > > +   struct_group(algs,
+> > > +           char verify_alg[SHARED_SECRET_MAX];
+> > > +           char csums_alg[SHARED_SECRET_MAX];
+> > > +   );
+> > >     u32 c_plan_ahead;
+> > >     u32 c_delay_target;
+> > >     u32 c_fill_target;
+> > > diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
+> > > index 1f740e42e457..6df2539e215b 100644
+> > > --- a/drivers/block/drbd/drbd_receiver.c
+> > > +++ b/drivers/block/drbd/drbd_receiver.c
+> > > @@ -3921,7 +3921,8 @@ static int receive_SyncParam(struct drbd_connection *connection, struct packet_i
+> > >     /* initialize verify_alg and csums_alg */
+> > >     p = pi->data;
+> > > -   memset(p->verify_alg, 0, 2 * SHARED_SECRET_MAX);
+> > > +   BUILD_BUG_ON(sizeof(p->algs) != 2 * SHARED_SECRET_MAX);
+> > > +   memset(&p->algs, 0, sizeof(p->algs));
+> >
+> > Using struct_group() introduces complexity. Has it been considered not to
+> > modify struct p_rs_param_95 and instead to use two memset() calls instead of
+> > one (one memset() call per member)?
+>
+> I went this direction because using two memset()s (or memcpy()s in other
+> patches) changes the machine code. It's not much of a change, but it
+> seems easier to justify "no binary changes" via the use of struct_group().
+>
+> If splitting the memset() is preferred, I can totally do that instead.
+> :)
 
-The information is from AP side, it should be not changed untill the AP 
-restart.
-If someone want to change configure of AP, the AP should restart and 
-then take effect by my understand.
-Is it have some case for this information change?
+I'm not sure that compilers can fold memsets of adjacent members. It
+might not matter, but you could wrap these members in a _named_ struct
+then simply use assignment for optimal codegen.
 
 
-> 2) Should we at least check it again from the protected beacon or such
-> after association, so we don't blindly trust the probe response or
-> beacon (received during scan, not validated) at least when BIGTK is in
-> use?
-
-May we add support for BIGTK in future with another patch?
-The info(pwr_reduction and tx_pwr_env) is used by lower driver such as 
-ath11k.
-If the info changed after association, then how to notify lower driver?
-Do it like below in ieee80211_rx_mgmt_beacon()?
-And use BSS_CHANGED_TXPOWER or a new enum in ieee80211_bss_change?
-
-ieee80211_rx_mgmt_beacon{
-	changed |= ieee80211_handle_pwr_constr(sdata, chan, mgmt,
-					       elems.country_elem,
-					       elems.country_elem_len,
-					       elems.pwr_constr_elem,
-					       elems.cisco_dtpc_elem);
-
-	ieee80211_bss_info_change_notify(sdata, changed);
-}
-
-> 
-> johannes
+-- 
+Thanks,
+~Nick Desaulniers
