@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD80F3DC184
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jul 2021 01:21:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C628D3DC2A8
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jul 2021 04:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233540AbhG3XV1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 30 Jul 2021 19:21:27 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.49]:44352 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233500AbhG3XV1 (ORCPT
+        id S235961AbhGaCRm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 30 Jul 2021 22:17:42 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:60846 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231464AbhGaCRl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 30 Jul 2021 19:21:27 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.119])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id DA0AA1A006A
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 23:21:20 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id B89787C0068
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 23:21:20 +0000 (UTC)
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 545AD13C2B1;
-        Fri, 30 Jul 2021 16:21:20 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 545AD13C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1627687280;
-        bh=7PDWbJt6RBx1H6N7lbTr/WYGM5igrxh0CCrgMRBjjN8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Zy86HSRs8pUvxnom4cY1YHDWR4wwVwm9/D1pNOeWHOVBbcQw1/h1ug7Ksiu4fyo6r
-         e7PZXASmmSe/48t54XLjyVMKY0uITm4MvceqtO+OX+qpwRon3aakkDylKyKS75i+oO
-         rTINU7THXFy0MmYkR75lka8tq/ng2OPOPb4YIGrk=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH v3] mt76: mt7915:  Fix hwmon temp sensor mem use-after-free.
-Date:   Fri, 30 Jul 2021 16:21:15 -0700
-Message-Id: <20210730232115.3965-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
+        Fri, 30 Jul 2021 22:17:41 -0400
+X-UUID: 9f53958af566410cb811042340d5a19b-20210731
+X-UUID: 9f53958af566410cb811042340d5a19b-20210731
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1074251285; Sat, 31 Jul 2021 10:17:31 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs05n2.mediatek.inc (172.21.101.140) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 31 Jul 2021 10:17:30 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 31 Jul 2021 10:17:30 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ben Greear <greearb@candelatech.com>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v4 1/2] mt76: mt7915: fix hwmon temp sensor mem use-after-free
+Date:   Sat, 31 Jul 2021 10:17:27 +0800
+Message-ID: <9f5b0cf6c4296d3a9e78a95516cf26d1db4baba9.1627696765.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-MDID: 1627687281-phNI43ff1TYh
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -56,46 +56,63 @@ mt7915-pci-1400
 Adapter: PCI adapter
 temp1:        +49.0°C
 
-Fixes: d6938251bb5be8 (mt76: mt7915: add thermal sensor device support)
+Fixes: d6938251bb5b (mt76: mt7915: add thermal sensor device support)
 Signed-off-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
-
+v4:  Simplify flow.
 v3:  Add 'fixes' tag to aid backports.
-
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 192e3e190ce1..e741c4f73d19 100644
+index 77c7486d6a5c..a1b9e1b3f700 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -132,8 +132,16 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
+@@ -155,13 +155,13 @@ static void mt7915_unregister_thermal(struct mt7915_phy *phy)
+ 	thermal_cooling_device_unregister(phy->cdev);
+ }
+ 
+-static int mt7915_thermal_init(struct mt7915_phy *phy)
++static int mt7915_thermal_init(struct mt7915_phy *phy, const char *prefix)
+ {
  	struct wiphy *wiphy = phy->mt76->hw->wiphy;
  	struct thermal_cooling_device *cdev;
  	struct device *hwmon;
-+	struct mt7915_dev *dev = phy->dev;
-+	bool ext_phy = phy != &dev->phy;
-+	const char *my_prefix;
  
 -	cdev = thermal_cooling_device_register(wiphy_name(wiphy), phy,
-+	if (ext_phy)
-+		my_prefix = "mt7915_ext";
-+	else
-+		my_prefix = "mt7915";
-+
-+	cdev = thermal_cooling_device_register(my_prefix, phy,
++	cdev = thermal_cooling_device_register(prefix, phy,
  					       &mt7915_thermal_ops);
  	if (!IS_ERR(cdev)) {
  		if (sysfs_create_link(&wiphy->dev.kobj, &cdev->device.kobj,
-@@ -147,7 +155,7 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
+@@ -175,7 +175,7 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
  		return 0;
  
  	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev,
 -						       wiphy_name(wiphy), phy,
-+						       my_prefix, phy,
++						       prefix, phy,
  						       mt7915_hwmon_groups);
  	if (IS_ERR(hwmon))
  		return PTR_ERR(hwmon);
+@@ -403,7 +403,7 @@ static int mt7915_register_ext_phy(struct mt7915_dev *dev)
+ 	if (ret)
+ 		goto error;
+ 
+-	ret = mt7915_thermal_init(phy);
++	ret = mt7915_thermal_init(phy, KBUILD_MODNAME "-ext");
+ 	if (ret)
+ 		goto error;
+ 
+@@ -853,7 +853,7 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = mt7915_thermal_init(&dev->phy);
++	ret = mt7915_thermal_init(&dev->phy, KBUILD_MODNAME);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
-2.20.1
+2.29.2
 
