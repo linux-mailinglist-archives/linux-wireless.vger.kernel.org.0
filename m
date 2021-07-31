@@ -2,114 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 661AF3DC329
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jul 2021 06:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A193A3DC439
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jul 2021 09:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231558AbhGaEUl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 31 Jul 2021 00:20:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48358 "EHLO
+        id S229871AbhGaHCI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 31 Jul 2021 03:02:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229867AbhGaEUl (ORCPT
+        with ESMTP id S231335AbhGaHCH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 31 Jul 2021 00:20:41 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61664C061798
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 21:20:34 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id mt6so18079797pjb.1
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jul 2021 21:20:34 -0700 (PDT)
+        Sat, 31 Jul 2021 03:02:07 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE1BBC06175F
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Jul 2021 00:02:00 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id b13so3328886wrs.3
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Jul 2021 00:02:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=2rZ9kzapSn9AYE0eMMnwGkMNI7xYc/vEgm+TA1Yc3wc=;
-        b=kzkctvvNb0ShS1nE2Wqqqn7Z+lkc9IkqCaSxgDE+W4cNa7ElmV6eqi/hsxBTgUGOT7
-         yT40vj00aRlu1HRv6Mtup3+uZulpZ8P1kroGaDVwv4G3QErDjEpyR+stG1AW6mrMBIrR
-         OJ3iwnlXAm7Yt6bm3VvVwhqzyglWUXeDjxPZ4=
+        d=colorremedies-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=JHoZaXWwk7gKrcZ029LzWeTH2lhGhqMg6fgg3UzrOc8=;
+        b=L1SMJOkqFQr4DyybYqHKBlULrf1HBrKlaMkrr8BfYPyRmiqelUUCF64FN6BrCk9iib
+         BYfaW7cUY+k2dvvteW+qZaxAYJXFPSd3Ry9wPE5cl2wBeTbE5tbuXBtjvuICPuc4gy5G
+         Br9850rx6zZrZ+SDqaXp/z/GJ4wIzbtRC8vhNEy8ZmDMhVzi4HFiD7tbfFdAVFGAv6LM
+         d4stCabJSl6H8miS6bOkk1vzAP7ZVPycyBsG8nMXCtE6x9qKB8Ws0MpfH7Mei7GnJFbA
+         zcN9LTu4vVuWZZ/sFnPfOWXP2eGbv3qaql7GjfKbvkCi2VwF617LmRR7L2RxAEbRd3LH
+         DIFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=2rZ9kzapSn9AYE0eMMnwGkMNI7xYc/vEgm+TA1Yc3wc=;
-        b=jTwQ92uB9mJvVR2IKsWIwWzuXiUvz5fiOBxx/I9kUcnVa/K8dusL5temwirtdbjnLt
-         7a1p0u7pU9rwX54SsoUN91LUnf4PhcU9ILEl/wwXQzAkZFfueJUnZdGc0Agr23NYYxHI
-         SwFIgjCBiElaaNlgrRwIXDOx4gd6QA7RQOhdjkTSm3jYhtU12pqKOnGUYyfXJWIMrnT2
-         xOqy1ykpOiTwos5J/IveONWOMikcXkVH4bqnkiYj4G4a4U0Nw3A/7/hueg+ZXcaKNY6M
-         xuL6ZwIsQrfBZZfjEV2dvhrAyXTUPyP71utRgkFeLYajsR9I1C+oNaJP6kNSTsH0sOZR
-         Tf1g==
-X-Gm-Message-State: AOAM530Z5X/G8GnpFL3ove+RzD707JBo3iZowA/fUo/jbSGVM1Lj5zDG
-        8it+TYLTyZSli0CNU3axfUR+Ig==
-X-Google-Smtp-Source: ABdhPJzZaza126Vv3WlcT6KBKm6/ibQnq8c34Xqn2AoVgq2DTgH6cZz+KdKXk9j+VMHkrcs62jXe1w==
-X-Received: by 2002:a17:90b:110c:: with SMTP id gi12mr6515447pjb.163.1627705233841;
-        Fri, 30 Jul 2021 21:20:33 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id w18sm4094035pjg.50.2021.07.30.21.20.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jul 2021 21:20:32 -0700 (PDT)
-Date:   Fri, 30 Jul 2021 21:20:31 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kbuild@vger.kernel.org, netdev@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-block@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Keith Packard <keithpac@amazon.com>,
-        linux-hardening@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 25/64] drm/mga/mga_ioc32: Use struct_group() for memcpy()
- region
-Message-ID: <202107302118.C0B84E521@keescook>
-References: <20210727205855.411487-1-keescook@chromium.org>
- <20210727205855.411487-26-keescook@chromium.org>
- <YQDxmEYfppJ4wAmD@kroah.com>
- <YQKa76A6XuFqgM03@phenom.ffwll.local>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=JHoZaXWwk7gKrcZ029LzWeTH2lhGhqMg6fgg3UzrOc8=;
+        b=aVzGXX0amAVGKa45ONsxTArkqXDsJrkx9UaCguWSGg5+IH0xvWpC9JIKTcfwzZ9Lev
+         UGhbOiNIUajduzwk7dUe5xy9VqEfICAIy/RGi4CzJveXI0SOfyu+ByG1TJxL+7PsduD1
+         0gsojx8qP5qFTpPjyCwX+1gN8i+LRkaUdnc5y+9ASVrgHW8tisB3w7LDX/B/q2SfUF1j
+         E/0/QpqN5EsczjkoRiA7ft954A//LPHhiBYMzZNfS58gJuN2uydPXaM5JAd8dVzwok5e
+         ioipAvcbDXCu4wN6IMVwVR4gbm4PHCTVpbL5NKC+xWm9S1h1I6ujYpKnNwZrVe3UZyKz
+         gEyw==
+X-Gm-Message-State: AOAM530Fe+VdeTN4YPMdGTRbZtGM3CaiHR+YCZ/5EQAfQ+juqLCuPcM+
+        M/lWnaVg/Z0dIan5aW62REouB9vbqtl3fr975HBlRMJzXN05kEpk
+X-Google-Smtp-Source: ABdhPJyGD3ia8eQJrL0/k8qKEMimXSE4lAJ9i47x6V2VPIRBP4UCS6agVSOEpxbpxnfRLEsO8qmFjjRFYJR39OnEkWw=
+X-Received: by 2002:adf:fbce:: with SMTP id d14mr6929673wrs.236.1627714918946;
+ Sat, 31 Jul 2021 00:01:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YQKa76A6XuFqgM03@phenom.ffwll.local>
+From:   Chris Murphy <lists@colorremedies.com>
+Date:   Sat, 31 Jul 2021 01:01:43 -0600
+Message-ID: <CAJCQCtSXJ5qA4bqSPY=oLRMbv-irihVvP7A2uGutEbXQVkoNaw@mail.gmail.com>
+Subject: 5.14-rc3 lockdep warning, iwlwifi 9560
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jul 29, 2021 at 02:11:27PM +0200, Daniel Vetter wrote:
-> On Wed, Jul 28, 2021 at 07:56:40AM +0200, Greg Kroah-Hartman wrote:
-> > On Tue, Jul 27, 2021 at 01:58:16PM -0700, Kees Cook wrote:
-> > > In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> > > field bounds checking for memcpy(), memmove(), and memset(), avoid
-> > > intentionally writing across neighboring fields.
-> > > 
-> > > Use struct_group() in struct drm32_mga_init around members chipset, sgram,
-> > > maccess, fb_cpp, front_offset, front_pitch, back_offset, back_pitch,
-> > > depth_cpp, depth_offset, depth_pitch, texture_offset, and texture_size,
-> > > so they can be referenced together. This will allow memcpy() and sizeof()
-> > > to more easily reason about sizes, improve readability, and avoid future
-> > > warnings about writing beyond the end of chipset.
-> > > 
-> > > "pahole" shows no size nor member offset changes to struct drm32_mga_init.
-> > > "objdump -d" shows no meaningful object code changes (i.e. only source
-> > > line number induced differences and optimizations).
-> > > 
-> > > Note that since this includes a UAPI header, struct_group() has been
-> > > explicitly redefined local to the header.
-> > > [...]
-> > 
-> > Why can you use __struct_group in this uapi header, but not the
-> > networking one?
-> 
-> If there's others, maybe we can stuff the uapi __struct_group into
-> linux/types.h where all the other __ uapi types hang out?
+[    8.353133] iwlwifi 0000:00:14.3: loaded firmware version
+46.6b541b68.0 9000-pu-b0-jf-b0-46.ucode op_mode iwlmvm
+...
+[    8.737865] iwlwifi 0000:00:14.3: Detected Intel(R) Wireless-AC
+9560 160MHz, REV=0x318
+...
+[   17.384143] ======================================================
+[   17.384144] WARNING: possible circular locking dependency detected
+[   17.384146] 5.14.0-0.rc3.29.fc35.x86_64+debug #1 Not tainted
+[   17.384147] ------------------------------------------------------
+[   17.384148] kworker/u16:8/554 is trying to acquire lock:
+[   17.384149] ffff91e2af7d80e8 (&sta->rate_ctrl_lock){+.-.}-{2:2},
+at: rate_control_get_rate+0xc0/0x140 [mac80211]
+[   17.384197]
+               but task is already holding lock:
+[   17.384198] ffff91e2af7d8130 (&sta->lock){+.-.}-{2:2}, at:
+ieee80211_stop_tx_ba_cb+0x2e/0x1e0 [mac80211]
+[   17.384229]
 
-Ah yeah; it looks like include/uapi/linux/stddef.h is the place for it.
+dmesg:
+https://drive.google.com/file/d/1A5aZNMf_qXFU6arthGyu_FEIYV08V7wv/view?usp=sharing
 
-> Anyway mga is very dead, I don't anyone cares.
-> 
-> Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-> 
-> I'm assuming this goes in through a topic pull from you?
+lspci -vvnn
+00:14.3 Network controller [0280]: Intel Corporation Cannon Point-LP
+CNVi [Wireless-AC] [8086:9df0] (rev 11)
+    Subsystem: Intel Corporation Device [8086:0030]
+    Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop-
+ParErr- Stepping- SERR- FastB2B- DisINTx+
+    Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort-
+<TAbort- <MAbort- >SERR- <PERR- INTx-
+    Latency: 0
+    Interrupt: pin A routed to IRQ 16
+    IOMMU group: 6
+    Region 0: Memory at ea238000 (64-bit, non-prefetchable) [size=16K]
+    Capabilities: [c8] Power Management version 3
+        Flags: PMEClk- DSI+ D1- D2- AuxCurrent=0mA
+PME(D0+,D1-,D2-,D3hot+,D3cold+)
+        Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=0 PME-
+    Capabilities: [d0] MSI: Enable- Count=1/1 Maskable- 64bit+
+        Address: 0000000000000000  Data: 0000
+    Capabilities: [40] Express (v2) Root Complex Integrated Endpoint, MSI 00
+        DevCap:    MaxPayload 128 bytes, PhantFunc 0
+            ExtTag- RBE- FLReset+
+        DevCtl:    CorrErr- NonFatalErr- FatalErr- UnsupReq-
+            RlxdOrd+ ExtTag- PhantFunc- AuxPwr+ NoSnoop+ FLReset-
+            MaxPayload 128 bytes, MaxReadReq 128 bytes
+        DevSta:    CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ TransPend-
+        DevCap2: Completion Timeout: Range B, TimeoutDis+ NROPrPrP- LTR+
+             10BitTagComp- 10BitTagReq- OBFF Via WAKE#, ExtFmt- EETLPPrefix-
+             EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
+             FRS-
+             AtomicOpsCap: 32bit- 64bit- 128bitCAS-
+        DevCtl2: Completion Timeout: 16ms to 55ms, TimeoutDis- LTR+
+OBFF Disabled,
+             AtomicOpsCtl: ReqEn-
+    Capabilities: [80] MSI-X: Enable+ Count=16 Masked-
+        Vector table: BAR=0 offset=00002000
+        PBA: BAR=0 offset=00003000
+    Capabilities: [100 v0] Null
+    Capabilities: [14c v1] Latency Tolerance Reporting
+        Max snoop latency: 0ns
+        Max no snoop latency: 0ns
+    Capabilities: [164 v1] Vendor Specific Information: ID=0010 Rev=0
+Len=014 <?>
+    Kernel driver in use: iwlwifi
+    Kernel modules: iwlwifi
 
-Thanks! Yeah, my intention is to carry this as topic branch for Linus.
 
--Kees
+
 
 -- 
-Kees Cook
+Chris Murphy
