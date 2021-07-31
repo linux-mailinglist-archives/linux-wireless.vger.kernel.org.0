@@ -2,116 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E1EF3DC68C
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jul 2021 17:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B6603DC6A4
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jul 2021 17:26:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233393AbhGaPKb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 31 Jul 2021 11:10:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39578 "EHLO
+        id S233570AbhGaP0B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 31 Jul 2021 11:26:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233344AbhGaPK3 (ORCPT
+        with ESMTP id S233550AbhGaP0A (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 31 Jul 2021 11:10:29 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B92CDC0613D5
-        for <linux-wireless@vger.kernel.org>; Sat, 31 Jul 2021 08:10:22 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d1so14629783pll.1
-        for <linux-wireless@vger.kernel.org>; Sat, 31 Jul 2021 08:10:22 -0700 (PDT)
+        Sat, 31 Jul 2021 11:26:00 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 827E5C0613CF
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Jul 2021 08:25:53 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id a4-20020a17090aa504b0290176a0d2b67aso25186423pjq.2
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Jul 2021 08:25:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
+        h=date:from:to:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=lfME4cjM5NCmgici7VQUeLVxABhRdomGydOStVoPzx4=;
-        b=L1DNvP8P4y6KQNKh86u6z0gd+tOQyO7mJoJt8B2bk6sGD8lMj6Noy13eCNQYPK3Dgy
-         aDVIvQEK9ubu5kah/3TCTRHCNGkVaZuPiLrC8xqR8E3ktJaFvicJZgoCG3Pk4ob+PTGz
-         EpAjtcymW/wEeRKic3KicM0N2mM2qfw23QKRo=
+        bh=rMM6+nPYXY2uiSyyu4uBWYISUK/txh/pCdnfftmwE5I=;
+        b=E0SoYgUeBE+ftZKNo9x/ExH0q8CDdIpilft8etS0hsXIxl3+Vlp6pt0MCFF4VHLSjd
+         wmGidikllJX4N9GOuxdiKOtBL2OwlFFooSKknT62V/QxawH+fKFq/IN6UkGfthss0Jue
+         /LaKbBpm/i7NpiK11ikcOkYrwperY7OevSA6Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+        h=x-gm-message-state:date:from:to:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=lfME4cjM5NCmgici7VQUeLVxABhRdomGydOStVoPzx4=;
-        b=MR51Ht6Fp9evRFaDCk4Cc6B7grKO3CJQDoZGy45mNoZQeaBC+oENoS5kM4Vdtbpj/X
-         BEymAfPWEo5GcA0NLcJ8EKT0QhResu7rL53Xg92Uiikk3FnYizRhi5gX7uNY5HnLoXPO
-         9G2THE1ytysQLjuxb0qH5tM6V1+700sEObA4A1/eFAJZ7o8BQbCCaMBM8sukzDBsracN
-         l9tBvLCkHsjPafcxAy9kWzh0BuAOV8oKDVFI6mu88lHKZFVEp0tVrb16cVhnGP1G9+EK
-         F+b7Q3u+z/hiK/wxcQwybWnNkSyLYKxWi9FWta8RDNTU36HEf6HUT/ioxgvLn/g1DFMT
-         dnnA==
-X-Gm-Message-State: AOAM530FD4S3sbp6cu/aXS0qs4OOjpMKwSE+58HTD6b5MyT88/j/FCnn
-        eLS5BuF+xZyVI95rYk8E3NFclA==
-X-Google-Smtp-Source: ABdhPJyHVa4d8FlEw//xZVgbZjv62jZZqTBJVRdefEHg8GdXxlxk+maNXdDjshUpKLrxricctBpEKw==
-X-Received: by 2002:a05:6a00:1488:b029:332:5e67:1198 with SMTP id v8-20020a056a001488b02903325e671198mr8347873pfu.9.1627744222329;
-        Sat, 31 Jul 2021 08:10:22 -0700 (PDT)
+        bh=rMM6+nPYXY2uiSyyu4uBWYISUK/txh/pCdnfftmwE5I=;
+        b=dZgaJEy1Ng+ke1kMO4WauscgaUjXZkwVahU73BD7izzsd30Ji+gb0G7VvwvxnWLmMn
+         GSR81niATCDwzfYN4mAZVec1oI8f4N40hF6aS0GPNUxoZGuyyrT/t64Skwq1wk2uvSbz
+         4K1WhTwPhp2LKvzs0A2/M1YzxX1NTGbpw45Y4XwPDfNB2io3You+ayrSCP+Q8WjkJHy9
+         /MJU5qVtmbwAOMQz/UmmptEJ96T1ZvxVcH/A9dEzt4oH41Hst0P2hhTB+jcAkrPSNTP2
+         IeuJkeVsqvPwNOIIw/SoVmH7oQfhPK5PQR+n59Ze8TFui3hc6W/nlsT8Amq7q2/gbVSh
+         XxxQ==
+X-Gm-Message-State: AOAM530v+Kfre/GZHnxnlP8+sXzUKvKR9uaL7cIhknNv/qvFp0aLTW49
+        3kDTlcQ06Pd+nlAsCgLbZgh/yQ==
+X-Google-Smtp-Source: ABdhPJwoeVgbbn7dICfcKEt6dw6EQc8t7kiQ+j9S2D0qHZ1VpbfIunOgZUzrdbIveyTtuLa19saudA==
+X-Received: by 2002:a63:8948:: with SMTP id v69mr1184969pgd.132.1627745153109;
+        Sat, 31 Jul 2021 08:25:53 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id n1sm891630pgt.63.2021.07.31.08.10.21
+        by smtp.gmail.com with ESMTPSA id m18sm5745081pjq.32.2021.07.31.08.25.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Jul 2021 08:10:21 -0700 (PDT)
-Date:   Sat, 31 Jul 2021 08:10:20 -0700
+        Sat, 31 Jul 2021 08:25:52 -0700 (PDT)
+Date:   Sat, 31 Jul 2021 08:25:51 -0700
 From:   Kees Cook <keescook@chromium.org>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     "Williams, Dan J" <dan.j.williams@intel.com>, keithpac@amazon.com,
-        clang-built-linux@googlegroups.com, linux-kbuild@vger.kernel.org,
-        akpm@linux-foundation.org, gregkh@linuxfoundation.org,
-        dri-devel@lists.freedesktop.org, linux-cxl@vger.kernel.org,
+To:     dsterba@suse.cz, linux-hardening@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Keith Packard <keithpac@amazon.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-hardening@vger.kernel.org,
-        gustavoars@kernel.org, linux-staging@lists.linux.dev,
-        linux-block@vger.kernel.org
-Subject: Re: [PATCH 04/64] stddef: Introduce struct_group() helper macro
-Message-ID: <202107310806.CD5D546DB7@keescook>
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
+Subject: Re: [PATCH 47/64] btrfs: Use memset_after() to clear end of struct
+Message-ID: <202107310822.31BEB6E543@keescook>
 References: <20210727205855.411487-1-keescook@chromium.org>
- <20210727205855.411487-5-keescook@chromium.org>
- <41183a98-bdb9-4ad6-7eab-5a7292a6df84@rasmusvillemoes.dk>
- <202107281456.1A3A5C18@keescook>
- <1d9a2e6df2a9a35b2cdd50a9a68cac5991e7e5f0.camel@intel.com>
- <202107301952.B484563@keescook>
- <CAKwiHFheDv2pwsm6Fa+-KnOFyvk7bfZQjb2BQ-CSwH61gxgVYg@mail.gmail.com>
+ <20210727205855.411487-48-keescook@chromium.org>
+ <20210728094215.GX5047@twin.jikos.cz>
+ <202107281455.2A0753F5@keescook>
+ <20210729103337.GS5047@suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAKwiHFheDv2pwsm6Fa+-KnOFyvk7bfZQjb2BQ-CSwH61gxgVYg@mail.gmail.com>
+In-Reply-To: <20210729103337.GS5047@suse.cz>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Jul 31, 2021 at 07:24:44AM +0200, Rasmus Villemoes wrote:
-> On Sat, Jul 31, 2021, 04:59 Kees Cook <keescook@chromium.org> wrote:
+On Thu, Jul 29, 2021 at 12:33:37PM +0200, David Sterba wrote:
+> On Wed, Jul 28, 2021 at 02:56:31PM -0700, Kees Cook wrote:
+> > On Wed, Jul 28, 2021 at 11:42:15AM +0200, David Sterba wrote:
+> > > On Tue, Jul 27, 2021 at 01:58:38PM -0700, Kees Cook wrote:
+> > > > In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> > > > field bounds checking for memset(), avoid intentionally writing across
+> > > > neighboring fields.
+> > > > 
+> > > > Use memset_after() so memset() doesn't get confused about writing
+> > > > beyond the destination member that is intended to be the starting point
+> > > > of zeroing through the end of the struct.
+> > > > 
+> > > > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > > > ---
+> > > >  fs/btrfs/root-tree.c | 5 +----
+> > > >  1 file changed, 1 insertion(+), 4 deletions(-)
+> > > > 
+> > > > diff --git a/fs/btrfs/root-tree.c b/fs/btrfs/root-tree.c
+> > > > index 702dc5441f03..ec9e78f65fca 100644
+> > > > --- a/fs/btrfs/root-tree.c
+> > > > +++ b/fs/btrfs/root-tree.c
+> > > > @@ -39,10 +39,7 @@ static void btrfs_read_root_item(struct extent_buffer *eb, int slot,
+> > > >  		need_reset = 1;
+> > > >  	}
+> > > >  	if (need_reset) {
+> > > > -		memset(&item->generation_v2, 0,
+> > > > -			sizeof(*item) - offsetof(struct btrfs_root_item,
+> > > > -					generation_v2));
+> > > > -
+> > > 
+> > > Please add
+> > > 		/* Clear all members from generation_v2 onwards */
+> > > 
+> > > > +		memset_after(item, 0, level);
+> > 
+> > Perhaps there should be another helper memset_starting()? That would
+> > make these cases a bit more self-documenting.
 > 
-> > On Fri, Jul 30, 2021 at 10:19:20PM +0000, Williams, Dan J wrote:
-> > > On Wed, 2021-07-28 at 14:59 -0700, Kees Cook wrote:
-> >
-> > >  /**
-> > >   * struct_group(NAME, MEMBERS)
-> > >   *
-> > > @@ -67,7 +73,10 @@ enum {
-> > >   * @NAME: The name of the mirrored sub-struct
-> > >   * @MEMBERS: The member declarations for the mirrored structs
-> > >   */
-> > > -#define struct_group(NAME, MEMBERS)    \
-> > > +#define struct_group(NAME, MEMBERS...) \
-> > >         struct_group_attr(NAME, /* no attrs */, MEMBERS)
-> > >
-> > > +#define struct_group_typed(TYPE, NAME, MEMBERS...) \
-> > > +       struct_group_attr_typed(TYPE, NAME, /* no attrs */, MEMBERS)
-> > > +
-> > >  #endif
-> >
-> > Awesome! My instinct is to expose the resulting API as:
-> >
-> > __struct_group(type, name, attrs, members...)
-> >
-> > struct_group(name, members...)
-> > struct_group_attr(name, attrs, members...)
-> > struct_group_typed(type, name, members...)
+> That would be better, yes.
 > 
-> Bikeshed: can we use proper nomenclature please. s/type/tag/,
-> s/typed/tagged.
+> > +		memset_starting(item, 0, generation_v2);
+> 
+> memset_from?
 
-Ah! Thank you. I went looking for the spec on what these are called and
-couldn't find it. "struct $tag" is the type, then, yes? So IIUC now:
+For v2, I bikeshed this to "memset_startat" since "from" is semantically
+close to "source" which I thought might be confusing. (I, too, did not
+like "starting".) :)
 
-       |    type   | members  | name
-       |       tag
-	struct foo { int bar; } baz;
+Can I make "bikeshed" a verb? :P
 
 -- 
 Kees Cook
