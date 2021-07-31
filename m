@@ -2,128 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CFB73DC6F4
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jul 2021 18:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B499D3DC8E6
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Aug 2021 01:21:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230303AbhGaQgg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 31 Jul 2021 12:36:36 -0400
-Received: from mout.gmx.net ([212.227.15.19]:33449 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229449AbhGaQgd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 31 Jul 2021 12:36:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1627749368;
-        bh=xJvnrqgnd9oF7uVLB3WIMKssaszgPE/iFBWc4v5eLAQ=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=Alsr1hoWR+49KAmUuhQ2HqyZWAGoejfLJAJMiEmnlXSgw2GXOanitvygzLWJD/7Oi
-         wXUA4KVUwtGE8HBdXH3J37WAVBEj+/XCaf/xjJlYGP/4QIEevEe6U/scIjpIWBp2ia
-         gTEjmnDSics9ZvasAOJbEgSEyZqijBV1CBc4EQx8=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([79.150.72.99]) by mail.gmx.net
- (mrgmx005 [212.227.17.184]) with ESMTPSA (Nemesis) id
- 1MYeMj-1meoo72hv9-00Vjup; Sat, 31 Jul 2021 18:36:08 +0200
-From:   Len Baker <len.baker@gmx.com>
-To:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Len Baker <len.baker@gmx.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pkshih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4] rtw88: Remove unnecessary check code
-Date:   Sat, 31 Jul 2021 18:35:46 +0200
-Message-Id: <20210731163546.10753-1-len.baker@gmx.com>
-X-Mailer: git-send-email 2.25.1
+        id S229510AbhGaXWD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 31 Jul 2021 19:22:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53646 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229449AbhGaXWC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 31 Jul 2021 19:22:02 -0400
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C09C0613CF
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Jul 2021 16:21:55 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id h1so15977061iol.9
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Jul 2021 16:21:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=FCAlHwKghI205wTZ5Z0xQp3SR9+6820WRK8lRLKqL7g=;
+        b=MWoVuHLhFpszllY+OF8DSte4pLcyOpBtxsvY6Szo+Cz5WdzDySucMDt4VTZCkzigSb
+         Jz6r1O7G9HcUkCA7vnYaWmVCuewcQV2B5i0d4rzVGVLqM8qaHRb+pXhJEeLTqs6yGKXy
+         8J/QpRrP8l+k58XtMq4ivAoH/Jdb/BEY/T+c/XDH8+ATEOwdhndXtoMzHe4os66CL4B8
+         OlZ4fxhjyITeKOetZG+C/+I4MQXfKhnWevFQtkYI7YOrgu6bsuWUn2+6ztv5NL2GdHaT
+         IEhCDxEX3cGmsVI2uQsjDL0J2tZb3+nPHkmGw4nODyd1zZhGZnBPB99bHOH0JiF/McYz
+         Bmfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=FCAlHwKghI205wTZ5Z0xQp3SR9+6820WRK8lRLKqL7g=;
+        b=i7TEqmTKBHab982yvP9bLOK2GUjyLkghgL9jNqvTlW3npq98s6N2qEO37HR2+URNOA
+         rE39wxHY/JpQqUkSy6dOLSUE1ZzN1d8YjWdMlCsy8EaivSRLzIkYsl2TZWDh2TE4CsbQ
+         Q9FYXxKuqees3O6GYMC4WRxNreFKG46GRQzRTR7HjIYbnqVzB9nqCwwuUxEAf1Csm9cC
+         ciPfxkW1U9qjcNDps1QAoGhPb1lK/g7X/bLMJMvjDEp6KvQi1l4TSPpBSfej94/owLCO
+         UJWVszYIE+u7wiqcefin52aIGyoZoup0QJIkD5GOiAEUIdb5Vj0eaG+w0D2rqeTVyuAi
+         vCyA==
+X-Gm-Message-State: AOAM531YPZH29wDSxL7Tw2GUSla1wbr6TIPI4JHLL4X8KsCgep9AczGf
+        nfHtW6ohgAxqE9/WXFTP91hH5QSR+XvzX6o+2TE=
+X-Google-Smtp-Source: ABdhPJyngVXzMJHT8iWSGvLhzZIMWZBmaWFJTOUnzj9bsINiMirVWcdpwDc53BOjCsbyJQkZjzhgV11unQWgGOSk/uM=
+X-Received: by 2002:a6b:5c18:: with SMTP id z24mr2054870ioh.88.1627773714514;
+ Sat, 31 Jul 2021 16:21:54 -0700 (PDT)
 MIME-Version: 1.0
+Reply-To: davidschantal90@gmail.com
+Sender: susancha62@gmail.com
+Received: by 2002:a05:6e02:198e:0:0:0:0 with HTTP; Sat, 31 Jul 2021 16:21:53
+ -0700 (PDT)
+From:   "Dr. Abu Salam" <abu347454@gmail.com>
+Date:   Sat, 31 Jul 2021 16:21:53 -0700
+X-Google-Sender-Auth: j0V-YIOPVvbWGrBfLDHey86_4Uk
+Message-ID: <CAHFYgy59NeiNHp33TBSzatG+sH0b4ZCuvCN1exoxnMS3mf83nQ@mail.gmail.com>
+Subject: GREETINGS FROM ABU SALAM.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Jtwz9aBwHctj85q8uhjC+MnBU57LqajgZpmCGu0RbG4Govyh8YW
- kvAS04XqEtEnO0qARUfbKOLjOKqRMsve59DPCLrFV+22e/85q12rF6rZpZVJHtV3uy2cU0i
- amzAzeQSE48PPyGmX6eYg2xZDwXzKRsPl+pmQxBWh7dndgQu4C4or3Venups3tVXeU+GtJu
- lgqEXiAkuzDC50+920W3Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:eP0mDLW+2jk=:/6Smk11weOco+P2vV8ia6z
- fls3CdyeTl8+RYmU17Vy3MeHm18/NonuyGAR+e7fdXFl4Ht4hwQkKt0pWBuKsRJ8LGFHjfVyk
- RQJWjM3gkt5+oPjfT1uOQ4nC0Ct8zFH/vrTZ7U4t2P0Xe7iJvbz+V2mldkYbZo/S81cHk4w7D
- b9SARSQ9Gp9D0ZWqmnDkLIY6KKj6GCHbU/b6fjgvcwyVjPmGm5W2pex0CcYEuAkkxXzmGuSGm
- GJFosOpSNj4Atn0uNEKlJFVd6Mj49s4Zs4/Z0hA6iO57iSId3pR8g6xwv7C91mUo3sCX6xHBc
- rf3x5hMh+bqTEN7tbaLFu9E1NuAvqaWyYnJgyY52KLCFjCzOVCH+0EBhFTFPuiIuePqqd6LlF
- g0XxZYMZc+JmPaFFQdwvtF8EcD7kL1JtwaOnlujs2mCrPhFMZLq2/iMKTmrUgQMZk+f7Iqt9B
- m0n00ZjsXAr6GeffdDHEWFroRx9f5X4vZxYCV5vaEcL2HDl5ecDBtAz//i7dBjy46tGCedijL
- Lnpi0SZm31mh8Z8Hbr1cXTFZ95C8Ru+msdI2lVmWlgI7HZUEx2RjJq/VZSaxjMzF+MGEXlmCe
- lQdPOENHQBUq8W0Sn9moT5aHibJtYZX64p2XAuHU9DFrXo6vw4lpk/ISiZ5Y5FZ+NDV5DQgJS
- xNF4NDNC9kmAwr8n2L5rM0N4P7Vg+KRHlVZitJMkd7ZyGUQTFLWpmAOXgg0hq9CfJX7fbwsHW
- pfVUZp7/IP2VgRuN8ra25Q4teePeI4zDUXI9wTVnxomp4ORjZQIybEDqMtt/9D5I5O2vsZ104
- dAWVhZv2Y37CAiyWKYohHn7smoKmf/fKtzr84q4tkGCXob+gP8IdbvmNwk4KerhF0NFRv4+5n
- NsEq8KY1z/8A0u40szauyPBtB6fN0ZaA3DR6j+3g2M9AVUc8sqHjeJqcaI96xkh6Fde/wgaLE
- XTIDpv73RpOBqnmQ7l8+5V4FKZmpfUBLwADDAKtHzEr2eNHosRaOjCH1DChn100PNMDOgXSII
- TYrYKHXJ7xsmD03n5a27X8DZ15o9zyBAOhFJ96j6CH+uM/QrO3NmhXsMRcrOyY+khLjSEy/g/
- 5507y1N9j+PEttzZT1D2kbKsDqINne36eEQ
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The rtw_pci_init_rx_ring function is only ever called with a fixed
-constant or RTK_MAX_RX_DESC_NUM for the "len" argument. Since this
-constant is defined as 512, the "if (len > TRX_BD_IDX_MASK)" check
-can never happen (TRX_BD_IDX_MASK is defined as GENMASK(11, 0) or in
-other words as 4095).
+Dear Friend,
 
-So, remove this check.
+I'm sorry but happy to inform you about my success in getting those
+funds transferred under the cooperation of a new partner from Vietnam,
+though I tried my best to involve you in the business but God decided
+the whole situations. Presently I=E2=80=99m in Vietnam for investment proje=
+cts
+with my own share of the total sum. Meanwhile, I didn't forget your
+past efforts and attempts to assist me in transferring those funds
+despite that it failed us some how.
 
-The true motivation for this patch is to silence a false Coverity
-warning.
+Now contact my secretary in Burkina Faso her name is Ms. Chantal
+Davids on her e-mail address below (davidschantal90@gmail.com) ask her
+to send you the total of $1.450,000.00 (One million four hundred and
+fifty thousand united state of America dollars) which I kept for your
+compensation for all the past efforts and attempts to assist me in
+this matter. I appreciated your efforts at that time very much. So
+feel free and get in touched with my secretary Ms. Chantal Davids and
+instruct her where to send the amount to you. Please do let me know
+immediately you receive it so that we can share joy after all the
+sufferness at that time.
 
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Len Baker <len.baker@gmx.com>
-=2D--
-Changelog v1 -> v2
-- Remove the macro ARRAY_SIZE from the for loop (Pkshih, Brian Norris).
-- Add a new check for the len variable (Pkshih, Brian Norris).
+In the moment, I=E2=80=99m very busy here because of the investment project=
+s
+which I and the new partner are having at hand, finally, remember that
+I had forwarded instruction to the secretary on your behalf to receive
+that money, so feel free to get in touch with Ms. Chantal Davids she
+will send the amount to you without any delay OK. Extend my greetings
+to your family.
 
-Changelog v2 -> v3
-- Change the subject of the patch.
-- Remove the "if" check statement (Greg KH)
-- Remove the "Fixes" tag, "Addresses-Coverity-ID" tag and Cc to stable.
+My Best regards
 
-Changelog v3 -> v4
-- Add the "Reviewed-by: Brian Norris" tag.
-- Update the commit changelog to include the true motivation for the
-  patch (Brian Norris).
-
-The previous versions can be found at:
-
-v1
-https://lore.kernel.org/lkml/20210711141634.6133-1-len.baker@gmx.com/
-
-v2
-https://lore.kernel.org/lkml/20210716155311.5570-1-len.baker@gmx.com/
-
-v3
-https://lore.kernel.org/lkml/20210718084202.5118-1-len.baker@gmx.com/
-
- drivers/net/wireless/realtek/rtw88/pci.c | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wirele=
-ss/realtek/rtw88/pci.c
-index e7d17ab8f113..f17e7146f20f 100644
-=2D-- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -268,11 +268,6 @@ static int rtw_pci_init_rx_ring(struct rtw_dev *rtwde=
-v,
- 	int i, allocated;
- 	int ret =3D 0;
-
--	if (len > TRX_BD_IDX_MASK) {
--		rtw_err(rtwdev, "len %d exceeds maximum RX entries\n", len);
--		return -EINVAL;
--	}
--
- 	head =3D dma_alloc_coherent(&pdev->dev, ring_sz, &dma, GFP_KERNEL);
- 	if (!head) {
- 		rtw_err(rtwdev, "failed to allocate rx ring\n");
-=2D-
-2.25.1
-
+Yours brother
+Dr. Abu Salam
+Greetings from Vietnam.
