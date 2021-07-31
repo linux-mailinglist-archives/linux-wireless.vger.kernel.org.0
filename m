@@ -2,95 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E26C93DC5FC
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jul 2021 14:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C863F3DC67B
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jul 2021 17:02:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233090AbhGaMk6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 31 Jul 2021 08:40:58 -0400
-Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:55296
-        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232692AbhGaMk5 (ORCPT
+        id S233332AbhGaPCJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 31 Jul 2021 11:02:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37274 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233253AbhGaPCH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 31 Jul 2021 08:40:57 -0400
-Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 753DA3F0A8;
-        Sat, 31 Jul 2021 12:40:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1627735249;
-        bh=WmppQV2MYziB7/h7Q9+1v9o0+Fs4+5hGMgdCIXdYWlE=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version:Content-Type;
-        b=wBgNYQm0hDv5l3lbaflmQrk2gx4/xLXmvgoKToO/EQ2eXXfXsFsqJO+9k/xFAgK5Y
-         OXli37WVFc1ew44JhiLeGwTCLezOOaZgJ1U7/jYBCuhXQ8pqOpvo7nPF0zKwPtiN+b
-         SwPuvFk258yapl4rqqJ8BjaTtZi/c4lRMtsZD49tXm0xO3UMxF4AsZHWU/TPxCwNIR
-         dT1nd2YBlzDuXk43T7esgwymw6zrViog60XHzkKYovAwX/yWQEG6QcToXSZmJSyrA2
-         gzMSS03Zl4LtmN1ZKsjlHtiafiZ1rBROa12etRyfQgWgYGe6VMRM2WKPN80F2rQPxB
-         W2Gz31QLcJW6Q==
-From:   Colin King <colin.king@canonical.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] rtlwifi: rtl8192de:  make arrays static const, makes object smaller
-Date:   Sat, 31 Jul 2021 13:40:44 +0100
-Message-Id: <20210731124044.101927-2-colin.king@canonical.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210731124044.101927-1-colin.king@canonical.com>
-References: <20210731124044.101927-1-colin.king@canonical.com>
+        Sat, 31 Jul 2021 11:02:07 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7923C0613D3
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Jul 2021 08:01:59 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id c16so14563257plh.7
+        for <linux-wireless@vger.kernel.org>; Sat, 31 Jul 2021 08:01:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=6NzNWl7LhGEt5gulXFub5aIXRWGd7b+RfXfHU7IL/eI=;
+        b=Jx/NovSJ2alFyoaVfse4LYGuhNMlBcAWv6JTiM3YSwvodvaXCAulhewOn2HF0FC+nz
+         N7t2fd02SxFeFS/jAywZfBDu3dF82py23YxGadXmxU6FsZZNwFLKknaPYZ73JtAAQWAr
+         FgjDEpjlNdXTBhWlUNhxTGhy3p9i8wqoga8qo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=6NzNWl7LhGEt5gulXFub5aIXRWGd7b+RfXfHU7IL/eI=;
+        b=fgDVjkZXJhpFI8IE+ymvFUot9Abdxegv2KvDigkDSVjceSiADRwr4HsYOENtjMD3h+
+         4h2XS3qK/WscD5qckRUpH+DPuWpZHyAN/U/Cd4eBOjUZKGQBOubn9WzNL7JL9qZpopyA
+         godUGOTxKYRlrZHAvpvAf0oD/LTwrL9Co28w/+J7nawuBX7GCOQAVVkinrq+vNo8SfyI
+         egSv57SntSdDRzLHLmLvYZwiXsCecLoS9H4+0BX/W9N3LrHVFWdVZ6kxloYRU6PVrvPu
+         7mPW2AnRmJfVfDsmj5R5u0WkufwhtvIS1n4Z3C0nDUvLioFRmaFYPolRdQxMDVf8z1sJ
+         OTkQ==
+X-Gm-Message-State: AOAM530o5zsmNjuQ0vv1wSi9aNL/iX/a6fWJZT8fI0K0/svuOFsyOvcD
+        5ybmJJM7HTMVbC7SN1Eog6r9RQ==
+X-Google-Smtp-Source: ABdhPJxldKFq/Rzqofqxn4rJbNcLhr5hYJ4ZeyAVRbwaYS9Cd10PchwbLiRXEC7+1Qe+4tL2UtPocg==
+X-Received: by 2002:a65:53ce:: with SMTP id z14mr2617394pgr.275.1627743719538;
+        Sat, 31 Jul 2021 08:01:59 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id jz24sm1857832pjb.9.2021.07.31.08.01.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Jul 2021 08:01:58 -0700 (PDT)
+Date:   Sat, 31 Jul 2021 08:01:57 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-hardening@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Keith Packard <keithpac@amazon.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com
+Subject: Re: [PATCH 54/64] ipv6: Use struct_group() to zero rt6_info
+Message-ID: <202107310801.D50070F@keescook>
+References: <20210727205855.411487-1-keescook@chromium.org>
+ <20210727205855.411487-55-keescook@chromium.org>
+ <20210729115850.7f913c73@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210729115850.7f913c73@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Thu, Jul 29, 2021 at 11:58:50AM -0700, Jakub Kicinski wrote:
+> On Tue, 27 Jul 2021 13:58:45 -0700 Kees Cook wrote:
+> > In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> > field bounds checking for memset(), avoid intentionally writing across
+> > neighboring fields.
+> > 
+> > Add struct_group() to mark region of struct rt6_info that should be
+> > initialized to zero.
+> 
+> memset_after() ?
 
-Don't populate arrays the stack but instead make them static const
-Makes the object code smaller by 852 bytes.
+Oh, hah. Yes. I will adjust for v2.
 
-Before:
-   text	   data	    bss	    dec	    hex	filename
- 128211	  44250	   1024	 173485	  2a5ad	../realtek/rtlwifi/rtl8192de/phy.o
-
-After:
-   text	   data	    bss	    dec	    hex	filename
- 127199	  44410	   1024	 172633	  2a259	../realtek/rtlwifi/rtl8192de/phy.o
-
-(gcc version 10.2.0)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index 4eaa40d73baf..79956254f798 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -1354,7 +1354,7 @@ static void _rtl92d_phy_switch_rf_setting(struct ieee80211_hw *hw, u8 channel)
- 
- u8 rtl92d_get_rightchnlplace_for_iqk(u8 chnl)
- {
--	u8 channel_all[59] = {
-+	static const u8 channel_all[59] = {
- 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
- 		36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58,
- 		60, 62, 64, 100, 102, 104, 106, 108, 110, 112,
-@@ -3220,7 +3220,7 @@ void rtl92d_phy_config_macphymode_info(struct ieee80211_hw *hw)
- u8 rtl92d_get_chnlgroup_fromarray(u8 chnl)
- {
- 	u8 group;
--	u8 channel_info[59] = {
-+	static const u8 channel_info[59] = {
- 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
- 		36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56,
- 		58, 60, 62, 64, 100, 102, 104, 106, 108,
 -- 
-2.31.1
-
+Kees Cook
