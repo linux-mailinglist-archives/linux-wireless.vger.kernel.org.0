@@ -2,76 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 371983DCA86
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Aug 2021 09:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98C173DCB16
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Aug 2021 12:25:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230507AbhHAHZg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 1 Aug 2021 03:25:36 -0400
-Received: from poohprod.ru ([185.146.156.86]:60954 "EHLO mail.poohprod.ru"
+        id S231687AbhHAKZr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 1 Aug 2021 06:25:47 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:51457 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230356AbhHAHZg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 1 Aug 2021 03:25:36 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0D407E0363
-        for <linux-wireless@vger.kernel.org>; Sun,  1 Aug 2021 10:25:22 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poohprod.ru; s=dkim;
-        t=1627802725; h=from:subject:date:message-id:to:mime-version:content-type:
-         content-transfer-encoding:content-language;
-        bh=nJnPp0/BmJ/W28q+9URdHGjVLXADIqBuLHY27gmblfI=;
-        b=oGUfPRMwFbGlz/8jH1PVRlwRFVhzDVyz8NRyw7dEo4yOwd9Ys53fuYW0VNrgh784YgFOX5
-        zLO4n0RRtlfixsIm8PPo56Cbe0HzBBfR0F7ke5SF8TpLqaBvYa/5FtbM/qmeRMJRdqABVZ
-        jiWowuzaZjv5tvuhEDJkc82qwU3xX/EkCEPheDKrC1Gl+Va2Pw7J5s+Fr5mypCtvrLB/h4
-        RgeW2sf9mlX2Csjii05lirqCMW/MHlX//TC4w+PWclqyi7kS+ygCO6sf1exjKeDoJIKgDB
-        +6IC34wrj8iAjCUP/Iqch6S8uCwZvHN+zWHz/eYX6SGK5cGAFOi9J2+K4n2D8w==
-To:     linux-wireless@vger.kernel.org
-From:   Pooh <pooh@poohprod.ru>
-Subject: (Arch Linux) rtw_8822ce WiFi driver for Linux
-Message-ID: <720e699d-a062-28cd-6242-735282dc3e54@poohprod.ru>
-Date:   Sun, 1 Aug 2021 10:25:05 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S231470AbhHAKZ0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 1 Aug 2021 06:25:26 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1627813518; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=+Tht/oadIlec4geTdluJd5Vlo6uXIie13sxNodjZpdA=;
+ b=chl1fgY8BIRXDNn9s6T0r8N5CN7+g/NWj80So+k1jQLsAl6nX+jesUMOuK+owII81kXcqkPN
+ VZBozsIP4pVULsY5ywx22OZZuv9kGO5UodhJMyozen+KrpDfD0wqv1rVHGzNSs2G8Me4zKqd
+ UPT2EkQXR10Hz/q5v01EKuz5nRk=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 6106768017c2b4047d6083d8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 01 Aug 2021 10:25:04
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C56E4C433F1; Sun,  1 Aug 2021 10:25:03 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DF196C433D3;
+        Sun,  1 Aug 2021 10:25:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DF196C433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] brcmfmac: use separate firmware for 43430 revision 2
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210628145412.26046-1-mike.rudenko@gmail.com>
+References: <20210628145412.26046-1-mike.rudenko@gmail.com>
+To:     Mikhail Rudenko <mike.rudenko@gmail.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Mikhail Rudenko <mike.rudenko@gmail.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-Id: <20210801102503.C56E4C433F1@smtp.codeaurora.org>
+Date:   Sun,  1 Aug 2021 10:25:03 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi! The following errors constantly appear in the log. The WiFi 
-connection is stable at the same time.
+Mikhail Rudenko <mike.rudenko@gmail.com> wrote:
 
-июн 30 19:39:31 not-a-virus kernel: rtw_8822ce 0000:01:00.0: failed to 
-send h2c command
-июн 30 19:39:31 not-a-virus kernel: rtw_8822ce 0000:01:00.0: failed to 
-send h2c command
-июн 30 19:39:31 not-a-virus kernel: rtw_8822ce 0000:01:00.0: failed to 
-send h2c command
-июн 30 19:39:31 not-a-virus kernel: rtw_8822ce 0000:01:00.0: failed to 
-send h2c command
-июн 30 19:39:31 not-a-virus kernel: rtw_8822ce 0000:01:00.0: failed to 
-send h2c command
-июн 30 19:39:31 not-a-virus kernel: rtw_8822ce 0000:01:00.0: failed to 
-send h2c command
-июн 30 19:39:31 not-a-virus kernel: rtw_8822ce 0000:01:00.0: firmware 
-failed to leave lps state
+> A separate firmware is needed for Broadcom 43430 revision 2.  This
+> chip can be found in e.g. certain revisions of Ampak AP6212 wireless
+> IC. Original firmware file from IC vendor is named
+> 'fw_bcm43436b0.bin', but brcmfmac and also btbcm drivers report chip
+> id 43430, so requested firmware file name is
+> 'brcmfmac43430b0-sdio.bin' in line with other 43430 revisions.
+> 
+> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
 
-lspci -v
+Failed to apply to wireless-drivers-next, please rebase.
 
-01:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8822CE 
-802.11ac PCIe Wireless Network Adapter
-Subsystem: Electronics & Telecommunications RSH Device 1e25
-Physical Slot: 0
-Flags: bus master, fast devsel, latency 0, IRQ 75, IOMMU group 7
-I/O ports at 2000 [size=256]
-Memory at c0700000 (64-bit, non-prefetchable) [size=64K]
-Capabilities: [40] Power Management version 3
-Capabilities: [50] MSI: Enable+ Count=1/1 Maskable- 64bit+
-Capabilities: [70] Express Endpoint, MSI 00
-Capabilities: [100] Advanced Error Reporting
-Capabilities: [148] Device Serial Number 00-e0-4c-ff-fe-c8-22-01
-Capabilities: [158] Latency Tolerance Reporting
-Capabilities: [160] L1 PM Substates
-Kernel driver in use: rtw_8822ce
-Kernel modules: rtw88_8822ce, rtw_8822ce
+Recorded preimage for 'drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c'
+error: Failed to merge in the changes.
+hint: Use 'git am --show-current-patch' to see the failed patch
+Applying: brcmfmac: use separate firmware for 43430 revision 2
+Using index info to reconstruct a base tree...
+M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+Patch failed at 0001 brcmfmac: use separate firmware for 43430 revision 2
+
+Patch set to Changes Requested.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210628145412.26046-1-mike.rudenko@gmail.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
