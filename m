@@ -2,218 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF1613DDCF7
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Aug 2021 17:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 247483DDD87
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Aug 2021 18:23:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235307AbhHBP6S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Aug 2021 11:58:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56342 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233995AbhHBP6R (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Aug 2021 11:58:17 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9DF3361102;
-        Mon,  2 Aug 2021 15:58:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627919888;
-        bh=ezjSXOa8rkXEer10Na/t0VlqYJk4ORYl/15FrFHZIv4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZZ4/PweTZED2cfx20aIf+TsvZx49FLqLKsPQqKvMubdG0o3c2kthoyuDN3hIuC8DQ
-         esugT4SUyhBvNSPlGNXFEzpKMZ3SY8X43Kd0RXSJmecKbg/uRgoaWhjmGcVskVJnua
-         QZoxqgX7oYtYBgEnru7PfadfZRM/jOv9bhy8Ai5b1PC12D4yoSbReZy43ppSViheL1
-         PGUQO74FDffaAvsuA+iT/9HJ6JSH3RKf8si2xJ6GRLhPwvAFrv5zro72m5tncWNyPr
-         rt0OHf2Pa5c4MWswiXGWyb8ZiRtmOlaS8/+IH2M3Dr5xcP4+Ori6y+6IPl2sG8KWTf
-         TX7iQNk8AaSXg==
-Date:   Mon, 2 Aug 2021 17:58:03 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     greearb@candelatech.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v6 3/7] mt76: mt7915: add some per-station tx stats to
- ethtool
-Message-ID: <YQgWCxrCbKAZq6U3@lore-desk>
-References: <20210802150808.30113-1-greearb@candelatech.com>
- <20210802150808.30113-3-greearb@candelatech.com>
+        id S232390AbhHBQXg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Aug 2021 12:23:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49660 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232391AbhHBQXg (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 2 Aug 2021 12:23:36 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4371C061796
+        for <linux-wireless@vger.kernel.org>; Mon,  2 Aug 2021 09:23:26 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id dw2-20020a17090b0942b0290177cb475142so6595965pjb.2
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Aug 2021 09:23:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=JaILGVZ5ZfAh5yd44e+vxSRLCop37r4sy9cxjRO/kVU=;
+        b=aw1kgIMmRz0YMmD8jXYt7yhGZxHLHmcNQFLrG40MdDJ4dxtp5Dp6z04FghrmAgWxls
+         ibbc21J6Lj1o0KA7GwJpBkMxWoCQKSfGPfoyBryQnP/vDd6QBrsp3tbdnfeGJcBe4xv4
+         fS1shEaQqJCHHvIk5MIu8rA0hZEvPYJj50Zzs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=JaILGVZ5ZfAh5yd44e+vxSRLCop37r4sy9cxjRO/kVU=;
+        b=PFxNCa0ZrOzWEpgvbF9zgZT0R+E54s3OVHEjbXHy8hriRmMQSoS6qim9YK+w9SuMVb
+         b7qKZIuVyYqSQIusiG/cp+a3qInCpbVSfEPDPJoUqbnjJU6RhK/aZICK35UBwaJq47xa
+         +N9ZpmgJH91EsiT6k8Y0dbKLQOkOjrAbBJbNimVdxRjvwSzgJiHlH4MmjZbgzpZ8cGCA
+         CR8xdJxT9MSPB54sSlVs0wwpDy7Of1E931JztiOW6b1sOogDWSh8sVVSvg1aX3L5rXUC
+         8ryP4xgotCEOEvZZTZGRLawYbwpDX0FaAcUQM2JjDGCIm7RQDDakm48U8BmHvQlW6HrG
+         cZOw==
+X-Gm-Message-State: AOAM531CObSAkXhcOT3SHrHwvlrJP0LH8uDnb4iGA3+60nfqsyNhyD6N
+        jS0Rb73lhHaz3D8eFRu3anaiEQ==
+X-Google-Smtp-Source: ABdhPJyna/JEEPlWGNR2S+ZqJqCzOPLMMoqPYs8YB21x4PV9XLYXx00eTM9yttg27rSVI2z426vQLw==
+X-Received: by 2002:a63:4a49:: with SMTP id j9mr2250552pgl.20.1627921406097;
+        Mon, 02 Aug 2021 09:23:26 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id s193sm13206950pfc.183.2021.08.02.09.23.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Aug 2021 09:23:25 -0700 (PDT)
+Date:   Mon, 2 Aug 2021 09:23:24 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Shai Malin <smalin@marvell.com>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Keith Packard <keithpac@amazon.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
+        "clang-built-linux@googlegroups.com" 
+        <clang-built-linux@googlegroups.com>,
+        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+        GR-everest-linux-l2 <GR-everest-linux-l2@marvell.com>,
+        Ariel Elior <aelior@marvell.com>
+Subject: Re: [PATCH 42/64] net: qede: Use memset_after() for counters
+Message-ID: <202108020922.FE8A35C854@keescook>
+References: <SJ0PR18MB3882DC88DB04C9DE68678CEDCCEF9@SJ0PR18MB3882.namprd18.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="owrvu04ZxqawYk6m"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210802150808.30113-3-greearb@candelatech.com>
+In-Reply-To: <SJ0PR18MB3882DC88DB04C9DE68678CEDCCEF9@SJ0PR18MB3882.namprd18.prod.outlook.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Mon, Aug 02, 2021 at 02:29:28PM +0000, Shai Malin wrote:
+> 
+> On Tue, Jul 31, 2021 at 07:07:00PM -0300, Kees Cook wrote:
+> > On Tue, Jul 27, 2021 at 01:58:33PM -0700, Kees Cook wrote:
+> > > In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> > > field bounds checking for memset(), avoid intentionally writing across
+> > > neighboring fields.
+> > >
+> > > Use memset_after() so memset() doesn't get confused about writing
+> > > beyond the destination member that is intended to be the starting point
+> > > of zeroing through the end of the struct.
+> > >
+> > > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > > ---
+> > > The old code seems to be doing the wrong thing: starting from not the
+> > > first member, but sized for the whole struct. Which is correct?
+> > 
+> > Quick ping on this question.
+> > 
+> > The old code seems to be doing the wrong thing: it starts from the second
+> > member and writes beyond int_info, clobbering qede_lock:
+> 
+> Thanks for highlighting the problem, but actually, the memset is redundant.
+> We will remove it so the change will not be needed.
+> 
+> > 
+> > struct qede_dev {
+> >         ...
+> >         struct qed_int_info             int_info;
+> > 
+> >         /* Smaller private variant of the RTNL lock */
+> >         struct mutex                    qede_lock;
+> >         ...
+> > 
+> > 
+> > struct qed_int_info {
+> >         struct msix_entry       *msix;
+> >         u8                      msix_cnt;
+> > 
+> >         /* This should be updated by the protocol driver */
+> >         u8                      used_cnt;
+> > };
+> > 
+> > Should this also clear the "msix" member, or should this not write
+> > beyond int_info? This patch does the latter.
+> 
+> It should clear only the msix_cnt, no need to clear the entire 
+> qed_int_info structure.
 
---owrvu04ZxqawYk6m
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Should used_cnt be cleared too? It is currently. Better yet, what patch
+do you suggest I replace this proposed one with? :)
 
-> From: Ben Greear <greearb@candelatech.com>
->=20
-> The tx status callback is not called for every frame, so
-> those specific counters under-count, but at least they give
-> some idea of what is going on.
->=20
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> ---
->  .../net/wireless/mediatek/mt76/mt7915/main.c  | 98 ++++++++++++++++++-
->  1 file changed, 93 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7915/main.c
-> index 994f84e9d7aa..88a8547e2e7f 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-> @@ -1068,6 +1068,35 @@ static const char mt7915_gstrings_stats[][ETH_GSTR=
-ING_LEN] =3D {
->  	"tx_msdu_pack_6",
->  	"tx_msdu_pack_7",
->  	"tx_msdu_pack_8",
-> +	/* per vif counters */
-> +	"v_tx_mpdu_attempts",
-> +	"v_tx_mpdu_fail",
-> +	"v_tx_mpdu_retry",
-> +	"v_tx_mode_cck",
-> +	"v_tx_mode_ofdm",
-> +	"v_tx_mode_ht",
-> +	"v_tx_mode_ht_gf",
-> +	"v_tx_mode_vht",
-> +	"v_tx_mode_he_su",
-> +	"v_tx_mode_he_ext_su",
-> +	"v_tx_mode_he_tb",
-> +	"v_tx_mode_he_mu",
-> +	"v_tx_bw_20",
-> +	"v_tx_bw_40",
-> +	"v_tx_bw_80",
-> +	"v_tx_bw_160",
-> +	"v_tx_mcs_0",
-> +	"v_tx_mcs_1",
-> +	"v_tx_mcs_2",
-> +	"v_tx_mcs_3",
-> +	"v_tx_mcs_4",
-> +	"v_tx_mcs_5",
-> +	"v_tx_mcs_6",
-> +	"v_tx_mcs_7",
-> +	"v_tx_mcs_8",
-> +	"v_tx_mcs_9",
-> +	"v_tx_mcs_10",
-> +	"v_tx_mcs_11",
->  };
-> =20
->  #define MT7915_SSTATS_LEN ARRAY_SIZE(mt7915_gstrings_stats)
-> @@ -1093,6 +1122,50 @@ int mt7915_get_et_sset_count(struct ieee80211_hw *=
-hw,
->  	return 0;
->  }
-> =20
-> +struct mt7915_ethtool_worker_info {
-> +	u64 *data;
-> +	struct mt7915_vif *mvif;
-> +	int initial_stat_idx;
-> +	int worker_stat_count;
-> +	int sta_count;
-> +};
-> +
-> +static void mt7915_ethtool_worker(void *wi_data, struct ieee80211_sta *s=
-ta)
-> +{
-> +	struct mt7915_ethtool_worker_info *wi =3D wi_data;
-> +	struct mt7915_sta *msta =3D (struct mt7915_sta *)sta->drv_priv;
-> +	int ei =3D wi->initial_stat_idx;
-> +	int q;
-> +	u64 *data =3D wi->data;
-> +	struct mt7915_sta_stats *mstats =3D &msta->stats;
-> +
-> +	if (msta->vif !=3D wi->mvif)
-> +		return;
-> +
-> +	wi->sta_count++;
-> +
-> +	data[ei++] +=3D mstats->tx_mpdu_attempts;
-> +	data[ei++] +=3D mstats->tx_mpdu_fail;
-> +	data[ei++] +=3D mstats->tx_mpdu_retry;
-> +	data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_CCK];
-> +	data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_OFDM];
-> +	data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HT];
-> +	data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HT_GF];
-> +	data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_VHT];
-> +	data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HE_SU];
-> +	data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HE_EXT_SU];
-> +	data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HE_TB];
-> +	data[ei++] +=3D mstats->tx_mode[MT_PHY_TYPE_HE_MU];
-> +
-> +	for (q =3D 0; q < ARRAY_SIZE(mstats->tx_bw); q++)
-> +		data[ei++] +=3D mstats->tx_bw[q];
-> +
-> +	for (q =3D 0; q < 12; q++)
-> +		data[ei++] +=3D mstats->tx_mcs[q];
-> +
-> +	wi->worker_stat_count =3D ei - wi->initial_stat_idx;
-> +}
-> +
->  static
->  void mt7915_get_et_stats(struct ieee80211_hw *hw,
->  			 struct ieee80211_vif *vif,
-> @@ -1100,10 +1173,8 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
->  {
->  	struct mt7915_dev *dev =3D mt7915_hw_dev(hw);
->  	struct mt7915_phy *phy =3D mt7915_hw_phy(hw);
-> -
-> -	/* TODO:  These are mostly dev-wide stats at this point.
-> -	 *  Get some per-vif stats?
-> -	 */
-> +	struct mt7915_vif *mvif =3D (struct mt7915_vif *)vif->drv_priv;
-> +	struct mt7915_ethtool_worker_info wi;
-> =20
->  	/* See mt7915_ampdu_stat_read_phy, etc */
->  	bool ext_phy =3D phy !=3D &dev->phy;
-> @@ -1161,7 +1232,24 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
->  	for (i =3D 0; i < 8; i++)
->  		data[ei++] =3D mt76_rr(dev,  MT_PLE_AMSDU_PACK_MSDU_CNT(i));
-> =20
-> -	WARN_ON(ei !=3D MT7915_SSTATS_LEN);
-> +	/* Add values for all stations owned by this vif */
-> +	wi.data =3D data;
-> +	wi.mvif =3D mvif;
-> +	wi.initial_stat_idx =3D ei;
-> +	wi.worker_stat_count =3D 0;
-> +	wi.sta_count =3D 0;
-> +
-> +	ieee80211_iterate_stations_atomic(hw, mt7915_ethtool_worker, &wi);
-> +
-> +	if (wi.sta_count =3D=3D 0)
-> +		return;
-> +
-> +	ei +=3D wi.worker_stat_count;
-> +	if (ei !=3D MT7915_SSTATS_LEN) {
-> +		dev_err(dev->mt76.dev, "ei: %d  MT7915_SSTATS_LEN: %d",
-> +			ei, (int)(MT7915_SSTATS_LEN));
+Thanks for looking at this!
 
-you can drop () here
+-Kees
 
-> +		WARN_ON_ONCE(ei !=3D MT7915_SSTATS_LEN);
-
-I think you can drop WARN_ON_ONCE here since we already have dev_err()
-
-Regards,
-Lorenzo
-
-> +	}
->  }
-> =20
->  const struct ieee80211_ops mt7915_ops =3D {
-> --=20
-> 2.20.1
->=20
-
---owrvu04ZxqawYk6m
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYQgWCQAKCRA6cBh0uS2t
-rKIrAQDQGgAEGWwRBzudv1uHLIxim1TLLDmLtCj+4UTxdwN3IQD/cFFxSmrO6SBR
-cdc0pzRDQckTNhtDlAzcZRDNeOcswQY=
-=iAX8
------END PGP SIGNATURE-----
-
---owrvu04ZxqawYk6m--
+-- 
+Kees Cook
