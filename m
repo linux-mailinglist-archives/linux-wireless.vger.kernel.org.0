@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 651323DDB06
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Aug 2021 16:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEF0C3DDB07
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Aug 2021 16:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234070AbhHBO2z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Aug 2021 10:28:55 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:50968 "EHLO
+        id S234326AbhHBO25 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Aug 2021 10:28:57 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:50972 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234330AbhHBO2y (ORCPT
+        with ESMTP id S234313AbhHBO25 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Aug 2021 10:28:54 -0400
+        Mon, 2 Aug 2021 10:28:57 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1mAYvn-001xts-NV; Mon, 02 Aug 2021 17:28:41 +0300
+        id 1mAYvo-001xts-Ka; Mon, 02 Aug 2021 17:28:42 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Mon,  2 Aug 2021 17:28:28 +0300
-Message-Id: <iwlwifi.20210802172232.80611a3c1ee7.I8a3d2b269421b6d8bada8c12cce3e095e6cfaeed@changeid>
+Date:   Mon,  2 Aug 2021 17:28:29 +0300
+Message-Id: <iwlwifi.20210802172232.3939f7c5c43a.I1d5cb5262e31a000023d79acbb897b8db50adf0d@changeid>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210802142829.109448-1-luca@coelho.fi>
 References: <20210802142829.109448-1-luca@coelho.fi>
@@ -32,40 +32,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH 11/12] iwlwifi: mvm: clean up number of HW queues
+Subject: [PATCH 12/12] iwlwifi: mvm: treat MMPDUs in iwl_mvm_mac_tx() as bcast
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Since switching to mac80211 TXQs, we no longer need to
-advertise more hardware queues than ACs, since we don't
-even set QUEUE_CONTROL anyway, so the vif->hw_queue[]
-mapping array won't be used.
+There's no need for all the complicated conditions here, any
+bufferable MMPDUs or MMPDUs for client interfaces are already
+coming through the TXQ interface, not iwl_mvm_mac_tx().
 
-All we need (at least for now) is for hw->queues to
-indicate that we have enough queues to handle QoS.
+Simplify the logic.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index b2072e19b5dc..f38d2476d5a3 100644
+index f38d2476d5a3..c60c0b49d7f7 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -390,7 +390,7 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
- 	if (mvm->trans->max_skb_frags)
- 		hw->netdev_features = NETIF_F_HIGHDMA | NETIF_F_SG;
+@@ -762,11 +762,11 @@ static void iwl_mvm_mac_tx(struct ieee80211_hw *hw,
+ 	    !test_bit(IWL_MVM_STATUS_ROC_AUX_RUNNING, &mvm->status))
+ 		goto drop;
  
--	hw->queues = IEEE80211_MAX_QUEUES;
-+	hw->queues = IEEE80211_NUM_ACS;
- 	hw->offchannel_tx_hw_queue = IWL_MVM_OFFCHANNEL_QUEUE;
- 	hw->radiotap_mcs_details |= IEEE80211_RADIOTAP_MCS_HAVE_FEC |
- 				    IEEE80211_RADIOTAP_MCS_HAVE_STBC;
+-	/* treat non-bufferable MMPDUs on AP interfaces as broadcast */
+-	if ((info->control.vif->type == NL80211_IFTYPE_AP ||
+-	     info->control.vif->type == NL80211_IFTYPE_ADHOC) &&
+-	    ieee80211_is_mgmt(hdr->frame_control) &&
+-	    !ieee80211_is_bufferable_mmpdu(hdr->frame_control))
++	/*
++	 * bufferable MMPDUs or MMPDUs on STA interfaces come via TXQs
++	 * so we treat the others as broadcast
++	 */
++	if (ieee80211_is_mgmt(hdr->frame_control))
+ 		sta = NULL;
+ 
+ 	/* If there is no sta, and it's not offchannel - send through AP */
 -- 
 2.32.0
 
