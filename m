@@ -2,202 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 675B43DDDC7
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Aug 2021 18:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE8953DDE37
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Aug 2021 19:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232297AbhHBQf6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Aug 2021 12:35:58 -0400
-Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]:12432 "EHLO
-        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S230139AbhHBQf5 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Aug 2021 12:35:57 -0400
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-        by mx0a-0016f401.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 172GUNSS007186;
-        Mon, 2 Aug 2021 09:35:42 -0700
-Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam08lp2176.outbound.protection.outlook.com [104.47.73.176])
-        by mx0a-0016f401.pphosted.com with ESMTP id 3a6265332r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 02 Aug 2021 09:35:41 -0700
+        id S229881AbhHBRJk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Aug 2021 13:09:40 -0400
+Received: from mail-eopbgr00086.outbound.protection.outlook.com ([40.107.0.86]:56918
+        "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229737AbhHBRJj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 2 Aug 2021 13:09:39 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KKu1CYunTkf7+pkp3M976vKa58lRB8HA9jR1s4f1DJVYSOjdJT7Tmh0YcE8gBYV7HD7mA8HFbuPY7/he0sDErH9pgv2nod7rtZBGO6pS5FyhDnPWuQ89Ov0ZqKNTd8ddcpFdGwm5vb1HUJL6OV1IRXoGG+z3hhpqkf3wjjSGImgCTCOwVXLnuC3rEWhXPMhdErnzkT2henw3P5Y9fzNuMVaLWkcCCSNgHeC9Zkkkh95PrvXek7q/eWiF32+hFvI8/YL7JLa3A/rRmZTm1apw8b/jPoN9Us5glsKlJRe0dVsbbhpMXGBwOkrKZZhRuUMMlOLIo8fRWChMaEakZi5t2g==
+ b=n2MZRT23MS+DoQyNHBgSk6KSUmvLdCJgpFdChWOjN/b3HcYPYgWBBhFb69rIJQzx3nk1iyPOmJ8+ytETwrEUv4KYqZcMfIk4x0fkQwTOii5MKwkSylJ5YpDW6ZhLuOOfIKT9ge5UbKuzgRPCC4A7uc6+n+7EDiFz+AwU30HcFRNCs96K6RgR0cKq6BW48p9cHwlqpfyacsgJDRfOkWJWjpBuK1gGxpVjmZBJV5vPT2GdmnB5uiPKuFhoiTVG7DW/L1Msjzgewka733HpS/HFVqGGdZ0qx855AT8kHq+GKdd1UA2bcJv7O4M93wAIJg8I5kl2Fyyxm0e/5/JL1/Aiaw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Aqn/GgO4sjqodFwoIqRzBPmLwSWUto1BpH6b/fe8NME=;
- b=OO9YYU2616bl8OXBqleelvc7MAcIt0VRF7QW7CdydJsnbnTlxg1P+lo8uO9w+hxR9HUte5toaxDDeCkhO1TkXbYpzFbn5IcyEC+xVGzzUgUZWfRe2CyTNHkG9QItFAyJl2teLHWbpCC6gpH5QoIs/33dIeROjeukYp6J8GvwoE5qsfpsx1MF/ObmynyCPn/dS9MkROrsrnjWmsTV50uWOez+qqzG2Nbx7qOZz3HIlA5B8tyEa99qPVqukCF6f4zOgEYT0sLs2ZU4luA29c6BiPiAJ6fu0l6qo551Eo853HoHIBEP2qPLUyrwWzN6lQJ3XVb9ViDI9DGNw1oEGMYBMA==
+ bh=PV9KL1vUqpxcAn86G8OlVgIPtly9V88/PnCNhXLvksE=;
+ b=oMyo/SELO6UZHU9iFv88+bILUq1ogDPXChTwlJMkqJTfTNYhWxJcigGOTrpP+zH70/ol2ECvQEhiss/CD4yEekm6wk9xP+y2wLT9plpqim7j1iZF62l6d79FxnENJsKSZhURWYBMRWV1CzbTAVfPy2V7ghp+9w7IRDCx7F+PlXmDXFxxiUBMokQyDTapOEVeO9k0ytnmkMKQcge0Xl/rqvUjEKX7A4C6rLxnpVbngBan2qSvRfah/sxkcWHyp1ZpxQuz9bY6ie1sQdwHMIe0q8ULhv01MStKNOOFb0dTjBUHw0b/vYvml4AORKqm8Tx7GgDdGhQS96cM8/VlmLK2GA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=marvell.onmicrosoft.com; s=selector1-marvell-onmicrosoft-com;
+ d=secospa.onmicrosoft.com; s=selector2-secospa-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Aqn/GgO4sjqodFwoIqRzBPmLwSWUto1BpH6b/fe8NME=;
- b=pQD++wgZD4xS6Wi/TaPICZV36/nMIaWjfu4JWHphQOhDeOjgGjeJD5jHnS4c25ipd/0ExF1KOBC4lEuGBa77J6U5BuZia04IdAeUFiBK48a1pxhdPswoWPupm10CIaKpjOTp0kPkqDGXgNlPfthxqgVze8Mrk87mMIkl1B/F2HE=
-Received: from SJ0PR18MB3882.namprd18.prod.outlook.com (2603:10b6:a03:2c8::13)
- by BYAPR18MB3064.namprd18.prod.outlook.com (2603:10b6:a03:10a::19) with
+ bh=PV9KL1vUqpxcAn86G8OlVgIPtly9V88/PnCNhXLvksE=;
+ b=ug2D0DyEdR2a8btLHPqg0GNE5cHQwOEz8ElfNgbpgaH/WrHQ2Lh/R7K2/Gatnrxi2sIr1mjDqVWJaod2Dvon8wCm2eawWdmKBZGbt5Ju5/w9gLPvtQpP4oIAFLY5pGh5EytF161l5xDB3he2vAlu6/iHLdXCVmhXNJ6xKEN/mRc=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=seco.com;
+Received: from DB7PR03MB4523.eurprd03.prod.outlook.com (2603:10a6:10:19::27)
+ by DB8PR03MB5579.eurprd03.prod.outlook.com (2603:10a6:10:102::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.26; Mon, 2 Aug
- 2021 16:35:40 +0000
-Received: from SJ0PR18MB3882.namprd18.prod.outlook.com
- ([fe80::6513:d2ca:d44a:537c]) by SJ0PR18MB3882.namprd18.prod.outlook.com
- ([fe80::6513:d2ca:d44a:537c%9]) with mapi id 15.20.4373.026; Mon, 2 Aug 2021
- 16:35:40 +0000
-From:   Shai Malin <smalin@marvell.com>
-To:     Kees Cook <keescook@chromium.org>
-CC:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Keith Packard <keithpac@amazon.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
-        "clang-built-linux@googlegroups.com" 
-        <clang-built-linux@googlegroups.com>,
-        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-        GR-everest-linux-l2 <GR-everest-linux-l2@marvell.com>,
-        Ariel Elior <aelior@marvell.com>
-Subject: Re: [PATCH 42/64] net: qede: Use memset_after() for counters
-Thread-Topic: [PATCH 42/64] net: qede: Use memset_after() for counters
-Thread-Index: AdeHu2WnTRdoaKwFSqaAMCIXmimw8Q==
-Date:   Mon, 2 Aug 2021 16:35:39 +0000
-Message-ID: <SJ0PR18MB3882AB903407280EB87DFF5FCCEF9@SJ0PR18MB3882.namprd18.prod.outlook.com>
-Accept-Language: he-IL, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: chromium.org; dkim=none (message not signed)
- header.d=none;chromium.org; dmarc=none action=none header.from=marvell.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 84e4bf04-176d-4a11-a847-08d955d39087
-x-ms-traffictypediagnostic: BYAPR18MB3064:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BYAPR18MB3064A6F0307B253297413C61CCEF9@BYAPR18MB3064.namprd18.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: M1zOZggx0KKdCkGkvPxFUwoiriex9E5a+Cwn6R0ed5hilD/gsN2i9C3dfhnleTawIMOkPLItqATHYfmMamlDC5keJndVm0DEFc/zak+6ctgQswwY7uBpJqiTqYwaq8TkzARjikZPCOJ9zDe0idEQrb1/RQZCPZyPNhdIhnGozzBazHYpXVarnbwSkhlHkiFdmk4xyUYKgjJNm1GpnIAcdJj2NQsTqeAfNkNbP6r5MXrHrqBy5nd0d7pYlvWNk25GNqj7pWdtrFdCnYyER2KTWmPhRvnDLWbHADLJ4cfQEbnuC+tufTziywbidBWmY8mOzAt6ofZK656Eld5pO2RsDE10PKwtb6YGUsT5RtQxKoWXWiyy/SLmHH2eCMH3gLzdECSQc6vVaeJQBqs1MEBDqf4+PRUolgVsftzTT3MdCPYyiOqDiifSOTcMc8j5EA6u5EX9d07MBj0p2p8ocv5Ku6bBKLryHuzHHoEfFiaY0DmZwUdhhZyYPCvmjgzH3cF0dfHkhRPR3+FODgE44HKBgYQ8aLni4IzMtJQBbnkl8peUb8q26RFqbGQ3XsbWBZaQDNcNU37ntn0m8uuJ76R9m0w8GNK1QoqZlsiDpon+Y8BYXSZEbjtlFE5MOvJ2c7D+RP0VxoWtva29N9Min69xXgh7PgWg9PH3mTPn7fM39DzLlqEw/uvSg0kTldscoyW9xZXqteYZ2Jdr19HFmTWkcA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR18MB3882.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(136003)(376002)(366004)(39860400002)(26005)(8676002)(8936002)(186003)(66446008)(64756008)(66556008)(66946007)(66476007)(6506007)(5660300002)(2906002)(52536014)(38070700005)(9686003)(316002)(7696005)(54906003)(38100700002)(122000001)(55016002)(478600001)(4326008)(76116006)(6916009)(107886003)(86362001)(83380400001)(71200400001)(7416002)(33656002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?0aGPhJtrEbsiGt50IbhEOw44CngPsjfqoA2FpWc88KXgacu96/Ti+zkGTXwu?=
- =?us-ascii?Q?oyAO1aHeW2l8299+xy0TuStZ9uXLP5quDTmVT4jHlgJaaceaJSjsPSayvOaX?=
- =?us-ascii?Q?/mIfPkZxQ4YkogVI0aZ49xeRFs6LtTg9a9binCEODPVJZsRtMfbs0tm9QWqf?=
- =?us-ascii?Q?IuYXGjFduw89ErHt14KcFkLdQdgbpPPKchM+gru9LkS8cfVo6QJQWr3WGaw0?=
- =?us-ascii?Q?S+qwPaxSc5TuhG87ZMRbpR5xOQp70mUJYzfWhzPqsMvFYbLQ1gXcQ52dmlV0?=
- =?us-ascii?Q?mfoqbSXOraVHLUZKxsCyCR+PBshaVfocZldRTy2kqCX5vCXa+08bgP43/cnF?=
- =?us-ascii?Q?Em0QiO1W+otbj6T9NY3h5dNOL1DCojNCAMeA3JvWHXVOjStVcsTEYrIcRQ8F?=
- =?us-ascii?Q?w85fYHf0vHENrUh8bdRxShEKe5pPqiB8UjvrR9sxpL/kr1s4QvWSq7Dl4zSm?=
- =?us-ascii?Q?C97rnA3d0SuI4A8nGsQRZ6l6RnTJPitvtkmJQbwcVJdzrVGQsJOiIBLmWB0J?=
- =?us-ascii?Q?N9czFcyHjj4ioO9fwd1jGZMsZPMXNNzfI6eVFC3YVdeyPJFMd2JPDmi1+wle?=
- =?us-ascii?Q?m1kvTLcyN5ZKHu/yadWP5CB7WZyjlmcT8MbZekapmPXExhmcWsyNLPxU4+Z6?=
- =?us-ascii?Q?pDqMEnUPDtmgVGd3YlL2oBEC6+emVjufhLw47iPiLE+ihBLvTGsJnfgiYEv4?=
- =?us-ascii?Q?88hL9MfJW3bfnP5f67Ac0vrlfaJlGNiSaF9XwWNWRH9crmvuN4qp6YOANb2D?=
- =?us-ascii?Q?Gabbi5lzEoTW/UIuRob14zdfLj+RejZRJ7mBK2Dys/rDg6MtY6+d9r2lXAc3?=
- =?us-ascii?Q?mujNkDSc4E8pqeXvnUvG2ptbLz5H9SlM1krW70VNbhC6pYC12SOLzdZP8WMJ?=
- =?us-ascii?Q?XknpYGmhVk8ZpiAE5nlSKN9svaUfLmvtOrbL9fh4ATAQw6ghHXjfItE31KFv?=
- =?us-ascii?Q?EL0gwV5g2qG7+PwegYegp9qgaDOb9BCCUPYQcn1OuQ3ZRDAqcLvYqYDXJ101?=
- =?us-ascii?Q?LaaMI6hWJxQDfGT5O7vg8bBj0oet3yinEeqpp3+h9naFc5/4Jzs3B9wxaxzd?=
- =?us-ascii?Q?EQk5EqVYC0bihbq4OSmfJFWtl0in4BIerfCQug9pmyu6f/7jC4hnPtWh67z1?=
- =?us-ascii?Q?T+BuN3DPkS40vKMdQqFoF0SASHC1QibhrDMAClfJQiqHqDSyn+K7H5W5P1fE?=
- =?us-ascii?Q?5GY1ZA7J7SfQmGOxdkppJ+yBKo1RUgAlenFiuXhWxWyEmTp+vo521T8KOCmN?=
- =?us-ascii?Q?m7Mm0A1UJdda0UHEvzYpqZjfRQl1ZVIhLzaP506AX+J/zaiNXlZuaNQXfEl3?=
- =?us-ascii?Q?pfA/qmJ7mVhEOZHZJU5kYxQN?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.25; Mon, 2 Aug
+ 2021 17:09:26 +0000
+Received: from DB7PR03MB4523.eurprd03.prod.outlook.com
+ ([fe80::dc6c:815b:2062:d1f1]) by DB7PR03MB4523.eurprd03.prod.outlook.com
+ ([fe80::dc6c:815b:2062:d1f1%7]) with mapi id 15.20.4373.026; Mon, 2 Aug 2021
+ 17:09:26 +0000
+From:   Sean Anderson <sean.anderson@seco.com>
+To:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
+Cc:     Chi-hsien Lin <chi-hsien.lin@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Tejun Heo <tj@kernel.org>, SHA-cyfmac-dev-list@infineon.com,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        Sean Anderson <sean.anderson@seco.com>
+Subject: [PATCH] brcmfmac: Set SDIO workqueue as WQ_HIGHPRI
+Date:   Mon,  2 Aug 2021 13:09:04 -0400
+Message-Id: <20210802170904.3116223-1-sean.anderson@seco.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR07CA0006.namprd07.prod.outlook.com
+ (2603:10b6:208:1a0::16) To DB7PR03MB4523.eurprd03.prod.outlook.com
+ (2603:10a6:10:19::27)
 MIME-Version: 1.0
-X-OriginatorOrg: marvell.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from plantagenet.inhand.com (50.195.82.171) by MN2PR07CA0006.namprd07.prod.outlook.com (2603:10b6:208:1a0::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.18 via Frontend Transport; Mon, 2 Aug 2021 17:09:24 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 7a869fce-3d36-49fe-b31e-08d955d8480d
+X-MS-TrafficTypeDiagnostic: DB8PR03MB5579:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DB8PR03MB5579345E12EDFC0176D4F88596EF9@DB8PR03MB5579.eurprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:321;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3Bv7NI7jZBRqO1bKessG5DrSr13Kxdo9ynvuwK1naRwlpDajCae405SnL28n9Ozu1DoP1joD32o/SZHfv6RQJGAVVRg016Fphoit7/kX5QDwwaCZqrO3YBtWBq0fjXlJxIHm92Ymv6wJdUFyyfwQOGKNAEWG8D4ZFK2qyfkB/zM2rKc9wDkkmFx9AvWOCKc1YxAbWolivOCHFcHrBtg5BmOF4sVXTBqN7Ged56s08h3KaiSAQiN9y4G5vbzq5rEeuEayqVysBnLguE97I4T0FVLfY/7nTO5j5dEzyK5yImjMiFvnTc/V5J69VBvAaI6o4IaSp3rHq64LHBTdkf93ZDmYBytmEbWJwUoRfAWVvnDH9+I2Ge1NDJ347WodxY9dV8IZC0zHhSMPZDu8UDAq9sN1p4w7nTAU6ConEZWKEZ7Eencu/K7QO1iLu0DQPad95OORKwWlXCHB8dQjd8e+U8TTW/KVEHFHxWp/Xpo0Jx4T/6AfgOxVBqYPpfnBYVbb1v3xBk114Pu3V3DgmcQ608tG0hkd7c3SaYKNG54BcdCJCnm4Cjnx1MjPpNvpqPGbfatRkOCplzhuqziQfSkhj1Jc8/x/Pqi2QQUjKFBt4TldyeFfJkTSCuVmKc8LSIABm4W1nVhoufmlup91Z7Unp35MrzFyyhkHmZGN/f0h2XfCknzNJJSqxP4RsXEA5FKO/s1dYupwjzJCzuP2YB+f8IVGI/lr1nfw/5pcadHEwRvbBnHjZ6mkbcpnAdZoG8lTtFdO+5WKnz3ffJPcduxG9g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4523.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(346002)(136003)(366004)(39830400003)(396003)(26005)(83380400001)(107886003)(186003)(1076003)(966005)(86362001)(478600001)(6512007)(4326008)(52116002)(2906002)(54906003)(44832011)(38350700002)(38100700002)(6666004)(66946007)(7416002)(66476007)(8936002)(956004)(66556008)(8676002)(5660300002)(2616005)(6506007)(6486002)(6916009)(36756003)(316002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3mhkGUiDMdf6+814YdXbNwGK3KkrBJR9J7WFYj5g+sOx3JMLwbw9Sl17WfLU?=
+ =?us-ascii?Q?/2piK2DhU/art8jg7HlPQ4yWGKiEkbdArePUOtAhmGOHRCThstnZMcOWOARn?=
+ =?us-ascii?Q?9NEBSDdsf5Z7bLFGopiOdXUPTgaeFlblBoSampuQ3L0LT/Lt55gpll6E1Op6?=
+ =?us-ascii?Q?INn1dnZDuvhGRpdK3YvD3v/xqIl6Mow5KVlAtoAZgJyahgshu5/i9o74k0FY?=
+ =?us-ascii?Q?sd43SbgG0hCxA2n1lVHyXSI8+CmXg6MWmndAa3dBJTGjRsogMo2UKucfQ+Wj?=
+ =?us-ascii?Q?92vznUj4/mFzqHicVNVzZ/8N73s1VKsuStI5lIckdbLQvmv/k8oVGxTiNuZZ?=
+ =?us-ascii?Q?wRDlX0lbhWV68XHz7SiW2Q8pJ7t+Fw9XPmFL47CuG+rFp80Pnnzx3k+2Iuya?=
+ =?us-ascii?Q?BXwyWPkDgOrSD1831uoW8hoQ3QV84eSnMwHd7gXrvHZS38ldS4veBYlWvm9H?=
+ =?us-ascii?Q?RoFDndkxqg5CWxiqCOE3MSGfFL4ZYobTL80Dvgf9hWl+hukj9wx0fzppAvzT?=
+ =?us-ascii?Q?av1j3thdWGSIBocJQpvoNoMf86B93P5wsUwCx25s3nRI0vVMNq+99/WQYPCx?=
+ =?us-ascii?Q?1jfF/FtA3iwGla4dpFx9DpVmsKG946HQ7hh0TzjdBb2RLccftRyQhcuufdzk?=
+ =?us-ascii?Q?pDwsai9N43X/wzzrjwe1dMzQU2RkbXXVfTqdJhyqa/NirkUAVhDhjoGdWcur?=
+ =?us-ascii?Q?6WRNfBKZ0dTAJd4UnHkstHXgR9eaKmsh+0YZpCrc4dqIczRJsJ1WrzF6PXAo?=
+ =?us-ascii?Q?650PvSEJKxNe7/xUn/pIBDLIA9kAPZ90ZkZ4IiqMxMXt38auPs6h8KPqpJaX?=
+ =?us-ascii?Q?R7GuKELbGIc6D9dRcdqjq2aJ51ONtuCvUIhE/dFYARimwby8PHra7RwpgJdl?=
+ =?us-ascii?Q?DRyBPngQlhwU0ub4AekB7HociXisq5cLMD/vre7JERFv0hYso6SXA5gLs+2u?=
+ =?us-ascii?Q?8BoaCvBxyIY7qYjNfiZXAI11CJpEtyXtp/LwYIBU5CuXruQAimwsOeUeFFZm?=
+ =?us-ascii?Q?4ABirpcwhbc605b6GaBjF6ApHMN7QCExTiHWxvLFZC4poIrIh8UJazgMZRBv?=
+ =?us-ascii?Q?Vq9axbWDviTZ/0SwePDGES9ClrIVXjkcS7KlWqGSlnkdyKDDzBAAylNMPgX8?=
+ =?us-ascii?Q?zUF4CcOrYebB9eQ+wuxnr0vwHwZsStYxP6NYoefV5UF3XLqQOTb+VrEjBKm7?=
+ =?us-ascii?Q?bJWgnRIiLpMP73qCai8wzRSueNloG4VYLsDqeA4U4QorB1k3kD4cVAQ3BLTD?=
+ =?us-ascii?Q?xQCkDg0VCZqxVFcWF7DD/EQQ15CiXwOWgn1ApciLpgbDmPvgM/bRTmM2SESs?=
+ =?us-ascii?Q?i04K4Ee0FifyKJfQWzLTEmWs?=
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a869fce-3d36-49fe-b31e-08d955d8480d
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4523.eurprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR18MB3882.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84e4bf04-176d-4a11-a847-08d955d39087
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Aug 2021 16:35:39.9870
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2021 17:09:26.1549
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: UySO1HYRFB5385NWKQM8f4ddgP+fe/cT2PwmeTem7EtVvOADGIf5EU2cnh34qgpNuxixoNQd5H0ugPhHMj1SkQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR18MB3064
-X-Proofpoint-ORIG-GUID: 5FxVOV93Oc6wFh5q-ZaL3krJVytn8HZK
-X-Proofpoint-GUID: 5FxVOV93Oc6wFh5q-ZaL3krJVytn8HZK
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-08-02_07:2021-08-02,2021-08-02 signatures=0
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K8B8NQEFfiliHa9lwkHb15h1jtm9YNEeNiiJbX8e304y5/7Uou+wRrn1EyNTdLolZYVyFxfdqL8fLzEzVGXJNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR03MB5579
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Aug 02, 2021 at 07:23:00PM +0300, Kees Cook wrote:
-> On Mon, Aug 02, 2021 at 02:29:28PM +0000, Shai Malin wrote:
-> > On Tue, Jul 31, 2021 at 07:07:00PM -0300, Kees Cook wrote:
-> > > On Tue, Jul 27, 2021 at 01:58:33PM -0700, Kees Cook wrote:
-> > > > In preparation for FORTIFY_SOURCE performing compile-time and run-t=
-ime
-> > > > field bounds checking for memset(), avoid intentionally writing acr=
-oss
-> > > > neighboring fields.
-> > > >
-> > > > Use memset_after() so memset() doesn't get confused about writing
-> > > > beyond the destination member that is intended to be the starting p=
-oint
-> > > > of zeroing through the end of the struct.
-> > > >
-> > > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > > > ---
-> > > > The old code seems to be doing the wrong thing: starting from not t=
-he
-> > > > first member, but sized for the whole struct. Which is correct?
-> > >
-> > > Quick ping on this question.
-> > >
-> > > The old code seems to be doing the wrong thing: it starts from the se=
-cond
-> > > member and writes beyond int_info, clobbering qede_lock:
-> >
-> > Thanks for highlighting the problem, but actually, the memset is redund=
-ant.
-> > We will remove it so the change will not be needed.
-> >
-> > >
-> > > struct qede_dev {
-> > >         ...
-> > >         struct qed_int_info             int_info;
-> > >
-> > >         /* Smaller private variant of the RTNL lock */
-> > >         struct mutex                    qede_lock;
-> > >         ...
-> > >
-> > >
-> > > struct qed_int_info {
-> > >         struct msix_entry       *msix;
-> > >         u8                      msix_cnt;
-> > >
-> > >         /* This should be updated by the protocol driver */
-> > >         u8                      used_cnt;
-> > > };
-> > >
-> > > Should this also clear the "msix" member, or should this not write
-> > > beyond int_info? This patch does the latter.
-> >
-> > It should clear only the msix_cnt, no need to clear the entire
-> > qed_int_info structure.
->=20
-> Should used_cnt be cleared too? It is currently. Better yet, what patch
-> do you suggest I replace this proposed one with? :)
+This puts tasks submitted to the SDIO workqueue at the head of the queue
+and runs them immediately. This gets higher RX throughput with the SDIO
+bus.
 
-In qede_sync_free_irqs(), just after:
-  edev->int_info.used_cnt =3D 0;
-Please add:
-  edev->int_info.msix_cnt =3D 0;
+This was originally submitted as [1]. The original author Wright Feng
+reports
 
-Thanks!
+> throughput result with 43455(11ac) on 1 core 1.6 Ghz platform is
+>     Without WQ_HIGGPRI TX/RX: 293/301 (mbps)
+>     With    WQ_HIGHPRI TX/RX: 293/321 (mbps)
 
->=20
-> Thanks for looking at this!
->=20
-> -Kees
->=20
-> --
-> Kees Cook
+I tested this with a 43364(11bgn) on a 1 core 800 MHz platform and got
+    Without WQ_HIGHPRI TX/RX: 16/19 (Mbits/sec)
+    With    WQ_HIGHPRI TX/RX: 24/20 (MBits/sec)
+
+[1] https://lore.kernel.org/linux-wireless/1584604406-15452-4-git-send-email-wright.feng@cypress.com/
+
+Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+---
+
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 97ee9e2e2e35..5e10176c6c7e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -4442,7 +4442,7 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
+ 	bus->tx_seq = SDPCM_SEQ_WRAP - 1;
+ 
+ 	/* single-threaded workqueue */
+-	wq = alloc_ordered_workqueue("brcmf_wq/%s", WQ_MEM_RECLAIM,
++	wq = alloc_ordered_workqueue("brcmf_wq/%s", WQ_MEM_RECLAIM | WQ_HIGHPRI,
+ 				     dev_name(&sdiodev->func1->dev));
+ 	if (!wq) {
+ 		brcmf_err("insufficient memory to create txworkqueue\n");
+-- 
+2.25.1
+
