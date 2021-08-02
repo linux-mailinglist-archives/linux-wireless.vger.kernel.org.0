@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8D63DDFB3
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Aug 2021 20:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1356E3DDFB6
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Aug 2021 20:59:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229899AbhHBS7O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Aug 2021 14:59:14 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:51018 "EHLO
+        id S231259AbhHBS7Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Aug 2021 14:59:16 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:51022 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230382AbhHBS7O (ORCPT
+        with ESMTP id S230442AbhHBS7P (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Aug 2021 14:59:14 -0400
+        Mon, 2 Aug 2021 14:59:15 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1mAd9R-001ySl-NP; Mon, 02 Aug 2021 21:59:03 +0300
+        id 1mAd9S-001ySl-Nm; Mon, 02 Aug 2021 21:59:04 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Mon,  2 Aug 2021 21:58:50 +0300
-Message-Id: <iwlwifi.20210802215208.928c7983f014.Ic5ba92d98946c1b4640280a05dcfd75119c0f0c0@changeid>
+Date:   Mon,  2 Aug 2021 21:58:51 +0300
+Message-Id: <iwlwifi.20210802215208.00a137364a95.I059a2abac948965458862941ee7db6a2e1076fa6@changeid>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210802185856.175567-1-luca@coelho.fi>
 References: <20210802185856.175567-1-luca@coelho.fi>
@@ -32,181 +32,211 @@ X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH 04/10] iwlwifi: read MAC address from correct place on Bz
+Subject: [PATCH 05/10] iwlwifi: pcie: implement Bz device startup
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-On Bz devices, the MAC address CSRs changed from 0x380 to 0x30.
-Change the boolean configuration "mac_addr_from_csr" to hold the
-base address instead, and set it correctly for the different
-devices using this feature.
+Device startup changed in Bz, some register bits moved around.
+Change the code accordingly.
+
+The new Bz hardware changes also the way we wake it (grab NIC
+access) and the way we disable bus mastering, update the driver
+code accordingly.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/cfg/22000.c    | 42 ++++++++++++++++++-
- drivers/net/wireless/intel/iwlwifi/cfg/9000.c |  2 +-
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  6 ++-
- drivers/net/wireless/intel/iwlwifi/iwl-csr.h  | 10 ++---
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 10 +++--
- 5 files changed, 56 insertions(+), 14 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |  8 ++++
+ drivers/net/wireless/intel/iwlwifi/iwl-io.c   | 17 ++++++---
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  | 24 ++++++++++--
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 38 ++++++++++++++-----
+ 4 files changed, 68 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index a3ff7001e1c3..cb4c1d23fc92 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -154,7 +154,7 @@ static const struct iwl_ht_params iwl_22000_ht_params = {
- 	.apmg_not_supported = true,					\
- 	.trans.mq_rx_supported = true,					\
- 	.vht_mu_mimo_supported = true,					\
--	.mac_addr_from_csr = true,					\
-+	.mac_addr_from_csr = 0x380,					\
- 	.ht_params = &iwl_22000_ht_params,				\
- 	.nvm_ver = IWL_22000_NVM_VERSION,				\
- 	.trans.use_tfh = true,						\
-@@ -215,8 +215,46 @@ static const struct iwl_ht_params iwl_22000_ht_params = {
- 		},							\
- 	}
- 
-+#define IWL_DEVICE_BZ_COMMON						\
-+	.ucode_api_max = IWL_22000_UCODE_API_MAX,			\
-+	.ucode_api_min = IWL_22000_UCODE_API_MIN,			\
-+	.led_mode = IWL_LED_RF_STATE,					\
-+	.nvm_hw_section_num = 10,					\
-+	.non_shared_ant = ANT_B,					\
-+	.dccm_offset = IWL_22000_DCCM_OFFSET,				\
-+	.dccm_len = IWL_22000_DCCM_LEN,					\
-+	.dccm2_offset = IWL_22000_DCCM2_OFFSET,				\
-+	.dccm2_len = IWL_22000_DCCM2_LEN,				\
-+	.smem_offset = IWL_22000_SMEM_OFFSET,				\
-+	.smem_len = IWL_22000_SMEM_LEN,					\
-+	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,		\
-+	.apmg_not_supported = true,					\
-+	.trans.mq_rx_supported = true,					\
-+	.vht_mu_mimo_supported = true,					\
-+	.mac_addr_from_csr = 0x30,					\
-+	.ht_params = &iwl_22000_ht_params,				\
-+	.nvm_ver = IWL_22000_NVM_VERSION,				\
-+	.trans.use_tfh = true,						\
-+	.trans.rf_id = true,						\
-+	.trans.gen2 = true,						\
-+	.nvm_type = IWL_NVM_EXT,					\
-+	.dbgc_supported = true,						\
-+	.min_umac_error_event_table = 0x400000,				\
-+	.d3_debug_data_base_addr = 0x401000,				\
-+	.d3_debug_data_length = 60 * 1024,				\
-+	.mon_smem_regs = {						\
-+		.write_ptr = {						\
-+			.addr = LDBG_M2S_BUF_WPTR,			\
-+			.mask = LDBG_M2S_BUF_WPTR_VAL_MSK,		\
-+	},								\
-+		.cycle_cnt = {						\
-+			.addr = LDBG_M2S_BUF_WRAP_CNT,			\
-+			.mask = LDBG_M2S_BUF_WRAP_CNT_VAL_MSK,		\
-+		},							\
-+	}
-+
- #define IWL_DEVICE_BZ							\
--	IWL_DEVICE_22000_COMMON,					\
-+	IWL_DEVICE_BZ_COMMON,						\
- 	.trans.umac_prph_offset = 0x300000,				\
- 	.trans.device_family = IWL_DEVICE_FAMILY_BZ,			\
- 	.trans.base_params = &iwl_ax210_base_params,			\
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/9000.c b/drivers/net/wireless/intel/iwlwifi/cfg/9000.c
-index 871533beff30..7a7ca06d46c1 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/9000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/9000.c
-@@ -89,7 +89,7 @@ static const struct iwl_tt_params iwl9000_tt_params = {
- 	.apmg_not_supported = true,					\
- 	.num_rbds = 512,						\
- 	.vht_mu_mimo_supported = true,					\
--	.mac_addr_from_csr = true,					\
-+	.mac_addr_from_csr = 0x380,					\
- 	.nvm_type = IWL_NVM_EXT,					\
- 	.dbgc_supported = true,						\
- 	.min_umac_error_event_table = 0x800000,				\
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 82e49ead3a44..7eb534df5331 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -322,7 +322,7 @@ struct iwl_fw_mon_regs {
-  * @host_interrupt_operation_mode: device needs host interrupt operation
-  *	mode set
-  * @nvm_hw_section_num: the ID of the HW NVM section
-- * @mac_addr_from_csr: read HW address from CSR registers
-+ * @mac_addr_from_csr: read HW address from CSR registers at this offset
-  * @features: hw features, any combination of feature_passlist
-  * @pwr_tx_backoffs: translation table between power limits and backoffs
-  * @max_tx_agg_size: max TX aggregation size of the ADDBA request/response
-@@ -344,6 +344,8 @@ struct iwl_fw_mon_regs {
-  *	supports 256 BA aggregation
-  * @num_rbds: number of receive buffer descriptors to use
-  *	(only used for multi-queue capable devices)
-+ * @mac_addr_csr_base: CSR base register for MAC address access, if not set
-+ *	assume 0x380
-  *
-  * We enable the driver to be backward compatible wrt. hardware features.
-  * API differences in uCode shouldn't be handled here but through TLVs
-@@ -379,7 +381,7 @@ struct iwl_cfg {
- 	    internal_wimax_coex:1,
- 	    host_interrupt_operation_mode:1,
- 	    high_temp:1,
--	    mac_addr_from_csr:1,
-+	    mac_addr_from_csr:10,
- 	    lp_xtal_workaround:1,
- 	    disable_dummy_notification:1,
- 	    apmg_not_supported:1,
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
-index 47e5a17c0f48..004a1b02bea8 100644
+index 004a1b02bea8..704ff2ada122 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
-@@ -604,10 +604,10 @@ enum msix_hw_int_causes {
-  *                     HW address related registers                          *
-  *****************************************************************************/
+@@ -266,6 +266,14 @@
+ #define CSR_GP_CNTRL_REG_FLAG_RFKILL_WAKE_L1A_EN     (0x04000000)
+ #define CSR_GP_CNTRL_REG_FLAG_HW_RF_KILL_SW          (0x08000000)
  
--#define CSR_ADDR_BASE			(0x380)
--#define CSR_MAC_ADDR0_OTP		(CSR_ADDR_BASE)
--#define CSR_MAC_ADDR1_OTP		(CSR_ADDR_BASE + 4)
--#define CSR_MAC_ADDR0_STRAP		(CSR_ADDR_BASE + 8)
--#define CSR_MAC_ADDR1_STRAP		(CSR_ADDR_BASE + 0xC)
-+#define CSR_ADDR_BASE(trans)			((trans)->cfg->mac_addr_from_csr)
-+#define CSR_MAC_ADDR0_OTP(trans)		(CSR_ADDR_BASE(trans) + 0x00)
-+#define CSR_MAC_ADDR1_OTP(trans)		(CSR_ADDR_BASE(trans) + 0x04)
-+#define CSR_MAC_ADDR0_STRAP(trans)		(CSR_ADDR_BASE(trans) + 0x08)
-+#define CSR_MAC_ADDR1_STRAP(trans)		(CSR_ADDR_BASE(trans) + 0x0c)
++/* From Bz we use these instead during init/reset flow */
++#define CSR_GP_CNTRL_REG_FLAG_MAC_INIT			BIT(6)
++#define CSR_GP_CNTRL_REG_FLAG_ROM_START			BIT(7)
++#define CSR_GP_CNTRL_REG_FLAG_MAC_STATUS		BIT(20)
++#define CSR_GP_CNTRL_REG_FLAG_BZ_MAC_ACCESS_REQ		BIT(21)
++#define CSR_GP_CNTRL_REG_FLAG_BUS_MASTER_DISABLE_STATUS	BIT(28)
++#define CSR_GP_CNTRL_REG_FLAG_BUS_MASTER_DISABLE_REQ	BIT(29)
++#define CSR_GP_CNTRL_REG_FLAG_SW_RESET			BIT(31)
  
- #endif /* !__iwl_csr_h__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index a6de34358a3f..2fbb7cdf00a4 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -964,8 +964,10 @@ static void iwl_flip_hw_address(__le32 mac_addr0, __le32 mac_addr1, u8 *dest)
- static void iwl_set_hw_address_from_csr(struct iwl_trans *trans,
- 					struct iwl_nvm_data *data)
+ /* HW REV */
+ #define CSR_HW_REV_DASH(_val)          (((_val) & 0x0000003) >> 0)
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-io.c b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
+index 2a0be1fafdf9..dba54b3297d1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-io.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
+@@ -398,6 +398,7 @@ int iwl_dump_fh(struct iwl_trans *trans, char **buf)
+ int iwl_finish_nic_init(struct iwl_trans *trans,
+ 			const struct iwl_cfg_trans_params *cfg_trans)
  {
--	__le32 mac_addr0 = cpu_to_le32(iwl_read32(trans, CSR_MAC_ADDR0_STRAP));
--	__le32 mac_addr1 = cpu_to_le32(iwl_read32(trans, CSR_MAC_ADDR1_STRAP));
-+	__le32 mac_addr0 = cpu_to_le32(iwl_read32(trans,
-+						  CSR_MAC_ADDR0_STRAP(trans)));
-+	__le32 mac_addr1 = cpu_to_le32(iwl_read32(trans,
-+						  CSR_MAC_ADDR1_STRAP(trans)));
++	u32 poll_ready;
+ 	int err;
  
- 	iwl_flip_hw_address(mac_addr0, mac_addr1, data->hw_addr);
- 	/*
-@@ -975,8 +977,8 @@ static void iwl_set_hw_address_from_csr(struct iwl_trans *trans,
- 	if (is_valid_ether_addr(data->hw_addr))
- 		return;
+ 	if (cfg_trans->bisr_workaround) {
+@@ -409,7 +410,16 @@ int iwl_finish_nic_init(struct iwl_trans *trans,
+ 	 * Set "initialization complete" bit to move adapter from
+ 	 * D0U* --> D0A* (powered-up active) state.
+ 	 */
+-	iwl_set_bit(trans, CSR_GP_CNTRL, CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
++	if (cfg_trans->device_family >= IWL_DEVICE_FAMILY_BZ) {
++		iwl_set_bit(trans, CSR_GP_CNTRL,
++			    CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY |
++			    CSR_GP_CNTRL_REG_FLAG_MAC_INIT);
++		poll_ready = CSR_GP_CNTRL_REG_FLAG_MAC_STATUS;
++	} else {
++		iwl_set_bit(trans, CSR_GP_CNTRL,
++			    CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
++		poll_ready = CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY;
++	}
  
--	mac_addr0 = cpu_to_le32(iwl_read32(trans, CSR_MAC_ADDR0_OTP));
--	mac_addr1 = cpu_to_le32(iwl_read32(trans, CSR_MAC_ADDR1_OTP));
-+	mac_addr0 = cpu_to_le32(iwl_read32(trans, CSR_MAC_ADDR0_OTP(trans)));
-+	mac_addr1 = cpu_to_le32(iwl_read32(trans, CSR_MAC_ADDR1_OTP(trans)));
+ 	if (cfg_trans->device_family == IWL_DEVICE_FAMILY_8000)
+ 		udelay(2);
+@@ -419,10 +429,7 @@ int iwl_finish_nic_init(struct iwl_trans *trans,
+ 	 * device-internal resources is supported, e.g. iwl_write_prph()
+ 	 * and accesses to uCode SRAM.
+ 	 */
+-	err = iwl_poll_bit(trans, CSR_GP_CNTRL,
+-			   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY,
+-			   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY,
+-			   25000);
++	err = iwl_poll_bit(trans, CSR_GP_CNTRL, poll_ready, poll_ready, 25000);
+ 	if (err < 0)
+ 		IWL_DEBUG_INFO(trans, "Failed to wake NIC\n");
  
- 	iwl_flip_hw_address(mac_addr0, mac_addr1, data->hw_addr);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+index a266a35ff928..fa416b42bd9d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+@@ -87,7 +87,12 @@ static void iwl_pcie_gen2_apm_stop(struct iwl_trans *trans, bool op_mode_leave)
+ 	 * Clear "initialization complete" bit to move adapter from
+ 	 * D0A* (powered-up Active) --> D0U* (Uninitialized) state.
+ 	 */
+-	iwl_clear_bit(trans, CSR_GP_CNTRL, CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
++	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ)
++		iwl_clear_bit(trans, CSR_GP_CNTRL,
++			      CSR_GP_CNTRL_REG_FLAG_MAC_INIT);
++	else
++		iwl_clear_bit(trans, CSR_GP_CNTRL,
++			      CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
  }
+ 
+ static void iwl_trans_pcie_fw_reset_handshake(struct iwl_trans *trans)
+@@ -159,9 +164,17 @@ void _iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans)
+ 		iwl_pcie_ctxt_info_free(trans);
+ 
+ 	/* Make sure (redundant) we've released our request to stay awake */
+-	iwl_clear_bit(trans, CSR_GP_CNTRL,
+-		      CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
++	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ)
++		iwl_clear_bit(trans, CSR_GP_CNTRL,
++			      CSR_GP_CNTRL_REG_FLAG_BZ_MAC_ACCESS_REQ);
++	else
++		iwl_clear_bit(trans, CSR_GP_CNTRL,
++			      CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
+ 
++	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
++		iwl_set_bit(trans, CSR_GP_CNTRL,
++			    CSR_GP_CNTRL_REG_FLAG_SW_RESET);
++	}
+ 	/* Stop the device, and put it in low power state */
+ 	iwl_pcie_gen2_apm_stop(trans, false);
+ 
+@@ -441,7 +454,10 @@ int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
+ 
+ 	iwl_pcie_set_ltr(trans);
+ 
+-	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
++	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ)
++		iwl_set_bit(trans, CSR_GP_CNTRL,
++			    CSR_GP_CNTRL_REG_FLAG_ROM_START);
++	else if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
+ 		iwl_write_umac_prph(trans, UREG_CPU_INIT_RUN, 1);
+ 	else
+ 		iwl_write_prph(trans, UREG_CPU_INIT_RUN, 1);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 65cc25cbb9ec..86a949440486 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -449,11 +449,23 @@ void iwl_pcie_apm_stop_master(struct iwl_trans *trans)
+ 	int ret;
+ 
+ 	/* stop device's busmaster DMA activity */
+-	iwl_set_bit(trans, CSR_RESET, CSR_RESET_REG_FLAG_STOP_MASTER);
+ 
+-	ret = iwl_poll_bit(trans, CSR_RESET,
+-			   CSR_RESET_REG_FLAG_MASTER_DISABLED,
+-			   CSR_RESET_REG_FLAG_MASTER_DISABLED, 100);
++	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
++		iwl_set_bit(trans, CSR_GP_CNTRL,
++			    CSR_GP_CNTRL_REG_FLAG_BUS_MASTER_DISABLE_REQ);
++
++		ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
++				   CSR_GP_CNTRL_REG_FLAG_BUS_MASTER_DISABLE_STATUS,
++				   CSR_GP_CNTRL_REG_FLAG_BUS_MASTER_DISABLE_STATUS,
++				   100);
++	} else {
++		iwl_set_bit(trans, CSR_RESET, CSR_RESET_REG_FLAG_STOP_MASTER);
++
++		ret = iwl_poll_bit(trans, CSR_RESET,
++				   CSR_RESET_REG_FLAG_MASTER_DISABLED,
++				   CSR_RESET_REG_FLAG_MASTER_DISABLED, 100);
++	}
++
+ 	if (ret < 0)
+ 		IWL_WARN(trans, "Master Disable Timed Out, 100 usec\n");
+ 
+@@ -1995,15 +2007,24 @@ bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
+ {
+ 	int ret;
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
++	u32 write = CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ;
++	u32 mask = CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY |
++		   CSR_GP_CNTRL_REG_FLAG_GOING_TO_SLEEP;
++	u32 poll = CSR_GP_CNTRL_REG_VAL_MAC_ACCESS_EN;
+ 
+ 	spin_lock(&trans_pcie->reg_lock);
+ 
+ 	if (trans_pcie->cmd_hold_nic_awake)
+ 		goto out;
+ 
++	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
++		write = CSR_GP_CNTRL_REG_FLAG_BZ_MAC_ACCESS_REQ;
++		mask = CSR_GP_CNTRL_REG_FLAG_MAC_STATUS;
++		poll = CSR_GP_CNTRL_REG_FLAG_MAC_STATUS;
++	}
++
+ 	/* this bit wakes up the NIC */
+-	__iwl_trans_pcie_set_bit(trans, CSR_GP_CNTRL,
+-				 CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
++	__iwl_trans_pcie_set_bit(trans, CSR_GP_CNTRL, write);
+ 	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_8000)
+ 		udelay(2);
+ 
+@@ -2027,10 +2048,7 @@ bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
+ 	 * 5000 series and later (including 1000 series) have non-volatile SRAM,
+ 	 * and do not save/restore SRAM when power cycling.
+ 	 */
+-	ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
+-			   CSR_GP_CNTRL_REG_VAL_MAC_ACCESS_EN,
+-			   (CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY |
+-			    CSR_GP_CNTRL_REG_FLAG_GOING_TO_SLEEP), 15000);
++	ret = iwl_poll_bit(trans, CSR_GP_CNTRL, poll, mask, 15000);
+ 	if (unlikely(ret < 0)) {
+ 		u32 cntrl = iwl_read32(trans, CSR_GP_CNTRL);
+ 
 -- 
 2.32.0
 
