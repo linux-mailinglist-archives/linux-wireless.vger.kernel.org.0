@@ -2,47 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27E213DF0AF
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 16:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 972773DF115
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 17:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236321AbhHCOuE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Aug 2021 10:50:04 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:55850
+        id S236880AbhHCPJf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Aug 2021 11:09:35 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:57128
         "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235368AbhHCOuC (ORCPT
+        by vger.kernel.org with ESMTP id S236685AbhHCPJT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Aug 2021 10:50:02 -0400
+        Tue, 3 Aug 2021 11:09:19 -0400
 Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 7AEE73F0FF;
-        Tue,  3 Aug 2021 14:49:50 +0000 (UTC)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 87E4E3F070;
+        Tue,  3 Aug 2021 15:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1628002190;
-        bh=OSXLs7UOCDaUH/Z2FsCqFS59Zra8YYCA6HkdQfm7sZs=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version:Content-Type;
-        b=Hg+RoLzmfw1V6/+4j87RoskXSf8QvgpdifyL0u9L6WCu0Dfd1NG/wkWZcAdNsIoZM
-         /be4sQu/GOR8IZgQn+aZb+Ni6oDufNdQ0pEnm9lSLk1Noje3T6yKt1yZi0jSbS1GNs
-         Lr0iwTqtN/uPqcdlxTEd3ZZQ6mb59ctSeEqW4DCw0NtLr0QP93gCC2Px8QZquLs5t3
-         u7Cc45+7pyX+rdTKNGtaWG84QP1Di6JwoKWTDNfZ7CNAL9i3CGMPzsGPDI+Z/3BwRZ
-         WUAsCd//Q67GcvTbZY9VzC6/nUPUukrmECBHp7wYVW8Lb2HRbnCsTg5Q5PNGMWzzup
-         5K+PqEdEtF2mQ==
+        s=20210705; t=1628003344;
+        bh=yujcAW928JS1+WAa5ppXQvA0AiE4xUVDj/s66hatc0A=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=mREzlHPwx8jgCXwCQp5AweexjLomZrqnpv852tP8GEMfnDNQ9EJZuB1sab7bJNrGk
+         D7QfrRHgwLxawch47XtG9QsCVQPOGIvpgWHr9SDIg4f0MgRHnL21bIUQVP2+lKueKF
+         rQOEhkLmppi2Cu5ldSdAZmpjBIL8PyThXJuBTn8v47zgboCQ+mtaKrMNVaCgRcR76q
+         +rGSxnkpHTe/HkOjautuv4a3h4TvjTJX2hajKOnSSLz9oXKWYardQxD98JjMDR3Igu
+         jr//IdPSl+37xIHBh7CDoSUnpfddVTA3gkeTcmcXkrDffArQJxK9mAkPKq6n45huO4
+         F+/KQhEPocRXw==
 From:   Colin King <colin.king@canonical.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, Joe Perches <joe@perches.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] rtlwifi: rtl8192de: fix array size limit in for-loop
-Date:   Tue,  3 Aug 2021 15:49:49 +0100
-Message-Id: <20210803144949.79433-3-colin.king@canonical.com>
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] brcmfmac: firmware: Fix uninitialized variable ret
+Date:   Tue,  3 Aug 2021 16:09:04 +0100
+Message-Id: <20210803150904.80119-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210803144949.79433-1-colin.king@canonical.com>
-References: <20210803144949.79433-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,31 +56,30 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the size of the entire array is being used in a for-loop
-for the element count. While this works since the elements are u8
-sized, it is preferred to use ARRAY_SIZE to get the element count
-of the array.
+Currently the variable ret is uninitialized and is only set if
+the pointer alt_path is non-null. Fix this by ininitializing ret
+to zero.
 
-Kudos to Joe Perches for spotting this issue.
-
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 2 +-
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index 8ae69d914312..e11728622a9e 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -1366,7 +1366,7 @@ u8 rtl92d_get_rightchnlplace_for_iqk(u8 chnl)
- 	u8 place = chnl;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+index adfdfc654b10..4f387e868120 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+@@ -680,7 +680,7 @@ int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
+ 	struct brcmf_fw_item *first = &req->items[0];
+ 	struct brcmf_fw *fwctx;
+ 	char *alt_path;
+-	int ret;
++	int ret = 0;
  
- 	if (chnl > 14) {
--		for (place = 14; place < sizeof(channel_all); place++) {
-+		for (place = 14; place < ARRAY_SIZE(channel_all); place++) {
- 			if (channel_all[place] == chnl)
- 				return place - 13;
- 		}
+ 	brcmf_dbg(TRACE, "enter: dev=%s\n", dev_name(dev));
+ 	if (!fw_cb)
 -- 
 2.31.1
 
