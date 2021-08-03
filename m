@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9D423DEC96
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 13:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1CAB3DECF5
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 13:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235954AbhHCLoo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Aug 2021 07:44:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35028 "EHLO mail.kernel.org"
+        id S236062AbhHCLoq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Aug 2021 07:44:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35192 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235857AbhHCLoJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Aug 2021 07:44:09 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E46D560EE9;
-        Tue,  3 Aug 2021 11:43:57 +0000 (UTC)
+        id S236143AbhHCLoZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 3 Aug 2021 07:44:25 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 56C1760EFD;
+        Tue,  3 Aug 2021 11:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627991038;
+        s=k20201202; t=1627991054;
         bh=lvcEqVgoMJ79cmjL70D1HIbTb+IuIzUON0roCXgucJI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u/o++lsIC887PoQ4+EgWp380Qc2ZPFfGqmS8f/xhTORN6ruk/h2QV2jE4NbDxyenj
-         DyO1co9y6S3kWCnFm364n0BqyQ9970WAVIrOSyBHLH/XDaw3U3bZ5Yz+ZxAFtVPO3i
-         M+0LAW861Q7rfOW1HzxzMeEPk2FWxDh06dMacKVUuauKOCPv7ve9FcHAjnS0oZZ/HX
-         QwkXTVG7jWk/qS+kqjlqOgnxwfX6flp65Mkzr25UWuA+LUFtcDnMcVyXfz9KMyCqnI
-         Gsj33yN06xjT34PvRyc8bxQfTRQzi4O9JkfFPGx/r+5SK7LR5EMdHFNUVXL7zpub3H
-         UpUHMq39lnIcA==
+        b=Sw9Gm1OaYfiHDPBviM3icFliHxjj0wFd0P7vpEcpl4GKAo5bvLL/1KgEDpSZVg6ql
+         oPCF042unQgkzYEM+602Nk9VuSEFZkNJNEbkypUTOlNn3ILcdYC2ngZgdO55LyVgTu
+         zQSb10iYrc4Vw0/bwYs+rMPuJjyTtvbGQyb0wa3KdKUsUa2YHuc2pRyM1AFJrpJFdq
+         kMrDKU6ZEWPdPBi9DtkLsju0RIJ3GGm/xn7GbMAERvnsNyJlAyXDa2+rqYgbHJggm8
+         pj2fsFao4J2Z/+Lsi5KCWPJ6llBzOMz9FsRqoddPFPl0G6SssJiA3Sx3DQOMdNcYAo
+         GAz7r8fDNJkLg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Matteo Croce <mcroce@microsoft.com>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 04/11] virt_wifi: fix error on connect
-Date:   Tue,  3 Aug 2021 07:43:45 -0400
-Message-Id: <20210803114352.2252544-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 4/9] virt_wifi: fix error on connect
+Date:   Tue,  3 Aug 2021 07:44:03 -0400
+Message-Id: <20210803114408.2252713-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210803114352.2252544-1-sashal@kernel.org>
-References: <20210803114352.2252544-1-sashal@kernel.org>
+In-Reply-To: <20210803114408.2252713-1-sashal@kernel.org>
+References: <20210803114408.2252713-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
