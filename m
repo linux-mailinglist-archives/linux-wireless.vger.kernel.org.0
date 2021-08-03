@@ -2,153 +2,232 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DD943DE8FD
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 10:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5BDA3DEA41
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 12:03:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234725AbhHCIye (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Aug 2021 04:54:34 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:25439 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234907AbhHCIyd (ORCPT
+        id S235293AbhHCKEB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Aug 2021 06:04:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48882 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235241AbhHCKDx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Aug 2021 04:54:33 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1627980862; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=abStokMOHD5/rkoDLaed2ke3OYy1nFP6XjtCBnzj1nU=;
- b=pySgNT8fBVuKy3RJlxz1E08DdvNjn9EP2V7Lm6HC1L01VUZn7/WZ++41fiuHimWbl0I1czHm
- J1qZI3/mYtEBH1nSVDq1Z4iwIn1CAGENKV3sLsOwWhD7Br0uJ0gLEj1SDTXH5jZxbM/a//Fr
- /x1F9kjgRiZLfMKTYD9lWUvqwcw=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 61090424e81205dd0aad75a4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 03 Aug 2021 08:53:56
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2AAF4C433F1; Tue,  3 Aug 2021 08:53:56 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6959CC433D3;
-        Tue,  3 Aug 2021 08:53:55 +0000 (UTC)
+        Tue, 3 Aug 2021 06:03:53 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E934DC061764
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Aug 2021 03:03:42 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mArFM-0002yH-C3; Tue, 03 Aug 2021 12:02:04 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mArFB-0006F1-AC; Tue, 03 Aug 2021 12:01:53 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mArFB-0002le-6C; Tue, 03 Aug 2021 12:01:53 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     kernel@pengutronix.de,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-pci@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell Currey <ruscur@russell.cc>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Michael Buesch <m@bues.ch>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Fiona Trahe <fiona.trahe@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Wojciech Ziemba <wojciech.ziemba@intel.com>,
+        Alexander Duyck <alexanderduyck@fb.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-crypto@vger.kernel.org, qat-linux@intel.com,
+        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
+        netdev@vger.kernel.org, oss-drivers@corigine.com,
+        xen-devel@lists.xenproject.org, linux-usb@vger.kernel.org
+Subject: [PATCH v2 0/6] PCI: Drop duplicated tracking of a pci_dev's bound driver
+Date:   Tue,  3 Aug 2021 12:01:44 +0200
+Message-Id: <20210803100150.1543597-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 03 Aug 2021 16:53:55 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 9/9] mac80211: save transmit power envelope element and
- power constraint
-In-Reply-To: <1126f8d996e895ae048092b3f8aad19b@codeaurora.org>
-References: <20210517201932.8860-1-wgong@codeaurora.org>
- <20210517201932.8860-10-wgong@codeaurora.org>
- (sfid-20210517_222034_029448_A9A89D57)
- <d9491db4ece67ac78eb39a1078b91a106770fbb0.camel@sipsolutions.net>
- <1126f8d996e895ae048092b3f8aad19b@codeaurora.org>
-Message-ID: <270e3bd0143564b2e2ec6c359897a507@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi johannes,
+Hello,
 
-Could you see my answer below?
-please feel free to point out the mistakes :)
+changes since v1 (https://lore.kernel.org/linux-pci/20210729203740.1377045-1-u.kleine-koenig@pengutronix.de):
 
-On 2021-07-30 18:47, Wen Gong wrote:
-> On 2021-07-23 17:38, Johannes Berg wrote:
->> On Mon, 2021-05-17 at 16:19 -0400, Wen Gong wrote:
->>> 
->>> +		if (is_6ghz) {
->>> +			struct ieee802_11_elems elems;
->>> +			struct ieee80211_bss_conf *bss_conf;
->>> +			u8 i, n;
->>> +
->>> +			ieee802_11_parse_elems(ies->data, ies->len, false, &elems,
->>> +					       NULL, NULL);
->>> +			bss_conf = &sdata->vif.bss_conf;
->>> +			bss_conf->pwr_reduction = 0;
->>> +			if (elems.pwr_constr_elem)
->>> +				bss_conf->pwr_reduction = *elems.pwr_constr_elem;
->>> +
->>> +			memset(bss_conf->tx_pwr_env, 0, sizeof(bss_conf->tx_pwr_env));
->>> +			bss_conf->tx_pwr_env_num = elems.tx_pwr_env_num;
->>> +			n = min_t(u8, elems.tx_pwr_env_num,
->>> +				  ARRAY_SIZE(elems.tx_pwr_env));
->> 
->> If anything, that min_t would make sense only if you were actually 
->> using
->> ARRAY_SIZE(bss_conf->tx_pwr_env), but like this it's quite pointless,
->> just checking again if the element parsing was internally consistent?
->> 
->> I'd probably remove it and throw in a
->> 
->> 	BUILD_BUG_ON(ARRAY_SIZE(bss_conf->tx_pwr_env) !=
->>                      ARRAY_SIZE(elems.tx_pwr_env));
->> 
->> instead.
->> 
->>> +			for (i = 0; i < n; i++)
->>> +				memcpy(&bss_conf->tx_pwr_env[i], elems.tx_pwr_env[i],
->>> +				       elems.tx_pwr_env_len[i]);
->> 
->> You also never validated that the element wasn't too long!
->> 
-> will change it.
->> 
->> If you connect to 6 Ghz with this, and then again to another AP that
->> doesn't, you'll have it stuck at the old values. You need to reset at
->> some point (during disconnect).
->> 
-> will change to reset it in ieee80211_prep_channel outside is_6ghz{}.
-> Then it will be reset for each connection.
->> And then two more questions:
->> 
->> 1) Could this information change? Should we track it in beacons?
->> 
-> 
-> The information is from AP side, it should be not changed untill the AP 
-> restart.
-> If someone want to change configure of AP, the AP should restart and
-> then take effect by my understand.
-> Is it have some case for this information change?
-> 
-> 
->> 2) Should we at least check it again from the protected beacon or such
->> after association, so we don't blindly trust the probe response or
->> beacon (received during scan, not validated) at least when BIGTK is in
->> use?
-> 
-> May we add support for BIGTK in future with another patch?
-> The info(pwr_reduction and tx_pwr_env) is used by lower driver such as 
-> ath11k.
-> If the info changed after association, then how to notify lower driver?
-> Do it like below in ieee80211_rx_mgmt_beacon()?
-> And use BSS_CHANGED_TXPOWER or a new enum in ieee80211_bss_change?
-> 
-> ieee80211_rx_mgmt_beacon{
-> 	changed |= ieee80211_handle_pwr_constr(sdata, chan, mgmt,
-> 					       elems.country_elem,
-> 					       elems.country_elem_len,
-> 					       elems.pwr_constr_elem,
-> 					       elems.cisco_dtpc_elem);
-> 
-> 	ieee80211_bss_info_change_notify(sdata, changed);
-> }
-> 
->> 
->> johannes
+- New patch to simplify drivers/pci/xen-pcifront.c, spotted and
+  suggested by Boris Ostrovsky
+- Fix a possible NULL pointer dereference I introduced in xen-pcifront.c
+- A few whitespace improvements
+- Add a commit log to patch #6 (formerly #5)
+
+I also expanded the audience for patches #4 and #6 to allow affected
+people to actually see the changes to their drivers.
+
+Interdiff can be found below.
+
+The idea is still the same: After a few cleanups (#1 - #3) a new macro
+is introduced abstracting access to struct pci_dev->driver. All users
+are then converted to use this and in the last patch the macro is
+changed to make use of struct pci_dev::dev->driver to get rid of the
+duplicated tracking.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (6):
+  PCI: Simplify pci_device_remove()
+  PCI: Drop useless check from pci_device_probe()
+  xen/pci: Drop some checks that are always true
+  PCI: Provide wrapper to access a pci_dev's bound driver
+  PCI: Adapt all code locations to not use struct pci_dev::driver
+    directly
+  PCI: Drop duplicated tracking of a pci_dev's bound driver
+
+ arch/powerpc/include/asm/ppc-pci.h            |  3 +-
+ arch/powerpc/kernel/eeh_driver.c              | 12 ++--
+ arch/x86/events/intel/uncore.c                |  2 +-
+ arch/x86/kernel/probe_roms.c                  |  2 +-
+ drivers/bcma/host_pci.c                       |  6 +-
+ drivers/crypto/hisilicon/qm.c                 |  2 +-
+ drivers/crypto/qat/qat_common/adf_aer.c       |  2 +-
+ drivers/message/fusion/mptbase.c              |  4 +-
+ drivers/misc/cxl/guest.c                      | 21 +++----
+ drivers/misc/cxl/pci.c                        | 25 ++++----
+ .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  2 +-
+ .../ethernet/marvell/prestera/prestera_pci.c  |  2 +-
+ drivers/net/ethernet/mellanox/mlxsw/pci.c     |  2 +-
+ .../ethernet/netronome/nfp/nfp_net_ethtool.c  |  2 +-
+ drivers/pci/iov.c                             | 23 ++++---
+ drivers/pci/pci-driver.c                      | 48 +++++++--------
+ drivers/pci/pci.c                             | 10 ++--
+ drivers/pci/pcie/err.c                        | 35 ++++++-----
+ drivers/pci/xen-pcifront.c                    | 60 ++++++++-----------
+ drivers/ssb/pcihost_wrapper.c                 |  7 ++-
+ drivers/usb/host/xhci-pci.c                   |  3 +-
+ include/linux/pci.h                           |  2 +-
+ 22 files changed, 145 insertions(+), 130 deletions(-)
+
+Range-diff against v1:
+1:  7d97605df363 = 1:  8ba6e9faa18c PCI: Simplify pci_device_remove()
+2:  aec84c688d0f = 2:  d8a7dc52091f PCI: Drop useless check from pci_device_probe()
+-:  ------------ > 3:  f4b78aa41776 xen/pci: Drop some checks that are always true
+3:  e6f933f532c9 = 4:  50f3daa64170 PCI: Provide wrapper to access a pci_dev's bound driver
+4:  d678a2924143 ! 5:  21cbd3f180a1 PCI: Adapt all code locations to not use struct pci_dev::driver directly
+    @@ drivers/message/fusion/mptbase.c: mpt_device_driver_register(struct mpt_pci_driv
+     -		id = ioc->pcidev->driver ?
+     -		    ioc->pcidev->driver->id_table : NULL;
+     +		struct pci_driver *pdrv = pci_driver_of_dev(ioc->pcidev);
+    -+		id = pdrv ?  pdrv->id_table : NULL;
+    ++		id = pdrv ? pdrv->id_table : NULL;
+      		if (dd_cbfunc->probe)
+      			dd_cbfunc->probe(ioc->pcidev, id);
+      	 }
+    @@ drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c: static void hns3_get_drvinfo
+      	}
+      
+     -	strncpy(drvinfo->driver, h->pdev->driver->name,
+    --		sizeof(drvinfo->driver));
+    -+	strncpy(drvinfo->driver, pci_driver_of_dev(h->pdev)->name, sizeof(drvinfo->driver));
+    ++	strncpy(drvinfo->driver, pci_driver_of_dev(h->pdev)->name,
+    + 		sizeof(drvinfo->driver));
+      	drvinfo->driver[sizeof(drvinfo->driver) - 1] = '\0';
+      
+    - 	strncpy(drvinfo->bus_info, pci_name(h->pdev),
+     
+      ## drivers/net/ethernet/marvell/prestera/prestera_pci.c ##
+     @@ drivers/net/ethernet/marvell/prestera/prestera_pci.c: static int prestera_fw_load(struct prestera_fw *fw)
+    @@ drivers/pci/xen-pcifront.c: static pci_ers_result_t pcifront_common_process(int
+      
+      	pcidev = pci_get_domain_bus_and_slot(domain, bus, devfn);
+     -	if (!pcidev || !pcidev->driver) {
+    -+	pdrv = pci_driver_of_dev(pcidev);
+    -+	if (!pcidev || !pdrv) {
+    ++	if (!pcidev || !(pdrv = pci_driver_of_dev(pcidev))) {
+      		dev_err(&pdev->xdev->dev, "device or AER driver is NULL\n");
+      		pci_dev_put(pcidev);
+      		return result;
+      	}
+     -	pdrv = pcidev->driver;
+      
+    - 	if (pdrv) {
+    - 		if (pdrv->err_handler && pdrv->err_handler->error_detected) {
+    + 	if (pdrv->err_handler && pdrv->err_handler->error_detected) {
+    + 		pci_dbg(pcidev, "trying to call AER service\n");
+     
+      ## drivers/ssb/pcihost_wrapper.c ##
+     @@ drivers/ssb/pcihost_wrapper.c: static int ssb_pcihost_probe(struct pci_dev *dev,
+    @@ drivers/ssb/pcihost_wrapper.c: static int ssb_pcihost_probe(struct pci_dev *dev,
+      	name = dev_name(&dev->dev);
+     -	if (dev->driver && dev->driver->name)
+     -		name = dev->driver->name;
+    -+	
+    ++
+     +	pdrv = pci_driver_of_dev(dev);
+     +	if (pdrv && pdrv->name)
+     +		name = pdrv->name;
+5:  8c70ffd24380 ! 6:  02e6da6e5919 PCI: Drop duplicated tracking of a pci_dev's bound driver
+    @@ Metadata
+      ## Commit message ##
+         PCI: Drop duplicated tracking of a pci_dev's bound driver
+     
+    +    Currently it's tracked twice which driver is bound to a given pci
+    +    device. Now that all users of the pci specific one (struct
+    +    pci_dev::driver) are updated to use an access macro
+    +    (pci_driver_of_dev()), change the macro to use the information from the
+    +    driver core and remove the driver member from struct pci_dev.
+    +
+         Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+     
+      ## drivers/pci/pci-driver.c ##
+
+base-commit: 2734d6c1b1a089fb593ef6a23d4b70903526fe0c
+-- 
+2.30.2
+
