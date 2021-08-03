@@ -2,89 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5933D3DF52E
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 21:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 748513DF696
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 22:48:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239483AbhHCTOd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Aug 2021 15:14:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45002 "EHLO
+        id S231329AbhHCUsu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Aug 2021 16:48:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239474AbhHCTOd (ORCPT
+        with ESMTP id S229551AbhHCUsq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Aug 2021 15:14:33 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8DDC061757
-        for <linux-wireless@vger.kernel.org>; Tue,  3 Aug 2021 12:14:20 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id a26so274012lfr.11
-        for <linux-wireless@vger.kernel.org>; Tue, 03 Aug 2021 12:14:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=o0KpkzuHgK9GvKRz84YUwSFRZoVYeFdlCPtHyXWJQI4=;
-        b=IhVvc2zO0gVenINJka9gU+HwzPs2chpbN81UxmimQd2DrzkYTxm58GZq29MO5pPrqO
-         /b1z92x2EQLw7KwxaepO60QJxHJfmkD4ODPtUrnthsHL/gv5/gwORNIwMCzIzM2rwLd3
-         +qRbm3O2pt1vJ1vzGeoeZp0BBj/Jr5gZVANa0nWwTlgd59plD4greZN1+qurDjT46QhC
-         NKNFR5yWdCfqPq2mJNpvb5Gj+DC2QnwuGUswMZ5efFinEjjCF7xUnkz/A+PNvqBlEMOz
-         IWE0sQoSSqjUMHW3BCXee39qartNBPLd7H+v6iSMe6sFtM7ZVaCK+PBx1DrGYIdXb98F
-         eFWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=o0KpkzuHgK9GvKRz84YUwSFRZoVYeFdlCPtHyXWJQI4=;
-        b=rlWy2DjrzmntUXjftUWmDYsHL+4uWUwVJJen7Tw2CI+5WEt61tECrcJjIU19ky2D53
-         kRIYpYwV9zymNBXa/rub1Fb2ezLM4ya3OLEyrJUrHq58bz5luBhbyWiaWJqksCZ+JWgE
-         SbGO1FLeUSAmLVuOfETMO0lkWORR5FibWPTd+GTtKCAFHqgh43BHgLIIwMKMuLPJSL4n
-         n//0YfZ8VMbOf3Qk5FFI9IN1jUWedmtV3PByT44pMJ4mUXmj68a1M9rQDPYL/1njX1HE
-         Y6P5fTnTYOBu/cmo8IkqYIJrzQ1QzF1u1xB755PkT4Dvp+LDE51LR1WVmqgn+vd6dLw3
-         ly5w==
-X-Gm-Message-State: AOAM532btsTucNC+aabimttfrXRsFowAopv0Kks7gmCbj01sHuU9KbOk
-        X6/8pLC3cf89mILV2NTfQTFAzOU3VMQ6t7olFdiBCQ==
-X-Google-Smtp-Source: ABdhPJxhNGyqsLT6k8Bxnxe0BQDXXGxD/VmjU/Ju+m5Ftr+9Ql55KKi1LMJz+or4Ekd3G8wphgKajB3wLeYYk6dLDuc=
-X-Received: by 2002:ac2:5d4a:: with SMTP id w10mr17773309lfd.529.1628018058868;
- Tue, 03 Aug 2021 12:14:18 -0700 (PDT)
+        Tue, 3 Aug 2021 16:48:46 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 457A6C061757
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Aug 2021 13:48:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=QWs3BH3XBPnXcej1dOOumZ/7syw392rAMk1Svfrefac=; b=fxkpdFbKaKvDZQ3Rqnx3WzWN0d
+        KEA4Gk0OdzyvC6+JMly70STFMMqA5gaP4/XZER9xwyz+YzwJkqa1PaNxdAnZrX6/qx/EBr3Vszqz1
+        hUdON951dKRKfUeWv+us+jZr7uoL7ihX/y/87gqNXKTb1cUAKwJ9WzYmuT7cVqNdLYlU=;
+Received: from p4ff13206.dip0.t-ipconnect.de ([79.241.50.6] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1mB1Ky-00074B-Ch
+        for linux-wireless@vger.kernel.org; Tue, 03 Aug 2021 22:48:32 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7615: fix skb use-after-free on mac reset
+Date:   Tue,  3 Aug 2021 22:48:30 +0200
+Message-Id: <20210803204830.3862-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-References: <20210803150904.80119-1-colin.king@canonical.com>
-In-Reply-To: <20210803150904.80119-1-colin.king@canonical.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 3 Aug 2021 21:14:07 +0200
-Message-ID: <CACRpkdZ5u-C8uH2pCr1689v_ndyzqevDDksXvtPYv=FfD=x_xg@mail.gmail.com>
-Subject: Re: [PATCH][next] brcmfmac: firmware: Fix uninitialized variable ret
-To:     Colin King <colin.king@canonical.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev <netdev@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Aug 3, 2021 at 5:09 PM Colin King <colin.king@canonical.com> wrote:
+When clearing all existing pending tx slots, mt76_tx_complete_skb needs to
+be used to free the skbs, to ensure that they are cleared from the status
+list as well.
 
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currently the variable ret is uninitialized and is only set if
-> the pointer alt_path is non-null. Fix this by ininitializing ret
-> to zero.
->
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 45 ++++++++++---------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-Nice catch!
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 5a8539d5f030..5455231f5188 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1497,32 +1497,41 @@ static void mt7615_mac_add_txs(struct mt7615_dev *dev, void *data)
+ }
+ 
+ static void
+-mt7615_mac_tx_free_token(struct mt7615_dev *dev, u16 token)
++mt7615_txwi_free(struct mt7615_dev *dev, struct mt76_txwi_cache *txwi)
+ {
+ 	struct mt76_dev *mdev = &dev->mt76;
+-	struct mt76_txwi_cache *txwi;
+ 	__le32 *txwi_data;
+ 	u32 val;
+ 	u8 wcid;
+ 
+-	trace_mac_tx_free(dev, token);
+-	txwi = mt76_token_put(mdev, token);
+-	if (!txwi)
+-		return;
++	mt7615_txp_skb_unmap(mdev, txwi);
++	if (!txwi->skb)
++		goto out;
+ 
+ 	txwi_data = (__le32 *)mt76_get_txwi_ptr(mdev, txwi);
+ 	val = le32_to_cpu(txwi_data[1]);
+ 	wcid = FIELD_GET(MT_TXD1_WLAN_IDX, val);
++	mt76_tx_complete_skb(mdev, wcid, txwi->skb);
+ 
+-	mt7615_txp_skb_unmap(mdev, txwi);
+-	if (txwi->skb) {
+-		mt76_tx_complete_skb(mdev, wcid, txwi->skb);
+-		txwi->skb = NULL;
+-	}
+-
++out:
++	txwi->skb = NULL;
+ 	mt76_put_txwi(mdev, txwi);
+ }
+ 
++static void
++mt7615_mac_tx_free_token(struct mt7615_dev *dev, u16 token)
++{
++	struct mt76_dev *mdev = &dev->mt76;
++	struct mt76_txwi_cache *txwi;
++
++	trace_mac_tx_free(dev, token);
++	txwi = mt76_token_put(mdev, token);
++	if (!txwi)
++		return;
++
++	mt7615_txwi_free(dev, txwi);
++}
++
+ static void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb)
+ {
+ 	struct mt7615_tx_free *free = (struct mt7615_tx_free *)skb->data;
+@@ -2029,16 +2038,8 @@ void mt7615_tx_token_put(struct mt7615_dev *dev)
+ 	int id;
+ 
+ 	spin_lock_bh(&dev->mt76.token_lock);
+-	idr_for_each_entry(&dev->mt76.token, txwi, id) {
+-		mt7615_txp_skb_unmap(&dev->mt76, txwi);
+-		if (txwi->skb) {
+-			struct ieee80211_hw *hw;
+-
+-			hw = mt76_tx_status_get_hw(&dev->mt76, txwi->skb);
+-			ieee80211_free_txskb(hw, txwi->skb);
+-		}
+-		mt76_put_txwi(&dev->mt76, txwi);
+-	}
++	idr_for_each_entry(&dev->mt76.token, txwi, id)
++		mt7615_txwi_free(dev, txwi);
+ 	spin_unlock_bh(&dev->mt76.token_lock);
+ 	idr_destroy(&dev->mt76.token);
+ }
+-- 
+2.30.1
 
-Yours,
-Linus Walleij
