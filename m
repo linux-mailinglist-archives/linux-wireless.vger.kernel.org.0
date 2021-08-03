@@ -2,95 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF5FD3DF474
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 20:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5933D3DF52E
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 21:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238880AbhHCSMt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Aug 2021 14:12:49 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:41352
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238829AbhHCSMr (ORCPT
+        id S239483AbhHCTOd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Aug 2021 15:14:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45002 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239474AbhHCTOd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Aug 2021 14:12:47 -0400
-Received: from [10.172.193.212] (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id F01C73F35B;
-        Tue,  3 Aug 2021 18:12:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1628014354;
-        bh=yQXpzRt+qukZtH49AvXR+lZq2BKkun/fs7KiYXTefVQ=;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type;
-        b=sU9leV7Hl0yx62sOaASnlhuYnbY7ubcsZiPetMuI0Rn5Sg0XRn32mrsOhqFb30bhH
-         YvhvOqdvUaChbu5H0zgpz2hUFrLAQ99NpyE4IJE0adRc4Q379rfGyx3oNhMTBw4sYm
-         iS0ae76svGlqGK1PxpTsoVJw/lSSeB1fM7vS1c4nEtN/gc+1vU1CZG1xYK8Gvm4/J0
-         G6KKzlV719/SkELeCh2C8vUj0+yMOUBHHmf5mC+YVb+AlCuLH6Iu/j9W9UOla1qCVX
-         aI3L/9EllxRTJUaBjgn74udfOIJww/V35uO6tEiDh17Y7LOcrA1cAhaVoNymdGGz9j
-         7nSZHRiw1TE/w==
-Subject: Re: [PATCH 3/3] rtlwifi: rtl8192de: fix array size limit in for-loop
-To:     Joe Perches <joe@perches.com>, Ping-Ke Shih <pkshih@realtek.com>,
+        Tue, 3 Aug 2021 15:14:33 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8DDC061757
+        for <linux-wireless@vger.kernel.org>; Tue,  3 Aug 2021 12:14:20 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id a26so274012lfr.11
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Aug 2021 12:14:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=o0KpkzuHgK9GvKRz84YUwSFRZoVYeFdlCPtHyXWJQI4=;
+        b=IhVvc2zO0gVenINJka9gU+HwzPs2chpbN81UxmimQd2DrzkYTxm58GZq29MO5pPrqO
+         /b1z92x2EQLw7KwxaepO60QJxHJfmkD4ODPtUrnthsHL/gv5/gwORNIwMCzIzM2rwLd3
+         +qRbm3O2pt1vJ1vzGeoeZp0BBj/Jr5gZVANa0nWwTlgd59plD4greZN1+qurDjT46QhC
+         NKNFR5yWdCfqPq2mJNpvb5Gj+DC2QnwuGUswMZ5efFinEjjCF7xUnkz/A+PNvqBlEMOz
+         IWE0sQoSSqjUMHW3BCXee39qartNBPLd7H+v6iSMe6sFtM7ZVaCK+PBx1DrGYIdXb98F
+         eFWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=o0KpkzuHgK9GvKRz84YUwSFRZoVYeFdlCPtHyXWJQI4=;
+        b=rlWy2DjrzmntUXjftUWmDYsHL+4uWUwVJJen7Tw2CI+5WEt61tECrcJjIU19ky2D53
+         kRIYpYwV9zymNBXa/rub1Fb2ezLM4ya3OLEyrJUrHq58bz5luBhbyWiaWJqksCZ+JWgE
+         SbGO1FLeUSAmLVuOfETMO0lkWORR5FibWPTd+GTtKCAFHqgh43BHgLIIwMKMuLPJSL4n
+         n//0YfZ8VMbOf3Qk5FFI9IN1jUWedmtV3PByT44pMJ4mUXmj68a1M9rQDPYL/1njX1HE
+         Y6P5fTnTYOBu/cmo8IkqYIJrzQ1QzF1u1xB755PkT4Dvp+LDE51LR1WVmqgn+vd6dLw3
+         ly5w==
+X-Gm-Message-State: AOAM532btsTucNC+aabimttfrXRsFowAopv0Kks7gmCbj01sHuU9KbOk
+        X6/8pLC3cf89mILV2NTfQTFAzOU3VMQ6t7olFdiBCQ==
+X-Google-Smtp-Source: ABdhPJxhNGyqsLT6k8Bxnxe0BQDXXGxD/VmjU/Ju+m5Ftr+9Ql55KKi1LMJz+or4Ekd3G8wphgKajB3wLeYYk6dLDuc=
+X-Received: by 2002:ac2:5d4a:: with SMTP id w10mr17773309lfd.529.1628018058868;
+ Tue, 03 Aug 2021 12:14:18 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210803150904.80119-1-colin.king@canonical.com>
+In-Reply-To: <20210803150904.80119-1-colin.king@canonical.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 3 Aug 2021 21:14:07 +0200
+Message-ID: <CACRpkdZ5u-C8uH2pCr1689v_ndyzqevDDksXvtPYv=FfD=x_xg@mail.gmail.com>
+Subject: Re: [PATCH][next] brcmfmac: firmware: Fix uninitialized variable ret
+To:     Colin King <colin.king@canonical.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210803144949.79433-1-colin.king@canonical.com>
- <20210803144949.79433-3-colin.king@canonical.com>
- <39b42c868d1aa01bb421733aac32f072dc85e393.camel@perches.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <3ce51250-bf32-97a6-a7e1-f49b27116907@canonical.com>
-Date:   Tue, 3 Aug 2021 19:12:33 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
-MIME-Version: 1.0
-In-Reply-To: <39b42c868d1aa01bb421733aac32f072dc85e393.camel@perches.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev <netdev@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 03/08/2021 19:11, Joe Perches wrote:
-> On Tue, 2021-08-03 at 15:49 +0100, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> Currently the size of the entire array is being used in a for-loop
->> for the element count. While this works since the elements are u8
->> sized, it is preferred to use ARRAY_SIZE to get the element count
->> of the array.
-> []
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-> []
->> @@ -1366,7 +1366,7 @@ u8 rtl92d_get_rightchnlplace_for_iqk(u8 chnl)
->>  	u8 place = chnl;
->>
->>  	if (chnl > 14) {
->> -		for (place = 14; place < sizeof(channel_all); place++) {
->> +		for (place = 14; place < ARRAY_SIZE(channel_all); place++) {
->>  			if (channel_all[place] == chnl)
->>  				return place - 13;
->>  		}
-> 
-> Thanks.
-> 
-> It seems a relatively common copy/paste use in rtlwifi
+On Tue, Aug 3, 2021 at 5:09 PM Colin King <colin.king@canonical.com> wrote:
 
-Urgh. Let's drop patch 3/3 for the moment. I'll send a fix later on, I'm
-kinda tied up for the next 24 hours.
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> Currently the variable ret is uninitialized and is only set if
+> the pointer alt_path is non-null. Fix this by ininitializing ret
+> to zero.
+>
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
+Nice catch!
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-> 
-> $ git grep -P -n 'for\b.*<\s*sizeof\s*\(\s*\w+\w*\)\s*;' drivers/net/wireless/realtek/rtlwifi/
-> drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:893:               for (place = 14; place < sizeof(channel5g); place++) {
-> drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:1368:              for (place = 14; place < sizeof(channel_all); place++) {
-> drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:2430:      for (i = 0; i < sizeof(channel5g); i++)
-> drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c:2781:              for (place = 14; place < sizeof(channel_all); place++) {
-> drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c:2170:              for (place = 14; place < sizeof(channel_all); place++) {
-> drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c:3610:              for (place = 14; place < sizeof(channel_all); place++)
-> 
-> 
-> 
-
+Yours,
+Linus Walleij
