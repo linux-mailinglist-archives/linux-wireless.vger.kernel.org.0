@@ -2,82 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B9213DEF9F
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 16:03:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB28B3DF06F
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Aug 2021 16:37:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236479AbhHCODt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Aug 2021 10:03:49 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:52536
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236412AbhHCODr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Aug 2021 10:03:47 -0400
-Received: from [10.172.193.212] (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 385F23F045;
-        Tue,  3 Aug 2021 14:03:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1627999415;
-        bh=2Eega8M+8xNrGY1tf+6f/bUwq+O7naUIVBjSVZIM+lQ=;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type;
-        b=gANBUft+YMWDKu/Em7/tBio1TyPV4dBdccZapxpWh7EctofgoDOcopVqnZZxPI+38
-         7OWuGpKVw5Bxh5Avv1bN+czI03GjFesN//JRt9fUkXzw5liEfnqzE0Iu8nJPcDeFWU
-         q5JHE+k+OB1hahc1viwkpN9FeTcdHqfM5jQ5KdNBlHDj9K07OgUM0q0OELEP4T/bZy
-         Hz3+SVFJIQw8T5mlOiyQM+Gso+QAer2nKuUvsNON1x4fmLNoPQqjBsDlsBs+2aFzOA
-         GSGMtsvDSRTfbSnRJDo8Xhts+8bEmZGcHBhEZZMykZB6Srh29FKM+Z0rmCiKVCTfzF
-         cGb56iYHeQB6w==
-Subject: Re: [PATCH 1/2] rtlwifi: rtl8192de: Remove redundant variable
- initializations
-To:     Joe Perches <joe@perches.com>, Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
+        id S236619AbhHCOh5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Aug 2021 10:37:57 -0400
+Received: from mga06.intel.com ([134.134.136.31]:34407 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236421AbhHCOh4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 3 Aug 2021 10:37:56 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10065"; a="274759989"
+X-IronPort-AV: E=Sophos;i="5.84,291,1620716400"; 
+   d="scan'208";a="274759989"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2021 07:37:44 -0700
+X-IronPort-AV: E=Sophos;i="5.84,291,1620716400"; 
+   d="scan'208";a="479533435"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2021 07:37:29 -0700
+Received: from andy by smile with local (Exim 4.94.2)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1mAvXk-004lSc-2p; Tue, 03 Aug 2021 17:37:20 +0300
+Date:   Tue, 3 Aug 2021 17:37:20 +0300
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>, kernel@pengutronix.de,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-pci@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell Currey <ruscur@russell.cc>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210731124044.101927-1-colin.king@canonical.com>
- <3f55848b4612d1b17d95a4c36bec1dee2b1814f1.camel@perches.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <35877a55-3dc3-abb1-5aa4-1d7edaa85602@canonical.com>
-Date:   Tue, 3 Aug 2021 15:03:34 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Michael Buesch <m@bues.ch>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Fiona Trahe <fiona.trahe@intel.com>,
+        Wojciech Ziemba <wojciech.ziemba@intel.com>,
+        Alexander Duyck <alexanderduyck@fb.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-crypto@vger.kernel.org, qat-linux@intel.com,
+        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
+        netdev@vger.kernel.org, oss-drivers@corigine.com,
+        xen-devel@lists.xenproject.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH v2 4/6] PCI: Provide wrapper to access a pci_dev's bound
+ driver
+Message-ID: <YQlUoGYP6c/eWgJO@smile.fi.intel.com>
+References: <20210803100150.1543597-1-u.kleine-koenig@pengutronix.de>
+ <20210803100150.1543597-5-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <3f55848b4612d1b17d95a4c36bec1dee2b1814f1.camel@perches.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210803100150.1543597-5-u.kleine-koenig@pengutronix.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 02/08/2021 09:35, Joe Perches wrote:
-> On Sat, 2021-07-31 at 13:40 +0100, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> The variables rtstatus and place are being initialized with a values that
->> are never read, the initializations are redundant and can be removed.
-> 
-> trivia:
-> 
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-> []
->> @@ -1362,7 +1362,7 @@ u8 rtl92d_get_rightchnlplace_for_iqk(u8 chnl)
->>  		132, 134, 136, 138, 140, 149, 151, 153, 155,
->>  		157, 159, 161, 163, 165
->>  	};
->> -	u8 place = chnl;
->> +	u8 place;
->>  
->>
->>  	if (chnl > 14) {
->>  		for (place = 14; place < sizeof(channel_all); place++) {
-> 
-> This line should probably be
-> 
-> 		for (place = 14; place < ARRAY_SIZE(channel_all); place++) {
-> 
+On Tue, Aug 03, 2021 at 12:01:48PM +0200, Uwe Kleine-K�nig wrote:
+> Which driver a device is bound to is available twice: In struct
+> pci_dev::dev->driver and in struct pci_dev::driver. To get rid of the
+> duplication introduce a wrapper to access struct pci_dev's driver
+> member. Once all users are converted the wrapper can be changed to
+> calculate the driver using pci_dev::dev->driver.
 
-Nice catch, will send a V2.
+...
+
+>  #define	to_pci_driver(drv) container_of(drv, struct pci_driver, driver)
+> +#define pci_driver_of_dev(pdev) ((pdev)->driver)
+
+Seems like above is (mis)using TAB instead of space after #define. Not sure if
+it's good to have them different.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
