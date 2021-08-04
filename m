@@ -2,128 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF8233E0A4A
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 00:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 340FD3E0A84
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 00:46:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233487AbhHDWX2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Aug 2021 18:23:28 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:35044 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230236AbhHDWX2 (ORCPT
+        id S234022AbhHDWqY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Aug 2021 18:46:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55482 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229775AbhHDWqX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Aug 2021 18:23:28 -0400
-X-UUID: d1e909313d2e421b82c0b8d3fb9bbc16-20210805
-X-UUID: d1e909313d2e421b82c0b8d3fb9bbc16-20210805
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 291457690; Thu, 05 Aug 2021 06:23:10 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs02n1.mediatek.inc (172.21.101.77) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 5 Aug 2021 06:23:08 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 5 Aug 2021 06:23:02 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <jemele@google.com>, <yenlinlai@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH v2] mt76: connac: add support maximum regulatory Tx power
-Date:   Thu, 5 Aug 2021 06:23:00 +0800
-Message-ID: <e05024275119c517a4eb7e39bf249640db68d07d.1628115504.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        Wed, 4 Aug 2021 18:46:23 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A49C5C0613D5
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Aug 2021 15:46:09 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id a5-20020a05683012c5b029036edcf8f9a6so3209728otq.3
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Aug 2021 15:46:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=wvjJXIAyDtPL/Ndk/Btj800bsnjEboaOCHdw/tjENlE=;
+        b=NvgNV1BmOyqa+ONMf/ndrJq3FcJ7c5LtBMHtnvF0HO93XBKfRK4RrR34Cc/uKakySh
+         m7ZcUjTOAWSAAigDKMZlCvF7srO4sHeRrHLUrLoJxffYgyd+VQBKS40QzRAd432FN48J
+         RSWCYqHIZn95SJUMdLqpkiUnfZs96ZUZQ7ggQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wvjJXIAyDtPL/Ndk/Btj800bsnjEboaOCHdw/tjENlE=;
+        b=Rov9ejBhSpKGAlvUWg22ywOiuUDM9Y9mF2Jrdp4WK4s+2n0RHuYOAclQ07gmy1RYIy
+         BConA23glf36mLY2cD0Uz+1xS8oVIjDczMtNWKoUHMcQ7/zUFA0tepGwIMDTUl9UjVIs
+         TW2GtPbzg4qkeUTLujU57pMm+vG7tVCqbMNFKCgTiD1tNen34NCsZYNxR2G+uzI2CExn
+         5gA65aaIQ1T9Xpn+o4FhD8lzPy1Z9KmXlyNs3LZg1sGWa+KN7jWZUXeexXnugACkuf+h
+         J5tajix7sM1wCORz7vEoK6rMfSEBL3IsYQvMbpf1WCUpkjHB01PKEdsB8VRzGgmCrTwZ
+         s42A==
+X-Gm-Message-State: AOAM532//2iFetFEmmDRIK751JECG9Q6FN9it5PDt787lohelQSFWIAa
+        zat1hEcJ1/QMvw6niENoshoM2iAenA3UIQ==
+X-Google-Smtp-Source: ABdhPJyfEOJtCr/ndUdhREDuxNpYkoIQd4zR+7FPlmdJCbYKlUCD+wGCh7UyVZuyZehoQbwq1yAdOw==
+X-Received: by 2002:a9d:6d16:: with SMTP id o22mr1402460otp.336.1628117168615;
+        Wed, 04 Aug 2021 15:46:08 -0700 (PDT)
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com. [209.85.167.169])
+        by smtp.gmail.com with ESMTPSA id p8sm394988otk.22.2021.08.04.15.46.06
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Aug 2021 15:46:06 -0700 (PDT)
+Received: by mail-oi1-f169.google.com with SMTP id q6so4771496oiw.7
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Aug 2021 15:46:06 -0700 (PDT)
+X-Received: by 2002:aca:110d:: with SMTP id 13mr7258895oir.77.1628117166068;
+ Wed, 04 Aug 2021 15:46:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+References: <20210804020305.29812-1-islituo@gmail.com>
+In-Reply-To: <20210804020305.29812-1-islituo@gmail.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Wed, 4 Aug 2021 15:45:54 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPxMBeVwb+708Z5ZwKsNmBhcAE1AwbbRvsQMDiNaGJXQQ@mail.gmail.com>
+Message-ID: <CA+ASDXPxMBeVwb+708Z5ZwKsNmBhcAE1AwbbRvsQMDiNaGJXQQ@mail.gmail.com>
+Subject: Re: [PATCH] mwifiex: drop redundant null-pointer check in mwifiex_dnld_cmd_to_fw()
+To:     Tuo Li <islituo@gmail.com>
+Cc:     amit karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        baijiaju1990@gmail.com, TOTE Robot <oslab@tsinghua.edu.cn>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: YN Chen <YN.Chen@mediatek.com>
+On Tue, Aug 3, 2021 at 7:03 PM Tuo Li <islituo@gmail.com> wrote:
+>
+> There is no case in which the variable cmd_node->cmd_skb has no ->data,
+> and thus the variable host_cmd is guaranteed to be not NULL. Therefore,
+> the null-pointer check is redundant and can be dropped.
+>
+> Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+> Signed-off-by: Tuo Li <islituo@gmail.com>
 
-Consider .max_reg_power in struct ieee80211_channel to limit the
-maximum power the wireless device allowed to transmit on the
-corresponding channel according to the regulatory domain.
-
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: YN Chen <YN.Chen@mediatek.com>
----
-v2: consider the power limit that can be allowed on mt7663
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 43 ++++++++++++++++++-
- 1 file changed, 41 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index d71393b1c5e6..80987af03efe 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1773,6 +1773,43 @@ static s8 mt76_connac_get_sar_power(struct mt76_phy *phy,
- 	return target_power;
- }
- 
-+static s8 mt76_connac_get_ch_power(struct mt76_phy *phy,
-+				   struct ieee80211_channel *chan,
-+				   s8 target_power)
-+{
-+	struct mt76_dev *dev = phy->dev;
-+	struct ieee80211_supported_band *sband;
-+	int i;
-+
-+	switch (chan->band) {
-+	case NL80211_BAND_2GHZ:
-+		sband = &phy->sband_2g.sband;
-+		break;
-+	case NL80211_BAND_5GHZ:
-+		sband = &phy->sband_5g.sband;
-+		break;
-+	default:
-+		return target_power;
-+	}
-+
-+	for (i = 0; i < sband->n_channels; i++) {
-+		struct ieee80211_channel *ch = &sband->channels[i];
-+
-+		if (ch->hw_value == chan->hw_value) {
-+			if (!(ch->flags & IEEE80211_CHAN_DISABLED)) {
-+				int power = 2 * ch->max_reg_power;
-+
-+				if (is_mt7663(dev) && (power > 63 || power < -64))
-+					power = 63;
-+				target_power = min_t(s8, power, target_power);
-+			}
-+			break;
-+		}
-+	}
-+
-+	return target_power;
-+}
-+
- static int
- mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
- 				  enum nl80211_band band)
-@@ -1840,10 +1877,12 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
- 				.hw_value = ch_list[idx],
- 				.band = band,
- 			};
--			s8 sar_power;
-+			s8 reg_power, sar_power;
- 
-+			reg_power = mt76_connac_get_ch_power(phy, &chan,
-+							     tx_power);
- 			sar_power = mt76_connac_get_sar_power(phy, &chan,
--							      tx_power);
-+							      reg_power);
- 
- 			mt76_get_rate_power_limits(phy, &chan, &limits,
- 						   sar_power);
--- 
-2.25.1
-
+Tested-by: Brian Norris <briannorris@chromium.org>
+Reviewed-by: Brian Norris <briannorris@chromium.org>
