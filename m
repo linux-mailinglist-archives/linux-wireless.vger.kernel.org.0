@@ -2,130 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 602B73DFD09
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 10:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 858ED3DFD3D
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 10:48:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236554AbhHDIgC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Aug 2021 04:36:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34438 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236493AbhHDIgB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Aug 2021 04:36:01 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3DA4560F43;
-        Wed,  4 Aug 2021 08:35:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628066149;
-        bh=muTWgcFJLnLXzIosEs5tdTY/jGxKmJvIwmLNkrSK/gE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kNlTmd20IZnrkMP0Vz/yHd1XsRMuCAQw19C0GmzKejR96pkJQEOaFklYzIyCE4Dj3
-         lZ+M8CrBsTEQb1ir1JfkJqn8ZccZIiuDQiGIB07Cq8PWxNbCk6Qn7W7fCI7e238uN1
-         gwAJamNxMT1V3KoGvSvg1cEEmGY3SNnYY9ua6PlGrk+M4MFMuVCmMzs+vnDr/Pz85D
-         x8CguSgvxP5gHzwkFU7wh7doTPPuY1WDIHXfZDOz4qlHA0bQgGL7Ha8P2Clzfa2Ot8
-         tFYPUHQmCsIrfJdwg/3cJJBbbIPpCAlhGD2LxES4aHUtHfqh6Ux2BztBd1/6BAbR3u
-         8A6IgYF6Kf0FQ==
-Date:   Wed, 4 Aug 2021 10:35:44 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name, johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        ryder.lee@mediatek.com, chui-hao.chiu@mediatek.com
-Subject: Re: [PATCH mac80211-next 7/7] mt76: mt7915: add twt_stats knob in
- debugfs
-Message-ID: <YQpRYH3AuzAHQwq3@lore-desk>
-References: <cover.1628062233.git.lorenzo@kernel.org>
- <c15deb39ada1d7f642a7cf7bf21a60e84dde240d.1628062233.git.lorenzo@kernel.org>
+        id S235750AbhHDIsd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Aug 2021 04:48:33 -0400
+Received: from lpdvsmtp11.broadcom.com ([192.19.166.231]:51948 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235582AbhHDIsd (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 4 Aug 2021 04:48:33 -0400
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 8E6F480D8;
+        Wed,  4 Aug 2021 01:48:20 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 8E6F480D8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1628066900;
+        bh=pt1KK0fcrEO6kMlem5B+QxkgrpxkL407PGTI8pa/FSg=;
+        h=From:Subject:To:Cc:References:Date:In-Reply-To:From;
+        b=ihx49GHxb4Ooinhl4Y65BbwJ/1QvcHNESc4HCJwue3PjKIC7YzVe1W5Q18pdoSPZd
+         BWY284+/OunsAvGR2tGNwcZJMcVSpxTcPjBVsb/X2rXBIcq0+1SHnpZ90+E9j5jDRT
+         cw/TFthwuo4BZ1k5LjzrsRqS8zUcvOZDZEMxmWj8=
+Received: from [10.230.42.155] (unknown [10.230.42.155])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 5E7EA1874BD;
+        Wed,  4 Aug 2021 01:48:16 -0700 (PDT)
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: Re: [PATCH] brcmfmac: firmware: Allow per-board firmware binaries
+To:     Dmitry Osipenko <digetx@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        phone-devel@vger.kernel.org, newbyte@disroot.org,
+        Stephan Gerhold <stephan@gerhold.net>
+References: <20210711231659.255479-1-linus.walleij@linaro.org>
+ <fca09928-72a8-a573-a862-7c486a2094d6@gmail.com>
+ <02415358-6635-a974-7682-a721912ca4fc@gmail.com>
+Message-ID: <a2ee7f03-879e-543f-fbaf-06a58e416e9d@broadcom.com>
+Date:   Wed, 4 Aug 2021 10:48:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ric8hidzDizXyMIJ"
-Content-Disposition: inline
-In-Reply-To: <c15deb39ada1d7f642a7cf7bf21a60e84dde240d.1628062233.git.lorenzo@kernel.org>
+In-Reply-To: <02415358-6635-a974-7682-a721912ca4fc@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On August 3, 2021 5:53:14 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 
---ric8hidzDizXyMIJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> 03.08.2021 18:28, Dmitry Osipenko пишет:
+>> 12.07.2021 02:16, Linus Walleij пишет:
+>>> After some crashes in the 3D engine (!) on the Samsung GT-I8530
+>>> it turns out that the main firmware file can be device dependent,
+>>> something that was previously only handled for the NVRAM
+>>> parameter file.
+>>>
+>>> Rewrite the code a bit so we can a per-board suffixed firmware
+>>> binary as well, if this does not exist we fall back to the
+>>> canonical firmware name.
+>>>
+>>> Example: a 4330 device with the OF board compatible is
+>>> "samsung,gavini". We will first try
+>>> "brcmfmac4330-sdio.samsung,gavini.bin" then "brcmfmac4330-sdio.bin"
+>>> if that does not work.
+>>>
+>>> Cc: phone-devel@vger.kernel.org
+>>> Cc: newbyte@disroot.org
+>>> Cc: Stephan Gerhold <stephan@gerhold.net>
+>>> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+>>> ---
+>>> .../broadcom/brcm80211/brcmfmac/firmware.c    | 53 +++++++++++++++----
+>>> 1 file changed, 42 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c 
+>>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+>>> index d40104b8df55..adfdfc654b10 100644
+>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+>>> @@ -594,28 +594,47 @@ static int brcmf_fw_complete_request(const struct 
+>>> firmware *fw,
+>>> return (cur->flags & BRCMF_FW_REQF_OPTIONAL) ? 0 : ret;
+>>> }
+>>>
+>>> +static char *brcm_alt_fw_path(const char *path, const char *board_type)
+>>> +{
+>>> + char alt_path[BRCMF_FW_NAME_LEN];
+>>> + char suffix[5];
+>>> +
+>>> + strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
+>>> + /* At least one character + suffix */
+>>> + if (strlen(alt_path) < 5)
+>>> + return NULL;
+>>> +
+>>> + /* strip .txt or .bin at the end */
+>>> + strscpy(suffix, alt_path + strlen(alt_path) - 4, 5);
+>>> + alt_path[strlen(alt_path) - 4] = 0;
+>>> + strlcat(alt_path, ".", BRCMF_FW_NAME_LEN);
+>>> + strlcat(alt_path, board_type, BRCMF_FW_NAME_LEN);
+>>> + strlcat(alt_path, suffix, BRCMF_FW_NAME_LEN);
+>>> +
+>>> + return kstrdup(alt_path, GFP_KERNEL);
+>>> +}
+>>> +
+>>> static int brcmf_fw_request_firmware(const struct firmware **fw,
+>>>   struct brcmf_fw *fwctx)
+>>> {
+>>> struct brcmf_fw_item *cur = &fwctx->req->items[fwctx->curpos];
+>>> int ret;
+>>>
+>>> - /* nvram files are board-specific, first try a board-specific path */
+>>> + /* Files can be board-specific, first try a board-specific path */
+>>> if (cur->type == BRCMF_FW_TYPE_NVRAM && fwctx->req->board_type) {
+>>> - char alt_path[BRCMF_FW_NAME_LEN];
+>>> + char *alt_path;
+>>>
+>>> - strlcpy(alt_path, cur->path, BRCMF_FW_NAME_LEN);
+>>> - /* strip .txt at the end */
+>>> - alt_path[strlen(alt_path) - 4] = 0;
+>>> - strlcat(alt_path, ".", BRCMF_FW_NAME_LEN);
+>>> - strlcat(alt_path, fwctx->req->board_type, BRCMF_FW_NAME_LEN);
+>>> - strlcat(alt_path, ".txt", BRCMF_FW_NAME_LEN);
+>>> + alt_path = brcm_alt_fw_path(cur->path, fwctx->req->board_type);
+>>> + if (!alt_path)
+>>> + goto fallback;
+>>>
+>>> ret = request_firmware(fw, alt_path, fwctx->dev);
+>>> + kfree(alt_path);
+>>> if (ret == 0)
+>>> return ret;
+>>> }
+>>>
+>>> +fallback:
+>>> return request_firmware(fw, cur->path, fwctx->dev);
+>>> }
+>>>
+>>> @@ -660,6 +679,7 @@ int brcmf_fw_get_firmwares(struct device *dev, struct 
+>>> brcmf_fw_request *req,
+>>> {
+>>> struct brcmf_fw_item *first = &req->items[0];
+>>> struct brcmf_fw *fwctx;
+>>> + char *alt_path;
+>>> int ret;
+>>>
+>>> brcmf_dbg(TRACE, "enter: dev=%s\n", dev_name(dev));
+>>> @@ -677,9 +697,20 @@ int brcmf_fw_get_firmwares(struct device *dev, struct 
+>>> brcmf_fw_request *req,
+>>> fwctx->req = req;
+>>> fwctx->done = fw_cb;
+>>>
+>>> - ret = request_firmware_nowait(THIS_MODULE, true, first->path,
+>>> -      fwctx->dev, GFP_KERNEL, fwctx,
+>>> -      brcmf_fw_request_done);
+>>> + /* First try alternative board-specific path if any */
+>>> + alt_path = brcm_alt_fw_path(first->path, fwctx->req->board_type);
+>>> + if (alt_path) {
+>>> + ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
+>>> +      fwctx->dev, GFP_KERNEL, fwctx,
+>>> +      brcmf_fw_request_done);
+>
+> This return 0 immediately, despite of the missing firmware file. It's
+> not a blocking FW request.
 
-> Introduce twt_stats knob in debugfs in order to dump established
-> agreements
->=20
-> Tested-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  .../wireless/mediatek/mt76/mt7915/debugfs.c   | 28 +++++++++++++++++++
->  1 file changed, 28 insertions(+)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/driver=
-s/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> index 1a48b09d0cb7..5ed329f720d6 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> @@ -335,6 +335,32 @@ mt7915_read_rate_txpower(struct seq_file *s, void *d=
-ata)
->  	return 0;
->  }
-> =20
-> +static int
-> +mt7915_twt_stats(struct seq_file *s, void *data)
-> +{
-> +	struct mt7915_dev *dev =3D dev_get_drvdata(s->private);
-> +	struct mt7915_twt_flow *iter;
-> +
-> +	rcu_read_lock();
-> +
-> +	seq_puts(s, "     wcid |       id |    flags |      exp | mantissa");
-> +	seq_puts(s, " | duration |            tsf |\n");
-> +	list_for_each_entry_rcu(iter, &dev->twt_list, list)
-> +		seq_printf(s,
-> +			"%9d | %8d | %5c%c%c%c | %8d | %8d | %8d | %14lld |\n",
-> +			iter->wcid, iter->id,
-> +			iter->sched ? 's' : 'u',
-> +			iter->protection ? 'p' : '-',
-> +			iter->trigger ? 't' : '-',
-> +			iter->flowtype ? '-' : 'a',
-> +			iter->exp, iter->mantissa,
-> +			iter->duration, iter->tsf);
-> +
-> +	rcu_read_lock();
+Right. I didn't get to looking at this earlier, but indeed the check 
+whether the requested firmware exists is done in another thread context 
+so the return value here only indicates whether the firmware request 
+could be scheduled or not.
 
-ops, there is a typo here, I will fix it in v2. I will wait for some feedba=
-cks
-on v1 first.
+My first reaction to the patch was to reject it, but leaning towards 
+supporting this now. OEMs tend to get tailor-made firmware in terms of 
+features. Depending on their requirements they get their mix of firmware 
+features. That such difference lead to a crash in 3d engine is somewhat 
+surprising. I am curious if we can debug this more and learn how a 
+firmware variant could cause such a crash. Maybe some DMA issue?
 
 Regards,
-Lorenzo
+Arend
 
-> +
-> +	return 0;
-> +}
-> +
->  int mt7915_init_debugfs(struct mt7915_dev *dev)
->  {
->  	struct dentry *dir;
-> @@ -352,6 +378,8 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
->  	debugfs_create_file("implicit_txbf", 0600, dir, dev,
->  			    &fops_implicit_txbf);
->  	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
-> +	debugfs_create_devm_seqfile(dev->mt76.dev, "twt_stats", dir,
-> +				    mt7915_twt_stats);
->  	/* test knobs */
->  	debugfs_create_file("radar_trigger", 0200, dir, dev,
->  			    &fops_radar_trigger);
-> --=20
-> 2.31.1
->=20
-
---ric8hidzDizXyMIJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYQpRXgAKCRA6cBh0uS2t
-rOtQAQCVPQEnHq9JyMUWRFZ/pzZ2jLI3T3zZpmpTzSKMR3coSwEAw4ysMI+LmEKv
-yGNYcNtO1KWVRzBZAjCPXs3mWu7HTQE=
-=P8VX
------END PGP SIGNATURE-----
-
---ric8hidzDizXyMIJ--
