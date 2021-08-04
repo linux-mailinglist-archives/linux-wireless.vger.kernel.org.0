@@ -2,174 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22EEA3E03BD
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 16:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F419F3E03F4
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 17:13:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238798AbhHDO5z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Aug 2021 10:57:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33306 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234423AbhHDO5z (ORCPT
+        id S238834AbhHDPNw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Aug 2021 11:13:52 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:58698
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237114AbhHDPNv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Aug 2021 10:57:55 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84E61C0613D5
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Aug 2021 07:57:42 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id f42so4945826lfv.7
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Aug 2021 07:57:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=zYWGs8eU0z6/1DWlmjeGv+5E7wOWfIZstGb5/DSqj0g=;
-        b=A/2LcYuJVE5qsoWtbJe/xJ9PHzCmwEJYO8L/hsVaR6PnazHFyRmElT9uEvi7CgpOYe
-         iy2Q+glmmnOybz0Ju7H4wPT9H5fefc/GBaGs2FjyqnWQffUVY9AEZiNEBuLcLVgRugTL
-         PiJDGCIhRN/4FPARqrJGYAF3AmsjzRGhBk+tPucX1RXnMz/VD3e0zgHACatwkJBAdrE1
-         5Vqjm6fx+Vbjnh73SBSE2wwWolUEQYyXgJBK6i3f2MCaTD+Ce4tSGMo0KiVcQQfQ72HY
-         0kllbwSxA/b3mGzgL/atM02ZtaK48AYSimbluyxgQf9B3zZYaBSkKb+LmNM+FhbpES5L
-         uIrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=zYWGs8eU0z6/1DWlmjeGv+5E7wOWfIZstGb5/DSqj0g=;
-        b=jRkFGNStZ7kbReTFaBY5AzHFaVTw60FqJ64dT9z7O8pz9r0PHuYXlt/OGqpkQ1gBBV
-         NrUbnO/7HTw2A+HO04NmbV4nr5ixuSATCeWwm/A5b2msbWrLBt9sk7jqlQnPnIAaM92M
-         zbWQlULqMyg29UqEuveXA7o89kEjpASWyJ0byjMdTGiavVl6jmbhZwEnviSUthUcnHgm
-         79yvGCutnxb6WnLGwAK168id3/adfDeQyX5qi+8tfYXDWNB2Q+8iw5Qvqsrf8nd8+R/z
-         96DLZ2o4PETdA7Gb72HEoxw2PuWye/Yg+DYQhEgfaw65K9GvS9w66T9KgFlW4i7pnBsL
-         aiKA==
-X-Gm-Message-State: AOAM5302OJUx7C9T2XjXhr79UFDax+yCSBr9Cct9yS+QipG7HpE/4VL5
-        sRXP0414nDd78qrBlY/Iv5s=
-X-Google-Smtp-Source: ABdhPJxlhGcWr1T4z1xKaaCRbkL3waPIrIf1ffiby6N+HgO9/O0BLzQLF8nOLzjmSyNt2NuaipSxGQ==
-X-Received: by 2002:ac2:5322:: with SMTP id f2mr8954295lfh.429.1628089060923;
-        Wed, 04 Aug 2021 07:57:40 -0700 (PDT)
-Received: from [192.168.2.145] (46-138-98-74.dynamic.spd-mgts.ru. [46.138.98.74])
-        by smtp.googlemail.com with ESMTPSA id i5sm219758lfb.124.2021.08.04.07.57.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Aug 2021 07:57:40 -0700 (PDT)
-Subject: Re: [PATCH] brcmfmac: firmware: Fix firmware loading
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        Stefan Hansson <newbyte@disroot.org>
-References: <20210803232746.3389570-1-linus.walleij@linaro.org>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <242b823b-627d-de3c-596d-0f13e28ccd47@gmail.com>
-Date:   Wed, 4 Aug 2021 17:57:39 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Wed, 4 Aug 2021 11:13:51 -0400
+Received: from localhost.localdomain (111-240-142-2.dynamic-ip.hinet.net [111.240.142.2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id C3D1E3F0FC;
+        Wed,  4 Aug 2021 15:13:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1628090018;
+        bh=2gLssv6zfXEbS3M1XEEg2CclWAXeqhmsLnOeaUBQ4dw=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=Rq9p9eYkWFrpXHPeddwWgMU2pwPLCvrvEWC3LAER+1QJbA6Q1cT2MkiHfS8s8sd83
+         pnStAIY3TQgINh0IS8bJy5PSAK6n5NZ7jF8N9YZ8eWc0EhTPgw2biULxU7gQGds63A
+         0EUXqZ6DgWw4ky+2Sc6k18PkrwgFWgI/P+S1J+Ww2WOOx6yUurOri5UViC+6MMn3vy
+         6+wcyRhcCSJgPFe8jzqwXKQTR4m5esXT8qfIoKOZ/QOHdsNyq7j22aVX5bLumQ0Fal
+         VfWXz7ADN81Pz9eXmBOcv/V/qzqhSkwcw4OLevZuwpi6ydSjITFeZ4bcGhuJVQMtso
+         DEv07sn4I7jAA==
+From:   chris.chiu@canonical.com
+To:     jes.sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     code@reto-schneider.ch, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chris Chiu <chris.chiu@canonical.com>
+Subject: [PATCH v2] rtl8xxxu: Fix the handling of TX A-MPDU aggregation
+Date:   Wed,  4 Aug 2021 23:13:25 +0800
+Message-Id: <20210804151325.86600-1-chris.chiu@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20210803232746.3389570-1-linus.walleij@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-04.08.2021 02:27, Linus Walleij пишет:
-> The patch that would first try the board-specific firmware
-> had a bug because the fallback would not be called: the
-> asynchronous interface is used meaning request_firmware_nowait()
-> returns 0 immediately.
-> 
-> Harden the firmware loading like this:
-> 
-> - If we cannot build an alt_path (like if no board_type is
->   specified) just request the first firmware without any
->   suffix, like in the past.
-> 
-> - If the lookup of a board specific firmware fails, we get
->   a NULL fw in the async callback, so just try again without
->   the alt_path. Use a static variable to check that we do not
->   try this indefinitely.
-> 
-> - Rename the brcm_fw_request_done to brcm_fw_request_done_first
->   reflecting the fact that this callback is only used for the
->   first (main) firmware file, and drop the unnecessary
->   prototype.
-> 
-> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
-> Cc: Dmitry Osipenko <digetx@gmail.com>
-> Cc: Stefan Hansson <newbyte@disroot.org>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
->  .../broadcom/brcm80211/brcmfmac/firmware.c    | 29 +++++++++++++------
->  1 file changed, 20 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-> index adfdfc654b10..71ca4a517e42 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-> @@ -431,8 +431,6 @@ struct brcmf_fw {
->  	void (*done)(struct device *dev, int err, struct brcmf_fw_request *req);
->  };
->  
-> -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx);
-> -
->  #ifdef CONFIG_EFI
->  /* In some cases the EFI-var stored nvram contains "ccode=ALL" or "ccode=XV"
->   * to specify "worldwide" compatible settings, but these 2 ccode-s do not work
-> @@ -638,11 +636,26 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
->  	return request_firmware(fw, cur->path, fwctx->dev);
->  }
->  
-> -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx)
-> +static void brcmf_fw_request_done_first(const struct firmware *fw, void *ctx)
->  {
->  	struct brcmf_fw *fwctx = ctx;
-> +	struct brcmf_fw_item *first = &fwctx->req->items[0];
-> +	static bool retry = true;
->  	int ret;
->  
-> +	/*Something failed with the first firmware request , such as not
+From: Chris Chiu <chris.chiu@canonical.com>
 
-There is a problem with whitespaces here.
+The TX A-MPDU aggregation is not handled in the driver since the
+ieee80211_start_tx_ba_session has never been started properly.
+Start and stop the TX BA session by tracking the TX aggregation
+status of each TID. Fix the ampdu_action and the tx descriptor
+accordingly with the given TID.
 
-> +	 * getting the per-board firmware. Retry this, now using the less
-> +	 * specific path for the first firmware item, i.e. without the board
-> +	 * suffix.
-> +	 */
-> +	if (!fw && retry) {
-> +		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
-> +					      fwctx->dev, GFP_KERNEL, fwctx,
-> +					      brcmf_fw_request_done_first);
-> +		retry = false;
-> +		return;
-> +	}
-> +
->  	ret = brcmf_fw_complete_request(fw, fwctx);
->  
->  	while (ret == 0 && ++fwctx->curpos < fwctx->req->n_items) {
-> @@ -702,17 +715,15 @@ int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
->  	if (alt_path) {
->  		ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
->  					      fwctx->dev, GFP_KERNEL, fwctx,
-> -					      brcmf_fw_request_done);
-> +					      brcmf_fw_request_done_first);
->  		kfree(alt_path);
-> -	}
-> -	/* Else try canonical path */
-> -	if (ret) {
-> +	} else {
->  		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
->  					      fwctx->dev, GFP_KERNEL, fwctx,
-> -					      brcmf_fw_request_done);
-> +					      brcmf_fw_request_done_first);
->  	}
->  	if (ret < 0)
-> -		brcmf_fw_request_done(NULL, fwctx);
-> +		brcmf_fw_request_done_first(NULL, fwctx);
->  
->  	return 0;
->  }
-> 
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+---
 
-Works, thanks!
+Changelog:
+  v2:
+   - use data type BITMAP for tx_aggr_started instead of bool array
+
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  2 ++
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 33 ++++++++++++++-----
+ 2 files changed, 26 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index 01735776345a..7ddce3c3f0c4 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -1378,6 +1378,8 @@ struct rtl8xxxu_priv {
+ 	u8 no_pape:1;
+ 	u8 int_buf[USB_INTR_CONTENT_LENGTH];
+ 	u8 rssi_level;
++	DECLARE_BITMAP(tx_aggr_started, IEEE80211_NUM_TIDS);
++	DECLARE_BITMAP(tid_tx_operational, IEEE80211_NUM_TIDS);
+ 	/*
+ 	 * Only one virtual interface permitted because only STA mode
+ 	 * is supported and no iface_combinations are provided.
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index ac1061caacd6..3285a91efb91 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4805,6 +4805,8 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ 	struct ieee80211_rate *tx_rate = ieee80211_get_tx_rate(hw, tx_info);
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+ 	struct device *dev = &priv->udev->dev;
++	u8 *qc = ieee80211_get_qos_ctl(hdr);
++	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
+ 	u32 rate;
+ 	u16 rate_flags = tx_info->control.rates[0].flags;
+ 	u16 seq_number;
+@@ -4828,7 +4830,7 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ 
+ 	tx_desc->txdw3 = cpu_to_le32((u32)seq_number << TXDESC32_SEQ_SHIFT);
+ 
+-	if (ampdu_enable)
++	if (ampdu_enable && test_bit(tid, priv->tid_tx_operational))
+ 		tx_desc->txdw1 |= cpu_to_le32(TXDESC32_AGG_ENABLE);
+ 	else
+ 		tx_desc->txdw1 |= cpu_to_le32(TXDESC32_AGG_BREAK);
+@@ -4876,6 +4878,8 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+ 	struct device *dev = &priv->udev->dev;
+ 	struct rtl8xxxu_txdesc40 *tx_desc40;
++	u8 *qc = ieee80211_get_qos_ctl(hdr);
++	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
+ 	u32 rate;
+ 	u16 rate_flags = tx_info->control.rates[0].flags;
+ 	u16 seq_number;
+@@ -4902,7 +4906,7 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ 
+ 	tx_desc40->txdw9 = cpu_to_le32((u32)seq_number << TXDESC40_SEQ_SHIFT);
+ 
+-	if (ampdu_enable)
++	if (ampdu_enable && test_bit(tid, priv->tid_tx_operational))
+ 		tx_desc40->txdw2 |= cpu_to_le32(TXDESC40_AGG_ENABLE);
+ 	else
+ 		tx_desc40->txdw2 |= cpu_to_le32(TXDESC40_AGG_BREAK);
+@@ -5015,12 +5019,19 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+ 	if (ieee80211_is_data_qos(hdr->frame_control) && sta) {
+ 		if (sta->ht_cap.ht_supported) {
+ 			u32 ampdu, val32;
++			u8 *qc = ieee80211_get_qos_ctl(hdr);
++			u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
+ 
+ 			ampdu = (u32)sta->ht_cap.ampdu_density;
+ 			val32 = ampdu << TXDESC_AMPDU_DENSITY_SHIFT;
+ 			tx_desc->txdw2 |= cpu_to_le32(val32);
+ 
+ 			ampdu_enable = true;
++
++			if (!test_bit(tid, priv->tx_aggr_started) &&
++			    !(skb->protocol == cpu_to_be16(ETH_P_PAE)))
++				if (!ieee80211_start_tx_ba_session(sta, tid, 0))
++					set_bit(tid, priv->tx_aggr_started);
+ 		}
+ 	}
+ 
+@@ -6096,6 +6107,7 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	struct device *dev = &priv->udev->dev;
+ 	u8 ampdu_factor, ampdu_density;
+ 	struct ieee80211_sta *sta = params->sta;
++	u16 tid = params->tid;
+ 	enum ieee80211_ampdu_mlme_action action = params->action;
+ 
+ 	switch (action) {
+@@ -6108,17 +6120,20 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		dev_dbg(dev,
+ 			"Changed HT: ampdu_factor %02x, ampdu_density %02x\n",
+ 			ampdu_factor, ampdu_density);
+-		break;
++		return IEEE80211_AMPDU_TX_START_IMMEDIATE;
++	case IEEE80211_AMPDU_TX_STOP_CONT:
+ 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
+-		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP_FLUSH\n", __func__);
+-		rtl8xxxu_set_ampdu_factor(priv, 0);
+-		rtl8xxxu_set_ampdu_min_space(priv, 0);
+-		break;
+ 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
+-		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP_FLUSH_CONT\n",
+-			 __func__);
++		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP\n", __func__);
+ 		rtl8xxxu_set_ampdu_factor(priv, 0);
+ 		rtl8xxxu_set_ampdu_min_space(priv, 0);
++		clear_bit(tid, priv->tx_aggr_started);
++		clear_bit(tid, priv->tid_tx_operational);
++		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
++		break;
++	case IEEE80211_AMPDU_TX_OPERATIONAL:
++		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_OPERATIONAL\n", __func__);
++		set_bit(tid, priv->tid_tx_operational);
+ 		break;
+ 	case IEEE80211_AMPDU_RX_START:
+ 		dev_dbg(dev, "%s: IEEE80211_AMPDU_RX_START\n", __func__);
+-- 
+2.20.1
+
