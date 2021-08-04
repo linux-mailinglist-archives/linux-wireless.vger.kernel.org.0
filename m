@@ -2,87 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E7323DFCFC
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 10:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 602B73DFD09
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 10:35:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236590AbhHDIeT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Aug 2021 04:34:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57708 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236460AbhHDIeQ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Aug 2021 04:34:16 -0400
-Received: from canardo.mork.no (canardo.mork.no [IPv6:2001:4641::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F950C0613D5
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Aug 2021 01:34:03 -0700 (PDT)
-Received: from miraculix.mork.no ([IPv6:2a01:799:95f:ef0a:7f0c:624e:2eac:9b4])
-        (authenticated bits=0)
-        by canardo.mork.no (8.15.2/8.15.2) with ESMTPSA id 1748XjiF002649
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-        Wed, 4 Aug 2021 10:33:45 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-        t=1628066025; bh=XvqZG4OZOMKZ3OCyYeCAI3eOAwCQRcikbumRB+Ngy6M=;
-        h=From:To:Cc:Subject:Date:Message-Id:From;
-        b=BbjE1jT+KNAIUMvUucaBZoWdAL0i8qwx2cAhAsSgpPUZcn4s0QgY1Ywe99y3qRAs2
-         LEqPXc81kEYqrP2YVxfBi+4LNx7qfZS1+41HfsQj/A9vFKcSUl3oDIJqAOy5gaSg0I
-         YlC3fw/McNV+PkztutEPNtTlQsSQ1duMn7sSA59s=
-Received: from bjorn by miraculix.mork.no with local (Exim 4.94.2)
-        (envelope-from <bjorn@miraculix.mork.no>)
-        id 1mBCLM-0002JF-4A; Wed, 04 Aug 2021 10:33:40 +0200
-From:   =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
-To:     Seth Forshee <sforshee@kernel.org>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
-        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
-Subject: [PATCH] wireless-regdb: Update regulatory rules for Norway (NO) on 6 and 60 GHz
-Date:   Wed,  4 Aug 2021 10:33:37 +0200
-Message-Id: <20210804083337.8833-1-bjorn@mork.no>
-X-Mailer: git-send-email 2.30.2
+        id S236554AbhHDIgC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Aug 2021 04:36:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34438 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236493AbhHDIgB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 4 Aug 2021 04:36:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3DA4560F43;
+        Wed,  4 Aug 2021 08:35:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628066149;
+        bh=muTWgcFJLnLXzIosEs5tdTY/jGxKmJvIwmLNkrSK/gE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kNlTmd20IZnrkMP0Vz/yHd1XsRMuCAQw19C0GmzKejR96pkJQEOaFklYzIyCE4Dj3
+         lZ+M8CrBsTEQb1ir1JfkJqn8ZccZIiuDQiGIB07Cq8PWxNbCk6Qn7W7fCI7e238uN1
+         gwAJamNxMT1V3KoGvSvg1cEEmGY3SNnYY9ua6PlGrk+M4MFMuVCmMzs+vnDr/Pz85D
+         x8CguSgvxP5gHzwkFU7wh7doTPPuY1WDIHXfZDOz4qlHA0bQgGL7Ha8P2Clzfa2Ot8
+         tFYPUHQmCsIrfJdwg/3cJJBbbIPpCAlhGD2LxES4aHUtHfqh6Ux2BztBd1/6BAbR3u
+         8A6IgYF6Kf0FQ==
+Date:   Wed, 4 Aug 2021 10:35:44 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name, johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        ryder.lee@mediatek.com, chui-hao.chiu@mediatek.com
+Subject: Re: [PATCH mac80211-next 7/7] mt76: mt7915: add twt_stats knob in
+ debugfs
+Message-ID: <YQpRYH3AuzAHQwq3@lore-desk>
+References: <cover.1628062233.git.lorenzo@kernel.org>
+ <c15deb39ada1d7f642a7cf7bf21a60e84dde240d.1628062233.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.2 at canardo
-X-Virus-Status: Clean
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ric8hidzDizXyMIJ"
+Content-Disposition: inline
+In-Reply-To: <c15deb39ada1d7f642a7cf7bf21a60e84dde240d.1628062233.git.lorenzo@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The Norwegian regulatory authority (NKOM) has updated the existing
-regulations.
 
-WiFi 6E is now allowed with the same restrictions as in many/most
-EU/EEA countries - i.e 200 mW indoor and 25 mW outdoor, Using the
-DE entry as a template for now, until this dual entry can be
-described in the database.
+--ric8hidzDizXyMIJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The update also extended the 60 GHz band to 71 GHz.
+> Introduce twt_stats knob in debugfs in order to dump established
+> agreements
+>=20
+> Tested-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  .../wireless/mediatek/mt76/mt7915/debugfs.c   | 28 +++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/driver=
+s/net/wireless/mediatek/mt76/mt7915/debugfs.c
+> index 1a48b09d0cb7..5ed329f720d6 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+> @@ -335,6 +335,32 @@ mt7915_read_rate_txpower(struct seq_file *s, void *d=
+ata)
+>  	return 0;
+>  }
+> =20
+> +static int
+> +mt7915_twt_stats(struct seq_file *s, void *data)
+> +{
+> +	struct mt7915_dev *dev =3D dev_get_drvdata(s->private);
+> +	struct mt7915_twt_flow *iter;
+> +
+> +	rcu_read_lock();
+> +
+> +	seq_puts(s, "     wcid |       id |    flags |      exp | mantissa");
+> +	seq_puts(s, " | duration |            tsf |\n");
+> +	list_for_each_entry_rcu(iter, &dev->twt_list, list)
+> +		seq_printf(s,
+> +			"%9d | %8d | %5c%c%c%c | %8d | %8d | %8d | %14lld |\n",
+> +			iter->wcid, iter->id,
+> +			iter->sched ? 's' : 'u',
+> +			iter->protection ? 'p' : '-',
+> +			iter->trigger ? 't' : '-',
+> +			iter->flowtype ? '-' : 'a',
+> +			iter->exp, iter->mantissa,
+> +			iter->duration, iter->tsf);
+> +
+> +	rcu_read_lock();
 
-The official announcement of the regulation changes:
-https://lovdata.no/dokument/LTI/forskrift/2021-06-29-2312
+ops, there is a typo here, I will fix it in v2. I will wait for some feedba=
+cks
+on v1 first.
 
-The existing reference in the database has been updated with these
-changes, so no new reference is needed.
+Regards,
+Lorenzo
 
-Signed-off-by: Bjørn Mork <bjorn@mork.no>
----
- db.txt | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> +
+> +	return 0;
+> +}
+> +
+>  int mt7915_init_debugfs(struct mt7915_dev *dev)
+>  {
+>  	struct dentry *dir;
+> @@ -352,6 +378,8 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
+>  	debugfs_create_file("implicit_txbf", 0600, dir, dev,
+>  			    &fops_implicit_txbf);
+>  	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
+> +	debugfs_create_devm_seqfile(dev->mt76.dev, "twt_stats", dir,
+> +				    mt7915_twt_stats);
+>  	/* test knobs */
+>  	debugfs_create_file("radar_trigger", 0200, dir, dev,
+>  			    &fops_radar_trigger);
+> --=20
+> 2.31.1
+>=20
 
-diff --git a/db.txt b/db.txt
-index debd878f83c7..e7b11cff28b2 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1198,8 +1198,10 @@ country NO: DFS-ETSI
- 	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
- 	# short range devices (ETSI EN 300 440-1)
- 	(5725 - 5875 @ 80), (25 mW)
-+	# WiFi 6E
-+	(5945 - 6425 @ 160), (200 mW), NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
- 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
--	(57000 - 66000 @ 2160), (40)
-+	(57000 - 71000 @ 2160), (40)
- 
- country NP: DFS-JP
- 	(2402 - 2482 @ 40), (20)
--- 
-2.30.2
+--ric8hidzDizXyMIJ
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYQpRXgAKCRA6cBh0uS2t
+rOtQAQCVPQEnHq9JyMUWRFZ/pzZ2jLI3T3zZpmpTzSKMR3coSwEAw4ysMI+LmEKv
+yGNYcNtO1KWVRzBZAjCPXs3mWu7HTQE=
+=P8VX
+-----END PGP SIGNATURE-----
+
+--ric8hidzDizXyMIJ--
