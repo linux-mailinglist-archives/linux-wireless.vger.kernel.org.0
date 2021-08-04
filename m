@@ -2,54 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 007093E0035
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 13:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CA313E0176
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 14:53:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236990AbhHDLcr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Aug 2021 07:32:47 -0400
-Received: from lpdvsmtp10.broadcom.com ([192.19.11.229]:56564 "EHLO
+        id S237680AbhHDMxS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Aug 2021 08:53:18 -0400
+Received: from lpdvsmtp11.broadcom.com ([192.19.166.231]:34104 "EHLO
         relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232885AbhHDLcq (ORCPT
+        by vger.kernel.org with ESMTP id S237536AbhHDMxQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Aug 2021 07:32:46 -0400
+        Wed, 4 Aug 2021 08:53:16 -0400
 Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id EA1B62E22D;
-        Wed,  4 Aug 2021 04:32:32 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com EA1B62E22D
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id ACB452476F;
+        Wed,  4 Aug 2021 05:53:03 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com ACB452476F
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1628076753;
-        bh=zk83iXNpbo+buzqPU3gpG1XVe6m+R78f04CnZJVATXE=;
-        h=From:Subject:To:Cc:References:Date:In-Reply-To:From;
-        b=SvvXF49IF2S3RjhuNg7T1s4JgIxbiQKstYZtxzaaHqBvGxVNC3JU9b5sMD/Ufvyg3
-         eMU2bxEDjHWxi1mvqs1E8pKcK6DemcU1pZ/GcbHTTWlVYs6et+HNt2kHVwwcNjOWl0
-         r2ii+pUSJWr5I90hCXFAPM79eGv8n8LG7Y52IkUE=
+        s=dkimrelay; t=1628081583;
+        bh=z4s64varXqPrB/Ah1GYt031f9jlBpcvMwZyS8AqsYoE=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=G1Sr5s30DDofwX/qt8U0gnPYGcxck1ZkdZYjNB2m8lgOeTQkudarVlE8vxL/ieFu+
+         H6PtH1yhyfjBXPUAsGNtHsupj1TVuA00dEk8/1vNVLnVPbQ4+HteFzX6hrufcAqJVb
+         7TQTC5rkoDt2CJnczZfh0YTdLup0Hi0kVN18b6x8=
 Received: from [10.230.42.155] (unknown [10.230.42.155])
-        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id AEFEE1874BD;
-        Wed,  4 Aug 2021 04:32:28 -0700 (PDT)
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH] brcmfmac: firmware: Allow per-board firmware binaries
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Dmitry Osipenko <digetx@gmail.com>,
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id F42191874BD;
+        Wed,  4 Aug 2021 05:52:59 -0700 (PDT)
+Subject: Re: [PATCH] brcmfmac: firmware: Fix firmware loading
+To:     Linus Walleij <linus.walleij@linaro.org>,
         Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-hsien Lin <chi-hsien.lin@infineon.com>,
         Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>, phone-devel@vger.kernel.org,
-        newbyte@disroot.org, Stephan Gerhold <stephan@gerhold.net>
-References: <20210711231659.255479-1-linus.walleij@linaro.org>
- <fca09928-72a8-a573-a862-7c486a2094d6@gmail.com>
- <02415358-6635-a974-7682-a721912ca4fc@gmail.com>
- <a2ee7f03-879e-543f-fbaf-06a58e416e9d@broadcom.com>
- <CACRpkdYSXmPO0zGfFbmg3dHrv30sTzQcaGW-vbVV+L1NNS3MqA@mail.gmail.com>
-Message-ID: <dbdf5491-6365-4804-9719-e60d093a62f4@broadcom.com>
-Date:   Wed, 4 Aug 2021 13:32:20 +0200
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Stefan Hansson <newbyte@disroot.org>
+References: <20210803232746.3389570-1-linus.walleij@linaro.org>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <f9fd6e70-783c-8d53-036a-a876ca8c0237@broadcom.com>
+Date:   Wed, 4 Aug 2021 14:52:56 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <CACRpkdYSXmPO0zGfFbmg3dHrv30sTzQcaGW-vbVV+L1NNS3MqA@mail.gmail.com>
+In-Reply-To: <20210803232746.3389570-1-linus.walleij@linaro.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -57,91 +52,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 04-08-2021 11:35, Linus Walleij wrote:
-> On Wed, Aug 4, 2021 at 10:48 AM Arend van Spriel
-> <arend.vanspriel@broadcom.com> wrote:
->
->> Right. I didn't get to looking at this earlier, but indeed the check
->> whether the requested firmware exists is done in another thread context
->> so the return value here only indicates whether the firmware request
->> could be scheduled or not.
->
-> I think my recent patch fixes is, please have a look.
+On 04-08-2021 01:27, Linus Walleij wrote:
+> The patch that would first try the board-specific firmware
+> had a bug because the fallback would not be called: the
+> asynchronous interface is used meaning request_firmware_nowait()
+> returns 0 immediately.
+> 
+> Harden the firmware loading like this:
+> 
+> - If we cannot build an alt_path (like if no board_type is
+>    specified) just request the first firmware without any
+>    suffix, like in the past.
+> 
+> - If the lookup of a board specific firmware fails, we get
+>    a NULL fw in the async callback, so just try again without
+>    the alt_path. Use a static variable to check that we do not
+>    try this indefinitely.
+> 
+> - Rename the brcm_fw_request_done to brcm_fw_request_done_first
+>    reflecting the fact that this callback is only used for the
+>    first (main) firmware file, and drop the unnecessary
+>    prototype.
+> 
+> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
+> Cc: Dmitry Osipenko <digetx@gmail.com>
+> Cc: Stefan Hansson <newbyte@disroot.org>
 
-Right. I want to explore another option for myself, but I will first 
-look at your patch so we can fix the current issue in timely manner.
+One remark below, but you may add...
 
->> My first reaction to the patch was to reject it, but leaning towards
->> supporting this now. OEMs tend to get tailor-made firmware in terms of
->> features. Depending on their requirements they get their mix of firmware
->> features. That such difference lead to a crash in 3d engine is somewhat
->> surprising. I am curious if we can debug this more and learn how a
->> firmware variant could cause such a crash. Maybe some DMA issue?
->
-> I am not certain what happens, but I think the 3D engine misses its
-> interrupts. This may in turn be because GPIO IRQs are held
-> low or fireing repeatedly for an extensive period of time, stressing
-> the system to the point that other important IRQs are missed.
->
-> This in turn can be caused by the wrong (non-custom) firmware
-> managing these GPIO IRQs fireing left and right.
->
-> I have noticed that the config files for brcmfmac contain words
-> about GPIOs and so on and that is what makes me think this way.
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>   .../broadcom/brcm80211/brcmfmac/firmware.c    | 29 +++++++++++++------
+>   1 file changed, 20 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+> index adfdfc654b10..71ca4a517e42 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+> @@ -431,8 +431,6 @@ struct brcmf_fw {
+>   	void (*done)(struct device *dev, int err, struct brcmf_fw_request *req);
+>   };
+>   
+> -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx);
+> -
+>   #ifdef CONFIG_EFI
+>   /* In some cases the EFI-var stored nvram contains "ccode=ALL" or "ccode=XV"
+>    * to specify "worldwide" compatible settings, but these 2 ccode-s do not work
+> @@ -638,11 +636,26 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
+>   	return request_firmware(fw, cur->path, fwctx->dev);
+>   }
+>   
+> -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx)
+> +static void brcmf_fw_request_done_first(const struct firmware *fw, void *ctx)
+>   {
+>   	struct brcmf_fw *fwctx = ctx;
+> +	struct brcmf_fw_item *first = &fwctx->req->items[0];
+> +	static bool retry = true;
 
-Not sure what config files you refer to. I am only aware of the device 
-tree bindings mentioning GPIO for out-of-band SDIO interrupt.
-
-> I can tell for sure that brcmfmac has definately had special
-> firmware tailored by/for Samsung for these phones. We can just
-> look at the files extracted from the platforms (the original
-> files are named bcmdhd_sta.bin_b2 or similar):
->
-> BRCMFMAC 4330
-> -rw-r--r--. 1 linus linus 213390 Mar 22 23:32
-> brcmfmac4330-sdio.samsung,janice.bin
-> -rw-r--r--. 1 linus linus 203593 Jul 11 01:53
-> brcmfmac4330-sdio.samsung,codina.bin
-> -rw-r--r--. 1 linus linus 212956 Mar 22 23:31
-> brcmfmac4330-sdio.samsung,gavini.bin
->
-> BRCMFMAC 4334
-> -rw-r--r--. 1 linus linus 346151 Mar 16 22:53
-> brcmfmac4334-sdio.samsung,golden.bin
-> -rw-r--r--. 1 linus linus 434236 Jul  7 00:43 brcmfmac4334-sdio.samsung,kyle.bin
-> -rw-r--r--. 1 linus linus 434236 Mar 16 22:54
-> brcmfmac4334-sdio.samsung,skomer.bin
->
-> All different file sizes, except Kyle and Skomer, who actually share
-> the same firmware. (Those were the two last phones produced
-> in this series BTW.) Doing strings * on each file reveals that they
-> were compiled at different dates around the time these phones
-> were produced.
-
-As said earlier customers get their mix of firmware features. Apart from 
-the compile date using strings will also give you the firmware compile 
-target, ie. 4330*-roml/... Could you share that?
-
-> These are all for standard WiFi functionality. There is two more
-> firmwares for each phone, one for the access point usecase and
-> one more which I don't know what it is for, the actual set of firmware
-> for each phone is for example (Skomer):
->
-> bcmdhd_apsta.bin_b2
-> bcmdhd_mfg.bin_b2
-> bcmdhd_p2p.bin_b2
-> bcmdhd_sta.bin_b2
->
-> So I am half-guessing that bcmdhd_sta.bin_b2 is obviously for the
-> ordinary use case, *mfg* is probably for manufacturing, *apsta*
-> for mobile hotspot (access point) and *p2p* for some other cool
-
-Half-guessing seems sufficient ;-) If I recall correctly on Android the 
-driver loads different firmware based on what a user selects in the gui. 
-Not something we do in upstream linux. p2p is a WFA specification and 
-supported in upstream linux cfg80211. Many TV sets support it to show 
-content from your portable device.
+using a static seems tricky to me when there are multiple supported 
+devices in a system (like in mine ;-)). Probably better to add the flag 
+in struct brcmf_fw.
 
 Regards,
 Arend
-
