@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D3173DFF3E
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 12:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F6F83DFF6A
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 12:31:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237516AbhHDKOb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Aug 2021 06:14:31 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:46744 "EHLO
+        id S237337AbhHDKcK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Aug 2021 06:32:10 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:46836 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S236909AbhHDKO3 (ORCPT
+        with ESMTP id S236964AbhHDKcJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Aug 2021 06:14:29 -0400
-X-UUID: 96e7c9387dc44afe8cb0d92d5c75b2e0-20210804
-X-UUID: 96e7c9387dc44afe8cb0d92d5c75b2e0-20210804
+        Wed, 4 Aug 2021 06:32:09 -0400
+X-UUID: 7ca25142207246c0977d7cfb3954f4a6-20210804
+X-UUID: 7ca25142207246c0977d7cfb3954f4a6-20210804
 Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
+        (envelope-from <yn.chen@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 156633199; Wed, 04 Aug 2021 18:14:07 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 4 Aug 2021 18:14:01 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+        with ESMTP id 1489151951; Wed, 04 Aug 2021 18:31:54 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 4 Aug 2021 18:31:53 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 4 Aug 2021 18:14:00 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
+ Transport; Wed, 4 Aug 2021 18:31:52 +0800
+From:   YN Chen <YN.Chen@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>,
         Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
 CC:     Sean Wang <sean.wang@mediatek.com>,
         Soul Huang <Soul.Huang@mediatek.com>,
         YN Chen <YN.Chen@mediatek.com>,
         Leon Yen <Leon.Yen@mediatek.com>,
-        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
         Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
         Robin Chiu <robin.chiu@mediatek.com>,
         CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
@@ -41,25 +41,24 @@ CC:     Sean Wang <sean.wang@mediatek.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
         Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] mt76: mt7921: enable VO tx aggregation
-Date:   Wed, 4 Aug 2021 18:11:53 +0800
-Message-ID: <0747f9249b2d7902f9cb514861342a9940d49e0d.1628071231.git.deren.wu@mediatek.com>
+Subject: [PATCH v2] mt76: mt7921: enable VO tx aggregation
+Date:   Wed, 4 Aug 2021 18:31:18 +0800
+Message-ID: <889fc1f28a8402f82cb83243af4916c3311c3eb1.1628072837.git.deren.wu@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
 Content-Type: text/plain
-X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Deren Wu <deren.wu@mediatek.com>
 
-From: YN Chen <YN.Chen@mediatek.com>
-
 Avoid throughput drop in VO streaming, enable TX BA by default.
 
 Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: YN Chen <YN.Chen@mediatek.com>
+---
+v1 -> v2 : commit format adjustment
 ---
  drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 2 --
  1 file changed, 2 deletions(-)
