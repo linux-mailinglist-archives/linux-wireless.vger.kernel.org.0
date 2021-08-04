@@ -2,117 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CA313E0176
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 14:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D5C73E0230
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 15:43:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237680AbhHDMxS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Aug 2021 08:53:18 -0400
-Received: from lpdvsmtp11.broadcom.com ([192.19.166.231]:34104 "EHLO
-        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237536AbhHDMxQ (ORCPT
+        id S238505AbhHDNn4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Aug 2021 09:43:56 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.52]:45600 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237305AbhHDNn4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Aug 2021 08:53:16 -0400
-Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
-        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id ACB452476F;
-        Wed,  4 Aug 2021 05:53:03 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com ACB452476F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1628081583;
-        bh=z4s64varXqPrB/Ah1GYt031f9jlBpcvMwZyS8AqsYoE=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=G1Sr5s30DDofwX/qt8U0gnPYGcxck1ZkdZYjNB2m8lgOeTQkudarVlE8vxL/ieFu+
-         H6PtH1yhyfjBXPUAsGNtHsupj1TVuA00dEk8/1vNVLnVPbQ4+HteFzX6hrufcAqJVb
-         7TQTC5rkoDt2CJnczZfh0YTdLup0Hi0kVN18b6x8=
-Received: from [10.230.42.155] (unknown [10.230.42.155])
-        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id F42191874BD;
-        Wed,  4 Aug 2021 05:52:59 -0700 (PDT)
-Subject: Re: [PATCH] brcmfmac: firmware: Fix firmware loading
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Stefan Hansson <newbyte@disroot.org>
-References: <20210803232746.3389570-1-linus.walleij@linaro.org>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <f9fd6e70-783c-8d53-036a-a876ca8c0237@broadcom.com>
-Date:   Wed, 4 Aug 2021 14:52:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+        Wed, 4 Aug 2021 09:43:56 -0400
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.122])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 18AEB1C0069
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Aug 2021 13:43:42 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id E08FE40074
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Aug 2021 13:43:41 +0000 (UTC)
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 8065313C2B1;
+        Wed,  4 Aug 2021 06:43:41 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8065313C2B1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1628084621;
+        bh=KtXSQ9BeAexWGA+yypCZ6tWcKT9Meri47z5Kjke8ylU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=izkWIkBF7HxbM82XTzlenEIL6yvEgnNe3VMdXrdNX723sHdNpk77pIOkgL0sdRCZ0
+         RrspMkrEKM+Ur9tW08LrR4wyOItk0U0sk1EAAeDbp7xro6adGCtlaQPFt03m/vRdF5
+         g7fzT8FWXxlHHR3AW5Txn3TgAjlzUJK3CrqvTezM=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH v7 1/7] mt76: mt7915: add ethtool stats support
+Date:   Wed,  4 Aug 2021 06:43:29 -0700
+Message-Id: <20210804134337.2582-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20210803232746.3389570-1-linus.walleij@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-MDID: 1628084622-nzd6gGG_j0GK
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 04-08-2021 01:27, Linus Walleij wrote:
-> The patch that would first try the board-specific firmware
-> had a bug because the fallback would not be called: the
-> asynchronous interface is used meaning request_firmware_nowait()
-> returns 0 immediately.
-> 
-> Harden the firmware loading like this:
-> 
-> - If we cannot build an alt_path (like if no board_type is
->    specified) just request the first firmware without any
->    suffix, like in the past.
-> 
-> - If the lookup of a board specific firmware fails, we get
->    a NULL fw in the async callback, so just try again without
->    the alt_path. Use a static variable to check that we do not
->    try this indefinitely.
-> 
-> - Rename the brcm_fw_request_done to brcm_fw_request_done_first
->    reflecting the fact that this callback is only used for the
->    first (main) firmware file, and drop the unnecessary
->    prototype.
-> 
-> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
-> Cc: Dmitry Osipenko <digetx@gmail.com>
-> Cc: Stefan Hansson <newbyte@disroot.org>
+From: Ben Greear <greearb@candelatech.com>
 
-One remark below, but you may add...
+This exposes some tx-path stats to the ethtool API, so that
+ethtool -S wlanX provides some more useful info.
 
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
->   .../broadcom/brcm80211/brcmfmac/firmware.c    | 29 +++++++++++++------
->   1 file changed, 20 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-> index adfdfc654b10..71ca4a517e42 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-> @@ -431,8 +431,6 @@ struct brcmf_fw {
->   	void (*done)(struct device *dev, int err, struct brcmf_fw_request *req);
->   };
->   
-> -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx);
-> -
->   #ifdef CONFIG_EFI
->   /* In some cases the EFI-var stored nvram contains "ccode=ALL" or "ccode=XV"
->    * to specify "worldwide" compatible settings, but these 2 ccode-s do not work
-> @@ -638,11 +636,26 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
->   	return request_firmware(fw, cur->path, fwctx->dev);
->   }
->   
-> -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx)
-> +static void brcmf_fw_request_done_first(const struct firmware *fw, void *ctx)
->   {
->   	struct brcmf_fw *fwctx = ctx;
-> +	struct brcmf_fw_item *first = &fwctx->req->items[0];
-> +	static bool retry = true;
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
 
-using a static seems tricky to me when there are multiple supported 
-devices in a system (like in mine ;-)). Probably better to add the flag 
-in struct brcmf_fw.
+v7:  Remove code added in this series but deleted in next
 
-Regards,
-Arend
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 139 ++++++++++++++++++
+ 1 file changed, 139 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 48b5e2051bad..994f84e9d7aa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1028,6 +1028,142 @@ static void mt7915_sta_set_decap_offload(struct ieee80211_hw *hw,
+ 	mt7915_mcu_sta_update_hdr_trans(dev, vif, sta);
+ }
+ 
++static const char mt7915_gstrings_stats[][ETH_GSTRING_LEN] = {
++	"tx_ampdu_len:0-1",
++	"tx_ampdu_len:2-10",
++	"tx_ampdu_len:11-19",
++	"tx_ampdu_len:20-28",
++	"tx_ampdu_len:29-37",
++	"tx_ampdu_len:38-46",
++	"tx_ampdu_len:47-55",
++	"tx_ampdu_len:56-79",
++	"tx_ampdu_len:80-103",
++	"tx_ampdu_len:104-127",
++	"tx_ampdu_len:128-151",
++	"tx_ampdu_len:152-175",
++	"tx_ampdu_len:176-199",
++	"tx_ampdu_len:200-223",
++	"tx_ampdu_len:224-247",
++	"ba_miss_count",
++	"tx_beamformer_ppdu_iBF",
++	"tx_beamformer_ppdu_eBF",
++	"tx_beamformer_rx_feedback_all",
++	"tx_beamformer_rx_feedback_he",
++	"tx_beamformer_rx_feedback_vht",
++	"tx_beamformer_rx_feedback_ht",
++	"tx_beamformer_rx_feedback_bw", /* zero based idx: 20, 40, 80, 160 */
++	"tx_beamformer_rx_feedback_nc",
++	"tx_beamformer_rx_feedback_nr",
++	"tx_beamformee_ok_feedback_pkts",
++	"tx_beamformee_feedback_trig",
++	"tx_mu_beamforming",
++	"tx_mu_mpdu",
++	"tx_mu_successful_mpdu",
++	"tx_su_successful_mpdu",
++	"tx_msdu_pack_1",
++	"tx_msdu_pack_2",
++	"tx_msdu_pack_3",
++	"tx_msdu_pack_4",
++	"tx_msdu_pack_5",
++	"tx_msdu_pack_6",
++	"tx_msdu_pack_7",
++	"tx_msdu_pack_8",
++};
++
++#define MT7915_SSTATS_LEN ARRAY_SIZE(mt7915_gstrings_stats)
++
++/* Ethtool related API */
++static
++void mt7915_get_et_strings(struct ieee80211_hw *hw,
++			   struct ieee80211_vif *vif,
++			   u32 sset, u8 *data)
++{
++	if (sset == ETH_SS_STATS)
++		memcpy(data, *mt7915_gstrings_stats,
++		       sizeof(mt7915_gstrings_stats));
++}
++
++static
++int mt7915_get_et_sset_count(struct ieee80211_hw *hw,
++			     struct ieee80211_vif *vif, int sset)
++{
++	if (sset == ETH_SS_STATS)
++		return MT7915_SSTATS_LEN;
++
++	return 0;
++}
++
++static
++void mt7915_get_et_stats(struct ieee80211_hw *hw,
++			 struct ieee80211_vif *vif,
++			 struct ethtool_stats *stats, u64 *data)
++{
++	struct mt7915_dev *dev = mt7915_hw_dev(hw);
++	struct mt7915_phy *phy = mt7915_hw_phy(hw);
++
++	/* TODO:  These are mostly dev-wide stats at this point.
++	 *  Get some per-vif stats?
++	 */
++
++	/* See mt7915_ampdu_stat_read_phy, etc */
++	bool ext_phy = phy != &dev->phy;
++	int i, n, cnt;
++	int ei = 0;
++
++	if (!phy)
++		return;
++
++	/* Tx ampdu stat */
++	n = ext_phy ? ARRAY_SIZE(dev->mt76.aggr_stats) / 2 : 0;
++	for (i = 0; i < 15 /*ARRAY_SIZE(bound)*/; i++)
++		data[ei++] = dev->mt76.aggr_stats[i + n];
++
++	data[ei++] = phy->mib.ba_miss_cnt;
++
++	/* Tx Beamformer monitor */
++	cnt = mt76_rr(dev, MT_ETBF_TX_APP_CNT(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_TX_IBF_CNT, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_TX_EBF_CNT, cnt);
++
++	/* Tx Beamformer Rx feedback monitor */
++	cnt = mt76_rr(dev, MT_ETBF_RX_FB_CNT(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_ALL, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_HE, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_VHT, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_HT, cnt);
++
++	cnt = mt76_rr(dev, MT_ETBF_RX_FB_CONT(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_BW, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_NC, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_RX_FB_NR, cnt);
++
++	/* Tx Beamformee Rx NDPA & Tx feedback report */
++	cnt = mt76_rr(dev, MT_ETBF_TX_NDP_BFRP(ext_phy));
++	data[ei++] = FIELD_GET(MT_ETBF_TX_FB_CPL, cnt);
++	data[ei++] = FIELD_GET(MT_ETBF_TX_FB_TRI, cnt);
++
++	/* Tx SU & MU counters */
++	cnt = mt76_rr(dev, MT_MIB_SDR34(ext_phy));
++	data[ei++] = FIELD_GET(MT_MIB_MU_BF_TX_CNT, cnt);
++
++	cnt = mt76_rr(dev, MT_MIB_DR8(ext_phy));
++	data[ei++] = cnt;
++
++	cnt = mt76_rr(dev, MT_MIB_DR9(ext_phy));
++	data[ei++] = cnt; /* MU MPDU SUccessful */
++
++	cnt = mt76_rr(dev, MT_MIB_DR11(ext_phy));
++	data[ei++] = cnt; /* SU MPDU successful */
++
++	/* TODO:  External phy too?? */
++
++	/* Tx amsdu info (pack-count histogram) */
++	for (i = 0; i < 8; i++)
++		data[ei++] = mt76_rr(dev,  MT_PLE_AMSDU_PACK_MSDU_CNT(i));
++
++	WARN_ON(ei != MT7915_SSTATS_LEN);
++}
++
+ const struct ieee80211_ops mt7915_ops = {
+ 	.tx = mt7915_tx,
+ 	.start = mt7915_start,
+@@ -1052,6 +1188,9 @@ const struct ieee80211_ops mt7915_ops = {
+ 	.get_txpower = mt76_get_txpower,
+ 	.channel_switch_beacon = mt7915_channel_switch_beacon,
+ 	.get_stats = mt7915_get_stats,
++	.get_et_sset_count = mt7915_get_et_sset_count,
++	.get_et_stats = mt7915_get_et_stats,
++	.get_et_strings = mt7915_get_et_strings,
+ 	.get_tsf = mt7915_get_tsf,
+ 	.set_tsf = mt7915_set_tsf,
+ 	.offset_tsf = mt7915_offset_tsf,
+-- 
+2.20.1
+
