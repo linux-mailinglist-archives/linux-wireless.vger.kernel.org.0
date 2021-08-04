@@ -2,176 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F419F3E03F4
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 17:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A46F3E043B
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Aug 2021 17:33:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238834AbhHDPNw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Aug 2021 11:13:52 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:58698
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237114AbhHDPNv (ORCPT
+        id S239060AbhHDPdI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Aug 2021 11:33:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41330 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239065AbhHDPc5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Aug 2021 11:13:51 -0400
-Received: from localhost.localdomain (111-240-142-2.dynamic-ip.hinet.net [111.240.142.2])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id C3D1E3F0FC;
-        Wed,  4 Aug 2021 15:13:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1628090018;
-        bh=2gLssv6zfXEbS3M1XEEg2CclWAXeqhmsLnOeaUBQ4dw=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=Rq9p9eYkWFrpXHPeddwWgMU2pwPLCvrvEWC3LAER+1QJbA6Q1cT2MkiHfS8s8sd83
-         pnStAIY3TQgINh0IS8bJy5PSAK6n5NZ7jF8N9YZ8eWc0EhTPgw2biULxU7gQGds63A
-         0EUXqZ6DgWw4ky+2Sc6k18PkrwgFWgI/P+S1J+Ww2WOOx6yUurOri5UViC+6MMn3vy
-         6+wcyRhcCSJgPFe8jzqwXKQTR4m5esXT8qfIoKOZ/QOHdsNyq7j22aVX5bLumQ0Fal
-         VfWXz7ADN81Pz9eXmBOcv/V/qzqhSkwcw4OLevZuwpi6ydSjITFeZ4bcGhuJVQMtso
-         DEv07sn4I7jAA==
-From:   chris.chiu@canonical.com
-To:     jes.sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     code@reto-schneider.ch, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chris Chiu <chris.chiu@canonical.com>
-Subject: [PATCH v2] rtl8xxxu: Fix the handling of TX A-MPDU aggregation
-Date:   Wed,  4 Aug 2021 23:13:25 +0800
-Message-Id: <20210804151325.86600-1-chris.chiu@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Wed, 4 Aug 2021 11:32:57 -0400
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ED89C061799
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Aug 2021 08:32:43 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id e5so3032964ljp.6
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Aug 2021 08:32:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gLf04e+Zhw8WzOuyHOsmOkdODLmYUmMx1YbBO54G3Ms=;
+        b=EhZgW40m+cqkNcrmILtqoajz2gvAGaADEVvMSIQbDQsakbbeY0hTu+ZSHqsUntaFZk
+         vixMoPJYHJoKZ7F7k+11fEaFizEqMZjczlXt67PtyEvJsa87MajvZ5epEc4oHT4Di8L9
+         X90uUuWUCzgOhBFf8DgyiRo8iKJvt453mWo6Ikrfc7UOKMlMK/aEPQpm1GgAg8CHeTpO
+         is4o0epeoRyLUwbRpj77Zl1KuSKPdshErfthiSWiASproOTpCWnWXAX2fnLsKg1uVyZS
+         XdwVrBaJHAqYXaXuqHbtFFNKiJ7HfbJSlill1cZU8PjMsYov50ilXymIYLAobG+bH49K
+         HhDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gLf04e+Zhw8WzOuyHOsmOkdODLmYUmMx1YbBO54G3Ms=;
+        b=LmhH+qd1JpqxmgOQ3lcbS2pnvmhkk6LpgSacPBQ3pCSLJnN3ch8ELSOvDzd7yAQlKK
+         oiUiWFKMjpjxEXVjtzC1Cv7Xpjl1N4cIkzpwzE4eFJn22vZ0JQG5h5zCX9vPdedDxLVD
+         2Hi5d2GURcY1QtgwIxVZchSBvVzu3/JnbqUrc+rWWvinAo2qhDXScZeAsarA7J5WkjB0
+         qINjL1eg9rJHCXJSr/tNmzYOSuHhXmwJgBzqxuEzXJxeN6cSeYzDWIhDwJkFbQRfpmaT
+         VMFvO465GXFJaeQ9vRJRimnNIrE705h//q4eLOqqt9PIR0tsOG0K9dHSnvJ9xw7sg2IZ
+         4Rdw==
+X-Gm-Message-State: AOAM5329NvBOBqR6+yae52lxed9tHcK1FnSSg1FykBTVQOSJyGDmDgfF
+        RzwvNcFGp37JHAKCW8aQWZRna9OpbEoSZWIvVQFhMA==
+X-Google-Smtp-Source: ABdhPJxQhmlG2bRdcKVDdkwqrl423FhmA/8AMOVB9CESPF3E6prmZXntqiWiQTDD+OIgowVVE8lWp3rB7fZ+RlhbOxY=
+X-Received: by 2002:a2e:888f:: with SMTP id k15mr43777lji.326.1628091161725;
+ Wed, 04 Aug 2021 08:32:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210803232746.3389570-1-linus.walleij@linaro.org> <242b823b-627d-de3c-596d-0f13e28ccd47@gmail.com>
+In-Reply-To: <242b823b-627d-de3c-596d-0f13e28ccd47@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 4 Aug 2021 17:32:30 +0200
+Message-ID: <CACRpkdZE2j6zROA+ijdxBhZGfjCicrWXmqnB-FkSXvdxSOFgJQ@mail.gmail.com>
+Subject: Re: [PATCH] brcmfmac: firmware: Fix firmware loading
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stefan Hansson <newbyte@disroot.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chris Chiu <chris.chiu@canonical.com>
+On Wed, Aug 4, 2021 at 4:57 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 
-The TX A-MPDU aggregation is not handled in the driver since the
-ieee80211_start_tx_ba_session has never been started properly.
-Start and stop the TX BA session by tracking the TX aggregation
-status of each TID. Fix the ampdu_action and the tx descriptor
-accordingly with the given TID.
+> Works, thanks!
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
----
+I record this as Tested-by! :)
 
-Changelog:
-  v2:
-   - use data type BITMAP for tx_aggr_started instead of bool array
-
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  2 ++
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 33 ++++++++++++++-----
- 2 files changed, 26 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 01735776345a..7ddce3c3f0c4 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1378,6 +1378,8 @@ struct rtl8xxxu_priv {
- 	u8 no_pape:1;
- 	u8 int_buf[USB_INTR_CONTENT_LENGTH];
- 	u8 rssi_level;
-+	DECLARE_BITMAP(tx_aggr_started, IEEE80211_NUM_TIDS);
-+	DECLARE_BITMAP(tid_tx_operational, IEEE80211_NUM_TIDS);
- 	/*
- 	 * Only one virtual interface permitted because only STA mode
- 	 * is supported and no iface_combinations are provided.
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index ac1061caacd6..3285a91efb91 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4805,6 +4805,8 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 	struct ieee80211_rate *tx_rate = ieee80211_get_tx_rate(hw, tx_info);
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 	struct device *dev = &priv->udev->dev;
-+	u8 *qc = ieee80211_get_qos_ctl(hdr);
-+	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
- 	u32 rate;
- 	u16 rate_flags = tx_info->control.rates[0].flags;
- 	u16 seq_number;
-@@ -4828,7 +4830,7 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 
- 	tx_desc->txdw3 = cpu_to_le32((u32)seq_number << TXDESC32_SEQ_SHIFT);
- 
--	if (ampdu_enable)
-+	if (ampdu_enable && test_bit(tid, priv->tid_tx_operational))
- 		tx_desc->txdw1 |= cpu_to_le32(TXDESC32_AGG_ENABLE);
- 	else
- 		tx_desc->txdw1 |= cpu_to_le32(TXDESC32_AGG_BREAK);
-@@ -4876,6 +4878,8 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 	struct device *dev = &priv->udev->dev;
- 	struct rtl8xxxu_txdesc40 *tx_desc40;
-+	u8 *qc = ieee80211_get_qos_ctl(hdr);
-+	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
- 	u32 rate;
- 	u16 rate_flags = tx_info->control.rates[0].flags;
- 	u16 seq_number;
-@@ -4902,7 +4906,7 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 
- 	tx_desc40->txdw9 = cpu_to_le32((u32)seq_number << TXDESC40_SEQ_SHIFT);
- 
--	if (ampdu_enable)
-+	if (ampdu_enable && test_bit(tid, priv->tid_tx_operational))
- 		tx_desc40->txdw2 |= cpu_to_le32(TXDESC40_AGG_ENABLE);
- 	else
- 		tx_desc40->txdw2 |= cpu_to_le32(TXDESC40_AGG_BREAK);
-@@ -5015,12 +5019,19 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
- 	if (ieee80211_is_data_qos(hdr->frame_control) && sta) {
- 		if (sta->ht_cap.ht_supported) {
- 			u32 ampdu, val32;
-+			u8 *qc = ieee80211_get_qos_ctl(hdr);
-+			u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
- 
- 			ampdu = (u32)sta->ht_cap.ampdu_density;
- 			val32 = ampdu << TXDESC_AMPDU_DENSITY_SHIFT;
- 			tx_desc->txdw2 |= cpu_to_le32(val32);
- 
- 			ampdu_enable = true;
-+
-+			if (!test_bit(tid, priv->tx_aggr_started) &&
-+			    !(skb->protocol == cpu_to_be16(ETH_P_PAE)))
-+				if (!ieee80211_start_tx_ba_session(sta, tid, 0))
-+					set_bit(tid, priv->tx_aggr_started);
- 		}
- 	}
- 
-@@ -6096,6 +6107,7 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	struct device *dev = &priv->udev->dev;
- 	u8 ampdu_factor, ampdu_density;
- 	struct ieee80211_sta *sta = params->sta;
-+	u16 tid = params->tid;
- 	enum ieee80211_ampdu_mlme_action action = params->action;
- 
- 	switch (action) {
-@@ -6108,17 +6120,20 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		dev_dbg(dev,
- 			"Changed HT: ampdu_factor %02x, ampdu_density %02x\n",
- 			ampdu_factor, ampdu_density);
--		break;
-+		return IEEE80211_AMPDU_TX_START_IMMEDIATE;
-+	case IEEE80211_AMPDU_TX_STOP_CONT:
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
--		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP_FLUSH\n", __func__);
--		rtl8xxxu_set_ampdu_factor(priv, 0);
--		rtl8xxxu_set_ampdu_min_space(priv, 0);
--		break;
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
--		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP_FLUSH_CONT\n",
--			 __func__);
-+		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_STOP\n", __func__);
- 		rtl8xxxu_set_ampdu_factor(priv, 0);
- 		rtl8xxxu_set_ampdu_min_space(priv, 0);
-+		clear_bit(tid, priv->tx_aggr_started);
-+		clear_bit(tid, priv->tid_tx_operational);
-+		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
-+		break;
-+	case IEEE80211_AMPDU_TX_OPERATIONAL:
-+		dev_dbg(dev, "%s: IEEE80211_AMPDU_TX_OPERATIONAL\n", __func__);
-+		set_bit(tid, priv->tid_tx_operational);
- 		break;
- 	case IEEE80211_AMPDU_RX_START:
- 		dev_dbg(dev, "%s: IEEE80211_AMPDU_RX_START\n", __func__);
--- 
-2.20.1
-
+Yours,
+Linus Walleij
