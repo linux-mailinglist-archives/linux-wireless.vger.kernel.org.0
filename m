@@ -2,107 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CAF23E0C2C
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 03:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C13E3E0E87
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 08:44:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237970AbhHEBpB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Aug 2021 21:45:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38532 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237962AbhHEBpB (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Aug 2021 21:45:01 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85A66C061798
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Aug 2021 18:44:46 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id h9so4876901ljq.8
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Aug 2021 18:44:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=EKlnp45pcNqPON8PnE65HNTmjyovSu1kzs8bqYr1SpE=;
-        b=SPBB7ytNsoAC7LvJoToTUNikQHk1/XBSLm8lv/lb6jIqH9pdXJlupdV6UsrWuVfy5U
-         Qd+0JJZOGnhTWbRYyQzmEAvQY6CzqPx+npU5rYe1KL1KW0pIFF4O+2pKCrBERWmCsL1n
-         HCJ/UQiYxhIU4F9VoBtoXjVw6R7NC3V+ek1pk5NHQh+Gk/uzMEMv3spMDcfP+m/NCRiK
-         Lee3I2l1AGTt6MB9gf+ZlVncTXCwCe3fQuYk+KLEkce5pEuEkVejDATUQm7W+r9vcD9G
-         dWX38GiB3pHf8BBATHAaCfshgHQOC4f8au8vcpcL/4ELKZaYyEfqrHX4my2sqP2G7yt1
-         0JlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=EKlnp45pcNqPON8PnE65HNTmjyovSu1kzs8bqYr1SpE=;
-        b=cEUElxpq+Et8Vm8SxdKDWblC37Ms3wkVsk+F5ogKYtcJvvxx+xQ+FEZU0ZOz7Oyxte
-         1DG+aBzBW2ide9Gka5y01uWeLuAbrk5Crc8iy2ZerncVirFU/o2ZezMI/6Ggq2BAytyL
-         UNhv7t0JoZI1WE6pUVKlH5jHFsQCidbxtFD1nYE/UItDrmG379F+KAgsH9NvzCRPeGqs
-         MvkS+5uTsxsdIhCC9VwZq+tdlrAZ+36TM2qxFu6qWxv/aDG16q9+irxE8LKIYiChDPz6
-         O+4QcY7JRPcHROO/tX1dxjVphpQxYY/xTgoQ6nfWLjvbN1v6L3z+UziaIO/xBlMQ9Hb3
-         D/sw==
-X-Gm-Message-State: AOAM531j/9JrhcNdPDhDqWKFgJdlAcsQnS2u8HE8OGs+nxs54CDZqT72
-        0BPNQR/TZMT/v3laUH+7HzI=
-X-Google-Smtp-Source: ABdhPJwan1jWHlxdvquCwGdqwJ8Z0XOZe2dtJZGiRINivi/UmrI+gOWQ0NhuxGfd7FgsrosbanoVsw==
-X-Received: by 2002:a2e:80c6:: with SMTP id r6mr1446262ljg.138.1628127884872;
-        Wed, 04 Aug 2021 18:44:44 -0700 (PDT)
-Received: from [192.168.2.145] (46-138-65-182.dynamic.spd-mgts.ru. [46.138.65.182])
-        by smtp.googlemail.com with ESMTPSA id q13sm352718lfu.272.2021.08.04.18.44.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Aug 2021 18:44:44 -0700 (PDT)
-Subject: Re: [PATCH v2] brcmfmac: firmware: Fix firmware loading
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Stefan Hansson <newbyte@disroot.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-References: <20210804153434.3429348-1-linus.walleij@linaro.org>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <0f439074-83ea-087d-7eec-aa6d4d3d4689@gmail.com>
-Date:   Thu, 5 Aug 2021 04:44:43 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S237819AbhHEGpI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Aug 2021 02:45:08 -0400
+Received: from m12-13.163.com ([220.181.12.13]:48310 "EHLO m12-13.163.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231418AbhHEGpH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Aug 2021 02:45:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=RfB/J
+        nJf9EP8SNAwmDp79LofGOgEFWPMAYpseX6FoDI=; b=FlCE++Mc+hr6Q/36HOak7
+        FAaK3PAbnvhXSTYyQ8TxErZ1xQ5O1cKDqFvIaHDPZBc1h3vqkYGNpgyXkHrvSrui
+        bd+p5//Ew5XKarrVVvhsxOFWCvVKhHoZdZRiZpF66XqzmpxGLJSqSjaAmvY7EwmV
+        N4a5YY8e6X4l9nOHeme6iI=
+Received: from COOL-20201222LC.ccdomain.com (unknown [218.94.48.178])
+        by smtp9 (Coremail) with SMTP id DcCowAA3PZHKiAthGZjwOA--.41047S2;
+        Thu, 05 Aug 2021 14:44:30 +0800 (CST)
+From:   dingsenjie@163.com
+To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dingsenjie <dingsenjie@yulong.com>
+Subject: [PATCH] net: mac80211: Remove unnecessary variable and label
+Date:   Thu,  5 Aug 2021 14:43:49 +0800
+Message-Id: <20210805064349.202148-1-dingsenjie@163.com>
+X-Mailer: git-send-email 2.21.0.windows.1
 MIME-Version: 1.0
-In-Reply-To: <20210804153434.3429348-1-linus.walleij@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: DcCowAA3PZHKiAthGZjwOA--.41047S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AF48trWfZFW8Wr4rZw47urg_yoW8Xw1xpF
+        9xK34DtrWkJr15Aw1rAryqqF95Cr40ka40gr4xJ3Z3ZFsI9rn8Gr1Uuw4FqFyYkFZrt34a
+        vFWv9r45Zw1DGrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jmwZ7UUUUU=
+X-Originating-IP: [218.94.48.178]
+X-CM-SenderInfo: 5glqw25hqmxvi6rwjhhfrp/1tbiHgThyFSIwHli5QABsQ
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-04.08.2021 18:34, Linus Walleij пишет:
-> +		fwctx->tested_board_variant = false;
+From: dingsenjie <dingsenjie@yulong.com>
 
-This shouldn't be really needed, isn't it?
+The variable ret and label just used as return, so we delete it and
+use the return statement instead of the goto statement.
 
->  		ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
->  					      fwctx->dev, GFP_KERNEL, fwctx,
-> -					      brcmf_fw_request_done);
-> +					      brcmf_fw_request_done_first);
->  		kfree(alt_path);
-> -	}
-> -	/* Else try canonical path */
-> -	if (ret) {
+Signed-off-by: dingsenjie <dingsenjie@yulong.com>
+---
+ net/mac80211/ibss.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
+
+diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
+index 1f552f3..9115b68 100644
+--- a/net/mac80211/ibss.c
++++ b/net/mac80211/ibss.c
+@@ -489,7 +489,6 @@ int ieee80211_ibss_csa_beacon(struct ieee80211_sub_if_data *sdata,
+ 	const struct cfg80211_bss_ies *ies;
+ 	u16 capability = WLAN_CAPABILITY_IBSS;
+ 	u64 tsf;
+-	int ret = 0;
+ 
+ 	sdata_assert_lock(sdata);
+ 
+@@ -501,10 +500,8 @@ int ieee80211_ibss_csa_beacon(struct ieee80211_sub_if_data *sdata,
+ 				ifibss->ssid_len, IEEE80211_BSS_TYPE_IBSS,
+ 				IEEE80211_PRIVACY(ifibss->privacy));
+ 
+-	if (WARN_ON(!cbss)) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
++	if (WARN_ON(!cbss))
++		return -EINVAL;
+ 
+ 	rcu_read_lock();
+ 	ies = rcu_dereference(cbss->ies);
+@@ -520,18 +517,14 @@ int ieee80211_ibss_csa_beacon(struct ieee80211_sub_if_data *sdata,
+ 					   sdata->vif.bss_conf.basic_rates,
+ 					   capability, tsf, &ifibss->chandef,
+ 					   NULL, csa_settings);
+-	if (!presp) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
++	if (!presp)
++		return -ENOMEM;
+ 
+ 	rcu_assign_pointer(ifibss->presp, presp);
+ 	if (old_presp)
+ 		kfree_rcu(old_presp, rcu_head);
+ 
+ 	return BSS_CHANGED_BEACON;
+- out:
+-	return ret;
+ }
+ 
+ int ieee80211_ibss_finish_csa(struct ieee80211_sub_if_data *sdata)
+-- 
+1.9.1
 
 
-> +	} else {
-> +		fwctx->tested_board_variant = true;
->  		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
->  					      fwctx->dev, GFP_KERNEL, fwctx,
-> -					      brcmf_fw_request_done);
-> +					      brcmf_fw_request_done_first);
->  	}
->  	if (ret < 0)
-> -		brcmf_fw_request_done(NULL, fwctx);
-> +		brcmf_fw_request_done_first(NULL, fwctx);
-
-This "else" can be replaced with:
-
-if (!alt_path || ret < 0)
-	brcmf_fw_request_done(NULL, fwctx);
