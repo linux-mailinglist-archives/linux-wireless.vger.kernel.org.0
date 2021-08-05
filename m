@@ -2,54 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E245E3E1123
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 11:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A98D3E1144
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 11:27:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239988AbhHEJSV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Aug 2021 05:18:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55024 "EHLO
+        id S232888AbhHEJ15 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Aug 2021 05:27:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239957AbhHEJST (ORCPT
+        with ESMTP id S229913AbhHEJ15 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Aug 2021 05:18:19 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5ED8C061765
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Aug 2021 02:18:04 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id z2so9807862lft.1
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Aug 2021 02:18:04 -0700 (PDT)
+        Thu, 5 Aug 2021 05:27:57 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E103C061765
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Aug 2021 02:27:43 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id a7so6171037ljq.11
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Aug 2021 02:27:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=4uLXn1AGtC/+MfcLgiyTSI/T9I40ie2kMxk/wKlyuPw=;
-        b=k7XnMiTF7VyVC+yB8C3p7B3wtRyHrB/mEIJFIdGcPgk6uCuLxgicTTaekDqJr20aoK
-         vrvzNK9b16scOqPJO1e3KivprKsRFi2s0YaXnoAFlLqZjhQvD7MHhQws2InhJz7NeUIo
-         1Tc+aNzckUCbqJXByRvvrT0KtIweizo0QumEZSCKioGBf6IxINArlxqdcxbnWoWD/uRm
-         6NXogGfL25sYjqMITbT8zorcYkuxFF8falI0Wc1M0aVXG1CCuCuY69SA+WmjP4SF202W
-         H8nFP7R0YKO/Pl0YrOt6S2dq27j2Q20dxoYFcEYrBpUth0kIrPh08NYjU+OPNVaBuNkG
-         zg8w==
+        bh=hL26yHOhw1C0P6uqdCGDAIN4iA8hDZQju3wZ2sJAocQ=;
+        b=Mq8L8ExV56AclIfwXPGNPai4cblMb9qaQctaht+oXMrpbY/vvHcqiYr/V9+tvRvFp2
+         8j8IOL4Tf79OWLuk4kGdy5NF6E10Kp2yyrA2NIH4hGFT0ZHz8i1hmIIMXdHZtEv0Kmed
+         ArXh0I9aWOwgfLZKLsD6LFPjTpFQ2JL7Em2UclFwWmhCyd3p46d5Z5eaEMKnTpe7hxzB
+         VHu8EOVZJfJKeT8C2pkcQ8i29Ym9zbEAqZk89n7WX5mZwSY63v72aCNEMPszX962rVlo
+         uqzdPw8YnnSlppj8wfnJPi7JHmTWceAA/llIP36FXGRl9OXZFHpHOnomF2tWRyXrMgzS
+         tu8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=4uLXn1AGtC/+MfcLgiyTSI/T9I40ie2kMxk/wKlyuPw=;
-        b=tIrm0gdaG5VEqBuWeYEwsFnLehz9mRusp5+v/prXB3wnygoKC6aS1AiTW89bpk1yLM
-         mSEp91LZ/w5l7oWqFJ4gEG8KenQb5qwtIKM5rSMrVZzUQyznCIjrqkVXwRlOCAtr4Zi8
-         hzpfog2UYgkqoLwtpqFEBOOYzbyjxajxET6mln3jkhf8DMpXaYXbabxYQ4vArwdSKfn8
-         lxUNdtTU4u1em1ERtGDubis2knlzZTtTOHUaWzyxKAcZxs5zGMHbkAD9CL7OPQN2/mX2
-         N7Tgw019jTT+3wlX9suhQIDj8z5ti7IBUkSmZ/Kicdqiu/uoBHSuszILHL47pMnlT12P
-         VqnQ==
-X-Gm-Message-State: AOAM533vc+Xwgf9UVr0xnGzbcJbDoUBjUJsCRiThQ+ETggZVgfYozdmc
-        0l/9YZj0VjEunWmC7uPNoyDooCTuswjREFYYSTvHaA==
-X-Google-Smtp-Source: ABdhPJyr4mBQsHi7eKjcLElt6HnWGpdqyEZ6sAX02TmFUR4yAw4zcypyKhmyePAqmIyKAvBM/kLQg9EAiXJnMMNdhKI=
-X-Received: by 2002:ac2:4c4c:: with SMTP id o12mr2844915lfk.157.1628155083038;
- Thu, 05 Aug 2021 02:18:03 -0700 (PDT)
+        bh=hL26yHOhw1C0P6uqdCGDAIN4iA8hDZQju3wZ2sJAocQ=;
+        b=QJVXpRpMVz1gAk5VuJxVKIMLx3vKrkuAn74xrvq3FDRwKH6847LOhWuxZ+KjJ7DbPx
+         meYNXTJm6DxxXuSvHF4njzCqACKrT/fUF5jAJUbhTR3kZJO8zhNasSj+A54KfcoLXvEw
+         Y5e5TNNEj6GoU2BdYnh9uWQj5R6OccCVzbXVJUwu6kuiKQj8NpZ23mAK/NPV6OGBhpaX
+         hhkCr3z1oaCZD90iqURgfaIPW1+jOTY+2x+GvT5zmGNncJ2Fx3MwDF5OmXKFukeoZq+W
+         4a0bvFW8Dc0UH6TxtWFf1ok4PFQUOuOSxmKz95aREqUXqTdEdTp78HS+UziMbYAjvRzh
+         EX0w==
+X-Gm-Message-State: AOAM530lTXaHgwK3u1BkwDtYMlwqPa3y37LtTdQCox1XGishCW2B7WsI
+        81LS8dAYSTDa+c7NXMvQjaEKW76Lf0TK8E5BDwjWOg==
+X-Google-Smtp-Source: ABdhPJzM6pI6v9xQQr4g18oEm/HYbjw8QzWXL1izSg1JLY+52wNvR1FNhDLLtvEdknIJFVS4UPe9IbjzAvuS7pED5GE=
+X-Received: by 2002:a2e:7c04:: with SMTP id x4mr2540382ljc.273.1628155661827;
+ Thu, 05 Aug 2021 02:27:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210804153434.3429348-1-linus.walleij@linaro.org> <74e24409-aeb2-5297-6888-7af2b1126ccd@gmail.com>
-In-Reply-To: <74e24409-aeb2-5297-6888-7af2b1126ccd@gmail.com>
+References: <20210804153434.3429348-1-linus.walleij@linaro.org> <0f439074-83ea-087d-7eec-aa6d4d3d4689@gmail.com>
+In-Reply-To: <0f439074-83ea-087d-7eec-aa6d4d3d4689@gmail.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 5 Aug 2021 11:17:51 +0200
-Message-ID: <CACRpkdam=PzCf4ojxb4ASjyPBmVM8ZDWDFXqX+BukhQ+f38J0A@mail.gmail.com>
+Date:   Thu, 5 Aug 2021 11:27:30 +0200
+Message-ID: <CACRpkdY_PrEus+DQ7PKH=1E5eMsDAS=M6ObB97TKUeP-vzeFZg@mail.gmail.com>
 Subject: Re: [PATCH v2] brcmfmac: firmware: Fix firmware loading
 To:     Dmitry Osipenko <digetx@gmail.com>
 Cc:     Arend van Spriel <aspriel@gmail.com>,
@@ -68,30 +68,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Aug 5, 2021 at 3:35 AM Dmitry Osipenko <digetx@gmail.com> wrote:
+On Thu, Aug 5, 2021 at 3:44 AM Dmitry Osipenko <digetx@gmail.com> wrote:
+
 > 04.08.2021 18:34, Linus Walleij =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
-> > +     bool tested_board_variant;
+> > +             fwctx->tested_board_variant =3D false;
 >
-> What about s/tested/tried/?
+> This shouldn't be really needed, isn't it?
 
-OK that is clearer, I fix!
+It is true in the sense that fwctx is allocated with kzalloc.
 
-> > -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx=
-)
-> > +static void brcmf_fw_request_done_first(const struct firmware *fw, voi=
-d *ctx)
+But it is done in a different function brcmf_fw_alloc_request()
+and it is not entirely clear that the allocated struct is not reused,
+and if someone refactors the code they could reuse it, so I add
+this just to be 100% sure that this gets set to false.
+
+Usually in the kernel when we have functions named *alloc*
+it is allocating objects that can later be reused several times
+(see the block layer for example), so I try to follow that pattern
+here and assume that fwctx can be reused.
+
+The only time I really rely on fields being zero is when the
+allocation is in the same base block, e.g. inside probe() or
+so.
+
+> > +     } else {
+> > +             fwctx->tested_board_variant =3D true;
+> >               ret =3D request_firmware_nowait(THIS_MODULE, true, first-=
+>path,
+> >                                             fwctx->dev, GFP_KERNEL, fwc=
+tx,
+> > -                                           brcmf_fw_request_done);
+> > +                                           brcmf_fw_request_done_first=
+);
+> >       }
+> >       if (ret < 0)
+> > -             brcmf_fw_request_done(NULL, fwctx);
+> > +             brcmf_fw_request_done_first(NULL, fwctx);
 >
-> Is it really worthwhile to rename this function? There is no "done_second=
-".
+> This "else" can be replaced with:
+>
+> if (!alt_path || ret < 0)
+>         brcmf_fw_request_done(NULL, fwctx);
 
-It is to reflect the actual use, because it fooled me as it could
-be interpreted (intuitively) as "this is called when all firmware requests
-are done" since it doesn't specify. But that is not the case, it is
-only called when done with the first first firmware in the list.
-Hence the name change.
-
-The philosophy is in line with Rusty Russell's API design hierarchy:
-http://sweng.the-davies.net/Home/rustys-api-design-manifesto
+Sorry I don't quite get this... both branches of the if/else clause will
+assign ret also if alt_path is set request_firmware_nowait() can return
+nonzero and then brcmf_fw_request_done() needs to get
+called?
 
 Yours,
 Linus Walleij
