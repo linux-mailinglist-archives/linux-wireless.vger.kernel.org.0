@@ -2,138 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A7553E1842
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 17:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8663E183F
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 17:39:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242281AbhHEPjv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Aug 2021 11:39:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58438 "EHLO
+        id S242201AbhHEPjq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Aug 2021 11:39:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242220AbhHEPjo (ORCPT
+        with ESMTP id S241840AbhHEPjm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Aug 2021 11:39:44 -0400
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83FCEC0613D5
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Aug 2021 08:39:30 -0700 (PDT)
-Received: by mail-pj1-x102f.google.com with SMTP id l19so9845973pjz.0
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Aug 2021 08:39:30 -0700 (PDT)
+        Thu, 5 Aug 2021 11:39:42 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED049C061765;
+        Thu,  5 Aug 2021 08:39:26 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id mz5-20020a17090b3785b0290176ecf64922so15722209pjb.3;
+        Thu, 05 Aug 2021 08:39:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ot7k522t7tkww/gX8P+bxa/STMEn0jLnSSwzpwYPO18=;
-        b=utic3nZYCnPeafOdB5uoaVtxojMNCLKIo2xKX9t82krXXWyGwcCFzlwckj6QdMlFXD
-         GLaEhJvWYX/fOONI+vz9BZhMifJBlAX7PLChJVqO975qI1icoCW0CcG2fn6+7QMNkiCv
-         Bg0U4OFesb9+eC+zI3YnpKcoJ/kRYrQa43DKeh/9Sv+Z+SSDfANVvAO1vOEFxlZ+N4IT
-         sKWWy55sqWsuvjP9/U4zqxB7jC3jkswfeocRKI3S1TVRUu4Yt65+HoVc4qsmW0sl7sLI
-         5jObu1fi7jCKCYeZkR3YoyedZnKfwKrB1WzmVfA2TuSTpUJE5LukyNcHwVWuU00AQdtD
-         f0zA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5vBIrdt8B8CVa9oETvI/wFhOCaIABa5EmEBz4zWZ01I=;
+        b=Gg6667v/ufxR+ZJaa1GECyIPiUAgnOnIHtmOWBZkrSlCb/f29ngyB/Y5YYjDO1b3zN
+         vOr0+vQUEhKQw3YDnTttWdS7WkkIV2K2ggxxOp0g0HAMXB6DTpqDBm7Rd8xIvEq8z1Vr
+         +nL45S2Q9gt3ZsnBXUroCx1LZm4/OmcfXAjuBc1WsU9hYUBsh/KuowOhuoDouAozO23Q
+         bNJxQir0bF8ekbmMGDXMxFoy3XU3K6mmPms56dKPNOQq2q6OAEFdTuYOTn53X1YnpSO+
+         Ic7LyGTKafpb4w9Gx8nLuXoW4FwpguvakzmZg5HiI/9hWi0OMNpbL7ZBen57OhmY6wte
+         0Pyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ot7k522t7tkww/gX8P+bxa/STMEn0jLnSSwzpwYPO18=;
-        b=o1j7EZktJRCYAhOxamCH9vqEz/kVZfNKjD6KOtzwhOlK0fstqk0cSrO4Dr1B6wEHGl
-         6RxdGhzmidujSEbzy/uD6set1Nc9KCda05+Ki9vJ3vr4CI7tW+acOh5L0i5sdlca1hjM
-         Pu0N2I4f/ar6dWiTzXtWCVocFdoCoik51VBBWdzFzEZyAiX90Ui+fGDP1XavYElg1HNT
-         ss5A2or1TNA9NZHkAoIfxMD/GmoJReh8NjpnQlOll6GC6bPap6WcvwC3QGm2QtS89xHI
-         6u7qPw363H5QzfhNxjW0yBb0evbvPCuFoPqenm2NYaa+VR+PmunbdDRtKzw471iXkgpM
-         g18A==
-X-Gm-Message-State: AOAM532RD0OlCt1S15pYNnC/BEDyAU+4B0ByVZvR8yBiAEEds6HyiXu2
-        B6z21uHjE+pJXI/yfpCZBGg=
-X-Google-Smtp-Source: ABdhPJzI6Osj7BruIbyH3v3jjgR8866LhUnUXyQp2+58ST7DxRr5rceLcY4XlVDKySf/AMl/sj3AYw==
-X-Received: by 2002:a62:1489:0:b029:336:162f:3417 with SMTP id 131-20020a6214890000b0290336162f3417mr148817pfu.14.1628177970105;
-        Thu, 05 Aug 2021 08:39:30 -0700 (PDT)
-Received: from lattitude.lan ([49.206.116.229])
-        by smtp.googlemail.com with ESMTPSA id m17sm7173437pfh.133.2021.08.05.08.39.28
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5vBIrdt8B8CVa9oETvI/wFhOCaIABa5EmEBz4zWZ01I=;
+        b=rupzMTPg4wTGstpifztfR2ScxRk2M1Ii/Y9gys3jnhviKyVpW7IJp2gJwQEC15n//q
+         iecM4yu4KWaXZNxdLP6ncMBCepqPACgmAOLjA+mnk3FeVwaHZW/GpBB9rTYbi+sXQtWG
+         2mYGpUZY7wjqdI+Va6rVvyt+3mAkixb8s5CBHQbPtV2nMg3qWnZfiVk8YxYUt96vkOU1
+         JzdgQCmqCbzM5B9hlbDjOGLT6TQOf/xLwIg5gaWyFLs6hbLzE+5UOC8X1Q56DhmWUKDm
+         EosP577l4V7PRM993TMIJPM4ho/bVwpU8QhPcKNrIxT4FW84VPoD52BXuiHawQyuFz+J
+         yHDw==
+X-Gm-Message-State: AOAM532D0eYnGO7Ewn3woPJvh0hgnY87SI8+O4v0xaIhyVqNosExL0ha
+        iVOG6kRC6NvA71Bt8XvF3fs=
+X-Google-Smtp-Source: ABdhPJzf3lTIGiMS4P/exM38/Nyj0q06ZBOyeQapWim+xLd79Q9eNN7cBIDMLwGU0eieDdUMrsVbNw==
+X-Received: by 2002:a62:bd15:0:b029:31c:a584:5f97 with SMTP id a21-20020a62bd150000b029031ca5845f97mr5935776pff.33.1628177966550;
+        Thu, 05 Aug 2021 08:39:26 -0700 (PDT)
+Received: from localhost.localdomain ([45.135.186.81])
+        by smtp.gmail.com with ESMTPSA id p53sm7222242pfw.143.2021.08.05.08.39.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Aug 2021 08:39:29 -0700 (PDT)
-From:   Gokul Sivakumar <gokulkumar792@gmail.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Gokul Sivakumar <gokulkumar792@gmail.com>,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH 2/2] iw: mesh: add new cmd to dump all the supported mesh config params at once
-Date:   Thu,  5 Aug 2021 21:08:07 +0530
-Message-Id: <20210805153807.645106-2-gokulkumar792@gmail.com>
+        Thu, 05 Aug 2021 08:39:26 -0700 (PDT)
+From:   Tuo Li <islituo@gmail.com>
+To:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
+        Tuo Li <islituo@gmail.com>, TOTE Robot <oslab@tsinghua.edu.cn>
+Subject: [PATCH] ath: dfs_pattern_detector: Fix possible null-pointer dereference in channel_detector_create()
+Date:   Thu,  5 Aug 2021 08:38:53 -0700
+Message-Id: <20210805153854.154066-1-islituo@gmail.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210805153807.645106-1-gokulkumar792@gmail.com>
-References: <20210805153807.645106-1-gokulkumar792@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The function print_mesh_param_handler() already supports printing all the
-mesh config params when not pasing one specific parameter, so add a new
-"mesh_param dump" command to help the user see all the parameters at once.
+kzalloc() is used to allocate memory for cd->detectors, and if it fails,
+channel_detector_exit() behind the label fail will be called:
+  channel_detector_exit(dpd, cd);
 
-$ iw dev mesh0 mesh_param dump
-mesh_retry_timeout = 100 milliseconds
-mesh_confirm_timeout = 100 milliseconds
-mesh_holding_timeout = 100 milliseconds
-mesh_max_peer_links = 99
-mesh_max_retries = 3
-mesh_ttl = 31
-mesh_element_ttl = 31
-mesh_auto_open_plinks = 0
-mesh_hwmp_max_preq_retries = 4
-mesh_path_refresh_time = 1000 milliseconds
-mesh_min_discovery_timeout = 100 milliseconds
-mesh_hwmp_active_path_timeout = 5000 TUs
-mesh_hwmp_preq_min_interval = 10 TUs
-mesh_hwmp_net_diameter_traversal_time = 50 TUs
-mesh_hwmp_rootmode = 0
-mesh_hwmp_rann_interval = 5000 TUs
-mesh_gate_announcements = 0
-mesh_fwding = 1
-mesh_sync_offset_max_neighor = 50
-mesh_rssi_threshold = 0 dBm
-mesh_hwmp_active_path_to_root_timeout = 6000 TUs
-mesh_hwmp_root_interval = 5000 TUs
-mesh_hwmp_confirmation_interval = 2000 TUs
-mesh_power_mode = active
-mesh_awake_window = 10 TUs
-mesh_plink_timeout = 0 seconds
-mesh_connected_to_gate = 0
+In channel_detector_exit(), cd->detectors is dereferenced through:
+  struct pri_detector *de = cd->detectors[i];
 
-Signed-off-by: Gokul Sivakumar <gokulkumar792@gmail.com>
+To fix this possible null-pointer dereference, check cd->detectors before 
+the for loop to dereference cd->detectors. 
+
+Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+Signed-off-by: Tuo Li <islituo@gmail.com>
 ---
- mesh.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/wireless/ath/dfs_pattern_detector.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/mesh.c b/mesh.c
-index 3797335..943edf5 100644
---- a/mesh.c
-+++ b/mesh.c
-@@ -11,6 +11,7 @@
- #include "iw.h"
- 
- SECTION(mesh);
-+SECTION(mesh_param);
- 
- 
- typedef struct _any_t {
-@@ -447,6 +448,19 @@ COMMAND(get, mesh_param, "[<param>]",
- 	NL80211_CMD_GET_MESH_PARAMS, 0, CIB_NETDEV, get_interface_meshparam,
- 	"Retrieve mesh parameter (run command without any to see available ones).");
- 
-+static int dump_interface_meshparam(struct nl80211_state *state,
-+				    struct nl_msg *msg,
-+				    int argc, char **argv,
-+				    enum id_input id)
-+{
-+	register_handler(print_mesh_param_handler, NULL);
-+	return 0;
-+}
-+
-+COMMAND(mesh_param, dump, "",
-+	NL80211_CMD_GET_MESH_PARAMS, 0, CIB_NETDEV, dump_interface_meshparam,
-+	"List all supported mesh parameters");
-+
- static int join_mesh(struct nl80211_state *state,
- 		     struct nl_msg *msg, int argc, char **argv,
- 		     enum id_input id)
+diff --git a/drivers/net/wireless/ath/dfs_pattern_detector.c b/drivers/net/wireless/ath/dfs_pattern_detector.c
+index 80390495ea25..75cb53a3ec15 100644
+--- a/drivers/net/wireless/ath/dfs_pattern_detector.c
++++ b/drivers/net/wireless/ath/dfs_pattern_detector.c
+@@ -183,10 +183,12 @@ static void channel_detector_exit(struct dfs_pattern_detector *dpd,
+ 	if (cd == NULL)
+ 		return;
+ 	list_del(&cd->head);
+-	for (i = 0; i < dpd->num_radar_types; i++) {
+-		struct pri_detector *de = cd->detectors[i];
+-		if (de != NULL)
+-			de->exit(de);
++	if (cd->detectors) {
++		for (i = 0; i < dpd->num_radar_types; i++) {
++			struct pri_detector *de = cd->detectors[i];
++			if (de != NULL)
++				de->exit(de);
++		}
+ 	}
+ 	kfree(cd->detectors);
+ 	kfree(cd);
 -- 
 2.25.1
 
