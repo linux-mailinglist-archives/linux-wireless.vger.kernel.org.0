@@ -2,54 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81B003E10F4
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 11:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E245E3E1123
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 11:18:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236120AbhHEJPI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Aug 2021 05:15:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54312 "EHLO
+        id S239988AbhHEJSV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Aug 2021 05:18:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232367AbhHEJPH (ORCPT
+        with ESMTP id S239957AbhHEJST (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Aug 2021 05:15:07 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5857C061765
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Aug 2021 02:14:52 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id x9so4199312ljj.2
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Aug 2021 02:14:52 -0700 (PDT)
+        Thu, 5 Aug 2021 05:18:19 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5ED8C061765
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Aug 2021 02:18:04 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id z2so9807862lft.1
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Aug 2021 02:18:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=fFXN1GDx+ZY9KtgSWo8Ue+Fd8NB20QdYpM/y0IVYDbk=;
-        b=cBiXIjV2mnr0k8pAM8Nrz0D+Ru82yIscVI5XOIrTwmvCcuovZIPLz964rmtrnT4Tf5
-         UTZXYMS4am7p0yo2N+6SouOvZk9h/N8WJDXXNeByaYVPK97kvGRW1Gc4F8mBsiQy2JcP
-         GJYzPYGh//0nHeteH8OZx3odyqQYtsW4APl+vPDFrg6f3Fmxphg042H7eZ8sq9SvIoJ1
-         FwyDRGRmshBHvBZJOVUz1MM3DUhEfiB50xWm0EN77rJk5xHPC6tGrVVfLymXYKFCxbUf
-         lWEfmz6OhHdzgIPJd9LZJl1G0zFyvhsNStTV3IMlVrAbSP8mW8/6Bd0+N6emm2/UGjxw
-         3ksg==
+        bh=4uLXn1AGtC/+MfcLgiyTSI/T9I40ie2kMxk/wKlyuPw=;
+        b=k7XnMiTF7VyVC+yB8C3p7B3wtRyHrB/mEIJFIdGcPgk6uCuLxgicTTaekDqJr20aoK
+         vrvzNK9b16scOqPJO1e3KivprKsRFi2s0YaXnoAFlLqZjhQvD7MHhQws2InhJz7NeUIo
+         1Tc+aNzckUCbqJXByRvvrT0KtIweizo0QumEZSCKioGBf6IxINArlxqdcxbnWoWD/uRm
+         6NXogGfL25sYjqMITbT8zorcYkuxFF8falI0Wc1M0aVXG1CCuCuY69SA+WmjP4SF202W
+         H8nFP7R0YKO/Pl0YrOt6S2dq27j2Q20dxoYFcEYrBpUth0kIrPh08NYjU+OPNVaBuNkG
+         zg8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=fFXN1GDx+ZY9KtgSWo8Ue+Fd8NB20QdYpM/y0IVYDbk=;
-        b=KxUwOMKgTpi/HwjyHnGlDn2OD3p/YKWNwvueDjIlkUtoJ2yISBmzO5S5CMb5wThNRC
-         hI/v7mml5lCXSuNnWg7J8d79SYcenk2Giw+xVSDZpmSHlRZMreDFhOKgDKnNSko4mxa3
-         IYloJxwDIcE9B1w8NUoh+BJ10AlQ+UVsypsRF8R2yO39tnMp1WBTJwD6ZRsAK9S1JzXk
-         JkH/HndwrdqV0tbI2lw8gSVenjMdr06xjLAzqjX/6G+lKM8F8W9GZLPFdZ8nh/CPzhnE
-         e/GZDTyVMK+G/WaA3JT8oLI7dqBnsp1IGM/O0ERJh8n97xmAqrX87Fl72jvrSKQn40L7
-         23jQ==
-X-Gm-Message-State: AOAM533t9drjhDEvhY0+qdb2z0zYfDdW736DuEBjfW75nLsfYmFf3F90
-        pHTlZRIUIShWQggcgV6ruLmVNuvA/raKcWslmtrRTg==
-X-Google-Smtp-Source: ABdhPJyLpUwapWwaaef2IJDSLgnKOxm9QR3qNDKinFingvDlLlotPP5pEeuvIhtSrZk1WedT+d1iytHOd9IlJ4PhklA=
-X-Received: by 2002:a05:651c:1318:: with SMTP id u24mr2476741lja.200.1628154891272;
- Thu, 05 Aug 2021 02:14:51 -0700 (PDT)
+        bh=4uLXn1AGtC/+MfcLgiyTSI/T9I40ie2kMxk/wKlyuPw=;
+        b=tIrm0gdaG5VEqBuWeYEwsFnLehz9mRusp5+v/prXB3wnygoKC6aS1AiTW89bpk1yLM
+         mSEp91LZ/w5l7oWqFJ4gEG8KenQb5qwtIKM5rSMrVZzUQyznCIjrqkVXwRlOCAtr4Zi8
+         hzpfog2UYgkqoLwtpqFEBOOYzbyjxajxET6mln3jkhf8DMpXaYXbabxYQ4vArwdSKfn8
+         lxUNdtTU4u1em1ERtGDubis2knlzZTtTOHUaWzyxKAcZxs5zGMHbkAD9CL7OPQN2/mX2
+         N7Tgw019jTT+3wlX9suhQIDj8z5ti7IBUkSmZ/Kicdqiu/uoBHSuszILHL47pMnlT12P
+         VqnQ==
+X-Gm-Message-State: AOAM533vc+Xwgf9UVr0xnGzbcJbDoUBjUJsCRiThQ+ETggZVgfYozdmc
+        0l/9YZj0VjEunWmC7uPNoyDooCTuswjREFYYSTvHaA==
+X-Google-Smtp-Source: ABdhPJyr4mBQsHi7eKjcLElt6HnWGpdqyEZ6sAX02TmFUR4yAw4zcypyKhmyePAqmIyKAvBM/kLQg9EAiXJnMMNdhKI=
+X-Received: by 2002:ac2:4c4c:: with SMTP id o12mr2844915lfk.157.1628155083038;
+ Thu, 05 Aug 2021 02:18:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210804153434.3429348-1-linus.walleij@linaro.org> <67ba8440-8f39-daa0-ef39-e506007fd46a@gmail.com>
-In-Reply-To: <67ba8440-8f39-daa0-ef39-e506007fd46a@gmail.com>
+References: <20210804153434.3429348-1-linus.walleij@linaro.org> <74e24409-aeb2-5297-6888-7af2b1126ccd@gmail.com>
+In-Reply-To: <74e24409-aeb2-5297-6888-7af2b1126ccd@gmail.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 5 Aug 2021 11:14:40 +0200
-Message-ID: <CACRpkda+4CTeBpdFru82ekkF=PcN-5yGQtPBWuwXhE3biewoLA@mail.gmail.com>
+Date:   Thu, 5 Aug 2021 11:17:51 +0200
+Message-ID: <CACRpkdam=PzCf4ojxb4ASjyPBmVM8ZDWDFXqX+BukhQ+f38J0A@mail.gmail.com>
 Subject: Re: [PATCH v2] brcmfmac: firmware: Fix firmware loading
 To:     Dmitry Osipenko <digetx@gmail.com>
 Cc:     Arend van Spriel <aspriel@gmail.com>,
@@ -68,39 +68,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Aug 5, 2021 at 3:22 AM Dmitry Osipenko <digetx@gmail.com> wrote:
+On Thu, Aug 5, 2021 at 3:35 AM Dmitry Osipenko <digetx@gmail.com> wrote:
 > 04.08.2021 18:34, Linus Walleij =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+> > +     bool tested_board_variant;
+>
+> What about s/tested/tried/?
+
+OK that is clearer, I fix!
+
+> > -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx=
+)
 > > +static void brcmf_fw_request_done_first(const struct firmware *fw, voi=
 d *ctx)
-> >  {
-> >       struct brcmf_fw *fwctx =3D ctx;
-> > +     struct brcmf_fw_item *first =3D &fwctx->req->items[0];
-> >       int ret;
-> >
-> > +     /* Something failed with the first firmware request, such as not
-> > +      * getting the per-board firmware. Retry this, now using the less
-> > +      * specific path for the first firmware item, i.e. without the bo=
-ard
-> > +      * suffix.
-> > +      */
-> > +     if (!fw && !fwctx->tested_board_variant) {
-> > +             fwctx->tested_board_variant =3D true;
-> > +             ret =3D request_firmware_nowait(THIS_MODULE, true, first-=
->path,
-> > +                                           fwctx->dev, GFP_KERNEL, fwc=
-tx,
-> > +                                           brcmf_fw_request_done_first=
-);
-> > +             return;
 >
-> The original code was proceeding on error. Is this a typo here?
+> Is it really worthwhile to rename this function? There is no "done_second=
+".
 
-No, we are testing specifically for fw being NULL and in that case we issue
-a new request_firmware_nowait() call with ourselves as "done" callback,
-so we really need to return here.
+It is to reflect the actual use, because it fooled me as it could
+be interpreted (intuitively) as "this is called when all firmware requests
+are done" since it doesn't specify. But that is not the case, it is
+only called when done with the first first firmware in the list.
+Hence the name change.
 
-The worker will call the same function again after this but now
-tested_board_variant is true.
+The philosophy is in line with Rusty Russell's API design hierarchy:
+http://sweng.the-davies.net/Home/rustys-api-design-manifesto
 
 Yours,
 Linus Walleij
