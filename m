@@ -2,60 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FFB73E15F1
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 15:44:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 340963E161D
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 15:54:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241697AbhHENot (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Aug 2021 09:44:49 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:61016 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239222AbhHENot (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Aug 2021 09:44:49 -0400
+        id S241352AbhHENyg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Aug 2021 09:54:36 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:32115 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235180AbhHENyf (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Aug 2021 09:54:35 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1628171075; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1628171661; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=UDqqULtEilcoytZXS/txGxlVIVFuUcqpiXHWmqfAO/E=; b=tfl/tTx0I0fDpWOTf63TK/lVb9VJqFvW61HRrm3ILDcqOX4IlTsvh3IxvFgv1dDxc9Qxc/Qb
- fMhIru+9NQGcva6XPDvWSsA9XAQ6siGPJ3SW8aZsRijnHtXQFWZFVG+lmV00iqvcs/3iokbs
- 2UlMlJZqNLHhGZjrdSTuvPw2G1o=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ bh=bcr6vJTCmnIH6dipHg22HDP4Lj3skF7+z+y098CkOwU=; b=Fo4mxh4cKkbiA4iy+pywh/yDDLIuIMKYTq78IW4d3UGbaXBinONGmjLw9P081u2kQt/Q299k
+ +AcMTXFgbAjRAkOBFjG8wX9Z7SLEeziSVdVtAnvkau64VyMcv3zy2lIuQG3XZ5Tuemnczdhv
+ 70Pxr90mZZHRw1qrB227XJSxprw=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
  smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 610beb3ab4dfc4b0ef2dfff2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 05 Aug 2021 13:44:26
+ 610bed7db4dfc4b0ef3c8f9e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 05 Aug 2021 13:54:05
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 64548C43144; Thu,  5 Aug 2021 13:44:25 +0000 (UTC)
+        id 4FF41C43147; Thu,  5 Aug 2021 13:54:04 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9B60DC4338A;
-        Thu,  5 Aug 2021 13:44:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9B60DC4338A
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E3DC7C433F1;
+        Thu,  5 Aug 2021 13:53:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E3DC7C433F1
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Liwei Song <liwei.song@windriver.com>
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
-        David <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iwlwifi: select MAC80211_LEDS conditionally
-References: <20210624100823.854-1-liwei.song@windriver.com>
-        <87sg17ilz2.fsf@codeaurora.org>
-        <92d293b4-0ef1-6239-4b91-4af420786980@windriver.com>
-Date:   Thu, 05 Aug 2021 16:44:17 +0300
-In-Reply-To: <92d293b4-0ef1-6239-4b91-4af420786980@windriver.com> (Liwei
-        Song's message of "Thu, 24 Jun 2021 19:06:39 +0800")
-Message-ID: <87fsvoc8ge.fsf@codeaurora.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev <netdev@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] brcmfmac: firmware: Fix uninitialized variable ret
+References: <20210803150904.80119-1-colin.king@canonical.com>
+        <CACRpkdZ5u-C8uH2pCr1689v_ndyzqevDDksXvtPYv=FfD=x_xg@mail.gmail.com>
+Date:   Thu, 05 Aug 2021 16:53:54 +0300
+In-Reply-To: <CACRpkdZ5u-C8uH2pCr1689v_ndyzqevDDksXvtPYv=FfD=x_xg@mail.gmail.com>
+        (Linus Walleij's message of "Tue, 3 Aug 2021 21:14:07 +0200")
+Message-ID: <875ywkc80d.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -63,42 +73,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Liwei Song <liwei.song@windriver.com> writes:
+Linus Walleij <linus.walleij@linaro.org> writes:
 
-> On 6/24/21 18:41, Kalle Valo wrote:
->> Liwei Song <liwei.song@windriver.com> writes:
->> 
->>> MAC80211_LEDS depends on LEDS_CLASS=y or LEDS_CLASS=MAC80211,
->>> add condition to enable it in iwlwifi/Kconfig to avoid below
->>> compile warning when LEDS_CLASS was set to m:
->>>
->>> WARNING: unmet direct dependencies detected for MAC80211_LEDS
->>>   Depends on [n]: NET [=y] && WIRELESS [=y] && MAC80211 [=y] &&
->>> (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=MAC80211 [=y])
->>>   Selected by [m]:
->>>   - IWLWIFI_LEDS [=y] && NETDEVICES [=y] && WLAN [=y] &&
->>> WLAN_VENDOR_INTEL [=y] && IWLWIFI [=m] && (LEDS_CLASS [=m]=y ||
->>> LEDS_CLASS [=m]=IWLWIFI [=m]) && (IWLMVM [=m] || IWLDVM [=m])
->>>
->>> Signed-off-by: Liwei Song <liwei.song@windriver.com>
->> 
->> Is this is a new regression or an old bug? What commit caused this?
+> On Tue, Aug 3, 2021 at 5:09 PM Colin King <colin.king@canonical.com> wrote:
 >
-> It should be exist when the below commit change the dependency of MAC80211_LEDS
-> to fix some build error:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Currently the variable ret is uninitialized and is only set if
+>> the pointer alt_path is non-null. Fix this by ininitializing ret
+>> to zero.
+>>
+>> Addresses-Coverity: ("Uninitialized scalar variable")
+>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 >
-> commit b64acb28da8394485f0762e657470c9fc33aca4d
-> Author: Arnd Bergmann <arnd@arndb.de>
-> Date:   Mon Jan 25 12:36:42 2021 +0100
->
->     ath9k: fix build error with LEDS_CLASS=m
+> Nice catch!
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Thanks, it seems LEDS_CLASS is a constant source of problems for
-wireless drivers :/
-
-Luca, what should we do? We cannot have compile errors in the tree.
-
-I assigned this patch to me on patchwork.
+I assume this will be fixed by Linus' patch "brcmfmac: firmware: Fix
+firmware loading" and I should drop Colin's patch, correct?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
