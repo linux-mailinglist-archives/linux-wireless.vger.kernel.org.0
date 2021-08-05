@@ -2,147 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0E4B3E0F97
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 09:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81B003E10F4
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 11:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236191AbhHEHup (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Aug 2021 03:50:45 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:52974 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229674AbhHEHuo (ORCPT
+        id S236120AbhHEJPI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Aug 2021 05:15:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54312 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232367AbhHEJPH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Aug 2021 03:50:44 -0400
-X-UUID: 09012ca01f6e4b8d93495502ba24a715-20210805
-X-UUID: 09012ca01f6e4b8d93495502ba24a715-20210805
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1570785462; Thu, 05 Aug 2021 15:50:26 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 5 Aug 2021 15:50:03 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 5 Aug 2021 15:50:03 +0800
-From:   <sean.wang@mediatek.com>
-To:     <lorenzo.bianconi@redhat.com>
-CC:     <nbd@nbd.name>, <sean.wang@mediatek.com>,
-        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
-        <Leon.Yen@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <jemele@google.com>, <yenlinlai@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH v2] mt76: connac: add support maximum regulatory Tx power
-Date:   Thu, 5 Aug 2021 15:50:02 +0800
-Message-ID: <1628149802-26387-1-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <YQuI/Zf8vYjKx9LR@lore-desk--annotate>
-References: <YQuI/Zf8vYjKx9LR@lore-desk--annotate>
+        Thu, 5 Aug 2021 05:15:07 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5857C061765
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Aug 2021 02:14:52 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id x9so4199312ljj.2
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Aug 2021 02:14:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=fFXN1GDx+ZY9KtgSWo8Ue+Fd8NB20QdYpM/y0IVYDbk=;
+        b=cBiXIjV2mnr0k8pAM8Nrz0D+Ru82yIscVI5XOIrTwmvCcuovZIPLz964rmtrnT4Tf5
+         UTZXYMS4am7p0yo2N+6SouOvZk9h/N8WJDXXNeByaYVPK97kvGRW1Gc4F8mBsiQy2JcP
+         GJYzPYGh//0nHeteH8OZx3odyqQYtsW4APl+vPDFrg6f3Fmxphg042H7eZ8sq9SvIoJ1
+         FwyDRGRmshBHvBZJOVUz1MM3DUhEfiB50xWm0EN77rJk5xHPC6tGrVVfLymXYKFCxbUf
+         lWEfmz6OhHdzgIPJd9LZJl1G0zFyvhsNStTV3IMlVrAbSP8mW8/6Bd0+N6emm2/UGjxw
+         3ksg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=fFXN1GDx+ZY9KtgSWo8Ue+Fd8NB20QdYpM/y0IVYDbk=;
+        b=KxUwOMKgTpi/HwjyHnGlDn2OD3p/YKWNwvueDjIlkUtoJ2yISBmzO5S5CMb5wThNRC
+         hI/v7mml5lCXSuNnWg7J8d79SYcenk2Giw+xVSDZpmSHlRZMreDFhOKgDKnNSko4mxa3
+         IYloJxwDIcE9B1w8NUoh+BJ10AlQ+UVsypsRF8R2yO39tnMp1WBTJwD6ZRsAK9S1JzXk
+         JkH/HndwrdqV0tbI2lw8gSVenjMdr06xjLAzqjX/6G+lKM8F8W9GZLPFdZ8nh/CPzhnE
+         e/GZDTyVMK+G/WaA3JT8oLI7dqBnsp1IGM/O0ERJh8n97xmAqrX87Fl72jvrSKQn40L7
+         23jQ==
+X-Gm-Message-State: AOAM533t9drjhDEvhY0+qdb2z0zYfDdW736DuEBjfW75nLsfYmFf3F90
+        pHTlZRIUIShWQggcgV6ruLmVNuvA/raKcWslmtrRTg==
+X-Google-Smtp-Source: ABdhPJyLpUwapWwaaef2IJDSLgnKOxm9QR3qNDKinFingvDlLlotPP5pEeuvIhtSrZk1WedT+d1iytHOd9IlJ4PhklA=
+X-Received: by 2002:a05:651c:1318:: with SMTP id u24mr2476741lja.200.1628154891272;
+ Thu, 05 Aug 2021 02:14:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+References: <20210804153434.3429348-1-linus.walleij@linaro.org> <67ba8440-8f39-daa0-ef39-e506007fd46a@gmail.com>
+In-Reply-To: <67ba8440-8f39-daa0-ef39-e506007fd46a@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 5 Aug 2021 11:14:40 +0200
+Message-ID: <CACRpkda+4CTeBpdFru82ekkF=PcN-5yGQtPBWuwXhE3biewoLA@mail.gmail.com>
+Subject: Re: [PATCH v2] brcmfmac: firmware: Fix firmware loading
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Stefan Hansson <newbyte@disroot.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
-
->> From: YN Chen <YN.Chen@mediatek.com>
->>
->> Consider .max_reg_power in struct ieee80211_channel to limit the
->> maximum power the wireless device allowed to transmit on the
->> corresponding channel according to the regulatory domain.
->>
->> Co-developed-by: Sean Wang <sean.wang@mediatek.com>
->> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
->> Signed-off-by: YN Chen <YN.Chen@mediatek.com>
->> ---
->> v2: consider the power limit that can be allowed on mt7663
->> ---
->>  .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 43
->> ++++++++++++++++++-
->>  1 file changed, 41 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> index d71393b1c5e6..80987af03efe 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> @@ -1773,6 +1773,43 @@ static s8 mt76_connac_get_sar_power(struct mt76_phy *phy,
->>	return target_power;
->>  }
->>
->> +static s8 mt76_connac_get_ch_power(struct mt76_phy *phy,
->> +				   struct ieee80211_channel *chan,
->> +				   s8 target_power)
->> +{
->> +	struct mt76_dev *dev = phy->dev;
->> +	struct ieee80211_supported_band *sband;
->> +	int i;
->> +
->> +	switch (chan->band) {
->> +	case NL80211_BAND_2GHZ:
->> +		sband = &phy->sband_2g.sband;
->> +		break;
->> +	case NL80211_BAND_5GHZ:
->> +		sband = &phy->sband_5g.sband;
->> +		break;
->> +	default:
->> +		return target_power;
->> +	}
->> +
->> +	for (i = 0; i < sband->n_channels; i++) {
->> +		struct ieee80211_channel *ch = &sband->channels[i];
->> +
->> +		if (ch->hw_value == chan->hw_value) {
->> +			if (!(ch->flags & IEEE80211_CHAN_DISABLED)) {
->> +				int power = 2 * ch->max_reg_power;
->> +
->> +				if (is_mt7663(dev) && (power > 63 || power < -64))
->> +					power = 63;
+On Thu, Aug 5, 2021 at 3:22 AM Dmitry Osipenko <digetx@gmail.com> wrote:
+> 04.08.2021 18:34, Linus Walleij =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+> > +static void brcmf_fw_request_done_first(const struct firmware *fw, voi=
+d *ctx)
+> >  {
+> >       struct brcmf_fw *fwctx =3D ctx;
+> > +     struct brcmf_fw_item *first =3D &fwctx->req->items[0];
+> >       int ret;
+> >
+> > +     /* Something failed with the first firmware request, such as not
+> > +      * getting the per-board firmware. Retry this, now using the less
+> > +      * specific path for the first firmware item, i.e. without the bo=
+ard
+> > +      * suffix.
+> > +      */
+> > +     if (!fw && !fwctx->tested_board_variant) {
+> > +             fwctx->tested_board_variant =3D true;
+> > +             ret =3D request_firmware_nowait(THIS_MODULE, true, first-=
+>path,
+> > +                                           fwctx->dev, GFP_KERNEL, fwc=
+tx,
+> > +                                           brcmf_fw_request_done_first=
+);
+> > +             return;
 >
->I guess now you are missing the value for mt7921. What I mean is something similar to mt76_connac_mcu_build_sku()
->
->int max_power = is_mt7921(dev) ? 127 : 63;
+> The original code was proceeding on error. Is this a typo here?
 
-the power limit that can be allowed on mt7921 would be -128 to 127 and target_power is s8 type
+No, we are testing specifically for fw being NULL and in that case we issue
+a new request_firmware_nowait() call with ourselves as "done" callback,
+so we really need to return here.
 
-so I think the boundary check for mt7921 case is unnecessary
+The worker will call the same function again after this but now
+tested_board_variant is true.
 
->Regards,
->Lorenzo
->
->> +				target_power = min_t(s8, power, target_power);
->> +			}
->> +			break;
->> +		}
->> +	}
->> +
->> +	return target_power;
->> +}
->> +
->>  static int
->>  mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
->>				  enum nl80211_band band)
->> @@ -1840,10 +1877,12 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
->>				.hw_value = ch_list[idx],
->>				.band = band,
->>			};
->> -			s8 sar_power;
->> +			s8 reg_power, sar_power;
->>
->> +			reg_power = mt76_connac_get_ch_power(phy, &chan,
->> +							     tx_power);
->>			sar_power = mt76_connac_get_sar_power(phy, &chan,
->> -							      tx_power);
->> +							      reg_power);
->>
->>			mt76_get_rate_power_limits(phy, &chan, &limits,
->>						   sar_power);
->> --
->> 2.25.1
->>
->
+Yours,
+Linus Walleij
