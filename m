@@ -2,154 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AE363E13CA
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 13:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50FD83E13F0
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 13:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240992AbhHELWb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Aug 2021 07:22:31 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:51344 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S241044AbhHELWa (ORCPT
+        id S240812AbhHELf3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Aug 2021 07:35:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58600 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240819AbhHELf3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Aug 2021 07:22:30 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <luca@coelho.fi>)
-        id 1mBbRy-00243p-8X; Thu, 05 Aug 2021 14:22:11 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Thu,  5 Aug 2021 14:21:58 +0300
-Message-Id: <iwlwifi.20210805141826.78e441b16f9c.I2d79492f05624ddd02c533c673811a36eaf8a396@changeid>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210805112158.460799-1-luca@coelho.fi>
-References: <20210805112158.460799-1-luca@coelho.fi>
+        Thu, 5 Aug 2021 07:35:29 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA85C061765
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Aug 2021 04:35:14 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id u3so9053598ejz.1
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Aug 2021 04:35:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TPxcG4+CwNlbnzANZW7VoHTJshHvntqkoSxrRT4OVfw=;
+        b=g9GrgLS2YuPluJGvAoZ1l2cymERChCW/kwFTq8sToqmrvbUAnarD3N2IJ0eGvo6sGx
+         ieaQ12aVGyBuUjpH1XGr0TBBEBcW8NIrEzR8O1xATpil6fkNAAiviW0Z9Q7ox93Z/XsT
+         MxulU4qdZmYOffz20OGWJDg+vy5yVLsxEM+CDL4J6teZj/RC5FjLZ7tShchu45rDwjj+
+         vgmb7GAYpR9IM3cUSQ14MdeAQ9itRfNGdfRV5Gy4yHx+7IiWJUQPOqcjxNDKQJoR8QAf
+         UwCuhM2TAVKHKraM1qBCTuq4o77VM1imSbynumIzbDLQiCbb51FSQINVjgQZuT+c593E
+         h4HQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TPxcG4+CwNlbnzANZW7VoHTJshHvntqkoSxrRT4OVfw=;
+        b=kt2n5KoRhlR4MZtmN1pKFKF8dOd5eXeDDIcqXY4L5OlRAGH76eT4KyAX9iKqSy4Wfe
+         noqAqLQeFE6cuOSju0j7LD7EgFDGiimmTxc4uuLTOPnfMTe9Lt/P9lErislSv0KU7aqm
+         iF7focGnRCRaaETws6oNwr3GrMSwLLKBjU+tw+ngX9ZQZl1gNKQQ3S2I1Woqju6CasV6
+         32fPTIlQ0EK81d/qh8qr5yTwOgExKUBLd7j0+viY+1a/4Yh13hY2kSb/RBHhIM1whVm+
+         90OW8dqLXZ5brjEBYt8B+eCHzalBrrLLMdli4GKIa7pI8BqyEdLb5NKccyJxgRFE+jE/
+         p7hw==
+X-Gm-Message-State: AOAM533YGT4qwhIwlvcHEN207r+qjUDMr94FhyVpyopagRrpYLNimta5
+        h1mXk1My8UGvIO66EQNFdG3nshdOELO+yqyJAz4=
+X-Google-Smtp-Source: ABdhPJwiNwCpUEm1qQ13WtAbbLzMjWLriMlxJypY5seHH+2gFR/hzxIxVYaRTvRb+Omgb2BHABjr2C8Zjo9qCUfEQ90=
+X-Received: by 2002:a17:906:814:: with SMTP id e20mr4344298ejd.497.1628163312577;
+ Thu, 05 Aug 2021 04:35:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
-        farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH 12/12] iwlwifi: acpi: support reading and storing WGDS revision 2
+References: <20210805093023.3465081-1-linus.walleij@linaro.org>
+In-Reply-To: <20210805093023.3465081-1-linus.walleij@linaro.org>
+From:   Arend van Spriel <aspriel@gmail.com>
+Date:   Thu, 5 Aug 2021 13:35:03 +0200
+Message-ID: <CAJ65rDx1ab8gBZRpnyp5kb__VVA+_Vy3VS-0xesYC_+VmEKchw@mail.gmail.com>
+Subject: Re: [PATCH v3] brcmfmac: firmware: Fix firmware loading
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Stefan Hansson <newbyte@disroot.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+On Thu, Aug 5, 2021 at 11:32 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+> The patch that would first try the board-specific firmware
+> had a bug because the fallback would not be called: the
+> asynchronous interface is used meaning request_firmware_nowait()
+> returns 0 immediately.
+>
+> Harden the firmware loading like this:
+>
+> - If we cannot build an alt_path (like if no board_type is
+>   specified) just request the first firmware without any
+>   suffix, like in the past.
+>
+> - If the lookup of a board specific firmware fails, we get
+>   a NULL fw in the async callback, so just try again without
+>   the alt_path. Use a context state variable to check that
+>   we do not try this indefinitely.
+>
+> - Rename the brcm_fw_request_done to brcm_fw_request_done_first
+>   reflecting the fact that this callback is only used for the
+>   first (main) firmware file, and drop the unnecessary
+>   prototype.
 
-Revisions 0 and 1 are identical, so we were already supporting that.
-But revision 2 has a different size, so we have to try to read them
-separately.
+While implementing the firmware.c module at first I was doing every
+firmware request with the 'nowait' variant hence the callback was used
+repeatedly. However, I abandoned that as the reason for async request
+was to avoid delay it may cause on kernel boot. Decoupling the initial
+firmware request was sufficient for that and simplified things quite a
+bit. As to the naming maybe 'brcmf_fw_async_request_done()' is a clear
+alternative.
 
-Add support for this new revision.
+> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
+> Cc: Dmitry Osipenko <digetx@gmail.com>
+> Cc: Stefan Hansson <newbyte@disroot.org>
+> Tested-by: Dmitry Osipenko <digetx@gmail.com>
+> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ChangeLog v2->v3:
+> - Rename state variable to "tried_board_variant".
+> ChangeLog v1->v2:
+> - Instead of using a static variable, add a context variable
+>   "tested_board_variant"
+> - Collect Arend's review tag.
+> - Collect Tested-by from Dmitry.
+> ---
+>  .../broadcom/brcm80211/brcmfmac/firmware.c    | 31 +++++++++++++------
+>  1 file changed, 22 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+> index adfdfc654b10..d32491fd74fe 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+> @@ -428,11 +428,10 @@ struct brcmf_fw {
+>         struct device *dev;
+>         struct brcmf_fw_request *req;
+>         u32 curpos;
+> +       bool tried_board_variant;
+>         void (*done)(struct device *dev, int err, struct brcmf_fw_request *req);
+>  };
+>
+> -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx);
+> -
+>  #ifdef CONFIG_EFI
+>  /* In some cases the EFI-var stored nvram contains "ccode=ALL" or "ccode=XV"
+>   * to specify "worldwide" compatible settings, but these 2 ccode-s do not work
+> @@ -638,11 +637,25 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
+>         return request_firmware(fw, cur->path, fwctx->dev);
+>  }
+>
+> -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx)
+> +static void brcmf_fw_request_done_first(const struct firmware *fw, void *ctx)
+>  {
+>         struct brcmf_fw *fwctx = ctx;
+> +       struct brcmf_fw_item *first = &fwctx->req->items[0];
+>         int ret;
+>
+> +       /* Something failed with the first firmware request, such as not
+> +        * getting the per-board firmware. Retry this, now using the less
+> +        * specific path for the first firmware item, i.e. without the board
+> +        * suffix.
+> +        */
+> +       if (!fw && !fwctx->tried_board_variant) {
+> +               fwctx->tried_board_variant = true;
+> +               ret = request_firmware_nowait(THIS_MODULE, true, first->path,
+> +                                             fwctx->dev, GFP_KERNEL, fwctx,
+> +                                             brcmf_fw_request_done_first);
+> +               return;
+> +       }
+> +
 
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 38 +++++++++++++++-----
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h | 19 ++++++----
- 2 files changed, 43 insertions(+), 14 deletions(-)
+So here we could use the synchronous variant instead for the reason
+explained earlier.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index 1802a451c450..de1e9271dcd2 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -703,27 +703,49 @@ int iwl_sar_get_wgds_table(struct iwl_fw_runtime *fwrt)
- 	union acpi_object *wifi_pkg, *data;
- 	int i, j, k, ret, tbl_rev;
- 	int idx = 1; /* start from one to skip the domain */
-+	u8 num_bands;
- 
- 	data = iwl_acpi_get_object(fwrt->dev, ACPI_WGDS_METHOD);
- 	if (IS_ERR(data))
- 		return PTR_ERR(data);
- 
-+	/* start by trying to read revision 2 */
- 	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
--					 ACPI_WGDS_WIFI_DATA_SIZE, &tbl_rev);
-+					 ACPI_WGDS_WIFI_DATA_SIZE_REV2,
-+					 &tbl_rev);
-+	if (!IS_ERR(wifi_pkg)) {
-+		if (tbl_rev != 2) {
-+			ret = PTR_ERR(wifi_pkg);
-+			goto out_free;
-+		}
- 
--	if (IS_ERR(wifi_pkg)) {
--		ret = PTR_ERR(wifi_pkg);
--		goto out_free;
-+		num_bands = ACPI_GEO_NUM_BANDS_REV2;
-+
-+		goto read_table;
- 	}
- 
--	if (tbl_rev > 1) {
--		ret = -EINVAL;
--		goto out_free;
-+	/* then try revision 0 (which is the same as 1) */
-+	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
-+					 ACPI_WGDS_WIFI_DATA_SIZE_REV0,
-+					 &tbl_rev);
-+	if (!IS_ERR(wifi_pkg)) {
-+		if (tbl_rev != 0 && tbl_rev != 1) {
-+			ret = PTR_ERR(wifi_pkg);
-+			goto out_free;
-+		}
-+
-+		num_bands = ACPI_GEO_NUM_BANDS_REV0;
-+
-+		goto read_table;
- 	}
- 
-+	ret = PTR_ERR(wifi_pkg);
-+	goto out_free;
-+
-+read_table:
- 	fwrt->geo_rev = tbl_rev;
- 	for (i = 0; i < ACPI_NUM_GEO_PROFILES; i++) {
--		for (j = 0; j < ACPI_GEO_NUM_BANDS_REV0; j++) {
-+		for (j = 0; j < num_bands; j++) {
- 			union acpi_object *entry;
- 
- 			entry = &wifi_pkg->package.elements[idx++];
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-index a424186af3c8..16ed0995b51e 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-@@ -38,11 +38,6 @@
- #define ACPI_SAR_NUM_SUB_BANDS_REV1	11
- #define ACPI_SAR_NUM_SUB_BANDS_REV2	11
- 
--#define ACPI_GEO_NUM_CHAINS		2
--#define ACPI_GEO_NUM_BANDS_REV0		2
--#define ACPI_GEO_NUM_BANDS_REV1		2
--#define ACPI_GEO_NUM_BANDS_REV2		3
--
- #define ACPI_WRDS_WIFI_DATA_SIZE_REV0	(ACPI_SAR_NUM_CHAINS_REV0 * \
- 					 ACPI_SAR_NUM_SUB_BANDS_REV0 + 2)
- #define ACPI_WRDS_WIFI_DATA_SIZE_REV1	(ACPI_SAR_NUM_CHAINS_REV1 * \
-@@ -58,7 +53,19 @@
- #define ACPI_EWRD_WIFI_DATA_SIZE_REV2	((ACPI_SAR_PROFILE_NUM - 1) * \
- 					 ACPI_SAR_NUM_CHAINS_REV2 * \
- 					 ACPI_SAR_NUM_SUB_BANDS_REV2 + 3)
--#define ACPI_WGDS_WIFI_DATA_SIZE	19
-+
-+/* revision 0 and 1 are identical, except for the semantics in the FW */
-+#define ACPI_GEO_NUM_BANDS_REV0		2
-+#define ACPI_GEO_NUM_BANDS_REV2		3
-+#define ACPI_GEO_NUM_CHAINS		2
-+
-+#define ACPI_WGDS_WIFI_DATA_SIZE_REV0	(ACPI_NUM_GEO_PROFILES *   \
-+					 ACPI_GEO_NUM_BANDS_REV0 * \
-+					 ACPI_GEO_PER_CHAIN_SIZE + 1)
-+#define ACPI_WGDS_WIFI_DATA_SIZE_REV2	(ACPI_NUM_GEO_PROFILES *   \
-+					 ACPI_GEO_NUM_BANDS_REV2 * \
-+					 ACPI_GEO_PER_CHAIN_SIZE + 1)
-+
- #define ACPI_WRDD_WIFI_DATA_SIZE	2
- #define ACPI_SPLC_WIFI_DATA_SIZE	2
- #define ACPI_ECKV_WIFI_DATA_SIZE	2
--- 
-2.32.0
-
+Regards,
+Arend
