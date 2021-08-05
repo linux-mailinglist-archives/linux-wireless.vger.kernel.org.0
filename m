@@ -2,53 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93EE13E0C1F
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 03:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CAF23E0C2C
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 03:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237668AbhHEBfX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Aug 2021 21:35:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36398 "EHLO
+        id S237970AbhHEBpB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Aug 2021 21:45:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234640AbhHEBfW (ORCPT
+        with ESMTP id S237962AbhHEBpB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Aug 2021 21:35:22 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654E8C061765
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Aug 2021 18:35:08 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id m9so4853745ljp.7
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Aug 2021 18:35:08 -0700 (PDT)
+        Wed, 4 Aug 2021 21:45:01 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85A66C061798
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Aug 2021 18:44:46 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id h9so4876901ljq.8
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Aug 2021 18:44:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=AjXSLkd7H7YYDtJulH4krIQq1Y0iBImwf2ezdniIkdA=;
-        b=sHJcB4jXI1zcgqPOZbIRAPp1vjrO3w4XLO+80yQ1MuSzVrAV1xXi4+raix9RC4NhxR
-         U5NGLYnBmO98IShasDNXUY7XCt02jwep11JHfp9yDdK2Eg9rUiv1b5cMFXGwZUN6mnih
-         Gr0jul6O94GONM1N3GP2bbkBnqwI5MaWXW9EFM4euqjtgRfvjmFPB66ll06X7Cf07c4s
-         uFxxwc8uyVPKRPN/Dz8LzXKbiGSPeOEVC87x3UBHIBpShnrjhhHwJgBt2v1otbyfGyh4
-         ebJOkkxwL4VnvIcSzcEpMtIyjjrsJpgno2wWvtQk4a1nlM+q/2cQtZG7iS1vvW48Br2d
-         /PYg==
+        bh=EKlnp45pcNqPON8PnE65HNTmjyovSu1kzs8bqYr1SpE=;
+        b=SPBB7ytNsoAC7LvJoToTUNikQHk1/XBSLm8lv/lb6jIqH9pdXJlupdV6UsrWuVfy5U
+         Qd+0JJZOGnhTWbRYyQzmEAvQY6CzqPx+npU5rYe1KL1KW0pIFF4O+2pKCrBERWmCsL1n
+         HCJ/UQiYxhIU4F9VoBtoXjVw6R7NC3V+ek1pk5NHQh+Gk/uzMEMv3spMDcfP+m/NCRiK
+         Lee3I2l1AGTt6MB9gf+ZlVncTXCwCe3fQuYk+KLEkce5pEuEkVejDATUQm7W+r9vcD9G
+         dWX38GiB3pHf8BBATHAaCfshgHQOC4f8au8vcpcL/4ELKZaYyEfqrHX4my2sqP2G7yt1
+         0JlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=AjXSLkd7H7YYDtJulH4krIQq1Y0iBImwf2ezdniIkdA=;
-        b=WRMJsT5mrNuG9Dy69/1/c14/9NbIlTE2IcQRHpyUrtRLY5HAIrwmy2fGvZTxMm393n
-         r2wCk8EhkeytocY9XXaz6lYH4bO2HdIAopyUqoodYybeCsQYFjSv6ZuJWtbWkfQF4Fwl
-         P0CuIAC21y48+JRkUzaaDECP07QE3N+3H1y1+dRjWYlT584cmuzjfVtsq0UoT7Hi+vIb
-         dMk4v31VROzrrhkceSe99KZE6JSJraFdTyt5I84CsjXk2/2pfFRjq70urZBNvjuf9in7
-         dqumOrKK9TMzhMdtZD974rKWd5EOSU5vb3M877yNNuveIXOI2zrX15jlhAL4nrGc5Klz
-         3+cA==
-X-Gm-Message-State: AOAM533MlNrYAHh6J8yCljYDKyRr0SRlj9VjXnRuUwa9062Z/oNldt0r
-        vhe4ySU8HhbfH5DGXRLV6ss=
-X-Google-Smtp-Source: ABdhPJxJs0S5Dx9r0YKKkwk2cKGfGp76xrV0JclngteQaqi1YprULQ3XX9G3z8R7SUfkqenjL+DDhA==
-X-Received: by 2002:a2e:85d7:: with SMTP id h23mr1357805ljj.329.1628127306755;
-        Wed, 04 Aug 2021 18:35:06 -0700 (PDT)
+        bh=EKlnp45pcNqPON8PnE65HNTmjyovSu1kzs8bqYr1SpE=;
+        b=cEUElxpq+Et8Vm8SxdKDWblC37Ms3wkVsk+F5ogKYtcJvvxx+xQ+FEZU0ZOz7Oyxte
+         1DG+aBzBW2ide9Gka5y01uWeLuAbrk5Crc8iy2ZerncVirFU/o2ZezMI/6Ggq2BAytyL
+         UNhv7t0JoZI1WE6pUVKlH5jHFsQCidbxtFD1nYE/UItDrmG379F+KAgsH9NvzCRPeGqs
+         MvkS+5uTsxsdIhCC9VwZq+tdlrAZ+36TM2qxFu6qWxv/aDG16q9+irxE8LKIYiChDPz6
+         O+4QcY7JRPcHROO/tX1dxjVphpQxYY/xTgoQ6nfWLjvbN1v6L3z+UziaIO/xBlMQ9Hb3
+         D/sw==
+X-Gm-Message-State: AOAM531j/9JrhcNdPDhDqWKFgJdlAcsQnS2u8HE8OGs+nxs54CDZqT72
+        0BPNQR/TZMT/v3laUH+7HzI=
+X-Google-Smtp-Source: ABdhPJwan1jWHlxdvquCwGdqwJ8Z0XOZe2dtJZGiRINivi/UmrI+gOWQ0NhuxGfd7FgsrosbanoVsw==
+X-Received: by 2002:a2e:80c6:: with SMTP id r6mr1446262ljg.138.1628127884872;
+        Wed, 04 Aug 2021 18:44:44 -0700 (PDT)
 Received: from [192.168.2.145] (46-138-65-182.dynamic.spd-mgts.ru. [46.138.65.182])
-        by smtp.googlemail.com with ESMTPSA id y3sm280964ljj.121.2021.08.04.18.35.05
+        by smtp.googlemail.com with ESMTPSA id q13sm352718lfu.272.2021.08.04.18.44.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Aug 2021 18:35:06 -0700 (PDT)
+        Wed, 04 Aug 2021 18:44:44 -0700 (PDT)
 Subject: Re: [PATCH v2] brcmfmac: firmware: Fix firmware loading
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Arend van Spriel <aspriel@gmail.com>,
@@ -63,8 +63,8 @@ Cc:     linux-wireless@vger.kernel.org,
         Arend van Spriel <arend.vanspriel@broadcom.com>
 References: <20210804153434.3429348-1-linus.walleij@linaro.org>
 From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <74e24409-aeb2-5297-6888-7af2b1126ccd@gmail.com>
-Date:   Thu, 5 Aug 2021 04:35:05 +0300
+Message-ID: <0f439074-83ea-087d-7eec-aa6d4d3d4689@gmail.com>
+Date:   Thu, 5 Aug 2021 04:44:43 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
@@ -77,23 +77,32 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 04.08.2021 18:34, Linus Walleij пишет:
-> +	bool tested_board_variant;
+> +		fwctx->tested_board_variant = false;
 
-What about s/tested/tried/?
+This shouldn't be really needed, isn't it?
 
->  	void (*done)(struct device *dev, int err, struct brcmf_fw_request *req);
->  };
->  
-> -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx);
-> -
->  #ifdef CONFIG_EFI
->  /* In some cases the EFI-var stored nvram contains "ccode=ALL" or "ccode=XV"
->   * to specify "worldwide" compatible settings, but these 2 ccode-s do not work
-> @@ -638,11 +637,25 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
->  	return request_firmware(fw, cur->path, fwctx->dev);
->  }
->  
-> -static void brcmf_fw_request_done(const struct firmware *fw, void *ctx)
-> +static void brcmf_fw_request_done_first(const struct firmware *fw, void *ctx)
+>  		ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
+>  					      fwctx->dev, GFP_KERNEL, fwctx,
+> -					      brcmf_fw_request_done);
+> +					      brcmf_fw_request_done_first);
+>  		kfree(alt_path);
+> -	}
+> -	/* Else try canonical path */
+> -	if (ret) {
 
-Is it really worthwhile to rename this function? There is no "done_second".
+
+> +	} else {
+> +		fwctx->tested_board_variant = true;
+>  		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
+>  					      fwctx->dev, GFP_KERNEL, fwctx,
+> -					      brcmf_fw_request_done);
+> +					      brcmf_fw_request_done_first);
+>  	}
+>  	if (ret < 0)
+> -		brcmf_fw_request_done(NULL, fwctx);
+> +		brcmf_fw_request_done_first(NULL, fwctx);
+
+This "else" can be replaced with:
+
+if (!alt_path || ret < 0)
+	brcmf_fw_request_done(NULL, fwctx);
