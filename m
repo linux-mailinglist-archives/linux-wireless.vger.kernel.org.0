@@ -2,102 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C13E3E0E87
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 08:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1598F3E0E8B
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 08:45:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237819AbhHEGpI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Aug 2021 02:45:08 -0400
-Received: from m12-13.163.com ([220.181.12.13]:48310 "EHLO m12-13.163.com"
+        id S237843AbhHEGpg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Aug 2021 02:45:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45592 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231418AbhHEGpH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Aug 2021 02:45:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=RfB/J
-        nJf9EP8SNAwmDp79LofGOgEFWPMAYpseX6FoDI=; b=FlCE++Mc+hr6Q/36HOak7
-        FAaK3PAbnvhXSTYyQ8TxErZ1xQ5O1cKDqFvIaHDPZBc1h3vqkYGNpgyXkHrvSrui
-        bd+p5//Ew5XKarrVVvhsxOFWCvVKhHoZdZRiZpF66XqzmpxGLJSqSjaAmvY7EwmV
-        N4a5YY8e6X4l9nOHeme6iI=
-Received: from COOL-20201222LC.ccdomain.com (unknown [218.94.48.178])
-        by smtp9 (Coremail) with SMTP id DcCowAA3PZHKiAthGZjwOA--.41047S2;
-        Thu, 05 Aug 2021 14:44:30 +0800 (CST)
-From:   dingsenjie@163.com
-To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dingsenjie <dingsenjie@yulong.com>
-Subject: [PATCH] net: mac80211: Remove unnecessary variable and label
-Date:   Thu,  5 Aug 2021 14:43:49 +0800
-Message-Id: <20210805064349.202148-1-dingsenjie@163.com>
-X-Mailer: git-send-email 2.21.0.windows.1
+        id S231418AbhHEGpf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Aug 2021 02:45:35 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 732A560462;
+        Thu,  5 Aug 2021 06:45:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628145921;
+        bh=M/GfuYHTix3waNbmYdkOqyUu+CmAGKSMK3fHOxTlX/s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mSk8kwFfPxB3/4i5tTCbGii6wWBfTkP/zDyKlOPfYNNEaNXKImhldAFc7aaAJ8Hua
+         v5G6O9EtCixcmjPRNtirLNWEs8dEqgs8GvI6mOrnSPxlUgpGztMrFhdyo3kgIZRI8a
+         373t0ofmaS8EPXv7PQ8zJUYhXtWjykcOcC+ItdJnIKIfvETw1CpSoGEQpI/QhiNBeT
+         /W1DwWKRzY3FcS56uOhcAbtzTklWV5qSAoSNQ4v8vCuaFeC2XcAC7TwIA87k629EFA
+         adU1Nka68PYgElq2/vS48RRjzXPefFdCt3uWuRGkf+BCEz0z2oxmnvA5j5J2fZKWBL
+         3gn1KGJveR3og==
+Date:   Thu, 5 Aug 2021 08:45:17 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     sean.wang@mediatek.com
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Soul.Huang@mediatek.com,
+        YN.Chen@mediatek.com, Leon.Yen@mediatek.com,
+        Eric-SY.Chang@mediatek.com, Deren.Wu@mediatek.com,
+        km.lin@mediatek.com, robin.chiu@mediatek.com, ch.yeh@mediatek.com,
+        posh.sun@mediatek.com, Eric.Liang@mediatek.com,
+        Stella.Chang@mediatek.com, jemele@google.com, yenlinlai@google.com,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v2] mt76: connac: add support maximum regulatory Tx power
+Message-ID: <YQuI/Zf8vYjKx9LR@lore-desk>
+References: <e05024275119c517a4eb7e39bf249640db68d07d.1628115504.git.objelf@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DcCowAA3PZHKiAthGZjwOA--.41047S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AF48trWfZFW8Wr4rZw47urg_yoW8Xw1xpF
-        9xK34DtrWkJr15Aw1rAryqqF95Cr40ka40gr4xJ3Z3ZFsI9rn8Gr1Uuw4FqFyYkFZrt34a
-        vFWv9r45Zw1DGrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jmwZ7UUUUU=
-X-Originating-IP: [218.94.48.178]
-X-CM-SenderInfo: 5glqw25hqmxvi6rwjhhfrp/1tbiHgThyFSIwHli5QABsQ
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="hxDLajrAgiBDpkcF"
+Content-Disposition: inline
+In-Reply-To: <e05024275119c517a4eb7e39bf249640db68d07d.1628115504.git.objelf@gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: dingsenjie <dingsenjie@yulong.com>
 
-The variable ret and label just used as return, so we delete it and
-use the return statement instead of the goto statement.
+--hxDLajrAgiBDpkcF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: dingsenjie <dingsenjie@yulong.com>
----
- net/mac80211/ibss.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+> From: YN Chen <YN.Chen@mediatek.com>
+>=20
+> Consider .max_reg_power in struct ieee80211_channel to limit the
+> maximum power the wireless device allowed to transmit on the
+> corresponding channel according to the regulatory domain.
+>=20
+> Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> Signed-off-by: YN Chen <YN.Chen@mediatek.com>
+> ---
+> v2: consider the power limit that can be allowed on mt7663
+> ---
+>  .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 43 ++++++++++++++++++-
+>  1 file changed, 41 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drive=
+rs/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> index d71393b1c5e6..80987af03efe 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> @@ -1773,6 +1773,43 @@ static s8 mt76_connac_get_sar_power(struct mt76_ph=
+y *phy,
+>  	return target_power;
+>  }
+> =20
+> +static s8 mt76_connac_get_ch_power(struct mt76_phy *phy,
+> +				   struct ieee80211_channel *chan,
+> +				   s8 target_power)
+> +{
+> +	struct mt76_dev *dev =3D phy->dev;
+> +	struct ieee80211_supported_band *sband;
+> +	int i;
+> +
+> +	switch (chan->band) {
+> +	case NL80211_BAND_2GHZ:
+> +		sband =3D &phy->sband_2g.sband;
+> +		break;
+> +	case NL80211_BAND_5GHZ:
+> +		sband =3D &phy->sband_5g.sband;
+> +		break;
+> +	default:
+> +		return target_power;
+> +	}
+> +
+> +	for (i =3D 0; i < sband->n_channels; i++) {
+> +		struct ieee80211_channel *ch =3D &sband->channels[i];
+> +
+> +		if (ch->hw_value =3D=3D chan->hw_value) {
+> +			if (!(ch->flags & IEEE80211_CHAN_DISABLED)) {
+> +				int power =3D 2 * ch->max_reg_power;
+> +
+> +				if (is_mt7663(dev) && (power > 63 || power < -64))
+> +					power =3D 63;
 
-diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
-index 1f552f3..9115b68 100644
---- a/net/mac80211/ibss.c
-+++ b/net/mac80211/ibss.c
-@@ -489,7 +489,6 @@ int ieee80211_ibss_csa_beacon(struct ieee80211_sub_if_data *sdata,
- 	const struct cfg80211_bss_ies *ies;
- 	u16 capability = WLAN_CAPABILITY_IBSS;
- 	u64 tsf;
--	int ret = 0;
- 
- 	sdata_assert_lock(sdata);
- 
-@@ -501,10 +500,8 @@ int ieee80211_ibss_csa_beacon(struct ieee80211_sub_if_data *sdata,
- 				ifibss->ssid_len, IEEE80211_BSS_TYPE_IBSS,
- 				IEEE80211_PRIVACY(ifibss->privacy));
- 
--	if (WARN_ON(!cbss)) {
--		ret = -EINVAL;
--		goto out;
--	}
-+	if (WARN_ON(!cbss))
-+		return -EINVAL;
- 
- 	rcu_read_lock();
- 	ies = rcu_dereference(cbss->ies);
-@@ -520,18 +517,14 @@ int ieee80211_ibss_csa_beacon(struct ieee80211_sub_if_data *sdata,
- 					   sdata->vif.bss_conf.basic_rates,
- 					   capability, tsf, &ifibss->chandef,
- 					   NULL, csa_settings);
--	if (!presp) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!presp)
-+		return -ENOMEM;
- 
- 	rcu_assign_pointer(ifibss->presp, presp);
- 	if (old_presp)
- 		kfree_rcu(old_presp, rcu_head);
- 
- 	return BSS_CHANGED_BEACON;
-- out:
--	return ret;
- }
- 
- int ieee80211_ibss_finish_csa(struct ieee80211_sub_if_data *sdata)
--- 
-1.9.1
+I guess now you are missing the value for mt7921. What I mean is something
+similar to mt76_connac_mcu_build_sku()
 
+int max_power =3D is_mt7921(dev) ? 127 : 63;
 
+Regards,
+Lorenzo
+
+> +				target_power =3D min_t(s8, power, target_power);
+> +			}
+> +			break;
+> +		}
+> +	}
+> +
+> +	return target_power;
+> +}
+> +
+>  static int
+>  mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
+>  				  enum nl80211_band band)
+> @@ -1840,10 +1877,12 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy=
+ *phy,
+>  				.hw_value =3D ch_list[idx],
+>  				.band =3D band,
+>  			};
+> -			s8 sar_power;
+> +			s8 reg_power, sar_power;
+> =20
+> +			reg_power =3D mt76_connac_get_ch_power(phy, &chan,
+> +							     tx_power);
+>  			sar_power =3D mt76_connac_get_sar_power(phy, &chan,
+> -							      tx_power);
+> +							      reg_power);
+> =20
+>  			mt76_get_rate_power_limits(phy, &chan, &limits,
+>  						   sar_power);
+> --=20
+> 2.25.1
+>=20
+
+--hxDLajrAgiBDpkcF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYQuI+gAKCRA6cBh0uS2t
+rPB9AQDCnVhsbNJDEIyRTl1ack1ChpXMCi7BwkMYperDcFN2VQEAiyEnXDp5pw9d
+1qugK0mBeoZ1WsgtJNNJNvVbMZGsXQI=
+=AOvU
+-----END PGP SIGNATURE-----
+
+--hxDLajrAgiBDpkcF--
