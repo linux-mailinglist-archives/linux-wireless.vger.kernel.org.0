@@ -2,140 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEADA3E183E
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 17:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A7553E1842
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 17:39:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242280AbhHEPje (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Aug 2021 11:39:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58346 "EHLO
+        id S242281AbhHEPjv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Aug 2021 11:39:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242273AbhHEPjd (ORCPT
+        with ESMTP id S242220AbhHEPjo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Aug 2021 11:39:33 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62F2BC061798
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Aug 2021 08:39:18 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id j1so9770392pjv.3
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Aug 2021 08:39:18 -0700 (PDT)
+        Thu, 5 Aug 2021 11:39:44 -0400
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83FCEC0613D5
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Aug 2021 08:39:30 -0700 (PDT)
+Received: by mail-pj1-x102f.google.com with SMTP id l19so9845973pjz.0
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Aug 2021 08:39:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MALEPaHHc/EsqmzETjoT0BXGuVrPDKvHZtKjVXpWqAs=;
-        b=tncQI6Tv2gOgxIUz/J7Xvc5/29/QU2+LVrhjPZRllp86AhwFyhAHKHQZX79cglXRXH
-         yuv5PfYKHmIu2OFeu6JDFT7mMVphyR8xaJt3c0omDzd+/rWfew01TvsEujVbMo26FYnR
-         7XlpxVckSQ8nxX2tOK9b/ssWoSm0LoFsH0+rCGtAhWARZnKAbq7c9B3IOlsPlEweHAxu
-         i81VgMxbiGLG4lTmC83mnTRJb2Y8gmuqhhEMrc7e9FdzqsL5E3elJesXA8SWX5J1e1a4
-         G9jYIao/vHguK9N2ridpCbjOEiTY2NQd4hdJT52Hw5hruJtaA/TBbiv5jmO4oFUkL+70
-         o4nQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=ot7k522t7tkww/gX8P+bxa/STMEn0jLnSSwzpwYPO18=;
+        b=utic3nZYCnPeafOdB5uoaVtxojMNCLKIo2xKX9t82krXXWyGwcCFzlwckj6QdMlFXD
+         GLaEhJvWYX/fOONI+vz9BZhMifJBlAX7PLChJVqO975qI1icoCW0CcG2fn6+7QMNkiCv
+         Bg0U4OFesb9+eC+zI3YnpKcoJ/kRYrQa43DKeh/9Sv+Z+SSDfANVvAO1vOEFxlZ+N4IT
+         sKWWy55sqWsuvjP9/U4zqxB7jC3jkswfeocRKI3S1TVRUu4Yt65+HoVc4qsmW0sl7sLI
+         5jObu1fi7jCKCYeZkR3YoyedZnKfwKrB1WzmVfA2TuSTpUJE5LukyNcHwVWuU00AQdtD
+         f0zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MALEPaHHc/EsqmzETjoT0BXGuVrPDKvHZtKjVXpWqAs=;
-        b=JNBlbcjNgqShOUnX0ttr/N8um05ksaa8UDtZS9ah0/eIduhOTomIOC8sM9SVeOse71
-         dsHzN9dIBPbtmRt9t5x6jr9U3RglBovNgRm+4iGnnT5QLediM2yMdaTmdVFS6jL2xHv9
-         zNwRI+80pvQ1VWr3VBrSQkEJe65AJw0vY1xKHbrnOaPBk+mtkx8PYK3M1xdnEKF1HKA5
-         t0bL76rZS4BTljhuV23hqsqHnTw/Pvtc2VTU4xRGZSXbeEsO52AQigV51QBJ1zXnWEhA
-         5p1TMxIQuhOn7QtLU/BPTsXV51WuGpfnAqm3TG9C0GstKvHofRm0uOq+Gq7T2kOUO6r9
-         v3Pg==
-X-Gm-Message-State: AOAM533i6bswKb6UaJJrKWUH9j+FyVOe0MvWB6lGfcFYiSKcI/9b6nye
-        4TbbBtnTCOR8cGg+XX/2Xnc=
-X-Google-Smtp-Source: ABdhPJyl/jYreKM8rT7ZF1N6xtbrpW6t3uRvQCYAys2qHvLar5pdP6mXohXMTkuCfQXLsgRx3jgIPQ==
-X-Received: by 2002:a17:90a:c89:: with SMTP id v9mr5381031pja.175.1628177957784;
-        Thu, 05 Aug 2021 08:39:17 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ot7k522t7tkww/gX8P+bxa/STMEn0jLnSSwzpwYPO18=;
+        b=o1j7EZktJRCYAhOxamCH9vqEz/kVZfNKjD6KOtzwhOlK0fstqk0cSrO4Dr1B6wEHGl
+         6RxdGhzmidujSEbzy/uD6set1Nc9KCda05+Ki9vJ3vr4CI7tW+acOh5L0i5sdlca1hjM
+         Pu0N2I4f/ar6dWiTzXtWCVocFdoCoik51VBBWdzFzEZyAiX90Ui+fGDP1XavYElg1HNT
+         ss5A2or1TNA9NZHkAoIfxMD/GmoJReh8NjpnQlOll6GC6bPap6WcvwC3QGm2QtS89xHI
+         6u7qPw363H5QzfhNxjW0yBb0evbvPCuFoPqenm2NYaa+VR+PmunbdDRtKzw471iXkgpM
+         g18A==
+X-Gm-Message-State: AOAM532RD0OlCt1S15pYNnC/BEDyAU+4B0ByVZvR8yBiAEEds6HyiXu2
+        B6z21uHjE+pJXI/yfpCZBGg=
+X-Google-Smtp-Source: ABdhPJzI6Osj7BruIbyH3v3jjgR8866LhUnUXyQp2+58ST7DxRr5rceLcY4XlVDKySf/AMl/sj3AYw==
+X-Received: by 2002:a62:1489:0:b029:336:162f:3417 with SMTP id 131-20020a6214890000b0290336162f3417mr148817pfu.14.1628177970105;
+        Thu, 05 Aug 2021 08:39:30 -0700 (PDT)
 Received: from lattitude.lan ([49.206.116.229])
-        by smtp.googlemail.com with ESMTPSA id m17sm7173437pfh.133.2021.08.05.08.39.15
+        by smtp.googlemail.com with ESMTPSA id m17sm7173437pfh.133.2021.08.05.08.39.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Aug 2021 08:39:17 -0700 (PDT)
+        Thu, 05 Aug 2021 08:39:29 -0700 (PDT)
 From:   Gokul Sivakumar <gokulkumar792@gmail.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     Gokul Sivakumar <gokulkumar792@gmail.com>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH 1/2] iw: mesh: fix crash when attempting to print the conf param "mesh_nolearn"
-Date:   Thu,  5 Aug 2021 21:08:06 +0530
-Message-Id: <20210805153807.645106-1-gokulkumar792@gmail.com>
+Subject: [PATCH 2/2] iw: mesh: add new cmd to dump all the supported mesh config params at once
+Date:   Thu,  5 Aug 2021 21:08:07 +0530
+Message-Id: <20210805153807.645106-2-gokulkumar792@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210805153807.645106-1-gokulkumar792@gmail.com>
+References: <20210805153807.645106-1-gokulkumar792@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Even if iw did not receive some of the meshconf attributes in response to
-NL80211_CMD_GET_MESH_PARAMS, it tries to print that param and gets crashed.
-Fix this by adding a condition check before trying to access each of the
-mesh conf params.
+The function print_mesh_param_handler() already supports printing all the
+mesh config params when not pasing one specific parameter, so add a new
+"mesh_param dump" command to help the user see all the parameters at once.
 
-$ iw dev mesh0 get mesh_param mesh_nolearn
-Segmentation fault (core dumped)
-
- (gdb) bt
- #0  0x00007f21f54660e9 in nla_get_u8 () from /lib/x86_64-linux-gnu/libnl-3.so.200
- #1  0x0000562ba2f5d70d in _print_u8 (a=<optimized out>) at mesh.c:131
- #2  0x0000562ba2f5d7ce in print_mesh_param_handler (msg=<optimized out>,
-     arg=0x562ba2f85758 <_mesh_param_descrs+1080>) at mesh.c:412
- #3  0x00007f21f546db9c in nl_recvmsgs_report () from /lib/x86_64-linux-gnu/libnl-3.so.200
- #4  0x00007f21f546e059 in nl_recvmsgs () from /lib/x86_64-linux-gnu/libnl-3.so.200
- #5  0x0000562ba2f5bb3b in __handle_cmd (state=0x7ffe677bc510, idby=II_NETDEV, argc=<optimized out>,
-     argv=<optimized out>, cmdout=0x7ffe677bc508) at iw.c:541
- #6  0x0000562ba2f4fe0c in __handle_cmd (cmdout=0x7ffe677bc508, argv=0x7ffe677bc658, argc=4, idby=II_NETDEV,
-     state=0x7ffe677bc510) at iw.c:613
- #7  main (argc=4, argv=0x7ffe677bc658) at iw.c:613
- (gdb) up 2
- #2  0x0000562ba2f5d7ce in print_mesh_param_handler (msg=<optimized out>,
-     arg=0x562ba2f85758 <_mesh_param_descrs+1080>) at mesh.c:412
- 412             mdescr->nla_print_fn(mesh_params[mdescr->mesh_param_num]);
- (gdb) i local
- mdescr = 0x562ba2f85758 <_mesh_param_descrs+1080>
- attrs = {0x0 <repeats 35 times>, 0x562ba4002a14, 0x0 <repeats 266 times>}
- parent_attr = <optimized out>
- mesh_params = {0x0, 0x562ba4002a20, 0x562ba4002a28, 0x562ba4002a30, 0x562ba4002a38, 0x562ba4002a40,
-   0x562ba4002a48, 0x562ba4002a58, 0x562ba4002a68, 0x562ba4002a70, 0x562ba4002a78, 0x562ba4002a80,
-   0x562ba4002a88, 0x562ba4002a98, 0x562ba4002aa0, 0x562ba4002a50, 0x562ba4002aa8, 0x562ba4002ab0,
-   0x562ba4002a90, 0x562ba4002ab8, 0x562ba4002ac0, 0x562ba4002a60, 0x562ba4002ac8, 0x562ba4002ad0,
-   0x562ba4002ad8, 0x562ba4002ae0, 0x562ba4002ae8, 0x562ba4002af0, 0x562ba4002af8, 0x562ba4002b00, 0x0, 0x0}
- gnlh = 0x562ba4002a10
- (gdb)
- (gdb) p mesh_params[30]
- $7 = (struct nlattr *) 0x0
- (gdb)
+$ iw dev mesh0 mesh_param dump
+mesh_retry_timeout = 100 milliseconds
+mesh_confirm_timeout = 100 milliseconds
+mesh_holding_timeout = 100 milliseconds
+mesh_max_peer_links = 99
+mesh_max_retries = 3
+mesh_ttl = 31
+mesh_element_ttl = 31
+mesh_auto_open_plinks = 0
+mesh_hwmp_max_preq_retries = 4
+mesh_path_refresh_time = 1000 milliseconds
+mesh_min_discovery_timeout = 100 milliseconds
+mesh_hwmp_active_path_timeout = 5000 TUs
+mesh_hwmp_preq_min_interval = 10 TUs
+mesh_hwmp_net_diameter_traversal_time = 50 TUs
+mesh_hwmp_rootmode = 0
+mesh_hwmp_rann_interval = 5000 TUs
+mesh_gate_announcements = 0
+mesh_fwding = 1
+mesh_sync_offset_max_neighor = 50
+mesh_rssi_threshold = 0 dBm
+mesh_hwmp_active_path_to_root_timeout = 6000 TUs
+mesh_hwmp_root_interval = 5000 TUs
+mesh_hwmp_confirmation_interval = 2000 TUs
+mesh_power_mode = active
+mesh_awake_window = 10 TUs
+mesh_plink_timeout = 0 seconds
+mesh_connected_to_gate = 0
 
 Signed-off-by: Gokul Sivakumar <gokulkumar792@gmail.com>
 ---
- mesh.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ mesh.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/mesh.c b/mesh.c
-index 23b3471..3797335 100644
+index 3797335..943edf5 100644
 --- a/mesh.c
 +++ b/mesh.c
-@@ -401,16 +401,20 @@ static int print_mesh_param_handler(struct nl_msg *msg, void *arg)
+@@ -11,6 +11,7 @@
+ #include "iw.h"
  
- 		for (i = 0; i < ARRAY_SIZE(_mesh_param_descrs); i++) {
- 			mdescr = &_mesh_param_descrs[i];
--			printf("%s = ", mdescr->name);
--			mdescr->nla_print_fn(mesh_params[mdescr->mesh_param_num]);
--			printf("\n");
-+			if (mesh_params[mdescr->mesh_param_num]) {
-+				printf("%s = ", mdescr->name);
-+				mdescr->nla_print_fn(mesh_params[mdescr->mesh_param_num]);
-+				printf("\n");
-+			}
- 		}
- 		return NL_SKIP;
- 	}
+ SECTION(mesh);
++SECTION(mesh_param);
  
- 	/* print out the mesh parameter */
--	mdescr->nla_print_fn(mesh_params[mdescr->mesh_param_num]);
--	printf("\n");
-+	if (mesh_params[mdescr->mesh_param_num]) {
-+		mdescr->nla_print_fn(mesh_params[mdescr->mesh_param_num]);
-+		printf("\n");
-+	}
- 	return NL_SKIP;
- }
  
+ typedef struct _any_t {
+@@ -447,6 +448,19 @@ COMMAND(get, mesh_param, "[<param>]",
+ 	NL80211_CMD_GET_MESH_PARAMS, 0, CIB_NETDEV, get_interface_meshparam,
+ 	"Retrieve mesh parameter (run command without any to see available ones).");
+ 
++static int dump_interface_meshparam(struct nl80211_state *state,
++				    struct nl_msg *msg,
++				    int argc, char **argv,
++				    enum id_input id)
++{
++	register_handler(print_mesh_param_handler, NULL);
++	return 0;
++}
++
++COMMAND(mesh_param, dump, "",
++	NL80211_CMD_GET_MESH_PARAMS, 0, CIB_NETDEV, dump_interface_meshparam,
++	"List all supported mesh parameters");
++
+ static int join_mesh(struct nl80211_state *state,
+ 		     struct nl_msg *msg, int argc, char **argv,
+ 		     enum id_input id)
 -- 
 2.25.1
 
