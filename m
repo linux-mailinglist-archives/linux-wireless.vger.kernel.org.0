@@ -2,62 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E837F3E1257
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 12:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D5FB3E1272
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 12:19:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240432AbhHEKKv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Aug 2021 06:10:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38990 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240487AbhHEKKh (ORCPT
+        id S240105AbhHEKTw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Aug 2021 06:19:52 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:51194 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S240012AbhHEKTw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Aug 2021 06:10:37 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F0D5C0617BB
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Aug 2021 03:10:17 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id y12so7564135edo.6
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Aug 2021 03:10:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
-        b=iS9YA7D4AkLyKrMVsoVYMawu0L36NuU4+ZSSyySlEHd80Db/SKmaXNHUYbn10iE1ak
-         iC2IvrlH8v1AbmVGIfByuGkfSJI0XOychxHlUayNB69sXT4UE/GxiJdUnwpUeLi55ukG
-         xxmbK315oyKozAfiGnXEqKK3PxzEgZV5MZYS8JrbDSFfNkjPPnwGCrlh5tDeKwhJwNKw
-         T5dIuH8sR8enUCr5iznpK0TZ2LjgjrjjYSvOKCwjpML2kXz9bFVQEOg044XfixvXje/K
-         h6N675zJB4VwjShIVvQTmJWjRDKft4Rcevz64ZRcI/rUzQ/43BUMnv9UMxVY4mSVx0dv
-         +ZPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
-        b=Zita2K4d3E1JkLD/NHXIWqF6lvHYCsZ0pisiR0KF6IMqDGzOqbYInm6xNTqJ8ipOGQ
-         HU8Fh3SrWLZ8GD4oHxOxPsWdBpPSSLN5MZXF9j76qxfYfRVwP0IV9UQgpUgcyLMOm/vh
-         5MAEsr6J3OpQFMBFIkZa9Vg3IuZJWPvcBnAUyaBSAweBgIkaTwvUQG26WCxfbFGDkZVw
-         JkNkRF8LdLQab0EosMyr3Sil6aBYtqZDIF3/1ziR7Uy2NRIPDQJO1d2qGhOcjELV8O5V
-         DCVbZt8SbBKexqEWFzwev5mliuxehfBwU5K0USBX8LIYF/8zjkaWATioKH/e2HTHlr7v
-         bdeQ==
-X-Gm-Message-State: AOAM531tyj1qsm2+NzF1bJ9jq9CZwwym7qIShIl3aQjfCsvNk7/mCJzj
-        djdlZX+qMMdycOjLK9BIDMcDeKyjepsgTjRNvOc=
-X-Google-Smtp-Source: ABdhPJz/RKmv260xIbuerDTPdwMwXLpAeKReSpRsKd2xVxrYh4CfQJfzAebDIdig2CS2Izsib4l5qV0PM0JZd046dok=
-X-Received: by 2002:a05:6402:40c7:: with SMTP id z7mr5373679edb.193.1628158216069;
- Thu, 05 Aug 2021 03:10:16 -0700 (PDT)
+        Thu, 5 Aug 2021 06:19:52 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94)
+        (envelope-from <luca@coelho.fi>)
+        id 1mBaTP-00240Q-2s; Thu, 05 Aug 2021 13:19:36 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+Date:   Thu,  5 Aug 2021 13:19:22 +0300
+Message-Id: <20210805101934.431479-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Received: by 2002:a05:6408:258c:b029:e3:fe5c:5c2d with HTTP; Thu, 5 Aug 2021
- 03:10:15 -0700 (PDT)
-Reply-To: theresabangurah3333@yahoo.com
-From:   Theresa Bangurah <mariamabah77879@gmail.com>
-Date:   Thu, 5 Aug 2021 11:10:15 +0100
-Message-ID: <CAAi==jrP1LU0nh-DrLEYOsm5GW=VtCGzFW8zeRyVbCcv17qusA@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
+        farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
+Subject: [PATCH 00/12] iwlwifi: updates intended for v5.15 2021-08-05
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Luca Coelho <luciano.coelho@intel.com>
+
+Hi,
+
+Here's the fourth set of patches intended for v5.15.  It's the usual
+development, new features, cleanups and bugfixes.
+
+The changes are:
+
+* A bunch of changes in the D3 code, including new FW API;
+* Finalize the refactoring of 6GHz scan;
+* Initial changes in the SAR profile code;
+* Some other small fixes, clean-ups and improvements.
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Avraham Stern (1):
+  iwlwifi: mvm: silently drop encrypted frames for unknown station
+
+Ilan Peer (1):
+  iwlwifi: mvm: Refactor setting of SSIDs for 6GHz scan
+
+Johannes Berg (7):
+  iwlwifi: mvm: d3: separate TKIP data from key iteration
+  iwlwifi: mvm: d3: remove fixed cmd_flags argument
+  iwlwifi: mvm: d3: refactor TSC/RSC configuration
+  iwlwifi: mvm: d3: add separate key iteration for GTK type
+  iwlwifi: mvm: d3: make key reprogramming iteration optional
+  iwlwifi: mvm: d3: implement RSC command version 5
+  iwlwifi: mvm: fix access to BSS elements
+
+Luca Coelho (3):
+  iwlwifi: rename ACPI_SAR_NUM_CHAIN_LIMITS to ACPI_SAR_NUM_CHAINS
+  iwlwifi: convert flat SAR profile table to a struct version
+  iwlwifi: remove ACPI_SAR_NUM_TABLES definition
+
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  36 +-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  16 +-
+ .../wireless/intel/iwlwifi/fw/api/commands.h  |   3 +-
+ .../net/wireless/intel/iwlwifi/fw/api/d3.h    |  22 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 575 +++++++++++++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   3 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   8 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 104 +---
+ 9 files changed, 494 insertions(+), 277 deletions(-)
+
 -- 
-My name is Mrs.Theresa Bangurah,i am American citizen i have something
-important to tell you.Reply me immediately you get this message.God
-bless you.
+2.32.0
+
