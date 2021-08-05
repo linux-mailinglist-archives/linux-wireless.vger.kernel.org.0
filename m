@@ -2,77 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0A5C3E0B62
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 02:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 180B13E0C0E
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 03:23:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233484AbhHEAr1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Aug 2021 20:47:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54088 "EHLO
+        id S237134AbhHEBXL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Aug 2021 21:23:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229912AbhHEAr0 (ORCPT
+        with ESMTP id S231143AbhHEBXK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Aug 2021 20:47:26 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AE49C0613D5
-        for <linux-wireless@vger.kernel.org>; Wed,  4 Aug 2021 17:47:12 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id zb12so1729333ejb.5
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Aug 2021 17:47:12 -0700 (PDT)
+        Wed, 4 Aug 2021 21:23:10 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16215C061765
+        for <linux-wireless@vger.kernel.org>; Wed,  4 Aug 2021 18:22:55 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id f42so7776205lfv.7
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Aug 2021 18:22:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=oOqUrSuUCCTti4b89vsLrMyMjdmQmo0cHUZ19+DYd/0=;
-        b=EXasX1HQWvPJwPgvotHoAWGV4k8XTliBmxJa8RxxJ/TRzdXmbpDXBVmFb1FHrkC4va
-         me4qIMHqNqPjfLZXXWptEFhEWIoz9X3lhZDkAyaLDCq8lIemUBnoP+JjxjGyno6hkBhw
-         aW9xxJeFeQV4K/xoh0RyAeE+pCPNuQ/7nu2+OVbf9Wob9tyExHJC5jJ2n1os1JLwBLym
-         yi+sMA7GYPtLLDkeerGeA0Futl5nSqslQvaB/gSNHUa4VLtOfmP4lYBkbdMRhRRSCPTI
-         SOXA492cdFdiWjjwKvIQR0V2P4bRcWAQmLGU6CTA6dAKspmmiQAK5Aeh09z0keR2xRdn
-         PwNQ==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=bltuF2//lN0RwIpoXHj2UV+Rix6dkOwcfgrgodgcNKU=;
+        b=SOcFGwbYGP8hHZN3D0wa465sPwYS4qM2o+sLsTBBSVw7rLDeCdfh7lJ9CfHUWQ1+HJ
+         pF1Izy7LrOOgCORK4rRx0r27QnWeWIfqecapncdT+8acxLrWzH6AlRxeKL1Mw/rsQM7Q
+         NPjBPtYtg2ZmP/UrIo59mnzQBAKL4nZ3WVDWdO0+ChVtdPcmJibiWbadiQVVEIFy0RWr
+         ew9gz/TQhCPp0Y3V5mY50jp0YUR/5Uq0vXmS19AZk38WE4SDqz7TQWZzgN7u9dDVaiZo
+         jd2O5rc6Ox+xebiDaHLUyaFxS8NYBzFxznglmC82NeP1oiD4pc3Y3C1DyURwF3UbUJ/k
+         Xs2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=oOqUrSuUCCTti4b89vsLrMyMjdmQmo0cHUZ19+DYd/0=;
-        b=Fv/1WcY5ZckDgUf5dCMhIzgotAP9PyQnqpO1VzPJXB2TbdOpPbNkxgQvasla0UB1Sv
-         C3rUu2ogHfi0TKQHtYhBqKALerLBFNk0vMTxi3BAfT4JcGAJ/Vc3aDApnv0fAR0F65Gm
-         bJStOGc0HIlT2pzMcIyCveSnuC963zYAxUwxIU6VXhH9l7Z+J8+NPSwDf4WMcxMSpfq6
-         BZdfDYTS3x36DzlOW36xx6OiIgZjzpVvg63SiET5YpcT/WL3oCcYdje80X7W8y9qvFpb
-         uJ/gNb9hIaZmVRXcj3YIbF7x/sHFLsLccJtR8UISQSoMPySTRO+iSv6uHxSxqcZWpE1O
-         UNYg==
-X-Gm-Message-State: AOAM532M3SRzB9C1BwFvguQn3HeLdUUmzKg+bYFG/4tLxkowHwZbo6si
-        hfkQvk2aBuQZ6P//vlz3fCWKsNHFnuwmtfIulqw=
-X-Google-Smtp-Source: ABdhPJxwolnk+uP/FiJBnxafpJfM5CMYEQTgHib15msJVgGHIVCBpEtDB6yzJpkBQO1z0+OWJGkVYgqbfcfdTzUUJKw=
-X-Received: by 2002:a17:906:158f:: with SMTP id k15mr1821827ejd.241.1628124430838;
- Wed, 04 Aug 2021 17:47:10 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=bltuF2//lN0RwIpoXHj2UV+Rix6dkOwcfgrgodgcNKU=;
+        b=YsrybrIj6YPcNtKmzv6GCGtkNTn6SUGGI+0Lamina0LaRrV/hnQV72ZxU/EXH8u51c
+         Gy7QEOaO8A5vUwzMLKVCSB9HqYO12e/KfwHk9Tg+XR+d8wmuT7t/3EDDC7TdWBWzNsB0
+         z29rlWMPb8d73kCYWw86ltK6v8hU8pGKFwzU0tpoPtJnpYVnfgx5un5R1E8ogEb6xGVx
+         XUsabgT7xbB/L2JGvieh9t+xAujzn8lGhiItXSvCkwUoKfI8hkSC85B7XnuMBUO7Z8LK
+         U4LZ9lOZjj1V42Z60rtaAkVOJNeUdEXA9oSrhrRQGjrJWl4y2o+JS3thfifE0qIxW6cQ
+         fs8Q==
+X-Gm-Message-State: AOAM531qIe2ukJLjhEH5K/0wFfHHISjtXNKIGMwnaeqebdh2oADKnZHQ
+        2U9b/NM57pfCguWdZpTMcSE=
+X-Google-Smtp-Source: ABdhPJzS3nS8Gho9+oTdcPrkF8eY0dxe2Je3c4ng5pEefQkrTZ/bo5Z2fqWsgNxD+q+e6pLxzj3agg==
+X-Received: by 2002:a05:6512:61c:: with SMTP id b28mr1582481lfe.415.1628126574105;
+        Wed, 04 Aug 2021 18:22:54 -0700 (PDT)
+Received: from [192.168.2.145] (46-138-65-182.dynamic.spd-mgts.ru. [46.138.65.182])
+        by smtp.googlemail.com with ESMTPSA id q66sm288817ljb.83.2021.08.04.18.22.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Aug 2021 18:22:53 -0700 (PDT)
+Subject: Re: [PATCH v2] brcmfmac: firmware: Fix firmware loading
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Stefan Hansson <newbyte@disroot.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+References: <20210804153434.3429348-1-linus.walleij@linaro.org>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <67ba8440-8f39-daa0-ef39-e506007fd46a@gmail.com>
+Date:   Thu, 5 Aug 2021 04:22:52 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Received: by 2002:a54:228b:0:0:0:0:0 with HTTP; Wed, 4 Aug 2021 17:47:10 -0700 (PDT)
-Reply-To: mrschantelhermans@gmail.com
-From:   Mrs Chantel Hermans <preshsam379@gmail.com>
-Date:   Wed, 4 Aug 2021 17:47:10 -0700
-Message-ID: <CAGvGuvGXKoqZ0oDxV77TpOKNa6GZ=bXjn_e12zGauTxVjHTNnA@mail.gmail.com>
-Subject: ATTENTION
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210804153434.3429348-1-linus.walleij@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
+04.08.2021 18:34, Linus Walleij пишет:
+> +static void brcmf_fw_request_done_first(const struct firmware *fw, void *ctx)
+>  {
+>  	struct brcmf_fw *fwctx = ctx;
+> +	struct brcmf_fw_item *first = &fwctx->req->items[0];
+>  	int ret;
+>  
+> +	/* Something failed with the first firmware request, such as not
+> +	 * getting the per-board firmware. Retry this, now using the less
+> +	 * specific path for the first firmware item, i.e. without the board
+> +	 * suffix.
+> +	 */
+> +	if (!fw && !fwctx->tested_board_variant) {
+> +		fwctx->tested_board_variant = true;
+> +		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
+> +					      fwctx->dev, GFP_KERNEL, fwctx,
+> +					      brcmf_fw_request_done_first);
+> +		return;
 
+The original code was proceeding on error. Is this a typo here?
 
-ATTENTION
-
-
-
-You have been compensated with the sum of 6.9 million dollars in this
-United Nation the payment will be issue into ATM Visa Card,
-
-
-
-and send to you from the Santander Bank of Spain we need your
-Address,Passport and your whatsapp number.
-
-
-
-THANKS
-
-*Mrs Chantel Hermans*
+if (!ret)
+	return;
