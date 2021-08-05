@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12ED53E13C8
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 13:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE363E13CA
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Aug 2021 13:22:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241033AbhHELW0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Aug 2021 07:22:26 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:51334 "EHLO
+        id S240992AbhHELWb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Aug 2021 07:22:31 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:51344 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S241021AbhHELW0 (ORCPT
+        with ESMTP id S241044AbhHELWa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Aug 2021 07:22:26 -0400
+        Thu, 5 Aug 2021 07:22:30 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1mBbRx-00243p-Bl; Thu, 05 Aug 2021 14:22:11 +0300
+        id 1mBbRy-00243p-8X; Thu, 05 Aug 2021 14:22:11 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Thu,  5 Aug 2021 14:21:57 +0300
-Message-Id: <iwlwifi.20210805141826.a6077801d7d5.I7d8d5c895bc467efbf81ea055dde366ea01cced1@changeid>
+Date:   Thu,  5 Aug 2021 14:21:58 +0300
+Message-Id: <iwlwifi.20210805141826.78e441b16f9c.I2d79492f05624ddd02c533c673811a36eaf8a396@changeid>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210805112158.460799-1-luca@coelho.fi>
 References: <20210805112158.460799-1-luca@coelho.fi>
@@ -32,98 +32,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH 11/12] iwlwifi: mvm: load regdomain at INIT stage
+Subject: [PATCH 12/12] iwlwifi: acpi: support reading and storing WGDS revision 2
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Luca Coelho <luciano.coelho@intel.com>
 
-We used to load the regdomain only in the load stage,
-this caused the 'iw phy phy0 reg get' command to fail if we
-booted a machine with wifi off.
-Therefor we should load it in INIT stage already.
+Revisions 0 and 1 are identical, so we were already supporting that.
+But revision 2 has a different size, so we have to try to read them
+separately.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Add support for this new revision.
+
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 19 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  |  4 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  5 +++++
- 3 files changed, 26 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 38 +++++++++++++++-----
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h | 19 ++++++----
+ 2 files changed, 43 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 2fbb7cdf00a4..03387a5f8cbc 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -1381,6 +1381,25 @@ iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
- 		reg_query_regdb_wmm(regd->alpha2, center_freq, rule);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 1802a451c450..de1e9271dcd2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -703,27 +703,49 @@ int iwl_sar_get_wgds_table(struct iwl_fw_runtime *fwrt)
+ 	union acpi_object *wifi_pkg, *data;
+ 	int i, j, k, ret, tbl_rev;
+ 	int idx = 1; /* start from one to skip the domain */
++	u8 num_bands;
+ 
+ 	data = iwl_acpi_get_object(fwrt->dev, ACPI_WGDS_METHOD);
+ 	if (IS_ERR(data))
+ 		return PTR_ERR(data);
+ 
++	/* start by trying to read revision 2 */
+ 	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
+-					 ACPI_WGDS_WIFI_DATA_SIZE, &tbl_rev);
++					 ACPI_WGDS_WIFI_DATA_SIZE_REV2,
++					 &tbl_rev);
++	if (!IS_ERR(wifi_pkg)) {
++		if (tbl_rev != 2) {
++			ret = PTR_ERR(wifi_pkg);
++			goto out_free;
++		}
+ 
+-	if (IS_ERR(wifi_pkg)) {
+-		ret = PTR_ERR(wifi_pkg);
+-		goto out_free;
++		num_bands = ACPI_GEO_NUM_BANDS_REV2;
++
++		goto read_table;
  	}
  
-+	/*
-+	 * Certain firmware versions might report no valid channels
-+	 * if booted in RF-kill, i.e. not all calibrations etc. are
-+	 * running. We'll get out of this situation later when the
-+	 * rfkill is removed and we update the regdomain again, but
-+	 * since cfg80211 doesn't accept an empty regdomain, add a
-+	 * dummy (unusable) rule here in this case so we can init.
-+	 */
-+	if (!valid_rules) {
-+		valid_rules = 1;
-+		rule = &regd->reg_rules[valid_rules - 1];
-+		rule->freq_range.start_freq_khz = MHZ_TO_KHZ(2412);
-+		rule->freq_range.end_freq_khz = MHZ_TO_KHZ(2413);
-+		rule->freq_range.max_bandwidth_khz = MHZ_TO_KHZ(1);
-+		rule->power_rule.max_antenna_gain = DBI_TO_MBI(6);
-+		rule->power_rule.max_eirp =
-+			DBM_TO_MBM(IWL_DEFAULT_MAX_TX_POWER);
-+	}
+-	if (tbl_rev > 1) {
+-		ret = -EINVAL;
+-		goto out_free;
++	/* then try revision 0 (which is the same as 1) */
++	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
++					 ACPI_WGDS_WIFI_DATA_SIZE_REV0,
++					 &tbl_rev);
++	if (!IS_ERR(wifi_pkg)) {
++		if (tbl_rev != 0 && tbl_rev != 1) {
++			ret = PTR_ERR(wifi_pkg);
++			goto out_free;
++		}
 +
- 	regd->n_reg_rules = valid_rules;
++		num_bands = ACPI_GEO_NUM_BANDS_REV0;
++
++		goto read_table;
+ 	}
  
- 	/*
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-index 7fb4e618f76e..da705fcaf0fc 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2019 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2019, 2021 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -416,7 +416,7 @@ iwl_mvm_update_mcc(struct iwl_mvm *mvm, const char *alpha2,
- 	struct iwl_rx_packet *pkt;
- 	struct iwl_host_cmd cmd = {
- 		.id = MCC_UPDATE_CMD,
--		.flags = CMD_WANT_SKB,
-+		.flags = CMD_WANT_SKB | CMD_SEND_IN_RFKILL,
- 		.data = { &mcc_update_cmd },
- 	};
++	ret = PTR_ERR(wifi_pkg);
++	goto out_free;
++
++read_table:
+ 	fwrt->geo_rev = tbl_rev;
+ 	for (i = 0; i < ACPI_NUM_GEO_PROFILES; i++) {
+-		for (j = 0; j < ACPI_GEO_NUM_BANDS_REV0; j++) {
++		for (j = 0; j < num_bands; j++) {
+ 			union acpi_object *entry;
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index edff2cd3a30e..8ce937f8445a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -692,11 +692,16 @@ static int iwl_mvm_start_get_nvm(struct iwl_mvm *mvm)
+ 			entry = &wifi_pkg->package.elements[idx++];
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+index a424186af3c8..16ed0995b51e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+@@ -38,11 +38,6 @@
+ #define ACPI_SAR_NUM_SUB_BANDS_REV1	11
+ #define ACPI_SAR_NUM_SUB_BANDS_REV2	11
  
- 	if (ret && ret != -ERFKILL)
- 		iwl_fw_dbg_error_collect(&mvm->fwrt, FW_DBG_TRIGGER_DRIVER);
-+	if (!ret && iwl_mvm_is_lar_supported(mvm)) {
-+		mvm->hw->wiphy->regulatory_flags |= REGULATORY_WIPHY_SELF_MANAGED;
-+		ret = iwl_mvm_init_mcc(mvm);
-+	}
- 
- 	if (!iwlmvm_mod_params.init_dbg || !ret)
- 		iwl_mvm_stop_device(mvm);
- 
- 	mutex_unlock(&mvm->mutex);
-+	rtnl_unlock();
- 
- 	if (ret < 0)
- 		IWL_ERR(mvm, "Failed to run INIT ucode: %d\n", ret);
+-#define ACPI_GEO_NUM_CHAINS		2
+-#define ACPI_GEO_NUM_BANDS_REV0		2
+-#define ACPI_GEO_NUM_BANDS_REV1		2
+-#define ACPI_GEO_NUM_BANDS_REV2		3
+-
+ #define ACPI_WRDS_WIFI_DATA_SIZE_REV0	(ACPI_SAR_NUM_CHAINS_REV0 * \
+ 					 ACPI_SAR_NUM_SUB_BANDS_REV0 + 2)
+ #define ACPI_WRDS_WIFI_DATA_SIZE_REV1	(ACPI_SAR_NUM_CHAINS_REV1 * \
+@@ -58,7 +53,19 @@
+ #define ACPI_EWRD_WIFI_DATA_SIZE_REV2	((ACPI_SAR_PROFILE_NUM - 1) * \
+ 					 ACPI_SAR_NUM_CHAINS_REV2 * \
+ 					 ACPI_SAR_NUM_SUB_BANDS_REV2 + 3)
+-#define ACPI_WGDS_WIFI_DATA_SIZE	19
++
++/* revision 0 and 1 are identical, except for the semantics in the FW */
++#define ACPI_GEO_NUM_BANDS_REV0		2
++#define ACPI_GEO_NUM_BANDS_REV2		3
++#define ACPI_GEO_NUM_CHAINS		2
++
++#define ACPI_WGDS_WIFI_DATA_SIZE_REV0	(ACPI_NUM_GEO_PROFILES *   \
++					 ACPI_GEO_NUM_BANDS_REV0 * \
++					 ACPI_GEO_PER_CHAIN_SIZE + 1)
++#define ACPI_WGDS_WIFI_DATA_SIZE_REV2	(ACPI_NUM_GEO_PROFILES *   \
++					 ACPI_GEO_NUM_BANDS_REV2 * \
++					 ACPI_GEO_PER_CHAIN_SIZE + 1)
++
+ #define ACPI_WRDD_WIFI_DATA_SIZE	2
+ #define ACPI_SPLC_WIFI_DATA_SIZE	2
+ #define ACPI_ECKV_WIFI_DATA_SIZE	2
 -- 
 2.32.0
 
