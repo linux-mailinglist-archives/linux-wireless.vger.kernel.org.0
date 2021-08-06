@@ -2,162 +2,277 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB63E3E3112
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 23:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 407F73E316B
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 23:51:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240933AbhHFVZL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Aug 2021 17:25:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38082 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240338AbhHFVZJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Aug 2021 17:25:09 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4064360EE8;
-        Fri,  6 Aug 2021 21:24:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628285093;
-        bh=OJXVvQV1lg0BTpnm4/Nv7ym7sLl0HIhqKTRdfOznYwg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=goH/1yJM9CgOOo+OcwLI85KOcKMTJKy8qsbi9kmA/eUKLp96x9J8M/JAw+C0HoXtl
-         LLP9C54GqLgkjnKpGR9kkrYUXUKz/g5bCUA/CpaOzR6XQzlUTgr5y3Dk7zGrmBxX8N
-         en5fOF69mFY7iz78CR1nGEcyNekjfw/CZ0EQbDXeU3Hh82nmIhL0nXS2kQ3mhduoVP
-         XswzHNEybaPpFHtw5KHBi3RP5f5dPsW9v9eFEsYvxzj76KiOdi8Bw4rMEV5B6PvQ1z
-         CLKL2wH1wGanKV5ZinDF8ZSKormkVT85L0UCSY8TizkDvEv+r8Jkclod/etLJWRRFl
-         2rifLx8uQfKtA==
-Date:   Fri, 6 Aug 2021 16:24:52 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
-        Russell Currey <ruscur@russell.cc>,
-        Sathya Prakash <sathya.prakash@broadcom.com>,
-        oss-drivers@corigine.com, Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Jiri Olsa <jolsa@redhat.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        linux-perf-users@vger.kernel.org,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        linux-scsi@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        Ido Schimmel <idosch@nvidia.com>, x86@kernel.org,
-        qat-linux@intel.com,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Fiona Trahe <fiona.trahe@intel.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, Michael Buesch <m@bues.ch>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Juergen Gross <jgross@suse.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        xen-devel@lists.xenproject.org, Vadym Kochan <vkochan@marvell.com>,
-        MPT-FusionLinux.pdl@broadcom.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org,
-        Wojciech Ziemba <wojciech.ziemba@intel.com>,
-        linux-kernel@vger.kernel.org, Taras Chornyi <tchornyi@marvell.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
-        netdev@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v2 0/6] PCI: Drop duplicated tracking of a pci_dev's
- bound driver
-Message-ID: <20210806212452.GA1867870@bjorn-Precision-5520>
+        id S245399AbhHFVvm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Aug 2021 17:51:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45048 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245383AbhHFVvb (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Aug 2021 17:51:31 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E36CC061798
+        for <linux-wireless@vger.kernel.org>; Fri,  6 Aug 2021 14:51:15 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id t7-20020a17090a5d87b029017807007f23so21471253pji.5
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Aug 2021 14:51:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tWEiCkw+fSiz6EiygCnTJiJ8o5BtcEILDKNkLL6Uu3s=;
+        b=BX3+BEAylAbE/hNGLDIXMbDFoR+/KM+Z/rF4MghjRq7IjV4KWs0jpcGEkJ6fKEsODl
+         Sljvlv9qUJMBY5XiRx9uKD/LhdqKaGq6TLZPuICLdBGv1ppOSNElnsGhKuN4jDK9cpni
+         2w2ZKDN5VMjaV5qs5QjjNdjIC11LlKq5QilWw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tWEiCkw+fSiz6EiygCnTJiJ8o5BtcEILDKNkLL6Uu3s=;
+        b=ocpiqHrgUY84g2BD5F/JxRpKQfjM03IuHABYGgeGOp720krWccIuBk60K6gUURrstc
+         FD1vOCRVpZoiVwbhvl+Rn/WyILoeqy4XHCPGAfsk+2xAWZk/8F6Q2YMoL25VoaKDlWr4
+         T2V16IPN0nE22oc8epU4KusCjjK6YZG5UvEBb9BtRrH1xOXoGziKlbmvOTPuOGvnxPf+
+         Du8zR/d3S5zpdPjYM+FpUV8FK2kW07GppCQxUpc5cmfgKoWUj3+Jw31G9Wapot0UhPTb
+         X1uC3nZwep0ktzAAraYBVJrqUCPouSu0WMnKEFPelhS8sSF5cEO6/NxSUYomf6dEdF+b
+         Hd/w==
+X-Gm-Message-State: AOAM532NipNUQtxPlzYoa9pNmRBAIAHsuAfrBoA+/QyrrZO8ayuFe2Jj
+        tNZd8ecC3zr+XCTyoOJtm6BiGg==
+X-Google-Smtp-Source: ABdhPJz6V63GlXJdSmLLP/MTaSIOKcIhloT+lM9y1AYLFfR1I8ESY4FgdjJkGIx6PLfRg6qjDqmUnQ==
+X-Received: by 2002:a05:6a00:16c6:b029:32d:e190:9dd0 with SMTP id l6-20020a056a0016c6b029032de1909dd0mr12475598pfc.70.1628286674964;
+        Fri, 06 Aug 2021 14:51:14 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id y2sm10734979pjl.6.2021.08.06.14.51.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Aug 2021 14:51:14 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Kees Cook <keescook@chromium.org>, David Sterba <dsterba@suse.cz>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: [PATCH] mac80211: radiotap: Use BIT() instead of shifts
+Date:   Fri,  6 Aug 2021 14:51:12 -0700
+Message-Id: <20210806215112.2874773-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8683; h=from:subject; bh=czSMCGdMP4Zyrr8fUtCTJKV3QkH9XMp2P84y9iqGzvE=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhDa7Q05vzCyv/C+X37SFm9tonPHNTDPmeDyfL6WJM WkJDsZeJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYQ2u0AAKCRCJcvTf3G3AJtu4D/ 9A0n0fkYoVF8zOcW4lzqhOH07vbnwGmnmVpT5O2rGg06I/UNQb+aRBQMa829A3FDw6fcXwgBe5sY6N 8EHPntfbYtlXviGJbn8pwD4kW412i9EkJcTvNMsg77pSGe0q+UhfRNCp+aGY4y5yXbKhAnFGUFBQIs IoJ91oCvEEcjSZS3cUvERUUd5ZyqfAcB6Eof/qUE1+kUyNooIwvDITDWi6LvlGQsa4mwvn5sJzRAJ6 rIAmQ92s2nVPwLpMhhT4ASNMmjiqAlTE+p7bBdHe/lZ0yDV5U1kP8CbP5vkFmNvNNuNJLyeLXVSdye 1OgWpKWJI8I3Tag3wFyiziPzMEILbN28XB5W7tIwKC68FfBAdAX2Nym4aufAyaGLuY5mzvgQTP4vIE 2eVEin4OZzRMGgntdVZWXFGEdHVOqrvERClSqA/ttEBP+0ayFvqmYQDCaPIqTF7cWEgkaYl8ChhxCp 87ILfTh+5N+GGQWCmCRYcy3gdUD/R5ZJkCMBNfXy9VenyN5O6kSo5ZawqC+/aP2mtyZxRzAMuDpRqa OMJdnxN97T9OYKHTZC5uKvjVW3Ny8Icp5u2QPPecYL240muMsKE6vSYgMXMddFMfUJlrXEZYGZ3Ssu heeaGoUa6GKH6XLFykaCXSrPGZDo1XP1s72Ys09ItwmovFscP3HhNjUmXgEg==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210806064623.3lxl4clzbjpmchef@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 06, 2021 at 08:46:23AM +0200, Uwe Kleine-König wrote:
-> On Thu, Aug 05, 2021 at 06:42:34PM -0500, Bjorn Helgaas wrote:
+IEEE80211_RADIOTAP_EXT has a value of 31, which means if shift was ever
+cast to 64-bit, the result would become sign-extended. As a matter of
+robustness, just replace all the open-coded shifts with BIT().
 
-> > I looked at all the bus_type.probe() methods, it looks like pci_dev is
-> > not the only offender here.  At least the following also have a driver
-> > pointer in the device struct:
-> > 
-> >   parisc_device.driver
-> >   acpi_device.driver
-> >   dio_dev.driver
-> >   hid_device.driver
-> >   pci_dev.driver
-> >   pnp_dev.driver
-> >   rio_dev.driver
-> >   zorro_dev.driver
-> 
-> Right, when I converted zorro_dev it was pointed out that the code was
-> copied from pci and the latter has the same construct. :-)
-> See
-> https://lore.kernel.org/r/20210730191035.1455248-5-u.kleine-koenig@pengutronix.de
-> for the patch, I don't find where pci was pointed out, maybe it was on
-> irc only.
+Suggested-by: David Sterba <dsterba@suse.cz>
+Link: https://lore.kernel.org/lkml/20210728092323.GW5047@twin.jikos.cz/
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ net/mac80211/rx.c       | 22 +++++++++++-----------
+ net/mac80211/status.c   | 16 ++++++++--------
+ net/wireless/radiotap.c |  4 ++--
+ 3 files changed, 21 insertions(+), 21 deletions(-)
 
-Oh, thanks!  I looked to see if you'd done something similar
-elsewhere, but I missed this one.
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 2563473b5cf1..3eb7b03b23c6 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -372,7 +372,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 			ieee80211_calculate_rx_timestamp(local, status,
+ 							 mpdulen, 0),
+ 			pos);
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_TSFT);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_TSFT));
+ 		pos += 8;
+ 	}
+ 
+@@ -396,7 +396,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 		*pos = 0;
+ 	} else {
+ 		int shift = 0;
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_RATE);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_RATE));
+ 		if (status->bw == RATE_INFO_BW_10)
+ 			shift = 1;
+ 		else if (status->bw == RATE_INFO_BW_5)
+@@ -433,7 +433,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 	    !(status->flag & RX_FLAG_NO_SIGNAL_VAL)) {
+ 		*pos = status->signal;
+ 		rthdr->it_present |=
+-			cpu_to_le32(1 << IEEE80211_RADIOTAP_DBM_ANTSIGNAL);
++			cpu_to_le32(BIT(IEEE80211_RADIOTAP_DBM_ANTSIGNAL));
+ 		pos++;
+ 	}
+ 
+@@ -459,7 +459,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 	if (status->encoding == RX_ENC_HT) {
+ 		unsigned int stbc;
+ 
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_MCS);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_MCS));
+ 		*pos++ = local->hw.radiotap_mcs_details;
+ 		*pos = 0;
+ 		if (status->enc_flags & RX_ENC_FLAG_SHORT_GI)
+@@ -483,7 +483,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 		while ((pos - (u8 *)rthdr) & 3)
+ 			pos++;
+ 		rthdr->it_present |=
+-			cpu_to_le32(1 << IEEE80211_RADIOTAP_AMPDU_STATUS);
++			cpu_to_le32(BIT(IEEE80211_RADIOTAP_AMPDU_STATUS));
+ 		put_unaligned_le32(status->ampdu_reference, pos);
+ 		pos += 4;
+ 		if (status->flag & RX_FLAG_AMPDU_LAST_KNOWN)
+@@ -510,7 +510,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 	if (status->encoding == RX_ENC_VHT) {
+ 		u16 known = local->hw.radiotap_vht_details;
+ 
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_VHT);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_VHT));
+ 		put_unaligned_le16(known, pos);
+ 		pos += 2;
+ 		/* flags */
+@@ -554,7 +554,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 		u8 flags = IEEE80211_RADIOTAP_TIMESTAMP_FLAG_32BIT;
+ 
+ 		rthdr->it_present |=
+-			cpu_to_le32(1 << IEEE80211_RADIOTAP_TIMESTAMP);
++			cpu_to_le32(BIT(IEEE80211_RADIOTAP_TIMESTAMP));
+ 
+ 		/* ensure 8 byte alignment */
+ 		while ((pos - (u8 *)rthdr) & 7)
+@@ -642,7 +642,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 		/* ensure 2 byte alignment */
+ 		while ((pos - (u8 *)rthdr) & 1)
+ 			pos++;
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_HE);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_HE));
+ 		memcpy(pos, &he, sizeof(he));
+ 		pos += sizeof(he);
+ 	}
+@@ -652,14 +652,14 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 		/* ensure 2 byte alignment */
+ 		while ((pos - (u8 *)rthdr) & 1)
+ 			pos++;
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_HE_MU);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_HE_MU));
+ 		memcpy(pos, &he_mu, sizeof(he_mu));
+ 		pos += sizeof(he_mu);
+ 	}
+ 
+ 	if (status->flag & RX_FLAG_NO_PSDU) {
+ 		rthdr->it_present |=
+-			cpu_to_le32(1 << IEEE80211_RADIOTAP_ZERO_LEN_PSDU);
++			cpu_to_le32(BIT(IEEE80211_RADIOTAP_ZERO_LEN_PSDU));
+ 		*pos++ = status->zero_length_psdu_type;
+ 	}
+ 
+@@ -667,7 +667,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 		/* ensure 2 byte alignment */
+ 		while ((pos - (u8 *)rthdr) & 1)
+ 			pos++;
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_LSIG);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_LSIG));
+ 		memcpy(pos, &lsig, sizeof(lsig));
+ 		pos += sizeof(lsig);
+ 	}
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index bae321ff77f6..1f295e5721ef 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -305,8 +305,8 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
+ 	memset(rthdr, 0, rtap_len);
+ 	rthdr->it_len = cpu_to_le16(rtap_len);
+ 	rthdr->it_present =
+-		cpu_to_le32((1 << IEEE80211_RADIOTAP_TX_FLAGS) |
+-			    (1 << IEEE80211_RADIOTAP_DATA_RETRIES));
++		cpu_to_le32(BIT(IEEE80211_RADIOTAP_TX_FLAGS) |
++			    BIT(IEEE80211_RADIOTAP_DATA_RETRIES));
+ 	pos = (unsigned char *)(rthdr + 1);
+ 
+ 	/*
+@@ -331,7 +331,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
+ 			sband->bitrates[info->status.rates[0].idx].bitrate;
+ 
+ 	if (legacy_rate) {
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_RATE);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_RATE));
+ 		*pos = DIV_ROUND_UP(legacy_rate, 5 * (1 << shift));
+ 		/* padding for tx flags */
+ 		pos += 2;
+@@ -358,7 +358,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
+ 
+ 	if (status && status->rate &&
+ 	    (status->rate->flags & RATE_INFO_FLAGS_MCS)) {
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_MCS);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_MCS));
+ 		pos[0] = IEEE80211_RADIOTAP_MCS_HAVE_MCS |
+ 			 IEEE80211_RADIOTAP_MCS_HAVE_GI |
+ 			 IEEE80211_RADIOTAP_MCS_HAVE_BW;
+@@ -374,7 +374,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
+ 			(IEEE80211_RADIOTAP_VHT_KNOWN_GI |
+ 			 IEEE80211_RADIOTAP_VHT_KNOWN_BANDWIDTH);
+ 
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_VHT);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_VHT));
+ 
+ 		/* required alignment from rthdr */
+ 		pos = (u8 *)rthdr + ALIGN(pos - (u8 *)rthdr, 2);
+@@ -419,7 +419,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
+ 		   (status->rate->flags & RATE_INFO_FLAGS_HE_MCS)) {
+ 		struct ieee80211_radiotap_he *he;
+ 
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_HE);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_HE));
+ 
+ 		/* required alignment from rthdr */
+ 		pos = (u8 *)rthdr + ALIGN(pos - (u8 *)rthdr, 2);
+@@ -495,7 +495,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
+ 	/* IEEE80211_RADIOTAP_MCS
+ 	 * IEEE80211_RADIOTAP_VHT */
+ 	if (info->status.rates[0].flags & IEEE80211_TX_RC_MCS) {
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_MCS);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_MCS));
+ 		pos[0] = IEEE80211_RADIOTAP_MCS_HAVE_MCS |
+ 			 IEEE80211_RADIOTAP_MCS_HAVE_GI |
+ 			 IEEE80211_RADIOTAP_MCS_HAVE_BW;
+@@ -512,7 +512,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
+ 			(IEEE80211_RADIOTAP_VHT_KNOWN_GI |
+ 			 IEEE80211_RADIOTAP_VHT_KNOWN_BANDWIDTH);
+ 
+-		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_VHT);
++		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_VHT));
+ 
+ 		/* required alignment from rthdr */
+ 		pos = (u8 *)rthdr + ALIGN(pos - (u8 *)rthdr, 2);
+diff --git a/net/wireless/radiotap.c b/net/wireless/radiotap.c
+index 36f1b59a78bf..8099c9564a59 100644
+--- a/net/wireless/radiotap.c
++++ b/net/wireless/radiotap.c
+@@ -125,13 +125,13 @@ int ieee80211_radiotap_iterator_init(
+ 
+ 	/* find payload start allowing for extended bitmap(s) */
+ 
+-	if (iterator->_bitmap_shifter & (1<<IEEE80211_RADIOTAP_EXT)) {
++	if (iterator->_bitmap_shifter & (BIT(IEEE80211_RADIOTAP_EXT))) {
+ 		if ((unsigned long)iterator->_arg -
+ 		    (unsigned long)iterator->_rtheader + sizeof(uint32_t) >
+ 		    (unsigned long)iterator->_max_length)
+ 			return -EINVAL;
+ 		while (get_unaligned_le32(iterator->_arg) &
+-					(1 << IEEE80211_RADIOTAP_EXT)) {
++					(BIT(IEEE80211_RADIOTAP_EXT))) {
+ 			iterator->_arg += sizeof(uint32_t);
+ 
+ 			/*
+-- 
+2.30.2
 
-> > Looking through the places that care about pci_dev.driver (the ones
-> > updated by patch 5/6), many of them are ... a little dubious to begin
-> > with.  A few need the "struct pci_error_handlers *err_handler"
-> > pointer, so that's probably legitimate.  But many just need a name,
-> > and should probably be using dev_driver_string() instead.
-> 
-> Yeah, I considered adding a function to get the driver name from a
-> pci_dev and a function to get the error handlers. Maybe it's an idea to
-> introduce these two and then use to_pci_driver(pdev->dev.driver) for the
-> few remaining users? Maybe doing that on top of my current series makes
-> sense to have a clean switch from pdev->driver to pdev->dev.driver?!
-
-I'd propose using dev_driver_string() for these places:
-
-  eeh_driver_name() (could change callers to use dev_driver_string())
-  bcma_host_pci_probe()
-  qm_alloc_uacce()
-  hns3_get_drvinfo()
-  prestera_pci_probe()
-  mlxsw_pci_probe()
-  nfp_get_drvinfo()
-  ssb_pcihost_probe()
-
-The use in mpt_device_driver_register() looks unnecessary: it's only
-to get a struct pci_device_id *, which is passed to ->probe()
-functions that don't need it.
-
-The use in adf_enable_aer() looks wrong: it sets the err_handler
-pointer in one of the adf_driver structs.  I think those structs
-should be basically immutable, and the drivers that call
-adf_enable_aer() from their .probe() methods should set
-".err_handler = &adf_err_handler" in their static adf_driver
-definitions instead.
-
-I think that basically leaves these:
-
-  uncore_pci_probe()     # .id_table, custom driver "registration"
-  match_id()             # .id_table, arch/x86/kernel/probe_roms.c
-  xhci_pci_quirks()      # .id_table
-  pci_error_handlers()   # roll-your-own AER handling, drivers/misc/cxl/guest.c
-
-I think it would be fine to use to_pci_driver(pdev->dev.driver) for
-these few.
-
-Bjorn
