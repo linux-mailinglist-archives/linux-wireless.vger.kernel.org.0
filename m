@@ -2,98 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BC813E298E
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 13:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46A443E2A9F
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 14:32:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245454AbhHFL2t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Aug 2021 07:28:49 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:46186
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S245371AbhHFL2r (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Aug 2021 07:28:47 -0400
-Received: from [10.172.193.212] (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        id S1343714AbhHFMcr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Aug 2021 08:32:47 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:15073 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1343684AbhHFMcq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Aug 2021 08:32:46 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1628253150; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=64u7uNH1LgCuCacOvZPPHByj6Huub6A+vuiCo061RFw=; b=uKGaKfx9zvinlRfwJBIpePy7RnehuIWRisrF3DeJFJp85QkHEZBZTRte/99WV2IkRU0epb/w
+ TDyJczjnf8t1gPpMD9hWapywP9JKkhVFMpiDovnOQpALsZpTPOBDaOOWkmDoh8MS1LVB8mF7
+ ziXT5RG2ABqzVAffo7SsGmnzQrY=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 610d2bbfb4dfc4b0efbb0242 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Aug 2021 12:31:59
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 48B99C4338A; Fri,  6 Aug 2021 12:31:58 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id E19764065E;
-        Fri,  6 Aug 2021 11:28:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1628249310;
-        bh=TSF6syblnU+wYbj7noZ2K9gDs7lGPeoRUp1P79rvg7w=;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type;
-        b=rLiwQ60cBvjSxqmgY/q8PBEs0eDonpUuvxGqCCCANYZehYbTN9nocTlIWu+cqPZWI
-         YTsM2PGBM3zHpkilwfjZO9I8p541EoD0un7uVZ+8p4MKCKQ7bnXRRZhGQLoEemGe8y
-         9uG2WQ8T3KexgkMcDWKnnYShk+tGaRJ5Fx2gpLISt/gxQc0uJ/iVVjt5yWweVhbYFG
-         MJB9VzYli3lZGZS6wFsz0FOZ5GzLg0ZX5ySAOZPYUtl1a7nuVcpYyPaqwRZVvzhTWl
-         TwILdGJJqxDIlYzxNoTB7MLOM6k4X94hMYwV0BtkXgtBcH6dFEbjn2sM1vnsl2IJbJ
-         XIxZwueXEFquw==
-Subject: Re: [PATCH][next] brcmfmac: firmware: Fix uninitialized variable ret
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev <netdev@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-References: <20210803150904.80119-1-colin.king@canonical.com>
- <CACRpkdZ5u-C8uH2pCr1689v_ndyzqevDDksXvtPYv=FfD=x_xg@mail.gmail.com>
- <875ywkc80d.fsf@codeaurora.org>
- <96709926-30c6-457e-3e80-eb7ad6e9d778@broadcom.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <b2034ac5-0080-a2fb-32ef-61ad50dfd248@canonical.com>
-Date:   Fri, 6 Aug 2021 12:28:29 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4B1ABC4338A;
+        Fri,  6 Aug 2021 12:31:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4B1ABC4338A
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Reto Schneider <rs@hqv.ch>
+Cc:     chris.chiu@canonical.com, code@reto-schneider.ch,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, jes.sorensen@gmail.com,
+        davem@davemloft.net, kuba@kernel.org
+Subject: Re: [PATCH v2] rtl8xxxu: Fix the handling of TX A-MPDU aggregation
+References: <20210804151325.86600-1-chris.chiu@canonical.com>
+        <26f85a9f-552d-8420-0010-f5cda70d3a00@hqv.ch>
+Date:   Fri, 06 Aug 2021 15:31:52 +0300
+In-Reply-To: <26f85a9f-552d-8420-0010-f5cda70d3a00@hqv.ch> (Reto Schneider's
+        message of "Fri, 6 Aug 2021 12:03:18 +0200")
+Message-ID: <87o8aabvpj.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <96709926-30c6-457e-3e80-eb7ad6e9d778@broadcom.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 06/08/2021 12:23, Arend van Spriel wrote:
-> On 05-08-2021 15:53, Kalle Valo wrote:
->> Linus Walleij <linus.walleij@linaro.org> writes:
->>
->>> On Tue, Aug 3, 2021 at 5:09 PM Colin King <colin.king@canonical.com>
->>> wrote:
->>>
->>>> From: Colin Ian King <colin.king@canonical.com>
->>>>
->>>> Currently the variable ret is uninitialized and is only set if
->>>> the pointer alt_path is non-null. Fix this by ininitializing ret
->>>> to zero.
->>>>
->>>> Addresses-Coverity: ("Uninitialized scalar variable")
->>>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware
->>>> binaries")
->>>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->>>
->>> Nice catch!
->>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->>
->> I assume this will be fixed by Linus' patch "brcmfmac: firmware: Fix
->> firmware loading" and I should drop Colin's patch, correct?
-> 
-> That would be my assumption as well, but not sure when he will submit
-> another revision of it. You probably know what to do ;-)
+Reto Schneider <rs@hqv.ch> writes:
 
-I'd prefer my patch to be dropped in preference to Linus' fix.
+> On 8/4/21 17:13, chris.chiu@canonical.com wrote:
+>> The TX A-MPDU aggregation is not handled in the driver since the
+>> ieee80211_start_tx_ba_session has never been started properly.
+>> Start and stop the TX BA session by tracking the TX aggregation
+>> status of each TID. Fix the ampdu_action and the tx descriptor
+>> accordingly with the given TID.
+>
+> I'd like to test this but I am not sure what to look for (before and
+> after applying the patch).
 
-> 
-> Regards,
-> Arend
+Thanks, testing feedback is always very much appreciated.
 
+> What should I look for when looking at the (sniffed) Wireshark traces?
+
+From my (maintainer) point of view most important is that there are no
+regressions visible to users, for example no data stalls, crashes or
+anything like that.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
