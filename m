@@ -2,62 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8B473E3171
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 23:53:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D461F3E3177
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 23:57:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245414AbhHFVx2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Aug 2021 17:53:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45502 "EHLO
+        id S245404AbhHFV5w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Aug 2021 17:57:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245410AbhHFVx0 (ORCPT
+        with ESMTP id S242102AbhHFV5w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Aug 2021 17:53:26 -0400
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C342C06179A
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Aug 2021 14:53:09 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id t3so8856130plg.9
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Aug 2021 14:53:09 -0700 (PDT)
+        Fri, 6 Aug 2021 17:57:52 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31C43C061799
+        for <linux-wireless@vger.kernel.org>; Fri,  6 Aug 2021 14:57:36 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id l19so18798746pjz.0
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Aug 2021 14:57:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=Fl84p+xysP6AB2l/hihiICphduq4Sq1Mlhhi22j77F0=;
-        b=fLUUzWCdWgjWzaVQtWF39lVb3u4CpbC62haKkT9QefCrNahRNB/hNVyvsoNxIwYR6A
-         y4VcIYg/Y0Pel44OEtKyqDU+CZ++YCLqYxDqGN5yYwd90cA3Uizjes5NXVUCbx797GmS
-         CPs9YpONuuf17+AcOhLbkKxAaZsPVnsX3sYsY=
+        bh=AY970ncUJAZ3XFO8vIsQqriyIPN/r8JHpDac7fWieeM=;
+        b=GRldI1oetU6ItCaJ5fQcboBOkS3kNm2NJPpnSaaazigE6TM8n6i0NiIJP8y33/Xxwa
+         X1jAnVhjjyuIS90Qp8RPwxHhAgqIXbZqVgNoEV0eule5rbSNSOwhCx8kbtPOAu5r+kt7
+         l/iGkMkrDTQIRoGctxtnHVFRWFZ5GSeRqK0SQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=Fl84p+xysP6AB2l/hihiICphduq4Sq1Mlhhi22j77F0=;
-        b=bBxPZ07+EKZLstNZ+CmdqAuw86Y0JL6BprLiR0+SsbKWlIEGsyYFQ4IEInJ5rBwkXx
-         87H6q4EplR41tS/G0p7sHk9IfjaDKII5pPcpmE5xkJQWL5BZhyWR8yiXUDcbj8wrNEf8
-         6Yp9BYnvw3Ag9bh8nxtfU2DEJjwDZVTP3fT56qV4y7rQgZIQbDopSpJOxjrLtsHtPkeW
-         6FkwVE0FbZg5g60l25+GvR3vlDX+J8Zohi8tr9UdvfxcNzae4lpfSPupHt+ubLtznl5T
-         2kJ5uATMbVlYMefumhE1D+/ZrKAK0YZTM+8CraPmscXNS31XWoFfOc8x5V17fG/+kgIP
-         Ye/g==
-X-Gm-Message-State: AOAM531BTQ5olL64Fop1kToTh1wQGqdz81AkIK4/dyhH8o4qInZGf6df
-        LCIeUs9ieZAqsZUo2uEmnOiWKg==
-X-Google-Smtp-Source: ABdhPJwHq7KmH6xi7My6g9FWVyFXC33n4QjGWSGUKLW13137lkqBzkcgKwjRr+vS4ysHDuw+bkP5Iw==
-X-Received: by 2002:a63:5153:: with SMTP id r19mr1218197pgl.56.1628286788954;
-        Fri, 06 Aug 2021 14:53:08 -0700 (PDT)
+        bh=AY970ncUJAZ3XFO8vIsQqriyIPN/r8JHpDac7fWieeM=;
+        b=udSuTEOh1q23m2azPZvzrDdZXsvBLC3sk9VyfvrGWY04scSiXNWR4G5WOA435ql8oN
+         8rsCOTa8M4yv9znvGr5NAWxSQ/EK0idWq0hKY7javZuQUYoXZb/vAHJT8ETdxyNHspK6
+         uGF1QhFNOH4Il/JlpZi2psIgmZUvIi+eUhKWaoP32ywKR5aNKjUfhpIl29ilXdEY32pa
+         r3I9CRLrScpjlhLvnzZL/dfBZRlGMCKXBV7A4/82s2EbtuauSfVxXbW5JFrwaSNG7fZc
+         zYUtLXvLVF9AxabkGWOW42ZFu5sckGten1res0xjkCu30jneleCPvjKDVYsrmPM8jW4M
+         bVjA==
+X-Gm-Message-State: AOAM530rE4S+WStiLGOA/FcVHIrbDy4ImvUPLEwU8YuZrCmmEEXOojt8
+        r1cIdc6QPT/MwkMMY4H6bl/wJw==
+X-Google-Smtp-Source: ABdhPJzl6uHhzenJtj16rXyHOXA9lloApy8P+OInYnPj3mA9JONQ+nAAQl57sYQLIY6HcAjxwW1oJg==
+X-Received: by 2002:a63:d607:: with SMTP id q7mr347628pgg.268.1628287055799;
+        Fri, 06 Aug 2021 14:57:35 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id x81sm11699524pfc.22.2021.08.06.14.53.08
+        by smtp.gmail.com with ESMTPSA id v7sm9814110pjk.37.2021.08.06.14.57.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Aug 2021 14:53:08 -0700 (PDT)
+        Fri, 06 Aug 2021 14:57:35 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     Kees Cook <keescook@chromium.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH] mac80211: Use flex-array for radiotap header bitmap
-Date:   Fri,  6 Aug 2021 14:53:05 -0700
-Message-Id: <20210806215305.2875621-1-keescook@chromium.org>
+Subject: [PATCH] pcmcia: ray_cs: Split memcpy() to avoid bounds check warning
+Date:   Fri,  6 Aug 2021 14:57:33 -0700
+Message-Id: <20210806215733.2875927-1-keescook@chromium.org>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3027; h=from:subject; bh=nSxGvyUo7OEzP3mLXXxASonhC3Vjw4BHa0bqzCW6SeM=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhDa9A9RTUHqidNfMpH0wWsYz9M+GpIQDZS5YZ+oPS wd3imheJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYQ2vQAAKCRCJcvTf3G3AJi4MD/ wPb1AljxGZOdesdD+OlcFXZD+MpzQa76k/9wnbr0ajzpHapsWmZGOWVxwbtp1Sw3MOFp//BSGIgomr dLRE9PSoxQOt6eo1+dJ5M3CXUAAgAFvEh3OZx/3GHraMErZx5+Qq+dfHSjMM67Onlv6lK/QTovrCO7 zJXLO2yzeIkypN1+b/L6HNguWflmaXh1FS88eVN7BcBQ1zSbmxFEN7icWsNFFRZWO411yRbA8hSJfm GxZ7wvVYCUlY9jMriW7PlOVKTup09VU122TVtnHEwn+Dv3XTFAo7EtbeP4mspPqiKvIGDq9mTxzBfJ bkQaEHI5BAvWC8Z4vFi0IVlhXwK8hjitA1KLB1XKgoXVoCjHyJ/WGmoQ+qBPbHWLtaq4UtttJdtKYx 6vG9dRhJO/SGp/IbRHPIaKHe58dxbSAL+LhtonFjSgImxhSSVYwmFtVR49QQq+7jotNYqQe6BRWewt EKBki3K18PJbo3NstEuH5hqtdAB2zNY7Su/VgWEcbL2ey7dTXm3x1IETDH1pXHTJ9gGFDZWV37QoO9 gGWk++JijMalclpEwb+WedkrdYLEycJSPmVJA6ojueQJiVrLpQUUgGsmva89C5tkmyk/AS517ORWqT xVyXwn/SiyKcbU3U4JZMzluqq/uAou5KL22dlgyTwdTFpx2mxmwHpAXrctdQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1806; h=from:subject; bh=MoN9sZmmdDw0lR5vW36Fdr39zzqTtcOilmLJ144gA30=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhDbBMeJZHHO3+hbAJbiz+YaA05/E7kfaAlhhB+qwX bgM8lUWJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYQ2wTAAKCRCJcvTf3G3AJhexD/ kB913c39c5/NcFF+4Bg7joDZ0bnRbO13Ww9Wcn2hoK3sgl3q35x2wuzAdruejBJR/7gKFmzHIor4am aQJFNLZmnb6GPsvPww07WjJfTTEL2aIlKw6+RWECbMmIYaZ37VzT15AZWr7/vFYGDiK3mdL9xbL/me Cqo5qkyChQRNlo/+/yNVveUiJl+1pMkhAmiBJtqpSbz/wsuhbUHV6CTpAr0QbVgJ016V/YJq7thei/ Cxa0BcbWyYKVWQLlUIX5ZHYSD/jLrNRFd6//Q/VIQDxOYsOmsi+CpByAkVxj+lZSZY6tKX8r3nNlOn 7QP7eGd/6oYfB2vi/QzQi0xblqs/V0+YUydIQl82RZVXNrZ4lt2XuUWH0jDHKJA4FFWzIhxEU2zzqO u6boGH1JLSgNFuIqvxpAz2jC0jdOgJzEv7J1/ixrvO2YX1Qwn7wkEuZF1CPlnqb/kbIwhw9xROvpaJ UbKIBV6X3neOI7A6xFItNCs1/NMdpia3JLKGL1rOlEAa+4LJvYDTOk8P64wH6mXxcNW2BfXIMdCM1K 7uSnblp9J+MeWF5KAkfhocRvIvvSLERrXvxiHUeewIlTIZr4emNWe5kaN3svEFMY98VTx6nZI6VQd9 EEqmYPMVOmWup8WfcCrwxyCI6XU8OI1DxJN9glwcxMBWsW1g9DqqZnU9uh1g==
 X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -68,75 +68,41 @@ In preparation for FORTIFY_SOURCE performing compile-time and run-time
 field bounds checking for memcpy(), memmove(), and memset(), avoid
 intentionally writing across neighboring fields.
 
-The it_present member of struct ieee80211_radiotap_header is treated as a
-flexible array (multiple u32s can be conditionally present). In order for
-memcpy() to reason (or really, not reason) about the size of operations
-against this struct, use of bytes beyond it_present need to be treated
-as part of the flexible array. Add a trailing flexible array and
-initialize its initial index via pointer arithmetic.
+Split memcpy() for each address range to help memcpy() correctly reason
+about the bounds checking. Avoids the future warning:
 
-Cc: Johannes Berg <johannes@sipsolutions.net>
+In function 'fortify_memcpy_chk',
+    inlined from 'memcpy_toio' at ./include/asm-generic/io.h:1204:2,
+    inlined from 'ray_build_header.constprop' at drivers/net/wireless/ray_cs.c:984:3:
+./include/linux/fortify-string.h:285:4: warning: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Wattribute-warning]
+  285 |    __write_overflow_field(p_size_field, size);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Cc: Kalle Valo <kvalo@codeaurora.org>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
 Cc: linux-wireless@vger.kernel.org
 Cc: netdev@vger.kernel.org
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- include/net/ieee80211_radiotap.h | 4 ++++
- net/mac80211/rx.c                | 7 ++++++-
- net/wireless/radiotap.c          | 5 ++---
- 3 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ray_cs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
-index c0854933e24f..6b7274edb3c6 100644
---- a/include/net/ieee80211_radiotap.h
-+++ b/include/net/ieee80211_radiotap.h
-@@ -43,6 +43,10 @@ struct ieee80211_radiotap_header {
- 	 * @it_present: (first) present word
- 	 */
- 	__le32 it_present;
-+	/**
-+	 * @it_optional: all remaining presence bitmaps
-+	 */
-+	__le32 it_optional[];
- } __packed;
+diff --git a/drivers/net/wireless/ray_cs.c b/drivers/net/wireless/ray_cs.c
+index 590bd974d94f..d57bbe551630 100644
+--- a/drivers/net/wireless/ray_cs.c
++++ b/drivers/net/wireless/ray_cs.c
+@@ -982,7 +982,9 @@ AP to AP	1	1	dest AP		src AP		dest	source
+ 	if (local->net_type == ADHOC) {
+ 		writeb(0, &ptx->mac.frame_ctl_2);
+ 		memcpy_toio(ptx->mac.addr_1, ((struct ethhdr *)data)->h_dest,
+-			    2 * ADDRLEN);
++			    ADDRLEN);
++		memcpy_toio(ptx->mac.addr_2, ((struct ethhdr *)data)->h_source,
++			    ADDRLEN);
+ 		memcpy_toio(ptx->mac.addr_3, local->bss_id, ADDRLEN);
+ 	} else { /* infrastructure */
  
- /* version is always 0 */
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 3eb7b03b23c6..33c56eab07fc 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -359,7 +359,12 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 
- 	put_unaligned_le32(it_present_val, it_present);
- 
--	pos = (void *)(it_present + 1);
-+	/* This references through an offset into it_optional[] rather
-+	 * than via it_present otherwise later uses of pos will cause
-+	 * the compiler to think we have walked past the end of the
-+	 * struct member.
-+	 */
-+	pos = (void *)&rthdr->it_optional[it_present - rthdr->it_optional];
- 
- 	/* the order of the following fields is important */
- 
-diff --git a/net/wireless/radiotap.c b/net/wireless/radiotap.c
-index 8099c9564a59..ae2e1a896461 100644
---- a/net/wireless/radiotap.c
-+++ b/net/wireless/radiotap.c
-@@ -115,10 +115,9 @@ int ieee80211_radiotap_iterator_init(
- 	iterator->_max_length = get_unaligned_le16(&radiotap_header->it_len);
- 	iterator->_arg_index = 0;
- 	iterator->_bitmap_shifter = get_unaligned_le32(&radiotap_header->it_present);
--	iterator->_arg = (uint8_t *)radiotap_header + sizeof(*radiotap_header);
-+	iterator->_arg = (uint8_t *)radiotap_header->it_optional;
- 	iterator->_reset_on_ext = 0;
--	iterator->_next_bitmap = &radiotap_header->it_present;
--	iterator->_next_bitmap++;
-+	iterator->_next_bitmap = radiotap_header->it_optional;
- 	iterator->_vns = vns;
- 	iterator->current_namespace = &radiotap_ns;
- 	iterator->is_radiotap_ns = 1;
 -- 
 2.30.2
 
