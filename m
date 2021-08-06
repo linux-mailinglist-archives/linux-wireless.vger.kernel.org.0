@@ -2,115 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9DED3E2AB3
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 14:35:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D8873E2C1F
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 16:10:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343728AbhHFMfk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Aug 2021 08:35:40 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:16680 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343717AbhHFMfk (ORCPT
+        id S237135AbhHFOK7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Aug 2021 10:10:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54796 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236234AbhHFOKu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Aug 2021 08:35:40 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1628253324; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=N2y4oRCNfmsOR5AcLj7KTqZExbR4TqZaeaiHeBAWq7o=; b=S0MIYlKVBti4dThUFgq/St1y19X91dbIPDdqqYO6c6m8K1Pz90t811ScuU8+UhenB+Xinkb/
- XdWHCAmHj3m229b+CU0XhDDyAoV2I+dLQ+7jNCl1sn+a7mITy1UdHnXetByoGP1LXCGD+IEs
- K+JmHkN5gweB3qcuZikNP5N2PxI=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 610d2c815c73bba6fbbc3543 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Aug 2021 12:35:13
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 81AB6C43145; Fri,  6 Aug 2021 12:35:12 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D3A5AC433F1;
-        Fri,  6 Aug 2021 12:35:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D3A5AC433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev <netdev@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] brcmfmac: firmware: Fix uninitialized variable ret
-References: <20210803150904.80119-1-colin.king@canonical.com>
-        <CACRpkdZ5u-C8uH2pCr1689v_ndyzqevDDksXvtPYv=FfD=x_xg@mail.gmail.com>
-        <875ywkc80d.fsf@codeaurora.org>
-        <96709926-30c6-457e-3e80-eb7ad6e9d778@broadcom.com>
-        <b2034ac5-0080-a2fb-32ef-61ad50dfd248@canonical.com>
-Date:   Fri, 06 Aug 2021 15:35:05 +0300
-In-Reply-To: <b2034ac5-0080-a2fb-32ef-61ad50dfd248@canonical.com> (Colin Ian
-        King's message of "Fri, 6 Aug 2021 12:28:29 +0100")
-Message-ID: <87eeb6bvk6.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 6 Aug 2021 10:10:50 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4D74C0617A0
+        for <linux-wireless@vger.kernel.org>; Fri,  6 Aug 2021 07:10:32 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id p21so13185597edi.9
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Aug 2021 07:10:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
+        b=q3xyYt1HrVQnyL1KZndhIFKim0Z6RZXWCajZa6+jKaUt/xPBmWrU2b2TpwIqgxHoY3
+         6sUeXJPoUC3zz+xqx5Y/7bh16ON7BcCcP2liy5jl/yv+hyxVGmxIcBCDJXoapuOO0RIl
+         REN9Zv+ClhtVVEMybVDTEUTnyt+YraWqvgNO4CiPEvSNbjJp0ymaQzc4FwPALfOqM4La
+         f+KzIMXFoGuca5XlZdCXXnnqi+xUiOGsem/cV9JUjNFonSZWOzEGazowyEr2eG3dp5DR
+         pLBa7cN2FmOkeXw/dSFAaB7k29Eu0Yivashc8iQbXHlro4ZoI7aiyRP21+G8wGDlMmu6
+         HPDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
+        b=rYkEetVDiM3p6KvCxQ4aSLmfkb8FzUGIzB7LOGu9XRAsZt0vNjDG3JvYGx3k2HPsh8
+         q6ZzFF6xMFkbOaNJbspTwTjyf9yBKgnnbkAUz4RN23XLn5QfXx9wC2G16aVZRCYPVt4h
+         0/A7h+YDrUocuULuHMDu3Jmn3iqEcanf2m4Yi/iPVnKFvoOg22Qi5/Wb67A6IheyDrT+
+         PqK+zZGJvu6Og/ITen64MNFQ/PYEF1RL7iSrU3x7Ng4kSxoYkg0pzXfa3zuphv2j/yzg
+         ASGSOaDhz0iPudSmgF1MFUIZ7ptQ3BXcQrkhAsXL2l67r4sMjNsZw+LvLApQA8mCPwv4
+         ywgQ==
+X-Gm-Message-State: AOAM530TjBUDCEdtAB+tFSx++ePgzS72ovpX2TDiihvc3KY8EjKYb5J2
+        CwU9cy4Qf542F7+NCAQrrRWitij95BNMPw1guw==
+X-Google-Smtp-Source: ABdhPJx229jhz+o+nQwdgIkoqR5HwLh3S4+JGHt0eG+5fB4X3WTmNmInTj1ZpuXDIVm9CYEhhFZzLyuZYbLrplGdX6A=
+X-Received: by 2002:a05:6402:3094:: with SMTP id de20mr13526197edb.272.1628259031175;
+ Fri, 06 Aug 2021 07:10:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+Received: by 2002:a54:26cf:0:0:0:0:0 with HTTP; Fri, 6 Aug 2021 07:10:30 -0700 (PDT)
+Reply-To: mrmaxwellwatford@gmail.com
+From:   Maxwell Watford <orchowskiruthi@gmail.com>
+Date:   Fri, 6 Aug 2021 14:10:30 +0000
+Message-ID: <CA+q9Q6OJB6Z0+y=5_3MBDNGkAUG9rVxg7bZVma38uDOvJ+sOGw@mail.gmail.com>
+Subject: i need your reply
+To:     orchowskiruthi@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Colin Ian King <colin.king@canonical.com> writes:
+Greetings,
 
-> On 06/08/2021 12:23, Arend van Spriel wrote:
->> On 05-08-2021 15:53, Kalle Valo wrote:
->>> Linus Walleij <linus.walleij@linaro.org> writes:
->>>
->>>> On Tue, Aug 3, 2021 at 5:09 PM Colin King <colin.king@canonical.com>
->>>> wrote:
->>>>
->>>>> From: Colin Ian King <colin.king@canonical.com>
->>>>>
->>>>> Currently the variable ret is uninitialized and is only set if
->>>>> the pointer alt_path is non-null. Fix this by ininitializing ret
->>>>> to zero.
->>>>>
->>>>> Addresses-Coverity: ("Uninitialized scalar variable")
->>>>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware
->>>>> binaries")
->>>>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->>>>
->>>> Nice catch!
->>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->>>
->>> I assume this will be fixed by Linus' patch "brcmfmac: firmware: Fix
->>> firmware loading" and I should drop Colin's patch, correct?
->> 
->> That would be my assumption as well, but not sure when he will submit
->> another revision of it. You probably know what to do ;-)
->
-> I'd prefer my patch to be dropped in preference to Linus' fix.
+We are writing to you from Ecowas Finance Controller Office Lome Togo,
+because we have received a file from the Ministry of Finance Lome-
+Togo, concerning an Inherited Fund bearing your name on it, And after
+our verifications, we found out that the funds belong to you.
 
-Ok, I'll then drop Colin's patch.
+It has been awarded and I will like to guide you to claim the funds.
+Please contact me at my private email address
+(mrmaxwellwatford@gmail.com) for more information and directive
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+I am looking forward to your urgent reply,
+Best regards
+Mr Maxwell Watford
