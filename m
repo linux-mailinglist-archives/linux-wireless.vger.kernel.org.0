@@ -2,74 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 407F73E316B
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 23:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8B473E3171
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 23:53:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245399AbhHFVvm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Aug 2021 17:51:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45048 "EHLO
+        id S245414AbhHFVx2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Aug 2021 17:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245383AbhHFVvb (ORCPT
+        with ESMTP id S245410AbhHFVx0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Aug 2021 17:51:31 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E36CC061798
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Aug 2021 14:51:15 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id t7-20020a17090a5d87b029017807007f23so21471253pji.5
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Aug 2021 14:51:15 -0700 (PDT)
+        Fri, 6 Aug 2021 17:53:26 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C342C06179A
+        for <linux-wireless@vger.kernel.org>; Fri,  6 Aug 2021 14:53:09 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id t3so8856130plg.9
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Aug 2021 14:53:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=tWEiCkw+fSiz6EiygCnTJiJ8o5BtcEILDKNkLL6Uu3s=;
-        b=BX3+BEAylAbE/hNGLDIXMbDFoR+/KM+Z/rF4MghjRq7IjV4KWs0jpcGEkJ6fKEsODl
-         Sljvlv9qUJMBY5XiRx9uKD/LhdqKaGq6TLZPuICLdBGv1ppOSNElnsGhKuN4jDK9cpni
-         2w2ZKDN5VMjaV5qs5QjjNdjIC11LlKq5QilWw=
+        bh=Fl84p+xysP6AB2l/hihiICphduq4Sq1Mlhhi22j77F0=;
+        b=fLUUzWCdWgjWzaVQtWF39lVb3u4CpbC62haKkT9QefCrNahRNB/hNVyvsoNxIwYR6A
+         y4VcIYg/Y0Pel44OEtKyqDU+CZ++YCLqYxDqGN5yYwd90cA3Uizjes5NXVUCbx797GmS
+         CPs9YpONuuf17+AcOhLbkKxAaZsPVnsX3sYsY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=tWEiCkw+fSiz6EiygCnTJiJ8o5BtcEILDKNkLL6Uu3s=;
-        b=ocpiqHrgUY84g2BD5F/JxRpKQfjM03IuHABYGgeGOp720krWccIuBk60K6gUURrstc
-         FD1vOCRVpZoiVwbhvl+Rn/WyILoeqy4XHCPGAfsk+2xAWZk/8F6Q2YMoL25VoaKDlWr4
-         T2V16IPN0nE22oc8epU4KusCjjK6YZG5UvEBb9BtRrH1xOXoGziKlbmvOTPuOGvnxPf+
-         Du8zR/d3S5zpdPjYM+FpUV8FK2kW07GppCQxUpc5cmfgKoWUj3+Jw31G9Wapot0UhPTb
-         X1uC3nZwep0ktzAAraYBVJrqUCPouSu0WMnKEFPelhS8sSF5cEO6/NxSUYomf6dEdF+b
-         Hd/w==
-X-Gm-Message-State: AOAM532NipNUQtxPlzYoa9pNmRBAIAHsuAfrBoA+/QyrrZO8ayuFe2Jj
-        tNZd8ecC3zr+XCTyoOJtm6BiGg==
-X-Google-Smtp-Source: ABdhPJz6V63GlXJdSmLLP/MTaSIOKcIhloT+lM9y1AYLFfR1I8ESY4FgdjJkGIx6PLfRg6qjDqmUnQ==
-X-Received: by 2002:a05:6a00:16c6:b029:32d:e190:9dd0 with SMTP id l6-20020a056a0016c6b029032de1909dd0mr12475598pfc.70.1628286674964;
-        Fri, 06 Aug 2021 14:51:14 -0700 (PDT)
+        bh=Fl84p+xysP6AB2l/hihiICphduq4Sq1Mlhhi22j77F0=;
+        b=bBxPZ07+EKZLstNZ+CmdqAuw86Y0JL6BprLiR0+SsbKWlIEGsyYFQ4IEInJ5rBwkXx
+         87H6q4EplR41tS/G0p7sHk9IfjaDKII5pPcpmE5xkJQWL5BZhyWR8yiXUDcbj8wrNEf8
+         6Yp9BYnvw3Ag9bh8nxtfU2DEJjwDZVTP3fT56qV4y7rQgZIQbDopSpJOxjrLtsHtPkeW
+         6FkwVE0FbZg5g60l25+GvR3vlDX+J8Zohi8tr9UdvfxcNzae4lpfSPupHt+ubLtznl5T
+         2kJ5uATMbVlYMefumhE1D+/ZrKAK0YZTM+8CraPmscXNS31XWoFfOc8x5V17fG/+kgIP
+         Ye/g==
+X-Gm-Message-State: AOAM531BTQ5olL64Fop1kToTh1wQGqdz81AkIK4/dyhH8o4qInZGf6df
+        LCIeUs9ieZAqsZUo2uEmnOiWKg==
+X-Google-Smtp-Source: ABdhPJwHq7KmH6xi7My6g9FWVyFXC33n4QjGWSGUKLW13137lkqBzkcgKwjRr+vS4ysHDuw+bkP5Iw==
+X-Received: by 2002:a63:5153:: with SMTP id r19mr1218197pgl.56.1628286788954;
+        Fri, 06 Aug 2021 14:53:08 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id y2sm10734979pjl.6.2021.08.06.14.51.14
+        by smtp.gmail.com with ESMTPSA id x81sm11699524pfc.22.2021.08.06.14.53.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Aug 2021 14:51:14 -0700 (PDT)
+        Fri, 06 Aug 2021 14:53:08 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Kees Cook <keescook@chromium.org>, David Sterba <dsterba@suse.cz>,
+Cc:     Kees Cook <keescook@chromium.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH] mac80211: radiotap: Use BIT() instead of shifts
-Date:   Fri,  6 Aug 2021 14:51:12 -0700
-Message-Id: <20210806215112.2874773-1-keescook@chromium.org>
+Subject: [PATCH] mac80211: Use flex-array for radiotap header bitmap
+Date:   Fri,  6 Aug 2021 14:53:05 -0700
+Message-Id: <20210806215305.2875621-1-keescook@chromium.org>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8683; h=from:subject; bh=czSMCGdMP4Zyrr8fUtCTJKV3QkH9XMp2P84y9iqGzvE=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhDa7Q05vzCyv/C+X37SFm9tonPHNTDPmeDyfL6WJM WkJDsZeJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYQ2u0AAKCRCJcvTf3G3AJtu4D/ 9A0n0fkYoVF8zOcW4lzqhOH07vbnwGmnmVpT5O2rGg06I/UNQb+aRBQMa829A3FDw6fcXwgBe5sY6N 8EHPntfbYtlXviGJbn8pwD4kW412i9EkJcTvNMsg77pSGe0q+UhfRNCp+aGY4y5yXbKhAnFGUFBQIs IoJ91oCvEEcjSZS3cUvERUUd5ZyqfAcB6Eof/qUE1+kUyNooIwvDITDWi6LvlGQsa4mwvn5sJzRAJ6 rIAmQ92s2nVPwLpMhhT4ASNMmjiqAlTE+p7bBdHe/lZ0yDV5U1kP8CbP5vkFmNvNNuNJLyeLXVSdye 1OgWpKWJI8I3Tag3wFyiziPzMEILbN28XB5W7tIwKC68FfBAdAX2Nym4aufAyaGLuY5mzvgQTP4vIE 2eVEin4OZzRMGgntdVZWXFGEdHVOqrvERClSqA/ttEBP+0ayFvqmYQDCaPIqTF7cWEgkaYl8ChhxCp 87ILfTh+5N+GGQWCmCRYcy3gdUD/R5ZJkCMBNfXy9VenyN5O6kSo5ZawqC+/aP2mtyZxRzAMuDpRqa OMJdnxN97T9OYKHTZC5uKvjVW3Ny8Icp5u2QPPecYL240muMsKE6vSYgMXMddFMfUJlrXEZYGZ3Ssu heeaGoUa6GKH6XLFykaCXSrPGZDo1XP1s72Ys09ItwmovFscP3HhNjUmXgEg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3027; h=from:subject; bh=nSxGvyUo7OEzP3mLXXxASonhC3Vjw4BHa0bqzCW6SeM=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhDa9A9RTUHqidNfMpH0wWsYz9M+GpIQDZS5YZ+oPS wd3imheJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYQ2vQAAKCRCJcvTf3G3AJi4MD/ wPb1AljxGZOdesdD+OlcFXZD+MpzQa76k/9wnbr0ajzpHapsWmZGOWVxwbtp1Sw3MOFp//BSGIgomr dLRE9PSoxQOt6eo1+dJ5M3CXUAAgAFvEh3OZx/3GHraMErZx5+Qq+dfHSjMM67Onlv6lK/QTovrCO7 zJXLO2yzeIkypN1+b/L6HNguWflmaXh1FS88eVN7BcBQ1zSbmxFEN7icWsNFFRZWO411yRbA8hSJfm GxZ7wvVYCUlY9jMriW7PlOVKTup09VU122TVtnHEwn+Dv3XTFAo7EtbeP4mspPqiKvIGDq9mTxzBfJ bkQaEHI5BAvWC8Z4vFi0IVlhXwK8hjitA1KLB1XKgoXVoCjHyJ/WGmoQ+qBPbHWLtaq4UtttJdtKYx 6vG9dRhJO/SGp/IbRHPIaKHe58dxbSAL+LhtonFjSgImxhSSVYwmFtVR49QQq+7jotNYqQe6BRWewt EKBki3K18PJbo3NstEuH5hqtdAB2zNY7Su/VgWEcbL2ey7dTXm3x1IETDH1pXHTJ9gGFDZWV37QoO9 gGWk++JijMalclpEwb+WedkrdYLEycJSPmVJA6ojueQJiVrLpQUUgGsmva89C5tkmyk/AS517ORWqT xVyXwn/SiyKcbU3U4JZMzluqq/uAou5KL22dlgyTwdTFpx2mxmwHpAXrctdQ==
 X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-IEEE80211_RADIOTAP_EXT has a value of 31, which means if shift was ever
-cast to 64-bit, the result would become sign-extended. As a matter of
-robustness, just replace all the open-coded shifts with BIT().
+In preparation for FORTIFY_SOURCE performing compile-time and run-time
+field bounds checking for memcpy(), memmove(), and memset(), avoid
+intentionally writing across neighboring fields.
 
-Suggested-by: David Sterba <dsterba@suse.cz>
-Link: https://lore.kernel.org/lkml/20210728092323.GW5047@twin.jikos.cz/
+The it_present member of struct ieee80211_radiotap_header is treated as a
+flexible array (multiple u32s can be conditionally present). In order for
+memcpy() to reason (or really, not reason) about the size of operations
+against this struct, use of bytes beyond it_present need to be treated
+as part of the flexible array. Add a trailing flexible array and
+initialize its initial index via pointer arithmetic.
+
 Cc: Johannes Berg <johannes@sipsolutions.net>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Jakub Kicinski <kuba@kernel.org>
@@ -77,202 +82,61 @@ Cc: linux-wireless@vger.kernel.org
 Cc: netdev@vger.kernel.org
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- net/mac80211/rx.c       | 22 +++++++++++-----------
- net/mac80211/status.c   | 16 ++++++++--------
- net/wireless/radiotap.c |  4 ++--
- 3 files changed, 21 insertions(+), 21 deletions(-)
+ include/net/ieee80211_radiotap.h | 4 ++++
+ net/mac80211/rx.c                | 7 ++++++-
+ net/wireless/radiotap.c          | 5 ++---
+ 3 files changed, 12 insertions(+), 4 deletions(-)
 
+diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
+index c0854933e24f..6b7274edb3c6 100644
+--- a/include/net/ieee80211_radiotap.h
++++ b/include/net/ieee80211_radiotap.h
+@@ -43,6 +43,10 @@ struct ieee80211_radiotap_header {
+ 	 * @it_present: (first) present word
+ 	 */
+ 	__le32 it_present;
++	/**
++	 * @it_optional: all remaining presence bitmaps
++	 */
++	__le32 it_optional[];
+ } __packed;
+ 
+ /* version is always 0 */
 diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 2563473b5cf1..3eb7b03b23c6 100644
+index 3eb7b03b23c6..33c56eab07fc 100644
 --- a/net/mac80211/rx.c
 +++ b/net/mac80211/rx.c
-@@ -372,7 +372,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 			ieee80211_calculate_rx_timestamp(local, status,
- 							 mpdulen, 0),
- 			pos);
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_TSFT);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_TSFT));
- 		pos += 8;
- 	}
+@@ -359,7 +359,12 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
  
-@@ -396,7 +396,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 		*pos = 0;
- 	} else {
- 		int shift = 0;
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_RATE);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_RATE));
- 		if (status->bw == RATE_INFO_BW_10)
- 			shift = 1;
- 		else if (status->bw == RATE_INFO_BW_5)
-@@ -433,7 +433,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 	    !(status->flag & RX_FLAG_NO_SIGNAL_VAL)) {
- 		*pos = status->signal;
- 		rthdr->it_present |=
--			cpu_to_le32(1 << IEEE80211_RADIOTAP_DBM_ANTSIGNAL);
-+			cpu_to_le32(BIT(IEEE80211_RADIOTAP_DBM_ANTSIGNAL));
- 		pos++;
- 	}
+ 	put_unaligned_le32(it_present_val, it_present);
  
-@@ -459,7 +459,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 	if (status->encoding == RX_ENC_HT) {
- 		unsigned int stbc;
+-	pos = (void *)(it_present + 1);
++	/* This references through an offset into it_optional[] rather
++	 * than via it_present otherwise later uses of pos will cause
++	 * the compiler to think we have walked past the end of the
++	 * struct member.
++	 */
++	pos = (void *)&rthdr->it_optional[it_present - rthdr->it_optional];
  
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_MCS);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_MCS));
- 		*pos++ = local->hw.radiotap_mcs_details;
- 		*pos = 0;
- 		if (status->enc_flags & RX_ENC_FLAG_SHORT_GI)
-@@ -483,7 +483,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 		while ((pos - (u8 *)rthdr) & 3)
- 			pos++;
- 		rthdr->it_present |=
--			cpu_to_le32(1 << IEEE80211_RADIOTAP_AMPDU_STATUS);
-+			cpu_to_le32(BIT(IEEE80211_RADIOTAP_AMPDU_STATUS));
- 		put_unaligned_le32(status->ampdu_reference, pos);
- 		pos += 4;
- 		if (status->flag & RX_FLAG_AMPDU_LAST_KNOWN)
-@@ -510,7 +510,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 	if (status->encoding == RX_ENC_VHT) {
- 		u16 known = local->hw.radiotap_vht_details;
+ 	/* the order of the following fields is important */
  
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_VHT);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_VHT));
- 		put_unaligned_le16(known, pos);
- 		pos += 2;
- 		/* flags */
-@@ -554,7 +554,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 		u8 flags = IEEE80211_RADIOTAP_TIMESTAMP_FLAG_32BIT;
- 
- 		rthdr->it_present |=
--			cpu_to_le32(1 << IEEE80211_RADIOTAP_TIMESTAMP);
-+			cpu_to_le32(BIT(IEEE80211_RADIOTAP_TIMESTAMP));
- 
- 		/* ensure 8 byte alignment */
- 		while ((pos - (u8 *)rthdr) & 7)
-@@ -642,7 +642,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 		/* ensure 2 byte alignment */
- 		while ((pos - (u8 *)rthdr) & 1)
- 			pos++;
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_HE);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_HE));
- 		memcpy(pos, &he, sizeof(he));
- 		pos += sizeof(he);
- 	}
-@@ -652,14 +652,14 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 		/* ensure 2 byte alignment */
- 		while ((pos - (u8 *)rthdr) & 1)
- 			pos++;
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_HE_MU);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_HE_MU));
- 		memcpy(pos, &he_mu, sizeof(he_mu));
- 		pos += sizeof(he_mu);
- 	}
- 
- 	if (status->flag & RX_FLAG_NO_PSDU) {
- 		rthdr->it_present |=
--			cpu_to_le32(1 << IEEE80211_RADIOTAP_ZERO_LEN_PSDU);
-+			cpu_to_le32(BIT(IEEE80211_RADIOTAP_ZERO_LEN_PSDU));
- 		*pos++ = status->zero_length_psdu_type;
- 	}
- 
-@@ -667,7 +667,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 		/* ensure 2 byte alignment */
- 		while ((pos - (u8 *)rthdr) & 1)
- 			pos++;
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_LSIG);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_LSIG));
- 		memcpy(pos, &lsig, sizeof(lsig));
- 		pos += sizeof(lsig);
- 	}
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index bae321ff77f6..1f295e5721ef 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -305,8 +305,8 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
- 	memset(rthdr, 0, rtap_len);
- 	rthdr->it_len = cpu_to_le16(rtap_len);
- 	rthdr->it_present =
--		cpu_to_le32((1 << IEEE80211_RADIOTAP_TX_FLAGS) |
--			    (1 << IEEE80211_RADIOTAP_DATA_RETRIES));
-+		cpu_to_le32(BIT(IEEE80211_RADIOTAP_TX_FLAGS) |
-+			    BIT(IEEE80211_RADIOTAP_DATA_RETRIES));
- 	pos = (unsigned char *)(rthdr + 1);
- 
- 	/*
-@@ -331,7 +331,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
- 			sband->bitrates[info->status.rates[0].idx].bitrate;
- 
- 	if (legacy_rate) {
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_RATE);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_RATE));
- 		*pos = DIV_ROUND_UP(legacy_rate, 5 * (1 << shift));
- 		/* padding for tx flags */
- 		pos += 2;
-@@ -358,7 +358,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
- 
- 	if (status && status->rate &&
- 	    (status->rate->flags & RATE_INFO_FLAGS_MCS)) {
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_MCS);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_MCS));
- 		pos[0] = IEEE80211_RADIOTAP_MCS_HAVE_MCS |
- 			 IEEE80211_RADIOTAP_MCS_HAVE_GI |
- 			 IEEE80211_RADIOTAP_MCS_HAVE_BW;
-@@ -374,7 +374,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
- 			(IEEE80211_RADIOTAP_VHT_KNOWN_GI |
- 			 IEEE80211_RADIOTAP_VHT_KNOWN_BANDWIDTH);
- 
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_VHT);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_VHT));
- 
- 		/* required alignment from rthdr */
- 		pos = (u8 *)rthdr + ALIGN(pos - (u8 *)rthdr, 2);
-@@ -419,7 +419,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
- 		   (status->rate->flags & RATE_INFO_FLAGS_HE_MCS)) {
- 		struct ieee80211_radiotap_he *he;
- 
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_HE);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_HE));
- 
- 		/* required alignment from rthdr */
- 		pos = (u8 *)rthdr + ALIGN(pos - (u8 *)rthdr, 2);
-@@ -495,7 +495,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
- 	/* IEEE80211_RADIOTAP_MCS
- 	 * IEEE80211_RADIOTAP_VHT */
- 	if (info->status.rates[0].flags & IEEE80211_TX_RC_MCS) {
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_MCS);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_MCS));
- 		pos[0] = IEEE80211_RADIOTAP_MCS_HAVE_MCS |
- 			 IEEE80211_RADIOTAP_MCS_HAVE_GI |
- 			 IEEE80211_RADIOTAP_MCS_HAVE_BW;
-@@ -512,7 +512,7 @@ ieee80211_add_tx_radiotap_header(struct ieee80211_local *local,
- 			(IEEE80211_RADIOTAP_VHT_KNOWN_GI |
- 			 IEEE80211_RADIOTAP_VHT_KNOWN_BANDWIDTH);
- 
--		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_VHT);
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_VHT));
- 
- 		/* required alignment from rthdr */
- 		pos = (u8 *)rthdr + ALIGN(pos - (u8 *)rthdr, 2);
 diff --git a/net/wireless/radiotap.c b/net/wireless/radiotap.c
-index 36f1b59a78bf..8099c9564a59 100644
+index 8099c9564a59..ae2e1a896461 100644
 --- a/net/wireless/radiotap.c
 +++ b/net/wireless/radiotap.c
-@@ -125,13 +125,13 @@ int ieee80211_radiotap_iterator_init(
- 
- 	/* find payload start allowing for extended bitmap(s) */
- 
--	if (iterator->_bitmap_shifter & (1<<IEEE80211_RADIOTAP_EXT)) {
-+	if (iterator->_bitmap_shifter & (BIT(IEEE80211_RADIOTAP_EXT))) {
- 		if ((unsigned long)iterator->_arg -
- 		    (unsigned long)iterator->_rtheader + sizeof(uint32_t) >
- 		    (unsigned long)iterator->_max_length)
- 			return -EINVAL;
- 		while (get_unaligned_le32(iterator->_arg) &
--					(1 << IEEE80211_RADIOTAP_EXT)) {
-+					(BIT(IEEE80211_RADIOTAP_EXT))) {
- 			iterator->_arg += sizeof(uint32_t);
- 
- 			/*
+@@ -115,10 +115,9 @@ int ieee80211_radiotap_iterator_init(
+ 	iterator->_max_length = get_unaligned_le16(&radiotap_header->it_len);
+ 	iterator->_arg_index = 0;
+ 	iterator->_bitmap_shifter = get_unaligned_le32(&radiotap_header->it_present);
+-	iterator->_arg = (uint8_t *)radiotap_header + sizeof(*radiotap_header);
++	iterator->_arg = (uint8_t *)radiotap_header->it_optional;
+ 	iterator->_reset_on_ext = 0;
+-	iterator->_next_bitmap = &radiotap_header->it_present;
+-	iterator->_next_bitmap++;
++	iterator->_next_bitmap = radiotap_header->it_optional;
+ 	iterator->_vns = vns;
+ 	iterator->current_namespace = &radiotap_ns;
+ 	iterator->is_radiotap_ns = 1;
 -- 
 2.30.2
 
