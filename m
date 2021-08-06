@@ -2,82 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1A563E2904
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 13:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 057F13E2978
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 13:23:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245259AbhHFLBU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Aug 2021 07:01:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38782 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231700AbhHFLBT (ORCPT
+        id S231173AbhHFLXh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Aug 2021 07:23:37 -0400
+Received: from lpdvsmtp11.broadcom.com ([192.19.166.231]:40322 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S245458AbhHFLXh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Aug 2021 07:01:19 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BB3C061798
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Aug 2021 04:01:03 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id c24so13823759lfi.11
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Aug 2021 04:01:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=VVEkcp+L+S8fath1Zex4nCP/ojRM5GbNkoZhhNgg96k=;
-        b=m8oYHSWm1Lu3oj9zR8+KTt7Qe/+9GeN8QKYyp99s9fglBuJWJ1cmNnIMHWzskfEe74
-         O2WTBsk/aD7hvZ068bruq2qrWciccVpMaed6mOfXG6gpLkwEUG+tCJe7os+rTi/eV+Yg
-         uPgEfcOp/3QE5alZdY+K5nssuKnfvX9ZSrcXSfY+llllr8XsQ7k44nT6F2A//nji514M
-         y5+YUg9KXk3QujlKRIPVWWfTVKpRKWMxryofkuMPPa3ZR/n8P75p6e7nD+ftdilSiCK3
-         vdyCLmEJ/C7AbEkxHlmBWxU3i9K5R5Oo/64PRunqWA8peEBylGQk5Q5ZRhPIAwJTnzGD
-         OVww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=VVEkcp+L+S8fath1Zex4nCP/ojRM5GbNkoZhhNgg96k=;
-        b=D9OaES2Nv7r6z0WGwqq2xM/2R7XNbGGdBcPNSim++DEgKTdzGiZwPdSwYwGuGBDVao
-         Oem2CwrDUh5tk5RJyWHPeBOt4v3cAw3Jo7v1Lh5xvlr12v58Spr6SsGaCo12EdBKi1EZ
-         xk+OqgJVPPLwz0DGihHYZx9fK2mARt6czCmI6UKhn64fGYPtq687QLGknrQES/36hZHE
-         FqRruwOt6lRbmOaYQE+2BiEU3VRZ5PtltisgXEHxZ3fPh6wWrlvPtZ5kvZowjmbZI8te
-         YhrMts/5tMoM6Eb4yhXxz+wlf1YP9/h2M/AU2tSMutVTVL6lD7vMvvRTT7MZ1Yzk/HPW
-         34dg==
-X-Gm-Message-State: AOAM532qCKIlqOZzQWkq2aBulV9xQXkhX7qZTegDw66UqULjAjy8aAvw
-        uxwqWzSSlIR2aEVw9gPazvwN9G6fWbWxCuSx2bI=
-X-Google-Smtp-Source: ABdhPJygLwKwUngaBHb+OAe746Eq7o+MsPvNf6IAPiVMp4EFeTR0bXgDbvRqB42Ztpcq2iLX+2f02l0h7+z+8Lxf8io=
-X-Received: by 2002:a19:dc5e:: with SMTP id f30mr7283073lfj.318.1628247661554;
- Fri, 06 Aug 2021 04:01:01 -0700 (PDT)
+        Fri, 6 Aug 2021 07:23:37 -0400
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id F0C167FFA;
+        Fri,  6 Aug 2021 04:23:17 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com F0C167FFA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1628248998;
+        bh=Jr1JdI9/CVhnPEppjM4hGw5lZqvxFIHWJWTGtlGgjvw=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=FeFEiAVkrPA13FeM5iTdS5lcG1xWHt+sLhfpLXqlgpjL4ZAfnE+vWXrXoXK3sH6C7
+         u4ilFNKmqTAiSoh9RJfvgEB2DIZRjlcoOpp8iMO6lHOf9AjDiiUeiWkMyFZbFfVsz2
+         lRd2H1k1I/ifAY+8HwhbUAnV6Rs2tmziYhS2SFL0=
+Received: from [10.230.42.155] (unknown [10.230.42.155])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 068E31874BD;
+        Fri,  6 Aug 2021 04:23:11 -0700 (PDT)
+Subject: Re: [PATCH][next] brcmfmac: firmware: Fix uninitialized variable ret
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev <netdev@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+References: <20210803150904.80119-1-colin.king@canonical.com>
+ <CACRpkdZ5u-C8uH2pCr1689v_ndyzqevDDksXvtPYv=FfD=x_xg@mail.gmail.com>
+ <875ywkc80d.fsf@codeaurora.org>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <96709926-30c6-457e-3e80-eb7ad6e9d778@broadcom.com>
+Date:   Fri, 6 Aug 2021 13:23:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Received: by 2002:a19:4f41:0:0:0:0:0 with HTTP; Fri, 6 Aug 2021 04:01:00 -0700 (PDT)
-Reply-To: infosteen979@gmail.com
-From:   "Staff Sergeant Indeck Dagan William." <savuthmrroth@gmail.com>
-Date:   Fri, 6 Aug 2021 12:01:00 +0100
-Message-ID: <CANtB1ThZpGp0hLJkjd3DZHBknLZ5durKMtwNrWR-dcX69e4jzQ@mail.gmail.com>
-Subject: URGENT RESPONSE PLEASE
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <875ywkc80d.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-Hello Friend,
+On 05-08-2021 15:53, Kalle Valo wrote:
+> Linus Walleij <linus.walleij@linaro.org> writes:
+> 
+>> On Tue, Aug 3, 2021 at 5:09 PM Colin King <colin.king@canonical.com> wrote:
+>>
+>>> From: Colin Ian King <colin.king@canonical.com>
+>>>
+>>> Currently the variable ret is uninitialized and is only set if
+>>> the pointer alt_path is non-null. Fix this by ininitializing ret
+>>> to zero.
+>>>
+>>> Addresses-Coverity: ("Uninitialized scalar variable")
+>>> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
+>>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>>
+>> Nice catch!
+>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> 
+> I assume this will be fixed by Linus' patch "brcmfmac: firmware: Fix
+> firmware loading" and I should drop Colin's patch, correct?
 
-Greetings, this letter might surprise you because we have not met
-neither in person nor by correspondence. My name is Staff Sergeant
-Indeck Dagan William. US ARMY the 82nd Airborne Division transfer from
-Iraq to Syria serving the World and my country in the most honorable
-way I know I can, am in Syria right now Can you receive money?
+That would be my assumption as well, but not sure when he will submit 
+another revision of it. You probably know what to do ;-)
 
-As you must agree with me it has been hell here in Syria trying to
-keep this money safe from people's eyes for all these while and with
-this opportunity all I need is just someone capable I can trust 100% I
-can send the boxes to. So if you can assure me of your honesty I will
-go ahead and send the boxes to you for safe keeping till I am back
-home and I will gladly give you 40% of the money.
-
-As soon as I receive your response the source of the Money will explain.
-
-I wait your reply as to proceed immediately
-
-God bless you and thanks for cooperation in advance.
-
-Best Regards,
-Staff Sergeant Indeck Dagan William.
-U.S ARMY
+Regards,
+Arend
