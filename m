@@ -2,199 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D85D23E301D
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 22:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3046E3E3063
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 22:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244531AbhHFUJU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Aug 2021 16:09:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50166 "EHLO
+        id S231715AbhHFUgq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Aug 2021 16:36:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229851AbhHFUJS (ORCPT
+        with ESMTP id S231132AbhHFUgq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Aug 2021 16:09:18 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07A9DC061798
-        for <linux-wireless@vger.kernel.org>; Fri,  6 Aug 2021 13:09:02 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id k11-20020a17090a62cbb02901786a5edc9aso445708pjs.5
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Aug 2021 13:09:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=n6L9lQWvGLp2RmRr83sqFXDKRaXPPCi+3uhrZ6kADNA=;
-        b=nWIt5g3GXVnW5z2AYO8uYLJsBM6J19V+JIVdl7YLTXZFqY7W9ei9/SgJ1UmRs6mpSt
-         Sgf7eH9PcaBa1aXMpzUtoN8DPYTYyMKbZdxMdXYTGNWSnoGW6Y5HgZuwuV739iqL14gA
-         jgS2A68AoBOi9b0r8dz5V8+OUWGDinrYH2T2g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=n6L9lQWvGLp2RmRr83sqFXDKRaXPPCi+3uhrZ6kADNA=;
-        b=EkXcGe6AJ9G4bVi096tDmT7imRejVbeeqQEPVX4a+m7Y1KrBx+awLon/VcmiewG5c9
-         wnvA20mzAqmVbS6+xtbkV2EymfItm4jNTYEDHu6kmnUDU0djb6A3bVAZyh9Fbf1X6fDS
-         cEmqdhlVwBD13PUIqHnRxPawkOzPBl66h7LsYGszweNGiYwAetDpUBAWo6sJSXzKx/32
-         24bNRS2ND5UfopXWfT7oyk0lLeSlPyC8SJD49QrgTOkx6z+iRQdkixDPMwgi7JWmihZ9
-         ffSw3JpJDditg9yxHOFEZzTFAqAtOAtglEyR6aDXMlTgu05n2dkSSNN0cp8NR7gWyxPi
-         pVng==
-X-Gm-Message-State: AOAM532b3rrVPIwsNCLDyP0oTNw22xoTuU+ju2jXrHhgD42c+1rjgw5j
-        lOI7+mnYlUkY0/8/Di0c4+CwmA==
-X-Google-Smtp-Source: ABdhPJyaXk/keHXFRBUqFrft8A94/ur96J4Pv6Rk2fUUwU/ShuzzjV/o1/H164HklzW6ysO8GRYZvQ==
-X-Received: by 2002:a17:902:7b8b:b029:12b:8d3e:70e7 with SMTP id w11-20020a1709027b8bb029012b8d3e70e7mr3840249pll.76.1628280541543;
-        Fri, 06 Aug 2021 13:09:01 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id b20sm10911854pfl.9.2021.08.06.13.09.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Aug 2021 13:09:01 -0700 (PDT)
-From:   Kees Cook <keescook@chromium.org>
-To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH] ipw2x00: Avoid field-overflowing memcpy()
-Date:   Fri,  6 Aug 2021 13:08:55 -0700
-Message-Id: <20210806200855.2870554-1-keescook@chromium.org>
-X-Mailer: git-send-email 2.30.2
+        Fri, 6 Aug 2021 16:36:46 -0400
+X-Greylist: delayed 1064 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 Aug 2021 13:36:30 PDT
+Received: from scc-mailout-kit-01.scc.kit.edu (scc-mailout-kit-01.scc.kit.edu [IPv6:2a00:1398:9:f712::810d:e751])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 015EDC0613CF
+        for <linux-wireless@vger.kernel.org>; Fri,  6 Aug 2021 13:36:29 -0700 (PDT)
+Received: from akkmail.akk.kit.edu ([2a00:1398:5:f602:2::2] helo=akkmail.akk.org)
+        by scc-mailout-kit-01.scc.kit.edu with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (envelope-from <jreusch@akk.org>)
+        id 1mC6Ih-0006iK-Fj; Fri, 06 Aug 2021 22:18:42 +0200
+Received: from akk24-int.akk.uni-karlsruhe.de ([172.22.9.216] helo=akk29neu)
+        by akkmail.akk.org with esmtp (Exim 4.92)
+        (envelope-from <jreusch@akk.org>)
+        id 1mC6Ig-0001Et-1c; Fri, 06 Aug 2021 22:18:38 +0200
+Received: from jreusch by akk29neu with local (Exim 4.94.2)
+        (envelope-from <jreusch@akk.org>)
+        id 1mC6If-000YYI-GL; Fri, 06 Aug 2021 22:18:37 +0200
+Date:   Fri, 6 Aug 2021 22:18:37 +0200
+From:   Jan Reusch <jan@jreusch.de>
+To:     linux-wireless@vger.kernel.org, pkshih@realtek.com
+Subject: RE: Difficulty connecting to AP using rtw89
+Message-ID: <YQ2ZHTCCzbXil+9Y@akk.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4665; h=from:subject; bh=6caGhOOY446DlpmdSUBQVYbe7alelvqjsReWU0FV/Ck=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhDZbWlqznbRsXo6uyVHMPyqNKwaw98x0jc7wCkSGo 4cEIMHSJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYQ2W1gAKCRCJcvTf3G3AJi8lD/ 9jkPT4xmisHW9IgfwnETPhxevmZe48HyNSPt0ogmaNIQR3nP17BoJqLqbh1kgsgpeDUDDsDy1ua+mO gcrIcZOgYrYrht+RcOiVxnah/a5qQ42tAEaG6f079GUNRdCRUStdeSpRr+P/jfg24QD7+o4gkPsveA WNEwu5IwBUOg6BZ5NR9Umi1zzuf4ApLASOjiQd2q7bnbD+5mGUX3hN7r8dIyp+vrW3+fidwZrgB65n E7eYABTLvNzW1B9QaiGYO0GHFY6a4by6nBT7vzxAxnziKpACP9ByPGpf4WbAwzihh2Odhf5BDtdpD5 uaaJpEJhHMrUgFGvB8Mo0CSqIeKn9owfuOQdo8Rq5KfMHyygDQaD6cVt6uijgZBvA4P1tt9pVzOd9Q f232tFq+SFm0S4xmo+WIs/+YS9wFU66rn/33cWapsMrl297Kf/HHTlQPHz6fKMfbyijX9yqJVcVzNQ HygM9SfHUjQP9RqhiuX4DK9oXycQ6LY3iuV+e4A40NGlSoA5RDiJm8eFZEOPtDbviGGvo5YdQCpoxP aguORZY7LbjDEoI6XbdHLAPO/Q9aWARrUEXlleSGt4kFXPSmXNGB22KWAx2KdEftHEFbdxkHuy+xP/ qUd2YeQXVndotuUf4y6ZzFm854RDTRIRgnzTgcBmD4u8iG+0t1d754v5DEnQ==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2551f3d4aff248e29118a2c6339e4d96@realtek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In preparation for FORTIFY_SOURCE performing compile-time and run-time
-field bounds checking for memcpy(), memmove(), and memset(), avoid
-intentionally writing across neighboring fields.
+Hey hey
+Hope this works and gets sorted right, i had to manually set the
+in-reply-to header.
 
-libipw_read_qos_param_element() copies a struct libipw_info_element
-into a struct libipw_qos_information_element, but is actually wanting to
-copy into the larger struct libipw_qos_parameter_info (the contents of
-ac_params_record[] is later examined). Refactor the routine to perform
-centralized checks, and copy the entire contents directly (since the id
-and len members match the elementID and length members):
+I'm one of the people having problems with ipv6 and the rtw89 driver.
+i've tested it with the debian bullseye kernel and vanilla 5.13 from
+kernel.org
 
-struct libipw_info_element {
-        u8 id;
-        u8 len;
-        u8 data[];
-} __packed;
+It's about a Realtek 8852 in a Thinkpad E14 Gen2 (amd).
 
-struct libipw_qos_information_element {
-        u8 elementID;
-        u8 length;
-        u8 qui[QOS_OUI_LEN];
-        u8 qui_type;
-        u8 qui_subtype;
-        u8 version;
-        u8 ac_info;
-} __packed;
+> > The driver handles L2 things only, but IPv6 that is L3 that we don't
+> > have special deal.
+> > Could I know the problem you met?
 
-struct libipw_qos_parameter_info {
-        struct libipw_qos_information_element info_element;
-        u8 reserved;
-        struct libipw_qos_ac_parameter ac_params_record[QOS_QUEUE_NUM];
-} __packed;
+Yep that was also my first reaction 1:1, but it's 100% repdoducible.
+Ethernet connection works, i get an v4 adress and an v6 one (SLAAC), it
+works flawlessly with an USB wifi stick, but the integrated wifi only
+gets the link local ipv6 address,  an ipv4 one but nothing more.
+I've tried to dump router advertisements, but none of them pop up. (As
+soon as i attach the ethernet cable/usb wifi stick they're there...)
+I have around ~10 other devices in the same network, all of them get
+without any hazzle an v6 address via SLAAC and since some other people
+seem to have the same problem in the github issue i'm really suspecting
+the driver here...
 
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- .../net/wireless/intel/ipw2x00/libipw_rx.c    | 56 ++++++-------------
- 1 file changed, 17 insertions(+), 39 deletions(-)
+If it maybe helps: this is what i get als output from ip(8) on a wifi
+usb stick:
+59: wlx801XXXXXXXXX: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq
+state UP group default qlen 1000
+   link/ether 80:1f:XX:XX:XX:XX brd ff:ff:ff:ff:ff:ff
+   inet 192.168.64.113/24 brd 192.168.64.255 scope global dynamic
+noprefixroute wlx801XXXXXXXXX
+      valid_lft 862412sec preferred_lft 862412sec
+   inet6 fd00::1245:XXXX:XXXX:XXXX/64 scope global dynamic noprefixroute
+      valid_lft 6718sec preferred_lft 3118sec
+   inet6 2a02:8071:2cc3:XXX:XXXX:XXXX:XXXX:XXXX/64 scope global
+dynamic noprefixroute
+      valid_lft 6718sec preferred_lft 3118sec
+   inet6 fe80::XX:XXXX:XXXX:XXXX/64 scope link noprefixroute
+      valid_lft forever preferred_lft forever 
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-index 5a2a723e480b..7cda31e403bd 100644
---- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-+++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-@@ -927,7 +927,8 @@ static u8 qos_oui[QOS_OUI_LEN] = { 0x00, 0x50, 0xF2 };
- static int libipw_verify_qos_info(struct libipw_qos_information_element
- 				     *info_element, int sub_type)
- {
--
-+	if (info_element->elementID != QOS_ELEMENT_ID)
-+		return -1;
- 	if (info_element->qui_subtype != sub_type)
- 		return -1;
- 	if (memcmp(info_element->qui, qos_oui, QOS_OUI_LEN))
-@@ -943,57 +944,34 @@ static int libipw_verify_qos_info(struct libipw_qos_information_element
- /*
-  * Parse a QoS parameter element
-  */
--static int libipw_read_qos_param_element(struct libipw_qos_parameter_info
--					    *element_param, struct libipw_info_element
--					    *info_element)
-+static int libipw_read_qos_param_element(
-+			struct libipw_qos_parameter_info *element_param,
-+			struct libipw_info_element *info_element)
- {
--	int ret = 0;
--	u16 size = sizeof(struct libipw_qos_parameter_info) - 2;
-+	size_t size = sizeof(*element_param);
- 
--	if ((info_element == NULL) || (element_param == NULL))
-+	if (!element_param || !info_element || info_element->len != size - 2)
- 		return -1;
- 
--	if (info_element->id == QOS_ELEMENT_ID && info_element->len == size) {
--		memcpy(element_param->info_element.qui, info_element->data,
--		       info_element->len);
--		element_param->info_element.elementID = info_element->id;
--		element_param->info_element.length = info_element->len;
--	} else
--		ret = -1;
--	if (ret == 0)
--		ret = libipw_verify_qos_info(&element_param->info_element,
--						QOS_OUI_PARAM_SUB_TYPE);
--	return ret;
-+	memcpy(element_param, info_element, size);
-+	return libipw_verify_qos_info(&element_param->info_element,
-+				      QOS_OUI_PARAM_SUB_TYPE);
- }
- 
- /*
-  * Parse a QoS information element
-  */
--static int libipw_read_qos_info_element(struct
--					   libipw_qos_information_element
--					   *element_info, struct libipw_info_element
--					   *info_element)
-+static int libipw_read_qos_info_element(
-+			struct libipw_qos_information_element *element_info,
-+			struct libipw_info_element *info_element)
- {
--	int ret = 0;
--	u16 size = sizeof(struct libipw_qos_information_element) - 2;
-+	size_t size = sizeof(struct libipw_qos_information_element) - 2;
- 
--	if (element_info == NULL)
-+	if (!element_info || info_element || info_element->len != size - 2)
- 		return -1;
--	if (info_element == NULL)
--		return -1;
--
--	if ((info_element->id == QOS_ELEMENT_ID) && (info_element->len == size)) {
--		memcpy(element_info->qui, info_element->data,
--		       info_element->len);
--		element_info->elementID = info_element->id;
--		element_info->length = info_element->len;
--	} else
--		ret = -1;
- 
--	if (ret == 0)
--		ret = libipw_verify_qos_info(element_info,
--						QOS_OUI_INFO_SUB_TYPE);
--	return ret;
-+	memcpy(element_info, info_element, size);
-+	return libipw_verify_qos_info(element_info, QOS_OUI_INFO_SUB_TYPE);
- }
- 
- /*
+and this is what i get on the 8852:
+4: wlp3s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue
+state UP group default qlen 1000
+   link/ether 74:4c:XX:XX:XX:XX brd ff:ff:ff:ff:ff:ff
+   inet 192.168.64.112/24 brd 192.168.64.255 scope global dynamic
+noprefixroute wlp3s0
+      valid_lft 863997sec preferred_lft 863997sec
+   inet6 fe80::XXXX:XXXX:XXXX:XXX/64 scope link noprefixroute
+      valid_lft forever preferred_lft forever 
+
+i'd be glad to help to debug this any further, currently i'm also out of
+ideas how the driver could impact L3...
+
+
+> I'm not sure if ISP limits the throughput or not.
+> My suggestion is to have another PC connected to AP with ethernet cable.
+> Then,
+> do performance test between two PCs to check the difference between IPv4
+> and IPv6.
+
+Please do not confused by this throughput problem, that's completely
+independent.
+The ipv4 performance of the driver seems to be enough, though i did not
+measure it, but it's also not noticable slow :)
+The only problem for me personally is that i only have a DS-Lite
+connection from my ISP, which means for v4 i'm behind a carrier grade
+nat - and the gateway (of the carrier) where my v4 traffic is routed
+through seems to be heavily overloaded during some hours of the day.
+So no worries for the driver here at all ;)
+
+Thanks!
+Cheers
+Jan
+
+
 -- 
-2.30.2
-
+Hi! I'm a .signature virus! Copy me into your ~/.signature to help me spread
+ If you dont know what ~/.signature means , dont get your panties in a
+               knot, you already have a WinSBuLcOkWss virus.!
