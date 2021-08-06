@@ -2,96 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 167A43E268A
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 10:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8446B3E26B3
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 11:03:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243874AbhHFI5z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Aug 2021 04:57:55 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:44596 "EHLO m43-7.mailgun.net"
+        id S243914AbhHFJDi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Aug 2021 05:03:38 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:20092 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243591AbhHFI5y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Aug 2021 04:57:54 -0400
+        id S243794AbhHFJDh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Aug 2021 05:03:37 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1628240258; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=fpyjPu+FBT9NUHrFq7Z7ZZkGRCTZTAek+H6Ad5eVnrk=;
- b=qsfYY6n9PV75GQFIFtV9cL7zKBU6wlPGl2yjKRlySzpAA5oBJQeW7emu/6xyDu4R8vxMscm+
- 9zecT5bUdjE4WSYefHAcSZAr/yGpZjilD5/Il/4jEujIhtvaNzYZtzdSN5UVvmX+bZiAqv3n
- CSLY+M7IdCW8+YPxHxaKluz0OJI=
+ s=smtp; t=1628240602; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=X1qWQpq0Sf+GBW+SGHJTfGW1V3rTwlAwDVIchdBetig=; b=GIIjv8bi3x3SSj45fgAWWK1DDaF1U9m7h0cMznn0G/qVLOe2sGCatgmMeNFsfLfPSnisJc0+
+ 6KDtZT7/Lm/WGhzTLB09/Q/LTmjHGUhGL7yXdyQP0DkmXySCaj+lVyWI1ws7AyT6ssl/yWPb
+ K5436xaYN8qavxraClPip7k3iUA=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 610cf981041a739c46f62c7d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Aug 2021 08:57:37
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 610cfad8ad1af63949d8b8b0 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Aug 2021 09:03:20
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 25802C43460; Fri,  6 Aug 2021 08:57:37 +0000 (UTC)
+        id 345FEC4338A; Fri,  6 Aug 2021 09:03:20 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 67D26C433D3;
-        Fri,  6 Aug 2021 08:57:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 67D26C433D3
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 30D6FC433F1;
+        Fri,  6 Aug 2021 09:03:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 30D6FC433F1
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: intersil: remove obsolete prism54 wireless driver
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210713054025.32006-1-lukas.bulwahn@gmail.com>
-References: <20210713054025.32006-1-lukas.bulwahn@gmail.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dwaipayan Ray <dwaipayanray1@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210806085737.25802C43460@smtp.codeaurora.org>
-Date:   Fri,  6 Aug 2021 08:57:37 +0000 (UTC)
+To:     chris.chiu@canonical.com
+Cc:     jes.sorensen@gmail.com, davem@davemloft.net, kuba@kernel.org,
+        code@reto-schneider.ch, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rtl8xxxu: Fix the handling of TX A-MPDU aggregation
+References: <20210804151325.86600-1-chris.chiu@canonical.com>
+Date:   Fri, 06 Aug 2021 12:03:12 +0300
+In-Reply-To: <20210804151325.86600-1-chris.chiu@canonical.com> (chris chiu's
+        message of "Wed, 4 Aug 2021 23:13:25 +0800")
+Message-ID: <87wnozaqsv.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+chris.chiu@canonical.com writes:
 
-> Commit 1d89cae1b47d ("MAINTAINERS: mark prism54 obsolete") indicated the
-> prism54 driver as obsolete in July 2010.
-> 
-> Now, after being exposed for ten years to refactoring, general tree-wide
-> changes and various janitor clean-up, it is really time to delete the
-> driver for good.
-> 
-> This was discovered as part of a checkpatch evaluation, investigating all
-> reports of checkpatch's WARNING:OBSOLETE check.
-> 
-> p54 replaces prism54 so users should be unaffected. There was a one off chipset
-> someone long ago reported that p54 didn't work with but the reporter never
-> followed up on that. Additionally, distributions have been blacklisting prism54
-> for years now.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+> From: Chris Chiu <chris.chiu@canonical.com>
+>
+> The TX A-MPDU aggregation is not handled in the driver since the
+> ieee80211_start_tx_ba_session has never been started properly.
+> Start and stop the TX BA session by tracking the TX aggregation
+> status of each TID. Fix the ampdu_action and the tx descriptor
+> accordingly with the given TID.
+>
+> Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-d249ff28b1d8 intersil: remove obsolete prism54 wireless driver
+Is this ok to take?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210713054025.32006-1-lukas.bulwahn@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
