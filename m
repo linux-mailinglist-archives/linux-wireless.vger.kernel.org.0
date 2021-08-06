@@ -2,141 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4255D3E24E1
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 10:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5971D3E2653
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 10:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243618AbhHFIPD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Aug 2021 04:15:03 -0400
-Received: from esa.microchip.iphmx.com ([68.232.153.233]:24593 "EHLO
-        esa.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243470AbhHFIPA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Aug 2021 04:15:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1628237685; x=1659773685;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vh/BL0aX8xxc9KpUT74mE1eVjgLeMpUkwiTiAs0EAkU=;
-  b=w26awP+ec+4u+8pWrl/943+tqcGJ7E0YD5uMR2AF0pMfy6LeXvlCNaiw
-   SpxviWPCLL+jd/cHS6P6fsE5PulQ+RoooTQkozvyaaZfSNCWWudvYD8uz
-   TYV8bHhAKUoUnRBS0B8XB71sCGUmrRmAsUT8f2vtQ8l3bfzS1AyzzPy/2
-   nHJ4afp0MvnmLtqG1jTXvIIK7XULk5MFYgspEjngRsuaJ4b2XN++Ry2a4
-   Q9Kwvouh9Hy53ut1cCsjVo67B4I5kiryO7oEAIzQx3qU7Rr+WwDhWIlGx
-   JJh4XA5JNKj4R3CnUwrQg/PcjWhPySd1jqlJGNMWwenU/689HY9+RJ+St
-   w==;
-IronPort-SDR: 56qDI2tzlZc5Xe3Btz6aE9Hg3kpD/7R6mUnQhSsq5ZmOCvfH0sLwu8QhGSSD5Kf58fC6i182Be
- bD/x+84LZZLYo7xNjQMVad+6+bqXgjsDUojC2BSspoqR9/sKcO3tffdcIPbSTFQtCzsYl49qSj
- /F/vNfaaxWsuRyNCqJdA69VHE+4XDJPQrYmBWUabXtt6XDMp4V3RZ5O+m1d3h9YdNsluDi7ooY
- Gsuz1+hU+k0bY/eS6L+GUzIbYxtAb+rjCamo6yZFVwDBfqtfZR7HAEkZ8AWrQXNSPHMM7b1aPB
- ISNLtFmuJ8wtbot5O8y4nVaq
-X-IronPort-AV: E=Sophos;i="5.84,300,1620716400"; 
-   d="scan'208";a="139048860"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 06 Aug 2021 01:14:42 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Fri, 6 Aug 2021 01:14:42 -0700
-Received: from m18063-ThinkPad-T460p.mchp-main.com (10.10.115.15) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2176.2 via Frontend Transport; Fri, 6 Aug 2021 01:14:40 -0700
-From:   Claudiu Beznea <claudiu.beznea@microchip.com>
-To:     <ajay.kathat@microchip.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>, <kuba@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>
-Subject: [PATCH 3/3] wilc1000: use devm_clk_get_optional()
-Date:   Fri, 6 Aug 2021 11:12:29 +0300
-Message-ID: <20210806081229.721731-4-claudiu.beznea@microchip.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210806081229.721731-1-claudiu.beznea@microchip.com>
-References: <20210806081229.721731-1-claudiu.beznea@microchip.com>
+        id S243438AbhHFIr3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Aug 2021 04:47:29 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:41947 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231497AbhHFIr2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Aug 2021 04:47:28 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1628239633; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=Ana7UmuqR+Bk0VGuXemplEABFtFk/iLk/wuJCyedqS0=;
+ b=Fiv9584hmXvKpmnxC8hur+y/VWHcAR4tE4X2ZTN2uc6xYeuwlFno+uTIor5ahJBOlAL+ZYc7
+ N2IrShCrLmOFnBQZr8izc2mJKwpOan9d1r7ARcsMagCjoEb+EI7Cvy8V+OWmUsq8UYCbDcJt
+ TiHmWaqJbdpzQjx2dvJojpUEprk=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 610cf711ad1af63949ce7b32 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Aug 2021 08:47:13
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5A1C1C43460; Fri,  6 Aug 2021 08:47:12 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0A9CAC433F1;
+        Fri,  6 Aug 2021 08:47:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0A9CAC433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 27/54] dt-bindings: net: wireless: Convert ESP ESP8089
+ binding
+ to a schema
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210721140424.725744-28-maxime@cerno.tech>
+References: <20210721140424.725744-28-maxime@cerno.tech>
+To:     Maxime Ripard <maxime@cerno.tech>
+Cc:     Chen-Yu Tsai <wens@csie.org>, Maxime Ripard <maxime@cerno.tech>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@googlegroups.com,
+        "David S. Miller" <davem@davemloft.net>,
+        de Goede <hdegoede@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-Id: <20210806084712.5A1C1C43460@smtp.codeaurora.org>
+Date:   Fri,  6 Aug 2021 08:47:12 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use devm_clk_get_optional() for rtc clock: it simplifies a bit
-the code.
+Maxime Ripard <maxime@cerno.tech> wrote:
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
----
- drivers/net/wireless/microchip/wilc1000/sdio.c | 14 ++++++--------
- drivers/net/wireless/microchip/wilc1000/spi.c  | 15 +++++++--------
- 2 files changed, 13 insertions(+), 16 deletions(-)
+> The ESP8089 Wireless Chip is supported by Linux (through an out-of-tree
+> driver) thanks to its device tree binding.
+> 
+> Now that we have the DT validation in place, let's convert the device
+> tree bindings for that driver over to a YAML schema.
+> 
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: de Goede <hdegoede@redhat.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-index d1fd182bbbff..42e03a701ae1 100644
---- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-+++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-@@ -146,12 +146,12 @@ static int wilc_sdio_probe(struct sdio_func *func,
- 	wilc->bus_data = sdio_priv;
- 	wilc->dev = &func->dev;
- 
--	wilc->rtc_clk = devm_clk_get(&func->card->dev, "rtc");
--	if (PTR_ERR_OR_ZERO(wilc->rtc_clk) == -EPROBE_DEFER) {
--		ret = -EPROBE_DEFER;
-+	wilc->rtc_clk = devm_clk_get_optional(&func->card->dev, "rtc");
-+	if (IS_ERR(wilc->rtc_clk)) {
-+		ret = PTR_ERR(wilc->rtc_clk);
- 		goto dispose_irq;
--	} else if (!IS_ERR(wilc->rtc_clk))
--		clk_prepare_enable(wilc->rtc_clk);
-+	}
-+	clk_prepare_enable(wilc->rtc_clk);
- 
- 	dev_info(&func->dev, "Driver Initializing success\n");
- 	return 0;
-@@ -168,9 +168,7 @@ static void wilc_sdio_remove(struct sdio_func *func)
- {
- 	struct wilc *wilc = sdio_get_drvdata(func);
- 
--	if (!IS_ERR(wilc->rtc_clk))
--		clk_disable_unprepare(wilc->rtc_clk);
--
-+	clk_disable_unprepare(wilc->rtc_clk);
- 	wilc_netdev_cleanup(wilc);
- }
- 
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index 23d811b2b925..8b180c29d682 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -162,12 +162,12 @@ static int wilc_bus_probe(struct spi_device *spi)
- 	wilc->bus_data = spi_priv;
- 	wilc->dev_irq_num = spi->irq;
- 
--	wilc->rtc_clk = devm_clk_get(&spi->dev, "rtc");
--	if (PTR_ERR_OR_ZERO(wilc->rtc_clk) == -EPROBE_DEFER) {
--		ret = -EPROBE_DEFER;
-+	wilc->rtc_clk = devm_clk_get_optional(&spi->dev, "rtc");
-+	if (IS_ERR(wilc->rtc_clk)) {
-+		ret = PTR_ERR(wilc->rtc_clk);
- 		goto netdev_cleanup;
--	} else if (!IS_ERR(wilc->rtc_clk))
--		clk_prepare_enable(wilc->rtc_clk);
-+	}
-+	clk_prepare_enable(wilc->rtc_clk);
- 
- 	return 0;
- 
-@@ -182,10 +182,9 @@ static int wilc_bus_remove(struct spi_device *spi)
- {
- 	struct wilc *wilc = spi_get_drvdata(spi);
- 
--	if (!IS_ERR(wilc->rtc_clk))
--		clk_disable_unprepare(wilc->rtc_clk);
--
-+	clk_disable_unprepare(wilc->rtc_clk);
- 	wilc_netdev_cleanup(wilc);
-+
- 	return 0;
- }
- 
+We support out-of-tree drivers in DT?  Via which tree is this supposed to go? I
+guess not via wireless-drivers-next as this is an out-of-tree driver.
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20210721140424.725744-28-maxime@cerno.tech/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
