@@ -2,111 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 748343E26BC
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 11:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 691393E2855
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Aug 2021 12:13:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243914AbhHFJGq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Aug 2021 05:06:46 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:50952 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231559AbhHFJGp (ORCPT
+        id S244941AbhHFKNf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Aug 2021 06:13:35 -0400
+Received: from amphora3.sui-inter.net ([80.74.147.35]:51798 "EHLO
+        amphora3.sui-inter.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244980AbhHFKN1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Aug 2021 05:06:45 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1628240790; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=eGRB1c7R3wNbeGgi5/cgrfgmx0N/n1KWYXBimiwCgjs=; b=JmMeex6iU1dlWRaPqEiaak7WnxPmpcZWdhO0+HxwBYX6fTZNBGARUjiNmvaPlX5ldeLEWeWI
- 8V7JC/yuR1gbCSI+26T7V+x4P/0XY6VHSvkx+u/4R266mhHfgusoM7LOu9/7G9RGhXBLuSxT
- sK8svAfzE+qMiOJ6KkpY8Ps6u0E=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 610cfb94ad1af63949db21aa (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 06 Aug 2021 09:06:28
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 13CDBC4323A; Fri,  6 Aug 2021 09:06:28 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 54EA7C433F1;
-        Fri,  6 Aug 2021 09:06:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 54EA7C433F1
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Pavel Skripkin <paskripkin@gmail.com>
-Cc:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzbot+03110230a11411024147@syzkaller.appspotmail.com
-Subject: Re: [PATCH] net: ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
-References: <20210804194841.14544-1-paskripkin@gmail.com>
-Date:   Fri, 06 Aug 2021 12:06:17 +0300
-In-Reply-To: <20210804194841.14544-1-paskripkin@gmail.com> (Pavel Skripkin's
-        message of "Wed, 4 Aug 2021 22:48:41 +0300")
-Message-ID: <87sfznaqnq.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 6 Aug 2021 06:13:27 -0400
+X-Greylist: delayed 588 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Aug 2021 06:13:25 EDT
+Received: from [IPV6:2a02:168:6182:1:7643:c4ac:7a96:f4a3] (localhost [127.0.0.1]) by amphora3.sui-inter.net (Postfix) with ESMTPSA id 1068DB042353;
+        Fri,  6 Aug 2021 12:03:19 +0200 (CEST)
+Authentication-Results: amphora.sui-inter.net;
+        spf=pass (sender IP is 2a02:168:6182:1:7643:c4ac:7a96:f4a3) smtp.mailfrom=rs@hqv.ch smtp.helo=[IPV6:2a02:168:6182:1:7643:c4ac:7a96:f4a3]
+Received-SPF: pass (amphora.sui-inter.net: connection is authenticated)
+Message-ID: <26f85a9f-552d-8420-0010-f5cda70d3a00@hqv.ch>
+Date:   Fri, 6 Aug 2021 12:03:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.0
+Subject: Re: [PATCH v2] rtl8xxxu: Fix the handling of TX A-MPDU aggregation
+Content-Language: en-US
+To:     chris.chiu@canonical.com
+Cc:     code@reto-schneider.ch, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jes.sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+References: <20210804151325.86600-1-chris.chiu@canonical.com>
+From:   Reto Schneider <rs@hqv.ch>
+In-Reply-To: <20210804151325.86600-1-chris.chiu@canonical.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pavel Skripkin <paskripkin@gmail.com> writes:
 
-> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb(). The
-> problem was in incorrect htc_handle->drv_priv initialization.
->
-> Probable call trace which can trigger use-after-free:
->
-> ath9k_htc_probe_device()
->   /* htc_handle->drv_priv = priv; */
->   ath9k_htc_wait_for_target()      <--- Failed
->   ieee80211_free_hw()		   <--- priv pointer is freed
->
-> <IRQ>
-> ...
-> ath9k_hif_usb_rx_cb()
->   ath9k_hif_usb_rx_stream()
->    RX_STAT_INC()		<--- htc_handle->drv_priv access
->
-> In order to not add fancy protection for drv_priv we can move
-> htc_handle->drv_priv initialization at the end of the
-> ath9k_htc_probe_device() and add helper macro to make
-> all *_STAT_* macros NULL save.
->
-> Also, I made whitespaces clean ups in *_STAT_* macros definitions
-> to make checkpatch.pl happy.
+Hi Chris,
 
-Separate patch for cleanups, please.
+On 8/4/21 17:13, chris.chiu@canonical.com wrote:
+> The TX A-MPDU aggregation is not handled in the driver since the
+> ieee80211_start_tx_ba_session has never been started properly.
+> Start and stop the TX BA session by tracking the TX aggregation
+> status of each TID. Fix the ampdu_action and the tx descriptor
+> accordingly with the given TID.
 
-> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-> Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotmail.com
-> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
-> ---
->
-> Hi, ath9k maintainer/developers!
->
-> I know, that you do not like changes, that wasn't tested on real
-> hardware. I really don't access to this one, so I'd like you to test it on
-> real hardware piece, if you have one. At least, this patch was tested by
-> syzbot [1]
->
-> [1] https://syzkaller.appspot.com/bug?id=6ead44e37afb6866ac0c7dd121b4ce07cb665f60
+I'd like to test this but I am not sure what to look for (before and 
+after applying the patch).
 
-syzbot does not equal testing on real hardware. Can someone test or
-review this, please?
+What should I look for when looking at the (sniffed) Wireshark traces?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Kind regards,
+Reto
