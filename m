@@ -2,155 +2,225 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2D893E33FC
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Aug 2021 09:46:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DEB13E3453
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Aug 2021 11:29:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231515AbhHGHkx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Aug 2021 03:40:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51902 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231490AbhHGHkw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Aug 2021 03:40:52 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EFD8A610CB;
-        Sat,  7 Aug 2021 07:40:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628322035;
-        bh=53mGiYjCJgajosU+BkA+CzZJ+1b7FYN5XUfvUMzRow0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=BqFFP+7vnGw8P4n0bc9/3j4FrW05aIitE+UWUuya0K425ptvTHqEFWLEWzfO3x9St
-         LHci7A2M0qavgg1RJAl0EQssA3J3SldD4Irhd7iYYZf8MA6J8tORNugJQ6lKJCfozT
-         HW+8hTJKlRXpdpTnj0KJA2+IkGBPvLtVvRNIDwo3wPgZMAfepNnpsrx25UMLMZ/Xd5
-         vd971Vr3QVwj6QrwB3fW+YgwwcaxNMD1fg86EWG6AHp+QHpDNnTEvy/fcFgjGOc7d+
-         +RiGoX8tseFEOPpmdR9VFhKkmr8V8PEt4fWVZK706fal/4ZixxBaUFbGBEmN0HBTGQ
-         T0jd2s+WRZxcw==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] mt76: mt7615: move mt7615_mcu_set_p2p_oppps in mt76_connac module
-Date:   Sat,  7 Aug 2021 09:40:30 +0200
-Message-Id: <c2d278faf03f8d17d3c02710f4e07ce55215eb09.1628321941.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S231710AbhHGJ3M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Aug 2021 05:29:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55318 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231613AbhHGJ3I (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 7 Aug 2021 05:29:08 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B829C0613D3
+        for <linux-wireless@vger.kernel.org>; Sat,  7 Aug 2021 02:28:51 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mCIc5-0000Og-1o; Sat, 07 Aug 2021 11:27:29 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mCIbl-0007UG-9f; Sat, 07 Aug 2021 11:27:09 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mCIbl-0007Ct-6j; Sat, 07 Aug 2021 11:27:09 +0200
+Date:   Sat, 7 Aug 2021 11:26:45 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
+        Russell Currey <ruscur@russell.cc>, x86@kernel.org,
+        oss-drivers@corigine.com, netdev@vger.kernel.org,
+        Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Jiri Olsa <jolsa@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        linux-scsi@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        qat-linux@intel.com,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        Fiona Trahe <fiona.trahe@intel.com>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Borislav Petkov <bp@alien8.de>, Michael Buesch <m@bues.ch>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Juergen Gross <jgross@suse.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        xen-devel@lists.xenproject.org, Vadym Kochan <vkochan@marvell.com>,
+        MPT-FusionLinux.pdl@broadcom.com, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-perf-users@vger.kernel.org,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-crypto@vger.kernel.org,
+        kernel@pengutronix.de,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        Wojciech Ziemba <wojciech.ziemba@intel.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v2 0/6] PCI: Drop duplicated tracking of a pci_dev's
+ bound driver
+Message-ID: <20210807092645.52kn4ustyjudztvl@pengutronix.de>
+References: <20210806064623.3lxl4clzbjpmchef@pengutronix.de>
+ <20210806212452.GA1867870@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="hfh2djfsv3k2boqr"
+Content-Disposition: inline
+In-Reply-To: <20210806212452.GA1867870@bjorn-Precision-5520>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move mt7615_mcu_set_p2p_oppps routine in mt76_connac_lib module in order
-to be reused in mt7921 driver
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt7615/main.c  |  4 ++--
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 22 -------------------
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  2 --
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 20 +++++++++++++++++
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  2 ++
- 5 files changed, 24 insertions(+), 26 deletions(-)
+--hfh2djfsv3k2boqr
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index dada43d6d879..457e50255250 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -567,8 +567,8 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
- 		mt7615_mcu_add_bss_info(phy, vif, NULL, true);
- 		mt7615_mcu_sta_add(phy, vif, NULL, true);
- 
--		if (vif->p2p)
--			mt7615_mcu_set_p2p_oppps(hw, vif);
-+		if (mt7615_firmware_offload(dev) && vif->p2p)
-+			mt76_connac_mcu_set_p2p_oppps(hw, vif);
- 	}
- 
- 	if (changed & (BSS_CHANGED_BEACON |
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index f8a09692d3e4..a39776833efd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -2762,28 +2762,6 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 				 sizeof(req), false);
- }
- 
--int mt7615_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
--			     struct ieee80211_vif *vif)
--{
--	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
--	int ct_window = vif->bss_conf.p2p_noa_attr.oppps_ctwindow;
--	struct mt7615_dev *dev = mt7615_hw_dev(hw);
--	struct {
--		__le32 ct_win;
--		u8 bss_idx;
--		u8 rsv[3];
--	} __packed req = {
--		.ct_win = cpu_to_le32(ct_window),
--		.bss_idx = mvif->mt76.idx,
--	};
--
--	if (!mt7615_firmware_offload(dev))
--		return -ENOTSUPP;
--
--	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_P2P_OPPPS, &req,
--				 sizeof(req), false);
--}
--
- u32 mt7615_mcu_reg_rr(struct mt76_dev *dev, u32 offset)
- {
- 	struct {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index d0c64a9b09cf..58a98b5c0cbc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -541,8 +541,6 @@ int mt7615_mcu_apply_rx_dcoc(struct mt7615_phy *phy);
- int mt7615_mcu_apply_tx_dpd(struct mt7615_phy *phy);
- int mt7615_dfs_init_radar_detector(struct mt7615_phy *phy);
- 
--int mt7615_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
--			     struct ieee80211_vif *vif);
- int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 		       struct ieee80211_channel *chan, int duration);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index a2555dc0f003..ce5985f6b515 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1930,6 +1930,26 @@ int mt76_connac_mcu_update_arp_filter(struct mt76_dev *dev,
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_update_arp_filter);
- 
-+int mt76_connac_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
-+				  struct ieee80211_vif *vif)
-+{
-+	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
-+	int ct_window = vif->bss_conf.p2p_noa_attr.oppps_ctwindow;
-+	struct mt76_phy *phy = hw->priv;
-+	struct {
-+		__le32 ct_win;
-+		u8 bss_idx;
-+		u8 rsv[3];
-+	} __packed req = {
-+		.ct_win = cpu_to_le32(ct_window),
-+		.bss_idx = mvif->idx,
-+	};
-+
-+	return mt76_mcu_send_msg(phy->dev, MCU_CMD_SET_P2P_OPPPS, &req,
-+				 sizeof(req), false);
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_p2p_oppps);
-+
- #ifdef CONFIG_PM
- 
- const struct wiphy_wowlan_support mt76_connac_wowlan_support = {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index ab77289c0541..43787ab224b2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1094,4 +1094,6 @@ int mt76_connac_mcu_set_deep_sleep(struct mt76_dev *dev, bool enable);
- void mt76_connac_mcu_coredump_event(struct mt76_dev *dev, struct sk_buff *skb,
- 				    struct mt76_connac_coredump *coredump);
- int mt76_connac_mcu_set_rate_txpower(struct mt76_phy *phy);
-+int mt76_connac_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
-+				  struct ieee80211_vif *vif);
- #endif /* __MT76_CONNAC_MCU_H */
--- 
-2.31.1
+On Fri, Aug 06, 2021 at 04:24:52PM -0500, Bjorn Helgaas wrote:
+> On Fri, Aug 06, 2021 at 08:46:23AM +0200, Uwe Kleine-K=F6nig wrote:
+> > On Thu, Aug 05, 2021 at 06:42:34PM -0500, Bjorn Helgaas wrote:
+>=20
+> > > I looked at all the bus_type.probe() methods, it looks like pci_dev is
+> > > not the only offender here.  At least the following also have a driver
+> > > pointer in the device struct:
+> > >=20
+> > >   parisc_device.driver
+> > >   acpi_device.driver
+> > >   dio_dev.driver
+> > >   hid_device.driver
+> > >   pci_dev.driver
+> > >   pnp_dev.driver
+> > >   rio_dev.driver
+> > >   zorro_dev.driver
+> >=20
+> > Right, when I converted zorro_dev it was pointed out that the code was
+> > copied from pci and the latter has the same construct. :-)
+> > See
+> > https://lore.kernel.org/r/20210730191035.1455248-5-u.kleine-koenig@peng=
+utronix.de
+> > for the patch, I don't find where pci was pointed out, maybe it was on
+> > irc only.
+>=20
+> Oh, thanks!  I looked to see if you'd done something similar
+> elsewhere, but I missed this one.
+>=20
+> > > Looking through the places that care about pci_dev.driver (the ones
+> > > updated by patch 5/6), many of them are ... a little dubious to begin
+> > > with.  A few need the "struct pci_error_handlers *err_handler"
+> > > pointer, so that's probably legitimate.  But many just need a name,
+> > > and should probably be using dev_driver_string() instead.
+> >=20
+> > Yeah, I considered adding a function to get the driver name from a
+> > pci_dev and a function to get the error handlers. Maybe it's an idea to
+> > introduce these two and then use to_pci_driver(pdev->dev.driver) for the
+> > few remaining users? Maybe doing that on top of my current series makes
+> > sense to have a clean switch from pdev->driver to pdev->dev.driver?!
+>=20
+> I'd propose using dev_driver_string() for these places:
+>=20
+>   eeh_driver_name() (could change callers to use dev_driver_string())
+>   bcma_host_pci_probe()
+>   qm_alloc_uacce()
+>   hns3_get_drvinfo()
+>   prestera_pci_probe()
+>   mlxsw_pci_probe()
+>   nfp_get_drvinfo()
+>   ssb_pcihost_probe()
 
+So the idea is:
+
+	PCI: Simplify pci_device_remove()
+	PCI: Drop useless check from pci_device_probe()
+	xen/pci: Drop some checks that are always true
+
+are kept as is as preparation. (Do you want to take them from this v2,
+or should I include them again in v3?)
+
+Then convert the list of functions above to use dev_driver_string() in a
+4th patch.
+
+> The use in mpt_device_driver_register() looks unnecessary: it's only
+> to get a struct pci_device_id *, which is passed to ->probe()
+> functions that don't need it.
+
+This is patch #5.
+
+> The use in adf_enable_aer() looks wrong: it sets the err_handler
+> pointer in one of the adf_driver structs.  I think those structs
+> should be basically immutable, and the drivers that call
+> adf_enable_aer() from their .probe() methods should set
+> ".err_handler =3D &adf_err_handler" in their static adf_driver
+> definitions instead.
+
+I don't understand that one without some research, probably this yields
+at least one patch.
+
+> I think that basically leaves these:
+>=20
+>   uncore_pci_probe()     # .id_table, custom driver "registration"
+>   match_id()             # .id_table, arch/x86/kernel/probe_roms.c
+>   xhci_pci_quirks()      # .id_table
+>   pci_error_handlers()   # roll-your-own AER handling, drivers/misc/cxl/g=
+uest.c
+>=20
+> I think it would be fine to use to_pci_driver(pdev->dev.driver) for
+> these few.
+
+Converting these will be patch 7 then and patch 8 can then drop the
+duplicated handling.
+
+Sounds reasonable?
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--hfh2djfsv3k2boqr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmEOUc0ACgkQwfwUeK3K
+7AnHpgf/RF3DUcUr+MLq/SXC+ZFfynYOmvBgChskJ2ZCMYGHElw/XWeeZ3ypnETk
+Bq9PLYeIZrTWUb6sDYkPOkeSkiNrYOAp2v1vkl8fGpTpxobnkCW2Rv2fYndODqw9
+z5he4PjzBqPSO+LpWQ+XuW6OKaQaPijZm6SgH4JdVW2Etu1RiIeQHnTlFMkx2pd8
+hn3lUEsH/SF+WGd7olILhZ/FxycXldBLR4CjQNbCJ1G7LZ6IuGu+Ir2TbrlnPMPD
+RWuspO5voAOSEaTPlgGYELadA2nNr375R89u659MJOo/DssBdSaNaKik6udH5Vea
+yvZvenIp8//zyIdZpD38UlFSayO1OQ==
+=tPhD
+-----END PGP SIGNATURE-----
+
+--hfh2djfsv3k2boqr--
