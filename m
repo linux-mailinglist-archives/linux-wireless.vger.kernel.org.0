@@ -2,84 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0EFA3E36A4
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Aug 2021 20:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E67A3E36C8
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Aug 2021 20:34:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229577AbhHGScu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Aug 2021 14:32:50 -0400
-Received: from mga02.intel.com ([134.134.136.20]:1116 "EHLO mga02.intel.com"
+        id S229663AbhHGSez (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Aug 2021 14:34:55 -0400
+Received: from mga03.intel.com ([134.134.136.65]:56432 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229471AbhHGScq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Aug 2021 14:32:46 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10069"; a="201694735"
+        id S229464AbhHGSey (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 7 Aug 2021 14:34:54 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10069"; a="214547898"
 X-IronPort-AV: E=Sophos;i="5.84,303,1620716400"; 
-   d="scan'208";a="201694735"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2021 11:32:29 -0700
+   d="scan'208";a="214547898"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2021 11:34:36 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.84,303,1620716400"; 
-   d="scan'208";a="468213698"
-Received: from fmsmsx605.amr.corp.intel.com ([10.18.126.85])
-  by orsmga008.jf.intel.com with ESMTP; 07 Aug 2021 11:32:28 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx605.amr.corp.intel.com (10.18.126.85) with Microsoft SMTP Server
+   d="scan'208";a="502321358"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orsmga001.jf.intel.com with ESMTP; 07 Aug 2021 11:34:36 -0700
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.4; Sat, 7 Aug 2021 11:32:28 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.1.2242.10; Sat, 7 Aug 2021 11:34:35 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.10; Sat, 7 Aug 2021 11:32:27 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.10 via Frontend Transport; Sat, 7 Aug 2021 11:32:27 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.104)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ 15.1.2242.10 via Frontend Transport; Sat, 7 Aug 2021 11:34:35 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.168)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2242.10; Sat, 7 Aug 2021 11:32:27 -0700
+ 15.1.2242.10; Sat, 7 Aug 2021 11:34:35 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RjbXUJ32wsJgpgAlid9yeEpXn6vtGIynJnCpwHPxFE3d6+LljE7DhFBkqU7P5AR2IQ+21y+lpL8af68ylb/CRrIZa/YI2FeznNNPsYuv3w0jkiEaeM0gzRK7Fyy1dmHPxtHUQXa/N/I+SEHhQRU78tzLYqI4cTq46jJk9GlfWbMBsq+8WQlddB/mt9G9NdxXPD+l3JdtqHMZrV9kMUOl7516jjIexVlWIg/1oREktMoam/ui1xvoFyuI1Ho0HF9pamvwfv80qp1/8ukpEJ5rbN4DV0fz7QU+pbnSRMINjzqx8DgqgAhUdPr08areXj+dlmiloTsh1/UkV4TVN5W5jQ==
+ b=gu1ILMpgV31QuUCh+07CXUvMpWsKtGXXP2zcPNgvjn5oSl+KMXatPZQZBVtRwggEmKuC+hynn+xaIuAaHdExQEqNI6RPhDEYRut1vE0C9xbmcYi1cXhpfMigsaozQXx5Ygf34+jfat9RDHLceRe4hVIs3B6g0tL3EiTKny/jyDliJfukwJjrqE18hlRgfME7H1u35VaY3QZGh6izB2UW2kF0LTcDG/fCII1gztN51K3RiOE7zvAjXvgP83aLHTA+kyNDz+cxeojY9RX+vyfx2cq574na3GRqv5f1KTYrL6l2jv2zhcJse+8wspnz1ZEcGMW6Bf/YWQ0VINkDS4Mliw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/7n/O7X//hrQygId+XI55k1W5j74XGWc/l5czv7C01U=;
- b=GOSIwuxk3Z7iSUa/NNr3TgU5TBqQaBiMCLqIQsbE+9VuyiZAxaXqj27oqj5elGZ83O5thx/GJptv7QhBxulSmBbGTzj/5Rr2xo6eFhD/bsJol0bzG85ezw5A4KQ9qMzXStdy+4g4QE04zvWvifPfyeDscUmJD3SSBJ7B6MAIle7MfnIHpjRx5WGrfmx1UOabZSeb4+N8Q9Uw9AOdnjX459VyoPo3yYng6W2EiJN97lIFTNghNPvELezL9HKZyey5aamQhslYn+AdcANxVOzOqNdFMgr+z6621zVnpj2yCaDHn2OLGsagCKgsul6OqHSE8l9lbyWdP8w4idFAzgbwbA==
+ bh=fQOR5S1ZU7gCN5eQ5JASZSaEl98egeUVIvXGzOuqNsA=;
+ b=VhNxJyhEFNh+tLCkKzsui42kSkJz+cNoKzal3qY1MKa5w55B5NMH1QCNciL+jibyDM1ZJLJ9qzd6Nj+giaM5lDs98yQeChYIbanzGe12HbuQoozv7onXU8wzSVAlFxJw6kAIJC0iK/GQj/Yer/PuyjMG031i9OwYR9dWuKfFfZ+1tCU8G0Tc7P4tgzsMTPoMRKAw0cf2+PYCiOYsZ5/g4k1u4NVguPPlhQGto4SzpuVB6xdeW0IfJfPBp6xc99pkpi9tga9bBwuG0eS4HazY4jdTTje0DfkVNn0ckI8G46h5aGji7KMHs9leP9CbCtmxSIrYz+slQMPOX/IyEg5YZw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
  s=selector2-intel-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/7n/O7X//hrQygId+XI55k1W5j74XGWc/l5czv7C01U=;
- b=RRk3kn9oq1SEztfK2A9EzLRbBKyd0KWRgLYP/uvebO1O6RRZA/n/stYGAIxauvg9y71btuWILV+qspjqoKD/kEoda/fZlFc46uuv7HY7w4uRixLXP73OFHtr63h4Jaq6ZJ2rMOMZkPpGS73byg+QrtaFuQtm+IIZ15gECDliMy0=
+ bh=fQOR5S1ZU7gCN5eQ5JASZSaEl98egeUVIvXGzOuqNsA=;
+ b=gr3srszYidU6XxBbYqrJ+uKeUW+GybgAOXcxH9XxyrfZuhLPNvdnmsTHZQSB4OCIz5qLbPfhlpSKISsEhIR94yjY+GIyXUAnpQ8Ufj1sDagdYwzuiL2R0Pa4aqezgzYRkNY25FYqZiuOqLHfHvO2tPn2n9BhODRoH84EalKmavU=
 Received: from SA0PR11MB4752.namprd11.prod.outlook.com (2603:10b6:806:99::24)
- by SA2PR11MB4986.namprd11.prod.outlook.com (2603:10b6:806:114::13) with
+ by SA2PR11MB5017.namprd11.prod.outlook.com (2603:10b6:806:11e::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.22; Sat, 7 Aug
- 2021 18:32:26 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.16; Sat, 7 Aug
+ 2021 18:34:34 +0000
 Received: from SA0PR11MB4752.namprd11.prod.outlook.com
  ([fe80::4534:c66a:f050:3486]) by SA0PR11MB4752.namprd11.prod.outlook.com
  ([fe80::4534:c66a:f050:3486%7]) with mapi id 15.20.4394.021; Sat, 7 Aug 2021
- 18:32:26 +0000
+ 18:34:34 +0000
 From:   "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
 To:     Kalle Valo <kvalo@codeaurora.org>,
         Emmanuel Grumbach <egrumbach@gmail.com>
 CC:     "Coelho, Luciano" <luciano.coelho@intel.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         "Beker, Ayala" <ayala.beker@intel.com>
-Subject: RE: [PATCH v3 3/4] nl80211: vendor-cmd: add Intel vendor commands for
- iwlmei usage
-Thread-Topic: [PATCH v3 3/4] nl80211: vendor-cmd: add Intel vendor commands
- for iwlmei usage
-Thread-Index: AQHXif1wGoEh3hgq1EWl9IMc9He2FqtoYGOA
-Date:   Sat, 7 Aug 2021 18:32:26 +0000
-Message-ID: <SA0PR11MB47521818C15629E58B99525AF2F49@SA0PR11MB4752.namprd11.prod.outlook.com>
+Subject: RE: [PATCH v3 4/4] iwlwifi: mvm: add vendor commands needed for
+ iwlmei
+Thread-Topic: [PATCH v3 4/4] iwlwifi: mvm: add vendor commands needed for
+ iwlmei
+Thread-Index: AQHXif7lxFnULUNnIESM18ARXXkclatoYS8g
+Date:   Sat, 7 Aug 2021 18:34:34 +0000
+Message-ID: <SA0PR11MB4752D9B34C2A60B85CA3E5F3F2F49@SA0PR11MB4752.namprd11.prod.outlook.com>
 References: <20210623141033.27475-1-emmanuel.grumbach@intel.com>
-        <20210623141033.27475-3-emmanuel.grumbach@intel.com>
-        <87k0mji43p.fsf@codeaurora.org>
-        <CANUX_P0d0jrq9x99jM824oKOhmi0Wa5WqhECMsX=hd269H6atw@mail.gmail.com>
- <87sfzoc9bw.fsf@codeaurora.org>
-In-Reply-To: <87sfzoc9bw.fsf@codeaurora.org>
+        <20210623141033.27475-4-emmanuel.grumbach@intel.com>
+        <87fsx7i416.fsf@codeaurora.org>
+        <CANUX_P3HWWBkeHHSw+-wdQEBFNF1V+GWRDFiEerH7NhksRvOzA@mail.gmail.com>
+ <87o8acc8v1.fsf@codeaurora.org>
+In-Reply-To: <87o8acc8v1.fsf@codeaurora.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -90,99 +86,132 @@ dlp-version: 11.5.1.3
 authentication-results: codeaurora.org; dkim=none (message not signed)
  header.d=none;codeaurora.org; dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: e7c7155c-9752-4f50-4d79-08d959d1b4ef
-x-ms-traffictypediagnostic: SA2PR11MB4986:
+x-ms-office365-filtering-correlation-id: 1cb430be-be12-42c1-99f3-08d959d200e3
+x-ms-traffictypediagnostic: SA2PR11MB5017:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SA2PR11MB4986794AB77835FDB95E1E98F2F49@SA2PR11MB4986.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-microsoft-antispam-prvs: <SA2PR11MB5017A996D5510D3C70F7E59BF2F49@SA2PR11MB5017.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: TaSTm9Yio91RR//PMDB2a3OuqdMpd7Mcr3DjZ58U34HNurioNInV4Ae/0UZfLJVt96VU3V5h5IvJh+wqXj8Yq/TnZFojkEGJlJls+f6ReB5mj/QGImz8Huto7vTH6gjv6E3trWltF62+mPXmvkiki5+va6ImD8SmzSk7rWP7/1r3jPdfk5UXw/f6xKYOvw1sBa58UUzTOSkg7KDp7gK4RyVD+1v1WL/H+OS7lkxpD7KDgZZ4jHy9ktI2hcSHoEkp84k5CS/aRHHRog2DZ3ZbugLXFvEn7Tc6mnHhj/3nDwvDDe7U7CPyUQHMr8lWPvfq//VG5NgL0ThIyhWVW5sDhcFhsYV1pI8ZzXtOmSZoy70MuKNbAxz69Lfw0kGYoe7F4amVaPKtVyM7T2D/4kOsrzZXY/ijf5Lquk/8TnMl/nr+w+k+Ab2ck6Wlc/CJob/EYdPfhgfMSfviMGot/zVHtfjCV4AvqTSX6LxhtjMT5vWpK+g4V8MCxXPLKRh5Ph38B/UjfXRwZlsu2ULb7X2q95u2a97vlq2Vm7BDDAf2Momu6htG8WQF3jFNLtmVs/5ab5ET7UXdT8txJtt6hEUuHuYhVx42AqVzZYImH5p0iUCCgOeKB/XN0sHSScOTrbwUz+74S4aSnk8xR6OweeUUxMik6schqcAV3u6cQ1YqKz/xKXc/WH51lWSqFWWLpn/NlriOT8xv0RkAjJojK9b9HeJxh8QMqwDF7ALczsYVKlIIplL7+9ULFEmXEa2uKgr3+QKK2K0EGW8REb8tKXvCPWEgx54AMNoXrzlfe2NEv9Q=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR11MB4752.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(346002)(366004)(376002)(396003)(39860400002)(107886003)(86362001)(2906002)(186003)(52536014)(7696005)(55016002)(53546011)(6506007)(8676002)(5660300002)(71200400001)(26005)(8936002)(110136005)(66476007)(66946007)(64756008)(76116006)(966005)(478600001)(33656002)(4326008)(66556008)(9686003)(54906003)(83380400001)(316002)(38100700002)(122000001)(66446008)(38070700005);DIR:OUT;SFP:1102;
+x-microsoft-antispam-message-info: lPn5MRxECykaiaZmkXMI1tF2HTX1jO6D2qBrBvKkotx3AGMFAQB+pcL5u1JPNVnjC+XW07DTdg4w8oolA+XpDmu+nxPdcGpC4XyxwCEr7O/sUyrH+RG5vEzXJMuuxnyIcMQtnbnonjIf/dIIJnHjQvsca2Yq/qSetjtMzZQdCU/zXo8JsgMEEeuGbOisJJLW8BpzlC22RFMbYSWqhoHH/+4yyj36zTicT0h29MUTlJHFyQZRN8rTiRiTtzJbC0EFut3dMqVOWs1ElH3IVkbT0qIP6EpnVQUARkZwXpNtBZ2Q8hf267Ipq6NmZF3fW0I7grC8U3HukgaRqCgzV8Sfol9nvvn6CcYf1xJw10Mk0lGo6qZheZgKexJuE1naiz50GngHRgZQ59gejv2d0J/WEPOry8AmnhNQWlKCjeieRBT1vMUqRZXpPKhX6YXAgk9R+yB8XONokYhRmdQIdu8j5sRHZ9mx69RakD29lV6OVGc3yugmw0C27eV+XUc1Ot7g9x7wfDRWMz7FM2qsJ+xiGULFs44AuLyILbgXBODeIhvJHtvo7l1VGrMsQ/GhTfso+kcdLa/QRHOU2m5iTJNXO7YALuGeR7PJB/y6f9UJ5lMcu6msXqyF67+9HfU8KMWMqPbEbrVyaY92YlezED2BtGIX5gyCdBjGzbud6z/uAHOEvG75Hde+x/dYMEuQYkgA+hDXhAONNFqnOXz3mWAy8Q==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR11MB4752.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(66476007)(2906002)(66946007)(66556008)(76116006)(64756008)(66446008)(53546011)(33656002)(6506007)(55016002)(316002)(508600001)(5660300002)(107886003)(122000001)(38070700005)(8936002)(54906003)(4326008)(186003)(86362001)(38100700002)(52536014)(9686003)(83380400001)(71200400001)(110136005)(7696005)(26005)(8676002);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?dWvPIhjkuJRinbhf5/kqMK4TjRshy9nsQA7ruwLYdbMInCWojxBs88v0CenR?=
- =?us-ascii?Q?iMvTBsJUuYutTExzhvIqvciemzTpoyjTqX0zOX5iFD+Uyf93Y+74KEq3D82M?=
- =?us-ascii?Q?wRN1jXL3hloXFi3uSVzZaeQrQNjF0ERXiJcFpbclzvahV66BZvKzMdPAiB20?=
- =?us-ascii?Q?dhRvBp4rGB3X4KodsjHbpNAhMIFYYRl+Fcajdr8L1TdDyB9jO5489FPBaP+i?=
- =?us-ascii?Q?Q6zQzX/ytBJnXK8THN3aj+PMA1jjLDVzKOf5f7W0JAP8hXcgawEqUOwj7PKh?=
- =?us-ascii?Q?qWEHZx68CmoMMnDpAzT4jpX6+82atrWWayAz6i01j9UPiO/sF+SaLT4484Eo?=
- =?us-ascii?Q?q6pbHUY/mQkb7eo9HLozE0dyWujBwlAmkq+4UxXmP8VpRm2ukRS6N0XB5xE6?=
- =?us-ascii?Q?vgyFDpZcRx36QkCuJIQkIK/DssRFA8CkAPZ9qbNCQ8rJI/v7CY1LHJ74Li4B?=
- =?us-ascii?Q?vVKx+Ahe5ZoYL5BkcZon6mKHRMHfem9n7xhbSVLiY12MjQYgl/ootStKhUat?=
- =?us-ascii?Q?CTtM0G9OB4R2kOcG6bPsXUSX369KovW5nprQnRn0f0rh+p7MsizwPsroqIZn?=
- =?us-ascii?Q?eT9eNOP1bxaVfre0xRN1QiGjANcXZ1I1pkHRlUeyLzq8ArUC4qhZJSm+i9xm?=
- =?us-ascii?Q?drT4q4qxKAf5mUJVULfa0Hg6EV+GPoSu0I5jobwW+0WYi0uJ/kHUEz5owYkr?=
- =?us-ascii?Q?H8mx2rBPlumg31mmqMJiqYg5LKKrsjM+qgVmKUT/j7rg/rCulVmgtyITaEMt?=
- =?us-ascii?Q?fECXXCki7pL2pUN2oOk0me/v/8RpwnRhheQEnms+kLSSU30l6FONfKHYRdQO?=
- =?us-ascii?Q?/7yCgClKGtD5JbJc4pTS5X03Yrv5DPxdnfAEn1AZNgD8Sd7qIkcwK9mkHDtd?=
- =?us-ascii?Q?ABAuyWvj4moedbqAZ0bcA7QTk/nEl25/zATjRV6q3ABVYOXNjTRgBB0D+MOY?=
- =?us-ascii?Q?0TVuinOxOnpvlATRK44nJclLAnVFKLkI0KRPmr6RdkS8kfm2wkbE1MmAP5pR?=
- =?us-ascii?Q?wE6B0SNdjmu9YdmrSkcyX2/+f3+VBgzzaaqgX7/WDUjftb0lGKLHHoNDFbBP?=
- =?us-ascii?Q?i3mPBd/K6AeaPcV8tT2+ZTEXwiascpSakVUFoGDqSjFJMGDiZYLHGxWHCV8a?=
- =?us-ascii?Q?8UrDzZKFGP2/vfZVAr1wUOxzTY8MdSHCz5CkEcV1GoLIJqvfucHCM+/low8x?=
- =?us-ascii?Q?VXDjM4aD8Zj9+s2N4NiZ6VH/iG20Str5Gcd5ACNze3TJ4mrreV0el57RnRRh?=
- =?us-ascii?Q?DghWNLiCxo5FdzkTG/d+/16GOISKTvH7/JEBbhQ3ExgcxNWzr8clXVw11m/Y?=
- =?us-ascii?Q?DfI=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?JcUwZHhjfvpv4Bg3Wexg/kNWeXNtukA39QMBMxg0cN7YH4siFn6FWLl6CjzD?=
+ =?us-ascii?Q?1CTfKdQ5s/JxwglqjvkIQTml97oTCBINPzGWSoYwlKfgwe3ytE9Jq5wI1y4M?=
+ =?us-ascii?Q?6nKdPmbsuST/4Stdpieg0NHP1Amf9O+r6Oo45YvHA5zM13h6lFNl+JxVS5j3?=
+ =?us-ascii?Q?S5xO952VOiPoJIeNI34SuLt9JCCB8QSoPdMBPYSs4k9tqXJa9XHpDhvohx7p?=
+ =?us-ascii?Q?INwx+xyhsVz2/Oyfj6om0sMDYRQiw5zjYSbBPgR1gOLx5KgKUNJq88UF7uuu?=
+ =?us-ascii?Q?JvRYXS8HpsksVEvI/9ydH5V078pdBgWxtcvevmIns+FWWFia/ZGQKZDwknJa?=
+ =?us-ascii?Q?4IokGNZpWSISy0OIZF6E6DL47pBC5G9+3/aldd5vrzYQ2TPajBs5ONb/1KE1?=
+ =?us-ascii?Q?KiSKrozHjKppQwIcJ/M3ruWmvkR+tH5PaSHNCUTsSI7j4BSffkz8d+dTjbRs?=
+ =?us-ascii?Q?x7rF5+DZLGzvv+AjdqFvJOaB0XyBN0CictpHRUASNEO0w0elqpDmsQrZWj+R?=
+ =?us-ascii?Q?ftmNeZel+syv30N5GWqJZyt/PtONZC9czr+aMqtiU8pNC2J9KKmvf6Jn6/N8?=
+ =?us-ascii?Q?oe1hCV15lF6S/qZNU+6Y0rJy50mnlOktVtDfJSlzL05j4DctJGMwq4WdamrU?=
+ =?us-ascii?Q?vlC0RnhdgnBc6QPMIEqR7ZOifILeJQAndXsescVAZ4S03rAGC29Q7ky6cYAd?=
+ =?us-ascii?Q?plch6RBLYjXLmcZkjlmXM9Ut5xI3CvstLDAAgON/fM5D5ieDK3PagAuFRrea?=
+ =?us-ascii?Q?55LkRI3ma0/LrmayfI21YqaonGvdYm4lwlOgHO+jx3ZgSL9piz0yU21GOYfK?=
+ =?us-ascii?Q?6B5llllduxaZP3kn05jkDPO1OcWV9O83L7lc5Kd0aUQegqaA/7RBSNM07f9V?=
+ =?us-ascii?Q?Hi7TamFlRErr1aNQZWgreuP5DLRHQzVjHqfsHKKndACDkeHuI80sq88KdHSD?=
+ =?us-ascii?Q?jjRY1tQfMI8g1BCNrckjJWAmNCHxGfJHBa2WtH2cgEdb4+ZBdmO66b0OTYRM?=
+ =?us-ascii?Q?TN5DoB9g9RfFBpdpfF++cbgVVV+HAhvyX2IVApkhpZb/r1qdlhNpGRyqdIlN?=
+ =?us-ascii?Q?mYJxybiPl4jLUxYZ0StqHg/GaZEYaxyaW5ryEJGY7mH5kzabCH1Iqy1ThIyp?=
+ =?us-ascii?Q?rn3dYnCyNeZ42y20MKtjjWj2mmpts2ifVWbFbY8hdI/lPRdon+FSFl3YYxEA?=
+ =?us-ascii?Q?2S2/aIGhvL9TRF/S5NhgeXOaUOe2H1TSG8ptKg383laV/e3H1uNUHuza6hrI?=
+ =?us-ascii?Q?uk9EqA/5TIoSND8dNACBXiFCIePYt5t2Mth3tvL8hlr11pPHWnPKJ+gTA8kU?=
+ =?us-ascii?Q?vneKbmuuctezW+z07+S0MNAq?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: SA0PR11MB4752.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e7c7155c-9752-4f50-4d79-08d959d1b4ef
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Aug 2021 18:32:26.7418
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cb430be-be12-42c1-99f3-08d959d200e3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Aug 2021 18:34:34.1032
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: krfege+Vo7Y0Tp/D/U6xLNoougYbhN1bWPiX8GSlnyAljSM4lKoHQg0xkuWsmg8moU5s5iAjlLJZs1jHjV9OTErNjZ9TG77mNYObz6SsmOY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4986
+X-MS-Exchange-CrossTenant-userprincipalname: c6gLl0S38YKt9z6E3AJ8jbo+Y8zNgCj8kcDH2e+Sd1lQXS0w7IEYn1FuvHIMaXpiGVFgNFIJP4ifh/2ty0OQBwuXH6qUdjC1KasVkx67dJI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5017
 X-OriginatorOrg: intel.com
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->=20
-> > On Thu, Jun 24, 2021 at 8:09 PM Kalle Valo <kvalo@codeaurora.org> wrote=
+=20
+> > On Thu, Jun 24, 2021 at 8:13 PM Kalle Valo <kvalo@codeaurora.org> wrote=
 :
 > >>
 > >> Emmanuel Grumbach <emmanuel.grumbach@intel.com> writes:
 > >>
-> >> > iwlmei allows to integrate with the CSME firmware. There are flows
-> >> > that are prioprietary for this purpose:
+> >> > Add the vendor commands that must be used by the network manager
+> to
+> >> > allow proper operation of iwlmei.
 > >> >
-> >> > * Get the information the AP, the CSME firmware is connected
-> >> >   to. This is useful when we need to speed up the connection
-> >> >   process in case the CSME firmware has an TCP connection
-> >> >   that must be kept alive across the ownership transition.
-> >> > * Forbid roaming, which will happen when the CSME firmware
-> >> >   wants to tell the user space not disrupt the connection.
-> >> > * Request ownership, upon driver boot when the CSME firmware
-> >> >   owns the device.
+> >> > * Send information on the AP CSME is connected to
+> >> > * Notify the userspace when roaming is forbidden
+> >> > * Allow the userspace to require ownership
+> >> >
+> >> > Co-Developed-by: Ayala Beker <ayala.beker@intel.com>
+> >> > Signed-off-by: Emmanuel Grumbach
+> <emmanuel.grumbach@intel.com>
+> >> > ---
+> >> >  drivers/net/wireless/intel/iwlwifi/Kconfig    |  11 ++
+> >> >  .../net/wireless/intel/iwlwifi/mvm/Makefile   |   1 +
+> >> >  .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   2 +
+> >> >  drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   9 +-
+> >> >  .../wireless/intel/iwlwifi/mvm/vendor-cmd.c   | 186
+> ++++++++++++++++++
+> >> >  5 files changed, 203 insertions(+), 6 deletions(-)  create mode
+> >> > 100644 drivers/net/wireless/intel/iwlwifi/mvm/vendor-cmd.c
+> >> >
+> >> > diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig
+> >> > b/drivers/net/wireless/intel/iwlwifi/Kconfig
+> >> > index 629aaa26a230..f91516d08b28 100644
+> >> > --- a/drivers/net/wireless/intel/iwlwifi/Kconfig
+> >> > +++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
+> >> > @@ -92,11 +92,22 @@ config IWLWIFI_BCAST_FILTERING
+> >> >         If unsure, don't enable this option, as some programs might
+> >> >         expect incoming broadcasts for their normal operations.
+> >> >
+> >> > +config IWLMVM_VENDOR_CMDS
+> >> > +     bool "Enable vendor commands"
+> >> > +     depends on IWLMVM
+> >> > +     help
+> >> > +       This option enables support for vendor commands, including s=
+ome
+> >> > +       that don't have their own Kconfig option. Other Kconfig opti=
+ons
+> >> > +       depend on this one as well.
+> >> > +
+> >> > +       This is not enabled by default, if unsure, say N.
 > >>
-> >> Vendor command requirements are documented here:
-> >>
-> >> https://wireless.wiki.kernel.org/en/developers/documentation/nl80211#
-> >> vendor-specific_api
-> >>
-> >> The commit log is not really answering to those. For example, how a
-> >> user would use this? Or is there a user space tool?
+> >> Why do we need a new Kconfig option? Why not always include it in the
+> >> compilation?
 > >
-> > We intend to send those command from the NetworkManager.
+> > I expect 99.9% of the users to want to disable this.VENDOR_CMDS adds a
+> > user space API and in a sense, it increases the attack surface. You
+> > can claim that I can reuse the IWLMEI Kconfig option, which is true,
+> > but we have other features that need VENDOR_CMDS that are not (yet)
+> > upstream. So the idea here is that any feature that needs the
+> > VENDOR_CMDS will select it and if none of them are enabled (for 99.9%
+> > of the use cases), then, we would disable VENDOR_CMDS and decrease
+> the
+> > attack surface.
+> >
+> > Makes sense?
 >=20
-> I'm not really fond of the idea that NetworkManager uses nl80211 vendor
-> commands, sounds quite hacky to me. I would prefer that NetworkManager
-> uses generic nl80211 interface so that it works with every driver. But I =
-need
-> to look at v4 to understand more how this all works.
+> How do you prevent users or distros from enabling the feature? They can b=
+e
+> in a hurry, lazy or not caring and enable the feature anyway. So no, I'm =
+not
+> really buying this. If the interface is not secure it should not be in up=
+stream, I
+> think only exception to this is the nl80211 testmode interface which is f=
+or lab
+> or similar use.
 >=20
 
-You'd need to look at v5 which I already sent.
-Nothing of this can be generic, because it is really Intel proprietary. CSM=
-E can only use Intel devices by design.
-It uses a proprietary bus implemented only in Intel devices (and not even a=
-ll of them, only the ones in systems
-with the vPRO sticker).
-I already touched base with the NetworkManager's maintainers about this. Th=
-ey asked the vendor commands
-to be upstream in the kernel, so this is what I am doing.
+So what do you want?
+To make it depend on IWLMEI Kconfig knob and not add the VENDOR_CMDS one?
+Fine.
