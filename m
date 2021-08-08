@@ -2,68 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DA2D3E39CE
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Aug 2021 12:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F06433E3AC4
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Aug 2021 16:23:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231130AbhHHKBC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Aug 2021 06:01:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34038 "EHLO
+        id S230354AbhHHOX1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Aug 2021 10:23:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230354AbhHHKBC (ORCPT
+        with ESMTP id S231137AbhHHOX0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Aug 2021 06:01:02 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2FB1C061760
-        for <linux-wireless@vger.kernel.org>; Sun,  8 Aug 2021 03:00:42 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id a19so19284798oiw.6
-        for <linux-wireless@vger.kernel.org>; Sun, 08 Aug 2021 03:00:42 -0700 (PDT)
+        Sun, 8 Aug 2021 10:23:26 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B78C061760
+        for <linux-wireless@vger.kernel.org>; Sun,  8 Aug 2021 07:23:06 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id x27so5801899lfu.5
+        for <linux-wireless@vger.kernel.org>; Sun, 08 Aug 2021 07:23:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=6wyow44YPiiK5i4Vf6IipqAYBIDrKgSk5WD113gWcH4=;
-        b=Uzp9tIAuHLV6mzU0CTvTg9j3iI/iiJWhG2zC8+JsL1pi+BwhY1YpkMyPwp5jEHD7nI
-         cArsDUcTdRF1105RhsPKFKYwynjc5r8a7dV9f3bLyBQWWAbF8LxKQHBEXujFlB5uTFYQ
-         TbJi7AVIeaej3BltYec+oI8OXSamF9ERc2/K/wugqwVyAQlTBnTFzsfoZ9tg93fwfF1S
-         /TE8e8QtFxZP5APvUv75cqX+cQ3XD61P0TrcU5KhrRn31zc6ELP+IPs7rq6+0FtdDiJl
-         dPC+gYD6DOs8k/AZO2ykKYa/3cwDbIqQiozrW8HYN0IsjDt1V5JkdjYfFMQUNbj2jUZX
-         1jEg==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=WavvQQZOBIVZIE14HNTXDFFXya0UVR0yWNhNi/FOKzw=;
+        b=em9EjhKZyXzrZsIuJSXm19/KWWvgZ1wLaVIkVNJp3e+a568prv+f0GugMt5rvqIU/X
+         Iku2X1ezIRaX7c6KmDURstRNntl+ePQv6VSkT5BtyJH8hzVNUTmz8FuK2B0Z613RTFds
+         qUFrSvk+g4vPtH970uYkmFvuRUvmOaTp+n+l7U3fte2eiHtcaUFAX8jv2nVjTMpOfamv
+         ZDxQp96gA9y9rixA+FBgCQ7ll/Po++u4BQfq1ygFpzQb70r6+vuRqB0KpWmFR0o0jrB5
+         9JYapNsiE5Y9mwKWTzTqM6tjAxS9QW98EfvTo62wwLbxe4nKfQM6+jFWus25vNbsFCOA
+         1oyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=6wyow44YPiiK5i4Vf6IipqAYBIDrKgSk5WD113gWcH4=;
-        b=q5+wSlUOaTaT8pgPBvDFctD0YDf0S4uQJj+4Yoqneet6nVaMbu8jwLqsaUAB9TEd+f
-         Eu5VXjniBOf9iWfI9FJ+eL02HIzZxpOid3QTboG6b2ZrEL935sGFkgWDn8Imlqoi97XE
-         0vD3IJKYh63XXK3aUgZEjedNvW5Oerj6f0u1QsqIXunX5w7LJ6+Mexwt72sBgPCjzGjA
-         bsUinDxaTd9doq2X7StGxnAQrp/rqUdXqnFYsIPzaBzC5XCjr+iOpIDY4hRIZ3OCOTwY
-         rFKrXvj/gB9hHtPbiW/Z2JwZUm72x18qjY1nZ01OUpzkLtGqJs7Hx5vPaB60SEvkNjn8
-         f7Nw==
-X-Gm-Message-State: AOAM532Gp7SA1rwAQ5GMoQaismgJBUqtOyPMZFWxQxWpSmm6M7DbX9Aw
-        mp6TGySPq4c/p8K6b/HMCHdG+hH0w58/t7vUL7JTFpnya9c=
-X-Google-Smtp-Source: ABdhPJzadqf4wN5tw4e0K/s28GCFnZ1j4bMAqpXth5lYuCpwKuMS0H+RJoUCZxHnRbm6zVXYcso85I06l8ffilUkavU=
-X-Received: by 2002:a05:6808:3db:: with SMTP id o27mr3439737oie.114.1628416841815;
- Sun, 08 Aug 2021 03:00:41 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=WavvQQZOBIVZIE14HNTXDFFXya0UVR0yWNhNi/FOKzw=;
+        b=WJZdYZNcaYqVDc8CAHXWXmhWX7YOjXW50wxcsfvrBx3J1UIgL4wWa4jZCfYY5AJY3Y
+         o+lCddk1U745Av1G6xBKo2VY+id1/uBeGIpmxS8fsoFNf1HvzPK8nfe+gPpSl35Q9wHq
+         pf/j/nh28JglwdhFeQL0DSqy2822nJo8pbp/KIsphLB0UisxIGzXIh+VzA6JvAq49wzA
+         hxSXIblYGfZWCMzau2nUYvAXQYTo8IqV/OBNyeSe0LKDdwrJvmUxwLDv7qYcegG8HwcV
+         HJ6vJjP7QbsH21dfX8Kw50ZeZbZxT8oBlZZncmfaw1wHfp/VGzcfrmiF/Qi61NKxMitj
+         g5mQ==
+X-Gm-Message-State: AOAM532mV7kQv58Zxx7SDgf8PJ5GZkW+BNsc5gmXrCsYfj2uLkBysfT4
+        eBOgybuPHC7/3G7YiCksCLM=
+X-Google-Smtp-Source: ABdhPJx0f09SGu4pdXGIchzllpVtRWCphAk8fE5MYWNZvYGtKkDqHakWp/TEsUGnojG3OgVVppFnFQ==
+X-Received: by 2002:a19:4349:: with SMTP id m9mr13679580lfj.404.1628432585169;
+        Sun, 08 Aug 2021 07:23:05 -0700 (PDT)
+Received: from [192.168.2.145] (46-138-117-53.dynamic.spd-mgts.ru. [46.138.117.53])
+        by smtp.googlemail.com with ESMTPSA id b19sm493403lfs.112.2021.08.08.07.23.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 08 Aug 2021 07:23:04 -0700 (PDT)
+Subject: Re: [PATCH v3] brcmfmac: firmware: Fix firmware loading
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Stefan Hansson <newbyte@disroot.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+References: <20210805093023.3465081-1-linus.walleij@linaro.org>
+ <9316a403-e755-3870-6393-62f20792af44@gmail.com>
+ <CACRpkdZs4Zw5k6Hv0-PDKtrqXpEhTDn9OjwDJDvwJvsXJWDUvQ@mail.gmail.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <018613ac-d479-46e4-5654-9b8ee56e3937@gmail.com>
+Date:   Sun, 8 Aug 2021 17:23:03 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-From:   Sugandh Huthanahally Mohan <sugandhgowda@gmail.com>
-Date:   Sun, 8 Aug 2021 12:00:31 +0200
-Message-ID: <CAD_iCC9=wccbhrPCzAzMnRa3-a9g_BcjL6g=FAgs6aXEwGB5Aw@mail.gmail.com>
-Subject: FTM support in ath drivers
-To:     linux-wireless@vger.kernel.org, pradeepc@codeaurora.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CACRpkdZs4Zw5k6Hv0-PDKtrqXpEhTDn9OjwDJDvwJvsXJWDUvQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello All and Pradeep,
+08.08.2021 02:02, Linus Walleij пишет:
+> On Thu, Aug 5, 2021 at 12:31 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+> 
+>> Combining my previous comments together, I rewrote it like this:
+> 
+> I like this, can you fold in your patch on top of mine, add your
+> Signed-off-by at the end and resend to the list?
+> 
+> That way we get a clean record of the delivery path and also the
+> patch looks like you want it :)
+> 
+> You can perhaps tag on v4 on the [PATCH] as well so it's clear
+> for Kalle to apply this version. (Hoping Arnd will be fine with it as
+> well.)
 
-We are required to evaluate the Fine Time Measurement protocol (FTM)
-in ath drivers for a project. We want to make use of both components
-of FTM i.e., Initiator and Responder.
-
-Going by the ath10k drivers, we found implementations for FTM
-Responder while we could not find implementations for FTM Initiator.
-Could you please let us know if the FTM Initiator implementation was
-done as part of ath10k drivers?
-Also, is FTM supported in ath11k drivers?
-
-Thanks and Regards,
-Sugandh Huthanahally Mohan
+Alright, let's try that.
