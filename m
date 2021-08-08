@@ -2,183 +2,199 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 414653E3C22
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Aug 2021 20:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7F2A3E3C79
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Aug 2021 21:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231887AbhHHSFq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Aug 2021 14:05:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54926 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230201AbhHHSFp (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Aug 2021 14:05:45 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C9A5C061760
-        for <linux-wireless@vger.kernel.org>; Sun,  8 Aug 2021 11:05:26 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id m18so8918761ljo.1
-        for <linux-wireless@vger.kernel.org>; Sun, 08 Aug 2021 11:05:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mGJAl+Fq7GcSLnAox4645t1xKPlQNJc87nCcOMMco4k=;
-        b=YeITZrqEyTzmWF5O6g5b4jLcvOiXJZvGkK2+FslrE3dDseGdW7SqeYDoTJts9BpsZh
-         AYonFaR0fF+IPcyGEK3OZ+EQMWyWmTD4vin3VVLxLWnLV1czwuJ9gKojQwIwSwIwEBTG
-         Ziy3q/3MgUOe7H/ynRrp61wflox9Q/kJzPo06oydOyDGwftMBNARDMSuI+GR+Vj9Msnx
-         Ujpxx95a6cbU5TUbzbJlrsWiG1gQs33XIRBzEXFB8dS7vHCpc4HpvlUflAsLM5OHBUPB
-         7EYkIHDYSjB1tsrIplMcpwbsemcBBV+y/thA0C9Ao5x41qEI+8F3pnOYL2c3BzOjeKQP
-         DQuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mGJAl+Fq7GcSLnAox4645t1xKPlQNJc87nCcOMMco4k=;
-        b=Ru39R8e3fnaqe5c0YgALfIEx2l+E1RIZxK/yFBq67nDOuR9BeZBDjuR+c/vgYBYVK0
-         A0yP89Npa7rKlx5XdC7qoNZsQt9v1ldqqvSCk7VVdTgKcr7jNTiUOzL/e/CBlu1Ofc9j
-         7AQyf5k/UmBFGksA82/zRAwvUUrVLNzAQhzCOfp6hwHQeXmOhhGtzLJY/7L+wxdKAuJC
-         dOqdyStmGJpt1hNYcVQkTdIRRnEr3B6aok6xou6oB803GddWuyamRMMKm+LU4U3H7PX9
-         spGecbZH/PlcU8lt7eoDfx6vps76+4MAa6ZsSqDy1YBCgaod8k4Sa/6ucavzH43L83+l
-         tcbw==
-X-Gm-Message-State: AOAM531z7+5OnMoSNRTUy07sPyMzmw4sMEzoTNOHDJUsOyvp3chjiDgU
-        /l9IaEfkdQHMjp+t9/d5KZPcItVhis0=
-X-Google-Smtp-Source: ABdhPJzo76jAbBBo1asB8JQAAAY7Rpbg9xeCTOlKjUpZi00k2MCX8eyj052OiCKsU4FW+txjeu0qzQ==
-X-Received: by 2002:a2e:b989:: with SMTP id p9mr13246274ljp.477.1628445924668;
-        Sun, 08 Aug 2021 11:05:24 -0700 (PDT)
-Received: from localhost.localdomain (46-138-117-53.dynamic.spd-mgts.ru. [46.138.117.53])
-        by smtp.gmail.com with ESMTPSA id c9sm1205574lfb.181.2021.08.08.11.05.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Aug 2021 11:05:24 -0700 (PDT)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Stefan Hansson <newbyte@disroot.org>
-Subject: [PATCH v5] brcmfmac: firmware: Fix firmware loading
-Date:   Sun,  8 Aug 2021 21:05:10 +0300
-Message-Id: <20210808180510.8753-1-digetx@gmail.com>
-X-Mailer: git-send-email 2.32.0
+        id S232371AbhHHTMU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Aug 2021 15:12:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45470 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231717AbhHHTMU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 8 Aug 2021 15:12:20 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B10596054E;
+        Sun,  8 Aug 2021 19:12:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628449921;
+        bh=TYhox4wV1zu8cCABoP8GVavCOMkor0M3kgFICFMUgeg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=EpSrPmzyTH96/ldVBbgyz0YZ+Ni/uHAiaxz3YGh5ZPt8pTwiOGJ3WN71FgNYZRwmI
+         kSxZvnsQY1OcsY4EcnRQlxxhNhLvEg92eN4CdsS3EftJTc/jPWQ+B9ABpMpeg4vuii
+         KvxyNsPZ/ljZ6ZmpkqlFB5i5AZv0QvTidr9PyWynnRpNCpkmhco4Kl/n9ddOASlewP
+         ZdM0cAkFf+HC3PnJB0CsaIG9/OmBMurP48QEog20WAkNx92zbDIeLAvXazRK7lH6m6
+         BCvxOC78Hs9hwT9uydPP6KQ8nM1iM1nYIqdXe9B9pCho6l/i0eYv3J0kEJUgcgsspE
+         +Q0n1K/qwRxdw==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: overwrite default reg_ops if necessary
+Date:   Sun,  8 Aug 2021 21:11:49 +0200
+Message-Id: <b784f6eff864a6543b49ac93ceb9397271e8ecb8.1628449861.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+Introduce mt76_register_debugfs_fops routine in order to
+define per-driver regs file operations and make sure the
+device is up before reading or writing its registers
 
-The patch that would first try the board-specific firmware
-had a bug because the fallback would not be called: the
-asynchronous interface is used meaning request_firmware_nowait()
-returns 0 immediately.
-
-Harden the firmware loading like this:
-
-- If we cannot build an alt_path (like if no board_type is
-  specified) just request the first firmware without any
-  suffix, like in the past.
-
-- If the lookup of a board specific firmware fails, we get
-  a NULL fw in the async callback, so just try again without
-  the alt_path from a dedicated brcm_fw_request_done_alt_path
-  callback.
-
-- Drop the unnecessary prototype of brcm_fw_request_done.
-
-- Added MODULE_FIRMWARE match for per-board SDIO bins, making
-  userspace tools to pull all the relevant firmware files.
-
-Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
-Cc: Stefan Hansson <newbyte@disroot.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+Fixes: 1d8efc741df8 'mt76: mt7921: introduce Runtime PM support'
+Fixes: de5ff3c9d1a2 'mt76: mt7615: introduce pm_power_save delayed work'
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-ChangeLog v4->v5:
-- Added MODULE_FIRMWARE to catch per-board SDIO firmware files.
-ChangeLog v3->v4:
-- Added brcmf_fw_request_done_alt_path() callback to replace the
-  "tried_board_variant" variable, making code cleaner and errors
-  handled consistently.
-ChangeLog v2->v3:
-- Rename state variable to "tried_board_variant".
-ChangeLog v1->v2:
-- Instead of using a static variable, add a context variable
-  "tested_board_variant"
-- Collect Arend's review tag.
-- Collect Tested-by from Dmitry.
----
- .../broadcom/brcm80211/brcmfmac/firmware.c    | 24 ++++++++++++++-----
- .../broadcom/brcm80211/brcmfmac/sdio.c        |  3 +++
- 2 files changed, 21 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/debugfs.c  | 10 ++++---
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  8 ++++-
+ .../wireless/mediatek/mt76/mt7615/debugfs.c   | 29 ++++++++++++++++++-
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   | 28 +++++++++++++++++-
+ 4 files changed, 68 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-index adfdfc654b10..0eb13e5df517 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-@@ -431,8 +431,6 @@ struct brcmf_fw {
- 	void (*done)(struct device *dev, int err, struct brcmf_fw_request *req);
- };
- 
--static void brcmf_fw_request_done(const struct firmware *fw, void *ctx);
--
- #ifdef CONFIG_EFI
- /* In some cases the EFI-var stored nvram contains "ccode=ALL" or "ccode=XV"
-  * to specify "worldwide" compatible settings, but these 2 ccode-s do not work
-@@ -658,6 +656,22 @@ static void brcmf_fw_request_done(const struct firmware *fw, void *ctx)
- 	kfree(fwctx);
+diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/wireless/mediatek/mt76/debugfs.c
+index fa48cc3a7a8f..ad97308c7853 100644
+--- a/drivers/net/wireless/mediatek/mt76/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
+@@ -116,8 +116,11 @@ static int mt76_read_rate_txpower(struct seq_file *s, void *data)
+ 	return 0;
  }
  
-+static void brcmf_fw_request_done_alt_path(const struct firmware *fw, void *ctx)
+-struct dentry *mt76_register_debugfs(struct mt76_dev *dev)
++struct dentry *
++mt76_register_debugfs_fops(struct mt76_dev *dev,
++			   const struct file_operations *ops)
+ {
++	const struct file_operations *fops = ops ? ops : &fops_regval;
+ 	struct dentry *dir;
+ 
+ 	dir = debugfs_create_dir("mt76", dev->hw->wiphy->debugfsdir);
+@@ -126,8 +129,7 @@ struct dentry *mt76_register_debugfs(struct mt76_dev *dev)
+ 
+ 	debugfs_create_u8("led_pin", 0600, dir, &dev->led_pin);
+ 	debugfs_create_u32("regidx", 0600, dir, &dev->debugfs_reg);
+-	debugfs_create_file_unsafe("regval", 0600, dir, dev,
+-				   &fops_regval);
++	debugfs_create_file_unsafe("regval", 0600, dir, dev, fops);
+ 	debugfs_create_file_unsafe("napi_threaded", 0600, dir, dev,
+ 				   &fops_napi_threaded);
+ 	debugfs_create_blob("eeprom", 0400, dir, &dev->eeprom);
+@@ -140,4 +142,4 @@ struct dentry *mt76_register_debugfs(struct mt76_dev *dev)
+ 
+ 	return dir;
+ }
+-EXPORT_SYMBOL_GPL(mt76_register_debugfs);
++EXPORT_SYMBOL_GPL(mt76_register_debugfs_fops);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index bf36f9227713..8c49515000f6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -879,7 +879,13 @@ struct mt76_phy *mt76_alloc_phy(struct mt76_dev *dev, unsigned int size,
+ int mt76_register_phy(struct mt76_phy *phy, bool vht,
+ 		      struct ieee80211_rate *rates, int n_rates);
+ 
+-struct dentry *mt76_register_debugfs(struct mt76_dev *dev);
++struct dentry *mt76_register_debugfs_fops(struct mt76_dev *dev,
++					  const struct file_operations *ops);
++static inline struct dentry *mt76_register_debugfs(struct mt76_dev *dev)
 +{
-+	struct brcmf_fw *fwctx = ctx;
-+	struct brcmf_fw_item *first = &fwctx->req->items[0];
-+	int ret = 0;
-+
-+	/* Fall back to canonical path if board firmware not found */
-+	if (!fw)
-+		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
-+					      fwctx->dev, GFP_KERNEL, fwctx,
-+					      brcmf_fw_request_done);
-+
-+	if (fw || ret < 0)
-+		brcmf_fw_request_done(fw, ctx);
++	return mt76_register_debugfs_fops(dev, NULL);
 +}
 +
- static bool brcmf_fw_request_is_valid(struct brcmf_fw_request *req)
- {
- 	struct brcmf_fw_item *item;
-@@ -702,11 +716,9 @@ int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
- 	if (alt_path) {
- 		ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
- 					      fwctx->dev, GFP_KERNEL, fwctx,
--					      brcmf_fw_request_done);
-+					      brcmf_fw_request_done_alt_path);
- 		kfree(alt_path);
--	}
--	/* Else try canonical path */
--	if (ret) {
-+	} else {
- 		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
- 					      fwctx->dev, GFP_KERNEL, fwctx,
- 					      brcmf_fw_request_done);
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 97ee9e2e2e35..1d1b0b7d8d9b 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -629,6 +629,9 @@ BRCMF_FW_CLM_DEF(43012, "brcmfmac43012-sdio");
- MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-sdio.*.txt");
- MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-pcie.*.txt");
+ int mt76_queues_read(struct seq_file *s, void *data);
+ void mt76_seq_puts_array(struct seq_file *file, const char *str,
+ 			 s8 *val, int len);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+index cb4659771fd9..bda22ca0bd71 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+@@ -2,6 +2,33 @@
  
-+/* per-board firmware binaries */
-+MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-sdio.*.bin");
+ #include "mt7615.h"
+ 
++static int
++mt7615_reg_set(void *data, u64 val)
++{
++	struct mt7615_dev *dev = data;
 +
- static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
- 	BRCMF_FW_ENTRY(BRCM_CC_43143_CHIP_ID, 0xFFFFFFFF, 43143),
- 	BRCMF_FW_ENTRY(BRCM_CC_43241_CHIP_ID, 0x0000001F, 43241B0),
++	mt7615_mutex_acquire(dev);
++	mt76_wr(dev, dev->mt76.debugfs_reg, val);
++	mt7615_mutex_release(dev);
++
++	return 0;
++}
++
++static int
++mt7615_reg_get(void *data, u64 *val)
++{
++	struct mt7615_dev *dev = data;
++
++	mt7615_mutex_acquire(dev);
++	*val = mt76_rr(dev, dev->mt76.debugfs_reg);
++	mt7615_mutex_release(dev);
++
++	return 0;
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_regval, mt7615_reg_get, mt7615_reg_set,
++			 "0x%08llx\n");
++
+ static int
+ mt7615_radar_pattern_set(void *data, u64 val)
+ {
+@@ -506,7 +533,7 @@ int mt7615_init_debugfs(struct mt7615_dev *dev)
+ {
+ 	struct dentry *dir;
+ 
+-	dir = mt76_register_debugfs(&dev->mt76);
++	dir = mt76_register_debugfs_fops(&dev->mt76, &fops_regval);
+ 	if (!dir)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+index 77468bdae460..4c89c4ac8031 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+@@ -4,6 +4,32 @@
+ #include "mt7921.h"
+ #include "eeprom.h"
+ 
++static int
++mt7921_reg_set(void *data, u64 val)
++{
++	struct mt7921_dev *dev = data;
++
++	mt7921_mutex_acquire(dev);
++	mt76_wr(dev, dev->mt76.debugfs_reg, val);
++	mt7921_mutex_release(dev);
++
++	return 0;
++}
++
++static int
++mt7921_reg_get(void *data, u64 *val)
++{
++	struct mt7921_dev *dev = data;
++
++	mt7921_mutex_acquire(dev);
++	*val = mt76_rr(dev, dev->mt76.debugfs_reg);
++	mt7921_mutex_release(dev);
++
++	return 0;
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_regval, mt7921_reg_get, mt7921_reg_set,
++			 "0x%08llx\n");
+ static int
+ mt7921_fw_debug_set(void *data, u64 val)
+ {
+@@ -373,7 +399,7 @@ int mt7921_init_debugfs(struct mt7921_dev *dev)
+ {
+ 	struct dentry *dir;
+ 
+-	dir = mt76_register_debugfs(&dev->mt76);
++	dir = mt76_register_debugfs_fops(&dev->mt76, &fops_regval);
+ 	if (!dir)
+ 		return -ENOMEM;
+ 
 -- 
-2.32.0
+2.31.1
 
