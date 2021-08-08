@@ -2,84 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2CC63E3785
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Aug 2021 01:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41B4F3E391E
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Aug 2021 07:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229743AbhHGXD3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Aug 2021 19:03:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34176 "EHLO
+        id S229726AbhHHFsv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Aug 2021 01:48:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbhHGXD2 (ORCPT
+        with ESMTP id S229473AbhHHFsv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Aug 2021 19:03:28 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A68AC061760
-        for <linux-wireless@vger.kernel.org>; Sat,  7 Aug 2021 16:03:09 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id g13so25882453lfj.12
-        for <linux-wireless@vger.kernel.org>; Sat, 07 Aug 2021 16:03:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VAiujPmqeW3PmmspEt40oMN8MqX4NV81C5A1ROIdZ0U=;
-        b=q13/JTHNnDdAUQ8FMHMv94aMulxrrbmg8lHOfJ1FtGBaBdf6/Gn1tpXRSt3EBPMfpP
-         ynddBI03PBsjuvLxG21Bh7YLafFnN7ciL2YTK1rDPhFughsxqIrlQRDeDR7O9xRIIwpg
-         zKpOhIuinSGJY1nnalR1FZHIqad6YHHpaynNIBbkSNYvp+GFRecBenQDV7nWJ5GwJY6e
-         RhAVkbZpqkH7cuY4Cxxoass6abWbh4fZwgoviysXaFMjtw740S04Aq6iqFTSdL8irD9z
-         yzB2WKT8JgT50rNRp+FoHvmSLkMfMcAIdMfnDZS7U68TeHdaAqdZeQ1yOTYYadAJb4k0
-         rmPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VAiujPmqeW3PmmspEt40oMN8MqX4NV81C5A1ROIdZ0U=;
-        b=hK9kQ6zQ0LtxaW5+rcwO8eKdBWnASlhXHUoeoA15gbaccRNWIBp2pzIow+rvQouGWh
-         feozGwytQJwUqJCqIrsA1pYYeBYb9IAz5DFQmtcHJ6zh+42UcUo5Tpzq6v4a6+gtW8Y5
-         96aIVUz06Ga1ZSdsCUu9ZKpD24/82RrcIHvtEOFntXRyd/Xe8kfOzyQIpMiMbaIoI1Ve
-         cH9Q/SR3BEeynI38lpow0GjZZmYjKZ8TbUbVXBakMOTVce6dqs84Qt5M7Dq8SM/6prJt
-         pdmuN6U5lqz8zW6+2i1MlmAFAp652FPSI/UU0G5u6iiAcRIK2Jfg5sUt2hetsU6cHOFY
-         rOxA==
-X-Gm-Message-State: AOAM532XWLO/FKOcVkdJVxYq0NZRReP+EICZdyy9ySS3CYAysS5iREQE
-        iSf9yaes+TrAJEhv8QBFaLMLO0KtRJNvgsLyTpQq4w==
-X-Google-Smtp-Source: ABdhPJz3G+w3mI4aek6BzRvN50UdpHzPSqVrw7QJX1z7lMdAc71YC6jy6p2L4bIcF3bNKcpY94dE+anLvrHCmioY+tw=
-X-Received: by 2002:a19:7b14:: with SMTP id w20mr12406875lfc.29.1628377387496;
- Sat, 07 Aug 2021 16:03:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210805093023.3465081-1-linus.walleij@linaro.org> <9316a403-e755-3870-6393-62f20792af44@gmail.com>
-In-Reply-To: <9316a403-e755-3870-6393-62f20792af44@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 8 Aug 2021 01:02:56 +0200
-Message-ID: <CACRpkdZs4Zw5k6Hv0-PDKtrqXpEhTDn9OjwDJDvwJvsXJWDUvQ@mail.gmail.com>
-Subject: Re: [PATCH v3] brcmfmac: firmware: Fix firmware loading
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Sun, 8 Aug 2021 01:48:51 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8F84C061760;
+        Sat,  7 Aug 2021 22:48:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=OIwUtBzI6xerh1ScveYcE/N7s0JINLJAvmYDzzzUws8=; b=nc0czvcXFDGAR4wVT1YeGxW99+
+        bfkJZ646yVaMBv09dgdgAekfc5dEjO0cN2TAlcxWSj0+Ef2ffjXLJ6OR2ku/17B61TaR/sJ+Dxh/A
+        4KNJHw4tAWAp4+4yrY0DhNmR5s9viQ+HIONBKXdKOundsMMGW45UVq6bNfT1ikRSFr8lLEMRwpfit
+        yrwcbtYoBPSt371S1ZzdjY82FMRJvtsBl7jxmEOUcNSyOGNKz1qRR/w1q8vtmES3O+RdcUVQicitJ
+        hYCFvPwsC1KUB/ln3SVGQ/fwqgI3MzoH1Ai7y4y+Y+/ceytJnp7fQsa1ktetEcPmUR287VmzalgHw
+        5Ur5+kTA==;
+Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mCbfh-00FYG3-Oz; Sun, 08 Aug 2021 05:48:29 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     netdev@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Stefan Hansson <newbyte@disroot.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
+        linux-wireless@vger.kernel.org
+Subject: [PATCH] wireless: iwlwifi: fix build warnings in rfi.c
+Date:   Sat,  7 Aug 2021 22:48:22 -0700
+Message-Id: <20210808054822.20846-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Aug 5, 2021 at 12:31 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+Fix one gcc "old-style-declaration" warning and one kernel-doc
+warning.
 
-> Combining my previous comments together, I rewrote it like this:
+drivers/net/wireless/intel/iwlwifi/mvm/rfi.c:14:1: warning: 'static' is not at beginning of declaration [-Wold-style-declaration]
+      14 | const static struct iwl_rfi_lut_entry iwl_rfi_table[IWL_RFI_LUT_SIZE] = {
 
-I like this, can you fold in your patch on top of mine, add your
-Signed-off-by at the end and resend to the list?
+../drivers/net/wireless/intel/iwlwifi/mvm/rfi.c:11: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+ * DDR needs frequency in units of 16.666MHz, so provide FW with the
 
-That way we get a clean record of the delivery path and also the
-patch looks like you want it :)
+Fixes: 21254908cbe9 ("iwlwifi: mvm: add RFI-M support")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Luca Coelho <luciano.coelho@intel.com>
+Cc: Gregory Greenman <gregory.greenman@intel.com>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: linux-wireless@vger.kernel.org
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-You can perhaps tag on v4 on the [PATCH] as well so it's clear
-for Kalle to apply this version. (Hoping Arnd will be fine with it as
-well.)
-
-Yours,
-Linus Walleij
+--- linux-next-20210806.orig/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
++++ linux-next-20210806/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
+@@ -7,11 +7,11 @@
+ #include "fw/api/commands.h"
+ #include "fw/api/phy-ctxt.h"
+ 
+-/**
++/*
+  * DDR needs frequency in units of 16.666MHz, so provide FW with the
+  * frequency values in the adjusted format.
+  */
+-const static struct iwl_rfi_lut_entry iwl_rfi_table[IWL_RFI_LUT_SIZE] = {
++static const struct iwl_rfi_lut_entry iwl_rfi_table[IWL_RFI_LUT_SIZE] = {
+ 	/* LPDDR4 */
+ 
+ 	/* frequency 3733MHz */
