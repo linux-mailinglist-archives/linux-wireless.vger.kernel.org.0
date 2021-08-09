@@ -2,124 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D41523E3E35
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Aug 2021 05:18:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDA913E3EA4
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Aug 2021 06:05:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232542AbhHIDSh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Aug 2021 23:18:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33776 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229942AbhHIDSh (ORCPT
+        id S231260AbhHIEFt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Aug 2021 00:05:49 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:45868 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230365AbhHIEFs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Aug 2021 23:18:37 -0400
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ACA6C061757;
-        Sun,  8 Aug 2021 20:18:17 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        Mon, 9 Aug 2021 00:05:48 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1628481928; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=Vbpd/GuClOmGWBsNoX7W4sL/Zu3cwNTKNWcrglilN1g=; b=qo6PdhoRrw+DQymSzCgEl0tk4D4foIeLokiAjmpwLNqXhxyQokU+ntD+JnZW+rW7bLb+dnuS
+ uADAf+E8NNfUydOtM2vNYxxrDWStZROB08IkjcGCbJ5s9hncbL9ixN5MGlNID3nGCgsxe4/z
+ UZtMbRsPcyIXu2mz6aYJhXzbI6E=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 6110a982b14e7e2ecb658921 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 09 Aug 2021 04:05:22
+ GMT
+Sender: miaoqing=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8077CC433D3; Mon,  9 Aug 2021 04:05:22 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from miaoqing-HP-Z220-SFF-Workstation.ap.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gjh9d6X6Hz9sWX;
-        Mon,  9 Aug 2021 13:18:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1628479094;
-        bh=JSjEqkO0SK13kfbGfd0rXE6B3pLcWE5fT+mLWjxOuiw=;
-        h=Date:From:To:Cc:Subject:From;
-        b=nKJDIYvetzsui66DegHwPeFqT0Gb3dN7kKtMnzeKtXFeusjw5KeWSf6uE7gOIRyib
-         +kSmEkj75DJQWP810obJ0c6YkaShU60RMX5kTugApNusgi/RnNjOnDB+jp7VL0wtZr
-         JW4oznlQNA03WJuE8gKZsUWWsSpUSjR5DqEBx6E00JrkSXNPTTSrJYT/6vmDFrnWE0
-         GijB2ao4HwlslA/or2BZAd37l/CiOr8a4cZEwCBJuk2aDHEcJyhnTvQhI+IPr/7rZv
-         9b/gFG1OYjvrf8Mpu8MXJgixJfbRYnFn3XQqjkjeKrBgj7DYjx7S6Gd4gKi2atgPEn
-         Ryg7bsoCR9WkQ==
-Date:   Mon, 9 Aug 2021 13:18:13 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Wireless <linux-wireless@vger.kernel.org>,
-        Petr Mladek <pmladek@suse.com>
-Cc:     Chris Down <chris@chrisdown.name>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: linux-next: manual merge of the wireless-drivers-next tree with the
- printk tree
-Message-ID: <20210809131813.3989f9e8@canb.auug.org.au>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/J0qSpD.0pt+p+Ol=dY3doOR";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+        (Authenticated sender: miaoqing)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4B476C433D3;
+        Mon,  9 Aug 2021 04:05:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4B476C433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=miaoqing@codeaurora.org
+From:   Miaoqing Pan <miaoqing@codeaurora.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
+        dan.carpenter@oracle.com, linux-gpio@vger.kernel.org,
+        Miaoqing Pan <miaoqing@codeaurora.org>
+Subject: [PATCH] ath9k: fix sleeping in atomic context
+Date:   Mon,  9 Aug 2021 12:05:16 +0800
+Message-Id: <1628481916-15030-1-git-send-email-miaoqing@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/J0qSpD.0pt+p+Ol=dY3doOR
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+The problem is that gpio_free() can sleep and the cfg_soc() can be
+called with spinlocks held. One problematic call tree is:
 
-Hi all,
+--> ath_reset_internal() takes &sc->sc_pcu_lock spin lock
+   --> ath9k_hw_reset()
+      --> ath9k_hw_gpio_request_in()
+         --> ath9k_hw_gpio_request()
+            --> ath9k_hw_gpio_cfg_soc()
 
-Today's linux-next merge of the wireless-drivers-next tree got a
-conflict in:
+Remove gpio_free(), use error message instead, so we should make sure
+there is no GPIO conflict.
 
-  MAINTAINERS
+Also remove ath9k_hw_gpio_free() from ath9k_hw_apply_gpio_override(),
+as gpio_mask will never be set for SOC chips.
 
-between commit:
+Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath9k/hw.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-  337015573718 ("printk: Userspace format indexing support")
+diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
+index 2ca3b86..172081f 100644
+--- a/drivers/net/wireless/ath/ath9k/hw.c
++++ b/drivers/net/wireless/ath/ath9k/hw.c
+@@ -1621,7 +1621,6 @@ static void ath9k_hw_apply_gpio_override(struct ath_hw *ah)
+ 		ath9k_hw_gpio_request_out(ah, i, NULL,
+ 					  AR_GPIO_OUTPUT_MUX_AS_OUTPUT);
+ 		ath9k_hw_set_gpio(ah, i, !!(ah->gpio_val & BIT(i)));
+-		ath9k_hw_gpio_free(ah, i);
+ 	}
+ }
+ 
+@@ -2728,14 +2727,17 @@ static void ath9k_hw_gpio_cfg_output_mux(struct ath_hw *ah, u32 gpio, u32 type)
+ static void ath9k_hw_gpio_cfg_soc(struct ath_hw *ah, u32 gpio, bool out,
+ 				  const char *label)
+ {
++	int err;
++
+ 	if (ah->caps.gpio_requested & BIT(gpio))
+ 		return;
+ 
+-	/* may be requested by BSP, free anyway */
+-	gpio_free(gpio);
+-
+-	if (gpio_request_one(gpio, out ? GPIOF_OUT_INIT_LOW : GPIOF_IN, label))
++	err = gpio_request_one(gpio, out ? GPIOF_OUT_INIT_LOW : GPIOF_IN, label);
++	if (err) {
++		ath_err(ath9k_hw_common(ah), "request GPIO%d failed:%d\n",
++			gpio, err);
+ 		return;
++	}
+ 
+ 	ah->caps.gpio_requested |= BIT(gpio);
+ }
+-- 
+2.7.4
 
-from the printk tree and commit:
-
-  d249ff28b1d8 ("intersil: remove obsolete prism54 wireless driver")
-
-from the wireless-drivers-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc MAINTAINERS
-index 5cf181197a50,492bc169c3bd..000000000000
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@@ -14974,18 -14927,6 +14974,11 @@@ S:	Maintaine
-  F:	include/linux/printk.h
-  F:	kernel/printk/
- =20
- +PRINTK INDEXING
- +R:	Chris Down <chris@chrisdown.name>
- +S:	Maintained
- +F:	kernel/printk/index.c
- +
-- PRISM54 WIRELESS DRIVER
-- M:	Luis Chamberlain <mcgrof@kernel.org>
-- L:	linux-wireless@vger.kernel.org
-- S:	Obsolete
-- W:	https://wireless.wiki.kernel.org/en/users/Drivers/p54
-- F:	drivers/net/wireless/intersil/prism54/
--=20
-  PROC FILESYSTEM
-  L:	linux-kernel@vger.kernel.org
-  L:	linux-fsdevel@vger.kernel.org
-
---Sig_/J0qSpD.0pt+p+Ol=dY3doOR
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmEQnnUACgkQAVBC80lX
-0GwOYwf+MWaAUMoUFCY9sT8KILHP1ELpF5s271ME6q15pHJp/cOQjUh88YvcbjaZ
-UMR3opUfNatDLhVZb1DW/L9ru29hOIO8ShIO4OaJrhuk6Dp0Y+5vt8wMzOzbFoOm
-RPL2bIQJTvNRo1nXb2Wah1TAH1UZ80LzS7ZDA/lbs+eT2Zy3EAzsW6LHI6BSeOE/
-eGIW73qh7HNXtJBP4cOjP5ILf5FHmat+BygqIJ/Hf/QK37HeaK8RThLjfkANFv+D
-rhsi64Si6uLOVdy697lqXTdKWOcil66J7OyGBKpk/sJDqKKJ1n6zeRbpeLcrjhzS
-8ESUqh7YLm9dLU/GSNf5M/xtS20e3Q==
-=k0gP
------END PGP SIGNATURE-----
-
---Sig_/J0qSpD.0pt+p+Ol=dY3doOR--
