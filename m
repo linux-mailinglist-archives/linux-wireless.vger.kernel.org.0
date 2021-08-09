@@ -2,136 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDE273E4113
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Aug 2021 09:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FFEB3E4182
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Aug 2021 10:23:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233429AbhHIHuF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Aug 2021 03:50:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37536 "EHLO
+        id S233930AbhHIIYQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Aug 2021 04:24:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233533AbhHIHuC (ORCPT
+        with ESMTP id S233857AbhHIIYP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Aug 2021 03:50:02 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F05AC0613CF
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Aug 2021 00:49:42 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id go31so27381594ejc.6
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Aug 2021 00:49:42 -0700 (PDT)
+        Mon, 9 Aug 2021 04:24:15 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D44CC0613CF
+        for <linux-wireless@vger.kernel.org>; Mon,  9 Aug 2021 01:23:55 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id u3so27551528ejz.1
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Aug 2021 01:23:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to;
-        bh=It/Lnuu272+nF4W+Ep4xg1QXYSFim5ZjrrqER9h8h/s=;
-        b=Cuk1V3lkcqyLbJ8SraPIcwsLohA5ypb1u0CX54TVlLeE80YM3d2AiDcMlnlVYOVHeF
-         EMX0yp4+RayV0cEZhfCsSEk1A2emuja4QSXLg1nBs+uYkBlb/45GqzVjG2XolNIQXoKo
-         Ck9c2hjawtBYWv7Y6Dea7riQiY+Cc3i6eCI6Q=
+        bh=lmWT97CDa6Eep/ahzK3DFdzOqVC7jVfNxph1wNjMACo=;
+        b=GOJN9opge1KjrfRO93ifEF7jpaAUoA2aKf2IzIZRlQRVCLwvqjMRns5reiXuqpwYDf
+         u4HQnJwBTZtNO1mMOAgw/Au58Ms3Dc+bSQ5QBOKViPsYQabWExqQoM9w6rX/FhK5puC7
+         EUjmN/CThs0KCXKfwAVrf+glkeBwHiDuJPnJg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to;
-        bh=It/Lnuu272+nF4W+Ep4xg1QXYSFim5ZjrrqER9h8h/s=;
-        b=uc5WheORSpjXrfMc3dsnwrIO0BLmg6EN72NUE5o4lwYaKJDXnMtKIz1g/nqODsbg0t
-         aT1QkhLpGose8U5cNUSvoSrt6O9FQXVqEQMo/eJfUMGbpewdpTbjMtnDkDSAXGSfnTed
-         GSvLVF5QpzUyYdgi0TxEsgfmT3GY/ysMV65oJ5q6bZlrvd+f9mCtj/eH4jzPW46cF/t1
-         YOEHOupzx5OMhvWMOV97rHQYtEGu822YFsiN6+LbbuWcRLu9ihQfKNxFgbtBIQ2v5/ic
-         19VnGXdbuaGBuOEZ9u3jZA8nU1Qvo2AyLh/LzHmT4dTFMbY64pXMVaYdy7qJP6kFHFZV
-         RFOw==
-X-Gm-Message-State: AOAM531D3KoIoYiY5kcwSmebkjo3yypNRdJfUrgO78SsT976skR5s5hd
-        Xc+znrP30daxyWOPHZm8i7q+sbqgGyPDKLWKOuvzM/Lo1GnJKMpi+EBOL8nDa2MOTQt4Hi6I63p
-        8EfR6Ja8kjEIkBpil6g==
-X-Google-Smtp-Source: ABdhPJwFPVa1G/bGb8qVNYPpkciVXa5d6v+MwkNG+OmG/Ni1PNKKMVbQmOsSaCL8if2GbJ+C4etxrA==
-X-Received: by 2002:a17:906:3157:: with SMTP id e23mr135678eje.29.1628495381058;
-        Mon, 09 Aug 2021 00:49:41 -0700 (PDT)
+        bh=lmWT97CDa6Eep/ahzK3DFdzOqVC7jVfNxph1wNjMACo=;
+        b=eXuXoqNtGdXmgJxUSjqt9d4A0m5FWQO6CMOF+JxB3403nULxCrqre1X6CUQOm1j0VV
+         qW1D/ymnrvKJADbmSIRE8PeRdFpy1olDeHm83jFnptBck7p5LKclaLfa/sO22nBV1Qhq
+         0Fn9JvmkeY+nx6LlY04wR/CtFTH2nwzJwZRsUpYVNfHWPmgcsN1cB0aSHoHXvNNi8rbL
+         Vr7/agxv5Ia5N1e6B+dagtDRrr9kNECFhVM9uA1wUIAr5nMuT51rBzs4fRzLdO4bCvoq
+         sqV6W3zbOvwG3MCBMfWdlzeZMUsr9p/qKhVzN8hKe0nZfoSI7Mimfk5KnrBbkqSevwUl
+         drMw==
+X-Gm-Message-State: AOAM531bm24Y1ybpjAOdQtoBiZbgGzBmDG0M11gCqAE0r15gCR1Iau/d
+        Go/gt7f1Ic2zIyeflptt7Igv8oL1vjsTLX6sW+l+B535LLuX5EbaX1jpVs7RGbmh1HttqXJadNp
+        PAOaT2SJPYpy51xFhIrlVMMEkkw==
+X-Google-Smtp-Source: ABdhPJzR0K9DKaXB+E6bqA8Fg5XxgrlBnJ0JIxOxoMb1hOSrEobRQHQj6frWffvsvcKofywcNfJDzw==
+X-Received: by 2002:a17:906:1bf2:: with SMTP id t18mr4359882ejg.314.1628497434108;
+        Mon, 09 Aug 2021 01:23:54 -0700 (PDT)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id e22sm7716640edu.35.2021.08.09.00.49.40
+        by smtp.gmail.com with ESMTPSA id br3sm5647408ejb.103.2021.08.09.01.23.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Aug 2021 00:49:40 -0700 (PDT)
-Subject: Re: [PATCH v3 1/4] iwlwifi: mei: add the driver to allow cooperation
- with CSME
-To:     "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
+        Mon, 09 Aug 2021 01:23:53 -0700 (PDT)
+Subject: Re: [PATCH v5] brcmfmac: firmware: Fix firmware loading
+To:     Dmitry Osipenko <digetx@gmail.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Emmanuel Grumbach <egrumbach@gmail.com>
-Cc:     "Coelho, Luciano" <luciano.coelho@intel.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "Beker, Ayala" <ayala.beker@intel.com>
-References: <20210623141033.27475-1-emmanuel.grumbach@intel.com>
- <87bl7vi3o1.fsf@codeaurora.org>
- <CANUX_P3QE9xNnQLT=mHNDp4VCv37Bcjuvn9O1wQ4Btejjkbrvg@mail.gmail.com>
- <87k0l0c8pa.fsf@codeaurora.org>
- <SA0PR11MB4752B06F7330E6C14717E113F2F49@SA0PR11MB4752.namprd11.prod.outlook.com>
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Stefan Hansson <newbyte@disroot.org>
+References: <20210808180510.8753-1-digetx@gmail.com>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <7f027e15-71a7-8843-7b60-91b57f88a553@broadcom.com>
-Date:   Mon, 9 Aug 2021 09:49:38 +0200
+Message-ID: <902984be-2c27-e6b0-247b-8d9a94c08cc4@broadcom.com>
+Date:   Mon, 9 Aug 2021 10:23:51 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <SA0PR11MB4752B06F7330E6C14717E113F2F49@SA0PR11MB4752.namprd11.prod.outlook.com>
+In-Reply-To: <20210808180510.8753-1-digetx@gmail.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000b9b8b705c91ba0cf"
+        boundary="000000000000175bb305c91c1b6b"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000b9b8b705c91ba0cf
+--000000000000175bb305c91c1b6b
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Language: en-US
 
-
-
-On 8/7/2021 8:38 PM, Grumbach, Emmanuel wrote:
->>
->>>>> +     BUILD_BUG_ON((u32)IWL_MEI_AKM_AUTH_OPEN !=
->>>>> +                  (u32)SAP_WIFI_AUTH_TYPE_OPEN);
->>>>> +     BUILD_BUG_ON((u32)IWL_MEI_AKM_AUTH_RSNA !=
->>>>> +                  (u32)SAP_WIFI_AUTH_TYPE_RSNA);
->>>>> +     BUILD_BUG_ON((u32)IWL_MEI_AKM_AUTH_RSNA_PSK !=
->>>>> +                  (u32)SAP_WIFI_AUTH_TYPE_RSNA_PSK);
->>>>> +     BUILD_BUG_ON((u32)IWL_MEI_AKM_AUTH_SAE !=
->>>>> +                  (u32)SAP_WIFI_AUTH_TYPE_SAE);
->>>>> +
->>>>> +     BUILD_BUG_ON((u32)IWL_MEI_CIPHER_NONE !=
->>>>> +                  (u32)SAP_WIFI_CIPHER_ALG_NONE);
->>>>> +     BUILD_BUG_ON((u32)IWL_MEI_CIPHER_CCMP !=
->>>>> +                  (u32)SAP_WIFI_CIPHER_ALG_CCMP);
->>>>> +     BUILD_BUG_ON((u32)IWL_MEI_CIPHER_GCMP !=
->>>>> +                  (u32)SAP_WIFI_CIPHER_ALG_GCMP);
->>>>> +     BUILD_BUG_ON((u32)IWL_MEI_CIPHER_GCMP_256 !=
->>>>> +                  (u32)SAP_WIFI_CIPHER_ALG_GCMP_256);
->>>>
->>>> These look just weird, and suspicious. You are using two different
->>>> enums but they have to be same values, or what?
->>>
->>> Exactly. I don't want the userspace to have to include all the SAP
->>> protocol header file. OTOH, I don't want to have to translate between
->>> vendor commands attributes values and the SAP values.
->>
->> Why not? I assume you would just need a helper function with switch
->> statements to "translate" between enums, not much more lines of code but
->> a lot cleaner code.
->>
+On 8/8/2021 8:05 PM, Dmitry Osipenko wrote:
+> From: Linus Walleij <linus.walleij@linaro.org>
 > 
-> I disagree that it'll give us a cleaner code.
-> What we'll have is two different enums with two different values and functions
-> that translate from one value to another. This is very bug prone. When you want
-> to debug, you get a value, you always need to think of what type of enum you're
-> dealing with.
-> I believe your suggestion is not good, but since I am tired arguing I will do it to
-> make you happy.
+> The patch that would first try the board-specific firmware
+> had a bug because the fallback would not be called: the
+> asynchronous interface is used meaning request_firmware_nowait()
+> returns 0 immediately.
+> 
+> Harden the firmware loading like this:
+> 
+> - If we cannot build an alt_path (like if no board_type is
+>    specified) just request the first firmware without any
+>    suffix, like in the past.
+> 
+> - If the lookup of a board specific firmware fails, we get
+>    a NULL fw in the async callback, so just try again without
+>    the alt_path from a dedicated brcm_fw_request_done_alt_path
+>    callback.
+> 
+> - Drop the unnecessary prototype of brcm_fw_request_done.
+> 
+> - Added MODULE_FIRMWARE match for per-board SDIO bins, making
+>    userspace tools to pull all the relevant firmware files.
+The original idea was to setup the path names in 
+brcmf_fw_alloc_request() function, but with the introduction of the 
+board_type for NVRAM files that was abandoned and we cook up alternative 
+paths. Now similar is done for the firmware files. So I would want to 
+rework the code, but for now I am going with Linus's/Your fix for the 
+sake of having the regression more or less quickly resolved.
 
-I don't want to flare up this fire further, but have you considered to 
-declare the enum values needed by user-space in uapi header and simply 
-declare the SAP enum using those values:
-
-#include <uapi/iwlmei.h>
-
-enum sap_cipher {
-	SAP_WIFI_CIPHER_ALG_NONE = IWL_MEI_CIPHER_NONE,
-	SAP_WIFI_CIPHER_ALG_CCMP = IWL_MEI_CIPHER_CCMP,
-		:
-};
-
-Seems like assurance enough that user-space api is cleanly separated and 
-using the same values.
+You reported an issue earlier where the firmware callback was called 
+from the probe context causing it to hang and it is not clear to me 
+whether that is fixed with this version of the patch.
 
 Regards,
 Arend
@@ -149,7 +126,7 @@ this e-mail is strictly prohibited. If you received this e-mail in error,
 please return the e-mail to the sender, delete it from your computer, and 
 destroy any printed copy of it.
 
---000000000000b9b8b705c91ba0cf
+--000000000000175bb305c91c1b6b
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -220,14 +197,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBnBl4Qa0CXqsyUBUUt
-7buc4O4177kzGl2hxBRXDHHaEzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMTA4MDkwNzQ5NDFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCC0Ohyq4HyyLPH3eO2Z
+7tuAhD4tL6FuEzqs0clGdugJlzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMTA4MDkwODIzNTRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEADebZO+YQQ2TLqOkRQFCFPXsJn6DxeOMtG1T0
-TM63MpKFn0Ok3TQ8bvz0frN30T48WRzkccNbbnL7EkqSvmP+e1CgbFuE7VBAxczemhdMoJjUeO3l
-PLvplm7FZZs6vWtPpHmJj//pkFw7A4YK2doT4GSTeihrDsGnwX1V7DKCPYERER23NPsDM5Avi9/n
-tfHQQXr8UGerBTNTnScqnjERwhEx3TWAg5t+cgs2bHjL4L5IBxPaxJptcZC5Ci8mORjZctHFYaoX
-d5H6FwEovm0PdyVJT2AzxySOD0rKaYthSov0XbUEvL3dYcLvGzZIPyzz0qtxNlbL1U+B6DZucwMB
-ig==
---000000000000b9b8b705c91ba0cf--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAL5BTWfu81C2/HaUaWfXCQtOo5va7nwHzSipX
+ZZ3gOhUiS9FPDbN5KRG9jA7sqynI1kW+JKza+5Duws2PWUuceQx+UfjocYuAF+syNqY/65zPMDKn
+eEe9rDJUTPvQDiFTebce8C+mJqjbmcrZird0xe3DBTE/tMelNXXHulF4C9GgP+1LcRzxQzP7hXyZ
+k1SanL+RuuNlxyJPcWaKgAJlqp3s/hF9uD9CRD+FuSyxtb6ACG90+WGkSeYIJaAkDanMLYYYJIbZ
+/xvASSUPcJIAb+KS+aJPSQTHWw71wWNAhYmuaAIJPu/FOIvohpsfx1Jj53tm7hc8qWEmyfei683S
+mA==
+--000000000000175bb305c91c1b6b--
