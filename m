@@ -2,130 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E361A3E4EBB
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Aug 2021 23:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED92A3E4F28
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Aug 2021 00:27:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236020AbhHIVup (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Aug 2021 17:50:45 -0400
-Received: from gateway30.websitewelcome.com ([192.185.180.41]:28778 "EHLO
-        gateway30.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232193AbhHIVuo (ORCPT
+        id S236666AbhHIW1t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Aug 2021 18:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41900 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233660AbhHIW1o (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Aug 2021 17:50:44 -0400
-X-Greylist: delayed 1239 seconds by postgrey-1.27 at vger.kernel.org; Mon, 09 Aug 2021 17:50:44 EDT
-Received: from cm11.websitewelcome.com (cm11.websitewelcome.com [100.42.49.5])
-        by gateway30.websitewelcome.com (Postfix) with ESMTP id C43A7B23F
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Aug 2021 16:29:42 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id DCq6megeYK61iDCq6mfSuq; Mon, 09 Aug 2021 16:29:42 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=QgyrrxOHvP7M6fplZ52oJH8CjSBf+T8N9dmFTacakl0=; b=RJ5HVUfwJimK7r90lDMzMJc0bK
-        kSZulCYMs8kEDYXa7fYxujML3b7F4zI94vIbs1yMfALNkuQpPtZ+y4Z7L7KkyZapPQq8str0VuE1d
-        +k13Y54uSLP/mt2btGWXP/lX9b/sPI9IxSNOm5m7SQDUHhyy4vQqu7QHJh8IohRTBTlvNHkhNN3di
-        9D/KDAvDLagoWUYImeYbxAvFmMcich7didzy0Sp8PEwQL0Hrg8xYkeycHQ8v/i1qyEG+UT9/u7yS5
-        WBVSJ4c1OC+Jhbg0+e3jXKXSsu4cz+QB3VEHdDbtKXl/IRRZMGtotuI8tKb0prXVe9bRWIBkQjjEA
-        /ELAzuUw==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:36120 helo=[192.168.15.8])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1mDCq5-000CXb-UH; Mon, 09 Aug 2021 16:29:41 -0500
-Subject: Re: [PATCH][next] mwifiex: usb: Replace one-element array with
- flexible-array member
-To:     Brian Norris <briannorris@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev@vger.kernel.org,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        linux-hardening@vger.kernel.org
-References: <20210809211134.GA22488@embeddedor>
- <CA+ASDXO+GbP_WWVdO0=Uavh036ZhZiziE8DwGRKP-ooofd2QVw@mail.gmail.com>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Message-ID: <533036d7-1a0e-21e8-5e40-2e807b32a215@embeddedor.com>
-Date:   Mon, 9 Aug 2021 16:32:27 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Mon, 9 Aug 2021 18:27:44 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4410C0613D3;
+        Mon,  9 Aug 2021 15:27:23 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id o7-20020a05600c5107b0290257f956e02dso490974wms.1;
+        Mon, 09 Aug 2021 15:27:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
+        b=T9CVn4B3EbbMGcnO1AU5wqcQcpb0tQ5LH9fRYZaJKi+82sEjgmu6fE93vJvxRB74AZ
+         g+mLp+yoYEfHT9LYe3fE1IcYiC6cZ/2VZJB1bZ4dpOQv2kX3HkKsvGqQbxtzUO8OFhrH
+         omfekMWXfxgsqwExp3WuYGlCT1kzsLiIi6EAHoKU+Xou4X+SQdG7Iitmp6Mx3RGbFpKW
+         U4jUEeYQL7eYku6T/x+/QN5BUfJLOsTDZgZRKDYfvHnvNI90CAFIQO5/aayz1zN5jzOT
+         1tXp0/iJbkh19qVfqCGwfPQldLql6kOFGUQ0AX3RlDOqd32+Q98bOpOTbKB5TAS9FfFW
+         1nHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
+        b=P/ZMhzT+OyiGS7cKltG5wJ8tgQ9cUQOka1a2S3NK3IikG9gdWWgZnStCq9P5gmEmTe
+         /RRoDNaU4KOMN9rkcZ2BhlamZdfuVbxmWB1UAxa5LxBP9JbEqPwQuQuZO7FEigY8NTD2
+         QAkQCGiarPlddt0BWDi80ZDg/etY4mFyM1W+uBut/Q+Go82IadG9EAjVllIFqgRXE+TK
+         AWPtnlynODarChetB7IDY4d4tVQmPk9JqFr5npC9ed5CMmclqnvg3aMIa1nfFFOwubSO
+         hrTAQG+yF88k59RqfY+nis0ojV1fRT0Gx9+UxDC4XWqzNvkw4uBPhufon02yemS5q3YJ
+         mm0Q==
+X-Gm-Message-State: AOAM531NlblAehxeVvnNu6OsA4nhciIFbIFJtnvwGAvWvpjKyQbj/zjO
+        tbKqflirLGSrlJX+SQggxDo=
+X-Google-Smtp-Source: ABdhPJwO3S+QbUSf4MsX925O2tFZCneo+LHwa5uyb5fImBml5m6s6N/lCY3YDL1LfexaiuQFBSJ5dg==
+X-Received: by 2002:a7b:c30f:: with SMTP id k15mr1300333wmj.128.1628548042376;
+        Mon, 09 Aug 2021 15:27:22 -0700 (PDT)
+Received: from [192.168.1.70] ([102.64.223.208])
+        by smtp.gmail.com with ESMTPSA id j4sm18778506wmi.4.2021.08.09.15.27.06
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Mon, 09 Aug 2021 15:27:21 -0700 (PDT)
+Message-ID: <6111abc9.1c69fb81.8b5d4.7653@mx.google.com>
+From:   Vanina curth <curtisvani0020@gmail.com>
+X-Google-Original-From: Vanina  curth
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <CA+ASDXO+GbP_WWVdO0=Uavh036ZhZiziE8DwGRKP-ooofd2QVw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1mDCq5-000CXb-UH
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:36120
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 10
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Dear
+To:     Recipients <Vanina@vger.kernel.org>
+Date:   Mon, 09 Aug 2021 22:26:25 +0000
+Reply-To: curtisvani9008@gmail.com
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 8/9/21 16:24, Brian Norris wrote:
-> On Mon, Aug 9, 2021 at 2:08 PM Gustavo A. R. Silva
-> <gustavoars@kernel.org> wrote:
->>
->> There is a regular need in the kernel to provide a way to declare having
->> a dynamically sized set of trailing elements in a structure. Kernel code
->> should always use “flexible array members”[1] for these cases. The older
->> style of one-element or zero-length arrays should no longer be used[2].
->>
->> This helps with the ongoing efforts to globally enable -Warray-bounds
->> and get us closer to being able to tighten the FORTIFY_SOURCE routines
->> on memcpy().
->>
->> This issue was found with the help of Coccinelle and audited and fixed,
->> manually.
->>
->> [1] https://en.wikipedia.org/wiki/Flexible_array_member
->> [2] https://www.kernel.org/doc/html/v5.10/process/deprecated.html#zero-length-and-one-element-arrays
->>
->> Link: https://github.com/KSPP/linux/issues/79
->> Link: https://github.com/KSPP/linux/issues/109
->> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> 
-> An important part of your patch rationale should include determining
-> that the 1-length wasn't actually important anywhere. I double checked
-> for you, and nobody seemed to be relying on 'sizeof struct fw_data' at
-> all, so this should be OK:
-
-I always do that. That's the reason why I included this line in the
-changelog text:
-
-"This issue was found with the help of Coccinelle and audited and fixed,
-manually."
-
-Thanks for double-checking, though. :)
-
-> Reviewed-by: Brian Norris <briannorris@chromium.org>
-
-Thanks
---
-Gustavo
-
+How are you? I'm Vanina. I'm interested to know you and I would like to kno=
+w more about you and establish relationship with you. i will wait for your =
+response. thank you.
