@@ -2,101 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ECDC3E41B5
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Aug 2021 10:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 961043E434B
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Aug 2021 11:52:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233968AbhHIIik (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Aug 2021 04:38:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43950 "EHLO mail.kernel.org"
+        id S233290AbhHIJwc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Aug 2021 05:52:32 -0400
+Received: from ixit.cz ([94.230.151.217]:45390 "EHLO ixit.cz"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233903AbhHIIij (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Aug 2021 04:38:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0FB4660F55;
-        Mon,  9 Aug 2021 08:38:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628498299;
-        bh=BNiZvoYEnY1eUhfJPizwbFeIp7f4O/U2jVhd0TksxfQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=tpYrfcd7b1/eZQJmOFugh5rgIdtVGWnKUvNQs1kTsG0zQbSG8wEnxoGPRT2GRBQtS
-         /aEupDBJtgUiMcRvpUO8x8gFlgkL93FnX+h1SdHUPv30PeCC7abKyCKKYMIWUA5j5+
-         PKtBLUjnzUbZ64zYxTPfoMaLfa3i6N2q9bi/JC2hmOxoRKZOT0m3mOXrnV+KIHPSiG
-         Y6/MfwrInbIhOGa8SfQD4r+JblnR1/OB+iMYzignjWvmw+lc/Y8ZOHiH4ECbaZyGtj
-         oep68B7CStnNczoMofUragpG1zahJZaSl10cjusm8nPAE5tswn6tYXd35UX/kr5ds+
-         g6mF/P5T+8q5w==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] mt76: mt7921: get rid of mt7921_mac_set_beacon_filter
-Date:   Mon,  9 Aug 2021 10:38:03 +0200
-Message-Id: <9495cf2a8ba645b5028f65ffa2bf0c6351ffa9c6.1628498244.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S232944AbhHIJwb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 9 Aug 2021 05:52:31 -0400
+Received: from [192.168.1.138] (ixit.cz [94.230.151.217])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ixit.cz (Postfix) with ESMTPSA id 010922029F;
+        Mon,  9 Aug 2021 11:52:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+        t=1628502729; h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type; bh=zMMvPYXCWwg1ECXuJ65Ce2QQL+GNmPxWmXQL8VjJT+A=;
+        b=howMU3VFC/t653oHDrbc9ZILio1UPU+Z1yl3/1JY3PGCRGCy9IbsCRLWrayvM02TYCZaZM
+        m7P3PfTT+5FcjDnGL9l1VIEA/SMw8lsE8sxphkAGMYJ2Q7FMkI3fvaXupq10Q8nvpaby0K
+        NBqjWP5KzA6wlVl8zJEMZXDz85wA4bg=
+Date:   Mon, 09 Aug 2021 11:51:03 +0200
+From:   David Heidelberg <david@ixit.cz>
+Reply-To: 1608618887-8857-1-git-send-email-miaoqing@codeaurora.org
+Subject: Re: [PATCH v2] ath10k: fix wmi mgmt tx queue full due to race
+ condition
+To:     miaoqing@codeaurora.org, briannorris@chromium.org,
+        kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <3PGKXQ.OUNHZGPTI7091@ixit.cz>
+X-Mailer: geary/40.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove mt7921_mac_set_beacon_filter routine since it is no longer used.
+Hello all,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 28 -------------------
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  3 --
- 2 files changed, 31 deletions(-)
+since I noticed this issue is very common (at least for me and some 
+others) on 4.14 kernels [1] [2] would you think that backporting this 
+patch into stable would make sense? I assume that at some point it 
+could help some OpenWRT/LEDE and other devices (since for Turris it'll 
+be most likely backported anyway).
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 296e0f7a1d14..2fd9be46dfdf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -1507,34 +1507,6 @@ void mt7921_pm_power_save_work(struct work_struct *work)
- 	queue_delayed_work(dev->mt76.wq, &dev->pm.ps_work, delta);
- }
- 
--int mt7921_mac_set_beacon_filter(struct mt7921_phy *phy,
--				 struct ieee80211_vif *vif,
--				 bool enable)
--{
--	struct mt7921_dev *dev = phy->dev;
--	bool ext_phy = phy != &dev->phy;
--	int err;
--
--	if (!dev->pm.enable)
--		return -EOPNOTSUPP;
--
--	err = mt7921_mcu_set_bss_pm(dev, vif, enable);
--	if (err)
--		return err;
--
--	if (enable) {
--		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
--		mt76_set(dev, MT_WF_RFCR(ext_phy),
--			 MT_WF_RFCR_DROP_OTHER_BEACON);
--	} else {
--		vif->driver_flags &= ~IEEE80211_VIF_BEACON_FILTER;
--		mt76_clear(dev, MT_WF_RFCR(ext_phy),
--			   MT_WF_RFCR_DROP_OTHER_BEACON);
--	}
--
--	return 0;
--}
--
- void mt7921_coredump_work(struct work_struct *work)
- {
- 	struct mt7921_dev *dev;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 5fcd197936be..8722df3b9a29 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -377,9 +377,6 @@ int mt7921_mcu_fw_pmctrl(struct mt7921_dev *dev);
- void mt7921_pm_wake_work(struct work_struct *work);
- void mt7921_pm_power_save_work(struct work_struct *work);
- bool mt7921_wait_for_mcu_init(struct mt7921_dev *dev);
--int mt7921_mac_set_beacon_filter(struct mt7921_phy *phy,
--				 struct ieee80211_vif *vif,
--				 bool enable);
- void mt7921_pm_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif);
- void mt7921_coredump_work(struct work_struct *work);
- int mt7921_wfsys_reset(struct mt7921_dev *dev);
--- 
-2.31.1
+Thank you for the working on this!
+David
+
+[1] 
+https://forum.turris.cz/t/5-2-4-patch-wifi-fails-after-while-wmi-mgmt-tx-queue-is-full/15510
+[2] https://forum.turris.cz/t/unstable-wifi-on-mox-b/11065/
+
+
 
