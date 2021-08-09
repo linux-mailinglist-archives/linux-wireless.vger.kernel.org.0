@@ -2,126 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 097863E3F72
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Aug 2021 07:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 299BB3E40EA
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Aug 2021 09:38:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233126AbhHIFwh convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Aug 2021 01:52:37 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:37339 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233127AbhHIFwg (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Aug 2021 01:52:36 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1795q68m9015326, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1795q68m9015326
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 9 Aug 2021 13:52:06 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 9 Aug 2021 13:52:05 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 9 Aug 2021 13:52:05 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91]) by
- RTEXMBS04.realtek.com.tw ([fe80::5bd:6f71:b434:7c91%5]) with mapi id
- 15.01.2106.013; Mon, 9 Aug 2021 13:52:05 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Jan Reusch <jan@jreusch.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: Difficulty connecting to AP using rtw89
-Thread-Topic: Difficulty connecting to AP using rtw89
-Thread-Index: AQHXedzEvSHwSXSC2EGxNTyUmGxj/atE4CcwgABoiACAARvNsIAAARaAgAM0tpCAHOxcgIAER3XA
-Date:   Mon, 9 Aug 2021 05:52:04 +0000
-Message-ID: <3b903f001e13429d81cb12d78b396ce5@realtek.com>
-References: <2551f3d4aff248e29118a2c6339e4d96@realtek.com>
- <YQ2ZHTCCzbXil+9Y@akk.org>
-In-Reply-To: <YQ2ZHTCCzbXil+9Y@akk.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/8/9_=3F=3F_03:08:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S233431AbhHIHio (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Aug 2021 03:38:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37440 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233161AbhHIHio (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 9 Aug 2021 03:38:44 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 44F6C61058;
+        Mon,  9 Aug 2021 07:38:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628494704;
+        bh=rwkrRbH7Ltoi1G+zrvt1GB+D/VqD3gaMLX0LiZ32sfA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UoEVPDrrQXLJiRQIrCzkHXWvViJl7tZ7Xv5KA80bFmw7d/h8aHKX9FLFkzRQ+VYGL
+         ULDPPqAX8Nt4tVjlPDeWbC1yEcbhSPReswlt4oEf9uxdx9y63g0boQOWML2yttFZ3g
+         C8PsDuzrAjE5GnXIx5eF+vOCup2MwzmAYJYNXsICswHvTUo3TNGYtPALSGtq/f6h5m
+         x0WsOfLjXg7mj4zm6mEDCozCjDbrd1q2cXIifcoqzHoJZsZSRh5ctEZQL4nD/5Lm1P
+         Zqj9V7Dsd+Zt1pyuZwZSRPgUVqO8/vSCwLP7HMc4OgR3h2qS8KpZ9jXFfhGeGd2oC+
+         bTSO6ROJB6wrQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: mt7921: get rid of monitor_vif
+Date:   Mon,  9 Aug 2021 09:38:07 +0200
+Message-Id: <803484aa5d3ed16be7432665d77bcc129768a916.1628494557.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 08/09/2021 05:39:44
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 165456 [Aug 06 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 454 454 39c6e442fd417993330528e7f9d13ac1bf7fdf8c
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 08/09/2021 05:42:00
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Remove monitor_vif pointer from mt7921 since it is just a leftover of
+initial porting.
 
-> -----Original Message-----
-> From: Jan Reusch [mailto:jan@jreusch.de]
-> Sent: Saturday, August 07, 2021 4:19 AM
-> To: linux-wireless@vger.kernel.org; Pkshih
-> Subject: RE: Difficulty connecting to AP using rtw89
-> 
-> Hey hey
-> Hope this works and gets sorted right, i had to manually set the
-> in-reply-to header.
-> 
-> I'm one of the people having problems with ipv6 and the rtw89 driver.
-> i've tested it with the debian bullseye kernel and vanilla 5.13 from
-> kernel.org
-> 
-> It's about a Realtek 8852 in a Thinkpad E14 Gen2 (amd).
-> 
-> > > The driver handles L2 things only, but IPv6 that is L3 that we don't
-> > > have special deal.
-> > > Could I know the problem you met?
-> 
-> Yep that was also my first reaction 1:1, but it's 100% repdoducible.
-> Ethernet connection works, i get an v4 adress and an v6 one (SLAAC), it
-> works flawlessly with an USB wifi stick, but the integrated wifi only
-> gets the link local ipv6 address,  an ipv4 one but nothing more.
-> I've tried to dump router advertisements, but none of them pop up. (As
-> soon as i attach the ethernet cable/usb wifi stick they're there...)
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c   | 7 -------
+ drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 2 --
+ 2 files changed, 9 deletions(-)
 
-Could you provide your dump of USB wifi stick and rtw89?
-If possible, I'd like to have tcpdump of interfaces locally and sniffer
-packets in the air. Then, I can check the good and bad cases, and check
-if any transmitting data is eaten by rtw89.
-
-If the data have privacy problem, please send me directly.
-
-[...]
-
-Thank you
---
-Ping-Ke
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 7c4f97d65aae..b121a0e369c7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -243,10 +243,6 @@ static int mt7921_add_interface(struct ieee80211_hw *hw,
+ 
+ 	mt7921_mutex_acquire(dev);
+ 
+-	if (vif->type == NL80211_IFTYPE_MONITOR &&
+-	    is_zero_ether_addr(vif->addr))
+-		phy->monitor_vif = vif;
+-
+ 	mvif->mt76.idx = ffs(~dev->mt76.vif_mask) - 1;
+ 	if (mvif->mt76.idx >= MT7921_MAX_INTERFACES) {
+ 		ret = -ENOSPC;
+@@ -306,9 +302,6 @@ static void mt7921_remove_interface(struct ieee80211_hw *hw,
+ 	struct mt7921_phy *phy = mt7921_hw_phy(hw);
+ 	int idx = msta->wcid.idx;
+ 
+-	if (vif == phy->monitor_vif)
+-		phy->monitor_vif = NULL;
+-
+ 	mt7921_mutex_acquire(dev);
+ 	mt76_connac_free_pending_tx_skbs(&dev->pm, &msta->wcid);
+ 	mt76_connac_mcu_uni_add_dev(&dev->mphy, vif, &mvif->sta.wcid, false);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 6e9e4dfb3928..5fcd197936be 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -123,8 +123,6 @@ struct mt7921_phy {
+ 
+ 	struct ieee80211_sband_iftype_data iftype[2][NUM_NL80211_IFTYPES];
+ 
+-	struct ieee80211_vif *monitor_vif;
+-
+ 	u32 rxfilter;
+ 	u64 omac_mask;
+ 
+-- 
+2.31.1
 
