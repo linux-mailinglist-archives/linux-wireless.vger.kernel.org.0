@@ -2,157 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49AD33E3D20
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Aug 2021 01:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D41523E3E35
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Aug 2021 05:18:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231688AbhHHXIz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Aug 2021 19:08:55 -0400
-Received: from mailout2.samsung.com ([203.254.224.25]:14761 "EHLO
-        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231127AbhHHXIy (ORCPT
+        id S232542AbhHIDSh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Aug 2021 23:18:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33776 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229942AbhHIDSh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Aug 2021 19:08:54 -0400
-Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
-        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20210808230833epoutp02f2ab8c464a898caf0120bfa6eea32dda~Zd3uekJVf2605826058epoutp02y
-        for <linux-wireless@vger.kernel.org>; Sun,  8 Aug 2021 23:08:33 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20210808230833epoutp02f2ab8c464a898caf0120bfa6eea32dda~Zd3uekJVf2605826058epoutp02y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1628464113;
-        bh=jvL3UYfe1fnogHMOYPJzMx9xpzgagoS4gyTCYbeMpBw=;
-        h=Subject:To:From:Date:In-Reply-To:References:From;
-        b=S1ADDSUB0BbuPrqoyvJ5/JSwFGqNadkOLAYnToz4V5Z1lxpst7nYnLi5iqoztEw6i
-         rRfOl3eRwhYMz0OgtEz8EHjn63LMv3IoHsy5CVoFsWdqtfIsl9WZvtNBwd1KqCOvQf
-         fy2Tsm4Bszm6ABtB5gHs5hCFBVLIauXZgfojclmA=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-        epcas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20210808230832epcas1p2a51ccbdd1dde25963e707fa23c685015~Zd3txeD6M3036730367epcas1p2S;
-        Sun,  8 Aug 2021 23:08:32 +0000 (GMT)
-Received: from epsmges1p4.samsung.com (unknown [182.195.40.158]) by
-        epsnrtp4.localdomain (Postfix) with ESMTP id 4GjZdT0TB8z4x9QD; Sun,  8 Aug
-        2021 23:08:29 +0000 (GMT)
-Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
-        epsmges1p4.samsung.com (Symantec Messaging Gateway) with SMTP id
-        31.38.10119.CE360116; Mon,  9 Aug 2021 08:08:28 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20210808230828epcas1p17835a0574e65e9c41d853cfa8d5bf1ce~Zd3pwQrEt0136301363epcas1p1M;
-        Sun,  8 Aug 2021 23:08:28 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20210808230828epsmtrp1ce1171943a869376c5c1ef6382c7d1ce~Zd3pvIOLV2793027930epsmtrp1C;
-        Sun,  8 Aug 2021 23:08:28 +0000 (GMT)
-X-AuditID: b6c32a38-965ff70000002787-db-611063eccdc2
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        C8.2C.08394.BE360116; Mon,  9 Aug 2021 08:08:27 +0900 (KST)
-Received: from [10.113.113.235] (unknown [10.113.113.235]) by
-        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20210808230827epsmtip2e25de7e5d2324b984c47152384feffcf~Zd3pYtg1B1773317733epsmtip2D;
-        Sun,  8 Aug 2021 23:08:27 +0000 (GMT)
-Subject: Re: [PATCH] iwlwifi Add support for ax201 in Samsung Galaxy Book
- Flex2 Alpha
-To:     Justin Forbes <jmforbes@linuxtx.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matti Gottlieb <matti.gottlieb@intel.com>,
-        ybaruch <yaara.baruch@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Ihab Zhaika <ihab.zhaika@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless@vger.kernel.org,
-        "open list:BPF (Safe dynamic programs and tools)" 
-        <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        yj99.shin@samsung.com
-From:   Jaehoon Chung <jh80.chung@samsung.com>
-Message-ID: <8c55c7c9-a5ae-3b0e-8a0f-8954a8da7e7b@samsung.com>
-Date:   Mon, 9 Aug 2021 08:09:13 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
-        Thunderbird/78.11.0
+        Sun, 8 Aug 2021 23:18:37 -0400
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ACA6C061757;
+        Sun,  8 Aug 2021 20:18:17 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gjh9d6X6Hz9sWX;
+        Mon,  9 Aug 2021 13:18:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1628479094;
+        bh=JSjEqkO0SK13kfbGfd0rXE6B3pLcWE5fT+mLWjxOuiw=;
+        h=Date:From:To:Cc:Subject:From;
+        b=nKJDIYvetzsui66DegHwPeFqT0Gb3dN7kKtMnzeKtXFeusjw5KeWSf6uE7gOIRyib
+         +kSmEkj75DJQWP810obJ0c6YkaShU60RMX5kTugApNusgi/RnNjOnDB+jp7VL0wtZr
+         JW4oznlQNA03WJuE8gKZsUWWsSpUSjR5DqEBx6E00JrkSXNPTTSrJYT/6vmDFrnWE0
+         GijB2ao4HwlslA/or2BZAd37l/CiOr8a4cZEwCBJuk2aDHEcJyhnTvQhI+IPr/7rZv
+         9b/gFG1OYjvrf8Mpu8MXJgixJfbRYnFn3XQqjkjeKrBgj7DYjx7S6Gd4gKi2atgPEn
+         Ryg7bsoCR9WkQ==
+Date:   Mon, 9 Aug 2021 13:18:13 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Wireless <linux-wireless@vger.kernel.org>,
+        Petr Mladek <pmladek@suse.com>
+Cc:     Chris Down <chris@chrisdown.name>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: linux-next: manual merge of the wireless-drivers-next tree with the
+ printk tree
+Message-ID: <20210809131813.3989f9e8@canb.auug.org.au>
 MIME-Version: 1.0
-In-Reply-To: <CAFxkdApGUeGdg4=rH=iC2SK58FO6yzbFiq3uSFMFTyZsDQ5j5w@mail.gmail.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrEJsWRmVeSWpSXmKPExsWy7bCmvu6bZIFEgwOdlhZzzrewWLRuu8tq
-        8ej1NmaLB5vvMlk8WjGL3eLCtj5Wi0UrF7JZXN41h83izYo77BaHty5gspjTco7Z4tgCMYv5
-        2x4xWhy6s5DZgc/jcl8vk8eWlTeZPBbvecnksWlVJ5vH9B0OHn1bVjF6fN4kF8AelW2TkZqY
-        klqkkJqXnJ+SmZduq+QdHO8cb2pmYKhraGlhrqSQl5ibaqvk4hOg65aZA3SxkkJZYk4pUCgg
-        sbhYSd/Opii/tCRVISO/uMRWKbUgJafAskCvODG3uDQvXS85P9fK0MDAyBSoMCE7Y9efxWwF
-        39kqDt2dz9LAuIW1i5GTQ0LARKL73A2WLkYuDiGBHYwS+3deZAZJCAl8YpR4f1QNIvGNUeLu
-        0nNMXYwcYB0LJ7tBxPcySjQd6WWCcN4zSvy7P5MJpFtYIFzi0vsrLCC2iMAhFomFb7NBbDYB
-        HYnt346D1fAK2EkcWnQOrIZFQEXi2vV+dhBbVCBS4vzuBSwQNYISJ2c+AbM5BQIljuz4BNbL
-        LCAucevJfChbXmL72znMEO8c4JB4czkBwnaR2HL9FDuELSzx6vgWKFtK4mV/G5RdLbGr+Qwz
-        yAMSAh2MEre2NTFBJIwl9i+dDPYxs4CmxPpd+hBhRYmdv+cyQuzlk3j3tYcVEii8Eh1tQhAl
-        KhKXXr9kgll198l/aEh7SMyZtxka0rcZJZZ29LNOYFSYheTNWUhem4XktVkIVyxgZFnFKJZa
-        UJybnlpsWGCCHNmbGMGJWctiB+Pctx/0DjEycTAeYpTgYFYS4V0/gy9RiDclsbIqtSg/vqg0
-        J7X4EKMpMOAnMkuJJucDc0NeSbyhqZGxsbGFiaGZqaGhkjjvt9ivCUIC6YklqdmpqQWpRTB9
-        TBycUg1MhRvMpvt3Lnn4dmHbEfew8rUTCvxqvnvOvPHe9r6PDeeLjJarwgH7+sRzT4isC81l
-        2li+NefYAYkVk3ZFP7zz5Y37HueboY3fk358Zc7pCM9KEP0YqnqFy10h6tz75U3B/U2zP02a
-        Iul9at7znGbdyb3r1p5Zu6s+vdCy+Kb89t/+/lfXTlS6d2ODpOS5354Hr79a8fFvRN6Ktled
-        s6S+tXfryAYtTlPhnyP+dJJOt4sxp/RToxusnI+ebLij4la6W0xp44KnIpxW866pBK3171qq
-        M1v/48f8qxuYLp8S9V2/chqD7YMc9V3Hqje6b5O6EX39RS6D1RvmnVtz+9cvn/Pw9KLXWz6t
-        UuIJ1dG69k+JpTgj0VCLuag4EQAKG+FmVQQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprKIsWRmVeSWpSXmKPExsWy7bCSvO7rZIFEgyN3jSzmnG9hsWjddpfV
-        4tHrbcwWDzbfZbJ4tGIWu8WFbX2sFotWLmSzuLxrDpvFmxV32C0Ob13AZDGn5RyzxbEFYhbz
-        tz1itDh0ZyGzA5/H5b5eJo8tK28yeSze85LJY9OqTjaP6TscPPq2rGL0+LxJLoA9issmJTUn
-        syy1SN8ugStj15/FbAXf2SoO3Z3P0sC4hbWLkYNDQsBEYuFkty5GLg4hgd2MEp9f7GLrYuQE
-        iktJfH46lQ2iRlji8OFiiJq3jBI3Ph5lBqkRFgiXuPT+CgtIQkTgEIvEy19PwBJCArcZJSa3
-        eoDYbAI6Etu/HWcCsXkF7CQOLTrHAmKzCKhIXLvezw5iiwpESnxe8IoVokZQ4uTMJ2A1nAKB
-        Ekd2fALrZRZQl/gz7xIzhC0ucevJfKi4vMT2t3OYJzAKzkLSPgtJyywkLbOQtCxgZFnFKJla
-        UJybnltsWGCYl1quV5yYW1yal66XnJ+7iREcc1qaOxi3r/qgd4iRiYPxEKMEB7OSCO/6GXyJ
-        QrwpiZVVqUX58UWlOanFhxilOViUxHkvdJ2MFxJITyxJzU5NLUgtgskycXBKNTCt+e6y3dLv
-        ModTL/e6y42HuLg4jXlsdh/ocjC6VRr79WVymDFbboBPEVPt7O9Kh/Tzlrwzz319mPfIiUNb
-        CkK6L545GdqRKmqm4eNU6VGuovp6nqzgSsajMT3L/+m9s0tct+9XkJXv33rJjz7Zu1ImnZf5
-        X22/vWRhIrvXQq843nYRqaIvG208mNo9WE/Zl32J2rZ76XLnPuWWcu69hZl1e/eul+zeMmfp
-        vW61D9b1q4v+sc1IWNS37OJKoXMtGx8sW/vz2QH9H5Fqk3idVLcxmK5SvXbEk50n9tf7guRH
-        zFVlW6x4Va7zLi3Ibamo+fjk+m4zTq4mjRnpF+9r741f8u22Y9nt0GXMsVudo5VYijMSDbWY
-        i4oTAQFCeSIoAwAA
-X-CMS-MailID: 20210808230828epcas1p17835a0574e65e9c41d853cfa8d5bf1ce
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20210709173244epcas1p3ea6488202595e182d45f59fcba695e0a
-References: <20210702223155.1981510-1-jforbes@fedoraproject.org>
-        <CGME20210709173244epcas1p3ea6488202595e182d45f59fcba695e0a@epcas1p3.samsung.com>
-        <CAFxkdApGUeGdg4=rH=iC2SK58FO6yzbFiq3uSFMFTyZsDQ5j5w@mail.gmail.com>
+Content-Type: multipart/signed; boundary="Sig_/J0qSpD.0pt+p+Ol=dY3doOR";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+--Sig_/J0qSpD.0pt+p+Ol=dY3doOR
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On 7/10/21 2:32 AM, Justin Forbes wrote:
-> On Fri, Jul 2, 2021 at 5:32 PM Justin M. Forbes
-> <jforbes@fedoraproject.org> wrote:
->>
->> The Samsung Galaxy Book Flex2 Alpha uses an ax201 with the ID a0f0/6074.
->> This works fine with the existing driver once it knows to claim it.
->> Simple patch to add the device.
->>
->> Signed-off-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Hi all,
 
+Today's linux-next merge of the wireless-drivers-next tree got a
+conflict in:
 
-Before sending patch, I have found same patch to solve the Wifi problem.
-Is there any progress about this patch? 
+  MAINTAINERS
 
-I hope that this patch will be applied.
+between commit:
 
-Reviewed-by: Jaehoon Chung <jh80.chung@samsung.com>
+  337015573718 ("printk: Userspace format indexing support")
 
-Best Regards,
-Jaehoon Chung
+from the printk tree and commit:
 
+  d249ff28b1d8 ("intersil: remove obsolete prism54 wireless driver")
 
->> ---
-> 
-> Just an update from the user with this hardware that I built a test kernel for:
-> "Still going strong w/ AX201, speed OK, on par w/ speeds on windows,
-> no crashes, no weird messages about the driver."
-> 
-> Justin
-> 
+from the wireless-drivers-next tree.
 
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc MAINTAINERS
+index 5cf181197a50,492bc169c3bd..000000000000
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@@ -14974,18 -14927,6 +14974,11 @@@ S:	Maintaine
+  F:	include/linux/printk.h
+  F:	kernel/printk/
+ =20
+ +PRINTK INDEXING
+ +R:	Chris Down <chris@chrisdown.name>
+ +S:	Maintained
+ +F:	kernel/printk/index.c
+ +
+- PRISM54 WIRELESS DRIVER
+- M:	Luis Chamberlain <mcgrof@kernel.org>
+- L:	linux-wireless@vger.kernel.org
+- S:	Obsolete
+- W:	https://wireless.wiki.kernel.org/en/users/Drivers/p54
+- F:	drivers/net/wireless/intersil/prism54/
+-=20
+  PROC FILESYSTEM
+  L:	linux-kernel@vger.kernel.org
+  L:	linux-fsdevel@vger.kernel.org
+
+--Sig_/J0qSpD.0pt+p+Ol=dY3doOR
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmEQnnUACgkQAVBC80lX
+0GwOYwf+MWaAUMoUFCY9sT8KILHP1ELpF5s271ME6q15pHJp/cOQjUh88YvcbjaZ
+UMR3opUfNatDLhVZb1DW/L9ru29hOIO8ShIO4OaJrhuk6Dp0Y+5vt8wMzOzbFoOm
+RPL2bIQJTvNRo1nXb2Wah1TAH1UZ80LzS7ZDA/lbs+eT2Zy3EAzsW6LHI6BSeOE/
+eGIW73qh7HNXtJBP4cOjP5ILf5FHmat+BygqIJ/Hf/QK37HeaK8RThLjfkANFv+D
+rhsi64Si6uLOVdy697lqXTdKWOcil66J7OyGBKpk/sJDqKKJ1n6zeRbpeLcrjhzS
+8ESUqh7YLm9dLU/GSNf5M/xtS20e3Q==
+=k0gP
+-----END PGP SIGNATURE-----
+
+--Sig_/J0qSpD.0pt+p+Ol=dY3doOR--
