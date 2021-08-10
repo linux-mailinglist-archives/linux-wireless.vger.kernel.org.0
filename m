@@ -2,70 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CD573E7EB5
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Aug 2021 19:34:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD9BE3E8406
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Aug 2021 21:59:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233175AbhHJRe6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Aug 2021 13:34:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50644 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232881AbhHJRe1 (ORCPT
+        id S230184AbhHJT7p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Aug 2021 15:59:45 -0400
+Received: from mail-0201.mail-europe.com ([51.77.79.158]:38397 "EHLO
+        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229480AbhHJT7o (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Aug 2021 13:34:27 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05A64C061372
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Aug 2021 10:33:13 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id x7so18726493ljn.10
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Aug 2021 10:33:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
-        b=RsiBBdA9QKOcTCF5lGXKVsjmClQ3sMV8nYRHi5UzQ6RFRdaZ6t981j56diJ7q3WLiT
-         dSrogDmRt6kwHS+J+pcIdphvlu5Vk62bOJudqb0dzEOf5Tr6sAVMWTY2NbEn++ZnSdaf
-         F4yj6h4F7VBk6uVCXN4p2StSiBpSckLhr0NJoCtUTvVh+gCrpSdvA2dss+nT8Q4XWg+b
-         4x9fMuBGMminOSzPCK8njOsWexpWsfb2omBFXa3GLhHqzUauC1r8oyB3fDvFuiS7qNjT
-         fDqijYMWxjmP3EeBvtWaIUY7Z5YEma/9OhqmI5Ya7ZKqW/5hzlkm8xAdNsqyzESz/5Xj
-         5sZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
-        b=bWGSMSvAgxNrJg4UdGdj97ExLG4F34yHwNzaCkc0hY3Vf+7RKYLxVDuzCVKWGG0XOR
-         oIiL+gjbQOeRAnkJvFRU+WgWRWFqHzA9+Wab8fCUFI9dJhBGPwI02DdDqfS7eJ4DOXT0
-         BxdI8Whx2bnfr249CROQyxjvUEZ9ur60UepoWd8WZ66zpuyqeNWImXmUt2DhwyUQxQXX
-         h8FA17SCmCN7qiqB+gTyJDpNy1GAsSxmm8EIgaWvZ6cGlEyeBPA2orika/zBs3iHnkNY
-         ilwKhOeRPCmRH5ZQ7n9wteW9zFWD63Wh3gfjElU6zrQfJrvIo70p+qdWNm8HiYNNBktf
-         FHmA==
-X-Gm-Message-State: AOAM533exOgMOGHJ/2LBd0nQJBfJfWF6eR6zbtMi0EnYtl629yhzXztX
-        b6kmyZl5L98f2ZD13yNBVIxUeJWAl9Oj2kesBRM=
-X-Google-Smtp-Source: ABdhPJw+sC+pBQw0G+0ULVvin/r/jCVVb1V7XUqN67UCoWrnBzyIXnaSzK5br1SZrCupI/L0LIZWgMfi7vhpZK+Wcm0=
-X-Received: by 2002:a05:651c:32c:: with SMTP id b12mr1745558ljp.198.1628616792032;
- Tue, 10 Aug 2021 10:33:12 -0700 (PDT)
+        Tue, 10 Aug 2021 15:59:44 -0400
+Date:   Tue, 10 Aug 2021 19:59:15 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1628625558;
+        bh=JpwKQU7qJGvcJbOmub6Vo4gSKW3dGyhyyY1vRQB7Uo4=;
+        h=Date:To:From:Reply-To:Subject:From;
+        b=YthvMLKdgFD0TDoG/Pk6rBF5GZj0q9my5X8G4kxdXL5xdhDhxGTa/jUv1XT6GDMH1
+         Bz4Lr6Q5orNffC/BDuW6KmIvWwQHygq7DW1q2RBN5k5rOJQn178kqVYRk8oMv7qm8o
+         KYXMTnUB9aDn1NBF489aKW8Csh8OZ5d+YNV+0ct0=
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   Michael Yartys <michael.yartys@protonmail.com>
+Reply-To: Michael Yartys <michael.yartys@protonmail.com>
+Subject: Not able to roam on FT-SAE network
+Message-ID: <NB-cdP_zWop55KKgEYOXNh25URknq08i4hqQ2mRF9aVBi6YFIlJaYIk9pg1ewyJY7hLC1x8mtEFX5WyutbN3YZRoyaJMvOpn7MH2GsUTv7o=@protonmail.com>
 MIME-Version: 1.0
-Received: by 2002:ac2:5d2e:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 10:33:10
- -0700 (PDT)
-Reply-To: majidmuzaffar8@gmail.com
-From:   Majid Muzaffar <ing.abdullabin.rishid.me@gmail.com>
-Date:   Tue, 10 Aug 2021 20:33:10 +0300
-Message-ID: <CAFsu49XXzY7ugKhGzJm5OPKe2LG1R35c-Dkp83VgS3+u27y=sQ@mail.gmail.com>
-Subject: Proposal
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Salam alaikum,
+Hi
 
-I am the investment officer of UAE based investment company who are
-ready to fund projects outside UAE, in the form of debt finance. We
-grant loan to both Corporate and private entities at a low interest
-rate of 3% ROI per annum. The terms are very flexible and interesting.
-Kindly revert back if you have projects that needs funding for further
-discussion and negotiation.
+I've been running an FT-SAE network for quite some time now, and I've long =
+noticed that my both my laptops with Intel 7260AC cards are unable to roam =
+from one AP to another. When I move the laptops to an area with poor signal=
+ strength the background scanning of NetworkManager/hostapd is triggered as=
+ expected and a roam appears to be initiated, but instead of successfully r=
+oaming to the other AP with better signal strength it ends up returning to =
+the current AP. This keeps on happening until I either manually disable and=
+ re-enable wifi, or if I move back to an area where the current AP has good=
+ signal strength. The laptops are running the following distros, kernels an=
+d wpa_supplicant versions:
 
-Thanks
+-- Laptop 1 --
+* Fedora 34
+* 5.13.8-200
+* wpa_supplicant v2.9
 
-investment officer
+-- Laptop 2 --
+* Ubuntu 20.04.2 LTS
+* 5.11.0-25
+* wpa_supplicant v2.10-devel-hostap_2_9-2285-gc3155a725 (recent snapshot)
+
+I can provide relevant logs from wpa_supplicant and the APs to developers p=
+ersonally.
+
+Michael
