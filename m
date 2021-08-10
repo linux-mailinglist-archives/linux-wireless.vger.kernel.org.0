@@ -2,77 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D69833E7DFE
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Aug 2021 19:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CD573E7EB5
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Aug 2021 19:34:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230042AbhHJRJR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Aug 2021 13:09:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45150 "EHLO
+        id S233175AbhHJRe6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Aug 2021 13:34:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229663AbhHJRJR (ORCPT
+        with ESMTP id S232881AbhHJRe1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Aug 2021 13:09:17 -0400
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3927C0613C1
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Aug 2021 10:08:54 -0700 (PDT)
-Received: by mail-qt1-x82f.google.com with SMTP id b1so16044888qtx.0
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Aug 2021 10:08:54 -0700 (PDT)
+        Tue, 10 Aug 2021 13:34:27 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05A64C061372
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Aug 2021 10:33:13 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id x7so18726493ljn.10
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Aug 2021 10:33:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=M0nMc32VdYeoROakqfdUuqdNeVnekYQ4hd5V8oDaN7M=;
-        b=pgVJN2i7UW0gnI9xKl+qd1+UJbk1gvKBllUJjNMc9eYv01CFtXlOZsejG/mBg46Ka3
-         dwcU/JR6gTtc2oO744Ojs2krSWB+9aCLGX7V9pCMRZUiM7nY94G383Ld3gWk3/ohKNPL
-         LgJ68mkfhYBUVKQKLqvUoyp/t6SQNRmFbK6v2iBiVy20ZoaYz9LchiaSJWCEa6+wdn/i
-         A+oWfBv7lw74wxLsb8Enfw0AGpgVlLcFzSB7j3YnN4KsTF/99dfKNfZM+pvbj16zNZij
-         +WX0Qv/KN398U+DH/170VpHbZb2kdkzc8IDwI9xTGVLjdvS/g+RcmFo42B2NyLMRKOse
-         esqg==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
+        b=RsiBBdA9QKOcTCF5lGXKVsjmClQ3sMV8nYRHi5UzQ6RFRdaZ6t981j56diJ7q3WLiT
+         dSrogDmRt6kwHS+J+pcIdphvlu5Vk62bOJudqb0dzEOf5Tr6sAVMWTY2NbEn++ZnSdaf
+         F4yj6h4F7VBk6uVCXN4p2StSiBpSckLhr0NJoCtUTvVh+gCrpSdvA2dss+nT8Q4XWg+b
+         4x9fMuBGMminOSzPCK8njOsWexpWsfb2omBFXa3GLhHqzUauC1r8oyB3fDvFuiS7qNjT
+         fDqijYMWxjmP3EeBvtWaIUY7Z5YEma/9OhqmI5Ya7ZKqW/5hzlkm8xAdNsqyzESz/5Xj
+         5sZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=M0nMc32VdYeoROakqfdUuqdNeVnekYQ4hd5V8oDaN7M=;
-        b=PwMjqdzJsUmfz+7RMRHA7IIUa03KVwPYQZoAoK7N/JrEdQ6K9MiYMuZ8+e9oQJlnBq
-         HVGmami0Z4x516ohawlfMOvXA4xIMsv617JrG532GgUSTOSrObjG5UjlfGyLAL8mVxHJ
-         5UMxeGkuUmVuNzWkYO4uO5cf0Fhpua3r5WiQb+L7rJpZWEnjNnY02yCdFkoaIVWFYwxW
-         Vgc1rfrCNiDzMGsvjM/PDntUBlYYQFmc13l/g688B2hiBSfyvse/y/Bdf99MFPP1z1ba
-         z/rf/coUABN0xpc7hSGOAb8V03qvGBN9owaatGIfqr/fKqTvzMNBRnVVjcntvt8yMli1
-         4vJQ==
-X-Gm-Message-State: AOAM533xb5L8Hgi8pH+EZVY3yS4U+D6ZxBaCYAEGz9W6+HHntTLmSQur
-        V56qaaagRWrvz3T62yfTTKY06w==
-X-Google-Smtp-Source: ABdhPJxKPrfTZqcK0gHuLOcyLYaxjm3Jy4sYYs8ctATrBZ7Mwl/gg2kJDtdAgx2mpAz7DsuayNYgEA==
-X-Received: by 2002:ac8:73c9:: with SMTP id v9mr13551051qtp.12.1628615333996;
-        Tue, 10 Aug 2021 10:08:53 -0700 (PDT)
-Received: from [192.168.1.171] (bras-base-kntaon1617w-grc-28-184-148-47-47.dsl.bell.ca. [184.148.47.47])
-        by smtp.googlemail.com with ESMTPSA id c69sm2442113qkg.1.2021.08.10.10.08.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Aug 2021 10:08:53 -0700 (PDT)
-From:   Jamal Hadi Salim <jhs@mojatatu.com>
-To:     people <people@netdevconf.org>
-Cc:     lwn@lwn.net, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        netfilter-devel@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        lartc@vger.kernel.org
-Subject: Netdevconf 0x15 slides and papers up
-Message-ID: <64ae0651-61b7-7a40-2eb4-8f1cb6dda87e@mojatatu.com>
-Date:   Tue, 10 Aug 2021 13:08:52 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
+        b=bWGSMSvAgxNrJg4UdGdj97ExLG4F34yHwNzaCkc0hY3Vf+7RKYLxVDuzCVKWGG0XOR
+         oIiL+gjbQOeRAnkJvFRU+WgWRWFqHzA9+Wab8fCUFI9dJhBGPwI02DdDqfS7eJ4DOXT0
+         BxdI8Whx2bnfr249CROQyxjvUEZ9ur60UepoWd8WZ66zpuyqeNWImXmUt2DhwyUQxQXX
+         h8FA17SCmCN7qiqB+gTyJDpNy1GAsSxmm8EIgaWvZ6cGlEyeBPA2orika/zBs3iHnkNY
+         ilwKhOeRPCmRH5ZQ7n9wteW9zFWD63Wh3gfjElU6zrQfJrvIo70p+qdWNm8HiYNNBktf
+         FHmA==
+X-Gm-Message-State: AOAM533exOgMOGHJ/2LBd0nQJBfJfWF6eR6zbtMi0EnYtl629yhzXztX
+        b6kmyZl5L98f2ZD13yNBVIxUeJWAl9Oj2kesBRM=
+X-Google-Smtp-Source: ABdhPJw+sC+pBQw0G+0ULVvin/r/jCVVb1V7XUqN67UCoWrnBzyIXnaSzK5br1SZrCupI/L0LIZWgMfi7vhpZK+Wcm0=
+X-Received: by 2002:a05:651c:32c:: with SMTP id b12mr1745558ljp.198.1628616792032;
+ Tue, 10 Aug 2021 10:33:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ac2:5d2e:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 10:33:10
+ -0700 (PDT)
+Reply-To: majidmuzaffar8@gmail.com
+From:   Majid Muzaffar <ing.abdullabin.rishid.me@gmail.com>
+Date:   Tue, 10 Aug 2021 20:33:10 +0300
+Message-ID: <CAFsu49XXzY7ugKhGzJm5OPKe2LG1R35c-Dkp83VgS3+u27y=sQ@mail.gmail.com>
+Subject: Proposal
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi folks,
+Salam alaikum,
 
-The slides and papers are now up. The videos will come after.
+I am the investment officer of UAE based investment company who are
+ready to fund projects outside UAE, in the form of debt finance. We
+grant loan to both Corporate and private entities at a low interest
+rate of 3% ROI per annum. The terms are very flexible and interesting.
+Kindly revert back if you have projects that needs funding for further
+discussion and negotiation.
 
-Check the session pages for the links to the slides and papers
-https://netdevconf.info/0x15/accepted-sessions.html
+Thanks
 
-cheers,
-jamal
+investment officer
