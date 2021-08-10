@@ -2,84 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88D3A3E58B5
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Aug 2021 12:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 448023E5999
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Aug 2021 14:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238063AbhHJK7C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Aug 2021 06:59:02 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:60094 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236602AbhHJK7B (ORCPT
+        id S238548AbhHJMFP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Aug 2021 08:05:15 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:14299 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235466AbhHJMFP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Aug 2021 06:59:01 -0400
-X-Greylist: delayed 364 seconds by postgrey-1.27 at vger.kernel.org; Tue, 10 Aug 2021 06:59:01 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1628592748;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=vaByksnZU0SJEQddb5aLty6JxOjM7E9gHuqnSrHVxIY=;
-        b=va2OkbaZUnybNsNJgvbLYD6cyhKkKOenUxtS/vyUWXreNV2RJQ5Uz+K4jd8sK5w2GJW138
-        bLe8K9FYsQwPzplzFAuag5neDaa9pFNvVHE8Gihake6iWxieHc2Vu4aFnd6dLsGDr3rA8j
-        cN8+VgDKdJCCxLI8jmbnHYmcxeTYyUY=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Maharaja Kennadyrajan <mkenna@codeaurora.org>
-Subject: Re: [PATCH v5 1/3] nl80211: Add support for beacon tx mode
-Date:   Tue, 10 Aug 2021 12:52:20 +0200
-Message-ID: <6210385.n8AMQ0p90U@ripper>
-In-Reply-To: <1628585783-21139-2-git-send-email-mkenna@codeaurora.org>
-References: <1628585783-21139-1-git-send-email-mkenna@codeaurora.org> <1628585783-21139-2-git-send-email-mkenna@codeaurora.org>
+        Tue, 10 Aug 2021 08:05:15 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1628597093; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=w4YQaQH2LBKxBMptHGZhvdKN7L2B42qvUJiqZuTkJnQ=;
+ b=LNJPVadVu4O6M7WYZVI8ba6QOjfbzSOa21vQBEFcpIaRL0X9FFdKcDnNiOOou98RQ0Se/mjN
+ /3b8PTueGL+sJE7krwQOwrHR6uPeAIjxS1CTBbA9hb921ofJOLpfGZJjy9i674XZQUl6GT8T
+ 0aye4XwZHdY3DzoOI5RxaLb2PPU=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 61126ac891487ad520068350 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 10 Aug 2021 12:02:16
+ GMT
+Sender: mkenna=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5A0D2C433D3; Tue, 10 Aug 2021 12:02:15 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: mkenna)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1E492C433F1;
+        Tue, 10 Aug 2021 12:02:15 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart6500757.dMg44LP4KO"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 10 Aug 2021 17:32:15 +0530
+From:   Maharaja Kennadyrajan <mkenna@codeaurora.org>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v5 1/3] nl80211: Add support for beacon tx mode
+In-Reply-To: <7eaa665c-7f9b-268c-5297-4d3851e10e43@nbd.name>
+References: <1628585783-21139-1-git-send-email-mkenna@codeaurora.org>
+ <1628585783-21139-2-git-send-email-mkenna@codeaurora.org>
+ <7eaa665c-7f9b-268c-5297-4d3851e10e43@nbd.name>
+Message-ID: <f96e91618142c34172d12954f2f08ce9@codeaurora.org>
+X-Sender: mkenna@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart6500757.dMg44LP4KO
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org, Maharaja Kennadyrajan <mkenna@codeaurora.org>
-Subject: Re: [PATCH v5 1/3] nl80211: Add support for beacon tx mode
-Date: Tue, 10 Aug 2021 12:52:20 +0200
-Message-ID: <6210385.n8AMQ0p90U@ripper>
-In-Reply-To: <1628585783-21139-2-git-send-email-mkenna@codeaurora.org>
-References: <1628585783-21139-1-git-send-email-mkenna@codeaurora.org> <1628585783-21139-2-git-send-email-mkenna@codeaurora.org>
-
-On Tuesday, 10 August 2021 10:56:21 CEST Maharaja Kennadyrajan wrote:
-> 1. Staggered mode and 2. Burst mode while bring-up the AP
-> or MESH.
-
-Why when you bring up mesh or AP when it is actually a global setting for this 
-radio/PHY?
-
-
-Kind regards,
-	Sven
---nextPart6500757.dMg44LP4KO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmESWmQACgkQXYcKB8Em
-e0ZVNhAAzEL7jFJRhuGh9GrlP6Jrf8AdcQ+Loy1Pg3u6f4QtRmPvUtYyuh49dqXJ
-PA5Qheatm8hWbKRnvMLbJSwz6eZoN23R4bacKh0Zf3hpnyw3t5Z2VzLuEcqT1VYA
-N8X1sMQgqiFtUAsd+B3XXgJW+MIf73IY1/iQ3BNpoVJNCT6+rsCC+Nuc9/kQ7vzN
-U0X3/f4llpaaWoJqXuCOQwEMeEBU7VzMeliYki7qaecUYV09wx6Y5iDB4FN9BzBC
-7e32l7rQ/HIK4Ddr3g4/pUz1st3+2gJdVPcufS4KMMbremWw4nqSy4/cEqPMuZ2y
-vguzy+98Z7vJi2iFFP0o5GYYjDcE0Qn3e85bxoyj4jlNtZg5THufIty6LH+NB7do
-YPYd8xja/9DhlmbIbJf0rTRg70xSpbpf8fG+8nodxwPHnfdntj1aZkdWomzSIhVT
-txYkEFHbd/O7pAYZ2dHSmLYyDVFlclJonIPNrPq3aP687xagDSFt+i0vt2iRMl83
-zVM0lwIDZsyl1Z6MO53xcHQ3bFJOsf1ovzUm/roZ4cuxjPFhw9HWRXb6tQ3u0BFV
-uf1SBsGNBA6Ep1//suXx8+Qp1bxDWAthXouAsQyV44aX+ppR7nIaDh6KhUzep5q4
-K3VavYf3/cvOgDiHFuGgIyBYL3VmgYWHiGyaz/Bvh/xn1UJU/M8=
-=OsUH
------END PGP SIGNATURE-----
-
---nextPart6500757.dMg44LP4KO--
-
-
-
+On 2021-08-10 15:44, Felix Fietkau wrote:
+> On 2021-08-10 10:56, Maharaja Kennadyrajan wrote:
+>> User can configure the below beacon tx mode
+>> 1. Staggered mode and 2. Burst mode while bring-up the AP
+>> or MESH.
+>> 
+>> Beacons can be sent out in burst(continuously in a single shot
+>> one after another) or staggered (equally spread out over beacon
+>> interval) mode.
+>> 
+>> Set the beacon_tx_mode as 1 for Staggered mode and 2 for
+>> burst mode.
+> What's the advantage of one over the other? When and why would the user
+> choose a different mode other than the default?
+> 
+[Maha]: In the multi-vap scenario and default or staggered mode,
+tx failure of the packets will happen if the packets duration
+is greater than the beacon interval between the two vaps.
+In case of burst mode it works, where during retry it transmits
+the packet.
+> - Felix
