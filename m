@@ -2,64 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B87153E5B4D
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Aug 2021 15:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8DAF3E5C2A
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Aug 2021 15:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239632AbhHJNY0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Aug 2021 09:24:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48566 "EHLO
+        id S241939AbhHJNux (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Aug 2021 09:50:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241356AbhHJNYV (ORCPT
+        with ESMTP id S233318AbhHJNuw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Aug 2021 09:24:21 -0400
-Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com [IPv6:2607:f8b0:4864:20::932])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC6F9C0617A3
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Aug 2021 06:23:58 -0700 (PDT)
-Received: by mail-ua1-x932.google.com with SMTP id b7so398716uav.11
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Aug 2021 06:23:58 -0700 (PDT)
+        Tue, 10 Aug 2021 09:50:52 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E24C0613D3;
+        Tue, 10 Aug 2021 06:50:30 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id t7-20020a17090a5d87b029017807007f23so4422166pji.5;
+        Tue, 10 Aug 2021 06:50:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=2tvLhkad0w+Mh63WhnFJkmRFgYsLXsJmUqGVjzUAFIo=;
-        b=qJkL8fZ0S06Z0FQYNh/4MmhK7j+A3bS9xjmC8OhX22QJHec66aC0Yf4uxmFTWU4uq4
-         4zaEpRJNfTE5P16qMJLxRcIb0ytBzoINHrciZ16oueveU7FDwweNrhTU3c5UDo/z56b1
-         V6OdxuJ3tySYUYaZ04rAyM/uWtPYMenii8jy05cVXjVhDDgXkFHgaK2GOhpBsc52YFve
-         VL8iidod2m9w/QUkoClpuMrUGWkFzng1pEsZ+h9zY+IQVIYyQzRt6aNjeoljVsfoneAG
-         aU0zlSqRp6BET5jUs8EdKhkDPhg4/tsUe0YNuMP0A6vUsTut9Hk4K2nn2uiUPyEelDJr
-         VDiA==
+        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+         :content-transfer-encoding:content-language;
+        bh=Na5r6WxMbNS8Nyf4HKx/vDqX/nZNyBc04/DnaxOLZ2Y=;
+        b=Ahbyu2SQmqnDXV3uBXJSN8rqkMvO/ZJlqir0IXF1zyK/AGu22zKxz2xhsCDJEXR+uA
+         3alD+uwbGXY2v84PLfKm1FBFnWPEJ5FlkFfiBLCsEGZoQa/rEuo6P4+xcZG2ez3xqKAV
+         Smkq4m+LX89dPNk9wuhGd+UukuQSh1Jf6P0zH18Rei2FgLiqIHeKpZIjNvcJp68xV4O3
+         fhYSl0CaINn65Ft6SpvsEyqUC37C31UkXoied8mffJyG865V09HIdKxCE1+6xH416elk
+         QPi07rf45Yquu5bsMnJfsHxezsbCQ1AE4tFMeIcNY+AV7G6xg3WXhxVdjA2lGBoWz1mU
+         3itw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=2tvLhkad0w+Mh63WhnFJkmRFgYsLXsJmUqGVjzUAFIo=;
-        b=HS/JDixuQMi0BxoQtvJEgccBDvcxEYkESD5QiNNBSLXNnHBu/yoFW6d8XVj1h9gbpo
-         qAh9pZoX01n2UpFRM7PMPbiSizu/yRq+dVEQs8sJN4G7GKO9Gabki6YL/14XEUX8mlV0
-         tfBVUb353ojrZB0EaUUQaGwQTnhrlVcsIEIl8NX6FhgMxkcaODzP7//xTMB6KUy7i+BB
-         OVPCBTEAp3Bc4WH/IFG/mbM9OBiY3vDp1BZp3No3iM+cjclSL+g8c9ecRh/Wb4/1zBs6
-         N6dk95UYGRkvU41HgG3Rqzox9N0s2QhvWlCQNztgkQ9UspvmAwboCF3++3f1O8RDtksC
-         CDHA==
-X-Gm-Message-State: AOAM53366tayhpwCmAToYmXDaqfYVlEo+C6gL+Nfl/jN1RL+ejYMtML6
-        pBjpS79sXPk/IGIPqDk0H3w+1TRnFmK1I5aiGb8=
-X-Google-Smtp-Source: ABdhPJzvLPSDVsAzGJ6P6qYZROOmnBdkR5scyeQ8xySEfopDOzsn96BkEsNJXYQk9ma1do3JY374g/deOX6n1CT3K3s=
-X-Received: by 2002:ab0:3b59:: with SMTP id o25mr9024839uaw.80.1628601838128;
- Tue, 10 Aug 2021 06:23:58 -0700 (PDT)
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-transfer-encoding:content-language;
+        bh=Na5r6WxMbNS8Nyf4HKx/vDqX/nZNyBc04/DnaxOLZ2Y=;
+        b=leNr+6PHM+R2HoRrICc8Q0pqCnwIuKZpavzZ4uSo8MkRJEadqHshx5HLlgHTlhVE/N
+         wc82QYRh0lj0Ce4oGFLohKskRoib41W1Xz+eZLnMJkyVWI53foEWAFvpgz3rxprhoh05
+         M2JT91LwqtVHIaXVCyC9fLPU+PPs77LV0FfeHdYtHmD2q330BoLbwq/RE3y1eByg+TMj
+         8fjL+gvAnysNdc+CGyoJz0yGsZmESPE4sBwLifc//HHhNxc6QoHY8hI+BOVXpjKWJZzZ
+         R1XzzQ0wI2Gz5XZXSp+sQahjAJKNGYZHwgyb135FEyc2HqGf+6X+s/2amb/Cgpo0e0Bm
+         /gQA==
+X-Gm-Message-State: AOAM530VkHEWy86wPTLIFNh+QEw95l/V0T/nmD3CQLZhUZAsjbLAYpiB
+        AYx9W/8yqmx2j86nqVimNijgLaPZs3Jov9hE
+X-Google-Smtp-Source: ABdhPJwV3jkigz40brQy9FHVLtrTjI+Mefvt3ubGb4yUvVNbzWqZ6cgeEI5Ca4ZSqeMlG7am0ui1UQ==
+X-Received: by 2002:a05:6a00:808:b029:3c1:15ba:ade2 with SMTP id m8-20020a056a000808b02903c115baade2mr23517872pfk.74.1628603430204;
+        Tue, 10 Aug 2021 06:50:30 -0700 (PDT)
+Received: from [10.178.0.62] ([85.203.23.37])
+        by smtp.gmail.com with ESMTPSA id d2sm28417068pgv.87.2021.08.10.06.50.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Aug 2021 06:50:29 -0700 (PDT)
+To:     stas.yakovlev@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     "baijiaju1990@gmail.com" <baijiaju1990@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+From:   Tuo Li <islituo@gmail.com>
+Subject: [BUG] ipw2x00: possible null-pointer dereference in
+ libipw_wx_set_encode()
+Message-ID: <b9e3b7c9-59e4-7b3d-45d0-89ca006d45fc@gmail.com>
+Date:   Tue, 10 Aug 2021 21:50:26 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Sender: immeublesourou@gmail.com
-Received: by 2002:ab0:3903:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 06:23:57
- -0700 (PDT)
-From:   John Kumor <owo219901@gmail.com>
-Date:   Wed, 11 Aug 2021 01:23:57 +1200
-X-Google-Sender-Auth: yS3UzgPnn68wNDbf-hnce3gLnn0
-Message-ID: <CAHdg_cT_K-3CiTtG_z=2JyS3OA_ir2VvAFdLZYYHbPxjicSz0w@mail.gmail.com>
-Subject: Urgent
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My dear,
-Greetings! I trust that all is well with you and your family. Did you
-receive my previous email?
-Regards
-John Kumor.
+Hello,
+
+Our static analysis tool finds a possible null-pointer dereference in 
+the ipw2x00 driver in Linux 5.14.0-rc3:
+
+The variable (*crypt)->ops is checked in:
+360:    if (*crypt != NULL && (*crypt)->ops != NULL && 
+strcmp((*crypt)->ops->name, "WEP") != 0)
+
+This indicates that (*crypt)->ops can be NULL. If so, some possible 
+null-pointer dereferences will occur:
+407:    (*crypt)->ops->set_key(sec.keys[key], len, NULL, (*crypt)->priv);
+417:    len = (*crypt)->ops->get_key(sec.keys[key], WEP_KEY_LEN, ...)
+
+I am not quite sure whether these possible null-pointer dereferences are 
+real and how to fix them if they are real.
+Any feedback would be appreciated, thanks!
+
+Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+
+Best wishes,
+Tuo Li
