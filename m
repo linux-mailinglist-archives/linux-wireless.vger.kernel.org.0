@@ -2,79 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2607A3E518E
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Aug 2021 05:39:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 465963E556F
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Aug 2021 10:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236607AbhHJDjm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Aug 2021 23:39:42 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.48]:53756 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230039AbhHJDjm (ORCPT
+        id S238455AbhHJIcs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Aug 2021 04:32:48 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:18525 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238412AbhHJIcU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Aug 2021 23:39:42 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.66.135])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 1E84D1A0068
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Aug 2021 03:39:20 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id F1F384C0027
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Aug 2021 03:39:19 +0000 (UTC)
-Received: from [192.168.254.6] (unknown [50.34.183.227])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        Tue, 10 Aug 2021 04:32:20 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1628584318; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=k8fAPXmJhs2qAvhPhJBwaZE1UtzhiWWsv7aTQpRafF8=;
+ b=g3DRnJSDJFJLXvglu/UJwHrJ5QXXwWhnxjVR9ckmirZUpemWLVdX6AtLqtlKNZlfp/VhyLyo
+ ZER+GAzeolDu7CuDwYnBKHKIKGVbaQGxQsnLxP2ZCngyacxQe/XGbqR1TXFmuvL5pkA7ZlhS
+ bpiF3Qd/Dl1aqjBl+QfFj91yw/Q=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 6112396bb14e7e2ecbb0e484 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 10 Aug 2021 08:31:39
+ GMT
+Sender: mkenna=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E6A20C43149; Tue, 10 Aug 2021 08:31:38 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 53CE413C2B1
-        for <linux-wireless@vger.kernel.org>; Mon,  9 Aug 2021 20:39:19 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 53CE413C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1628566759;
-        bh=imY1lNm5G8GUS/q6JcEIXoquPUAy6l9bqDPSMjQypgc=;
-        h=To:From:Subject:Date:From;
-        b=jD9hlL4+DwRdj1fJzOizB8UbjkkFWQ/4za5EZ6ZmklE/lTJuSrt6tv5Cs4O2Y4wSc
-         eXxLWqD/GDyc6aEFz+qLNe7ECFWA4PiIzZRSCbs4YPe+nBQfhM88jrc7nrwdY4sysM
-         sA5uMex/lhtBAwbEK68wXt4OeRbtjPkScvgZr8ZM=
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   Ben Greear <greearb@candelatech.com>
-Subject: question on HE debugfs output
-Organization: Candela Technologies
-Message-ID: <578da3a0-f029-4e60-d4e6-34d42def62e8@candelatech.com>
-Date:   Mon, 9 Aug 2021 20:39:18 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        (Authenticated sender: mkenna)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C64CEC43143;
+        Tue, 10 Aug 2021 08:31:37 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-MDID: 1628566760-7OHsPFOgfl5T
+Date:   Tue, 10 Aug 2021 14:01:37 +0530
+From:   Maharaja Kennadyrajan <mkenna@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] nl80211: Add support for beacon tx mode
+In-Reply-To: <f14e6e6b81978ace4580774981a7e032b4001182.camel@sipsolutions.net>
+References: <1623164855-15910-1-git-send-email-mkenna@codeaurora.org>
+ <1623164855-15910-2-git-send-email-mkenna@codeaurora.org>
+ (sfid-20210608_171052_201356_8AEA5406)
+ <f14e6e6b81978ace4580774981a7e032b4001182.camel@sipsolutions.net>
+Message-ID: <65b594ccab0a30bfb5bc2122cbf73f20@codeaurora.org>
+X-Sender: mkenna@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Johannes,
-
-While poking around in things, I noticed that the
-he_capa debugfs is not showing the least-common-denominator, but rather
-more specifically the peer's capabilities.
-
-This could be bugs in how I'm using this, but thought I'd ask to
-see if this was on purpose or not.
-
-Code in question looks like this.  That sta->sta.he_cap is
-from the peer as far as I can tell.  The local one is obtained
-from the radio/driver (and then modified a bit in some hackings
-I am doing).
-
-static ssize_t sta_he_capa_read(struct file *file, char __user *userbuf,
-				size_t count, loff_t *ppos)
-{
-	char *buf, *p;
-	size_t buf_sz = PAGE_SIZE;
-	struct sta_info *sta = file->private_data;
-	struct ieee80211_sta_he_cap *hec = &sta->sta.he_cap;
-	struct ieee80211_he_mcs_nss_supp *nss = &hec->he_mcs_nss_supp;
-
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+On 2021-06-23 16:46, Johannes Berg wrote:
+> First, I'd like to see some input from other vendors - is this useful?
+> 
+> I have no objections to it and it comes with an in-kernel driver, so 
+> I'm
+> inclined to accept it, but maybe we should have other modes, etc.?
+> 
+> 
+>> + * @NL80211_ATTR_BEACON_TX_MODE: used to configure the beacon tx mode 
+>> as
+>> + *      staggered mode = 1 or burst mode = 2 in %NL80211_CMD_START_AP 
+>> or
+>> + *      %NL80211_CMD_JOIN_MESH from user-space.
+> 
+[Maha]: will replace the hard-coded values with enum here.
+> 
+> This should refer to the enum, not the hard-coded constants.
+>> 
+>> +/**
+>> + * enum nl80211_beacon_tx_mode - Beacon Tx Mode enum.
+>> + *      Used to configure beacon staggered mode or beacon burst mode.
+>> + */
+>> +enum nl80211_beacon_tx_mode {
+> 
+> 
+> That's missing kernel-doc, and you also don't specify what default
+> means. Why is it even here?
+> 
+[Maha]: sure, I will add the same in the kernel-doc.
+>> +	[NL80211_ATTR_BEACON_TX_MODE] = NLA_POLICY_RANGE(NLA_U32, 1,
+> 2),
+> 
+> That really also needs to use the enum, not hard-coded constants...
+[Maha]: will replace the hard-coded values with enum also here.
+> 
+> johannes
