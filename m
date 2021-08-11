@@ -2,70 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60FC53E95C4
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Aug 2021 18:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C59AD3E95C9
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Aug 2021 18:19:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229966AbhHKQSC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Aug 2021 12:18:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55378 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229588AbhHKQSC (ORCPT
+        id S229811AbhHKQTq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Aug 2021 12:19:46 -0400
+Received: from mail-40134.protonmail.ch ([185.70.40.134]:53390 "EHLO
+        mail-40134.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229473AbhHKQTp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Aug 2021 12:18:02 -0400
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41B3CC061765
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Aug 2021 09:17:38 -0700 (PDT)
-Received: by mail-qv1-xf32.google.com with SMTP id 3so1442216qvd.2
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Aug 2021 09:17:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=yhvM+JkFggzUW8DMDrmAWjVU7mJmMX9GTEZl6kWxpNk=;
-        b=ve22Z4xKXgOwiVW8Zs1/PlssDPd73dSg436bIS+IO1PxK9Vbl4KWsY9Md3tizUVOH9
-         PRkK7hcrMsXOo0xKk8tKLj6thZyP5xOUFM6N2PRrsbE+Z1mMc5LB6AxeqHyysQbJCDbB
-         hAzo0LZJLOxc2IDxoRPM2c/3p1xrZHcxCee4/UgCFR+9YvF/oUlPtBmY3bnt49PLLEW6
-         oqAwBYZM5ecO+zvgRLah9+6r60UcXJEECVfROxTv3Jd8t2GzPEqL8Kduo2bc2lRSokiD
-         adpzMtLsZtKHPyki7Lm24Y+lU24zasCgY8c3iaf4I+tsJmRdpeITeifZRW4AZlsB7CSM
-         Nzhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=yhvM+JkFggzUW8DMDrmAWjVU7mJmMX9GTEZl6kWxpNk=;
-        b=SvMcEy16lhUrdPQs4Zq354jm/adfHDxLovarRivh1TT25XJmvS3ZrpgYqg7LTtLkKC
-         ryZjTwNxQR9MeNp8I6Hczit//kNbHXCY2baCQMT843f3r7su5H71PxHv684VwNASlxEM
-         H0jFnYR1NUk2n6YO0tJG+Rh2ZSDJsbca7VV3jFCf01ZWZzejf8yEeKvB/JOuOXeneexp
-         jvjfmOOaH6dv2ncigwPYm1vXS+GvfBd1KDLYe7v/UT7YDL0YExId42DsWi8KK+k1VHRj
-         C9Ct/bxWEdamko/8cqxdz2amHgZqOJDayue08NcZG5RvFXuZe/JjkD0LtNgwvkPnT23i
-         rbYw==
-X-Gm-Message-State: AOAM532sqnw91l25eALYrZ+KhIwSQKgb2OWkOMraSnkMHcxfekc3OiQL
-        WqolulYCzAgwk3EEGD2ntByv8f8IfhPQU/KeTHs=
-X-Google-Smtp-Source: ABdhPJwoSc/a8vSNYy2Wt8OxZHw7Ng9zTlVteWK5nkhEP84Y+yqmRoMRYnc17dHBvhY9HfDJWORTHXjrW0spxOKkwJ8=
-X-Received: by 2002:ad4:4dc5:: with SMTP id cw5mr10799850qvb.62.1628698657243;
- Wed, 11 Aug 2021 09:17:37 -0700 (PDT)
+        Wed, 11 Aug 2021 12:19:45 -0400
+Date:   Wed, 11 Aug 2021 16:19:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1628698760;
+        bh=HzJlQKp2vEDcv5QHMFvxuwBRR+J+RG73R9ydHLvkdSw=;
+        h=Date:To:From:Reply-To:Subject:In-Reply-To:References:From;
+        b=WPcKX8AXN0ZhI3k5zxirbne+eMxEaYWqGwTacFay3LCzTrnEecDbWXXqKvxsufKjW
+         bGBWd9wrKOWur/edfb/p1FT9MpjOfGvrL1q6HMOwD1A5JAMX0cAbhBy4id6ut5iE0J
+         v6nRXVLgnF+py9SYrCKXsqVgy2EwttMzhZbvz5LM=
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   Michael Yartys <michael.yartys@protonmail.com>
+Reply-To: Michael Yartys <michael.yartys@protonmail.com>
+Subject: Re: Not able to roam on FT-SAE network
+Message-ID: <V0_IPYc_Npfn1PZUsG4j0O18IfrVvtou6oKpNYuaij5nYWJ1q8IALf7_C2trQiys9MSGzAPM22bxZAAPB2GbONz4Em5xGA116mR2N80qpV4=@protonmail.com>
+In-Reply-To: <NB-cdP_zWop55KKgEYOXNh25URknq08i4hqQ2mRF9aVBi6YFIlJaYIk9pg1ewyJY7hLC1x8mtEFX5WyutbN3YZRoyaJMvOpn7MH2GsUTv7o=@protonmail.com>
+References: <NB-cdP_zWop55KKgEYOXNh25URknq08i4hqQ2mRF9aVBi6YFIlJaYIk9pg1ewyJY7hLC1x8mtEFX5WyutbN3YZRoyaJMvOpn7MH2GsUTv7o=@protonmail.com>
 MIME-Version: 1.0
-Reply-To: evelynbintaa01@gmail.com
-Sender: dosserpicard@gmail.com
-Received: by 2002:ac8:7ecf:0:0:0:0:0 with HTTP; Wed, 11 Aug 2021 09:17:36
- -0700 (PDT)
-From:   Evelyn Binta <evelynbintaa01@gmail.com>
-Date:   Wed, 11 Aug 2021 16:17:36 +0000
-X-Google-Sender-Auth: wO-Dr7wZfv1721AD7vP9Gn0r1rw
-Message-ID: <CANGjjsBhB6C7Sw+M-x=oYADRLoawigVT-h42azas-oqjupnkjg@mail.gmail.com>
-Subject: I Need Your Friendly Assistance
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-My Dear, I know this message will be so strange to you, but i summon
-courage to reach you because i desperately need your friendly
-assistance there in your country. I am making preparations to relocate
-with my children there and i have some capital which i wanted to
-invest there to be able to take care of my kids and i want you by my
-side to plan the investment and decide the best city for us to reside.
-Please i will be waiting for your response, so that you will
-understand properly the reason why i contacted you.
+Hi
 
-Mrs.Evelyn
+I did a packet capture and I found out that what happens is that the client=
+ attempts to authenticate with fast transition, but the AP rejects the requ=
+est due to an invalid PMKID. What's interesting is that my iPad causes the =
+same behaviour, which might indicate that the problem lies with hostapd rat=
+her than the client implementations. I'll post this on the hostapd mailing =
+list as well.
+
+Michael
+
+=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original Me=
+ssage =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
+
+On Tuesday, August 10th, 2021 at 21:59, Michael Yartys <michael.yartys@prot=
+onmail.com> wrote:
+
+> Hi
+>
+> I've been running an FT-SAE network for quite some time now, and I've lon=
+g noticed that my both my laptops with Intel 7260AC cards are unable to roa=
+m from one AP to another. When I move the laptops to an area with poor sign=
+al strength the background scanning of NetworkManager/hostapd is triggered =
+as expected and a roam appears to be initiated, but instead of successfully=
+ roaming to the other AP with better signal strength it ends up returning t=
+o the current AP. This keeps on happening until I either manually disable a=
+nd re-enable wifi, or if I move back to an area where the current AP has go=
+od signal strength. The laptops are running the following distros, kernels =
+and wpa_supplicant versions:
+>
+> -- Laptop 1 --
+>
+> -   Fedora 34
+> -   5.13.8-200
+> -   wpa_supplicant v2.9
+>
+>     -- Laptop 2 --
+> -   Ubuntu 20.04.2 LTS
+> -   5.11.0-25
+> -   wpa_supplicant v2.10-devel-hostap_2_9-2285-gc3155a725 (recent snapsho=
+t)
+>
+>     I can provide relevant logs from wpa_supplicant and the APs to develo=
+pers personally.
+>
+>     Michael
