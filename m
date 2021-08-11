@@ -2,132 +2,209 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DA863E9A83
+	by mail.lfdr.de (Postfix) with ESMTP id D524C3E9A85
 	for <lists+linux-wireless@lfdr.de>; Wed, 11 Aug 2021 23:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232280AbhHKVps (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Aug 2021 17:45:48 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.48]:52200 "EHLO
+        id S232366AbhHKVpv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Aug 2021 17:45:51 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.184]:58450 "EHLO
         dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232209AbhHKVpS (ORCPT
+        by vger.kernel.org with ESMTP id S232212AbhHKVpT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Aug 2021 17:45:18 -0400
+        Wed, 11 Aug 2021 17:45:19 -0400
 X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.133])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 3BBFB1C0078
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.48.61])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id EEB3F2005E
         for <linux-wireless@vger.kernel.org>; Wed, 11 Aug 2021 21:44:51 +0000 (UTC)
 Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 05327B00077
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Aug 2021 21:44:50 +0000 (UTC)
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id B3217C0070
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Aug 2021 21:44:51 +0000 (UTC)
 Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 8E20013C2BB;
+        by mail3.candelatech.com (Postfix) with ESMTP id 00A8013C2BC;
         Wed, 11 Aug 2021 14:44:50 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8E20013C2BB
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 00A8013C2BC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1628718290;
-        bh=FYpMgNZRlt2UK3/srkfuBUP1LDdB2QWKkLq/QbOdSXY=;
+        s=default; t=1628718291;
+        bh=i5oeDBHi/e687OJ0AVoEccXnXu7tCfqappsSLtfOngg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VyBG0NL5VVkCCG/FKXWee/hTWHxpmCOkeb8rf6dgq3x7maxw0ALamsf/Vp/qrlM51
-         I5NOYCZtUkKgLxlKlVlz3dylsTKPMKpBQOziHjiYafyCDmoJlAftRMhymEE/o//Cla
-         wbT8WZ/1ZRuWlPsamH6XDD9xZ4Pud5V2ImaTN3ZA=
+        b=CSAnVLwp9E+1qPWi0bXlOr3QpAiFTDYgSx0zaPw3J/8WEtD3Uo1DUC/WQRam+itQE
+         mLwKXq+3WpuuLWGTjuQO6YJpzJRCbGSybwX/k/6Vj1GgRUx/UUtyotzwpOd7mrkQGN
+         h9I9CuzfgCfhlwO/W3RQ0gYa8s9w3bcuS+SfQwIg=
 From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 06/15] mt76: mt7915:  rename amsdu_pack_stats to tx_amsdu_pack_stats
-Date:   Wed, 11 Aug 2021 14:44:30 -0700
-Message-Id: <20210811214439.17458-7-greearb@candelatech.com>
+Subject: [PATCH 07/15] mt76: mt7915:  ethtool group-5 rx stats information
+Date:   Wed, 11 Aug 2021 14:44:31 -0700
+Message-Id: <20210811214439.17458-8-greearb@candelatech.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20210811214439.17458-1-greearb@candelatech.com>
 References: <20210811214439.17458-1-greearb@candelatech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1628718291-PJT7RLvtLNbP
+X-MDID: 1628718292-m0ViCENeW0vW
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ben Greear <greearb@candelatech.com>
 
-Make it more clear that this is a tx-stat, and move it to
-the tx section of the mib stats struct.
+Add ethtool support for rx-nss, rx-bw, rx-mode stats.
+These are only valid when the group-5 rx stats are
+enabled.
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c | 8 ++++----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c     | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt7915/main.c    | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h  | 3 +--
- 4 files changed, 8 insertions(+), 9 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 23 ++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 42 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    | 10 +++++
+ 3 files changed, 75 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index 885c60ea2a71..688641ea4bb5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -488,11 +488,11 @@ mt7915_tx_stats_show(struct seq_file *file, void *data)
- 
- 	/* Tx amsdu info */
- 	seq_puts(file, "Tx MSDU statistics:\n");
--	for (i = 0, n = 0; i < ARRAY_SIZE(mib->amsdu_pack_stats); i++)
--		n += mib->amsdu_pack_stats[i];
-+	for (i = 0, n = 0; i < ARRAY_SIZE(mib->tx_amsdu_pack_stats); i++)
-+		n += mib->tx_amsdu_pack_stats[i];
- 
--	for (i = 0; i < ARRAY_SIZE(mib->amsdu_pack_stats); i++) {
--		long si = mib->amsdu_pack_stats[i];
-+	for (i = 0; i < ARRAY_SIZE(mib->tx_amsdu_pack_stats); i++) {
-+		long si = mib->tx_amsdu_pack_stats[i];
- 
- 		seq_printf(file, "AMSDU pack count of %d MSDU in TXD: %ld ",
- 			   i + 1, si);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index b44ca71e7d06..f1cff26cbc36 100644
+index f1cff26cbc36..697dbf62c35f 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -2204,8 +2204,8 @@ mt7915_mac_update_stats(struct mt7915_phy *phy)
- 	}
+@@ -424,6 +424,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 	u8 qos_ctl = 0;
+ 	__le16 fc = 0;
+ 	int i, idx;
++	struct mt7915_sta_stats *mstats = NULL;
  
- 	/* Tx amsdu info (pack-count histogram) */
--	for (i = 0; i < ARRAY_SIZE(mib->amsdu_pack_stats); i++)
--		mib->amsdu_pack_stats[i] += mt76_rr(dev,  MT_PLE_AMSDU_PACK_MSDU_CNT(i));
-+	for (i = 0; i < ARRAY_SIZE(mib->tx_amsdu_pack_stats); i++)
-+		mib->tx_amsdu_pack_stats[i] += mt76_rr(dev,  MT_PLE_AMSDU_PACK_MSDU_CNT(i));
+ 	memset(status, 0, sizeof(*status));
  
- }
+@@ -451,6 +452,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 		struct mt7915_sta *msta;
  
+ 		msta = container_of(status->wcid, struct mt7915_sta, wcid);
++		mstats = &msta->stats;
+ 		spin_lock_bh(&dev->sta_poll_lock);
+ 		if (list_empty(&msta->poll_list))
+ 			list_add_tail(&msta->poll_list, &dev->sta_poll_list);
+@@ -654,8 +656,19 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 				WARN_ON_ONCE(nss > 4);
+ 			}
+ 
++			if (mstats) {
++				if (nss > 3)
++					mstats->rx_nss[3]++;
++				else
++					mstats->rx_nss[nss - 1]++;
++
++				mstats->rx_mode[mode]++;
++			}
++
+ 			switch (FIELD_GET(MT_CRXV_FRAME_MODE, v2)) {
+ 			case IEEE80211_STA_RX_BW_20:
++				if (mstats)
++					mstats->rx_bw_20++;
+ 				break;
+ 			case IEEE80211_STA_RX_BW_40:
+ 				if (mode & MT_PHY_TYPE_HE_EXT_SU &&
+@@ -663,14 +676,24 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 					status->bw = RATE_INFO_BW_HE_RU;
+ 					status->he_ru =
+ 						NL80211_RATE_INFO_HE_RU_ALLOC_106;
++					if (mstats) {
++						mstats->rx_bw_he_ru++;
++						mstats->rx_ru_106++;
++					}
+ 				} else {
+ 					status->bw = RATE_INFO_BW_40;
++					if (mstats)
++						mstats->rx_bw_40++;
+ 				}
+ 				break;
+ 			case IEEE80211_STA_RX_BW_80:
+ 				status->bw = RATE_INFO_BW_80;
++				if (mstats)
++					mstats->rx_bw_80++;
+ 				break;
+ 			case IEEE80211_STA_RX_BW_160:
++				if (mstats)
++					mstats->rx_bw_160++;
+ 				status->bw = RATE_INFO_BW_160;
+ 				break;
+ 			default:
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index b3f3b53da843..427b275f123a 100644
+index 427b275f123a..1ce4260557c7 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1255,7 +1255,7 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
- 
- 	/* Tx amsdu info (pack-count histogram) */
- 	for (i = 0; i < 8; i++)
--		data[ei++] = mib->amsdu_pack_stats[i];
-+		data[ei++] = mib->tx_amsdu_pack_stats[i];
- 
- 	/* rx counters */
- 	data[ei++] = mib->rx_fifo_full_cnt;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 8086233d6e2b..b446a5c73aa5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -147,6 +147,7 @@ struct mib_stats {
- 
- 	u32 tx_rwp_fail_cnt;
- 	u32 tx_rwp_need_cnt;
-+	u32 tx_amsdu_pack_stats[8]; /* histogram of how many sub-frames in amsdu */
- 
- 	/* rx stats */
- 	u32 rx_fifo_full_cnt;
-@@ -162,8 +163,6 @@ struct mib_stats {
- 	u32 rx_pfdrop_cnt;
- 	u32 rx_vec_queue_overflow_drop_cnt;
- 	u32 rx_ba_cnt;
--
--	u32 amsdu_pack_stats[8]; /* histogram of how many sub-frames in amsdu */
+@@ -1123,6 +1123,27 @@ static const char mt7915_gstrings_stats[][ETH_GSTRING_LEN] = {
+ 	"v_tx_mcs_9",
+ 	"v_tx_mcs_10",
+ 	"v_tx_mcs_11",
++
++	/* per-vif rx counters */
++	"v_rx_nss1",
++	"v_rx_nss2",
++	"v_rx_nss3",
++	"v_rx_nss4",
++	"v_rx_mode_cck",
++	"v_rx_mode_ofdm",
++	"v_rx_mode_ht",
++	"v_rx_mode_ht_gf",
++	"v_rx_mode_vht",
++	"v_rx_mode_he_su",
++	"v_rx_mode_he_ext_su",
++	"v_rx_mode_he_tb",
++	"v_rx_mode_he_mu",
++	"v_rx_bw_20",
++	"v_rx_bw_40",
++	"v_rx_bw_80",
++	"v_rx_bw_160",
++	"v_rx_bw_he_ru",
++	"v_rx_ru_106",
  };
  
- struct mt7915_hif {
+ #define MT7915_SSTATS_LEN ARRAY_SIZE(mt7915_gstrings_stats)
+@@ -1190,6 +1211,27 @@ static void mt7915_ethtool_worker(void *wi_data, struct ieee80211_sta *sta)
+ 	for (q = 0; q < 12; q++)
+ 		data[ei++] += mstats->tx_mcs[q];
+ 
++	/* rx stats */
++	for (q = 0; q < ARRAY_SIZE(mstats->rx_nss); q++)
++		data[ei++] += mstats->rx_nss[q];
++
++	data[ei++] += mstats->rx_mode[MT_PHY_TYPE_CCK];
++	data[ei++] += mstats->rx_mode[MT_PHY_TYPE_OFDM];
++	data[ei++] += mstats->rx_mode[MT_PHY_TYPE_HT];
++	data[ei++] += mstats->rx_mode[MT_PHY_TYPE_HT_GF];
++	data[ei++] += mstats->rx_mode[MT_PHY_TYPE_VHT];
++	data[ei++] += mstats->rx_mode[MT_PHY_TYPE_HE_SU];
++	data[ei++] += mstats->rx_mode[MT_PHY_TYPE_HE_EXT_SU];
++	data[ei++] += mstats->rx_mode[MT_PHY_TYPE_HE_TB];
++	data[ei++] += mstats->rx_mode[MT_PHY_TYPE_HE_MU];
++
++	data[ei++] += mstats->rx_bw_20;
++	data[ei++] += mstats->rx_bw_40;
++	data[ei++] += mstats->rx_bw_80;
++	data[ei++] += mstats->rx_bw_160;
++	data[ei++] += mstats->rx_bw_he_ru;
++	data[ei++] += mstats->rx_ru_106;
++
+ 	wi->worker_stat_count = ei - wi->initial_stat_idx;
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index b446a5c73aa5..1f0be4fbee35 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -73,6 +73,16 @@ struct mt7915_sta_stats {
+ 	unsigned long tx_bw[4]; /* 20, 40, 80, 160 */
+ 	unsigned long tx_nss[4]; /* 1, 2, 3, 4 */
+ 	unsigned long tx_mcs[16]; /* mcs idx */
++
++	/* This section requires group-5 in rxd to be enabled. */
++	u32 rx_nss[4]; /* rx-nss histogram */
++	u32 rx_mode[MT_PHY_TYPE_HE_LAST]; /* rx mode histogram */
++	u32 rx_bw_20;
++	u32 rx_bw_40;
++	u32 rx_bw_80;
++	u32 rx_bw_160;
++	u32 rx_bw_he_ru;
++	u32 rx_ru_106;
+ };
+ 
+ struct mt7915_sta_key_conf {
 -- 
 2.20.1
 
