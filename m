@@ -2,158 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 733653E9A7D
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Aug 2021 23:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DA863E9A83
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Aug 2021 23:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232301AbhHKVp1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Aug 2021 17:45:27 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.48]:52194 "EHLO
+        id S232280AbhHKVps (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Aug 2021 17:45:48 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.48]:52200 "EHLO
         dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232191AbhHKVpQ (ORCPT
+        by vger.kernel.org with ESMTP id S232209AbhHKVpS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Aug 2021 17:45:16 -0400
+        Wed, 11 Aug 2021 17:45:18 -0400
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.133])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id D86C61C0069
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Aug 2021 21:44:50 +0000 (UTC)
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 3BBFB1C0078
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Aug 2021 21:44:51 +0000 (UTC)
 Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id ABCE2B0007D
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 05327B00077
         for <linux-wireless@vger.kernel.org>; Wed, 11 Aug 2021 21:44:50 +0000 (UTC)
 Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 574B613C2B8;
+        by mail3.candelatech.com (Postfix) with ESMTP id 8E20013C2BB;
         Wed, 11 Aug 2021 14:44:50 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 574B613C2B8
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8E20013C2BB
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
         s=default; t=1628718290;
-        bh=4D/biQnMez0QMS5CXxavsZkq+zZ/e2cZoSHmp4kxnb8=;
+        bh=FYpMgNZRlt2UK3/srkfuBUP1LDdB2QWKkLq/QbOdSXY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qm7/2rkyebnSRjSaetDj+X2JXt3ROzF7HYfPcRTsvsYDzzuTVYldRCljBnoBlL2Hy
-         KBmvaYnaU0Ae4KY+kp2GRJKJFYUarDzOh9ZvyG3qAfm6GJO0I4rN/YWyuaNCIKjQ8J
-         c4XeZgLwyTupeUBSSgOKzzv5q9qRwUIYP6TeMnJY=
+        b=VyBG0NL5VVkCCG/FKXWee/hTWHxpmCOkeb8rf6dgq3x7maxw0ALamsf/Vp/qrlM51
+         I5NOYCZtUkKgLxlKlVlz3dylsTKPMKpBQOziHjiYafyCDmoJlAftRMhymEE/o//Cla
+         wbT8WZ/1ZRuWlPsamH6XDD9xZ4Pud5V2ImaTN3ZA=
 From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 05/15] mt76: mt7915:  use nss for calculating rx-chains
-Date:   Wed, 11 Aug 2021 14:44:29 -0700
-Message-Id: <20210811214439.17458-6-greearb@candelatech.com>
+Subject: [PATCH 06/15] mt76: mt7915:  rename amsdu_pack_stats to tx_amsdu_pack_stats
+Date:   Wed, 11 Aug 2021 14:44:30 -0700
+Message-Id: <20210811214439.17458-7-greearb@candelatech.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20210811214439.17458-1-greearb@candelatech.com>
 References: <20210811214439.17458-1-greearb@candelatech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1628718291-Q4KSLCW02wfa
+X-MDID: 1628718291-PJT7RLvtLNbP
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ben Greear <greearb@candelatech.com>
 
-When group-5 is enabled, we can find the actuall NSS used.
-In that case, update the rx chains info so that the upper
-stack can give better idea of actual antenna usage.
+Make it more clear that this is a tx-stat, and move it to
+the tx section of the mib stats struct.
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 32 +++++++++++++------
- 1 file changed, 22 insertions(+), 10 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c | 8 ++++----
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c     | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c    | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h  | 3 +--
+ 4 files changed, 8 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 885c60ea2a71..688641ea4bb5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -488,11 +488,11 @@ mt7915_tx_stats_show(struct seq_file *file, void *data)
+ 
+ 	/* Tx amsdu info */
+ 	seq_puts(file, "Tx MSDU statistics:\n");
+-	for (i = 0, n = 0; i < ARRAY_SIZE(mib->amsdu_pack_stats); i++)
+-		n += mib->amsdu_pack_stats[i];
++	for (i = 0, n = 0; i < ARRAY_SIZE(mib->tx_amsdu_pack_stats); i++)
++		n += mib->tx_amsdu_pack_stats[i];
+ 
+-	for (i = 0; i < ARRAY_SIZE(mib->amsdu_pack_stats); i++) {
+-		long si = mib->amsdu_pack_stats[i];
++	for (i = 0; i < ARRAY_SIZE(mib->tx_amsdu_pack_stats); i++) {
++		long si = mib->tx_amsdu_pack_stats[i];
+ 
+ 		seq_printf(file, "AMSDU pack count of %d MSDU in TXD: %ld ",
+ 			   i + 1, si);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 7d5156a9e48d..b44ca71e7d06 100644
+index b44ca71e7d06..f1cff26cbc36 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -560,6 +560,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 	/* RXD Group 3 - P-RXV */
- 	if (rxd1 & MT_RXD1_NORMAL_GROUP_3) {
- 		u32 v0, v1, v2;
-+		u8 nss;
- 
- 		rxv = rxd; /* DW16 assuming group 1,2,3,4 */
- 		rxd += 2;
-@@ -577,21 +578,12 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 		/* TODO:  When group-5 is enabled, use nss (and stbc) to
- 		 * calculate chains properly for this particular skb.
- 		 */
--		status->chains = mphy->antenna_mask;
- 		status->chain_signal[0] = to_rssi(MT_PRXV_RCPI0, v1);
- 		status->chain_signal[1] = to_rssi(MT_PRXV_RCPI1, v1);
- 		status->chain_signal[2] = to_rssi(MT_PRXV_RCPI2, v1);
- 		status->chain_signal[3] = to_rssi(MT_PRXV_RCPI3, v1);
--		status->signal = status->chain_signal[0];
- 
--		for (i = 1; i < hweight8(mphy->antenna_mask); i++) {
--			if (!(status->chains & BIT(i)))
--				continue;
--
--			/* TODO:  Use db sum logic instead of max. */
--			status->signal = max(status->signal,
--					     status->chain_signal[i]);
--		}
-+		nss = hweight8(mphy->antenna_mask);
- 
- 		/* RXD Group 5 - C-RXV.
- 		 * Group 5 Not currently enabled for 7915 except in
-@@ -604,6 +596,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 			u8 gi = FIELD_GET(MT_CRXV_HT_SHORT_GI, v2);
- 			bool cck = false;
- 
-+			nss = 1;
- 			rxd += 18;
- 			if ((u8 *)rxd - skb->data >= skb->len)
- 				return -EINVAL;
-@@ -623,6 +616,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 				status->encoding = RX_ENC_HT;
- 				if (i > 31)
- 					return -EINVAL;
-+				nss = i / 8 + 1;
- 				break;
- 			case MT_PHY_TYPE_VHT:
- 				status->nss =
-@@ -630,6 +624,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 				status->encoding = RX_ENC_VHT;
- 				if (i > 9)
- 					return -EINVAL;
-+				nss = status->nss;
- 				break;
- 			case MT_PHY_TYPE_HE_MU:
- 				status->flag |= RX_FLAG_RADIOTAP_HE_MU;
-@@ -639,6 +634,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 			case MT_PHY_TYPE_HE_TB:
- 				status->nss =
- 					FIELD_GET(MT_PRXV_NSTS, v0) + 1;
-+				nss = status->nss;
- 				status->encoding = RX_ENC_HE;
- 				status->flag |= RX_FLAG_RADIOTAP_HE;
- 				i &= GENMASK(3, 0);
-@@ -653,6 +649,11 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 			}
- 			status->rate_idx = i;
- 
-+			if (stbc) {
-+				nss *= 2;
-+				WARN_ON_ONCE(nss > 4);
-+			}
-+
- 			switch (FIELD_GET(MT_CRXV_FRAME_MODE, v2)) {
- 			case IEEE80211_STA_RX_BW_20:
- 				break;
-@@ -680,6 +681,17 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 			if (mode < MT_PHY_TYPE_HE_SU && gi)
- 				status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
- 		}
-+
-+		status->chains = 1;
-+		status->signal = status->chain_signal[0];
-+
-+		for (i = 1; i < nss; i++) {
-+			status->chains |= BIT(i);
-+
-+			/* TODO:  Use db sum logic instead of max. */
-+			status->signal = max(status->signal,
-+					     status->chain_signal[i]);
-+		}
+@@ -2204,8 +2204,8 @@ mt7915_mac_update_stats(struct mt7915_phy *phy)
  	}
  
- 	skb_pull(skb, (u8 *)rxd - skb->data + 2 * remove_pad);
+ 	/* Tx amsdu info (pack-count histogram) */
+-	for (i = 0; i < ARRAY_SIZE(mib->amsdu_pack_stats); i++)
+-		mib->amsdu_pack_stats[i] += mt76_rr(dev,  MT_PLE_AMSDU_PACK_MSDU_CNT(i));
++	for (i = 0; i < ARRAY_SIZE(mib->tx_amsdu_pack_stats); i++)
++		mib->tx_amsdu_pack_stats[i] += mt76_rr(dev,  MT_PLE_AMSDU_PACK_MSDU_CNT(i));
+ 
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index b3f3b53da843..427b275f123a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1255,7 +1255,7 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
+ 
+ 	/* Tx amsdu info (pack-count histogram) */
+ 	for (i = 0; i < 8; i++)
+-		data[ei++] = mib->amsdu_pack_stats[i];
++		data[ei++] = mib->tx_amsdu_pack_stats[i];
+ 
+ 	/* rx counters */
+ 	data[ei++] = mib->rx_fifo_full_cnt;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 8086233d6e2b..b446a5c73aa5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -147,6 +147,7 @@ struct mib_stats {
+ 
+ 	u32 tx_rwp_fail_cnt;
+ 	u32 tx_rwp_need_cnt;
++	u32 tx_amsdu_pack_stats[8]; /* histogram of how many sub-frames in amsdu */
+ 
+ 	/* rx stats */
+ 	u32 rx_fifo_full_cnt;
+@@ -162,8 +163,6 @@ struct mib_stats {
+ 	u32 rx_pfdrop_cnt;
+ 	u32 rx_vec_queue_overflow_drop_cnt;
+ 	u32 rx_ba_cnt;
+-
+-	u32 amsdu_pack_stats[8]; /* histogram of how many sub-frames in amsdu */
+ };
+ 
+ struct mt7915_hif {
 -- 
 2.20.1
 
