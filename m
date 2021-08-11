@@ -2,75 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 105FC3E948C
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Aug 2021 17:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60FC53E95C4
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Aug 2021 18:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233174AbhHKP2t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Aug 2021 11:28:49 -0400
-Received: from li1434-30.members.linode.com ([45.33.107.30]:46090 "EHLO
-        node.akkea.ca" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233176AbhHKP2s (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Aug 2021 11:28:48 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by node.akkea.ca (Postfix) with ESMTP id AF41755E351;
-        Wed, 11 Aug 2021 15:28:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akkea.ca; s=mail;
-        t=1628695704; bh=oZRecWo3hf7nFre+mVbt6VMymLHXbxnodvh5R5BevZo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=Y0e8191p7dg7QwkpxxdoHgrPUHyhpj04RhoLmekIDbmoKpM0zNTxQSQRhb+lc8W6C
-         iKZzYQQDQLGueUTdSJ1xB0Wz0/UD2uxOcBK9yLJsofPvJicz9MYYOZxZdW8ciZY7Gu
-         J+nmlD2W97Cd5jYgWegxBsijfwz80olMR3iJev28=
-X-Virus-Scanned: Debian amavisd-new at mail.akkea.ca
-Received: from node.akkea.ca ([127.0.0.1])
-        by localhost (mail.akkea.ca [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id QQL_Ki4d_weC; Wed, 11 Aug 2021 15:28:24 +0000 (UTC)
-Received: from midas.localdomain (S0106788a2041785e.gv.shawcable.net [70.66.86.75])
-        by node.akkea.ca (Postfix) with ESMTPSA id 2841D55E344;
-        Wed, 11 Aug 2021 15:28:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akkea.ca; s=mail;
-        t=1628695704; bh=oZRecWo3hf7nFre+mVbt6VMymLHXbxnodvh5R5BevZo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=Y0e8191p7dg7QwkpxxdoHgrPUHyhpj04RhoLmekIDbmoKpM0zNTxQSQRhb+lc8W6C
-         iKZzYQQDQLGueUTdSJ1xB0Wz0/UD2uxOcBK9yLJsofPvJicz9MYYOZxZdW8ciZY7Gu
-         J+nmlD2W97Cd5jYgWegxBsijfwz80olMR3iJev28=
-From:   Angus Ainslie <angus@akkea.ca>
-To:     kernel@puri.sm
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com, Angus Ainslie <angus@akkea.ca>
-Subject: [PATCH v2 3/3] brcmfmac: add patch ram for bluetooth
-Date:   Wed, 11 Aug 2021 08:28:04 -0700
-Message-Id: <20210811152804.2379405-4-angus@akkea.ca>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210811152804.2379405-1-angus@akkea.ca>
-References: <20210811152804.2379405-1-angus@akkea.ca>
+        id S229966AbhHKQSC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Aug 2021 12:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55378 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229588AbhHKQSC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 11 Aug 2021 12:18:02 -0400
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41B3CC061765
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Aug 2021 09:17:38 -0700 (PDT)
+Received: by mail-qv1-xf32.google.com with SMTP id 3so1442216qvd.2
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Aug 2021 09:17:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=yhvM+JkFggzUW8DMDrmAWjVU7mJmMX9GTEZl6kWxpNk=;
+        b=ve22Z4xKXgOwiVW8Zs1/PlssDPd73dSg436bIS+IO1PxK9Vbl4KWsY9Md3tizUVOH9
+         PRkK7hcrMsXOo0xKk8tKLj6thZyP5xOUFM6N2PRrsbE+Z1mMc5LB6AxeqHyysQbJCDbB
+         hAzo0LZJLOxc2IDxoRPM2c/3p1xrZHcxCee4/UgCFR+9YvF/oUlPtBmY3bnt49PLLEW6
+         oqAwBYZM5ecO+zvgRLah9+6r60UcXJEECVfROxTv3Jd8t2GzPEqL8Kduo2bc2lRSokiD
+         adpzMtLsZtKHPyki7Lm24Y+lU24zasCgY8c3iaf4I+tsJmRdpeITeifZRW4AZlsB7CSM
+         Nzhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=yhvM+JkFggzUW8DMDrmAWjVU7mJmMX9GTEZl6kWxpNk=;
+        b=SvMcEy16lhUrdPQs4Zq354jm/adfHDxLovarRivh1TT25XJmvS3ZrpgYqg7LTtLkKC
+         ryZjTwNxQR9MeNp8I6Hczit//kNbHXCY2baCQMT843f3r7su5H71PxHv684VwNASlxEM
+         H0jFnYR1NUk2n6YO0tJG+Rh2ZSDJsbca7VV3jFCf01ZWZzejf8yEeKvB/JOuOXeneexp
+         jvjfmOOaH6dv2ncigwPYm1vXS+GvfBd1KDLYe7v/UT7YDL0YExId42DsWi8KK+k1VHRj
+         C9Ct/bxWEdamko/8cqxdz2amHgZqOJDayue08NcZG5RvFXuZe/JjkD0LtNgwvkPnT23i
+         rbYw==
+X-Gm-Message-State: AOAM532sqnw91l25eALYrZ+KhIwSQKgb2OWkOMraSnkMHcxfekc3OiQL
+        WqolulYCzAgwk3EEGD2ntByv8f8IfhPQU/KeTHs=
+X-Google-Smtp-Source: ABdhPJwoSc/a8vSNYy2Wt8OxZHw7Ng9zTlVteWK5nkhEP84Y+yqmRoMRYnc17dHBvhY9HfDJWORTHXjrW0spxOKkwJ8=
+X-Received: by 2002:ad4:4dc5:: with SMTP id cw5mr10799850qvb.62.1628698657243;
+ Wed, 11 Aug 2021 09:17:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Reply-To: evelynbintaa01@gmail.com
+Sender: dosserpicard@gmail.com
+Received: by 2002:ac8:7ecf:0:0:0:0:0 with HTTP; Wed, 11 Aug 2021 09:17:36
+ -0700 (PDT)
+From:   Evelyn Binta <evelynbintaa01@gmail.com>
+Date:   Wed, 11 Aug 2021 16:17:36 +0000
+X-Google-Sender-Auth: wO-Dr7wZfv1721AD7vP9Gn0r1rw
+Message-ID: <CANGjjsBhB6C7Sw+M-x=oYADRLoawigVT-h42azas-oqjupnkjg@mail.gmail.com>
+Subject: I Need Your Friendly Assistance
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bluetooth on the BCM43752 needs a patchram file to function correctly.
+My Dear, I know this message will be so strange to you, but i summon
+courage to reach you because i desperately need your friendly
+assistance there in your country. I am making preparations to relocate
+with my children there and i have some capital which i wanted to
+invest there to be able to take care of my kids and i want you by my
+side to plan the investment and decide the best city for us to reside.
+Please i will be waiting for your response, so that you will
+understand properly the reason why i contacted you.
 
-Signed-off-by: Angus Ainslie <angus@akkea.ca>
----
- drivers/bluetooth/btbcm.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
-index e5d706ed55ea..e4182acee488 100644
---- a/drivers/bluetooth/btbcm.c
-+++ b/drivers/bluetooth/btbcm.c
-@@ -387,6 +387,7 @@ struct bcm_subver_table {
- };
- 
- static const struct bcm_subver_table bcm_uart_subver_table[] = {
-+	{ 0x1111, "BCM4362A2"	},	/* 000.017.017 */
- 	{ 0x4103, "BCM4330B1"	},	/* 002.001.003 */
- 	{ 0x410d, "BCM4334B0"	},	/* 002.001.013 */
- 	{ 0x410e, "BCM43341B0"	},	/* 002.001.014 */
--- 
-2.25.1
-
+Mrs.Evelyn
