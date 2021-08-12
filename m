@@ -2,186 +2,184 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D0603EA065
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Aug 2021 10:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 033A03EA3DA
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Aug 2021 13:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234995AbhHLIQ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Aug 2021 04:16:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46444 "EHLO
+        id S236937AbhHLLh0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Aug 2021 07:37:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231520AbhHLIQ2 (ORCPT
+        with ESMTP id S236982AbhHLLhZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Aug 2021 04:16:28 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F02F9C061765
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 01:16:03 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mE5rm-0002LU-Am; Thu, 12 Aug 2021 10:15:06 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mE5rb-0002s2-AN; Thu, 12 Aug 2021 10:14:55 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mE5rb-0006R3-8Y; Thu, 12 Aug 2021 10:14:55 +0200
-Date:   Thu, 12 Aug 2021 10:14:25 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
-        oss-drivers@corigine.com, Paul Mackerras <paulus@samba.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Rafa?? Mi??ecki <zajec5@gmail.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
-        netdev@vger.kernel.org, Simon Horman <simon.horman@corigine.com>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v3 4/8] PCI: replace pci_dev::driver usage that gets the
- driver name
-Message-ID: <20210812081425.7pjy4a25e2ehkr3x@pengutronix.de>
-References: <20210811080637.2596434-1-u.kleine-koenig@pengutronix.de>
- <20210811080637.2596434-5-u.kleine-koenig@pengutronix.de>
- <YRTIqGm5Dr8du7a7@infradead.org>
+        Thu, 12 Aug 2021 07:37:25 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08425C0613D3
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 04:37:00 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id by4so9266717edb.0
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 04:36:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to;
+        bh=Yb0Yl+/A19dTyk61D0Oz1zyIwSt7kMyFOvBaA/K+R6o=;
+        b=YdCxC2GesUFUo2wbNzId2oh3NJnX4iC3kHXvDPRT0wi7b/WaGqbwt/3CF+IPyEXOQL
+         R8ZR/GBu8upZEuI06GMoWbdcEVQBPHzWJgZeOcPm+VVLwzAAGu61Ur+8kg14CN9x+WCK
+         1yjarOIrQiYfeNQuIKETkGlBG767XRp9tMlh8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to;
+        bh=Yb0Yl+/A19dTyk61D0Oz1zyIwSt7kMyFOvBaA/K+R6o=;
+        b=OnsPIZq+rAbTDsqwXhAi0XGsMt2k/Wci9nzuHqYnDZiP4voGnGLqhDY7nRWx3qAutg
+         FRcCSbggG4Ao2XD7S6cBXb+4Hl0O5lc73tA6V+wCYbf2OITeg+PXzExrNU5DnoTUDJrR
+         nAKGC/Lm25PN/G6RVmRjCSbkYPiz3HMtzl4dDZdlOMKZgbIINfbN6tBaP6Vj1Tj03Mbz
+         yueHJsSmZetB3Np3DDyvddUsxLFcg9pyCSS4/I5rMHek9pTzzgLD/gma4cb1eMerbgWK
+         TVNWcVoyMPbie4Kf4BAGdT7jftLWnmKl5xZmC07Rv490mrhGtUpvWoq7dGwIvcc4ymtB
+         ex/Q==
+X-Gm-Message-State: AOAM532JmlIb7tbVeQFevjnZRGMUKfVyXF52nzl9BKIvgqD9viBNf1sc
+        wysH+N/QwDVOuJUvJCCXGZBYv7YrtJxCfJhytXxak1McmCZSdhR2wwWpN+/jinDuK95ggcx4Cvt
+        h5Sh4MZJNyZKUzEGQ6YBVqNQJiWoN
+X-Google-Smtp-Source: ABdhPJyCyK0BfgfD+OCAxFyeihgPPbg+waONHS9CcxQihDOC/58YI8UJw4mBZSzHlKc2Eqq/uxQqsw==
+X-Received: by 2002:a05:6402:649:: with SMTP id u9mr3600414edx.224.1628768218465;
+        Thu, 12 Aug 2021 04:36:58 -0700 (PDT)
+Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id hg25sm694352ejc.109.2021.08.12.04.36.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Aug 2021 04:36:57 -0700 (PDT)
+Subject: Re: [PATCH v2 2/3] brcmfmac: add initializers for the 43752
+To:     Angus Ainslie <angus@akkea.ca>, kernel@puri.sm
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
+References: <20210811152804.2379405-1-angus@akkea.ca>
+ <20210811152804.2379405-3-angus@akkea.ca>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <2f1be427-a804-9ded-cede-532114dc4743@broadcom.com>
+Date:   Thu, 12 Aug 2021 13:36:56 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="n62mnckfisrc5gc5"
-Content-Disposition: inline
-In-Reply-To: <YRTIqGm5Dr8du7a7@infradead.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+In-Reply-To: <20210811152804.2379405-3-angus@akkea.ca>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="00000000000019815505c95b2762"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+--00000000000019815505c95b2762
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Language: en-US
 
---n62mnckfisrc5gc5
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 8/11/2021 5:28 PM, Angus Ainslie wrote:
+> Add the firmware mapping structures for the BRCM43752 chipset.
+> The 43752 needs some things setup similar to the 43012 chipset.
+> The WATERMARK shows better performance when initialized to the 4373 value.
 
-On Thu, Aug 12, 2021 at 08:07:20AM +0100, Christoph Hellwig wrote:
-> On Wed, Aug 11, 2021 at 10:06:33AM +0200, Uwe Kleine-K??nig wrote:
-> >  static inline const char *eeh_driver_name(struct pci_dev *pdev)
-> >  {
-> > -	return (pdev && pdev->driver) ? pdev->driver->name : "<null>";
-> > +	const char *drvstr =3D pdev ? dev_driver_string(&pdev->dev) : "";
-> > +
-> > +	if (*drvstr =3D=3D '\0')
-> > +		return "<null>";
-> > +
-> > +	return drvstr;
->=20
-> This looks rather obsfucated due to the fact that dev_driver_string
-> never returns '\0', and due to the strange mix of a tenary operation
-> and the if on a related condition.
+Don't see much value in having this in separate patch. Please collapse 
+with the first patch in this series.
 
-dev_driver_string() might return "" (via dev_bus_name()). If that happens
-*drvstr =3D=3D '\0' becomes true.
+Regards,
+Arend
 
-Would the following be better?:
+> Signed-off-by: Angus Ainslie <angus@akkea.ca>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c | 1 +
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 8 ++++++--
+>   2 files changed, 7 insertions(+), 2 deletions(-)
 
-	const char *drvstr;
+-- 
+This electronic communication and the information and any files transmitted 
+with it, or attached to it, are confidential and are intended solely for 
+the use of the individual or entity to whom it is addressed and may contain 
+information that is confidential, legally privileged, protected by privacy 
+laws, or otherwise restricted from disclosure to anyone else. If you are 
+not the intended recipient or the person responsible for delivering the 
+e-mail to the intended recipient, you are hereby notified that any use, 
+copying, distributing, dissemination, forwarding, printing, or copying of 
+this e-mail is strictly prohibited. If you received this e-mail in error, 
+please return the e-mail to the sender, delete it from your computer, and 
+destroy any printed copy of it.
 
-	if (pdev)
-		return "<null>";
+--00000000000019815505c95b2762
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-	drvstr =3D dev_driver_string(&pdev->dev);
-
-	if (!strcmp(drvstr, ""))
-		return "<null>";
-
-	return drvstr;
-
-When I thought about this hunk I considered it ugly to have "<null>" in
-it twice.
-
-> >  }
-> > =20
-> >  #endif /* CONFIG_EEH */
-> > diff --git a/drivers/bcma/host_pci.c b/drivers/bcma/host_pci.c
-> > index 69c10a7b7c61..dc2ffa686964 100644
-> > --- a/drivers/bcma/host_pci.c
-> > +++ b/drivers/bcma/host_pci.c
-> > @@ -175,9 +175,10 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
-> >  	if (err)
-> >  		goto err_kfree_bus;
-> > =20
-> > -	name =3D dev_name(&dev->dev);
-> > -	if (dev->driver && dev->driver->name)
-> > -		name =3D dev->driver->name;
-> > +	name =3D dev_driver_string(&dev->dev);
-> > +	if (*name =3D=3D '\0')
-> > +		name =3D dev_name(&dev->dev);
->=20
-> Where does this '\0' check come from?
-
-The original code is equivalent to
-
-	if (dev->driver && dev->driver->name)
-		name =3D dev->driver->name;
-	else:
-		name =3D dev_name(...);
-
-As dev_driver_string() implements something like:
-
-	if (dev->driver && dev->driver->name)
-		return dev->driver->name;
-	else
-		return "";
-
-the change looks fine to me. (One could wonder if it's sensible to fall
-back to the device name if the driver has no nice name, but this isn't
-new with my change.)
-
-> > +	name =3D dev_driver_string(&dev->dev);
-> > +	if (*name =3D=3D '\0')
-> > +		name =3D dev_name(&dev->dev);
-> > +
->=20
-> More of this weirdness.
-
-I admit it's not pretty. Would it help to use !strcmp(name, "")
-instead of *name =3D=3D '\0'? Any other constructive suggestion?
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---n62mnckfisrc5gc5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmEU2FkACgkQwfwUeK3K
-7An+dgf/QrRVML0a6qk3HkGyLdsB8Vz7TG3WIJF9aLj4O2kfcEPwkNYsSxN/21iu
-rEFabdOH9lU5Zd2HWHmas7GEMR232ZquxQiELI+9rh01/2S6Y/u/6AVGLvdzqFVZ
-rXTrEHH02r9SqMl/V0Z/M7VIltjkbZwF4eSLW4+5+hHb65DACabRPBWTAjvotPU4
-0WlKPyYnJf0uVw9UF7NqDkXjgdyYzRf0lM6Ie9SLp3JctB9pqnVCu4JQSqBln0Ri
-AoFiE71+XFMORrsnY4gr2qdjhzoIRRGvDVVZ1BqXx0WZ7ZTzxcWXBg4xzrjF5kw0
-FlVhUnMK0NFPQnBoNJXA7B6UG7ZkvA==
-=3HwH
------END PGP SIGNATURE-----
-
---n62mnckfisrc5gc5--
+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
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDUge0r7pVcpsZ3Xj5i
+TBEK7Cl3zKA5nMFau7x6WMVZJTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMTA4MTIxMTM2NThaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAOpHuwdZLZ0wFeYiR/Ce+n6ek94cqxtoLHeBT
+ppSLP/g+4L6mxczZSO/B9v/e2MfTnf8EN5IIZ8VMApbcYl788CVyFDIkaI4fzZshVA3WYfuAnuKd
++wMyRC9ru/5XuwrYSxWw78ePs09aeJzndFdJd7WFeH+oR10iC1KsuA9oooO4YTBvEujA1Xy9hH7l
+1BJJF61wTjyI2/uwui9t+h/bfeQEDMqLkg+2tyt3g3QsoBaOWK3stnKBuGG6riU4tkLSUXufGrLF
+DV+I+WvTf/mRWn7jdsKvv9yUBPWZLgpKwZOOZYSDhdU81L3ScUZJcyH2KFl3pDUlQDWhkr3+skYp
+Rw==
+--00000000000019815505c95b2762--
