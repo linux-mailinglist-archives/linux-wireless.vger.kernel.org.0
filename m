@@ -2,91 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 033A03EA3DA
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Aug 2021 13:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 304693EA3E7
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Aug 2021 13:40:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236937AbhHLLh0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Aug 2021 07:37:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36888 "EHLO
+        id S236849AbhHLLko (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Aug 2021 07:40:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236982AbhHLLhZ (ORCPT
+        with ESMTP id S229994AbhHLLkn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Aug 2021 07:37:25 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08425C0613D3
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 04:37:00 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id by4so9266717edb.0
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 04:36:59 -0700 (PDT)
+        Thu, 12 Aug 2021 07:40:43 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D495C061765
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 04:40:18 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id gs8so10882871ejc.13
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 04:40:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to;
-        bh=Yb0Yl+/A19dTyk61D0Oz1zyIwSt7kMyFOvBaA/K+R6o=;
-        b=YdCxC2GesUFUo2wbNzId2oh3NJnX4iC3kHXvDPRT0wi7b/WaGqbwt/3CF+IPyEXOQL
-         R8ZR/GBu8upZEuI06GMoWbdcEVQBPHzWJgZeOcPm+VVLwzAAGu61Ur+8kg14CN9x+WCK
-         1yjarOIrQiYfeNQuIKETkGlBG767XRp9tMlh8=
+        bh=r6KlGOx5Nnttl3Dd52zX7Uh7MqkWErCTvwZ6fP5i1OI=;
+        b=POoFlg+o7ToJcvd846V3xq+QaB35zGZDJBBfEtfAudwa1tIqvTt+bc8tvTsNn2bpXN
+         Sm5Z1yDWIY/sMD63n8UZkCwcvhItioaOo1JfrB6VBZ1PEJBbTZF00cIjEf8wfgrjTM5p
+         eITFhG4q9z65BhLWCI/Oj321e1hiQ5tTOGcko=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to;
-        bh=Yb0Yl+/A19dTyk61D0Oz1zyIwSt7kMyFOvBaA/K+R6o=;
-        b=OnsPIZq+rAbTDsqwXhAi0XGsMt2k/Wci9nzuHqYnDZiP4voGnGLqhDY7nRWx3qAutg
-         FRcCSbggG4Ao2XD7S6cBXb+4Hl0O5lc73tA6V+wCYbf2OITeg+PXzExrNU5DnoTUDJrR
-         nAKGC/Lm25PN/G6RVmRjCSbkYPiz3HMtzl4dDZdlOMKZgbIINfbN6tBaP6Vj1Tj03Mbz
-         yueHJsSmZetB3Np3DDyvddUsxLFcg9pyCSS4/I5rMHek9pTzzgLD/gma4cb1eMerbgWK
-         TVNWcVoyMPbie4Kf4BAGdT7jftLWnmKl5xZmC07Rv490mrhGtUpvWoq7dGwIvcc4ymtB
-         ex/Q==
-X-Gm-Message-State: AOAM532JmlIb7tbVeQFevjnZRGMUKfVyXF52nzl9BKIvgqD9viBNf1sc
-        wysH+N/QwDVOuJUvJCCXGZBYv7YrtJxCfJhytXxak1McmCZSdhR2wwWpN+/jinDuK95ggcx4Cvt
-        h5Sh4MZJNyZKUzEGQ6YBVqNQJiWoN
-X-Google-Smtp-Source: ABdhPJyCyK0BfgfD+OCAxFyeihgPPbg+waONHS9CcxQihDOC/58YI8UJw4mBZSzHlKc2Eqq/uxQqsw==
-X-Received: by 2002:a05:6402:649:: with SMTP id u9mr3600414edx.224.1628768218465;
-        Thu, 12 Aug 2021 04:36:58 -0700 (PDT)
+        bh=r6KlGOx5Nnttl3Dd52zX7Uh7MqkWErCTvwZ6fP5i1OI=;
+        b=ZAfC007lxy8A3/PiZsdu791wL06egswx0Titu4/0jld7YWu8TAU8aK2NW7kjBrRfDI
+         kzXD76W5HA/fQfnv5HG/u/VPb9B4OMHDhIA3HrjxWaLyK4J/RdThf7cpJqSyk7mZQIX5
+         +rXptBhFgSt2NvRYsEBIh3q1bIuN2s6zow4evZmEWFoOeVdA5otyK7AZ9/7KXGlACqlo
+         dh9Kty56F+hO6hDiJgg8EWK1N/4fFrylEcxrzbYWL7Gg0bHA3ts680U/0UQxWZq0H+Y+
+         QDAeQtFk+xzYvw/pELtMk0f70WcH0DeEDENIBcHhoge2pvewtC0x5taY9kK+hZGNapwq
+         FpuA==
+X-Gm-Message-State: AOAM532/u3hQrTtIsqaxm0qMrsO8saUQ0cdjuskKB1rijPO5ZxwLKovv
+        KG8DdihO6+C0iMRbvxKQ/SOh29dZOrpxNn3IJ1WBcmdPu22E46WgMxt/HM/gWMDOFJaP3Q7YyY4
+        U22hMAXZrUm/b+oObCA==
+X-Google-Smtp-Source: ABdhPJwq2EPtSWLMDLSSs46dsSdKLeYPu11o+cfMS6KMUMtzgK0SgyUXXPCm+Z/ZIcP66cj87BOHpQ==
+X-Received: by 2002:a17:906:3019:: with SMTP id 25mr3154477ejz.91.1628768416900;
+        Thu, 12 Aug 2021 04:40:16 -0700 (PDT)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id hg25sm694352ejc.109.2021.08.12.04.36.57
+        by smtp.gmail.com with ESMTPSA id z8sm697505ejd.94.2021.08.12.04.40.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Aug 2021 04:36:57 -0700 (PDT)
-Subject: Re: [PATCH v2 2/3] brcmfmac: add initializers for the 43752
+        Thu, 12 Aug 2021 04:40:16 -0700 (PDT)
+Subject: Re: [PATCH v2 3/3] brcmfmac: add patch ram for bluetooth
 To:     Angus Ainslie <angus@akkea.ca>, kernel@puri.sm
 Cc:     Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
 References: <20210811152804.2379405-1-angus@akkea.ca>
- <20210811152804.2379405-3-angus@akkea.ca>
+ <20210811152804.2379405-4-angus@akkea.ca>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <2f1be427-a804-9ded-cede-532114dc4743@broadcom.com>
-Date:   Thu, 12 Aug 2021 13:36:56 +0200
+Message-ID: <d7d7fa89-916e-203a-8e7d-07cf88aa3fd1@broadcom.com>
+Date:   Thu, 12 Aug 2021 13:40:15 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <20210811152804.2379405-3-angus@akkea.ca>
+In-Reply-To: <20210811152804.2379405-4-angus@akkea.ca>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000019815505c95b2762"
+        boundary="000000000000ef3b6a05c95b3249"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000019815505c95b2762
+--000000000000ef3b6a05c95b3249
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Language: en-US
 
 On 8/11/2021 5:28 PM, Angus Ainslie wrote:
-> Add the firmware mapping structures for the BRCM43752 chipset.
-> The 43752 needs some things setup similar to the 43012 chipset.
-> The WATERMARK shows better performance when initialized to the 4373 value.
+> Bluetooth on the BCM43752 needs a patchram file to function correctly.
 
-Don't see much value in having this in separate patch. Please collapse 
-with the first patch in this series.
+this patch is dealing with bluetooth so you should add the proper 
+mailing list.
+
+> Signed-off-by: Angus Ainslie <angus@akkea.ca>
+> ---
+>   drivers/bluetooth/btbcm.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
+> index e5d706ed55ea..e4182acee488 100644
+> --- a/drivers/bluetooth/btbcm.c
+> +++ b/drivers/bluetooth/btbcm.c
+> @@ -387,6 +387,7 @@ struct bcm_subver_table {
+>   };
+>   
+>   static const struct bcm_subver_table bcm_uart_subver_table[] = {
+> +	{ 0x1111, "BCM4362A2"	},	/* 000.017.017 */
+
+This seems odd. 4362 vs 43752? What is the story here?
 
 Regards,
 Arend
 
-> Signed-off-by: Angus Ainslie <angus@akkea.ca>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c | 1 +
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 8 ++++++--
->   2 files changed, 7 insertions(+), 2 deletions(-)
+>   	{ 0x4103, "BCM4330B1"	},	/* 002.001.003 */
+>   	{ 0x410d, "BCM4334B0"	},	/* 002.001.013 */
+>   	{ 0x410e, "BCM43341B0"	},	/* 002.001.014 */
+> 
 
 -- 
 This electronic communication and the information and any files transmitted 
@@ -101,7 +115,7 @@ this e-mail is strictly prohibited. If you received this e-mail in error,
 please return the e-mail to the sender, delete it from your computer, and 
 destroy any printed copy of it.
 
---00000000000019815505c95b2762
+--000000000000ef3b6a05c95b3249
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -172,14 +186,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDUge0r7pVcpsZ3Xj5i
-TBEK7Cl3zKA5nMFau7x6WMVZJTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMTA4MTIxMTM2NThaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCncEPJt014SoNDTvuv
+K0m6C7n3MtO0YGqBwNR6eNoAnjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMTA4MTIxMTQwMTdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAOpHuwdZLZ0wFeYiR/Ce+n6ek94cqxtoLHeBT
-ppSLP/g+4L6mxczZSO/B9v/e2MfTnf8EN5IIZ8VMApbcYl788CVyFDIkaI4fzZshVA3WYfuAnuKd
-+wMyRC9ru/5XuwrYSxWw78ePs09aeJzndFdJd7WFeH+oR10iC1KsuA9oooO4YTBvEujA1Xy9hH7l
-1BJJF61wTjyI2/uwui9t+h/bfeQEDMqLkg+2tyt3g3QsoBaOWK3stnKBuGG6riU4tkLSUXufGrLF
-DV+I+WvTf/mRWn7jdsKvv9yUBPWZLgpKwZOOZYSDhdU81L3ScUZJcyH2KFl3pDUlQDWhkr3+skYp
-Rw==
---00000000000019815505c95b2762--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFzCjRa6cYm0jSjhAxOb16P5IVJK2CqwSACNW
+aoFA4FwvxKABDFztCPUq0MtmWPR/q5A3M3FfA6mgGIqH8Jrg7zroV77eSQxDdcHXCsdjDa7+R6X3
+bfO/FhDv2mhmwZFfOZwkK4BCLzgEnPbAdxb/c8BFmYztGjNMTZzcVi4ha4cb0PGv30PxLdQm/Ob4
+RT/kivYcgSHSX2Zln7qA1agIvONxivNGQ1efIA9w2Tf9j+Dj66x0MhHSTboxMSgBSkJF1Ir0cUln
++dmE8slsWvxk6SxVZxEwQXTO16fyys7X5sejU4NTN3SLh4DVOPn+iIt+juf+ma39DNGZCPpI0p2m
+eQ==
+--000000000000ef3b6a05c95b3249--
