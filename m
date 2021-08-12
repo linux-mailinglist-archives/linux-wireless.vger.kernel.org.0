@@ -2,51 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 304693EA3E7
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Aug 2021 13:40:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1F2C3EA3F0
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Aug 2021 13:43:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236849AbhHLLko (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Aug 2021 07:40:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37674 "EHLO
+        id S236896AbhHLLmj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Aug 2021 07:42:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbhHLLkn (ORCPT
+        with ESMTP id S236700AbhHLLmi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Aug 2021 07:40:43 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D495C061765
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 04:40:18 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id gs8so10882871ejc.13
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 04:40:18 -0700 (PDT)
+        Thu, 12 Aug 2021 07:42:38 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B1A5C061765
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 04:42:13 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id bo19so9150565edb.9
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 04:42:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
+        h=subject:from:to:cc:references:message-id:date:user-agent
          :mime-version:in-reply-to;
-        bh=r6KlGOx5Nnttl3Dd52zX7Uh7MqkWErCTvwZ6fP5i1OI=;
-        b=POoFlg+o7ToJcvd846V3xq+QaB35zGZDJBBfEtfAudwa1tIqvTt+bc8tvTsNn2bpXN
-         Sm5Z1yDWIY/sMD63n8UZkCwcvhItioaOo1JfrB6VBZ1PEJBbTZF00cIjEf8wfgrjTM5p
-         eITFhG4q9z65BhLWCI/Oj321e1hiQ5tTOGcko=
+        bh=Vs0IDyqZgg2liY1XW1UJFJO+W1c7pA+nZ3p8b4rEkOo=;
+        b=Gg2Q02c0o/zQhYak9uNXzVGgmHUB0qPlk4s6s+sM9PH7BJXvARcqpgteUnq5ROpdvh
+         k9Obl+e15+/pWbM5lhPuxdhu3GjddYWX7doIJhzZUESudukfiLWepAYToAlFgUCZT1Yg
+         LF7TY6v+NyEJl/BLRmCsoWMZDR3xWmDiFl2dI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
          :user-agent:mime-version:in-reply-to;
-        bh=r6KlGOx5Nnttl3Dd52zX7Uh7MqkWErCTvwZ6fP5i1OI=;
-        b=ZAfC007lxy8A3/PiZsdu791wL06egswx0Titu4/0jld7YWu8TAU8aK2NW7kjBrRfDI
-         kzXD76W5HA/fQfnv5HG/u/VPb9B4OMHDhIA3HrjxWaLyK4J/RdThf7cpJqSyk7mZQIX5
-         +rXptBhFgSt2NvRYsEBIh3q1bIuN2s6zow4evZmEWFoOeVdA5otyK7AZ9/7KXGlACqlo
-         dh9Kty56F+hO6hDiJgg8EWK1N/4fFrylEcxrzbYWL7Gg0bHA3ts680U/0UQxWZq0H+Y+
-         QDAeQtFk+xzYvw/pELtMk0f70WcH0DeEDENIBcHhoge2pvewtC0x5taY9kK+hZGNapwq
-         FpuA==
-X-Gm-Message-State: AOAM532/u3hQrTtIsqaxm0qMrsO8saUQ0cdjuskKB1rijPO5ZxwLKovv
-        KG8DdihO6+C0iMRbvxKQ/SOh29dZOrpxNn3IJ1WBcmdPu22E46WgMxt/HM/gWMDOFJaP3Q7YyY4
-        U22hMAXZrUm/b+oObCA==
-X-Google-Smtp-Source: ABdhPJwq2EPtSWLMDLSSs46dsSdKLeYPu11o+cfMS6KMUMtzgK0SgyUXXPCm+Z/ZIcP66cj87BOHpQ==
-X-Received: by 2002:a17:906:3019:: with SMTP id 25mr3154477ejz.91.1628768416900;
-        Thu, 12 Aug 2021 04:40:16 -0700 (PDT)
+        bh=Vs0IDyqZgg2liY1XW1UJFJO+W1c7pA+nZ3p8b4rEkOo=;
+        b=JpXZTJp8lzlQlTTVOS+MZ71YNmUoh7yjlk3LGOPWO2COTE6r/i+piWvvwwv9m9hTpi
+         XF6lVMIJrZm/rDTypJlpMdi3NXcpQ1IiIVEIG7P2rSYPCVSlh61FSigk7vLh2Qpnu7lP
+         obIcctmJnTjTPNQVgZghuhPKswGBaqmVDIczIwhtPpQqQOL0cMfSU3ijnXLQq6r4Ertg
+         vyQhJ7ytgSuQnFpO1mNsMz3KR5xXsK17YPgokN+LkT85weg1RC6YJ5xD2bM8g4J5/ddu
+         qy06F4l4GIzMlq8ETGUFj6jjB9skXwdrBJwAHSfSA7TKw/acS6FQZsD4GJnWYOxwvb5o
+         C8FA==
+X-Gm-Message-State: AOAM532OAY1v9SFxlwNmI6QFC3JMDZ0LIF9W1bO2CcDygNtZ8CCINsfP
+        jB+W82c9usLi/KPu6uIUf+x6SgKjY6xopTs1reKH61sKKWH+fafPCNGmTLf5XJreGuwdQQR1+OC
+        Gp22m4QAah4epJuBekw==
+X-Google-Smtp-Source: ABdhPJz8dOZqV4YRwEPzjd1so0jgT+88ZyOSfqGLghBBdzsFk8fW9FJcQ4ejqcIynvDWNflidwSfgw==
+X-Received: by 2002:a05:6402:2158:: with SMTP id bq24mr5019782edb.8.1628768531861;
+        Thu, 12 Aug 2021 04:42:11 -0700 (PDT)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id z8sm697505ejd.94.2021.08.12.04.40.15
+        by smtp.gmail.com with ESMTPSA id ju5sm699897ejc.8.2021.08.12.04.42.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Aug 2021 04:40:16 -0700 (PDT)
+        Thu, 12 Aug 2021 04:42:11 -0700 (PDT)
 Subject: Re: [PATCH v2 3/3] brcmfmac: add patch ram for bluetooth
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
 To:     Angus Ainslie <angus@akkea.ca>, kernel@puri.sm
 Cc:     Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
@@ -54,53 +55,35 @@ Cc:     Arend van Spriel <aspriel@gmail.com>,
         linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
 References: <20210811152804.2379405-1-angus@akkea.ca>
  <20210811152804.2379405-4-angus@akkea.ca>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <d7d7fa89-916e-203a-8e7d-07cf88aa3fd1@broadcom.com>
-Date:   Thu, 12 Aug 2021 13:40:15 +0200
+ <d7d7fa89-916e-203a-8e7d-07cf88aa3fd1@broadcom.com>
+Message-ID: <e8c3a3b0-17c6-ac85-7a14-5c100288341a@broadcom.com>
+Date:   Thu, 12 Aug 2021 13:42:10 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <20210811152804.2379405-4-angus@akkea.ca>
+In-Reply-To: <d7d7fa89-916e-203a-8e7d-07cf88aa3fd1@broadcom.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000ef3b6a05c95b3249"
+        boundary="000000000000c6f3df05c95b3977"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000ef3b6a05c95b3249
+--000000000000c6f3df05c95b3977
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Language: en-US
 
-On 8/11/2021 5:28 PM, Angus Ainslie wrote:
-> Bluetooth on the BCM43752 needs a patchram file to function correctly.
-
-this patch is dealing with bluetooth so you should add the proper 
-mailing list.
-
-> Signed-off-by: Angus Ainslie <angus@akkea.ca>
-> ---
->   drivers/bluetooth/btbcm.c | 1 +
->   1 file changed, 1 insertion(+)
+On 8/12/2021 1:40 PM, Arend van Spriel wrote:
+> On 8/11/2021 5:28 PM, Angus Ainslie wrote:
+>> Bluetooth on the BCM43752 needs a patchram file to function correctly.
 > 
-> diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
-> index e5d706ed55ea..e4182acee488 100644
-> --- a/drivers/bluetooth/btbcm.c
-> +++ b/drivers/bluetooth/btbcm.c
-> @@ -387,6 +387,7 @@ struct bcm_subver_table {
->   };
->   
->   static const struct bcm_subver_table bcm_uart_subver_table[] = {
-> +	{ 0x1111, "BCM4362A2"	},	/* 000.017.017 */
+> this patch is dealing with bluetooth so you should add the proper 
+> mailing list.
 
-This seems odd. 4362 vs 43752? What is the story here?
+...and the 'brcmfmac:' prefix in the subject is inappropriate. It should 
+  be 'btbcm:' instead.
 
 Regards,
 Arend
-
->   	{ 0x4103, "BCM4330B1"	},	/* 002.001.003 */
->   	{ 0x410d, "BCM4334B0"	},	/* 002.001.013 */
->   	{ 0x410e, "BCM43341B0"	},	/* 002.001.014 */
-> 
 
 -- 
 This electronic communication and the information and any files transmitted 
@@ -115,7 +98,7 @@ this e-mail is strictly prohibited. If you received this e-mail in error,
 please return the e-mail to the sender, delete it from your computer, and 
 destroy any printed copy of it.
 
---000000000000ef3b6a05c95b3249
+--000000000000c6f3df05c95b3977
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -186,14 +169,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCncEPJt014SoNDTvuv
-K0m6C7n3MtO0YGqBwNR6eNoAnjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMTA4MTIxMTQwMTdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDiJliGnU3hSyNr0zd7
+TeFlWsjlFHMYyO1rquG1dx7dCDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMTA4MTIxMTQyMTJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFzCjRa6cYm0jSjhAxOb16P5IVJK2CqwSACNW
-aoFA4FwvxKABDFztCPUq0MtmWPR/q5A3M3FfA6mgGIqH8Jrg7zroV77eSQxDdcHXCsdjDa7+R6X3
-bfO/FhDv2mhmwZFfOZwkK4BCLzgEnPbAdxb/c8BFmYztGjNMTZzcVi4ha4cb0PGv30PxLdQm/Ob4
-RT/kivYcgSHSX2Zln7qA1agIvONxivNGQ1efIA9w2Tf9j+Dj66x0MhHSTboxMSgBSkJF1Ir0cUln
-+dmE8slsWvxk6SxVZxEwQXTO16fyys7X5sejU4NTN3SLh4DVOPn+iIt+juf+ma39DNGZCPpI0p2m
-eQ==
---000000000000ef3b6a05c95b3249--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAi4sr4cdcY4FVd8mhl941JaEw4O5AL66hCC/N
+LaXX/OYyjQm/m1Cm1mks4m9AsFaaqdOwNtKPS8k2TVPZWzOPa45R0VVPTXzBwmlMtF0AdSVEiw74
+4+aqEiB93jhvtxfLh0TeK59buf3NeurMkpw4x3HTQ08RIG5ENnqQiuQZeKqBW/VOuHAAJIiuJusA
+JkkkY9OcFZ6WxyOvPB6aPEDaqWGFQ2oE9C8+6bdPoUYXoTJhBXspeLpisj7DCXBEUUf1zMhnUttV
+Y6kzklSe0jl8/xaXAbNa/lbrVA9/j8k4RQOZi+dBMfktHI7DbM/0EUwUwP1+7OikgrsgP7b8Nux6
+Cw==
+--000000000000c6f3df05c95b3977--
