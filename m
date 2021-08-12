@@ -2,169 +2,226 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C35653EAD1B
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 00:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5F2D3EAD5E
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 00:48:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238251AbhHLWZx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Aug 2021 18:25:53 -0400
-Received: from mailout1.samsung.com ([203.254.224.24]:46356 "EHLO
-        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233901AbhHLWZv (ORCPT
+        id S236723AbhHLWs6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Aug 2021 18:48:58 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:34290 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S234084AbhHLWs5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Aug 2021 18:25:51 -0400
-Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
-        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20210812222523epoutp0112726bfbc26a119e4b9d053367f8139e~ar3MEgOQe0616506165epoutp01d
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 22:25:23 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20210812222523epoutp0112726bfbc26a119e4b9d053367f8139e~ar3MEgOQe0616506165epoutp01d
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1628807123;
-        bh=uGMImXLROuaXIlRM3ziE5kD/gMKtk73S5JDnGjDptSE=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=u/Ihj0/SU2iAsEnLHyacaTjw1E+qf0TRGTo/8q0Qyuu5bNZFHjtG0uhfh2b49KvWH
-         vy7n+cW2WK0aKuzFAq4mcUOdWoxE9uMPG9IJJJOsr6aWM6geWosg1EgUchMcZ14xrt
-         n1BbyNrKLTVIKq2YFk6MvyQYQzGLsCCgsBtoAWHg=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
-        20210812222523epcas1p3a2332b70096a521c8e22279f77ec6499~ar3LXhV2q2702527025epcas1p3M;
-        Thu, 12 Aug 2021 22:25:23 +0000 (GMT)
-Received: from epsmges1p1.samsung.com (unknown [182.195.40.155]) by
-        epsnrtp4.localdomain (Postfix) with ESMTP id 4Gm1Tq5phWz4x9Pq; Thu, 12 Aug
-        2021 22:25:19 +0000 (GMT)
-Received: from epcas1p1.samsung.com ( [182.195.41.45]) by
-        epsmges1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
-        1B.9D.45479.FCF95116; Fri, 13 Aug 2021 07:25:19 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20210812222518epcas1p10a9de28c1dbbcadf244c58326776f3ce~ar3HnLVel2953529535epcas1p1C;
-        Thu, 12 Aug 2021 22:25:18 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20210812222518epsmtrp267773e085daef1d60b6bf840e597e402~ar3HmQE7c0661306613epsmtrp2D;
-        Thu, 12 Aug 2021 22:25:18 +0000 (GMT)
-X-AuditID: b6c32a35-cbfff7000001b1a7-35-61159fcf2317
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        68.35.08394.ECF95116; Fri, 13 Aug 2021 07:25:18 +0900 (KST)
-Received: from [10.113.113.235] (unknown [10.113.113.235]) by
-        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20210812222518epsmtip28690c13cb8259cce15c7e3ff63daf580~ar3HSooDE2229922299epsmtip2h;
-        Thu, 12 Aug 2021 22:25:18 +0000 (GMT)
-Subject: Re: [PATCH] iwlwifi Add support for ax201 in Samsung Galaxy Book
- Flex2 Alpha
-From:   Jaehoon Chung <jh80.chung@samsung.com>
-To:     Justin Forbes <jmforbes@linuxtx.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matti Gottlieb <matti.gottlieb@intel.com>,
-        ybaruch <yaara.baruch@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Ihab Zhaika <ihab.zhaika@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless@vger.kernel.org,
-        "open list:BPF (Safe dynamic programs and tools)" 
-        <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        yj99.shin@samsung.com
-Message-ID: <94edb3c4-43a6-1031-8431-2befb0eca2bf@samsung.com>
-Date:   Fri, 13 Aug 2021 07:26:06 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
-        Thunderbird/78.11.0
+        Thu, 12 Aug 2021 18:48:57 -0400
+X-UUID: 601d46cdf5674712a6c37f2c6446920b-20210813
+X-UUID: 601d46cdf5674712a6c37f2c6446920b-20210813
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1031051865; Fri, 13 Aug 2021 06:48:27 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 13 Aug 2021 06:48:25 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 13 Aug 2021 06:48:26 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <jemele@google.com>, <yenlinlai@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7921: report HE MU radiotap
+Date:   Fri, 13 Aug 2021 06:48:24 +0800
+Message-ID: <c340d189992eb10288fb8f050ae513f1c15da179.1628807229.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-In-Reply-To: <8c55c7c9-a5ae-3b0e-8a0f-8954a8da7e7b@samsung.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrCJsWRmVeSWpSXmKPExsWy7bCmru75+aKJBlNeaFjMOd/CYtG67S6r
-        xaPX25gtHmy+y2TxaMUsdosL2/pYLRatXMhmcXnXHDaLNyvusFsc3rqAyWJOyzlmi2MLxCzm
-        b3vEaHHozkJmBz6Py329TB5bVt5k8li85yWTx6ZVnWwe03c4ePRtWcXo8XmTXAB7VLZNRmpi
-        SmqRQmpecn5KZl66rZJ3cLxzvKmZgaGuoaWFuZJCXmJuqq2Si0+ArltmDtDFSgpliTmlQKGA
-        xOJiJX07m6L80pJUhYz84hJbpdSClJwCywK94sTc4tK8dL3k/FwrQwMDI1OgwoTsjDftVxkL
-        TnBU7Og8zNTAeJqti5GDQ0LARGJHX1QXIxeHkMAORon27mWMEM4nRoltRx+wQTjfGCXuL93F
-        2sXICdax4usTdojEXkaJO+cnsEI47xklLrw7yA5SJSwQLnHp/RUWEJtNQEdi+7fjTCC2iMAh
-        FomFb7NBbF4BO4lNU+cygtgsAqoS8xbMYQOxRQUiJc7vXsACUSMocXLmEzCbU8Be4tz2C8wg
-        NrOAuMStJ/OZIGx5ie1v5zCDHCEhcIBDYtORWcwQp7pIrL97jQ3CFpZ4dXwLO4QtJfH53V6o
-        eLXEruYzUM0djBK3tjUxQSSMJfYvncwECiVmAU2J9bv0IcKKEjt/QxzNLMAn8e5rDyskIHkl
-        OtqEIEpUJC69fskEs+ruk//QkPOQmDNvMwsksCYwSbS9OMU4gVFhFpI/ZyH5bRaS32YhXLGA
-        kWUVo1hqQXFuemqxYYEhcnRvYgQnZy3THYwT337QO8TIxMF4iFGCg1lJhHennFCiEG9KYmVV
-        alF+fFFpTmrxIUZTYMhPZJYSTc4H5oe8knhDUyNjY2MLE0MzU0NDJXHeb7FfE4QE0hNLUrNT
-        UwtSi2D6mDg4pRqYdLVfMXfsOCTyV3VyzdEj+ryi7/tWFssE+Oz9emX6Z8e/paFxj9NqvW6t
-        Lv3M/0NEMiP6X4nojUbfWe4T3v3b8Ksw6WfabvfdGjPrDXmaMt6989+8fBlD0IMNv6b+nv18
-        26ywojtn6/7Y/12aFH336ILn/jOUiyJOveuYwx8UsDZFwrXZ8dP6lRWqxclHq88fkxZuPrOv
-        lOOX5jbN7oot1o9zPLT2J/z+N72pu3GPbnZl+hS320duPZu08k+X56VnUb9bl8U4f7ayj5n1
-        wCm3p0bp972I9Zqmc/8Xstjsv/31wMGGRSdK1tcvM3Ar3P2wZgtPkKXobTYrZbPqnY4Tgq4m
-        sb1g3Mlx3PK615HwR0osxRmJhlrMRcWJAAsRFRpXBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprKIsWRmVeSWpSXmKPExsWy7bCSvO65+aKJBrO6jSzmnG9hsWjddpfV
-        4tHrbcwWDzbfZbJ4tGIWu8WFbX2sFotWLmSzuLxrDpvFmxV32C0Ob13AZDGn5RyzxbEFYhbz
-        tz1itDh0ZyGzA5/H5b5eJo8tK28yeSze85LJY9OqTjaP6TscPPq2rGL0+LxJLoA9issmJTUn
-        syy1SN8ugSvjTftVxoITHBU7Og8zNTCeZuti5OSQEDCRWPH1CTuILSSwm1HiZpsIRFxK4vPT
-        qUA1HEC2sMThw8UQJW8ZJa58qgexhQXCJS69v8ICYrMJ6Ehs/3acqYuRi0NE4BCLxMtfT5hB
-        HCGBCUwSb3Y+Ywap4hWwk9g0dS4jiM0ioCoxb8EcsCNEBSIlPi94xQpRIyhxcuYTsKmcAvYS
-        57ZfAOtlFlCX+DPvEpQtLnHryXwmCFteYvvbOcwTGAVnIWmfhaRlFpKWWUhaFjCyrGKUTC0o
-        zk3PLTYsMMxLLdcrTswtLs1L10vOz93ECI45Lc0djNtXfdA7xMjEwXiIUYKDWUmEd6ecUKIQ
-        b0piZVVqUX58UWlOavEhRmkOFiVx3gtdJ+OFBNITS1KzU1MLUotgskwcnFINTC7xPotK87hL
-        b2Qszev7kC8z2WJPooJOjpBklNGxZS95FumZ5+4L4wkL+vmpWCqu8uYm/+55FovfleyIz5E1
-        jCjgdk5zncAXP+1sSZL76SlmWZaPH+7sDeooXD4/Qml77kQrZTO9B7MnXsqwCmd/VeruP8di
-        UsnVzTslmLMevXNjn17dZl/Ct63e8PYLt/U9y1gkNtT/VAqN1f+66JPLnducd29l+Nh4Ld2o
-        tm2G8qGrzUtMFjB/Y+j0XV721cNqmXnYs/0lGqG1zacb+Nd7Vmx92yvbtPuh8cSioCeLShm6
-        D3166Ryte7Zoit+uJ0vPV4oylp6eIv+oeu2nPd810lbIGx1aVr970okPBgVJSizFGYmGWsxF
-        xYkAQYCyfCgDAAA=
-X-CMS-MailID: 20210812222518epcas1p10a9de28c1dbbcadf244c58326776f3ce
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20210709173244epcas1p3ea6488202595e182d45f59fcba695e0a
-References: <20210702223155.1981510-1-jforbes@fedoraproject.org>
-        <CGME20210709173244epcas1p3ea6488202595e182d45f59fcba695e0a@epcas1p3.samsung.com>
-        <CAFxkdApGUeGdg4=rH=iC2SK58FO6yzbFiq3uSFMFTyZsDQ5j5w@mail.gmail.com>
-        <8c55c7c9-a5ae-3b0e-8a0f-8954a8da7e7b@samsung.com>
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+From: Sean Wang <sean.wang@mediatek.com>
 
-On 8/9/21 8:09 AM, Jaehoon Chung wrote:
-> Hi
-> 
-> On 7/10/21 2:32 AM, Justin Forbes wrote:
->> On Fri, Jul 2, 2021 at 5:32 PM Justin M. Forbes
->> <jforbes@fedoraproject.org> wrote:
->>>
->>> The Samsung Galaxy Book Flex2 Alpha uses an ax201 with the ID a0f0/6074.
->>> This works fine with the existing driver once it knows to claim it.
->>> Simple patch to add the device.
->>>
->>> Signed-off-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Report HE MU/BF radiotap.
 
-If this patch is merged, can this patch be also applied on stable tree?
+That fixed HE MU packets dropped by mac80211 because they are missing the
+ieee80211_radiotap_he_mu header.
 
-Best Regards,
-Jaehoon Chung
+Fixes: 163f4d22c118d ("mt76: mt7921: add MAC support")
+Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Co-developed-by: Eric-SY Chang <Eric-SY.Chang@mediatek.com>
+Signed-off-by: Eric-SY Chang <Eric-SY.Chang@mediatek.com>
+Tested-by: Eric-SY Chang <Eric-SY.Chang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 65 ++++++++++++++++---
+ .../net/wireless/mediatek/mt76/mt7921/mac.h   |  8 +++
+ 2 files changed, 65 insertions(+), 8 deletions(-)
 
-> 
-> 
-> Before sending patch, I have found same patch to solve the Wifi problem.
-> Is there any progress about this patch? 
-> 
-> I hope that this patch will be applied.
-> 
-> Reviewed-by: Jaehoon Chung <jh80.chung@samsung.com>
-> 
-> Best Regards,
-> Jaehoon Chung
-> 
-> 
->>> ---
->>
->> Just an update from the user with this hardware that I built a test kernel for:
->> "Still going strong w/ AX201, speed OK, on par w/ speeds on windows,
->> no crashes, no weird messages about the driver."
->>
->> Justin
->>
-> 
-> 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 296e0f7a1d14..7ee9ef2fb9f0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -180,12 +180,56 @@ mt7921_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
+ 				      IEEE80211_RADIOTAP_HE_DATA2_RU_OFFSET);
+ }
+ 
++static void
++mt7921_mac_decode_he_mu_radiotap(struct sk_buff *skb,
++				 struct mt76_rx_status *status,
++				 __le32 *rxv)
++{
++	static const struct ieee80211_radiotap_he_mu mu_known = {
++		.flags1 = HE_BITS(MU_FLAGS1_SIG_B_MCS_KNOWN) |
++			  HE_BITS(MU_FLAGS1_SIG_B_DCM_KNOWN) |
++			  HE_BITS(MU_FLAGS1_CH1_RU_KNOWN) |
++			  HE_BITS(MU_FLAGS1_SIG_B_SYMS_USERS_KNOWN) |
++			  HE_BITS(MU_FLAGS1_SIG_B_COMP_KNOWN),
++		.flags2 = HE_BITS(MU_FLAGS2_BW_FROM_SIG_A_BW_KNOWN) |
++			  HE_BITS(MU_FLAGS2_PUNC_FROM_SIG_A_BW_KNOWN),
++	};
++	struct ieee80211_radiotap_he_mu *he_mu = NULL;
++
++	he_mu = skb_push(skb, sizeof(mu_known));
++	memcpy(he_mu, &mu_known, sizeof(mu_known));
++
++#define MU_PREP(f, v)	le16_encode_bits(v, IEEE80211_RADIOTAP_HE_MU_##f)
++
++	he_mu->flags1 |= MU_PREP(FLAGS1_SIG_B_MCS, status->rate_idx);
++	if (status->he_dcm)
++		he_mu->flags1 |= MU_PREP(FLAGS1_SIG_B_DCM, status->he_dcm);
++
++	he_mu->flags2 |= MU_PREP(FLAGS2_BW_FROM_SIG_A_BW, status->bw) |
++			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
++				 le32_get_bits(rxv[2], MT_CRXV_HE_NUM_USER));
++
++	he_mu->ru_ch1[0] = FIELD_GET(MT_CRXV_HE_RU0, cpu_to_le32(rxv[3]));
++
++	if (status->bw >= RATE_INFO_BW_40) {
++		he_mu->flags1 |= HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
++		he_mu->ru_ch2[0] =
++			FIELD_GET(MT_CRXV_HE_RU1, cpu_to_le32(rxv[3]));
++	}
++
++	if (status->bw >= RATE_INFO_BW_80) {
++		he_mu->ru_ch1[1] =
++			FIELD_GET(MT_CRXV_HE_RU2, cpu_to_le32(rxv[3]));
++		he_mu->ru_ch2[1] =
++			FIELD_GET(MT_CRXV_HE_RU3, cpu_to_le32(rxv[3]));
++	}
++}
++
+ static void
+ mt7921_mac_decode_he_radiotap(struct sk_buff *skb,
+ 			      struct mt76_rx_status *status,
+ 			      __le32 *rxv, u32 phy)
+ {
+-	/* TODO: struct ieee80211_radiotap_he_mu */
+ 	static const struct ieee80211_radiotap_he known = {
+ 		.data1 = HE_BITS(DATA1_DATA_MCS_KNOWN) |
+ 			 HE_BITS(DATA1_DATA_DCM_KNOWN) |
+@@ -193,6 +237,7 @@ mt7921_mac_decode_he_radiotap(struct sk_buff *skb,
+ 			 HE_BITS(DATA1_CODING_KNOWN) |
+ 			 HE_BITS(DATA1_LDPC_XSYMSEG_KNOWN) |
+ 			 HE_BITS(DATA1_DOPPLER_KNOWN) |
++			 HE_BITS(DATA1_SPTL_REUSE_KNOWN) |
+ 			 HE_BITS(DATA1_BSS_COLOR_KNOWN),
+ 		.data2 = HE_BITS(DATA2_GI_KNOWN) |
+ 			 HE_BITS(DATA2_TXBF_KNOWN) |
+@@ -207,9 +252,12 @@ mt7921_mac_decode_he_radiotap(struct sk_buff *skb,
+ 
+ 	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[14]) |
+ 		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[2]);
++	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[11]);
+ 	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[2]) |
+ 		    le16_encode_bits(ltf_size,
+ 				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
++	if (cpu_to_le32(rxv[0]) & MT_PRXV_TXBF)
++		he->data5 |= HE_BITS(DATA5_TXBF);
+ 	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
+ 		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
+ 
+@@ -217,8 +265,7 @@ mt7921_mac_decode_he_radiotap(struct sk_buff *skb,
+ 	case MT_PHY_TYPE_HE_SU:
+ 		he->data1 |= HE_BITS(DATA1_FORMAT_SU) |
+ 			     HE_BITS(DATA1_UL_DL_KNOWN) |
+-			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
+-			     HE_BITS(DATA1_SPTL_REUSE_KNOWN);
++			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN);
+ 
+ 		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
+ 			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
+@@ -232,17 +279,15 @@ mt7921_mac_decode_he_radiotap(struct sk_buff *skb,
+ 		break;
+ 	case MT_PHY_TYPE_HE_MU:
+ 		he->data1 |= HE_BITS(DATA1_FORMAT_MU) |
+-			     HE_BITS(DATA1_UL_DL_KNOWN) |
+-			     HE_BITS(DATA1_SPTL_REUSE_KNOWN);
++			     HE_BITS(DATA1_UL_DL_KNOWN);
+ 
+ 		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
+-		he->data4 |= HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[11]);
++		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[7]);
+ 
+ 		mt7921_mac_decode_he_radiotap_ru(status, he, rxv);
+ 		break;
+ 	case MT_PHY_TYPE_HE_TB:
+ 		he->data1 |= HE_BITS(DATA1_FORMAT_TRIG) |
+-			     HE_BITS(DATA1_SPTL_REUSE_KNOWN) |
+ 			     HE_BITS(DATA1_SPTL_REUSE2_KNOWN) |
+ 			     HE_BITS(DATA1_SPTL_REUSE3_KNOWN) |
+ 			     HE_BITS(DATA1_SPTL_REUSE4_KNOWN);
+@@ -606,9 +651,13 @@ int mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
+ 
+ 	mt7921_mac_assoc_rssi(dev, skb);
+ 
+-	if (rxv && status->flag & RX_FLAG_RADIOTAP_HE)
++	if (rxv && status->flag & RX_FLAG_RADIOTAP_HE) {
+ 		mt7921_mac_decode_he_radiotap(skb, status, rxv, mode);
+ 
++		if (status->flag & RX_FLAG_RADIOTAP_HE_MU)
++			mt7921_mac_decode_he_mu_radiotap(skb, status, rxv);
++	}
++
+ 	if (!status->wcid || !ieee80211_is_data_qos(fc))
+ 		return 0;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
+index 3af67fac213d..f0194c878037 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
+@@ -116,6 +116,7 @@ enum rx_pkt_type {
+ #define MT_PRXV_TX_DCM			BIT(4)
+ #define MT_PRXV_TX_ER_SU_106T		BIT(5)
+ #define MT_PRXV_NSTS			GENMASK(9, 7)
++#define MT_PRXV_TXBF			BIT(10)
+ #define MT_PRXV_HT_AD_CODE		BIT(11)
+ #define MT_PRXV_FRAME_MODE		GENMASK(14, 12)
+ #define MT_PRXV_SGI			GENMASK(16, 15)
+@@ -138,8 +139,15 @@ enum rx_pkt_type {
+ #define MT_CRXV_HE_LTF_SIZE		GENMASK(18, 17)
+ #define MT_CRXV_HE_LDPC_EXT_SYM		BIT(20)
+ #define MT_CRXV_HE_PE_DISAMBIG		BIT(23)
++#define MT_CRXV_HE_NUM_USER		GENMASK(30, 24)
+ #define MT_CRXV_HE_UPLINK		BIT(31)
+ 
++#define MT_CRXV_HE_RU0			GENMASK(7, 0)
++#define MT_CRXV_HE_RU1			GENMASK(15, 8)
++#define MT_CRXV_HE_RU2			GENMASK(23, 16)
++#define MT_CRXV_HE_RU3			GENMASK(31, 24)
++#define MT_CRXV_HE_MU_AID		GENMASK(30, 20)
++
+ #define MT_CRXV_HE_SR_MASK		GENMASK(11, 8)
+ #define MT_CRXV_HE_SR1_MASK		GENMASK(16, 12)
+ #define MT_CRXV_HE_SR2_MASK             GENMASK(20, 17)
+-- 
+2.25.1
 
