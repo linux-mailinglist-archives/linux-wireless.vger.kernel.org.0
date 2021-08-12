@@ -2,225 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B00393EAC30
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Aug 2021 23:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C35653EAD1B
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 00:25:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234290AbhHLVE7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Aug 2021 17:04:59 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:55474 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229655AbhHLVE7 (ORCPT
+        id S238251AbhHLWZx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Aug 2021 18:25:53 -0400
+Received: from mailout1.samsung.com ([203.254.224.24]:46356 "EHLO
+        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233901AbhHLWZv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Aug 2021 17:04:59 -0400
-X-UUID: d6c08a5d03b24f2782fc66b00a1bd806-20210813
-X-UUID: d6c08a5d03b24f2782fc66b00a1bd806-20210813
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 946320826; Fri, 13 Aug 2021 05:04:31 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 13 Aug 2021 05:04:29 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 13 Aug 2021 05:04:29 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 3/3] mt76: mt7915: rework debugfs fixed-rate knob
-Date:   Fri, 13 Aug 2021 05:04:26 +0800
-Message-ID: <9286919a9098d3ce3d77fbf3df8fb408670dc7d9.1628799602.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <1c3fc7ff6d5ab129a58160cd878787d9fbeba9c2.1628799602.git.ryder.lee@mediatek.com>
-References: <1c3fc7ff6d5ab129a58160cd878787d9fbeba9c2.1628799602.git.ryder.lee@mediatek.com>
+        Thu, 12 Aug 2021 18:25:51 -0400
+Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
+        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20210812222523epoutp0112726bfbc26a119e4b9d053367f8139e~ar3MEgOQe0616506165epoutp01d
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Aug 2021 22:25:23 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20210812222523epoutp0112726bfbc26a119e4b9d053367f8139e~ar3MEgOQe0616506165epoutp01d
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1628807123;
+        bh=uGMImXLROuaXIlRM3ziE5kD/gMKtk73S5JDnGjDptSE=;
+        h=Subject:From:To:Date:In-Reply-To:References:From;
+        b=u/Ihj0/SU2iAsEnLHyacaTjw1E+qf0TRGTo/8q0Qyuu5bNZFHjtG0uhfh2b49KvWH
+         vy7n+cW2WK0aKuzFAq4mcUOdWoxE9uMPG9IJJJOsr6aWM6geWosg1EgUchMcZ14xrt
+         n1BbyNrKLTVIKq2YFk6MvyQYQzGLsCCgsBtoAWHg=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
+        20210812222523epcas1p3a2332b70096a521c8e22279f77ec6499~ar3LXhV2q2702527025epcas1p3M;
+        Thu, 12 Aug 2021 22:25:23 +0000 (GMT)
+Received: from epsmges1p1.samsung.com (unknown [182.195.40.155]) by
+        epsnrtp4.localdomain (Postfix) with ESMTP id 4Gm1Tq5phWz4x9Pq; Thu, 12 Aug
+        2021 22:25:19 +0000 (GMT)
+Received: from epcas1p1.samsung.com ( [182.195.41.45]) by
+        epsmges1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+        1B.9D.45479.FCF95116; Fri, 13 Aug 2021 07:25:19 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20210812222518epcas1p10a9de28c1dbbcadf244c58326776f3ce~ar3HnLVel2953529535epcas1p1C;
+        Thu, 12 Aug 2021 22:25:18 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20210812222518epsmtrp267773e085daef1d60b6bf840e597e402~ar3HmQE7c0661306613epsmtrp2D;
+        Thu, 12 Aug 2021 22:25:18 +0000 (GMT)
+X-AuditID: b6c32a35-cbfff7000001b1a7-35-61159fcf2317
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        68.35.08394.ECF95116; Fri, 13 Aug 2021 07:25:18 +0900 (KST)
+Received: from [10.113.113.235] (unknown [10.113.113.235]) by
+        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20210812222518epsmtip28690c13cb8259cce15c7e3ff63daf580~ar3HSooDE2229922299epsmtip2h;
+        Thu, 12 Aug 2021 22:25:18 +0000 (GMT)
+Subject: Re: [PATCH] iwlwifi Add support for ax201 in Samsung Galaxy Book
+ Flex2 Alpha
+From:   Jaehoon Chung <jh80.chung@samsung.com>
+To:     Justin Forbes <jmforbes@linuxtx.org>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Matti Gottlieb <matti.gottlieb@intel.com>,
+        ybaruch <yaara.baruch@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Ihab Zhaika <ihab.zhaika@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless@vger.kernel.org,
+        "open list:BPF (Safe dynamic programs and tools)" 
+        <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        yj99.shin@samsung.com
+Message-ID: <94edb3c4-43a6-1031-8431-2befb0eca2bf@samsung.com>
+Date:   Fri, 13 Aug 2021 07:26:06 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+        Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+In-Reply-To: <8c55c7c9-a5ae-3b0e-8a0f-8954a8da7e7b@samsung.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrCJsWRmVeSWpSXmKPExsWy7bCmru75+aKJBlNeaFjMOd/CYtG67S6r
+        xaPX25gtHmy+y2TxaMUsdosL2/pYLRatXMhmcXnXHDaLNyvusFsc3rqAyWJOyzlmi2MLxCzm
+        b3vEaHHozkJmBz6Py329TB5bVt5k8li85yWTx6ZVnWwe03c4ePRtWcXo8XmTXAB7VLZNRmpi
+        SmqRQmpecn5KZl66rZJ3cLxzvKmZgaGuoaWFuZJCXmJuqq2Si0+ArltmDtDFSgpliTmlQKGA
+        xOJiJX07m6L80pJUhYz84hJbpdSClJwCywK94sTc4tK8dL3k/FwrQwMDI1OgwoTsjDftVxkL
+        TnBU7Og8zNTAeJqti5GDQ0LARGJHX1QXIxeHkMAORon27mWMEM4nRoltRx+wQTjfGCXuL93F
+        2sXICdax4usTdojEXkaJO+cnsEI47xklLrw7yA5SJSwQLnHp/RUWEJtNQEdi+7fjTCC2iMAh
+        FomFb7NBbF4BO4lNU+cygtgsAqoS8xbMYQOxRQUiJc7vXsACUSMocXLmEzCbU8Be4tz2C8wg
+        NrOAuMStJ/OZIGx5ie1v5zCDHCEhcIBDYtORWcwQp7pIrL97jQ3CFpZ4dXwLO4QtJfH53V6o
+        eLXEruYzUM0djBK3tjUxQSSMJfYvncwECiVmAU2J9bv0IcKKEjt/QxzNLMAn8e5rDyskIHkl
+        OtqEIEpUJC69fskEs+ruk//QkPOQmDNvMwsksCYwSbS9OMU4gVFhFpI/ZyH5bRaS32YhXLGA
+        kWUVo1hqQXFuemqxYYEhcnRvYgQnZy3THYwT337QO8TIxMF4iFGCg1lJhHennFCiEG9KYmVV
+        alF+fFFpTmrxIUZTYMhPZJYSTc4H5oe8knhDUyNjY2MLE0MzU0NDJXHeb7FfE4QE0hNLUrNT
+        UwtSi2D6mDg4pRqYdLVfMXfsOCTyV3VyzdEj+ryi7/tWFssE+Oz9emX6Z8e/paFxj9NqvW6t
+        Lv3M/0NEMiP6X4nojUbfWe4T3v3b8Ksw6WfabvfdGjPrDXmaMt6989+8fBlD0IMNv6b+nv18
+        26ywojtn6/7Y/12aFH336ILn/jOUiyJOveuYwx8UsDZFwrXZ8dP6lRWqxclHq88fkxZuPrOv
+        lOOX5jbN7oot1o9zPLT2J/z+N72pu3GPbnZl+hS320duPZu08k+X56VnUb9bl8U4f7ayj5n1
+        wCm3p0bp972I9Zqmc/8Xstjsv/31wMGGRSdK1tcvM3Ar3P2wZgtPkKXobTYrZbPqnY4Tgq4m
+        sb1g3Mlx3PK615HwR0osxRmJhlrMRcWJAAsRFRpXBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprKIsWRmVeSWpSXmKPExsWy7bCSvO65+aKJBrO6jSzmnG9hsWjddpfV
+        4tHrbcwWDzbfZbJ4tGIWu8WFbX2sFotWLmSzuLxrDpvFmxV32C0Ob13AZDGn5RyzxbEFYhbz
+        tz1itDh0ZyGzA5/H5b5eJo8tK28yeSze85LJY9OqTjaP6TscPPq2rGL0+LxJLoA9issmJTUn
+        syy1SN8ugSvjTftVxoITHBU7Og8zNTCeZuti5OSQEDCRWPH1CTuILSSwm1HiZpsIRFxK4vPT
+        qUA1HEC2sMThw8UQJW8ZJa58qgexhQXCJS69v8ICYrMJ6Ehs/3acqYuRi0NE4BCLxMtfT5hB
+        HCGBCUwSb3Y+Ywap4hWwk9g0dS4jiM0ioCoxb8EcsCNEBSIlPi94xQpRIyhxcuYTsKmcAvYS
+        57ZfAOtlFlCX+DPvEpQtLnHryXwmCFteYvvbOcwTGAVnIWmfhaRlFpKWWUhaFjCyrGKUTC0o
+        zk3PLTYsMMxLLdcrTswtLs1L10vOz93ECI45Lc0djNtXfdA7xMjEwXiIUYKDWUmEd6ecUKIQ
+        b0piZVVqUX58UWlOavEhRmkOFiVx3gtdJ+OFBNITS1KzU1MLUotgskwcnFINTC7xPotK87hL
+        b2Qszev7kC8z2WJPooJOjpBklNGxZS95FumZ5+4L4wkL+vmpWCqu8uYm/+55FovfleyIz5E1
+        jCjgdk5zncAXP+1sSZL76SlmWZaPH+7sDeooXD4/Qml77kQrZTO9B7MnXsqwCmd/VeruP8di
+        UsnVzTslmLMevXNjn17dZl/Ct63e8PYLt/U9y1gkNtT/VAqN1f+66JPLnducd29l+Nh4Ld2o
+        tm2G8qGrzUtMFjB/Y+j0XV721cNqmXnYs/0lGqG1zacb+Nd7Vmx92yvbtPuh8cSioCeLShm6
+        D3166Ryte7Zoit+uJ0vPV4oylp6eIv+oeu2nPd810lbIGx1aVr970okPBgVJSizFGYmGWsxF
+        xYkAQYCyfCgDAAA=
+X-CMS-MailID: 20210812222518epcas1p10a9de28c1dbbcadf244c58326776f3ce
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20210709173244epcas1p3ea6488202595e182d45f59fcba695e0a
+References: <20210702223155.1981510-1-jforbes@fedoraproject.org>
+        <CGME20210709173244epcas1p3ea6488202595e182d45f59fcba695e0a@epcas1p3.samsung.com>
+        <CAFxkdApGUeGdg4=rH=iC2SK58FO6yzbFiq3uSFMFTyZsDQ5j5w@mail.gmail.com>
+        <8c55c7c9-a5ae-3b0e-8a0f-8954a8da7e7b@samsung.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Switch to use new mt7915_mcu_set_fixed_rate_ctrl().
+Hi
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-@Felix, please ignore the following one 
-https://patchwork.kernel.org/project/linux-wireless/patch/c3fd9c4ea692f28e2eb78073fd8da7753199ba60.1628301616.git.ryder.lee@mediatek.com/
-[3/4] mt76: mt7915: add HE-LTF into fixed rate command
----
- .../wireless/mediatek/mt76/mt7915/debugfs.c   | 68 ++++++++++++++++---
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 48 +------------
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 -
- 3 files changed, 61 insertions(+), 57 deletions(-)
+On 8/9/21 8:09 AM, Jaehoon Chung wrote:
+> Hi
+> 
+> On 7/10/21 2:32 AM, Justin Forbes wrote:
+>> On Fri, Jul 2, 2021 at 5:32 PM Justin M. Forbes
+>> <jforbes@fedoraproject.org> wrote:
+>>>
+>>> The Samsung Galaxy Book Flex2 Alpha uses an ax201 with the ID a0f0/6074.
+>>> This works fine with the existing driver once it knows to claim it.
+>>> Simple patch to add the device.
+>>>
+>>> Signed-off-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index d9d18f662039..e1cdfbe52199 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -365,19 +365,71 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
- #ifdef CONFIG_MAC80211_DEBUGFS
- /** per-station debugfs **/
- 
--static int mt7915_sta_fixed_rate_set(void *data, u64 rate)
-+static ssize_t mt7915_sta_fixed_rate_set(struct file *file,
-+					 const char __user *user_buf,
-+					 size_t count, loff_t *ppos)
- {
--	struct ieee80211_sta *sta = data;
-+	struct ieee80211_sta *sta = file->private_data;
- 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
--
--	/* usage: <he ltf> <tx mode> <ldpc> <stbc> <bw> <gi> <nss> <mcs>
--	 * <tx mode>: see enum mt76_phy_type
-+	struct mt7915_dev *dev = msta->vif->phy->dev;
-+	struct ieee80211_vif *vif;
-+	struct sta_phy phy = {};
-+	char buf[100];
-+	int ret;
-+	u32 field;
-+	u8 i, gi, he_ltf;
-+
-+	if (count >= sizeof(buf))
-+		return -EINVAL;
-+
-+	if (copy_from_user(buf, user_buf, count))
-+		return -EFAULT;
-+
-+	if (count && buf[count - 1] == '\n')
-+		buf[count - 1] = '\0';
-+	else
-+		buf[count] = '\0';
-+
-+	/* Mode: CCK:0, OFDM:1, HT:2, GF:3, VHT:4, HE_SU:8, HE_ER:9
-+	 * BW: BW20:0, BW40:1, BW80:2, BW160:3
-+	 * NSS: VHT:1~4, HE:1~4, Others:Ignore
-+	 * MCS: CCK:0~4, OFDM:0~7, HT:0~32, VHT:0~9, HE_SU:0~11, HE_ER:0~2
-+	 * GI: (HT/VHT) LGI:0, SGI:1; (HE) 0.8us:0, 1.6us:1, 3.2us:2
-+	 * LDPC: Off:0, On:1
-+	 * STBC: Off:0, On:1
-+	 * HE_LTF: 1xLTF:0, 2xLTF:1, 4xLTF:2
- 	 */
--	return mt7915_mcu_set_fixed_rate(msta->vif->phy->dev, sta, rate);
-+	if (sscanf(buf, "%hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu",
-+		   &phy.type, &phy.bw, &phy.nss, &phy.mcs, &gi,
-+		   &phy.ldpc, &phy.stbc, &he_ltf) != 8) {
-+		dev_warn(dev->mt76.dev,
-+			 "format: Mode BW NSS MCS (HE)GI LDPC STBC HE_LTF\n");
-+		field = RATE_PARAM_AUTO;
-+		goto out;
-+	}
-+
-+	phy.ldpc = (phy.bw || phy.ldpc) * GENMASK(2, 0);
-+	for (i = 0; i <= phy.bw; i++) {
-+		phy.sgi |= gi << (i << sta->he_cap.has_he);
-+		phy.he_ltf |= he_ltf << (i << sta->he_cap.has_he);
-+	}
-+	field = RATE_PARAM_FIXED;
-+
-+out:
-+	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
-+	ret = mt7915_mcu_set_fixed_rate_ctrl(dev, vif, sta, &phy, field);
-+	if (ret)
-+		return -EFAULT;
-+
-+	return count;
- }
- 
--DEFINE_DEBUGFS_ATTRIBUTE(fops_fixed_rate, NULL,
--			 mt7915_sta_fixed_rate_set, "%llx\n");
-+static const struct file_operations fops_fixed_rate = {
-+	.write = mt7915_sta_fixed_rate_set,
-+	.open = simple_open,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
- 
- void mt7915_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			    struct ieee80211_sta *sta, struct dentry *dir)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index dfe9b47c8f4e..5f4cab743f56 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2065,6 +2065,7 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
- 	switch (field) {
- 	case RATE_PARAM_AUTO:
- 		break;
-+	case RATE_PARAM_FIXED:
- 	case RATE_PARAM_FIXED_MCS:
- 	case RATE_PARAM_FIXED_GI:
- 	case RATE_PARAM_FIXED_HE_LTF:
-@@ -2416,53 +2417,6 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
- 				     MCU_EXT_CMD(STA_REC_UPDATE), true);
- }
- 
--int mt7915_mcu_set_fixed_rate(struct mt7915_dev *dev,
--			      struct ieee80211_sta *sta, u32 rate)
--{
--	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
--	struct mt7915_vif *mvif = msta->vif;
--	struct sta_rec_ra_fixed *ra;
--	struct sk_buff *skb;
--	struct tlv *tlv;
--	int len = sizeof(struct sta_req_hdr) + sizeof(*ra);
--
--	skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta, len);
--	if (IS_ERR(skb))
--		return PTR_ERR(skb);
--
--	tlv = mt7915_mcu_add_tlv(skb, STA_REC_RA_UPDATE, sizeof(*ra));
--	ra = (struct sta_rec_ra_fixed *)tlv;
--
--	if (!rate) {
--		ra->field = cpu_to_le32(RATE_PARAM_AUTO);
--		goto out;
--	}
--
--	ra->field = cpu_to_le32(RATE_PARAM_FIXED);
--	ra->phy.type = FIELD_GET(RATE_CFG_PHY_TYPE, rate);
--	ra->phy.bw = FIELD_GET(RATE_CFG_BW, rate);
--	ra->phy.nss = FIELD_GET(RATE_CFG_NSS, rate);
--	ra->phy.mcs = FIELD_GET(RATE_CFG_MCS, rate);
--	ra->phy.stbc = FIELD_GET(RATE_CFG_STBC, rate);
--
--	if (ra->phy.bw)
--		ra->phy.ldpc = 7;
--	else
--		ra->phy.ldpc = FIELD_GET(RATE_CFG_LDPC, rate) * 7;
--
--	/* HT/VHT - SGI: 1, LGI: 0; HE - SGI: 0, MGI: 1, LGI: 2 */
--	if (ra->phy.type > MT_PHY_TYPE_VHT) {
--		ra->phy.he_ltf = FIELD_GET(RATE_CFG_HE_LTF, rate) * 85;
--		ra->phy.sgi = FIELD_GET(RATE_CFG_GI, rate) * 85;
--	} else {
--		ra->phy.sgi = FIELD_GET(RATE_CFG_GI, rate) * 15;
--	}
--
--out:
--	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
--				     MCU_EXT_CMD(STA_REC_UPDATE), true);
--}
--
- int mt7915_mcu_add_dev_info(struct mt7915_phy *phy,
- 			    struct ieee80211_vif *vif, bool enable)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 477a8621550a..c0da97f2774c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -331,8 +331,6 @@ int mt7915_set_channel(struct mt7915_phy *phy);
- int mt7915_mcu_set_chan_info(struct mt7915_phy *phy, int cmd);
- int mt7915_mcu_set_tx(struct mt7915_dev *dev, struct ieee80211_vif *vif);
- int mt7915_mcu_update_edca(struct mt7915_dev *dev, void *req);
--int mt7915_mcu_set_fixed_rate(struct mt7915_dev *dev,
--			      struct ieee80211_sta *sta, u32 rate);
- int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_sta *sta,
--- 
-2.29.2
+If this patch is merged, can this patch be also applied on stable tree?
+
+Best Regards,
+Jaehoon Chung
+
+> 
+> 
+> Before sending patch, I have found same patch to solve the Wifi problem.
+> Is there any progress about this patch? 
+> 
+> I hope that this patch will be applied.
+> 
+> Reviewed-by: Jaehoon Chung <jh80.chung@samsung.com>
+> 
+> Best Regards,
+> Jaehoon Chung
+> 
+> 
+>>> ---
+>>
+>> Just an update from the user with this hardware that I built a test kernel for:
+>> "Still going strong w/ AX201, speed OK, on par w/ speeds on windows,
+>> no crashes, no weird messages about the driver."
+>>
+>> Justin
+>>
+> 
+> 
 
