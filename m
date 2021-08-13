@@ -2,80 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0F4D3EB689
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 16:08:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D04B53EB750
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 17:01:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240783AbhHMOJR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Aug 2021 10:09:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60056 "EHLO
+        id S241029AbhHMPCE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Aug 2021 11:02:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235317AbhHMOJR (ORCPT
+        with ESMTP id S241003AbhHMPCD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Aug 2021 10:09:17 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78D94C061756
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Aug 2021 07:08:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Ehp8QVXrAvoNWo7feuIvdyhoR1bCsHv5aFy82Lmft0c=; b=d29drEZoc4LcAxSYYCvx/XZHqh
-        jdGQ07ks9cUE/riKPBDARs6Y/b/uVgeALUbGyauuQxDLWk5Oo9RtP9SwMcEonScyPOBMqXd6hVAex
-        0k0euZbTZxNH8iZMubkXnb35C71QSfs2ge1UIS1w/nwExADs1WUkT1I1hf5wgFDgyD5A=;
-Received: from p4ff13206.dip0.t-ipconnect.de ([79.241.50.6] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1mEXrZ-0001CP-Sq; Fri, 13 Aug 2021 16:08:45 +0200
-To:     Ben Greear <greearb@candelatech.com>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <9f5b0cf6c4296d3a9e78a95516cf26d1db4baba9.1627696765.git.ryder.lee@mediatek.com>
- <04c61f83-e4ce-536f-7030-9050d8edfe78@nbd.name>
- <44c91410-49db-b829-a69a-f9826c8ff3ee@candelatech.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH v4 1/2] mt76: mt7915: fix hwmon temp sensor mem
- use-after-free
-Message-ID: <1c4ab69a-21ad-f3fb-12b9-e1664dcc735d@nbd.name>
-Date:   Fri, 13 Aug 2021 16:08:45 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.13.0
+        Fri, 13 Aug 2021 11:02:03 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1383C061756;
+        Fri, 13 Aug 2021 08:01:36 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id h2so16054244lji.6;
+        Fri, 13 Aug 2021 08:01:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=y6YYsoW3o43TzZv2ct50vUJfqFlF+SIH/P40e9oxhyA=;
+        b=XZZhtKyCe9oudkuOpiydMs5XjPD2Tj1CTL3C1vqOg2oc8RHyMoN9G6PPVYo7fNtDS0
+         LJAiFStstYR4QM/RbfSln2cwbSRWqmprEgVVRDWZh1CUmZqkAGVphw942l3CYoMn4bw9
+         8xEtlKl+YSOfHvH5KBbXmD2txWDpmrRHVdKq/hvESZHSw9YMfiTsKWyVZ4+xQRonQOiH
+         pIHUecySSUN5GbrRu1+0Jc9irrUrQrAeIHODwfzQQjXXCIY4+2UQT3YMkd3VyYKW5RG4
+         bCCviRHAJUZLNIMR0Ly35ImEa3uk74fUAfbxE8WUPFiWpDKXKMayRxJFG2TPP+FRlGM+
+         J7yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=y6YYsoW3o43TzZv2ct50vUJfqFlF+SIH/P40e9oxhyA=;
+        b=TfEfL2VqPhccglo4uzOqyB1Y6azxlm9avVO+rKFy+a1J8/svELJy8Qmfom4JJjWVUB
+         TSXQvjxZra39oZ2L4U/YOzbh6FdWyFoKzOTifknY5yTY8zxU6hK48v/8Nboy56/4cBC4
+         Z783qpDwq+IXx9RfU9CvovGB/V/GKlP78A1GU8scieSkjxm3zkCMeiDSDrYKiJvfMp6k
+         +ouceyncbcT4KGafvAyw/jZYSlYw/nVSZPgNb3cqjxCXclaqV5qTKI4jxS9Sv7ue9ydF
+         zjOc9Ylxwq5JNk+3Na+yfjCZvfo6z53EXkjhWgiXsN6uposEG6oLe2kFWdqM8SfiCHVU
+         1riw==
+X-Gm-Message-State: AOAM530Jv3ztkegR6khIIZgCdgcL5jFD64+ffXbZ1o8/99VWHC8R0NoQ
+        mUnVHLUxRLF5K2TRjxrUHgWxZ6wNlGIvGQ==
+X-Google-Smtp-Source: ABdhPJwNBJVKQlqNyDXJP8slHW7YmYyK15Vl7lUVpajvtB0GPJptVtoGk+uabRRZG2nuhuFHQQYCdg==
+X-Received: by 2002:a05:651c:1785:: with SMTP id bn5mr2258040ljb.18.1628866893518;
+        Fri, 13 Aug 2021 08:01:33 -0700 (PDT)
+Received: from [192.168.1.11] ([46.235.67.232])
+        by smtp.gmail.com with ESMTPSA id u6sm177762lfs.79.2021.08.13.08.01.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Aug 2021 08:01:33 -0700 (PDT)
+Subject: Re: [PATCH] net: ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+To:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
+        davem@davemloft.net, vasanth@atheros.com, senthilkumar@atheros.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        linux-kernel@vger.kernel.org
+References: <20210804194841.14544-1-paskripkin@gmail.com>
+From:   Pavel Skripkin <paskripkin@gmail.com>
+Message-ID: <9e14d6b7-50d0-db97-f6d9-3b84e188e8bd@gmail.com>
+Date:   Fri, 13 Aug 2021 18:01:31 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <44c91410-49db-b829-a69a-f9826c8ff3ee@candelatech.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20210804194841.14544-1-paskripkin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-08-13 15:54, Ben Greear wrote:
-> On 8/13/21 3:15 AM, Felix Fietkau wrote:
->> 
->> On 2021-07-31 04:17, Ryder Lee wrote:
->>> From: Ben Greear <greearb@candelatech.com>
->>>
->>> Without this change, garbage is seen in the hwmon name
->>> and sensors output for mt7915 is garbled.
->> Where does the use-after-free bug come from? It's not obvious to me why
->> using KBUILD_MODNAME instead of wiphy_name() fixes it.
->> I still think the phy name should probably be part of the prefix.
+On 8/4/21 10:48 PM, Pavel Skripkin wrote:
+> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb(). The
+> problem was in incorrect htc_handle->drv_priv initialization.
 > 
-> We rename phy devices as part of our normal operation, I think maybe
-> that helps trigger the bug.
+> Probable call trace which can trigger use-after-free:
 > 
-> It appears that the hwmon logic does not make a copy of the incoming string,
-> but instead just copies a char* and expects it to never go away.  But,
-> I did not actually verify that.
-That makes sense. It seems that thermal copies the string internally,
-but hwmon does not.
-How about using devm_kstrdup on the wiphy name instead of using
-KBUILD_MODNAME? If you really don't want to use the initial phy name,
-there's also the option of using dev_name(dev->mt76.dev)
+> ath9k_htc_probe_device()
+>    /* htc_handle->drv_priv = priv; */
+>    ath9k_htc_wait_for_target()      <--- Failed
+>    ieee80211_free_hw()		   <--- priv pointer is freed
+> 
+> <IRQ>
+> ...
+> ath9k_hif_usb_rx_cb()
+>    ath9k_hif_usb_rx_stream()
+>     RX_STAT_INC()		<--- htc_handle->drv_priv access
+> 
+> In order to not add fancy protection for drv_priv we can move
+> htc_handle->drv_priv initialization at the end of the
+> ath9k_htc_probe_device() and add helper macro to make
+> all *_STAT_* macros NULL save.
+> 
+> Also, I made whitespaces clean ups in *_STAT_* macros definitions
+> to make checkpatch.pl happy.
+> 
+> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+> Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotmail.com
+> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+> ---
+> 
+> Hi, ath9k maintainer/developers!
+> 
+> I know, that you do not like changes, that wasn't tested on real
+> hardware. I really don't access to this one, so I'd like you to test it on
+> real hardware piece, if you have one. At least, this patch was tested by
+> syzbot [1]
+> 
+> [1] https://syzkaller.appspot.com/bug?id=6ead44e37afb6866ac0c7dd121b4ce07cb665f60
+> 
+> ---
 
-- Felix
+Btw, this patch also passes this syzbot test
+
+https://syzkaller.appspot.com/bug?id=b8101ffcec107c0567a0cd8acbbacec91e9ee8de
+
+
+With regards,
+Pavel Skripkin
