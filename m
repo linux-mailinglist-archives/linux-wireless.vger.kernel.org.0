@@ -2,149 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22B6A3EAE44
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 03:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DBDD3EAE9A
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 04:32:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238384AbhHMBts (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Aug 2021 21:49:48 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187]:17013 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238315AbhHMBtq (ORCPT
+        id S238060AbhHMCdD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Aug 2021 22:33:03 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:40754 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S237040AbhHMCdD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Aug 2021 21:49:46 -0400
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Gm5wx6l2Dzb0hx;
-        Fri, 13 Aug 2021 09:45:37 +0800 (CST)
-Received: from dggpeml500024.china.huawei.com (7.185.36.10) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Fri, 13 Aug 2021 09:49:18 +0800
-Received: from localhost.localdomain (10.67.165.24) by
- dggpeml500024.china.huawei.com (7.185.36.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Fri, 13 Aug 2021 09:49:17 +0800
-From:   Yufeng Mo <moyufeng@huawei.com>
-To:     <davem@davemloft.net>, <kuba@kernel.org>
-CC:     <netdev@vger.kernel.org>, <shenjian15@huawei.com>,
-        <lipeng321@huawei.com>, <yisen.zhuang@huawei.com>,
-        <linyunsheng@huawei.com>, <huangguangbin2@huawei.com>,
-        <chenhao288@hisilicon.com>, <salil.mehta@huawei.com>,
-        <moyufeng@huawei.com>, <linuxarm@huawei.com>,
-        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
-        <netanel@amazon.com>, <akiyano@amazon.com>,
-        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
-        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
-        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
-        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
-        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
-        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
-        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
-        <linux-wireless@vger.kernel.org>
-Subject: [RFC V3 net-next 4/4] net: hns3: add ethtool support for CQE/EQE mode configuration
-Date:   Fri, 13 Aug 2021 09:45:29 +0800
-Message-ID: <1628819129-23332-5-git-send-email-moyufeng@huawei.com>
-X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1628819129-23332-1-git-send-email-moyufeng@huawei.com>
-References: <1628819129-23332-1-git-send-email-moyufeng@huawei.com>
+        Thu, 12 Aug 2021 22:33:03 -0400
+X-UUID: b48e3d07b7494116931afa4d87f1e4f4-20210813
+X-UUID: b48e3d07b7494116931afa4d87f1e4f4-20210813
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1685313060; Fri, 13 Aug 2021 10:32:34 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs05n2.mediatek.inc (172.21.101.140) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 13 Aug 2021 10:32:34 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 13 Aug 2021 10:32:34 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v2 1/3] mt76: mt7915: remove mt7915_mcu_add_he()
+Date:   Fri, 13 Aug 2021 10:32:31 +0800
+Message-ID: <1c3fc7ff6d5ab129a58160cd878787d9fbeba9c2.1628821139.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.67.165.24]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml500024.china.huawei.com (7.185.36.10)
-X-CFilter-Loop: Reflected
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support in ethtool for switching EQE/CQE mode.
+Make mt7915_mcu_sta_he_tlv() as a part of mt7915_mcu_add_rate_ctrl() as
+firmware rate control should get HE rate information from sta_rec_he,
+and reduce a global function accordingly.
 
-Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
-Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c    |  6 +++---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.h    |  3 +++
- drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c | 18 +++++++++++++++++-
- 3 files changed, 23 insertions(+), 4 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   |  6 +--
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 45 +++++++------------
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 +-
+ 3 files changed, 19 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 47fe6d2..d9f697b 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -4986,9 +4986,9 @@ static void hns3_set_cq_period_mode(struct hns3_nic_priv *priv,
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 667ccb2dab78..5349736eac73 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1933,10 +1933,8 @@ void mt7915_mac_sta_rc_work(struct work_struct *work)
+ 
+ 		if (changed & (IEEE80211_RC_SUPP_RATES_CHANGED |
+ 			       IEEE80211_RC_NSS_CHANGED |
+-			       IEEE80211_RC_BW_CHANGED)) {
+-			mt7915_mcu_add_he(dev, vif, sta);
+-			mt7915_mcu_add_rate_ctrl(dev, vif, sta);
+-		}
++			       IEEE80211_RC_BW_CHANGED))
++			mt7915_mcu_add_rate_ctrl(dev, vif, sta, true);
+ 
+ 		if (changed & IEEE80211_RC_SMPS_CHANGED)
+ 			mt7915_mcu_add_smps(dev, vif, sta);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 030d6fba59e9..028ee5bb0532 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2141,41 +2141,27 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
  }
  
--static void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
--				     enum dim_cq_period_mode tx_mode,
--				     enum dim_cq_period_mode rx_mode)
-+void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
-+			      enum dim_cq_period_mode tx_mode,
-+			      enum dim_cq_period_mode rx_mode)
+ int mt7915_mcu_add_rate_ctrl(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+-			     struct ieee80211_sta *sta)
+-{
+-	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+-	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+-	struct sk_buff *skb;
+-	int len = sizeof(struct sta_req_hdr) + sizeof(struct sta_rec_ra);
+-
+-	skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta, len);
+-	if (IS_ERR(skb))
+-		return PTR_ERR(skb);
+-
+-	mt7915_mcu_sta_rate_ctrl_tlv(skb, dev, vif, sta);
+-
+-	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
+-				     MCU_EXT_CMD(STA_REC_UPDATE), true);
+-}
+-
+-int mt7915_mcu_add_he(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+-		      struct ieee80211_sta *sta)
++			     struct ieee80211_sta *sta, bool changed)
  {
- 	hns3_set_cq_period_mode(priv, tx_mode, true);
- 	hns3_set_cq_period_mode(priv, rx_mode, false);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-index 9cb59f7..30891fb 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-@@ -710,4 +710,7 @@ void hns3_dbg_register_debugfs(const char *debugfs_dir_name);
- void hns3_dbg_unregister_debugfs(void);
- void hns3_shinfo_pack(struct skb_shared_info *shinfo, __u32 *size);
- u16 hns3_get_max_available_channels(struct hnae3_handle *h);
-+void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
-+			      enum dim_cq_period_mode tx_mode,
-+			      enum dim_cq_period_mode rx_mode);
- #endif
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-index 6470bba..4a27f17 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-@@ -1163,6 +1163,11 @@ static int hns3_get_coalesce(struct net_device *netdev,
- 	cmd->tx_max_coalesced_frames = tx_coal->int_ql;
- 	cmd->rx_max_coalesced_frames = rx_coal->int_ql;
+ 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+ 	struct sk_buff *skb;
+ 	int len;
  
-+	kernel_coal->use_cqe_mode_tx = (priv->tx_cqe_mode ==
-+					DIM_CQ_PERIOD_MODE_START_FROM_CQE);
-+	kernel_coal->use_cqe_mode_rx = (priv->rx_cqe_mode ==
-+					DIM_CQ_PERIOD_MODE_START_FROM_CQE);
+-	if (!sta->he_cap.has_he)
+-		return 0;
+-
+-	len = sizeof(struct sta_req_hdr) + sizeof(struct sta_rec_he);
+-
++	len = sizeof(struct sta_req_hdr) + sizeof(struct sta_rec_ra) +
++	      sizeof(struct sta_rec_he);
+ 	skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta, len);
+ 	if (IS_ERR(skb))
+ 		return PTR_ERR(skb);
+ 
+-	mt7915_mcu_sta_he_tlv(skb, sta);
++	/* firmware rate control algorithm refers to sta_rec_he for HE rate
++	 * control, so when dev->rc_work changes the settings driver should
++	 * update sta_rec_he here as well.
++	 */
++	if (sta->he_cap.has_he && changed)
++		mt7915_mcu_sta_he_tlv(skb, sta);
 +
- 	return 0;
++	mt7915_mcu_sta_rate_ctrl_tlv(skb, dev, vif, sta);
+ 
+ 	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
+ 				     MCU_EXT_CMD(STA_REC_UPDATE), true);
+@@ -2214,7 +2200,7 @@ mt7915_mcu_add_mu(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+ 	struct sk_buff *skb;
+-	int ret;
++	int len, ret;
+ 
+ 	if (!sta->vht_cap.vht_supported && !sta->he_cap.has_he)
+ 		return 0;
+@@ -2223,8 +2209,9 @@ mt7915_mcu_add_mu(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 	if (ret)
+ 		return ret;
+ 
+-	skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta,
+-				       MT7915_STA_UPDATE_MAX_SIZE);
++	len = sizeof(struct sta_req_hdr) + sizeof(struct sta_rec_muru) +
++	      sizeof(struct sta_rec_vht);
++	skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta, len);
+ 	if (IS_ERR(skb))
+ 		return PTR_ERR(skb);
+ 
+@@ -2256,7 +2243,7 @@ int mt7915_mcu_add_sta_adv(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 	if (ret)
+ 		return ret;
+ 
+-	return mt7915_mcu_add_rate_ctrl(dev, vif, sta);
++	return mt7915_mcu_add_rate_ctrl(dev, vif, sta, false);
  }
  
-@@ -1332,6 +1337,8 @@ static int hns3_set_coalesce(struct net_device *netdev,
- 	struct hns3_enet_coalesce *tx_coal = &priv->tx_coal;
- 	struct hns3_enet_coalesce *rx_coal = &priv->rx_coal;
- 	u16 queue_num = h->kinfo.num_tqps;
-+	enum dim_cq_period_mode tx_mode;
-+	enum dim_cq_period_mode rx_mode;
- 	int ret;
- 	int i;
- 
-@@ -1357,6 +1364,14 @@ static int hns3_set_coalesce(struct net_device *netdev,
- 	for (i = 0; i < queue_num; i++)
- 		hns3_set_coalesce_per_queue(netdev, cmd, i);
- 
-+	tx_mode = kernel_coal->use_cqe_mode_tx ?
-+		  DIM_CQ_PERIOD_MODE_START_FROM_CQE :
-+		  DIM_CQ_PERIOD_MODE_START_FROM_EQE;
-+	rx_mode = kernel_coal->use_cqe_mode_rx ?
-+		  DIM_CQ_PERIOD_MODE_START_FROM_CQE :
-+		  DIM_CQ_PERIOD_MODE_START_FROM_EQE;
-+	hns3_cq_period_mode_init(priv, tx_mode, rx_mode);
-+
- 	return 0;
- }
- 
-@@ -1662,7 +1677,8 @@ static int hns3_set_tunable(struct net_device *netdev,
- 				 ETHTOOL_COALESCE_USE_ADAPTIVE |	\
- 				 ETHTOOL_COALESCE_RX_USECS_HIGH |	\
- 				 ETHTOOL_COALESCE_TX_USECS_HIGH |	\
--				 ETHTOOL_COALESCE_MAX_FRAMES)
-+				 ETHTOOL_COALESCE_MAX_FRAMES |		\
-+				 ETHTOOL_COALESCE_USE_CQE)
- 
- static int hns3_get_ts_info(struct net_device *netdev,
- 			    struct ethtool_ts_info *info)
+ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 1f5065ed6a59..f842452af897 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -324,9 +324,7 @@ int mt7915_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ int mt7915_mcu_add_obss_spr(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 			    bool enable);
+ int mt7915_mcu_add_rate_ctrl(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+-			     struct ieee80211_sta *sta);
+-int mt7915_mcu_add_he(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+-		      struct ieee80211_sta *sta);
++			     struct ieee80211_sta *sta, bool changed);
+ int mt7915_mcu_add_smps(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 			struct ieee80211_sta *sta);
+ int mt7915_set_channel(struct mt7915_phy *phy);
 -- 
-2.8.1
+2.29.2
 
