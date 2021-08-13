@@ -2,200 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F30D83EBBA3
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 19:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0E613EBBBA
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 19:58:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbhHMRqi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Aug 2021 13:46:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54892 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229654AbhHMRqe (ORCPT
+        id S230377AbhHMR63 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Aug 2021 13:58:29 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:60946 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229607AbhHMR63 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Aug 2021 13:46:34 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E8CCC061756
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Aug 2021 10:46:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:Subject:From:References:To:Sender:Reply-To:Cc:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=8YrbaCWBN6o2dZTIsmftPtA1nwsbp5/jkn8U66mIBzU=; b=kKvGJj0nzH7svxAH/JHSmkGj80
-        mcgRH/BKS17Ik3Vl85EOGWmUnIP/OMEZIggwS5Ug8PSMkvAO+NxxbZf8Ppded7Bs5tx2+Xs6aFszy
-        UyTKo06gpRD4eu7wGOxjzgbgDjXj++Z/k7dBmREfxX7j7F3/7fIaRI9vDi1izhbfLT/Q=;
-Received: from p4ff13206.dip0.t-ipconnect.de ([79.241.50.6] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1mEbFp-0003Lb-3w; Fri, 13 Aug 2021 19:46:01 +0200
-To:     Ben Greear <greearb@candelatech.com>,
-        linux-wireless@vger.kernel.org
-References: <20210804134505.3208-1-greearb@candelatech.com>
- <ec49f403-54d3-28e1-3ea8-811df0756b29@nbd.name>
- <0a7e7206-91c0-35a9-8935-20bc6283367f@candelatech.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH v5 01/11] mt76: add hash lookup for skb on TXS status_list
-Message-ID: <d479d24c-87b4-51c3-8f07-d71480913f8f@nbd.name>
-Date:   Fri, 13 Aug 2021 19:46:00 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.13.0
+        Fri, 13 Aug 2021 13:58:29 -0400
+X-UUID: e918cf55376e4163a57db98a09de6a3b-20210814
+X-UUID: e918cf55376e4163a57db98a09de6a3b-20210814
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1653128758; Sat, 14 Aug 2021 01:51:52 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 14 Aug 2021 01:51:50 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 14 Aug 2021 01:51:50 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <jemele@google.com>, <yenlinlai@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH] mt76: mt7921: fix kernel warning from cfg80211_calculate_bitrate
+Date:   Sat, 14 Aug 2021 01:51:48 +0800
+Message-ID: <e0389646cd508d9a5c7055eb85c44cc459cdf59d.1628876256.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-In-Reply-To: <0a7e7206-91c0-35a9-8935-20bc6283367f@candelatech.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-08-13 19:28, Ben Greear wrote:
-> On 8/13/21 9:50 AM, Felix Fietkau wrote:
->> 
->> On 2021-08-04 15:44, greearb@candelatech.com wrote:
->>> From: Ben Greear <greearb@candelatech.com>
->>>
->>> This improves performance when sending lots of frames that
->>> are requesting being mapped to a TXS callback.
->>>
->>> Add comments to help next person understood the tx path
->>> better.
->>>
->>> Signed-off-by: Ben Greear <greearb@candelatech.com>
->>> ---
->>>
->>> v5:  Rebased on top of previous series.
->>>
->>>   drivers/net/wireless/mediatek/mt76/mt76.h     | 48 +++++++---
->>>   .../net/wireless/mediatek/mt76/mt7603/mac.c   |  2 +-
->>>   .../net/wireless/mediatek/mt76/mt7615/mac.c   |  2 +-
->>>   .../net/wireless/mediatek/mt76/mt76x02_mac.c  |  2 +-
->>>   .../net/wireless/mediatek/mt76/mt7915/mac.c   |  8 +-
->>>   .../net/wireless/mediatek/mt76/mt7921/mac.c   |  9 +-
->>>   drivers/net/wireless/mediatek/mt76/tx.c       | 90 ++++++++++++++++---
->>>   7 files changed, 132 insertions(+), 29 deletions(-)
->>>
->>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
->>> index 436bf2b8e2cd..016f563fec39 100644
->>> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
->>> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
->>> @@ -235,6 +235,14 @@ DECLARE_EWMA(signal, 10, 8);
->>>   #define MT_WCID_TX_INFO_TXPWR_ADJ	GENMASK(25, 18)
->>>   #define MT_WCID_TX_INFO_SET		BIT(31)
->>>   
->>> +#define MT_PACKET_ID_MASK		GENMASK(6, 0)
->>> +#define MT_PACKET_ID_NO_ACK		0
->>> +/* Request TXS, but don't try to match with skb. */
->>> +#define MT_PACKET_ID_NO_SKB		1
->>> +#define MT_PACKET_ID_FIRST		2
->>> +#define MT_PACKET_ID_HAS_RATE		BIT(7)
->>> +#define MT_PACKET_ID_MAX		(GENMASK(7, 0) - 1)
->>> +
->>>   struct mt76_wcid {
->>>   	struct mt76_rx_tid __rcu *aggr[IEEE80211_NUM_TIDS];
->>>   
->>> @@ -246,6 +254,8 @@ struct mt76_wcid {
->>>   
->>>   	struct rate_info rate;
->>>   
->>> +	struct sk_buff *skb_status_array[MT_PACKET_ID_MAX + 1];
->> You could add this to reduce the struct size:
->> #define MT_NUM_STATUS_PACKETS \
->> 	(MT_PACKET_ID_MAX + 1 - MT_PACKET_ID_FIRST)
->> 
->> And then subtract MT_PACKET_ID_FIRST from cache entries.
-> 
-> That saves two void* bytes of memory, and complicates the code a bit?
-> I can do the change, just doesn't seem worthwhile to me.
-It's not much more complicated (simple subtraction in very few places),
-and the memory saved is per station.
+From: Sean Wang <sean.wang@mediatek.com>
 
->>>   	u16 idx;
->>>   	u8 hw_key_idx;
->>>   	u8 hw_key_idx2;
->>> @@ -302,13 +312,8 @@ struct mt76_rx_tid {
->>>   #define MT_TX_CB_TXS_DONE		BIT(1)
->>>   #define MT_TX_CB_TXS_FAILED		BIT(2)
->>>   
->>> -#define MT_PACKET_ID_MASK		GENMASK(6, 0)
->>> -#define MT_PACKET_ID_NO_ACK		0
->>> -#define MT_PACKET_ID_NO_SKB		1
->>> -#define MT_PACKET_ID_FIRST		2
->>> -#define MT_PACKET_ID_HAS_RATE		BIT(7)
->>> -
->>> -#define MT_TX_STATUS_SKB_TIMEOUT	HZ
->>> +/* This is timer for when to give up when waiting for TXS callback. */
->>> +#define MT_TX_STATUS_SKB_TIMEOUT	(HZ / 8)
->> I think the way timeouts are checked now, HZ/8 is way too short.
->> I would recommend checking timeout only for packets where
->> MT_TX_CB_DMA_DONE is already set, and setting cb->jiffies from within
->> __mt76_tx_status_skb_done on DMA completion. That should make it
->> possible to keep the timeout short without running into it in cases
->> where significant congestion adds huge completion latency.
-> 
-> Ok, I like that idea.  What is reasonable timeout from time of DMA done
-> before we give up on TXS callback?
-Your value of HZ / 8 seems reasonable to me for that case.
+Fix the kernel warning from cfg80211_calculate_bitrate
+due to the legacy rate is not parsed well in current driver.
 
->>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
->>> index d9f52e2611a7..8f5702981900 100644
->>> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
->>> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
->>> @@ -1318,6 +1318,8 @@ mt7915_mac_add_txs_skb(struct mt7915_dev *dev, struct mt76_wcid *wcid, int pid,
->>>   
->>>   	mt76_tx_status_lock(mdev, &list);
->>>   	skb = mt76_tx_status_skb_get(mdev, wcid, pid, &list);
->>> +
->>> +	/* TODO:  Gather stats anyway, even if we are not matching on an skb. */
->> Please drop this comment, since you're deleting in another patch in this
->> series anyway.
->> 
->>> @@ -1417,10 +1419,14 @@ mt7915_mac_add_txs_skb(struct mt7915_dev *dev, struct mt76_wcid *wcid, int pid,
->>>   		stats->tx_bw[0]++;
->>>   		break;
->>>   	}
->>> +
->>> +	/* Cache rate for packets that don't get a TXS callback for some
->>> +	 * reason.
->>> +	 */
->>>   	wcid->rate = rate;
->> That comment is wrong, wcid->rate is cached because HE rates can't be
->> reported via skb->cb due to lack of space.
-> 
-> We can update the rate from txs callback, and and from txfree path,
-> and also from querying the firmware rate-ctrl registers (I think?).
-> TXS is disabled for most frames by default.  txfree gives only some
-> info, not enough.  And polling rate-ctrl registers is slow.
-> 
-> So I think the comment is OK, but I end up modifying the code later anyway,
-> so I can remove this comment if you prefer.
-Yes, please do that.
+Also, zeros struct rate_info before we fill it out to avoid the old value
+is kept such as rate->legacy.
 
->>> diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
->>> index 6f302acb6e69..4c8504d3c904 100644
->>> --- a/drivers/net/wireless/mediatek/mt76/tx.c
->>> +++ b/drivers/net/wireless/mediatek/mt76/tx.c
->>> @@ -130,15 +154,30 @@ mt76_tx_status_skb_add(struct mt76_dev *dev, struct mt76_wcid *wcid,
->>>   			     IEEE80211_TX_CTL_RATE_CTRL_PROBE)))
->>>   		return MT_PACKET_ID_NO_SKB;
->>>   
->>> +	/* due to limited range of the pktid (7 bits), we can only
->>> +	 * have a limited number of outstanding frames.  I think it is OK to
->>> +	 * check the length outside of a lock since it doesn't matter too much
->>> +	 * if we read wrong data here.
->>> +	 * The TX-status callbacks don't always return a callback for an SKB,
->>> +	 * so the status_list may contain some stale skbs.  Those will be cleaned
->>> +	 * out periodically, see MT_TX_STATUS_SKB_TIMEOUT.
->>> +	 */
->>> +
->>> +	qlen = skb_queue_len(&dev->status_list);
->>> +	if (qlen > 120)
->>> +		return MT_PACKET_ID_NO_SKB;
->> Checking the length of the per-device status list doesn't make sense,
->> since pktid allocation is per-wcid.
-> 
-> Ok, so just remove this code, or should I set some other higher
-> limit to bound the list?
-You could just check for a duplicate skb_status_array entry.
+[  790.921560] WARNING: CPU: 7 PID: 970 at net/wireless/util.c:1298 cfg80211_calculate_bitrate+0x354/0x35c [cfg80211]
+[  790.987738] Hardware name: MediaTek Asurada rev1 board (DT)
+[  790.993298] pstate: a0400009 (NzCv daif +PAN -UAO)
+[  790.998104] pc : cfg80211_calculate_bitrate+0x354/0x35c [cfg80211]
+[  791.004295] lr : cfg80211_calculate_bitrate+0x180/0x35c [cfg80211]
+[  791.010462] sp : ffffffc0129c3880
+[  791.013765] x29: ffffffc0129c3880 x28: ffffffd38305bea8
+[  791.019065] x27: ffffffc0129c3970 x26: 0000000000000013
+[  791.024364] x25: 00000000000003ca x24: 000000000000002f
+[  791.029664] x23: 00000000000000d0 x22: ffffff8d108bc000
+[  791.034964] x21: ffffff8d108bc0d0 x20: ffffffc0129c39a8
+[  791.040264] x19: ffffffc0129c39a8 x18: 00000000ffff0a10
+[  791.045563] x17: 0000000000000050 x16: 00000000000000ec
+[  791.050910] x15: ffffffd3f9ebed9c x14: 0000000000000006
+[  791.056211] x13: 00000000000b2eea x12: 0000000000000000
+[  791.061511] x11: 00000000ffffffff x10: 0000000000000000
+[  791.066811] x9 : 0000000000000000 x8 : 0000000000000000
+[  791.072110] x7 : 0000000000000000 x6 : ffffffd3fafa5a7b
+[  791.077409] x5 : 0000000000000000 x4 : 0000000000000000
+[  791.082708] x3 : 0000000000000000 x2 : 0000000000000000
+[  791.088008] x1 : ffffff8d3f79c918 x0 : 0000000000000000
+[  791.093308] Call trace:
+[  791.095770]  cfg80211_calculate_bitrate+0x354/0x35c [cfg80211]
+[  791.101615]  nl80211_put_sta_rate+0x6c/0x2c0 [cfg80211]
+[  791.106853]  nl80211_send_station+0x980/0xaa4 [cfg80211]
+[  791.112178]  nl80211_get_station+0xb4/0x134 [cfg80211]
+[  791.117308]  genl_rcv_msg+0x3a0/0x440
+[  791.120960]  netlink_rcv_skb+0xcc/0x118
+[  791.124785]  genl_rcv+0x34/0x48
+[  791.127916]  netlink_unicast+0x144/0x1dc
 
-- Felix
+Fixes: 1c099ab44727 ("mt76: mt7921: add MCU support")
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index cadb633639d3..27317c121256 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -328,14 +328,15 @@ mt7921_mcu_tx_rate_parse(struct mt76_phy *mphy,
+ 			 struct rate_info *rate, u16 r)
+ {
+ 	struct ieee80211_supported_band *sband;
+-	u16 flags = 0;
++	u16 flags = 0, rate_idx;
+ 	u8 txmode = FIELD_GET(MT_WTBL_RATE_TX_MODE, r);
+ 	u8 gi = 0;
+ 	u8 bw = 0;
++	bool cck = false;
+ 
++	memset(rate, 0, sizeof(*rate));
+ 	rate->mcs = FIELD_GET(MT_WTBL_RATE_MCS, r);
+ 	rate->nss = FIELD_GET(MT_WTBL_RATE_NSS, r) + 1;
+-
+ 	switch (peer->bw) {
+ 	case IEEE80211_STA_RX_BW_160:
+ 		gi = peer->g16;
+@@ -357,13 +358,18 @@ mt7921_mcu_tx_rate_parse(struct mt76_phy *mphy,
+ 
+ 	switch (txmode) {
+ 	case MT_PHY_TYPE_CCK:
++		cck = true;
++		fallthrough;
+ 	case MT_PHY_TYPE_OFDM:
+ 		if (mphy->chandef.chan->band == NL80211_BAND_5GHZ)
+ 			sband = &mphy->sband_5g.sband;
+ 		else
+ 			sband = &mphy->sband_2g.sband;
+ 
+-		rate->legacy = sband->bitrates[rate->mcs].bitrate;
++		rate_idx = FIELD_GET(MT_TX_RATE_IDX, r);
++		rate_idx = mt76_get_rate(mphy->dev, sband, rate_idx,
++					 cck);
++		rate->legacy = sband->bitrates[rate_idx].bitrate;
+ 		break;
+ 	case MT_PHY_TYPE_HT:
+ 	case MT_PHY_TYPE_HT_GF:
+-- 
+2.25.1
+
