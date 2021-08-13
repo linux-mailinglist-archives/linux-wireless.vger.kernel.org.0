@@ -2,75 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5A5F3EB296
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 10:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 549673EB2DB
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 10:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238671AbhHMI1A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Aug 2021 04:27:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38532 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229605AbhHMI06 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Aug 2021 04:26:58 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BF7BC061756;
-        Fri, 13 Aug 2021 01:26:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=YEwjQFo7Tx0VL17MD4O47XBig2dYQpejA0GRz46DLE0=;
-        t=1628843192; x=1630052792; b=OL/8zSuUwiVu9UBCi6zNNhDY6+pVkOu5Yhl7e7FGA1mLz6Y
-        EXvALba0lFR4yZ9+LN+13I63hW3SCtDhp/Va8RuqoSrUljprDtc26tRrkyg9rIj0L5ayXbobhzOw1
-        QEE739auEUre/V0c8PQKmhULSbfeqnxRyC/UIxUh3vdi6a1tR65TCixxhLBsc+oMjAcFZZjVPoLx5
-        N7aAlAaO2K2MfBGcPqqqiWitqsUg60Dey4WytRUh81gBVsPBf08UlPTsMGLkhSuxQubW5UyxN60Bk
-        oCIOeqHxq863KUKXWBQRY4BlJ0fF8s81PoRaysxIrA9V+tJ7JYqI/dS6phSUChBQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mESWH-00A9vJ-HT; Fri, 13 Aug 2021 10:26:25 +0200
-Message-ID: <64b3313ec8a15229e75a29fac2fb5ba1491a2191.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/2] rtl8xxxu: unset the hw capability
- HAS_RATE_CONTROL
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Chris Chiu <chris.chiu@canonical.com>
-Cc:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        code@reto-schneider.ch
-Date:   Fri, 13 Aug 2021 10:26:24 +0200
-In-Reply-To: <CABTNMG0Q6Oh8T_sqW-b3ymdbepYmMRQALGozo6pXiKg=r-ndxA@mail.gmail.com>
-References: <20210603120609.58932-1-chris.chiu@canonical.com>
-         <20210603120609.58932-2-chris.chiu@canonical.com>
-         <5bb08a2db092c590119ff706ac3654de14c984fc.camel@sipsolutions.net>
-         <CABTNMG0Q6Oh8T_sqW-b3ymdbepYmMRQALGozo6pXiKg=r-ndxA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S239680AbhHMIsk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Aug 2021 04:48:40 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:56134 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239720AbhHMIsj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 13 Aug 2021 04:48:39 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1628844493; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=U5Vjp8FNKLyKkd6CIz80ylnWZ/KwDvvPahUsp8EwovQ=;
+ b=P8WqwDu7IYlNtvAY/3/fZS/gdGJFRzOv7fe6WQQ8tPEAB/Cyg8n2WgdoBKoJjOuW2+bml/7u
+ HG6MjJ/Sp9JmxwOaukhDZPs5UpOdzx0qaViV4djV1cY1BpECfYanND0M9UGVjmfAruYlXWEo
+ Dyz29CaKlrtGqhnO+uPlAaFWVq8=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 611631bd7ee6040977638398 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 13 Aug 2021 08:47:57
+ GMT
+Sender: wgong=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1E4EEC43217; Fri, 13 Aug 2021 08:47:56 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 986BCC4338A;
+        Fri, 13 Aug 2021 08:47:55 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 13 Aug 2021 16:47:55 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 9/9] mac80211: save transmit power envelope element and
+ power constraint
+In-Reply-To: <1273cc1a399a7457c3d908648a7651c8fe9b93f3.camel@sipsolutions.net>
+References: <20210517201932.8860-1-wgong@codeaurora.org>
+ <20210517201932.8860-10-wgong@codeaurora.org>
+ (sfid-20210517_222034_029448_A9A89D57)
+ <d9491db4ece67ac78eb39a1078b91a106770fbb0.camel@sipsolutions.net>
+ <1126f8d996e895ae048092b3f8aad19b@codeaurora.org>
+ <38e7d9d2eebafa7245a36a0a0396094526eb3efd.camel@sipsolutions.net>
+ <1273cc1a399a7457c3d908648a7651c8fe9b93f3.camel@sipsolutions.net>
+Message-ID: <a056e32d4911400fb0822bf02167e91c@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2021-06-11 at 22:47 +0800, Chris Chiu wrote:
+On 2021-08-13 15:25, Johannes Berg wrote:
+> On Fri, 2021-08-13 at 09:19 +0200, Johannes Berg wrote:
+>> 
+>> > > 2) Should we at least check it again from the protected beacon or such
+>> > > after association, so we don't blindly trust the probe response or
+>> > > beacon (received during scan, not validated) at least when BIGTK is in
+>> > > use?
+>> >
+>> > May we add support for BIGTK in future with another patch?
+>> 
+>> We already have BIGTK support in mac80211, so if we don't do that now
+>> we're almost certainly not going to do it, so I'd really prefer if you
+>> did it here, or if a separate patch still did it now.
 > 
-> Based on the description in
-> https://github.com/torvalds/linux/blob/master/net/mac80211/agg-tx.c#L32
-> to L36, if we set HAS_RATE_CONTROL, which means we don't want the
-> software rate control (default minstrel), then we will have to deal
-> with both the rate control and the TX aggregation in the driver, and
-> the .ampdu_action is not really required. 
+> Actually, I should say though - the question was more whether we even
+> need/want that, rather than whether we can do it later or not.
 > 
-
-I don't think this is true. You'll probably still want to use the A-MPDU
-state machine in mac80211, etc.
-
-What you *don't* get without rate control in mac80211 is any decision on
-whether or not to enable A-MPDU, but that's something you can easily do
-elsewhere and just call ieee80211_start_tx_ba_session() at an
-appropriate point in time.
-
-johannes
-
+> If we should protect this data/information then IMHO we should do it
+> now, but it's not clear to me that we should, given that we also don't
+> have encrypted association response and we still take information from
+> there too, etc.
+> 
+> johannes
+I prefer to add a new enum(not use BSS_CHANGED_TXPOWER),e.g, 
+BSS_CHANGED_PWR_ENV.
+And add check in ieee80211_rx_mgmt_beacon() as well as 
+ieee80211_handle_pwr_constr(),
+when the value of pwr_reduction or content of elems.tx_pwr_env changed,
+save the pwr_reduction and elems.tx_pwr_env to ieee80211_bss_conf, and 
+notify lower
+driver with BSS_CHANGED_PWR_ENV, then lower driver will do next action.
