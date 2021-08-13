@@ -2,118 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB1553EB9C8
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 18:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E72C13EB9CF
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 18:09:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232482AbhHMQJQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Aug 2021 12:09:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60156 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbhHMQJQ (ORCPT
+        id S231927AbhHMQJl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Aug 2021 12:09:41 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:49604 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229471AbhHMQJl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Aug 2021 12:09:16 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 470CEC0617AE
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Aug 2021 09:08:49 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id w13-20020a17090aea0db029017897a5f7bcso16638854pjy.5
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Aug 2021 09:08:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Zb6hESOPAPpsYQTxj6uunL70me57Ohn5RtlRGa2hRIU=;
-        b=bt0deawY8VgLg78fejbazYxtQGqnJJ+YkSz5IoTYnQ5LuF//jd0UR5Pt6RCob2ruwg
-         L7XvtJcs+LMzfCUDh81Ba+1wBbHDlsnlh6IiZoditm2+zMGPr5c1K/absUN+/4ZuN2lB
-         hqNu9nLcRyjmucoSbEUpC/VFf1vXe3dcafsIk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Zb6hESOPAPpsYQTxj6uunL70me57Ohn5RtlRGa2hRIU=;
-        b=ubdNhW3s8Go+0yEaKqlkDqoxYj7B08oUC/3t9vtOIWjw9sB+0PCmGsFO5Xv22A960q
-         IN/gPI9pTPL1nkzT2vmtQ49YRv2lAcYBa/7cacSycZwzKoWNP5j8SsnxQcufbV6/DVhJ
-         ymV6zHguKyg2envXbE2bHdWxP+439VSutO+3+JLzuK4FUBydyJhzlv4WjmCS4Gjol1ub
-         MgjLm9emki4GvaLIUJA3g6mnzZxM/wyw8nUs0SxWkOsh9+3NQW4jVgJWV6sxDTHGXItZ
-         Dq+xkxXbLe1O6T1LTAuoB16MZMdHjzygDae7ytaEoYJctxle6EXXF1qbWc4F9v9wzm5C
-         9oNA==
-X-Gm-Message-State: AOAM532UFc8ipAXKdTIQbPsrGaT3vplJb1rJTAx6Kl0H7bJaUdoMTcZr
-        YCO/zAL2k099cEa+1KofWaN/ew==
-X-Google-Smtp-Source: ABdhPJzO/EBStKGp8NBzLlcdP5+lTA2rI0q06EsQcV9US+8Rtvv2vMu7llrU0u1jr9BMG5zMLdkcVQ==
-X-Received: by 2002:a05:6a00:1803:b029:3cd:d5c1:f718 with SMTP id y3-20020a056a001803b02903cdd5c1f718mr3121899pfa.22.1628870928766;
-        Fri, 13 Aug 2021 09:08:48 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id y64sm3224461pgy.32.2021.08.13.09.08.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Aug 2021 09:08:48 -0700 (PDT)
-Date:   Fri, 13 Aug 2021 09:08:47 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Keith Packard <keithpac@amazon.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 39/64] mac80211: Use memset_after() to clear tx status
-Message-ID: <202108130907.FD09C6B@keescook>
-References: <20210727205855.411487-1-keescook@chromium.org>
- <20210727205855.411487-40-keescook@chromium.org>
- <202107310852.551B66EE32@keescook>
- <bb01e784dddf6a297025981a2a000a4d3fdaf2ba.camel@sipsolutions.net>
+        Fri, 13 Aug 2021 12:09:41 -0400
+X-UUID: 8270d9b2da2347c7a181e91fc547d50d-20210814
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=l+ySDnC1xxmiXel2dEsTe3+lMh8lrZDZ747TEAnrsjA=;
+        b=tS6jfda/CTVNcixMG1z5o6LXAye7r6Rh/GyfqSEXykGiIWKJH2nPQnxqDs5nYdGntjsKvWztoTV2tUvyOfTPGQPFRemyuRw74S6HCWMP1NFc4/j2bJKQ6J7Tcka+6H8cJYZamC6hxBhfK3484/l3oVRzjj2GeQ3g/iHJVPEso2E=;
+X-UUID: 8270d9b2da2347c7a181e91fc547d50d-20210814
+Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 486236983; Sat, 14 Aug 2021 00:09:09 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 14 Aug 2021 00:09:07 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 14 Aug 2021 00:09:07 +0800
+Message-ID: <bbe7e343d6788a3327aa5bc81509328568883c51.camel@mediatek.com>
+Subject: Re: [PATCH] mt76: mt7915: add LED support
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        "Money Wang" <money.wang@mediatek.com>
+Date:   Sat, 14 Aug 2021 00:09:08 +0800
+In-Reply-To: <670252a9-636c-9d3d-5d6e-acfcabfff4c0@nbd.name>
+References: <20210621141430.17577-1-MeiChia.Chiu@mediatek.com>
+         <670252a9-636c-9d3d-5d6e-acfcabfff4c0@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bb01e784dddf6a297025981a2a000a4d3fdaf2ba.camel@sipsolutions.net>
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 13, 2021 at 09:40:07AM +0200, Johannes Berg wrote:
-> On Sat, 2021-07-31 at 08:55 -0700, Kees Cook wrote:
-> > On Tue, Jul 27, 2021 at 01:58:30PM -0700, Kees Cook wrote:
-> > > In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> > > field bounds checking for memset(), avoid intentionally writing across
-> > > neighboring fields.
-> > > 
-> > > Use memset_after() so memset() doesn't get confused about writing
-> > > beyond the destination member that is intended to be the starting point
-> > > of zeroing through the end of the struct.
-> > > 
-> > > Note that the common helper, ieee80211_tx_info_clear_status(), does NOT
-> > > clear ack_signal, but the open-coded versions do. All three perform
-> > > checks that the ack_signal position hasn't changed, though.
-> > 
-> > Quick ping on this question: there is a mismatch between the common
-> > helper and the other places that do this. Is there a bug here?
-> 
-> Yes.
-> 
-> The common helper should also clear ack_signal, but that was broken by
-> commit e3e1a0bcb3f1 ("mac80211: reduce IEEE80211_TX_MAX_RATES"), because
-> that commit changed the order of the fields and updated carl9170 and p54
-> properly but not the common helper...
+T24gRnJpLCAyMDIxLTA4LTEzIGF0IDEyOjUyICswMjAwLCBGZWxpeCBGaWV0a2F1IHdyb3RlOg0K
+PiBPbiAyMDIxLTA2LTIxIDE2OjE0LCBNZWlDaGlhIENoaXUgd3JvdGU6DQo+ID4gRnJvbTogTWVp
+Q2hpYSBDaGl1IDxtZWljaGlhLmNoaXVAbWVkaWF0ZWsuY29tPg0KPiA+IA0KPiA+IEluaXRpYWxp
+emUgYnJpZ2h0bmVzc19zZXQgYW5kIGJsaW5rX3NldCBjYWxsYmFja3MgdG8gZW5hYmxlIExFRA0K
+PiA+IHN1cHBvcnQuDQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogTWVpQ2hpYSBDaGl1IDxtZWlj
+aGlhLmNoaXVAbWVkaWF0ZWsuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFJ5ZGVyIExlZSA8cnlk
+ZXIubGVlQG1lZGlhdGVrLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBNb25leSBXYW5nIDxtb25l
+eS53YW5nQG1lZGlhdGVrLmNvbT4NCj4gPiAtLS0NCj4gPiAgLi4uL25ldC93aXJlbGVzcy9tZWRp
+YXRlay9tdDc2L210NzkxNS9pbml0LmMgfCA2OQ0KPiA+ICsrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiA+ICAuLi4vbmV0L3dpcmVsZXNzL21lZGlh
+dGVrL210NzYvbXQ3OTE1L21taW8uYyB8ICA2ICsrKy0tDQo+ID4gIC4uLi9uZXQvd2lyZWxlc3Mv
+bWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oIHwgMTkgKysrKysrKysrKysrKysNCj4gPiAgMyBm
+aWxlcyBjaGFuZ2VkLCA5MiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+
+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9p
+bml0LmMNCj4gPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2lu
+aXQuYw0KPiA+IGluZGV4IGUwMjcyNzMuLmRlZmIwZWMgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jDQo+ID4gKysrIGIvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jDQo+ID4gQEAgLTE1
+MSw2ICsxNTEsNjQgQEAgc3RhdGljIGludCBtdDc5MTVfdGhlcm1hbF9pbml0KHN0cnVjdA0KPiA+
+IG10NzkxNV9waHkgKnBoeSkNCj4gPiAgCXJldHVybiAwOw0KPiA+ICB9DQo+ID4gIA0KPiA+ICtz
+dGF0aWMgdm9pZCBtdDc5MTVfbGVkX3NldF9jb25maWcoc3RydWN0IGxlZF9jbGFzc2RldiAqbGVk
+X2NkZXYsDQo+ID4gKwkJCQkgIHU4IGRlbGF5X29uLCB1OCBkZWxheV9vZmYpDQo+ID4gK3sNCj4g
+PiArCXN0cnVjdCBtdDc5MTVfZGV2ICpkZXY7DQo+ID4gKwlzdHJ1Y3QgbXQ3Nl9kZXYgKm10NzY7
+DQo+ID4gKwl1MzIgdmFsOw0KPiA+ICsNCj4gPiArCW10NzYgPSBjb250YWluZXJfb2YobGVkX2Nk
+ZXYsIHN0cnVjdCBtdDc2X2RldiwgbGVkX2NkZXYpOw0KPiA+ICsJZGV2ID0gY29udGFpbmVyX29m
+KG10NzYsIHN0cnVjdCBtdDc5MTVfZGV2LCBtdDc2KTsNCj4gPiArDQo+ID4gKwkvKiBzZWxlY3Qg
+VFggYmxpbmsgbW9kZSwgMjogb25seSBkYXRhIGZyYW1lcyAqLw0KPiA+ICsJbXQ3Nl9ybXdfZmll
+bGQoZGV2LCBNVF9UTUFDX1RDUjAoMCksIE1UX1RNQUNfVENSMF9UWF9CTElOSywgMik7DQo+IA0K
+PiBEb2VzIHRoYXQgbWVhbiB0aGUgaHcgdHJpZ2dlcnMgdGhlIExFRCB3aXRoIHRoZSBjb25maWd1
+cmVkIG9uL29mZg0KPiBkZWxheQ0KPiBvbiBUWD8gSSB0aGluayBibGlua2luZyBzaG91bGQgYmUg
+Y29udHJvbGxlZCBlbnRpcmVseSBieSBzb2Z0d2FyZS4NCj4gDQoNCkJsaW5rIGlzIHN0aWxsIGNv
+bnRvbGxlZCBieSBzb2Z0d2FyZS4gVGhpcyBtZWFucyB1cHBlciBsYXllciBjYW4gc2V0DQpvbi9v
+ZmYgZGlyZWN0bHkuDQoNCg0KUnlkZXINCg==
 
-It looks like p54 actually uses the rates, which is why it does this
-manually. I can't see why carl9170 does this manually, though.
-
-> It doesn't actually matter much because ack_signal is normally filled in
-> afterwards, and even if it isn't, it's just for statistics.
-> 
-> The correct thing to do here would be to
-> 
-> 	memset_after(&info->status, 0, rates);
-
-Sounds good; I will adjust these (and drop the BULID_BUG_ONs, as you
-suggest in the next email).
-
-Thanks!
-
--Kees
-
--- 
-Kees Cook
