@@ -2,225 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C46543EAE9C
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 04:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7957C3EB14A
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 09:20:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238232AbhHMCdG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Aug 2021 22:33:06 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:40904 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S238165AbhHMCdG (ORCPT
+        id S238815AbhHMHUc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Aug 2021 03:20:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51068 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238794AbhHMHUb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Aug 2021 22:33:06 -0400
-X-UUID: 49d4c38613ed4c52b80ba0516418aa86-20210813
-X-UUID: 49d4c38613ed4c52b80ba0516418aa86-20210813
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 437030386; Fri, 13 Aug 2021 10:32:36 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 13 Aug 2021 10:32:34 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 13 Aug 2021 10:32:34 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2 3/3] mt76: mt7915: rework debugfs fixed-rate knob
-Date:   Fri, 13 Aug 2021 10:32:33 +0800
-Message-ID: <dfc47f04c82dae6df42398dc691f8a5dfa04f0c1.1628821139.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <1c3fc7ff6d5ab129a58160cd878787d9fbeba9c2.1628821139.git.ryder.lee@mediatek.com>
-References: <1c3fc7ff6d5ab129a58160cd878787d9fbeba9c2.1628821139.git.ryder.lee@mediatek.com>
+        Fri, 13 Aug 2021 03:20:31 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7432CC061756
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Aug 2021 00:20:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=ii8qigtqoWhNY+QmoOCkpVp/ABXpmn52aG2GUe/zRcw=;
+        t=1628839205; x=1630048805; b=T1Denlz1Bu4lSYlkD0ysxIPyb029VfLjXn+mJwKAkNt1NMg
+        Ww/cJE7bN9MfureyTOGNwrtR+JbqiKb0cBRhlNMuWrvOn5Ens+1pSdjzi9HndGcVr2+lYCsWPOt6f
+        ptNAVkmAUG5wRRmYQcdaHbikaAghpX82AJKwmsOe7+jO5NxLascabmu94z1V6PiaNK8BFXRFJzFQZ
+        Pvj8op7rGU/ug3zTspH2YvPqj0YM0Keta4P/MKcJlQzw1Dp5Z2VJSD7rdsTnMgfLGrhBqAj/r5qIS
+        RWcg/vDXOgoWstPirRhWFM2yic/u0S1o82kzkCDDzfWY+5fmE17sD45exXUi7WcA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mERTw-00A8YF-8k; Fri, 13 Aug 2021 09:19:56 +0200
+Message-ID: <38e7d9d2eebafa7245a36a0a0396094526eb3efd.camel@sipsolutions.net>
+Subject: Re: [PATCH 9/9] mac80211: save transmit power envelope element and
+ power constraint
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Date:   Fri, 13 Aug 2021 09:19:55 +0200
+In-Reply-To: <1126f8d996e895ae048092b3f8aad19b@codeaurora.org>
+References: <20210517201932.8860-1-wgong@codeaurora.org>
+         <20210517201932.8860-10-wgong@codeaurora.org>
+         (sfid-20210517_222034_029448_A9A89D57) <d9491db4ece67ac78eb39a1078b91a106770fbb0.camel@sipsolutions.net>
+         <1126f8d996e895ae048092b3f8aad19b@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Switch to use new mt7915_mcu_set_fixed_rate_ctrl().
+On Fri, 2021-07-30 at 18:47 +0800, Wen Gong wrote:
+> 
+> > And then two more questions:
+> > 
+> > 1) Could this information change? Should we track it in beacons?
+> > 
+> 
+> The information is from AP side, it should be not changed untill the AP 
+> restart.
+> If someone want to change configure of AP, the AP should restart and 
+> then take effect by my understand.
+> Is it have some case for this information change?
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-@Felix, please ignore the following one 
-https://patchwork.kernel.org/project/linux-wireless/patch/c3fd9c4ea692f28e2eb78073fd8da7753199ba60.1628301616.git.ryder.lee@mediatek.com/
-[3/4] mt76: mt7915: add HE-LTF into fixed rate command
----
- .../wireless/mediatek/mt76/mt7915/debugfs.c   | 68 ++++++++++++++++---
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 48 +------------
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 -
- 3 files changed, 61 insertions(+), 57 deletions(-)
+No, I guess that's fine then, I just didn't know.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index d9d18f662039..e1cdfbe52199 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -365,19 +365,71 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
- #ifdef CONFIG_MAC80211_DEBUGFS
- /** per-station debugfs **/
- 
--static int mt7915_sta_fixed_rate_set(void *data, u64 rate)
-+static ssize_t mt7915_sta_fixed_rate_set(struct file *file,
-+					 const char __user *user_buf,
-+					 size_t count, loff_t *ppos)
- {
--	struct ieee80211_sta *sta = data;
-+	struct ieee80211_sta *sta = file->private_data;
- 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
--
--	/* usage: <he ltf> <tx mode> <ldpc> <stbc> <bw> <gi> <nss> <mcs>
--	 * <tx mode>: see enum mt76_phy_type
-+	struct mt7915_dev *dev = msta->vif->phy->dev;
-+	struct ieee80211_vif *vif;
-+	struct sta_phy phy = {};
-+	char buf[100];
-+	int ret;
-+	u32 field;
-+	u8 i, gi, he_ltf;
-+
-+	if (count >= sizeof(buf))
-+		return -EINVAL;
-+
-+	if (copy_from_user(buf, user_buf, count))
-+		return -EFAULT;
-+
-+	if (count && buf[count - 1] == '\n')
-+		buf[count - 1] = '\0';
-+	else
-+		buf[count] = '\0';
-+
-+	/* Mode: CCK:0, OFDM:1, HT:2, GF:3, VHT:4, HE_SU:8, HE_ER:9
-+	 * BW: BW20:0, BW40:1, BW80:2, BW160:3
-+	 * NSS: VHT:1~4, HE:1~4, Others:Ignore
-+	 * MCS: CCK:0~4, OFDM:0~7, HT:0~32, VHT:0~9, HE_SU:0~11, HE_ER:0~2
-+	 * GI: (HT/VHT) LGI:0, SGI:1; (HE) 0.8us:0, 1.6us:1, 3.2us:2
-+	 * LDPC: Off:0, On:1
-+	 * STBC: Off:0, On:1
-+	 * HE_LTF: 1xLTF:0, 2xLTF:1, 4xLTF:2
- 	 */
--	return mt7915_mcu_set_fixed_rate(msta->vif->phy->dev, sta, rate);
-+	if (sscanf(buf, "%hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu",
-+		   &phy.type, &phy.bw, &phy.nss, &phy.mcs, &gi,
-+		   &phy.ldpc, &phy.stbc, &he_ltf) != 8) {
-+		dev_warn(dev->mt76.dev,
-+			 "format: Mode BW NSS MCS (HE)GI LDPC STBC HE_LTF\n");
-+		field = RATE_PARAM_AUTO;
-+		goto out;
-+	}
-+
-+	phy.ldpc = (phy.bw || phy.ldpc) * GENMASK(2, 0);
-+	for (i = 0; i <= phy.bw; i++) {
-+		phy.sgi |= gi << (i << sta->he_cap.has_he);
-+		phy.he_ltf |= he_ltf << (i << sta->he_cap.has_he);
-+	}
-+	field = RATE_PARAM_FIXED;
-+
-+out:
-+	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
-+	ret = mt7915_mcu_set_fixed_rate_ctrl(dev, vif, sta, &phy, field);
-+	if (ret)
-+		return -EFAULT;
-+
-+	return count;
- }
- 
--DEFINE_DEBUGFS_ATTRIBUTE(fops_fixed_rate, NULL,
--			 mt7915_sta_fixed_rate_set, "%llx\n");
-+static const struct file_operations fops_fixed_rate = {
-+	.write = mt7915_sta_fixed_rate_set,
-+	.open = simple_open,
-+	.owner = THIS_MODULE,
-+	.llseek = default_llseek,
-+};
- 
- void mt7915_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			    struct ieee80211_sta *sta, struct dentry *dir)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 74f08e1c2f55..a21a3760c4fc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2065,6 +2065,7 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
- 	switch (field) {
- 	case RATE_PARAM_AUTO:
- 		break;
-+	case RATE_PARAM_FIXED:
- 	case RATE_PARAM_FIXED_MCS:
- 	case RATE_PARAM_FIXED_GI:
- 	case RATE_PARAM_FIXED_HE_LTF:
-@@ -2416,53 +2417,6 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
- 				     MCU_EXT_CMD(STA_REC_UPDATE), true);
- }
- 
--int mt7915_mcu_set_fixed_rate(struct mt7915_dev *dev,
--			      struct ieee80211_sta *sta, u32 rate)
--{
--	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
--	struct mt7915_vif *mvif = msta->vif;
--	struct sta_rec_ra_fixed *ra;
--	struct sk_buff *skb;
--	struct tlv *tlv;
--	int len = sizeof(struct sta_req_hdr) + sizeof(*ra);
--
--	skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta, len);
--	if (IS_ERR(skb))
--		return PTR_ERR(skb);
--
--	tlv = mt7915_mcu_add_tlv(skb, STA_REC_RA_UPDATE, sizeof(*ra));
--	ra = (struct sta_rec_ra_fixed *)tlv;
--
--	if (!rate) {
--		ra->field = cpu_to_le32(RATE_PARAM_AUTO);
--		goto out;
--	}
--
--	ra->field = cpu_to_le32(RATE_PARAM_FIXED);
--	ra->phy.type = FIELD_GET(RATE_CFG_PHY_TYPE, rate);
--	ra->phy.bw = FIELD_GET(RATE_CFG_BW, rate);
--	ra->phy.nss = FIELD_GET(RATE_CFG_NSS, rate);
--	ra->phy.mcs = FIELD_GET(RATE_CFG_MCS, rate);
--	ra->phy.stbc = FIELD_GET(RATE_CFG_STBC, rate);
--
--	if (ra->phy.bw)
--		ra->phy.ldpc = 7;
--	else
--		ra->phy.ldpc = FIELD_GET(RATE_CFG_LDPC, rate) * 7;
--
--	/* HT/VHT - SGI: 1, LGI: 0; HE - SGI: 0, MGI: 1, LGI: 2 */
--	if (ra->phy.type > MT_PHY_TYPE_VHT) {
--		ra->phy.he_ltf = FIELD_GET(RATE_CFG_HE_LTF, rate) * 85;
--		ra->phy.sgi = FIELD_GET(RATE_CFG_GI, rate) * 85;
--	} else {
--		ra->phy.sgi = FIELD_GET(RATE_CFG_GI, rate) * 15;
--	}
--
--out:
--	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
--				     MCU_EXT_CMD(STA_REC_UPDATE), true);
--}
--
- int mt7915_mcu_add_dev_info(struct mt7915_phy *phy,
- 			    struct ieee80211_vif *vif, bool enable)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 477a8621550a..c0da97f2774c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -331,8 +331,6 @@ int mt7915_set_channel(struct mt7915_phy *phy);
- int mt7915_mcu_set_chan_info(struct mt7915_phy *phy, int cmd);
- int mt7915_mcu_set_tx(struct mt7915_dev *dev, struct ieee80211_vif *vif);
- int mt7915_mcu_update_edca(struct mt7915_dev *dev, void *req);
--int mt7915_mcu_set_fixed_rate(struct mt7915_dev *dev,
--			      struct ieee80211_sta *sta, u32 rate);
- int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_sta *sta,
--- 
-2.29.2
+> > 2) Should we at least check it again from the protected beacon or such
+> > after association, so we don't blindly trust the probe response or
+> > beacon (received during scan, not validated) at least when BIGTK is in
+> > use?
+> 
+> May we add support for BIGTK in future with another patch?
+
+We already have BIGTK support in mac80211, so if we don't do that now
+we're almost certainly not going to do it, so I'd really prefer if you
+did it here, or if a separate patch still did it now.
+
+> The info(pwr_reduction and tx_pwr_env) is used by lower driver such as 
+> ath11k.
+
+Sure.
+
+> If the info changed after association, then how to notify lower driver?
+> Do it like below in ieee80211_rx_mgmt_beacon()?
+> And use BSS_CHANGED_TXPOWER or a new enum in ieee80211_bss_change?
+
+Yeah, dunno. Are the drivers assuming now it's set once you get to
+associated state?
+
+johannes
 
