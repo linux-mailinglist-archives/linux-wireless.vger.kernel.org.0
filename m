@@ -2,137 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0E613EBBBA
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 19:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7927B3EBBB6
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Aug 2021 19:55:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230377AbhHMR63 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Aug 2021 13:58:29 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:60946 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229607AbhHMR63 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Aug 2021 13:58:29 -0400
-X-UUID: e918cf55376e4163a57db98a09de6a3b-20210814
-X-UUID: e918cf55376e4163a57db98a09de6a3b-20210814
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1653128758; Sat, 14 Aug 2021 01:51:52 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 14 Aug 2021 01:51:50 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 14 Aug 2021 01:51:50 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <jemele@google.com>, <yenlinlai@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] mt76: mt7921: fix kernel warning from cfg80211_calculate_bitrate
-Date:   Sat, 14 Aug 2021 01:51:48 +0800
-Message-ID: <e0389646cd508d9a5c7055eb85c44cc459cdf59d.1628876256.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        id S232025AbhHMRzj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Aug 2021 13:55:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43466 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229944AbhHMRzf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 13 Aug 2021 13:55:35 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D881260EFE;
+        Fri, 13 Aug 2021 17:55:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628877304;
+        bh=eSU+ma0haKb2aIUsp/HJIzNk6roGALnzB8QN2POuuW8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Gp+R5/O+YZNgwjbJwcKEdlL4jwnjD1zMNc8tMlFvsCMSX8NyyUq+JCoeW2TsoFgaN
+         ZMvghvB7cZCk3pbB6K48ULDORiwWADVJImvMjrtI3L3D2pqdNywn6/C6nXiFP8WAbc
+         4GXoRdQztGp3Qv8OXd+0lagSa4ByrukVJhVc+4pP0zSnl8CiBsCtykiHMYhBTpq+pJ
+         bLaLPvX6PsZTlqaE22jVWQSFLxezv88+85qhjsv2GzSnxIUl77MvZ1nAbmuylwEdUY
+         kVeuryam7fQBw7pMaQTXLSIVAny278VEaSxm+M/iND0UiLpY6M4kHs7V9ifYyl3PjR
+         Y+tICLIRN5Jqw==
+Date:   Fri, 13 Aug 2021 10:55:03 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Yufeng Mo <moyufeng@huawei.com>
+Cc:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <shenjian15@huawei.com>, <lipeng321@huawei.com>,
+        <yisen.zhuang@huawei.com>, <linyunsheng@huawei.com>,
+        <huangguangbin2@huawei.com>, <chenhao288@hisilicon.com>,
+        <salil.mehta@huawei.com>, <linuxarm@huawei.com>,
+        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
+        <netanel@amazon.com>, <akiyano@amazon.com>,
+        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
+        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
+        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
+        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
+        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
+        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
+        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
+        <linux-wireless@vger.kernel.org>
+Subject: Re: [RFC V3 net-next 1/4] ethtool: add two coalesce attributes for
+ CQE mode
+Message-ID: <20210813105503.600ad1cd@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <1628819129-23332-2-git-send-email-moyufeng@huawei.com>
+References: <1628819129-23332-1-git-send-email-moyufeng@huawei.com>
+        <1628819129-23332-2-git-send-email-moyufeng@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+On Fri, 13 Aug 2021 09:45:26 +0800 Yufeng Mo wrote:
+> Currently, there many drivers who support CQE mode configuration,
+> some configure it as a fixed when initialized, some provide an
+> interface to change it by ethtool private flags. In order make it
+> more generic, add two new 'ETHTOOL_A_COALESCE_USE_CQE_TX' and
+> 'ETHTOOL_A_COALESCE_USE_CQE_RX' coalesce attributes, then these
+> parameters can be accessed by ethtool netlink coalesce uAPI.
+> 
+> Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
+> Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
 
-Fix the kernel warning from cfg80211_calculate_bitrate
-due to the legacy rate is not parsed well in current driver.
+The series LGTM. When I was asking for documentation earlier I meant 
+a paragraph explaining the difference between the two modes. Here is 
+an example based on my current understanding, I could very well be
+wrong but you see what kind of explanation I'm after? If this is more
+or less correct please feel free to use it and modify as you see fit.
 
-Also, zeros struct rate_info before we fill it out to avoid the old value
-is kept such as rate->legacy.
-
-[  790.921560] WARNING: CPU: 7 PID: 970 at net/wireless/util.c:1298 cfg80211_calculate_bitrate+0x354/0x35c [cfg80211]
-[  790.987738] Hardware name: MediaTek Asurada rev1 board (DT)
-[  790.993298] pstate: a0400009 (NzCv daif +PAN -UAO)
-[  790.998104] pc : cfg80211_calculate_bitrate+0x354/0x35c [cfg80211]
-[  791.004295] lr : cfg80211_calculate_bitrate+0x180/0x35c [cfg80211]
-[  791.010462] sp : ffffffc0129c3880
-[  791.013765] x29: ffffffc0129c3880 x28: ffffffd38305bea8
-[  791.019065] x27: ffffffc0129c3970 x26: 0000000000000013
-[  791.024364] x25: 00000000000003ca x24: 000000000000002f
-[  791.029664] x23: 00000000000000d0 x22: ffffff8d108bc000
-[  791.034964] x21: ffffff8d108bc0d0 x20: ffffffc0129c39a8
-[  791.040264] x19: ffffffc0129c39a8 x18: 00000000ffff0a10
-[  791.045563] x17: 0000000000000050 x16: 00000000000000ec
-[  791.050910] x15: ffffffd3f9ebed9c x14: 0000000000000006
-[  791.056211] x13: 00000000000b2eea x12: 0000000000000000
-[  791.061511] x11: 00000000ffffffff x10: 0000000000000000
-[  791.066811] x9 : 0000000000000000 x8 : 0000000000000000
-[  791.072110] x7 : 0000000000000000 x6 : ffffffd3fafa5a7b
-[  791.077409] x5 : 0000000000000000 x4 : 0000000000000000
-[  791.082708] x3 : 0000000000000000 x2 : 0000000000000000
-[  791.088008] x1 : ffffff8d3f79c918 x0 : 0000000000000000
-[  791.093308] Call trace:
-[  791.095770]  cfg80211_calculate_bitrate+0x354/0x35c [cfg80211]
-[  791.101615]  nl80211_put_sta_rate+0x6c/0x2c0 [cfg80211]
-[  791.106853]  nl80211_send_station+0x980/0xaa4 [cfg80211]
-[  791.112178]  nl80211_get_station+0xb4/0x134 [cfg80211]
-[  791.117308]  genl_rcv_msg+0x3a0/0x440
-[  791.120960]  netlink_rcv_skb+0xcc/0x118
-[  791.124785]  genl_rcv+0x34/0x48
-[  791.127916]  netlink_unicast+0x144/0x1dc
-
-Fixes: 1c099ab44727 ("mt76: mt7921: add MCU support")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index cadb633639d3..27317c121256 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -328,14 +328,15 @@ mt7921_mcu_tx_rate_parse(struct mt76_phy *mphy,
- 			 struct rate_info *rate, u16 r)
- {
- 	struct ieee80211_supported_band *sband;
--	u16 flags = 0;
-+	u16 flags = 0, rate_idx;
- 	u8 txmode = FIELD_GET(MT_WTBL_RATE_TX_MODE, r);
- 	u8 gi = 0;
- 	u8 bw = 0;
-+	bool cck = false;
+diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
+index c86628e6a235..fc7ac5938aac 100644
+--- a/Documentation/networking/ethtool-netlink.rst
++++ b/Documentation/networking/ethtool-netlink.rst
+@@ -939,12 +939,25 @@ Gets coalescing parameters like ``ETHTOOL_GCOALESCE`` ioctl request.
+   ``ETHTOOL_A_COALESCE_TX_USECS_HIGH``         u32     delay (us), high Tx
+   ``ETHTOOL_A_COALESCE_TX_MAX_FRAMES_HIGH``    u32     max packets, high Tx
+   ``ETHTOOL_A_COALESCE_RATE_SAMPLE_INTERVAL``  u32     rate sampling interval
++  ``ETHTOOL_A_COALESCE_USE_CQE_TX``            bool    timer reset mode, Tx
++  ``ETHTOOL_A_COALESCE_USE_CQE_RX``            bool    timer reset mode, Rx
+   ===========================================  ======  =======================
  
-+	memset(rate, 0, sizeof(*rate));
- 	rate->mcs = FIELD_GET(MT_WTBL_RATE_MCS, r);
- 	rate->nss = FIELD_GET(MT_WTBL_RATE_NSS, r) + 1;
--
- 	switch (peer->bw) {
- 	case IEEE80211_STA_RX_BW_160:
- 		gi = peer->g16;
-@@ -357,13 +358,18 @@ mt7921_mcu_tx_rate_parse(struct mt76_phy *mphy,
+ Attributes are only included in reply if their value is not zero or the
+ corresponding bit in ``ethtool_ops::supported_coalesce_params`` is set (i.e.
+ they are declared as supported by driver).
  
- 	switch (txmode) {
- 	case MT_PHY_TYPE_CCK:
-+		cck = true;
-+		fallthrough;
- 	case MT_PHY_TYPE_OFDM:
- 		if (mphy->chandef.chan->band == NL80211_BAND_5GHZ)
- 			sband = &mphy->sband_5g.sband;
- 		else
- 			sband = &mphy->sband_2g.sband;
++Timer reset mode (``ETHTOOL_A_COALESCE_USE_CQE_TX`` and
++``ETHTOOL_A_COALESCE_USE_CQE_RX``) control the interaction between packet
++arrival and the various time based delay parameters. By default timers are
++expected to limit the max delay between any packet arrival/departure
++and a corresponding interrupt. In this mode timer should be started by packet
++arrival (sometimes delivery of previous interrupt) and reset when interrupt
++is delivered.
++Setting the appropriate attribute to 1 will enable ``CQE`` mode, where
++each packet event resets the timer. In this mode timer is used to force
++the interrupt if queue goes idle, while busy queues depend on the packet
++limit to trigger interrupts.
  
--		rate->legacy = sband->bitrates[rate->mcs].bitrate;
-+		rate_idx = FIELD_GET(MT_TX_RATE_IDX, r);
-+		rate_idx = mt76_get_rate(mphy->dev, sband, rate_idx,
-+					 cck);
-+		rate->legacy = sband->bitrates[rate_idx].bitrate;
- 		break;
- 	case MT_PHY_TYPE_HT:
- 	case MT_PHY_TYPE_HT_GF:
--- 
-2.25.1
-
+ COALESCE_SET
+ ============
+@@ -977,6 +990,8 @@ Sets coalescing parameters like ``ETHTOOL_SCOALESCE`` ioctl request.
+   ``ETHTOOL_A_COALESCE_TX_USECS_HIGH``         u32     delay (us), high Tx
+   ``ETHTOOL_A_COALESCE_TX_MAX_FRAMES_HIGH``    u32     max packets, high Tx
+   ``ETHTOOL_A_COALESCE_RATE_SAMPLE_INTERVAL``  u32     rate sampling interval
++  ``ETHTOOL_A_COALESCE_USE_CQE_TX``            bool    timer reset mode, Tx
++  ``ETHTOOL_A_COALESCE_USE_CQE_RX``            bool    timer reset mode, Rx
+   ===========================================  ======  =======================
+ 
+ Request is rejected if it attributes declared as unsupported by driver (i.e.
