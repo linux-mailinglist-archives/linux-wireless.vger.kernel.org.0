@@ -2,251 +2,312 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74A213EC261
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Aug 2021 13:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BFAB3EC288
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Aug 2021 14:03:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238302AbhHNLfm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 Aug 2021 07:35:42 -0400
-Received: from mout.gmx.net ([212.227.17.22]:36057 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238053AbhHNLfe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 Aug 2021 07:35:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1628940799;
-        bh=cCjVf4j91gw+QhSCL99zmK+t+X4+yzpKlIk+1eVjv3o=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=A6zCt4cBc65HnDIH/tcj67tdSZ/r/B6srCcQ+dM01mJkzkX1MqEpgtb+cbxhllyVK
-         3y1kR+v77Kr/YsFiNXXM49g/zqgJLGyatVXyBj24AT22IML44K/BkNHmkK8ecPDsKO
-         GP0GuD7s2+Mm9F4aRyJUkMKI2QDDEzuh8pqIwLwA=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.1.100] ([79.206.240.54]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M6Daq-1mCg350RVg-006bDh; Sat, 14
- Aug 2021 13:33:19 +0200
-Subject: Re: [PATCH V2] ath10k: don't fail if IRAM write fails
-To:     Axel Rasmussen <axel.rasmussen1@gmail.com>, ojab // <ojab@ojab.ru>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath10k@lists.infradead.org,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-References: <20210722193459.7474-1-ojab@ojab.ru>
- <CAKzrAgRvOLX6rcKKz=8ghD+QLyMu-1KEPm5HkkLEAzuE1MQpDA@mail.gmail.com>
- <CACC2YF1j45r0chib-HC463FVO_a1Um1f+7PvuRBYVLC7WbgGnQ@mail.gmail.com>
- <CACC2YF1WCSZqLrCig-O-_wJ9s4x47iTc2Xa0-LnyqLm8EWfUHg@mail.gmail.com>
-From:   "sparks71@gmx.de" <sparks71@gmx.de>
-Message-ID: <b3aa258f-9002-f53b-5fd7-98e773dbeff5@gmx.de>
-Date:   Sat, 14 Aug 2021 13:33:17 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S238329AbhHNMDd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 Aug 2021 08:03:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44674 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238064AbhHNMDc (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 14 Aug 2021 08:03:32 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12449C061764
+        for <linux-wireless@vger.kernel.org>; Sat, 14 Aug 2021 05:03:04 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id d11so23215361eja.8
+        for <linux-wireless@vger.kernel.org>; Sat, 14 Aug 2021 05:03:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
+         :subject:mime-version;
+        bh=s2I4LJah/RaKQ/5LyyWD/4dd3ubFDxZgFk3ecD0u5+E=;
+        b=SMg84clhIKpMnDsVAlVge/SfOMQ8iz0q62W8BtuPZnFHYEd2GoG9QO9+oV1zw7HzX9
+         ydbdU3Mm3yo3PlvZbBni9z6CWf4hxo+1MnHVgiRrlDxgZkD0fC2YofWnLgwJNq95FYgs
+         FHOSACCVOAWMGQ+gkIeeezt2JsxqlI5D28C9c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
+         :references:user-agent:subject:mime-version;
+        bh=s2I4LJah/RaKQ/5LyyWD/4dd3ubFDxZgFk3ecD0u5+E=;
+        b=nvs+A2g/uxqr9TeStiBXWvRHYli6iSc2kuOEuQoD0e7VBpUIxuS6Ov7BttPp3Hc/HE
+         DGzk9REhvwO3pifQusgvEeXUls1ZnGcLE5fLlSAJHAoIpNv85XANas9S9rbQ8edC+9Tw
+         UkB4FI2z/kr4pz0Y6LV8sVUjhw7SWR+wVL1/7UR7AhAiQiUCTMvZMGfmwx+9Ck1OXxnu
+         E5Uf1VV4Xg5XlTDJd/GXtcLsyG7iYYwHbROL1wZI+QlxADB9whFQ7+ZGCq1k3iEagdQe
+         kapL8nDymJHcZOtk6AdwXn/qCh6gXBOH9n/hSCMyCIsRJvBd/+BPKJYVbJpdAVHgVZgF
+         HEyA==
+X-Gm-Message-State: AOAM531FCOn+dhWRSpGpkBSXn5AHVMgg5MHgeRIVFA0q5eKxQh7Ipc+L
+        wWip5BUkK4xRIz9cHDXytCoYeEyFE+alXGhuv/B6RZAfZ/BAi76vF5cN9SE4b2dY6VMFVGI8Xeh
+        BTCaKYIFK6yACQIRYgw==
+X-Google-Smtp-Source: ABdhPJyQop8RZlA97Eu9LZaLsGnyT0e920kGuIQL4LE0u4jdOCnI2+FtzNIK9iE67Ked6Lx5pU5mAA==
+X-Received: by 2002:a17:906:a24c:: with SMTP id bi12mr7168414ejb.530.1628942582339;
+        Sat, 14 Aug 2021 05:03:02 -0700 (PDT)
+Received: from [192.168.178.38] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id n26sm2158664eds.63.2021.08.14.05.03.00
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 14 Aug 2021 05:03:00 -0700 (PDT)
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+To:     "M.Sadegh Zeyghami" <mszeyghami@gmail.com>
+CC:     <linux-wireless@vger.kernel.org>
+Date:   Sat, 14 Aug 2021 14:03:00 +0200
+Message-ID: <17b448b3920.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <CACiH_1pRgjO7X5a5tvc6ygLy13arC4GjCp6qWOY7-Rxe3D93yA@mail.gmail.com>
+References: <CACiH_1qejUGY5h84AJwdpzu7hnv1QcpUwxusuUHTYvHudZ1XQQ@mail.gmail.com>
+ <CACiH_1oOYQtTK+ZHToocwJDFZJwsqfXn+rfNTPNKfs4216tdRQ@mail.gmail.com>
+ <CACiH_1oJ82bRqf6chxbz60ocU5Lt_U1tzC2BzhxQnc2sPkAH=Q@mail.gmail.com>
+ <2020122116491715139911@myirtech.com>
+ <CACiH_1rKWwKBN90cMHyDVfTLjxpq74n8+xR1fLTwUw=omazkRQ@mail.gmail.com>
+ <202012211717114369410@myirtech.com>
+ <CACiH_1radH2fiCGEqrFd2KT3LmXXTt0kwS=h1nJ4ONKv86vO=g@mail.gmail.com>
+ <202101210845326804970@myirtech.com>
+ <CACiH_1rbn8cvOLOcwPjnh3J18tu1RO-MsSrCPqHn4gX_oxg=sw@mail.gmail.com>
+ <202105170852049596790@myirtech.com>
+ <CACiH_1r=yvmZOjCTH+Brrks0uv_+uw1FXyVGO7GW3-g0Qki-iw@mail.gmail.com>
+ <CACiH_1qG=o9XNw3Fby=ta9edGe4LPMmcZ2qgM3o5unhkmmpxiw@mail.gmail.com>
+ <202105191404513233631@myirtech.com>
+ <CACiH_1ryCWNgGJZ7+sCT3EBdDLh98qhNKvn2BHrfYkt+pPpTLA@mail.gmail.com>
+ <202105200917269788315@myirtech.com>
+ <CACiH_1r16eNxgT+2iTWOafwh4m+3H1ZoASfAyY-Vyu4z6Xwn_w@mail.gmail.com>
+ <202106031043566804622@myirtech.com>
+ <CACiH_1pJAJNSKC=Grkv64itzJZQw6cKF14fW7+QhAouMVgJ6Dw@mail.gmail.com>
+ <CACiH_1oOxQL2wuv0O7i75WZroUkFqbbaoDsN+Enk51RsiZddPQ@mail.gmail.com>
+ <202106070850449973117@myirtech.com>
+ <CACiH_1oNK7c1F9FmMDEA9gsAiQ1Ccp3c_aHFqPesuSFdHZUtMw@mail.gmail.com>
+ <202106081344596009918@myirtech.com>
+ <CACiH_1q+6aYHinK=mV1Tux8V-XHJ6cJ9czM8nbMj8n5jk2peqg@mail.gmail.com>
+ <202106081408186587600@myirtech.com>
+ <CACiH_1r-PJio4aK5K1muQ=JDkmE__00OsXbmvFzcNkcsqAfQUQ@mail.gmail.com>
+ <CACiH_1rNAR2E1ybaT8CbHE9dM+1kTxs=DvVpdpUwqAE--yv3eQ@mail.gmail.com>
+ <2021060909525128128510@myirtech.com>
+ <CACiH_1qnY+=9NRrpv7Ey1ANSqZ_dO+uxP_gS1X=PAVe2GcUnHQ@mail.gmail.com>
+ <CACiH_1rMHucS2yKDEAQYChFoEsCSjqpwhw7aDHU7Yh0DyuQRhw@mail.gmail.com>
+ <CACiH_1q7OAeipL1AUbWnCAt+O+abXKC4-jvd3BAwL_OEqLfKwA@mail.gmail.com>
+ <CACiH_1pQPod2zEYFDHbs35QnowmWbhund+tvLxnP1eYQXtX8NQ@mail.gmail.com>
+ <17b43871760.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CACiH_1ph6bYFtKDLc=mVJP7ntWbhGotWzBH2DOhgK8PPik83=Q@mail.gmail.com>
+ <CACiH_1pRgjO7X5a5tvc6ygLy13arC4GjCp6qWOY7-Rxe3D93yA@mail.gmail.com>
+User-Agent: AquaMail/1.30.1-1828 (build: 103001000)
+Subject: Re: add support for brcm43362
 MIME-Version: 1.0
-In-Reply-To: <CACC2YF1WCSZqLrCig-O-_wJ9s4x47iTc2Xa0-LnyqLm8EWfUHg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Content-Language: en-US
-X-Provags-ID: V03:K1:bYrMIP8NbdP3LCTRBQl+RWFYK5X46lZ2WTJPdYciARVlZsyw1xQ
- eFi9A9CJzCW9xhZ5tLTVA2tsZdnrp9+c4hYIKE9yD4/IUzFhL6D1pLsBkMglZ9vGhmcJngQ
- VdwtZggMGHW8WhEMvsttkLIUrnZvzqG96ery2uTb/GB7/I9jHkaAN1RtrqY95ix8ucm54hr
- mezZ5FiYPJYXqjW3X65nQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:8PW8q2EGZX8=:tYuHZnvNoRIVi1YMncMBWd
- FD3+G1775Tiv5DLg32ZTKZNSDlyXEO+KPFqgISodGPjm1ovSBwP8ArK7cokU5q8RnQ/hqhn7/
- LseNfxi0+B7IzF97DEubU8wM/ru1nRNo6gDx2EYJnCtYaD0kULv9XS2LFlajqx6ohxUObwl8T
- Sr9j8LdMEkFPb7yRJYhtF/f2B1xv2A4t1NxwnOR2Yr6T27Qm7rWeQHVwPmbBvTenkpdMIRl6V
- rtt4E8yexxUVE3BQKPf2pMnVwODAH84vZwmBXFQNsuJdl2cpiXw9JayFjcilFXHK9/OLe5ony
- Y5O7MQy+1iGVhNibpBL6UnK8owFfqlRZAowjMWBEFluJ9kmRZkIX4fP/N5x1b6irVx2wivnLu
- DOhVpFAzgIwSFrUZyMNT92jt5ZVi3BTFGtLz0d2XkFO6zwV9KwRiaVyCYMkE4ttjibjQ3iXRt
- mJ+Bl9yuA3wLUDwMgKAeC+zzdvsASI7DLju9KiTUw9XU6Suv/3fI6yrbf96rwbJNkaWiLgYmR
- iVTyyf8K8AYy0YzfciY5DBcgca9/Q0in/gYcqzdRjDk9TVcUQe1csAK0JliVDg5hn6xkhwSd/
- VbdkFIDHSSyVgtUex2f4P5gMxk4xeCytmfoXRrU5RMMfWOquqSRy/Qb5tYDokmy/aUkFCcktj
- kIJj/+wKNPqtSzUDD1+WVV7xZZ03WmuxLTfTsm1HOgVJpusSI2AlgwGsgGmeKWBH6CyqfnHMz
- zn6xkcP2IFlopWXDCdvvqpzoDrDg/xr+Nu3EzGWQVIH4QKnfTlubtP259SUHxoHuOkc1E9ypX
- qFg4v9aJEu10MBEyKdrLreekozjGPlgCvHFK3j/Zhfrs5kJ2Z8H0GioUc3kfPzWHO7pwhpfhG
- ue46fYcwi678K4v7bFG50vzl18EJvko9NrjFXQbojjOrl4G91edbjs1/zTjb+XdWFETyDBXM3
- CxOuskRWw4JTDTbAyXVcVFx0efKM4z7WNoqUiV6bL9+2MT+zm8W1M8AfL5F2aRLOSQmR0BOpu
- K3FRM1HFuQCdgaZUBiPl9S6A+erWMrA1y3yb8G03yRbxZyurdgmgbfMR7/fah/aoohVwD4Gfl
- 8+ACRJgfQQTBD2lcHokXx02wenPyiAKbPMrh3BxoUHhFVn/JCYSikSDNg==
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="00000000000002385105c983c0d4"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello, I have the same problem with my QCA9984 cards and also tested the
-patch successfully.
+--00000000000002385105c983c0d4
+Content-Type: text/plain; format=flowed; charset="US-ASCII"
 
-See > https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1939937
+Please keep linux-wireless in Cc:
 
-best regards
+On August 14, 2021 1:14:14 PM "M.Sadegh Zeyghami" <mszeyghami@gmail.com> wrote:
 
+> I have fixed the regulatory.db error. but the issue still persists.
 
+Right. That should not be an issue for you right now. The driver does not 
+seem to get to a state where that would matter.
 
-Am 12.08.21 um 22:21 schrieb Axel Rasmussen:
-> Sorry again for the slow response time.
+So taking a look at brcmf_ops_sdio_probe() [1]. It should end up calling 
+brcmf_sdiod_probe() which would show up in the kernel log. As it doesn't I 
+only see two places that may fail but those are allocations so that would 
+dump a stack trace in the log. So I have no clue unless that SDK you are 
+using has some modifications in brcmfmac driver.
+
+Regards,
+Arend
+
+[1] 
+https://elixir.bootlin.com/linux/v5.4.3/source/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c#L991
+
 >
-> I got around to testing this today on my hardware. I tested with a
-> vanilla 5.13.8 kernel, and then the same kernel with this patch
-> applied. Long story short, the patch does indeed seem to at least work
-> around the issue I was seeing in [1]. With this patch applied, I still
-> get the same "failed to copy target iram contents" error, but the
-> interface comes up and seems to be functional regardless.
->
-> So, for what it's worth (granted I am no wireless expert!), you can take=
-:
->
-> Tested-by: Axel Rasmussen <axelrasmussen@google.com>
->
-> (This issue has nothing to do with my full time job, but I'm meant to
-> use my @google.com address for any open source contributions, which I
-> believe applies to commit messages too.)
->
-> [1]: https://lists.infradead.org/pipermail/ath10k/2021-May/012626.html
->
->
->
-> Here are the two dmesg outputs, for comparison:
->
-> # uname -a
-> Linux router 5.13.8 #1 SMP Wed Aug 11 20:18:51 PDT 2021 x86_64 AMD
-> GX-412TC SOC AuthenticAMD GNU/Linux
-> # dmesg | grep ath
-> [   12.491747] ath10k_pci 0000:04:00.0: pci irq msi oper_irq_mode 2
-> irq_mode 0 reset_mode 0
-> [   12.613341] ath10k_pci 0000:04:00.0: qca9984/qca9994 hw1.0 target
-> 0x01000000 chip_id 0x00000000 sub 168c:cafe
-> [   12.613367] ath10k_pci 0000:04:00.0: kconfig debug 1 debugfs 1
-> tracing 1 dfs 1 testmode 0
-> [   12.615071] ath10k_pci 0000:04:00.0: firmware ver
-> 10.4-3.9.0.2-00131 api 5 features
-> no-p2p,mfp,peer-flow-ctrl,btcoex-param,allows-mesh-bcast,no-ps,peer-fixe=
-d-rate,iram-recovery
-> crc32 23bd9e43
-> [   13.846538] ath10k_pci 0000:04:00.0: board_file api 2 bmi_id 0:31
-> crc32 85498734
-> [   16.428502] ath10k_pci 0000:04:00.0: failed to copy target iram conte=
-nts: -12
-> [   16.518692] ath10k_pci 0000:04:00.0: could not init core (-12)
-> [   16.518950] ath10k_pci 0000:04:00.0: could not probe fw (-12)
->
->
->
-> # uname -a
-> Linux router 5.13.8+ #2 SMP Wed Aug 11 20:28:56 PDT 2021 x86_64 AMD
-> GX-412TC SOC AuthenticAMD GNU/Linux
-> # dmesg | grep ath
-> [   12.201239] ath10k_pci 0000:04:00.0: pci irq msi oper_irq_mode 2
-> irq_mode 0 reset_mode 0
-> [   12.323354] ath10k_pci 0000:04:00.0: qca9984/qca9994 hw1.0 target
-> 0x01000000 chip_id 0x00000000 sub 168c:cafe
-> [   12.323407] ath10k_pci 0000:04:00.0: kconfig debug 1 debugfs 1
-> tracing 1 dfs 1 testmode 0
-> [   12.325162] ath10k_pci 0000:04:00.0: firmware ver
-> 10.4-3.9.0.2-00131 api 5 features
-> no-p2p,mfp,peer-flow-ctrl,btcoex-param,allows-mesh-bcast,no-ps,peer-fixe=
-d-rate,iram-reco
-> very crc32 23bd9e43
-> [   13.556748] ath10k_pci 0000:04:00.0: board_file api 2 bmi_id 0:31
-> crc32 85498734
-> [   16.155848] ath10k_pci 0000:04:00.0: No hardware memory
-> [   16.155873] ath10k_pci 0000:04:00.0: failed to copy target iram conte=
-nts: -12
-> [   16.267376] ath10k_pci 0000:04:00.0: htt-ver 2.2 wmi-op 6 htt-op 4
-> cal otp max-sta 512 raw 0 hwcrypto 1
-> [   16.382257] ath: EEPROM regdomain sanitized
-> [   16.382289] ath: EEPROM regdomain: 0x64
-> [   16.382306] ath: EEPROM indicates we should expect a direct regpair m=
-ap
-> [   16.382312] ath: Country alpha2 being used: 00
-> [   16.382316] ath: Regpair used: 0x64
-> [   16.393599] ath10k_pci 0000:04:00.0 wlp4s0: renamed from wlan0
-> [   41.264025] ath10k_pci 0000:04:00.0: No hardware memory
-> [   41.264045] ath10k_pci 0000:04:00.0: failed to copy target iram conte=
-nts: -12
-> [   41.480677] ath10k_pci 0000:04:00.0: Unknown eventid: 36933
->
-> On Sun, Aug 1, 2021 at 7:23 PM Axel Rasmussen <axel.rasmussen1@gmail.com=
+> On Sat, Aug 14, 2021 at 2:56 PM M.Sadegh Zeyghami <mszeyghami@gmail.com>
 > wrote:
->> On Thu, Jul 22, 2021 at 12:42 PM ojab // <ojab@ojab.ru> wrote:
->>> See also: https://lists.infradead.org/pipermail/ath10k/2021-May/012626=
-.html
->>>
->>> On Thu, 22 Jul 2021 at 22:36, ojab <ojab@ojab.ru> wrote:
->>>> After reboot with kernel & firmware updates I found `failed to copy
->>>> target iram contents:` in dmesg and missing wlan interfaces for both
->>>> of my QCA9984 compex cards. Rolling back kernel/firmware didn't fixed
->>>> it, so while I have no idea what's actually happening, I don't see wh=
-y
->>>> we should fail in this case, looks like some optional firmware abilit=
-y
->>>> that could be skipped.
->>>>
->>>> Also with additional logging there is
->>>> ```
->>>> [    6.839858] ath10k_pci 0000:04:00.0: No hardware memory
->>>> [    6.841205] ath10k_pci 0000:04:00.0: failed to copy target iram co=
-ntents: -12
->>>> [    6.873578] ath10k_pci 0000:07:00.0: No hardware memory
->>>> [    6.875052] ath10k_pci 0000:07:00.0: failed to copy target iram co=
-ntents: -12
->>>> ```
->>>> so exact branch could be seen.
->>>>
->>>> Signed-off-by: Slava Kardakov <ojab@ojab.ru>
->>>> ---
->>>>   Of course I forgot to sing off, since I don't use it by default bec=
-ause I
->>>>   hate my real name and kernel requires it
->> Thanks for working on this! And sorry for the slow response. I've been
->> unexpectedly very busy lately, but I plan to test out this patch next
->> week.
+>
+>> OK
+>> you can see sdio log as below:
 >>
->>>>   drivers/net/wireless/ath/ath10k/core.c | 9 ++++++---
->>>>   1 file changed, 6 insertions(+), 3 deletions(-)
+>> [  684.265241] brcmfmac: brcmfmac_module_init No platform data available.
+>> [  684.271302] brcmfmac: brcmf_ops_sdio_probe Enter
+>> [  684.271323] brcmfmac: brcmf_ops_sdio_probe Class=0
+>> [  684.271336] brcmfmac: brcmf_ops_sdio_probe sdio vendor ID: 0x02d0
+>> [  684.271347] brcmfmac: brcmf_ops_sdio_probe sdio device ID: 0xa962
+>> [  684.271357] brcmfmac: brcmf_ops_sdio_probe Function#: 1
+>> [  684.271681] brcmfmac: brcmf_ops_sdio_probe Enter
+>> [  684.271695] brcmfmac: brcmf_ops_sdio_probe Class=0
+>> [  684.271706] brcmfmac: brcmf_ops_sdio_probe sdio vendor ID: 0x02d0
+>> [  684.271713] brcmfmac: brcmf_ops_sdio_probe sdio device ID: 0xa962
+>> [  684.271722] brcmfmac: brcmf_ops_sdio_probe Function#: 2
+>>
+>> is it possible that the error is related to below error log?
+>>
+>> [   18.352425] cfg80211: Loading compiled-in X.509 certificates for
+>> regulatory database
+>> [   18.552486] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+>> [   18.631523] platform regulatory.0: Direct firmware load for
+>> regulatory.db failed with error -2
+>> [   18.690135] platform regulatory.0: Falling back to sysfs fallback for:
+>> regulatory.db
+>>
+>> On Sat, Aug 14, 2021 at 11:48 AM Arend Van Spriel <
+>> arend.vanspriel@broadcom.com> wrote:
+>>
+>>> + linux-wireless list
+>>>
+>>> On August 14, 2021 6:07:15 AM "M.Sadegh Zeyghami" <mszeyghami@gmail.com>
+>>> wrote:
+>>>
+>>>> Hi,
+>>>> How are you?
+>>>> I've compiled a linux OS using yocto project. I want to have wifi
+>>> interface
+>>>> using WM-N-BM-02SDIO . I have set the WM-N-BM-02SDIO on sdio-1 which is
+>>>> considered for sd card. I have successfully added wifi before in a
+>>> project
+>>>> with kernel 4.x.x.
+>>>> now I'm trying with new sdk:
+>>>> uname -a
+>>>> 5.4.3-g9c2490ac8-dirty #3 SMP PREEMPT Sun Aug 8 12:11:16 UTC 2021 armv7l
+>>>> GNU/Linux
 >>>>
->>>> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wir=
-eless/ath/ath10k/core.c
->>>> index 2f9be182fbfb..d9fd5294e142 100644
->>>> --- a/drivers/net/wireless/ath/ath10k/core.c
->>>> +++ b/drivers/net/wireless/ath/ath10k/core.c
->>>> @@ -2691,8 +2691,10 @@ static int ath10k_core_copy_target_iram(struct=
- ath10k *ar)
->>>>          u32 len, remaining_len;
+>>>> I have an issue with the brcmfmac kernel module. I have enabled brcmfmac
+>>>> debug and enabled all message types in debug messages.
 >>>>
->>>>          hw_mem =3D ath10k_coredump_get_mem_layout(ar);
->>>> -       if (!hw_mem)
->>>> +       if (!hw_mem) {
->>>> +               ath10k_warn(ar, "No hardware memory");
->>>>                  return -ENOMEM;
->>>> +       }
+>>>> you can see the dmesg output when I put this command insmod /<path to ko
+>>>> file>/brcmfmac.ko debug=0x1FFFE :
 >>>>
->>>>          for (i =3D 0; i < hw_mem->region_table.size; i++) {
->>>>                  tmp =3D &hw_mem->region_table.regions[i];
->>>> @@ -2702,8 +2704,10 @@ static int ath10k_core_copy_target_iram(struct=
- ath10k *ar)
->>>>                  }
->>>>          }
->>>>
->>>> -       if (!mem_region)
->>>> +       if (!mem_region) {
->>>> +               ath10k_warn(ar, "No memory region");
->>>>                  return -ENOMEM;
->>>> +       }
->>>>
->>>>          for (i =3D 0; i < ar->wmi.num_mem_chunks; i++) {
->>>>                  if (ar->wmi.mem_chunks[i].req_id =3D=3D
->>>> @@ -2917,7 +2921,6 @@ int ath10k_core_start(struct ath10k *ar, enum a=
-th10k_firmware_mode mode,
->>>>                  if (status) {
->>>>                          ath10k_warn(ar, "failed to copy target iram =
-contents: %d",
->>>>                                      status);
->>>> -                       goto err_hif_stop;
->>>>                  }
->>>>          }
->>>>
->>>> --
->>>> 2.32.0
-> _______________________________________________
-> ath10k mailing list
-> ath10k@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/ath10k
->
->
+>>>> [ 2526.159218] brcmfmac: brcmfmac_module_init No platform data
+>>> available.
+>>>> [ 2526.168959] brcmfmac: brcmf_ops_sdio_probe Enter
+>>>> [ 2526.168979] brcmfmac: brcmf_ops_sdio_probe Class=0
+>>>> [ 2526.168991] brcmfmac: brcmf_ops_sdio_probe sdio vendor ID: 0x02d0
+>>>> [ 2526.169001] brcmfmac: brcmf_ops_sdio_probe sdio device ID: 0xa962
+>>>> [ 2526.169011] brcmfmac: brcmf_ops_sdio_probe Function#: 1
+>>>> [ 2526.169347] brcmfmac: brcmf_ops_sdio_probe Enter
+>>>> [ 2526.169362] brcmfmac: brcmf_ops_sdio_probe Class=0
+>>>> [ 2526.169372] brcmfmac: brcmf_ops_sdio_probe sdio vendor ID: 0x02d0
+>>>> [ 2526.169383] brcmfmac: brcmf_ops_sdio_probe sdio device ID: 0xa962
+>>>> [ 2526.169392] brcmfmac: brcmf_ops_sdio_probe Function#: 2[
+>>>> 3249.364285] brcmfmac: brcmf_sdio_exit Enter
+>>>
+>>> The vendor and device id are correct so can you retry using debug=0x31416
+>>> enabling SDIO debug level.
+>>>
+>>> Regards,
+>>> Arend
+>>>
+>>>
+>>>
+>>> --
+>>> This electronic communication and the information and any files
+>>> transmitted
+>>> with it, or attached to it, are confidential and are intended solely for
+>>> the use of the individual or entity to whom it is addressed and may
+>>> contain
+>>> information that is confidential, legally privileged, protected by
+>>> privacy
+>>> laws, or otherwise restricted from disclosure to anyone else. If you are
+>>> not the intended recipient or the person responsible for delivering the
+>>> e-mail to the intended recipient, you are hereby notified that any use,
+>>> copying, distributing, dissemination, forwarding, printing, or copying of
+>>> this e-mail is strictly prohibited. If you received this e-mail in error,
+>>> please return the e-mail to the sender, delete it from your computer, and
+>>> destroy any printed copy of it.
 
+
+
+
+-- 
+This electronic communication and the information and any files transmitted 
+with it, or attached to it, are confidential and are intended solely for 
+the use of the individual or entity to whom it is addressed and may contain 
+information that is confidential, legally privileged, protected by privacy 
+laws, or otherwise restricted from disclosure to anyone else. If you are 
+not the intended recipient or the person responsible for delivering the 
+e-mail to the intended recipient, you are hereby notified that any use, 
+copying, distributing, dissemination, forwarding, printing, or copying of 
+this e-mail is strictly prohibited. If you received this e-mail in error, 
+please return the e-mail to the sender, delete it from your computer, and 
+destroy any printed copy of it.
+
+--00000000000002385105c983c0d4
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCicDNyrkU5ja6PhNzT
+Qvu69txW70WSV9XCDtQH3RJarzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMTA4MTQxMjAzMDJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAJYuakv4Z0dt1x/670uBB41o5NCqghsbFW3wv
+zoxmOFOd5XdtwDoK0yMHpCf5Bm3dlL74iRy3CJqbzGJW4soxNoLtmZwXP1HlKSjzPlAYKyS2Fgij
+v9KADxSrVAbAbjjF63/chcByY9EUT8U+ZY9pBzUGzQ8a2/jyh8qFatWCWHc3P2H8Rl38YP4jBXNV
+Hn1Cga3/ReGmgMWyndSqQWQFP14BS305W6kkoCbqbx/reXj3pR1r1YjznQTpdYT0EsNsCnYR10Ce
+BPGqNNmqWgmNYDIiEGShhahCf8rWbrsAUo4qKFeFGrhlzBXI2OA56HtnuY4aJylno4EmTA/Y1H+U
+kg==
+--00000000000002385105c983c0d4--
