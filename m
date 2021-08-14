@@ -2,57 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 151CB3EC117
+	by mail.lfdr.de (Postfix) with ESMTP id AD1A43EC11A
 	for <lists+linux-wireless@lfdr.de>; Sat, 14 Aug 2021 09:22:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236970AbhHNHTZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 Aug 2021 03:19:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38280 "EHLO
+        id S237100AbhHNHWf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 Aug 2021 03:22:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236519AbhHNHTZ (ORCPT
+        with ESMTP id S236519AbhHNHWd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 Aug 2021 03:19:25 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066D4C06175F
-        for <linux-wireless@vger.kernel.org>; Sat, 14 Aug 2021 00:18:57 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id lo4so22321297ejb.7
-        for <linux-wireless@vger.kernel.org>; Sat, 14 Aug 2021 00:18:56 -0700 (PDT)
+        Sat, 14 Aug 2021 03:22:33 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9360C06175F
+        for <linux-wireless@vger.kernel.org>; Sat, 14 Aug 2021 00:22:05 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id hs10so22563589ejc.0
+        for <linux-wireless@vger.kernel.org>; Sat, 14 Aug 2021 00:22:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=from:to:cc:date:message-id:in-reply-to:references:user-agent
          :subject:mime-version;
-        bh=MRJTLhNkf/r4LBSYGQpa781XHZuwuh9h8ZoN7H/mDbs=;
-        b=giPu6LC6iwaWSrnH838SohGKps9t/y31quRlGxzkkywVvui4FJe48Hv9rmFCkwfV6M
-         bqypjmnSjcLLIN1Jr+5tuv7YvGd1dFpL04QVf+BwUNhzV079Gb47mflqYRnnuXTC82Kt
-         UVK6DxKgcGahZVRANZGz8D1AsipedkYyAR11o=
+        bh=CNUT1KqsINszP2V9xSH/Y2/y0k/pnh9QZ1NA/fKLmPY=;
+        b=GPIILXGgI63ynHQrNtYN+DCiACauj/N6HzkncH9Ja/iDfsMSWWn39Wp58lXfdUIy+u
+         F6hm/HGh6YdhdlpHeu2LNDknd8sFe8clTnsof1VuYj07MmeeUp6OAkRgV4DvKPKmc0KF
+         PIuGxtedKVCfup/xwrVczLZLDY5uw7+RL3zGQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
          :references:user-agent:subject:mime-version;
-        bh=MRJTLhNkf/r4LBSYGQpa781XHZuwuh9h8ZoN7H/mDbs=;
-        b=d++jpHft3wOG5bP52EF6e6Q7te1MZxMRR6HJDqDWufEw12j7g7PcO9MwhWBdWNU5+h
-         BI3HQZs0NBWhkXFVWHg2LvTfBisHTdr1tDKEJNu/64Rbe0tvwsiBu9hsDmBKhTDxFT+8
-         RP1UjatXOEAx6wHQBdQ2VJ69b5Wi3qM2o5rnRw2Wzkm6sAr6EdNEJfWnQpYbKKcoYQZi
-         GW7da0WLFsjMUdcviptOZiPtQu3lNMjvsGUp847MCfem0EEAZI4W+3qZh7u7J34oGyF8
-         S7M8tlOaY34wxFnWaW6pPNi+ktEox2cchhxgONgizXBb7JzhoTNMLhGceZBDCoImjEv5
-         QeLA==
-X-Gm-Message-State: AOAM532m39q49c6bLpy08R6RP721j0Jhe1eV1m0iGhS/tD+Nq1CPZXXS
-        C3mbzstXLM9NGEGGILiy0rguBUk0c36cY/Nj6ZpldbmQ8TB3WEX6/nulVa6JNfXEOuF3bUhFClm
-        yAGwG3U6a+aQXzFQCuA==
-X-Google-Smtp-Source: ABdhPJyf4TlBQMMzZKhdOOydaKrJW5ON3yHMgW8NG1zCOebAONzRDKXjB83m34eZBy5t77xJFfI4TA==
-X-Received: by 2002:a17:906:c251:: with SMTP id bl17mr6239919ejb.219.1628925533990;
-        Sat, 14 Aug 2021 00:18:53 -0700 (PDT)
+        bh=CNUT1KqsINszP2V9xSH/Y2/y0k/pnh9QZ1NA/fKLmPY=;
+        b=i57CanVDs1tFSUXqaHOiz4gtKOHuntXOQKzmWpF9wgHCGMq6X1lZVo/9dRvHqSXe8S
+         V1FHOim7vSm+9LUsFUFi06VabjkeJrLyIcGi4OOQSP+YmVDtnV0HQhfXur907vt7078d
+         VyAXHbOsmuCR7objqCDrsHfKBh6rHrk2jazYyuUpm0cJWlJt7P8R0tyY2QdUuJWKxB1B
+         E/FtSuV7ZXHGE5R3jyCITOt8tCjPwtqA/6Re9wPaf9KFELv789//VN0V/d5MPKaBru9o
+         08SJeSJMaERBwNd+E+pgjQUudvugjXULU6QxEDJE38F+BSxtvAphXFxKNjHC0WGvVWC8
+         lf5w==
+X-Gm-Message-State: AOAM531Tu8Iwbfer0n3mKpRKBAOdqlahFwAtsYxRspSKPtqXlxvpnhjt
+        OS+uHOutT0qiHe86hMiCt9sDZQGBNWG8KI6Y1kjkp+5w5yHHE2Gp3FpOzD7BzlRk1khZCdEevd1
+        IYK0PEe6bqoSkHR5wUA==
+X-Google-Smtp-Source: ABdhPJw0V9w+Ehm+6pxihKjodYtfEdyr07tNn9GWAiNLA3e+Qh/GO00xqVaIv3QFaVsg30XR4L0sjg==
+X-Received: by 2002:a17:906:6009:: with SMTP id o9mr6319339ejj.266.1628925724156;
+        Sat, 14 Aug 2021 00:22:04 -0700 (PDT)
 Received: from [192.168.178.38] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id u2sm1439803ejc.61.2021.08.14.00.18.52
+        by smtp.gmail.com with ESMTPSA id b25sm1886234edw.67.2021.08.14.00.22.03
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 14 Aug 2021 00:18:52 -0700 (PDT)
+        Sat, 14 Aug 2021 00:22:03 -0700 (PDT)
 From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
 To:     "M.Sadegh Zeyghami" <mszeyghami@gmail.com>,
         <Chi-Hsien.Lin@cypress.com>
 CC:     <linux-wireless@vger.kernel.org>
-Date:   Sat, 14 Aug 2021 09:18:52 +0200
-Message-ID: <17b43871760.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <CACiH_1pQPod2zEYFDHbs35QnowmWbhund+tvLxnP1eYQXtX8NQ@mail.gmail.com>
+Date:   Sat, 14 Aug 2021 09:22:03 +0200
+Message-ID: <17b438a0178.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <17b43871760.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
 References: <CACiH_1qejUGY5h84AJwdpzu7hnv1QcpUwxusuUHTYvHudZ1XQQ@mail.gmail.com>
  <CACiH_1oOYQtTK+ZHToocwJDFZJwsqfXn+rfNTPNKfs4216tdRQ@mail.gmail.com>
  <CACiH_1oJ82bRqf6chxbz60ocU5Lt_U1tzC2BzhxQnc2sPkAH=Q@mail.gmail.com>
@@ -84,54 +84,57 @@ References: <CACiH_1qejUGY5h84AJwdpzu7hnv1QcpUwxusuUHTYvHudZ1XQQ@mail.gmail.com>
  <CACiH_1rMHucS2yKDEAQYChFoEsCSjqpwhw7aDHU7Yh0DyuQRhw@mail.gmail.com>
  <CACiH_1q7OAeipL1AUbWnCAt+O+abXKC4-jvd3BAwL_OEqLfKwA@mail.gmail.com>
  <CACiH_1pQPod2zEYFDHbs35QnowmWbhund+tvLxnP1eYQXtX8NQ@mail.gmail.com>
+ <17b43871760.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
 User-Agent: AquaMail/1.30.1-1828 (build: 103001000)
 Subject: Re: add support for brcm43362
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000d5a58305c97fc7b3"
+        boundary="0000000000002a974c05c97fd3bc"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000d5a58305c97fc7b3
+--0000000000002a974c05c97fd3bc
 Content-Type: text/plain; format=flowed; charset="US-ASCII"
 
-+ linux-wireless list
+On August 14, 2021 9:18:52 AM Arend Van Spriel 
+<arend.vanspriel@broadcom.com> wrote:
 
-On August 14, 2021 6:07:15 AM "M.Sadegh Zeyghami" <mszeyghami@gmail.com> wrote:
+> + linux-wireless list
+>
+> On August 14, 2021 6:07:15 AM "M.Sadegh Zeyghami" <mszeyghami@gmail.com> wrote:
+>
+>> Hi,
+>> How are you?
+>> I've compiled a linux OS using yocto project. I want to have wifi interface
+>> using WM-N-BM-02SDIO . I have set the WM-N-BM-02SDIO on sdio-1 which is
+>> considered for sd card. I have successfully added wifi before in a project
+>> with kernel 4.x.x.
+>> now I'm trying with new sdk:
+>> uname -a
+>> 5.4.3-g9c2490ac8-dirty #3 SMP PREEMPT Sun Aug 8 12:11:16 UTC 2021 armv7l
+>> GNU/Linux
+>>
+>> I have an issue with the brcmfmac kernel module. I have enabled brcmfmac
+>> debug and enabled all message types in debug messages.
+>>
+>> you can see the dmesg output when I put this command insmod /<path to ko
+>> file>/brcmfmac.ko debug=0x1FFFE :
+>>
+>> [ 2526.159218] brcmfmac: brcmfmac_module_init No platform data available.
+>> [ 2526.168959] brcmfmac: brcmf_ops_sdio_probe Enter
+>> [ 2526.168979] brcmfmac: brcmf_ops_sdio_probe Class=0
+>> [ 2526.168991] brcmfmac: brcmf_ops_sdio_probe sdio vendor ID: 0x02d0
+>> [ 2526.169001] brcmfmac: brcmf_ops_sdio_probe sdio device ID: 0xa962
+>> [ 2526.169011] brcmfmac: brcmf_ops_sdio_probe Function#: 1
+>> [ 2526.169347] brcmfmac: brcmf_ops_sdio_probe Enter
+>> [ 2526.169362] brcmfmac: brcmf_ops_sdio_probe Class=0
+>> [ 2526.169372] brcmfmac: brcmf_ops_sdio_probe sdio vendor ID: 0x02d0
+>> [ 2526.169383] brcmfmac: brcmf_ops_sdio_probe sdio device ID: 0xa962
+>> [ 2526.169392] brcmfmac: brcmf_ops_sdio_probe Function#: 2[
+>> 3249.364285] brcmfmac: brcmf_sdio_exit Enter
 
-> Hi,
-> How are you?
-> I've compiled a linux OS using yocto project. I want to have wifi interface
-> using WM-N-BM-02SDIO . I have set the WM-N-BM-02SDIO on sdio-1 which is
-> considered for sd card. I have successfully added wifi before in a project
-> with kernel 4.x.x.
-> now I'm trying with new sdk:
-> uname -a
-> 5.4.3-g9c2490ac8-dirty #3 SMP PREEMPT Sun Aug 8 12:11:16 UTC 2021 armv7l
-> GNU/Linux
->
-> I have an issue with the brcmfmac kernel module. I have enabled brcmfmac
-> debug and enabled all message types in debug messages.
->
-> you can see the dmesg output when I put this command insmod /<path to ko
-> file>/brcmfmac.ko debug=0x1FFFE :
->
-> [ 2526.159218] brcmfmac: brcmfmac_module_init No platform data available.
-> [ 2526.168959] brcmfmac: brcmf_ops_sdio_probe Enter
-> [ 2526.168979] brcmfmac: brcmf_ops_sdio_probe Class=0
-> [ 2526.168991] brcmfmac: brcmf_ops_sdio_probe sdio vendor ID: 0x02d0
-> [ 2526.169001] brcmfmac: brcmf_ops_sdio_probe sdio device ID: 0xa962
-> [ 2526.169011] brcmfmac: brcmf_ops_sdio_probe Function#: 1
-> [ 2526.169347] brcmfmac: brcmf_ops_sdio_probe Enter
-> [ 2526.169362] brcmfmac: brcmf_ops_sdio_probe Class=0
-> [ 2526.169372] brcmfmac: brcmf_ops_sdio_probe sdio vendor ID: 0x02d0
-> [ 2526.169383] brcmfmac: brcmf_ops_sdio_probe sdio device ID: 0xa962
-> [ 2526.169392] brcmfmac: brcmf_ops_sdio_probe Function#: 2[
-> 3249.364285] brcmfmac: brcmf_sdio_exit Enter
-
-The vendor and device id are correct so can you retry using debug=0x31416 
-enabling SDIO debug level.
+This last line is from doing a rmmod, right?
 
 Regards,
 Arend
@@ -151,7 +154,7 @@ this e-mail is strictly prohibited. If you received this e-mail in error,
 please return the e-mail to the sender, delete it from your computer, and 
 destroy any printed copy of it.
 
---000000000000d5a58305c97fc7b3
+--0000000000002a974c05c97fd3bc
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -222,14 +225,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCmhJBt6MeUA5VpIder
-7bPY0BHwrbtSl445gls5GdgMsDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMTA4MTQwNzE4NTRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCD1wbgRfoDpsjpNSGZD
+wWaHdZGz6dbbbOu4SAwAQId02TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMTA4MTQwNzIyMDRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEALQneyaox7CypKsjUw55m2kkPRwiU6IvGrJMh
-BCBRnxeBakPz7tSYpd2/hbPfYPssJhBK2M+v++Y7hVShwUeuDcxPNVgcRQCde3584/OBFx3hw71i
-wNLtUcaIp84Fb3HchAtQ288rR7kcYdWrrpfB/FVBWMgjQfqVR8q6eOY22cwgMcD2Gn5rtxP3pDoE
-5GlAjFo8iN+EQ6RLW3Jvf3F/lDDyyECVyw8Rx5Rbq8DHmVKaAAjuACH7/bSXQbGZfOVbrOycEo7T
-r1mqhMXKuyXDWfSpFVqsuwyyil08FEb2UreoJRgo7ggVt0RW2vcOMKq6Mebfp1CDL9LDXHgammz8
-sQ==
---000000000000d5a58305c97fc7b3--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEARTTGiTbuvFJ7A2BJweJvzPsEhYgqZeSBkv16
+PRYjX9zCXJ8kdOl5fgMBaoTzjHFTx7nhITvex63qaKFPpCDlwRBJR0wwqHmxDlyHwrfPElwmk+H0
+vFrHkl8QV4VjhNkT5ZNz+StjaYNR0OdSN2EIvNSDD0eJDXG8TvGxBDeCGOIRhkk24t4hEFbWWcT8
+D2bjyj4iz/AJP7zGeMi3OEFw5kTkBzoUyTBSnX7j06TQ8Snd7aEQoZKHkaFxO9LeNUMBNXjjnmu/
+G01SZvL2pA8ZFFTV0nRJEX535V2R8igPFGnNv01JINhBFiGDLIrH3I6cEXKRom3M74SGry9Mibhp
+Lw==
+--0000000000002a974c05c97fd3bc--
