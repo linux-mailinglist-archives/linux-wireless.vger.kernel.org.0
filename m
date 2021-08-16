@@ -2,150 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CF5A3ED7D5
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Aug 2021 15:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA9743ED7F9
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Aug 2021 15:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231756AbhHPNpK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Aug 2021 09:45:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60152 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230478AbhHPNpI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Aug 2021 09:45:08 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CCBE863282;
-        Mon, 16 Aug 2021 13:44:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629121476;
-        bh=DBLx5Qi1xn3W3lUbGH5/MbJacCST668Js48ekUZyKkU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aqz+j91WbqNXs+0TWqTn3VZHdph25VwNBZoh+3SAHxIOzR7iLrYyVQ2Lbx7BBZ4hC
-         Gm/UIsvsK7vpnYgIpVH8vBAZofRdta8a5EXVLM1Eqg9Pl3y9dviRqSWYuIrI3oVwCh
-         paj9AsP06bG+YT0eGbmx/CaMiDi6l3npoR86c8p1l3b+gaSDZ3S+B3+o5v3XVCAnl4
-         /SOvbtnn+SWz6HbsT0Ex1qyiNmvu41eK0UtuVWtYKZEtJ5Y98CJqOdldomgxrU7dt+
-         vVWbKSWqKfpOHlZ6qWdyr0ePsbRZc+8Bzby9TG24/OPWbNJPW8fVHvU7/BSSR1WMch
-         IgQnzkFB2NXKA==
-Received: by pali.im (Postfix)
-        id CA4992B76; Mon, 16 Aug 2021 15:44:33 +0200 (CEST)
-From:   =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To:     stable@vger.kernel.org
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        id S230180AbhHPNyw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Aug 2021 09:54:52 -0400
+Received: from wnew4-smtp.messagingengine.com ([64.147.123.18]:50369 "EHLO
+        wnew4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230071AbhHPNys (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 16 Aug 2021 09:54:48 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailnew.west.internal (Postfix) with ESMTP id 0D4BB2B01258;
+        Mon, 16 Aug 2021 09:54:14 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Mon, 16 Aug 2021 09:54:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:content-transfer-encoding:in-reply-to; s=fm1; bh=9
+        4uyQ/Y3UGrErl2d7WvNOsT3dUU8l/TaaASeFSuZ4wQ=; b=NEttHJfIQq8CeT46E
+        LjAMXnaiIs7D72771ZpXr7rNg6VUZjBIenPKwshF2OA2Zzed002Ljbt9IexsRFKd
+        Y/IvLURs5A2iWlX7NjCZsMqpMR/96sxF00WQxAdvMJK9LQdCUDUAMAu16ndQscxf
+        3Yt/1OCkruhLDh5N7HI3kOoopDku+ebk2RgpPiSd2qLMx32QfLbGEeOK8Wu6Jk6G
+        qdXqp2SeR4LinYi7Eb0jMaEhST+UmadU9RKM2WXEn/ptAMgmBpBObtJDlrZx+gYF
+        V7aAl4TPtzFDYiCmsF7av2RI0y+cXmC3oEdcsR5uTPhbI643spBWfSKjh1IoK/U/
+        nu7bQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; bh=94uyQ/Y3UGrErl2d7WvNOsT3dUU8l/TaaASeFSuZ4
+        wQ=; b=JmZYa7HUS2u05avuWAnQ9DIWW3iCEQKD2rjsd+4WrBP7UuIrnQAGGoXwF
+        zTH8ZnGDxTYMYaXU5Hbw5wv1o5T41nlZ/lakIwQf7obkCvxgegFdW6fHotD2eX6w
+        LO4gCRtZpvzYHHgZJ2YAjKDF9cB1PaGPrRHNdMMlHCdHrY0pAS21YU+mvjwOP3eo
+        VmNhwfD3a9C5qRDN2KXkkhV53OqASF82f5ByneFM//ljOjDZBy08HSnJm/w95xIe
+        4+ImYdXT0zaqH5DMjcxPoO+mUdizA3Wjv75RbImA7zxO6DnaB3lTBAC8+gOpYzXh
+        73O5E6Cgtk/jzrDlUE7EWHvomj4/A==
+X-ME-Sender: <xms:BW4aYbghGjNE4_J5ffeLTFIn24NX9SkjrQdZKB8qzX29rFXepZOKIg>
+    <xme:BW4aYYDHASr-FTNf2oEyFH_4zK9L_p1SNhxQ1FBZ9p4369ahIFJp7bCIQpjhxl08o
+    pyc8ayLDHGctw>
+X-ME-Received: <xmr:BW4aYbFJX13NPf3G2kX1t32fJw7cqYWiJYqkP9sRfJCrfO7PgzJ_jowst_jRc6xfnmP2VGIQPk-38orpBZ1zAxOC9tYw4hhn>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrledugdejtdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpedvfffgue
+    eiuefhheevheetgfehvdefgeekfeevueejfeeftdetudetiefhheffvdenucffohhmrghi
+    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:BW4aYYTS1g-ZYn49QssyLIQqfEwT9q1p8odn_teWUZR32Q_bp6x6Qw>
+    <xmx:BW4aYYz-jYUMlhGI3XXk9CGj4zay8cIuBWyrMg_R_AXbCvWV0Yd8WQ>
+    <xmx:BW4aYe7FHQJfGd92O1wkgeL6MSH2AuvdbkTT-FV9jNuGjWDxT-9BWg>
+    <xmx:Bm4aYdpL4WxU3vHiCA-dI0p33F_DNt1GIKkTy6cN45zM0_1OrtJX4OQcaf4>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Aug 2021 09:54:13 -0400 (EDT)
+Date:   Mon, 16 Aug 2021 15:54:03 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Cc:     stable@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>,
         Sasha Levin <sashal@kernel.org>, Luca Coelho <luca@coelho.fi>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH] mac80211: drop data frames without key on encrypted links
-Date:   Mon, 16 Aug 2021 15:44:24 +0200
-Message-Id: <20210816134424.28191-1-pali@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200327150342.252AF20748@mail.kernel.org>
+Subject: Re: [PATCH] mac80211: drop data frames without key on encrypted links
+Message-ID: <YRpt+5BI0WlTQ5dP@kroah.com>
 References: <20200327150342.252AF20748@mail.kernel.org>
+ <20210816134424.28191-1-pali@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210816134424.28191-1-pali@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Mon, Aug 16, 2021 at 03:44:24PM +0200, Pali Roh·r wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> commit a0761a301746ec2d92d7fcb82af69c0a6a4339aa upstream.
+> 
+> If we know that we have an encrypted link (based on having had
+> a key configured for TX in the past) then drop all data frames
+> in the key selection handler if there's no key anymore.
+> 
+> This fixes an issue with mac80211 internal TXQs - there we can
+> buffer frames for an encrypted link, but then if the key is no
+> longer there when they're dequeued, the frames are sent without
+> encryption. This happens if a station is disconnected while the
+> frames are still on the TXQ.
+> 
+> Detecting that a link should be encrypted based on a first key
+> having been configured for TX is fine as there are no use cases
+> for a connection going from with encryption to no encryption.
+> With extended key IDs, however, there is a case of having a key
+> configured for only decryption, so we can't just trigger this
+> behaviour on a key being configured.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Jouni Malinen <j@w1.fi>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> Link: https://lore.kernel.org/r/iwlwifi.20200326150855.6865c7f28a14.I9fb1d911b064262d33e33dfba730cdeef83926ca@changeid
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> [pali: Backported to 4.19 and older versions]
+> Signed-off-by: Pali Roh·r <pali@kernel.org>
 
-commit a0761a301746ec2d92d7fcb82af69c0a6a4339aa upstream.
+Now queued up, thanks!
 
-If we know that we have an encrypted link (based on having had
-a key configured for TX in the past) then drop all data frames
-in the key selection handler if there's no key anymore.
+Did not apply to 4.4.y, don't know if you want it there or not...
 
-This fixes an issue with mac80211 internal TXQs - there we can
-buffer frames for an encrypted link, but then if the key is no
-longer there when they're dequeued, the frames are sent without
-encryption. This happens if a station is disconnected while the
-frames are still on the TXQ.
+thanks,
 
-Detecting that a link should be encrypted based on a first key
-having been configured for TX is fine as there are no use cases
-for a connection going from with encryption to no encryption.
-With extended key IDs, however, there is a case of having a key
-configured for only decryption, so we can't just trigger this
-behaviour on a key being configured.
-
-Cc: stable@vger.kernel.org
-Reported-by: Jouni Malinen <j@w1.fi>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20200326150855.6865c7f28a14.I9fb1d911b064262d33e33dfba730cdeef83926ca@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[pali: Backported to 4.19 and older versions]
-Signed-off-by: Pali Roh√°r <pali@kernel.org>
----
- net/mac80211/debugfs_sta.c |  1 +
- net/mac80211/key.c         |  1 +
- net/mac80211/sta_info.h    |  1 +
- net/mac80211/tx.c          | 12 +++++++++---
- 4 files changed, 12 insertions(+), 3 deletions(-)
-
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 4105081dc1df..6f390c2e4c8e 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -80,6 +80,7 @@ static const char * const sta_flag_names[] = {
- 	FLAG(MPSP_OWNER),
- 	FLAG(MPSP_RECIPIENT),
- 	FLAG(PS_DELIVER),
-+	FLAG(USES_ENCRYPTION),
- #undef FLAG
- };
- 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index 6775d6cb7d3d..7fc55177db84 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -341,6 +341,7 @@ static void ieee80211_key_replace(struct ieee80211_sub_if_data *sdata,
- 	if (sta) {
- 		if (pairwise) {
- 			rcu_assign_pointer(sta->ptk[idx], new);
-+			set_sta_flag(sta, WLAN_STA_USES_ENCRYPTION);
- 			sta->ptk_idx = idx;
- 			ieee80211_check_fast_xmit(sta);
- 		} else {
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index c33bc5fc0f2d..75d982ff7f3d 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -102,6 +102,7 @@ enum ieee80211_sta_info_flags {
- 	WLAN_STA_MPSP_OWNER,
- 	WLAN_STA_MPSP_RECIPIENT,
- 	WLAN_STA_PS_DELIVER,
-+	WLAN_STA_USES_ENCRYPTION,
- 
- 	NUM_WLAN_STA_FLAGS,
- };
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 98d048630ad2..3530d1a5fc98 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -593,10 +593,13 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx->skb);
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx->skb->data;
- 
--	if (unlikely(info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT))
-+	if (unlikely(info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT)) {
- 		tx->key = NULL;
--	else if (tx->sta &&
--		 (key = rcu_dereference(tx->sta->ptk[tx->sta->ptk_idx])))
-+		return TX_CONTINUE;
-+	}
-+
-+	if (tx->sta &&
-+	    (key = rcu_dereference(tx->sta->ptk[tx->sta->ptk_idx])))
- 		tx->key = key;
- 	else if (ieee80211_is_group_privacy_action(tx->skb) &&
- 		(key = rcu_dereference(tx->sdata->default_multicast_key)))
-@@ -657,6 +660,9 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
- 		if (!skip_hw && tx->key &&
- 		    tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
- 			info->control.hw_key = &tx->key->conf;
-+	} else if (!ieee80211_is_mgmt(hdr->frame_control) && tx->sta &&
-+		   test_sta_flag(tx->sta, WLAN_STA_USES_ENCRYPTION)) {
-+		return TX_DROP;
- 	}
- 
- 	return TX_CONTINUE;
--- 
-2.20.1
-
+greg k-h
