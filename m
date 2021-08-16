@@ -2,130 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55A2B3ECC22
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Aug 2021 02:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D02EC3ECD3E
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Aug 2021 05:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231719AbhHPAqV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Aug 2021 20:46:21 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:46212 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230124AbhHPAqU (ORCPT
+        id S232138AbhHPDbK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Aug 2021 23:31:10 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:8415 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232594AbhHPDa5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Aug 2021 20:46:20 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17G0jeVH3019827, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17G0jeVH3019827
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 16 Aug 2021 08:45:40 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+        Sun, 15 Aug 2021 23:30:57 -0400
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Gp01F5wgkz87sc;
+        Mon, 16 Aug 2021 11:25:53 +0800 (CST)
+Received: from dggpeml500024.china.huawei.com (7.185.36.10) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 16 Aug 2021 08:45:39 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 16 Aug 2021 08:45:38 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
- RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Mon, 16 Aug 2021 08:45:38 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Pkshih <pkshih@realtek.com>, Jan Reusch <jan@jreusch.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: Difficulty connecting to AP using rtw89
-Thread-Topic: Difficulty connecting to AP using rtw89
-Thread-Index: AQHXedzEvSHwSXSC2EGxNTyUmGxj/atE4CcwgABoiACAARvNsIAAARaAgAM0tpCAHOxcgIAER3XAgAqsXPA=
-Date:   Mon, 16 Aug 2021 00:45:38 +0000
-Message-ID: <5996f62cd8594a4d98490a8ad76a61a7@realtek.com>
-References: <2551f3d4aff248e29118a2c6339e4d96@realtek.com>
- <YQ2ZHTCCzbXil+9Y@akk.org> <3b903f001e13429d81cb12d78b396ce5@realtek.com>
-In-Reply-To: <3b903f001e13429d81cb12d78b396ce5@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/8/15_=3F=3F_03:30:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+ 15.1.2176.2; Mon, 16 Aug 2021 11:29:54 +0800
+Received: from [10.67.103.6] (10.67.103.6) by dggpeml500024.china.huawei.com
+ (7.185.36.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 16 Aug
+ 2021 11:29:54 +0800
+Subject: Re: [RFC V3 net-next 1/4] ethtool: add two coalesce attributes for
+ CQE mode
+To:     Jakub Kicinski <kuba@kernel.org>
+References: <1628819129-23332-1-git-send-email-moyufeng@huawei.com>
+ <1628819129-23332-2-git-send-email-moyufeng@huawei.com>
+ <20210813105503.600ad1cd@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <shenjian15@huawei.com>, <lipeng321@huawei.com>,
+        <yisen.zhuang@huawei.com>, <linyunsheng@huawei.com>,
+        <huangguangbin2@huawei.com>, <chenhao288@hisilicon.com>,
+        <salil.mehta@huawei.com>, <linuxarm@huawei.com>,
+        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
+        <netanel@amazon.com>, <akiyano@amazon.com>,
+        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
+        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
+        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
+        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
+        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
+        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
+        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
+        <linux-wireless@vger.kernel.org>
+From:   moyufeng <moyufeng@huawei.com>
+Message-ID: <9aad8548-8a3e-b88c-441f-805a0b71d709@huawei.com>
+Date:   Mon, 16 Aug 2021 11:29:54 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 08/16/2021 00:33:18
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 30
-X-KSE-AntiSpam-Info: Lua profiles 165565 [Aug 16 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 454 454 39c6e442fd417993330528e7f9d13ac1bf7fdf8c
-X-KSE-AntiSpam-Info: {Prob_susp_to_in_reply, in_rep}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;github.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 30
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 08/16/2021 00:35:00
+In-Reply-To: <20210813105503.600ad1cd@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.103.6]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpeml500024.china.huawei.com (7.185.36.10)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-> -----Original Message-----
-> From: Pkshih [mailto:pkshih@realtek.com]
-> Sent: Monday, August 09, 2021 1:52 PM
-> To: Jan Reusch; linux-wireless@vger.kernel.org
-> Subject: RE: Difficulty connecting to AP using rtw89
+
+On 2021/8/14 1:55, Jakub Kicinski wrote:
+> On Fri, 13 Aug 2021 09:45:26 +0800 Yufeng Mo wrote:
+>> Currently, there many drivers who support CQE mode configuration,
+>> some configure it as a fixed when initialized, some provide an
+>> interface to change it by ethtool private flags. In order make it
+>> more generic, add two new 'ETHTOOL_A_COALESCE_USE_CQE_TX' and
+>> 'ETHTOOL_A_COALESCE_USE_CQE_RX' coalesce attributes, then these
+>> parameters can be accessed by ethtool netlink coalesce uAPI.
+>>
+>> Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
+>> Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
 > 
-> > -----Original Message-----
-> > From: Jan Reusch [mailto:jan@jreusch.de]
-> > Sent: Saturday, August 07, 2021 4:19 AM
-> > To: linux-wireless@vger.kernel.org; Pkshih
-> > Subject: RE: Difficulty connecting to AP using rtw89
-> >
-> > Hey hey
-> > Hope this works and gets sorted right, i had to manually set the
-> > in-reply-to header.
-> >
-> > I'm one of the people having problems with ipv6 and the rtw89 driver.
-> > i've tested it with the debian bullseye kernel and vanilla 5.13 from
-> > kernel.org
-> >
-> > It's about a Realtek 8852 in a Thinkpad E14 Gen2 (amd).
-> >
-> > > > The driver handles L2 things only, but IPv6 that is L3 that we don't
-> > > > have special deal.
-> > > > Could I know the problem you met?
-> >
-> > Yep that was also my first reaction 1:1, but it's 100% repdoducible.
-> > Ethernet connection works, i get an v4 adress and an v6 one (SLAAC), it
-> > works flawlessly with an USB wifi stick, but the integrated wifi only
-> > gets the link local ipv6 address,  an ipv4 one but nothing more.
-> > I've tried to dump router advertisements, but none of them pop up. (As
-> > soon as i attach the ethernet cable/usb wifi stick they're there...)
-> 
-> Could you provide your dump of USB wifi stick and rtw89?
-> If possible, I'd like to have tcpdump of interfaces locally and sniffer
-> packets in the air. Then, I can check the good and bad cases, and check
-> if any transmitting data is eaten by rtw89.
+> The series LGTM. When I was asking for documentation earlier I meant 
+> a paragraph explaining the difference between the two modes. Here is 
+> an example based on my current understanding, I could very well be
+> wrong but you see what kind of explanation I'm after? If this is more
+> or less correct please feel free to use it and modify as you see fit.
 > 
 
-With Jan's help, we get this fixed.
-This fix will be included in next submission recently. If people want this
-fix right now, please checkout Larry's GitHub https://github.com/lwfinger/rtw89
+The description in the following document is consistent with my
+understanding. I'll add the following paragraph and add
+"Signed-off-by: Jakub Kicinski <kuba@kernel.org>" to the patch.
+Thanks for your correction.
 
-Ping-Ke
-
+> diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
+> index c86628e6a235..fc7ac5938aac 100644
+> --- a/Documentation/networking/ethtool-netlink.rst
+> +++ b/Documentation/networking/ethtool-netlink.rst
+> @@ -939,12 +939,25 @@ Gets coalescing parameters like ``ETHTOOL_GCOALESCE`` ioctl request.
+>    ``ETHTOOL_A_COALESCE_TX_USECS_HIGH``         u32     delay (us), high Tx
+>    ``ETHTOOL_A_COALESCE_TX_MAX_FRAMES_HIGH``    u32     max packets, high Tx
+>    ``ETHTOOL_A_COALESCE_RATE_SAMPLE_INTERVAL``  u32     rate sampling interval
+> +  ``ETHTOOL_A_COALESCE_USE_CQE_TX``            bool    timer reset mode, Tx
+> +  ``ETHTOOL_A_COALESCE_USE_CQE_RX``            bool    timer reset mode, Rx
+>    ===========================================  ======  =======================
+>  
+>  Attributes are only included in reply if their value is not zero or the
+>  corresponding bit in ``ethtool_ops::supported_coalesce_params`` is set (i.e.
+>  they are declared as supported by driver).
+>  
+> +Timer reset mode (``ETHTOOL_A_COALESCE_USE_CQE_TX`` and
+> +``ETHTOOL_A_COALESCE_USE_CQE_RX``) control the interaction between packet
+> +arrival and the various time based delay parameters. By default timers are
+> +expected to limit the max delay between any packet arrival/departure
+> +and a corresponding interrupt. In this mode timer should be started by packet
+> +arrival (sometimes delivery of previous interrupt) and reset when interrupt
+> +is delivered.
+> +Setting the appropriate attribute to 1 will enable ``CQE`` mode, where
+> +each packet event resets the timer. In this mode timer is used to force
+> +the interrupt if queue goes idle, while busy queues depend on the packet
+> +limit to trigger interrupts.
+>  
+>  COALESCE_SET
+>  ============
+> @@ -977,6 +990,8 @@ Sets coalescing parameters like ``ETHTOOL_SCOALESCE`` ioctl request.
+>    ``ETHTOOL_A_COALESCE_TX_USECS_HIGH``         u32     delay (us), high Tx
+>    ``ETHTOOL_A_COALESCE_TX_MAX_FRAMES_HIGH``    u32     max packets, high Tx
+>    ``ETHTOOL_A_COALESCE_RATE_SAMPLE_INTERVAL``  u32     rate sampling interval
+> +  ``ETHTOOL_A_COALESCE_USE_CQE_TX``            bool    timer reset mode, Tx
+> +  ``ETHTOOL_A_COALESCE_USE_CQE_RX``            bool    timer reset mode, Rx
+>    ===========================================  ======  =======================
+>  
+>  Request is rejected if it attributes declared as unsupported by driver (i.e.
+> .
+> 
