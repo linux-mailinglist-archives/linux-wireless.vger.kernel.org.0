@@ -2,70 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9794A3EDCBB
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Aug 2021 20:01:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10E5A3EDD2E
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Aug 2021 20:37:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231992AbhHPSB2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Aug 2021 14:01:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57912 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232165AbhHPSB1 (ORCPT
+        id S232165AbhHPSiO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Aug 2021 14:38:14 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:34780 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231652AbhHPSiO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Aug 2021 14:01:27 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F4CEC0613CF
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Aug 2021 11:00:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=fy+XSd4c1g3JehejpC/XclvscNcJ0LAVSRTnEHJ5EG8=;
-        t=1629136856; x=1630346456; b=bYLVy3AJ/D1/2FBz5rup/ffIHFKVYi2+uwGo4l6+UwpMPJu
-        W329YiFgKpETv477La+fRFZrt5cs9XAJHWjxuOsrjMht4t/qk5dP96AstKezIZNtSu4xzsFfj5fuJ
-        T1lTRoxmVRzI+0rGkOvAvfc/bG1rcLlTVQ9c2med2qL93+tveqSLW1GnHWqaOBVytHpgWSCYHmmQQ
-        CpVkM72bHckbIT2+VfXH09w06Fglk4hVPVVzx8tCGPTE3Y3+bc6RoxqPVgYycNYJ5PASitpcuf8yM
-        BOaGolqe/iJdeg9IivVBezkGVIb0PCLQcZckw330Dqgh/SAANTzz6dzgN94w8/hg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mFgur-00BvHX-CP; Mon, 16 Aug 2021 20:00:53 +0200
-Message-ID: <f234ab236affd3bc305d18218a83dc8e50028123.camel@sipsolutions.net>
-Subject: Re: iwlwifi: OFMDA Sniffer not capturing actual data
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Milo Garcia <ing.eagm@gmail.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 16 Aug 2021 20:00:52 +0200
-In-Reply-To: <CAAZjYukkV0iZ=94CtpqfhAiYUV4uK=HtKW9uMLyJi12ODWbtjA@mail.gmail.com>
-References: <CAAZjYunwQ5UtjJuvrBNWU9qTf72WMRjoaYD+mgn7OaqmXXZ+fw@mail.gmail.com>
-         <aa62f2ff1ae79089d63f25c3b215f7ed7196ae15.camel@sipsolutions.net>
-         <CAAZjYumZQJud7y0nVXhO5RLCrx=MF3hLEv9T7U0bAWw=63WoKw@mail.gmail.com>
-         <dd83ba70fd669b6bd5825b745e07ab331ba7184f.camel@sipsolutions.net>
-         <CAAZjYukkV0iZ=94CtpqfhAiYUV4uK=HtKW9uMLyJi12ODWbtjA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Mon, 16 Aug 2021 14:38:14 -0400
+X-UUID: be3af381f02747728c769b3ded82cac0-20210817
+X-UUID: be3af381f02747728c769b3ded82cac0-20210817
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 2106951730; Tue, 17 Aug 2021 02:37:38 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs05n2.mediatek.inc (172.21.101.140) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 17 Aug 2021 02:37:37 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 17 Aug 2021 02:37:37 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v2 1/3] mt76: mt7915: update mac timing settings
+Date:   Tue, 17 Aug 2021 02:37:33 +0800
+Message-ID: <3f393508b9ed8251f4e2408356110af092c8ad3e.1629133569.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2021-08-16 at 18:26 +0200, Milo Garcia wrote:
-> > oh, but that's not the *data*, that's the RU allocation information.
-> > 
-> > Looks like we don't report that for 0-length PSDU, not sure,
-> > probably
-> > the DSP doesn't propagate it if there was nothing for the AID you
-> > configured, or so.
-> ok, so if that is the allocation and we are getting 0-length PSDU,
-> then it means that I am sniffing with the wrong AID?
-> 
-> In practice then I will just need to select an AID to which data is
-> being sent and then I will be able to see the HE_MU Data?
+1. EIFS has been divided into OFDM/CCK fields after 11ax generation.
+2. For 5G/6G SIFS setting, hardware counts extra 6us for OFDM.
 
-I think so. And also the data that was sent to that AID.
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c  | 14 ++++++--------
+ drivers/net/wireless/mediatek/mt76/mt7915/regs.h |  5 ++++-
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-All only as long as the NIC is actually in sniffer mode, of course.
-
-johannes
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 0ed86cbf722b..1b8e37e265cb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1575,17 +1575,12 @@ void mt7915_mac_set_timing(struct mt7915_phy *phy)
+ 		  FIELD_PREP(MT_TIMEOUT_VAL_CCA, 48);
+ 	u32 ofdm = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, 60) |
+ 		   FIELD_PREP(MT_TIMEOUT_VAL_CCA, 28);
+-	int sifs, offset;
++	int offset;
+ 	bool is_5ghz = phy->mt76->chandef.chan->band == NL80211_BAND_5GHZ;
+ 
+ 	if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
+ 		return;
+ 
+-	if (is_5ghz)
+-		sifs = 16;
+-	else
+-		sifs = 10;
+-
+ 	if (ext_phy) {
+ 		coverage_class = max_t(s16, dev->phy.coverage_class,
+ 				       coverage_class);
+@@ -1607,11 +1602,14 @@ void mt7915_mac_set_timing(struct mt7915_phy *phy)
+ 	mt76_wr(dev, MT_TMAC_CDTR(ext_phy), cck + reg_offset);
+ 	mt76_wr(dev, MT_TMAC_ODTR(ext_phy), ofdm + reg_offset);
+ 	mt76_wr(dev, MT_TMAC_ICR0(ext_phy),
+-		FIELD_PREP(MT_IFS_EIFS, 360) |
++		FIELD_PREP(MT_IFS_EIFS_OFDM, is_5ghz ? 84 : 78) |
+ 		FIELD_PREP(MT_IFS_RIFS, 2) |
+-		FIELD_PREP(MT_IFS_SIFS, sifs) |
++		FIELD_PREP(MT_IFS_SIFS, 10) |
+ 		FIELD_PREP(MT_IFS_SLOT, phy->slottime));
+ 
++	mt76_wr(dev, MT_TMAC_ICR1(ext_phy),
++		FIELD_PREP(MT_IFS_EIFS_CCK, 314));
++
+ 	if (phy->slottime < 20 || is_5ghz)
+ 		val = MT7915_CFEND_RATE_DEFAULT;
+ 	else
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+index a213b5cb82f8..91c1fb56b0ed 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+@@ -72,11 +72,14 @@
+ #define MT_TMAC_TRCR0_I2T_CHK		GENMASK(24, 16)
+ 
+ #define MT_TMAC_ICR0(_band)		MT_WF_TMAC(_band, 0x0a4)
+-#define MT_IFS_EIFS			GENMASK(8, 0)
++#define MT_IFS_EIFS_OFDM			GENMASK(8, 0)
+ #define MT_IFS_RIFS			GENMASK(14, 10)
+ #define MT_IFS_SIFS			GENMASK(22, 16)
+ #define MT_IFS_SLOT			GENMASK(30, 24)
+ 
++#define MT_TMAC_ICR1(_band)		MT_WF_TMAC(_band, 0x0b4)
++#define MT_IFS_EIFS_CCK			GENMASK(8, 0)
++
+ #define MT_TMAC_CTCR0(_band)			MT_WF_TMAC(_band, 0x0f4)
+ #define MT_TMAC_CTCR0_INS_DDLMT_REFTIME		GENMASK(5, 0)
+ #define MT_TMAC_CTCR0_INS_DDLMT_EN		BIT(17)
+-- 
+2.29.2
 
