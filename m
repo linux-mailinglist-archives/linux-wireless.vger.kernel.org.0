@@ -2,20 +2,20 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86A3F3ED09E
+	by mail.lfdr.de (Postfix) with ESMTP id 79EC53ED09D
 	for <lists+linux-wireless@lfdr.de>; Mon, 16 Aug 2021 10:52:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234962AbhHPIw5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S234863AbhHPIw5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Mon, 16 Aug 2021 04:52:57 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:37343 "EHLO
+Received: from rtits2.realtek.com ([211.75.126.72]:37344 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234861AbhHPIw4 (ORCPT
+        with ESMTP id S234359AbhHPIw4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 16 Aug 2021 04:52:56 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17G8qHQh9026669, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17G8qHQj9026669, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17G8qHQh9026669
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17G8qHQj9026669
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Mon, 16 Aug 2021 16:52:17 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
@@ -25,14 +25,16 @@ Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
 Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 16 Aug
- 2021 16:52:07 +0800
+ 2021 16:52:10 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <johannes@sipsolutions.net>
 CC:     <linux-wireless@vger.kernel.org>, <gary.chang@realtek.com>
-Subject: [PATCH 1/2] mac80211: Fix ieee80211_amsdu_aggregate frag_tail bug
-Date:   Mon, 16 Aug 2021 16:51:27 +0800
-Message-ID: <20210816085128.10931-1-pkshih@realtek.com>
+Subject: [PATCH 2/2] mac80211: Fix insufficient headroom issue for AMSDU
+Date:   Mon, 16 Aug 2021 16:51:28 +0800
+Message-ID: <20210816085128.10931-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210816085128.10931-1-pkshih@realtek.com>
+References: <20210816085128.10931-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -78,39 +80,31 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Chih-Kang Chang <gary.chang@realtek.com>
 
-In ieee80211_amsdu_aggregate() set a pointer frag_tail point to the
-end of skb_shinfo(head)->frag_list, and use it to bind other skb in
-the end of this function. But when execute ieee80211_amsdu_aggregate()
-->ieee80211_amsdu_realloc_pad()->pskb_expand_head(), the address of
-skb_shinfo(head)->frag_list will be changed. However, the
-ieee80211_amsdu_aggregate() not update frag_tail after call
-pskb_expand_head(). That will cause the second skb can't bind to the
-head skb appropriately.So we update the address of frag_tail to fix it.
+ieee80211_amsdu_realloc_pad() lacks some check for extra_tx_headroom,
+the original reserved headroom might be eaten. So we add the
+extra_tx_headroom check.
 
 Fixes: 6e0456b54545 ("mac80211: add A-MSDU tx support")
 Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- net/mac80211/tx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/mac80211/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 8509778ff31f..9e0d4fca1c76 100644
+index 9e0d4fca1c76..a69dc58d9768 100644
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -3406,6 +3406,12 @@ static bool ieee80211_amsdu_aggregate(struct ieee80211_sub_if_data *sdata,
+@@ -3242,7 +3242,8 @@ static bool ieee80211_amsdu_prepare_head(struct ieee80211_sub_if_data *sdata,
+ 	if (info->control.flags & IEEE80211_TX_CTRL_AMSDU)
+ 		return true;
  
- 	head->len += skb->len;
- 	head->data_len += skb->len;
-+
-+	/* frag_list should be updated after pskb_expand_head() */
-+	frag_tail = &skb_shinfo(head)->frag_list;
-+	while (*frag_tail)
-+		frag_tail = &(*frag_tail)->next;
-+
- 	*frag_tail = skb;
+-	if (!ieee80211_amsdu_realloc_pad(local, skb, sizeof(*amsdu_hdr)))
++	if (!ieee80211_amsdu_realloc_pad(local, skb, sizeof(*amsdu_hdr) +
++					 local->hw.extra_tx_headroom))
+ 		return false;
  
- out_recalc:
+ 	data = skb_push(skb, sizeof(*amsdu_hdr));
 -- 
 2.25.1
 
