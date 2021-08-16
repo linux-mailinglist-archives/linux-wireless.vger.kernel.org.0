@@ -2,149 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C3653ECD4C
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Aug 2021 05:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86A3F3ED09E
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Aug 2021 10:52:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232983AbhHPDoS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Aug 2021 23:44:18 -0400
-Received: from szxga08-in.huawei.com ([45.249.212.255]:14207 "EHLO
-        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231738AbhHPDoH (ORCPT
+        id S234962AbhHPIw5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Aug 2021 04:52:57 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:37343 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234861AbhHPIw4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Aug 2021 23:44:07 -0400
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.53])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Gp0PG2twcz1CXHS;
-        Mon, 16 Aug 2021 11:43:14 +0800 (CST)
-Received: from dggpeml500024.china.huawei.com (7.185.36.10) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+        Mon, 16 Aug 2021 04:52:56 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17G8qHQh9026669, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17G8qHQh9026669
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 16 Aug 2021 16:52:17 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 16 Aug 2021 11:43:35 +0800
-Received: from localhost.localdomain (10.67.165.24) by
- dggpeml500024.china.huawei.com (7.185.36.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 16 Aug 2021 11:43:35 +0800
-From:   Yufeng Mo <moyufeng@huawei.com>
-To:     <davem@davemloft.net>, <kuba@kernel.org>
-CC:     <netdev@vger.kernel.org>, <shenjian15@huawei.com>,
-        <lipeng321@huawei.com>, <yisen.zhuang@huawei.com>,
-        <linyunsheng@huawei.com>, <huangguangbin2@huawei.com>,
-        <chenhao288@hisilicon.com>, <salil.mehta@huawei.com>,
-        <moyufeng@huawei.com>, <linuxarm@huawei.com>,
-        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
-        <netanel@amazon.com>, <akiyano@amazon.com>,
-        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
-        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
-        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
-        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
-        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
-        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
-        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
-        <linux-wireless@vger.kernel.org>
-Subject: [RFC V4 net-next 4/4] net: hns3: add ethtool support for CQE/EQE mode configuration
-Date:   Mon, 16 Aug 2021 11:39:46 +0800
-Message-ID: <1629085186-8622-5-git-send-email-moyufeng@huawei.com>
-X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1629085186-8622-1-git-send-email-moyufeng@huawei.com>
-References: <1629085186-8622-1-git-send-email-moyufeng@huawei.com>
+ 15.1.2106.2; Mon, 16 Aug 2021 16:52:17 +0800
+Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 16 Aug
+ 2021 16:52:07 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>, <gary.chang@realtek.com>
+Subject: [PATCH 1/2] mac80211: Fix ieee80211_amsdu_aggregate frag_tail bug
+Date:   Mon, 16 Aug 2021 16:51:27 +0800
+Message-ID: <20210816085128.10931-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.165.24]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpeml500024.china.huawei.com (7.185.36.10)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.146]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/16/2021 06:52:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzgvMTYgpFekyCAwMzowNjowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 08/16/2021 06:59:56
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 165566 [Aug 16 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 454 454 39c6e442fd417993330528e7f9d13ac1bf7fdf8c
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/16/2021 07:03:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support in ethtool for switching EQE/CQE mode.
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
-Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
+In ieee80211_amsdu_aggregate() set a pointer frag_tail point to the
+end of skb_shinfo(head)->frag_list, and use it to bind other skb in
+the end of this function. But when execute ieee80211_amsdu_aggregate()
+->ieee80211_amsdu_realloc_pad()->pskb_expand_head(), the address of
+skb_shinfo(head)->frag_list will be changed. However, the
+ieee80211_amsdu_aggregate() not update frag_tail after call
+pskb_expand_head(). That will cause the second skb can't bind to the
+head skb appropriately.So we update the address of frag_tail to fix it.
+
+Fixes: 6e0456b54545 ("mac80211: add A-MSDU tx support")
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c    |  6 +++---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.h    |  3 +++
- drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c | 18 +++++++++++++++++-
- 3 files changed, 23 insertions(+), 4 deletions(-)
+ net/mac80211/tx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 47fe6d2..d9f697b 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -4986,9 +4986,9 @@ static void hns3_set_cq_period_mode(struct hns3_nic_priv *priv,
- 	}
- }
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 8509778ff31f..9e0d4fca1c76 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3406,6 +3406,12 @@ static bool ieee80211_amsdu_aggregate(struct ieee80211_sub_if_data *sdata,
  
--static void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
--				     enum dim_cq_period_mode tx_mode,
--				     enum dim_cq_period_mode rx_mode)
-+void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
-+			      enum dim_cq_period_mode tx_mode,
-+			      enum dim_cq_period_mode rx_mode)
- {
- 	hns3_set_cq_period_mode(priv, tx_mode, true);
- 	hns3_set_cq_period_mode(priv, rx_mode, false);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-index 9cb59f7..30891fb 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-@@ -710,4 +710,7 @@ void hns3_dbg_register_debugfs(const char *debugfs_dir_name);
- void hns3_dbg_unregister_debugfs(void);
- void hns3_shinfo_pack(struct skb_shared_info *shinfo, __u32 *size);
- u16 hns3_get_max_available_channels(struct hnae3_handle *h);
-+void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
-+			      enum dim_cq_period_mode tx_mode,
-+			      enum dim_cq_period_mode rx_mode);
- #endif
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-index 6470bba..4a27f17 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-@@ -1163,6 +1163,11 @@ static int hns3_get_coalesce(struct net_device *netdev,
- 	cmd->tx_max_coalesced_frames = tx_coal->int_ql;
- 	cmd->rx_max_coalesced_frames = rx_coal->int_ql;
- 
-+	kernel_coal->use_cqe_mode_tx = (priv->tx_cqe_mode ==
-+					DIM_CQ_PERIOD_MODE_START_FROM_CQE);
-+	kernel_coal->use_cqe_mode_rx = (priv->rx_cqe_mode ==
-+					DIM_CQ_PERIOD_MODE_START_FROM_CQE);
+ 	head->len += skb->len;
+ 	head->data_len += skb->len;
 +
- 	return 0;
- }
- 
-@@ -1332,6 +1337,8 @@ static int hns3_set_coalesce(struct net_device *netdev,
- 	struct hns3_enet_coalesce *tx_coal = &priv->tx_coal;
- 	struct hns3_enet_coalesce *rx_coal = &priv->rx_coal;
- 	u16 queue_num = h->kinfo.num_tqps;
-+	enum dim_cq_period_mode tx_mode;
-+	enum dim_cq_period_mode rx_mode;
- 	int ret;
- 	int i;
- 
-@@ -1357,6 +1364,14 @@ static int hns3_set_coalesce(struct net_device *netdev,
- 	for (i = 0; i < queue_num; i++)
- 		hns3_set_coalesce_per_queue(netdev, cmd, i);
- 
-+	tx_mode = kernel_coal->use_cqe_mode_tx ?
-+		  DIM_CQ_PERIOD_MODE_START_FROM_CQE :
-+		  DIM_CQ_PERIOD_MODE_START_FROM_EQE;
-+	rx_mode = kernel_coal->use_cqe_mode_rx ?
-+		  DIM_CQ_PERIOD_MODE_START_FROM_CQE :
-+		  DIM_CQ_PERIOD_MODE_START_FROM_EQE;
-+	hns3_cq_period_mode_init(priv, tx_mode, rx_mode);
++	/* frag_list should be updated after pskb_expand_head() */
++	frag_tail = &skb_shinfo(head)->frag_list;
++	while (*frag_tail)
++		frag_tail = &(*frag_tail)->next;
 +
- 	return 0;
- }
+ 	*frag_tail = skb;
  
-@@ -1662,7 +1677,8 @@ static int hns3_set_tunable(struct net_device *netdev,
- 				 ETHTOOL_COALESCE_USE_ADAPTIVE |	\
- 				 ETHTOOL_COALESCE_RX_USECS_HIGH |	\
- 				 ETHTOOL_COALESCE_TX_USECS_HIGH |	\
--				 ETHTOOL_COALESCE_MAX_FRAMES)
-+				 ETHTOOL_COALESCE_MAX_FRAMES |		\
-+				 ETHTOOL_COALESCE_USE_CQE)
- 
- static int hns3_get_ts_info(struct net_device *netdev,
- 			    struct ethtool_ts_info *info)
+ out_recalc:
 -- 
-2.8.1
+2.25.1
 
