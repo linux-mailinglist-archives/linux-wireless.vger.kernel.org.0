@@ -2,149 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE9643EE484
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 04:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F26EF3EE650
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 07:42:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236156AbhHQCkf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Aug 2021 22:40:35 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:8428 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233634AbhHQCkc (ORCPT
+        id S237458AbhHQFmt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Aug 2021 01:42:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48074 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234155AbhHQFms (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Aug 2021 22:40:32 -0400
-Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GpZs8628Sz88FG;
-        Tue, 17 Aug 2021 10:35:56 +0800 (CST)
-Received: from dggpeml500024.china.huawei.com (7.185.36.10) by
- dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 17 Aug 2021 10:39:58 +0800
-Received: from localhost.localdomain (10.67.165.24) by
- dggpeml500024.china.huawei.com (7.185.36.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 17 Aug 2021 10:39:58 +0800
-From:   Yufeng Mo <moyufeng@huawei.com>
-To:     <davem@davemloft.net>, <kuba@kernel.org>
-CC:     <netdev@vger.kernel.org>, <shenjian15@huawei.com>,
-        <lipeng321@huawei.com>, <yisen.zhuang@huawei.com>,
-        <linyunsheng@huawei.com>, <huangguangbin2@huawei.com>,
-        <chenhao288@hisilicon.com>, <salil.mehta@huawei.com>,
-        <moyufeng@huawei.com>, <linuxarm@huawei.com>,
-        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
-        <netanel@amazon.com>, <akiyano@amazon.com>,
-        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
-        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
-        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
-        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
-        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
-        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
-        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
-        <linux-wireless@vger.kernel.org>
-Subject: [PATCH net-next 4/4] net: hns3: add ethtool support for CQE/EQE mode configuration
-Date:   Tue, 17 Aug 2021 10:36:07 +0800
-Message-ID: <1629167767-7550-5-git-send-email-moyufeng@huawei.com>
-X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1629167767-7550-1-git-send-email-moyufeng@huawei.com>
-References: <1629167767-7550-1-git-send-email-moyufeng@huawei.com>
+        Tue, 17 Aug 2021 01:42:48 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E01C061764
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Aug 2021 22:42:15 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id g21so16079692edw.4
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Aug 2021 22:42:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
+         :subject:mime-version:content-transfer-encoding;
+        bh=X2F6zB2gjSZJNfvr4P11MJij3kt8szXaPROrSZkqLns=;
+        b=bQTM3qyJyPea68pVTl53+sQne6oIc7beGtCexmVXjZ21yjkET3+Dwp0WU5jls5b36K
+         dEqp/hu5H66K0cWWxlmAV1T6w9nR2dbUDfwQN9jNLBR1YJ7aQ/GCmjvhNSazBv7kNtKV
+         rYR86KGjJO5VezffPblEVo6G5qn1QuAFOjXOFIS5AqmLmx27xV06LInrfds3rNp/GUYl
+         UW+kLNjs9V/xtKp7uqKKsQzCDYEuryDkfjMUghuzeAWYwC8q6oJF++pyVBOzDkVCtrHw
+         pl5qHnrk9sxPcgfyJb8vNtEBzCXwG3LgDpAjlplCQEj7fLi7rPjBgoZRTONt9n8zmCId
+         amTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
+         :references:user-agent:subject:mime-version
+         :content-transfer-encoding;
+        bh=X2F6zB2gjSZJNfvr4P11MJij3kt8szXaPROrSZkqLns=;
+        b=cDzsPV8VWUIgVhVeakNWD3nDNzxH9uBqH+SMgNiGf0Krwks2fL/4CzUddzkruP9xbl
+         rLe8jduJkPmxsOTaFfSYzBMYl9gNQ5y/Q8VfvMztyOMINRIXa/0NXuQVyAngq0tS5Xtu
+         Lap006q8YfUetoJ6mioJ7Xz+w1fG868GjZ2UKwnU7gL0Q439HyAHwpp5jJCoEB4Nlir7
+         Qos8LdZEaGXQZk8YSUZXogUqir4l7Bw5OZs0g0vpfLiJEL35z0F9I6wfMTSVeeQgub5B
+         WFhFF5vamU8eWp0SI0tD0+SKVHm9kxEUpabNToR5sNBaNrtjklHeBawCe/jPUJMMH+vq
+         VyLQ==
+X-Gm-Message-State: AOAM530HFMBxm+l/ddedL7ShQPU7/ScHa+S8xek63NjFJZRt8+84RhbY
+        ENK/MdkW8inuhtsMn+Gd9RDmk7HJxmaeZrUu
+X-Google-Smtp-Source: ABdhPJxTtmLgTovqoY3PI5jQhHR+Z293ywPRXbnQNEvc6irAS/Jm6PPhe2rr/vVgKQ31cjUFkLVLAg==
+X-Received: by 2002:a05:6402:2709:: with SMTP id y9mr2138590edd.231.1629178934090;
+        Mon, 16 Aug 2021 22:42:14 -0700 (PDT)
+Received: from [192.168.178.38] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id c17sm487286edu.11.2021.08.16.22.42.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 16 Aug 2021 22:42:13 -0700 (PDT)
+From:   Arend van Spriel <aspriel@gmail.com>
+To:     Ryutaroh Matsumoto <ryutaroh@ict.e.titech.ac.jp>,
+        <arend.vanspriel@broadcom.com>
+CC:     <linux-rpi-kernel@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <SHA-cyfmac-dev-list@infineon.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <chi-hsien.lin@infineon.com>,
+        <wright.feng@infineon.com>, <chung-hsien.hsu@infineon.com>
+Date:   Tue, 17 Aug 2021 07:42:12 +0200
+Message-ID: <17b52a1ab20.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
+In-Reply-To: <20210817.093658.33467107987117119.ryutaroh@ict.e.titech.ac.jp>
+References: <20210816.084210.1700916388797835755.ryutaroh@ict.e.titech.ac.jp>
+ <85b31c5a-eb4a-48a0-ad94-e46db00af016@broadcom.com>
+ <20210817.093658.33467107987117119.ryutaroh@ict.e.titech.ac.jp>
+User-Agent: AquaMail/1.30.1-1828 (build: 103001000)
+Subject: Re: 5.10.58 UBSAN from brcmf_sdio_dpc+0xa50/0x128c [brcmfmac]
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.165.24]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpeml500024.china.huawei.com (7.185.36.10)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support in ethtool for switching EQE/CQE mode.
+Using different email to avoid disclaimers...
 
-Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
-Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
----
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c    |  6 +++---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.h    |  3 +++
- drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c | 18 +++++++++++++++++-
- 3 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 1bd83d7..39d01ca 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -5055,9 +5055,9 @@ static void hns3_set_cq_period_mode(struct hns3_nic_priv *priv,
- 	}
- }
- 
--static void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
--				     enum dim_cq_period_mode tx_mode,
--				     enum dim_cq_period_mode rx_mode)
-+void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
-+			      enum dim_cq_period_mode tx_mode,
-+			      enum dim_cq_period_mode rx_mode)
- {
- 	hns3_set_cq_period_mode(priv, tx_mode, true);
- 	hns3_set_cq_period_mode(priv, rx_mode, false);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-index ff45825..dfad906 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-@@ -718,4 +718,7 @@ void hns3_dbg_register_debugfs(const char *debugfs_dir_name);
- void hns3_dbg_unregister_debugfs(void);
- void hns3_shinfo_pack(struct skb_shared_info *shinfo, __u32 *size);
- u16 hns3_get_max_available_channels(struct hnae3_handle *h);
-+void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
-+			      enum dim_cq_period_mode tx_mode,
-+			      enum dim_cq_period_mode rx_mode);
- #endif
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-index 049be076..b8d9851 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-@@ -1203,6 +1203,11 @@ static int hns3_get_coalesce(struct net_device *netdev,
- 	cmd->tx_max_coalesced_frames = tx_coal->int_ql;
- 	cmd->rx_max_coalesced_frames = rx_coal->int_ql;
- 
-+	kernel_coal->use_cqe_mode_tx = (priv->tx_cqe_mode ==
-+					DIM_CQ_PERIOD_MODE_START_FROM_CQE);
-+	kernel_coal->use_cqe_mode_rx = (priv->rx_cqe_mode ==
-+					DIM_CQ_PERIOD_MODE_START_FROM_CQE);
-+
- 	return 0;
- }
- 
-@@ -1372,6 +1377,8 @@ static int hns3_set_coalesce(struct net_device *netdev,
- 	struct hns3_enet_coalesce *tx_coal = &priv->tx_coal;
- 	struct hns3_enet_coalesce *rx_coal = &priv->rx_coal;
- 	u16 queue_num = h->kinfo.num_tqps;
-+	enum dim_cq_period_mode tx_mode;
-+	enum dim_cq_period_mode rx_mode;
- 	int ret;
- 	int i;
- 
-@@ -1397,6 +1404,14 @@ static int hns3_set_coalesce(struct net_device *netdev,
- 	for (i = 0; i < queue_num; i++)
- 		hns3_set_coalesce_per_queue(netdev, cmd, i);
- 
-+	tx_mode = kernel_coal->use_cqe_mode_tx ?
-+		  DIM_CQ_PERIOD_MODE_START_FROM_CQE :
-+		  DIM_CQ_PERIOD_MODE_START_FROM_EQE;
-+	rx_mode = kernel_coal->use_cqe_mode_rx ?
-+		  DIM_CQ_PERIOD_MODE_START_FROM_CQE :
-+		  DIM_CQ_PERIOD_MODE_START_FROM_EQE;
-+	hns3_cq_period_mode_init(priv, tx_mode, rx_mode);
-+
- 	return 0;
- }
- 
-@@ -1702,7 +1717,8 @@ static int hns3_set_tunable(struct net_device *netdev,
- 				 ETHTOOL_COALESCE_USE_ADAPTIVE |	\
- 				 ETHTOOL_COALESCE_RX_USECS_HIGH |	\
- 				 ETHTOOL_COALESCE_TX_USECS_HIGH |	\
--				 ETHTOOL_COALESCE_MAX_FRAMES)
-+				 ETHTOOL_COALESCE_MAX_FRAMES |		\
-+				 ETHTOOL_COALESCE_USE_CQE)
- 
- static int hns3_get_ts_info(struct net_device *netdev,
- 			    struct ethtool_ts_info *info)
--- 
-2.8.1
+On August 17, 2021 2:39:56 AM Ryutaroh Matsumoto 
+<ryutaroh@ict.e.titech.ac.jp> wrote:
+
+> Hi Arend, thank you for paying attention to this.
+>
+>> Line 2016 in skbuff.h is inline function __skb_queue_before() and as
+>> far as I can tell brcmfmac is not using that direct or indirect. Maybe
+>> I am reading the line info incorrectly?
+>
+> I am unsure of it. On the other hand, I have also seen somewhat similar
+> UBSAN from a header file "include/net/flow.h" as reported at
+> https://lore.kernel.org/netdev/20210813.081908.1574714532738245424.ryutaroh@ict.e.titech.ac.jp/
+>
+> All UBSANs that I have seen come from *.h compiled with clang...
+>
+>> Would you be able to provide information as to what line
+>> brcmf_sdio_dpc+0xa50 refers to.
+>
+> I'd like to do, but I do not know how to let kernel UBSAN include a line 
+> number,
+> though I know it with user-space applications...
+
+If you enable CONFIG_DEBUG_INFO in your kernel .config and recompile 
+brcmfmac you can load the module in gdb:
+
+gdb> add-symbol-file brcmfmac.ko [address]
+gdb> l *brcmf_sdio_dpc+0xa50
+
+The [address] is not very important so just fill in a nice value. The 'l' 
+command should provide the line number.
+
+Regards,
+Arend
+
 
