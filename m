@@ -2,95 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 945543EF08C
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 19:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E42C3EF0A2
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 19:11:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231285AbhHQRC2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Aug 2021 13:02:28 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:10253 "EHLO m43-7.mailgun.net"
+        id S232029AbhHQRLh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Aug 2021 13:11:37 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:25113 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229716AbhHQRCX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Aug 2021 13:02:23 -0400
+        id S229716AbhHQRLe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Aug 2021 13:11:34 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1629219710; h=Content-Type: MIME-Version: Message-ID: Date:
- References: In-Reply-To: Subject: Cc: To: From: Sender;
- bh=LYwT4eDRj2JiICfdihGDs8jIqG9wwZd/0YayCwFiVtU=; b=wR6MsQjYOcemFCkvAKQnC8mI+o57gPv7qFey4QtszlNfzuiZ6LkeNQ3jqFdQtkueTtRl2vys
- W9z9HUaeLWLyK3SdtGKBJ3IEmgQWznZn2qPmR2hTig6DUAIDB+xTyuSdaPtHgjKojmUpKC4d
- PRaK59MQ4cLxk73Gs0CcTIR4ySs=
+ s=smtp; t=1629220260; h=Date: Message-Id: Cc: To: Subject: From:
+ Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
+ bh=j4CvZGuYP14rkmjA9Lt+u0xDy49L6nJEIItpS1gWPR4=; b=GEwZcXXxLYMoWaxu/1DBkmmIlQHtFWa+E/+Eh9p38+V0R8fUlaOihfHhFFFno2Vpqeak0Uwv
+ PU+XG0avRP+wqe+ja/LTnYFntkfLOXflZZN6pNekkeK1z0OOGW+6aP1t9w2RXZ/7F7ZMcCqU
+ uiqxNI68mqQYrxRTEJX0jFFEMWQ=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 611beb65f746c298d9b1f586 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 17 Aug 2021 17:01:25
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 611bed84454b7a558f812e1c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 17 Aug 2021 17:10:28
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C28C9C43617; Tue, 17 Aug 2021 17:01:24 +0000 (UTC)
+        id EC1E6C43460; Tue, 17 Aug 2021 17:10:27 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CA75AC4338F;
-        Tue, 17 Aug 2021 17:01:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org CA75AC4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E3967C4338F;
+        Tue, 17 Aug 2021 17:10:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org E3967C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     Wireless <linux-wireless@vger.kernel.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Chris Down <chris@chrisdown.name>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: Re: linux-next: manual merge of the wireless-drivers-next tree with the printk tree
-In-Reply-To: <20210809131813.3989f9e8@canb.auug.org.au> (Stephen Rothwell's
-        message of "Mon, 9 Aug 2021 13:18:13 +1000")
-References: <20210809131813.3989f9e8@canb.auug.org.au>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Tue, 17 Aug 2021 20:01:16 +0300
-Message-ID: <87bl5wf1k3.fsf@codeaurora.org>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@codeaurora.org>
+Subject: pull-request: wireless-drivers-2021-08-17
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20210817171027.EC1E6C43460@smtp.codeaurora.org>
+Date:   Tue, 17 Aug 2021 17:10:27 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
+Hi,
 
-> Today's linux-next merge of the wireless-drivers-next tree got a
-> conflict in:
->
->   MAINTAINERS
->
-> between commit:
->
->   337015573718 ("printk: Userspace format indexing support")
->
-> from the printk tree and commit:
->
->   d249ff28b1d8 ("intersil: remove obsolete prism54 wireless driver")
->
-> from the wireless-drivers-next tree.
->
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-Thanks, the conflict is trivial enough so Linus should handle it without
-problems.
+Kalle
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+The following changes since commit 09cfae9f13d51700b0fecf591dcd658fc5375428:
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+  ixgbe: Fix packet corruption due to missing DMA sync (2021-07-20 16:58:41 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-08-17
+
+for you to fetch changes up to abf3d98dee7c4038152ce88833ddc2189f68cbd4:
+
+  mt76: fix enum type mismatch (2021-08-06 10:56:53 +0300)
+
+----------------------------------------------------------------
+wireless-drivers fixes for v5.14
+
+First set of fixes for v5.14 and nothing major this time. New devices
+for iwlwifi and one fix for a compiler warning.
+
+iwlwifi
+
+* support for new devices
+
+mt76
+
+* fix compiler warning about MT_CIPHER_NONE
+
+----------------------------------------------------------------
+Arnd Bergmann (1):
+      mt76: fix enum type mismatch
+
+Johannes Berg (1):
+      iwlwifi: pnvm: accept multiple HW-type TLVs
+
+Yaara Baruch (2):
+      iwlwifi: add new SoF with JF devices
+      iwlwifi: add new so-jf devices
+
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c    | 25 +++++----
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c   | 70 ++++++++++++++++++++++++-
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.h |  3 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.h |  3 +-
+ 6 files changed, 91 insertions(+), 14 deletions(-)
