@@ -2,166 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C30E93EEBC9
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 13:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F97D3EEBF7
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 13:54:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236792AbhHQLem (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Aug 2021 07:34:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44450 "EHLO
+        id S239752AbhHQLza (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Aug 2021 07:55:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231515AbhHQLel (ORCPT
+        with ESMTP id S236693AbhHQLz3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Aug 2021 07:34:41 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F728C061764
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Aug 2021 04:34:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=due7ziju01rtb98wwFf4NAjAb1qaKyv7ZY7KzUweqjA=;
-        t=1629200048; x=1630409648; b=IkcTeH6UDcUyZ4MgM2L2b3METw6ui3SlMM0ZDcx4PjRU+pZ
-        6vL5uQq4S7fSOAHhuQjlBDfye4VSxiZFylSu7kvh8uVV11V7vn5YyRtbvHr5gqt5wey/33+3v/zyt
-        GALl252Jvz2rvp7AmRfXBoUj6WAhF7pIyP1g6bq3RNjnOrYGv8DgjTQXcaJZ/aSjW4DE+yRz6obkA
-        2k5YxeC4dm76UCmrKIUBcdK4jRZ12dpV9dfK+EfoxaqF5rDAor9a4obQArOh9mQvwm206QJxwiO+h
-        AeqAn9liqB27EtgEmF/yXbr+YKOEMSDPhYCvWEZ42+RU0AdSTm0cNyTT715hFp+g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mFxM1-00CF1d-QF; Tue, 17 Aug 2021 13:34:01 +0200
-Message-ID: <ece8459373db3b76d38a583ec43f73e65d62a6c0.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 mac80211-next 2/7] mac80211: introduce individual TWT
- support in AP mode.
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        ryder.lee@mediatek.com, chui-hao.chiu@mediatek.com
-Date:   Tue, 17 Aug 2021 13:34:00 +0200
-In-Reply-To: <e3b70c37cb366399e944a0aa02f0d7cac25b4bb6.1628529781.git.lorenzo@kernel.org>
-References: <cover.1628529781.git.lorenzo@kernel.org>
-         <e3b70c37cb366399e944a0aa02f0d7cac25b4bb6.1628529781.git.lorenzo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Tue, 17 Aug 2021 07:55:29 -0400
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A6BBC061764;
+        Tue, 17 Aug 2021 04:54:56 -0700 (PDT)
+Received: by mail-pj1-x102f.google.com with SMTP id qe12-20020a17090b4f8c00b00179321cbae7so5946437pjb.2;
+        Tue, 17 Aug 2021 04:54:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Bgl9uVhNiGx/pTbLvHKqn3TMS3R5Cf8IQxryvvFpcpI=;
+        b=cJInMwbaIXud/uoN6772D3dlVO8hk6wPZwEBc1b20zqCuxPR10o71pegYZ93fdYyvN
+         jmEn+EPbOSCvqRHC3i12bFQAxvbCc3Ve8+z38ya3gSsfBp+osbwJcckMwLZEWnl44ucV
+         8tYt3fVdVOGtxBi8C7lPnL4CNNL3cWQPxfdm8m4QAB357NuIQviUoa8S87jjNI1g15bd
+         h/+vy0sd4SUD5hY2l9c95k6cuJWFgKv6gMIaIGqHkBZ4SkiH7wLoHKM80sRzvPA0mTwq
+         qTjWBpxTPeguzlHG5Z5tngp7J8Ip184D5xC/WMpC1f8j2xQ6/Tu+mxOXq+DAZB3Io4Rs
+         ZndQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Bgl9uVhNiGx/pTbLvHKqn3TMS3R5Cf8IQxryvvFpcpI=;
+        b=YXazFWG2lMuUL/HqMsLyWv4BV9MycY3WxLIuxV6Wnhjxb85hlUdVxE+szFMjbxmB9t
+         8fuzKHdNiIP5XJhW70chs0xcFMGoPqgHCax5FL+LlWHxVq6ejiSMr5TcVM1bVxk3zsPT
+         v8OGZRyOPc+XmLzeMM3/5+9KpmLEXdkA+S8aiXMIcYM1CXpG96UbVOR4nIIBVFEin4cm
+         3ry8wXfxBMhnZvn9AxRAYugK8+wGH4S+5CcYGiCZ/qkfKUwBoTmLZNdEAjHHFnuUEd5o
+         OEnHRwEtHNP2hi6x70NfPfbcHRgqa3nlKfqk8Tl+9/rAwv9S2490zdgBZo3UvIajR0BC
+         O5dA==
+X-Gm-Message-State: AOAM5319dHGTNnT/eiaPPzKGdtmA6rKsbpqFBGSy7Wmt0F67bLvVRPFh
+        yVoupnlpp6lQ/N0p0CWONZJh2JwZcjSL77fS3r4=
+X-Google-Smtp-Source: ABdhPJwUnyfxYGu+USswkUnXnwy2QG0hhxlTxixeZifys3CI5PQjx4UNNR+M+K6AuVSGar3L5o3DUlBB09aMOwa10Qg=
+X-Received: by 2002:a17:902:ced0:b029:12d:4ce1:ce3a with SMTP id
+ d16-20020a170902ced0b029012d4ce1ce3amr2608066plg.0.1629201296064; Tue, 17 Aug
+ 2021 04:54:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+References: <20210817063521.22450-1-a.fatoum@pengutronix.de>
+ <CAHp75Vfc_T04p95PgVUd+CK+ttPwX2aOC4WPD35Z01WQV1MxKw@mail.gmail.com> <3a9a3789-5a13-7e72-b909-8f0826b8ab86@pengutronix.de>
+In-Reply-To: <3a9a3789-5a13-7e72-b909-8f0826b8ab86@pengutronix.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 17 Aug 2021 14:54:16 +0300
+Message-ID: <CAHp75VfahF=_CmS7kw5PbKs46+hXFweweq=sjwd83hccRsrH9g@mail.gmail.com>
+Subject: Re: [PATCH] brcmfmac: pcie: fix oops on failure to resume and reprobe
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> 
-> +static inline void drv_add_twt_setup(struct ieee80211_local *local,
-> +				     struct ieee80211_sub_if_data *sdata,
-> +				     struct ieee80211_sta *sta,
-> +				     struct ieee80211_twt_params *agrt_req,
-> +				     struct ieee80211_twt_params *agrt_resp)
-> +{
-> +	might_sleep();
-> +	check_sdata_in_driver(sdata);
-> +
-> +	local->ops->add_twt_setup(&local->hw, sta, agrt_req, agrt_resp);
-> +}
-> +
-> +static inline void drv_twt_teardown_request(struct ieee80211_local *local,
-> +					    struct ieee80211_sub_if_data *sdata,
-> +					    struct ieee80211_sta *sta,
-> +					    u8 flowid)
-> +{
-> +	might_sleep();
-> +	check_sdata_in_driver(sdata);
-> +
-> +	if (local->ops->twt_teardown_request)
-> +		local->ops->twt_teardown_request(&local->hw, sta, flowid);
-> +}
+On Tue, Aug 17, 2021 at 2:11 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrot=
+e:
+> On 17.08.21 13:02, Andy Shevchenko wrote:
+> > On Tuesday, August 17, 2021, Ahmad Fatoum <a.fatoum@pengutronix.de> wro=
+te:
 
-These should have tracing.
+...
 
-> +++ b/net/mac80211/iface.c
-> @@ -1381,6 +1381,19 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
->  			WARN_ON(1);
->  			break;
->  		}
-> +	} else if (ieee80211_is_action(mgmt->frame_control) &&
-> +		   mgmt->u.action.category == WLAN_CATEGORY_S1G) {
-> +		switch (mgmt->u.action.u.s1g.action_code) {
-> +		case WLAN_S1G_TWT_TEARDOWN:
-> +		case WLAN_S1G_TWT_SETUP:
-> +			if (skb->pkt_type == IEEE80211_TX_STATUS_MSG)
-> +				ieee80211_s1g_status_h_twt(sdata, skb);
-> +			else
-> +				ieee80211_s1g_rx_h_twt(sdata, skb);
+> >>         err =3D brcmf_pcie_probe(pdev, NULL);
+> >>         if (err)
+> >> -               brcmf_err(bus, "probe after resume failed, err=3D%d\n"=
+, err);
+> >> +               __brcmf_err(NULL, __func__, "probe after resume failed=
+,
+> >> err=3D%d\n",
+> >
+> >
+> > This is weird looking line now. Why can=E2=80=99t you simply use dev_er=
+r() /
+> > netdev_err()?
+>
+> That's what brcmf_err normally expands to, but in this file the macro
+> is overridden to add the extra first argument.
 
+So, then the problem is in macro here. You need another portion of
+macro(s) that will use the dev pointer directly. When you have a valid
+device, use it. And here it seems the case.
 
-I *really* don't like what you're doing here with the sdata->skb_queue,
-which we only ever use for RX today.
+> The brcmf_ logging function write to brcmf trace buffers. This is not
+> done with netdev_err/dev_err (and replacing the existing logging
+> is out of scope for a regression fix anyway).
 
-We have today ieee80211_mgd_conn_tx_status() that gets called at the
-right place, so you should add stuff there, and perhaps it needs to
-queue things, or mark a separate TWT data structure before queueing the
-work, or something else - but please don't use the RX skb_queue.
+I see.
 
-> 
-> +static ieee80211_rx_result debug_noinline
-> +ieee80211_rx_h_twt(struct ieee80211_rx_data *rx)
-
-Please rename this - it's not actually an rx_h_ that's called through
-the normal RX handler stuff, it's just a sub-function for the action RX
-handler.
-
-It also doesn't need the rx_result, it can just be bool/int.
-
-> +	case WLAN_CATEGORY_S1G:
-> +		switch (mgmt->u.action.u.s1g.action_code) {
-> +		case WLAN_S1G_TWT_SETUP:
-> +		case WLAN_S1G_TWT_TEARDOWN:
-> +			if (ieee80211_rx_h_twt(rx) != RX_CONTINUE)
-> +				goto queue;
-
-
-(see here)
-
-> +		default:
-
-Also missing a "fallthrough" annotation or such.
-
-> +
-> +static int
-> +ieee80211_s1g_rx_h_twt_teardown(struct ieee80211_sub_if_data *sdata,
-> +				struct sta_info *sta, struct sk_buff *skb)
-> +{
-> +	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
-> +
-> +	drv_twt_teardown_request(sdata->local, sdata, &sta->sta,
-> +				 mgmt->u.action.u.s1g.variable[0]);
-> +
-> +	return 0;
-
-Evidently, this cannot fail, so needs no return value.
-
-> +void ieee80211_s1g_rx_h_twt(struct ieee80211_sub_if_data *sdata,
-> +			    struct sk_buff *skb)
-
-again, not a real RX handler
-
-> +{
-> +	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
-> +	struct ieee80211_local *local = sdata->local;
-> +	struct sta_info *sta;
-> +
-> +	mutex_lock(&local->sta_mtx);
-> +
-> +	sta = sta_info_get_bss(sdata, mgmt->sa);
-> +	if (!sta)
-> +		goto out;
-> +
-> +	switch (mgmt->u.action.u.s1g.action_code) {
-> +	case WLAN_S1G_TWT_SETUP:
-> +		ieee80211_s1g_rx_h_twt_setup(sdata, sta, skb);
-
-You're completely ignoring the return value. That's probably fine in the
--ENOMEM case, but the other cases you should still send a response. Just
-like the driver callback is void because it should just fill in the
-response to the other side (even in the failure cases).
-
-johannes
-
+--=20
+With Best Regards,
+Andy Shevchenko
