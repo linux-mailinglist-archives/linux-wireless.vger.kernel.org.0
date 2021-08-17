@@ -2,68 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6A8B3EEDF2
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 16:00:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E5B23EEEF9
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 17:11:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235971AbhHQOAm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Aug 2021 10:00:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43760 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235092AbhHQOAj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Aug 2021 10:00:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id DFB7460E09;
-        Tue, 17 Aug 2021 14:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629208805;
-        bh=dCRWIl/PGCx8+O8TXnNtR0qy28pSlWm/9WEhSwHcdDM=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=BwRlYnkI+nrBgSMMZ0xKeIHF2KH6mIN1J0g+GrN3QwVLN41Wj2XTWYC8yDbgeNAl/
-         TGSdJAte1SAFYmLSrHsVt6WRRrOEU4GNugYQglmib84aBAzQbC8G7mBRQa+2uME6FC
-         8JGW3/T69TJZ/8RW7BrnOvncdK799E52WStbgnEamfokcy2xeRFahCyV4w3kU2ABDz
-         oK2kvIe6NC7nSmqVPduFZo+E/W3fNYJqSc24RC9SZdG3/2M21y6PPkjbzguu+2r3zz
-         OFdRagD157Qk7gx6Xyge35EQhcqb4gg1ZxYJpf18GB/twIDRGBlTA/QqlqA26J6ZSL
-         mtao3TIO0uKjQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id D2AD860A25;
-        Tue, 17 Aug 2021 14:00:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S240082AbhHQPMB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Aug 2021 11:12:01 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:37390 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S238352AbhHQPL7 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Aug 2021 11:11:59 -0400
+X-UUID: 69980d906f934727937951f5759e81df-20210817
+X-UUID: 69980d906f934727937951f5759e81df-20210817
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1465298048; Tue, 17 Aug 2021 23:11:21 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs05n2.mediatek.inc (172.21.101.140) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 17 Aug 2021 23:11:20 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 17 Aug 2021 23:11:20 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: add a bound check in mt76_calculate_default_rate()
+Date:   Tue, 17 Aug 2021 23:11:19 +0800
+Message-ID: <a4f6f434d4ec1e5e381d9765a634b6dd08a08070.1629212578.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] mac80211: fix locking in ieee80211_restart_work()
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162920880585.21796.10051805264087210953.git-patchwork-notify@kernel.org>
-Date:   Tue, 17 Aug 2021 14:00:05 +0000
-References: <20210817121210.47bdb177064f.Ib1ef79440cd27f318c028ddfc0c642406917f512@changeid>
-In-Reply-To: <20210817121210.47bdb177064f.Ib1ef79440cd27f318c028ddfc0c642406917f512@changeid>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        johannes.berg@intel.com
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+basic_rate could be 0 ie. hidden AP. Always pick the lowest rate
+for such cases.
 
-This patch was applied to netdev/net.git (refs/heads/master):
+Fixes: 75fb2e62d444 (mt76: add mt76_default_basic_rate more devices can rely on)
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-On Tue, 17 Aug 2021 12:12:22 +0200 you wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> Ilan's change to move locking around accidentally lost the
-> wiphy_lock() during some porting, add it back.
-> 
-> Fixes: 45daaa131841 ("mac80211: Properly WARN on HW scan before restart")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] mac80211: fix locking in ieee80211_restart_work()
-    https://git.kernel.org/netdev/net/c/276e189f8e4e
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index e282c627e25c..3658328f513b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1360,6 +1360,10 @@ u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx)
+ 	if (phy->chandef.chan->band == NL80211_BAND_5GHZ)
+ 		offset = 4;
+ 
++	/* pick the lowest rate for hidden nodes */
++	if (rateidx < 0)
++		rateidx = 0;
++
+ 	rate = &mt76_rates[offset + rateidx];
+ 
+ 	return rate->hw_value;
+-- 
+2.29.2
 
