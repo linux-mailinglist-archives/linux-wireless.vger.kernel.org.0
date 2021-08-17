@@ -2,66 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9C73EEDC8
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 15:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6A8B3EEDF2
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 16:00:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235168AbhHQNyu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Aug 2021 09:54:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48218 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231786AbhHQNyt (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Aug 2021 09:54:49 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F9B3C061764
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Aug 2021 06:54:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=Vu1TXcfH3DvBTTcz1EmP1TUDxly89rGPQJPnroBTIB8=;
-        t=1629208456; x=1630418056; b=UHI+LAZvUJW6VHosMsjWw/ZAX2n6HBWCtA0CsEan0TYbOde
-        PP5w/icqC9o8RtSclPXuymWR4v3KSQwa1qR8TUlCzA6EPI/uiEB224qX2gFnkT/tgf/oTdvHpBwd3
-        QPFNY74ApEXX+k9pYA735ZvibozX9wE/wV8fDbyTM3Qy/SJFzZOnHdTa/+H1E+Q4MD8tZMs6r9Ugu
-        m9bYJhPYNfN7ktnOe3s+EGjh1L4PLM91ap1q0B7/RHBfBTYXcd0sPd+rUMzuGn5H5Z0tKVNdn9VtT
-        NqiJjlahFght8hZgLRKYLmBQOpK49AoETvuhlghy0oA9IxFcGzwt5PrywdonSa1w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mFzXi-00CHfm-IS; Tue, 17 Aug 2021 15:54:14 +0200
-Message-ID: <ec979481036ad198d4c42d2756caf66fd3496bbc.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] cfg80211: Handle driver updated MU-EDCA params
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Muna Sinada <msinada@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 17 Aug 2021 15:54:13 +0200
-In-Reply-To: <1628660743-24413-1-git-send-email-msinada@codeaurora.org>
-References: <1628660743-24413-1-git-send-email-msinada@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S235971AbhHQOAm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Aug 2021 10:00:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43760 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235092AbhHQOAj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Aug 2021 10:00:39 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id DFB7460E09;
+        Tue, 17 Aug 2021 14:00:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629208805;
+        bh=dCRWIl/PGCx8+O8TXnNtR0qy28pSlWm/9WEhSwHcdDM=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=BwRlYnkI+nrBgSMMZ0xKeIHF2KH6mIN1J0g+GrN3QwVLN41Wj2XTWYC8yDbgeNAl/
+         TGSdJAte1SAFYmLSrHsVt6WRRrOEU4GNugYQglmib84aBAzQbC8G7mBRQa+2uME6FC
+         8JGW3/T69TJZ/8RW7BrnOvncdK799E52WStbgnEamfokcy2xeRFahCyV4w3kU2ABDz
+         oK2kvIe6NC7nSmqVPduFZo+E/W3fNYJqSc24RC9SZdG3/2M21y6PPkjbzguu+2r3zz
+         OFdRagD157Qk7gx6Xyge35EQhcqb4gg1ZxYJpf18GB/twIDRGBlTA/QqlqA26J6ZSL
+         mtao3TIO0uKjQ==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id D2AD860A25;
+        Tue, 17 Aug 2021 14:00:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] mac80211: fix locking in ieee80211_restart_work()
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162920880585.21796.10051805264087210953.git-patchwork-notify@kernel.org>
+Date:   Tue, 17 Aug 2021 14:00:05 +0000
+References: <20210817121210.47bdb177064f.Ib1ef79440cd27f318c028ddfc0c642406917f512@changeid>
+In-Reply-To: <20210817121210.47bdb177064f.Ib1ef79440cd27f318c028ddfc0c642406917f512@changeid>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        johannes.berg@intel.com
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2021-08-10 at 22:45 -0700, Muna Sinada wrote:
-> Add necessary functions and attributes to receive updated MU-EDCA
-> parameters from driver and send to user space, where management
-> frame are updated to reflect latest parameters.
+Hello:
+
+This patch was applied to netdev/net.git (refs/heads/master):
+
+On Tue, 17 Aug 2021 12:12:22 +0200 you wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
 > 
+> Ilan's change to move locking around accidentally lost the
+> wiphy_lock() during some porting, add it back.
+> 
+> Fixes: 45daaa131841 ("mac80211: Properly WARN on HW scan before restart")
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> 
+> [...]
 
-On second thought - this really could use some more explanation?
+Here is the summary with links:
+  - [net] mac80211: fix locking in ieee80211_restart_work()
+    https://git.kernel.org/netdev/net/c/276e189f8e4e
 
-Why are MU-EDCA parameters determined by the driver? What does this
-actually do? Is it meant for AP mode, or client mode? Any spec
-references?
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Mac80211 parses this coming from the AP, so probably this is meant for
-AP mode, but why? Why wouldn't hostapd determine the correct parameters?
-
-etc.
-
-johannes
 
