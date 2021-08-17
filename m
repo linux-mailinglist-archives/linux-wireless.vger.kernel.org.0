@@ -2,119 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EA213EED36
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 15:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41ADC3EEDBC
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 15:50:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237209AbhHQNUf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Aug 2021 09:20:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40130 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235267AbhHQNUe (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Aug 2021 09:20:34 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24693C061764
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Aug 2021 06:20:01 -0700 (PDT)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1mFz0P-0008JJ-6g; Tue, 17 Aug 2021 15:19:49 +0200
-Subject: Re: [PATCH] brcmfmac: pcie: fix oops on failure to resume and reprobe
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Wright Feng <wright.feng@infineon.com>,
-        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Franky Lin <franky.lin@broadcom.com>
-References: <20210817063521.22450-1-a.fatoum@pengutronix.de>
- <CAHp75Vfc_T04p95PgVUd+CK+ttPwX2aOC4WPD35Z01WQV1MxKw@mail.gmail.com>
- <3a9a3789-5a13-7e72-b909-8f0826b8ab86@pengutronix.de>
- <CAHp75VfahF=_CmS7kw5PbKs46+hXFweweq=sjwd83hccRsrH9g@mail.gmail.com>
- <e59b23ba-7e5b-00e3-e8c9-f5c2bb89b860@pengutronix.de>
- <85e30fb4-ce7d-6402-f93e-09efadbbcd06@pengutronix.de>
- <CAHp75VfkOWk+CwSAOi-ibMcDOz5f0tOjxrygmUoMP1CEHxph-Q@mail.gmail.com>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <479c2aaa-c67e-4a98-4ed1-57c44e9484c5@pengutronix.de>
-Date:   Tue, 17 Aug 2021 15:19:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S237517AbhHQNv2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Aug 2021 09:51:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33736 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233288AbhHQNv2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Aug 2021 09:51:28 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8671760F35;
+        Tue, 17 Aug 2021 13:39:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629207545;
+        bh=2BNje+PP31tmUpIGZqD0jAs9iIRc8+S0ks+rtVdopxc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=R4HJPZX5snVbcwoIYEK0usstZOCCK2Ep5nJYVwb53BXFKPQ+2yLn/ANFidoHMO57r
+         FlfsVm/Eyq06l5McqN5AW7GPmsp/uPfoHzviKpMv4FB1omO5guXYYbBXoAPSd/gjIm
+         eXb6XfJ2NAVsEGnJeRXo53zILfUYimz0RyNeiV9o5MRjw4OWMrBd+FHSWkVlhgtp0z
+         mOxGEi0VH5udAslzPiKeoMIgPD+csn25l8fPsuk/n54SW3a45cYkP69iUx7scTQ7G3
+         AQG5sWYPLH4Ac5WDB7eM8mAGzcpVthql/haswrr8YSSla4y8xOQvKP2DLFrUOxNy/z
+         ZA/yWga36uZeQ==
+Date:   Tue, 17 Aug 2021 06:39:03 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Yufeng Mo <moyufeng@huawei.com>
+Cc:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <shenjian15@huawei.com>, <lipeng321@huawei.com>,
+        <yisen.zhuang@huawei.com>, <linyunsheng@huawei.com>,
+        <huangguangbin2@huawei.com>, <chenhao288@hisilicon.com>,
+        <salil.mehta@huawei.com>, <linuxarm@huawei.com>,
+        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
+        <netanel@amazon.com>, <akiyano@amazon.com>,
+        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
+        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
+        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
+        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
+        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
+        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
+        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
+        <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH net-next 2/4] ethtool: extend coalesce setting uAPI with
+ CQE mode
+Message-ID: <20210817063903.6b62801c@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <1629167767-7550-3-git-send-email-moyufeng@huawei.com>
+References: <1629167767-7550-1-git-send-email-moyufeng@huawei.com>
+        <1629167767-7550-3-git-send-email-moyufeng@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VfkOWk+CwSAOi-ibMcDOz5f0tOjxrygmUoMP1CEHxph-Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 17.08.21 15:06, Andy Shevchenko wrote:
-> On Tue, Aug 17, 2021 at 3:07 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->> On 17.08.21 14:03, Ahmad Fatoum wrote:
->>> On 17.08.21 13:54, Andy Shevchenko wrote:
->>>> On Tue, Aug 17, 2021 at 2:11 PM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>>>> On 17.08.21 13:02, Andy Shevchenko wrote:
->>>>>> On Tuesday, August 17, 2021, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
-> 
-> ...
-> 
->>>>>>>         err = brcmf_pcie_probe(pdev, NULL);
->>>>>>>         if (err)
->>>>>>> -               brcmf_err(bus, "probe after resume failed, err=%d\n", err);
->>>>>>> +               __brcmf_err(NULL, __func__, "probe after resume failed,
->>>>>>> err=%d\n",
->>>>>>
->>>>>>
->>>>>> This is weird looking line now. Why can’t you simply use dev_err() /
->>>>>> netdev_err()?
->>>>>
->>>>> That's what brcmf_err normally expands to, but in this file the macro
->>>>> is overridden to add the extra first argument.
->>>>
->>>> So, then the problem is in macro here. You need another portion of
->>>> macro(s) that will use the dev pointer directly. When you have a valid
->>>> device, use it. And here it seems the case.
->>>
->>> Ah, you mean using pdev instead of the stale bus. Ye, I could do that.
->>> Thanks for pointing out.
->>
->> Ah, not so easy: __brcmf_err accepts a struct brcmf_bus * as first argument,
->> but there is none I can pass along. As the whole file uses the brcm_
->> logging functions, I'd just leave this one without a device.
-> 
-> And what exactly prevents you to split that to something like
-> 
-> __brcm_dev_err() // as current __brcm_err with dev argument
-> {
-> ...
-> }
-> 
-> __brsm_err(bus, ...)  __brcm_dev_err(bus->dev, ...)
-> 
-> ?
+On Tue, 17 Aug 2021 10:36:05 +0800 Yufeng Mo wrote:
+> In order to support more coalesce parameters through netlink,
+> add an new structure kernel_ethtool_coalesce, and keep
+> struct ethtool_coalesce as the base(legacy) part, then the
+> new parameter can be added into struct kernel_ethtool_coalesce.
+>=20
+> Also add new extack parameter for .set_coalesce and .get_coalesce
+> then some extra info can return to user with the netlink API.
+>=20
+> Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
+> Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
 
-I like my regression fixes to be short and to the point.
+This and the following patches don't build, please make sure
+allmodconfig builds correctly. Here's an example failure, but
+IDK if there isn't more:
 
-Cheers,
-Ahmad
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+drivers/net/ethernet/ti/davinci_emac.c: In function =E2=80=98emac_dev_open=
+=E2=80=99:
+drivers/net/ethernet/ti/davinci_emac.c:1469:3: error: too few arguments to =
+function =E2=80=98emac_set_coalesce=E2=80=99
+ 1469 |   emac_set_coalesce(ndev, &coal);
+      |   ^~~~~~~~~~~~~~~~~
