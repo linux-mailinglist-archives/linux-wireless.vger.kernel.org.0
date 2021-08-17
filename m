@@ -2,94 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 477533EE69F
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 08:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A794F3EE847
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 10:18:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236534AbhHQGhA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Aug 2021 02:37:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60016 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229716AbhHQGg7 (ORCPT
+        id S239146AbhHQISi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Aug 2021 04:18:38 -0400
+Received: from relay.smtp-ext.broadcom.com ([192.19.166.231]:58650 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234706AbhHQISf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Aug 2021 02:36:59 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A187C061764
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Aug 2021 23:36:27 -0700 (PDT)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <afa@pengutronix.de>)
-        id 1mFsht-0007o2-2g; Tue, 17 Aug 2021 08:36:17 +0200
-Received: from afa by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <afa@pengutronix.de>)
-        id 1mFshq-0006vl-De; Tue, 17 Aug 2021 08:36:14 +0200
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+        Tue, 17 Aug 2021 04:18:35 -0400
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id C118024ACB;
+        Tue, 17 Aug 2021 01:18:00 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com C118024ACB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1629188280;
+        bh=0xZ8pgGrQDUx2DKXZLbQE9+YSyK5bQFM0TkSsIlD0I4=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=f4zQFyzMewT4vwNRW1hNJJ+2dqx6vcMqr6+7/BKKOGLH/SDTsH7i0xGSTi3amDLmo
+         WozdnPtPpuRcmhyarV30t9Fpfn9yjxE7jJzp///i/+V3ck6GWhYUkLDb/N9Nw9Xyo7
+         dbj6OQnablN+MvKXJCTH60BxqKLkq7waH1np6m5Y=
+Received: from [10.230.40.140] (unknown [10.230.40.140])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id B3B5B1874BD;
+        Tue, 17 Aug 2021 01:17:57 -0700 (PDT)
+Subject: Re: 5.10.58 UBSAN from brcmf_sdio_dpc+0xa50/0x128c [brcmfmac]
 To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
-Cc:     kernel@pengutronix.de, Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        SHA-cyfmac-dev-list@infineon.com,
-        brcm80211-dev-list.pdl@broadcom.com, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] brcmfmac: pcie: fix oops on failure to resume and reprobe
-Date:   Tue, 17 Aug 2021 08:35:22 +0200
-Message-Id: <20210817063521.22450-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+        Ryutaroh Matsumoto <ryutaroh@ict.e.titech.ac.jp>
+Cc:     linux-rpi-kernel@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
+        wright.feng@infineon.com, chung-hsien.hsu@infineon.com,
+        netdev@vger.kernel.org, David Miller <davem@davemloft.net>
+References: <20210816.084210.1700916388797835755.ryutaroh@ict.e.titech.ac.jp>
+ <85b31c5a-eb4a-48a0-ad94-e46db00af016@broadcom.com>
+ <20210817.093658.33467107987117119.ryutaroh@ict.e.titech.ac.jp>
+ <17b52a1ab20.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <56ea3e65-62f4-2496-edd4-e454126abc66@broadcom.com>
+Date:   Tue, 17 Aug 2021 10:17:55 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: afa@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+In-Reply-To: <17b52a1ab20.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When resuming from suspend, brcmf_pcie_pm_leave_D3 will first attempt a
-hot resume and then fall back to removing the PCI device and then
-reprobing. If this probe fails, the kernel will oops, because brcmf_err,
-which is called to report the failure will dereference the stale bus
-pointer. Open code and use the default bus-less brcmf_err to avoid this.
++netdev, +Dave
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-To: Arend van Spriel <aspriel@gmail.com>
-To: Franky Lin <franky.lin@broadcom.com>
-To: Hante Meuleman <hante.meuleman@broadcom.com>
-To: Chi-hsien Lin <chi-hsien.lin@infineon.com>
-To: Wright Feng <wright.feng@infineon.com>
-To: Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
-Cc: SHA-cyfmac-dev-list@infineon.com
-Cc: brcm80211-dev-list.pdl@broadcom.com
-Cc: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-kernel@vger.kernel.org
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 8/17/2021 7:42 AM, Arend van Spriel wrote:
+> Using different email to avoid disclaimers...
+> 
+> 
+> On August 17, 2021 2:39:56 AM Ryutaroh Matsumoto 
+> <ryutaroh@ict.e.titech.ac.jp> wrote:
+> 
+>> Hi Arend, thank you for paying attention to this.
+>>
+>>> Line 2016 in skbuff.h is inline function __skb_queue_before() and as
+>>> far as I can tell brcmfmac is not using that direct or indirect. Maybe
+>>> I am reading the line info incorrectly?
+>>
+>> I am unsure of it. On the other hand, I have also seen somewhat similar
+>> UBSAN from a header file "include/net/flow.h" as reported at
+>> https://lore.kernel.org/netdev/20210813.081908.1574714532738245424.ryutaroh@ict.e.titech.ac.jp/ 
+>>
+>>
+>> All UBSANs that I have seen come from *.h compiled with clang...
+>>
+>>> Would you be able to provide information as to what line
+>>> brcmf_sdio_dpc+0xa50 refers to.
+>>
+>> I'd like to do, but I do not know how to let kernel UBSAN include a 
+>> line number,
+>> though I know it with user-space applications...
+> 
+> If you enable CONFIG_DEBUG_INFO in your kernel .config and recompile 
+> brcmfmac you can load the module in gdb:
+> 
+> gdb> add-symbol-file brcmfmac.ko [address]
+> gdb> l *brcmf_sdio_dpc+0xa50
+> 
+> The [address] is not very important so just fill in a nice value. The 
+> 'l' command should provide the line number.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index 9ef94d7a7ca7..d824bea4b79d 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -2209,7 +2209,7 @@ static int brcmf_pcie_pm_leave_D3(struct device *dev)
- 
- 	err = brcmf_pcie_probe(pdev, NULL);
- 	if (err)
--		brcmf_err(bus, "probe after resume failed, err=%d\n", err);
-+		__brcmf_err(NULL, __func__, "probe after resume failed, err=%d\n", err);
- 
- 	return err;
- }
--- 
-2.30.2
+Hi Ryutaroh,
 
+Meanwhile I did some digging in the brcmfmac driver and I think I found 
+the location in brcmf_sdio_sendfromq() where we do a __skb_queue_tail(). 
+So I looked at that and it does following:
+
+static inline void __skb_queue_tail(struct sk_buff_head *list,
+				   struct sk_buff *newsk)
+{
+	__skb_queue_before(list, (struct sk_buff *)list, newsk);
+}
+
+Your report seems to be coming from the cast that is done here, which is 
+fine as long as sk_buff and sk_buff_head have the same members 'next' 
+and 'prev' at the start, which is true today and hopefully forever ;-) I 
+am inclined to say this is a false report.
+
+Can you please confirm the stack trace indeed points to 
+brcmf_sdio_sendfromq() in your report.
+
+Regards,
+Arend
