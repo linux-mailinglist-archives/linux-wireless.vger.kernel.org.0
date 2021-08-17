@@ -2,63 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA1603EED99
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 15:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11FA43EEDB6
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Aug 2021 15:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239943AbhHQNmU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Aug 2021 09:42:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58832 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239955AbhHQNmJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Aug 2021 09:42:09 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3CD3D60FBF;
-        Tue, 17 Aug 2021 13:40:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629207606;
-        bh=sEyoYkgf+LK3AB8PmeLeHrmxFSc+SRKOIWZbv+8dyeo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DkwmgfolEyDi9xhFXhBIjo56UqXglcCX9LFIsU7QWCRIPD2sFjpFvpwE1p2PRtCvW
-         R4bTCUxUeqZq37K74D1POWKXPsLN4/AzkA0X66pvV1UeAg2XSTeumHW/yeyvziQijN
-         A8dQup3msDjEKxeWN+j2zKyL43d792LGaejvvA5ZVSPwWQoxnoo85Fgu4f73WTrRwy
-         ph3oAh+0hXVK5KW4tKIJiBunphVPhiM3hkha4MYQg6xcU3gmxHPUBEKeQQGqSwP5Bf
-         hDphuxMqw/LjU31s+l0qHcbufqsymK7EQohzf7ScasdkhzSkseU/2PRe5AMFi3XPRh
-         pUH1TC9eBeS3A==
-Date:   Tue, 17 Aug 2021 06:40:03 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Yufeng Mo <moyufeng@huawei.com>
-Cc:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        <shenjian15@huawei.com>, <lipeng321@huawei.com>,
-        <yisen.zhuang@huawei.com>, <linyunsheng@huawei.com>,
-        <huangguangbin2@huawei.com>, <chenhao288@hisilicon.com>,
-        <salil.mehta@huawei.com>, <linuxarm@huawei.com>,
-        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
-        <netanel@amazon.com>, <akiyano@amazon.com>,
-        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
-        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
-        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
-        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
-        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
-        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
-        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH net-next 2/4] ethtool: extend coalesce setting uAPI with
- CQE mode
-Message-ID: <20210817064003.00733801@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <1629167767-7550-3-git-send-email-moyufeng@huawei.com>
-References: <1629167767-7550-1-git-send-email-moyufeng@huawei.com>
-        <1629167767-7550-3-git-send-email-moyufeng@huawei.com>
+        id S240021AbhHQNtp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Aug 2021 09:49:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46964 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240262AbhHQNtl (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Aug 2021 09:49:41 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 603F5C061764
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Aug 2021 06:48:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=/W9/D3SiuIV6V9Op6YkOARi9D9mQ5/8a2ZXv22fwWa8=;
+        t=1629208134; x=1630417734; b=Jy2XntR1A0mxiccbqHiwgE5FmFEId7Ck7HPVAP6Z4IMI+0l
+        Sh9+OiuJSsBlv1MVCsLw+aEjs6uVbhoLaN/4P4ztrQEjylRcaDmIFdKC9bVHgUxU9sXJapG9G1TtS
+        r1lRK3PebA3NOIOHkVCxC0H1h0HbdhW9aqf5KOZdfMTERZxuk+Gn8c/9Dlqy5wSyCJcGe/cK8iED1
+        VNp6esabfRyHzMmFcjD5gWTM9IvBk8Bc2dF8gH55XwJwph8cqALWjEBSi5EH1p9D22PfMqV+qpMBd
+        85GorNR41/UUOqLpyAyPCpW+JeOzBjaBMF07TBi4roTduJ6iQwMGX8SBATjatUfw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mFzSV-00CHYe-OQ; Tue, 17 Aug 2021 15:48:51 +0200
+Message-ID: <6d85542f47955cdac0137c72b0de04e5c0fe0799.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] nl80211: Add HE UL MU fixed rate setting
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Muna Sinada <msinada@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 17 Aug 2021 15:48:50 +0200
+In-Reply-To: <1627587701-13134-1-git-send-email-msinada@codeaurora.org>
+References: <1627587701-13134-1-git-send-email-msinada@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 17 Aug 2021 10:36:05 +0800 Yufeng Mo wrote:
->  include/linux/ethtool.h                            | 16 ++++++++++--
->  net/ethtool/coalesce.c                             | 29 ++++++++++++++++++----
->  net/ethtool/ioctl.c                                | 15 ++++++++---
->  net/ethtool/netlink.h                              |  2 +-
+Hi,
 
-I'd move changes to these files to the first patch, otherwise 
-they're hard to find in all the driver modifications.
+On Thu, 2021-07-29 at 12:41 -0700, Muna Sinada wrote:
+> This patch adds nl80211 definitions, policies and parsing code required
+> to pass HE UL MU fixed rate settings.
+> 
+
+I don't understand how this is sufficient?
+
+>  		enum nl80211_txrate_gi gi;
+>  		enum nl80211_he_gi he_gi;
+>  		enum nl80211_he_ltf he_ltf;
+
+Previously, for HE rates, we had configurations for:
+ * HE MCS
+ * HE guard interval
+ * HE LTF
+
+I guess I can sort of follow that uplink traffic is a bit different and
+not already configured by the setting for rate control we have today,
+but why does it not need all these parameters?
+
+Also, why is this not a per-station parameter? OK, maybe we don't really
+want it to be a per-station parameter, or maybe the firmware/algorithm
+that's selecting things there can't deal with that, but it feels odd to
+combine it with the "rate control fixed rate" parameters you have here,
+and do that without even any explanation of how this is supposed to
+work.
+
+This is going to need some work.
+
+johannes
+
