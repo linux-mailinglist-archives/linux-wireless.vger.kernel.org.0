@@ -2,59 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDD643F0CE7
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 22:44:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7EF53F0D0F
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 22:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233792AbhHRUop (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Aug 2021 16:44:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53448 "EHLO
+        id S233517AbhHRU7X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Aug 2021 16:59:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233785AbhHRUom (ORCPT
+        with ESMTP id S233847AbhHRU7P (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Aug 2021 16:44:42 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CB9C061764
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 13:44:06 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id r9so7432644lfn.3
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 13:44:06 -0700 (PDT)
+        Wed, 18 Aug 2021 16:59:15 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AACAC061796
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 13:58:40 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id d4so7453017lfk.9
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 13:58:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ReRbCCu0NU8RaS/JlVj2xJ16jur0TR6FOgfUXy9kMT8=;
-        b=kHgHFIrN/AkFQjVOnO4YPNKDmkaGspaNUBCMzY0msP8ztHtG6lO1QOmF0BWTuW/DDd
-         rCsJ7uzdbEWQvvfchSR9Iyqkz6ChERVfC2kM+iIUM0tKGAbllVb5gy4GFlqpSRmx3WlM
-         CmaVPJ/xAUYPG/lHcVFFjdFynEvzKT/3XDNk64VIdw/Mmis2OVvDzbYTjD4kHBgP8USF
-         ygH1DOw3CRci8FUZPqxgdlW/gHn5GBzsIQF1yTrNKr5kp6GuEWuPMjMtIuszrWFs955V
-         LyVWV2i5enncbyXqyZiJhqBc59lNZqv5PiRrJxwyJqKNg6R0CrqT9bKloaYW0dHbPkrT
-         KqEw==
+        bh=3jJTY5RurtelSMfApfTPulu82aXjdVlqtKpskloZbHk=;
+        b=AKqgZUaq97Yoy52AsC1xrmksvvgnRXN6lRBktw0TKuJVw6fGAaawLwp7iMr9t+XZct
+         U0MGdA+roLw/J/kmo8gMgmFQC0WqUcGCeMGFu6smOOJu9X1tQlw5nZGYG1lT79iIZ+Cx
+         ebpkwGJcLVX1ZnJuLTc7UWljkN1yRvQVxpdQzXu7Efg5XCKbGqkU/2YIm32eljuZN0GW
+         oDpHLvz9QwJjSu3l8919b3hbhfLQlgapDVkUWGA7Oc3h7ET/XG87r+aOXhyMnkmMGZm2
+         KKr7jmE3NG/6a/8+iiytMWGAzbzpO+6t9ZlgpSU+pWhheZKVkE+Z2KjB9DGfczJbhKvO
+         FByA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ReRbCCu0NU8RaS/JlVj2xJ16jur0TR6FOgfUXy9kMT8=;
-        b=muXMO933KlwBzcCd9MLfgAh9WmBZRzKf1IEeZcn9lpltjN47mC7OzCLLac2LDBchhx
-         dOrVe090yQUHY1aB/PxDwQ88iGD6+C8pAQl1XwQokkpoUEWs/HrxUefIdTNTSfSbHHD3
-         AOF+imWRmn6sahRn6+7MuTMm2UVdc/y0Moyt5cxkr2XrSOGh4TV8TWi+FGfRpgZrLyHD
-         5mWS+8fQkw0HaN8FV/T6c0Td/L+vlQTCVvTRcqYuen01rr5YuX2RKjGq6DViiZ9jAnlV
-         eDrezLWiyqLsCwndFQg8P4SzF1krLZpl/2YxZP1llo6aHub11hTblZHxYWmkXfPtNk5e
-         z66g==
-X-Gm-Message-State: AOAM532edoblbzEjCtcUeIIl5Z4gksP0DtTM1IvMtMBNf32IBE3ALVJ3
-        9MeYFaUH+ud8IeRLUaPd/cGG1R7DG4ICRgN1As4=
-X-Google-Smtp-Source: ABdhPJxvKi2zQU2opUFjrNrd9PiSQytgodqEWYK7C9DiGchwcwp1emNustuYq+DrpER9P34sni153g+POCphaBCki3E=
-X-Received: by 2002:a05:6512:401a:: with SMTP id br26mr3380230lfb.539.1629319444959;
- Wed, 18 Aug 2021 13:44:04 -0700 (PDT)
+        bh=3jJTY5RurtelSMfApfTPulu82aXjdVlqtKpskloZbHk=;
+        b=spnWxgUgoIRDDbHbcSh3ZMT5xCCXC2Bn/88XbMNJ3ocd2ADdSnmKrMCHqLHOo0Q1T3
+         3lOXuSn+l5LzOBwFo5wsCNoAuUAFnu8RTmhVI1m7HDCPiNkwKsLLRbmBHla8XaoDdr+2
+         zc/FlClfgjGQanKs8PLa/dRl7JF0F+ueP/hR/6wEaaClmplHQUpTc7Xs3aHx6kYbvXO6
+         F4qAMxLyQKi1pUGYiaAoJ1DefKndopDaJEURcjPWIfK5JxLSAOVaCmyWFbHgu3qvLtZa
+         vymn/JTAaCNQvR3N0I418zRM6dFvBotllAIFMb7Lp01mKS/O1Su543hCnXvdhg8Cv2/B
+         /b8Q==
+X-Gm-Message-State: AOAM533Uj5PBejUy3VXuEGO1JLjfeIzbISlh6NSU31JCl/mSdF0z6EPa
+        0c96YmErNg1nZnP4qSKkUu+YQCgrKDMWqcSmrCs=
+X-Google-Smtp-Source: ABdhPJw9EbFfs6R+Cg3EX4J2J+gzDbYWl7CvmAajlIy7XoKhalcW6E8qm6r8lqRWTPZYJd8pCJCnaMC43umjzmsASBY=
+X-Received: by 2002:ac2:4143:: with SMTP id c3mr5149201lfi.295.1629320318930;
+ Wed, 18 Aug 2021 13:58:38 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210818150943.1630199-1-festevam@denx.de> <17b5a29d098.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
- <369c1f89-df33-455b-773e-a2e0dbf582ff@eero.com>
-In-Reply-To: <369c1f89-df33-455b-773e-a2e0dbf582ff@eero.com>
+In-Reply-To: <17b5a29d098.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
 From:   Fabio Estevam <festevam@gmail.com>
-Date:   Wed, 18 Aug 2021 17:43:53 -0300
-Message-ID: <CAOMZO5DbZ11HE4un20tBkLbjGWcyUu8KpTV+gEtVf=rT2JyT+A@mail.gmail.com>
+Date:   Wed, 18 Aug 2021 17:58:27 -0300
+Message-ID: <CAOMZO5BjAp3eJtOgifDDvAa-EB--SbvtYFMD=ha8VokipVp3tA@mail.gmail.com>
 Subject: Re: [PATCH] ath10k: Do not call dma_alloc_coherent() for SDIO and USB
-To:     Peter Oh <peter.oh@eero.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Fabio Estevam <festevam@denx.de>,
+To:     Arend van Spriel <aspriel@gmail.com>
+Cc:     Fabio Estevam <festevam@denx.de>,
         Kalle Valo <kvalo@codeaurora.org>, ath10k@lists.infradead.org,
         linux-wireless <linux-wireless@vger.kernel.org>,
         Christoph Hellwig <hch@lst.de>, erik.stromdahl@gmail.com
@@ -63,23 +61,20 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Peter,
+Hi Arend,
 
-On Wed, Aug 18, 2021 at 2:35 PM Peter Oh <peter.oh@eero.com> wrote:
->
->
-> >> Fix the problem by not calling dma_alloc_coherent() when the device
-> >> is not DMA capable, such as SDIO and USB.
-> >>
-> ath10k calls dma_alloc_coherent multiple places including
-> ath10k_htt_rx_alloc.
->
-> Do SDIO and USB not use such data path function at all?
+On Wed, Aug 18, 2021 at 1:51 PM Arend van Spriel <aspriel@gmail.com> wrote:
 
-Good point! Maybe I am not just hitting these paths on my simple tests.
+> Does this mean you can not really setup a beaconing interface type for SDIO
+> and USB?
 
-Kalle,
+As per the debug message below:
 
-How should we handle this?
+ath10k_dbg(ar, ATH10K_DBG_MAC, "mac vdev create %d (add interface)
+type %d subtype %d bcnmode %s\n",
+   arvif->vdev_id, arvif->vdev_type, arvif->vdev_subtype,
+   arvif->beacon_buf ? "single-buf" : "per-skb");
+
+If arvif->beacon_buf is NULL then it will be a "per-skb" beacon mode.
 
 Thanks
