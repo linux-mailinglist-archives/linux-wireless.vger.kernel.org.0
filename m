@@ -2,125 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D6013F0E83
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 01:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC1D3F0E9A
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 01:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234870AbhHRXHS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Aug 2021 19:07:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57440 "EHLO
+        id S234642AbhHRX1i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Aug 2021 19:27:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234834AbhHRXHR (ORCPT
+        with ESMTP id S232862AbhHRX1h (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Aug 2021 19:07:17 -0400
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0467BC0617AD
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 16:06:41 -0700 (PDT)
-Received: by mail-pg1-x52b.google.com with SMTP id k14so3960250pga.13
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 16:06:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=6LXlTnktuLXOSEatHkAd9iidtx/DlqNXw6t+P+U3BQc=;
-        b=QDNt5PHgo+7rFQ5/N15pMYx2nigmnDuCuJ+bOuvXfS72zqVl8vZRlj8bX+wFTjLeE1
-         +cWdQw4DYXF54Bu3mpVNecT17rymK4/4HID0NO8YPAsOH71eiDyu8sN6XAFVcXLqPAMH
-         GiSiCnGqiMI57DyQ0LAdNhljzGxXXxsfxTLco=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=6LXlTnktuLXOSEatHkAd9iidtx/DlqNXw6t+P+U3BQc=;
-        b=YXnxo9iV0sWbtaVTU0KiCDZG0TmpPFxANJJL6O1eLwauM+eXgHNwzyCjc5BaUnxCsY
-         /iV0E5VLGl1Ig+EtMa84IPKjNj9Uym2TpM5F/bQyTbp2GP6GGbero7NrneisOMcPZeId
-         UB4ndqG0L0S3oV7auyR6rsg2nwoVQG2hkGwDPIHusG0dYjPuxYz0c7LUCutAit5GtCon
-         N/TQChO9b+j+f7faN7CIFtB4vspgotZ8Bxp2GYtmNJAbj0T5R37cFFTjzOgr8DZ3mQhe
-         twlFzMTDEjKxlTwZ3x5phxCEj4XGL9Qqqrtg97wx4NHJOfL5S6HiTDA358peESySBHdD
-         xh8w==
-X-Gm-Message-State: AOAM5331nRFcZHjkfpIJx9Npq0DsQ4iwgU/0BJho/JWknIz/aE4F/M7C
-        zY7omMPEL1X2r9F7vRf7fpDNtg==
-X-Google-Smtp-Source: ABdhPJyUYId4jZehTEC5dWKrbyuUEowd9b0WCT527H1rHej12/Bkc/D16VHqxCGKKKhtIhB0IMVa/w==
-X-Received: by 2002:aa7:8242:0:b0:3e2:97eb:d6e8 with SMTP id e2-20020aa78242000000b003e297ebd6e8mr9677080pfn.66.1629328001407;
-        Wed, 18 Aug 2021 16:06:41 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id 143sm916287pfz.13.2021.08.18.16.06.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Aug 2021 16:06:40 -0700 (PDT)
-Date:   Wed, 18 Aug 2021 16:06:39 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Sean Christopherson <seanjc@google.com>
-Cc:     linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        kvm@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
-        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 53/63] KVM: x86: Use struct_group() to zero decode
- cache
-Message-ID: <202108181605.44C504C@keescook>
-References: <20210818060533.3569517-1-keescook@chromium.org>
- <20210818060533.3569517-54-keescook@chromium.org>
- <YR0jIEzEcUom/7rd@google.com>
- <202108180922.6C9E385A1@keescook>
- <YR2PhlO3njPcFOkg@google.com>
+        Wed, 18 Aug 2021 19:27:37 -0400
+Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25909C061764
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 16:27:02 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPv6:2804:14c:485:504a:609d:5443:34fc:77bc])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: festevam@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id 0CFCF80F30;
+        Thu, 19 Aug 2021 01:26:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1629329218;
+        bh=s6e4Ese2VIMrxJ7iyVt3pQ+bRy1WssQdFGiizMnyVWk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mwvQKN49+SlILw9eldAn08MYYfTq53nQl3gjlkAAMYN9FUKZjnC9argrZkh8PWVTx
+         YNPO5HXYi/UW1CbDRRe8SgiRRxjacfypwvR4RthdJ97IBIP3KQNF/906udRu46nD2q
+         //fzsgtjaC1LGvBWilFGCDfASX7rDVYXb2ix0uV/VcidOWnIYlxhKt/rlaKjmOljNU
+         N/FXU0qPT5hS56SzL63iVdwffzd2seq155kdm+cTK1OKgW67lpPh950+iHtZwJ8Nij
+         s9cJkxNfwqblyEPEuPTRDxgiOAYJvNR2q8YjMcn3inUj7J+E0w1+nRy0FLXpRtHI38
+         LkcRHYLoLqFbQ==
+From:   Fabio Estevam <festevam@denx.de>
+To:     kvalo@codeaurora.org
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        hch@lst.de, erik.stromdahl@gmail.com, peter.oh@eero.com,
+        aspriel@gmail.com, marex@denx.de, alagusankar@silex-india.com,
+        Fabio Estevam <festevam@denx.de>
+Subject: [PATCH v3] ath10k: high latency fixes for beacon buffer
+Date:   Wed, 18 Aug 2021 20:26:27 -0300
+Message-Id: <20210818232627.2040121-1-festevam@denx.de>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YR2PhlO3njPcFOkg@google.com>
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
+X-Virus-Status: Clean
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Aug 18, 2021 at 10:53:58PM +0000, Sean Christopherson wrote:
-> On Wed, Aug 18, 2021, Kees Cook wrote:
-> > On Wed, Aug 18, 2021 at 03:11:28PM +0000, Sean Christopherson wrote:
-> > > From dbdca1f4cd01fee418c252e54c360d518b2b1ad6 Mon Sep 17 00:00:00 2001
-> > > From: Sean Christopherson <seanjc@google.com>
-> > > Date: Wed, 18 Aug 2021 08:03:08 -0700
-> > > Subject: [PATCH] KVM: x86: Replace memset() "optimization" with normal
-> > >  per-field writes
-> > > 
-> > > Explicitly zero select fields in the emulator's decode cache instead of
-> > > zeroing the fields via a gross memset() that spans six fields.  gcc and
-> > > clang are both clever enough to batch the first five fields into a single
-> > > quadword MOV, i.e. memset() and individually zeroing generate identical
-> > > code.
-> > > 
-> > > Removing the wart also prepares KVM for FORTIFY_SOURCE performing
-> > > compile-time and run-time field bounds checking for memset().
-> > > 
-> > > No functional change intended.
-> > > 
-> > > Reported-by: Kees Cook <keescook@chromium.org>
-> > > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > 
-> > Reviewed-by: Kees Cook <keescook@chromium.org>
-> > 
-> > Do you want me to take this patch into my tree, or do you want to carry
-> > it for KVM directly?
-> 
-> That's a Paolo question :-)
-> 
-> What's the expected timeframe for landing stricter bounds checking?  If it's
-> 5.16 or later, the easiest thing would be to squeak this into 5.15.
+From: Alagu Sankar <alagusankar@silex-india.com>
 
-I'm hoping to land all the "compile time" stuff for 5.15, but
-realistically, some portions may not get there. I'll just carry this
-patch for now and if we need to swap trees we can do that. :)
+Beacon buffer for high latency devices does not use DMA. other similar
+buffer allocation methods in the driver have already been modified for
+high latency path. Fix the beacon buffer allocation left out in the
+earlier high latency changes.
 
-Thanks!
+Signed-off-by: Alagu Sankar <alagusankar@silex-india.com>
+Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
+[fabio: adapt it to use ar->bus_param.dev_type ]
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+---
+Changes since v2:
+- Pick Alagu's patch:
+https://patchwork.kernel.org/project/ath10k/patch/20190417191503.18814-3-erik.stromdahl@gmail.com/
 
--Kees
+ drivers/net/wireless/ath/ath10k/mac.c | 31 ++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index c272b290fa73..7ca68c81d9b6 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -993,8 +993,12 @@ static void ath10k_mac_vif_beacon_cleanup(struct ath10k_vif *arvif)
+ 	ath10k_mac_vif_beacon_free(arvif);
+ 
+ 	if (arvif->beacon_buf) {
+-		dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
+-				  arvif->beacon_buf, arvif->beacon_paddr);
++		if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL)
++			kfree(arvif->beacon_buf);
++		else
++			dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
++					  arvif->beacon_buf,
++					  arvif->beacon_paddr);
+ 		arvif->beacon_buf = NULL;
+ 	}
+ }
+@@ -5576,10 +5580,17 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
+ 	if (vif->type == NL80211_IFTYPE_ADHOC ||
+ 	    vif->type == NL80211_IFTYPE_MESH_POINT ||
+ 	    vif->type == NL80211_IFTYPE_AP) {
+-		arvif->beacon_buf = dma_alloc_coherent(ar->dev,
+-						       IEEE80211_MAX_FRAME_LEN,
+-						       &arvif->beacon_paddr,
+-						       GFP_ATOMIC);
++		if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL) {
++			arvif->beacon_buf = kmalloc(IEEE80211_MAX_FRAME_LEN,
++						    GFP_KERNEL);
++			arvif->beacon_paddr = (dma_addr_t)arvif->beacon_buf;
++		} else {
++			arvif->beacon_buf =
++				dma_alloc_coherent(ar->dev,
++						   IEEE80211_MAX_FRAME_LEN,
++						   &arvif->beacon_paddr,
++						   GFP_ATOMIC);
++		}
+ 		if (!arvif->beacon_buf) {
+ 			ret = -ENOMEM;
+ 			ath10k_warn(ar, "failed to allocate beacon buffer: %d\n",
+@@ -5794,8 +5805,12 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
+ 
+ err:
+ 	if (arvif->beacon_buf) {
+-		dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
+-				  arvif->beacon_buf, arvif->beacon_paddr);
++		if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL)
++			kfree(arvif->beacon_buf);
++		else
++			dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
++					  arvif->beacon_buf,
++					  arvif->beacon_paddr);
+ 		arvif->beacon_buf = NULL;
+ 	}
+ 
 -- 
-Kees Cook
+2.25.1
+
