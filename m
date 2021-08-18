@@ -2,66 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A52D3EF5AB
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 00:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99D873EF7C6
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 03:57:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234681AbhHQWUk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Aug 2021 18:20:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53348 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229729AbhHQWUj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Aug 2021 18:20:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 36FAE60EE0;
-        Tue, 17 Aug 2021 22:20:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629238806;
-        bh=88PEeN3QPvy2n7i+U59YDW1+amHB33i+8WSgBy2glF8=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=Ur7e6pkBy5DlpJXANsQp2WzwIDe3Y0KD1cAoTbnIg1iwnZaIxeCaPBycq8MP5MGLj
-         Pi+oTGwQrGkxnexkhlnPrlFReizL0ZLnGHCf4wQkit/LQwd6xcwW9mQue80UVjkSZ1
-         wbqNHGbujNxQHveVKV0IEddPuM10rQLh0cgc0TRr8OXZ5976bUI+2ss+xshXv2IN1l
-         uwEFDGfAx60YBfyfsTzKxG0YWmwajcO0lJpDUHX9heZ1vnVrWkWrgVA194doNYok8q
-         aaXwAyGgepPq1jeLLJX7gmPwwNqWUo81jGf/ll8nmxxuKg2xbiPxmmqH/mbyI3GacO
-         bJ558qvJ93rPQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 2A0DA60A25;
-        Tue, 17 Aug 2021 22:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S236312AbhHRB6U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Aug 2021 21:58:20 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187]:17033 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236121AbhHRB6T (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Aug 2021 21:58:19 -0400
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Gq9tH5NHZzbfLX;
+        Wed, 18 Aug 2021 09:53:59 +0800 (CST)
+Received: from dggpeml500024.china.huawei.com (7.185.36.10) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Wed, 18 Aug 2021 09:57:43 +0800
+Received: from [10.67.103.6] (10.67.103.6) by dggpeml500024.china.huawei.com
+ (7.185.36.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Wed, 18 Aug
+ 2021 09:57:43 +0800
+Subject: Re: [PATCH net-next 2/4] ethtool: extend coalesce setting uAPI with
+ CQE mode
+To:     Jakub Kicinski <kuba@kernel.org>
+References: <1629167767-7550-1-git-send-email-moyufeng@huawei.com>
+ <1629167767-7550-3-git-send-email-moyufeng@huawei.com>
+ <20210817063903.6b62801c@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <shenjian15@huawei.com>, <lipeng321@huawei.com>,
+        <yisen.zhuang@huawei.com>, <linyunsheng@huawei.com>,
+        <huangguangbin2@huawei.com>, <chenhao288@hisilicon.com>,
+        <salil.mehta@huawei.com>, <linuxarm@huawei.com>,
+        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
+        <netanel@amazon.com>, <akiyano@amazon.com>,
+        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
+        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
+        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
+        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
+        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
+        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
+        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
+        <linux-wireless@vger.kernel.org>
+From:   moyufeng <moyufeng@huawei.com>
+Message-ID: <c03f3079-ec46-6bfc-5d14-1eaa7e1ef667@huawei.com>
+Date:   Wed, 18 Aug 2021 09:57:43 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
+In-Reply-To: <20210817063903.6b62801c@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-drivers-2021-08-17
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162923880616.4403.10581636012968627104.git-patchwork-notify@kernel.org>
-Date:   Tue, 17 Aug 2021 22:20:06 +0000
-References: <20210817171027.EC1E6C43460@smtp.codeaurora.org>
-In-Reply-To: <20210817171027.EC1E6C43460@smtp.codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+X-Originating-IP: [10.67.103.6]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpeml500024.china.huawei.com (7.185.36.10)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
 
-This pull request was applied to netdev/net.git (refs/heads/master):
 
-On Tue, 17 Aug 2021 17:10:27 +0000 (UTC) you wrote:
-> Hi,
+On 2021/8/17 21:39, Jakub Kicinski wrote:
+> On Tue, 17 Aug 2021 10:36:05 +0800 Yufeng Mo wrote:
+>> In order to support more coalesce parameters through netlink,
+>> add an new structure kernel_ethtool_coalesce, and keep
+>> struct ethtool_coalesce as the base(legacy) part, then the
+>> new parameter can be added into struct kernel_ethtool_coalesce.
+>>
+>> Also add new extack parameter for .set_coalesce and .get_coalesce
+>> then some extra info can return to user with the netlink API.
+>>
+>> Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
+>> Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
 > 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
+> This and the following patches don't build, please make sure
+> allmodconfig builds correctly. Here's an example failure, but
+> IDK if there isn't more:
 > 
-> Kalle
+> drivers/net/ethernet/ti/davinci_emac.c: In function ‘emac_dev_open’:
+> drivers/net/ethernet/ti/davinci_emac.c:1469:3: error: too few arguments to function ‘emac_set_coalesce’
+>  1469 |   emac_set_coalesce(ndev, &coal);
+>       |   ^~~~~~~~~~~~~~~~~
+> .
 > 
-> [...]
-
-Here is the summary with links:
-  - pull-request: wireless-drivers-2021-08-17
-    https://git.kernel.org/netdev/net/c/e5e487a2ec8a
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Sorry, I'll check allmodconfig again and make sure all builds correctly.
