@@ -2,134 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC1CA3EFF6F
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 10:45:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C723A3EFF86
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 10:49:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238840AbhHRIqV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Aug 2021 04:46:21 -0400
-Received: from wnew2-smtp.messagingengine.com ([64.147.123.27]:51009 "EHLO
-        wnew2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229474AbhHRIqU (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Aug 2021 04:46:20 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.west.internal (Postfix) with ESMTP id C56B62B00B95;
-        Wed, 18 Aug 2021 04:45:44 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Wed, 18 Aug 2021 04:45:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm3; bh=gVF8x9/os7Hq80f5jXn4NGfCz4z
-        I9Ggl0mz751t0VxY=; b=HMVFEgsFZb0/aAsUkFKNAYZ2aGpyUAvFqTjlgXRSssM
-        PfyVJVq2zKqPjbZXG1+vhMi34Psu0Ob31N/p0hc69+KmIQ8p79Llao1EXlR+QTAB
-        Q6QK4J4EYgoaPbCTSOmKH2lt0XN4yGbShulofooITBH1WWG9CODQN8qbFNvjGn2P
-        U0h4WTi+VRhNPLwMN0v3mnWGnGt0KLAbzQl8xWsF6/YE2uTpl4ijH0ByhMzGEd20
-        PM8uJ8vgycJE2Gs1GhCS2kfBGxR3Yzh1W53x2VIVJAzcnXXjCjo2kSPDcH0i7Pvc
-        kCISgu2o5jWUr9bXwOdS6wlseyHryV0b1EXvmcBywZg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=gVF8x9
-        /os7Hq80f5jXn4NGfCz4zI9Ggl0mz751t0VxY=; b=Z9cXy/ZYbei0ZKf8W0hqzf
-        91LbYgxbs/TinjVIo7HKFfYdRs4aoTUnFKaebSJXAppdlUR3DYAPUGnACdiWkTxV
-        LNlmLh07rr4SblqOSjforLbxMe43/lEAFwIUcJQW1+K+MBtU1uU8cVz09YrKghIK
-        7jdhux7Xi0tJecHSM70w3MY5iPYsWG+eDjW6njxwIrUveagMqI52xV8CgljrfLsI
-        lTrwdVvA3hHWy94Z5oR3FShuQ31RbVMQcE4eMsJrE1UUK9bw3JSlUwgtwnOc+Cuw
-        Iu0jdIgvZdsMpY6quIEYIeZJV2ABm+cL1qqzva7JyWroWPgFqR1zVlzdX9mdwyNg
-        ==
-X-ME-Sender: <xms:tsgcYWq-CO3B-5R0JP82K3vxmNqxfnGhcADWF1jev60HwCb6maPP6Q>
-    <xme:tsgcYUpreoVRzdcBk8Viykq84CDU-Jg2IzopUs6nEFrPfpC6poIkjJe8oJq8AnKMy
-    5139BAH3W9UOgQB8zg>
-X-ME-Received: <xmr:tsgcYbOCHN3UHDimLlsNrwVOzraPmfqdPu9FenKnzmvkUd3YPhzLlCoFR3nza8Keh5XeKOQGF-mhc-8jzv89gxDMwWFPoioTsTlb>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrleehgddtkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepofgrgihimhgv
-    ucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucggtffrrghtth
-    gvrhhnpeelkeeghefhuddtleejgfeljeffheffgfeijefhgfeufefhtdevteegheeiheeg
-    udenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrg
-    igihhmvgestggvrhhnohdrthgvtghh
-X-ME-Proxy: <xmx:tsgcYV7kd765tzB4qEfvDR2COzE_7yZ-uTV3TH-V8vMxxM2cWBa0Vg>
-    <xmx:tsgcYV50JBellncZaf7aE9M_BlypVGNI_aidSOMOiH_l2RQiBCrWKQ>
-    <xmx:tsgcYVicoOaeXzVMoBaUcmJ8Cxb-d1t69W8KybhLNMkDop1qP5eV5Q>
-    <xmx:uMgcYRh1duafOHGA--YDvrBi9OTkP5fGUwd3Av1rI06jmJV-nttl96_xZIE>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 18 Aug 2021 04:45:42 -0400 (EDT)
-Date:   Wed, 18 Aug 2021 10:45:39 +0200
-From:   Maxime Ripard <maxime@cerno.tech>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-sunxi@googlegroups.com,
-        "David S. Miller" <davem@davemloft.net>,
-        de Goede <hdegoede@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 27/54] dt-bindings: net: wireless: Convert ESP ESP8089
- binding to a schema
-Message-ID: <20210818084539.kw267o4dc5nqk2qt@gilmour>
-References: <20210721140424.725744-28-maxime@cerno.tech>
- <20210806084709.0C279C4338A@smtp.codeaurora.org>
+        id S233640AbhHRItp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Aug 2021 04:49:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47840 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229944AbhHRItg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Aug 2021 04:49:36 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8899261053;
+        Wed, 18 Aug 2021 08:49:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629276541;
+        bh=GGkX2P/e53YC5Y3E87DrwesFOzn/RDad8enFDtE/Rqk=;
+        h=Date:From:To:Cc:Subject:From;
+        b=ddE0AGJdx9UT7KmrCG/fXVY6E81BAJ1uT81hIjp8QES14+M0BQQn4z1RbxGAuk/lP
+         4hH5mb7ssm9PIHsR2k+8ujCc8S9AHVd0eK9WeFSC7KV/G6Y0KsxKdV0PpODKovrfyc
+         TwnTLlERxYKLJCjlc4TwK6/reOz8QvCAWtiPYenY76XKBAA7Get+DJlQ8IsCA7S37Z
+         vtNPWTQlKXKtpx79tioMc1LofibKJBwqXnRgUFUmh4FONkFLYZmly9sX0bSGiBHosR
+         FYvKNfEErU7AtvU+fAL68ox/qS20wjJwz/y3+sHdOVsVZdiAktjNFCeF3RamLtgl9Z
+         m4fgnfwJlEmcw==
+Received: by pali.im (Postfix)
+        id 2BABD68A; Wed, 18 Aug 2021 10:48:59 +0200 (CEST)
+Date:   Wed, 18 Aug 2021 10:48:59 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     stable@vger.kernel.org
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+Subject: Backporting CVE-2020-3702 ath9k patches to stable
+Message-ID: <20210818084859.vcs4vs3yd6zetmyt@pali>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="4hpn24w3x2mvdec6"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210806084709.0C279C4338A@smtp.codeaurora.org>
+User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hello! I would like to request for backporting following ath9k commits
+which are fixing CVE-2020-3702 issue.
 
---4hpn24w3x2mvdec6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+56c5485c9e44 ("ath: Use safer key clearing with key cache entries")
+73488cb2fa3b ("ath9k: Clear key cache explicitly on disabling hardware")
+d2d3e36498dd ("ath: Export ath_hw_keysetmac()")
+144cd24dbc36 ("ath: Modify ath_key_delete() to not need full key entry")
+ca2848022c12 ("ath9k: Postpone key cache entry deletion for TXQ frames reference it")
 
-Hi Kalle,
+See also:
+https://lore.kernel.org/linux-wireless/87o8hvlx5g.fsf@codeaurora.org/
 
-On Fri, Aug 06, 2021 at 08:47:09AM +0000, Kalle Valo wrote:
-> Maxime Ripard <maxime@cerno.tech> wrote:
->=20
-> > The ESP8089 Wireless Chip is supported by Linux (through an out-of-tree
-> > driver) thanks to its device tree binding.
-> >=20
-> > Now that we have the DT validation in place, let's convert the device
-> > tree bindings for that driver over to a YAML schema.
-> >=20
-> > Cc: "David S. Miller" <davem@davemloft.net>
-> > Cc: de Goede <hdegoede@redhat.com>
-> > Cc: Jakub Kicinski <kuba@kernel.org>
-> > Cc: Kalle Valo <kvalo@codeaurora.org>
-> > Cc: linux-wireless@vger.kernel.org
-> > Cc: netdev@vger.kernel.org
-> > Signed-off-by: Maxime Ripard <maxime@cerno.tech>
-> > Reviewed-by: Rob Herring <robh@kernel.org>
->=20
-> We support out-of-tree drivers in DT?
+This CVE-2020-3702 issue affects ath9k driver in stable kernel versions.
+And due to this issue Qualcomm suggests to not use open source ath9k
+driver and instead to use their proprietary driver which do not have
+this issue.
 
-Yeah, as long as the binding is stable we can merge it. This controller
-is one of these examples, but we supported multiple GPU that way too.
+Details about CVE-2020-3702 are described on the ESET blog post:
+https://www.welivesecurity.com/2020/08/06/beyond-kr00k-even-more-wifi-chips-vulnerable-eavesdropping/
 
-> Via which tree is this supposed to go? I guess not via
-> wireless-drivers-next as this is an out-of-tree driver.
-
-It's up to you I guess. It was already part of the dt-bindings wireless
-directory, so either your tree or the DT maintainers if you'd prefer not
-to.
-
-Maxime
-
---4hpn24w3x2mvdec6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCYRzIswAKCRDj7w1vZxhR
-xeimAP9lnyCRsmUlFyHaAGKuDn/+dex3GP0IDQ3vJG4AV1E8gwEA4YPJVG80H85C
-fzFKnYkQugjE0pe/nvOnLDggi2q4/gY=
-=v1V8
------END PGP SIGNATURE-----
-
---4hpn24w3x2mvdec6--
+Two months ago ESET tested above mentioned commits applied on top of
+4.14 stable tree and confirmed that issue cannot be reproduced anymore
+with those patches. Commits were applied cleanly on top of 4.14 stable
+tree without need to do any modification.
