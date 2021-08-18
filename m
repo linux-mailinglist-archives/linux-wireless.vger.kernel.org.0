@@ -2,250 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 587143EFB7E
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 08:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49EC93EFCB3
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 08:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238250AbhHRGNi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Aug 2021 02:13:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45488 "EHLO
+        id S239418AbhHRG2I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Aug 2021 02:28:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238153AbhHRGNL (ORCPT
+        with ESMTP id S238903AbhHRG2F (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Aug 2021 02:13:11 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEB10C08C5F1
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Aug 2021 23:06:07 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id y11so1065504pfl.13
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Aug 2021 23:06:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=0bRXcGnjUc7NVLeCTdRJyE4ge8RgoyPp9mDS2KzOq8s=;
-        b=WQqdtls/I5KQTun/hms341YldczQzpNKS3BfKfWY/GwZZ0hWoG9we6ibSjWW7lx/A3
-         n6thS6+Nyek/C9pXuosZvP3ZzBi7YorfMd8mKDm8qDfvHb0EJADzUaECrtRMe9FIa9KN
-         qz2Nc4X0B0W57jPUBjUc42oG7dCdby25RRrX0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=0bRXcGnjUc7NVLeCTdRJyE4ge8RgoyPp9mDS2KzOq8s=;
-        b=Ra8p6ewaecrEPAg3F5ERlGu4Db9KOTM1t8kiGMi8tubGF5SBFaU74EEZ/TeaQw3ksU
-         vILuDHBymSDhWMpKnWnLsthfR7pf+CQKYFZjkamu4T2PQ6cRR3Vv/xHOT69m3602XBFs
-         EHbh9NSBwG4Pt02HD0NgYNe7h8tMlVQTovrEWQY+zkzAWI/gIjAHWorg+VHfdK9AzqS5
-         4ek1zg9lwrzANZBWU6/F6yVQtCVkjNq3gG4kaTZDoFI9faCrr1PfkLNSVg4/DsIV6ZLC
-         teNzf7KZmY1q0ALggGkQDq8NPd5fZsiQzq/4I1rYQ+mUI4ObxWCHPCkIFyJE6EoVWcTv
-         ZpeA==
-X-Gm-Message-State: AOAM530hmpGgo9k9k+kD7iTnG9FjYkSsNygsB8ECaJRbOASFAMgk08q5
-        pF1GskJ7/sR+9r5Edkhx+RDOdqQeyk2o/w==
-X-Google-Smtp-Source: ABdhPJzf07hn4/UJFD8k9v/PFTouOU2hjIEruQiURQ/GtTe5NoEQV+QNXrPpXGYcUZ9Mijvig6sL0A==
-X-Received: by 2002:aa7:8206:0:b029:3c6:2846:3f9f with SMTP id k6-20020aa782060000b02903c628463f9fmr7834685pfi.30.1629266766977;
-        Tue, 17 Aug 2021 23:06:06 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id l18sm4571594pff.24.2021.08.17.23.06.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Aug 2021 23:06:04 -0700 (PDT)
-From:   Kees Cook <keescook@chromium.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Kees Cook <keescook@chromium.org>,
+        Wed, 18 Aug 2021 02:28:05 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B8A1C061292
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Aug 2021 23:27:28 -0700 (PDT)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=bjornoya.blackshift.org)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1mGF2W-0007Xm-Bs; Wed, 18 Aug 2021 08:27:04 +0200
+Received: from pengutronix.de (unknown [IPv6:2a02:810a:8940:aa0:ed04:8488:5061:54d4])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        (Authenticated sender: mkl-all@blackshift.org)
+        by smtp.blackshift.org (Postfix) with ESMTPSA id 7335C66975A;
+        Wed, 18 Aug 2021 06:26:59 +0000 (UTC)
+Date:   Wed, 18 Aug 2021 08:26:57 +0200
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-can@vger.kernel.org,
+        netdev@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
-        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
+        linux-wireless@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         linux-hardening@vger.kernel.org
-Subject: [PATCH v2 63/63] fortify: Work around Clang inlining bugs
-Date:   Tue, 17 Aug 2021 23:05:33 -0700
-Message-Id: <20210818060533.3569517-64-keescook@chromium.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210818060533.3569517-1-keescook@chromium.org>
+Subject: Re: [PATCH v2 59/63] can: flexcan: Use struct_group() to zero struct
+ flexcan_regs regions
+Message-ID: <20210818062657.6hvn75kf5o5cgey2@pengutronix.de>
 References: <20210818060533.3569517-1-keescook@chromium.org>
+ <20210818060533.3569517-60-keescook@chromium.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7591; h=from:subject; bh=Hec0xxMOh0cK4yBYBOcb5aqhxRAjnc34rm5FBOgOGD0=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhHKMs6ml8yWGswBEn8BNaWTcv46iAfG0OJbmF8YMg oAEj0wmJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYRyjLAAKCRCJcvTf3G3AJmy1EA Cxa4AsWTCF8/uDP8AV7JotgjiK7+Wd6hTmjaB2izxSIO3ujFU7lf++q7Flx4Rk0Khk2tYC5yFzkf1q KsVqRI+lR033mk6KdPSJ9FrfNzNJz8wPKrUcmvO1yC5Ew7NsSbVcFG9rAJTpUGSp6PB33hEZa7ao6X g00L0SWHv3JrcPqQxfPVH40XS0edTmHg2xsJ5mtz/NsFH7sjkVvbomQwzPWIWneWOUFnBoNs+gvf6t vSf2XOihAR71V0F5AszPaupkbs6G5njj1px9/ENBv3HIa208Q3y8DpqsvqamaITfm+fmWG8CrO/7OT jWWUwcLUoiPAzcKaa+OKE5ii0xStgjRPNhoJKsOJU0dDqt0/5/X37hzygJ+A+cggmAIfMoTzmE9a8f appSBcljh4nYutCtxDKnbc2yqCBtKYTAlZ+vqGGAe35wFrXKhNNsQK7c8ciBk7F+G4tdWcsfmTfE+h Z4gxHVqy2JU4v0EWPwh/KVUbbHw6edMeAslLgW8TyhklAWJSFhjGecLkyTpx66usdMKTWdYMmrbu8O PytqhJuULFGtFs5i5jkysrms3SGobkhoweDZHzjT82RPdfsZchVOG0LZfHsmuh54DBoXEf/9bw4Zgm QQ4sjZ4Ski2g83oskEkT+N7EABOdA+mCeKE78rnk61IM+xXh4/vRHiEA0ipw==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="kduqcl3tf4g5uel5"
+Content-Disposition: inline
+In-Reply-To: <20210818060533.3569517-60-keescook@chromium.org>
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-To enable FORTIFY_SOURCE support for Clang, the kernel must work around
-a pair of bugs, related to Clang's inlining.
 
-Change all the fortified APIs into macros with different inline names to
-bypass Clang's broken inline-of-a-builtin detection:
-https://bugs.llvm.org/show_bug.cgi?id=50322
+--kduqcl3tf4g5uel5
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Lift all misbehaving __builtin_object_size() calls into the macros to
-bypass Clang's broken __builtin_object_size() arguments-of-an-inline
-visibility:
-https://github.com/ClangBuiltLinux/linux/issues/1401
+On 17.08.2021 23:05:29, Kees Cook wrote:
+> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> field bounds checking for memset(), avoid intentionally writing across
+> neighboring fields.
+>=20
+> Add struct_group() to mark both regions of struct flexcan_regs that get
+> initialized to zero. Avoid the future warnings:
+>=20
+> In function 'fortify_memset_chk',
+>     inlined from 'memset_io' at ./include/asm-generic/io.h:1169:2,
+>     inlined from 'flexcan_ram_init' at drivers/net/can/flexcan.c:1403:2:
+> ./include/linux/fortify-string.h:199:4: warning: call to '__write_overflo=
+w_field' declared with attribute warning: detected write beyond size of fie=
+ld (1st parameter); maybe use struct_group()? [-Wattribute-warning]
+>   199 |    __write_overflow_field(p_size_field, size);
+>       |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> In function 'fortify_memset_chk',
+>     inlined from 'memset_io' at ./include/asm-generic/io.h:1169:2,
+>     inlined from 'flexcan_ram_init' at drivers/net/can/flexcan.c:1408:3:
+> ./include/linux/fortify-string.h:199:4: warning: call to '__write_overflo=
+w_field' declared with attribute warning: detected write beyond size of fie=
+ld (1st parameter); maybe use struct_group()? [-Wattribute-warning]
+>   199 |    __write_overflow_field(p_size_field, size);
+>       |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>=20
+> Cc: Wolfgang Grandegger <wg@grandegger.com>
+> Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: linux-can@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-Thankfully, due to how the inlining already behaves in GCC, this change
-has no effect on GCC builds, but allows Clang to finally gain full
-FORTIFY coverage.
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-However, because of a third bug which had no work-arounds, FORTIFY_SOURCE
-will only work with Clang version 13 and later. Update the Kconfig to
-reflect the new requirements.
+> -	memset_io(&regs->mb[0][0], 0,
+> -		  offsetof(struct flexcan_regs, rx_smb1[3]) -
+> -		  offsetof(struct flexcan_regs, mb[0][0]) + 0x4);
+> +	memset_io(&regs->init, 0, sizeof(regs->init));
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- include/linux/fortify-string.h | 55 +++++++++++++++++++++-------------
- security/Kconfig               |  2 +-
- 2 files changed, 36 insertions(+), 21 deletions(-)
+This even makes the code more readable! \o/
 
-diff --git a/include/linux/fortify-string.h b/include/linux/fortify-string.h
-index 7de4673dfe2c..e62d3633a329 100644
---- a/include/linux/fortify-string.h
-+++ b/include/linux/fortify-string.h
-@@ -48,10 +48,10 @@ extern char *__underlying_strncpy(char *p, const char *q, __kernel_size_t size)
- #define __underlying_strncpy	__builtin_strncpy
- #endif
- 
--__FORTIFY_INLINE char *strncpy(char *p, const char *q, __kernel_size_t size)
-+#define strncpy(p, q, s) __fortify_strncpy(p, q, s, __builtin_object_size(p, 1))
-+__FORTIFY_INLINE char *__fortify_strncpy(char *p, const char *q,
-+					 __kernel_size_t size, size_t p_size)
- {
--	size_t p_size = __builtin_object_size(p, 1);
--
- 	if (__builtin_constant_p(size) && p_size < size)
- 		__write_overflow();
- 	if (p_size < size)
-@@ -71,9 +71,10 @@ __FORTIFY_INLINE char *strcat(char *p, const char *q)
- }
- 
- extern __kernel_size_t __real_strnlen(const char *, __kernel_size_t) __RENAME(strnlen);
--__FORTIFY_INLINE __kernel_size_t strnlen(const char *p, __kernel_size_t maxlen)
-+#define strnlen(p, s) __fortify_strnlen(p, s, __builtin_object_size(p, 1))
-+__FORTIFY_INLINE __kernel_size_t __fortify_strnlen(const char *p, size_t maxlen,
-+						   size_t p_size)
- {
--	size_t p_size = __builtin_object_size(p, 1);
- 	size_t p_len = __compiletime_strlen(p);
- 	size_t ret;
- 
-@@ -108,10 +109,14 @@ __FORTIFY_INLINE __kernel_size_t strlen(const char *p)
- 
- /* defined after fortified strlen to reuse it */
- extern size_t __real_strlcpy(char *, const char *, size_t) __RENAME(strlcpy);
--__FORTIFY_INLINE size_t strlcpy(char *p, const char *q, size_t size)
-+#define strlcpy(p, q, s) __fortify_strlcpy(p, q, s,			\
-+					   __builtin_object_size(p, 1),	\
-+					   __builtin_object_size(q, 1))
-+__FORTIFY_INLINE size_t __fortify_strlcpy(char *p, const char *q,
-+					  size_t size,
-+					  const size_t p_size,
-+					  const size_t q_size)
- {
--	size_t p_size = __builtin_object_size(p, 1);
--	size_t q_size = __builtin_object_size(q, 1);
- 	size_t q_len;	/* Full count of source string length. */
- 	size_t len;	/* Count of characters going into destination. */
- 
-@@ -135,12 +140,15 @@ __FORTIFY_INLINE size_t strlcpy(char *p, const char *q, size_t size)
- 
- /* defined after fortified strnlen to reuse it */
- extern ssize_t __real_strscpy(char *, const char *, size_t) __RENAME(strscpy);
--__FORTIFY_INLINE ssize_t strscpy(char *p, const char *q, size_t size)
-+#define strscpy(p, q, s) __fortify_strscpy(p, q, s,			\
-+					   __builtin_object_size(p, 1),	\
-+					   __builtin_object_size(q, 1))
-+__FORTIFY_INLINE ssize_t __fortify_strscpy(char *p, const char *q,
-+					   size_t size,
-+					   const size_t p_size,
-+					   const size_t q_size)
- {
- 	size_t len;
--	/* Use string size rather than possible enclosing struct size. */
--	size_t p_size = __builtin_object_size(p, 1);
--	size_t q_size = __builtin_object_size(q, 1);
- 
- 	/* If we cannot get size of p and q default to call strscpy. */
- 	if (p_size == (size_t) -1 && q_size == (size_t) -1)
-@@ -181,11 +189,13 @@ __FORTIFY_INLINE ssize_t strscpy(char *p, const char *q, size_t size)
- }
- 
- /* defined after fortified strlen and strnlen to reuse them */
--__FORTIFY_INLINE char *strncat(char *p, const char *q, __kernel_size_t count)
-+#define strncat(p, q, count)	__fortify_strncat(p, q, count, \
-+						  __builtin_object_size(p, 1), \
-+						  __builtin_object_size(q, 1))
-+__FORTIFY_INLINE char *__fortify_strncat(char *p, const char *q, size_t count,
-+					 size_t p_size, size_t q_size)
- {
- 	size_t p_len, copy_len;
--	size_t p_size = __builtin_object_size(p, 1);
--	size_t q_size = __builtin_object_size(q, 1);
- 
- 	if (p_size == (size_t)-1 && q_size == (size_t)-1)
- 		return __underlying_strncat(p, q, count);
-@@ -352,7 +362,8 @@ __FORTIFY_INLINE void fortify_memcpy_chk(__kernel_size_t size,
- 		memmove)
- 
- extern void *__real_memscan(void *, int, __kernel_size_t) __RENAME(memscan);
--__FORTIFY_INLINE void *memscan(void *p, int c, __kernel_size_t size)
-+#define memscan(p, c, s) __fortify_memscan(p, c, s)
-+__FORTIFY_INLINE void *__fortify_memscan(void *p, int c, __kernel_size_t size)
- {
- 	size_t p_size = __builtin_object_size(p, 0);
- 
-@@ -363,7 +374,8 @@ __FORTIFY_INLINE void *memscan(void *p, int c, __kernel_size_t size)
- 	return __real_memscan(p, c, size);
- }
- 
--__FORTIFY_INLINE int memcmp(const void *p, const void *q, __kernel_size_t size)
-+#define memcmp(p, q, s) __fortify_memcmp(p, q, s)
-+__FORTIFY_INLINE int __fortify_memcmp(const void *p, const void *q, __kernel_size_t size)
- {
- 	size_t p_size = __builtin_object_size(p, 0);
- 	size_t q_size = __builtin_object_size(q, 0);
-@@ -379,7 +391,8 @@ __FORTIFY_INLINE int memcmp(const void *p, const void *q, __kernel_size_t size)
- 	return __underlying_memcmp(p, q, size);
- }
- 
--__FORTIFY_INLINE void *memchr(const void *p, int c, __kernel_size_t size)
-+#define memchr(p, c, s) __fortify_memchr(p, c, s)
-+__FORTIFY_INLINE void *__fortify_memchr(const void *p, int c, __kernel_size_t size)
- {
- 	size_t p_size = __builtin_object_size(p, 0);
- 
-@@ -391,7 +404,8 @@ __FORTIFY_INLINE void *memchr(const void *p, int c, __kernel_size_t size)
- }
- 
- void *__real_memchr_inv(const void *s, int c, size_t n) __RENAME(memchr_inv);
--__FORTIFY_INLINE void *memchr_inv(const void *p, int c, size_t size)
-+#define memchr_inv(p, c, s) __fortify_memchr_inv(p, c, s)
-+__FORTIFY_INLINE void *__fortify_memchr_inv(const void *p, int c, size_t size)
- {
- 	size_t p_size = __builtin_object_size(p, 0);
- 
-@@ -415,7 +429,8 @@ __FORTIFY_INLINE void *kmemdup(const void *p, size_t size, gfp_t gfp)
- }
- 
- /* Defined after fortified strlen to reuse it. */
--__FORTIFY_INLINE char *strcpy(char *p, const char *q)
-+#define strcpy(p, q) __fortify_strcpy(p, q)
-+__FORTIFY_INLINE char *__fortify_strcpy(char *p, const char *q)
- {
- 	size_t p_size = __builtin_object_size(p, 1);
- 	size_t q_size = __builtin_object_size(q, 1);
-diff --git a/security/Kconfig b/security/Kconfig
-index fe6c0395fa02..530a15566b1d 100644
---- a/security/Kconfig
-+++ b/security/Kconfig
-@@ -193,7 +193,7 @@ config FORTIFY_SOURCE
- 	depends on ARCH_HAS_FORTIFY_SOURCE
- 	# https://bugs.llvm.org/show_bug.cgi?id=50322
- 	# https://bugs.llvm.org/show_bug.cgi?id=41459
--	depends on !CC_IS_CLANG
-+	depends on !CC_IS_CLANG || CLANG_VERSION >= 130000
- 	help
- 	  Detect overflows of buffers in common string and memory functions
- 	  where the compiler can determine and validate the buffer sizes.
--- 
-2.30.2
+>  	if (priv->can.ctrlmode & CAN_CTRLMODE_FD)
+> -		memset_io(&regs->tx_smb_fd[0], 0,
+> -			  offsetof(struct flexcan_regs, rx_smb1_fd[17]) -
+> -			  offsetof(struct flexcan_regs, tx_smb_fd[0]) + 0x4);
+> +		memset_io(&regs->init_fd, 0, sizeof(regs->init_fd));
+> =20
+>  	reg_ctrl2 &=3D ~FLEXCAN_CTRL2_WRMFRZ;
+>  	priv->write(reg_ctrl2, &regs->ctrl2);
 
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde           |
+Embedded Linux                   | https://www.pengutronix.de  |
+Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
+
+--kduqcl3tf4g5uel5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEK3kIWJt9yTYMP3ehqclaivrt76kFAmEcqC4ACgkQqclaivrt
+76lMtAf+PLTf+69ONg9/KGwncoo4yvZ5m8bSKHLYfYYuCITf4oOnHWQIBFT3P8Fn
+GMKihDcISmFKjqSbFu8aJSqtNFhYzGB0uIUjuhW+15TJRH7SUTZCuT/U6VPXrEWi
+qWCGvkl3szxqSpDVrbCW5ChnnsAZ3Nj2pXV+gkB62mvtcwTdqFBczMfbKHNhLHgv
+BYjF2uWTN51iadHR3Kese6EccsTaIoCrqZjnGrlJSBVLtt66BT101RY0pE9890e+
++p/LRFYivNeT0DnAObs8TDghwzxWlqfE3nR1QLSvENRbMBSzhEbipc7oz3DQJC4v
+WM/41iCaZScHUFfgxPrBqtGtM1p9RA==
+=LXIZ
+-----END PGP SIGNATURE-----
+
+--kduqcl3tf4g5uel5--
