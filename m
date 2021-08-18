@@ -2,94 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C98CD3F0D24
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 23:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48F853F0DA2
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 23:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233958AbhHRVJt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Aug 2021 17:09:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59088 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233915AbhHRVJt (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Aug 2021 17:09:49 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EE06C061764
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 14:09:14 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id i28so7597437lfl.2
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 14:09:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qjXrcIOgVKk1mPzvCDdPM89T7IRAJPhj3erq4tB0vv8=;
-        b=IAGuXZNBtJmAbMdUhqC7E8KnSq78nSFb7TeRpra2h/nIwoCi4li37yOLsIAfpFhzAG
-         ElR1A1zxGPsnh/weuzxoVwIypaI7o9SkS4eLUn+znPLeUpI4k8lbZLzKsuWg6XaaTnNE
-         nKVr0yMeh/s+mxNcJL5VifZx0Z388DvO8d8aEgUVVRXGJzl/XGm13d4/cRLKe5KP7Ynz
-         7hjo0dTJg4VdEEOyITpL5jeFeUVLpbz0UaJM8aYEoGfizl2uWC9+/A4x3TQOKdOrpy2c
-         DU7JBmblBuEaxYxvrZdpmFB/EuyrFDuASnYqGIhhHvhNJVy2dVPthUGp7peZi4L9J3bn
-         TqoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qjXrcIOgVKk1mPzvCDdPM89T7IRAJPhj3erq4tB0vv8=;
-        b=Dm/Ice+jN8bQZLsreKSDaoPm772pKUoplxECZ4258SMrNed64UOWe54HoJwiYLstyz
-         bJaU0s3UP0K9VAH9cxnv9gYYuPK5JYPMaUodAPGWt8QO4UsZ5MoYHrwbZz7rUZLxxmBr
-         r+mipnvieUzyPuCEr6I/VGoRhuM8t2/AUzenIoclvl89NvYGxuwdBJrsN3IqgGzht28n
-         n1rSzjL9lUQoUTkR1j+RVLZKHEEOFZz1rTfOPMnuv2nGnF2O4HAeUdtOLSZRT750iHUd
-         CKajzAHL3dOgbkpSegk6qZVMovYKcl3a/WjvSKcwAcU29odZvezR7djahXZbQpWV0fWI
-         nxjg==
-X-Gm-Message-State: AOAM5316BAXJKsjmoOENjTa9Z94vzxWPQoJFo1LtT31QjufcatWaCVZS
-        mb6AnWVCwYi/xQmb/PH/jkBYaM9kY7/d6wWTKQs=
-X-Google-Smtp-Source: ABdhPJyMnPkX2OEHQPBg6pvpnH5zUk/Eiteuhlum86nkFXZ4lKjx6flrkhBXLBbliC9RkX3DvkG9kJD2G4wA30j6eqU=
-X-Received: by 2002:ac2:5b46:: with SMTP id i6mr7436547lfp.500.1629320952285;
- Wed, 18 Aug 2021 14:09:12 -0700 (PDT)
+        id S234115AbhHRVpm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Aug 2021 17:45:42 -0400
+Received: from phobos.denx.de ([85.214.62.61]:44286 "EHLO phobos.denx.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234045AbhHRVpl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Aug 2021 17:45:41 -0400
+Received: from localhost.localdomain (unknown [IPv6:2804:14c:485:504a:609d:5443:34fc:77bc])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: festevam@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id 101F6804E7;
+        Wed, 18 Aug 2021 23:45:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1629323104;
+        bh=NWf6JmEEvSLlYTGA0z2y6P2/u/8zsC+hN4OppuKmJws=;
+        h=From:To:Cc:Subject:Date:From;
+        b=g9DrdKzLPX2kUCBeXLVWp1Awj6Ryu9tl4IGW4B8whjo0syjPVskhO9IVRlcaWPvFm
+         M2F5Cin+EYacL8PV2RNC4C1CQKK1VOKpkBeYQ+IKekju9SNatoEzJcrwJPElu6lZv1
+         iQtOzbmlpt8sCfAylHt0lnXRayXyNLwYtcZfUt/JL7FAmJulWGq03ThJht7h260lCn
+         TCfaH6VQ+eFksvGyrnSlzRLDuN7GHHYy4z0g0UQlVNzTph9MmvW8TkRDp3uqNUcX9J
+         egTvS06H8LNi6UgMcJyWO2hN+UsEsmlocce/boTQjOMp3GSCXkv5Ug11YypNwx8PD6
+         Z5f5n+4Iw/yPw==
+From:   Fabio Estevam <festevam@denx.de>
+To:     kvalo@codeaurora.org
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        hch@lst.de, erik.stromdahl@gmail.com, peter.oh@eero.com,
+        aspriel@gmail.com, marex@denx.de, Fabio Estevam <festevam@denx.de>
+Subject: [PATCH v2] ath10k: Do not call dma_alloc_coherent() for SDIO and USB
+Date:   Wed, 18 Aug 2021 18:44:51 -0300
+Message-Id: <20210818214451.1969739-1-festevam@denx.de>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20210818150943.1630199-1-festevam@denx.de> <17b5a29d098.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
- <369c1f89-df33-455b-773e-a2e0dbf582ff@eero.com>
-In-Reply-To: <369c1f89-df33-455b-773e-a2e0dbf582ff@eero.com>
-From:   Fabio Estevam <festevam@gmail.com>
-Date:   Wed, 18 Aug 2021 18:09:01 -0300
-Message-ID: <CAOMZO5DQTArbXjAdxh4cmtwPfRS9UCiAiQeRQHhjqLpEOUxsyA@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: Do not call dma_alloc_coherent() for SDIO and USB
-To:     Peter Oh <peter.oh@eero.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Fabio Estevam <festevam@denx.de>,
-        Kalle Valo <kvalo@codeaurora.org>, ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Christoph Hellwig <hch@lst.de>, erik.stromdahl@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
+X-Virus-Status: Clean
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Peter,
+When running the "hostapd" application on a i.MX7-based board with
+an ath10k device connected via SDIO, the following warning is seen:
 
-On Wed, Aug 18, 2021 at 2:35 PM Peter Oh <peter.oh@eero.com> wrote:
->
->
-> >> Fix the problem by not calling dma_alloc_coherent() when the device
-> >> is not DMA capable, such as SDIO and USB.
-> >>
-> ath10k calls dma_alloc_coherent multiple places including
-> ath10k_htt_rx_alloc.
->
-> Do SDIO and USB not use such data path function at all?
+------------[ cut here ]------------
+ WARNING: CPU: 0 PID: 489 at kernel/dma/mapping.c:427 dma_alloc_attrs+0xd0/0x114
+ Modules linked in: ath10k_sdio ath10k_core ath
+ CPU: 0 PID: 489 Comm: hostapd Not tainted 5.10.48-stable-standard #1
+ Hardware name: Freescale i.MX7 Dual (Device Tree)
+ [<c0111378>] (unwind_backtrace) from [<c010bc04>] (show_stack+0x10/0x14)
+ [<c010bc04>] (show_stack) from [<c0e26094>] (dump_stack+0xdc/0x104)
+ [<c0e26094>] (dump_stack) from [<c0125574>] (__warn+0xd8/0x114)
+ [<c0125574>] (__warn) from [<c0e20ecc>] (warn_slowpath_fmt+0x60/0xbc)
+ [<c0e20ecc>] (warn_slowpath_fmt) from [<c01b9eac>] (dma_alloc_attrs+0xd0/0x114)
+ [<c01b9eac>] (dma_alloc_attrs) from [<bf01373c>] (ath10k_add_interface+0x2f0/0x1094 [ath10k_core])
+ [<bf01373c>] (ath10k_add_interface [ath10k_core]) from [<c0d94470>] (drv_add_interface+0x88/0x2fc)
+ 
+As explained by Christoph Hellwig:
 
-Now that I look closer:  no, SDIO and USB do not reach the
-dma_alloc_coherent() inside
-ath10k_htt_rx_alloc.
+"Looking at the ath10k code ar->dev is set by ath10k_core_create, which
+has multiple callers.
 
-drivers/net/wireless/ath/ath10k/usb.c and
-drivers/net/wireless/ath/ath10k/sdio.c both set:
-bus_params.dev_type = ATH10K_DEV_TYPE_HL;
+For ath10k_pci_probe it is a pci_dev, which should always have a
+dma_mask.
 
-ath10k_htt_rx_alloc() has:
+For ath10k_ahb_probe is a device tree probed platform_device,
+which should have a dma mask.
 
-if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL)
-     return 0;
+For ath10k_sdio_probe it is a sdio_func, which from my understanding is
+a virtual device can't do DMA itself.
 
-So it returns early in the USB and SDIO cases and does not call
-dma_alloc_coherent().
+For ath10k_snoc_probe it is a platform device with an explicit
+dma_set_mask_and_coherent and above so the dma_mask is set.
 
-Thanks
+For ath10k_usb_probe it is an usb device which can't do USB."
+
+Fix the problem by not calling dma_alloc_coherent() when the device
+is not DMA capable, such as SDIO and USB.
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+---
+Changes since v1:
+- Simplify the check by comparing against ATH10K_DEV_TYPE_HL
+
+ drivers/net/wireless/ath/ath10k/mac.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index c272b290fa73..e85c3f107d2e 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -5576,15 +5576,17 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
+ 	if (vif->type == NL80211_IFTYPE_ADHOC ||
+ 	    vif->type == NL80211_IFTYPE_MESH_POINT ||
+ 	    vif->type == NL80211_IFTYPE_AP) {
+-		arvif->beacon_buf = dma_alloc_coherent(ar->dev,
+-						       IEEE80211_MAX_FRAME_LEN,
+-						       &arvif->beacon_paddr,
+-						       GFP_ATOMIC);
+-		if (!arvif->beacon_buf) {
+-			ret = -ENOMEM;
+-			ath10k_warn(ar, "failed to allocate beacon buffer: %d\n",
+-				    ret);
+-			goto err;
++		if (ar->bus_param.dev_type != ATH10K_DEV_TYPE_HL) {
++			arvif->beacon_buf = dma_alloc_coherent(ar->dev,
++							       IEEE80211_MAX_FRAME_LEN,
++							       &arvif->beacon_paddr,
++							       GFP_ATOMIC);
++			if (!arvif->beacon_buf) {
++				ret = -ENOMEM;
++				ath10k_warn(ar, "failed to allocate beacon buffer: %d\n",
++					    ret);
++				goto err;
++			}
+ 		}
+ 	}
+ 	if (test_bit(ATH10K_FLAG_HW_CRYPTO_DISABLED, &ar->dev_flags))
+-- 
+2.25.1
+
