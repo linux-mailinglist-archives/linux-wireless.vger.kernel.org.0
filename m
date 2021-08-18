@@ -2,130 +2,209 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8497F3F078B
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 17:10:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 295613F0797
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 17:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239308AbhHRPKf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Aug 2021 11:10:35 -0400
-Received: from phobos.denx.de ([85.214.62.61]:60788 "EHLO phobos.denx.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235131AbhHRPKf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Aug 2021 11:10:35 -0400
-Received: from localhost.localdomain (unknown [IPv6:2804:14c:485:504a:609d:5443:34fc:77bc])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: festevam@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id DF5368023C;
-        Wed, 18 Aug 2021 17:09:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1629299399;
-        bh=V3aIwBjPDSwQvWYn3MTxVSL+3+CQ6L5vEo6cTcG4ITw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=tm0U1B+9FVLv5V7tM+4OKtWQr0bp05d1xfbai/h1Hw6GLJFrixLLLIPVCYPmyQU4u
-         c0n/fDYiI5kVgjLdtCb+bVh35Vqi/OobOHJDTgFnBPJkVDXao9Rx6qskeOroUlT3ld
-         SnCC7m9dBGFpSyUCEMohiYcRah0GYAA1Jl9QwH1H4C3FKV5dUlkoYkVvSqgMuh4/XD
-         fKhIRWVbqQR+927L+d9GwbUCPfjayHoSs4IOMY1Xd10y0V0lzFOezjiDBWPlb7zS55
-         DfIvYiW8k42ZaMWYj7rp78SCNz+0l8LE7e4epuiZh3hJdCbZZUMr9NAYbJ541kdAuj
-         kKjNjKE+UAp9Q==
-From:   Fabio Estevam <festevam@denx.de>
-To:     kvalo@codeaurora.org
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        hch@lst.de, erik.stromdahl@gmail.com,
-        Fabio Estevam <festevam@denx.de>
-Subject: [PATCH] ath10k: Do not call dma_alloc_coherent() for SDIO and USB
-Date:   Wed, 18 Aug 2021 12:09:43 -0300
-Message-Id: <20210818150943.1630199-1-festevam@denx.de>
-X-Mailer: git-send-email 2.25.1
+        id S239703AbhHRPML (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Aug 2021 11:12:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60368 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239472AbhHRPMK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Aug 2021 11:12:10 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F51BC061764
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 08:11:35 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id 28-20020a17090a031cb0290178dcd8a4d1so5413011pje.0
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 08:11:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=BATSV86SaK5afBXIFxzdzZX4j4EhGdui2K0OHBJGQcw=;
+        b=nKyY7H15ZclPASn0mrCWStoJsQEVzP5/BmW4V3jtYB1HxVdnZRQQ4l+PtPCRG/dTV6
+         xfDqZKumuBc2DNoifQ7E+k+2RHNCKiMDNP3onIJnlrl5OiL/2iza72Z9iX+5k4rKwpSO
+         /m3Ffp/F03wd5BcOk1ihua3YxRddIsYpot1qTBRf+xRtenjeQ4qFFoOSIN66Jft6TSfW
+         c2t4wMFRzHKGD7LvgQQ/GVhG8mAh1vCDNxP/Inly9yMM79tpqdyKRQdjifrNITzwA6c7
+         yGxl1c2NhdVpvxPZ2G3/l6okDceS2O7mIXsDYuviCR6t29nOh+UDrTcg3BH0FRZEUvzE
+         zLIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=BATSV86SaK5afBXIFxzdzZX4j4EhGdui2K0OHBJGQcw=;
+        b=G4HynvfoL5Dn8Z6hQAgs7Nm1xy4HRAo2lRa7tjRT/ZJDHN3FaF+IZaDQUwoXz7szgu
+         GABA7zaIjZqmLfxYaBtTggcRUS05ZxlRV6K1aVf+LuadGZM0NvOGWV8cemwfgtDoL5LX
+         QhMq+PwWepvHh6UFUdwFLwSNFy9SYMVBRhycEJDy9Ej7oXkAheUN3/hCUohFDZq4rowd
+         kyXEqHpvMUKQidp4YvN3HMEEzwAHDHjQuQ2dkGjgI+CE8XTIrJ4RXYK6BMX6LbchJMqH
+         LemLbvtkud6UhncrJPCvPqEzwMPAac601I46prHTqx6kLFGhjsKYYQnXEmBlDljNjYqJ
+         muJA==
+X-Gm-Message-State: AOAM5306wT1RCx/ikYxr89s83VSuYaNh++QO0RQZupjuIiC4GKis43af
+        lAg1klkeA3I7erHKPTI/QPSQ8A==
+X-Google-Smtp-Source: ABdhPJyb9v3aI2ukGkg+KeS46DSybL7HwTNvsJIGANZduqIYX0SVbX0PrpsQIc/aOBu7eADDQMvgoA==
+X-Received: by 2002:a17:90b:1e03:: with SMTP id pg3mr9751970pjb.203.1629299494765;
+        Wed, 18 Aug 2021 08:11:34 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id m7sm28291pfc.212.2021.08.18.08.11.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Aug 2021 08:11:34 -0700 (PDT)
+Date:   Wed, 18 Aug 2021 15:11:28 +0000
+From:   Sean Christopherson <seanjc@google.com>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        kvm@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
+        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 53/63] KVM: x86: Use struct_group() to zero decode
+ cache
+Message-ID: <YR0jIEzEcUom/7rd@google.com>
+References: <20210818060533.3569517-1-keescook@chromium.org>
+ <20210818060533.3569517-54-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210818060533.3569517-54-keescook@chromium.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When running the "hostapd" application on a i.MX7-based board with
-an ath10k device connected via SDIO, the following warning is seen:
+On Tue, Aug 17, 2021, Kees Cook wrote:
+>  arch/x86/kvm/emulate.c     |  3 +--
+>  arch/x86/kvm/kvm_emulate.h | 19 +++++++++++--------
+>  2 files changed, 12 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+> index 2837110e66ed..2608a047e769 100644
+> --- a/arch/x86/kvm/emulate.c
+> +++ b/arch/x86/kvm/emulate.c
+> @@ -5377,8 +5377,7 @@ static int fastop(struct x86_emulate_ctxt *ctxt, fastop_t fop)
+>  
+>  void init_decode_cache(struct x86_emulate_ctxt *ctxt)
+>  {
+> -	memset(&ctxt->rip_relative, 0,
+> -	       (void *)&ctxt->modrm - (void *)&ctxt->rip_relative);
+> +	memset(&ctxt->decode_cache, 0, sizeof(ctxt->decode_cache));
+>  
+>  	ctxt->io_read.pos = 0;
+>  	ctxt->io_read.end = 0;
+> diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+> index 68b420289d7e..9b8afcb8ad39 100644
+> --- a/arch/x86/kvm/kvm_emulate.h
+> +++ b/arch/x86/kvm/kvm_emulate.h
+> @@ -341,14 +341,17 @@ struct x86_emulate_ctxt {
+>  	 * the rest are initialized unconditionally in x86_decode_insn
+>  	 * or elsewhere
+>  	 */
+> -	bool rip_relative;
+> -	u8 rex_prefix;
+> -	u8 lock_prefix;
+> -	u8 rep_prefix;
+> -	/* bitmaps of registers in _regs[] that can be read */
+> -	u32 regs_valid;
+> -	/* bitmaps of registers in _regs[] that have been written */
+> -	u32 regs_dirty;
+> +	struct_group(decode_cache,
 
-------------[ cut here ]------------
- WARNING: CPU: 0 PID: 489 at kernel/dma/mapping.c:427 dma_alloc_attrs+0xd0/0x114
- Modules linked in: ath10k_sdio ath10k_core ath
- CPU: 0 PID: 489 Comm: hostapd Not tainted 5.10.48-stable-standard #1
- Hardware name: Freescale i.MX7 Dual (Device Tree)
- [<c0111378>] (unwind_backtrace) from [<c010bc04>] (show_stack+0x10/0x14)
- [<c010bc04>] (show_stack) from [<c0e26094>] (dump_stack+0xdc/0x104)
- [<c0e26094>] (dump_stack) from [<c0125574>] (__warn+0xd8/0x114)
- [<c0125574>] (__warn) from [<c0e20ecc>] (warn_slowpath_fmt+0x60/0xbc)
- [<c0e20ecc>] (warn_slowpath_fmt) from [<c01b9eac>] (dma_alloc_attrs+0xd0/0x114)
- [<c01b9eac>] (dma_alloc_attrs) from [<bf01373c>] (ath10k_add_interface+0x2f0/0x1094 [ath10k_core])
- [<bf01373c>] (ath10k_add_interface [ath10k_core]) from [<c0d94470>] (drv_add_interface+0x88/0x2fc)
- 
-As explained by Christoph Hellwig:
+This is somewhat misleading because half of this struct is the so called "decode
+cache", not just these six fields.
 
-"Looking at the ath10k code ar->dev is set by ath10k_core_create, which
-has multiple callers.
+KVM's "optimization" is quite ridiculous as this has never been such a hot path
+that saving a few mov instructions would be noticeable.  And hilariously, the
+"optimization" is completely unnecessary because both gcc and clang are clever
+enough to batch the first five into a movq even when zeroing the fields individually.
 
-For ath10k_pci_probe it is a pci_dev, which should always have a
-dma_mask.
+So, I would much prefer to go with the following:
 
-For ath10k_ahb_probe is a device tree probed platform_device,
-which should have a dma mask.
+From dbdca1f4cd01fee418c252e54c360d518b2b1ad6 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Wed, 18 Aug 2021 08:03:08 -0700
+Subject: [PATCH] KVM: x86: Replace memset() "optimization" with normal
+ per-field writes
 
-For ath10k_sdio_probe it is a sdio_func, which from my understanding is
-a virtual device can't do DMA itself.
+Explicitly zero select fields in the emulator's decode cache instead of
+zeroing the fields via a gross memset() that spans six fields.  gcc and
+clang are both clever enough to batch the first five fields into a single
+quadword MOV, i.e. memset() and individually zeroing generate identical
+code.
 
-For ath10k_snoc_probe it is a platform device with an explicit
-dma_set_mask_and_coherent and above so the dma_mask is set.
+Removing the wart also prepares KVM for FORTIFY_SOURCE performing
+compile-time and run-time field bounds checking for memset().
 
-For ath10k_usb_probe it is an usb device which can't do USB."
+No functional change intended.
 
-Fix the problem by not calling dma_alloc_coherent() when the device
-is not DMA capable, such as SDIO and USB.
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reported-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
-Hi,
+ arch/x86/kvm/emulate.c     | 9 +++++++--
+ arch/x86/kvm/kvm_emulate.h | 6 +-----
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
-I am not certain about the proper commit to include in the Fixes tag.
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 2837110e66ed..bf81fd017e7f 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -5377,8 +5377,13 @@ static int fastop(struct x86_emulate_ctxt *ctxt, fastop_t fop)
 
-Any suggestions?
+ void init_decode_cache(struct x86_emulate_ctxt *ctxt)
+ {
+-	memset(&ctxt->rip_relative, 0,
+-	       (void *)&ctxt->modrm - (void *)&ctxt->rip_relative);
++	/* Clear fields that are set conditionally but read without a guard. */
++	ctxt->rip_relative = false;
++	ctxt->rex_prefix = 0;
++	ctxt->lock_prefix = 0;
++	ctxt->rep_prefix = 0;
++	ctxt->regs_valid = 0;
++	ctxt->regs_dirty = 0;
 
-Thanks
+ 	ctxt->io_read.pos = 0;
+ 	ctxt->io_read.end = 0;
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+index 68b420289d7e..bc1fecacccd4 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -336,11 +336,7 @@ struct x86_emulate_ctxt {
+ 		fastop_t fop;
+ 	};
+ 	int (*check_perm)(struct x86_emulate_ctxt *ctxt);
+-	/*
+-	 * The following six fields are cleared together,
+-	 * the rest are initialized unconditionally in x86_decode_insn
+-	 * or elsewhere
+-	 */
++
+ 	bool rip_relative;
+ 	u8 rex_prefix;
+ 	u8 lock_prefix;
+--
+2.33.0.rc1.237.g0d66db33f3-goog
 
- drivers/net/wireless/ath/ath10k/mac.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index c272b290fa73..e85c3f107d2e 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -5576,15 +5576,17 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
- 	if (vif->type == NL80211_IFTYPE_ADHOC ||
- 	    vif->type == NL80211_IFTYPE_MESH_POINT ||
- 	    vif->type == NL80211_IFTYPE_AP) {
--		arvif->beacon_buf = dma_alloc_coherent(ar->dev,
--						       IEEE80211_MAX_FRAME_LEN,
--						       &arvif->beacon_paddr,
--						       GFP_ATOMIC);
--		if (!arvif->beacon_buf) {
--			ret = -ENOMEM;
--			ath10k_warn(ar, "failed to allocate beacon buffer: %d\n",
--				    ret);
--			goto err;
-+		if (!(ar->hif.bus == ATH10K_BUS_SDIO) && !(ar->hif.bus == ATH10K_BUS_USB)) {
-+			arvif->beacon_buf = dma_alloc_coherent(ar->dev,
-+							       IEEE80211_MAX_FRAME_LEN,
-+							       &arvif->beacon_paddr,
-+							       GFP_ATOMIC);
-+			if (!arvif->beacon_buf) {
-+				ret = -ENOMEM;
-+				ath10k_warn(ar, "failed to allocate beacon buffer: %d\n",
-+					    ret);
-+				goto err;
-+			}
- 		}
- 	}
- 	if (test_bit(ATH10K_FLAG_HW_CRYPTO_DISABLED, &ar->dev_flags))
--- 
-2.25.1
-
+> +		bool rip_relative;
+> +		u8 rex_prefix;
+> +		u8 lock_prefix;
+> +		u8 rep_prefix;
+> +		/* bitmaps of registers in _regs[] that can be read */
+> +		u32 regs_valid;
+> +		/* bitmaps of registers in _regs[] that have been written */
+> +		u32 regs_dirty;
+> +	);
+> +
+>  	/* modrm */
+>  	u8 modrm;
+>  	u8 modrm_mod;
+> -- 
+> 2.30.2
+> 
