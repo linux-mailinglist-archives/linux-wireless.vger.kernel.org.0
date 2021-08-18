@@ -2,107 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 275BE3EFD21
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 08:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF5833EFD59
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 09:07:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238377AbhHRGuy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Aug 2021 02:50:54 -0400
-Received: from pegase2.c-s.fr ([93.17.235.10]:34005 "EHLO pegase2.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238515AbhHRGuw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Aug 2021 02:50:52 -0400
-X-Greylist: delayed 475 seconds by postgrey-1.27 at vger.kernel.org; Wed, 18 Aug 2021 02:50:51 EDT
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4GqJH06ckGz9sVX;
-        Wed, 18 Aug 2021 08:42:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id BlboCUcmPLhC; Wed, 18 Aug 2021 08:42:20 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4GqJH05SCXz9sVD;
-        Wed, 18 Aug 2021 08:42:20 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 9988E8B7D3;
-        Wed, 18 Aug 2021 08:42:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id KISUn5YdRZul; Wed, 18 Aug 2021 08:42:20 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id B20628B766;
-        Wed, 18 Aug 2021 08:42:19 +0200 (CEST)
-Subject: Re: [PATCH v2 61/63] powerpc: Split memset() to avoid multi-field
- overflow
-To:     Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Wang Wensheng <wangwensheng4@huawei.com>,
-        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Qinglang Miao <miaoqinglang@huawei.com>,
-        linux-block@vger.kernel.org, Hulk Robot <hulkci@huawei.com>,
-        clang-built-linux@googlegroups.com, netdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-kbuild@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-References: <20210818060533.3569517-1-keescook@chromium.org>
- <20210818060533.3569517-62-keescook@chromium.org>
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <7630b0bc-4389-6283-d8b9-c532df916d60@csgroup.eu>
-Date:   Wed, 18 Aug 2021 08:42:18 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S238842AbhHRHHv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Aug 2021 03:07:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58314 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238144AbhHRHH0 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Aug 2021 03:07:26 -0400
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D72DC0613CF
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 00:06:51 -0700 (PDT)
+Received: by mail-il1-x141.google.com with SMTP id x5so1216448ill.3
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 00:06:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=l8/06Pt7vp+QnEaozw4jU2IiSWTeFeipDK9alaB1bSQ=;
+        b=q2oblBvDMuSmXjMkiVOxmfQnOmOeXGvuC09btNnQgc81x6KPpNGLxgBw0gkKn4Qtuj
+         cUktfn5LWaD3SjIjBBjA03MzktMrq69xgyn1bdFTAUkhcNdNiYjHgPXNhnEfgvwVQE8/
+         Ht4O4lfOLmGFovSoElOJNgsSpXLe2q711J3Svzdq2rDwlPZI6QWs+f1l/82+P/ygzuA/
+         VLSychtg6nTMizzWmm0iqyqNqP3fNyNu05VkC9VpvP9GvR+foRPoNsqeeIaXG3lr9SZS
+         pQ5Y0ghMvO2XNUfOfJGELZ1PP8TebmyUXPWYO7x6DUBiBi5BXsLvmFFb1sgMAmiT+WxA
+         Hx7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=l8/06Pt7vp+QnEaozw4jU2IiSWTeFeipDK9alaB1bSQ=;
+        b=DOsTzJcoXz78vWkIb4tSnAzxSLnYwTBA4Rr8lVKHNQcB7cQpmYCURAHz3t1sYbTeVh
+         EZD6gz0pM79hPIJCSgiZK1nEiI/MRAFQpIqwYE/kRq5z/bKNGub7Bexy7KTIjjHtrmZZ
+         e/gdBaYgk/ojS6or3Z63h9ttEyfPsuxfUtar93QhVyvLtiWigcpoQuTCkxjRZFt+upyi
+         MgG0d0bHeBosqphytK7KlI0ye+AzIuvN5L7BFxHcQCk7nzRw6s+FVn9wuYUBE/zwFHBw
+         hbPo6dgdErRU4Y155alXZpwnMsBA/n3ncPdf+0qgdIjFve8mG/qiamcUuK6dyee/uzAX
+         J5aQ==
+X-Gm-Message-State: AOAM530+UqNPOgZlTmyrI9YmcD4KJF4Fr7KghKFCQO6MfLuQi8fQzO6q
+        tZgmbBgAYibqcoMiOnZhofpjJvWlb6o3fcWoeZ0=
+X-Google-Smtp-Source: ABdhPJwTyYHAGrxdalNU4Js4e0rtyC/UBOPCjsjWeK8pSwfTSQeLfwtA0xM1AO6uR58+Z1jzdz+HxwXnTUoy6dw7zSI=
+X-Received: by 2002:a05:6e02:12b3:: with SMTP id f19mr5320663ilr.234.1629270410700;
+ Wed, 18 Aug 2021 00:06:50 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210818060533.3569517-62-keescook@chromium.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Reply-To: godwinppter@gmail.com
+Sender: bandafrancisca915@gmail.com
+Received: by 2002:a6b:b854:0:0:0:0:0 with HTTP; Wed, 18 Aug 2021 00:06:50
+ -0700 (PDT)
+From:   Godwin Pete <godwinnpeter@gmail.com>
+Date:   Wed, 18 Aug 2021 09:06:50 +0200
+X-Google-Sender-Auth: B4v6EfKRrsHX8kuCkYrSSk0Vy_g
+Message-ID: <CAFC7EqsQeArPfC5nNu4hByW6zG4vkeSczGikWUxD6U456UQ2bw@mail.gmail.com>
+Subject: For your information
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
+I just want to use this little opportunity to inform you about my
+success towards the transfer. I'm currently in India for an investment
+with part of my share, after completing the transfer with an Indian
+business man. But i will visit your country, next year. After the
+completion of my project here in India. Please, contact my secretary
+to send you the (ATM) card which I've already credited with the sum of
+($500,000.00). Just contact her to help you in receiving the (ATM)
+card. I've explained everything to her before my trip to India. This
+is what I can do for you because, you couldn't help in the transfer,
+but for the fact that you're the person whom I've contacted initially,
+for the transfer. I decided to give this ($500,000.00) as a
+compensation for being contacted initially for the transfer. I always
+try to make the difference, in dealing with people any time I come in
+contact with them. I'm also trying to show that I'm quite a different
+person from others whose may have a different purpose within them. I
+believe that you will render some help to me when I, will visit your
+country, for another investment there. So contact my secretary for the
+card, Her contact are as follows,
 
-Le 18/08/2021 à 08:05, Kees Cook a écrit :
-> In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> field bounds checking for memset(), avoid intentionally writing across
-> neighboring fields.
-> 
-> Instead of writing across a field boundary with memset(), move the call
-> to just the array, and an explicit zeroing of the prior field.
-> 
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Qinglang Miao <miaoqinglang@huawei.com>
-> Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-> Cc: Hulk Robot <hulkci@huawei.com>
-> Cc: Wang Wensheng <wangwensheng4@huawei.com>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
-> Link: https://lore.kernel.org/lkml/87czqsnmw9.fsf@mpe.ellerman.id.au
-> ---
->   drivers/macintosh/smu.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/macintosh/smu.c b/drivers/macintosh/smu.c
-> index 94fb63a7b357..59ce431da7ef 100644
-> --- a/drivers/macintosh/smu.c
-> +++ b/drivers/macintosh/smu.c
-> @@ -848,7 +848,8 @@ int smu_queue_i2c(struct smu_i2c_cmd *cmd)
->   	cmd->read = cmd->info.devaddr & 0x01;
->   	switch(cmd->info.type) {
->   	case SMU_I2C_TRANSFER_SIMPLE:
-> -		memset(&cmd->info.sublen, 0, 4);
-> +		cmd->info.sublen = 0;
-> +		memset(&cmd->info.subaddr, 0, 3);
+Full name: Mrs, Jovita Dumuije,
+Country: Burkina Faso
+Email: jovitadumuije@gmail.com
 
-subaddr[] is a table, should the & be avoided ?
-And while at it, why not use sizeof(subaddr) instead of 3 ?
+Thanks, and hope for a good corporation with you in future.
 
-
->   		break;
->   	case SMU_I2C_TRANSFER_COMBINED:
->   		cmd->info.devaddr &= 0xfe;
-> 
+Godwin Peter,
