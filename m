@@ -2,81 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52DD73F0A4C
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 19:30:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A24E13F0BA9
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 21:18:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233051AbhHRRbU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Aug 2021 13:31:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36508 "EHLO
+        id S232964AbhHRTTX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Aug 2021 15:19:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233061AbhHRRbO (ORCPT
+        with ESMTP id S231743AbhHRTTW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Aug 2021 13:31:14 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959CFC061764
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 10:30:38 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id u25so4412555oiv.5
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 10:30:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eero.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=X1JvNj6TPH+OCZuoL+69d7aXsqVTanSmq4nlChB91RM=;
-        b=UfclXNE6fS2NX0zaGPyHaQ9Sf51yRwlF1tIwR0Nlt7IrrO8SDVjg6xc4bfNPGdnGJL
-         rG2kvtG5zfJgWqRJGgUr7iIkkC/97HU/n2ou4jDX4Z4lzRDeylPLrCvmuUFF43PVzEUS
-         JgU/6dhsSBUgN3Dzg4wAy6HOVxpzz0G1c/Kp0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=X1JvNj6TPH+OCZuoL+69d7aXsqVTanSmq4nlChB91RM=;
-        b=dscteOkIqehRG/YVgkCTU1MDlbgOXBw3F629swLtagVOOFMN8owzXO99DNOzk1whuC
-         zGvpYmo3V6wsi4+px97Fnm9Zr9WjAmm8doiak9be1Zt/LjLAW3nxUF9b/JdSeRo6YE0j
-         CEmpBa4DKItvKxwtpPmPi7iTGwvRsdb4M8q4E/IY8BMtjFNuk/8hcgiTCbB4gm99AyQ1
-         hXNrGsV0t2WXxRJhV2bGSlADiZQa+8YxYHTtQmkHq4ZODq9D7IrbN/U3ZQw33+krsu9r
-         wZFWETSizxpSzmpIi75VXyuzGCHE3ibXd29ertcJ8BsroOwQaDHKsHIAMiRGnyegBS+z
-         ECng==
-X-Gm-Message-State: AOAM5304msGSh1BonHlrRBYe1g/6Xr7WikW1uZSEf0r7sES/hPf04baG
-        IModbsNiJK/4PbSrSmLF8UCYoA==
-X-Google-Smtp-Source: ABdhPJxcxzje4axs4isWBNvSoYF1FO1zc5wsEp46nT2W663U4WNanGxKa8wkDVSmcAAWpvRqcj6/Iw==
-X-Received: by 2002:aca:b608:: with SMTP id g8mr7959112oif.66.1629307837970;
-        Wed, 18 Aug 2021 10:30:37 -0700 (PDT)
-Received: from ?IPv6:2600:1700:38c5:675f:4c90:f673:77ac:78b3? ([2600:1700:38c5:675f:4c90:f673:77ac:78b3])
-        by smtp.gmail.com with ESMTPSA id c16sm124828otp.59.2021.08.18.10.30.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Aug 2021 10:30:37 -0700 (PDT)
-Subject: Re: [PATCH] ath10k: Do not call dma_alloc_coherent() for SDIO and USB
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Fabio Estevam <festevam@denx.de>, kvalo@codeaurora.org
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        hch@lst.de, erik.stromdahl@gmail.com
-References: <20210818150943.1630199-1-festevam@denx.de>
- <17b5a29d098.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
-From:   Peter Oh <peter.oh@eero.com>
-Message-ID: <369c1f89-df33-455b-773e-a2e0dbf582ff@eero.com>
-Date:   Wed, 18 Aug 2021 10:30:36 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Wed, 18 Aug 2021 15:19:22 -0400
+X-Greylist: delayed 567 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 18 Aug 2021 12:18:44 PDT
+Received: from confino.investici.org (confino.investici.org [IPv6:2a00:c38:11e:ffff::a020])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC70C061764;
+        Wed, 18 Aug 2021 12:18:44 -0700 (PDT)
+Received: from mx1.investici.org (unknown [127.0.0.1])
+        by confino.investici.org (Postfix) with ESMTP id 4Gqcrh08nxz10yG;
+        Wed, 18 Aug 2021 19:09:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=privacyrequired.com;
+        s=stigmate; t=1629313748;
+        bh=zZRv+nXoCrBil3F5oNtg2nOIZFdUyNScEfpQhHkWs20=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=XuNyCGrF4TFImYa8YkqQMbYM79KtRR5mjYpqhKJM6XXrw3sAON1jt+Y/v45iEN+cy
+         Nbzj3fNcPYxB8NOjFzB0xdXNDXJvqNY6iamhJ9vb6u8qWPeDiUAbgsciFPC3g7lCn0
+         bKt0uIxCi4lHr8vwhgUg7zZ7PXj3VH8B7+AkRuxE=
+Received: from [212.103.72.250] (mx1.investici.org [212.103.72.250]) (Authenticated sender: laniel_francis@privacyrequired.com) by localhost (Postfix) with ESMTPSA id 4Gqcrf3wsYz10y6;
+        Wed, 18 Aug 2021 19:09:06 +0000 (UTC)
+From:   Francis Laniel <laniel_francis@privacyrequired.com>
+To:     linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Daniel Axtens <dja@axtens.net>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
+        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 27/63] fortify: Move remaining fortify helpers into fortify-string.h
+Date:   Wed, 18 Aug 2021 21:05:58 +0200
+Message-ID: <77588349.MC4sUV1sfq@machine>
+In-Reply-To: <20210818060533.3569517-28-keescook@chromium.org>
+References: <20210818060533.3569517-1-keescook@chromium.org> <20210818060533.3569517-28-keescook@chromium.org>
 MIME-Version: 1.0
-In-Reply-To: <17b5a29d098.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi.
 
->> Fix the problem by not calling dma_alloc_coherent() when the device
->> is not DMA capable, such as SDIO and USB.
->>
-ath10k calls dma_alloc_coherent multiple places including 
-ath10k_htt_rx_alloc.
 
-Do SDIO and USB not use such data path function at all?
+Le mercredi 18 ao=FBt 2021, 08:04:57 CEST Kees Cook a =E9crit :
+> When commit a28a6e860c6c ("string.h: move fortified functions definitions
+> in a dedicated header.") moved the fortify-specific code, some helpers
+> were left behind. Moves the remaining fortify-specific helpers into
+> fortify-string.h so they're together where they're used. This requires
+> that any FORTIFY helper function prototypes be conditionally built to
+> avoid "no prototype" warnings. Additionally removes unused helpers.
+>=20
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Francis Laniel <laniel_francis@privacyrequired.com>
+> Cc: Daniel Axtens <dja@axtens.net>
+> Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+> Cc: Andrey Konovalov <andreyknvl@google.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  include/linux/fortify-string.h | 7 +++++++
+>  include/linux/string.h         | 9 ---------
+>  lib/string_helpers.c           | 2 ++
+>  3 files changed, 9 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/include/linux/fortify-string.h b/include/linux/fortify-strin=
+g.h
+> index c1be37437e77..7e67d02764db 100644
+> --- a/include/linux/fortify-string.h
+> +++ b/include/linux/fortify-string.h
+> @@ -2,6 +2,13 @@
+>  #ifndef _LINUX_FORTIFY_STRING_H_
+>  #define _LINUX_FORTIFY_STRING_H_
+>=20
+> +#define __FORTIFY_INLINE extern __always_inline __attribute__((gnu_inlin=
+e))
+> +#define __RENAME(x) __asm__(#x)
+> +
+> +void fortify_panic(const char *name) __noreturn __cold;
+> +void __read_overflow(void) __compiletime_error("detected read beyond size
+> of object (1st parameter)"); +void __read_overflow2(void)
+> __compiletime_error("detected read beyond size of object (2nd parameter)"=
+);
+> +void __write_overflow(void) __compiletime_error("detected write beyond
+> size of object (1st parameter)");
+>=20
+>  #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+>  extern void *__underlying_memchr(const void *p, int c, __kernel_size_t
+> size) __RENAME(memchr); diff --git a/include/linux/string.h
+> b/include/linux/string.h
+> index b48d2d28e0b1..9473f81b9db2 100644
+> --- a/include/linux/string.h
+> +++ b/include/linux/string.h
+> @@ -249,15 +249,6 @@ static inline const char *kbasename(const char *path)
+>  	return tail ? tail + 1 : path;
+>  }
+>=20
+> -#define __FORTIFY_INLINE extern __always_inline __attribute__((gnu_inlin=
+e))
+> -#define __RENAME(x) __asm__(#x)
+> -
+> -void fortify_panic(const char *name) __noreturn __cold;
+> -void __read_overflow(void) __compiletime_error("detected read beyond size
+> of object passed as 1st parameter"); -void __read_overflow2(void)
+> __compiletime_error("detected read beyond size of object passed as 2nd
+> parameter"); -void __read_overflow3(void) __compiletime_error("detected
+> read beyond size of object passed as 3rd parameter"); -void
+> __write_overflow(void) __compiletime_error("detected write beyond size of
+> object passed as 1st parameter"); -
+>  #if !defined(__NO_FORTIFY) && defined(__OPTIMIZE__) &&
+> defined(CONFIG_FORTIFY_SOURCE) #include <linux/fortify-string.h>
+>  #endif
+> diff --git a/lib/string_helpers.c b/lib/string_helpers.c
+> index bde13612c25d..faa9d8e4e2c5 100644
+> --- a/lib/string_helpers.c
+> +++ b/lib/string_helpers.c
+> @@ -883,9 +883,11 @@ char *strreplace(char *s, char old, char new)
+>  }
+>  EXPORT_SYMBOL(strreplace);
+>=20
+> +#ifdef CONFIG_FORTIFY_SOURCE
+>  void fortify_panic(const char *name)
+>  {
+>  	pr_emerg("detected buffer overflow in %s\n", name);
+>  	BUG();
+>  }
+>  EXPORT_SYMBOL(fortify_panic);
+> +#endif /* CONFIG_FORTIFY_SOURCE */
 
-Thanks,
+If I remember correctly, I let these helpers in string.h because I thought=
+=20
+they could be used by code not related to fortify-string.h.
 
-Peter
+But you are right and I think it is better to have all the code related to =
+one=20
+feature in the same place.
+I am happy to see the kernel is fortifying, and this contribution is good, =
+so=20
+here is what I can give:
+Acked-by: Francis Laniel <laniel_francis@privacyrequired.com>
+
+
+Best regards.
+
 
