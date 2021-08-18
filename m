@@ -2,94 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40FFD3F04D7
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 15:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C926F3F05CD
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 16:10:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237097AbhHRNe1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Aug 2021 09:34:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39160 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233722AbhHRNe1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Aug 2021 09:34:27 -0400
-Received: from oasis.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5C0CE6109E;
-        Wed, 18 Aug 2021 13:33:51 +0000 (UTC)
-Date:   Wed, 18 Aug 2021 09:33:49 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
-        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 50/63] tracing: Use memset_startat() to zero struct
- trace_iterator
-Message-ID: <20210818093349.3144276b@oasis.local.home>
-In-Reply-To: <20210818060533.3569517-51-keescook@chromium.org>
-References: <20210818060533.3569517-1-keescook@chromium.org>
-        <20210818060533.3569517-51-keescook@chromium.org>
-X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S237786AbhHROLA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Aug 2021 10:11:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45950 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236932AbhHROK7 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Aug 2021 10:10:59 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62094C061764
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 07:10:25 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id c4so1871169plh.7
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 07:10:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=fX5Uv2QrhFHhTY+4jYcEhVL4jiJDAoHsth04p039l7A=;
+        b=u3mMFSqQpVX90ZDfioa90rOt1cXTtnW+hI/7t3A5wfT3UUj73lyuHRCWKcgNI8vAzf
+         EeTKxck+X9HmMQKfBXQkiS8Y8+4Ls8pEoOo81LEXS5K0iXrrOkC/eqbm3FwQwKNY7zp+
+         H7txnhfVpOJVZzsymEitnhKgJOmRd/IDZgwVEELIalA/opUrpG16lkJtg+kkPyzCEKdL
+         q6H9gFDQbG+UY9FdXWbGf3BMkBpV9sPJ7ucrU+pkouGrjZQvFcMiJ5vovJtiAUa4v8IU
+         LoOq5I57BrTOe5V5xIS4mxrPVWc0n8e/bAPNfPdIbdKxxfG6jl5/K9g5gvaiWGd2nk8i
+         NGWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=fX5Uv2QrhFHhTY+4jYcEhVL4jiJDAoHsth04p039l7A=;
+        b=LG5eXLmDSZmMF4E8xbWgmP8EKzbzbVrb/UlSDGr+xOc47LXNNIWrQ0jmxNh3YiMnxg
+         IeCCNS8TrkH/SS9hmw/4m5Iv+iWinqKEDJMeM4TaNW8O1zMYdR0dYUMAO92zP5c2z53l
+         fkuFZ5Aqook2xFuXWrfakvUjhqCPgqdItr83N1Z70LKWjTBn79hKJFKFaCMJpVDUb7CX
+         gobuPfP65HeNc2sRRaf8OVJGNkV2OHCbOMvAmgSidqqM7wRJ+BpePWLEzpqYCqMrIM25
+         dkahEQennQOWCbAa1yX9vQFcXl+tbzbvkywycfJw/rw9l4mMQB7Y1vh7868UpRrD28E3
+         ODwQ==
+X-Gm-Message-State: AOAM530s/4WK3pqfn5msIsZWPzeTVDkf34iYm2/gmXD6d+4VPwXeHix5
+        M9USR6kbJ339PwbbOGesnmmxDHlypATtUldmXOw=
+X-Google-Smtp-Source: ABdhPJz7Oez3PA0FHNnhiK237VscufV6vI9tV0pSbxPegdHtWw+58D9hZfL/wNCvPX1jGvZBpndGn2Q0rZ+Zm6UVI9o=
+X-Received: by 2002:a17:90a:e641:: with SMTP id ep1mr9528761pjb.209.1629295824853;
+ Wed, 18 Aug 2021 07:10:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:7300:3ce:b029:32:eb80:20b5 with HTTP; Wed, 18 Aug 2021
+ 07:10:24 -0700 (PDT)
+Reply-To: michellegoodman035@gmail.com
+From:   Michelle Goodman <michellegoodman323@gmail.com>
+Date:   Wed, 18 Aug 2021 15:10:24 +0100
+Message-ID: <CAEJQfwkA7jkUrFwMyzoSpfia-pa2kdxEsinQujsyXFN6-_Gx0Q@mail.gmail.com>
+Subject: From Michelle
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 17 Aug 2021 23:05:20 -0700
-Kees Cook <keescook@chromium.org> wrote:
-
-> In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> field bounds checking for memset(), avoid intentionally writing across
-> neighboring fields.
-> 
-> Use memset_startat() to avoid confusing memset() about writing beyond
-> the target struct member.
-> 
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->  kernel/trace/trace.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-> index 13587e771567..9ff8c31975cd 100644
-> --- a/kernel/trace/trace.c
-> +++ b/kernel/trace/trace.c
-> @@ -6691,9 +6691,7 @@ tracing_read_pipe(struct file *filp, char __user *ubuf,
->  		cnt = PAGE_SIZE - 1;
->  
->  	/* reset all but tr, trace, and overruns */
-> -	memset(&iter->seq, 0,
-> -	       sizeof(struct trace_iterator) -
-> -	       offsetof(struct trace_iterator, seq));
-> +	memset_startat(iter, 0, seq);
-
-I can't find memset_startat() in mainline nor linux-next. I don't see it
-in this thread either, but since this has 63 patches, I could have
-easily missed it.
-
-This change really should belong to a patch set that just introduces
-memset_startat() (and perhaps memset_after()) and then updates all the
-places that should use it. That way I can give it a proper review. In
-other words, you should break this patch set up into smaller, more
-digestible portions for the reviewers.
-
-Thanks,
-
--- Steve
-
-
-
->  	cpumask_clear(iter->started);
->  	trace_seq_init(&iter->seq);
->  	iter->pos = -1;
-
+Hallo, ich hoffe du hast meine Nachricht bekommen.
+Ich brauche schnelle Antworten
+Eine Menge
+Vielen Dank.
+Michelle
