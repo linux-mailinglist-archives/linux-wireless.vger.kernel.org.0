@@ -2,61 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B59103F0E35
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 00:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F32923F0E43
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 00:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232456AbhHRWgA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Aug 2021 18:36:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50388 "EHLO
+        id S234796AbhHRWhL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Aug 2021 18:37:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234246AbhHRWgA (ORCPT
+        with ESMTP id S234783AbhHRWhK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Aug 2021 18:36:00 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E018C0613D9
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 15:35:25 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id c17so3891374pgc.0
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 15:35:25 -0700 (PDT)
+        Wed, 18 Aug 2021 18:37:10 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 027D9C0617AD
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 15:36:34 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id j187so3648244pfg.4
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Aug 2021 15:36:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=P+5mSEtJrjnggVNveih68RddTImV6HnC03hWsATd0wA=;
-        b=kRIj8JIqpPRaKtf6CIkL46zXyN+TG7NSk6bw8gu7+8srWnLtPpMsCTfSAl6mGxQkPO
-         AO2tJAjBgrQqg48z/R0w1gBkmv7qgCaYMxOgKctRX1l4WVxZaQ6vNnvX5LAGRKfFudjG
-         PsQYY9oWNpYKfElRnHpaNeEhFchqOLvvFftCGuTzj/AyqbjlyvdzlVVTJ1IB4Ngv7/Ms
-         u4r7kwHlTNVtr67hCv3yPPJX5ARYvjGYympkKth1dgkHgrQuh2AbLYKgiGUMqV8NtvDX
-         +pRCiBA2g2BclAPoPSaP8V7pu3JHnBNUDDtuik7qEFxuxYTic4rAadkAFa3uqJjCsduq
-         ulwQ==
+        bh=2sMII5G/YrPb+0dkZspyZPS9+RZRKOtmg2+pJ+lOQh8=;
+        b=zCeTW3J0K5np3tXoG1IVSEAaPhRTsp6E7FG40JMxEKemO8ZOHARazqIQmpKFIcs6Sd
+         N+GcdWyWkTcutczTnN4sOyyVCxvFWCYptMFPsGfhg09eZke8WGMWE7X323gqAUdPsHGt
+         GJI+Q1n5sJHSiu6jvMoqplSND0vhS0iaBcT4D21x/nhiQ6MHkY+ruWt2EXdQpfM96zjC
+         hi5+qOD40TDeOvrQRR206d0ujvibZUy7wKb/uB+gerRXWqa6ZBPhLTAUkWQOL5fPGNzE
+         UiSjQoQgCCbD822O9dBlOBwzl+Vg8GmLowbUkm3Fma27sj5ipvOpNTGfxjNlZImQucyY
+         2hBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=P+5mSEtJrjnggVNveih68RddTImV6HnC03hWsATd0wA=;
-        b=kcNIw51ma+InZY/38jXB/Se2T7qt/UXcvzlW04w+UNapQNyP3fLKuiHR1S3lifwnm6
-         xGeSObPWDU7mais3szpc5zc1WnIHEIcwgzBQ6GVk1ao6BxH3YQ5apu5XdVAOHhaP0bcp
-         AWhcPSiD91U0OkwxVnzl6hI6dO2iuy3NFvWRUj4BiX2auZLQ16fxZEbiccVHNRELRD9K
-         82aFcTFmuQOdZU4LG+xa4TAXpztrFa76zyf+OcJhnE6lxskcS/znVe77bbRISlYO9xB9
-         +xp13o+fMfW/b1hJmfRIPFY1iZffq8HL0ow68gcQEMGLF0u1ZAQ7IeQIiRY9OtxbZDfq
-         VJ/Q==
-X-Gm-Message-State: AOAM53039oXABCH487g8S40BbfIfKwUWPdx+aM+57IBJsV4b4OdVLV33
-        l6uEEFmLRQ6XxrWaa92gAR8tub/sVjaJ+dW5rpuUzQ==
-X-Google-Smtp-Source: ABdhPJwyt02ESgNp2hR1UmZAbrXcfqwpxlM4lrynFVwd2ax1rLD8IK0a6F+uEetO+Gksr5LJ8GXEb6TCnHWEdnZ/Nzg=
-X-Received: by 2002:a63:311:: with SMTP id 17mr10873581pgd.450.1629326124479;
- Wed, 18 Aug 2021 15:35:24 -0700 (PDT)
+        bh=2sMII5G/YrPb+0dkZspyZPS9+RZRKOtmg2+pJ+lOQh8=;
+        b=VJo5H7+K+ktdJS1Tim1c1w/v47OPrPhHQQUTN4hvhelmFxeGJVuDr/5N0wmUxn5H7r
+         /mnKXqJyPVUQQHFf8o12L/WVNlojYQ6A0avGtHzu0zcJ/QDMYRI4tLNG0q5N2HF9LDJ7
+         NK7ptG80FBnz5Mg7yat2ieNXi1K7OMqmR7fsfUpaxd2Ozdk2+yMR97xP8rVXGBQVMVia
+         DbmwpPEIO5JgPNA0xG8cD0VHo7mbShOLjzrUMGdXQMoxN6p3j1a4XLu3mpuRBI035uvq
+         XNlfp5+8MwImhlLmMHYHdtKysgKFcmnWaswjB97UQLkFMz+A5BL37T0OLqao4lVrBsGu
+         KDWA==
+X-Gm-Message-State: AOAM530iUQqic+0rZCQK8ipYk3M3JZpRPuy+omyOorN4q731qRbYA3AO
+        BH/PVPyqR06bOe9LU3xGo8EuPvBM8hQOrpwOKcaauw==
+X-Google-Smtp-Source: ABdhPJx62hXsE0+fSTYrXfKzc8DzxmmvkPKOdI5TBxPP7euaOB9l5vqd5XytOvYvOyAB9vVojNAO4JW+D+jXmEpzsAs=
+X-Received: by 2002:a63:dd0e:: with SMTP id t14mr9405083pgg.279.1629326194463;
+ Wed, 18 Aug 2021 15:36:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210818060533.3569517-1-keescook@chromium.org> <20210818060533.3569517-6-keescook@chromium.org>
-In-Reply-To: <20210818060533.3569517-6-keescook@chromium.org>
+References: <20210818060533.3569517-1-keescook@chromium.org> <20210818060533.3569517-7-keescook@chromium.org>
+In-Reply-To: <20210818060533.3569517-7-keescook@chromium.org>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 18 Aug 2021 15:35:13 -0700
-Message-ID: <CAPcyv4jU+FhX0e4EXXVzisD5hzsdxK+cyVD3=QuqGOSpE4j-SQ@mail.gmail.com>
-Subject: Re: [PATCH v2 05/63] stddef: Introduce struct_group() helper macro
+Date:   Wed, 18 Aug 2021 15:36:23 -0700
+Message-ID: <CAPcyv4hZUOENLxUgqXrzpv0rhHp-TP_EkTaBKjvrsFLjy3-1Vw@mail.gmail.com>
+Subject: Re: [PATCH v2 06/63] cxl/core: Replace unions with struct_group()
 To:     Kees Cook <keescook@chromium.org>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Keith Packard <keithp@keithp.com>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        linux-cxl@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linux Wireless List <linux-wireless@vger.kernel.org>,
@@ -66,6 +68,7 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-block@vger.kernel.org,
         Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         clang-built-linux <clang-built-linux@googlegroups.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
@@ -74,136 +77,16 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Tue, Aug 17, 2021 at 11:06 PM Kees Cook <keescook@chromium.org> wrote:
 >
-> Kernel code has a regular need to describe groups of members within a
-> structure usually when they need to be copied or initialized separately
-> from the rest of the surrounding structure. The generally accepted design
-> pattern in C is to use a named sub-struct:
+> Use the newly introduced struct_group_typed() macro to clean up the
+> declaration of struct cxl_regs.
 >
->         struct foo {
->                 int one;
->                 struct {
->                         int two;
->                         int three, four;
->                 } thing;
->                 int five;
->         };
->
-> This would allow for traditional references and sizing:
->
->         memcpy(&dst.thing, &src.thing, sizeof(dst.thing));
->
-> However, doing this would mean that referencing struct members enclosed
-> by such named structs would always require including the sub-struct name
-> in identifiers:
->
->         do_something(dst.thing.three);
->
-> This has tended to be quite inflexible, especially when such groupings
-> need to be added to established code which causes huge naming churn.
-> Three workarounds exist in the kernel for this problem, and each have
-> other negative properties.
->
-> To avoid the naming churn, there is a design pattern of adding macro
-> aliases for the named struct:
->
->         #define f_three thing.three
->
-> This ends up polluting the global namespace, and makes it difficult to
-> search for identifiers.
->
-> Another common work-around in kernel code avoids the pollution by avoiding
-> the named struct entirely, instead identifying the group's boundaries using
-> either a pair of empty anonymous structs of a pair of zero-element arrays:
->
->         struct foo {
->                 int one;
->                 struct { } start;
->                 int two;
->                 int three, four;
->                 struct { } finish;
->                 int five;
->         };
->
->         struct foo {
->                 int one;
->                 int start[0];
->                 int two;
->                 int three, four;
->                 int finish[0];
->                 int five;
->         };
->
-> This allows code to avoid needing to use a sub-struct named for member
-> references within the surrounding structure, but loses the benefits of
-> being able to actually use such a struct, making it rather fragile. Using
-> these requires open-coded calculation of sizes and offsets. The efforts
-> made to avoid common mistakes include lots of comments, or adding various
-> BUILD_BUG_ON()s. Such code is left with no way for the compiler to reason
-> about the boundaries (e.g. the "start" object looks like it's 0 bytes
-> in length), making bounds checking depend on open-coded calculations:
->
->         if (length > offsetof(struct foo, finish) -
->                      offsetof(struct foo, start))
->                 return -EINVAL;
->         memcpy(&dst.start, &src.start, offsetof(struct foo, finish) -
->                                        offsetof(struct foo, start));
->
-> However, the vast majority of places in the kernel that operate on
-> groups of members do so without any identification of the grouping,
-> relying either on comments or implicit knowledge of the struct contents,
-> which is even harder for the compiler to reason about, and results in
-> even more fragile manual sizing, usually depending on member locations
-> outside of the region (e.g. to copy "two" and "three", use the start of
-> "four" to find the size):
->
->         BUILD_BUG_ON((offsetof(struct foo, four) <
->                       offsetof(struct foo, two)) ||
->                      (offsetof(struct foo, four) <
->                       offsetof(struct foo, three));
->         if (length > offsetof(struct foo, four) -
->                      offsetof(struct foo, two))
->                 return -EINVAL;
->         memcpy(&dst.two, &src.two, length);
->
-> In order to have a regular programmatic way to describe a struct
-> region that can be used for references and sizing, can be examined for
-> bounds checking, avoids forcing the use of intermediate identifiers,
-> and avoids polluting the global namespace, introduce the struct_group()
-> macro. This macro wraps the member declarations to create an anonymous
-> union of an anonymous struct (no intermediate name) and a named struct
-> (for references and sizing):
->
->         struct foo {
->                 int one;
->                 struct_group(thing,
->                         int two;
->                         int three, four;
->                 );
->                 int five;
->         };
->
->         if (length > sizeof(src.thing))
->                 return -EINVAL;
->         memcpy(&dst.thing, &src.thing, length);
->         do_something(dst.three);
->
-> There are some rare cases where the resulting struct_group() needs
-> attributes added, so struct_group_attr() is also introduced to allow
-> for specifying struct attributes (e.g. __align(x) or __packed).
-> Additionally, there are places where such declarations would like to
-> have the struct be typed, so struct_group_typed() is added.
->
-> Given there is a need for a handful of UAPI uses too, the underlying
-> __struct_group() macro has been defined in UAPI so it can be used there
-> too.
->
-> Co-developed-by: Keith Packard <keithp@keithp.com>
-> Signed-off-by: Keith Packard <keithp@keithp.com>
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Link: https://lore.kernel.org/lkml/20210728023217.GC35706@embeddedor
-> Enhanced-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Link: https://lore.kernel.org/lkml/41183a98-bdb9-4ad6-7eab-5a7292a6df84@rasmusvillemoes.dk
-> Enhanced-by: Dan Williams <dan.j.williams@intel.com>
+> Cc: Alison Schofield <alison.schofield@intel.com>
+> Cc: Vishal Verma <vishal.l.verma@intel.com>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Cc: Ben Widawsky <ben.widawsky@intel.com>
+> Cc: linux-cxl@vger.kernel.org
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
 
-Acked-by: Dan Williams <dan.j.williams@intel.com>
+Looks good and tests ok here:
+
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
