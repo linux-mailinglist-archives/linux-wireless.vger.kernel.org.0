@@ -2,76 +2,210 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC4BF3EF7C8
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 03:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 714DE3EF990
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Aug 2021 06:38:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236173AbhHRB72 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Aug 2021 21:59:28 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:8868 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234723AbhHRB72 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Aug 2021 21:59:28 -0400
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Gq9vF5Yh5z8sY6;
-        Wed, 18 Aug 2021 09:54:49 +0800 (CST)
-Received: from dggpeml500024.china.huawei.com (7.185.36.10) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 18 Aug 2021 09:58:52 +0800
-Received: from [10.67.103.6] (10.67.103.6) by dggpeml500024.china.huawei.com
- (7.185.36.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Wed, 18 Aug
- 2021 09:58:51 +0800
-Subject: Re: [PATCH net-next 2/4] ethtool: extend coalesce setting uAPI with
- CQE mode
+        id S236690AbhHREi7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Aug 2021 00:38:59 -0400
+Received: from mga18.intel.com ([134.134.136.126]:5026 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229449AbhHREi6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Aug 2021 00:38:58 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10079"; a="203400458"
+X-IronPort-AV: E=Sophos;i="5.84,330,1620716400"; 
+   d="scan'208";a="203400458"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2021 21:38:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,330,1620716400"; 
+   d="scan'208";a="676896697"
+Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 17 Aug 2021 21:38:23 -0700
+Received: from kbuild by d053b881505b with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mGDLK-000Sag-JA; Wed, 18 Aug 2021 04:38:22 +0000
+Date:   Wed, 18 Aug 2021 12:37:49 +0800
+From:   kernel test robot <lkp@intel.com>
 To:     Jakub Kicinski <kuba@kernel.org>
-References: <1629167767-7550-1-git-send-email-moyufeng@huawei.com>
- <1629167767-7550-3-git-send-email-moyufeng@huawei.com>
- <20210817064003.00733801@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        <shenjian15@huawei.com>, <lipeng321@huawei.com>,
-        <yisen.zhuang@huawei.com>, <linyunsheng@huawei.com>,
-        <huangguangbin2@huawei.com>, <chenhao288@hisilicon.com>,
-        <salil.mehta@huawei.com>, <linuxarm@huawei.com>,
-        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
-        <netanel@amazon.com>, <akiyano@amazon.com>,
-        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
-        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
-        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
-        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
-        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
-        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
-        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
-        <linux-wireless@vger.kernel.org>
-From:   moyufeng <moyufeng@huawei.com>
-Message-ID: <3f45d740-a732-7f18-92ef-2cea8cf2b84c@huawei.com>
-Date:   Wed, 18 Aug 2021 09:58:51 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211:master] BUILD SUCCESS
+ 0a298d133893c72c96e2156ed7cb0f0c4a306a3e
+Message-ID: <611c8e9d.uQsDj2R9qc6cfC4K%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <20210817064003.00733801@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.103.6]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpeml500024.china.huawei.com (7.185.36.10)
-X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git master
+branch HEAD: 0a298d133893c72c96e2156ed7cb0f0c4a306a3e  net: qlcnic: add missed unlock in qlcnic_83xx_flash_read32
 
+elapsed time: 787m
 
-On 2021/8/17 21:40, Jakub Kicinski wrote:
-> On Tue, 17 Aug 2021 10:36:05 +0800 Yufeng Mo wrote:
->>  include/linux/ethtool.h                            | 16 ++++++++++--
->>  net/ethtool/coalesce.c                             | 29 ++++++++++++++++++----
->>  net/ethtool/ioctl.c                                | 15 ++++++++---
->>  net/ethtool/netlink.h                              |  2 +-
-> 
-> I'd move changes to these files to the first patch, otherwise 
-> they're hard to find in all the driver modifications.
-> .
-> 
-ok, thanks.
+configs tested: 152
+configs skipped: 4
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20210816
+xtensa                generic_kc705_defconfig
+sh                        edosk7760_defconfig
+arc                         haps_hs_defconfig
+arm                       aspeed_g5_defconfig
+mips                      maltaaprp_defconfig
+powerpc                     akebono_defconfig
+powerpc                      mgcoge_defconfig
+powerpc                 linkstation_defconfig
+mips                         db1xxx_defconfig
+arm                          simpad_defconfig
+powerpc                     pq2fads_defconfig
+powerpc                      walnut_defconfig
+powerpc                       holly_defconfig
+arm                             ezx_defconfig
+powerpc                     mpc512x_defconfig
+xtensa                  nommu_kc705_defconfig
+arm                         at91_dt_defconfig
+mips                     loongson1c_defconfig
+mips                          rb532_defconfig
+mips                       bmips_be_defconfig
+arm                            dove_defconfig
+sh                     magicpanelr2_defconfig
+powerpc                     sequoia_defconfig
+sh                        sh7757lcr_defconfig
+powerpc                mpc7448_hpc2_defconfig
+ia64                             alldefconfig
+arm                         lubbock_defconfig
+sh                         ecovec24_defconfig
+arc                        nsim_700_defconfig
+mips                            e55_defconfig
+arm                          lpd270_defconfig
+powerpc                 mpc836x_mds_defconfig
+powerpc                  iss476-smp_defconfig
+arc                        vdk_hs38_defconfig
+mips                           jazz_defconfig
+mips                     cu1000-neo_defconfig
+ia64                            zx1_defconfig
+sh                        edosk7705_defconfig
+powerpc                   microwatt_defconfig
+arm                  colibri_pxa270_defconfig
+um                               alldefconfig
+sh                           se7721_defconfig
+sh                          rsk7201_defconfig
+arm                  colibri_pxa300_defconfig
+openrisc                         alldefconfig
+arm                          badge4_defconfig
+powerpc                      pmac32_defconfig
+arm                        spear3xx_defconfig
+sh                          r7780mp_defconfig
+x86_64                           alldefconfig
+mips                        jmr3927_defconfig
+powerpc                      acadia_defconfig
+mips                   sb1250_swarm_defconfig
+sh                           se7724_defconfig
+powerpc                        cell_defconfig
+openrisc                 simple_smp_defconfig
+mips                        vocore2_defconfig
+powerpc                        icon_defconfig
+powerpc                      katmai_defconfig
+x86_64                            allnoconfig
+powerpc                   currituck_defconfig
+powerpc                 canyonlands_defconfig
+powerpc                           allnoconfig
+powerpc                       maple_defconfig
+powerpc                     tqm8541_defconfig
+arm                           sama5_defconfig
+arm                           u8500_defconfig
+sparc                       sparc32_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+x86_64               randconfig-a006-20210816
+x86_64               randconfig-a004-20210816
+x86_64               randconfig-a003-20210816
+x86_64               randconfig-a001-20210816
+x86_64               randconfig-a005-20210816
+x86_64               randconfig-a002-20210816
+i386                 randconfig-a004-20210816
+i386                 randconfig-a003-20210816
+i386                 randconfig-a002-20210816
+i386                 randconfig-a001-20210816
+i386                 randconfig-a006-20210816
+i386                 randconfig-a005-20210816
+i386                 randconfig-a011-20210817
+i386                 randconfig-a015-20210817
+i386                 randconfig-a014-20210817
+i386                 randconfig-a013-20210817
+i386                 randconfig-a016-20210817
+i386                 randconfig-a012-20210817
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+i386                 randconfig-a004-20210817
+i386                 randconfig-a006-20210817
+i386                 randconfig-a005-20210817
+x86_64               randconfig-a011-20210816
+x86_64               randconfig-a013-20210816
+x86_64               randconfig-a016-20210816
+x86_64               randconfig-a012-20210816
+x86_64               randconfig-a015-20210816
+x86_64               randconfig-a014-20210816
+i386                 randconfig-a011-20210816
+i386                 randconfig-a015-20210816
+i386                 randconfig-a013-20210816
+i386                 randconfig-a014-20210816
+i386                 randconfig-a016-20210816
+i386                 randconfig-a012-20210816
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
