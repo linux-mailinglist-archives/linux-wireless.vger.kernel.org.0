@@ -2,82 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C85763F21DD
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 22:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F5EB3F2209
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 23:02:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235628AbhHSUun (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Aug 2021 16:50:43 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.184]:37302 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235563AbhHSUun (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Aug 2021 16:50:43 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.48.61])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id AE2B520061;
-        Thu, 19 Aug 2021 20:50:05 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 72A29C0076;
-        Thu, 19 Aug 2021 20:50:05 +0000 (UTC)
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id AF73C13C2BE;
-        Thu, 19 Aug 2021 13:49:56 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com AF73C13C2BE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1629406196;
-        bh=Wuh5dOzI8THzLhn2SA/cFW1xGtRgxaBEPaFiOuobEaw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cdFw5ViBeZ3EFHD5ohx5StNNF7Pgiy9UoUwXDa7UFW2lS37FoXB+ytTbBpwvSrJ2t
-         7o51OeL5iV7paWdn9fZ2VS1ijLr7K9qJ5BFs9vecU6SLMzj7KR2olzK17scnyzS4za
-         twjJ5K+JYgAgp3pA97SGl6SNU+asMtiBjKfutkJU=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v8 9/9] mt76: mt7915: add a missing HT flag for GI parsing
-Date:   Thu, 19 Aug 2021 13:49:50 -0700
-Message-Id: <20210819204950.12150-9-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210819204950.12150-1-greearb@candelatech.com>
-References: <20210819204950.12150-1-greearb@candelatech.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1629406206-pzfPfx-yFnet
+        id S235560AbhHSVCf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Aug 2021 17:02:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47766 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229791AbhHSVCf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Aug 2021 17:02:35 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 4E48560E76;
+        Thu, 19 Aug 2021 21:01:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629406918;
+        bh=49QqhGLQhA2ZhmHBHD3l7+wGJmxDsRilCUW2Tw3L0sc=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=ULMigV3lllpmZ9s3SUD0R2Sna8ttpIyilImebMSnwMniobzsU6YMXGTgogOPE3AwY
+         yoormveSneeM9NuT0npYJ74StVGNLd8C80GqPkoRz6QP4w9HJRWm+ap6MWRk2017IR
+         9eoWOuFBuGsZxwRzKNY828i1q7XJNavz704ng0EuRnF61plb2IcEvKqXXwSM/vPNKK
+         LWHNn+2V06r/POZN1o6RDWD5k9HugfAYtpgeVFCDEnbt9t2RQMXg5OJyMc+juK75Jq
+         7v+1dXIgEuZBazxKtIqaLzcn1PZ0gUOKENkj4HhYV1n+iyUNs/3YoTLcSzmtVNS3W0
+         VwHSNVpzoWQow==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 39D7F60997;
+        Thu, 19 Aug 2021 21:01:58 +0000 (UTC)
+Subject: Re: [GIT PULL] Networking for 5.14-rc7
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20210819190205.2996753-1-kuba@kernel.org>
+References: <20210819190205.2996753-1-kuba@kernel.org>
+X-PR-Tracked-List-Id: <netdev.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20210819190205.2996753-1-kuba@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-5.14-rc7
+X-PR-Tracked-Commit-Id: cd0a719fbd702eb4b455a6ad986483750125588a
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: f87d64319e6f980c82acfc9b95ed523d053fb7ac
+Message-Id: <162940691817.11714.3665593341045192709.pr-tracker-bot@kernel.org>
+Date:   Thu, 19 Aug 2021 21:01:58 +0000
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     torvalds@linux-foundation.org, kuba@kernel.org,
+        davem@davemloft.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ryder Lee <ryder.lee@mediatek.com>
+The pull request you sent on Thu, 19 Aug 2021 12:02:05 -0700:
 
-The previous commit missed a HT flag.
+> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-5.14-rc7
 
-Fixes: 14b220c07188 ("mt76: mt7915: report tx rate directly from tx status")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/f87d64319e6f980c82acfc9b95ed523d053fb7ac
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index f5332e2c5e4e..10f4001d8d92 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -206,7 +206,8 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
- 
- 			rate->he_gi = (val & (0x3 << offs)) >> offs;
- 			msta->wcid.rate_he_gi = rate->he_gi; /* cache for later */
--		} else if (rate->flags & RATE_INFO_FLAGS_VHT_MCS) {
-+		} else if (rate->flags &
-+			   (RATE_INFO_FLAGS_VHT_MCS | RATE_INFO_FLAGS_MCS)) {
- 			if (val & BIT(12 + bw)) {
- 				rate->flags |= RATE_INFO_FLAGS_SHORT_GI;
- 				msta->wcid.rate_short_gi = 1;
-@@ -215,7 +216,6 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
- 				msta->wcid.rate_short_gi = 0;
- 			}
- 		}
--		/* TODO:  Deal with HT_MCS */
- 	}
- 
- 	rcu_read_unlock();
+Thank you!
+
 -- 
-2.20.1
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
