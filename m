@@ -2,123 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F8BE3F1CB4
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 17:27:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C03B3F1CD5
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 17:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239919AbhHSP2T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Aug 2021 11:28:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60040 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238643AbhHSP2S (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Aug 2021 11:28:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B545D6101A;
-        Thu, 19 Aug 2021 15:27:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629386862;
-        bh=Xop4c49vcx4vurHfQJu8rNJT2PZCKPSm8sGMUaLTugc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FHaWTiiPBSijYUXzpIc5xQc7MU7KpOonkbN0ajOSM779Amxdm2sbkbC9WYgXn1VQ9
-         hFz+KxjH6yrQ37VIJh5r592mCsDb2dBZUED7/2739m4rAzc1lJ2o6YihwoBYDwxp9N
-         3gPY4VL853poiFPgGf0vMPzMCfrHJ8M3zIQ+hJBPqjwjtuhSZRQWSB+qYc/6O+B4Yi
-         vycJB4iPVadDWtpVez+xOZejUfhact0ahw2JKOUPaHVgOixRbqD4UOsDAGJZpZkdVB
-         U1DUQSVeCbLg9vznid7OvRondz+2fmc+tAIANWljO4Yhq8s/2gmfXJD88kVHJ4NwCP
-         QDUEEMi8HGz5Q==
-Date:   Thu, 19 Aug 2021 17:27:37 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
-        Deren.Wu@mediatek.com
-Subject: Re: [PATCH 3/5] mt76: mt7921: report tx rate directly from tx status
-Message-ID: <YR54aQ2Rih62lZYj@lore-desk>
-References: <cover.1629277624.git.lorenzo@kernel.org>
- <1aa7b946cac8bb1c3d3ad3eaa41a7c610d122d92.1629277624.git.lorenzo@kernel.org>
- <87a6ldbi20.fsf@tynnyri.adurom.net>
+        id S238460AbhHSPdF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Aug 2021 11:33:05 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:62526 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239996AbhHSPdE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Aug 2021 11:33:04 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1629387148; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=m8oYcwwW35O1xYM7OTaGmj1IiMfk8wk5c9x55EP+xD0=; b=pjkzKsi7GcHQLQMmVTk0j2UtRKd4X+5uvcDHSz4rr4Iex1qB+ry6Sx5KSn7Jil2hvNrTuZGh
+ nkq/0dOSxr7hSkL/9ASdMDKHgAaT2m+WbzBXCuPeIw6a3kZoXnCv03673Q2bGOWipEf14mPT
+ S5rUDVSjKTJ80zQ1TsD0q+/xaXk=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 611e7978454b7a558f6f498e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 19 Aug 2021 15:32:08
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C2535C43618; Thu, 19 Aug 2021 15:32:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 51B0FC4338F;
+        Thu, 19 Aug 2021 15:32:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 51B0FC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH 1/4] mt76: mt7915: checkpatch cleanup
+References: <77372f644903053e09d671325c0cd44cf75e14ac.1628301615.git.ryder.lee@mediatek.com>
+Date:   Thu, 19 Aug 2021 18:32:01 +0300
+In-Reply-To: <77372f644903053e09d671325c0cd44cf75e14ac.1628301615.git.ryder.lee@mediatek.com>
+        (Ryder Lee's message of "Sat, 7 Aug 2021 11:14:21 +0800")
+Message-ID: <871r6pbgcu.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="XjC+AgyjIn/rinKE"
-Content-Disposition: inline
-In-Reply-To: <87a6ldbi20.fsf@tynnyri.adurom.net>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Ryder Lee <ryder.lee@mediatek.com> writes:
 
---XjC+AgyjIn/rinKE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Fix reasonable checkpatch warnings and clean up codes.
+>
+> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 
-On Aug 19, Kalle Valo wrote:
-> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->=20
-> > Report tx rate from tx status packets instead of receiving periodic mcu
-> > event. This improves flexibility, accuracy and AQL performance, and
-> > simplifies code flow for better readability.
-> >
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->=20
-> [...]
->=20
-> > +		/* We don't support reading GI info from txs packets.
-> > +		 * For accurate tx status reporting and AQL improvement,
-> > +		 * we need to make sure that flags match so polling GI
-> > +		 * from per-sta counters directly.
-> > +		 */
-> > +		rate =3D &msta->wcid.rate;
-> > +		addr =3D MT_WTBL_LMAC_OFFS(idx, 0) + 7 * 4;
->=20
-> Magic values.
+One logical change per patch, please. This is difficult to review as you
+are making several changes.
 
-ack, I reused what was already in mt7921_mac_sta_poll(), but I can add some
-definitions :)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
->=20
-> > +		val =3D mt76_rr(dev, addr);
-> > +
-> > +		switch (rate->bw) {
-> > +		case RATE_INFO_BW_160:
-> > +			bw =3D IEEE80211_STA_RX_BW_160;
-> > +			break;
-> > +		case RATE_INFO_BW_80:
-> > +			bw =3D IEEE80211_STA_RX_BW_80;
-> > +			break;
-> > +		case RATE_INFO_BW_40:
-> > +			bw =3D IEEE80211_STA_RX_BW_40;
-> > +			break;
-> > +		default:
-> > +			bw =3D IEEE80211_STA_RX_BW_20;
-> > +			break;
-> > +		}
-> > +
-> > +		if (rate->flags & RATE_INFO_FLAGS_HE_MCS) {
-> > +			u8 offs =3D 24 + 2 * bw;
-> > +
-> > +			rate->he_gi =3D (val & (0x3 << offs)) >> offs;
->=20
-> Ditto.
-
-same here, I just reused the code from mt7915, I will fix it.
-
-Regards,
-Lorenzo
-
->=20
-> --=20
-> https://patchwork.kernel.org/project/linux-wireless/list/
->=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
-
---XjC+AgyjIn/rinKE
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYR54ZQAKCRA6cBh0uS2t
-rAGMAP0SDrQcyfqMU+Q4RaQkQ6wfXdZbjnfiFDnD5fFLk+wyDAEAwEtRa1zAGf2D
-YRRVzgMKEIuvcC/uyrCWOrGD6fXSJQg=
-=0DAG
------END PGP SIGNATURE-----
-
---XjC+AgyjIn/rinKE--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
