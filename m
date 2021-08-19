@@ -2,61 +2,232 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F5EB3F2209
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 23:02:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D40653F2395
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 01:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235560AbhHSVCf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Aug 2021 17:02:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47766 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229791AbhHSVCf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Aug 2021 17:02:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 4E48560E76;
-        Thu, 19 Aug 2021 21:01:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629406918;
-        bh=49QqhGLQhA2ZhmHBHD3l7+wGJmxDsRilCUW2Tw3L0sc=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=ULMigV3lllpmZ9s3SUD0R2Sna8ttpIyilImebMSnwMniobzsU6YMXGTgogOPE3AwY
-         yoormveSneeM9NuT0npYJ74StVGNLd8C80GqPkoRz6QP4w9HJRWm+ap6MWRk2017IR
-         9eoWOuFBuGsZxwRzKNY828i1q7XJNavz704ng0EuRnF61plb2IcEvKqXXwSM/vPNKK
-         LWHNn+2V06r/POZN1o6RDWD5k9HugfAYtpgeVFCDEnbt9t2RQMXg5OJyMc+juK75Jq
-         7v+1dXIgEuZBazxKtIqaLzcn1PZ0gUOKENkj4HhYV1n+iyUNs/3YoTLcSzmtVNS3W0
-         VwHSNVpzoWQow==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 39D7F60997;
-        Thu, 19 Aug 2021 21:01:58 +0000 (UTC)
-Subject: Re: [GIT PULL] Networking for 5.14-rc7
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20210819190205.2996753-1-kuba@kernel.org>
-References: <20210819190205.2996753-1-kuba@kernel.org>
-X-PR-Tracked-List-Id: <netdev.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20210819190205.2996753-1-kuba@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-5.14-rc7
-X-PR-Tracked-Commit-Id: cd0a719fbd702eb4b455a6ad986483750125588a
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: f87d64319e6f980c82acfc9b95ed523d053fb7ac
-Message-Id: <162940691817.11714.3665593341045192709.pr-tracker-bot@kernel.org>
-Date:   Thu, 19 Aug 2021 21:01:58 +0000
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     torvalds@linux-foundation.org, kuba@kernel.org,
-        davem@davemloft.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        linux-wireless@vger.kernel.org
+        id S236845AbhHSXSO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Aug 2021 19:18:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53264 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236444AbhHSXSN (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Aug 2021 19:18:13 -0400
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19172C061756
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Aug 2021 16:17:37 -0700 (PDT)
+Received: by mail-ot1-x329.google.com with SMTP id i3-20020a056830210300b0051af5666070so1068970otc.4
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Aug 2021 16:17:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=dqgoJAQz3Mv7B0ZEGRvtaCqkcK4kqu5N3VSB9Do7xY4=;
+        b=BMf23iSlOWarU9fDcULweKVfxlosd41Wfztfxi8DOr0ErrJ2WhFuCCJdroa4O3U6Y4
+         Ornh+yHcbZUTjYugKoCBoMvCuzIam6M+JCV2WGHWTCt5Q87DYpGvI7XiogoqjDWvdBJq
+         ndpRW8alwfoz9eRtKWAiyOOYuHxpm070gdIkFjgkcZQRsAYJhwuC10wddFnkpuuDXvId
+         SdgUNgerTBW5jnZEmujJEh18/L85559JS7Mgk3us3PqXvJEoQFq08GdIqS/f1/cl8knE
+         ZpLOcgtVLfQjQa1B0gpCqgHYebtUQqbo4TIy1POmSREhzGqokLYnjGXFMZKWIgQ4FXh5
+         C37Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=dqgoJAQz3Mv7B0ZEGRvtaCqkcK4kqu5N3VSB9Do7xY4=;
+        b=K0wgUzkUwd4zAL1n0UPcFB+I/TpKsItl5SbWNYDh6xh+FERSFgX6cZwXUG0saukpgN
+         6EjUCymFk7isLL24nySvRAmjK9KpJr7iQ3ge46hwTlxL1EzNV9nKNQH6nBnLGT5ug/yX
+         +z7y9/cwPFjazxi0ZISR3UT/+XKzj8mORAoJVJ7LbRYaTuv1GMRH/7ezZij/TEjx6g6Y
+         H8diHYYK7R+iPN8HqKloMZCTsjqHgFLyAeidTkkLDhugYje0DoSRMMchtM39oiQDvyWm
+         vRdtr2NgQTocRE7RCRCSODGGCVv4k+86X6nOePcNeh9kdXK0eFzpPc5D0VVbB8F7ia8Z
+         QiCA==
+X-Gm-Message-State: AOAM533QHvTRFJMB5bw0h0X2eVo7G1u5klGabnnc9+6WQ9A425/I11Xu
+        e3OCnSJL/9xCQ3trifumwRRbSQ==
+X-Google-Smtp-Source: ABdhPJyW/PO0aRB2JhV3QSCv+CbV97dGiXbm6pwAyuaGcZ90eIfRAKlNSig9OcjkDtMHhlGDTPhK9g==
+X-Received: by 2002:a9d:bec:: with SMTP id 99mr13825165oth.187.1629415056421;
+        Thu, 19 Aug 2021 16:17:36 -0700 (PDT)
+Received: from ripper (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id z26sm971827oih.3.2021.08.19.16.17.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Aug 2021 16:17:36 -0700 (PDT)
+Date:   Thu, 19 Aug 2021 16:18:59 -0700
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [RFC PATCH 10/15] pwrseq: add support for QCA BT+WiFi power
+ sequencer
+Message-ID: <YR7m43mURVJ8YufC@ripper>
+References: <20210817005507.1507580-1-dmitry.baryshkov@linaro.org>
+ <20210817005507.1507580-11-dmitry.baryshkov@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210817005507.1507580-11-dmitry.baryshkov@linaro.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The pull request you sent on Thu, 19 Aug 2021 12:02:05 -0700:
+On Mon 16 Aug 17:55 PDT 2021, Dmitry Baryshkov wrote:
+[..]
+> diff --git a/drivers/power/pwrseq/pwrseq_qca.c b/drivers/power/pwrseq/pwrseq_qca.c
+> new file mode 100644
+> index 000000000000..3421a4821126
+> --- /dev/null
+> +++ b/drivers/power/pwrseq/pwrseq_qca.c
+> @@ -0,0 +1,290 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) 2021, Linaro Ltd.
+> + *
+> + * Author: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> + *
+> + * Power Sequencer for Qualcomm WiFi + BT SoCs
+> + */
+> +
+> +#include <linux/delay.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pwrseq/driver.h>
+> +#include <linux/regulator/consumer.h>
+> +
+> +/*
+> + * Voltage regulator information required for configuring the
+> + * QCA WiFi+Bluetooth chipset
+> + */
+> +struct qca_vreg {
+> +	const char *name;
+> +	unsigned int load_uA;
+> +};
+> +
+> +struct qca_device_data {
+> +	struct qca_vreg vddio;
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-5.14-rc7
+Any particular reason why this isn't just the first entry in vregs and
+operated as part of the bulk API?
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/f87d64319e6f980c82acfc9b95ed523d053fb7ac
+> +	struct qca_vreg *vregs;
+> +	size_t num_vregs;
+> +	bool has_bt_en;
+> +	bool has_wifi_en;
+> +};
+> +
+> +struct pwrseq_qca;
+> +struct pwrseq_qca_one {
+> +	struct pwrseq_qca *common;
+> +	struct gpio_desc *enable;
+> +};
+> +
+> +#define PWRSEQ_QCA_WIFI 0
+> +#define PWRSEQ_QCA_BT 1
+> +
+> +#define PWRSEQ_QCA_MAX 2
+> +
+> +struct pwrseq_qca {
+> +	struct regulator *vddio;
+> +	struct gpio_desc *sw_ctrl;
+> +	struct pwrseq_qca_one pwrseq_qcas[PWRSEQ_QCA_MAX];
+> +	int num_vregs;
+> +	struct regulator_bulk_data vregs[];
+> +};
+> +
+> +static int pwrseq_qca_power_on(struct pwrseq *pwrseq)
+> +{
+> +	struct pwrseq_qca_one *qca_one = pwrseq_get_data(pwrseq);
+> +	int ret;
+> +
+> +	if (qca_one->common->vddio) {
 
-Thank you!
+devm_regulator_get() doesn't return NULL, so this is always true.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+> +		ret = regulator_enable(qca_one->common->vddio);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	ret = regulator_bulk_enable(qca_one->common->num_vregs, qca_one->common->vregs);
+> +	if (ret)
+> +		goto vddio_off;
+> +
+> +	if (qca_one->enable) {
+> +		gpiod_set_value_cansleep(qca_one->enable, 0);
+> +		msleep(50);
+> +		gpiod_set_value_cansleep(qca_one->enable, 1);
+> +		msleep(150);
+> +	}
+> +
+> +	if (qca_one->common->sw_ctrl) {
+> +		bool sw_ctrl_state = gpiod_get_value_cansleep(qca_one->common->sw_ctrl);
+> +		dev_dbg(&pwrseq->dev, "SW_CTRL is %d", sw_ctrl_state);
+> +	}
+> +
+> +	return 0;
+> +
+> +vddio_off:
+> +	regulator_disable(qca_one->common->vddio);
+> +
+> +	return ret;
+> +}
+[..]
+> +static int pwrseq_qca_probe(struct platform_device *pdev)
+> +{
+> +	struct pwrseq_qca *pwrseq_qca;
+> +	struct pwrseq *pwrseq;
+> +	struct pwrseq_provider *provider;
+> +	struct device *dev = &pdev->dev;
+> +	struct pwrseq_onecell_data *onecell;
+> +	const struct qca_device_data *data;
+> +	int ret, i;
+> +
+> +	data = device_get_match_data(dev);
+> +	if (!data)
+> +		return -EINVAL;
+> +
+> +	pwrseq_qca = devm_kzalloc(dev, struct_size(pwrseq_qca, vregs, data->num_vregs), GFP_KERNEL);
+> +	if (!pwrseq_qca)
+> +		return -ENOMEM;
+> +
+> +	onecell = devm_kzalloc(dev, struct_size(onecell, pwrseqs, PWRSEQ_QCA_MAX), GFP_KERNEL);
+> +	if (!onecell)
+> +		return -ENOMEM;
+> +
+> +	ret = pwrseq_qca_regulators_init(dev, pwrseq_qca, data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (data->has_wifi_en) {
+> +		pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_WIFI].enable = devm_gpiod_get(dev, "wifi-enable", GPIOD_OUT_LOW);
+> +		if (IS_ERR(pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_WIFI].enable)) {
+> +			return dev_err_probe(dev, PTR_ERR(pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_WIFI].enable),
+> +					"failed to acquire WIFI enable GPIO\n");
+> +		}
+> +	}
+> +
+> +	if (data->has_bt_en) {
+> +		pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_BT].enable = devm_gpiod_get(dev, "bt-enable", GPIOD_OUT_LOW);
+> +		if (IS_ERR(pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_BT].enable)) {
+> +			return dev_err_probe(dev, PTR_ERR(pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_BT].enable),
+> +					"failed to acquire BT enable GPIO\n");
+> +		}
+> +	}
+> +
+> +	pwrseq_qca->sw_ctrl = devm_gpiod_get_optional(dev, "swctrl", GPIOD_IN);
+> +	if (IS_ERR(pwrseq_qca->sw_ctrl)) {
+> +		return dev_err_probe(dev, PTR_ERR(pwrseq_qca->sw_ctrl),
+> +				"failed to acquire SW_CTRL gpio\n");
+> +	} else if (!pwrseq_qca->sw_ctrl)
+> +		dev_info(dev, "No SW_CTRL gpio\n");
+
+Some {} around the else as well please.
+
+Regards,
+Bjorn
