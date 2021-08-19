@@ -2,149 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84B5E3F1342
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 08:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEFAA3F1537
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 10:32:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231435AbhHSGV5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Aug 2021 02:21:57 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187]:17046 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230416AbhHSGVx (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Aug 2021 02:21:53 -0400
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Gqvgt6dLbzbfqw;
-        Thu, 19 Aug 2021 14:17:30 +0800 (CST)
-Received: from dggpeml500024.china.huawei.com (7.185.36.10) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 19 Aug 2021 14:21:16 +0800
-Received: from localhost.localdomain (10.67.165.24) by
- dggpeml500024.china.huawei.com (7.185.36.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 19 Aug 2021 14:21:15 +0800
-From:   Yufeng Mo <moyufeng@huawei.com>
-To:     <davem@davemloft.net>, <kuba@kernel.org>
-CC:     <netdev@vger.kernel.org>, <shenjian15@huawei.com>,
-        <lipeng321@huawei.com>, <yisen.zhuang@huawei.com>,
-        <linyunsheng@huawei.com>, <huangguangbin2@huawei.com>,
-        <chenhao288@hisilicon.com>, <salil.mehta@huawei.com>,
-        <moyufeng@huawei.com>, <linuxarm@huawei.com>,
-        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
-        <netanel@amazon.com>, <akiyano@amazon.com>,
-        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
-        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
-        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
-        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
-        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
-        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
-        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
-        <linux-wireless@vger.kernel.org>
-Subject: [PATCH V2 net-next 4/4] net: hns3: add ethtool support for CQE/EQE mode configuration
-Date:   Thu, 19 Aug 2021 14:17:24 +0800
-Message-ID: <1629353844-49626-5-git-send-email-moyufeng@huawei.com>
-X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1629353844-49626-1-git-send-email-moyufeng@huawei.com>
-References: <1629353844-49626-1-git-send-email-moyufeng@huawei.com>
+        id S237216AbhHSIdC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Aug 2021 04:33:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47750 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237185AbhHSIdB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Aug 2021 04:33:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2944C610FA;
+        Thu, 19 Aug 2021 08:32:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629361945;
+        bh=+AAObEjMIRTJImIgDgXmA1crtVBMnTcnxYJDm392mZo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=CuxYcMACdkS6r5OMSlqnrkzklGTDNhT0z3LYGg/ja/K1W292odPwdvFS+n5mXzZTc
+         dWHh7kS3xsao4ZW/ySs+yIFo4vNkT1DR90IMyOsXO3Yr8ziyDntr20bsUjZzKHZbGg
+         DIMl/cWMwDHuP9fd5SypUe7ypc4wwdy5aUrl/HKgdtJTf0fHeY8p/3cNBX+XbV8DGk
+         8y9rduARZcx8yxIREgo1fEUmT9psy5H/B2FYdr9hw3SxRoLCacwGdm0K7iHINjLccD
+         89GbpMZG2hS3LcSM/KQFC7hGMOr5ceUgCybdgPpHoD3kUhtqmquA4M+UhL088K10sU
+         ZdkSsT3+LUD2Q==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com, Deren.Wu@mediatek.com
+Subject: [PATCH v2 0/5] add tx status reporting to mt7921 driver
+Date:   Thu, 19 Aug 2021 10:32:00 +0200
+Message-Id: <cover.1629361688.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.165.24]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpeml500024.china.huawei.com (7.185.36.10)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support in ethtool for switching EQE/CQE mode.
+Report tx rate from tx status packets instead of receiving periodic mcu
+event. This improves flexibility, accuracy and AQL performance, and
+simplifies code flow for better readability.
+Add some code cleanup
 
-Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
-Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
----
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c    |  6 +++---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.h    |  3 +++
- drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c | 18 +++++++++++++++++-
- 3 files changed, 23 insertions(+), 4 deletions(-)
+Changes since v1:
+- fix rate flags in mt7921_mac_sta_poll() for ht rates
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 1bd83d7..39d01ca 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -5055,9 +5055,9 @@ static void hns3_set_cq_period_mode(struct hns3_nic_priv *priv,
- 	}
- }
- 
--static void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
--				     enum dim_cq_period_mode tx_mode,
--				     enum dim_cq_period_mode rx_mode)
-+void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
-+			      enum dim_cq_period_mode tx_mode,
-+			      enum dim_cq_period_mode rx_mode)
- {
- 	hns3_set_cq_period_mode(priv, tx_mode, true);
- 	hns3_set_cq_period_mode(priv, rx_mode, false);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-index ff45825..dfad906 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-@@ -718,4 +718,7 @@ void hns3_dbg_register_debugfs(const char *debugfs_dir_name);
- void hns3_dbg_unregister_debugfs(void);
- void hns3_shinfo_pack(struct skb_shared_info *shinfo, __u32 *size);
- u16 hns3_get_max_available_channels(struct hnae3_handle *h);
-+void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
-+			      enum dim_cq_period_mode tx_mode,
-+			      enum dim_cq_period_mode rx_mode);
- #endif
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-index 049be076..b8d9851 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-@@ -1203,6 +1203,11 @@ static int hns3_get_coalesce(struct net_device *netdev,
- 	cmd->tx_max_coalesced_frames = tx_coal->int_ql;
- 	cmd->rx_max_coalesced_frames = rx_coal->int_ql;
- 
-+	kernel_coal->use_cqe_mode_tx = (priv->tx_cqe_mode ==
-+					DIM_CQ_PERIOD_MODE_START_FROM_CQE);
-+	kernel_coal->use_cqe_mode_rx = (priv->rx_cqe_mode ==
-+					DIM_CQ_PERIOD_MODE_START_FROM_CQE);
-+
- 	return 0;
- }
- 
-@@ -1372,6 +1377,8 @@ static int hns3_set_coalesce(struct net_device *netdev,
- 	struct hns3_enet_coalesce *tx_coal = &priv->tx_coal;
- 	struct hns3_enet_coalesce *rx_coal = &priv->rx_coal;
- 	u16 queue_num = h->kinfo.num_tqps;
-+	enum dim_cq_period_mode tx_mode;
-+	enum dim_cq_period_mode rx_mode;
- 	int ret;
- 	int i;
- 
-@@ -1397,6 +1404,14 @@ static int hns3_set_coalesce(struct net_device *netdev,
- 	for (i = 0; i < queue_num; i++)
- 		hns3_set_coalesce_per_queue(netdev, cmd, i);
- 
-+	tx_mode = kernel_coal->use_cqe_mode_tx ?
-+		  DIM_CQ_PERIOD_MODE_START_FROM_CQE :
-+		  DIM_CQ_PERIOD_MODE_START_FROM_EQE;
-+	rx_mode = kernel_coal->use_cqe_mode_rx ?
-+		  DIM_CQ_PERIOD_MODE_START_FROM_CQE :
-+		  DIM_CQ_PERIOD_MODE_START_FROM_EQE;
-+	hns3_cq_period_mode_init(priv, tx_mode, rx_mode);
-+
- 	return 0;
- }
- 
-@@ -1702,7 +1717,8 @@ static int hns3_set_tunable(struct net_device *netdev,
- 				 ETHTOOL_COALESCE_USE_ADAPTIVE |	\
- 				 ETHTOOL_COALESCE_RX_USECS_HIGH |	\
- 				 ETHTOOL_COALESCE_TX_USECS_HIGH |	\
--				 ETHTOOL_COALESCE_MAX_FRAMES)
-+				 ETHTOOL_COALESCE_MAX_FRAMES |		\
-+				 ETHTOOL_COALESCE_USE_CQE)
- 
- static int hns3_get_ts_info(struct net_device *netdev,
- 			    struct ethtool_ts_info *info)
+Lorenzo Bianconi (5):
+  mt76: mt7921: start reworking tx rate reporting
+  mt76: mt7921: add support for tx status reporting
+  mt76: mt7921: report tx rate directly from tx status
+  mt76: mt7921: remove mcu rate reporting code
+  mt76: mt7921: remove mt7921_sta_stats
+
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |   1 -
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 365 ++++++++++++------
+ .../net/wireless/mediatek/mt76/mt7921/mac.h   |   9 +
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |  28 +-
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 133 -------
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   |  47 ---
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  21 +-
+ 7 files changed, 279 insertions(+), 325 deletions(-)
+
 -- 
-2.8.1
+2.31.1
 
