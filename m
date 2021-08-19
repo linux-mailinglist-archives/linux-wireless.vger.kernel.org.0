@@ -2,108 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09C233F1D1F
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 17:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF3143F1D71
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 18:06:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240066AbhHSPoS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Aug 2021 11:44:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32948 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238587AbhHSPoS (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Aug 2021 11:44:18 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B5B8C061575;
-        Thu, 19 Aug 2021 08:43:41 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id gt38so13720352ejc.13;
-        Thu, 19 Aug 2021 08:43:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
-         :subject:mime-version:content-transfer-encoding;
-        bh=8ijfvDsyns8e3FukmUhdkOQH6x/qKdqiPKSWYcH8vCQ=;
-        b=uRArM1418rKa3Ik+eFB00LsUjzkgm36oxmEK4qhRf18YDCMT0Yj6uO3UdWZMesM+k5
-         AgOYoyXhbXJTRAmslaoytrJCNtewyodI71iH0yElf4j1MW+XwUA9JmeVzuLbAEy7Xy+2
-         Gs348JTcM7BsyEpsYPXGnaddijcdXuj3faxT1tn7xuJfTjb+jrlUrk83fLLHrDeg//g9
-         1awXgQnvbxRweafyGXmBs74HlGyONGnTFaWxw1VrHYofTm8FlZnTLWxctuDjFkT0RRDZ
-         Y6jFT0rbYNKG85a+fsoAAwduXw6sezPAWF87SA2Htv/PrsJlWx8L1R8T27PHKp8XQIuM
-         E76w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
-         :references:user-agent:subject:mime-version
-         :content-transfer-encoding;
-        bh=8ijfvDsyns8e3FukmUhdkOQH6x/qKdqiPKSWYcH8vCQ=;
-        b=M73wMzZYV93QxSQdYXjdJV/ZpMIHzFSEEbLOyV8ETJXADAB/Ms4R34HfKB87Yv/qLn
-         ZjI1qBEb+BwsiITVOkVvwdEqqsblGohrdOHG+uKm1QZdam5euVjyngTHg+/hKC+gkKTe
-         /oF2dOXMrSGH9T4HYSs8iL8u/8Tb2jfVPUuLxF4qPExj1uOM9G1CWPriUJDnpbiXWCwX
-         X40ZrEqKuf06z30hc7iYOkqZrcss/gNN2AVdlmSR8+kgtkx1jssPAEPa/GVmw6FhONwD
-         XPmQDNCBNjhVeP32cmOo9I1GHiKArBa8dJv1vEWAUcyE0zvooNdmYP9+UTOmPhqEQiJV
-         uR1A==
-X-Gm-Message-State: AOAM531O45dz3qXtXL30co5mrQX11lWQZ3msd5FV1JuePKA2po1QRJG9
-        0VFesw8iumBrZYznm2uNdIw=
-X-Google-Smtp-Source: ABdhPJzYk8WPSyVPDcVziWsVFYS9DWtlTlJXLGKJAGueSaNlhcVXrqy9s/u14lPIBO4YpR6WKQHbJw==
-X-Received: by 2002:a17:906:f910:: with SMTP id lc16mr16206536ejb.478.1629387820145;
-        Thu, 19 Aug 2021 08:43:40 -0700 (PDT)
-Received: from [10.230.42.144] ([192.19.152.250])
-        by smtp.gmail.com with ESMTPSA id v13sm1428864ejh.62.2021.08.19.08.43.39
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 19 Aug 2021 08:43:39 -0700 (PDT)
-From:   Arend van Spriel <aspriel@gmail.com>
-To:     Marcel Holtmann <marcel@holtmann.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-CC:     Angus Ainslie <angus@akkea.ca>, <kernel@puri.sm>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <linux-bluetooth@vger.kernel.org>
-Date:   Thu, 19 Aug 2021 17:43:38 +0200
-Message-ID: <17b5f150410.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
-In-Reply-To: <5766C95B-D5A4-463C-A87F-41B35BF82046@holtmann.org>
-References: <20210812165218.2508258-1-angus@akkea.ca>
- <20210812165218.2508258-3-angus@akkea.ca>
- <1cd0e008-9239-f430-7294-865d34795a2f@broadcom.com>
- <5766C95B-D5A4-463C-A87F-41B35BF82046@holtmann.org>
-User-Agent: AquaMail/1.30.1-1828 (build: 103001000)
-Subject: Re: [PATCH v3 2/2] btbcm: add patch ram for bluetooth
+        id S230435AbhHSQHN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Aug 2021 12:07:13 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:28835 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229519AbhHSQHN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Aug 2021 12:07:13 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1629389196; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=PfiKxiRVzTeZn/6Bdsu/sbhy2HWUxwJvKh650opMqZQ=; b=Y+UBkt4VV7HtUMY79QhJpOfYi+2XYXCPBvvo/vPMVpPZECNuwnxTjViM+Hi99diaWqDT1zDX
+ FFR28W6KHIGF9KAr1UMw7QeRPIm2IKR7dgP1/5Y3noVPBGIoRdenUxAUCp0fl/7f8qVDkEY4
+ Yf+6NgZFY2xhDW3300VN9qvEVxI=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 611e817e454b7a558f9d22df (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 19 Aug 2021 16:06:22
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 84C2FC4338F; Thu, 19 Aug 2021 16:06:22 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 72AE1C43460;
+        Thu, 19 Aug 2021 16:06:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 72AE1C43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     greearb@candelatech.com
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v5 05/11] mt76: mt7915:  debugfs hook to enable TXS for NO_SKB pkt-ids
+References: <20210804134505.3208-1-greearb@candelatech.com>
+        <20210804134505.3208-5-greearb@candelatech.com>
+Date:   Thu, 19 Aug 2021 19:06:18 +0300
+In-Reply-To: <20210804134505.3208-5-greearb@candelatech.com> (greearb's
+        message of "Wed, 4 Aug 2021 06:44:59 -0700")
+Message-ID: <87mtpda079.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On August 19, 2021 5:26:42 PM Marcel Holtmann <marcel@holtmann.org> wrote:
+greearb@candelatech.com writes:
 
-> Hi Arend,
+> From: Ben Greear <greearb@candelatech.com>
 >
->>> Bluetooth on the BCM43752 needs a patchram file to function correctly.
->>> Signed-off-by: Angus Ainslie <angus@akkea.ca>
->>> ---
->>> drivers/bluetooth/btbcm.c | 1 +
->>> 1 file changed, 1 insertion(+)
->>> diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
->>> index e5d706ed55ea..e4182acee488 100644
->>> --- a/drivers/bluetooth/btbcm.c
->>> +++ b/drivers/bluetooth/btbcm.c
->>> @@ -387,6 +387,7 @@ struct bcm_subver_table {
->>> };
->>> static const struct bcm_subver_table bcm_uart_subver_table[] = {
->>> + { 0x1111, "BCM4362A2" }, /* 000.017.017 */
->>
->> Noticed Marcel applied this one already, but as I asked in earlier patch I 
->> would like to know why the commit message says 43752 but this entry says 
->> 4362? Still confused.
+> This lets user turn on/off this feature.  Enabling gives better
+> tx-rate related stats, but will cause extra driver and (maybe)
+> firmware work.  Not sure if it actually affects performance or
+> not.
 >
-> seems I missed that part. Can you look internally what this hardware is and 
-> we fix it?
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
 
-I will check although not internally as this is probably a Cypress chipset. 
-Anyway, I will follow up on this.
+This is grey area, debugfs is not really meant to be used for users
+enabling driver features.
 
-Regards,
-Arend
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
