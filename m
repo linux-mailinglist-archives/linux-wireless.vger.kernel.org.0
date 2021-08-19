@@ -2,111 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0E333F153C
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 10:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5963E3F1907
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 14:17:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237350AbhHSIdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Aug 2021 04:33:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47826 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237318AbhHSIdM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Aug 2021 04:33:12 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 775A661101;
-        Thu, 19 Aug 2021 08:32:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629361956;
-        bh=PqJDBUX1vUQTnYtC4cgmckgX6tpFhcGk9KLGtKf8JdA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WTb6dK7u46GNh+pWSzNpsfC/IGb/4mqcMGu9A2HyxNT6Nb0huxKWIUqirraCUghLf
-         nXs/SsMEKoLdBWllcCQSCbyEY1qn6n10U2tzSZih6HmdesGM+wmdwJaVCowXce7AvQ
-         HHxheHqzd0f5//2bayui/rCuWwwf9ey/NASJB4qT1D/3LHxFnNtDT2X9CoGvgEHuXk
-         0on/szwCC7Ukrh7SqJ+7ywCeVVLnWo4gml0FmnusEy0oenkNOHmvuvqZRPVLUfyMTv
-         8sZa8ccxpslqQeC/FG3KrXYSNypZdK+32P2nKlvRdL85sQFeH2MFVGKEM4XSwsjbny
-         wex3zKLAAj5GQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, Deren.Wu@mediatek.com
-Subject: [PATCH v2 5/5] mt76: mt7921: remove mt7921_sta_stats
-Date:   Thu, 19 Aug 2021 10:32:05 +0200
-Message-Id: <9cb6e1a19c64a27ebad929a3b7c9c8ddfd3ac42a.1629361688.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1629361688.git.lorenzo@kernel.org>
-References: <cover.1629361688.git.lorenzo@kernel.org>
+        id S239164AbhHSMRa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Aug 2021 08:17:30 -0400
+Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:36268
+        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238357AbhHSMR3 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Aug 2021 08:17:29 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 5676440C9E;
+        Thu, 19 Aug 2021 12:16:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1629375411;
+        bh=jsGWeGecQ1kWffqrQvCeBJMCWUwwxyDVLr5Pq+OBIQA=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=qP8naA+8cHCYt7YbKmUmxvC6slgIAPThy+wi0iVhtyAfdCqx9ER7XSNn07hEcq/cK
+         vfRm4ryOD58AaJU5bZrlnwXHOFqSsKT3H10wOxYI/I5OEE9B8rNjX6RGJwPVgFYbcw
+         Q5QHbslXwLOWR7v0DzgAZ+izOq5w62VNEaPSWP3H6Hg9RPJvvpXs+FNniIo/iGwfVg
+         KqphZBwMoKpjLR4gRaXdCukhRXULbIcSfzAkSCt3DfyvBslVHN5qklx/WHUYPNDOUs
+         Y4rWP15bLPnpJSWcxlxIoZJrkwAJBxHzu4WQ3KBUdVzqgRs8/bfcSKMVvNgOEiOUlh
+         aBhFM03CDAIdg==
+From:   Colin King <colin.king@canonical.com>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] mwifiex: make arrays static const, makes object smaller
+Date:   Thu, 19 Aug 2021 13:16:51 +0100
+Message-Id: <20210819121651.7566-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mt7921_sta_stats is no longer needed
+From: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Don't populate the arrays wpa_oui and wps_oui on the stack but
+instead them static const. Makes the object code smaller by 63 bytes:
+
+Before:
+   text   data  bss     dec    hex filename
+  29453   5451   64   34968   8898 .../wireless/marvell/mwifiex/sta_ioctl.o
+
+After:
+   text	  data  bss     dec    hex filename
+  29356	  5611   64   35031   88d7 ../wireless/marvell/mwifiex/sta_ioctl.o
+
+(gcc version 10.3.0)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c    |  4 ++--
- drivers/net/wireless/mediatek/mt76/mt7921/main.c   |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 12 +-----------
- 3 files changed, 4 insertions(+), 14 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/sta_ioctl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 1d15599c782a..a5db5c3b0a6a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -967,9 +967,9 @@ int mt7921_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	if (sta) {
- 		struct mt7921_sta *msta = (struct mt7921_sta *)sta->drv_priv;
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c b/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
+index 653f9e094256..fb3b11cf123b 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
+@@ -1325,8 +1325,8 @@ mwifiex_set_gen_ie_helper(struct mwifiex_private *priv, u8 *ie_data_ptr,
+ 			  u16 ie_len)
+ {
+ 	struct ieee_types_vendor_header *pvendor_ie;
+-	const u8 wpa_oui[] = { 0x00, 0x50, 0xf2, 0x01 };
+-	const u8 wps_oui[] = { 0x00, 0x50, 0xf2, 0x04 };
++	static const u8 wpa_oui[] = { 0x00, 0x50, 0xf2, 0x01 };
++	static const u8 wps_oui[] = { 0x00, 0x50, 0xf2, 0x04 };
+ 	u16 unparsed_len = ie_len, cur_ie_len;
  
--		if (time_after(jiffies, msta->stats.jiffies + HZ / 4)) {
-+		if (time_after(jiffies, msta->last_txs + HZ / 4)) {
- 			info->flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
--			msta->stats.jiffies = jiffies;
-+			msta->last_txs = jiffies;
- 		}
- 	}
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 8a7b4e78c097..217ed7055aa0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -586,7 +586,7 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	msta->wcid.idx = idx;
- 	msta->wcid.ext_phy = mvif->mt76.band_idx;
- 	msta->wcid.tx_info |= MT_WCID_TX_INFO_SET;
--	msta->stats.jiffies = jiffies;
-+	msta->last_txs = jiffies;
- 
- 	ret = mt76_connac_pm_wake(&dev->mphy, &dev->pm);
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 61fa53af3840..a6caca73fdda 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -65,15 +65,6 @@ enum mt7921_rxq_id {
- 	MT7921_RXQ_MCU_WM = 0,
- };
- 
--struct mt7921_sta_stats {
--	struct rate_info prob_rate;
--	struct rate_info tx_rate;
--
--	unsigned long per;
--	unsigned long changed;
--	unsigned long jiffies;
--};
--
- struct mt7921_sta_key_conf {
- 	s8 keyidx;
- 	u8 key[16];
-@@ -87,8 +78,7 @@ struct mt7921_sta {
- 	struct list_head poll_list;
- 	u32 airtime_ac[8];
- 
--	struct mt7921_sta_stats stats;
--
-+	unsigned long last_txs;
- 	unsigned long ampdu_state;
- 
- 	struct mt7921_sta_key_conf bip;
+ 	/* If the passed length is zero, reset the buffer */
 -- 
-2.31.1
+2.32.0
 
