@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EC743F21A0
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 22:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5546D3F2194
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Aug 2021 22:28:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235239AbhHSU3M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Aug 2021 16:29:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43076 "EHLO
+        id S235505AbhHSU3L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Aug 2021 16:29:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235273AbhHSU3H (ORCPT
+        with ESMTP id S235265AbhHSU3H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 19 Aug 2021 16:29:07 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25D88C0617AE
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D75EC0617AD
         for <linux-wireless@vger.kernel.org>; Thu, 19 Aug 2021 13:28:29 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id y190so6599214pfg.7
+Received: by mail-pf1-x42c.google.com with SMTP id 18so6597898pfh.9
         for <linux-wireless@vger.kernel.org>; Thu, 19 Aug 2021 13:28:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7BmMwB56/tf81QYzz1dJjsAP+TKJKa73m/kJUppNO1k=;
-        b=H0khrC27nefPi4TPO+akLEMsfICTGJ38sMGOl7fqtkLK6QbwzwnhFHh77LKo9BQo97
-         uB0SEQHqI9AmDe3O+VOwR88+YBHkJsnOaL0wV27bHHsKFZ7+P8wd18jMD6EO4wV1O2nz
-         LkvnmtujEWffW91OzJuNnovndzRXD6PAb3FUE=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=23NqigPoreurbrTRI3DzstnCrCz1u9qo8AUicrCllIQ=;
+        b=F/aXFSEFO3B0S1KjxtCFJ0bHN8UOoU5i9j7QIQ9H4wCLpPExP8i4eq1nUqdGC+vTAl
+         qpkYSn/zo5uF001tqNcSIy5OHDEEyNlsMGJFCO4L+E7F3tNOhKH/pjcDNRFmTt4sIiKy
+         R+62ZU9GtHuOUMyC4YOREpkj2XaWxyuMRkKPQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7BmMwB56/tf81QYzz1dJjsAP+TKJKa73m/kJUppNO1k=;
-        b=JVRFNDid0FB2YOuqZy36kCc6EBNheUwN+rlEFRVXDDe/SGdo/MIAWZp0eKdmj/0vX2
-         CAOCzDOg395Z8h3Wjj/Czuc+yQ2e4pDAedemG8zKHK39b2YZiQjhiO+37aAMY5YdmZJc
-         sOZfQ3Md56IgoR9a3poJMZo0p0pWMM1A7KjhtGvD8jqBwzVFPpfL9nwOloYuWM7ibY5J
-         /HblX81wXkXMUO9xy6R1RmjhxnwcmDKnO74gLIbNVLmzB5wtrc/HDUzkXX9+ajvvtE/g
-         sR5JR7BFJt5bn1TLFT24qa8OuARnxRT0H+EMf1FP5Hnj6LtguysQP7D/x8GTGVmwnTlL
-         oPbw==
-X-Gm-Message-State: AOAM531O9f3/3Db0I9zZO0aZLW4ypzhuZC/wqAQ9xDw52Q6XErU5BZyu
-        qhI88pem3LuPdugZCUck+t0rew==
-X-Google-Smtp-Source: ABdhPJwBwTwati1bY3MTycSie0IRt5wIeaqOaw59+Eej05BsSQ9Odxt7CVzlngkJjZjCO/3shrUcGA==
-X-Received: by 2002:a05:6a00:2d6:b0:3e2:da0e:30c8 with SMTP id b22-20020a056a0002d600b003e2da0e30c8mr11210539pft.5.1629404909344;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=23NqigPoreurbrTRI3DzstnCrCz1u9qo8AUicrCllIQ=;
+        b=f31uhpE2hiZ8h4i551dASh8lvRhDFO0pvflkCFdfNR9hSaQu33kEB4XPkxVEX5lvPE
+         Gm9WSeuCxiTQvmEEVPSQxcRQKgupttHL/OaZuOqtW2y8Ezl5C9VY//673ijdOjaJioVJ
+         aCL1pPt6TncL430XwTfuLpyRUddhkns57FvdSOuv5yYrKNQt42tpvl2mClz8tiCCfcfP
+         RKWL6GaqVbdcFfjYY1yT1r0UGc0l4sBJvWTjFgX2v3d854TAsdR3VcFxnHhGVr2Zp44v
+         3H5G6+0V3k+vISFFk1wK17Zoe1MQu9JES+B1gTs/ZENN186tD3aT7XICe544u46u3xPj
+         I6oA==
+X-Gm-Message-State: AOAM5331tjIJju4AGQwfh93/kaHq7INLI4EhKfVzr7KChiEAmHO4PCT1
+        ffFs4B4gvIkETkVwZAJa4mixpg==
+X-Google-Smtp-Source: ABdhPJz+KOpZhGJ5FXJOigQpPSgrYjpb97GBUvqFXR+qoBMUxfptkbVry7hNayEJ2a7UzVP906Pfwg==
+X-Received: by 2002:aa7:8b07:0:b029:3c7:c29f:9822 with SMTP id f7-20020aa78b070000b02903c7c29f9822mr15973588pfd.33.1629404909020;
         Thu, 19 Aug 2021 13:28:29 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id b6sm4701800pgs.94.2021.08.19.13.28.27
+        by smtp.gmail.com with ESMTPSA id k25sm4370211pfa.213.2021.08.19.13.28.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Aug 2021 13:28:28 -0700 (PDT)
+        Thu, 19 Aug 2021 13:28:27 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     netdev@vger.kernel.org
 Cc:     Kees Cook <keescook@chromium.org>,
@@ -52,7 +52,7 @@ Cc:     Kees Cook <keescook@chromium.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        linux-wireless@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
         Leon Romanovsky <leon@kernel.org>,
         Alexei Starovoitov <ast@kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
@@ -62,47 +62,153 @@ Cc:     Kees Cook <keescook@chromium.org>,
         Martin KaFai Lau <kafai@fb.com>,
         Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
         KP Singh <kpsingh@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-rdma@vger.kernel.org,
-        bpf@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH 0/3] net: Cleanups for FORTIFY_SOURCE
-Date:   Thu, 19 Aug 2021 13:28:22 -0700
-Message-Id: <20210819202825.3545692-1-keescook@chromium.org>
+        linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH 1/3] ipw2x00: Avoid field-overflowing memcpy()
+Date:   Thu, 19 Aug 2021 13:28:23 -0700
+Message-Id: <20210819202825.3545692-2-keescook@chromium.org>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210819202825.3545692-1-keescook@chromium.org>
+References: <20210819202825.3545692-1-keescook@chromium.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=939; h=from:subject; bh=xu51d0uSjF8p/6CmPlqDJce+9b/KxPieOk/fd0W2RNE=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhHr7oeuE5Hk6ttR0/276Ucq7WsZ1PJMejfCZIJ5ja WFAOar6JAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYR6+6AAKCRCJcvTf3G3AJi+vD/ 9PovNPdpG3KfYLjfa5Wq+Rx9PVxGTCcy8753xHYa5slO0mAcBbC9pctQ8SY/YQP4YIge5P0eBw3pEe Fmzjuf/yYx64lXiW62yPeozuyn4ezJe1S8tR5aFxb4YeZ3ndkEOcMmsNpuUhUzkkaaaa0L6EAqNfE2 H2ChsbDgszgE+3ji28i8SwAMIkYxZCoFRNT7zbfBSx2lBo3cxvduLgc25RUNpthYSphnn/Qc9r7boC gkWajXv9KXoerNH+LppmWDoFXO2FcD5rcuPhaVyofU9uUNidQGngqO6Y2a1W6UgZcA/Cc8BpHbnp0m Texen5JXiaNQAL8BA+uIPno6vD7G0wU/WIkbpwty3i6wnX1cQHnyHr0F0A/BGZ933ULETe4Qqy/Eov nT6Bu9R9PnhhL0GBig3IMlH7uxy+U/VCqw+bKVEzZhoBaV95QZomrezc2zUgo4vDwc5zr9a58XZEu3 dF3lctzDEHYAxjbFAZzjkANlyu1BBon3zwmKfw624SPm83iEVq+0+JA3fYd2segeAsHibt47VJ5I7t PQHEYWVwP2Ct/ogy38i1brMBdiERunX7r7TH7H804gT8IRt0/w4jyx5rFzgJa2g+quhCC1TD/ksBb3 vv9I7tId+0F4eLs0eAIhA6OtFKaHYUF18hkmFt178s/TR9TunNXNNC2VKSWQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4716; h=from:subject; bh=3b5t4fLR/wEetR2E8Hwk2j3VzU8yz2BgAEsleqg3XAU=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhHr7o3RE3VXLm1V4wHPPpY4uHLTNlH2i9cpT7/zcX 6bMNqjOJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYR6+6AAKCRCJcvTf3G3AJumUD/ 0f1bg3FbVuqAiMBaS9IMEbmlwImkHFdXvVqAGU0c0JnDVZSLl2o2jU4irNcZfOHOGiyYpNUxA8mBNP Y0BXEwPXwzfEODoS/bKlfvvDB4v5d0nQoewu4eFdhGrxNUqnaYxIf2ZgkWFpbxJQnWNR9PSXhdRv/7 8Xe1K+TlHO/3aUYVYuWA/xyvHtdSpptiyvVf3SzuCCmB1Nxzl1mT2w8+AUzjXJ33G+FItKamDkI9iU fpmEm+7I35jZniX3qbMeW+pB/I1M/xgCAPZSeRkDk+x+5wL+ENoCG8oWONDewGhXmjydCkRSIcCinC Iw5eONYFN8dyEG0CljmQvmUrLMIaIowHZwfIbrnf2We+VJEMYCDc6DwIe6OB/fNutrXM0C7eF9il4z PrdDwnVMQawJ9pmSFF8T8fSvCFQ5IYh7/qiP+bYkKv6D6iBH8sep+aWaGHsPbXJCBTV4MSCj8Htluh T2+HVUM+wthFo1IgE64PMPX1dOnTXs6C/w+96vYw3d8flThTGS4zgwyEIXUBWVuqFeyl6zwyNeC2s8 91oO/WcGpuQ7nfQe/lhNmXygtElyjfy8OrkfQqJzAHjJOr7/h9InrqLU8Q93mnIFEx2mDaWcrJUMYR sQ8w+xtOk+PnA9bV07nr3lpdK4YQX8rffoX2nSX4l2Yc4i2FTP3Z66PxBt+Q==
 X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-
 In preparation for FORTIFY_SOURCE performing compile-time and run-time
 field bounds checking for memcpy(), memmove(), and memset(), avoid
 intentionally writing across neighboring fields.
 
-These three changes have been living in my memcpy() series[1], but have
-no external dependencies. It's probably better to have these go via
-netdev.
+libipw_read_qos_param_element() copies a struct libipw_info_element
+into a struct libipw_qos_information_element, but is actually wanting to
+copy into the larger struct libipw_qos_parameter_info (the contents of
+ac_params_record[] is later examined). Refactor the routine to perform
+centralized checks, and copy the entire contents directly (since the id
+and len members match the elementID and length members):
 
-Thanks!
+struct libipw_info_element {
+        u8 id;
+        u8 len;
+        u8 data[];
+} __packed;
 
--Kees
+struct libipw_qos_information_element {
+        u8 elementID;
+        u8 length;
+        u8 qui[QOS_OUI_LEN];
+        u8 qui_type;
+        u8 qui_subtype;
+        u8 version;
+        u8 ac_info;
+} __packed;
 
-[1] https://lore.kernel.org/lkml/20210818060533.3569517-1-keescook@chromium.org/
+struct libipw_qos_parameter_info {
+        struct libipw_qos_information_element info_element;
+        u8 reserved;
+        struct libipw_qos_ac_parameter ac_params_record[QOS_QUEUE_NUM];
+} __packed;
 
-Kees Cook (3):
-  ipw2x00: Avoid field-overflowing memcpy()
-  net/mlx5e: Avoid field-overflowing memcpy()
-  pcmcia: ray_cs: Split memcpy() to avoid bounds check warning
-
- drivers/net/ethernet/mellanox/mlx5/core/en.h  |  4 +-
- .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  4 +-
+Cc: Stanislav Yakovlev <stas.yakovlev@gmail.com>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
  .../net/wireless/intel/ipw2x00/libipw_rx.c    | 56 ++++++-------------
- drivers/net/wireless/ray_cs.c                 |  4 +-
- 4 files changed, 25 insertions(+), 43 deletions(-)
+ 1 file changed, 17 insertions(+), 39 deletions(-)
 
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+index 5a2a723e480b..7a684b76f39b 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+@@ -927,7 +927,8 @@ static u8 qos_oui[QOS_OUI_LEN] = { 0x00, 0x50, 0xF2 };
+ static int libipw_verify_qos_info(struct libipw_qos_information_element
+ 				     *info_element, int sub_type)
+ {
+-
++	if (info_element->elementID != QOS_ELEMENT_ID)
++		return -1;
+ 	if (info_element->qui_subtype != sub_type)
+ 		return -1;
+ 	if (memcmp(info_element->qui, qos_oui, QOS_OUI_LEN))
+@@ -943,57 +944,34 @@ static int libipw_verify_qos_info(struct libipw_qos_information_element
+ /*
+  * Parse a QoS parameter element
+  */
+-static int libipw_read_qos_param_element(struct libipw_qos_parameter_info
+-					    *element_param, struct libipw_info_element
+-					    *info_element)
++static int libipw_read_qos_param_element(
++			struct libipw_qos_parameter_info *element_param,
++			struct libipw_info_element *info_element)
+ {
+-	int ret = 0;
+-	u16 size = sizeof(struct libipw_qos_parameter_info) - 2;
++	size_t size = sizeof(*element_param);
+ 
+-	if ((info_element == NULL) || (element_param == NULL))
++	if (!element_param || !info_element || info_element->len != size - 2)
+ 		return -1;
+ 
+-	if (info_element->id == QOS_ELEMENT_ID && info_element->len == size) {
+-		memcpy(element_param->info_element.qui, info_element->data,
+-		       info_element->len);
+-		element_param->info_element.elementID = info_element->id;
+-		element_param->info_element.length = info_element->len;
+-	} else
+-		ret = -1;
+-	if (ret == 0)
+-		ret = libipw_verify_qos_info(&element_param->info_element,
+-						QOS_OUI_PARAM_SUB_TYPE);
+-	return ret;
++	memcpy(element_param, info_element, size);
++	return libipw_verify_qos_info(&element_param->info_element,
++				      QOS_OUI_PARAM_SUB_TYPE);
+ }
+ 
+ /*
+  * Parse a QoS information element
+  */
+-static int libipw_read_qos_info_element(struct
+-					   libipw_qos_information_element
+-					   *element_info, struct libipw_info_element
+-					   *info_element)
++static int libipw_read_qos_info_element(
++			struct libipw_qos_information_element *element_info,
++			struct libipw_info_element *info_element)
+ {
+-	int ret = 0;
+-	u16 size = sizeof(struct libipw_qos_information_element) - 2;
++	size_t size = sizeof(struct libipw_qos_information_element) - 2;
+ 
+-	if (element_info == NULL)
++	if (!element_info || !info_element || info_element->len != size - 2)
+ 		return -1;
+-	if (info_element == NULL)
+-		return -1;
+-
+-	if ((info_element->id == QOS_ELEMENT_ID) && (info_element->len == size)) {
+-		memcpy(element_info->qui, info_element->data,
+-		       info_element->len);
+-		element_info->elementID = info_element->id;
+-		element_info->length = info_element->len;
+-	} else
+-		ret = -1;
+ 
+-	if (ret == 0)
+-		ret = libipw_verify_qos_info(element_info,
+-						QOS_OUI_INFO_SUB_TYPE);
+-	return ret;
++	memcpy(element_info, info_element, size);
++	return libipw_verify_qos_info(element_info, QOS_OUI_INFO_SUB_TYPE);
+ }
+ 
+ /*
 -- 
 2.30.2
 
