@@ -2,53 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D51083F3065
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 17:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE40C3F3144
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 18:11:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241384AbhHTP6H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 11:58:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55990 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241313AbhHTP6G (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 11:58:06 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E448C061760
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 08:57:28 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id u15so6156122plg.13
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 08:57:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=AJeoq+Z5WucmTQVKUtIcwcvIvzIMIDi7YIzeoCuQoP0=;
-        b=oIxFw+GWAwZs8paucH0s/In4m5BgJDLq+dmzX+m7YKc4gCfgmo4JI2M4BsORRDjuci
-         qAYG9G5n+7RQUkylKMqlb1PMW/ybYfuvOAKQsZeE3AgNOJAe0FYCQwED3j3ea2q1qoXd
-         5B7pTsEFDxH8oJwSmaEr+SvpFW0GYanuTjebY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=AJeoq+Z5WucmTQVKUtIcwcvIvzIMIDi7YIzeoCuQoP0=;
-        b=jvEYtYpIelLMoT6WrgC07xFnJoAwJkEd1LLO7BNHhy3rPWz6eaSaOdQ/ybcHiF+3DS
-         gFOKLg24REfwkof0KTvHbe1DAF8WYTCTuz/q/HGg038rb4YoRMXSI02zo0ijEmpiUG+1
-         2/AqfEaId8GAnz2hRGwh2imJpoiALd7H3WJDSlUn7cSHM6Qc872UHKpNeXL6Oc/8uCSX
-         F2nT6Nu1ptG9w+i5f/rIe6nYnAPKyIB0MZvSP3/aQ9s6aoJS9R3JUxVXBioq5KYT7UEb
-         lv3BoAHze6MXf5dj19MCYajLGSxR69IapujzU4j1IfsATIO4msp1xG5LA3mn/sLQ6GdW
-         lZlg==
-X-Gm-Message-State: AOAM532cayKhj9NxwDwsB2grba7+jD90WiaUt88BedUaehd6vRzlIpQc
-        0bpQIllkh9tNhXSxYZ2jCfWyZg==
-X-Google-Smtp-Source: ABdhPJzw8iPuALjJ/8kpXHMg33VLmYMXrF5AQDF992t6FjpOqQ1z2rFQNZkt6dgaqjw8sRY3eqQNTg==
-X-Received: by 2002:a17:902:c215:b0:12f:b1b6:9f07 with SMTP id 21-20020a170902c21500b0012fb1b69f07mr7880820pll.82.1629475048022;
-        Fri, 20 Aug 2021 08:57:28 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id z20sm7604377pfr.121.2021.08.20.08.57.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Aug 2021 08:57:27 -0700 (PDT)
-Date:   Fri, 20 Aug 2021 08:57:26 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Jiri Kosina <jikos@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
+        id S234105AbhHTQMG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 12:12:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47630 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235634AbhHTQLx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 12:11:53 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D147E61244;
+        Fri, 20 Aug 2021 16:11:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629475875;
+        bh=QtHvxXjD6Lxo5RaKara/Y2QvqxDS6ThacQcb91QFjy8=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=Cm8q6m2PtljGp+99RX9+Khsax5QCk8ma2yXHvKEh8RrOqdQSjmdQD2FlsFBC5lfPd
+         hDf7fZUEaGki4tlDFutbg5ca6FLVXGfPxHWaOBD4XhqmxjD5ePMawLPi6bmTjgSHcj
+         8DgCDWq5VV5OHyCMsJm5rGAQ/UScpbb7txwU6ToO1lJuBsRHIKQLuxTBS3CKRDxgkY
+         zbUcPhLTjOj0CWY3U2jpczxlNukz8oI1saQ7GA/O6BTQCSTo/8mMx+D4koYcDYvj2z
+         VhBU9Lvgl0wa0B8f5+WyDtCS3bjffcF1LCILvKtgT/qWDSeF7AMzYCV7dZ3fCz/Xm4
+         QMcNMCjdf825A==
+Date:   Fri, 20 Aug 2021 18:11:10 +0200 (CEST)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+cc:     LKML <linux-kernel@vger.kernel.org>,
         Stefan Achatz <erazor_de@users.sourceforge.net>,
         Benjamin Tissoires <benjamin.tissoires@redhat.com>,
         linux-input <linux-input@vger.kernel.org>,
@@ -66,48 +44,46 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         linux-hardening@vger.kernel.org
 Subject: Re: [PATCH v2 55/63] HID: roccat: Use struct_group() to zero
  kone_mouse_event
-Message-ID: <202108200857.FA4AA13@keescook>
-References: <20210818060533.3569517-1-keescook@chromium.org>
- <20210818060533.3569517-56-keescook@chromium.org>
- <nycvar.YFH.7.76.2108201501510.15313@cbobk.fhfr.pm>
- <CAJr-aD=6-g7VRw2Hw0dhs+RrtA=Tago5r6Dukfw_gGPB0YYKOQ@mail.gmail.com>
- <nycvar.YFH.7.76.2108201725360.15313@cbobk.fhfr.pm>
+In-Reply-To: <202108200857.FA4AA13@keescook>
+Message-ID: <nycvar.YFH.7.76.2108201810560.15313@cbobk.fhfr.pm>
+References: <20210818060533.3569517-1-keescook@chromium.org> <20210818060533.3569517-56-keescook@chromium.org> <nycvar.YFH.7.76.2108201501510.15313@cbobk.fhfr.pm> <CAJr-aD=6-g7VRw2Hw0dhs+RrtA=Tago5r6Dukfw_gGPB0YYKOQ@mail.gmail.com>
+ <nycvar.YFH.7.76.2108201725360.15313@cbobk.fhfr.pm> <202108200857.FA4AA13@keescook>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <nycvar.YFH.7.76.2108201725360.15313@cbobk.fhfr.pm>
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 20, 2021 at 05:27:35PM +0200, Jiri Kosina wrote:
-> On Fri, 20 Aug 2021, Kees Cook wrote:
-> 
-> > > > In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> > > > field bounds checking for memset(), avoid intentionally writing across
-> > > > neighboring fields.
+On Fri, 20 Aug 2021, Kees Cook wrote:
+
+> > > > > In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> > > > > field bounds checking for memset(), avoid intentionally writing across
+> > > > > neighboring fields.
+> > > > >
+> > > > > Add struct_group() to mark region of struct kone_mouse_event that should
+> > > > > be initialized to zero.
+> > > > >
+> > > > > Cc: Stefan Achatz <erazor_de@users.sourceforge.net>
+> > > > > Cc: Jiri Kosina <jikos@kernel.org>
+> > > > > Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+> > > > > Cc: linux-input@vger.kernel.org
+> > > > > Signed-off-by: Kees Cook <keescook@chromium.org>
 > > > >
-> > > > Add struct_group() to mark region of struct kone_mouse_event that should
-> > > > be initialized to zero.
+> > > > Applied, thank you Kees.
 > > > >
-> > > > Cc: Stefan Achatz <erazor_de@users.sourceforge.net>
-> > > > Cc: Jiri Kosina <jikos@kernel.org>
-> > > > Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> > > > Cc: linux-input@vger.kernel.org
-> > > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > >
-> > > Applied, thank you Kees.
-> > >
+> > > 
+> > > Eek! No, this will break the build: struct_group() is not yet in the tree.
+> > > I can carry this with an Ack, etc.
 > > 
-> > Eek! No, this will break the build: struct_group() is not yet in the tree.
-> > I can carry this with an Ack, etc.
+> > I was pretty sure I saw struct_group() already in linux-next, but that was 
+> > apparently a vacation-induced brainfart, sorry. Dropping.
 > 
-> I was pretty sure I saw struct_group() already in linux-next, but that was 
-> apparently a vacation-induced brainfart, sorry. Dropping.
+> Oh, for these two patches, can I add your Acked-by while I carry them?
 
-Oh, for these two patches, can I add your Acked-by while I carry them?
-
-Thanks!
+Yes, thanks, and sorry for the noise.
 
 -- 
-Kees Cook
+Jiri Kosina
+SUSE Labs
+
