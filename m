@@ -2,105 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8C4E3F35FF
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 23:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA0903F3653
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 00:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236605AbhHTVXs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 17:23:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59012 "EHLO mail.kernel.org"
+        id S231817AbhHTWV5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 18:21:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39722 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231200AbhHTVXs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 17:23:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AB8926108B;
-        Fri, 20 Aug 2021 21:23:09 +0000 (UTC)
+        id S231334AbhHTWV5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 18:21:57 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A9F0160FBF;
+        Fri, 20 Aug 2021 22:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629494590;
-        bh=fLgBCmuTS4P3zp1jdfgwAGz5rrUB0maIASN2bUovQHg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=anmUv4Xt4BBNtFaoa+B1nUnzAKbBsH2Xny7MlTj0KVkLaM/dWk8UBVeOJe+66CyoC
-         U7C0HChGU3fpubVT/Lq2+IPIceNxJH+Z7UsbLYXZESSW8hjAZB39xCo6EmjU6dfVvn
-         yxeDwvzQBRhfJRoc3hDuZQ1b6XUO3aXJn9BjQyaaKXK8AyYP3fuauNk/c6LQxCpDfQ
-         qVDHre2tdHw0pOHk0vM7cZDWLLo/giIESfM6PMh2kR6exnRBZ1mW6u6lG3f5ep1ZCW
-         rYcfTL0b36hnwtme+N5qD8I492skWULAdw6ZKJjwSqayItMvlZeoGR7SxO8lJCExKY
-         mzF8ERMMEEYBQ==
-Date:   Fri, 20 Aug 2021 17:23:08 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Cc:     Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Subject: Re: Backporting CVE-2020-3702 ath9k patches to stable
-Message-ID: <YSAdPJFhmTztd+0Z@sashalap>
-References: <20210818084859.vcs4vs3yd6zetmyt@pali>
- <YRzMt53Ca/5irXc0@kroah.com>
- <20210818091027.2mhqrhg5pcq2bagt@pali>
- <YRzQZZIp/LfMy/xG@kroah.com>
- <20210820113505.dgcsurognowp6xqp@pali>
+        s=k20201202; t=1629498078;
+        bh=/mPrx5HSawvrMzpeHVhapxF2G89uzszKWakMrW4wzdE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Xt6rhIWgwhMr43PiCxMhVcdaevTSu1UcmhrRaTxeXFgEAEoOrw3lxjMbIcfsZxbWy
+         9Im+hKABqnV9F2nEAtDWkb8bHqlyyw2MnFoOYpvgkJb/vcXYeIwkcha5bMwIC4fuCI
+         wGMsVR+Z7ffHkHkP2v5ES0OyJxoBTRFhIvLmLMeWuWZxDr48704uWCbv7HkPH/SM9F
+         uro6349EMvH8zJ0pDcQHNNf+1okjnErONWSL2uwPy2DLxJlWwg4HDSplopFS2/h4hl
+         fX58bfIXs0a35ZZmlqgrBzPKQNOfzGoIeABoRJaUSXMgqxEvncKr8HkOWRdItJBCu8
+         e7YZo4Trvf0yQ==
+Date:   Fri, 20 Aug 2021 15:21:16 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Yufeng Mo <moyufeng@huawei.com>, <davem@davemloft.net>,
+        <netdev@vger.kernel.org>, <shenjian15@huawei.com>,
+        <lipeng321@huawei.com>, <yisen.zhuang@huawei.com>,
+        <linyunsheng@huawei.com>, <huangguangbin2@huawei.com>,
+        <chenhao288@hisilicon.com>, <salil.mehta@huawei.com>,
+        <linuxarm@huawei.com>, <linuxarm@openeuler.org>,
+        <dledford@redhat.com>, <jgg@ziepe.ca>, <netanel@amazon.com>,
+        <akiyano@amazon.com>, <thomas.lendacky@amd.com>,
+        <irusskikh@marvell.com>, <michael.chan@broadcom.com>,
+        <edwin.peer@broadcom.com>, <rohitm@chelsio.com>,
+        <jacob.e.keller@intel.com>, <ioana.ciornei@nxp.com>,
+        <vladimir.oltean@nxp.com>, <sgoutham@marvell.com>,
+        <sbhatta@marvell.com>, <saeedm@nvidia.com>,
+        <ecree.xilinx@gmail.com>, <merez@codeaurora.org>,
+        <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH V3 net-next 2/4] ethtool: extend coalesce setting uAPI
+ with CQE mode
+Message-ID: <20210820152116.0741369a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <32fd0b32-e748-42d9-6468-b5b1393511e9@ti.com>
+References: <1629444920-25437-1-git-send-email-moyufeng@huawei.com>
+        <1629444920-25437-3-git-send-email-moyufeng@huawei.com>
+        <32fd0b32-e748-42d9-6468-b5b1393511e9@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210820113505.dgcsurognowp6xqp@pali>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 20, 2021 at 01:35:05PM +0200, Pali Rohár wrote:
->On Wednesday 18 August 2021 11:18:29 Greg KH wrote:
->> On Wed, Aug 18, 2021 at 11:10:27AM +0200, Pali Rohár wrote:
->> > On Wednesday 18 August 2021 11:02:47 Greg KH wrote:
->> > > On Wed, Aug 18, 2021 at 10:48:59AM +0200, Pali Rohár wrote:
->> > > > Hello! I would like to request for backporting following ath9k commits
->> > > > which are fixing CVE-2020-3702 issue.
->> > > >
->> > > > 56c5485c9e44 ("ath: Use safer key clearing with key cache entries")
->> > > > 73488cb2fa3b ("ath9k: Clear key cache explicitly on disabling hardware")
->> > > > d2d3e36498dd ("ath: Export ath_hw_keysetmac()")
->> > > > 144cd24dbc36 ("ath: Modify ath_key_delete() to not need full key entry")
->> > > > ca2848022c12 ("ath9k: Postpone key cache entry deletion for TXQ frames reference it")
->> > > >
->> > > > See also:
->> > > > https://lore.kernel.org/linux-wireless/87o8hvlx5g.fsf@codeaurora.org/
->> > > >
->> > > > This CVE-2020-3702 issue affects ath9k driver in stable kernel versions.
->> > > > And due to this issue Qualcomm suggests to not use open source ath9k
->> > > > driver and instead to use their proprietary driver which do not have
->> > > > this issue.
->> > > >
->> > > > Details about CVE-2020-3702 are described on the ESET blog post:
->> > > > https://www.welivesecurity.com/2020/08/06/beyond-kr00k-even-more-wifi-chips-vulnerable-eavesdropping/
->> > > >
->> > > > Two months ago ESET tested above mentioned commits applied on top of
->> > > > 4.14 stable tree and confirmed that issue cannot be reproduced anymore
->> > > > with those patches. Commits were applied cleanly on top of 4.14 stable
->> > > > tree without need to do any modification.
->> > >
->> > > What stable tree(s) do you want to see these go into?
->> >
->> > Commits were introduced in 5.12, so it should go to all stable trees << 5.12
->> >
->> > > And what order are the above commits to be applied in, top-to-bottom or
->> > > bottom-to-top?
->> >
->> > Same order in which were applied in 5.12. So first commit to apply is
->> > 56c5485c9e44, then 73488cb2fa3b and so on... (from top of the email to
->> > the bottom of email).
->>
->> Great, all now queued up.  Sad that qcom didn't want to do this
->> themselves :(
->>
->> greg k-h
->
->It is sad, but Qualcomm support said that they have fixed it in their
->proprietary driver in July 2020 (so more than year ago) and that open
->source drivers like ath9k are unsupported and customers should not use
->them :( And similar answer is from vendors who put these chips into
->their cards / products.
+On Fri, 20 Aug 2021 21:27:13 +0300 Grygorii Strashko wrote:
+> This is very big change which is not only mix two separate changes, but also looks
+> half-done. From one side you're adding HW feature supported by limited number of HW,
+> from another - changing most of net drivers to support it by generating mix of legacy
+> and new kernel_ethtool_coalesce parameters.
+> 
+> There is also an issue - you do not account get/set_per_queue_coalesce() in any way.
 
-Is there a public statement that says that? Right now the MAINTAINERS
-file says it's "supported" and if it's not the case we should at least
-fix that and consider deprecating it if it's really orphaned.
+ethtool's netlink interface does not support per queue coalescing.
+I don't think it's fair to require it as part of this series.
 
--- 
-Thanks,
-Sasha
+> Would it be possible to consider following, please?
+> 
+> - move extack change out of this series
+
+Why? To have to change all the drivers twice?
+
+> - option (a)
+>    add new callbacks in ethtool_ops as set_coalesce_cqe/get_coalesce_cqe for CQE support.
+>    Only required drivers will need to be changed.
+
+All the params are changed as one operation from user space's
+perspective. Having two ops would make it problematic for drivers 
+to fail the entire op without modifying half of the parameters in 
+a previous callback.
+
+> - option (b)
+>    add struct ethtool_coalesce as first field of kernel_ethtool_coalesce
+
+This ends up being more painful than passing an extra parameter 
+in my experience.
+
+> struct kernel_ethtool_coalesce {
+> 	/* legacy */
+> 	struct ethtool_coalesce coal;
+> 
+> 	/* new */
+> 	u8 use_cqe_mode_tx;
+> 	u8 use_cqe_mode_rx;
+> };
+> 
+> --  then b.1
+>    drivers can be updated as
+>     static int set_coalesce(struct net_device *dev,
+>     			    struct kernel_ethtool_coalesce *kernel_coal)
+>     {
+> 	struct ethtool_coalesce *coal = &kernel_coal->coal;
+>     
+>     (which will clearly indicate migration to the new interface )
+> 
+> -- then b.2
+>      add new callbacks in ethtool_ops as set_coalesce_ext/get_coalesce_ext (extended)
+>      which will accept struct kernel_ethtool_coalesce as parameter an allow drivers to migrate when needed
+>      (or as separate patch which will do only migration).
+> 
+> Personally, I like "b.2".
+
+These options were considered. None of the options is great to 
+be honest. Let's try the new params, I say. 
