@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E70E83F2BEA
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 14:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1758A3F2BF4
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 14:21:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240554AbhHTMVk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 08:21:40 -0400
+        id S239917AbhHTMWB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 08:22:01 -0400
 Received: from m43-7.mailgun.net ([69.72.43.7]:53290 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240329AbhHTMVj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 08:21:39 -0400
+        id S240613AbhHTMV5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 08:21:57 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1629462061; h=Content-Transfer-Encoding: MIME-Version:
+ s=smtp; t=1629462079; h=Content-Transfer-Encoding: MIME-Version:
  References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=JsGCfZQIQ3Z0P9pypU2AKrMWSoy/ba8cpre//PAvbvU=; b=s/Oe+4yUVfUeSFKd7spHgltPZ1n2H7m8GkqJPD0N1Etzdk5L8h82OZzzTleEiUHLYHONM5Uw
- T8lND70pbH8WBaK29uWjP9dIHH9NKzZOn92DHhMzGR50a9ED0cLgnWw4z4ZzenkBCHkmh7L4
- pnBSuj02EaSPmpJP0wPcM1gXSQk=
+ Sender; bh=x/Cgq183T9f89XOOcwri40VOSTuVlC/dB43M5oaeiNc=; b=rDH0GxiEaYjkJPldProZUbwBGhx8d8sZQ1k2I8d0cCWgmRpHyhIxh4o1xxHtpqib+kcJXRAB
+ OxbCE4rcSKq5LQ5xj/C5qMEo0+TD9jilVLte/lnFmJsfPj0C9SYAe/AT6ZylJ4eitv/caqRN
+ yz+fFWt0kQ7xW3uMBe6O+ZOdv7s=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 611f9e2c89fbdf3ffe7b9ac6 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 20 Aug 2021 12:21:00
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 611f9e2d0f9b337f11cd3ab6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 20 Aug 2021 12:21:01
  GMT
 Sender: wgong=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B6159C43616; Fri, 20 Aug 2021 12:20:59 +0000 (UTC)
+        id 4FE75C43460; Fri, 20 Aug 2021 12:21:01 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,17 +37,17 @@ Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 13FD0C4338F;
-        Fri, 20 Aug 2021 12:20:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 13FD0C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9CEC0C43460;
+        Fri, 20 Aug 2021 12:20:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 9CEC0C43460
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Wen Gong <wgong@codeaurora.org>
 To:     johannes@sipsolutions.net, ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH v2 7/8] mac80211: add parse transmit power envelope element
-Date:   Fri, 20 Aug 2021 08:20:40 -0400
-Message-Id: <20210820122041.12157-8-wgong@codeaurora.org>
+Subject: [PATCH v2 8/8] mac80211: save transmit power envelope element and power constraint
+Date:   Fri, 20 Aug 2021 08:20:41 -0400
+Message-Id: <20210820122041.12157-9-wgong@codeaurora.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210820122041.12157-1-wgong@codeaurora.org>
 References: <20210820122041.12157-1-wgong@codeaurora.org>
@@ -57,61 +57,105 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The transmit power envelope elements in beacon is used to calculate
-the power limit by lower driver, and sometimes it has more than
-one elements in a beacon frame.
-
-This is to add parse the transmit power envelope elements, then it
-will be saved and transfer to lower driver to calculate the power
-limit.
+This is to save the transmit power envelope element and power
+constraint in struct ieee80211_bss_conf for 6 GHz. Lower driver
+will use this info to calculate the power limit.
 
 Signed-off-by: Wen Gong <wgong@codeaurora.org>
 ---
- net/mac80211/ieee80211_i.h | 3 +++
- net/mac80211/util.c        | 9 +++++++++
- 2 files changed, 12 insertions(+)
+ include/net/mac80211.h |  6 ++++++
+ net/mac80211/chan.c    |  9 +++++++++
+ net/mac80211/mlme.c    | 26 ++++++++++++++++++++++++++
+ 3 files changed, 41 insertions(+)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 648696b49f89..bb62de5e3758 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1494,6 +1494,7 @@ struct ieee802_11_elems {
- 	const struct ieee80211_he_spr *he_spr;
- 	const struct ieee80211_mu_edca_param_set *mu_edca_param_set;
- 	const struct ieee80211_he_6ghz_capa *he_6ghz_capa;
-+	const struct ieee80211_tx_pwr_env *tx_pwr_env[IEEE80211_TPE_MAX_IE_COUNT];
- 	const u8 *uora_element;
- 	const u8 *mesh_id;
- 	const u8 *peering;
-@@ -1544,6 +1545,8 @@ struct ieee802_11_elems {
- 	u8 perr_len;
- 	u8 country_elem_len;
- 	u8 bssid_index_len;
-+	u8 tx_pwr_env_len[IEEE80211_TPE_MAX_IE_COUNT];
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index e89530d0d9c6..6e11e122e364 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -631,6 +631,9 @@ struct ieee80211_fils_discovery {
+  * @s1g: BSS is S1G BSS (affects Association Request format).
+  * @beacon_tx_rate: The configured beacon transmit rate that needs to be passed
+  *	to driver when rate control is offloaded to firmware.
++ * @tx_pwr_env: transmit power envelope array of BSS.
++ * @tx_pwr_env_num: number of @tx_pwr_env.
++ * @pwr_reduction: power constraint of BSS.
+  */
+ struct ieee80211_bss_conf {
+ 	const u8 *bssid;
+@@ -700,6 +703,9 @@ struct ieee80211_bss_conf {
+ 	u32 unsol_bcast_probe_resp_interval;
+ 	bool s1g;
+ 	struct cfg80211_bitrate_mask beacon_tx_rate;
++	struct ieee80211_tx_pwr_env tx_pwr_env[IEEE80211_TPE_MAX_IE_COUNT];
 +	u8 tx_pwr_env_num;
++	u8 pwr_reduction;
+ };
  
- 	/* whether a parse error occurred while retrieving these elements */
- 	bool parse_error;
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index cb1c35d8ef48..12c70cc30461 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1336,6 +1336,15 @@ _ieee802_11_parse_elems_crc(const u8 *start, size_t len, bool action,
- 			elems->rsnx = pos;
- 			elems->rsnx_len = elen;
- 			break;
-+		case WLAN_EID_TX_POWER_ENVELOPE:
-+			if (elems->tx_pwr_env_num >= ARRAY_SIZE(elems->tx_pwr_env) ||
-+			    elen < 1)
-+				break;
+ /**
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index 907bb1f748a1..149d4ac798f6 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -721,6 +721,15 @@ static int ieee80211_assign_vif_chanctx(struct ieee80211_sub_if_data *sdata,
+ 					 lockdep_is_held(&local->chanctx_mtx));
+ 
+ 	if (conf) {
++		if (conf->def.chan->band == NL80211_BAND_6GHZ) {
++			struct ieee80211_bss_conf *bss_conf;
 +
-+			elems->tx_pwr_env[elems->tx_pwr_env_num] = (void *)pos;
-+			elems->tx_pwr_env_len[elems->tx_pwr_env_num] = elen;
-+			elems->tx_pwr_env_num++;
-+			break;
- 		case WLAN_EID_EXTENSION:
- 			ieee80211_parse_extension_element(calc_crc ?
- 								&crc : NULL,
++			bss_conf = &sdata->vif.bss_conf;
++			bss_conf->pwr_reduction = 0;
++			bss_conf->tx_pwr_env_num = 0;
++			memset(bss_conf->tx_pwr_env, 0, sizeof(bss_conf->tx_pwr_env));
++		}
++
+ 		curr_ctx = container_of(conf, struct ieee80211_chanctx, conf);
+ 
+ 		drv_unassign_vif_chanctx(local, sdata, curr_ctx);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 2480bd0577bb..a6d66b4ad7ee 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5070,6 +5070,7 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 
+ 	if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE)) {
+ 		const struct cfg80211_bss_ies *ies;
++		struct ieee80211_bss_conf *bss_conf;
+ 		const u8 *he_oper_ie;
+ 
+ 		ies = rcu_dereference(cbss->ies);
+@@ -5081,6 +5082,31 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 		else
+ 			he_oper = NULL;
+ 
++		if (is_6ghz) {
++			struct ieee802_11_elems elems;
++			u8 i, j = 0;
++
++			ieee802_11_parse_elems(ies->data, ies->len, false, &elems,
++					       NULL, NULL);
++
++			if (elems.pwr_constr_elem)
++				bss_conf->pwr_reduction = *elems.pwr_constr_elem;
++
++			BUILD_BUG_ON(ARRAY_SIZE(bss_conf->tx_pwr_env) !=
++				     ARRAY_SIZE(elems.tx_pwr_env));
++
++			for (i = 0; i < elems.tx_pwr_env_num; i++) {
++				if (elems.tx_pwr_env_len[i] >
++				    sizeof(bss_conf->tx_pwr_env[j]))
++					continue;
++
++				bss_conf->tx_pwr_env_num++;
++				memcpy(&bss_conf->tx_pwr_env[j], elems.tx_pwr_env[i],
++				       elems.tx_pwr_env_len[i]);
++				j++;
++			}
++		}
++
+ 		if (!ieee80211_verify_sta_he_mcs_support(sband, he_oper))
+ 			ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
+ 	}
 -- 
 2.31.1
 
