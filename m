@@ -2,98 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29EB23F2B4C
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 13:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E13833F2BC7
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 14:14:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239655AbhHTLfq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 07:35:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48132 "EHLO mail.kernel.org"
+        id S240254AbhHTMOh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 08:14:37 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:45181 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239233AbhHTLfq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 07:35:46 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 40C8361051;
-        Fri, 20 Aug 2021 11:35:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629459308;
-        bh=tkVRmuGLhLfvsBQ3/bsUHTitr56vDiVOqOLUyKm0InQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BDSNSX8F+DlYltseB0FN+yIf9YASDb9S52bRN2o+mkZ0KaRb780gByvfQxN+pBrMI
-         kDI1ilmXZbWdHaGos0MRfjvKCts4hvDQf/4PzIcNDkSiEtz1RFE5NlxQD2ylm8Pdgw
-         2LLbfoJmUkIbdsIPmvgWEF4thNmv7o1jaUqD1DE/I42Ai6FJL2Ad4DzesBEFWKozWC
-         fC9AvbGuwdALjC065GHOZIfRxp5Gra7plMyLJVnYjaJJJqmQrq6IFZT6k6vn4My140
-         PTAG5x1TXXv0YLcpniBKx9Ye2XCYdgoY5s67TE8AQMWGV2rg0acuCN1y+e6RNWrqKa
-         p+Ab8K0POfGWw==
-Received: by pali.im (Postfix)
-        id BD89B7C5; Fri, 20 Aug 2021 13:35:05 +0200 (CEST)
-Date:   Fri, 20 Aug 2021 13:35:05 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Subject: Re: Backporting CVE-2020-3702 ath9k patches to stable
-Message-ID: <20210820113505.dgcsurognowp6xqp@pali>
-References: <20210818084859.vcs4vs3yd6zetmyt@pali>
- <YRzMt53Ca/5irXc0@kroah.com>
- <20210818091027.2mhqrhg5pcq2bagt@pali>
- <YRzQZZIp/LfMy/xG@kroah.com>
+        id S237882AbhHTMOh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 08:14:37 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4GrgXg1cMHz9sSs;
+        Fri, 20 Aug 2021 22:13:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+        s=201909; t=1629461637;
+        bh=GaPKIeDl8hhkmPkLrvrJ9stzgKavrRQRLEdG6v/pbF8=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=Cg5iz+FrUHTpi7DCGlIH7oXwkf4XcqnUHNlNAsx67J8ipGyBRlXQyjIQBkg1fYcl8
+         GV+t0VyhBXDRR97pVPUxVgp868U+GNvxTlPP6U2zCnk47Np7XQp1FjrHxff4fmXpif
+         8KAqXR527PErlM6JgshcTwv7RJvULaJSG2WBf/CdesX8nJ3mGPOyc/62wOlIhiuiK4
+         pHFjOmTd7s4UU/4Kk0VVQGMkOsTQ4C/5DX7na2EhBWLRpjDz6EOnwY09XINL4JSd2V
+         9F5kX7hGtMD+XnYF6MYL6RHkdxZzx1LCjbCfB1+2VyGkTnXO9jkpYniGuZF7TGKKHz
+         ymJThU067ZGkA==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
+        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 57/63] powerpc/signal32: Use struct_group() to zero
+ spe regs
+In-Reply-To: <0f6e508e-62b6-3840-5ff4-eb5a77635bd1@csgroup.eu>
+References: <20210818060533.3569517-1-keescook@chromium.org>
+ <20210818060533.3569517-58-keescook@chromium.org>
+ <877dggeesw.fsf@mpe.ellerman.id.au>
+ <0f6e508e-62b6-3840-5ff4-eb5a77635bd1@csgroup.eu>
+Date:   Fri, 20 Aug 2021 22:13:53 +1000
+Message-ID: <874kbke2ke.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YRzQZZIp/LfMy/xG@kroah.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wednesday 18 August 2021 11:18:29 Greg KH wrote:
-> On Wed, Aug 18, 2021 at 11:10:27AM +0200, Pali Rohár wrote:
-> > On Wednesday 18 August 2021 11:02:47 Greg KH wrote:
-> > > On Wed, Aug 18, 2021 at 10:48:59AM +0200, Pali Rohár wrote:
-> > > > Hello! I would like to request for backporting following ath9k commits
-> > > > which are fixing CVE-2020-3702 issue.
-> > > > 
-> > > > 56c5485c9e44 ("ath: Use safer key clearing with key cache entries")
-> > > > 73488cb2fa3b ("ath9k: Clear key cache explicitly on disabling hardware")
-> > > > d2d3e36498dd ("ath: Export ath_hw_keysetmac()")
-> > > > 144cd24dbc36 ("ath: Modify ath_key_delete() to not need full key entry")
-> > > > ca2848022c12 ("ath9k: Postpone key cache entry deletion for TXQ frames reference it")
-> > > > 
-> > > > See also:
-> > > > https://lore.kernel.org/linux-wireless/87o8hvlx5g.fsf@codeaurora.org/
-> > > > 
-> > > > This CVE-2020-3702 issue affects ath9k driver in stable kernel versions.
-> > > > And due to this issue Qualcomm suggests to not use open source ath9k
-> > > > driver and instead to use their proprietary driver which do not have
-> > > > this issue.
-> > > > 
-> > > > Details about CVE-2020-3702 are described on the ESET blog post:
-> > > > https://www.welivesecurity.com/2020/08/06/beyond-kr00k-even-more-wifi-chips-vulnerable-eavesdropping/
-> > > > 
-> > > > Two months ago ESET tested above mentioned commits applied on top of
-> > > > 4.14 stable tree and confirmed that issue cannot be reproduced anymore
-> > > > with those patches. Commits were applied cleanly on top of 4.14 stable
-> > > > tree without need to do any modification.
-> > > 
-> > > What stable tree(s) do you want to see these go into?
-> > 
-> > Commits were introduced in 5.12, so it should go to all stable trees << 5.12
-> > 
-> > > And what order are the above commits to be applied in, top-to-bottom or
-> > > bottom-to-top?
-> > 
-> > Same order in which were applied in 5.12. So first commit to apply is
-> > 56c5485c9e44, then 73488cb2fa3b and so on... (from top of the email to
-> > the bottom of email).
-> 
-> Great, all now queued up.  Sad that qcom didn't want to do this
-> themselves :(
-> 
-> greg k-h
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 20/08/2021 =C3=A0 09:49, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Kees Cook <keescook@chromium.org> writes:
+>>> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+>>> field bounds checking for memset(), avoid intentionally writing across
+>>> neighboring fields.
+>>>
+>>> Add a struct_group() for the spe registers so that memset() can correct=
+ly reason
+>>> about the size:
+>>>
+>>>     In function 'fortify_memset_chk',
+>>>         inlined from 'restore_user_regs.part.0' at arch/powerpc/kernel/=
+signal_32.c:539:3:
+>>>>> include/linux/fortify-string.h:195:4: error: call to '__write_overflo=
+w_field' declared with attribute warning: detected write beyond size of fie=
+ld (1st parameter); maybe use struct_group()? [-Werror=3Dattribute-warning]
+>>>       195 |    __write_overflow_field();
+>>>           |    ^~~~~~~~~~~~~~~~~~~~~~~~
+>>>
+>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>>> Cc: Paul Mackerras <paulus@samba.org>
+>>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>> Cc: Sudeep Holla <sudeep.holla@arm.com>
+>>> Cc: linuxppc-dev@lists.ozlabs.org
+>>> Reported-by: kernel test robot <lkp@intel.com>
+>>> Signed-off-by: Kees Cook <keescook@chromium.org>
+>>> ---
+>>>   arch/powerpc/include/asm/processor.h | 6 ++++--
+>>>   arch/powerpc/kernel/signal_32.c      | 6 +++---
+>>>   2 files changed, 7 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/includ=
+e/asm/processor.h
+>>> index f348e564f7dd..05dc567cb9a8 100644
+>>> --- a/arch/powerpc/include/asm/processor.h
+>>> +++ b/arch/powerpc/include/asm/processor.h
+>>> @@ -191,8 +191,10 @@ struct thread_struct {
+>>>   	int		used_vsr;	/* set if process has used VSX */
+>>>   #endif /* CONFIG_VSX */
+>>>   #ifdef CONFIG_SPE
+>>> -	unsigned long	evr[32];	/* upper 32-bits of SPE regs */
+>>> -	u64		acc;		/* Accumulator */
+>>> +	struct_group(spe,
+>>> +		unsigned long	evr[32];	/* upper 32-bits of SPE regs */
+>>> +		u64		acc;		/* Accumulator */
+>>> +	);
+>>>   	unsigned long	spefscr;	/* SPE & eFP status */
+>>>   	unsigned long	spefscr_last;	/* SPEFSCR value on last prctl
+>>>   					   call or trap return */
+>>> diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/sign=
+al_32.c
+>>> index 0608581967f0..77b86caf5c51 100644
+>>> --- a/arch/powerpc/kernel/signal_32.c
+>>> +++ b/arch/powerpc/kernel/signal_32.c
+>>> @@ -532,11 +532,11 @@ static long restore_user_regs(struct pt_regs *reg=
+s,
+>>>   	regs_set_return_msr(regs, regs->msr & ~MSR_SPE);
+>>>   	if (msr & MSR_SPE) {
+>>>   		/* restore spe registers from the stack */
+>>> -		unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
+>>> -				      ELF_NEVRREG * sizeof(u32), failed);
+>>> +		unsafe_copy_from_user(&current->thread.spe, &sr->mc_vregs,
+>>> +				      sizeof(current->thread.spe), failed);
+>>=20
+>> This makes me nervous, because the ABI is that we copy ELF_NEVRREG *
+>> sizeof(u32) bytes, not whatever sizeof(current->thread.spe) happens to
+>> be.
+>>=20
+>> ie. if we use sizeof an inadvertent change to the fields in
+>> thread_struct could change how many bytes we copy out to userspace,
+>> which would be an ABI break.
+>>=20
+>> And that's not that hard to do, because it's not at all obvious that the
+>> size and layout of fields in thread_struct affects the user ABI.
+>>=20
+>> At the same time we don't want to copy the right number of bytes but
+>> the wrong content, so from that point of view using sizeof is good :)
+>>=20
+>> The way we handle it in ptrace is to have BUILD_BUG_ON()s to verify that
+>> things match up, so maybe we should do that here too.
+>>=20
+>> ie. add:
+>>=20
+>> 	BUILD_BUG_ON(sizeof(current->thread.spe) =3D=3D ELF_NEVRREG * sizeof(u3=
+2));
+>
+> You mean !=3D I guess ?
 
-It is sad, but Qualcomm support said that they have fixed it in their
-proprietary driver in July 2020 (so more than year ago) and that open
-source drivers like ath9k are unsupported and customers should not use
-them :( And similar answer is from vendors who put these chips into
-their cards / products.
+Gah. Yes I do :)
+
+cheers
