@@ -2,153 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EDCB3F2CCA
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 15:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34F863F2DE6
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 16:21:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240613AbhHTNJM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 09:09:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44250 "EHLO
+        id S240814AbhHTOWQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 10:22:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240723AbhHTNJL (ORCPT
+        with ESMTP id S237597AbhHTOWQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 09:09:11 -0400
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB259C06175F
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 06:08:33 -0700 (PDT)
-Received: by mail-qt1-x830.google.com with SMTP id b1so7447031qtx.0
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 06:08:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=TUaFXYR3HgX7rq/VVrgPte+1/jUiDRhyGavFeUWW8ns=;
-        b=qyykdYkmfS+sozWV6prsKemkogSdt6dw3JI6xplGBEyTZrCLVw/V2WrXps+vMYETkc
-         8Te8E/naVt9sCYftHN+RQWgeipXTUxRrtvWgldkYCu2Cbe9g6ADwtRoynUE5z+qBzTjG
-         54yO9pPGaOTEYQUVc1FEW/T8RQKm7EsP8D7GtvNgk4bFWoxEOLRtHkxavfl9A0+APfke
-         fUSP5CH+beQOqMRPOpWAxyXQpPSp8NBKx7ZcRxpsbapjzzBlp12z8K73a7u/zLR3Yi/5
-         /eO+ssNjqZxgkZLIbtO1QrlN47VLwXpLqfNwD+gSTbQel6v8qOEG9qHA3WYS7WzopQpP
-         XncQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=TUaFXYR3HgX7rq/VVrgPte+1/jUiDRhyGavFeUWW8ns=;
-        b=j1hnbx/AZTV+Y5Vc2OMHxYeeA7wSwbWewROaEc7CAvBHPcZDgldWRzuQnOOdkEh7rY
-         4uy6KgRqU7hgVfwYViya5JiWiT330WL5kw89DTdOc/oSj5czzP/LHRAdlSMAPgxVsrt2
-         L6jcR9FzR/Z79FYbJDkpk3YJvOPWck4ha0/sm/kqTWvvimkQBDbXRDu6AzRMxi3xwI3F
-         kVBb7JRmXg6vheht0Na3kMRENcTb/WvomefZJr0YZy+4u+NAYm1sOYBffC+yd0YRlzBN
-         /zW1ey50iKHCOX0ulm4rPMiL7bsGm5qBKvoyzCMaUx4DNMbFnoOKU/Bbyuqoimd3NgmG
-         rZ3w==
-X-Gm-Message-State: AOAM531srhgtwLEvF6Mwx39hueaORT9t/1MfuAAL2UfF+UX8l625pdb2
-        jkoAPmAzschQifhlfvIQpwY3cTXCHz6QYiJ+xrrvJA==
-X-Google-Smtp-Source: ABdhPJyHXvzqFdkh92xFSl2Tfgr6Wq+GnxyuqFmSQJ3g0FPjwxN9S26JOc0IArVq879EP1YIZ1goBTULRA693ce45J8=
-X-Received: by 2002:a05:622a:13c8:: with SMTP id p8mr17705841qtk.238.1629464912762;
- Fri, 20 Aug 2021 06:08:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210817005507.1507580-1-dmitry.baryshkov@linaro.org> <1CA665D1-86F0-45A1-862D-17DAB3ABA974@holtmann.org>
-In-Reply-To: <1CA665D1-86F0-45A1-862D-17DAB3ABA974@holtmann.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Fri, 20 Aug 2021 16:08:21 +0300
-Message-ID: <CAA8EJpoOxerwmwQozL3gp1nX-+oxLMFUFjVPvRy-MoVfPuvqrw@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/15] create power sequencing subsystem
-To:     Marcel Holtmann <marcel@holtmann.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Fri, 20 Aug 2021 10:22:16 -0400
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050::465:201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F2B9C061575;
+        Fri, 20 Aug 2021 07:21:38 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4GrkMy5GVjzQk1w;
+        Fri, 20 Aug 2021 16:21:34 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de [80.241.56.123]) (amavisd-new, port 10030)
+        with ESMTP id oQdTRAHGdyxc; Fri, 20 Aug 2021 16:21:30 +0200 (CEST)
+From:   =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        MSM <linux-arm-msm@vger.kernel.org>, linux-mmc@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:BLUETOOTH SUBSYSTEM" <linux-bluetooth@vger.kernel.org>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+Subject: [PATCH v3 0/2] mwifiex: Add quirks for MS Surface devices
+Date:   Fri, 20 Aug 2021 16:20:48 +0200
+Message-Id: <20210820142050.35741-1-verdre@v0yd.nl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BF4421887
+X-Rspamd-UID: 39dc6b
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Third revision of this patch, here's version 1 and 2:
+version 1: https://lore.kernel.org/linux-wireless/20210522131827.67551-1-verdre@v0yd.nl/
+version 2: https://lore.kernel.org/linux-wireless/20210709145831.6123-1-verdre@v0yd.nl/
 
-On Thu, 19 Aug 2021 at 18:23, Marcel Holtmann <marcel@holtmann.org> wrote:
-> > This is an RFC of the proposed power sequencer subsystem. This is a
-> > generification of the MMC pwrseq code. The subsystem tries to abstract
-> > the idea of complex power-up/power-down/reset of the devices.
-> >
-> > The primary set of devices that promted me to create this patchset is
-> > the Qualcomm BT+WiFi family of chips. They reside on serial+platform
-> > interfaces (older generations) or on serial+PCIe (newer generations).
-> > They require a set of external voltage regulators to be powered on and
-> > (some of them) have separate WiFi and Bluetooth enable GPIOs.
-> >
-> > This patchset being an RFC tries to demonstrate the approach, design an=
-d
-> > usage of the pwrseq subsystem. Following issues are present in the RFC
-> > at this moment but will be fixed later if the overall approach would be
-> > viewed as acceptable:
-> >
-> > - No documentation
-> >   While the code tries to be self-documenting proper documentation
-> >   would be required.
-> >
-> > - Minimal device tree bindings changes
-> >   There are no proper updates for the DT bindings (thus neither Rob
-> >   Herring nor devicetree are included in the To/Cc lists). The dt
-> >   schema changes would be a part of v1.
-> >
-> > - Lack of proper PCIe integration
-> >   At this moment support for PCIe is hacked up to be able to test the
-> >   PCIe part of qca6390. Proper PCIe support would require automatically
-> >   powering up the devices before the scan basing on the proper device
-> >   structure in the device tree.
-> >
-> > ----------------------------------------------------------------
-> > Dmitry Baryshkov (15):
-> >      power: add power sequencer subsystem
-> >      pwrseq: port MMC's pwrseq drivers to new pwrseq subsystem
-> >      mmc: core: switch to new pwrseq subsystem
-> >      ath10k: add support for pwrseq sequencing
-> >      Bluetooth: hci_qca: merge qca_power into qca_serdev
-> >      Bluetooth: hci_qca: merge init paths
-> >      Bluetooth: hci_qca: merge qca_power_on with qca_regulators_init
-> >      Bluetooth: hci_qca: futher rework of power on/off handling
-> >      Bluetooth: hci_qca: add support for pwrseq
->
-> any chance you can try to abandon patching hci_qca. The serdev support in=
- hci_uart is rather hacking into old line discipline code and it is not agi=
-ng well. It is really becoming a mess.
+Changes between v2 and v3:
+ - Removed a small comment about the choice of dev_dbg() over mwifiex_dbg()
+ - Switched to same licence boilerplate for pcie_quirks.* as the rest of mwifiex
 
-I wanted to stay away from rewriting the BT code. But... New driver
-would have a bonus point that I don't have to be compatible with old
-bindings. In fact we can even make it the other way around: let the
-old driver always use regulators and make the new driver support only
-the pwrseq. Then it should be possible to drop the old hci_qca driver
-together with dropping the old bindings.
+Jonas Dreßler (1):
+  mwifiex: pcie: add DMI-based quirk implementation for Surface devices
 
-> I would say that the Qualcomm serial devices could use a separate standal=
-one serdev driver. A while I send an RFC for a new serdev driver.
->
-> https://www.spinics.net/lists/linux-bluetooth/msg74918.html
+Tsuchiya Yuto (1):
+  mwifiex: pcie: add reset_d3cold quirk for Surface gen4+ devices
 
-Any reason why your driver stayed as an RFC and never made it into the
-kernel? Do you plan to revive your old RFCs on H:4 and H:5?
+ drivers/net/wireless/marvell/mwifiex/Makefile |   1 +
+ drivers/net/wireless/marvell/mwifiex/pcie.c   |  11 ++
+ drivers/net/wireless/marvell/mwifiex/pcie.h   |   1 +
+ .../wireless/marvell/mwifiex/pcie_quirks.c    | 161 ++++++++++++++++++
+ .../wireless/marvell/mwifiex/pcie_quirks.h    |  23 +++
+ 5 files changed, 197 insertions(+)
+ create mode 100644 drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
+ create mode 100644 drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
 
-> There I had the idea that simple vendor specifics can be in that driver (=
-like the Broadcom part I added there), but frankly the QCA specifics are a =
-bit too specific and it should be a separate driver. However I think this w=
-ould be a good starting point.
->
-> In general a H:4 based Bluetooth driver is dead simple with the help of h=
-4_recv.h helper we have in the kernel. The complicated part is the power ma=
-nagement pieces or any vendor specific low-power protocol they are running =
-on that serial line. And since you are touching this anyway, doing a driver=
- from scratch might be lot simpler and cleaner. It would surely help all th=
-e new QCA device showing up in the future.
+-- 
+2.31.1
 
---=20
-With best wishes
-Dmitry
