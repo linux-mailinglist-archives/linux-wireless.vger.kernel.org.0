@@ -2,141 +2,246 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E3453F32C3
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 20:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 563973F33B9
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 20:28:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235686AbhHTSHp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 14:07:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57964 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230089AbhHTSHo (ORCPT
+        id S236139AbhHTS2m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 14:28:42 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:34714 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236119AbhHTS2f (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 14:07:44 -0400
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE00C061756
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 11:07:05 -0700 (PDT)
-Received: by mail-qk1-x72c.google.com with SMTP id 22so11749404qkg.2
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 11:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2P/6ZDosW5/PVcVOFh8CyCIBugd9jmsRIXNI9frVp7k=;
-        b=eKlYoSg3dyAbESo+fqg+WE15YLNT8pnJoLbLlt4p3gPHdJcPfp3zxOG3s4YPxNRYRA
-         wA/+17Kcf4OTu6WSv5rvKqFSNJjVgyZil/Aa+dRjpq1fyJs7xT7HCyWE5Lez19Fctvpn
-         fnt8zYEUB6XDJTwGrbo+cxtaQ8xBfy2lhSw/pUcTUjHq3SYmL42O7NATxxGUxx/p6PSR
-         X9CvVNLLR5FUVuHZUm2uMHxa9qn0/npIpTtFzrf84CoEsU3pVNpAkQHFSKrI4BjqhFYk
-         jKjg6TogdUzt0VlXmNMV8Hk+zLDxDpdka2jmr+B9Uk7If6pBiWAdgmz88s0DbRPoFKJU
-         sMnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2P/6ZDosW5/PVcVOFh8CyCIBugd9jmsRIXNI9frVp7k=;
-        b=Edp/cii272whrXvEJHyvFsEDAGZMp3LihRVWgLeaDBC3yt+lLl5WxnDEN3y6+wC8oM
-         8Ssh00YuAyOLkcHgDwcC97WzEidK8MRAUd2dGAgMTFTnW9+zSRxfGMQ/vsQOW/gyiHpn
-         Y7YV10Lm4CShwB/OqqNPwyq25OCb5Dudsj1tqrZ5pNKmY4RNpglb2qXciuQZ2SWm8k9G
-         kjo7tiCIdQFBEUzePfE350sZZZpmpqFn+RFYeqpkm6V+3UDe+cJX+zxKGNjNgAIg+EoW
-         oU5oa26rc0woy9Y2Tos0SXMeO5heRxJZAiqkW9gTsM+V3yZ2rSTfqUxh+PpTZxejbZ6a
-         6XBw==
-X-Gm-Message-State: AOAM530c0cO6IwSn8duOIbdv/PjSb5R1jHMnhIev11RiR+42ZsuFbFNk
-        tmijYYXH1ncmzCBtw5W8QYUcDBxGGhAuVuZWefH4ew==
-X-Google-Smtp-Source: ABdhPJy0huyrDFkZklcWqufreDpJu2i+J+NGLsKEiT3nXZbNTjdURslsF8xR7EyStcydsSHXMEetryziZu3Y6KGLCVk=
-X-Received: by 2002:a37:7801:: with SMTP id t1mr10378336qkc.162.1629482824676;
- Fri, 20 Aug 2021 11:07:04 -0700 (PDT)
+        Fri, 20 Aug 2021 14:28:35 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 17KIRHqM068427;
+        Fri, 20 Aug 2021 13:27:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1629484037;
+        bh=PA8KESUM4iIbQdy8FOvIfYXjnsAfczIewWjmDQ8Hgok=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=G0BmwBm/75FsPjyKBOfZehQosiB/OHK4ZE9aLqSOnGyBCNWdFYDNtB5bweyL+xiyd
+         5W5QJuqtLC/2ghlbVedt05IQaEYnH5rnNzs+tDyrXSqNunMBWUybdMZdgh6ZGzjZqn
+         ASRsI9IEHnv2yesUVu3sj2b9ayK7nWhEO1tEQnBg=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 17KIRHLS107305
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 20 Aug 2021 13:27:17 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Fri, 20
+ Aug 2021 13:27:17 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Fri, 20 Aug 2021 13:27:17 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 17KIR6mI088414;
+        Fri, 20 Aug 2021 13:27:06 -0500
+Subject: Re: [PATCH V3 net-next 2/4] ethtool: extend coalesce setting uAPI
+ with CQE mode
+To:     Yufeng Mo <moyufeng@huawei.com>, <davem@davemloft.net>,
+        <kuba@kernel.org>
+CC:     <netdev@vger.kernel.org>, <shenjian15@huawei.com>,
+        <lipeng321@huawei.com>, <yisen.zhuang@huawei.com>,
+        <linyunsheng@huawei.com>, <huangguangbin2@huawei.com>,
+        <chenhao288@hisilicon.com>, <salil.mehta@huawei.com>,
+        <linuxarm@huawei.com>, <linuxarm@openeuler.org>,
+        <dledford@redhat.com>, <jgg@ziepe.ca>, <netanel@amazon.com>,
+        <akiyano@amazon.com>, <thomas.lendacky@amd.com>,
+        <irusskikh@marvell.com>, <michael.chan@broadcom.com>,
+        <edwin.peer@broadcom.com>, <rohitm@chelsio.com>,
+        <jacob.e.keller@intel.com>, <ioana.ciornei@nxp.com>,
+        <vladimir.oltean@nxp.com>, <sgoutham@marvell.com>,
+        <sbhatta@marvell.com>, <saeedm@nvidia.com>,
+        <ecree.xilinx@gmail.com>, <merez@codeaurora.org>,
+        <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>
+References: <1629444920-25437-1-git-send-email-moyufeng@huawei.com>
+ <1629444920-25437-3-git-send-email-moyufeng@huawei.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <32fd0b32-e748-42d9-6468-b5b1393511e9@ti.com>
+Date:   Fri, 20 Aug 2021 21:27:13 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-References: <20210817005507.1507580-1-dmitry.baryshkov@linaro.org>
- <1CA665D1-86F0-45A1-862D-17DAB3ABA974@holtmann.org> <CAA8EJpoOxerwmwQozL3gp1nX-+oxLMFUFjVPvRy-MoVfPuvqrw@mail.gmail.com>
- <YR/gQ0K9MjddBVwY@ripper>
-In-Reply-To: <YR/gQ0K9MjddBVwY@ripper>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Fri, 20 Aug 2021 21:06:53 +0300
-Message-ID: <CAA8EJpo7R4azxybBmKC4uzAm_dvP4tpm4g9VoDMTdw6XZCxzTg@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/15] create power sequencing subsystem
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Marcel Holtmann <marcel@holtmann.org>,
-        Andy Gross <agross@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        MSM <linux-arm-msm@vger.kernel.org>, linux-mmc@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:BLUETOOTH SUBSYSTEM" <linux-bluetooth@vger.kernel.org>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1629444920-25437-3-git-send-email-moyufeng@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 20 Aug 2021 at 20:01, Bjorn Andersson
-<bjorn.andersson@linaro.org> wrote:
->
-> On Fri 20 Aug 06:08 PDT 2021, Dmitry Baryshkov wrote:
->
-> > Hi,
-> >
-> > On Thu, 19 Aug 2021 at 18:23, Marcel Holtmann <marcel@holtmann.org> wrote:
-> > > > This is an RFC of the proposed power sequencer subsystem. This is a
-> > > > generification of the MMC pwrseq code. The subsystem tries to abstract
-> > > > the idea of complex power-up/power-down/reset of the devices.
-> > > >
-> > > > The primary set of devices that promted me to create this patchset is
-> > > > the Qualcomm BT+WiFi family of chips. They reside on serial+platform
-> > > > interfaces (older generations) or on serial+PCIe (newer generations).
-> > > > They require a set of external voltage regulators to be powered on and
-> > > > (some of them) have separate WiFi and Bluetooth enable GPIOs.
-> > > >
-> > > > This patchset being an RFC tries to demonstrate the approach, design and
-> > > > usage of the pwrseq subsystem. Following issues are present in the RFC
-> > > > at this moment but will be fixed later if the overall approach would be
-> > > > viewed as acceptable:
-> > > >
-> > > > - No documentation
-> > > >   While the code tries to be self-documenting proper documentation
-> > > >   would be required.
-> > > >
-> > > > - Minimal device tree bindings changes
-> > > >   There are no proper updates for the DT bindings (thus neither Rob
-> > > >   Herring nor devicetree are included in the To/Cc lists). The dt
-> > > >   schema changes would be a part of v1.
-> > > >
-> > > > - Lack of proper PCIe integration
-> > > >   At this moment support for PCIe is hacked up to be able to test the
-> > > >   PCIe part of qca6390. Proper PCIe support would require automatically
-> > > >   powering up the devices before the scan basing on the proper device
-> > > >   structure in the device tree.
-> > > >
-> > > > ----------------------------------------------------------------
-> > > > Dmitry Baryshkov (15):
-> > > >      power: add power sequencer subsystem
-> > > >      pwrseq: port MMC's pwrseq drivers to new pwrseq subsystem
-> > > >      mmc: core: switch to new pwrseq subsystem
-> > > >      ath10k: add support for pwrseq sequencing
-> > > >      Bluetooth: hci_qca: merge qca_power into qca_serdev
-> > > >      Bluetooth: hci_qca: merge init paths
-> > > >      Bluetooth: hci_qca: merge qca_power_on with qca_regulators_init
-> > > >      Bluetooth: hci_qca: futher rework of power on/off handling
-> > > >      Bluetooth: hci_qca: add support for pwrseq
-> > >
-> > > any chance you can try to abandon patching hci_qca. The serdev support in hci_uart is rather hacking into old line discipline code and it is not aging well. It is really becoming a mess.
-> >
-> > I wanted to stay away from rewriting the BT code. But... New driver
-> > would have a bonus point that I don't have to be compatible with old
-> > bindings.
->
-> It would be preferable if this was a implementation-only change and that
-> we kept the existing binding and existing dtb continued to work.
 
-This would require setting up the pwrseq from within the bt driver. I
-did not have that in mind. However that'd ease the bt code, since we
-won't have to handle the fallback/back-compatibility. Let me think
-about it.
+
+On 20/08/2021 10:35, Yufeng Mo wrote:
+> In order to support more coalesce parameters through netlink,
+> add two new parameter kernel_coal and extack for .set_coalesce
+> and .get_coalesce, then some extra info can return to user with
+> the netlink API.
+> 
+> Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
+> Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
+> ---
+>   drivers/infiniband/ulp/ipoib/ipoib_ethtool.c           |  8 ++++++--
+>   drivers/net/ethernet/amazon/ena/ena_ethtool.c          |  8 ++++++--
+>   drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c           |  8 ++++++--
+>   drivers/net/ethernet/aquantia/atlantic/aq_ethtool.c    |  8 ++++++--
+>   drivers/net/ethernet/broadcom/bcmsysport.c             |  8 ++++++--
+>   drivers/net/ethernet/broadcom/bnx2.c                   | 12 ++++++++----
+>   drivers/net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c    |  8 ++++++--
+>   drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c      |  8 ++++++--
+>   drivers/net/ethernet/broadcom/genet/bcmgenet.c         |  8 ++++++--
+>   drivers/net/ethernet/broadcom/tg3.c                    | 10 ++++++++--
+>   drivers/net/ethernet/brocade/bna/bnad_ethtool.c        | 12 ++++++++----
+>   drivers/net/ethernet/cavium/liquidio/lio_ethtool.c     |  8 ++++++--
+>   drivers/net/ethernet/cavium/thunder/nicvf_ethtool.c    |  4 +++-
+>   drivers/net/ethernet/chelsio/cxgb/cxgb2.c              |  8 ++++++--
+>   drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c        |  8 ++++++--
+>   drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c     |  8 ++++++--
+>   drivers/net/ethernet/chelsio/cxgb4vf/cxgb4vf_main.c    |  8 ++++++--
+>   drivers/net/ethernet/cisco/enic/enic_ethtool.c         |  8 ++++++--
+>   drivers/net/ethernet/cortina/gemini.c                  |  8 ++++++--
+>   drivers/net/ethernet/emulex/benet/be_ethtool.c         |  8 ++++++--
+>   drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c     |  8 ++++++--
+>   drivers/net/ethernet/freescale/enetc/enetc_ethtool.c   |  8 ++++++--
+>   drivers/net/ethernet/freescale/fec_main.c              | 14 +++++++++-----
+>   drivers/net/ethernet/freescale/gianfar_ethtool.c       |  8 ++++++--
+>   drivers/net/ethernet/hisilicon/hip04_eth.c             |  8 ++++++--
+>   drivers/net/ethernet/hisilicon/hns/hns_ethtool.c       | 12 ++++++++++--
+>   drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c     |  8 ++++++--
+>   drivers/net/ethernet/huawei/hinic/hinic_ethtool.c      |  8 ++++++--
+>   drivers/net/ethernet/intel/e1000/e1000_ethtool.c       |  8 ++++++--
+>   drivers/net/ethernet/intel/e1000e/ethtool.c            |  8 ++++++--
+>   drivers/net/ethernet/intel/fm10k/fm10k_ethtool.c       |  8 ++++++--
+>   drivers/net/ethernet/intel/i40e/i40e_ethtool.c         | 12 ++++++++++--
+>   drivers/net/ethernet/intel/iavf/iavf_ethtool.c         | 12 ++++++++++--
+>   drivers/net/ethernet/intel/ice/ice_ethtool.c           | 12 ++++++++----
+>   drivers/net/ethernet/intel/igb/igb_ethtool.c           |  8 ++++++--
+>   drivers/net/ethernet/intel/igbvf/ethtool.c             |  8 ++++++--
+>   drivers/net/ethernet/intel/igc/igc_ethtool.c           |  8 ++++++--
+>   drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c       |  8 ++++++--
+>   drivers/net/ethernet/intel/ixgbevf/ethtool.c           |  8 ++++++--
+>   drivers/net/ethernet/jme.c                             | 12 ++++++++----
+>   drivers/net/ethernet/marvell/mv643xx_eth.c             | 12 ++++++++----
+>   drivers/net/ethernet/marvell/mvneta.c                  | 14 ++++++++++----
+>   drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c        | 14 ++++++++++----
+>   .../net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c  |  8 ++++++--
+>   drivers/net/ethernet/marvell/skge.c                    |  8 ++++++--
+>   drivers/net/ethernet/marvell/sky2.c                    |  8 ++++++--
+>   drivers/net/ethernet/mellanox/mlx4/en_ethtool.c        |  8 ++++++--
+>   drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c   |  8 ++++++--
+>   drivers/net/ethernet/mellanox/mlx5/core/en_rep.c       |  8 ++++++--
+>   .../net/ethernet/mellanox/mlx5/core/ipoib/ethtool.c    |  8 ++++++--
+>   drivers/net/ethernet/myricom/myri10ge/myri10ge.c       | 12 ++++++++----
+>   drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c   |  8 ++++++--
+>   drivers/net/ethernet/ni/nixge.c                        | 14 ++++++++++----
+>   drivers/net/ethernet/pensando/ionic/ionic_ethtool.c    |  8 ++++++--
+>   .../net/ethernet/qlogic/netxen/netxen_nic_ethtool.c    |  8 ++++++--
+>   drivers/net/ethernet/qlogic/qede/qede.h                |  4 +++-
+>   drivers/net/ethernet/qlogic/qede/qede_ethtool.c        |  8 ++++++--
+>   drivers/net/ethernet/qlogic/qlcnic/qlcnic_ethtool.c    |  8 ++++++--
+>   drivers/net/ethernet/realtek/r8169_main.c              | 10 ++++++++--
+>   drivers/net/ethernet/samsung/sxgbe/sxgbe_ethtool.c     |  8 ++++++--
+>   drivers/net/ethernet/sfc/ethtool.c                     |  8 ++++++--
+>   drivers/net/ethernet/sfc/falcon/ethtool.c              |  8 ++++++--
+>   drivers/net/ethernet/socionext/netsec.c                | 10 +++++++---
+>   drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c   |  8 ++++++--
+>   drivers/net/ethernet/synopsys/dwc-xlgmac-ethtool.c     | 14 ++++++++++----
+>   drivers/net/ethernet/tehuti/tehuti.c                   | 12 ++++++++----
+>   drivers/net/ethernet/ti/cpsw.c                         |  2 +-
+>   drivers/net/ethernet/ti/cpsw_ethtool.c                 |  8 ++++++--
+>   drivers/net/ethernet/ti/cpsw_new.c                     |  2 +-
+>   drivers/net/ethernet/ti/cpsw_priv.h                    |  8 ++++++--
+>   drivers/net/ethernet/ti/davinci_emac.c                 | 14 +++++++++++---
+>   drivers/net/ethernet/via/via-velocity.c                |  8 ++++++--
+>   drivers/net/ethernet/xilinx/ll_temac_main.c            | 14 ++++++++++----
+>   drivers/net/ethernet/xilinx/xilinx_axienet_main.c      | 18 ++++++++++++++----
+>   drivers/net/netdevsim/ethtool.c                        |  8 ++++++--
+>   drivers/net/tun.c                                      |  8 ++++++--
+>   drivers/net/usb/r8152.c                                |  8 ++++++--
+>   drivers/net/virtio_net.c                               |  8 ++++++--
+>   drivers/net/vmxnet3/vmxnet3_ethtool.c                  | 12 ++++++++----
+>   drivers/net/wireless/ath/wil6210/ethtool.c             | 14 ++++++++++----
+>   drivers/s390/net/qeth_ethtool.c                        |  4 +++-
+>   drivers/staging/qlge/qlge_ethtool.c                    | 10 ++++++++--
+>   include/linux/ethtool.h                                | 11 +++++++++--
+>   net/ethtool/coalesce.c                                 | 10 +++++++---
+>   net/ethtool/ioctl.c                                    | 15 ++++++++++++---
+>   85 files changed, 576 insertions(+), 202 deletions(-)
+> 
+> diff --git a/drivers/infiniband/ulp/ipoib/ipoib_ethtool.c b/drivers/infiniband/ulp/ipoib/ipoib_ethtool.c
+> index 823f683..a09ca21 100644
+> --- a/drivers/infiniband/ulp/ipoib/ipoib_ethtool.c
+> +++ b/drivers/infiniband/ulp/ipoib/ipoib_ethtool.c
+> @@ -72,7 +72,9 @@ static void ipoib_get_drvinfo(struct net_device *netdev,
+>   }
+>   
+>   static int ipoib_get_coalesce(struct net_device *dev,
+> -			      struct ethtool_coalesce *coal)
+> +			      struct ethtool_coalesce *coal,
+> +			      struct kernel_ethtool_coalesce *kernel_coal,
+> +			      struct netlink_ext_ack *extack)
+>   {
+>   	struct ipoib_dev_priv *priv = ipoib_priv(dev);
+>   
+> @@ -83,7 +85,9 @@ static int ipoib_get_coalesce(struct net_device *dev,
+>   }
+>   
+>   static int ipoib_set_coalesce(struct net_device *dev,
+> -			      struct ethtool_coalesce *coal)
+> +			      struct ethtool_coalesce *coal,
+> +			      struct kernel_ethtool_coalesce *kernel_coal,
+> +			      struct netlink_ext_ack *extack)
+>   {
+>   	struct ipoib_dev_priv *priv = ipoib_priv(dev);
+>   	int ret;
+
+[...]
+
+This is very big change which is not only mix two separate changes, but also looks
+half-done. From one side you're adding HW feature supported by limited number of HW,
+from another - changing most of net drivers to support it by generating mix of legacy
+and new kernel_ethtool_coalesce parameters.
+
+There is also an issue - you do not account get/set_per_queue_coalesce() in any way.
+
+Would it be possible to consider following, please?
+
+- move extack change out of this series
+
+- option (a)
+   add new callbacks in ethtool_ops as set_coalesce_cqe/get_coalesce_cqe for CQE support.
+   Only required drivers will need to be changed.
+
+- option (b)
+   add struct ethtool_coalesce as first field of kernel_ethtool_coalesce
+
+struct kernel_ethtool_coalesce {
+	/* legacy */
+	struct ethtool_coalesce coal;
+
+	/* new */
+	u8 use_cqe_mode_tx;
+	u8 use_cqe_mode_rx;
+};
+
+--  then b.1
+   drivers can be updated as
+    static int set_coalesce(struct net_device *dev,
+    			    struct kernel_ethtool_coalesce *kernel_coal)
+    {
+	struct ethtool_coalesce *coal = &kernel_coal->coal;
+    
+    (which will clearly indicate migration to the new interface )
+
+-- then b.2
+     add new callbacks in ethtool_ops as set_coalesce_ext/get_coalesce_ext (extended)
+     which will accept struct kernel_ethtool_coalesce as parameter an allow drivers to migrate when needed
+     (or as separate patch which will do only migration).
+
+Personally, I like "b.2".
 
 -- 
-With best wishes
-Dmitry
+Best regards,
+grygorii
