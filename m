@@ -2,127 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A442C3F2A54
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 12:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3FBC3F2A7B
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 13:03:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238769AbhHTKyQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 06:54:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41290 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238990AbhHTKyP (ORCPT
+        id S237509AbhHTLEB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 07:04:01 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:57510 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229847AbhHTLEA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 06:54:15 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1CCAC061756;
-        Fri, 20 Aug 2021 03:53:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=crQ+UKajYqeRHWVOrLPqjerJ5dx5gK1qFrVXZ7KNiZA=; t=1629456817; x=1630666417; 
-        b=n63Um6DNEKpZGOUQAG3Cxj6Ic5TVYfQIvhP7Q+Peg4eN6Bw/sG1wKbUGZkxQyoE0YTlsOghMrLf
-        m4O+uyl6uxIrs0Rz1FebqsZ1a/t2fZtlM1XipFnYGCqCBcrnwHM/kIxHuOKbGkTa38ZoUYtT1P1Bh
-        GkWxuVKtWrybAX4nji4AztRwEsW4+oYS296GfSec+aIqvhUi3Pzvqyc7/MG9HGSBCVQyJKwneQ9JS
-        0PBVGrZptSL/YDn/juoNJZKpPyoi3Cpgk0VjjemTE2qadxIvM6tShCWt84UH3OYCCMP/PKh7b5K72
-        kY4geNcgXfOLwE9heX9ZK7ism5m/LXuBaWYQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mH29W-00DYph-Lz; Fri, 20 Aug 2021 12:53:34 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211-next 2021-08-20
-Date:   Fri, 20 Aug 2021 12:53:28 +0200
-Message-Id: <20210820105329.48674-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.31.1
+        Fri, 20 Aug 2021 07:04:00 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94)
+        (envelope-from <luca@coelho.fi>)
+        id 1mH2Iw-002IL4-TE; Fri, 20 Aug 2021 14:03:21 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+Date:   Fri, 20 Aug 2021 14:03:06 +0300
+Message-Id: <20210820110318.260751-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
+        farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
+Subject: [PATCH 00/13]  iwlwifi: updates intended for v5.15 2021-08-20
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Luca Coelho <luciano.coelho@intel.com>
+
 Hi,
 
-Just a couple of smallish items, in case we get a release.
-I expect a few resends of other things, but don't know if
-they'll make it, we'll see.
+Here's the seventh set of patches intended for v5.15.  It's the usual
+development, new features, cleanups and bugfixes.
 
-Please pull and let me know if there's any problem.
+The changes are:
 
-Thanks,
-johannes
+* Support few new FW command versions;
+* Ongoing work on support for Bz devices;
+* Add new DHC framework to help with debugging of FW flows;
+* Some other small fixes, clean-ups and improvements.
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
 
 
+Avraham Stern (2):
+  iwlwifi: mvm: add support for range request command version 13
+  iwlwifi: mvm: add support for resonder config command version 9
 
-The following changes since commit b769cf44ed55f4b277b89cf53df6092f0c9082d0:
+Dror Moshe (1):
+  iwlwifi: move get pnvm file name to a separate function
 
-  dt-bindings: net: qcom,ipa: make imem interconnect optional (2021-08-12 14:53:44 -0700)
+Gregory Greenman (1):
+  iwlwifi: mvm: introduce iwl_stored_beacon_notif_v3
 
-are available in the Git repository at:
+Ilan Peer (1):
+  iwlwifi: mvm: Fix scan channel flags settings
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2021-08-20
+Johannes Berg (1):
+  iwlwifi: mvm: don't use FW key ID in beacon protection
 
-for you to fetch changes up to c448f0fd2ce59947b3b8b8d6b56e15036449d1f1:
+Luca Coelho (2):
+  iwlwifi: export DHC framework and add first public entry, twt_setup
+  iwlwifi: mvm: add fixed_rate debugfs entry to public DHC
 
-  cfg80211: fix BSS color notify trace enum confusion (2021-08-18 09:21:52 +0200)
+Matti Gottlieb (3):
+  iwlwifi: Add support for getting rf id with blank otp
+  iwlwifi: Add support for more BZ HWs
+  iwlwifi: Start scratch debug register for Bz family
 
-----------------------------------------------------------------
-Minor updates:
- * BSS coloring support
- * MEI commands for Intel platforms
- * various fixes/cleanups
+Shaul Triebitz (1):
+  iwlwifi: mvm: support broadcast TWT alone
 
-----------------------------------------------------------------
-Chih-Kang Chang (1):
-      mac80211: Fix insufficient headroom issue for AMSDU
+ drivers/net/wireless/intel/iwlwifi/Kconfig    |   6 +
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |  23 +++
+ .../wireless/intel/iwlwifi/fw/api/commands.h  |   5 +
+ .../net/wireless/intel/iwlwifi/fw/api/dhc.h   | 132 ++++++++++++
+ .../wireless/intel/iwlwifi/fw/api/location.h  | 189 +++++++++++++++++-
+ .../wireless/intel/iwlwifi/fw/api/offload.h   |  31 ++-
+ .../net/wireless/intel/iwlwifi/fw/api/rs.h    |  40 +++-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |   2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dump.c  |   7 +
+ .../wireless/intel/iwlwifi/fw/error-dump.h    |   4 -
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c  |  13 +-
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.h  |  20 ++
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |   3 +
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |   7 +
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  39 ++++
+ .../wireless/intel/iwlwifi/mvm/constants.h    |   5 +-
+ .../wireless/intel/iwlwifi/mvm/debugfs-vif.c  |  87 ++++++++
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |  46 +++++
+ .../intel/iwlwifi/mvm/ftm-initiator.c         |  85 ++++++--
+ .../intel/iwlwifi/mvm/ftm-responder.c         |  27 ++-
+ .../net/wireless/intel/iwlwifi/mvm/fw-api.h   |   3 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  41 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   3 +-
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    |  33 +++
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.h   |  10 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  41 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c |   2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 111 ++++++++++
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |   8 +-
+ 29 files changed, 939 insertions(+), 84 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/fw/api/dhc.h
 
-Dan Carpenter (1):
-      mac80211: remove unnecessary NULL check in ieee80211_register_hw()
-
-Emmanuel Grumbach (1):
-      nl80211: vendor-cmd: add Intel vendor commands for iwlmei usage
-
-Johan Almbladh (1):
-      mac80211: Fix monitor MTU limit so that A-MSDUs get through
-
-Johannes Berg (2):
-      mac80211: include <linux/rbtree.h>
-      cfg80211: fix BSS color notify trace enum confusion
-
-John Crispin (2):
-      nl80211: add support for BSS coloring
-      mac80211: add support for BSS color change
-
-Kees Cook (2):
-      mac80211: radiotap: Use BIT() instead of shifts
-      mac80211: Use flex-array for radiotap header bitmap
-
-YueHaibing (1):
-      mac80211: Reject zero MAC address in sta_info_insert_check()
-
-dingsenjie (1):
-      mac80211: Remove unnecessary variable and label
-
- include/net/cfg80211.h                 |  92 +++++++++++++
- include/net/ieee80211_radiotap.h       |   5 +
- include/net/mac80211.h                 |  29 ++++
- include/uapi/linux/nl80211-vnd-intel.h |  77 +++++++++++
- include/uapi/linux/nl80211.h           |  43 ++++++
- net/mac80211/cfg.c                     | 234 +++++++++++++++++++++++++++++++--
- net/mac80211/ibss.c                    |  15 +--
- net/mac80211/ieee80211_i.h             |  12 ++
- net/mac80211/iface.c                   |  13 +-
- net/mac80211/main.c                    |   2 +-
- net/mac80211/rx.c                      |  29 ++--
- net/mac80211/sta_info.c                |   2 +-
- net/mac80211/status.c                  |  16 +--
- net/mac80211/tx.c                      |  33 +++--
- net/wireless/nl80211.c                 | 157 ++++++++++++++++++++++
- net/wireless/radiotap.c                |   9 +-
- net/wireless/rdev-ops.h                |  13 ++
- net/wireless/trace.h                   |  46 +++++++
- 18 files changed, 764 insertions(+), 63 deletions(-)
- create mode 100644 include/uapi/linux/nl80211-vnd-intel.h
+-- 
+2.33.0
 
