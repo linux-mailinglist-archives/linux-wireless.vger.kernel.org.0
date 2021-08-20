@@ -2,157 +2,253 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 973A53F27F6
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 09:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0E0C3F2828
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 10:10:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238882AbhHTHy0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 03:54:26 -0400
-Received: from pegase2.c-s.fr ([93.17.235.10]:41517 "EHLO pegase2.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236378AbhHTHy0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 03:54:26 -0400
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4GrYmV3rRlz9sTr;
-        Fri, 20 Aug 2021 09:53:46 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id E8Ffz9K-cCxD; Fri, 20 Aug 2021 09:53:46 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4GrYmV2jCFz9sTj;
-        Fri, 20 Aug 2021 09:53:46 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 3A2918B868;
-        Fri, 20 Aug 2021 09:53:46 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id GYJg-josgfgQ; Fri, 20 Aug 2021 09:53:46 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 0AEB28B862;
-        Fri, 20 Aug 2021 09:53:45 +0200 (CEST)
-Subject: Re: [PATCH v2 57/63] powerpc/signal32: Use struct_group() to zero spe
- regs
-To:     Michael Ellerman <mpe@ellerman.id.au>,
-        Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
-        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-hardening@vger.kernel.org
-References: <20210818060533.3569517-1-keescook@chromium.org>
- <20210818060533.3569517-58-keescook@chromium.org>
- <877dggeesw.fsf@mpe.ellerman.id.au>
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <0f6e508e-62b6-3840-5ff4-eb5a77635bd1@csgroup.eu>
-Date:   Fri, 20 Aug 2021 09:53:41 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S231448AbhHTILT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 04:11:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60180 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230176AbhHTILS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 04:11:18 -0400
+Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33EDDC061757
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 01:10:41 -0700 (PDT)
+Received: by mail-qt1-x836.google.com with SMTP id w18so3143441qtk.2
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 01:10:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=g5IS6e3Hnyb2jRAb6f1KMnSZamwQJcSDoTsblYNlRlY=;
+        b=AZ9hPtV94XSFU7TEKvhcU+et+rJ+GpExWH9lrUhoqWoy0ewHu2M34a/uO6l9DjkV3W
+         f0oJk7nxCalOBi4OJVItLOhpuaLrPNMPtOlhahFsCqEnDmrPKqvI4ExcusqN0kmf2dmm
+         X6aVP3hh5uVmOusZVgIhxqBCEvpuDtGXIU0bCJxnBEYFye8qFaFZb0rRPDeTD4tGclZw
+         r6C1JJE68Lj5FmT8KeHnhA7VE0yN5hMhHlb84zbNqFmbhPEbOEPv33O68IOJr/4+cmXs
+         8UuTDZzFcGnR83wrcms+xf3UQTABzatiaTOhd2YkS23GfoR9Q7lX2ajxwnwJ0ubC8bl1
+         XkYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=g5IS6e3Hnyb2jRAb6f1KMnSZamwQJcSDoTsblYNlRlY=;
+        b=iAGmNfQTaq2j+7esjoFptVxUGW84MmMWCQWEbNi6i0izDyNvPPCLOBIutIwLV36Y0w
+         2QXh0otCuV+7cCKDBezs7wrie4AR6fQjCy+uCXxU6vuUE0BONxs0DcqNQm11V/UNe5x0
+         LJ78D3wIwW7JMBfYXlFGSNCqIspYFMtaV3TC1RPGcFnNEsN9xFT4n7zf1ru7xx0juRUa
+         UJtoi6DpQBhpkCFFQ334csFXJ4Jb8Qnkk9nv2WSWR9PHw/fExGkH/PKahOqfJurR3TjU
+         v/C+IlBE73jzVLF920e+UCjdMDEYb9Fkz+6VeklfOV5N3X/1F+p6+Tg6bpqnX/JlCxGG
+         clqA==
+X-Gm-Message-State: AOAM5310kfQhD6eXJcwS225urLp/rs69C1ZnOjeIY5AyU92VVgEsI7AN
+        GWNZ1CIGedFBGKVumGAZcEFm/hNdPsRgduykSv7ibw==
+X-Google-Smtp-Source: ABdhPJykvHLGPJLrte3XmQ+2fZnjn7MpEKijpvU45xzTfUuHaBNaF5vvWd95j2y77Xi7ngLBiT0SX8r507FJf1UymdA=
+X-Received: by 2002:a05:622a:13c8:: with SMTP id p8mr16634457qtk.238.1629447040101;
+ Fri, 20 Aug 2021 01:10:40 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <877dggeesw.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20210817005507.1507580-1-dmitry.baryshkov@linaro.org>
+ <20210817005507.1507580-11-dmitry.baryshkov@linaro.org> <YR7m43mURVJ8YufC@ripper>
+In-Reply-To: <YR7m43mURVJ8YufC@ripper>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Fri, 20 Aug 2021 11:10:29 +0300
+Message-ID: <CAA8EJpr+=Yg2B_DzQWntW0GgvBfaSpAu0K+UD3NowdkusiYxrQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 10/15] pwrseq: add support for QCA BT+WiFi power sequencer
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
+        <linux-arm-msm@vger.kernel.org>, linux-mmc@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-bluetooth@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
+
+On Fri, 20 Aug 2021 at 02:17, Bjorn Andersson
+<bjorn.andersson@linaro.org> wrote:
+>
+> On Mon 16 Aug 17:55 PDT 2021, Dmitry Baryshkov wrote:
+> [..]
+> > diff --git a/drivers/power/pwrseq/pwrseq_qca.c b/drivers/power/pwrseq/pwrseq_qca.c
+> > new file mode 100644
+> > index 000000000000..3421a4821126
+> > --- /dev/null
+> > +++ b/drivers/power/pwrseq/pwrseq_qca.c
+> > @@ -0,0 +1,290 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * Copyright (c) 2021, Linaro Ltd.
+> > + *
+> > + * Author: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> > + *
+> > + * Power Sequencer for Qualcomm WiFi + BT SoCs
+> > + */
+> > +
+> > +#include <linux/delay.h>
+> > +#include <linux/gpio/consumer.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/pwrseq/driver.h>
+> > +#include <linux/regulator/consumer.h>
+> > +
+> > +/*
+> > + * Voltage regulator information required for configuring the
+> > + * QCA WiFi+Bluetooth chipset
+> > + */
+> > +struct qca_vreg {
+> > +     const char *name;
+> > +     unsigned int load_uA;
+> > +};
+> > +
+> > +struct qca_device_data {
+> > +     struct qca_vreg vddio;
+>
+> Any particular reason why this isn't just the first entry in vregs and
+> operated as part of the bulk API?
+
+Because VDDIO should be up before bringing the rest of the power
+sources (at least for wcn39xx). This is usually the case since VDDIO
+is S4A, but I'd still prefer to express this in the code.
+And register_bulk_enable powers up all the supplies asynchronously,
+thus it can not guarantee that the first entry would be powered up
+first.
+
+>
+> > +     struct qca_vreg *vregs;
+> > +     size_t num_vregs;
+> > +     bool has_bt_en;
+> > +     bool has_wifi_en;
+> > +};
+> > +
+> > +struct pwrseq_qca;
+> > +struct pwrseq_qca_one {
+> > +     struct pwrseq_qca *common;
+> > +     struct gpio_desc *enable;
+> > +};
+> > +
+> > +#define PWRSEQ_QCA_WIFI 0
+> > +#define PWRSEQ_QCA_BT 1
+> > +
+> > +#define PWRSEQ_QCA_MAX 2
+> > +
+> > +struct pwrseq_qca {
+> > +     struct regulator *vddio;
+> > +     struct gpio_desc *sw_ctrl;
+> > +     struct pwrseq_qca_one pwrseq_qcas[PWRSEQ_QCA_MAX];
+> > +     int num_vregs;
+> > +     struct regulator_bulk_data vregs[];
+> > +};
+> > +
+> > +static int pwrseq_qca_power_on(struct pwrseq *pwrseq)
+> > +{
+> > +     struct pwrseq_qca_one *qca_one = pwrseq_get_data(pwrseq);
+> > +     int ret;
+> > +
+> > +     if (qca_one->common->vddio) {
+>
+> devm_regulator_get() doesn't return NULL, so this is always true.
+
+This is more of the safety guard for the cases when the qca doesn't
+have the special vddio supply.
+
+>
+> > +             ret = regulator_enable(qca_one->common->vddio);
+> > +             if (ret)
+> > +                     return ret;
+> > +     }
+> > +
+> > +     ret = regulator_bulk_enable(qca_one->common->num_vregs, qca_one->common->vregs);
+> > +     if (ret)
+> > +             goto vddio_off;
+> > +
+> > +     if (qca_one->enable) {
+> > +             gpiod_set_value_cansleep(qca_one->enable, 0);
+> > +             msleep(50);
+> > +             gpiod_set_value_cansleep(qca_one->enable, 1);
+> > +             msleep(150);
+> > +     }
+> > +
+> > +     if (qca_one->common->sw_ctrl) {
+> > +             bool sw_ctrl_state = gpiod_get_value_cansleep(qca_one->common->sw_ctrl);
+> > +             dev_dbg(&pwrseq->dev, "SW_CTRL is %d", sw_ctrl_state);
+> > +     }
+> > +
+> > +     return 0;
+> > +
+> > +vddio_off:
+> > +     regulator_disable(qca_one->common->vddio);
+> > +
+> > +     return ret;
+> > +}
+> [..]
+> > +static int pwrseq_qca_probe(struct platform_device *pdev)
+> > +{
+> > +     struct pwrseq_qca *pwrseq_qca;
+> > +     struct pwrseq *pwrseq;
+> > +     struct pwrseq_provider *provider;
+> > +     struct device *dev = &pdev->dev;
+> > +     struct pwrseq_onecell_data *onecell;
+> > +     const struct qca_device_data *data;
+> > +     int ret, i;
+> > +
+> > +     data = device_get_match_data(dev);
+> > +     if (!data)
+> > +             return -EINVAL;
+> > +
+> > +     pwrseq_qca = devm_kzalloc(dev, struct_size(pwrseq_qca, vregs, data->num_vregs), GFP_KERNEL);
+> > +     if (!pwrseq_qca)
+> > +             return -ENOMEM;
+> > +
+> > +     onecell = devm_kzalloc(dev, struct_size(onecell, pwrseqs, PWRSEQ_QCA_MAX), GFP_KERNEL);
+> > +     if (!onecell)
+> > +             return -ENOMEM;
+> > +
+> > +     ret = pwrseq_qca_regulators_init(dev, pwrseq_qca, data);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     if (data->has_wifi_en) {
+> > +             pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_WIFI].enable = devm_gpiod_get(dev, "wifi-enable", GPIOD_OUT_LOW);
+> > +             if (IS_ERR(pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_WIFI].enable)) {
+> > +                     return dev_err_probe(dev, PTR_ERR(pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_WIFI].enable),
+> > +                                     "failed to acquire WIFI enable GPIO\n");
+> > +             }
+> > +     }
+> > +
+> > +     if (data->has_bt_en) {
+> > +             pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_BT].enable = devm_gpiod_get(dev, "bt-enable", GPIOD_OUT_LOW);
+> > +             if (IS_ERR(pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_BT].enable)) {
+> > +                     return dev_err_probe(dev, PTR_ERR(pwrseq_qca->pwrseq_qcas[PWRSEQ_QCA_BT].enable),
+> > +                                     "failed to acquire BT enable GPIO\n");
+> > +             }
+> > +     }
+> > +
+> > +     pwrseq_qca->sw_ctrl = devm_gpiod_get_optional(dev, "swctrl", GPIOD_IN);
+> > +     if (IS_ERR(pwrseq_qca->sw_ctrl)) {
+> > +             return dev_err_probe(dev, PTR_ERR(pwrseq_qca->sw_ctrl),
+> > +                             "failed to acquire SW_CTRL gpio\n");
+> > +     } else if (!pwrseq_qca->sw_ctrl)
+> > +             dev_info(dev, "No SW_CTRL gpio\n");
+>
+> Some {} around the else as well please.
+
+ack
+
+>
+> Regards,
+> Bjorn
 
 
-Le 20/08/2021 à 09:49, Michael Ellerman a écrit :
-> Kees Cook <keescook@chromium.org> writes:
->> In preparation for FORTIFY_SOURCE performing compile-time and run-time
->> field bounds checking for memset(), avoid intentionally writing across
->> neighboring fields.
->>
->> Add a struct_group() for the spe registers so that memset() can correctly reason
->> about the size:
->>
->>     In function 'fortify_memset_chk',
->>         inlined from 'restore_user_regs.part.0' at arch/powerpc/kernel/signal_32.c:539:3:
->>>> include/linux/fortify-string.h:195:4: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
->>       195 |    __write_overflow_field();
->>           |    ^~~~~~~~~~~~~~~~~~~~~~~~
->>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->> Cc: Sudeep Holla <sudeep.holla@arm.com>
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Reported-by: kernel test robot <lkp@intel.com>
->> Signed-off-by: Kees Cook <keescook@chromium.org>
->> ---
->>   arch/powerpc/include/asm/processor.h | 6 ++++--
->>   arch/powerpc/kernel/signal_32.c      | 6 +++---
->>   2 files changed, 7 insertions(+), 5 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
->> index f348e564f7dd..05dc567cb9a8 100644
->> --- a/arch/powerpc/include/asm/processor.h
->> +++ b/arch/powerpc/include/asm/processor.h
->> @@ -191,8 +191,10 @@ struct thread_struct {
->>   	int		used_vsr;	/* set if process has used VSX */
->>   #endif /* CONFIG_VSX */
->>   #ifdef CONFIG_SPE
->> -	unsigned long	evr[32];	/* upper 32-bits of SPE regs */
->> -	u64		acc;		/* Accumulator */
->> +	struct_group(spe,
->> +		unsigned long	evr[32];	/* upper 32-bits of SPE regs */
->> +		u64		acc;		/* Accumulator */
->> +	);
->>   	unsigned long	spefscr;	/* SPE & eFP status */
->>   	unsigned long	spefscr_last;	/* SPEFSCR value on last prctl
->>   					   call or trap return */
->> diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
->> index 0608581967f0..77b86caf5c51 100644
->> --- a/arch/powerpc/kernel/signal_32.c
->> +++ b/arch/powerpc/kernel/signal_32.c
->> @@ -532,11 +532,11 @@ static long restore_user_regs(struct pt_regs *regs,
->>   	regs_set_return_msr(regs, regs->msr & ~MSR_SPE);
->>   	if (msr & MSR_SPE) {
->>   		/* restore spe registers from the stack */
->> -		unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
->> -				      ELF_NEVRREG * sizeof(u32), failed);
->> +		unsafe_copy_from_user(&current->thread.spe, &sr->mc_vregs,
->> +				      sizeof(current->thread.spe), failed);
-> 
-> This makes me nervous, because the ABI is that we copy ELF_NEVRREG *
-> sizeof(u32) bytes, not whatever sizeof(current->thread.spe) happens to
-> be.
-> 
-> ie. if we use sizeof an inadvertent change to the fields in
-> thread_struct could change how many bytes we copy out to userspace,
-> which would be an ABI break.
-> 
-> And that's not that hard to do, because it's not at all obvious that the
-> size and layout of fields in thread_struct affects the user ABI.
-> 
-> At the same time we don't want to copy the right number of bytes but
-> the wrong content, so from that point of view using sizeof is good :)
-> 
-> The way we handle it in ptrace is to have BUILD_BUG_ON()s to verify that
-> things match up, so maybe we should do that here too.
-> 
-> ie. add:
-> 
-> 	BUILD_BUG_ON(sizeof(current->thread.spe) == ELF_NEVRREG * sizeof(u32));
 
-You mean != I guess ?
-
-
-> 
-> 
-> Not sure if you are happy doing that as part of this patch. I can always
-> do it later if not.
-> 
-> cheers
-> 
+-- 
+With best wishes
+Dmitry
