@@ -2,111 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B1643F2894
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 10:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D32A13F28A9
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 10:50:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233617AbhHTIir (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 04:38:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53064 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231963AbhHTIij (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 04:38:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0B21A61130;
-        Fri, 20 Aug 2021 08:38:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629448682;
-        bh=GeripngIwAb3s3BUMXnfWW8gLCyFQps4yhTgrtrC97A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iZzPK3TwPz5PCttHSHHUDBO55Mq9dciCfTvyU28ijfPSPvNou3Tb6f7OlMsYysR7W
-         rp3tJ1Tp+JkVg4BGBQaxLtddK/xMu/3801HpMFCC9yBJ4e5b6uzeYDLfpOZ3Zyr66A
-         FO4guRrWDR6BWbBTtQzUTYCl5MQQXanj7KT3lgj0znIPeocWVifFqiwa/HHVjzJfj8
-         P+hpX1vIAMm6XQ9j4AHQXyXMlmNs1Q0xuOQdu8Mhr2kkHg/bn84Vbn3JWh73P9G7Sp
-         8Asy49WbV4INM83Ia/wOQsJAGhDf6q16hzQSO8IIqysRaIvwcB9Z3JALVM4Tt2fyLn
-         AonO7Ju7zTqVg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, Deren.Wu@mediatek.com
-Subject: [PATCH v3 5/5] mt76: mt7921: remove mt7921_sta_stats
-Date:   Fri, 20 Aug 2021 10:37:45 +0200
-Message-Id: <f90bbeb7fdafcbcb749d62ce42fac4e13ee62b7e.1629448559.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1629448559.git.lorenzo@kernel.org>
-References: <cover.1629448559.git.lorenzo@kernel.org>
+        id S232492AbhHTIuy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 04:50:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40904 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229586AbhHTIux (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 04:50:53 -0400
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02855C061575
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 01:50:16 -0700 (PDT)
+Received: by mail-qv1-xf34.google.com with SMTP id j9so5133010qvt.4
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 01:50:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SvhAeR492M8EeJTTsM7VxBsaJ8w8PTYW6CNfHJ9BY2c=;
+        b=dKLqKUJhPoyCJWDUu8gJmjjE0Wc3rdqQkmBcmfkwom8eSKEyeb8rOpa4aupFDqivwV
+         VRU0qIuQrbVN0Ha4h5IF4dJMIt7G6fy8Ip/cpeCDRQx2J/VqQW28GSLRSHv2Jt0Dbcg7
+         gkECVHdOZbmswNg9/PsZhRkVS0bXWp/UZ0nL5ET9j5+/DoAWCrAjkD/sP1HCYsxemvX7
+         x7whEy0Hs49bDP4HdIYRvYY8oDAAE5CuZhvjCCAtkyC6AyZG2H1J5CCgJN8WeJcoMDwo
+         2vAJYsgWHNjAi+R1OjOm7ppdpCeL4TmH1ILRGmwSQCSdM1NZvTkEBLdUO4YpS9c0clBQ
+         Noag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SvhAeR492M8EeJTTsM7VxBsaJ8w8PTYW6CNfHJ9BY2c=;
+        b=jCvTVG4Z2ibw9reS6n+KHJVFSbnltguGr6JDPATf2Pq4j+1D1zHHvUF0+CA3PZqHsW
+         p5n68Y494XRQ4s1/cxlqGv0f29aWFQpVigwqQy5okVwgNkcqtGPLEfEyUYdR8EKNyD38
+         N1E458NDb+7Nkzi5ZC1ByikueaRYHNAHX7hWn4TDxVKeDFzQojIYaY6QILDRA1hCO3zE
+         nukIdwe9LBV0bDkP+5pt+NxMKqx2Tj/4hkDdjR1Pcim0TfF5mXxx/lvTqlXJymePtWRs
+         2yVqk//nSj+3dFy4N475jKiEO2c2zjQH9JWM1rAETDZALPmJ/qHkSL4xXBfXYqB2QRzv
+         LxiA==
+X-Gm-Message-State: AOAM533KJCbamXSO1DdBdMOBpWNPAVLI8xZc1Z3Jza0BcQy25o5X7ARU
+        OfFsbfeg9wDtKrIYWTU4soUn8iKivFw5lWGQtQ5kbA==
+X-Google-Smtp-Source: ABdhPJy/QJn6fSqlmsALEyKeczIYJGYK90zosKS269iQJbHQVvas6xuChnmDApCtJxPNdNz0fntXs47ZI4/8W6cdsu4=
+X-Received: by 2002:a05:6214:126:: with SMTP id w6mr18974742qvs.61.1629449415210;
+ Fri, 20 Aug 2021 01:50:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210817005507.1507580-1-dmitry.baryshkov@linaro.org>
+ <20210817005507.1507580-15-dmitry.baryshkov@linaro.org> <YR7s2vK7jdUssx+A@ripper>
+In-Reply-To: <YR7s2vK7jdUssx+A@ripper>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Fri, 20 Aug 2021 11:50:04 +0300
+Message-ID: <CAA8EJpptHqBR=deRaf72iGqXtWX5+3EgE4nKKGCPE7Cg9R0PBg@mail.gmail.com>
+Subject: Re: [RFC PATCH 14/15] WIP: PCI: qcom: use pwrseq to power up bus devices
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
+        <linux-arm-msm@vger.kernel.org>, linux-mmc@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-bluetooth@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mt7921_sta_stats is no longer needed
+Hi,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c    |  4 ++--
- drivers/net/wireless/mediatek/mt76/mt7921/main.c   |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 12 +-----------
- 3 files changed, 4 insertions(+), 14 deletions(-)
+On Fri, 20 Aug 2021 at 02:43, Bjorn Andersson
+<bjorn.andersson@linaro.org> wrote:
+>
+> On Mon 16 Aug 17:55 PDT 2021, Dmitry Baryshkov wrote:
+>
+> > Use bus-pwrseq device tree node to power up the devices on the bus. This
+> > is to be rewritten with the proper code parsing the device tree and
+> > powering up individual devices.
+> >
+>
+> How about describing the PCI device in DT and having the PCIe controller
+> dig it up up from there? Although we won't have a struct device until
+> later, so perhaps we need the of-based pwrseq_get() for that.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 762e6ee4be1d..55b7a52cd232 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -968,9 +968,9 @@ int mt7921_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	if (sta) {
- 		struct mt7921_sta *msta = (struct mt7921_sta *)sta->drv_priv;
- 
--		if (time_after(jiffies, msta->stats.jiffies + HZ / 4)) {
-+		if (time_after(jiffies, msta->last_txs + HZ / 4)) {
- 			info->flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
--			msta->stats.jiffies = jiffies;
-+			msta->last_txs = jiffies;
- 		}
- 	}
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 8a7b4e78c097..217ed7055aa0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -586,7 +586,7 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	msta->wcid.idx = idx;
- 	msta->wcid.ext_phy = mvif->mt76.band_idx;
- 	msta->wcid.tx_info |= MT_WCID_TX_INFO_SET;
--	msta->stats.jiffies = jiffies;
-+	msta->last_txs = jiffies;
- 
- 	ret = mt76_connac_pm_wake(&dev->mphy, &dev->pm);
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 61fa53af3840..a6caca73fdda 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -65,15 +65,6 @@ enum mt7921_rxq_id {
- 	MT7921_RXQ_MCU_WM = 0,
- };
- 
--struct mt7921_sta_stats {
--	struct rate_info prob_rate;
--	struct rate_info tx_rate;
--
--	unsigned long per;
--	unsigned long changed;
--	unsigned long jiffies;
--};
--
- struct mt7921_sta_key_conf {
- 	s8 keyidx;
- 	u8 key[16];
-@@ -87,8 +78,7 @@ struct mt7921_sta {
- 	struct list_head poll_list;
- 	u32 airtime_ac[8];
- 
--	struct mt7921_sta_stats stats;
--
-+	unsigned long last_txs;
- 	unsigned long ampdu_state;
- 
- 	struct mt7921_sta_key_conf bip;
+Yes, this is the plan. Currently I just wanted to have a way to power
+up the PCIe part of the chip and be able to test that.
+In the previous attempts to provide qca6390 support, Rob has clearly
+stated that we'd have to have the following device tree snippet:
+
+pcie0 {
+    bridge@0,0 {
+        qca6390@1,0 {
+            supplies-or-whatever = ....;
+        };
+    };
+};
+
+>
+> Regards,
+> Bjorn
+>
+> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> > ---
+> >  drivers/pci/controller/dwc/pcie-qcom.c | 13 +++++++++++++
+> >  drivers/power/pwrseq/pwrseq_qca.c      |  1 +
+> >  2 files changed, 14 insertions(+)
+> >
+> > diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+> > index 8a7a300163e5..a60d41fbcd6f 100644
+> > --- a/drivers/pci/controller/dwc/pcie-qcom.c
+> > +++ b/drivers/pci/controller/dwc/pcie-qcom.c
+> > @@ -23,6 +23,7 @@
+> >  #include <linux/pm_runtime.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/phy/phy.h>
+> > +#include <linux/pwrseq/consumer.h>
+> >  #include <linux/regulator/consumer.h>
+> >  #include <linux/reset.h>
+> >  #include <linux/slab.h>
+> > @@ -1467,6 +1468,7 @@ static int qcom_pcie_probe(struct platform_device *pdev)
+> >       struct pcie_port *pp;
+> >       struct dw_pcie *pci;
+> >       struct qcom_pcie *pcie;
+> > +     struct pwrseq *pwrseq;
+> >       int ret;
+> >
+> >       pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
+> > @@ -1520,6 +1522,17 @@ static int qcom_pcie_probe(struct platform_device *pdev)
+> >
+> >       pp->ops = &qcom_pcie_dw_ops;
+> >
+> > +     pwrseq = devm_pwrseq_get_optional(dev, "bus");
+> > +     if (IS_ERR(pwrseq)) {
+> > +             ret = PTR_ERR(pwrseq);
+> > +             goto err_pm_runtime_put;
+> > +     }
+> > +     if (pwrseq) {
+> > +             ret = pwrseq_full_power_on(pwrseq);
+> > +             if (ret)
+> > +                     goto err_pm_runtime_put;
+> > +     }
+> > +
+> >       ret = phy_init(pcie->phy);
+> >       if (ret) {
+> >               pm_runtime_disable(&pdev->dev);
+> > diff --git a/drivers/power/pwrseq/pwrseq_qca.c b/drivers/power/pwrseq/pwrseq_qca.c
+> > index 3421a4821126..4107f0a9c05d 100644
+> > --- a/drivers/power/pwrseq/pwrseq_qca.c
+> > +++ b/drivers/power/pwrseq/pwrseq_qca.c
+> > @@ -1,3 +1,4 @@
+> > +#define DEBUG
+> >  // SPDX-License-Identifier: GPL-2.0-only
+> >  /*
+> >   * Copyright (c) 2021, Linaro Ltd.
+> > --
+> > 2.30.2
+> >
+
+
+
 -- 
-2.31.1
-
+With best wishes
+Dmitry
