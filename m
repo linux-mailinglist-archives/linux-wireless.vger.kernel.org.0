@@ -2,83 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28E1B3F2F73
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 17:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1BC43F2FA0
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 17:38:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241051AbhHTP2T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 11:28:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56544 "EHLO mail.kernel.org"
+        id S241159AbhHTPjH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 11:39:07 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:58626 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240472AbhHTP2S (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 11:28:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9331A60F44;
-        Fri, 20 Aug 2021 15:27:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629473260;
-        bh=OwwtgX2M/Z1j8G1sPd2l0muzQPlxYWaQWBaFFSOCB3I=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=hD1bmNxq2pXA6JY0w3JSfU6ec1u4utu+1+zz9abtVNra03vaEswGGJOV+Z2853GXD
-         oWJ5vmjMvcenUtdBVw1+fZ+L5fZOztbObkcT5iIaya9Tcvq/cYGfTGfh6LnoChpBR+
-         iGroeoSTE1zbRytr6N7HLC8nAHksqo/5ucG0afMSW2Famnb5JgFraG/JaJFaJandAh
-         zToyO+JNLN+2FsSfuo9qIsrx3YbBTwpSaj8JU5ZQwb83Adi++CTjgtUK8mlvC1lY6x
-         2angoBbLeQxbPm9CmNpz2Vmc9cCVXYEkeNBrRT70CAVatQvZR6NiwmD3WIRrEnz9q1
-         PGj2wVDAgorvQ==
-Date:   Fri, 20 Aug 2021 17:27:35 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-cc:     LKML <linux-kernel@vger.kernel.org>,
-        Stefan Achatz <erazor_de@users.sourceforge.net>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input <linux-input@vger.kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, linux-staging@lists.linux.dev,
-        linux-block <linux-block@vger.kernel.org>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 55/63] HID: roccat: Use struct_group() to zero
- kone_mouse_event
-In-Reply-To: <CAJr-aD=6-g7VRw2Hw0dhs+RrtA=Tago5r6Dukfw_gGPB0YYKOQ@mail.gmail.com>
-Message-ID: <nycvar.YFH.7.76.2108201725360.15313@cbobk.fhfr.pm>
-References: <20210818060533.3569517-1-keescook@chromium.org> <20210818060533.3569517-56-keescook@chromium.org> <nycvar.YFH.7.76.2108201501510.15313@cbobk.fhfr.pm> <CAJr-aD=6-g7VRw2Hw0dhs+RrtA=Tago5r6Dukfw_gGPB0YYKOQ@mail.gmail.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S241168AbhHTPjG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 11:39:06 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1629473908; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=hUB58vUtBkJznZmZlGpx0GC9S+b69Gc7EdgGwJSYyqo=; b=ajnk0VGWJuxnM4nj8yt8fDAOmiK7q3Om1EZT+fuiYZwNH9BLp+G59lzWuqyFu043T0YT8FwA
+ LOfzDdPomYUSgw0Bw4X/rvOOTvm6vHkwfhArdPgRGdkYtk+NGdfFsNLmxW7LG5mbtTZcy0aI
+ wsAd6QOTK+RohzL/Ylaljlr1G9U=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 611fcc5889fbdf3ffec8880c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 20 Aug 2021 15:38:00
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A4792C4360C; Fri, 20 Aug 2021 15:37:59 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 80079C4338F;
+        Fri, 20 Aug 2021 15:37:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 80079C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: brcmfmac patch serie
+References: <94b84496-a072-4dd5-a11e-01b10dfe2170@broadcom.com>
+Date:   Fri, 20 Aug 2021 18:37:56 +0300
+In-Reply-To: <94b84496-a072-4dd5-a11e-01b10dfe2170@broadcom.com> (Arend van
+        Spriel's message of "Fri, 20 Aug 2021 12:28:54 +0200")
+Message-ID: <877dggf7or.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 20 Aug 2021, Kees Cook wrote:
+Arend van Spriel <arend.vanspriel@broadcom.com> writes:
 
-> > > In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> > > field bounds checking for memset(), avoid intentionally writing across
-> > > neighboring fields.
-> > >
-> > > Add struct_group() to mark region of struct kone_mouse_event that should
-> > > be initialized to zero.
-> > >
-> > > Cc: Stefan Achatz <erazor_de@users.sourceforge.net>
-> > > Cc: Jiri Kosina <jikos@kernel.org>
-> > > Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> > > Cc: linux-input@vger.kernel.org
-> > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> >
-> > Applied, thank you Kees.
-> >
-> 
-> Eek! No, this will break the build: struct_group() is not yet in the tree.
-> I can carry this with an Ack, etc.
+> I posted a patch series last month, but it is still marked as 'New' in
+> patchwork. Any chance to get that in? It still applies to
+> wireless-drivers-next/master (just checked).
+>
+> Here the URL for this series:
+>
+> https://patchwork.kernel.org/project/linux-wireless/list/?series=522927
 
-I was pretty sure I saw struct_group() already in linux-next, but that was 
-apparently a vacation-induced brainfart, sorry. Dropping.
+I have been mostly away for several weeks so lagging behind, a lot.
+Trying to catch up now.
 
 -- 
-Jiri Kosina
-SUSE Labs
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
