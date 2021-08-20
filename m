@@ -2,110 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12C173F301F
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 17:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B24483F304D
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 17:56:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241296AbhHTPud (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 11:50:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54060 "EHLO
+        id S241360AbhHTP4i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 11:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241078AbhHTPuc (ORCPT
+        with ESMTP id S241349AbhHTP4g (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 11:50:32 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9013DC061760
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 08:49:54 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id j10-20020a17090a94ca00b00181f17b7ef7so1223469pjw.2
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 08:49:54 -0700 (PDT)
+        Fri, 20 Aug 2021 11:56:36 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 305B0C0613D9
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 08:55:58 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id x16so8968614pfh.2
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 08:55:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=JP8WFZmb9rgUa+mH2LJuzuE/iABY2L7RW9PxVxSWy1g=;
-        b=k4UQQteJL7Qh1f6962sQXTg69gVAgArCnEbcoafW8q8WU3a0dFyoCb6HUcE0lFqUsS
-         2TQNQdHpbA93nCoa1N/aiXdy8pDJcz4pQGJmxqJfbouuNtmtbloWKcbAnFDzgP+YEWHK
-         NHH2EzfCjBYGkA2kf/rNG+rCeii3d90rhg4wY=
+        bh=DfMkWVrhrXjOa4WT8fjUg2g99cfma/KNVtPegOy6YVA=;
+        b=Tn/7uDGMiPjXxAM3ovBYEVyLtygFwlSJAWHrob1PWt4oz/x2Imgk0GhPN2Q3ecFemj
+         9aGJEzabYG/yp6A5N5Z9cTlvPVLlh/yP6oNypqN5vG8oOziU+OSzJRTu7fqXk/NgneL3
+         +EIYwoyeYH2hiFo8BxwiCpYmqjeLAOAaaL9bA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=JP8WFZmb9rgUa+mH2LJuzuE/iABY2L7RW9PxVxSWy1g=;
-        b=PCKDUbiU9XCKjNCpKq2FVoxhEUW95rz1x4gaaEhb9pcSDcefo76JXRTVDp60yEweVC
-         WdwJl4D1KbEI3K67zQFJ0NL6aV5WAKXHkZdOw521J1OXy8zQKJsmjfsYBan2Q9NiHbEx
-         PU8YwY6+o31FfSLoWaiMMOXpSzAIzm9G7YtfmYwp06aDgnRywU6ZQ0RZpBAUtkDfzKwI
-         4fuaTeKLLhyHwJZpVKW73/6LLiLhONwkweTPa7dMUSLAotYG918p8BMQP79aKohkIeyL
-         ipV0J1xlmwuu3m2qop5Q3Ook9niP6bPKrVgLownT/1R2+4TBDTeCvQCPg9Np4jldW69T
-         r8NQ==
-X-Gm-Message-State: AOAM5304CisDK9b7KHtOKCavYltpc8hPSg5oQEVeU5S1JGS9kjTEYe5j
-        N5n4KjpgMZ5Y0w7IYtIuy+Bb5A==
-X-Google-Smtp-Source: ABdhPJwhegutOkRrxvU2g3GeI5YumyD6linmLQRuyi6C1VpKbOltTluibfSiLlEYf9DDH4WcSj+Egg==
-X-Received: by 2002:a17:902:7c98:b0:131:21fd:3717 with SMTP id y24-20020a1709027c9800b0013121fd3717mr2602853pll.53.1629474594147;
-        Fri, 20 Aug 2021 08:49:54 -0700 (PDT)
+        bh=DfMkWVrhrXjOa4WT8fjUg2g99cfma/KNVtPegOy6YVA=;
+        b=LhfbBN8fceItUgWfwMUV/3FZzLGcbA9GluyZkLUrmVA2mCWAy6ZuLC5hnJnTLQJqWf
+         1s0x1/liUmYQKb0Gpujtu9d88si4RE6TfmvWy1w1SwlcFj6wQDyh7MOc5wOXz9I2/A/F
+         ohTEaGLRqLf2u/C2m+T8TVdE5YGDe4DiGZGy6AEK5iu4XzqfO5j+2zSKU8qkIsdjsjDe
+         chomOPn+Bi4IQ6JP+CTtfY4BCA3Lz1W5ZnzxNjIysMKc9fl/lCy90i9h2ey3PE0fgMK3
+         adtjN+q+k5pN7nPcTXcoGuEFKBVNhghZHRXeCi+OwvBh7FBEGodClzUbURxXc6pnYtzQ
+         SwSw==
+X-Gm-Message-State: AOAM530moxsWxSC271EIPeeyiLZooAtnUuACciJW6KbYPseDRPpMRoeJ
+        w56wQyEhjt4fXEBVT8HIwr01Hw==
+X-Google-Smtp-Source: ABdhPJxNmkkLS0IYvcJdUty1efO3ATpriVc4oMEh5d9+VW4AFW/Rt8LdZFCR+Kj2vvrc2GQCiXZJ9w==
+X-Received: by 2002:a63:4d24:: with SMTP id a36mr6002323pgb.37.1629474957688;
+        Fri, 20 Aug 2021 08:55:57 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id q18sm7564913pfj.178.2021.08.20.08.49.53
+        by smtp.gmail.com with ESMTPSA id o10sm6412690pjg.34.2021.08.20.08.55.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Aug 2021 08:49:53 -0700 (PDT)
-Date:   Fri, 20 Aug 2021 08:49:52 -0700
+        Fri, 20 Aug 2021 08:55:57 -0700 (PDT)
+Date:   Fri, 20 Aug 2021 08:55:56 -0700
 From:   Kees Cook <keescook@chromium.org>
-To:     Jiri Kosina <jikos@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Stefan Achatz <erazor_de@users.sourceforge.net>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input <linux-input@vger.kernel.org>,
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     linux-kernel@vger.kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, linux-staging@lists.linux.dev,
-        linux-block <linux-block@vger.kernel.org>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
+        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 55/63] HID: roccat: Use struct_group() to zero
- kone_mouse_event
-Message-ID: <202108200849.9EBF036376@keescook>
+Subject: Re: [PATCH v2 57/63] powerpc/signal32: Use struct_group() to zero
+ spe regs
+Message-ID: <202108200851.8AF09CDB71@keescook>
 References: <20210818060533.3569517-1-keescook@chromium.org>
- <20210818060533.3569517-56-keescook@chromium.org>
- <nycvar.YFH.7.76.2108201501510.15313@cbobk.fhfr.pm>
- <CAJr-aD=6-g7VRw2Hw0dhs+RrtA=Tago5r6Dukfw_gGPB0YYKOQ@mail.gmail.com>
- <nycvar.YFH.7.76.2108201725360.15313@cbobk.fhfr.pm>
+ <20210818060533.3569517-58-keescook@chromium.org>
+ <877dggeesw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <nycvar.YFH.7.76.2108201725360.15313@cbobk.fhfr.pm>
+In-Reply-To: <877dggeesw.fsf@mpe.ellerman.id.au>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Aug 20, 2021 at 05:27:35PM +0200, Jiri Kosina wrote:
-> On Fri, 20 Aug 2021, Kees Cook wrote:
+On Fri, Aug 20, 2021 at 05:49:35PM +1000, Michael Ellerman wrote:
+> Kees Cook <keescook@chromium.org> writes:
+> > In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> > field bounds checking for memset(), avoid intentionally writing across
+> > neighboring fields.
+> >
+> > Add a struct_group() for the spe registers so that memset() can correctly reason
+> > about the size:
+> >
+> >    In function 'fortify_memset_chk',
+> >        inlined from 'restore_user_regs.part.0' at arch/powerpc/kernel/signal_32.c:539:3:
+> >>> include/linux/fortify-string.h:195:4: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+> >      195 |    __write_overflow_field();
+> >          |    ^~~~~~~~~~~~~~~~~~~~~~~~
+> >
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > Cc: Paul Mackerras <paulus@samba.org>
+> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > Cc: Sudeep Holla <sudeep.holla@arm.com>
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > ---
+> >  arch/powerpc/include/asm/processor.h | 6 ++++--
+> >  arch/powerpc/kernel/signal_32.c      | 6 +++---
+> >  2 files changed, 7 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+> > index f348e564f7dd..05dc567cb9a8 100644
+> > --- a/arch/powerpc/include/asm/processor.h
+> > +++ b/arch/powerpc/include/asm/processor.h
+> > @@ -191,8 +191,10 @@ struct thread_struct {
+> >  	int		used_vsr;	/* set if process has used VSX */
+> >  #endif /* CONFIG_VSX */
+> >  #ifdef CONFIG_SPE
+> > -	unsigned long	evr[32];	/* upper 32-bits of SPE regs */
+> > -	u64		acc;		/* Accumulator */
+> > +	struct_group(spe,
+> > +		unsigned long	evr[32];	/* upper 32-bits of SPE regs */
+> > +		u64		acc;		/* Accumulator */
+> > +	);
+> >  	unsigned long	spefscr;	/* SPE & eFP status */
+> >  	unsigned long	spefscr_last;	/* SPEFSCR value on last prctl
+> >  					   call or trap return */
+> > diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+> > index 0608581967f0..77b86caf5c51 100644
+> > --- a/arch/powerpc/kernel/signal_32.c
+> > +++ b/arch/powerpc/kernel/signal_32.c
+> > @@ -532,11 +532,11 @@ static long restore_user_regs(struct pt_regs *regs,
+> >  	regs_set_return_msr(regs, regs->msr & ~MSR_SPE);
+> >  	if (msr & MSR_SPE) {
+> >  		/* restore spe registers from the stack */
+> > -		unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
+> > -				      ELF_NEVRREG * sizeof(u32), failed);
+> > +		unsafe_copy_from_user(&current->thread.spe, &sr->mc_vregs,
+> > +				      sizeof(current->thread.spe), failed);
 > 
-> > > > In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> > > > field bounds checking for memset(), avoid intentionally writing across
-> > > > neighboring fields.
-> > > >
-> > > > Add struct_group() to mark region of struct kone_mouse_event that should
-> > > > be initialized to zero.
-> > > >
-> > > > Cc: Stefan Achatz <erazor_de@users.sourceforge.net>
-> > > > Cc: Jiri Kosina <jikos@kernel.org>
-> > > > Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> > > > Cc: linux-input@vger.kernel.org
-> > > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > >
-> > > Applied, thank you Kees.
-> > >
-> > 
-> > Eek! No, this will break the build: struct_group() is not yet in the tree.
-> > I can carry this with an Ack, etc.
+> This makes me nervous, because the ABI is that we copy ELF_NEVRREG *
+> sizeof(u32) bytes, not whatever sizeof(current->thread.spe) happens to
+> be.
 > 
-> I was pretty sure I saw struct_group() already in linux-next, but that was 
-> apparently a vacation-induced brainfart, sorry. Dropping.
+> ie. if we use sizeof an inadvertent change to the fields in
+> thread_struct could change how many bytes we copy out to userspace,
+> which would be an ABI break.
+> 
+> And that's not that hard to do, because it's not at all obvious that the
+> size and layout of fields in thread_struct affects the user ABI.
+> 
+> At the same time we don't want to copy the right number of bytes but
+> the wrong content, so from that point of view using sizeof is good :)
+> 
+> The way we handle it in ptrace is to have BUILD_BUG_ON()s to verify that
+> things match up, so maybe we should do that here too.
+> 
+> ie. add:
+> 
+> 	BUILD_BUG_ON(sizeof(current->thread.spe) == ELF_NEVRREG * sizeof(u32));
+> 
+> Not sure if you are happy doing that as part of this patch. I can always
+> do it later if not.
 
-Cool, no worries. Sorry for the confusion!
+Sounds good to me; I did that in a few other cases in the series where
+the relationships between things seemed tenuous. :) I'll add this (as
+!=) in v3.
+
+Thanks!
 
 -- 
 Kees Cook
