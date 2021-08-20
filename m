@@ -2,70 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAF793F31AD
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 18:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EF0E3F31EA
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 19:02:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230520AbhHTQoe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 12:44:34 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.164]:60476 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229784AbhHTQod (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 12:44:33 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.166])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 8A9441A0065
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 16:43:54 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 60671900066
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 16:43:54 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 87CEF13C2B1
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 09:43:53 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 87CEF13C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1629477833;
-        bh=reLbaoW+xv7HVA4OQzl/IXK+kPVoSeKdMEu+xBbVe7s=;
-        h=To:From:Subject:Date:From;
-        b=jr0moSFJCHq1Whgpcz839QQrWNmJ4u1CMytApUD/I+O4WaysuLJykH+dQqr7606kI
-         Q56/5b6Ndk/9ZfXsE9k9MpiCT2OhDRDhfF0Q00kBiFOrHsgz9syPnYM9xblTgTuFMY
-         7GxHOilDUXVJvBoSx09jtAbiPF5BIgf0M7SdEXDk=
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   Ben Greear <greearb@candelatech.com>
-Subject: CAC question: DFS -> non-dfs -> DFS
-Organization: Candela Technologies
-Message-ID: <a0464631-22f3-be43-a7cd-7623bdc640e8@candelatech.com>
-Date:   Fri, 20 Aug 2021 09:43:53 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S234121AbhHTRCi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 13:02:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34490 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232906AbhHTRCb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 13:02:31 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 906B0610CC;
+        Fri, 20 Aug 2021 17:01:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629478913;
+        bh=xTkMIkuRn3ljkfmNjAERQ5Fr9C6u5cx0vFhpd6KNW+w=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=JRdx79AsJcT6Zc5Uyn3gZruJaO9Ff23MDu6d+m+7oqP29/sX9gQVEwXJ2AeQAvYc0
+         Gbj4drL6XtAfuPnBOpHkGOmJyLNU4axMlP6hU2K8yQWsZtoR/0udqGOoyr+e0SyeUL
+         h/zn0BeNrl5W1t/Rrzagp6aUcwFJ+sqt32KbWJMX0tMG95IPUZTAEy7D94QBIgjyG4
+         AWNc+N7kUZWfDUL2cpSqufQsJMDPeaOCmnNMrrLR5VXHkfbEL5KgGvvEUbS7XC130Y
+         pm71LqlZNBlv+F4oft0cZObRc89TZJ3pVd7rdL2OURCZ5lz4rRIBFIUnlAJ+gdXObM
+         KH2HThdFFtQHA==
+Date:   Fri, 20 Aug 2021 10:01:51 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Kees Cook <keescook@chromium.org>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     netdev@vger.kernel.org,
+        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Leon Romanovsky <leon@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        KP Singh <kpsingh@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-rdma@vger.kernel.org,
+        bpf@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 0/3] net: Cleanups for FORTIFY_SOURCE
+Message-ID: <20210820100151.25f7ccd4@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20210819202825.3545692-1-keescook@chromium.org>
+References: <20210819202825.3545692-1-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-MDID: 1629477835-fC5lSee2o5BR
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On Thu, 19 Aug 2021 13:28:22 -0700 Kees Cook wrote:
+> Hi,
+> 
+> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> field bounds checking for memcpy(), memmove(), and memset(), avoid
+> intentionally writing across neighboring fields.
+> 
+> These three changes have been living in my memcpy() series[1], but have
+> no external dependencies. It's probably better to have these go via
+> netdev.
 
-While poking at the MTK driver and trying to fix some CAC bugs in it,
-I noticed the following:
+Thanks.
 
-Select ch 100, which enables DFS CAC logic.  Wait for that to finish.
-Then select CH 36 (disable DFS)
-Then select ch 100 again, and the chandef->chan->dfs_state is set back to 0
-which I think means we must do CAC again.
-
-I was expecting in this case that the DFS state would be set to NL80211_DFS_AVAILABLE
-instead, since CAC just passed a few minutes prior?
-
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+Kalle, Saeed - would you like to take the relevant changes? Presumably
+they would get into net-next anyway by the time the merge window opens.
