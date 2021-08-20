@@ -2,160 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1758A3F2BF4
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 14:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B0EF3F2C2D
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 14:34:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239917AbhHTMWB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 08:22:01 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:53290 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240613AbhHTMV5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 08:21:57 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1629462079; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=x/Cgq183T9f89XOOcwri40VOSTuVlC/dB43M5oaeiNc=; b=rDH0GxiEaYjkJPldProZUbwBGhx8d8sZQ1k2I8d0cCWgmRpHyhIxh4o1xxHtpqib+kcJXRAB
- OxbCE4rcSKq5LQ5xj/C5qMEo0+TD9jilVLte/lnFmJsfPj0C9SYAe/AT6ZylJ4eitv/caqRN
- yz+fFWt0kQ7xW3uMBe6O+ZOdv7s=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 611f9e2d0f9b337f11cd3ab6 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 20 Aug 2021 12:21:01
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4FE75C43460; Fri, 20 Aug 2021 12:21:01 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9CEC0C43460;
-        Fri, 20 Aug 2021 12:20:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 9CEC0C43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     johannes@sipsolutions.net, ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH v2 8/8] mac80211: save transmit power envelope element and power constraint
-Date:   Fri, 20 Aug 2021 08:20:41 -0400
-Message-Id: <20210820122041.12157-9-wgong@codeaurora.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210820122041.12157-1-wgong@codeaurora.org>
-References: <20210820122041.12157-1-wgong@codeaurora.org>
+        id S240487AbhHTMem (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 08:34:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36180 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239917AbhHTMek (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 08:34:40 -0400
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96D46C0613CF
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 05:34:02 -0700 (PDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id bl13so5410052qvb.5
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Aug 2021 05:34:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=FxHzHqYkZIYKuBII5yJmxkfX68sHHNA5VrSWbqQXyKE=;
+        b=LKWHjCeNEUlwo8stybqJCnXzWMQM7x0bGZxSQUSvDEzvNf1rR/5NIRBxcsq8j+/O1Q
+         n0nUB2SGq4I944/SzVA06PgpS5TZJLAeuT0eHnupeq9B+6Ke4eApnMJzh0PSSn3USY22
+         DCevWLZt6mnoLjPVwnT/B6qIy3u8gu6R9V0eYF2w1BUAXn85ddRUOkrnCFaTavga7CyB
+         OHwKCMDxBA7mQeV8i9u/U1itYCfjgHgpthcASaDTqWMWWREFiEjUsvbxUeQR41p24/42
+         cXB4sxzSr+JXUbmuhE4oft2wqIs67/Ai41z+4L6PkD8HA2B/GtZI5tt/EczYHI2wefxZ
+         10cQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=FxHzHqYkZIYKuBII5yJmxkfX68sHHNA5VrSWbqQXyKE=;
+        b=qnbdhIdd9kr79I0alHu29aiLCiSofH+Hij0tvO/giH3XH9DGIMGO7RSHsH/Bm3tOp+
+         dKOmXSzv1LylC/1pHVv5Liy4iS9ec8CDPicFmD/JsyyP0TswNdibejmzrL3ggyjopJi1
+         1OpJhtXoTk9igTogNdipR1WTH6WaReeZDurPDLmmS9rvLLTwlLfJBSA9V5ipHFzOJSH4
+         /9bOiH1+F/VtJbbeKsU7BTYSMuZdHif1cuKO/U+oje+o3EQ+JyiFFQZGgsOe2JebSxMC
+         DO22f13ulDGd3e1GXzDYvJgIDmG48bzZmm6A/Vq2vj7CYvm5aQ9moe0RryqziiH5Xint
+         4JIA==
+X-Gm-Message-State: AOAM530ytvHwfWHlCHJ8bwZN8PscknLdIOn9I7pfKwoIz/P07LjgXABx
+        iLPLOUVs5sL36ZE9l1C3J7ISLw==
+X-Google-Smtp-Source: ABdhPJwGEOvhoU1c/BkmKt9S+cy9PyrWCoEZ7eevTf7BK/BVeVCzTaDTUl3qnqghNI/H9rEss9GPTg==
+X-Received: by 2002:a0c:d6cd:: with SMTP id l13mr1047928qvi.24.1629462841673;
+        Fri, 20 Aug 2021 05:34:01 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-162-113-129.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.113.129])
+        by smtp.gmail.com with ESMTPSA id 69sm3472288qke.55.2021.08.20.05.34.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Aug 2021 05:34:01 -0700 (PDT)
+Received: from jgg by mlx with local (Exim 4.94)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1mH3ii-001q0s-MH; Fri, 20 Aug 2021 09:34:00 -0300
+Date:   Fri, 20 Aug 2021 09:34:00 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     linux-kernel@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
+        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 56/63] RDMA/mlx5: Use struct_group() to zero struct
+ mlx5_ib_mr
+Message-ID: <20210820123400.GW543798@ziepe.ca>
+References: <20210818060533.3569517-1-keescook@chromium.org>
+ <20210818060533.3569517-57-keescook@chromium.org>
+ <20210819122716.GP543798@ziepe.ca>
+ <202108190916.7CC455DA@keescook>
+ <20210819164757.GS543798@ziepe.ca>
+ <202108191106.1956C05A@keescook>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202108191106.1956C05A@keescook>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is to save the transmit power envelope element and power
-constraint in struct ieee80211_bss_conf for 6 GHz. Lower driver
-will use this info to calculate the power limit.
+On Thu, Aug 19, 2021 at 11:14:37AM -0700, Kees Cook wrote:
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
----
- include/net/mac80211.h |  6 ++++++
- net/mac80211/chan.c    |  9 +++++++++
- net/mac80211/mlme.c    | 26 ++++++++++++++++++++++++++
- 3 files changed, 41 insertions(+)
+> Which do you mean? When doing the conversions I tended to opt for
+> struct_group() since it provides more robust "intentionality". Strictly
+> speaking, the new memset helpers are doing field-spanning writes, but the
+> "clear to the end" pattern was so common it made sense to add the helpers,
+> as they're a bit less disruptive. It's totally up to you! :)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index e89530d0d9c6..6e11e122e364 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -631,6 +631,9 @@ struct ieee80211_fils_discovery {
-  * @s1g: BSS is S1G BSS (affects Association Request format).
-  * @beacon_tx_rate: The configured beacon transmit rate that needs to be passed
-  *	to driver when rate control is offloaded to firmware.
-+ * @tx_pwr_env: transmit power envelope array of BSS.
-+ * @tx_pwr_env_num: number of @tx_pwr_env.
-+ * @pwr_reduction: power constraint of BSS.
-  */
- struct ieee80211_bss_conf {
- 	const u8 *bssid;
-@@ -700,6 +703,9 @@ struct ieee80211_bss_conf {
- 	u32 unsol_bcast_probe_resp_interval;
- 	bool s1g;
- 	struct cfg80211_bitrate_mask beacon_tx_rate;
-+	struct ieee80211_tx_pwr_env tx_pwr_env[IEEE80211_TPE_MAX_IE_COUNT];
-+	u8 tx_pwr_env_num;
-+	u8 pwr_reduction;
- };
- 
- /**
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 907bb1f748a1..149d4ac798f6 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -721,6 +721,15 @@ static int ieee80211_assign_vif_chanctx(struct ieee80211_sub_if_data *sdata,
- 					 lockdep_is_held(&local->chanctx_mtx));
- 
- 	if (conf) {
-+		if (conf->def.chan->band == NL80211_BAND_6GHZ) {
-+			struct ieee80211_bss_conf *bss_conf;
-+
-+			bss_conf = &sdata->vif.bss_conf;
-+			bss_conf->pwr_reduction = 0;
-+			bss_conf->tx_pwr_env_num = 0;
-+			memset(bss_conf->tx_pwr_env, 0, sizeof(bss_conf->tx_pwr_env));
-+		}
-+
- 		curr_ctx = container_of(conf, struct ieee80211_chanctx, conf);
- 
- 		drv_unassign_vif_chanctx(local, sdata, curr_ctx);
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 2480bd0577bb..a6d66b4ad7ee 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -5070,6 +5070,7 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
- 
- 	if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE)) {
- 		const struct cfg80211_bss_ies *ies;
-+		struct ieee80211_bss_conf *bss_conf;
- 		const u8 *he_oper_ie;
- 
- 		ies = rcu_dereference(cbss->ies);
-@@ -5081,6 +5082,31 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
- 		else
- 			he_oper = NULL;
- 
-+		if (is_6ghz) {
-+			struct ieee802_11_elems elems;
-+			u8 i, j = 0;
-+
-+			ieee802_11_parse_elems(ies->data, ies->len, false, &elems,
-+					       NULL, NULL);
-+
-+			if (elems.pwr_constr_elem)
-+				bss_conf->pwr_reduction = *elems.pwr_constr_elem;
-+
-+			BUILD_BUG_ON(ARRAY_SIZE(bss_conf->tx_pwr_env) !=
-+				     ARRAY_SIZE(elems.tx_pwr_env));
-+
-+			for (i = 0; i < elems.tx_pwr_env_num; i++) {
-+				if (elems.tx_pwr_env_len[i] >
-+				    sizeof(bss_conf->tx_pwr_env[j]))
-+					continue;
-+
-+				bss_conf->tx_pwr_env_num++;
-+				memcpy(&bss_conf->tx_pwr_env[j], elems.tx_pwr_env[i],
-+				       elems.tx_pwr_env_len[i]);
-+				j++;
-+			}
-+		}
-+
- 		if (!ieee80211_verify_sta_he_mcs_support(sband, he_oper))
- 			ifmgd->flags |= IEEE80211_STA_DISABLE_HE;
- 	}
--- 
-2.31.1
+Well, of the patches you cc'd to me only this one used the struct
+group..
 
+Jason 
