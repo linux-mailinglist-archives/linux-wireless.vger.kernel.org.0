@@ -2,153 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E13833F2BC7
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 14:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56ABC3F2BE9
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 14:21:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240254AbhHTMOh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 08:14:37 -0400
-Received: from bilbo.ozlabs.org ([203.11.71.1]:45181 "EHLO ozlabs.org"
+        id S240294AbhHTMVi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 08:21:38 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:53290 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237882AbhHTMOh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 08:14:37 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        id S240340AbhHTMVh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 08:21:37 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1629462058; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=TNsFo9asXxTaILvhClQleGhoJKkPqv7/MQpYITwgVmY=; b=nk8JUCAjb6dMJ4qgRNF9kw4SiB0wGdWiF5ilyVwHiHVJnma+Mqjd9BIpI+JXoF2WO/N+CBhn
+ ed5Y0VwKQcWqZM3yCp2coZlmAEtLUfYpPOMKx08wOBSIU2la58Fi8ZWYIiRfvE6TDy8X0zDO
+ 7K+JJmOe8SqJFnZ802zAmVWgv+w=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 611f9e2189fbdf3ffe7b6237 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 20 Aug 2021 12:20:49
+ GMT
+Sender: wgong=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C32A6C4360C; Fri, 20 Aug 2021 12:20:48 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4GrgXg1cMHz9sSs;
-        Fri, 20 Aug 2021 22:13:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-        s=201909; t=1629461637;
-        bh=GaPKIeDl8hhkmPkLrvrJ9stzgKavrRQRLEdG6v/pbF8=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=Cg5iz+FrUHTpi7DCGlIH7oXwkf4XcqnUHNlNAsx67J8ipGyBRlXQyjIQBkg1fYcl8
-         GV+t0VyhBXDRR97pVPUxVgp868U+GNvxTlPP6U2zCnk47Np7XQp1FjrHxff4fmXpif
-         8KAqXR527PErlM6JgshcTwv7RJvULaJSG2WBf/CdesX8nJ3mGPOyc/62wOlIhiuiK4
-         pHFjOmTd7s4UU/4Kk0VVQGMkOsTQ4C/5DX7na2EhBWLRpjDz6EOnwY09XINL4JSd2V
-         9F5kX7hGtMD+XnYF6MYL6RHkdxZzx1LCjbCfB1+2VyGkTnXO9jkpYniGuZF7TGKKHz
-         ymJThU067ZGkA==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
-        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 57/63] powerpc/signal32: Use struct_group() to zero
- spe regs
-In-Reply-To: <0f6e508e-62b6-3840-5ff4-eb5a77635bd1@csgroup.eu>
-References: <20210818060533.3569517-1-keescook@chromium.org>
- <20210818060533.3569517-58-keescook@chromium.org>
- <877dggeesw.fsf@mpe.ellerman.id.au>
- <0f6e508e-62b6-3840-5ff4-eb5a77635bd1@csgroup.eu>
-Date:   Fri, 20 Aug 2021 22:13:53 +1000
-Message-ID: <874kbke2ke.fsf@mpe.ellerman.id.au>
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1F5AEC4338F;
+        Fri, 20 Aug 2021 12:20:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 1F5AEC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     johannes@sipsolutions.net, ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
+Subject: [PATCH v2 0/8] cfg80211/mac80211: Add support for 6GHZ STA for various modes : LPI, SP and VLP
+Date:   Fri, 20 Aug 2021 08:20:33 -0400
+Message-Id: <20210820122041.12157-1-wgong@codeaurora.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 20/08/2021 =C3=A0 09:49, Michael Ellerman a =C3=A9crit=C2=A0:
->> Kees Cook <keescook@chromium.org> writes:
->>> In preparation for FORTIFY_SOURCE performing compile-time and run-time
->>> field bounds checking for memset(), avoid intentionally writing across
->>> neighboring fields.
->>>
->>> Add a struct_group() for the spe registers so that memset() can correct=
-ly reason
->>> about the size:
->>>
->>>     In function 'fortify_memset_chk',
->>>         inlined from 'restore_user_regs.part.0' at arch/powerpc/kernel/=
-signal_32.c:539:3:
->>>>> include/linux/fortify-string.h:195:4: error: call to '__write_overflo=
-w_field' declared with attribute warning: detected write beyond size of fie=
-ld (1st parameter); maybe use struct_group()? [-Werror=3Dattribute-warning]
->>>       195 |    __write_overflow_field();
->>>           |    ^~~~~~~~~~~~~~~~~~~~~~~~
->>>
->>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->>> Cc: Paul Mackerras <paulus@samba.org>
->>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> Cc: Sudeep Holla <sudeep.holla@arm.com>
->>> Cc: linuxppc-dev@lists.ozlabs.org
->>> Reported-by: kernel test robot <lkp@intel.com>
->>> Signed-off-by: Kees Cook <keescook@chromium.org>
->>> ---
->>>   arch/powerpc/include/asm/processor.h | 6 ++++--
->>>   arch/powerpc/kernel/signal_32.c      | 6 +++---
->>>   2 files changed, 7 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/includ=
-e/asm/processor.h
->>> index f348e564f7dd..05dc567cb9a8 100644
->>> --- a/arch/powerpc/include/asm/processor.h
->>> +++ b/arch/powerpc/include/asm/processor.h
->>> @@ -191,8 +191,10 @@ struct thread_struct {
->>>   	int		used_vsr;	/* set if process has used VSX */
->>>   #endif /* CONFIG_VSX */
->>>   #ifdef CONFIG_SPE
->>> -	unsigned long	evr[32];	/* upper 32-bits of SPE regs */
->>> -	u64		acc;		/* Accumulator */
->>> +	struct_group(spe,
->>> +		unsigned long	evr[32];	/* upper 32-bits of SPE regs */
->>> +		u64		acc;		/* Accumulator */
->>> +	);
->>>   	unsigned long	spefscr;	/* SPE & eFP status */
->>>   	unsigned long	spefscr_last;	/* SPEFSCR value on last prctl
->>>   					   call or trap return */
->>> diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/sign=
-al_32.c
->>> index 0608581967f0..77b86caf5c51 100644
->>> --- a/arch/powerpc/kernel/signal_32.c
->>> +++ b/arch/powerpc/kernel/signal_32.c
->>> @@ -532,11 +532,11 @@ static long restore_user_regs(struct pt_regs *reg=
-s,
->>>   	regs_set_return_msr(regs, regs->msr & ~MSR_SPE);
->>>   	if (msr & MSR_SPE) {
->>>   		/* restore spe registers from the stack */
->>> -		unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
->>> -				      ELF_NEVRREG * sizeof(u32), failed);
->>> +		unsafe_copy_from_user(&current->thread.spe, &sr->mc_vregs,
->>> +				      sizeof(current->thread.spe), failed);
->>=20
->> This makes me nervous, because the ABI is that we copy ELF_NEVRREG *
->> sizeof(u32) bytes, not whatever sizeof(current->thread.spe) happens to
->> be.
->>=20
->> ie. if we use sizeof an inadvertent change to the fields in
->> thread_struct could change how many bytes we copy out to userspace,
->> which would be an ABI break.
->>=20
->> And that's not that hard to do, because it's not at all obvious that the
->> size and layout of fields in thread_struct affects the user ABI.
->>=20
->> At the same time we don't want to copy the right number of bytes but
->> the wrong content, so from that point of view using sizeof is good :)
->>=20
->> The way we handle it in ptrace is to have BUILD_BUG_ON()s to verify that
->> things match up, so maybe we should do that here too.
->>=20
->> ie. add:
->>=20
->> 	BUILD_BUG_ON(sizeof(current->thread.spe) =3D=3D ELF_NEVRREG * sizeof(u3=
-2));
->
-> You mean !=3D I guess ?
+v2: change per comments of johannes.
+    including code style, code logic, patch merge, commit log... 
 
-Gah. Yes I do :)
+It introduced some new concept:
+power type of AP(STANDARD_POWER_AP, INDOOR_AP, VERY_LOW_POWER_AP)
+power type of STATION(DEFAULT_CLIENT, SUBORDINATE_CLIENT)
+power spectral density(psd)
 
-cheers
+This patchset for cfg80211/mac80211 is to add the definition of new
+concept of 6G and add basic parse of IE(transmit power envelope
+element) in beacon and save power spectral density(psd) reported
+by lower-driver for 6G channel, the info will be passed to lower
+driver when connecting to 6G AP.
+
+Wen Gong (8):
+  cfg80211: add power type definition for 6 GHz
+  mac80211: add definition of regulatory info in 6 GHz operation
+    information
+  mac80211: add parse regulatory info in 6 GHz operation information
+  cfg80211: add definition for 6 GHz power spectral density(psd)
+  cfg80211: save power spectral density(psd) of regulatory rule
+  mac80211: add definition for transmit power envelope element
+  mac80211: add parse transmit power envelope element
+  mac80211: save transmit power envelope element and power constraint
+
+ include/linux/ieee80211.h    | 43 +++++++++++++++++++++++++++++++++++-
+ include/net/cfg80211.h       |  7 ++++++
+ include/net/mac80211.h       |  6 +++++
+ include/net/regulatory.h     |  1 +
+ include/uapi/linux/nl80211.h | 36 ++++++++++++++++++++++++++++++
+ net/mac80211/chan.c          |  9 ++++++++
+ net/mac80211/ieee80211_i.h   |  3 +++
+ net/mac80211/mlme.c          | 26 ++++++++++++++++++++++
+ net/mac80211/util.c          | 19 ++++++++++++++++
+ net/wireless/reg.c           | 14 ++++++++++++
+ 10 files changed, 163 insertions(+), 1 deletion(-)
+
+-- 
+2.31.1
+
