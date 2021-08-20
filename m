@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E9203F2BE8
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 14:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A5313F2BF2
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 14:21:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240405AbhHTMVe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 08:21:34 -0400
+        id S240587AbhHTMVw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 08:21:52 -0400
 Received: from so254-9.mailgun.net ([198.61.254.9]:45228 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240329AbhHTMVd (ORCPT
+        with ESMTP id S240586AbhHTMVv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 08:21:33 -0400
+        Fri, 20 Aug 2021 08:21:51 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1629462055; h=Content-Transfer-Encoding: MIME-Version:
+ s=smtp; t=1629462073; h=Content-Transfer-Encoding: MIME-Version:
  References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=jnwcZqup2t+Kfk4f7HioOXGRaUIsvZg7Fv79FCZApHk=; b=dtzS13V0KTPb0Ka/raVmP+280dD0PPvA9Nb96r7RmSjK3EV7vwkmsyiXAwAvfEmspTQSECYa
- FCpFTdhlhNCIHLl38oI0wG0pxNO1J4nNkHB5eJjW/vgF83+Qid68Op9gz8GWHGJ+G/i+f3Gc
- 8r2idH8Pc6jZLRZx54+MfJNOmEA=
+ Sender; bh=RTUiezN9FbKIsshyxNe23rZMeP1NaJDLEYiD0lv96m4=; b=G+EtpBXFz6rNBiU1GhT7OifYQ75UIaq8TgptuGF+rZqKSdp2ZI6O0PWlGxSkIs6zbrHesZP+
+ QItJyMCzu8+CI+HYpKzOFynYBAFtrWF6MwZSdZv54jxMcRU1LDcE2JfI6MHI7W/dsdP92kOt
+ SvFoekg5rclD8YVy/PfIWn5AoWo=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 611f9e261d4eeff4c395e97d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 20 Aug 2021 12:20:54
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 611f9e2989fbdf3ffe7b8de8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 20 Aug 2021 12:20:57
  GMT
 Sender: wgong=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C7556C4360D; Fri, 20 Aug 2021 12:20:54 +0000 (UTC)
+        id 9404FC4360C; Fri, 20 Aug 2021 12:20:56 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,17 +38,17 @@ Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5D9FAC43460;
-        Fri, 20 Aug 2021 12:20:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 5D9FAC43460
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E2EF4C4360D;
+        Fri, 20 Aug 2021 12:20:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org E2EF4C4360D
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Wen Gong <wgong@codeaurora.org>
 To:     johannes@sipsolutions.net, ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH v2 4/8] cfg80211: add definition for 6 GHz power spectral density(psd)
-Date:   Fri, 20 Aug 2021 08:20:37 -0400
-Message-Id: <20210820122041.12157-5-wgong@codeaurora.org>
+Subject: [PATCH v2 5/8] cfg80211: save power spectral density(psd) of regulatory rule
+Date:   Fri, 20 Aug 2021 08:20:38 -0400
+Message-Id: <20210820122041.12157-6-wgong@codeaurora.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210820122041.12157-1-wgong@codeaurora.org>
 References: <20210820122041.12157-1-wgong@codeaurora.org>
@@ -58,85 +58,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-6 GHz regulatory domains introduces power spectral density(psd). This
-patch is define the flags for psd.
+The power spectral density(psd) of regulatory rule should be take
+effect to the channels. This patch is to save the values to the
+channel which has psd value.
 
 Signed-off-by: Wen Gong <wgong@codeaurora.org>
 ---
- include/net/cfg80211.h       | 5 +++++
- include/net/regulatory.h     | 1 +
- include/uapi/linux/nl80211.h | 2 ++
- 3 files changed, 8 insertions(+)
+ net/wireless/reg.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index f17a4d1202fc..27326e5d5ff3 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -108,6 +108,8 @@ struct wiphy;
-  *	on this channel.
-  * @IEEE80211_CHAN_16MHZ: 16 MHz bandwidth is permitted
-  *	on this channel.
-+ * @IEEE80211_CHAN_PSD: power spectral density (in dBm)
-+ *	on this channel.
-  *
-  */
- enum ieee80211_channel_flags {
-@@ -130,6 +132,7 @@ enum ieee80211_channel_flags {
- 	IEEE80211_CHAN_4MHZ		= 1<<16,
- 	IEEE80211_CHAN_8MHZ		= 1<<17,
- 	IEEE80211_CHAN_16MHZ		= 1<<18,
-+	IEEE80211_CHAN_PSD		= 1<<19,
- };
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 0406ce7334fa..602d95e8bde6 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -1583,6 +1583,8 @@ static u32 map_regdom_flags(u32 rd_flags)
+ 		channel_flags |= IEEE80211_CHAN_NO_160MHZ;
+ 	if (rd_flags & NL80211_RRF_NO_HE)
+ 		channel_flags |= IEEE80211_CHAN_NO_HE;
++	if (rd_flags & NL80211_RRF_PSD)
++		channel_flags |= IEEE80211_CHAN_PSD;
+ 	return channel_flags;
+ }
  
- #define IEEE80211_CHAN_NO_HT40 \
-@@ -163,6 +166,7 @@ enum ieee80211_channel_flags {
-  *	on this channel.
-  * @dfs_state_entered: timestamp (jiffies) when the dfs state was entered.
-  * @dfs_cac_ms: DFS CAC time in milliseconds, this is valid for DFS channels.
-+ * @psd: power spectral density (in dBm)
-  */
- struct ieee80211_channel {
- 	enum nl80211_band band;
-@@ -179,6 +183,7 @@ struct ieee80211_channel {
- 	enum nl80211_dfs_state dfs_state;
- 	unsigned long dfs_state_entered;
- 	unsigned int dfs_cac_ms;
-+	s8 psd;
- };
+@@ -1787,6 +1789,9 @@ static void handle_channel_single_rule(struct wiphy *wiphy,
+ 				chan->dfs_cac_ms = reg_rule->dfs_cac_ms;
+ 		}
  
- /**
-diff --git a/include/net/regulatory.h b/include/net/regulatory.h
-index 47f06f6f5a67..ed20004fb6a9 100644
---- a/include/net/regulatory.h
-+++ b/include/net/regulatory.h
-@@ -221,6 +221,7 @@ struct ieee80211_reg_rule {
- 	u32 flags;
- 	u32 dfs_cac_ms;
- 	bool has_wmm;
-+	s8 psd;
- };
++		if (chan->flags & IEEE80211_CHAN_PSD)
++			chan->psd = reg_rule->psd;
++
+ 		return;
+ 	}
  
- struct ieee80211_regdomain {
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index ab1d4aa85272..9ac1dc551cbc 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4043,6 +4043,7 @@ enum nl80211_sched_scan_match_attr {
-  * @NL80211_RRF_NO_80MHZ: 80MHz operation not allowed
-  * @NL80211_RRF_NO_160MHZ: 160MHz operation not allowed
-  * @NL80211_RRF_NO_HE: HE operation not allowed
-+ * @NL80211_RRF_PSD: channels has power spectral density value
-  */
- enum nl80211_reg_rule_flags {
- 	NL80211_RRF_NO_OFDM		= 1<<0,
-@@ -4061,6 +4062,7 @@ enum nl80211_reg_rule_flags {
- 	NL80211_RRF_NO_80MHZ		= 1<<15,
- 	NL80211_RRF_NO_160MHZ		= 1<<16,
- 	NL80211_RRF_NO_HE		= 1<<17,
-+	NL80211_RRF_PSD		= 1<<18,
- };
+@@ -1807,6 +1812,9 @@ static void handle_channel_single_rule(struct wiphy *wiphy,
+ 			chan->dfs_cac_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
+ 	}
  
- #define NL80211_RRF_PASSIVE_SCAN	NL80211_RRF_NO_IR
++	if (chan->flags & IEEE80211_CHAN_PSD)
++		chan->psd = reg_rule->psd;
++
+ 	if (chan->orig_mpwr) {
+ 		/*
+ 		 * Devices that use REGULATORY_COUNTRY_IE_FOLLOW_POWER
+@@ -1876,6 +1884,9 @@ static void handle_channel_adjacent_rules(struct wiphy *wiphy,
+ 							 rrule2->dfs_cac_ms);
+ 		}
+ 
++		if (chan->flags & IEEE80211_CHAN_PSD)
++			chan->psd = min_t(s8, rrule1->psd, rrule1->psd);
++
+ 		return;
+ 	}
+ 
+@@ -2533,6 +2544,9 @@ static void handle_channel_custom(struct wiphy *wiphy,
+ 			chan->dfs_cac_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
+ 	}
+ 
++	if (chan->flags & IEEE80211_CHAN_PSD)
++		chan->psd = reg_rule->psd;
++
+ 	chan->max_power = chan->max_reg_power;
+ }
+ 
 -- 
 2.31.1
 
