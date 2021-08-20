@@ -2,123 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68B563F2A88
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 13:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29EB23F2B4C
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 13:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239333AbhHTLEY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 07:04:24 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:57578 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S239492AbhHTLEO (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 07:04:14 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <luca@coelho.fi>)
-        id 1mH2JA-002IL4-1E; Fri, 20 Aug 2021 14:03:33 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Fri, 20 Aug 2021 14:03:18 +0300
-Message-Id: <iwlwifi.20210820140104.a53724e330e0.I05c351233601ecc51dddfa5df69ace292216eb95@changeid>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210820110318.260751-1-luca@coelho.fi>
-References: <20210820110318.260751-1-luca@coelho.fi>
+        id S239655AbhHTLfq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 07:35:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48132 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239233AbhHTLfq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 07:35:46 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 40C8361051;
+        Fri, 20 Aug 2021 11:35:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629459308;
+        bh=tkVRmuGLhLfvsBQ3/bsUHTitr56vDiVOqOLUyKm0InQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BDSNSX8F+DlYltseB0FN+yIf9YASDb9S52bRN2o+mkZ0KaRb780gByvfQxN+pBrMI
+         kDI1ilmXZbWdHaGos0MRfjvKCts4hvDQf/4PzIcNDkSiEtz1RFE5NlxQD2ylm8Pdgw
+         2LLbfoJmUkIbdsIPmvgWEF4thNmv7o1jaUqD1DE/I42Ai6FJL2Ad4DzesBEFWKozWC
+         fC9AvbGuwdALjC065GHOZIfRxp5Gra7plMyLJVnYjaJJJqmQrq6IFZT6k6vn4My140
+         PTAG5x1TXXv0YLcpniBKx9Ye2XCYdgoY5s67TE8AQMWGV2rg0acuCN1y+e6RNWrqKa
+         p+Ab8K0POfGWw==
+Received: by pali.im (Postfix)
+        id BD89B7C5; Fri, 20 Aug 2021 13:35:05 +0200 (CEST)
+Date:   Fri, 20 Aug 2021 13:35:05 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: Backporting CVE-2020-3702 ath9k patches to stable
+Message-ID: <20210820113505.dgcsurognowp6xqp@pali>
+References: <20210818084859.vcs4vs3yd6zetmyt@pali>
+ <YRzMt53Ca/5irXc0@kroah.com>
+ <20210818091027.2mhqrhg5pcq2bagt@pali>
+ <YRzQZZIp/LfMy/xG@kroah.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
-        farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH 12/12] iwlwifi: Start scratch debug register for Bz family
+In-Reply-To: <YRzQZZIp/LfMy/xG@kroah.com>
+User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Matti Gottlieb <matti.gottlieb@intel.com>
+On Wednesday 18 August 2021 11:18:29 Greg KH wrote:
+> On Wed, Aug 18, 2021 at 11:10:27AM +0200, Pali Rohár wrote:
+> > On Wednesday 18 August 2021 11:02:47 Greg KH wrote:
+> > > On Wed, Aug 18, 2021 at 10:48:59AM +0200, Pali Rohár wrote:
+> > > > Hello! I would like to request for backporting following ath9k commits
+> > > > which are fixing CVE-2020-3702 issue.
+> > > > 
+> > > > 56c5485c9e44 ("ath: Use safer key clearing with key cache entries")
+> > > > 73488cb2fa3b ("ath9k: Clear key cache explicitly on disabling hardware")
+> > > > d2d3e36498dd ("ath: Export ath_hw_keysetmac()")
+> > > > 144cd24dbc36 ("ath: Modify ath_key_delete() to not need full key entry")
+> > > > ca2848022c12 ("ath9k: Postpone key cache entry deletion for TXQ frames reference it")
+> > > > 
+> > > > See also:
+> > > > https://lore.kernel.org/linux-wireless/87o8hvlx5g.fsf@codeaurora.org/
+> > > > 
+> > > > This CVE-2020-3702 issue affects ath9k driver in stable kernel versions.
+> > > > And due to this issue Qualcomm suggests to not use open source ath9k
+> > > > driver and instead to use their proprietary driver which do not have
+> > > > this issue.
+> > > > 
+> > > > Details about CVE-2020-3702 are described on the ESET blog post:
+> > > > https://www.welivesecurity.com/2020/08/06/beyond-kr00k-even-more-wifi-chips-vulnerable-eavesdropping/
+> > > > 
+> > > > Two months ago ESET tested above mentioned commits applied on top of
+> > > > 4.14 stable tree and confirmed that issue cannot be reproduced anymore
+> > > > with those patches. Commits were applied cleanly on top of 4.14 stable
+> > > > tree without need to do any modification.
+> > > 
+> > > What stable tree(s) do you want to see these go into?
+> > 
+> > Commits were introduced in 5.12, so it should go to all stable trees << 5.12
+> > 
+> > > And what order are the above commits to be applied in, top-to-bottom or
+> > > bottom-to-top?
+> > 
+> > Same order in which were applied in 5.12. So first commit to apply is
+> > 56c5485c9e44, then 73488cb2fa3b and so on... (from top of the email to
+> > the bottom of email).
+> 
+> Great, all now queued up.  Sad that qcom didn't want to do this
+> themselves :(
+> 
+> greg k-h
 
-Start scratch debug register for Bz family.
-This register is used for FW debug, and the driver
-should start this register with a fixed value, during
-init, and upon an error, should read it, and add it to
-the dump.
-
-Signed-off-by: Matti Gottlieb <matti.gottlieb@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/dump.c         | 7 +++++++
- drivers/net/wireless/intel/iwlwifi/iwl-csr.h         | 7 +++++++
- drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c | 8 +++++---
- 3 files changed, 19 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dump.c b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-index a1842205e86a..1f9cf4e40547 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-@@ -328,6 +328,13 @@ static void iwl_fwrt_dump_tcm_error_log(struct iwl_fw_runtime *fwrt)
- 	for (i = 0; i < ARRAY_SIZE(table.sw_status); i++)
- 		IWL_ERR(fwrt, "0x%08X | tcm SW status[%d]\n",
- 			table.sw_status[i], i);
-+
-+	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
-+		u32 scratch = iwl_read32(trans, CSR_FUNC_SCRATCH);
-+
-+		IWL_ERR(fwrt, "Function Scratch status:\n");
-+		IWL_ERR(fwrt, "0x%08X | Func Scratch\n", scratch);
-+	}
- }
- 
- static void iwl_fwrt_dump_iml_error_log(struct iwl_fw_runtime *fwrt)
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
-index cf796403c45c..2c4d70fb32fa 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
-@@ -34,6 +34,7 @@
- #define CSR_GPIO_IN             (CSR_BASE+0x018) /* read external chip pins */
- #define CSR_RESET               (CSR_BASE+0x020) /* busmaster enable, NMI, etc*/
- #define CSR_GP_CNTRL            (CSR_BASE+0x024)
-+#define CSR_FUNC_SCRATCH        (CSR_BASE+0x02c) /* Scratch register - used for FW dbg */
- 
- /* 2nd byte of CSR_INT_COALESCING, not accessible via iwl_write32()! */
- #define CSR_INT_PERIODIC_REG	(CSR_BASE+0x005)
-@@ -135,6 +136,12 @@
- #define CSR_DBG_HPET_MEM_REG		(CSR_BASE+0x240)
- #define CSR_DBG_LINK_PWR_MGMT_REG	(CSR_BASE+0x250)
- 
-+/*
-+ * Scratch register initial configuration - this is set on init, and read
-+ * during a error FW error.
-+ */
-+#define CSR_FUNC_SCRATCH_INIT_VALUE		(0x01010101)
-+
- /* Bits for CSR_HW_IF_CONFIG_REG */
- #define CSR_HW_IF_CONFIG_REG_MSK_MAC_DASH	(0x00000003)
- #define CSR_HW_IF_CONFIG_REG_MSK_MAC_STEP	(0x0000000C)
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-index bf0c32a74ca4..53bc5b7d8d5c 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-@@ -466,13 +466,15 @@ int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
- 
- 	iwl_pcie_set_ltr(trans);
- 
--	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ)
-+	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
-+		iwl_write32(trans, CSR_FUNC_SCRATCH, CSR_FUNC_SCRATCH_INIT_VALUE);
- 		iwl_set_bit(trans, CSR_GP_CNTRL,
- 			    CSR_GP_CNTRL_REG_FLAG_ROM_START);
--	else if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
-+	} else if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210) {
- 		iwl_write_umac_prph(trans, UREG_CPU_INIT_RUN, 1);
--	else
-+	} else {
- 		iwl_write_prph(trans, UREG_CPU_INIT_RUN, 1);
-+	}
- 
- 	/* re-check RF-Kill state since we may have missed the interrupt */
- 	hw_rfkill = iwl_pcie_check_hw_rf_kill(trans);
--- 
-2.33.0
-
+It is sad, but Qualcomm support said that they have fixed it in their
+proprietary driver in July 2020 (so more than year ago) and that open
+source drivers like ath9k are unsupported and customers should not use
+them :( And similar answer is from vendors who put these chips into
+their cards / products.
