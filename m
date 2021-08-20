@@ -2,59 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3F553F2459
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 03:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78BC13F2468
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 03:48:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234737AbhHTB3n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Aug 2021 21:29:43 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:34774 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232191AbhHTB3m (ORCPT
+        id S235635AbhHTBso (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Aug 2021 21:48:44 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:14289 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234909AbhHTBsn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Aug 2021 21:29:42 -0400
-X-UUID: 223b09b2fcbf4c2a8f3559511d71e03b-20210820
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=3uIDSbynqZ+e8h4IIwd7j0R/OKDKxqtlUSN4a8VEEGA=;
-        b=GLNPBB0dp0oZMidyyQ2CfM5bVpYAEZfU69OzJd4/m79w1fna5kuLJvyT39a+3gyvu7+y9So0cTB8ArxgrwcmJVkSVf1sukqQ0nQo/DCnMxG/scruwhxSZyDSLFWqCuYZ+kS6cJM/6ZwyeNdOL9B+lXRBR7Hm9eGcALPDjXucGX8=;
-X-UUID: 223b09b2fcbf4c2a8f3559511d71e03b-20210820
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 40793816; Fri, 20 Aug 2021 09:29:02 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 20 Aug 2021 09:29:00 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 20 Aug 2021 09:29:00 +0800
-Message-ID: <45c67ffb65debdd62a417c0b68af2ba7f1932195.camel@mediatek.com>
-Subject: Re: [PATCH 2/4] mt76: mt7615: checkpatch cleanup
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Date:   Fri, 20 Aug 2021 09:29:00 +0800
-In-Reply-To: <87wnoha1rd.fsf@tynnyri.adurom.net>
-References: <77372f644903053e09d671325c0cd44cf75e14ac.1628301615.git.ryder.lee@mediatek.com>
-         <1991c856459c2014386d1a16f6657e9ba82b6d1f.1628301615.git.ryder.lee@mediatek.com>
-         <87wnoha1rd.fsf@tynnyri.adurom.net>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        Thu, 19 Aug 2021 21:48:43 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4GrPfL3cnVz88Db;
+        Fri, 20 Aug 2021 09:47:54 +0800 (CST)
+Received: from dggpeml500024.china.huawei.com (7.185.36.10) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Fri, 20 Aug 2021 09:48:00 +0800
+Received: from [10.67.103.6] (10.67.103.6) by dggpeml500024.china.huawei.com
+ (7.185.36.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Fri, 20 Aug
+ 2021 09:48:00 +0800
+Subject: Re: [PATCH V2 net-next 2/4] ethtool: extend coalesce setting uAPI
+ with CQE mode
+To:     Jakub Kicinski <kuba@kernel.org>
+References: <1629353844-49626-1-git-send-email-moyufeng@huawei.com>
+ <1629353844-49626-3-git-send-email-moyufeng@huawei.com>
+ <20210819120829.27c9b124@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <shenjian15@huawei.com>, <lipeng321@huawei.com>,
+        <yisen.zhuang@huawei.com>, <linyunsheng@huawei.com>,
+        <huangguangbin2@huawei.com>, <chenhao288@hisilicon.com>,
+        <salil.mehta@huawei.com>, <linuxarm@huawei.com>,
+        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
+        <netanel@amazon.com>, <akiyano@amazon.com>,
+        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
+        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
+        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
+        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
+        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
+        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
+        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
+        <linux-wireless@vger.kernel.org>
+From:   moyufeng <moyufeng@huawei.com>
+Message-ID: <6e68afa9-9071-4459-ca6b-666ea806ace6@huawei.com>
+Date:   Fri, 20 Aug 2021 09:48:00 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-X-MTK:  N
-Content-Transfer-Encoding: base64
+In-Reply-To: <20210819120829.27c9b124@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.103.6]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpeml500024.china.huawei.com (7.185.36.10)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVGh1LCAyMDIxLTA4LTE5IGF0IDE4OjMyICswMzAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBS
-eWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+IHdyaXRlczoNCj4gDQo+ID4gRml4IHJl
-YXNvbmFibGUgY2hlY2twYXRjaCB3YXJuaW5ncy4NCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBS
-eWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+DQo+IA0KPiBPbmUgbG9naWNhbCBjaGFu
-Z2UgcGVyIHBhdGNoLCBwbGVhc2UuDQo+IA0KDQpJIHByZWZlciBjb2xsZWN0aW9uIGFsbCBjaGVj
-a3BhdGNoIHdhcm5pbmdzIGludG8gdGhlIHNpbmdsZSBwYXRjaC4NCg0KUnlkZXINCg==
 
+
+On 2021/8/20 3:08, Jakub Kicinski wrote:
+> On Thu, 19 Aug 2021 14:17:22 +0800 Yufeng Mo wrote:
+>> In order to support more coalesce parameters through netlink,
+>> add two new parameter kernel_coal and extack for .set_coalesce
+>> and .get_coalesce, then some extra info can return to user with
+>> the netlink API.
+>>
+>> Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
+>> Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
+> 
+> Looks like it builds fine, unfortunately you need to correct the kdoc 
+> of the functions which have it (by adding the new param description
+> everywhere), otherwise we'll get these on W=1 builds:
+> 
+> drivers/net/ethernet/hisilicon/hns/hns_ethtool.c:741: warning: Function parameter or member 'kernel_coal' not described in 'hns_get_coalesce'
+> drivers/net/ethernet/hisilicon/hns/hns_ethtool.c:741: warning: Function parameter or member 'extack' not described in 'hns_get_coalesce'
+> drivers/net/ethernet/hisilicon/hns/hns_ethtool.c:787: warning: Function parameter or member 'kernel_coal' not described in 'hns_set_coalesce'
+> drivers/net/ethernet/hisilicon/hns/hns_ethtool.c:787: warning: Function parameter or member 'extack' not described in 'hns_set_coalesce'
+> drivers/net/ethernet/intel/i40e/i40e_ethtool.c:2825: warning: Function parameter or member 'kernel_coal' not described in 'i40e_get_coalesce'
+> drivers/net/ethernet/intel/i40e/i40e_ethtool.c:2825: warning: Function parameter or member 'extack' not described in 'i40e_get_coalesce'
+> drivers/net/ethernet/intel/i40e/i40e_ethtool.c:2999: warning: Function parameter or member 'kernel_coal' not described in 'i40e_set_coalesce'
+> drivers/net/ethernet/intel/i40e/i40e_ethtool.c:2999: warning: Function parameter or member 'extack' not described in 'i40e_set_coalesce'
+> drivers/net/ethernet/intel/iavf/iavf_ethtool.c:699: warning: Function parameter or member 'kernel_coal' not described in 'iavf_get_coalesce'
+> drivers/net/ethernet/intel/iavf/iavf_ethtool.c:699: warning: Function parameter or member 'extack' not described in 'iavf_get_coalesce'
+> drivers/net/ethernet/intel/iavf/iavf_ethtool.c:817: warning: Function parameter or member 'kernel_coal' not described in 'iavf_set_coalesce'
+> drivers/net/ethernet/intel/iavf/iavf_ethtool.c:817: warning: Function parameter or member 'extack' not described in 'iavf_set_coalesce'
+> drivers/net/ethernet/ti/davinci_emac.c:395: warning: Function parameter or member 'kernel_coal' not described in 'emac_get_coalesce'
+> drivers/net/ethernet/ti/davinci_emac.c:395: warning: Function parameter or member 'extack' not described in 'emac_get_coalesce'
+> drivers/net/ethernet/ti/davinci_emac.c:415: warning: Function parameter or member 'kernel_coal' not described in 'emac_set_coalesce'
+> drivers/net/ethernet/ti/davinci_emac.c:415: warning: Function parameter or member 'extack' not described in 'emac_set_coalesce'
+> drivers/net/ethernet/xilinx/xilinx_axienet_main.c:1416: warning: Function parameter or member 'kernel_coal' not described in 'axienet_ethtools_get_coalesce'
+> drivers/net/ethernet/xilinx/xilinx_axienet_main.c:1416: warning: Function parameter or member 'extack' not described in 'axienet_ethtools_get_coalesce'
+> drivers/net/ethernet/xilinx/xilinx_axienet_main.c:1444: warning: Function parameter or member 'kernel_coal' not described in 'axienet_ethtools_set_coalesce'
+> drivers/net/ethernet/xilinx/xilinx_axienet_main.c:1444: warning:
+> Function parameter or member 'extack' not described in
+> 'axienet_ethtools_set_coalesce'
+> .
+> 
+ok, will fix it in V3, thanks
