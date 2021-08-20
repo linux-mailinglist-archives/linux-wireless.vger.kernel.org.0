@@ -2,94 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B8E53F2E99
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 17:09:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28E1B3F2F73
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 17:27:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240956AbhHTPJh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 11:09:37 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.184]:55278 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S240830AbhHTPJg (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 11:09:36 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.178])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 33C111A006C;
-        Fri, 20 Aug 2021 15:08:57 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id EC510B00017;
-        Fri, 20 Aug 2021 15:08:56 +0000 (UTC)
-Received: from [192.168.254.6] (unknown [50.34.183.227])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id AA9D813C2B1;
-        Fri, 20 Aug 2021 08:08:55 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com AA9D813C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1629472136;
-        bh=4IYuTzG8CyRKnbhBsPfmXxh3KG2A7Xh9Jhn2VvBrPJQ=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=UWRHkvfKTzINRmDaGERq4jRurmFOWyBc6Qx3xlUYmKOiBzo6hGPBc1/AeVRE+YGqO
-         cTMqtn0IKMcdUZjxm3l7EdOfzzu2bj48dfiXcpCqlasg5h6rDA9zs2jv9F6KpWPHt7
-         DNpaqAtdvbCIOrKH2bmqlwvNZBgTa07fo/qNDs6g=
-Subject: Re: question on HE debugfs output
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <578da3a0-f029-4e60-d4e6-34d42def62e8@candelatech.com>
- <2c55dce18c94d778207b3fc452a09e14ee80c032.camel@sipsolutions.net>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <dd40890b-c8a1-e3c1-d234-672179dc6331@candelatech.com>
-Date:   Fri, 20 Aug 2021 08:08:55 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S241051AbhHTP2T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 11:28:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56544 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240472AbhHTP2S (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Aug 2021 11:28:18 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9331A60F44;
+        Fri, 20 Aug 2021 15:27:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629473260;
+        bh=OwwtgX2M/Z1j8G1sPd2l0muzQPlxYWaQWBaFFSOCB3I=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=hD1bmNxq2pXA6JY0w3JSfU6ec1u4utu+1+zz9abtVNra03vaEswGGJOV+Z2853GXD
+         oWJ5vmjMvcenUtdBVw1+fZ+L5fZOztbObkcT5iIaya9Tcvq/cYGfTGfh6LnoChpBR+
+         iGroeoSTE1zbRytr6N7HLC8nAHksqo/5ucG0afMSW2Famnb5JgFraG/JaJFaJandAh
+         zToyO+JNLN+2FsSfuo9qIsrx3YbBTwpSaj8JU5ZQwb83Adi++CTjgtUK8mlvC1lY6x
+         2angoBbLeQxbPm9CmNpz2Vmc9cCVXYEkeNBrRT70CAVatQvZR6NiwmD3WIRrEnz9q1
+         PGj2wVDAgorvQ==
+Date:   Fri, 20 Aug 2021 17:27:35 +0200 (CEST)
+From:   Jiri Kosina <jikos@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+cc:     LKML <linux-kernel@vger.kernel.org>,
+        Stefan Achatz <erazor_de@users.sourceforge.net>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input <linux-input@vger.kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, linux-staging@lists.linux.dev,
+        linux-block <linux-block@vger.kernel.org>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 55/63] HID: roccat: Use struct_group() to zero
+ kone_mouse_event
+In-Reply-To: <CAJr-aD=6-g7VRw2Hw0dhs+RrtA=Tago5r6Dukfw_gGPB0YYKOQ@mail.gmail.com>
+Message-ID: <nycvar.YFH.7.76.2108201725360.15313@cbobk.fhfr.pm>
+References: <20210818060533.3569517-1-keescook@chromium.org> <20210818060533.3569517-56-keescook@chromium.org> <nycvar.YFH.7.76.2108201501510.15313@cbobk.fhfr.pm> <CAJr-aD=6-g7VRw2Hw0dhs+RrtA=Tago5r6Dukfw_gGPB0YYKOQ@mail.gmail.com>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <2c55dce18c94d778207b3fc452a09e14ee80c032.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
-X-MDID: 1629472137-LfiB1ebh1LNv
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/20/21 2:17 AM, Johannes Berg wrote:
-> Hi Ben,
-> 
->> While poking around in things, I noticed that the
->> he_capa debugfs is not showing the least-common-denominator, but rather
->> more specifically the peer's capabilities.
->>
->> This could be bugs in how I'm using this, but thought I'd ask to
->> see if this was on purpose or not.
-> 
-> It was on purpose. Also, for HE it's different from HT/VHT in that we
-> don't do this in the stack any more.
-> 
-> I'm not really sure _why_ now (or if we should change it), but I seem to
-> remember it was just a lot more complex to do in general, but drivers
-> didn't really care so much since they tend to have a lot of hard-coded
-> assumptions, e.g. they might not care about seeing 2, 3 or more streams
-> supported if their code assumes the device always only supports 2 in the
-> first place, so all they need is a >= 2 check in this case, for example.
-> 
-> If you wanted to change that, I wouldn't mind, but it might be complex.
+On Fri, 20 Aug 2021, Kees Cook wrote:
 
-Ok, for now it is a curiosity.  While hacking on things (to disable 160Mhz
-support so that a station can be forced to 80Mhz when radio supports 160),
-I ended up writing code to take the station HE capabilities from the driver
-and then modify them.  Other code in mac80211 is already sort of doing this
-here and there.  So, maybe that is a way to start consolidating the
-'overrides' logic to build a more proper HE capab in mac80211...
-
-Thanks,
-Ben
-
+> > > In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> > > field bounds checking for memset(), avoid intentionally writing across
+> > > neighboring fields.
+> > >
+> > > Add struct_group() to mark region of struct kone_mouse_event that should
+> > > be initialized to zero.
+> > >
+> > > Cc: Stefan Achatz <erazor_de@users.sourceforge.net>
+> > > Cc: Jiri Kosina <jikos@kernel.org>
+> > > Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+> > > Cc: linux-input@vger.kernel.org
+> > > Signed-off-by: Kees Cook <keescook@chromium.org>
+> >
+> > Applied, thank you Kees.
+> >
 > 
-> johannes
-> 
+> Eek! No, this will break the build: struct_group() is not yet in the tree.
+> I can carry this with an Ack, etc.
 
+I was pretty sure I saw struct_group() already in linux-next, but that was 
+apparently a vacation-induced brainfart, sorry. Dropping.
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Jiri Kosina
+SUSE Labs
+
