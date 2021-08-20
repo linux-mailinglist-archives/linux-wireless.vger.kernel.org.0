@@ -2,203 +2,305 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19DE93F260F
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 06:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EBB83F27B5
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Aug 2021 09:39:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236436AbhHTEis (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 00:38:48 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:39312 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230007AbhHTEis (ORCPT
+        id S238830AbhHTHkB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 03:40:01 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:8897 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238799AbhHTHjv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 00:38:48 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17K4c7Eh9004321, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17K4c7Eh9004321
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 20 Aug 2021 12:38:07 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+        Fri, 20 Aug 2021 03:39:51 -0400
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GrYLz6Jxbz8srd;
+        Fri, 20 Aug 2021 15:35:07 +0800 (CST)
+Received: from dggpeml500024.china.huawei.com (7.185.36.10) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Fri, 20 Aug 2021 12:38:06 +0800
-Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 20 Aug
- 2021 12:38:06 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v6 24/24] rtw89: add Kconfig and Makefile
-Date:   Fri, 20 Aug 2021 12:35:38 +0800
-Message-ID: <20210820043538.12424-25-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210820043538.12424-1-pkshih@realtek.com>
-References: <20210820043538.12424-1-pkshih@realtek.com>
+ 15.1.2176.2; Fri, 20 Aug 2021 15:39:12 +0800
+Received: from localhost.localdomain (10.67.165.24) by
+ dggpeml500024.china.huawei.com (7.185.36.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Fri, 20 Aug 2021 15:39:11 +0800
+From:   Yufeng Mo <moyufeng@huawei.com>
+To:     <davem@davemloft.net>, <kuba@kernel.org>
+CC:     <netdev@vger.kernel.org>, <shenjian15@huawei.com>,
+        <lipeng321@huawei.com>, <yisen.zhuang@huawei.com>,
+        <linyunsheng@huawei.com>, <huangguangbin2@huawei.com>,
+        <chenhao288@hisilicon.com>, <salil.mehta@huawei.com>,
+        <moyufeng@huawei.com>, <linuxarm@huawei.com>,
+        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
+        <netanel@amazon.com>, <akiyano@amazon.com>,
+        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
+        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
+        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
+        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
+        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
+        <ecree.xilinx@gmail.com>, <grygorii.strashko@ti.com>,
+        <merez@codeaurora.org>, <kvalo@codeaurora.org>,
+        <linux-wireless@vger.kernel.org>
+Subject: [PATCH V3 net-next 0/4] ethtool: extend coalesce uAPI
+Date:   Fri, 20 Aug 2021 15:35:16 +0800
+Message-ID: <1629444920-25437-1-git-send-email-moyufeng@huawei.com>
+X-Mailer: git-send-email 2.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.146]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 08/20/2021 04:22:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzgvMjAgpFekyCAwMzowODowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 08/20/2021 04:18:54
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 165674 [Aug 20 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 454 454 39c6e442fd417993330528e7f9d13ac1bf7fdf8c
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 08/20/2021 04:22:00
+Content-Type: text/plain
+X-Originating-IP: [10.67.165.24]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpeml500024.china.huawei.com (7.185.36.10)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With Kconfig and Makefile, we can build rtw89 and support 8852AE chip.
+In order to support some configuration in coalesce uAPI, this series
+extend coalesce uAPI and add support for CQE mode.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/Kconfig        |  1 +
- drivers/net/wireless/realtek/Makefile       |  1 +
- drivers/net/wireless/realtek/rtw89/Kconfig  | 50 +++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/Makefile | 25 +++++++++++
- 4 files changed, 77 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw89/Kconfig
- create mode 100644 drivers/net/wireless/realtek/rtw89/Makefile
+Below is some test result with HNS3 driver:
+1. old ethtool(ioctl) + new kernel:
+estuary:/$ ethtool -c eth0
+Coalesce parameters for eth0:
+Adaptive RX: on  TX: on
+stats-block-usecs: 0
+sample-interval: 0
+pkt-rate-low: 0
+pkt-rate-high: 0
 
-diff --git a/drivers/net/wireless/realtek/Kconfig b/drivers/net/wireless/realtek/Kconfig
-index 474843277fa1..4a1f0e64df03 100644
---- a/drivers/net/wireless/realtek/Kconfig
-+++ b/drivers/net/wireless/realtek/Kconfig
-@@ -16,5 +16,6 @@ source "drivers/net/wireless/realtek/rtl818x/Kconfig"
- source "drivers/net/wireless/realtek/rtlwifi/Kconfig"
- source "drivers/net/wireless/realtek/rtl8xxxu/Kconfig"
- source "drivers/net/wireless/realtek/rtw88/Kconfig"
-+source "drivers/net/wireless/realtek/rtw89/Kconfig"
- 
- endif # WLAN_VENDOR_REALTEK
-diff --git a/drivers/net/wireless/realtek/Makefile b/drivers/net/wireless/realtek/Makefile
-index 888b5d594e79..ab25419f56c6 100644
---- a/drivers/net/wireless/realtek/Makefile
-+++ b/drivers/net/wireless/realtek/Makefile
-@@ -8,4 +8,5 @@ obj-$(CONFIG_RTL8187)		+= rtl818x/
- obj-$(CONFIG_RTLWIFI)		+= rtlwifi/
- obj-$(CONFIG_RTL8XXXU)		+= rtl8xxxu/
- obj-$(CONFIG_RTW88)		+= rtw88/
-+obj-$(CONFIG_RTW89)		+= rtw89/
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/Kconfig b/drivers/net/wireless/realtek/rtw89/Kconfig
-new file mode 100644
-index 000000000000..055d45103a4b
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/Kconfig
-@@ -0,0 +1,50 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+menuconfig RTW89
-+	tristate "Realtek 802.11ax wireless chips support"
-+	depends on MAC80211
-+	help
-+	  This module adds support for mac80211-based wireless drivers that
-+	  enables Realtek IEEE 802.11ax wireless chipsets.
-+
-+	  If you choose to build a module, it'll be called rtw89.
-+
-+if RTW89
-+
-+config RTW89_CORE
-+	tristate
-+
-+config RTW89_PCI
-+	tristate
-+
-+config RTW89_8852AE
-+	tristate "Realtek 8852AE PCI wireless network adapter"
-+	depends on PCI
-+	select RTW89_CORE
-+	select RTW89_PCI
-+	help
-+	  Select this option will enable support for 8852AE chipset
-+
-+	  802.11ax PCIe wireless network adapter
-+
-+config RTW89_DEBUG
-+	bool
-+
-+config RTW89_DEBUGMSG
-+	bool "Realtek rtw89 debug message support"
-+	depends on RTW89_CORE
-+	select RTW89_DEBUG
-+	help
-+	  Enable debug message support
-+
-+	  If unsure, say Y to simplify debug problems
-+
-+config RTW89_DEBUGFS
-+	bool "Realtek rtw89 debugfs support"
-+	depends on RTW89_CORE
-+	select RTW89_DEBUG
-+	help
-+	  Enable debugfs support
-+
-+	  If unsure, say Y to simplify debug problems
-+
-+endif
-diff --git a/drivers/net/wireless/realtek/rtw89/Makefile b/drivers/net/wireless/realtek/rtw89/Makefile
-new file mode 100644
-index 000000000000..077e8fe23f60
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/Makefile
-@@ -0,0 +1,25 @@
-+# SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+
-+obj-$(CONFIG_RTW89_CORE) += rtw89_core.o
-+rtw89_core-y += core.o \
-+		mac80211.o \
-+		mac.o \
-+		phy.o \
-+		fw.o \
-+		rtw8852a.o \
-+		rtw8852a_table.o \
-+		rtw8852a_rfk.o \
-+		rtw8852a_rfk_table.o \
-+		cam.o \
-+		efuse.o \
-+		regd.o \
-+		sar.o \
-+		coex.o \
-+		ps.o \
-+		ser.o
-+
-+rtw89_core-$(CONFIG_RTW89_DEBUG) += debug.o
-+
-+obj-$(CONFIG_RTW89_PCI) += rtw89_pci.o
-+rtw89_pci-y := pci.o
-+
+rx-usecs: 20
+rx-frames: 0
+rx-usecs-irq: 0
+rx-frames-irq: 0
+
+tx-usecs: 20
+tx-frames: 0
+tx-usecs-irq: 0
+tx-frames-irq: 0
+
+rx-usecs-low: 0
+rx-frame-low: 0
+tx-usecs-low: 0
+tx-frame-low: 0
+
+rx-usecs-high: 0
+rx-frame-high: 0
+tx-usecs-high: 0
+tx-frame-high: 0
+
+2. ethtool(netlink with cqe mode) + kernel without cqe mode:
+estuary:/$ ethtool -c eth0
+Coalesce parameters for eth0:
+Adaptive RX: on  TX: on
+stats-block-usecs: n/a
+sample-interval: n/a
+pkt-rate-low: n/a
+pkt-rate-high: n/a
+
+rx-usecs: 20
+rx-frames: 0
+rx-usecs-irq: n/a
+rx-frames-irq: n/a
+
+tx-usecs: 20
+tx-frames: 0
+tx-usecs-irq: n/a
+tx-frames-irq: n/a
+
+rx-usecs-low: n/a
+rx-frame-low: n/a
+tx-usecs-low: n/a
+tx-frame-low: n/a
+
+rx-usecs-high: 0
+rx-frame-high: n/a
+tx-usecs-high: 0
+tx-frame-high: n/a
+
+CQE mode RX: n/a  TX: n/a
+
+3. ethool(netlink with cqe mode) + kernel with cqe mode:
+estuary:/$ ethtool -c eth0
+Coalesce parameters for eth0:
+Adaptive RX: on  TX: on
+stats-block-usecs: n/a
+sample-interval: n/a
+pkt-rate-low: n/a
+pkt-rate-high: n/a
+
+rx-usecs: 20
+rx-frames: 0
+rx-usecs-irq: n/a
+rx-frames-irq: n/a
+
+tx-usecs: 20
+tx-frames: 0
+tx-usecs-irq: n/a
+tx-frames-irq: n/a
+
+rx-usecs-low: n/a
+rx-frame-low: n/a
+tx-usecs-low: n/a
+tx-frame-low: n/a
+
+rx-usecs-high: 0
+rx-frame-high: n/a
+tx-usecs-high: 0
+tx-frame-high: n/a
+
+CQE mode RX: off  TX: off
+
+4. ethool(netlink without cqe mode) + kernel with cqe mode:
+estuary:/$ ethtool -c eth0
+Coalesce parameters for eth0:
+Adaptive RX: on  TX: on
+stats-block-usecs: n/a
+sample-interval: n/a
+pkt-rate-low: n/a
+pkt-rate-high: n/a
+
+rx-usecs: 20
+rx-frames: 0
+rx-usecs-irq: n/a
+rx-frames-irq: n/a
+
+tx-usecs: 20
+tx-frames: 0
+tx-usecs-irq: n/a
+tx-frames-irq: n/a
+
+rx-usecs-low: n/a
+rx-frame-low: n/a
+tx-usecs-low: n/a
+tx-frame-low: n/a
+
+rx-usecs-high: 0
+rx-frame-high: n/a
+tx-usecs-high: 0
+tx-frame-high: n/a
+
+Change log:
+V2 -> V3:
+         fix some warning on W=1 builds in #2
+
+V1 -> V2:
+         1. fix compile error using allmodconfig in #2
+         2. move some property-related modifications from #2 to #1
+            for better review suggested by Jakub Kicinski.
+
+Change log from RFC:
+V3 -> V4:
+         add document explaining the difference between CQE and EQE
+         in #1 suggested by Jakub Kicinski.
+
+V2 -> V3:
+         1. split #1 into adding new parameter and adding new attributes.
+         2. use NLA_POLICY_MAX(NLA_U8, 1) instead of NLA_U8.
+         3. modify the description of CQE in Document. 
+
+V1 -> V2:
+         refactor #1&#2 in V1 suggestted by Jakub Kicinski.
+
+Yufeng Mo (4):
+  ethtool: add two coalesce attributes for CQE mode
+  ethtool: extend coalesce setting uAPI with CQE mode
+  net: hns3: add support for EQE/CQE mode configuration
+  net: hns3: add ethtool support for CQE/EQE mode configuration
+
+ Documentation/networking/ethtool-netlink.rst       | 15 +++++++
+ drivers/infiniband/ulp/ipoib/ipoib_ethtool.c       |  8 +++-
+ drivers/net/ethernet/amazon/ena/ena_ethtool.c      |  8 +++-
+ drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c       |  8 +++-
+ .../net/ethernet/aquantia/atlantic/aq_ethtool.c    |  8 +++-
+ drivers/net/ethernet/broadcom/bcmsysport.c         |  8 +++-
+ drivers/net/ethernet/broadcom/bnx2.c               | 12 ++++--
+ .../net/ethernet/broadcom/bnx2x/bnx2x_ethtool.c    |  8 +++-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c  |  8 +++-
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c     |  8 +++-
+ drivers/net/ethernet/broadcom/tg3.c                | 10 ++++-
+ drivers/net/ethernet/brocade/bna/bnad_ethtool.c    | 12 ++++--
+ drivers/net/ethernet/cavium/liquidio/lio_ethtool.c |  8 +++-
+ .../net/ethernet/cavium/thunder/nicvf_ethtool.c    |  4 +-
+ drivers/net/ethernet/chelsio/cxgb/cxgb2.c          |  8 +++-
+ drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c    |  8 +++-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c |  8 +++-
+ .../net/ethernet/chelsio/cxgb4vf/cxgb4vf_main.c    |  8 +++-
+ drivers/net/ethernet/cisco/enic/enic_ethtool.c     |  8 +++-
+ drivers/net/ethernet/cortina/gemini.c              |  8 +++-
+ drivers/net/ethernet/emulex/benet/be_ethtool.c     |  8 +++-
+ drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c |  8 +++-
+ .../net/ethernet/freescale/enetc/enetc_ethtool.c   |  8 +++-
+ drivers/net/ethernet/freescale/fec_main.c          | 14 ++++---
+ drivers/net/ethernet/freescale/gianfar_ethtool.c   |  8 +++-
+ drivers/net/ethernet/hisilicon/hip04_eth.c         |  8 +++-
+ drivers/net/ethernet/hisilicon/hns/hns_ethtool.c   | 12 +++++-
+ drivers/net/ethernet/hisilicon/hns3/hnae3.h        |  1 +
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c    | 49 +++++++++++++++++++++-
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.h    | 11 +++++
+ drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c | 26 ++++++++++--
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c    |  1 +
+ .../ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c  |  1 +
+ drivers/net/ethernet/huawei/hinic/hinic_ethtool.c  |  8 +++-
+ drivers/net/ethernet/intel/e1000/e1000_ethtool.c   |  8 +++-
+ drivers/net/ethernet/intel/e1000e/ethtool.c        |  8 +++-
+ drivers/net/ethernet/intel/fm10k/fm10k_ethtool.c   |  8 +++-
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c     | 12 +++++-
+ drivers/net/ethernet/intel/iavf/iavf_ethtool.c     | 12 +++++-
+ drivers/net/ethernet/intel/ice/ice_ethtool.c       | 12 ++++--
+ drivers/net/ethernet/intel/igb/igb_ethtool.c       |  8 +++-
+ drivers/net/ethernet/intel/igbvf/ethtool.c         |  8 +++-
+ drivers/net/ethernet/intel/igc/igc_ethtool.c       |  8 +++-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c   |  8 +++-
+ drivers/net/ethernet/intel/ixgbevf/ethtool.c       |  8 +++-
+ drivers/net/ethernet/jme.c                         | 12 ++++--
+ drivers/net/ethernet/marvell/mv643xx_eth.c         | 12 ++++--
+ drivers/net/ethernet/marvell/mvneta.c              | 14 +++++--
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c    | 14 +++++--
+ .../ethernet/marvell/octeontx2/nic/otx2_ethtool.c  |  8 +++-
+ drivers/net/ethernet/marvell/skge.c                |  8 +++-
+ drivers/net/ethernet/marvell/sky2.c                |  8 +++-
+ drivers/net/ethernet/mellanox/mlx4/en_ethtool.c    |  8 +++-
+ .../net/ethernet/mellanox/mlx5/core/en_ethtool.c   |  8 +++-
+ drivers/net/ethernet/mellanox/mlx5/core/en_rep.c   |  8 +++-
+ .../ethernet/mellanox/mlx5/core/ipoib/ethtool.c    |  8 +++-
+ drivers/net/ethernet/myricom/myri10ge/myri10ge.c   | 12 ++++--
+ .../net/ethernet/netronome/nfp/nfp_net_ethtool.c   |  8 +++-
+ drivers/net/ethernet/ni/nixge.c                    | 14 +++++--
+ .../net/ethernet/pensando/ionic/ionic_ethtool.c    |  8 +++-
+ .../ethernet/qlogic/netxen/netxen_nic_ethtool.c    |  8 +++-
+ drivers/net/ethernet/qlogic/qede/qede.h            |  4 +-
+ drivers/net/ethernet/qlogic/qede/qede_ethtool.c    |  8 +++-
+ .../net/ethernet/qlogic/qlcnic/qlcnic_ethtool.c    |  8 +++-
+ drivers/net/ethernet/realtek/r8169_main.c          | 10 ++++-
+ drivers/net/ethernet/samsung/sxgbe/sxgbe_ethtool.c |  8 +++-
+ drivers/net/ethernet/sfc/ethtool.c                 |  8 +++-
+ drivers/net/ethernet/sfc/falcon/ethtool.c          |  8 +++-
+ drivers/net/ethernet/socionext/netsec.c            | 10 +++--
+ .../net/ethernet/stmicro/stmmac/stmmac_ethtool.c   |  8 +++-
+ drivers/net/ethernet/synopsys/dwc-xlgmac-ethtool.c | 14 +++++--
+ drivers/net/ethernet/tehuti/tehuti.c               | 12 ++++--
+ drivers/net/ethernet/ti/cpsw.c                     |  2 +-
+ drivers/net/ethernet/ti/cpsw_ethtool.c             |  8 +++-
+ drivers/net/ethernet/ti/cpsw_new.c                 |  2 +-
+ drivers/net/ethernet/ti/cpsw_priv.h                |  8 +++-
+ drivers/net/ethernet/ti/davinci_emac.c             | 14 +++++--
+ drivers/net/ethernet/via/via-velocity.c            |  8 +++-
+ drivers/net/ethernet/xilinx/ll_temac_main.c        | 14 +++++--
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c  | 18 ++++++--
+ drivers/net/netdevsim/ethtool.c                    |  8 +++-
+ drivers/net/tun.c                                  |  8 +++-
+ drivers/net/usb/r8152.c                            |  8 +++-
+ drivers/net/virtio_net.c                           |  8 +++-
+ drivers/net/vmxnet3/vmxnet3_ethtool.c              | 12 ++++--
+ drivers/net/wireless/ath/wil6210/ethtool.c         | 14 +++++--
+ drivers/s390/net/qeth_ethtool.c                    |  4 +-
+ drivers/staging/qlge/qlge_ethtool.c                | 10 ++++-
+ include/linux/ethtool.h                            | 22 ++++++++--
+ include/uapi/linux/ethtool_netlink.h               |  2 +
+ net/ethtool/coalesce.c                             | 29 ++++++++++---
+ net/ethtool/ioctl.c                                | 15 +++++--
+ net/ethtool/netlink.h                              |  2 +-
+ 93 files changed, 699 insertions(+), 209 deletions(-)
+
 -- 
-2.25.1
+2.8.1
 
