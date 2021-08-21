@@ -2,32 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C99C13F3AD1
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 15:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DECC3F3AD6
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 15:56:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234536AbhHUNnd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Aug 2021 09:43:33 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:33056 "EHLO m43-7.mailgun.net"
+        id S230061AbhHUNy1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Aug 2021 09:54:27 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:37997 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234450AbhHUNnc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Aug 2021 09:43:32 -0400
+        id S229593AbhHUNy1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 21 Aug 2021 09:54:27 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1629553373; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1629554027; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=+3hD0keNjM2fSKlKxzNlIIPlWObJlXI+6cdOTa4unVo=; b=OTYq3gIDaqdzQeSxVoZCsnuHln7ORsFPqyM6IluZEW+tHlXJB7cc7FmEGNYJJ45H44koM5LL
- oB5jJ91R3MCb/UaQqN7OQweGzBXHgAv7o9b05KcCcih3q/c2wqfDgxXVdVk01xd+4QcY7XDs
- ZhcIjVl2vbDTBMHKaArd/hY6W4o=
+ bh=ExSTpZVTkMLuLl3k2obEZndgqEaIBsVKlJ9wh93FXDM=; b=wivYB8CcGlIPf3swUm78YUQ56GkCUVcso1kyO7WouAKpai8CV69/qI07Li7zuLEjdKiGqFn/
+ KQbX16qrJ35vTsV1fUz0yH2ak6SMYwBnCCLpKNocgagR+iLeMr2cGw4WGSLUHTHbLFR6lNea
+ 20BGxm3a47iRuOtzpvrln2WTa5I=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 612102da89fbdf3ffe7a9bf7 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 21 Aug 2021 13:42:50
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 6121056b2b9e91b6881ea8ee (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 21 Aug 2021 13:53:47
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1F626C43618; Sat, 21 Aug 2021 13:42:50 +0000 (UTC)
+        id E126AC43617; Sat, 21 Aug 2021 13:53:46 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,29 +37,24 @@ Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A1E14C43460;
-        Sat, 21 Aug 2021 13:42:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org A1E14C43460
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C7A01C4338F;
+        Sat, 21 Aug 2021 13:53:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C7A01C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Srinivasan Raju <srini.raju@purelifi.com>
-Cc:     Mostafa Afgani <mostafa.afgani@purelifi.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list\:NETWORKING DRIVERS \(WIRELESS\)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list\:NETWORKING DRIVERS" <netdev@vger.kernel.org>
-Subject: Re: [PATCH] [v14] wireless: Initial driver submission for pureLiFi STA devices
-References: <20200928102008.32568-1-srini.raju@purelifi.com>
-        <20210226130810.119216-1-srini.raju@purelifi.com>
-        <CWLP265MB17945FD418D1D242756B2AC4E0499@CWLP265MB1794.GBRP265.PROD.OUTLOOK.COM>
-        <CWLP265MB321782CCA0CC2130A2D59A53E0F79@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM>
-Date:   Sat, 21 Aug 2021 16:42:44 +0300
-In-Reply-To: <CWLP265MB321782CCA0CC2130A2D59A53E0F79@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM>
-        (Srinivasan Raju's message of "Tue, 10 Aug 2021 13:02:46 +0000")
-Message-ID: <87eeamud63.fsf@codeaurora.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
+        Deren.Wu@mediatek.com
+Subject: Re: [PATCH 3/5] mt76: mt7921: report tx rate directly from tx status
+References: <cover.1629277624.git.lorenzo@kernel.org>
+        <1aa7b946cac8bb1c3d3ad3eaa41a7c610d122d92.1629277624.git.lorenzo@kernel.org>
+        <87a6ldbi20.fsf@tynnyri.adurom.net> <YR54aQ2Rih62lZYj@lore-desk>
+Date:   Sat, 21 Aug 2021 16:53:41 +0300
+In-Reply-To: <YR54aQ2Rih62lZYj@lore-desk> (Lorenzo Bianconi's message of "Thu,
+        19 Aug 2021 17:27:37 +0200")
+Message-ID: <877dgeucnu.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -67,21 +62,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Srinivasan Raju <srini.raju@purelifi.com> writes:
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-> Could you please review this patch and let us know if there are any comments.
-> And please let us know if any changes has to be made to the driver for getting into wireless-next. 
-> We have already submitted the firmware for review as well. The patch is in "Awaiting Upstream" state for a long time. 
-> Please let us know.
+> On Aug 19, Kalle Valo wrote:
+>> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+>> 
+>> > Report tx rate from tx status packets instead of receiving periodic mcu
+>> > event. This improves flexibility, accuracy and AQL performance, and
+>> > simplifies code flow for better readability.
+>> >
+>> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>> 
+>> [...]
+>> 
+>> > +		/* We don't support reading GI info from txs packets.
+>> > +		 * For accurate tx status reporting and AQL improvement,
+>> > +		 * we need to make sure that flags match so polling GI
+>> > +		 * from per-sta counters directly.
+>> > +		 */
+>> > +		rate = &msta->wcid.rate;
+>> > +		addr = MT_WTBL_LMAC_OFFS(idx, 0) + 7 * 4;
+>> 
+>> Magic values.
+>
+> ack, I reused what was already in mt7921_mac_sta_poll(), but I can add some
+> definitions :)
 
-Reviewing new drivers is time consuming and it's not always easy to find
-time for that. It's unfortunate that the review takes so long, but
-please take into account that we are volunteers.
-
-> https://patchwork.kernel.org/project/netdevbpf/patch/20210226130810.119216-1-srini.raju@purelifi.com/
-
-You are looking at the wrong patchwork project, you should follow
-linux-wireless project. Direct link below.
+Heh, I guess then I have been doing sloppy review earlier :) But thanks
+for fixing these, we should not repeat past mistakes.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
