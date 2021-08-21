@@ -2,96 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D24153F37FE
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 04:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 226F03F384F
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 05:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240816AbhHUCJn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 22:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53160 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230455AbhHUCJm (ORCPT
+        id S232158AbhHUD25 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Aug 2021 23:28:57 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187]:18023 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229610AbhHUD2y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 22:09:42 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01BF0C061575;
-        Fri, 20 Aug 2021 19:09:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=mcAGd4syBQmVvuYw/FXr91ofwKpJKCgF/Cq6zrQxiU0=; b=3WAo4n4liJuDkp4HI1U0WWfYzx
-        WtJl1xf3E2gRSEflLuAI2lKmQTO0XBYfTy/2PTpeTpRNvTBuN0Jsnphq+VsilmVL2quUHug/gTuC3
-        efyxNmKyv2GPNJBgh1EOZhYTNpB4wYD+xlxFI7HQx9GahzUQxwbQIfI/KD7cu8i+cN5P5pDlL5FhM
-        w8MLtGlOiRZEkBsZn6Ef6rDW0GCiSf1PFJ78/iUgakH8L34/w3qhhPL08MXBbv0wFwTT1VxdFgYzL
-        SeY7Op85StOgCrIaSQx9lo1i9UwCOplHpqD9WIXi3FRnHa0asgNsQ9/pIlAgRsM1j35TT6DwDzCg1
-        EK2vc9PA==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mHGRS-00CNDA-II; Sat, 21 Aug 2021 02:09:02 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     netdev@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        linux-wireless@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH -net] wireless: iwlwifi: fix printk format warnings in uefi.c
-Date:   Fri, 20 Aug 2021 19:09:01 -0700
-Message-Id: <20210821020901.25901-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.31.1
+        Fri, 20 Aug 2021 23:28:54 -0400
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Gs3lH4DdVzbgCh;
+        Sat, 21 Aug 2021 11:24:27 +0800 (CST)
+Received: from dggema764-chm.china.huawei.com (10.1.198.206) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Sat, 21 Aug 2021 11:28:12 +0800
+Received: from [10.174.185.179] (10.174.185.179) by
+ dggema764-chm.china.huawei.com (10.1.198.206) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2176.2; Sat, 21 Aug 2021 11:28:09 +0800
+Subject: Re: [PATCH 1/2] bcma: Fix memory leak for internally-handled cores
+To:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <zajec5@gmail.com>, <kvalo@codeaurora.org>, <hauke@hauke-m.de>,
+        <linville@tuxdriver.com>, <wanghaibin.wang@huawei.com>
+References: <20210727025232.663-1-yuzenghui@huawei.com>
+ <20210727025232.663-2-yuzenghui@huawei.com>
+From:   Zenghui Yu <yuzenghui@huawei.com>
+Message-ID: <8943a493-aee8-3fe5-e63a-f3b61eaead14@huawei.com>
+Date:   Sat, 21 Aug 2021 11:28:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210727025232.663-2-yuzenghui@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.185.179]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggema764-chm.china.huawei.com (10.1.198.206)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The kernel test robot reports printk format warnings in uefi.c, so
-correct them.
+On 2021/7/27 10:52, Zenghui Yu wrote:
+> kmemleak reported that dev_name() of internally-handled cores were leaked
+> on driver unbinding. Let's use device_initialize() to take refcounts for
+> them and put_device() to properly free the related stuff.
 
-../drivers/net/wireless/intel/iwlwifi/fw/uefi.c: In function 'iwl_uefi_get_pnvm':
-../drivers/net/wireless/intel/iwlwifi/fw/uefi.c:52:30: warning: format '%zd' expects argument of type 'signed size_t', but argument 7 has type 'long unsigned int' [-Wformat=]
-   52 |                              "PNVM UEFI variable not found %d (len %zd)\n",
-      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   53 |                              err, package_size);
-      |                                   ~~~~~~~~~~~~
-      |                                   |
-      |                                   long unsigned int
-../drivers/net/wireless/intel/iwlwifi/fw/uefi.c:59:29: warning: format '%zd' expects argument of type 'signed size_t', but argument 6 has type 'long unsigned int' [-Wformat=]
-   59 |         IWL_DEBUG_FW(trans, "Read PNVM from UEFI with size %zd\n", package_size);
-      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~
-      |                                                                    |
-      |                                                                    long unsigned int
+Could this be picked as a fix for v5.14 (_if_ it does fix something)?
 
-Fixes: 84c3c9952afb ("iwlwifi: move UEFI code to a separate file")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Luca Coelho <luciano.coelho@intel.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- linux-next-20210820.orig/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-+++ linux-next-20210820/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-@@ -49,14 +49,14 @@ void *iwl_uefi_get_pnvm(struct iwl_trans
- 	err = efivar_entry_get(pnvm_efivar, NULL, &package_size, data);
- 	if (err) {
- 		IWL_DEBUG_FW(trans,
--			     "PNVM UEFI variable not found %d (len %zd)\n",
-+			     "PNVM UEFI variable not found %d (len %lu)\n",
- 			     err, package_size);
- 		kfree(data);
- 		data = ERR_PTR(err);
- 		goto out;
- 	}
- 
--	IWL_DEBUG_FW(trans, "Read PNVM from UEFI with size %zd\n", package_size);
-+	IWL_DEBUG_FW(trans, "Read PNVM from UEFI with size %lu\n", package_size);
- 	*len = package_size;
- 
- out:
+Thanks,
+Zenghui
