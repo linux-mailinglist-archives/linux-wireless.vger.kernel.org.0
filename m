@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A96DB3F3BA0
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 19:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FC203F3BB0
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 19:26:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbhHURQu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Aug 2021 13:16:50 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:52083 "EHLO m43-7.mailgun.net"
+        id S231313AbhHUR1M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Aug 2021 13:27:12 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:33132 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230366AbhHURQs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Aug 2021 13:16:48 -0400
+        id S229803AbhHUR1K (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 21 Aug 2021 13:27:10 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1629566169; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1629566791; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=MLXw2kAV40fUYj05/3m6TBzD/fnzpbaaqB86lj9wxNQ=;
- b=YvaqIFhphguctGSq56BKs4BmSIy/xNl4MbUloieGT9XE2aefVeVVpm/cULdo6m1+TB8TvUQC
- ZhRjmmW1j87ubspSAoId7Gjwb39JO0XautDjbZB/k80Fv072f1gxaVcx2jpuM/Ul64v21xYT
- zfGRy8pnKLYz0P5/siO2+tCxOYU=
+ Content-Type: Sender; bh=6WsGx9ae68Ps20lCTKcLH+Mv3aDl+4r3zhiufzd6GVI=;
+ b=DlmBAk+pqLcatpi0BLHVOd7ekU6xaFHGeQFq45A1v50HE35nUG8R8/ANfZP6mggDzE1hkd0F
+ VRuNdunDOsV8hJxD98FRHWmxFPJ4HQbw1Xkdx+2K5hMKTbTskbyEvexlvAsJQof6r0ZWjrtA
+ U+hMJpp+ycT2xHIx7yWHuppsVFE=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 612134cb89fbdf3ffe78282d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 21 Aug 2021 17:15:55
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 61213739a2d1fbf62b2a4edf (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 21 Aug 2021 17:26:17
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 398BEC43619; Sat, 21 Aug 2021 17:15:54 +0000 (UTC)
+        id 06659C43616; Sat, 21 Aug 2021 17:26:17 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,92 +39,86 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AEA07C4360C;
-        Sat, 21 Aug 2021 17:15:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org AEA07C4360C
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5E4C6C4338F;
+        Sat, 21 Aug 2021 17:26:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 5E4C6C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/3] ipw2x00: Avoid field-overflowing memcpy()
+Subject: Re: [PATCH 1/3] rsi: fix occasional initialisation failure with BT
+ coex
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210819202825.3545692-2-keescook@chromium.org>
-References: <20210819202825.3545692-2-keescook@chromium.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     netdev@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
+In-Reply-To: <1628245403-2517-2-git-send-email-martin.fuzzey@flowbird.group>
+References: <1628245403-2517-2-git-send-email-martin.fuzzey@flowbird.group>
+To:     Martin Fuzzey <martin.fuzzey@flowbird.group>
+Cc:     linux-wireless@vger.kernel.org,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        KP Singh <kpsingh@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-        linux-hardening@vger.kernel.org
+        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        Martin Fuzzey <martin.fuzzey@flowbird.group>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210821171554.398BEC43619@smtp.codeaurora.org>
-Date:   Sat, 21 Aug 2021 17:15:54 +0000 (UTC)
+Message-Id: <20210821172617.06659C43616@smtp.codeaurora.org>
+Date:   Sat, 21 Aug 2021 17:26:17 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> wrote:
+Martin Fuzzey <martin.fuzzey@flowbird.group> wrote:
 
-> In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> field bounds checking for memcpy(), memmove(), and memset(), avoid
-> intentionally writing across neighboring fields.
+> When BT coexistence is enabled (eg oper mode 13, which is the default)
+> the initialisation on startup sometimes silently fails.
 > 
-> libipw_read_qos_param_element() copies a struct libipw_info_element
-> into a struct libipw_qos_information_element, but is actually wanting to
-> copy into the larger struct libipw_qos_parameter_info (the contents of
-> ac_params_record[] is later examined). Refactor the routine to perform
-> centralized checks, and copy the entire contents directly (since the id
-> and len members match the elementID and length members):
+> In a normal initialisation we see
+> 	usb 1-1.3: Product: Wireless USB Network Module
+> 	usb 1-1.3: Manufacturer: Redpine Signals, Inc.
+> 	usb 1-1.3: SerialNumber: 000000000001
+> 	rsi_91x: rsi_probe: Initialized os intf ops
+> 	rsi_91x: rsi_load_9116_firmware: Loading chunk 0
+> 	rsi_91x: rsi_load_9116_firmware: Loading chunk 1
+> 	rsi_91x: rsi_load_9116_firmware: Loading chunk 2
+> 	rsi_91x: Max Stations Allowed = 1
 > 
-> struct libipw_info_element {
->         u8 id;
->         u8 len;
->         u8 data[];
-> } __packed;
+> But sometimes the last log is missing and the wlan net device is
+> not created.
 > 
-> struct libipw_qos_information_element {
->         u8 elementID;
->         u8 length;
->         u8 qui[QOS_OUI_LEN];
->         u8 qui_type;
->         u8 qui_subtype;
->         u8 version;
->         u8 ac_info;
-> } __packed;
+> Running a userspace loop that resets the hardware via a GPIO shows the
+> problem occurring ~5/100 resets.
 > 
-> struct libipw_qos_parameter_info {
->         struct libipw_qos_information_element info_element;
->         u8 reserved;
->         struct libipw_qos_ac_parameter ac_params_record[QOS_QUEUE_NUM];
-> } __packed;
+> The problem does not occur in oper mode 1 (wifi only).
 > 
-> Cc: Stanislav Yakovlev <stas.yakovlev@gmail.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+> Adding logs shows that the initialisation state machine requests a MAC
+> reset via rsi_send_reset_mac() but the firmware does not reply, leading
+> to the initialisation sequence being incomplete.
+> 
+> Fix this by delaying attaching the BT adapter until the wifi
+> initialisation has completed.
+> 
+> With this applied I have done > 300 reset loops with no errors.
+> 
+> Fixes: 716b840c7641 ("rsi: handle BT traffic in driver")
+> Signed-off-by: Martin Fuzzey <martin.fuzzey@flowbird.group>
+> CC: stable@vger.kernel.org
 
-2 patches applied to wireless-drivers-next.git, thanks.
+Failed to apply, please rebase on top of wireless-drivers-next.
 
-d6b6d1bb80be ipw2x00: Avoid field-overflowing memcpy()
-92276c592a6b ray_cs: Split memcpy() to avoid bounds check warning
+error: sha1 information is lacking or useless (drivers/net/wireless/rsi/rsi_91x_mgmt.c).
+error: could not build fake ancestor
+hint: Use 'git am --show-current-patch' to see the failed patch
+Applying: rsi: fix occasional initialisation failure with BT coex
+Patch failed at 0001 rsi: fix occasional initialisation failure with BT coex
+
+3 patches set to Changes Requested.
+
+12423167 [1/3] rsi: fix occasional initialisation failure with BT coex
+12423171 [2/3] rsi: fix key enabled check causing unwanted encryption for vap_id > 0
+12423173 [3/3] rsi: fix rate mask set leading to P2P failure
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210819202825.3545692-2-keescook@chromium.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/1628245403-2517-2-git-send-email-martin.fuzzey@flowbird.group/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
