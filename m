@@ -2,34 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 224063F3C40
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 21:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E6933F3C41
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 21:19:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229854AbhHUTUA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Aug 2021 15:20:00 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:24990 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229742AbhHUTUA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Aug 2021 15:20:00 -0400
+        id S229872AbhHUTUX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Aug 2021 15:20:23 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:24212 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230022AbhHUTUW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 21 Aug 2021 15:20:22 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1629573560; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1629573583; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=j2LucqxXjFpQE4Ci4kh2doG9zkgMYBppe7hJEGHUhRc=;
- b=ueM7AInuymgdexEB7RCbjps7XOH6TdIUE34IhhwI7AuY1UV1gTbeNNZVZ1ntGCZgR88ZO70z
- WAQdxRrY+D+XaQ2Z0CXx3L+WlCPNOikjcEmmnZ2zJwXap+mfYfd5mJEFvk1VeaRmHXQ5X+er
- gxMYHCObXs/FvzMP4O8IVGXMgDw=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ Content-Type: Sender; bh=eF0gYav3vS9Hx4zy3jnW+UB9dHq4sPLBVBcMFnDnzQY=;
+ b=C2YhiKkSXWg6EggzTeDXe+64Lg/uE0Iu7uy71E3HIKDOlz1OlrHxPoWR+ocQInfdIhNoUY8A
+ uIV07Kz4lk+srOSmSHvOQ+8+RG6ticu1FZEUz0Ok8ab929UyixeY0yJU2dyb5l+bz5iICmng
+ gP/qU0XH0Q57zU82JSFyCw1nKWk=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 612151a29b8228d0d0b1c5de (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 21 Aug 2021 19:18:58
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 612151ca1d4eeff4c3613ae0 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 21 Aug 2021 19:19:38
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6FF07C43460; Sat, 21 Aug 2021 19:18:57 +0000 (UTC)
+        id 22F45C43460; Sat, 21 Aug 2021 19:19:38 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,24 +39,25 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C85B7C4338F;
-        Sat, 21 Aug 2021 19:18:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C85B7C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6018DC4338F;
+        Sat, 21 Aug 2021 19:19:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 6018DC4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtw88: 8822ce: set CLKREQ# signal to low during suspend
+Subject: Re: [PATCH v2 1/5] rtw88: use read_poll_timeout instead of fixed
+ sleep
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210727100503.31626-1-pkshih@realtek.com>
-References: <20210727100503.31626-1-pkshih@realtek.com>
+In-Reply-To: <20210728014335.8785-2-pkshih@realtek.com>
+References: <20210728014335.8785-2-pkshih@realtek.com>
 To:     Ping-Ke Shih <pkshih@realtek.com>
 Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
         <timlee@realtek.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210821191857.6FF07C43460@smtp.codeaurora.org>
-Date:   Sat, 21 Aug 2021 19:18:57 +0000 (UTC)
+Message-Id: <20210821191938.22F45C43460@smtp.codeaurora.org>
+Date:   Sat, 21 Aug 2021 19:19:38 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -66,21 +66,27 @@ Ping-Ke Shih <pkshih@realtek.com> wrote:
 
 > From: Chin-Yen Lee <timlee@realtek.com>
 > 
-> We find the power sequence of system suspend flow don't meet
-> the criteria when using 8822CE-VR chip by rfe-type 6, because the
-> reference clock form host is sometimes late. To avoid the behavoir,
-> we keep CLKREQ# signal to low during suspend to make sure the reference
-> clock arrival in time.
+> In current wow flow, driver calls rtw_wow_fw_start and sleep for 100ms,
+> to wait firmware finish preliminary work and then update the value of
+> WOWLAN_WAKE_REASON register to zero. But later firmware will start wow
+> function with power-saving mode, in which mode the value of
+> WOWLAN_WAKE_REASON register is 0xea. So driver may get 0xea value and
+> return fail. We use read_poll_timeout instead to check the value to avoid
+> this issue.
 > 
 > Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-drivers-next.git, thanks.
+5 patches applied to wireless-drivers-next.git, thanks.
 
-8d52b46caf68 rtw88: 8822ce: set CLKREQ# signal to low during suspend
+02a55c0009a5 rtw88: use read_poll_timeout instead of fixed sleep
+67368f14a816 rtw88: refine the setting of rsvd pages for different firmware
+05e45887382c rtw88: wow: build wow function only if CONFIG_PM is on
+4bac10f2de22 rtw88: wow: report wow reason through mac80211 api
+69c7044526d9 rtw88: wow: fix size access error of probe request
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210727100503.31626-1-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210728014335.8785-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
