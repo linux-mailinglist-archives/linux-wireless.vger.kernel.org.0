@@ -2,57 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 226F03F384F
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 05:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DB643F38DC
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 07:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232158AbhHUD25 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Aug 2021 23:28:57 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187]:18023 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbhHUD2y (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Aug 2021 23:28:54 -0400
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Gs3lH4DdVzbgCh;
-        Sat, 21 Aug 2021 11:24:27 +0800 (CST)
-Received: from dggema764-chm.china.huawei.com (10.1.198.206) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Sat, 21 Aug 2021 11:28:12 +0800
-Received: from [10.174.185.179] (10.174.185.179) by
- dggema764-chm.china.huawei.com (10.1.198.206) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Sat, 21 Aug 2021 11:28:09 +0800
-Subject: Re: [PATCH 1/2] bcma: Fix memory leak for internally-handled cores
-To:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <zajec5@gmail.com>, <kvalo@codeaurora.org>, <hauke@hauke-m.de>,
-        <linville@tuxdriver.com>, <wanghaibin.wang@huawei.com>
-References: <20210727025232.663-1-yuzenghui@huawei.com>
- <20210727025232.663-2-yuzenghui@huawei.com>
-From:   Zenghui Yu <yuzenghui@huawei.com>
-Message-ID: <8943a493-aee8-3fe5-e63a-f3b61eaead14@huawei.com>
-Date:   Sat, 21 Aug 2021 11:28:09 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        id S231273AbhHUFlU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Aug 2021 01:41:20 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:61669 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229657AbhHUFlT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 21 Aug 2021 01:41:19 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1629524441; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=UC5eWRTEzqulkg0w1otRArNQRDvCbpACDgnYwfxDjIY=; b=kmVo2PMBipMpEzX1DjekLoBDddqrWZi15L9ujgbr/XkGScu9cV4KMpLu2bWRiHw4OOrD3TrC
+ 3ArN+kGC53Z8hXhWHUb6/6dQ+Bk174NyhU63hssvxZsA+pVKqBtkAM0etj+AH5pJho1ROvM5
+ Gcv4W/V0TaFcTpACa6bt8Xw1BkM=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 612091cbf588e42af198aea8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 21 Aug 2021 05:40:27
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A2E42C43616; Sat, 21 Aug 2021 05:40:27 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CCF54C4338F;
+        Sat, 21 Aug 2021 05:40:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org CCF54C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Christian Lamparter <chunkeey@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        ath9k-devel@qca.qualcomm.com
+Subject: Re: [RFC PATCH v1 1/3] dt-bindings:net:wireless:qca,ath9k: add nvmem-cells for calibration data
+References: <91e68ca7f65bee7197ed5829ef91bc526df16e8a.1629508039.git.chunkeey@gmail.com>
+Date:   Sat, 21 Aug 2021 08:40:20 +0300
+In-Reply-To: <91e68ca7f65bee7197ed5829ef91bc526df16e8a.1629508039.git.chunkeey@gmail.com>
+        (Christian Lamparter's message of "Sat, 21 Aug 2021 03:09:13 +0200")
+Message-ID: <87ilzz9wzf.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20210727025232.663-2-yuzenghui@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.185.179]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggema764-chm.china.huawei.com (10.1.198.206)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021/7/27 10:52, Zenghui Yu wrote:
-> kmemleak reported that dev_name() of internally-handled cores were leaked
-> on driver unbinding. Let's use device_initialize() to take refcounts for
-> them and put_device() to properly free the related stuff.
+Christian Lamparter <chunkeey@gmail.com> writes:
 
-Could this be picked as a fix for v5.14 (_if_ it does fix something)?
+> On most embedded ath9k devices (like range extenders,
+> routers, accesspoints, ...) the calibration data for
+> the RF/PHY is simply stored in a MTD partition named
+> "ART", "caldata"/"calibration", etc.
+>
+> Any mtd partition is automatically registered in the
+> nvmem subsystem. This makes is possible to fetch the
+> necessary calibration directly from there at the low
+> cost of adding nvmem cell information via the
+> device-tree or via similar means.
+>
+> This speeds up the driver's initialization a lot,
+> because the driver doesn't have to wait for userspace
+> to provide the data via helpers.
+>
+> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
 
-Thanks,
-Zenghui
+The series looks good to me. But I'm curious, why you marked this as
+RFC? Is there something controversial I missed?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
