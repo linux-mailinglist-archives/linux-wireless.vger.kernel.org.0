@@ -2,81 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A4223F3A93
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 14:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A4B23F3AC7
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 15:34:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234496AbhHUMUX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Aug 2021 08:20:23 -0400
-Received: from wtarreau.pck.nerim.net ([62.212.114.60]:37816 "EHLO 1wt.eu"
+        id S231491AbhHUNfQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Aug 2021 09:35:16 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:42380 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229968AbhHUMUW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Aug 2021 08:20:22 -0400
-Received: (from willy@localhost)
-        by pcw.home.local (8.15.2/8.15.2/Submit) id 17LCJ0Nc000440;
-        Sat, 21 Aug 2021 14:19:00 +0200
-Date:   Sat, 21 Aug 2021 14:19:00 +0200
-From:   Willy Tarreau <w@1wt.eu>
-To:     Oleksandr Natalenko <oleksandr@natalenko.name>
-Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        id S229793AbhHUNfP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 21 Aug 2021 09:35:15 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1629552876; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=95lCQMtRZ3oSzWOdDjJ1909AnLQq/yrMzjCJjr9CGRU=; b=Yg7OByshnFauuZAgCSPCnFGryKa785VxNcV5j8ldZpJCUbvkwzLdCsK/1/fFdgLgHHv2tNSy
+ zzaI2myxGtFY2CIluC4bn81alSqlxd2nn+sGIKKwGrndZwa99dUlT12tBEULYQSmfpT8UPzR
+ rSswfrnCf6qzpdWq/5AVo0nI/Eg=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 612100e70f9b337f11ccf687 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 21 Aug 2021 13:34:31
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E4E9AC43617; Sat, 21 Aug 2021 13:34:30 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7EEBBC4338F;
+        Sat, 21 Aug 2021 13:34:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 7EEBBC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jaehoon Chung <jh80.chung@samsung.com>
+Cc:     Justin Forbes <jmforbes@linuxtx.org>,
+        Luca Coelho <luciano.coelho@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: Divide error in minstrel_ht_get_tp_avg()
-Message-ID: <20210821121900.GA32713@1wt.eu>
-References: <20210529165728.bskaozwtmwxnvucx@spock.localdomain>
- <20210607145223.tlxo5ge42mef44m5@spock.localdomain>
- <2137329.lhgpPQ2jGW@natalenko.name>
+        Jakub Kicinski <kuba@kernel.org>,
+        Matti Gottlieb <matti.gottlieb@intel.com>,
+        ybaruch <yaara.baruch@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Ihab Zhaika <ihab.zhaika@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless@vger.kernel.org,
+        "open list\:BPF \(Safe dynamic programs and tools\)" 
+        <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        yj99.shin@samsung.com
+Subject: Re: [PATCH] iwlwifi Add support for ax201 in Samsung Galaxy Book Flex2 Alpha
+References: <20210702223155.1981510-1-jforbes@fedoraproject.org>
+        <CGME20210709173244epcas1p3ea6488202595e182d45f59fcba695e0a@epcas1p3.samsung.com>
+        <CAFxkdApGUeGdg4=rH=iC2SK58FO6yzbFiq3uSFMFTyZsDQ5j5w@mail.gmail.com>
+        <8c55c7c9-a5ae-3b0e-8a0f-8954a8da7e7b@samsung.com>
+        <94edb3c4-43a6-1031-8431-2befb0eca2bf@samsung.com>
+Date:   Sat, 21 Aug 2021 16:34:23 +0300
+In-Reply-To: <94edb3c4-43a6-1031-8431-2befb0eca2bf@samsung.com> (Jaehoon
+        Chung's message of "Fri, 13 Aug 2021 07:26:06 +0900")
+Message-ID: <87ilzyudk0.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2137329.lhgpPQ2jGW@natalenko.name>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Aug 21, 2021 at 01:14:34PM +0200, Oleksandr Natalenko wrote:
-> > > So, it seems `minstrel_ht_avg_ampdu_len()` can return 0, which is not
-> > > really legitimate.
-> > > 
-> > > Looking at `minstrel_ht_avg_ampdu_len()`, I see the following:
-> > > 
-> > > ```
-> > > 16:#define MINSTREL_SCALE  12
-> > > ...
-> > > 18:#define MINSTREL_TRUNC(val) ((val) >> MINSTREL_SCALE)
-> > > ```
-> > > 
-> > > ```
-> > > 
-> > >  401 static unsigned int
-> > >  402 minstrel_ht_avg_ampdu_len(struct minstrel_ht_sta *mi)
-> > >  403 {
-> > > 
-> > > ...
-> > > 
-> > >  406     if (mi->avg_ampdu_len)
-> > >  407         return MINSTREL_TRUNC(mi->avg_ampdu_len);
-> > > 
-> > > ```
-> > > 
-> > > So, likely, `mi->avg_ampdu_len` is non-zero, but it's too small, hence
-> > > right bitshift makes it zero.
-(...)
-> I've also found out that this happens exactly at midnight, IOW, at 00:00:00. 
-> Not every midnight, though.
-> 
-> Does it have something to do with timekeeping? This is strange, I wouldn't 
-> expect kernel to act like that. Probably, some client sends malformed frame? 
-> How to find out?
+Jaehoon Chung <jh80.chung@samsung.com> writes:
 
-Well, in minstrel_ht_update_stats() at line 1006 avg_ampdu_len is
-explicitly set to zero. And this seems to be called based on timing
-criteria from minstrel_ht_tx_status() so this could confirm your
-experience.  Thus there is some inconsistency there.
+> Hi
+>
+> On 8/9/21 8:09 AM, Jaehoon Chung wrote:
+>> Hi
+>> 
+>> On 7/10/21 2:32 AM, Justin Forbes wrote:
+>>> On Fri, Jul 2, 2021 at 5:32 PM Justin M. Forbes
+>>> <jforbes@fedoraproject.org> wrote:
+>>>>
+>>>> The Samsung Galaxy Book Flex2 Alpha uses an ax201 with the ID a0f0/6074.
+>>>> This works fine with the existing driver once it knows to claim it.
+>>>> Simple patch to add the device.
+>>>>
+>>>> Signed-off-by: Justin M. Forbes <jforbes@fedoraproject.org>
+>
+> If this patch is merged, can this patch be also applied on stable tree?
 
-Willy
+Luca, what should we do with this patch?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
