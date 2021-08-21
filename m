@@ -2,101 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5B263F3C7C
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Aug 2021 23:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60E103F3CCF
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Aug 2021 02:00:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230290AbhHUVFx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Aug 2021 17:05:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46616 "EHLO
+        id S229841AbhHVAAr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Aug 2021 20:00:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229976AbhHUVFx (ORCPT
+        with ESMTP id S229519AbhHVAAq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Aug 2021 17:05:53 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 687FDC061575
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Aug 2021 14:05:13 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id r17-20020a0568302371b0290504f3f418fbso23959409oth.12
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Aug 2021 14:05:13 -0700 (PDT)
+        Sat, 21 Aug 2021 20:00:46 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8766EC061575
+        for <linux-wireless@vger.kernel.org>; Sat, 21 Aug 2021 17:00:06 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id f2so23984364ljn.1
+        for <linux-wireless@vger.kernel.org>; Sat, 21 Aug 2021 17:00:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=46fy5xAeWWEt4Q7fLDKMyeqCSDu/ixAPmiNoshobWVA=;
-        b=E8gfnE9qZjDLZrWh9NtnHBq7W9u7jogkApMIOOuRDCtx8RvhfzepWkBxohkgPOK5m8
-         6Cq/8MT/FbtCWuCsw9CVIas+EFTG7aLj3e08AnBPrWflr1Y9FbRTsM9BNjB6TsltdhwD
-         bl3e0ZkfiV7CUMAMphtYQYABrBPvebjRd/YjxA90zKwqj5mhVw10R7mC/lypaDuZz2ZG
-         FuW5SPQlBZFaTr+uLUASORkDrHALD3bK09RA82UAp5uYmM3ISTGnmQieDQYiKLYuR/bz
-         SXsMZOvESQE0rOkin5cRDSaI3lqtj/FkTZdj0hpkDKXskNb23N+8DRkugfPAUPk205Jw
-         PiWA==
+        bh=Ewrnzff7hboyvEG9Koe5XvHu9H6UT6gQnq05IG0OMi4=;
+        b=r3T1nOtyA59J9itlGkWYea6NGKEqc8UrjszA0+nJWzYRgjaXL0+NEe4v93MQk7VXPG
+         QvkBXFNBUdRSpDTGLI7bXKrLZfVtyuMzTPLXUGYUutEpt9ibpHlAx6l6ZxoEYT7h3V+X
+         hJSBQsNAHEBEllsYvzStSUDPZRX7F4fkqC8cL98s8uIbUw1MkXgo+BdDogodXT8G4U2Z
+         TvYw9uYqb7un94nWsRDh5TZDtfeRGEe3z4FNYV3/vmxNmnV8eMMsxKKnW7larQshJXeJ
+         +CmNJCBJaiDQZqoMRQSOpUynsVsRfYeGk7YiXSk5nYV6bWV6PkC6irZoHCnLQWSIOqB1
+         VG0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=46fy5xAeWWEt4Q7fLDKMyeqCSDu/ixAPmiNoshobWVA=;
-        b=eR8Zh7daRna8aBiTS5oMNwRaQZnHXsOVPxQEdNIaqpfDzyuyWDP4MgnjQW96bbpXaJ
-         RD9dbINVT+QZuz5GGMV2UnkiSsjvTvUVoU0/RBe481aPICQI9xhiOVbB7gxxB84Wk1aL
-         tN4lmnx8/s9bsk8qlZFf6b1Zx5qmRjs09HH4DRgtfNdsn35kU3/Usie6jjfLQH9Av2Pk
-         U/xfXfeUwp+9WpasNRn/gYhChH0Sl4JcIPtau2EHWSCyG6hkUC2JsZaoERrRJvy3PCPk
-         bgtS1WFwjtdnxlsMfYZP40QL42wuhYSfoPjOskYB3YYlxmcsePyHGmvzVX/9+zdOu2qI
-         6FNw==
-X-Gm-Message-State: AOAM533hD5zzkc7zdlmKy85Kx6OCmX5CvQK0hdMwUaXp3uJy2nksj+TW
-        s2dVPUHyUjBti/pOL2di5p4=
-X-Google-Smtp-Source: ABdhPJzNDtv0VIkSZjukiZ5v6UmT0TeknxnVYM88FogwpjJA3JOeAT/10xY7WIossm62k0tAJL4H0A==
-X-Received: by 2002:aca:a996:: with SMTP id s144mr7268666oie.175.1629579912636;
-        Sat, 21 Aug 2021 14:05:12 -0700 (PDT)
-Received: from 2603-8090-2005-39b3-0000-0000-0000-1023.res6.spectrum.com.com (2603-8090-2005-39b3-0000-0000-0000-1023.res6.spectrum.com. [2603:8090:2005:39b3::1023])
-        by smtp.gmail.com with ESMTPSA id t1sm2533598otp.9.2021.08.21.14.05.11
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Ewrnzff7hboyvEG9Koe5XvHu9H6UT6gQnq05IG0OMi4=;
+        b=jWmlYzf3EA6z13/jHtmN3IFIjdbMYOOO7aUz/naUxMXbrqnU/kyQxANounmLxiskY7
+         PAP3NDwsuo8cYKhmK3Lmjtnlh38vj9H4V89tYHCkzjqBFYf0GzYulmhZgfI5SlLEXGOS
+         neGHgCfbmAOn96WN5XqrH0dGd6tRL5zjbtFie2UxYQuixLe3+mHEKWXT13aqkyhZT6Dd
+         PVhBCCZ+K9V5UdfmD+ctYdwEVdYfuqdBdWxrjGCdypn/70dOHT4dRK5yamMHuhm1DrFn
+         UAKPiyYygJWD67S33Z2pELpUwjn2LHCcC/aFgJj3juRTinciC4Pf5aUM7o0uinYR2RFu
+         mOlg==
+X-Gm-Message-State: AOAM5300rwJImoXhjKWsBz31yH4Pmi5hVe4aVx5jYBoVNMeJ4X/gjK7g
+        Y1S3s8sP1MjsSQYoMmpAFC5OoKr7JYv+0w==
+X-Google-Smtp-Source: ABdhPJzRduaDI4y6GRKN20t5DJ7qROZ9wNGy4ahSXV8scWaLRlfExWNIkyUcBN+gKGHQ5dSc6NLvXg==
+X-Received: by 2002:a05:651c:510:: with SMTP id o16mr21992975ljp.257.1629590404310;
+        Sat, 21 Aug 2021 17:00:04 -0700 (PDT)
+Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
+        by smtp.gmail.com with ESMTPSA id r145sm1037523lff.128.2021.08.21.17.00.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Aug 2021 14:05:12 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@codeaurora.org
+        Sat, 21 Aug 2021 17:00:03 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Michael Buesch <m@bues.ch>, Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org,
-        =?UTF-8?q?Ugo=20R=C3=A9mery?= <ugo.remery@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [PATCH v2] rtw88: add quirk to disable pci caps on HP Pavilion 14-ce0xxx
-Date:   Sat, 21 Aug 2021 16:05:05 -0500
-Message-Id: <20210821210505.20257-1-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.32.0
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH] ssb: Drop legacy header include
+Date:   Sun, 22 Aug 2021 01:58:00 +0200
+Message-Id: <20210821235800.138817-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ugo Rémery <ugo.remery@gmail.com>
+The SSB header only uses the legacy <linux/gpio.h> header to get
+struct gpio_chip so inluce <linux/gpio/driver.h> which is the right
+include to deal with gpio_chip.
 
-    8821CE causes random freezes on HP Pavilion 14-ce0019nf. Add a quirk
-    to disable pci ASPM capability.
-
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Cc: Michael Buesch <m@bues.ch>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
-v2 - add s-o-b line
----
- drivers/net/wireless/realtek/rtw88/pci.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/linux/ssb/ssb.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index e7d17ab8f113..31ee859d379b 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1701,6 +1701,15 @@ static const struct dmi_system_id rtw88_pci_quirks[] = {
- 		},
- 		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
- 	},
-+	{
-+		.callback = disable_pci_caps,
-+		.ident = "HP HP Pavilion Laptop 14-ce0xxx",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion Laptop 14-ce0xxx"),
-+		},
-+		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
-+	},
- 	{}
- };
- 
+diff --git a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
+index 0d5a2691e7e9..f9b53acb4e02 100644
+--- a/include/linux/ssb/ssb.h
++++ b/include/linux/ssb/ssb.h
+@@ -7,7 +7,7 @@
+ #include <linux/types.h>
+ #include <linux/spinlock.h>
+ #include <linux/pci.h>
+-#include <linux/gpio.h>
++#include <linux/gpio/driver.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/platform_device.h>
 -- 
-2.32.0
+2.31.1
 
