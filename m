@@ -2,107 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B5933F3E02
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Aug 2021 07:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54C503F3E3E
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Aug 2021 09:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231213AbhHVFRD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Aug 2021 01:17:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39288 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231124AbhHVFRB (ORCPT
+        id S231156AbhHVHPg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Aug 2021 03:15:36 -0400
+Received: from smtprelay0037.hostedemail.com ([216.40.44.37]:51066 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229934AbhHVHPg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Aug 2021 01:17:01 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEB7EC061760
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Aug 2021 22:16:20 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id j1so9873387pjv.3
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Aug 2021 22:16:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=y8ajL1MXjnm98ftlu2xw9F3LVfgwHRHrIy4fib1NoNg=;
-        b=Y0a8GbxIDGsupMPfALs9c9spCnnTUj10GqcmI81qVhXcdsNXwx3+WXpuFT/OMEwdqV
-         ov72OppMgo1s3fFQNnWub4aPQ3g1ot25/8ftkZ5p3ZUdFTAy3eibMgeUHw1Ncik4DfoH
-         1fyvWtmEFxySeGpMWW3u1iMK9poENxq7thhvU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=y8ajL1MXjnm98ftlu2xw9F3LVfgwHRHrIy4fib1NoNg=;
-        b=rR63RkaDnxTtkJdIogMu3jjTzEWuRsNFy8ymSkw5g1h2uaL6D47tS0F9gQckU8wp5/
-         XNCOHY2GjbmN3Cy71BAKJ4L2ST8BXURmnvIBfUZSlf6eb47rE41qomWjAAKHxapyUolG
-         +I4qpnWSn7XMzE7NM7TMPFznqD9xRAfMgYJqqES3QjYUtALLUiBGqGDCpS5/7bf/HwdG
-         7Rvxk7vOo8wN0ogszYE9eJy0qdP7yHSeaNuTHJG55ShqnUcF7lai5P9om3o5CwNs3GCP
-         wNZZE6qdTnUfWAKxT/k9Lewt01mTDdugOmAppJDUKuEjFWVOCvbIGof39PcF+aDxHG3z
-         SHgA==
-X-Gm-Message-State: AOAM532g0t7NisMo8hC3hZRaESxDv4YdzBpPNEiSznak9UswDI7fzhC8
-        VRA6r8JhSTil602qsIcMW4BKDw==
-X-Google-Smtp-Source: ABdhPJyR+NATVJLBLIhcM5YqAZh+Upqb5pIwMTUuXQGDWIR7A9ZoJQ38xuDUEW6TSdHtuwjl1NIx8w==
-X-Received: by 2002:a17:90a:5147:: with SMTP id k7mr11682056pjm.73.1629609380131;
-        Sat, 21 Aug 2021 22:16:20 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id m194sm11771124pfd.58.2021.08.21.22.16.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Aug 2021 22:16:19 -0700 (PDT)
-Date:   Sat, 21 Aug 2021 22:16:18 -0700
-From:   Kees Cook <keescook@chromium.org>
+        Sun, 22 Aug 2021 03:15:36 -0400
+Received: from omf02.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 3553D18037BD8;
+        Sun, 22 Aug 2021 07:14:54 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf02.hostedemail.com (Postfix) with ESMTPA id 09A5F1D42F4;
+        Sun, 22 Aug 2021 07:14:52 +0000 (UTC)
+Message-ID: <2e0bea3524268f96a39506b3e5ea9f738c6aab27.camel@perches.com>
+Subject: Re: [PATCH v1 1/1] ray_cs: use %*ph to print small buffer
+From:   Joe Perches <joe@perches.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        Saeed Mahameed <saeedm@nvidia.com>, netdev@vger.kernel.org,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
-        Leon Romanovsky <leon@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        KP Singh <kpsingh@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-rdma@vger.kernel.org,
-        bpf@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 0/3] net: Cleanups for FORTIFY_SOURCE
-Message-ID: <202108212215.35185C924B@keescook>
-References: <20210819202825.3545692-1-keescook@chromium.org>
- <20210820100151.25f7ccd4@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <87tujjt8d9.fsf@codeaurora.org>
- <87eean9kby.fsf@tynnyri.adurom.net>
+        Jakub Kicinski <kuba@kernel.org>
+Date:   Sun, 22 Aug 2021 00:14:51 -0700
+In-Reply-To: <877dgerrqw.fsf@codeaurora.org>
+References: <20210712142943.23981-1-andriy.shevchenko@linux.intel.com>
+         <20210821171432.B996DC4360C@smtp.codeaurora.org>
+         <293b9231af8b36bb9a24a11c689d33c7e89c3c4e.camel@perches.com>
+         <877dgerrqw.fsf@codeaurora.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.40.0-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87eean9kby.fsf@tynnyri.adurom.net>
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspamout04
+X-Rspamd-Queue-Id: 09A5F1D42F4
+X-Stat-Signature: ybkgy97sw4z5qypncs8n4fbpy78rcu97
+X-Spam-Status: No, score=-1.59
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1+yJGoCh/tebKAdOx3pd0yDij8KagAZkmo=
+X-HE-Tag: 1629616492-286889
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Aug 21, 2021 at 01:13:37PM +0300, Kalle Valo wrote:
-> Kalle Valo <kvalo@codeaurora.org> writes:
+On Sun, 2021-08-22 at 08:08 +0300, Kalle Valo wrote:
+> Joe Perches <joe@perches.com> writes:
 > 
-> > Jakub Kicinski <kuba@kernel.org> writes:
-> >
-> >> On Thu, 19 Aug 2021 13:28:22 -0700 Kees Cook wrote:
-> >>> Hi,
-> >>> 
-> >>> In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> >>> field bounds checking for memcpy(), memmove(), and memset(), avoid
-> >>> intentionally writing across neighboring fields.
-> >>> 
-> >>> These three changes have been living in my memcpy() series[1], but have
-> >>> no external dependencies. It's probably better to have these go via
-> >>> netdev.
-> >>
-> >> Thanks.
-> >>
-> >> Kalle, Saeed - would you like to take the relevant changes? Presumably
-> >> they would get into net-next anyway by the time the merge window opens.
-> >
-> > Ok, I'll take patch 1 to wireless-drivers-next.
+> > On Sat, 2021-08-21 at 17:14 +0000, Kalle Valo wrote:
+> > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > > 
+> > > > Use %*ph format to print small buffer as hex string.
+> > > > 
+> > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > 
+> > > Patch applied to wireless-drivers-next.git, thanks.
+> > > 
+> > > 502213fd8fca ray_cs: use %*ph to print small buffer
+> > > 
+> > 
+> > There's one more of these in the same file but it's in an #ifdef 0 block...
 > 
-> Correction: I'll take patches 1 and 3 to wireless-drivers-next.
+> I would rather remove the whole ifdef 0 block, patches welcome.
+> 
 
-Great; thanks!
+It'd probably take you about 20 seconds if you do it yourself.
 
--- 
-Kees Cook
+$ git grep -P -n '^\s*#\s*if\s+0\b' drivers/net/wireless/ray_cs.c
+drivers/net/wireless/ray_cs.c:637:#if 0
+drivers/net/wireless/ray_cs.c:2281:#if 0
+drivers/net/wireless/ray_cs.c:2341:#if 0
+
+Rather a bit more time if you want to do the whole kernel...
+
+$ git grep -P -n '^\s*#\s*if\s+0\b' | wc -l
+1558
+
+
+
