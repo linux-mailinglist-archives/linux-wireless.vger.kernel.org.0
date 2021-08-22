@@ -2,148 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7B4D3F4093
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Aug 2021 18:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64B323F4150
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Aug 2021 21:50:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230315AbhHVQts (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Aug 2021 12:49:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48662 "EHLO
+        id S230040AbhHVTub (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Aug 2021 15:50:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbhHVQtq (ORCPT
+        with ESMTP id S229565AbhHVTub (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Aug 2021 12:49:46 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9996EC061575
-        for <linux-wireless@vger.kernel.org>; Sun, 22 Aug 2021 09:49:05 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id y6so26875155lje.2
-        for <linux-wireless@vger.kernel.org>; Sun, 22 Aug 2021 09:49:05 -0700 (PDT)
+        Sun, 22 Aug 2021 15:50:31 -0400
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C58CDC061575
+        for <linux-wireless@vger.kernel.org>; Sun, 22 Aug 2021 12:49:49 -0700 (PDT)
+Received: by mail-ot1-x335.google.com with SMTP id x9-20020a056830278900b0051b8be1192fso9735841otu.7
+        for <linux-wireless@vger.kernel.org>; Sun, 22 Aug 2021 12:49:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=kj+F/iivvvpon61c7DD9W/irW+je8k1Oa5+INDP5Jrk=;
-        b=L6OCr7wdb7keKFej8krtdy0G1ItcZxQTdGV9XqIBAdNfiWHdVnUDP0c2cxH0/fOhr5
-         KgXzwR8nrvmz34cS8iGEbd7ciKVMlJG4KNaM5ChmpvqJM1/eHuWm+Pq9eYLDvW4DnTv4
-         w1XODFFGLWFw39llHUk7ypbnUOqglJ/AgglXt26eUsvyFn/WifNnYzt3+llmD8/0zKtV
-         OZv4HmnWQ59EOeRScfCdyC6Btl0qIuDxC/YGekPOYX2+m/bhAE6DqCGcek6sniT7hhQf
-         w20/cvPNRig+/EdjYuSJlbf6ptkMlr8eGx2wOYhfVh7ulwbmf0KPihkD0dlqJlvuOJWN
-         e2zA==
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CC9gKDezogjb3lBxOHKaNmmDUKbBZiDh5x9l+iGH4VU=;
+        b=oumz+cXSoOQIjDzllwHY8cjjgF1T2JfEz7EmGXaIT2lWViEzeJ6hLW8pbMxOjTLOpJ
+         UqVOCQ4nmlEQNbVHQyc5C8I1Ng+WMUt9Uwn3YOU0HGkdtS6k4jRiCGHqesY2zU2RPk/Z
+         mLjpnXhU1WepNP51YhNsFJZ/1EQ26WvW0jSLExrLMU/VQF/6i9nN7gxwPI/6BjMJUHtD
+         Sk6RrveZrvK1VqtH67yG2l//rlNeoQIyKVgDVjYHDZAOt9lPsL/AYedwNsdFhTwnURh1
+         1+8w6aTqnZIMjcZc309GtwwLWWfiNEjnhsHQzbaikeC28///0CQncezzTTNRlrUH2Nu3
+         KhBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=kj+F/iivvvpon61c7DD9W/irW+je8k1Oa5+INDP5Jrk=;
-        b=C4OnN7rXzm9x7fU2RIXfXSjlOm/TISD4t+ShO2tkV4uMDd98rKKBrl8JxioQIcHImM
-         4ko2g6+0fxadccpq+AmyekhQYlu2e8bDtvPKsR/NmOuoF5ZuDSbSc+P2lVJobdaR9gvu
-         DRQJ0lpjhO+iMd8ao08GNYE8NyJ67gy5kQ5f7UXNJTj5zh+FiiTpyaiCxndEOKOh1uy4
-         du3ljdlW/kx/qKqfP7hFhgr71IHM09BGQcqNNWnmJ8Wh7l1U2fzMQMpZBdsyiTx76Wah
-         lPqj6d1EgM6Sj+dSDEe54IaYdk9VxC4oq4IBgp9lN5Y1QPkuUQvtDWT0chM4k3Ex8dWz
-         NEZg==
-X-Gm-Message-State: AOAM533AMCElXb1rHYyF6cHRcskYU2DSwLz+hboNi5wCrAH/IWxImFTk
-        sOYooi6L2vYKj/Hxy7cBbdnXf0NdpvQ=
-X-Google-Smtp-Source: ABdhPJzWplplqm5odJS3im829yPVY/Ppj/Hl+97zaQRmiJ+EMwyujosNwE9vDyKw8KtVzUJfjK6lIA==
-X-Received: by 2002:a2e:b80c:: with SMTP id u12mr24643290ljo.436.1629650943638;
-        Sun, 22 Aug 2021 09:49:03 -0700 (PDT)
-Received: from localhost ([94.19.228.143])
-        by smtp.gmail.com with ESMTPSA id a22sm1230098lfl.259.2021.08.22.09.49.02
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=CC9gKDezogjb3lBxOHKaNmmDUKbBZiDh5x9l+iGH4VU=;
+        b=YeG+NIX1dQWK4CqH2I3EQo+Dm9FM3hLo+M+8br+Ud95U62lHdISXmT3e+N+7R/UFQ2
+         /BjDEwinjKRgTdOe9nDefLuDPw01jyHKiTny0SYg9F4JBi6slHw4+ssOcBH5+uvvNXTC
+         awaHJ+givyijP8oJ8BQkoOumbvmJPHhlV0KU6m4l1bNW+JtFkrwul9uye68clH821GY9
+         5zY8U0kSomOfgvYiSLE/KV5vPnwCy04Eez1KjhrDefZsQPV5KJRJwxJipNiN2ZBRyCmD
+         Y6pnX9qNu0fI90/MbK+KIajJOge0NPRytxwJEq4VfAB8XgypSNeUr5qhZh5xjrUgf/bC
+         iQHw==
+X-Gm-Message-State: AOAM5328XRXhv+0nN0V+7wWTqXxd0zKAs0zZow8LEk7QvNAMvEZdDIQv
+        4gzUGqK+UWK8Yu08eTppU4Y=
+X-Google-Smtp-Source: ABdhPJzs7OhnwgvBMm+uhlqHDlDPikn4riEUmCIS3VIkrQmBUoBpcqSPBWnJJiznz6flS7GZZB9W8Q==
+X-Received: by 2002:a9d:450b:: with SMTP id w11mr24555134ote.254.1629661789153;
+        Sun, 22 Aug 2021 12:49:49 -0700 (PDT)
+Received: from 2603-8090-2005-39b3-0000-0000-0000-1023.res6.spectrum.com.com (2603-8090-2005-39b3-0000-0000-0000-1023.res6.spectrum.com. [2603:8090:2005:39b3::1023])
+        by smtp.gmail.com with ESMTPSA id l4sm1759904oth.4.2021.08.22.12.49.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Aug 2021 09:49:02 -0700 (PDT)
-Date:   Sun, 22 Aug 2021 19:49:02 +0300
-From:   Andrey Skvortsov <andrej.skvortzov@gmail.com>
-To:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Cc:     Wen Gong <wgong@codeaurora.org>, Kalle Valo <kvalo@codeaurora.org>,
-        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        Brian Norris <briannorris@chromium.org>,
-        Julian Calaby <julian.calaby@gmail.com>, svp <svpm@yandex.ru>,
-        felix+debian@gueux.org, Massimo Maggi <me@massimo-maggi.eu>
-Subject: Revert: ath: add support for special 0x0 regulatory domain
-Message-ID: <YSJ//ki/A1EgfLga@skv.local>
+        Sun, 22 Aug 2021 12:49:48 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org,
+        =?UTF-8?q?Ugo=20R=C3=A9mery?= <ugo.remery@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH v3] rtw88: add quirk to disable pci caps on HP Pavilion 14-ce0xxx
+Date:   Sun, 22 Aug 2021 14:49:32 -0500
+Message-Id: <20210822194932.29630-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Ugo Rémery <ugo.remery@gmail.com>
 
-this patch broke several 5GHz AP in my home based on different Atheros
-cards (ath9k and ath10k). Both of them have FCC ID and were purchased from
-different suppliers (EU and non-EU) in 2020 and in 2018. I know many other
-users are affected as well.
+    8821CE causes random freezes on HP Pavilion 14-ce0019nf. Add a quirk
+    to disable pci ASPM capability.
 
-I know this problem was discussed several times already. But I have a
-couple of questions.
+Signed-off-by: =?UTF-8?q?Ugo=20R=C3=A9mery?= <ugo.remery@gmail.com>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+v2 - add s-o-b line
+v3 - added s-o-b line for =?UTF-8?q?Ugo=20R=C3=A9mery
+---
+ drivers/net/wireless/realtek/rtw88/pci.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-1) Current behaviour maps 0x0 regulatory domain to the most restrictive
-world domain. According to the wiki (probably based on Atheros
-documentation) 0x0 means US. Does wiki contain wrong information?
-
-2) If I understand correctly, 0x0 is always replaced with 0x64 and that
-makes the following code useless, because it will never be executed. Is it
-ok?
-
-drivers/net/wireless/ath/regd.c:703:708
-
-if (reg->country_code == CTRY_DEFAULT &&
-        regdmn == CTRY_DEFAULT) {
-            printk(KERN_DEBUG "ath: EEPROM indicates default "
-                "country code should be used\n");
-            reg->country_code = CTRY_UNITED_STATES;
-}
-
-3) Previously it was possible to get regulatory information using 'iw reg
-get', but now it doesn't work anymore. Is it expected behavior?
-
-[--------------------4.19 ---------------------------------]
-# iw reg get
-global
-country 98: DFS-UNSET
-(2400 - 2483 @ 40), (N/A, 20), (N/A)
-(5150 - 5250 @ 100), (N/A, 20), (N/A), NO-OUTDOOR
-(5250 - 5350 @ 100), (N/A, 20), (0 ms), NO-OUTDOOR, DFS
-(5650 - 5730 @ 80), (N/A, 20), (0 ms), NO-OUTDOOR, DFS
-(5730 - 5850 @ 80), (N/A, 20), (N/A), NO-OUTDOOR
-(57240 - 66000 @ 2160), (N/A, 40), (N/A), NO-OUTDOOR
-
-phy#0
-country US: DFS-FCC
-(2400 - 2483 @ 40), (N/A, 30), (N/A)
-(5150 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
-(5250 - 5350 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
-(5470 - 5730 @ 160), (N/A, 23), (0 ms), DFS
-(5730 - 5850 @ 80), (N/A, 30), (N/A)
-(57240 - 71000 @ 2160), (N/A, 40), (N/A)
-
-phy#1
-country US: DFS-FCC
-(2400 - 2483 @ 40), (N/A, 30), (N/A)
-(5150 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
-(5250 - 5350 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
-(5470 - 5730 @ 160), (N/A, 23), (0 ms), DFS
-(5730 - 5850 @ 80), (N/A, 30), (N/A)
-(57240 - 71000 @ 2160), (N/A, 40), (N/A)
-
-
-[--------------------- 5.10 --------------------------------]
-#iw reg get
-global
-country RU: DFS-UNSET
-(2400 - 2483 @ 40), (N/A, 20), (N/A)
-(5150 - 5350 @ 160), (N/A, 20), (N/A), NO-OUTDOOR
-(5650 - 5850 @ 160), (N/A, 20), (N/A), NO-OUTDOOR
-(57000 - 66000 @ 2160), (N/A, 40), (N/A), NO-OUTDOOR
-
-[-----------------------------------------------------------]
-
-4) As many users are affected by this problem and maintainers don't really
-want to revert the problematic patch, is there any other solution to make
-AP work again using a clean mainline kernel? Firmware upgrade or any other
-solution? What should we do with non-working hardware now?
-
-1. https://wireless.wiki.kernel.org/en/users/drivers/ath#the_0x0_regulatory_domain
-
-P.S. sorry, I've resent the message using other MTA, because it wasn't delivered to MLs.
-
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index e7d17ab8f113..31ee859d379b 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -1701,6 +1701,15 @@ static const struct dmi_system_id rtw88_pci_quirks[] = {
+ 		},
+ 		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
+ 	},
++	{
++		.callback = disable_pci_caps,
++		.ident = "HP HP Pavilion Laptop 14-ce0xxx",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion Laptop 14-ce0xxx"),
++		},
++		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
++	},
+ 	{}
+ };
+ 
 -- 
-Best regards,
-Andrey Skvortsov
+2.32.0
+
