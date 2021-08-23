@@ -2,93 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09C6F3F4B23
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 14:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF9043F4B71
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 15:07:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235731AbhHWMy0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 08:54:26 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:47209 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232574AbhHWMy0 (ORCPT
+        id S237386AbhHWNHM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 09:07:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39308 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236025AbhHWNHE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 08:54:26 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1629723223; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=JcfDWR4cffqT+kvemo31Qw9aFals0hPQCxPipl6EkWA=; b=FzHJgtykFiN+2t6yIioZprcxLZS2X/YYIOxQwTR2o8t5hdCKBFX1ylsjNoM4JORDkGekczDa
- SpQbeRNbF7kzRrK9/h0J/gyrCmxPtBJd9CaUhNsyVfpxDSxbwnK5RYi71L6rucVxO8Fe5i3U
- TcJmTqpzWgyOT4yHn6inLsjJ7mQ=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 61239a4289fbdf3ffe5fb306 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 23 Aug 2021 12:53:22
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 27F62C4338F; Mon, 23 Aug 2021 12:53:22 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7F0DDC4338F;
-        Mon, 23 Aug 2021 12:53:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 7F0DDC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wren Turkal <wt@penguintechs.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        regressions@lists.linux.dev,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Hemant Kumar <hemantk@codeaurora.org>,
-        Loic Poulain <loic.poulain@linaro.org>
-Subject: Re: 5.14 rc6 broken for QCA6390 on Dell XPS 13 9310
-References: <a8cddf24-ecfc-088e-27f4-98cbbb5fb67c@penguintechs.org>
-Date:   Mon, 23 Aug 2021 15:53:14 +0300
-In-Reply-To: <a8cddf24-ecfc-088e-27f4-98cbbb5fb67c@penguintechs.org> (Wren
-        Turkal's message of "Sun, 22 Aug 2021 14:08:11 -0700")
-Message-ID: <87y28sqq4l.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 23 Aug 2021 09:07:04 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48CD7C061757
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Aug 2021 06:06:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=Uk7gR7DqqbsvkWJa4huXiKSphAE1bA3HhmiPpKT7P3Y=;
+        t=1629723982; x=1630933582; b=Mx2j7lnQRxm1ukkBoi2YXC+U62/3twn2JqoVswR7TqMPLh0
+        jjA0Z6UVCqGP5wQ90ZWKEmRiiAhLdwSsNBhKLWEYyZuUGAiGdD49BnTg2LDxB/bdmcdlVabTqpgew
+        bJr0OGeyoWN+9VjHdBO8UkekoIypfeswZeR2xoz7xp0ZcqgBoM85FaO+Ky6DPgnewkYh2dyjxj9L5
+        649V88GA5dbvxsYlPdup+d29xXkkkVyjA9kIS7G3YJDKtvrljTwQyp/IZsTTel/qaDBmvOBj+uuX/
+        JZZQRDDRwB/wEt8E2C5jAJw1J3NM9gMyLrVDQQVdbIjpPHRemI3AH+5O6DpipKUg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mI9ed-00EqsQ-Mo; Mon, 23 Aug 2021 15:06:19 +0200
+Message-ID: <8eac660ee029530811fa63d59dd223a98af952ce.camel@sipsolutions.net>
+Subject: Re: 5.14-rc3 lockdep warning, iwlwifi 9560
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Chris Murphy <lists@colorremedies.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Mon, 23 Aug 2021 15:06:18 +0200
+In-Reply-To: <CAJCQCtQqqrN2-AApnOwbTQYxARA5GEfiTPKQDoEmYKdSm0Jhxw@mail.gmail.com>
+References: <CAJCQCtSXJ5qA4bqSPY=oLRMbv-irihVvP7A2uGutEbXQVkoNaw@mail.gmail.com>
+         <480c17405d7735bed3148c3085f93e3d278acadd.camel@sipsolutions.net>
+         <CAJCQCtQqqrN2-AApnOwbTQYxARA5GEfiTPKQDoEmYKdSm0Jhxw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(adding linux-wireless, regressions and some mhi folks)
+On Sat, 2021-08-21 at 00:22 -0600, Chris Murphy wrote:
+> Hi Johannes,
+> 
+> Filed a bug
+> https://bugzilla.kernel.org/show_bug.cgi?id=214123
 
-Wren Turkal <wt@penguintechs.org> writes:
+Thanks, I looked at it this, if you want to try a patch, try this:
 
-> I have no device for the wifi on my computer. 5.13 worked pretty well.
-> I also found others reporting similar issues:
-> https://forum.manjaro.org/t/kernel5-14-rc6-ath11k-on-qca6390-regression-m=
-hi-probe-failure/79362
->
-> Here's info about the hardware on my laptop:
-> =E2=9E=9C  ~ sudo dmidecode -s system-product-name
-> XPS 13 9310
->
-> =E2=9E=9C  ~ sudo dmidecode -s bios-version
-> 3.0.4
+https://p.sipsolutions.net/d27dfc58efe3313c.txt
 
-Do you get the same mhi error as in the forum post?
+johannes
 
-qcom_mhi_qrtr: probe of mhi0_IPCR failed with error -22
-
-MHI folks, any ideas? I have XPS 13 9310 myself but I'm not able to test
-v5.14-rc6 kernel right now.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
