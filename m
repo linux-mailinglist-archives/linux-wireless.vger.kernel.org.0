@@ -2,71 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 662A43F4405
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 05:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82B093F4484
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 06:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233206AbhHWD5V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Aug 2021 23:57:21 -0400
-Received: from szxga08-in.huawei.com ([45.249.212.255]:15202 "EHLO
-        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232866AbhHWD5V (ORCPT
+        id S232852AbhHWE4v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 00:56:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229462AbhHWE4u (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Aug 2021 23:57:21 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.53])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4GtJLt6YFzz1CZdD;
-        Mon, 23 Aug 2021 11:56:06 +0800 (CST)
-Received: from dggema764-chm.china.huawei.com (10.1.198.206) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Mon, 23 Aug 2021 11:56:35 +0800
-Received: from [10.174.185.179] (10.174.185.179) by
- dggema764-chm.china.huawei.com (10.1.198.206) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Mon, 23 Aug 2021 11:56:34 +0800
-Subject: Re: [PATCH 1/2] bcma: Fix memory leak for internally-handled cores
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <zajec5@gmail.com>, <hauke@hauke-m.de>, <linville@tuxdriver.com>,
-        <wanghaibin.wang@huawei.com>
-References: <20210727025232.663-1-yuzenghui@huawei.com>
- <20210727025232.663-2-yuzenghui@huawei.com>
- <8943a493-aee8-3fe5-e63a-f3b61eaead14@huawei.com>
- <877dgfun7t.fsf@codeaurora.org>
-From:   Zenghui Yu <yuzenghui@huawei.com>
-Message-ID: <2b218922-45b2-38cc-2a80-4d339949deed@huawei.com>
-Date:   Mon, 23 Aug 2021 11:56:34 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+        Mon, 23 Aug 2021 00:56:50 -0400
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB190C061575;
+        Sun, 22 Aug 2021 21:56:08 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4GtKh13JJDz9sWS;
+        Mon, 23 Aug 2021 14:56:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+        s=201909; t=1629694564;
+        bh=R8PBxC/HynH4xEcQANJCH6rE1jH+u8gsKBuxIbMNLTs=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=a1iW2Pt1kHHliRzWnsgUWnUPXzAPa6K0czSeVW/lgopJWaUMSBdXd9RvxA2oo+2Bi
+         pmRIJH5PBg6bByQY/cxKNxkoprS4/Y5ACVbXiYIchmTaPZGQCOlmNym0Z7HGM2wM4c
+         4Fp2ulP/ZaQxpRgJz4EDHxe4xx6yYeKW+hpsTCDkiHP5QbMve8C48MLs61Q+vEPfdI
+         VTqXFsDNZDd3tnl+2/9gl12uMzzs6VCYFegjMVs0YdD8TM9avqLkWjZK74C6aBMExz
+         Etv9zteIN82cJPx68a7lGtZT15hKDTFtgcJJIQISdDBokbfeJWLCrCJY//wTldYX9G
+         LRVCHoyBJgAkQ==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
+        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 57/63] powerpc/signal32: Use struct_group() to zero
+ spe regs
+In-Reply-To: <202108200851.8AF09CDB71@keescook>
+References: <20210818060533.3569517-1-keescook@chromium.org>
+ <20210818060533.3569517-58-keescook@chromium.org>
+ <877dggeesw.fsf@mpe.ellerman.id.au> <202108200851.8AF09CDB71@keescook>
+Date:   Mon, 23 Aug 2021 14:55:58 +1000
+Message-ID: <87k0kcdajl.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <877dgfun7t.fsf@codeaurora.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.185.179]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggema764-chm.china.huawei.com (10.1.198.206)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021/8/21 18:05, Kalle Valo wrote:
-> Zenghui Yu <yuzenghui@huawei.com> writes:
-> 
->> On 2021/7/27 10:52, Zenghui Yu wrote:
->>> kmemleak reported that dev_name() of internally-handled cores were leaked
->>> on driver unbinding. Let's use device_initialize() to take refcounts for
->>> them and put_device() to properly free the related stuff.
->>
->> Could this be picked as a fix for v5.14 (_if_ it does fix something)?
-> 
-> Why should this go to v5.14? Most probably it's too late for v5.14
-> anyway.
+Kees Cook <keescook@chromium.org> writes:
+> On Fri, Aug 20, 2021 at 05:49:35PM +1000, Michael Ellerman wrote:
+>> Kees Cook <keescook@chromium.org> writes:
+>> > In preparation for FORTIFY_SOURCE performing compile-time and run-time
+>> > field bounds checking for memset(), avoid intentionally writing across
+>> > neighboring fields.
+>> >
+>> > Add a struct_group() for the spe registers so that memset() can correctly reason
+>> > about the size:
+>> >
+>> >    In function 'fortify_memset_chk',
+>> >        inlined from 'restore_user_regs.part.0' at arch/powerpc/kernel/signal_32.c:539:3:
+>> >>> include/linux/fortify-string.h:195:4: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+>> >      195 |    __write_overflow_field();
+>> >          |    ^~~~~~~~~~~~~~~~~~~~~~~~
+>> >
+>> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> > Cc: Paul Mackerras <paulus@samba.org>
+>> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> > Cc: Sudeep Holla <sudeep.holla@arm.com>
+>> > Cc: linuxppc-dev@lists.ozlabs.org
+>> > Reported-by: kernel test robot <lkp@intel.com>
+>> > Signed-off-by: Kees Cook <keescook@chromium.org>
+>> > ---
+>> >  arch/powerpc/include/asm/processor.h | 6 ++++--
+>> >  arch/powerpc/kernel/signal_32.c      | 6 +++---
+>> >  2 files changed, 7 insertions(+), 5 deletions(-)
+>> >
+>> > diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+>> > index f348e564f7dd..05dc567cb9a8 100644
+>> > --- a/arch/powerpc/include/asm/processor.h
+>> > +++ b/arch/powerpc/include/asm/processor.h
+>> > @@ -191,8 +191,10 @@ struct thread_struct {
+>> >  	int		used_vsr;	/* set if process has used VSX */
+>> >  #endif /* CONFIG_VSX */
+>> >  #ifdef CONFIG_SPE
+>> > -	unsigned long	evr[32];	/* upper 32-bits of SPE regs */
+>> > -	u64		acc;		/* Accumulator */
+>> > +	struct_group(spe,
+>> > +		unsigned long	evr[32];	/* upper 32-bits of SPE regs */
+>> > +		u64		acc;		/* Accumulator */
+>> > +	);
+>> >  	unsigned long	spefscr;	/* SPE & eFP status */
+>> >  	unsigned long	spefscr_last;	/* SPEFSCR value on last prctl
+>> >  					   call or trap return */
+>> > diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+>> > index 0608581967f0..77b86caf5c51 100644
+>> > --- a/arch/powerpc/kernel/signal_32.c
+>> > +++ b/arch/powerpc/kernel/signal_32.c
+>> > @@ -532,11 +532,11 @@ static long restore_user_regs(struct pt_regs *regs,
+>> >  	regs_set_return_msr(regs, regs->msr & ~MSR_SPE);
+>> >  	if (msr & MSR_SPE) {
+>> >  		/* restore spe registers from the stack */
+>> > -		unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
+>> > -				      ELF_NEVRREG * sizeof(u32), failed);
+>> > +		unsafe_copy_from_user(&current->thread.spe, &sr->mc_vregs,
+>> > +				      sizeof(current->thread.spe), failed);
+>> 
+>> This makes me nervous, because the ABI is that we copy ELF_NEVRREG *
+>> sizeof(u32) bytes, not whatever sizeof(current->thread.spe) happens to
+>> be.
+>> 
+>> ie. if we use sizeof an inadvertent change to the fields in
+>> thread_struct could change how many bytes we copy out to userspace,
+>> which would be an ABI break.
+>> 
+>> And that's not that hard to do, because it's not at all obvious that the
+>> size and layout of fields in thread_struct affects the user ABI.
+>> 
+>> At the same time we don't want to copy the right number of bytes but
+>> the wrong content, so from that point of view using sizeof is good :)
+>> 
+>> The way we handle it in ptrace is to have BUILD_BUG_ON()s to verify that
+>> things match up, so maybe we should do that here too.
+>> 
+>> ie. add:
+>> 
+>> 	BUILD_BUG_ON(sizeof(current->thread.spe) == ELF_NEVRREG * sizeof(u32));
+>> 
+>> Not sure if you are happy doing that as part of this patch. I can always
+>> do it later if not.
+>
+> Sounds good to me; I did that in a few other cases in the series where
+> the relationships between things seemed tenuous. :) I'll add this (as
+> !=) in v3.
 
-No worries. It's not urgent and just that I didn't realize we're
-already at rc7 now.
+Thanks.
 
-The patch has been on the list for about 4 weeks and I'd appreciate
-any review comments from maintainers.
-
-Zenghui
+cheers
