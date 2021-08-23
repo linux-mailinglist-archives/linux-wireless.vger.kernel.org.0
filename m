@@ -2,94 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AE093F4702
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 10:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D633B3F4935
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 13:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230231AbhHWI6b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 04:58:31 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:59384 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229699AbhHWI6b (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 04:58:31 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <luca@coelho.fi>)
-        id 1mI5m5-002KDh-PK; Mon, 23 Aug 2021 11:57:47 +0300
-Message-ID: <3be8a0e1cbe82e0c4b55b00c7e7fe06d8014aa71.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 23 Aug 2021 11:57:45 +0300
-In-Reply-To: <87y28usxl0.fsf@codeaurora.org>
-References: <20210820110318.260751-1-luca@coelho.fi>
-         <iwlwifi.20210820140104.b5c7c6613634.I53b8d9fb194b88070a0df6613f7f57668ea0eaf8@changeid>
-         <87y28usxl0.fsf@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+        id S236400AbhHWLBN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 07:01:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58634 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236339AbhHWLA6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Aug 2021 07:00:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 21D0E613CE;
+        Mon, 23 Aug 2021 11:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629716408;
+        bh=lc1Im8wSSH2obJkNnm9ge+Xx0A3EIz4JQmwso97pPa8=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=XuEiMCU+yb4Or0NtGl5C9Sl6X9OnYfu4VnW+oi6CNyji2Aj7vTJYP4gbRswh5ya8l
+         IAh1iEuD8EgbdsNjR5vkdYutRcrAFUOAaB4wgXHBUuRbZ/istS4PccaIV5lTIBDDYa
+         dLgmgu04X7JqY4vQ0alb288UjZWxoPoYAXIao5wEvjgetgO9B5aSDL0cN7F+kyfhdw
+         F/HDlZVE9/2tUYnTFPxyNoB4xzzG+r4eddHUcgnOcZfGLEbTGlvKTi+6prKPsr0x15
+         LYIHl1EV2yDHzOBGfkEQiGR6VV8Kdrqf6tXva21F5Clv0gu4YRt+MdKXXojrTzdzO4
+         lSxsqAs06o8Gw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 18EF7609ED;
+        Mon, 23 Aug 2021 11:00:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
-        farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: Re: [PATCH 08/12] iwlwifi: export DHC framework and add first
- public entry, twt_setup
+Subject: Re: [PATCH] qtnfmac: switch from 'pci_' to 'dma_' API
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162971640809.3591.9339770206982762794.git-patchwork-notify@kernel.org>
+Date:   Mon, 23 Aug 2021 11:00:08 +0000
+References: <de7727a8aec3a3e3fae2218a05bdf3c5949b8150.1629618169.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <de7727a8aec3a3e3fae2218a05bdf3c5949b8150.1629618169.git.christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     imitsyanko@quantenna.com, geomatsi@gmail.com, davem@davemloft.net,
+        kvalo@codeaurora.org, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2021-08-21 at 17:04 +0300, Kalle Valo wrote:
-> Luca Coelho <luca@coelho.fi> writes:
+Hello:
+
+This patch was applied to netdev/net-next.git (refs/heads/master):
+
+On Sun, 22 Aug 2021 09:44:07 +0200 you wrote:
+> The wrappers in include/linux/pci-dma-compat.h should go away.
 > 
-> > From: Luca Coelho <luciano.coelho@intel.com>
-> > 
-> > Export the debug host command framework and add the twt_setup entry.
-> > This will allow external parties to use these debugging features.
-> > More entries can be added later on.
-> > 
-> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> The patch has been generated with the coccinelle script below.
+> 
+> It has been compile tested.
+> 
 > 
 > [...]
-> 
-> > --- a/drivers/net/wireless/intel/iwlwifi/Kconfig
-> > +++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
-> > @@ -92,6 +92,12 @@ config IWLWIFI_BCAST_FILTERING
-> >  	  If unsure, don't enable this option, as some programs might
-> >  	  expect incoming broadcasts for their normal operations.
-> >  
-> > 
-> > +config IWLWIFI_DHC
-> > +	bool "Enable debug host commands"
-> > +	help
-> > +	  This option enables the debug host command API.  It's used
-> > +	  for debugging and validation purposes.
-> > +
-> 
-> Why a new Kconfig option? Those should not be added lightly.
 
-This is a debugging feature that is not really needed in production
-kernels, so we prefer to allow it to be removed so we don't waste
-resources.
+Here is the summary with links:
+  - qtnfmac: switch from 'pci_' to 'dma_' API
+    https://git.kernel.org/netdev/net-next/c/06e1359cc83b
 
-We're publishing this for a few reasons:
-
-1. it will help prevent rebasing mistakes when sending patches upstream
-from our internal tree, because a lot of this code is spread around the
-driver;
-
-2. in some occasions, we may ask advanced users to enable it so we can
-get more data and run more tests in case of tricky bugs;
-
-3. for the specific case of twt_setup, this allows running some TWT
-test scenarios with our driver that wouldn't be easily available
-otherwise.
-
-Is it okay to keep it?
-
+You are awesome, thank you!
 --
-Cheers,
-Luca.
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
