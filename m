@@ -2,69 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B66BB3F44FC
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 08:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8B483F46E8
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 10:51:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231777AbhHWGd6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 02:33:58 -0400
-Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:44430
-        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229778AbhHWGd5 (ORCPT
+        id S235626AbhHWIwT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 04:52:19 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:59374 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S235573AbhHWIwR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 02:33:57 -0400
-Received: from localhost.localdomain (unknown [222.129.32.23])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 3D0F13F047;
-        Mon, 23 Aug 2021 06:33:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1629700394;
-        bh=h+Lqrx8H7LFmJq35FTa1ano+uoUiw14tzRykgsn21aY=;
-        h=From:To:Subject:Date:Message-Id:MIME-Version;
-        b=Pf3gWNoLWK9ZMYRbMud+Fp0XQcZFJf6Bg/N6xYN8pNVgXMQb/9YZtpYel5QJbdFrN
-         3LdFDkzXx6CZ722tsWyYyjb8uF02uusjuvKMmAuZOHsHfl9rGb3s1PGKSRtT3Xp+BF
-         DkVO5uwMbY81nvY8N4QhjZFb8DoTeAGZ1/3XtgZvYPqxy8kjrB7cpVnJtGz+D2aIuY
-         mdISgHsA9dqWO3avZM602szwpTscLYa6fs0ETxE0BYHNjJcR84GYHlERUgd+wF49/7
-         DJ+QMVmVAOkxQE0bhCkNhPkmgT1wqKBBEL37huCmrTIYB8UGO3lSZB8N6+z308GBL2
-         SYPSrJKEbryCQ==
-From:   Aaron Ma <aaron.ma@canonical.com>
-To:     aaron.ma@canonical.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ath11k: qmi: avoid error messages when dma allocation fails
-Date:   Mon, 23 Aug 2021 14:32:58 +0800
-Message-Id: <20210823063258.37747-1-aaron.ma@canonical.com>
-X-Mailer: git-send-email 2.32.0
+        Mon, 23 Aug 2021 04:52:17 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94)
+        (envelope-from <luca@coelho.fi>)
+        id 1mI5fz-002KDV-1a; Mon, 23 Aug 2021 11:51:28 +0300
+Message-ID: <5bb55d70a737a070042a1a6687197c1a1b8ecd3d.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Mon, 23 Aug 2021 11:51:27 +0300
+In-Reply-To: <8735r2ucb1.fsf@codeaurora.org>
+References: <20210820110318.260751-1-luca@coelho.fi>
+         <iwlwifi.20210820140104.b7e1bf6359b6.Ice4112c1910cf94babd1c2d492a3a3de9f7ee6cb@changeid>
+         <8735r2ucb1.fsf@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
+        farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
+Subject: Re: [PATCH 02/12] iwlwifi: mvm: add support for resonder config
+ command version 9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-qmi tries to allocate a large contiguous dma memory at first,
-on the AMD Ryzen platform it fails, then retries with small slices.
-So set flag GFP_NOWARN to avoid flooding dmesg.
+On Sat, 2021-08-21 at 17:01 +0300, Kalle Valo wrote:
+> Luca Coelho <luca@coelho.fi> writes:
+> 
+> > From: Avraham Stern <avraham.stern@intel.com>
+> > 
+> > This version adds the following configuration options:
+> > 1. Enable/disable setting the session id in the FTM frame
+> > 2. Set the BSS color for the responder
+> > 3. Set the minimum and maximum time between measurements for
+> >    non trigger based NDP ranging.
+> > 
+> > Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> 
+> s/resonder/responder/
 
-Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
----
- drivers/net/wireless/ath/ath11k/qmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks, I'll fix it.
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index b5e34d670715..d6270e96d46c 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1770,7 +1770,7 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
- 		chunk->vaddr = dma_alloc_coherent(ab->dev,
- 						  chunk->size,
- 						  &chunk->paddr,
--						  GFP_KERNEL);
-+						  GFP_KERNEL | __GFP_NOWARN);
- 		if (!chunk->vaddr) {
- 			if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
- 				ath11k_dbg(ab, ATH11K_DBG_QMI,
--- 
-2.30.2
+--
+Luca.
 
