@@ -2,82 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8CD73F4369
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 04:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2CE53F4391
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 05:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234779AbhHWC1l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Aug 2021 22:27:41 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:50974 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234692AbhHWC1k (ORCPT
+        id S232362AbhHWDHw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Aug 2021 23:07:52 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:14313 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231172AbhHWDHv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Aug 2021 22:27:40 -0400
-X-UUID: ca4d1e7c8e8c426aac0b7257d69cf96f-20210823
-X-UUID: ca4d1e7c8e8c426aac0b7257d69cf96f-20210823
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 973707880; Mon, 23 Aug 2021 10:26:53 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 23 Aug 2021 10:26:52 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 23 Aug 2021 10:26:52 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <jemele@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] mt76: mt7921: fix the inconsistent state between bind and unbind
-Date:   Mon, 23 Aug 2021 10:26:51 +0800
-Message-ID: <9c71befbdf8a97f72f4538c39a71041ccffbaf83.1629685207.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        Sun, 22 Aug 2021 23:07:51 -0400
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.53])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4GtHG63xdQz899l;
+        Mon, 23 Aug 2021 11:06:54 +0800 (CST)
+Received: from dggpeml500024.china.huawei.com (7.185.36.10) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 23 Aug 2021 11:07:00 +0800
+Received: from [10.67.103.6] (10.67.103.6) by dggpeml500024.china.huawei.com
+ (7.185.36.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 23 Aug
+ 2021 11:07:00 +0800
+Subject: Re: [PATCH V3 net-next 2/4] ethtool: extend coalesce setting uAPI
+ with CQE mode
+To:     Jakub Kicinski <kuba@kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+References: <1629444920-25437-1-git-send-email-moyufeng@huawei.com>
+ <1629444920-25437-3-git-send-email-moyufeng@huawei.com>
+ <32fd0b32-e748-42d9-6468-b5b1393511e9@ti.com>
+ <20210820152116.0741369a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <shenjian15@huawei.com>, <lipeng321@huawei.com>,
+        <yisen.zhuang@huawei.com>, <linyunsheng@huawei.com>,
+        <huangguangbin2@huawei.com>, <chenhao288@hisilicon.com>,
+        <salil.mehta@huawei.com>, <linuxarm@huawei.com>,
+        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
+        <netanel@amazon.com>, <akiyano@amazon.com>,
+        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
+        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
+        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
+        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
+        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
+        <ecree.xilinx@gmail.com>, <merez@codeaurora.org>,
+        <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>,
+        <moyufeng@huawei.com>
+From:   moyufeng <moyufeng@huawei.com>
+Message-ID: <659649ed-4697-e622-424d-0ab418c571a3@huawei.com>
+Date:   Mon, 23 Aug 2021 11:06:59 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+In-Reply-To: <20210820152116.0741369a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.103.6]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500024.china.huawei.com (7.185.36.10)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
 
-We shouldn't put back the device into fw own state after wifi reset at
-driver unbind stage to fix the following error because that is not the
-consistent state the current driver bind stage expects.
 
-localhost ~ # echo 0000:01:00.0 > /sys/bus/pci/drivers/mt7921e/unbind
-localhost ~ # echo 0000:01:00.0 > /sys/bus/pci/drivers/mt7921e/bind
-...
-[  481.172969] mt7921e 0000:01:00.0: ASIC revision: feed0000
-[  482.133547] mt7921e: probe of 0000:01:00.0 failed with error -110
--bash: echo: write error: No such device
+On 2021/8/21 6:21, Jakub Kicinski wrote:
+> On Fri, 20 Aug 2021 21:27:13 +0300 Grygorii Strashko wrote:
+>> This is very big change which is not only mix two separate changes, but also looks
+>> half-done. From one side you're adding HW feature supported by limited number of HW,
+>> from another - changing most of net drivers to support it by generating mix of legacy
+>> and new kernel_ethtool_coalesce parameters.
+>>
+>> There is also an issue - you do not account get/set_per_queue_coalesce() in any way.
+> 
+> ethtool's netlink interface does not support per queue coalescing.
+> I don't think it's fair to require it as part of this series.
+> 
+>> Would it be possible to consider following, please?
+>>
+>> - move extack change out of this series
+> 
+> Why? To have to change all the drivers twice?
+> 
+>> - option (a)
+>>    add new callbacks in ethtool_ops as set_coalesce_cqe/get_coalesce_cqe for CQE support.
+>>    Only required drivers will need to be changed.
+> 
+> All the params are changed as one operation from user space's
+> perspective. Having two ops would make it problematic for drivers 
+> to fail the entire op without modifying half of the parameters in 
+> a previous callback.
+> 
+>> - option (b)
+>>    add struct ethtool_coalesce as first field of kernel_ethtool_coalesce
+> 
+> This ends up being more painful than passing an extra parameter 
+> in my experience.
+> 
+>> struct kernel_ethtool_coalesce {
+>> 	/* legacy */
+>> 	struct ethtool_coalesce coal;
+>>
+>> 	/* new */
+>> 	u8 use_cqe_mode_tx;
+>> 	u8 use_cqe_mode_rx;
+>> };
+>>
+>> --  then b.1
+>>    drivers can be updated as
+>>     static int set_coalesce(struct net_device *dev,
+>>     			    struct kernel_ethtool_coalesce *kernel_coal)
+>>     {
+>> 	struct ethtool_coalesce *coal = &kernel_coal->coal;
+>>     
+>>     (which will clearly indicate migration to the new interface )
+>>
+>> -- then b.2
+>>      add new callbacks in ethtool_ops as set_coalesce_ext/get_coalesce_ext (extended)
+>>      which will accept struct kernel_ethtool_coalesce as parameter an allow drivers to migrate when needed
+>>      (or as separate patch which will do only migration).
+>>
+>> Personally, I like "b.2".
+> 
+> These options were considered. None of the options is great to 
+> be honest. Let's try the new params, I say. 
+> .
+> 
 
-Fixes: c1af184ba830 ("mt76: mt7921: fix dma hang in rmmod")
-Co-developed-by: YN Chen <YN.Chen@mediatek.com>
-Signed-off-by: YN Chen <YN.Chen@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/init.c | 1 -
- 1 file changed, 1 deletion(-)
+Yes, these have been considered in previous RFCs. For details, please refer to [1].
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 1f37e64b6038..3e84ef8f5358 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -279,7 +279,6 @@ void mt7921_unregister_device(struct mt7921_dev *dev)
- 	mt7921_mcu_drv_pmctrl(dev);
- 	mt7921_dma_cleanup(dev);
- 	mt7921_mcu_exit(dev);
--	mt7921_mcu_fw_pmctrl(dev);
- 
- 	tasklet_disable(&dev->irq_tasklet);
- 	mt76_free_device(&dev->mt76);
--- 
-2.25.1
+[1]https://lore.kernel.org/netdev/20210526165633.3f7982c9@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com/
 
