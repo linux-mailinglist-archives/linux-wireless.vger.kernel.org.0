@@ -2,94 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 072333F528C
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 23:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ACF63F5350
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 00:21:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232644AbhHWVHh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 17:07:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37582 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232503AbhHWVHh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 17:07:37 -0400
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03184C061575
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Aug 2021 14:06:53 -0700 (PDT)
-Received: by mail-ot1-x330.google.com with SMTP id i3-20020a056830210300b0051af5666070so30295016otc.4
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Aug 2021 14:06:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fLL6TsZ0p1BxQUf3mIJkFGmI1A6NCb0FMhavacPJRyg=;
-        b=SIEteore6KBkjf1V/T0XrUBvgjsGHQ3CRmC/jfX6gFyKTum7UR3ll9NRZTJvK+k0cx
-         +VL+anTu0sQ4h8bhc012Lty0DVtyjowmnQR8wmCf7q/YYeUj7qbvuDJXrFdcYxW6/U1a
-         JjfR4fEDz4vqS4kw73NZZZh0iJ4CHLnjANXwQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fLL6TsZ0p1BxQUf3mIJkFGmI1A6NCb0FMhavacPJRyg=;
-        b=WKwysXe9R2ua/OKCHy3h4WGAHmG/O2IqbhpaXu1mFy41mWcP8BHnpVErH7LzbE6WWg
-         nWNIvDpA6SXOyhFMQeetfO8u6JMuPKF02K87/X7OaSiQaBn/QVsCsP8AbthRT7bDH0np
-         d3pXMTIiaQTWE8vhHoFUsceOMqXIW8NsNd6l0aMFhhC8AnEC4QCpdCI/jWAGPK/HuOGH
-         ZfMW4Fc5FpXioVvQfMlxOYK20jQmTGZuZDewdyjUA45guo/9d3V++62QAOccLl2G9CRK
-         xMFkFLBdla+vIPbKC6lJRPmthoB/b3KpbociXoxidR363yNKgBR+WkI32bBV2FOM1R9O
-         qsTw==
-X-Gm-Message-State: AOAM5318D+DrLzAmzLFw28FrykhJAPqc6Y6L05EOv2ZjoRwjDWoY4dHe
-        O0/WlpWpmKGM9wqlzwDWIQH3av0WLEeJkA==
-X-Google-Smtp-Source: ABdhPJwiW6kl//I2ZpuaYatSvx3dTnqx7VhaX138kVcdGaD4/Gq5GcD8uP4S/C6HjwOD6WEnuux/+A==
-X-Received: by 2002:aca:acd5:: with SMTP id v204mr421111oie.124.1629752812320;
-        Mon, 23 Aug 2021 14:06:52 -0700 (PDT)
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com. [209.85.210.48])
-        by smtp.gmail.com with ESMTPSA id c3sm1309538oiy.30.2021.08.23.14.06.51
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Aug 2021 14:06:51 -0700 (PDT)
-Received: by mail-ot1-f48.google.com with SMTP id o16-20020a9d2210000000b0051b1e56c98fso25205136ota.8
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Aug 2021 14:06:51 -0700 (PDT)
-X-Received: by 2002:a9d:2278:: with SMTP id o111mr16276286ota.229.1629752810696;
- Mon, 23 Aug 2021 14:06:50 -0700 (PDT)
+        id S233118AbhHWWVs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 18:21:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52098 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229632AbhHWWVr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Aug 2021 18:21:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A045B61037;
+        Mon, 23 Aug 2021 22:21:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629757264;
+        bh=c2dWCa0HWj45H4vSGrBr15OdWr53psJLo9xCrc1YnH4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=e/1yYmL+23yyZdPAJh2VFBrbAvT2tVHcyZv2NdRUkAro1/nv233SU7opLMPeUu5os
+         Xh22G+UnbeWNRwbguEYjwxiSL1Yb1IjnKg+DorzBMakWzQCuVtV9KWFlSQtEqrZg2x
+         7hkauGS+GBVwZfGsxEHjWjjxZbezxu45Q4HEWyIW7m+PHUbxF1pffyH2toKjxtotB8
+         QJ2cXyZJeVUcKrrJT2Bt7l2eCQWQ5kHlCPJgFIgt6yAw/dWdNXcUw5vQAPw77WI4+J
+         KYbWUMQJr8iR/Jf8RGpV88AvYDQ4PfM67mWXEGh+4BxvfJSZjqeKhl+ReMjNNferiX
+         UeX+cTO7PS8Gg==
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        llvm@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH] rtlwifi: rtl8192de: Fix initialization of place in _rtl92c_phy_get_rightchnlplace()
+Date:   Mon, 23 Aug 2021 15:20:14 -0700
+Message-Id: <20210823222014.764557-1-nathan@kernel.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-References: <YSJ//ki/A1EgfLga@skv.local> <CA+ASDXNzv6D1PthjUU-CVw6amT+JHmJP2mNSL=LVJKGm0zkEXw@mail.gmail.com>
- <YSQC32TygIq2SHJR@skv.local>
-In-Reply-To: <YSQC32TygIq2SHJR@skv.local>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Mon, 23 Aug 2021 14:06:39 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXPi0RRd0gFYcON=XLu8ABwKKcRXf0j0QoCRnvDwGa0VyQ@mail.gmail.com>
-Message-ID: <CA+ASDXPi0RRd0gFYcON=XLu8ABwKKcRXf0j0QoCRnvDwGa0VyQ@mail.gmail.com>
-Subject: Re: Revert: ath: add support for special 0x0 regulatory domain
-To:     Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        Wen Gong <wgong@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        Julian Calaby <julian.calaby@gmail.com>, svp <svpm@yandex.ru>,
-        felix+debian@gueux.org, Massimo Maggi <me@massimo-maggi.eu>
-Content-Type: text/plain; charset="UTF-8"
+X-Patchwork-Bot: notify
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Aug 23, 2021 at 1:19 PM Andrey Skvortsov
-<andrej.skvortzov@gmail.com> wrote:
-> On 21-08-23 10:23, Brian Norris wrote:
-> > Maybe it needs an Nth person to submit a revert?
->
-> Later (Dec 23, 2020) said "Actually I don't see how I could apply the
-> revert due to the regulatory problems explained by Jouni". [1]
-> I think this could be the date when your patch was marked as Rejected.
->
-> 1. http://lists.infradead.org/pipermail/ath10k/2020-December/012370.html
+Clang warns:
 
-Oh wow, I almost forgot about that... Too many threads. I also forgot
-that I already replied, expressing my disagreement:
-http://lists.infradead.org/pipermail/ath10k/2020-December/012372.html
+drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:901:6: warning:
+variable 'place' is used uninitialized whenever 'if' condition is false
+[-Wsometimes-uninitialized]
+        if (chnl > 14) {
+            ^~~~~~~~~
+drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:909:9: note:
+uninitialized use occurs here
+        return place;
+               ^~~~~
+drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:901:2: note: remove
+the 'if' if its condition is always true
+        if (chnl > 14) {
+        ^~~~~~~~~~~~~~~
+drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:899:10: note:
+initialize the variable 'place' to silence this warning
+        u8 place;
+                ^
+                 = '\0'
+1 warning generated.
 
-But I guess it's not really expected that mainline Linux really works
-as-is on most products, unfortunately, and the maintainers don't have
-enough time or energy to provide constructive paths forward on real
-issues like this :(
+Commit 369956ae5720 ("rtlwifi: rtl8192de: Remove redundant variable
+initializations") removed the initialization of place but it appears
+that this removal was in the wrong function.
 
-Brian
+_rtl92c_phy_get_rightchnlplace() returns place's value at the end of the
+function so now if the if statement is false, place never gets
+initialized. Add that initialization back to address the warning.
+
+place's initialization is not necessary in
+rtl92d_get_rightchnlplace_for_iqk() as place is only used within the if
+statement so it can be removed, which is likely what was intended in the
+first place.
+
+Fixes: 369956ae5720 ("rtlwifi: rtl8192de: Remove redundant variable initializations")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+index 8ae69d914312..9b83c710c9b8 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+@@ -896,7 +896,7 @@ static void _rtl92d_ccxpower_index_check(struct ieee80211_hw *hw,
+ 
+ static u8 _rtl92c_phy_get_rightchnlplace(u8 chnl)
+ {
+-	u8 place;
++	u8 place = chnl;
+ 
+ 	if (chnl > 14) {
+ 		for (place = 14; place < sizeof(channel5g); place++) {
+@@ -1363,7 +1363,7 @@ static void _rtl92d_phy_switch_rf_setting(struct ieee80211_hw *hw, u8 channel)
+ 
+ u8 rtl92d_get_rightchnlplace_for_iqk(u8 chnl)
+ {
+-	u8 place = chnl;
++	u8 place;
+ 
+ 	if (chnl > 14) {
+ 		for (place = 14; place < sizeof(channel_all); place++) {
+
+base-commit: 609c1308fbc6446fd6d8fec42b80e157768a5362
+-- 
+2.33.0
+
