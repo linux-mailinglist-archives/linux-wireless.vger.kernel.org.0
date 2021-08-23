@@ -2,129 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E251D3F4CC0
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 16:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E413F4E0D
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 18:11:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230364AbhHWO6q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 10:58:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43030 "EHLO mail.kernel.org"
+        id S229755AbhHWQMk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 12:12:40 -0400
+Received: from ns.iliad.fr ([212.27.33.1]:51188 "EHLO ns.iliad.fr"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229726AbhHWO6p (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 10:58:45 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D83476126A;
-        Mon, 23 Aug 2021 14:58:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629730683;
-        bh=VajzC1sI/veGDJx6T8QXvO5++Fal+F0aqT2if88hGB4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KSM1M93GS+/NyeD3TVXK3SsdLewgdolWjn/C5hG6CKx1aCeLT+Jwb0dXO7SHGdbeF
-         JecuaSAOz3BsOBf6P1oVpdo/yZ4LrfLCiRrdG9G0/fN0baDRFiQ066z/N1OdaVMO/n
-         LmbQ5WdHoD1ZT32XTZ0YiId+O7Ug7lSUqiAVh/PjtYvWlXtNrCbgVOvThQdNSUd1eW
-         aLUhMKysOGIJ0vdteYUaiDmBEXMpx2IQRt9VwNvMU/oY/3yjrDtQQbqLjKS2som/e+
-         uoMEhVVdGDhzwga4Q2Ymdi8BJHCNqbeMFBRXOlverUd2h2oKjIMiQOrBBuCvNtIQET
-         +yg9w0Fkhba9g==
-Received: by pali.im (Postfix)
-        id 49223FC2; Mon, 23 Aug 2021 16:58:00 +0200 (CEST)
-Date:   Mon, 23 Aug 2021 16:58:00 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Ben Greear <greearb@candelatech.com>
-Cc:     Sasha Levin <sashal@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: Drivers for Qualcomm wifi chips (ath*k) and security issues
-Message-ID: <20210823145800.4vzdgzjch77ldeku@pali>
-References: <20210823140844.q3kx6ruedho7jen5@pali>
- <18c5a8be-66d7-0dd8-b158-0931335f7ac5@candelatech.com>
+        id S229627AbhHWQMj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Aug 2021 12:12:39 -0400
+X-Greylist: delayed 562 seconds by postgrey-1.27 at vger.kernel.org; Mon, 23 Aug 2021 12:12:39 EDT
+Received: from ns.iliad.fr (localhost [127.0.0.1])
+        by ns.iliad.fr (Postfix) with ESMTP id D0EB3205A4;
+        Mon, 23 Aug 2021 18:02:33 +0200 (CEST)
+Received: from [192.168.108.37] (freebox.vlq16.iliad.fr [213.36.7.13])
+        by ns.iliad.fr (Postfix) with ESMTP id B5AD92021B;
+        Mon, 23 Aug 2021 18:02:33 +0200 (CEST)
+Subject: Re: 5.14 rc6 broken for QCA6390 on Dell XPS 13 9310
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Wren Turkal <wt@penguintechs.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        regressions@lists.linux.dev,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Hemant Kumar <hemantk@codeaurora.org>,
+        Loic Poulain <loic.poulain@linaro.org>
+References: <a8cddf24-ecfc-088e-27f4-98cbbb5fb67c@penguintechs.org>
+ <87y28sqq4l.fsf@codeaurora.org>
+From:   Nicolas Schichan <nschichan@freebox.fr>
+Message-ID: <843e7689-fa1e-441b-c49a-ed7291046d5f@freebox.fr>
+Date:   Mon, 23 Aug 2021 18:02:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+In-Reply-To: <87y28sqq4l.fsf@codeaurora.org>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <18c5a8be-66d7-0dd8-b158-0931335f7ac5@candelatech.com>
-User-Agent: NeoMutt/20180716
+X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Mon Aug 23 18:02:33 2021 +0200 (CEST)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Monday 23 August 2021 07:32:11 Ben Greear wrote:
-> On 8/23/21 7:08 AM, Pali Rohár wrote:
-> > Hello Sasha and Greg!
-> > 
-> > Last week I sent request for backporting ath9k wifi fixes for security
-> > issue CVE-2020-3702 into stable LTS kernels because Qualcomm/maintainers
-> > did not it for more months... details are in email:
-> > https://lore.kernel.org/stable/20210818084859.vcs4vs3yd6zetmyt@pali/t/#u
+On 23/08/2021 14:53, Kalle Valo wrote:
+> (adding linux-wireless, regressions and some mhi folks)
 > 
-> For one thing, almost everyone using these radios is using openwrt or
-> similar which has its own patch sets.
-
-AFAIK, latest stable released openwrt uses ath9k from 4.19 tree and
-AFAIK did not have above patch.
-
-> So, it is good to have the patches backported to real kernels,
-> but also, for actual users of these, it matters more what openwrt
-> has done...
-
-ath9k and ath10k wifi cards are widely used not only in wifi routers
-(as access points) but also in laptops (as clients). These chips are
-available on more (noname / laptop vendor branded) cards so are popular
-also outside of openwrt market. Maybe people even do not know that their
-wifi card in laptop has one of these Qualcomm chips.
-
-> Thanks,
-> Ben
+> Wren Turkal <wt@penguintechs.org> writes:
 > 
-> > 
-> > And now I got reports that in stable LTS kernels (4.14, 4.19) are
-> > missing also other fixes for other Qualcomm wifi security issues,
-> > covered by FragAttacks codename: CVE-2020-26145 CVE-2020-26139
-> > CVE-2020-26141
-> > 
-> > People have already asked if somebody is already doing backports to 4.19
-> > of patches for these security issues, but there was no response, see email:
-> > https://lore.kernel.org/linux-wireless/704e1c77-6c48-79f7-043a-b2d03fbfef8b@candelatech.com/
-> > 
-> > I got information that issues for ath10k are again going to be (or are
-> > already?) fixed in some vendor custom/fork kernels, but not in official
-> > stable tree 4.14/4.19 (yet).
-> > 
-> > This situation is really bad because lot of times I hear to use mainline
-> > kernel versions or official stable LTS tree (which are maintained by
-> > you), but due to such security issues in LTS trees which stays unfixed
-> > and others say to use rather vendor custom/fork kernels where it is
-> > claimed that issues are fixed.
-> > 
-> > And because there is no statement for end users (end users do not
-> > communicate with vendors and so they do not have information what is
-> > supported and what not), end users just use what Linux open source
-> > distributions have in their kernels (which lot of times match official
-> > LTS kernel trees). And users think that everything is OK and security
-> > issues are fixed.
-> > 
-> > So there is really a need for public statement from you or Qualcomm
-> > side, if stable LTS kernel trees are going to include security fixes for
-> > drivers used by Qualcomm wifi chips (ath*k) or not or under which
-> > conditions. And what should users / Linux distributions use if they do
-> > not want to have years-old unpatched drivers with security issues. Such
-> > information is really important also for distributions which include
-> > unmodified (or slightly modified) kernel LTS trees into their own
-> > packages. As they also need to know from which source should take
-> > (e.g. Qualcomm wifi) drivers for their systems to ensure that have
-> > security patches applied.
-> > 
-> > I can understand that you or other people or volunteers do not have time
-> > to track or maintain some parts of drivers. So nothing wrong if official
-> > statement is that stable trees X and Y do not receive security updates
-> > for driver A and B anymore. Also I can understand that it takes some
-> > time to include required fixes, so expect fixes for A and B in X and Y
-> > versions with one month delay. But it is needed to know what should
-> > people expect from LTS trees for particular drivers. Because I think it
-> > is not currently clear...
-> > 
-> > Do not take me wrong, I just wanted to show that this is hidden problem
-> > which needs some discussion.
-> > 
+>> I have no device for the wifi on my computer. 5.13 worked pretty well.
+>> I also found others reporting similar issues:
+>> https://forum.manjaro.org/t/kernel5-14-rc6-ath11k-on-qca6390-regression-mhi-probe-failure/79362
+>>
+>> Here's info about the hardware on my laptop:
+>> ➜  ~ sudo dmidecode -s system-product-name
+>> XPS 13 9310
+>>
+>> ➜  ~ sudo dmidecode -s bios-version
+>> 3.0.4
 > 
+> Do you get the same mhi error as in the forum post?
 > 
-> -- 
-> Ben Greear <greearb@candelatech.com>
-> Candela Technologies Inc  http://www.candelatech.com
+> qcom_mhi_qrtr: probe of mhi0_IPCR failed with error -22
+> 
+> MHI folks, any ideas? I have XPS 13 9310 myself but I'm not able to test
+> v5.14-rc6 kernel right now.
+
+Hello,
+
+I have hit the same issue on Linux 5.14-rc7:
+
+[   14.780566] qcom_mhi_qrtr: probe of mhi0_IPCR failed with error -22
+
+This looks to be caused by commit:
+
+ce78ffa3ef16 net: really fix the build...
+
+Reverting this commit results in ath11k being able to load without errors.
+
+Regards,
+
+-- 
+Nicolas Schichan
+
