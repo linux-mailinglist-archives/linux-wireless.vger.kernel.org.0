@@ -2,128 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B45753F4C67
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 16:32:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB7B53F4CBC
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 16:54:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230282AbhHWOc6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 10:32:58 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.48]:53956 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230004AbhHWOc5 (ORCPT
+        id S230471AbhHWOzW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 10:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36094 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230506AbhHWOzP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 10:32:57 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.65.203])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 58BE41C007B;
-        Mon, 23 Aug 2021 14:32:13 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id D808CAC008D;
-        Mon, 23 Aug 2021 14:32:12 +0000 (UTC)
-Received: from [192.168.254.6] (unknown [50.34.183.227])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 1290D13C2B1;
-        Mon, 23 Aug 2021 07:32:12 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1290D13C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1629729132;
-        bh=Suph8N33Dg8q+AI7Tnijg0maK1o1PGLl3M1l8TWgnFE=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=iUEZTDkai8YgJvEdW+V0HXyDhBVf05/zAwJK5RV4ojS4zy2dRhmflkfaZN0omUVQQ
-         Wfr26vsExitvKf7FdMlf/X+p7mmbnlAf6jmR5KuBWB4BUYiB7WTMP20L9NMr7MdUYa
-         f6+DddzaRex8U1gD9BIVpwlEhWWHL1vzUn5B067E=
+        Mon, 23 Aug 2021 10:55:15 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73D5EC061575;
+        Mon, 23 Aug 2021 07:54:32 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id s3so31974442ljp.11;
+        Mon, 23 Aug 2021 07:54:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=qF4/nz8GIrXzAyIJoNZKO7UtlDKmjc+9xeOndqWrLxY=;
+        b=rG0INA7uDDS6Zl5bzg7W+WIiKdPo6xKX1cCbeoyGCUofQ9KyTJDrDmS0GCrhSthi8s
+         BVDwbzN+Ni57Qsw870s3rFqK0WE37DQiTOVfe7Q8RNSgDlxtai9uegAq/OLm50bUyBDS
+         Ee1XdEa0RHv3QsnaIoq+LUUtp3Us0djYmVHdHS3KMwBRWG20ThsL+31EP1vnfwQP9muO
+         5n1JdwvDYw8lDQlJlJWGx5Y7rbeWVCdAkWG3JnJJAlrLi/bLt1NAxM4vuOaO7Bctmh+J
+         Y/ULsa35IAiLlBANhJ+MGS3xrdB9NOZCMq6Ak9FZMPo1q1FBJ0M5lajO0/QCf9/TJt35
+         xUgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=qF4/nz8GIrXzAyIJoNZKO7UtlDKmjc+9xeOndqWrLxY=;
+        b=B7U8vyIHE/dS/wrG10t7cbSJ8kb3yhJYW2/CV88ETlYmudop6Dl2+in9IpxnHUDLBP
+         MnHZGRnIz4D9E71L1KrYJtO2L4ZuZ2PpAi/M62eooVpDGRPtMDs341IZw/r3acO18MZZ
+         7X21+08lU2Bz/8ZBhDM/sTmcbyOgBvR1LlTlM1hm/A83hUjGflqbwa7j0wRjDajUicG5
+         DCYqnqGrz2jSsOZ7OHqX6+AVaNVkOOr/5e657bhKayPiYxcoQKSYF0yPwUNxehCrrEW8
+         Rw7YTAFPbueA4Ekm/Tl6vS5lsoue3HhWolO19a3DlHfHPQUdyiiY4QaEh4EANzEppdQz
+         /nvQ==
+X-Gm-Message-State: AOAM532zA5+T++T0LqVPHDAVPE8cd5GG2R25+QXZoiCAEvndu9R7XDej
+        DvIEzXp2GmAIZQ10BbG3HmYaFX4LMydhFfK1TU8=
+X-Google-Smtp-Source: ABdhPJwPLxxS5dxbt5SFn02vNj7fTqAu6y2V4GxzgDnqgocAKlPmCQDEm+Fc1H89nbCm9WtQWZ0xTvL82jYHte9yReI=
+X-Received: by 2002:a2e:bd85:: with SMTP id o5mr17218398ljq.439.1629730470819;
+ Mon, 23 Aug 2021 07:54:30 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210823140844.q3kx6ruedho7jen5@pali> <18c5a8be-66d7-0dd8-b158-0931335f7ac5@candelatech.com>
+In-Reply-To: <18c5a8be-66d7-0dd8-b158-0931335f7ac5@candelatech.com>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Tue, 24 Aug 2021 00:54:18 +1000
+Message-ID: <CAGRGNgUMioB8NRrJQjFYRPdEt4OzF50kU6_CJ4nDvqsuq+U6nw@mail.gmail.com>
 Subject: Re: Drivers for Qualcomm wifi chips (ath*k) and security issues
-To:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+To:     Ben Greear <greearb@candelatech.com>
+Cc:     =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
         Sasha Levin <sashal@kernel.org>,
         Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-References: <20210823140844.q3kx6ruedho7jen5@pali>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <18c5a8be-66d7-0dd8-b158-0931335f7ac5@candelatech.com>
-Date:   Mon, 23 Aug 2021 07:32:11 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <20210823140844.q3kx6ruedho7jen5@pali>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 8bit
-X-MDID: 1629729133-krNcDAnYg5xC
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/23/21 7:08 AM, Pali Rohár wrote:
-> Hello Sasha and Greg!
-> 
-> Last week I sent request for backporting ath9k wifi fixes for security
-> issue CVE-2020-3702 into stable LTS kernels because Qualcomm/maintainers
-> did not it for more months... details are in email:
-> https://lore.kernel.org/stable/20210818084859.vcs4vs3yd6zetmyt@pali/t/#u
+Hi Ben,
 
-For one thing, almost everyone using these radios is using openwrt or
-similar which has its own patch sets.
+On Tue, Aug 24, 2021 at 12:37 AM Ben Greear <greearb@candelatech.com> wrote=
+:
+>
+> On 8/23/21 7:08 AM, Pali Roh=C3=A1r wrote:
+> > Hello Sasha and Greg!
+> >
+> > Last week I sent request for backporting ath9k wifi fixes for security
+> > issue CVE-2020-3702 into stable LTS kernels because Qualcomm/maintainer=
+s
+> > did not it for more months... details are in email:
+> > https://lore.kernel.org/stable/20210818084859.vcs4vs3yd6zetmyt@pali/t/#=
+u
+>
+> For one thing, almost everyone using these radios is using openwrt or
+> similar which has its own patch sets.
 
-So, it is good to have the patches backported to real kernels,
-but also, for actual users of these, it matters more what openwrt
-has done...
+For reference, according to Debian's own security tracker, only
+CVE-2020-26139 is patched on all but the most ancient tracked release:
+
+https://security-tracker.debian.org/tracker/CVE-2020-26139 (fixed in
+all but the most ancient release)
+https://security-tracker.debian.org/tracker/CVE-2020-3702 (all tracked
+kernels are vulnerable)
+https://security-tracker.debian.org/tracker/CVE-2020-26145 (only
+testing/unstable is fixed)
+https://security-tracker.debian.org/tracker/CVE-2020-26141 (only
+testing/unstable is fixed)
+
+Debian Buster has a 4.19 kernel and they only released Bullseye, it's
+successor, a couple of weeks ago, so there's probably a
+not-insignificant number of PCs out there still running kernels that
+old, and I understand that they'll be supporting Buster with security
+fixes for approximately another year:
+https://www.debian.org/security/faq#lifespan
 
 Thanks,
-Ben
 
-> 
-> And now I got reports that in stable LTS kernels (4.14, 4.19) are
-> missing also other fixes for other Qualcomm wifi security issues,
-> covered by FragAttacks codename: CVE-2020-26145 CVE-2020-26139
-> CVE-2020-26141
-> 
-> People have already asked if somebody is already doing backports to 4.19
-> of patches for these security issues, but there was no response, see email:
-> https://lore.kernel.org/linux-wireless/704e1c77-6c48-79f7-043a-b2d03fbfef8b@candelatech.com/
-> 
-> I got information that issues for ath10k are again going to be (or are
-> already?) fixed in some vendor custom/fork kernels, but not in official
-> stable tree 4.14/4.19 (yet).
-> 
-> This situation is really bad because lot of times I hear to use mainline
-> kernel versions or official stable LTS tree (which are maintained by
-> you), but due to such security issues in LTS trees which stays unfixed
-> and others say to use rather vendor custom/fork kernels where it is
-> claimed that issues are fixed.
-> 
-> And because there is no statement for end users (end users do not
-> communicate with vendors and so they do not have information what is
-> supported and what not), end users just use what Linux open source
-> distributions have in their kernels (which lot of times match official
-> LTS kernel trees). And users think that everything is OK and security
-> issues are fixed.
-> 
-> So there is really a need for public statement from you or Qualcomm
-> side, if stable LTS kernel trees are going to include security fixes for
-> drivers used by Qualcomm wifi chips (ath*k) or not or under which
-> conditions. And what should users / Linux distributions use if they do
-> not want to have years-old unpatched drivers with security issues. Such
-> information is really important also for distributions which include
-> unmodified (or slightly modified) kernel LTS trees into their own
-> packages. As they also need to know from which source should take
-> (e.g. Qualcomm wifi) drivers for their systems to ensure that have
-> security patches applied.
-> 
-> I can understand that you or other people or volunteers do not have time
-> to track or maintain some parts of drivers. So nothing wrong if official
-> statement is that stable trees X and Y do not receive security updates
-> for driver A and B anymore. Also I can understand that it takes some
-> time to include required fixes, so expect fixes for A and B in X and Y
-> versions with one month delay. But it is needed to know what should
-> people expect from LTS trees for particular drivers. Because I think it
-> is not currently clear...
-> 
-> Do not take me wrong, I just wanted to show that this is hidden problem
-> which needs some discussion.
-> 
+--=20
+Julian Calaby
 
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
