@@ -2,66 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AE3A3F4969
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 13:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FEB13F497C
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 13:13:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236381AbhHWLK6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 07:10:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60526 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236301AbhHWLK5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 07:10:57 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 6B13661391;
-        Mon, 23 Aug 2021 11:10:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629717015;
-        bh=ig5ptECh8CQ3XDKyUcQf7E6A5jrN37C1+1uDZs38l54=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=ssWsmMDikjZhWAlZpshwXBgI9zfL9535Eb0RKMoMtrNIlxDJF7dfZw43BuzQe+c8K
-         Zxr24jAhhJVjhQoTrSFvPC3aLntH8kReIurvvJ4Uil/4Qgd4OHvpDLBMMXrRzHqFx6
-         TOO9yU9XM5L7TQ3vsM+GMUpBtFbnA4OUK0QiSVxu7sXCK4sEhAdCnLqBNI4WNuEmTs
-         ULlmZe3Ajs/G4TQ5kwnSsDM2tlSuXw+8jJR7ELFCVOK1+xAnCdJmHC67BjiXx3URug
-         abGAJMq71zN6xMf93kTlb1sPWSfvBJhqCXeBRStMYs27GYOPPHjtkc169zy0/zWaWD
-         FQvt8Cpk9vhrA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 60C0C60A27;
-        Mon, 23 Aug 2021 11:10:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S235341AbhHWLOT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 07:14:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41166 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235007AbhHWLOS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Aug 2021 07:14:18 -0400
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BDE0C061575
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Aug 2021 04:13:36 -0700 (PDT)
+Received: by mail-qk1-x732.google.com with SMTP id t4so4324813qkb.9
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Aug 2021 04:13:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=MhaWH0xm/odULRUgpRN30Lg5qdDn6Ee/GPJGPBWoxIc=;
+        b=GbZHiziBMt8I0FuZkFMmXPvNmDbtiwVNnHu8uyklXvieGfEK+Ezk9hGpxk8EY8+WzL
+         PNkTbUo77YTn39u1JuQPrYhlRwGxjyHBGzvRj6OPSviYX0jOpX4lcSuwnuOjpbNDr4y1
+         Kfce+gxc84k2/06HiDtL6UsraCztGGogEBr9HafQSqYQc0nHpafiudtKBMGncuRchlgN
+         ltEbArdW9TwgkOwaaWM3006LeAIfB6PmO8v9O2RCAXnVBLKqfWUvmBtGNKL2x7Jiy27N
+         VY+TaFG6BWsFGHTogM+iWqgKLQHPujwBSuycroQ9ncdJ/IJuwHgDqxjY6U8Q1dBzlmRH
+         V6Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=MhaWH0xm/odULRUgpRN30Lg5qdDn6Ee/GPJGPBWoxIc=;
+        b=aHQMD5MOxqtxGK/1U+IuCO4o9YBmcU6pk5npgr51npyEnr05dPBJ6eGFfcZMXGc9ou
+         OahuHrQVeBtjUdN0a35KZut44Q94Fq/kJUS4owMxRNlRtZ5ex7jNnQl5NF4eFHEkVa0B
+         U01RsDGj5rWnZE/bD+b+0tM0sOw+KklxsSzlcj2pSRXTWmg87Pkw9e3IgtjhRkF9MTJ5
+         utf2l0+1th43UqR0Rpdjg4FhHxDmklFT8OVdQNfw5lb23rySfBcyuqKjBpOjBy8Wcbrv
+         JzaYvLNQdPo37EXVTEq+9Xy1YrZwhVq2jUoIMXri7cNLQy1pBiTQ6BB7ozWeFxjejVZ3
+         NmOA==
+X-Gm-Message-State: AOAM530Q5rizgBzeKpwFdg74xo8Z/7xKJBRjCxu4+hhqljJakGn0AOuT
+        ZZPfLTnS6lxOXFmGlCPmdIzpZeY8k0h5F2Lfp5Y=
+X-Google-Smtp-Source: ABdhPJyoAWSR+FY47oRVI/U2W7CtlYfSBz6LD4xvQ2uWhwRkY9QRrttbRmbsfNauv/zRGyUFqhz5xAozVEQiLLpwfq0=
+X-Received: by 2002:a05:620a:111b:: with SMTP id o27mr20994066qkk.76.1629717215064;
+ Mon, 23 Aug 2021 04:13:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-drivers-next-2021-08-22
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <162971701539.8269.8347648767487963500.git-patchwork-notify@kernel.org>
-Date:   Mon, 23 Aug 2021 11:10:15 +0000
-References: <20210822085438.360ACC4338F@smtp.codeaurora.org>
-In-Reply-To: <20210822085438.360ACC4338F@smtp.codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Received: by 2002:a05:6214:500a:0:0:0:0 with HTTP; Mon, 23 Aug 2021 04:13:34
+ -0700 (PDT)
+Reply-To: isabella.ferreira@yandex.com
+From:   "Isabella.Ferreira" <robinsonlori989@gmail.com>
+Date:   Mon, 23 Aug 2021 12:13:34 +0100
+Message-ID: <CANi+hepk9A3MtOvFMtMq8=ehOZYpG944eY-+TP6JrfAYzySovg@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+Greetings,
 
-This pull request was applied to netdev/net-next.git (refs/heads/master):
+I wonder why you continue neglecting my emails. Please, acknowledge
+the receipt of this message in reference to the subject above as I
+intend to send to you the details of the mail. Sometimes, try to check
+your spam box because most of these correspondences fall out sometimes
+in SPAM folder.
 
-On Sun, 22 Aug 2021 08:54:38 +0000 (UTC) you wrote:
-> Hi,
-> 
-> here's a pull request to net-next tree, more info below. Please let me know if
-> there are any problems.
-> 
-> Kalle
-> 
-> [...]
-
-Here is the summary with links:
-  - pull-request: wireless-drivers-next-2021-08-22
-    https://git.kernel.org/netdev/net-next/c/e6a70a02defd
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Best regards,
+Isabella
