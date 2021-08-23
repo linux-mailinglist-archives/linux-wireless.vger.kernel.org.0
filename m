@@ -2,98 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59CFE3F46F5
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 10:53:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AE093F4702
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Aug 2021 10:58:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235724AbhHWIx6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 04:53:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51594 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235677AbhHWIx6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 04:53:58 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C9FAA6121E;
-        Mon, 23 Aug 2021 08:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629708796;
-        bh=6pYbU9x1AIKeZXK+TbaFZOdM74+ZgHIfIbcdpbRFwv0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fljpf49iWXKNNtmx98FHMRXIdW5GkqnUBO3BP3oi65NofvJYi66pOJny/NGVAr/hl
-         J5BvjqPJtWgruQi/k3K9ayLEkNA2GnTIiagWW3zQIYvUXtlTb6A58XScxwQp8QKPPM
-         z192t1XGBHI3MbH+812Z46aZJehQ9tHxjL1ONpyLcEcagB4JARP1c7AOH6CWaEeYg1
-         O+D+aODxAliV4Lem3u6D/XpF9WaOsFZijjk/EBZaYcCkPm6gvPYtp2O65cH2cdQa4z
-         aGYPE8r0iHotw9Rv64l/cOKIjHg5FhxyLROJiV5telSey1VEmiyOwYT2mGus5BveEs
-         J28EpwTJ6ZQKA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name, johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        ryder.lee@mediatek.com, chui-hao.chiu@mediatek.com
-Subject: [PATCH v3 mac80211-next 7/7] mt76: mt7915: add twt_stats knob in debugfs
-Date:   Mon, 23 Aug 2021 10:52:45 +0200
-Message-Id: <e865fde3c93099e93b326fad55aa19becb0573b0.1629706968.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1629706968.git.lorenzo@kernel.org>
-References: <cover.1629706968.git.lorenzo@kernel.org>
+        id S230231AbhHWI6b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 04:58:31 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:59384 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229699AbhHWI6b (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Aug 2021 04:58:31 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94)
+        (envelope-from <luca@coelho.fi>)
+        id 1mI5m5-002KDh-PK; Mon, 23 Aug 2021 11:57:47 +0300
+Message-ID: <3be8a0e1cbe82e0c4b55b00c7e7fe06d8014aa71.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Mon, 23 Aug 2021 11:57:45 +0300
+In-Reply-To: <87y28usxl0.fsf@codeaurora.org>
+References: <20210820110318.260751-1-luca@coelho.fi>
+         <iwlwifi.20210820140104.b5c7c6613634.I53b8d9fb194b88070a0df6613f7f57668ea0eaf8@changeid>
+         <87y28usxl0.fsf@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
+        farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
+Subject: Re: [PATCH 08/12] iwlwifi: export DHC framework and add first
+ public entry, twt_setup
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce twt_stats knob in debugfs in order to dump established
-agreements
+On Sat, 2021-08-21 at 17:04 +0300, Kalle Valo wrote:
+> Luca Coelho <luca@coelho.fi> writes:
+> 
+> > From: Luca Coelho <luciano.coelho@intel.com>
+> > 
+> > Export the debug host command framework and add the twt_setup entry.
+> > This will allow external parties to use these debugging features.
+> > More entries can be added later on.
+> > 
+> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> 
+> [...]
+> 
+> > --- a/drivers/net/wireless/intel/iwlwifi/Kconfig
+> > +++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
+> > @@ -92,6 +92,12 @@ config IWLWIFI_BCAST_FILTERING
+> >  	  If unsure, don't enable this option, as some programs might
+> >  	  expect incoming broadcasts for their normal operations.
+> >  
+> > 
+> > +config IWLWIFI_DHC
+> > +	bool "Enable debug host commands"
+> > +	help
+> > +	  This option enables the debug host command API.  It's used
+> > +	  for debugging and validation purposes.
+> > +
+> 
+> Why a new Kconfig option? Those should not be added lightly.
 
-Tested-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../wireless/mediatek/mt76/mt7915/debugfs.c   | 28 +++++++++++++++++++
- 1 file changed, 28 insertions(+)
+This is a debugging feature that is not really needed in production
+kernels, so we prefer to allow it to be removed so we don't waste
+resources.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index d9d18f662039..655e4f5171e4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -335,6 +335,32 @@ mt7915_read_rate_txpower(struct seq_file *s, void *data)
- 	return 0;
- }
- 
-+static int
-+mt7915_twt_stats(struct seq_file *s, void *data)
-+{
-+	struct mt7915_dev *dev = dev_get_drvdata(s->private);
-+	struct mt7915_twt_flow *iter;
-+
-+	rcu_read_lock();
-+
-+	seq_puts(s, "     wcid |       id |    flags |      exp | mantissa");
-+	seq_puts(s, " | duration |            tsf |\n");
-+	list_for_each_entry_rcu(iter, &dev->twt_list, list)
-+		seq_printf(s,
-+			"%9d | %8d | %5c%c%c%c | %8d | %8d | %8d | %14lld |\n",
-+			iter->wcid, iter->id,
-+			iter->sched ? 's' : 'u',
-+			iter->protection ? 'p' : '-',
-+			iter->trigger ? 't' : '-',
-+			iter->flowtype ? '-' : 'a',
-+			iter->exp, iter->mantissa,
-+			iter->duration, iter->tsf);
-+
-+	rcu_read_unlock();
-+
-+	return 0;
-+}
-+
- int mt7915_init_debugfs(struct mt7915_dev *dev)
- {
- 	struct dentry *dir;
-@@ -352,6 +378,8 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
- 	debugfs_create_file("implicit_txbf", 0600, dir, dev,
- 			    &fops_implicit_txbf);
- 	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
-+	debugfs_create_devm_seqfile(dev->mt76.dev, "twt_stats", dir,
-+				    mt7915_twt_stats);
- 	/* test knobs */
- 	debugfs_create_file("radar_trigger", 0200, dir, dev,
- 			    &fops_radar_trigger);
--- 
-2.31.1
+We're publishing this for a few reasons:
+
+1. it will help prevent rebasing mistakes when sending patches upstream
+from our internal tree, because a lot of this code is spread around the
+driver;
+
+2. in some occasions, we may ask advanced users to enable it so we can
+get more data and run more tests in case of tricky bugs;
+
+3. for the specific case of twt_setup, this allows running some TWT
+test scenarios with our driver that wouldn't be easily available
+otherwise.
+
+Is it okay to keep it?
+
+--
+Cheers,
+Luca.
 
