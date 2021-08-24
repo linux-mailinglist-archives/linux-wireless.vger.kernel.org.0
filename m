@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1646F3F5BF3
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 12:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AF603F5BF5
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 12:23:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236204AbhHXKXm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Aug 2021 06:23:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59448 "EHLO mail.kernel.org"
+        id S236225AbhHXKXo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Aug 2021 06:23:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59460 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236104AbhHXKXm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Aug 2021 06:23:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6C4A8610FB;
-        Tue, 24 Aug 2021 10:22:57 +0000 (UTC)
+        id S236208AbhHXKXo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Aug 2021 06:23:44 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 62D2C61357;
+        Tue, 24 Aug 2021 10:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629800578;
-        bh=6ouoeNaYox008aHgViWFKA9VCHvQ4Apg5vIrWI0zzXE=;
+        s=k20201202; t=1629800580;
+        bh=V8eg2EfgB+Lq2e+61gNSvU3VgjEJN2bkZR+I3wsWlPQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cEtFVR4xhjcrbN5S1/Z/VLZg7FJMcFMYV1wS0T4nKMmmYno3xEhRtrxToF6yhuZHV
-         lg+qHFyIGh58K7j7Npzb6RKit50HxQJaAbmDSnxuQG3sRWlAK0YRP+vqHYFg1KVWkb
-         FPYyonItePvD5KCjLBc+rTixEISJ25jg08HEZ/KzesO1SKodRznQ1VWR73rOElw1c7
-         0ySq1EdXMaActQ1JssXY9wIBQTPFh2JRyeJ3Dh0+04HSKOrC84487SjCcb53GoPzFI
-         RyMfPU9YNpjgclTb7A6PlMwcOydm0hhJb16RYp8kwgaCGGb+kBRCSrwa2wIrcqh06p
-         EEbb6fqmRJ2Dg==
+        b=b1uCQZk6HmH8qecyLAl4k0TWzs+wdvxsOA81oU2UDp+2gghhUFh3ad2LHTiH8uWZk
+         nzJfNdXAGAIl4a4Kgh3IZgFmCNb9H3iQbIuu0+5f8Q9O2DPTDAtWE0W1J2e1mUz+ix
+         +xtTV8cOWCvnQG0FH+K2+qosB7hlVw0kREzA0jN+uVDXD4TRGV1M3NmQWZpS814YYd
+         xpMKiiKRWPJOda/UgzBmeBaZvJFpsVPYPcobeO5f5ZrsMNbQDQKOXaSZB17P5jGsEC
+         C09GMiYdm2GQXI199HrSsok9LPmLa4NjB2Aw7sKVzS8fCKf46DSooNVq1AbJvABTkM
+         BW0dREKQB6I8w==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, Deren.Wu@mediatek.com
-Subject: [PATCH 1/9] mt76: connac: set 6G phymode in mt76_connac_get_phy_mode{,v2}
-Date:   Tue, 24 Aug 2021 12:22:19 +0200
-Message-Id: <5d645888e6b881d08ee6a99eb96f6086427f2051.1629799385.git.lorenzo@kernel.org>
+Subject: [PATCH 2/9] mt76: connac: enable 6GHz band for hw scan
+Date:   Tue, 24 Aug 2021 12:22:20 +0200
+Message-Id: <183f3c5992833a013b4f09e2dbd642977ae545d7.1629799385.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1629799385.git.lorenzo@kernel.org>
 References: <cover.1629799385.git.lorenzo@kernel.org>
@@ -44,46 +44,52 @@ This is a preliminary patch to support 6GHz band on mt7921 devices.
 Tested-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 25 +++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 9c0f86eefd75..8b72ed77881c 100644
+index 8b72ed77881c..8858a06ebd95 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -691,7 +691,7 @@ mt76_connac_get_phy_mode_v2(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+@@ -1458,7 +1458,17 @@ int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		else
+ 			chan = &req->channels[i];
  
- 		if (he_cap->has_he)
- 			mode |= PHY_TYPE_BIT_HE;
--	} else if (band == NL80211_BAND_5GHZ) {
-+	} else if (band == NL80211_BAND_5GHZ || band == NL80211_BAND_6GHZ) {
- 		mode |= PHY_TYPE_BIT_OFDM;
- 
- 		if (ht_cap->ht_supported)
-@@ -1154,7 +1154,7 @@ mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 
- 		if (he_cap->has_he)
- 			mode |= PHY_MODE_AX_24G;
--	} else if (band == NL80211_BAND_5GHZ) {
-+	} else if (band == NL80211_BAND_5GHZ || band == NL80211_BAND_6GHZ) {
- 		mode |= PHY_MODE_A;
- 
- 		if (ht_cap->ht_supported)
-@@ -1163,8 +1163,12 @@ mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 		if (vht_cap->vht_supported)
- 			mode |= PHY_MODE_AC;
- 
--		if (he_cap->has_he)
--			mode |= PHY_MODE_AX_5G;
-+		if (he_cap->has_he) {
-+			if (band == NL80211_BAND_6GHZ)
-+				mode |= PHY_MODE_AX_6G;
-+			else
-+				mode |= PHY_MODE_AX_5G;
+-		chan->band = scan_list[i]->band == NL80211_BAND_2GHZ ? 1 : 2;
++		switch (scan_list[i]->band) {
++		case NL80211_BAND_2GHZ:
++			chan->band = 1;
++			break;
++		case NL80211_BAND_6GHZ:
++			chan->band = 3;
++			break;
++		default:
++			chan->band = 2;
++			break;
 +		}
+ 		chan->channel_num = scan_list[i]->hw_value;
+ 	}
+ 	req->channel_type = sreq->n_channels ? 4 : 0;
+@@ -1567,7 +1577,18 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
+ 	req->channels_num = min_t(u8, sreq->n_channels, 64);
+ 	for (i = 0; i < req->channels_num; i++) {
+ 		chan = &req->channels[i];
+-		chan->band = scan_list[i]->band == NL80211_BAND_2GHZ ? 1 : 2;
++
++		switch (scan_list[i]->band) {
++		case NL80211_BAND_2GHZ:
++			chan->band = 1;
++			break;
++		case NL80211_BAND_6GHZ:
++			chan->band = 3;
++			break;
++		default:
++			chan->band = 2;
++			break;
++		}
+ 		chan->channel_num = scan_list[i]->hw_value;
  	}
  
- 	return mode;
 -- 
 2.31.1
 
