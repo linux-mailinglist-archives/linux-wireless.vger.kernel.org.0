@@ -2,142 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6C493F55A5
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 04:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FAFA3F568C
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 05:14:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233664AbhHXCJw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 22:09:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48440 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229742AbhHXCJv (ORCPT
+        id S234027AbhHXDPi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 23:15:38 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:14411 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233885AbhHXDPh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 22:09:51 -0400
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D488C061575;
-        Mon, 23 Aug 2021 19:09:07 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gtsww2w1Cz9sXM;
-        Tue, 24 Aug 2021 12:09:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1629770945;
-        bh=t8udJ6b3N0UaUSZ3BGOlaMN6Co2sK8BZqj+NJF3I+No=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NUK4v+qATIBq7WL0xY5pFWbcWzJhIsPWunQrvEldw0AzCjDoJL80cuEIE2UnIZ5R7
-         jJvUFQHrORnU9RG4ewhauBjcv2e3QKP2EyTuTOXZYGXdHdBkDFQxUFbvtt1fPLBffp
-         f2STgCkY/2cVa3oy/6P5MNNeD2klSUIS/7mAEnbsF3LXHmv6G1gm5sJ8XHdkdNLNLu
-         aZO04G6/7yZORLIZf6hR0u0ejK34KUpMkrN7O7TpI8ovxHZU5PCxC2UCaTrxWVkyQr
-         /21/1ep7IoGWuM5bPzAebDrJ/Ij8uJj74Qx/MQxYbSxpHqkAuZKqMvEMbUaX/cefOn
-         nKL44yCbpSwMQ==
-Date:   Tue, 24 Aug 2021 12:09:03 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Petr Mladek <pmladek@suse.com>, David Miller <davem@davemloft.net>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Wireless <linux-wireless@vger.kernel.org>,
-        Chris Down <chris@chrisdown.name>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Networking <netdev@vger.kernel.org>
-Subject: Re: linux-next: manual merge of the wireless-drivers-next tree with
- the printk tree
-Message-ID: <20210824120903.0c427fb9@canb.auug.org.au>
-In-Reply-To: <20210824120714.421e734d@canb.auug.org.au>
-References: <20210809131813.3989f9e8@canb.auug.org.au>
-        <20210824120714.421e734d@canb.auug.org.au>
+        Mon, 23 Aug 2021 23:15:37 -0400
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GtvJP2zp6zbdT6;
+        Tue, 24 Aug 2021 11:11:01 +0800 (CST)
+Received: from dggpeml500024.china.huawei.com (7.185.36.10) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Tue, 24 Aug 2021 11:14:50 +0800
+Received: from [10.67.103.6] (10.67.103.6) by dggpeml500024.china.huawei.com
+ (7.185.36.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 24 Aug
+ 2021 11:14:50 +0800
+Subject: Re: [PATCH V3 net-next 2/4] ethtool: extend coalesce setting uAPI
+ with CQE mode
+To:     Jakub Kicinski <kuba@kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+References: <1629444920-25437-1-git-send-email-moyufeng@huawei.com>
+ <1629444920-25437-3-git-send-email-moyufeng@huawei.com>
+ <32fd0b32-e748-42d9-6468-b5b1393511e9@ti.com>
+ <20210820152116.0741369a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <659649ed-4697-e622-424d-0ab418c571a3@huawei.com>
+CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <shenjian15@huawei.com>, <lipeng321@huawei.com>,
+        <yisen.zhuang@huawei.com>, <linyunsheng@huawei.com>,
+        <huangguangbin2@huawei.com>, <chenhao288@hisilicon.com>,
+        <salil.mehta@huawei.com>, <linuxarm@huawei.com>,
+        <linuxarm@openeuler.org>, <dledford@redhat.com>, <jgg@ziepe.ca>,
+        <netanel@amazon.com>, <akiyano@amazon.com>,
+        <thomas.lendacky@amd.com>, <irusskikh@marvell.com>,
+        <michael.chan@broadcom.com>, <edwin.peer@broadcom.com>,
+        <rohitm@chelsio.com>, <jacob.e.keller@intel.com>,
+        <ioana.ciornei@nxp.com>, <vladimir.oltean@nxp.com>,
+        <sgoutham@marvell.com>, <sbhatta@marvell.com>, <saeedm@nvidia.com>,
+        <ecree.xilinx@gmail.com>, <merez@codeaurora.org>,
+        <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>
+From:   moyufeng <moyufeng@huawei.com>
+Message-ID: <0380b0e4-eb5f-b74c-57e8-30c9ca38f0ff@huawei.com>
+Date:   Tue, 24 Aug 2021 11:14:49 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/5n6IoWL2IMYIcg8e2lGgRWN";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+In-Reply-To: <659649ed-4697-e622-424d-0ab418c571a3@huawei.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.103.6]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500024.china.huawei.com (7.185.36.10)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/5n6IoWL2IMYIcg8e2lGgRWN
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
 
-Hi all,
 
-[Just cc'ing Dave]
+On 2021/8/23 11:06, moyufeng wrote:
+> 
+> 
+> On 2021/8/21 6:21, Jakub Kicinski wrote:
+>> On Fri, 20 Aug 2021 21:27:13 +0300 Grygorii Strashko wrote:
+>>> This is very big change which is not only mix two separate changes, but also looks
+>>> half-done. From one side you're adding HW feature supported by limited number of HW,
+>>> from another - changing most of net drivers to support it by generating mix of legacy
+>>> and new kernel_ethtool_coalesce parameters.
+>>>
+>>> There is also an issue - you do not account get/set_per_queue_coalesce() in any way.
+>>
+>> ethtool's netlink interface does not support per queue coalescing.
+>> I don't think it's fair to require it as part of this series.
+>>
+>>> Would it be possible to consider following, please?
+>>>
+>>> - move extack change out of this series
+>>
+>> Why? To have to change all the drivers twice?
+>>
+>>> - option (a)
+>>>    add new callbacks in ethtool_ops as set_coalesce_cqe/get_coalesce_cqe for CQE support.
+>>>    Only required drivers will need to be changed.
+>>
+>> All the params are changed as one operation from user space's
+>> perspective. Having two ops would make it problematic for drivers 
+>> to fail the entire op without modifying half of the parameters in 
+>> a previous callback.
+>>
+>>> - option (b)
+>>>    add struct ethtool_coalesce as first field of kernel_ethtool_coalesce
+>>
+>> This ends up being more painful than passing an extra parameter 
+>> in my experience.
+>>
+>>> struct kernel_ethtool_coalesce {
+>>> 	/* legacy */
+>>> 	struct ethtool_coalesce coal;
+>>>
+>>> 	/* new */
+>>> 	u8 use_cqe_mode_tx;
+>>> 	u8 use_cqe_mode_rx;
+>>> };
+>>>
+>>> --  then b.1
+>>>    drivers can be updated as
+>>>     static int set_coalesce(struct net_device *dev,
+>>>     			    struct kernel_ethtool_coalesce *kernel_coal)
+>>>     {
+>>> 	struct ethtool_coalesce *coal = &kernel_coal->coal;
+>>>     
+>>>     (which will clearly indicate migration to the new interface )
+>>>
+>>> -- then b.2
+>>>      add new callbacks in ethtool_ops as set_coalesce_ext/get_coalesce_ext (extended)
+>>>      which will accept struct kernel_ethtool_coalesce as parameter an allow drivers to migrate when needed
+>>>      (or as separate patch which will do only migration).
+>>>
+>>> Personally, I like "b.2".
+>>
+>> These options were considered. None of the options is great to 
+>> be honest. Let's try the new params, I say. 
+>> .
+>>
+> 
+> Yes, these have been considered in previous RFCs. For details, please refer to [1].
+> 
+> [1]https://lore.kernel.org/netdev/20210526165633.3f7982c9@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com/
+> 
+> .
+> 
+Hi Grygorii & Jakub
 
-On Tue, 24 Aug 2021 12:07:14 +1000 Stephen Rothwell <sfr@canb.auug.org.au> =
-wrote:
->
-> On Mon, 9 Aug 2021 13:18:13 +1000 Stephen Rothwell <sfr@canb.auug.org.au>=
- wrote:
-> >
-> > Today's linux-next merge of the wireless-drivers-next tree got a
-> > conflict in:
-> >=20
-> >   MAINTAINERS
-> >=20
-> > between commit:
-> >=20
-> >   337015573718 ("printk: Userspace format indexing support")
-> >=20
-> > from the printk tree and commit:
-> >=20
-> >   d249ff28b1d8 ("intersil: remove obsolete prism54 wireless driver")
-> >=20
-> > from the wireless-drivers-next tree.
-> >=20
-> > I fixed it up (see below) and can carry the fix as necessary. This
-> > is now fixed as far as linux-next is concerned, but any non trivial
-> > conflicts should be mentioned to your upstream maintainer when your tree
-> > is submitted for merging.  You may also want to consider cooperating
-> > with the maintainer of the conflicting tree to minimise any particularly
-> > complex conflicts.
-> >=20
-> > --=20
-> > Cheers,
-> > Stephen Rothwell
-> >=20
-> > diff --cc MAINTAINERS
-> > index 5cf181197a50,492bc169c3bd..000000000000
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@@ -14974,18 -14927,6 +14974,11 @@@ S:	Maintaine
-> >   F:	include/linux/printk.h
-> >   F:	kernel/printk/
-> >  =20
-> >  +PRINTK INDEXING
-> >  +R:	Chris Down <chris@chrisdown.name>
-> >  +S:	Maintained
-> >  +F:	kernel/printk/index.c
-> >  +
-> > - PRISM54 WIRELESS DRIVER
-> > - M:	Luis Chamberlain <mcgrof@kernel.org>
-> > - L:	linux-wireless@vger.kernel.org
-> > - S:	Obsolete
-> > - W:	https://wireless.wiki.kernel.org/en/users/Drivers/p54
-> > - F:	drivers/net/wireless/intersil/prism54/
-> > -=20
-> >   PROC FILESYSTEM
-> >   L:	linux-kernel@vger.kernel.org
-> >   L:	linux-fsdevel@vger.kernel.org =20
->=20
-> This is now a conflict between the net-next tree and Linus' tree.
+Is this patch still good? Or do I need to resend this series
+with RFC link above in change log?
 
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/5n6IoWL2IMYIcg8e2lGgRWN
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmEkVL8ACgkQAVBC80lX
-0GxQCwgAnH1FfJYTJWR2GqxEGsRtXxtdsIj1W68C2NndtyhzZpUezGfBWr6CG5nm
-rG+dH3Cl6U72Xw6+XoDyHfhBRlwZbi+UL9QZk1JOD5OXdTz1G0ACRQYhA0rQDuJs
-/ANU9eC3m/PXxvX5L7/5ay12135kOa78NrGldQMDt1tEALXfWbckvTu7Q5yAbpaT
-E92+aOYjHyp7dChDpv4Wx0woEYHTX74+pLl5gq4hc9MAFsWGo70YG0LkUVu+R34V
-2OeDIiqzcPSMlgShGTIg2Z0ZyOJgr9XmMDkYskakYtE63OTWickZjiVewsnmIqqT
-t24tYt7ZnPlaHNDYjAsEg1qbuJZkPQ==
-=W40K
------END PGP SIGNATURE-----
-
---Sig_/5n6IoWL2IMYIcg8e2lGgRWN--
+Thanks
