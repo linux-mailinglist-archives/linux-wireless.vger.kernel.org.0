@@ -2,63 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64F453F5BF4
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 12:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1646F3F5BF3
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 12:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236182AbhHXKXj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Aug 2021 06:23:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59412 "EHLO mail.kernel.org"
+        id S236204AbhHXKXm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Aug 2021 06:23:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59448 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236104AbhHXKXj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Aug 2021 06:23:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0F6516127B;
-        Tue, 24 Aug 2021 10:22:53 +0000 (UTC)
+        id S236104AbhHXKXm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Aug 2021 06:23:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6C4A8610FB;
+        Tue, 24 Aug 2021 10:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629800575;
-        bh=ECBCoUS2CDhZUwPBLz31g1DbxEATvf2+bA+eK8JJ2wE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ol86pxjG+S8hUszTvQry+/LqeEKE8eJZIn+/82x+ExtmBFtJLs7tSF37Out0TELrV
-         pYiicxVcwPZJaXSs9ldudSbdoG23p+DwvNHuftBkQ7y6l4at1dqZOG1aNcXxQQUDCr
-         PND0RmkI4oVRhmW90XSwhk+3Ws4gg3bN1fAKLoj2GT6gmBOgn0mUKMiDzPLXn2+HHi
-         jQyDIL+TUPvnhPLdVtD8X7vS4cOmCH8a7a5g24LntHTrFlv0QdzXaoB94uFbAd6kuQ
-         HVV9r+55ZGsdOlCKFG5s7ou7do448X+uAp2Uu3h89SZ3oRkWdR+NtLK9zftADCBCVJ
-         PcLmCtvQopYsQ==
+        s=k20201202; t=1629800578;
+        bh=6ouoeNaYox008aHgViWFKA9VCHvQ4Apg5vIrWI0zzXE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=cEtFVR4xhjcrbN5S1/Z/VLZg7FJMcFMYV1wS0T4nKMmmYno3xEhRtrxToF6yhuZHV
+         lg+qHFyIGh58K7j7Npzb6RKit50HxQJaAbmDSnxuQG3sRWlAK0YRP+vqHYFg1KVWkb
+         FPYyonItePvD5KCjLBc+rTixEISJ25jg08HEZ/KzesO1SKodRznQ1VWR73rOElw1c7
+         0ySq1EdXMaActQ1JssXY9wIBQTPFh2JRyeJ3Dh0+04HSKOrC84487SjCcb53GoPzFI
+         RyMfPU9YNpjgclTb7A6PlMwcOydm0hhJb16RYp8kwgaCGGb+kBRCSrwa2wIrcqh06p
+         EEbb6fqmRJ2Dg==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, Deren.Wu@mediatek.com
-Subject: [PATCH 0/9] introduce 6GHz support to mt7921 driver
-Date:   Tue, 24 Aug 2021 12:22:18 +0200
-Message-Id: <cover.1629799385.git.lorenzo@kernel.org>
+Subject: [PATCH 1/9] mt76: connac: set 6G phymode in mt76_connac_get_phy_mode{,v2}
+Date:   Tue, 24 Aug 2021 12:22:19 +0200
+Message-Id: <5d645888e6b881d08ee6a99eb96f6086427f2051.1629799385.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <cover.1629799385.git.lorenzo@kernel.org>
+References: <cover.1629799385.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi (9):
-  mt76: connac: set 6G phymode in mt76_connac_get_phy_mode{,v2}
-  mt76: connac: enable 6GHz band for hw scan
-  mt76: connac: add 6GHz support to mt76_connac_mcu_set_channel_domain
-  mt76: connac: set 6G phymode in single-sku support
-  mt76: connac: add 6GHz support to mt76_connac_mcu_sta_tlv
-  mt76: connac: add 6GHz support to mt76_connac_mcu_uni_add_bss
-  mt76: connac: enable hw amsdu @ 6GHz
-  mt76: add 6GHz support
-  mt76: mt7921: add 6GHz support
+This is a preliminary patch to support 6GHz band on mt7921 devices.
 
- drivers/net/wireless/mediatek/mt76/eeprom.c   |   3 +
- drivers/net/wireless/mediatek/mt76/mac80211.c | 128 +++++++++++++++-
- drivers/net/wireless/mediatek/mt76/mt76.h     |   1 +
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 139 +++++++++++++++---
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  19 ++-
- .../net/wireless/mediatek/mt76/mt7921/mac.c   |  33 +++--
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  39 ++++-
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |   6 +-
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |   2 +-
- 9 files changed, 324 insertions(+), 46 deletions(-)
+Tested-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 9c0f86eefd75..8b72ed77881c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -691,7 +691,7 @@ mt76_connac_get_phy_mode_v2(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 
+ 		if (he_cap->has_he)
+ 			mode |= PHY_TYPE_BIT_HE;
+-	} else if (band == NL80211_BAND_5GHZ) {
++	} else if (band == NL80211_BAND_5GHZ || band == NL80211_BAND_6GHZ) {
+ 		mode |= PHY_TYPE_BIT_OFDM;
+ 
+ 		if (ht_cap->ht_supported)
+@@ -1154,7 +1154,7 @@ mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 
+ 		if (he_cap->has_he)
+ 			mode |= PHY_MODE_AX_24G;
+-	} else if (band == NL80211_BAND_5GHZ) {
++	} else if (band == NL80211_BAND_5GHZ || band == NL80211_BAND_6GHZ) {
+ 		mode |= PHY_MODE_A;
+ 
+ 		if (ht_cap->ht_supported)
+@@ -1163,8 +1163,12 @@ mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		if (vht_cap->vht_supported)
+ 			mode |= PHY_MODE_AC;
+ 
+-		if (he_cap->has_he)
+-			mode |= PHY_MODE_AX_5G;
++		if (he_cap->has_he) {
++			if (band == NL80211_BAND_6GHZ)
++				mode |= PHY_MODE_AX_6G;
++			else
++				mode |= PHY_MODE_AX_5G;
++		}
+ 	}
+ 
+ 	return mode;
 -- 
 2.31.1
 
