@@ -2,196 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7CBF3F6362
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 18:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 980D03F6865
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 19:49:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233439AbhHXQw4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Aug 2021 12:52:56 -0400
-Received: from mx0b-0016f401.pphosted.com ([67.231.156.173]:42778 "EHLO
-        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232862AbhHXQwx (ORCPT
+        id S239550AbhHXRuU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Aug 2021 13:50:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39752 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242356AbhHXRuC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Aug 2021 12:52:53 -0400
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-        by mx0b-0016f401.pphosted.com (8.16.1.2/8.16.0.43) with SMTP id 17O7c7dB001614;
-        Tue, 24 Aug 2021 09:51:58 -0700
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2106.outbound.protection.outlook.com [104.47.55.106])
-        by mx0b-0016f401.pphosted.com with ESMTP id 3amkrkbtjd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 24 Aug 2021 09:51:58 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=czAfMb0AwPnBj2JVIrDRau8L33UOUOK15XONVbpelNmZ7G34UQTHj1EFN1w+7CnaeHMNpGWu2sDngQW655+zHs0IpY4drh6HkYuao58+GifgDMvvqWDKt+xEknuCgsQ8bSzlB0/dhRZVEKdrQopj/FnmzPtdbBhA+/9gst1TCwi1l8pXyY1LCcAJha9gzfcy6hjOJ/GFHSC1ggbtx2+0zJxh5l10tvoOg5h9qqGAsby1wJv+PDbwb08SaJqSfMA2H6WNeWEA0aLJoJon5QdPExFEKiGAlzokIoktXonaJ+Fz8Yv3t29Xnjz4pcPJ/54+RKnKd7d+vgTPj7ttAzvRoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GKAc/sib8ICeu1v/im8JhK0QCORsA7jtiVGn75aZW78=;
- b=F7GsmEgfJ4t7Lzjy8qGQNfxRmD4hrwmuAxpNRoJSmNzzDBDLE0JkloOSAGKupNYwTqFdtHLFNlMJ4oV2nMkuTfWBbhJmCW43gqVufwuF8hlJTlOqfiFJHuo/lMCTl9nun2/iGUpP9n9oYjNmP877eThQ+no405ECrXHkCbrSghm7U/fIAOEQBF1aoA3AtYEHcvM9YNFsG5yBF17lczfUM5UlLndrdIK4WC0gGRYa8Hrm7TLPWquBDKSgabuEnSEiD+Y1I9QOnXCFf3AhH26oNpCD6W+QzdGAPfV4+IkeQ76gHXf9C1pLF9+hDHM7RcxsWVdpn1CfXM+5ioCuvyw/gw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
+        Tue, 24 Aug 2021 13:50:02 -0400
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18220C0F26CC
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Aug 2021 10:11:11 -0700 (PDT)
+Received: by mail-ot1-x334.google.com with SMTP id k12-20020a056830150c00b0051abe7f680bso42900371otp.1
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Aug 2021 10:11:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=marvell.onmicrosoft.com; s=selector1-marvell-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GKAc/sib8ICeu1v/im8JhK0QCORsA7jtiVGn75aZW78=;
- b=vHGngrrceGG/uEJy1M5OzOidhkIBKUa+GTngkwCigWqEo152yj97f15/a8+u97iPtsaCLNjxDaedDgIDin4A2N4TB7tCEuV9qL521HJJRl0ajZCmt7EgqBEnfw+IsyLMGdPQrDvEyqcJTfCu5lWZxWHSPqIusUNd1z/xPrNDpnE=
-Received: from SJ0PR18MB3882.namprd18.prod.outlook.com (2603:10b6:a03:2c8::13)
- by BYAPR18MB2357.namprd18.prod.outlook.com (2603:10b6:a03:133::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.22; Tue, 24 Aug
- 2021 16:51:56 +0000
-Received: from SJ0PR18MB3882.namprd18.prod.outlook.com
- ([fe80::80cb:c908:f6d2:6184]) by SJ0PR18MB3882.namprd18.prod.outlook.com
- ([fe80::80cb:c908:f6d2:6184%4]) with mapi id 15.20.4436.024; Tue, 24 Aug 2021
- 16:51:56 +0000
-From:   Shai Malin <smalin@marvell.com>
-To:     Kees Cook <keescook@chromium.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Ariel Elior <aelior@marvell.com>,
-        GR-everest-linux-l2 <GR-everest-linux-l2@marvell.com>,
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WvhpETrEpcbNS5tm6bQ3pCjBYg+a71Wh95ngB5PZYBE=;
+        b=AOzGiPFS13S44pAap29oALDR+4evL+IZW+yZrvzYI0T1p/5RbsaugSmkNhL2jrtoJU
+         +Hj1lt5hKsOlTgEkuncuJXnTeBTHtcB7yoF3J755EAtQjIEJf3Sj92lU1wat5orlB2J+
+         sDUdqli6kx+wu2MU3pk63OMZdoeNIkkbGK1nqSEGXsMMz/NgH1EaWAldDktdLJqRLqZw
+         nZWoW5pejn175qs4teV8oZlfzEgZRfdAFtGBpI0yUqvKoMoi771sHIKahEzrMf12uFGc
+         kmFoPO7cJy3QA1zK+BtDzRd9yb4rZ1UNUd3pKiU0cUkzOak9k/kbOz+qekbAqIrxKSjs
+         NAkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WvhpETrEpcbNS5tm6bQ3pCjBYg+a71Wh95ngB5PZYBE=;
+        b=ryDRKJZ59/+FUHWPM/lfm8+2SXxxxF5jlP+ZM2X6KIZEUcQCM3qW/0hhyPrjw1w8ZE
+         hwOpo3YJ22A50TkJ36XGCL9nWIVDo72Bg+9i8w/25AGXZLgnoKG3GrlIHzjLNeYmedGK
+         Xfz9fclOlX6tf7osKMK7zX8NDrRj7LxgfCmMkwMMycntfzBHtMnygSmEZWTNY2ay5JRR
+         s+RjWqpw1piY6kYc3/GtU3n5y7+aafIV+910PBfsZlKxaB6XxtTMidFyinU+xpDf5e0E
+         R2A/P6LQq6UwDwoA94rO0aVJ+6HnCUqllACHApraRd7hrz2fhkKroqUp2wtgmQQdfR/y
+         WtNw==
+X-Gm-Message-State: AOAM531e8qyEYuLJKYCpdPY4yOtwWERvM3WAwCM9tZF5PxUralmz+d5q
+        86xjzJp04Ud/Nl9j8/j+r5SNfw==
+X-Google-Smtp-Source: ABdhPJw7ciWfxqB71e4RSCRJJxzK+nKwfBFMu3mHYumW2+F97O/lOwbyNKxlfTwFzOw0wH4GtZH8rg==
+X-Received: by 2002:a9d:1d25:: with SMTP id m34mr32755207otm.313.1629825070322;
+        Tue, 24 Aug 2021 10:11:10 -0700 (PDT)
+Received: from localhost.localdomain (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id v29sm4213475ooe.31.2021.08.24.10.11.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Aug 2021 10:11:09 -0700 (PDT)
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
-        "clang-built-linux@googlegroups.com" 
-        <clang-built-linux@googlegroups.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
-Subject: RE: [PATCH v2 43/63] net: qede: Use memset_startat() for counters
-Thread-Topic: [PATCH v2 43/63] net: qede: Use memset_startat() for counters
-Thread-Index: AdeZBCugI6aPxGdIRAaponLK1gPaLw==
-Date:   Tue, 24 Aug 2021 16:51:55 +0000
-Message-ID: <SJ0PR18MB3882AEDD1D855866DFE7AC00CCC59@SJ0PR18MB3882.namprd18.prod.outlook.com>
-Accept-Language: he-IL, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: chromium.org; dkim=none (message not signed)
- header.d=none;chromium.org; dmarc=none action=none header.from=marvell.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 26aacfcf-831e-4bb7-9721-08d9671f7b6a
-x-ms-traffictypediagnostic: BYAPR18MB2357:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BYAPR18MB23579C10D306910C29F001D2CCC59@BYAPR18MB2357.namprd18.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3513;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hHuhiTw6XfRX+jE5RnJTmtGoHwVl8zqhT3XIsN37LDr9qdxIWuLpoCDEzSWFR0KwbZJbxQ8PFiE6rsKeNnzXIF64J/MnPfIix/j+j1avxYIauL5ml6ErtFg8A1njP7iRopMWNo47gYLHClKRauiOCiKilwCp8Q3C+W9LbPF3jGpYAxisxbbGJfG0YjGE7Qrjks5ANfv42Npq79Thqcn2rXzINb/UvfROqRPQrWUceaOshvshNi7duxa/lbEwAhz6QL6NXr5Q/HbTM+zAk3mA8MUe+s3hC7XYnsVPBfRcqUnN5IFiv7GDbfUHIE0fkXpsrbTbu/wu63uO1Oq6oBClfFsKjSQ/jiaaCKeQ4E64HPbQlesSYlowLq6/n+54GvXOuRWlnbacYQKjU+flvgjFhS870xf4AANbjZkjrCI/y+Eb1FT0A23PgNne6DRlTlY77Px3U81QQHVIzQveFVQhUNVZRfL6zPphOGaKr9eF4ClcQVHkCzPWoF3XTvUz6d5YsuXiwH/N3qATF4gPsJqqW7zJoVrUbhQo9o2pAEnbCJ6KHyiBuba5cXvCbyGsHQecj46bdJTp0AWm2lX8nt3dvrDwqSn80vgi+RU4Zf1TOpyku8ZTT39yc3FIuAUwlJ4nxGqVIeIgBJekIug6VSwSJbrExj2PEUr+u1uKaFEQp/b8J/7wb0X7YrEy5bITXcXNTFojS44qu20qvgga2EejEg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR18MB3882.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(396003)(346002)(136003)(366004)(39860400002)(38100700002)(33656002)(64756008)(38070700005)(6506007)(66446008)(5660300002)(7696005)(83380400001)(478600001)(76116006)(186003)(26005)(110136005)(52536014)(55016002)(9686003)(8676002)(8936002)(122000001)(2906002)(7416002)(4326008)(54906003)(316002)(66476007)(66556008)(86362001)(66946007)(71200400001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?qJK/dfG8HcfFlGtkPt/SZjGfzn+hzFe7qIZ/x8NuF4k2D5+jaVmgA1Z/f+Lc?=
- =?us-ascii?Q?s2rdrMcLA++2Sk1yf1rC8/L2a99pgjri9eNQW8DbbRRC+nW1WERrvhpefVUP?=
- =?us-ascii?Q?C9TwVTYOh7qeGmqMitTWmRmhlImiw7GbBp5jDZrGtcqnIKMlcmBn0XFe3vcE?=
- =?us-ascii?Q?nLvMIrx8j6v4DnvJZU7OrDWnO8Zi6oxvqLArX08I+xHbLWHya0xypPfbfxxG?=
- =?us-ascii?Q?FQqmekGdo/WBGvfzbD+LLuFonp2pKyXcJRx7ChslxPQjR+G2ermVaGZyNtdl?=
- =?us-ascii?Q?JGe3QdHXaf5H9G2SVtAPvmlBpn0+DBGJc/MlI0SBMMxClIWONz/3k5Ka8uvW?=
- =?us-ascii?Q?Kr4yIezPBuHquSiWyRFfOpBvFgHqIxOWoBRVIUg+wd+rhZg3WnvprJqZ3bvi?=
- =?us-ascii?Q?tdf7TsuKfbsfLwlP4GXztXouEO0HookJvj05PmG8tgF4p8CivqNCdzYK+34i?=
- =?us-ascii?Q?RBDIHzhX6lVgoiZWxh5smxUSCUxial0o4l0Lo3zAeH2G2goV5OcMgNebJ4X/?=
- =?us-ascii?Q?jnah8+cHW0Qv4/PnrV/4BzCti1vi4UgzGbawuC2lhtNU5AhW0CwCeFI/+Df+?=
- =?us-ascii?Q?9/L5+KXKki0QxcTJrsm3IPic6zEUp38luXTu96fg3W+A3wu07Gb18VMDfzpl?=
- =?us-ascii?Q?BaW3qLimrgRON8RcMN/t6P38LYQnl56IrSBzFmtSfkLscXn31GIslw6DnmNM?=
- =?us-ascii?Q?j9+rDb1LVk1Pm9mWrsS54L4Ioyg4lkRiPSsPODHXg2pd+DX5sIoJxUYqG6D9?=
- =?us-ascii?Q?hZnAWgfbwF6GMpYNU0gUNEAK7/MNcHFfkge7zZQS6G9R1MjqO2cSzJEJLuxU?=
- =?us-ascii?Q?W7BRuN4s6sxmUE78xNHDR+OgR9aKRdkogwNqPLZnPbi1Qiy8z7Ma60BW9Adb?=
- =?us-ascii?Q?sAOpEzVvKcry8bj3BDMAQQOc1H1aMStgbRatTMsAnlR1Qzs6co51rZIWFDZg?=
- =?us-ascii?Q?h5ZHx8KY8ALctH+pD4LNUX9HqfR8otm5tNMwc0peRKj9tIGc+7oKa2jRc4Hn?=
- =?us-ascii?Q?WqXdD44qCuXgTHMVl5sb9bvCBozwRTBo+5K0ELhj/Jz29/6CSw29rjabQGW7?=
- =?us-ascii?Q?iekHTe8ggUdSHdVhWqSlRSAVV0Ufwy+NMqwlCFn8ZHsi5YgXTjNfmRPrb9cS?=
- =?us-ascii?Q?2QOgYWmz/6eO9O/wtKQCFQolvRa30H6tl8xi2NuBOOwaZ3R3A9VDXoWsC6z8?=
- =?us-ascii?Q?ojLMixE0dgpUntBVpXgt/lkaGiC8Gi6h0sDpyClEk9UKk1zd0c/qpZWLRW2F?=
- =?us-ascii?Q?RrM54slvMrjDlCFrKOf4OayWRiXzcn1TlEVaZJIDulAlm7UzOPz1M67wTPSw?=
- =?us-ascii?Q?P/B6srbyxZiEjZUGLpijntM/?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        =?UTF-8?q?An=C3=ADbal=20Lim=C3=B3n?= <anibal.limon@linaro.org>
+Subject: [RESEND PATCH] wcn36xx: Allow firmware name to be overridden by DT
+Date:   Tue, 24 Aug 2021 10:12:25 -0700
+Message-Id: <20210824171225.686683-1-bjorn.andersson@linaro.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-X-OriginatorOrg: marvell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR18MB3882.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26aacfcf-831e-4bb7-9721-08d9671f7b6a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Aug 2021 16:51:55.9904
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: YodOmbgsWUOIyimZguZIW1V6PLbduYypyHuaJWcJUluqg3MLJQoB+QZdkw8tOD8YNzaaPhtWnCy2WveA9ATlrw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR18MB2357
-X-Proofpoint-GUID: 2qz3__2YNzO1xVZPNRbqpM4Jgj5emVW-
-X-Proofpoint-ORIG-GUID: 2qz3__2YNzO1xVZPNRbqpM4Jgj5emVW-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-08-24_05,2021-08-24_01,2020-04-07_01
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On August 18, 2021 9:05 AM -0300, Kees Cook wrote:
-> In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> field bounds checking for memset(), avoid intentionally writing across
-> neighboring fields.
->=20
-> Use memset_startat() so memset() doesn't get confused about writing
-> beyond the destination member that is intended to be the starting point
-> of zeroing through the end of the struct.
->=20
-> The old code was doing the wrong thing: it starts from the second member
-> and writes beyond int_info, clobbering qede_lock:
->=20
-> struct qede_dev {
-> 	...
->         struct qed_int_info             int_info;
->=20
->         /* Smaller private variant of the RTNL lock */
->         struct mutex                    qede_lock;
-> 	...
->=20
-> struct qed_int_info {
->         struct msix_entry       *msix;
->         u8                      msix_cnt;
->=20
->         /* This should be updated by the protocol driver */
->         u8                      used_cnt;
-> };
->=20
-> Cc: Ariel Elior <aelior@marvell.com>
-> Cc: GR-everest-linux-l2@marvell.com
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->  drivers/net/ethernet/qlogic/qede/qede_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/qlogic/qede/qede_main.c
-> b/drivers/net/ethernet/qlogic/qede/qede_main.c
-> index d400e9b235bf..0ed9a0c8452c 100644
-> --- a/drivers/net/ethernet/qlogic/qede/qede_main.c
-> +++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
-> @@ -2419,7 +2419,7 @@ static int qede_load(struct qede_dev *edev, enum
-> qede_load_mode mode,
->  	goto out;
->  err4:
->  	qede_sync_free_irqs(edev);
-> -	memset(&edev->int_info.msix_cnt, 0, sizeof(struct qed_int_info));
-> +	memset_startat(&edev->int_info, 0, msix_cnt);
+The WLAN NV firmware blob differs between platforms, and possibly
+devices, so add support in the wcn36xx driver for reading the path of
+this file from DT in order to allow these files to live in a generic
+file system (or linux-firmware).
 
-As I commented on V1:
-"[PATCH 42/64] net: qede: Use memset_after() for counters",
-the memset is redundant and it should clear only the msix_cnt.
+For some reason the parent (wcnss_ctrl) also needs to upload this blob,
+so rather than specifying the same information in both nodes wcn36xx
+reads the string from the parent's of_node.
 
-We will fix it.
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Tested-by: Aníbal Limón <anibal.limon@linaro.org>
+---
 
->  err3:
->  	qede_napi_disable_remove(edev);
->  err2:
-> --
-> 2.30.2
+This was previously part of a series spanning multiple subsystems, picked up
+tested-bys and resending alone in hope that it can be merged.
+
+https://lore.kernel.org/linux-arm-msm/20210312003318.3273536-3-bjorn.andersson@linaro.org/
+
+ drivers/net/wireless/ath/wcn36xx/main.c    | 7 +++++++
+ drivers/net/wireless/ath/wcn36xx/smd.c     | 4 ++--
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 1 +
+ 3 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index d202f2128df2..2ccf7a8924a0 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -1500,6 +1500,13 @@ static int wcn36xx_probe(struct platform_device *pdev)
+ 		goto out_wq;
+ 	}
+ 
++	wcn->nv_file = WLAN_NV_FILE;
++	ret = of_property_read_string(wcn->dev->parent->of_node, "firmware-name", &wcn->nv_file);
++	if (ret < 0 && ret != -EINVAL) {
++		wcn36xx_err("failed to read \"firmware-name\" property\n");
++		goto out_wq;
++	}
++
+ 	wcn->smd_channel = qcom_wcnss_open_channel(wcnss, "WLAN_CTRL", wcn36xx_smd_rsp_process, hw);
+ 	if (IS_ERR(wcn->smd_channel)) {
+ 		wcn36xx_err("failed to open WLAN_CTRL channel\n");
+diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
+index 0e3be17d8cea..57fa857b290b 100644
+--- a/drivers/net/wireless/ath/wcn36xx/smd.c
++++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+@@ -504,10 +504,10 @@ int wcn36xx_smd_load_nv(struct wcn36xx *wcn)
+ 	u16 fm_offset = 0;
+ 
+ 	if (!wcn->nv) {
+-		ret = request_firmware(&wcn->nv, WLAN_NV_FILE, wcn->dev);
++		ret = request_firmware(&wcn->nv, wcn->nv_file, wcn->dev);
+ 		if (ret) {
+ 			wcn36xx_err("Failed to load nv file %s: %d\n",
+-				      WLAN_NV_FILE, ret);
++				    wcn->nv_file, ret);
+ 			goto out;
+ 		}
+ 	}
+diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+index 6121d8a5641a..a69cce883563 100644
+--- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
++++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+@@ -199,6 +199,7 @@ struct wcn36xx {
+ 	struct device		*dev;
+ 	struct list_head	vif_list;
+ 
++	const char		*nv_file;
+ 	const struct firmware	*nv;
+ 
+ 	u8			fw_revision;
+-- 
+2.29.2
 
