@@ -2,105 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68D153F5898
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 09:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 477F43F591F
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 09:38:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232245AbhHXHBL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Aug 2021 03:01:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56864 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231363AbhHXHBK (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Aug 2021 03:01:10 -0400
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70092C061575;
-        Tue, 24 Aug 2021 00:00:26 -0700 (PDT)
-Received: by mail-qk1-x72c.google.com with SMTP id f22so12381170qkm.5;
-        Tue, 24 Aug 2021 00:00:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fwvoBNnOVeLStj97kABmgr2lP/M5U/faVgrrsm4jm84=;
-        b=mC9Ff686jjOmOumd3lR9JG3qMEQkK+Ag9ppBQvU50pFOwaIUXq64acUTXdLBaC5GtW
-         tUnI2RlSyaCDAOfyVIT/QMuEv/4E6HIGFdhfaM3NJ/MtQjeUpFaUac1v5aAIDSOhgzwk
-         a3sjh/voQHFgmv/8G/nrUN0QCH2gCJWVcvvSsWzhso40Ow5FctuGQ6ZED7094hK0Q1gl
-         7s2lQ8C+FrlLFrIbboHdCoxnznwPnw4RnV9RGiTKjBNFnMfp5Rz6tzcezU5TmBjQjNNb
-         Q8o/eVo/X5iqZje4p1IdLnLrVL4DLDpWtfqXEd7w3mt51rzgx6Rtqw4TZU1KefhSsoxH
-         Fvqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fwvoBNnOVeLStj97kABmgr2lP/M5U/faVgrrsm4jm84=;
-        b=NdPsym5nTdsBPRG6c1GB0qu0kjbJdiUIEJyRCTghtXapci3owUh94hofb2evbk6SBV
-         zQ1LE4+/1rx3+/a5Q4XZvzkv3oZAPrVKsDWoIdQW1Mk7N+vLa6/7R3hU+WrrgTEj7g1x
-         x0S0bjTSQnbxqdv+c02pZhT1t7lbiV+/AhLc6RMhe55DnII+zIFdbJdeAest8MdOnT52
-         Jlty1cUGkVrbcZ20fBQg2O48ptFUqSVM7xULgoLA0xzA7c/6hJe1mMuyuC7Dge5fHq8z
-         tAttE+X158Ouw1MG+JK2U1LVPjLcmPB4RSNbGPVYcEiuVy91VPX43RxDJbtRNvnysnvA
-         0jUA==
-X-Gm-Message-State: AOAM531NhXh3kADAmPOhikrJ3L8QIDt/Jo4Zi/+UejJ0UyuSix/pb4eb
-        VypTPL5TV6I+LFfSyRhiioY=
-X-Google-Smtp-Source: ABdhPJyImx60V8UEyg8azSONvBkqYkkNAY287rTKR4p7BzwG8oQScs6KgKrohwK/SSQxWCZuq1S5ZQ==
-X-Received: by 2002:a05:620a:1342:: with SMTP id c2mr25256932qkl.264.1629788425718;
-        Tue, 24 Aug 2021 00:00:25 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id c7sm8420156qtv.9.2021.08.24.00.00.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Aug 2021 00:00:25 -0700 (PDT)
-From:   CGEL <cgel.zte@gmail.com>
-X-Google-Original-From: CGEL <deng.changcheng@zte.com.cn>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Jing Yangyang <jing.yangyang@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH linux-next] wireless:usb_sdio: fix boolreturn.cocci warnings
-Date:   Tue, 24 Aug 2021 00:00:17 -0700
-Message-Id: <20210824070017.60880-1-deng.changcheng@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        id S235104AbhHXHi4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Aug 2021 03:38:56 -0400
+Received: from mga03.intel.com ([134.134.136.65]:32305 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234616AbhHXHiz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Aug 2021 03:38:55 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10085"; a="217283964"
+X-IronPort-AV: E=Sophos;i="5.84,346,1620716400"; 
+   d="scan'208";a="217283964"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2021 00:38:11 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,346,1620716400"; 
+   d="scan'208";a="515317618"
+Received: from um.fi.intel.com (HELO um) ([10.237.72.62])
+  by fmsmga004.fm.intel.com with ESMTP; 24 Aug 2021 00:38:07 -0700
+From:   Alexander Shishkin <alexander.shishkin@linux.intel.com>
+To:     Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org
+Cc:     Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev,
+        linux-block@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-hardening@vger.kernel.org, alexander.shishkin@linux.intel.com
+Subject: Re: [PATCH v2 47/63] intel_th: msu: Use memset_startat() for
+ clearing hw header
+In-Reply-To: <20210818060533.3569517-48-keescook@chromium.org>
+References: <20210818060533.3569517-1-keescook@chromium.org>
+ <20210818060533.3569517-48-keescook@chromium.org>
+Date:   Tue, 24 Aug 2021 10:38:06 +0300
+Message-ID: <87sfyzi97l.fsf@ashishki-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Jing Yangyang <jing.yangyang@zte.com.cn>
+Kees Cook <keescook@chromium.org> writes:
 
-./drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c:172:8-9:WARNING:
-return of 0/1 in function 'mt7663_usb_sdio_tx_status_data'
-with return type bool
+> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> field bounds checking for memset(), avoid intentionally writing across
+> neighboring fields.
+>
+> Use memset_startat() so memset() doesn't get confused about writing
+> beyond the destination member that is intended to be the starting point
+> of zeroing through the end of the struct.
+>
+> Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-Return statements in functions returning bool should use true/false
-instead of 1/0.
+Acked-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-Generated by: scripts/coccinelle/misc/boolreturn.cocci
-
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Jing Yangyang <jing.yangyang@zte.com.cn>
----
- drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-index 996d48c..bd2939e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-@@ -169,7 +169,7 @@ bool mt7663_usb_sdio_tx_status_data(struct mt76_dev *mdev, u8 *update)
- 	mt7615_mac_sta_poll(dev);
- 	mt7615_mutex_release(dev);
- 
--	return 0;
-+	return false;
- }
- EXPORT_SYMBOL_GPL(mt7663_usb_sdio_tx_status_data);
- 
--- 
-1.8.3.1
-
-
+> ---
+>  drivers/hwtracing/intel_th/msu.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/drivers/hwtracing/intel_th/msu.c b/drivers/hwtracing/intel_th/msu.c
+> index 432ade0842f6..70a07b4e9967 100644
+> --- a/drivers/hwtracing/intel_th/msu.c
+> +++ b/drivers/hwtracing/intel_th/msu.c
+> @@ -658,13 +658,11 @@ static void msc_buffer_clear_hw_header(struct msc *msc)
+>  
+>  	list_for_each_entry(win, &msc->win_list, entry) {
+>  		unsigned int blk;
+> -		size_t hw_sz = sizeof(struct msc_block_desc) -
+> -			offsetof(struct msc_block_desc, hw_tag);
+>  
+>  		for_each_sg(win->sgt->sgl, sg, win->nr_segs, blk) {
+>  			struct msc_block_desc *bdesc = sg_virt(sg);
+>  
+> -			memset(&bdesc->hw_tag, 0, hw_sz);
+> +			memset_startat(bdesc, 0, hw_tag);
+>  		}
+>  	}
+>  }
+> -- 
+> 2.30.2
