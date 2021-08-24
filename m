@@ -2,66 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10EF63F5817
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 08:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68D153F5898
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 09:00:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231209AbhHXGVf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Aug 2021 02:21:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47800 "EHLO
+        id S232245AbhHXHBL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Aug 2021 03:01:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230350AbhHXGVc (ORCPT
+        with ESMTP id S231363AbhHXHBK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Aug 2021 02:21:32 -0400
-Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B5FFC061575;
-        Mon, 23 Aug 2021 23:20:49 -0700 (PDT)
-Received: by mail-qv1-xf36.google.com with SMTP id jv8so11113630qvb.3;
-        Mon, 23 Aug 2021 23:20:49 -0700 (PDT)
+        Tue, 24 Aug 2021 03:01:10 -0400
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70092C061575;
+        Tue, 24 Aug 2021 00:00:26 -0700 (PDT)
+Received: by mail-qk1-x72c.google.com with SMTP id f22so12381170qkm.5;
+        Tue, 24 Aug 2021 00:00:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=dntYHUzQ96z9Ky92LFdr542JcEb8KpIOuE1biM9oOng=;
-        b=XCRXYTyzatkPP8LEC19ZZxojm7wRfPfgig0TBX/WzVke5FJ94VLVeHBozn0K0xawJZ
-         hliKrJhvaacXh8PutX7ZOBMRfD7PmXd1C5avwhjShdNy05M0ZrK2MaFWDkFJvdcMxgup
-         3/+4OiQeJIPJMfPdnEr31zobPvuqOgmFtAaVF9Dn2kxn4CwLYxN9sIBwNntW7PxM+SAk
-         U+IIZ7W2W7RIFLUVLuXklqh3aeTNWACPFfYYaWWuhpKt8qSPmrbBClP6jkzgf08CP8fO
-         4PxNQkekqeupxF8Ohwn1ptAhB29JhZ06zqUatNmV/lpg+2CKqbKNc0eroYIWxjoXXtUz
-         g1mg==
+        bh=fwvoBNnOVeLStj97kABmgr2lP/M5U/faVgrrsm4jm84=;
+        b=mC9Ff686jjOmOumd3lR9JG3qMEQkK+Ag9ppBQvU50pFOwaIUXq64acUTXdLBaC5GtW
+         tUnI2RlSyaCDAOfyVIT/QMuEv/4E6HIGFdhfaM3NJ/MtQjeUpFaUac1v5aAIDSOhgzwk
+         a3sjh/voQHFgmv/8G/nrUN0QCH2gCJWVcvvSsWzhso40Ow5FctuGQ6ZED7094hK0Q1gl
+         7s2lQ8C+FrlLFrIbboHdCoxnznwPnw4RnV9RGiTKjBNFnMfp5Rz6tzcezU5TmBjQjNNb
+         Q8o/eVo/X5iqZje4p1IdLnLrVL4DLDpWtfqXEd7w3mt51rzgx6Rtqw4TZU1KefhSsoxH
+         Fvqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=dntYHUzQ96z9Ky92LFdr542JcEb8KpIOuE1biM9oOng=;
-        b=XFmhspIBRgDDi2c4CMP4bUWOKkMWgxtTk4BpMLVgAFOm1KcdiEe8OBFMn8PduSsvCx
-         mRzvXwwZdoe5SA1voIAix8ZifYDfJ8HgUUTmAJF0XOztKhhBK6IFgktHxTibSN8mYo6j
-         0OZl37gwD1hF99fRnSQ0OAcQmiqVcSyvtM7WhlPZtyd9rKr291CRCzEDc943mOPtw9Cz
-         jSfz6p63XedYnyoaD36PYPbwDCAU+eJACWULQa5oZ9JL4YhG5HVxDY3vitLlQVyxzv6u
-         NQk++Y+mhpIccxU/kLucvNwTi2RAl8nqH0qsIVJR1wGH0p0ZzFyL7qIg/K4Mtxb0skIi
-         upCQ==
-X-Gm-Message-State: AOAM532g5fUf/NaScRMqmrd+XD3vnrLL2nKgoQ00myJCMFYFRYeX/4Q1
-        E7XDUQR4aKgDrE8LiP/hbZs=
-X-Google-Smtp-Source: ABdhPJw1m88JOSSpAu2p8G5KZFCnC1u84/ZdM/n5H8zPBv7IWbRO4BJEhMcVC8+mWl8PCdPbjahU/Q==
-X-Received: by 2002:a05:6214:1c1:: with SMTP id c1mr37231034qvt.37.1629786048450;
-        Mon, 23 Aug 2021 23:20:48 -0700 (PDT)
+        bh=fwvoBNnOVeLStj97kABmgr2lP/M5U/faVgrrsm4jm84=;
+        b=NdPsym5nTdsBPRG6c1GB0qu0kjbJdiUIEJyRCTghtXapci3owUh94hofb2evbk6SBV
+         zQ1LE4+/1rx3+/a5Q4XZvzkv3oZAPrVKsDWoIdQW1Mk7N+vLa6/7R3hU+WrrgTEj7g1x
+         x0S0bjTSQnbxqdv+c02pZhT1t7lbiV+/AhLc6RMhe55DnII+zIFdbJdeAest8MdOnT52
+         Jlty1cUGkVrbcZ20fBQg2O48ptFUqSVM7xULgoLA0xzA7c/6hJe1mMuyuC7Dge5fHq8z
+         tAttE+X158Ouw1MG+JK2U1LVPjLcmPB4RSNbGPVYcEiuVy91VPX43RxDJbtRNvnysnvA
+         0jUA==
+X-Gm-Message-State: AOAM531NhXh3kADAmPOhikrJ3L8QIDt/Jo4Zi/+UejJ0UyuSix/pb4eb
+        VypTPL5TV6I+LFfSyRhiioY=
+X-Google-Smtp-Source: ABdhPJyImx60V8UEyg8azSONvBkqYkkNAY287rTKR4p7BzwG8oQScs6KgKrohwK/SSQxWCZuq1S5ZQ==
+X-Received: by 2002:a05:620a:1342:: with SMTP id c2mr25256932qkl.264.1629788425718;
+        Tue, 24 Aug 2021 00:00:25 -0700 (PDT)
 Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id d129sm10144598qkf.136.2021.08.23.23.20.45
+        by smtp.gmail.com with ESMTPSA id c7sm8420156qtv.9.2021.08.24.00.00.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Aug 2021 23:20:48 -0700 (PDT)
+        Tue, 24 Aug 2021 00:00:25 -0700 (PDT)
 From:   CGEL <cgel.zte@gmail.com>
 X-Google-Original-From: CGEL <deng.changcheng@zte.com.cn>
-To:     Luca Coelho <luciano.coelho@intel.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Jakub Kicinski <kuba@kernel.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
         linux-kernel@vger.kernel.org,
         Jing Yangyang <jing.yangyang@zte.com.cn>,
         Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH linux-next] iwlwifi:rfi: fix memdup.cocci warnings
-Date:   Mon, 23 Aug 2021 23:20:40 -0700
-Message-Id: <20210824062040.59414-1-deng.changcheng@zte.com.cn>
+Subject: [PATCH linux-next] wireless:usb_sdio: fix boolreturn.cocci warnings
+Date:   Tue, 24 Aug 2021 00:00:17 -0700
+Message-Id: <20210824070017.60880-1-deng.changcheng@zte.com.cn>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -71,37 +72,34 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Jing Yangyang <jing.yangyang@zte.com.cn>
 
-./drivers/net/wireless/intel/iwlwifi/mvm/rfi.c:110:8-15:8-15:WARNING:
-opportunity for kmemdup
+./drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c:172:8-9:WARNING:
+return of 0/1 in function 'mt7663_usb_sdio_tx_status_data'
+with return type bool
 
-Use kmemdup rather than duplicating its implementation
+Return statements in functions returning bool should use true/false
+instead of 1/0.
 
-Generated by: scripts/coccinelle/api/memdup.cocci
+Generated by: scripts/coccinelle/misc/boolreturn.cocci
 
 Reported-by: Zeal Robot <zealci@zte.com.cn>
 Signed-off-by: Jing Yangyang <jing.yangyang@zte.com.cn>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rfi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
-index 0b81806..2225c4f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rfi.c
-@@ -107,12 +107,10 @@ struct iwl_rfi_freq_table_resp_cmd *iwl_rfi_get_freq_table(struct iwl_mvm *mvm)
- 	if (WARN_ON_ONCE(iwl_rx_packet_payload_len(cmd.resp_pkt) != resp_size))
- 		return ERR_PTR(-EIO);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
+index 996d48c..bd2939e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
+@@ -169,7 +169,7 @@ bool mt7663_usb_sdio_tx_status_data(struct mt76_dev *mdev, u8 *update)
+ 	mt7615_mac_sta_poll(dev);
+ 	mt7615_mutex_release(dev);
  
--	resp = kzalloc(resp_size, GFP_KERNEL);
-+	resp = kmemdup(cmd.resp_pkt->data, resp_size, GFP_KERNEL);
- 	if (!resp)
- 		return ERR_PTR(-ENOMEM);
- 
--	memcpy(resp, cmd.resp_pkt->data, resp_size);
--
- 	iwl_free_resp(&cmd);
- 	return resp;
+-	return 0;
++	return false;
  }
+ EXPORT_SYMBOL_GPL(mt7663_usb_sdio_tx_status_data);
+ 
 -- 
 1.8.3.1
 
