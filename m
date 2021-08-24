@@ -2,110 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ACF63F5350
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 00:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A3593F5438
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 02:54:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233118AbhHWWVs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 18:21:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52098 "EHLO mail.kernel.org"
+        id S233533AbhHXAyn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 20:54:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47182 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229632AbhHWWVr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 18:21:47 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A045B61037;
-        Mon, 23 Aug 2021 22:21:02 +0000 (UTC)
+        id S233441AbhHXAym (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Aug 2021 20:54:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0A249613AD;
+        Tue, 24 Aug 2021 00:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629757264;
-        bh=c2dWCa0HWj45H4vSGrBr15OdWr53psJLo9xCrc1YnH4=;
+        s=k20201202; t=1629766438;
+        bh=S9iJn1Hv/lkhDJlzG1PsR7eS5tjZs98s/7plS8XSqZk=;
         h=From:To:Cc:Subject:Date:From;
-        b=e/1yYmL+23yyZdPAJh2VFBrbAvT2tVHcyZv2NdRUkAro1/nv233SU7opLMPeUu5os
-         Xh22G+UnbeWNRwbguEYjwxiSL1Yb1IjnKg+DorzBMakWzQCuVtV9KWFlSQtEqrZg2x
-         7hkauGS+GBVwZfGsxEHjWjjxZbezxu45Q4HEWyIW7m+PHUbxF1pffyH2toKjxtotB8
-         QJ2cXyZJeVUcKrrJT2Bt7l2eCQWQ5kHlCPJgFIgt6yAw/dWdNXcUw5vQAPw77WI4+J
-         KYbWUMQJr8iR/Jf8RGpV88AvYDQ4PfM67mWXEGh+4BxvfJSZjqeKhl+ReMjNNferiX
-         UeX+cTO7PS8Gg==
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Colin Ian King <colin.king@canonical.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        llvm@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH] rtlwifi: rtl8192de: Fix initialization of place in _rtl92c_phy_get_rightchnlplace()
-Date:   Mon, 23 Aug 2021 15:20:14 -0700
-Message-Id: <20210823222014.764557-1-nathan@kernel.org>
-X-Mailer: git-send-email 2.33.0
+        b=UOVB14cjbywGUu2PAOSWdbr79yjb2rGgYIdlnHCjvC5CCgzlIdtV8qpIwUrKPcdgf
+         KuTGtQJ/43ecRwrdlbaE3WuaPh91Ge4L/NEUbpzT9al1agOpdTQ7yVCMui+x8nugZf
+         CMJ7CopCMTA4rSknhviWQ8CU6EmzxIVivSKYH0hK7M5lQHRCYnoKAYE5rZcb97dI4o
+         48COGKCU1/76rr+OlRjBolqkybvE5e9gYGFbngQpnhe2fc3nvHy7dhtRQ3cI7ozYGJ
+         v73b6dSuvu4EH8kBXeGLmhFDLZdnP7zKDrAksu7VkZrp5OwIUy9Ng8+Ainz7UmBwZe
+         crzbc8qyeaAkA==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.13 01/26] iwlwifi: pnvm: accept multiple HW-type TLVs
+Date:   Mon, 23 Aug 2021 20:53:31 -0400
+Message-Id: <20210824005356.630888-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Clang warns:
+From: Johannes Berg <johannes.berg@intel.com>
 
-drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:901:6: warning:
-variable 'place' is used uninitialized whenever 'if' condition is false
-[-Wsometimes-uninitialized]
-        if (chnl > 14) {
-            ^~~~~~~~~
-drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:909:9: note:
-uninitialized use occurs here
-        return place;
-               ^~~~~
-drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:901:2: note: remove
-the 'if' if its condition is always true
-        if (chnl > 14) {
-        ^~~~~~~~~~~~~~~
-drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:899:10: note:
-initialize the variable 'place' to silence this warning
-        u8 place;
-                ^
-                 = '\0'
-1 warning generated.
+[ Upstream commit 0f673c16c850250db386537a422c11d248fb123c ]
 
-Commit 369956ae5720 ("rtlwifi: rtl8192de: Remove redundant variable
-initializations") removed the initialization of place but it appears
-that this removal was in the wrong function.
+Some products (So) may have two different types of products
+with different mac-type that are otherwise equivalent, and
+have the same PNVM data, so the PNVM file will contain two
+(or perhaps later more) HW-type TLVs. Accept the file and
+use the data section that contains any matching entry.
 
-_rtl92c_phy_get_rightchnlplace() returns place's value at the end of the
-function so now if the if statement is false, place never gets
-initialized. Add that initialization back to address the warning.
-
-place's initialization is not necessary in
-rtl92d_get_rightchnlplace_for_iqk() as place is only used within the if
-statement so it can be removed, which is likely what was intended in the
-first place.
-
-Fixes: 369956ae5720 ("rtlwifi: rtl8192de: Remove redundant variable initializations")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/20210719140154.a6a86e903035.Ic0b1b75c45d386698859f251518e8a5144431938@changeid
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 25 +++++++++++++-------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index 8ae69d914312..9b83c710c9b8 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -896,7 +896,7 @@ static void _rtl92d_ccxpower_index_check(struct ieee80211_hw *hw,
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+index 40f2109a097f..1a63cae6567e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+@@ -37,6 +37,7 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
+ 	u32 sha1 = 0;
+ 	u16 mac_type = 0, rf_id = 0;
+ 	u8 *pnvm_data = NULL, *tmp;
++	bool hw_match = false;
+ 	u32 size = 0;
+ 	int ret;
  
- static u8 _rtl92c_phy_get_rightchnlplace(u8 chnl)
- {
--	u8 place;
-+	u8 place = chnl;
+@@ -83,6 +84,9 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
+ 				break;
+ 			}
  
- 	if (chnl > 14) {
- 		for (place = 14; place < sizeof(channel5g); place++) {
-@@ -1363,7 +1363,7 @@ static void _rtl92d_phy_switch_rf_setting(struct ieee80211_hw *hw, u8 channel)
++			if (hw_match)
++				break;
++
+ 			mac_type = le16_to_cpup((__le16 *)data);
+ 			rf_id = le16_to_cpup((__le16 *)(data + sizeof(__le16)));
  
- u8 rtl92d_get_rightchnlplace_for_iqk(u8 chnl)
- {
--	u8 place = chnl;
-+	u8 place;
+@@ -90,15 +94,9 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
+ 				     "Got IWL_UCODE_TLV_HW_TYPE mac_type 0x%0x rf_id 0x%0x\n",
+ 				     mac_type, rf_id);
  
- 	if (chnl > 14) {
- 		for (place = 14; place < sizeof(channel_all); place++) {
-
-base-commit: 609c1308fbc6446fd6d8fec42b80e157768a5362
+-			if (mac_type != CSR_HW_REV_TYPE(trans->hw_rev) ||
+-			    rf_id != CSR_HW_RFID_TYPE(trans->hw_rf_id)) {
+-				IWL_DEBUG_FW(trans,
+-					     "HW mismatch, skipping PNVM section, mac_type 0x%0x, rf_id 0x%0x.\n",
+-					     CSR_HW_REV_TYPE(trans->hw_rev), trans->hw_rf_id);
+-				ret = -ENOENT;
+-				goto out;
+-			}
+-
++			if (mac_type == CSR_HW_REV_TYPE(trans->hw_rev) &&
++			    rf_id == CSR_HW_RFID_TYPE(trans->hw_rf_id))
++				hw_match = true;
+ 			break;
+ 		case IWL_UCODE_TLV_SEC_RT: {
+ 			struct iwl_pnvm_section *section = (void *)data;
+@@ -149,6 +147,15 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
+ 	}
+ 
+ done:
++	if (!hw_match) {
++		IWL_DEBUG_FW(trans,
++			     "HW mismatch, skipping PNVM section (need mac_type 0x%x rf_id 0x%x)\n",
++			     CSR_HW_REV_TYPE(trans->hw_rev),
++			     CSR_HW_RFID_TYPE(trans->hw_rf_id));
++		ret = -ENOENT;
++		goto out;
++	}
++
+ 	if (!size) {
+ 		IWL_DEBUG_FW(trans, "Empty PNVM, skipping.\n");
+ 		ret = -ENOENT;
 -- 
-2.33.0
+2.30.2
 
