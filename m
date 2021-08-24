@@ -2,120 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE8BD3F549C
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 02:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B382B3F5591
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 03:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234653AbhHXA4D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 20:56:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48168 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234219AbhHXAzT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 20:55:19 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C688261406;
-        Tue, 24 Aug 2021 00:54:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629766474;
-        bh=3FEbFjT3yU9J6PMogKjc+hEPRYy3y/390wSZa2VRkU4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=VK232pEgOfDO0ObZOIpYDw2staA9R1Klg3/9W1LZVgrcg6004cCpVzcut0SzmqFFN
-         ipOIV/iBrfykvaGPmR0DSZzoVy5Tg3FFtJOiB1sLPeTlgsKMXbSy5mQ9LaXQNxWuj1
-         mZ/lfqRzYqE+jaVEsep8H3NW0M3PRFqVQ6Nu4iFRPA6uQ+8QIbjJQWY18wNjrc5zVv
-         hiy7n9Z0HpRjMnPjaqRDLKdzSc9qDx+4NMqYF8JgR5yY21TnreHff3RjrLl31WKJ+N
-         KIM0LHBqHWbTZO5PZ86kWw8dKVBjGj0OutKgMTetYjgDkEAX5J0Vrw5XZTxtyK4pym
-         lXwLz6YyuAw5Q==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 01/18] iwlwifi: pnvm: accept multiple HW-type TLVs
-Date:   Mon, 23 Aug 2021 20:54:15 -0400
-Message-Id: <20210824005432.631154-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S233624AbhHXBqf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 21:46:35 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:43817 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232186AbhHXBqf (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Aug 2021 21:46:35 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17O1jQohD005631, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36502.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17O1jQohD005631
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 24 Aug 2021 09:45:26 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36502.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Tue, 24 Aug 2021 09:45:25 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Tue, 24 Aug 2021 09:45:25 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Tue, 24 Aug 2021 09:45:25 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Nathan Chancellor <nathan@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+CC:     Colin Ian King <colin.king@canonical.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "clang-built-linux@googlegroups.com" 
+        <clang-built-linux@googlegroups.com>,
+        "llvm@lists.linux.dev" <llvm@lists.linux.dev>
+Subject: RE: [PATCH] rtlwifi: rtl8192de: Fix initialization of place in _rtl92c_phy_get_rightchnlplace()
+Thread-Topic: [PATCH] rtlwifi: rtl8192de: Fix initialization of place in
+ _rtl92c_phy_get_rightchnlplace()
+Thread-Index: AQHXmG0s5HBB1+4FIUaWbT4swfecM6uB4bug
+Date:   Tue, 24 Aug 2021 01:45:25 +0000
+Message-ID: <6ad224d9cd5545bebfaf2e60c54d359b@realtek.com>
+References: <20210823222014.764557-1-nathan@kernel.org>
+In-Reply-To: <20210823222014.764557-1-nathan@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.146]
+x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/8/23_=3F=3F_11:22:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+X-KSE-ServerInfo: RTEXH36502.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 08/24/2021 01:27:34
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 165744 [Aug 23 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 454 454 39c6e442fd417993330528e7f9d13ac1bf7fdf8c
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/24/2021 01:29:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 0f673c16c850250db386537a422c11d248fb123c ]
+> -----Original Message-----
+> From: Nathan Chancellor [mailto:nathan@kernel.org]
+> Sent: Tuesday, August 24, 2021 6:20 AM
+> To: Pkshih; Kalle Valo
+> Cc: Colin Ian King; linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+> linux-kernel@vger.kernel.org; clang-built-linux@googlegroups.com; llvm@lists.linux.dev; Nathan
+> Chancellor
+> Subject: [PATCH] rtlwifi: rtl8192de: Fix initialization of place in _rtl92c_phy_get_rightchnlplace()
+> 
+> Clang warns:
+> 
+> drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:901:6: warning:
+> variable 'place' is used uninitialized whenever 'if' condition is false
+> [-Wsometimes-uninitialized]
+>         if (chnl > 14) {
+>             ^~~~~~~~~
+> drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:909:9: note:
+> uninitialized use occurs here
+>         return place;
+>                ^~~~~
+> drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:901:2: note: remove
+> the 'if' if its condition is always true
+>         if (chnl > 14) {
+>         ^~~~~~~~~~~~~~~
+> drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c:899:10: note:
+> initialize the variable 'place' to silence this warning
+>         u8 place;
+>                 ^
+>                  = '\0'
+> 1 warning generated.
+> 
+> Commit 369956ae5720 ("rtlwifi: rtl8192de: Remove redundant variable
+> initializations") removed the initialization of place but it appears
+> that this removal was in the wrong function.
 
-Some products (So) may have two different types of products
-with different mac-type that are otherwise equivalent, and
-have the same PNVM data, so the PNVM file will contain two
-(or perhaps later more) HW-type TLVs. Accept the file and
-use the data section that contains any matching entry.
+Somehow, I also look into wrong function.
+Thanks for the catch.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210719140154.a6a86e903035.Ic0b1b75c45d386698859f251518e8a5144431938@changeid
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 25 +++++++++++++-------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+> 
+> _rtl92c_phy_get_rightchnlplace() returns place's value at the end of the
+> function so now if the if statement is false, place never gets
+> initialized. Add that initialization back to address the warning.
+> 
+> place's initialization is not necessary in
+> rtl92d_get_rightchnlplace_for_iqk() as place is only used within the if
+> statement so it can be removed, which is likely what was intended in the
+> first place.
+> 
+> Fixes: 369956ae5720 ("rtlwifi: rtl8192de: Remove redundant variable initializations")
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-index 37ce4fe136c5..cdea741be6f6 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-@@ -38,6 +38,7 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
- 	u32 sha1 = 0;
- 	u16 mac_type = 0, rf_id = 0;
- 	u8 *pnvm_data = NULL, *tmp;
-+	bool hw_match = false;
- 	u32 size = 0;
- 	int ret;
- 
-@@ -84,6 +85,9 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
- 				break;
- 			}
- 
-+			if (hw_match)
-+				break;
-+
- 			mac_type = le16_to_cpup((__le16 *)data);
- 			rf_id = le16_to_cpup((__le16 *)(data + sizeof(__le16)));
- 
-@@ -91,15 +95,9 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
- 				     "Got IWL_UCODE_TLV_HW_TYPE mac_type 0x%0x rf_id 0x%0x\n",
- 				     mac_type, rf_id);
- 
--			if (mac_type != CSR_HW_REV_TYPE(trans->hw_rev) ||
--			    rf_id != CSR_HW_RFID_TYPE(trans->hw_rf_id)) {
--				IWL_DEBUG_FW(trans,
--					     "HW mismatch, skipping PNVM section, mac_type 0x%0x, rf_id 0x%0x.\n",
--					     CSR_HW_REV_TYPE(trans->hw_rev), trans->hw_rf_id);
--				ret = -ENOENT;
--				goto out;
--			}
--
-+			if (mac_type == CSR_HW_REV_TYPE(trans->hw_rev) &&
-+			    rf_id == CSR_HW_RFID_TYPE(trans->hw_rf_id))
-+				hw_match = true;
- 			break;
- 		case IWL_UCODE_TLV_SEC_RT: {
- 			struct iwl_pnvm_section *section = (void *)data;
-@@ -150,6 +148,15 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
- 	}
- 
- done:
-+	if (!hw_match) {
-+		IWL_DEBUG_FW(trans,
-+			     "HW mismatch, skipping PNVM section (need mac_type 0x%x rf_id 0x%x)\n",
-+			     CSR_HW_REV_TYPE(trans->hw_rev),
-+			     CSR_HW_RFID_TYPE(trans->hw_rf_id));
-+		ret = -ENOENT;
-+		goto out;
-+	}
-+
- 	if (!size) {
- 		IWL_DEBUG_FW(trans, "Empty PNVM, skipping.\n");
- 		ret = -ENOENT;
--- 
-2.30.2
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+
+> ---
+>  drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> index 8ae69d914312..9b83c710c9b8 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> @@ -896,7 +896,7 @@ static void _rtl92d_ccxpower_index_check(struct ieee80211_hw *hw,
+> 
+>  static u8 _rtl92c_phy_get_rightchnlplace(u8 chnl)
+>  {
+> -	u8 place;
+> +	u8 place = chnl;
+> 
+>  	if (chnl > 14) {
+>  		for (place = 14; place < sizeof(channel5g); place++) {
+> @@ -1363,7 +1363,7 @@ static void _rtl92d_phy_switch_rf_setting(struct ieee80211_hw *hw, u8 channel)
+> 
+>  u8 rtl92d_get_rightchnlplace_for_iqk(u8 chnl)
+>  {
+> -	u8 place = chnl;
+> +	u8 place;
+> 
+>  	if (chnl > 14) {
+>  		for (place = 14; place < sizeof(channel_all); place++) {
+> 
+> base-commit: 609c1308fbc6446fd6d8fec42b80e157768a5362
+> --
+> 2.33.0
 
