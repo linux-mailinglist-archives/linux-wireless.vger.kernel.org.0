@@ -2,143 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 980D03F6865
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 19:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E67383F6A74
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 22:35:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239550AbhHXRuU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Aug 2021 13:50:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39752 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242356AbhHXRuC (ORCPT
+        id S234838AbhHXUgI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Aug 2021 16:36:08 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:52744 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229514AbhHXUgI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Aug 2021 13:50:02 -0400
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18220C0F26CC
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Aug 2021 10:11:11 -0700 (PDT)
-Received: by mail-ot1-x334.google.com with SMTP id k12-20020a056830150c00b0051abe7f680bso42900371otp.1
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Aug 2021 10:11:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=WvhpETrEpcbNS5tm6bQ3pCjBYg+a71Wh95ngB5PZYBE=;
-        b=AOzGiPFS13S44pAap29oALDR+4evL+IZW+yZrvzYI0T1p/5RbsaugSmkNhL2jrtoJU
-         +Hj1lt5hKsOlTgEkuncuJXnTeBTHtcB7yoF3J755EAtQjIEJf3Sj92lU1wat5orlB2J+
-         sDUdqli6kx+wu2MU3pk63OMZdoeNIkkbGK1nqSEGXsMMz/NgH1EaWAldDktdLJqRLqZw
-         nZWoW5pejn175qs4teV8oZlfzEgZRfdAFtGBpI0yUqvKoMoi771sHIKahEzrMf12uFGc
-         kmFoPO7cJy3QA1zK+BtDzRd9yb4rZ1UNUd3pKiU0cUkzOak9k/kbOz+qekbAqIrxKSjs
-         NAkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=WvhpETrEpcbNS5tm6bQ3pCjBYg+a71Wh95ngB5PZYBE=;
-        b=ryDRKJZ59/+FUHWPM/lfm8+2SXxxxF5jlP+ZM2X6KIZEUcQCM3qW/0hhyPrjw1w8ZE
-         hwOpo3YJ22A50TkJ36XGCL9nWIVDo72Bg+9i8w/25AGXZLgnoKG3GrlIHzjLNeYmedGK
-         Xfz9fclOlX6tf7osKMK7zX8NDrRj7LxgfCmMkwMMycntfzBHtMnygSmEZWTNY2ay5JRR
-         s+RjWqpw1piY6kYc3/GtU3n5y7+aafIV+910PBfsZlKxaB6XxtTMidFyinU+xpDf5e0E
-         R2A/P6LQq6UwDwoA94rO0aVJ+6HnCUqllACHApraRd7hrz2fhkKroqUp2wtgmQQdfR/y
-         WtNw==
-X-Gm-Message-State: AOAM531e8qyEYuLJKYCpdPY4yOtwWERvM3WAwCM9tZF5PxUralmz+d5q
-        86xjzJp04Ud/Nl9j8/j+r5SNfw==
-X-Google-Smtp-Source: ABdhPJw7ciWfxqB71e4RSCRJJxzK+nKwfBFMu3mHYumW2+F97O/lOwbyNKxlfTwFzOw0wH4GtZH8rg==
-X-Received: by 2002:a9d:1d25:: with SMTP id m34mr32755207otm.313.1629825070322;
-        Tue, 24 Aug 2021 10:11:10 -0700 (PDT)
-Received: from localhost.localdomain (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id v29sm4213475ooe.31.2021.08.24.10.11.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Aug 2021 10:11:09 -0700 (PDT)
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        =?UTF-8?q?An=C3=ADbal=20Lim=C3=B3n?= <anibal.limon@linaro.org>
-Subject: [RESEND PATCH] wcn36xx: Allow firmware name to be overridden by DT
-Date:   Tue, 24 Aug 2021 10:12:25 -0700
-Message-Id: <20210824171225.686683-1-bjorn.andersson@linaro.org>
-X-Mailer: git-send-email 2.29.2
+        Tue, 24 Aug 2021 16:36:08 -0400
+X-UUID: 814b16205a6c480ab5a64afe02273594-20210825
+X-UUID: 814b16205a6c480ab5a64afe02273594-20210825
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 557214062; Wed, 25 Aug 2021 04:35:19 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs05n2.mediatek.inc (172.21.101.140) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 25 Aug 2021 04:35:18 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 25 Aug 2021 04:35:18 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: fill boottime_ns in Rx path
+Date:   Wed, 25 Aug 2021 04:35:16 +0800
+Message-ID: <f098865a41b59e82fb05adfbc8b661bb8e7d5f8e.1629836741.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The WLAN NV firmware blob differs between platforms, and possibly
-devices, so add support in the wcn36xx driver for reading the path of
-this file from DT in order to allow these files to live in a generic
-file system (or linux-firmware).
+Give a proper boottime_ns value for netlink RX to avoid scan
+issues with Android.
 
-For some reason the parent (wcnss_ctrl) also needs to upload this blob,
-so rather than specifying the same information in both nodes wcn36xx
-reads the string from the parent's of_node.
-
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Tested-by: Aníbal Limón <anibal.limon@linaro.org>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-This was previously part of a series spanning multiple subsystems, picked up
-tested-bys and resending alone in hope that it can be merged.
-
-https://lore.kernel.org/linux-arm-msm/20210312003318.3273536-3-bjorn.andersson@linaro.org/
-
- drivers/net/wireless/ath/wcn36xx/main.c    | 7 +++++++
- drivers/net/wireless/ath/wcn36xx/smd.c     | 4 ++--
- drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 1 +
- 3 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index d202f2128df2..2ccf7a8924a0 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1500,6 +1500,13 @@ static int wcn36xx_probe(struct platform_device *pdev)
- 		goto out_wq;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 2a434a97fa45..fab55f7d3766 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -801,6 +801,7 @@ mt76_rx_convert(struct mt76_dev *dev, struct sk_buff *skb,
+ 		struct ieee80211_sta **sta)
+ {
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
++	struct ieee80211_hdr *hdr = mt76_skb_get_hdr(skb);
+ 	struct mt76_rx_status mstat;
  
-+	wcn->nv_file = WLAN_NV_FILE;
-+	ret = of_property_read_string(wcn->dev->parent->of_node, "firmware-name", &wcn->nv_file);
-+	if (ret < 0 && ret != -EINVAL) {
-+		wcn36xx_err("failed to read \"firmware-name\" property\n");
-+		goto out_wq;
-+	}
+ 	mstat = *((struct mt76_rx_status *)skb->cb);
+@@ -823,6 +824,10 @@ mt76_rx_convert(struct mt76_dev *dev, struct sk_buff *skb,
+ 	status->device_timestamp = mstat.timestamp;
+ 	status->mactime = mstat.timestamp;
+ 
++	if (ieee80211_is_beacon(hdr->frame_control) ||
++	    ieee80211_is_probe_resp(hdr->frame_control))
++		status->boottime_ns = ktime_get_boottime_ns();
 +
- 	wcn->smd_channel = qcom_wcnss_open_channel(wcnss, "WLAN_CTRL", wcn36xx_smd_rsp_process, hw);
- 	if (IS_ERR(wcn->smd_channel)) {
- 		wcn36xx_err("failed to open WLAN_CTRL channel\n");
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index 0e3be17d8cea..57fa857b290b 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -504,10 +504,10 @@ int wcn36xx_smd_load_nv(struct wcn36xx *wcn)
- 	u16 fm_offset = 0;
- 
- 	if (!wcn->nv) {
--		ret = request_firmware(&wcn->nv, WLAN_NV_FILE, wcn->dev);
-+		ret = request_firmware(&wcn->nv, wcn->nv_file, wcn->dev);
- 		if (ret) {
- 			wcn36xx_err("Failed to load nv file %s: %d\n",
--				      WLAN_NV_FILE, ret);
-+				    wcn->nv_file, ret);
- 			goto out;
- 		}
- 	}
-diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-index 6121d8a5641a..a69cce883563 100644
---- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-+++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-@@ -199,6 +199,7 @@ struct wcn36xx {
- 	struct device		*dev;
- 	struct list_head	vif_list;
- 
-+	const char		*nv_file;
- 	const struct firmware	*nv;
- 
- 	u8			fw_revision;
+ 	BUILD_BUG_ON(sizeof(mstat) > sizeof(skb->cb));
+ 	BUILD_BUG_ON(sizeof(status->chain_signal) !=
+ 		     sizeof(mstat.chain_signal));
 -- 
 2.29.2
 
