@@ -2,40 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 578343F543F
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 02:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE8BD3F549C
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 02:55:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233624AbhHXAys (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Aug 2021 20:54:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47202 "EHLO mail.kernel.org"
+        id S234653AbhHXA4D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Aug 2021 20:56:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48168 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233536AbhHXAyo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Aug 2021 20:54:44 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 97AF7613AD;
-        Tue, 24 Aug 2021 00:54:00 +0000 (UTC)
+        id S234219AbhHXAzT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Aug 2021 20:55:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C688261406;
+        Tue, 24 Aug 2021 00:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629766441;
-        bh=8uGhlzw8itBNSqnqsC9IrVharzy9ChGrbnsD8NU3DQ0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=urdxF2d2Rrilwg8fMEl0nGnhH+8qyluNbyQWmUXq5MLVS6pVcRANFgiahxtZ0huuN
-         9eWWkBmDqTvxyfb+Lu3nZUmCYiHPq0EwPxIdpHqpgDStjObw1s5Go7Y2UXL42NRcEy
-         f+f3RXvCoD9cavwFGiB37InL7mnBix+XavPrfcTOC5z/qllREFVMfHWtd55rjKw++p
-         qJhSsyuJgah6lOtEUK2SiVfM382bc0xuWWZV0/tq6I+0aYYJXWWWEAasgaaSQ2LDro
-         Uge+okqCcTt39hniaDdUrmqmvE7sV2qZzdteM95XygnANpmTVdsUEC1D/kvKSz2WY2
-         a9YDMwIC8Q8Zw==
+        s=k20201202; t=1629766474;
+        bh=3FEbFjT3yU9J6PMogKjc+hEPRYy3y/390wSZa2VRkU4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VK232pEgOfDO0ObZOIpYDw2staA9R1Klg3/9W1LZVgrcg6004cCpVzcut0SzmqFFN
+         ipOIV/iBrfykvaGPmR0DSZzoVy5Tg3FFtJOiB1sLPeTlgsKMXbSy5mQ9LaXQNxWuj1
+         mZ/lfqRzYqE+jaVEsep8H3NW0M3PRFqVQ6Nu4iFRPA6uQ+8QIbjJQWY18wNjrc5zVv
+         hiy7n9Z0HpRjMnPjaqRDLKdzSc9qDx+4NMqYF8JgR5yY21TnreHff3RjrLl31WKJ+N
+         KIM0LHBqHWbTZO5PZ86kWw8dKVBjGj0OutKgMTetYjgDkEAX5J0Vrw5XZTxtyK4pym
+         lXwLz6YyuAw5Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Yaara Baruch <yaara.baruch@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Johannes Berg <johannes.berg@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 03/26] iwlwifi: add new so-jf devices
-Date:   Mon, 23 Aug 2021 20:53:33 -0400
-Message-Id: <20210824005356.630888-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 01/18] iwlwifi: pnvm: accept multiple HW-type TLVs
+Date:   Mon, 23 Aug 2021 20:54:15 -0400
+Message-Id: <20210824005432.631154-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210824005356.630888-1-sashal@kernel.org>
-References: <20210824005356.630888-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,68 +41,81 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yaara Baruch <yaara.baruch@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 891332f697e14bfb2002f56e21d9bbd4800a7098 ]
+[ Upstream commit 0f673c16c850250db386537a422c11d248fb123c ]
 
-Add new so-jf devices to the driver.
+Some products (So) may have two different types of products
+with different mac-type that are otherwise equivalent, and
+have the same PNVM data, so the PNVM file will contain two
+(or perhaps later more) HW-type TLVs. Accept the file and
+use the data section that contains any matching entry.
 
-Signed-off-by: Yaara Baruch <yaara.baruch@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210719144523.1c9a59fd2760.If5aef1942007828210f0f2c4a17985f63050bb45@changeid
+Link: https://lore.kernel.org/r/20210719140154.a6a86e903035.Ic0b1b75c45d386698859f251518e8a5144431938@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 36 ++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 25 +++++++++++++-------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index cd204a9ec87d..9f11a1d5d034 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1142,7 +1142,41 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_GF, IWL_CFG_ANY,
- 		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB,
--		      iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_name)
-+		      iwlax211_2ax_cfg_so_gf_a0, iwl_ax211_name),
-+
-+/* So with JF2 */
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      iwlax210_2ax_cfg_so_jf_b0, iwl9560_160_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_JF2, IWL_CFG_RF_ID_JF,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      iwlax210_2ax_cfg_so_jf_b0, iwl9560_name),
-+
-+/* So with JF */
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      iwlax210_2ax_cfg_so_jf_b0, iwl9461_160_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV,
-+		      IWL_CFG_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      iwlax210_2ax_cfg_so_jf_b0, iwl9462_160_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      iwlax210_2ax_cfg_so_jf_b0, iwl9461_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_JF1, IWL_CFG_RF_ID_JF1_DIV,
-+		      IWL_CFG_NO_160, IWL_CFG_CORES_BT, IWL_CFG_NO_CDB,
-+		      iwlax210_2ax_cfg_so_jf_b0, iwl9462_name)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+index 37ce4fe136c5..cdea741be6f6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+@@ -38,6 +38,7 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
+ 	u32 sha1 = 0;
+ 	u16 mac_type = 0, rf_id = 0;
+ 	u8 *pnvm_data = NULL, *tmp;
++	bool hw_match = false;
+ 	u32 size = 0;
+ 	int ret;
  
- #endif /* CONFIG_IWLMVM */
- };
+@@ -84,6 +85,9 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
+ 				break;
+ 			}
+ 
++			if (hw_match)
++				break;
++
+ 			mac_type = le16_to_cpup((__le16 *)data);
+ 			rf_id = le16_to_cpup((__le16 *)(data + sizeof(__le16)));
+ 
+@@ -91,15 +95,9 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
+ 				     "Got IWL_UCODE_TLV_HW_TYPE mac_type 0x%0x rf_id 0x%0x\n",
+ 				     mac_type, rf_id);
+ 
+-			if (mac_type != CSR_HW_REV_TYPE(trans->hw_rev) ||
+-			    rf_id != CSR_HW_RFID_TYPE(trans->hw_rf_id)) {
+-				IWL_DEBUG_FW(trans,
+-					     "HW mismatch, skipping PNVM section, mac_type 0x%0x, rf_id 0x%0x.\n",
+-					     CSR_HW_REV_TYPE(trans->hw_rev), trans->hw_rf_id);
+-				ret = -ENOENT;
+-				goto out;
+-			}
+-
++			if (mac_type == CSR_HW_REV_TYPE(trans->hw_rev) &&
++			    rf_id == CSR_HW_RFID_TYPE(trans->hw_rf_id))
++				hw_match = true;
+ 			break;
+ 		case IWL_UCODE_TLV_SEC_RT: {
+ 			struct iwl_pnvm_section *section = (void *)data;
+@@ -150,6 +148,15 @@ static int iwl_pnvm_handle_section(struct iwl_trans *trans, const u8 *data,
+ 	}
+ 
+ done:
++	if (!hw_match) {
++		IWL_DEBUG_FW(trans,
++			     "HW mismatch, skipping PNVM section (need mac_type 0x%x rf_id 0x%x)\n",
++			     CSR_HW_REV_TYPE(trans->hw_rev),
++			     CSR_HW_RFID_TYPE(trans->hw_rf_id));
++		ret = -ENOENT;
++		goto out;
++	}
++
+ 	if (!size) {
+ 		IWL_DEBUG_FW(trans, "Empty PNVM, skipping.\n");
+ 		ret = -ENOENT;
 -- 
 2.30.2
 
