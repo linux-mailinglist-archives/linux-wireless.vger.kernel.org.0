@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B49FB3F5BFA
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 12:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15EAF3F5BFB
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Aug 2021 12:23:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236275AbhHXKX7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S236265AbhHXKX7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 24 Aug 2021 06:23:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59536 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:59572 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236294AbhHXKXz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Aug 2021 06:23:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4591761357;
-        Tue, 24 Aug 2021 10:23:10 +0000 (UTC)
+        id S236216AbhHXKX5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Aug 2021 06:23:57 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8EA71610FB;
+        Tue, 24 Aug 2021 10:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629800591;
-        bh=ZKCdGx1GjiDkuyKxTg1nFpSsLpUEWRJzTVf61ShnKls=;
+        s=k20201202; t=1629800593;
+        bh=cLObTUa8VQP5Jsqgfao37i78VkDKRbaLbQ3voofxYOY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ih4pgf0zSh5JJJ+lqjIVI/DcC45C6MUW1bQxAq7PLamZn/1hOOHaMm2aMpfo1aDZ5
-         yQu0hH0RRud57++h9KUlIUx1OEBGaq50WZAcDb+LdNnmo48Pyqj3MKtwlDgUyhwsOe
-         2GLs/3AnWc+sb3n0e7OBZd849Av+z09FdyjsS9G4trjjjmOEN17UO6CS0EqajIT9Cs
-         /S56ncURHro4xtW7aGsQ3dTT39TE3tMFznj42IDRmJdST6wQWlGGlSi26v3Zv994f7
-         1t9cEvePxfiRNECMU4/fG80tgTA0by2jz7JIRZuosGo0u0M9j5Oa0Hl2CoR2a/8Ttc
-         qZHuHkvQME9yQ==
+        b=oKEd7lQPVUUwZBEoZN58wnRsj82unLo32bT7Ey7KN7ukwn55jfWoH9JAMqQyDsWeB
+         W5z4W2nL3Onv7x6QUIf6ln6LotF09BWF1Xt0/Hh1KI6kYoFPTqT61NND1IVfxTWfp5
+         Rbryge2zHS95ldeUWdZt5/eoz2Fp6uz41xOReThj+zAc9yAw5axyQaVgFx+i++WAj2
+         bmgRNav+HAj8ua68ebMaxyg29hgsl1lzlwvUcwrcNupIZoQQ4RTEa1zVaqEtXIH8jz
+         kFNSHvu6BvGA2EdufG8x5YYTxGCiPanOLvi3N5ouPS2AHrI7+/LUA4bUTGSZ17aNeN
+         hdhvURGjueNfA==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, Deren.Wu@mediatek.com
-Subject: [PATCH 8/9] mt76: add 6GHz support
-Date:   Tue, 24 Aug 2021 12:22:26 +0200
-Message-Id: <4c6f43c3413fe91d22d30def6516b37faf6f655d.1629799385.git.lorenzo@kernel.org>
+Subject: [PATCH 9/9] mt76: mt7921: add 6GHz support
+Date:   Tue, 24 Aug 2021 12:22:27 +0200
+Message-Id: <308d55c9dd3ae931c970166fbf5287dd8590eb36.1629799385.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1629799385.git.lorenzo@kernel.org>
 References: <cover.1629799385.git.lorenzo@kernel.org>
@@ -39,244 +39,199 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce 6GHz channel list in mt76 module. This is a preliminary patch
-to unlock 6GHz band for mt7921 devices.
+Unlock 6GHz band if supported by the device. Configure HE 6G
+capabilities.
 
 Tested-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mac80211.c | 128 ++++++++++++++++--
- 1 file changed, 120 insertions(+), 8 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 33 ++++++++++------
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 39 ++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  6 ++-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  2 +-
+ 4 files changed, 64 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index e282c627e25c..c1b2af458691 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -20,6 +20,13 @@
- 	.max_power = 30,			\
- }
- 
-+#define CHAN6G(_idx, _freq) {			\
-+	.band = NL80211_BAND_6GHZ,		\
-+	.center_freq = (_freq),			\
-+	.hw_value = (_idx),			\
-+	.max_power = 30,			\
-+}
-+
- static const struct ieee80211_channel mt76_channels_2ghz[] = {
- 	CHAN2G(1, 2412),
- 	CHAN2G(2, 2417),
-@@ -70,6 +77,72 @@ static const struct ieee80211_channel mt76_channels_5ghz[] = {
- 	CHAN5G(173, 5865),
- };
- 
-+static const struct ieee80211_channel mt76_channels_6ghz[] = {
-+	/* UNII-5 */
-+	CHAN6G(1, 5955),
-+	CHAN6G(5, 5975),
-+	CHAN6G(9, 5995),
-+	CHAN6G(13, 6015),
-+	CHAN6G(17, 6035),
-+	CHAN6G(21, 6055),
-+	CHAN6G(25, 6075),
-+	CHAN6G(29, 6095),
-+	CHAN6G(33, 6115),
-+	CHAN6G(37, 6135),
-+	CHAN6G(41, 6155),
-+	CHAN6G(45, 6175),
-+	CHAN6G(49, 6195),
-+	CHAN6G(53, 6215),
-+	CHAN6G(57, 6235),
-+	CHAN6G(61, 6255),
-+	CHAN6G(65, 6275),
-+	CHAN6G(69, 6295),
-+	CHAN6G(73, 6315),
-+	CHAN6G(77, 6335),
-+	CHAN6G(81, 6355),
-+	CHAN6G(85, 6375),
-+	CHAN6G(89, 6395),
-+	CHAN6G(93, 6415),
-+	/* UNII-6 */
-+	CHAN6G(97, 6435),
-+	CHAN6G(101, 6455),
-+	CHAN6G(105, 6475),
-+	CHAN6G(109, 6495),
-+	CHAN6G(113, 6515),
-+	CHAN6G(117, 6535),
-+	/* UNII-7 */
-+	CHAN6G(121, 6555),
-+	CHAN6G(125, 6575),
-+	CHAN6G(129, 6595),
-+	CHAN6G(133, 6615),
-+	CHAN6G(137, 6635),
-+	CHAN6G(141, 6655),
-+	CHAN6G(145, 6675),
-+	CHAN6G(149, 6695),
-+	CHAN6G(153, 6715),
-+	CHAN6G(157, 6735),
-+	CHAN6G(161, 6755),
-+	CHAN6G(165, 6775),
-+	CHAN6G(169, 6795),
-+	CHAN6G(173, 6815),
-+	CHAN6G(177, 6835),
-+	CHAN6G(181, 6855),
-+	CHAN6G(185, 6875),
-+	/* UNII-8 */
-+	CHAN6G(189, 6895),
-+	CHAN6G(193, 6915),
-+	CHAN6G(197, 6935),
-+	CHAN6G(201, 6955),
-+	CHAN6G(205, 6975),
-+	CHAN6G(209, 6995),
-+	CHAN6G(213, 7015),
-+	CHAN6G(217, 7035),
-+	CHAN6G(221, 7055),
-+	CHAN6G(225, 7075),
-+	CHAN6G(229, 7095),
-+	CHAN6G(233, 7115),
-+};
-+
- static const struct ieee80211_tpt_blink mt76_tpt_blink[] = {
- 	{ .throughput =   0 * 1024, .blink_time = 334 },
- 	{ .throughput =   1 * 1024, .blink_time = 260 },
-@@ -194,13 +267,16 @@ void mt76_set_stream_caps(struct mt76_phy *phy, bool vht)
- 		mt76_init_stream_cap(phy, &phy->sband_2g.sband, false);
- 	if (phy->cap.has_5ghz)
- 		mt76_init_stream_cap(phy, &phy->sband_5g.sband, vht);
-+	if (phy->cap.has_6ghz)
-+		mt76_init_stream_cap(phy, &phy->sband_6g.sband, vht);
- }
- EXPORT_SYMBOL_GPL(mt76_set_stream_caps);
- 
- static int
- mt76_init_sband(struct mt76_phy *phy, struct mt76_sband *msband,
- 		const struct ieee80211_channel *chan, int n_chan,
--		struct ieee80211_rate *rates, int n_rates, bool vht)
-+		struct ieee80211_rate *rates, int n_rates,
-+		bool ht, bool vht)
- {
- 	struct ieee80211_supported_band *sband = &msband->sband;
- 	struct ieee80211_sta_vht_cap *vht_cap;
-@@ -224,6 +300,9 @@ mt76_init_sband(struct mt76_phy *phy, struct mt76_sband *msband,
- 	sband->bitrates = rates;
- 	sband->n_bitrates = n_rates;
- 
-+	if (!ht)
-+		return 0;
-+
- 	ht_cap = &sband->ht_cap;
- 	ht_cap->ht_supported = true;
- 	ht_cap->cap |= IEEE80211_HT_CAP_SUP_WIDTH_20_40 |
-@@ -260,7 +339,7 @@ mt76_init_sband_2g(struct mt76_phy *phy, struct ieee80211_rate *rates,
- 
- 	return mt76_init_sband(phy, &phy->sband_2g, mt76_channels_2ghz,
- 			       ARRAY_SIZE(mt76_channels_2ghz), rates,
--			       n_rates, false);
-+			       n_rates, true, false);
- }
- 
- static int
-@@ -271,7 +350,18 @@ mt76_init_sband_5g(struct mt76_phy *phy, struct ieee80211_rate *rates,
- 
- 	return mt76_init_sband(phy, &phy->sband_5g, mt76_channels_5ghz,
- 			       ARRAY_SIZE(mt76_channels_5ghz), rates,
--			       n_rates, vht);
-+			       n_rates, true, vht);
-+}
-+
-+static int
-+mt76_init_sband_6g(struct mt76_phy *phy, struct ieee80211_rate *rates,
-+		   int n_rates)
-+{
-+	phy->hw->wiphy->bands[NL80211_BAND_6GHZ] = &phy->sband_6g.sband;
-+
-+	return mt76_init_sband(phy, &phy->sband_6g, mt76_channels_6ghz,
-+			       ARRAY_SIZE(mt76_channels_6ghz), rates,
-+			       n_rates, false, false);
- }
- 
- static void
-@@ -400,9 +490,16 @@ int mt76_register_phy(struct mt76_phy *phy, bool vht,
- 			return ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 55b7a52cd232..7eee67a4d184 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -355,7 +355,14 @@ mt7921_get_status_freq_info(struct mt7921_dev *dev, struct mt76_phy *mphy,
+ 		return;
  	}
  
-+	if (phy->cap.has_6ghz) {
-+		ret = mt76_init_sband_6g(phy, rates + 4, n_rates - 4);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	wiphy_read_of_freq_limits(phy->hw->wiphy);
- 	mt76_check_sband(phy, &phy->sband_2g, NL80211_BAND_2GHZ);
- 	mt76_check_sband(phy, &phy->sband_5g, NL80211_BAND_5GHZ);
-+	mt76_check_sband(phy, &phy->sband_6g, NL80211_BAND_6GHZ);
- 
- 	ret = ieee80211_register_hw(phy->hw);
- 	if (ret)
-@@ -510,9 +607,16 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
- 			return ret;
- 	}
- 
-+	if (phy->cap.has_6ghz) {
-+		ret = mt76_init_sband_6g(phy, rates + 4, n_rates - 4);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	wiphy_read_of_freq_limits(hw->wiphy);
- 	mt76_check_sband(&dev->phy, &phy->sband_2g, NL80211_BAND_2GHZ);
- 	mt76_check_sband(&dev->phy, &phy->sband_5g, NL80211_BAND_5GHZ);
-+	mt76_check_sband(&dev->phy, &phy->sband_6g, NL80211_BAND_6GHZ);
- 
- 	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
- 		ret = mt76_led_init(dev);
-@@ -657,6 +761,8 @@ mt76_channel_state(struct mt76_phy *phy, struct ieee80211_channel *c)
- 
- 	if (c->band == NL80211_BAND_2GHZ)
- 		msband = &phy->sband_2g;
-+	else if (c->band == NL80211_BAND_6GHZ)
-+		msband = &phy->sband_6g;
- 	else
- 		msband = &phy->sband_5g;
- 
-@@ -732,10 +838,16 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
- 	if (idx == 0 && dev->drv->update_survey)
- 		mt76_update_survey(phy);
- 
--	sband = &phy->sband_2g;
--	if (idx >= sband->sband.n_channels) {
--		idx -= sband->sband.n_channels;
-+	if (idx >= phy->sband_2g.sband.n_channels +
-+		   phy->sband_5g.sband.n_channels) {
-+		idx -= (phy->sband_2g.sband.n_channels +
-+			phy->sband_5g.sband.n_channels);
-+		sband = &phy->sband_6g;
-+	} else if (idx >= phy->sband_2g.sband.n_channels) {
-+		idx -= phy->sband_2g.sband.n_channels;
- 		sband = &phy->sband_5g;
+-	status->band = chfreq <= 14 ? NL80211_BAND_2GHZ : NL80211_BAND_5GHZ;
++	if (chfreq > 180) {
++		status->band = NL80211_BAND_6GHZ;
++		chfreq = (chfreq - 181) * 4 + 1;
++	} else if (chfreq > 14) {
++		status->band = NL80211_BAND_5GHZ;
 +	} else {
-+		sband = &phy->sband_2g;
++		status->band = NL80211_BAND_2GHZ;
++	}
+ 	status->freq = ieee80211_channel_to_frequency(chfreq, status->band);
+ }
+ 
+@@ -441,10 +448,17 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
+ 
+ 	mt7921_get_status_freq_info(dev, mphy, status, chfreq);
+ 
+-	if (status->band == NL80211_BAND_5GHZ)
++	switch (status->band) {
++	case NL80211_BAND_5GHZ:
+ 		sband = &mphy->sband_5g.sband;
+-	else
++		break;
++	case NL80211_BAND_6GHZ:
++		sband = &mphy->sband_6g.sband;
++		break;
++	default:
+ 		sband = &mphy->sband_2g.sband;
++		break;
++	}
+ 
+ 	if (!sband->channels)
+ 		return -EINVAL;
+@@ -994,7 +1008,7 @@ mt7921_tx_check_aggr(struct ieee80211_sta *sta, __le32 *txwi)
+ 	u16 fc, tid;
+ 	u32 val;
+ 
+-	if (!sta || !sta->ht_cap.ht_supported)
++	if (!sta || !(sta->ht_cap.ht_supported || sta->he_cap.has_he))
+ 		return;
+ 
+ 	tid = FIELD_GET(MT_TXD1_TID, le32_to_cpu(txwi[1]));
+@@ -1397,17 +1411,12 @@ void mt7921_mac_set_timing(struct mt7921_phy *phy)
+ 		  FIELD_PREP(MT_TIMEOUT_VAL_CCA, 48);
+ 	u32 ofdm = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, 60) |
+ 		   FIELD_PREP(MT_TIMEOUT_VAL_CCA, 28);
+-	int sifs, offset;
+-	bool is_5ghz = phy->mt76->chandef.chan->band == NL80211_BAND_5GHZ;
++	bool is_2ghz = phy->mt76->chandef.chan->band == NL80211_BAND_2GHZ;
++	int sifs = is_2ghz ? 10 : 16, offset;
+ 
+ 	if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
+ 		return;
+ 
+-	if (is_5ghz)
+-		sifs = 16;
+-	else
+-		sifs = 10;
+-
+ 	mt76_set(dev, MT_ARB_SCR(0),
+ 		 MT_ARB_SCR_TX_DISABLE | MT_ARB_SCR_RX_DISABLE);
+ 	udelay(1);
+@@ -1424,7 +1433,7 @@ void mt7921_mac_set_timing(struct mt7921_phy *phy)
+ 		FIELD_PREP(MT_IFS_SIFS, sifs) |
+ 		FIELD_PREP(MT_IFS_SLOT, phy->slottime));
+ 
+-	if (phy->slottime < 20 || is_5ghz)
++	if (phy->slottime < 20 || !is_2ghz)
+ 		val = MT7921_CFEND_RATE_DEFAULT;
+ 	else
+ 		val = MT7921_CFEND_RATE_11B;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 217ed7055aa0..cd3974b6ba8f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -72,7 +72,7 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
+ 		if (band == NL80211_BAND_2GHZ)
+ 			he_cap_elem->phy_cap_info[0] =
+ 				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G;
+-		else if (band == NL80211_BAND_5GHZ)
++		else
+ 			he_cap_elem->phy_cap_info[0] =
+ 				IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G;
+ 
+@@ -93,7 +93,7 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
+ 			if (band == NL80211_BAND_2GHZ)
+ 				he_cap_elem->phy_cap_info[0] |=
+ 					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_RU_MAPPING_IN_2G;
+-			else if (band == NL80211_BAND_5GHZ)
++			else
+ 				he_cap_elem->phy_cap_info[0] |=
+ 					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_RU_MAPPING_IN_5G;
+ 
+@@ -142,6 +142,32 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
+ 			he_cap_elem->phy_cap_info[9] |=
+ 				IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_16US;
+ 		}
++
++		if (band == NL80211_BAND_6GHZ) {
++			struct ieee80211_supported_band *sband =
++				&phy->mt76->sband_5g.sband;
++			struct ieee80211_sta_vht_cap *vht_cap = &sband->vht_cap;
++			struct ieee80211_sta_ht_cap *ht_cap = &sband->ht_cap;
++			u32 exp;
++			u16 cap;
++
++			cap = u16_encode_bits(ht_cap->ampdu_density,
++					IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START);
++			exp = u32_get_bits(vht_cap->cap,
++				IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK);
++			cap |= u16_encode_bits(exp,
++					IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP);
++			exp = u32_get_bits(vht_cap->cap,
++					   IEEE80211_VHT_CAP_MAX_MPDU_MASK);
++			cap |= u16_encode_bits(exp,
++					IEEE80211_HE_6GHZ_CAP_MAX_MPDU_LEN);
++			if (vht_cap->cap & IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN)
++				cap |= IEEE80211_HE_6GHZ_CAP_TX_ANTPAT_CONS;
++			if (vht_cap->cap & IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN)
++				cap |= IEEE80211_HE_6GHZ_CAP_RX_ANTPAT_CONS;
++
++			data->he_6ghz_capa.capa = cpu_to_le16(cap);
++		}
+ 		idx++;
  	}
  
- 	if (idx >= sband->sband.n_channels) {
-@@ -1285,7 +1397,7 @@ int mt76_get_rate(struct mt76_dev *dev,
- 	int i, offset = 0, len = sband->n_bitrates;
+@@ -170,6 +196,15 @@ void mt7921_set_stream_he_caps(struct mt7921_phy *phy)
+ 		band = &phy->mt76->sband_5g.sband;
+ 		band->iftype_data = data;
+ 		band->n_iftype_data = n;
++
++		if (phy->mt76->cap.has_6ghz) {
++			data = phy->iftype[NL80211_BAND_6GHZ];
++			n = mt7921_init_he_caps(phy, NL80211_BAND_6GHZ, data);
++
++			band = &phy->mt76->sband_6g.sband;
++			band->iftype_data = data;
++			band->n_iftype_data = n;
++		}
+ 	}
+ }
  
- 	if (cck) {
--		if (sband == &dev->phy.sband_5g.sband)
-+		if (sband != &dev->phy.sband_2g.sband)
- 			return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index f49fc8078125..34038f182bb0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1028,9 +1028,13 @@ int mt7921_mcu_set_chan_info(struct mt7921_phy *phy, int cmd)
+ 		.tx_streams_num = hweight8(phy->mt76->antenna_mask),
+ 		.rx_streams = phy->mt76->antenna_mask,
+ 		.band_idx = phy != &dev->phy,
+-		.channel_band = chandef->chan->band,
+ 	};
  
- 		idx &= ~BIT(2); /* short preamble */
-@@ -1357,7 +1469,7 @@ u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx)
- 	int offset = 0;
- 	struct ieee80211_rate *rate;
++	if (chandef->chan->band == NL80211_BAND_6GHZ)
++		req.channel_band = 2;
++	else
++		req.channel_band = chandef->chan->band;
++
+ 	if (dev->mt76.hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
+ 		req.switch_reason = CH_SWITCH_SCAN_BYPASS_DPD;
+ 	else if ((chandef->chan->flags & IEEE80211_CHAN_RADAR) &&
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index a6caca73fdda..856035e0a5b7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -111,7 +111,7 @@ struct mt7921_phy {
+ 	struct mt76_phy *mt76;
+ 	struct mt7921_dev *dev;
  
--	if (phy->chandef.chan->band == NL80211_BAND_5GHZ)
-+	if (phy->chandef.chan->band != NL80211_BAND_2GHZ)
- 		offset = 4;
+-	struct ieee80211_sband_iftype_data iftype[2][NUM_NL80211_IFTYPES];
++	struct ieee80211_sband_iftype_data iftype[NUM_NL80211_BANDS][NUM_NL80211_IFTYPES];
  
- 	rate = &mt76_rates[offset + rateidx];
+ 	u32 rxfilter;
+ 	u64 omac_mask;
 -- 
 2.31.1
 
