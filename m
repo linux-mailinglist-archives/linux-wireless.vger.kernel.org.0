@@ -2,193 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 899503F6E71
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Aug 2021 06:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18FB03F6FA7
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Aug 2021 08:36:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229765AbhHYE1K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Aug 2021 00:27:10 -0400
-Received: from condef-01.nifty.com ([202.248.20.66]:59485 "EHLO
-        condef-01.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229631AbhHYE1J (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Aug 2021 00:27:09 -0400
-X-Greylist: delayed 312 seconds by postgrey-1.27 at vger.kernel.org; Wed, 25 Aug 2021 00:27:09 EDT
-Received: from conuserg-11.nifty.com ([10.126.8.74])by condef-01.nifty.com with ESMTP id 17P4IX64023256
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 13:18:46 +0900
-Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
-        by conuserg-11.nifty.com with ESMTP id 17P4GiCL020114;
-        Wed, 25 Aug 2021 13:16:45 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-11.nifty.com 17P4GiCL020114
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1629865005;
-        bh=1wLIpiebg99hItGHemsWx98J3K7UeOaCPEUf3e672lI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=G/4OiGhxHia4g/8G5CnboXu0wY5xACRJsnoAdK2dTPl34riwfFplzi3VHlywh+MAJ
-         hKNh+ZS2zIOBG7qOMstqDjKNEO9c3XjkvH0IMPPvag3ZrM1U3F5eYNO1MCNWXhdlL4
-         edVaM5S1Bg8xr4Pdi004/VBEYRhOx8xWeGU3Js2RQ8XvsET7Z5J5UhYhVHdCWMwVl7
-         WTwU1l/W2ASLag6PijSV2aOgjDUGJ9v/4mqptuNV05Kq57wG60quq4Q+5wpmH505k/
-         3F64jEe2OWzEqHuF33ACLjKt619ZKTFyaeQpGJkXFYEM2iirw/M7KzFHdpr9a2HTyf
-         2i0P+Md1pa3Pw==
-X-Nifty-SrcIP: [133.32.232.101]
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-kbuild@vger.kernel.org
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH] kconfig: forbid symbols that end with '_MODULE'
-Date:   Wed, 25 Aug 2021 13:16:37 +0900
-Message-Id: <20210825041637.365171-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S238843AbhHYGhZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Aug 2021 02:37:25 -0400
+Received: from mga02.intel.com ([134.134.136.20]:50791 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238375AbhHYGhY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 25 Aug 2021 02:37:24 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10086"; a="204660172"
+X-IronPort-AV: E=Sophos;i="5.84,349,1620716400"; 
+   d="scan'208";a="204660172"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2021 23:36:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,349,1620716400"; 
+   d="scan'208";a="516001212"
+Received: from lkp-server02.sh.intel.com (HELO 181e7be6f509) ([10.239.97.151])
+  by fmsmga004.fm.intel.com with ESMTP; 24 Aug 2021 23:36:37 -0700
+Received: from kbuild by 181e7be6f509 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mImWa-0001H5-JQ; Wed, 25 Aug 2021 06:36:36 +0000
+Date:   Wed, 25 Aug 2021 14:35:45 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:master] BUILD SUCCESS
+ f5a4c24e689f54e66201f04d343bdd2e8a1d7923
+Message-ID: <6125e4c1.H1p/+M5kqnRfxB0X%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kconfig (syncconfig) generates include/generated/autoconf.h to make
-CONFIG options available to the pre-processor.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git master
+branch HEAD: f5a4c24e689f54e66201f04d343bdd2e8a1d7923  mac80211: introduce individual TWT support in AP mode
 
-The macros are suffixed with '_MODULE' for symbols with the value 'm'.
+elapsed time: 1301m
 
-Here is a conflict; CONFIG_FOO=m results in '#define CONFIG_FOO_MODULE 1',
-but CONFIG_FOO_MODULE=y also results in the same define.
+configs tested: 104
+configs skipped: 3
 
-fixdep always assumes CONFIG_FOO_MODULE comes from CONFIG_FOO=m, so the
-dependency is not properly tracked for symbols that end with '_MODULE'.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-This commit makes Kconfig error out if it finds a symbol suffixed with
-'_MODULE'. This restriction does not exist if the module feature is not
-supported (at least from the Kconfig perspective).
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+riscv                            alldefconfig
+powerpc                        fsp2_defconfig
+sparc64                             defconfig
+arc                           tb10x_defconfig
+arm                          pxa910_defconfig
+powerpc                     pq2fads_defconfig
+powerpc                       ebony_defconfig
+mips                      malta_kvm_defconfig
+powerpc                     pseries_defconfig
+arc                              alldefconfig
+arm                           tegra_defconfig
+arm                        realview_defconfig
+powerpc                      pmac32_defconfig
+m68k                         apollo_defconfig
+sh                          sdk7786_defconfig
+sh                           se7721_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+x86_64                            allnoconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a005-20210824
+x86_64               randconfig-a006-20210824
+x86_64               randconfig-a001-20210824
+x86_64               randconfig-a003-20210824
+x86_64               randconfig-a004-20210824
+x86_64               randconfig-a002-20210824
+i386                 randconfig-a006-20210824
+i386                 randconfig-a001-20210824
+i386                 randconfig-a002-20210824
+i386                 randconfig-a005-20210824
+i386                 randconfig-a003-20210824
+i386                 randconfig-a004-20210824
+arc                  randconfig-r043-20210824
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-It detected one error:
-  error: SND_SOC_DM365_VOICE_CODEC_MODULE: symbol name must not end with '_MODULE'
+clang tested configs:
+i386                 randconfig-c001-20210824
+s390                 randconfig-c005-20210824
+arm                  randconfig-c002-20210824
+riscv                randconfig-c006-20210824
+powerpc              randconfig-c003-20210824
+x86_64               randconfig-c007-20210824
+mips                 randconfig-c004-20210824
+x86_64               randconfig-a014-20210824
+x86_64               randconfig-a015-20210824
+x86_64               randconfig-a016-20210824
+x86_64               randconfig-a013-20210824
+x86_64               randconfig-a012-20210824
+x86_64               randconfig-a011-20210824
+i386                 randconfig-a011-20210824
+i386                 randconfig-a016-20210824
+i386                 randconfig-a012-20210824
+i386                 randconfig-a014-20210824
+i386                 randconfig-a013-20210824
+i386                 randconfig-a015-20210824
+hexagon              randconfig-r041-20210824
+hexagon              randconfig-r045-20210824
+riscv                randconfig-r042-20210824
+s390                 randconfig-r044-20210824
 
-Rename it to SND_SOC_DM365_VOICE_CODEC_MODULAR. Commit 147162f57515
-("ASoC: ti: fix SND_SOC_DM365_VOICE_CODEC dependencies") added it for
-internal use. So, this renaming has no impact on users.
-
-Remove a comment from drivers/net/wireless/intel/iwlwifi/Kconfig since
-this is a hard error now.
-
-Add a comment to include/linux/kconfig.h in order not to worry observant
-developers.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
-
- drivers/net/wireless/intel/iwlwifi/Kconfig |  1 -
- include/linux/kconfig.h                    |  3 ++
- scripts/kconfig/parser.y                   | 40 +++++++++++++++++++++-
- sound/soc/ti/Kconfig                       |  2 +-
- 4 files changed, 43 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
-index 1085afbefba8..5b238243617c 100644
---- a/drivers/net/wireless/intel/iwlwifi/Kconfig
-+++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
-@@ -70,7 +70,6 @@ config IWLMVM
- 	  of the devices that use this firmware is available here:
- 	  https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi#firmware
- 
--# don't call it _MODULE -- will confuse Kconfig/fixdep/...
- config IWLWIFI_OPMODE_MODULAR
- 	bool
- 	default y if IWLDVM=m
-diff --git a/include/linux/kconfig.h b/include/linux/kconfig.h
-index 20d1079e92b4..54f677e742fe 100644
---- a/include/linux/kconfig.h
-+++ b/include/linux/kconfig.h
-@@ -53,6 +53,9 @@
-  * IS_MODULE(CONFIG_FOO) evaluates to 1 if CONFIG_FOO is set to 'm', 0
-  * otherwise.  CONFIG_FOO=m results in "#define CONFIG_FOO_MODULE 1" in
-  * autoconf.h.
-+ * CONFIG_FOO_MODULE=y would also result in "#define CONFIG_FOO_MODULE 1",
-+ * but Kconfig forbids symbol names that end with '_MODULE', so that would
-+ * not happen.
-  */
- #define IS_MODULE(option) __is_defined(option##_MODULE)
- 
-diff --git a/scripts/kconfig/parser.y b/scripts/kconfig/parser.y
-index 2af7ce4e1531..b0f73f74ccd3 100644
---- a/scripts/kconfig/parser.y
-+++ b/scripts/kconfig/parser.y
-@@ -475,6 +475,37 @@ assign_val:
- 
- %%
- 
-+/*
-+ * Symbols suffixed with '_MODULE' would cause a macro conflict in autoconf.h,
-+ * and also confuse the interaction between syncconfig and fixdep.
-+ * Error out if a symbol with the '_MODULE' suffix is found.
-+ */
-+static int sym_check_name(struct symbol *sym)
-+{
-+	static const char *suffix = "_MODULE";
-+	static const size_t suffix_len = strlen("_MODULE");
-+	char *name;
-+	size_t len;
-+
-+	name = sym->name;
-+
-+	if (!name)
-+		return 0;
-+
-+	len = strlen(name);
-+
-+	if (len < suffix_len)
-+		return 0;
-+
-+	if (strcmp(name + len - suffix_len, suffix))
-+		return 0;
-+
-+	fprintf(stderr, "error: %s: symbol name must not end with '%s'\n",
-+		name, suffix);
-+
-+	return -1;
-+}
-+
- void conf_parse(const char *name)
- {
- 	struct symbol *sym;
-@@ -493,8 +524,15 @@ void conf_parse(const char *name)
- 
- 	if (yynerrs)
- 		exit(1);
--	if (!modules_sym)
-+
-+	if (modules_sym) {
-+		for_all_symbols(i, sym) {
-+			if (sym_check_name(sym))
-+				yynerrs++;
-+		}
-+	} else {
- 		modules_sym = sym_find( "n" );
-+	}
- 
- 	if (!menu_has_prompt(&rootmenu)) {
- 		current_entry = &rootmenu;
-diff --git a/sound/soc/ti/Kconfig b/sound/soc/ti/Kconfig
-index 698d7bc84dcf..c56a5789056f 100644
---- a/sound/soc/ti/Kconfig
-+++ b/sound/soc/ti/Kconfig
-@@ -211,7 +211,7 @@ config SND_SOC_DM365_VOICE_CODEC
- 	  Say Y if you want to add support for SoC On-chip voice codec
- endchoice
- 
--config SND_SOC_DM365_VOICE_CODEC_MODULE
-+config SND_SOC_DM365_VOICE_CODEC_MODULAR
- 	def_tristate y
- 	depends on SND_SOC_DM365_VOICE_CODEC && SND_SOC
- 	select MFD_DAVINCI_VOICECODEC
--- 
-2.30.2
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
