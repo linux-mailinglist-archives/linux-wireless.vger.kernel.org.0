@@ -2,108 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5953F3F7C09
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Aug 2021 20:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68DAA3F7C34
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Aug 2021 20:31:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239550AbhHYSIc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Aug 2021 14:08:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36388 "EHLO
+        id S237457AbhHYSbz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Aug 2021 14:31:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231231AbhHYSIc (ORCPT
+        with ESMTP id S236995AbhHYSbx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Aug 2021 14:08:32 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DC1DC0613C1
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 11:07:46 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id u3so197303ejz.1
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 11:07:46 -0700 (PDT)
+        Wed, 25 Aug 2021 14:31:53 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1A4FC0613CF
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 11:31:06 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id u15so74684plg.13
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 11:31:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EcYKVqQSFav1GX+z3dOkJIc4nB4fMZOFfEayNc3CdZA=;
-        b=MWBegt9r0CkqgxFcqDtewibUSNsZ1bQl+pb0B6BQvvhIgHW+/lZ7gHh802g+Ho3zjw
-         gqQp4+Vh2WP08rW72lYsSWVa8dVfodLMVnFAbO0DgNrkuE/ROW2Buu5GzX8gX0VHY3gJ
-         yJ0XuUt7P4yWx9MFK/pFwP4pYtBZFlCl+UKpE=
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=E6dOXUoSPTypGPQDCucOQV34a6rWJR5EWTqmODKV08s=;
+        b=YiOVAxh8heSMZTuQdsY3Rn90r7ckvGRPSgw6gusedwKl6hrqXtX+qL+HGrRI83QgZs
+         m3pFCruNZauUuMVhH9M7YBc4vS7vGwyUtquoBBPcvoFTOF56RwP1TntNfwtSRIAZJIpT
+         NU7ofXdsneBIS8e7YjQ6MdkdiWmzTxtzM7Mls=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EcYKVqQSFav1GX+z3dOkJIc4nB4fMZOFfEayNc3CdZA=;
-        b=qADzWm77/xGHQhbQTKIWAsQvEsTDV56PY5I647Pj/+IDvwvvIc1pf2ZHcKOC9ln/ib
-         eP6PAM6P5Zr1kus3xFIDRxwpvgBRrNqQV23FNdSHdz+ds2Il8nDfO+iMLyFm6nW+96gn
-         4FDrXTz6K6CKyQzb/JafhssWl3SVOQDCg0evu+YfwWRO88Rqx+MI1eTpVWQHeYb8ZfPI
-         BLn9AiaidoIx6fxm0eIJuF9Kej4ZkWVAxC6qEfk5RNsbAP08mkrq5MhcxhI6Fm+k8iWF
-         wM0DzRs1tT0jmG/zHOjjlR9Lg8su1lzeu2RR0s5iqmvGntVsilzliSbimPnnhMpJsIcg
-         8yog==
-X-Gm-Message-State: AOAM530Ifidaxt/jbeg1lOyX0uPimEhhMf05t454tt5aTfoOb/Zo5HXQ
-        Rw+6Uit1iu+4Y5KPUmETqWyFcdRLOFOwzgCY4WnStg==
-X-Google-Smtp-Source: ABdhPJxNfrBB4SRP7AEr2PstKyZ1UcKE7jB+fsPlnc3d+DtyMYlgpBb8XNigBy9JNwuG2+WzeSMznGaq1/298lXOJ/g=
-X-Received: by 2002:a17:907:2126:: with SMTP id qo6mr19587033ejb.476.1629914864682;
- Wed, 25 Aug 2021 11:07:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210702223155.1981510-1-jforbes@fedoraproject.org>
- <CGME20210709173244epcas1p3ea6488202595e182d45f59fcba695e0a@epcas1p3.samsung.com>
- <CAFxkdApGUeGdg4=rH=iC2SK58FO6yzbFiq3uSFMFTyZsDQ5j5w@mail.gmail.com>
- <8c55c7c9-a5ae-3b0e-8a0f-8954a8da7e7b@samsung.com> <94edb3c4-43a6-1031-8431-2befb0eca2bf@samsung.com>
- <87ilzyudk0.fsf@codeaurora.org>
-In-Reply-To: <87ilzyudk0.fsf@codeaurora.org>
-From:   Justin Forbes <jmforbes@linuxtx.org>
-Date:   Wed, 25 Aug 2021 13:07:33 -0500
-Message-ID: <CAFxkdArjsp4YxYWYZ_qW7UsNobzodKOaNJqKTHpPf5RmtT+Rww@mail.gmail.com>
-Subject: Re: [PATCH] iwlwifi Add support for ax201 in Samsung Galaxy Book
- Flex2 Alpha
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=E6dOXUoSPTypGPQDCucOQV34a6rWJR5EWTqmODKV08s=;
+        b=CEHdCOVJJ5Fb59tjo13vZK1pRYO/P0j2idMsvYRa5vDguuyBzm5QEHj7xfslLq6UGH
+         TU2/rVg2BL88fF1/1JX1VuVJO9BtVCzT1gUnUFtxHDB2u1ZBjhm0Ljysy1pmnrcneUqN
+         wjHtGqj9n+bQAQlH+IuHH6kn8HiCQPKKsFzTVfaENhQxQAg4ct5cUt9yEUZq+Tv1wlau
+         dFgvIiZHrCWE3+KZD1tVKS/zJMf/73RYmWdAoRu7aUwWVRFpUhp79A3no8kLpEo/i/S7
+         MWnT0WQj/nraSNQq32cDgGq3OtN/x2uHK9ow4ohYTzIO9ffqP11416ewDPDJ6Vhc/2Mo
+         fOHA==
+X-Gm-Message-State: AOAM5330R5DNqemn4tT6kWUnco1Q0+egMM7wSDxEbgDWx9QJPPN5W26x
+        Sn0fzaQoeolw+TVMehkmNgd/Rw==
+X-Google-Smtp-Source: ABdhPJwuW+8E9IwXrJ6Bs6gnlyFZ9HmMjLjxedAJoqQTnZPubi7HPwA1Bb216qD2OnMWatoJkBD3jQ==
+X-Received: by 2002:a17:90b:3547:: with SMTP id lt7mr11866220pjb.23.1629916266354;
+        Wed, 25 Aug 2021 11:31:06 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id j9sm700035pgl.1.2021.08.25.11.31.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Aug 2021 11:31:05 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Matti Gottlieb <matti.gottlieb@intel.com>,
-        ybaruch <yaara.baruch@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Ihab Zhaika <ihab.zhaika@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless@vger.kernel.org,
-        "open list:BPF (Safe dynamic programs and tools)" 
-        <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        yj99.shin@samsung.com
-Content-Type: text/plain; charset="UTF-8"
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Colin Ian King <colin.king@canonical.com>,
+        Kaixu Xia <kaixuxia@tencent.com>,
+        Joe Perches <joe@perches.com>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH] rtlwifi: rtl8192de: Restore channel index initialization
+Date:   Wed, 25 Aug 2021 11:31:03 -0700
+Message-Id: <20210825183103.1142909-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1333; h=from:subject; bh=Hw85ADjil8Tyn+cbVzUlabg2wwgY/mlYBNlLCrYximo=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhJoxntp7RbQ9YdoPTLDiD6nyn1nZUuZgcd7qA8AzQ LoTbsfyJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYSaMZwAKCRCJcvTf3G3AJq0HD/ 9kc+5/HXPayu+LgCjEUEG+dTqq6bkKPnXVRQ7zWMCkT7ihzaUHCBEw9UZgcjMucAZ1HQsofxZomolf RtboXmrxE9/bTSbjHONDVtTo6ZZynqTyU7IbQ6aENortHOR4BCZ7/jWQ2yH9+AknPWve4A5hA7c1ZD 9ga3HHTctJ00csVbZ9x0ozOUTBRGcM69jDEu8vkQ+NY/nC7ls9VxYwTupGS73eWPUFfG1ctJz+gVBu INp+vEu7vgYFYDf7VrUeWSkm1QkXLTGdFFi9tivY0cLe74OqBTZutg/zHBARRjIku9HdPxf4KTTEce 84MK03bpAcIwsXzzAgGvj/nss7LHAEeYmyVqbryEU391TpScdAXCKIZlHORqlQYjLF3f+/KH0llJAS w6BU3q4mo/wYKs5Fe17Rt6bY3s1RsC/Ypphuy2h22H0GzoL9nWO5L6iihaNTddnULj+kflTswWTw2Y ++I69b2Otse7z07SuogA/eERasbX6Gxivt4Dz321weCd3CONopR9jUS/wAq63us7l5pzB2atCBZckG dHLBRsjWmp4ydQu+p6JJsbUJDD0LS1S+FeOhsbRRS5ZuemQzQswrTD/oR5p6HJBLZqSM1dgJ/txu8n B6TwEq4+ZOaw+CHavUlgovoQcx3SpUk00B1V3xJgfYTHWBvbAH94/GknfxQg==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Aug 21, 2021 at 8:34 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Jaehoon Chung <jh80.chung@samsung.com> writes:
->
-> > Hi
-> >
-> > On 8/9/21 8:09 AM, Jaehoon Chung wrote:
-> >> Hi
-> >>
-> >> On 7/10/21 2:32 AM, Justin Forbes wrote:
-> >>> On Fri, Jul 2, 2021 at 5:32 PM Justin M. Forbes
-> >>> <jforbes@fedoraproject.org> wrote:
-> >>>>
-> >>>> The Samsung Galaxy Book Flex2 Alpha uses an ax201 with the ID a0f0/6074.
-> >>>> This works fine with the existing driver once it knows to claim it.
-> >>>> Simple patch to add the device.
-> >>>>
-> >>>> Signed-off-by: Justin M. Forbes <jforbes@fedoraproject.org>
-> >
-> > If this patch is merged, can this patch be also applied on stable tree?
->
-> Luca, what should we do with this patch?
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2G channel indexes still need "place" to be initialized, since it is
+returned from this function when channel is less than 14.
 
+Fixes: 369956ae5720 ("rtlwifi: rtl8192de: Remove redundant variable initializations")
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Larry Finger <Larry.Finger@lwfinger.net>
+Cc: Colin Ian King <colin.king@canonical.com>
+Cc: Kaixu Xia <kaixuxia@tencent.com>
+Cc: Joe Perches <joe@perches.com>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Is that to imply that there is an issue with the submission?  Happy to
-fix any problems, but it would nice to get this in soon.  I know the
-5.14 merge window was already opened when I sent it, but the 5.15 MR
-is opening soon.  Hardware is definitely shipping and in users hands.
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+index 8ae69d914312..b32fa7a75f17 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+@@ -896,7 +896,7 @@ static void _rtl92d_ccxpower_index_check(struct ieee80211_hw *hw,
+ 
+ static u8 _rtl92c_phy_get_rightchnlplace(u8 chnl)
+ {
+-	u8 place;
++	u8 place = chnl;
+ 
+ 	if (chnl > 14) {
+ 		for (place = 14; place < sizeof(channel5g); place++) {
+-- 
+2.30.2
 
-Justin
