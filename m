@@ -2,102 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3922A3F7ED6
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 01:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E72D73F7EFB
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 01:25:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232726AbhHYXC1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Aug 2021 19:02:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46434 "EHLO
+        id S233361AbhHYXZa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Aug 2021 19:25:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231535AbhHYXC1 (ORCPT
+        with ESMTP id S233291AbhHYXZa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Aug 2021 19:02:27 -0400
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 366E5C061757
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 16:01:41 -0700 (PDT)
-Received: by mail-oi1-x233.google.com with SMTP id t35so1630087oiw.9
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 16:01:41 -0700 (PDT)
+        Wed, 25 Aug 2021 19:25:30 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 773CBC061757
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 16:24:43 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id j4so2366754lfg.9
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 16:24:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=c7HZlWC8KJohv3wxpeiYZ8xLIfggzme+ADhSLyEO+Yg=;
-        b=kzEpcmV5cjVZjLrrDSrvWkwENdpxVZywXviL2w13mDb8LhPUcHx18eBMtuuR/U7BqI
-         ZBKvsv64+VAjwxU4viRTT4nf5zu4onbxB+qAxSJpNMlD1DJGNen7l30Cp1ht2ou31L9H
-         VKHIM2jFvbsin05OfbFvHhuCQOxJ7R44MPwzLP1C6tQaQwwxGAlnCE7hi4FGjLz8u16+
-         OC6z0MJYoQwJMM962U3yNW4tfxBcXfqbOgrBOn/dv8pSDftHpuji1V6yPx38fG5JbX89
-         XmiOpYmlNVouCymyfVL4YxXrnc64+dqvTc5elJ/n5Hm7zJJjk9L4nkvyosV+9WmN9zRc
-         I51A==
+        bh=ohnyH/sYJ4RhitC7WS5XOqlr5Fq+L2Nsz7HS2qyXv2Y=;
+        b=fFTMTLVaSYyrU35PgaGSgyyOg1shsRQ+Vfs/Ao7B4oHszJKMa7Zb9cRkHJZH29RFgO
+         q9xVAdKnNr+tuNBJ+fYIGc5UOMoTpdrKSiE+v4QqVwEA9KVFSiD69ThhdrTIkdUfILiM
+         AcBYL50IBx3zgSyuh5EEkh6mn4UzaT1Xyx1SZuv8uG2LQsa6bKGXAv1Bijq4BfbNMyEb
+         9emQnQH9e0/+9TAhi//CJOgs0TLz7sPAKIVbnTG5ymqKpeG+A3mNyGTrCOURPbGI5Peb
+         tCoC3ri3zUPvFid8hu/lauw5jj4o4pvzWQX3bhFIc/V8fNmOhdntAl/xQzYpAKZ0gkyh
+         dUug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=c7HZlWC8KJohv3wxpeiYZ8xLIfggzme+ADhSLyEO+Yg=;
-        b=GaKXP7bFrOGnHxnGDJRAUL8YwXrZCBVA/LYoZRVebBBUUQ6/VGmk55K6CHBn/vRzb+
-         CsCreIt7A5hR9FrD58XSUV7P6k7Tb5dguAqwkuMFZ+Y0BhaJloRTN3H0KakGNPmcZQ8S
-         aoLc0apLZr+s0m5lHNmT1f39GY9xEak48s5EFzOUeCDhaLJzDHeO0ADQpH+RzkES05uN
-         M6jVpXEkvZtccVp+qiZIu2mZxD8VVw+b2XIFdVc0Vq8S4gXzzlRoDNrC1bNzvsTxQETx
-         joaqouEf3f8+VDetcWBLAPBAsCxNoWDnJfVvA3NRoXYCSaPZtnWEpkxhRTIMJ3RC1yma
-         T10g==
-X-Gm-Message-State: AOAM531d+wIKD10iYzSFkgr/2NaKt7mgEWZ8c1TreeKxBAsR8dSkgbNL
-        cfZrTPha0G94zfCOBeuFBUJNIt2X5OQmV9yqujw=
-X-Google-Smtp-Source: ABdhPJyfWdhuq7QS8eNXfpfLZpVi4hXUbiV4Dx7xPMWbM48ok62/D1CS1zZm7aUrNajAyCd9p7QK3U39GoarGOwR24M=
-X-Received: by 2002:aca:3488:: with SMTP id b130mr8461960oia.17.1629932500628;
- Wed, 25 Aug 2021 16:01:40 -0700 (PDT)
+        bh=ohnyH/sYJ4RhitC7WS5XOqlr5Fq+L2Nsz7HS2qyXv2Y=;
+        b=VXbv6i5oJYi8QWZUMGg1AkkXLP+P3XiHw+tbxQDXDPa1Cu6pR1uJpw5zgxfZj/uDf6
+         t9Xp7PsaMluTABfjth1ro4PPiJvrWN0IM/IHEoBEc/NIA7m4nSaw9fOEHXgMfevxIfO1
+         88Ik/vkhnRR6kFe5RlXEtCaWWgDBgPFxvrE1rdstecFzyR/ENm5rTsJbdJjNzsa6iKOR
+         1HT+IYonmaJlED3ukecqWXvlJ+H/b6u9aUrasNi3JOCc+Afwh5rAMejFOTB73wdu0Kbx
+         F/9pD9fN/q9L2HYn24oTw2fI2q6dMhgr62FuX1O6BWieJvuB1uXzN3j7TX+iiZXuBudj
+         6gCQ==
+X-Gm-Message-State: AOAM533ZHI1JdhHkvN/RjUK2JO0jH3f5KzZBxnE9RX7MR8+7zVJQWZr/
+        gtBkWs+JDbZmg0zwuDP9N6ms+4ybfT43a23yN/8=
+X-Google-Smtp-Source: ABdhPJx0yuexm2urpVSvrUS46piujDlfdC3y6Zpjw9XL+wDgCd6LNhL1oaONJBO/qYI4XxDSIfnnEBzIDSad6f4E2Ak=
+X-Received: by 2002:a05:6512:3d15:: with SMTP id d21mr431412lfv.474.1629933881878;
+ Wed, 25 Aug 2021 16:24:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <1629884277-18759-1-git-send-email-ppranees@codeaurora.org> <1629884277-18759-12-git-send-email-ppranees@codeaurora.org>
-In-Reply-To: <1629884277-18759-12-git-send-email-ppranees@codeaurora.org>
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Thu, 26 Aug 2021 02:02:10 +0300
-Message-ID: <CAHNKnsRi9CYH4vZfgpEUTJEHJfb-Av24dyE-_7pc7KMKy3S8VA@mail.gmail.com>
-Subject: Re: [PATCH v2 11/12] ath11k: add branch predictors in dp_tx path
-To:     P Praneesh <ppranees@codeaurora.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, Sriram R <srirrama@codeaurora.org>,
-        Jouni Malinen <jouni@codeaurora.org>
+References: <51ddd9063eddbd5ffb880728f610fba95428a313.1629925713.git.ryder.lee@mediatek.com>
+In-Reply-To: <51ddd9063eddbd5ffb880728f610fba95428a313.1629925713.git.ryder.lee@mediatek.com>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Thu, 26 Aug 2021 09:24:30 +1000
+Message-ID: <CAGRGNgW+4CG=TWxDMcocA3VuxLtY-d0MZAoWhFO3G-D0sDZm6g@mail.gmail.com>
+Subject: Re: [PATCH v3] mt76: mt7915: introduce mt7915_mcu_beacon_check_caps()
+To:     Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Aug 25, 2021 at 12:39 PM P Praneesh <ppranees@codeaurora.org> wrote:
-> Add branch prediction in dp_tx code path in
-> tx and tx completion handlers.
+Hi Ryder,
+
+On Thu, Aug 26, 2021 at 7:22 AM Ryder Lee <ryder.lee@mediatek.com> wrote:
 >
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01734-QCAHKSWPL_SILICONZ-1 v2
+> Beacon elements might be changed by hostapd configuraion, so driver
+> should compare both IEs and PHY capabilities to get the least common
+> denominator before association.
 >
-> Co-developed-by: Sriram R <srirrama@codeaurora.org>
-> Signed-off-by: Sriram R <srirrama@codeaurora.org>
-> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
-> Signed-off-by: P Praneesh <ppranees@codeaurora.org>
+> Co-developed-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+> Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 > ---
->  drivers/net/wireless/ath/ath11k/dp_tx.c | 45 +++++++++++++++++----------------
->  drivers/net/wireless/ath/ath11k/mac.c   |  2 +-
->  2 files changed, 24 insertions(+), 23 deletions(-)
+> v3 - rebase and rework LDPC part.
+> v2 - clean up codes.
+> ---
+>  .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 164 +++++++++++++-----
+>  .../wireless/mediatek/mt76/mt7915/mt7915.h    |  12 ++
+>  2 files changed, 137 insertions(+), 39 deletions(-)
 >
-> diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-> index 8bba523..ab9ccf0 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-> +++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-
-[skipped]
-
-> @@ -432,12 +432,12 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+> index ab8fc27646e0..640e0f06bb97 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+> @@ -83,12 +83,24 @@ struct mt7915_sta {
+>         struct mt7915_sta_key_conf bip;
+>  };
 >
->         rcu_read_lock();
->
-> -       if (!rcu_dereference(ab->pdevs_active[ar->pdev_idx])) {
-> +       if (unlikely(!rcu_dereference(ab->pdevs_active[ar->pdev_idx]))) {
->                 dev_kfree_skb_any(msdu);
->                 goto exit;
->         }
+> ++struct mt7915_vif_cap {
 
-This is another place where rcu_dereference() could be replaced by the
-rcu_access_pointer() and the whole block could be moved above the
-rcu_read_lock().
+Extra +?
 
-On the other hand this is an _unlikely_ path, so it looks like a
-matter of taste which macro to use here.
+Thanks,
 
 -- 
-Sergey
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
