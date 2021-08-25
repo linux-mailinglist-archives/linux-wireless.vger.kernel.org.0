@@ -2,59 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67E103F6D9E
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Aug 2021 05:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 899503F6E71
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Aug 2021 06:26:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237672AbhHYDPS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Aug 2021 23:15:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54984 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236811AbhHYDPR (ORCPT
+        id S229765AbhHYE1K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Aug 2021 00:27:10 -0400
+Received: from condef-01.nifty.com ([202.248.20.66]:59485 "EHLO
+        condef-01.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229631AbhHYE1J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Aug 2021 23:15:17 -0400
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00544C061757
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Aug 2021 20:14:31 -0700 (PDT)
-Received: by mail-ua1-x934.google.com with SMTP id t26so13802771uao.12
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Aug 2021 20:14:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=b7C6eU2bq+kP7VKEHH8KfX35tClQoC7RBscehpXMH58=;
-        b=iS3h7ld81iYe+OuZ/XBYi7nF14iSBhqjpHLLwzcHgMEPXcptUjyqCF5Mx4W5zXryAb
-         z6tsceDG6GCOv4UgdyM0NSb6qsTZISSuZQpPK/5qBhjI7qtEFCp3olPta7NQL/Zq54Pi
-         eT1HklsaTztFkDdT7Csy1YXO0roVRf5ojpeQ0H/m3bItLUIT8WOzU31pJ/wvfeSVrnxy
-         fcVurvo0qBsVe++s8EzpCgJ+OuaplM80FArrVrVufr+5OxRl1gjH4OmUWAD+Lmo/WNEx
-         KLlN2oS+dLNdPMaWTDoaiyhZ05cYNh1nbqkgx8jXhW9apMAraFJJGNpXJThze/9/khn0
-         FnKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=b7C6eU2bq+kP7VKEHH8KfX35tClQoC7RBscehpXMH58=;
-        b=JXsSlhH0Lj2nMmp2Y+ajw71WqlDYb35V5ChK91Aewa1u00Lj3lp7XU8JlSjLKDz58o
-         PKlMkCLnIvitAH+atWqXNkQczQJdPAyV6AWrB8RlqRs78bls1zq7D9ydZny1kHGnFMwm
-         7fIEc5sLNOj2hp0lFAS7no5hWTTIrWrjLoCxg9UbXnM7ErMwv4OG8RWoejqhCld9rdDV
-         YoHnUNuYc9tJqHNaFp/xZShg0sYA9mumAHzpTErA2Shz0oP+jPMLNiGVAwhocF3LWWK0
-         LCvIn1Btc4DDA7vBk5j9ROwpCFnBn+XbMR2AzdO0GZtFYPWHGltDqXJGQIMQQNmoMKIO
-         oRAg==
-X-Gm-Message-State: AOAM533xXp5CKZY5v9oV0r44fOgwl7lWh4F78n5y3Qj5Y3cn+LP475tG
-        qF9DTWiZzpDMB2SSINxpx0w=
-X-Google-Smtp-Source: ABdhPJy0fyJVxgTrPhXZqox/Kz0fMaLaXdSKttH+Xus1YCTDiT6yDqtFf2pyKZn+7PDotHbZZ9I55w==
-X-Received: by 2002:a05:6102:378:: with SMTP id f24mr31639120vsa.37.1629861269559;
-        Tue, 24 Aug 2021 20:14:29 -0700 (PDT)
-Received: from helios300.. ([186.33.134.25])
-        by smtp.gmail.com with ESMTPSA id l26sm2173689vsi.3.2021.08.24.20.14.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Aug 2021 20:14:29 -0700 (PDT)
-From:   Victor Bayas <victorsbayas@gmail.com>
-To:     sforshee@kernel.org
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Victor Bayas <victorsbayas@gmail.com>
-Subject: [PATCH] Update regulatory rules for Ecuador (EC)
-Date:   Tue, 24 Aug 2021 22:14:09 -0500
-Message-Id: <20210825031409.10552-1-victorsbayas@gmail.com>
+        Wed, 25 Aug 2021 00:27:09 -0400
+X-Greylist: delayed 312 seconds by postgrey-1.27 at vger.kernel.org; Wed, 25 Aug 2021 00:27:09 EDT
+Received: from conuserg-11.nifty.com ([10.126.8.74])by condef-01.nifty.com with ESMTP id 17P4IX64023256
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 13:18:46 +0900
+Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
+        by conuserg-11.nifty.com with ESMTP id 17P4GiCL020114;
+        Wed, 25 Aug 2021 13:16:45 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-11.nifty.com 17P4GiCL020114
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1629865005;
+        bh=1wLIpiebg99hItGHemsWx98J3K7UeOaCPEUf3e672lI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=G/4OiGhxHia4g/8G5CnboXu0wY5xACRJsnoAdK2dTPl34riwfFplzi3VHlywh+MAJ
+         hKNh+ZS2zIOBG7qOMstqDjKNEO9c3XjkvH0IMPPvag3ZrM1U3F5eYNO1MCNWXhdlL4
+         edVaM5S1Bg8xr4Pdi004/VBEYRhOx8xWeGU3Js2RQ8XvsET7Z5J5UhYhVHdCWMwVl7
+         WTwU1l/W2ASLag6PijSV2aOgjDUGJ9v/4mqptuNV05Kq57wG60quq4Q+5wpmH505k/
+         3F64jEe2OWzEqHuF33ACLjKt619ZKTFyaeQpGJkXFYEM2iirw/M7KzFHdpr9a2HTyf
+         2i0P+Md1pa3Pw==
+X-Nifty-SrcIP: [133.32.232.101]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH] kconfig: forbid symbols that end with '_MODULE'
+Date:   Wed, 25 Aug 2021 13:16:37 +0900
+Message-Id: <20210825041637.365171-1-masahiroy@kernel.org>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -62,43 +54,141 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Update the frequency ranges and power limits according to the current Ecuadorian norm [1],
-corrected 5GHz maximum bandwidth since there are no legal restrictions in this subject.
+Kconfig (syncconfig) generates include/generated/autoconf.h to make
+CONFIG options available to the pre-processor.
 
-Note: 60GHz channels 1 to 3 are allowed without license for Point-to-Point links but
-they aren't for Point-to-Multipoint links so they were omitted in this patch.
+The macros are suffixed with '_MODULE' for symbols with the value 'm'.
 
-[1] https://www.arcotel.gob.ec/wp-content/uploads/2018/04/NORMA-ESPECTRO-DE-USO-LIBRE-Y-ESPECTRO-PARA-USO-DETERMINADO-EN-BANDAS-LIBRES.pdf
+Here is a conflict; CONFIG_FOO=m results in '#define CONFIG_FOO_MODULE 1',
+but CONFIG_FOO_MODULE=y also results in the same define.
 
-Signed-off-by: Victor Bayas <victorsbayas@gmail.com>
+fixdep always assumes CONFIG_FOO_MODULE comes from CONFIG_FOO=m, so the
+dependency is not properly tracked for symbols that end with '_MODULE'.
+
+This commit makes Kconfig error out if it finds a symbol suffixed with
+'_MODULE'. This restriction does not exist if the module feature is not
+supported (at least from the Kconfig perspective).
+
+It detected one error:
+  error: SND_SOC_DM365_VOICE_CODEC_MODULE: symbol name must not end with '_MODULE'
+
+Rename it to SND_SOC_DM365_VOICE_CODEC_MODULAR. Commit 147162f57515
+("ASoC: ti: fix SND_SOC_DM365_VOICE_CODEC dependencies") added it for
+internal use. So, this renaming has no impact on users.
+
+Remove a comment from drivers/net/wireless/intel/iwlwifi/Kconfig since
+this is a hard error now.
+
+Add a comment to include/linux/kconfig.h in order not to worry observant
+developers.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- db.txt | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/db.txt b/db.txt
-index e7b11cf..4630854 100644
---- a/db.txt
-+++ b/db.txt
-@@ -504,12 +504,14 @@ country DZ: DFS-JP
- 	(5250.000 - 5330.000 @ 80.000), (23.00), DFS, AUTO-BW
- 	(5490.000 - 5670.000 @ 160.000), (23.00), DFS
+ drivers/net/wireless/intel/iwlwifi/Kconfig |  1 -
+ include/linux/kconfig.h                    |  3 ++
+ scripts/kconfig/parser.y                   | 40 +++++++++++++++++++++-
+ sound/soc/ti/Kconfig                       |  2 +-
+ 4 files changed, 43 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
+index 1085afbefba8..5b238243617c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/Kconfig
++++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
+@@ -70,7 +70,6 @@ config IWLMVM
+ 	  of the devices that use this firmware is available here:
+ 	  https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi#firmware
  
-+# Source:
-+# https://www.arcotel.gob.ec/wp-content/uploads/2018/04/NORMA-ESPECTRO-DE-USO-LIBRE-Y-ESPECTRO-PARA-USO-DETERMINADO-EN-BANDAS-LIBRES.pdf
- country EC: DFS-FCC
--	(2402 - 2482 @ 40), (20)
--	(5170 - 5250 @ 20), (17)
--	(5250 - 5330 @ 20), (24), DFS
--	(5490 - 5730 @ 20), (24), DFS
--	(5735 - 5835 @ 20), (30)
-+	(2400 - 2483.5 @ 40), (1000 mW)
-+	(5150 - 5250 @ 80), (50 mW), AUTO-BW
-+	(5250 - 5350 @ 80), (250 mW), AUTO-BW, DFS
-+	(5470 - 5725 @ 160), (250 mW), DFS
-+	(5725 - 5850 @ 80), (1000 mW)
+-# don't call it _MODULE -- will confuse Kconfig/fixdep/...
+ config IWLWIFI_OPMODE_MODULAR
+ 	bool
+ 	default y if IWLDVM=m
+diff --git a/include/linux/kconfig.h b/include/linux/kconfig.h
+index 20d1079e92b4..54f677e742fe 100644
+--- a/include/linux/kconfig.h
++++ b/include/linux/kconfig.h
+@@ -53,6 +53,9 @@
+  * IS_MODULE(CONFIG_FOO) evaluates to 1 if CONFIG_FOO is set to 'm', 0
+  * otherwise.  CONFIG_FOO=m results in "#define CONFIG_FOO_MODULE 1" in
+  * autoconf.h.
++ * CONFIG_FOO_MODULE=y would also result in "#define CONFIG_FOO_MODULE 1",
++ * but Kconfig forbids symbol names that end with '_MODULE', so that would
++ * not happen.
+  */
+ #define IS_MODULE(option) __is_defined(option##_MODULE)
  
- # EE as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893)
- # and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
+diff --git a/scripts/kconfig/parser.y b/scripts/kconfig/parser.y
+index 2af7ce4e1531..b0f73f74ccd3 100644
+--- a/scripts/kconfig/parser.y
++++ b/scripts/kconfig/parser.y
+@@ -475,6 +475,37 @@ assign_val:
+ 
+ %%
+ 
++/*
++ * Symbols suffixed with '_MODULE' would cause a macro conflict in autoconf.h,
++ * and also confuse the interaction between syncconfig and fixdep.
++ * Error out if a symbol with the '_MODULE' suffix is found.
++ */
++static int sym_check_name(struct symbol *sym)
++{
++	static const char *suffix = "_MODULE";
++	static const size_t suffix_len = strlen("_MODULE");
++	char *name;
++	size_t len;
++
++	name = sym->name;
++
++	if (!name)
++		return 0;
++
++	len = strlen(name);
++
++	if (len < suffix_len)
++		return 0;
++
++	if (strcmp(name + len - suffix_len, suffix))
++		return 0;
++
++	fprintf(stderr, "error: %s: symbol name must not end with '%s'\n",
++		name, suffix);
++
++	return -1;
++}
++
+ void conf_parse(const char *name)
+ {
+ 	struct symbol *sym;
+@@ -493,8 +524,15 @@ void conf_parse(const char *name)
+ 
+ 	if (yynerrs)
+ 		exit(1);
+-	if (!modules_sym)
++
++	if (modules_sym) {
++		for_all_symbols(i, sym) {
++			if (sym_check_name(sym))
++				yynerrs++;
++		}
++	} else {
+ 		modules_sym = sym_find( "n" );
++	}
+ 
+ 	if (!menu_has_prompt(&rootmenu)) {
+ 		current_entry = &rootmenu;
+diff --git a/sound/soc/ti/Kconfig b/sound/soc/ti/Kconfig
+index 698d7bc84dcf..c56a5789056f 100644
+--- a/sound/soc/ti/Kconfig
++++ b/sound/soc/ti/Kconfig
+@@ -211,7 +211,7 @@ config SND_SOC_DM365_VOICE_CODEC
+ 	  Say Y if you want to add support for SoC On-chip voice codec
+ endchoice
+ 
+-config SND_SOC_DM365_VOICE_CODEC_MODULE
++config SND_SOC_DM365_VOICE_CODEC_MODULAR
+ 	def_tristate y
+ 	depends on SND_SOC_DM365_VOICE_CODEC && SND_SOC
+ 	select MFD_DAVINCI_VOICECODEC
 -- 
 2.30.2
 
