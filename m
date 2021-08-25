@@ -2,136 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE3313F7C41
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Aug 2021 20:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A78113F7C63
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Aug 2021 20:46:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238418AbhHYSek (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Aug 2021 14:34:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42316 "EHLO
+        id S241849AbhHYSqq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Aug 2021 14:46:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237509AbhHYSej (ORCPT
+        with ESMTP id S241704AbhHYSqo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Aug 2021 14:34:39 -0400
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10990C0613C1
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 11:33:53 -0700 (PDT)
-Received: by mail-pg1-x52e.google.com with SMTP id s11so555585pgr.11
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 11:33:53 -0700 (PDT)
+        Wed, 25 Aug 2021 14:46:44 -0400
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DE18C061757
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 11:45:58 -0700 (PDT)
+Received: by mail-qk1-x734.google.com with SMTP id b64so614560qkg.0
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Aug 2021 11:45:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Ggf+LpJPCzqcDcd2e/5j3m/TAA3DFUus0qxXI93OXMw=;
-        b=CsfwSRyoDWtqTpvJN2VE9yqMc//0Dh3+4OBPgIbZC04ZCSC8Zpvrla7s3FECoQzFyR
-         er96tpvXPhXPStl9lnMkpniY1tQrHmKcBBU4ECKzgxCNsp4yg32j2wOlyRn1YvOYwPcB
-         dLRSn1ySg03S/IoQasZzd2kEnMVVEqfN7is1Y=
+        d=eero.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=MM9TxT9aun9DoTvxLwFQ9t7L9RLMum6d40huNFPUugw=;
+        b=YtDBuQZQpIl2+VpA7woAuOMDzBS5iPSCoECtEM+xTD0Bc6+05goxarFy4Z1WMQeKO+
+         N62fcGSPe6ibgyLLzBkzw9mJ3bDb5l/V6twafYW1CrtHrUZoSpSrXj386RVxebBdfZ0+
+         TXNJekS3TrnOE95UkySThRss6jxiSZIY3lwWI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Ggf+LpJPCzqcDcd2e/5j3m/TAA3DFUus0qxXI93OXMw=;
-        b=iJRSJzmaWbcwMuxlIcWkJphphA0WeOiiTw2ZWlj0O3qkg/90VTJWPNN/Ig9K2gLwrf
-         TDECueOu9xov7PgBDB3GNPDEXxRXsS/5MJVbSu58thPvoGVGCDeCYOu0OrDYyTG9bKAq
-         dyHOIVoC143IjLPJ9tC/XbHRJC9wBSpLN6Y8N4loVZ6I1gX3D6+/OMj1lMMddvVN52QV
-         z3Vp51rtN8UqGf3SZUa3Ds/T7pG7uGPifDV1ZRU8MtnUFBZjTTupFmR099qGd6ZHfhbI
-         ErsTDRiZkmxaTVSozH8QfTY6/XB138/sMleNl8F+eW2tVYNLeTMkHlfI0qfeEYOQ/iGJ
-         vWhQ==
-X-Gm-Message-State: AOAM530YtujIhzxr27JeCi2Xl4DeWaauB0Fd9plaHgnZCRANwpaXAT4R
-        1SBY2P0MOxwrf7h9ZoAIf9eZog==
-X-Google-Smtp-Source: ABdhPJzvLkiLyiR8okGaSKcAVrW2SnLai1N911vjm8Gmj6lrRbWXY5pWPjjrAAUnXeI5gXGvK7YUrA==
-X-Received: by 2002:a62:e116:0:b0:3e1:57a4:e501 with SMTP id q22-20020a62e116000000b003e157a4e501mr45763002pfh.36.1629916432644;
-        Wed, 25 Aug 2021 11:33:52 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id br3sm4801088pjb.52.2021.08.25.11.33.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Aug 2021 11:33:52 -0700 (PDT)
-From:   Kees Cook <keescook@chromium.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Colin Ian King <colin.king@canonical.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Joe Perches <joe@perches.com>,
-        Kaixu Xia <kaixuxia@tencent.com>, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH] rtlwifi: rtl8192de: Style clean-ups
-Date:   Wed, 25 Aug 2021 11:33:50 -0700
-Message-Id: <20210825183350.1145441-1-keescook@chromium.org>
-X-Mailer: git-send-email 2.30.2
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=MM9TxT9aun9DoTvxLwFQ9t7L9RLMum6d40huNFPUugw=;
+        b=lJc7GOnzN7rvq69wOtBRWt4vgkml1c0wy9OBrT+3BvnHE6MFARwOS+dgWnUybdASQ1
+         sFM0Hx4hrnr66rmexQkmBjF358GESg3jhLoCuj/5tlfhzj0ZTTaBQPvvfUn8kBUkJVZf
+         8qZoyYDgchxc21AKKPoLW0pOTx9DBKA8YMsem/quJL+M5PH2OsA3b2GOGpAItx0SGn6M
+         qDx2zKNRnSZ/TA/8rZGbVughcs5SjcNZZtrxIWHOG5gc6WBvEz82Wwp+kRWiPA9f2bLN
+         9LwPTvlgVSljFfC50R9Wk4G49yYiE3+W3ixMj1YA1i/dydsLJaw6bxwBhBJhhkgeiubj
+         g3Kg==
+X-Gm-Message-State: AOAM5318oJv2aBjSbIQChr8YMCcGHosih2D07QfAwVxIjpl11oRnv22r
+        Af9UqxCFV2gMpn/iQmbso9nHDA==
+X-Google-Smtp-Source: ABdhPJyyErLt+HKMWABB1TgmTuHzP77uR58/1erwL8HU1rBgU3RHoZMijNY7O9EeUFXtI9oXnpqQ8Q==
+X-Received: by 2002:a37:8242:: with SMTP id e63mr32745206qkd.294.1629917157522;
+        Wed, 25 Aug 2021 11:45:57 -0700 (PDT)
+Received: from ?IPv6:2600:1700:38c5:675f:d171:ff55:3554:62a5? ([2600:1700:38c5:675f:d171:ff55:3554:62a5])
+        by smtp.gmail.com with ESMTPSA id s69sm594493qka.102.2021.08.25.11.45.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Aug 2021 11:45:56 -0700 (PDT)
+Subject: Re: [PATCH v2 02/12] ath11k: allocate dst ring descriptors from
+ cacheable memory
+To:     P Praneesh <ppranees@codeaurora.org>, kvalo@codeaurora.org
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Sriram R <srirrama@codeaurora.org>,
+        Jouni Malinen <jouni@codeaurora.org>
+References: <1629884277-18759-1-git-send-email-ppranees@codeaurora.org>
+ <1629884277-18759-3-git-send-email-ppranees@codeaurora.org>
+From:   Peter Oh <peter.oh@eero.com>
+Message-ID: <bbd198b3-87b7-a0ce-ada1-2bd723c9d9c9@eero.com>
+Date:   Wed, 25 Aug 2021 11:45:55 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2542; h=from:subject; bh=WiI8i3mVA5kMq1xjzJQkl4VAkYEYT2HU/B+WViFz08k=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhJo0NkICAybEIi3bCEwhqPsG25+Mb1MpwZyumlIsh CtJ5dJaJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYSaNDQAKCRCJcvTf3G3AJqCXD/ 0SV/fuu4BuMqqjwabMcvyFOrQX+6BYxq4R9SGvGsvGBzn4cDaoGlC/DKqGSE4gHnCQjd3B7UsLHD/c Y6nWJ+7LpvVYO9IRwIDfIPn/ahXGNEy7OOp1VLkP9f8NMtHBwsFynMr4re77KztB5A3idqT3W5t0KA V4PTpJrKFwiBKQJ4Xfm8y2dmn7hoz8+Agq7Y8QHBy63FR5RHs9LO/7y1flQ9as9mIidNxhV3gozvW2 324af4kHsg+ECMUat7mkUzL4wKPVfakuxF2iW+kY++hRK5HESb51ov2ZF9GpWOIu3xpHMws719ZE3Z gQrQ9KhSKTX602mr/mp1UVZhLVB0PQGXoHm/ydi1bustMKpPG7pyOkQEPkAxdbyArmGkfM2Ucm+xJ4 vxy35LlOsrZN6fM9HWV75yy9Ta1fsBcUJN5mCazaJmXlMJdLYYzG8tbHBR4m0++ASGgzEjLfsJm3iO NL56mC4bu+/QMuhoZWhGG+yMRHGexC3bE/CZuReAs9+fl3QUgkP4cOvB5ikc00qO46kJX29oAKTVpX PFGyq3bvBEU7L5/3z4WNoohsjAyWrmNeCMrNrNF/2shq7BxyUBiqpS7qt3EtutjCdA/s0UmR8/CV+G d5Ryhn2BQUZiUhBy9UkBaRFVqfspXa7kngyIKpHoYRdeM1vo6TjjeIJ23L+Q==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1629884277-18759-3-git-send-email-ppranees@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Clean up some style issues:
-- Use ARRAY_SIZE() even though it's a u8 array.
-- Remove redundant CHANNEL_MAX_NUMBER_2G define.
-Additionally fix some dead code WARNs.
 
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: Colin Ian King <colin.king@canonical.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 8 +++-----
- drivers/net/wireless/realtek/rtlwifi/wifi.h          | 1 -
- 2 files changed, 3 insertions(+), 6 deletions(-)
+On 8/25/21 2:37 AM, P Praneesh wrote:
+> @@ -292,6 +315,11 @@ int ath11k_dp_srng_setup(struct ath11k_base *ab, struct dp_srng *ring,
+>   		return -EINVAL;
+>   	}
+>   
+> +	if (cached && ab->hw_params.alloc_cacheable_memory) {
+> +		params.flags |= HAL_SRNG_FLAGS_CACHED;
+> +		ring->cached = 1;
+> +	}
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index b32fa7a75f17..9807c9e91998 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -899,7 +899,7 @@ static u8 _rtl92c_phy_get_rightchnlplace(u8 chnl)
- 	u8 place = chnl;
- 
- 	if (chnl > 14) {
--		for (place = 14; place < sizeof(channel5g); place++) {
-+		for (place = 14; place < ARRAY_SIZE(channel5g); place++) {
- 			if (channel5g[place] == chnl) {
- 				place++;
- 				break;
-@@ -2861,16 +2861,14 @@ u8 rtl92d_phy_sw_chnl(struct ieee80211_hw *hw)
- 	case BAND_ON_5G:
- 		/* Get first channel error when change between
- 		 * 5G and 2.4G band. */
--		if (channel <= 14)
-+		if (WARN_ONCE(channel <= 14, "rtl8192de: 5G but channel<=14\n"))
- 			return 0;
--		WARN_ONCE((channel <= 14), "rtl8192de: 5G but channel<=14\n");
- 		break;
- 	case BAND_ON_2_4G:
- 		/* Get first channel error when change between
- 		 * 5G and 2.4G band. */
--		if (channel > 14)
-+		if (WARN_ONCE(channel > 14, "rtl8192de: 2G but channel>14\n"))
- 			return 0;
--		WARN_ONCE((channel > 14), "rtl8192de: 2G but channel>14\n");
- 		break;
- 	default:
- 		WARN_ONCE(true, "rtl8192de: Invalid WirelessMode(%#x)!!\n",
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index aa07856411b1..31f9e9e5c680 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -108,7 +108,6 @@
- #define	CHANNEL_GROUP_IDX_5GM		6
- #define	CHANNEL_GROUP_IDX_5GH		9
- #define	CHANNEL_GROUP_MAX_5G		9
--#define CHANNEL_MAX_NUMBER_2G		14
- #define AVG_THERMAL_NUM			8
- #define AVG_THERMAL_NUM_88E		4
- #define AVG_THERMAL_NUM_8723BE		4
--- 
-2.30.2
+"&& ab->hw_params.alloc_cacheable_memory" is redundant check.
+
+Thanks,
+Peter
 
