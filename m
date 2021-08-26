@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBBA73F8F2C
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 21:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5887E3F8F2E
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 21:48:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232241AbhHZTtW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Aug 2021 15:49:22 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:33470 "EHLO
+        id S243522AbhHZTtY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Aug 2021 15:49:24 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:33478 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S243565AbhHZTtS (ORCPT
+        with ESMTP id S232398AbhHZTtX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Aug 2021 15:49:18 -0400
+        Thu, 26 Aug 2021 15:49:23 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1mJLM2-002XB4-8Y; Thu, 26 Aug 2021 22:48:03 +0300
+        id 1mJLM3-002XB4-3k; Thu, 26 Aug 2021 22:48:04 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Thu, 26 Aug 2021 22:47:47 +0300
-Message-Id: <iwlwifi.20210826224715.64ab5278fb9f.I4f2a547dc04c3d14cacdbc739da0b056fc04923d@changeid>
+Date:   Thu, 26 Aug 2021 22:47:48 +0300
+Message-Id: <iwlwifi.20210826224715.609ad58a49f3.I05c351233601ecc51dddfa5df69ace292216eb95@changeid>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210826194748.826360-1-luca@coelho.fi>
 References: <20210826194748.826360-1-luca@coelho.fi>
@@ -32,141 +32,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH v2 11/12] iwlwifi: Add support for more BZ HWs
+Subject: [PATCH v2 12/12] iwlwifi: Start scratch debug register for Bz family
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Matti Gottlieb <matti.gottlieb@intel.com>
 
-Add support for GA and for BZ with FM rf.
+Start scratch debug register for Bz family.
+This register is used for FW debug, and the driver
+should start this register with a fixed value, during
+init, and upon an error, should read it, and add it to
+the dump.
 
 Signed-off-by: Matti Gottlieb <matti.gottlieb@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/cfg/22000.c    | 23 +++++++++++++++++++
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  3 +++
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  1 +
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 14 +++++++++++
- 4 files changed, 41 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/dump.c         | 7 +++++++
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h         | 7 +++++++
+ drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c | 8 +++++---
+ 3 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 52d1d391f4c6..1950482b3829 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -53,6 +53,9 @@
- #define IWL_BZ_A_GF_A_FW_PRE		"iwlwifi-bz-a0-gf-a0-"
- #define IWL_BZ_A_GF4_A_FW_PRE		"iwlwifi-bz-a0-gf4-a0-"
- #define IWL_BZ_A_MR_A_FW_PRE		"iwlwifi-bz-a0-mr-a0-"
-+#define IWL_BZ_A_FM_A_FW_PRE		"iwlwifi-bz-a0-fm-a0-"
-+#define IWL_GL_A_FM_A_FW_PRE		"iwlwifi-gl-a0-fm7-a0-"
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dump.c b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
+index a1842205e86a..1f9cf4e40547 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dump.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
+@@ -328,6 +328,13 @@ static void iwl_fwrt_dump_tcm_error_log(struct iwl_fw_runtime *fwrt)
+ 	for (i = 0; i < ARRAY_SIZE(table.sw_status); i++)
+ 		IWL_ERR(fwrt, "0x%08X | tcm SW status[%d]\n",
+ 			table.sw_status[i], i);
 +
- 
- #define IWL_QU_B_HR_B_MODULE_FIRMWARE(api) \
- 	IWL_QU_B_HR_B_FW_PRE __stringify(api) ".ucode"
-@@ -106,6 +109,10 @@
- 	IWL_BZ_A_GF4_A_FW_PRE __stringify(api) ".ucode"
- #define IWL_BZ_A_MR_A_MODULE_FIRMWARE(api) \
- 	IWL_BZ_A_MR_A_FW_PRE __stringify(api) ".ucode"
-+#define IWL_BZ_A_FM_A_MODULE_FIRMWARE(api) \
-+		IWL_BZ_A_FM_A_FW_PRE __stringify(api) ".ucode"
-+#define IWL_GL_A_FM_A_MODULE_FIRMWARE(api) \
-+		IWL_GL_A_FM_A_FW_PRE __stringify(api) ".ucode"
- 
- static const struct iwl_base_params iwl_22000_base_params = {
- 	.eeprom_size = OTP_LOW_IMAGE_SIZE_32K,
-@@ -850,6 +857,20 @@ const struct iwl_cfg iwl_cfg_bz_a0_mr_a0 = {
- 	.num_rbds = IWL_NUM_RBDS_AX210_HE,
- };
- 
-+const struct iwl_cfg iwl_cfg_bz_a0_fm_a0 = {
-+	.fw_name_pre = IWL_BZ_A_FM_A_FW_PRE,
-+	.uhb_supported = true,
-+	IWL_DEVICE_BZ,
-+	.num_rbds = IWL_NUM_RBDS_AX210_HE,
-+};
++	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
++		u32 scratch = iwl_read32(trans, CSR_FUNC_SCRATCH);
 +
-+const struct iwl_cfg iwl_cfg_gl_a0_fm_a0 = {
-+	.fw_name_pre = IWL_GL_A_FM_A_FW_PRE,
-+	.uhb_supported = true,
-+	IWL_DEVICE_BZ,
-+	.num_rbds = IWL_NUM_RBDS_AX210_HE,
-+};
++		IWL_ERR(fwrt, "Function Scratch status:\n");
++		IWL_ERR(fwrt, "0x%08X | Func Scratch\n", scratch);
++	}
+ }
+ 
+ static void iwl_fwrt_dump_iml_error_log(struct iwl_fw_runtime *fwrt)
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
+index cf796403c45c..2c4d70fb32fa 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
+@@ -34,6 +34,7 @@
+ #define CSR_GPIO_IN             (CSR_BASE+0x018) /* read external chip pins */
+ #define CSR_RESET               (CSR_BASE+0x020) /* busmaster enable, NMI, etc*/
+ #define CSR_GP_CNTRL            (CSR_BASE+0x024)
++#define CSR_FUNC_SCRATCH        (CSR_BASE+0x02c) /* Scratch register - used for FW dbg */
+ 
+ /* 2nd byte of CSR_INT_COALESCING, not accessible via iwl_write32()! */
+ #define CSR_INT_PERIODIC_REG	(CSR_BASE+0x005)
+@@ -135,6 +136,12 @@
+ #define CSR_DBG_HPET_MEM_REG		(CSR_BASE+0x240)
+ #define CSR_DBG_LINK_PWR_MGMT_REG	(CSR_BASE+0x250)
+ 
++/*
++ * Scratch register initial configuration - this is set on init, and read
++ * during a error FW error.
++ */
++#define CSR_FUNC_SCRATCH_INIT_VALUE		(0x01010101)
 +
- MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QNJ_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-@@ -876,3 +897,5 @@ MODULE_FIRMWARE(IWL_BZ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BZ_A_GF_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BZ_A_GF4_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BZ_A_MR_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-+MODULE_FIRMWARE(IWL_BZ_A_FM_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-+MODULE_FIRMWARE(IWL_GL_A_FM_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 7eb534df5331..f55f08d4d511 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -420,6 +420,7 @@ struct iwl_cfg {
- #define IWL_CFG_MAC_TYPE_SOF		0x43
- #define IWL_CFG_MAC_TYPE_MA		0x44
- #define IWL_CFG_MAC_TYPE_BZ		0x46
-+#define IWL_CFG_MAC_TYPE_GL		0x47
+ /* Bits for CSR_HW_IF_CONFIG_REG */
+ #define CSR_HW_IF_CONFIG_REG_MSK_MAC_DASH	(0x00000003)
+ #define CSR_HW_IF_CONFIG_REG_MSK_MAC_STEP	(0x0000000C)
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+index bf0c32a74ca4..53bc5b7d8d5c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+@@ -466,13 +466,15 @@ int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
  
- #define IWL_CFG_RF_TYPE_TH		0x105
- #define IWL_CFG_RF_TYPE_TH1		0x108
-@@ -628,6 +629,8 @@ extern const struct iwl_cfg iwl_cfg_bz_a0_hr_b0;
- extern const struct iwl_cfg iwl_cfg_bz_a0_gf_a0;
- extern const struct iwl_cfg iwl_cfg_bz_a0_gf4_a0;
- extern const struct iwl_cfg iwl_cfg_bz_a0_mr_a0;
-+extern const struct iwl_cfg iwl_cfg_bz_a0_fm_a0;
-+extern const struct iwl_cfg iwl_cfg_gl_a0_fm_a0;
- #endif /* CONFIG_IWLMVM */
+ 	iwl_pcie_set_ltr(trans);
  
- #endif /* __IWL_CONFIG_H__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-index 48213d61bac7..a84ab02cf9d7 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-@@ -437,6 +437,7 @@ enum {
- #define REG_CRF_ID_TYPE_GF			0x410
- #define REG_CRF_ID_TYPE_GF_TC			0xF08
- #define REG_CRF_ID_TYPE_MR			0x810
-+#define REG_CRF_ID_TYPE_FM			0x910
+-	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ)
++	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
++		iwl_write32(trans, CSR_FUNC_SCRATCH, CSR_FUNC_SCRATCH_INIT_VALUE);
+ 		iwl_set_bit(trans, CSR_GP_CNTRL,
+ 			    CSR_GP_CNTRL_REG_FLAG_ROM_START);
+-	else if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
++	} else if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210) {
+ 		iwl_write_umac_prph(trans, UREG_CPU_INIT_RUN, 1);
+-	else
++	} else {
+ 		iwl_write_prph(trans, UREG_CPU_INIT_RUN, 1);
++	}
  
- #define HPM_DEBUG			0xA03440
- #define PERSISTENCE_BIT			BIT(12)
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index fb70198c6c8b..79ff71493ef1 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1109,6 +1109,17 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 		      IWL_CFG_RF_TYPE_MR, IWL_CFG_ANY,
- 		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_bz_a0_mr_a0, iwl_bz_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_BZ, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_FM, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      iwl_cfg_bz_a0_fm_a0, iwl_bz_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_GL, IWL_CFG_ANY,
-+		      IWL_CFG_RF_TYPE_FM, IWL_CFG_ANY,
-+		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
-+		      iwl_cfg_gl_a0_fm_a0, iwl_bz_name),
-+
- 
- /* So with GF */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-@@ -1181,6 +1192,9 @@ static int get_crf_id(struct iwl_trans *iwl_trans)
- 	case REG_CRF_ID_TYPE_MR:
- 		iwl_trans->hw_rf_id = (IWL_CFG_RF_TYPE_MR << 12);
- 		break;
-+		case REG_CRF_ID_TYPE_FM:
-+			iwl_trans->hw_rf_id = (IWL_CFG_RF_TYPE_FM << 12);
-+			break;
- 	default:
- 		ret = -EIO;
- 		IWL_ERR(iwl_trans,
+ 	/* re-check RF-Kill state since we may have missed the interrupt */
+ 	hw_rfkill = iwl_pcie_check_hw_rf_kill(trans);
 -- 
 2.33.0
 
