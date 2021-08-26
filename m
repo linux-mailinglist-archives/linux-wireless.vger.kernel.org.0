@@ -2,178 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 992CA3F7F8E
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 02:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D93003F8069
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 04:25:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235061AbhHZA7n convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Aug 2021 20:59:43 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:47535 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234396AbhHZA7n (ORCPT
+        id S237641AbhHZC0J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Aug 2021 22:26:09 -0400
+Received: from conssluserg-05.nifty.com ([210.131.2.90]:27592 "EHLO
+        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237584AbhHZC0I (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Aug 2021 20:59:43 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17Q0wERN1006279, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36501.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17Q0wERN1006279
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 26 Aug 2021 08:58:15 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36501.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 26 Aug 2021 08:58:14 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 26 Aug 2021 08:58:13 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
- RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Thu, 26 Aug 2021 08:58:13 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Kees Cook <keescook@chromium.org>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
+        Wed, 25 Aug 2021 22:26:08 -0400
+X-Greylist: delayed 79598 seconds by postgrey-1.27 at vger.kernel.org; Wed, 25 Aug 2021 22:26:07 EDT
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53]) (authenticated)
+        by conssluserg-05.nifty.com with ESMTP id 17Q2OrdX005266;
+        Thu, 26 Aug 2021 11:24:53 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 17Q2OrdX005266
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1629944693;
+        bh=d+AhyAERcvxh7BiYq2ElJkN7iLAXCwUv6UgSMsPKu74=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=CNgzwNhGDlLum2EBrBPzXzIdyjpIas0Y+NGmekx/BDBP1E7B39hjx6NP8GxxzN8dc
+         jxUGzqsab/nL5UXGq7eyHvnQLst1jqoH2G5HU2Z7uAqahoIiumWZL60vtzOA84ybQm
+         Uh7MHhofTbhUAgfPNROwLJsKcUGdea4vVad0tZRjN1wBEMlJHjnF7WTcEiuktq5eyk
+         ft80RzSYGRxTEeKtazr9OBbZ7buOkh/CMexm490CU+0JiQlxbZBTsQ1i5EUXbwZroa
+         Q6NEhp6o1PtbnyOkcLONBqoQt2z6Lwr84DxJcnqTUiL2jjBcNXTLAyupBjah3P3tan
+         Njey37RG80jsw==
+X-Nifty-SrcIP: [209.85.216.53]
+Received: by mail-pj1-f53.google.com with SMTP id j1so1137976pjv.3;
+        Wed, 25 Aug 2021 19:24:53 -0700 (PDT)
+X-Gm-Message-State: AOAM532MFFhPHKVuJzSVjf2J14BZSXa/b725jm2lCSagUYgRP6ywpB1E
+        jUjnsS8RlcWMZwzygyEsr4Gn3LjyIpfPLh7veQI=
+X-Google-Smtp-Source: ABdhPJw2EzwVb2S7fExRdpLksQsCs6YsBhQqntXqcomXVhX20PH/b2rdtnGXTKMbAl7GvXo5xuFBUf00afHREEkilBQ=
+X-Received: by 2002:a17:90a:a581:: with SMTP id b1mr1441813pjq.153.1629944692537;
+ Wed, 25 Aug 2021 19:24:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210825041637.365171-1-masahiroy@kernel.org> <boris.20210825172545@codesynthesis.com>
+In-Reply-To: <boris.20210825172545@codesynthesis.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Thu, 26 Aug 2021 11:24:15 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAS-NhR=94uHYcZUhRkdUEm=dYZSRbGKkB5zJJGNRw0z2A@mail.gmail.com>
+Message-ID: <CAK7LNAS-NhR=94uHYcZUhRkdUEm=dYZSRbGKkB5zJJGNRw0z2A@mail.gmail.com>
+Subject: Re: [PATCH] kconfig: forbid symbols that end with '_MODULE'
+To:     Boris Kolpackov <boris@codesynthesis.com>
+Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Colin Ian King <colin.king@canonical.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Joe Perches <joe@perches.com>,
-        Kaixu Xia <kaixuxia@tencent.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
-Subject: RE: [PATCH] rtlwifi: rtl8192de: Style clean-ups
-Thread-Topic: [PATCH] rtlwifi: rtl8192de: Style clean-ups
-Thread-Index: AQHXmd/DHYB2maO/lkCxyh94iMiVM6uE9bHg
-Date:   Thu, 26 Aug 2021 00:58:13 +0000
-Message-ID: <3e0b0efc0c0142bbb79cb11f927967bb@realtek.com>
-References: <20210825183350.1145441-1-keescook@chromium.org>
-In-Reply-To: <20210825183350.1145441-1-keescook@chromium.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/8/25_=3F=3F_08:00:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36501.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 08/26/2021 00:43:02
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 165781 [Aug 25 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 457 457 f9912fc467375383fbac52a53ade5bbe1c769e2a
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 08/26/2021 00:46:00
+        Jaroslav Kysela <perex@perex.cz>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-wireless@vger.kernel.org, Networking <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Thu, Aug 26, 2021 at 12:42 AM Boris Kolpackov
+<boris@codesynthesis.com> wrote:
+>
+> Masahiro Yamada <masahiroy@kernel.org> writes:
+>
+> > Kconfig (syncconfig) generates include/generated/autoconf.h to make
+> > CONFIG options available to the pre-processor.
+> >
+> > The macros are suffixed with '_MODULE' for symbols with the value 'm'.
+> >
+> > Here is a conflict; CONFIG_FOO=m results in '#define CONFIG_FOO_MODULE 1',
+> > but CONFIG_FOO_MODULE=y also results in the same define.
+> >
+> > fixdep always assumes CONFIG_FOO_MODULE comes from CONFIG_FOO=m, so the
+> > dependency is not properly tracked for symbols that end with '_MODULE'.
+>
+> It seem to me the problem is in autoconf.h/fixdep, not in the Kconfig
+> language.
 
-> -----Original Message-----
-> From: Kees Cook [mailto:keescook@chromium.org]
-> Sent: Thursday, August 26, 2021 2:34 AM
-> To: Pkshih
-> Cc: Kees Cook; Kalle Valo; David S. Miller; Jakub Kicinski; Larry Finger; Colin Ian King;
-> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; Joe Perches; Kaixu Xia;
-> linux-kernel@vger.kernel.org; linux-hardening@vger.kernel.org
-> Subject: [PATCH] rtlwifi: rtl8192de: Style clean-ups
-> 
-> Clean up some style issues:
-> - Use ARRAY_SIZE() even though it's a u8 array.
-> - Remove redundant CHANNEL_MAX_NUMBER_2G define.
-> Additionally fix some dead code WARNs.
-> 
-> Cc: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Larry Finger <Larry.Finger@lwfinger.net>
-> Cc: Colin Ian King <colin.king@canonical.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->  drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 8 +++-----
->  drivers/net/wireless/realtek/rtlwifi/wifi.h          | 1 -
->  2 files changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-> b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-> index b32fa7a75f17..9807c9e91998 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-> @@ -899,7 +899,7 @@ static u8 _rtl92c_phy_get_rightchnlplace(u8 chnl)
->  	u8 place = chnl;
-> 
->  	if (chnl > 14) {
-> -		for (place = 14; place < sizeof(channel5g); place++) {
-> +		for (place = 14; place < ARRAY_SIZE(channel5g); place++) {
 
-There are still many places we can use ARRAY_SIZE() instead of sizeof().
-Could you fix them within this file, even this driver?
-Otherwise, this patch looks good to me.
+Partly a Kconfig problem since autoconf.h is generated by Kconfig.
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+So, what is your suggestion for doing this correctly?
+(of course without breaking the compatibility
+because this is how the kernel is configured/built
+for more than 20 years)
 
->  			if (channel5g[place] == chnl) {
->  				place++;
->  				break;
-> @@ -2861,16 +2861,14 @@ u8 rtl92d_phy_sw_chnl(struct ieee80211_hw *hw)
->  	case BAND_ON_5G:
->  		/* Get first channel error when change between
->  		 * 5G and 2.4G band. */
-> -		if (channel <= 14)
-> +		if (WARN_ONCE(channel <= 14, "rtl8192de: 5G but channel<=14\n"))
->  			return 0;
-> -		WARN_ONCE((channel <= 14), "rtl8192de: 5G but channel<=14\n");
->  		break;
->  	case BAND_ON_2_4G:
->  		/* Get first channel error when change between
->  		 * 5G and 2.4G band. */
-> -		if (channel > 14)
-> +		if (WARN_ONCE(channel > 14, "rtl8192de: 2G but channel>14\n"))
->  			return 0;
-> -		WARN_ONCE((channel > 14), "rtl8192de: 2G but channel>14\n");
->  		break;
->  	default:
->  		WARN_ONCE(true, "rtl8192de: Invalid WirelessMode(%#x)!!\n",
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-> b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-> index aa07856411b1..31f9e9e5c680 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-> @@ -108,7 +108,6 @@
->  #define	CHANNEL_GROUP_IDX_5GM		6
->  #define	CHANNEL_GROUP_IDX_5GH		9
->  #define	CHANNEL_GROUP_MAX_5G		9
-> -#define CHANNEL_MAX_NUMBER_2G		14
->  #define AVG_THERMAL_NUM			8
->  #define AVG_THERMAL_NUM_88E		4
->  #define AVG_THERMAL_NUM_8723BE		4
-> --
-> 2.30.2
 
+
+
+>
+> > This commit makes Kconfig error out if it finds a symbol suffixed with
+> > '_MODULE'.
+>
+> I know you don't care, but I will voice my objection, for the record:
+> Kconfig is used by projects other than the Linux kernel and some of
+> them do not use the autoconf.h functionality. For such projects this
+> restriction seems arbitrary and potentially backwards-incompatible.
+
+I am not sure what your worry is, but this check resides in
+"if (modules_sym)" conditional, so projects using Kconfig but
+not module functionality (e.g. buildroot) will not be  affected.
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
