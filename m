@@ -2,99 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 820753F7F0C
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 01:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 174733F7F67
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 02:47:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233361AbhHYXkN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Aug 2021 19:40:13 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:64826 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233329AbhHYXkM (ORCPT
+        id S235425AbhHZArf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Aug 2021 20:47:35 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:46275 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232139AbhHZAre (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Aug 2021 19:40:12 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1629934766; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=FBhtRsz7II9iVtWFFo0AZP2XK3ulX6YiKBXT1VTeed0=; b=wyqngNYeOBzZYDbdPxR7tIy/wmR6yd5HV5DSz5jpXM6bFuwf/hMQ5wKZyRiUDGs7phI2OfVB
- 4F8uSeBD5pHcZljWhyWbuHTNHY/6Vj10VXn1+VbtyG0notwlD5CpwV6TkG4GkH2m9Y/UJDu8
- D4kys+T9IU1ArkUk09vC+E7Nfoc=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 6126d4a8b52e91333c4b4911 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 25 Aug 2021 23:39:20
- GMT
-Sender: srirrama=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 036B9C4360D; Wed, 25 Aug 2021 23:39:20 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from srirrama-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: srirrama)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C1285C4338F;
-        Wed, 25 Aug 2021 23:39:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C1285C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Sriram R <srirrama@codeaurora.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net, Sriram R <srirrama@codeaurora.org>
-Subject: [PATCH] cfg80211: Fetch wiphy DFS domain if it is self-managed
-Date:   Thu, 26 Aug 2021 05:08:50 +0530
-Message-Id: <1629934730-16388-1-git-send-email-srirrama@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Wed, 25 Aug 2021 20:47:34 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17Q0jtsL7003526, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36501.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17Q0jtsL7003526
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 26 Aug 2021 08:45:56 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36501.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 26 Aug 2021 08:45:54 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 26 Aug 2021 08:45:53 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Thu, 26 Aug 2021 08:45:53 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Kees Cook <keescook@chromium.org>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Colin Ian King <colin.king@canonical.com>,
+        Kaixu Xia <kaixuxia@tencent.com>,
+        Joe Perches <joe@perches.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
+Subject: RE: [PATCH] rtlwifi: rtl8192de: Restore channel index initialization
+Thread-Topic: [PATCH] rtlwifi: rtl8192de: Restore channel index initialization
+Thread-Index: AQHXmd9h/5hSWDmaB0eK6ixaYO0v8quE8ftA
+Date:   Thu, 26 Aug 2021 00:45:53 +0000
+Message-ID: <0f63064fd9f4464a87d9358e874c6b84@realtek.com>
+References: <20210825183103.1142909-1-keescook@chromium.org>
+In-Reply-To: <20210825183103.1142909-1-keescook@chromium.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.146]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/8/25_=3F=3F_08:00:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-KSE-ServerInfo: RTEXH36501.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 08/26/2021 00:30:56
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 165781 [Aug 25 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 457 457 f9912fc467375383fbac52a53ade5bbe1c769e2a
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/26/2021 00:34:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently during CAC start or other radar events, the DFS
-domain is fetched from cfg based on global DFS setting.
 
-But this could be different in case of self managed wiphy's
-in case the self managed driver updates its database or supports
-regions which has DFS domain set to UNSET in cfg80211 local
-regdomain.
 
-This avoids AP bringup failure for these self-managed drivers
-when such conflict occurs.
+> -----Original Message-----
+> From: Kees Cook [mailto:keescook@chromium.org]
+> Sent: Thursday, August 26, 2021 2:31 AM
+> To: Pkshih
+> Cc: Kees Cook; Kalle Valo; David S. Miller; Jakub Kicinski; Larry Finger; Colin Ian King; Kaixu Xia;
+> Joe Perches; linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org;
+> linux-hardening@vger.kernel.org
+> Subject: [PATCH] rtlwifi: rtl8192de: Restore channel index initialization
+> 
+> 2G channel indexes still need "place" to be initialized, since it is
+> returned from this function when channel is less than 14.
+> 
+> Fixes: 369956ae5720 ("rtlwifi: rtl8192de: Remove redundant variable initializations")
 
-Signed-off-by: Sriram R <srirrama@codeaurora.org>
----
- net/wireless/reg.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Like the patch "rtlwifi: rtl8192de: Fix initialization of place in _rtl92c_phy_get_rightchnlplace()"
+you sent before, please help to correct the removal of the commit 369956ae5720.
+I think we can add following into this patch.
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index c2d0ff7..78626e7 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -171,6 +171,7 @@ enum nl80211_dfs_regions reg_get_dfs_region(struct wiphy *wiphy)
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+@@ -1363,7 +1363,7 @@ static void _rtl92d_phy_switch_rf_setting(struct ieee80211_hw *hw, u8 channel)
+
+ u8 rtl92d_get_rightchnlplace_for_iqk(u8 chnl)
  {
- 	const struct ieee80211_regdomain *regd = NULL;
- 	const struct ieee80211_regdomain *wiphy_regd = NULL;
-+	enum nl80211_dfs_regions dfs_region;
- 
- 	rcu_read_lock();
- 	regd = get_cfg80211_regdom();
-@@ -182,6 +183,13 @@ enum nl80211_dfs_regions reg_get_dfs_region(struct wiphy *wiphy)
- 	if (!wiphy_regd)
- 		goto out;
- 
-+	/* In case the wiphy is self managed, return its dfs domain */
-+	if (wiphy->regulatory_flags & REGULATORY_WIPHY_SELF_MANAGED) {
-+		dfs_region = wiphy_regd->dfs_region;
-+		rcu_read_unlock();
-+		return dfs_region;
-+	}
-+
- 	if (wiphy_regd->dfs_region == regd->dfs_region)
- 		goto out;
- 
--- 
-2.7.4
+-       u8 place = chnl;
++       u8 place;
+
+        if (chnl > 14) {
+                for (place = 14; place < sizeof(channel_all); place++) {
+
+> Cc: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Larry Finger <Larry.Finger@lwfinger.net>
+> Cc: Colin Ian King <colin.king@canonical.com>
+> Cc: Kaixu Xia <kaixuxia@tencent.com>
+> Cc: Joe Perches <joe@perches.com>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> index 8ae69d914312..b32fa7a75f17 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> @@ -896,7 +896,7 @@ static void _rtl92d_ccxpower_index_check(struct ieee80211_hw *hw,
+> 
+>  static u8 _rtl92c_phy_get_rightchnlplace(u8 chnl)
+>  {
+> -	u8 place;
+> +	u8 place = chnl;
+> 
+>  	if (chnl > 14) {
+>  		for (place = 14; place < sizeof(channel5g); place++) {
+
+--
+Ping-Ke
 
