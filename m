@@ -2,109 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3123F8718
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 14:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BAEF3F8A26
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 16:32:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242456AbhHZMRD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Aug 2021 08:17:03 -0400
-Received: from codesynthesis.com ([188.40.148.39]:49622 "EHLO
-        codesynthesis.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242415AbhHZMRC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Aug 2021 08:17:02 -0400
-Received: from brak.codesynthesis.com (197-255-152-207.static.adept.co.za [197.255.152.207])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by codesynthesis.com (Postfix) with ESMTPSA id 4760D5F7CB;
-        Thu, 26 Aug 2021 12:16:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codesynthesis.com;
-        s=mail1; t=1629980173;
-        bh=Wcp+spva27SDUMn5lh3p20Ss4YEIqbN0awnBME542Vc=;
-        h=Date:From:To:Subject:Message-ID:MIME-Version:From;
-        b=eaN58FnQWvzkHM296c9v+VrbfZQ49nAoJFz9UJX992sl6ORTlxe4hFsAr3kmjn3+t
-         t5lEvmW+IVk4jEzoiuoeNBve+Q7EZho2ZKqCc+YHWky+7OHD4gqhxts5aFcXdUu8m7
-         Dt/Fa1lmZldSU/4Yqq4NDO/p7NvA9IWQyisNDs0bNN4ANOx074wGDTokR0YA4ACnu2
-         LKLauFGA+Ax0Q5OAJ+yYB1fC8Ogp1vvo1YbNQpSHPEcDPcn3XCwUbCSe3FIFj2lsGJ
-         EeW5BL4FEolSf6EvSnLdd3szd8mf6pUEYEDBdaA+hzAiN9600nM1WcfKnNZT+FiZuc
-         hfcHt8oR5T2cw==
-Received: by brak.codesynthesis.com (Postfix, from userid 1000)
-        id F0E911A800C4; Thu, 26 Aug 2021 14:16:09 +0200 (SAST)
-Date:   Thu, 26 Aug 2021 14:16:09 +0200
-From:   Boris Kolpackov <boris@codesynthesis.com>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, Networking <netdev@vger.kernel.org>
-Subject: Re: [PATCH] kconfig: forbid symbols that end with '_MODULE'
-Message-ID: <boris.20210826140701@codesynthesis.com>
-References: <20210825041637.365171-1-masahiroy@kernel.org>
- <boris.20210825172545@codesynthesis.com>
- <CAK7LNAS-NhR=94uHYcZUhRkdUEm=dYZSRbGKkB5zJJGNRw0z2A@mail.gmail.com>
+        id S242843AbhHZOdW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Aug 2021 10:33:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43364 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S242708AbhHZOdV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 26 Aug 2021 10:33:21 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D000360FC1;
+        Thu, 26 Aug 2021 14:32:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629988354;
+        bh=+OvWSAv6eT2o2f8090dQ6SlXbDQ2R+xHr4AY/G7zmcA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CRfyvN4w42pUmfauqzgOQgfSvbPTEWKVp+ZPpaQcqiDqdIvzP3qGr7flvgaKCDhFQ
+         9uDQ214uDl94npSSewfc2ARnbxhmuZJYAmJXMXmX7kytkwGkKht8KhN0kp2t8QdDl2
+         RMrX/wA+KY1dqV/xgLc21pr/FRgcUne2AYfarPHN38a5VhRNc5lTifhXa7FLC+rB1R
+         UmAonIe6eFGWUS8WXjXW5yJ75R1+vqupB7U1Qf1jVP7BT2PEOWnPo0lq19d0T3nDMP
+         wqhcrAJBD4oTRbV9SmGYX/UeNVApCQa6sIRo9/KPoou8imqlhceNhQy3J0+PwbZe7U
+         efzfytpx3K7Xg==
+Date:   Thu, 26 Aug 2021 09:32:32 -0500
+From:   Seth Forshee <sforshee@kernel.org>
+To:     Victor Bayas <victorsbayas@gmail.com>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] Update regulatory rules for Ecuador (EC)
+Message-ID: <YSemAGfADr2WTey8@ubuntu-x1>
+References: <20210825031409.10552-1-victorsbayas@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK7LNAS-NhR=94uHYcZUhRkdUEm=dYZSRbGKkB5zJJGNRw0z2A@mail.gmail.com>
-Organization: Code Synthesis
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <20210825031409.10552-1-victorsbayas@gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Masahiro Yamada <masahiroy@kernel.org> writes:
-
-> On Thu, Aug 26, 2021 at 12:42 AM Boris Kolpackov
-> <boris@codesynthesis.com> wrote:
-> >
-> > Masahiro Yamada <masahiroy@kernel.org> writes:
-> >
-> > > Kconfig (syncconfig) generates include/generated/autoconf.h to make
-> > > CONFIG options available to the pre-processor.
-> > >
-> > > The macros are suffixed with '_MODULE' for symbols with the value 'm'.
-> > >
-> > > Here is a conflict; CONFIG_FOO=m results in '#define CONFIG_FOO_MODULE 1',
-> > > but CONFIG_FOO_MODULE=y also results in the same define.
-> > >
-> > > fixdep always assumes CONFIG_FOO_MODULE comes from CONFIG_FOO=m, so the
-> > > dependency is not properly tracked for symbols that end with '_MODULE'.
-> >
-> > It seem to me the problem is in autoconf.h/fixdep, not in the Kconfig
-> > language.
+On Tue, Aug 24, 2021 at 10:14:09PM -0500, Victor Bayas wrote:
+> Update the frequency ranges and power limits according to the current Ecuadorian norm [1],
+> corrected 5GHz maximum bandwidth since there are no legal restrictions in this subject.
 > 
-> So, what is your suggestion for doing this correctly?
-> (of course without breaking the compatibility
-> because this is how the kernel is configured/built
-> for more than 20 years)
-
-Yes, I appreciate that fixing this properly may not be an option
-due to backwards-compatibility. How about then moving the check
-from the language closer to the place where it will actually be
-an issue. Specifically, can the error be triggered when we are
-about to write #define to autoconf.h and see that the name ends
-with _MODULE?
-
-
-> > I know you don't care, but I will voice my objection, for the record:
-> > Kconfig is used by projects other than the Linux kernel and some of
-> > them do not use the autoconf.h functionality. For such projects this
-> > restriction seems arbitrary and potentially backwards-incompatible.
+> Note: 60GHz channels 1 to 3 are allowed without license for Point-to-Point links but
+> they aren't for Point-to-Multipoint links so they were omitted in this patch.
 > 
-> I am not sure what your worry is, but this check resides in
-> "if (modules_sym)" conditional, so projects using Kconfig but
-> not module functionality (e.g. buildroot) will not be  affected.
+> [1] https://www.arcotel.gob.ec/wp-content/uploads/2018/04/NORMA-ESPECTRO-DE-USO-LIBRE-Y-ESPECTRO-PARA-USO-DETERMINADO-EN-BANDAS-LIBRES.pdf
+> 
+> Signed-off-by: Victor Bayas <victorsbayas@gmail.com>
 
-The Kconfig module semantics is actually general enough that a
-project other than the Linux kernel could reuse it. (I've written
-more on this possibility here[1]).
+Thanks for the patch! A few comments below.
 
-[1] https://build2.org/libbuild2-kconfig/doc/build2-kconfig-manual.xhtml#lang-mod
+> ---
+>  db.txt | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/db.txt b/db.txt
+> index e7b11cf..4630854 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -504,12 +504,14 @@ country DZ: DFS-JP
+>  	(5250.000 - 5330.000 @ 80.000), (23.00), DFS, AUTO-BW
+>  	(5490.000 - 5670.000 @ 160.000), (23.00), DFS
+>  
+> +# Source:
+> +# https://www.arcotel.gob.ec/wp-content/uploads/2018/04/NORMA-ESPECTRO-DE-USO-LIBRE-Y-ESPECTRO-PARA-USO-DETERMINADO-EN-BANDAS-LIBRES.pdf
+>  country EC: DFS-FCC
+> -	(2402 - 2482 @ 40), (20)
+> -	(5170 - 5250 @ 20), (17)
+> -	(5250 - 5330 @ 20), (24), DFS
+> -	(5490 - 5730 @ 20), (24), DFS
+> -	(5735 - 5835 @ 20), (30)
+> +	(2400 - 2483.5 @ 40), (1000 mW)
+> +	(5150 - 5250 @ 80), (50 mW), AUTO-BW
+
+It looks like 5150-5250 MHz also requires DFS.
+
+> +	(5250 - 5350 @ 80), (250 mW), AUTO-BW, DFS
+> +	(5470 - 5725 @ 160), (250 mW), DFS
+
+5250-5350 and 5470-5725 MHz require TPC. Since Linux does not support
+TPC the power limits need to be reduced by 3 dBm, which puts them at 125
+mW.
+
+I also don't see any DFS requirement for 5470-5725 MHz.
+
+Thanks,
+Seth
