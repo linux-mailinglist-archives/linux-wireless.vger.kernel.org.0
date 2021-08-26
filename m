@@ -2,78 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38C713F862B
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 13:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7933D3F866F
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 13:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241630AbhHZLMU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Aug 2021 07:12:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41446 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233736AbhHZLMU (ORCPT
+        id S242420AbhHZL1K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Aug 2021 07:27:10 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:33146 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S242022AbhHZL07 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Aug 2021 07:12:20 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 568B7C061757
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Aug 2021 04:11:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=AFPbCt38NXGTil1OJr1SDJKcyo5E5Oeu941r64ejGRQ=;
-        t=1629976293; x=1631185893; b=b9/MzwDjzg84FPRgCJQMRWR1tYNlk7/1pMWsxYatuWFFKRl
-        xUVFWTvpKSk4HuULdOW071+14v731Sf+0iTYRtQTJTnGvwpQxPD3/P+vllicw23WqYKS6/8ZghGxA
-        5jOPwKudxf4MHRxcQAKVUucqqDz6u3bzDqDGvOevknbE7/qa2xpCdXTZ7KxL9XzZFaldpkSoBqB/I
-        Y8F8czQ5GymO1n4WPk7vz5pO4luK4UrWSHjup7tLiV9Z1suGQjCTT2mrPOlukMvtsp55iPAiTTfCW
-        wZ/SeJ6BQU2YMcuAlLvXQf4TxkzYtnWXWSncpr4AgBFOX+64ip1NKYZ81r/yBR1A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mJDI8-00G7hg-SN; Thu, 26 Aug 2021 13:11:28 +0200
-Message-ID: <be51d30eae34c20e3992e1a3b1f5212cefe288fb.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/8] cfg80211: add power type definition for 6 GHz
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Date:   Thu, 26 Aug 2021 13:11:28 +0200
-In-Reply-To: <3fea8f33ea9c341fbe0e4c1443a2c378@codeaurora.org>
-References: <20210820122041.12157-1-wgong@codeaurora.org>
-         <20210820122041.12157-2-wgong@codeaurora.org>
-         <b6ba152ce1efde5863cae53a94728e8472ba53c0.camel@sipsolutions.net>
-         <4ab79bd421d021a2199c71471f60fefb97f317ad.camel@sipsolutions.net>
-         <3fea8f33ea9c341fbe0e4c1443a2c378@codeaurora.org>
+        Thu, 26 Aug 2021 07:26:59 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94)
+        (envelope-from <luca@coelho.fi>)
+        id 1mJDWG-002VQo-19; Thu, 26 Aug 2021 14:26:08 +0300
+Message-ID: <a58ee2748eaecfa708faac00658c05fed3fcd4a3.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 26 Aug 2021 14:26:03 +0300
+In-Reply-To: <3be8a0e1cbe82e0c4b55b00c7e7fe06d8014aa71.camel@coelho.fi>
+References: <20210820110318.260751-1-luca@coelho.fi>
+         <iwlwifi.20210820140104.b5c7c6613634.I53b8d9fb194b88070a0df6613f7f57668ea0eaf8@changeid>
+         <87y28usxl0.fsf@codeaurora.org>
+         <3be8a0e1cbe82e0c4b55b00c7e7fe06d8014aa71.camel@coelho.fi>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
+        farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
+Subject: Re: [PATCH 08/12] iwlwifi: export DHC framework and add first
+ public entry, twt_setup
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2021-08-26 at 19:02 +0800, Wen Gong wrote:
-> On 2021-08-26 16:22, Johannes Berg wrote:
-> > On Thu, 2021-08-26 at 10:20 +0200, Johannes Berg wrote:
-> > > >  struct cfg80211_chan_def {
-> > > >  	struct ieee80211_channel *chan;
-> > > > @@ -684,6 +685,7 @@ struct cfg80211_chan_def {
-> > > >  	u32 center_freq2;
-> > > >  	struct ieee80211_edmg edmg;
-> > > >  	u16 freq1_offset;
-> > > > +	enum nl80211_ap_reg_power power_type;
+On Mon, 2021-08-23 at 11:57 +0300, Luca Coelho wrote:
+> On Sat, 2021-08-21 at 17:04 +0300, Kalle Valo wrote:
+> > Luca Coelho <luca@coelho.fi> writes:
+> > 
+> > > From: Luca Coelho <luciano.coelho@intel.com>
 > > > 
-> > > I'm not sure why this should be in the chandef, there's no way that
-> > > anything in cfg80211 is ever using it there, at least in your patches.
+> > > Export the debug host command framework and add the twt_setup entry.
+> > > This will allow external parties to use these debugging features.
+> > > More entries can be added later on.
+> > > 
+> > > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 > > 
-> > Does it even *apply* to a channel? What if I'm connecting to two APs on
-> > the same channel (two client interfaces)?
+> > [...]
 > > 
-> this is one copy for each connection, each client has its own 
-> cfg80211_chan_def.
+> > > --- a/drivers/net/wireless/intel/iwlwifi/Kconfig
+> > > +++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
+> > > @@ -92,6 +92,12 @@ config IWLWIFI_BCAST_FILTERING
+> > >  	  If unsure, don't enable this option, as some programs might
+> > >  	  expect incoming broadcasts for their normal operations.
+> > >  
+> > > 
+> > > +config IWLWIFI_DHC
+> > > +	bool "Enable debug host commands"
+> > > +	help
+> > > +	  This option enables the debug host command API.  It's used
+> > > +	  for debugging and validation purposes.
+> > > +
+> > 
+> > Why a new Kconfig option? Those should not be added lightly.
+> 
+> This is a debugging feature that is not really needed in production
+> kernels, so we prefer to allow it to be removed so we don't waste
+> resources.
+> 
+> We're publishing this for a few reasons:
+> 
+> 1. it will help prevent rebasing mistakes when sending patches upstream
+> from our internal tree, because a lot of this code is spread around the
+> driver;
+> 
+> 2. in some occasions, we may ask advanced users to enable it so we can
+> get more data and run more tests in case of tricky bugs;
+> 
+> 3. for the specific case of twt_setup, this allows running some TWT
+> test scenarios with our driver that wouldn't be easily available
+> otherwise.
+> 
+> Is it okay to keep it?
 
-That depends on where you check it - but you're basically saying "use
-this only from vif->bss_conf.chandef (or something, didn't check now),
-but chandef shows up in many other places and you don't maintain it
-anywhere else.
+Johannes suggested to add "if EXPERT" here, so I'm going to do that and
+resend.
 
-johannes
+--
+Cheers,
+Luca.
 
