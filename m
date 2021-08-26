@@ -2,99 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7933D3F866F
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 13:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE4483F868B
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 13:30:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242420AbhHZL1K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Aug 2021 07:27:10 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:33146 "EHLO
+        id S242014AbhHZLbh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Aug 2021 07:31:37 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:33154 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S242022AbhHZL07 (ORCPT
+        with ESMTP id S234382AbhHZLbg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Aug 2021 07:26:59 -0400
+        Thu, 26 Aug 2021 07:31:36 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1mJDWG-002VQo-19; Thu, 26 Aug 2021 14:26:08 +0300
-Message-ID: <a58ee2748eaecfa708faac00658c05fed3fcd4a3.camel@coelho.fi>
+        id 1mJDao-002VRV-GQ; Thu, 26 Aug 2021 14:30:48 +0300
+Message-ID: <ce687133d7edf29abb421a9f1a105bb9eedd9761.camel@coelho.fi>
 From:   Luca Coelho <luca@coelho.fi>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 26 Aug 2021 14:26:03 +0300
-In-Reply-To: <3be8a0e1cbe82e0c4b55b00c7e7fe06d8014aa71.camel@coelho.fi>
+Date:   Thu, 26 Aug 2021 14:30:46 +0300
+In-Reply-To: <87tujisxfq.fsf@codeaurora.org>
 References: <20210820110318.260751-1-luca@coelho.fi>
-         <iwlwifi.20210820140104.b5c7c6613634.I53b8d9fb194b88070a0df6613f7f57668ea0eaf8@changeid>
-         <87y28usxl0.fsf@codeaurora.org>
-         <3be8a0e1cbe82e0c4b55b00c7e7fe06d8014aa71.camel@coelho.fi>
+         <iwlwifi.20210820140104.8f8ce6f25ecd.Iec9b2e2615ce65e6aff5ce896589227a7030f4cf@changeid>
+         <87tujisxfq.fsf@codeaurora.org>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
         farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: Re: [PATCH 08/12] iwlwifi: export DHC framework and add first
- public entry, twt_setup
+Subject: Re: [PATCH 10/12] iwlwifi: Add support for getting rf id with blank
+ otp
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2021-08-23 at 11:57 +0300, Luca Coelho wrote:
-> On Sat, 2021-08-21 at 17:04 +0300, Kalle Valo wrote:
-> > Luca Coelho <luca@coelho.fi> writes:
+On Sat, 2021-08-21 at 17:07 +0300, Kalle Valo wrote:
+> Luca Coelho <luca@coelho.fi> writes:
+> 
+> > From: Matti Gottlieb <matti.gottlieb@intel.com>
 > > 
-> > > From: Luca Coelho <luciano.coelho@intel.com>
-> > > 
-> > > Export the debug host command framework and add the twt_setup entry.
-> > > This will allow external parties to use these debugging features.
-> > > More entries can be added later on.
-> > > 
-> > > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> > When having a blank OTP the only way to get the rf id
+> > and the cdb info is from prph registers.
 > > 
-> > [...]
+> > Currently there is some implementation for this, but it
+> > is located in the wrong place in the code (should be before
+> > trying to understand what HW is connected and not after),
+> > and it has a partial implementation.
 > > 
-> > > --- a/drivers/net/wireless/intel/iwlwifi/Kconfig
-> > > +++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
-> > > @@ -92,6 +92,12 @@ config IWLWIFI_BCAST_FILTERING
-> > >  	  If unsure, don't enable this option, as some programs might
-> > >  	  expect incoming broadcasts for their normal operations.
-> > >  
-> > > 
-> > > +config IWLWIFI_DHC
-> > > +	bool "Enable debug host commands"
-> > > +	help
-> > > +	  This option enables the debug host command API.  It's used
-> > > +	  for debugging and validation purposes.
-> > > +
-> > 
-> > Why a new Kconfig option? Those should not be added lightly.
+> > Signed-off-by: Matti Gottlieb <matti.gottlieb@intel.com>
+> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 > 
-> This is a debugging feature that is not really needed in production
-> kernels, so we prefer to allow it to be removed so we don't waste
-> resources.
+> [...]
 > 
-> We're publishing this for a few reasons:
+> > +/*
+> > + * struct iwl_crf_chip_id_reg
+> > + *
+> > + * type: bits 0-11
+> > + * reserved: bits 12-18
+> > + * slave_exist: bit 19
+> > + * dash: bits 20-23
+> > + * step: bits 24-26
+> > + * flavor: bits 27-31
+> > + */
+> > +struct iwl_crf_chip_id_reg {
+> > +	u32 type : 12;
+> > +	u32 reserved : 7;
+> > +	u32 slave_exist : 1;
+> > +	u32 dash : 4;
+> > +	u32 step : 4;
+> > +	u32 flavor : 4;
+> > +};
 > 
-> 1. it will help prevent rebasing mistakes when sending patches upstream
-> from our internal tree, because a lot of this code is spread around the
-> driver;
-> 
-> 2. in some occasions, we may ask advanced users to enable it so we can
-> get more data and run more tests in case of tricky bugs;
-> 
-> 3. for the specific case of twt_setup, this allows running some TWT
-> test scenarios with our driver that wouldn't be easily available
-> otherwise.
-> 
-> Is it okay to keep it?
+> This doesn't look endian safe.
 
-Johannes suggested to add "if EXPERT" here, so I'm going to do that and
-resend.
+It's not exactly that this is not endian safe, but we had two issues:
+
+1. AFAIK these bitfields are not guaranteed to be kept in order, so we
+shouldn't use them.  I'll change it to decode this in some other way.
+
+2. We are actually reading the register without caring for endianess. 
+I will fix it.
+
+Expect v2 soon.
 
 --
 Cheers,
 Luca.
+
+
+> > +	/* Set CDB capabilities */
+> > +	if (cdb & BIT(4)) {
+> > +		iwl_trans->hw_rf_id += BIT(28);
+> > +		IWL_INFO(iwl_trans, "Adding cdb to rf id\n");
+> > +	}
+> 
+> Magic numbers.
+> 
+
 
