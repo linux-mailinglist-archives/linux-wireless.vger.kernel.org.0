@@ -2,83 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86C653F85F9
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 12:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA1B33F85FF
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 13:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241634AbhHZLAC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Aug 2021 07:00:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38506 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231485AbhHZLAB (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Aug 2021 07:00:01 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83F6BC061757
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Aug 2021 03:59:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=gDiGKjEUkKRAhz5HdTK51/IAOIhHO1MVRogdEKMpohQ=;
-        t=1629975554; x=1631185154; b=fXridZ37kkzpjiOm4vEIiJ9kWg8B6RyVB9olaUoP3NzsFjC
-        7QFEPVoyI3wJaoOA9T4B3ZmVv1afErjnXkuWXfguPCmg/26r1iN8DLNEi9MZf22vejPOd75wPn6OM
-        MCVyHkp4NP93P2lIeoUYAGsojO3YHQgxYLYJxsTSvIvuNAEIFbY0pMY1oWGQSBZIe5kUCR1FguE/Z
-        PtZ6AHafXty12LkrwveNSuJtjQ5+5vTlQGDg4eOKBESdKZa8U+8vo+CPsz1WcwURCjZf2NYSiVo/J
-        KMfOFdWlTetY8sA1saSM1TDjdt6oGA+2awMjW+hmYODA6HtRCeHo+XIfUzRNj/JQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mJD6E-00G7PG-3A; Thu, 26 Aug 2021 12:59:10 +0200
-Message-ID: <7e07a64f33bc1a1ca09e36d6152628478a622b69.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/8] cfg80211: add power type definition for 6 GHz
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Date:   Thu, 26 Aug 2021 12:59:09 +0200
-In-Reply-To: <e6006814059d085a1f57af24b9561dde@codeaurora.org>
-References: <20210820122041.12157-1-wgong@codeaurora.org>
-         <20210820122041.12157-2-wgong@codeaurora.org>
-         <b6ba152ce1efde5863cae53a94728e8472ba53c0.camel@sipsolutions.net>
-         <e6006814059d085a1f57af24b9561dde@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S234228AbhHZLCe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Aug 2021 07:02:34 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:11220 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231406AbhHZLCR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 26 Aug 2021 07:02:17 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1629975690; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=pJ+bz9wD7XOqHk2p2R+b9YiyyLyqz0L0AkZHisb0OFY=;
+ b=PUPhb4SDDpnpLPQGrlKAg4LN43DkmzTIag/MvdyQ2osKymz8vwIw1hD69bhNNRkVETVCg2+l
+ V6wkRPxw+0o2rMH5SDIlQFyPruw69gukFLrLdEBbGmbOV3gtrmAfQISLGwImZo7YAOoqhOPN
+ UZPaMJphz4mfTcIw/S1iL83sqNU=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 6127744c825e13c54aa575d6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 26 Aug 2021 11:00:28
+ GMT
+Sender: wgong=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id AAFE6C43460; Thu, 26 Aug 2021 11:00:27 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7A8A7C4338F;
+        Thu, 26 Aug 2021 11:00:27 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 26 Aug 2021 19:00:27 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 8/8] mac80211: save transmit power envelope element and
+ power constraint
+In-Reply-To: <5c85b2bcfbffb617c5aa3f55e7ae94a1ab4df743.camel@sipsolutions.net>
+References: <20210820122041.12157-1-wgong@codeaurora.org>
+ <20210820122041.12157-9-wgong@codeaurora.org>
+ <dfe27f657b4615369cf751d394f5cba75f5fdcc1.camel@sipsolutions.net>
+ <fe21853e8c9a73632e0ca860eef00296@codeaurora.org>
+ <5c85b2bcfbffb617c5aa3f55e7ae94a1ab4df743.camel@sipsolutions.net>
+Message-ID: <f86091b72422d194a2e59b1f6d27a69b@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2021-08-26 at 18:57 +0800, Wen Gong wrote:
-> On 2021-08-26 16:20, Johannes Berg wrote:
-> > >  struct cfg80211_chan_def {
-> > >  	struct ieee80211_channel *chan;
-> > > @@ -684,6 +685,7 @@ struct cfg80211_chan_def {
-> > >  	u32 center_freq2;
-> > >  	struct ieee80211_edmg edmg;
-> > >  	u16 freq1_offset;
-> > > +	enum nl80211_ap_reg_power power_type;
-> > 
-> > I'm not sure why this should be in the chandef, there's no way that
-> > anything in cfg80211 is ever using it there, at least in your patches.
-> > 
-> It is used in mac80211 of [PATCH v2 3/8] mac80211: add parse regulatory 
-> info in 6 GHz operation information.
-> should i move it to mac80211's .h file?
-> > > +/**
-> > > + * enum nl80211_ap_reg_power - regulatory power for a Access Point
-[...]
-> > 
-> It is used in mac80211 of [PATCH v2 3/8] mac80211: add parse regulatory 
-> info in 6 GHz operation information.
-> should i move it to mac80211's .h file?
-
-Yeah I saw both of them are used, but why are they defined as nl80211
-API? Do you have any intention to set them through nl80211?
-
-And like I said, I'm not really convinced this belongs into struct
-cfg80211_chan_def either. Maybe it should be in bss_conf too?
-
-johannes
+On 2021-08-26 18:57, Johannes Berg wrote:
+> On Thu, 2021-08-26 at 18:50 +0800, Wen Gong wrote:
+>> >
+>> it is memset here i this patch:
 > 
-
+> Oops, missed that.
+> 
+> But is that really a good place for it? Doesn't really seem to belong 
+> to
+> assigning a channel context - maybe put it into set_disassoc()?
+> 
+it is correct.
+you can see it is place together with "drv_unassign_vif_chanctx(local, 
+sdata, curr_ctx)"
+in ieee80211_assign_vif_chanctx(), it is for disconnect.
+> johannes
