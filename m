@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C39043F8F23
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 21:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17ED13F8F24
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Aug 2021 21:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243563AbhHZTsm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Aug 2021 15:48:42 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:33418 "EHLO
+        id S243575AbhHZTso (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Aug 2021 15:48:44 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:33424 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S243547AbhHZTsm (ORCPT
+        with ESMTP id S243567AbhHZTsn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Aug 2021 15:48:42 -0400
+        Thu, 26 Aug 2021 15:48:43 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94)
         (envelope-from <luca@coelho.fi>)
-        id 1mJLLr-002XB4-LM; Thu, 26 Aug 2021 22:47:53 +0300
+        id 1mJLLs-002XB4-JY; Thu, 26 Aug 2021 22:47:54 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Thu, 26 Aug 2021 22:47:38 +0300
-Message-Id: <iwlwifi.20210826224715.0a10d43f3d7f.Ice4112c1910cf94babd1c2d492a3a3de9f7ee6cb@changeid>
+Date:   Thu, 26 Aug 2021 22:47:39 +0300
+Message-Id: <iwlwifi.20210826224715.7d2dd18c75a2.I3652584755b9ab44909ddcd09ff4d80c6690a1ad@changeid>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210826194748.826360-1-luca@coelho.fi>
 References: <20210826194748.826360-1-luca@coelho.fi>
@@ -32,214 +32,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.5-pre1 (2020-06-20) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.5-pre1
-Subject: [PATCH v2 02/12] iwlwifi: mvm: add support for responder config command version 9
+Subject: [PATCH v2 03/12] iwlwifi: move get pnvm file name to a separate function
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Dror Moshe <drorx.moshe@intel.com>
 
-This version adds the following configuration options:
-1. Enable/disable setting the session id in the FTM frame
-2. Set the BSS color for the responder
-3. Set the minimum and maximum time between measurements for
-   non trigger based NDP ranging.
+Move code that generates the pnvm file name to a separate function,
+so that it can be reused.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Dror Moshe <drorx.moshe@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/api/location.h  | 70 +++++++++++++++++--
- .../intel/iwlwifi/mvm/ftm-responder.c         | 27 +++++--
- 2 files changed, 88 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 13 ++-----------
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.h | 20 ++++++++++++++++++++
+ 2 files changed, 22 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/location.h b/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-index 0a8681d9687c..6bbb8b8c91cd 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-@@ -151,6 +151,10 @@ enum iwl_tof_mcsi_enable {
-  *	is valid
-  * @IWL_TOF_RESPONDER_CMD_VALID_NDP_PARAMS: NDP parameters are valid
-  * @IWL_TOF_RESPONDER_CMD_VALID_LMR_FEEDBACK: LMR feedback support is valid
-+ * @IWL_TOF_RESPONDER_CMD_VALID_SESSION_ID: session id flag is valid
-+ * @IWL_TOF_RESPONDER_CMD_VALID_BSS_COLOR: the bss_color field is valid
-+ * @IWL_TOF_RESPONDER_CMD_VALID_MIN_MAX_TIME_BETWEEN_MSR: the
-+ *	min_time_between_msr and max_time_between_msr fields are valid
-  */
- enum iwl_tof_responder_cmd_valid_field {
- 	IWL_TOF_RESPONDER_CMD_VALID_CHAN_INFO = BIT(0),
-@@ -169,6 +173,9 @@ enum iwl_tof_responder_cmd_valid_field {
- 	IWL_TOF_RESPONDER_CMD_VALID_NDP_SUPPORT = BIT(22),
- 	IWL_TOF_RESPONDER_CMD_VALID_NDP_PARAMS = BIT(23),
- 	IWL_TOF_RESPONDER_CMD_VALID_LMR_FEEDBACK = BIT(24),
-+	IWL_TOF_RESPONDER_CMD_VALID_SESSION_ID = BIT(25),
-+	IWL_TOF_RESPONDER_CMD_VALID_BSS_COLOR = BIT(26),
-+	IWL_TOF_RESPONDER_CMD_VALID_MIN_MAX_TIME_BETWEEN_MSR = BIT(27),
- };
- 
- /**
-@@ -186,6 +193,8 @@ enum iwl_tof_responder_cmd_valid_field {
-  * @IWL_TOF_RESPONDER_FLAGS_NDP_SUPPORT: support NDP ranging
-  * @IWL_TOF_RESPONDER_FLAGS_LMR_FEEDBACK: request for LMR feedback if the
-  *	initiator supports it
-+ * @IWL_TOF_RESPONDER_FLAGS_SESSION_ID: send the session id in the initial FTM
-+ *	frame.
-  */
- enum iwl_tof_responder_cfg_flags {
- 	IWL_TOF_RESPONDER_FLAGS_NON_ASAP_SUPPORT = BIT(0),
-@@ -200,6 +209,7 @@ enum iwl_tof_responder_cfg_flags {
- 	IWL_TOF_RESPONDER_FLAGS_FTM_TX_ANT = RATE_MCS_ANT_ABC_MSK,
- 	IWL_TOF_RESPONDER_FLAGS_NDP_SUPPORT = BIT(24),
- 	IWL_TOF_RESPONDER_FLAGS_LMR_FEEDBACK = BIT(25),
-+	IWL_TOF_RESPONDER_FLAGS_SESSION_ID = BIT(27),
- };
- 
- /**
-@@ -297,13 +307,13 @@ struct iwl_tof_responder_config_cmd_v7 {
-  * @r2i_ndp_params: parameters for R2I NDP.
-  *	bits 0 - 2: max number of LTF repetitions
-  *	bits 3 - 5: max number of spatial streams (supported values are < 2)
-- *	bits 6 - 7: max number of total LTFs
-- *		    (&enum ieee80211_range_params_max_total_ltf)
-+ *	bits 6 - 7: max number of total LTFs see
-+ *	&enum ieee80211_range_params_max_total_ltf
-  * @i2r_ndp_params: parameters for I2R NDP.
-  *	bits 0 - 2: max number of LTF repetitions
-  *	bits 3 - 5: max number of spatial streams
-- *	bits 6 - 7: max number of total LTFs
-- *		    (&enum ieee80211_range_params_max_total_ltf)
-+ *	bits 6 - 7: max number of total LTFs see
-+ *	&enum ieee80211_range_params_max_total_ltf
-  */
- struct iwl_tof_responder_config_cmd_v8 {
- 	__le32 cmd_valid_fields;
-@@ -322,6 +332,58 @@ struct iwl_tof_responder_config_cmd_v8 {
- 	u8 i2r_ndp_params;
- } __packed; /* TOF_RESPONDER_CONFIG_CMD_API_S_VER_8 */
- 
-+/**
-+ * struct iwl_tof_responder_config_cmd_v9 - ToF AP mode (for debug)
-+ * @cmd_valid_fields: &iwl_tof_responder_cmd_valid_field
-+ * @responder_cfg_flags: &iwl_tof_responder_cfg_flags
-+ * @format_bw: bits 0 - 3: &enum iwl_location_frame_format.
-+ *             bits 4 - 7: &enum iwl_location_bw.
-+ * @bss_color: current AP bss_color
-+ * @channel_num: current AP Channel
-+ * @ctrl_ch_position: coding of the control channel position relative to
-+ *	the center frequency, see iwl_mvm_get_ctrl_pos()
-+ * @sta_id: index of the AP STA when in AP mode
-+ * @reserved1: reserved
-+ * @toa_offset: Artificial addition [pSec] for the ToA - to be used for debug
-+ *	purposes, simulating station movement by adding various values
-+ *	to this field
-+ * @common_calib: XVT: common calibration value
-+ * @specific_calib: XVT: specific calibration value
-+ * @bssid: Current AP BSSID
-+ * @r2i_ndp_params: parameters for R2I NDP.
-+ *	bits 0 - 2: max number of LTF repetitions
-+ *	bits 3 - 5: max number of spatial streams (supported values are < 2)
-+ *	bits 6 - 7: max number of total LTFs see
-+ *	&enum ieee80211_range_params_max_total_ltf
-+ * @i2r_ndp_params: parameters for I2R NDP.
-+ *	bits 0 - 2: max number of LTF repetitions
-+ *	bits 3 - 5: max number of spatial streams
-+ *	bits 6 - 7: max number of total LTFs see
-+ *	&enum ieee80211_range_params_max_total_ltf
-+ * @min_time_between_msr: for non trigger based NDP ranging, minimum time
-+ *	between measurements in milliseconds.
-+ * @max_time_between_msr: for non trigger based NDP ranging, maximum time
-+ *	between measurements in milliseconds.
-+ */
-+struct iwl_tof_responder_config_cmd_v9 {
-+	__le32 cmd_valid_fields;
-+	__le32 responder_cfg_flags;
-+	u8 format_bw;
-+	u8 bss_color;
-+	u8 channel_num;
-+	u8 ctrl_ch_position;
-+	u8 sta_id;
-+	u8 reserved1;
-+	__le16 toa_offset;
-+	__le16 common_calib;
-+	__le16 specific_calib;
-+	u8 bssid[ETH_ALEN];
-+	u8 r2i_ndp_params;
-+	u8 i2r_ndp_params;
-+	__le16 min_time_between_msr;
-+	__le16 max_time_between_msr;
-+} __packed; /* TOF_RESPONDER_CONFIG_CMD_API_S_VER_8 */
-+
- #define IWL_LCI_CIVIC_IE_MAX_SIZE	400
- 
- /**
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-index 5a249ea97eb2..eba5433c2626 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2020 Intel Corporation
-+ * Copyright (C) 2018-2021 Intel Corporation
-  */
- #include <net/cfg80211.h>
- #include <linux/etherdevice.h>
-@@ -77,7 +77,7 @@ static int iwl_mvm_ftm_responder_set_bw_v2(struct cfg80211_chan_def *chandef,
- 
- static void
- iwl_mvm_ftm_responder_set_ndp(struct iwl_mvm *mvm,
--			      struct iwl_tof_responder_config_cmd_v8 *cmd)
-+			      struct iwl_tof_responder_config_cmd_v9 *cmd)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+index 1de30bae7829..bbd8c31cbbec 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
+@@ -223,19 +223,10 @@ static int iwl_pnvm_parse(struct iwl_trans *trans, const u8 *data,
+ static int iwl_pnvm_get_from_fs(struct iwl_trans *trans, u8 **data, size_t *len)
  {
- 	/* Up to 2 R2I STS are allowed on the responder */
- 	u32 r2i_max_sts = IWL_MVM_FTM_R2I_MAX_STS < 2 ?
-@@ -104,7 +104,7 @@ iwl_mvm_ftm_responder_cmd(struct iwl_mvm *mvm,
- 	 * field interpretation is different), so the same struct can be use
- 	 * for all cases.
- 	 */
--	struct iwl_tof_responder_config_cmd_v8 cmd = {
-+	struct iwl_tof_responder_config_cmd_v9 cmd = {
- 		.channel_num = chandef->chan->hw_value,
- 		.cmd_valid_fields =
- 			cpu_to_le32(IWL_TOF_RESPONDER_CMD_VALID_CHAN_INFO |
-@@ -115,10 +115,27 @@ iwl_mvm_ftm_responder_cmd(struct iwl_mvm *mvm,
- 	u8 cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw, LOCATION_GROUP,
- 					   TOF_RESPONDER_CONFIG_CMD, 6);
- 	int err;
-+	int cmd_size;
+ 	const struct firmware *pnvm;
+-	char pnvm_name[64];
++	char pnvm_name[MAX_PNVM_NAME];
+ 	int ret;
  
- 	lockdep_assert_held(&mvm->mutex);
+-	/*
+-	 * The prefix unfortunately includes a hyphen at the end, so
+-	 * don't add the dot here...
+-	 */
+-	snprintf(pnvm_name, sizeof(pnvm_name), "%spnvm",
+-		 trans->cfg->fw_name_pre);
+-
+-	/* ...but replace the hyphen with the dot here. */
+-	if (strlen(trans->cfg->fw_name_pre) < sizeof(pnvm_name))
+-		pnvm_name[strlen(trans->cfg->fw_name_pre) - 1] = '.';
++	iwl_pnvm_get_fs_name(trans, pnvm_name, sizeof(pnvm_name));
  
--if (cmd_ver == 8)
-+	/* Use a default of bss_color=1 for now */
-+	if (cmd_ver == 9) {
-+		cmd.cmd_valid_fields |=
-+			cpu_to_le32(IWL_TOF_RESPONDER_CMD_VALID_BSS_COLOR |
-+				    IWL_TOF_RESPONDER_CMD_VALID_MIN_MAX_TIME_BETWEEN_MSR);
-+		cmd.bss_color = 1;
-+		cmd.min_time_between_msr =
-+			cpu_to_le16(IWL_MVM_FTM_NON_TB_MIN_TIME_BETWEEN_MSR);
-+		cmd.max_time_between_msr =
-+			cpu_to_le16(IWL_MVM_FTM_NON_TB_MAX_TIME_BETWEEN_MSR);
-+		cmd_size = sizeof(struct iwl_tof_responder_config_cmd_v9);
-+	} else {
-+		/* All versions up to version 8 have the same size */
-+		cmd_size = sizeof(struct iwl_tof_responder_config_cmd_v8);
-+	}
+ 	ret = firmware_request_nowarn(&pnvm, pnvm_name, trans->dev);
+ 	if (ret) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h
+index 61d3d4e0b7d9..203c367dd4de 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h
+@@ -12,7 +12,27 @@
+ 
+ #define MVM_UCODE_PNVM_TIMEOUT	(HZ / 4)
+ 
++#define MAX_PNVM_NAME  64
 +
-+	if (cmd_ver >= 8)
- 		iwl_mvm_ftm_responder_set_ndp(mvm, &cmd);
+ int iwl_pnvm_load(struct iwl_trans *trans,
+ 		  struct iwl_notif_wait_data *notif_wait);
  
- 	if (cmd_ver >= 7)
-@@ -137,7 +154,7 @@ if (cmd_ver == 8)
- 
- 	return iwl_mvm_send_cmd_pdu(mvm, iwl_cmd_id(TOF_RESPONDER_CONFIG_CMD,
- 						    LOCATION_GROUP, 0),
--				    0, sizeof(cmd), &cmd);
-+				    0, cmd_size, &cmd);
- }
- 
- static int
++static inline
++void iwl_pnvm_get_fs_name(struct iwl_trans *trans,
++			  u8 *pnvm_name, size_t max_len)
++{
++	int pre_len;
++
++	/*
++	 * The prefix unfortunately includes a hyphen at the end, so
++	 * don't add the dot here...
++	 */
++	snprintf(pnvm_name, max_len, "%spnvm", trans->cfg->fw_name_pre);
++
++	/* ...but replace the hyphen with the dot here. */
++	pre_len = strlen(trans->cfg->fw_name_pre);
++	if (pre_len < max_len && pre_len > 0)
++		pnvm_name[pre_len - 1] = '.';
++}
++
+ #endif /* __IWL_PNVM_H__ */
 -- 
 2.33.0
 
