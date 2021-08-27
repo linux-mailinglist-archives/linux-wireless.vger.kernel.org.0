@@ -2,73 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A1E83F92C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Aug 2021 05:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D52693F92E6
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Aug 2021 05:28:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244183AbhH0DPG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Aug 2021 23:15:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36654 "EHLO
+        id S244076AbhH0D2o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Aug 2021 23:28:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244167AbhH0DPE (ORCPT
+        with ESMTP id S243968AbhH0D2n (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Aug 2021 23:15:04 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B754C0613D9
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Aug 2021 20:14:16 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id y34so11340999lfa.8
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Aug 2021 20:14:16 -0700 (PDT)
+        Thu, 26 Aug 2021 23:28:43 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FEB0C061757
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Aug 2021 20:27:55 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id l2so3325966lfp.2
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Aug 2021 20:27:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
-        b=cC0BxLFnUKz0c21HrubnssCYDr5nVrznnJUoINLXL5MirOvjUsn5TwAoYnqZX8lkyO
-         o4/+tmHutbBZwWfiz97dgnaUo9Ghq6ikB203epgjrOuEQm6q415jvLtf3kq7KdHN1OWD
-         xqj0T1a65ktqryCgCqacNsLxexVhl7mULDVdQhDBaTnmFoP6WhkBXo6QPbwuDi8S2NKJ
-         iL+BCA8VvVguE8cqeCUqUlCa48hZ5qiN2ijRYPVKk83get6ZlORbsO/eTRcfuwCVcVbL
-         7uCQR3TKzJNsrAIeDOD4cPVjyMvSpZ3ssVje9XISQzIlHNXSqiiWPkjmCVB5pJYADYvd
-         fF4w==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=pfzWdZ6inW6NfgNveCILpYn6diqRm+obpyh4LMyhAYs=;
+        b=Upcr0mCiX2tvOpqHwuRHzYniUf/sjSRf6PrD/L8mZAcKFDgUNPg8fpyJ0Ob06E/27v
+         +2sf0+b+n0H1UC6/regZuyVM7vM26h4M2O7oicJ7gul8E+DQqy366pDcs4+6ZnQCfTJY
+         eUKtI1xpLN6/GT7WOg06s4DDMetjboIDml05S1sVRT0YEZOWNF3r7CKWC3KEv5POlHYV
+         a//cSjgNTnnPut4oJdGO4ypywsd3dLluZHxwYoIRxgqgzp6EZ6cKghGEZEZtJ7eQkTu8
+         x9LOGOT5/0MjKEPXvX+bTDWrCpGADF61i1IsDstb1JQ3rXQ4C8PpaJreokP2xFGPJIa8
+         gYvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
-        b=fVxyqQqhdfa54umuL+25oUotAwa6RCqZAIhqLt9dyQGYalNbk5uTVJ/oUOkmQFjY/B
-         wYCg6arwDlQ7z1UNSFM+oI2L9i/fAFQKR+1TyPk1CvB5s833gnZ7B1pohQK3Jn4olQKP
-         dOL40nA0MT34Cw9Dw/ca7qKsyN2XEkaOsQBHEP4ko+3gm5Bk2XkbsDAt4sEKay9ryuhA
-         Su5OnLhRhfRipTpGL186lUYNdUCWBmzQuj5VsA/5bBgKIGlYKv+Wz++072bmPIT4LQSu
-         mjgHUzzaZZ/O5gFLD6jAAyCBc0iC//Mk9JkJApiM4b6ppabosF0iAnu8rQQUCmuXJy2v
-         Zt4A==
-X-Gm-Message-State: AOAM531Qv3cVZyzcIFPWT+eWBGBultb/MHPoi8iKKfOhzGYJS2W5QYth
-        7ry1QGQih7pGH9VYCaRKRjfT8dzughC2nW/HuQI=
-X-Google-Smtp-Source: ABdhPJzylVQGhzLLivtDEtlwvz+iZmloeTwC9KlmU8ABRPrKlwIu0iWmx40epdvWF5eA3kUXnpHt9DtyZt+6efb8tJE=
-X-Received: by 2002:a05:6512:3fa8:: with SMTP id x40mr5454556lfa.345.1630034054852;
- Thu, 26 Aug 2021 20:14:14 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=pfzWdZ6inW6NfgNveCILpYn6diqRm+obpyh4LMyhAYs=;
+        b=HWPog+n4I1jTIqJEniGw/ozDA8H9gvrs1oJWJWbe7pe40VCxQivlsZErMoZHCirXug
+         IehySIeDhlVf5lG1L+/U8Sc9fUURc8uRNB1h6IDkNEVduK9qsDF15E/i+H37Ct1RQXz2
+         ixCNz4AFrbl+1OnX5P2hgZ+07/+uk3SoZR2lFavTCQxtJiMyewIlalVkRwEfV6Fzncd4
+         5yFJpa2Q1Mq7hPVCWd2/D7PvCzZ34YJ1GyonTzX4LtoNsd4nwU8iASudiJytzDpsCt3c
+         3PkeY5g2mx0YkT8IG06koYGbWlsbA77tXUHOPCUR4PTKfFcA84R2kRLeRZInDzSIw3g0
+         CFqg==
+X-Gm-Message-State: AOAM532vMz/2ylYzPuU31RsAf5Muoc5R7N2yhg26VRwkmak59+irwA4g
+        ujZ+nsoej+22Xnzez8zJqvMJb+BoL4n6xRavVs0=
+X-Google-Smtp-Source: ABdhPJx5Uy9+rILgYMbwFbSQ6VPhGHUK+IZ0ZfO5+P7nEe8o02PlZsZw/WmIBOipxsYlBI14zdAFlgY3c8ZjIQRYArA=
+X-Received: by 2002:a05:6512:31d3:: with SMTP id j19mr337453lfe.436.1630034873537;
+ Thu, 26 Aug 2021 20:27:53 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a2e:7304:0:0:0:0:0 with HTTP; Thu, 26 Aug 2021 20:14:14
+Received: by 2002:ab3:1988:0:0:0:0:0 with HTTP; Thu, 26 Aug 2021 20:27:52
  -0700 (PDT)
-From:   john williams <jw3340082@gmail.com>
-Date:   Thu, 26 Aug 2021 15:14:14 -1200
-Message-ID: <CAEoBN-hJRxDC4NPMHoaX75dL7YHCDOKNeRiyERwXoZJapGNpeA@mail.gmail.com>
-Subject: CONFIRM YOUR DETAILS TO ENABLE US START,
+Reply-To: sroomf70@gmail.com
+From:   "Mr. Mollerm Michael" <mollerm118@gmail.com>
+Date:   Thu, 26 Aug 2021 20:27:52 -0700
+Message-ID: <CA+W+CS-S4bCD82EqF-fnkLjD_hPMRsPdnuW2BVAh506uNtV7cw@mail.gmail.com>
+Subject: Greetings,
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear Beneficiary,
+-- 
+Greeting,
+From Mr. Mollerm Michael, please a huge amount of payment was made
+into your account. as soon as your respond is noted the payment
+confirmation slip will immediately send to you.  please do not
+hesitate to reply as soon as you receive this message. awaiting your
+urgent reply please.
 
-Following your pending fund for years and the delay you imposed in
-receiving it,We have called back your fund to this office as directed
-by the Finance Office and we will be paying you directly through the
-BANK OF AMERICA.(BOA) NEW YORK BRANCH AND ALL YOU NEED NOW IS TO
-RE-CONFIRM YOUR BANKING DETAILS FOR THE TRANSFER IMMEDIATELY WITHOUT
-ANY FURTHER DELAY.
+Thanks
+Mr. Mollerm Michael,
 
-NOTE THAT WE WILL PAY ALL THE EXPENSES INVOLVED FOR YOU TO RECEIVE
-THIS FUND AND ALL WE NEED FROM YOU IS YOUR CO-OPERATION.
-
-Send your full details with Banking details to enable us commence the
-transfer process immediately through the BOA BANK IN NEW YORK,USA OR
-DO YOU WANT TO RECEIVE THIS FUND VIA ATM CARD ????????.
-
-John O.Williams.
+Best regards
+Prof. Dr Diane
