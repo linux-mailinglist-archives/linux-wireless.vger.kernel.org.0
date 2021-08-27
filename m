@@ -2,103 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F2F73F90E4
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Aug 2021 01:18:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 573943F9230
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Aug 2021 04:03:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243620AbhHZXTR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Aug 2021 19:19:17 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:39430 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234555AbhHZXTL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Aug 2021 19:19:11 -0400
+        id S244002AbhH0CDF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Aug 2021 22:03:05 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:35110 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231588AbhH0CDF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 26 Aug 2021 22:03:05 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1630019903; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
- To: From: Sender; bh=td6+lKliZWnn37e5EfNvN74QchLXCgx0S8KN6MlSPAI=; b=tC86QvNimOfUZ3+3AQeHQSJKj0XrFElg4tw8O5UgLQOBRueBLhn98p7ifHmTYSL63VPmJPdo
- Ho/kkq2jUIJRAte+mdQaA4V1iNVnaOG800/QIF1X5Yo8XjwcgP0wOmYINhbSL3ClIpgenJa6
- Hv8YKWTE5xKzF8dIYBiuXAkrpyY=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ s=smtp; t=1630029737; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=01sQCPM90oT/9Y0DVA/AYmIOOSIUjqYBOT5kYLBRkUA=;
+ b=mZtakYgfaieBhXBfPAeiVYvTejtSDPyHWta6AjDJ9VmuKMr7ol9yJGr9hdxyC07aIgt39Mv/
+ kVP7gS6eJ2wRMaVrIDZTnYtD0OygIZm3QJ53etpiwapMiCLu2Iur77lemCEFPwoMH03qGJ0F
+ 0WVyZoaJL1Ga3NJJjMA1KzRT2J8=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 6128213e4d644b7d1c7b25c8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 26 Aug 2021 23:18:22
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 61284793fc1f4cb6929e39ff (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 27 Aug 2021 02:01:55
  GMT
-Sender: msinada=codeaurora.org@mg.codeaurora.org
+Sender: wgong=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 64DA5C4360C; Thu, 26 Aug 2021 23:18:22 +0000 (UTC)
+        id CFE0EC4360D; Fri, 27 Aug 2021 02:01:54 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from MSINADA (unknown [98.45.135.251])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: msinada)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C4CD2C4338F;
-        Thu, 26 Aug 2021 23:18:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C4CD2C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   "Muna Sinada" <msinada@codeaurora.org>
-To:     "'Johannes Berg'" <johannes@sipsolutions.net>
-Cc:     <linux-wireless@vger.kernel.org>
-References: <1628660743-24413-1-git-send-email-msinada@codeaurora.org> <ec979481036ad198d4c42d2756caf66fd3496bbc.camel@sipsolutions.net>
-In-Reply-To: <ec979481036ad198d4c42d2756caf66fd3496bbc.camel@sipsolutions.net>
-Subject: RE: [PATCH v2] cfg80211: Handle driver updated MU-EDCA params
-Date:   Thu, 26 Aug 2021 16:18:21 -0700
-Message-ID: <001801d79ad0$a9a92a70$fcfb7f50$@codeaurora.org>
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6754EC4338F;
+        Fri, 27 Aug 2021 02:01:54 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-us
-Thread-Index: AQKPi0h8Y3QBEVBPnfPFaPv7V44okgHUa8dSqgfksbA=
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 27 Aug 2021 10:01:54 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 8/8] mac80211: save transmit power envelope element and
+ power constraint
+In-Reply-To: <e75ee4e160d6ec09d9c5f131f882d2e9d8eb49cd.camel@sipsolutions.net>
+References: <20210820122041.12157-1-wgong@codeaurora.org>
+ <20210820122041.12157-9-wgong@codeaurora.org>
+ <dfe27f657b4615369cf751d394f5cba75f5fdcc1.camel@sipsolutions.net>
+ <fe21853e8c9a73632e0ca860eef00296@codeaurora.org>
+ <5c85b2bcfbffb617c5aa3f55e7ae94a1ab4df743.camel@sipsolutions.net>
+ <f86091b72422d194a2e59b1f6d27a69b@codeaurora.org>
+ <e75ee4e160d6ec09d9c5f131f882d2e9d8eb49cd.camel@sipsolutions.net>
+Message-ID: <6cf1f6ee76f675831ca506d188c58850@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Johannes,
-
-The firmware algorithm determines better MU-EDCA parameters based on =
-channel conditions. The updated parameters are used and reported to =
-Hostapd to reflect in AP beacons. These dynamic parameter updates are =
-offloaded to firmware for better user experience, and this would also =
-mean that there are hardly any details on specifically how these =
-parameters are determined but we know that the updated parameters need =
-to be reflected in future beacons. This feature is meant for AP mode, =
-and it is a ath11k feature, thus no spec references.
-
-Thank you,
-Muna
-
------Original Message-----
-From: Johannes Berg <johannes@sipsolutions.net>=20
-Sent: Tuesday, August 17, 2021 6:54 AM
-To: Muna Sinada <msinada@codeaurora.org>
-Cc: linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] cfg80211: Handle driver updated MU-EDCA params
-
-On Tue, 2021-08-10 at 22:45 -0700, Muna Sinada wrote:
-> Add necessary functions and attributes to receive updated MU-EDCA=20
-> parameters from driver and send to user space, where management frame=20
-> are updated to reflect latest parameters.
->=20
-
-On second thought - this really could use some more explanation?
-
-Why are MU-EDCA parameters determined by the driver? What does this =
-actually do? Is it meant for AP mode, or client mode? Any spec =
-references?
-
-Mac80211 parses this coming from the AP, so probably this is meant for =
-AP mode, but why? Why wouldn't hostapd determine the correct parameters?
-
-etc.
-
-johannes
-
-
+On 2021-08-26 19:10, Johannes Berg wrote:
+> On Thu, 2021-08-26 at 19:00 +0800, Wen Gong wrote:
+>> On 2021-08-26 18:57, Johannes Berg wrote:
+>> > On Thu, 2021-08-26 at 18:50 +0800, Wen Gong wrote:
+>> > > >
+>> > > it is memset here i this patch:
+>> >
+>> > Oops, missed that.
+>> >
+>> > But is that really a good place for it? Doesn't really seem to belong
+>> > to
+>> > assigning a channel context - maybe put it into set_disassoc()?
+>> >
+>> it is correct.
+>> you can see it is place together with "drv_unassign_vif_chanctx(local,
+>> sdata, curr_ctx)"
+>> in ieee80211_assign_vif_chanctx(), it is for disconnect.
+> 
+> Yes, I know it's *correct*, but that doesn't mean it's *good*?
+> 
+> Look at that code - it does nothing with bss_conf. Nobody is ever going
+> to look there.
+> 
+Yes,
+seems it is better do memset() in ieee80211_set_disassoc().
+I will change it in next verion.
+> johannes
+>> 
