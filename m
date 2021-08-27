@@ -2,431 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3D623F9F14
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Aug 2021 20:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A98FC3FA09B
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Aug 2021 22:31:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230110AbhH0Spr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Aug 2021 14:45:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:45573 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229993AbhH0Spo (ORCPT
+        id S231256AbhH0Ubh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Aug 2021 16:31:37 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:58760 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229591AbhH0Ubh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Aug 2021 14:45:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1630089894;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=GKTEKILYopUZMceo/SvcBY7xL5qbjDWf3wbuGwU275M=;
-        b=UUt/y0yGeTjUqRywca2StjR1+1SbkSfi38Xj85kNFN2Fv3vDyZZT16yLtE0q4fHZQ4TAxD
-        7PbsBQBLX0Zc9+QEfDV+tmGFmGeD40mnxj37JAyCnmrZ5eSfwquGxrWoP4qVzI4AHmXBXU
-        +UKVfKYh322Wk3X5mVIeu8UoPfMft90=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-548-IM_7fkAXPKOSCjmGBL5fdA-1; Fri, 27 Aug 2021 14:44:53 -0400
-X-MC-Unique: IM_7fkAXPKOSCjmGBL5fdA-1
-Received: by mail-ej1-f69.google.com with SMTP id ne21-20020a1709077b95b029057eb61c6fdfso2209241ejc.22
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Aug 2021 11:44:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=GKTEKILYopUZMceo/SvcBY7xL5qbjDWf3wbuGwU275M=;
-        b=lGDvshFkknDqifKrQLcbcCC6dSO8V5z9G+dEITJ/np6vgAQZow/9Xafhdmbv3PtgqI
-         ls1nQ0Dgtw6IGInImULM2jhoJm57r8v6ZhSmbIScgS9E3jnSc7EkCgZa4RJWdIJB4lKa
-         csNpFOjHPnP5YtWih41rDGwJXRXa/GoyQlsZzltYo1epm81iEsqJHnCj3MQ8CDJ8reDN
-         BoKPI032bgSyeO+Ej9MLHRNSTIZFCL6s7BsuU43LWgtjdZvvbC1oo/vjJN4bEvfmTPdS
-         yVZnqwknhV4yIxkXtmY3/m8PHZLmANE7lj+vOd4gN3uLSgOPoLcAxssItfnhzY8Mf/gt
-         ncWQ==
-X-Gm-Message-State: AOAM532Nwd/HNhCGr2pq4i4qSxJEWvaChhg+72ulKI+x1Q2wa4hDjQjf
-        IxV/zQLqqvG2qgCukdlgEO4+duf2uN8RYvhtAnOgkC3gRFTB7EZTOIwkOeu7xSqaJU3BsOh1eVJ
-        rnJOl4y9Q3xvHQWQbKyYub9C3dK8=
-X-Received: by 2002:a17:906:93ef:: with SMTP id yl15mr11641545ejb.229.1630089891390;
-        Fri, 27 Aug 2021 11:44:51 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyn8kDZv8r73ghWNHOsZxx+Cr88NJ+Zr3y719xbWWZYCEM/Y7Gq78VMeXuFODeiUjr7VUgnOA==
-X-Received: by 2002:a17:906:93ef:: with SMTP id yl15mr11641526ejb.229.1630089891117;
-        Fri, 27 Aug 2021 11:44:51 -0700 (PDT)
-Received: from localhost (net-47-53-3-199.cust.vodafonedsl.it. [47.53.3.199])
-        by smtp.gmail.com with ESMTPSA id y13sm3818191edd.45.2021.08.27.11.44.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Aug 2021 11:44:50 -0700 (PDT)
-Date:   Fri, 27 Aug 2021 20:44:47 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Chad Monroe <chad@monroe.io>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Johannes Berg <johannes.berg@intel.com>,
+        Fri, 27 Aug 2021 16:31:37 -0400
+X-UUID: 17bbc664e26c447b882805aede26e5b6-20210828
+X-UUID: 17bbc664e26c447b882805aede26e5b6-20210828
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1983312012; Sat, 28 Aug 2021 04:30:45 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 28 Aug 2021 04:30:44 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 28 Aug 2021 04:30:44 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         Shayne Chen <shayne.chen@mediatek.com>,
         Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        MeiChia Chiu <meichia.chiu@mediatek.com>,
         Ryder Lee <ryder.lee@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        Ben Greear <greearb@candelatech.com>
-Subject: Re: [PATCH 2/2] mt76: mt7615: fix radar detector logic
-Message-ID: <YSkyn9eqQKLXcncf@lore-desk>
-References: <54c9a89210608d2a9b9adf37a8c2a743275e5723.1630081048.git.chad@monroe.io>
- <4a4bb98aa6dd1c7f4671d11a901fb8cf35f49308.1630081048.git.chad@monroe.io>
+        Money Wang <money.wang@mediatek.com>
+Subject: [PATCH v2] mt76: mt7915: add LED support
+Date:   Sat, 28 Aug 2021 04:30:43 +0800
+Message-ID: <748e894194ced01ceda3af6bf7a7202f9cb34054.1630095891.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="znaAPSv3wzvrJXLm"
-Content-Disposition: inline
-In-Reply-To: <4a4bb98aa6dd1c7f4671d11a901fb8cf35f49308.1630081048.git.chad@monroe.io>
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: MeiChia Chiu <meichia.chiu@mediatek.com>
 
---znaAPSv3wzvrJXLm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Initialize brightness_set and blink_set callbacks to enable LED support.
+The base 0x7c000000 is MCU space so driver can't touch it, and should
+map the LED base to host's view 0x18000000.
 
-> Before this patch, if AP went from ch 100 to ch 36, the radar detector
-> logic in the firmware was not being disabled.  This made the AP appear
-> to be up, but no beacons were seen on air until module reload or
-> reboot.
->=20
-> To reproduce this, I change hostapd.conf and restart hostapd.  Others
-> on openwrt used their UI to make changes and problem was seen, but
-> stil others changed channels in some other way and/or had some other
-> difference and could *not* reproduce it.  So, something perhaps a
-> bit subtle.
->=20
-> To fix the problem, stop depending on comparing dfs_state, store last
-> freq/bandwidth to detect changes in that, and streamline code that
-> checks to enable/disable radar detection.  And add in error checking
-> and dev_dbg logic so one can see what is actually happening if need
-> to debug this again.
->=20
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> Signed-off-by: Chad Monroe <chad@monroe.io>
-> ---
->  .../net/wireless/mediatek/mt76/mt7615/init.c  |  12 ++-
->  .../net/wireless/mediatek/mt76/mt7615/mac.c   | 102 ++++++++++++------
->  .../net/wireless/mediatek/mt76/mt7615/main.c  |  25 ++++-
->  .../wireless/mediatek/mt76/mt7615/mt7615.h    |   6 +-
->  4 files changed, 104 insertions(+), 41 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7615/init.c
-> index 05235a60d413..23dde13c2703 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-> @@ -333,6 +333,7 @@ mt7615_regd_notifier(struct wiphy *wiphy,
->  	struct mt76_phy *mphy =3D hw->priv;
->  	struct mt7615_phy *phy =3D mphy->priv;
->  	struct cfg80211_chan_def *chandef =3D &mphy->chandef;
-> +	int ret;
-> =20
->  	memcpy(dev->mt76.alpha2, request->alpha2, sizeof(dev->mt76.alpha2));
->  	dev->mt76.region =3D request->dfs_region;
-> @@ -342,14 +343,18 @@ mt7615_regd_notifier(struct wiphy *wiphy,
-> =20
->  	mt7615_mutex_acquire(dev);
-> =20
-> -	if (chandef->chan->flags & IEEE80211_CHAN_RADAR)
-> -		mt7615_dfs_init_radar_detector(phy);
-> -
->  	if (mt7615_firmware_offload(phy->dev)) {
->  		mt76_connac_mcu_set_channel_domain(mphy);
->  		mt76_connac_mcu_set_rate_txpower(mphy);
->  	}
-> =20
-> +	if (chandef->chan->flags & IEEE80211_CHAN_RADAR) {
-> +		ret =3D mt7615_dfs_init_radar_detector(phy);
-> +		if (ret < 0)
-> +			dev_err(dev->mt76.dev, "init-wifi: dfs-init-radar-detector failed: %d=
-",
-> +				ret);
+Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Money Wang <money.wang@mediatek.com>
+---
+v2 - define the registers as being in the 0x18000000 range
+---
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 69 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mmio.c  |  3 +-
+ .../net/wireless/mediatek/mt76/mt7915/regs.h  | 19 +++++
+ 3 files changed, 89 insertions(+), 2 deletions(-)
 
-I guess this chunck does not make any difference since mt7663 does not supp=
-ort
-dfs (w offload fw).
-
-> +	}
-> +
->  	mt7615_mutex_release(dev);
->  }
-> =20
-> @@ -550,7 +555,6 @@ void mt7615_init_device(struct mt7615_dev *dev)
->  	dev->pm.stats.last_wake_event =3D jiffies;
->  	dev->pm.stats.last_doze_event =3D jiffies;
->  	mt7615_cap_dbdc_disable(dev);
-> -	dev->phy.dfs_state =3D -1;
-> =20
->  #ifdef CONFIG_NL80211_TESTMODE
->  	dev->mt76.test_ops =3D &mt7615_testmode_ops;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7615/mac.c
-> index 78b55e872da0..571fa73baa76 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-> @@ -2101,14 +2101,29 @@ void mt7615_tx_token_put(struct mt7615_dev *dev)
->  }
->  EXPORT_SYMBOL_GPL(mt7615_tx_token_put);
-> =20
-> -static void mt7615_dfs_stop_radar_detector(struct mt7615_phy *phy)
-> +int mt7615_dfs_stop_radar_detector(struct mt7615_phy *phy, bool ext_phy)
->  {
->  	struct mt7615_dev *dev =3D phy->dev;
-> +	int err;
-> +
-> +	dev_dbg(dev->mt76.dev, "dfs-stop-radar-detector, rdd-state: 0x%x",
-> +		phy->rdd_state);
-> +
-> +	err =3D mt7615_mcu_rdd_cmd(dev, RDD_NORMAL_START, ext_phy,
-> +				 MT_RX_SEL0, 0);
-> +	if (err < 0) {
-> +		dev_err(dev->mt76.dev, "mcu-rdd-cmd RDD_NORMAL_START failed: %d",
-> +			err);
-> +		/* I think best to carry on, even if we have an error here. */
-> +	}
-
-I guess you just moved mt7615_mcu_rdd_cmd(dev, RDD_NORMAL_START, ..) here b=
-ut
-the logic is the same as before, right? If so I think we can drop it
-
-> =20
->  	if (phy->rdd_state & BIT(0))
->  		mt7615_mcu_rdd_cmd(dev, RDD_STOP, 0, MT_RX_SEL0, 0);
->  	if (phy->rdd_state & BIT(1))
->  		mt7615_mcu_rdd_cmd(dev, RDD_STOP, 1, MT_RX_SEL0, 0);
-> +	phy->rdd_state =3D 0;
-> +
-> +	return err;
->  }
-> =20
->  static int mt7615_dfs_start_rdd(struct mt7615_dev *dev, int chain)
-> @@ -2116,11 +2131,14 @@ static int mt7615_dfs_start_rdd(struct mt7615_dev=
- *dev, int chain)
->  	int err;
-> =20
->  	err =3D mt7615_mcu_rdd_cmd(dev, RDD_START, chain, MT_RX_SEL0, 0);
-> +
-> +	dev_dbg(dev->mt76.dev, "dfs-start-rdd, RDD_START rv: %d", err);
->  	if (err < 0)
->  		return err;
-> =20
-> -	return mt7615_mcu_rdd_cmd(dev, RDD_DET_MODE, chain,
-> -				  MT_RX_SEL0, 1);
-> +	err =3D mt7615_mcu_rdd_cmd(dev, RDD_DET_MODE, chain, MT_RX_SEL0, 1);
-> +	dev_dbg(dev->mt76.dev, "dfs-start-rdd, RDD_DET_MODE rv: %d", err);
-> +	return err;
->  }
-> =20
->  static int mt7615_dfs_start_radar_detector(struct mt7615_phy *phy)
-> @@ -2227,48 +2245,70 @@ int mt7615_dfs_init_radar_detector(struct mt7615_=
-phy *phy)
->  	if (is_mt7663(&dev->mt76))
->  		return 0;
-> =20
-> -	if (dev->mt76.region =3D=3D NL80211_DFS_UNSET) {
-> -		phy->dfs_state =3D -1;
-> -		if (phy->rdd_state)
-> -			goto stop;
-> +	dev_dbg(dev->mt76.dev,
-> +		"dfs-init-radar-detector, region: %d freq: %d chandef dfs-state: %d",
-> +		dev->mt76.region, chandef->chan->center_freq,
-> +		chandef->chan->dfs_state);
-> =20
-> +	if (test_bit(MT76_SCANNING, &phy->mt76->state)) {
-> +		dev_dbg(dev->mt76.dev, "init-radar, was scanning, no change.\n");
->  		return 0;
->  	}
-> =20
-> -	if (test_bit(MT76_SCANNING, &phy->mt76->state))
-> -		return 0;
-> +	if (dev->mt76.region =3D=3D NL80211_DFS_UNSET) {
-> +		dev_dbg(dev->mt76.dev,
-> +			"dfs-init-radar, region is UNSET, disable radar.");
-> +		goto stop;
-> +	}
-> +
-> +	if (!(chandef->chan->flags & IEEE80211_CHAN_RADAR)) {
-> +		dev_dbg(dev->mt76.dev,
-> +			"dfs-init-radar, chandef does not want radar.");
-> +		goto stop;
-> +	}
-> +
-> +	ieee80211_iterate_active_interfaces(phy->mt76->hw,
-> +					    IEEE80211_IFACE_ITER_RESUME_ALL,
-> +					    mt7615_vif_counts, &counts);
-> +
-> +	if (!(counts.ap + counts.adhoc + counts.mesh)) {
-> +		/* No beaconning interfaces, do not start CAC */
-> +		dev_dbg(dev->mt76.dev,
-> +			"dfs-init-radar, no AP/Mesh/Adhoc vifs active, stop radar.");
-> +		goto stop;
-> +	}
-> =20
-> -	if (phy->dfs_state =3D=3D chandef->chan->dfs_state)
-> +	/* At this point, we need radar detection, see if we have started
-> +	 * it already.
-> +	 */
-> +	if (phy->rdd_state) {
-
-Are you sure this approach works with DBDC? in this case phy->rdd_state is =
-not
-0 but the radar detection has not started on this phy.
-
-> +		if (chandef->chan->dfs_state =3D=3D NL80211_DFS_AVAILABLE) {
-> +			/* CAC is already complete. */
-> +			dev_dbg(dev->mt76.dev,
-> +				"init-radar, RADAR started and DFS state is AVAILABLE, call RDD_CAC_=
-END");
-> +			return mt7615_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy,
-> +						  MT_RX_SEL0, 0);
-> +		}
-> +		dev_dbg(dev->mt76.dev,
-> +			"init-radar, rdd_state indicates RADAR already started,"
-> +			" DFS state: %d not YET available, rdd_state: 0x%x",
-> +			chandef->chan->dfs_state, phy->rdd_state);
->  		return 0;
-> +	}
-> =20
->  	err =3D mt7615_dfs_init_radar_specs(phy);
->  	if (err < 0) {
-> -		phy->dfs_state =3D -1;
-> +		dev_err(dev->mt76.dev, "dfs-init-radar-specs failed: %d",
-> +			err);
->  		goto stop;
->  	}
-> =20
-> -	phy->dfs_state =3D chandef->chan->dfs_state;
-> -
-> -	if (chandef->chan->flags & IEEE80211_CHAN_RADAR) {
-> -		if (chandef->chan->dfs_state !=3D NL80211_DFS_AVAILABLE) {
-> -			ieee80211_iterate_active_interfaces(phy->mt76->hw,
-> -				IEEE80211_IFACE_ITER_RESUME_ALL,
-> -				mt7615_vif_counts, &counts);
-> -			if (counts.ap + counts.adhoc + counts.mesh)
-> -				mt7615_dfs_start_radar_detector(phy);
-> -			return 0;
-> -		}
-> -		return mt7615_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy,
-> -					  MT_RX_SEL0, 0);
-> -	}
-> +	err =3D mt7615_dfs_start_radar_detector(phy);
-> +	dev_dbg(dev->mt76.dev, "dfs-start-radar-detector rv: %d", err);
-> +	return err;
-> =20
->  stop:
-> -	err =3D mt7615_mcu_rdd_cmd(dev, RDD_NORMAL_START, ext_phy, MT_RX_SEL0, =
-0);
-> -	if (err < 0)
-> -		return err;
-> -
-> -	mt7615_dfs_stop_radar_detector(phy);
-> -	return 0;
-> +	return mt7615_dfs_stop_radar_detector(phy, ext_phy);
->  }
-> =20
->  int mt7615_mac_set_beacon_filter(struct mt7615_phy *phy,
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7615/main.c
-> index 7154acf3eb9b..484c8803726f 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-> @@ -291,6 +291,8 @@ static void mt7615_init_dfs_state(struct mt7615_phy *=
-phy)
->  	struct mt76_phy *mphy =3D phy->mt76;
->  	struct ieee80211_hw *hw =3D mphy->hw;
->  	struct cfg80211_chan_def *chandef =3D &hw->conf.chandef;
-> +	struct mt7615_dev *dev =3D phy->dev;
-> +	bool ext_phy =3D phy !=3D &dev->phy;
-> =20
->  	if (hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
->  		return;
-> @@ -298,11 +300,23 @@ static void mt7615_init_dfs_state(struct mt7615_phy=
- *phy)
->  	if (!(chandef->chan->flags & IEEE80211_CHAN_RADAR))
->  		return;
-> =20
-> -	if (mphy->chandef.chan->center_freq =3D=3D chandef->chan->center_freq &&
-> -	    mphy->chandef.width =3D=3D chandef->width)
-> +	if (phy->dfs_center_freq =3D=3D chandef->chan->center_freq &&
-> +	    phy->dfs_ch_width =3D=3D chandef->width)
->  		return;
-
-Why do we need phy->dfs_center_freq and phy->dfs_ch_width? if I read correc=
-tly
-the code mphy->chandef.* is updated in mt76_set_channel() so we do not need
-them for thec check above, right?
-
-Regards,
-Lorenzo
-
-> =20
-> -	phy->dfs_state =3D -1;
-> +	/* We are being moved to a new frequency/bw, still on DFS.  Stop
-> +	 * any existing DFS, then will start it again in the
-> +	 * init-radar-detector logic.
-> +	 */
-> +	if (phy->rdd_state) {
-> +		dev_dbg(dev->mt76.dev,
-> +			"init-dfs-state, channel changed, old: %d:%d  new: %d:%d, stopping ra=
-dar.",
-> +			phy->dfs_center_freq, phy->dfs_ch_width,
-> +			chandef->chan->center_freq, chandef->width);
-> +		mt7615_dfs_stop_radar_detector(phy, ext_phy);
-> +	}
-> +	phy->dfs_center_freq =3D chandef->chan->center_freq;
-> +	phy->dfs_ch_width =3D chandef->width;
->  }
-> =20
->  int mt7615_set_channel(struct mt7615_phy *phy)
-> @@ -336,8 +350,11 @@ int mt7615_set_channel(struct mt7615_phy *phy)
-> =20
->  	mt7615_mac_set_timing(phy);
->  	ret =3D mt7615_dfs_init_radar_detector(phy);
-> -	if (ret)
-> +	if (ret < 0) {
-> +		dev_err(dev->mt76.dev, "set-channel: dfs-init-radar-detector failed: %=
-d",
-> +			ret);
->  		goto out;
-> +	}
-> =20
->  	mt7615_mac_cca_stats_reset(phy);
->  	ret =3D mt7615_mcu_set_sku_en(phy, true);
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers=
-/net/wireless/mediatek/mt76/mt7615/mt7615.h
-> index 58a98b5c0cbc..6a3209439492 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-> @@ -164,8 +164,9 @@ struct mt7615_phy {
->  	u8 slottime;
-> =20
->  	u8 chfreq;
-> -	u8 rdd_state;
-> -	int dfs_state;
-> +	u8 rdd_state; /* radar detection started bitfield */
-> +	enum nl80211_chan_width dfs_ch_width;
-> +	u32 dfs_center_freq;
-> =20
->  	u32 rx_ampdu_ts;
->  	u32 ampdu_ref;
-> @@ -540,6 +541,7 @@ int mt7615_mcu_set_sku_en(struct mt7615_phy *phy, boo=
-l enable);
->  int mt7615_mcu_apply_rx_dcoc(struct mt7615_phy *phy);
->  int mt7615_mcu_apply_tx_dpd(struct mt7615_phy *phy);
->  int mt7615_dfs_init_radar_detector(struct mt7615_phy *phy);
-> +int mt7615_dfs_stop_radar_detector(struct mt7615_phy *phy, bool ext_phy);
-> =20
->  int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
->  		       struct ieee80211_channel *chan, int duration);
-> --=20
-> 2.20.1
->=20
-
---znaAPSv3wzvrJXLm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYSkynQAKCRA6cBh0uS2t
-rMOGAQD43z+Ip6lJ2NYlurzOczMIQWFy50dl+DDWkP6lHqdxQgD9F0z/wHXE2huu
-tnzRI3u2ED4Cqx42W6l7o+flNkzk1gA=
-=OpuX
------END PGP SIGNATURE-----
-
---znaAPSv3wzvrJXLm--
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index ba41ed38a4c5..a73b0d9499bc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -187,6 +187,64 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
+ 	return 0;
+ }
+ 
++static void mt7915_led_set_config(struct led_classdev *led_cdev,
++				  u8 delay_on, u8 delay_off)
++{
++	struct mt7915_dev *dev;
++	struct mt76_dev *mt76;
++	u32 val;
++
++	mt76 = container_of(led_cdev, struct mt76_dev, led_cdev);
++	dev = container_of(mt76, struct mt7915_dev, mt76);
++
++	/* select TX blink mode, 2: only data frames */
++	mt76_rmw_field(dev, MT_TMAC_TCR0(0), MT_TMAC_TCR0_TX_BLINK, 2);
++
++	/* enable LED */
++	mt76_wr(dev, MT_LED_EN(0), 1);
++
++	/* set LED Tx blink on/off time */
++	val = FIELD_PREP(MT_LED_TX_BLINK_ON_MASK, delay_on) |
++	      FIELD_PREP(MT_LED_TX_BLINK_OFF_MASK, delay_off);
++	mt76_wr(dev, MT_LED_TX_BLINK(0), val);
++
++	/* control LED */
++	val = MT_LED_CTRL_BLINK_MODE | MT_LED_CTRL_KICK;
++	if (dev->mt76.led_al)
++		val |= MT_LED_CTRL_POLARITY;
++
++	mt76_wr(dev, MT_LED_CTRL(0), val);
++	mt76_clear(dev, MT_LED_CTRL(0), MT_LED_CTRL_KICK);
++}
++
++static int mt7915_led_set_blink(struct led_classdev *led_cdev,
++				unsigned long *delay_on,
++				unsigned long *delay_off)
++{
++	u16 delta_on, delta_off;
++
++#define HW_TICK		10
++#define TO_HW_TICK(_t)	(((_t) > HW_TICK) ? ((_t) / HW_TICK) : HW_TICK)
++
++	if (*delay_on)
++		delta_on = TO_HW_TICK(*delay_on);
++	if (*delay_off)
++		delta_off = TO_HW_TICK(*delay_off);
++
++	mt7915_led_set_config(led_cdev, delta_on, delta_off);
++
++	return 0;
++}
++
++static void mt7915_led_set_brightness(struct led_classdev *led_cdev,
++				      enum led_brightness brightness)
++{
++	if (!brightness)
++		mt7915_led_set_config(led_cdev, 0, 0xff);
++	else
++		mt7915_led_set_config(led_cdev, 0xff, 0);
++}
++
+ static void
+ mt7915_init_txpower(struct mt7915_dev *dev,
+ 		    struct ieee80211_supported_band *sband)
+@@ -341,6 +399,11 @@ static void mt7915_mac_init(struct mt7915_dev *dev)
+ 				       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+ 	for (i = 0; i < 2; i++)
+ 		mt7915_mac_init_band(dev, i);
++
++	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
++		i = dev->mt76.led_pin ? MT_LED_GPIO_MUX3 : MT_LED_GPIO_MUX2;
++		mt76_rmw_field(dev, i, MT_LED_GPIO_SEL_MASK, 4);
++	}
+ }
+ 
+ static int mt7915_txbf_init(struct mt7915_dev *dev)
+@@ -847,6 +910,12 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ 	dev->mt76.test_ops = &mt7915_testmode_ops;
+ #endif
+ 
++	/* init led callbacks */
++	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
++		dev->mt76.led_cdev.brightness_set = mt7915_led_set_brightness;
++		dev->mt76.led_cdev.blink_set = mt7915_led_set_blink;
++	}
++
+ 	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
+ 				   ARRAY_SIZE(mt76_rates));
+ 	if (ret)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index bb5522446eab..1f6ba306c850 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -95,8 +95,7 @@ static u32 __mt7915_reg_addr(struct mt7915_dev *dev, u32 addr)
+ 	}
+ 
+ 	if ((addr >= 0x18000000 && addr < 0x18c00000) ||
+-	    (addr >= 0x70000000 && addr < 0x78000000) ||
+-	    (addr >= 0x7c000000 && addr < 0x7c400000))
++	    (addr >= 0x70000000 && addr < 0x78000000))
+ 		return mt7915_reg_map_l1(dev, addr);
+ 
+ 	return mt7915_reg_map_l2(dev, addr);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+index 724988f16107..05eb70645a7c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+@@ -57,6 +57,7 @@
+ #define MT_WF_TMAC(_band, ofs)		(MT_WF_TMAC_BASE(_band) + (ofs))
+ 
+ #define MT_TMAC_TCR0(_band)		MT_WF_TMAC(_band, 0)
++#define MT_TMAC_TCR0_TX_BLINK		GENMASK(7, 6)
+ #define MT_TMAC_TCR0_TBTT_STOP_CTRL	BIT(25)
+ 
+ #define MT_TMAC_CDTR(_band)		MT_WF_TMAC(_band, 0x090)
+@@ -435,6 +436,20 @@
+ #define MT_SWDEF_ICAP_MODE		1
+ #define MT_SWDEF_SPECTRUM_MODE		2
+ 
++#define MT_LED_TOP_BASE			0x18013000
++#define MT_LED_PHYS(_n)			(MT_LED_TOP_BASE + (_n))
++
++#define MT_LED_CTRL(_n)			MT_LED_PHYS(0x00 + ((_n) * 4))
++#define MT_LED_CTRL_KICK		BIT(7)
++#define MT_LED_CTRL_BLINK_MODE		BIT(2)
++#define MT_LED_CTRL_POLARITY		BIT(1)
++
++#define MT_LED_TX_BLINK(_n)		MT_LED_PHYS(0x10 + ((_n) * 4))
++#define MT_LED_TX_BLINK_ON_MASK		GENMASK(7, 0)
++#define MT_LED_TX_BLINK_OFF_MASK        GENMASK(15, 8)
++
++#define MT_LED_EN(_n)			MT_LED_PHYS(0x40 + ((_n) * 4))
++
+ #define MT_TOP_BASE			0x18060000
+ #define MT_TOP(ofs)			(MT_TOP_BASE + (ofs))
+ 
+@@ -445,6 +460,10 @@
+ #define MT_TOP_MISC			MT_TOP(0xf0)
+ #define MT_TOP_MISC_FW_STATE		GENMASK(2, 0)
+ 
++#define MT_LED_GPIO_MUX2                0x70005058 /* GPIO 18 */
++#define MT_LED_GPIO_MUX3                0x7000505C /* GPIO 26 */
++#define MT_LED_GPIO_SEL_MASK            GENMASK(11, 8)
++
+ #define MT_HW_BOUND			0x70010020
+ #define MT_HW_CHIPID			0x70010200
+ #define MT_HW_REV			0x70010204
+-- 
+2.29.2
 
