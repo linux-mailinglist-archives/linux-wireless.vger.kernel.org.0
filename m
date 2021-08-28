@@ -2,248 +2,214 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 356A73FA60B
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Aug 2021 15:27:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C3DE3FA669
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Aug 2021 17:16:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234364AbhH1N2D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 28 Aug 2021 09:28:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46168 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230155AbhH1N17 (ORCPT
+        id S234335AbhH1PQ4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 28 Aug 2021 11:16:56 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:44298 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230478AbhH1PQz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 28 Aug 2021 09:27:59 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C46C061756
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Aug 2021 06:27:08 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id 79-20020a1c0452000000b002e6cf79e572so11258070wme.1
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Aug 2021 06:27:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=iLQvE81eR+5NR1tm+/llRwBeJW5SU1QUf1tsFm9hUUs=;
-        b=LIjfCfQvzebPNvtecMNR4FEXfFbrnZDCPTTZMDp/BPqXX12UlwYnptC1c6pvuVXGdC
-         PWoWm85zjKu6DSQYPwTRfnXLahFSG1lg7deQC/WOeB1a7NNH9F8dgcztDmnVCCEPFhlI
-         3E9IIHlyHir7l8s5/J+ln2O/G1FdTvDItaQpGNx4l7WzmTxBf0W2TtXWpz4pJzwPN0s2
-         9eZC/78pOg4G4o5rKwkjUUynS52Exrtxl2L9i45aUWP66iB8zZPheo8ier/QeTx+JBSM
-         gZ35EwvcflI/3/9ALfJJjmePRHNudKSFBugVqXdjelD9PAZ43NLIS7nVCyLO8EV5m3Dx
-         VLyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=iLQvE81eR+5NR1tm+/llRwBeJW5SU1QUf1tsFm9hUUs=;
-        b=AD4yJB4N75VZmJQRcimD796fYE8hQsxFGACCEHK/NlBp8A2e+yekgY3ZjqHmGPFHOL
-         qtJsgDKF4vj4AkidUjywbz2IJddBMrwTMkm8T6IS1kRe/8bfxQnsbsTqv1PdKF6O56WV
-         aZmjwmfjP+0tBpqMrumW9RZlFqRVTPxYq7/0F35/wOssxJtZC0FfP1/tnoAeM6x3lxpw
-         au3Rm1LNRY2mBBeWBcMam9iuecRpmskpggRiwPqbIe1tA2pmdcBq1GyjlHM9m+9dvKwu
-         QXH38T1ygZ/IfTt12ekjZonIgTFs/OJUVsl6DVpDmFtHpwTW5/5UnD4DgXKz7IV/py8c
-         G4kA==
-X-Gm-Message-State: AOAM531oQD2ci0exWIJ84Eej0c5Xnzme7qqzQbV4aeyzHxMKWbaV+U+J
-        iF1FFvJJ78VqRMQ/04ACHxZ/ZzrM0mQ=
-X-Google-Smtp-Source: ABdhPJyfBjAjledD6ifeq5JGDxEGb7sJ7UUgP1o1qLcGXVa0unWd6dYwU7Aek9vDGB3ms1UqQyJLeg==
-X-Received: by 2002:a05:600c:4106:: with SMTP id j6mr772396wmi.102.1630157227017;
-        Sat, 28 Aug 2021 06:27:07 -0700 (PDT)
-Received: from debian64.daheim (p5b0d759d.dip0.t-ipconnect.de. [91.13.117.157])
-        by smtp.gmail.com with ESMTPSA id p1sm1187783wmp.12.2021.08.28.06.27.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Aug 2021 06:27:06 -0700 (PDT)
-Received: from chuck by debian64.daheim with local (Exim 4.94.2)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1mJyMT-000C8i-M3; Sat, 28 Aug 2021 15:27:05 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com
-Subject: [PATCH v1 2/2] ath9k: owl-loader: fetch pci init values through nvmem
-Date:   Sat, 28 Aug 2021 15:27:05 +0200
-Message-Id: <bc79ba1c6f6435000577bf1e5f4d7ebe18a8df97.1630157099.git.chunkeey@gmail.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <f9b732b50a3453fadf3923cc75d365bae3505fe7.1630157099.git.chunkeey@gmail.com>
-References: <f9b732b50a3453fadf3923cc75d365bae3505fe7.1630157099.git.chunkeey@gmail.com>
+        Sat, 28 Aug 2021 11:16:55 -0400
+X-UUID: f8308c4f37154cb8850bb1922b5d573b-20210828
+X-UUID: f8308c4f37154cb8850bb1922b5d573b-20210828
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 23872068; Sat, 28 Aug 2021 23:16:02 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 28 Aug 2021 23:16:00 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 28 Aug 2021 23:16:00 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7915: add WA firmware log support
+Date:   Sat, 28 Aug 2021 23:13:06 +0800
+Message-ID: <20210828151307.25011-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-extends the owl loader to fetch important pci initialization
-values - which are stored together with the calibration data -
-through the nvmem subsystem.
+Support to turn on/off WA firmware log from debugfs.
 
-This allows for much faster WIFI/ath9k initializations on devices
-that do not require to perform any post-processing (like XOR'ing/
-reversal or unpacking)... than the current way through the
-firmware_request which involves the filesystem/userspace.
-
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- .../wireless/ath/ath9k/ath9k_pci_owl_loader.c | 105 +++++++++++++-----
- 1 file changed, 76 insertions(+), 29 deletions(-)
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   | 42 +++++++++++++++----
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  9 +++-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  6 +++
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  5 ++-
+ 4 files changed, 49 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
-index 56d1a7764b9f..708c8969b503 100644
---- a/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
-+++ b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
-@@ -19,9 +19,14 @@
- #include <linux/delay.h>
- #include <linux/platform_device.h>
- #include <linux/ath9k_platform.h>
-+#include <linux/nvmem-consumer.h>
-+#include <linux/workqueue.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index d9d18f6..3878635 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -75,7 +75,7 @@ DEFINE_DEBUGFS_ATTRIBUTE(fops_radar_trigger, NULL,
+ 			 mt7915_radar_trigger, "%lld\n");
  
- struct owl_ctx {
-+	struct pci_dev *pdev;
- 	struct completion eeprom_load;
-+	struct work_struct work;
-+	struct nvmem_cell *cell;
- };
+ static int
+-mt7915_fw_debug_set(void *data, u64 val)
++mt7915_fw_debug_wm_set(void *data, u64 val)
+ {
+ 	struct mt7915_dev *dev = data;
+ 	enum {
+@@ -86,28 +86,51 @@ mt7915_fw_debug_set(void *data, u64 val)
+ 		DEBUG_RPT_RX,
+ 	} debug;
  
- #define EEPROM_FILENAME_LEN 100
-@@ -42,6 +47,12 @@ static int ath9k_pci_fixup(struct pci_dev *pdev, const u16 *cal_data,
- 	u32 bar0;
- 	bool swap_needed = false;
+-	dev->fw_debug = !!val;
++	dev->fw_debug_wm = val ? MCU_FW_LOG_TO_HOST : 0;
  
-+	/* also note that we are doing *u16 operations on the file */
-+	if (cal_len > 4096 || cal_len < 0x200 || (cal_len & 1) == 1) {
-+		dev_err(&pdev->dev, "eeprom has an invalid size.\n");
-+		return -EINVAL;
-+	}
-+
- 	if (*cal_data != AR5416_EEPROM_MAGIC) {
- 		if (*cal_data != swab16(AR5416_EEPROM_MAGIC)) {
- 			dev_err(&pdev->dev, "invalid calibration data\n");
-@@ -99,38 +110,31 @@ static int ath9k_pci_fixup(struct pci_dev *pdev, const u16 *cal_data,
+-	mt7915_mcu_fw_log_2_host(dev, dev->fw_debug ? 2 : 0);
++	mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WM, dev->fw_debug_wm);
+ 
+ 	for (debug = DEBUG_TXCMD; debug <= DEBUG_RPT_RX; debug++)
+-		mt7915_mcu_fw_dbg_ctrl(dev, debug, dev->fw_debug);
++		mt7915_mcu_fw_dbg_ctrl(dev, debug, !!dev->fw_debug_wm);
+ 
  	return 0;
  }
  
--static void owl_fw_cb(const struct firmware *fw, void *context)
-+static void owl_rescan(struct pci_dev *pdev)
+ static int
+-mt7915_fw_debug_get(void *data, u64 *val)
++mt7915_fw_debug_wm_get(void *data, u64 *val)
  {
--	struct pci_dev *pdev = (struct pci_dev *)context;
--	struct owl_ctx *ctx = (struct owl_ctx *)pci_get_drvdata(pdev);
--	struct pci_bus *bus;
--
--	complete(&ctx->eeprom_load);
--
--	if (!fw) {
--		dev_err(&pdev->dev, "no eeprom data received.\n");
--		goto release;
--	}
--
--	/* also note that we are doing *u16 operations on the file */
--	if (fw->size > 4096 || fw->size < 0x200 || (fw->size & 1) == 1) {
--		dev_err(&pdev->dev, "eeprom file has an invalid size.\n");
--		goto release;
--	}
--
--	if (ath9k_pci_fixup(pdev, (const u16 *)fw->data, fw->size))
--		goto release;
-+	struct pci_bus *bus = pdev->bus;
+ 	struct mt7915_dev *dev = data;
  
- 	pci_lock_rescan_remove();
--	bus = pdev->bus;
- 	pci_stop_and_remove_bus_device(pdev);
- 	/* the device should come back with the proper
- 	 * ProductId. But we have to initiate a rescan.
- 	 */
- 	pci_rescan_bus(bus);
- 	pci_unlock_rescan_remove();
-+}
-+
-+static void owl_fw_cb(const struct firmware *fw, void *context)
-+{
-+	struct owl_ctx *ctx = (struct owl_ctx *)context;
-+
-+	complete(&ctx->eeprom_load);
+-	*val = dev->fw_debug;
++	*val = dev->fw_debug_wm;
  
--release:
-+	if (fw) {
-+		ath9k_pci_fixup(ctx->pdev, (const u16 *)fw->data, fw->size);
-+		owl_rescan(ctx->pdev);
-+	} else {
-+		dev_err(&ctx->pdev->dev, "no eeprom data received.\n");
-+	}
- 	release_firmware(fw);
+ 	return 0;
  }
  
-@@ -152,6 +156,43 @@ static const char *owl_get_eeprom_name(struct pci_dev *pdev)
- 	return eeprom_name;
- }
- 
-+static void owl_nvmem_work(struct work_struct *work)
+-DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_debug, mt7915_fw_debug_get,
+-			 mt7915_fw_debug_set, "%lld\n");
++DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_debug_wm, mt7915_fw_debug_wm_get,
++			 mt7915_fw_debug_wm_set, "%lld\n");
++
++static int
++mt7915_fw_debug_wa_set(void *data, u64 val)
 +{
-+	struct owl_ctx *ctx = container_of(work, struct owl_ctx, work);
-+	void *buf;
-+	size_t len;
++	struct mt7915_dev *dev = data;
 +
-+	complete(&ctx->eeprom_load);
++	dev->fw_debug_wa = val ? MCU_FW_LOG_TO_HOST : 0;
 +
-+	buf = nvmem_cell_read(ctx->cell, &len);
-+	if (!IS_ERR(buf)) {
-+		ath9k_pci_fixup(ctx->pdev, buf, len);
-+		kfree(buf);
-+		owl_rescan(ctx->pdev);
-+	} else {
-+		dev_err(&ctx->pdev->dev, "no nvmem data received.\n");
-+	}
++	return mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WA, dev->fw_debug_wa);
 +}
 +
-+static int owl_nvmem_probe(struct owl_ctx *ctx)
++static int
++mt7915_fw_debug_wa_get(void *data, u64 *val)
 +{
-+	int err;
++	struct mt7915_dev *dev = data;
 +
-+	ctx->cell = devm_nvmem_cell_get(&ctx->pdev->dev, "calibration");
-+	if (IS_ERR(ctx->cell)) {
-+		err = PTR_ERR(ctx->cell);
-+		if (err == -ENOENT || err == -EOPNOTSUPP)
-+			return 1; /* not present, try firmware_request */
-+
-+		return err;
-+	}
-+
-+	INIT_WORK(&ctx->work, owl_nvmem_work);
-+	schedule_work(&ctx->work);
++	*val = dev->fw_debug_wa;
 +
 +	return 0;
 +}
 +
- static int owl_probe(struct pci_dev *pdev,
- 		     const struct pci_device_id *id)
++DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_debug_wa, mt7915_fw_debug_wa_get,
++			 mt7915_fw_debug_wa_set, "%lld\n");
+ 
+ static void
+ mt7915_ampdu_stat_read_phy(struct mt7915_phy *phy,
+@@ -348,7 +371,8 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
+ 	debugfs_create_devm_seqfile(dev->mt76.dev, "acq", dir,
+ 				    mt7915_queues_acq);
+ 	debugfs_create_file("tx_stats", 0400, dir, dev, &mt7915_tx_stats_fops);
+-	debugfs_create_file("fw_debug", 0600, dir, dev, &fops_fw_debug);
++	debugfs_create_file("fw_debug_wm", 0600, dir, dev, &fops_fw_debug_wm);
++	debugfs_create_file("fw_debug_wa", 0600, dir, dev, &fops_fw_debug_wa);
+ 	debugfs_create_file("implicit_txbf", 0600, dir, dev,
+ 			    &fops_implicit_txbf);
+ 	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index da4480f..dad1858 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2796,7 +2796,7 @@ static int mt7915_load_firmware(struct mt7915_dev *dev)
+ 	return 0;
+ }
+ 
+-int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 ctrl)
++int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 type, u8 ctrl)
  {
-@@ -164,21 +205,27 @@ static int owl_probe(struct pci_dev *pdev,
+ 	struct {
+ 		u8 ctrl_val;
+@@ -2805,6 +2805,10 @@ int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 ctrl)
+ 		.ctrl_val = ctrl
+ 	};
  
- 	pcim_pin_device(pdev);
- 
--	eeprom_name = owl_get_eeprom_name(pdev);
--	if (!eeprom_name) {
--		dev_err(&pdev->dev, "no eeprom filename found.\n");
--		return -ENODEV;
--	}
--
- 	ctx = devm_kzalloc(&pdev->dev, sizeof(*ctx), GFP_KERNEL);
- 	if (!ctx)
- 		return -ENOMEM;
- 
- 	init_completion(&ctx->eeprom_load);
-+	ctx->pdev = pdev;
- 
- 	pci_set_drvdata(pdev, ctx);
++	if (type == MCU_FW_LOG_WA)
++		return mt76_mcu_send_msg(&dev->mt76, MCU_WA_EXT_CMD(FW_LOG_2_HOST),
++					 &data, sizeof(data), true);
 +
-+	err = owl_nvmem_probe(ctx);
-+	if (err <= 0)
-+		return err;
-+
-+	eeprom_name = owl_get_eeprom_name(pdev);
-+	if (!eeprom_name) {
-+		dev_err(&pdev->dev, "no eeprom filename found.\n");
-+		return -ENODEV;
-+	}
-+
- 	err = request_firmware_nowait(THIS_MODULE, true, eeprom_name,
--				      &pdev->dev, GFP_KERNEL, pdev, owl_fw_cb);
-+				      &pdev->dev, GFP_KERNEL, ctx, owl_fw_cb);
- 	if (err)
- 		dev_err(&pdev->dev, "failed to request caldata (%d).\n", err);
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(FW_LOG_2_HOST), &data,
+ 				 sizeof(data), true);
+ }
+@@ -2861,7 +2865,8 @@ int mt7915_mcu_init(struct mt7915_dev *dev)
+ 		return ret;
  
+ 	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
+-	mt7915_mcu_fw_log_2_host(dev, 0);
++	mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WM, 0);
++	mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WA, 0);
+ 	mt7915_mcu_set_mwds(dev, 1);
+ 	mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(SET), MCU_WA_PARAM_RED, 0, 0);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index eda17a9..44e215d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -228,6 +228,12 @@ enum {
+ 	MCU_S2D_H2CN
+ };
+ 
++enum {
++	MCU_FW_LOG_WM,
++	MCU_FW_LOG_WA,
++	MCU_FW_LOG_TO_HOST,
++};
++
+ #define __MCU_CMD_FIELD_ID	GENMASK(7, 0)
+ #define __MCU_CMD_FIELD_EXT_ID	GENMASK(15, 8)
+ #define __MCU_CMD_FIELD_QUERY	BIT(16)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index cc74dd2..75368ae 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -185,8 +185,9 @@ struct mt7915_dev {
+ 
+ 	bool dbdc_support;
+ 	bool flash_mode;
+-	bool fw_debug;
+ 	bool ibf;
++	u8 fw_debug_wm;
++	u8 fw_debug_wa;
+ 
+ 	void *cal;
+ };
+@@ -350,7 +351,7 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta, struct rate_info *rate);
+ int mt7915_mcu_rdd_cmd(struct mt7915_dev *dev, enum mt7915_rdd_cmd cmd,
+ 		       u8 index, u8 rx_sel, u8 val);
+-int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 ctrl);
++int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 type, u8 ctrl);
+ int mt7915_mcu_fw_dbg_ctrl(struct mt7915_dev *dev, u32 module, u8 level);
+ void mt7915_mcu_rx_event(struct mt7915_dev *dev, struct sk_buff *skb);
+ void mt7915_mcu_exit(struct mt7915_dev *dev);
 -- 
-2.33.0
+2.25.1
 
