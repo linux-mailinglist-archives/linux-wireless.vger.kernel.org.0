@@ -2,211 +2,247 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E1713FA60C
+	by mail.lfdr.de (Postfix) with ESMTP id 356A73FA60B
 	for <lists+linux-wireless@lfdr.de>; Sat, 28 Aug 2021 15:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234354AbhH1N2I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 28 Aug 2021 09:28:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46172 "EHLO
+        id S234364AbhH1N2D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 28 Aug 2021 09:28:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234346AbhH1N17 (ORCPT
+        with ESMTP id S230155AbhH1N17 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sat, 28 Aug 2021 09:27:59 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 287AFC0613D9
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Aug 2021 06:27:09 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id h13so14950957wrp.1
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Aug 2021 06:27:09 -0700 (PDT)
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C46C061756
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Aug 2021 06:27:08 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 79-20020a1c0452000000b002e6cf79e572so11258070wme.1
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Aug 2021 06:27:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id:mime-version
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=OtcS9aafz+Q0L8pDWZo/dhLnfCDOiTMCVcQTauLHP7s=;
-        b=V/EzGIz2+C/cJ6GWnn64p+/BA7g9PDwx1bo2grDO9nAcDJcJ/vkuIlEEiy0SG0jn2E
-         KJZPvuTna6VZtp7rJJ20rSyLIKRsiCEGn4ADxC8lMCupwhaXHQFFUnl4eDCZZd6+KRrk
-         1TugS80QncrTuvcV3+I7jWqv2gQSHhHnfnbbXyYqh26OzyC184EtRm8Xzk8eEFgn6E90
-         sjonBWd17dJUsN5vXUOVLUnBAEuoHcogMpbFhFhRGSIc4fVEL/9+2MVDi8x1h1w/L+oF
-         Hz5Ddv9MgwSENj/zEH22UxO8xA7juRSh22Zg5YhUo+KSGsjMzsfheRdkT2MOFwxxZWIy
-         lEew==
+        bh=iLQvE81eR+5NR1tm+/llRwBeJW5SU1QUf1tsFm9hUUs=;
+        b=LIjfCfQvzebPNvtecMNR4FEXfFbrnZDCPTTZMDp/BPqXX12UlwYnptC1c6pvuVXGdC
+         PWoWm85zjKu6DSQYPwTRfnXLahFSG1lg7deQC/WOeB1a7NNH9F8dgcztDmnVCCEPFhlI
+         3E9IIHlyHir7l8s5/J+ln2O/G1FdTvDItaQpGNx4l7WzmTxBf0W2TtXWpz4pJzwPN0s2
+         9eZC/78pOg4G4o5rKwkjUUynS52Exrtxl2L9i45aUWP66iB8zZPheo8ier/QeTx+JBSM
+         gZ35EwvcflI/3/9ALfJJjmePRHNudKSFBugVqXdjelD9PAZ43NLIS7nVCyLO8EV5m3Dx
+         VLyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=OtcS9aafz+Q0L8pDWZo/dhLnfCDOiTMCVcQTauLHP7s=;
-        b=Z1wujtYBtAoyoj7jcHAXFBKoY0LQuThte8OfU13VgBfgLzf0WCylE/ljuY9C36YLLD
-         iHniDVEdC46WVBvAGA2wHVEDrftbu0RSmToHIwFJYWTCB1tLu3TOoQcBUtM0b7kj8Eqe
-         qHCOyBmDIQaD0Af0NifQ5DWw7qUpCMFqdJegRGODgRfk+jiyVbDmpmPcJwIs0lr7lRYY
-         zykAi/E5o7JynZt+26BrjTQFkGogGEQpzUI9MhPvXTZiyiPHWRnaVXt073VOiZHntMt1
-         RZJUIMvrGD0HS0sKS24K5HljyBFSlyVqhi4T5NT0sih3LDO6/eiLGZJM61hjO99TP5Ju
-         zUFw==
-X-Gm-Message-State: AOAM533K67CQ5eUOYvDyAuw+adSRk/3sI9tuQMq8PVb22wmMBQfQga5v
-        SOrDSlZ4ZOzDU9bZ9LJvmfblTyln5Hc=
-X-Google-Smtp-Source: ABdhPJwx2uGFEfrjrfSVYup07+zvpX7IRewIZf2qp78BZHFeMIoIES/tDrKCqGIbnmY87V4XwIkMdA==
-X-Received: by 2002:adf:e6d0:: with SMTP id y16mr16286581wrm.284.1630157227723;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=iLQvE81eR+5NR1tm+/llRwBeJW5SU1QUf1tsFm9hUUs=;
+        b=AD4yJB4N75VZmJQRcimD796fYE8hQsxFGACCEHK/NlBp8A2e+yekgY3ZjqHmGPFHOL
+         qtJsgDKF4vj4AkidUjywbz2IJddBMrwTMkm8T6IS1kRe/8bfxQnsbsTqv1PdKF6O56WV
+         aZmjwmfjP+0tBpqMrumW9RZlFqRVTPxYq7/0F35/wOssxJtZC0FfP1/tnoAeM6x3lxpw
+         au3Rm1LNRY2mBBeWBcMam9iuecRpmskpggRiwPqbIe1tA2pmdcBq1GyjlHM9m+9dvKwu
+         QXH38T1ygZ/IfTt12ekjZonIgTFs/OJUVsl6DVpDmFtHpwTW5/5UnD4DgXKz7IV/py8c
+         G4kA==
+X-Gm-Message-State: AOAM531oQD2ci0exWIJ84Eej0c5Xnzme7qqzQbV4aeyzHxMKWbaV+U+J
+        iF1FFvJJ78VqRMQ/04ACHxZ/ZzrM0mQ=
+X-Google-Smtp-Source: ABdhPJyfBjAjledD6ifeq5JGDxEGb7sJ7UUgP1o1qLcGXVa0unWd6dYwU7Aek9vDGB3ms1UqQyJLeg==
+X-Received: by 2002:a05:600c:4106:: with SMTP id j6mr772396wmi.102.1630157227017;
         Sat, 28 Aug 2021 06:27:07 -0700 (PDT)
 Received: from debian64.daheim (p5b0d759d.dip0.t-ipconnect.de. [91.13.117.157])
-        by smtp.gmail.com with ESMTPSA id n10sm9390328wrw.76.2021.08.28.06.27.07
+        by smtp.gmail.com with ESMTPSA id p1sm1187783wmp.12.2021.08.28.06.27.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Aug 2021 06:27:07 -0700 (PDT)
+        Sat, 28 Aug 2021 06:27:06 -0700 (PDT)
 Received: from chuck by debian64.daheim with local (Exim 4.94.2)
         (envelope-from <chunkeey@gmail.com>)
-        id 1mJyMT-000C8g-LJ; Sat, 28 Aug 2021 15:27:05 +0200
+        id 1mJyMT-000C8i-M3; Sat, 28 Aug 2021 15:27:05 +0200
 From:   Christian Lamparter <chunkeey@gmail.com>
 To:     linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com
-Subject: [PATCH v1 1/2] ath9k: fetch calibration data via nvmem subsystem
-Date:   Sat, 28 Aug 2021 15:27:04 +0200
-Message-Id: <f9b732b50a3453fadf3923cc75d365bae3505fe7.1630157099.git.chunkeey@gmail.com>
+Subject: [PATCH v1 2/2] ath9k: owl-loader: fetch pci init values through nvmem
+Date:   Sat, 28 Aug 2021 15:27:05 +0200
+Message-Id: <bc79ba1c6f6435000577bf1e5f4d7ebe18a8df97.1630157099.git.chunkeey@gmail.com>
 X-Mailer: git-send-email 2.33.0
+In-Reply-To: <f9b732b50a3453fadf3923cc75d365bae3505fe7.1630157099.git.chunkeey@gmail.com>
+References: <f9b732b50a3453fadf3923cc75d365bae3505fe7.1630157099.git.chunkeey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On most embedded ath9k devices (like range extenders,
-routers, accesspoints, ...) the calibration data is
-stored in a MTD partitions named "ART", or "caldata"/
-"calibration".
+extends the owl loader to fetch important pci initialization
+values - which are stored together with the calibration data -
+through the nvmem subsystem.
 
-Since commit 4b361cfa8624 ("mtd: core: add OTP nvmem provider support"):
-All MTD partitions are all automatically available through
-the nvmem subsystem.
-
-This feature - together with an nvmem cell definition either
-in the platform data or via device-tree allows drivers to get
-the data necessary for initializing the WIFI, without having
-to wait around for the filesystem and userspace to do
-the extractions.
+This allows for much faster WIFI/ath9k initializations on devices
+that do not require to perform any post-processing (like XOR'ing/
+reversal or unpacking)... than the current way through the
+firmware_request which involves the filesystem/userspace.
 
 Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
 ---
- drivers/net/wireless/ath/ath9k/eeprom.c | 12 +++++-
- drivers/net/wireless/ath/ath9k/hw.h     |  2 +
- drivers/net/wireless/ath/ath9k/init.c   | 56 +++++++++++++++++++++++++
- 3 files changed, 69 insertions(+), 1 deletion(-)
+ .../wireless/ath/ath9k/ath9k_pci_owl_loader.c | 105 +++++++++++++-----
+ 1 file changed, 76 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/eeprom.c b/drivers/net/wireless/ath/ath9k/eeprom.c
-index c22d457dbc54..e6b3cd49ea18 100644
---- a/drivers/net/wireless/ath/ath9k/eeprom.c
-+++ b/drivers/net/wireless/ath/ath9k/eeprom.c
-@@ -135,13 +135,23 @@ static bool ath9k_hw_nvram_read_firmware(const struct firmware *eeprom_blob,
- 					 offset, data);
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
+index 56d1a7764b9f..708c8969b503 100644
+--- a/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
++++ b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
+@@ -19,9 +19,14 @@
+ #include <linux/delay.h>
+ #include <linux/platform_device.h>
+ #include <linux/ath9k_platform.h>
++#include <linux/nvmem-consumer.h>
++#include <linux/workqueue.h>
+ 
+ struct owl_ctx {
++	struct pci_dev *pdev;
+ 	struct completion eeprom_load;
++	struct work_struct work;
++	struct nvmem_cell *cell;
+ };
+ 
+ #define EEPROM_FILENAME_LEN 100
+@@ -42,6 +47,12 @@ static int ath9k_pci_fixup(struct pci_dev *pdev, const u16 *cal_data,
+ 	u32 bar0;
+ 	bool swap_needed = false;
+ 
++	/* also note that we are doing *u16 operations on the file */
++	if (cal_len > 4096 || cal_len < 0x200 || (cal_len & 1) == 1) {
++		dev_err(&pdev->dev, "eeprom has an invalid size.\n");
++		return -EINVAL;
++	}
++
+ 	if (*cal_data != AR5416_EEPROM_MAGIC) {
+ 		if (*cal_data != swab16(AR5416_EEPROM_MAGIC)) {
+ 			dev_err(&pdev->dev, "invalid calibration data\n");
+@@ -99,38 +110,31 @@ static int ath9k_pci_fixup(struct pci_dev *pdev, const u16 *cal_data,
+ 	return 0;
  }
  
-+static bool ath9k_hw_nvram_read_nvmem(struct ath_hw *ah, off_t offset,
-+				      u16 *data)
-+{
-+	return ath9k_hw_nvram_read_array(ah->nvmem_blob,
-+					 ah->nvmem_blob_len / sizeof(u16),
-+					 offset, data);
+-static void owl_fw_cb(const struct firmware *fw, void *context)
++static void owl_rescan(struct pci_dev *pdev)
+ {
+-	struct pci_dev *pdev = (struct pci_dev *)context;
+-	struct owl_ctx *ctx = (struct owl_ctx *)pci_get_drvdata(pdev);
+-	struct pci_bus *bus;
+-
+-	complete(&ctx->eeprom_load);
+-
+-	if (!fw) {
+-		dev_err(&pdev->dev, "no eeprom data received.\n");
+-		goto release;
+-	}
+-
+-	/* also note that we are doing *u16 operations on the file */
+-	if (fw->size > 4096 || fw->size < 0x200 || (fw->size & 1) == 1) {
+-		dev_err(&pdev->dev, "eeprom file has an invalid size.\n");
+-		goto release;
+-	}
+-
+-	if (ath9k_pci_fixup(pdev, (const u16 *)fw->data, fw->size))
+-		goto release;
++	struct pci_bus *bus = pdev->bus;
+ 
+ 	pci_lock_rescan_remove();
+-	bus = pdev->bus;
+ 	pci_stop_and_remove_bus_device(pdev);
+ 	/* the device should come back with the proper
+ 	 * ProductId. But we have to initiate a rescan.
+ 	 */
+ 	pci_rescan_bus(bus);
+ 	pci_unlock_rescan_remove();
 +}
 +
- bool ath9k_hw_nvram_read(struct ath_hw *ah, u32 off, u16 *data)
- {
- 	struct ath_common *common = ath9k_hw_common(ah);
- 	struct ath9k_platform_data *pdata = ah->dev->platform_data;
- 	bool ret;
++static void owl_fw_cb(const struct firmware *fw, void *context)
++{
++	struct owl_ctx *ctx = (struct owl_ctx *)context;
++
++	complete(&ctx->eeprom_load);
  
--	if (ah->eeprom_blob)
-+	if (ah->nvmem_blob)
-+		ret = ath9k_hw_nvram_read_nvmem(ah, off, data);
-+	else if (ah->eeprom_blob)
- 		ret = ath9k_hw_nvram_read_firmware(ah->eeprom_blob, off, data);
- 	else if (pdata && !pdata->use_eeprom)
- 		ret = ath9k_hw_nvram_read_pdata(pdata, off, data);
-diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
-index b7b65b1c90e8..096a206f49ed 100644
---- a/drivers/net/wireless/ath/ath9k/hw.h
-+++ b/drivers/net/wireless/ath/ath9k/hw.h
-@@ -977,6 +977,8 @@ struct ath_hw {
- 	bool disable_5ghz;
- 
- 	const struct firmware *eeprom_blob;
-+	u16 *nvmem_blob;	/* devres managed */
-+	size_t nvmem_blob_len;
- 
- 	struct ath_dynack dynack;
- 
-diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
-index e9a36dd7144f..1568730fc01e 100644
---- a/drivers/net/wireless/ath/ath9k/init.c
-+++ b/drivers/net/wireless/ath/ath9k/init.c
-@@ -22,6 +22,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_net.h>
-+#include <linux/nvmem-consumer.h>
- #include <linux/relay.h>
- #include <linux/dmi.h>
- #include <net/ieee80211_radiotap.h>
-@@ -568,6 +569,57 @@ static void ath9k_eeprom_release(struct ath_softc *sc)
- 	release_firmware(sc->sc_ah->eeprom_blob);
+-release:
++	if (fw) {
++		ath9k_pci_fixup(ctx->pdev, (const u16 *)fw->data, fw->size);
++		owl_rescan(ctx->pdev);
++	} else {
++		dev_err(&ctx->pdev->dev, "no eeprom data received.\n");
++	}
+ 	release_firmware(fw);
  }
  
-+static int ath9k_nvmem_request_eeprom(struct ath_softc *sc)
+@@ -152,6 +156,43 @@ static const char *owl_get_eeprom_name(struct pci_dev *pdev)
+ 	return eeprom_name;
+ }
+ 
++static void owl_nvmem_work(struct work_struct *work)
 +{
-+	struct ath_hw *ah = sc->sc_ah;
-+	struct nvmem_cell *cell;
++	struct owl_ctx *ctx = container_of(work, struct owl_ctx, work);
 +	void *buf;
 +	size_t len;
++
++	complete(&ctx->eeprom_load);
++
++	buf = nvmem_cell_read(ctx->cell, &len);
++	if (!IS_ERR(buf)) {
++		ath9k_pci_fixup(ctx->pdev, buf, len);
++		kfree(buf);
++		owl_rescan(ctx->pdev);
++	} else {
++		dev_err(&ctx->pdev->dev, "no nvmem data received.\n");
++	}
++}
++
++static int owl_nvmem_probe(struct owl_ctx *ctx)
++{
 +	int err;
 +
-+	cell = devm_nvmem_cell_get(sc->dev, "calibration");
-+	if (IS_ERR(cell)) {
-+		err = PTR_ERR(cell);
-+
-+		/* nvmem cell might not be defined, or the nvmem
-+		 * subsystem isn't included. In this case, follow
-+		 * the established "just return 0;" convention of
-+		 * ath9k_init_platform to say:
-+		 * "All good. Nothing to see here. Please go on."
-+		 */
++	ctx->cell = devm_nvmem_cell_get(&ctx->pdev->dev, "calibration");
++	if (IS_ERR(ctx->cell)) {
++		err = PTR_ERR(ctx->cell);
 +		if (err == -ENOENT || err == -EOPNOTSUPP)
-+			return 0;
++			return 1; /* not present, try firmware_request */
 +
 +		return err;
 +	}
 +
-+	buf = nvmem_cell_read(cell, &len);
-+	if (IS_ERR(buf))
-+		return PTR_ERR(buf);
-+
-+	/* run basic sanity checks on the returned nvram cell length.
-+	 * That length has to be a multiple of a "u16" (i.e.: & 1).
-+	 * Furthermore, it has to be more than "let's say" 512 bytes
-+	 * but less than the maximum of AR9300_EEPROM_SIZE (16kb).
-+	 */
-+	if ((len & 1) == 1 || len < 512 || len >= AR9300_EEPROM_SIZE) {
-+		kfree(buf);
-+		return -EINVAL;
-+	}
-+
-+	/* devres manages the calibration values release on shutdown */
-+	ah->nvmem_blob = (u16 *)devm_kmemdup(sc->dev, buf, len, GFP_KERNEL);
-+	kfree(buf);
-+	if (IS_ERR(ah->nvmem_blob))
-+		return PTR_ERR(ah->nvmem_blob);
-+
-+	ah->nvmem_blob_len = len;
-+	ah->ah_flags &= ~AH_USE_EEPROM;
-+	ah->ah_flags |= AH_NO_EEP_SWAP;
++	INIT_WORK(&ctx->work, owl_nvmem_work);
++	schedule_work(&ctx->work);
 +
 +	return 0;
 +}
 +
- static int ath9k_init_platform(struct ath_softc *sc)
+ static int owl_probe(struct pci_dev *pdev,
+ 		     const struct pci_device_id *id)
  {
- 	struct ath9k_platform_data *pdata = sc->dev->platform_data;
-@@ -704,6 +756,10 @@ static int ath9k_init_softc(u16 devid, struct ath_softc *sc,
- 	if (ret)
- 		return ret;
+@@ -164,21 +205,27 @@ static int owl_probe(struct pci_dev *pdev,
  
-+	ret = ath9k_nvmem_request_eeprom(sc);
-+	if (ret)
-+		return ret;
+ 	pcim_pin_device(pdev);
+ 
+-	eeprom_name = owl_get_eeprom_name(pdev);
+-	if (!eeprom_name) {
+-		dev_err(&pdev->dev, "no eeprom filename found.\n");
+-		return -ENODEV;
+-	}
+-
+ 	ctx = devm_kzalloc(&pdev->dev, sizeof(*ctx), GFP_KERNEL);
+ 	if (!ctx)
+ 		return -ENOMEM;
+ 
+ 	init_completion(&ctx->eeprom_load);
++	ctx->pdev = pdev;
+ 
+ 	pci_set_drvdata(pdev, ctx);
 +
- 	if (ath9k_led_active_high != -1)
- 		ah->config.led_active_high = ath9k_led_active_high == 1;
++	err = owl_nvmem_probe(ctx);
++	if (err <= 0)
++		return err;
++
++	eeprom_name = owl_get_eeprom_name(pdev);
++	if (!eeprom_name) {
++		dev_err(&pdev->dev, "no eeprom filename found.\n");
++		return -ENODEV;
++	}
++
+ 	err = request_firmware_nowait(THIS_MODULE, true, eeprom_name,
+-				      &pdev->dev, GFP_KERNEL, pdev, owl_fw_cb);
++				      &pdev->dev, GFP_KERNEL, ctx, owl_fw_cb);
+ 	if (err)
+ 		dev_err(&pdev->dev, "failed to request caldata (%d).\n", err);
  
 -- 
 2.33.0
