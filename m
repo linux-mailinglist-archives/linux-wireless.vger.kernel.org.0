@@ -2,240 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31BC13FA668
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Aug 2021 17:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F38D3FA66E
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Aug 2021 17:19:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbhH1PQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 28 Aug 2021 11:16:55 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:36728 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229799AbhH1PQy (ORCPT
+        id S230091AbhH1PUD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 28 Aug 2021 11:20:03 -0400
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:9368 "EHLO
+        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229933AbhH1PUC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 28 Aug 2021 11:16:54 -0400
-X-UUID: fdfdcbb23f2044d4aef447119dfb8bd6-20210828
-X-UUID: fdfdcbb23f2044d4aef447119dfb8bd6-20210828
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 368365835; Sat, 28 Aug 2021 23:16:02 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs05n2.mediatek.inc (172.21.101.140) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 28 Aug 2021 23:16:01 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 28 Aug 2021 23:16:00 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 2/2] mt76: mt7915: add debugfs knobs for MCU utilization
-Date:   Sat, 28 Aug 2021 23:13:07 +0800
-Message-ID: <20210828151307.25011-2-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20210828151307.25011-1-shayne.chen@mediatek.com>
-References: <20210828151307.25011-1-shayne.chen@mediatek.com>
+        Sat, 28 Aug 2021 11:20:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
+        h=from:subject:mime-version:to:cc:content-transfer-encoding:
+        content-type;
+        s=sgd; bh=PQdksHrrEUAosv4sUQmLo5SlZ0YKm2v3sLipoz4qRo8=;
+        b=nCjNXsqpW8+nSyK+Cged+ar8WLSOLiGSgUz1AnhEy4CEoyq4gnDfE4xvUgbuY8vhf0jX
+        0yy4tPvPVVLddwMV/aimTQMJFGp6kAbJhOq0Z7x/GTDzl6d5+vYnSdth7rZqUOHOzgbK5C
+        PnS70Ldr14TvUI+U7/NoBR8D6nEg59ofeRLluDas+P43IQqDPuKBta7HI4WKOQvIVp2b3y
+        nVBhQ1+9DrBS/uacnIoEMLkr5QYwamJe3egALdwgzDTwrbEQmRXYooUZSSdwj5dhj+srOt
+        pfVeWKjUllyHKXGpq+5nZJ2nQ4lve59u1RVLApGfTnOZ2h8snuYhAD3odhOlVW3Q==
+Received: by filterdrecv-7c9b89cc6f-d5wss with SMTP id filterdrecv-7c9b89cc6f-d5wss-1-612A53EF-2B
+        2021-08-28 15:19:11.741570818 +0000 UTC m=+1350096.534804194
+Received: from pearl.egauge.net (unknown)
+        by geopod-ismtpd-canary-0 (SG)
+        with ESMTP
+        id fZUiZXmERFiobl53QmrglQ
+        Sat, 28 Aug 2021 15:19:11.547 +0000 (UTC)
+Received: by pearl.egauge.net (Postfix, from userid 1000)
+        id 9CCED70034D; Sat, 28 Aug 2021 09:19:10 -0600 (MDT)
+From:   David Mosberger-Tang <davidm@egauge.net>
+Subject: [PATCH v2] wilc1000: Convert module-global "isinit" to
+ device-specific variable
+Date:   Sat, 28 Aug 2021 15:19:11 +0000 (UTC)
+Message-Id: <20210828151346.3012697-1-davidm@egauge.net>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvGQOcDIo0v0Wt1nZY?=
+ =?us-ascii?Q?nhFXmgKfSXYNH8DajXxCCVAqSzDilFOqxtsJ+dW?=
+ =?us-ascii?Q?MbZor7W+CG4hIN7z9QVW+amCHPSanMsPqnhggrU?=
+ =?us-ascii?Q?ib9La7SQTEUT=2F1zqlXVXdK7h=2FuI8Te4UUV70RTy?=
+ =?us-ascii?Q?PezFS9nsMdE=2FXcBdBFW6vmV6y3P+pqwgmZo24+U?=
+ =?us-ascii?Q?X5cvIc=2FxB715bFkMYekrA=3D=3D?=
+To:     linux-wireless@vger.kernel.org
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        David Mosberger-Tang <davidm@egauge.net>
+X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add debugfs knobs to read MCU utilization, which helps user know
-firmware status more easily to narrow down CPU bottleneck issues.
+Move static "isinit" variable to wilc_spi structure to allow multiple
+WILC1000 devices per machine.
 
-Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- .../wireless/mediatek/mt76/mt7915/debugfs.c   | 49 ++++++++++++++++++-
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  5 +-
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  2 +
- .../net/wireless/mediatek/mt76/mt7915/mmio.c  |  3 ++
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 +
- .../net/wireless/mediatek/mt76/mt7915/regs.h  | 17 +++++++
- 6 files changed, 73 insertions(+), 4 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/spi.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index 3878635..5f2feb3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -93,6 +93,12 @@ mt7915_fw_debug_wm_set(void *data, u64 val)
- 	for (debug = DEBUG_TXCMD; debug <= DEBUG_RPT_RX; debug++)
- 		mt7915_mcu_fw_dbg_ctrl(dev, debug, !!dev->fw_debug_wm);
+diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
+index 8b180c29d682..dd481dc0b5ce 100644
+--- a/drivers/net/wireless/microchip/wilc1000/spi.c
++++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+@@ -39,6 +39,7 @@ MODULE_PARM_DESC(enable_crc16,
+ #define WILC_SPI_RSP_HDR_EXTRA_DATA	8
  
-+	/* WM CPU info record control */
-+	mt76_clear(dev, MT_CPU_UTLZ_CTRL, BIT(0));
-+	mt76_wr(dev, MT_DIC_CMD_REG_CMD, BIT(2) | BIT(13) | !dev->fw_debug_wm);
-+	mt76_wr(dev, MT_MCU_WM_CIRQ_IRQ_MASK_CLR_ADDR, BIT(5));
-+	mt76_wr(dev, MT_MCU_WM_CIRQ_IRQ_SOFT_ADDR, BIT(5));
-+
+ struct wilc_spi {
++	bool isinit;		/* true if SPI protocol has been configured */
+ 	bool probing_crc;	/* true if we're probing chip's CRC config */
+ 	bool crc7_enabled;	/* true if crc7 is currently enabled */
+ 	bool crc16_enabled;	/* true if crc16 is currently enabled */
+@@ -908,15 +909,15 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
+ 	struct wilc_spi *spi_priv = wilc->bus_data;
+ 	u32 reg;
+ 	u32 chipid;
+-	static int isinit;
+ 	int ret, i;
+ 
+-	if (isinit) {
++	if (spi_priv->isinit) {
++		/* Confirm we can read chipid register without error: */
+ 		ret = wilc_spi_read_reg(wilc, WILC_CHIPID, &chipid);
+-		if (ret)
+-			dev_err(&spi->dev, "Fail cmd read chip id...\n");
++		if (ret == 0)
++			return 0;
+ 
+-		return ret;
++		dev_err(&spi->dev, "Fail cmd read chip id...\n");
+ 	}
+ 
+ 	/*
+@@ -974,7 +975,7 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
+ 	spi_priv->probing_crc = false;
+ 
+ 	/*
+-	 * make sure can read back chip id correctly
++	 * make sure can read chip id without protocol error
+ 	 */
+ 	ret = wilc_spi_read_reg(wilc, WILC_CHIPID, &chipid);
+ 	if (ret) {
+@@ -982,7 +983,7 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
+ 		return ret;
+ 	}
+ 
+-	isinit = 1;
++	spi_priv->isinit = true;
+ 
  	return 0;
  }
- 
-@@ -116,7 +122,11 @@ mt7915_fw_debug_wa_set(void *data, u64 val)
- 
- 	dev->fw_debug_wa = val ? MCU_FW_LOG_TO_HOST : 0;
- 
--	return mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WA, dev->fw_debug_wa);
-+	mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WA, dev->fw_debug_wa);
-+	mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(SET), MCU_WA_PARAM_PDMA_RX,
-+			  !!dev->fw_debug_wa, 0);
-+
-+	return 0;
- }
- 
- static int
-@@ -132,6 +142,39 @@ mt7915_fw_debug_wa_get(void *data, u64 *val)
- DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_debug_wa, mt7915_fw_debug_wa_get,
- 			 mt7915_fw_debug_wa_set, "%lld\n");
- 
-+static int
-+mt7915_fw_utilization_wm_show(struct seq_file *file, void *data)
-+{
-+	struct mt7915_dev *dev = file->private;
-+
-+	if (dev->fw_debug_wm) {
-+		seq_printf(file, "Busy: %u%%  Peak busy: %u%%\n",
-+			   mt76_rr(dev, MT_CPU_UTLZ_BUSY_PCT),
-+			   mt76_rr(dev, MT_CPU_UTLZ_PEAK_BUSY_PCT));
-+		seq_printf(file, "Idle count: %u  Peak idle count: %u\n",
-+			   mt76_rr(dev, MT_CPU_UTLZ_IDLE_CNT),
-+			   mt76_rr(dev, MT_CPU_UTLZ_PEAK_IDLE_CNT));
-+	}
-+
-+	return 0;
-+}
-+
-+DEFINE_SHOW_ATTRIBUTE(mt7915_fw_utilization_wm);
-+
-+static int
-+mt7915_fw_utilization_wa_show(struct seq_file *file, void *data)
-+{
-+	struct mt7915_dev *dev = file->private;
-+
-+	if (dev->fw_debug_wa)
-+		mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(QUERY),
-+				  MCU_WA_PARAM_CPU_UTILIZATION, 0, 0);
-+
-+	return 0;
-+}
-+
-+DEFINE_SHOW_ATTRIBUTE(mt7915_fw_utilization_wa);
-+
- static void
- mt7915_ampdu_stat_read_phy(struct mt7915_phy *phy,
- 			   struct seq_file *file)
-@@ -373,6 +416,10 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
- 	debugfs_create_file("tx_stats", 0400, dir, dev, &mt7915_tx_stats_fops);
- 	debugfs_create_file("fw_debug_wm", 0600, dir, dev, &fops_fw_debug_wm);
- 	debugfs_create_file("fw_debug_wa", 0600, dir, dev, &fops_fw_debug_wa);
-+	debugfs_create_file("fw_utilization_wm", 0400, dir, dev,
-+			    &mt7915_fw_utilization_wm_fops);
-+	debugfs_create_file("fw_utilization_wa", 0400, dir, dev,
-+			    &mt7915_fw_utilization_wa_fops);
- 	debugfs_create_file("implicit_txbf", 0600, dir, dev,
- 			    &fops_implicit_txbf);
- 	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index dad1858..cfa0550 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -416,8 +416,7 @@ exit:
- 	return mt76_tx_queue_skb_raw(dev, mdev->q_mcu[qid], skb, 0);
- }
- 
--static void
--mt7915_mcu_wa_cmd(struct mt7915_dev *dev, int cmd, u32 a1, u32 a2, u32 a3)
-+void mt7915_mcu_wa_cmd(struct mt7915_dev *dev, int cmd, u32 a1, u32 a2, u32 a3)
- {
- 	struct {
- 		__le32 args[3];
-@@ -429,7 +428,7 @@ mt7915_mcu_wa_cmd(struct mt7915_dev *dev, int cmd, u32 a1, u32 a2, u32 a3)
- 		},
- 	};
- 
--	mt76_mcu_send_msg(&dev->mt76, cmd, &req, sizeof(req), true);
-+	mt76_mcu_send_msg(&dev->mt76, cmd, &req, sizeof(req), false);
- }
- 
- static void
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 44e215d..9c10073 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -298,6 +298,8 @@ enum {
- };
- 
- enum {
-+	MCU_WA_PARAM_PDMA_RX = 0x04,
-+	MCU_WA_PARAM_CPU_UTILIZATION = 0x0b,
- 	MCU_WA_PARAM_RED = 0x0e,
- };
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index af712a9..bb55224 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -34,6 +34,9 @@ static u32 __mt7915_reg_addr(struct mt7915_dev *dev, u32 addr)
- 		u32 mapped;
- 		u32 size;
- 	} fixed_map[] = {
-+		{ 0x00400000, 0x80000, 0x10000 }, /* WF_MCU_SYSRAM */
-+		{ 0x00410000, 0x90000, 0x10000 }, /* WF_MCU_SYSRAM (configure regs) */
-+		{ 0x40000000, 0x70000, 0x10000 }, /* WF_UMAC_SYSRAM */
- 		{ 0x54000000, 0x02000, 0x1000 }, /* WFDMA PCIE0 MCU DMA0 */
- 		{ 0x55000000, 0x03000, 0x1000 }, /* WFDMA PCIE0 MCU DMA1 */
- 		{ 0x58000000, 0x06000, 0x1000 }, /* WFDMA PCIE1 MCU DMA0 (MEM_DMA) */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 75368ae..01c582e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -351,6 +351,7 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta, struct rate_info *rate);
- int mt7915_mcu_rdd_cmd(struct mt7915_dev *dev, enum mt7915_rdd_cmd cmd,
- 		       u8 index, u8 rx_sel, u8 val);
-+void mt7915_mcu_wa_cmd(struct mt7915_dev *dev, int cmd, u32 a1, u32 a2, u32 a3);
- int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 type, u8 ctrl);
- int mt7915_mcu_fw_dbg_ctrl(struct mt7915_dev *dev, u32 module, u8 level);
- void mt7915_mcu_rx_event(struct mt7915_dev *dev, struct sk_buff *skb);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index f4101cc..fdf65d8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -413,6 +413,18 @@
- #define MT_HIF_REMAP_L2_BASE		GENMASK(31, 12)
- #define MT_HIF_REMAP_BASE_L2		0x00000
- 
-+#define MT_DIC_CMD_REG_BASE		0x41f000
-+#define MT_DIC_CMD_REG(ofs)		(MT_DIC_CMD_REG_BASE + (ofs))
-+#define MT_DIC_CMD_REG_CMD		MT_DIC_CMD_REG(0x10)
-+
-+#define MT_CPU_UTLZ_BASE		0x41f030
-+#define MT_CPU_UTLZ(ofs)		(MT_CPU_UTLZ_BASE + (ofs))
-+#define MT_CPU_UTLZ_BUSY_PCT		MT_CPU_UTLZ(0x00)
-+#define MT_CPU_UTLZ_PEAK_BUSY_PCT	MT_CPU_UTLZ(0x04)
-+#define MT_CPU_UTLZ_IDLE_CNT		MT_CPU_UTLZ(0x08)
-+#define MT_CPU_UTLZ_PEAK_IDLE_CNT	MT_CPU_UTLZ(0x0c)
-+#define MT_CPU_UTLZ_CTRL		MT_CPU_UTLZ(0x1c)
-+
- #define MT_SWDEF_BASE			0x41f200
- #define MT_SWDEF(ofs)			(MT_SWDEF_BASE + (ofs))
- #define MT_SWDEF_MODE			MT_SWDEF(0x3c)
-@@ -458,4 +470,9 @@
- #define MT_WF_PHY_RXTD12_IRPI_SW_CLR_ONLY	BIT(18)
- #define MT_WF_PHY_RXTD12_IRPI_SW_CLR	BIT(29)
- 
-+#define MT_MCU_WM_CIRQ_BASE			0x89010000
-+#define MT_MCU_WM_CIRQ(ofs)			(MT_MCU_WM_CIRQ_BASE + (ofs))
-+#define MT_MCU_WM_CIRQ_IRQ_MASK_CLR_ADDR	MT_MCU_WM_CIRQ(0x80)
-+#define MT_MCU_WM_CIRQ_IRQ_SOFT_ADDR		MT_MCU_WM_CIRQ(0xc0)
-+
- #endif
 -- 
 2.25.1
 
