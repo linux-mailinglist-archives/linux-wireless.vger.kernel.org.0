@@ -2,33 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0038E3FA9DE
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 09:13:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0DA33FA9E1
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 09:13:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234749AbhH2HNl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Aug 2021 03:13:41 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:55535 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234733AbhH2HNl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Aug 2021 03:13:41 -0400
+        id S234833AbhH2HOE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Aug 2021 03:14:04 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:57245 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234802AbhH2HN5 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 29 Aug 2021 03:13:57 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1630221169; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1630221186; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=XURRjWT7HCcJ0+x0NBR/pNfKdWc/Eef8Bji3peHuyhg=;
- b=uRD0ChlxB5T4rIvGXncqC2yxayiPQG6cBTcipaOLqy6al3PgHpZGGjEqUa0uKxa4n7pi6JRI
- bEferRYZ/oKhTcC4F36SV87UghVeEVONFMKSqtqbabPtbiN+ju7V46dpy1RZOmeQCXFDnmXW
- MSlExpV32T9/Xy7ZWhpE3fKzDZY=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ Content-Type: Sender; bh=AVWGNT7tRSSLenpvopz6gPJLfeDmo/Fgk1wnlvMrLcM=;
+ b=uSTCmGmATuo0zmDxEqriu4MbYsXlAMSsWjMhY0HANZQAyOVd/5gKxghnyQgLDgXJokWqshJp
+ pZFU8wMfuHHCe+9+KsEi0xNtmcSSUhJLu1DYQL8/IWJr8T+N0IUN6lXcJLiz6i1ioSNd6aKT
+ 2ssofSl97SssUZE9UrBMlVsKR4k=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 612b336a6fc2cf7ad9de6023 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 29 Aug 2021 07:12:42
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 612b337cd6653df7672df0ab (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 29 Aug 2021 07:13:00
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B0FA5C43460; Sun, 29 Aug 2021 07:12:41 +0000 (UTC)
+        id 9AE75C43616; Sun, 29 Aug 2021 07:12:59 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,55 +40,47 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A0348C4338F;
-        Sun, 29 Aug 2021 07:12:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org A0348C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 949EEC43460;
+        Sun, 29 Aug 2021 07:12:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 949EEC43460
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath9k: fix sleeping in atomic context
+Subject: Re: [PATCH] ath6kl: wmi: fix an error code in ath6kl_wmi_sync_point()
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1628481916-15030-1-git-send-email-miaoqing@codeaurora.org>
-References: <1628481916-15030-1-git-send-email-miaoqing@codeaurora.org>
-To:     Miaoqing Pan <miaoqing@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com,
-        dan.carpenter@oracle.com, linux-gpio@vger.kernel.org,
-        Miaoqing Pan <miaoqing@codeaurora.org>
+In-Reply-To: <20210813113438.GB30697@kili>
+References: <20210813113438.GB30697@kili>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Raja Mani <rmani@qca.qualcomm.com>,
+        Vasanthakumar Thiagarajan <vthiagar@qca.qualcomm.com>,
+        Suraj Sumangala <surajs@qca.qualcomm.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210829071241.B0FA5C43460@smtp.codeaurora.org>
-Date:   Sun, 29 Aug 2021 07:12:41 +0000 (UTC)
+Message-Id: <20210829071259.9AE75C43616@smtp.codeaurora.org>
+Date:   Sun, 29 Aug 2021 07:12:59 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Miaoqing Pan <miaoqing@codeaurora.org> wrote:
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> The problem is that gpio_free() can sleep and the cfg_soc() can be
-> called with spinlocks held. One problematic call tree is:
+> This error path is unlikely because of it checked for NULL and
+> returned -ENOMEM earlier in the function.  But it should return
+> an error code here as well if we ever do hit it because of a
+> race condition or something.
 > 
-> --> ath_reset_internal() takes &sc->sc_pcu_lock spin lock
->    --> ath9k_hw_reset()
->       --> ath9k_hw_gpio_request_in()
->          --> ath9k_hw_gpio_request()
->             --> ath9k_hw_gpio_cfg_soc()
-> 
-> Remove gpio_free(), use error message instead, so we should make sure
-> there is no GPIO conflict.
-> 
-> Also remove ath9k_hw_gpio_free() from ath9k_hw_apply_gpio_override(),
-> as gpio_mask will never be set for SOC chips.
-> 
-> Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+> Fixes: bdcd81707973 ("Add ath6kl cleaned up driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-7c48662b9d56 ath9k: fix sleeping in atomic context
+fd6729ec534c ath6kl: wmi: fix an error code in ath6kl_wmi_sync_point()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1628481916-15030-1-git-send-email-miaoqing@codeaurora.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210813113438.GB30697@kili/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
