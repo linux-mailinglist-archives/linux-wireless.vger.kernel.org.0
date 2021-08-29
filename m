@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 330293FABC4
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 15:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E90823FABA1
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 15:14:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235668AbhH2NPI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Aug 2021 09:15:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46998 "EHLO
+        id S235589AbhH2NOQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Aug 2021 09:14:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235495AbhH2NOL (ORCPT
+        with ESMTP id S235510AbhH2NOL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 29 Aug 2021 09:14:11 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA223C0612A7
-        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 06:13:17 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id d16so20717482ljq.4
-        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 06:13:17 -0700 (PDT)
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89802C0612AD
+        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 06:13:18 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id g13so25234793lfj.12
+        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 06:13:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=gLxBTtcfVl4dtJ5J9RXz2IWihrIE1icg8208P8LI768=;
-        b=eLd/CdzikufAJoC+IWYRwvNs/Ql43QYVNlpuhiAPvhXzK3//Di9TCZafUPMM5EBULL
-         Mo7y7RQS5b6C83VsilbdzSAvFTfgRwq9R6PJqo+k6+JPE6UTqoKCXW5SxiMrryD/RYk1
-         MQtk5NojhV6O5mVIyn4SLnYNe8drwgcqVngKycpPETjynfImIykdyRPNbJnWCR2gmidg
-         zqSJ8xjaa55tkihcjiHk6+WjAFbO/PUtvtMessLfsw6NBVGRhhRtV7mZrqceZU91XyXp
-         WVS598gLcNzThW5YhN+k5gzLYDy22dy7DJAXHZVF0i22qsRLVdcWSKv6nT1GmZzaEgeN
-         LpCg==
+        bh=L38kgQv//emLd4ZPZWGNBDSkLJU2AA0/25feolL0iIY=;
+        b=PKOPo4eo6O7r2pbSVyV6dlmRizAKPHv8Gsi1JEwGmBrBuRsuag0tYpek2/JgmUOwQI
+         eVFwhDETUXPLgR8sqFRnl1Q/NXsfBaalYtozrjVt1zSW4vhaaLwkiOkdqVy7n4hNzstj
+         4Kr8V+J00IjPN7i9vl4uwT7qwydvj33nnjbnDXSIVf2runmfYgKiJ5rbl7rGo4kWgT8/
+         QARJ+34wCmWZT3/MmpDRYMF8tOsKV8N5bV8r1nh60A0q4JBOwdzpM7PkX0YVIWfwTzIS
+         cu/p6/61SkR9cLiDvx36/rJC00sTqlp+HtOapdQaMvI53wVJlbTYPoF/YZz5nllo64ET
+         MjmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=gLxBTtcfVl4dtJ5J9RXz2IWihrIE1icg8208P8LI768=;
-        b=laNKQFWPcxVE+fXkDtPYpVOAm8UOrtUC8OgBfTV+sxZCQNxwRF3oMwPxFJ4viP8nKZ
-         Nq3VklrxZ35WDksVITCS241wCm53RkI8YtnDL/iMtcNye+kIyGjZkrNX5n+A9vRhl5j+
-         dHEwnHH7bZaWFL6xuA7cA5l/JxBKTw+sVTGoqs8dTaRd49ntF5IqQ/NfdzIFMk7rm271
-         4Ry1pFCo6ElcIDGO/cK09l9x+pfrV4JjX+pZiwXl/7/2Tbxr3//lQYjcstzIj+5qf1AY
-         LPDISkQrGFqtSVGpzDFFOoPdEl9EHhKzh0J3KxWfwCuwbIlQbJMm4bLYLS+LigsTbvpv
-         K1DQ==
-X-Gm-Message-State: AOAM530Sm8HHFySxfGUwmCUsSrb7uKeztFtsdtz0HxI1897Fgvrt1f39
-        zcYO2rM6UWiMIjQOOF4V7g61Fg==
-X-Google-Smtp-Source: ABdhPJwtyTp/w9lWaYotVNpODsQf+S4wJ2V3YCPsSXqB7W2BUqqv7USVpkUFF3pFpTY6r+3biVWKuw==
-X-Received: by 2002:a2e:97cf:: with SMTP id m15mr16094354ljj.125.1630242796087;
+        bh=L38kgQv//emLd4ZPZWGNBDSkLJU2AA0/25feolL0iIY=;
+        b=iqHnkOnSYJFE7IzlIZmmpDRmyPyluIgw4vyZsn3MeLQDJ+puag1x7J6S983b2HMR39
+         rCo/5/youF7vnPexR8Y+69eg42/HLjb964mv0JX6P4Vk8Zgsz248HG+qSUr8VvTdkZny
+         HxHStKo0KmlIXQZsEwIxDJYU23OioBFdl/aArIch/5KHblEXeJjaJGKCsYPprHb7VmEk
+         hlxrG2LrsM6u2VPGOEFXU5QlOrrAzSWp8rIGPEdtdYjVWC/5B75uoXWRrh7BHB1VGJcW
+         FuGrNF5is94lYHuvCNLCkIRhurPKq1uhYVpJeazh4Da1QFebYkfsvWhUMj1X2EhKtwnF
+         b/lw==
+X-Gm-Message-State: AOAM532UduanLn6ZSWUUJJvgu6ub7nmySlJpLevROjEML2sMJ8zzsLfE
+        WiI5NdinzdMuy0fHQLcM2q3ldQ==
+X-Google-Smtp-Source: ABdhPJzdn7I12oW46O5UIXj/wovt7fy2VV2ahAwxWW+a4IFWY/AUt0BBSKGBtjDcX3VqOkSXoXKlaQ==
+X-Received: by 2002:ac2:4c41:: with SMTP id o1mr10394337lfk.52.1630242796938;
         Sun, 29 Aug 2021 06:13:16 -0700 (PDT)
 Received: from eriador.lan ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id x13sm712503lfq.262.2021.08.29.06.13.15
+        by smtp.gmail.com with ESMTPSA id x13sm712503lfq.262.2021.08.29.06.13.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Aug 2021 06:13:15 -0700 (PDT)
+        Sun, 29 Aug 2021 06:13:16 -0700 (PDT)
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -63,9 +63,9 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
         ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [RFC v2 08/13] ath10k: add support for pwrseq sequencing
-Date:   Sun, 29 Aug 2021 16:13:00 +0300
-Message-Id: <20210829131305.534417-9-dmitry.baryshkov@linaro.org>
+Subject: [RFC v2 09/13] arm64: dts: qcom: sdm845-db845c: switch bt+wifi to qca power sequencer
+Date:   Sun, 29 Aug 2021 16:13:01 +0300
+Message-Id: <20210829131305.534417-10-dmitry.baryshkov@linaro.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210829131305.534417-1-dmitry.baryshkov@linaro.org>
 References: <20210829131305.534417-1-dmitry.baryshkov@linaro.org>
@@ -75,134 +75,78 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Power sequencing for Qualcomm WiFi+BT chipsets are being reworked to use
-pwrseq rather than individually handling all the regulators. Add support
-for pwrseq to ath10k SNOC driver.
+Switch sdm845-db845c device tree to use new power sequencer driver
+rather than separate regulators.
 
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 45 +++++++++++++-------------
- drivers/net/wireless/ath/ath10k/snoc.h |  4 +--
- 2 files changed, 25 insertions(+), 24 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-db845c.dts | 21 ++++++++++++++-------
+ arch/arm64/boot/dts/qcom/sdm845.dtsi       |  6 ++++++
+ 2 files changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index ea00fbb15601..8578c56982df 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -14,6 +14,7 @@
- #include <linux/regulator/consumer.h>
- #include <linux/of_address.h>
- #include <linux/iommu.h>
-+#include <linux/pwrseq/consumer.h>
- 
- #include "ce.h"
- #include "coredump.h"
-@@ -41,14 +42,6 @@ static char *const ce_name[] = {
- 	"WLAN_CE_11",
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+index 2d5533dd4ec2..a6a34a959a91 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+@@ -629,6 +629,16 @@ &qupv3_id_1 {
+ 	status = "okay";
  };
  
--static const char * const ath10k_regulators[] = {
--	"vdd-0.8-cx-mx",
--	"vdd-1.8-xo",
--	"vdd-1.3-rfa",
--	"vdd-3.3-ch0",
--	"vdd-3.3-ch1",
--};
--
- static const char * const ath10k_clocks[] = {
- 	"cxo_ref_clk_pin", "qdss",
++&qca_pwrseq {
++	status = "okay";
++
++	vddio-supply = <&vreg_s4a_1p8>;
++
++	vddxo-supply = <&vreg_l7a_1p8>;
++	vddrf-supply = <&vreg_l17a_1p3>;
++	vddch0-supply = <&vreg_l25a_3p3>;
++};
++
+ &sdhc_2 {
+ 	status = "okay";
+ 
+@@ -916,10 +926,8 @@ &uart6 {
+ 	bluetooth {
+ 		compatible = "qcom,wcn3990-bt";
+ 
+-		vddio-supply = <&vreg_s4a_1p8>;
+-		vddxo-supply = <&vreg_l7a_1p8>;
+-		vddrf-supply = <&vreg_l17a_1p3>;
+-		vddch0-supply = <&vreg_l25a_3p3>;
++		bt-pwrseq = <&qca_pwrseq 1>;
++
+ 		max-speed = <3200000>;
+ 	};
  };
-@@ -1010,10 +1003,14 @@ static int ath10k_hw_power_on(struct ath10k *ar)
+@@ -1036,9 +1044,8 @@ &wifi {
+ 	status = "okay";
  
- 	ath10k_dbg(ar, ATH10K_DBG_SNOC, "soc power on\n");
- 
--	ret = regulator_bulk_enable(ar_snoc->num_vregs, ar_snoc->vregs);
-+	ret = pwrseq_full_power_on(ar_snoc->pwrseq);
- 	if (ret)
- 		return ret;
- 
-+	ret = regulator_enable(ar_snoc->vreg_cx_mx);
-+	if (ret)
-+		goto vreg_pwrseq_off;
+ 	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
+-	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
+-	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
+-	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
 +
- 	ret = clk_bulk_prepare_enable(ar_snoc->num_clks, ar_snoc->clks);
- 	if (ret)
- 		goto vreg_off;
-@@ -1021,11 +1018,14 @@ static int ath10k_hw_power_on(struct ath10k *ar)
- 	return ret;
++	wifi-pwrseq = <&qca_pwrseq 0>;
  
- vreg_off:
--	regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs);
-+	regulator_disable(ar_snoc->vreg_cx_mx);
-+vreg_pwrseq_off:
-+	pwrseq_power_off(ar_snoc->pwrseq);
+ 	qcom,snoc-host-cap-8bit-quirk;
+ };
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 0a86fe71a66d..78e889b2c8dd 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -1051,6 +1051,12 @@ psci {
+ 		method = "smc";
+ 	};
+ 
++	qca_pwrseq: qca-pwrseq {
++		compatible = "qcom,wcn3990-pwrseq";
++		#pwrseq-cells = <1>;
++		status = "disabled";
++	};
 +
- 	return ret;
- }
- 
--static int ath10k_hw_power_off(struct ath10k *ar)
-+static void ath10k_hw_power_off(struct ath10k *ar)
- {
- 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
- 
-@@ -1033,7 +1033,9 @@ static int ath10k_hw_power_off(struct ath10k *ar)
- 
- 	clk_bulk_disable_unprepare(ar_snoc->num_clks, ar_snoc->clks);
- 
--	return regulator_bulk_disable(ar_snoc->num_vregs, ar_snoc->vregs);
-+	regulator_disable(ar_snoc->vreg_cx_mx);
-+
-+	pwrseq_power_off(ar_snoc->pwrseq);
- }
- 
- static void ath10k_snoc_wlan_disable(struct ath10k *ar)
-@@ -1691,20 +1693,19 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
- 		goto err_release_resource;
- 	}
- 
--	ar_snoc->num_vregs = ARRAY_SIZE(ath10k_regulators);
--	ar_snoc->vregs = devm_kcalloc(&pdev->dev, ar_snoc->num_vregs,
--				      sizeof(*ar_snoc->vregs), GFP_KERNEL);
--	if (!ar_snoc->vregs) {
--		ret = -ENOMEM;
-+	ar_snoc->pwrseq = devm_pwrseq_get(&pdev->dev, "wifi");
-+	if (IS_ERR(ar_snoc->pwrseq)) {
-+		ret = PTR_ERR(ar_snoc->pwrseq);
-+		if (ret != -EPROBE_DEFER)
-+			ath10k_warn(ar, "failed to acquire pwrseq: %d\n", ret);
- 		goto err_free_irq;
- 	}
--	for (i = 0; i < ar_snoc->num_vregs; i++)
--		ar_snoc->vregs[i].supply = ath10k_regulators[i];
- 
--	ret = devm_regulator_bulk_get(&pdev->dev, ar_snoc->num_vregs,
--				      ar_snoc->vregs);
--	if (ret < 0)
-+	ar_snoc->vreg_cx_mx = devm_regulator_get(&pdev->dev, "vdd-0.8-cx-mx");
-+	if (IS_ERR(ar_snoc->vreg_cx_mx)) {
-+		ret = PTR_ERR(ar_snoc->vreg_cx_mx);
- 		goto err_free_irq;
-+	}
- 
- 	ar_snoc->num_clks = ARRAY_SIZE(ath10k_clocks);
- 	ar_snoc->clks = devm_kcalloc(&pdev->dev, ar_snoc->num_clks,
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
-index 5095d1893681..5188d6f6f850 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.h
-+++ b/drivers/net/wireless/ath/ath10k/snoc.h
-@@ -70,10 +70,10 @@ struct ath10k_snoc {
- 	struct ath10k_snoc_ce_irq ce_irqs[CE_COUNT_MAX];
- 	struct ath10k_ce ce;
- 	struct timer_list rx_post_retry;
--	struct regulator_bulk_data *vregs;
--	size_t num_vregs;
-+	struct regulator *vreg_cx_mx;
- 	struct clk_bulk_data *clks;
- 	size_t num_clks;
-+	struct pwrseq *pwrseq;
- 	struct ath10k_qmi *qmi;
- 	unsigned long flags;
- 	bool xo_cal_supported;
+ 	soc: soc@0 {
+ 		#address-cells = <2>;
+ 		#size-cells = <2>;
 -- 
 2.33.0
 
