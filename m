@@ -2,88 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8787D3FAD8E
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 19:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36D023FAD9C
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 20:05:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230100AbhH2R51 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Aug 2021 13:57:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53404 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229736AbhH2R50 (ORCPT
+        id S235044AbhH2SGD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Aug 2021 14:06:03 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:53932
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230010AbhH2SGA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Aug 2021 13:57:26 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14BD9C061575
-        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 10:56:34 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id f2so21749937ljn.1
-        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 10:56:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=P1Y80Vw8sw5liCLYQx1o6b086zpBifZuJM9UGKAOns8=;
-        b=sxmComzQ6uhH27beJgztFWBAq9CGMSvsnBxyhmT2NG+nzoISSuz+w3UFlX6MZz3kgI
-         SLDUNbNSOaV5dFZWp6sjesd2yW9cJ42aU98Q1okuHWfnRvCW8DcO2qaAo8axoaNCIblX
-         aaKE4/kAtc/QCjnwxQEw10nJB4mi9BUcg00Lxuc5wl8tvTRdHFkPlggCF0I/vRcPJ+3l
-         IEmN+Z6QOS2BdS+JhSiXSdA96qFjAPoChob4u4MYVp93F/GYLeSW45Mg3Sxht7LEEDU5
-         hw7ue3FrM8n3wZnp9E/oTnPgiMrffDICfRdA8vAEFWzmpeV6GQtW5U8d7s0VtTl+JkEb
-         tWNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=P1Y80Vw8sw5liCLYQx1o6b086zpBifZuJM9UGKAOns8=;
-        b=GjPB4kJYl4sxsazleNWy1cczgIW81pfa8vnYIQWFjt9WZcTR5qUAbLPAHCDSf+yYyQ
-         /rwcfFRbKqmvKia0CMewOp6mcoJI6DNyEXsUqyVE8Ner0yXM8syIXfVxKr25C9vfUKEJ
-         WRUue/DgqpEbCw4ShRJFuNZxbogONNMFvnZ3ykaA2dWXpI0nqyE8W9PP4JQkfq98+aV+
-         hTkIOm3HjJ4OjYTHBohPdIk/r+rc10cpuW7WLKK5eDAMO2hkFgzJpiXuYM/BBqyQhODX
-         DDanf+Gp/T1oWJXDWVHDEBLWqrTGZv39XgO27KD8PzHIHiRphyJ6CI/+JhzPv6GguxPC
-         ZkDg==
-X-Gm-Message-State: AOAM530DqWcMu8TyEW8YeQ0Xz4ni/k5+PIaLN4GHeE3zIzWioGxLv9TO
-        c9Hsn4Tu4gkXkT7iM0tE7nZwa2du4IWuiLt48MXYkN0N
-X-Google-Smtp-Source: ABdhPJw8sXm8FKHXK8gP1CAUH7xR4cmYW55krqXu1AMrMMXA/XFiUviVJ8ytKodR11oP6Uaoqy4sg2vu+TqGB8gV1fU=
-X-Received: by 2002:a2e:3914:: with SMTP id g20mr17095204lja.88.1630259792468;
- Sun, 29 Aug 2021 10:56:32 -0700 (PDT)
+        Sun, 29 Aug 2021 14:06:00 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 51ABC3F101;
+        Sun, 29 Aug 2021 18:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1630260306;
+        bh=5xRSsNwOwnDTizm0g7YvHUz989lGjI0HmFERSykg4No=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=icGu6xT/3v5EVTU5eqCoiS/SUT+GBzzk8C4C9vrqV61fCfSUuUGGYZnyuqjGXIXAa
+         4ZRGqPTwazDTaFZy1rGaSRECho8HDeHCu2RuyjgrzI69ai6oME51A+l2rgNUhseVHi
+         rnNgiYgJ/zorLayPh/KZcnBida0W/Sld/xz8xm1qBXNpDYbIFj6em5lEyXmnUHYNY8
+         ZurntEBcQjn9D/ipmZjUlJ1fV6RXqEzyYuFn+fF7rXoTqpENEun7YCB93e+lRCvs6l
+         g//5nexOWoZXT5YYRQhHU5f5/84ExrlUqsf6J/BH+20dBbGToMErhg7RJKHTSfBsrB
+         irryICpIp5aLQ==
+From:   Colin King <colin.king@canonical.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] rtlwifi: rtl8192de: Fix uninitialized variable place
+Date:   Sun, 29 Aug 2021 19:05:03 +0100
+Message-Id: <20210829180503.533934-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-References: <a0464631-22f3-be43-a7cd-7623bdc640e8@candelatech.com>
-In-Reply-To: <a0464631-22f3-be43-a7cd-7623bdc640e8@candelatech.com>
-From:   Janusz Dziedzic <janusz.dziedzic@gmail.com>
-Date:   Sun, 29 Aug 2021 19:56:20 +0200
-Message-ID: <CAFED-j=FGHJv+NQZMfN+xEfNB9L51EeU+-1BKjcZ0kX-K925nw@mail.gmail.com>
-Subject: Re: CAC question: DFS -> non-dfs -> DFS
-To:     Ben Greear <greearb@candelatech.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-pt., 20 sie 2021 o 18:45 Ben Greear <greearb@candelatech.com> napisa=C5=82(=
-a):
->
-> Hello,
->
-> While poking at the MTK driver and trying to fix some CAC bugs in it,
-> I noticed the following:
->
-> Select ch 100, which enables DFS CAC logic.  Wait for that to finish.
-> Then select CH 36 (disable DFS)
-> Then select ch 100 again, and the chandef->chan->dfs_state is set back to=
- 0
-> which I think means we must do CAC again.
->
-> I was expecting in this case that the DFS state would be set to NL80211_D=
-FS_AVAILABLE
-> instead, since CAC just passed a few minutes prior?
->
+From: Colin Ian King <colin.king@canonical.com>
 
-This depends on DFS region (country).
-EU allow preCAC - once you pass CAC then you can switch to other
-channel and - the old one will be DFS_AVAILABLE - no need to do CAC
-again.
-All other regions don't allow preCAC - so each channel switch will
-clear DFS_AVAILABLE and require CAC again.
+In the case where chnl <= 14 variable place is not initialized and
+the function returns an uninitialized value. This fixes an earlier
+cleanup where I introduced this bug. My bad.
 
-BR
-Janusz
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: 369956ae5720 ("rtlwifi: rtl8192de: Remove redundant variable initializations")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+index 8ae69d914312..b32fa7a75f17 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+@@ -896,7 +896,7 @@ static void _rtl92d_ccxpower_index_check(struct ieee80211_hw *hw,
+ 
+ static u8 _rtl92c_phy_get_rightchnlplace(u8 chnl)
+ {
+-	u8 place;
++	u8 place = chnl;
+ 
+ 	if (chnl > 14) {
+ 		for (place = 14; place < sizeof(channel5g); place++) {
+-- 
+2.32.0
+
