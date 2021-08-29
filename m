@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4464A3FABA8
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 15:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A533E3FABA6
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 15:14:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235608AbhH2NOU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Aug 2021 09:14:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47006 "EHLO
+        id S235462AbhH2NOT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Aug 2021 09:14:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235549AbhH2NON (ORCPT
+        with ESMTP id S235564AbhH2NON (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 29 Aug 2021 09:14:13 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6D6DC0613A3
-        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 06:13:20 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id m28so25250573lfj.6
-        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 06:13:20 -0700 (PDT)
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF416C061760
+        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 06:13:21 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id i28so20722924ljm.7
+        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 06:13:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=V1qCDwrnxZyyxD18n557PC/vv86td/OsZqjd5RQRW8E=;
-        b=jdppaH2W155GXBSpK9HAC3zcOJOHlIf4pWlevT2rBJaK2K4RL+tfztI/UYo+hW4cPu
-         0zCBlJzfpZvZj5m49gAwW6XfSPo+3ZkEpXYllog2PoKxHmBFWhLtG8Dn9SbQIwAHybEc
-         veVLg9MOR1ETsT8FRVvJsnXX3ycN6piz2/RRZPfzd7VtITuX8/MCDHPs4EWcU8GKlDcV
-         s0kPsKiT32JfX+QUOuxxOqCGgHG13Oe/BqgWg6sR611svTU2nBGGnU8oZFHMfpblERBX
-         gM/UYdNj5mANmoAj5JXOMPo4p4426dnQEYXtW3pOafe0PvMn5iNnRorLXgzf56ZUBPJ0
-         WJSg==
+        bh=DZOpdA3eYjpudg4OpQFFkH8jLHw3BxsNdxzTMff7kgw=;
+        b=JYgvhRh/XMbWSmh2hHQ6low2HT/EK5Db15j4xEn196MVYAmhicQUPTkqK33Ygf5yJV
+         rIzHsKI+Z3ckWJRnIUe8dzDewGj8MNiCcN3JIyjVk8xGm0jTD/fexByf4nfLDCRojILy
+         /oSMgUZwtgSQTDfCyHKl3j2WvWHGMsledNkCtgxqqMzm9IvPQvg4CFrG2Jlfglgj36iX
+         PooxcxfGHTuPO6c6gyEHfNmzBVsimJZLJTGHu6co+MuRlWDTVLxi4vVmD0a2oxg5N+8h
+         2NOSABtA1NVG0Xv+u7omjq/8kK4obaak3LZh0U+Pdzi6pCOqwezV15LMpV08KYXIqDFE
+         T49A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=V1qCDwrnxZyyxD18n557PC/vv86td/OsZqjd5RQRW8E=;
-        b=UNhEj6nGyRDO19W7hWgAehe3LTlTcmFfHIuBn532QGMKMdSVcc4am3Sx9NZ4TI4jmr
-         FJaI34dUDkd/5aId8I8ms6FhiVV7NWfM5YmQkxzfsNIj6n/Y0boXXVCsFpVneuID6IAt
-         GA6ubwpD22pypWG56HPc3M8LcqUdYLi1cll+lMsQ3TJvjR/ZLPokoEakhmx5J0FSAX6c
-         rIyrVu+sDOndxwcp/Whmimf5NyTCKi5ke0+CFWiKo30KTfS5iNXdaV7Dl+94TQO6AH3R
-         50IWYC26Fm4RortIAUbxzSCJ7tG6FFL5Wmmi/eUut94hcVI5858nPcwUkM6MW7VoGryR
-         12yA==
-X-Gm-Message-State: AOAM530GVOaIw37ZXsh1c1H+CVJ6zcR8r0A/bzyqIWu6BdfrbZQ3KMew
-        kjjIE5tFmrQJy8ee6C7tCVXG2Q==
-X-Google-Smtp-Source: ABdhPJyKjcg8TLay1deazFXUMwoYdOraqQvWUGRZSJPo25xL40sIUpHM/gyv+ASdRt7Jol3tqtKlQQ==
-X-Received: by 2002:a05:6512:e99:: with SMTP id bi25mr13658144lfb.486.1630242799230;
-        Sun, 29 Aug 2021 06:13:19 -0700 (PDT)
+        bh=DZOpdA3eYjpudg4OpQFFkH8jLHw3BxsNdxzTMff7kgw=;
+        b=YA2FvlyERU5iR45BQm2+qpLJEIJ+FW4CSmhMn01gqKOQ6xlkksIGZiP1FTTDq8/Z5K
+         WGFj0fc34ab8J1eRDFzDZDqlclP+kLagSwTp+fj0wcA27KUAJijVaBB4cfvhTxCZ5/5J
+         8TWp7//Sk9Mxy8akcJBasQ5KRqK22k2g3TA4P3UbHb2FEim1PmeUav1rtYVbIUndjnOs
+         x4D73bpc7z57F3aKn2Wft31ZRSQlq8LI0oaSEzhVwc8SMLNjtVOaEVczKlOt9zXNgScN
+         6GtohwyN5NDtHqUBm28mTC0rd9w2pCi+T9PMTZflqhflLkR3xBRKSSaJuC3cMYaAkKG7
+         AbUg==
+X-Gm-Message-State: AOAM53090A0SLXZteVNVDcsqXzgJDdsNbKXvwnrkw9vcG8eVAgqoKuwt
+        +giN6iaMZxYMNIH5NkWuTUlWHQ==
+X-Google-Smtp-Source: ABdhPJwN0RnHneAiBvwIuepF2POuNFYC+7soqzPBkiEXgB5t1sLpCiFezga+nEjbYoWJ71ExIPe4Iw==
+X-Received: by 2002:a2e:b605:: with SMTP id r5mr16548450ljn.283.1630242800140;
+        Sun, 29 Aug 2021 06:13:20 -0700 (PDT)
 Received: from eriador.lan ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id x13sm712503lfq.262.2021.08.29.06.13.18
+        by smtp.gmail.com with ESMTPSA id x13sm712503lfq.262.2021.08.29.06.13.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Aug 2021 06:13:18 -0700 (PDT)
+        Sun, 29 Aug 2021 06:13:19 -0700 (PDT)
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -63,9 +63,9 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
         ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [RFC v2 12/13] WIP: PCI: qcom: use pwrseq to power up bus devices
-Date:   Sun, 29 Aug 2021 16:13:04 +0300
-Message-Id: <20210829131305.534417-13-dmitry.baryshkov@linaro.org>
+Subject: [RFC v2 13/13] WIP: arm64: dts: qcom: qrb5165-rb5: add bus-pwrseq property to pcie0
+Date:   Sun, 29 Aug 2021 16:13:05 +0300
+Message-Id: <20210829131305.534417-14-dmitry.baryshkov@linaro.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210829131305.534417-1-dmitry.baryshkov@linaro.org>
 References: <20210829131305.534417-1-dmitry.baryshkov@linaro.org>
@@ -75,53 +75,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use bus-pwrseq device tree node to power up the devices on the bus. This
-is to be rewritten with the proper code parsing the device tree and
-powering up individual devices.
-
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index 8a7a300163e5..a60d41fbcd6f 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -23,6 +23,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/platform_device.h>
- #include <linux/phy/phy.h>
-+#include <linux/pwrseq/consumer.h>
- #include <linux/regulator/consumer.h>
- #include <linux/reset.h>
- #include <linux/slab.h>
-@@ -1467,6 +1468,7 @@ static int qcom_pcie_probe(struct platform_device *pdev)
- 	struct pcie_port *pp;
- 	struct dw_pcie *pci;
- 	struct qcom_pcie *pcie;
-+	struct pwrseq *pwrseq;
- 	int ret;
+diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
+index 326330f528fc..0c347cb6f8e0 100644
+--- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
++++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
+@@ -689,6 +689,7 @@ wifi-therm@1 {
  
- 	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
-@@ -1520,6 +1522,17 @@ static int qcom_pcie_probe(struct platform_device *pdev)
+ &pcie0 {
+ 	status = "okay";
++	bus-pwrseq = <&qca_pwrseq 0>;
+ };
  
- 	pp->ops = &qcom_pcie_dw_ops;
- 
-+	pwrseq = devm_pwrseq_get_optional(dev, "bus");
-+	if (IS_ERR(pwrseq)) {
-+		ret = PTR_ERR(pwrseq);
-+		goto err_pm_runtime_put;
-+	}
-+	if (pwrseq) {
-+		ret = pwrseq_full_power_on(pwrseq);
-+		if (ret)
-+			goto err_pm_runtime_put;
-+	}
-+
- 	ret = phy_init(pcie->phy);
- 	if (ret) {
- 		pm_runtime_disable(&pdev->dev);
+ &pcie0_phy {
 -- 
 2.33.0
 
