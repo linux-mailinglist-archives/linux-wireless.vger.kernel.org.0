@@ -2,151 +2,196 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EF083FA779
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Aug 2021 22:01:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8355B3FA825
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 03:42:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231321AbhH1UB7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 28 Aug 2021 16:01:59 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:33100 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230253AbhH1UB7 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 28 Aug 2021 16:01:59 -0400
-X-UUID: dbbb5091496549b0afccf05d0df1e722-20210829
-X-UUID: dbbb5091496549b0afccf05d0df1e722-20210829
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1699741830; Sun, 29 Aug 2021 04:01:04 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sun, 29 Aug 2021 04:01:03 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sun, 29 Aug 2021 04:01:03 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7915: enable configured beacon tx rate
-Date:   Sun, 29 Aug 2021 04:01:02 +0800
-Message-ID: <f915e8849cb416eb36dc655bb6208db43cd37e32.1630180819.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S234629AbhH2Bnf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 28 Aug 2021 21:43:35 -0400
+Received: from mga12.intel.com ([192.55.52.136]:1566 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229725AbhH2Bne (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 28 Aug 2021 21:43:34 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10090"; a="197694100"
+X-IronPort-AV: E=Sophos;i="5.84,360,1620716400"; 
+   d="scan'208";a="197694100"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2021 18:42:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,360,1620716400"; 
+   d="scan'208";a="688423602"
+Received: from lkp-server01.sh.intel.com (HELO 4fbc2b3ce5aa) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 28 Aug 2021 18:42:41 -0700
+Received: from kbuild by 4fbc2b3ce5aa with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mK9qL-0003ub-4p; Sun, 29 Aug 2021 01:42:41 +0000
+Date:   Sun, 29 Aug 2021 09:41:44 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:pending] BUILD SUCCESS
+ 44482467ab3aa48f59ef82171b13833366fd8a98
+Message-ID: <612ae5d8.j9AjKK5J71Sp2g+1%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The user is allowed to change beacon tx rate (HT/VHT/HE) from hostapd.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
+branch HEAD: 44482467ab3aa48f59ef82171b13833366fd8a98  Merge tag 'iwlwifi-next-for-kalle-2021-08-26' of git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next into pending
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+elapsed time: 2640m
+
+configs tested: 137
+configs skipped: 4
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20210827
+arc                            hsdk_defconfig
+arm                         lpc32xx_defconfig
+sh                           sh2007_defconfig
+arm                         lpc18xx_defconfig
+m68k                       m5275evb_defconfig
+mips                         mpc30x_defconfig
+mips                           ip32_defconfig
+m68k                        m5272c3_defconfig
+arm                       imx_v4_v5_defconfig
+mips                           xway_defconfig
+mips                        maltaup_defconfig
+arm                         palmz72_defconfig
+powerpc                      tqm8xx_defconfig
+arm                         at91_dt_defconfig
+mips                     loongson1b_defconfig
+arm                         s5pv210_defconfig
+xtensa                           alldefconfig
+sh                        edosk7705_defconfig
+sh                         apsh4a3a_defconfig
+arm                        keystone_defconfig
+powerpc                     akebono_defconfig
+nios2                         3c120_defconfig
+arc                        vdk_hs38_defconfig
+sh                         ap325rxa_defconfig
+sh                        sh7763rdp_defconfig
+sh                   rts7751r2dplus_defconfig
+arc                    vdk_hs38_smp_defconfig
+arm                        vexpress_defconfig
+powerpc                      ppc44x_defconfig
+powerpc                 mpc836x_rdk_defconfig
+arm                         s3c6400_defconfig
+powerpc                       holly_defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+xtensa                           allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a014-20210827
+x86_64               randconfig-a015-20210827
+x86_64               randconfig-a016-20210827
+x86_64               randconfig-a013-20210827
+x86_64               randconfig-a012-20210827
+x86_64               randconfig-a011-20210827
+i386                 randconfig-a011-20210829
+i386                 randconfig-a016-20210829
+i386                 randconfig-a012-20210829
+i386                 randconfig-a014-20210829
+i386                 randconfig-a013-20210829
+i386                 randconfig-a015-20210829
+i386                 randconfig-a011-20210827
+i386                 randconfig-a016-20210827
+i386                 randconfig-a012-20210827
+i386                 randconfig-a014-20210827
+i386                 randconfig-a013-20210827
+i386                 randconfig-a015-20210827
+arc                  randconfig-r043-20210827
+riscv                randconfig-r042-20210827
+s390                 randconfig-r044-20210827
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+s390                 randconfig-c005-20210827
+i386                 randconfig-c001-20210827
+arm                  randconfig-c002-20210827
+riscv                randconfig-c006-20210827
+powerpc              randconfig-c003-20210827
+x86_64               randconfig-c007-20210827
+mips                 randconfig-c004-20210827
+x86_64               randconfig-a005-20210827
+x86_64               randconfig-a001-20210827
+x86_64               randconfig-a006-20210827
+x86_64               randconfig-a003-20210827
+x86_64               randconfig-a004-20210827
+x86_64               randconfig-a002-20210827
+i386                 randconfig-a006-20210827
+i386                 randconfig-a001-20210827
+i386                 randconfig-a002-20210827
+i386                 randconfig-a005-20210827
+i386                 randconfig-a004-20210827
+i386                 randconfig-a003-20210827
+x86_64               randconfig-a016-20210828
+x86_64               randconfig-a015-20210828
+x86_64               randconfig-a012-20210828
+x86_64               randconfig-a013-20210828
+x86_64               randconfig-a011-20210828
+x86_64               randconfig-a001-20210829
+x86_64               randconfig-a006-20210829
+x86_64               randconfig-a005-20210829
+x86_64               randconfig-a003-20210829
+x86_64               randconfig-a004-20210829
+x86_64               randconfig-a002-20210829
+hexagon              randconfig-r041-20210827
+hexagon              randconfig-r045-20210827
+
 ---
- .../net/wireless/mediatek/mt76/mt7915/init.c  |  4 ++
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 59 +++++++++++++++----
- 2 files changed, 50 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 6208f5662704..acc83e9f409b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -325,6 +325,10 @@ mt7915_init_wiphy(struct ieee80211_hw *hw)
- 	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_LEGACY);
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_HT);
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_VHT);
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_RATE_HE);
- 
- 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
- 	ieee80211_hw_set(hw, SUPPORTS_TX_ENCAP_OFFLOAD);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 1b8e37e265cb..6305f3231537 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -993,6 +993,51 @@ mt7915_mac_write_txwi_80211(struct mt7915_dev *dev, __le32 *txwi,
- 	txwi[7] |= cpu_to_le32(val);
- }
- 
-+static u16
-+mt7915_mac_tx_rate_val(struct mt76_phy *mphy, struct ieee80211_vif *vif,
-+		       bool beacon, bool mcast)
-+{
-+	u8 mode = 0, band = mphy->chandef.chan->band;
-+	int rateidx = 0, mcast_rate;
-+
-+	if (beacon) {
-+		struct cfg80211_bitrate_mask *mask;
-+
-+		mask = &vif->bss_conf.beacon_tx_rate;
-+		if (hweight16(mask->control[band].he_mcs[0]) == 1) {
-+			rateidx = ffs(mask->control[band].he_mcs[0]) - 1;
-+			mode = MT_PHY_TYPE_HE_SU;
-+			goto out;
-+		} else if (hweight16(mask->control[band].vht_mcs[0]) == 1) {
-+			rateidx = ffs(mask->control[band].vht_mcs[0]) - 1;
-+			mode = MT_PHY_TYPE_VHT;
-+			goto out;
-+		} else if (hweight8(mask->control[band].ht_mcs[0]) == 1) {
-+			rateidx = ffs(mask->control[band].ht_mcs[0]) - 1;
-+			mode = MT_PHY_TYPE_HT;
-+			goto out;
-+		} else if (hweight32(mask->control[band].legacy) == 1) {
-+			rateidx = ffs(mask->control[band].legacy) - 1;
-+			goto legacy;
-+		}
-+	}
-+
-+	mcast_rate = vif->bss_conf.mcast_rate[band];
-+	if (mcast && mcast_rate > 0)
-+		rateidx = mcast_rate - 1;
-+	else
-+		rateidx = ffs(vif->bss_conf.basic_rates) - 1;
-+
-+legacy:
-+	rateidx = mt76_calculate_default_rate(mphy, rateidx);
-+	mode = rateidx >> 8;
-+	rateidx &= GENMASK(7, 0);
-+
-+out:
-+	return FIELD_PREP(MT_TX_RATE_IDX, rateidx) |
-+	       FIELD_PREP(MT_TX_RATE_MODE, mode);
-+}
-+
- void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 			   struct sk_buff *skb, struct mt76_wcid *wcid, int pid,
- 			   struct ieee80211_key_conf *key, bool beacon)
-@@ -1069,23 +1114,11 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 		mt7915_mac_write_txwi_80211(dev, txwi, skb, key, &mcast);
- 
- 	if (txwi[2] & cpu_to_le32(MT_TXD2_FIX_RATE)) {
--		u8 band = mphy->chandef.chan->band;
--		int rateidx, mcast_rate = vif->bss_conf.mcast_rate[band];
--		u16 rate, mode;
-+		u16 rate = mt7915_mac_tx_rate_val(mphy, vif, beacon, mcast);
- 
- 		/* hardware won't add HTC for mgmt/ctrl frame */
- 		txwi[2] |= cpu_to_le32(MT_TXD2_HTC_VLD);
- 
--		if (mcast && mcast_rate > 0)
--			rateidx = mcast_rate - 1;
--		else
--			rateidx = ffs(vif->bss_conf.basic_rates) - 1;
--
--		rate = mt76_calculate_default_rate(mphy, rateidx);
--		mode = rate >> 8;
--		rate &= GENMASK(7, 0);
--		rate |= FIELD_PREP(MT_TX_RATE_MODE, mode);
--
- 		val = MT_TXD6_FIXED_BW |
- 		      FIELD_PREP(MT_TXD6_TX_RATE, rate);
- 		txwi[6] |= cpu_to_le32(val);
--- 
-2.29.2
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
