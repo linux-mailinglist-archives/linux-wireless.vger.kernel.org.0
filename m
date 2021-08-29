@@ -2,33 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A86A3FA9D7
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 09:11:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81D9B3FA9D8
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 09:11:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234769AbhH2HL7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Aug 2021 03:11:59 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:55535 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234772AbhH2HL7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Aug 2021 03:11:59 -0400
+        id S234800AbhH2HMU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Aug 2021 03:12:20 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:57245 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234785AbhH2HMR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 29 Aug 2021 03:12:17 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1630221067; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1630221084; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=kGWUkwWLSjglSCFuyo5qdWqvaikSa7L8lNlgZG4f8ms=;
- b=MrAfj29MZ1eiGPd29RQ6rphRltnLRe2kGk7SUR4Em5kte0LX4NcjLSQmpn/BHZnblq+2T1LG
- tF5ZZ+kVAxYOwfMU7nU4d55vqQEgG6bww8VW81W/RQLZBLz8N/cJ7TwoEzrFq6WQSzGZ89F7
- TbAA83QfJwp7TYiHhjStsLpDjP4=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ Content-Type: Sender; bh=GC6e2n/NXwo6S5mQY/R3X6Vs5DlKo2BD30jx+kOMJDw=;
+ b=OVSdds/YJtYUJAIoQ++iDpzOvKKYc2Ka69iZUjmBCkSKatVutMmy9A80BPIFA0Pi3weOE20O
+ WVbUDDmFiVZYmUN+tTRP+H9OPV9q4PsEKYwMQn41/LQXcY3P1k+K3CvG5Jj8CZ+FdAJ/dCk5
+ LA2YrW5cd/Z/3ua8R9m43uoA4P4=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 612b3302cd680e89694dc60e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 29 Aug 2021 07:10:58
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 612b331c825e13c54ab7de57 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 29 Aug 2021 07:11:24
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 53AE1C43616; Sun, 29 Aug 2021 07:10:57 +0000 (UTC)
+        id 45FA9C4360C; Sun, 29 Aug 2021 07:11:23 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,50 +40,57 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3BE0DC4360C;
-        Sun, 29 Aug 2021 07:10:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 3BE0DC4360C
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 48DDDC43617;
+        Sun, 29 Aug 2021 07:11:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 48DDDC43617
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wcn36xx: Ensure finish scan is not requested before start
- scan
+Content-Transfer-Encoding: 8bit
+Subject: Re: [RESEND PATCH] wcn36xx: Allow firmware name to be overridden by
+ DT
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1629286303-13179-1-git-send-email-loic.poulain@linaro.org>
-References: <1629286303-13179-1-git-send-email-loic.poulain@linaro.org>
-To:     Loic Poulain <loic.poulain@linaro.org>
-Cc:     bryan.odonoghue@linaro.org, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, Joseph Gates <jgates@squareup.com>,
-        stable@vger.kernel.org, Loic Poulain <loic.poulain@linaro.org>
+In-Reply-To: <20210824171225.686683-1-bjorn.andersson@linaro.org>
+References: <20210824171225.686683-1-bjorn.andersson@linaro.org>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        =?utf-8?b?QW7DrWJhbCBMaW0=?= =?utf-8?b?w7Nu?= 
+        <anibal.limon@linaro.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210829071057.53AE1C43616@smtp.codeaurora.org>
-Date:   Sun, 29 Aug 2021 07:10:57 +0000 (UTC)
+Message-Id: <20210829071123.45FA9C4360C@smtp.codeaurora.org>
+Date:   Sun, 29 Aug 2021 07:11:23 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Loic Poulain <loic.poulain@linaro.org> wrote:
+Bjorn Andersson <bjorn.andersson@linaro.org> wrote:
 
-> If the operating channel is the first in the scan list, it was seen that
-> a finish scan request would be sent before a start scan request was
-> sent, causing the firmware to fail all future scans. Track the current
-> channel being scanned to avoid requesting the scan finish before it
-> starts.
+> The WLAN NV firmware blob differs between platforms, and possibly
+> devices, so add support in the wcn36xx driver for reading the path of
+> this file from DT in order to allow these files to live in a generic
+> file system (or linux-firmware).
 > 
-> Cc: <stable@vger.kernel.org>
-> Fixes: 5973a2947430 ("wcn36xx: Fix software-driven scan")
-> Signed-off-by: Joseph Gates <jgates@squareup.com>
-> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+> For some reason the parent (wcnss_ctrl) also needs to upload this blob,
+> so rather than specifying the same information in both nodes wcn36xx
+> reads the string from the parent's of_node.
+> 
+> Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Tested-by: Aníbal Limón <anibal.limon@linaro.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-d195d7aac09b wcn36xx: Ensure finish scan is not requested before start scan
+b7f96d5c79cd wcn36xx: Allow firmware name to be overridden by DT
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1629286303-13179-1-git-send-email-loic.poulain@linaro.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210824171225.686683-1-bjorn.andersson@linaro.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
