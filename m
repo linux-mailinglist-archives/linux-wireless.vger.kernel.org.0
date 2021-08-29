@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6245B3FAB31
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 13:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 254823FAB33
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 13:49:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235208AbhH2Lsh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Aug 2021 07:48:37 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:20076 "EHLO
+        id S235321AbhH2Ls6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Aug 2021 07:48:58 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:24675 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235253AbhH2Lsg (ORCPT
+        with ESMTP id S235249AbhH2Ls6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Aug 2021 07:48:36 -0400
+        Sun, 29 Aug 2021 07:48:58 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1630237665; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1630237686; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=wiNv/bL6XeE4L6+OaqStsterPHowAAdviE3eH7NnQ/w=;
- b=M7yYzzeMQqtqnqJIWjrI+rbAnfTMx6iSrnGAdN7UADJiYncV0/7HFo0lUsj/t2nag2Is4Q5C
- 3OsSvPGR8YLdQArwhzN1L5fL3odrgLqxfRQ3APIGQsM8v+kO3VoG6+0XGhekdfzH8YfHL3Vu
- 6k1g1BxKimK0E6/t2ngDQq0tXyE=
+ Content-Type: Sender; bh=C/vcWL38QyfErtBrZGZQ+wc4T3M6x9tx8602b7YOosU=;
+ b=GYfkKKeUZezJK+TZn0w580ihbGiquf0aTa1w5g6lO9Pad6dz2IbKk9CvdxWPYI8Tj8HA2Ovc
+ LTT3nusj3bDua7O5YMlJkvQG+Er+RPqmqcCtUNhVHalovfdtRfXpZw+UYdQ5M1xsiVcTkHqa
+ mLQrXFHQ+bM1dbzb3vgMQV+eSr8=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 612b73d5f61b2f864bde2b8f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 29 Aug 2021 11:47:33
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 612b73f56fc2cf7ad979fce4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 29 Aug 2021 11:48:05
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BA9E2C43617; Sun, 29 Aug 2021 11:47:32 +0000 (UTC)
+        id 8D0FDC43617; Sun, 29 Aug 2021 11:48:04 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,168 +40,51 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CEBB2C4338F;
-        Sun, 29 Aug 2021 11:47:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org CEBB2C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6C22AC4338F;
+        Sun, 29 Aug 2021 11:48:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 6C22AC4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] intel: switch from 'pci_' to 'dma_' API
+Subject: Re: [linux-next] ssb: fix boolreturn.cocci warning
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <f55043d0c847bfae60087707778563cf732a7bf9.1629619229.git.christophe.jaillet@wanadoo.fr>
-References: <f55043d0c847bfae60087707778563cf732a7bf9.1629619229.git.christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     stf_xl@wp.pl, davem@davemloft.net, kuba@kernel.org,
-        luciano.coelho@intel.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20210824061341.59255-1-deng.changcheng@zte.com.cn>
+References: <20210824061341.59255-1-deng.changcheng@zte.com.cn>
+To:     CGEL <cgel.zte@gmail.com>
+Cc:     Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jing Yangyang <jing.yangyang@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210829114732.BA9E2C43617@smtp.codeaurora.org>
-Date:   Sun, 29 Aug 2021 11:47:32 +0000 (UTC)
+Message-Id: <20210829114804.8D0FDC43617@smtp.codeaurora.org>
+Date:   Sun, 29 Aug 2021 11:48:04 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+CGEL <cgel.zte@gmail.com> wrote:
 
-> The wrappers in include/linux/pci-dma-compat.h should go away.
+> From: Jing Yangyang <jing.yangyang@zte.com.cn>
 > 
-> The patch has been generated with the coccinelle script below.
+> ./include/linux/ssb/ssb_driver_extif.h:200:8-9:WARNING: return of 0/1 in
+> function 'ssb_extif_available' with return type bool
 > 
-> It has been hand modified to use 'dma_set_mask_and_coherent()' instead of
-> 'pci_set_dma_mask()/pci_set_consistent_dma_mask()' when applicable.
-> This is less verbose.
+> Return statements in functions returning bool should use true/false
+> instead of 1/0.
 > 
-> It has been compile tested.
+> Generated by: scripts/coccinelle/misc/boolreturn.cocci
 > 
-> 
-> @@
-> @@
-> -    PCI_DMA_BIDIRECTIONAL
-> +    DMA_BIDIRECTIONAL
-> 
-> @@
-> @@
-> -    PCI_DMA_TODEVICE
-> +    DMA_TO_DEVICE
-> 
-> @@
-> @@
-> -    PCI_DMA_FROMDEVICE
-> +    DMA_FROM_DEVICE
-> 
-> @@
-> @@
-> -    PCI_DMA_NONE
-> +    DMA_NONE
-> 
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_alloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> 
-> @@
-> expression e1, e2, e3;
-> @@
-> -    pci_zalloc_consistent(e1, e2, e3)
-> +    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_free_consistent(e1, e2, e3, e4)
-> +    dma_free_coherent(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_single(e1, e2, e3, e4)
-> +    dma_map_single(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_single(e1, e2, e3, e4)
-> +    dma_unmap_single(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4, e5;
-> @@
-> -    pci_map_page(e1, e2, e3, e4, e5)
-> +    dma_map_page(&e1->dev, e2, e3, e4, e5)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_page(e1, e2, e3, e4)
-> +    dma_unmap_page(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_map_sg(e1, e2, e3, e4)
-> +    dma_map_sg(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_unmap_sg(e1, e2, e3, e4)
-> +    dma_unmap_sg(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_single_for_device(e1, e2, e3, e4)
-> +    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
-> +    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2, e3, e4;
-> @@
-> -    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
-> +    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_dma_mapping_error(e1, e2)
-> +    dma_mapping_error(&e1->dev, e2)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_dma_mask(e1, e2)
-> +    dma_set_mask(&e1->dev, e2)
-> 
-> @@
-> expression e1, e2;
-> @@
-> -    pci_set_consistent_dma_mask(e1, e2)
-> +    dma_set_coherent_mask(&e1->dev, e2)
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Jing Yangyang <jing.yangyang@zte.com.cn>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-ebe9e6514b40 intel: switch from 'pci_' to 'dma_' API
+8d4be124062b ssb: fix boolreturn.cocci warning
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/f55043d0c847bfae60087707778563cf732a7bf9.1629619229.git.christophe.jaillet@wanadoo.fr/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210824061341.59255-1-deng.changcheng@zte.com.cn/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
