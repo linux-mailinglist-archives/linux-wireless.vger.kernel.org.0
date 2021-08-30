@@ -2,97 +2,213 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A3A3FBA84
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Aug 2021 18:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F80B3FBF08
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Aug 2021 00:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237985AbhH3Q7R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Aug 2021 12:59:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55866 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237989AbhH3Q7R (ORCPT
+        id S232960AbhH3WjV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Aug 2021 18:39:21 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.52]:51480 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232030AbhH3WjV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Aug 2021 12:59:17 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BE75C06175F
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Aug 2021 09:58:23 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id e26so3840186wmk.2
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Aug 2021 09:58:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=bv45KdT4Zm8l8jEqKG5eCu37McR/6YB/mBE0UhGjXlI=;
-        b=Fpm8KZ30UhfR+FyeLGEv+OjD5Sa3ifrD2lU0n/5R+sGkMZlCv+VEYVmA7M6ApLw/SY
-         cKnr6j4SkD3rJEmh6qA5XVbzevsPclsPm1X1nAor1w/Am0huQlkmzGBLudAjsdb/78He
-         byXG9uDUJaGhivyVzjc+GXsEhZd11FE724sbKeHgdCrDMjuVbvA/S7aCXlcxBgI1JlUb
-         bup3LgrEzVUKZoCLdjhT6XZsdLZZ/hEEizFnI73Ee+fODeEr5c+4wkInjqb40X+lY45q
-         ap6gJPLEzBNGzqhy7wowkmbHehJOfu1DqzIXJfAim6a7hcnUG8nWknyMjaZtDVS/k+HY
-         y0kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=bv45KdT4Zm8l8jEqKG5eCu37McR/6YB/mBE0UhGjXlI=;
-        b=YdFoFE7n6SwPszF5HZmV3YmACC6HETHNUy7/U2paRE7ZrKs9AFFfcirH1tVaTpiN55
-         51Qi3NCT1cVz71mt1/xNjoR6pRxKKIKFubfHVhK9++a+JMLTgrGovUdfIuHTGBN34GCT
-         mu+fChFvKst8loCOBga6+n16AZHcnbKtWdwtHoQltxJQ5XLELRofutuW139zkzJdmkjg
-         B02irKriPP/EVldV0J2gWf1i0fQ5/1DBhAkKL8tF3OPHsqyf5+ZeuEc19hQBi3Rm0Yj8
-         XGvpuUag/KSctqeqETDl48hGJ5+i558rCk1xOEvyc9X8c63kKAN6gQI7nP/KFQrs0GwV
-         d+iQ==
-X-Gm-Message-State: AOAM531YUfXFbiyzuazwldYzDzwzj4mBpkDrxMqm1ss83SFsQZYQQ85R
-        l/ALKypIoeH/XaHMntXeaKdghA==
-X-Google-Smtp-Source: ABdhPJwOGImZ9sAtMUAlxXKrLn5YLDr9McehM+oesLu7xNEf2x5nMMhhY0satKodtzgTwC83ZOeZOw==
-X-Received: by 2002:a1c:23d2:: with SMTP id j201mr22822039wmj.163.1630342701525;
-        Mon, 30 Aug 2021 09:58:21 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:e0a:82c:5f0:8009:4e09:ca3:8f6])
-        by smtp.gmail.com with ESMTPSA id r129sm72256wmr.7.2021.08.30.09.58.20
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 30 Aug 2021 09:58:21 -0700 (PDT)
-From:   Loic Poulain <loic.poulain@linaro.org>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, bryan.odonoghue@linaro.org,
-        Loic Poulain <loic.poulain@linaro.org>, stable@vger.kernel.org
-Subject: [PATCH] Revert "wcn36xx: Enable firmware link monitoring"
-Date:   Mon, 30 Aug 2021 19:09:20 +0200
-Message-Id: <1630343360-5942-1-git-send-email-loic.poulain@linaro.org>
-X-Mailer: git-send-email 2.7.4
+        Mon, 30 Aug 2021 18:39:21 -0400
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.66.134])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id E296720073;
+        Mon, 30 Aug 2021 22:38:22 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A1095680073;
+        Mon, 30 Aug 2021 22:38:22 +0000 (UTC)
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id D187B13C2B1;
+        Mon, 30 Aug 2021 15:38:19 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D187B13C2B1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1630363099;
+        bh=gHsiHHShCL0hyNn3IC2fHk7RvVc4ve2wiKz4amKgfFM=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=nkm623cgIhqQCmCf8oQ1b3YcBfOMMRlUmi1VKWC5FK+Aou/ElrESux9GfNrC3an17
+         YajuTj2q+fr8lQG85oQAsoZL62Owsw8Em6vAqZgKdu1yglukpQzCVcw59sF2OMFMyg
+         0mDaW9k2iQ6Wqh/uH3MwaimRU5YiQ0dYaYjDJM4w=
+Subject: Re: [PATCH v3 1/2] mt76: mt7915: fix STA mode connection on DFS
+ channels
+To:     Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Rubio Lu <Rubio-DW.Lu@mediatek.com>
+References: <20210820203531.20706-1-greearb@candelatech.com>
+ <CAFED-j=wek6cuX5wFeTKZFPJZ-hdQ+OoJsf-FKEwtpm49U30Qw@mail.gmail.com>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <0d65d7e4-4b3d-d4da-28a9-dd73ebd9dfc9@candelatech.com>
+Date:   Mon, 30 Aug 2021 15:38:19 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
+MIME-Version: 1.0
+In-Reply-To: <CAFED-j=wek6cuX5wFeTKZFPJZ-hdQ+OoJsf-FKEwtpm49U30Qw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-MDID: 1630363103-yJyus6ECc0zZ
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This reverts commit 8def9ec46a5fafc0abcf34489a9e8a787bca984d.
+On 8/29/21 11:17 AM, Janusz Dziedzic wrote:
+> pt., 20 sie 2021 o 22:37 <greearb@candelatech.com> napisał(a):
+>>
+>> From: Ben Greear <greearb@candelatech.com>
+>>
+>> Only AP, adhoc and mesh mode needs to check CAC.
+>> Stations, in particular, do not need this check.
+>>
+>> Signed-off-by: Rubio Lu <Rubio-DW.Lu@mediatek.com>
+>> Signed-off-by: Ben Greear <greearb@candelatech.com>
+>> ---
+>> v3:  Fix typo in SOB in 1/2, fix rebase typo in 2/2,
+>>    split long line in 2/2
+>>   .../net/wireless/mediatek/mt76/mt7915/mac.c   | 38 +++++++++++++++++--
+>>   1 file changed, 35 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+>> index 8747e452e114..a6e142d27b60 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+>> @@ -2455,6 +2455,32 @@ static int mt7915_dfs_start_radar_detector(struct mt7915_phy *phy)
+>>          return 0;
+>>   }
+>>
+>> +struct mt7915_vif_counts {
+>> +       u32 mesh;
+>> +       u32 adhoc;
+>> +       u32 ap;
+>> +};
+>> +
+>> +static void
+>> +mt7915_vif_counts(void *priv, u8 *mac, struct ieee80211_vif *vif)
+>> +{
+>> +       struct mt7915_vif_counts *counts = priv;
+>> +
+>> +       switch (vif->type) {
+>> +       case NL80211_IFTYPE_ADHOC:
+>> +               counts->adhoc++;
+>> +               break;
+>> +       case NL80211_IFTYPE_MESH_POINT:
+>> +               counts->mesh++;
+>> +               break;
+>> +       case NL80211_IFTYPE_AP:
+>> +               counts->ap++;
+>> +               break;
+>> +       default:
+>> +               break;
+>> +       }
+>> +}
+>> +
+>>   static int
+>>   mt7915_dfs_init_radar_specs(struct mt7915_phy *phy)
+>>   {
+>> @@ -2495,6 +2521,7 @@ int mt7915_dfs_init_radar_detector(struct mt7915_phy *phy)
+>>          struct mt7915_dev *dev = phy->dev;
+>>          bool ext_phy = phy != &dev->phy;
+>>          int err;
+>> +       struct mt7915_vif_counts counts = {0};
+>>
+>>          if (dev->mt76.region == NL80211_DFS_UNSET) {
+>>                  phy->dfs_state = -1;
+>> @@ -2519,9 +2546,14 @@ int mt7915_dfs_init_radar_detector(struct mt7915_phy *phy)
+>>          phy->dfs_state = chandef->chan->dfs_state;
+>>
+>>          if (chandef->chan->flags & IEEE80211_CHAN_RADAR) {
+>> -               if (chandef->chan->dfs_state != NL80211_DFS_AVAILABLE)
+>> -                       return mt7915_dfs_start_radar_detector(phy);
+>> -
+>> +               if (chandef->chan->dfs_state != NL80211_DFS_AVAILABLE) {
+>> +                       ieee80211_iterate_active_interfaces(phy->mt76->hw,
+>> +                               IEEE80211_IFACE_ITER_RESUME_ALL,
+>> +                               mt7915_vif_counts, &counts);
+>> +                       if (counts.ap + counts.adhoc + counts.mesh)
+>> +                               mt7915_dfs_start_radar_detector(phy);
+>> +                       return 0;
+>> +               }
+>>                  return mt7915_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy,
+>>                                            MT_RX_SEL0, 0);
+>>          }
+>> --
+>> 2.20.1
+>>
+> 
+> This depends on spec interpretation - when we have multiple ifaces on
+> the same radio/channel (STA + APs).
+> Maybe this is good time to start discussion about it - how we handle
+> DFS and if we should improve.
+> 
+> Some vendors "derive" CAC from STA.
+> So, while STA don't need to run CAC and first VIF sta will be
+> connected on DFS channel, assume don't need to run CAC for second,
+> third ... AP VIF. Still required ISM (In service monitoring, radar
+> detection if AP ifaces) but simple skip CAC. This simplify
+> implementation a lot for multi-vif (STA+APs) case.
+> 
+> So, maybe we should/could add kconfig for that - CONFIG_DFS_DERIVE_STA_CAC.
+> When set, we could simple set NL80211_DFS_AVAILABLE when STA will
+> connect on DFS channel - then any other APs we will add on the same
+> channel will not require CAC, radar detection still required.
 
-The firmware keep-alive does not cause any event in case of error
-such as non acked. It's just a basic keep alive to prevent the AP
-to kick-off the station due to inactivity. So let mac80211 submit
-its own monitoring packet (probe/null) and disconnect on timeout.
+So this config option would mean 'I think CAC spec means I don't have to do
+CAC if station is already on this channel', with the understanding that this
+may actually be an incorrect interpretation?  That seems like something that
+would not be acceptable upstream for good reasons.
 
-Note: We want to keep firmware keep alive to prevent kick-off
-when host is in suspend-to-mem (no mac80211 monitor packet).
-Ideally fw keep alive should be enabled in suspend path and disabled
-in resume path to prevent having both firmware and mac80211 submitting
-periodic null packets.
+Do you have any pointers to the specification(s) section(s) that apply to this?
 
-This fixes non detected AP leaving issues in active mode (nothing
-monitors beacon or connection).
 
-Cc: stable@vger.kernel.org
-Fixes: 8def9ec46a5f ("wcn36xx: Enable firmware link monitoring")
-Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/main.c | 1 -
- 1 file changed, 1 deletion(-)
+> Regarding STA connection on DFS channel, I agree - today MT76x have a
+> bug for that (eg. single VIF station).
+> I have much older code and fix it simplest way I could.
+> 
+> --- a/mt7615/mac.c
+> +++ b/mt7615/mac.c
+> @@ -2034,6 +2034,11 @@ static int mt7615_dfs_start_radar_detect
+>    phy->rdd_state |= BIT(1);
+>    }
+> 
+> +   /* end CAC - upper layer will care about it, lock tx, beacon setup */
+> +   err = mt7615_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy, MT_RX_SEL0, 0);
+> +   if (err < 0)
+> +       return err;
+> +
+>    return 0;
+>   }
+> 
+> @@ -2104,11 +2109,7 @@ int mt7615_dfs_init_radar_detector(struc
+>    phy->dfs_state = chandef->chan->dfs_state;
+> 
+>    if (chandef->chan->flags & IEEE80211_CHAN_RADAR) {
+> -   if (chandef->chan->dfs_state != NL80211_DFS_AVAILABLE)
+> -     return mt7615_dfs_start_radar_detector(phy);
+> -
+> -   return mt7615_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy,
+> -   MT_RX_SEL0, 0);
+> +   return mt7615_dfs_start_radar_detector(phy);
+>    }
+> 
+>   stop:
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index 216bc34..128d25d 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1362,7 +1362,6 @@ static int wcn36xx_init_ieee80211(struct wcn36xx *wcn)
- 	ieee80211_hw_set(wcn->hw, HAS_RATE_CONTROL);
- 	ieee80211_hw_set(wcn->hw, SINGLE_SCAN_ON_ALL_BANDS);
- 	ieee80211_hw_set(wcn->hw, REPORTS_TX_ACK_STATUS);
--	ieee80211_hw_set(wcn->hw, CONNECTION_MONITOR);
- 
- 	wcn->hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
- 		BIT(NL80211_IFTYPE_AP) |
+It would certainly be nice to simplify the code, but I don't know
+enough about the firmware/driver details to comment intelligently on this
+part.
+
+Thanks,
+Ben
+
+> 
+> BR
+> Janusz
+> 
+
+
 -- 
-2.7.4
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
