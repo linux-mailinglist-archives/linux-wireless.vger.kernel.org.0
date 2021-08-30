@@ -2,99 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCE573FB754
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Aug 2021 15:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69CF33FB8F6
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Aug 2021 17:26:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236864AbhH3Nyo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Aug 2021 09:54:44 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.48]:39148 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233874AbhH3Nyn (ORCPT
+        id S237473AbhH3P1o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Aug 2021 11:27:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34160 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237416AbhH3P1n (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Aug 2021 09:54:43 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.65.202])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 16CB91A007B;
-        Mon, 30 Aug 2021 13:53:49 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id DF58D8006C;
-        Mon, 30 Aug 2021 13:53:48 +0000 (UTC)
-Received: from [192.168.254.6] (unknown [50.34.183.227])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 32EFF13C2B1;
-        Mon, 30 Aug 2021 06:53:46 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 32EFF13C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1630331628;
-        bh=Qopc5UCPbJi+lUhL6ff7J0Lso2pTOrHH4hv/J5AfGxA=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=oceU6VmGz0wHTQOlfNtiNzSLH2tU15GNYTGVaIfJEDFfDUDapzWV0TfMVoiPDPhSi
-         5ejtSSoA3xNUpFLLAW/xh/EnenBDTS5lWyorSHK2y7p+bIVTRpdbVrKnysKeV/S2Zr
-         H65got8ihtcHwgHSsAvHFwDkpRBPCKmdE13RuSTo=
-Subject: Re: Delay sending packets after a wireless roam
-To:     Michael Johnson <mjohnson459@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <CACsRnHWa47zpx3D1oDq9JYnZWniS8yBwW1h0WAVZ6vrbwL_S0w@mail.gmail.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <42b5d899-b791-1fed-b2a0-1e96028f5eb5@candelatech.com>
-Date:   Mon, 30 Aug 2021 06:53:45 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <CACsRnHWa47zpx3D1oDq9JYnZWniS8yBwW1h0WAVZ6vrbwL_S0w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
-X-MDID: 1630331629-gde3hp27B0lY
+        Mon, 30 Aug 2021 11:27:43 -0400
+Received: from mail-wm1-x362.google.com (mail-wm1-x362.google.com [IPv6:2a00:1450:4864:20::362])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99B8DC061575
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Aug 2021 08:26:49 -0700 (PDT)
+Received: by mail-wm1-x362.google.com with SMTP id i3so9070357wmq.3
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Aug 2021 08:26:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flowbird.group; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=RrIvaJZ/GjhxIo37rC4zzq6/oz+qoDd/3ecuQPVux5o=;
+        b=BtInqqaRvi+tvj/zNMrgH4HVRQbXbX/Ba2rZoWVSeVgngTXvTbgvFp90mWeXb9IrCq
+         +S3gfG263hc1pRVxg9L5dKqFeenwjwxryY2oowIU4Mu1IL9upOGqHuJhixyqFdK+z/dw
+         2hXwVRDtSyszZWP6tJGkJr+WXL1iQoyuUWdfiq84UXH3qGSq9mYgZlIVvKnHbevB6PNI
+         c59ZUL7l/WQFec1J3Z6nX7KO7c0sS/mnf8damXXOQ+/6w73VfREgsUnsuoNrnZx1/ii8
+         sECfak2Ru22f7UymTUF5U9Rav87N2vysKbQYKNVt/IHsnUJhITwsX91OtUm8XFIkBnbu
+         DJew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=RrIvaJZ/GjhxIo37rC4zzq6/oz+qoDd/3ecuQPVux5o=;
+        b=PSoTXYTaxXFdOlfKM/avyigZFQ8chdz06ppNOD0QmNdxpowNFX2kfi2r5jIWghV5gy
+         8dEU9loQSiNr49DBhtjcltomnupMLgnPOew8piYzPMmqmIs0JetHRdTVyePHpDV/rCqv
+         db0MQxeXZY22+/bU5qmNvx0ZOnnGCdM3qpoNraVmiqIm6eIyEYN4++iaGY07fqmqcZKR
+         j3XEZPox8GwPlM5pZkdZYh0GjxHtuaMxnAfdPXovAAGY2HxBnooOni7WZ8rxwzE0ay2P
+         fbx5pD8jBSRcE82c8ngXjS4sCOeABU9SOg9pQQEk4Whhw+5jVskwfqU55miJgjMp+xRP
+         kFFA==
+X-Gm-Message-State: AOAM5302lcoDrXnC3tm12WDlGwkHFEu0tHnRGkZFEk5nAfdVAVlfjs6O
+        s4QEzUClZQmrlPyKoWizUCFF97m/ZFOPLPOA+3UFuHg1oNOuCq3wmJ6n2tBcQmFeYdbVH4vUQbi
+        bsvaCcq2O4yIJx2zp9KsDJwi7dY0zL829OVkCbZrGMP4+hKDXyxBoSv1oqiyaa4aRB2V7RPElgA
+        +iCxzNb1y/AqeeBnRjv2IpP/BsLre9xQ==
+X-Google-Smtp-Source: ABdhPJwQT+w11PKVsAe8yvCQ/H4GqlvdAfEUkz0+LgLyA8XAPYXB9B4JwlvqNls5V+2PlbnwFylBF+8mUybR
+X-Received: by 2002:a05:600c:3b9c:: with SMTP id n28mr15483219wms.184.1630337207746;
+        Mon, 30 Aug 2021 08:26:47 -0700 (PDT)
+Received: from mta1.parkeon.com ([185.149.63.251])
+        by smtp-relay.gmail.com with ESMTPS id g15sm388399wmq.15.2021.08.30.08.26.47
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Mon, 30 Aug 2021 08:26:47 -0700 (PDT)
+X-Relaying-Domain: flowbird.group
+Received: from [172.16.13.38] (port=37560 helo=PC12445-BES.dynamic.besancon.parkeon.com)
+        by mta1.parkeon.com with esmtp (Exim 4.71)
+        (envelope-from <martin.fuzzey@flowbird.group>)
+        id 1mKjBP-0005mz-AT; Mon, 30 Aug 2021 17:26:47 +0200
+From:   Martin Fuzzey <martin.fuzzey@flowbird.group>
+To:     linux-wireless@vger.kernel.org
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        Martin Fuzzey <martin.fuzzey@flowbird.group>
+Subject: [PATCH v2 0/3] rsi: fix startup and P2P mode
+Date:   Mon, 30 Aug 2021 17:26:43 +0200
+Message-Id: <1630337206-12410-1-git-send-email-martin.fuzzey@flowbird.group>
+X-Mailer: git-send-email 1.9.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/27/21 3:23 AM, Michael Johnson wrote:
-> Hi all,
-> 
-> I'm having an odd issue with wireless roaming whereby any time I roam
-> from one access point to another I start receiving packets almost
-> instantly but experience a delay of roughly 1 second before I can send
-> packets out. I think I've narrowed it down to somewhere kernel related
-> but I'm struggling to know where to look next.
-> 
-> Firstly, I started seeing this delay after upgrading from Ubuntu 16.04
-> (so 4.15 kernel) to 20.04 (tested with 5.4, 5.8 and 5.11) but I also
-> tested this on Kali 2021.2 (5.10).
-> I see the delay with intel (iwlwifi), qualcomm (ath10k), and realtek cards.
-> I've also used both iwd and wpa_supplicant, with and without
-> systemd-networkd and NetworkManager.
-> I've been using ICMP for testing but I've also tried a python script
-> for sending udp packets with the same result.
-> 
-> Here is the output of the simplest test that still shows the issue
-> (ping + tcpdump + iwd + 5.11.0-27-generic):
-> https://pastebin.com/92TKKktb
-> 
-> My naive tl;dr of that data is:
-> 
-> 30.322638 - we start to roam which falls between icmp_seq=121 and icmp_seq=122.
-> 30.415411 - roam is complete
-> 30.424277 - iwd is sending and receiving neighbor reports over the link
-> 31.358491 - an ARP request is sent out  (should the ARP cache be
-> cleared on a roam?)
-> 31.367930 - ARP response
-> 31.368009 - packets start being sent again as soon as we get the ARP response
-> 
-> Can anyone help me understand what might be happening between the
-> interface going "up" at 30.415411 and the ARP request at 31.358491
-> please?
-> Also, does anyone else see something in their environment?
+This series fixes an occasional startup failure when BT
+coexistence is enabled and makes P2P mode work
+(the two are unrelated but sending as a series since the same files
+are modified).
 
-I think ARP cache should be cleared on roam...I'm not sure how best to do that
-though.  wid/supplicant could make the call to clear as soon as roam happens?
+Tested on RS9116 in P2P client mode against an Android phone (S8, Android 9)
 
-Thanks,
-Ben
+For an unknown reason GO mode does not work against the phone but it
+does work against a second RS9116 device.
+In this case Android does not send a response to the 3rd WPA handshake
+packet. It is difficult to debug this without the phone wpa_supplicant
+logs which I don't have.
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Regression tested OK for STA and AP modes.
+
+V2:
+  * rebase against wireless-drivers-next
+  * add cc: stable to patches 2 & 3
+
+Martin Fuzzey (3):
+  rsi: fix occasional initialisation failure with BT coex
+  rsi: fix key enabled check causing unwanted encryption for vap_id > 0
+  rsi: fix rate mask set leading to P2P failure
+
+ drivers/net/wireless/rsi/rsi_91x_core.c     |  2 +
+ drivers/net/wireless/rsi/rsi_91x_hal.c      | 10 ++--
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c | 74 +++++++++--------------------
+ drivers/net/wireless/rsi/rsi_91x_main.c     | 16 +++++--
+ drivers/net/wireless/rsi/rsi_91x_mgmt.c     | 24 +++++++---
+ drivers/net/wireless/rsi/rsi_main.h         | 15 ++++--
+ 6 files changed, 72 insertions(+), 69 deletions(-)
+
+--
+1.9.1
+
