@@ -2,54 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E8F3FB151
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Aug 2021 08:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E3A23FB15A
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Aug 2021 08:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232853AbhH3Gme convert rfc822-to-8bit (ORCPT
+        id S232778AbhH3Gr6 convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Aug 2021 02:42:34 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:44234 "EHLO
+        Mon, 30 Aug 2021 02:47:58 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:44455 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232358AbhH3Gmd (ORCPT
+        with ESMTP id S231839AbhH3Gr6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Aug 2021 02:42:33 -0400
+        Mon, 30 Aug 2021 02:47:58 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17U6fXXG1029890, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17U6kwLT3030735, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17U6fXXG1029890
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17U6kwLT3030735
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 30 Aug 2021 14:41:33 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+        Mon, 30 Aug 2021 14:46:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Mon, 30 Aug 2021 14:41:33 +0800
+ 15.1.2308.14; Mon, 30 Aug 2021 14:46:58 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 30 Aug 2021 14:41:32 +0800
+ 15.1.2106.2; Mon, 30 Aug 2021 14:46:57 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
  RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Mon, 30 Aug 2021 14:41:32 +0800
+ 15.01.2106.013; Mon, 30 Aug 2021 14:46:57 +0800
 From:   Pkshih <pkshih@realtek.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
 CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         Timlee <timlee@realtek.com>, Kevin Yang <kevin_yang@realtek.com>
-Subject: RE: [PATCH 2/4] rtw88: add regulatory strategy by chip type
-Thread-Topic: [PATCH 2/4] rtw88: add regulatory strategy by chip type
-Thread-Index: AQHXnMm/XgSYcZ3L+kmcf4MmXe5q0KuLmkow
-Date:   Mon, 30 Aug 2021 06:41:32 +0000
-Message-ID: <f9a78ca4554d41c8be6077c05258ad9b@realtek.com>
+Subject: RE: [PATCH 3/4] rtw88: support adaptivity for ETSI/JP DFS region
+Thread-Topic: [PATCH 3/4] rtw88: support adaptivity for ETSI/JP DFS region
+Thread-Index: AQHXnMqu0PGj5vBD7k685h/O45/eP6uLmpVA
+Date:   Mon, 30 Aug 2021 06:46:57 +0000
+Message-ID: <61a242c186bf453d80820d81e1c48464@realtek.com>
 References: <20210802063140.25670-1-pkshih@realtek.com>
-        <20210802063140.25670-3-pkshih@realtek.com>
- <87mtp04h9r.fsf@codeaurora.org>
-In-Reply-To: <87mtp04h9r.fsf@codeaurora.org>
+        <20210802063140.25670-4-pkshih@realtek.com> <87ilzo4gyr.fsf@codeaurora.org>
+In-Reply-To: <87ilzo4gyr.fsf@codeaurora.org>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
 x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
  rules found
 x-kse-antivirus-interceptor-info: scan successful
@@ -90,26 +89,94 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 > -----Original Message-----
 > From: kvalo=codeaurora.org@mg.codeaurora.org [mailto:kvalo=codeaurora.org@mg.codeaurora.org] On
 > Behalf Of Kalle Valo
-> Sent: Sunday, August 29, 2021 7:34 PM
+> Sent: Sunday, August 29, 2021 7:40 PM
 > To: Pkshih
 > Cc: tony0620emma@gmail.com; linux-wireless@vger.kernel.org; Timlee; Kevin Yang
-> Subject: Re: [PATCH 2/4] rtw88: add regulatory strategy by chip type
+> Subject: Re: [PATCH 3/4] rtw88: support adaptivity for ETSI/JP DFS region
 > 
 > Ping-Ke Shih <pkshih@realtek.com> writes:
 > 
 > > From: Zong-Zhe Yang <kevin_yang@realtek.com>
 > >
-> > Realtek chips can program a specific country domain on efuse to
-> > indicate what is the expected rtw_regulatory. For chips with a
-> > PGed country domain, we set REGULATORY_STRICT_REG to tell stack
+> > Add Energy Detected CCA (EDCCA) mechanism to detect energy on the channel.
+> > And EDCCA support adaptivity mode now. From MIC Ordinance Regulating Radio
+> > Equipment article 49.20, ETSI EN-300-328 and EN-301-893, the device should
+> > be able to dynamically pause TX activity when energy detected on the air.
+> > According to ETSI/JP DFS region, driver will set corresponding threshold
+> > and stop TX activity if the detected energy exceeds the threshold. For now,
+> > we support it on 8822b and 8822c first.
+> >
+> > By default, EDCCA mechanism is turned on. For ETSI/JP DFS region, it will
+> > turn to adaptivity mode. However, with adaptivity, if environment is too
+> > nosiy, TX may often be halted. So, a debugfs for EDCCA is added. It can
+> > show what EDCCA mode is used currently. And EDCCA mechanism can be turned
+> > on/off through the debugfs while debugging.
+> >
+> > Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 > 
-> In the commit logs please avoid using acronyms as much as possible, they
-> make it harder to read. Only after looking at the patch I was able to
-> figure out that "PGed" means "programmed", or that's I at least assume
-> it to mean.
+> [...]
+> 
+> > +static ssize_t rtw_debugfs_set_edcca_enable(struct file *filp,
+> > +					    const char __user *buffer,
+> > +					    size_t count, loff_t *loff)
+> > +{
+> > +	struct seq_file *seqpriv = (struct seq_file *)filp->private_data;
+> > +	struct rtw_debugfs_priv *debugfs_priv = seqpriv->private;
+> > +	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
+> > +	bool input;
+> > +	int err;
+> > +
+> > +	err = kstrtobool_from_user(buffer, count, &input);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	rtw_edcca_enabled = input;
+> > +	rtw_phy_adaptivity_set_mode(rtwdev);
+> > +
+> > +	return count;
+> > +}
+> > +
+> > +static int rtw_debugfs_get_edcca_enable(struct seq_file *m, void *v)
+> > +{
+> > +	struct rtw_debugfs_priv *debugfs_priv = m->private;
+> > +	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
+> > +	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
+> > +
+> > +	seq_printf(m, "EDCCA %s: EDCCA mode %d\n",
+> > +		   rtw_edcca_enabled ? "enabled" : "disabled",
+> > +		   dm_info->edcca_mode);
+> > +	return 0;
+> > +}
+> 
+> [...]
+> 
+> > --- a/drivers/net/wireless/realtek/rtw88/main.c
+> > +++ b/drivers/net/wireless/realtek/rtw88/main.c
+> > @@ -23,6 +23,7 @@ EXPORT_SYMBOL(rtw_disable_lps_deep_mode);
+> >  bool rtw_bf_support = true;
+> >  unsigned int rtw_debug_mask;
+> >  EXPORT_SYMBOL(rtw_debug_mask);
+> > +bool rtw_edcca_enabled = true;
+> 
+> You are making rtw_edcca_enabled per driver, should it instead be per
+> device? If something is changed via debugfs the assumption is that the
+> value is per device.
+> 
+> For example, let's say you have two rtw88 devices attached on the same
+> system, device A and B. If a user changes edcca via debugfs on device A
+> it will also change the state in device B. Is that the desired
+> functionality? If yes, I think you should add a comment to
+> rtw_edcca_enabled explaining that.
 > 
 
-I'll avoid these acronyms in next version.
+As mentioned in commit message, the debugfs is expected to be used when debugging
+in noisy environment. In that case, we think all rtw88 devices will probably
+be affected. Besides, we believe that turning EDCCA off is a temporary state under
+debugging.
+
+Based on the two points, it seems no need to maintain rtw_edcca_enabled by device,
+so a comment will be added to explain this.
 
 --
 Ping-Ke
