@@ -2,242 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA1603FB003
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Aug 2021 05:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FDFB3FB11B
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Aug 2021 08:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbhH3DbM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Aug 2021 23:31:12 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:34640 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229548AbhH3DbK (ORCPT
+        id S232313AbhH3GTd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Aug 2021 02:19:33 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:42377 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231911AbhH3GTc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Aug 2021 23:31:10 -0400
-X-UUID: 2272df4e5f4d4d0bb17a5d8893d558c3-20210830
-X-UUID: 2272df4e5f4d4d0bb17a5d8893d558c3-20210830
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 435558280; Mon, 30 Aug 2021 11:30:13 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs05n1.mediatek.inc (172.21.101.15) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 30 Aug 2021 11:30:11 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 30 Aug 2021 11:30:11 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH v2 2/2] mt76: mt7915: add debugfs knobs for MCU utilization
-Date:   Mon, 30 Aug 2021 11:28:58 +0800
-Message-ID: <20210830032858.1897-2-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20210830032858.1897-1-shayne.chen@mediatek.com>
-References: <20210830032858.1897-1-shayne.chen@mediatek.com>
+        Mon, 30 Aug 2021 02:19:32 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17U6ILBL0024805, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17U6ILBL0024805
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 30 Aug 2021 14:18:21 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Mon, 30 Aug 2021 14:18:20 +0800
+Received: from localhost (172.21.69.146) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Mon, 30 Aug
+ 2021 14:18:20 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>, <nbd@nbd.name>,
+        <gary.chang@realtek.com>, <kevin_yang@realtek.com>
+Subject: [PATCH v2] mac80211: Fix ieee80211_amsdu_aggregate frag_tail bug
+Date:   Mon, 30 Aug 2021 14:17:28 +0800
+Message-ID: <20210830061728.10332-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.146]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/30/2021 05:58:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzgvMzAgpFekyCAwNDoyMTowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 08/30/2021 06:05:39
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 165837 [Aug 30 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 457 457 f9912fc467375383fbac52a53ade5bbe1c769e2a
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/30/2021 06:09:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add debugfs knobs to read MCU utilization, which helps user know
-firmware status more easily to narrow down CPU bottleneck issues.
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
-v2: abbreviate utilization to util
----
- .../wireless/mediatek/mt76/mt7915/debugfs.c   | 49 ++++++++++++++++++-
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  5 +-
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  2 +
- .../net/wireless/mediatek/mt76/mt7915/mmio.c  |  3 ++
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 +
- .../net/wireless/mediatek/mt76/mt7915/regs.h  | 17 +++++++
- 6 files changed, 73 insertions(+), 4 deletions(-)
+In ieee80211_amsdu_aggregate() set a pointer frag_tail point to the
+end of skb_shinfo(head)->frag_list, and use it to bind other skb in
+the end of this function. But when execute ieee80211_amsdu_aggregate()
+->ieee80211_amsdu_realloc_pad()->pskb_expand_head(), the address of
+skb_shinfo(head)->frag_list will be changed. However, the
+ieee80211_amsdu_aggregate() not update frag_tail after call
+pskb_expand_head(). That will cause the second skb can't bind to the
+head skb appropriately.So we update the address of frag_tail to fix it.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index 3878635..411dc5d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -93,6 +93,12 @@ mt7915_fw_debug_wm_set(void *data, u64 val)
- 	for (debug = DEBUG_TXCMD; debug <= DEBUG_RPT_RX; debug++)
- 		mt7915_mcu_fw_dbg_ctrl(dev, debug, !!dev->fw_debug_wm);
+Fixes: 6e0456b54545 ("mac80211: add A-MSDU tx support")
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+v2: an alternative fix to prevent iterating fragment twice.
+---
+ net/mac80211/tx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 2d1193ed3eb5..fb5e43489b62 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3380,6 +3380,13 @@ static bool ieee80211_amsdu_aggregate(struct ieee80211_sub_if_data *sdata,
+ 	if (!ieee80211_amsdu_prepare_head(sdata, fast_tx, head))
+ 		goto out;
  
-+	/* WM CPU info record control */
-+	mt76_clear(dev, MT_CPU_UTIL_CTRL, BIT(0));
-+	mt76_wr(dev, MT_DIC_CMD_REG_CMD, BIT(2) | BIT(13) | !dev->fw_debug_wm);
-+	mt76_wr(dev, MT_MCU_WM_CIRQ_IRQ_MASK_CLR_ADDR, BIT(5));
-+	mt76_wr(dev, MT_MCU_WM_CIRQ_IRQ_SOFT_ADDR, BIT(5));
++       /* While n == 2, frag_tail should be the address of head's frag_list.
++	* However, head probably re-alloc after ieee80211_amsdu_prepare_head.
++	* So, re-assign frag_tail again to make sure the correctness.
++	*/
++	if (n == 2)
++		frag_tail = &skb_shinfo(head)->frag_list;
 +
- 	return 0;
- }
- 
-@@ -116,7 +122,11 @@ mt7915_fw_debug_wa_set(void *data, u64 val)
- 
- 	dev->fw_debug_wa = val ? MCU_FW_LOG_TO_HOST : 0;
- 
--	return mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WA, dev->fw_debug_wa);
-+	mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WA, dev->fw_debug_wa);
-+	mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(SET), MCU_WA_PARAM_PDMA_RX,
-+			  !!dev->fw_debug_wa, 0);
-+
-+	return 0;
- }
- 
- static int
-@@ -132,6 +142,39 @@ mt7915_fw_debug_wa_get(void *data, u64 *val)
- DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_debug_wa, mt7915_fw_debug_wa_get,
- 			 mt7915_fw_debug_wa_set, "%lld\n");
- 
-+static int
-+mt7915_fw_util_wm_show(struct seq_file *file, void *data)
-+{
-+	struct mt7915_dev *dev = file->private;
-+
-+	if (dev->fw_debug_wm) {
-+		seq_printf(file, "Busy: %u%%  Peak busy: %u%%\n",
-+			   mt76_rr(dev, MT_CPU_UTIL_BUSY_PCT),
-+			   mt76_rr(dev, MT_CPU_UTIL_PEAK_BUSY_PCT));
-+		seq_printf(file, "Idle count: %u  Peak idle count: %u\n",
-+			   mt76_rr(dev, MT_CPU_UTIL_IDLE_CNT),
-+			   mt76_rr(dev, MT_CPU_UTIL_PEAK_IDLE_CNT));
-+	}
-+
-+	return 0;
-+}
-+
-+DEFINE_SHOW_ATTRIBUTE(mt7915_fw_util_wm);
-+
-+static int
-+mt7915_fw_util_wa_show(struct seq_file *file, void *data)
-+{
-+	struct mt7915_dev *dev = file->private;
-+
-+	if (dev->fw_debug_wa)
-+		mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(QUERY),
-+				  MCU_WA_PARAM_CPU_UTIL, 0, 0);
-+
-+	return 0;
-+}
-+
-+DEFINE_SHOW_ATTRIBUTE(mt7915_fw_util_wa);
-+
- static void
- mt7915_ampdu_stat_read_phy(struct mt7915_phy *phy,
- 			   struct seq_file *file)
-@@ -373,6 +416,10 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
- 	debugfs_create_file("tx_stats", 0400, dir, dev, &mt7915_tx_stats_fops);
- 	debugfs_create_file("fw_debug_wm", 0600, dir, dev, &fops_fw_debug_wm);
- 	debugfs_create_file("fw_debug_wa", 0600, dir, dev, &fops_fw_debug_wa);
-+	debugfs_create_file("fw_util_wm", 0400, dir, dev,
-+			    &mt7915_fw_util_wm_fops);
-+	debugfs_create_file("fw_util_wa", 0400, dir, dev,
-+			    &mt7915_fw_util_wa_fops);
- 	debugfs_create_file("implicit_txbf", 0600, dir, dev,
- 			    &fops_implicit_txbf);
- 	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index dad1858..cfa0550 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -416,8 +416,7 @@ exit:
- 	return mt76_tx_queue_skb_raw(dev, mdev->q_mcu[qid], skb, 0);
- }
- 
--static void
--mt7915_mcu_wa_cmd(struct mt7915_dev *dev, int cmd, u32 a1, u32 a2, u32 a3)
-+void mt7915_mcu_wa_cmd(struct mt7915_dev *dev, int cmd, u32 a1, u32 a2, u32 a3)
- {
- 	struct {
- 		__le32 args[3];
-@@ -429,7 +428,7 @@ mt7915_mcu_wa_cmd(struct mt7915_dev *dev, int cmd, u32 a1, u32 a2, u32 a3)
- 		},
- 	};
- 
--	mt76_mcu_send_msg(&dev->mt76, cmd, &req, sizeof(req), true);
-+	mt76_mcu_send_msg(&dev->mt76, cmd, &req, sizeof(req), false);
- }
- 
- static void
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 44e215d..5a707aa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -298,6 +298,8 @@ enum {
- };
- 
- enum {
-+	MCU_WA_PARAM_PDMA_RX = 0x04,
-+	MCU_WA_PARAM_CPU_UTIL = 0x0b,
- 	MCU_WA_PARAM_RED = 0x0e,
- };
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index af712a9..bb55224 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -34,6 +34,9 @@ static u32 __mt7915_reg_addr(struct mt7915_dev *dev, u32 addr)
- 		u32 mapped;
- 		u32 size;
- 	} fixed_map[] = {
-+		{ 0x00400000, 0x80000, 0x10000 }, /* WF_MCU_SYSRAM */
-+		{ 0x00410000, 0x90000, 0x10000 }, /* WF_MCU_SYSRAM (configure regs) */
-+		{ 0x40000000, 0x70000, 0x10000 }, /* WF_UMAC_SYSRAM */
- 		{ 0x54000000, 0x02000, 0x1000 }, /* WFDMA PCIE0 MCU DMA0 */
- 		{ 0x55000000, 0x03000, 0x1000 }, /* WFDMA PCIE0 MCU DMA1 */
- 		{ 0x58000000, 0x06000, 0x1000 }, /* WFDMA PCIE1 MCU DMA0 (MEM_DMA) */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 75368ae..01c582e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -351,6 +351,7 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta, struct rate_info *rate);
- int mt7915_mcu_rdd_cmd(struct mt7915_dev *dev, enum mt7915_rdd_cmd cmd,
- 		       u8 index, u8 rx_sel, u8 val);
-+void mt7915_mcu_wa_cmd(struct mt7915_dev *dev, int cmd, u32 a1, u32 a2, u32 a3);
- int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 type, u8 ctrl);
- int mt7915_mcu_fw_dbg_ctrl(struct mt7915_dev *dev, u32 module, u8 level);
- void mt7915_mcu_rx_event(struct mt7915_dev *dev, struct sk_buff *skb);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index f4101cc..aa65cd8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -413,6 +413,18 @@
- #define MT_HIF_REMAP_L2_BASE		GENMASK(31, 12)
- #define MT_HIF_REMAP_BASE_L2		0x00000
- 
-+#define MT_DIC_CMD_REG_BASE		0x41f000
-+#define MT_DIC_CMD_REG(ofs)		(MT_DIC_CMD_REG_BASE + (ofs))
-+#define MT_DIC_CMD_REG_CMD		MT_DIC_CMD_REG(0x10)
-+
-+#define MT_CPU_UTIL_BASE		0x41f030
-+#define MT_CPU_UTIL(ofs)		(MT_CPU_UTIL_BASE + (ofs))
-+#define MT_CPU_UTIL_BUSY_PCT		MT_CPU_UTIL(0x00)
-+#define MT_CPU_UTIL_PEAK_BUSY_PCT	MT_CPU_UTIL(0x04)
-+#define MT_CPU_UTIL_IDLE_CNT		MT_CPU_UTIL(0x08)
-+#define MT_CPU_UTIL_PEAK_IDLE_CNT	MT_CPU_UTIL(0x0c)
-+#define MT_CPU_UTIL_CTRL		MT_CPU_UTIL(0x1c)
-+
- #define MT_SWDEF_BASE			0x41f200
- #define MT_SWDEF(ofs)			(MT_SWDEF_BASE + (ofs))
- #define MT_SWDEF_MODE			MT_SWDEF(0x3c)
-@@ -458,4 +470,9 @@
- #define MT_WF_PHY_RXTD12_IRPI_SW_CLR_ONLY	BIT(18)
- #define MT_WF_PHY_RXTD12_IRPI_SW_CLR	BIT(29)
- 
-+#define MT_MCU_WM_CIRQ_BASE			0x89010000
-+#define MT_MCU_WM_CIRQ(ofs)			(MT_MCU_WM_CIRQ_BASE + (ofs))
-+#define MT_MCU_WM_CIRQ_IRQ_MASK_CLR_ADDR	MT_MCU_WM_CIRQ(0x80)
-+#define MT_MCU_WM_CIRQ_IRQ_SOFT_ADDR		MT_MCU_WM_CIRQ(0xc0)
-+
- #endif
+ 	/*
+ 	 * Pad out the previous subframe to a multiple of 4 by adding the
+ 	 * padding to the next one, that's being added. Note that head->len
 -- 
 2.25.1
 
