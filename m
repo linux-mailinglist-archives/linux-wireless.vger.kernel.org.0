@@ -2,120 +2,214 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0BF03FAFAA
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Aug 2021 04:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49A2D3FB006
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Aug 2021 05:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236220AbhH3CCC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Aug 2021 22:02:02 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:48675 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235552AbhH3CCB (ORCPT
+        id S229569AbhH3DbI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Aug 2021 23:31:08 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:46320 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229548AbhH3DbI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Aug 2021 22:02:01 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17U20muI6026661, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17U20muI6026661
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 30 Aug 2021 10:00:48 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Mon, 30 Aug 2021 10:00:47 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 30 Aug 2021 10:00:46 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
- RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Mon, 30 Aug 2021 10:00:46 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Colin King <colin.king@canonical.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH][next] rtlwifi: rtl8192de: Fix uninitialized variable place
-Thread-Topic: [PATCH][next] rtlwifi: rtl8192de: Fix uninitialized variable
- place
-Thread-Index: AQHXnQBql2HJfhVS0UOTvovudWzUtauLSmYw
-Date:   Mon, 30 Aug 2021 02:00:46 +0000
-Message-ID: <9f09efe170cb450aa7a1927af58f005e@realtek.com>
-References: <20210829180503.533934-1-colin.king@canonical.com>
-In-Reply-To: <20210829180503.533934-1-colin.king@canonical.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.146]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzgvMjkg5LiL5Y2IIDExOjE4OjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Sun, 29 Aug 2021 23:31:08 -0400
+X-UUID: 475e243d5edf4712b8a46c5fddd1e869-20210830
+X-UUID: 475e243d5edf4712b8a46c5fddd1e869-20210830
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1559950013; Mon, 30 Aug 2021 11:30:12 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs05n2.mediatek.inc (172.21.101.140) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 30 Aug 2021 11:30:11 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 30 Aug 2021 11:30:11 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH v2 1/2] mt76: mt7915: add WA firmware log support
+Date:   Mon, 30 Aug 2021 11:28:57 +0800
+Message-ID: <20210830032858.1897-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 08/30/2021 01:49:33
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 165836 [Aug 29 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 457 457 f9912fc467375383fbac52a53ade5bbe1c769e2a
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;patchwork.kernel.org:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 08/30/2021 01:51:00
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IENvbGluIEtpbmcgW21haWx0
-bzpjb2xpbi5raW5nQGNhbm9uaWNhbC5jb21dDQo+IFNlbnQ6IE1vbmRheSwgQXVndXN0IDMwLCAy
-MDIxIDI6MDUgQU0NCj4gVG86IFBrc2hpaDsgS2FsbGUgVmFsbzsgRGF2aWQgUyAuIE1pbGxlcjsg
-SmFrdWIgS2ljaW5za2k7IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZzsNCj4gbmV0ZGV2
-QHZnZXIua2VybmVsLm9yZw0KPiBDYzoga2VybmVsLWphbml0b3JzQHZnZXIua2VybmVsLm9yZzsg
-bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBbUEFUQ0hdW25leHRdIHJ0
-bHdpZmk6IHJ0bDgxOTJkZTogRml4IHVuaW5pdGlhbGl6ZWQgdmFyaWFibGUgcGxhY2UNCj4gDQo+
-IEZyb206IENvbGluIElhbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+IA0KPiBJ
-biB0aGUgY2FzZSB3aGVyZSBjaG5sIDw9IDE0IHZhcmlhYmxlIHBsYWNlIGlzIG5vdCBpbml0aWFs
-aXplZCBhbmQNCj4gdGhlIGZ1bmN0aW9uIHJldHVybnMgYW4gdW5pbml0aWFsaXplZCB2YWx1ZS4g
-VGhpcyBmaXhlcyBhbiBlYXJsaWVyDQo+IGNsZWFudXAgd2hlcmUgSSBpbnRyb2R1Y2VkIHRoaXMg
-YnVnLiBNeSBiYWQuDQo+IA0KPiBBZGRyZXNzZXMtQ292ZXJpdHk6ICgiVW5pbml0aWFsaXplZCBz
-Y2FsYXIgdmFyaWFibGUiKQ0KPiBGaXhlczogMzY5OTU2YWU1NzIwICgicnRsd2lmaTogcnRsODE5
-MmRlOiBSZW1vdmUgcmVkdW5kYW50IHZhcmlhYmxlIGluaXRpYWxpemF0aW9ucyIpDQo+IFNpZ25l
-ZC1vZmYtYnk6IENvbGluIElhbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+IC0t
-LQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkZS9waHku
-YyB8IDIgKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigt
-KQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lm
-aS9ydGw4MTkyZGUvcGh5LmMNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdp
-ZmkvcnRsODE5MmRlL3BoeS5jDQo+IGluZGV4IDhhZTY5ZDkxNDMxMi4uYjMyZmE3YTc1ZjE3IDEw
-MDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5
-MmRlL3BoeS5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9y
-dGw4MTkyZGUvcGh5LmMNCj4gQEAgLTg5Niw3ICs4OTYsNyBAQCBzdGF0aWMgdm9pZCBfcnRsOTJk
-X2NjeHBvd2VyX2luZGV4X2NoZWNrKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LA0KPiANCj4gIHN0
-YXRpYyB1OCBfcnRsOTJjX3BoeV9nZXRfcmlnaHRjaG5scGxhY2UodTggY2hubCkNCj4gIHsNCj4g
-LQl1OCBwbGFjZTsNCj4gKwl1OCBwbGFjZSA9IGNobmw7DQo+IA0KPiAgCWlmIChjaG5sID4gMTQp
-IHsNCj4gIAkJZm9yIChwbGFjZSA9IDE0OyBwbGFjZSA8IHNpemVvZihjaGFubmVsNWcpOyBwbGFj
-ZSsrKSB7DQoNCk5hdGhhbiBDaGFuY2VsbG9yIGhhcyBzZW50IGEgcGF0Y2ggWzFdIHRvIGZpeCB0
-aGlzLCBhbmQgdGhlIHBhdGNoIA0KaGFzIGJlZW4gbWVyZ2VkLg0KDQpbMV0gaHR0cHM6Ly9wYXRj
-aHdvcmsua2VybmVsLm9yZy9wcm9qZWN0L2xpbnV4LXdpcmVsZXNzL3BhdGNoLzIwMjEwODIzMjIy
-MDE0Ljc2NDU1Ny0xLW5hdGhhbkBrZXJuZWwub3JnLw0KDQotLQ0KUGluZy1LZQ0KDQo=
+Support to turn on/off WA firmware log from debugfs.
+
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   | 42 +++++++++++++++----
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  9 +++-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  6 +++
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  5 ++-
+ 4 files changed, 49 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index d9d18f6..3878635 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -75,7 +75,7 @@ DEFINE_DEBUGFS_ATTRIBUTE(fops_radar_trigger, NULL,
+ 			 mt7915_radar_trigger, "%lld\n");
+ 
+ static int
+-mt7915_fw_debug_set(void *data, u64 val)
++mt7915_fw_debug_wm_set(void *data, u64 val)
+ {
+ 	struct mt7915_dev *dev = data;
+ 	enum {
+@@ -86,28 +86,51 @@ mt7915_fw_debug_set(void *data, u64 val)
+ 		DEBUG_RPT_RX,
+ 	} debug;
+ 
+-	dev->fw_debug = !!val;
++	dev->fw_debug_wm = val ? MCU_FW_LOG_TO_HOST : 0;
+ 
+-	mt7915_mcu_fw_log_2_host(dev, dev->fw_debug ? 2 : 0);
++	mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WM, dev->fw_debug_wm);
+ 
+ 	for (debug = DEBUG_TXCMD; debug <= DEBUG_RPT_RX; debug++)
+-		mt7915_mcu_fw_dbg_ctrl(dev, debug, dev->fw_debug);
++		mt7915_mcu_fw_dbg_ctrl(dev, debug, !!dev->fw_debug_wm);
+ 
+ 	return 0;
+ }
+ 
+ static int
+-mt7915_fw_debug_get(void *data, u64 *val)
++mt7915_fw_debug_wm_get(void *data, u64 *val)
+ {
+ 	struct mt7915_dev *dev = data;
+ 
+-	*val = dev->fw_debug;
++	*val = dev->fw_debug_wm;
+ 
+ 	return 0;
+ }
+ 
+-DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_debug, mt7915_fw_debug_get,
+-			 mt7915_fw_debug_set, "%lld\n");
++DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_debug_wm, mt7915_fw_debug_wm_get,
++			 mt7915_fw_debug_wm_set, "%lld\n");
++
++static int
++mt7915_fw_debug_wa_set(void *data, u64 val)
++{
++	struct mt7915_dev *dev = data;
++
++	dev->fw_debug_wa = val ? MCU_FW_LOG_TO_HOST : 0;
++
++	return mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WA, dev->fw_debug_wa);
++}
++
++static int
++mt7915_fw_debug_wa_get(void *data, u64 *val)
++{
++	struct mt7915_dev *dev = data;
++
++	*val = dev->fw_debug_wa;
++
++	return 0;
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_debug_wa, mt7915_fw_debug_wa_get,
++			 mt7915_fw_debug_wa_set, "%lld\n");
+ 
+ static void
+ mt7915_ampdu_stat_read_phy(struct mt7915_phy *phy,
+@@ -348,7 +371,8 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
+ 	debugfs_create_devm_seqfile(dev->mt76.dev, "acq", dir,
+ 				    mt7915_queues_acq);
+ 	debugfs_create_file("tx_stats", 0400, dir, dev, &mt7915_tx_stats_fops);
+-	debugfs_create_file("fw_debug", 0600, dir, dev, &fops_fw_debug);
++	debugfs_create_file("fw_debug_wm", 0600, dir, dev, &fops_fw_debug_wm);
++	debugfs_create_file("fw_debug_wa", 0600, dir, dev, &fops_fw_debug_wa);
+ 	debugfs_create_file("implicit_txbf", 0600, dir, dev,
+ 			    &fops_implicit_txbf);
+ 	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index da4480f..dad1858 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2796,7 +2796,7 @@ static int mt7915_load_firmware(struct mt7915_dev *dev)
+ 	return 0;
+ }
+ 
+-int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 ctrl)
++int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 type, u8 ctrl)
+ {
+ 	struct {
+ 		u8 ctrl_val;
+@@ -2805,6 +2805,10 @@ int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 ctrl)
+ 		.ctrl_val = ctrl
+ 	};
+ 
++	if (type == MCU_FW_LOG_WA)
++		return mt76_mcu_send_msg(&dev->mt76, MCU_WA_EXT_CMD(FW_LOG_2_HOST),
++					 &data, sizeof(data), true);
++
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(FW_LOG_2_HOST), &data,
+ 				 sizeof(data), true);
+ }
+@@ -2861,7 +2865,8 @@ int mt7915_mcu_init(struct mt7915_dev *dev)
+ 		return ret;
+ 
+ 	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
+-	mt7915_mcu_fw_log_2_host(dev, 0);
++	mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WM, 0);
++	mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WA, 0);
+ 	mt7915_mcu_set_mwds(dev, 1);
+ 	mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(SET), MCU_WA_PARAM_RED, 0, 0);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index eda17a9..44e215d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -228,6 +228,12 @@ enum {
+ 	MCU_S2D_H2CN
+ };
+ 
++enum {
++	MCU_FW_LOG_WM,
++	MCU_FW_LOG_WA,
++	MCU_FW_LOG_TO_HOST,
++};
++
+ #define __MCU_CMD_FIELD_ID	GENMASK(7, 0)
+ #define __MCU_CMD_FIELD_EXT_ID	GENMASK(15, 8)
+ #define __MCU_CMD_FIELD_QUERY	BIT(16)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index cc74dd2..75368ae 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -185,8 +185,9 @@ struct mt7915_dev {
+ 
+ 	bool dbdc_support;
+ 	bool flash_mode;
+-	bool fw_debug;
+ 	bool ibf;
++	u8 fw_debug_wm;
++	u8 fw_debug_wa;
+ 
+ 	void *cal;
+ };
+@@ -350,7 +351,7 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta, struct rate_info *rate);
+ int mt7915_mcu_rdd_cmd(struct mt7915_dev *dev, enum mt7915_rdd_cmd cmd,
+ 		       u8 index, u8 rx_sel, u8 val);
+-int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 ctrl);
++int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 type, u8 ctrl);
+ int mt7915_mcu_fw_dbg_ctrl(struct mt7915_dev *dev, u32 module, u8 level);
+ void mt7915_mcu_rx_event(struct mt7915_dev *dev, struct sk_buff *skb);
+ void mt7915_mcu_exit(struct mt7915_dev *dev);
+-- 
+2.25.1
+
