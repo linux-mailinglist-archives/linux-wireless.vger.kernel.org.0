@@ -2,201 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EAD83FADAB
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Aug 2021 20:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0BF03FAFAA
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Aug 2021 04:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232422AbhH2STB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Aug 2021 14:19:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58182 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230010AbhH2STB (ORCPT
+        id S236220AbhH3CCC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Aug 2021 22:02:02 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:48675 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235552AbhH3CCB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Aug 2021 14:19:01 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CA46C061575
-        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 11:18:08 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id m18so12300927lfl.10
-        for <linux-wireless@vger.kernel.org>; Sun, 29 Aug 2021 11:18:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=6qpYKHPZ3o/6p8b4HBCXmyZQFDSVexANicwSr1f3zk8=;
-        b=RlAWJQuCVBr9KMnjgUj1FsKOb96EzNnNe2t9pCuakhoG0MdwkX3EAKB3YLTm9B7FqN
-         tItSf69UF731foIENk9yrnavs5JQ6u1T+uEGeN2372v64vfO+CSeoqiFZBVJ3d6Caerk
-         qSCxf4HwXwmVpOeTMf4MVxjBQn+NXyktB+FeIGrRD4m3LBjHv0xK4DsR/EzxoBGcppqa
-         avZCdNep2R74Q9alizkMgPOUo2IjxaiFPck2qgMr4nMIiqNwBX3oFTzO/5wRCj4XwCZF
-         bBEU4+CyhLtS3m+sGE/OXGZOf1IJXoqPuZZFnmmBwUT5fU2XDs6LrqPqvYgv3lmkMHru
-         bHzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=6qpYKHPZ3o/6p8b4HBCXmyZQFDSVexANicwSr1f3zk8=;
-        b=O4QdzWC7OBgXjW1Ll7NR8FVnziXQ+NaFmQvEfSArJgCbwmWRp4yuH/Wz4GMOifUHy8
-         aNCRyhUSYpemjUaggJEX9I616b8tRhJmGffs2K1cD7f5f+omLAiG2/0u5dxzcsX6zrvv
-         c1f3cbg8wkpGW5fvsObXz/AHbTaf5SdujhlBgWIUSYQ2cTY+1EL45/3dydaTbE2C/wwL
-         qEB6FK3VtrJ7cYMmTkf3VGZ8AHu5WXrTUZKnZak2WiMjLQMffboJnNVkXy1DOT7+GlPI
-         8o405d2fF7qCqrv0oZuTRZYeD4n+0fCM3nby3NNVfGrPeX1T7a/akhQXEAtbNRW20HNR
-         CMEA==
-X-Gm-Message-State: AOAM530bwZ7NyX3C3fwF4NAiJaZLahCtqVyFaEkvvEesFWOzFcVdkES3
-        m+ziDoqs9RoaBrKMYO7ORvfV2X2Ql0V7eyUJv7Kl6piD+14=
-X-Google-Smtp-Source: ABdhPJypPc6jKFpj69MIcXiza9jRjFIUmH/9BI56NY738+KegFGwan3WXZ4i2Tb1BVjKJ/RLkWEmazpvEoBNn7CkrW0=
-X-Received: by 2002:a05:6512:3b9b:: with SMTP id g27mr462557lfv.556.1630261086691;
- Sun, 29 Aug 2021 11:18:06 -0700 (PDT)
+        Sun, 29 Aug 2021 22:02:01 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 17U20muI6026661, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 17U20muI6026661
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 30 Aug 2021 10:00:48 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Mon, 30 Aug 2021 10:00:47 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 30 Aug 2021 10:00:46 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Mon, 30 Aug 2021 10:00:46 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Colin King <colin.king@canonical.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH][next] rtlwifi: rtl8192de: Fix uninitialized variable place
+Thread-Topic: [PATCH][next] rtlwifi: rtl8192de: Fix uninitialized variable
+ place
+Thread-Index: AQHXnQBql2HJfhVS0UOTvovudWzUtauLSmYw
+Date:   Mon, 30 Aug 2021 02:00:46 +0000
+Message-ID: <9f09efe170cb450aa7a1927af58f005e@realtek.com>
+References: <20210829180503.533934-1-colin.king@canonical.com>
+In-Reply-To: <20210829180503.533934-1-colin.king@canonical.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.146]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzgvMjkg5LiL5Y2IIDExOjE4OjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20210820203531.20706-1-greearb@candelatech.com>
-In-Reply-To: <20210820203531.20706-1-greearb@candelatech.com>
-From:   Janusz Dziedzic <janusz.dziedzic@gmail.com>
-Date:   Sun, 29 Aug 2021 20:17:55 +0200
-Message-ID: <CAFED-j=wek6cuX5wFeTKZFPJZ-hdQ+OoJsf-FKEwtpm49U30Qw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] mt76: mt7915: fix STA mode connection on DFS channels
-To:     Ben Greear <greearb@candelatech.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Rubio Lu <Rubio-DW.Lu@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 08/30/2021 01:49:33
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 165836 [Aug 29 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 457 457 f9912fc467375383fbac52a53ade5bbe1c769e2a
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;patchwork.kernel.org:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/30/2021 01:51:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-pt., 20 sie 2021 o 22:37 <greearb@candelatech.com> napisa=C5=82(a):
->
-> From: Ben Greear <greearb@candelatech.com>
->
-> Only AP, adhoc and mesh mode needs to check CAC.
-> Stations, in particular, do not need this check.
->
-> Signed-off-by: Rubio Lu <Rubio-DW.Lu@mediatek.com>
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> ---
-> v3:  Fix typo in SOB in 1/2, fix rebase typo in 2/2,
->   split long line in 2/2
->  .../net/wireless/mediatek/mt76/mt7915/mac.c   | 38 +++++++++++++++++--
->  1 file changed, 35 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7915/mac.c
-> index 8747e452e114..a6e142d27b60 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-> @@ -2455,6 +2455,32 @@ static int mt7915_dfs_start_radar_detector(struct =
-mt7915_phy *phy)
->         return 0;
->  }
->
-> +struct mt7915_vif_counts {
-> +       u32 mesh;
-> +       u32 adhoc;
-> +       u32 ap;
-> +};
-> +
-> +static void
-> +mt7915_vif_counts(void *priv, u8 *mac, struct ieee80211_vif *vif)
-> +{
-> +       struct mt7915_vif_counts *counts =3D priv;
-> +
-> +       switch (vif->type) {
-> +       case NL80211_IFTYPE_ADHOC:
-> +               counts->adhoc++;
-> +               break;
-> +       case NL80211_IFTYPE_MESH_POINT:
-> +               counts->mesh++;
-> +               break;
-> +       case NL80211_IFTYPE_AP:
-> +               counts->ap++;
-> +               break;
-> +       default:
-> +               break;
-> +       }
-> +}
-> +
->  static int
->  mt7915_dfs_init_radar_specs(struct mt7915_phy *phy)
->  {
-> @@ -2495,6 +2521,7 @@ int mt7915_dfs_init_radar_detector(struct mt7915_ph=
-y *phy)
->         struct mt7915_dev *dev =3D phy->dev;
->         bool ext_phy =3D phy !=3D &dev->phy;
->         int err;
-> +       struct mt7915_vif_counts counts =3D {0};
->
->         if (dev->mt76.region =3D=3D NL80211_DFS_UNSET) {
->                 phy->dfs_state =3D -1;
-> @@ -2519,9 +2546,14 @@ int mt7915_dfs_init_radar_detector(struct mt7915_p=
-hy *phy)
->         phy->dfs_state =3D chandef->chan->dfs_state;
->
->         if (chandef->chan->flags & IEEE80211_CHAN_RADAR) {
-> -               if (chandef->chan->dfs_state !=3D NL80211_DFS_AVAILABLE)
-> -                       return mt7915_dfs_start_radar_detector(phy);
-> -
-> +               if (chandef->chan->dfs_state !=3D NL80211_DFS_AVAILABLE) =
-{
-> +                       ieee80211_iterate_active_interfaces(phy->mt76->hw=
-,
-> +                               IEEE80211_IFACE_ITER_RESUME_ALL,
-> +                               mt7915_vif_counts, &counts);
-> +                       if (counts.ap + counts.adhoc + counts.mesh)
-> +                               mt7915_dfs_start_radar_detector(phy);
-> +                       return 0;
-> +               }
->                 return mt7915_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy,
->                                           MT_RX_SEL0, 0);
->         }
-> --
-> 2.20.1
->
-
-This depends on spec interpretation - when we have multiple ifaces on
-the same radio/channel (STA + APs).
-Maybe this is good time to start discussion about it - how we handle
-DFS and if we should improve.
-
-Some vendors "derive" CAC from STA.
-So, while STA don't need to run CAC and first VIF sta will be
-connected on DFS channel, assume don't need to run CAC for second,
-third ... AP VIF. Still required ISM (In service monitoring, radar
-detection if AP ifaces) but simple skip CAC. This simplify
-implementation a lot for multi-vif (STA+APs) case.
-
-So, maybe we should/could add kconfig for that - CONFIG_DFS_DERIVE_STA_CAC.
-When set, we could simple set NL80211_DFS_AVAILABLE when STA will
-connect on DFS channel - then any other APs we will add on the same
-channel will not require CAC, radar detection still required.
-
-
-Regarding STA connection on DFS channel, I agree - today MT76x have a
-bug for that (eg. single VIF station).
-I have much older code and fix it simplest way I could.
-
---- a/mt7615/mac.c
-+++ b/mt7615/mac.c
-@@ -2034,6 +2034,11 @@ static int mt7615_dfs_start_radar_detect
-  phy->rdd_state |=3D BIT(1);
-  }
-
-+   /* end CAC - upper layer will care about it, lock tx, beacon setup */
-+   err =3D mt7615_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy, MT_RX_SEL0, 0);
-+   if (err < 0)
-+       return err;
-+
-  return 0;
- }
-
-@@ -2104,11 +2109,7 @@ int mt7615_dfs_init_radar_detector(struc
-  phy->dfs_state =3D chandef->chan->dfs_state;
-
-  if (chandef->chan->flags & IEEE80211_CHAN_RADAR) {
--   if (chandef->chan->dfs_state !=3D NL80211_DFS_AVAILABLE)
--     return mt7615_dfs_start_radar_detector(phy);
--
--   return mt7615_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy,
--   MT_RX_SEL0, 0);
-+   return mt7615_dfs_start_radar_detector(phy);
-  }
-
- stop:
-
-BR
-Janusz
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IENvbGluIEtpbmcgW21haWx0
+bzpjb2xpbi5raW5nQGNhbm9uaWNhbC5jb21dDQo+IFNlbnQ6IE1vbmRheSwgQXVndXN0IDMwLCAy
+MDIxIDI6MDUgQU0NCj4gVG86IFBrc2hpaDsgS2FsbGUgVmFsbzsgRGF2aWQgUyAuIE1pbGxlcjsg
+SmFrdWIgS2ljaW5za2k7IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZzsNCj4gbmV0ZGV2
+QHZnZXIua2VybmVsLm9yZw0KPiBDYzoga2VybmVsLWphbml0b3JzQHZnZXIua2VybmVsLm9yZzsg
+bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBbUEFUQ0hdW25leHRdIHJ0
+bHdpZmk6IHJ0bDgxOTJkZTogRml4IHVuaW5pdGlhbGl6ZWQgdmFyaWFibGUgcGxhY2UNCj4gDQo+
+IEZyb206IENvbGluIElhbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+IA0KPiBJ
+biB0aGUgY2FzZSB3aGVyZSBjaG5sIDw9IDE0IHZhcmlhYmxlIHBsYWNlIGlzIG5vdCBpbml0aWFs
+aXplZCBhbmQNCj4gdGhlIGZ1bmN0aW9uIHJldHVybnMgYW4gdW5pbml0aWFsaXplZCB2YWx1ZS4g
+VGhpcyBmaXhlcyBhbiBlYXJsaWVyDQo+IGNsZWFudXAgd2hlcmUgSSBpbnRyb2R1Y2VkIHRoaXMg
+YnVnLiBNeSBiYWQuDQo+IA0KPiBBZGRyZXNzZXMtQ292ZXJpdHk6ICgiVW5pbml0aWFsaXplZCBz
+Y2FsYXIgdmFyaWFibGUiKQ0KPiBGaXhlczogMzY5OTU2YWU1NzIwICgicnRsd2lmaTogcnRsODE5
+MmRlOiBSZW1vdmUgcmVkdW5kYW50IHZhcmlhYmxlIGluaXRpYWxpemF0aW9ucyIpDQo+IFNpZ25l
+ZC1vZmYtYnk6IENvbGluIElhbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+IC0t
+LQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkZS9waHku
+YyB8IDIgKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigt
+KQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lm
+aS9ydGw4MTkyZGUvcGh5LmMNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdp
+ZmkvcnRsODE5MmRlL3BoeS5jDQo+IGluZGV4IDhhZTY5ZDkxNDMxMi4uYjMyZmE3YTc1ZjE3IDEw
+MDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5
+MmRlL3BoeS5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9y
+dGw4MTkyZGUvcGh5LmMNCj4gQEAgLTg5Niw3ICs4OTYsNyBAQCBzdGF0aWMgdm9pZCBfcnRsOTJk
+X2NjeHBvd2VyX2luZGV4X2NoZWNrKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LA0KPiANCj4gIHN0
+YXRpYyB1OCBfcnRsOTJjX3BoeV9nZXRfcmlnaHRjaG5scGxhY2UodTggY2hubCkNCj4gIHsNCj4g
+LQl1OCBwbGFjZTsNCj4gKwl1OCBwbGFjZSA9IGNobmw7DQo+IA0KPiAgCWlmIChjaG5sID4gMTQp
+IHsNCj4gIAkJZm9yIChwbGFjZSA9IDE0OyBwbGFjZSA8IHNpemVvZihjaGFubmVsNWcpOyBwbGFj
+ZSsrKSB7DQoNCk5hdGhhbiBDaGFuY2VsbG9yIGhhcyBzZW50IGEgcGF0Y2ggWzFdIHRvIGZpeCB0
+aGlzLCBhbmQgdGhlIHBhdGNoIA0KaGFzIGJlZW4gbWVyZ2VkLg0KDQpbMV0gaHR0cHM6Ly9wYXRj
+aHdvcmsua2VybmVsLm9yZy9wcm9qZWN0L2xpbnV4LXdpcmVsZXNzL3BhdGNoLzIwMjEwODIzMjIy
+MDE0Ljc2NDU1Ny0xLW5hdGhhbkBrZXJuZWwub3JnLw0KDQotLQ0KUGluZy1LZQ0KDQo=
