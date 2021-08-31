@@ -2,80 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5662C3FC4F6
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Aug 2021 11:53:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E71313FC557
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Aug 2021 12:28:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240582AbhHaJYh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Aug 2021 05:24:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51084 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239716AbhHaJYh (ORCPT
+        id S240816AbhHaJ6r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Aug 2021 05:58:47 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:51384 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S239629AbhHaJ6r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Aug 2021 05:24:37 -0400
-Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DAE7C061575
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Aug 2021 02:23:42 -0700 (PDT)
-Received: by mail-ua1-x942.google.com with SMTP id g2so9349398uad.4
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Aug 2021 02:23:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=4XGsywAMEzxy/B2u56IdqAZLT6HKv7aFxn8n6i1vg/0=;
-        b=YX3gUNd1owTPidYsgaKjrB7AR4G+mEJUGq+6Liz7UzLzG1ZXDuFbOe4uAdgIWZrqor
-         C4kO353cBwhzxdCriFbDOsGxAVklf27apaMtf1Q3M5fCQ6Ko2Ne6rcXep2aFj/OY4uP2
-         +KA6VQNNguw5bfQ7BIFel1EAD4mZcyKB/Y4qnPmDa9BdkG3E2NsU21vyAWtwPtWtVfO2
-         thORHDeMRO4uR+kWzd7XAS0wMMSaBdU4DSl6L/Y4jZhTmt6I/6Nrg9xorhvE7Hq/VjIn
-         r46psrs35oXfL7lt/gmKtw9Lj4UNGV3Ch3iQIM2F33DcqnBe5ofghDM8hGzjPiYv1JHY
-         0Guw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=4XGsywAMEzxy/B2u56IdqAZLT6HKv7aFxn8n6i1vg/0=;
-        b=AWYQMbSept4Xs7wNslSOc/OLl3xLJfBrRnmToPDLFstmn1gvvXcesErcqzAda8B3u3
-         G7E0OB66qevW8SpOBCZ+34GqZFdqu2rv75ucep2TmdY+uBBAA1KkzH4/dczoq3E/1UN/
-         Ab0bSxr1Zpos55QLiiHjFNYZczxE3cf5NDV1yv/48Hlqljd/foxVkH7bY4kahd/I0xIW
-         b4cZ0XbME5eTnDJsFNKnv5Uin3TiLztRi+tLLU9BYM6CQaWvt2RS4hoq6SqOwHYR2T5L
-         1QTHQujpMr+Vfn3fk5SmG6yfX8XEVH/jpQH847CrWTyvRDxc6Cc0N5/s3Z4xOnNkph7I
-         0t2A==
-X-Gm-Message-State: AOAM5304vkbSeyKzMXY5HLz+9umlOV93eygwqim8AMP3gU5S+E4bPiOT
-        qE9Ne15BXuZffrvNazNl2qHo1+Dr3Pxjhu8aSA==
-X-Google-Smtp-Source: ABdhPJz48KMhWFUM909H72enyw35fpDjH1lfKezFgk9OnJONGEShk5POhGS5dfqF1DXtu12GE0u7E2+lIquC4+39Eu4=
-X-Received: by 2002:ab0:2e8a:: with SMTP id f10mr17977051uaa.19.1630401821316;
- Tue, 31 Aug 2021 02:23:41 -0700 (PDT)
+        Tue, 31 Aug 2021 05:58:47 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1mL0Wa-0002eK-CP; Tue, 31 Aug 2021 12:57:49 +0300
+Message-ID: <99e8d907c34295f3a00e052b2370ea19a29580df.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kyle@infradead.org" <kyle@infradead.org>,
+        "jwboyer@kernel.org" <jwboyer@kernel.org>,
+        "ben@decadent.org.uk" <ben@decadent.org.uk>,
+        golan.ben.ami@intel.com
+Date:   Tue, 31 Aug 2021 12:57:46 +0300
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-XXYxUiTjSb9nJ5bD4kmY"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
-Received: by 2002:a67:d305:0:0:0:0:0 with HTTP; Tue, 31 Aug 2021 02:23:41
- -0700 (PDT)
-Reply-To: smitpaul440@gmail.com
-From:   Maria Ben <davidwilson.agent23@gmail.com>
-Date:   Tue, 31 Aug 2021 10:23:41 +0100
-Message-ID: <CADJT-Ly4koBp1VX012gyAHUNJSWZES182z=9wB_aguqdkeLD_A@mail.gmail.com>
-Subject: ATTENTION BENEFICIARY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: pull request: iwlwifi firmware updates 2021-08-31
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Congratulations
 
-We have been having a meetings for the past (6) months United Nations
-Office have agreed to Compensate you with sum of $1.5 million United
-States Dollars and the fund have been arrange through ATM Visa Card
-which is the latest instruction from Mr.Ant=C3=B3nio Guterres UN Secretary
-General
+--=-XXYxUiTjSb9nJ5bD4kmY
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Therefore be advice to contact our representative Mr.Smith Paul for
-the shipping of your ATM Visa Card kindly forward your full delivery
-details to him:Email: (smithpaul4403@gmail.com) +22990411776
+Hi,
 
-1 Full Name: .............
-2 Country:...........
-3 Delivery Address:...........
-4 Telephone:...........
 
-Thanks Maria Ben
-CC: David Malpass World Bank president
-CC: Ant=C3=B3nio Guterres UN Secretary General
+This pull request contains a single patch that adds firmware binaries
+to support one more device in iwlwifi, So SOCs with Gf radio modules.
+
+Please pull or let me know if there are any issues.
+
+--
+Cheers,
+Luca.
+
+
+The following changes since commit 2e271f23ce4787b3598753f743bb75b8a2da3c61=
+:
+
+  rtl_bt: Update RTL8852A BT USB firmware to 0xD9A9_127B (2021-08-30 19:27:=
+58 -0400)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git =
+tags/iwlwifi-fw-2021-08-31
+
+for you to fetch changes up to 1418f75c63fbc72de41aba61376ea30d199cd23e:
+
+  iwlwifi: add FW for new So/Gf device type (2021-08-31 12:30:18 +0300)
+
+----------------------------------------------------------------
+Add iwlwifi firmwares for so-a0-gf-a0.
+
+----------------------------------------------------------------
+Luca Coelho (1):
+      iwlwifi: add FW for new So/Gf device type
+
+ WHENCE                       |   5 +++++
+ iwlwifi-so-a0-gf-a0-64.ucode | Bin 0 -> 1515812 bytes
+ iwlwifi-so-a0-gf-a0.pnvm     | Bin 0 -> 41804 bytes
+ 3 files changed, 5 insertions(+)
+ create mode 100644 iwlwifi-so-a0-gf-a0-64.ucode
+ create mode 100644 iwlwifi-so-a0-gf-a0.pnvm
+
+
+--=-XXYxUiTjSb9nJ5bD4kmY
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmEt/RoACgkQoUecoho8
+xfoJ3RAArWPD6LivmyWDAnOxPaGSCE8VWtOuypW9fCjfYu0bux5AsyMzig9REGN+
+vYV9kJz9wsglATyyAZOg93DtfKFT36hXr8e8Jd1o2CVE4h2JvcNqxfQhqTVZKPjw
+UHfGWBx46KlUMGpL3hiTrjrmPAJkB123NnLny9vYdwdy7isg70ZTvLDhvYBvdZ1s
+s+Zxvk2V4u76IBuya5kQQM26Ix6yLVxZN30cszE7VYi38KoYZLNhOfkJx6vpdmP2
+kL3MN5b26mMYThvr9rQq2RCFumeA8ZnIn97CRC0u/QQJ38Cy4D54Inu7OtSNkngI
+axEEBctDZ1n5G2ljkjasFj2E/AkGUclbAVPqydeVzvl8Ge31mP8dr8BhsBU0BHC6
+HZ6fkO5Af1gnYSuPn7D9Tc30Rayn8PTPvG+g98w+2gYhwxoVaGjYAPD/kgfk7eun
+ZOL7VS+HMHdsZcPtjx0PMy4v/RYquAKw9phrWdNhqw8mHcO1TGrwtrjSspiq6aMV
+jCJYAcYnsEHeRwb7I1B76cvTc4GExhldPR2qaGrxLYPZcpZKwK0nkF2lxrxNKNYY
+rDJM+5fCp84XlllCgNHy6E+tLN4m+EUJb2FUYwsKjRF6lk+r1LEQCj1PQdS/A04P
+aUMnPbINNP5LmqhrwcPcTB5wlWGK7hbONJzhECN+dAc/FBdd6wA=
+=3y+H
+-----END PGP SIGNATURE-----
+
+--=-XXYxUiTjSb9nJ5bD4kmY--
+
