@@ -2,172 +2,225 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D9873FC638
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Aug 2021 13:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D28E63FC6E3
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Aug 2021 14:06:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241032AbhHaKov (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Aug 2021 06:44:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40534 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238567AbhHaKou (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Aug 2021 06:44:50 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A34EC061575;
-        Tue, 31 Aug 2021 03:43:55 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id h1so30917173ljl.9;
-        Tue, 31 Aug 2021 03:43:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=NCyZges4LSfBygkjB5WR0itgY49P3E5xevDMIcceVSw=;
-        b=TbaAt/f8GhDRt10oNppg6QI3MVQqA/zfWAnJYdBjBHyAthBQ4H3WbjIlWEfo9CeNQT
-         GJWGCq8lEv7UTme0Kx/8MitQ+XZuVW+m8BC7ZwVqRmDw9pU64aZMVLZrft0ZyhdUDZRy
-         nPHF/BV4MNxm60TtJLMr5uCvrFfgpA92rQP0el+BYhTFe2I1kJmmb2Pef3VXF2J5wK97
-         HMkNAsPK1tp/QMZx3DS7NIvsDRdhPEwuje2er89BoyS38Ts7KWBg1h/4tSjpBvJOZVQ2
-         h7bdLns+PA3bQIropTOxvbUEHsIb1ytBhNLXd/4umx6Abino9rYKO3KFMM/MbT8Tv+a6
-         38Fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=NCyZges4LSfBygkjB5WR0itgY49P3E5xevDMIcceVSw=;
-        b=a94A/dMYEG3SqoLLUbbwGKIy1GPQ1O/zOqTsh/EVB2GOonpvBK4yl1O1HWDniiwKjx
-         3QmPwA3nexsym30OqR4uoP/AL3q2GCDVbdJPq/EUT4vD45vhwn2YR7b4ZpG6XahMK4kY
-         O6HjI3UNkKhgYnjeLFszJQeI4qjEb/XAUJ4BEd9igCFcjMPq22spfCGRm6E/rdwgpVAs
-         aci14Iyz7HKSCQ/p5YRsYEr7EYAMUiTj+ouKps3m1iwKB2EUmK5403BE6EwUnQHA2Ihx
-         aElP0Ru1csA7pFegVjBH2qGde1GF8EO1iqanP79opISGQEs0FtWYxAqqULC0/sa7LSpD
-         6nsA==
-X-Gm-Message-State: AOAM530FY3DuFBuRYka+R8QQF1pDdzgNoIg2UwYM3eN1UTsySw58EItU
-        X6QCjVNOpN5OdSs5682eWFYpZQP79k4=
-X-Google-Smtp-Source: ABdhPJzqEA7GugBUX4eDLND3dXUloMtXUS1htfAi8jRxzVIAh+95KqQOtrbCJdi3ATwfBMq6KrG0Xw==
-X-Received: by 2002:a2e:9915:: with SMTP id v21mr24522204lji.108.1630406633234;
-        Tue, 31 Aug 2021 03:43:53 -0700 (PDT)
-Received: from localhost.localdomain ([46.61.204.60])
-        by smtp.gmail.com with ESMTPSA id k23sm2147066ljg.73.2021.08.31.03.43.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Aug 2021 03:43:52 -0700 (PDT)
-Subject: Re: [PATCH] net: ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
-From:   Pavel Skripkin <paskripkin@gmail.com>
-To:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
-        davem@davemloft.net, vasanth@atheros.com, senthilkumar@atheros.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
-        linux-kernel@vger.kernel.org
-References: <20210804194841.14544-1-paskripkin@gmail.com>
- <a490dcec-b14f-e8c8-fbb0-a480892c1def@gmail.com>
-Message-ID: <4119f4fa-31b0-66bc-a0e2-373b2e1c449e@gmail.com>
-Date:   Tue, 31 Aug 2021 13:43:51 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S241581AbhHaL4f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Aug 2021 07:56:35 -0400
+Received: from mga04.intel.com ([192.55.52.120]:9060 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231628AbhHaL4e (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 31 Aug 2021 07:56:34 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10092"; a="216605705"
+X-IronPort-AV: E=Sophos;i="5.84,366,1620716400"; 
+   d="scan'208";a="216605705"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2021 04:55:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,366,1620716400"; 
+   d="scan'208";a="689939859"
+Received: from lkp-server01.sh.intel.com (HELO 4fbc2b3ce5aa) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 31 Aug 2021 04:55:38 -0700
+Received: from kbuild by 4fbc2b3ce5aa with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mL2Mb-0006Sk-MI; Tue, 31 Aug 2021 11:55:37 +0000
+Date:   Tue, 31 Aug 2021 19:54:45 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:pending] BUILD SUCCESS
+ a1cf8ff2eac95fbdaef2b783958a1f872298a717
+Message-ID: <612e1885.0TrfEe0zReBOiOzQ%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <a490dcec-b14f-e8c8-fbb0-a480892c1def@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/4/21 10:57 PM, Pavel Skripkin wrote:
-> On 8/4/21 10:48 PM, Pavel Skripkin wrote:
->> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb(). The
->> problem was in incorrect htc_handle->drv_priv initialization.
->> 
->> Probable call trace which can trigger use-after-free:
->> 
->> ath9k_htc_probe_device()
->>    /* htc_handle->drv_priv = priv; */
->>    ath9k_htc_wait_for_target()      <--- Failed
->>    ieee80211_free_hw()		   <--- priv pointer is freed
->> 
->> <IRQ>
->> ...
->> ath9k_hif_usb_rx_cb()
->>    ath9k_hif_usb_rx_stream()
->>     RX_STAT_INC()		<--- htc_handle->drv_priv access
->> 
->> In order to not add fancy protection for drv_priv we can move
->> htc_handle->drv_priv initialization at the end of the
->> ath9k_htc_probe_device() and add helper macro to make
->> all *_STAT_* macros NULL save.
->> 
->> Also, I made whitespaces clean ups in *_STAT_* macros definitions
->> to make checkpatch.pl happy.
->> 
->> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
->> Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotmail.com
->> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
->> ---
->> 
->> Hi, ath9k maintainer/developers!
->> 
->> I know, that you do not like changes, that wasn't tested on real
->> hardware. I really don't access to this one, so I'd like you to test it on
->> real hardware piece, if you have one. At least, this patch was tested by
->> syzbot [1]
->> 
->> [1] https://syzkaller.appspot.com/bug?id=6ead44e37afb6866ac0c7dd121b4ce07cb665f60
->> 
->> ---
->>   drivers/net/wireless/ath/ath9k/htc.h          | 11 ++++++-----
->>   drivers/net/wireless/ath/ath9k/htc_drv_init.c |  3 ++-
->>   2 files changed, 8 insertions(+), 6 deletions(-)
->> 
->> diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
->> index 0a1634238e67..c16b2a482e83 100644
->> --- a/drivers/net/wireless/ath/ath9k/htc.h
->> +++ b/drivers/net/wireless/ath/ath9k/htc.h
->> @@ -326,11 +326,12 @@ static inline struct ath9k_htc_tx_ctl *HTC_SKB_CB(struct sk_buff *skb)
->>   
->>   #ifdef CONFIG_ATH9K_HTC_DEBUGFS
->>   
->> -#define TX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
->> -#define TX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
->> -#define RX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
->> -#define RX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
->> -#define CAB_STAT_INC   priv->debug.tx_stats.cab_queued++
->> +#define __STAT_SAVE(expr)	(hif_dev->htc_handle->drv_priv ? (expr) : 0)
->> +#define TX_STAT_INC(c)		__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
->> +#define TX_STAT_ADD(c, a)	__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
->> +#define RX_STAT_INC(c)		__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
->> +#define RX_STAT_ADD(c, a)	__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
->> +#define CAB_STAT_INC		(priv->debug.tx_stats.cab_queued++)
->>   
->>   #define TX_QSTAT_INC(q) (priv->debug.tx_stats.queue_stats[q]++)
->>   
->> diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_init.c b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
->> index ff61ae34ecdf..07ac88fb1c57 100644
->> --- a/drivers/net/wireless/ath/ath9k/htc_drv_init.c
->> +++ b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
->> @@ -944,7 +944,6 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
->>   	priv->hw = hw;
->>   	priv->htc = htc_handle;
->>   	priv->dev = dev;
->> -	htc_handle->drv_priv = priv;
->>   	SET_IEEE80211_DEV(hw, priv->dev);
->>   
->>   	ret = ath9k_htc_wait_for_target(priv);
->> @@ -965,6 +964,8 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
->>   	if (ret)
->>   		goto err_init;
->>   
->> +	htc_handle->drv_priv = priv;
->> +
->>   	return 0;
->>   
->>   err_init:
->> 
-> 
-> Added missing LKML in CC. Sorry for confusion.
-> 
-> 
-Any chance to review this patch? Thanks
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
+branch HEAD: a1cf8ff2eac95fbdaef2b783958a1f872298a717  Merge commit 'e257d969f36503b8eb1240f32653a1afb3109f86' of git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next into pending
 
+elapsed time: 3004m
 
+configs tested: 166
+configs skipped: 3
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-With regards,
-Pavel Skripkin
+gcc tested configs:
+arm64                            allyesconfig
+arm64                               defconfig
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20210831
+arc                 nsimosci_hs_smp_defconfig
+m68k                          atari_defconfig
+arm                         s3c2410_defconfig
+sh                          rsk7201_defconfig
+m68k                          hp300_defconfig
+sh                          kfr2r09_defconfig
+arm                       versatile_defconfig
+m68k                                defconfig
+xtensa                  nommu_kc705_defconfig
+powerpc               mpc834x_itxgp_defconfig
+m68k                       m5249evb_defconfig
+powerpc                 canyonlands_defconfig
+sh                           sh2007_defconfig
+mips                         cobalt_defconfig
+arm                         hackkit_defconfig
+nios2                         3c120_defconfig
+arm                            xcep_defconfig
+arm                            dove_defconfig
+mips                     cu1830-neo_defconfig
+alpha                            alldefconfig
+sh                            titan_defconfig
+mips                       bmips_be_defconfig
+sh                           se7722_defconfig
+arc                         haps_hs_defconfig
+sh                             espt_defconfig
+sh                        edosk7705_defconfig
+arm                          imote2_defconfig
+powerpc                   microwatt_defconfig
+sh                            shmin_defconfig
+powerpc                 mpc836x_mds_defconfig
+m68k                             alldefconfig
+mips                           ip27_defconfig
+sh                          r7780mp_defconfig
+powerpc                 mpc8560_ads_defconfig
+sh                            hp6xx_defconfig
+arm                        oxnas_v6_defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a005-20210831
+x86_64               randconfig-a001-20210831
+x86_64               randconfig-a003-20210831
+x86_64               randconfig-a002-20210831
+x86_64               randconfig-a004-20210831
+x86_64               randconfig-a006-20210831
+i386                 randconfig-a005-20210831
+i386                 randconfig-a002-20210831
+i386                 randconfig-a003-20210831
+i386                 randconfig-a006-20210831
+i386                 randconfig-a004-20210831
+i386                 randconfig-a001-20210831
+x86_64               randconfig-a014-20210830
+x86_64               randconfig-a015-20210830
+x86_64               randconfig-a013-20210830
+x86_64               randconfig-a016-20210830
+x86_64               randconfig-a012-20210830
+x86_64               randconfig-a011-20210830
+x86_64               randconfig-a014-20210829
+x86_64               randconfig-a016-20210829
+x86_64               randconfig-a015-20210829
+x86_64               randconfig-a012-20210829
+x86_64               randconfig-a013-20210829
+x86_64               randconfig-a011-20210829
+i386                 randconfig-a011-20210829
+i386                 randconfig-a016-20210829
+i386                 randconfig-a012-20210829
+i386                 randconfig-a014-20210829
+i386                 randconfig-a013-20210829
+i386                 randconfig-a015-20210829
+i386                 randconfig-a016-20210830
+i386                 randconfig-a011-20210830
+i386                 randconfig-a015-20210830
+i386                 randconfig-a014-20210830
+i386                 randconfig-a012-20210830
+i386                 randconfig-a013-20210830
+arc                  randconfig-r043-20210829
+riscv                randconfig-r042-20210829
+s390                 randconfig-r044-20210829
+s390                 randconfig-r044-20210830
+arc                  randconfig-r043-20210830
+riscv                randconfig-r042-20210830
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+i386                 randconfig-c001-20210831
+s390                 randconfig-c005-20210831
+riscv                randconfig-c006-20210831
+powerpc              randconfig-c003-20210831
+mips                 randconfig-c004-20210831
+arm                  randconfig-c002-20210831
+x86_64               randconfig-c007-20210831
+x86_64               randconfig-a001-20210829
+x86_64               randconfig-a006-20210829
+x86_64               randconfig-a005-20210829
+x86_64               randconfig-a003-20210829
+x86_64               randconfig-a004-20210829
+x86_64               randconfig-a002-20210829
+x86_64               randconfig-a005-20210830
+x86_64               randconfig-a001-20210830
+x86_64               randconfig-a003-20210830
+x86_64               randconfig-a002-20210830
+x86_64               randconfig-a004-20210830
+x86_64               randconfig-a006-20210830
+x86_64               randconfig-a014-20210831
+x86_64               randconfig-a015-20210831
+x86_64               randconfig-a013-20210831
+x86_64               randconfig-a016-20210831
+x86_64               randconfig-a012-20210831
+x86_64               randconfig-a011-20210831
+i386                 randconfig-a016-20210831
+i386                 randconfig-a011-20210831
+i386                 randconfig-a015-20210831
+i386                 randconfig-a014-20210831
+i386                 randconfig-a012-20210831
+i386                 randconfig-a013-20210831
+s390                 randconfig-r044-20210831
+hexagon              randconfig-r041-20210831
+hexagon              randconfig-r045-20210831
+riscv                randconfig-r042-20210831
+hexagon              randconfig-r041-20210829
+hexagon              randconfig-r045-20210829
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
