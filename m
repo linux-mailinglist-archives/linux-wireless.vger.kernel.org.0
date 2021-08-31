@@ -2,61 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BD183FC732
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Aug 2021 14:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B7533FC738
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Aug 2021 14:29:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232137AbhHaMTH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Aug 2021 08:19:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33858 "EHLO
+        id S238156AbhHaMUH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Aug 2021 08:20:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229816AbhHaMTG (ORCPT
+        with ESMTP id S233409AbhHaMUE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Aug 2021 08:19:06 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57A39C061760
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Aug 2021 05:18:11 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id d2so14360199qto.6
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Aug 2021 05:18:11 -0700 (PDT)
+        Tue, 31 Aug 2021 08:20:04 -0400
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0B1AC06175F
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Aug 2021 05:19:09 -0700 (PDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id s16so8324256qvt.13
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Aug 2021 05:19:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=mojatatu-com.20150623.gappssmtp.com; s=20150623;
         h=from:subject:to:cc:message-id:date:user-agent:mime-version
          :content-language:content-transfer-encoding;
         bh=Tu4+uxp4XyX6aEhdHL/PmBEnSH2qrVBxKdrE8vdWq/o=;
-        b=xK+DfoI9N93Yh6XrQT8RzbaSazNDgeIEY2V59Sm0StmIQ6wo4l+OfOJtAdCjXV+uCa
-         kDqe3tmZi/EeyD9ZAvEhb0OUAGRe6jQkD79LsyqV+ZBnHojErQckiKe2ztJvLSLTA/aE
-         MufAaQIR3Fb5UggnHfIyWEGqDrQ/vQbO6lGNIlDy6LN7LG6RdlkRQfdt0ImO41W3kcpT
-         M4IjCsWN1kBVyrn/q/NswcIJUX9HVbgTYyWut6J/8DPJrRJ8GJCqbqpQnLEWqiLZ8SoL
-         Uoi7FvyMlJtbvN8PI9CxQIgb1jkVxBQngEeu1aJHbmijZZ+i9NUJVyYQ4Ob8L0SC1gyO
-         V4+Q==
+        b=dy8HB4lzJSL52K/wsljPKtLha6ge0BpgmR9KcByNe0gN9jMRWNfopow7HgKIYKdqFt
+         iCDyMJWv4CSdJPEI3na5JnWZ733ZKtN2B9KF6hN/UXEbCa9YkXYlciDSZEbMtda0Bojs
+         hzjqmURkWWZ1etGCombRRoGT1cb3y2CefKHtr4dGaiN9o0aEnF8w8ueO8HflKxMzwT7z
+         YY/4Z9ktssn5m4q2WFU1F1MSGlkC8einyb5qEo6/gmws6gqFOe+BUt5NBZHB3sVxbGbM
+         Bgz4UO0nxlrVFP814kpaEeJ/50W4eIvJqvTtyCkIFjsOnOuYJnh0yOrQzRRNBXE2h7Ks
+         wsew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
          :mime-version:content-language:content-transfer-encoding;
         bh=Tu4+uxp4XyX6aEhdHL/PmBEnSH2qrVBxKdrE8vdWq/o=;
-        b=Q8vvR4jPEH7pwZGcpr73+mbGAEuzcqSWpXswayElvC/qWKwEiQvYuxP3gGHIl8DxMa
-         /C2JpbAw77x1UEERoSz4zWeA23DQuJaikxpMHrXuyByseBwo1yuRpCZ/fAOCbb6xsEdb
-         jlJeBVn1kXKhEFi1MgOouU0SVT+V5zsqmnmn/t02Vkpgyytm0pruY3m0AEbJkYniwtFg
-         sSHn5rqr0lWMCuYYhHUW22CduLDGQ67ywDlpRldlC/96gsxR0NPQk0rGDeJTFEvNJPbI
-         6bXQsTZ8iv4xjCz3apVe9soOz1MgqiHCQyQyeEeHtdtU5QCKzzgEd1dtzMESEWVfRZ2r
-         fL2g==
-X-Gm-Message-State: AOAM530Vt5IQm9tZhapcoA8JB+LmAmw+1rkBBgXVNT3dY3FomX/ut3b+
-        yemSqh3bF9t0crppebjOOfqGk9pot9G9ew==
-X-Google-Smtp-Source: ABdhPJxr3llu+9b2eKzBDY/xfPMRJ0ZbGzZ7C6K2RqOfFd67Bnw2BlSLl/LjjUfJdI2KBswVm1iv9g==
-X-Received: by 2002:a05:622a:1908:: with SMTP id w8mr2407784qtc.269.1630412290585;
-        Tue, 31 Aug 2021 05:18:10 -0700 (PDT)
+        b=tp6Ga7FXnCmeeBBuLo1Gtb6lCON0PqkFOY5/aquqA4NYcS6AWyH7GgxHmYv4nuybgz
+         n+1Ve/78++Rg5Te7BQJ1q0UHFjHh30Maw4SBiz8wX8/u1sAgSPYz4D/CInVKBKbE7j4F
+         XpDq8ETC5eIPJ3/mKUFvmDaFjmWoOPZHYg0EjL13ZGflp+JWd2V509NjRJrzQxb9DMcm
+         cQ33/uvQW1Kp6dfe2LqdMP6imPELwEZ33Bgze40+Zkuu2rwWPaMLDlEh/IQKbz2l8TWr
+         xV6hEaFizeoAOHydO9bdBPJorKP/M8TtytOJnKZkcEF9szPhboFdDO1xwBcArsKMOqVO
+         H8Dw==
+X-Gm-Message-State: AOAM530kUOhN3+l4Ti3qCc/2Yh1vW1WqBoT7DVRr/tFnrld8HCuC7qua
+        T8/ZD6bUPJ/AJDt+oif38Z+IRA==
+X-Google-Smtp-Source: ABdhPJwkgwmWfLtqZzAkBzK+oIstAvzkmI9KLmkiZ+WpWW303JdtMGdUZLWacSUVEt7A6h7gzc81cQ==
+X-Received: by 2002:a0c:f382:: with SMTP id i2mr28575024qvk.43.1630412348785;
+        Tue, 31 Aug 2021 05:19:08 -0700 (PDT)
 Received: from [192.168.1.79] (bras-base-kntaon1617w-grc-28-184-148-47-47.dsl.bell.ca. [184.148.47.47])
-        by smtp.googlemail.com with ESMTPSA id p1sm13822151qkh.115.2021.08.31.05.18.09
+        by smtp.googlemail.com with ESMTPSA id p12sm9883818qtw.54.2021.08.31.05.19.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Aug 2021 05:18:10 -0700 (PDT)
+        Tue, 31 Aug 2021 05:19:08 -0700 (PDT)
 From:   Jamal Hadi Salim <jhs@mojatatu.com>
-Subject: Netdevconf 0x15 slides and papers up
+Subject: Netdevconf 0x15 videos, slides and papers up
 To:     people <people@netdevconf.org>
 Cc:     lwn@lwn.net, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
         netfilter-devel@vger.kernel.org,
         linux-wireless <linux-wireless@vger.kernel.org>,
         lartc@vger.kernel.org
-Message-ID: <12a6899a-3d65-86c9-8610-c1b171d45cb6@mojatatu.com>
-Date:   Tue, 31 Aug 2021 08:18:09 -0400
+Message-ID: <6ee8f309-d8c6-1938-ad7d-477949a59d3c@mojatatu.com>
+Date:   Tue, 31 Aug 2021 08:19:07 -0400
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
