@@ -2,102 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7A6A3FC5F6
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Aug 2021 13:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D9873FC638
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Aug 2021 13:33:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241149AbhHaKic (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Aug 2021 06:38:32 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:49262 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241098AbhHaKiX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Aug 2021 06:38:23 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1630406248; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=qzDTJsu+ue9QOjLN365DiRha10XR/lBgrs4CbIzNUto=; b=DlZoWMGkQAUBlH59KEE8jxBKnjX899VjgKvXLoqoO1JN1nbt8VH9/9NgyCvdrwGZ6p7BKvcy
- OSufJz7FZTlwSynGq9ziWIzNgusakcA1GcotX9EBu7/d2XeEnWlqa0fAmXNImwIqbirg0pIK
- vs7P/VGVmU5XASZikMMa+FMAouE=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 612e065f4f8fcf705426263c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 31 Aug 2021 10:37:19
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 046D3C4361B; Tue, 31 Aug 2021 10:37:19 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1320CC4338F;
-        Tue, 31 Aug 2021 10:37:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 1320CC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Nicolas Schichan <nschichan@freebox.fr>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Linus Torvalds <torvalds@linuxfoundation.org>,
-        Wren Turkal <wt@penguintechs.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, regressions@lists.linux.dev,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Hemant Kumar <hemantk@codeaurora.org>,
-        Loic Poulain <loic.poulain@linaro.org>
-Subject: Re: [regression] Re: 5.14 rc6 broken for QCA6390 on Dell XPS 13 9310
-References: <a8cddf24-ecfc-088e-27f4-98cbbb5fb67c@penguintechs.org>
-        <87y28sqq4l.fsf@codeaurora.org>
-        <843e7689-fa1e-441b-c49a-ed7291046d5f@freebox.fr>
-        <87tujgqcth.fsf@codeaurora.org> <87mtp47073.fsf_-_@codeaurora.org>
-        <YSenaxWzxRkYkucv@kroah.com>
-        <20210826074850.16768dee@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <87eeag6yjr.fsf@codeaurora.org> <87y28o5cw4.fsf@codeaurora.org>
-        <20210826111207.364d0ba5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <87sfyv5abg.fsf@codeaurora.org>
-        <CAHNNwZD2dLC9dWui7kAEg8R04U0LVdQJMJCyugkHA6rdfRwGLQ@mail.gmail.com>
-Date:   Tue, 31 Aug 2021 13:37:11 +0300
-In-Reply-To: <CAHNNwZD2dLC9dWui7kAEg8R04U0LVdQJMJCyugkHA6rdfRwGLQ@mail.gmail.com>
-        (Nicolas Schichan's message of "Mon, 30 Aug 2021 18:04:04 +0200")
-Message-ID: <87sfyp3noo.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S241032AbhHaKov (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Aug 2021 06:44:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40534 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238567AbhHaKou (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 31 Aug 2021 06:44:50 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A34EC061575;
+        Tue, 31 Aug 2021 03:43:55 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id h1so30917173ljl.9;
+        Tue, 31 Aug 2021 03:43:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=NCyZges4LSfBygkjB5WR0itgY49P3E5xevDMIcceVSw=;
+        b=TbaAt/f8GhDRt10oNppg6QI3MVQqA/zfWAnJYdBjBHyAthBQ4H3WbjIlWEfo9CeNQT
+         GJWGCq8lEv7UTme0Kx/8MitQ+XZuVW+m8BC7ZwVqRmDw9pU64aZMVLZrft0ZyhdUDZRy
+         nPHF/BV4MNxm60TtJLMr5uCvrFfgpA92rQP0el+BYhTFe2I1kJmmb2Pef3VXF2J5wK97
+         HMkNAsPK1tp/QMZx3DS7NIvsDRdhPEwuje2er89BoyS38Ts7KWBg1h/4tSjpBvJOZVQ2
+         h7bdLns+PA3bQIropTOxvbUEHsIb1ytBhNLXd/4umx6Abino9rYKO3KFMM/MbT8Tv+a6
+         38Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=NCyZges4LSfBygkjB5WR0itgY49P3E5xevDMIcceVSw=;
+        b=a94A/dMYEG3SqoLLUbbwGKIy1GPQ1O/zOqTsh/EVB2GOonpvBK4yl1O1HWDniiwKjx
+         3QmPwA3nexsym30OqR4uoP/AL3q2GCDVbdJPq/EUT4vD45vhwn2YR7b4ZpG6XahMK4kY
+         O6HjI3UNkKhgYnjeLFszJQeI4qjEb/XAUJ4BEd9igCFcjMPq22spfCGRm6E/rdwgpVAs
+         aci14Iyz7HKSCQ/p5YRsYEr7EYAMUiTj+ouKps3m1iwKB2EUmK5403BE6EwUnQHA2Ihx
+         aElP0Ru1csA7pFegVjBH2qGde1GF8EO1iqanP79opISGQEs0FtWYxAqqULC0/sa7LSpD
+         6nsA==
+X-Gm-Message-State: AOAM530FY3DuFBuRYka+R8QQF1pDdzgNoIg2UwYM3eN1UTsySw58EItU
+        X6QCjVNOpN5OdSs5682eWFYpZQP79k4=
+X-Google-Smtp-Source: ABdhPJzqEA7GugBUX4eDLND3dXUloMtXUS1htfAi8jRxzVIAh+95KqQOtrbCJdi3ATwfBMq6KrG0Xw==
+X-Received: by 2002:a2e:9915:: with SMTP id v21mr24522204lji.108.1630406633234;
+        Tue, 31 Aug 2021 03:43:53 -0700 (PDT)
+Received: from localhost.localdomain ([46.61.204.60])
+        by smtp.gmail.com with ESMTPSA id k23sm2147066ljg.73.2021.08.31.03.43.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Aug 2021 03:43:52 -0700 (PDT)
+Subject: Re: [PATCH] net: ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+From:   Pavel Skripkin <paskripkin@gmail.com>
+To:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
+        davem@davemloft.net, vasanth@atheros.com, senthilkumar@atheros.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        linux-kernel@vger.kernel.org
+References: <20210804194841.14544-1-paskripkin@gmail.com>
+ <a490dcec-b14f-e8c8-fbb0-a480892c1def@gmail.com>
+Message-ID: <4119f4fa-31b0-66bc-a0e2-373b2e1c449e@gmail.com>
+Date:   Tue, 31 Aug 2021 13:43:51 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <a490dcec-b14f-e8c8-fbb0-a480892c1def@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nicolas Schichan <nschichan@freebox.fr> writes:
+On 8/4/21 10:57 PM, Pavel Skripkin wrote:
+> On 8/4/21 10:48 PM, Pavel Skripkin wrote:
+>> Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb(). The
+>> problem was in incorrect htc_handle->drv_priv initialization.
+>> 
+>> Probable call trace which can trigger use-after-free:
+>> 
+>> ath9k_htc_probe_device()
+>>    /* htc_handle->drv_priv = priv; */
+>>    ath9k_htc_wait_for_target()      <--- Failed
+>>    ieee80211_free_hw()		   <--- priv pointer is freed
+>> 
+>> <IRQ>
+>> ...
+>> ath9k_hif_usb_rx_cb()
+>>    ath9k_hif_usb_rx_stream()
+>>     RX_STAT_INC()		<--- htc_handle->drv_priv access
+>> 
+>> In order to not add fancy protection for drv_priv we can move
+>> htc_handle->drv_priv initialization at the end of the
+>> ath9k_htc_probe_device() and add helper macro to make
+>> all *_STAT_* macros NULL save.
+>> 
+>> Also, I made whitespaces clean ups in *_STAT_* macros definitions
+>> to make checkpatch.pl happy.
+>> 
+>> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+>> Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotmail.com
+>> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+>> ---
+>> 
+>> Hi, ath9k maintainer/developers!
+>> 
+>> I know, that you do not like changes, that wasn't tested on real
+>> hardware. I really don't access to this one, so I'd like you to test it on
+>> real hardware piece, if you have one. At least, this patch was tested by
+>> syzbot [1]
+>> 
+>> [1] https://syzkaller.appspot.com/bug?id=6ead44e37afb6866ac0c7dd121b4ce07cb665f60
+>> 
+>> ---
+>>   drivers/net/wireless/ath/ath9k/htc.h          | 11 ++++++-----
+>>   drivers/net/wireless/ath/ath9k/htc_drv_init.c |  3 ++-
+>>   2 files changed, 8 insertions(+), 6 deletions(-)
+>> 
+>> diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
+>> index 0a1634238e67..c16b2a482e83 100644
+>> --- a/drivers/net/wireless/ath/ath9k/htc.h
+>> +++ b/drivers/net/wireless/ath/ath9k/htc.h
+>> @@ -326,11 +326,12 @@ static inline struct ath9k_htc_tx_ctl *HTC_SKB_CB(struct sk_buff *skb)
+>>   
+>>   #ifdef CONFIG_ATH9K_HTC_DEBUGFS
+>>   
+>> -#define TX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
+>> -#define TX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
+>> -#define RX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
+>> -#define RX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
+>> -#define CAB_STAT_INC   priv->debug.tx_stats.cab_queued++
+>> +#define __STAT_SAVE(expr)	(hif_dev->htc_handle->drv_priv ? (expr) : 0)
+>> +#define TX_STAT_INC(c)		__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
+>> +#define TX_STAT_ADD(c, a)	__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
+>> +#define RX_STAT_INC(c)		__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
+>> +#define RX_STAT_ADD(c, a)	__STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
+>> +#define CAB_STAT_INC		(priv->debug.tx_stats.cab_queued++)
+>>   
+>>   #define TX_QSTAT_INC(q) (priv->debug.tx_stats.queue_stats[q]++)
+>>   
+>> diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_init.c b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+>> index ff61ae34ecdf..07ac88fb1c57 100644
+>> --- a/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+>> +++ b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+>> @@ -944,7 +944,6 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
+>>   	priv->hw = hw;
+>>   	priv->htc = htc_handle;
+>>   	priv->dev = dev;
+>> -	htc_handle->drv_priv = priv;
+>>   	SET_IEEE80211_DEV(hw, priv->dev);
+>>   
+>>   	ret = ath9k_htc_wait_for_target(priv);
+>> @@ -965,6 +964,8 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
+>>   	if (ret)
+>>   		goto err_init;
+>>   
+>> +	htc_handle->drv_priv = priv;
+>> +
+>>   	return 0;
+>>   
+>>   err_init:
+>> 
+> 
+> Added missing LKML in CC. Sorry for confusion.
+> 
+> 
+Any chance to review this patch? Thanks
 
-> On Fri, Aug 27, 2021 at 2:41 PM Kalle Valo <kvalo@codeaurora.org> wrote:
->> Jakub Kicinski <kuba@kernel.org> writes:
->> > Done, thank you!
->>
->> Thank you waiting for me :)
->>
->> I just tested commit 7e9965cddea8 from Linus' tree on Dell XPS 13 9310
->> laptop with QCA6390 and ath11k works without problems. So the issue
->> should be solved in the final v5.14 release.
->>
->
-> Good evening,
->
-> I have tested loading ath11k on v5.14.0 and I can confirm that the
-> driver loads fine now, with a phy and wlan interface being created as
-> a result.
 
-Great, thanks for testing and letting us know. And espeacially huge
-thanks for finding the commit which broke this!
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+With regards,
+Pavel Skripkin
