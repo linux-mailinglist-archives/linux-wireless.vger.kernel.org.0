@@ -2,141 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9F613FE191
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 19:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D8533FE1A8
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 20:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344920AbhIAR4c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Sep 2021 13:56:32 -0400
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.49]:41964 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344878AbhIAR4b (ORCPT
+        id S1344813AbhIASDf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Sep 2021 14:03:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51342 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344238AbhIASDe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Sep 2021 13:56:31 -0400
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.121])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 5BD4B20080;
-        Wed,  1 Sep 2021 17:55:33 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id BB77C4C0073;
-        Wed,  1 Sep 2021 17:55:32 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 427A913C2B1;
-        Wed,  1 Sep 2021 10:55:32 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 427A913C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1630518932;
-        bh=rXtzppk88Wnm3uo/M6L8zsOdWGLsxQnIw4Z+wmXUGuM=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=hgGa7w7ZeY6odpEu2V7C/wYhx7Gx5N7KuApR2/uM/YPSwjaFXp/WjKHu0AAQvhxwQ
-         wEKAff23ex3i6w7H1jsd4VVtiUC8Zk6Sg+gXTnzZhOGmEKBpym/EUYJA/KzTWJQcW0
-         0B/At/dX6rkshUlLBjh8SDrEpQzZIUkRXrbJz60A=
-Subject: Re: [PATCH v5 1/2] mt76: mt7915: fix hwmon temp sensor mem
- use-after-free
-To:     Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <d72e872e7fdb5c04e890b978575f4d86bc61ad36.1630515789.git.ryder.lee@mediatek.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <efe0cd18-b89a-0385-a271-d6c57fea08ca@candelatech.com>
-Date:   Wed, 1 Sep 2021 10:55:31 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Wed, 1 Sep 2021 14:03:34 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB78DC061764
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Sep 2021 11:02:35 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id k24so247832pgh.8
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Sep 2021 11:02:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=squareup.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=y30if3F3NS1+QkGYwwybS7kbIaoempyrzf9jSIfoY3A=;
+        b=ESredNTJViz+fzZkQ9m1MSPT3f0f154gcIeOGNFX7Q4gaI0pDTE1Gg9QpIhLX/bsIN
+         sqJZ5ZbH7QAo4eMn/tf4BQ0lWmYVvghCuMBoolH58nH9Vx5aewNop+MmfSIff6JTs+Z5
+         jmze25Fq8cVXjxxwX+KqnBae1gP4cflG5UP/w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=y30if3F3NS1+QkGYwwybS7kbIaoempyrzf9jSIfoY3A=;
+        b=HxeJet68nbMueJIjE8q05B9JFFc8A994yNJdfJWMvDhAsYhpvcRTBfqn1UyzOoini/
+         PiUx2+4/3iewtunnp1z/ct+DsrccXeLSffRo18/aNVVtZNlNt6Gvc/dhr3DxxeJDlKKI
+         TD1UpJKtFg2ociumQSkd6yhaRXIYJU6Ql8t0odWteT7qvR81N5aOS1FBAGiRH7ET5zdJ
+         +yJeQ2A/jCYE5YKzlo8c8qfH/fmyMAJ4l99B+IPUoNBmVt7bqTgO7Wn1H96Dlu01Ew6r
+         lJnnpDey4v5n6QShF/72tyAUxT/EiCJyB7wakBEN1Prd6RAHiN055CCUspKvEvhY/G8i
+         1X6w==
+X-Gm-Message-State: AOAM532i0EcSe5jsRzaafBxazJGfYeggJ+UIzHnqEFCP78jXyT4cWFpe
+        Yq9Vi7ND6kSJ+9sBcjUFHzEPXQ==
+X-Google-Smtp-Source: ABdhPJzsAsOgDwSLPteGex0dqQAwNeVXY4yZb23xomFOALrmZvS9rc7jQepSJ7jUP15ZkXZ0ai76og==
+X-Received: by 2002:aa7:9ae9:0:b0:3f5:e1a7:db23 with SMTP id y9-20020aa79ae9000000b003f5e1a7db23mr718513pfp.42.1630519355340;
+        Wed, 01 Sep 2021 11:02:35 -0700 (PDT)
+Received: from benl-m5lvdt.local ([2600:6c50:4d00:2376:c5f1:a747:4b09:56ac])
+        by smtp.gmail.com with ESMTPSA id v190sm147942pfv.166.2021.09.01.11.02.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Sep 2021 11:02:34 -0700 (PDT)
+Subject: Re: [PATCH] wcn36xx: handle connection loss indication
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, stable@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        Network Development <netdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20210901030542.17257-1-benl@squareup.com>
+ <CAMZdPi_frOfwf+9nfiUw2NJhfuSVgcPj3=Hx2g0d8UsaZza5MA@mail.gmail.com>
+ <b6157d1f-b548-13c0-3683-2d8c35964d1d@linaro.org>
+From:   Benjamin Li <benl@squareup.com>
+Message-ID: <168f96a5-58ec-fea9-c0d3-61f925bd1129@squareup.com>
+Date:   Wed, 1 Sep 2021 11:02:32 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
+ Gecko/20100101 Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <d72e872e7fdb5c04e890b978575f4d86bc61ad36.1630515789.git.ryder.lee@mediatek.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <b6157d1f-b548-13c0-3683-2d8c35964d1d@linaro.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-MDID: 1630518933-01oFyndXDFRY
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/1/21 10:49 AM, Ryder Lee wrote:
-> From: Ben Greear <greearb@candelatech.com>
-> 
-> Without this change, garbage is seen in the hwmon name and sensors output
-> for mt7915 is garbled. It appears that the hwmon logic does not make a
-> copy of the incoming string, but instead just copies a char* and expects
-> it to never go away.
-> 
-> Fixes: d6938251bb5b ("mt76: mt7915: add thermal sensor device support")
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
-> v5:  Use devm_kstrdup on the wiphy name as suggested.
+Thanks for the investigation!
 
-I don't care a great deal either way, but phyname can change (which was original
-way to reproduce this corruption bug), so with this v5 change, then the hwmon 'id' could confusingly
-be 'phy0' while user has renamed the phy0 to wiphy0 or whatever.
+As discussed offline, I will send v2 with Fixes: removed, and Bryan will test and submit a separate patch to add the additional feat_caps for the power_save off case.
 
-It won't break my usage either way, so if you are happy with this, then good
-enough for me.
+Depending on DB410c testing, these feat_caps may need to be gated for WCN3680 only, in which case Loic's patch to re-enable CONNECTION_MONITOR (but gated for WCN3660/3620) would still be needed.
 
-But, see below, there is spurious change...
-
-
-> v4:  Simplify flow.
-> v3:  Add 'fixes' tag to aid backports.
-> ---
->   drivers/net/wireless/mediatek/mt76/mt7915/init.c | 8 ++++----
->   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c  | 2 +-
->   2 files changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> index acc83e9f409b..78b9abbe63f3 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> @@ -160,9 +160,10 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
->   	struct wiphy *wiphy = phy->mt76->hw->wiphy;
->   	struct thermal_cooling_device *cdev;
->   	struct device *hwmon;
-> +	const char *name;
->   
-> -	cdev = thermal_cooling_device_register(wiphy_name(wiphy), phy,
-> -					       &mt7915_thermal_ops);
-> +	name = devm_kstrdup(&wiphy->dev, wiphy_name(wiphy), GFP_KERNEL);
-> +	cdev = thermal_cooling_device_register(name, phy, &mt7915_thermal_ops);
->   	if (!IS_ERR(cdev)) {
->   		if (sysfs_create_link(&wiphy->dev.kobj, &cdev->device.kobj,
->   				      "cooling_device") < 0)
-> @@ -174,8 +175,7 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
->   	if (!IS_REACHABLE(CONFIG_HWMON))
->   		return 0;
->   
-> -	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev,
-> -						       wiphy_name(wiphy), phy,
-> +	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
->   						       mt7915_hwmon_groups);
->   	if (IS_ERR(hwmon))
->   		return PTR_ERR(hwmon);
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> index 932cf5a629db..219bb353b56d 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> @@ -1962,7 +1962,7 @@ mt7915_mcu_sta_bfer_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
->   	else
->   		return;
->   
-> -	bf->bf_cap = BIT(!ebf && dev->ibf);
-> +	bf->bf_cap = ebf ? ebf : dev->ibf << 1;
-
-And this should not be in this patch.
-
-Thanks,
 Ben
 
->   	bf->bw = sta->bandwidth;
->   	bf->ibf_dbw = sta->bandwidth;
->   	bf->ibf_nrow = tx_ant;
+On 9/1/21 4:56 AM, Bryan O'Donoghue wrote:
+> On 01/09/2021 07:40, Loic Poulain wrote:
+>> iw wlan0 set power_save off
 > 
-
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+> I do this on wcn3680b and get no loss of signal
+> 
+> If I do this though
+> 
+> diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
+> index 03966072f34c..ba613fbb728d 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/smd.c
+> +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+> @@ -2345,6 +2345,8 @@ int wcn36xx_smd_feature_caps_exchange(struct wcn36xx *wcn)
+>                 set_feat_caps(msg_body.feat_caps, DOT11AC);
+>                 set_feat_caps(msg_body.feat_caps, ANTENNA_DIVERSITY_SELECTION);
+>         }
+> +       set_feat_caps(msg_body.feat_caps, IBSS_HEARTBEAT_OFFLOAD);
+> +       set_feat_caps(msg_body.feat_caps, WLANACTIVE_OFFLOAD);
+> 
+>         PREPARE_HAL_BUF(wcn->hal_buf, msg_body);
+> 
+> @@ -2589,7 +2591,7 @@ static int wcn36xx_smd_missed_beacon_ind(struct wcn36xx *wcn,
+>         struct wcn36xx_hal_missed_beacon_ind_msg *rsp = buf;
+>         struct ieee80211_vif *vif = NULL;
+>         struct wcn36xx_vif *tmp;
+> -
+> +wcn36xx_info("%s/%d\n", __func__, __LINE__);
+>         /* Old FW does not have bss index */
+>         if (wcn36xx_is_fw_version(wcn, 1, 2, 2, 24)) {
+>                 list_for_each_entry(tmp, &wcn->vif_list, list) {
+> @@ -2608,7 +2610,7 @@ static int wcn36xx_smd_missed_beacon_ind(struct wcn36xx *wcn,
+> 
+>         list_for_each_entry(tmp, &wcn->vif_list, list) {
+>                 if (tmp->bss_index == rsp->bss_index) {
+> -                       wcn36xx_dbg(WCN36XX_DBG_HAL, "beacon missed bss_index %d\n",
+> +                       wcn36xx_info("beacon missed bss_index %d\n",
+>                                     rsp->bss_index);
+>                         vif = wcn36xx_priv_to_vif(tmp);
+>                         ieee80211_connection_loss(vif);
+> 
+> 
+> bingo
+> 
+> root@linaro-developer:~# iw wlan0 set power_save off
+> 
+> 
+> # pulls plug on AP
+> 
+> root@linaro-developer:~# [   83.290987] wcn36xx: wcn36xx_smd_missed_beacon_ind/2594
+> [   83.291070] wcn36xx: beacon missed bss_index 0
+> [   83.295403] wlan0: Connection to AP e2:63:da:9c:a4:bd lost
+> 
+> I'm not sure if both flags are required but, this is the behavior we want
+> 
