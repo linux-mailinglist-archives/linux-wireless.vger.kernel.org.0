@@ -2,144 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FF033FE2B4
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 21:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E31C53FE2C7
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 21:10:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243227AbhIATCU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Sep 2021 15:02:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37074 "EHLO
+        id S242455AbhIATLX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Sep 2021 15:11:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244864AbhIATCO (ORCPT
+        with ESMTP id S242439AbhIATLX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Sep 2021 15:02:14 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 009B9C061760
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Sep 2021 12:01:16 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id bq28so1095227lfb.7
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Sep 2021 12:01:16 -0700 (PDT)
+        Wed, 1 Sep 2021 15:11:23 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04C43C061575
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Sep 2021 12:10:26 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id c6so293974pjv.1
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Sep 2021 12:10:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=npd1RU7mbNsF3k0GeBkr9d4yP6Ob5CEAADTVG3CYCjw=;
-        b=ErHaIpxZiEMxxjypsttdmUORwYq4vP1VZ+xYSjVl8afEmUE0mZp3Aj9x4LVzPgegFp
-         QxCWY5+Gxwtt2L2qth2RgEkh1nozrNfG4UGJESfbueNOy10Bzrii0P8RVC60ibu3uR99
-         Ri6W/fH6hsL0OtQOBkjpL0U0EcWE6CxP3PMa4=
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6O0hTb+/SiW+RCaXHAjU5CZHsijbAqGowKgKh4Z53XQ=;
+        b=cmwOXdkrPRWgUFof+Q+wCfovs0yxot/hHJTwT+JUH6CS4jB2d1RjDqL5AYjkvPijZw
+         tmCS2UmjxsASyEyhRflD4qRhySsRc3B6BJ+G19A0KzSKLgXT75iwFi5xwq0eoOmy8Mpg
+         ha9JzLHsB6lQucoyb4VpJUJyMQkKyOYDd2+arrkK0bn9RLyDUIHPLherXAWuVY/17aSX
+         s4jvsK4lmy02lMmzzBlv72LwBhkbC1tYw/p1pZFmpA6NpWUDY0t2nc0Uly5ewYB/YFMv
+         dyDk0PvMxK/KrsJRlmTKEX5n2B+r6woj7PSsN/barGHm+aFSJw9bzfJyDMr2jkeOiZbG
+         64bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=npd1RU7mbNsF3k0GeBkr9d4yP6Ob5CEAADTVG3CYCjw=;
-        b=L/1eM1xhC87EsBpEyzxIJjBFsxZT+7wCkaND3eB13wtZDZKPw/MkP2AP3kI9ara5L+
-         oRQ/q2waL7jKzIFOFgPGgYNso/Muwjys33lfqKbPr+6KgTPgpby8KN7oeEEDJ9hqSm4C
-         bbpycWZsDtd/OUpjZZ4kTJQU9eUxPnFGONe4qzJGzcChfHYSS0gvWcU+bM+MNpd7UQf0
-         wLgjjtJ52ViYwzEZ3BM+Y3WojF+tvOv12kZr/JnjyUu28tvr5nqsrf6Q82Ncbrwr4ol+
-         suEhMGXiV0rRRXADc5Y8T06Ax/4BI07nnEqyyvAMEvXYmuIrGPR9ZDz5g9VyFCtM9PfN
-         QjdA==
-X-Gm-Message-State: AOAM532gPcziELwzdxhJLlb6N2F0Ke49mA88lcGRvzJMTtyQyWGGme1j
-        TYmDQPHuhs/5Re4kRtPEd56rueqFaHOIX+Ut
-X-Google-Smtp-Source: ABdhPJyQf5yx6NAwHaYLImtHRjVsfd67Ehgqij+wLHV/QWTAAcsZ2VmadbeRf/MvbFyTGQCtQjecqg==
-X-Received: by 2002:ac2:5689:: with SMTP id 9mr621374lfr.397.1630522874317;
-        Wed, 01 Sep 2021 12:01:14 -0700 (PDT)
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com. [209.85.208.178])
-        by smtp.gmail.com with ESMTPSA id w5sm36275lfq.80.2021.09.01.12.01.13
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Sep 2021 12:01:14 -0700 (PDT)
-Received: by mail-lj1-f178.google.com with SMTP id y6so801341lje.2
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Sep 2021 12:01:13 -0700 (PDT)
-X-Received: by 2002:a2e:3004:: with SMTP id w4mr888035ljw.465.1630522873162;
- Wed, 01 Sep 2021 12:01:13 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6O0hTb+/SiW+RCaXHAjU5CZHsijbAqGowKgKh4Z53XQ=;
+        b=mv3lPPbD3JxqZMPCB/+d36N56bvVPNs7ggYHirZk98dr5/4JGkKYnv070cMwqp64NH
+         0QIZLWru6KJXlPp9C4yz62BE9UB5AFynU56OMqcMYxgMfPoeaFyer/sKIuxldlrZzNUE
+         auTuam+fzn5KUx1Fa8gRvGpPIoUcUw8auZY1imZ+XIVR4YQP8vH0ayHlV0d5cXFQn3u0
+         3kH2oZRShp7f1focd0k2fcG/MP6i/RV4ERsUgjiU5ag4Ey2kQmOMr6wS/sMUf8g+ERVF
+         j8Egaew2fCVBH1WawcrQ2iZoVvaDhYySxXp01OjYqalZUiNub4zCQdVK9ep/libWKqnt
+         hNuQ==
+X-Gm-Message-State: AOAM5332kwh2gERHftHplZxSyu4J9tZfZohmE0pqqKdU3Q/f+F4b7Iym
+        QHnd/sGIxZyvZg1yVz77NBnl99BP0LFWxg==
+X-Google-Smtp-Source: ABdhPJw9uLc2SqJY4xePUTCzoj28XdlGB78JoEKOT0Qp63YbGXAuVfL275Z8YANRda31paF3Tqm1DA==
+X-Received: by 2002:a17:90a:d187:: with SMTP id fu7mr956451pjb.106.1630523425237;
+        Wed, 01 Sep 2021 12:10:25 -0700 (PDT)
+Received: from localhost.localdomain ([50.39.173.103])
+        by smtp.gmail.com with ESMTPSA id b7sm419407pgs.64.2021.09.01.12.10.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Sep 2021 12:10:24 -0700 (PDT)
+From:   James Prestwood <prestwoj@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     James Prestwood <prestwoj@gmail.com>
+Subject: [PATCH] brcmfmac: fix incorrect error prints
+Date:   Wed,  1 Sep 2021 12:06:41 -0700
+Message-Id: <20210901190641.255624-1-prestwoj@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20210831203727.3852294-1-kuba@kernel.org>
-In-Reply-To: <20210831203727.3852294-1-kuba@kernel.org>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 1 Sep 2021 12:00:57 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjB_zBwZ+WR9LOpvgjvaQn=cqryoKigod8QnZs=iYGEhA@mail.gmail.com>
-Message-ID: <CAHk-=wjB_zBwZ+WR9LOpvgjvaQn=cqryoKigod8QnZs=iYGEhA@mail.gmail.com>
-Subject: Re: [GIT PULL] Networking for v5.15
-To:     Jakub Kicinski <kuba@kernel.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     David Miller <davem@davemloft.net>,
-        Netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Aug 31, 2021 at 1:37 PM Jakub Kicinski <kuba@kernel.org> wrote:
->
-> No conflicts at the time of writing. There were conflicts with
-> char-misc but I believe Greg dropped the commits in question.
+An unsupported AKM would end up printing "invalid cipher group". Instead
+print "invalid akm suite" with the offending AKM.
 
-Hmm. I already merged this earlier, but didn't notice a new warning on
-my desktop:
+Signed-off-by: James Prestwood <prestwoj@gmail.com>
+---
+ .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c  | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-  RTNL: assertion failed at net/wireless/reg.c (4025)
-  WARNING: CPU: 60 PID: 1720 at net/wireless/reg.c:4025
-regulatory_set_wiphy_regd_sync+0x7f/0x90 [cfg80211]
-  Call Trace:
-   iwl_mvm_init_mcc+0x170/0x190 [iwlmvm]
-   iwl_op_mode_mvm_start+0x824/0xa60 [iwlmvm]
-   iwl_opmode_register+0xd0/0x130 [iwlwifi]
-   init_module+0x23/0x1000 [iwlmvm]
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index f4405d7861b6..34d3d2d198de 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -1783,8 +1783,8 @@ brcmf_set_key_mgmt(struct net_device *ndev, struct cfg80211_connect_params *sme)
+ 			val = WPA_AUTH_PSK;
+ 			break;
+ 		default:
+-			bphy_err(drvr, "invalid cipher group (%d)\n",
+-				 sme->crypto.cipher_group);
++			bphy_err(drvr, "invalid akm suite (%d)\n",
++				 sme->crypto.akm_suites[0]);
+ 			return -EINVAL;
+ 		}
+ 	} else if (val & (WPA2_AUTH_PSK | WPA2_AUTH_UNSPECIFIED)) {
+@@ -1816,8 +1816,8 @@ brcmf_set_key_mgmt(struct net_device *ndev, struct cfg80211_connect_params *sme)
+ 			profile->is_ft = true;
+ 			break;
+ 		default:
+-			bphy_err(drvr, "invalid cipher group (%d)\n",
+-				 sme->crypto.cipher_group);
++			bphy_err(drvr, "invalid akm suite (%d)\n",
++				 sme->crypto.akm_suites[0]);
+ 			return -EINVAL;
+ 		}
+ 	} else if (val & WPA3_AUTH_SAE_PSK) {
+@@ -1830,8 +1830,8 @@ brcmf_set_key_mgmt(struct net_device *ndev, struct cfg80211_connect_params *sme)
+ 			}
+ 			break;
+ 		default:
+-			bphy_err(drvr, "invalid cipher group (%d)\n",
+-				 sme->crypto.cipher_group);
++			bphy_err(drvr, "invalid akm suite (%d)\n",
++				 sme->crypto.akm_suites[0]);
+ 			return -EINVAL;
+ 		}
+ 	}
+-- 
+2.31.1
 
-and
-
-  RTNL: assertion failed at net/wireless/reg.c (3106)
-  WARNING: CPU: 60 PID: 1720 at net/wireless/reg.c:3106
-reg_process_self_managed_hint+0x26c/0x280 [cfg80211]
-  Call Trace:
-   regulatory_set_wiphy_regd_sync+0x3a/0x90 [cfg80211]
-   iwl_mvm_init_mcc+0x170/0x190 [iwlmvm]
-   iwl_op_mode_mvm_start+0x824/0xa60 [iwlmvm]
-   iwl_opmode_register+0xd0/0x130 [iwlwifi]
-   init_module+0x23/0x1000 [iwlmvm]
-
-and
-
-  RTNL: assertion failed at net/wireless/core.c (84)
-  WARNING: CPU: 60 PID: 1720 at net/wireless/core.c:84
-wiphy_idx_to_wiphy+0x97/0xd0 [cfg80211]
-  Call Trace:
-   nl80211_common_reg_change_event+0xf9/0x1e0 [cfg80211]
-   reg_process_self_managed_hint+0x23d/0x280 [cfg80211]
-   regulatory_set_wiphy_regd_sync+0x3a/0x90 [cfg80211]
-   iwl_mvm_init_mcc+0x170/0x190 [iwlmvm]
-   iwl_op_mode_mvm_start+0x824/0xa60 [iwlmvm]
-   iwl_opmode_register+0xd0/0x130 [iwlwifi]
-   init_module+0x23/0x1000 [iwlmvm]
-
-and
-
-  RTNL: assertion failed at net/wireless/core.c (61)
-  WARNING: CPU: 60 PID: 1720 at net/wireless/core.c:61
-wiphy_idx_to_wiphy+0xbf/0xd0 [cfg80211]
-  Call Trace:
-   nl80211_common_reg_change_event+0xf9/0x1e0 [cfg80211]
-   reg_process_self_managed_hint+0x23d/0x280 [cfg80211]
-   regulatory_set_wiphy_regd_sync+0x3a/0x90 [cfg80211]
-   iwl_mvm_init_mcc+0x170/0x190 [iwlmvm]
-   iwl_op_mode_mvm_start+0x824/0xa60 [iwlmvm]
-   iwl_opmode_register+0xd0/0x130 [iwlwifi]
-   init_module+0x23/0x1000 [iwlmvm]
-
-They all seem to have that same issue, and it looks like the fix would
-be to get the RTN lock in iwl_mvm_init_mcc(), but I didn't really look
-into it very much.
-
-This is on my desktop, and I actually don't _use_ the wireless on this
-machine. I assume it still works despite the warnings, but they should
-get fixed.
-
-I *don't* see these warnings on my laptop where I actually use
-wireless, but that one uses ath10k_pci, so it seems this is purely a
-iwlwifi issue.
-
-I can't be the only one that sees this. Hmm?
-
-                 Linus
