@@ -2,144 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F6C53FD1A2
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 05:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CED883FD3B3
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 08:15:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241713AbhIADGn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Aug 2021 23:06:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40586 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241078AbhIADGn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Aug 2021 23:06:43 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42779C061760
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Aug 2021 20:05:47 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id u13-20020a17090abb0db0290177e1d9b3f7so3580197pjr.1
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Aug 2021 20:05:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=squareup.com; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=nyOJ9iZETVTEFk6iWhg2g1yikDtoNUIcwl8+erJ8BFY=;
-        b=d1V6u3ysAEYUUAHURWSacyDQzOtUqDO+ucg+6rnhcJevnwInrzshAWGb/fRLWLMwla
-         cuFmZBqSoqtR3njWqQ2qYCmhP3gd3jLtSBV4DjFpwkNu5EM4ZRupyrAVEWSw0KpM6qhv
-         645zstCpXVFvmC3fyKt0XuANOdSmyUHDvepPQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=nyOJ9iZETVTEFk6iWhg2g1yikDtoNUIcwl8+erJ8BFY=;
-        b=RHXAAPukSHH8YPJzQh//0TCfS1mRFEQ6Kez/mPLhmRi3rG0wZvoWWxO5cSILTseXKR
-         U/q8MAoi2Qwua5sIZK+rYmmSIwejJl9u7cGrI0LJeG5Glr25UlLzjbCQrzJOaYKHvwbJ
-         TOMlXCXi6uE55E9q61ahKP3ll/fgGEdw69thl4XDBdP2CXtoqVd7imtq8SjRSCg1HND0
-         Flz4xNdalWwg6Ba2R2aAg7zNwPj8mXbmUe7rGCTFBuUsHOpWztWGCpvKE2vGOFXahc0O
-         1DXAl8lpFuaGosw/0Xk1XomyK9DmuMiHkLGfxMrbVC1jcOFULFEm3wANeareXr9Be7tV
-         9SRA==
-X-Gm-Message-State: AOAM533hHWHhw972q0LIknBBLcsog0SoUjn6iHF+/XwtB6BR8zrMyKjA
-        Y8hm8XwFMP/gu8vSa983mgCjtg==
-X-Google-Smtp-Source: ABdhPJwIDQ1redj58uqfaouUGUpSY5cLZfiK40nKf7S/m9qcC6EahuadQ5zCgv6Fu3HiSg47QDsp0Q==
-X-Received: by 2002:a17:90a:5d12:: with SMTP id s18mr9226138pji.35.1630465546442;
-        Tue, 31 Aug 2021 20:05:46 -0700 (PDT)
-Received: from localhost (138-229-239-060.res.spectrum.com. [138.229.239.60])
-        by smtp.gmail.com with ESMTPSA id 77sm10856219pfz.118.2021.08.31.20.05.44
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 31 Aug 2021 20:05:45 -0700 (PDT)
-From:   Benjamin Li <benl@squareup.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Benjamin Li <benl@squareup.com>, stable@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] wcn36xx: handle connection loss indication
-Date:   Tue, 31 Aug 2021 20:05:41 -0700
-Message-Id: <20210901030542.17257-1-benl@squareup.com>
-X-Mailer: git-send-email 2.17.1
+        id S242197AbhIAGQE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Sep 2021 02:16:04 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:18642 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S242180AbhIAGQD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 1 Sep 2021 02:16:03 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1630476907; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=ZXaAicq53OuRyXnDIGqMVp7cKVSiuHVVieLqiFabWkI=; b=NAH2lCaA95JufiiLvTyrdfNZhhexxPc4PQF8lUSshd1rUUVirFG0z7L1YIABcDA/6rrw4BU2
+ Sepwdw2PoBdSNBiLP+spwSTxYEhTDIWWkHFARy6t3Mz2wamvqeFsHZSBItKZ9Q8J2M9mMzaM
+ 8WcqWF6Ehh3sZnVfk5xYZ7riP48=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 612f1a5bd15f4d68a2c1db5c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 01 Sep 2021 06:14:51
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 56530C4360D; Wed,  1 Sep 2021 06:14:51 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4748FC4338F;
+        Wed,  1 Sep 2021 06:14:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 4748FC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc:     Loic Poulain <loic.poulain@linaro.org>,
+        linux-wireless@vger.kernel.org, stable@vger.kernel.org,
+        Benjamin Li <benl@squareup.com>
+Subject: Re: [PATCH] Revert "wcn36xx: Enable firmware link monitoring"
+References: <1630343360-5942-1-git-send-email-loic.poulain@linaro.org>
+        <878s0i3yfq.fsf@codeaurora.org>
+        <40edf308-d12c-2116-0e5f-22cab413ea71@linaro.org>
+        <afb41aa0-c6a8-4663-3b05-c26046a2f5b1@linaro.org>
+Date:   Wed, 01 Sep 2021 09:14:46 +0300
+In-Reply-To: <afb41aa0-c6a8-4663-3b05-c26046a2f5b1@linaro.org> (Bryan
+        O'Donoghue's message of "Wed, 1 Sep 2021 00:54:14 +0100")
+Message-ID: <87o89c3jqh.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Firmware sends delete_sta_context_ind when it detects the AP has gone
-away in STA mode. Right now the handler for that indication only handles
-AP mode; fix it to also handle STA mode.
+Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
 
-Cc: stable@vger.kernel.org
-Fixes: 8def9ec46a5f ("wcn36xx: Enable firmware link monitoring")
-Signed-off-by: Benjamin Li <benl@squareup.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/smd.c | 44 +++++++++++++++++++-------
- 1 file changed, 33 insertions(+), 11 deletions(-)
+> On 01/09/2021 00:51, Bryan O'Donoghue wrote:
+>> On 31/08/2021 07:44, Kalle Valo wrote:
+>>> Loic Poulain <loic.poulain@linaro.org> writes:
+>>>
+>>>> This reverts commit wcn->hw, CONNECTION_MONITOR.
+>>>>
+>>>> The firmware keep-alive does not cause any event in case of error
+>>>> such as non acked. It's just a basic keep alive to prevent the AP
+>>>> to kick-off the station due to inactivity. So let mac80211 submit
+>>>> its own monitoring packet (probe/null) and disconnect on timeout.
+>>>>
+>>>> Note: We want to keep firmware keep alive to prevent kick-off
+>>>> when host is in suspend-to-mem (no mac80211 monitor packet).
+>>>> Ideally fw keep alive should be enabled in suspend path and disabled
+>>>> in resume path to prevent having both firmware and mac80211 submitting
+>>>> periodic null packets.
+>>>>
+>>>> This fixes non detected AP leaving issues in active mode (nothing
+>>>> monitors beacon or connection).
+>>>>
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: 8def9ec46a5f ("wcn36xx: Enable firmware link monitoring")
+>>>> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+>>>
+>>> I'll queue this to v5.15.
+>>>
+>>
+>> Might want to hold off on that.
+>>
+>> Its been reported by testing that
+>> wcn36xx_smd_delete_sta_context_ind() actually _is_ firing.
+>>
+>> But if you look at wcn36xx_smd_delete_sta_context_ind() it doesn't
+>> seem to do ieee80211_connection_loss() like it presumably should.
+>>
+>> I think the right fix here might be to call
+>> ieee80211_connection_loss() in wcn36xx_smd_delete_sta_context_ind()
+>> if (wcn->hw & CONNECTION_MONITOR)
+>>
+>> ---
+>> bod
+>
+> In that case right now if (wcn->hw & CONNECTION_MONITOR) we'd
+> presumably rely on a subsequent wcn36xx_smd_missed_beacon_ind() but...
+>
+> its not clear that wcn36xx_smd_missed_beacon_ind() would fire
+> subsequent to wcn36xx_smd_delete_sta_context_ind()
+>
+> In fact, it would be pretty illogical if it did.
+>
+> I think instead of revert - we want to just do better processing here
+> in wcn36xx_smd_delete_sta_context_ind() alright.
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index 57fa857b290b..f6bea896abe8 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -2623,30 +2623,52 @@ static int wcn36xx_smd_delete_sta_context_ind(struct wcn36xx *wcn,
- 					      size_t len)
- {
- 	struct wcn36xx_hal_delete_sta_context_ind_msg *rsp = buf;
--	struct wcn36xx_vif *tmp;
-+	struct wcn36xx_vif *vif_priv;
-+	struct ieee80211_vif *vif;
-+	struct ieee80211_bss_conf *bss_conf;
- 	struct ieee80211_sta *sta;
-+	bool found = false;
- 
- 	if (len != sizeof(*rsp)) {
- 		wcn36xx_warn("Corrupted delete sta indication\n");
- 		return -EIO;
- 	}
- 
--	wcn36xx_dbg(WCN36XX_DBG_HAL, "delete station indication %pM index %d\n",
--		    rsp->addr2, rsp->sta_id);
-+	wcn36xx_dbg(WCN36XX_DBG_HAL,
-+		    "delete station indication %pM index %d reason %d\n",
-+		    rsp->addr2, rsp->sta_id, rsp->reason_code);
- 
--	list_for_each_entry(tmp, &wcn->vif_list, list) {
-+	list_for_each_entry(vif_priv, &wcn->vif_list, list) {
- 		rcu_read_lock();
--		sta = ieee80211_find_sta(wcn36xx_priv_to_vif(tmp), rsp->addr2);
--		if (sta)
--			ieee80211_report_low_ack(sta, 0);
-+		vif = wcn36xx_priv_to_vif(vif_priv);
-+
-+		if (vif->type == NL80211_IFTYPE_STATION) {
-+			/* We could call ieee80211_find_sta too, but checking
-+			 * bss_conf is clearer.
-+			 */
-+			bss_conf = &vif->bss_conf;
-+			if (vif_priv->sta_assoc &&
-+			    !memcmp(bss_conf->bssid, rsp->addr2, ETH_ALEN)) {
-+				found = true;
-+				wcn36xx_dbg(WCN36XX_DBG_HAL,
-+					    "connection loss bss_index %d\n",
-+					    vif_priv->bss_index);
-+				ieee80211_connection_loss(vif);
-+			}
-+		} else {
-+			sta = ieee80211_find_sta(vif, rsp->addr2);
-+			if (sta) {
-+				found = true;
-+				ieee80211_report_low_ack(sta, 0);
-+			}
-+		}
-+
- 		rcu_read_unlock();
--		if (sta)
-+		if (found)
- 			return 0;
- 	}
- 
--	wcn36xx_warn("STA with addr %pM and index %d not found\n",
--		     rsp->addr2,
--		     rsp->sta_id);
-+	wcn36xx_warn("BSS or STA with addr %pM not found\n", rsp->addr2);
- 	return -ENOENT;
- }
- 
+Ok, I'll drop this patch.
+
 -- 
-2.17.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
