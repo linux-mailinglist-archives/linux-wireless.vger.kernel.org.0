@@ -2,94 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E74A3FE0EA
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 19:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAA363FE14A
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 19:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344652AbhIARJP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Sep 2021 13:09:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38530 "EHLO
+        id S1345750AbhIARlB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Sep 2021 13:41:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232491AbhIARJP (ORCPT
+        with ESMTP id S1345543AbhIARlA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Sep 2021 13:09:15 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E4FC061575;
-        Wed,  1 Sep 2021 10:08:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=/eEATaSgxKUQuEI/VyWcCLd2zs8bwbYE3icsNkYYsmw=;
-        t=1630516098; x=1631725698; b=RtAtVXaduob7xiT7IHVqDf4yVm7hZDPfHF61IRzyCKEwmJX
-        mSK8vDdF7RHjaN0vmn/QjTZnro8PJfs3ruUBvowAJZ5Vo4AC4CQWoITgxNG1Gu45dSv5x1n/B6s5b
-        wnEa1PGC2XikPYykvpU1K79Z0UAeRNA5BIM8KuTxP8mgPn5YOar0Q+3bNG62yZOMF8uFvNSxL2Qe6
-        xTgYsnDsI9IKwEMoasdU1/l6SxvAdyZ5oh3Xckr9PXuhDvUEDt+WcjfHU9HkcluFjti2Q/C8sZokH
-        QRKOw4aWovo4GQmc1HNP3Y/LaU3OOtWD4jJsv2QpmrDMOjgLA01Bj0Fq/lv/0blA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mLTiS-001Fyv-Ur; Wed, 01 Sep 2021 19:08:01 +0200
-Message-ID: <f293c619399ba8bd60240879a20ee34db1248255.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/2] mwifiex: Use non-posted PCI register writes
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Heiner Kallweit <hkallweit1@gmail.com>,
-        Pali =?ISO-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        Jonas =?ISO-8859-1?Q?Dre=DFler?= <verdre@v0yd.nl>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
+        Wed, 1 Sep 2021 13:41:00 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9159BC061575;
+        Wed,  1 Sep 2021 10:40:03 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id c8-20020a7bc008000000b002e6e462e95fso245738wmb.2;
+        Wed, 01 Sep 2021 10:40:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=NwiEX4/BmUHjFjLm/pps/RMvagHoU8AMBDUAk6ldmoA=;
+        b=XqttsRYNlYYkM99XNLfcCtTtSZ5/0zYjcvuvVsEJ8NRRrDHdiIsmRx1HmOpglU73Ha
+         TyUch1MzJwDhPjWpjOss5Hm1kzwms3qYBfBlz2h0FSyzwdJhVArezy+quIx7QeFI8r1k
+         Q14ABlDcTc0OQdeVeSb/ZEmJyD/EuuYq8kZmn2IA7Xg3B524PpLcI4mItpEXF8WXmI3b
+         BidUOB03PeFecnHivH6QhzEni1pstRz3qskOjTiTPr79OKOQqWW/J7nBRbrkeeGoLSeq
+         ZpDd/eqCB96rVMPFuVSrdggFiLvuPVI6NdseTFGqf0lK6v4RLCXwazGcgOha55P61L/p
+         LgQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=NwiEX4/BmUHjFjLm/pps/RMvagHoU8AMBDUAk6ldmoA=;
+        b=OwPZmM6Ig3Cu4A1jL/UbrpfkEeQdxdLixLnZjC10zTjO9KvjigZj4Cr3w6UwpEpp4T
+         jz/rHSLbZTS9GQ9SoSmiQnwwBFSHuSW4ZEEaAB3QMOj8TshGGzhS3zkGZht+ndre4OBU
+         Q8V/RNzcr3VxIMYnGv58jUKEwsWp5ZmISddc1lBpy/SLLokbTDOM0RwRq3Tj44NtqKZT
+         tgZACsUhzNSXkW7m/U0jwvKuDcSor+6+jnRQOxRVuyQedb6ocmZTT4+4cv+Iarlov4xE
+         Z9ExEuHB4B+TDtCHIC+yM8mfTt1LmHuakb1qPnE7MnSdqp68/jpBJt2aXr47bE4GgPjl
+         RmPA==
+X-Gm-Message-State: AOAM5315G3VpixgrNSXxWLZE8AlTjuMSbGjg9sE+vlTFNepaWOnFg6a2
+        aIh171c8ZMDh3kwoxTmxsKvPhsOByD8=
+X-Google-Smtp-Source: ABdhPJyanR3u0J1KdpUYbubSEoP0tYiXAY82tfxGC7QyoAaVGAjxr6KWybOhdcy81G006H+UCFJxqA==
+X-Received: by 2002:a05:600c:a05:: with SMTP id z5mr585300wmp.73.1630518002158;
+        Wed, 01 Sep 2021 10:40:02 -0700 (PDT)
+Received: from debian64.daheim (p5b0d7864.dip0.t-ipconnect.de. [91.13.120.100])
+        by smtp.gmail.com with ESMTPSA id k16sm96413wrx.87.2021.09.01.10.40.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Sep 2021 10:40:01 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+        by debian64.daheim with esmtp (Exim 4.95-RC2)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1mLSLF-000Jxk-Pl;
+        Wed, 01 Sep 2021 19:40:00 +0200
+Subject: Re: [PATCH] p54: Remove obsolete comment
+To:     Wan Jiabing <wanjiabing@vivo.com>,
+        Christian Lamparter <chunkeey@googlemail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Date:   Wed, 01 Sep 2021 19:07:58 +0200
-In-Reply-To: <985049b8-bad7-6f18-c94f-368059dd6f95@gmail.com>
-References: <20210830123704.221494-1-verdre@v0yd.nl>
-         <20210830123704.221494-2-verdre@v0yd.nl>
-         <CAHp75VeAKs=nFw4E20etKc3C_Cszyz9AqN=mLsum7F-BdVK5Rg@mail.gmail.com>
-         <7e38931e-2f1c-066e-088e-b27b56c1245c@v0yd.nl>
-         <20210901155110.xgje2qrtq65loawh@pali>
-         <985049b8-bad7-6f18-c94f-368059dd6f95@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     kael_w@yeah.net
+References: <20210901024744.7013-1-wanjiabing@vivo.com>
+From:   Christian Lamparter <chunkeey@gmail.com>
+Message-ID: <1ac57e49-30e0-3ca1-c324-3aea2aec598b@gmail.com>
+Date:   Wed, 1 Sep 2021 19:40:00 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+In-Reply-To: <20210901024744.7013-1-wanjiabing@vivo.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: de-DE
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-09-01 at 18:51 +0200, Heiner Kallweit wrote:
-> On 01.09.2021 17:51, Pali Rohár wrote:
-> > On Wednesday 01 September 2021 16:01:54 Jonas Dreßler wrote:
-> > > On 8/30/21 2:49 PM, Andy Shevchenko wrote:
-> > > > On Mon, Aug 30, 2021 at 3:38 PM Jonas Dreßler <verdre@v0yd.nl> wrote:
-> > > > > 
-> > > > > On the 88W8897 card it's very important the TX ring write pointer is
-> > > > > updated correctly to its new value before setting the TX ready
-> > > > > interrupt, otherwise the firmware appears to crash (probably because
-> > > > > it's trying to DMA-read from the wrong place).
-> > > > > 
+On 01/09/2021 04:47, Wan Jiabing wrote:
+> In commit d249ff28b1d8 ("intersil: remove obsolete prism54 wireless driver"),
+> prism54/isl_oid.h is deleted. The comment here is obsolete.
 > 
-> This sounds somehow like the typical case where you write DMA descriptors
-> and then ring the doorbell. This normally requires a dma_wmb().
-> Maybe something like that is missing here?
+Instead of removing said "obsolete" comment, why not copy the
+excellent comment about that "frameburst technology" from the
+prism54/isl_oid.h file there?
 
-But it looks like this "TX ring write pointer" is actually the register?
+Cheers,
+Christian
 
-However, I would agree that doing it in mwifiex_write_reg() is possibly
-too big a hammer - could be done only for reg->tx_wrptr, not all the
-registers?
 
-Actually, can two writes actually cross on PCI?
-
-johannes
+> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+> ---
+>   drivers/net/wireless/intersil/p54/fwio.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/intersil/p54/fwio.c b/drivers/net/wireless/intersil/p54/fwio.c
+> index bece14e4ff0d..1fe072de3e63 100644
+> --- a/drivers/net/wireless/intersil/p54/fwio.c
+> +++ b/drivers/net/wireless/intersil/p54/fwio.c
+> @@ -583,7 +583,6 @@ int p54_set_edcf(struct p54_common *priv)
+>   	rtd = 3 * priv->coverage_class;
+>   	edcf->slottime += rtd;
+>   	edcf->round_trip_delay = cpu_to_le16(rtd);
+> -	/* (see prism54/isl_oid.h for further details) */
+>   	edcf->frameburst = cpu_to_le16(0);
+>   	edcf->flags = 0;
+>   	memset(edcf->mapping, 0, sizeof(edcf->mapping));
+> 
 
