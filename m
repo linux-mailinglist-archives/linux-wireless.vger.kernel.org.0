@@ -2,120 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8EE93FD434
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 09:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95B833FD44F
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 09:16:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242485AbhIAHIj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Sep 2021 03:08:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38964 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242472AbhIAHIh (ORCPT
+        id S242545AbhIAHRC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Sep 2021 03:17:02 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:52006 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S242424AbhIAHRC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Sep 2021 03:08:37 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B446C061575;
-        Wed,  1 Sep 2021 00:07:40 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id s12so3274671ljg.0;
-        Wed, 01 Sep 2021 00:07:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=tkBnSZ8tPceYf/KAGSxnZEdY1ZtMechZKaYpAIYU2LU=;
-        b=JpZndJyO+xZ+tPnCYMD2xifEVddZnLPmd+brJFxJkwgMGOki8Lmrj1E5wmSr96IMF2
-         S2Apqee7gU620BrjYj372ooKP+8t9+eOpanhgTbBXxuyW1S1QJdek8diuRmJnZWBSHP0
-         f8x73VwBsyNvw8onW+48c7JbZjT/DCDNyA0vsq7xZocBUOVHgMuHajEYEwa4rQrzualO
-         pFJGL87zIX0WAtdWO9FdmeIubO/opQkioRArXx5apfDvDl7UbupTCfjwlIOa/IS1hozI
-         YIiI68VsoRZf5cZRnVcWpLbvJcpgHr+p8mRnRd7DYMOuMqGgRGDcpwiNgsUOa00/uAss
-         1fDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=tkBnSZ8tPceYf/KAGSxnZEdY1ZtMechZKaYpAIYU2LU=;
-        b=WDOpA3ktNUIuYvIMCmmwZ4okXhrY8s0+LBZIuRAROXJzYNpaox0oMdedmmvfQDMB0j
-         vStLcM9v19o3JtqstDUZtmPT0jnmVNdjrB+vfnBiV0/egQsFIc6YUlN6QVIkVCD0TYPh
-         b9kIN0k0cfj1dmemCNMYO/8CoybEGclGwCkgLgnDQ+5o1r5cNAaeZDnsIuAPBiENXGEU
-         81InCLsqZE7+70WLa2sc8fzUDYPhp8D1gNv/C1OPInDc28+ezdg03ALWtEooH8hW6tyR
-         QD4J250Veggd3hxNu2C6Pf1B6ED174BjPwWkimp/C7IxYVVMmbN/n57p545FdPS2oQjz
-         sQ+Q==
-X-Gm-Message-State: AOAM533hbgdBmZy6E7VDGzenOBmZVhuv26VvQ9ldcUX3BVi4buDnJAsr
-        s4YIRLHZbxtdp/z+BdeV4ObIB/673vur9E5l
-X-Google-Smtp-Source: ABdhPJzBtCI4VowD9Iwme8UWUOdfX0tOvBmQwSrdCZKL4TslD81zSa8XW6GbUD12UflGAFZbRun0ew==
-X-Received: by 2002:a05:651c:2120:: with SMTP id a32mr28497251ljq.252.1630480058455;
-        Wed, 01 Sep 2021 00:07:38 -0700 (PDT)
-Received: from [10.0.0.40] (91-155-111-71.elisa-laajakaista.fi. [91.155.111.71])
-        by smtp.gmail.com with ESMTPSA id j5sm1942288lfu.1.2021.09.01.00.07.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Sep 2021 00:07:37 -0700 (PDT)
-Subject: Re: [PATCH] kconfig: forbid symbols that end with '_MODULE'
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, Networking <netdev@vger.kernel.org>
-References: <20210825041637.365171-1-masahiroy@kernel.org>
- <9df591f6-53fc-4567-8758-0eb1be4eade5@gmail.com>
- <CAK7LNATDMzR1DnwwAcQFHaKZeGVYDZ1oDKL-QOe_7DaB_yByAA@mail.gmail.com>
-From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
-Message-ID: <d9e777dc-d274-92ee-4d77-711bfd553611@gmail.com>
-Date:   Wed, 1 Sep 2021 10:07:57 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        Wed, 1 Sep 2021 03:17:02 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1mLKTb-0003Fq-Oi; Wed, 01 Sep 2021 10:16:04 +0300
+Message-ID: <dcc42802afee4c0a29e7eea8e4488196b86a6570.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed, 01 Sep 2021 10:16:02 +0300
+In-Reply-To: <87k0k03jnx.fsf@codeaurora.org>
+References: <c0d6e33d5f9e113e59ee34ca65a4fb45cd89f33b.camel@coelho.fi>
+         <87wno44i8k.fsf@codeaurora.org>
+         <e048218dbe3338124ba09908cb1e49ec89214a96.camel@coelho.fi>
+         <87k0k03jnx.fsf@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
-In-Reply-To: <CAK7LNATDMzR1DnwwAcQFHaKZeGVYDZ1oDKL-QOe_7DaB_yByAA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: pull-request: iwlwifi-next 2021-08-26
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-On 26/08/2021 05:28, Masahiro Yamada wrote:
-> On Wed, Aug 25, 2021 at 8:59 PM Péter Ujfalusi <peter.ujfalusi@gmail.com> wrote:
-
-...
-
->>> diff --git a/sound/soc/ti/Kconfig b/sound/soc/ti/Kconfig
->>> index 698d7bc84dcf..c56a5789056f 100644
->>> --- a/sound/soc/ti/Kconfig
->>> +++ b/sound/soc/ti/Kconfig
->>> @@ -211,7 +211,7 @@ config SND_SOC_DM365_VOICE_CODEC
->>>         Say Y if you want to add support for SoC On-chip voice codec
->>>  endchoice
->>>
->>> -config SND_SOC_DM365_VOICE_CODEC_MODULE
->>> +config SND_SOC_DM365_VOICE_CODEC_MODULAR
->>
->> This Kconfig option is only used to select the codecs needed for the
->> voice mode, I think it would be better to use something like
->>
->> SND_SOC_DM365_SELECT_VOICE_CODECS ?
+On Wed, 2021-09-01 at 09:16 +0300, Kalle Valo wrote:
+> Luca Coelho <luca@coelho.fi> writes:
 > 
-> I do not have a strong opinion.
-> I am fine with any name unless it ends with _MODULE.
+> > > As the merge window most likely starts today, and I didn't want to
+> > > unnecessarily delay rest of iwlwifi patches, I decided to pull from a
+> > > commit before that DHC stuff:
+> > > 
+> > > git pull
+> > > git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git
+> > > e257d969f36503b8eb1240f32653a1afb3109f86
+> > > 
+> > > So pulled, thanks.
+> > 
+> > Thanks for pulling! But we also need at least the top patch in my pull-
+> > req, the one that bumps the FW API...
 > 
-> 
-> The sound subsystem maintainers and Arnd,
-> author of 147162f575152db800 are CC'ed.
-> 
-> If they suggest a better name, I'd be happy to adopt it.
-> 
+> Can you submit that patch again and assign it to me? And don't forget
+> document in the commit log why it's needed.
 
-Can you resend (a separate patch would be even better) with
-SND_SOC_DM365_SELECT_VOICE_CODECS
+Thanks, Kalle!
 
-for sound/soc/ti/Kconfig ?
+I'll resend it.
 
-Thank you,
-Péter
+We have a new FW API freeze every 6 weeks, so we need to bump the
+newest version number that the driver supports accordingly.  In this
+specific case, support for new HW will only be possible with the new FW
+version, so we need it in v5.15.
+
+I'll try to reflect that in the commit log.
+
+--
+Cheers,
+Luca.
+
