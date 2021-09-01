@@ -2,135 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D8533FE1A8
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 20:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF5D93FE1BC
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 20:07:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344813AbhIASDf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Sep 2021 14:03:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51342 "EHLO
+        id S1346750AbhIASHa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Sep 2021 14:07:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344238AbhIASDe (ORCPT
+        with ESMTP id S1344967AbhIASHW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Sep 2021 14:03:34 -0400
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB78DC061764
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Sep 2021 11:02:35 -0700 (PDT)
-Received: by mail-pg1-x52e.google.com with SMTP id k24so247832pgh.8
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Sep 2021 11:02:35 -0700 (PDT)
+        Wed, 1 Sep 2021 14:07:22 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6059FC06179A
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Sep 2021 11:06:23 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id j1so151082pjv.3
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Sep 2021 11:06:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=squareup.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=y30if3F3NS1+QkGYwwybS7kbIaoempyrzf9jSIfoY3A=;
-        b=ESredNTJViz+fzZkQ9m1MSPT3f0f154gcIeOGNFX7Q4gaI0pDTE1Gg9QpIhLX/bsIN
-         sqJZ5ZbH7QAo4eMn/tf4BQ0lWmYVvghCuMBoolH58nH9Vx5aewNop+MmfSIff6JTs+Z5
-         jmze25Fq8cVXjxxwX+KqnBae1gP4cflG5UP/w=
+        h=from:to:cc:subject:date:message-id;
+        bh=H+/Lyfz9TNtbqDe9NxLVaW+b1GlctI9OD0MfTlvmgNc=;
+        b=WTP4TEMkzedv2yNtgJ7iDgcDBULVbrjObJdUgjDn0wOttDyvbplSm9LzhYwaH0ZsdU
+         radkKLHEnURIzLZwbFhTCRpakKcKorkRDX47yml3+6703UxiM2slo7NTCOKkJK/yPvU1
+         nolHGLuFlZacTTrh4OewVEMIQJ/ZLaQriiJcA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=y30if3F3NS1+QkGYwwybS7kbIaoempyrzf9jSIfoY3A=;
-        b=HxeJet68nbMueJIjE8q05B9JFFc8A994yNJdfJWMvDhAsYhpvcRTBfqn1UyzOoini/
-         PiUx2+4/3iewtunnp1z/ct+DsrccXeLSffRo18/aNVVtZNlNt6Gvc/dhr3DxxeJDlKKI
-         TD1UpJKtFg2ociumQSkd6yhaRXIYJU6Ql8t0odWteT7qvR81N5aOS1FBAGiRH7ET5zdJ
-         +yJeQ2A/jCYE5YKzlo8c8qfH/fmyMAJ4l99B+IPUoNBmVt7bqTgO7Wn1H96Dlu01Ew6r
-         lJnnpDey4v5n6QShF/72tyAUxT/EiCJyB7wakBEN1Prd6RAHiN055CCUspKvEvhY/G8i
-         1X6w==
-X-Gm-Message-State: AOAM532i0EcSe5jsRzaafBxazJGfYeggJ+UIzHnqEFCP78jXyT4cWFpe
-        Yq9Vi7ND6kSJ+9sBcjUFHzEPXQ==
-X-Google-Smtp-Source: ABdhPJzsAsOgDwSLPteGex0dqQAwNeVXY4yZb23xomFOALrmZvS9rc7jQepSJ7jUP15ZkXZ0ai76og==
-X-Received: by 2002:aa7:9ae9:0:b0:3f5:e1a7:db23 with SMTP id y9-20020aa79ae9000000b003f5e1a7db23mr718513pfp.42.1630519355340;
-        Wed, 01 Sep 2021 11:02:35 -0700 (PDT)
-Received: from benl-m5lvdt.local ([2600:6c50:4d00:2376:c5f1:a747:4b09:56ac])
-        by smtp.gmail.com with ESMTPSA id v190sm147942pfv.166.2021.09.01.11.02.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Sep 2021 11:02:34 -0700 (PDT)
-Subject: Re: [PATCH] wcn36xx: handle connection loss indication
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, stable@vger.kernel.org,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=H+/Lyfz9TNtbqDe9NxLVaW+b1GlctI9OD0MfTlvmgNc=;
+        b=oc7qIaRorSV66HjLuBOQ/fhT1fDYLdNmYoVzCTimFcWtvF3+TJsB0W0TRwywNlnoYS
+         MGD1r+GSDiVejyGGMjE2nsbNoYCZRMNLLRYTw6+gc2+mZ4iN7EL8svvCFMbV6qwxFeLF
+         gaYLmEkH1TQjGtRTI446g3SPXnhOVycR0LQYQ2N4gVeULILcZt1HFdEfRlz/pcLNwG1P
+         P7W/M+gFjpp/+7UaRfp10kcZGktaapsXuret+BIIAorA5usiw91f0451bxXXb4LodKvr
+         KQtymGb0JaKqfknZK5o1XNZTjE4g4c2H21e51qBq+ioAXui1znUjbC2IfgILgCCvHVrD
+         YjsA==
+X-Gm-Message-State: AOAM532vKNCT0EyiwpJOyOySxg28KOQFH6MoAb9VuPe2W+slY8+6+Un2
+        B3anxf1uhOjQOqaQM/8cUDiDkR+tgYZxbzW9
+X-Google-Smtp-Source: ABdhPJxYow6k47ju8zaGAxZ3QDUvTl7R69BptJmcg9HIkO/wrTRp5zileffx5LsgJSu/+VcPjnXxvg==
+X-Received: by 2002:a17:90a:6b4d:: with SMTP id x13mr613010pjl.88.1630519582734;
+        Wed, 01 Sep 2021 11:06:22 -0700 (PDT)
+Received: from localhost (138-229-239-060.res.spectrum.com. [138.229.239.60])
+        by smtp.gmail.com with ESMTPSA id i5sm181241pjk.47.2021.09.01.11.06.20
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 01 Sep 2021 11:06:21 -0700 (PDT)
+From:   Benjamin Li <benl@squareup.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Benjamin Li <benl@squareup.com>, stable@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        Network Development <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20210901030542.17257-1-benl@squareup.com>
- <CAMZdPi_frOfwf+9nfiUw2NJhfuSVgcPj3=Hx2g0d8UsaZza5MA@mail.gmail.com>
- <b6157d1f-b548-13c0-3683-2d8c35964d1d@linaro.org>
-From:   Benjamin Li <benl@squareup.com>
-Message-ID: <168f96a5-58ec-fea9-c0d3-61f925bd1129@squareup.com>
-Date:   Wed, 1 Sep 2021 11:02:32 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.1
-MIME-Version: 1.0
-In-Reply-To: <b6157d1f-b548-13c0-3683-2d8c35964d1d@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] wcn36xx: handle connection loss indication
+Date:   Wed,  1 Sep 2021 11:06:05 -0700
+Message-Id: <20210901180606.11686-1-benl@squareup.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thanks for the investigation!
+Firmware sends delete_sta_context_ind when it detects the AP has gone
+away in STA mode. Right now the handler for that indication only handles
+AP mode; fix it to also handle STA mode.
 
-As discussed offline, I will send v2 with Fixes: removed, and Bryan will test and submit a separate patch to add the additional feat_caps for the power_save off case.
+Cc: stable@vger.kernel.org
+Signed-off-by: Benjamin Li <benl@squareup.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+---
+ drivers/net/wireless/ath/wcn36xx/smd.c | 44 +++++++++++++++++++-------
+ 1 file changed, 33 insertions(+), 11 deletions(-)
 
-Depending on DB410c testing, these feat_caps may need to be gated for WCN3680 only, in which case Loic's patch to re-enable CONNECTION_MONITOR (but gated for WCN3660/3620) would still be needed.
+diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
+index 57fa857b290b..f6bea896abe8 100644
+--- a/drivers/net/wireless/ath/wcn36xx/smd.c
++++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+@@ -2623,30 +2623,52 @@ static int wcn36xx_smd_delete_sta_context_ind(struct wcn36xx *wcn,
+ 					      size_t len)
+ {
+ 	struct wcn36xx_hal_delete_sta_context_ind_msg *rsp = buf;
+-	struct wcn36xx_vif *tmp;
++	struct wcn36xx_vif *vif_priv;
++	struct ieee80211_vif *vif;
++	struct ieee80211_bss_conf *bss_conf;
+ 	struct ieee80211_sta *sta;
++	bool found = false;
+ 
+ 	if (len != sizeof(*rsp)) {
+ 		wcn36xx_warn("Corrupted delete sta indication\n");
+ 		return -EIO;
+ 	}
+ 
+-	wcn36xx_dbg(WCN36XX_DBG_HAL, "delete station indication %pM index %d\n",
+-		    rsp->addr2, rsp->sta_id);
++	wcn36xx_dbg(WCN36XX_DBG_HAL,
++		    "delete station indication %pM index %d reason %d\n",
++		    rsp->addr2, rsp->sta_id, rsp->reason_code);
+ 
+-	list_for_each_entry(tmp, &wcn->vif_list, list) {
++	list_for_each_entry(vif_priv, &wcn->vif_list, list) {
+ 		rcu_read_lock();
+-		sta = ieee80211_find_sta(wcn36xx_priv_to_vif(tmp), rsp->addr2);
+-		if (sta)
+-			ieee80211_report_low_ack(sta, 0);
++		vif = wcn36xx_priv_to_vif(vif_priv);
++
++		if (vif->type == NL80211_IFTYPE_STATION) {
++			/* We could call ieee80211_find_sta too, but checking
++			 * bss_conf is clearer.
++			 */
++			bss_conf = &vif->bss_conf;
++			if (vif_priv->sta_assoc &&
++			    !memcmp(bss_conf->bssid, rsp->addr2, ETH_ALEN)) {
++				found = true;
++				wcn36xx_dbg(WCN36XX_DBG_HAL,
++					    "connection loss bss_index %d\n",
++					    vif_priv->bss_index);
++				ieee80211_connection_loss(vif);
++			}
++		} else {
++			sta = ieee80211_find_sta(vif, rsp->addr2);
++			if (sta) {
++				found = true;
++				ieee80211_report_low_ack(sta, 0);
++			}
++		}
++
+ 		rcu_read_unlock();
+-		if (sta)
++		if (found)
+ 			return 0;
+ 	}
+ 
+-	wcn36xx_warn("STA with addr %pM and index %d not found\n",
+-		     rsp->addr2,
+-		     rsp->sta_id);
++	wcn36xx_warn("BSS or STA with addr %pM not found\n", rsp->addr2);
+ 	return -ENOENT;
+ }
+ 
+-- 
+2.17.1
 
-Ben
-
-On 9/1/21 4:56 AM, Bryan O'Donoghue wrote:
-> On 01/09/2021 07:40, Loic Poulain wrote:
->> iw wlan0 set power_save off
-> 
-> I do this on wcn3680b and get no loss of signal
-> 
-> If I do this though
-> 
-> diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-> index 03966072f34c..ba613fbb728d 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/smd.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-> @@ -2345,6 +2345,8 @@ int wcn36xx_smd_feature_caps_exchange(struct wcn36xx *wcn)
->                 set_feat_caps(msg_body.feat_caps, DOT11AC);
->                 set_feat_caps(msg_body.feat_caps, ANTENNA_DIVERSITY_SELECTION);
->         }
-> +       set_feat_caps(msg_body.feat_caps, IBSS_HEARTBEAT_OFFLOAD);
-> +       set_feat_caps(msg_body.feat_caps, WLANACTIVE_OFFLOAD);
-> 
->         PREPARE_HAL_BUF(wcn->hal_buf, msg_body);
-> 
-> @@ -2589,7 +2591,7 @@ static int wcn36xx_smd_missed_beacon_ind(struct wcn36xx *wcn,
->         struct wcn36xx_hal_missed_beacon_ind_msg *rsp = buf;
->         struct ieee80211_vif *vif = NULL;
->         struct wcn36xx_vif *tmp;
-> -
-> +wcn36xx_info("%s/%d\n", __func__, __LINE__);
->         /* Old FW does not have bss index */
->         if (wcn36xx_is_fw_version(wcn, 1, 2, 2, 24)) {
->                 list_for_each_entry(tmp, &wcn->vif_list, list) {
-> @@ -2608,7 +2610,7 @@ static int wcn36xx_smd_missed_beacon_ind(struct wcn36xx *wcn,
-> 
->         list_for_each_entry(tmp, &wcn->vif_list, list) {
->                 if (tmp->bss_index == rsp->bss_index) {
-> -                       wcn36xx_dbg(WCN36XX_DBG_HAL, "beacon missed bss_index %d\n",
-> +                       wcn36xx_info("beacon missed bss_index %d\n",
->                                     rsp->bss_index);
->                         vif = wcn36xx_priv_to_vif(tmp);
->                         ieee80211_connection_loss(vif);
-> 
-> 
-> bingo
-> 
-> root@linaro-developer:~# iw wlan0 set power_save off
-> 
-> 
-> # pulls plug on AP
-> 
-> root@linaro-developer:~# [   83.290987] wcn36xx: wcn36xx_smd_missed_beacon_ind/2594
-> [   83.291070] wcn36xx: beacon missed bss_index 0
-> [   83.295403] wlan0: Connection to AP e2:63:da:9c:a4:bd lost
-> 
-> I'm not sure if both flags are required but, this is the behavior we want
-> 
