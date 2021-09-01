@@ -2,89 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AEC03FD3D4
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 08:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8EE93FD434
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 09:07:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242208AbhIAGcX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Sep 2021 02:32:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58944 "EHLO
+        id S242485AbhIAHIj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Sep 2021 03:08:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242141AbhIAGcW (ORCPT
+        with ESMTP id S242472AbhIAHIh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Sep 2021 02:32:22 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00A7AC0613C1
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Aug 2021 23:31:26 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id v1so878502plo.10
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Aug 2021 23:31:25 -0700 (PDT)
+        Wed, 1 Sep 2021 03:08:37 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B446C061575;
+        Wed,  1 Sep 2021 00:07:40 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id s12so3274671ljg.0;
+        Wed, 01 Sep 2021 00:07:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Bpafk1X41xGK7MXDbJ4VMxRCE4Mzuv5uYTag/1eQibs=;
-        b=E4pSGWJ/pCQWOPy/QHPIVscmiPk7GDQnP8Ckbq4SEJS3kYCdoDp/GzKpzTwPQP/lse
-         LrpKqoqSyM2OpkcoSxmvISKxyhKrbt9a0eIF+jrjgtqFSgKnYySy6qjpxb64ufkvhSXo
-         WLaCLbuQC0EQQq/Lb84kToLsnPRw+32XzUuuhJgzo+x9ho7MBAfFY8shcFqa0S53cuF/
-         7+6lNDZ03P0VuQh4BNtQKq/sLsPhUkzytxcudzH//w8Lx6xbleCcHtS+5g6SfJcikmhF
-         2rlGg5vKWfepZK39qtS+oVNaDr/HlYYwnXrXY9s2s4LTx1zBrI+vX5vmB6rFhOa2XgP+
-         GbfQ==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=tkBnSZ8tPceYf/KAGSxnZEdY1ZtMechZKaYpAIYU2LU=;
+        b=JpZndJyO+xZ+tPnCYMD2xifEVddZnLPmd+brJFxJkwgMGOki8Lmrj1E5wmSr96IMF2
+         S2Apqee7gU620BrjYj372ooKP+8t9+eOpanhgTbBXxuyW1S1QJdek8diuRmJnZWBSHP0
+         f8x73VwBsyNvw8onW+48c7JbZjT/DCDNyA0vsq7xZocBUOVHgMuHajEYEwa4rQrzualO
+         pFJGL87zIX0WAtdWO9FdmeIubO/opQkioRArXx5apfDvDl7UbupTCfjwlIOa/IS1hozI
+         YIiI68VsoRZf5cZRnVcWpLbvJcpgHr+p8mRnRd7DYMOuMqGgRGDcpwiNgsUOa00/uAss
+         1fDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Bpafk1X41xGK7MXDbJ4VMxRCE4Mzuv5uYTag/1eQibs=;
-        b=ILVLbEtEmNzdqDwpLmMAVF+oOhOjw6uob2k+JKhJ4vQqaTK7IhWexVc90sTl35DSa6
-         S/pDfyb9LdjWZtfJv7QU2Q9FKx5tmkth+hk9mXbdOoBERr1g5b/Bt1Mf414AnT8CK4+O
-         O8Q/rpfv5GD0ARqZlXPAbjOLPYBfIqpenWuBNVtskcY7cv2LCI9ZvgiNPCSBc8Lj8W3t
-         8+CpAvHJptTGdWht41CfL9460CybN2lA7TL04T6XhuJwZjz0rfEOo9hxM9g68ONjvuOS
-         DXxYOnaCypr4oCPnFKFscUgO1XaP+jSf6Dw+0/t9Ld3zoDlA+ePVIjDkkFgvNpq/Kuq2
-         Jtiw==
-X-Gm-Message-State: AOAM532H8nIk3jDZkMS966IiuTYdhSMktI0fSSIq3vQuAdZYYQUlbxoX
-        s93GNv9hywM42Viixy1rrsiVqKGXOPVdAWBkeTiPyA==
-X-Google-Smtp-Source: ABdhPJxprnOJMY4UIu5n1XDKPKNGr9RV+zGkMFTEI22fw+hJGHUzBjxZ7RvaQyjWpEoorsORfRskSTs3bbt3V9WssXA=
-X-Received: by 2002:a17:90b:238b:: with SMTP id mr11mr10076478pjb.18.1630477885388;
- Tue, 31 Aug 2021 23:31:25 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=tkBnSZ8tPceYf/KAGSxnZEdY1ZtMechZKaYpAIYU2LU=;
+        b=WDOpA3ktNUIuYvIMCmmwZ4okXhrY8s0+LBZIuRAROXJzYNpaox0oMdedmmvfQDMB0j
+         vStLcM9v19o3JtqstDUZtmPT0jnmVNdjrB+vfnBiV0/egQsFIc6YUlN6QVIkVCD0TYPh
+         b9kIN0k0cfj1dmemCNMYO/8CoybEGclGwCkgLgnDQ+5o1r5cNAaeZDnsIuAPBiENXGEU
+         81InCLsqZE7+70WLa2sc8fzUDYPhp8D1gNv/C1OPInDc28+ezdg03ALWtEooH8hW6tyR
+         QD4J250Veggd3hxNu2C6Pf1B6ED174BjPwWkimp/C7IxYVVMmbN/n57p545FdPS2oQjz
+         sQ+Q==
+X-Gm-Message-State: AOAM533hbgdBmZy6E7VDGzenOBmZVhuv26VvQ9ldcUX3BVi4buDnJAsr
+        s4YIRLHZbxtdp/z+BdeV4ObIB/673vur9E5l
+X-Google-Smtp-Source: ABdhPJzBtCI4VowD9Iwme8UWUOdfX0tOvBmQwSrdCZKL4TslD81zSa8XW6GbUD12UflGAFZbRun0ew==
+X-Received: by 2002:a05:651c:2120:: with SMTP id a32mr28497251ljq.252.1630480058455;
+        Wed, 01 Sep 2021 00:07:38 -0700 (PDT)
+Received: from [10.0.0.40] (91-155-111-71.elisa-laajakaista.fi. [91.155.111.71])
+        by smtp.gmail.com with ESMTPSA id j5sm1942288lfu.1.2021.09.01.00.07.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Sep 2021 00:07:37 -0700 (PDT)
+Subject: Re: [PATCH] kconfig: forbid symbols that end with '_MODULE'
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-wireless@vger.kernel.org, Networking <netdev@vger.kernel.org>
+References: <20210825041637.365171-1-masahiroy@kernel.org>
+ <9df591f6-53fc-4567-8758-0eb1be4eade5@gmail.com>
+ <CAK7LNATDMzR1DnwwAcQFHaKZeGVYDZ1oDKL-QOe_7DaB_yByAA@mail.gmail.com>
+From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+Message-ID: <d9e777dc-d274-92ee-4d77-711bfd553611@gmail.com>
+Date:   Wed, 1 Sep 2021 10:07:57 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-References: <20210901030542.17257-1-benl@squareup.com>
-In-Reply-To: <20210901030542.17257-1-benl@squareup.com>
-From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Wed, 1 Sep 2021 08:41:48 +0200
-Message-ID: <CAMZdPi8QdLwrWM5ghDNYTT2nxNJm=NgNkZGxYvbRGsYQFHGxXA@mail.gmail.com>
-Subject: Re: [PATCH] wcn36xx: handle connection loss indication
-To:     Benjamin Li <benl@squareup.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
-        stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        Network Development <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAK7LNATDMzR1DnwwAcQFHaKZeGVYDZ1oDKL-QOe_7DaB_yByAA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Benjamin,
 
-On Wed, 1 Sept 2021 at 05:05, Benjamin Li <benl@squareup.com> wrote:
->
-> Firmware sends delete_sta_context_ind when it detects the AP has gone
-> away in STA mode. Right now the handler for that indication only handles
-> AP mode; fix it to also handle STA mode.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 8def9ec46a5f ("wcn36xx: Enable firmware link monitoring")
+On 26/08/2021 05:28, Masahiro Yamada wrote:
+> On Wed, Aug 25, 2021 at 8:59 PM Péter Ujfalusi <peter.ujfalusi@gmail.com> wrote:
 
-I think it's good to have but does it really fix the link monitoring issue?
-Is the connection loss detected in this scenario:
-- Connect to AP
-- Force active mode (iw wlan0 set power_save off)
-- Wait for no data activity
-- HW shutdown the AP (AP leave)
+...
 
-Do you get any indication?
+>>> diff --git a/sound/soc/ti/Kconfig b/sound/soc/ti/Kconfig
+>>> index 698d7bc84dcf..c56a5789056f 100644
+>>> --- a/sound/soc/ti/Kconfig
+>>> +++ b/sound/soc/ti/Kconfig
+>>> @@ -211,7 +211,7 @@ config SND_SOC_DM365_VOICE_CODEC
+>>>         Say Y if you want to add support for SoC On-chip voice codec
+>>>  endchoice
+>>>
+>>> -config SND_SOC_DM365_VOICE_CODEC_MODULE
+>>> +config SND_SOC_DM365_VOICE_CODEC_MODULAR
+>>
+>> This Kconfig option is only used to select the codecs needed for the
+>> voice mode, I think it would be better to use something like
+>>
+>> SND_SOC_DM365_SELECT_VOICE_CODECS ?
+> 
+> I do not have a strong opinion.
+> I am fine with any name unless it ends with _MODULE.
+> 
+> 
+> The sound subsystem maintainers and Arnd,
+> author of 147162f575152db800 are CC'ed.
+> 
+> If they suggest a better name, I'd be happy to adopt it.
+> 
 
-In this scenario, DB410C (wcn3620) does not report anything.
+Can you resend (a separate patch would be even better) with
+SND_SOC_DM365_SELECT_VOICE_CODECS
 
-Regards,
-Loic
+for sound/soc/ti/Kconfig ?
+
+Thank you,
+Péter
