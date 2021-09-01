@@ -2,90 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60C643FE35F
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 21:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84B8E3FE42E
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Sep 2021 22:41:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230189AbhIATul (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Sep 2021 15:50:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48348 "EHLO
+        id S231598AbhIAUmO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Sep 2021 16:42:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229601AbhIATul (ORCPT
+        with ESMTP id S231398AbhIAUmO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Sep 2021 15:50:41 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04508C061575;
-        Wed,  1 Sep 2021 12:49:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=+g9z+ixAqKBu8NtXPBf3J1tXQUMoPBULRDmQiFJbsfs=;
-        t=1630525784; x=1631735384; b=ELPx7IV/2ptH/CfJAPc+XdTuay0msgFtbO3z8oT8SX+m1yu
-        t+Seq/eToWQGNI7B4mV5urS8fkvPJ95cvCuCgyZKNyspOEHh2U2tJO1bLPTBzelrVlIK9+WEAnaml
-        NMayu4E/gegTpE+Zp7PTvqD0hM4IYzcDV+vIW+rCc9sLnAmG4ypNSzQC39lOlSJCNK0GA2lQ8k2ys
-        aTHUzHXkokw5jB/6FlqKjcssde3YtIjjmuySEhwh5G2hDJ6DItniUoF9+TEYAqQcE64b6/+FSyPmU
-        nhNXA2WNEYRZJ8oLl5jEpmmkG9xA8bFlTbfiP42VeWBTNijB/BDdRK2udLTHVLlw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mLWEn-001J7E-P3; Wed, 01 Sep 2021 21:49:33 +0200
-Message-ID: <4dfae09cd2ea3f5fe4b8fa5097d1e0cc8a34e848.camel@sipsolutions.net>
-Subject: Re: [GIT PULL] Networking for v5.15
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        David Miller <davem@davemloft.net>,
-        Netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Date:   Wed, 01 Sep 2021 21:49:32 +0200
-In-Reply-To: <20210901124131.0bc62578@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <20210831203727.3852294-1-kuba@kernel.org>
-         <CAHk-=wjB_zBwZ+WR9LOpvgjvaQn=cqryoKigod8QnZs=iYGEhA@mail.gmail.com>
-         <20210901124131.0bc62578@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Wed, 1 Sep 2021 16:42:14 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C512C061575;
+        Wed,  1 Sep 2021 13:41:17 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id m17so409591plc.6;
+        Wed, 01 Sep 2021 13:41:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=NO/zd5PEh4sGso5loCQniKnDMB+CL8oSBEUV4F7LrXw=;
+        b=IP0mTBtq6mlacOZ39e0lYeKPTk+VrJ0ZQqRlm1T1+QNDaOlvcqYRPV8jm+803qYDl7
+         LY4ZXJsWOq+hbIlsbXpy6iNRIGf2Q1TF7o68nDz9wP41a0Qi2vHBy+eWiI8u6Hx0ifHk
+         ixOXbYG9jzZTr7QFpGbJ/H7QmmaWWFgbtHh3B8Wh6leVIAHm8+dsbahllR3BJHiFEPlY
+         pk+VVnObLh2Tq/ChZWHPsg8sGfqTHuVvRPzv/zTs+czN7mrfONq8O0n7skB9RzkYyXjU
+         CkM+Z1XN0DZVxaW89t+e1m2jWWMZME8O76qbDN2EaSMVIfmYoPo2wThKC6gPSkMERMaC
+         bSaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=NO/zd5PEh4sGso5loCQniKnDMB+CL8oSBEUV4F7LrXw=;
+        b=GWqqbfDvmE0c5TTLJ7Ue12iU09sx1xZLu/49uLd7uxwZURFtS8vcOTUx1SWaOvpdM9
+         ukGJzx2ZXXbciFsG2qpOArKUJ6bNq2FS0QcO4tgPjFUlXs62RPLVcILW7jDD93rZfbM0
+         2kQmQlEzf0nSq/2ZpOY5AqXvqjqqZyyLTq4uC4leKHZD0NzHgIZ9JJpHEgdOeAs0z53/
+         c86vfDq9kJCfnl8KFyLYlFdA1VsSyRU5JUEVDu85ulUAFUBiu6OwmaOWDfhqlL+ZCn0N
+         kKb8dUzaqETOqpTLb8vlKjLqEmKpM/1CaWeXLNSnZW1V8nmEHe+pV7S/zGVebuqJUQEy
+         VAzA==
+X-Gm-Message-State: AOAM531mceOYJGVf5pYlb59+So0aO6h4wOTnajSyoKyx75dis5jFBTeb
+        a9Xth/dNwem4m/e/5faVikBHnwMxDhS1B2ddfxQ=
+X-Google-Smtp-Source: ABdhPJyokH7tzWOv52uIscrHN+41KOxxtDBm9KGPkir22Mv0bLlWOv/nJud3iY+etysezBR/VQTmiUQ9iCOMiMV7vB4=
+X-Received: by 2002:a17:903:120e:b0:138:d732:3b01 with SMTP id
+ l14-20020a170903120e00b00138d7323b01mr877939plh.21.1630528876524; Wed, 01 Sep
+ 2021 13:41:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+References: <20210830123704.221494-1-verdre@v0yd.nl> <20210830123704.221494-2-verdre@v0yd.nl>
+ <CA+ASDXPKZ0i5Bi11Q=qqppY8OCgw=7m0dnPn0s+y+GAvvQodog@mail.gmail.com>
+In-Reply-To: <CA+ASDXPKZ0i5Bi11Q=qqppY8OCgw=7m0dnPn0s+y+GAvvQodog@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 1 Sep 2021 23:40:40 +0300
+Message-ID: <CAHp75VdR4VC+Ojy9NjAtewAaPAgowq-3rffrr3uAdOeiN8gN-A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mwifiex: Use non-posted PCI register writes
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     =?UTF-8?Q?Jonas_Dre=C3=9Fler?= <verdre@v0yd.nl>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-09-01 at 12:41 -0700, Jakub Kicinski wrote:
-> 
-> > 
-> > They all seem to have that same issue, and it looks like the fix would
-> > be to get the RTN lock in iwl_mvm_init_mcc(), but I didn't really look
-> > into it very much.
-> > 
-> > This is on my desktop, and I actually don't _use_ the wireless on this
-> > machine. I assume it still works despite the warnings, but they should
-> > get fixed.
-> > 
-> > I *don't* see these warnings on my laptop where I actually use
-> > wireless, but that one uses ath10k_pci, so it seems this is purely a
-> > iwlwifi issue.
-> > 
-> > I can't be the only one that sees this. Hmm?
-> 
-> Mm. Looking thru the recent commits there is a suspicious rtnl_unlock()
-> in commit eb09ae93dabf ("iwlwifi: mvm: load regdomain at INIT stage").
+On Wed, Sep 1, 2021 at 11:25 PM Brian Norris <briannorris@chromium.org> wro=
+te:
+> On Mon, Aug 30, 2021 at 5:37 AM Jonas Dre=C3=9Fler <verdre@v0yd.nl> wrote=
+:
 
-Huh! That's not the version of the commit I remember - it had an
-rtnl_lock() in there too (just before the mutex_lock)?! Looks like that
-should really be there, not sure how/where it got lost along the way.
+...
 
-That unbalanced rtnl_unlock() makes no sense anyway. Wonder why it
-doesn't cause more assertions/problems at that point, clearly it's
-unbalanced. Pretty sure it's missing the rtnl_lock() earlier in the
-function for some reason.
+> This might be good for many cases, but please read this commit:
+>
+> https://git.kernel.org/linus/062e008a6e83e7c4da7df0a9c6aefdbc849e2bb3
+> mwifiex: pcie: use posted write to wake up firmware
+>
+> It's very much intentional that this is a posted write in some cases.
+>
+> Without ensuring this doesn't regress, NAK from me.
 
-Luca and I will look at it tomorrow, getting late here, sorry. 
+Can you ensure that from Chrome / Google perspective, please?
 
-johannes
-
+--=20
+With Best Regards,
+Andy Shevchenko
