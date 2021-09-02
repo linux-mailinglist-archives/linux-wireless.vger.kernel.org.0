@@ -2,89 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39A9E3FE8B2
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Sep 2021 07:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5688F3FE8BA
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Sep 2021 07:34:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231339AbhIBF2W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Sep 2021 01:28:22 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:30744 "EHLO
+        id S230261AbhIBFfc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Sep 2021 01:35:32 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:27330 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229601AbhIBF2V (ORCPT
+        with ESMTP id S230483AbhIBFf3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Sep 2021 01:28:21 -0400
+        Thu, 2 Sep 2021 01:35:29 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1630560444; h=Message-ID: Subject: Cc: To: From: Date:
- Content-Transfer-Encoding: Content-Type: MIME-Version: Sender;
- bh=xUPDCjlZZkxT5PbC0lrXcjdiYxOt/vxITKFTYtv1fFQ=; b=OfUDp8hP5oVeXyGVezupV0UmnxZCrHgOeyJvq8EApnV31ihMj9aLwYIlWVnKNzQXQ5AbECHl
- w8WNSsxgJgZ8+z2dfJSc/Vr9zcoTuPWQ1N5ocW7eXlPk3V06GCuqwMU9cBVvwyKwj9EdF4Mg
- yuSeyG/sbk9JmEEj7x5AOS/H644=
+ s=smtp; t=1630560872; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=ZYlAM6qs8ju6qwANgzbN+HuD8bJBqDlc+WKuouCbLTk=; b=U3w2EAGxya81IhyrZwiDg/ZiGzjdDGR7Lhyogfnjbdmp/IZwpyRXmENKiyR5hW/nA9A9g6X9
+ Txz3UlYpmhDBljOOHV/ylsOiJrGxa8QGHjUvYXBAf6a6iC6NElxBvusUUgBJCc6gbO3W7ajS
+ S6cLtExfXR6+4eQuYZ6MHz+uTCU=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 613060aa825e13c54a9f691c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 02 Sep 2021 05:27:06
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 61306267c603a0154fc2c6e7 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 02 Sep 2021 05:34:31
  GMT
-Sender: murugana=codeaurora.org@mg.codeaurora.org
+Sender: ppranees=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CE65BC43460; Thu,  2 Sep 2021 05:27:05 +0000 (UTC)
+        id CC62FC43460; Thu,  2 Sep 2021 05:34:29 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from ppranees-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: murugana)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B699EC4338F;
-        Thu,  2 Sep 2021 05:27:04 +0000 (UTC)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Thu, 02 Sep 2021 10:57:04 +0530
-From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: Multi-client EAPOL key timeout when not having RTNL lock protection
-Message-ID: <6cae54aee83a19dc13e458e4d20e4f28@codeaurora.org>
-X-Sender: murugana@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+        (Authenticated sender: ppranees)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CC152C4338F;
+        Thu,  2 Sep 2021 05:34:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org CC152C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   P Praneesh <ppranees@codeaurora.org>
+To:     kvalo@codeaurora.org
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        P Praneesh <ppranees@codeaurora.org>
+Subject: [PATCH v3 00/12] ath11k: optimizations in data path
+Date:   Thu,  2 Sep 2021 11:03:28 +0530
+Message-Id: <1630560820-21905-1-git-send-email-ppranees@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+This patchset covers optimizations in rx (first 7 patches)
+and tx (remaining 5 patches) data path.
 
-In the multi-client (64 or higher clients on single radio) test scenario 
-of AP mode using hostapd, we are facing EAPOL key timeout for random 
-clients.
+Running UDP DL/UL traffic on IPQ8074 5G radio showed an average 5-10%
+improvement on a 4 core platform
+---
+v3:
+	- Changed rcu_dereference to rcu_access_pointer in
+	  [PATCH 07/12] ath11k: add branch predictors in process_rx
+	  [PATCH 11/12] ath11k: add branch predictors in dp_tx path.
+	  removed redundant check in
+	  [PATCH 02/12] ath11k: allocate dst ring descriptors from
+	  cacheable memory.
+v2:
+        - Addressed internal developer reported segfault and avoid lookup twice
+          by utilizing idr_remove (patch 12/12 and patch 2/12).
+---
+P Praneesh (12):
+  ath11k: disable unused CE8 interrupts for ipq8074
+  ath11k: allocate dst ring descriptors from cacheable memory
+  ath11k: modify dp_rx desc access wrapper calls inline
+  ath11k: avoid additional access to ath11k_hal_srng_dst_num_free
+  ath11k: avoid active pdev check for each msdu
+  ath11k: remove usage quota while processing rx packets
+  ath11k: add branch predictors in process_rx
+  ath11k: allocate HAL_WBM2SW_RELEASE ring from cacheable  memory
+  ath11k: remove mod operator in dst ring processing
+  ath11k: avoid while loop in ring selection of tx completion interrupt
+  ath11k: add branch predictors in dp_tx path
+  ath11k: avoid unnecessary lock contention in tx_completion path
 
-wlan1: STA 00:41:c0:a8:03:10 WPA: received EAPOL-Key msg 4/4 in invalid 
-state (7) – dropped
+ drivers/net/wireless/ath/ath11k/ce.c    |   2 +-
+ drivers/net/wireless/ath/ath11k/core.c  |   5 +
+ drivers/net/wireless/ath/ath11k/dp.c    |  48 ++++++--
+ drivers/net/wireless/ath/ath11k/dp.h    |   1 +
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 207 ++++++++++++++++----------------
+ drivers/net/wireless/ath/ath11k/dp_tx.c |  86 ++++++-------
+ drivers/net/wireless/ath/ath11k/hal.c   |  35 +++++-
+ drivers/net/wireless/ath/ath11k/hal.h   |   1 +
+ drivers/net/wireless/ath/ath11k/hw.h    |   1 +
+ drivers/net/wireless/ath/ath11k/mac.c   |   2 +-
+ 10 files changed, 220 insertions(+), 168 deletions(-)
 
-This is happening due to delay in transmission of association response 
-frames for retried association request frames from the client and one of 
-the association requests is received when EAPOL key exchange is in 
-process. NL80211_CMD_NEW_STATION is received on hostapd when already 
-EAPOL M3 is transmitted and waiting for EAPOL M4. But since hostapd 
-received NL80211_CMD_NEW_STATION, it resets the handshake process from 
-M1 again by the time client sends M4 to see the above error.
+-- 
+2.7.4
 
-This delay is seen only after the commit, a05829a7222e ("cfg80211: avoid 
-holding the RTNL when calling the driver") and not seen before/without 
-this commit. We could see delay in processing of nl80211_get_key, 
-nl80211_set_key, nl80211_new_key, nl80211_del_key and nl80211_tx_mgmt 
-commands.
-
-The delay and EAPOL key timeout is not seen when NL80211_FLAG_NEED_RTNL 
-is set back to internal_flags of nl80211_get_key, nl80211_set_key, 
-nl80211_new_key, nl80211_del_key and nl80211_tx_mgmt messages alone.
-
-Please share your comments on this issue requiring RTNL lock for key and 
-mgmt nl80211 commands.
-
-With regards,
-Sathishkumar
