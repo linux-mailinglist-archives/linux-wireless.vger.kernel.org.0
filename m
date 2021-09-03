@@ -2,81 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B32F3FF506
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Sep 2021 22:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0528D3FFA57
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Sep 2021 08:24:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245411AbhIBUjT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Sep 2021 16:39:19 -0400
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:37799 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232057AbhIBUjS (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Sep 2021 16:39:18 -0400
-Received: from pop-os.home ([90.126.253.178])
-        by mwinf5d54 with ME
-        id p8eC2500A3riaq2038eDGc; Thu, 02 Sep 2021 22:38:16 +0200
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 02 Sep 2021 22:38:16 +0200
-X-ME-IP: 90.126.253.178
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     luciano.coelho@intel.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org, johannes.berg@intel.com,
-        pierre-louis.bossart@linux.intel.com, drorx.moshe@intel.com
+        id S1345271AbhICGZg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Sep 2021 02:25:36 -0400
+Received: from m12-16.163.com ([220.181.12.16]:33641 "EHLO m12-16.163.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230128AbhICGZg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 3 Sep 2021 02:25:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=gwsSz
+        w+Owsx9E4ND5+dICrWSiwl4/4CbypIPkR7vonI=; b=Ndzlx7LlgcBchTm16OBPA
+        D9z5qAA3g/mFnDrTiU5yV35+osDXdAbtU0u2Hgm3KvgrLzGBTtfdTOay9uSphwet
+        HHsiTgWCvuo1FuNJF0F0aVr4zhwwpeEfj9LEgOcCuFrv5gMyoirzL+6Mw+pJy3sG
+        GPDrwnGH1JHMbWcZ0shV4M=
+Received: from COOL-20201222LC.ccdomain.com (unknown [218.94.48.178])
+        by smtp12 (Coremail) with SMTP id EMCowABn+2yHvzFh91wlAg--.14S2;
+        Fri, 03 Sep 2021 14:24:19 +0800 (CST)
+From:   dingsenjie@163.com
+To:     jirislaby@kernel.org, mickflemm@gmail.com, mcgrof@kernel.org,
+        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] iwlwifi: pnvm: Fix a memory leak in 'iwl_pnvm_get_from_fs()'
-Date:   Thu,  2 Sep 2021 22:38:11 +0200
-Message-Id: <1b5d80f54c1dbf85710fd285243932943b498fe7.1630614969.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.30.2
+        linux-kernel@vger.kernel.org, dingsenjie <dingsenjie@yulong.com>
+Subject: [PATCH] wireless: ath5k: Remove unnecessary label of ath5k_beacon_update
+Date:   Fri,  3 Sep 2021 14:23:16 +0800
+Message-Id: <20210903062316.11756-1-dingsenjie@163.com>
+X-Mailer: git-send-email 2.21.0.windows.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: EMCowABn+2yHvzFh91wlAg--.14S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZFyfWr1rJryxJr4fCF1rZwb_yoWDuwc_ur
+        WI93Z7JF15GryYgrsrC3y3Z34IkFW8uF95G3WjqFW7KF13CrWkAr95Zr9rGw17uw4xAFnx
+        uFsrAFy3tw1jvjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0D73DUUUUU==
+X-Originating-IP: [218.94.48.178]
+X-CM-SenderInfo: 5glqw25hqmxvi6rwjhhfrp/1tbiYxQDyFaEEMIYRAAAsg
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A firmware is requested but never released in this function. This leads to
-a memory leak in the normal execution path.
+From: dingsenjie <dingsenjie@yulong.com>
 
-Add the missing 'release_firmware()' call.
-Also introduce a temp variable (new_len) in order to keep the value of
-'pnvm->size' after the firmware has been released.
+The label just used as return, so we delete it and
+use the return statement instead of the goto statement.
 
-Fixes: cdda18fbbefa ("iwlwifi: pnvm: move file loading code to a separate function")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: dingsenjie <dingsenjie@yulong.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath5k/base.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-index 314ed90c23dd..dde22bdc8703 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-@@ -231,6 +231,7 @@ static int iwl_pnvm_get_from_fs(struct iwl_trans *trans, u8 **data, size_t *len)
- {
- 	const struct firmware *pnvm;
- 	char pnvm_name[MAX_PNVM_NAME];
-+	size_t new_len;
- 	int ret;
+diff --git a/drivers/net/wireless/ath/ath5k/base.c b/drivers/net/wireless/ath/ath5k/base.c
+index 4c6e57f..9739189 100644
+--- a/drivers/net/wireless/ath/ath5k/base.c
++++ b/drivers/net/wireless/ath/ath5k/base.c
+@@ -1896,23 +1896,18 @@ static int ath5k_remove_padding(struct sk_buff *skb)
+ 	struct ath5k_vif *avf;
+ 	struct sk_buff *skb;
  
- 	iwl_pnvm_get_fs_name(trans, pnvm_name, sizeof(pnvm_name));
-@@ -242,11 +243,14 @@ static int iwl_pnvm_get_from_fs(struct iwl_trans *trans, u8 **data, size_t *len)
- 		return ret;
- 	}
+-	if (WARN_ON(!vif)) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
++	if (WARN_ON(!vif))
++		return -EINVAL;
  
-+	new_len = pnvm->size;
- 	*data = kmemdup(pnvm->data, pnvm->size, GFP_KERNEL);
-+	release_firmware(pnvm);
-+
- 	if (!*data)
- 		return -ENOMEM;
+ 	skb = ieee80211_beacon_get(hw, vif);
  
--	*len = pnvm->size;
-+	*len = new_len;
+-	if (!skb) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
++	if (!skb)
++		return -ENOMEM;
  
- 	return 0;
+ 	avf = (void *)vif->drv_priv;
+ 	ath5k_txbuf_free_skb(ah, avf->bbuf);
+ 	avf->bbuf->skb = skb;
+ 	ret = ath5k_beacon_setup(ah, avf->bbuf);
+-out:
+ 	return ret;
  }
+ 
 -- 
-2.30.2
+1.9.1
+
 
