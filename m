@@ -2,89 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0528D3FFA57
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Sep 2021 08:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B4833FFA75
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Sep 2021 08:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345271AbhICGZg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Sep 2021 02:25:36 -0400
-Received: from m12-16.163.com ([220.181.12.16]:33641 "EHLO m12-16.163.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230128AbhICGZg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Sep 2021 02:25:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=gwsSz
-        w+Owsx9E4ND5+dICrWSiwl4/4CbypIPkR7vonI=; b=Ndzlx7LlgcBchTm16OBPA
-        D9z5qAA3g/mFnDrTiU5yV35+osDXdAbtU0u2Hgm3KvgrLzGBTtfdTOay9uSphwet
-        HHsiTgWCvuo1FuNJF0F0aVr4zhwwpeEfj9LEgOcCuFrv5gMyoirzL+6Mw+pJy3sG
-        GPDrwnGH1JHMbWcZ0shV4M=
-Received: from COOL-20201222LC.ccdomain.com (unknown [218.94.48.178])
-        by smtp12 (Coremail) with SMTP id EMCowABn+2yHvzFh91wlAg--.14S2;
-        Fri, 03 Sep 2021 14:24:19 +0800 (CST)
-From:   dingsenjie@163.com
-To:     jirislaby@kernel.org, mickflemm@gmail.com, mcgrof@kernel.org,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dingsenjie <dingsenjie@yulong.com>
-Subject: [PATCH] wireless: ath5k: Remove unnecessary label of ath5k_beacon_update
-Date:   Fri,  3 Sep 2021 14:23:16 +0800
-Message-Id: <20210903062316.11756-1-dingsenjie@163.com>
-X-Mailer: git-send-email 2.21.0.windows.1
+        id S1345785AbhICGfm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Sep 2021 02:35:42 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:54612 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230128AbhICGfm (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 3 Sep 2021 02:35:42 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 53E3A1C0B7F; Fri,  3 Sep 2021 08:34:41 +0200 (CEST)
+Date:   Fri, 3 Sep 2021 08:34:40 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Pavel Machek <pavel@denx.de>, nobuhiro1.iwamatsu@toshiba.co.jp,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: Backporting CVE-2020-3702 ath9k patches to stable
+Message-ID: <20210903063440.GC9690@amd>
+References: <20210818084859.vcs4vs3yd6zetmyt@pali>
+ <YRzMt53Ca/5irXc0@kroah.com>
+ <20210818091027.2mhqrhg5pcq2bagt@pali>
+ <YRzQZZIp/LfMy/xG@kroah.com>
+ <20210902114814.GA525@amd>
+ <YTC9QBWPoulIhZYq@kroah.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: EMCowABn+2yHvzFh91wlAg--.14S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZFyfWr1rJryxJr4fCF1rZwb_yoWDuwc_ur
-        WI93Z7JF15GryYgrsrC3y3Z34IkFW8uF95G3WjqFW7KF13CrWkAr95Zr9rGw17uw4xAFnx
-        uFsrAFy3tw1jvjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0D73DUUUUU==
-X-Originating-IP: [218.94.48.178]
-X-CM-SenderInfo: 5glqw25hqmxvi6rwjhhfrp/1tbiYxQDyFaEEMIYRAAAsg
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="bKyqfOwhbdpXa4YI"
+Content-Disposition: inline
+In-Reply-To: <YTC9QBWPoulIhZYq@kroah.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: dingsenjie <dingsenjie@yulong.com>
 
-The label just used as return, so we delete it and
-use the return statement instead of the goto statement.
+--bKyqfOwhbdpXa4YI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: dingsenjie <dingsenjie@yulong.com>
----
- drivers/net/wireless/ath/ath5k/base.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+Hi!
 
-diff --git a/drivers/net/wireless/ath/ath5k/base.c b/drivers/net/wireless/ath/ath5k/base.c
-index 4c6e57f..9739189 100644
---- a/drivers/net/wireless/ath/ath5k/base.c
-+++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -1896,23 +1896,18 @@ static int ath5k_remove_padding(struct sk_buff *skb)
- 	struct ath5k_vif *avf;
- 	struct sk_buff *skb;
- 
--	if (WARN_ON(!vif)) {
--		ret = -EINVAL;
--		goto out;
--	}
-+	if (WARN_ON(!vif))
-+		return -EINVAL;
- 
- 	skb = ieee80211_beacon_get(hw, vif);
- 
--	if (!skb) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!skb)
-+		return -ENOMEM;
- 
- 	avf = (void *)vif->drv_priv;
- 	ath5k_txbuf_free_skb(ah, avf->bbuf);
- 	avf->bbuf->skb = skb;
- 	ret = ath5k_beacon_setup(ah, avf->bbuf);
--out:
- 	return ret;
- }
- 
--- 
-1.9.1
+> > > > > > See also:
+> > > > > > https://lore.kernel.org/linux-wireless/87o8hvlx5g.fsf@codeauror=
+a.org/
+> > ...
+> > > > > What stable tree(s) do you want to see these go into?
+> > > >=20
+> > > > Commits were introduced in 5.12, so it should go to all stable tree=
+s << 5.12
+> >=20
+> > ...
+> >=20
+> > > Great, all now queued up.  Sad that qcom didn't want to do this
+> > > themselves :(
+> >=20
+> > Thanks for the fixes; I see them in 4.14 and newer stable trees.
+> >=20
+> > But I don't see them in 4.4 and 4.9, nor can I see reason why they
+> > were not applied.
+> >=20
+> > Can someone help?
+>=20
+> Odd, I don't remember why I didn't even try to apply them to older
+> kernels.  I'll do that after this next round is released in a few days,
+> sorry about that.
 
+Thank you! If there are problems, let me know and I'll try to help.
 
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--bKyqfOwhbdpXa4YI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAmExwgAACgkQMOfwapXb+vL3TQCglF+Ay6yLbttelKWaUQRvV57f
+YBQAoJr6RzNptQw8rpn6beL9D77IQDe2
+=AWOu
+-----END PGP SIGNATURE-----
+
+--bKyqfOwhbdpXa4YI--
