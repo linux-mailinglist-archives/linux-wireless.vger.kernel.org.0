@@ -2,32 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52F503FFF68
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Sep 2021 13:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CA343FFF62
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Sep 2021 13:49:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349320AbhICLuH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Sep 2021 07:50:07 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:20507 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1349023AbhICLt7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Sep 2021 07:49:59 -0400
+        id S1348069AbhICLtn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Sep 2021 07:49:43 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:17175 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235252AbhICLtl (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 3 Sep 2021 07:49:41 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1630669739; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=XI+1JWFKXuTIl053ryCOv7u9PvZrXBuAZlr+HypEck4=; b=u89pmAhjNIVT2tNEiaxk9P5zQrIwp4l8w72jxq7MpAadZNbrtgL8FlHlYKu66SiNMRzNGgpP
- U1dW1S204Qi9/QRR/fuXic5ZfdvKPG5xNx1Mxm4fOs+25B531NC8pXvMKW94MrKTvTCTmZFz
- Q1iGxWRu9V1nE8PX+7pkoospMJQ=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ s=smtp; t=1630669718; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: References: In-Reply-To: Message-Id: Date: Subject: Cc:
+ To: From: Sender; bh=1NXJeUbnWJhpPLVO6LB2BPGMdz0cm2i+y35XfNacnKE=; b=ewODx8QK1z9WOsPOO6pYcIFwW8rO1lQTQJZOb3rCgvv0drpLGt0fF+TXG1SkPR3l9RdmzwJI
+ j3ev7FuHhVK4bHoJy9gZNpqJK576PePCPuICRrQpW3OY5Ewrp/8CnstZ9T9EgM51imkxwCZz
+ DBC+Xti3sRPoLSQqpMbJHhP/nAc=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 61320b944d644b7d1c5ea61f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 03 Sep 2021 11:48:36
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 61320b961567234b8c8fde07 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 03 Sep 2021 11:48:38
  GMT
 Sender: wgong=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 436C4C4360C; Fri,  3 Sep 2021 11:48:36 +0000 (UTC)
+        id 96A61C4338F; Fri,  3 Sep 2021 11:48:37 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,91 +38,95 @@ Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A0566C43617;
-        Fri,  3 Sep 2021 11:48:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org A0566C43617
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 37C97C4360D;
+        Fri,  3 Sep 2021 11:48:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 37C97C4360D
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Wen Gong <wgong@codeaurora.org>
 To:     johannes@sipsolutions.net, ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH v3 5/9] cfg80211: save power spectral density(psd) of regulatory rule
-Date:   Fri,  3 Sep 2021 07:48:17 -0400
-Message-Id: <20210903114821.23346-6-wgong@codeaurora.org>
+Subject: [PATCH v3 6/9] ieee80211: add definition for transmit power envelope element
+Date:   Fri,  3 Sep 2021 07:48:18 -0400
+Message-Id: <20210903114821.23346-7-wgong@codeaurora.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210903114821.23346-1-wgong@codeaurora.org>
 References: <20210903114821.23346-1-wgong@codeaurora.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The power spectral density(psd) of regulatory rule should be take
-effect to the channels. This patch is to save the values to the
-channel which has psd value.
+IEEE Std 802.11ax™-2021 have some change for transmit power envelope
+element. Add the definition of it.
 
 Signed-off-by: Wen Gong <wgong@codeaurora.org>
 ---
- net/wireless/reg.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ include/linux/ieee80211.h | 42 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 41 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 0406ce7334fa..a971d97aaf12 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -1583,6 +1583,8 @@ static u32 map_regdom_flags(u32 rd_flags)
- 		channel_flags |= IEEE80211_CHAN_NO_160MHZ;
- 	if (rd_flags & NL80211_RRF_NO_HE)
- 		channel_flags |= IEEE80211_CHAN_NO_HE;
-+	if (rd_flags & NL80211_RRF_PSD)
-+		channel_flags |= IEEE80211_CHAN_PSD;
- 	return channel_flags;
- }
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index bed510b7bb6b..b35cdfae0625 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2324,6 +2324,46 @@ struct ieee80211_he_6ghz_oper {
+ 	u8 minrate;
+ } __packed;
  
-@@ -1787,6 +1789,9 @@ static void handle_channel_single_rule(struct wiphy *wiphy,
- 				chan->dfs_cac_ms = reg_rule->dfs_cac_ms;
- 		}
- 
-+		if (chan->flags & IEEE80211_CHAN_PSD)
-+			chan->psd = reg_rule->psd;
++/*
++ * In "9.4.2.161 Transmit Power Envelope element" of
++ * "IEEE Std 802.11ax-2021", it show 4 types in "Table
++ * 9-275a-Maximum Transmit Power Interpretation subfield encoding".
++ * And it has 2 category for each type in "Table E-12-Regulatory
++ * Info subfield encoding in the United States".
++ * So it it totally max 8 Transmit Power Envelope element.
++ */
++#define IEEE80211_TPE_MAX_IE_COUNT	8
 +
- 		return;
- 	}
- 
-@@ -1807,6 +1812,9 @@ static void handle_channel_single_rule(struct wiphy *wiphy,
- 			chan->dfs_cac_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
- 	}
- 
-+	if (chan->flags & IEEE80211_CHAN_PSD)
-+		chan->psd = reg_rule->psd;
++/*
++ * In "Table 9-277 Meaning of Maximum Transmit Power Count subfield"
++ * of "IEEE Std 802.11ax-2021", the max power level is 8.
++ */
++#define IEEE80211_MAX_NUM_PWR_LEVEL	8
 +
- 	if (chan->orig_mpwr) {
- 		/*
- 		 * Devices that use REGULATORY_COUNTRY_IE_FOLLOW_POWER
-@@ -1876,6 +1884,12 @@ static void handle_channel_adjacent_rules(struct wiphy *wiphy,
- 							 rrule2->dfs_cac_ms);
- 		}
- 
-+		if ((rrule1->flags & NL80211_RRF_PSD) &&
-+		    (rrule2->flags & NL80211_RRF_PSD))
-+			chan->psd = min_t(s8, rrule1->psd, rrule2->psd);
-+		else
-+			chan->flags &= ~NL80211_RRF_PSD;
++#define IEEE80211_TPE_MAX_POWER_COUNT	8
 +
- 		return;
- 	}
- 
-@@ -2533,6 +2547,9 @@ static void handle_channel_custom(struct wiphy *wiphy,
- 			chan->dfs_cac_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
- 	}
- 
-+	if (chan->flags & IEEE80211_CHAN_PSD)
-+		chan->psd = reg_rule->psd;
++/* transmit power interpretation type of transmit power envelope element*/
++enum ieee80211_tx_power_intrpt_type {
++	IEEE80211_TPE_LOCAL_EIRP,
++	IEEE80211_TPE_LOCAL_EIRP_PSD,
++	IEEE80211_TPE_REG_CLIENT_EIRP,
++	IEEE80211_TPE_REG_CLIENT_EIRP_PSD,
++};
 +
- 	chan->max_power = chan->max_reg_power;
- }
- 
++/*
++ * struct ieee80211_tx_pwr_env
++ *
++ * This structure represents the "Transmit Power Envelope element"
++ */
++struct ieee80211_tx_pwr_env {
++	u8 tx_power_info;
++	s8 tx_power[IEEE80211_TPE_MAX_POWER_COUNT];
++} __packed;
++
++#define IEEE80211_TX_PWR_ENV_INFO_COUNT 0x7
++#define IEEE80211_TX_PWR_ENV_INFO_INTERPRET 0x38
++#define IEEE80211_TX_PWR_ENV_INFO_CATEGORY 0xC0
++
+ /*
+  * ieee80211_he_oper_size - calculate 802.11ax HE Operations IE size
+  * @he_oper_ie: byte data of the He Operations IE, stating from the byte
+@@ -2905,7 +2945,7 @@ enum ieee80211_eid {
+ 	WLAN_EID_VHT_OPERATION = 192,
+ 	WLAN_EID_EXTENDED_BSS_LOAD = 193,
+ 	WLAN_EID_WIDE_BW_CHANNEL_SWITCH = 194,
+-	WLAN_EID_VHT_TX_POWER_ENVELOPE = 195,
++	WLAN_EID_TX_POWER_ENVELOPE = 195,
+ 	WLAN_EID_CHANNEL_SWITCH_WRAPPER = 196,
+ 	WLAN_EID_AID = 197,
+ 	WLAN_EID_QUIET_CHANNEL = 198,
 -- 
 2.31.1
 
