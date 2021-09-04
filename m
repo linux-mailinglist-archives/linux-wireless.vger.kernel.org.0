@@ -2,125 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35D80400B34
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Sep 2021 13:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDF4B400C96
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Sep 2021 20:31:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235615AbhIDLvc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 Sep 2021 07:51:32 -0400
-Received: from mout.gmx.net ([212.227.15.15]:54833 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234695AbhIDLvb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 Sep 2021 07:51:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1630756195;
-        bh=v23ee+m+JJjtewkqOV9p0pm3JlwVl9WxkFvaAGuX1Ok=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=aFui8fkZ7Z58f+hoFtAARRQYR9O68rtrzMTniksFo0yE+lIEfO8ModCfBVi3mXR5i
-         EiOQClEbqBjrK4Gn5fkW3frJ1W1wJ28rxOIoMIaAkazaBm4BVzWTUpmsjw9B6B7DvV
-         +BTYZq34iQwbt2CERbZuU6dSHBuhNNARphYOxqDg=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([79.150.72.99]) by mail.gmx.net
- (mrgmx004 [212.227.17.184]) with ESMTPSA (Nemesis) id
- 1MNKhs-1mbF5F0Vek-00OpPE; Sat, 04 Sep 2021 13:49:55 +0200
-From:   Len Baker <len.baker@gmx.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Len Baker <len.baker@gmx.com>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ath11k: Replace one-element array with flexible-array member
-Date:   Sat,  4 Sep 2021 13:49:37 +0200
-Message-Id: <20210904114937.6644-1-len.baker@gmx.com>
-X-Mailer: git-send-email 2.25.1
+        id S237569AbhIDScA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 Sep 2021 14:32:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44792 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237485AbhIDSby (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 4 Sep 2021 14:31:54 -0400
+X-Greylist: delayed 585 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 04 Sep 2021 11:30:52 PDT
+Received: from smtp.dkm.cz (smtp.dkm.cz [IPv6:2a02:8301:0:11::39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A57CC0617AD
+        for <linux-wireless@vger.kernel.org>; Sat,  4 Sep 2021 11:30:52 -0700 (PDT)
+Received: from smtp.dkm.cz (localhost [127.0.0.1])
+        by smtp.dkm.cz (Postfix) with ESMTP id 712B32EC81;
+        Sat,  4 Sep 2021 20:20:58 +0200 (CEST)
+Received: from router.bayer.uni.cx (ip-89-103-167-90.net.upcbroadband.cz [89.103.167.90])
+        by smtp.dkm.cz (Postfix) with ESMTP;
+        Sat,  4 Sep 2021 20:20:58 +0200 (CEST)
+Received: from album.bayer.uni.cx (album.bayer.uni.cx [IPv6:2001:470:993c:1:5246:5dff:fe8e:a186])
+        by router.bayer.uni.cx (Postfix) with SMTP id 29D96A0DC3;
+        Sat,  4 Sep 2021 20:20:57 +0200 (CEST)
+Received: by album.bayer.uni.cx (sSMTP sendmail emulation); Sat, 04 Sep 2021 20:20:57 +0200
+Date:   Sat, 4 Sep 2021 20:20:57 +0200
+From:   Petr Pisar <petr.pisar@atlas.cz>
+To:     linux-wireless@vger.kernel.org
+Cc:     Petr Pisar <petr.pisar@atlas.cz>
+Subject: ath9 stopped transmitting multicast frames in Linux 5.14.0
+Message-ID: <YTO5CYiGa/OV8tLY@album.bayer.uni.cx>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:80dhGiw6SsS128pziswnDI1u80tDjGhkmv0etse23Btp6AiuXMU
- erX4Fha1+Rio79fF8pR8DDJ243friSWaqCt5kJWcTfJS8wa/JbBXL4tgdUSUZYaPB9y7t0X
- 9ZEW64C2K3McSXftObLTHx2lBttv0XJ/hCJFeLcUY4zh87JmoJAlgu26uWiTJbTQJy6b4hi
- SILt2HJn0e/o9Q3rmEX8w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:hwJ/wysCuJA=:gLwWR3WSAne682ae3N83h7
- 50mzDgEeO35RizI+pFCaDClySune61eyNXfXjLGv6+ZINVl5WeMkJTnPUt+6yi6iloIqsY1Bo
- 3oEgJpt+dDyr33uMSv10s3FwMTuBd+b3R+KBHY2fFqSVHuI6DKRQICn+TrH+k/U5ftBNaaHhb
- sju5YC9m1VdKaetngY17T8nk28xhEZCAYKpsYvYNuVoLYu4b8Y122XoJq2NCNbhJlHKFtWTUQ
- 6wlAv7cn+wobzXEc1s4XmWZNF5dMwSmrSv5wYpBP/jlCUvh/wV1NcwYpWPz+UhZWdkuZpVMEN
- Jd7AF4eu4eXPmLexUxlWjZfuw7mwsxoWiyWT8+0mZT5RFufCGtdJV2MS1gAgK7/vtScsB3fBo
- +CBPGDQxKx046dbIJYdy81lWeSDDdn9HGLCeSvZdNrFtIlNYwYQkCKOWgsvbxOUYMm8z9+ZWs
- 1/ghu6bCKaR9DSMjZ1Y4/en4DCsoOS6o2ExUB5DCL6ZTCizzqsPCZuBk+Jn2toPzILlSJiujM
- 3qI4SwhsxWgjMaOQl8sWt//D9QYjh7ILxAljt7JMEfuDmsQd37zETumtwPmq9MqADN1JnPQCf
- PEJ7+Epmtn9Q8NuHDceo3VwcbtG1BPh4CfQkyt9R2e6JweyG69DslwhMhFiP1OG8OFKsLAjoq
- Ll5CkkmUvYz2eQy/0Ir/ZQg8BMAXp4K+ODHOsTYq3Q/dmz7bMYRZlHVasI5iWQwegyhLRgA4J
- 0qI0Z/Ppfx3xXsBJnnJBn8q50MP30dlVQ6APQm8uvH52NUZ7wqGebKiKPEecS18MFHIlLO8mC
- xqJL1by3fzzt8VWO8+6pTSN99WU4chbNeaS3+8ntlhIoOcEu2VK0Xg9xOzNGCu/69ZG2zNlss
- W5gftl2UUdcsuZv10FcUv2tiNEcB58aL5bHPNyUAbzPuexYpcxrVUj+5m5Yb8dLzbCDuY68TD
- R7xEjJB3zUAyDJ77S4e3lrUoOWJQQu41sVXPm1Pu0JuKGbr06Pk5rh1I8edO/OnbcYSyPSSMe
- VzUVBm+roYpznFZXx6FxTnuataFDQOcwfoWxNbh2Q/3YfR5E4xVGCAzmb0e3ZwmPa9Fy6oIBc
- spnMijX1mfCTHO9cQgrpNdhlNAB4gtHtDXSthY1/3jqmx+N4q4T9CiZTw==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Qu/g+g4LZLshFBDJ"
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a regular need in the kernel to provide a way to declare having
-a dynamically sized set of trailing elements in a structure. Kernel code
-should always use "flexible array members"[1] for these cases. The older
-style of one-element or zero-length arrays should no longer be used[2].
 
-Also, refactor the code a bit to make use of the struct_size() helper in
-kzalloc().
+--Qu/g+g4LZLshFBDJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-[1] https://en.wikipedia.org/wiki/Flexible_array_member
-[2] https://www.kernel.org/doc/html/v5.14/process/deprecated.html#zero-len=
-gth-and-one-element-arrays
+Hello,
 
-Signed-off-by: Len Baker <len.baker@gmx.com>
-=2D--
- drivers/net/wireless/ath/ath11k/reg.c | 7 ++-----
- drivers/net/wireless/ath/ath11k/wmi.h | 2 +-
- 2 files changed, 3 insertions(+), 6 deletions(-)
+after upgrading Linux from 5.13.13 to 5.14.0 on my router with this wireless
+device:
 
-diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/=
-ath/ath11k/reg.c
-index e1a1df169034..c83d265185f1 100644
-=2D-- a/drivers/net/wireless/ath/ath11k/reg.c
-+++ b/drivers/net/wireless/ath/ath11k/reg.c
-@@ -97,7 +97,6 @@ int ath11k_reg_update_chan_list(struct ath11k *ar)
- 	struct channel_param *ch;
- 	enum nl80211_band band;
- 	int num_channels =3D 0;
--	int params_len;
- 	int i, ret;
+03:00.0 Network controller [0280]: Qualcomm Atheros AR93xx Wireless Network Adapter [168c:0030] (rev 01)
+        Subsystem: Qualcomm Atheros AR93xx Wireless Network Adapter [168c:3116]
+        Flags: bus master, fast devsel, latency 0, IRQ 18
+        Memory at 81200000 (64-bit, non-prefetchable) [size=128K]
+        Expansion ROM at 81220000 [disabled] [size=64K]
+        Capabilities: [40] Power Management version 3
+        Capabilities: [50] MSI: Enable- Count=1/4 Maskable+ 64bit+
+        Capabilities: [70] Express Endpoint, MSI 00
+        Capabilities: [100] Advanced Error Reporting
+        Capabilities: [140] Virtual Channel
+        Capabilities: [300] Device Serial Number 00-00-00-00-00-00-00-00
+        Kernel driver in use: ath9k
+        Kernel modules: ath9k
 
- 	bands =3D hw->wiphy->bands;
-@@ -117,10 +116,8 @@ int ath11k_reg_update_chan_list(struct ath11k *ar)
- 	if (WARN_ON(!num_channels))
- 		return -EINVAL;
+which works as a WiFi accesspoint, I noticed that WiFi clients cannot use IPv6
+anymore. The problem is that the router cannot translate an IPv6 address of
+the client to a MAC address. The reason is that IPv6 multicast packets used by
+ICMPv6 neighbour discovery protocol do not reach the clients. In other words
+the ath9k-driven device stopped transmitting multicast frames.
 
--	params_len =3D sizeof(struct scan_chan_list_params) +
--			num_channels * sizeof(struct channel_param);
--	params =3D kzalloc(params_len, GFP_KERNEL);
--
-+	params =3D kzalloc(struct_size(params, ch_param, num_channels),
-+			 GFP_KERNEL);
- 	if (!params)
- 		return -ENOMEM;
+This can be reproduced with "ndisc6 -r 100 fe80::217:c4ff:fe4e:1552 wlan0"
+command which queries (100 times) fe80::217:c4ff:fe4e:1552 address of
+my client from the router. tcpdump on the ath9k device shows the queries,
+but tcpdump on the client cannot see them.
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/=
-ath/ath11k/wmi.h
-index d35c47e0b19d..d9c83726f65d 100644
-=2D-- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -3608,7 +3608,7 @@ struct wmi_stop_scan_cmd {
- struct scan_chan_list_params {
- 	u32 pdev_id;
- 	u16 nallchans;
--	struct channel_param ch_param[1];
-+	struct channel_param ch_param[];
- };
+The other way works correctly. I observed this with all two WiFi clients
+I have (Pixel 3a phone, and a laptop with a Realtek chip). Upgrading to 5.14.1
+did not help. Once I rebooted to 5.13.13, the functionality was restored.
 
- struct wmi_scan_chan_list_cmd {
-=2D-
-2.25.1
+Therefore I conclude this is regression in 5.14.0 Linux.
 
+-- Petr
+
+--Qu/g+g4LZLshFBDJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE4/QvzhVoMKgDWObpT9GuwzZa978FAmEzuPwACgkQT9GuwzZa
+979ZohAA4HM5dZV74vOfg5ILT5kJ2M4M64bYN7u/8XcuDGrKBkK/2vfTUI9knKnH
+aBvl7wRpAkNsDRPCiu65azUhEtJbZnFii7jLQz6l6R+i25g5Jlyia/ew9J4BTnx3
+WWswQZCGRcE0/IIZ8Ego8xEmi2stii5+Qg/r3UkgdJbQzTFG3BsdYKlM7AXSOjom
+Oa9M5QVzfraWKK3c8+f03Z+1sEqwXiho/jbpF4K+g1MuDaGSCZC6EYMyYzdgRN5C
+7H/2V4YQZKYEvV4xJlUkffE+VR8LiKr7e1KqHuL9/GSZRYicyERidZ4WpPKrxbq0
+Zd9nFhBU3c58QUb2njBWaUF2TbZP4AlMtUezsePjD3eHO7hpXI1uoLL+NH6/qttv
+9hOu2cW0aUWyPMW/bnjGkQXONsii8CdzVkBpIMgFWFlSyJ+RXcG4En36PmOBCqsm
+Ae9rMBSEWqIZqWd+O6O86J+NQy9SOTSIR8UhudzJG/wxdZhYF0HqOkjvbfNTvpfR
+5njzUhKWrZgiRmmSwV1wXDyxUdSC1sBbEAF3eph6mQdnWQ7kWEXduAhojeYqpcoq
+Yf16kuZjk/+vDxG6nWpGLBHqdXr5TRfVqOao/LoVOK3KETbZCXcHxK+q5/u++rfy
+VRgjgrvq7wgJ2VoJwfPL2RFLTHH1KV5JikFqxXoMbtgMyEwLQEo=
+=9Wg2
+-----END PGP SIGNATURE-----
+
+--Qu/g+g4LZLshFBDJ--
