@@ -2,109 +2,224 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43204401152
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Sep 2021 21:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5F7D4011A6
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Sep 2021 23:04:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238243AbhIETIo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Sep 2021 15:08:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54902 "EHLO
+        id S238136AbhIEVFH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Sep 2021 17:05:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238207AbhIETIi (ORCPT
+        with ESMTP id S229510AbhIEVFG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Sep 2021 15:08:38 -0400
-Received: from bombadil.infradead.org (unknown [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0E9CC061575;
-        Sun,  5 Sep 2021 12:07:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description;
-        bh=/odDc7mk41rre/LvWYwSnSF6ajw14qMrg/v5VI8KJLE=; b=SEeBFrINPxA2rmhesA5ng1d0He
-        4wzmEW8qufcl+UrEylhY9OJ0GBbrze1ACP63cghcm7duZbCPtUU0eY6Mu6vHzn6i+0Ng/d8C7E+e3
-        ksQYEU/fio0jJIc8NJRXy7P9WiyLY0+UI36+k/Ff4cOoteFlI11isaA2UZuefcDFY/P0yLMTihyDb
-        KAIG9hNAcQbeAFpoE7IlbdatF3bxorP4iCOzVFYKNvFpXbjeLKe13vvd97AD3vIp5eEFbBPyTK8jP
-        9jyNIZcVGVs1s3o0vo8yV2ujq/AlQvK9DgRl05Y1RBP/SKkR4/QH2K4SebRXDT7Xb9/dAbExCRFyQ
-        IZK+ghSg==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mMxUL-00GINm-83; Sun, 05 Sep 2021 19:07:33 +0000
-Subject: Re: [PATCH -net] wireless: iwlwifi: fix printk format warnings in
- uefi.c
-To:     netdev@vger.kernel.org
-Cc:     kernel test robot <lkp@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        linux-wireless@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-References: <20210821020901.25901-1-rdunlap@infradead.org>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <e5ccd622-e876-d4e8-5f2b-e1d183799026@infradead.org>
-Date:   Sun, 5 Sep 2021 12:07:32 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        Sun, 5 Sep 2021 17:05:06 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 640A6C06175F
+        for <linux-wireless@vger.kernel.org>; Sun,  5 Sep 2021 14:04:03 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id i13so3037594pjv.5
+        for <linux-wireless@vger.kernel.org>; Sun, 05 Sep 2021 14:04:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8sNKEVJBC2v8g4oUEvMr7hiCcGK5pocfEGEp7QE+uNk=;
+        b=Y6VghV8fTqkS26PwLmH4McynWrZ7OTKq1bFj+o2Gg+h+pCcPNKQStZG/FmplOZT7EM
+         KmeiWMC8frtkq70DuXlsWa+UN9obBBowNDE1ndPirTCixslhbBQ9SBOSHS3iupWoxPAh
+         lK+T9KrcKHjUXVcLEyB7VUk2qMOOqo3pnNB9I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8sNKEVJBC2v8g4oUEvMr7hiCcGK5pocfEGEp7QE+uNk=;
+        b=aRHFZ1TWiXWdGXKp2MNtmaFLorQKYTTZk1VZ7jYGUZFH3HjEXpY9D1JJxgE4hwV/AH
+         gX0Tffi2DUFJ5fV3zX8g0UMFFG5Oy7fSOiAr+HkY+V5l2jJs8c/UTo4zn5DkwZd+Dbez
+         osRGIn1omrYpW/TBHF0r+RIoh6+vHM9mg2mmlOYTG6mRtLZjjdqi1H5bndau/m6+o5wJ
+         0A7KaQS3k9TEDD3UDogIubSfiKPgzEUt/ilO3VcWX/oYNvxuZO9R8EKevLrh8bzs0t1Z
+         C6FmXtu+HQpjYgpRT2GqLjB/nP2z0auyFDD1KTmEN4s4J7+3+bQQ6yHLS00f6wwWgVOL
+         kR+Q==
+X-Gm-Message-State: AOAM533NJIyJ4xUrDaPWPzSf19+T2bF6+Xqqp3d2GkTXfL5QRGHssTDf
+        oJiavnjZRB7iN8aOWMMTMrl0oA==
+X-Google-Smtp-Source: ABdhPJwup5WpYvzf3TPglhjUyzySn9YGNiVmr7+eq7fdfkNhRwCRNXx4lIdbfKBgFJ86itinGYaAaw==
+X-Received: by 2002:a17:90a:a092:: with SMTP id r18mr10298978pjp.175.1630875842717;
+        Sun, 05 Sep 2021 14:04:02 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:201:5077:c47b:f2dc:d63b])
+        by smtp.gmail.com with ESMTPSA id n9sm5243109pfu.152.2021.09.05.14.04.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Sep 2021 14:04:02 -0700 (PDT)
+From:   Stephen Boyd <swboyd@chromium.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        netdev@vger.kernel.org, Govind Singh <govinds@codeaurora.org>,
+        Youghandhar Chintala <youghand@codeaurora.org>,
+        Abhishek Kumar <kuabhs@chromium.org>
+Subject: [PATCH] ath10k: Don't always treat modem stop events as crashes
+Date:   Sun,  5 Sep 2021 14:04:00 -0700
+Message-Id: <20210905210400.1157870-1-swboyd@chromium.org>
+X-Mailer: git-send-email 2.33.0.153.gba50c8fa24-goog
 MIME-Version: 1.0
-In-Reply-To: <20210821020901.25901-1-rdunlap@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/20/21 7:09 PM, Randy Dunlap wrote:
-> The kernel test robot reports printk format warnings in uefi.c, so
-> correct them.
-> 
-> ../drivers/net/wireless/intel/iwlwifi/fw/uefi.c: In function 'iwl_uefi_get_pnvm':
-> ../drivers/net/wireless/intel/iwlwifi/fw/uefi.c:52:30: warning: format '%zd' expects argument of type 'signed size_t', but argument 7 has type 'long unsigned int' [-Wformat=]
->     52 |                              "PNVM UEFI variable not found %d (len %zd)\n",
->        |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->     53 |                              err, package_size);
->        |                                   ~~~~~~~~~~~~
->        |                                   |
->        |                                   long unsigned int
-> ../drivers/net/wireless/intel/iwlwifi/fw/uefi.c:59:29: warning: format '%zd' expects argument of type 'signed size_t', but argument 6 has type 'long unsigned int' [-Wformat=]
->     59 |         IWL_DEBUG_FW(trans, "Read PNVM from UEFI with size %zd\n", package_size);
->        |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~
->        |                                                                    |
->        |                                                                    long unsigned int
-> 
-> Fixes: 84c3c9952afb ("iwlwifi: move UEFI code to a separate file")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: Luca Coelho <luciano.coelho@intel.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> ---
->   drivers/net/wireless/intel/iwlwifi/fw/uefi.c |    4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> --- linux-next-20210820.orig/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-> +++ linux-next-20210820/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-> @@ -49,14 +49,14 @@ void *iwl_uefi_get_pnvm(struct iwl_trans
->   	err = efivar_entry_get(pnvm_efivar, NULL, &package_size, data);
->   	if (err) {
->   		IWL_DEBUG_FW(trans,
-> -			     "PNVM UEFI variable not found %d (len %zd)\n",
-> +			     "PNVM UEFI variable not found %d (len %lu)\n",
->   			     err, package_size);
->   		kfree(data);
->   		data = ERR_PTR(err);
->   		goto out;
->   	}
->   
-> -	IWL_DEBUG_FW(trans, "Read PNVM from UEFI with size %zd\n", package_size);
-> +	IWL_DEBUG_FW(trans, "Read PNVM from UEFI with size %lu\n", package_size);
->   	*len = package_size;
->   
->   out:
-> 
+When rebooting on sc7180 Trogdor devices I see the following crash from
+the wifi driver.
 
-Hm, no one has commented on this and the robot is still reporting it as
-build warnings.
-Do I need to resend it?
+ ath10k_snoc 18800000.wifi: firmware crashed! (guid 83493570-29a2-4e98-a83e-70048c47669c)
 
-thanx.
+This is because a modem stop event looks just like a firmware crash to
+the driver, the qmi connection is closed in both cases. Use the qcom ssr
+notifier block to stop treating the qmi connection close event as a
+firmware crash signal when the modem hasn't actually crashed. See
+ath10k_qmi_event_server_exit() for more details.
+
+This silences the crash message seen during every reboot.
+
+Fixes: 3f14b73c3843 ("ath10k: Enable MSA region dump support for WCN3990")
+Cc: Govind Singh <govinds@codeaurora.org>
+Cc: Youghandhar Chintala <youghand@codeaurora.org>
+Cc: Abhishek Kumar <kuabhs@chromium.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+---
+ drivers/net/wireless/ath/ath10k/snoc.c | 75 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath10k/snoc.h |  4 ++
+ 2 files changed, 79 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index ea00fbb15601..fc4970e063f8 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -12,6 +12,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/remoteproc/qcom_rproc.h>
+ #include <linux/of_address.h>
+ #include <linux/iommu.h>
+ 
+@@ -1477,6 +1478,70 @@ void ath10k_snoc_fw_crashed_dump(struct ath10k *ar)
+ 	mutex_unlock(&ar->dump_mutex);
+ }
+ 
++static int ath10k_snoc_modem_notify(struct notifier_block *nb, unsigned long action,
++				    void *data)
++{
++	struct ath10k_snoc *ar_snoc = container_of(nb, struct ath10k_snoc, nb);
++	struct ath10k *ar = ar_snoc->ar;
++	struct qcom_ssr_notify_data *notify_data = data;
++
++	switch (action) {
++	case QCOM_SSR_BEFORE_POWERUP:
++		ath10k_dbg(ar, ATH10K_DBG_SNOC, "received modem starting event\n");
++		clear_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags);
++		break;
++
++	case QCOM_SSR_AFTER_POWERUP:
++		ath10k_dbg(ar, ATH10K_DBG_SNOC, "received modem running event\n");
++		break;
++
++	case QCOM_SSR_BEFORE_SHUTDOWN:
++		ath10k_dbg(ar, ATH10K_DBG_SNOC, "received modem %s event\n",
++			   notify_data->crashed ? "crashed" : "stopping");
++		if (!notify_data->crashed)
++			set_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags);
++		else
++			clear_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags);
++		break;
++
++	case QCOM_SSR_AFTER_SHUTDOWN:
++		ath10k_dbg(ar, ATH10K_DBG_SNOC, "received modem offline event\n");
++		break;
++
++	default:
++		ath10k_err(ar, "received unrecognized event %lu\n", action);
++		break;
++	}
++
++	return NOTIFY_OK;
++}
++
++static int ath10k_modem_init(struct ath10k *ar)
++{
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
++	void *notifier;
++
++	ar_snoc->nb.notifier_call = ath10k_snoc_modem_notify;
++
++	notifier = qcom_register_ssr_notifier("mpss", &ar_snoc->nb);
++	if (IS_ERR(notifier))
++		return PTR_ERR(notifier);
++
++	ar_snoc->notifier = notifier;
++
++	return 0;
++}
++
++static void ath10k_modem_deinit(struct ath10k *ar)
++{
++	int ret;
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
++
++	ret = qcom_unregister_ssr_notifier(ar_snoc->notifier, &ar_snoc->nb);
++	if (ret)
++		ath10k_err(ar, "error %d unregistering notifier\n", ret);
++}
++
+ static int ath10k_setup_msa_resources(struct ath10k *ar, u32 msa_size)
+ {
+ 	struct device *dev = ar->dev;
+@@ -1740,10 +1805,19 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
+ 		goto err_fw_deinit;
+ 	}
+ 
++	ret = ath10k_modem_init(ar);
++	if (ret) {
++		ath10k_err(ar, "failed to initialize modem notifier: %d\n", ret);
++		goto err_qmi_deinit;
++	}
++
+ 	ath10k_dbg(ar, ATH10K_DBG_SNOC, "snoc probe\n");
+ 
+ 	return 0;
+ 
++err_qmi_deinit:
++	ath10k_qmi_deinit(ar);
++
+ err_fw_deinit:
+ 	ath10k_fw_deinit(ar);
+ 
+@@ -1771,6 +1845,7 @@ static int ath10k_snoc_free_resources(struct ath10k *ar)
+ 	ath10k_fw_deinit(ar);
+ 	ath10k_snoc_free_irq(ar);
+ 	ath10k_snoc_release_resource(ar);
++	ath10k_modem_deinit(ar);
+ 	ath10k_qmi_deinit(ar);
+ 	ath10k_core_destroy(ar);
+ 
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
+index 5095d1893681..d986edc772f8 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.h
++++ b/drivers/net/wireless/ath/ath10k/snoc.h
+@@ -6,6 +6,8 @@
+ #ifndef _SNOC_H_
+ #define _SNOC_H_
+ 
++#include <linux/notifier.h>
++
+ #include "hw.h"
+ #include "ce.h"
+ #include "qmi.h"
+@@ -75,6 +77,8 @@ struct ath10k_snoc {
+ 	struct clk_bulk_data *clks;
+ 	size_t num_clks;
+ 	struct ath10k_qmi *qmi;
++	struct notifier_block nb;
++	void *notifier;
+ 	unsigned long flags;
+ 	bool xo_cal_supported;
+ 	u32 xo_cal_data;
+
+base-commit: 7d2a07b769330c34b4deabeed939325c77a7ec2f
+-- 
+https://chromeos.dev
+
