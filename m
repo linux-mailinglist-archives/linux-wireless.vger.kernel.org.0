@@ -2,105 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDF4B400C96
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Sep 2021 20:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80A68400E65
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Sep 2021 08:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237569AbhIDScA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 Sep 2021 14:32:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44792 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237485AbhIDSby (ORCPT
+        id S235002AbhIEGNN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Sep 2021 02:13:13 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:50370 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234206AbhIEGNN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 Sep 2021 14:31:54 -0400
-X-Greylist: delayed 585 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 04 Sep 2021 11:30:52 PDT
-Received: from smtp.dkm.cz (smtp.dkm.cz [IPv6:2a02:8301:0:11::39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A57CC0617AD
-        for <linux-wireless@vger.kernel.org>; Sat,  4 Sep 2021 11:30:52 -0700 (PDT)
-Received: from smtp.dkm.cz (localhost [127.0.0.1])
-        by smtp.dkm.cz (Postfix) with ESMTP id 712B32EC81;
-        Sat,  4 Sep 2021 20:20:58 +0200 (CEST)
-Received: from router.bayer.uni.cx (ip-89-103-167-90.net.upcbroadband.cz [89.103.167.90])
-        by smtp.dkm.cz (Postfix) with ESMTP;
-        Sat,  4 Sep 2021 20:20:58 +0200 (CEST)
-Received: from album.bayer.uni.cx (album.bayer.uni.cx [IPv6:2001:470:993c:1:5246:5dff:fe8e:a186])
-        by router.bayer.uni.cx (Postfix) with SMTP id 29D96A0DC3;
-        Sat,  4 Sep 2021 20:20:57 +0200 (CEST)
-Received: by album.bayer.uni.cx (sSMTP sendmail emulation); Sat, 04 Sep 2021 20:20:57 +0200
-Date:   Sat, 4 Sep 2021 20:20:57 +0200
-From:   Petr Pisar <petr.pisar@atlas.cz>
-To:     linux-wireless@vger.kernel.org
-Cc:     Petr Pisar <petr.pisar@atlas.cz>
-Subject: ath9 stopped transmitting multicast frames in Linux 5.14.0
-Message-ID: <YTO5CYiGa/OV8tLY@album.bayer.uni.cx>
+        Sun, 5 Sep 2021 02:13:13 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1630822330; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=ECiXLk/29oWzHj/i402TCaubZLema0VXpywFNl85Os4=;
+ b=Sbtgs0lQE0WgYYZ0t+1cK/7cHjWTEEkY32wcL58DgO2r3fkpvUj59fd5G3XP/xbq9udg74RW
+ dJATRRBReNiyixxtE/jnZcEAR4Dj70qN+BQtzB+35Z/OPnB4Tl1hoCvGAQ7i8Ksu37q5wo44
+ pNNh/mkdWe7TpRPWd/ddbXmKuLE=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 61345f8f1567234b8c99f677 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 05 Sep 2021 06:11:27
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8B6F9C43618; Sun,  5 Sep 2021 06:11:26 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0EE14C4338F;
+        Sun,  5 Sep 2021 06:11:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 0EE14C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Qu/g+g4LZLshFBDJ"
-Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] iwlwifi: pnvm: Fix a memory leak in
+ 'iwl_pnvm_get_from_fs()'
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1b5d80f54c1dbf85710fd285243932943b498fe7.1630614969.git.christophe.jaillet@wanadoo.fr>
+References: <1b5d80f54c1dbf85710fd285243932943b498fe7.1630614969.git.christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     luciano.coelho@intel.com, davem@davemloft.net, kuba@kernel.org,
+        johannes.berg@intel.com, pierre-louis.bossart@linux.intel.com,
+        drorx.moshe@intel.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-Id: <20210905061126.8B6F9C43618@smtp.codeaurora.org>
+Date:   Sun,  5 Sep 2021 06:11:26 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
---Qu/g+g4LZLshFBDJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> A firmware is requested but never released in this function. This leads to
+> a memory leak in the normal execution path.
+> 
+> Add the missing 'release_firmware()' call.
+> Also introduce a temp variable (new_len) in order to keep the value of
+> 'pnvm->size' after the firmware has been released.
+> 
+> Fixes: cdda18fbbefa ("iwlwifi: pnvm: move file loading code to a separate function")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Acked-by: Luca Coelho <luca@coelho.fi>
 
-Hello,
+Patch applied to wireless-drivers.git, thanks.
 
-after upgrading Linux from 5.13.13 to 5.14.0 on my router with this wireless
-device:
+45010c080e6e iwlwifi: pnvm: Fix a memory leak in 'iwl_pnvm_get_from_fs()'
 
-03:00.0 Network controller [0280]: Qualcomm Atheros AR93xx Wireless Network Adapter [168c:0030] (rev 01)
-        Subsystem: Qualcomm Atheros AR93xx Wireless Network Adapter [168c:3116]
-        Flags: bus master, fast devsel, latency 0, IRQ 18
-        Memory at 81200000 (64-bit, non-prefetchable) [size=128K]
-        Expansion ROM at 81220000 [disabled] [size=64K]
-        Capabilities: [40] Power Management version 3
-        Capabilities: [50] MSI: Enable- Count=1/4 Maskable+ 64bit+
-        Capabilities: [70] Express Endpoint, MSI 00
-        Capabilities: [100] Advanced Error Reporting
-        Capabilities: [140] Virtual Channel
-        Capabilities: [300] Device Serial Number 00-00-00-00-00-00-00-00
-        Kernel driver in use: ath9k
-        Kernel modules: ath9k
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/1b5d80f54c1dbf85710fd285243932943b498fe7.1630614969.git.christophe.jaillet@wanadoo.fr/
 
-which works as a WiFi accesspoint, I noticed that WiFi clients cannot use IPv6
-anymore. The problem is that the router cannot translate an IPv6 address of
-the client to a MAC address. The reason is that IPv6 multicast packets used by
-ICMPv6 neighbour discovery protocol do not reach the clients. In other words
-the ath9k-driven device stopped transmitting multicast frames.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-This can be reproduced with "ndisc6 -r 100 fe80::217:c4ff:fe4e:1552 wlan0"
-command which queries (100 times) fe80::217:c4ff:fe4e:1552 address of
-my client from the router. tcpdump on the ath9k device shows the queries,
-but tcpdump on the client cannot see them.
-
-The other way works correctly. I observed this with all two WiFi clients
-I have (Pixel 3a phone, and a laptop with a Realtek chip). Upgrading to 5.14.1
-did not help. Once I rebooted to 5.13.13, the functionality was restored.
-
-Therefore I conclude this is regression in 5.14.0 Linux.
-
--- Petr
-
---Qu/g+g4LZLshFBDJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE4/QvzhVoMKgDWObpT9GuwzZa978FAmEzuPwACgkQT9GuwzZa
-979ZohAA4HM5dZV74vOfg5ILT5kJ2M4M64bYN7u/8XcuDGrKBkK/2vfTUI9knKnH
-aBvl7wRpAkNsDRPCiu65azUhEtJbZnFii7jLQz6l6R+i25g5Jlyia/ew9J4BTnx3
-WWswQZCGRcE0/IIZ8Ego8xEmi2stii5+Qg/r3UkgdJbQzTFG3BsdYKlM7AXSOjom
-Oa9M5QVzfraWKK3c8+f03Z+1sEqwXiho/jbpF4K+g1MuDaGSCZC6EYMyYzdgRN5C
-7H/2V4YQZKYEvV4xJlUkffE+VR8LiKr7e1KqHuL9/GSZRYicyERidZ4WpPKrxbq0
-Zd9nFhBU3c58QUb2njBWaUF2TbZP4AlMtUezsePjD3eHO7hpXI1uoLL+NH6/qttv
-9hOu2cW0aUWyPMW/bnjGkQXONsii8CdzVkBpIMgFWFlSyJ+RXcG4En36PmOBCqsm
-Ae9rMBSEWqIZqWd+O6O86J+NQy9SOTSIR8UhudzJG/wxdZhYF0HqOkjvbfNTvpfR
-5njzUhKWrZgiRmmSwV1wXDyxUdSC1sBbEAF3eph6mQdnWQ7kWEXduAhojeYqpcoq
-Yf16kuZjk/+vDxG6nWpGLBHqdXr5TRfVqOao/LoVOK3KETbZCXcHxK+q5/u++rfy
-VRgjgrvq7wgJ2VoJwfPL2RFLTHH1KV5JikFqxXoMbtgMyEwLQEo=
-=9Wg2
------END PGP SIGNATURE-----
-
---Qu/g+g4LZLshFBDJ--
