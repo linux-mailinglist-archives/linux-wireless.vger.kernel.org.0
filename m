@@ -2,66 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA2BA4025F8
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 11:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E65DD40275C
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 12:47:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244584AbhIGJLM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Sep 2021 05:11:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45560 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243468AbhIGJLM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Sep 2021 05:11:12 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 5925F61102;
-        Tue,  7 Sep 2021 09:10:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631005806;
-        bh=uPbfy4mODdIz4BjAVSEGBJX/mpjICUVdEQbd7dDa7k4=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=XpQH2Po+oHFilzA1jwKByu9ZlpRnXV3MFn/9Qd2zpj/q2XW1jXk4TJYBNJUwIMid3
-         ftyA9YwyiVVh/r8EqIFI6WR+BLJ2A8gyoJFIh/CVG2hmXEeZlCq+jZtwp4/AHo1JfO
-         qwyGCH19tAX25uYa18+YEGBUZL04sRlitQuLou6Hmgpo7PrMujekM7uTWjyqtOqDAs
-         Q4w5GyNuOkLMuu7OtOwVk8cg3eUJmR66N10t8WGkCVmcrShQHA2+G3bZC4n/3+U9WT
-         ZJhGKUEQnxkdGnhtORleccFNNmKi2pdDlNoA2kuNNbIXEKRxeAoYEaDMVN26fcnTe9
-         ITXEOA4+6q57g==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 4D979609F5;
-        Tue,  7 Sep 2021 09:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S245098AbhIGKsG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Sep 2021 06:48:06 -0400
+Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:54950
+        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S244744AbhIGKsG (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 Sep 2021 06:48:06 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id C2CE94017C;
+        Tue,  7 Sep 2021 10:46:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1631011618;
+        bh=fX1N3TOwZMxrjPJFX3uSNd2JDuJSiQ0i8IY9scgNe1k=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=JrlWUbgVLY2tqzUxKRhjSIHz19gPT1essAZw/2RXf4i+t6cfwtRTl1RP6z4H+cr9H
+         OmWsVdcqeo+TYRK7puMWmnNLNjT4/lTI2NeUnbpe+Trf1EfWqIP14FvcRTRHpmR0/n
+         FsBwV6l3p/x280hMSizkX3pa2K6cm/dWozO30y4CVZ5Ujv+sB6LNRW/tHv57Su+iKU
+         E/nPzPavrxOxhWIXoqMtSpJLhYe7Tv1vwOT2Iy1F3u+CzPhJ1Akp+lcXrasQcbY/gX
+         2TJ4fZGW7GVaYQGENY1ysE9d8A1j7SfDN1CAHT2OFq4NhOP498CFAeUCZajITdWz1/
+         S0PklCe4WiwQA==
+From:   Colin King <colin.king@canonical.com>
+To:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Wey-Yi Guy <wey-yi.w.guy@intel.com>,
+        "John W . Linville" <linville@tuxdriver.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iwlwifi: Fix -EIO error code that is never returned
+Date:   Tue,  7 Sep 2021 11:46:58 +0100
+Message-Id: <20210907104658.14706-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-drivers-2021-09-07
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <163100580631.1890.9498522128656095721.git-patchwork-notify@kernel.org>
-Date:   Tue, 07 Sep 2021 09:10:06 +0000
-References: <20210907033842.CE38EC43460@smtp.codeaurora.org>
-In-Reply-To: <20210907033842.CE38EC43460@smtp.codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+From: Colin Ian King <colin.king@canonical.com>
 
-This pull request was applied to netdev/net.git (refs/heads/master):
+Currently the error -EIO is being assinged to variable ret when
+the READY_BIT is not set but the function iwlagn_mac_start returns
+0 rather than ret. Fix this by returning ret instead of 0.
 
-On Tue,  7 Sep 2021 03:38:42 +0000 (UTC) you wrote:
-> Hi,
-> 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
-> 
-> Kalle
-> 
-> [...]
+Addresses-Coverity: ("Unused value")
+Fixes: 7335613ae27a ("iwlwifi: move all mac80211 related functions to one place")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Here is the summary with links:
-  - pull-request: wireless-drivers-2021-09-07
-    https://git.kernel.org/netdev/net/c/8f110f35f962
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
+index 75e7665773c5..90fe4adca492 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
+@@ -304,7 +304,7 @@ static int iwlagn_mac_start(struct ieee80211_hw *hw)
+ 
+ 	priv->is_open = 1;
+ 	IWL_DEBUG_MAC80211(priv, "leave\n");
+-	return 0;
++	return ret;
+ }
+ 
+ static void iwlagn_mac_stop(struct ieee80211_hw *hw)
+-- 
+2.32.0
 
