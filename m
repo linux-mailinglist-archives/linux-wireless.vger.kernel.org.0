@@ -2,134 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2E75402D71
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 19:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18880402EEC
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 21:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345588AbhIGRIG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Sep 2021 13:08:06 -0400
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:46516
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1345474AbhIGRIF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Sep 2021 13:08:05 -0400
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 16B5240199
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Sep 2021 17:06:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1631034418;
-        bh=VG0JhmyVLkk6Ofw6jiVRBn2qayN7edeiW2niGR0upjE=;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type;
-        b=TgT/PXvn+qGf1sZJ4hFR/kdhA023LCYgPrRZQHf7sCoEfhMG6kOa35aV8Vue2di/E
-         pHSTzmlw4u1f6XOwrdgEAXmBQUyJ3V7gjJ6jO0tVm/2Sab/LVZvCrV5DgLlX1mXPOI
-         YUwz0l9PHC4SBoqvr7BfWWG2yaf4vQ5bS6N/CbMo0xsyJxKISiZlHwWhL4SYwCaEbZ
-         rLUWASbPSyTILpyGkhsjT0Bfp1tp2jJx1aNxtCim+ftU/w60lxfHZqKncoEfJ5ql20
-         nWhQfYctu8bwQS3X0QgrK4uKwYaqI+hX2BUt3m2jSWSETYR1NzDzkTcDH4R5CCRJGM
-         F3Ar09hJ17jWw==
-Received: by mail-wm1-f69.google.com with SMTP id f17-20020a05600c155100b002f05f30ff03so1460098wmg.3
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Sep 2021 10:06:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=VG0JhmyVLkk6Ofw6jiVRBn2qayN7edeiW2niGR0upjE=;
-        b=ifCBagmyG9jvC5rc2AGSfVVbeaWJ2z2gLrREssd9IK/XsVkAERy6CtWMOAqg1dcHs7
-         jo6Tz4Qco13TYJQ24Fjh8BaSLknouf6Izm9KaRjHmC6E1AHPWb85dx6zHvliMIkWgkAh
-         q7U4FkZqBvzDDdji8vnjjtquce8VFcBJ25TD8An4GPH889I3GXkdURNLzFaxSD9HqXCv
-         In7ZKSfk2XL4EIC0LFn/XLvB6ILFKuWtmCvm0+U/tYkkIyxLtNjl7IY2+Mm2QnJS8fn4
-         6QhuteIjRkil7zvXKm9CAkrQQl5MXN1ZSldzioR3t54jHyyBsrodTdCVZUAQR9YN9hOi
-         L6qA==
-X-Gm-Message-State: AOAM5313OvtiNcXbE4/yzZi4Xrp+dlHOmjRpuVGdTDg2vs/wVylQD/L7
-        tZp2zrpNtUrMyFph8r14cpMGGWfNN9jTKPdIUcvqBc1dbONQZet8aW5T5zu2hKm1ZjKqGmi7QiD
-        0v7lGuUYuEJohFEDHRTfk+l9lGB32+3hYQmzUgd7RCcUx
-X-Received: by 2002:a05:6000:186:: with SMTP id p6mr20176884wrx.210.1631034416921;
-        Tue, 07 Sep 2021 10:06:56 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzE/K0JY0VlMzZwE0MrSbz25moOxrUCE+1AcR5gJXHm/zeMeF7W8lJAkFYZcpZ3SugSoUEeOg==
-X-Received: by 2002:a05:6000:186:: with SMTP id p6mr20176851wrx.210.1631034416728;
-        Tue, 07 Sep 2021 10:06:56 -0700 (PDT)
-Received: from [192.168.3.211] ([79.98.113.47])
-        by smtp.gmail.com with ESMTPSA id w29sm11722496wra.88.2021.09.07.10.06.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Sep 2021 10:06:56 -0700 (PDT)
-Subject: Re: [PATCH 05/15] nfc: pn533: drop unneeded debug prints
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Krzysztof Opasiak <k.opasiak@samsung.com>,
-        Mark Greer <mgreer@animalcreek.com>,
-        "David S. Miller" <davem@davemloft.net>, linux-nfc@lists.01.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-References: <20210907121816.37750-1-krzysztof.kozlowski@canonical.com>
- <20210907121816.37750-6-krzysztof.kozlowski@canonical.com>
- <35626061-ff2e-cb01-21ff-87a6f776dc28@canonical.com>
- <20210907100310.0cdec18b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Message-ID: <f6677c91-30ba-132d-20d2-0ec7edf40025@canonical.com>
-Date:   Tue, 7 Sep 2021 19:06:55 +0200
+        id S1346059AbhIGTY2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Sep 2021 15:24:28 -0400
+Received: from mout.web.de ([212.227.15.3]:51897 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1346052AbhIGTY2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 Sep 2021 15:24:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1631042581;
+        bh=C3Kava3hgepg/XaIDROu8dHiXBxSSlrzwnw2BXTTxu8=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=F34+gslEYeoBXcN3bghzku+i7clvDzh2RBQ/M9jbz3bg03teZgpsI4NW81YdcuyJq
+         x4PhmsRc9ZlbTjbgWwetsSS8H67vwHi4EXSBk8FFm1x5IxabxDT49WtY+jtxR+bha6
+         A7n6Kkda9oCzBMhyGdsAJgV7wu5onSx+PNC5xqpc=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.27] ([89.12.22.161]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MLUDi-1mN8ic3ogc-000aA6; Tue, 07
+ Sep 2021 21:23:01 +0200
+Subject: [BUG] Re: [PATCH] brcmfmac: use ISO3166 country code and 0 rev as
+ fallback
+To:     Shawn Guo <shawn.guo@linaro.org>, Kalle Valo <kvalo@codeaurora.org>
+Cc:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-rockchip@lists.infradead.org" 
+        <linux-rockchip@lists.infradead.org>
+References: <20210425110200.3050-1-shawn.guo@linaro.org>
+From:   Soeren Moch <smoch@web.de>
+Message-ID: <cb7ac252-3356-8ef7-fcf9-eb017f5f161f@web.de>
+Date:   Tue, 7 Sep 2021 21:22:52 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210907100310.0cdec18b@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20210425110200.3050-1-shawn.guo@linaro.org>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Language: en-GB
+X-Provags-ID: V03:K1:slohztXf3BTkkoBYuYLA1V9JVQKp3w602USBrAoPIC4BUO/YYP+
+ hWpggc/Wu4nzDjc19d/6TODSknsPsfXprnkl0AzalPdCdzyTA7uIXePKNmM7F8GcqwPxNEK
+ cfAr9EY79iuOr1onVlEU5TWlPVawIrX1VV9fBBw3tjBZXMm8SacELYdtKlxbq5GXpfss8Q8
+ KE924fHKVxJVVFjoHrwng==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ExnSiwBjD2s=:IA5XJh8uKbl+uI+OZe3887
+ DbkIFzvC2TdLGsbchBIXFrCH4Oaz6fvoE8KuiltMJ/vVCXrxDo3qzWRab41lOIqwH4lNJN289
+ q+gnRP+OcQPOAj6A6IYwGBxzomSK2vvnP53zlNMq60Nf3OEmKfYR2F0XU6sM6/7DIC0YBbLyV
+ MX5QFbLCyDudiLvss8fGCQD32CXo8e4nYfx1JBumTV/w/X77mfbY6UyebZYNi21m08QE64l3U
+ VTdgBtblvLXtu4TWaZqj6Y/q4LZXbpPUgphps4vK/BEMjrS4LW+anUKD29c0yS8NC3AHHm3KR
+ xzTHFGU/Q4VvyKRKaONJffM3AxNmFjBoUH5v2apmiwjF7iXDm5ypXC/Rn2onUU8rXAEkwVrbT
+ Fbm/Ex9TppX/xuEMOb9VFYOIqMTJ8QcRvoGjWq0/dsWFxgcdasmTX73ucPPiZ2Vsy8y1iCS0Z
+ 1fll7/6xnuYB4FKgGBhSMK+XcnVWrNcaN4pROPoA7HGlQwnCPTKzWpkNtKs+/FtdY8rjGWvTG
+ avYXyV269I85+BT2ZyM33gQBOw25Syf0G/bAyj+z2hawZjQvWG+fQ6Lc3xl0ZStjE5hgLiQHa
+ qM8hElmc+rcefhEiYv9JQTyF9jgSNYfxa05pWhDX0qc03YCm8td/EbgiUwrB7MAc2/RdPq/on
+ 9F7zWNixLWmoXLusSuGUNzIbNKoPxRzbOKVOQ+IVgEPq9aqofQ2+EGn9e71hwg9/zFqXdTaod
+ JOg7s/YiRKOh2BxzY/F8dTRk3JeKyju1gHBPgd3BIPJ4huuC4y6xM+BNjPRpzBnIn3+Pee1Wa
+ YzNxaz0TH+L7VUl1DUVQtcdbtJahFyA4c3778PlMNy/ktkM/NRHs2KWfAYz+sOflJkOMGuuQa
+ iQxZHFVdN5nzTqQfLE27ES4cLDV/d0soNsopLAYSqlyeuvtrqm3YMdp8cbKjhYykbzOk0XCkP
+ yvjHyS9n0YDH0FBMHDB6zA5eLh1UGRf0qxGZZvg9SioQuXGO6sFrEd2sa9wcspeUIsN6aUYNC
+ tIEevqAgNLcN6oyVuRMhy07phv5JAfz3fp4ZUQ9EpGLd8DiKlGO0z20IhizluBxMhJmAPFR62
+ fqYJnRwJCy6P4Q=
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 07/09/2021 19:03, Jakub Kicinski wrote:
-> On Tue, 7 Sep 2021 18:05:25 +0200 Krzysztof Kozlowski wrote:
->> On 07/09/2021 14:18, Krzysztof Kozlowski wrote:
->>> ftrace is a preferred and standard way to debug entering and exiting
->>> functions so drop useless debug prints.
->>>
->>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
->>> ---
->>>  drivers/nfc/pn533/i2c.c   | 1 -
->>>  drivers/nfc/pn533/pn533.c | 2 --
->>>  2 files changed, 3 deletions(-)
->>>
->>> diff --git a/drivers/nfc/pn533/i2c.c b/drivers/nfc/pn533/i2c.c
->>> index e6bf8cfe3aa7..91d4a035eb63 100644
->>> --- a/drivers/nfc/pn533/i2c.c
->>> +++ b/drivers/nfc/pn533/i2c.c
->>> @@ -138,7 +138,6 @@ static irqreturn_t pn533_i2c_irq_thread_fn(int irq, void *data)
->>>  	}
->>>  
->>>  	client = phy->i2c_dev;  
->>
->> This line should also be removed (reported by kbuild robot).
->>
->> I will send a v2.
-> 
-> Dave marked the series as Deferred (although this patch is Changes
-> Requested, I'm guessing you did that, if so please don't change patch
-> states in netdev pw)
+On 25.04.21 13:02, Shawn Guo wrote:
+> Instead of aborting country code setup in firmware, use ISO3166 country
+> code and 0 rev as fallback, when country_codes mapping table is not
+> configured.  This fallback saves the country_codes table setup for recen=
+t
+> brcmfmac chipsets/firmwares, which just use ISO3166 code and require no
+> revision number.
+This patch breaks wireless support on RockPro64. At least the access
+point is not usable, station mode not tested.
 
-Yes, that was me. Sorry for disturbing the process.
+brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4359/9 wl0: Mar=C2=A0 6 2017
+10:16:06 version 9.87.51.7 (r686312) FWID 01-4dcc75d9
 
->, please hold off:
-> 
-> 
-> # Form letter - net-next is closed
-> 
-> We have already sent the networking pull request for 5.15
-> and therefore net-next is closed for new drivers, features,
-> code refactoring and optimizations. We are currently accepting
-> bug fixes only.
-> 
-> Please repost when net-next reopens after 5.15-rc1 is cut.
-> 
-> Look out for the announcement on the mailing list or check:
-> http://vger.kernel.org/~davem/net-next.html
-> 
-> RFC patches sent for review only are obviously welcome at any time.
+Reverting this patch makes the access point show up again with linux-5.14 =
+.
 
-Sure, I'll wait till end of merge window.
+Regards,
+Soeren
+> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> ---
+>  .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c=
+ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> index f4405d7861b6..6cb09c7c37b6 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> @@ -7442,18 +7442,23 @@ static s32 brcmf_translate_country_code(struct b=
+rcmf_pub *drvr, char alpha2[2],
+>  	s32 found_index;
+>  	int i;
+>
+> -	country_codes =3D drvr->settings->country_codes;
+> -	if (!country_codes) {
+> -		brcmf_dbg(TRACE, "No country codes configured for device\n");
+> -		return -EINVAL;
+> -	}
+> -
+>  	if ((alpha2[0] =3D=3D ccreq->country_abbrev[0]) &&
+>  	    (alpha2[1] =3D=3D ccreq->country_abbrev[1])) {
+>  		brcmf_dbg(TRACE, "Country code already set\n");
+>  		return -EAGAIN;
+>  	}
+>
+> +	country_codes =3D drvr->settings->country_codes;
+> +	if (!country_codes) {
+> +		brcmf_dbg(TRACE, "No country codes configured for device, using ISO31=
+66 code and 0 rev\n");
+> +		memset(ccreq, 0, sizeof(*ccreq));
+> +		ccreq->country_abbrev[0] =3D alpha2[0];
+> +		ccreq->country_abbrev[1] =3D alpha2[1];
+> +		ccreq->ccode[0] =3D alpha2[0];
+> +		ccreq->ccode[1] =3D alpha2[1];
+> +		return 0;
+> +	}
+> +
+>  	found_index =3D -1;
+>  	for (i =3D 0; i < country_codes->table_size; i++) {
+>  		cc =3D &country_codes->table[i];
 
-
-Best regards,
-Krzysztof
