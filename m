@@ -2,68 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 082B540220D
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 04:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A644402285
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 05:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237504AbhIGBas (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Sep 2021 21:30:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37516 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232664AbhIGBar (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Sep 2021 21:30:47 -0400
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C0AC061757
-        for <linux-wireless@vger.kernel.org>; Mon,  6 Sep 2021 18:29:41 -0700 (PDT)
-Received: by mail-vs1-xe2e.google.com with SMTP id j19so6954425vsi.6
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Sep 2021 18:29:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=l5mEJkuEiwt69n27DH8U6Hc4V9C+CVzteIU8pmw0YMg=;
-        b=C+GZLDdiu+CO2KY3fhAAPwiEHSDZjobPQUs+uXhVzc+GdMYcODArjKJuGAN5lmZ8JL
-         Z1mHy+UCsNUVImwZdhoXCeu9JeSjMxfhF48zfREbmdGOgfR0jnvwC/Vohzk+5S+Y9Nmd
-         ZLx/iGxMghWOY34+S/Z9ACLY6Md+bBAWJGXHdcZhL7TOmfaWjsZTRqgROebY2zSqRjwQ
-         wnfkHwcn4pMezqvumdeKXu6h7FHG5c+v6JJ1MeahKpgzu0E7faPYGTgLMSIjykOQw2LP
-         Z23CmZEa/2b6mhAEZOLvc8BelzFEHGNzBE98Rz9BXVHIKPZbydhxNvnPA3bDTTPfpqbO
-         bUDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=l5mEJkuEiwt69n27DH8U6Hc4V9C+CVzteIU8pmw0YMg=;
-        b=JTEx9Y++rU4ovymnl2+XTO8tBnUC5i5dNdJDT0GaBUxoArHJKhxNQM/WQD9gJ2/hb6
-         RE/cejKqe/CQlvYUxeB6ZsNr+nI/m6i41pdQFtQR2PSCODroAkXS9GPRD/JsMKVPF9E3
-         NWJZVg02VfL5ULPgOCg83g5aTZMve8ULAGtRDEj3nBaC4OdSTbFBEZId/PuxXEcFka0g
-         +yr/Hyfdxa9zaFKFFpqtxz0lTIfF1SOoPn0erHw+KWNOC1wj3qE8eLdBimQEIy3k06Mt
-         kzwsPIDCi+V5tI6FAkGLCXYi6sOR4AYcQ8FKD3gkFWIW5IPYunTTSxHAu1RTS1hitZ8b
-         X0FQ==
-X-Gm-Message-State: AOAM530tgwlNucpvfkDsUp5BPk+cSvTm6aNpPoMxIZHjUVOqXSOOvcts
-        ZnPoN+sk5XPgOkaVvB1Nr5fkCS9FdUpL4YO7cOO8H9b0x3GE4g==
-X-Google-Smtp-Source: ABdhPJxaCEa45LTsmMKnL4CX57esc+J+vIcDGiYdeDnSAjDT8Pj0qieln7aPpD3xwy2Su8KoPFXudS0gylnzTxhLFuw=
-X-Received: by 2002:a17:902:7e0f:b0:139:fdd6:77bc with SMTP id
- b15-20020a1709027e0f00b00139fdd677bcmr12776117plm.22.1630978170156; Mon, 06
- Sep 2021 18:29:30 -0700 (PDT)
+        id S235811AbhIGDju (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Sep 2021 23:39:50 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:22530 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235605AbhIGDjt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 Sep 2021 23:39:49 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1630985924; h=Date: Message-Id: Cc: To: Subject: From:
+ Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
+ bh=URFQ2d5yfgfV4Tw0297JNt9EKh8NGekV8HtcCAp2kZ4=; b=AnUb9TJ+aIpNN+JGMTowcOpxSgtqEdHILa9ICAdd6WPt5ZvOcnIZC4Me3yEVveamZvtWtiOy
+ JPF2gjqt70z+RqrhWI9gVHkDu/J6CRppcXne5gQnl+6Q0qjYy/pnCeKETCagTM+MkEAJc4uR
+ NJ9DaVVxN07N4uxG0qKU5++aEtI=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 6136dec36fc2cf7ad9f033b2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 07 Sep 2021 03:38:43
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CE38EC43460; Tue,  7 Sep 2021 03:38:42 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AD07CC4338F;
+        Tue,  7 Sep 2021 03:38:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org AD07CC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a17:90a:b794:0:0:0:0 with HTTP; Mon, 6 Sep 2021 18:29:29
- -0700 (PDT)
-Reply-To: sroomf70@gmail.com
-From:   "Prof. Dr Diane" <mrsfazal739@gmail.com>
-Date:   Mon, 6 Sep 2021 18:29:29 -0700
-Message-ID: <CAOvGKq5BfQO6gNsQC7hx_tU2seHAEy0ANxKLpJgcOL2cyVmhOg@mail.gmail.com>
-Subject: Good Day,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@codeaurora.org>
+Subject: pull-request: wireless-drivers-2021-09-07
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20210907033842.CE38EC43460@smtp.codeaurora.org>
+Date:   Tue,  7 Sep 2021 03:38:42 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-From Prof. Dr Diane, please a huge amount of payment was made into
-your account. as soon as your respond is noted the payment
-confirmation slip will immediately send to you.  please do not
-hesitate to reply as soon as you receive this message. awaiting your
-urgent reply please.
+Hi,
 
-Best regards
-Prof. Dr Diane
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
+
+Kalle
+
+The following changes since commit 205b95fe658ddba25236c60da777f67b4eec3fd3:
+
+  net/ncsi: add get MAC address command to get Intel i210 MAC address (2021-09-01 17:18:56 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-09-07
+
+for you to fetch changes up to e4457a45b41c1c2ec7fb392dc60f4e2386b48a90:
+
+  iwlwifi: fix printk format warnings in uefi.c (2021-09-06 13:03:06 +0300)
+
+----------------------------------------------------------------
+wireless-drivers fixes for v5.15
+
+First set of fixes for v5.15 and only iwlwifi patches this time. Most
+important being support for new hardware and new firmware API.
+
+I had already earlier applied a fix which also Linus applied to this
+tree as commit 1476ff21abb4 ("iwl: fix debug printf format strings"),
+but this doesn't seem to cause any conflicts so I left it there.
+
+iwlwifi
+
+* add support for firmware API 66
+
+* add support for Samsung Galaxy Book Flex2 Alpha
+
+* fix a leak happening every time module is loaded
+
+* fix a printk compiler warning
+
+----------------------------------------------------------------
+Christophe JAILLET (1):
+      iwlwifi: pnvm: Fix a memory leak in 'iwl_pnvm_get_from_fs()'
+
+Justin M. Forbes (1):
+      iwlwifi Add support for ax201 in Samsung Galaxy Book Flex2 Alpha
+
+Luca Coelho (1):
+      iwlwifi: bump FW API to 66 for AX devices
+
+Randy Dunlap (1):
+      iwlwifi: fix printk format warnings in uefi.c
+
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c   | 6 +++++-
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c   | 4 ++--
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c  | 1 +
+ 4 files changed, 9 insertions(+), 4 deletions(-)
