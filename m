@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08D8340287E
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 14:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EBBA40288C
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 14:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344599AbhIGMUT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Sep 2021 08:20:19 -0400
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:33696
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344087AbhIGMTv (ORCPT
+        id S1344161AbhIGMUg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Sep 2021 08:20:36 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:36948
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1344351AbhIGMTw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Sep 2021 08:19:51 -0400
+        Tue, 7 Sep 2021 08:19:52 -0400
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id C4D404019C
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Sep 2021 12:18:35 +0000 (UTC)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id E0C68407AA
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Sep 2021 12:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1631017115;
-        bh=Puh8mRYPY/DpKQ/I9uyYNXcSBWp/u+3lkb87itcd3n8=;
+        s=20210705; t=1631017116;
+        bh=vC5ZeeYLEo1QgnDozyJaTYMB8bYZWzk5ZY30xgpVgcM=;
         h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
          MIME-Version;
-        b=uUM0PGv4Rfv1eIcr/jyhIigDDP8aHrh/h5BVxfaJ8Y/CnfjE8YPeL7liuR927Teqq
-         STekRzWqNFsFiHoLo5t/iynyWYXVdQ0HGA5UBL6syWw1UeEWS+ORr/8D7DEu4OLJmW
-         ZDegXvvAx1ePauQZeHS74aULclKv5J+6S8N3GUkIGtCMEAPt8hydng134zw5kYMc2S
-         8H912pfWb6qtYXviPK2WAMfiWwzJCQfuzaAGYfjPqE6xf3FqovXyzbd/lzwFplv1Es
-         2L/oX5igL3KDFVgiCFEUnR5ClL8RhnvuKBRKkZ9TcB8yHNTBCTVCY1s7+y2G6Jhg45
-         TkVBqvd3XDtRA==
-Received: by mail-wm1-f70.google.com with SMTP id u1-20020a05600c210100b002e74fc5af71so3326296wml.1
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Sep 2021 05:18:35 -0700 (PDT)
+        b=tTyMQxiqTAGMXRkmo9aHy0Xh+NsYkcZDhsUaVu85+4GuPOu9SaUXKoB2Iyx/MHECt
+         JghnYmR3Fx7/fYl/JhRoZiDqs/+/CpB026Q6ZS7On+U67bQEM7KVlat4H5qoHfL0lv
+         dQGOleE7W5aYRGU3H6P1c18o4PgigX9xzN6zByLmOUuhB44uwsuKSZ1SI5yT5bgOv9
+         /PmIszq/E4HIPhCSdDdMiB4FPIvhT5scRHX4U5Er1slOAmB45HEcu5o2jSelxEktTi
+         Hmo+ydRKBS23PPyvSV9RBC6rrqHxm3JWGEIfNOcx6j2Om3olCEiLwstCOT7wVZ0JXI
+         444hpHS4Gw4uA==
+Received: by mail-wm1-f70.google.com with SMTP id u14-20020a7bcb0e0000b0290248831d46e4so1033210wmj.6
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Sep 2021 05:18:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Puh8mRYPY/DpKQ/I9uyYNXcSBWp/u+3lkb87itcd3n8=;
-        b=garm8dBNiPezafHBesqUYF4OB2QfkF1lwORU1uZp1NZbMsPjNCnAQtbNrfmesRTTZw
-         CkDdn91rTS43VbWl4jk9U1AORgeWdQ69k57kn0A9gKO8M3MH0jhp4YTHo2LRgK6oZf6d
-         KzjUJEs0oMBWQB4R7aPfpwvbgqDhPsU8jcwhH816E8R5U7vC7mU0pjZPmzBvoyTJKIFr
-         b1EYOy541pkuX68jdTJTqiiM85tGue9nlctwtEnUHahhJBso8fiWpg63APAybToInAmw
-         spcGLhpdh8zZTKF+RJxBzZAYbQB0tne0VVggdzU6/9fQG7MLE+FnLMiHoGeK9ialbazt
-         VGRg==
-X-Gm-Message-State: AOAM530faY9li+5ct4tX/Q5A2giVfhYhddZxJfOdyTJKnqHivroIaQA9
-        tfRIrjsu3ad0Fce0P4XNpKZ9pF9Iw0C4Y/IcVZkfF1zDPctnooodNhubPLdfp1JHnStCxcxCOt7
-        eU491kcKePyRq8GIZcduRGUsBTagVPvNh5q3JEkokYCGg
-X-Received: by 2002:adf:f490:: with SMTP id l16mr18418669wro.136.1631017115522;
-        Tue, 07 Sep 2021 05:18:35 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyLMJx55+Q/WM79I6j8ltV38paMRUj8UUI3CoLPAg5wP7ajpWFYZY+esfWvjPdv6zq3PNmHWg==
-X-Received: by 2002:adf:f490:: with SMTP id l16mr18418651wro.136.1631017115342;
-        Tue, 07 Sep 2021 05:18:35 -0700 (PDT)
+        bh=vC5ZeeYLEo1QgnDozyJaTYMB8bYZWzk5ZY30xgpVgcM=;
+        b=j4GZyiZLZ/R2F0bNnhO16sjRuB5A/BVmj0SY00u0tUCb5oReOTvrjkN10xO1Ivwt1w
+         aZGaeLDh9lnidph8BkOSW+eq0aLz50kfd1iwoVcbqulP5V7FJPqEzEZGOXwGpZDOJFfp
+         dnomVLBp2fQ6b1AxR+Cve7lKUlDMMZLbcygrz4OwRofOxN9h1N+0zTTk+LkeVOEcZlb9
+         /y5NmZ+ubqYQKZpxma7mCrajdWWt1tr873hvnXVFkQs/2oOnrWNHnC0WvM7UpyrGiDFN
+         4XhIzMRB41co+EJxggRASAzNE6aNH5aSaiT7OXytVIHrQvYMcG4Cj1MEbf+wtaGDwck7
+         wzFg==
+X-Gm-Message-State: AOAM5334Gbiw0wA3lEEQ8ZnvzDbfuBnlN/EIjPq/bW0mbD7qfdIyBfSt
+        3T1UiYbmu9JUIQ20nxuxHQyBypyuCtjuP9qphjFufT/9PyhFu/Lb7o5vyI4/ryL72AjdXr4lmU3
+        CDSg03+1CyWpWBvafhGnEGYm0nQ9oN5yEW1JLdLgnCg6X
+X-Received: by 2002:a05:600c:350b:: with SMTP id h11mr3654650wmq.101.1631017116587;
+        Tue, 07 Sep 2021 05:18:36 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz1nc8FfA3NegAiSteStJpWLEeZZ3ZcnTr4pnxkPwnCbeOusix2fXAFJixkw6WN/2ypjZQRhw==
+X-Received: by 2002:a05:600c:350b:: with SMTP id h11mr3654639wmq.101.1631017116468;
+        Tue, 07 Sep 2021 05:18:36 -0700 (PDT)
 Received: from kozik-lap.lan ([79.98.113.47])
-        by smtp.gmail.com with ESMTPSA id m3sm13525216wrg.45.2021.09.07.05.18.34
+        by smtp.gmail.com with ESMTPSA id m3sm13525216wrg.45.2021.09.07.05.18.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Sep 2021 05:18:35 -0700 (PDT)
+        Tue, 07 Sep 2021 05:18:36 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Krzysztof Opasiak <k.opasiak@samsung.com>,
@@ -62,9 +62,9 @@ To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Jakub Kicinski <kuba@kernel.org>, linux-nfc@lists.01.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-wireless@vger.kernel.org
-Subject: [PATCH 11/15] nfc: st21nfca: drop unneeded debug prints
-Date:   Tue,  7 Sep 2021 14:18:12 +0200
-Message-Id: <20210907121816.37750-12-krzysztof.kozlowski@canonical.com>
+Subject: [PATCH 12/15] nfc: trf7970a: drop unneeded debug prints
+Date:   Tue,  7 Sep 2021 14:18:13 +0200
+Message-Id: <20210907121816.37750-13-krzysztof.kozlowski@canonical.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210907121816.37750-1-krzysztof.kozlowski@canonical.com>
 References: <20210907121816.37750-1-krzysztof.kozlowski@canonical.com>
@@ -79,54 +79,49 @@ functions so drop useless debug prints.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 ---
- drivers/nfc/st21nfca/i2c.c | 4 ----
- drivers/nfc/st21nfca/se.c  | 4 ----
- 2 files changed, 8 deletions(-)
+ drivers/nfc/trf7970a.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/nfc/st21nfca/i2c.c b/drivers/nfc/st21nfca/i2c.c
-index 279d88128b2e..f126ce96a7df 100644
---- a/drivers/nfc/st21nfca/i2c.c
-+++ b/drivers/nfc/st21nfca/i2c.c
-@@ -421,7 +421,6 @@ static int st21nfca_hci_i2c_read(struct st21nfca_i2c_phy *phy,
- static irqreturn_t st21nfca_hci_irq_thread_fn(int irq, void *phy_id)
- {
- 	struct st21nfca_i2c_phy *phy = phy_id;
--	struct i2c_client *client;
+diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+index 8890fcd59c39..29ca9c328df2 100644
+--- a/drivers/nfc/trf7970a.c
++++ b/drivers/nfc/trf7970a.c
+@@ -2170,8 +2170,6 @@ static int trf7970a_suspend(struct device *dev)
+ 	struct spi_device *spi = to_spi_device(dev);
+ 	struct trf7970a *trf = spi_get_drvdata(spi);
  
- 	int r;
- 
-@@ -430,9 +429,6 @@ static irqreturn_t st21nfca_hci_irq_thread_fn(int irq, void *phy_id)
- 		return IRQ_NONE;
- 	}
- 
--	client = phy->i2c_dev;
--	dev_dbg(&client->dev, "IRQ\n");
+-	dev_dbg(dev, "Suspend\n");
 -
- 	if (phy->hard_fault != 0)
- 		return IRQ_HANDLED;
+ 	mutex_lock(&trf->lock);
  
-diff --git a/drivers/nfc/st21nfca/se.c b/drivers/nfc/st21nfca/se.c
-index c8bdf078d111..a43fc4117fa5 100644
---- a/drivers/nfc/st21nfca/se.c
-+++ b/drivers/nfc/st21nfca/se.c
-@@ -257,8 +257,6 @@ static void st21nfca_se_wt_timeout(struct timer_list *t)
- 	struct st21nfca_hci_info *info = from_timer(info, t,
- 						    se_info.bwi_timer);
+ 	trf7970a_shutdown(trf);
+@@ -2187,8 +2185,6 @@ static int trf7970a_resume(struct device *dev)
+ 	struct trf7970a *trf = spi_get_drvdata(spi);
+ 	int ret;
  
--	pr_debug("\n");
+-	dev_dbg(dev, "Resume\n");
 -
- 	info->se_info.bwi_active = false;
+ 	mutex_lock(&trf->lock);
  
- 	if (!info->se_info.xch_error) {
-@@ -278,8 +276,6 @@ static void st21nfca_se_activation_timeout(struct timer_list *t)
- 	struct st21nfca_hci_info *info = from_timer(info, t,
- 						    se_info.se_active_timer);
+ 	ret = trf7970a_startup(trf);
+@@ -2206,8 +2202,6 @@ static int trf7970a_pm_runtime_suspend(struct device *dev)
+ 	struct trf7970a *trf = spi_get_drvdata(spi);
+ 	int ret;
  
--	pr_debug("\n");
+-	dev_dbg(dev, "Runtime suspend\n");
 -
- 	info->se_info.se_active = false;
+ 	mutex_lock(&trf->lock);
  
- 	complete(&info->se_info.req_completion);
+ 	ret = trf7970a_power_down(trf);
+@@ -2223,8 +2217,6 @@ static int trf7970a_pm_runtime_resume(struct device *dev)
+ 	struct trf7970a *trf = spi_get_drvdata(spi);
+ 	int ret;
+ 
+-	dev_dbg(dev, "Runtime resume\n");
+-
+ 	ret = trf7970a_power_up(trf);
+ 	if (!ret)
+ 		pm_runtime_mark_last_busy(dev);
 -- 
 2.30.2
 
