@@ -2,114 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A644402285
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 05:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA2BA4025F8
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 11:10:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235811AbhIGDju (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Sep 2021 23:39:50 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:22530 "EHLO m43-7.mailgun.net"
+        id S244584AbhIGJLM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Sep 2021 05:11:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45560 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235605AbhIGDjt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Sep 2021 23:39:49 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1630985924; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=URFQ2d5yfgfV4Tw0297JNt9EKh8NGekV8HtcCAp2kZ4=; b=AnUb9TJ+aIpNN+JGMTowcOpxSgtqEdHILa9ICAdd6WPt5ZvOcnIZC4Me3yEVveamZvtWtiOy
- JPF2gjqt70z+RqrhWI9gVHkDu/J6CRppcXne5gQnl+6Q0qjYy/pnCeKETCagTM+MkEAJc4uR
- NJ9DaVVxN07N4uxG0qKU5++aEtI=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 6136dec36fc2cf7ad9f033b2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 07 Sep 2021 03:38:43
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CE38EC43460; Tue,  7 Sep 2021 03:38:42 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AD07CC4338F;
-        Tue,  7 Sep 2021 03:38:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org AD07CC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+        id S243468AbhIGJLM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 Sep 2021 05:11:12 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 5925F61102;
+        Tue,  7 Sep 2021 09:10:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631005806;
+        bh=uPbfy4mODdIz4BjAVSEGBJX/mpjICUVdEQbd7dDa7k4=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=XpQH2Po+oHFilzA1jwKByu9ZlpRnXV3MFn/9Qd2zpj/q2XW1jXk4TJYBNJUwIMid3
+         ftyA9YwyiVVh/r8EqIFI6WR+BLJ2A8gyoJFIh/CVG2hmXEeZlCq+jZtwp4/AHo1JfO
+         qwyGCH19tAX25uYa18+YEGBUZL04sRlitQuLou6Hmgpo7PrMujekM7uTWjyqtOqDAs
+         Q4w5GyNuOkLMuu7OtOwVk8cg3eUJmR66N10t8WGkCVmcrShQHA2+G3bZC4n/3+U9WT
+         ZJhGKUEQnxkdGnhtORleccFNNmKi2pdDlNoA2kuNNbIXEKRxeAoYEaDMVN26fcnTe9
+         ITXEOA4+6q57g==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 4D979609F5;
+        Tue,  7 Sep 2021 09:10:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-2021-09-07
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20210907033842.CE38EC43460@smtp.codeaurora.org>
-Date:   Tue,  7 Sep 2021 03:38:42 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-drivers-2021-09-07
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <163100580631.1890.9498522128656095721.git-patchwork-notify@kernel.org>
+Date:   Tue, 07 Sep 2021 09:10:06 +0000
+References: <20210907033842.CE38EC43460@smtp.codeaurora.org>
+In-Reply-To: <20210907033842.CE38EC43460@smtp.codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hello:
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+This pull request was applied to netdev/net.git (refs/heads/master):
 
-Kalle
+On Tue,  7 Sep 2021 03:38:42 +0000 (UTC) you wrote:
+> Hi,
+> 
+> here's a pull request to net tree, more info below. Please let me know if there
+> are any problems.
+> 
+> Kalle
+> 
+> [...]
 
-The following changes since commit 205b95fe658ddba25236c60da777f67b4eec3fd3:
+Here is the summary with links:
+  - pull-request: wireless-drivers-2021-09-07
+    https://git.kernel.org/netdev/net/c/8f110f35f962
 
-  net/ncsi: add get MAC address command to get Intel i210 MAC address (2021-09-01 17:18:56 -0700)
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-09-07
-
-for you to fetch changes up to e4457a45b41c1c2ec7fb392dc60f4e2386b48a90:
-
-  iwlwifi: fix printk format warnings in uefi.c (2021-09-06 13:03:06 +0300)
-
-----------------------------------------------------------------
-wireless-drivers fixes for v5.15
-
-First set of fixes for v5.15 and only iwlwifi patches this time. Most
-important being support for new hardware and new firmware API.
-
-I had already earlier applied a fix which also Linus applied to this
-tree as commit 1476ff21abb4 ("iwl: fix debug printf format strings"),
-but this doesn't seem to cause any conflicts so I left it there.
-
-iwlwifi
-
-* add support for firmware API 66
-
-* add support for Samsung Galaxy Book Flex2 Alpha
-
-* fix a leak happening every time module is loaded
-
-* fix a printk compiler warning
-
-----------------------------------------------------------------
-Christophe JAILLET (1):
-      iwlwifi: pnvm: Fix a memory leak in 'iwl_pnvm_get_from_fs()'
-
-Justin M. Forbes (1):
-      iwlwifi Add support for ax201 in Samsung Galaxy Book Flex2 Alpha
-
-Luca Coelho (1):
-      iwlwifi: bump FW API to 66 for AX devices
-
-Randy Dunlap (1):
-      iwlwifi: fix printk format warnings in uefi.c
-
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 2 +-
- drivers/net/wireless/intel/iwlwifi/fw/pnvm.c   | 6 +++++-
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c   | 4 ++--
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c  | 1 +
- 4 files changed, 9 insertions(+), 4 deletions(-)
