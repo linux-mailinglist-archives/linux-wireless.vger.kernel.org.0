@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABD15402891
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 14:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D96C402893
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 14:20:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344457AbhIGMUv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Sep 2021 08:20:51 -0400
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:33686
+        id S1344494AbhIGMUz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Sep 2021 08:20:55 -0400
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:33682
         "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344477AbhIGMUC (ORCPT
+        by vger.kernel.org with ESMTP id S1344473AbhIGMUC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 7 Sep 2021 08:20:02 -0400
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 6A1EB40824
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Sep 2021 12:18:39 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id AC76540827
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Sep 2021 12:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1631017119;
-        bh=KQ0ijwIeFsveeXdiNAQIdSvmUM7JWh6ALRqQaOVckDE=;
+        s=20210705; t=1631017120;
+        bh=IGi454bY1uM8p5QRZSKGDo9YXvHCL/LufQFtzz+SznM=;
         h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
          MIME-Version;
-        b=wdnn4Cu+1kPZwLD8NSz8v4+gilcSmMUNzV19dgbI8z7OTYIm2VXD0H26q7CVS0LZj
-         yljS/ufJWBhbS/vOu54tXmjjowYXkYptc6MqU18Wu+GLPJlOKcSag9KpzRK6VWHUI5
-         1UaA7r+j6H8qnaWHjz902P+1V2FL2pYJB1kMH6o2b57CIKo7Lj8XUYHNk8EUlefj4Z
-         /dqXgfX117aM2QSFadNarzKjSA520y5UEYG2gUt+GsfJge7We8YCLW+HoMusrEaUJP
-         0Glsx42KKI0/e3z4u5KoSbsxyo9sqE8RhUF9U//V8EP2zp3H+3p6wXArsOsrhXbo54
-         dTAhJ7X/hTHqA==
-Received: by mail-wr1-f69.google.com with SMTP id j1-20020adff541000000b001593715d384so2046623wrp.1
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Sep 2021 05:18:39 -0700 (PDT)
+        b=BKgQmkFGobUvYp4GFsCJgQW/pS4+dZHWtVS2CgD0+/SI7oAylF4qKPMClkPE2XS9K
+         KiZgUKdoGhiybUMClbmES0ASH/vud9PeZBpFkNjWyNt1E5o1XhJkp7Rpx++N8C3zW6
+         Ho1loJ4DQ2kx8RN6QMF24nvlqOSbTPQAKgfAid2UyNRputTZHAaoQs+OO5q23+jOtk
+         x6M9WFETDet2o8tUchLOwI9jxOtL8VKItU8ahicahuLk/ImV0VX/13u7+cHFhCxhbQ
+         ZXqRG6pQpbHxYhkM5caBjQto37Wy/nRNpkqVFkWT+0GhNR+RcCyPMu8vz/LMs5nc6E
+         2oXBE6+0V5CTw==
+Received: by mail-wm1-f72.google.com with SMTP id n16-20020a1c7210000000b002ea2ed60dc6so861643wmc.0
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Sep 2021 05:18:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=KQ0ijwIeFsveeXdiNAQIdSvmUM7JWh6ALRqQaOVckDE=;
-        b=FO0fSO/GW/DYpyfNbK699+bVkaYvAMrIUJrY9A1xMc/c1mhqRx6+JDaV0MPPxawjxd
-         GHNHvK74bU+FS3wZqRsg5m01OUS1DGoKprxoZL2EavEbwbXPL9IhIwmZnQ/gTP5TqbM0
-         EqHVcl3zvkCvyP4PJm94yBwkrNTUncMTgpajrpSdaqBl03FbX2x7Qb8qPf8UuYW1lJAd
-         uJzGsuh/vgn3fGgbrKopgrLTOTMB2K0nHA29rQYFEivZdHreTJXCDYcHt/qPma3hYWpz
-         BHSQmQ4SU56j255JLgo2vKGuuwt2TbGDjUFnkR/WGkeKWw+DPlXhi6eM4cawxIhXcEFg
-         7d6A==
-X-Gm-Message-State: AOAM533qOpIosH58BnH2N3YroDFMKKU0uJCttbXN0V/jcRdS4g1AaBsG
-        Va4+bZhAvQHiP4+6JdTQ1MtCkuqfEM+TL8u5mUDqRVayCTtz74kJmo7CCVnjeeMmq1HDFcrjEuC
-        kZLNJeR7D5C0Y1X253XmvsvJknnpbb4MOHbJrd02b+idI
-X-Received: by 2002:a1c:4e02:: with SMTP id g2mr3721764wmh.64.1631017119172;
-        Tue, 07 Sep 2021 05:18:39 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxQnetzmuiPkZxY5ujifiMc0ZSDMSRGclmWVVBN7PzhHJltL2XOpfe1Q53piPXGFgUJqPpP0w==
-X-Received: by 2002:a1c:4e02:: with SMTP id g2mr3721745wmh.64.1631017119053;
-        Tue, 07 Sep 2021 05:18:39 -0700 (PDT)
+        bh=IGi454bY1uM8p5QRZSKGDo9YXvHCL/LufQFtzz+SznM=;
+        b=eB0Zg39esto4SSxYn/M9A0KTqtDrpt+KmbZ6Dqf8qcUBER9kxlhP3McEOrxrnUm0zE
+         sNTfYKtmVtZrFaEFVRk8WEVPHbM1TE6JZ8DLGmlnf0issNGVdxcqyRJIaSy9Z8rDctzo
+         RFGMNJuzpf23tYwtPsrhevUnw2Pv7M7yWQsCHSsu7opWAp5cK8al9Xs+u7jt7VBsJx4x
+         59QwCxqIpyU9tLW+G7OOqytUerPALoT9P4RHMBJNmX4Q5uytmhYauXJjd2qpnTUvFK8U
+         NGfTYW2+Nr2qawlV0R1LPqPcj7r92pUcNxQHFDqDEZu9//ChUO2DWgDaaYmb6Ze+C4Rl
+         9Z6A==
+X-Gm-Message-State: AOAM533ZM4kRl1zkSA7dq7d1ZsMTQXdcpkhicpfa2U6T0spDKw88c2pL
+        6yNghOOEmTm0EawHU7KmNlkbl68uoyVrwiMu+Qtj8Uq80CVxyyJDpwaJpalODv4lH9KwysrUcg5
+        nEexRHt4L16/O6RwsKxeUzegDR4FwbIJR77VgucAjwh1D
+X-Received: by 2002:a05:600c:1d27:: with SMTP id l39mr3629442wms.146.1631017120416;
+        Tue, 07 Sep 2021 05:18:40 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxzkQReT6hqXvnsRi4xVMvPv5mwLHDY/KqHilLqyCDbOJpRRpQ8tjRRU7brxn8w70vPDRKkmA==
+X-Received: by 2002:a05:600c:1d27:: with SMTP id l39mr3629425wms.146.1631017120289;
+        Tue, 07 Sep 2021 05:18:40 -0700 (PDT)
 Received: from kozik-lap.lan ([79.98.113.47])
-        by smtp.gmail.com with ESMTPSA id m3sm13525216wrg.45.2021.09.07.05.18.37
+        by smtp.gmail.com with ESMTPSA id m3sm13525216wrg.45.2021.09.07.05.18.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Sep 2021 05:18:38 -0700 (PDT)
+        Tue, 07 Sep 2021 05:18:39 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Krzysztof Opasiak <k.opasiak@samsung.com>,
@@ -62,9 +62,9 @@ To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Jakub Kicinski <kuba@kernel.org>, linux-nfc@lists.01.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-wireless@vger.kernel.org
-Subject: [PATCH 14/15] nfc: microread: drop unneeded memory allocation fail messages
-Date:   Tue,  7 Sep 2021 14:18:15 +0200
-Message-Id: <20210907121816.37750-15-krzysztof.kozlowski@canonical.com>
+Subject: [PATCH 15/15] nfc: mrvl: drop unneeded memory allocation fail messages
+Date:   Tue,  7 Sep 2021 14:18:16 +0200
+Message-Id: <20210907121816.37750-16-krzysztof.kozlowski@canonical.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210907121816.37750-1-krzysztof.kozlowski@canonical.com>
 References: <20210907121816.37750-1-krzysztof.kozlowski@canonical.com>
@@ -74,30 +74,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-nfc_mei_phy_alloc() already prints an error message on memory allocation
+nci_skb_alloc() already prints an error message on memory allocation
 failure.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 ---
- drivers/nfc/microread/mei.c | 4 +---
+ drivers/nfc/nfcmrvl/fw_dnld.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/nfc/microread/mei.c b/drivers/nfc/microread/mei.c
-index 686be3381727..e2a77a5fc887 100644
---- a/drivers/nfc/microread/mei.c
-+++ b/drivers/nfc/microread/mei.c
-@@ -24,10 +24,8 @@ static int microread_mei_probe(struct mei_cl_device *cldev,
- 	int r;
+diff --git a/drivers/nfc/nfcmrvl/fw_dnld.c b/drivers/nfc/nfcmrvl/fw_dnld.c
+index edac56b01fd1..e83f65596a88 100644
+--- a/drivers/nfc/nfcmrvl/fw_dnld.c
++++ b/drivers/nfc/nfcmrvl/fw_dnld.c
+@@ -76,10 +76,8 @@ static struct sk_buff *alloc_lc_skb(struct nfcmrvl_private *priv, uint8_t plen)
+ 	struct nci_data_hdr *hdr;
  
- 	phy = nfc_mei_phy_alloc(cldev);
--	if (!phy) {
--		pr_err("Cannot allocate memory for microread mei phy.\n");
-+	if (!phy)
- 		return -ENOMEM;
+ 	skb = nci_skb_alloc(priv->ndev, (NCI_DATA_HDR_SIZE + plen), GFP_KERNEL);
+-	if (!skb) {
+-		pr_err("no memory for data\n");
++	if (!skb)
+ 		return NULL;
 -	}
  
- 	r = microread_probe(phy, &mei_phy_ops, LLC_NOP_NAME,
- 			    MEI_NFC_HEADER_SIZE, 0, MEI_NFC_MAX_HCI_PAYLOAD,
+ 	hdr = skb_put(skb, NCI_DATA_HDR_SIZE);
+ 	hdr->conn_id = NCI_CORE_LC_CONNID_PROP_FW_DL;
 -- 
 2.30.2
 
