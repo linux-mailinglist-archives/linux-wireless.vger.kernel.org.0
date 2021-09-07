@@ -2,127 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EE124027C4
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 13:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 199A54027C6
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 13:32:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244987AbhIGLbn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Sep 2021 07:31:43 -0400
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:35608
-        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S244596AbhIGLbm (ORCPT
+        id S231194AbhIGLd2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Sep 2021 07:33:28 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:56072 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S242911AbhIGLd2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Sep 2021 07:31:42 -0400
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 3AF773F229
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Sep 2021 11:30:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1631014235;
-        bh=P2bfunZepWm9+WvxkBIjeIexMDJikor2nKCNpG8+xQk=;
-        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type;
-        b=JQPu+3t4Kvu7YkMgY8/E/tKt0ibrSlmsqfFpdanmSlv4SvVnhhbi51L/UI8+YUHh1
-         yfIRFCc2k/LEGaxKam/+RKjhMtt916uIJf4DjgzEnxgrY2oVTYEt+bAQru3WGitwb7
-         8RApsWlpJbw8QunwMRPKhQ7JH0Cluc4A92SEUf3kC/QcNYOoVYlB9OEG4Ac77Nwz74
-         /pZY6J62SCkjMzQd6OJZyJEMXAyz9NdRYkcffBK5uxOF2xM6kSk77IP1VYmcGU1Vul
-         3kGpSjRWQHkzgY9RNzwLptIFCdbqF3yb+fYU5pekg24DuYLDc0SVfMevOl4VBn9Qqs
-         ilM1BQbxbENKA==
-Received: by mail-oo1-f70.google.com with SMTP id x7-20020a4aea07000000b0028b880a3cd3so5549701ood.15
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Sep 2021 04:30:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=P2bfunZepWm9+WvxkBIjeIexMDJikor2nKCNpG8+xQk=;
-        b=ZWzPQJ/qeYOPqExqjaM/7RixHlhpIkCPB/7nV1IKkypbdZe/++3nGXcK7lVqrn4Gmm
-         pe2d7avYP15V2xvc2pMo6oOn5AOzSWdVLdmpXRTcM5oI6slwvIpAI5vRkqCnPYgxgNcw
-         4t79pBqdAgo273aXwgMgshioCOOqR2ln9gbM7UyB3r/Uryo6IPHSTKhmgD/kgAo43zWa
-         4zqHNWhfKXnMuLbzGasivwQDJldB7O6gJbdyEbFAKrNKbGmtzVK2MjhuVO77/1uKtacF
-         Cg71ke75OZ5ccXuGV/GAwfCyfBZomQacJoJEUks5S1hhXPSSH5qpX7HPw5xFune/d3pd
-         dC8g==
-X-Gm-Message-State: AOAM531TbcQLYHB5Yfcwmz9yXmFL4CdLuP4rCaoFBnsiYXa4/GRiqoSd
-        1Q4K8A6A1Qvy8hq8LrQUlr8Ln3gmH1Owb1K+DpXJoAKQ428rCi4RN2EPtTutgo76IHN9sp98bNg
-        DR3yscpt6p6DErdpepkSjACxM1gHUkO3vWSqErFUX61iE18L51U4Oo3Rl6DhD
-X-Received: by 2002:a05:6830:1355:: with SMTP id r21mr14255429otq.11.1631014233792;
-        Tue, 07 Sep 2021 04:30:33 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJynb1o8YNFQEU4qHUaPsLNjsSt1W89En7PI6nQ4cSPeBIY1Yh18rMRCKsI0RJPbOcr1/pUsnJOPbqtlYmSXriA=
-X-Received: by 2002:a05:6830:1355:: with SMTP id r21mr14255399otq.11.1631014233433;
- Tue, 07 Sep 2021 04:30:33 -0700 (PDT)
+        Tue, 7 Sep 2021 07:33:28 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1mNZKp-0007Yg-TB; Tue, 07 Sep 2021 14:32:16 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org,
+        dan.carpenter@oracle.com
+Date:   Tue,  7 Sep 2021 14:32:14 +0300
+Message-Id: <iwlwifi.20210907143156.e80e52167d93.Ie2247f43f8acb2cee6dff5b07a3947c79a772835@changeid>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-References: <20210210115637.276676-1-luca@coelho.fi> <iwlwifi.20210210135352.889862e6d393.I8b894c1b2b3fe0ad2fb39bf438273ea47eb5afa4@changeid>
-In-Reply-To: <iwlwifi.20210210135352.889862e6d393.I8b894c1b2b3fe0ad2fb39bf438273ea47eb5afa4@changeid>
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date:   Tue, 7 Sep 2021 19:30:21 +0800
-Message-ID: <CAAd53p5udakjRZeFLyrzwtfoq5Vr937CNRghS6_YnCet9yhB1Q@mail.gmail.com>
-Subject: Re: [PATCH v2 05/12] iwlwifi: mvm: store PPAG enabled/disabled flag properly
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: [PATCH] iwlwifi: mvm: Fix possible NULL dereference
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Luca,
+From: Ilan Peer <ilan.peer@intel.com>
 
-On Wed, Feb 10, 2021 at 8:00 PM Luca Coelho <luca@coelho.fi> wrote:
->
-> From: Luca Coelho <luciano.coelho@intel.com>
->
-> When reading the PPAG table from ACPI, we should store everything in
-> our fwrt structure, so it can be accessed later.  But we had a local
-> ppag_table variable in the function and were erroneously storing the
-> enabled/disabled flag in it instead of storing it in the fwrt.  Fix
-> this by removing the local variable and storing everything directly in
-> fwrt.
+In __iwl_mvm_remove_time_event() check that 'te_data->vif' is NULL
+before dereferencing it.
 
-This patch enables PPAG, but it breaks one of HP laptop with Intel 9560.
+Fixes: 7b3954a1d69a ("iwlwifi: mvm: Explicitly stop session protection before unbinding")
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/time-event.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-dmesg with iwlwifi.debug=0x80 attached in the bug report:
-https://bugzilla.kernel.org/show_bug.cgi?id=214343
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+index 25af88a3edce..e91f8e889df7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+@@ -662,12 +662,13 @@ static bool __iwl_mvm_remove_time_event(struct iwl_mvm *mvm,
+ 					u32 *uid)
+ {
+ 	u32 id;
+-	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(te_data->vif);
++	struct iwl_mvm_vif *mvmvif;
+ 	enum nl80211_iftype iftype;
+ 
+ 	if (!te_data->vif)
+ 		return false;
+ 
++	mvmvif = iwl_mvm_vif_from_mac80211(te_data->vif);
+ 	iftype = te_data->vif->type;
+ 
+ 	/*
+-- 
+2.33.0
 
->
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> Fixes: f2134f66f40e ("iwlwifi: acpi: support ppag table command v2")
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> ---
->  drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> index 3bfb80dd17cf..57471ab2f5ef 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> @@ -895,7 +895,6 @@ static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
->  static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
->  {
->         union acpi_object *wifi_pkg, *data, *enabled;
-> -       union iwl_ppag_table_cmd ppag_table;
->         int i, j, ret, tbl_rev, num_sub_bands;
->         int idx = 2;
->         s8 *gain;
-> @@ -949,8 +948,8 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
->                 goto out_free;
->         }
->
-> -       ppag_table.v1.enabled = cpu_to_le32(enabled->integer.value);
-> -       if (!ppag_table.v1.enabled) {
-> +       mvm->fwrt.ppag_table.v1.enabled = cpu_to_le32(enabled->integer.value);
-> +       if (!mvm->fwrt.ppag_table.v1.enabled) {
->                 ret = 0;
->                 goto out_free;
->         }
-> @@ -978,7 +977,7 @@ static int iwl_mvm_get_ppag_table(struct iwl_mvm *mvm)
->                             (j != 0 &&
->                              (gain[i * num_sub_bands + j] > ACPI_PPAG_MAX_HB ||
->                               gain[i * num_sub_bands + j] < ACPI_PPAG_MIN_HB))) {
-> -                               ppag_table.v1.enabled = cpu_to_le32(0);
-> +                               mvm->fwrt.ppag_table.v1.enabled = cpu_to_le32(0);
->                                 ret = -EINVAL;
->                                 goto out_free;
->                         }
-> --
-> 2.30.0
->
