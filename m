@@ -2,319 +2,400 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B28D24036CE
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Sep 2021 11:21:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D481403729
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Sep 2021 11:43:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348710AbhIHJWg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Sep 2021 05:22:36 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:61004 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245487AbhIHJWf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Sep 2021 05:22:35 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1631092888; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=YL/HKKRBnTTqUSAY8JwDqXetSifEeQ2qUezVr7j1D7Q=; b=gpbUzOFLjUdrPPgn3LssatUM3PfkAWrx0hD+LOQz102+N+d+DvLENUQRNhlqqLkD/LsXxOmg
- V2IvWugaHFJflDzciq0Cuepw9ANSsxQnGnc4FR2pNNssfVkoZrbf0pjkF6Q+g8/nt1ZDdzx4
- wXUyjzA/OL3ZEY03nhNBFInVdLI=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 613880946fc2cf7ad9194217 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 08 Sep 2021 09:21:24
- GMT
-Sender: subratm=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B7A4EC4360D; Wed,  8 Sep 2021 09:21:23 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from blr-ubuntu-subratm.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: subratm)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9E836C4338F;
-        Wed,  8 Sep 2021 09:21:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 9E836C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Subrat Mishra <subratm@codeaurora.org>
-To:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Cc:     Subrat Mishra <subratm@codeaurora.org>
-Subject: [PATCH v2] cfg80211: AP mode driver offload for FILS association crypto
-Date:   Wed,  8 Sep 2021 14:51:06 +0530
-Message-Id: <1631092866-4530-1-git-send-email-subratm@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1347951AbhIHJoL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Sep 2021 05:44:11 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:47112 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1347921AbhIHJoH (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 8 Sep 2021 05:44:07 -0400
+X-UUID: d816d6073ef44144b50221b2c3e054f9-20210908
+X-UUID: d816d6073ef44144b50221b2c3e054f9-20210908
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1525011866; Wed, 08 Sep 2021 17:42:55 +0800
+Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
+ mtkexhb01.mediatek.inc (172.21.101.102) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 8 Sep 2021 17:42:54 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Wed, 8 Sep 2021 17:42:54 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 8 Sep 2021 17:42:54 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH v3 1/8] mt76: mt7915: introduce mt7915_mcu_beacon_check_caps()
+Date:   Wed, 8 Sep 2021 17:41:37 +0800
+Message-ID: <20210908094144.25641-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add a driver FILS crypto offload extended capability flag to indicate
-that the driver running in AP mode is capable of handling encryption
-and decryption of (Re)Association request and response frames.
-Add a command to set FILS AAD data to driver.
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-This feature is supported on drivers running in AP mode only.
-This extended capability is exchanged with hostapd during cfg80211
-init. If the driver indicates this capability, then before sending the
-Authentication response frame, hostapd sets FILS AAD data to the
-driver. This allows the driver to decrypt (Re)Association Request
-frame and encrypt (Re)Association Response frame. FILS Key derivation
-will still be done in hostapd.
+Beacon elements might be changed by hostapd configuraion, so driver
+should compare both IEs and PHY capabilities to get the least common
+denominator before association.
 
-Signed-off-by: Subrat Mishra <subratm@codeaurora.org>
+Co-developed-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+v2: modify condition for mimo_dl_en
+---
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 163 +++++++++++++-----
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  12 ++
+ 2 files changed, 136 insertions(+), 39 deletions(-)
 
-v2:
-- NL80211_FLAG_NEED_RTNL flag removed from internal_flags of command NL80211_FLAG_NEED_RTNL
-- Fixed alignment in include/net/cfg80211.h set_fils_aad() comments
-- Fixed alignment in net/wireless/trace.h rdev_set_fils_aad Trace event
-
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 62dd842..621e3b2 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -740,6 +740,22 @@ struct cfg80211_tid_config {
- };
- 
- /**
-+ * struct cfg80211_fils_aad - FILS AAD data
-+ * @macaddr: STA MAC address
-+ * @kek: FILS KEK
-+ * @kek_len: FILS KEK length
-+ * @snonce: STA Nonce
-+ * @anonce: AP Nonce
-+ */
-+struct cfg80211_fils_aad {
-+	const u8 *macaddr;
-+	const u8 *kek;
-+	u8 kek_len;
-+	const u8 *snonce;
-+	const u8 *anonce;
-+}
-+
-+/**
-  * cfg80211_get_chandef_type - return old channel type from chandef
-  * @chandef: the channel definition
-  *
-@@ -4018,6 +4034,10 @@ struct mgmt_frame_regs {
-  * @set_sar_specs: Update the SAR (TX power) settings.
-  *
-  * @color_change: Initiate a color change.
-+ *
-+ * @set_fils_aad: Set FILS AAD data to the AP driver so that the driver can use
-+ *	those to decrypt (Re)Association Request and encrypt (Re)Association
-+ *	Response frame.
-  */
- struct cfg80211_ops {
- 	int	(*suspend)(struct wiphy *wiphy, struct cfg80211_wowlan *wow);
-@@ -4348,6 +4368,8 @@ struct cfg80211_ops {
- 	int	(*color_change)(struct wiphy *wiphy,
- 				struct net_device *dev,
- 				struct cfg80211_color_change_settings *params);
-+	int     (*set_fils_aad)(struct wiphy *wiphy, struct net_device *dev,
-+				struct cfg80211_fils_aad *fils_aad);
- };
- 
- /*
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index c2efea9..e89bbf8 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -301,6 +301,29 @@
-  */
- 
- /**
-+ * DOC: FILS shared key crypto offload
-+ *
-+ * This feature is applicable to drivers running in AP mode.
-+ *
-+ * FILS shared key crypto offload can be advertised by drivers by setting
-+ * @NL80211_EXT_FEATURE_FILS_CRYPTO_OFFLOAD flag. The drivers that support
-+ * FILS shared key crypto offload should be able to encrypt and decrypt
-+ * association frames for FILS shared key authentication as per IEEE 802.11ai.
-+ * With this capability, for FILS key derivation, drivers depend on userspace.
-+ *
-+ * After FILS key derivation, userspace shares the FILS AAD details with the
-+ * driver and the driver stores the same to use in decryption of association
-+ * request and in encryption of association response. The below parameters
-+ * should be given to the driver in %NL80211_CMD_SET_FILS_AAD.
-+ *	%NL80211_ATTR_MAC - STA MAC address, used for storing FILS AAD per STA
-+ *	%NL80211_ATTR_FILS_KEK - Used for encryption or decryption
-+ *	%NL80211_ATTR_FILS_NONCES - Used for encryption or decryption
-+ *			(STA Nonce 16 bytes followed by AP Nonce 16 bytes)
-+ *
-+ * Once the association is done, the driver cleans the FILS AAD data.
-+ */
-+
-+/**
-  * enum nl80211_commands - supported nl80211 commands
-  *
-  * @NL80211_CMD_UNSPEC: unspecified command to catch errors
-@@ -1200,6 +1223,12 @@
-  * @NL80211_CMD_COLOR_CHANGE_COMPLETED: Notify userland that the color change
-  *	has completed
-  *
-+ * @NL80211_CMD_SET_FILS_AAD: Set FILS AAD data to the driver using -
-+ *	&NL80211_ATTR_MAC - for STA MAC address
-+ *	&NL80211_ATTR_FILS_KEK - for KEK
-+ *	&NL80211_ATTR_FILS_NONCES - for FILS Nonces
-+ *		(STA Nonce 16 bytes followed by AP Nonce 16 bytes)
-+ *
-  * @NL80211_CMD_MAX: highest used command number
-  * @__NL80211_CMD_AFTER_LAST: internal use
-  */
-@@ -1440,6 +1469,8 @@ enum nl80211_commands {
- 	NL80211_CMD_COLOR_CHANGE_ABORTED,
- 	NL80211_CMD_COLOR_CHANGE_COMPLETED,
- 
-+	NL80211_CMD_SET_FILS_AAD,
-+
- 	/* add new commands above here */
- 
- 	/* used to define NL80211_CMD_MAX below */
-@@ -5995,6 +6026,11 @@ enum nl80211_feature_flags {
-  * @NL80211_EXT_FEATURE_BSS_COLOR: The driver supports BSS color collision
-  *	detection and change announcemnts.
-  *
-+ * @NL80211_EXT_FEATURE_FILS_CRYPTO_OFFLOAD: Driver running in AP mode supports
-+ *	FILS encryption and decryption for (Re)Association Request and Response
-+ *	frames. Userspace has to share FILS AAD details to the driver by using
-+ *	@NL80211_CMD_SET_FILS_AAD.
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -6060,6 +6096,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_SECURE_RTT,
- 	NL80211_EXT_FEATURE_PROT_RANGE_NEGO_AND_MEASURE,
- 	NL80211_EXT_FEATURE_BSS_COLOR,
-+	NL80211_EXT_FEATURE_FILS_CRYPTO_OFFLOAD,
- 
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index bf7cd47..761760a 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -14904,6 +14904,29 @@ static int nl80211_color_change(struct sk_buff *skb, struct genl_info *info)
- 	return err;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 39cba8210242..955afe9f2958 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -1317,9 +1317,11 @@ mt7915_mcu_sta_basic_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
  }
  
-+static int nl80211_set_fils_aad(struct sk_buff *skb,
-+				struct genl_info *info)
-+{
-+	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-+	struct net_device *dev = info->user_ptr[1];
-+	struct cfg80211_fils_aad fils_aad = {};
-+	u8 *nonces;
-+
-+	if (!info->attrs[NL80211_ATTR_MAC] ||
-+	    !info->attrs[NL80211_ATTR_FILS_KEK] ||
-+	    !info->attrs[NL80211_ATTR_FILS_NONCES])
-+		return -EINVAL;
-+
-+	fils_aad.macaddr = nla_data(info->attrs[NL80211_ATTR_MAC]);
-+	fils_aad.kek_len = nla_len(info->attrs[NL80211_ATTR_FILS_KEK]);
-+	fils_aad.kek = nla_data(info->attrs[NL80211_ATTR_FILS_KEK]);
-+	nonces = nla_data(info->attrs[NL80211_ATTR_FILS_NONCES]);
-+	fils_aad.snonce = nonces;
-+	fils_aad.anonce = nonces + FILS_NONCE_LEN;
-+
-+	return rdev_set_fils_aad(rdev, dev, &fils_aad);
-+}
-+
- #define NL80211_FLAG_NEED_WIPHY		0x01
- #define NL80211_FLAG_NEED_NETDEV	0x02
- #define NL80211_FLAG_NEED_RTNL		0x04
-@@ -15907,6 +15930,13 @@ static const struct genl_small_ops nl80211_small_ops[] = {
- 		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP |
- 				  NL80211_FLAG_NEED_RTNL,
- 	},
-+	{
-+		.cmd = NL80211_CMD_SET_FILS_AAD,
-+		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit = nl80211_set_fils_aad,
-+		.flags = GENL_UNS_ADMIN_PERM,
-+		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP,
-+	},
- };
+ static void
+-mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
++mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
++		      struct ieee80211_vif *vif)
+ {
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+ 	struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
+ 	struct ieee80211_he_cap_elem *elem = &he_cap->he_cap_elem;
+ 	enum nl80211_band band = msta->vif->phy->mt76->chandef.chan->band;
+@@ -1352,8 +1354,8 @@ mt7915_mcu_sta_he_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
+ 	     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_RU_MAPPING_IN_5G))
+ 		cap |= STA_REC_HE_CAP_BW20_RU242_SUPPORT;
  
- static struct genl_family nl80211_fam __ro_after_init = {
-diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-index ce6bf21..cc1efec 100644
---- a/net/wireless/rdev-ops.h
-+++ b/net/wireless/rdev-ops.h
-@@ -1381,4 +1381,18 @@ static inline int rdev_color_change(struct cfg80211_registered_device *rdev,
- 	return ret;
+-	if (elem->phy_cap_info[1] &
+-	    IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD)
++	if (mvif->cap.ldpc && (elem->phy_cap_info[1] &
++			       IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
+ 		cap |= STA_REC_HE_CAP_LDPC;
+ 
+ 	if (elem->phy_cap_info[1] &
+@@ -1488,8 +1490,10 @@ mt7915_mcu_sta_uapsd_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
  }
  
-+static inline int
-+rdev_set_fils_aad(struct cfg80211_registered_device *rdev,
-+		  struct net_device *dev, struct cfg80211_fils_aad *fils_aad)
+ static void
+-mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
++mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
++			struct ieee80211_vif *vif)
+ {
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+ 	struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
+ 	struct ieee80211_he_cap_elem *elem = &he_cap->he_cap_elem;
+ 	struct sta_rec_muru *muru;
+@@ -1499,7 +1503,13 @@ mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
+ 
+ 	muru = (struct sta_rec_muru *)tlv;
+ 	muru->cfg.ofdma_dl_en = true;
+-	muru->cfg.mimo_dl_en = true;
++
++	/* A non-AP HE station must support MU beamformee */
++	muru->cfg.mimo_dl_en = (vif->type == NL80211_IFTYPE_STATION &&
++				vif->bss_conf.he_support) ||
++			       mvif->cap.he_mu_ebfer ||
++			       mvif->cap.vht_mu_ebfer ||
++			       mvif->cap.vht_mu_ebfee;
+ 
+ 	muru->ofdma_dl.punc_pream_rx =
+ 		HE_PHY(CAP1_PREAMBLE_PUNC_RX_MASK, elem->phy_cap_info[1]);
+@@ -1598,7 +1608,7 @@ mt7915_mcu_sta_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
+ 
+ 	/* starec he */
+ 	if (sta->he_cap.has_he)
+-		mt7915_mcu_sta_he_tlv(skb, sta);
++		mt7915_mcu_sta_he_tlv(skb, sta, vif);
+ 
+ 	/* starec uapsd */
+ 	mt7915_mcu_sta_uapsd_tlv(skb, sta, vif);
+@@ -1620,9 +1630,11 @@ mt7915_mcu_wtbl_smps_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ }
+ 
+ static void
+-mt7915_mcu_wtbl_ht_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+-		       void *sta_wtbl, void *wtbl_tlv)
++mt7915_mcu_wtbl_ht_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
++		       struct ieee80211_sta *sta, void *sta_wtbl,
++		       void *wtbl_tlv)
+ {
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+ 	struct wtbl_ht *ht = NULL;
+ 	struct tlv *tlv;
+ 
+@@ -1631,7 +1643,8 @@ mt7915_mcu_wtbl_ht_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 		tlv = mt7915_mcu_add_nested_tlv(skb, WTBL_HT, sizeof(*ht),
+ 						wtbl_tlv, sta_wtbl);
+ 		ht = (struct wtbl_ht *)tlv;
+-		ht->ldpc = !!(sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING);
++		ht->ldpc = mvif->cap.ldpc &&
++			   (sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING);
+ 		ht->af = sta->ht_cap.ampdu_factor;
+ 		ht->mm = sta->ht_cap.ampdu_density;
+ 		ht->ht = true;
+@@ -1645,7 +1658,8 @@ mt7915_mcu_wtbl_ht_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 		tlv = mt7915_mcu_add_nested_tlv(skb, WTBL_VHT, sizeof(*vht),
+ 						wtbl_tlv, sta_wtbl);
+ 		vht = (struct wtbl_vht *)tlv;
+-		vht->ldpc = !!(sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC);
++		vht->ldpc = mvif->cap.ldpc &&
++			    (sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC);
+ 		vht->vht = true;
+ 
+ 		af = FIELD_GET(IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK,
+@@ -1968,7 +1982,7 @@ mt7915_mcu_add_txbf(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 	struct mt7915_phy *phy;
+ 	struct sk_buff *skb;
+ 	int r, len;
+-	bool ebfee = 0, ebf = 0;
++	bool ebfee = false, ebfer = false;
+ 
+ 	if (vif->type != NL80211_IFTYPE_STATION &&
+ 	    vif->type != NL80211_IFTYPE_AP)
+@@ -1977,42 +1991,32 @@ mt7915_mcu_add_txbf(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 	phy = mvif->band_idx ? mt7915_ext_phy(dev) : &dev->phy;
+ 
+ 	if (sta->he_cap.has_he) {
+-		struct ieee80211_he_cap_elem *pe;
+-		const struct ieee80211_he_cap_elem *ve;
+-		const struct ieee80211_sta_he_cap *vc;
+-
+-		pe = &sta->he_cap.he_cap_elem;
+-		vc = mt7915_get_he_phy_cap(phy, vif);
+-		ve = &vc->he_cap_elem;
+-
+-		ebfee = !!(HE_PHY(CAP3_SU_BEAMFORMER, pe->phy_cap_info[3]) &&
+-			   HE_PHY(CAP4_SU_BEAMFORMEE, ve->phy_cap_info[4]));
+-		ebf = !!(HE_PHY(CAP3_SU_BEAMFORMER, ve->phy_cap_info[3]) &&
+-			 HE_PHY(CAP4_SU_BEAMFORMEE, pe->phy_cap_info[4]));
+-	} else if (sta->vht_cap.vht_supported) {
+-		struct ieee80211_sta_vht_cap *pc;
+-		struct ieee80211_sta_vht_cap *vc;
++		struct ieee80211_he_cap_elem *pe = &sta->he_cap.he_cap_elem;
+ 
+-		pc = &sta->vht_cap;
+-		vc = &phy->mt76->sband_5g.sband.vht_cap;
++		ebfee = mvif->cap.he_su_ebfee &&
++			HE_PHY(CAP3_SU_BEAMFORMER, pe->phy_cap_info[3]);
++		ebfer = mvif->cap.he_su_ebfer &&
++			HE_PHY(CAP4_SU_BEAMFORMEE, pe->phy_cap_info[4]);
++	} else if (sta->vht_cap.vht_supported) {
++		u32 cap = sta->vht_cap.cap;
+ 
+-		ebfee = !!((pc->cap & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE) &&
+-			   (vc->cap & IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE));
+-		ebf = !!((vc->cap & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE) &&
+-			 (pc->cap & IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE));
++		ebfee = mvif->cap.vht_su_ebfee &&
++			(cap & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE);
++		ebfer = mvif->cap.vht_su_ebfer &&
++			(cap & IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE);
+ 	}
+ 
+ 	/* must keep each tag independent */
+ 
+ 	/* starec bf */
+-	if (ebf || dev->ibf) {
++	if (ebfer || dev->ibf) {
+ 		len = sizeof(struct sta_req_hdr) + sizeof(struct sta_rec_bf);
+ 
+ 		skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta, len);
+ 		if (IS_ERR(skb))
+ 			return PTR_ERR(skb);
+ 
+-		mt7915_mcu_sta_bfer_tlv(skb, sta, vif, phy, enable, ebf);
++		mt7915_mcu_sta_bfer_tlv(skb, sta, vif, phy, enable, ebfer);
+ 
+ 		r = mt76_mcu_skb_send_msg(&dev->mt76, skb,
+ 					  MCU_EXT_CMD(STA_REC_UPDATE), true);
+@@ -2217,7 +2221,8 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 			cap |= STA_CAP_TX_STBC;
+ 		if (sta->ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
+ 			cap |= STA_CAP_RX_STBC;
+-		if (sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING)
++		if (mvif->cap.ldpc &&
++		    (sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING))
+ 			cap |= STA_CAP_LDPC;
+ 
+ 		mt7915_mcu_set_sta_ht_mcs(sta, ra->ht_mcs,
+@@ -2242,7 +2247,8 @@ mt7915_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7915_dev *dev,
+ 			cap |= STA_CAP_VHT_TX_STBC;
+ 		if (sta->vht_cap.cap & IEEE80211_VHT_CAP_RXSTBC_1)
+ 			cap |= STA_CAP_VHT_RX_STBC;
+-		if (sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC)
++		if (mvif->cap.ldpc &&
++		    (sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC))
+ 			cap |= STA_CAP_VHT_LDPC;
+ 
+ 		mt7915_mcu_set_sta_vht_mcs(sta, ra->supp_vht_mcs,
+@@ -2276,7 +2282,7 @@ int mt7915_mcu_add_rate_ctrl(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 	 * update sta_rec_he here as well.
+ 	 */
+ 	if (sta->he_cap.has_he && changed)
+-		mt7915_mcu_sta_he_tlv(skb, sta);
++		mt7915_mcu_sta_he_tlv(skb, sta, vif);
+ 
+ 	/* sta_rec_ra accommodates BW, NSS and only MCS range format
+ 	 * i.e 0-{7,8,9} for VHT.
+@@ -2346,7 +2352,7 @@ mt7915_mcu_add_mu(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 	/* wait until TxBF and MU ready to update stare vht */
+ 
+ 	/* starec muru */
+-	mt7915_mcu_sta_muru_tlv(skb, sta);
++	mt7915_mcu_sta_muru_tlv(skb, sta, vif);
+ 	/* starec vht */
+ 	mt7915_mcu_sta_vht_tlv(skb, sta);
+ 
+@@ -2405,7 +2411,7 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 		mt7915_mcu_wtbl_generic_tlv(skb, vif, sta, sta_wtbl, wtbl_hdr);
+ 		mt7915_mcu_wtbl_hdr_trans_tlv(skb, vif, sta, sta_wtbl, wtbl_hdr);
+ 		if (sta)
+-			mt7915_mcu_wtbl_ht_tlv(skb, sta, sta_wtbl, wtbl_hdr);
++			mt7915_mcu_wtbl_ht_tlv(skb, vif, sta, sta_wtbl, wtbl_hdr);
+ 	}
+ 
+ 	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
+@@ -2499,6 +2505,83 @@ mt7915_mcu_beacon_cont(struct mt7915_dev *dev, struct sk_buff *rskb,
+ 	memcpy(buf + MT_TXD_SIZE, skb->data, skb->len);
+ }
+ 
++static void
++mt7915_mcu_beacon_check_caps(struct mt7915_phy *phy, struct ieee80211_vif *vif,
++			     struct sk_buff *skb)
 +{
-+	int ret = -EOPNOTSUPP;
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
++	struct mt7915_vif_cap *vc = &mvif->cap;
++	const struct ieee80211_he_cap_elem *he;
++	const struct ieee80211_vht_cap *vht;
++	const struct ieee80211_ht_cap *ht;
++	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
++	const u8 *ie;
++	u32 len, bc;
 +
-+	trace_rdev_set_fils_aad(&rdev->wiphy, dev, fils_aad);
-+	if (rdev->ops->set_fils_aad)
-+		ret = rdev->ops->set_fils_aad(&rdev->wiphy, dev, fils_aad);
-+	trace_rdev_return_int(&rdev->wiphy, ret);
++	/* Check missing configuration options to allow AP mode in mac80211
++	 * to remain in sync with hostapd settings, and get a subset of
++	 * beacon and hardware capabilities.
++	 */
++	if (WARN_ON_ONCE(skb->len <= (mgmt->u.beacon.variable - skb->data)))
++		return;
 +
-+	return ret;
++	memset(vc, 0, sizeof(*vc));
++
++	len = skb->len - (mgmt->u.beacon.variable - skb->data);
++
++	ie = cfg80211_find_ie(WLAN_EID_HT_CAPABILITY, mgmt->u.beacon.variable,
++			      len);
++	if (ie && ie[1] >= sizeof(*ht)) {
++		ht = (void *)(ie + 2);
++		bc = le32_to_cpu(ht->cap_info);
++
++		vc->ldpc |= !!(bc & IEEE80211_HT_CAP_LDPC_CODING);
++	}
++
++	ie = cfg80211_find_ie(WLAN_EID_VHT_CAPABILITY, mgmt->u.beacon.variable,
++			      len);
++	if (ie && ie[1] >= sizeof(*vht)) {
++		u32 pc = phy->mt76->sband_5g.sband.vht_cap.cap;
++
++		vht = (void *)(ie + 2);
++		bc = le32_to_cpu(vht->vht_cap_info);
++
++		vc->ldpc |= !!(bc & IEEE80211_VHT_CAP_RXLDPC);
++		vc->vht_su_ebfer =
++			(bc & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE) &&
++			(pc & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE);
++		vc->vht_su_ebfee =
++			(bc & IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE) &&
++			(pc & IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE);
++		vc->vht_mu_ebfer =
++			(bc & IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE) &&
++			(pc & IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE);
++		vc->vht_mu_ebfee =
++			(bc & IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE) &&
++			(pc & IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE);
++	}
++
++	ie = cfg80211_find_ext_ie(WLAN_EID_EXT_HE_CAPABILITY,
++				  mgmt->u.beacon.variable, len);
++	if (ie && ie[1] >= sizeof(*he) + 1) {
++		const struct ieee80211_sta_he_cap *pc =
++			mt7915_get_he_phy_cap(phy, vif);
++		const struct ieee80211_he_cap_elem *pe = &pc->he_cap_elem;
++
++		he = (void *)(ie + 3);
++
++		vc->he_su_ebfer =
++			HE_PHY(CAP3_SU_BEAMFORMER, he->phy_cap_info[3]) &&
++			HE_PHY(CAP3_SU_BEAMFORMER, pe->phy_cap_info[3]);
++		vc->he_su_ebfee =
++			HE_PHY(CAP4_SU_BEAMFORMEE, he->phy_cap_info[4]) &&
++			HE_PHY(CAP4_SU_BEAMFORMEE, pe->phy_cap_info[4]);
++		vc->he_mu_ebfer =
++			HE_PHY(CAP4_MU_BEAMFORMER, he->phy_cap_info[4]) &&
++			HE_PHY(CAP4_MU_BEAMFORMER, pe->phy_cap_info[4]);
++	}
 +}
 +
- #endif /* __CFG80211_RDEV_OPS */
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 19b78d4..88cd694 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -167,6 +167,19 @@
- 			__entry->center_freq1, __entry->freq1_offset,	\
- 			__entry->center_freq2
+ int mt7915_mcu_add_beacon(struct ieee80211_hw *hw,
+ 			  struct ieee80211_vif *vif, bool en)
+ {
+@@ -2539,6 +2622,8 @@ int mt7915_mcu_add_beacon(struct ieee80211_hw *hw,
+ 		info->hw_queue |= MT_TX_HW_QUEUE_EXT_PHY;
+ 	}
  
-+#define FILS_AAD_ASSIGN(fa)                                                  \
-+	do {                                                                 \
-+		if (fa) {                                                    \
-+			ether_addr_copy(__entry->macaddr, fa->macaddr);      \
-+			__entry->kek_len = fa->kek_len;                      \
-+		} else {                                                     \
-+			eth_zero_addr(__entry->macaddr);                     \
-+			__entry->kek_len = 0;                                \
-+		}                                                            \
-+	} while (0)
-+#define FILS_AAD_PR_FMT                                                      \
-+	"macaddr: %pM, kek_len: %d"
++	mt7915_mcu_beacon_check_caps(phy, vif, skb);
 +
- #define SINFO_ENTRY __field(int, generation)	    \
- 		    __field(u32, connected_time)    \
- 		    __field(u32, inactive_time)	    \
-@@ -2614,6 +2627,24 @@ DEFINE_EVENT(wiphy_wdev_cookie_evt, rdev_abort_pmsr,
- 	TP_ARGS(wiphy, wdev, cookie)
- );
+ 	/* TODO: subtag - bss color count & 11v MBSSID */
+ 	mt7915_mcu_beacon_csa(rskb, skb, bcn, &offs);
+ 	mt7915_mcu_beacon_cont(dev, rskb, skb, bcn, &offs);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index ab8fc27646e0..d68e345765e8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -83,12 +83,24 @@ struct mt7915_sta {
+ 	struct mt7915_sta_key_conf bip;
+ };
  
-+TRACE_EVENT(rdev_set_fils_aad,
-+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
-+		 struct cfg80211_fils_aad *fils_aad),
-+	TP_ARGS(wiphy, netdev, fils_aad),
-+	TP_STRUCT__entry(WIPHY_ENTRY
-+		NETDEV_ENTRY
-+		__array(u8, macaddr, ETH_ALEN)
-+		__field(u8, kek_len)
-+	),
-+	TP_fast_assign(WIPHY_ASSIGN;
-+		NETDEV_ASSIGN;
-+		FILS_AAD_ASSIGN(fils_aad);
-+	),
-+	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", " FILS_AAD_PR_FMT,
-+		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->macaddr,
-+		  __entry->kek_len)
-+);
++struct mt7915_vif_cap {
++	bool ldpc:1;
++	bool vht_su_ebfer:1;
++	bool vht_su_ebfee:1;
++	bool vht_mu_ebfer:1;
++	bool vht_mu_ebfee:1;
++	bool he_su_ebfer:1;
++	bool he_su_ebfee:1;
++	bool he_mu_ebfer:1;
++};
 +
- /*************************************************************
-  *	     cfg80211 exported functions traces		     *
-  *************************************************************/
+ struct mt7915_vif {
+ 	u16 idx;
+ 	u8 omac_idx;
+ 	u8 band_idx;
+ 	u8 wmm_idx;
+ 
++	struct mt7915_vif_cap cap;
+ 	struct mt7915_sta sta;
+ 	struct mt7915_phy *phy;
+ 
 -- 
-2.7.4
+2.25.1
 
