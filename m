@@ -2,355 +2,215 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D22114038CF
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Sep 2021 13:33:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0916403A62
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Sep 2021 15:13:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233570AbhIHLeg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Sep 2021 07:34:36 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:24497 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1348557AbhIHLef (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Sep 2021 07:34:35 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1631100808; h=Message-ID: References: In-Reply-To: Subject:
- To: From: Date: Content-Transfer-Encoding: Content-Type: MIME-Version:
- Sender; bh=c1eAQwc/AsdvFFvV01heG1otnVO7qTuysZLJybAStOI=; b=ruE5htyLZj6pg6oN63qRiAGOwlMJkR0AgdsHd0NK6hxJjtqpZEun2A+Ehd52CWyM+FuSIs3E
- 75/Qp6nALwyxqJMF0qg1W9M5NkxOCU+StHzP/IdIqon7thASrmCNnxK357cP1XCcNc2UaFgN
- tGjX0C0JjDbK3Dz8pTdsGuZCXkk=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 61389f86c603a0154f36b1c7 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 08 Sep 2021 11:33:26
- GMT
-Sender: subratm=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E005BC4360D; Wed,  8 Sep 2021 11:33:25 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: subratm)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 85838C4338F;
-        Wed,  8 Sep 2021 11:33:24 +0000 (UTC)
+        id S235290AbhIHNOg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Sep 2021 09:14:36 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:43144 "EHLO
+        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233810AbhIHNOg (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 8 Sep 2021 09:14:36 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 188AN7Ka010809;
+        Wed, 8 Sep 2021 13:13:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2021-07-09;
+ bh=mJUfToBJKsf1P1I8ZNgKMNINQoIxb1STEr/zUr11KTg=;
+ b=lOXJdHP2E9HwFjPWPzRGYfPGjRFXlfl2XtJFPQU59d3O3LgoiPEEeL72P00oVbZBOosk
+ o3Y0O9c32xeMIjm+TIaJos+boZjS8Z65qZwd2xvuZcRWv1MFeDkydJW8FUep/tR3u4xn
+ WywKaI/DrcGjliqqcg/s8Ij/f45CK3UWnVhNBFPW4bft3xoMzNGUB7oE1CJtjDkSkBPv
+ gRJGZr+py8dcmvCGEmV4GGGK4PYwoqnGyQeHKfGk/EPw834w2ocp3o8t3HDQG/vHbX5O
+ rhb5F8GPC7O+27rA3AkAJT4rvaYSgwbU+6JMimAZyw8eDDuK1zfzD2jJIgCK5TfpAkWX dQ== 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2020-01-29;
+ bh=mJUfToBJKsf1P1I8ZNgKMNINQoIxb1STEr/zUr11KTg=;
+ b=dwWbYRYDsMsAjNYCeWAer5PO7ktZlpsL978xq/dHpKUR6D/hhGOZRv7+dCpbPGhudkB4
+ AqF6kQZMtOHoM2q9t1PZ7+8FsI3yMcM+FfzsWP4mqGGkRc0Pd5E9EgPFqaHDGflwUTKQ
+ pQwA3QEDit36BkmkvQFLettJWtCVE3wWveHoW7SzODTEys+5ANZnrKZQ/PyHUaug+8S2
+ +mck5VhJyHQAs2qVrgD0HkTHvXOb2sOjV1ol16oJxhdY5GI617ww05C+yaYeeHTXNKMb
+ QN1j9jhR/fGPBQ8NLJVX9/O57jVeBJbcuX8lFaUKHRIpTxyBBhcHftg8XQMlOeo+Hcxa 5Q== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3axcw6anj1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Sep 2021 13:13:18 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 188DADRk074840;
+        Wed, 8 Sep 2021 13:13:17 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
+        by aserp3030.oracle.com with ESMTP id 3axcpnqfhs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Sep 2021 13:13:17 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aFf9n9g/XENvVmcrDJuyuL2VuhvAKNDZbyYWKf89sBeE3NzH0R+5Bc2SvXbOkX0u0nBc0Gv0yYPtpMVzhx/2WP8S1rI21RF5V7lXi5CAKxLBJe1/BCYjYaDJNjBMvXlOXbaRW7BTefyYnlp8BkWMyR7fBv61jdxT+53g+RhRCLdZMWOAAjtNXHuOHeeIE4aJaRcdFYImtFKNfRxt6zweczLmQ4JtTedgzt6nTcJZGvVE8/7siC3kUi2kK/dzmevTLsVF426x637MWYW528J/s67+yBas/WxCaGqepVQ0cj5UTVTomprX6s38/h9Kdo8swShKZbd4sGAjHuRWa+klzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=mJUfToBJKsf1P1I8ZNgKMNINQoIxb1STEr/zUr11KTg=;
+ b=YRBXoeiBqQfozCeWz/xfxUQkbqU94nSwf9VlX2RjuD8yai1rAdxjvWG9otXflM0XRBA66bkEG6QLoz4JeRVrMuNbW8x3ebMvNYnSNiZ74KYi3V1eKMjIrBSKwbLN34NxlljOku7kRacO0O0AGL7/0sEJO11i5u3B0CntiS5U4RY5bedOGl5kuVJKJ+OojusarWqbnXhhikBBmAyUaR5CdbTWAMiY17lMiR8YcXb6r21Y6itHUUS9XZcBfH5nkHp7TE/R0YO9CkWeyPQglJQJal/yVXbxZzQtqKHvPx1rPrbtLAPWHqj2hNdkTCKz1SerEiV1FBjhX4mmRWcYvapbUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mJUfToBJKsf1P1I8ZNgKMNINQoIxb1STEr/zUr11KTg=;
+ b=QH4AUlVkXvUsiOB/9sZaFp9rN3SsCvc29DjWyJVVtvFCYi0e5GfQP6yfLG1Ybxt3Iq2lKAUPCrdRFtqofR/Mn8YxQz5rwJh1s7MUJElaoqxr9hYGsdR/VAWOZ5GGJCDH4HJ0QQtYsb5/ccnp7W4VaN4Q120cGsRTXJu1f7AAhYA=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=oracle.com;
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ (2603:10b6:301:2d::28) by MWHPR10MB1661.namprd10.prod.outlook.com
+ (2603:10b6:301:8::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4500.15; Wed, 8 Sep
+ 2021 13:13:14 +0000
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::5820:e42b:73d7:4268]) by MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::5820:e42b:73d7:4268%7]) with mapi id 15.20.4500.014; Wed, 8 Sep 2021
+ 13:13:14 +0000
+Date:   Wed, 8 Sep 2021 16:12:54 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Matthias Brugger <mbrugger@suse.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Hans deGoede <hdegoede@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v3] brcmfmac: fix "board_type" in brcmf_of_probe()
+Message-ID: <20210908131254.GJ1935@kadam>
+References: <YNCHELb14+eNV94n@mwanda>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YNCHELb14+eNV94n@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: JNAP275CA0014.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:4c::19)
+ To MWHPR1001MB2365.namprd10.prod.outlook.com (2603:10b6:301:2d::28)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Wed, 08 Sep 2021 17:03:24 +0530
-From:   subratm@codeaurora.org
-To:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: [PATCH v2] cfg80211: AP mode driver offload for FILS association
- crypto
-In-Reply-To: <1631092866-4530-1-git-send-email-subratm@codeaurora.org>
-References: <1631092866-4530-1-git-send-email-subratm@codeaurora.org>
-Message-ID: <f9834941ab55b89b96334eb090f27ce3@codeaurora.org>
-X-Sender: subratm@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Received: from kadam (62.8.83.99) by JNAP275CA0014.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:4c::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4500.14 via Frontend Transport; Wed, 8 Sep 2021 13:13:07 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 1e0751c2-2ea4-448f-24e4-08d972ca6a8c
+X-MS-TrafficTypeDiagnostic: MWHPR10MB1661:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <MWHPR10MB16612ABE5E4B1C74DE27C4798ED49@MWHPR10MB1661.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 2FOa+uC/VQ4AskTIbAaVxRRmNjWiKveVaZKLWAzTc1pXAjy9q9yw/UAJE1MWPrdyR3sV/89xiheUDd+sYJq6aM68Vsqkxg9a6T/D+Ot6S20ji023/JtFH/wOyPZyzZcMMWeJ6tMBStQRR236p7KavEUnbyAoPgjHT5o/f6GUDk9fYCLFpb3HjW8K0CC9hnb78tUfXyx97bJGncmpybWmZMSbRMsG1Nc0dkJYh4Zt50NI4mQvdbxaJ7juayk6A42MLbjip8fExEL9QDZmLscl3oDymxBIpJXSlB8uOl+ZfzcUhcN4srBxupTzoIyZhxwecbL/1HTub0D51/sDipUeTmc3Ah8k7/1WsZeZggcwOg8eOO6WVsqxvnoYBflxM9OxAuQMyQBoIML5iZXTcINvh/ZbcAw6p33nmKi1AvoU9dpgQC6KLPyAIIZssRjSsXrLLpzwpPSoBWjb78mgQE93Ql9K0L7wF1xayMAzkbjuSd68SC8LFnmHf5+gqdKRVYvahBNm2wlH23UCk9bi7HFw4abaIC4vBN8rxAFreSaMKxrEOFl8e+a2qgyKkewE88d1OxO8cCxA7MtFILS57vQ10exqYFY0hyfMfHK10bAj80C5DqRHyaR3qbUlb5HKKwNFT+NYtOeI+ppDfEOWGiosTKcTDaGG76PVwjJvAtazMSL7ZkPaDstzBRkpYhPdczeomVwoii1054uqcTvad/8FrA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(39860400002)(376002)(396003)(366004)(136003)(7416002)(2906002)(186003)(316002)(38350700002)(66476007)(38100700002)(956004)(6496006)(4326008)(54906003)(66946007)(110136005)(26005)(33716001)(44832011)(52116002)(478600001)(86362001)(55016002)(5660300002)(1076003)(6666004)(8936002)(83380400001)(33656002)(9686003)(9576002)(8676002)(66556008);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?fCtO43JJS8SPbrorD053eZ+tbGMwpJW+eB6Tsi4R4kOJaEiS9EZA/qsCkEPm?=
+ =?us-ascii?Q?L6eM/mIbXgCeXtrZ0aAWL1bauKa/wKTtZoJrl4cns82/GVcLR5fSoVeu4qot?=
+ =?us-ascii?Q?PtltxvruOmoWBscR6NcJbM1g2B0+h1Grg+e7MNLy1JNYb8oW1o1XD8kQpXOn?=
+ =?us-ascii?Q?QpvmBnc3gOI1j1JJGifODbd1MQYr8G+0nLfcss9UlMGWjyXRkdAJzQ/Szwly?=
+ =?us-ascii?Q?vEslgL9x3oZOeoTusJTuc2gAN9GWQkM1F9dvSTbf3ChmDHtSOAeXDpcezRvI?=
+ =?us-ascii?Q?9/QwUmmX57ZqWFkMaLUVUEsOzCSXrC2EkLGw1IbetgVQgzrkFnQ5jQFIkWf2?=
+ =?us-ascii?Q?G9Wnr1b2LmcFLaSNgHOgF8+TRB7rtOLm9Jm46xa2VYcW5D751NYdl7964gO6?=
+ =?us-ascii?Q?iVCJAAhqzkkTrr4mA04pD9kaZu3MYnd4IVcmN4H8/4MnW57XiegLzO3Vu1lV?=
+ =?us-ascii?Q?Ky0dfWxsfpWVwGLf9rnRstJoW5YHREOGO9aQd1ftYFgjqAf4/PEkd38EYXai?=
+ =?us-ascii?Q?SpCAF5nffq4ZlToVfL8zYqxKiOlkvnLuU/k2JXz+w8lkW4jH5zjQY3w//8bz?=
+ =?us-ascii?Q?GyWVe2eW9e2DBJF2Wop7+9N8prufGkNlMj9wv5eKgmhGCrj1ebQMLkMK/UDb?=
+ =?us-ascii?Q?hZgVqD+gpjmkDvCSGAR95+bHMMVHpRHB1aKQwEDROlnvNgxQ+MrJqjTQ0YIo?=
+ =?us-ascii?Q?j/KtpIYaoyn4b/ZQ0GNHGuryxQb8qrGVeXqic9d8V/QgSJRUBYv1qKJ+8IMF?=
+ =?us-ascii?Q?x1T118Z/grLB4qEzsxJE6H8yuAEhBXFDKiyeS/PlB4BpbqWbWJHvafbq5xZa?=
+ =?us-ascii?Q?TIAF6lNcRPeFDgt2hRsfIK0njKZdRPRITFTt7Yo8JfvplxqNPBnGJ5QZ07FQ?=
+ =?us-ascii?Q?xJ56QhrWG7M5+6UDJWHmJBCJ/RpXtgVkyf0jPKngiQZhdx24dnqiNdXUds1L?=
+ =?us-ascii?Q?gCgK+Z+HrMwtiU2vbVvcAAqNt0w53Uf//2HTb1o/Pkb6j6R6vp4oEjCsPO6m?=
+ =?us-ascii?Q?JEw4E7BtxoGLIFAD8uZik3jtH76evGyF+QmfZHhuX6F81DUgq5UntOeiDmGK?=
+ =?us-ascii?Q?ixcKEvQoPnEgc4MQ2CqG/tlaOdNgTX3Ew6n19f7H0n69phTHIMiaYREQbxF6?=
+ =?us-ascii?Q?pYaZP9H4HJ6m7chtxEWVvZoYytEQdPVeQEhHwdoq6SdO65PFtBXNjCMFWIEW?=
+ =?us-ascii?Q?QCgmGQtAB/1z/9nwZm3htqWyeoAdlaVQR7R8gvmLFi3rLp0DNo2/yDqRSWna?=
+ =?us-ascii?Q?h0DrDh68jiFNBk+tjIAYPNjCQkBnuZcNUJ/pxEKGRVZwLopST7V8wMCcgSgG?=
+ =?us-ascii?Q?iE80AtjtehSNam5bJi30W4yY?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e0751c2-2ea4-448f-24e4-08d972ca6a8c
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2021 13:13:14.8304
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x1uxL/xBwdLQXS8EC7C7kMidN7e2CF0iqC9S+PoQ7+0dlSJ2hTzXUqG35SaLg66VPNwoG3BMnUhz8u7HNWhzj2Fi9xE2DyWOje5NuxJVQfU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR10MB1661
+X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10100 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ suspectscore=0 mlxscore=0 phishscore=0 malwarescore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109030001
+ definitions=main-2109080085
+X-Proofpoint-GUID: LaG7XhL3a-3t0KttQ6UBsKg2rs0Jmqaa
+X-Proofpoint-ORIG-GUID: LaG7XhL3a-3t0KttQ6UBsKg2rs0Jmqaa
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+This patch is still needed.
 
-Please ignore v2 Patch set. I will be uploading v3 patch by addressing 
-the issue reported by kernel test robot.
+regards,
+dan carpenter
 
-Regards,
-Subrat Mishra
 
-On 2021-09-08 14:51, Subrat Mishra wrote:
-> Add a driver FILS crypto offload extended capability flag to indicate
-> that the driver running in AP mode is capable of handling encryption
-> and decryption of (Re)Association request and response frames.
-> Add a command to set FILS AAD data to driver.
+On Tue, Jun 22, 2021 at 01:46:55PM +0300, Dan Carpenter wrote:
+> There are two bugs here:
+> 1) devm_kzalloc() needs to be checked for allocation errors.
+> 2) The loop was intended to be:
 > 
-> This feature is supported on drivers running in AP mode only.
-> This extended capability is exchanged with hostapd during cfg80211
-> init. If the driver indicates this capability, then before sending the
-> Authentication response frame, hostapd sets FILS AAD data to the
-> driver. This allows the driver to decrypt (Re)Association Request
-> frame and encrypt (Re)Association Response frame. FILS Key derivation
-> will still be done in hostapd.
+>  Bad:	for (i = 0; i < board_type[i]; i++) {
+> Good:	for (i = 0; i < len; i++) {
 > 
-> Signed-off-by: Subrat Mishra <subratm@codeaurora.org>
+> Neither of these bugs are likely to cause an issue in practice but
+> they're worth fixing.  Also the code could be made simpler by using the
+> devm_kstrdup() and strreplace() functions.
 > 
-> v2:
-> - NL80211_FLAG_NEED_RTNL flag removed from internal_flags of command
-> NL80211_FLAG_NEED_RTNL
-> - Fixed alignment in include/net/cfg80211.h set_fils_aad() comments
-> - Fixed alignment in net/wireless/trace.h rdev_set_fils_aad Trace event
+> Fixes: 29e354ebeeec ("brcmfmac: Transform compatible string for FW loading")
+> Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+> Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Reported-by: Hans deGoede <hdegoede@redhat.com>
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> v2: Basically a completely different patch.  :)
+> v3: Add missing of_node_put() caught by Hans de Goede
 > 
-> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-> index 62dd842..621e3b2 100644
-> --- a/include/net/cfg80211.h
-> +++ b/include/net/cfg80211.h
-> @@ -740,6 +740,22 @@ struct cfg80211_tid_config {
->  };
+>  .../net/wireless/broadcom/brcm80211/brcmfmac/of.c    | 12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
 > 
->  /**
-> + * struct cfg80211_fils_aad - FILS AAD data
-> + * @macaddr: STA MAC address
-> + * @kek: FILS KEK
-> + * @kek_len: FILS KEK length
-> + * @snonce: STA Nonce
-> + * @anonce: AP Nonce
-> + */
-> +struct cfg80211_fils_aad {
-> +	const u8 *macaddr;
-> +	const u8 *kek;
-> +	u8 kek_len;
-> +	const u8 *snonce;
-> +	const u8 *anonce;
-> +}
-> +
-> +/**
->   * cfg80211_get_chandef_type - return old channel type from chandef
->   * @chandef: the channel definition
->   *
-> @@ -4018,6 +4034,10 @@ struct mgmt_frame_regs {
->   * @set_sar_specs: Update the SAR (TX power) settings.
->   *
->   * @color_change: Initiate a color change.
-> + *
-> + * @set_fils_aad: Set FILS AAD data to the AP driver so that the 
-> driver can use
-> + *	those to decrypt (Re)Association Request and encrypt 
-> (Re)Association
-> + *	Response frame.
->   */
->  struct cfg80211_ops {
->  	int	(*suspend)(struct wiphy *wiphy, struct cfg80211_wowlan *wow);
-> @@ -4348,6 +4368,8 @@ struct cfg80211_ops {
->  	int	(*color_change)(struct wiphy *wiphy,
->  				struct net_device *dev,
->  				struct cfg80211_color_change_settings *params);
-> +	int     (*set_fils_aad)(struct wiphy *wiphy, struct net_device *dev,
-> +				struct cfg80211_fils_aad *fils_aad);
->  };
-> 
->  /*
-> diff --git a/include/uapi/linux/nl80211.h 
-> b/include/uapi/linux/nl80211.h
-> index c2efea9..e89bbf8 100644
-> --- a/include/uapi/linux/nl80211.h
-> +++ b/include/uapi/linux/nl80211.h
-> @@ -301,6 +301,29 @@
->   */
-> 
->  /**
-> + * DOC: FILS shared key crypto offload
-> + *
-> + * This feature is applicable to drivers running in AP mode.
-> + *
-> + * FILS shared key crypto offload can be advertised by drivers by 
-> setting
-> + * @NL80211_EXT_FEATURE_FILS_CRYPTO_OFFLOAD flag. The drivers that 
-> support
-> + * FILS shared key crypto offload should be able to encrypt and 
-> decrypt
-> + * association frames for FILS shared key authentication as per IEEE 
-> 802.11ai.
-> + * With this capability, for FILS key derivation, drivers depend on 
-> userspace.
-> + *
-> + * After FILS key derivation, userspace shares the FILS AAD details 
-> with the
-> + * driver and the driver stores the same to use in decryption of 
-> association
-> + * request and in encryption of association response. The below 
-> parameters
-> + * should be given to the driver in %NL80211_CMD_SET_FILS_AAD.
-> + *	%NL80211_ATTR_MAC - STA MAC address, used for storing FILS AAD per 
-> STA
-> + *	%NL80211_ATTR_FILS_KEK - Used for encryption or decryption
-> + *	%NL80211_ATTR_FILS_NONCES - Used for encryption or decryption
-> + *			(STA Nonce 16 bytes followed by AP Nonce 16 bytes)
-> + *
-> + * Once the association is done, the driver cleans the FILS AAD data.
-> + */
-> +
-> +/**
->   * enum nl80211_commands - supported nl80211 commands
->   *
->   * @NL80211_CMD_UNSPEC: unspecified command to catch errors
-> @@ -1200,6 +1223,12 @@
->   * @NL80211_CMD_COLOR_CHANGE_COMPLETED: Notify userland that the color 
-> change
->   *	has completed
->   *
-> + * @NL80211_CMD_SET_FILS_AAD: Set FILS AAD data to the driver using -
-> + *	&NL80211_ATTR_MAC - for STA MAC address
-> + *	&NL80211_ATTR_FILS_KEK - for KEK
-> + *	&NL80211_ATTR_FILS_NONCES - for FILS Nonces
-> + *		(STA Nonce 16 bytes followed by AP Nonce 16 bytes)
-> + *
->   * @NL80211_CMD_MAX: highest used command number
->   * @__NL80211_CMD_AFTER_LAST: internal use
->   */
-> @@ -1440,6 +1469,8 @@ enum nl80211_commands {
->  	NL80211_CMD_COLOR_CHANGE_ABORTED,
->  	NL80211_CMD_COLOR_CHANGE_COMPLETED,
-> 
-> +	NL80211_CMD_SET_FILS_AAD,
-> +
->  	/* add new commands above here */
-> 
->  	/* used to define NL80211_CMD_MAX below */
-> @@ -5995,6 +6026,11 @@ enum nl80211_feature_flags {
->   * @NL80211_EXT_FEATURE_BSS_COLOR: The driver supports BSS color 
-> collision
->   *	detection and change announcemnts.
->   *
-> + * @NL80211_EXT_FEATURE_FILS_CRYPTO_OFFLOAD: Driver running in AP mode 
-> supports
-> + *	FILS encryption and decryption for (Re)Association Request and 
-> Response
-> + *	frames. Userspace has to share FILS AAD details to the driver by 
-> using
-> + *	@NL80211_CMD_SET_FILS_AAD.
-> + *
->   * @NUM_NL80211_EXT_FEATURES: number of extended features.
->   * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
->   */
-> @@ -6060,6 +6096,7 @@ enum nl80211_ext_feature_index {
->  	NL80211_EXT_FEATURE_SECURE_RTT,
->  	NL80211_EXT_FEATURE_PROT_RANGE_NEGO_AND_MEASURE,
->  	NL80211_EXT_FEATURE_BSS_COLOR,
-> +	NL80211_EXT_FEATURE_FILS_CRYPTO_OFFLOAD,
-> 
->  	/* add new features before the definition below */
->  	NUM_NL80211_EXT_FEATURES,
-> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> index bf7cd47..761760a 100644
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -14904,6 +14904,29 @@ static int nl80211_color_change(struct
-> sk_buff *skb, struct genl_info *info)
->  	return err;
->  }
-> 
-> +static int nl80211_set_fils_aad(struct sk_buff *skb,
-> +				struct genl_info *info)
-> +{
-> +	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-> +	struct net_device *dev = info->user_ptr[1];
-> +	struct cfg80211_fils_aad fils_aad = {};
-> +	u8 *nonces;
-> +
-> +	if (!info->attrs[NL80211_ATTR_MAC] ||
-> +	    !info->attrs[NL80211_ATTR_FILS_KEK] ||
-> +	    !info->attrs[NL80211_ATTR_FILS_NONCES])
-> +		return -EINVAL;
-> +
-> +	fils_aad.macaddr = nla_data(info->attrs[NL80211_ATTR_MAC]);
-> +	fils_aad.kek_len = nla_len(info->attrs[NL80211_ATTR_FILS_KEK]);
-> +	fils_aad.kek = nla_data(info->attrs[NL80211_ATTR_FILS_KEK]);
-> +	nonces = nla_data(info->attrs[NL80211_ATTR_FILS_NONCES]);
-> +	fils_aad.snonce = nonces;
-> +	fils_aad.anonce = nonces + FILS_NONCE_LEN;
-> +
-> +	return rdev_set_fils_aad(rdev, dev, &fils_aad);
-> +}
-> +
->  #define NL80211_FLAG_NEED_WIPHY		0x01
->  #define NL80211_FLAG_NEED_NETDEV	0x02
->  #define NL80211_FLAG_NEED_RTNL		0x04
-> @@ -15907,6 +15930,13 @@ static const struct genl_small_ops
-> nl80211_small_ops[] = {
->  		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP |
->  				  NL80211_FLAG_NEED_RTNL,
->  	},
-> +	{
-> +		.cmd = NL80211_CMD_SET_FILS_AAD,
-> +		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-> +		.doit = nl80211_set_fils_aad,
-> +		.flags = GENL_UNS_ADMIN_PERM,
-> +		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP,
-> +	},
->  };
-> 
->  static struct genl_family nl80211_fam __ro_after_init = {
-> diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-> index ce6bf21..cc1efec 100644
-> --- a/net/wireless/rdev-ops.h
-> +++ b/net/wireless/rdev-ops.h
-> @@ -1381,4 +1381,18 @@ static inline int rdev_color_change(struct
-> cfg80211_registered_device *rdev,
->  	return ret;
->  }
-> 
-> +static inline int
-> +rdev_set_fils_aad(struct cfg80211_registered_device *rdev,
-> +		  struct net_device *dev, struct cfg80211_fils_aad *fils_aad)
-> +{
-> +	int ret = -EOPNOTSUPP;
-> +
-> +	trace_rdev_set_fils_aad(&rdev->wiphy, dev, fils_aad);
-> +	if (rdev->ops->set_fils_aad)
-> +		ret = rdev->ops->set_fils_aad(&rdev->wiphy, dev, fils_aad);
-> +	trace_rdev_return_int(&rdev->wiphy, ret);
-> +
-> +	return ret;
-> +}
-> +
->  #endif /* __CFG80211_RDEV_OPS */
-> diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-> index 19b78d4..88cd694 100644
-> --- a/net/wireless/trace.h
-> +++ b/net/wireless/trace.h
-> @@ -167,6 +167,19 @@
->  			__entry->center_freq1, __entry->freq1_offset,	\
->  			__entry->center_freq2
-> 
-> +#define FILS_AAD_ASSIGN(fa)                                            
->       \
-> +	do {                                                                 
-> \
-> +		if (fa) {                                                    \
-> +			ether_addr_copy(__entry->macaddr, fa->macaddr);      \
-> +			__entry->kek_len = fa->kek_len;                      \
-> +		} else {                                                     \
-> +			eth_zero_addr(__entry->macaddr);                     \
-> +			__entry->kek_len = 0;                                \
-> +		}                                                            \
-> +	} while (0)
-> +#define FILS_AAD_PR_FMT                                                
->       \
-> +	"macaddr: %pM, kek_len: %d"
-> +
->  #define SINFO_ENTRY __field(int, generation)	    \
->  		    __field(u32, connected_time)    \
->  		    __field(u32, inactive_time)	    \
-> @@ -2614,6 +2627,24 @@ DEFINE_EVENT(wiphy_wdev_cookie_evt, 
-> rdev_abort_pmsr,
->  	TP_ARGS(wiphy, wdev, cookie)
->  );
-> 
-> +TRACE_EVENT(rdev_set_fils_aad,
-> +	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
-> +		 struct cfg80211_fils_aad *fils_aad),
-> +	TP_ARGS(wiphy, netdev, fils_aad),
-> +	TP_STRUCT__entry(WIPHY_ENTRY
-> +		NETDEV_ENTRY
-> +		__array(u8, macaddr, ETH_ALEN)
-> +		__field(u8, kek_len)
-> +	),
-> +	TP_fast_assign(WIPHY_ASSIGN;
-> +		NETDEV_ASSIGN;
-> +		FILS_AAD_ASSIGN(fils_aad);
-> +	),
-> +	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", " FILS_AAD_PR_FMT,
-> +		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->macaddr,
-> +		  __entry->kek_len)
-> +);
-> +
->  /*************************************************************
->   *	     cfg80211 exported functions traces		     *
->   *************************************************************/
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> index a7554265f95f..dee3d968e49b 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> @@ -24,20 +24,18 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+>  	/* Set board-type to the first string of the machine compatible prop */
+>  	root = of_find_node_by_path("/");
+>  	if (root) {
+> -		int i, len;
+>  		char *board_type;
+>  		const char *tmp;
+>  
+>  		of_property_read_string_index(root, "compatible", 0, &tmp);
+>  
+>  		/* get rid of '/' in the compatible string to be able to find the FW */
+> -		len = strlen(tmp) + 1;
+> -		board_type = devm_kzalloc(dev, len, GFP_KERNEL);
+> -		strscpy(board_type, tmp, len);
+> -		for (i = 0; i < board_type[i]; i++) {
+> -			if (board_type[i] == '/')
+> -				board_type[i] = '-';
+> +		board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
+> +		if (!board_type) {
+> +			of_node_put(root);
+> +			return;
+>  		}
+> +		strreplace(board_type, '/', '-');
+>  		settings->board_type = board_type;
+>  
+>  		of_node_put(root);
+> -- 
+> 2.30.2
