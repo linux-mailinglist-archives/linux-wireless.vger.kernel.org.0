@@ -2,156 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E30B2403203
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Sep 2021 03:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AFC340328D
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Sep 2021 04:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345948AbhIHBCP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Sep 2021 21:02:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46400 "EHLO
+        id S1347082AbhIHCUb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Sep 2021 22:20:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232947AbhIHBCO (ORCPT
+        with ESMTP id S235450AbhIHCUb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Sep 2021 21:02:14 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B84C7C061575
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Sep 2021 18:01:07 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id bg1so228143plb.13
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Sep 2021 18:01:07 -0700 (PDT)
+        Tue, 7 Sep 2021 22:20:31 -0400
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 753DAC061575
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Sep 2021 19:19:24 -0700 (PDT)
+Received: by mail-pg1-x531.google.com with SMTP id s11so900637pgr.11
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Sep 2021 19:19:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=fL7IHHdZ/gzoOTGUPxPDxAU1KAMX+gAeeQ7IEIgS92I=;
-        b=fUGYNrjWnrb3I1eaPcRpBHa5uCveys5QZgedEq6FkqjUD4OZbSwa4C3wVTN3Ea0J1E
-         NEeFEDtPtBpxrAKvOWTnaDwo2B2v/P/5kd5YLX/XwbKcaO8nplHt67j6ZHZVQpMteY+4
-         0eAtp+P3YO9W747F5K61gMUrXOoE1IA72GO8EM4UhZ02fP45WR68o9G/TsFy4xh+tT6j
-         8Gh/i3SW9y/vNeQtT6qSMbCQ9H+zzZF6E2bhHT6OyoUZ3m6dfTL3zikE4O0/Fj8Ue6Rj
-         Bh5cOEbzVLnmPBaFdSs4A1+vikjxpd4fQt9bHyJ402yyWqWjZTTapx4aTi1GtG/PfSRF
-         MbAg==
+        d=gmail.com; s=20210112;
+        h=references:user-agent:from:to:subject:date:message-id:mime-version;
+        bh=9CTgsXH1OpAWsvS5kM+f8xUiLJKc/FWlzvzHe9yeiYI=;
+        b=ML9CO27jlXqlKJhM7J7Os6eggFGpB/Q2BLXvut9Ot2X2iqHWeKL8G9yNxFaNVEpidd
+         DdsZGhkvlHN7I+22u9RbGXTV150UvqTUmdSIHgDASuruYKD4oY+Zy5nJqWrUs+b3Yqok
+         /613NOfd64eiCOE6j017BB7ZTBrXRxRWuIbtncbn5nctyumNgfmKj51JxBvRmEM4MpOv
+         JDulHjbDYDQKGGSIBu1ePj6sJX3iES/Bf2Ys8ZkzV3+Nyv+HZFRyzPL9YA2eyjVN5UnJ
+         pFP9H7rN0Z0CmItnqzmKrPSAjbSU3gBYYcCaw5QjoocJg6UCyCwU82qlZQWVw8Qq1Fnx
+         cpYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=fL7IHHdZ/gzoOTGUPxPDxAU1KAMX+gAeeQ7IEIgS92I=;
-        b=SkHfFR/CgiQaVXxszlX2kEJJMC5FsovJ8bOzCIJpnrrc4BA/SgCxZKUZz5J3xKV1Pf
-         LuxU+Tutirj7Tgr4ysv4KOWovlmEDgicWoNJB+eUo1RgKNwBRSCSXsFn/EElrZe/Sp9j
-         ei/rn6i15swnT1DCzwHWJlLwXxBpxr4H0eoGYigxY6wlhh9K614uNlRF3E+89Q248vz3
-         RXlA8MHuBcp1Dg6BkNTCc6bipr+GNdLGEKqZKlnVYwTI61kyysZcW7u7YPaQwj07eual
-         nO4MIBvq9tlSk3JW8FNQO3EaJx0cwjnvlSicSQCYrsKTLLZ70fsNp8yRgP73CPWoGuvo
-         0mUw==
-X-Gm-Message-State: AOAM533YALBZRhjHBYoGZFTHjnsk70IcUjmh6zhQdGMKc5CJkA76CuXf
-        vXmJ/udVh7BtHwPw2HrMm+B66w==
-X-Google-Smtp-Source: ABdhPJzn6dDaPFPvD6xD3dX6BMiDBYlT3VapdFvc9aR8lJIc1mWPZRw21Ia813useTb+MqcxrF740A==
-X-Received: by 2002:a17:90b:33c8:: with SMTP id lk8mr1221312pjb.241.1631062867247;
-        Tue, 07 Sep 2021 18:01:07 -0700 (PDT)
-Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
-        by smtp.gmail.com with ESMTPSA id g2sm239957pfo.154.2021.09.07.18.01.03
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 07 Sep 2021 18:01:06 -0700 (PDT)
-Date:   Wed, 8 Sep 2021 09:00:58 +0800
-From:   Shawn Guo <shawn.guo@linaro.org>
-To:     Soeren Moch <smoch@web.de>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>
-Subject: Re: [BUG] Re: [PATCH] brcmfmac: use ISO3166 country code and 0 rev
- as fallback
-Message-ID: <20210908010057.GB25255@dragon>
-References: <20210425110200.3050-1-shawn.guo@linaro.org>
- <cb7ac252-3356-8ef7-fcf9-eb017f5f161f@web.de>
+        h=x-gm-message-state:references:user-agent:from:to:subject:date
+         :message-id:mime-version;
+        bh=9CTgsXH1OpAWsvS5kM+f8xUiLJKc/FWlzvzHe9yeiYI=;
+        b=TMhcnSHZAW8QaGPoeIwV9H6BYr4JApKwHTC5Kf5qc3nZoNGAMOX9aRetU2ubJ/rbLo
+         XpsCKHTNtBYyr6rG9eTd3s6ZOe3y/R6dsTEIq1sIhbGjqBeB2I5SDJAa+DatX3meOGDh
+         TgikNIVn8g0Ibju60cCfBQIkhLflEcsTA2rMqbvIype3G0WtfwXbvRHp2nKP+LWwKLc0
+         07/5xgwNWzxyjQa61MqNwBXFhF1RIxh68Jk+GWwNGMd9k20VPIp8H/Z2zYar+jJAyixI
+         RvFmEoKWVgJsZvZvWmtaFkHISkiOd24UEKknypJDra5UtlLphnhU7WDScEI6sAwUA/XR
+         vWLw==
+X-Gm-Message-State: AOAM530/2b9MkBAEdmnUMLu4uzY0sfNDDejzJy1rJi8lmJJQp0GzHv38
+        +g7dQAxHExtHtJ9m5BiYkKhcQuQ3KNc=
+X-Google-Smtp-Source: ABdhPJzZjqTel3W7pKO5wwIp4VJib/0ETxUmQXCIvYoXZMC2HkpbJIWcJNNNOLMG/fDG3G4Wf/tVAw==
+X-Received: by 2002:a63:7012:: with SMTP id l18mr1333437pgc.167.1631067563758;
+        Tue, 07 Sep 2021 19:19:23 -0700 (PDT)
+Received: from localhost ([120.21.217.232])
+        by smtp.gmail.com with ESMTPSA id t14sm436520pga.62.2021.09.07.19.19.22
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Sep 2021 19:19:23 -0700 (PDT)
+References: <8735v9sdw6.fsf@ada>
+User-agent: mu4e 1.6.6; emacs 27.2
+From:   Alexis <flexibeast@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Subject: Fwd: rtw_8821ce: "rfe 4 isn't supported". Asus D509DA laptop.
+Date:   Wed, 08 Sep 2021 12:13:49 +1000
+Message-ID: <87ilzbollj.fsf@ada>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cb7ac252-3356-8ef7-fcf9-eb017f5f161f@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; format=flowed
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Soeren,
 
-On Tue, Sep 07, 2021 at 09:22:52PM +0200, Soeren Moch wrote:
-> On 25.04.21 13:02, Shawn Guo wrote:
-> > Instead of aborting country code setup in firmware, use ISO3166 country
-> > code and 0 rev as fallback, when country_codes mapping table is not
-> > configured.  This fallback saves the country_codes table setup for recent
-> > brcmfmac chipsets/firmwares, which just use ISO3166 code and require no
-> > revision number.
-> This patch breaks wireless support on RockPro64. At least the access
-> point is not usable, station mode not tested.
-> 
-> brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4359/9 wl0: Mar  6 2017
-> 10:16:06 version 9.87.51.7 (r686312) FWID 01-4dcc75d9
-> 
-> Reverting this patch makes the access point show up again with linux-5.14 .
+Hi all,
 
-Sorry for breaking your device!
+Just following up on the below, which i sent back in April:
 
-So it sounds like you do not have country_codes configured for your
-BCM4359/9 device, while it needs particular `rev` setup for the ccode
-you are testing with.  It was "working" likely because you have a static
-`ccode` and `regrev` setting in nvram file.  But roaming to a different
-region will mostly get you a broken WiFi support.  Is it possible to set
-up the country_codes for your device to get it work properly?
+  https://marc.info/?l=linux-wireless&m=161968427506696&w=2
 
-Shawn
+Using kernel 5.13.13, i'm still getting the "rfe 4 isn't 
+supported" message; and additionally, someone has commented in the 
+tomaspinho/rtl8821ce GitHub repo that they're getting an "rfe _6_ 
+isn't supported" message:
 
-> 
-> Regards,
-> Soeren
-> > Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
-> > ---
-> >  .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 +++++++++++------
-> >  1 file changed, 11 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> > index f4405d7861b6..6cb09c7c37b6 100644
-> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> > @@ -7442,18 +7442,23 @@ static s32 brcmf_translate_country_code(struct brcmf_pub *drvr, char alpha2[2],
-> >  	s32 found_index;
-> >  	int i;
-> >
-> > -	country_codes = drvr->settings->country_codes;
-> > -	if (!country_codes) {
-> > -		brcmf_dbg(TRACE, "No country codes configured for device\n");
-> > -		return -EINVAL;
-> > -	}
-> > -
-> >  	if ((alpha2[0] == ccreq->country_abbrev[0]) &&
-> >  	    (alpha2[1] == ccreq->country_abbrev[1])) {
-> >  		brcmf_dbg(TRACE, "Country code already set\n");
-> >  		return -EAGAIN;
-> >  	}
-> >
-> > +	country_codes = drvr->settings->country_codes;
-> > +	if (!country_codes) {
-> > +		brcmf_dbg(TRACE, "No country codes configured for device, using ISO3166 code and 0 rev\n");
-> > +		memset(ccreq, 0, sizeof(*ccreq));
-> > +		ccreq->country_abbrev[0] = alpha2[0];
-> > +		ccreq->country_abbrev[1] = alpha2[1];
-> > +		ccreq->ccode[0] = alpha2[0];
-> > +		ccreq->ccode[1] = alpha2[1];
-> > +		return 0;
-> > +	}
-> > +
-> >  	found_index = -1;
-> >  	for (i = 0; i < country_codes->table_size; i++) {
-> >  		cc = &country_codes->table[i];
-> 
+  https://github.com/tomaspinho/rtl8821ce/issues/142#issuecomment-914574651
+
+
+Alexis.
+
+
+Alexis <flexibeast@gmail.com> writes:
+
+> Hi all,
+>
+> i've just acquired an Asus D509DA, and wifi isn't working:
+>
+>    rtw_8821ce 0000:01:00.0: enabling device (0000 -> 0003)
+>    rtw_8821ce 0000:01:00.0: Firmware version 24.8.0, H2C version
+>    12
+>    rtw_8821ce 0000:01:00.0: rfe 4 isn't supported
+>    rtw_8821ce 0000:01:00.0: failed to setup chip efuse info
+>    rtw_8821ce 0000:01:00.0: failed to setup chip information
+>
+> `uname -a`:
+>
+>    Linux voidlinux 5.11.16_1 #1 SMP 1619045101 x86_64 GNU/Linux
+>
+> Void firmware package:
+>
+>    linux-firmware-network-20210315_2
+>
+> Some previous mentions of this issue on this list:
+>
+>    https://marc.info/?l=linux-wireless&m=159981742905028
+>    https://www.spinics.net/lists/linux-wireless/msg206075.html
+>
+> Some other mentions elsewhere:
+>
+>    https://bugzilla.kernel.org/show_bug.cgi?id=212435
+>    https://github.com/tomaspinho/rtl8821ce/issues/142
+>
+> Please let me know if there's any further information i can
+> provide. i'm not subscribed to the list.
+>
+> Thanks!
+>
+>
+> Alexis.
+
