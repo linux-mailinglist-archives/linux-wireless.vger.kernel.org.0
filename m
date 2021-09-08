@@ -2,80 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBFA8402F1E
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Sep 2021 21:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E30B2403203
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Sep 2021 03:01:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346052AbhIGTtU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Sep 2021 15:49:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60320 "EHLO
+        id S1345948AbhIHBCP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Sep 2021 21:02:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231560AbhIGTtT (ORCPT
+        with ESMTP id S232947AbhIHBCO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Sep 2021 15:49:19 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 356CFC061575
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Sep 2021 12:48:13 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id x10-20020a056830408a00b004f26cead745so492965ott.10
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Sep 2021 12:48:13 -0700 (PDT)
+        Tue, 7 Sep 2021 21:02:14 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B84C7C061575
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Sep 2021 18:01:07 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id bg1so228143plb.13
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Sep 2021 18:01:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:in-reply-to:references:from:user-agent:date:message-id
-         :subject:to:cc;
-        bh=w+pEkVJd/h+WI+7Ik9xWqY+Z8oL6sb51sITpdGLwuE0=;
-        b=ZfXkyFLoNLwSCxIt2lcXw2d4jOGw2BhBPBTFYcXhipfSjLsFGRUgNK6ftpTAP5TXWq
-         ruwHEv5trPt3h2I/CyAqcbyOo83YrThS3Kjacjot2cOxAKpRgjgr1lQizsZ7yTchvihV
-         ErsPeqGVBrbrrKzNFlwtX95iDjPuVYP5wRuiI=
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=fL7IHHdZ/gzoOTGUPxPDxAU1KAMX+gAeeQ7IEIgS92I=;
+        b=fUGYNrjWnrb3I1eaPcRpBHa5uCveys5QZgedEq6FkqjUD4OZbSwa4C3wVTN3Ea0J1E
+         NEeFEDtPtBpxrAKvOWTnaDwo2B2v/P/5kd5YLX/XwbKcaO8nplHt67j6ZHZVQpMteY+4
+         0eAtp+P3YO9W747F5K61gMUrXOoE1IA72GO8EM4UhZ02fP45WR68o9G/TsFy4xh+tT6j
+         8Gh/i3SW9y/vNeQtT6qSMbCQ9H+zzZF6E2bhHT6OyoUZ3m6dfTL3zikE4O0/Fj8Ue6Rj
+         Bh5cOEbzVLnmPBaFdSs4A1+vikjxpd4fQt9bHyJ402yyWqWjZTTapx4aTi1GtG/PfSRF
+         MbAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from
-         :user-agent:date:message-id:subject:to:cc;
-        bh=w+pEkVJd/h+WI+7Ik9xWqY+Z8oL6sb51sITpdGLwuE0=;
-        b=biunq9gVN7kQbKm63YNQq7JUSpECbNlx6BBJ6PTC0Pr1FTsauBd2INc82CK1qgJaaS
-         Xqd1q9gwaZrqFdylLqutwojylBu6FowMZWv5kW7u+AYSrxNYdgGFc3QhIrrj/75BMT8H
-         qjojJq6Cx3SGEx+6pIEyKwtdqtyrwDntLS1sIhy6CLW96hIEiOrDfALQH8UUT5TS9y2H
-         iEivrRLp+zkVFdjNyvIKqBvyGMhbTudmFgh/EHTXqVnZJIssx2/jeAdkS0VXyIqtFeMd
-         zNH0VzytTtRUo0A0VTOb64REbgfZlWXCSlvGCMO77KJCrZIKmtYsl4ge6jYqBIuswsjI
-         pTbw==
-X-Gm-Message-State: AOAM531mDtgNQr0EriSa9xRD/obpgtub+q8dZptEv9DRsRnuQ8kYsTiN
-        MrjLDJkT+57j+l0L2oGzdHhkCRVBYgPd6xwnKI369w==
-X-Google-Smtp-Source: ABdhPJxksUjTUTa8Exx6uQm/t3KaU/loUjkBf+4L6i+ATrGe4465p6dpfz+D435OVm1pzqfNM6HNZXNRx4Iq1MprmqA=
-X-Received: by 2002:a05:6830:1212:: with SMTP id r18mr58677otp.159.1631044092581;
- Tue, 07 Sep 2021 12:48:12 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 7 Sep 2021 19:48:11 +0000
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=fL7IHHdZ/gzoOTGUPxPDxAU1KAMX+gAeeQ7IEIgS92I=;
+        b=SkHfFR/CgiQaVXxszlX2kEJJMC5FsovJ8bOzCIJpnrrc4BA/SgCxZKUZz5J3xKV1Pf
+         LuxU+Tutirj7Tgr4ysv4KOWovlmEDgicWoNJB+eUo1RgKNwBRSCSXsFn/EElrZe/Sp9j
+         ei/rn6i15swnT1DCzwHWJlLwXxBpxr4H0eoGYigxY6wlhh9K614uNlRF3E+89Q248vz3
+         RXlA8MHuBcp1Dg6BkNTCc6bipr+GNdLGEKqZKlnVYwTI61kyysZcW7u7YPaQwj07eual
+         nO4MIBvq9tlSk3JW8FNQO3EaJx0cwjnvlSicSQCYrsKTLLZ70fsNp8yRgP73CPWoGuvo
+         0mUw==
+X-Gm-Message-State: AOAM533YALBZRhjHBYoGZFTHjnsk70IcUjmh6zhQdGMKc5CJkA76CuXf
+        vXmJ/udVh7BtHwPw2HrMm+B66w==
+X-Google-Smtp-Source: ABdhPJzn6dDaPFPvD6xD3dX6BMiDBYlT3VapdFvc9aR8lJIc1mWPZRw21Ia813useTb+MqcxrF740A==
+X-Received: by 2002:a17:90b:33c8:: with SMTP id lk8mr1221312pjb.241.1631062867247;
+        Tue, 07 Sep 2021 18:01:07 -0700 (PDT)
+Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
+        by smtp.gmail.com with ESMTPSA id g2sm239957pfo.154.2021.09.07.18.01.03
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 07 Sep 2021 18:01:06 -0700 (PDT)
+Date:   Wed, 8 Sep 2021 09:00:58 +0800
+From:   Shawn Guo <shawn.guo@linaro.org>
+To:     Soeren Moch <smoch@web.de>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-rockchip@lists.infradead.org" 
+        <linux-rockchip@lists.infradead.org>
+Subject: Re: [BUG] Re: [PATCH] brcmfmac: use ISO3166 country code and 0 rev
+ as fallback
+Message-ID: <20210908010057.GB25255@dragon>
+References: <20210425110200.3050-1-shawn.guo@linaro.org>
+ <cb7ac252-3356-8ef7-fcf9-eb017f5f161f@web.de>
 MIME-Version: 1.0
-In-Reply-To: <YTe+a0Gu7O6MEy2d@google.com>
-References: <20210905210400.1157870-1-swboyd@chromium.org> <YTe+a0Gu7O6MEy2d@google.com>
-From:   Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.9.1
-Date:   Tue, 7 Sep 2021 19:48:11 +0000
-Message-ID: <CAE-0n52d_GBh70pSDXTrVkD5S6akP4O9YcE4tVRKZcvLtLZSmg@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: Don't always treat modem stop events as crashes
-To:     Matthias Kaehlcke <mka@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-kernel@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-        Govind Singh <govinds@codeaurora.org>,
-        Youghandhar Chintala <youghand@codeaurora.org>,
-        Abhishek Kumar <kuabhs@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cb7ac252-3356-8ef7-fcf9-eb017f5f161f@web.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Quoting Matthias Kaehlcke (2021-09-07 12:32:59)
-> On Sun, Sep 05, 2021 at 02:04:00PM -0700, Stephen Boyd wrote:
-> > @@ -1740,10 +1805,19 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
-> >               goto err_fw_deinit;
-> >       }
-> >
-> > +     ret = ath10k_modem_init(ar);
-> > +     if (ret) {
-> > +             ath10k_err(ar, "failed to initialize modem notifier: %d\n", ret);
->
-> nit: ath10k_modem_init() encapsulates/hides the setup of the notifier,
-> the error message should be inside the function, as for _deinit()
+Hi Soeren,
 
-Sure. I can fix it. I was also wondering if I should drop the debug
-prints for the cases that don't matter in the switch statement but I'll
-just leave that alone unless someone complains about it.
+On Tue, Sep 07, 2021 at 09:22:52PM +0200, Soeren Moch wrote:
+> On 25.04.21 13:02, Shawn Guo wrote:
+> > Instead of aborting country code setup in firmware, use ISO3166 country
+> > code and 0 rev as fallback, when country_codes mapping table is not
+> > configured.  This fallback saves the country_codes table setup for recent
+> > brcmfmac chipsets/firmwares, which just use ISO3166 code and require no
+> > revision number.
+> This patch breaks wireless support on RockPro64. At least the access
+> point is not usable, station mode not tested.
+> 
+> brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4359/9 wl0: Mar  6 2017
+> 10:16:06 version 9.87.51.7 (r686312) FWID 01-4dcc75d9
+> 
+> Reverting this patch makes the access point show up again with linux-5.14 .
+
+Sorry for breaking your device!
+
+So it sounds like you do not have country_codes configured for your
+BCM4359/9 device, while it needs particular `rev` setup for the ccode
+you are testing with.  It was "working" likely because you have a static
+`ccode` and `regrev` setting in nvram file.  But roaming to a different
+region will mostly get you a broken WiFi support.  Is it possible to set
+up the country_codes for your device to get it work properly?
+
+Shawn
+
+> 
+> Regards,
+> Soeren
+> > Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> > ---
+> >  .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 +++++++++++------
+> >  1 file changed, 11 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> > index f4405d7861b6..6cb09c7c37b6 100644
+> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> > @@ -7442,18 +7442,23 @@ static s32 brcmf_translate_country_code(struct brcmf_pub *drvr, char alpha2[2],
+> >  	s32 found_index;
+> >  	int i;
+> >
+> > -	country_codes = drvr->settings->country_codes;
+> > -	if (!country_codes) {
+> > -		brcmf_dbg(TRACE, "No country codes configured for device\n");
+> > -		return -EINVAL;
+> > -	}
+> > -
+> >  	if ((alpha2[0] == ccreq->country_abbrev[0]) &&
+> >  	    (alpha2[1] == ccreq->country_abbrev[1])) {
+> >  		brcmf_dbg(TRACE, "Country code already set\n");
+> >  		return -EAGAIN;
+> >  	}
+> >
+> > +	country_codes = drvr->settings->country_codes;
+> > +	if (!country_codes) {
+> > +		brcmf_dbg(TRACE, "No country codes configured for device, using ISO3166 code and 0 rev\n");
+> > +		memset(ccreq, 0, sizeof(*ccreq));
+> > +		ccreq->country_abbrev[0] = alpha2[0];
+> > +		ccreq->country_abbrev[1] = alpha2[1];
+> > +		ccreq->ccode[0] = alpha2[0];
+> > +		ccreq->ccode[1] = alpha2[1];
+> > +		return 0;
+> > +	}
+> > +
+> >  	found_index = -1;
+> >  	for (i = 0; i < country_codes->table_size; i++) {
+> >  		cc = &country_codes->table[i];
+> 
