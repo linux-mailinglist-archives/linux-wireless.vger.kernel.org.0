@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCE50405392
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 14:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 196EA4057EA
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 15:44:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356163AbhIIMxO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Sep 2021 08:53:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55858 "EHLO mail.kernel.org"
+        id S1344322AbhIINoH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Sep 2021 09:44:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42302 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1355101AbhIIMlC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Sep 2021 08:41:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D2EA461BF5;
-        Thu,  9 Sep 2021 11:54:59 +0000 (UTC)
+        id S1351834AbhIIMrd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Sep 2021 08:47:33 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 817D363220;
+        Thu,  9 Sep 2021 11:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188500;
-        bh=b8uqT+IdXHTCWdfTeDRGw60YPedOurUWpACJtIdz0jA=;
+        s=k20201202; t=1631188589;
+        bh=Jqb7XaWOx11p37FMvH/ReA+WJNCzFGBf3lqGQwH79gI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I4pnuuYyWvcvwXDOYHJ/bG4lq+23Uadhtatwnix1+t+R1wEfpZQXZrneizMAm8sGQ
-         o3WDVN8xcMzogYEfsaadcdWvNHFf75UK1TciBEw4SepYAskK3lMH4d442DP5GyaEuw
-         oPeqEg5TwXILjDpD2I9Wa+Cod3uRkNgETBCl0D6Yi+flwLYDSjmON6ZbBmk94VucoU
-         DGWGYS7HnuVD0j4F6e4MSHTOapaLfWPW/jqAKlOc56C+hMjEtSoke8oqqA6L6MaG/0
-         CnePoQCXci5IRzFXCdjSl8DS94NqfnZC69kBv5amrV0EYwf49CArodAqaouyEuUt5f
-         f4j9LSxn79Wvg==
+        b=movnjE+IYV+9GnWIiFM5ZIMa66cHmb9QnNzBrSNvar5/oYJUFS+tdsjoalWd8/810
+         LnIY4LlEGe1fjJHUc18mSUH6iCNUBhw7V2oMGMBHxFj+NQFBALxt9SwvNjGG5faY6C
+         3wBfSDt3t+fu05F3tnG4czWNRRIQsuYKrbIP8GXTyv0VfgAdpVkT6XOAWeGDSZziXA
+         Eku1KLX0ubgpOd1m2723DiFkCAlS8TdZ6667Vr8M/YVTfJ+ARlPsFvnFBe+d93Fbvd
+         QEPKCSGFEr0RSnKH2yLRUdhM96aAIU2S/v4aCXiteAz9FIkqPWiZacnHYX7x0bSl+X
+         W9/i+WPKjWUrw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Johan Almbladh <johan.almbladh@anyfinetworks.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 172/176] ath9k: fix sleeping in atomic context
-Date:   Thu,  9 Sep 2021 07:51:14 -0400
-Message-Id: <20210909115118.146181-172-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 064/109] mac80211: Fix monitor MTU limit so that A-MSDUs get through
+Date:   Thu,  9 Sep 2021 07:54:21 -0400
+Message-Id: <20210909115507.147917-64-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210909115118.146181-1-sashal@kernel.org>
-References: <20210909115118.146181-1-sashal@kernel.org>
+In-Reply-To: <20210909115507.147917-1-sashal@kernel.org>
+References: <20210909115507.147917-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -43,67 +43,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miaoqing Pan <miaoqing@codeaurora.org>
+From: Johan Almbladh <johan.almbladh@anyfinetworks.com>
 
-[ Upstream commit 7c48662b9d56666219f526a71ace8c15e6e12f1f ]
+[ Upstream commit 79f5962baea74ce1cd4e5949598944bff854b166 ]
 
-The problem is that gpio_free() can sleep and the cfg_soc() can be
-called with spinlocks held. One problematic call tree is:
+The maximum MTU was set to 2304, which is the maximum MSDU size. While
+this is valid for normal WLAN interfaces, it is too low for monitor
+interfaces. A monitor interface may receive and inject MPDU frames, and
+the maximum MPDU frame size is larger than 2304. The MPDU may also
+contain an A-MSDU frame, in which case the size may be much larger than
+the MTU limit. Since the maximum size of an A-MSDU depends on the PHY
+mode of the transmitting STA, it is not possible to set an exact MTU
+limit for a monitor interface. Now the maximum MTU for a monitor
+interface is unrestricted.
 
---> ath_reset_internal() takes &sc->sc_pcu_lock spin lock
-   --> ath9k_hw_reset()
-      --> ath9k_hw_gpio_request_in()
-         --> ath9k_hw_gpio_request()
-            --> ath9k_hw_gpio_cfg_soc()
-
-Remove gpio_free(), use error message instead, so we should make sure
-there is no GPIO conflict.
-
-Also remove ath9k_hw_gpio_free() from ath9k_hw_apply_gpio_override(),
-as gpio_mask will never be set for SOC chips.
-
-Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/1628481916-15030-1-git-send-email-miaoqing@codeaurora.org
+Signed-off-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
+Link: https://lore.kernel.org/r/20210628123246.2070558-1-johan.almbladh@anyfinetworks.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/hw.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/mac80211/iface.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index c86faebbc459..6b2668f065d5 100644
---- a/drivers/net/wireless/ath/ath9k/hw.c
-+++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -1622,7 +1622,6 @@ static void ath9k_hw_apply_gpio_override(struct ath_hw *ah)
- 		ath9k_hw_gpio_request_out(ah, i, NULL,
- 					  AR_GPIO_OUTPUT_MUX_AS_OUTPUT);
- 		ath9k_hw_set_gpio(ah, i, !!(ah->gpio_val & BIT(i)));
--		ath9k_hw_gpio_free(ah, i);
- 	}
- }
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 6f576306a4d7..ddc001ad9055 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1875,9 +1875,16 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
  
-@@ -2730,14 +2729,17 @@ static void ath9k_hw_gpio_cfg_output_mux(struct ath_hw *ah, u32 gpio, u32 type)
- static void ath9k_hw_gpio_cfg_soc(struct ath_hw *ah, u32 gpio, bool out,
- 				  const char *label)
- {
-+	int err;
-+
- 	if (ah->caps.gpio_requested & BIT(gpio))
- 		return;
+ 		netdev_set_default_ethtool_ops(ndev, &ieee80211_ethtool_ops);
  
--	/* may be requested by BSP, free anyway */
--	gpio_free(gpio);
--
--	if (gpio_request_one(gpio, out ? GPIOF_OUT_INIT_LOW : GPIOF_IN, label))
-+	err = gpio_request_one(gpio, out ? GPIOF_OUT_INIT_LOW : GPIOF_IN, label);
-+	if (err) {
-+		ath_err(ath9k_hw_common(ah), "request GPIO%d failed:%d\n",
-+			gpio, err);
- 		return;
-+	}
+-		/* MTU range: 256 - 2304 */
++		/* MTU range is normally 256 - 2304, where the upper limit is
++		 * the maximum MSDU size. Monitor interfaces send and receive
++		 * MPDU and A-MSDU frames which may be much larger so we do
++		 * not impose an upper limit in that case.
++		 */
+ 		ndev->min_mtu = 256;
+-		ndev->max_mtu = local->hw.max_mtu;
++		if (type == NL80211_IFTYPE_MONITOR)
++			ndev->max_mtu = 0;
++		else
++			ndev->max_mtu = local->hw.max_mtu;
  
- 	ah->caps.gpio_requested |= BIT(gpio);
- }
+ 		ret = register_netdevice(ndev);
+ 		if (ret) {
 -- 
 2.30.2
 
