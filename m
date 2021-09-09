@@ -2,213 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEE2D405A35
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 17:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF037405A32
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 17:29:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232656AbhIIPcl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Sep 2021 11:32:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58944 "EHLO
+        id S236634AbhIIPaH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Sep 2021 11:30:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232359AbhIIPck (ORCPT
+        with ESMTP id S236270AbhIIPaH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Sep 2021 11:32:40 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE376C061574
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Sep 2021 08:31:30 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id u16so3158541wrn.5
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Sep 2021 08:31:30 -0700 (PDT)
+        Thu, 9 Sep 2021 11:30:07 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30DCC061574
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Sep 2021 08:28:57 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id x7so2066974pfa.8
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Sep 2021 08:28:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=6bcT8H0XxYOwPfG/ex8rhH7MU/535fM35JAq8iCTSoM=;
-        b=uanjnRZBU/oz1r5Bss7O464Ys4xNnm1ivBZYeLSt1FKixG552OIuOR/TMJMlPRW2zq
-         Ku1X9WRpDHYYBcYCmmjKFpAEuWGuFPbTDrieqXILNiWBodrFAodlhmDy1hhyDfb1lttG
-         euuDGfq5KnDcjrO7MwmcqibTM3949vQjo02/7uKSedftpFnoljmBrjvCn17RbxX2HjtA
-         ppydnhTmanFQ0yMJJzoKwakwPq+ygUz+/DMLA/8CvQrfmbeekWmoxrNghtgk4cFZIQrJ
-         Dps9mUBs/qjRDV5KHW+MRRNPZVLdixtUJnwtsMiLJDqctgwoXlbCxSBnD+0/npV7Ktlu
-         2rYw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bF0U+bI13rUtDY4/Stus0J0Hb1iLz5vZY9CKKh1Kj5U=;
+        b=X8RvLYbkI/+LmpSbLcHoE2xS9JaapFsQupbFofOrkx5UWQLGZWJYh6NcL6tJT1bKKG
+         dEpm6Jl0HbRGncdXf+AWkXD221vGA8DM/rIcfG3EYvJcTtEXJgGFzQYKU95kV5bbrGkH
+         XOZexRr59glv7yhGmHr0NIsUTvJQO2cGuMYAq4PhDnHD0/XnWR1l8fDxTeTSaFIw7tMD
+         g0Mchqgzmll1uaiCST33r0AbIyeEfdTAklX2Gj0tuDgPFAUboiZX4L5TYVQDiY1o2j2w
+         yqhK3o0osxvoWvdkFypvYmxIq0PMJGkNds8BACQniiCb6FpV6WEN+tHn7zwZNKrG6lob
+         4xKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=6bcT8H0XxYOwPfG/ex8rhH7MU/535fM35JAq8iCTSoM=;
-        b=0oX5TrtQibLpwC2xZgnk7yRMntvcdaU4c2p0rImHbNLsUQYyAbMRmZWe+2C/cHMw9M
-         EoAsZ0o0i+9rJavBzjdARvnletzNNTHOTWS3XULRvmyNIA2n2p6GCXFdGt/PR5LU4+k2
-         UGHGhqDuduv5FrJA7tAS/CFRxnUffMPVjIQ37yv7r/1Fsed3f0qtRBzV88zFy2HMKMeU
-         mQ9nSJSicpbMggTk/loqkjhbn4ti41guSGHPVTJ6HA5eOgz+TLdCZhKwBMYXdgXMB8b1
-         uzIADO85qEsxunP1ma8MTXxKq976iUzTBPcgR1/rtdD80um1aJBzB5QrUgjiI0H1bPTP
-         HAbw==
-X-Gm-Message-State: AOAM532sK2FZs9G+ivyyab53lAMt5eQMdKgePpnm7lSa2a8D3bYiWJfm
-        /LXIJnyZMNAmF07rIyaLEtTaPw==
-X-Google-Smtp-Source: ABdhPJyUnNw9AirgAmvpQ8XRmbjEUpZI4c2M4sJ/i2j4UvI5T2jG7XOQsen3aJhQHbJndCvCOwTpaQ==
-X-Received: by 2002:adf:8b19:: with SMTP id n25mr4549458wra.216.1631201487554;
-        Thu, 09 Sep 2021 08:31:27 -0700 (PDT)
-Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id f5sm1856536wmb.47.2021.09.09.08.31.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Sep 2021 08:31:27 -0700 (PDT)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        wcn36xx@lists.infradead.org
-Cc:     loic.poulain@linaro.org, benl@squareup.com,
-        bryan.odonoghue@linaro.org
-Subject: [PATCH] wcn36xx: Implement Idle Mode Power Save
-Date:   Thu,  9 Sep 2021 16:33:20 +0100
-Message-Id: <20210909153320.2624649-1-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.33.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bF0U+bI13rUtDY4/Stus0J0Hb1iLz5vZY9CKKh1Kj5U=;
+        b=q2uHr9gRdoFxxfuRxm5qsxSyG2dyoqyWE5lrctsNxPzxGwKCPQQwR7C7eRgA2zqxYn
+         RY12rYXbz4GJYMuw3tmi+RBcZrx6vGTTAKLuM2jIfIDfSh/RUbSWDjgFE9VMBHlPbvoI
+         5J9QAvRRIz2p9aFOnmoMTS/3aoBMbkRT/aa1LoT54n3TE3falFBaRQU2w7ZoZ+AmxGDQ
+         6k+oO7Dmtc1tIoRBXdBUA6KMkNehnza8OAerwgV/stasbxHWLFVn3J/WGmgUQ2TtRm+R
+         hLmn/87ZYcvybSkSd3FL8D5xSSqoT4rULvmiPatViOawsYUaeau9D2PanjC+hPBr54qU
+         Hbfw==
+X-Gm-Message-State: AOAM530zix5HRxE7lYYb7McWCz5Lx34H1aIQ3eqapoe5jhaT+1QUUAEY
+        BZh0SA6PXP6/0XwOmoxaOaK1jh0oqcwvNnuyytxEFg==
+X-Google-Smtp-Source: ABdhPJyeeb2UL55nz+qvr32zj3zf0BpE09JIRIqBkCvz8lvYssDr55tI8EPyZRpgiOQJQx6LVBgWfz2CqvOpASNYDrs=
+X-Received: by 2002:a63:5ec6:: with SMTP id s189mr3192046pgb.431.1631201337209;
+ Thu, 09 Sep 2021 08:28:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210909144428.2564650-1-bryan.odonoghue@linaro.org> <20210909144428.2564650-2-bryan.odonoghue@linaro.org>
+In-Reply-To: <20210909144428.2564650-2-bryan.odonoghue@linaro.org>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Thu, 9 Sep 2021 17:39:16 +0200
+Message-ID: <CAMZdPi9EQNp5GqOKnfZr-05Fp7CuuzM2u4vvx_2AS_0M_Fm6qw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] wcn36xx: Fix Antenna Diversity Switching
+To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        wcn36xx@lists.infradead.org, Benjamin Li <benl@squareup.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Idle Mode Power Save (IMPS) is a power saving mechanism which when called
-by wcn36xx will cause the radio hardware to enter power collapse.
+On Thu, 9 Sept 2021 at 16:42, Bryan O'Donoghue
+<bryan.odonoghue@linaro.org> wrote:
+>
+> We have been tracking a strange bug with Antenna Diversity Switching (ADS)
+> on wcn3680b for a while.
+>
+> ADS is configured like this:
+>    A. Via a firmware configuration table baked into the NV area.
+>        1. Defines if ADS is enabled.
+>        2. Defines which GPIOs are connected to which antenna enable pin.
+>        3. Defines which antenna/GPIO is primary and which is secondary.
+>
+>    B. WCN36XX_CFG_VAL(ANTENNA_DIVERSITY, N)
+>       N is a bitmask of available antenna.
+>
+>       Setting N to 3 indicates a bitmask of enabled antenna (1 | 2).
+>
+>       Obviously then we can set N to 1 or N to 2 to fix to a particular
+>       antenna and disable antenna diversity.
+>
+>    C. WCN36XX_CFG_VAL(ASD_PROBE_INTERVAL, XX)
+>       XX is the number of beacons between each antenna RSSI check.
+>       Setting this value to 50 means, every 50 received beacons, run the
+>       ADS algorithm.
+>
+>    D. WCN36XX_CFG_VAL(ASD_TRIGGER_THRESHOLD, YY)
+>       YY is a two's complement integer which specifies the RSSI decibel
+>       threshold below which ADS will run.
+>       We default to -60db here, meaning a measured RSSI <= -60db will
+>       trigger an ADS probe.
+>
+>    E. WCN36XX_CFG_VAL(ASD_RTT_RSSI_HYST_THRESHOLD, Z)
+>       Z is a hysteresis value, indicating a delta which the RSSI must
+>       exceed for the antenna switch to be valid.
+>
+>       For example if HYST_THRESHOLD == 3 AntennaId1-RSSI == -60db and
+>       AntennaId-2-RSSI == -58db then firmware will not switch antenna.
+>       The threshold needs to be -57db or better to satisfy the criteria.
+>
+>    F. A firmware feature bit also exists ANTENNA_DIVERSITY_SELECTION.
+>       This feature bit is used by the firmware to report if
+>       ANTENNA_DIVERSITY_SELECTION is supported. The host is not required to
+>       toggle this bit to enable or disable ADS.
+>
+> ADS works like this:
+>
+>     A. Every XX beacons the firmware switches to or remains on the primary
+>        antenna.
+>
+>     B. The firmware then sends a Request-To-Send (RTS) packet to the AP.
+>
+>     C. The firmware waits for a Clear-To-Send (CTS) response from the AP.
+>
+>     D. The firmware then notes the received RSSI on the CTS packet.
+>
+>     E. The firmware then repeats steps A-D on the secondary antenna.
+>
+>     F. Subsequently if the RSSI on the measured antenna is better than
+>        ASD_TRIGGER_THRESHOLD + the active antenna's RSSI then the
+>        measured antenna becomes the active antenna.
+>
+>     G. If RSSI rises past ASD_TRIGGER_THRESHOLD then ADS doesn't run at
+>        all even if there is a substantially better RSSI on the alternative
+>        antenna.
+>
+> What we have been observing is that the RTS packet is being sent but the
+> MAC address is a byte-swapped version of the target MAC. The ADS/RTS MAC is
+> corrupted only when the link is encrypted, if the AP is open the RTS MAC is
+> correct. Similarly if we configure the firmware to an RTS/CTS sequence for
+> regular data - the transmitted RTS MAC is correctly formatted.
+>
+> Internally the wcn36xx firmware uses the indexes in the SMD commands to
+> populate and extract data from specific entries in an STA lookup table. The
+> AP's MAC appears a number of times in different indexes within this lookup
+> table, so the MAC address extracted for the data-transmit RTS and the MAC
+> address extracted for the ADS/RTS packet are not the same STA table index.
+>
+> Our analysis indicates the relevant firmware STA table index is
+> "bssSelfStaIdx".
+>
+> There is an STA populate function responsible for formatting the MAC
+> address of the bssSelfStaIdx including byte-swapping the MAC address.
+>
+> Its clear then that the required STA populate command did not run for
+> bssSelfStaIdx.
+>
+> So taking a look at the sequence of SMD commands sent to the firmware we
+> see the following downstream when moving from an unencrypted to encrypted
+> BSS setup.
+>
+> - WLAN_HAL_CONFIG_BSS_REQ
+> - WLAN_HAL_CONFIG_STA_REQ
+> - WLAN_HAL_SET_STAKEY_REQ
+>
+> Upstream in wcn36xx we have
+>
+> - WLAN_HAL_CONFIG_BSS_REQ
+> - WLAN_HAL_SET_STAKEY_REQ
+>
+> The solution then is to add the missing WLAN_HAL_CONFIG_STA_REQ between
+> WLAN_HAL_CONFIG_BSS_REQ and WLAN_HAL_SET_STAKEY_REQ.
+>
+> No surprise WLAN_HAL_CONFIG_STA_REQ is the routine responsible for
+> populating the STA lookup table in the firmware and once done the MAC sent
+> by the ADS routine is in the correct byte-order.
+>
+> This bug is apparent with ADS but it is also the case that any other
+> firmware routine that depends on the "bssSelfStaIdx" would retrieve
+> malformed data on an encrypted link.
+>
+> Fixes: 3e977c5c523d ("wcn36xx: Define wcn3680 specific firmware parameters")
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Tested-by: Benjamin Li <benl@squareup.com>
 
-This particular call maps nicely to a simple conjunction/disjunction around
-IEEE80211_CONF_CHANGE_IDLE and IEEE80211_CONF_IDLE.
-
-Here we enter idle when we are not associated with an AP. The kernel will
-incrementally toggle idle on/off in the process of trying to establish a
-connection, thus saving power until we are connected to the AP again, at
-which point we give way to BMPS if power_save is on.
-
-We've validated that with IMPS an apq8039 device which has the wcn36xx
-module loaded but, has not authenticated with an AP will get to VMIN on
-suspend and will not without IMPS.
-
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Tested-by: Benjamin Li <benl@squareup.com>
----
- drivers/net/wireless/ath/wcn36xx/hal.h  |  6 +--
- drivers/net/wireless/ath/wcn36xx/main.c |  7 ++++
- drivers/net/wireless/ath/wcn36xx/smd.c  | 55 +++++++++++++++++++++++++
- drivers/net/wireless/ath/wcn36xx/smd.h  |  3 ++
- 4 files changed, 68 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
-index 455143c4164e..5f1f2480459a 100644
---- a/drivers/net/wireless/ath/wcn36xx/hal.h
-+++ b/drivers/net/wireless/ath/wcn36xx/hal.h
-@@ -3384,11 +3384,11 @@ struct tl_hal_flush_ac_rsp_msg {
- 
- struct wcn36xx_hal_enter_imps_req_msg {
- 	struct wcn36xx_hal_msg_header header;
--};
-+} __packed;
- 
--struct wcn36xx_hal_exit_imps_req {
-+struct wcn36xx_hal_exit_imps_req_msg {
- 	struct wcn36xx_hal_msg_header header;
--};
-+} __packed;
- 
- struct wcn36xx_hal_enter_bmps_req_msg {
- 	struct wcn36xx_hal_msg_header header;
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index 2561ae9cde65..412c629705a6 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -443,6 +443,13 @@ static int wcn36xx_config(struct ieee80211_hw *hw, u32 changed)
- 	if (changed & IEEE80211_CONF_CHANGE_PS)
- 		wcn36xx_change_ps(wcn, hw->conf.flags & IEEE80211_CONF_PS);
- 
-+	if (changed & IEEE80211_CONF_CHANGE_IDLE) {
-+		if (hw->conf.flags & IEEE80211_CONF_IDLE)
-+			wcn36xx_smd_enter_imps(wcn);
-+		else
-+			wcn36xx_smd_exit_imps(wcn);
-+	}
-+
- 	mutex_unlock(&wcn->conf_mutex);
- 
- 	return 0;
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index 57fa857b290b..599cb220b150 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -2184,6 +2184,59 @@ int wcn36xx_smd_exit_bmps(struct wcn36xx *wcn, struct ieee80211_vif *vif)
- 	return ret;
- }
- 
-+int wcn36xx_smd_enter_imps(struct wcn36xx *wcn)
-+{
-+	struct wcn36xx_hal_enter_imps_req_msg msg_body;
-+	int ret;
-+
-+	mutex_lock(&wcn->hal_mutex);
-+	INIT_HAL_MSG(msg_body, WCN36XX_HAL_ENTER_IMPS_REQ);
-+
-+	PREPARE_HAL_BUF(wcn->hal_buf, msg_body);
-+
-+	ret = wcn36xx_smd_send_and_wait(wcn, msg_body.header.len);
-+	if (ret) {
-+		wcn36xx_err("Sending hal_enter_imps failed\n");
-+		goto out;
-+	}
-+	ret = wcn36xx_smd_rsp_status_check(wcn->hal_buf, wcn->hal_rsp_len);
-+	if (ret) {
-+		wcn36xx_err("hal_enter_imps response failed err=%d\n", ret);
-+		goto out;
-+	}
-+
-+	wcn36xx_dbg(WCN36XX_DBG_HAL, "Entered idle mode\n");
-+out:
-+	mutex_unlock(&wcn->hal_mutex);
-+	return ret;
-+}
-+
-+int wcn36xx_smd_exit_imps(struct wcn36xx *wcn)
-+{
-+	struct wcn36xx_hal_exit_imps_req_msg msg_body;
-+	int ret;
-+
-+	mutex_lock(&wcn->hal_mutex);
-+	INIT_HAL_MSG(msg_body, WCN36XX_HAL_EXIT_IMPS_REQ);
-+
-+	PREPARE_HAL_BUF(wcn->hal_buf, msg_body);
-+
-+	ret = wcn36xx_smd_send_and_wait(wcn, msg_body.header.len);
-+	if (ret) {
-+		wcn36xx_err("Sending hal_exit_imps failed\n");
-+		goto out;
-+	}
-+	ret = wcn36xx_smd_rsp_status_check(wcn->hal_buf, wcn->hal_rsp_len);
-+	if (ret) {
-+		wcn36xx_err("hal_exit_imps response failed err=%d\n", ret);
-+		goto out;
-+	}
-+	wcn36xx_dbg(WCN36XX_DBG_HAL, "Exited idle mode\n");
-+out:
-+	mutex_unlock(&wcn->hal_mutex);
-+	return ret;
-+}
-+
- int wcn36xx_smd_set_power_params(struct wcn36xx *wcn, bool ignore_dtim)
- {
- 	struct wcn36xx_hal_set_power_params_req_msg msg_body;
-@@ -3060,6 +3113,8 @@ int wcn36xx_smd_rsp_process(struct rpmsg_device *rpdev,
- 	case WCN36XX_HAL_GTK_OFFLOAD_RSP:
- 	case WCN36XX_HAL_GTK_OFFLOAD_GETINFO_RSP:
- 	case WCN36XX_HAL_HOST_RESUME_RSP:
-+	case WCN36XX_HAL_ENTER_IMPS_RSP:
-+	case WCN36XX_HAL_EXIT_IMPS_RSP:
- 		memcpy(wcn->hal_buf, buf, len);
- 		wcn->hal_rsp_len = len;
- 		complete(&wcn->hal_rsp_compl);
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.h b/drivers/net/wireless/ath/wcn36xx/smd.h
-index 75d1a6d663bb..dbca0bd1b6ae 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.h
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.h
-@@ -165,4 +165,7 @@ int wcn36xx_smd_wlan_host_suspend_ind(struct wcn36xx *wcn);
- 
- int wcn36xx_smd_host_resume(struct wcn36xx *wcn);
- 
-+int wcn36xx_smd_enter_imps(struct wcn36xx *wcn);
-+int wcn36xx_smd_exit_imps(struct wcn36xx *wcn);
-+
- #endif	/* _SMD_H_ */
--- 
-2.33.0
-
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
