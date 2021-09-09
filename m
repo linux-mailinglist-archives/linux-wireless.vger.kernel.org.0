@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09350405266
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 14:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F957405275
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 14:48:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354374AbhIIMnR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Sep 2021 08:43:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45836 "EHLO mail.kernel.org"
+        id S1347669AbhIIMnd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Sep 2021 08:43:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46118 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244780AbhIIMg7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Sep 2021 08:36:59 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 68A7761BA5;
-        Thu,  9 Sep 2021 11:54:11 +0000 (UTC)
+        id S1354810AbhIIMji (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Sep 2021 08:39:38 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ADFBC61BE4;
+        Thu,  9 Sep 2021 11:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188452;
-        bh=RPUn723YwuyKp0Qjlf9A2KJKCf03ZrJex2xjJmeSgd0=;
+        s=k20201202; t=1631188485;
+        bh=BZrkluB2099K/J1qS8KSKoiffuQQBK2F02rugxMspQk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SYLgQKkEE3nzvtjpgo68nxrAHGFq82ticwS031mDUT1TDHWm8KxvC46YndxJ2yA06
-         2Oh8UlGwZ0xxBalj0V9GbxIQD+rp5a15Qdvj0u8PC8WuM+/HCyNyVq+tSMyfZ0Xc/j
-         Q1An8wXDjz5+GtOY6K8RBQv5jOXTgpnVdu1gk9AdFs/wF87DVV9azt4NQOjmF7UVZb
-         KGR1kntC3/ynME5W5QyzDXOalEYAVzqeEGHxmRmPAQvv6rty/16vkG8cAG7fAX33dM
-         usMNpuqE/RXQycfsHnP1XxfyRrIDP/TQvw3PhFeNsaLH3Ue/ty++Sti3N8mVbCN6a7
-         O3dFCvvC/spNw==
+        b=CPAhG+6AjtrKPlyYZyP7G3Db5HkCbOXkYXAldfKwGonF1PWgHEJBrAz8wqTQ52NAw
+         9k7+wHtqBJzV8oR3o66NghWKUaGmQaeag2WDPN4WkGb8GsDJnZYPGoPZ9y6VmgOGIO
+         gTe2xyg/dFaLhTqDzbwsfuuOzsRcYotUXcKiZyjkegDK2fTMjeJtnoYuKUKSkulaQM
+         JC/ntjByvoTRUzSaWfL0dG9nONsd4usXpFd1zOtqv8h0vv4mLLeCUdYQl0joEhWKEk
+         tHZUled7eh37NyXd8j6dLvjbC5viujhXu45tv9Qh2axuMeiK6RrGPq9UIeIOa74u6t
+         mwFN1pBItaygg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chin-Yen Lee <timlee@realtek.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 134/176] rtw88: wow: fix size access error of probe request
-Date:   Thu,  9 Sep 2021 07:50:36 -0400
-Message-Id: <20210909115118.146181-134-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 160/176] iwlwifi: pcie: free RBs during configure
+Date:   Thu,  9 Sep 2021 07:51:02 -0400
+Message-Id: <20210909115118.146181-160-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210909115118.146181-1-sashal@kernel.org>
 References: <20210909115118.146181-1-sashal@kernel.org>
@@ -44,85 +43,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chin-Yen Lee <timlee@realtek.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 69c7044526d984df672b8d9b6d6998c34617cde4 ]
+[ Upstream commit 6ac5720086c8b176794eb74c5cc09f8b79017f38 ]
 
-Current flow will lead to null ptr access because of trying
-to get the size of freed probe-request packets. We store the
-information of packet size into rsvd page instead and also fix
-the size error issue, which will cause unstable behavoir of
-sending probe request by wow firmware.
+When switching op-modes, or more generally when reconfiguring,
+we might switch the RB size. In _iwl_pcie_rx_init() we have a
+comment saying we must free all RBs since we might switch the
+size, but this is actually too late: the switch has been done
+and we'll free the buffers with the wrong size.
 
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210728014335.8785-6-pkshih@realtek.com
+Fix this by always freeing the buffers, if any, at the start
+of configure, instead of only after the size may have changed.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Link: https://lore.kernel.org/r/iwlwifi.20210802170640.42d7c93279c4.I07f74e65aab0e3d965a81206fcb289dc92d74878@changeid
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c | 8 ++++++--
- drivers/net/wireless/realtek/rtw88/fw.h | 1 +
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c    | 5 ++++-
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 3 +++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index b2fd87834f23..0452630bcfac 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -684,7 +684,7 @@ static u16 rtw_get_rsvd_page_probe_req_size(struct rtw_dev *rtwdev,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+index 94299f259518..2c13fa8f2820 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+@@ -544,6 +544,9 @@ void iwl_pcie_free_rbs_pool(struct iwl_trans *trans)
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	int i;
+ 
++	if (!trans_pcie->rx_pool)
++		return;
++
+ 	for (i = 0; i < RX_POOL_SIZE(trans_pcie->num_rx_bufs); i++) {
+ 		if (!trans_pcie->rx_pool[i].page)
  			continue;
- 		if ((!ssid && !rsvd_pkt->ssid) ||
- 		    rtw_ssid_equal(rsvd_pkt->ssid, ssid))
--			size = rsvd_pkt->skb->len;
-+			size = rsvd_pkt->probe_req_size;
- 	}
+@@ -1094,7 +1097,7 @@ static int _iwl_pcie_rx_init(struct iwl_trans *trans)
+ 	INIT_LIST_HEAD(&rba->rbd_empty);
+ 	spin_unlock(&rba->lock);
  
- 	return size;
-@@ -912,6 +912,8 @@ static struct sk_buff *rtw_get_rsvd_page_skb(struct ieee80211_hw *hw,
- 							 ssid->ssid_len, 0);
- 		else
- 			skb_new = ieee80211_probereq_get(hw, vif->addr, NULL, 0, 0);
-+		if (skb_new)
-+			rsvd_pkt->probe_req_size = (u16)skb_new->len;
- 		break;
- 	case RSVD_NLO_INFO:
- 		skb_new = rtw_nlo_info_get(hw);
-@@ -1508,6 +1510,7 @@ int rtw_fw_dump_fifo(struct rtw_dev *rtwdev, u8 fifo_sel, u32 addr, u32 size,
- static void __rtw_fw_update_pkt(struct rtw_dev *rtwdev, u8 pkt_id, u16 size,
- 				u8 location)
+-	/* free all first - we might be reconfigured for a different size */
++	/* free all first - we overwrite everything here */
+ 	iwl_pcie_free_rbs_pool(trans);
+ 
+ 	for (i = 0; i < RX_QUEUE_SIZE; i++)
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index bb990be7c870..082768ec8aa8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -1909,6 +1909,9 @@ static void iwl_trans_pcie_configure(struct iwl_trans *trans,
  {
-+	struct rtw_chip_info *chip = rtwdev->chip;
- 	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
- 	u16 total_size = H2C_PKT_HDR_SIZE + H2C_PKT_UPDATE_PKT_LEN;
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
  
-@@ -1518,6 +1521,7 @@ static void __rtw_fw_update_pkt(struct rtw_dev *rtwdev, u8 pkt_id, u16 size,
- 	UPDATE_PKT_SET_LOCATION(h2c_pkt, location);
- 
- 	/* include txdesc size */
-+	size += chip->tx_pkt_desc_sz;
- 	UPDATE_PKT_SET_SIZE(h2c_pkt, size);
- 
- 	rtw_fw_send_h2c_packet(rtwdev, h2c_pkt);
-@@ -1527,7 +1531,7 @@ void rtw_fw_update_pkt_probe_req(struct rtw_dev *rtwdev,
- 				 struct cfg80211_ssid *ssid)
- {
- 	u8 loc;
--	u32 size;
-+	u16 size;
- 
- 	loc = rtw_get_rsvd_page_probe_req_location(rtwdev, ssid);
- 	if (!loc) {
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
-index 08644540d259..f4aed247e3bd 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.h
-+++ b/drivers/net/wireless/realtek/rtw88/fw.h
-@@ -117,6 +117,7 @@ struct rtw_rsvd_page {
- 	u8 page;
- 	bool add_txdesc;
- 	struct cfg80211_ssid *ssid;
-+	u16 probe_req_size;
- };
- 
- enum rtw_keep_alive_pkt_type {
++	/* free all first - we might be reconfigured for a different size */
++	iwl_pcie_free_rbs_pool(trans);
++
+ 	trans->txqs.cmd.q_id = trans_cfg->cmd_queue;
+ 	trans->txqs.cmd.fifo = trans_cfg->cmd_fifo;
+ 	trans->txqs.cmd.wdg_timeout = trans_cfg->cmd_q_wdg_timeout;
 -- 
 2.30.2
 
