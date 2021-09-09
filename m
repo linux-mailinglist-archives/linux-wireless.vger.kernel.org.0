@@ -2,36 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC468405057
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 14:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62C6D405059
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 14:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350519AbhIIM0i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Sep 2021 08:26:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33210 "EHLO mail.kernel.org"
+        id S1353602AbhIIM0z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Sep 2021 08:26:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33294 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1349582AbhIIMWt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Sep 2021 08:22:49 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3090E61AD1;
-        Thu,  9 Sep 2021 11:51:02 +0000 (UTC)
+        id S1353007AbhIIMWv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Sep 2021 08:22:51 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 438DD61AFD;
+        Thu,  9 Sep 2021 11:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188262;
-        bh=v2eAQalN9+dq+alzkTjatiitCku3D0+kDsMpTGOhSng=;
+        s=k20201202; t=1631188269;
+        bh=k7GlPxKjxxPV1E0dBBXMjRRHeWhi0zDdQc+CVA8fLYg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bCfB9le2MP5Z3mE+A5CGD3qW+Pnesf72tMRdfcllXedc+4yfri2ToBppbcvSCSKtm
-         RpppTj6eyBVhRBQwwb5FzzNu4ha4Nrj6hawM19y6wCJ9/vcE5FvDCV/OpWR1E/vjZc
-         qyHr+R2SbEAieBqDkMIderBgZWXcKd/GrNk0mbHa+UqUMbouTK/mTCr7mzTKsupTUN
-         wZDUYl6SjKAvmPzLQhBrP/hM06ttil4jHiXr2nM1QxywAiyQ979QrBrl2SXoZMPLab
-         l0ukxT457UoiiF4If29WzZXwUcOCP1MMg8aO/f0EpmJJMUUxMdTDNv0tQ2bdCuT8cT
-         c6BJMaGk1nG7Q==
+        b=kGIJAwrJfnx4nGHSCutdFSBX+1ikz0fv69kMrH6mSDViqqWNfJSLgl2Ov3otMtQKq
+         DVRX6kVKjx/9nnRB4kX4Otg+TJH5QnVosesTAjd8iNFl0EIAyNCEz5JZe/aEUuo8YU
+         a5WYTLOTERzhWBZkL4iGZMF2w9AzigSOJuoaMjlxN5irSZcwqeyQ9mBydd/G6syQGM
+         +ZlqPLx24B/ZhwaE4R5JQtAWRuIwIVLluBecbPYouQkX87unvZdODaklB6DsKyHBCY
+         tNvKjKWTt57GO4mKkQo1Z6BJMbvErqE7W+rtmKbPEv6FayKSxIqvCo292w7uNrMcWK
+         i3mHOEejO5UOA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
+Cc:     Loic Poulain <loic.poulain@linaro.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, wcn36xx@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 208/219] iwlwifi: mvm: Fix scan channel flags settings
-Date:   Thu,  9 Sep 2021 07:46:24 -0400
-Message-Id: <20210909114635.143983-208-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.13 213/219] wcn36xx: Fix missing frame timestamp for beacon/probe-resp
+Date:   Thu,  9 Sep 2021 07:46:29 -0400
+Message-Id: <20210909114635.143983-213-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210909114635.143983-1-sashal@kernel.org>
 References: <20210909114635.143983-1-sashal@kernel.org>
@@ -43,35 +44,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Loic Poulain <loic.poulain@linaro.org>
 
-[ Upstream commit 090f1be3abf3069ef856b29761f181808bf55917 ]
+[ Upstream commit 8678fd31f2d3eb14f2b8b39c9bc266f16fa24b22 ]
 
-The iwl_mvm_scan_ch_n_aps_flag() is called with a variable
-before the value of the variable is set. Fix it.
+When receiving a beacon or probe response, we should update the
+boottime_ns field which is the timestamp the frame was received at.
+(cf mac80211.h)
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20210826224715.f6f188980a5e.Ie7331a8b94004d308f6cbde44e519155a5be91dd@changeid
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+This fixes a scanning issue with Android since it relies on this
+timestamp to determine when the AP has been seen for the last time
+(via the nl80211 BSS_LAST_SEEN_BOOTTIME parameter).
+
+Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/1629992768-23785-1-git-send-email-loic.poulain@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/wcn36xx/txrx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 3627de2af344..ee3aff8bf7c2 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1648,7 +1648,7 @@ iwl_mvm_umac_scan_cfg_channels_v6(struct iwl_mvm *mvm,
- 		struct iwl_scan_channel_cfg_umac *cfg = &cp->channel_config[i];
- 		u32 n_aps_flag =
- 			iwl_mvm_scan_ch_n_aps_flag(vif_type,
--						   cfg->v2.channel_num);
-+						   channels[i]->hw_value);
+diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
+index 1b831157ede1..cab196bb38cd 100644
+--- a/drivers/net/wireless/ath/wcn36xx/txrx.c
++++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
+@@ -287,6 +287,10 @@ int wcn36xx_rx_skb(struct wcn36xx *wcn, struct sk_buff *skb)
+ 		status.rate_idx = 0;
+ 	}
  
- 		cfg->flags = cpu_to_le32(flags | n_aps_flag);
- 		cfg->v2.channel_num = channels[i]->hw_value;
++	if (ieee80211_is_beacon(hdr->frame_control) ||
++	    ieee80211_is_probe_resp(hdr->frame_control))
++		status.boottime_ns = ktime_get_boottime_ns();
++
+ 	memcpy(IEEE80211_SKB_RXCB(skb), &status, sizeof(status));
+ 
+ 	if (ieee80211_is_beacon(hdr->frame_control)) {
 -- 
 2.30.2
 
