@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F81405393
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 14:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B508640549B
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 15:30:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352851AbhIIMx0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Sep 2021 08:53:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40984 "EHLO mail.kernel.org"
+        id S1356555AbhIINAk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Sep 2021 09:00:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42504 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1354484AbhIIMvK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Sep 2021 08:51:10 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1F4DB63242;
-        Thu,  9 Sep 2021 11:57:16 +0000 (UTC)
+        id S1354237AbhIIMvf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Sep 2021 08:51:35 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BF6CA6323C;
+        Thu,  9 Sep 2021 11:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188636;
-        bh=tKk3M5hdu0SivRmHrP4r5yAGD7NV+BEosnEsay9gu6c=;
+        s=k20201202; t=1631188640;
+        bh=Uh4gAPJjL7EvxAYvjfESQ3h7Yip6zR0rBwfOQmMswjk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ggd6xxaEr8sC70xrg7QMsy2h6ULYjOvlFws6wYKEFxMdZQqduS76Lqg9gXU3CaAy+
-         6r56Eroh5QLtXPXsaFqnx3eYocZuA5DFGptQaPaIBXI8MxTnLwb87lsnnTVaXJLz2w
-         T7FuEJOAK8BmJW/0RodTipDsWgg/9D05HwRUcOthaTJLyxVQI3hE/tCQ+mYnyTlQaB
-         NoDb2J6iALStTXxGVv5HfvvhZQpHAUm+EjhHaiVEBb2ONeNyOrKyuGycXYtgpeBVYY
-         qCLFnBBGHAoEpjoO/pu8NbMsZu9KyaBAzatzb6OHrKmUgabTBqoAhXyqoKIX0W/8yT
-         rdTD9dPo2dwYw==
+        b=BJZ73G7oYIm+A4PDpzyHq5Adwb0a8HfToWg/UXUq9eJu+/gW6beJn6rNK1nHmFIKy
+         yOhimNzDuTZRduOOOi5GxCT9Z4NKMKCccU85icLoHmidlFMgUUTyXkn+OBLMTCQvSt
+         z88MW56RV3apDYe74MIj+BHpoy0CbyhUv2/Z9lCFoc+RBbadsUJV06S2/lW5ZrKY5H
+         JDyV20rfLTxlDxVotWG3Y3flA1IY16H3kDOQQFD73nlOB8O9JJOW+HW0RRXdVnuoLc
+         dPf3zrdgfZWYbckCOyk2K0jVIgqOO513fyCirT3aO4Fjg3IlaU4TFpvu+ORt1diC8K
+         9HRQkLLZILIuw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+Cc:     Zekun Shen <bruceshenzk@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 102/109] iwlwifi: mvm: fix access to BSS elements
-Date:   Thu,  9 Sep 2021 07:54:59 -0400
-Message-Id: <20210909115507.147917-102-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 105/109] ath9k: fix OOB read ar9300_eeprom_restore_internal
+Date:   Thu,  9 Sep 2021 07:55:02 -0400
+Message-Id: <20210909115507.147917-105-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210909115507.147917-1-sashal@kernel.org>
 References: <20210909115507.147917-1-sashal@kernel.org>
@@ -43,49 +43,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Zekun Shen <bruceshenzk@gmail.com>
 
-[ Upstream commit 6c608cd6962ebdf84fd3de6d42f88ed64d2f4e1b ]
+[ Upstream commit 23151b9ae79e3bc4f6a0c4cd3a7f355f68dad128 ]
 
-BSS elements are protected using RCU, so we need to use
-RCU properly to access them, fix that.
+Bad header can have large length field which can cause OOB.
+cptr is the last bytes for read, and the eeprom is parsed
+from high to low address. The OOB, triggered by the condition
+length > cptr could cause memory error with a read on
+negative index.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20210805130823.fd8b5791ab44.Iba26800a6301078d3782fb249c476dd8ac2bf3c6@changeid
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+There are some sanity check around length, but it is not
+compared with cptr (the remaining bytes). Here, the
+corrupted/bad EEPROM can cause panic.
+
+I was able to reproduce the crash, but I cannot find the
+log and the reproducer now. After I applied the patch, the
+bug is no longer reproducible.
+
+Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/YM3xKsQJ0Hw2hjrc@Zekuns-MBP-16.fios-router.home
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath9k/ar9003_eeprom.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 09b1a6beee77..081cbc9ec736 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -2970,16 +2970,20 @@ static void iwl_mvm_check_he_obss_narrow_bw_ru_iter(struct wiphy *wiphy,
- 						    void *_data)
- {
- 	struct iwl_mvm_he_obss_narrow_bw_ru_data *data = _data;
-+	const struct cfg80211_bss_ies *ies;
- 	const struct element *elem;
- 
--	elem = cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY, bss->ies->data,
--				  bss->ies->len);
-+	rcu_read_lock();
-+	ies = rcu_dereference(bss->ies);
-+	elem = cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY, ies->data,
-+				  ies->len);
- 
- 	if (!elem || elem->datalen < 10 ||
- 	    !(elem->data[10] &
- 	      WLAN_EXT_CAPA10_OBSS_NARROW_BW_RU_TOLERANCE_SUPPORT)) {
- 		data->tolerated = false;
- 	}
-+	rcu_read_unlock();
- }
- 
- static void iwl_mvm_check_he_obss_narrow_bw_ru(struct ieee80211_hw *hw,
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+index b4885a700296..b0a4ca3559fd 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+@@ -3351,7 +3351,8 @@ static int ar9300_eeprom_restore_internal(struct ath_hw *ah,
+ 			"Found block at %x: code=%d ref=%d length=%d major=%d minor=%d\n",
+ 			cptr, code, reference, length, major, minor);
+ 		if ((!AR_SREV_9485(ah) && length >= 1024) ||
+-		    (AR_SREV_9485(ah) && length > EEPROM_DATA_LEN_9485)) {
++		    (AR_SREV_9485(ah) && length > EEPROM_DATA_LEN_9485) ||
++		    (length > cptr)) {
+ 			ath_dbg(common, EEPROM, "Skipping bad header\n");
+ 			cptr -= COMP_HDR_LEN;
+ 			continue;
 -- 
 2.30.2
 
