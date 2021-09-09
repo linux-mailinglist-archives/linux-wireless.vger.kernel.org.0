@@ -2,83 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9CC34047ED
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 11:42:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00471404C13
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 13:55:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232920AbhIIJn4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Sep 2021 05:43:56 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:14890 "EHLO m43-7.mailgun.net"
+        id S241185AbhIILzl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Sep 2021 07:55:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54740 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231793AbhIIJn4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Sep 2021 05:43:56 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1631180567; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=0QtdvAHb9aruE1j0Hq+zGQ6FzXUVEAUnOuOiAwUKuHE=; b=sX5UJBE/Gu15YWjMi+tmIvq6y0BewGkMxMQR9y1+M/qo2Ok4OUm5ObLjNQk0xrEj9qKblGLp
- 2QYMDRyFWSHpUoBB0p0UQHtJL6SMJtjg0UX6kfH/n2H7tuQwsfve6MiDahk46dbvHU0r5QAc
- XsqRdym52tPceOfVUXBTV4GNz5w=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 6139d705843a8a1032d4ab9a (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 09 Sep 2021 09:42:29
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 26557C43617; Thu,  9 Sep 2021 09:42:29 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6C64EC4338F;
-        Thu,  9 Sep 2021 09:42:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 6C64EC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Matthias Brugger <mbrugger@suse.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Hans deGoede <hdegoede@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v3] brcmfmac: fix "board_type" in brcmf_of_probe()
-References: <YNCHELb14+eNV94n@mwanda> <20210908131254.GJ1935@kadam>
-Date:   Thu, 09 Sep 2021 12:42:22 +0300
-In-Reply-To: <20210908131254.GJ1935@kadam> (Dan Carpenter's message of "Wed, 8
-        Sep 2021 16:12:54 +0300")
-Message-ID: <87v93a13wh.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S242573AbhIILwX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Sep 2021 07:52:23 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0115A61100;
+        Thu,  9 Sep 2021 11:44:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631187861;
+        bh=xHfzP72TZyDPRk8pGAwmlKS+B0g1x+9BYa0SUdCdils=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=sVwcZKh+hzP2J+67+aMTvK9u02C7XhI3iKnQaL2Af8Tfxt2yxGMFhEKOThIN8NTFb
+         QvnpANeHudBkBjpB31xZ3/8jD0rejWMxEnxNcyUGeoEyoU9nxhMDJqaGYj/w9KM5Hv
+         4KWiBSIkD0GhZjrO71PU1Ws0E1WdV8+pkHOIvhJjLg6/GLlcXK93FajVDnhB/zM1cD
+         ntzAiUvEBZMnxeFCkqwWSLdXbmWe1u+20JhUyoxmwb5uqsuDkvrWaFJkkr4y/SnD+0
+         7z+MPWgac0VpzN3haHFGt3miWsdpa7VYmgXx2fnGucq380JlRyG2NwzB3W5ISDHJEY
+         bofMoDpoGi7hw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Johan Almbladh <johan.almbladh@anyfinetworks.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.14 149/252] mac80211: Fix monitor MTU limit so that A-MSDUs get through
+Date:   Thu,  9 Sep 2021 07:39:23 -0400
+Message-Id: <20210909114106.141462-149-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210909114106.141462-1-sashal@kernel.org>
+References: <20210909114106.141462-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+From: Johan Almbladh <johan.almbladh@anyfinetworks.com>
 
-> This patch is still needed.
+[ Upstream commit 79f5962baea74ce1cd4e5949598944bff854b166 ]
 
-I don't see v3 in patchwork[1], but I do see v2. I don't know what
-happened, but please resend the patch as v4.
+The maximum MTU was set to 2304, which is the maximum MSDU size. While
+this is valid for normal WLAN interfaces, it is too low for monitor
+interfaces. A monitor interface may receive and inject MPDU frames, and
+the maximum MPDU frame size is larger than 2304. The MPDU may also
+contain an A-MSDU frame, in which case the size may be much larger than
+the MTU limit. Since the maximum size of an A-MSDU depends on the PHY
+mode of the transmitting STA, it is not possible to set an exact MTU
+limit for a monitor interface. Now the maximum MTU for a monitor
+interface is unrestricted.
 
-[1] https://patchwork.kernel.org/project/linux-wireless/list/?series=&submitter=37111&state=*&q=&archive=&delegate=
+Signed-off-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
+Link: https://lore.kernel.org/r/20210628123246.2070558-1-johan.almbladh@anyfinetworks.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mac80211/iface.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 1e5e9fc45523..cd96cd337aa8 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -2001,9 +2001,16 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 
+ 		netdev_set_default_ethtool_ops(ndev, &ieee80211_ethtool_ops);
+ 
+-		/* MTU range: 256 - 2304 */
++		/* MTU range is normally 256 - 2304, where the upper limit is
++		 * the maximum MSDU size. Monitor interfaces send and receive
++		 * MPDU and A-MSDU frames which may be much larger so we do
++		 * not impose an upper limit in that case.
++		 */
+ 		ndev->min_mtu = 256;
+-		ndev->max_mtu = local->hw.max_mtu;
++		if (type == NL80211_IFTYPE_MONITOR)
++			ndev->max_mtu = 0;
++		else
++			ndev->max_mtu = local->hw.max_mtu;
+ 
+ 		ret = cfg80211_register_netdevice(ndev);
+ 		if (ret) {
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.30.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
