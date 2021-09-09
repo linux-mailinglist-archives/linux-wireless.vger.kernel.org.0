@@ -2,87 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA4E04056A4
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 15:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CA794059A8
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 16:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356718AbhIINVJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Sep 2021 09:21:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36124 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1355431AbhIINNm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Sep 2021 09:13:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F2EA061440;
-        Thu,  9 Sep 2021 12:01:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188918;
-        bh=oiGYG2uBGu1Vn0UML6hygkGyZT/y2qStDHRVXZcIB7g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yd8PqQ+ms1OZWg1ffSXY2ZZa2XQZZT3DuY8g1xHjBhL6ZA0JBHJT2U9TccS8Z3IHQ
-         NGJR8tz5is8a6WJznWPKJ5HS0tHCJiDWc62Rv6EM+G/Mv6oC0pfBbYUBpoAgSRL92t
-         rvmeA36rtEDr/BCuAKr/SedRKPZIfI8jKX8Ep5kPVC4YnhM3nkI7TKUmeBo/bxTkTv
-         +p4yitpsqtpZK7Lp2AMJQLc1Vc7nWyFpE5qvHsEjV91x1L8uYtf1b0oH/wRsr+bn3T
-         zl3UjN0VCvsy4V25VyPO7kMlImW5jnB9jAww0CXvyRE54KwgI8OGd+TYafw74vIZwf
-         cENxkS/40yB7Q==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Zekun Shen <bruceshenzk@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 34/35] ath9k: fix OOB read ar9300_eeprom_restore_internal
-Date:   Thu,  9 Sep 2021 08:01:15 -0400
-Message-Id: <20210909120116.150912-34-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210909120116.150912-1-sashal@kernel.org>
-References: <20210909120116.150912-1-sashal@kernel.org>
+        id S243783AbhIIOtQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Sep 2021 10:49:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48596 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241675AbhIIOtC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Sep 2021 10:49:02 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECF36C06175F
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Sep 2021 07:42:35 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id v20-20020a1cf714000000b002e71f4d2026so1271700wmh.1
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Sep 2021 07:42:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=k8bZdv5DTLVGkZZdw+ZFnrk/hdYWsN69QWl4r7xO3Rs=;
+        b=pEcbWt0wt9p+MeEc03t+K3ZYgt5E5ZiIdHOpTdInAw7p4Z284XCdcnqtuKslX2EKZ0
+         ulYG79dfxmzEvbxtO7FSHxO4Pm8yiWdhi1JRCQoKnTnzOLOzEZ4X+VpHrTyoCF9V6WaN
+         7OqzdHyEOOEG1uhSMu7tWgK0She63mFdlFPsCY1+/8ebyYjAUoKG+s31glg4X+yJHc3t
+         CxnaslvYZzFJPed0Yu/uvk+Py9bjRX4fn36OlqHhRGS4uAdlFLk9s+ecKZMtGJx7LtuW
+         HZ1bGCPqXJg5ybY1nZWXFnNstTkKq92lSMZikH85ZfZh1WaFHxKqXuJaWkEDQytdViIb
+         I9Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=k8bZdv5DTLVGkZZdw+ZFnrk/hdYWsN69QWl4r7xO3Rs=;
+        b=g4JY+/59IdUj6PPurj7mDYTnM7fBjgnHKd3J4dk1izkN+zDk1XeFPbUEEevOdv8YzQ
+         z5zPHZmErlO+MfK2myjyolfNLGDv8F0NAGLXJ2yEyENzbp59pnalpM0jNy+f71g5MOhw
+         raiBDnWDdoTqFEgJZB5XAXzgOlLE0BeGCt6uvFh7/usQK7LgEJ9nXPoNm+9AyHRdxYdh
+         r8xE7uYMzBLICnO0woUUdM+TYI+Xd7/ou+rYc0XCYFK/88pXy4tkUUwCSwxqTgPNjhon
+         pnBxRK/Z8/Xv0as8MjmkSAMnxpGNnHQqQ3SMTjE+H2MZQM/MmgYk/HDcFrkac503E+ih
+         m51g==
+X-Gm-Message-State: AOAM530AO5JW7YaFQpHV9OOpEiEG8rQS5fmOe7YzvNjYNqTbdUBDYFaB
+        785PA/QPAsuYrEhnsv0H3DlPxQ==
+X-Google-Smtp-Source: ABdhPJyGLyEsmMuKKQjcgd0gPGogx9B1xtT8qCA8+LhB/nfh58L7TWlX8IPxiQQlzEOaVO1595To3Q==
+X-Received: by 2002:a1c:f706:: with SMTP id v6mr3424313wmh.167.1631198554533;
+        Thu, 09 Sep 2021 07:42:34 -0700 (PDT)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id k29sm1160712wms.24.2021.09.09.07.42.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Sep 2021 07:42:34 -0700 (PDT)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        wcn36xx@lists.infradead.org
+Cc:     loic.poulain@linaro.org, benl@squareup.com,
+        bryan.odonoghue@linaro.org
+Subject: [PATCH v2 0/2] wcn36xx: Two one line fixes for Antenna Diveristy Switching
+Date:   Thu,  9 Sep 2021 15:44:26 +0100
+Message-Id: <20210909144428.2564650-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zekun Shen <bruceshenzk@gmail.com>
+V2:
+Ammends the commit log of the first patch
+  - Clarifies NV is the location of antenna GPIO settings
+  - Adds some text about feature bit ANTENNA_DIVERSITY_SELECTION
+  - Tidies up language around "measured antenna"
+  - Adds Tested-by: Benjamin Li <benl@squareup.com>
 
-[ Upstream commit 23151b9ae79e3bc4f6a0c4cd3a7f355f68dad128 ]
+V1:
+Here are two one liners.
 
-Bad header can have large length field which can cause OOB.
-cptr is the last bytes for read, and the eeprom is parsed
-from high to low address. The OOB, triggered by the condition
-length > cptr could cause memory error with a read on
-negative index.
+The first fixes a fairly major bug that is apparent with Antenna Diveristy
+Switching (ADS) but, is not limited to ADS. The bug is a basic firmware
+table corruption problem, which just happens to manifest itself clearly
+with the ADS logic.
 
-There are some sanity check around length, but it is not
-compared with cptr (the remaining bytes). Here, the
-corrupted/bad EEPROM can cause panic.
+The second fix is a fairly trivial one-liner which prevents us from sending
+negative, two's complement integers to the firmware via the SMD backdoor
+"dump" command.
 
-I was able to reproduce the crash, but I cannot find the
-log and the reproducer now. After I applied the patch, the
-bug is no longer reproducible.
+Bryan O'Donoghue (2):
+  wcn36xx: Fix Antenna Diversity Switching
+  wcn36xx: Add ability for wcn36xx_smd_dump_cmd_req to pass two's
+    complement
 
-Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/YM3xKsQJ0Hw2hjrc@Zekuns-MBP-16.fios-router.home
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/ath/ath9k/ar9003_eeprom.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/wcn36xx/debug.c | 2 +-
+ drivers/net/wireless/ath/wcn36xx/main.c  | 4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-index c876dc2437b0..96e1f54cccaf 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -3345,7 +3345,8 @@ static int ar9300_eeprom_restore_internal(struct ath_hw *ah,
- 			"Found block at %x: code=%d ref=%d length=%d major=%d minor=%d\n",
- 			cptr, code, reference, length, major, minor);
- 		if ((!AR_SREV_9485(ah) && length >= 1024) ||
--		    (AR_SREV_9485(ah) && length > EEPROM_DATA_LEN_9485)) {
-+		    (AR_SREV_9485(ah) && length > EEPROM_DATA_LEN_9485) ||
-+		    (length > cptr)) {
- 			ath_dbg(common, EEPROM, "Skipping bad header\n");
- 			cptr -= COMP_HDR_LEN;
- 			continue;
 -- 
-2.30.2
+2.33.0
 
