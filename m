@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 196EA4057EA
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 15:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C143405498
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 15:30:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344322AbhIINoH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Sep 2021 09:44:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42302 "EHLO mail.kernel.org"
+        id S1352989AbhIINA1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Sep 2021 09:00:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40990 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1351834AbhIIMrd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Sep 2021 08:47:33 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 817D363220;
-        Thu,  9 Sep 2021 11:56:28 +0000 (UTC)
+        id S1354503AbhIIMvK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Sep 2021 08:51:10 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9474A63237;
+        Thu,  9 Sep 2021 11:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188589;
-        bh=Jqb7XaWOx11p37FMvH/ReA+WJNCzFGBf3lqGQwH79gI=;
+        s=k20201202; t=1631188634;
+        bh=XxpWqRYLel/LG59Qm3NLQDHNtbTcwgshYBLulKw/lvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=movnjE+IYV+9GnWIiFM5ZIMa66cHmb9QnNzBrSNvar5/oYJUFS+tdsjoalWd8/810
-         LnIY4LlEGe1fjJHUc18mSUH6iCNUBhw7V2oMGMBHxFj+NQFBALxt9SwvNjGG5faY6C
-         3wBfSDt3t+fu05F3tnG4czWNRRIQsuYKrbIP8GXTyv0VfgAdpVkT6XOAWeGDSZziXA
-         Eku1KLX0ubgpOd1m2723DiFkCAlS8TdZ6667Vr8M/YVTfJ+ARlPsFvnFBe+d93Fbvd
-         QEPKCSGFEr0RSnKH2yLRUdhM96aAIU2S/v4aCXiteAz9FIkqPWiZacnHYX7x0bSl+X
-         W9/i+WPKjWUrw==
+        b=i45/0f+MzfjrcimtJoTA0j4C4KmBVWVnqRrE7mlCnp2JEKKb9yHQQ4jhWQYBAB+Ax
+         loDU5NFa/VrMXJtGp5KL0NJieW3NW4CD5pCgMBqOl/o5igk0ULeVdRiRRxuMhHcZhh
+         PYoQgR5p8YGqzUGvIq/DQScgDddsZPeEk3h8sd7NOdFCwLh7ftX1Ds7Fz9BxeTDV18
+         N10MdbKO/zbzvU7Wk1/IAU7QvCKCu2Cm5tJy8D4FxIv5XGz350EyAKLrtptZWx0tjz
+         A4V2Diy4CrEA6lrSNzEbrsis7yCDJUvpLOSLSa7YvJsHHZdd9CLdwGbPDIbKoCk2sX
+         9zMMatNGYFarw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johan Almbladh <johan.almbladh@anyfinetworks.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Zhang Qilong <zhangqilong3@huawei.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 064/109] mac80211: Fix monitor MTU limit so that A-MSDUs get through
-Date:   Thu,  9 Sep 2021 07:54:21 -0400
-Message-Id: <20210909115507.147917-64-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 100/109] iwlwifi: mvm: fix a memory leak in iwl_mvm_mac_ctxt_beacon_changed
+Date:   Thu,  9 Sep 2021 07:54:57 -0400
+Message-Id: <20210909115507.147917-100-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210909115507.147917-1-sashal@kernel.org>
 References: <20210909115507.147917-1-sashal@kernel.org>
@@ -43,51 +43,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johan Almbladh <johan.almbladh@anyfinetworks.com>
+From: Zhang Qilong <zhangqilong3@huawei.com>
 
-[ Upstream commit 79f5962baea74ce1cd4e5949598944bff854b166 ]
+[ Upstream commit 0f5d44ac6e55551798dd3da0ff847c8df5990822 ]
 
-The maximum MTU was set to 2304, which is the maximum MSDU size. While
-this is valid for normal WLAN interfaces, it is too low for monitor
-interfaces. A monitor interface may receive and inject MPDU frames, and
-the maximum MPDU frame size is larger than 2304. The MPDU may also
-contain an A-MSDU frame, in which case the size may be much larger than
-the MTU limit. Since the maximum size of an A-MSDU depends on the PHY
-mode of the transmitting STA, it is not possible to set an exact MTU
-limit for a monitor interface. Now the maximum MTU for a monitor
-interface is unrestricted.
+If beacon_inject_active is true, we will return without freeing
+beacon.  Fid that by freeing it before returning.
 
-Signed-off-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
-Link: https://lore.kernel.org/r/20210628123246.2070558-1-johan.almbladh@anyfinetworks.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+[reworded the commit message]
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Link: https://lore.kernel.org/r/iwlwifi.20210802172232.d16206ca60fc.I9984a9b442c84814c307cee3213044e24d26f38a@changeid
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/iface.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 6f576306a4d7..ddc001ad9055 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1875,9 +1875,16 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index 9c417dd06291..7736621dca65 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -1043,8 +1043,10 @@ int iwl_mvm_mac_ctxt_beacon_changed(struct iwl_mvm *mvm,
+ 		return -ENOMEM;
  
- 		netdev_set_default_ethtool_ops(ndev, &ieee80211_ethtool_ops);
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+-	if (mvm->beacon_inject_active)
++	if (mvm->beacon_inject_active) {
++		dev_kfree_skb(beacon);
+ 		return -EBUSY;
++	}
+ #endif
  
--		/* MTU range: 256 - 2304 */
-+		/* MTU range is normally 256 - 2304, where the upper limit is
-+		 * the maximum MSDU size. Monitor interfaces send and receive
-+		 * MPDU and A-MSDU frames which may be much larger so we do
-+		 * not impose an upper limit in that case.
-+		 */
- 		ndev->min_mtu = 256;
--		ndev->max_mtu = local->hw.max_mtu;
-+		if (type == NL80211_IFTYPE_MONITOR)
-+			ndev->max_mtu = 0;
-+		else
-+			ndev->max_mtu = local->hw.max_mtu;
- 
- 		ret = register_netdevice(ndev);
- 		if (ret) {
+ 	ret = iwl_mvm_mac_ctxt_send_beacon(mvm, vif, beacon);
 -- 
 2.30.2
 
