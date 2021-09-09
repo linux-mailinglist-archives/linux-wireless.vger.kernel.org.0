@@ -2,55 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF037405A32
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 17:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 403E2405A34
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Sep 2021 17:29:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236634AbhIIPaH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Sep 2021 11:30:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58398 "EHLO
+        id S234162AbhIIPaq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Sep 2021 11:30:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236270AbhIIPaH (ORCPT
+        with ESMTP id S232359AbhIIPap (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Sep 2021 11:30:07 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30DCC061574
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Sep 2021 08:28:57 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id x7so2066974pfa.8
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Sep 2021 08:28:57 -0700 (PDT)
+        Thu, 9 Sep 2021 11:30:45 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED67C061574
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Sep 2021 08:29:36 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id m21-20020a17090a859500b00197688449c4so1738617pjn.0
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Sep 2021 08:29:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=bF0U+bI13rUtDY4/Stus0J0Hb1iLz5vZY9CKKh1Kj5U=;
-        b=X8RvLYbkI/+LmpSbLcHoE2xS9JaapFsQupbFofOrkx5UWQLGZWJYh6NcL6tJT1bKKG
-         dEpm6Jl0HbRGncdXf+AWkXD221vGA8DM/rIcfG3EYvJcTtEXJgGFzQYKU95kV5bbrGkH
-         XOZexRr59glv7yhGmHr0NIsUTvJQO2cGuMYAq4PhDnHD0/XnWR1l8fDxTeTSaFIw7tMD
-         g0Mchqgzmll1uaiCST33r0AbIyeEfdTAklX2Gj0tuDgPFAUboiZX4L5TYVQDiY1o2j2w
-         yqhK3o0osxvoWvdkFypvYmxIq0PMJGkNds8BACQniiCb6FpV6WEN+tHn7zwZNKrG6lob
-         4xKg==
+        bh=M9mh1yFONu1+KVZ1hcIpEXDWxwA0zNLhb3EzEa4tpuY=;
+        b=VAjl3a2NIx0JFixcvIf4Eum9SOuxOmtmTgG/94E0bZlG+P5lHYMmwD5lIptQRTZFVJ
+         3svcL23YIuCy+JgGVhnScgMacB/xADWhajHZ4pnzgByeRX73KwdA2df8YJodzC26z7ln
+         ZzZyTnvm91b/o2IeI0SkDULEpzI3iDMhSJmksni9Hw8x6+p4OrR3GX0QeM53d64UG2/j
+         LklJT4GOQFnBpz71BZ53j7vGwKl7XctAPTcfJml7bbMD6KMyox5znrntjJRi+rJcX2wr
+         691qdJtmwyLakOGpfYE1TcbxKgLxWb3Lkov60q0SygbHoLYG3pko72Fzz7YAInuO7mgq
+         pm7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=bF0U+bI13rUtDY4/Stus0J0Hb1iLz5vZY9CKKh1Kj5U=;
-        b=q2uHr9gRdoFxxfuRxm5qsxSyG2dyoqyWE5lrctsNxPzxGwKCPQQwR7C7eRgA2zqxYn
-         RY12rYXbz4GJYMuw3tmi+RBcZrx6vGTTAKLuM2jIfIDfSh/RUbSWDjgFE9VMBHlPbvoI
-         5J9QAvRRIz2p9aFOnmoMTS/3aoBMbkRT/aa1LoT54n3TE3falFBaRQU2w7ZoZ+AmxGDQ
-         6k+oO7Dmtc1tIoRBXdBUA6KMkNehnza8OAerwgV/stasbxHWLFVn3J/WGmgUQ2TtRm+R
-         hLmn/87ZYcvybSkSd3FL8D5xSSqoT4rULvmiPatViOawsYUaeau9D2PanjC+hPBr54qU
-         Hbfw==
-X-Gm-Message-State: AOAM530zix5HRxE7lYYb7McWCz5Lx34H1aIQ3eqapoe5jhaT+1QUUAEY
-        BZh0SA6PXP6/0XwOmoxaOaK1jh0oqcwvNnuyytxEFg==
-X-Google-Smtp-Source: ABdhPJyeeb2UL55nz+qvr32zj3zf0BpE09JIRIqBkCvz8lvYssDr55tI8EPyZRpgiOQJQx6LVBgWfz2CqvOpASNYDrs=
-X-Received: by 2002:a63:5ec6:: with SMTP id s189mr3192046pgb.431.1631201337209;
- Thu, 09 Sep 2021 08:28:57 -0700 (PDT)
+        bh=M9mh1yFONu1+KVZ1hcIpEXDWxwA0zNLhb3EzEa4tpuY=;
+        b=sWaNp4VMRlmN2laovqOKTz66NL9pwsxU0/0UVOUGQkuubCjhSqR4Cv9svR2AJZwgRw
+         VjaZPwCJ0MTGKu/X82Lk7F3FPaFaByOjtagJgnNvK+UCsVKZ1ODh/34kFyayt3UAPx6i
+         V9gjeewPJUSAx4A+WH8V3zOLp1IAZW2glUBWM9Q9mnv4Ozbdzzh1APgJ+OiOz+KIYjEN
+         kpA2TbxjxCQcj2wwJ+h+AvPbftKJfBrB1wLKvteXKgHduGSu+qvYikWDzOTi7bnV8UDs
+         OptFoa90pMcgjGXL7l2WOg+DK+gSHxvEVnj9QeSbA4FzLPqZRN4GDQl3oT/tLkpU2jMr
+         xvjw==
+X-Gm-Message-State: AOAM530Xcl18R/Hk5vnATcHpBLKddaeSMDSMAHqbnZnQngM6Mnxjtg8x
+        7+IaKH0PDL2Opws0j2GW4bsGetRzxnO/4gLD8ImrVw==
+X-Google-Smtp-Source: ABdhPJya+DpVgaQ+PERUyrEVe+QAI+E+TE/jMqsqhFTEslsDS0txJhrGhgmCej3O8a7wKnqakHlnrpWlk4OTvnYcc9U=
+X-Received: by 2002:a17:90a:ab86:: with SMTP id n6mr4120227pjq.159.1631201375443;
+ Thu, 09 Sep 2021 08:29:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210909144428.2564650-1-bryan.odonoghue@linaro.org> <20210909144428.2564650-2-bryan.odonoghue@linaro.org>
-In-Reply-To: <20210909144428.2564650-2-bryan.odonoghue@linaro.org>
+References: <20210909144428.2564650-1-bryan.odonoghue@linaro.org> <20210909144428.2564650-3-bryan.odonoghue@linaro.org>
+In-Reply-To: <20210909144428.2564650-3-bryan.odonoghue@linaro.org>
 From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Thu, 9 Sep 2021 17:39:16 +0200
-Message-ID: <CAMZdPi9EQNp5GqOKnfZr-05Fp7CuuzM2u4vvx_2AS_0M_Fm6qw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] wcn36xx: Fix Antenna Diversity Switching
+Date:   Thu, 9 Sep 2021 17:39:54 +0200
+Message-ID: <CAMZdPi9+yH05edfPKHHJd=34X3YF1es2hZH+2=H+=tTWD9xfLQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] wcn36xx: Add ability for wcn36xx_smd_dump_cmd_req
+ to pass two's complement
 To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
 Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
         wcn36xx@lists.infradead.org, Benjamin Li <benl@squareup.com>
@@ -62,115 +63,20 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 On Thu, 9 Sept 2021 at 16:42, Bryan O'Donoghue
 <bryan.odonoghue@linaro.org> wrote:
 >
-> We have been tracking a strange bug with Antenna Diversity Switching (ADS)
-> on wcn3680b for a while.
+> Qcom documents suggest passing of negative values to the dump command,
+> however currently we convert from string to u32 not s32, so we cannot pass
+> a two's complement value to the firmware in this way.
 >
-> ADS is configured like this:
->    A. Via a firmware configuration table baked into the NV area.
->        1. Defines if ADS is enabled.
->        2. Defines which GPIOs are connected to which antenna enable pin.
->        3. Defines which antenna/GPIO is primary and which is secondary.
+> There is in fact only one parameter which takes a two's complement value
+> <tigger threshold> in the antenna diversity switch command.
 >
->    B. WCN36XX_CFG_VAL(ANTENNA_DIVERSITY, N)
->       N is a bitmask of available antenna.
+> Downstream:
+> iwpriv wlan0 dump 71 3 <schedule period> <trigger threshold> <hysteresis value>
 >
->       Setting N to 3 indicates a bitmask of enabled antenna (1 | 2).
+> Upstream:
+> echo "71 3 <schedule period> <trigger threshold> <hysteresis value>" > /sys/kernel/debug/ieee80211/phy0/wcn36xx/dump
 >
->       Obviously then we can set N to 1 or N to 2 to fix to a particular
->       antenna and disable antenna diversity.
->
->    C. WCN36XX_CFG_VAL(ASD_PROBE_INTERVAL, XX)
->       XX is the number of beacons between each antenna RSSI check.
->       Setting this value to 50 means, every 50 received beacons, run the
->       ADS algorithm.
->
->    D. WCN36XX_CFG_VAL(ASD_TRIGGER_THRESHOLD, YY)
->       YY is a two's complement integer which specifies the RSSI decibel
->       threshold below which ADS will run.
->       We default to -60db here, meaning a measured RSSI <= -60db will
->       trigger an ADS probe.
->
->    E. WCN36XX_CFG_VAL(ASD_RTT_RSSI_HYST_THRESHOLD, Z)
->       Z is a hysteresis value, indicating a delta which the RSSI must
->       exceed for the antenna switch to be valid.
->
->       For example if HYST_THRESHOLD == 3 AntennaId1-RSSI == -60db and
->       AntennaId-2-RSSI == -58db then firmware will not switch antenna.
->       The threshold needs to be -57db or better to satisfy the criteria.
->
->    F. A firmware feature bit also exists ANTENNA_DIVERSITY_SELECTION.
->       This feature bit is used by the firmware to report if
->       ANTENNA_DIVERSITY_SELECTION is supported. The host is not required to
->       toggle this bit to enable or disable ADS.
->
-> ADS works like this:
->
->     A. Every XX beacons the firmware switches to or remains on the primary
->        antenna.
->
->     B. The firmware then sends a Request-To-Send (RTS) packet to the AP.
->
->     C. The firmware waits for a Clear-To-Send (CTS) response from the AP.
->
->     D. The firmware then notes the received RSSI on the CTS packet.
->
->     E. The firmware then repeats steps A-D on the secondary antenna.
->
->     F. Subsequently if the RSSI on the measured antenna is better than
->        ASD_TRIGGER_THRESHOLD + the active antenna's RSSI then the
->        measured antenna becomes the active antenna.
->
->     G. If RSSI rises past ASD_TRIGGER_THRESHOLD then ADS doesn't run at
->        all even if there is a substantially better RSSI on the alternative
->        antenna.
->
-> What we have been observing is that the RTS packet is being sent but the
-> MAC address is a byte-swapped version of the target MAC. The ADS/RTS MAC is
-> corrupted only when the link is encrypted, if the AP is open the RTS MAC is
-> correct. Similarly if we configure the firmware to an RTS/CTS sequence for
-> regular data - the transmitted RTS MAC is correctly formatted.
->
-> Internally the wcn36xx firmware uses the indexes in the SMD commands to
-> populate and extract data from specific entries in an STA lookup table. The
-> AP's MAC appears a number of times in different indexes within this lookup
-> table, so the MAC address extracted for the data-transmit RTS and the MAC
-> address extracted for the ADS/RTS packet are not the same STA table index.
->
-> Our analysis indicates the relevant firmware STA table index is
-> "bssSelfStaIdx".
->
-> There is an STA populate function responsible for formatting the MAC
-> address of the bssSelfStaIdx including byte-swapping the MAC address.
->
-> Its clear then that the required STA populate command did not run for
-> bssSelfStaIdx.
->
-> So taking a look at the sequence of SMD commands sent to the firmware we
-> see the following downstream when moving from an unencrypted to encrypted
-> BSS setup.
->
-> - WLAN_HAL_CONFIG_BSS_REQ
-> - WLAN_HAL_CONFIG_STA_REQ
-> - WLAN_HAL_SET_STAKEY_REQ
->
-> Upstream in wcn36xx we have
->
-> - WLAN_HAL_CONFIG_BSS_REQ
-> - WLAN_HAL_SET_STAKEY_REQ
->
-> The solution then is to add the missing WLAN_HAL_CONFIG_STA_REQ between
-> WLAN_HAL_CONFIG_BSS_REQ and WLAN_HAL_SET_STAKEY_REQ.
->
-> No surprise WLAN_HAL_CONFIG_STA_REQ is the routine responsible for
-> populating the STA lookup table in the firmware and once done the MAC sent
-> by the ADS routine is in the correct byte-order.
->
-> This bug is apparent with ADS but it is also the case that any other
-> firmware routine that depends on the "bssSelfStaIdx" would retrieve
-> malformed data on an encrypted link.
->
-> Fixes: 3e977c5c523d ("wcn36xx: Define wcn3680 specific firmware parameters")
+> Fixes: 8e84c2582169 ("wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680 hardware")
 > Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> Tested-by: Benjamin Li <benl@squareup.com>
 
 Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
