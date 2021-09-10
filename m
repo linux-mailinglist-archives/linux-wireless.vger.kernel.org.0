@@ -2,100 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA25B406D7A
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Sep 2021 16:18:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3A8F406D79
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Sep 2021 16:18:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232242AbhIJOTb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Sep 2021 10:19:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54888 "EHLO
+        id S234127AbhIJOT3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Sep 2021 10:19:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234038AbhIJOTT (ORCPT
+        with ESMTP id S234055AbhIJOTV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Sep 2021 10:19:19 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 829F3C061574
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Sep 2021 07:18:07 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id g14so2012587pfm.1
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Sep 2021 07:18:07 -0700 (PDT)
+        Fri, 10 Sep 2021 10:19:21 -0400
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B63C061574
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Sep 2021 07:18:10 -0700 (PDT)
+Received: by mail-pj1-x102f.google.com with SMTP id k23-20020a17090a591700b001976d2db364so1563907pji.2
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Sep 2021 07:18:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=OMwkUe+0yoW+A2+6v5xt7NkklVccYWTe+a7hUuUevc8=;
-        b=qBEe5lc5u0v4/l2QbhiQfOCiZPti+vQLTeNYMJr4aCNVIrnn4RNiEdHRg55c1pNMCW
-         9O4a2sU6dr+PnRDLmpnC5doNbAgWCDpXbQGQOHH2J4k+JfHlOtdlbSNxeZz4F+gJF9P4
-         //lktNjKjTevw+oJ4LC/1zlKLK70EAYWBO3b/M12H2+uCEWeIX4HpTki24SrUHEAJqcn
-         gVUZt1B8TNk1GnXwvjDa2BzsX7UpCF96Hl4kRTlhYh4MV9L4Nbr14H7BJKGT+uc2k3QZ
-         xH30PqLYQdcxHPIyQWpC5NMMMhxm08vCRXiMt3k39iloN2F7q0OLWeEc6WANqNUob/4C
-         8X0g==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=IUqMXkCxlPNHudbb/uiPg0FjgZTFGptY3HJFCo4/ZHc=;
+        b=WTgqIsGfc4OTPiXlzUSwbukZPfgMo73Zh6V1cMimwctHZR+R4rOhimhMFcmoQEqYQI
+         /WlRIfO9EC2sUBK52mvobDPj57ArDxvM5n4ZY6OkroK9e7WlbmOBfiGqU8zPFc5XvXX6
+         /oxWG8XKK5nJzHAZmscJyozYGxHImAjB52q/QSSPvk0Yt3YZRuypxN0vISA29ASdTNr/
+         vCccgKAbSXlXsTKdpt5df+qKP6+ZnbPYcrGUyRjVAK+luU8GZ/6kFkW1AcZRl9wQm2at
+         1ku1r5ZJbgFcZAiZfng4AQDyvpugnxvKtyOQApzqGgtQW0tdXrLpv8jHVLGiUoXxqG72
+         9Uww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=OMwkUe+0yoW+A2+6v5xt7NkklVccYWTe+a7hUuUevc8=;
-        b=IWvtosPYCd39L7pG/7JiGVgdi/tVdQGGjgWiP/rIIYu5RLoRgmHRr3RE/8evAsET3l
-         nEbb6jWWd9tv46DBdYqgiOwKRYRTro4IyYpyO/gWP+PQ2DH6j3j5zKG7cHCWAsOmX4Ub
-         2HqnnK4pQuQruYQSTCz/D7AH+l8kV7hi7c8+wZyXFQ7wRUtGkFJHR69fPW1a8Yn5UKB6
-         fRq/SR8+McwC4sKFJneCX8UXsQ+Aj0/wEzT4Z9tz1x1C6XWxDTwWfKfuu9i6cD3BcWnH
-         7eL9lN9z/27L+iwGcZMOcU4xix4Sgl8PzQZowi+a58Zo/Yxu6DlDHWi+9Ei3tjpKV54H
-         KWFQ==
-X-Gm-Message-State: AOAM532uScxuvlm+y1ozN1BVnE9PeDBHOYO90igMl7HBBGW2hoqd2+ln
-        fBGrwLGMnSQEzrxjHdH5Zvk=
-X-Google-Smtp-Source: ABdhPJzU22GZJVWbXbFkfLttfZf46nDbAOa26nFzVxfc6mbgD2X3y4kGySgPZ4zjbyM6NX2Ix8pdOA==
-X-Received: by 2002:a63:3717:: with SMTP id e23mr7624958pga.10.1631283486944;
-        Fri, 10 Sep 2021 07:18:06 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=IUqMXkCxlPNHudbb/uiPg0FjgZTFGptY3HJFCo4/ZHc=;
+        b=nT67qNPmtnbI1Q8y2m56LJWyM3o9c06J4dNJbynz/jreCt1HmhU2jJQWNWePxx9QZf
+         QcksLc+sseLWEzRmo8tLK0cyoUjTw4/4kQc4y2bu3t2kpl5Xr8Wv4a7j+9/vpv9Zj7Ie
+         9H9cHl4iry4jwQaeKmfR517+Y7IaXh+Fct8UVKsnnx6p+0RYmY4sv5E1P+Z98LbCqreD
+         0yztxAMiJP87+PCj+d86nrYjhT+tiWmOCLDTi+PDZUaNJYcbFITDNm+l7ZhdovC44tNm
+         ZVIBFNy5NNwhZZMsVvD87Zj5iPIjTAtiNYw1OrsM5C1AvSxrxvB347Dz5sS9nOr2Txmu
+         A5fw==
+X-Gm-Message-State: AOAM532untgX3c8DnZRYY7UwcLcbbBppmFA/OdoHDDZB5PjrUudErG6S
+        eIt34FTOtz4ZPzkYBioP8yE=
+X-Google-Smtp-Source: ABdhPJymV0vI0sJpipEm1nI+zCoTUdpWBknX9n5i32wTgs2NT8K8GZgav3OaCtyWoVKb5+R1ZOM6jw==
+X-Received: by 2002:a17:90b:1d02:: with SMTP id on2mr9762219pjb.21.1631283489836;
+        Fri, 10 Sep 2021 07:18:09 -0700 (PDT)
 Received: from localhost.localdomain ([49.206.113.222])
-        by smtp.googlemail.com with ESMTPSA id q9sm5079519pfs.40.2021.09.10.07.18.04
+        by smtp.googlemail.com with ESMTPSA id q9sm5079519pfs.40.2021.09.10.07.18.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Sep 2021 07:18:06 -0700 (PDT)
+        Fri, 10 Sep 2021 07:18:09 -0700 (PDT)
 From:   Gokul Sivakumar <gokulkumar792@gmail.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     Gokul Sivakumar <gokulkumar792@gmail.com>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH iw 1/4] iw: nl80211: add NLA_F_NESTED to nla_nest_start() with older libnl versions
-Date:   Fri, 10 Sep 2021 19:46:15 +0530
-Message-Id: <20210910141618.1594617-1-gokulkumar792@gmail.com>
+Subject: [PATCH iw 2/4] iw: link: mention the need for MAC addr arg in link get_sta cmd usage menu
+Date:   Fri, 10 Sep 2021 19:46:16 +0530
+Message-Id: <20210910141618.1594617-2-gokulkumar792@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210910141618.1594617-1-gokulkumar792@gmail.com>
+References: <20210910141618.1594617-1-gokulkumar792@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It is noticed in Kernel version 5.14.0-rc4+, that when sending the NL cmd
-NL80211_CMD_SET_TID_CONFIG with nested attrs under NL80211_ATTR_TID_CONFIG,
-kernel returnes a response with the error "NLA_F_NESTED is missing".
+The usage menu shown when running the hidden "link get_sta" command is not
+mentioning the need for the MAC address argument. Without this, the cmd is
+always failing with the output shown below.
 
- $ sudo ./iw dev wlan0 set tidconf tids 0x1 ampdu on
- kernel reports: NLA_F_NESTED is missing
- command failed: Invalid argument (-22))
+ $ ./iw dev wlan0 link get_sta
+ Usage:  ./iw [options] dev <devname> link get_sta
+ ...
 
-Fix this by setting NLA_F_NESTED flag everytime when using nla_nest_start()
-library function. This is needed to make cfg80211 allow the nl80211 command
-NL80211_ATTR_TID_CONFIG in the new kernel versions that enforce netlink
-attribute policy validation.
+To avoid this, let the user know about the mandatory "MAC address" argument
+like below.
+
+ $ ./iw dev wlan0 link get_sta
+ Usage:  ./iw [options] dev <devname> link get_sta <mac-addr>
+ ...
 
 Signed-off-by: Gokul Sivakumar <gokulkumar792@gmail.com>
 ---
- iw.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ link.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/iw.h b/iw.h
-index a118f5b..545fd0e 100644
---- a/iw.h
-+++ b/iw.h
-@@ -11,6 +11,11 @@
- #include "nl80211.h"
- #include "ieee80211.h"
- 
-+#ifndef NL_CAPABILITY_VERSION_3_5_0
-+#define nla_nest_start(msg, attrtype) \
-+       nla_nest_start(msg, NLA_F_NESTED | (attrtype))
-+#endif
-+
- /* support for extack if compilation headers are too old */
- #ifndef NETLINK_EXT_ACK
- #define NETLINK_EXT_ACK 11
+diff --git a/link.c b/link.c
+index 1ed7f63..2074488 100644
+--- a/link.c
++++ b/link.c
+@@ -273,7 +273,7 @@ static int handle_link(struct nl80211_state *state,
+ }
+ TOPLEVEL(link, NULL, 0, 0, CIB_NETDEV, handle_link,
+ 	 "Print information about the current link, if any.");
+-HIDDEN(link, get_sta, "", NL80211_CMD_GET_STATION, 0,
++HIDDEN(link, get_sta, "<mac-addr>", NL80211_CMD_GET_STATION, 0,
+ 	CIB_NETDEV, handle_link_sta);
+ HIDDEN(link, get_bss, NULL, NL80211_CMD_GET_SCAN, NLM_F_DUMP,
+ 	CIB_NETDEV, handle_scan_for_link);
 -- 
 2.25.1
 
