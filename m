@@ -2,82 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06F07407586
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Sep 2021 09:55:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63290407A07
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Sep 2021 19:51:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235344AbhIKH5B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Sep 2021 03:57:01 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:40984 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235331AbhIKH5B (ORCPT
+        id S232620AbhIKRxJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Sep 2021 13:53:09 -0400
+Received: from www262.sakura.ne.jp ([202.181.97.72]:63661 "EHLO
+        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229774AbhIKRxJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Sep 2021 03:57:01 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id DC96B1C0B7A; Sat, 11 Sep 2021 09:46:19 +0200 (CEST)
-Date:   Sat, 11 Sep 2021 09:46:19 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Pavel Machek <pavel@denx.de>, nobuhiro1.iwamatsu@toshiba.co.jp,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Subject: Re: Backporting CVE-2020-3702 ath9k patches to stable
-Message-ID: <20210911074619.GB27612@amd>
-References: <20210818084859.vcs4vs3yd6zetmyt@pali>
- <YRzMt53Ca/5irXc0@kroah.com>
- <20210818091027.2mhqrhg5pcq2bagt@pali>
- <YRzQZZIp/LfMy/xG@kroah.com>
- <20210902114814.GA525@amd>
- <YTC9QBWPoulIhZYq@kroah.com>
- <20210903063440.GC9690@amd>
- <YTXWDE4NStB8ZOf8@kroah.com>
+        Sat, 11 Sep 2021 13:53:09 -0400
+Received: from fsav414.sakura.ne.jp (fsav414.sakura.ne.jp [133.242.250.113])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 18BHpoLF007074;
+        Sun, 12 Sep 2021 02:51:50 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav414.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav414.sakura.ne.jp);
+ Sun, 12 Sep 2021 02:51:50 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav414.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 18BHpon0007071
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Sun, 12 Sep 2021 02:51:50 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+To:     Kalle Valo <kvalo@codeaurora.org>, ath9k-devel@qca.qualcomm.com
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Subject: [PATCH] ath9k_htc: fix NULL pointer dereference at ath9k_htc_rxep()
+Message-ID: <5fe48f65-d2ee-fd4f-a969-439d0a11acc5@i-love.sakura.ne.jp>
+Date:   Sun, 12 Sep 2021 02:51:47 +0900
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="H+4ONPRPur6+Ovig"
-Content-Disposition: inline
-In-Reply-To: <YTXWDE4NStB8ZOf8@kroah.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+syzbot is reporting kernel panic at ath9k_htc_rxep() [1], for
+ath9k_htc_rxep() depends on ath9k_rx_init() being already completed.
 
---H+4ONPRPur6+Ovig
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Since ath9k_htc_rxep() is set by ath9k_htc_connect_svc(WMI_BEACON_SVC)
+ from ath9k_init_htc_services(), it is possible that ath9k_htc_rxep() is
+called via timer interrupt before ath9k_rx_init() from ath9k_init_device()
+is called.
 
-Hi!
+Since we can't call ath9k_init_device() before ath9k_init_htc_services(),
+let's hold ath9k_htc_rxep() no-op until ath9k_rx_init() completes.
 
-> > > Odd, I don't remember why I didn't even try to apply them to older
-> > > kernels.  I'll do that after this next round is released in a few day=
-s,
-> > > sorry about that.
-> >=20
-> > Thank you! If there are problems, let me know and I'll try to help.
->=20
-> Now all queued up.
+Link: https://syzkaller.appspot.com/bug?extid=4d2d56175b934b9a7bf9 [1]
+Reported-by: syzbot <syzbot+4d2d56175b934b9a7bf9@syzkaller.appspotmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: syzbot+4d2d56175b934b9a7bf9@syzkaller.appspotmail.com
+---
+ drivers/net/wireless/ath/ath9k/htc.h          | 1 +
+ drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-Thank you! One less CVE to watch.
+diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
+index 0a1634238e67..4f71e962279a 100644
+--- a/drivers/net/wireless/ath/ath9k/htc.h
++++ b/drivers/net/wireless/ath/ath9k/htc.h
+@@ -281,6 +281,7 @@ struct ath9k_htc_rxbuf {
+ struct ath9k_htc_rx {
+ 	struct list_head rxbuf;
+ 	spinlock_t rxbuflock;
++	bool initialized;
+ };
+ 
+ #define ATH9K_HTC_TX_CLEANUP_INTERVAL 50 /* ms */
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+index 8e69e8989f6d..0d4595ee51ba 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+@@ -1130,6 +1130,9 @@ void ath9k_htc_rxep(void *drv_priv, struct sk_buff *skb,
+ 	struct ath9k_htc_rxbuf *rxbuf = NULL, *tmp_buf = NULL;
+ 	unsigned long flags;
+ 
++	/* Check if ath9k_rx_init() completed. */
++	if (!data_race(priv->rx.initialized))
++		goto err;
+ 	spin_lock_irqsave(&priv->rx.rxbuflock, flags);
+ 	list_for_each_entry(tmp_buf, &priv->rx.rxbuf, list) {
+ 		if (!tmp_buf->in_process) {
+@@ -1185,6 +1188,9 @@ int ath9k_rx_init(struct ath9k_htc_priv *priv)
+ 		list_add_tail(&rxbuf->list, &priv->rx.rxbuf);
+ 	}
+ 
++	/* Allow ath9k_htc_rxep() to operate. */
++	smp_wmb();
++	priv->rx.initialized = true;
+ 	return 0;
+ 
+ err:
+-- 
+2.30.2
 
-Best regards,
-
-								Pavel
---=20
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---H+4ONPRPur6+Ovig
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmE8XssACgkQMOfwapXb+vJXGgCdEBevk0mnjsCtLPGyfIcB42wW
-jVYAn2qsxzyXMxHxqWhK9nDVOoKwMCeb
-=ijDV
------END PGP SIGNATURE-----
-
---H+4ONPRPur6+Ovig--
