@@ -2,102 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63290407A07
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Sep 2021 19:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD7AF407AA5
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Sep 2021 00:20:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232620AbhIKRxJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Sep 2021 13:53:09 -0400
-Received: from www262.sakura.ne.jp ([202.181.97.72]:63661 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229774AbhIKRxJ (ORCPT
+        id S231521AbhIKWVs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Sep 2021 18:21:48 -0400
+Received: from smtp6.ctinetworks.com ([205.166.61.199]:60188 "EHLO
+        smtp6.ctinetworks.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229800AbhIKWVs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Sep 2021 13:53:09 -0400
-Received: from fsav414.sakura.ne.jp (fsav414.sakura.ne.jp [133.242.250.113])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 18BHpoLF007074;
-        Sun, 12 Sep 2021 02:51:50 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav414.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav414.sakura.ne.jp);
- Sun, 12 Sep 2021 02:51:50 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav414.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 18BHpon0007071
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-        Sun, 12 Sep 2021 02:51:50 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-To:     Kalle Valo <kvalo@codeaurora.org>, ath9k-devel@qca.qualcomm.com
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Subject: [PATCH] ath9k_htc: fix NULL pointer dereference at ath9k_htc_rxep()
-Message-ID: <5fe48f65-d2ee-fd4f-a969-439d0a11acc5@i-love.sakura.ne.jp>
-Date:   Sun, 12 Sep 2021 02:51:47 +0900
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+        Sat, 11 Sep 2021 18:21:48 -0400
+X-Greylist: delayed 532 seconds by postgrey-1.27 at vger.kernel.org; Sat, 11 Sep 2021 18:21:48 EDT
+Received: from localhost (unknown [117.193.4.44])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: enometh@meer.net)
+        by smtp6.ctinetworks.com (Postfix) with ESMTPSA id 2E4BD85B00
+        for <linux-wireless@vger.kernel.org>; Sat, 11 Sep 2021 18:11:34 -0400 (EDT)
+Date:   Sun, 12 Sep 2021 03:39:32 +0530 (IST)
+Message-Id: <20210912.033932.2187976226343353888.enometh@meer.net>
+To:     linux-wireless@vger.kernel.org
+Subject: help troubleshooting failures connect to an access point with
+ iw/iwd
+From:   Madhu <enometh@meer.net>
+In-Reply-To: <20210421.102130.167565230547376402.enometh@meer.net>
+References: <20210420.063244.1157699536418751229.enometh@meer.net>
+        <9167fd6d-affa-21d5-bd8d-0fb3d49d38f0@justmail.de>
+        <20210421.102130.167565230547376402.enometh@meer.net>
+X-Mailer: Mew version 6.8 on Emacs 28.0.50
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+X-ctinetworks-Information: Please contact the ISP for more information
+X-ctinetworks-MailScanner-ID: 2E4BD85B00.A91D1
+X-ctinetworks-VirusCheck: Found to be clean
+X-ctinetworks-SpamCheck: 
+X-ctinetworks-Watermark: 1632262301.20706@m9DEXiAm/ywwWfCSV0XDqw
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot is reporting kernel panic at ath9k_htc_rxep() [1], for
-ath9k_htc_rxep() depends on ath9k_rx_init() being already completed.
+I've been using wpa_supplicant with rtw88 and b43 cards to connect to
+a wpa-psk home router successfully for many years. This was with
+-Wext. However I'm not able to accomplish this with iw or iwd.
 
-Since ath9k_htc_rxep() is set by ath9k_htc_connect_svc(WMI_BEACON_SVC)
- from ath9k_init_htc_services(), it is possible that ath9k_htc_rxep() is
-called via timer interrupt before ath9k_rx_init() from ath9k_init_device()
-is called.
+$iw --version
+iw version 5.9
+$ iw dev wlan0 connect SSID key psk:<64bits> PSK CCMP CCMP
+command failed: Invalid argument (-22)
 
-Since we can't call ath9k_init_device() before ath9k_init_htc_services(),
-let's hold ath9k_htc_rxep() no-op until ath9k_rx_init() completes.
+- This always fails with this message. corresponding parameters work
+  with wpa_supplicant.
 
-Link: https://syzkaller.appspot.com/bug?extid=4d2d56175b934b9a7bf9 [1]
-Reported-by: syzbot <syzbot+4d2d56175b934b9a7bf9@syzkaller.appspotmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: syzbot+4d2d56175b934b9a7bf9@syzkaller.appspotmail.com
----
- drivers/net/wireless/ath/ath9k/htc.h          | 1 +
- drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+$/usr/libexec/iwd --version
+1.17
+$/usr/libexec/iwd -d
+$ iwctl station wlan0 get-hidden-access-points
+$ iwctl --passphrase=XXX  station wlan0 connect SSID
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
-index 0a1634238e67..4f71e962279a 100644
---- a/drivers/net/wireless/ath/ath9k/htc.h
-+++ b/drivers/net/wireless/ath/ath9k/htc.h
-@@ -281,6 +281,7 @@ struct ath9k_htc_rxbuf {
- struct ath9k_htc_rx {
- 	struct list_head rxbuf;
- 	spinlock_t rxbuflock;
-+	bool initialized;
- };
- 
- #define ATH9K_HTC_TX_CLEANUP_INTERVAL 50 /* ms */
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-index 8e69e8989f6d..0d4595ee51ba 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-@@ -1130,6 +1130,9 @@ void ath9k_htc_rxep(void *drv_priv, struct sk_buff *skb,
- 	struct ath9k_htc_rxbuf *rxbuf = NULL, *tmp_buf = NULL;
- 	unsigned long flags;
- 
-+	/* Check if ath9k_rx_init() completed. */
-+	if (!data_race(priv->rx.initialized))
-+		goto err;
- 	spin_lock_irqsave(&priv->rx.rxbuflock, flags);
- 	list_for_each_entry(tmp_buf, &priv->rx.rxbuf, list) {
- 		if (!tmp_buf->in_process) {
-@@ -1185,6 +1188,9 @@ int ath9k_rx_init(struct ath9k_htc_priv *priv)
- 		list_add_tail(&rxbuf->list, &priv->rx.rxbuf);
- 	}
- 
-+	/* Allow ath9k_htc_rxep() to operate. */
-+	smp_wmb();
-+	priv->rx.initialized = true;
- 	return 0;
- 
- err:
--- 
-2.30.2
+If this connects it always immediately disconnects
 
+kernel: [86195.924708] wlan0: authenticate with 58:xx:6e:xx:51:e4
+kernel: [86196.264641] wlan0: send auth to 58:xx:6e:xx:51:e4 (try 1/3)
+kernel: [86196.268477] wlan0: authenticated
+kernel: [86196.274379] wlan0: associate with 58:xx:6e:xx:51:e4 (try 1/3)
+kernel: [86196.281420] wlan0: RX AssocResp from 58:xx:6e:xx:51:e4 (capab=0x411 status=0 aid=1)
+kernel: [86196.281491] rtw_8822ce 0000:xx:00.0: sta 58:xx:6e:xx:51:e4 joined with macid 0
+kernel: [86196.282235] wlan0: associated
+kernel: [86238.445926] wlan0: deauthenticated from 58:xx:6e:xx:51:e4 (Reason: 6=CLASS2_FRAME_FROM_NONAUTH_STA)
+kernel: [86238.594381] rtw_8822ce 0000:xx:00.0: sta 58:xx:6e:xx:51:e4 with macid 0 left
+
+- So an connection, after authentication immediately deauthenticates
+  with (Reason: 6=CLASS2_FRAME_FROM_NONAUTH_STA). The deauthentication
+  happens when any packet is to be sent on the interface
+
+- In the case of b43 any authenticated connection also deauthenticates
+  but with (Reason: 15=4WAY_HANDSHAKE_TIMEOUT)
+
+- These are also the failure modes when iwd is used under
+  NetworkManager-1.33.2
+
+- I tried connman-1.40, but that didn't work at all It kept putting
+  the device into ad-hoc mode before trying to connect, and the
+  connection fails (even if i set the device in station mode via
+  iwctl, connman sets it to ad-hoc mode)
+
+I'm stumped on how to debug this - I'm seeking any suggestions on what
+to look at the netlink layer to track down these problems.
+
+I may be missing something basic, if you can spot it please let me
+know.
+
+[latest 5.10 kernel with both in-kernel rt88 drivers and lwfinger from
+april 2021]
