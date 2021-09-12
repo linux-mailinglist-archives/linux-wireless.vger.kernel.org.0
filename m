@@ -2,111 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 955CA407F96
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Sep 2021 21:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80931407FB2
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Sep 2021 21:28:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235569AbhILTNL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 12 Sep 2021 15:13:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51340 "EHLO mail.kernel.org"
+        id S235928AbhILT3O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 12 Sep 2021 15:29:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53950 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229732AbhILTNK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 12 Sep 2021 15:13:10 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9F1D86103D;
-        Sun, 12 Sep 2021 19:11:54 +0000 (UTC)
+        id S234625AbhILT3O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 12 Sep 2021 15:29:14 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9D5FC60F6C;
+        Sun, 12 Sep 2021 19:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631473916;
-        bh=VGU2+TdB4prMfLgkuaY2tvLR1iXGYB+nJkWyfFxSn+Y=;
+        s=k20201202; t=1631474879;
+        bh=vmtoFuG0plpPFF+EQhhTtgHGfdTsRfks9YatKXBlEeQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jfvPYU3n3xGNmiDRwTjwdfNbs3uf2xgzRDPK+UVbtTKhCIvxuvAmNAm9+nRbyyLhe
-         JwfL16h4bRhSNHa50W0AZNUB5KZDtbMBvc9Iu8qfr6qo25EhXGjknPJBnkRwH9bSRs
-         y/kVKmNA2Howot+IBPrweRpgUV2SFiK9rBbUOHABgjkhfaXzssIHNaTLBYFGwhDcIk
-         iH13pfaQJNsG1t5GN5gd5UiP1mY/p+yRsw8Y3xr3ZGYvlT0JikeAaJDZneA7mFmDZa
-         iqgpbXzJr6nzTE/jQCf7j47gnQdL047dTW8+JM397zMpcBIcE+2L3AAJzepza/SUUo
-         IUJGVpn9LMLBQ==
-Date:   Sun, 12 Sep 2021 14:15:36 -0500
+        b=j+Fckx/eoaFlsEVTEDbx5ul9vBoH7/iYrdmWBpOKDmeptkrcvSfHQpJa27yVzWT84
+         SNsC9UzDPYBzovTcZ9Oyt/mEltGokJ8RQ2mV1ayDiAiA6wCw95WUSr3cpcbyg+5vDu
+         Yjb8mytvs3rNrrQuLTAo7PDBmZaa+uToQ4k4jFFxJwBZc2366cRl5bkaddRGdyROp9
+         yeSr9Kjb1escQT8pibROK3y9sPWOqbHX+Kx9z7ugl7Z1EQuNIZKR7zckLz+mPiVOpC
+         N325kZBrI2Rx6d9jopqvmogWBSKJlaFsjQdrr4oCNi9WqKVGD8u+1GJ5EiDnOwN7oT
+         NWcOIomD5Dyzw==
+Date:   Sun, 12 Sep 2021 14:31:40 -0500
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
 To:     Len Baker <len.baker@gmx.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] brcmfmac: Replace zero-length array with flexible array
+Subject: Re: [PATCH] ath11k: Replace one-element array with flexible-array
  member
-Message-ID: <20210912191536.GB146608@embeddedor>
-References: <20210904092217.2848-1-len.baker@gmx.com>
+Message-ID: <20210912193140.GC146608@embeddedor>
+References: <20210904114937.6644-1-len.baker@gmx.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210904092217.2848-1-len.baker@gmx.com>
+In-Reply-To: <20210904114937.6644-1-len.baker@gmx.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Sep 04, 2021 at 11:22:17AM +0200, Len Baker wrote:
-> There is a regular need in the kernel to provide a way to declare
-> having a dynamically sized set of trailing elements in a structure.
-> Kernel code should always use "flexible array members"[1] for these
-> cases. The older style of one-element or zero-length arrays should
-> no longer be used[2].
+
+There is already a patch for this:
+
+https://lore.kernel.org/lkml/20210823172159.GA25800@embeddedor/
+
+which I will now add to my -next tree.
+
+Thanks
+--
+Gustavo
+
+On Sat, Sep 04, 2021 at 01:49:37PM +0200, Len Baker wrote:
+> There is a regular need in the kernel to provide a way to declare having
+> a dynamically sized set of trailing elements in a structure. Kernel code
+> should always use "flexible array members"[1] for these cases. The older
+> style of one-element or zero-length arrays should no longer be used[2].
 > 
-> Also, make use of the struct_size() helper in devm_kzalloc().
+> Also, refactor the code a bit to make use of the struct_size() helper in
+> kzalloc().
 > 
 > [1] https://en.wikipedia.org/wiki/Flexible_array_member
 > [2] https://www.kernel.org/doc/html/v5.14/process/deprecated.html#zero-length-and-one-element-arrays
 > 
 > Signed-off-by: Len Baker <len.baker@gmx.com>
-
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-
-I'll take this in my -next tree. :)
-
-Thanks, Len.
---
-Gustavo
-
 > ---
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 2 +-
->  include/linux/platform_data/brcmfmac.h                | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  drivers/net/wireless/ath/ath11k/reg.c | 7 ++-----
+>  drivers/net/wireless/ath/ath11k/wmi.h | 2 +-
+>  2 files changed, 3 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> index 2f7bc3a70c65..513c7e6421b2 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> @@ -29,7 +29,7 @@ static int brcmf_of_get_country_codes(struct device *dev,
->  		return (count == -EINVAL) ? 0 : count;
->  	}
+> diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/ath/ath11k/reg.c
+> index e1a1df169034..c83d265185f1 100644
+> --- a/drivers/net/wireless/ath/ath11k/reg.c
+> +++ b/drivers/net/wireless/ath/ath11k/reg.c
+> @@ -97,7 +97,6 @@ int ath11k_reg_update_chan_list(struct ath11k *ar)
+>  	struct channel_param *ch;
+>  	enum nl80211_band band;
+>  	int num_channels = 0;
+> -	int params_len;
+>  	int i, ret;
 > 
-> -	cc = devm_kzalloc(dev, sizeof(*cc) + count * sizeof(*cce), GFP_KERNEL);
-> +	cc = devm_kzalloc(dev, struct_size(cc, table, count), GFP_KERNEL);
->  	if (!cc)
+>  	bands = hw->wiphy->bands;
+> @@ -117,10 +116,8 @@ int ath11k_reg_update_chan_list(struct ath11k *ar)
+>  	if (WARN_ON(!num_channels))
+>  		return -EINVAL;
+> 
+> -	params_len = sizeof(struct scan_chan_list_params) +
+> -			num_channels * sizeof(struct channel_param);
+> -	params = kzalloc(params_len, GFP_KERNEL);
+> -
+> +	params = kzalloc(struct_size(params, ch_param, num_channels),
+> +			 GFP_KERNEL);
+>  	if (!params)
 >  		return -ENOMEM;
 > 
-> diff --git a/include/linux/platform_data/brcmfmac.h b/include/linux/platform_data/brcmfmac.h
-> index 1d30bf278231..2b5676ff35be 100644
-> --- a/include/linux/platform_data/brcmfmac.h
-> +++ b/include/linux/platform_data/brcmfmac.h
-> @@ -125,7 +125,7 @@ struct brcmfmac_pd_cc_entry {
->   */
->  struct brcmfmac_pd_cc {
->  	int				table_size;
-> -	struct brcmfmac_pd_cc_entry	table[0];
-> +	struct brcmfmac_pd_cc_entry	table[];
+> diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+> index d35c47e0b19d..d9c83726f65d 100644
+> --- a/drivers/net/wireless/ath/ath11k/wmi.h
+> +++ b/drivers/net/wireless/ath/ath11k/wmi.h
+> @@ -3608,7 +3608,7 @@ struct wmi_stop_scan_cmd {
+>  struct scan_chan_list_params {
+>  	u32 pdev_id;
+>  	u16 nallchans;
+> -	struct channel_param ch_param[1];
+> +	struct channel_param ch_param[];
 >  };
 > 
->  /**
+>  struct wmi_scan_chan_list_cmd {
 > --
 > 2.25.1
 > 
