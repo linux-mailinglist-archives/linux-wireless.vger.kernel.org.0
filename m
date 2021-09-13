@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D303E408DEB
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 15:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22DC0408D6F
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 15:25:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240742AbhIMNah (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Sep 2021 09:30:37 -0400
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:57990
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241239AbhIMNXk (ORCPT
+        id S241161AbhIMNZk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Sep 2021 09:25:40 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:34144
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S241168AbhIMNX2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Sep 2021 09:23:40 -0400
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+        Mon, 13 Sep 2021 09:23:28 -0400
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 2283E40259
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 13:20:49 +0000 (UTC)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 548874027F
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 13:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1631539249;
-        bh=hZ5N4zB6ne7AqKTWsazgl2eww5+7SrfSBiF0jiwRIRU=;
+        s=20210705; t=1631539250;
+        bh=Fky4BN6I50Xw0PgUAedFiL1xcmFxZZIBVgJL+3QtpWs=;
         h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
          MIME-Version;
-        b=YVPjkpxazpwtlErABeAyFzKOrvyoRQPu8vkoaZD3jaK228LtlT1jkpUs8zmtEpGM4
-         19eLOISGw60zBhZH4W/1ckAC5sWOSXfwQrq7vfq9JLFl6OmsUqs+nGwH7IhR4H5Ifa
-         hpGA8L79QoTP1/tZ7cXVPXnl9bO+n3/DuLQybit0HcLfKg5HH+GQ1Z4RYByMCBVOfF
-         Jvs2VEGjQ1hmbp0+wolSiSSOMy07KsRF2oD6zkXqIpwO16TF3MVzBb6HbTph/iJrC5
-         jXVTB0eOBe2HTC9Z8T24up1d42EyeT0uYrLgnROxQ7sAF/RaWGIHENexD5VNfR7xV1
-         meDlXx8hUB/mQ==
-Received: by mail-wm1-f71.google.com with SMTP id z26-20020a1c4c1a000000b00300ec9d8d77so1451624wmf.5
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 06:20:49 -0700 (PDT)
+        b=LDLkqs8XWdJPlHwSTXyxBqQgS9MUADcFkE2jeuQ1h1KLFFQr12xXbs0/xRC364wcl
+         sPciEhQIlfWS5UBUJ7ZaX0nxjDSekxJpqo03sLPA34Z9h5iqSShgjabo/B1nr7tAf2
+         9tMo6cIGW4/p+dywCEinGyvGkCgpmbLYQDgHPyNOxOHNdKcHc2+6i19KA8Vbv8vo1C
+         +H5SPzBhLdqVmvoa8OeThfp23B2pNz9oBEsZDxamVfUmeod6v0rakq0ugxbr69xQPh
+         mB43Yedahb3jr57kc96lcNW2j9sLMFGpfBPmOsbBg1nnrEIjdvgI5cGDRWjN8sL9Ev
+         N7Yq8xekTvcng==
+Received: by mail-wr1-f72.google.com with SMTP id x7-20020a5d6507000000b0015dada209b1so1721242wru.15
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 06:20:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=hZ5N4zB6ne7AqKTWsazgl2eww5+7SrfSBiF0jiwRIRU=;
-        b=ObhOrz6bnPO2e83rLxTuJcNkdP4BVh4AK/ttCmi4R6eD+HrmDYFCvvlz83E57RJMuh
-         g3C8CP+CuWkRtdoYPrk2Mntffc6FzqiOf1oNxHxujJ3rAVnbSU0o3HmYTs63VGcxTCch
-         QHiL9IAcRPQHjDKeomiEHy5dEIJ9JB6bsw6hC/DGiSCVNLuWAWUhCxG24FAzuKBA+Gz1
-         nuW3OroY54UOERkPLjuRoPgZK0MK1foaiwa+As+j/7wXkUlieYGaiJQch860tk2NofTD
-         Wt/o594mSDL9jGcJsVNH3as+B4/pkt5ylE6SJK0gMjOdJCy4Z1vqRoTiUB7hT5xLKaSR
-         +xXQ==
-X-Gm-Message-State: AOAM533L9tKy+h2yq1qwdJSTtpSrQ5SpLTW02ZBB+6NlVYLAVVC+ETD6
-        9FnQ3cc5K+MIG3c9vM5zHH8VKEexYFi2z+OqTqRR0K3xa3nWy2Gr6DVLeE4wnC0H5GUmcWe+f26
-        XG87croowEQ5V0h4ngXgiFCW8EaExfzFZEPYBt0EUspSQ
-X-Received: by 2002:a7b:cbd4:: with SMTP id n20mr11406242wmi.136.1631539248171;
-        Mon, 13 Sep 2021 06:20:48 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwGW1ojaPyD1M/BS656w+4FJLzZXRQcOiJW5oHFj8BydpZT1RYPdlEY9jeHIFid1HBy2UQTIw==
-X-Received: by 2002:a7b:cbd4:: with SMTP id n20mr11406199wmi.136.1631539247756;
-        Mon, 13 Sep 2021 06:20:47 -0700 (PDT)
+        bh=Fky4BN6I50Xw0PgUAedFiL1xcmFxZZIBVgJL+3QtpWs=;
+        b=MPLymXQOIIPV/O43qFDBoR4S3ZxJU8yV4Nkjx3ey95eyk3GuGMNE2vr1aQ8voKRkAF
+         8/HxqJUC16+Kjf0FjTJsYWLJ0MO0pqD45xZoSJH+l6LCPGXu/Oc8yHvY3bQxAjTKH5cB
+         CdJHL8UKkULrhtN/rLj86gbeAB/YgJqNrq80Ig1A3/Py+Ygrh8CGYKtjD9VSHTnng6Rk
+         DVhAzqILcjOyCqPh80SsT+87J5ip7u1FMCRn++wNymWGsiX5RczkY7xNOS7jStIU8Y5B
+         JV0o80/CN+Z90sQ04zm6xirK8H1CQR2Y7SOx7VHZ/JYT120MUT6W584hA9ku61TRaWhE
+         dSYQ==
+X-Gm-Message-State: AOAM532mPdS9fyLczIIlq6uQL2PBN1n+Ul2YLbXMpxa84ynXAtUf+I6P
+        PdDDRxrCy/SqvaPVsrJZHH3E7SUT3l4rYBsPqq+KQ3xd3aXU9TbB29dvikkggkrWIp53H/wsp75
+        18ll8rgDx5alSZ7H50yc56mtURljNrsXuhtYxqhwnukJM
+X-Received: by 2002:adf:8064:: with SMTP id 91mr12357522wrk.252.1631539249989;
+        Mon, 13 Sep 2021 06:20:49 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw5+h/fKlKQdXDMhGSM5nR9XBZObuvBHmrufg69rir3eN+eLiOg4WceN/MxX2SmmovwgHEcrQ==
+X-Received: by 2002:adf:8064:: with SMTP id 91mr12357504wrk.252.1631539249872;
+        Mon, 13 Sep 2021 06:20:49 -0700 (PDT)
 Received: from kozik-lap.lan (lk.84.20.244.219.dc.cable.static.lj-kabel.net. [84.20.244.219])
-        by smtp.gmail.com with ESMTPSA id n3sm7195888wmi.0.2021.09.13.06.20.46
+        by smtp.gmail.com with ESMTPSA id n3sm7195888wmi.0.2021.09.13.06.20.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Sep 2021 06:20:47 -0700 (PDT)
+        Mon, 13 Sep 2021 06:20:49 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Krzysztof Opasiak <k.opasiak@samsung.com>,
@@ -62,9 +62,9 @@ To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Jakub Kicinski <kuba@kernel.org>, linux-nfc@lists.01.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-wireless@vger.kernel.org
-Subject: [PATCH v2 04/15] nfc: fdp: drop unneeded debug prints
-Date:   Mon, 13 Sep 2021 15:20:24 +0200
-Message-Id: <20210913132035.242870-5-krzysztof.kozlowski@canonical.com>
+Subject: [PATCH v2 05/15] nfc: pn533: drop unneeded debug prints
+Date:   Mon, 13 Sep 2021 15:20:25 +0200
+Message-Id: <20210913132035.242870-6-krzysztof.kozlowski@canonical.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210913132035.242870-1-krzysztof.kozlowski@canonical.com>
 References: <20210913132035.242870-1-krzysztof.kozlowski@canonical.com>
@@ -79,21 +79,45 @@ functions so drop useless debug prints.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 ---
- drivers/nfc/fdp/i2c.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/nfc/pn533/i2c.c   | 4 ----
+ drivers/nfc/pn533/pn533.c | 2 --
+ 2 files changed, 6 deletions(-)
 
-diff --git a/drivers/nfc/fdp/i2c.c b/drivers/nfc/fdp/i2c.c
-index 051c43a2a52f..f78670bf41e0 100644
---- a/drivers/nfc/fdp/i2c.c
-+++ b/drivers/nfc/fdp/i2c.c
-@@ -335,7 +335,6 @@ static int fdp_nci_i2c_probe(struct i2c_client *client)
- 		return r;
+diff --git a/drivers/nfc/pn533/i2c.c b/drivers/nfc/pn533/i2c.c
+index e6bf8cfe3aa7..f5610b6b9894 100644
+--- a/drivers/nfc/pn533/i2c.c
++++ b/drivers/nfc/pn533/i2c.c
+@@ -128,7 +128,6 @@ static int pn533_i2c_read(struct pn533_i2c_phy *phy, struct sk_buff **skb)
+ static irqreturn_t pn533_i2c_irq_thread_fn(int irq, void *data)
+ {
+ 	struct pn533_i2c_phy *phy = data;
+-	struct i2c_client *client;
+ 	struct sk_buff *skb = NULL;
+ 	int r;
+ 
+@@ -137,9 +136,6 @@ static irqreturn_t pn533_i2c_irq_thread_fn(int irq, void *data)
+ 		return IRQ_NONE;
  	}
  
--	dev_dbg(dev, "I2C driver loaded\n");
- 	return 0;
- }
+-	client = phy->i2c_dev;
+-	dev_dbg(&client->dev, "IRQ\n");
+-
+ 	if (phy->hard_fault != 0)
+ 		return IRQ_HANDLED;
  
+diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
+index 2f3f3fe9a0ba..c5f127fe2d45 100644
+--- a/drivers/nfc/pn533/pn533.c
++++ b/drivers/nfc/pn533/pn533.c
+@@ -1235,8 +1235,6 @@ static void pn533_listen_mode_timer(struct timer_list *t)
+ {
+ 	struct pn533 *dev = from_timer(dev, t, listen_timer);
+ 
+-	dev_dbg(dev->dev, "Listen mode timeout\n");
+-
+ 	dev->cancel_listen = 1;
+ 
+ 	pn533_poll_next_mod(dev);
 -- 
 2.30.2
 
