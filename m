@@ -2,102 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22D53408DA0
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 15:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F03F4096BE
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 17:06:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241801AbhIMN1t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Sep 2021 09:27:49 -0400
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:34174
-        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241180AbhIMNZj (ORCPT
+        id S1345983AbhIMPHy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Sep 2021 11:07:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53182 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345340AbhIMPHv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Sep 2021 09:25:39 -0400
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 5E75340294
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 13:21:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1631539270;
-        bh=IGi454bY1uM8p5QRZSKGDo9YXvHCL/LufQFtzz+SznM=;
-        h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version;
-        b=TVKJmnVJLRM5Hrah7bOUMODh5Vj2a4tf0Uy/kSSXkYAij64cluvAPFXi9l5UMOY/O
-         OzZT4Wm0ftonrNR7Jor0StEYPT1X2eBJUxa4T/ErI7IlACiUqY1tNNsbcT/DDiRzG3
-         ygtg3Z3K94aM2EKy6GSEbL9mbC/qvY765Slj0Y2JFuAyfJNLJ3dA1YGtJ+HiulRJ6Q
-         eGct19qat+WAYVzla/3csbW3Axocc7aKnQ0mSsHA3Fka/yfLHXGnKFNT1eA7OReb59
-         D1ez94Rqp+yp2GA7NVKe11Fcr+qXKANEg8ExV+puCigQCoHYA0VNqv14iJiWq66q9I
-         WiFe9/ooT2jFg==
-Received: by mail-wm1-f72.google.com with SMTP id k5-20020a7bc3050000b02901e081f69d80so4922907wmj.8
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 06:21:10 -0700 (PDT)
+        Mon, 13 Sep 2021 11:07:51 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6D6C0086C0
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 06:43:09 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id bq5so21216179lfb.9
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 06:43:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tQAMjy8VRvJI6lW4tYB0PDHpx0tw8jGULSmN/FaNG+g=;
+        b=Bbb/S9bUWOBSsQ3pUMTVPvPM3mELyvG1d1Lp39NxhVgmVk+79l6sqgb6LzWCOb4L0G
+         4xOUKFakiyAC6nrltsn+MB6bUBos4WlUB0nm7FHkp2RF21NdRLUEm4sunjTSdshoRv4K
+         eNLAmdHSnHkdwraYqYyvKCPiIaApFzA0oCxB65b4ONd9T/nu22W+N71E6gYzBiva34CW
+         IgswZYwE132B2XWdZPaLFJFxywQZsw2cZ4gmU7fM6bSCADjsWz2QqrQNXrytfyNxu0Ed
+         QWM6q7ZowPchznXUFAyvgGnmTOZr9Qu57dB5+Rp0N50r+t46TxzQtEkrBzX3RfDkuaUN
+         gsXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=IGi454bY1uM8p5QRZSKGDo9YXvHCL/LufQFtzz+SznM=;
-        b=jOVXTlQLOg0zUPedEnOnwYd1jHM9969chM1g83YUyPM50zu2OdiS42KyrSbPuuILca
-         8sr7TqjvyDRJul8kPM6Do3bfx7PcKdkGNtXGSiErJt6C8QiIx6gHje3HN9lU+6Poi7aw
-         Juxp6fgjoM7WEkYU7P8kpUcZ412cPumTJWFkGzXiTa+R1mP5Q/l22FBQ0mklE/M49Ygq
-         21pCFFoZGzMr+SbqtVEoR6mW35auojZpnbL5H60aFiia7rCjP359aokW1fn9JzSgbs1Y
-         7gRuUvH50yI0SFx9tH3/QpHgtMft+Uov6ff7IE35bSs+d261EVpJHCT+pDXiHFKrYkrp
-         qCgg==
-X-Gm-Message-State: AOAM530eNMNoW3iPhUGo1mqaNjK2YQKGK2aPALxkwpt4Xf7Sz7yuWDGm
-        DQ4kKUqjUvwOxoIRxeUIdLYuXD3aANUPd4c0jpNDc7X5pMnXQ+Dg22kLn94SmwXXmwyOoOq7wEL
-        6/GgqT5JgU9ki2v+RPJslT+D3k4hnQaPGs/yM7n+TwBi5
-X-Received: by 2002:a7b:cc94:: with SMTP id p20mr10982104wma.75.1631539270108;
-        Mon, 13 Sep 2021 06:21:10 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyzcTw8iBQqSZqojTcM4kP7OKiemOCKYYc0KcyxRfeOMDAJB3GM+IUl88UZvA8hAphcWLUGHQ==
-X-Received: by 2002:a7b:cc94:: with SMTP id p20mr10982078wma.75.1631539269943;
-        Mon, 13 Sep 2021 06:21:09 -0700 (PDT)
-Received: from kozik-lap.lan (lk.84.20.244.219.dc.cable.static.lj-kabel.net. [84.20.244.219])
-        by smtp.gmail.com with ESMTPSA id n3sm7195888wmi.0.2021.09.13.06.21.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Sep 2021 06:21:09 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Krzysztof Opasiak <k.opasiak@samsung.com>,
-        Mark Greer <mgreer@animalcreek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-nfc@lists.01.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH v2 15/15] nfc: mrvl: drop unneeded memory allocation fail messages
-Date:   Mon, 13 Sep 2021 15:20:35 +0200
-Message-Id: <20210913132035.242870-16-krzysztof.kozlowski@canonical.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210913132035.242870-1-krzysztof.kozlowski@canonical.com>
-References: <20210913132035.242870-1-krzysztof.kozlowski@canonical.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tQAMjy8VRvJI6lW4tYB0PDHpx0tw8jGULSmN/FaNG+g=;
+        b=SG9LAryUviQApi2S2efHhu2iW6VeXa3DCIbiEKvSisl9gya2pX7DvbdsvUcmafDc6J
+         dlDg9up/fZFEDKbTzxPEMQgtnV79jcOPbtrDV9EOqbu4Afk6XOA5iNBvlGAzEYnyF4ql
+         ADOXuIZ2sNQzAYBcDGKwncW7Z+YqtxEp3EHshmGJ5YnajWdjS+fc3KASjl6lM6omJ23w
+         Zw2RLpdNNFn/4habL1/qvAwDwQceP4Vf5cGKCR9atUqoHA/RsXCcSe2y5KdwiVFj6/Z7
+         wpHeUyze5K5LcVLoCTgLnqo8nFx8mj+3lPeCkowzHSZiSPvn0cfqRUCesH/jBfhBU9pY
+         pGrA==
+X-Gm-Message-State: AOAM532xySmUJ+1/4N9e08BRnTp9siAIkxeKTjBXld4IbEiAst4s6rsz
+        H46vvbMkbVVzzBOTtfr3+zRXa9nRTuyjRZEcI2sCjA==
+X-Google-Smtp-Source: ABdhPJy07GBvfOdosgOPOaGQzsGX2CjzdZ3iQjt2WHHbgd+CW+rDXGN21SD5O2GYnEG/e8C/opszahQX3cMDMdCSpjk=
+X-Received: by 2002:a05:6512:6cd:: with SMTP id u13mr8847405lff.184.1631540588087;
+ Mon, 13 Sep 2021 06:43:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210829131305.534417-1-dmitry.baryshkov@linaro.org>
+ <20210829131305.534417-2-dmitry.baryshkov@linaro.org> <CAPDyKFp9CM+x505URK=hcO0QFqcZrpqzQ6uJQ=ZLR6uq-_d5Ew@mail.gmail.com>
+ <a0f8766a-7810-0ca5-229a-a40f73041dd9@linaro.org>
+In-Reply-To: <a0f8766a-7810-0ca5-229a-a40f73041dd9@linaro.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 13 Sep 2021 15:42:31 +0200
+Message-ID: <CAPDyKFrfEQr0czXeNeJbKSfP0toKuowwOX7yb89c723BORRqCA@mail.gmail.com>
+Subject: Re: [RFC v2 01/13] power: add power sequencer subsystem
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-bluetooth@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-nci_skb_alloc() already prints an error message on memory allocation
-failure.
+[...]
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
----
- drivers/nfc/nfcmrvl/fw_dnld.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+> >> +
+> >> +struct pwrseq *of_pwrseq_xlate_onecell(void *data, struct of_phandle_args *args)
+> >> +{
+> >> +       struct pwrseq_onecell_data *pwrseq_data = data;
+> >> +       unsigned int idx;
+> >> +
+> >> +       if (args->args_count != 1)
+> >> +               return ERR_PTR(-EINVAL);
+> >> +
+> >> +       idx = args->args[0];
+> >> +       if (idx >= pwrseq_data->num) {
+> >> +               pr_err("%s: invalid index %u\n", __func__, idx);
+> >> +               return ERR_PTR(-EINVAL);
+> >> +       }
+> >
+> > In many cases it's reasonable to leave room for future extensions, so
+> > that a provider could serve with more than one power-sequencer. I
+> > guess that is what you intend to do here, right?
+> >
+> > In my opinion, I don't think what would happen, especially since a
+> > power-sequence is something that should be specific to one particular
+> > device (a Qcom WiFi/Blutooth chip, for example).
+> >
+> > That said, I suggest limiting this to a 1:1 mapping between the device
+> > node and power-sequencer. I think that should simplify the code a bit.
+>
+> In fact the WiFi/BT example itself provides a non 1:1 mapping. In my
+> current design the power sequencer provides two instances (one for WiFi,
+> one for BT). This allows us to move the knowledge about "enable" pins to
+> the pwrseq. Once the QCA BT driver acquires and powers up the pwrseq,
+> the BT part is ready. No need to toggle any additional pins. Once the
+> WiFi pwrseq is powered up, the WiFi part is present on the bus and
+> ready, without any additional pin toggling.
 
-diff --git a/drivers/nfc/nfcmrvl/fw_dnld.c b/drivers/nfc/nfcmrvl/fw_dnld.c
-index edac56b01fd1..e83f65596a88 100644
---- a/drivers/nfc/nfcmrvl/fw_dnld.c
-+++ b/drivers/nfc/nfcmrvl/fw_dnld.c
-@@ -76,10 +76,8 @@ static struct sk_buff *alloc_lc_skb(struct nfcmrvl_private *priv, uint8_t plen)
- 	struct nci_data_hdr *hdr;
- 
- 	skb = nci_skb_alloc(priv->ndev, (NCI_DATA_HDR_SIZE + plen), GFP_KERNEL);
--	if (!skb) {
--		pr_err("no memory for data\n");
-+	if (!skb)
- 		return NULL;
--	}
- 
- 	hdr = skb_put(skb, NCI_DATA_HDR_SIZE);
- 	hdr->conn_id = NCI_CORE_LC_CONNID_PROP_FW_DL;
--- 
-2.30.2
+Aha, that seems reasonable.
 
+>
+> I can move onecell support to the separate patch if you think this might
+> simplify the code review.
+
+It doesn't matter, both options work for me.
+
+[...]
+
+Kind regards
+Uffe
