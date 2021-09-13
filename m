@@ -2,133 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F4D8409A30
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 18:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A87F409B39
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 19:51:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233210AbhIMQ73 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Sep 2021 12:59:29 -0400
-Received: from out5-smtp.messagingengine.com ([66.111.4.29]:58659 "EHLO
-        out5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241294AbhIMQ7Q (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Sep 2021 12:59:16 -0400
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
-        by mailout.nyi.internal (Postfix) with ESMTP id 7158D5C016A;
-        Mon, 13 Sep 2021 12:58:00 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Mon, 13 Sep 2021 12:58:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=animalcreek.com;
-         h=date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm3; bh=/YX5Udt6vbjGSgSU1tjpoD4Md1W
-        98inn3an5jk9WL1U=; b=u1c7uP9SPx6sFGOlB/+nkW/0sGKfMLaHiTpv/V7LELi
-        ens5F1SgPWJqHS8Md41mkuxMGaEmSkHWt0yf+9TSkZE0IgQWYwVKvJreuDPrvZH/
-        c4p/QFwCxkJbwW2qjikySgBThAw8gpIX60U6mBhhucLeXkdIccDkW68fBLBz6G/1
-        RYB/SBQ/WsGBfyyyV8NuBCQcwWnJoH6p138BRjjHgzB0C2qfAGtMn4axmCSsAVd/
-        yXsF/3CYrjvG5FPmvTcwWik56FA/FRbIWkDS/Myale83xcQAzQEWbBNZIDeMYXQp
-        HRpo9U+xRoK875YhR0F3jVJa3MBMhEJ/lxE8LIgRwJw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=/YX5Ud
-        t6vbjGSgSU1tjpoD4Md1W98inn3an5jk9WL1U=; b=V7ry8qo/HLWyAagg+DF6QW
-        XrqsxPfmZHPhyAWQ8LdxrwK73BnRSTodSvAQet0mbUrfRecGzl1BWwN2hzPEE/rA
-        cvBoumIccmSUMWzcPwqXC3fZXPHIHPPg1zNMPwOGiTR5aN+lZNz6Yw6evUxFcx6R
-        oRWd1HSZtfQ+2LZGWTuy9GMG0w6GzWWjBO5zHOK31fuUQzCBR44ExIXIryUrOpu9
-        /tC5f6ARSMjvQaH74zCXP/kmh0nSGotj6okjlYdMAM9LD/ruf7n6oAB/AjsTehc7
-        8DTaLQaOrM3Tq5ruO5WFRzhs3o2+I/4iCALVG4lI7u1xvNkdlCuoqEKVWpXO9I6Q
-        ==
-X-ME-Sender: <xms:FoM_YZWcwZT3Tfltlz7UmYcbmEMk2Mvm7VVwBbgIYZnSp9l2i-DYvw>
-    <xme:FoM_YZmlbyDSufF9TGroWQxa_i0y40lQtvu0DQTQ2ZQLRQOoHRRBdqf4tx-ZSNj90
-    HpSGGIw1cnLuQVgxQ>
-X-ME-Received: <xmr:FoM_YVZQvWysZfXDBhV_MQGByhwWmuTmKWzZRWet_SaPrN5fOYqSxFXHdufCVz1R7hQvF8qgSaAQdqPm_TeGQTSiiSktFYjBaAtet-I>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudegjedguddtgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvuffkfhggtggujghosehttdertddttddvnecuhfhrohhmpeforghr
-    khcuifhrvggvrhcuoehmghhrvggvrhesrghnihhmrghltghrvggvkhdrtghomheqnecugg
-    ftrfgrthhtvghrnhepieeugfdutdefiedtvdfftedufedvjeehgfevveefudfgjeffgeei
-    teetjedufffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepmhhgrhgvvghrsegrnhhimhgrlhgtrhgvvghkrdgtohhm
-X-ME-Proxy: <xmx:FoM_YcXk80oBL9lH3Wrx2Rx_zIs0eTxhtaJTGGwPz9GyRUd-TNpr2g>
-    <xmx:FoM_YTkqQQGWf06rahVdEFa6kkDqoj0QKV4yNRJn_ioERDbaRYZOWw>
-    <xmx:FoM_YZfMIPADBfBPhJ_HOXz0WsULCVEyoUnwcrrRuUn2huCOdnGlrA>
-    <xmx:GIM_YRXIYXcEckZQibekN4gcwbGUiB8P9Pe9HV-fFpOvuQV77VOevA>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Sep 2021 12:57:58 -0400 (EDT)
-Received: by blue.animalcreek.com (Postfix, from userid 1000)
-        id EB1C2136014F; Mon, 13 Sep 2021 09:57:57 -0700 (MST)
-Date:   Mon, 13 Sep 2021 09:57:57 -0700
-From:   Mark Greer <mgreer@animalcreek.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Krzysztof Opasiak <k.opasiak@samsung.com>,
-        Mark Greer <mgreer@animalcreek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-nfc@lists.01.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 12/15] nfc: trf7970a: drop unneeded debug prints
-Message-ID: <20210913165757.GA1309751@animalcreek.com>
-References: <20210913132035.242870-1-krzysztof.kozlowski@canonical.com>
- <20210913132035.242870-13-krzysztof.kozlowski@canonical.com>
+        id S239261AbhIMRwd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Sep 2021 13:52:33 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:11760 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239220AbhIMRwc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 Sep 2021 13:52:32 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1631555476; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=olKk6Vk9H6023FzC/tK7LvtFJsnhR6WnXnQz/7wxwxQ=; b=s/EqHWoF4QbgeJ4hBsNnlVHDynSZG8q6bBiHnN6hE6gjhrC8aV2ltaNru5X3MG9CDE1L6p09
+ bfmvzKWM3PnFvLRCkSwdTAsNiGbHk+u4rg1nySzyiwdwSVzAX4AjBlvtDuCIQpQLAiDXKhbf
+ WdmIHODIrfBcX5GeeJRzgFNRn04=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 613f8f81e0f78151d6babd47 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 13 Sep 2021 17:50:57
+ GMT
+Sender: jouni=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 96C86C43617; Mon, 13 Sep 2021 17:50:57 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from jouni.codeaurora.org (85-76-72-211-nat.elisa-mobile.fi [85.76.72.211])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: jouni)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 66B67C4338F;
+        Mon, 13 Sep 2021 17:50:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 66B67C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Jouni Malinen <jouni@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Abinaya Kalaiselvan <akalaise@codeaurora.org>,
+        Jouni Malinen <jouni@codeaurora.org>
+Subject: [PATCH] ath10k: Fix device boot error
+Date:   Mon, 13 Sep 2021 20:50:48 +0300
+Message-Id: <20210913175048.192812-1-jouni@codeaurora.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210913132035.242870-13-krzysztof.kozlowski@canonical.com>
-Organization: Animal Creek Technologies, Inc.
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Sep 13, 2021 at 03:20:32PM +0200, Krzysztof Kozlowski wrote:
-> ftrace is a preferred and standard way to debug entering and exiting
-> functions so drop useless debug prints.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-> ---
->  drivers/nfc/trf7970a.c | 8 --------
->  1 file changed, 8 deletions(-)
-> 
-> diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-> index 8890fcd59c39..29ca9c328df2 100644
-> --- a/drivers/nfc/trf7970a.c
-> +++ b/drivers/nfc/trf7970a.c
-> @@ -2170,8 +2170,6 @@ static int trf7970a_suspend(struct device *dev)
->  	struct spi_device *spi = to_spi_device(dev);
->  	struct trf7970a *trf = spi_get_drvdata(spi);
->  
-> -	dev_dbg(dev, "Suspend\n");
-> -
->  	mutex_lock(&trf->lock);
->  
->  	trf7970a_shutdown(trf);
-> @@ -2187,8 +2185,6 @@ static int trf7970a_resume(struct device *dev)
->  	struct trf7970a *trf = spi_get_drvdata(spi);
->  	int ret;
->  
-> -	dev_dbg(dev, "Resume\n");
-> -
->  	mutex_lock(&trf->lock);
->  
->  	ret = trf7970a_startup(trf);
-> @@ -2206,8 +2202,6 @@ static int trf7970a_pm_runtime_suspend(struct device *dev)
->  	struct trf7970a *trf = spi_get_drvdata(spi);
->  	int ret;
->  
-> -	dev_dbg(dev, "Runtime suspend\n");
-> -
->  	mutex_lock(&trf->lock);
->  
->  	ret = trf7970a_power_down(trf);
-> @@ -2223,8 +2217,6 @@ static int trf7970a_pm_runtime_resume(struct device *dev)
->  	struct trf7970a *trf = spi_get_drvdata(spi);
->  	int ret;
->  
-> -	dev_dbg(dev, "Runtime resume\n");
-> -
->  	ret = trf7970a_power_up(trf);
->  	if (!ret)
->  		pm_runtime_mark_last_busy(dev);
-> -- 
-> 2.30.2
+From: Abinaya Kalaiselvan <akalaise@codeaurora.org>
 
-Acked-by: Mark Greer <mgreer@animalcreek.com>
+mask value ATH10K_FW_CRASH_DUMP_RAM_DATA is not mandatory to get iram
+mem layout. So introduced ath10k_coredump_get_hw_mem_layout to copy
+hardware memory layout.
+
+This fixes the below boot error:
+[   17.468882] ath10k_pci 0000:06:00.0: failed to copy target iram contents: -12
+[   17.513925] ath10k_pci 0000:06:00.0: could not init core (-12)
+[   17.517635] ath10k_pci 0000:06:00.0: could not probe fw (-12)
+
+Tested-on: QCA9984 X86 10.4-3.9.0.2-00139
+
+Fixes: 9af7c32ceca8 ("ath10k: add target IRAM recovery feature support")
+Signed-off-by: Abinaya Kalaiselvan <akalaise@codeaurora.org>
+Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/core.c     |  2 +-
+ drivers/net/wireless/ath/ath10k/coredump.c | 11 ++++++++---
+ drivers/net/wireless/ath/ath10k/coredump.h |  1 +
+ 3 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 2f9be182fbfb..cbcf3aa3e92c 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -2690,7 +2690,7 @@ static int ath10k_core_copy_target_iram(struct ath10k *ar)
+ 	int i, ret;
+ 	u32 len, remaining_len;
+ 
+-	hw_mem = ath10k_coredump_get_mem_layout(ar);
++	hw_mem = ath10k_coredump_get_hw_mem_layout(ar);
+ 	if (!hw_mem)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/net/wireless/ath/ath10k/coredump.c b/drivers/net/wireless/ath/ath10k/coredump.c
+index 7eb72290a925..f8419a707b89 100644
+--- a/drivers/net/wireless/ath/ath10k/coredump.c
++++ b/drivers/net/wireless/ath/ath10k/coredump.c
+@@ -1447,11 +1447,17 @@ static u32 ath10k_coredump_get_ramdump_size(struct ath10k *ar)
+ 
+ const struct ath10k_hw_mem_layout *ath10k_coredump_get_mem_layout(struct ath10k *ar)
+ {
+-	int i;
+-
+ 	if (!test_bit(ATH10K_FW_CRASH_DUMP_RAM_DATA, &ath10k_coredump_mask))
+ 		return NULL;
+ 
++	return ath10k_coredump_get_hw_mem_layout(ar);
++}
++EXPORT_SYMBOL(ath10k_coredump_get_mem_layout);
++
++const struct ath10k_hw_mem_layout *ath10k_coredump_get_hw_mem_layout(struct ath10k *ar)
++{
++	int i;
++
+ 	if (WARN_ON(ar->target_version == 0))
+ 		return NULL;
+ 
+@@ -1464,7 +1470,6 @@ const struct ath10k_hw_mem_layout *ath10k_coredump_get_mem_layout(struct ath10k
+ 
+ 	return NULL;
+ }
+-EXPORT_SYMBOL(ath10k_coredump_get_mem_layout);
+ 
+ struct ath10k_fw_crash_data *ath10k_coredump_new(struct ath10k *ar)
+ {
+diff --git a/drivers/net/wireless/ath/ath10k/coredump.h b/drivers/net/wireless/ath/ath10k/coredump.h
+index 42404e246e0e..7f4849c69ce8 100644
+--- a/drivers/net/wireless/ath/ath10k/coredump.h
++++ b/drivers/net/wireless/ath/ath10k/coredump.h
+@@ -177,6 +177,7 @@ void ath10k_coredump_unregister(struct ath10k *ar);
+ void ath10k_coredump_destroy(struct ath10k *ar);
+ 
+ const struct ath10k_hw_mem_layout *ath10k_coredump_get_mem_layout(struct ath10k *ar);
++const struct ath10k_hw_mem_layout *ath10k_coredump_get_hw_mem_layout(struct ath10k *ar);
+ 
+ #else /* CONFIG_DEV_COREDUMP */
+ 
+-- 
+2.25.1
+
