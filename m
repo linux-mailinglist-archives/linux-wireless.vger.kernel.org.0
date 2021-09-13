@@ -2,206 +2,234 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65F84409BE7
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 20:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D955409E93
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 22:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346869AbhIMSNC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Sep 2021 14:13:02 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:29745 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238489AbhIMSMw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Sep 2021 14:12:52 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1631556696; h=Content-Transfer-Encoding: MIME-Version:
- Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=FX/1sta2YnAZClmgdE6oKf2tiE1gnDdzAL7dWMqTYQc=; b=kG4T2d1MfcJHELeo4AaAyAUSMcWGX1Qbdc4eRiIBgKbJbBfxhNQdYK/cJkj0hQJFuWXOLXDV
- NnaTZOSrGlhf6avdTcX+RVHA12tZy9HfjXeipP+l6Lbxj0FH+jMSKyMPVY4aZ96XeTfT9vXA
- m9x2B/m9ssowaj00P4xizkENG00=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 613f9458648642cc1c7b5cc2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 13 Sep 2021 18:11:36
- GMT
-Sender: jouni=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8CC9CC43460; Mon, 13 Sep 2021 18:11:36 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from jouni.codeaurora.org (85-76-72-211-nat.elisa-mobile.fi [85.76.72.211])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: jouni)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3257EC4338F;
-        Mon, 13 Sep 2021 18:11:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 3257EC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Jouni Malinen <jouni@codeaurora.org>
+        id S243629AbhIMUy7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Sep 2021 16:54:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50128 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244428AbhIMUyy (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 Sep 2021 16:54:54 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C4D4C061760
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 13:53:16 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id e16so10020608pfc.6
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 13:53:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=f90knbbhtSScT8ar0jqF08SQUZmsRray7TeEETy/L9c=;
+        b=TLgwdSKTYs4IaAyBBMpkY+P28NYma3r1phTKbQrF7ns68EYCnG/diFKdtFOwdJ2R8D
+         xT9nmLrmtnmDk54bafY9N3Zxttn4/3BZoudzEIvLFqtXIRDtgTzSPdOu0VCzfb3Skjyo
+         8K1CUuIokwBsacA+2mLbS6MBqCyLa4zgJLpQk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=f90knbbhtSScT8ar0jqF08SQUZmsRray7TeEETy/L9c=;
+        b=48WKIC8SBlbqPxs8Z0/+A3PJIBYRnLyS9nwCgH9rBfazMmFhH+ZyIMIaqZ/drtgt+Z
+         QYXMhSNyrVMhrfSQPmm0Shxhoib88adCw0VK/CJ5+1NtRjjNZ9tdpn9sRhLAfzArudFZ
+         tTC+guRgEV3hmkjgwAIsI6Gf1ZgV23nB6blQtdGsUq6tB0XUfJfd4iAcxRIXgo18MH/s
+         11C2lCQQimMALO3EBNPigIyX5Px16fsMYVJarYLjU3vAI7SFqehH9OyHpr3hBJUd7nEa
+         mZgNrsOMJqRgnwiEZrDQ63k/f5Khr4ZBnrN3WWy+b7iOhju5jAponHLjjGX4sL2BN7cr
+         UX+Q==
+X-Gm-Message-State: AOAM530VvqbwhLo1pFo1+xk/TZejY+dp0Lqk3+Z3qzTwSDjUtGLSeIj4
+        juB9Wz07g+lmeHN/XoXlaVKDPw==
+X-Google-Smtp-Source: ABdhPJxAl/mPXt91YwawfAofyXkkfN2pdLltwPNS+6qxwL3ENdYmXvUidco0XR00ILeLkAlx8X+QJg==
+X-Received: by 2002:a63:f817:: with SMTP id n23mr12417256pgh.250.1631566395792;
+        Mon, 13 Sep 2021 13:53:15 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:201:cd18:482a:6391:201b])
+        by smtp.gmail.com with ESMTPSA id n11sm7702188pjh.23.2021.09.13.13.53.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Sep 2021 13:53:15 -0700 (PDT)
+From:   Stephen Boyd <swboyd@chromium.org>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Wen Gong <wgong@codeaurora.org>,
-        Jouni Malinen <jouni@codeaurora.org>
-Subject: [PATCH] ath11k: add string type to search board data in board-2.bin for WCN6855
-Date:   Mon, 13 Sep 2021 21:11:31 +0300
-Message-Id: <20210913181131.194024-1-jouni@codeaurora.org>
-X-Mailer: git-send-email 2.25.1
+Cc:     linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        Youghandhar Chintala <youghand@codeaurora.org>,
+        Abhishek Kumar <kuabhs@chromium.org>,
+        Steev Klimaszewski <steev@kali.org>,
+        Matthias Kaehlcke <mka@chromium.org>
+Subject: [PATCH v2] ath10k: Don't always treat modem stop events as crashes
+Date:   Mon, 13 Sep 2021 13:53:13 -0700
+Message-Id: <20210913205313.3420049-1-swboyd@chromium.org>
+X-Mailer: git-send-email 2.33.0.309.g3052b89438-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Wen Gong <wgong@codeaurora.org>
+When rebooting on sc7180 Trogdor devices I see the following crash from
+the wifi driver.
 
-Currently ath11k only support string type with bus, chip id and board id
-such as "bus=ahb,qmi-chip-id=1,qmi-board-id=4" for ahb bus chip and
-"bus=pci,qmi-chip-id=0,qmi-board-id=255" for PCIe bus chip in
-board-2.bin. For WCN6855, it is not enough to distinguish all different
-chips.
+ ath10k_snoc 18800000.wifi: firmware crashed! (guid 83493570-29a2-4e98-a83e-70048c47669c)
 
-This is to add a new string type which include bus, chip id, board id,
-vendor, device, subsystem-vendor and subsystem-device for WCN6855.
+This is because a modem stop event looks just like a firmware crash to
+the driver, the qmi connection is closed in both cases. Use the qcom ssr
+notifier block to stop treating the qmi connection close event as a
+firmware crash signal when the modem hasn't actually crashed. See
+ath10k_qmi_event_server_exit() for more details.
 
-ath11k will first load board-2.bin and search in it for the board data
-with the above parameters, if matched one board data, then download it
-to firmware, if not matched any one, then ath11k will download the file
-board.bin to firmware.
+This silences the crash message seen during every reboot.
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
-Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+Fixes: 3f14b73c3843 ("ath10k: Enable MSA region dump support for WCN3990")
+Cc: Youghandhar Chintala <youghand@codeaurora.org>
+Cc: Abhishek Kumar <kuabhs@chromium.org>
+Tested-By: Steev Klimaszewski <steev@kali.org>
+Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
+Reviewed-by: Abhishek Kumar <kuabhs@chromium.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 27 ++++++++++++++++++++------
- drivers/net/wireless/ath/ath11k/core.h | 13 +++++++++++++
- drivers/net/wireless/ath/ath11k/pci.c  | 10 ++++++++++
- drivers/net/wireless/ath/ath11k/qmi.h  |  3 +++
- 4 files changed, 47 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 8f09ae827170..a8c6f7cf33d5 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -406,11 +406,26 @@ static int ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
- 		scnprintf(variant, sizeof(variant), ",variant=%s",
- 			  ab->qmi.target.bdf_ext);
+Changes since v1 (https://lore.kernel.org/r/20210905210400.1157870-1-swboyd@chromium.org):
+ * Push error message into function instead of checking at callsite
+
+ drivers/net/wireless/ath/ath10k/snoc.c | 77 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath10k/snoc.h |  4 ++
+ 2 files changed, 81 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index ea00fbb15601..965136261aef 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -12,6 +12,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/remoteproc/qcom_rproc.h>
+ #include <linux/of_address.h>
+ #include <linux/iommu.h>
  
--	scnprintf(name, name_len,
--		  "bus=%s,qmi-chip-id=%d,qmi-board-id=%d%s",
--		  ath11k_bus_str(ab->hif.bus),
--		  ab->qmi.target.chip_id,
--		  ab->qmi.target.board_id, variant);
-+	switch (ab->id.bdf_search) {
-+	case ATH11K_BDF_SEARCH_BUS_AND_BOARD:
-+		scnprintf(name, name_len,
-+			  "bus=%s,vendor=%04x,device=%04x,subsystem-vendor=%04x,subsystem-device=%04x,qmi-chip-id=%d,qmi-board-id=%d%s",
-+			  ath11k_bus_str(ab->hif.bus),
-+			  ab->id.vendor, ab->id.device,
-+			  ab->id.subsystem_vendor,
-+			  ab->id.subsystem_device,
-+			  FIELD_GET(ATH11K_CHIP_ID_MASK, ab->qmi.target.chip_id),
-+			  ab->qmi.target.board_id & 0xFF,
-+			  variant);
-+		break;
-+	default:
-+		scnprintf(name, name_len,
-+			  "bus=%s,qmi-chip-id=%d,qmi-board-id=%d%s",
-+			  ath11k_bus_str(ab->hif.bus),
-+			  ab->qmi.target.chip_id,
-+			  ab->qmi.target.board_id, variant);
-+		break;
-+	}
- 
- 	ath11k_dbg(ab, ATH11K_DBG_BOOT, "boot using board name '%s'\n", name);
- 
-@@ -647,7 +662,7 @@ static int ath11k_core_fetch_board_data_api_1(struct ath11k_base *ab,
- 	return 0;
+@@ -1477,6 +1478,74 @@ void ath10k_snoc_fw_crashed_dump(struct ath10k *ar)
+ 	mutex_unlock(&ar->dump_mutex);
  }
  
--#define BOARD_NAME_SIZE 100
-+#define BOARD_NAME_SIZE 200
- int ath11k_core_fetch_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd)
++static int ath10k_snoc_modem_notify(struct notifier_block *nb, unsigned long action,
++				    void *data)
++{
++	struct ath10k_snoc *ar_snoc = container_of(nb, struct ath10k_snoc, nb);
++	struct ath10k *ar = ar_snoc->ar;
++	struct qcom_ssr_notify_data *notify_data = data;
++
++	switch (action) {
++	case QCOM_SSR_BEFORE_POWERUP:
++		ath10k_dbg(ar, ATH10K_DBG_SNOC, "received modem starting event\n");
++		clear_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags);
++		break;
++
++	case QCOM_SSR_AFTER_POWERUP:
++		ath10k_dbg(ar, ATH10K_DBG_SNOC, "received modem running event\n");
++		break;
++
++	case QCOM_SSR_BEFORE_SHUTDOWN:
++		ath10k_dbg(ar, ATH10K_DBG_SNOC, "received modem %s event\n",
++			   notify_data->crashed ? "crashed" : "stopping");
++		if (!notify_data->crashed)
++			set_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags);
++		else
++			clear_bit(ATH10K_SNOC_FLAG_UNREGISTERING, &ar_snoc->flags);
++		break;
++
++	case QCOM_SSR_AFTER_SHUTDOWN:
++		ath10k_dbg(ar, ATH10K_DBG_SNOC, "received modem offline event\n");
++		break;
++
++	default:
++		ath10k_err(ar, "received unrecognized event %lu\n", action);
++		break;
++	}
++
++	return NOTIFY_OK;
++}
++
++static int ath10k_modem_init(struct ath10k *ar)
++{
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
++	void *notifier;
++	int ret;
++
++	ar_snoc->nb.notifier_call = ath10k_snoc_modem_notify;
++
++	notifier = qcom_register_ssr_notifier("mpss", &ar_snoc->nb);
++	if (IS_ERR(notifier)) {
++		ret = PTR_ERR(notifier);
++		ath10k_err(ar, "failed to initialize modem notifier: %d\n", ret);
++		return ret;
++	}
++
++	ar_snoc->notifier = notifier;
++
++	return 0;
++}
++
++static void ath10k_modem_deinit(struct ath10k *ar)
++{
++	int ret;
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
++
++	ret = qcom_unregister_ssr_notifier(ar_snoc->notifier, &ar_snoc->nb);
++	if (ret)
++		ath10k_err(ar, "error %d unregistering notifier\n", ret);
++}
++
+ static int ath10k_setup_msa_resources(struct ath10k *ar, u32 msa_size)
  {
- 	char boardname[BOARD_NAME_SIZE];
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index d58ca38d78c7..eda90776cee1 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -47,6 +47,11 @@ enum ath11k_supported_bw {
- 	ATH11K_BW_160	= 3,
- };
- 
-+enum ath11k_bdf_search {
-+	ATH11K_BDF_SEARCH_DEFAULT,
-+	ATH11K_BDF_SEARCH_BUS_AND_BOARD,
-+};
-+
- enum wme_ac {
- 	WME_AC_BE,
- 	WME_AC_BK,
-@@ -761,6 +766,14 @@ struct ath11k_base {
- 	struct completion htc_suspend;
- 	struct ath11k_num_vdevs_peers num_vdevs_peers;
- 
-+	struct {
-+		enum ath11k_bdf_search bdf_search;
-+		u32 vendor;
-+		u32 device;
-+		u32 subsystem_vendor;
-+		u32 subsystem_device;
-+	} id;
-+
- 	/* must be last */
- 	u8 drv_priv[0] __aligned(sizeof(void *));
- };
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index c6540d562c42..40f7e70693c0 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -1290,6 +1290,15 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
- 		goto err_free_core;
+ 	struct device *dev = ar->dev;
+@@ -1740,10 +1809,17 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
+ 		goto err_fw_deinit;
  	}
  
-+	ath11k_dbg(ab, ATH11K_DBG_BOOT, "pci probe %04x:%04x %04x:%04x\n",
-+		   pdev->vendor, pdev->device,
-+		   pdev->subsystem_vendor, pdev->subsystem_device);
++	ret = ath10k_modem_init(ar);
++	if (ret)
++		goto err_qmi_deinit;
 +
-+	ab->id.vendor = pdev->vendor;
-+	ab->id.device = pdev->device;
-+	ab->id.subsystem_vendor = pdev->subsystem_vendor;
-+	ab->id.subsystem_device = pdev->subsystem_device;
-+
- 	switch (pci_dev->device) {
- 	case QCA6390_DEVICE_ID:
- 		ath11k_pci_read_hw_version(ab, &soc_hw_version_major,
-@@ -1312,6 +1321,7 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
- 		ab->hw_rev = ATH11K_HW_QCN9074_HW10;
- 		break;
- 	case WCN6855_DEVICE_ID:
-+		ab->id.bdf_search = ATH11K_BDF_SEARCH_BUS_AND_BOARD;
- 		ath11k_pci_read_hw_version(ab, &soc_hw_version_major,
- 					   &soc_hw_version_minor);
- 		switch (soc_hw_version_major) {
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
-index 3bb0f9ef7996..a7c01b51d9a6 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.h
-+++ b/drivers/net/wireless/ath/ath11k/qmi.h
-@@ -97,6 +97,9 @@ struct target_mem_chunk {
- 	u32 *vaddr;
- };
+ 	ath10k_dbg(ar, ATH10K_DBG_SNOC, "snoc probe\n");
  
-+/* used to get the chip id in struct target_info */
-+#define ATH11K_CHIP_ID_MASK 0x10
+ 	return 0;
+ 
++err_qmi_deinit:
++	ath10k_qmi_deinit(ar);
 +
- struct target_info {
- 	u32 chip_id;
- 	u32 chip_family;
+ err_fw_deinit:
+ 	ath10k_fw_deinit(ar);
+ 
+@@ -1771,6 +1847,7 @@ static int ath10k_snoc_free_resources(struct ath10k *ar)
+ 	ath10k_fw_deinit(ar);
+ 	ath10k_snoc_free_irq(ar);
+ 	ath10k_snoc_release_resource(ar);
++	ath10k_modem_deinit(ar);
+ 	ath10k_qmi_deinit(ar);
+ 	ath10k_core_destroy(ar);
+ 
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
+index 5095d1893681..d986edc772f8 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.h
++++ b/drivers/net/wireless/ath/ath10k/snoc.h
+@@ -6,6 +6,8 @@
+ #ifndef _SNOC_H_
+ #define _SNOC_H_
+ 
++#include <linux/notifier.h>
++
+ #include "hw.h"
+ #include "ce.h"
+ #include "qmi.h"
+@@ -75,6 +77,8 @@ struct ath10k_snoc {
+ 	struct clk_bulk_data *clks;
+ 	size_t num_clks;
+ 	struct ath10k_qmi *qmi;
++	struct notifier_block nb;
++	void *notifier;
+ 	unsigned long flags;
+ 	bool xo_cal_supported;
+ 	u32 xo_cal_data;
+
+base-commit: 7d2a07b769330c34b4deabeed939325c77a7ec2f
 -- 
-2.25.1
+https://chromeos.dev
 
