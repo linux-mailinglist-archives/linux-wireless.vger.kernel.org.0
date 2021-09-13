@@ -2,862 +2,198 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD8F4408B15
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 14:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0848408B7E
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 15:02:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240005AbhIMMeD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Sep 2021 08:34:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47636 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236796AbhIMMeC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Sep 2021 08:34:02 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 360B6C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 05:32:46 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id n2so20843181lfk.0
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 05:32:46 -0700 (PDT)
+        id S236961AbhIMNDf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Sep 2021 09:03:35 -0400
+Received: from mail-dm6nam12on2088.outbound.protection.outlook.com ([40.107.243.88]:14912
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S236918AbhIMNDe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 Sep 2021 09:03:34 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hb2LvPD626wNpnO0enrp9Kar1sY9soww8jlEwX2zlztNpl3+Iu3JZR6XSG87mW3E97CS0B6cXnX3HSBbs7A3eF7/TnTtn7FmZwAM+fnr0t7cNvPU/RbaI8/4DAAztbY7aTfbKaSNnQYv56I99bq4Vo0B/o7Wf4l5jmjg3OUhn2yu5eTQRh3Uq1tjaS1xHH6N0d022tJBPtFBrIgajFYt9L1s9uN0BO1uW93VD5nNPnLrkIbxsZbNdIRtgkIjI1s12sF5ExNQoSDJp3EIWLtrseYg2JZCMdXQkutSpd3OkjVudMHELZNwVmSbLl7P4HVGv9VE/ckhVgCQAYW2mORpYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=vEasab9Ix4f7UzKncEVfA4qRm1ge3YVHkjWFEieBUvA=;
+ b=NyJ25kp6jrBGlZKPQLsN9/o39y445ibO5/OwLaulYrIxc0JBS+m+F843VnDzjYQbL4y0JrlXTxJI4tUwvUj/FoDl4uX3GVeQhEuZNHuccQIVG82hf0ZzU6vFUvR4e2fhjkP44g4vOlS4QMCvJy8VwPJVsr0pAJoqgWdC2PoVe/BuAt9t5YPbSm+nf6vjMAvNkFcpQfsfzy12o/RYihefx4PT8eS0m0p1bdw/mP3k4/0ps1MEDuSfe6+DhUSUH+lTPJSX1qDtl0GzFvt6b8y625uor1DLOhwwS+WNYKmpf9GQyHOpM2Uiof5kvQ7sJwutpdt0+kwpdS7TVooBEiBcDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=IcdxkekjvIPvscPJ6D0w7crdvHmRx6KsxbgxUaXJRrw=;
-        b=tA6b80GNGohjRpuhgmKICXzzbfhlC7GaHWz/S2PlgR59r09nir37/OJbElZxgA9iet
-         hgA8B04Iblm592IOLpsjelMJeqqPNyYgMmQEhhHnDZUtSxXSn8ZViZxpgt37YA9zwgj/
-         nFObsZZhZuTCzw1RXwR3OvWNZL19/u97nBPLjrLRXxbUGFwBhI1Tx94v8tKTe2GCX21w
-         Ec0j+YmR6z70qdF78j11fSLbNhJDK4QxuNJPhXQbH22zcqOnbVxaL1jQqWh86+GLePwd
-         rASHwFYSsKkgrWMwNQRFB0BX79tkgmXLA5KHyndygcwzo2nULVrQF03Nf2EnaKXPpmQ5
-         DVXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=IcdxkekjvIPvscPJ6D0w7crdvHmRx6KsxbgxUaXJRrw=;
-        b=5KGYRwVWhRQZZTko9cJECqTUAiDnbW6YjdG3yWAKeETlsx8LBM7f4r/viOAyA0SDE8
-         Cq8kif2/BtuXQgOFIXAPL7nEBjGxAHOqQkZUCWCZgcDzSH/VYIdP8wIKJRlHkqNCqBHb
-         bEvLLDB/qpXgQ9It/R+sHyGXULgaJWLt3hXndaGaUNNIv2Fqr8lHp2U1udF2ALE0n5aK
-         rRjYHfLF9OduJ128gVlbRYmT5EPfJT2C6qgVNPMB8ogIX5ymEjxVpJGrjVeVJKUZ7EeI
-         kz5kl0ScmLCiomxMtiJWBMWpMq973xfKK215zJRWZKSrwZAZsTxGamxfp1q+OwBrQkSZ
-         wrqw==
-X-Gm-Message-State: AOAM533PeZa9rlg5op7gSoCmI7emsZ1VbE6I2UTrtM4YukHqrFnKUWC6
-        V0n4FIXII915Sov8nTxhetSkFg==
-X-Google-Smtp-Source: ABdhPJwacia3u3mJRYboOXfbgAUVqtmBCqYzmIeMkt/7MmUQuAmiiX3mFaJ+Wo6i/ghlFBmlHCUoAw==
-X-Received: by 2002:a19:c753:: with SMTP id x80mr9051357lff.267.1631536364236;
-        Mon, 13 Sep 2021 05:32:44 -0700 (PDT)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id z4sm819184lfr.201.2021.09.13.05.32.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Sep 2021 05:32:43 -0700 (PDT)
-Subject: Re: [RFC v2 01/13] power: add power sequencer subsystem
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vEasab9Ix4f7UzKncEVfA4qRm1ge3YVHkjWFEieBUvA=;
+ b=YR2QHrDBRSAJAQyArWNLKB+btOv2MdXHWSQUSWSlqeCeOo4nR0auWzfyAUlJ1T1DIdKoqKGPOmtJ2yNJCPEwBf1ec2KeRts/wMbdiHDW03AdMvTcX+QFlj+ctGKxM6i91wdNdfXvRK6tjizxXp9DjMJy4iXOeX1WMtF/PQrVFcE=
+Authentication-Results: driverdev.osuosl.org; dkim=none (message not signed)
+ header.d=none;driverdev.osuosl.org; dmarc=none action=none
+ header.from=silabs.com;
+Received: from SN6PR11MB2718.namprd11.prod.outlook.com (2603:10b6:805:63::18)
+ by SN6PR11MB2894.namprd11.prod.outlook.com (2603:10b6:805:d7::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4500.17; Mon, 13 Sep
+ 2021 13:02:17 +0000
+Received: from SN6PR11MB2718.namprd11.prod.outlook.com
+ ([fe80::7050:a0a:415:2ccd]) by SN6PR11MB2718.namprd11.prod.outlook.com
+ ([fe80::7050:a0a:415:2ccd%7]) with mapi id 15.20.4500.017; Mon, 13 Sep 2021
+ 13:02:16 +0000
+From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
+To:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-bluetooth@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>
-References: <20210829131305.534417-1-dmitry.baryshkov@linaro.org>
- <20210829131305.534417-2-dmitry.baryshkov@linaro.org>
- <CAPDyKFp9CM+x505URK=hcO0QFqcZrpqzQ6uJQ=ZLR6uq-_d5Ew@mail.gmail.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Message-ID: <a0f8766a-7810-0ca5-229a-a40f73041dd9@linaro.org>
-Date:   Mon, 13 Sep 2021 15:32:42 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        "David S . Miller" <davem@davemloft.net>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>
+Subject: [PATCH v3 00/32] staging/wfx: usual maintenance
+Date:   Mon, 13 Sep 2021 15:01:31 +0200
+Message-Id: <20210913130203.1903622-1-Jerome.Pouiller@silabs.com>
+X-Mailer: git-send-email 2.33.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-ClientProxiedBy: PR2P264CA0021.FRAP264.PROD.OUTLOOK.COM (2603:10a6:101::33)
+ To SN6PR11MB2718.namprd11.prod.outlook.com (2603:10b6:805:63::18)
 MIME-Version: 1.0
-In-Reply-To: <CAPDyKFp9CM+x505URK=hcO0QFqcZrpqzQ6uJQ=ZLR6uq-_d5Ew@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Received: from pc-42.silabs.com (37.71.187.125) by PR2P264CA0021.FRAP264.PROD.OUTLOOK.COM (2603:10a6:101::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4500.14 via Frontend Transport; Mon, 13 Sep 2021 13:02:15 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 64f06eda-6147-4190-85be-08d976b6b655
+X-MS-TrafficTypeDiagnostic: SN6PR11MB2894:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SN6PR11MB2894779DF96CA8A85378498293D99@SN6PR11MB2894.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: rhaQpP2iwXLmp7jS3bIbqehf1F3mXhlQKL7yRNabIgLQGiVVZhurKy58yB4cfaLpMu8DjW69Cl16c9s8Vg/ALhmH8ti1CCJYXZLref0CfQg5wXZdRLm/eCETN6rKe/u83w1psDbH+JP0OlpzxSulrmSmnvv2ifzglDtc005psUBYQIfhwpKb3JDDN2Cw7XDWvjZ8vZY0Rs0+dFEvUTwx1Sebe4LfV2dr55Y+gAYqHVwrnvBS7P/60yDUOmUR3xwxzl2ymB4Mi1KmG4rVcTSNAHGM1oQvaT89sNoPbjUdyqwIv0NVMWa4xNTDjHrjs31bWvdgqB43Cyg/7Cz9Y44/RQoKA9HwfcmubR16uWBYjEB/pvq2bq/TsJdSlcei4MOo8gRNfJdvzYmtI5hyvSoBA11E/APMpvNDgxplQ1x5BRVdESyLsBMru6YvT9ZfD6nexlr7lKJRy3Fnu19W6XxmtX6nwxQL8LrRWdGrMM1DzAXJgdRxnZEXDUsCYqVvD7hX2xR0X5cjhWkHlc6S+UTM7JPdE6Mz+Fpq4hg74h1c8xMKgTW+C5BGV9SFKssV4y9HgkmaD8pm0ryljl2RTLOaG8gxzTZkGH/HzIKfuJXQIcKXXWt2FHp2B0rmAkkZVEHIGY1iDZ6EP25QvR+TFzxED/cLhEi/lDPJXuDvDmB2fqLiF+H35ss9dw4I7Snk5C80E4Kr+mbGmJa+xPo519danBah6kLRsEGfPLBeBh42BpPCMA1j5fyEsHnwlXFQieMSBIUt5j120HThnQgV/0ewTBkYT3zqQjrNDd4Oj8nU22g=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB2718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(366004)(136003)(39850400004)(346002)(376002)(5660300002)(966005)(26005)(8936002)(6486002)(38350700002)(38100700002)(66946007)(7696005)(186003)(316002)(1076003)(8676002)(956004)(478600001)(2616005)(2906002)(52116002)(4326008)(36756003)(6666004)(54906003)(83380400001)(107886003)(66476007)(66556008)(86362001)(66574015);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dmxyWnlYMGVlTlNOc0E3Z0lOWnRjbGFMckk3NGp0d2lEV1FOamM2eEd1L2xM?=
+ =?utf-8?B?N3NOL0pOSDVYTDlLd1VDTmdZL3libVlWVHRVdzBwV2UzeEFoU05jbEIyTFFO?=
+ =?utf-8?B?R25DemFlYnFPalFrd3lzaXQycDZZVWNXZTRITnFuZ3QzdkdMZmZBVjE1YmQ0?=
+ =?utf-8?B?NnJXVlBVMDlTSUkrNkkzUWpOeTgvWS84aXlyY1kxR1NTNm1kdG5nRy9DMnZT?=
+ =?utf-8?B?YzhrNVdDYk84L041L3dHejRuTlBIMExaN2d4cG1sRkd6dXlTNjNacGg1aUxZ?=
+ =?utf-8?B?QmhCby8wcW00dGRnT2RYVTNWNStLOTVPaUxEQ3o3SUZES2tkd3AyTWxDTG40?=
+ =?utf-8?B?anpGaGFkYmx4MHpXcjYwaUllcFU4TkgxNUNTVnFKa2h5OXpMNFo4dkVnNVRB?=
+ =?utf-8?B?Q21pQzB3YmZkUjRURGJiVFBOTVEvdzgvWWM2Tit2VUg3RXBOQWc1MC9ueUFi?=
+ =?utf-8?B?cUYrMFFweG9halNSSkFGQ3hIY1lmM1hWZ3o5U0w1R09qc2pBWjI2OUZQZG1h?=
+ =?utf-8?B?akpsTkg4MGE0MVpUaGRJNnBxVEtPbTd2VnRZV3FMNGE4UzVLM21GM0VrK3pz?=
+ =?utf-8?B?dFhjRHJKUUlHQnBrVlpIakZJeFVKenZnMERiV2xSVE1Vd1BnczZGRFo4b2d6?=
+ =?utf-8?B?VmpMd1RqRWRVaUlNd1hFN2hxUytHbGoyUlNFNGprclB6VDdUajd0RXU1MmZO?=
+ =?utf-8?B?Z3g3R3RacG1qeWpNMzljMUxwV1VBdEFSN1l0dVg3RkN2TVY1YzR1MXlWYWpQ?=
+ =?utf-8?B?M2kwbStHK0lmQWtKMzcyNG5KVmRsdmRESzYxR3ZzL0I3cmhhaUpzb1JsRHRD?=
+ =?utf-8?B?Y1Y1OUlKaUZzd0N1ZHJiSStVV2E0K0dQODM1enllMGtmQW12VzUwa3dMNkVz?=
+ =?utf-8?B?aDllNTBYTEZZa3ZTMkFlNGlwMlM2bnVmS0wxS2ZQeURsUjU5OFZXTXY3aXdN?=
+ =?utf-8?B?YXR5a3FDYlQzWlBsZHdHNWdhUDkreVJRM0pvRzZCTHplSklMQ3B5N3NueDhD?=
+ =?utf-8?B?UW5kY2xNNXdyN0J1QVRXNG5ycmQrRCtsVllPVEhmQmd6OURyNG1iYnJ2YjVI?=
+ =?utf-8?B?Zkw5c2RwdE1IaEcrVXJtNlNsMVBWazc2L2hJRWpiNEwvVVhuZTZ1N1lIUmVw?=
+ =?utf-8?B?TGlXWFV5UmxNbFZXYnpieVdoY1Jsak44Y1hJSWFXRTZqeThIS2dXSGRXMHV1?=
+ =?utf-8?B?NVVVR2kxNmNaa3FMUjR1Vzl4c0E5N2hsLzJYaS9HSHFUL1dIRkJJUytJQzBu?=
+ =?utf-8?B?Vzl0QXFnZk9UV3BDRFhvcE9Dek96YkVnWVkySEZON0piQytQelREWFVraC9O?=
+ =?utf-8?B?S3Q0SFJnUkQ5MFJkc2s5bkI2eVN1TXFxczVEYWQ5U2laWXYwNzBpS2xOY01U?=
+ =?utf-8?B?R0IvUWFzeEFLdjlJbTdkSDVJeDJXc2JYNUtWdTNTS2VqNXpTUGpvOGFKM09W?=
+ =?utf-8?B?NDdRVTVKQkJCZUhHQUphZi9LY051WlpjTUpZYjA5YjAxd1NUdENBTDJBSTBL?=
+ =?utf-8?B?cERXMEtxMFd4b0lFZmFhKzR0bGVGbmlKR1ZKNkF0VHVuNk5WR0NabFdmVHdC?=
+ =?utf-8?B?MHg5dkptK0VaK2NlSEdWMmxRcWdSVHRhbHNmWGpsb2U0SmViZ0RzVmhidjhZ?=
+ =?utf-8?B?bUphNFlLUkJScU9pbFk5djh2Y1ZNd21maG9DbWtFdUQ2ZHd0cG9zdWlYRWtt?=
+ =?utf-8?B?ZHpBZzRadUNIREZjOG13L3BKajBGT2krVk5rTkNEemgwQTF2ZTB5SUZVWHhw?=
+ =?utf-8?Q?9QcTzIsmPNHyEsWr1UpRM119wCDtglKa0P+cuSy?=
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64f06eda-6147-4190-85be-08d976b6b655
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2021 13:02:16.7397
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rYbpXFCXKdDamnpjmn1DaPuQXoD6oiuv+gB0LIZyLuaTC7+hU4cmB97LjCs3bgh2MtaIBXKXFGt2QoSlPx1+BQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB2894
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/09/2021 13:02, Ulf Hansson wrote:
-> On Sun, 29 Aug 2021 at 15:13, Dmitry Baryshkov
-> <dmitry.baryshkov@linaro.org> wrote:
->>
->> Basing on MMC's pwrseq support code, add separate power sequencer
->> subsystem. It will be used by other drivers to handle device power up
->> requirements.
-> 
-> This is far too vague. You are suggesting to add a new subsystem, I
-> think that deserves some more explanations as justifications.
-> 
-> Additionally, it wouldn't hurt to explain a bit how the actual
-> subsystem is supposed to work, at least from a toplevel point of view.
-
-Ack, will add more explanations together with the some inline documentation.
-
-> 
->>
->> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->> ---
->>   drivers/power/Kconfig           |   1 +
->>   drivers/power/Makefile          |   1 +
->>   drivers/power/pwrseq/Kconfig    |  11 +
->>   drivers/power/pwrseq/Makefile   |   6 +
->>   drivers/power/pwrseq/core.c     | 412 ++++++++++++++++++++++++++++++++
->>   include/linux/pwrseq/consumer.h |  88 +++++++
->>   include/linux/pwrseq/driver.h   |  75 ++++++
->>   7 files changed, 594 insertions(+)
->>   create mode 100644 drivers/power/pwrseq/Kconfig
->>   create mode 100644 drivers/power/pwrseq/Makefile
->>   create mode 100644 drivers/power/pwrseq/core.c
->>   create mode 100644 include/linux/pwrseq/consumer.h
->>   create mode 100644 include/linux/pwrseq/driver.h
-> 
-> I noticed there is no update of the MAINTAINERS file. We need that to
-> be a part of the $subject patch as well, I think. But, let's discuss
-> that later.
-> 
->>
->> diff --git a/drivers/power/Kconfig b/drivers/power/Kconfig
->> index 696bf77a7042..c87cd2240a74 100644
->> --- a/drivers/power/Kconfig
->> +++ b/drivers/power/Kconfig
->> @@ -1,3 +1,4 @@
->>   # SPDX-License-Identifier: GPL-2.0-only
->> +source "drivers/power/pwrseq/Kconfig"
->>   source "drivers/power/reset/Kconfig"
->>   source "drivers/power/supply/Kconfig"
->> diff --git a/drivers/power/Makefile b/drivers/power/Makefile
->> index effbf0377f32..1dbce454a8c4 100644
->> --- a/drivers/power/Makefile
->> +++ b/drivers/power/Makefile
->> @@ -1,3 +1,4 @@
->>   # SPDX-License-Identifier: GPL-2.0-only
->>   obj-$(CONFIG_POWER_RESET)      += reset/
->>   obj-$(CONFIG_POWER_SUPPLY)     += supply/
->> +obj-$(CONFIG_PWRSEQ)           += pwrseq/
->> diff --git a/drivers/power/pwrseq/Kconfig b/drivers/power/pwrseq/Kconfig
->> new file mode 100644
->> index 000000000000..8904ec9ed541
->> --- /dev/null
->> +++ b/drivers/power/pwrseq/Kconfig
->> @@ -0,0 +1,11 @@
->> +# SPDX-License-Identifier: GPL-2.0-only
->> +menuconfig PWRSEQ
->> +       bool "Power Sequencer drivers"
->> +       help
->> +         Provides support for special power sequencing drivers.
-> 
-> This needs more description. The name "power sequencer" isn't entirely
-> self-explanatory, for when this should be used. I am not saying you
-> should invent a new name, rather just extend the description so people
-> get a better idea of what this is supposed to be used for.
-> 
->> +
->> +         Say Y here to enable support for such devices
->> +
->> +if PWRSEQ
->> +
->> +endif
->> diff --git a/drivers/power/pwrseq/Makefile b/drivers/power/pwrseq/Makefile
->> new file mode 100644
->> index 000000000000..108429ff6445
->> --- /dev/null
->> +++ b/drivers/power/pwrseq/Makefile
->> @@ -0,0 +1,6 @@
->> +# SPDX-License-Identifier: GPL-2.0
->> +#
->> +# Makefile for power sequencer drivers.
->> +#
->> +
->> +obj-$(CONFIG_PWRSEQ) += core.o
->> diff --git a/drivers/power/pwrseq/core.c b/drivers/power/pwrseq/core.c
->> new file mode 100644
->> index 000000000000..2e4e9d123e60
->> --- /dev/null
->> +++ b/drivers/power/pwrseq/core.c
->> @@ -0,0 +1,412 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * Copyright 2021 (c) Linaro Ltd.
->> + * Author: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->> + *
->> + * Based on phy-core.c:
->> + * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com
->> + */
->> +
->> +#include <linux/device.h>
->> +#include <linux/idr.h>
->> +#include <linux/module.h>
->> +#include <linux/mutex.h>
->> +#include <linux/of.h>
->> +#include <linux/pm_runtime.h>
->> +#include <linux/pwrseq/consumer.h>
->> +#include <linux/pwrseq/driver.h>
->> +#include <linux/slab.h>
->> +
->> +#define        to_pwrseq(a)    (container_of((a), struct pwrseq, dev))
->> +
->> +static DEFINE_IDA(pwrseq_ida);
->> +static DEFINE_MUTEX(pwrseq_provider_mutex);
->> +static LIST_HEAD(pwrseq_provider_list);
->> +
->> +struct pwrseq_provider {
->> +       struct device           *dev;
->> +       struct module           *owner;
->> +       struct list_head        list;
->> +       void                    *data;
->> +       struct pwrseq * (*of_xlate)(void *data, struct of_phandle_args *args);
->> +};
->> +
->> +void pwrseq_put(struct device *dev, struct pwrseq *pwrseq)
->> +{
->> +       device_link_remove(dev, &pwrseq->dev);
-> 
-> device_links - why do we need these at this initial step?
-> 
-> Please drop them so we can start with a simple implementation - and
-> then possibly extend it.
-
-Ack
-
-> 
->> +
->> +       module_put(pwrseq->owner);
->> +       put_device(&pwrseq->dev);
->> +}
->> +EXPORT_SYMBOL_GPL(pwrseq_put);
->> +
->> +static struct pwrseq_provider *of_pwrseq_provider_lookup(struct device_node *node)
->> +{
->> +       struct pwrseq_provider *pwrseq_provider;
->> +
->> +       list_for_each_entry(pwrseq_provider, &pwrseq_provider_list, list) {
->> +               if (pwrseq_provider->dev->of_node == node)
->> +                       return pwrseq_provider;
->> +       }
->> +
->> +       return ERR_PTR(-EPROBE_DEFER);
->> +}
->> +
->> +static struct pwrseq *_of_pwrseq_get(struct device *dev, const char *id)
->> +{
->> +       struct pwrseq_provider *pwrseq_provider;
->> +       struct pwrseq *pwrseq;
->> +       struct of_phandle_args args;
->> +       char prop_name[64]; /* 64 is max size of property name */
->> +       int ret;
->> +
->> +       snprintf(prop_name, 64, "%s-pwrseq", id);
->> +       ret = of_parse_phandle_with_args(dev->of_node, prop_name, "#pwrseq-cells", 0, &args);
-> 
-> This means that you are parsing a new DT binding/property.
-> 
-> Please fold in a DT binding patch, preceding $subject patch, so that
-> new binding that it can be discussed as well.
-> 
->> +       if (ret) {
->> +               /*
->> +                * Parsing failed. Try locating old bindings for mmc-pwrseq,
->> +                * which did not use #pwrseq-cells.
->> +                */
->> +               if (strcmp(id, "mmc"))
->> +                       return NULL;
->> +
->> +               ret = of_parse_phandle_with_args(dev->of_node, prop_name, NULL, 0, &args);
->> +               if (ret)
->> +                       return NULL;
->> +
->> +               dev_warn(dev, "old mmc-pwrseq binding used, add #pwrseq-cells to the provider\n");
-> 
-> To start simple and thus to also make review easier, I suggest to skip
-> the mmc-pwrseq binding for now. Let's see if we can deal with that as
-> a standalone change on top, later, instead.
-
-Ack, will split to the separate patch
-
-> 
->> +       }
->> +
->> +       mutex_lock(&pwrseq_provider_mutex);
->> +       pwrseq_provider = of_pwrseq_provider_lookup(args.np);
->> +       if (IS_ERR(pwrseq_provider) || !try_module_get(pwrseq_provider->owner)) {
->> +               pwrseq = ERR_PTR(-EPROBE_DEFER);
->> +               goto out_unlock;
->> +       }
->> +
->> +       if (!of_device_is_available(args.np)) {
->> +               dev_warn(pwrseq_provider->dev, "Requested pwrseq is disabled\n");
->> +               pwrseq = ERR_PTR(-ENODEV);
->> +               goto out_put_module;
->> +       }
->> +
->> +       pwrseq = pwrseq_provider->of_xlate(pwrseq_provider->data, &args);
->> +
->> +out_put_module:
->> +       module_put(pwrseq_provider->owner);
->> +
->> +out_unlock:
->> +       mutex_unlock(&pwrseq_provider_mutex);
->> +       of_node_put(args.np);
->> +
->> +       return pwrseq;
->> +}
->> +
->> +struct pwrseq * __pwrseq_get(struct device *dev, const char *id, bool optional)
->> +{
->> +       struct pwrseq *pwrseq;
->> +       struct device_link *link;
->> +
->> +       pwrseq = _of_pwrseq_get(dev, id);
->> +       if (pwrseq == NULL)
->> +               return optional ? NULL : ERR_PTR(-ENODEV);
-> 
-> I think we can manage this without "optional". The optional should
-> typically be the default behaviour, I think.
-> 
-> The caller should expect to get a handle to a pwrseq - if there is
-> property in the DT file that says there should be one. If not, the
-> caller should be happy to just receive "NULL". And if there is an
-> error, we should return ERR_PTR, as you do.
-
-Ack.
-
-> 
->> +       else if (IS_ERR(pwrseq))
->> +               return pwrseq;
->> +
->> +       if (!try_module_get(pwrseq->owner))
->> +               return ERR_PTR(-EPROBE_DEFER);
->> +
->> +       get_device(&pwrseq->dev);
->> +       link = device_link_add(dev, &pwrseq->dev, DL_FLAG_STATELESS);
->> +       if (!link)
->> +               dev_dbg(dev, "failed to create device link to %s\n",
->> +                       dev_name(pwrseq->dev.parent));
->> +
->> +       return pwrseq;
->> +}
->> +
->> +struct pwrseq * pwrseq_get(struct device *dev, const char *id)
->> +{
->> +       return __pwrseq_get(dev, id, false);
->> +}
->> +EXPORT_SYMBOL_GPL(pwrseq_get);
->> +
->> +static void devm_pwrseq_release(struct device *dev, void *res)
->> +{
->> +       struct pwrseq *pwrseq = *(struct pwrseq **)res;
->> +
->> +       pwrseq_put(dev, pwrseq);
->> +}
->> +
->> +struct pwrseq * devm_pwrseq_get(struct device *dev, const char *id)
->> +{
->> +       struct pwrseq **ptr, *pwrseq;
->> +
->> +       ptr = devres_alloc(devm_pwrseq_release, sizeof(*ptr), GFP_KERNEL);
->> +       if (!ptr)
->> +               return ERR_PTR(-ENOMEM);
->> +
->> +       pwrseq = pwrseq_get(dev, id);
->> +       if (!IS_ERR(pwrseq)) {
->> +               *ptr = pwrseq;
->> +               devres_add(dev, ptr);
->> +       } else {
->> +               devres_free(ptr);
->> +       }
->> +
->> +       return pwrseq;
->> +}
->> +EXPORT_SYMBOL_GPL(devm_pwrseq_get);
->> +
->> +struct pwrseq * pwrseq_get_optional(struct device *dev, const char *id)
->> +{
->> +       return __pwrseq_get(dev, id, true);
->> +}
->> +EXPORT_SYMBOL_GPL(pwrseq_get_optional);
-> 
-> This can be dropped, if we make this the default behaviour.
-> 
->> +
->> +struct pwrseq * devm_pwrseq_get_optional(struct device *dev, const char *id)
->> +{
->> +       struct pwrseq **ptr, *pwrseq;
->> +
->> +       ptr = devres_alloc(devm_pwrseq_release, sizeof(*ptr), GFP_KERNEL);
->> +       if (!ptr)
->> +               return ERR_PTR(-ENOMEM);
->> +
->> +       pwrseq = pwrseq_get_optional(dev, id);
->> +       if (!IS_ERR_OR_NULL(pwrseq)) {
->> +               *ptr = pwrseq;
->> +               devres_add(dev, ptr);
->> +       } else {
->> +               devres_free(ptr);
->> +       }
->> +
->> +       return pwrseq;
->> +}
->> +EXPORT_SYMBOL_GPL(devm_pwrseq_get_optional);
-> 
-> Ditto.
-> 
->> +
->> +int pwrseq_pre_power_on(struct pwrseq *pwrseq)
->> +{
->> +       if (pwrseq && pwrseq->ops->pre_power_on)
->> +               return pwrseq->ops->pre_power_on(pwrseq);
->> +
->> +       return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(pwrseq_pre_power_on);
->> +
->> +int pwrseq_power_on(struct pwrseq *pwrseq)
->> +{
->> +       if (pwrseq && pwrseq->ops->power_on)
->> +               return pwrseq->ops->power_on(pwrseq);
->> +
->> +       return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(pwrseq_power_on);
->> +
->> +void pwrseq_power_off(struct pwrseq *pwrseq)
->> +{
->> +       if (pwrseq && pwrseq->ops->power_off)
->> +               pwrseq->ops->power_off(pwrseq);
->> +}
->> +EXPORT_SYMBOL_GPL(pwrseq_power_off);
->> +
->> +void pwrseq_reset(struct pwrseq *pwrseq)
->> +{
->> +       if (pwrseq && pwrseq->ops->reset)
->> +               pwrseq->ops->reset(pwrseq);
->> +}
->> +EXPORT_SYMBOL_GPL(pwrseq_reset);
->> +
->> +static void pwrseq_dev_release(struct device *dev)
->> +{
->> +       struct pwrseq *pwrseq = to_pwrseq(dev);
->> +
->> +       ida_free(&pwrseq_ida, pwrseq->id);
->> +       of_node_put(dev->of_node);
->> +       kfree(pwrseq);
->> +}
->> +
->> +static struct class pwrseq_class = {
->> +       .name = "pwrseq",
->> +       .dev_release = pwrseq_dev_release,
->> +};
->> +
->> +struct pwrseq *__pwrseq_create(struct device *dev, struct module *owner, const struct pwrseq_ops *ops, void *data)
->> +{
->> +       struct pwrseq *pwrseq;
->> +       int ret;
->> +
->> +       if (WARN_ON(!dev))
->> +               return ERR_PTR(-EINVAL);
->> +
->> +       pwrseq = kzalloc(sizeof(*pwrseq), GFP_KERNEL);
->> +       if (!pwrseq)
->> +               return ERR_PTR(-ENOMEM);
->> +
->> +       ret = ida_alloc(&pwrseq_ida, GFP_KERNEL);
->> +       if (ret < 0)
->> +               goto free_pwrseq;
->> +
->> +       pwrseq->id = ret;
->> +
->> +       device_initialize(&pwrseq->dev);
->> +
->> +       pwrseq->dev.class = &pwrseq_class;
->> +       pwrseq->dev.parent = dev;
->> +       pwrseq->dev.of_node = of_node_get(dev->of_node);
->> +       pwrseq->ops = ops;
->> +       pwrseq->owner = owner;
->> +
->> +       dev_set_drvdata(&pwrseq->dev, data);
->> +
->> +       ret = dev_set_name(&pwrseq->dev, "pwrseq-%s.%u", dev_name(dev), pwrseq->id);
->> +       if (ret)
->> +               goto put_dev;
->> +
->> +       ret = device_add(&pwrseq->dev);
->> +       if (ret)
->> +               goto put_dev;
->> +
->> +       if (pm_runtime_enabled(dev)) {
->> +               pm_runtime_enable(&pwrseq->dev);
->> +               pm_runtime_no_callbacks(&pwrseq->dev);
->> +       }
-> 
-> I don't think we should bother with runtime PM, at least in this
-> initial step. Please drop it, to start simple.
-
-Ack
-
-> 
->> +
->> +       return pwrseq;
->> +
->> +put_dev:
->> +       /* will call pwrseq_dev_release() to free resources */
->> +       put_device(&pwrseq->dev);
->> +
->> +       return ERR_PTR(ret);
->> +
->> +free_pwrseq:
->> +       kfree(pwrseq);
->> +
->> +       return ERR_PTR(ret);
->> +}
->> +EXPORT_SYMBOL_GPL(__pwrseq_create);
->> +
->> +void pwrseq_destroy(struct pwrseq *pwrseq)
->> +{
->> +       pm_runtime_disable(&pwrseq->dev);
->> +       device_unregister(&pwrseq->dev);
->> +}
->> +EXPORT_SYMBOL_GPL(pwrseq_destroy);
->> +
->> +static void devm_pwrseq_destroy(struct device *dev, void *res)
->> +{
->> +       struct pwrseq *pwrseq = *(struct pwrseq **)res;
->> +
->> +       pwrseq_destroy(pwrseq);
->> +}
->> +
->> +struct pwrseq *__devm_pwrseq_create(struct device *dev, struct module *owner, const struct pwrseq_ops *ops, void *data)
->> +{
->> +       struct pwrseq **ptr, *pwrseq;
->> +
->> +       ptr = devres_alloc(devm_pwrseq_destroy, sizeof(*ptr), GFP_KERNEL);
->> +       if (!ptr)
->> +               return ERR_PTR(-ENOMEM);
->> +
->> +       pwrseq = __pwrseq_create(dev, owner, ops, data);
->> +       if (!IS_ERR(pwrseq)) {
->> +               *ptr = pwrseq;
->> +               devres_add(dev, ptr);
->> +       } else {
->> +               devres_free(ptr);
->> +       }
->> +
->> +       return pwrseq;
->> +}
->> +EXPORT_SYMBOL_GPL(__devm_pwrseq_create);
->> +
->> +struct pwrseq_provider *__of_pwrseq_provider_register(struct device *dev,
->> +       struct module *owner,
->> +       struct pwrseq * (*of_xlate)(void *data,
->> +                                   struct of_phandle_args *args),
->> +       void *data)
->> +{
->> +       struct pwrseq_provider *pwrseq_provider;
->> +
->> +       pwrseq_provider = kzalloc(sizeof(*pwrseq_provider), GFP_KERNEL);
->> +       if (!pwrseq_provider)
->> +               return ERR_PTR(-ENOMEM);
->> +
->> +       pwrseq_provider->dev = dev;
->> +       pwrseq_provider->owner = owner;
->> +       pwrseq_provider->of_xlate = of_xlate;
->> +       pwrseq_provider->data = data;
->> +
->> +       mutex_lock(&pwrseq_provider_mutex);
->> +       list_add_tail(&pwrseq_provider->list, &pwrseq_provider_list);
->> +       mutex_unlock(&pwrseq_provider_mutex);
->> +
->> +       return pwrseq_provider;
->> +}
->> +EXPORT_SYMBOL_GPL(__of_pwrseq_provider_register);
->> +
->> +void of_pwrseq_provider_unregister(struct pwrseq_provider *pwrseq_provider)
->> +{
->> +       if (IS_ERR(pwrseq_provider))
->> +               return;
->> +
->> +       mutex_lock(&pwrseq_provider_mutex);
->> +       list_del(&pwrseq_provider->list);
->> +       kfree(pwrseq_provider);
->> +       mutex_unlock(&pwrseq_provider_mutex);
->> +}
->> +EXPORT_SYMBOL_GPL(of_pwrseq_provider_unregister);
->> +
->> +static void devm_pwrseq_provider_unregister(struct device *dev, void *res)
->> +{
->> +       struct pwrseq_provider *pwrseq_provider = *(struct pwrseq_provider **)res;
->> +
->> +       of_pwrseq_provider_unregister(pwrseq_provider);
->> +}
->> +
->> +struct pwrseq_provider *__devm_of_pwrseq_provider_register(struct device *dev,
->> +       struct module *owner,
->> +       struct pwrseq * (*of_xlate)(void *data,
->> +                                   struct of_phandle_args *args),
->> +       void *data)
->> +{
->> +       struct pwrseq_provider **ptr, *pwrseq_provider;
->> +
->> +       ptr = devres_alloc(devm_pwrseq_provider_unregister, sizeof(*ptr), GFP_KERNEL);
->> +       if (!ptr)
->> +               return ERR_PTR(-ENOMEM);
->> +
->> +       pwrseq_provider = __of_pwrseq_provider_register(dev, owner, of_xlate, data);
->> +       if (!IS_ERR(pwrseq_provider)) {
->> +               *ptr = pwrseq_provider;
->> +               devres_add(dev, ptr);
->> +       } else {
->> +               devres_free(ptr);
->> +       }
->> +
->> +       return pwrseq_provider;
->> +}
->> +EXPORT_SYMBOL_GPL(__devm_of_pwrseq_provider_register);
->> +
->> +struct pwrseq *of_pwrseq_xlate_onecell(void *data, struct of_phandle_args *args)
->> +{
->> +       struct pwrseq_onecell_data *pwrseq_data = data;
->> +       unsigned int idx;
->> +
->> +       if (args->args_count != 1)
->> +               return ERR_PTR(-EINVAL);
->> +
->> +       idx = args->args[0];
->> +       if (idx >= pwrseq_data->num) {
->> +               pr_err("%s: invalid index %u\n", __func__, idx);
->> +               return ERR_PTR(-EINVAL);
->> +       }
-> 
-> In many cases it's reasonable to leave room for future extensions, so
-> that a provider could serve with more than one power-sequencer. I
-> guess that is what you intend to do here, right?
-> 
-> In my opinion, I don't think what would happen, especially since a
-> power-sequence is something that should be specific to one particular
-> device (a Qcom WiFi/Blutooth chip, for example).
-> 
-> That said, I suggest limiting this to a 1:1 mapping between the device
-> node and power-sequencer. I think that should simplify the code a bit.
-
-In fact the WiFi/BT example itself provides a non 1:1 mapping. In my 
-current design the power sequencer provides two instances (one for WiFi, 
-one for BT). This allows us to move the knowledge about "enable" pins to 
-the pwrseq. Once the QCA BT driver acquires and powers up the pwrseq, 
-the BT part is ready. No need to toggle any additional pins. Once the 
-WiFi pwrseq is powered up, the WiFi part is present on the bus and 
-ready, without any additional pin toggling.
-
-I can move onecell support to the separate patch if you think this might 
-simplify the code review.
-
-> 
->> +
->> +       return pwrseq_data->pwrseqs[idx];
->> +}
->> +
->> +static int __init pwrseq_core_init(void)
->> +{
->> +       return class_register(&pwrseq_class);
->> +}
->> +device_initcall(pwrseq_core_init);
->> diff --git a/include/linux/pwrseq/consumer.h b/include/linux/pwrseq/consumer.h
->> new file mode 100644
->> index 000000000000..fbcdc1fc0751
->> --- /dev/null
->> +++ b/include/linux/pwrseq/consumer.h
->> @@ -0,0 +1,88 @@
->> +/* SPDX-License-Identifier: GPL-2.0-or-later */
->> +/*
->> + * Copyright (c) 2021 Linaro Ltd.
->> + */
->> +
->> +#ifndef __LINUX_PWRSEQ_CONSUMER_H__
->> +#define __LINUX_PWRSEQ_CONSUMER_H__
->> +
->> +struct pwrseq;
->> +struct device;
->> +
->> +#if defined(CONFIG_PWRSEQ)
->> +
->> +struct pwrseq *__must_check pwrseq_get(struct device *dev, const char *id);
->> +struct pwrseq *__must_check devm_pwrseq_get(struct device *dev, const char *id);
->> +
->> +struct pwrseq *__must_check pwrseq_get_optional(struct device *dev, const char *id);
->> +struct pwrseq *__must_check devm_pwrseq_get_optional(struct device *dev, const char *id);
->> +
->> +void pwrseq_put(struct device *dev, struct pwrseq *pwrseq);
->> +
->> +int pwrseq_pre_power_on(struct pwrseq *pwrseq);
->> +int pwrseq_power_on(struct pwrseq *pwrseq);
->> +void pwrseq_power_off(struct pwrseq *pwrseq);
->> +void pwrseq_reset(struct pwrseq *pwrseq);
->> +
->> +#else
->> +
->> +static inline struct pwrseq *__must_check
->> +pwrseq_get(struct device *dev, const char *id)
->> +{
->> +       return ERR_PTR(-ENOSYS);
->> +}
->> +
->> +static inline struct pwrseq *__must_check
->> +devm_pwrseq_get(struct device *dev, const char *id)
->> +{
->> +       return ERR_PTR(-ENOSYS);
->> +}
->> +
->> +static inline struct pwrseq *__must_check
->> +pwrseq_get_optional(struct device *dev, const char *id)
->> +{
->> +       return NULL;
->> +}
->> +
->> +static inline struct pwrseq *__must_check
->> +devm_pwrseq_get_optional(struct device *dev, const char *id)
->> +{
->> +       return NULL;
->> +}
->> +
->> +static inline void pwrseq_put(struct device *dev, struct pwrseq *pwrseq)
->> +{
->> +}
->> +
->> +static inline int pwrseq_pre_power_on(struct pwrseq *pwrseq)
->> +{
->> +       return -ENOSYS;
->> +}
->> +
->> +static inline int pwrseq_power_on(struct pwrseq *pwrseq)
->> +{
->> +       return -ENOSYS;
->> +}
->> +
->> +static inline void pwrseq_power_off(struct pwrseq *pwrseq)
->> +{
->> +}
->> +
->> +static inline void pwrseq_reset(struct pwrseq *pwrseq)
->> +{
->> +}
->> +
->> +#endif
->> +
->> +static inline int pwrseq_full_power_on(struct pwrseq *pwrseq)
->> +{
->> +       int ret;
->> +
->> +       ret = pwrseq_pre_power_on(pwrseq);
->> +       if (ret)
->> +               return ret;
->> +
->> +       return pwrseq_power_on(pwrseq);
->> +}
->> +
->> +#endif /* __LINUX_PWRSEQ_CONSUMER_H__ */
->> diff --git a/include/linux/pwrseq/driver.h b/include/linux/pwrseq/driver.h
->> new file mode 100644
->> index 000000000000..b2bc46624d7e
->> --- /dev/null
->> +++ b/include/linux/pwrseq/driver.h
->> @@ -0,0 +1,75 @@
->> +/* SPDX-License-Identifier: GPL-2.0-or-later */
->> +/*
->> + * Copyright (c) 2021 Linaro Ltd.
->> + */
->> +
->> +#ifndef __LINUX_PWRSEQ_DRIVER_H__
->> +#define __LINUX_PWRSEQ_DRIVER_H__
->> +
->> +#include <linux/device.h>
->> +
->> +struct pwrseq;
->> +
->> +struct pwrseq_ops {
->> +       int (*pre_power_on)(struct pwrseq *pwrseq);
->> +       int (*power_on)(struct pwrseq *pwrseq);
->> +       void (*power_off)(struct pwrseq *pwrseq);
->> +       void (*reset)(struct pwrseq *pwrseq);
->> +};
->> +
->> +struct module;
->> +
->> +struct pwrseq {
->> +       struct device dev;
->> +       const struct pwrseq_ops *ops;
->> +       unsigned int id;
->> +       struct module *owner;
->> +};
->> +
->> +struct pwrseq *__pwrseq_create(struct device *dev, struct module *owner, const struct pwrseq_ops *ops, void *data);
->> +struct pwrseq *__devm_pwrseq_create(struct device *dev, struct module *owner, const struct pwrseq_ops *ops, void *data);
->> +
->> +#define pwrseq_create(dev, ops, data) __pwrseq_create((dev), THIS_MODULE, (ops), (data))
->> +#define devm_pwrseq_create(dev, ops, data) __devm_pwrseq_create((dev), THIS_MODULE, (ops), (data))
->> +
->> +void pwrseq_destroy(struct pwrseq *pwrseq);
->> +
->> +static inline void *pwrseq_get_data(struct pwrseq *pwrseq)
->> +{
->> +       return dev_get_drvdata(&pwrseq->dev);
->> +}
->> +
->> +#define        of_pwrseq_provider_register(dev, xlate, data)   \
->> +       __of_pwrseq_provider_register((dev), THIS_MODULE, (xlate), (data))
->> +
->> +#define        devm_of_pwrseq_provider_register(dev, xlate, data)      \
->> +       __devm_of_pwrseq_provider_register((dev), THIS_MODULE, (xlate), (data))
->> +
->> +struct of_phandle_args;
->> +
->> +struct pwrseq_provider *__of_pwrseq_provider_register(struct device *dev,
->> +       struct module *owner,
->> +       struct pwrseq * (*of_xlate)(void *data,
->> +                                   struct of_phandle_args *args),
->> +       void *data);
->> +struct pwrseq_provider *__devm_of_pwrseq_provider_register(struct device *dev,
->> +       struct module *owner,
->> +       struct pwrseq * (*of_xlate)(void *data,
->> +                                   struct of_phandle_args *args),
->> +       void *data);
->> +void of_pwrseq_provider_unregister(struct pwrseq_provider *pwrseq_provider);
->> +
->> +static inline struct pwrseq *of_pwrseq_xlate_single(void *data,
->> +                                                   struct of_phandle_args *args)
->> +{
->> +       return data;
->> +}
->> +
->> +struct pwrseq_onecell_data {
->> +       unsigned int num;
->> +       struct pwrseq *pwrseqs[];
->> +};
-> 
-> According to my earlier comment, I think a lot can be removed from
-> here - if you would limit the provider to only use
-> of_pwrseq_xlate_single.
-> 
-> Again, I think it's better to start simple, as it simplifies the review.
-> 
->> +
->> +struct pwrseq *of_pwrseq_xlate_onecell(void *data, struct of_phandle_args *args);
->> +
->> +#endif /* __LINUX_PWRSEQ_DRIVER_H__ */
->> --
->> 2.33.0
->>
-> 
-> Other than my comments, overall I think this looks like a good start.
-> 
-> Kind regards
-> Uffe
-> 
-
-
--- 
-With best wishes
-Dmitry
+RnJvbTogSsOpcsO0bWUgUG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgoKSGks
+CgpUaGUgZm9sbG93aW5nIFBSIGNvbnRhaW5zIG5vdyB1c3VhbCBtYWludGVuYW5jZSBmb3IgdGhl
+IHdmeCBkcml2ZXIuIEkgaGF2ZQptb3JlLW9yLWxlc3Mgc29ydGVkIHRoZSBwYXRjaGVzIGJ5IGlt
+cG9ydGFuY2U6CiAgICAtIHRoZSBmaXJzdCBvbmVzIGFuZCB0aGUgdHdvIGxhc3Qgb25lcyBhcmUg
+Zml4ZXMgZm9yIGEgZmV3IGNvcm5lci1jYXNlcwogICAgICByZXBvcnRlZCBieSB1c2VycwogICAg
+LSB0aGUgcGF0Y2hlcyA5IGFuZCAxMCBhZGQgc3VwcG9ydCBmb3IgQ1NBIGFuZCBURExTCiAgICAt
+IHRoZW4gdGhlIGVuZCBvZiB0aGUgc2VyaWVzIGlzIG1vc3RseSBjb3NtZXRpY3MgYW5kIG5pdHBp
+Y2tpbmcKCkkgaGF2ZSB3YWl0IGxvbmdlciB0aGFuIEkgaW5pdGlhbGx5IHdhbnRlZCBiZWZvcmUg
+dG8gc2VuZCB0aGlzIFBSLiBJdCBpcwpiZWNhdXNlIGRpZG4ndCB3YW50IHRvIGNvbmZsaWN0IHdp
+dGggdGhlIFBSIGN1cnJlbnRseSBpbiByZXZpZXdbMV0gdG8KcmVsb2NhdGUgdGhpcyBkcml2ZXIg
+aW50byB0aGUgbWFpbiB0cmVlLiBIb3dldmVyLCB0aGlzIFBSIHN0YXJ0ZWQgdG8gYmUKdmVyeSBs
+YXJnZSBhbmQgbm90aGluZyBzZWVtcyB0byBtb3ZlIG9uIG1haW4tdHJlZSBzaWRlIHNvIEkgZGVj
+aWRlZCB0byBub3QKd2FpdCBsb25nZXIuCgpLYWxsZSwgSSBhbSBnb2luZyB0byBzZW5kIGEgbmV3
+IHZlcnNpb24gb2YgWzFdIGFzIHNvb24gYXMgdGhpcyBQUiB3aWxsIGJlCmFjY2VwdGVkLiBJIGhv
+cGUgeW91IHdpbGwgaGF2ZSB0aW1lIHRvIHJldmlldyBpdCBvbmUgZGF5IDotKS4KClsxXSBodHRw
+czovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyMTAzMTUxMzI1MDEuNDQxNjgxLTEtSmVyb21lLlBv
+dWlsbGVyQHNpbGFicy5jb20vCgp2MzoKICAtIEZpeCBwYXRjaCAxMSBhbmQgZHJvcCBwYXRjaCAz
+MyAoRGFuKQogIC0gRml4IG9uZSBtaXNzaW5nIEM5OSBjb21tZW50CiAgLSBEcm9wIHVzZWxlc3Mg
+V0FSTl9PTigpIChEYW4pCgp2MjoKICAtIEFkZCBwYXRjaGVzIDMyIGFuZCAzMyB0byBzb2x2ZSBh
+IHBvc3NpYmxlIHJhY2Ugd2hlbiBkZXZpY2UgaXMKICAgIG1pc2NvbmZpZ3VyZWQKICAtIEZpeCBD
+OTkgY29tbWVudHMgKEthcmkpCiAgLSBSZXBsYWNlICJBUEkgMy44IiBieSAiZmlybXdhcmUgQVBJ
+IDMuOCIgKEthcmkpCiAgLSBGaXggd29yZGluZyAiYWxpZ25lZCB3aXRoIGZpcnN0IGFyZ3VtZW50
+IiBpbnN0ZWFkIG9mICJhbGlnbmVkIHdpdGgKICAgIG9wZW5pbmcgcGFyZW50aGVzaXMiCgpKw6ly
+w7RtZSBQb3VpbGxlciAoMzIpOgogIHN0YWdpbmc6IHdmeDogdXNlIGFiYnJldmlhdGVkIG1lc3Nh
+Z2UgZm9yICJpbmNvcnJlY3Qgc2VxdWVuY2UiCiAgc3RhZ2luZzogd2Z4OiBkbyBub3Qgc2VuZCBD
+QUIgd2hpbGUgc2Nhbm5pbmcKICBzdGFnaW5nOiB3Zng6IGlnbm9yZSBQUyB3aGVuIFNUQS9BUCBz
+aGFyZSBzYW1lIGNoYW5uZWwKICBzdGFnaW5nOiB3Zng6IHdhaXQgZm9yIFNDQU5fQ01QTCBhZnRl
+ciBhIFNDQU5fU1RPUAogIHN0YWdpbmc6IHdmeDogYXZvaWQgcG9zc2libGUgbG9jay11cCBkdXJp
+bmcgc2NhbgogIHN0YWdpbmc6IHdmeDogZHJvcCB1bnVzZWQgYXJndW1lbnQgZnJvbSBoaWZfc2Nh
+bigpCiAgc3RhZ2luZzogd2Z4OiBmaXggYXRvbWljIGFjY2Vzc2VzIGluIHdmeF90eF9xdWV1ZV9l
+bXB0eSgpCiAgc3RhZ2luZzogd2Z4OiB0YWtlIGFkdmFudGFnZSBvZiB3ZnhfdHhfcXVldWVfZW1w
+dHkoKQogIHN0YWdpbmc6IHdmeDogZGVjbGFyZSBzdXBwb3J0IGZvciBURExTCiAgc3RhZ2luZzog
+d2Z4OiBmaXggc3VwcG9ydCBmb3IgQ1NBCiAgc3RhZ2luZzogd2Z4OiByZWxheCB0aGUgUERTIGV4
+aXN0ZW5jZSBjb25zdHJhaW50CiAgc3RhZ2luZzogd2Z4OiBzaW1wbGlmeSBBUEkgY29oZXJlbmN5
+IGNoZWNrCiAgc3RhZ2luZzogd2Z4OiB1cGRhdGUgd2l0aCB0aGUgZmlybXdhcmUgQVBJIDMuOAog
+IHN0YWdpbmc6IHdmeDogdW5pZm9ybWl6ZSBjb3VudGVyIG5hbWVzCiAgc3RhZ2luZzogd2Z4OiBm
+aXggbWlzbGVhZGluZyAncmF0ZV9pZCcgdXNhZ2UKICBzdGFnaW5nOiB3Zng6IGRlY2xhcmUgdmFy
+aWFibGVzIGF0IGJlZ2lubmluZyBvZiBmdW5jdGlvbnMKICBzdGFnaW5nOiB3Zng6IHNpbXBsaWZ5
+IGhpZl9qb2luKCkKICBzdGFnaW5nOiB3Zng6IHJlb3JkZXIgZnVuY3Rpb24gZm9yIHNsaWdodGx5
+IGJldHRlciBleWUgY2FuZHkKICBzdGFnaW5nOiB3Zng6IGZpeCBlcnJvciBuYW1lcwogIHN0YWdp
+bmc6IHdmeDogYXBwbHkgbmFtaW5nIHJ1bGVzIGluIGhpZl90eF9taWIuYwogIHN0YWdpbmc6IHdm
+eDogcmVtb3ZlIHVudXNlZCBkZWZpbml0aW9uCiAgc3RhZ2luZzogd2Z4OiByZW1vdmUgdXNlbGVz
+cyBkZWJ1ZyBzdGF0ZW1lbnQKICBzdGFnaW5nOiB3Zng6IGZpeCBzcGFjZSBhZnRlciBjYXN0IG9w
+ZXJhdG9yCiAgc3RhZ2luZzogd2Z4OiByZW1vdmUgcmVmZXJlbmNlcyB0byBXRnh4eCBpbiBjb21t
+ZW50cwogIHN0YWdpbmc6IHdmeDogdXBkYXRlIGZpbGVzIGRlc2NyaXB0aW9ucwogIHN0YWdpbmc6
+IHdmeDogcmVmb3JtYXQgY29tbWVudAogIHN0YWdpbmc6IHdmeDogYXZvaWQgYzk5IGNvbW1lbnRz
+CiAgc3RhZ2luZzogd2Z4OiBmaXggY29tbWVudHMgc3R5bGVzCiAgc3RhZ2luZzogd2Z4OiByZW1v
+dmUgdXNlbGVzcyBjb21tZW50cyBhZnRlciAjZW5kaWYKICBzdGFnaW5nOiB3Zng6IGV4cGxhaW4g
+dGhlIHB1cnBvc2Ugb2Ygd2Z4X3NlbmRfcGRzKCkKICBzdGFnaW5nOiB3Zng6IGluZGVudCBmdW5j
+dGlvbnMgYXJndW1lbnRzCiAgc3RhZ2luZzogd2Z4OiBlbnN1cmUgSVJRIGlzIHJlYWR5IGJlZm9y
+ZSBlbmFibGluZyBpdAoKIGRyaXZlcnMvc3RhZ2luZy93ZngvYmguYyAgICAgICAgICAgICAgfCAg
+MzcgKysrKy0tLQogZHJpdmVycy9zdGFnaW5nL3dmeC9iaC5oICAgICAgICAgICAgICB8ICAgNCAr
+LQogZHJpdmVycy9zdGFnaW5nL3dmeC9idXNfc2Rpby5jICAgICAgICB8ICAyOSArKystLS0KIGRy
+aXZlcnMvc3RhZ2luZy93ZngvYnVzX3NwaS5jICAgICAgICAgfCAgMjIgKystLS0KIGRyaXZlcnMv
+c3RhZ2luZy93ZngvZGF0YV9yeC5jICAgICAgICAgfCAgIDcgKy0KIGRyaXZlcnMvc3RhZ2luZy93
+ZngvZGF0YV9yeC5oICAgICAgICAgfCAgIDQgKy0KIGRyaXZlcnMvc3RhZ2luZy93ZngvZGF0YV90
+eC5jICAgICAgICAgfCAgODcgKysrKysrKysrLS0tLS0tLS0KIGRyaXZlcnMvc3RhZ2luZy93Zngv
+ZGF0YV90eC5oICAgICAgICAgfCAgIDYgKy0KIGRyaXZlcnMvc3RhZ2luZy93ZngvZGVidWcuYyAg
+ICAgICAgICAgfCAgNTQgKysrKysrLS0tLS0KIGRyaXZlcnMvc3RhZ2luZy93ZngvZGVidWcuaCAg
+ICAgICAgICAgfCAgIDIgKy0KIGRyaXZlcnMvc3RhZ2luZy93ZngvZndpby5jICAgICAgICAgICAg
+fCAgMjYgKystLS0KIGRyaXZlcnMvc3RhZ2luZy93ZngvZndpby5oICAgICAgICAgICAgfCAgIDIg
+Ky0KIGRyaXZlcnMvc3RhZ2luZy93ZngvaGlmX2FwaV9jbWQuaCAgICAgfCAgMTQgKy0tCiBkcml2
+ZXJzL3N0YWdpbmcvd2Z4L2hpZl9hcGlfZ2VuZXJhbC5oIHwgIDI1ICsrLS0tCiBkcml2ZXJzL3N0
+YWdpbmcvd2Z4L2hpZl9hcGlfbWliLmggICAgIHwgIDg1ICsrKysrKysrLS0tLS0tLS0KIGRyaXZl
+cnMvc3RhZ2luZy93ZngvaGlmX3J4LmMgICAgICAgICAgfCAgMjMgKystLS0KIGRyaXZlcnMvc3Rh
+Z2luZy93ZngvaGlmX3J4LmggICAgICAgICAgfCAgIDMgKy0KIGRyaXZlcnMvc3RhZ2luZy93Zngv
+aGlmX3R4LmMgICAgICAgICAgfCAgNjAgKysrKystLS0tLS0tCiBkcml2ZXJzL3N0YWdpbmcvd2Z4
+L2hpZl90eC5oICAgICAgICAgIHwgICA2ICstCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L2hpZl90eF9t
+aWIuYyAgICAgIHwgIDE0ICstLQogZHJpdmVycy9zdGFnaW5nL3dmeC9oaWZfdHhfbWliLmggICAg
+ICB8ICAgMiArLQogZHJpdmVycy9zdGFnaW5nL3dmeC9od2lvLmMgICAgICAgICAgICB8ICAgNiAr
+LQogZHJpdmVycy9zdGFnaW5nL3dmeC9od2lvLmggICAgICAgICAgICB8ICAyMCArKy0tCiBkcml2
+ZXJzL3N0YWdpbmcvd2Z4L2tleS5jICAgICAgICAgICAgIHwgIDMwICsrKy0tLQogZHJpdmVycy9z
+dGFnaW5nL3dmeC9rZXkuaCAgICAgICAgICAgICB8ICAgNCArLQogZHJpdmVycy9zdGFnaW5nL3dm
+eC9tYWluLmMgICAgICAgICAgICB8ICAzNyArKysrKy0tCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L21h
+aW4uaCAgICAgICAgICAgIHwgICAzICstCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3F1ZXVlLmMgICAg
+ICAgICAgIHwgIDQzICsrKystLS0tCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3F1ZXVlLmggICAgICAg
+ICAgIHwgICA2ICstCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3NjYW4uYyAgICAgICAgICAgIHwgIDU1
+ICsrKysrKystLS0tCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3NjYW4uaCAgICAgICAgICAgIHwgICA0
+ICstCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3N0YS5jICAgICAgICAgICAgIHwgMTM1ICsrKysrKysr
+KysrKysrKy0tLS0tLS0tLS0tCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3N0YS5oICAgICAgICAgICAg
+IHwgICA4ICstCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3RyYWNlcy5oICAgICAgICAgIHwgICAyICst
+CiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3dmeC5oICAgICAgICAgICAgIHwgIDE0ICsrLQogMzUgZmls
+ZXMgY2hhbmdlZCwgNDcwIGluc2VydGlvbnMoKyksIDQwOSBkZWxldGlvbnMoLSkKCi0tIAoyLjMz
+LjAKCg==
