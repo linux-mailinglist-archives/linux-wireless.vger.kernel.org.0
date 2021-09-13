@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A12AC408DE5
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 15:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC186408E40
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Sep 2021 15:34:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241812AbhIMNae (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Sep 2021 09:30:34 -0400
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:57726
+        id S241930AbhIMNaf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Sep 2021 09:30:35 -0400
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:57746
         "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S240596AbhIMNWB (ORCPT
+        by vger.kernel.org with ESMTP id S240599AbhIMNWD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Sep 2021 09:22:01 -0400
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+        Mon, 13 Sep 2021 09:22:03 -0400
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 435EC40258
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 13:20:45 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id C7E2140266
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 13:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1631539245;
-        bh=ygx+SrZOuhDRvL55hE9xxzLOd3db853TUebx3pnrgoQ=;
+        s=20210705; t=1631539246;
+        bh=Lf3U+DHYhMpuIl7nTJH6GPAYe+llXfLG7+wtuS7r1DY=;
         h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
          MIME-Version;
-        b=fdf45LTIcq4mY7uCJUaLFAQgCz3vWBx/FnEVwAbo+Hj+B5/BPnnEAD+bWjqq2YjMh
-         +tI44rlwaDSfR4mh3WTwH83F+cW1xaWLJTLe7GG+tERPiOSL2bZgYuZFwC8pcpAHqy
-         wSp/Ygf+Yr7bwMHj/HF4Bzv7+FA+pyuvQzDDA05nDTdWqKZ7vnneCwQsu6FQuzFh5L
-         LbRnOeS5W0ifR1vRwmWIV4Bxw2sX+ZNpiPKFBhURZE3XGWy2fcHCtxU6O6BH2JtWdy
-         576PwalssVDl8qDDtEPmMGs61LQj9gbkvgmra1rTcJzut9OsMSr1/vEy9pheoLcr5q
-         Nf4FpLtwRQygA==
-Received: by mail-wm1-f72.google.com with SMTP id h1-20020a05600c350100b002e751bf6733so1648035wmq.8
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 06:20:45 -0700 (PDT)
+        b=C9UVcbIUq3O4jN/3iHXwE6SSuKueuzAPU+yMYAhssYEWhd+HFJKX9NQCyZeGXBBm0
+         i542P4TyYCPz9wzsaKw1+fcRKbXbNbDzmnsgaPX6BuyUYa8Hr+Bq+kRESdzohlzahQ
+         zzqQAtkNcArCVaQEdKTWb0HvdE/bhhQ4fkEG1Su94IviI5ofwt3RNBlTGsY1kLN+Xm
+         G5gh62mfmk1AcRG82xVUhZV+pb5cd7YldXe96TNdn8LBXR6zEx9Hf1f1lHL5gaY2hz
+         oYRQK7bN1s9aoNeXAb7oNZeAXtUYB54cpWYSIe0NfD9ynDM9aPioGj45N93QuqxO9G
+         +6TFKvJ63c5Fw==
+Received: by mail-wr1-f72.google.com with SMTP id v15-20020adff68f000000b0015df51efa18so1323644wrp.16
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 06:20:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ygx+SrZOuhDRvL55hE9xxzLOd3db853TUebx3pnrgoQ=;
-        b=pF6YtA83XSff0j/vWkrrGmoGsOWZubkg10qQpnmS1Ztc97d2w8quEjsXwf45qqlmdl
-         8zD8Aqxha194zL/sRpCaCAW9w7hctRJJzleGxX4k0mvo8X8GhDXLuJVhE9YQCxysq6Ox
-         SfSLpKVZroyVMAeQZrFmyOMfuFU+NlnwxpZcGeOTu+wKuz9VMCt2g6cKvv15A1UVQm8e
-         GEKfi6VWOlend1TLak/ncJL+LoThsVQyZRe4RR6q3eEkJx8fmS/7nAaKyF7rzOL3KdpT
-         A8xWc/f4tsGsLkoLmUFBPhmJCQ4hgD4VoqW8rXLk8e7+ZkGRZ9WQ77oV+cbywOObBGJv
-         4sJg==
-X-Gm-Message-State: AOAM530DRFA19/Nurxht9or7xHr+aeLn/W9yMxylCqmUMjbvQ2yHXI70
-        tP0zHbcaG8tlWOoNF/Z6eCgyVcoN2yp8V4Tp/Va0EbfOKxQgzfcZsHVbLHdF+VAb9wdzchErU9e
-        Xhi15jiCFguIyvqUujwR8Aq87XD9R406OKOmv8qzwUbfP
-X-Received: by 2002:adf:fb07:: with SMTP id c7mr12251634wrr.399.1631539244940;
-        Mon, 13 Sep 2021 06:20:44 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwzILgpQkYxJU/M3MzweCeFPT+kDGa1TnDYwi3heoPxDFjyRATx52X0us/D5TSUHmIkvEVgWw==
-X-Received: by 2002:adf:fb07:: with SMTP id c7mr12251611wrr.399.1631539244768;
-        Mon, 13 Sep 2021 06:20:44 -0700 (PDT)
+        bh=Lf3U+DHYhMpuIl7nTJH6GPAYe+llXfLG7+wtuS7r1DY=;
+        b=K9+VdU9IT5WMY/m/HstaLmVVVy75u/GBYOsFrjJEGBR24eOsaT0+dv7/9/7lcVULib
+         lv9jEyQUEW16yef63V1QSOCk61cdmzdyPOrn8vVe+4cpb1EP4iWyIeUfjVOj8FFA3JeC
+         zGJfiIwHj35HbdnERpnoQxXVpIdjKvUS3bJ6y8qX+5ddfwAYBnj8WQD9AHSkNRd5WLPS
+         ABfXjaR/OPZ4zhWextLQPJsiJHxuHUdJEVqsia1M9Txb9gFloT4JBWf4fvwqpDk9rwuQ
+         xAqAGsFY2edou5pCpeO+tAIyYUbj1baEnxYGdwrxCJ3cGqSw0kM0nYvX8D964oWXSdKN
+         3FtQ==
+X-Gm-Message-State: AOAM532raGbnMM+uxziD5lHbjmWDNdH77gkG5aO5T7mB0HU2EO3/Zr4N
+        33kphLSEUbJeFvopGr/78IzbW4aubedm7ViJFvu1dyNGupjN9VBByZNbg1qt05O1g/Gzkyxhhsk
+        k8wU2XDkjMW48uHwT1Jh3jp34IIdMMObUN1lJDovEiDTK
+X-Received: by 2002:adf:f90f:: with SMTP id b15mr12528815wrr.364.1631539246423;
+        Mon, 13 Sep 2021 06:20:46 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwO4lsG5wdmhKIDutLLy9acqil5ZkWEOWZw6YwdcZcxBYqUrgu1dwPeeITR5yS7gtM6A2hFVg==
+X-Received: by 2002:adf:f90f:: with SMTP id b15mr12528787wrr.364.1631539246274;
+        Mon, 13 Sep 2021 06:20:46 -0700 (PDT)
 Received: from kozik-lap.lan (lk.84.20.244.219.dc.cable.static.lj-kabel.net. [84.20.244.219])
-        by smtp.gmail.com with ESMTPSA id n3sm7195888wmi.0.2021.09.13.06.20.42
+        by smtp.gmail.com with ESMTPSA id n3sm7195888wmi.0.2021.09.13.06.20.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Sep 2021 06:20:43 -0700 (PDT)
+        Mon, 13 Sep 2021 06:20:45 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Krzysztof Opasiak <k.opasiak@samsung.com>,
@@ -62,9 +62,9 @@ To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Jakub Kicinski <kuba@kernel.org>, linux-nfc@lists.01.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-wireless@vger.kernel.org
-Subject: [PATCH v2 02/15] nfc: do not break pr_debug() call into separate lines
-Date:   Mon, 13 Sep 2021 15:20:22 +0200
-Message-Id: <20210913132035.242870-3-krzysztof.kozlowski@canonical.com>
+Subject: [PATCH v2 03/15] nfc: nci: replace GPLv2 boilerplate with SPDX
+Date:   Mon, 13 Sep 2021 15:20:23 +0200
+Message-Id: <20210913132035.242870-4-krzysztof.kozlowski@canonical.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210913132035.242870-1-krzysztof.kozlowski@canonical.com>
 References: <20210913132035.242870-1-krzysztof.kozlowski@canonical.com>
@@ -74,75 +74,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove unneeded line break between pr_debug and arguments.
+Replace standard GPLv2 only license text with SPDX tag.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 ---
- net/nfc/hci/llc_shdlc.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ net/nfc/nci/uart.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/net/nfc/hci/llc_shdlc.c b/net/nfc/hci/llc_shdlc.c
-index 78b2ceb8ae6e..e90f70385813 100644
---- a/net/nfc/hci/llc_shdlc.c
-+++ b/net/nfc/hci/llc_shdlc.c
-@@ -201,8 +201,7 @@ static void llc_shdlc_reset_t2(struct llc_shdlc *shdlc, int y_nr)
- 			del_timer_sync(&shdlc->t2_timer);
- 			shdlc->t2_active = false;
- 
--			pr_debug
--			    ("All sent frames acked. Stopped T2(retransmit)\n");
-+			pr_debug("All sent frames acked. Stopped T2(retransmit)\n");
- 		}
- 	} else {
- 		skb = skb_peek(&shdlc->ack_pending_q);
-@@ -211,8 +210,7 @@ static void llc_shdlc_reset_t2(struct llc_shdlc *shdlc, int y_nr)
- 			  msecs_to_jiffies(SHDLC_T2_VALUE_MS));
- 		shdlc->t2_active = true;
- 
--		pr_debug
--		    ("Start T2(retransmit) for remaining unacked sent frames\n");
-+		pr_debug("Start T2(retransmit) for remaining unacked sent frames\n");
- 	}
- }
- 
-@@ -518,12 +516,11 @@ static void llc_shdlc_handle_send_queue(struct llc_shdlc *shdlc)
- 	unsigned long time_sent;
- 
- 	if (shdlc->send_q.qlen)
--		pr_debug
--		    ("sendQlen=%d ns=%d dnr=%d rnr=%s w_room=%d unackQlen=%d\n",
--		     shdlc->send_q.qlen, shdlc->ns, shdlc->dnr,
--		     shdlc->rnr == false ? "false" : "true",
--		     shdlc->w - llc_shdlc_w_used(shdlc->ns, shdlc->dnr),
--		     shdlc->ack_pending_q.qlen);
-+		pr_debug("sendQlen=%d ns=%d dnr=%d rnr=%s w_room=%d unackQlen=%d\n",
-+			 shdlc->send_q.qlen, shdlc->ns, shdlc->dnr,
-+			 shdlc->rnr == false ? "false" : "true",
-+			 shdlc->w - llc_shdlc_w_used(shdlc->ns, shdlc->dnr),
-+			 shdlc->ack_pending_q.qlen);
- 
- 	while (shdlc->send_q.qlen && shdlc->ack_pending_q.qlen < shdlc->w &&
- 	       (shdlc->rnr == false)) {
-@@ -641,8 +638,7 @@ static void llc_shdlc_sm_work(struct work_struct *work)
- 		llc_shdlc_handle_send_queue(shdlc);
- 
- 		if (shdlc->t1_active && timer_pending(&shdlc->t1_timer) == 0) {
--			pr_debug
--			    ("Handle T1(send ack) elapsed (T1 now inactive)\n");
-+			pr_debug("Handle T1(send ack) elapsed (T1 now inactive)\n");
- 
- 			shdlc->t1_active = false;
- 			r = llc_shdlc_send_s_frame(shdlc, S_FRAME_RR,
-@@ -652,8 +648,7 @@ static void llc_shdlc_sm_work(struct work_struct *work)
- 		}
- 
- 		if (shdlc->t2_active && timer_pending(&shdlc->t2_timer) == 0) {
--			pr_debug
--			    ("Handle T2(retransmit) elapsed (T2 inactive)\n");
-+			pr_debug("Handle T2(retransmit) elapsed (T2 inactive)\n");
- 
- 			shdlc->t2_active = false;
- 
+diff --git a/net/nfc/nci/uart.c b/net/nfc/nci/uart.c
+index 502e7a3f8948..65814dd72618 100644
+--- a/net/nfc/nci/uart.c
++++ b/net/nfc/nci/uart.c
+@@ -1,20 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
+ /*
+  * Copyright (C) 2015, Marvell International Ltd.
+  *
+- * This software file (the "File") is distributed by Marvell International
+- * Ltd. under the terms of the GNU General Public License Version 2, June 1991
+- * (the "License").  You may use, redistribute and/or modify this File in
+- * accordance with the terms and conditions of the License, a copy of which
+- * is available on the worldwide web at
+- * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+- *
+- * THE FILE IS DISTRIBUTED AS-IS, WITHOUT WARRANTY OF ANY KIND, AND THE
+- * IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE
+- * ARE EXPRESSLY DISCLAIMED.  The License provides additional details about
+- * this warranty disclaimer.
+- */
+-
+-/* Inspired (hugely) by HCI LDISC implementation in Bluetooth.
++ * Inspired (hugely) by HCI LDISC implementation in Bluetooth.
+  *
+  *  Copyright (C) 2000-2001  Qualcomm Incorporated
+  *  Copyright (C) 2002-2003  Maxim Krasnyansky <maxk@qualcomm.com>
 -- 
 2.30.2
 
