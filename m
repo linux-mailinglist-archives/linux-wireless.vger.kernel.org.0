@@ -2,173 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4251040B5EE
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Sep 2021 19:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 206B340B655
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Sep 2021 19:57:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231307AbhINRde (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Sep 2021 13:33:34 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:11136 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S230019AbhINRdd (ORCPT
+        id S231923AbhINR6i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Sep 2021 13:58:38 -0400
+Received: from gateway32.websitewelcome.com ([192.185.145.178]:23766 "EHLO
+        gateway32.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230035AbhINR6i (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Sep 2021 13:33:33 -0400
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.0.43) with SMTP id 18EGhd4g029046;
-        Tue, 14 Sep 2021 13:31:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=aIo1TaDICCdei1g5dVPm7EpGYyAVvfgdhezR0Ptp5c0=;
- b=s7hXSBA/32Y5ktAMPYe7jo9025Kjck+fWN6v/EzWvTwx3VGbrZ7VPw/zkFshlWQwU28A
- /CZHT3M3LfXH6tc7ThNn7FIWAgHhTAmJrMfd4hy5L7VCkjf3xzK1TyhW76AB4f57CvE6
- yZHVAt47J4mbivuUfXLlgLl6ZLbGvSSGUTg1YnIvQNV1lUSTJX2sQec8YkfhSEDEpc2u
- UBhUgRqRIvp/UcEM4R5EQXkAg8+3YZP4AwCXdjE/wSck4HkMfHv9YyZWy7vdnYvzoCJM
- D1tWCAdJ4CrbxsB7S49+1NG8YJDn3FK0+gNWTNxtm4gLNP48n8QOELhpTjrhn9I2I0g7 dw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3b2ygt19er-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Sep 2021 13:31:38 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18EGhuYX029606;
-        Tue, 14 Sep 2021 13:31:37 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3b2ygt19dt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Sep 2021 13:31:37 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-        by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18EHCBga013667;
-        Tue, 14 Sep 2021 17:31:35 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by ppma02fra.de.ibm.com with ESMTP id 3b0m39dj50-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Sep 2021 17:31:35 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 18EHVW7T46399848
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Sep 2021 17:31:32 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9AC59AE051;
-        Tue, 14 Sep 2021 17:31:32 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BBDB0AE053;
-        Tue, 14 Sep 2021 17:31:29 +0000 (GMT)
-Received: from [9.171.20.178] (unknown [9.171.20.178])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Tue, 14 Sep 2021 17:31:29 +0000 (GMT)
-Message-ID: <a366c691-fb81-8e30-3853-3260ceabf080@linux.ibm.com>
-Date:   Tue, 14 Sep 2021 20:31:29 +0300
+        Tue, 14 Sep 2021 13:58:38 -0400
+X-Greylist: delayed 1493 seconds by postgrey-1.27 at vger.kernel.org; Tue, 14 Sep 2021 13:58:38 EDT
+Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
+        by gateway32.websitewelcome.com (Postfix) with ESMTP id D07261A51BF
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Sep 2021 12:32:26 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id QCIEmmolIHlR1QCIEmCvQB; Tue, 14 Sep 2021 12:32:26 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=3sP6jXMNnxu6PJJC0Lvm+qOKW0f/dGtu/4FvN9Uf7iM=; b=g8Az3FMGHjcUQunQDfThX3OfVx
+        fI2MMchUpam/fzYsvIrUYzq3Ilrjsmjg+DZnyr7STqsjSE6Itbo44efKDrBR8yt4YU+riVw7lErnt
+        dR21PRArQDvU37USJICiFK8IoldkWyUV2C51+PhJihApbCnlTysBXPUGldNdXyzWcDPxzCuk9viYi
+        UOojkNYveJSd6GoERVUQOiaJEmTP0yFJ40vkx0Lblpafjwsw7qDE6uzkZbODbs5AN85CZa5jizmRL
+        nSBET8eexfyAaLddgskzpeW2PpEoY/fqAQxhOK8cuFH/FuHeLymn32wmV6yeWV3dneeYdtffFwStn
+        a3ziMzJw==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:34626 helo=[192.168.15.9])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1mQCIE-0035SF-A2; Tue, 14 Sep 2021 12:32:26 -0500
+Subject: Re: [PATCH][next] ath11k: Replace one-element array with
+ flexible-array member
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <20210823172159.GA25800@embeddedor>
+ <6e8229a1-187c-cd69-ad1c-018737e5e455@embeddedor.com>
+ <87r1dr1vpf.fsf@codeaurora.org>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Message-ID: <36d4e936-527d-e6ff-8f6a-e06fcb275327@embeddedor.com>
+Date:   Tue, 14 Sep 2021 12:36:13 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
-Subject: Re: [PATCH V3 net-next 2/4] ethtool: extend coalesce setting uAPI
- with CQE mode
+In-Reply-To: <87r1dr1vpf.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-To:     Yufeng Mo <moyufeng@huawei.com>, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     netdev@vger.kernel.org, shenjian15@huawei.com,
-        lipeng321@huawei.com, yisen.zhuang@huawei.com,
-        linyunsheng@huawei.com, huangguangbin2@huawei.com,
-        chenhao288@hisilicon.com, salil.mehta@huawei.com,
-        linuxarm@huawei.com, linuxarm@openeuler.org, dledford@redhat.com,
-        jgg@ziepe.ca, netanel@amazon.com, akiyano@amazon.com,
-        thomas.lendacky@amd.com, irusskikh@marvell.com,
-        michael.chan@broadcom.com, edwin.peer@broadcom.com,
-        rohitm@chelsio.com, jacob.e.keller@intel.com,
-        ioana.ciornei@nxp.com, vladimir.oltean@nxp.com,
-        sgoutham@marvell.com, sbhatta@marvell.com, saeedm@nvidia.com,
-        ecree.xilinx@gmail.com, grygorii.strashko@ti.com,
-        merez@codeaurora.org, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org
-References: <1629444920-25437-1-git-send-email-moyufeng@huawei.com>
- <1629444920-25437-3-git-send-email-moyufeng@huawei.com>
-From:   Julian Wiedmann <jwi@linux.ibm.com>
-In-Reply-To: <1629444920-25437-3-git-send-email-moyufeng@huawei.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: J9Eh5isQci_ecwaFFb4ZLD-60nRzRzVL
-X-Proofpoint-GUID: wCqWvBcAe21rS4r3kVmKye1GiH9Vqur8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
- definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 impostorscore=0 suspectscore=0 mlxlogscore=999
- bulkscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 malwarescore=0
- clxscore=1011 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109030001 definitions=main-2109140092
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1mQCIE-0035SF-A2
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.9]) [187.162.31.110]:34626
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 6
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 20.08.21 10:35, Yufeng Mo wrote:
-> In order to support more coalesce parameters through netlink,
-> add two new parameter kernel_coal and extack for .set_coalesce
-> and .get_coalesce, then some extra info can return to user with
-> the netlink API.
+
+
+On 9/14/21 02:07, Kalle Valo wrote:
+> "Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
 > 
-> Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
-> Signed-off-by: Huazhong Tan <tanhuazhong@huawei.com>
-> ---
-
-[...]
-
-> index 81fa36a..f2abc31 100644
-> --- a/net/ethtool/ioctl.c
-> +++ b/net/ethtool/ioctl.c
-> @@ -1619,12 +1619,14 @@ static noinline_for_stack int ethtool_get_coalesce(struct net_device *dev,
->  						   void __user *useraddr)
->  {
->  	struct ethtool_coalesce coalesce = { .cmd = ETHTOOL_GCOALESCE };
-> +	struct kernel_ethtool_coalesce kernel_coalesce = {};
->  	int ret;
->  
->  	if (!dev->ethtool_ops->get_coalesce)
->  		return -EOPNOTSUPP;
->  
-> -	ret = dev->ethtool_ops->get_coalesce(dev, &coalesce);
-> +	ret = dev->ethtool_ops->get_coalesce(dev, &coalesce, &kernel_coalesce,
-> +					     NULL);
->  	if (ret)
->  		return ret;
->  
-> @@ -1691,19 +1693,26 @@ ethtool_set_coalesce_supported(struct net_device *dev,
->  static noinline_for_stack int ethtool_set_coalesce(struct net_device *dev,
->  						   void __user *useraddr)
->  {
-> +	struct kernel_ethtool_coalesce kernel_coalesce = {};
->  	struct ethtool_coalesce coalesce;
->  	int ret;
->  
-> -	if (!dev->ethtool_ops->set_coalesce)
-> +	if (!dev->ethtool_ops->set_coalesce && !dev->ethtool_ops->get_coalesce)
->  		return -EOPNOTSUPP;
->  
-
-This needs to be
-
-	if (!set_coalesce || !get_coalesce)
-		return -EOPNOTSUPP;
-
-Otherwise you end up calling a NULL pointer below if just _one_ of the
-callbacks is available.
-
-
-> +	ret = dev->ethtool_ops->get_coalesce(dev, &coalesce, &kernel_coalesce,
-> +					     NULL);
-> +	if (ret)
-> +		return ret;
-> +
->  	if (copy_from_user(&coalesce, useraddr, sizeof(coalesce)))
->  		return -EFAULT;
->  
->  	if (!ethtool_set_coalesce_supported(dev, &coalesce))
->  		return -EOPNOTSUPP;
->  
-> -	ret = dev->ethtool_ops->set_coalesce(dev, &coalesce);
-> +	ret = dev->ethtool_ops->set_coalesce(dev, &coalesce, &kernel_coalesce,
-> +					     NULL);
->  	if (!ret)
->  		ethtool_notify(dev, ETHTOOL_MSG_COALESCE_NTF, NULL);
->  	return ret;
+>> I wonder if you can take this patch, please.
 > 
+> This is in my queue, please do not take ath11k patches.
 
+Great, and sure thing. :)
+
+Thanks
+--
+Gustavo
