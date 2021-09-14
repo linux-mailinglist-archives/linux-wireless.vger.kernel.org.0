@@ -2,145 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 070B340A19F
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Sep 2021 01:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09FE040A430
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Sep 2021 05:11:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243514AbhIMXlY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Sep 2021 19:41:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59992 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242698AbhIMXlQ (ORCPT
+        id S238749AbhINDMs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Sep 2021 23:12:48 -0400
+Received: from smtp6.ctinetworks.com ([205.166.61.199]:38820 "EHLO
+        smtp6.ctinetworks.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238764AbhINDMq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Sep 2021 19:41:16 -0400
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57DA4C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 16:39:58 -0700 (PDT)
-Received: by mail-oi1-x22e.google.com with SMTP id n27so16447355oij.0
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 16:39:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kali.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=ihysQIdGR8w+AiS+ReWp8DK2aVapwmF1UvOCNcDhHKc=;
-        b=IRIIEViIbrzd5kpmoPo6R+Oy3FbupEZKJ6mcTM8r782MvEpzOb2C7MJtR4EBx3lXie
-         CHl/9FYY3aeP6vQqOWBveC/ddBGSnwPWxnSDNX+l8j/LyDSs0YyJA0V5kzPVq7OqGLUj
-         AEtm0/7Jp51ctNjxsGlrTzmlPOU5/8x2CSs0IpWDN90SvGP5TfTkt/g/hzR+tufLr6UW
-         yuDGmsKRIR8E1QzgPqi5oDRRANvSTE9+mxDwDs94C0lx6P9LsTFRwoTL9CrjQGlmDaN4
-         HDVImDXi1v0SNfnC3VTDuj2dkOAwgst8eQllcU1qKkyr+yCz3r7Jo2YSvd1sJU/nVriu
-         D+9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=ihysQIdGR8w+AiS+ReWp8DK2aVapwmF1UvOCNcDhHKc=;
-        b=e9puu+5rSIRND+5aMKJiUA1fld866iYgACQIdCt7yeKlbL+i+dEK1ljoyhe25H1MLs
-         vJAyaHems81F3K/DUKEYkIAaH7JMmW8C+rbTiESmqEaphOFgOZtEBqobSMxuRi3iidt8
-         tZ+bQ70PL2dW5u/B/fUwVasx4A6AbeRj7c7RNQ1q9K0Pj8He0COFJYJNoT+8dd7LMozp
-         Kv0Ve+yy62GeOWVDOj+P5E8N40DvnxexACM8qkxJ9Kry+685PQFILg8d79RUO0JJrvHf
-         JxAxOpUjrE4svPcFgYLL2tWzTpQ9e7BR0d/x4u6s83Htk+wA4aZj3tdkdEdcdketQL8l
-         vTJQ==
-X-Gm-Message-State: AOAM531uJCDCh1rqKxMPDDS0e+Pw3lz7l8RL73/7NduKPbsuK+V98EB/
-        Yvq6ub77jOn8AY1e3O/DowUCoQ==
-X-Google-Smtp-Source: ABdhPJwV6GzMZQ+mNOpdRRBX3HLArICooddBup3dlenG8aQ6qcgGviIlOFg9Jtdit/VWiu2IZB/GZw==
-X-Received: by 2002:aca:914:: with SMTP id 20mr9750235oij.9.1631576397694;
-        Mon, 13 Sep 2021 16:39:57 -0700 (PDT)
-Received: from MacBook-Pro.hackershack.net (cpe-173-173-107-246.satx.res.rr.com. [173.173.107.246])
-        by smtp.gmail.com with ESMTPSA id u15sm2208500oor.34.2021.09.13.16.39.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Sep 2021 16:39:57 -0700 (PDT)
-Subject: Re: [RFC v2 00/13] create power sequencing subsystem
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <20210829131305.534417-1-dmitry.baryshkov@linaro.org>
-From:   Steev Klimaszewski <steev@kali.org>
-Message-ID: <4a508fc1-6253-9c11-67fb-f84f17fd2719@kali.org>
-Date:   Mon, 13 Sep 2021 18:39:55 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
-MIME-Version: 1.0
-In-Reply-To: <20210829131305.534417-1-dmitry.baryshkov@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+        Mon, 13 Sep 2021 23:12:46 -0400
+Received: from localhost (unknown [117.207.20.158])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: enometh@meer.net)
+        by smtp6.ctinetworks.com (Postfix) with ESMTPSA id 26AFB85D04
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Sep 2021 23:11:20 -0400 (EDT)
+Date:   Tue, 14 Sep 2021 08:41:16 +0530 (IST)
+Message-Id: <20210914.084116.1726846422542610443.enometh@meer.net>
+To:     linux-wireless@vger.kernel.org
+Subject:  Re: help troubleshooting failures connect to an access point with
+ iw/iwd
+From:   Madhu <enometh@meer.net>
+References: <20210420.063244.1157699536418751229.enometh@meer.net>
+        <9167fd6d-affa-21d5-bd8d-0fb3d49d38f0@justmail.de>
+        <20210421.102130.167565230547376402.enometh@meer.net>
+        <20210912.033932.2187976226343353888.enometh@meer.net>
+X-Mailer: Mew version 6.8 on Emacs 28.0.50
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-ctinetworks-Information: Please contact the ISP for more information
+X-ctinetworks-MailScanner-ID: 26AFB85D04.A8515
+X-ctinetworks-VirusCheck: Found to be clean
+X-ctinetworks-SpamCheck: 
+X-ctinetworks-Watermark: 1632453084.56048@skdk+a6O3UtsdcrVSuaZ9g
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 8/29/21 8:12 AM, Dmitry Baryshkov wrote:
-> This is the second RFC on the proposed power sequencer subsystem. This
-> is a generification of the MMC pwrseq code. The subsystem tries to
-> abstract the idea of complex power-up/power-down/reset of the devices.
->
-> To ease migration to pwrseq and to provide compatibility with older
-> device trees, while keeping drivers simple, this iteration of RFC
-> introduces pwrseq fallback support: pwrseq driver can register fallback
-> providers. If another device driver requests pwrseq instance and none
-> was declared, the pwrseq fallback code would go through the list of
-> fallback providers and if the match is found, driver would return a
-> crafted pwrseq instance. For now this mechanism is limited to the OF
-> device matching, but it can be extended further to use any combination
-> of device IDs.
->
-> The primary set of devices that promted me to create this patchset is
-> the Qualcomm BT+WiFi family of chips. They reside on serial+platform or
-> serial + SDIO interfaces (older generations) or on serial+PCIe (newer
-> generations).  They require a set of external voltage regulators to be
-> powered on and (some of them) have separate WiFi and Bluetooth enable
-> GPIOs.
->
-> This patchset being an RFC tries to demonstrate the approach, design and
-> usage of the pwrseq subsystem. Following issues are present in the RFC
-> at this moment but will be fixed later if the overall approach would be
-> viewed as acceptable:
->
->  - No documentation
->    While the code tries to be self-documenting proper documentation
->    would be required.
->
->  - Minimal device tree bindings changes
->    There are no proper updates for the DT bindings (thus neither Rob
->    Herring nor devicetree are included in the To/Cc lists). The dt
->    schema changes would be a part of v1.
->
->  - Lack of proper PCIe integration
->    At this moment support for PCIe is hacked up to be able to test the
->    PCIe part of qca6390. Proper PCIe support would require automatically
->    powering up the devices before the bus scan depending on the proper
->    device structure in the device tree.
->
-> Changes since RFC v1:
->  - Provider pwrseq fallback support
->  - Implement fallback support in pwrseq_qca.
->  - Mmove susclk handling to pwrseq_qca.
->  - Significantly simplify hci_qca.c changes, by dropping all legacy
->    code. Now hci_qca uses only pwrseq calls to power up/down bluetooth
->    parts of the chip.
->
-I tested this here, on the Lenovo Yoga C630, after creating a patch to
-do basically the same thing as the db845c does.  One thing I noticed, if
-PWRSEQ=y and the rest are =m, there is a build error.  I suppose once
-the full set is posted and not RFC, I can send the patch for that. 
+* I Wrote on Sun, 12 Sep 2021 03:39:32 +0530 (IST),
+in <20210912.033932.2187976226343353888.enometh@meer.net> :
 
-One question I have, if you don't mind, in patch 11, you add a second
-channel to qca power sequencer.  I've added that here, but in the c630's
-dts, "vreg_l23a_3p3: ldo23" is empty, so I added the same numbers in for
-the regulator, and I'm wondering how to test that it's actually working
-correctly?
+> I've been using wpa_supplicant with rtw88 and b43 cards to connect to
+> a wpa-psk home router successfully for many years. This was with
+> -Wext. However I'm not able to accomplish this with iw or iwd.
 
--- steev
+The iwd part of the story has a resolution:
 
+> $/usr/libexec/iwd --version
+> 1.17
+> $/usr/libexec/iwd -d
+> $ iwctl station wlan0 get-hidden-access-points
+> $ iwctl --passphrase=XXX  station wlan0 connect SSID
+>
+> If this connects it always immediately disconnects
+>
+> kernel: [86195.924708] wlan0: authenticate with 58:xx:6e:xx:51:e4
+> kernel: [86196.264641] wlan0: send auth to 58:xx:6e:xx:51:e4 (try 1/3)
+> kernel: [86196.268477] wlan0: authenticated
+> kernel: [86196.274379] wlan0: associate with 58:xx:6e:xx:51:e4 (try 1/3)
+> kernel: [86196.281420] wlan0: RX AssocResp from 58:xx:6e:xx:51:e4
+> (capab=0x411 status=0 aid=1)
+> kernel: [86196.281491] rtw_8822ce 0000:xx:00.0: sta 58:xx:6e:xx:51:e4
+> joined with macid 0
+> kernel: [86196.282235] wlan0: associated
+> kernel: [86238.445926] wlan0: deauthenticated from 58:xx:6e:xx:51:e4
+> (Reason: 6=CLASS2_FRAME_FROM_NONAUTH_STA)
+> kernel: [86238.594381] rtw_8822ce 0000:xx:00.0: sta 58:xx:6e:xx:51:e4 with macid 0 left
+>
+> - So an connection, after authentication immediately deauthenticates
+>   with (Reason: 6=CLASS2_FRAME_FROM_NONAUTH_STA). The deauthentication
+>   happens when any packet is to be sent on the interface
+
+As was pointed out, this is avoided by a
+
+[General]
+ControlPortOverNL80211=False
+
+item in /etc/iwd/main.conf
+
+The other problems are outstanding.
