@@ -2,94 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 206B340B655
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Sep 2021 19:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA9BF40B632
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Sep 2021 19:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231923AbhINR6i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Sep 2021 13:58:38 -0400
-Received: from gateway32.websitewelcome.com ([192.185.145.178]:23766 "EHLO
-        gateway32.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230035AbhINR6i (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Sep 2021 13:58:38 -0400
-X-Greylist: delayed 1493 seconds by postgrey-1.27 at vger.kernel.org; Tue, 14 Sep 2021 13:58:38 EDT
-Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
-        by gateway32.websitewelcome.com (Postfix) with ESMTP id D07261A51BF
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Sep 2021 12:32:26 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id QCIEmmolIHlR1QCIEmCvQB; Tue, 14 Sep 2021 12:32:26 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=3sP6jXMNnxu6PJJC0Lvm+qOKW0f/dGtu/4FvN9Uf7iM=; b=g8Az3FMGHjcUQunQDfThX3OfVx
-        fI2MMchUpam/fzYsvIrUYzq3Ilrjsmjg+DZnyr7STqsjSE6Itbo44efKDrBR8yt4YU+riVw7lErnt
-        dR21PRArQDvU37USJICiFK8IoldkWyUV2C51+PhJihApbCnlTysBXPUGldNdXyzWcDPxzCuk9viYi
-        UOojkNYveJSd6GoERVUQOiaJEmTP0yFJ40vkx0Lblpafjwsw7qDE6uzkZbODbs5AN85CZa5jizmRL
-        nSBET8eexfyAaLddgskzpeW2PpEoY/fqAQxhOK8cuFH/FuHeLymn32wmV6yeWV3dneeYdtffFwStn
-        a3ziMzJw==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:34626 helo=[192.168.15.9])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1mQCIE-0035SF-A2; Tue, 14 Sep 2021 12:32:26 -0500
-Subject: Re: [PATCH][next] ath11k: Replace one-element array with
- flexible-array member
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20210823172159.GA25800@embeddedor>
- <6e8229a1-187c-cd69-ad1c-018737e5e455@embeddedor.com>
- <87r1dr1vpf.fsf@codeaurora.org>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Message-ID: <36d4e936-527d-e6ff-8f6a-e06fcb275327@embeddedor.com>
-Date:   Tue, 14 Sep 2021 12:36:13 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S231438AbhINRtC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Sep 2021 13:49:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44562 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231723AbhINRtB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 Sep 2021 13:49:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CF44660EE7;
+        Tue, 14 Sep 2021 17:47:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631641663;
+        bh=XwFlKQprbS5Xsut4+KVkQ9rCehkueeb5Va+IvjAKMe4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=KSv+RtTpPHB8oKm9pr3uJGiIUDjyo2a5hOdIoMlnQ+P24YDigyFarSm+jspCdwnaF
+         78wzNARuX57eydl869SJQaHVt0n+G1NmLKKEHCwNPgxa6qAD3uhsKdlKXTwojUKZ7H
+         e7udUMegacreRABX8g+Klx5kSDDa8xPkubf2ga8jzzyOtSw/eAwSGSkqgPnkSsnnfs
+         DJLgqqWkeSW2lf1sKx3nerYD0NvR/aGS0vURmuOHsA4rK3TLz3D+S8yshF0EsjYWLd
+         EFkngxWr8o95rvJkavLuM9rA/6eGaHB/RYfqc4goNJ0MsM6pB+TnxV2cG/eGWX4zkF
+         xaDCKjKF8Ujdw==
+Date:   Tue, 14 Sep 2021 10:47:41 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Julian Wiedmann <jwi@linux.ibm.com>
+Cc:     Yufeng Mo <moyufeng@huawei.com>, davem@davemloft.net,
+        netdev@vger.kernel.org, shenjian15@huawei.com,
+        lipeng321@huawei.com, yisen.zhuang@huawei.com,
+        linyunsheng@huawei.com, huangguangbin2@huawei.com,
+        chenhao288@hisilicon.com, salil.mehta@huawei.com,
+        linuxarm@huawei.com, linuxarm@openeuler.org, dledford@redhat.com,
+        jgg@ziepe.ca, netanel@amazon.com, akiyano@amazon.com,
+        thomas.lendacky@amd.com, irusskikh@marvell.com,
+        michael.chan@broadcom.com, edwin.peer@broadcom.com,
+        rohitm@chelsio.com, jacob.e.keller@intel.com,
+        ioana.ciornei@nxp.com, vladimir.oltean@nxp.com,
+        sgoutham@marvell.com, sbhatta@marvell.com, saeedm@nvidia.com,
+        ecree.xilinx@gmail.com, grygorii.strashko@ti.com,
+        merez@codeaurora.org, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH V3 net-next 2/4] ethtool: extend coalesce setting uAPI
+ with CQE mode
+Message-ID: <20210914104741.78b21e72@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <a366c691-fb81-8e30-3853-3260ceabf080@linux.ibm.com>
+References: <1629444920-25437-1-git-send-email-moyufeng@huawei.com>
+        <1629444920-25437-3-git-send-email-moyufeng@huawei.com>
+        <a366c691-fb81-8e30-3853-3260ceabf080@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <87r1dr1vpf.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1mQCIE-0035SF-A2
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.9]) [187.162.31.110]:34626
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 6
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 9/14/21 02:07, Kalle Valo wrote:
-> "Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
+On Tue, 14 Sep 2021 20:31:29 +0300 Julian Wiedmann wrote:
+> > -	if (!dev->ethtool_ops->set_coalesce)
+> > +	if (!dev->ethtool_ops->set_coalesce && !dev->ethtool_ops->get_coalesce)
+> >  		return -EOPNOTSUPP;
+> >    
 > 
->> I wonder if you can take this patch, please.
+> This needs to be
 > 
-> This is in my queue, please do not take ath11k patches.
+> 	if (!set_coalesce || !get_coalesce)
+> 		return -EOPNOTSUPP;
+> 
+> Otherwise you end up calling a NULL pointer below if just _one_ of the
+> callbacks is available.
 
-Great, and sure thing. :)
-
-Thanks
---
-Gustavo
+Good catch, care to send a fix?
