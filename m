@@ -2,116 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 729AF40A968
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Sep 2021 10:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C0E740AB75
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Sep 2021 12:12:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229698AbhINIh6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Sep 2021 04:37:58 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:16981 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbhINIh5 (ORCPT
+        id S231160AbhINKNP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Sep 2021 06:13:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34206 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229968AbhINKNN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Sep 2021 04:37:57 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1631608601; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=ThxMhkVj/OTj4p4TH0zWh6uCc1CbZd7A1TXlOIaUUwU=;
- b=PSFudoHoW9Q9wt5wvMCD9OdFcT/1pye8hZs4N37y028g5ovqjWM+7ksuAaY5CWLKHBr15iwz
- EodaaGzoOV4opqt+1arvlhEj4nbNOfM04pnHc5O2abBgioKMk+ZmImPhfD0okC/g2bq3ixoV
- TdmmdAkLqyLT9olYoXh35/h2gcE=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 61405f18bd6681d8edc5c07b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 14 Sep 2021 08:36:40
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 751B9C43460; Tue, 14 Sep 2021 08:36:39 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Tue, 14 Sep 2021 06:13:13 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [IPv6:2001:67c:2050::465:202])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25E99C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Sep 2021 03:11:56 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6F3F1C4338F;
-        Tue, 14 Sep 2021 08:36:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 6F3F1C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4H7zfK0b4KzQk3L;
+        Tue, 14 Sep 2021 12:11:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Subject: Re: [EXT] Re: mwifiex cmd timeout on one pci variant
+To:     Dominique MARTINET <dominique.martinet@atmark-techno.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>
+References: <YTg/f5mHQ6jjHDt6@atmark-techno.com>
+ <YThLznrMQ4EYUDEl@atmark-techno.com>
+ <AM0PR04MB4529E0C28F43288E189D8F50FCD49@AM0PR04MB4529.eurprd04.prod.outlook.com>
+ <YThQiMn7YHzPRwnJ@atmark-techno.com>
+From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
+Message-ID: <af5cff45-da9d-26b7-fd00-c4e91344cfc1@v0yd.nl>
+Date:   Tue, 14 Sep 2021 12:11:46 +0200
 MIME-Version: 1.0
+In-Reply-To: <YThQiMn7YHzPRwnJ@atmark-techno.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/3] ath11k: Split PCI write/read functions
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210913180902.193874-2-jouni@codeaurora.org>
-References: <20210913180902.193874-2-jouni@codeaurora.org>
-To:     Jouni Malinen <jouni@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Baochen Qiang <bqiang@codeaurora.org>,
-        Jouni Malinen <jouni@codeaurora.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210914083639.751B9C43460@smtp.codeaurora.org>
-Date:   Tue, 14 Sep 2021 08:36:39 +0000 (UTC)
+X-Rspamd-Queue-Id: 6765918B4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jouni Malinen <jouni@codeaurora.org> wrote:
+Hi Dominique,
 
-> ath11k_pci_write32/read32 tries to wake up MHI before doing actual
-> write/read work, which means each time a u32 is written/read, MHI
-> wake up is performed. This is not necessary in case where we do a
-> large amount of write/read, cause only one time of wake up is needed.
-> So split each one into two parts, the first part does MHI get/put
-> and the second one does actual write/read work.
+regarding the firmware version, as you can see in the commit updating 
+the firmware binaries 
+(https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/mrvl/pcie8897_uapsta.bin?id=1a5773c0c89ee44cee51a285d5c7c1063cdb0891), 
+indeed the version numbering differs between the different versions of 
+the card (usb/usb, pcie/usb, pcie/uart(?)).
+
+Anyway, if you manage to find newer firmware for any of those versions, 
+I'd be happy if you could point me to that, apparently they just fixed a 
+critical vulnerability in the Windows firmware again (see 
+https://support.microsoft.com/en-us/surface/surface-pro-5th-gen-update-history-5203144a-90c1-63df-ce0b-7ec7ff32ff10), 
+I wouldn't be surprised if our firmware is also affected by that.
+
+About the command timeout, I have no idea why the fix isn't working for 
+you, but well, my analysis of the issue is also just a (not exactly 
+educated) guess, so it might as well be a completely different problem 
+and my fix is just a lucky hack.
+
+I'd kinda hope though that my proposed patches finally wake up some 
+people at NXP and motivate them to take a look at that firmware repo again.
+
+Jonas
+
+On 9/8/21 7:56 AM, Dominique MARTINET wrote:
+> Sharvari Harisangam wrote on Wed, Sep 08, 2021 at 05:45:53AM +0000:
+>> Use firmware from https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/mrvl
+>> for mwifiex driver.
 > 
-> Also avoid the put operation if the previous get operation fails.
+> Thanks, that's the first firmware I was using; it's currently at
+> 16.68.1.p179 which is why I'm surprised Jonas said the latest would be
+> 15.68.19.p21.
 > 
-> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+> I think it's just a different variant of the driver now though,
+> a binary grep matches 15.68.19.p21 for pcie8897_uapsta.bin but I my
+> driver loads pcieuart8997_combo_v4.bin
+> I hadn't noticed the first number didn't match, but that likely confirms
+> it.
 > 
-> Signed-off-by: Baochen Qiang <bqiang@codeaurora.org>
-> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-
-This causes new warnings:
-
-drivers/net/wireless/ath/ath11k/pci.c:177:6: error: no previous prototype for 'ath11k_pci_do_write32' [-Werror=missing-prototypes]
-drivers/net/wireless/ath/ath11k/pci.c:224:5: error: no previous prototype for 'ath11k_pci_do_read32' [-Werror=missing-prototypes]
-
-I fixed them in the pending branch like this:
-
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -174,7 +174,7 @@ static inline u32 ath11k_pci_get_window_start(struct ath11k_base *ab,
-        return window_start;
- }
- 
--void ath11k_pci_do_write32(struct ath11k_base *ab, u32 offset, u32 value)
-+static void ath11k_pci_do_write32(struct ath11k_base *ab, u32 offset, u32 value)
- {
-        struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
-        u32 window_start;
-@@ -221,7 +221,7 @@ void ath11k_pci_write32(struct ath11k_base *ab, u32 offset, u32 value)
-                mhi_device_put(ab_pci->mhi_ctrl->mhi_dev);
- }
- 
--u32 ath11k_pci_do_read32(struct ath11k_base *ab, u32 offset)
-+static u32 ath11k_pci_do_read32(struct ath11k_base *ab, u32 offset)
- {
-        struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
-        u32 val, window_start;
-
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210913180902.193874-2-jouni@codeaurora.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> Sorry for the noise on firmware version, I'm still interested in
+> understanding why the command timeouts.
+> 
 
