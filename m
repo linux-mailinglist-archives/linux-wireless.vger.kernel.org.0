@@ -2,44 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0134240C2B3
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 11:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB3040C2C8
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 11:29:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237063AbhIOJZZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Sep 2021 05:25:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45982 "EHLO
+        id S232009AbhIOJbC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Sep 2021 05:31:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237017AbhIOJZX (ORCPT
+        with ESMTP id S229785AbhIOJbB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Sep 2021 05:25:23 -0400
+        Wed, 15 Sep 2021 05:31:01 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F010C061574
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Sep 2021 02:24:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAEA1C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Sep 2021 02:29:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
         Resent-Message-ID:In-Reply-To:References;
-        bh=yZKAHmlzc5glpmkbfzosKlJPfC6IcsAEwJbPMyuFOXg=; t=1631697844; x=1632907444; 
-        b=IlT/A39K7tNCQNL88DxCp39/dBA/wgieqZURrWL/rNvMB1RWRerjcjnAQG+egH5+MDsuN6hqZgo
-        hpj4zKs094GYd5fdl4+3O8URbZBZlX9U37VL8igMnTUYRtQN6gBi/Ksb35In+1s8ameFaiz5bPL8t
-        AtrFBXiaLAPyZKJEN6af9olq0XRwVPH2MHdQzzRMYJgJeq5p078YIv1xUnOTF1uGJUuWoaeO3OVWH
-        3VkeXxTt9kE6p2z942TRBx77UfORfKlIRfQI6a+/lK1iuP/2np4qtMRZk5ZMHdktjtK4lM8Mf3KR7
-        GgqmzuwyVoIxyWTL5c991dRtkDZ2xKLZ8Edw==;
+        bh=Lwbht+9JyHx9MdypVAeL1o5IiJoUcF7weJP3LwqmfQ4=; t=1631698182; x=1632907782; 
+        b=JYHk0op/2A+sj6N8nNSr0qMZGowVl4Domm0HjCJP+WKIVd4OA/79IirKDhr7WDkzlyHV9i9Ctom
+        JL1txWMSrPk66JM1VmkhzjzSXc3Y7mgadKinD/hzYbu7ufIdRW77Ru89TAuFpF2u/VPyEv2Yf0HMf
+        gE63X+eZf+WoOP36LQ0gn9Tx9rzaxVDFyTRRvNv20A3Klb+4rUAaL8NxI7Wi1Zfymef/wrlOCa6XJ
+        rBbI9H2i8fFLrJwZpf6STYBMqgsD/FLTYI7YWxvbcNDtKPN0L0fTNqREEyREhSyYCLun9nMZAVsGK
+        wr9a75AAJGKKHOR3gap1ukWP9GPnwhTEmhxQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95-RC2)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1mQR97-007E6S-AK;
-        Wed, 15 Sep 2021 11:24:01 +0200
+        id 1mQREZ-007ED9-Lf;
+        Wed, 15 Sep 2021 11:29:39 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Dmitry Vyukov <dvyukov@google.com>,
         syzbot+0e964fad69a9c462bc1e@syzkaller.appspotmail.com
-Subject: [PATCH] mac80211-hwsim: fix late beacon hrtimer handling
-Date:   Wed, 15 Sep 2021 11:23:57 +0200
-Message-Id: <20210915112355.c201d329c554.I3f9712009027aa09244b65399bf18bf482a8c4f1@changeid>
+Subject: [PATCH v2] mac80211-hwsim: fix late beacon hrtimer handling
+Date:   Wed, 15 Sep 2021 11:29:37 +0200
+Message-Id: <20210915112936.544f383472eb.I3f9712009027aa09244b65399bf18bf482a8c4f1@changeid>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -79,7 +79,11 @@ picture), i.e. the next interval point after the current time.
 Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Reported-by: Dmitry Vyukov <dvyukov@google.com>
 Reported-by: syzbot+0e964fad69a9c462bc1e@syzkaller.appspotmail.com
+Fixes: 01e59e467ecf ("mac80211_hwsim: hrtimer beacon")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+v2: add fixes tag - it's kind of old and the patch won't apply,
+    but even the original hrtimer code here had this problem
 ---
  drivers/net/wireless/mac80211_hwsim.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
