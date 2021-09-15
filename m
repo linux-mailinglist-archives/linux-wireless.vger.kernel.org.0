@@ -2,126 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F72D40C239
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 10:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21DA540C22D
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 10:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237070AbhIOJAi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Sep 2021 05:00:38 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.23]:19810 "EHLO
-        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236951AbhIOJA1 (ORCPT
+        id S236972AbhIOI7N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Sep 2021 04:59:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:39420 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232676AbhIOI7M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Sep 2021 05:00:27 -0400
-X-Greylist: delayed 726 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 Sep 2021 05:00:27 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1631695621;
-    s=strato-dkim-0002; d=pixelbox.red;
-    h=In-Reply-To:Date:Message-ID:Cc:To:From:References:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=6vvsQu4kQ5uaTSfeuBssEq7ZHpGb8nbZE1QTnVzHEGg=;
-    b=GudV4LrmguDJZRxNH4y+HtXqUgk1+pI6ehtV50Glt3K0gHM2ult8UX2tv9IArUJUii
-    kO3guTttMKhnGFk+kD8UJT4d1ptZeVuXAXLtAye3aUhf0HaBVXT+VHURWUUJx3/KoJ5S
-    xvhueVUM0yg1tpU4Wkb+N0zrYzVKYf/S2TLRVoe18jMsset6i+2Bj/4SoQGniQ9aeroQ
-    iKDNo62C8d6fLPQVub7O0s+41d9ZdSpOUfJbI7XWKDpfhDrYTYA5usQX024vRXlkfexy
-    wH6GQpHnUWtgyL11CIz8gwLqmp4jhycKGdRw5/ByIuhTeObn1d/mk4peAvTOS7Ft0ooV
-    qFaw==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":PGkAZ0+Ia/aHbZh+i/9QzqYeH5BDcTFH98iPnCvV+7P5vDkn1QYVmmALvzR3jit8GeLSAHOfHP4hhbYGc15VV1Pk4ZI9IfywPogd"
-X-RZG-CLASS-ID: mo00
-Received: from 8.8.8.8
-    by smtp.strato.de (RZmta 47.33.1 AUTH)
-    with ESMTPSA id 002a89x8F8l1Z3r
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Wed, 15 Sep 2021 10:47:01 +0200 (CEST)
-Subject: [Question] rtw88: 8822c: RFE type3 support?
-References: <e887433fe7b64e21bc8687b5d13fc180@christ-es.de>
-From:   Peter Fink <pedro@pixelbox.red>
-To:     linux-wireless@vger.kernel.org
-Cc:     tony0620emma@gmail.com
-X-Forwarded-Message-Id: <e887433fe7b64e21bc8687b5d13fc180@christ-es.de>
-Message-ID: <82030168-84a0-453f-f768-dce25a762113@pixelbox.red>
-Date:   Wed, 15 Sep 2021 10:47:01 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        Wed, 15 Sep 2021 04:59:12 -0400
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1631696272;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=oO9OrB1G0+YxTYn/JMvLtBpJYNEF69i2CP96bjIn7ik=;
+        b=vgC8kAEuGghuxRk6oLs9YOA4m+/CPyok0IXqSq/RQwAliqNSFG7N2sfhvA4flz/w+16dXS
+        ze4J6Z3GFT8N2+Poo/b8OnWUIoqAp/7Rj5XlkcSHHqI+mEpxILlT5DUMy4rYiEdxTPzziT
+        YkifNWR599qlh4v77bwqXaUfuGeqjHsAA4d0kOR2HboBNQeFb0PYmWvPyZ4/N55aQ9NF4V
+        X9J0mdaE05krLDUmsixWfqH41ZVe9a0eK+Uo90phs6GArDDPp1+eD8B76DrhrKIEO0xQdy
+        hgHq45m3u9aAIsM7SzSuL8m4PDncS8inBg9BGHgvqqJBFWF8iukLNWgLMHn6Mg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1631696272;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=oO9OrB1G0+YxTYn/JMvLtBpJYNEF69i2CP96bjIn7ik=;
+        b=9kyvvPSSWvn71+QrnJy9ImxxpNW73+vs4dy6JlrZE54kCOPRwX3FE0TRUfD1/VEtvke3SQ
+        HbLcye+tf86ue0BA==
+To:     Dmitry Vyukov <dvyukov@google.com>
+Cc:     Hillf Danton <hdanton@sina.com>,
+        syzbot <syzbot+0e964fad69a9c462bc1e@syzkaller.appspotmail.com>,
+        linux-kernel@vger.kernel.org, paulmck@kernel.org,
+        syzkaller-bugs@googlegroups.com,
+        Peter Zijlstra <peterz@infradead.org>,
+        kasan-dev <kasan-dev@googlegroups.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [syzbot] INFO: rcu detected stall in syscall_exit_to_user_mode
+In-Reply-To: <CACT4Y+Yd3pEfZhRUQS9ymW+sQZ4O58Dz714xSqoZvdKa_9s2oQ@mail.gmail.com>
+References: <000000000000eaacf005ca975d1a@google.com>
+ <20210831074532.2255-1-hdanton@sina.com>
+ <20210914123726.4219-1-hdanton@sina.com> <87v933b3wf.ffs@tglx>
+ <CACT4Y+Yd3pEfZhRUQS9ymW+sQZ4O58Dz714xSqoZvdKa_9s2oQ@mail.gmail.com>
+Date:   Wed, 15 Sep 2021 10:57:52 +0200
+Message-ID: <87mtoeb4hb.ffs@tglx>
 MIME-Version: 1.0
-In-Reply-To: <e887433fe7b64e21bc8687b5d13fc180@christ-es.de>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi all,
+On Tue, Sep 14 2021 at 20:00, Dmitry Vyukov wrote:
+> On Tue, 14 Sept 2021 at 16:58, Thomas Gleixner <tglx@linutronix.de> wrote:
+>> Now what happens when the mac80211 callback rearms the timer so it
+>> expires immediately again:
+>>
+>>         hrtimer_forward(&data->beacon_timer, hrtimer_get_expires(timer),
+>>                         ns_to_ktime(bcn_int * NSEC_PER_USEC));
+>>
+>> bcn is a user space controlled value. Now lets assume that bcn_int is <=1,
+>> which would certainly cause the loop in hrtimer_run_queues() to keeping
+>> looping forever.
+>>
+>> That should be easy to verify by implementing a simple test which
+>> reschedules a hrtimer from the callback with a expiry time close to now.
+>>
+>> Not today as I'm about to head home to fire up the pizza oven.
+>
+> This question definitely shouldn't take priority over the pizza. But I
+> think I saw this "rearm a timer with a user-controlled value without
+> any checks" pattern lots of times and hangs are inherently harder to
+> localize and reproduce. So I wonder if it makes sense to add a debug
+> config that would catch such cases right when the timer is set up
+> (issue a WARNING)?
 
-I would like to have driver support for a RTL8822CU device which uses 
-RFE type 3.
+Yes and no. It's hard to differentiate between a valid short expiry
+rearm and something which is caused by unchecked values. I have some
+ideas but all of them are expensive and therefore probably debug
+only. Which is actually better than nothing :)
 
-I know that the usb devices are not supported by rtw88 drivers right 
-now, but there are repositories out there like 
-https://github.com/ulli-kroll/rtw88-usb 
-<https://github.com/ulli-kroll/rtw88-usb> which could take care of that 
-until the usb devices are also supported upstream.
+> However, for automated testing there is the usual question of
+> balancing between false positives and false negatives. The check
+> should not produce false positives, but at the same time it should
+> catch [almost] all actual stalls so that they don't manifest as
+> duplicate stall reports.
 
-1) What are the RFE types basically about and what does it stand for? 
-What are the differences apart from values in tables?
+Right. The problem could be even there with checked values:
 
-2) Is it worth trying to simply use/convert the corresponding tables 
-from the Realtek driver (doesn't compile) I got from the manufacturer at 
-https://drive.google.com/uc?id=18sNSSjY6rHwPI2MYtXUsnMNDB_ir3Hpy&export=download 
-<https://drive.google.com/uc?id=18sNSSjY6rHwPI2MYtXUsnMNDB_ir3Hpy&export=download>and 
-put them in rtw8822c_table.c? Or would I be wasting my time without 
-access to proper documentation?
+       start_timer(1ms)
+       timer_expires()
+         callback()
+           forward_timer(timer, now, period(1ms));
 
--> I saw that e.g. rtw8822c_agc is not exactly the same in this driver 
-and the kernel code. I can't tell - is this relevant?
+which might be perfectly fine with a production kernel as it leaves
+enough time to make overall progress.
 
--> rtw8822c_bb seems to match array_mp_8822c_phy_reg, but has 
-differences as well.
+Now with a full debug kernel with all bells and whistels that callback
+might just run into this situation:
 
--> rtw8822c_array_mp_cal_init is different, too.
-
--> rtw8822c_bb_pg_type0 is exactly the same as array_mp_8822c_phy_reg_pg
-
--> rtw8822c_dpk_* I didn't check in detail, because it's partly 
-conditional in the Realtek driver
-
--> And I guess array_mp_8822c_txpwr_lmt has to be translated to 
-rtw8822c_txpwr_lmt_type3:
-
-Realtek driver: #ifdef CONFIG_8822C const char 
-*array_mp_8822c_txpwr_lmt[] = {
-"FCC", "2.4G", "20M", "CCK", "1T", "01", "72",
-"ETSI", "2.4G", "20M", "CCK", "1T", "01", "60",
-"MKK", "2.4G", "20M", "CCK", "1T", "01", "68",
-"IC", "2.4G", "20M", "CCK", "1T", "01", "72",
-"KCC", "2.4G", "20M", "CCK", "1T", "01", "76",
-"ACMA", "2.4G", "20M", "CCK", "1T", "01", "60",
-"CHILE", "2.4G", "20M", "CCK", "1T", "01", "72",
-"UKRAINE", "2.4G", "20M", "CCK", "1T", "01", "60",
-"MEXICO", "2.4G", "20M", "CCK", "1T", "01", "72",
-"CN", "2.4G", "20M", "CCK", "1T", "01", "60","FCC", "2.4G", "20M", "CCK", "1T", "02", "72", ... versus 
-rtw88/rtw8822c_table.c: static const struct rtw_txpwr_lmt_cfg_pair rtw8822c_txpwr_lmt_type0[] = {
-	{ 0, 0, 0, 0, 1, 72, },
-	{ 2, 0, 0, 0, 1, 60, },
-	{ 1, 0, 0, 0, 1, 68, },
-	{ 3, 0, 0, 0, 1, 72, },
-...
+      start_timer(1ms) T0
+       timer_expires() T1
+         callback()
+           do_stuff()
+           forward_timer(timer, TNOW, period(1ms));
 
 
-1: Regulatory_domain (0=FCC,...)
-2: Band (0=2.4G, 1=5G)
-3: Band width (0=20MHz,...)
-4: Rate section (0=CCK, OFDM,...)
-5: Channel index (I guess 1=01,...)
-6: Power limit (obvious...)
+T1 - T0   = 1.001ms
+TNOW - T1 = 0.998 ms
 
-My guess is the 1T refer to "antenna 1/transmit".
-In the Realtek driver there is also a "2T", so likely a second antenna/rf output path. How is this accounted for in the rtw88 driver?
-If you are not telling me to stop wasting my time and somebody could 
-hint me in the right direction how to to handle the 1T/2T part of the 
-table, then I'm willing to try my luck...
+So the forward will just rearm it to T0 + 2ms which means it expires in
+1us.
 
-Thanks in advance & best regards, Peter
+> If I understand it correctly the timer is not actually set up as
+> periodic, but rather each callback invocation arms it again. Setting
+> up a timer for 1 ns _once_ (or few times) is probably fine (right?),
+> so the check needs to be somewhat more elaborate and detect "infinite"
+> rearming.
 
+Yes.
+
+That made me actually look at that mac80211_hwsim callback again.
+
+	hrtimer_forward(&data->beacon_timer, hrtimer_get_expires(timer),
+			ns_to_ktime(bcn_int * NSEC_PER_USEC));
+
+So what this does is really wrong because it tries to schedule the timer
+on the theoretical periodic timeline. Which goes really south once the
+timer is late or the callback execution took longer than the
+period. Hypervisors scheduling out a VCPU at the wrong place will do
+that for you nicely.
+
+What this actually should use is hrtimer_forward_now() which prevents
+that problem because it will forward the timer in the periodic schedule
+beyond now. That won't prevent the above corner case, but I doubt you
+can create an endless loop with that scenario as easy as you can with
+trying to catch up on your theoretical timeline by using the previous
+expiry time as a base for the forward. Patch below.
+
+/me goes off to audit hrtimer_forward() usage. Sigh...
+
+After that figure out ways to debug or even prevent this. More sigh...
+
+Thanks,
+
+        tglx
+---
+ drivers/net/wireless/mac80211_hwsim.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -1867,8 +1867,8 @@ mac80211_hwsim_beacon(struct hrtimer *ti
+ 		bcn_int -= data->bcn_delta;
+ 		data->bcn_delta = 0;
+ 	}
+-	hrtimer_forward(&data->beacon_timer, hrtimer_get_expires(timer),
+-			ns_to_ktime(bcn_int * NSEC_PER_USEC));
++	hrtimer_forward_now(&data->beacon_timer,
++			    ns_to_ktime(bcn_int * NSEC_PER_USEC));
+ 	return HRTIMER_RESTART;
+ }
+ 
