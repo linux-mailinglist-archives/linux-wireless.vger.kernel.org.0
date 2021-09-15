@@ -2,115 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 798FE40BD46
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 03:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33E4D40BD9A
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 04:16:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231298AbhIOBpb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Sep 2021 21:45:31 -0400
-Received: from gw2.atmark-techno.com ([35.74.137.57]:48718 "EHLO
-        gw2.atmark-techno.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232875AbhIOBp3 (ORCPT
+        id S230233AbhIOCSC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Sep 2021 22:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33906 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234174AbhIOCSB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Sep 2021 21:45:29 -0400
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-        by gw2.atmark-techno.com (Postfix) with ESMTPS id 11AFF20D74
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Sep 2021 10:44:10 +0900 (JST)
-Received: by mail-pl1-f200.google.com with SMTP id c10-20020a170902aa4a00b0013b8ac279deso192090plr.9
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Sep 2021 18:44:10 -0700 (PDT)
+        Tue, 14 Sep 2021 22:18:01 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802F2C061574;
+        Tue, 14 Sep 2021 19:16:43 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id on12-20020a17090b1d0c00b001997c60aa29so3230277pjb.1;
+        Tue, 14 Sep 2021 19:16:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=+D5A14G2hXb76oWqzjkLZYFPjmPBH8kjDmRtrAsB1DE=;
+        b=DmYGfEbCDoyZqqq0wNDta8dDG7Tq+ObFdfzDwih20rDzPF0g3w61ns1wrTGJoOOAbk
+         GngPqnmGHZZoCS+CTcnxz5Uh6hl4CcVb9U9SnfrXFS/stUxRBKbZlhn+ragKdCz7Ysvn
+         28Eq/FeBW1yh1uUxVQ0MWtWwAJH0LZbpaeJTMKT7iojpZiBMzKqq3Utl62wm/7nnwUKF
+         Rh5wia60/9reVYyIzMdGQZURkXTV24s2Z7TmtmJuWEJEqk8sAuYd8GBx0Mcem74PZonU
+         w1/z6xVxSS8zNmSjxU+fVv4q/qG8mfRBhe8AekC13SGQqTa5ldhEuSsN3T5r2MZ9azBQ
+         q3BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=ikqYOA8GQPCE7Q6OihdZpTAPd4IpVkHTbUht2zv8p34=;
-        b=nPggRcXdjwVQCwuGYQClKY57wwNKLbUXAcxO+Ea2JBML5dNPGiQ8fDPH+FrGouhjic
-         7KTYBmmNtdEsmDD3rTBB0sK062BjuhyigGf2uUl/zfu4mXuZw8laXTTkjZaWdymoQn3f
-         RmeI0cS8U4ZVjiIujTKVwv6qy7fvH8O51L7Lxa0XVK2Hrygp8uMFYPissIcHCTBD8Fhd
-         gPKP9mO0y8sGtIsU+gmZkMj9WmmDGsjfS1CCgL6Ayb8RJDs+tPNF0lXiZi/r2DbmrhC5
-         wtMIOuRHNax1VjPwB344mAIcMXV77P/jFoxAvzFhxpXsLhTGp7dWL58IfXnGg+3zAOeB
-         w3jg==
-X-Gm-Message-State: AOAM5325l0S7/yqh3yepcLZ1sY4DaL+xBfT/x0lJAoUiA9IwrE01XxvH
-        re6V9gDqmuXGEBdtJRWXQs0bxejODShzJ2FWtbLvRft84TRIRB6CeNrLEl0lHDg8J2x9zWjkuGQ
-        vPcSOgPAy/ztK5ZsipwhNFbzjjFBu
-X-Received: by 2002:a63:371c:: with SMTP id e28mr17486851pga.302.1631670249034;
-        Tue, 14 Sep 2021 18:44:09 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxeeyZiOwYhBYtypmYFF//c25IeBM86pjvqLlh7T8Q2BgBl54uVqmUrgfqez04HMUNyhJ4r3g==
-X-Received: by 2002:a63:371c:: with SMTP id e28mr17486837pga.302.1631670248751;
-        Tue, 14 Sep 2021 18:44:08 -0700 (PDT)
-Received: from pc-0115 (76.125.194.35.bc.googleusercontent.com. [35.194.125.76])
-        by smtp.gmail.com with ESMTPSA id k3sm2759637pjg.43.2021.09.14.18.44.08
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 14 Sep 2021 18:44:08 -0700 (PDT)
-Received: from martinet by pc-0115 with local (Exim 4.94.2)
-        (envelope-from <martinet@pc-0115>)
-        id 1mQJy2-000mPg-Un; Wed, 15 Sep 2021 10:44:06 +0900
-Date:   Wed, 15 Sep 2021 10:43:56 +0900
-From:   Dominique MARTINET <dominique.martinet@atmark-techno.com>
-To:     Jonas =?utf-8?Q?Dre=C3=9Fler?= <verdre@v0yd.nl>
-Cc:     Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>
-Subject: Re: [EXT] Re: mwifiex cmd timeout on one pci variant
-Message-ID: <YUFP3InQ+NYLpqRB@atmark-techno.com>
-References: <YTg/f5mHQ6jjHDt6@atmark-techno.com>
- <YThLznrMQ4EYUDEl@atmark-techno.com>
- <AM0PR04MB4529E0C28F43288E189D8F50FCD49@AM0PR04MB4529.eurprd04.prod.outlook.com>
- <YThQiMn7YHzPRwnJ@atmark-techno.com>
- <af5cff45-da9d-26b7-fd00-c4e91344cfc1@v0yd.nl>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=+D5A14G2hXb76oWqzjkLZYFPjmPBH8kjDmRtrAsB1DE=;
+        b=NgC0vpjAnmwvYyXWbJie1QZN2RJQ8cJvGEDsOGYNmv5yiBAmfPlCqEMjWWuw6lnviD
+         r0uMSY2ve5OZPGoXTAeyQkQcm3FOqDxDH97t0YWAwAnGkI7Ez5dlkagaCiJ2uQZscIxQ
+         kiFcUnaWNO7pG9HRt2L7D1yN16POoLMxpOsifppXuuaGTq8eyD+A+U6sl0kiOYIqso6a
+         +zd0fvY0cX+mUARTuJdSKCvP1LNDPsI+ON9IUwmI8GMZd/Ph3ScJmGNlqqY3UFhSMFg8
+         cSD5c9txRKayr5MC63/sfEQdPiBU1J9jnWywM0QexSfqSK6jqZQ4Ys5FFq7+L+onj/6j
+         qQTQ==
+X-Gm-Message-State: AOAM5336rxwegSeH37d2W/w/ghBXD5dJcMcdUBMPExsiv9Pw2IOQtTzE
+        GVgS7kNXlm4gSbUK1NkxiBn70j3kYEZFhUFbNA==
+X-Google-Smtp-Source: ABdhPJx6iyPm7BgmjJuDklZ4hv6kH+sgS2bDlBpm/23orZxhMulxhdui1vSNCwTfAFAwB8L77uuwnmhPNymI7uwRWnI=
+X-Received: by 2002:a17:902:7b84:b0:13b:90a7:e270 with SMTP id
+ w4-20020a1709027b8400b0013b90a7e270mr13016935pll.21.1631672202995; Tue, 14
+ Sep 2021 19:16:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <af5cff45-da9d-26b7-fd00-c4e91344cfc1@v0yd.nl>
+From:   Hao Sun <sunhao.th@gmail.com>
+Date:   Wed, 15 Sep 2021 10:16:32 +0800
+Message-ID: <CACkBjsbqK6wuYH66izxaZj=Knzzn8eKeX4CzeCxQB2DsEufT0g@mail.gmail.com>
+Subject: WARNING in sta_info_insert_rcu
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jonas,
+Hello,
 
-Jonas Dreßler wrote on Tue, Sep 14, 2021 at 12:11:46PM +0200:
-> regarding the firmware version, as you can see in the commit updating the
-> firmware binaries (https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/mrvl/pcie8897_uapsta.bin?id=1a5773c0c89ee44cee51a285d5c7c1063cdb0891),
-> indeed the version numbering differs between the different versions of the
-> card (usb/usb, pcie/usb, pcie/uart(?)).
+When using Healer to fuzz the latest Linux kernel, the following crash
+was triggered.
 
-Right. The update frequency is also quite different, so I'm assuming the
-pcie/uart version I'm using has a lot of vulnerabilities left open as
-well...
+HEAD commit: 6880fa6c5660 Linux 5.15-rc1
+git tree: upstream
+console output:
+https://drive.google.com/file/d/1JAoHNesGqAqeOvuCFuKXI-F9pBTcwDNo/view?usp=sharing
+kernel config: https://drive.google.com/file/d/1rUzyMbe5vcs6khA3tL9EHTLJvsUdWcgB/view?usp=sharing
 
+Sorry, I don't have a reproducer for this crash, hope the symbolized
+report can help.
+If you fix this issue, please add the following tag to the commit:
+Reported-by: Hao Sun <sunhao.th@gmail.com>
 
-> Anyway, if you manage to find newer firmware for any of those versions, I'd
-> be happy if you could point me to that, apparently they just fixed a
-> critical vulnerability in the Windows firmware again (see https://support.microsoft.com/en-us/surface/surface-pro-5th-gen-update-history-5203144a-90c1-63df-ce0b-7ec7ff32ff10),
-> I wouldn't be surprised if our firmware is also affected by that.
-
-That sounds like a safe bet..
-I assume the firmwares are not compatible and we can't just load these?
-
-
-> About the command timeout, I have no idea why the fix isn't working for you,
-> but well, my analysis of the issue is also just a (not exactly educated)
-> guess, so it might as well be a completely different problem and my fix is
-> just a lucky hack.
-
-Right, it really depends on why the firmware crashed, but we have no way
-of investigating that at the moment.
-
-> I'd kinda hope though that my proposed patches finally wake up some people
-> at NXP and motivate them to take a look at that firmware repo again.
-
-If it works well enough it could be a reason not to bother :D
-Alternatively if they can't spend time on it maybe open the firmware
-code (under NDA? my company probably already has one with NXP..), but
-my problem will need more time to reach them through regular channels.
-
--- 
-Dominique
+------------[ cut here ]------------
+WARNING: CPU: 3 PID: 7312 at net/mac80211/sta_info.c:546
+sta_info_insert_check net/mac80211/sta_info.c:545 [inline]
+WARNING: CPU: 3 PID: 7312 at net/mac80211/sta_info.c:546
+sta_info_insert_rcu+0xa3/0x1130 net/mac80211/sta_info.c:723
+Modules linked in:
+CPU: 3 PID: 7312 Comm: kworker/u8:4 Not tainted 5.15.0-rc1 #16
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+Workqueue: phy4 ieee80211_iface_work
+RIP: 0010:sta_info_insert_check net/mac80211/sta_info.c:545 [inline]
+RIP: 0010:sta_info_insert_rcu+0xa3/0x1130 net/mac80211/sta_info.c:723
+Code: 16 00 00 8b 90 a8 16 00 00 44 31 f9 44 31 e2 0f b7 c1 09 c2 74
+0f e8 dc c0 43 fd 41 f6 c4 01 0f 84 b2 00 00 00 e8 cd c0 43 fd <0f> 0b
+41 bc ea ff ff ff e8 c0 c0 43 fd 48 89 de 4c 89 f7 e8 35 fe
+RSP: 0018:ffffc90005b8bc98 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff88810ce08000 RCX: 0000000000000000
+RDX: ffff88810cdda240 RSI: ffffffff83f3d133 RDI: 0000000000000000
+RBP: ffffc90005b8bd18 R08: ffffffff83f3d0d6 R09: 0000000000000000
+R10: ffffc90005b8bc98 R11: 0000000000000003 R12: 00000000000ecf85
+R13: ffff88810ce49708 R14: ffff88810ce48d60 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff88813dd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000001b52c48 CR3: 000000010c909000 CR4: 0000000000750ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ ieee80211_ibss_finish_sta+0xbc/0x170 net/mac80211/ibss.c:585
+ ieee80211_ibss_work+0x13f/0x7d0 net/mac80211/ibss.c:1693
+ ieee80211_iface_work+0x43a/0x5f0 net/mac80211/iface.c:1515
+ process_one_work+0x359/0x850 kernel/workqueue.c:2297
+ worker_thread+0x41/0x4d0 kernel/workqueue.c:2444
+ kthread+0x178/0x1b0 kernel/kthread.c:319
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
