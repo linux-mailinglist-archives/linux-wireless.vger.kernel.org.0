@@ -2,92 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC9B240C2F0
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 11:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77D4040C34B
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 12:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232105AbhIOJue (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Sep 2021 05:50:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51548 "EHLO
+        id S232243AbhIOKIQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Sep 2021 06:08:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232046AbhIOJuc (ORCPT
+        with ESMTP id S232071AbhIOKIP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Sep 2021 05:50:32 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A653FC061574;
-        Wed, 15 Sep 2021 02:49:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=uBSC+UP9PeMZXmiRRocmqxiy4fu/aY9BBVkaqRDY24Q=; b=XkYHuvDygrf6X+nNo7iF5BkJQb
-        gymhJ5QvZuH8mJYuJm5iizimdP0XJl4woKTukUH7EEQ0XkXMwkpQG+n3z+vf6N4QAhAijfeLM8KjU
-        Ii6N2Adtzx6ckx89PMXWTL3zhVPgFnORVzaWa0g+KW/KbybViNK8PBhJOn753y+ZScMQ=;
-Received: from p57a6f913.dip0.t-ipconnect.de ([87.166.249.19] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1mQRXE-0006CG-Lo; Wed, 15 Sep 2021 11:48:56 +0200
-To:     =?UTF-8?Q?Linus_L=c3=bcssing?= <linus.luessing@c0d3.blue>,
+        Wed, 15 Sep 2021 06:08:15 -0400
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050::465:201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95508C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Sep 2021 03:06:56 -0700 (PDT)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4H8bV51YszzQkSX;
+        Wed, 15 Sep 2021 12:06:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Subject: Re: [EXT] Re: mwifiex cmd timeout on one pci variant
+To:     Dominique MARTINET <dominique.martinet@atmark-techno.com>
+Cc:     Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Lee Jones <lee.jones@linaro.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sujith Manoharan <c_manoha@qca.qualcomm.com>,
-        ath9k-devel@qca.qualcomm.com
-Cc:     linux-wireless@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "John W . Linville" <linville@tuxdriver.com>,
-        Felix Fietkau <nbd@openwrt.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>,
-        Sven Eckelmann <sven@narfation.org>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?Q?Linus_L=c3=bcssing?= <ll@simonwunderlich.de>
-References: <20210914192515.9273-1-linus.luessing@c0d3.blue>
- <20210914192515.9273-4-linus.luessing@c0d3.blue>
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH 3/3] ath9k: Fix potential hw interrupt resume during reset
-Message-ID: <255a49c7-d763-50d9-87e0-da22f4a9b053@nbd.name>
-Date:   Wed, 15 Sep 2021 11:48:55 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+        Xinming Hu <huxinming820@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>
+References: <YTg/f5mHQ6jjHDt6@atmark-techno.com>
+ <YThLznrMQ4EYUDEl@atmark-techno.com>
+ <AM0PR04MB4529E0C28F43288E189D8F50FCD49@AM0PR04MB4529.eurprd04.prod.outlook.com>
+ <YThQiMn7YHzPRwnJ@atmark-techno.com>
+ <af5cff45-da9d-26b7-fd00-c4e91344cfc1@v0yd.nl>
+ <YUFP3InQ+NYLpqRB@atmark-techno.com>
+From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
+Message-ID: <9337f5b5-71e4-ce35-b7ce-872fdf3d91a0@v0yd.nl>
+Date:   Wed, 15 Sep 2021 12:06:46 +0200
 MIME-Version: 1.0
-In-Reply-To: <20210914192515.9273-4-linus.luessing@c0d3.blue>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <YUFP3InQ+NYLpqRB@atmark-techno.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 04FBD183C
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 9/15/21 3:43 AM, Dominique MARTINET wrote:
+> Hi Jonas,
+> 
+> Jonas Dreßler wrote on Tue, Sep 14, 2021 at 12:11:46PM +0200:
+>> regarding the firmware version, as you can see in the commit updating the
+>> firmware binaries (https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/mrvl/pcie8897_uapsta.bin?id=1a5773c0c89ee44cee51a285d5c7c1063cdb0891),
+>> indeed the version numbering differs between the different versions of the
+>> card (usb/usb, pcie/usb, pcie/uart(?)).
+> 
+> Right. The update frequency is also quite different, so I'm assuming the
+> pcie/uart version I'm using has a lot of vulnerabilities left open as
+> well...
+> 
+> 
+>> Anyway, if you manage to find newer firmware for any of those versions, I'd
+>> be happy if you could point me to that, apparently they just fixed a
+>> critical vulnerability in the Windows firmware again (see https://support.microsoft.com/en-us/surface/surface-pro-5th-gen-update-history-5203144a-90c1-63df-ce0b-7ec7ff32ff10),
+>> I wouldn't be surprised if our firmware is also affected by that.
+> 
+> That sounds like a safe bet..
+> I assume the firmwares are not compatible and we can't just load these?
 
-On 2021-09-14 21:25, Linus Lüssing wrote:
-> From: Linus Lüssing <ll@simonwunderlich.de>
-> 
-> There is a small risk of the ath9k hw interrupts being reenabled in the
-> following way:
-> 
-> 1) ath_reset_internal()
->    ...
->    -> disable_irq()
->       ...
->       <- returns
-> 
->                       2) ath9k_tasklet()
->                          ...
->                          -> ath9k_hw_resume_interrupts()
->                          ...
-> 
-> 1) ath_reset_internal() continued:
->    -> tasklet_disable(&sc->intr_tq); (= ath9k_tasklet() off)
-> 
-> By first disabling the ath9k interrupt there is a small window
-> afterwards which allows ath9k hw interrupts being reenabled through
-> the ath9k_tasklet() before we disable this tasklet in
-> ath_reset_internal(). Leading to having the ath9k hw interrupts enabled
-> during the reset, which we should avoid.
-I don't see a way in which interrupts can be re-enabled through the
-tasklet. disable_irq disables the entire PCI IRQ (not through ath9k hw
-registers), and they will only be re-enabled by the corresponding
-enable_irq call.
+Yeah, they're quite similar and seem to descend from the same codebase, 
+but the APIs between the kernel driver and the firmware are very different.
 
-- Felix
+> 
+> 
+>> About the command timeout, I have no idea why the fix isn't working for you,
+>> but well, my analysis of the issue is also just a (not exactly educated)
+>> guess, so it might as well be a completely different problem and my fix is
+>> just a lucky hack.
+> 
+> Right, it really depends on why the firmware crashed, but we have no way
+> of investigating that at the moment.
+
+One more thing that comes to mind after reading this discussion 
+https://lore.kernel.org/linux-wireless/eb555433-ade1-e89e-30e4-f4c1c24c25e7@gmail.com/ 
+is that maybe the read-back is really only serving the purpose of a 
+udelay(), so if you want you can try playing around with that a bit 
+instead of the read-back.
+
+> 
+>> I'd kinda hope though that my proposed patches finally wake up some people
+>> at NXP and motivate them to take a look at that firmware repo again.
+> 
+> If it works well enough it could be a reason not to bother :D
+> Alternatively if they can't spend time on it maybe open the firmware
+> code (under NDA? my company probably already has one with NXP..), but
+> my problem will need more time to reach them through regular channels.
+> 
