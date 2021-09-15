@@ -2,82 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 974BD40CCB8
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 20:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9732740CCCC
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 20:48:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230447AbhIOSrc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Sep 2021 14:47:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50044 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229479AbhIOSrc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Sep 2021 14:47:32 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E047F610E8;
-        Wed, 15 Sep 2021 18:46:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631731573;
-        bh=6Jqw5jLRzxyx4PJuZTL0bBKrYEWat+ZKCcmgiUfxurE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=f8WruA9MTg7Da0jXFREjQn0b+1c87NmW904DsjOTU2wpqZFIbBXEBJzGtXQazKB9W
-         WOaR2f1nHCiRI1ES0TEowGIOTguHQ/7lRKHW92Wz2M27TfwaCELUjWMItbLJkoSqgK
-         s5biim1BQjY5HS9d6NWiPCra0UvrElX4ms4pNlBd56gGr8kCLOzdr+fdkq5fpJrIJK
-         VgUo/FDfOc+iMPW5h30B/nRlMhz5PLW5DeHhgj8TyKcb8TjsprxTvyDaOqx06Bu1ZX
-         jmc886lmEV9eoyFe/lh2idFLIxmZLEwbh/7Lc/8s6wl/Ld8plbXvq+O0tMfxE7fYQo
-         4w36pPzB6qE+w==
-Received: by pali.im (Postfix)
-        id 6DB685E1; Wed, 15 Sep 2021 20:46:10 +0200 (CEST)
-Date:   Wed, 15 Sep 2021 20:46:10 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Jonas =?utf-8?Q?Dre=C3=9Fler?= <verdre@v0yd.nl>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH 0/9] mwifiex: Fixes for wifi p2p and AP mode
-Message-ID: <20210915184610.2bdiegl3oolhe7ey@pali>
-References: <20210914195909.36035-1-verdre@v0yd.nl>
+        id S230362AbhIOSuJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Sep 2021 14:50:09 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:33639 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231664AbhIOStT (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 15 Sep 2021 14:49:19 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1631731680; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=f2Eq/1pPqgCPndJdn/eUy4HOGPYck/3mHt4Y/gsvJHw=;
+ b=ncX+qL3Uv7DbRwNVEuAWqQEgjjHuhKFg1u3mhV8OzGzPjMJjKwBdoqE9kSRChdVhVCyXiyrz
+ /OFIrNIK9KrvX7EksstOsqQwpmAZH0C7UJjUBqIJ5gcioRqtw8lyff2rc37Q006qvF6NUbUn
+ jY6EPsaYj2J89oBkhm5IrvEH7ng=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 61423fc6ec62f57c9a2f48e1 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 15 Sep 2021 18:47:34
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id BC4B1C43460; Wed, 15 Sep 2021 18:47:33 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7DF29C4338F;
+        Wed, 15 Sep 2021 18:47:33 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210914195909.36035-1-verdre@v0yd.nl>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 15 Sep 2021 11:47:03 -0700
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v11 0/4] multiple bssid and EMA support in AP mode
+In-Reply-To: <4c5314e8d15565759fec3edf0729e8d4f2e28319.camel@sipsolutions.net>
+References: <20210715070745.5033-1-alokad@codeaurora.org>
+ <849e2cf64fbf774fec9c30003e828aaf2d12a6d7.camel@sipsolutions.net>
+ <8263a758863ac8fcd2d4ae6b36668bc8@codeaurora.org>
+ <4c5314e8d15565759fec3edf0729e8d4f2e28319.camel@sipsolutions.net>
+Message-ID: <27559beca2f618ec1e535214d1d0a004@codeaurora.org>
+X-Sender: alokad@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tuesday 14 September 2021 21:59:00 Jonas Dreßler wrote:
-> A bunch of bugfixes for running mwifiex in the P2P and AP mode, for some prior
-> discussions, see https://github.com/linux-surface/kernel/pull/71.
-
-Changes look good,
-
-Acked-by: Pali Rohár <pali@kernel.org>
-
-> Jonas Dreßler (9):
->   mwifiex: Small cleanup for handling virtual interface type changes
->   mwifiex: Use function to check whether interface type change is
->     allowed
->   mwifiex: Run SET_BSS_MODE when changing from P2P to STATION vif-type
->   mwifiex: Use helper function for counting interface types
->   mwifiex: Update virtual interface counters right after setting
->     bss_type
->   mwifiex: Allow switching interface type from P2P_CLIENT to P2P_GO
->   mwifiex: Handle interface type changes from AP to STATION
->   mwifiex: Properly initialize private structure on interface type
->     changes
->   mwifiex: Fix copy-paste mistake when creating virtual interface
+On 2021-09-15 03:47, Johannes Berg wrote:
+> On Tue, 2021-09-14 at 20:47 -0700, Aloka Dixit wrote:
+>> On 2021-08-17 03:35, Johannes Berg wrote:
+>> > On Thu, 2021-07-15 at 00:07 -0700, Aloka Dixit wrote:
+>> > > This patchset adds support for multiple BSSID and
+>> > > enhanced multi-BSSID advertisements for AP mode.
+>> > > Individual patches describe the changes in this version.
+>> >
+>> > How about adding the trivial advertisement to hwsim so we can have some
+>> > tests in hostapd?
+>> >
+>> > johannes
+>> 
+>> Hi Johannes,
+>> Yes, I plan to add hwsim advertisement separately once kernel
+>> changes are accepted. Will also add hostapd testcases at the
+>> same time.
 > 
->  .../net/wireless/marvell/mwifiex/cfg80211.c   | 370 ++++++++++--------
->  1 file changed, 197 insertions(+), 173 deletions(-)
+> OK, great! But adding it in hwsim is a kernel change, so why not just
+> send that patch together?
 > 
-> -- 
-> 2.31.1
-> 
+> johannes
+
+Hi Johannes,
+
+Trivial advertisement will not work because mac80211_hwsim_beacon_tx() 
+does not handle the EMA case which may have more than one beacons 
+transmitted.
+It will need to be changed to use the newly added 
+ieee80211_beacon_get_template().
+
+Hence I will add a separate change for HWSIM.
+
+Thanks.
