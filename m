@@ -2,331 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3536C40BF6A
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 07:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F72D40C239
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 10:59:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236283AbhIOFyU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Sep 2021 01:54:20 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:40554 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230377AbhIOFyT (ORCPT
+        id S237070AbhIOJAi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Sep 2021 05:00:38 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.23]:19810 "EHLO
+        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236951AbhIOJA1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Sep 2021 01:54:19 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1631685181; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=d77NyEqQgnVrPnK6MiaiKg5SWBvYeQAn1ASPl9GZ7j4=; b=e1sVmfTyCOWpk6IkFF6R+uFoSqcwMx4F18YDCOsZTWZ+1CetgLp7r7pNVjEGgGkSpd6anJl0
- PHgTCediO6NMbwj/JxBbo3y1XX3cbnK2gGm9L57oseNtPkIuCFnfINVQ2CTX/DEy8nx7tf97
- we2nFK4TurXnueB1J5RRvANfbUI=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 61418a30bd6681d8ed9d70e5 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 15 Sep 2021 05:52:48
- GMT
-Sender: subratm=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9259CC4360C; Wed, 15 Sep 2021 05:52:47 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from blr-ubuntu-subratm.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: subratm)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EACC7C43460;
-        Wed, 15 Sep 2021 05:52:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org EACC7C43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Subrat Mishra <subratm@codeaurora.org>
-To:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Cc:     Subrat Mishra <subratm@codeaurora.org>
-Subject: [PATCH v3] cfg80211: AP mode driver offload for FILS association crypto
-Date:   Wed, 15 Sep 2021 11:22:23 +0530
-Message-Id: <1631685143-13530-1-git-send-email-subratm@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Wed, 15 Sep 2021 05:00:27 -0400
+X-Greylist: delayed 726 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 Sep 2021 05:00:27 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1631695621;
+    s=strato-dkim-0002; d=pixelbox.red;
+    h=In-Reply-To:Date:Message-ID:Cc:To:From:References:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=6vvsQu4kQ5uaTSfeuBssEq7ZHpGb8nbZE1QTnVzHEGg=;
+    b=GudV4LrmguDJZRxNH4y+HtXqUgk1+pI6ehtV50Glt3K0gHM2ult8UX2tv9IArUJUii
+    kO3guTttMKhnGFk+kD8UJT4d1ptZeVuXAXLtAye3aUhf0HaBVXT+VHURWUUJx3/KoJ5S
+    xvhueVUM0yg1tpU4Wkb+N0zrYzVKYf/S2TLRVoe18jMsset6i+2Bj/4SoQGniQ9aeroQ
+    iKDNo62C8d6fLPQVub7O0s+41d9ZdSpOUfJbI7XWKDpfhDrYTYA5usQX024vRXlkfexy
+    wH6GQpHnUWtgyL11CIz8gwLqmp4jhycKGdRw5/ByIuhTeObn1d/mk4peAvTOS7Ft0ooV
+    qFaw==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":PGkAZ0+Ia/aHbZh+i/9QzqYeH5BDcTFH98iPnCvV+7P5vDkn1QYVmmALvzR3jit8GeLSAHOfHP4hhbYGc15VV1Pk4ZI9IfywPogd"
+X-RZG-CLASS-ID: mo00
+Received: from 8.8.8.8
+    by smtp.strato.de (RZmta 47.33.1 AUTH)
+    with ESMTPSA id 002a89x8F8l1Z3r
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Wed, 15 Sep 2021 10:47:01 +0200 (CEST)
+Subject: [Question] rtw88: 8822c: RFE type3 support?
+References: <e887433fe7b64e21bc8687b5d13fc180@christ-es.de>
+From:   Peter Fink <pedro@pixelbox.red>
+To:     linux-wireless@vger.kernel.org
+Cc:     tony0620emma@gmail.com
+X-Forwarded-Message-Id: <e887433fe7b64e21bc8687b5d13fc180@christ-es.de>
+Message-ID: <82030168-84a0-453f-f768-dce25a762113@pixelbox.red>
+Date:   Wed, 15 Sep 2021 10:47:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
+MIME-Version: 1.0
+In-Reply-To: <e887433fe7b64e21bc8687b5d13fc180@christ-es.de>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add a driver FILS crypto offload extended capability flag to indicate
-that the driver running in AP mode is capable of handling encryption
-and decryption of (Re)Association request and response frames.
-Add a command to set FILS AAD data to driver.
+Hi all,
 
-This feature is supported on drivers running in AP mode only.
-This extended capability is exchanged with hostapd during cfg80211
-init. If the driver indicates this capability, then before sending the
-Authentication response frame, hostapd sets FILS AAD data to the
-driver. This allows the driver to decrypt (Re)Association Request
-frame and encrypt (Re)Association Response frame. FILS Key derivation
-will still be done in hostapd.
+I would like to have driver support for a RTL8822CU device which uses 
+RFE type 3.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Subrat Mishra <subratm@codeaurora.org>
----
-v3:
-- Fixed kernel test robot failure
+I know that the usb devices are not supported by rtw88 drivers right 
+now, but there are repositories out there like 
+https://github.com/ulli-kroll/rtw88-usb 
+<https://github.com/ulli-kroll/rtw88-usb> which could take care of that 
+until the usb devices are also supported upstream.
 
-v2:
-- NL80211_FLAG_NEED_RTNL flag removed from internal_flags of command NL80211_FLAG_NEED_RTNL
-- Fixed alignment in include/net/cfg80211.h set_fils_aad() comments
-- Fixed alignment in net/wireless/trace.h rdev_set_fils_aad Trace event
+1) What are the RFE types basically about and what does it stand for? 
+What are the differences apart from values in tables?
 
- include/net/cfg80211.h       | 22 ++++++++++++++++++++++
- include/uapi/linux/nl80211.h | 37 +++++++++++++++++++++++++++++++++++++
- net/wireless/nl80211.c       | 30 ++++++++++++++++++++++++++++++
- net/wireless/rdev-ops.h      | 14 ++++++++++++++
- net/wireless/trace.h         | 31 +++++++++++++++++++++++++++++++
- 5 files changed, 134 insertions(+)
+2) Is it worth trying to simply use/convert the corresponding tables 
+from the Realtek driver (doesn't compile) I got from the manufacturer at 
+https://drive.google.com/uc?id=18sNSSjY6rHwPI2MYtXUsnMNDB_ir3Hpy&export=download 
+<https://drive.google.com/uc?id=18sNSSjY6rHwPI2MYtXUsnMNDB_ir3Hpy&export=download>and 
+put them in rtw8822c_table.c? Or would I be wasting my time without 
+access to proper documentation?
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 62dd842..125f563 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -740,6 +740,22 @@ struct cfg80211_tid_config {
- };
- 
- /**
-+ * struct cfg80211_fils_aad - FILS AAD data
-+ * @macaddr: STA MAC address
-+ * @kek: FILS KEK
-+ * @kek_len: FILS KEK length
-+ * @snonce: STA Nonce
-+ * @anonce: AP Nonce
-+ */
-+struct cfg80211_fils_aad {
-+	const u8 *macaddr;
-+	const u8 *kek;
-+	u8 kek_len;
-+	const u8 *snonce;
-+	const u8 *anonce;
-+};
-+
-+/**
-  * cfg80211_get_chandef_type - return old channel type from chandef
-  * @chandef: the channel definition
-  *
-@@ -4018,6 +4034,10 @@ struct mgmt_frame_regs {
-  * @set_sar_specs: Update the SAR (TX power) settings.
-  *
-  * @color_change: Initiate a color change.
-+ *
-+ * @set_fils_aad: Set FILS AAD data to the AP driver so that the driver can use
-+ *	those to decrypt (Re)Association Request and encrypt (Re)Association
-+ *	Response frame.
-  */
- struct cfg80211_ops {
- 	int	(*suspend)(struct wiphy *wiphy, struct cfg80211_wowlan *wow);
-@@ -4348,6 +4368,8 @@ struct cfg80211_ops {
- 	int	(*color_change)(struct wiphy *wiphy,
- 				struct net_device *dev,
- 				struct cfg80211_color_change_settings *params);
-+	int     (*set_fils_aad)(struct wiphy *wiphy, struct net_device *dev,
-+				struct cfg80211_fils_aad *fils_aad);
- };
- 
- /*
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index c2efea9..e89bbf8 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -301,6 +301,29 @@
-  */
- 
- /**
-+ * DOC: FILS shared key crypto offload
-+ *
-+ * This feature is applicable to drivers running in AP mode.
-+ *
-+ * FILS shared key crypto offload can be advertised by drivers by setting
-+ * @NL80211_EXT_FEATURE_FILS_CRYPTO_OFFLOAD flag. The drivers that support
-+ * FILS shared key crypto offload should be able to encrypt and decrypt
-+ * association frames for FILS shared key authentication as per IEEE 802.11ai.
-+ * With this capability, for FILS key derivation, drivers depend on userspace.
-+ *
-+ * After FILS key derivation, userspace shares the FILS AAD details with the
-+ * driver and the driver stores the same to use in decryption of association
-+ * request and in encryption of association response. The below parameters
-+ * should be given to the driver in %NL80211_CMD_SET_FILS_AAD.
-+ *	%NL80211_ATTR_MAC - STA MAC address, used for storing FILS AAD per STA
-+ *	%NL80211_ATTR_FILS_KEK - Used for encryption or decryption
-+ *	%NL80211_ATTR_FILS_NONCES - Used for encryption or decryption
-+ *			(STA Nonce 16 bytes followed by AP Nonce 16 bytes)
-+ *
-+ * Once the association is done, the driver cleans the FILS AAD data.
-+ */
-+
-+/**
-  * enum nl80211_commands - supported nl80211 commands
-  *
-  * @NL80211_CMD_UNSPEC: unspecified command to catch errors
-@@ -1200,6 +1223,12 @@
-  * @NL80211_CMD_COLOR_CHANGE_COMPLETED: Notify userland that the color change
-  *	has completed
-  *
-+ * @NL80211_CMD_SET_FILS_AAD: Set FILS AAD data to the driver using -
-+ *	&NL80211_ATTR_MAC - for STA MAC address
-+ *	&NL80211_ATTR_FILS_KEK - for KEK
-+ *	&NL80211_ATTR_FILS_NONCES - for FILS Nonces
-+ *		(STA Nonce 16 bytes followed by AP Nonce 16 bytes)
-+ *
-  * @NL80211_CMD_MAX: highest used command number
-  * @__NL80211_CMD_AFTER_LAST: internal use
-  */
-@@ -1440,6 +1469,8 @@ enum nl80211_commands {
- 	NL80211_CMD_COLOR_CHANGE_ABORTED,
- 	NL80211_CMD_COLOR_CHANGE_COMPLETED,
- 
-+	NL80211_CMD_SET_FILS_AAD,
-+
- 	/* add new commands above here */
- 
- 	/* used to define NL80211_CMD_MAX below */
-@@ -5995,6 +6026,11 @@ enum nl80211_feature_flags {
-  * @NL80211_EXT_FEATURE_BSS_COLOR: The driver supports BSS color collision
-  *	detection and change announcemnts.
-  *
-+ * @NL80211_EXT_FEATURE_FILS_CRYPTO_OFFLOAD: Driver running in AP mode supports
-+ *	FILS encryption and decryption for (Re)Association Request and Response
-+ *	frames. Userspace has to share FILS AAD details to the driver by using
-+ *	@NL80211_CMD_SET_FILS_AAD.
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -6060,6 +6096,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_SECURE_RTT,
- 	NL80211_EXT_FEATURE_PROT_RANGE_NEGO_AND_MEASURE,
- 	NL80211_EXT_FEATURE_BSS_COLOR,
-+	NL80211_EXT_FEATURE_FILS_CRYPTO_OFFLOAD,
- 
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index bf7cd47..761760a 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -14904,6 +14904,29 @@ static int nl80211_color_change(struct sk_buff *skb, struct genl_info *info)
- 	return err;
- }
- 
-+static int nl80211_set_fils_aad(struct sk_buff *skb,
-+				struct genl_info *info)
-+{
-+	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-+	struct net_device *dev = info->user_ptr[1];
-+	struct cfg80211_fils_aad fils_aad = {};
-+	u8 *nonces;
-+
-+	if (!info->attrs[NL80211_ATTR_MAC] ||
-+	    !info->attrs[NL80211_ATTR_FILS_KEK] ||
-+	    !info->attrs[NL80211_ATTR_FILS_NONCES])
-+		return -EINVAL;
-+
-+	fils_aad.macaddr = nla_data(info->attrs[NL80211_ATTR_MAC]);
-+	fils_aad.kek_len = nla_len(info->attrs[NL80211_ATTR_FILS_KEK]);
-+	fils_aad.kek = nla_data(info->attrs[NL80211_ATTR_FILS_KEK]);
-+	nonces = nla_data(info->attrs[NL80211_ATTR_FILS_NONCES]);
-+	fils_aad.snonce = nonces;
-+	fils_aad.anonce = nonces + FILS_NONCE_LEN;
-+
-+	return rdev_set_fils_aad(rdev, dev, &fils_aad);
-+}
-+
- #define NL80211_FLAG_NEED_WIPHY		0x01
- #define NL80211_FLAG_NEED_NETDEV	0x02
- #define NL80211_FLAG_NEED_RTNL		0x04
-@@ -15907,6 +15930,13 @@ static const struct genl_small_ops nl80211_small_ops[] = {
- 		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP |
- 				  NL80211_FLAG_NEED_RTNL,
- 	},
-+	{
-+		.cmd = NL80211_CMD_SET_FILS_AAD,
-+		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit = nl80211_set_fils_aad,
-+		.flags = GENL_UNS_ADMIN_PERM,
-+		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP,
-+	},
- };
- 
- static struct genl_family nl80211_fam __ro_after_init = {
-diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-index ce6bf21..cc1efec 100644
---- a/net/wireless/rdev-ops.h
-+++ b/net/wireless/rdev-ops.h
-@@ -1381,4 +1381,18 @@ static inline int rdev_color_change(struct cfg80211_registered_device *rdev,
- 	return ret;
- }
- 
-+static inline int
-+rdev_set_fils_aad(struct cfg80211_registered_device *rdev,
-+		  struct net_device *dev, struct cfg80211_fils_aad *fils_aad)
-+{
-+	int ret = -EOPNOTSUPP;
-+
-+	trace_rdev_set_fils_aad(&rdev->wiphy, dev, fils_aad);
-+	if (rdev->ops->set_fils_aad)
-+		ret = rdev->ops->set_fils_aad(&rdev->wiphy, dev, fils_aad);
-+	trace_rdev_return_int(&rdev->wiphy, ret);
-+
-+	return ret;
-+}
-+
- #endif /* __CFG80211_RDEV_OPS */
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 19b78d4..88cd694 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -167,6 +167,19 @@
- 			__entry->center_freq1, __entry->freq1_offset,	\
- 			__entry->center_freq2
- 
-+#define FILS_AAD_ASSIGN(fa)                                                  \
-+	do {                                                                 \
-+		if (fa) {                                                    \
-+			ether_addr_copy(__entry->macaddr, fa->macaddr);      \
-+			__entry->kek_len = fa->kek_len;                      \
-+		} else {                                                     \
-+			eth_zero_addr(__entry->macaddr);                     \
-+			__entry->kek_len = 0;                                \
-+		}                                                            \
-+	} while (0)
-+#define FILS_AAD_PR_FMT                                                      \
-+	"macaddr: %pM, kek_len: %d"
-+
- #define SINFO_ENTRY __field(int, generation)	    \
- 		    __field(u32, connected_time)    \
- 		    __field(u32, inactive_time)	    \
-@@ -2614,6 +2627,24 @@ DEFINE_EVENT(wiphy_wdev_cookie_evt, rdev_abort_pmsr,
- 	TP_ARGS(wiphy, wdev, cookie)
- );
- 
-+TRACE_EVENT(rdev_set_fils_aad,
-+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
-+		 struct cfg80211_fils_aad *fils_aad),
-+	TP_ARGS(wiphy, netdev, fils_aad),
-+	TP_STRUCT__entry(WIPHY_ENTRY
-+		NETDEV_ENTRY
-+		__array(u8, macaddr, ETH_ALEN)
-+		__field(u8, kek_len)
-+	),
-+	TP_fast_assign(WIPHY_ASSIGN;
-+		NETDEV_ASSIGN;
-+		FILS_AAD_ASSIGN(fils_aad);
-+	),
-+	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", " FILS_AAD_PR_FMT,
-+		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->macaddr,
-+		  __entry->kek_len)
-+);
-+
- /*************************************************************
-  *	     cfg80211 exported functions traces		     *
-  *************************************************************/
--- 
-2.7.4
+-> I saw that e.g. rtw8822c_agc is not exactly the same in this driver 
+and the kernel code. I can't tell - is this relevant?
+
+-> rtw8822c_bb seems to match array_mp_8822c_phy_reg, but has 
+differences as well.
+
+-> rtw8822c_array_mp_cal_init is different, too.
+
+-> rtw8822c_bb_pg_type0 is exactly the same as array_mp_8822c_phy_reg_pg
+
+-> rtw8822c_dpk_* I didn't check in detail, because it's partly 
+conditional in the Realtek driver
+
+-> And I guess array_mp_8822c_txpwr_lmt has to be translated to 
+rtw8822c_txpwr_lmt_type3:
+
+Realtek driver: #ifdef CONFIG_8822C const char 
+*array_mp_8822c_txpwr_lmt[] = {
+"FCC", "2.4G", "20M", "CCK", "1T", "01", "72",
+"ETSI", "2.4G", "20M", "CCK", "1T", "01", "60",
+"MKK", "2.4G", "20M", "CCK", "1T", "01", "68",
+"IC", "2.4G", "20M", "CCK", "1T", "01", "72",
+"KCC", "2.4G", "20M", "CCK", "1T", "01", "76",
+"ACMA", "2.4G", "20M", "CCK", "1T", "01", "60",
+"CHILE", "2.4G", "20M", "CCK", "1T", "01", "72",
+"UKRAINE", "2.4G", "20M", "CCK", "1T", "01", "60",
+"MEXICO", "2.4G", "20M", "CCK", "1T", "01", "72",
+"CN", "2.4G", "20M", "CCK", "1T", "01", "60","FCC", "2.4G", "20M", "CCK", "1T", "02", "72", ... versus 
+rtw88/rtw8822c_table.c: static const struct rtw_txpwr_lmt_cfg_pair rtw8822c_txpwr_lmt_type0[] = {
+	{ 0, 0, 0, 0, 1, 72, },
+	{ 2, 0, 0, 0, 1, 60, },
+	{ 1, 0, 0, 0, 1, 68, },
+	{ 3, 0, 0, 0, 1, 72, },
+...
+
+
+1: Regulatory_domain (0=FCC,...)
+2: Band (0=2.4G, 1=5G)
+3: Band width (0=20MHz,...)
+4: Rate section (0=CCK, OFDM,...)
+5: Channel index (I guess 1=01,...)
+6: Power limit (obvious...)
+
+My guess is the 1T refer to "antenna 1/transmit".
+In the Realtek driver there is also a "2T", so likely a second antenna/rf output path. How is this accounted for in the rtw88 driver?
+If you are not telling me to stop wasting my time and somebody could 
+hint me in the right direction how to to handle the 1T/2T part of the 
+table, then I'm willing to try my luck...
+
+Thanks in advance & best regards, Peter
 
