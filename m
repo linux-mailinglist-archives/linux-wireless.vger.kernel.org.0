@@ -2,105 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77D4040C34B
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 12:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0B2540C3EB
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 12:46:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232243AbhIOKIQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Sep 2021 06:08:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55698 "EHLO
+        id S232642AbhIOKsR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Sep 2021 06:48:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232071AbhIOKIP (ORCPT
+        with ESMTP id S232291AbhIOKsQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Sep 2021 06:08:15 -0400
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050::465:201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95508C061574
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Sep 2021 03:06:56 -0700 (PDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4H8bV51YszzQkSX;
-        Wed, 15 Sep 2021 12:06:53 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Subject: Re: [EXT] Re: mwifiex cmd timeout on one pci variant
-To:     Dominique MARTINET <dominique.martinet@atmark-techno.com>
-Cc:     Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>
-References: <YTg/f5mHQ6jjHDt6@atmark-techno.com>
- <YThLznrMQ4EYUDEl@atmark-techno.com>
- <AM0PR04MB4529E0C28F43288E189D8F50FCD49@AM0PR04MB4529.eurprd04.prod.outlook.com>
- <YThQiMn7YHzPRwnJ@atmark-techno.com>
- <af5cff45-da9d-26b7-fd00-c4e91344cfc1@v0yd.nl>
- <YUFP3InQ+NYLpqRB@atmark-techno.com>
-From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
-Message-ID: <9337f5b5-71e4-ce35-b7ce-872fdf3d91a0@v0yd.nl>
-Date:   Wed, 15 Sep 2021 12:06:46 +0200
+        Wed, 15 Sep 2021 06:48:16 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14958C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Sep 2021 03:46:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=aQUccrzd3OWRqbsr231nUg88RRWJqwyyQiOH9qmiKTc=;
+        t=1631702818; x=1632912418; b=q4tCM+GuUbwCD/LEGaqYhUPQf0qtgDWODQfBmbIeZTlEBUF
+        BBPS/lGpmoQYpifyrN2zTfCsLb3Vrh5U7OWpHgict07UbglWGR+5Z592zF9OV2r6ZNR9PgD5FyubG
+        alMCjmIqzKlyTw+uMJZa9Vk3JV4dYP/aa68VbE63zxm54/awk/tVG1VGON5krcfKc3/ceLZvORQgz
+        o0djzRD42AvJSc1v1cRJNieyf8tRpEhrN+KJPfDNg5d4rbFNo8Oo5rEJRpNAi52XZgN4ZRfp5lKEi
+        sonVOCFa+dfi16VG939IlJJLphELNMC+MR8JfmQw7uIlstgMtNV5F3qONsCwgoUA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mQSRL-007G44-P2;
+        Wed, 15 Sep 2021 12:46:55 +0200
+Message-ID: <9d1465d5756c81e3ac1fa6e2f0c761036b9d9edf.camel@sipsolutions.net>
+Subject: Re: [PATCH v11 1/4] nl80211: MBSSID and EMA support in AP mode
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aloka Dixit <alokad@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed, 15 Sep 2021 12:46:54 +0200
+In-Reply-To: <a1d3ea130c11902bd772535eadd0ef47@codeaurora.org>
+References: <20210715070745.5033-1-alokad@codeaurora.org>
+         <20210715070745.5033-2-alokad@codeaurora.org>
+         <46cbed48d41a7200cec3d7428abe7bc6746e14fe.camel@sipsolutions.net>
+         <a1d3ea130c11902bd772535eadd0ef47@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-In-Reply-To: <YUFP3InQ+NYLpqRB@atmark-techno.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 04FBD183C
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/15/21 3:43 AM, Dominique MARTINET wrote:
-> Hi Jonas,
+On Tue, 2021-09-14 at 21:00 -0700, Aloka Dixit wrote:
+> > 
+> > > +	if (tb[NL80211_MBSSID_CONFIG_ATTR_TRANSMITTING_IFINDEX]) {
+> > > +		tx_ifindex =
+> > > +			nla_get_u32(tb[NL80211_MBSSID_CONFIG_ATTR_TRANSMITTING_IFINDEX]);
+> > > +
+> > > +		if (!config->index && tx_ifindex != dev->ifindex)
+> > > +			return -EINVAL;
+> > > +
+> > > +		tx_dev = __dev_get_by_index(wiphy_net(wiphy), tx_ifindex);
+> > 
+> > Here you try to look up the other transmitting device, and use
+> > __dev_get_by_index() for that - but we don't hold any relevant lock
+> > here!
+> > 
+> > This is (only) called from nl80211_start_ap(), which doesn't hold the
+> > RTNL since commit a05829a7222e ("cfg80211: avoid holding the RTNL when
+> > calling the driver"):
+> > 
+> >         {
+> >                 .cmd = NL80211_CMD_START_AP,
+> >                 .validate = GENL_DONT_VALIDATE_STRICT | 
+> > GENL_DONT_VALIDATE_DUMP,
+> >                 .flags = GENL_UNS_ADMIN_PERM,
+> >                 .doit = nl80211_start_ap,
+> > -               .internal_flags = NL80211_FLAG_NEED_NETDEV_UP |
+> > -                                 NL80211_FLAG_NEED_RTNL,
+> > +               .internal_flags = NL80211_FLAG_NEED_NETDEV_UP,
+> >         },
+> > 
+> > 
+> > I'd fix this, but it's not really trivial - we'd need to use
+> > dev_get_by_index() and ensure we dev_put() appropriately, but *only* if
+> > it's different from the original dev ... could probably do that in this
+> > function.
+> > 
+> > All told though this doesn't make me really very confident you tested
+> > this recently, seems like something would've complained here?
+> > 
 > 
-> Jonas Dreßler wrote on Tue, Sep 14, 2021 at 12:11:46PM +0200:
->> regarding the firmware version, as you can see in the commit updating the
->> firmware binaries (https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/mrvl/pcie8897_uapsta.bin?id=1a5773c0c89ee44cee51a285d5c7c1063cdb0891),
->> indeed the version numbering differs between the different versions of the
->> card (usb/usb, pcie/usb, pcie/uart(?)).
+> I tested a flavored version, testing without that this time.
 > 
-> Right. The update frequency is also quite different, so I'm assuming the
-> pcie/uart version I'm using has a lot of vulnerabilities left open as
-> well...
+> Other instances of calls to __dev_get_by_index() which don't already 
+> hold
+> RTNL explicitly call rtnl_lock()/unlock().
 > 
+> Is it okay to do same here?
 > 
->> Anyway, if you manage to find newer firmware for any of those versions, I'd
->> be happy if you could point me to that, apparently they just fixed a
->> critical vulnerability in the Windows firmware again (see https://support.microsoft.com/en-us/surface/surface-pro-5th-gen-update-history-5203144a-90c1-63df-ce0b-7ec7ff32ff10),
->> I wouldn't be surprised if our firmware is also affected by that.
-> 
-> That sounds like a safe bet..
-> I assume the firmwares are not compatible and we can't just load these?
+I don't think so, we're holding other locks, so that would create an
+ABBA deadlock - sometimes we do take RTNL->wiphy_mutex, but here you'd
+end up doing the opposite.
 
-Yeah, they're quite similar and seem to descend from the same codebase, 
-but the APIs between the kernel driver and the firmware are very different.
+But why not just use dev_get_by_index()?
 
-> 
-> 
->> About the command timeout, I have no idea why the fix isn't working for you,
->> but well, my analysis of the issue is also just a (not exactly educated)
->> guess, so it might as well be a completely different problem and my fix is
->> just a lucky hack.
-> 
-> Right, it really depends on why the firmware crashed, but we have no way
-> of investigating that at the moment.
+> Regarding the reference, I will call dev_hold() before assigning the 
+> value
+> to 'tx_dev' pointer if different than the current net_device,
+> and dev_put() after the processing is done.
 
-One more thing that comes to mind after reading this discussion 
-https://lore.kernel.org/linux-wireless/eb555433-ade1-e89e-30e4-f4c1c24c25e7@gmail.com/ 
-is that maybe the read-back is really only serving the purpose of a 
-udelay(), so if you want you can try playing around with that a bit 
-instead of the read-back.
+Then you also don't need dev_hold(), since that's implied by
+dev_get_by_index()?
 
-> 
->> I'd kinda hope though that my proposed patches finally wake up some people
->> at NXP and motivate them to take a look at that firmware repo again.
-> 
-> If it works well enough it could be a reason not to bother :D
-> Alternatively if they can't spend time on it maybe open the firmware
-> code (under NDA? my company probably already has one with NXP..), but
-> my problem will need more time to reach them through regular channels.
-> 
+An example in nl80211 would be get_vlan().
+
+johannes
+
