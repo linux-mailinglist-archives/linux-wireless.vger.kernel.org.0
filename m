@@ -2,108 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33E4D40BD9A
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 04:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23CC840BE6E
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Sep 2021 05:47:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230233AbhIOCSC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Sep 2021 22:18:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33906 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234174AbhIOCSB (ORCPT
+        id S234150AbhIODtG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Sep 2021 23:49:06 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:59311 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232517AbhIODtG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Sep 2021 22:18:01 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802F2C061574;
-        Tue, 14 Sep 2021 19:16:43 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id on12-20020a17090b1d0c00b001997c60aa29so3230277pjb.1;
-        Tue, 14 Sep 2021 19:16:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=+D5A14G2hXb76oWqzjkLZYFPjmPBH8kjDmRtrAsB1DE=;
-        b=DmYGfEbCDoyZqqq0wNDta8dDG7Tq+ObFdfzDwih20rDzPF0g3w61ns1wrTGJoOOAbk
-         GngPqnmGHZZoCS+CTcnxz5Uh6hl4CcVb9U9SnfrXFS/stUxRBKbZlhn+ragKdCz7Ysvn
-         28Eq/FeBW1yh1uUxVQ0MWtWwAJH0LZbpaeJTMKT7iojpZiBMzKqq3Utl62wm/7nnwUKF
-         Rh5wia60/9reVYyIzMdGQZURkXTV24s2Z7TmtmJuWEJEqk8sAuYd8GBx0Mcem74PZonU
-         w1/z6xVxSS8zNmSjxU+fVv4q/qG8mfRBhe8AekC13SGQqTa5ldhEuSsN3T5r2MZ9azBQ
-         q3BA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=+D5A14G2hXb76oWqzjkLZYFPjmPBH8kjDmRtrAsB1DE=;
-        b=NgC0vpjAnmwvYyXWbJie1QZN2RJQ8cJvGEDsOGYNmv5yiBAmfPlCqEMjWWuw6lnviD
-         r0uMSY2ve5OZPGoXTAeyQkQcm3FOqDxDH97t0YWAwAnGkI7Ez5dlkagaCiJ2uQZscIxQ
-         kiFcUnaWNO7pG9HRt2L7D1yN16POoLMxpOsifppXuuaGTq8eyD+A+U6sl0kiOYIqso6a
-         +zd0fvY0cX+mUARTuJdSKCvP1LNDPsI+ON9IUwmI8GMZd/Ph3ScJmGNlqqY3UFhSMFg8
-         cSD5c9txRKayr5MC63/sfEQdPiBU1J9jnWywM0QexSfqSK6jqZQ4Ys5FFq7+L+onj/6j
-         qQTQ==
-X-Gm-Message-State: AOAM5336rxwegSeH37d2W/w/ghBXD5dJcMcdUBMPExsiv9Pw2IOQtTzE
-        GVgS7kNXlm4gSbUK1NkxiBn70j3kYEZFhUFbNA==
-X-Google-Smtp-Source: ABdhPJx6iyPm7BgmjJuDklZ4hv6kH+sgS2bDlBpm/23orZxhMulxhdui1vSNCwTfAFAwB8L77uuwnmhPNymI7uwRWnI=
-X-Received: by 2002:a17:902:7b84:b0:13b:90a7:e270 with SMTP id
- w4-20020a1709027b8400b0013b90a7e270mr13016935pll.21.1631672202995; Tue, 14
- Sep 2021 19:16:42 -0700 (PDT)
+        Tue, 14 Sep 2021 23:49:06 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1631677668; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=oqHO6JlbOAOXTUPmmHQQGEh95mrZbQ3CcN3icP5T8lY=;
+ b=cpnSg62se9U3YVKFf0NHKYwBsX1kNXxSrwMKQKK069zzsFPu9dsvpKyWLZGYeDkvrGXiyzub
+ nIqtBEJkXSP76WKdcJYdQIS1iOypq6aeocwws64nSfHYbAcGeb6QtRVe55s3Bde31rUsmB7+
+ vdbNFoSwkucQWYkp3+iKH+ozykg=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 61416ce3bd6681d8ed4ba0a5 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 15 Sep 2021 03:47:47
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 3A11AC4360C; Wed, 15 Sep 2021 03:47:47 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 164FCC4338F;
+        Wed, 15 Sep 2021 03:47:46 +0000 (UTC)
 MIME-Version: 1.0
-From:   Hao Sun <sunhao.th@gmail.com>
-Date:   Wed, 15 Sep 2021 10:16:32 +0800
-Message-ID: <CACkBjsbqK6wuYH66izxaZj=Knzzn8eKeX4CzeCxQB2DsEufT0g@mail.gmail.com>
-Subject: WARNING in sta_info_insert_rcu
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 14 Sep 2021 20:47:15 -0700
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v11 0/4] multiple bssid and EMA support in AP mode
+In-Reply-To: <849e2cf64fbf774fec9c30003e828aaf2d12a6d7.camel@sipsolutions.net>
+References: <20210715070745.5033-1-alokad@codeaurora.org>
+ <849e2cf64fbf774fec9c30003e828aaf2d12a6d7.camel@sipsolutions.net>
+Message-ID: <8263a758863ac8fcd2d4ae6b36668bc8@codeaurora.org>
+X-Sender: alokad@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On 2021-08-17 03:35, Johannes Berg wrote:
+> On Thu, 2021-07-15 at 00:07 -0700, Aloka Dixit wrote:
+>> This patchset adds support for multiple BSSID and
+>> enhanced multi-BSSID advertisements for AP mode.
+>> Individual patches describe the changes in this version.
+> 
+> How about adding the trivial advertisement to hwsim so we can have some
+> tests in hostapd?
+> 
+> johannes
 
-When using Healer to fuzz the latest Linux kernel, the following crash
-was triggered.
-
-HEAD commit: 6880fa6c5660 Linux 5.15-rc1
-git tree: upstream
-console output:
-https://drive.google.com/file/d/1JAoHNesGqAqeOvuCFuKXI-F9pBTcwDNo/view?usp=sharing
-kernel config: https://drive.google.com/file/d/1rUzyMbe5vcs6khA3tL9EHTLJvsUdWcgB/view?usp=sharing
-
-Sorry, I don't have a reproducer for this crash, hope the symbolized
-report can help.
-If you fix this issue, please add the following tag to the commit:
-Reported-by: Hao Sun <sunhao.th@gmail.com>
-
-------------[ cut here ]------------
-WARNING: CPU: 3 PID: 7312 at net/mac80211/sta_info.c:546
-sta_info_insert_check net/mac80211/sta_info.c:545 [inline]
-WARNING: CPU: 3 PID: 7312 at net/mac80211/sta_info.c:546
-sta_info_insert_rcu+0xa3/0x1130 net/mac80211/sta_info.c:723
-Modules linked in:
-CPU: 3 PID: 7312 Comm: kworker/u8:4 Not tainted 5.15.0-rc1 #16
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
-Workqueue: phy4 ieee80211_iface_work
-RIP: 0010:sta_info_insert_check net/mac80211/sta_info.c:545 [inline]
-RIP: 0010:sta_info_insert_rcu+0xa3/0x1130 net/mac80211/sta_info.c:723
-Code: 16 00 00 8b 90 a8 16 00 00 44 31 f9 44 31 e2 0f b7 c1 09 c2 74
-0f e8 dc c0 43 fd 41 f6 c4 01 0f 84 b2 00 00 00 e8 cd c0 43 fd <0f> 0b
-41 bc ea ff ff ff e8 c0 c0 43 fd 48 89 de 4c 89 f7 e8 35 fe
-RSP: 0018:ffffc90005b8bc98 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff88810ce08000 RCX: 0000000000000000
-RDX: ffff88810cdda240 RSI: ffffffff83f3d133 RDI: 0000000000000000
-RBP: ffffc90005b8bd18 R08: ffffffff83f3d0d6 R09: 0000000000000000
-R10: ffffc90005b8bc98 R11: 0000000000000003 R12: 00000000000ecf85
-R13: ffff88810ce49708 R14: ffff88810ce48d60 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff88813dd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000001b52c48 CR3: 000000010c909000 CR4: 0000000000750ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- ieee80211_ibss_finish_sta+0xbc/0x170 net/mac80211/ibss.c:585
- ieee80211_ibss_work+0x13f/0x7d0 net/mac80211/ibss.c:1693
- ieee80211_iface_work+0x43a/0x5f0 net/mac80211/iface.c:1515
- process_one_work+0x359/0x850 kernel/workqueue.c:2297
- worker_thread+0x41/0x4d0 kernel/workqueue.c:2444
- kthread+0x178/0x1b0 kernel/kthread.c:319
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
+Hi Johannes,
+Yes, I plan to add hwsim advertisement separately once kernel
+changes are accepted. Will also add hostapd testcases at the
+same time.
+Thanks.
