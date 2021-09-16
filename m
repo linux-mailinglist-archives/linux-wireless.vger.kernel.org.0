@@ -2,101 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00B9840D1C6
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Sep 2021 04:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D096440D2A0
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Sep 2021 06:40:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233932AbhIPC4J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Sep 2021 22:56:09 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:13413 "EHLO
+        id S234248AbhIPElY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Sep 2021 00:41:24 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:24870 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233847AbhIPC4I (ORCPT
+        with ESMTP id S231951AbhIPElW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Sep 2021 22:56:08 -0400
+        Thu, 16 Sep 2021 00:41:22 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1631760889; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: To: From: Sender;
- bh=15fdQX6zT2tntxoGP0v27aQrV2KORJqVa7s6QF1ywf0=; b=oUAs2BjktHlxiNztV7+0BELOIHAc9Grxtk6sCxjbfMfSaEni3H30iV+gYp2uoJlXNhInhW6L
- 3bMtolX0ODjftkQ8JwKi8PilGCfPyU8XEmgOsu1t5hmL5NMXYMRVG51voQExh1VMwTwi86n7
- 0b6x7bEsg8XeOFEFVDV8uCIRpUA=
+ s=smtp; t=1631767202; h=Content-Type: MIME-Version: Message-ID: Date:
+ References: In-Reply-To: Subject: Cc: To: From: Sender;
+ bh=/+s/jscahNm5opYfahNTF4pek+pW4Sb5V6rCSNLcwfc=; b=lp3Zzhf64j3pLRlcUo4xlT9QY2zyIRV0V7fJZ2/8U7qLcaASUyk7mgLKitiX3CeqAfqbL92k
+ oZBW83Jo/KoMoNhocRKdGe07kBFVq9rbrlJI0GKiGWYaKDtZvpWln+OHD4EUhexX+8d0U8Qv
+ EU1TAs9+fm/DVyUZHAol8j1NuuA=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 6142b1f8b585cc7d24eb0d34 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 16 Sep 2021 02:54:48
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 6142ca8e507800c880a4bef3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 16 Sep 2021 04:39:42
  GMT
-Sender: alokad=codeaurora.org@mg.codeaurora.org
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 450E1C4360D; Thu, 16 Sep 2021 02:54:48 +0000 (UTC)
+        id 33B47C43619; Thu, 16 Sep 2021 04:39:41 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
         autolearn=no autolearn_force=no version=3.4.0
-Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D1BE1C43617;
-        Thu, 16 Sep 2021 02:54:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org D1BE1C43617
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id ABD35C4338F;
+        Thu, 16 Sep 2021 04:39:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org ABD35C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: [PATCH v12 4/4] mac80211: MBSSID channel switch
-Date:   Wed, 15 Sep 2021 19:54:37 -0700
-Message-Id: <20210916025437.29138-5-alokad@codeaurora.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210916025437.29138-1-alokad@codeaurora.org>
-References: <20210916025437.29138-1-alokad@codeaurora.org>
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Marek Vasut <marex@denx.de>
+Cc:     netdev@vger.kernel.org,
+        Amitkumar Karwar <amit.karwar@redpinesignals.com>,
+        Angus Ainslie <angus@akkea.ca>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Karun Eagalapati <karun256@gmail.com>,
+        Martin Fuzzey <martin.fuzzey@flowbird.group>,
+        Martin Kepplinger <martink@posteo.de>,
+        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        Siva Rebbagondla <siva8118@gmail.com>, stable@vger.kernel.org,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] rsi: Fix module dev_oper_mode parameter description
+In-Reply-To: <20210915080841.73938-1-marex@denx.de> (Marek Vasut's message of
+        "Wed, 15 Sep 2021 10:08:41 +0200")
+References: <20210915080841.73938-1-marex@denx.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Thu, 16 Sep 2021 07:39:33 +0300
+Message-ID: <87fsu516d6.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: John Crispin <john@phrozen.org>
++ linux-wireless
 
-Trigger ieee80211_csa_finish() on the non-transmitting interfaces
-when channel switch concludes on the transmitting interface.
+Marek Vasut <marex@denx.de> writes:
 
-Signed-off-by: John Crispin <john@phrozen.org>
-Co-developed-by: Aloka Dixit <alokad@codeaurora.org>
-Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
----
-v12: No changes.
+> The module parameters are missing dev_oper_mode 12, BT classic alone,
+> add it. Moreover, the parameters encode newlines, which ends up being
+> printed malformed e.g. by modinfo, so fix that too.
+>
+> However, the module parameter string is duplicated in both USB and SDIO
+> modules and the dev_oper_mode mode enumeration in those module parameters
+> is a duplicate of macros used by the driver. Furthermore, the enumeration
+> is confusing.
+>
+> So, deduplicate the module parameter string and use __stringify() to
+> encode the correct mode enumeration values into the module parameter
+> string. Finally, replace 'Wi-Fi' with 'Wi-Fi alone' and 'BT' with
+> 'BT classic alone' to clarify what those modes really mean.
+>
+> Fixes: 898b255339310 ("rsi: add module parameter operating mode")
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> Cc: Amitkumar Karwar <amit.karwar@redpinesignals.com>
+> Cc: Angus Ainslie <angus@akkea.ca>
+> Cc: David S. Miller <davem@davemloft.net>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: Karun Eagalapati <karun256@gmail.com>
+> Cc: Martin Fuzzey <martin.fuzzey@flowbird.group>
+> Cc: Martin Kepplinger <martink@posteo.de>
+> Cc: Prameela Rani Garnepudi <prameela.j04cs@gmail.com>
+> Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+> Cc: Siva Rebbagondla <siva8118@gmail.com>
+> To: netdev@vger.kernel.org
+> Cc: <stable@vger.kernel.org> # 4.17+
+> ---
+>  drivers/net/wireless/rsi/rsi_91x_sdio.c |  5 +----
+>  drivers/net/wireless/rsi/rsi_91x_usb.c  |  5 +----
+>  drivers/net/wireless/rsi/rsi_hal.h      | 11 +++++++++++
+>  3 files changed, 13 insertions(+), 8 deletions(-)
 
- net/mac80211/cfg.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+linux-wireless is not included so patchwork won't see this patch. Please
+resubmit (as v2) and include linux-wireless, more info in the wiki
+below.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 23fa0bb49be2..88fbed46e1bc 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3271,8 +3271,19 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif)
- {
- 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
- 
--	ieee80211_queue_work(&sdata->local->hw,
--			     &sdata->csa_finalize_work);
-+	if (vif->mbssid_tx_vif == vif) {
-+		struct ieee80211_sub_if_data *child, *tmp;
-+
-+		list_for_each_entry_safe(child, tmp,
-+					 &sdata->local->interfaces, list)
-+			if (child != sdata && child->vif.mbssid_tx_vif == vif &&
-+			    ieee80211_sdata_running(child)) {
-+				ieee80211_queue_work(&child->local->hw,
-+						     &child->csa_finalize_work);
-+			}
-+	}
-+
-+	ieee80211_queue_work(&sdata->local->hw, &sdata->csa_finalize_work);
- }
- EXPORT_SYMBOL(ieee80211_csa_finish);
- 
 -- 
-2.31.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
