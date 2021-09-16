@@ -2,101 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DA0340DDC9
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Sep 2021 17:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50FDD40DEB5
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Sep 2021 17:52:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236853AbhIPPTU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Sep 2021 11:19:20 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:20404 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237298AbhIPPTT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Sep 2021 11:19:19 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1631805479; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=W6szQ/LiyIiaf2JeeBlcAruOxPvIgc68+ew5H7jm+GE=; b=OP0KbVMtBWF/pk2auc0kk/As7qPgNn45+glDq/txAxx7W29yNDRwVI4nZERfKyao/zo8UXdm
- +U3+vo62GzXWAiQVD5IKgi4moslUsinfu3BfW8FP9IponbYMcitOsDx/f4Ci8xz2ipLVrAur
- AWfRibWZWb8PIQdVEYiyvzSN8Ak=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 6143601265c3cc8c6365f455 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 16 Sep 2021 15:17:38
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9E2EFC4361C; Thu, 16 Sep 2021 15:17:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9BCC1C4338F;
-        Thu, 16 Sep 2021 15:17:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 9BCC1C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Len Baker <len.baker@gmx.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] brcmfmac: Replace zero-length array with flexible array member
-References: <20210904092217.2848-1-len.baker@gmx.com>
-        <20210912191536.GB146608@embeddedor>
-Date:   Thu, 16 Sep 2021 18:17:31 +0300
-In-Reply-To: <20210912191536.GB146608@embeddedor> (Gustavo A. R. Silva's
-        message of "Sun, 12 Sep 2021 14:15:36 -0500")
-Message-ID: <87o88sy2gk.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S240352AbhIPPyN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Sep 2021 11:54:13 -0400
+Received: from mx24.baidu.com ([111.206.215.185]:47928 "EHLO baidu.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S240186AbhIPPyK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Sep 2021 11:54:10 -0400
+X-Greylist: delayed 981 seconds by postgrey-1.27 at vger.kernel.org; Thu, 16 Sep 2021 11:54:10 EDT
+Received: from BJHW-Mail-Ex13.internal.baidu.com (unknown [10.127.64.36])
+        by Forcepoint Email with ESMTPS id 5D66053E3965FAC9A189;
+        Thu, 16 Sep 2021 23:36:27 +0800 (CST)
+Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
+ BJHW-Mail-Ex13.internal.baidu.com (10.127.64.36) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.14; Thu, 16 Sep 2021 23:36:27 +0800
+Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.14; Thu, 16 Sep 2021 23:36:26 +0800
+From:   Cai Huoqing <caihuoqing@baidu.com>
+To:     <caihuoqing@baidu.com>
+CC:     Mark Greer <mgreer@animalcreek.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] nfc: trf7970a: Make use of the helper function dev_err_probe()
+Date:   Thu, 16 Sep 2021 23:36:21 +0800
+Message-ID: <20210916153621.16576-1-caihuoqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Originating-IP: [172.31.63.8]
+X-ClientProxiedBy: BC-Mail-Ex09.internal.baidu.com (172.31.51.49) To
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
+X-Baidu-BdMsfe-DateCheck: 1_BJHW-Mail-Ex13_2021-09-16 23:36:27:470
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavoars@kernel.org> writes:
+When possible use dev_err_probe help to properly deal with the
+PROBE_DEFER error, the benefit is that DEFER issue will be logged
+in the devices_deferred debugfs file.
+Using dev_err_probe() can reduce code size, and the error value
+gets printed.
 
-> On Sat, Sep 04, 2021 at 11:22:17AM +0200, Len Baker wrote:
->> There is a regular need in the kernel to provide a way to declare
->> having a dynamically sized set of trailing elements in a structure.
->> Kernel code should always use "flexible array members"[1] for these
->> cases. The older style of one-element or zero-length arrays should
->> no longer be used[2].
->> 
->> Also, make use of the struct_size() helper in devm_kzalloc().
->> 
->> [1] https://en.wikipedia.org/wiki/Flexible_array_member
->> [2] https://www.kernel.org/doc/html/v5.14/process/deprecated.html#zero-length-and-one-element-arrays
->> 
->> Signed-off-by: Len Baker <len.baker@gmx.com>
->
-> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
->
-> I'll take this in my -next tree. :)
+Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+---
+ drivers/nfc/trf7970a.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Why? It should go to wireless-drivers-next.
-
+diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+index 8890fcd59c39..8459a2735f2c 100644
+--- a/drivers/nfc/trf7970a.c
++++ b/drivers/nfc/trf7970a.c
+@@ -2067,8 +2067,8 @@ static int trf7970a_probe(struct spi_device *spi)
+ 
+ 	trf->regulator = devm_regulator_get(&spi->dev, "vin");
+ 	if (IS_ERR(trf->regulator)) {
+-		ret = PTR_ERR(trf->regulator);
+-		dev_err(trf->dev, "Can't get VIN regulator: %d\n", ret);
++		ret = dev_err_probe(trf->dev, PTR_ERR(trf->regulator),
++				    "Can't get VIN regulator\n");
+ 		goto err_destroy_lock;
+ 	}
+ 
+@@ -2084,8 +2084,8 @@ static int trf7970a_probe(struct spi_device *spi)
+ 
+ 	trf->regulator = devm_regulator_get(&spi->dev, "vdd-io");
+ 	if (IS_ERR(trf->regulator)) {
+-		ret = PTR_ERR(trf->regulator);
+-		dev_err(trf->dev, "Can't get VDD_IO regulator: %d\n", ret);
++		ret = dev_err_probe(trf->dev, PTR_ERR(trf->regulator),
++				    "Can't get VDD_IO regulator\n");
+ 		goto err_destroy_lock;
+ 	}
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
