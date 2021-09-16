@@ -2,271 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1078C40DCF5
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Sep 2021 16:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5525940DD10
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Sep 2021 16:43:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236817AbhIPOjl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Sep 2021 10:39:41 -0400
-Received: from mail-bn8nam12on2118.outbound.protection.outlook.com ([40.107.237.118]:34945
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S236323AbhIPOjj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Sep 2021 10:39:39 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JYAtRZcYoTHEmEO6LKuYBWepkTzJxxbi9apBL1wXpbm1uMWu5diL1bzADphIQXEElxESB+VPHNJoSRLZBG/OsoNIewg/ZWs+kB3GpAsSWmGCWyrN7Zkp2G/XOMkfOqjvKtgteLcXmqn/D5Z/YlSDCWxgki7rFQnA/1z5cYP4GRpD91Q40LGi06rG/gq4deNLU6KcQ3gj9PAchP4o6beXDrsk8E5/TPKtvS9PWDP/uCT4r8IU1aDlbBpRdvkYUFSHwzXeyOkL3lKPfAs6J2rHp9oYDxgcqoRq6d8zN4Q6l/6spRMn4okCu2jrUk8HyJM3x9WvVSdNKFouG0tnCm/oGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=I1wj+l/yPoG9lGxH/6T06V/KzZ5nyFB1zLNG9ymiOlU=;
- b=W4K8sVWb3OBKdExA2G+cL3ipXB5zS8URxtr6wKm/kz+2es1fAwWrOvA3/xXqZaE+nL6CCZrqiu9x/PkY9dfJrIxzHIBgRvHpXIfaMYRzfqNmFzB5kGVVrSSOpexjH5Ao4uoIcSOIJacG/n4RhSzCxD/KoXt73y01Dly8iNv7jtQOzdIMntR3OeobxgzY9b13fKmyqwdvaNEpjHShpGpSQfwy9qp+SrL+NIOvk8eU4yNakGGCW5bC7tfXc48itJIjrI9dAC1RfOFDob8ArCc7sYg1dbD3HHZ2CXjiWK51EevrjkFTOBvp42GJjjzBsuWSYOTnGE79mDGQWNuh0ZUsng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windtalker.com; dmarc=pass action=none
- header.from=windtalker.com; dkim=pass header.d=windtalker.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windtalker.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=I1wj+l/yPoG9lGxH/6T06V/KzZ5nyFB1zLNG9ymiOlU=;
- b=GpOugElWOMgG9O2fE+UPOyBYT23gRopVLPr4UmPZ9+CpdWzGeU4tqSz7X6a90fpN3gQmnELLCAVKi7U1/HBvqETWQBd+oZmwWv/Dd1kvpBWPNMnOMjDaQzv47I49B+M+/vkD/Xu2YLLkMzONhZOtKXFtETJ6BhNTsQ4qWafGk2wMdT26QhMDQpkgZbtRyBkd3q2I36xu32eGIBR3eX9ww0KvV0RcIdiimdm+QIWoFoUoUk5UvaWTbUDiHsW2cSfeYlI1twrMoQ5kaAgmzVqSWEJLPDcY96YSiD13nV5sI0LTEzRRcqAE9VTwQgwO6rUZZyZnKzdA2NCeTj9mieLWSQ==
-Received: from SJ0PR17MB4256.namprd17.prod.outlook.com (2603:10b6:a03:297::20)
- by BYAPR17MB2583.namprd17.prod.outlook.com (2603:10b6:a03:81::25) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.14; Thu, 16 Sep
- 2021 14:38:14 +0000
-Received: from SJ0PR17MB4256.namprd17.prod.outlook.com
- ([fe80::99a8:be90:dfa7:5f1f]) by SJ0PR17MB4256.namprd17.prod.outlook.com
- ([fe80::99a8:be90:dfa7:5f1f%6]) with mapi id 15.20.4523.016; Thu, 16 Sep 2021
- 14:38:14 +0000
-From:   Maurice Smulders <Maurice.Smulders@windtalker.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Qualcomm Atheros Ath10k and Ath11k CE Buffer DMA alignment issues on
- Raspberry PI CM4 - Aarch64 architecture
-Thread-Topic: Qualcomm Atheros Ath10k and Ath11k CE Buffer DMA alignment
- issues on Raspberry PI CM4 - Aarch64 architecture
-Thread-Index: AQHXqwh6twey/dzoCkCFLEL2MeOtqg==
-Date:   Thu, 16 Sep 2021 14:38:14 +0000
-Message-ID: <35F57D80-C7F7-47B2-BEC8-533006C72E2A@windtalker.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator: 
-user-agent: Microsoft-MacOutlook/16.53.21091200
-authentication-results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=windtalker.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d8e0d2d2-d483-438d-c56e-08d9791f9d79
-x-ms-traffictypediagnostic: BYAPR17MB2583:
-x-microsoft-antispam-prvs: <BYAPR17MB25837E2F9B63B759569FD6C3E9DC9@BYAPR17MB2583.namprd17.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: dJVX5FprVN38ld5QumM8az9DKLMvUfYp6jyKyi8ofahfpSbBrTlgkHlHdQse/VHo6LOJMUzGGcoBsOUgBcIiieVXb3ZF4zLZZt2mcfv4+Ic1sQ7akggRZTt/k8bdbFEBaGzb9pDq7jlVtYoOEoi6LgfJdjw6PaFCJi4ve4RbWHlumYAljFYtBARvj7Vo6rPgbqU8FfsopVPZFZXzPupv+r9DLNGRUpJ0WHUieLJYhMc/cnXhK4EaUyI/32xMR55REz+hW/Em6f2BHWvkq0E5bzFcOJxd9++0523fj5BmwrE5THTVBlIN4bb189Lc7seapRmfdFYhcj58/yJ5GOyxf2VrjOygCFRTtyDBSXsyXtvDalk7s10VueaVDenldJuLcYXAY7c6HDHAtCqo9qslOxFZCVYYx3DTbxL5+//8MhapvYbqC9lVUQpbHRqe7RYmpNTb8HJJtVOUWWQ2J9mJtF5ukE9vP/9AHsb+nXbyj+Wv5IEkXrGXskG945W3ICnslpQ9IqoFmr5Of99FU2Dhh200glu95+KqZ7K2T4vcTrxH39ugZrdU0I6Ta120DxDGafgGSDlbWDUglbZATIH7IUlNdTQMeIGXe7CRGLGKt152LnqzdeFvES6DU2z59/7B/bUKQwdYt9BJJPlrZnF2LE7ZwbDzvJRQHKY+hzevSYi2unrDvbbxmFJJaKs6e4oRrP43oviGk1O5/Z3sepOIoS9Ra4xZ/Jy4+6qac8Oit9WWtTyzsEFoK55f1o7Kb/GK7cQr0F/x6EwYuzfd+6gmNUhLYQWsp/FDDwTuCj1pfCS4PV9Zz38Al13A4DV8q7L1
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR17MB4256.namprd17.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39830400003)(346002)(136003)(396003)(376002)(366004)(5660300002)(71200400001)(6486002)(6506007)(33656002)(2906002)(6512007)(66616009)(38070700005)(55236004)(91956017)(66476007)(66556008)(86362001)(66446008)(26005)(76116006)(122000001)(99936003)(66946007)(38100700002)(83380400001)(36756003)(8676002)(8936002)(966005)(6916009)(186003)(2616005)(508600001)(316002)(40140700001)(64756008)(45980500001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TWpGUC8xalRtTFYrbFJnUVJWZUo2K0cwQVQ2VzBqQ0JDb0RRZDhnMVpkdkV6?=
- =?utf-8?B?SURsVXR4ZHlqWERRRC9kVHl6OG44cVB2QmJkLzduODk2cm1oeE5uZm45OW91?=
- =?utf-8?B?ZkFNTFRuOHVTWmdPY1lCejFvdm1aNysxRWhHT0J1SzB4SWcyOWROd2pER05q?=
- =?utf-8?B?UEJ5Mm8xb3ZvL1VrOGI1L0QwM2c0dUVXNVYyYkd1VVgydlZtbTdaSHgwb1M1?=
- =?utf-8?B?RjN5bXpadExVcXlkazBJZTZPU0dLVkRqa1JXNHJVUkk3NHBJQmo5Z0E4NFht?=
- =?utf-8?B?eFR2Qmk1ZTZ0K2F5Nk5JTHpwTGJ2SURwSW03K3JzelJqRUdaaldWNkw5TGRK?=
- =?utf-8?B?UTY2WWlxcERFRFQzRFhTQk0vSm4xeHFyQ2ZXYWZIUzlTRk05WlFzNTc2QStC?=
- =?utf-8?B?aWRVZnV6YjgxMWhoK01kZDVCYlFpclFwK1B2enU1RTJCbGRaV0RUM2FSV2Q4?=
- =?utf-8?B?Y2ZCUk52RVJNeTBwbWxNait3N0orMThOZlVveDZtQWl4ZUtiOEpsMWRuY2cr?=
- =?utf-8?B?WXZ5bi85SjBvazg0Wk4zL1Vla0taNVV1YW1qK3BjaWhFT3ZPdWo3RkpqRkQy?=
- =?utf-8?B?MzBrTFNqbHVlR3NQR3NKOEFUd0c3bWJpRG11ZmJjaWZ6a0VvRzNrSjZIT1l4?=
- =?utf-8?B?bWR1S3JaTk42UFRweWN0aTNuR3lGSkRXdjhpc0NuZnRuVzhWVjU2ZVJzVjh6?=
- =?utf-8?B?NE9rL0tmYXB1bFppL1JCc0dMTVVIanNqVDBUSTY0VWswVXNkdDlDVTI4V3BQ?=
- =?utf-8?B?UzROTG9WRVhMWUhPQkN3cXovU3VaZ3p5VXA5ZUpNQThlT3pQV0pOQk5WTkx3?=
- =?utf-8?B?Q3hkYWVLUFJoWEVRY24zRGRFU2FMc3BIVlArMytvYmtIcVFHT0xOOExIeWJS?=
- =?utf-8?B?TFZmYVFBSDB3S0lvaFAzT3ltTVlZVHVvWGU0T2ZDQ1NKcEdtZjZaTENIdWZK?=
- =?utf-8?B?WkpUbU0rZW5RWkJXK3JZdkttOEljcDlNNGtxZ20zSysram5zRE5aS29GSm1Y?=
- =?utf-8?B?RnJqNHl5b252b283RlpaeVE1clVrNldHRFJJMEVRMTlLdGR0aW8rZHptSjJ2?=
- =?utf-8?B?ZGxBcXVuUTZZNzF4SnpkSVJ3UG1SYVRnVm1VcnRhcWVuaFFXcWtuUEZ5b1hs?=
- =?utf-8?B?c2lhL3hLc2luTXQ1bTFyeWIzelVldmZabytwbUdLTHF1dEhYWDVGSmFjdlRI?=
- =?utf-8?B?ZEFuNGZVZkVEUDdGaXdzWjdMMURwak15Nk1VeHBuSW1IRzVpcEtuQ3g3YllJ?=
- =?utf-8?B?MnNDZmVjemFkeU5OVG01dE93U29wREdzWmNKWXNmd1BZQkxqeWlwK0Y2cWUy?=
- =?utf-8?B?bWh2MmpJaSs5VWpXc0ZNL3NJb1QzVGtlOG5uazdhQmVZb1UxTW9LWjJaVmIw?=
- =?utf-8?B?bXprYjZmcUxyOVBtTm1sd2h2cm1SSkpUUTZpdFpRb24vZW1kUXpkbDg3RWdo?=
- =?utf-8?B?aS93OVBYSWpKVndyb0tMbHE4MUlYODd1M1VoREFSMWZGZFJ5MDBWVzJQSHJ6?=
- =?utf-8?B?ZFNOZ0JXYlE1c1l3M1V6d0tWb0IxdVE5WU5YUHMxMTJJUHhGL0Exbmw4QkFx?=
- =?utf-8?B?Y3BYc1JVVVBQa2tQQXhacEhFUlRFWGN0VTRidzZlZ1QrTnNRZ21tS0NEbGZt?=
- =?utf-8?B?RCtaS0d6cXVqMDkzQTlzc3Jjc043OE9jZFJNZjFoUGVFekpBN1NJUlYyUXVU?=
- =?utf-8?B?cnNod2tJOFBqUlp6QnV2azdsdXVVcHFYL2Z1MDBRTVVTRndUL3ozYTB5Zzhl?=
- =?utf-8?Q?exAJN0HWQMNPIq1aLIegS7fOl/JivtjqhgjeIgx?=
-x-ms-exchange-transport-forked: True
-Content-Type: multipart/mixed;
-        boundary="_002_35F57D80C7F747B2BEC8533006C72E2Awindtalkercom_"
+        id S236879AbhIPOoW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Sep 2021 10:44:22 -0400
+Received: from phobos.denx.de ([85.214.62.61]:48444 "EHLO phobos.denx.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238822AbhIPOoV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Sep 2021 10:44:21 -0400
+Received: from tr.lan (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id CE79982F4D;
+        Thu, 16 Sep 2021 16:42:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1631803379;
+        bh=bnMsJPLuWwIRnmw7gfZ0rhRZu+JFrCunlfK7f2oGpH8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mUED4WfwUqKXpis41D9HlgdJqmJsKkV6LoWj17fZxZ/434NSh9Gxpw8426nUNOV11
+         EatYdo6b4yfWzWkxcxfZAMd31+CgWTcXAblAV+O3tbfMgzC/Z7speTMJhI+R9KDTuL
+         5P/QC8r8FZWg3K/69hE5DVuETEjnEgcvRs6AA2JFGEUD/64R8TQOX8FAeuaug8cvR5
+         2hSSEdHby2Q55i9WY5+/t11gDmXxu82AIEByh2l5fY5K5mLnKbOwjsx6AZRutnIQ/D
+         4PnukQ+GnfDcbFZcaoECb9i2LyYB9/RgPBXUM2+CT3N0NYKKSi8opb+1gjAQ3EZRlg
+         cphvtCqlqBTNg==
+From:   Marek Vasut <marex@denx.de>
+To:     linux-wireless@vger.kernel.org
+Cc:     Marek Vasut <marex@denx.de>,
+        Amitkumar Karwar <amit.karwar@redpinesignals.com>,
+        Angus Ainslie <angus@akkea.ca>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Karun Eagalapati <karun256@gmail.com>,
+        Martin Fuzzey <martin.fuzzey@flowbird.group>,
+        Martin Kepplinger <martink@posteo.de>,
+        Prameela Rani Garnepudi <prameela.j04cs@gmail.com>,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        Siva Rebbagondla <siva8118@gmail.com>, netdev@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH v2] rsi: Fix module dev_oper_mode parameter description
+Date:   Thu, 16 Sep 2021 16:42:45 +0200
+Message-Id: <20210916144245.10181-1-marex@denx.de>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-X-OriginatorOrg: windtalker.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB4256.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8e0d2d2-d483-438d-c56e-08d9791f9d79
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2021 14:38:14.0425
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 450cd5d0-8fd6-47a4-9886-31914220621d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +4yhn1c7h6ajOqfqi+b+/1QEXyUldOK/aEn3KR4hEZ+46tSJ5ypMzTEdK0snueiiZm5H6iC/G3K0aBg7nwIo/KWdk4/WA1I7U9sXZpktnd4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR17MB2583
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
+X-Virus-Status: Clean
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---_002_35F57D80C7F747B2BEC8533006C72E2Awindtalkercom_
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <37660A2628B2D047815806F205B2CDC4@namprd17.prod.outlook.com>
-Content-Transfer-Encoding: base64
+The module parameters are missing dev_oper_mode 12, BT classic alone,
+add it. Moreover, the parameters encode newlines, which ends up being
+printed malformed e.g. by modinfo, so fix that too.
 
-SSBhbSB0cnlpbmcgdG8gdXNlIHRoZSBRQ0E2MTc0QSBhbmQgdGhlIFFDQTYzOTAgb24gYSBjdXN0
-b20gYm9hcmQgdXNpbmcgYSBQQ0llIHN3aXRjaCAtIGJ1dCB0aGF0IGRvZXNuJ3QgbWF0dGVyIC0g
-SXQgc3RpbGwgZmFpbHMgdy9vIHRoZSBzd2l0Y2g6DQoNCmxzcGNpDQowMDowMC4wIFBDSSBicmlk
-Z2U6IEJyb2FkY29tIEluYy4gYW5kIHN1YnNpZGlhcmllcyBCQ00yNzExIFBDSWUgQnJpZGdlIChy
-ZXYgMjApDQowMTowMC4wIFBDSSBicmlkZ2U6IFBlcmljb20gU2VtaWNvbmR1Y3RvciBQSTdDOVgy
-RzYwOEdQIFBDSWUyIDYtUG9ydC84LUxhbmUgUGFja2V0IFN3aXRjaA0KMDI6MDEuMCBQQ0kgYnJp
-ZGdlOiBQZXJpY29tIFNlbWljb25kdWN0b3IgUEk3QzlYMkc2MDhHUCBQQ0llMiA2LVBvcnQvOC1M
-YW5lIFBhY2tldCBTd2l0Y2gNCjAyOjAyLjAgUENJIGJyaWRnZTogUGVyaWNvbSBTZW1pY29uZHVj
-dG9yIFBJN0M5WDJHNjA4R1AgUENJZTIgNi1Qb3J0LzgtTGFuZSBQYWNrZXQgU3dpdGNoDQowMjow
-My4wIFBDSSBicmlkZ2U6IFBlcmljb20gU2VtaWNvbmR1Y3RvciBQSTdDOVgyRzYwOEdQIFBDSWUy
-IDYtUG9ydC84LUxhbmUgUGFja2V0IFN3aXRjaA0KMDI6MDQuMCBQQ0kgYnJpZGdlOiBQZXJpY29t
-IFNlbWljb25kdWN0b3IgUEk3QzlYMkc2MDhHUCBQQ0llMiA2LVBvcnQvOC1MYW5lIFBhY2tldCBT
-d2l0Y2gNCjAyOjA1LjAgUENJIGJyaWRnZTogUGVyaWNvbSBTZW1pY29uZHVjdG9yIFBJN0M5WDJH
-NjA4R1AgUENJZTIgNi1Qb3J0LzgtTGFuZSBQYWNrZXQgU3dpdGNoDQowNTowMC4wIFVuYXNzaWdu
-ZWQgY2xhc3MgW2ZmMDBdOiBRdWFsY29tbSBRQ0E2MzkwIFdpcmVsZXNzIE5ldHdvcmsgQWRhcHRl
-ciBbQVg1MDAtREJTICgyeDIpXQ0KMDY6MDAuMCBOZXR3b3JrIGNvbnRyb2xsZXI6IFF1YWxjb21t
-IEF0aGVyb3MgUUNBNjE3NCA4MDIuMTFhYyBXaXJlbGVzcyBOZXR3b3JrIEFkYXB0ZXIgKHJldiAz
-MikNCg0KQm90aCBkZXZpY2UgZHJpdmVycyBkbyBub3Qgd29yay4gSSBjaGFuZ2VkIHRoZSBDRSBj
-b2RlIHRvIHVzZSB0aGUgR0ZQX0RNQTMyIGZsYWcgYXMgYW4gYXR0ZW1wdCB0byBhbGxvY2F0ZSB0
-aGUgbWVtb3J5IGNvcnJlY3RseSwgYnV0IERNRVNHIHNob3dzDQoNCltwaUBub2RlNjc0NSB+XSQg
-ZG1lc2cgfCBncmVwIGF0aA0KW8KgwqDCoMKgNS44MDE4OTZdIGF0aDEwa19wY2kgMDAwMDowNjow
-MC4wOiBhdGgxMGtfY2VfYWxsb2Nfc3JjX3Jpbmc6IE5vdCB1bmFsaWduZWQgPC0tLSBVc2VyIG1l
-c3NhZ2UgZXhpdCBmcm9tIHRoaXMgZnVuY3Rpb24NClvCoMKgwqDCoDUuODA0Mjg0XSBhdGgxMGtf
-cGNpIDAwMDA6MDY6MDAuMDogZmFpbGVkIHRvIGFsbG9jIENFIHNyYyByaW5nIDA6IC0xMg0KW8Kg
-wqDCoMKgNS44MTMxMzhdIGF0aDEwa19wY2kgMDAwMDowNjowMC4wOiBmYWlsZWQgdG8gYWxsb2Nh
-dGUgY29weSBlbmdpbmUgcGlwZSAwOiAtMTINClvCoMKgwqDCoDUuODE1NDE0XSBhdGgxMGtfcGNp
-IDAwMDA6MDY6MDAuMDogZmFpbGVkIHRvIGFsbG9jYXRlIGNvcHkgZW5naW5lIHBpcGVzOiAtMTIN
-ClvCoMKgwqDCoDUuODE4MDAyXSBhdGgxMGtfcGNpIDAwMDA6MDY6MDAuMDogZmFpbGVkIHRvIHNl
-dHVwIHJlc291cmNlOiAtMTINClvCoMKgwqDCoDUuODI2OTUzXSBhdGgxMGtfcGNpOiBwcm9iZSBv
-ZiAwMDAwOjA2OjAwLjAgZmFpbGVkIHdpdGggZXJyb3IgLTEyDQpbwqDCoMKgwqA1Ljg1NTk5M10g
-YXRoMTFrX3BjaSAwMDAwOjA1OjAwLjA6IFdBUk5JTkc6IGF0aDExayBQQ0kgc3VwcG9ydCBpcyBl
-eHBlcmltZW50YWwhDQpbwqDCoMKgwqA1Ljg5NjE0OF0gYXRoMTFrX3BjaSAwMDAwOjA1OjAwLjA6
-IEJBUiAwOiBhc3NpZ25lZCBbbWVtIDB4NjAwMDAwMDAwLTB4NjAwZmZmZmZmIDY0Yml0XQ0KW8Kg
-wqDCoMKgNS45MDAyMzZdIGF0aDExa19wY2kgMDAwMDowNTowMC4wOiBlbmFibGluZyBkZXZpY2Ug
-KDAwMDAgLT4gMDAwMikNClvCoMKgwqDCoDUuOTE0MDUwXSBhdGgxMWtfcGNpOiBwcm9iZSBvZiAw
-MDAwOjA1OjAwLjAgZmFpbGVkIHdpdGggZXJyb3IgLTEyDQoNCkVycm9yIC0xMiAoRU5PTUVNKSBn
-ZXRzIHJldHVybmVkIGFuZCB0aGUgZHJpdmVyIGRvZXNuJ3Qgd29yay4uLg0KDQowNTowMC4wIFVu
-YXNzaWduZWQgY2xhc3MgW2ZmMDBdOiBRdWFsY29tbSBRQ0E2MzkwIFdpcmVsZXNzIE5ldHdvcmsg
-QWRhcHRlciBbQVg1MDAtREJTICgyeDIpXQ0KU3Vic3lzdGVtOiBRdWFsY29tbSBEZXZpY2UgMDEw
-OA0KQ29udHJvbDogSS9PLSBNZW0rIEJ1c01hc3Rlci0gU3BlY0N5Y2xlLSBNZW1XSU5WLSBWR0FT
-bm9vcC0gUGFyRXJyLSBTdGVwcGluZy0gU0VSUi0gRmFzdEIyQi0gRGlzSU5UeC0NClN0YXR1czog
-Q2FwKyA2Nk1Iei0gVURGLSBGYXN0QjJCLSBQYXJFcnItIERFVlNFTD1mYXN0ID5UQWJvcnQtIDxU
-QWJvcnQtIDxNQWJvcnQtID5TRVJSLSA8UEVSUi0gSU5UeC0NClJlZ2lvbiAwOiBNZW1vcnkgYXQg
-NjAwMDAwMDAwICg2NC1iaXQsIG5vbi1wcmVmZXRjaGFibGUpIFtzaXplPTE2TV0NCkNhcGFiaWxp
-dGllczogPGFjY2VzcyBkZW5pZWQ+DQpLZXJuZWwgbW9kdWxlczogYXRoMTFrX3BjaQ0KDQowNjow
-MC4wIE5ldHdvcmsgY29udHJvbGxlcjogUXVhbGNvbW0gQXRoZXJvcyBRQ0E2MTc0IDgwMi4xMWFj
-IFdpcmVsZXNzIE5ldHdvcmsgQWRhcHRlciAocmV2IDMyKQ0KU3Vic3lzdGVtOiBBU1VTVGVLIENv
-bXB1dGVyIEluYy4gRGV2aWNlIDg2ZTANCkNvbnRyb2w6IEkvTy0gTWVtLSBCdXNNYXN0ZXItIFNw
-ZWNDeWNsZS0gTWVtV0lOVi0gVkdBU25vb3AtIFBhckVyci0gU3RlcHBpbmctIFNFUlItIEZhc3RC
-MkItIERpc0lOVHgtDQpTdGF0dXM6IENhcCsgNjZNSHotIFVERi0gRmFzdEIyQi0gUGFyRXJyLSBE
-RVZTRUw9ZmFzdCA+VEFib3J0LSA8VEFib3J0LSA8TUFib3J0LSA+U0VSUi0gPFBFUlItIElOVHgt
-DQpJbnRlcnJ1cHQ6IHBpbiBBIHJvdXRlZCB0byBJUlEgNDgNClJlZ2lvbiAwOiBNZW1vcnkgYXQg
-NjAxMDAwMDAwICg2NC1iaXQsIG5vbi1wcmVmZXRjaGFibGUpIFtkaXNhYmxlZF0gW3NpemU9Mk1d
-DQpDYXBhYmlsaXRpZXM6IDxhY2Nlc3MgZGVuaWVkPg0KS2VybmVsIG1vZHVsZXM6IGF0aDEwa19w
-Y2kNCg0KSSBhbSBhdCBhIGxvc3Mgd2hhdCB0byBkbyBoZXJlLiBUaGUgYXRoMTFrIGRyaXZlciBo
-YXMgdGhlIFNJTkdMRSBNU0kgZml4IGJ1aWx0IGluLsKgDQoNCkFueSBpZGVhcycgd2hhdCBJIGNh
-biB0cnkgdG8gZml4IHRoaXMgcHJvYmxlbSBvbiB0aGUgcmFzcGJlcnJ5IFBpIENNND8NCg0KLSBN
-YXVyaWNlDQoNCg0KDQogDQogDQpNYXVyaWNlIFNtdWxkZXJzICB8ICBPcGVyYXRpbmcgU3lzdGVt
-IFNvZnR3YXJlIEVuZ2luZWVyDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KaHR0cHM6Ly93aW5kdGFsa2VyLmNvbSAgIHwgIEM6
-IDcyMC41MTQuMDMxMA0KDQo=
+However, the module parameter string is duplicated in both USB and SDIO
+modules and the dev_oper_mode mode enumeration in those module parameters
+is a duplicate of macros used by the driver. Furthermore, the enumeration
+is confusing.
 
---_002_35F57D80C7F747B2BEC8533006C72E2Awindtalkercom_
-Content-Type: image/png; name="image001.png"
-Content-Description: image001.png
-Content-Disposition: attachment; filename="image001.png"; size=4551;
-	creation-date="Thu, 16 Sep 2021 14:38:13 GMT";
-	modification-date="Thu, 16 Sep 2021 14:38:13 GMT"
-Content-ID: <image001.png@01D7AAD6.1F3DDC30>
-Content-Transfer-Encoding: base64
+So, deduplicate the module parameter string and use __stringify() to
+encode the correct mode enumeration values into the module parameter
+string. Finally, replace 'Wi-Fi' with 'Wi-Fi alone' and 'BT' with
+'BT classic alone' to clarify what those modes really mean.
 
-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
+Fixes: 898b255339310 ("rsi: add module parameter operating mode")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Amitkumar Karwar <amit.karwar@redpinesignals.com>
+Cc: Angus Ainslie <angus@akkea.ca>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: Karun Eagalapati <karun256@gmail.com>
+Cc: Martin Fuzzey <martin.fuzzey@flowbird.group>
+Cc: Martin Kepplinger <martink@posteo.de>
+Cc: Prameela Rani Garnepudi <prameela.j04cs@gmail.com>
+Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Cc: Siva Rebbagondla <siva8118@gmail.com>
+Cc: netdev@vger.kernel.org
+Cc: <stable@vger.kernel.org> # 4.17+
+--
+V2: - Update description of DEV_OPMODE_BT_LE_ALONE DEV_OPMODE_BT_DUAL
+      DEV_OPMODE_AP_BT DEV_OPMODE_AP_BT_DUAL to include "alone" and
+      "Wi-Fi" consistently.
+    - Cc netdev and to linux-wireless
+---
+ drivers/net/wireless/rsi/rsi_91x_sdio.c |  5 +----
+ drivers/net/wireless/rsi/rsi_91x_usb.c  |  5 +----
+ drivers/net/wireless/rsi/rsi_hal.h      | 11 +++++++++++
+ 3 files changed, 13 insertions(+), 8 deletions(-)
 
---_002_35F57D80C7F747B2BEC8533006C72E2Awindtalkercom_--
+diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+index e0c502bc42707..9f16128e4ffab 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
++++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+@@ -24,10 +24,7 @@
+ /* Default operating mode is wlan STA + BT */
+ static u16 dev_oper_mode = DEV_OPMODE_STA_BT_DUAL;
+ module_param(dev_oper_mode, ushort, 0444);
+-MODULE_PARM_DESC(dev_oper_mode,
+-		 "1[Wi-Fi], 4[BT], 8[BT LE], 5[Wi-Fi STA + BT classic]\n"
+-		 "9[Wi-Fi STA + BT LE], 13[Wi-Fi STA + BT classic + BT LE]\n"
+-		 "6[AP + BT classic], 14[AP + BT classic + BT LE]");
++MODULE_PARM_DESC(dev_oper_mode, DEV_OPMODE_PARAM_DESC);
+ 
+ /**
+  * rsi_sdio_set_cmd52_arg() - This function prepares cmd 52 read/write arg.
+diff --git a/drivers/net/wireless/rsi/rsi_91x_usb.c b/drivers/net/wireless/rsi/rsi_91x_usb.c
+index 416976f098882..6a120211800db 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_usb.c
++++ b/drivers/net/wireless/rsi/rsi_91x_usb.c
+@@ -25,10 +25,7 @@
+ /* Default operating mode is wlan STA + BT */
+ static u16 dev_oper_mode = DEV_OPMODE_STA_BT_DUAL;
+ module_param(dev_oper_mode, ushort, 0444);
+-MODULE_PARM_DESC(dev_oper_mode,
+-		 "1[Wi-Fi], 4[BT], 8[BT LE], 5[Wi-Fi STA + BT classic]\n"
+-		 "9[Wi-Fi STA + BT LE], 13[Wi-Fi STA + BT classic + BT LE]\n"
+-		 "6[AP + BT classic], 14[AP + BT classic + BT LE]");
++MODULE_PARM_DESC(dev_oper_mode, DEV_OPMODE_PARAM_DESC);
+ 
+ static int rsi_rx_urb_submit(struct rsi_hw *adapter, u8 ep_num, gfp_t flags);
+ 
+diff --git a/drivers/net/wireless/rsi/rsi_hal.h b/drivers/net/wireless/rsi/rsi_hal.h
+index d044a440fa080..5b07262a97408 100644
+--- a/drivers/net/wireless/rsi/rsi_hal.h
++++ b/drivers/net/wireless/rsi/rsi_hal.h
+@@ -28,6 +28,17 @@
+ #define DEV_OPMODE_AP_BT		6
+ #define DEV_OPMODE_AP_BT_DUAL		14
+ 
++#define DEV_OPMODE_PARAM_DESC		\
++	__stringify(DEV_OPMODE_WIFI_ALONE)	"[Wi-Fi alone], "	\
++	__stringify(DEV_OPMODE_BT_ALONE)	"[BT classic alone], "	\
++	__stringify(DEV_OPMODE_BT_LE_ALONE)	"[BT LE alone], "	\
++	__stringify(DEV_OPMODE_BT_DUAL)		"[BT classic + BT LE alone], " \
++	__stringify(DEV_OPMODE_STA_BT)		"[Wi-Fi STA + BT classic], " \
++	__stringify(DEV_OPMODE_STA_BT_LE)	"[Wi-Fi STA + BT LE], "	\
++	__stringify(DEV_OPMODE_STA_BT_DUAL)	"[Wi-Fi STA + BT classic + BT LE], " \
++	__stringify(DEV_OPMODE_AP_BT)		"[Wi-Fi AP + BT classic], "	\
++	__stringify(DEV_OPMODE_AP_BT_DUAL)	"[Wi-Fi AP + BT classic + BT LE]"
++
+ #define FLASH_WRITE_CHUNK_SIZE		(4 * 1024)
+ #define FLASH_SECTOR_SIZE		(4 * 1024)
+ 
+-- 
+2.33.0
+
