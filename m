@@ -2,137 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 773FD40EA2E
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Sep 2021 20:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2C1740EACA
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Sep 2021 21:28:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245696AbhIPSqf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Sep 2021 14:46:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48968 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242908AbhIPSq2 (ORCPT
+        id S231168AbhIPT3V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Sep 2021 15:29:21 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:35468
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230267AbhIPT3U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Sep 2021 14:46:28 -0400
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA266C0619CF
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Sep 2021 10:19:32 -0700 (PDT)
-Received: by mail-pg1-x530.google.com with SMTP id 17so6802896pgp.4
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Sep 2021 10:19:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=vfppOddBimlXKR9WfYAKpD75AZ1AT5Ln0YqbfJSrBQA=;
-        b=XCkNHl8kcS/0Qgn6DtGioUwi3UGpp9yaSUkX6AIaAHVxHt6CWjhcgvE5uF0tFMJgTu
-         GJ3qlQyId2bhiwxToQ9QXgA/LE1nFwFzIp1Qe319B6aUnxWfHHdLIUORYz4v50AvfcGv
-         CPPhv3fd0Yd3Uzg7MgtWJveVEA3r054tjVv6p19Ui/dzOn8aoobt2VyaThJExdk6Y4oU
-         h5eOXmGL5rZ2SpdIjKzi4MXwuAjSewzyUVq0BHjqXbek1y7X+pxbs/e+zm4SyboglDRT
-         03uFXeQfhBae9LoI5cF13wjc0B2XppuOTkD56EnPO6UP6yl5tegpWn5qHb8VtpVRVLD0
-         hsRA==
+        Thu, 16 Sep 2021 15:29:20 -0400
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 935EF3F22C
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Sep 2021 19:27:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1631820478;
+        bh=MMcgzru3ZwhyKOsYx2iFuNW8JodY417NqNj4jNsFMOQ=;
+        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+         In-Reply-To:Content-Type;
+        b=WmsgSjgvRZbCGGvLpwIqgyndnz1GO8TIzbqyguhA46DPqcSXONcGKWFEeHR8us0yl
+         erGEGG1N0iPahnFMhHjqKX68P8lhXEYttk61jD60yBxtOLHIELfL9O4BCRnBBua6F1
+         q/RZ5umPWYLE8Q8tsZ7nonXuoUXVi2qvoKDOdL9X2MbHnUfmy83R7srXi0m89tiCxU
+         pFbxqN4pR7IJiLrVqH3SMF1fxn0FKeouaOhwLgN6UvVvs93vL6D/XMW+l1WAbhbwop
+         ZDrNAbuDxucDrUvwiBjz9BL6vXQhq/5q4zmDe/YK2IlX6S40UCfUpuhYJOQdG/9AmO
+         kJzGcRCSp7VPQ==
+Received: by mail-wm1-f72.google.com with SMTP id c187-20020a1c35c4000000b00304b489f2d8so3536094wma.6
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Sep 2021 12:27:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=vfppOddBimlXKR9WfYAKpD75AZ1AT5Ln0YqbfJSrBQA=;
-        b=p07ek3SbYMsa5DjwRl7QhsMZxmX600CV3ryIUfh1Pm6Et85+p8mGhJdokZhGAa8AUl
-         Mf3L1hcUSuYbcJpWfxXhEfkDCsWXQqpKAKtiemLbArl7hB5o+xBYRN4aSsG/EcOsurRd
-         +PjqrF6SG5yWy017yWpaHXMBeyup9YUGIyJ10f0/5Puwoao1BD+xFg5G9FVmA0gMwsWy
-         WO8B24qtv5rJK4DROLA+4uIz68duuJmwKyi3mWUSdvOrRMnHMMXLp35WD9PNAOFCXf/a
-         jcSAv+earCo00qlfaqRaeJAmzKRsr1SLDJSmIRIBnhMlSMoi2iIF3ZRj/ldQpHR0/jHD
-         AWww==
-X-Gm-Message-State: AOAM531fjHQOeQSo7jMjlcu3ekkxp+iudt1KRVCY0HElA5QMv7KFo0DC
-        Iv1kw0iqM5UaFRVXUyZhOrP9
-X-Google-Smtp-Source: ABdhPJwVVDHmLdlkvPxa0RTx6TeaN8ENWRxxpE5tjoHD788yzE86ICDdkUJKi9NvVNz7J3GzX/2j1g==
-X-Received: by 2002:aa7:9841:0:b0:439:c4cb:fe9a with SMTP id n1-20020aa79841000000b00439c4cbfe9amr6279540pfq.13.1631812772167;
-        Thu, 16 Sep 2021 10:19:32 -0700 (PDT)
-Received: from thinkpad ([117.193.213.12])
-        by smtp.gmail.com with ESMTPSA id o2sm3876721pgc.47.2021.09.16.10.19.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Sep 2021 10:19:31 -0700 (PDT)
-Date:   Thu, 16 Sep 2021 22:49:27 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Loic Poulain <loic.poulain@linaro.org>, ath11k@lists.infradead.org,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: [regression] mhi: ath11k resume fails on some devices
-Message-ID: <20210916171927.GB9027@thinkpad>
-References: <871r5p0x2u.fsf@codeaurora.org>
- <CAMZdPi8UJLvBFQd8-nf-iHAQh8cEuihq97PUFfZ7Q=rxRQoPsg@mail.gmail.com>
- <20210916111218.GA12918@thinkpad>
- <CAMZdPi94607mZorp+Zmkw3seWXak6p9Jr05CQ5hhfgKQoG8n7Q@mail.gmail.com>
- <20210916163529.GA9027@thinkpad>
- <87k0jgxyjp.fsf@codeaurora.org>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=MMcgzru3ZwhyKOsYx2iFuNW8JodY417NqNj4jNsFMOQ=;
+        b=z8l6qr6Yyiojrz7+YF9MsPOzdfR+NK4eCqk/JFIedunDT3wMn0DN7E6+7HBKy5AhyP
+         zilBujj65EOt3Vp7vA0ZknUDZW2qW2Y8f2OWybnM6zA2KJiJt9H566yKMbaXG9Lsgaid
+         wkJerSXHcC23Yo4eUaSU0m1O9jkOQSPx7EXLHfGBjuRdfg5WX7toO/3pz6vV3iCQ5gZJ
+         8KVIIfulEphFcrMea9SsGZWcnMujNB1pezT7LQ1sFHqCVtAq/xeZqLfeG9OQ9SiPBF2f
+         O385Vh9jwSJIMKAwQMgdK29cGedF2egSIvsaPO0tVqGM2jdB2MFCm0ZoNWzmm+pcz0fn
+         x6xw==
+X-Gm-Message-State: AOAM532ePY95tq8poL1PKKzz5jsX4xE6CEdzPEvBFJd7H8c+I4GLq2D0
+        u2BwcRa4D40ejOzONbajLxdbX/F8GC4lfNrqPYYp0VLd7DnLl3n/97dre6Yo9SLqWNFUYbPAM9v
+        /+frxltQxzY8nTYseraztFa1HHZKfClWeY0mdhVrDYrhn
+X-Received: by 2002:a1c:7f57:: with SMTP id a84mr6593058wmd.34.1631820478294;
+        Thu, 16 Sep 2021 12:27:58 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwqn1+ESA3K0zllvSWstH2qMZ0N3R38ReyqO045tBhcLAJAO9cDYj4nPSe6W+hMxkhv/fTfPg==
+X-Received: by 2002:a1c:7f57:: with SMTP id a84mr6593050wmd.34.1631820478167;
+        Thu, 16 Sep 2021 12:27:58 -0700 (PDT)
+Received: from [192.168.2.211] (lk.84.20.244.219.dc.cable.static.lj-kabel.net. [84.20.244.219])
+        by smtp.gmail.com with ESMTPSA id k6sm7063711wmo.37.2021.09.16.12.27.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Sep 2021 12:27:57 -0700 (PDT)
+Subject: Re: [PATCH] nfc: trf7970a: Make use of the helper function
+ dev_err_probe()
+To:     Cai Huoqing <caihuoqing@baidu.com>
+Cc:     Mark Greer <mgreer@animalcreek.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210916153621.16576-1-caihuoqing@baidu.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Message-ID: <21782e6d-038f-9009-ed8a-d65c2cdfb761@canonical.com>
+Date:   Thu, 16 Sep 2021 21:27:56 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
+In-Reply-To: <20210916153621.16576-1-caihuoqing@baidu.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87k0jgxyjp.fsf@codeaurora.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Sep 16, 2021 at 07:42:02PM +0300, Kalle Valo wrote:
-> Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+On 16/09/2021 17:36, Cai Huoqing wrote:
+> When possible use dev_err_probe help to properly deal with the
+> PROBE_DEFER error, the benefit is that DEFER issue will be logged
+> in the devices_deferred debugfs file.
+> Using dev_err_probe() can reduce code size, and the error value
+> gets printed.
 > 
-> > On Thu, Sep 16, 2021 at 01:18:22PM +0200, Loic Poulain wrote:
-> >> Le jeu. 16 sept. 2021 à 13:12, Manivannan Sadhasivam <
-> >> manivannan.sadhasivam@linaro.org> a écrit :
-> >> 
-> >
-> > [...]
-> >
-> >> > If things seems to work fine without that patch, then it implies that
-> >> > setting M0
-> >> > state works during resume. I think we should just revert that patch.
-> >> >
-> >> > Loic, did that patch fix any issue for you or it was a cosmetic fix only?
-> >> 
-> >> 
-> >> It fixes sdx modem resuming issue, without that we don’t know modem needs
-> >> to be reinitialized.
-> >> 
-> >
-> > Okay. Then in that case, the recovery mechanism has to be added to the ath11k
-> > MHI controller.
-> 
-> What does that mean in practise, do you have any pointers or examples? I
-> have no clue what you are proposing :)
+> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+> ---
+>  drivers/nfc/trf7970a.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
 
-Take a look at the mhi_pci_recovery_work() function below:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/bus/mhi/pci_generic.c#n610
+Please don't send patches one-by-one, but group them in series.
 
-You need to implement something similar that basically powers up the MHI
-endpoint (QCA6390) in case pm_resume() fails. At minimum, you need to call
-below functions:
+Same response - I think the preferred approach was Rob's dev_err removal.
 
-# Check if the device is powered on. If yes, then power it down to bring it back
-mhi_power_down()
-mhi_unprepare_after_power_down()
+P.S. You need to Cc all folks and all lists. The cc-list here is too short.
 
-# Power up the device
-mhi_prepare_for_power_up()
-mhi_sync_power_up()
-
-This implies that the WLAN device has been powered off during suspend, so the
-resume fails and we are bringing the device back to working state.
-
-> > If that's too much of work for Kalle, then I'll look into it. But I might get
-> > time only after Plumbers.
-> 
-> I'm busy, as always, so not sure when I'm able to do it either. I think
-> we should seriously consider reverting 020d3b26c07a and adding it back
-> after ath11k is able to handle this new situation.
-> 
-
-Since Loic said that reverting would cause his modem (SDX device) to fail during
-resume, this is not possible.
-
-Thanks,
-Mani
-
-> -- 
-> https://patchwork.kernel.org/project/linux-wireless/list/
-> 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Best regards,
+Krzysztof
