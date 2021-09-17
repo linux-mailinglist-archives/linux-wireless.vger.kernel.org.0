@@ -2,74 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B90FB40F7EB
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Sep 2021 14:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F1A40F822
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Sep 2021 14:41:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244422AbhIQMiV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Sep 2021 08:38:21 -0400
-Received: from mout-p-201.mailbox.org ([80.241.56.171]:36390 "EHLO
-        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238634AbhIQMiU (ORCPT
+        id S233669AbhIQMnN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Sep 2021 08:43:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39698 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232100AbhIQMnN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Sep 2021 08:38:20 -0400
-X-Greylist: delayed 555 seconds by postgrey-1.27 at vger.kernel.org; Fri, 17 Sep 2021 08:38:19 EDT
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        Fri, 17 Sep 2021 08:43:13 -0400
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [IPv6:2001:67c:2050::465:102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18845C061574;
+        Fri, 17 Sep 2021 05:41:51 -0700 (PDT)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4H9tkK153szQlWs;
-        Fri, 17 Sep 2021 14:36:57 +0200 (CEST)
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4H9tqx4HwtzQkBK;
+        Fri, 17 Sep 2021 14:41:49 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 Subject: Re: [PATCH] Bluetooth: btusb: Lower passive lescan interval on
  Marvell 88W8897
-To:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
+To:     Marcel Holtmann <marcel@holtmann.org>
 Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
         Ganapathi Bhat <ganapathi017@gmail.com>,
         Xinming Hu <huxinming820@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
         Johan Hedberg <johan.hedberg@gmail.com>,
         Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
         Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        linux-bluetooth <linux-bluetooth@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
         Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
 References: <20210917122718.86776-1-verdre@v0yd.nl>
- <20210917123057.gqitcxvxn4ax25np@pali>
+ <B9F09991-0B67-4848-86DE-C13BF3850D15@holtmann.org>
 From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
-Message-ID: <1bc68568-8b9a-7a39-ed79-717e15db58d9@v0yd.nl>
-Date:   Fri, 17 Sep 2021 14:36:50 +0200
+Message-ID: <3e5b7e27-e643-ae9b-db40-d885ca441385@v0yd.nl>
+Date:   Fri, 17 Sep 2021 14:41:42 +0200
 MIME-Version: 1.0
-In-Reply-To: <20210917123057.gqitcxvxn4ax25np@pali>
+In-Reply-To: <B9F09991-0B67-4848-86DE-C13BF3850D15@holtmann.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0B404188C
+X-Rspamd-Queue-Id: 5493A1848
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/17/21 2:30 PM, Pali Rohár wrote:
-> On Friday 17 September 2021 14:27:18 Jonas Dreßler wrote:
+On 9/17/21 2:35 PM, Marcel Holtmann wrote:
+> Hi Jonas,
+> 
 >> The Marvell 88W8897 combined wifi and bluetooth card (pcie+usb version)
 >> is used in a lot of Microsoft Surface devices, and all those devices
 >> suffer from very low 2.4GHz wifi connection speeds while bluetooth is
->> enabled.
-> 
-> Hello! Do you know if this issue is specific only to this one Marvell
-> 88W8897 chip or if this issue affects also other Marvell wifi+bt combo
-> chips?
-
-Hi! No idea, good question, but I don't own any other devices with 
-Marvell chips. Maybe it's even safe to apply it to all Bluetooth 
-devices, I guess less scanning load is good for everyone (as long as it 
-doesn't impact the scanning results of course, so that would need testing).
-
-> 
->> The reason for that is that the default passive scanning
+>> enabled. The reason for that is that the default passive scanning
 >> interval for Bluetooth Low Energy devices is quite high on Linux
 >> (interval of 60 msec and scan window of 30 msec, see le_scan_interval
 >> and le_scan_window in hci_core.c), and the Marvell chip is known for its
@@ -93,33 +85,33 @@ doesn't impact the scanning results of course, so that would need testing).
 >>
 >> Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
 >> ---
->>   drivers/bluetooth/btusb.c | 15 +++++++++++++++
->>   1 file changed, 15 insertions(+)
+>> drivers/bluetooth/btusb.c | 15 +++++++++++++++
+>> 1 file changed, 15 insertions(+)
 >>
 >> diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
 >> index 60d2fce59a71..05b11179c839 100644
 >> --- a/drivers/bluetooth/btusb.c
 >> +++ b/drivers/bluetooth/btusb.c
 >> @@ -59,6 +59,7 @@ static struct usb_driver btusb_driver;
->>   #define BTUSB_WIDEBAND_SPEECH	0x400000
->>   #define BTUSB_VALID_LE_STATES   0x800000
->>   #define BTUSB_QCA_WCN6855	0x1000000
+>> #define BTUSB_WIDEBAND_SPEECH	0x400000
+>> #define BTUSB_VALID_LE_STATES   0x800000
+>> #define BTUSB_QCA_WCN6855	0x1000000
 >> +#define BTUSB_LOWER_LESCAN_INTERVAL	0x2000000
->>   #define BTUSB_INTEL_BROKEN_INITIAL_NCMD 0x4000000
->>   
->>   static const struct usb_device_id btusb_table[] = {
+>> #define BTUSB_INTEL_BROKEN_INITIAL_NCMD 0x4000000
+>>
+>> static const struct usb_device_id btusb_table[] = {
 >> @@ -356,6 +357,7 @@ static const struct usb_device_id blacklist_table[] = {
->>   	{ USB_DEVICE(0x1286, 0x2044), .driver_info = BTUSB_MARVELL },
->>   	{ USB_DEVICE(0x1286, 0x2046), .driver_info = BTUSB_MARVELL },
->>   	{ USB_DEVICE(0x1286, 0x204e), .driver_info = BTUSB_MARVELL },
+>> 	{ USB_DEVICE(0x1286, 0x2044), .driver_info = BTUSB_MARVELL },
+>> 	{ USB_DEVICE(0x1286, 0x2046), .driver_info = BTUSB_MARVELL },
+>> 	{ USB_DEVICE(0x1286, 0x204e), .driver_info = BTUSB_MARVELL },
 >> +	{ USB_DEVICE(0x1286, 0x204c), .driver_info = BTUSB_LOWER_LESCAN_INTERVAL },
->>   
->>   	/* Intel Bluetooth devices */
->>   	{ USB_DEVICE(0x8087, 0x0025), .driver_info = BTUSB_INTEL_COMBINED },
+>>
+>> 	/* Intel Bluetooth devices */
+>> 	{ USB_DEVICE(0x8087, 0x0025), .driver_info = BTUSB_INTEL_COMBINED },
 >> @@ -3813,6 +3815,19 @@ static int btusb_probe(struct usb_interface *intf,
->>   	if (id->driver_info & BTUSB_MARVELL)
->>   		hdev->set_bdaddr = btusb_set_bdaddr_marvell;
->>   
+>> 	if (id->driver_info & BTUSB_MARVELL)
+>> 		hdev->set_bdaddr = btusb_set_bdaddr_marvell;
+>>
 >> +	/* The Marvell 88W8897 combined wifi and bluetooth card is known for
 >> +	 * very bad bt+wifi coexisting performance.
 >> +	 *
@@ -133,10 +125,20 @@ doesn't impact the scanning results of course, so that would need testing).
 >> +		hdev->le_scan_window = 0x000a;
 >> +	}
 >> +
->>   	if (IS_ENABLED(CONFIG_BT_HCIBTUSB_MTK) &&
->>   	    (id->driver_info & BTUSB_MEDIATEK)) {
->>   		hdev->setup = btusb_mtk_setup;
->> -- 
->> 2.31.1
->>
+> 
+> you can not do it this way. Modifying hci_dev internals from within the driver is not acceptable.
+> 
+> Regards
+> 
+> Marcel
+> 
 
+Hi Marcel,
+
+hmm okay, it seems to me that the intention of your commit 
+bef64738e3fb87eabc6fbeededad0c44ea173384 was to allow configuring it on 
+a per controller basis, also btusb changes a bunch of other hci_dev 
+properties? Given that we also have to match by usb-id, I don't think 
+there's another place to do that other than the usb driver, or is there?
+
+Jonas
