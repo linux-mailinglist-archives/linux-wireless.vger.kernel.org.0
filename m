@@ -2,253 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 045EE40EEC9
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Sep 2021 03:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3211140F02E
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Sep 2021 05:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239992AbhIQBf2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Sep 2021 21:35:28 -0400
-Received: from mga17.intel.com ([192.55.52.151]:53662 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240175AbhIQBf1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Sep 2021 21:35:27 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10109"; a="202858601"
-X-IronPort-AV: E=Sophos;i="5.85,299,1624345200"; 
-   d="scan'208";a="202858601"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2021 18:34:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,299,1624345200"; 
-   d="scan'208";a="509577593"
-Received: from lkp-server01.sh.intel.com (HELO 285e7b116627) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 16 Sep 2021 18:34:04 -0700
-Received: from kbuild by 285e7b116627 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mR2lP-0001c9-SU; Fri, 17 Sep 2021 01:34:03 +0000
-Date:   Fri, 17 Sep 2021 09:33:34 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [jberg-mac80211-next:master] BUILD SUCCESS
- 339133f6c318612f9a4556c300753beda27abc01
-Message-ID: <6143f06e.yZ29xkqRQK6GB2O+%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S243668AbhIQDG6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Sep 2021 23:06:58 -0400
+Received: from mail-pg1-f174.google.com ([209.85.215.174]:38463 "EHLO
+        mail-pg1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243665AbhIQDG5 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Sep 2021 23:06:57 -0400
+Received: by mail-pg1-f174.google.com with SMTP id w8so8213926pgf.5
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Sep 2021 20:05:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=RTIBZcrHfgJRG/qPnwrsIiHxUCIqeKEyFFMD3ajkpps=;
+        b=aB3fky7d+mVPURnQEqzVWwL7XF9PkakV6ADyqw6BMDOPPBBFB9CmjA0fna48OifLvl
+         bNWOzT9vuSW8nklAqNCQyfdFzSTdzKkMBZvVUJtdiQuj+3errr1RmA0I1T+IokeOV82b
+         7d6YPXQyFb6Lm98Xb0m7qoZF4be8qkGM6bFk7Bt2XGoNOe69kVA9c2kBweeMWflX8oSb
+         mGsFJh49Ee/86U1ShcLMRtNFopqw1HHCY0H/mg1yQLN8nVZDCzRna4cMuIttlVWQysll
+         k01N2lTeZg2YdSZ7j9R+d0EwopyKmNO196+LIWDSmk4h7Cya/4gIhq0BNe4l07wgw8zx
+         TIWg==
+X-Gm-Message-State: AOAM530xiwLNXFM5okglv6mSy5IMwLoIvcUx6qTxOGyemVGGaSUi3ie2
+        MA2ljHsGcTr3P9JzKChsjdlXmlRvB1y+Iw==
+X-Google-Smtp-Source: ABdhPJzjx4ozIroyvDi280lCL65EEhatbzzs93E8RHqCIyeireUVIDeOWH/DhZmC4d0dwEmU1LpfSw==
+X-Received: by 2002:a63:5f08:: with SMTP id t8mr7883774pgb.353.1631847935461;
+        Thu, 16 Sep 2021 20:05:35 -0700 (PDT)
+Received: from [192.168.0.242] (218-173-145-126.dynamic-ip.hinet.net. [218.173.145.126])
+        by smtp.gmail.com with ESMTPSA id q1sm4104993pfj.132.2021.09.16.20.05.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Sep 2021 20:05:35 -0700 (PDT)
+Subject: Re: pull request: iwlwifi firmware updates 2021-09-14 v2
+To:     Luca Coelho <luca@coelho.fi>,
+        "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kyle@infradead.org" <kyle@infradead.org>,
+        "jwboyer@kernel.org" <jwboyer@kernel.org>,
+        "ben@decadent.org.uk" <ben@decadent.org.uk>,
+        golan.ben.ami@intel.com
+References: <8ddba225f68405b5d4ed8b6cd9dcd05a03f532e4.camel@coelho.fi>
+From:   You-Sheng Yang <vicamo.yang@canonical.com>
+Message-ID: <576a9cff-b1aa-a46e-9e1a-bf99f46ddd8d@canonical.com>
+Date:   Fri, 17 Sep 2021 11:05:32 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <8ddba225f68405b5d4ed8b6cd9dcd05a03f532e4.camel@coelho.fi>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git master
-branch HEAD: 339133f6c318612f9a4556c300753beda27abc01  net: dsa: tag_rtl4_a: Drop bit 9 from egress frames
+Verified. Works for us. Thank you.
 
-elapsed time: 2747m
-
-configs tested: 193
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20210916
-arm                        clps711x_defconfig
-powerpc                 mpc8313_rdb_defconfig
-arc                 nsimosci_hs_smp_defconfig
-powerpc                      cm5200_defconfig
-sh                        edosk7705_defconfig
-powerpc               mpc834x_itxgp_defconfig
-powerpc                    mvme5100_defconfig
-arm                             rpc_defconfig
-riscv                               defconfig
-um                               alldefconfig
-powerpc                      chrp32_defconfig
-arm                         bcm2835_defconfig
-arm                         at91_dt_defconfig
-sh                           se7780_defconfig
-sh                          polaris_defconfig
-powerpc                 mpc8560_ads_defconfig
-arm                         lubbock_defconfig
-arm                          ep93xx_defconfig
-arc                              alldefconfig
-powerpc                      ppc44x_defconfig
-sh                          landisk_defconfig
-um                           x86_64_defconfig
-powerpc                     ep8248e_defconfig
-arm                        mvebu_v7_defconfig
-arc                        nsimosci_defconfig
-arm                          moxart_defconfig
-powerpc                        fsp2_defconfig
-mips                  decstation_64_defconfig
-mips                          ath79_defconfig
-s390                          debug_defconfig
-powerpc                 mpc8272_ads_defconfig
-mips                         db1xxx_defconfig
-sh                           se7712_defconfig
-powerpc                     tqm8555_defconfig
-arm                          pxa910_defconfig
-powerpc                      tqm8xx_defconfig
-h8300                       h8s-sim_defconfig
-sh                   sh7770_generic_defconfig
-arm                            hisi_defconfig
-powerpc                        warp_defconfig
-powerpc                     tqm8541_defconfig
-powerpc                     tqm8548_defconfig
-powerpc                     kmeter1_defconfig
-riscv                          rv32_defconfig
-s390                       zfcpdump_defconfig
-sh                           se7724_defconfig
-powerpc                     tqm5200_defconfig
-powerpc                      acadia_defconfig
-sh                          lboxre2_defconfig
-powerpc                  mpc885_ads_defconfig
-arm                         cm_x300_defconfig
-sh                               alldefconfig
-m68k                         amcore_defconfig
-arm                        oxnas_v6_defconfig
-sh                           se7206_defconfig
-arm                         lpc18xx_defconfig
-powerpc                    socrates_defconfig
-arm                       netwinder_defconfig
-sh                             sh03_defconfig
-powerpc                      katmai_defconfig
-arc                           tb10x_defconfig
-ia64                             alldefconfig
-xtensa                  cadence_csp_defconfig
-riscv                            alldefconfig
-sparc                       sparc32_defconfig
-m68k                           sun3_defconfig
-ia64                      gensparse_defconfig
-mips                        workpad_defconfig
-arm                     eseries_pxa_defconfig
-powerpc                    klondike_defconfig
-sh                           se7343_defconfig
-powerpc                 mpc837x_mds_defconfig
-mips                      bmips_stb_defconfig
-arm                      pxa255-idp_defconfig
-sh                            hp6xx_defconfig
-mips                  cavium_octeon_defconfig
-nios2                         3c120_defconfig
-arm                        realview_defconfig
-sh                          sdk7780_defconfig
-arm                           u8500_defconfig
-powerpc                       holly_defconfig
-powerpc                   microwatt_defconfig
-h8300                               defconfig
-sh                                  defconfig
-x86_64                           allyesconfig
-powerpc                  storcenter_defconfig
-arm                        mini2440_defconfig
-arm                        keystone_defconfig
-arm                             ezx_defconfig
-openrisc                         alldefconfig
-m68k                       m5475evb_defconfig
-powerpc                     pseries_defconfig
-mips                           ip27_defconfig
-arm                       imx_v6_v7_defconfig
-arm                     am200epdkit_defconfig
-m68k                            mac_defconfig
-mips                        nlm_xlr_defconfig
-xtensa                generic_kc705_defconfig
-mips                         tb0226_defconfig
-powerpc                 canyonlands_defconfig
-powerpc                     kilauea_defconfig
-m68k                             alldefconfig
-sh                            shmin_defconfig
-sh                        dreamcast_defconfig
-x86_64               randconfig-c001-20210916
-arm                  randconfig-c002-20210916
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                                defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                             allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-x86_64               randconfig-a016-20210916
-x86_64               randconfig-a013-20210916
-x86_64               randconfig-a012-20210916
-x86_64               randconfig-a011-20210916
-x86_64               randconfig-a014-20210916
-x86_64               randconfig-a015-20210916
-i386                 randconfig-a016-20210916
-i386                 randconfig-a015-20210916
-i386                 randconfig-a011-20210916
-i386                 randconfig-a012-20210916
-i386                 randconfig-a013-20210916
-i386                 randconfig-a014-20210916
-riscv                randconfig-r042-20210916
-s390                 randconfig-r044-20210916
-arc                  randconfig-r043-20210916
-arc                  randconfig-r043-20210915
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                             i386_defconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-riscv                randconfig-c006-20210916
-x86_64               randconfig-c007-20210916
-mips                 randconfig-c004-20210916
-powerpc              randconfig-c003-20210916
-arm                  randconfig-c002-20210916
-i386                 randconfig-c001-20210916
-s390                 randconfig-c005-20210916
-x86_64               randconfig-a002-20210916
-x86_64               randconfig-a003-20210916
-x86_64               randconfig-a006-20210916
-x86_64               randconfig-a004-20210916
-x86_64               randconfig-a005-20210916
-x86_64               randconfig-a001-20210916
-i386                 randconfig-a004-20210916
-i386                 randconfig-a005-20210916
-i386                 randconfig-a006-20210916
-i386                 randconfig-a002-20210916
-i386                 randconfig-a003-20210916
-i386                 randconfig-a001-20210916
-hexagon              randconfig-r045-20210916
-hexagon              randconfig-r041-20210916
-riscv                randconfig-r042-20210915
-hexagon              randconfig-r045-20210915
-s390                 randconfig-r044-20210915
-hexagon              randconfig-r041-20210915
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+On 9/16/21 8:25 PM, Luca Coelho wrote:
+> Hi,
+> 
+> I had typos in the WHENCE file in my previous pull request.  I have
+> fixed that and here's v2.
+> 
+> This pull request contains a single patch that adds firmware binaries
+> to support one more device family in iwlwifi, namely So SOCs with Gf,
+> Hr and Jf radio modules.  This replaces the previous patch that we
+> reverted.
+> 
+> Please pull or let me know if there are any issues.
+> 
+> --
+> Cheers,
+> Luca.
+> 
+> 
+> The following changes since commit 198ac651f46b7d4efd660a1f5ab4f93ca422947d:
+> 
+>   amdgpu: add initial firmware for Yellow Carp (2021-09-15 09:03:35 -0400)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.git tags/iwlwifi-fw-2021-09-14-v2
+> 
+> for you to fetch changes up to 0324161cb0723fccf5d7659114851cf8c1b1cda6:
+> 
+>   iwlwifi: add FWs for new So device types with multiple RF modules (2021-09-16 15:19:45 +0300)
+> 
+> ----------------------------------------------------------------
+> Add iwlwifi firmware binaries for So with Gf, Hr and Jf.
+> 
+> ----------------------------------------------------------------
+> Luca Coelho (1):
+>       iwlwifi: add FWs for new So device types with multiple RF modules
+> 
+>  WHENCE                       |  11 +++++++++++
+>  iwlwifi-so-a0-gf-a0-64.ucode | Bin 0 -> 1515812 bytes
+>  iwlwifi-so-a0-gf-a0.pnvm     | Bin 0 -> 41804 bytes
+>  iwlwifi-so-a0-hr-b0-64.ucode | Bin 0 -> 1427384 bytes
+>  iwlwifi-so-a0-jf-b0-64.ucode | Bin 0 -> 1365628 bytes
+>  5 files changed, 11 insertions(+)
+>  create mode 100644 iwlwifi-so-a0-gf-a0-64.ucode
+>  create mode 100644 iwlwifi-so-a0-gf-a0.pnvm
+>  create mode 100644 iwlwifi-so-a0-hr-b0-64.ucode
+>  create mode 100644 iwlwifi-so-a0-jf-b0-64.ucode
+> 
