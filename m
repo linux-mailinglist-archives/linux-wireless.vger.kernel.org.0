@@ -2,128 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FB7D40F5EC
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Sep 2021 12:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB05140F775
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Sep 2021 14:28:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242921AbhIQKaj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Sep 2021 06:30:39 -0400
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:55890
-        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S242942AbhIQKae (ORCPT
+        id S243593AbhIQM3N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Sep 2021 08:29:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36284 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235941AbhIQM3M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Sep 2021 06:30:34 -0400
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
+        Fri, 17 Sep 2021 08:29:12 -0400
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [IPv6:2001:67c:2050::465:102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF39C061574;
+        Fri, 17 Sep 2021 05:27:49 -0700 (PDT)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:105:465:1:4:0])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id A57733F324
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Sep 2021 10:29:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1631874551;
-        bh=6nkF1q/vzOOF+WmaUamUG6Dayh5+2aRPAbU59eAVA1I=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=MZzU9UDoBBZdRpuGKJxngydEV0gvUoYE5wvhu19HnMTLCkRsMDjIVwo5aUzShLcr3
-         5sib9lJsnKHCZ1/9k7jAE+hNPu9hIIHxzZcESgEzSmi8DyGsZJA5gT6SZEzWlNT/1R
-         Fqfe6Df/8YaF5a6wch2jDd8ojGsPnEba5u0YUOXqtL1K/UEr3cxePTLtpIGlbtMeSn
-         Ef+ocSfsLXJNJd44NJsTOGaEi+1JV1HskEKH4+/vh4R7XkrhoIDwgR+kUOL5elH34t
-         pp5QZZDYTQWgqRhe37IKM6nh3CZt6Myn5YKWBsvprXPvNjl+aeJI4D9Myvd3lOVu6W
-         sYJzTQd1FPwbQ==
-Received: by mail-wr1-f72.google.com with SMTP id c2-20020adfa302000000b0015e4260febdso2237847wrb.20
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Sep 2021 03:29:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=6nkF1q/vzOOF+WmaUamUG6Dayh5+2aRPAbU59eAVA1I=;
-        b=rUZ4jnMRklMQ/LvIZ7iTNJ18FGaQSKNyChJiawLb53dU9Wgzldlhcr5nvI42cVi1WC
-         4EYWJ+RifCdhIWP+KV83+riMhGvgHaAE4AH7l+psPGv+qh6hdbKXHHrolNs0oHXFGnII
-         u9nmJPT4NN1R9ZFkadhNA9dPgu6+AUC/djQiGTElTfGsS/EORYxo3zT1a7h8yvAXi/lE
-         Rudbk1btSWjUn6PF8dfZzskfe/2QXgAnf2SKVAh+ZUbqlV2XW8qUqzPHQ7yqS3EzKkQA
-         ajILoI1bKt/XwS7xNJ94jL5MqweUgjLq/5Op9uMVzsgNBYcFqcWooaIKRq7OhYYs62Xy
-         KnIw==
-X-Gm-Message-State: AOAM533k7iy/aDfFndohTBBWMMwqI5oYm02MpR/ouwlMXPmJzNrcuScy
-        H1ur8HdMTFC1+rkorq/EtQj9QUNUjFtEhBSpq4x3bZHZMGtMY+2STczErDmLLZ7Ed67OW2BXTMY
-        sN5rZ9Wkvm8LIA6xq4MTq6o1rZ3MG2MhpglajdBuawC5y
-X-Received: by 2002:a5d:444a:: with SMTP id x10mr11203585wrr.360.1631874551392;
-        Fri, 17 Sep 2021 03:29:11 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwfdrM+fEx6KhlE7ltFlZ5KnPF9rsYVzDu+ZzxcU3gF6vhY10MhrnkMCHgNj6YnhxdkkVbRow==
-X-Received: by 2002:a5d:444a:: with SMTP id x10mr11203568wrr.360.1631874551216;
-        Fri, 17 Sep 2021 03:29:11 -0700 (PDT)
-Received: from localhost.localdomain (lk.84.20.244.219.dc.cable.static.lj-kabel.net. [84.20.244.219])
-        by smtp.gmail.com with ESMTPSA id d8sm6651413wrv.20.2021.09.17.03.29.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Sep 2021 03:29:10 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     Ulrich Kunitz <kune@deine-taler.de>,
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4H9tWd0rlbzQjgX;
+        Fri, 17 Sep 2021 14:27:41 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+From:   =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, zd1211-devs@lists.sourceforge.net,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jens Frederich <jfrederich@gmail.com>,
-        Jon Nettleton <jon.nettleton@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-staging@lists.linux.dev
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Daniel Drake <drake@endlessos.org>
-Subject: [PATCH v2] MAINTAINERS: Move Daniel Drake to credits
-Date:   Fri, 17 Sep 2021 12:28:34 +0200
-Message-Id: <20210917102834.25649-1-krzysztof.kozlowski@canonical.com>
-X-Mailer: git-send-email 2.30.2
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc:     =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+Subject: [PATCH] Bluetooth: btusb: Lower passive lescan interval on Marvell 88W8897
+Date:   Fri, 17 Sep 2021 14:27:18 +0200
+Message-Id: <20210917122718.86776-1-verdre@v0yd.nl>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9094037F
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Daniel Drake's @gentoo.org email bounces (is listed as retired Gentoo
-developer) and there was no activity from him regarding zd1211rw driver.
-Also his second address @laptop.org bounces.
+The Marvell 88W8897 combined wifi and bluetooth card (pcie+usb version)
+is used in a lot of Microsoft Surface devices, and all those devices
+suffer from very low 2.4GHz wifi connection speeds while bluetooth is
+enabled. The reason for that is that the default passive scanning
+interval for Bluetooth Low Energy devices is quite high on Linux
+(interval of 60 msec and scan window of 30 msec, see le_scan_interval
+and le_scan_window in hci_core.c), and the Marvell chip is known for its
+bad bt+wifi coexisting performance.
 
-Cc: Daniel Drake <drake@endlessos.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+So decrease that passive scan interval and make the scan window shorter
+on this particular device to allow for spending more time transmitting
+wifi signals: The new scan interval is 250 msec (0x190 * 0.625 msec) and
+the new scan window is 6.25 msec (0xa * 0.625 msec).
 
+This change has a very large impact on the 2.4GHz wifi speeds and gets
+it up to performance comparable with the Windows driver, which seems to
+apply a similar quirk.
+
+The scan interval and scan window length were tested and found to work
+very well with a bunch of Bluetooth Low Energy devices, including the
+Surface Pen, a Bluetooth Speaker and two modern Bluetooth headphones.
+All devices were discovered immediately after turning them on. Even
+lower values were also tested, but these introduced longer delays until
+devices get discovered.
+
+Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
 ---
+ drivers/bluetooth/btusb.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Changes since v1:
-1. Drop also bouncing dsd@laptop.org.
----
- CREDITS     | 1 +
- MAINTAINERS | 2 --
- 2 files changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/CREDITS b/CREDITS
-index 7ef7b136e71d..d8f63e8329e8 100644
---- a/CREDITS
-+++ b/CREDITS
-@@ -971,6 +971,7 @@ D: PowerPC
- N: Daniel Drake
- E: dsd@gentoo.org
- D: USBAT02 CompactFlash support in usb-storage
-+D: ZD1211RW wireless driver
- S: UK
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 60d2fce59a71..05b11179c839 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -59,6 +59,7 @@ static struct usb_driver btusb_driver;
+ #define BTUSB_WIDEBAND_SPEECH	0x400000
+ #define BTUSB_VALID_LE_STATES   0x800000
+ #define BTUSB_QCA_WCN6855	0x1000000
++#define BTUSB_LOWER_LESCAN_INTERVAL	0x2000000
+ #define BTUSB_INTEL_BROKEN_INITIAL_NCMD 0x4000000
  
- N: Oleg Drokin
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 15a5fd8323f7..84ba171c85c8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17839,7 +17839,6 @@ F:	drivers/staging/nvec/
+ static const struct usb_device_id btusb_table[] = {
+@@ -356,6 +357,7 @@ static const struct usb_device_id blacklist_table[] = {
+ 	{ USB_DEVICE(0x1286, 0x2044), .driver_info = BTUSB_MARVELL },
+ 	{ USB_DEVICE(0x1286, 0x2046), .driver_info = BTUSB_MARVELL },
+ 	{ USB_DEVICE(0x1286, 0x204e), .driver_info = BTUSB_MARVELL },
++	{ USB_DEVICE(0x1286, 0x204c), .driver_info = BTUSB_LOWER_LESCAN_INTERVAL },
  
- STAGING - OLPC SECONDARY DISPLAY CONTROLLER (DCON)
- M:	Jens Frederich <jfrederich@gmail.com>
--M:	Daniel Drake <dsd@laptop.org>
- M:	Jon Nettleton <jon.nettleton@gmail.com>
- S:	Maintained
- W:	http://wiki.laptop.org/go/DCON
-@@ -20750,7 +20749,6 @@ S:	Maintained
- F:	mm/zbud.c
+ 	/* Intel Bluetooth devices */
+ 	{ USB_DEVICE(0x8087, 0x0025), .driver_info = BTUSB_INTEL_COMBINED },
+@@ -3813,6 +3815,19 @@ static int btusb_probe(struct usb_interface *intf,
+ 	if (id->driver_info & BTUSB_MARVELL)
+ 		hdev->set_bdaddr = btusb_set_bdaddr_marvell;
  
- ZD1211RW WIRELESS DRIVER
--M:	Daniel Drake <dsd@gentoo.org>
- M:	Ulrich Kunitz <kune@deine-taler.de>
- L:	linux-wireless@vger.kernel.org
- L:	zd1211-devs@lists.sourceforge.net (subscribers-only)
++	/* The Marvell 88W8897 combined wifi and bluetooth card is known for
++	 * very bad bt+wifi coexisting performance.
++	 *
++	 * Decrease the passive BT Low Energy scan interval a bit
++	 * (0x0190 * 0.625 msec = 250 msec) and make the scan window shorter
++	 * (0x000a * 0,625 msec = 6.25 msec). This allows for significantly
++	 * higher wifi throughput while passively scanning for BT LE devices.
++	 */
++	if (id->driver_info & BTUSB_LOWER_LESCAN_INTERVAL) {
++		hdev->le_scan_interval = 0x0190;
++		hdev->le_scan_window = 0x000a;
++	}
++
+ 	if (IS_ENABLED(CONFIG_BT_HCIBTUSB_MTK) &&
+ 	    (id->driver_info & BTUSB_MEDIATEK)) {
+ 		hdev->setup = btusb_mtk_setup;
 -- 
-2.30.2
+2.31.1
 
