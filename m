@@ -2,28 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD3E64101EF
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Sep 2021 02:00:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7CCB410256
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Sep 2021 02:09:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241613AbhIRABb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Sep 2021 20:01:31 -0400
-Received: from mailgw02.mediatek.com ([216.200.240.185]:53665 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241169AbhIRABa (ORCPT
+        id S237707AbhIRALL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Sep 2021 20:11:11 -0400
+Received: from mailgw01.mediatek.com ([216.200.240.184]:63455 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344052AbhIRALJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Sep 2021 20:01:30 -0400
-X-UUID: 89d4021512fd46048e52abcc76097976-20210917
-X-UUID: 89d4021512fd46048e52abcc76097976-20210917
-Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw02.mediatek.com
+        Fri, 17 Sep 2021 20:11:09 -0400
+X-UUID: 36ae9e92de59498fa64c8beec40ec143-20210917
+X-UUID: 36ae9e92de59498fa64c8beec40ec143-20210917
+Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw01.mediatek.com
         (envelope-from <sean.wang@mediatek.com>)
         (musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1502780333; Fri, 17 Sep 2021 17:00:05 -0700
+        with ESMTP id 1205345477; Fri, 17 Sep 2021 17:09:44 -0700
 Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- MTKMBS62N2.mediatek.inc (172.29.193.42) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 17 Sep 2021 17:00:00 -0700
+ MTKMBS62DR.mediatek.inc (172.29.94.18) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 17 Sep 2021 16:59:42 -0700
 Received: from mtkswgap22.mediatek.inc (172.21.77.33) by MTKCAS06.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 18 Sep 2021 08:00:00 +0800
+ Transport; Sat, 18 Sep 2021 07:59:35 +0800
 From:   <sean.wang@mediatek.com>
 To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
 CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
@@ -36,13 +36,11 @@ CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
         <steve.lee@mediatek.com>, <jsiuda@google.com>,
         <frankgor@google.com>, <jemele@google.com>, <shawnku@google.com>,
         <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH v2 05/16] mt76: mt7921: add MT7921_COMMON module
-Date:   Sat, 18 Sep 2021 07:59:21 +0800
-Message-ID: <23bf9455d505c19fc484de533098b98b08804935.1631918993.git.objelf@gmail.com>
+        <linux-mediatek@lists.infradead.org>, Sean Wang <objelf@gmail.com>
+Subject: [PATCH v2 00/16] Add MT7921 SDIO support
+Date:   Sat, 18 Sep 2021 07:59:16 +0800
+Message-ID: <cover.1631918993.git.objelf@gmail.com>
 X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <cover.1631918993.git.objelf@gmail.com>
-References: <cover.1631918993.git.objelf@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
@@ -50,240 +48,141 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Sean Wang <objelf@gmail.com>
 
-This is a preliminary patch to introduce mt7921s support.
+The patchset adds the SDIO support to the MT7921 driver, basically are
+made up of 3 parts.
 
-MT7921_COMMON module grouping bus independent objects the both mt7921e and
-mt7921s can share with and have to rely on.
+PART 1: patch 1-5, 8-9 and 12-14
+These are preliminary patches for mt7921s driver to refactor and reuse the
+current mt7921e driver as much as possible.
 
-Tested-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/Kconfig  | 8 ++++++--
- drivers/net/wireless/mediatek/mt76/mt7921/Makefile | 7 ++++---
- drivers/net/wireless/mediatek/mt76/mt7921/init.c   | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c    | 6 ++++++
- drivers/net/wireless/mediatek/mt76/mt7921/main.c   | 7 +++++++
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c    | 9 +++++++++
- 6 files changed, 34 insertions(+), 5 deletions(-)
+PART 2: patch 6-7, 10
+These are preliminary patches for mt7921s driver to refactor and reuse the
+current mt7663s driver as much as possible.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
-index 001f2b9cec26..071746809b1c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
-@@ -1,8 +1,12 @@
- # SPDX-License-Identifier: ISC
--config MT7921E
--	tristate "MediaTek MT7921E (PCIe) support"
-+config MT7921_COMMON
-+	tristate
- 	select MT76_CONNAC_LIB
- 	select WANT_DEV_COREDUMP
-+
-+config MT7921E
-+	tristate "MediaTek MT7921E (PCIe) support"
-+	select MT7921_COMMON
- 	depends on MAC80211
- 	depends on PCI
- 	help
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-index 4cb0b000cfe1..8cea896d5965 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-@@ -1,9 +1,10 @@
- # SPDX-License-Identifier: ISC
- 
-+obj-$(CONFIG_MT7921_COMMON) += mt7921-common.o
- obj-$(CONFIG_MT7921E) += mt7921e.o
- 
- CFLAGS_trace.o := -I$(src)
- 
--mt7921e-y := pci.o pci_mac.o pci_mcu.o mac.o mcu.o dma.o eeprom.o main.o \
--	     init.o debugfs.o trace.o
--mt7921e-$(CONFIG_NL80211_TESTMODE) += testmode.o
-+mt7921-common-y := mac.o mcu.o eeprom.o main.o init.o debugfs.o trace.o
-+mt7921-common-$(CONFIG_NL80211_TESTMODE) += testmode.o
-+mt7921e-y := pci.o pci_mac.o pci_mcu.o dma.o
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index f0fd32c424c6..d310d6e1e566 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -145,6 +145,7 @@ int mt7921_mac_init(struct mt7921_dev *dev)
- 
- 	return mt76_connac_mcu_set_rts_thresh(&dev->mt76, 0x92b, 0);
- }
-+EXPORT_SYMBOL_GPL(mt7921_mac_init);
- 
- static int __mt7921_init_hardware(struct mt7921_dev *dev)
- {
-@@ -285,3 +286,4 @@ int mt7921_register_device(struct mt7921_dev *dev)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(mt7921_register_device);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 24f24a2d8395..5812b518a571 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -39,6 +39,7 @@ static struct mt76_wcid *mt7921_rx_get_wcid(struct mt7921_dev *dev,
- void mt7921_sta_ps(struct mt76_dev *mdev, struct ieee80211_sta *sta, bool ps)
- {
- }
-+EXPORT_SYMBOL_GPL(mt7921_sta_ps);
- 
- bool mt7921_mac_wtbl_update(struct mt7921_dev *dev, int idx, u32 mask)
- {
-@@ -169,6 +170,7 @@ void mt7921_mac_sta_poll(struct mt7921_dev *dev)
- 
- 	rcu_read_unlock();
- }
-+EXPORT_SYMBOL_GPL(mt7921_mac_sta_poll);
- 
- static void
- mt7921_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
-@@ -920,6 +922,7 @@ void mt7921_mac_write_txwi(struct mt7921_dev *dev, __le32 *txwi,
- 		txwi[3] |= cpu_to_le32(MT_TXD3_BA_DISABLE);
- 	}
- }
-+EXPORT_SYMBOL_GPL(mt7921_mac_write_txwi);
- 
- void mt7921_tx_check_aggr(struct ieee80211_sta *sta, __le32 *txwi)
- {
-@@ -944,6 +947,7 @@ void mt7921_tx_check_aggr(struct ieee80211_sta *sta, __le32 *txwi)
- 	if (!test_and_set_bit(tid, &msta->ampdu_state))
- 		ieee80211_start_tx_ba_session(sta, tid, 0);
- }
-+EXPORT_SYMBOL_GPL(mt7921_tx_check_aggr);
- 
- static bool
- mt7921_mac_add_txs_skb(struct mt7921_dev *dev, struct mt76_wcid *wcid, int pid,
-@@ -1132,6 +1136,7 @@ void mt7921_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 		break;
- 	}
- }
-+EXPORT_SYMBOL_GPL(mt7921_queue_rx_skb);
- 
- void mt7921_mac_reset_counters(struct mt7921_phy *phy)
- {
-@@ -1247,6 +1252,7 @@ void mt7921_update_channel(struct mt76_phy *mphy)
- 
- 	mt76_connac_power_save_sched(mphy, &dev->pm);
- }
-+EXPORT_SYMBOL_GPL(mt7921_update_channel);
- 
- static void
- mt7921_vif_connect_iter(void *priv, u8 *mac,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index c51266e40cb4..cbffa8478329 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -237,6 +237,7 @@ int __mt7921_start(struct mt7921_phy *phy)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(__mt7921_start);
- 
- static int mt7921_start(struct ieee80211_hw *hw)
- {
-@@ -646,6 +647,7 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(mt7921_mac_sta_add);
- 
- void mt7921_mac_sta_assoc(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 			  struct ieee80211_sta *sta)
-@@ -667,6 +669,7 @@ void mt7921_mac_sta_assoc(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 
- 	mt7921_mutex_release(dev);
- }
-+EXPORT_SYMBOL_GPL(mt7921_mac_sta_assoc);
- 
- void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta)
-@@ -698,6 +701,7 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 
- 	mt76_connac_power_save_sched(&dev->mphy, &dev->pm);
- }
-+EXPORT_SYMBOL_GPL(mt7921_mac_sta_remove);
- 
- void mt7921_tx_worker(struct mt76_worker *w)
- {
-@@ -1250,3 +1254,6 @@ const struct ieee80211_ops mt7921_ops = {
- 	.flush = mt7921_flush,
- 	.set_sar_specs = mt7921_set_sar_specs,
- };
-+EXPORT_SYMBOL_GPL(mt7921_ops);
-+
-+MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 5553221b7f5c..866b8797f16e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -222,6 +222,8 @@ int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(mt7921_mcu_parse_response);
-+
- 
- int mt7921_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
- 			    int cmd, int *wait_seq)
-@@ -319,6 +321,7 @@ int mt7921_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
- 
- 	return mt76_tx_queue_skb_raw(dev, mdev->q_mcu[txq], skb, 0);
- }
-+EXPORT_SYMBOL_GPL(mt7921_mcu_send_message);
- 
- static void
- mt7921_mcu_scan_event(struct mt7921_dev *dev, struct sk_buff *skb)
-@@ -600,6 +603,7 @@ int mt7921_mcu_restart(struct mt76_dev *dev)
- 	return mt76_mcu_send_msg(dev, MCU_CMD_NIC_POWER_CTRL, &req,
- 				 sizeof(req), false);
- }
-+EXPORT_SYMBOL_GPL(mt7921_mcu_restart);
- 
- static u32 mt7921_get_data_mode(struct mt7921_dev *dev, u32 info)
- {
-@@ -903,11 +907,13 @@ int mt7921_run_firmware(struct mt7921_dev *dev)
- 
- 	return mt76_connac_mcu_get_nic_capability(&dev->mphy);
- }
-+EXPORT_SYMBOL_GPL(mt7921_run_firmware);
- 
- void mt7921_mcu_exit(struct mt7921_dev *dev)
- {
- 	skb_queue_purge(&dev->mt76.mcu.res_q);
- }
-+EXPORT_SYMBOL_GPL(mt7921_mcu_exit);
- 
- int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif)
- {
-@@ -1033,6 +1039,7 @@ int mt7921_mcu_set_eeprom(struct mt7921_dev *dev)
- 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_EFUSE_BUFFER_MODE,
- 				 &req, sizeof(req), true);
- }
-+EXPORT_SYMBOL_GPL(mt7921_mcu_set_eeprom);
- 
- int mt7921_mcu_get_eeprom(struct mt7921_dev *dev, u32 offset)
- {
-@@ -1215,6 +1222,7 @@ int mt7921_mcu_drv_pmctrl(struct mt7921_dev *dev)
- 
- 	return err;
- }
-+EXPORT_SYMBOL_GPL(mt7921_mcu_drv_pmctrl);
- 
- int mt7921_mcu_fw_pmctrl(struct mt7921_dev *dev)
- {
-@@ -1236,6 +1244,7 @@ int mt7921_mcu_fw_pmctrl(struct mt7921_dev *dev)
- 
- 	return err;
- }
-+EXPORT_SYMBOL_GPL(mt7921_mcu_fw_pmctrl);
- 
- int mt7921_mcu_set_beacon_filter(struct mt7921_dev *dev,
- 				 struct ieee80211_vif *vif,
--- 
+PART 3: patch 11 and 15-16
+These are specific patches for mt7921s driver and reset mechanism in the
+same framework where mt7921e have been supported.
+
+The patchset are built and generated against the current mt76 tree plus
+the extra pending patches [1] expected to be merged to mt76 tree soon to
+help the review and merge process be easier.
+
+The change list from v1 to v2
+1. rework the whole driver according to the new patches added
+   ("mt76: introduce __mt76_mcu_send_firmware routine"),
+   ("mt76: not accounting the MCU header size in __mt76_mcu_send_firmware for mt7915/21") and
+   ("mt76: sdio: move common code in mt76_sdio module")
+2. drop pci_init.c and sdio_init.c by moving the related logic to pci.c and sdio.c, respectively.
+3. cosmetics the patches like removing unnecessary new line and adding an extra space to fixed_map table.
+4. fix typo in commit message
+
+[1] The pending patch list prior to add MT7921 SDIO support
+
+da0054ae6b1f mt76: mt7921s: add reset support
+31c979d37209 mt76: mt7921: introduce mt7921s support
+c8f8caad718f mt76: mt7921: refactor mt7921_mcu_send_message
+f4bb6338d638 mt76: mt7921: rely on mcu_get_nic_capability
+0bfd21e29498 mt76: connac: extend mcu_get_nic_capability
+3b5f8d1815a4 mt76: sdio: extend sdio module to support CONNAC2
+28669a9ceff5 mt76: sdio: move common code in mt76_sdio module
+ad7ba2b9c6af mt76: mt7921: use physical addr to unify register access
+a6aebd446a9a mt76: mt7921: make all event parser reusable between mt7921s and mt7921e
+0c52f915f728 mt76: mt7663s: rely on mcu reg access utility
+42112d6b7b1c mt76: connac: move mcu reg access utility routines in mt76_connac_lib module
+23bf9455d505 mt76: mt7921: add MT7921_COMMON module
+688be52542bb mt76: mt7921: refactor init.c to be bus independent
+099a0527d05c mt76: mt7921: refactor mcu.c to be bus independent
+378767d66e2b mt76: mt7921: refactor dma.c to be pcie specific
+e15c4c1be3ea mt76: mt7921: refactor mac.c to be bus independent
+b72eaca3c81b mt76: not accounting the MCU header size in __mt76_mcu_send_firmware for mt7915/21
+870fe1bc5fc8 mt76: introduce __mt76_mcu_send_firmware routine
+465a8a6e834f mt76: schedule status timeout at dma completion
+4d3b6422fe5e mt76: substitute sk_buff_head status_list with spinlock_t status_lock
+13d50c723b79 mt76: remove mt76_wcid pointer from mt76_tx_status_check signature
+ed46465dc741 mt76: introduce packet_id idr
+b3568b1f391a mt76: mt7921: add 6GHz support
+6605e1e5c2be mt76: add 6GHz support
+1dcae1bad280 mt76: connac: enable hw amsdu @ 6GHz
+88c34fb4fdef mt76: connac: add 6GHz support to mt76_connac_mcu_uni_add_bss
+8bb780867211 mt76: connac: add 6GHz support to mt76_connac_mcu_sta_tlv
+6e021ff24950 mt76: connac: set 6G phymode in single-sku support
+21a96eed203d mt76: connac: add 6GHz support to mt76_connac_mcu_set_channel_domain
+b70bae155a51 mt76: connac: enable 6GHz band for hw scan
+92e29c77494c mt76: mt7921: remove mt7921_sta_stats
+56ea41ec4ae3 mt76: mt7921: remove mcu rate reporting code
+94b97e96549e mt76: mt7921: report tx rate directly from tx status
+8dd12eb23009 mt76: mt7921: add support for tx status reporting
+69328a635189 mt76: mt7921: start reworking tx rate reporting
+b915a7d2b882 mt76: mt7921: update mib counters dumping phy stats
+2a694a754e32 mt76: mt7921: always wake device if necessary in debugfs
+067927a52e93 mt76: mt7921: move mt7921_queue_rx_skb to mac.c
+a866733d977d mt76: mt7921: fix retrying release semaphore without end
+8853d1b5b6bf mt76: mt7921: robustify hardware initialization flow
+
+Lorenzo Bianconi (1):
+  mt76: sdio: move common code in mt76_sdio module
+
+Sean Wang (15):
+  mt76: mt7921: refactor mac.c to be bus independent
+  mt76: mt7921: refactor dma.c to be pcie specific
+  mt76: mt7921: refactor mcu.c to be bus independent
+  mt76: mt7921: refactor init.c to be bus independent
+  mt76: mt7921: add MT7921_COMMON module
+  mt76: connac: move mcu reg access utility routines in mt76_connac_lib
+    module
+  mt76: mt7663s: rely on mcu reg access utility
+  mt76: mt7921: make all event parser reusable between mt7921s and
+    mt7921e
+  mt76: mt7921: use physical addr to unify register access
+  mt76: sdio: extend sdio module to support CONNAC2
+  mt76: connac: extend mcu_get_nic_capability
+  mt76: mt7921: rely on mcu_get_nic_capability
+  mt76: mt7921: refactor mt7921_mcu_send_message
+  mt76: mt7921: introduce mt7921s support
+  mt76: mt7921s: add reset support
+
+ drivers/net/wireless/mediatek/mt76/Makefile   |   2 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  22 ++
+ .../wireless/mediatek/mt76/mt7615/Makefile    |   2 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  28 --
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |   6 -
+ .../net/wireless/mediatek/mt76/mt7615/sdio.c  | 282 +------------
+ .../wireless/mediatek/mt76/mt7615/sdio_mcu.c  |  11 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  |  93 +++++
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |   2 +
+ .../net/wireless/mediatek/mt76/mt7921/Kconfig |  18 +-
+ .../wireless/mediatek/mt76/mt7921/Makefile    |   8 +-
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |  18 +-
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   |  38 +-
+ .../wireless/mediatek/mt76/mt7921/eeprom.c    | 101 -----
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  52 +--
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 372 ++----------------
+ .../net/wireless/mediatek/mt76/mt7921/mac.h   |   4 +
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |   7 +
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 138 ++-----
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  94 ++++-
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |  49 ++-
+ .../wireless/mediatek/mt76/mt7921/pci_mac.c   | 346 ++++++++++++++++
+ .../wireless/mediatek/mt76/mt7921/pci_mcu.c   | 115 ++++++
+ .../net/wireless/mediatek/mt76/mt7921/regs.h  |  22 +-
+ .../net/wireless/mediatek/mt76/mt7921/sdio.c  | 285 ++++++++++++++
+ .../wireless/mediatek/mt76/mt7921/sdio_mac.c  | 220 +++++++++++
+ .../wireless/mediatek/mt76/mt7921/sdio_mcu.c  | 135 +++++++
+ drivers/net/wireless/mediatek/mt76/sdio.c     | 282 +++++++++++++
+ .../mediatek/mt76/{mt7615 => }/sdio.h         |  50 ++-
+ .../mediatek/mt76/{mt7615 => }/sdio_txrx.c    | 171 +++++---
+ 30 files changed, 1982 insertions(+), 991 deletions(-)
+ delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
+ rename drivers/net/wireless/mediatek/mt76/{mt7615 => }/sdio.h (68%)
+ rename drivers/net/wireless/mediatek/mt76/{mt7615 => }/sdio_txrx.c (59%)
+
+--
 2.25.1
 
