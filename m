@@ -2,130 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D4CF410B4E
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Sep 2021 13:41:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83871410BEB
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Sep 2021 16:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231426AbhISLmb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Sep 2021 07:42:31 -0400
-Received: from mout.gmx.net ([212.227.17.21]:51267 "EHLO mout.gmx.net"
+        id S232629AbhISOfo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Sep 2021 10:35:44 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:39999 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230051AbhISLmb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Sep 2021 07:42:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1632051657;
-        bh=zcMJKXoxY0q09KFAPU9VFCC+gFn0wKfbaB0yYvTThgM=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=Cjv1jpUK7CYyxLJCRDKAP/AKCnkoiCFyqPknEquYPvNyQH2dkiZ95NY2nBzuj6Mfp
-         dOWtTuuK5mWoAvTaPKwfMDqo1PgQ8fQIKAvQpXApHWjSPxhf2PznPxvEDFJQSAuMNW
-         873diz/YoT4FDNPasWXsDgcuI4VdwQ6jUJxK8CRY=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([79.150.72.99]) by mail.gmx.net
- (mrgmx104 [212.227.17.174]) with ESMTPSA (Nemesis) id
- 1MDQeU-1mZ2jv0Qa6-00ATTn; Sun, 19 Sep 2021 13:40:57 +0200
-From:   Len Baker <len.baker@gmx.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Len Baker <len.baker@gmx.com>, Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] nl80211: prefer struct_size over open coded arithmetic
-Date:   Sun, 19 Sep 2021 13:40:40 +0200
-Message-Id: <20210919114040.41522-1-len.baker@gmx.com>
-X-Mailer: git-send-email 2.25.1
+        id S232537AbhISOfn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 19 Sep 2021 10:35:43 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1632062058; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=AWCONV14urNUq4czq5gXObi3oJ1UL0RYjlDcTr1YGqs=;
+ b=FVJ1re8j4KQkpJxP/GtCMYjNR85BB23VXqau8WDaGV2Yj7wfvHAPQ0T4oinyU1MluNTftkJU
+ IyggxU0btgNz3vQsjkhUqsBOJlfGLAuBUOfqZazudZRr4gvTS8ApIxNWwLDpXAlExonZoEZR
+ zSGYc4AqMmjIFO6dL1B/B+gu0+M=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 61474a67bd6681d8edbc3254 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 19 Sep 2021 14:34:15
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id EF5FCC43616; Sun, 19 Sep 2021 14:34:14 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 36873C43460;
+        Sun, 19 Sep 2021 14:34:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 36873C43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8TLI47CD+YebazCO/52EvQKfcvJPJGRJcO7Rtr9g4W7wWhbe46O
- iUtegOwdVUxuSFfOuS4C/inGN5O91I9LZW7/83hJYbXPx+KhbFYsprZ/1TVuSCCLs7HoFdM
- ejmGhtDtYFO6s76cCv/+VcZan3g+pgtOFWwTClg0paSD5g/OAUGipdUCQYjNKYXJQSXLJap
- sV1am2MQkH2fwpXv+GNXA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:oCn579lJzVg=:wiDu61UsML4WMCKlWU7zIY
- zKngrsagcFnpKhIEnot7bqff58/FoEuLqU29ei9FcdJBSqxrBgqDKUJhIaxld//bx8xhasvh7
- sKS6j/RcLPAgca5QWJTeKeq8zFw/0dSwHRYw34uWYQs/dAJiXNdaFP9LPRFR8XESkpB1DXC7X
- 9iBR/mlBnJmEytTTWI579ffmFo3AGjy0H+qm0iXDdKzgAs4qKHhTiJQSRHVlY0WSjeubvK35u
- KfSPwwPC9Hl5dEmekZIB8Ic1hYu82LeoV2bMdYTzGYWablFLI+WGtUpIOJMG9ASrZkCuhC1N4
- 47GkqJFX3f1ZvZG6YxInW69Bmxs/B/mVo+qTAH5IYnn4+ReR7QPIsQn+CEi9RQuTuRPtrlurv
- llIF3KToDpaPGNDtrXwakPsVefD5XYegKXqDSk43cGwUYqFigNXM6Ed8cPqaWCj5eAFmJgY20
- 25FhlT+CD0S/zYYPdOU38/fFN2C6KNDYA6Im3TX50fPEdvTIf+rzdDgnmy26UDRpvaN9WAXOH
- L7lS7oajJo4CeXoU6NhPaa443J+s+/TOHtLpOZ04eobr+rCcSrWpUwrAIu9fo7xkgpI6EQLGI
- RLXSdn7axqg3K3tM1CgZ+fXDHz82/Pf0VjhOayirCLp0/8PCgSxuY9xKEhnOo0fTB6IkkNGeA
- VnevqQiRAqICSSVjvfUGp9Xz/okiv935KoWoaVHUlkRv8lh7MncApDuYbgnddJLptm6OTIBw2
- zu5S2aV51H6WT/9HuEPjJ1k0wliyDHnpMAnlqVyTb/DZh+QUZcRmm0IFO/zNZBWuVH37hYU5g
- 3hJGvact71ARd/b2Xw2EaGDp2W95WmiRfSiPUFfQwIURyT26gYVP7z34JcEUesCOw9pjFDngv
- efB4Q3xDBJwcLOsk8L8BFj/Cl0mRmT4OeljfPIMAXN67aVsTu8MbAKvLlMHJm29EXAjYrOLjJ
- FKNwUATAbIOTCVKsTft05flQ9mBk7Vmkly5L1b1sevUoTH08LIR0Pg016dSeIo6KiHvE/H8Y0
- 1DVcVeMyY+yaZoR4NwOB8Nw6bDVVYppPxNNW7qnSKCrVxvcIdZF9f96XbMmZR+Gb9P+8cgecs
- NSopheKd2MzbwA=
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] iwlwifi: mvm: d3: Fix off by ones in
+ iwl_mvm_wowlan_get_rsc_v5_data()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210831081802.GA9846@kili>
+References: <20210831081802.GA9846@kili>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Sara Sharon <sara.sharon@intel.com>,
+        Naftali Goldstein <naftali.goldstein@intel.com>,
+        Dan Halperin <Dan1.Halperin@intel.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-Id: <20210919143414.EF5FCC43616@smtp.codeaurora.org>
+Date:   Sun, 19 Sep 2021 14:34:14 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-As noted in the "Deprecated Interfaces, Language Features, Attributes,
-and Conventions" documentation [1], size calculations (especially
-multiplication) should not be performed in memory allocator (or similar)
-function arguments due to the risk of them overflowing. This could lead
-to values wrapping around and a smaller allocation being made than the
-caller was expecting. Using those allocations could lead to linear
-overflows of heap memory and other misbehaviors.
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-So, use the struct_size() helper to do the arithmetic instead of the
-argument "size + count * size" in the kzalloc() functions.
+> These should be >= ARRAY_SIZE() instead of > ARRAY_SIZE() to prevent an
+> out of bounds write on the next line.
+> 
+> Fixes: 79e561f0f05a ("iwlwifi: mvm: d3: implement RSC command version 5")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Acked-by: Luca Coelho <luca@coelho.fi>
 
-Also, take the opportunity to refactor the memcpy() call to use the
-flex_array_size() helper.
+2 patches applied to wireless-drivers.git, thanks.
 
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#open-co=
-ded-arithmetic-in-allocator-arguments
+27a221f433b7 iwlwifi: mvm: d3: Fix off by ones in iwl_mvm_wowlan_get_rsc_v5_data()
+b6a46b4f6e4b iwlwifi: mvm: d3: missing unlock in iwl_mvm_wowlan_program_keys()
 
-Signed-off-by: Len Baker <len.baker@gmx.com>
-=2D--
- net/wireless/nl80211.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210831081802.GA9846@kili/
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index bf7cd4752547..b56856349ced 100644
-=2D-- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -11766,9 +11766,10 @@ static int nl80211_set_cqm_rssi(struct genl_info =
-*info,
- 	wdev_lock(wdev);
- 	if (n_thresholds) {
- 		struct cfg80211_cqm_config *cqm_config;
-+		size_t size =3D struct_size(cqm_config, rssi_thresholds,
-+					  n_thresholds);
-
--		cqm_config =3D kzalloc(sizeof(struct cfg80211_cqm_config) +
--				     n_thresholds * sizeof(s32), GFP_KERNEL);
-+		cqm_config =3D kzalloc(size, GFP_KERNEL);
- 		if (!cqm_config) {
- 			err =3D -ENOMEM;
- 			goto unlock;
-@@ -11777,7 +11778,8 @@ static int nl80211_set_cqm_rssi(struct genl_info *=
-info,
- 		cqm_config->rssi_hyst =3D hysteresis;
- 		cqm_config->n_rssi_thresholds =3D n_thresholds;
- 		memcpy(cqm_config->rssi_thresholds, thresholds,
--		       n_thresholds * sizeof(s32));
-+		       flex_array_size(cqm_config, rssi_thresholds,
-+				       n_thresholds));
-
- 		wdev->cqm_config =3D cqm_config;
- 	}
-@@ -15081,9 +15083,7 @@ static int nl80211_set_sar_specs(struct sk_buff *s=
-kb, struct genl_info *info)
- 	if (specs > rdev->wiphy.sar_capa->num_freq_ranges)
- 		return -EINVAL;
-
--	sar_spec =3D kzalloc(sizeof(*sar_spec) +
--			   specs * sizeof(struct cfg80211_sar_sub_specs),
--			   GFP_KERNEL);
-+	sar_spec =3D kzalloc(struct_size(sar_spec, sub_specs, specs), GFP_KERNEL=
-);
- 	if (!sar_spec)
- 		return -ENOMEM;
-
-=2D-
-2.25.1
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
