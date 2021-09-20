@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47F634115F2
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Sep 2021 15:40:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 877894115EF
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Sep 2021 15:40:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239398AbhITNlp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Sep 2021 09:41:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40090 "EHLO
+        id S239274AbhITNln (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Sep 2021 09:41:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237413AbhITNlm (ORCPT
+        with ESMTP id S230159AbhITNlm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 20 Sep 2021 09:41:42 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5C2DC061764
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2797C061574
         for <linux-wireless@vger.kernel.org>; Mon, 20 Sep 2021 06:40:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=s+cbGAdxw/sghZvm54YxPVpJu6bh644f9w+nKfC+KGI=;
-        t=1632145215; x=1633354815; b=lfIROpIXpwFHm93918CH5mQUm1VWa+WZC+JmA+nQMMOIi92
-        iAj+VPpuc0g8AavflW6iGexXK8dwcC4yUvuIjKYOIY9zmpGEaKpoIbwyAbukUIFn/ZnaUHMxoWoLK
-        OR+n0q4JDbTcH1nxDn9UmRiimrWfpJJd5EaHSQcKctsweFnRgaQXoj+l6scY7SiT4DdgdFixlNXYE
-        2h18KaPkf5krH0V+fDkrOrBwR7rmbefQ2wYoWgQwGsq32jCbiiiJ1AqqB6tp7dajA9bWEkEDevBVM
-        YbiLSXKh5Ycig6mDKD02xtYUel/N9UtKAlk23lH2dXRGhciibfEEy8xgLG5psL8w==;
+        Resent-Cc:Resent-Message-ID; bh=f1RUlEg6rAZNCIOyvGotkyjtFoVntWGLYrjEYkUGAGA=;
+        t=1632145215; x=1633354815; b=o6dbTQTC3VgROGi+5qkFBfYjq+qbWgNYH5NcV8lQqScBD6a
+        KEEeJHiuSLHPlR1Hm4qyjasIvh+W0XGr0wigF4CB9WrUGWPVNcgDZEO5mra7Acd1LAJCfOj6CoOC1
+        Xbruut4d++F5sLbgZ/ahjQQh7P5bWldlC6RwYhltwTMLKSxyJk1HooEwEuqtXXjI9W9gMKHfgpfr8
+        qUvy8pyy2ETPKDyGxLB0uZFU1SVgo0B1ve9nMcEXmKLTlbgJD7xtAXewo+exmMGppfMMZCrAK3poB
+        2IGNDEK70eBxHkawM5QUZu/HXNKqiqg8ImPBh3Uy/aK1CkC+6xOXmiSnzH9gEFYg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95-RC2)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1mSJWn-009SO7-8J;
+        id 1mSJWn-009SO7-Gw;
         Mon, 20 Sep 2021 15:40:13 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 2/6] mac80211: reduce stack usage in debugfs
-Date:   Mon, 20 Sep 2021 15:40:06 +0200
-Message-Id: <20210920154009.1387f44e7382.Ife043c169e6a44edace516fea9f8311a5ca4282a@changeid>
+Subject: [PATCH v2 3/6] mac80211: mesh: clean up rx_bcn_presp API
+Date:   Mon, 20 Sep 2021 15:40:07 +0200
+Message-Id: <20210920154009.a18ed3d2da6c.I1824b773a0fbae4453e1433c184678ca14e8df45@changeid>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210920154009.3110ff75be0c.Ib6a2ff9e9cc9bc6fca50fce631ec1ce725cc926b@changeid>
 References: <20210920154009.3110ff75be0c.Ib6a2ff9e9cc9bc6fca50fce631ec1ce725cc926b@changeid>
@@ -47,113 +47,119 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We put a few large buffers on the stack here, but it's easy to
-just allocate them on the heap, so do that.
+We currently pass the entire elements to the rx_bcn_presp()
+method, but only need mesh_config. Additionally, we use the
+length of the elements to calculate back the entire frame's
+length, but that's confusing - just pass the length of the
+frame instead.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/debugfs_sta.c | 38 +++++++++++++++++++++++++++++++-------
- 1 file changed, 31 insertions(+), 7 deletions(-)
+ net/mac80211/ieee80211_i.h |  7 +++----
+ net/mac80211/mesh.c        |  4 ++--
+ net/mac80211/mesh_sync.c   | 26 ++++++++++++--------------
+ 3 files changed, 17 insertions(+), 20 deletions(-)
 
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 8be28cfd6f64..da22725eca0f 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -5,7 +5,7 @@
-  * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright(c) 2016 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2020 Intel Corporation
-+ * Copyright (C) 2018 - 2021 Intel Corporation
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 159af6c3ffb0..d74031bb4ae6 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -631,10 +631,9 @@ struct ieee80211_if_ocb {
+  */
+ struct ieee802_11_elems;
+ struct ieee80211_mesh_sync_ops {
+-	void (*rx_bcn_presp)(struct ieee80211_sub_if_data *sdata,
+-			     u16 stype,
+-			     struct ieee80211_mgmt *mgmt,
+-			     struct ieee802_11_elems *elems,
++	void (*rx_bcn_presp)(struct ieee80211_sub_if_data *sdata, u16 stype,
++			     struct ieee80211_mgmt *mgmt, unsigned int len,
++			     const struct ieee80211_meshconf_ie *mesh_cfg,
+ 			     struct ieee80211_rx_status *rx_status);
+ 
+ 	/* should be called with beacon_data under RCU read lock */
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index 97095b7c9c64..65e9335b3614 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -1353,8 +1353,8 @@ static void ieee80211_mesh_rx_bcn_presp(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	if (ifmsh->sync_ops)
+-		ifmsh->sync_ops->rx_bcn_presp(sdata,
+-			stype, mgmt, &elems, rx_status);
++		ifmsh->sync_ops->rx_bcn_presp(sdata, stype, mgmt, len,
++					      elems.mesh_config, rx_status);
+ }
+ 
+ int ieee80211_mesh_finish_csa(struct ieee80211_sub_if_data *sdata)
+diff --git a/net/mac80211/mesh_sync.c b/net/mac80211/mesh_sync.c
+index fde93de2b80a..9e342cc2504c 100644
+--- a/net/mac80211/mesh_sync.c
++++ b/net/mac80211/mesh_sync.c
+@@ -3,6 +3,7 @@
+  * Copyright 2011-2012, Pavel Zubarev <pavel.zubarev@gmail.com>
+  * Copyright 2011-2012, Marco Porsch <marco.porsch@s2005.tu-chemnitz.de>
+  * Copyright 2011-2012, cozybit Inc.
++ * Copyright (C) 2021 Intel Corporation
   */
  
- #include <linux/debugfs.h>
-@@ -314,11 +314,17 @@ STA_OPS_RW(aql);
- static ssize_t sta_agg_status_read(struct file *file, char __user *userbuf,
- 					size_t count, loff_t *ppos)
+ #include "ieee80211_i.h"
+@@ -35,12 +36,12 @@ struct sync_method {
+ /**
+  * mesh_peer_tbtt_adjusting - check if an mp is currently adjusting its TBTT
+  *
+- * @ie: information elements of a management frame from the mesh peer
++ * @cfg: mesh config element from the mesh peer (or %NULL)
+  */
+-static bool mesh_peer_tbtt_adjusting(struct ieee802_11_elems *ie)
++static bool mesh_peer_tbtt_adjusting(const struct ieee80211_meshconf_ie *cfg)
  {
--	char buf[71 + IEEE80211_NUM_TIDS * 40], *p = buf;
-+	char *buf, *p;
- 	int i;
- 	struct sta_info *sta = file->private_data;
- 	struct tid_ampdu_rx *tid_rx;
- 	struct tid_ampdu_tx *tid_tx;
-+	ssize_t ret;
-+
-+	buf = kzalloc(71 + IEEE80211_NUM_TIDS * 40, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+	p = buf;
- 
- 	rcu_read_lock();
- 
-@@ -352,7 +358,9 @@ static ssize_t sta_agg_status_read(struct file *file, char __user *userbuf,
- 	}
- 	rcu_read_unlock();
- 
--	return simple_read_from_buffer(userbuf, count, ppos, buf, p - buf);
-+	ret = simple_read_from_buffer(userbuf, count, ppos, buf, p - buf);
-+	kfree(buf);
-+	return ret;
+-	return (ie->mesh_config->meshconf_cap &
+-			IEEE80211_MESHCONF_CAPAB_TBTT_ADJUSTING) != 0;
++	return cfg &&
++	       (cfg->meshconf_cap & IEEE80211_MESHCONF_CAPAB_TBTT_ADJUSTING);
  }
  
- static ssize_t sta_agg_status_write(struct file *file, const char __user *userbuf,
-@@ -434,10 +442,16 @@ static ssize_t sta_ht_capa_read(struct file *file, char __user *userbuf,
- 	if (_cond) \
- 			p += scnprintf(p, sizeof(buf)+buf-p, "\t" _str "\n"); \
- 	} while (0)
--	char buf[512], *p = buf;
-+	char *buf, *p;
- 	int i;
- 	struct sta_info *sta = file->private_data;
- 	struct ieee80211_sta_ht_cap *htc = &sta->sta.ht_cap;
-+	ssize_t ret;
-+
-+	buf = kzalloc(512, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+	p = buf;
- 
- 	p += scnprintf(p, sizeof(buf) + buf - p, "ht %ssupported\n",
- 			htc->ht_supported ? "" : "not ");
-@@ -504,16 +518,24 @@ static ssize_t sta_ht_capa_read(struct file *file, char __user *userbuf,
- 				htc->mcs.tx_params);
+ void mesh_sync_adjust_tsf(struct ieee80211_sub_if_data *sdata)
+@@ -76,11 +77,11 @@ void mesh_sync_adjust_tsf(struct ieee80211_sub_if_data *sdata)
  	}
- 
--	return simple_read_from_buffer(userbuf, count, ppos, buf, p - buf);
-+	ret = simple_read_from_buffer(userbuf, count, ppos, buf, p - buf);
-+	kfree(buf);
-+	return ret;
  }
- STA_OPS(ht_capa);
  
- static ssize_t sta_vht_capa_read(struct file *file, char __user *userbuf,
- 				 size_t count, loff_t *ppos)
+-static void mesh_sync_offset_rx_bcn_presp(struct ieee80211_sub_if_data *sdata,
+-				   u16 stype,
+-				   struct ieee80211_mgmt *mgmt,
+-				   struct ieee802_11_elems *elems,
+-				   struct ieee80211_rx_status *rx_status)
++static void
++mesh_sync_offset_rx_bcn_presp(struct ieee80211_sub_if_data *sdata, u16 stype,
++			      struct ieee80211_mgmt *mgmt, unsigned int len,
++			      const struct ieee80211_meshconf_ie *mesh_cfg,
++			      struct ieee80211_rx_status *rx_status)
  {
--	char buf[512], *p = buf;
-+	char *buf, *p;
- 	struct sta_info *sta = file->private_data;
- 	struct ieee80211_sta_vht_cap *vhtc = &sta->sta.vht_cap;
-+	ssize_t ret;
-+
-+	buf = kzalloc(512, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+	p = buf;
+ 	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
+ 	struct ieee80211_local *local = sdata->local;
+@@ -101,10 +102,7 @@ static void mesh_sync_offset_rx_bcn_presp(struct ieee80211_sub_if_data *sdata,
+ 	 */
+ 	if (ieee80211_have_rx_timestamp(rx_status))
+ 		t_r = ieee80211_calculate_rx_timestamp(local, rx_status,
+-						       24 + 12 +
+-						       elems->total_len +
+-						       FCS_LEN,
+-						       24);
++						       len + FCS_LEN, 24);
+ 	else
+ 		t_r = drv_get_tsf(local, sdata);
  
- 	p += scnprintf(p, sizeof(buf) + buf - p, "VHT %ssupported\n",
- 			vhtc->vht_supported ? "" : "not ");
-@@ -609,7 +631,9 @@ static ssize_t sta_vht_capa_read(struct file *file, char __user *userbuf,
- #undef PFLAG
- 	}
+@@ -119,7 +117,7 @@ static void mesh_sync_offset_rx_bcn_presp(struct ieee80211_sub_if_data *sdata,
+ 	 * dot11MeshNbrOffsetMaxNeighbor non-peer non-MBSS neighbors
+ 	 */
  
--	return simple_read_from_buffer(userbuf, count, ppos, buf, p - buf);
-+	ret = simple_read_from_buffer(userbuf, count, ppos, buf, p - buf);
-+	kfree(buf);
-+	return ret;
- }
- STA_OPS(vht_capa);
- 
+-	if (elems->mesh_config && mesh_peer_tbtt_adjusting(elems)) {
++	if (mesh_peer_tbtt_adjusting(mesh_cfg)) {
+ 		msync_dbg(sdata, "STA %pM : is adjusting TBTT\n",
+ 			  sta->sta.addr);
+ 		goto no_sync;
 -- 
 2.31.1
 
