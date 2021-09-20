@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EEE04114DC
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Sep 2021 14:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1130641153F
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Sep 2021 15:05:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237619AbhITMuM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Sep 2021 08:50:12 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:19309 "EHLO
+        id S235754AbhITNGl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Sep 2021 09:06:41 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:29017 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231562AbhITMuL (ORCPT
+        with ESMTP id S233205AbhITNGj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Sep 2021 08:50:11 -0400
+        Mon, 20 Sep 2021 09:06:39 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632142125; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1632143113; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=oXH2r2YAvNR0xujgASmm26KkyFaQDUEkr4gUUo/Kmwg=; b=gTjlS0+Fn0h+ry1BzuHBDr1ggzSPyELoNWkYPxARG2YPTS/B7wlOpxk6K2A/A13a8JYqV9oq
- kC4rIgtddTtD2pYIFLzcnx+CZi7JMOlF+hKJ2pt3iUSY5mVvs9LBMpmi4Z7tt9IGLz1u6Rn1
- iM1qq1w0NLaFO6pJM+LLdozkr4c=
+ bh=rYP9XQ7w+We4iygmsl6D0285+JXJr7eMTLl25yCtN+Q=; b=L8uaCSW80r0BWaQOfGe/uguZEoRUXvI/FXMqQY3QfLiccxe3vfW6Rw2bRxdzbWDaPHTUeplP
+ 2DnDY1ZvcnZSyjCjosN2qm6l9h3jPCTA17uncPpsM6gsaaIPSLjm5PyyXY6JZjrMoEcwv5HK
+ yd3x1sE+l+CEDYeXhEIoPv/y0uY=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 6148831165c3cc8c639e2839 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 20 Sep 2021 12:48:17
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 61488708bd6681d8edfb0eb5 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 20 Sep 2021 13:05:12
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2EC55C4338F; Mon, 20 Sep 2021 12:48:17 +0000 (UTC)
+        id 82EB8C43616; Mon, 20 Sep 2021 13:05:11 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,31 +38,26 @@ Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 038A9C4338F;
-        Mon, 20 Sep 2021 12:48:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 038A9C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0B6FBC4338F;
+        Mon, 20 Sep 2021 13:05:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 0B6FBC4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
+To:     Srinivasan Raju <srini.raju@purelifi.com>
+Cc:     mostafa.afgani@purelifi.com,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Bob Copeland <me@bobcopeland.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] [v2] ath5k: fix building with LEDS=m
-References: <20210920122359.353810-1-arnd@kernel.org>
-Date:   Mon, 20 Sep 2021 15:48:10 +0300
-In-Reply-To: <20210920122359.353810-1-arnd@kernel.org> (Arnd Bergmann's
-        message of "Mon, 20 Sep 2021 14:23:44 +0200")
-Message-ID: <87sfxzwgz9.fsf@codeaurora.org>
+        linux-kernel@vger.kernel.org (open list),
+        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
+Subject: Re: [PATCH] [v15] wireless: Initial driver submission for pureLiFi STA devices
+References: <20210226130810.119216-1-srini.raju@purelifi.com>
+        <20210818141343.7833-1-srini.raju@purelifi.com>
+Date:   Mon, 20 Sep 2021 16:05:03 +0300
+In-Reply-To: <20210818141343.7833-1-srini.raju@purelifi.com> (Srinivasan
+        Raju's message of "Wed, 18 Aug 2021 15:13:00 +0100")
+Message-ID: <87o88nwg74.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -70,35 +65,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> writes:
+(big picture comments first)
 
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> Randconfig builds still show a failure for the ath5k driver,
-> similar to the one that was fixed for ath9k earlier:
->
-> WARNING: unmet direct dependencies detected for MAC80211_LEDS
->   Depends on [n]: NET [=y] && WIRELESS [=y] && MAC80211 [=y] && (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=MAC80211 [=y])
->   Selected by [m]:
->   - ATH5K [=m] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_ATH [=y] && (PCI [=y] || ATH25) && MAC80211 [=y]
-> net/mac80211/led.c: In function 'ieee80211_alloc_led_names':
-> net/mac80211/led.c:34:22: error: 'struct led_trigger' has no member named 'name'
->    34 |         local->rx_led.name = kasprintf(GFP_KERNEL, "%srx",
->       |                      ^
->
-> Copying the same logic from my ath9k patch makes this one work
-> as well, stubbing out the calls to the LED subsystem.
->
-> Fixes: b64acb28da83 ("ath9k: fix build error with LEDS_CLASS=m")
-> Fixes: 72cdab808714 ("ath9k: Do not select MAC80211_LEDS by default")
-> Fixes: 3a078876caee ("ath5k: convert LED code to use mac80211 triggers")
-> Link: https://lore.kernel.org/all/20210722105501.1000781-1-arnd@kernel.org/
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> Changes in v2:
-> - avoid link failure when NEW_LEDS is disabled
+Srinivasan Raju <srini.raju@purelifi.com> writes:
 
-I'll queue this to v5.15.
+> This introduces the pureLiFi LiFi driver for LiFi-X, LiFi-XC
+> and LiFi-XL USB devices.
+>
+> This driver implementation has been based on the zd1211rw driver.
+>
+> Driver is based on 802.11 softMAC Architecture and uses
+> native 802.11 for configuration and management.
+>
+> The driver is compiled and tested in ARM, x86 architectures and
+> compiled in powerpc architecture.
+
+You should describe in the commit log what LiFi means, not everyone know
+the term and might mistake this as a regular Wi-Fi device (which it's
+not).
+
+> +	hw->wiphy->bands[NL80211_BAND_2GHZ] = &mac->band;
+
+Johannes comment about piggy-backing NL80211_BAND_2GHZ is not yet addressed:
+
+https://patchwork.kernel.org/project/linux-wireless/patch/20210212115030.124490-1-srini.raju@purelifi.com/
+
+I agree with Johannes, a Li-Fi driver should not claim to be a regular
+2.4 GHz Wi-Fi device.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
