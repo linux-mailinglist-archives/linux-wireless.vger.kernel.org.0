@@ -2,156 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AD80413A8D
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 21:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46F17413A7B
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 21:04:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234240AbhIUTNu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Sep 2021 15:13:50 -0400
-Received: from gateway33.websitewelcome.com ([192.185.146.130]:14407 "EHLO
-        gateway33.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231135AbhIUTNt (ORCPT
+        id S234106AbhIUTGC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Sep 2021 15:06:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44374 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234103AbhIUTGA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Sep 2021 15:13:49 -0400
-X-Greylist: delayed 1450 seconds by postgrey-1.27 at vger.kernel.org; Tue, 21 Sep 2021 15:13:48 EDT
-Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
-        by gateway33.websitewelcome.com (Postfix) with ESMTP id 0742586EE70
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Sep 2021 13:48:10 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id SkoLmejVujSwzSkoMm7s6r; Tue, 21 Sep 2021 13:48:10 -0500
-X-Authority-Reason: nr=8
+        Tue, 21 Sep 2021 15:06:00 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E8AC061760
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Sep 2021 12:04:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=DE7tJmoJY542ECw3zNe99FgfYCCZRmZ+e7TMY8BcwkI=; b=ydXAntc8wo6PEex7KQ+biJ4Ok4
-        kqiDaypCXy7PA53MZiT+wphL75V5V2rxZUxbVQgoM6i9XWx6YHoanCNTlPnV/ghZRgAl4st5d2GTC
-        YNj5IXr0Eo2QmSeJtWn9EvgpsR3X5Fxu6EPd8caMyS87EaJ76Dr3Xd/wxm1h9WQW8GSCyaPJ4UGmd
-        6B9wASWWXjU1ntxRGEOSF+W9MoisLFNceKTYv2u9DLSM8EmmqHtW5vnGO1HatUxZdF3PXXIoOYeVx
-        3a0+t6BATb/sMe3rsoAEBtL8SOL/VUjecYux4JxBNpyqIn3Su9bHGghNb+X4QcRKy9Bjh/tEge5P/
-        582q5ptA==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:36692 helo=[192.168.15.9])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1mSkoL-0010W9-Ey; Tue, 21 Sep 2021 13:48:09 -0500
-Subject: Re: [PATCH] nl80211: prefer struct_size over open coded arithmetic
-To:     Len Baker <len.baker@gmx.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210919114040.41522-1-len.baker@gmx.com>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Message-ID: <47961463-5b2c-dd6f-0e98-ea95c13409fb@embeddedor.com>
-Date:   Tue, 21 Sep 2021 13:51:58 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=H86o5NHsrnLzeXx/GkxhQlNri6K2y/oydtKq1IAb8uk=;
+        t=1632251071; x=1633460671; b=a9x1aho+IH6w0M6bvmUkvCuHDc3zBBtmf+5k8711TOLae2W
+        0MH1WOQWrIOdYZs4LJqEdpLzf+N2pp6OyCXl3M7w5cMRXFCZf+OKhvUtjg+mYxjTzPpqqg93f57A4
+        13F3oE/QTPpKyo0VJyNF+Ovh8je/nYD9NcaE+uWNt46PaYT+sGrRvdkqd74kwBzws2h3pmmw7n4Wq
+        MxwzpysXk+blz1+nvUPRihRdMIORcoMdecfKefPIRvdtuWWZhdoo6cdXMb5Y3oFikjvxPYoIReKgn
+        UKQv6RNkAlx6/UEQMzCaybKsXnKbEAU++2QmzKL6T7+uGJBfl6i1SfxhQZ9C/9/g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mSl48-009yRG-Kj;
+        Tue, 21 Sep 2021 21:04:28 +0200
+Message-ID: <92a61ea6f05d9c461eddced42ee75db944a191b1.camel@sipsolutions.net>
+Subject: Re: [PATCH] iwlwifi: add NL80211_EXT_FEATURE_CAN_REPLACE_PTK0
+ support
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Alexander Wetzel <alexander@wetzel-home.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     "luciano.coelho@intel.com" <luciano.coelho@intel.com>,
+        "emmanuel.grumbach@intel.com" <emmanuel.grumbach@intel.com>,
+        "linuxwifi@intel.com" <linuxwifi@intel.com>
+Date:   Tue, 21 Sep 2021 21:04:27 +0200
+In-Reply-To: <a245ea65-d862-6388-d163-49b99046dc08@wetzel-home.de> (sfid-20200922_204540_116426_B91E091B)
+References: <20200918171301.6942-1-alexander@wetzel-home.de>
+         <f6df593556c3f395997dfe42a71a69f4919a5911.camel@sipsolutions.net>
+         <c887ae58-983b-0f4b-3b00-8ffbb669f37a@wetzel-home.de>
+         <a245ea65-d862-6388-d163-49b99046dc08@wetzel-home.de>
+         (sfid-20200922_204540_116426_B91E091B)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-In-Reply-To: <20210919114040.41522-1-len.baker@gmx.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1mSkoL-0010W9-Ey
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.9]) [187.162.31.110]:36692
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 16
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi Alexander,
+
+On Tue, 2020-09-22 at 20:45 +0200, Alexander Wetzel wrote:
+> 
+> Ok, forget this patch, the mvm part is pointless.
+> The maximum we have to do is pausing the queues when we delete a key, no 
+> flush required at all... I'll look into that again and send an updated 
+> version:
+
+I know it's been (almost exactly) a year, but I was wondering about this
+scenario recently
+(due to e.g. https://bugzilla.kernel.org/show_bug.cgi?id=213059, though
+I'm not sure that report even makes sense).
+
+Did you ever send another patch? I can't seem to find any.
 
 
-On 9/19/21 06:40, Len Baker wrote:
-> As noted in the "Deprecated Interfaces, Language Features, Attributes,
-> and Conventions" documentation [1], size calculations (especially
-> multiplication) should not be performed in memory allocator (or similar)
-> function arguments due to the risk of them overflowing. This could lead
-> to values wrapping around and a smaller allocation being made than the
-> caller was expecting. Using those allocations could lead to linear
-> overflows of heap memory and other misbehaviors.
-> 
-> So, use the struct_size() helper to do the arithmetic instead of the
-> argument "size + count * size" in the kzalloc() functions.
-> 
-> Also, take the opportunity to refactor the memcpy() call to use the
-> flex_array_size() helper.
-> 
-> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments
-> 
-> Signed-off-by: Len Baker <len.baker@gmx.com>
-> ---
->  net/wireless/nl80211.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> index bf7cd4752547..b56856349ced 100644
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -11766,9 +11766,10 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
->  	wdev_lock(wdev);
->  	if (n_thresholds) {
->  		struct cfg80211_cqm_config *cqm_config;
-> +		size_t size = struct_size(cqm_config, rssi_thresholds,
-> +					  n_thresholds);
-> 
-> -		cqm_config = kzalloc(sizeof(struct cfg80211_cqm_config) +
-> -				     n_thresholds * sizeof(s32), GFP_KERNEL);
-> +		cqm_config = kzalloc(size, GFP_KERNEL);
+But basically, in mvm, we support two scenarios these days:
 
-I don't think variable _size_ is needed here; this is just fine:
+ 1) PN assigned by the driver, in iwl_mvm_set_tx_cmd_crypto(), with two 
+    sub-cases:
+    a) key material embedded into the TX command (CCMP, TKIP, WEP)
+    b) key material taken from firmware key offset (CCMP-256, GCMP)
+ 2) PN assigned by the device per the station, via the "new TX API"
+    selected in iwl_mvm_set_tx_params().
 
--               cqm_config = kzalloc(sizeof(struct cfg80211_cqm_config) +
--                                    n_thresholds * sizeof(s32), GFP_KERNEL);
-+               cqm_config = kzalloc(struct_size(cqm_config, rssi_thresholds,
-+                                                n_thresholds), GFP_KERNEL);
 
-Thanks
---
-Gustavo
+Am I wrong in thinking that both scenarios 1a) and 2) are completely
+acceptable for CAN_REPLACE_PTK0, since there's never any possibility of
+sending a frame with a mismatch between the PN assignment and key
+material?
 
->  		if (!cqm_config) {
->  			err = -ENOMEM;
->  			goto unlock;
-> @@ -11777,7 +11778,8 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
->  		cqm_config->rssi_hyst = hysteresis;
->  		cqm_config->n_rssi_thresholds = n_thresholds;
->  		memcpy(cqm_config->rssi_thresholds, thresholds,
-> -		       n_thresholds * sizeof(s32));
-> +		       flex_array_size(cqm_config, rssi_thresholds,
-> +				       n_thresholds));
-> 
->  		wdev->cqm_config = cqm_config;
->  	}
-> @@ -15081,9 +15083,7 @@ static int nl80211_set_sar_specs(struct sk_buff *skb, struct genl_info *info)
->  	if (specs > rdev->wiphy.sar_capa->num_freq_ranges)
->  		return -EINVAL;
-> 
-> -	sar_spec = kzalloc(sizeof(*sar_spec) +
-> -			   specs * sizeof(struct cfg80211_sar_sub_specs),
-> -			   GFP_KERNEL);
-> +	sar_spec = kzalloc(struct_size(sar_spec, sub_specs, specs), GFP_KERNEL);
->  	if (!sar_spec)
->  		return -ENOMEM;
-> 
-> --
-> 2.25.1
-> 
+However, it seems that scenario 1b) is what this patch attempted to
+handle, by flushing the TX queues when the new key is installed, and I'm
+not sure why you said it wasn't necessary - if the driver installs new
+key material in the device while there are frames that already have a PN
+set, then the old PN _might_ be used with a new key, leading to
+problems.
+
+There's a probabilistic defense against this, in that we attempt to
+reuse key offsets (the hw_key ID that goes into the TX command) as
+rarely as possible, so that if we put a frame with key offset 0 into the
+queue, and then reinstall the PTK, it would go to key offset 2 (1 being
+used by the GTK), and 0 would stay unless we did another rekeying or so.
+
+I guess in theory we could arrange -- on the hardware where case 1b) is
+even relevant, i.e. only 9260 since previous don't support GCMP, and
+later use case 2) -- to never put the rekeyed PTK into the same slot,
+that way, even if we do have to reuse the slot, it'd be with a different
+key? But in theory that might leak data to the wrong station or
+something ... functionally, it would lead to a rejection of the frame
+and it being dropped at the receiver, but security-wise it'd be a
+problem.
+
+
+Anyway, I'm not really sure why you thought the flush wasn't needed, it
+seems to me it is still needed in the case 1b).
+
+Theoretically, it seems we could rely on the "no key slot (offset)
+reuse" if we put some kind of barrier into the TX queues whenever we
+stop using a key slot, that way we'd know if it might still get used or
+not. If yes, we flush, but that basically never happens since there are
+a relatively large number of slots and typical use cases don't have so
+many keys.
+
+
+The other question I had was concerning the documented requirements for
+NL80211_EXT_FEATURE_CAN_REPLACE_PTK0, aren't those too strict? For
+reference, this is what it says now:
+
+> * Mac80211 drivers should set the @NL80211_EXT_FEATURE_CAN_REPLACE_PTK0 flag
+> * when they are able to replace in-use PTK keys according to the following
+> * requirements:
+> * 1) They do not hand over frames decrypted with the old key to
+>      mac80211 once the call to set_key() with command %DISABLE_KEY has been
+>      completed when also setting @IEEE80211_KEY_FLAG_GENERATE_IV for any key,
+
+This is I think a bit misleading, how's the RX-side related to
+GENERATE_IV? It seems to me that this requirement is to ensure we don't
+get a bad replay counter on RX, but then that's unrelated to
+GENERATE_IV?
+
+>   2) either drop or continue to use the old key for any outgoing frames queued
+>      at the time of the key deletion (including re-transmits),
+
+That's mostly true for iwlwifi, apart from the case 1b) key offset reuse
+I was explaining above.
+
+>   3) never send out a frame queued prior to the set_key() %SET_KEY command
+>      encrypted with the new key and
+
+This I don't really know why - I think maybe *this* was meant to have
+the "when also setting GENERATE_IV"?
+
+I don't think this is necessary if you ensure that the PN is assigned
+from the correct key? That is, it doesn't really apply in case 2) I
+mentioned?
+
+
+>   4) never send out a frame unencrypted when it should be encrypted.
+
+Obviously :)
+
+
+Thanks,
+johannes
+
