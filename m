@@ -2,99 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A961413594
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 16:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 823434135A5
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 16:52:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233701AbhIUOt0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Sep 2021 10:49:26 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:11979 "EHLO m43-7.mailgun.net"
+        id S233808AbhIUOx7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Sep 2021 10:53:59 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:13900 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233688AbhIUOtZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Sep 2021 10:49:25 -0400
+        id S233799AbhIUOx6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Sep 2021 10:53:58 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632235677; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=0Z5rU5WAi7fjvHbvWeQgflIhRU+xnMZWswvMEHdDCDM=; b=gBn+6CyC9Rl6HLyVCBTyTOVmoJoahPKvL5UqJ5nXdlkbJVuU8Tv4KE6Ye9aqbU5Q1vF6RT0q
- 5CGzHEWi7DA23KSNWFj7dl9yA7krwCf9SZkin8ghmF2PA1Zr45DVksaLdob111Fv2vK1fXhs
- 8OS22GBa+KYe9t3w7gbfyFAofk4=
+ s=smtp; t=1632235950; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=XTsonDR+y2PGouwjvRW3GrSDtHUgwEO9NPTd8ohLSrc=;
+ b=H3zlgewFlKBIRCWAI1z7HU3rMR60vJvBuPGbQmnBPQsxv8Gsa8LB/UY8lqIVggEaPvVWe6eC
+ /UsYzN6PFFZm/tMc9ofZzmI3DwSUA2CF2v8XTxpV1lugjrMqTBSRnmlIMKesjDdBcgvwW5wG
+ 84QvnhVSim3fHn7Rp0RF1WF7bhw=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 6149f09bbd6681d8edd05ad3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 21 Sep 2021 14:47:55
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 6149f1a0ec62f57c9afe98bc (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 21 Sep 2021 14:52:16
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 84D04C43616; Tue, 21 Sep 2021 14:47:54 +0000 (UTC)
+        id 2E740C43460; Tue, 21 Sep 2021 14:52:15 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 49491C4360D;
-        Tue, 21 Sep 2021 14:47:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 49491C4360D
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7A563C4338F;
+        Tue, 21 Sep 2021 14:52:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 7A563C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "tony0620emma\@gmail.com" <tony0620emma@gmail.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Timlee <timlee@realtek.com>, Kevin Yang <kevin_yang@realtek.com>
-Subject: Re: [PATCH 3/4] rtw88: support adaptivity for ETSI/JP DFS region
-References: <20210802063140.25670-1-pkshih@realtek.com>
-        <20210802063140.25670-4-pkshih@realtek.com>
-        <87ilzo4gyr.fsf@codeaurora.org>
-        <61a242c186bf453d80820d81e1c48464@realtek.com>
-Date:   Tue, 21 Sep 2021 17:47:48 +0300
-In-Reply-To: <61a242c186bf453d80820d81e1c48464@realtek.com> (Pkshih's message
-        of "Mon, 30 Aug 2021 06:46:57 +0000")
-Message-ID: <87y27qt27f.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/4] rtw88: upgrade rtw_regulatory mechanism and
+ mapping
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210830072014.12250-2-pkshih@realtek.com>
+References: <20210830072014.12250-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <timlee@realtek.com>, <kevin_yang@realtek.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-Id: <20210921145215.2E740C43460@smtp.codeaurora.org>
+Date:   Tue, 21 Sep 2021 14:52:15 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pkshih <pkshih@realtek.com> writes:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
->> > --- a/drivers/net/wireless/realtek/rtw88/main.c
->> > +++ b/drivers/net/wireless/realtek/rtw88/main.c
->> > @@ -23,6 +23,7 @@ EXPORT_SYMBOL(rtw_disable_lps_deep_mode);
->> >  bool rtw_bf_support = true;
->> >  unsigned int rtw_debug_mask;
->> >  EXPORT_SYMBOL(rtw_debug_mask);
->> > +bool rtw_edcca_enabled = true;
->> 
->> You are making rtw_edcca_enabled per driver, should it instead be per
->> device? If something is changed via debugfs the assumption is that the
->> value is per device.
->> 
->> For example, let's say you have two rtw88 devices attached on the same
->> system, device A and B. If a user changes edcca via debugfs on device A
->> it will also change the state in device B. Is that the desired
->> functionality? If yes, I think you should add a comment to
->> rtw_edcca_enabled explaining that.
->> 
->
-> As mentioned in commit message, the debugfs is expected to be used when debugging
-> in noisy environment. In that case, we think all rtw88 devices will probably
-> be affected. Besides, we believe that turning EDCCA off is a temporary state under
-> debugging.
->
-> Based on the two points, it seems no need to maintain rtw_edcca_enabled by device,
-> so a comment will be added to explain this.
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+> 
+> Mapping table from country code to rtw_regulatory, which manages tx power
+> limit according to countries, is updated. And mapping architecture is also
+> upgraded. For more precise control on tx power limit, it allows different
+> rtw_regulatory for different bands logically. Besides, a helper function
+> to query rtw_regulatory for current band under current country is provided.
+> 
+> For older chips, some newly added rtw_regulatory may not be configured.
+> To avoid that those chips have no limit on some countries mapping to a
+> newer rtw_regulatory after table update, a backward selection mechanism
+> of rtw_regulatory is introduced. It can help chips use a rtw_regulatory
+> which has been configured as an alternative of a newer one which is not
+> configured.
+> 
+> In addition, rtw88 actually doesn't manage channel plans by itself.
+> Instead, it follows them from stack. So, correct some naming about
+> chplan with regd, and remove the unnecessary channel control for now.
+> 
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Ok, fair enough.
+4 patches applied to wireless-drivers-next.git, thanks.
+
+f8509c38ecec rtw88: upgrade rtw_regulatory mechanism and mapping
+8d4fb3998c05 rtw88: add regulatory strategy by chip type
+7285eb9693a2 rtw88: support adaptivity for ETSI/JP DFS region
+fe7bc23a8c5e rtw88: move adaptivity mechanism to firmware
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210830072014.12250-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
