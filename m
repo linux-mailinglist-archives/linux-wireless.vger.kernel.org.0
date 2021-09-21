@@ -2,76 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBDD14130C6
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 11:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B4B413340
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 14:15:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231380AbhIUJfR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Sep 2021 05:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52980 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229894AbhIUJfR (ORCPT
+        id S231799AbhIUMQb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Sep 2021 08:16:31 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:50320 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231211AbhIUMQa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Sep 2021 05:35:17 -0400
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15FF4C061574;
-        Tue, 21 Sep 2021 02:33:49 -0700 (PDT)
-Received: by mail-qt1-x832.google.com with SMTP id m9so18313320qtk.4;
-        Tue, 21 Sep 2021 02:33:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=2m1Y4N/BOq+NqKJAMkY8dVs35ufagp3rh/2SLlxO+yw=;
-        b=PHqsCADRSnOOcmzAkr+sEQMCLGbN6VZc1gM0oI7OJsgtOvY5WQYYYxlrqYGX0GiKl2
-         FDF5oCs6w152XcOmjHAClUVqVjI/atVK/ARcOKeA2/j+iVcEJsyEJLNwxGcpyitBaprd
-         KasbQB4N0io4XOLP/nPl94fErZjCbcM6EzVV6LSlRwYfcQO1oFbHfw4ulhaD79m/31IC
-         ra90bqEy4zM6Qj0gE1llMur1x/z2BouQZFBg541fibW03D/KNzbosklc0VqWstpeEkUI
-         F/ylRVLCX3ExzjOWrRyWYd/g0sfbU38ocPi2eZu0GPJsYFhjnuNbqQxVj/doxi/QjFkf
-         VE2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=2m1Y4N/BOq+NqKJAMkY8dVs35ufagp3rh/2SLlxO+yw=;
-        b=Fq6oFsUi1EDVW4ZcVS1wLP130rtemoSe4dkxNmHl1zdHKng/2Y6xvko2sB35MKSivK
-         87TaC+rqEne0cYFZk/5v0gB8PXOENABM9vV4mf0B4DPKTRrnmu0tK+8rw9dMzPKICLUy
-         pr9SRCR1neD/v3fE/qYf1dce6I++SWnOT9qEWrErNpaC0yC2Cda+iIZzxJWL9dbtGKXo
-         O4ymZ64BwUt2wW56ifCWCp7q+G9yKrzu4JDzmGnEE75g0HnEDN4d+wi7VH1RFG2ooph5
-         9zTKFcU8ziVCQGebxLyoSH4PyFumYCtm153uISC5cyEwzWR3l+04K7kL6tPP6PM5etQo
-         7gvQ==
-X-Gm-Message-State: AOAM531egHI7zFlgO1HqGmyd/Q+RRFxhtQ0elJNFbNqqM0hTpEHB8ere
-        0Q4t3axhhyUbzM4cY0WZqtG1ztl2Nw6GuxA89njdLrNG42I=
-X-Google-Smtp-Source: ABdhPJxkrhzzmtEyZMOlnDUiZF/m3C/32JSMlWjQS9o8UIh8brMmCw7E2k59uh4d5i8w5/QYaDopDetp4a++cb19Ba4=
-X-Received: by 2002:a05:622a:394:: with SMTP id j20mr27110940qtx.196.1632216828040;
- Tue, 21 Sep 2021 02:33:48 -0700 (PDT)
+        Tue, 21 Sep 2021 08:16:30 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1632226501; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=Qa8YpI5GcR223JNcE4rFrVQd6SC5DSUEIG/mknI93ho=; b=kKS/5sUOZ0cN0cTmrg71z67EV3CuAs55llOQ/JfMr2IGhfSo8FBo4VwV3GZ43iYX90wB3OLp
+ 9DUXhdF1Ky0toLnXg/ek2c/DhmK8kX1cGEZa1E9GXgc4ovW9m69X7IpNCQSTgdrI1H9DF4oe
+ FdmRQL+5TViXXPMPI/BCki0MiZU=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 6149cca9ec62f57c9ad9b457 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 21 Sep 2021 12:14:33
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E6D26C43460; Tue, 21 Sep 2021 12:14:32 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7E36DC4338F;
+        Tue, 21 Sep 2021 12:14:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 7E36DC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jouni Malinen <jouni@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Seevalamuthu Mariappan <seevalam@codeaurora.org>,
+        Miles Hu <milehu@codeaurora.org>,
+        Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
+Subject: Re: [PATCH 3/3] ath11k: monitor mode clean up to use separate APIs
+References: <20210721162053.46290-1-jouni@codeaurora.org>
+        <20210721162053.46290-4-jouni@codeaurora.org>
+Date:   Tue, 21 Sep 2021 15:14:26 +0300
+In-Reply-To: <20210721162053.46290-4-jouni@codeaurora.org> (Jouni Malinen's
+        message of "Wed, 21 Jul 2021 19:20:53 +0300")
+Message-ID: <87ilyuunvh.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-From:   Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Date:   Tue, 21 Sep 2021 14:33:37 +0500
-Message-ID: <CABXGCsODP8ze_mvzfJKcRYxuS-esVgHXAvDXS5KN3xFUN6bWgA@mail.gmail.com>
-Subject: [Bug] Driver mt7921e cause computer reboot.
-To:     Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        sean.wang@mediatek.com,
-        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
-        objelf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi folks.
-Driver mt7921e causes computer reboot.
-Yesterday I buyed laptop ASUS ROG Strix G15 Advantage Edition G513
-G513QY-HQ007. First thing, I installed my favorite Linux distribution
-there. Everything would be fine, but after setting up Wi-Fi, the
-laptop began to reboot infinitely. Moreover, at the next boot, the
-reboot occurs before the login screen appears.
-I interrupted this infinite reboot loop after disabling Wi-Fi in the BIOS.
-In the kernel log, if looked via journalctl, then nothing suspicious is visible.
-I would still like Wi-Fi to work too. Could you help me with this?
+Jouni Malinen <jouni@codeaurora.org> writes:
 
+> From: Seevalamuthu Mariappan <seevalam@codeaurora.org>
+>
+> If monitor interface is enabled in co-exist mode, only local traffic are
+> captured. It's caused by missing monitor vdev in co-exist mode. So,
+> monitor mode clean up is done with separate Monitor APIs. For this,
+> introduce monitor_started and monitor_vdev_created boolean flags.
+>
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01725-QCAHKSWPL_SILICONZ-1
+>
+> Co-developed-by: Miles Hu <milehu@codeaurora.org>
+> Signed-off-by: Miles Hu <milehu@codeaurora.org>
+> Co-developed-by: Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
+> Signed-off-by: Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
+> Signed-off-by: Seevalamuthu Mariappan <seevalam@codeaurora.org>
+> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath11k/core.h  |   5 --
+>  drivers/net/wireless/ath/ath11k/dp_rx.c |   2 +-
+>  drivers/net/wireless/ath/ath11k/dp_tx.c |   9 +-
+>  drivers/net/wireless/ath/ath11k/mac.c   | 112 ++++++++++++++----------
+>  4 files changed, 73 insertions(+), 55 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+> index 3cddab695031..0ad5a935b52b 100644
+> --- a/drivers/net/wireless/ath/ath11k/core.h
+> +++ b/drivers/net/wireless/ath/ath11k/core.h
+> @@ -192,10 +192,6 @@ enum ath11k_dev_flags {
+>  	ATH11K_FLAG_HTC_SUSPEND_COMPLETE,
+>  };
+>  
+> -enum ath11k_monitor_flags {
+> -	ATH11K_FLAG_MONITOR_ENABLED,
+> -};
+> -
+>  struct ath11k_vif {
+>  	u32 vdev_id;
+>  	enum wmi_vdev_type vdev_type;
+> @@ -478,7 +474,6 @@ struct ath11k {
+>  
+>  	unsigned long dev_flags;
+>  	unsigned int filter_flags;
+> -	unsigned long monitor_flags;
+>  	u32 min_tx_power;
+>  	u32 max_tx_power;
+>  	u32 txpower_limit_2g;
+> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+> index 9a224817630a..6fde70914e1a 100644
+> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
+> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+> @@ -5029,7 +5029,7 @@ int ath11k_dp_rx_process_mon_rings(struct ath11k_base *ab, int mac_id,
+>  	struct ath11k *ar = ath11k_ab_to_ar(ab, mac_id);
+>  	int ret = 0;
+>  
+> -	if (test_bit(ATH11K_FLAG_MONITOR_ENABLED, &ar->monitor_flags))
+> +	if (ar->monitor_started)
+>  		ret = ath11k_dp_mon_process_rx(ab, mac_id, napi, budget);
+>  	else
+>  		ret = ath11k_dp_rx_process_mon_status(ab, mac_id, napi, budget);
 
-kernel log: https://pastebin.com/tdn9jbMy
-lspci: https://pastebin.com/eD8scBSP
-lsusb: https://pastebin.com/SW9EUt8u
+Moving from test_bit() to a boolean looks racy to me, I don't see how
+monitor_started is serialised.
+
+And why move away from monitor_flags and having separate booleans
+anyway? I would monitor_conf_enabled and monitor_started from patch 2 to
+use monitor_flags.
+
+> @@ -1076,11 +1076,16 @@ int ath11k_dp_tx_htt_monitor_mode_ring_config(struct ath11k *ar, bool reset)
+>  
+>  	for (i = 0; i < ab->hw_params.num_rxmda_per_pdev; i++) {
+>  		ring_id = dp->rx_mon_status_refill_ring[i].refill_buf_ring.ring_id;
+> -		if (!reset)
+> +		if (!reset) {
+>  			tlv_filter.rx_filter =
+>  					HTT_RX_MON_FILTER_TLV_FLAGS_MON_STATUS_RING;
+> -		else
+> +		} else {
+>  			tlv_filter = ath11k_mac_mon_status_filter_default;
+> +#ifdef CONFIG_ATH11K_DEBUGFS
+> +			if (ar->debug.extd_rx_stats)
+> +				tlv_filter.rx_filter = ar->debug.rx_filter;
+> +#endif
+
+This should use ath11k_debugfs_is_extd_rx_stats_enabled and
+ath11k_debugfs_rx_filter(), then the ifdef is not needed.
 
 -- 
-Best Regards,
-Mike Gavrilov.
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
