@@ -2,134 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04A064136C3
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 17:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54D68413855
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 19:33:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234031AbhIUP56 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Sep 2021 11:57:58 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:53904 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229537AbhIUP5z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Sep 2021 11:57:55 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632239786; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=R2SYqKJghX3Q9JXD5f+M78ix3or9lR3EMnYoy1HL7R8=; b=Inr9ov+mZU4oO7UZcJT7vomJcWzwIYCaDEzeB65MsuNjdH8kfYSGrHmbKt10Zt9q6M3+BG3w
- n2xrco1uaFxTvrrdmKIcaDI/ZY9ZcjGTDMKRjm6et0tr5QaPen65oAQc/VstidyWb3VqdleQ
- UAAvsFYm6tyNRr8NbsG4LQyYNyM=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 614a008b507800c880555f51 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 21 Sep 2021 15:55:55
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EF9B5C43618; Tue, 21 Sep 2021 15:55:54 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E4765C43460;
-        Tue, 21 Sep 2021 15:55:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org E4765C43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Jouni Malinen <jouni@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Seevalamuthu Mariappan <seevalam@codeaurora.org>,
-        Miles Hu <milehu@codeaurora.org>,
-        Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
-Subject: Re: [PATCH 2/3] ath11k: add separate APIs for monitor mode
-References: <20210721162053.46290-1-jouni@codeaurora.org>
-        <20210721162053.46290-3-jouni@codeaurora.org>
-        <877dfaukjq.fsf@codeaurora.org>
-Date:   Tue, 21 Sep 2021 18:55:49 +0300
-In-Reply-To: <877dfaukjq.fsf@codeaurora.org> (Kalle Valo's message of "Tue, 21
-        Sep 2021 16:26:17 +0300")
-Message-ID: <87tuidudmi.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S230445AbhIUReu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Sep 2021 13:34:50 -0400
+Received: from gateway32.websitewelcome.com ([192.185.145.108]:38041 "EHLO
+        gateway32.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230413AbhIURet (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Sep 2021 13:34:49 -0400
+Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
+        by gateway32.websitewelcome.com (Postfix) with ESMTP id 2BDE1164082
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Sep 2021 12:33:18 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id Sjdtm490VrJtZSjdummcxu; Tue, 21 Sep 2021 12:33:18 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=V2ipY4XW+WZzd2kUAeQUYTq4ml6dgf93+kXUdm7z19M=; b=uCdk5SkXATJvZwBhALindVcIZ+
+        G9SvSKo4+wJcEcKSkAEo088pgDm703ewCmXelXXjYmsHtKM8OKBfMOs1084XJK6WbFPPYAYk3DcOf
+        2+GmBsEC5yoIkCRONsbY/2VRljJAyILeyR6zUOgkLvw+NJgH1FgL26MscJVzW6XVYRnAVJa4aAH/i
+        bSe0BUYk+KG/yZ3F+Toq0CyLeDMGfpLk9imeD3jOavWoPeFjdMRYKPdOKAkyyKjg9l7z85LBjNnVT
+        ELwvmFTj1HW184N0fpNuuNrBqcKMTFXDfvMWGjBMzbgh/CfW5LD9+sdPk1psogh1CHHEv5dNESTKk
+        +w+h2/rg==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:36190 helo=[192.168.15.9])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1mSjds-003xVQ-T2; Tue, 21 Sep 2021 12:33:16 -0500
+Subject: Re: [PATCH] brcmfmac: Replace zero-length array with flexible array
+ member
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Len Baker <len.baker@gmx.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210904092217.2848-1-len.baker@gmx.com>
+ <20210912191536.GB146608@embeddedor> <87o88sy2gk.fsf@codeaurora.org>
+ <871r5iwjyo.fsf@codeaurora.org>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Message-ID: <b8f06e6d-02e9-a82d-a9ae-448372e0f9cf@embeddedor.com>
+Date:   Tue, 21 Sep 2021 12:37:05 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <871r5iwjyo.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1mSjds-003xVQ-T2
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.9]) [187.162.31.110]:36190
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 14
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
 
->> +vdev_stop:
->> +	reinit_completion(&ar->vdev_setup_done);
->> +
->> +	ret = ath11k_wmi_vdev_stop(ar, vdev_id);
->> +	if (ret) {
->> +		ath11k_warn(ar->ab, "failed to stop monitor vdev %i after start failure: %d\n",
->> +			    vdev_id, ret);
->> +		return ret;
->> +	}
->> +
->> +	ret = ath11k_mac_vdev_setup_sync(ar);
->> +	if (ret)
->> +		ath11k_warn(ar->ab, "failed to synchronize setup for vdev %i stop: %d\n",
->> +			    vdev_id, ret);
->
-> I added return ret here for consistency..
->
->> +	return ret;
->
-> I don't thinks this is right, in an error path (vdev_stop label) we
-> return 0? I changed this to -EIO.
->
->> +static int ath11k_mac_monitor_vdev_stop(struct ath11k *ar)
->> +{
->> +	int ret;
->> +
->> +	lockdep_assert_held(&ar->conf_mutex);
->> +
->> +	reinit_completion(&ar->vdev_setup_done);
->> +
->> +	ret = ath11k_wmi_vdev_stop(ar, ar->monitor_vdev_id);
->> +	if (ret)
->> +		ath11k_warn(ar->ab, "failed to request monitor vdev %i stop: %d\n",
->> +			    ar->monitor_vdev_id, ret);
->> +
->> +	ret = ath11k_mac_vdev_setup_sync(ar);
->> +	if (ret)
->> + ath11k_warn(ar->ab, "failed to synchronize monitor vdev %i stop:
->> %d\n",
->> +			    ar->monitor_vdev_id, ret);
->> +
->> +	ret = ath11k_wmi_vdev_down(ar, ar->monitor_vdev_id);
->> +	if (ret)
->> +		ath11k_warn(ar->ab, "failed to put down monitor vdev %i: %d\n",
->> +			    ar->monitor_vdev_id, ret);
->> +
->> +	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "mac monitor vdev %i stopped\n",
->> +		   ar->monitor_vdev_id);
->> +	return ret;
->> +}
->
-> I was not sure what's the idea of error path handling here, we print
-> warnings but still continue the normal execution. I changed this so that
-> we bail out in the first error and if everything goes well we return 0.
 
-I found quite a few missing error checks, too many to list here but
-fixed in the pending branch:
+On 9/21/21 00:55, Kalle Valo wrote:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=8b2f8d11422e7909ff02db456cda41728f621de4
+> Gustavo, so have you dropped this from your tree now? I do not want to
+> get any conflicts because of this.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=5ff318be206b3d2a0bfdcfaf0ac52cc3b4ecdeae
+It's not on my tree.
 
-Please double check, compile tested only.
+> 
+> I'll reiterate again: do not take any patches touching
+> drivers/net/wireless unless I have acked them.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Got it.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+--
+Gustavo
