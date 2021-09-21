@@ -2,89 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EF7A4135E0
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 17:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04A064136C3
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 17:56:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233938AbhIUPLh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Sep 2021 11:11:37 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:61974 "EHLO m43-7.mailgun.net"
+        id S234031AbhIUP56 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Sep 2021 11:57:58 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:53904 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233893AbhIUPLh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Sep 2021 11:11:37 -0400
+        id S229537AbhIUP5z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Sep 2021 11:57:55 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632237008; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=RE3NuWcxFmHpZ009ctLHnSwnb6JLqP07uvXyBMNf1CM=;
- b=RsDKyUITFrUFAGUj1RebsfRVvJZl/jJLaqfaP7uNF0d6y5B1f7IFVSuhKxhsII2sDJL0zE1S
- bv63qQjZ8mx6VkNEqCHfbuZKAo8WiYI/vb5aZ8xgCa3h9k33kdZSjUV30T66lhktB4/QMY2j
- AmDRIeEK2OR1h5f5OJ2LafxEQZI=
+ s=smtp; t=1632239786; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=R2SYqKJghX3Q9JXD5f+M78ix3or9lR3EMnYoy1HL7R8=; b=Inr9ov+mZU4oO7UZcJT7vomJcWzwIYCaDEzeB65MsuNjdH8kfYSGrHmbKt10Zt9q6M3+BG3w
+ n2xrco1uaFxTvrrdmKIcaDI/ZY9ZcjGTDMKRjm6et0tr5QaPen65oAQc/VstidyWb3VqdleQ
+ UAAvsFYm6tyNRr8NbsG4LQyYNyM=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 6149f5caec62f57c9a238232 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 21 Sep 2021 15:10:02
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 614a008b507800c880555f51 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 21 Sep 2021 15:55:55
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B84E3C43616; Tue, 21 Sep 2021 15:10:01 +0000 (UTC)
+        id EF9B5C43618; Tue, 21 Sep 2021 15:55:54 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B0D24C4338F;
-        Tue, 21 Sep 2021 15:09:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B0D24C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E4765C43460;
+        Tue, 21 Sep 2021 15:55:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org E4765C43460
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/3] zd1211rw: remove duplicate USB device ID
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210917092108.19497-1-krzysztof.kozlowski@canonical.com>
-References: <20210917092108.19497-1-krzysztof.kozlowski@canonical.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Pontus Fuchs <pontus.fuchs@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, zd1211-devs@lists.sourceforge.net,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210921151001.B84E3C43616@smtp.codeaurora.org>
-Date:   Tue, 21 Sep 2021 15:10:01 +0000 (UTC)
+To:     Jouni Malinen <jouni@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Seevalamuthu Mariappan <seevalam@codeaurora.org>,
+        Miles Hu <milehu@codeaurora.org>,
+        Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
+Subject: Re: [PATCH 2/3] ath11k: add separate APIs for monitor mode
+References: <20210721162053.46290-1-jouni@codeaurora.org>
+        <20210721162053.46290-3-jouni@codeaurora.org>
+        <877dfaukjq.fsf@codeaurora.org>
+Date:   Tue, 21 Sep 2021 18:55:49 +0300
+In-Reply-To: <877dfaukjq.fsf@codeaurora.org> (Kalle Valo's message of "Tue, 21
+        Sep 2021 16:26:17 +0300")
+Message-ID: <87tuidudmi.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-> The device 0x07b8,0x6001 is already on the list as zd1211 chip. Wiki
-> https://wireless.wiki.kernel.org/en/users/Drivers/zd1211rw/devices
-> confirms it is also zd1211, not the zd1211b.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+>> +vdev_stop:
+>> +	reinit_completion(&ar->vdev_setup_done);
+>> +
+>> +	ret = ath11k_wmi_vdev_stop(ar, vdev_id);
+>> +	if (ret) {
+>> +		ath11k_warn(ar->ab, "failed to stop monitor vdev %i after start failure: %d\n",
+>> +			    vdev_id, ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	ret = ath11k_mac_vdev_setup_sync(ar);
+>> +	if (ret)
+>> +		ath11k_warn(ar->ab, "failed to synchronize setup for vdev %i stop: %d\n",
+>> +			    vdev_id, ret);
+>
+> I added return ret here for consistency..
+>
+>> +	return ret;
+>
+> I don't thinks this is right, in an error path (vdev_stop label) we
+> return 0? I changed this to -EIO.
+>
+>> +static int ath11k_mac_monitor_vdev_stop(struct ath11k *ar)
+>> +{
+>> +	int ret;
+>> +
+>> +	lockdep_assert_held(&ar->conf_mutex);
+>> +
+>> +	reinit_completion(&ar->vdev_setup_done);
+>> +
+>> +	ret = ath11k_wmi_vdev_stop(ar, ar->monitor_vdev_id);
+>> +	if (ret)
+>> +		ath11k_warn(ar->ab, "failed to request monitor vdev %i stop: %d\n",
+>> +			    ar->monitor_vdev_id, ret);
+>> +
+>> +	ret = ath11k_mac_vdev_setup_sync(ar);
+>> +	if (ret)
+>> + ath11k_warn(ar->ab, "failed to synchronize monitor vdev %i stop:
+>> %d\n",
+>> +			    ar->monitor_vdev_id, ret);
+>> +
+>> +	ret = ath11k_wmi_vdev_down(ar, ar->monitor_vdev_id);
+>> +	if (ret)
+>> +		ath11k_warn(ar->ab, "failed to put down monitor vdev %i: %d\n",
+>> +			    ar->monitor_vdev_id, ret);
+>> +
+>> +	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "mac monitor vdev %i stopped\n",
+>> +		   ar->monitor_vdev_id);
+>> +	return ret;
+>> +}
+>
+> I was not sure what's the idea of error path handling here, we print
+> warnings but still continue the normal execution. I changed this so that
+> we bail out in the first error and if everything goes well we return 0.
 
-3 patches applied to wireless-drivers-next.git, thanks.
+I found quite a few missing error checks, too many to list here but
+fixed in the pending branch:
 
-e142bd910f53 zd1211rw: remove duplicate USB device ID
-b7cca318d7ca ar5512: remove duplicate USB device ID
-60fe1f8dcd3c rt2x00: remove duplicate USB device ID
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=8b2f8d11422e7909ff02db456cda41728f621de4
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=5ff318be206b3d2a0bfdcfaf0ac52cc3b4ecdeae
+
+Please double check, compile tested only.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210917092108.19497-1-krzysztof.kozlowski@canonical.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
