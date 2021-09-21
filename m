@@ -2,76 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 860DC412A54
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 03:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 688B2412E3D
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 07:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232827AbhIUBkQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Sep 2021 21:40:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59056 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231550AbhIUBiS (ORCPT
+        id S229611AbhIUFhR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Sep 2021 01:37:17 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:42852 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229534AbhIUFhQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Sep 2021 21:38:18 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6A75C0F26DB
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Sep 2021 12:17:09 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id mv7-20020a17090b198700b0019c843e7233so707320pjb.4
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Sep 2021 12:17:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=cq5Af24UhMZNHdQJlYyjqZ7V5xSef6SgBEoLUBr0kiw=;
-        b=Z0s7XBbrGdwT71ibog12i3KsvL7FN2ohQMD7MY81IzU11LvZiFGi5XFoc+1gXziDdm
-         xj4CscuHmmm92yPAOvJXGg+ZfTTc8gKTnCEDqWqs8aW+AU8OdL/t8R1a2S14RC/sact4
-         yf/mwz9OVrdM35ci5KCOeSvbOJRDMOnwTlApoPQrLSolQVdPmFjBfCQiOaKEC5SHU7U3
-         ZsGmMstA51NesJ6IcaUJvVRmVnouonSdYEGYQsB/R8gADkhPWLAfA+Xtu2leSqDY/vjP
-         lNyc4885QMsXEx3YVCuz9o7maVgDeTo9m11Rggc7g7ufuVIg2vSxOSjs6WoHJ/V0ayG0
-         VSxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=cq5Af24UhMZNHdQJlYyjqZ7V5xSef6SgBEoLUBr0kiw=;
-        b=Q52qjXED9+YBWBN2lKcsAoLDNNTM1sK8gcH5Qk2qonsyPYDPtWPzycyWIZ+biz5Iuf
-         2ftcljy3mQ9J7/dNwbKFqk24A9oAoZ+fGN9ZBVGDlJIiW2I6NevL3SYUY1DI7qtCWrWJ
-         CIc0i2hK9fKbJ4q7JpaIPfrXi0bPPM8JkjnFuX9X0vgq1QXVlcoV9GUj4I8uUd4UNa9V
-         3UxXUdISSntx59XHPoNNuk9qEQ1hzKQeXDGvqynN885GB79eX/O2I2RKJj0JRt7Zx18Z
-         woCBfypHwKXgMan0HyRON2MD7SDuafv8FQBrWvdT7UCPFNnQJ4W3Zp5Wy4iHrfFL/rXT
-         h5Ug==
-X-Gm-Message-State: AOAM532TrE7Cz1ivEAnJpGMuIB2KwHxH0mQwiR+3MMPvBSHRJEpFdtLb
-        di7k/dM8w9xboiOnr2v/Tp+4X+uW4/H5CGvjyBM=
-X-Google-Smtp-Source: ABdhPJziMereuaOKhqEDpMmoPElWvhgrvrGiylv2osMSmtHgOAfXRxwqcr+Levacoid5t+/WXZ5LgJDmz7Mf9IFIBt4=
-X-Received: by 2002:a17:902:8648:b029:129:dda4:ddc2 with SMTP id
- y8-20020a1709028648b0290129dda4ddc2mr24046888plt.4.1632165429094; Mon, 20 Sep
- 2021 12:17:09 -0700 (PDT)
+        Tue, 21 Sep 2021 01:37:16 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1632202549; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=d/WbfYzCtCLxGjLS1Fn53umG1vTseNrfK0KHCNl2EuE=;
+ b=rMPUKIqZPkd4wY/Rp0cYE/fD5P9YF0VhB9bYGAaBUquexp7WX/J+MvJa4sARHMyVTjh0243o
+ yy57O8HhDkJraaxiGOptL0JE4J63KP7ELVyfkHrvgBvmFIvXWfSXysGuxm98gWCZ7cz/K2y2
+ fT+Kz6k2BFQqd0gLJKXoZkHGdB8=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 61496f1de0f78151d6dd2f17 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 21 Sep 2021 05:35:25
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D28BFC43616; Tue, 21 Sep 2021 05:35:25 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8E2C5C4338F;
+        Tue, 21 Sep 2021 05:35:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 8E2C5C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:fd95:0:0:0:0 with HTTP; Mon, 20 Sep 2021 12:17:08
- -0700 (PDT)
-Reply-To: info.moneygrampostunit@gmail.com
-From:   Ngozi Akpla <barristeremmanuellayman2@gmail.com>
-Date:   Mon, 20 Sep 2021 07:17:08 -1200
-Message-ID: <CA+5h8NQwXQB8gB7SeN1W==1uAF6-iEouugguWzu4GTi3zc+WGw@mail.gmail.com>
-Subject: attach
-To:     bkoko002 <bkoko002@mail.ru>
-Content-Type: multipart/mixed; boundary="0000000000009dc51805cc7220e2"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] MAINTAINERS: Move Daniel Drake to credits
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210917102834.25649-1-krzysztof.kozlowski@canonical.com>
+References: <20210917102834.25649-1-krzysztof.kozlowski@canonical.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Cc:     Ulrich Kunitz <kune@deine-taler.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, zd1211-devs@lists.sourceforge.net,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jens Frederich <jfrederich@gmail.com>,
+        Jon Nettleton <jon.nettleton@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-staging@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Daniel Drake <drake@endlessos.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-Id: <20210921053525.D28BFC43616@smtp.codeaurora.org>
+Date:   Tue, 21 Sep 2021 05:35:25 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000009dc51805cc7220e2
-Content-Type: text/plain; charset="UTF-8"
+Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
 
+> Daniel Drake's @gentoo.org email bounces (is listed as retired Gentoo
+> developer) and there was no activity from him regarding zd1211rw driver.
+> Also his second address @laptop.org bounces.
+> 
+> Cc: Daniel Drake <drake@endlessos.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
+Patch applied to wireless-drivers.git, thanks.
 
---0000000000009dc51805cc7220e2
-Content-Type: application/rtf; name="Document.rtf"
-Content-Disposition: attachment; filename="Document.rtf"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: file0
+91dab18f0df1 MAINTAINERS: Move Daniel Drake to credits
 
-e1xydGYxXGFuc2lcYW5zaWNwZzEyNTJcZGVmZjBcbm91aWNvbXBhdFxkZWZsYW5nMTAzM3tcZm9u
-dHRibHtcZjBcZm5pbFxmY2hhcnNldDAgQ2FsaWJyaTt9fQ0Ke1wqXGdlbmVyYXRvciBSaWNoZWQy
-MCAxMC4wLjEwMjQwfVx2aWV3a2luZDRcdWMxIA0KXHBhcmRcc2EyMDBcc2wyNzZcc2xtdWx0MVxm
-MFxmczIyXGxhbmcxMiBHb29kIGRheSBLaW5kbHkgaW5mb3JtIG1lIGlmIHlvdSBnb3QgbXkgZmly
-c3QgbGV0dGVyIGlzIHVyZ2VudCBwbGVhc2VccGFyDQp9DQoA
---0000000000009dc51805cc7220e2--
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210917102834.25649-1-krzysztof.kozlowski@canonical.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
