@@ -2,101 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBE7F414B91
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 16:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FFB5414BA8
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 16:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235379AbhIVOR6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Sep 2021 10:17:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54612 "EHLO
+        id S236246AbhIVOUA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Sep 2021 10:20:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232401AbhIVORz (ORCPT
+        with ESMTP id S235848AbhIVOT7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Sep 2021 10:17:55 -0400
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C50AC061574;
-        Wed, 22 Sep 2021 07:16:25 -0700 (PDT)
-Received: by mail-qt1-x834.google.com with SMTP id r1so2727418qta.12;
-        Wed, 22 Sep 2021 07:16:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=IuXIOcEoJLZm3JHNGPg8RoZZFJipAi9zCbRCXI1CFLE=;
-        b=ULd641Oiv+/i7cI8Q/Yn8PvBm7YDEf7KVUnkeQ4VK3WiKgwIfPykRoNewsQTr2PP/y
-         7HQyOIQd+RWlJpt+DVpkWk+3QHrraBYva2euDQFQASwfYGBJkiQK1mUgf8hNhN4h4rHJ
-         dmM6/sEvP5YB7PZwPV35sNogCKfgXZMXUgRf1janA+efa/kqrGZN7Ulce33nO/+m7crj
-         fJnh7jBe8H4x9/lcjWZFXdpptN4dNQ2LBWhC4N0k/JpmYcVNPFvNrF32AN71QtH3FaKC
-         IwPZviep9+codxTRfRyWd/8KkZOMS5nUcqfbr8x28tsvMYm8EE4/Xp6H1ree9EeVEAEa
-         /lgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=IuXIOcEoJLZm3JHNGPg8RoZZFJipAi9zCbRCXI1CFLE=;
-        b=Fu0KAdTGmQLv7dZjIDTz3H9hWcR0AniJu7djy2u7Z+FkKdCh1afsDl/rCIxVptvtXC
-         MEvWGpMCYs7komKCuRf90SLtkdZM429PhxMtWvSgqK+blay4XwC8+D8CR5nXY4Jdrjgf
-         KUDaa/Hhn7Qb0aWWb7p3QkuvCAWZOPirb4Y4iWafSpTyI3sPL2STbX6zgPIFbLjOpwg0
-         ov8n/nWAb29A6UbMjiYnYsg5EgLDTlXd5oqm03/HB4OvhvmtOA4cUSs92Y5WF9gfbykq
-         gp4V+LauqLOjl+JJpCLIyKmvaHZLlxoXh2l9elS6tnTGUjykhGpZKyvC4yv7a5F9T9V3
-         1zbg==
-X-Gm-Message-State: AOAM531tnT2jzLIMzVvot04biZ+9lVXpLmhhIFRXR0STAqFebVWdqCQD
-        JeRv2xbkvKiUQ37jBsNvFsk/mrwnfZJ1+Q==
-X-Google-Smtp-Source: ABdhPJyeaUVIst5XKcgB9ufm77XgKHtZH+7uA7dVm9KtXjXFGvQ4ErNh9WgKtbIlWl3y+PmqAQ7o0Q==
-X-Received: by 2002:aed:204b:: with SMTP id 69mr32961757qta.24.1632320183881;
-        Wed, 22 Sep 2021 07:16:23 -0700 (PDT)
-Received: from localhost.localdomain ([170.84.227.206])
-        by smtp.gmail.com with ESMTPSA id w20sm1456275qtj.72.2021.09.22.07.16.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Sep 2021 07:16:23 -0700 (PDT)
-From:   Ramon Fontes <ramonreisfontes@gmail.com>
-To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Wed, 22 Sep 2021 10:19:59 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 397C9C06175F;
+        Wed, 22 Sep 2021 07:18:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=4n0VEAk/fGGueYQaeOGAUpveXsFvYVIDnzHQ9qCNW9U=;
+        t=1632320309; x=1633529909; b=a0hM+uAb75K04Nh8ozlYd9fS01wL6yIcUBJGsFFdRR8ZTLW
+        +jc5aHCNf1hfCW5xTmc8aWx8bBRhtAD1V8UsdJ5xKTzAaRH90Sf4qTsD76pFG9GvJuwLnDjxZm0wl
+        Nm15LY0ovczgfNzaqVNhQx0meaN2uDrt0I/KMh7K2IsOTOnUjppxJJBsgJmsuQ6ivH8lrzb42yWeQ
+        SoSJmIo52vjIBvG1LDyFRWWFXKUnkrnyXeK4ETa7KZ2FKhot4pNzWBZN/eyiZpfVK2MAlF45G01t1
+        tC1ov9UKdeGfcIMBYYm1gXRF6b9Xre1HNLsVggD7C8EqAietDkImGpCbBo5pcVfg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mT34r-00AKDL-QG;
+        Wed, 22 Sep 2021 16:18:25 +0200
+Message-ID: <168ff8423d33cae53097f63d5e7386c439b3a82d.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211_hwsim: fix incorrect type in initializer
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ramon Fontes <ramonreisfontes@gmail.com>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net, kvalo@codeaurora.org,
-        davem@davemloft.net, Ramon Fontes <ramonreisfontes@gmail.com>
-Subject: [PATCH] mac80211_hwsim: fix incorrect type in initializer
-Date:   Wed, 22 Sep 2021 11:16:17 -0300
-Message-Id: <20210922141617.189660-1-ramonreisfontes@gmail.com>
-X-Mailer: git-send-email 2.25.1
+Cc:     kvalo@codeaurora.org, davem@davemloft.net
+Date:   Wed, 22 Sep 2021 16:18:24 +0200
+In-Reply-To: <20210922141617.189660-1-ramonreisfontes@gmail.com>
+References: <20210922141617.189660-1-ramonreisfontes@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This issue was raised by patchwork at:
-https://patchwork.kernel.org/project/linux-wireless/patch/20210906175350.13461-1-ramonreisfontes@gmail.com/
+On Wed, 2021-09-22 at 11:16 -0300, Ramon Fontes wrote:
+> This issue was raised by patchwork at:
+> https://patchwork.kernel.org/project/linux-wireless/patch/20210906175350.13461-1-ramonreisfontes@gmail.com/
 
-Signed-off-by: Ramon Fontes <ramonreisfontes@gmail.com>
----
- drivers/net/wireless/mac80211_hwsim.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+That wasn't patchwork that was the robot, but ... I don't think I've
+even applied that patch, so pleaes resend it with the correction
+included.
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index d36770db1..e31770439 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -2997,8 +2997,8 @@ static const struct ieee80211_sband_iftype_data he_capa_6ghz[] = {
- 			.capa = IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START |
- 			        IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP |
- 			        IEEE80211_HE_6GHZ_CAP_MAX_MPDU_LEN |
--			        IEEE80211_HE_6GHZ_CAP_TX_ANTPAT_CONS |
--			        IEEE80211_HE_6GHZ_CAP_RX_ANTPAT_CONS,
-+			        cpu_to_le16(IEEE80211_HE_6GHZ_CAP_TX_ANTPAT_CONS |
-+			        IEEE80211_HE_6GHZ_CAP_RX_ANTPAT_CONS),
- 		},
- 		.he_cap = {
- 			.has_he = true,
-@@ -3055,8 +3055,8 @@ static const struct ieee80211_sband_iftype_data he_capa_6ghz[] = {
- 			.capa = IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START |
- 			        IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP |
- 			        IEEE80211_HE_6GHZ_CAP_MAX_MPDU_LEN |
--			        IEEE80211_HE_6GHZ_CAP_TX_ANTPAT_CONS |
--			        IEEE80211_HE_6GHZ_CAP_RX_ANTPAT_CONS,
-+			        cpu_to_le16(IEEE80211_HE_6GHZ_CAP_TX_ANTPAT_CONS |
-+			        IEEE80211_HE_6GHZ_CAP_RX_ANTPAT_CONS),
- 		},
- 		.he_cap = {
- 			.has_he = true,
--- 
-2.25.1
+johannes
 
