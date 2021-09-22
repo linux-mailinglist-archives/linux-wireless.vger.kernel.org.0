@@ -2,137 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1DF74149A9
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 14:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 720BC414A6F
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 15:22:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236093AbhIVMwW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Sep 2021 08:52:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33518 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236101AbhIVMwP (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Sep 2021 08:52:15 -0400
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050::465:101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16C22C061574;
-        Wed, 22 Sep 2021 05:50:45 -0700 (PDT)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4HDynv2hbMzQk9R;
-        Wed, 22 Sep 2021 14:50:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Subject: Re: [PATCH 1/2] mwifiex: Use non-posted PCI register writes
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
+        id S231783AbhIVNXz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Sep 2021 09:23:55 -0400
+Received: from mga12.intel.com ([192.55.52.136]:64818 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230413AbhIVNXz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 22 Sep 2021 09:23:55 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10114"; a="203083836"
+X-IronPort-AV: E=Sophos;i="5.85,314,1624345200"; 
+   d="scan'208";a="203083836"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2021 06:22:23 -0700
+X-IronPort-AV: E=Sophos;i="5.85,314,1624345200"; 
+   d="scan'208";a="435432088"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2021 06:22:19 -0700
+Received: from andy by smile with local (Exim 4.95-RC2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mT2CW-004Bgc-2C;
+        Wed, 22 Sep 2021 16:22:16 +0300
+Date:   Wed, 22 Sep 2021 16:22:16 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonas =?iso-8859-1?Q?Dre=DFler?= <verdre@v0yd.nl>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
         Ganapathi Bhat <ganapathi017@gmail.com>,
         Xinming Hu <huxinming820@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev@vger.kernel.org,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
         Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
-References: <20210830123704.221494-1-verdre@v0yd.nl>
- <20210830123704.221494-2-verdre@v0yd.nl>
- <CA+ASDXPKZ0i5Bi11Q=qqppY8OCgw=7m0dnPn0s+y+GAvvQodog@mail.gmail.com>
- <CAHp75VdR4VC+Ojy9NjAtewAaPAgowq-3rffrr3uAdOeiN8gN-A@mail.gmail.com>
- <CA+ASDXNGR2=sQ+w1LkMiY_UCfaYgQ5tcu2pbBn46R2asv83sSQ@mail.gmail.com>
- <YS/rn8b0O3FPBbtm@google.com> <0ce93e7c-b041-d322-90cd-40ff5e0e8ef0@v0yd.nl>
- <CA+ASDXNMhrxX-nFrr6kBo0a0c-25+Ge2gBP2uTjE8UWJMeQO2A@mail.gmail.com>
-From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
-Message-ID: <bd64c142-93d0-c348-834c-34ed80c460f9@v0yd.nl>
-Date:   Wed, 22 Sep 2021 14:50:33 +0200
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Brian Norris <briannorris@chromium.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mwifiex: Use non-posted PCI write when setting TX
+ ring write pointer
+Message-ID: <YUsuCPSYsRhlCxwD@smile.fi.intel.com>
+References: <20210914114813.15404-1-verdre@v0yd.nl>
+ <20210914114813.15404-2-verdre@v0yd.nl>
+ <YUsQ3jU1RuThUYn8@smile.fi.intel.com>
+ <9293504f-f70d-61ac-b221-dd466f01b5df@v0yd.nl>
 MIME-Version: 1.0
-In-Reply-To: <CA+ASDXNMhrxX-nFrr6kBo0a0c-25+Ge2gBP2uTjE8UWJMeQO2A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5C450188F
+In-Reply-To: <9293504f-f70d-61ac-b221-dd466f01b5df@v0yd.nl>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/20/21 7:48 PM, Brian Norris wrote:
-> On Sat, Sep 18, 2021 at 12:37 AM Jonas Dre√üler <verdre@v0yd.nl> wrote:
->> Thanks for the pointer to that commit Brian, it turns out this is
->> actually the change that causes the "Firmware wakeup failed" issues that
->> I'm trying to fix with the second patch here.
-> 
-> Huh. That's interesting, although I guess it makes some sense given
-> your theory of "dropped writes". FWIW, this strategy (post a single
-> write, then wait for wakeup) is the same used by some other
-> chips/drivers too (e.g., ath10k/pci), although in those cases card
-> wakeup is much much faster. But if the bus was dropping writes
-> somehow, those strategies would fail too.
-> 
->> Also my approach is a lot messier than just reverting
->> 062e008a6e83e7c4da7df0a9c6aefdbc849e2bb3 and also appears to be blocking
->> even longer...
-> 
-> For the record, in case you're talking about my data ("blocking even
-> longer"): I was only testing patch 1. Patch 2 isn't really relevant to
-> my particular systems (Rockchip RK3399 + Marvell 8997/PCIe), because
-> (a) I'm pretty sure my system isn't "dropping" any reads or writes
-> (b) all my delay is in the read-back; the Rockchip PCIe bus is waiting
-> indefinitely for the card to wake up, instead of timing out and
-> reporting all-1's like many x86 systems appear to do (I've tested
-> this).
-> 
-> So, the 6ms delay is entirely sitting in the ioread32(), not a delay loop.
-> 
-> I haven't yet tried your version 2 (which avoids the blocking read to
-> wake up; good!), but it sounds like in theory it could solve your
-> problem while avoiding 6ms delays for me. I intend to test your v2
-> this week.
-> 
+On Wed, Sep 22, 2021 at 02:08:39PM +0200, Jonas Dreﬂler wrote:
+> On 9/22/21 1:17 PM, Andy Shevchenko wrote:
+> > On Tue, Sep 14, 2021 at 01:48:12PM +0200, Jonas Dreﬂler wrote:
 
-With "blocking even longer" I meant that (on my system) the delay-loop 
-blocks even longer than waking up the card via mwifiex_read_reg() (both 
-are in the orders of milliseconds). And given that in certain cases the 
-card wakeup (or a write getting through to the card, I have no idea) can 
-take extremely long, I'd feel more confident going with the 
-mwifiex_read_reg() method to wake up the card.
+...
 
-Anyway, you know what's even weirder with all this: I've been testing 
-the first commit of patch v2 (so just the single read-back instead of 
-the big hammer) together with 062e008a6e83e7c4da7df0a9c6aefdbc849e2bb3 
-reverted for a good week now and haven't seen any wakeup failure yet. 
-Otoh I'm fairly sure the big hammer with reading back every write wasn't 
-enough to fix the wakeup failures, otherwise I wouldn't even have 
-started working on the second commit.
-
-So that would mean there's a difference between writing and then reading 
-back vs only reading to wake up the card: Only the latter fixes the 
-wakeup failures.
-
->> Does anyone have an idea what could be the reason for the posted write
->> not going through, or could that also be a potential firmware bug in the
->> chip?
+> > Should it have a Fixes tag?
+> > 
 > 
-> I have no clue about that. That does sound downright horrible, but so
-> are many things when dealing with this family of hardware/firmware.
-> I'm not sure how to prove out whether this is a host bus problem, or
-> an endpoint/firmware problem, other than perhaps trying the same
-> module/firmware on another system, if that's possible.
-> 
-> Anyway, to reiterate: I'm not fundamentally opposed to v2 (pending a
-> test run here), even if it is a bit ugly and perhaps not 100%
-> understood.
-> 
+> Don't think so, there's the infamous
+> (https://bugzilla.kernel.org/show_bug.cgi?id=109681) Bugzilla bug it fixes
+> though, I'll mention that in v3.
 
-I'm not 100% sure about all this yet, I think I'm gonna try to confirm 
-my older findings once again now and then we'll see. FTR, would you be 
-fine with using the mwifiex_read_reg() method to wake up the card and 
-somehow quirking your system to use write_reg()?
+Good idea, use BugLink tag for that!
 
-> Brian
-> 
+...
+
+> Interesting, I haven't noticed that mwifiex_write_reg() always returns 0. So
+> are you suggesting to remove that return value and get rid of all the "if
+> (mwifiex_write_reg()) {}" checks in a separate commit?
+
+Something like this, yes.
+
+> As for why the dummy read/write functions exist, I have no idea. Looking at
+> git history it seems they were always there (only change is that
+> mwifiex_read_reg() started to handle read errors with commit
+> af05148392f50490c662dccee6c502d9fcba33e2). My bet would be that they were
+> created to be consistent with sdio.c which is the oldest supported bus type
+> in mwifiex.
+
+It has a check against all ones. Also your another patch mentioned wake up.
+Perhaps the purpose is to wake up and return if device was/is in power off mode
+(D3hot).
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
