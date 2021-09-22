@@ -2,92 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 345E24142B8
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 09:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 029394147A9
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 13:18:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233290AbhIVHfg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Sep 2021 03:35:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43976 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233208AbhIVHfg (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Sep 2021 03:35:36 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 846FBC061574;
-        Wed, 22 Sep 2021 00:34:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=9AY8F16aIJoBespGhpIqcYrXI4qFapt3L2VJxzUtRcw=;
-        t=1632296046; x=1633505646; b=uL+8G9BJdNnflVui72S/UFRPGdPpibVKacv9sdfFtCBJvm9
-        r7WOkC8DsJy6gUqePqokQqqkh7L+31IrKUv5QCqHkp2jJTJWx3ug3OVl/pyw9jws/ws1QlPYQYPeQ
-        /YhILgz/GTRNPaK8kU+njjiHzmXqUw3FeLUn+o/SpvGvYFxDLDuwrsHaNdtnLqTnH6R6HZFJx9mp4
-        gwQbgXgV5Rq/VvyCrX9eUA2sVYjPhdt4Oe1zKGT2mziJUj58qEcRRHFFxcr45ppZ/0oihiEmXwyev
-        WGMCnMKOGc8p9mSRb7xQuUOxuNgW1uPhx1xIwUpbxBke1J+2uG8qJDYLy+rpF99w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95-RC2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mSwlR-00ACry-SN;
-        Wed, 22 Sep 2021 09:33:58 +0200
-Message-ID: <e0522c7845390a71203744d209a9516cb8a562e6.camel@sipsolutions.net>
-Subject: Re: [EXTERNAL] Re: [PATCH] [v15] wireless: Initial driver
- submission for pureLiFi STA devices
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Srinivasan Raju <srini.raju@purelifi.com>
-Cc:     Mostafa Afgani <mostafa.afgani@purelifi.com>,
+        id S235458AbhIVLTd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Sep 2021 07:19:33 -0400
+Received: from mga18.intel.com ([134.134.136.126]:65341 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230171AbhIVLTc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 22 Sep 2021 07:19:32 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10114"; a="210649436"
+X-IronPort-AV: E=Sophos;i="5.85,313,1624345200"; 
+   d="scan'208";a="210649436"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2021 04:18:00 -0700
+X-IronPort-AV: E=Sophos;i="5.85,313,1624345200"; 
+   d="scan'208";a="474522094"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2021 04:17:53 -0700
+Received: from andy by smile with local (Exim 4.95-RC2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mT0G6-004ANk-OB;
+        Wed, 22 Sep 2021 14:17:50 +0300
+Date:   Wed, 22 Sep 2021 14:17:50 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonas =?iso-8859-1?Q?Dre=DFler?= <verdre@v0yd.nl>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS (WIRELESS)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
-Date:   Wed, 22 Sep 2021 09:33:56 +0200
-In-Reply-To: <87ee9iun4o.fsf@codeaurora.org>
-References: <20210226130810.119216-1-srini.raju@purelifi.com>
-         <20210818141343.7833-1-srini.raju@purelifi.com>
-         <87o88nwg74.fsf@codeaurora.org>
-         <CWLP265MB3217BB5AA5F102629A3AD204E0A19@CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM>
-         <87ee9iun4o.fsf@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Brian Norris <briannorris@chromium.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mwifiex: Use non-posted PCI write when setting TX
+ ring write pointer
+Message-ID: <YUsQ3jU1RuThUYn8@smile.fi.intel.com>
+References: <20210914114813.15404-1-verdre@v0yd.nl>
+ <20210914114813.15404-2-verdre@v0yd.nl>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210914114813.15404-2-verdre@v0yd.nl>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2021-09-21 at 15:30 +0300, Kalle Valo wrote:
-> > 
-> > Yes, I agree, As LiFi is not standardized yet we are using the
-> > existing wireless frameworks. For now, piggy backing with 2.4GHz is
-> > seamless for users. We will undertake band and other wider change once
-> > IEEE 802.11bb is standardized.
+On Tue, Sep 14, 2021 at 01:48:12PM +0200, Jonas Dreﬂler wrote:
+> On the 88W8897 card it's very important the TX ring write pointer is
+> updated correctly to its new value before setting the TX ready
+> interrupt, otherwise the firmware appears to crash (probably because
+> it's trying to DMA-read from the wrong place). The issue is present in
+> the latest firmware version 15.68.19.p21 of the pcie+usb card.
+
+Please, be consistent in the commit message(s) and the code (esp. if the term
+comes from a specification).
+
+Here, PCIe (same in the code, at least that I have noticed, but should be done
+everywhere).
+
+> Since PCI uses "posted writes" when writing to a register, it's not
+> guaranteed that a write will happen immediately. That means the pointer
+> might be outdated when setting the TX ready interrupt, leading to
+> firmware crashes especially when ASPM L1 and L1 substates are enabled
+> (because of the higher link latency, the write will probably take
+> longer).
 > 
-> I don't see why the IEEE standard needs to be final before adding the
-> band. Much better to add a band which is in draft stage compared to
-> giving false information to the user space.
+> So fix those firmware crashes by always using a non-posted write for
+> this specific register write. We do that by simply reading back the
+> register after writing it, just as a few other PCI drivers do.
+> 
+> This fixes a bug where during rx/tx traffic and with ASPM L1 substates
 
-I tend to agree, but looking at the current draft (D0.6), that's ...
-vague? Maybe it's obvious to somebody familiar with the technology, but
-I really don't understand how 800-1000nm infrared band maps to 21 MHz +
-channel offset? Isn't the frequency there a couple hundred THz?
+Ditto. TX/RX.
 
-Regardless, if the channelisation plan says 21 MHz + n_ch * 5 MHz, then
-I think we can just define NL80211_BAND_LC and the driver advertises
-those channels - that even gets you easy access to all the defined
-channels (apparently today all the odd channels from 1-61, split into
-20/40/80/160 MHz bandwidth).
+> enabled (the enabled substates are platform dependent), the firmware
+> crashes and eventually a command timeout appears in the logs.
 
-I guess I'm really not sure how that maps to the actual infrared, but
-reusing all the 20/40/80/160 machinery from VHT means we can actually do
-a lot of things in mac80211/etc. without much changes, which isn't bad.
+Should it have a Fixes tag?
 
-Anyway, I'd feel more comfortable defining an LC band here, even if it
-potentially changes later. Or maybe especially if the actual channels
-there change later.
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jonas Dreﬂler <verdre@v0yd.nl>
 
-johannes
+...
+
+> -		/* Write the TX ring write pointer in to reg->tx_wrptr */
+> -		if (mwifiex_write_reg(adapter, reg->tx_wrptr,
+> -				      card->txbd_wrptr | rx_val)) {
+> +		/* Write the TX ring write pointer in to reg->tx_wrptr.
+> +		 * The firmware (latest version 15.68.19.p21) of the 88W8897
+> +		 * pcie+usb card seems to crash when getting the TX ready
+> +		 * interrupt but the TX ring write pointer points to an outdated
+> +		 * address, so it's important we do a non-posted write here to
+> +		 * force the completion of the write.
+> +		 */
+> +		if (mwifiex_write_reg_np(adapter, reg->tx_wrptr,
+> +				        card->txbd_wrptr | rx_val)) {
+
+>  			mwifiex_dbg(adapter, ERROR,
+>  				    "SEND DATA: failed to write reg->tx_wrptr\n");
+>  			ret = -1;
+
+I'm not sure how this is not a dead code.
+
+On top of that, I would rather to call old function and explicitly put the
+dummy read after it.
+
+		/* Write the TX ring write pointer in to reg->tx_wrptr */
+		if (mwifiex_write_reg(adapter, reg->tx_wrptr,
+				      card->txbd_wrptr | rx_val)) {
+			...eliminate dead code in the following patch(es)...
+		}
+
++		/* The firmware (latest version 15.68.19.p21) of the 88W8897
++		 * pcie+usb card seems to crash when getting the TX ready
++		 * interrupt but the TX ring write pointer points to an outdated
++		 * address, so it's important we do a non-posted write here to
++		 * force the completion of the write.
++		 */
+		mwifiex_read_reg(...);
+
+Now, since I found the dummy read function to be present, perhaps you need to
+dive more into the code and understand why it exists.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
