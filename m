@@ -2,92 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5D9E415172
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 22:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D0C84151FC
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 22:55:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237581AbhIVUfB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Sep 2021 16:35:01 -0400
-Received: from mail-ot1-f47.google.com ([209.85.210.47]:44838 "EHLO
-        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236860AbhIVUfB (ORCPT
+        id S237919AbhIVU4y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Sep 2021 16:56:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34028 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237869AbhIVU4q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Sep 2021 16:35:01 -0400
-Received: by mail-ot1-f47.google.com with SMTP id h9-20020a9d2f09000000b005453f95356cso5293013otb.11;
-        Wed, 22 Sep 2021 13:33:31 -0700 (PDT)
+        Wed, 22 Sep 2021 16:56:46 -0400
+Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 883C9C061756
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Sep 2021 13:55:13 -0700 (PDT)
+Received: by mail-qk1-x729.google.com with SMTP id i132so14745098qke.1
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Sep 2021 13:55:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
+        b=KdXnhe/3zkHeZgixn9BpXiRXniwMgDmhauf6YTuxP0wgB5yzxGI3euReyxhx9TVrxq
+         3Od5gARvk08SiaQHEdbK80uTPJiKvZD1mvaXmFEi2OlRGGLVxi9qjTdQEJHDNx6GrhQf
+         +YDVSfcVXX6hJ9tzkOuxVlwY0IK/v4ECFsMgPN0YbEUFjdWw7wtLO6HU7k0GlwYOwBU7
+         g0u5ZrnjkFj9bDNBfxTJ+EZszn5R+MIWkE1noseX+tMOjLt3VKfnAtHOf7zGnzUi7/Ss
+         4zORj2FhCL6VBd/6ui6VhZsTJDlTQFr3MO12bpjTdn18irITsVHBfbJQd5ezVh5SqLsC
+         4EBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=+032e70i08NosH2L550S84MiHmrCemoO0aT5S55a2io=;
-        b=ln7yeQ7ZeyzO3TCgXUPSB/TU1Zy3pANk5OncXmfJl2MbpzosM0IghbmK4asrrR67qt
-         C50zqE5oPLLWRSOwrRvWSWAB9YBIf9KrEWrhFOqJ83V0wEGO+kIs1m6m45VKUQmGDBC8
-         8rcbEOiFketPfb4IkwswBJaC3vYtgDu6WGJ5rC2U5/h00FgYOKdjXqgruyT6IPSbGRxN
-         k0T/hi3BoIH2oLKcaHigkkyNyiAtxVGRBRBzlTr1bE1miiSbl+HFBmntLOq5THZ8KkCO
-         r6yJEP9EaXLlL2lsZ1NKzK0KzROEG4KVW/ZzdhY5cgIo+pEa3JrerekBHBvH/bpcak3V
-         IMaA==
-X-Gm-Message-State: AOAM532UV80AL0+ZUStQKWH1qWyeh+fKNsdec5Ti4St8iY5LtSAB1kSO
-        9R/b5lrmrUvuOPb6NwLrv0Mn6PQ02Q==
-X-Google-Smtp-Source: ABdhPJwyarhLCtwCbuT0tc1bP/7Weinth8Z3MeaqDXGNOlb+i4cGzU+1NGVt4tYnSZrMKE0vaK9oHg==
-X-Received: by 2002:a9d:721b:: with SMTP id u27mr1030029otj.214.1632342810619;
-        Wed, 22 Sep 2021 13:33:30 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id bk40sm789475oib.8.2021.09.22.13.33.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Sep 2021 13:33:30 -0700 (PDT)
-Received: (nullmailer pid 1243882 invoked by uid 1000);
-        Wed, 22 Sep 2021 20:33:29 -0000
-Date:   Wed, 22 Sep 2021 15:33:29 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Christian Lamparter <chunkeey@gmail.com>
-Cc:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH] dt-bindings: net: wireless: qca,ath9k: convert to the
- json-schema
-Message-ID: <YUuTGXk0EvuaYdqk@robh.at.kernel.org>
-References: <20210917164636.120658-1-chunkeey@gmail.com>
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
+        b=bOKku7Ny9EkmdCxZKcJvgzIO4dTUf0JmoDLeiOFMt8Tof8p6+DNsA5YIHAiv+53QLv
+         e2socJvTFDzwnDjGatoeXPb4gEbKs2so2h5olKi8gl1yzM9YuutCLhwvz5pZgEXdwP3C
+         Js0mCxglyXdz5xhpYBZDBCxIy0a+yuZ2WLpFIaly69dhr8b36I2qkW8FG0qTduyBxg8O
+         vD6uhvhmERNXGuVe7o9zy03blubGBBsyrPRf+NNBv6HQzG3gL3XdZmh7z72of3CSojkG
+         fAY6aJ+qeaV24U4ckeA/Pyp6YSqRe2VKlbMoEN8Rj9V126Nh3Hlfyq/P9/QAkKEDeJQQ
+         K03g==
+X-Gm-Message-State: AOAM532SZ53m1mPW3Mtx7si/QsA/y+as8QoGiQmkc26s0TM014xcnBsb
+        TZMbk1ztcytExZoWMAyAk+thCtCbDuZ097x2qbNFj6skDFIRJQ==
+X-Google-Smtp-Source: ABdhPJwsLqRgkk9jb+wC1ECBTFJXrEEB4mmlIo/Kaul20LfIYdlAYLv9tmwaB5Pxv0AmysZSk6ZePRs2dvYCH/qVqH0=
+X-Received: by 2002:a05:6902:150a:: with SMTP id q10mr1344586ybu.515.1632344102557;
+ Wed, 22 Sep 2021 13:55:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210917164636.120658-1-chunkeey@gmail.com>
+Sender: pablogboy98@gmail.com
+Received: by 2002:a05:7000:1903:0:0:0:0 with HTTP; Wed, 22 Sep 2021 13:55:02
+ -0700 (PDT)
+From:   Aisha Al-Qaddafi <aisha.gdaffi24@gmail.com>
+Date:   Wed, 22 Sep 2021 21:55:02 +0100
+X-Google-Sender-Auth: EgWN-7KeHIzBWxs5WISil-9jI9s
+Message-ID: <CAFZ0LQG=HorOEh0B82pMRaOtrfukA2tHOBoX92F9fX48+pG2cA@mail.gmail.com>
+Subject: My Dear Friend
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Sep 17, 2021 at 06:46:36PM +0200, Christian Lamparter wrote:
-> This replaces the existing .txt binding file. Furthermore, this
-> also helps with validating DTS files.
-> 
-> Introduced binding changes:
->  1. added inherited mac-address nvmem property
->  2. added inherited ieee80211-freq-limit property
->  3. added new calibration nvmem property
-> 
-> Added binding .yaml to MAINTAINERS.
-> 
-> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-> ---
-> 
-> Q: Is there a way to encode the pci-id device value to the
-> specific chip? This is because the qca,ath9k.txt had this
-> nice list:
->                   - 002e for AR9287
->                   - 0030 for AR9380, AR9381 and AR9382
->                   - 0032 for AR9485
-
-You can add a comment after each compatible value.
-
-> 
-> I would like to preserve this information.
-> 
-> Thanks,
-> Christian
-> 
-> ---
->  .../bindings/net/wireless/qca,ath9k.txt       | 48 -----------
->  .../bindings/net/wireless/qca,ath9k.yaml      | 82 +++++++++++++++++++
->  MAINTAINERS                                   |  1 +
->  3 files changed, 83 insertions(+), 48 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-
-Reviewed-by: Rob Herring <robh@kernel.org>
+Assalamu alaikum,
+I came across your e-mail contact prior to a private search while in
+need of your assistance. I am Aisha Al-Qaddafi, the only biological,
+Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
+single Mother and a Widow with three Children. I have investment funds
+worth Twenty Seven Million Five Hundred Thousand United State Dollar
+($27.500.000.00 ) and i need a trusted  investment Manager/Partner
+because of my current refugee status, however, I am interested in you
+for investment project assistance in your country. If you are willing
+to handle this project on my behalf kindly reply urgently to enable me
+to provide you more information about the investment
+funds.
+Best Regards
