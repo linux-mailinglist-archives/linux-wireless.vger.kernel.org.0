@@ -2,158 +2,260 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE59D414E41
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 18:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2496E414FAF
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 20:16:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236657AbhIVQnq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Sep 2021 12:43:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60200 "EHLO
+        id S237063AbhIVSRT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Sep 2021 14:17:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231925AbhIVQnp (ORCPT
+        with ESMTP id S237033AbhIVSRT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Sep 2021 12:43:45 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13899C061574;
-        Wed, 22 Sep 2021 09:42:14 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id m3so14387013lfu.2;
-        Wed, 22 Sep 2021 09:42:13 -0700 (PDT)
+        Wed, 22 Sep 2021 14:17:19 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D33DCC061574;
+        Wed, 22 Sep 2021 11:15:48 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id e16so1013286qts.4;
+        Wed, 22 Sep 2021 11:15:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=HKbAlOc1Wlgw4HYxdNy1uVme/WyrLHbAhGlknTbllXY=;
-        b=eyMrjTEzwp1Aq4W+/svDhtPTt1yTmfh7El5bIVpJWXrWnkNKXfH7U7sBpSlQo6MfSZ
-         HDakQeZ3fUgNT9tozKNQObuCfadSdJCmGbGOCVM+rPQ/g5u6EBTutCe9YVYj1dt3mbQO
-         BkfEiPGOeJwDcVPyyVEiUM3GyiY1Xc1pgk/I2Sn5wM2vJ8B3jSmcNY3BXgkmsUa3a9XW
-         QP2TckccwKCTXGZCI0ua6hT81DK2OgU6h+IGOZ/pOyHMjbIh68bd8yefdvLjL3gU3udn
-         UY8xDoviAoP6GBwR6sW3+Ok1cbUSP2MOIffijnanx/hEBZfxldEAiVP755+WeXdHxm1n
-         +82A==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rYW+NdpATot/tPib4ZCECgj+fvwE6XfDtrMX0C2zwCY=;
+        b=Jvdmr6A01TAyh75m8oM7pExbHPz8y8QlFX4x3S+vldwGe5h058JBFLQJ3GXjUocBo2
+         NY3jf6pMGEH7nSG3JCK9k7GXKeAAHi90YlHSIaCS64lMPJwEA7xxKo1hLwvYCdJreX9q
+         Abf4dwc3ka6BQPTePYmTtRy+OWnALWMkpAysQJuDn9LPyY5tfgsXSNBNzB4c01MolIiu
+         b7kYakKEvS7qdG5d4vsQVletXm6Q6j+wJQ52mi4HQDJZ3+GVf3L06XaqxU+dGBqbq/AN
+         OS46X4ZqQvqKIPXfA2tx064myfajpxnnd/nq6v3fB+h1zslprviR/Ta2YLP7lfQP2dfy
+         01vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=HKbAlOc1Wlgw4HYxdNy1uVme/WyrLHbAhGlknTbllXY=;
-        b=vSquOqm3Bb2c22DpvCp+4c9QF+haU2soPGu0+tf8wNF1NUuG9sslfn5Sh/UC/sgnuR
-         bjzF4s7Iv6hfrZb4+6RnI+WFt0GK0oY7beucH9wxgeBGXOfgOOVaY09XbMYJVTjckkmd
-         68Ye94mD2e65p5gJI9R+vMrBMBqtJbTCYvnjdqgYXs9KpyPTnVVCpSDTEc5AkpOAom2k
-         GH7LUX/mAVIzzGSm2ghOiub68qKdNFPamOV2OtNZwckMoQkeMcKBxqQMNwK9Eiprn3dq
-         B2DaotHIsfF13FNVAVZ3WF3zaxNGFKjWB2bwSgCNFb/gMjibgI5ZyHN7TJlF+iyPqpRb
-         tdMg==
-X-Gm-Message-State: AOAM5304YNJ6L1ol1Hzd6FbKObewzpldfPUQ306uPR2xK/sppkxPGNvb
-        5GGDBQLjY2AEWYzGnu8pYFk=
-X-Google-Smtp-Source: ABdhPJz7To6brLb+kZPYEp3gIZsc155MjryodCTCWDwyOXbQlRqN3tOncpVdU/Oa3pmBk91XHK8iXQ==
-X-Received: by 2002:a2e:94d0:: with SMTP id r16mr151073ljh.403.1632328932293;
-        Wed, 22 Sep 2021 09:42:12 -0700 (PDT)
-Received: from localhost.localdomain ([46.235.67.49])
-        by smtp.gmail.com with ESMTPSA id y11sm215791lfs.135.2021.09.22.09.42.10
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rYW+NdpATot/tPib4ZCECgj+fvwE6XfDtrMX0C2zwCY=;
+        b=zg/79ou3sLlxgGahAeUwB1WhB2nMcI267JvtN4z5RxR0p2M3E4gvyQ8aPIhiO5tw6I
+         GKVM/wzZkXANciPknFtutt1idyJQRNUtKVdjk2TtDt//nHaqeZ85WYK6+n8eyJzgzeOd
+         GzmXf/Toz/HiIwTN3yAJ1oHSv2DsQB5K0rdYPlOxZ7V0z1aALw7wk+e9zrqOgzkHKBh+
+         2InU2GbB0QRDS7nUd65utBXOl6Zj0r/WH34tOAXwjKkzXCM5TohyEoQX/JUJCl+5IKx8
+         j/Fq76DQ4o585C9eSUD6bhzCxLSpFxwWfs4Vx/yzyiXSVxIHJA6rtC0ZiMM5u4TpGRrS
+         oZPw==
+X-Gm-Message-State: AOAM532WZgO8KYYxNZ2uPXHSgUq4nXzy+dYEgtLgOfmZI/zZaUQSfnwW
+        4PIIMTWL1ggPA27glluHvWpngOKECqO9DA==
+X-Google-Smtp-Source: ABdhPJzdDs8wSGD9wgjEsUoAzGR3lN4aDnn9q+5jzeiCBEqGxucq6/LL4A6mfoOxrovU0ka9YMeKZA==
+X-Received: by 2002:ac8:5c91:: with SMTP id r17mr654178qta.184.1632334546245;
+        Wed, 22 Sep 2021 11:15:46 -0700 (PDT)
+Received: from localhost.localdomain ([170.84.227.206])
+        by smtp.gmail.com with ESMTPSA id k4sm885686qtq.88.2021.09.22.11.15.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Sep 2021 09:42:11 -0700 (PDT)
-From:   Pavel Skripkin <paskripkin@gmail.com>
-To:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org, Sujith.Manoharan@atheros.com,
-        linville@tuxdriver.com, vasanth@atheros.com,
-        senthilkumar@atheros.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Pavel Skripkin <paskripkin@gmail.com>,
-        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
-        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
-Subject: [PATCH RESEND] net: ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
-Date:   Wed, 22 Sep 2021 19:42:04 +0300
-Message-Id: <20210922164204.32680-1-paskripkin@gmail.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <4e1374b1-74e4-22ea-d5e0-7cf592a0b65b@gmail.com>
-References: <4e1374b1-74e4-22ea-d5e0-7cf592a0b65b@gmail.com>
+        Wed, 22 Sep 2021 11:15:45 -0700 (PDT)
+From:   Ramon Fontes <ramonreisfontes@gmail.com>
+To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, kvalo@codeaurora.org,
+        davem@davemloft.net, Ramon Fontes <ramonreisfontes@gmail.com>
+Subject: [PATCH] mac80211_hwsim: enable 6GHz channels
+Date:   Wed, 22 Sep 2021 15:15:39 -0300
+Message-Id: <20210922181539.25827-1-ramonreisfontes@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb(). The
-problem was in incorrect htc_handle->drv_priv initialization.
+This adds 6 GHz capabilities and reject HT/VHT
 
-Probable call trace which can trigger use-after-free:
-
-ath9k_htc_probe_device()
-  /* htc_handle->drv_priv = priv; */
-  ath9k_htc_wait_for_target()      <--- Failed
-  ieee80211_free_hw()		   <--- priv pointer is freed
-
-<IRQ>
-...
-ath9k_hif_usb_rx_cb()
-  ath9k_hif_usb_rx_stream()
-   RX_STAT_INC()		<--- htc_handle->drv_priv access
-
-In order to not add fancy protection for drv_priv we can move
-htc_handle->drv_priv initialization at the end of the
-ath9k_htc_probe_device() and add helper macro to make
-all *_STAT_* macros NULL save.
-
-Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotmail.com
-Reported-and-tested-by: syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
-Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+Signed-off-by: Ramon Fontes <ramonreisfontes@gmail.com>
 ---
+ drivers/net/wireless/mac80211_hwsim.c | 154 +++++++++++++++++++++++---
+ 1 file changed, 141 insertions(+), 13 deletions(-)
 
-Why resend?
-	No activity on this patch since 8/6/21, Kalle Valo has asked around,
-	for review and no one claimed it.
-
-Resend changes:
-	1. Rebased on top of v5.15-rc2
-	2. Removed clean ups for macros
-	3. Added 1 more syzbot tag, since this patch has passed 2 syzbot
-	tests
-
----
- drivers/net/wireless/ath/ath9k/htc.h          | 10 +++++-----
- drivers/net/wireless/ath/ath9k/htc_drv_init.c |  3 ++-
- 2 files changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
-index 0a1634238e67..c8cde2e05d77 100644
---- a/drivers/net/wireless/ath/ath9k/htc.h
-+++ b/drivers/net/wireless/ath/ath9k/htc.h
-@@ -325,11 +325,11 @@ static inline struct ath9k_htc_tx_ctl *HTC_SKB_CB(struct sk_buff *skb)
- }
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index ffa894f73..02c044d2f 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -2988,6 +2988,122 @@ static const struct ieee80211_sband_iftype_data he_capa_5ghz[] = {
+ #endif
+ };
  
- #ifdef CONFIG_ATH9K_HTC_DEBUGFS
--
--#define TX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
--#define TX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
--#define RX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
--#define RX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
-+#define __STAT_SAVE(expr) (hif_dev->htc_handle->drv_priv ? (expr) : 0)
-+#define TX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
-+#define TX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
-+#define RX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
-+#define RX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
- #define CAB_STAT_INC   priv->debug.tx_stats.cab_queued++
- 
- #define TX_QSTAT_INC(q) (priv->debug.tx_stats.queue_stats[q]++)
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_init.c b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
-index ff61ae34ecdf..07ac88fb1c57 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_init.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
-@@ -944,7 +944,6 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
- 	priv->hw = hw;
- 	priv->htc = htc_handle;
- 	priv->dev = dev;
--	htc_handle->drv_priv = priv;
- 	SET_IEEE80211_DEV(hw, priv->dev);
- 
- 	ret = ath9k_htc_wait_for_target(priv);
-@@ -965,6 +964,8 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
- 	if (ret)
- 		goto err_init;
- 
-+	htc_handle->drv_priv = priv;
++static const struct ieee80211_sband_iftype_data he_capa_6ghz[] = {
++	{
++		/* TODO: should we support other types, e.g., P2P?*/
++		.types_mask = BIT(NL80211_IFTYPE_STATION) |
++			      BIT(NL80211_IFTYPE_AP),
++		.he_6ghz_capa = {
++			.capa = IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START |
++					IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP |
++					IEEE80211_HE_6GHZ_CAP_MAX_MPDU_LEN |
++					IEEE80211_HE_6GHZ_CAP_SM_PS |
++					IEEE80211_HE_6GHZ_CAP_RD_RESPONDER |
++					cpu_to_le16(IEEE80211_HE_6GHZ_CAP_TX_ANTPAT_CONS |
++							IEEE80211_HE_6GHZ_CAP_RX_ANTPAT_CONS),
++		},
++		.he_cap = {
++			.has_he = true,
++			.he_cap_elem = {
++				.mac_cap_info[0] =
++					IEEE80211_HE_MAC_CAP0_HTC_HE,
++				.mac_cap_info[1] =
++					IEEE80211_HE_MAC_CAP1_TF_MAC_PAD_DUR_16US |
++					IEEE80211_HE_MAC_CAP1_MULTI_TID_AGG_RX_QOS_8,
++				.mac_cap_info[2] =
++					IEEE80211_HE_MAC_CAP2_BSR |
++					IEEE80211_HE_MAC_CAP2_MU_CASCADING |
++					IEEE80211_HE_MAC_CAP2_ACK_EN,
++				.mac_cap_info[3] =
++					IEEE80211_HE_MAC_CAP3_OMI_CONTROL |
++					IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_EXT_3,
++				.mac_cap_info[4] = IEEE80211_HE_MAC_CAP4_AMSDU_IN_AMPDU,
++				.phy_cap_info[0] =
++					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
++					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
++					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G,
++				.phy_cap_info[1] =
++					IEEE80211_HE_PHY_CAP1_PREAMBLE_PUNC_RX_MASK |
++					IEEE80211_HE_PHY_CAP1_DEVICE_CLASS_A |
++					IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD |
++					IEEE80211_HE_PHY_CAP1_MIDAMBLE_RX_TX_MAX_NSTS,
++				.phy_cap_info[2] =
++					IEEE80211_HE_PHY_CAP2_NDP_4x_LTF_AND_3_2US |
++					IEEE80211_HE_PHY_CAP2_STBC_TX_UNDER_80MHZ |
++					IEEE80211_HE_PHY_CAP2_STBC_RX_UNDER_80MHZ |
++					IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO |
++					IEEE80211_HE_PHY_CAP2_UL_MU_PARTIAL_MU_MIMO,
 +
- 	return 0;
++				/* Leave all the other PHY capability bytes
++				 * unset, as DCM, beam forming, RU and PPE
++				 * threshold information are not supported
++				 */
++			},
++			.he_mcs_nss_supp = {
++				.rx_mcs_80 = cpu_to_le16(0xfffa),
++				.tx_mcs_80 = cpu_to_le16(0xfffa),
++				.rx_mcs_160 = cpu_to_le16(0xfffa),
++				.tx_mcs_160 = cpu_to_le16(0xfffa),
++				.rx_mcs_80p80 = cpu_to_le16(0xfffa),
++				.tx_mcs_80p80 = cpu_to_le16(0xfffa),
++			},
++		},
++	},
++#ifdef CONFIG_MAC80211_MESH
++	{
++		/* TODO: should we support other types, e.g., IBSS?*/
++		.types_mask = BIT(NL80211_IFTYPE_MESH_POINT),
++		.he_6ghz_capa = {
++			.capa = IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START |
++					IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP |
++					IEEE80211_HE_6GHZ_CAP_MAX_MPDU_LEN |
++					IEEE80211_HE_6GHZ_CAP_SM_PS |
++					IEEE80211_HE_6GHZ_CAP_RD_RESPONDER |
++					cpu_to_le16(IEEE80211_HE_6GHZ_CAP_TX_ANTPAT_CONS |
++							IEEE80211_HE_6GHZ_CAP_RX_ANTPAT_CONS),
++		},
++		.he_cap = {
++			.has_he = true,
++			.he_cap_elem = {
++				.mac_cap_info[0] =
++					IEEE80211_HE_MAC_CAP0_HTC_HE,
++				.mac_cap_info[1] =
++					IEEE80211_HE_MAC_CAP1_MULTI_TID_AGG_RX_QOS_8,
++				.mac_cap_info[2] =
++					IEEE80211_HE_MAC_CAP2_ACK_EN,
++				.mac_cap_info[3] =
++					IEEE80211_HE_MAC_CAP3_OMI_CONTROL |
++					IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_EXT_3,
++				.mac_cap_info[4] = IEEE80211_HE_MAC_CAP4_AMSDU_IN_AMPDU,
++				.phy_cap_info[0] =
++					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
++					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
++					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G,
++				.phy_cap_info[1] =
++					IEEE80211_HE_PHY_CAP1_PREAMBLE_PUNC_RX_MASK |
++					IEEE80211_HE_PHY_CAP1_DEVICE_CLASS_A |
++					IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD |
++					IEEE80211_HE_PHY_CAP1_MIDAMBLE_RX_TX_MAX_NSTS,
++				.phy_cap_info[2] = 0,
++
++				/* Leave all the other PHY capability bytes
++				 * unset, as DCM, beam forming, RU and PPE
++				 * threshold information are not supported
++				 */
++			},
++			.he_mcs_nss_supp = {
++				.rx_mcs_80 = cpu_to_le16(0xfffa),
++				.tx_mcs_80 = cpu_to_le16(0xfffa),
++				.rx_mcs_160 = cpu_to_le16(0xfffa),
++				.tx_mcs_160 = cpu_to_le16(0xfffa),
++				.rx_mcs_80p80 = cpu_to_le16(0xfffa),
++				.tx_mcs_80p80 = cpu_to_le16(0xfffa),
++			},
++		},
++	},
++#endif
++};
++
+ static void mac80211_hwsim_he_capab(struct ieee80211_supported_band *sband)
+ {
+ 	u16 n_iftype_data;
+@@ -3000,6 +3116,10 @@ static void mac80211_hwsim_he_capab(struct ieee80211_supported_band *sband)
+ 		n_iftype_data = ARRAY_SIZE(he_capa_5ghz);
+ 		sband->iftype_data =
+ 			(struct ieee80211_sband_iftype_data *)he_capa_5ghz;
++	} else if (sband->band == NL80211_BAND_6GHZ) {
++		n_iftype_data = ARRAY_SIZE(he_capa_6ghz);
++		sband->iftype_data =
++			(struct ieee80211_sband_iftype_data *)he_capa_6ghz;
+ 	} else {
+ 		return;
+ 	}
+@@ -3290,6 +3410,12 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 			sband->vht_cap.vht_mcs.tx_mcs_map =
+ 				sband->vht_cap.vht_mcs.rx_mcs_map;
+ 			break;
++		case NL80211_BAND_6GHZ:
++			sband->channels = data->channels_6ghz;
++			sband->n_channels = ARRAY_SIZE(hwsim_channels_6ghz);
++			sband->bitrates = data->rates + 4;
++			sband->n_bitrates = ARRAY_SIZE(hwsim_rates) - 4;
++			break;
+ 		case NL80211_BAND_S1GHZ:
+ 			memcpy(&sband->s1g_cap, &hwsim_s1g_cap,
+ 			       sizeof(sband->s1g_cap));
+@@ -3300,19 +3426,21 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 			continue;
+ 		}
  
- err_init:
+-		sband->ht_cap.ht_supported = true;
+-		sband->ht_cap.cap = IEEE80211_HT_CAP_SUP_WIDTH_20_40 |
+-				    IEEE80211_HT_CAP_GRN_FLD |
+-				    IEEE80211_HT_CAP_SGI_20 |
+-				    IEEE80211_HT_CAP_SGI_40 |
+-				    IEEE80211_HT_CAP_DSSSCCK40;
+-		sband->ht_cap.ampdu_factor = 0x3;
+-		sband->ht_cap.ampdu_density = 0x6;
+-		memset(&sband->ht_cap.mcs, 0,
+-		       sizeof(sband->ht_cap.mcs));
+-		sband->ht_cap.mcs.rx_mask[0] = 0xff;
+-		sband->ht_cap.mcs.rx_mask[1] = 0xff;
+-		sband->ht_cap.mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
++		if (band != NL80211_BAND_6GHZ){
++			sband->ht_cap.ht_supported = true;
++			sband->ht_cap.cap = IEEE80211_HT_CAP_SUP_WIDTH_20_40 |
++					    IEEE80211_HT_CAP_GRN_FLD |
++					    IEEE80211_HT_CAP_SGI_20 |
++					    IEEE80211_HT_CAP_SGI_40 |
++					    IEEE80211_HT_CAP_DSSSCCK40;
++			sband->ht_cap.ampdu_factor = 0x3;
++			sband->ht_cap.ampdu_density = 0x6;
++			memset(&sband->ht_cap.mcs, 0,
++			       sizeof(sband->ht_cap.mcs));
++			sband->ht_cap.mcs.rx_mask[0] = 0xff;
++			sband->ht_cap.mcs.rx_mask[1] = 0xff;
++			sband->ht_cap.mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
++		}
+ 
+ 		mac80211_hwsim_he_capab(sband);
+ 
 -- 
-2.33.0
+2.25.1
 
