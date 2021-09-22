@@ -2,72 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D0C84151FC
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 22:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48769415346
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 00:20:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237919AbhIVU4y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Sep 2021 16:56:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34028 "EHLO
+        id S238272AbhIVWVk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Sep 2021 18:21:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237869AbhIVU4q (ORCPT
+        with ESMTP id S238243AbhIVWVj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Sep 2021 16:56:46 -0400
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 883C9C061756
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Sep 2021 13:55:13 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id i132so14745098qke.1
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Sep 2021 13:55:13 -0700 (PDT)
+        Wed, 22 Sep 2021 18:21:39 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 576E7C06175F
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Sep 2021 15:20:09 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id 97-20020a9d006a000000b00545420bff9eso5731617ota.8
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Sep 2021 15:20:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
-        b=KdXnhe/3zkHeZgixn9BpXiRXniwMgDmhauf6YTuxP0wgB5yzxGI3euReyxhx9TVrxq
-         3Od5gARvk08SiaQHEdbK80uTPJiKvZD1mvaXmFEi2OlRGGLVxi9qjTdQEJHDNx6GrhQf
-         +YDVSfcVXX6hJ9tzkOuxVlwY0IK/v4ECFsMgPN0YbEUFjdWw7wtLO6HU7k0GlwYOwBU7
-         g0u5ZrnjkFj9bDNBfxTJ+EZszn5R+MIWkE1noseX+tMOjLt3VKfnAtHOf7zGnzUi7/Ss
-         4zORj2FhCL6VBd/6ui6VhZsTJDlTQFr3MO12bpjTdn18irITsVHBfbJQd5ezVh5SqLsC
-         4EBw==
+        d=chromium.org; s=google;
+        h=mime-version:in-reply-to:references:from:user-agent:date:message-id
+         :subject:to:cc;
+        bh=W1rGCIVVi5108Q/9A0D4D81PogphtnHZcZGcFwI/n8c=;
+        b=lZ4jjQH4J53Sq0uWmOts31WHzdVOUeHYBNZoeXCSt/k2qPrrnZTnHDbYNMBlz8l4Qq
+         Unjn4X6mERv1brEkuIx2MTq8Jcgf4Snag6St/qVIUgqGuOWTxjZ0amqF3P1smySdlYGV
+         kH72kD8YBInkfTk5jrxD/6aKPnltlPHQyj2hg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
-        b=bOKku7Ny9EkmdCxZKcJvgzIO4dTUf0JmoDLeiOFMt8Tof8p6+DNsA5YIHAiv+53QLv
-         e2socJvTFDzwnDjGatoeXPb4gEbKs2so2h5olKi8gl1yzM9YuutCLhwvz5pZgEXdwP3C
-         Js0mCxglyXdz5xhpYBZDBCxIy0a+yuZ2WLpFIaly69dhr8b36I2qkW8FG0qTduyBxg8O
-         vD6uhvhmERNXGuVe7o9zy03blubGBBsyrPRf+NNBv6HQzG3gL3XdZmh7z72of3CSojkG
-         fAY6aJ+qeaV24U4ckeA/Pyp6YSqRe2VKlbMoEN8Rj9V126Nh3Hlfyq/P9/QAkKEDeJQQ
-         K03g==
-X-Gm-Message-State: AOAM532SZ53m1mPW3Mtx7si/QsA/y+as8QoGiQmkc26s0TM014xcnBsb
-        TZMbk1ztcytExZoWMAyAk+thCtCbDuZ097x2qbNFj6skDFIRJQ==
-X-Google-Smtp-Source: ABdhPJwsLqRgkk9jb+wC1ECBTFJXrEEB4mmlIo/Kaul20LfIYdlAYLv9tmwaB5Pxv0AmysZSk6ZePRs2dvYCH/qVqH0=
-X-Received: by 2002:a05:6902:150a:: with SMTP id q10mr1344586ybu.515.1632344102557;
- Wed, 22 Sep 2021 13:55:02 -0700 (PDT)
+        h=x-gm-message-state:mime-version:in-reply-to:references:from
+         :user-agent:date:message-id:subject:to:cc;
+        bh=W1rGCIVVi5108Q/9A0D4D81PogphtnHZcZGcFwI/n8c=;
+        b=akWU4id0K47Bgc91nMT79p7llFghKiVgohbc5kI7bal4KttsY2yhXrvaTQuga2YxLg
+         BRap5Zh2eTxfsu+7UwcJ5xGvOVzGqYVz/+MBc/8qJhTchjj07SqH4Ow7tCz2oRrG91RH
+         P/g6QD6/mA9AAj0LJJ3w5jOgq6ASuL5rwx3d6DKvEmWivA1l22lh8Temen9oNyu7MpGV
+         u04HZ6b9fWif2k3huh8mJhY6+ucVjvNXuPIP86naEPKhGUd9bTUIhNRoKoLEl4o4/8sT
+         Aoya8E96+mhVZqM3doIyx0IDsgvYLctpiT9Nu8UTjOLCiKoUweRT/MsDSZhT6X8T/+c/
+         0W8g==
+X-Gm-Message-State: AOAM5323j4NO+tAPb8eWVXXA/BB41lSFgpj766I+C7cGpQ5F1mIZM+9z
+        K54h8ySgZ9l1DZ+14yxE7sxkl3H0vvq+aAmaqdR8qw==
+X-Google-Smtp-Source: ABdhPJxDmhv2Wk4xS4LtcVnjVmDgD0uv50Ee3G6tTvQATi7KZyc3eV2KcY6vd/PwCbVrxO/pvQ+fcQrosyCBMLqNaLA=
+X-Received: by 2002:a9d:6a0f:: with SMTP id g15mr1388223otn.126.1632349208588;
+ Wed, 22 Sep 2021 15:20:08 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 22 Sep 2021 15:20:07 -0700
 MIME-Version: 1.0
-Sender: pablogboy98@gmail.com
-Received: by 2002:a05:7000:1903:0:0:0:0 with HTTP; Wed, 22 Sep 2021 13:55:02
- -0700 (PDT)
-From:   Aisha Al-Qaddafi <aisha.gdaffi24@gmail.com>
-Date:   Wed, 22 Sep 2021 21:55:02 +0100
-X-Google-Sender-Auth: EgWN-7KeHIzBWxs5WISil-9jI9s
-Message-ID: <CAFZ0LQG=HorOEh0B82pMRaOtrfukA2tHOBoX92F9fX48+pG2cA@mail.gmail.com>
-Subject: My Dear Friend
-To:     undisclosed-recipients:;
+In-Reply-To: <002501d7af73$ae0a7620$0a1f6260$@codeaurora.org>
+References: <002501d7af73$ae0a7620$0a1f6260$@codeaurora.org>
+From:   Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.9.1
+Date:   Wed, 22 Sep 2021 15:20:07 -0700
+Message-ID: <CAE-0n52DcCwcdR07fvMLrj=RJFtNthy0FdWmt1gBWiD9eLrOvQ@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Don't always treat modem stop events as crashes
+To:     pillair@codeaurora.org
+Cc:     ath10k@lists.infradead.org, govinds@codeaurora.org,
+        kuabhs@chromium.org, kvalo@codeaurora.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        youghand@codeaurora.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Assalamu alaikum,
-I came across your e-mail contact prior to a private search while in
-need of your assistance. I am Aisha Al-Qaddafi, the only biological,
-Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
-single Mother and a Widow with three Children. I have investment funds
-worth Twenty Seven Million Five Hundred Thousand United State Dollar
-($27.500.000.00 ) and i need a trusted  investment Manager/Partner
-because of my current refugee status, however, I am interested in you
-for investment project assistance in your country. If you are willing
-to handle this project on my behalf kindly reply urgently to enable me
-to provide you more information about the investment
-funds.
-Best Regards
+Quoting pillair@codeaurora.org (2021-09-21 22:35:34)
+>
+>
+> On 9/5/21 4:04 PM, Stephen Boyd wrote:
+>
+> > +static int ath10k_snoc_modem_notify(struct notifier_block *nb, unsigned long
+[...]
+>
+> > +
+>
+> > +          return NOTIFY_OK;
+>
+> > +}
+>
+>
+>
+> Thanks for posting the patch. It would be preferable to use a different flag
+> instead of ATH10K_SNOC_FLAG_UNREGISTERING,
+>
+> since we are not unloading the ath10k driver.
+>
+>
+
+Ok. I'll make a new flag ATH10K_SNOC_FLAG_MODEM_STOPPED and test that as
+well.
