@@ -2,163 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46F17413A7B
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Sep 2021 21:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D19B7413F84
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 04:37:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234106AbhIUTGC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Sep 2021 15:06:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44374 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234103AbhIUTGA (ORCPT
+        id S229923AbhIVCim (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Sep 2021 22:38:42 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:60316 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229466AbhIVCim (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Sep 2021 15:06:00 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E8AC061760
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Sep 2021 12:04:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=H86o5NHsrnLzeXx/GkxhQlNri6K2y/oydtKq1IAb8uk=;
-        t=1632251071; x=1633460671; b=a9x1aho+IH6w0M6bvmUkvCuHDc3zBBtmf+5k8711TOLae2W
-        0MH1WOQWrIOdYZs4LJqEdpLzf+N2pp6OyCXl3M7w5cMRXFCZf+OKhvUtjg+mYxjTzPpqqg93f57A4
-        13F3oE/QTPpKyo0VJyNF+Ovh8je/nYD9NcaE+uWNt46PaYT+sGrRvdkqd74kwBzws2h3pmmw7n4Wq
-        MxwzpysXk+blz1+nvUPRihRdMIORcoMdecfKefPIRvdtuWWZhdoo6cdXMb5Y3oFikjvxPYoIReKgn
-        UKQv6RNkAlx6/UEQMzCaybKsXnKbEAU++2QmzKL6T7+uGJBfl6i1SfxhQZ9C/9/g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95-RC2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mSl48-009yRG-Kj;
-        Tue, 21 Sep 2021 21:04:28 +0200
-Message-ID: <92a61ea6f05d9c461eddced42ee75db944a191b1.camel@sipsolutions.net>
-Subject: Re: [PATCH] iwlwifi: add NL80211_EXT_FEATURE_CAN_REPLACE_PTK0
- support
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Alexander Wetzel <alexander@wetzel-home.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     "luciano.coelho@intel.com" <luciano.coelho@intel.com>,
-        "emmanuel.grumbach@intel.com" <emmanuel.grumbach@intel.com>,
-        "linuxwifi@intel.com" <linuxwifi@intel.com>
-Date:   Tue, 21 Sep 2021 21:04:27 +0200
-In-Reply-To: <a245ea65-d862-6388-d163-49b99046dc08@wetzel-home.de> (sfid-20200922_204540_116426_B91E091B)
-References: <20200918171301.6942-1-alexander@wetzel-home.de>
-         <f6df593556c3f395997dfe42a71a69f4919a5911.camel@sipsolutions.net>
-         <c887ae58-983b-0f4b-3b00-8ffbb669f37a@wetzel-home.de>
-         <a245ea65-d862-6388-d163-49b99046dc08@wetzel-home.de>
-         (sfid-20200922_204540_116426_B91E091B)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Tue, 21 Sep 2021 22:38:42 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 18M2b5Dp9024556, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 18M2b5Dp9024556
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 22 Sep 2021 10:37:05 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Wed, 22 Sep 2021 10:37:05 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 22 Sep
+ 2021 10:37:03 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <vincent_fann@realtek.com>
+Subject: [PATCH 1/2] rtw88: 8821c: support RFE type4 wifi NIC
+Date:   Wed, 22 Sep 2021 10:36:36 +0800
+Message-ID: <20210922023637.9357-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/22/2021 02:12:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzkvMjIgpFekyCAwMTowNjowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Alexander,
+From: Guo-Feng Fan <vincent_fann@realtek.com>
 
-On Tue, 2020-09-22 at 20:45 +0200, Alexander Wetzel wrote:
-> 
-> Ok, forget this patch, the mvm part is pointless.
-> The maximum we have to do is pausing the queues when we delete a key, no 
-> flush required at all... I'll look into that again and send an updated 
-> version:
+RFE type4 is a new NIC which has one RF antenna shares with BT.
+RFE type4 HW is the same as RFE type2 but attaching antenna to
+aux antenna connector.
 
-I know it's been (almost exactly) a year, but I was wondering about this
-scenario recently
-(due to e.g. https://bugzilla.kernel.org/show_bug.cgi?id=213059, though
-I'm not sure that report even makes sense).
+RFE type2 attach antenna to main antenna connector.
+Load the same parameter as RFE type2 when initializing NIC.
 
-Did you ever send another patch? I can't seem to find any.
+Signed-off-by: Guo-Feng Fan <vincent_fann@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-
-But basically, in mvm, we support two scenarios these days:
-
- 1) PN assigned by the driver, in iwl_mvm_set_tx_cmd_crypto(), with two 
-    sub-cases:
-    a) key material embedded into the TX command (CCMP, TKIP, WEP)
-    b) key material taken from firmware key offset (CCMP-256, GCMP)
- 2) PN assigned by the device per the station, via the "new TX API"
-    selected in iwl_mvm_set_tx_params().
-
-
-Am I wrong in thinking that both scenarios 1a) and 2) are completely
-acceptable for CAN_REPLACE_PTK0, since there's never any possibility of
-sending a frame with a mismatch between the PN assignment and key
-material?
-
-However, it seems that scenario 1b) is what this patch attempted to
-handle, by flushing the TX queues when the new key is installed, and I'm
-not sure why you said it wasn't necessary - if the driver installs new
-key material in the device while there are frames that already have a PN
-set, then the old PN _might_ be used with a new key, leading to
-problems.
-
-There's a probabilistic defense against this, in that we attempt to
-reuse key offsets (the hw_key ID that goes into the TX command) as
-rarely as possible, so that if we put a frame with key offset 0 into the
-queue, and then reinstall the PTK, it would go to key offset 2 (1 being
-used by the GTK), and 0 would stay unless we did another rekeying or so.
-
-I guess in theory we could arrange -- on the hardware where case 1b) is
-even relevant, i.e. only 9260 since previous don't support GCMP, and
-later use case 2) -- to never put the rekeyed PTK into the same slot,
-that way, even if we do have to reuse the slot, it'd be with a different
-key? But in theory that might leak data to the wrong station or
-something ... functionally, it would lead to a rejection of the frame
-and it being dropped at the receiver, but security-wise it'd be a
-problem.
-
-
-Anyway, I'm not really sure why you thought the flush wasn't needed, it
-seems to me it is still needed in the case 1b).
-
-Theoretically, it seems we could rely on the "no key slot (offset)
-reuse" if we put some kind of barrier into the TX queues whenever we
-stop using a key slot, that way we'd know if it might still get used or
-not. If yes, we flush, but that basically never happens since there are
-a relatively large number of slots and typical use cases don't have so
-many keys.
-
-
-The other question I had was concerning the documented requirements for
-NL80211_EXT_FEATURE_CAN_REPLACE_PTK0, aren't those too strict? For
-reference, this is what it says now:
-
-> * Mac80211 drivers should set the @NL80211_EXT_FEATURE_CAN_REPLACE_PTK0 flag
-> * when they are able to replace in-use PTK keys according to the following
-> * requirements:
-> * 1) They do not hand over frames decrypted with the old key to
->      mac80211 once the call to set_key() with command %DISABLE_KEY has been
->      completed when also setting @IEEE80211_KEY_FLAG_GENERATE_IV for any key,
-
-This is I think a bit misleading, how's the RX-side related to
-GENERATE_IV? It seems to me that this requirement is to ensure we don't
-get a bad replay counter on RX, but then that's unrelated to
-GENERATE_IV?
-
->   2) either drop or continue to use the old key for any outgoing frames queued
->      at the time of the key deletion (including re-transmits),
-
-That's mostly true for iwlwifi, apart from the case 1b) key offset reuse
-I was explaining above.
-
->   3) never send out a frame queued prior to the set_key() %SET_KEY command
->      encrypted with the new key and
-
-This I don't really know why - I think maybe *this* was meant to have
-the "when also setting GENERATE_IV"?
-
-I don't think this is necessary if you ensure that the PN is assigned
-from the correct key? That is, it doesn't really apply in case 2) I
-mentioned?
-
-
->   4) never send out a frame unencrypted when it should be encrypted.
-
-Obviously :)
-
-
-Thanks,
-johannes
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index 349eef1a0ff2..3effdf902f22 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -305,7 +305,8 @@ static void rtw8821c_set_channel_rf(struct rtw_dev *rtwdev, u8 channel, u8 bw)
+ 	if (channel <= 14) {
+ 		if (rtwdev->efuse.rfe_option == 0)
+ 			rtw8821c_switch_rf_set(rtwdev, SWITCH_TO_WLG);
+-		else if (rtwdev->efuse.rfe_option == 2)
++		else if (rtwdev->efuse.rfe_option == 2 ||
++			 rtwdev->efuse.rfe_option == 4)
+ 			rtw8821c_switch_rf_set(rtwdev, SWITCH_TO_BTG);
+ 		rtw_write_rf(rtwdev, RF_PATH_A, RF_LUTDBG, BIT(6), 0x1);
+ 		rtw_write_rf(rtwdev, RF_PATH_A, 0x64, 0xf, 0xf);
+@@ -774,6 +775,15 @@ static void rtw8821c_coex_cfg_ant_switch(struct rtw_dev *rtwdev, u8 ctrl_type,
+ 	if (switch_status == coex_dm->cur_switch_status)
+ 		return;
+ 
++	if (coex_rfe->wlg_at_btg) {
++		ctrl_type = COEX_SWITCH_CTRL_BY_BBSW;
++
++		if (coex_rfe->ant_switch_polarity)
++			pos_type = COEX_SWITCH_TO_WLA;
++		else
++			pos_type = COEX_SWITCH_TO_WLG_BT;
++	}
++
+ 	coex_dm->cur_switch_status = switch_status;
+ 
+ 	if (coex_rfe->ant_switch_diversity &&
+@@ -1499,6 +1509,7 @@ static const struct rtw_intf_phy_para_table phy_para_table_8821c = {
+ static const struct rtw_rfe_def rtw8821c_rfe_defs[] = {
+ 	[0] = RTW_DEF_RFE(8821c, 0, 0),
+ 	[2] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
++	[4] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
+ };
+ 
+ static struct rtw_hw_reg rtw8821c_dig[] = {
+-- 
+2.25.1
 
