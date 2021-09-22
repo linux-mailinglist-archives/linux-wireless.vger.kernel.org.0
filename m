@@ -2,136 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76EE6414D82
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 17:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE59D414E41
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Sep 2021 18:42:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236542AbhIVPz6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Sep 2021 11:55:58 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.85.151]:22194 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236417AbhIVPz5 (ORCPT
+        id S236657AbhIVQnq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Sep 2021 12:43:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60200 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231925AbhIVQnp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Sep 2021 11:55:57 -0400
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-50-67rf-bCINT6N378a70FgGQ-1; Wed, 22 Sep 2021 16:54:25 +0100
-X-MC-Unique: 67rf-bCINT6N378a70FgGQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.23; Wed, 22 Sep 2021 16:54:24 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.023; Wed, 22 Sep 2021 16:54:24 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     =?utf-8?B?J1BhbGkgUm9ow6FyJw==?= <pali@kernel.org>
-CC:     =?utf-8?B?J0pvbmFzIERyZcOfbGVyJw==?= <verdre@v0yd.nl>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Tsuchiya Yuto" <kitakar@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Brian Norris <briannorris@chromium.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH v2 1/2] mwifiex: Use non-posted PCI write when setting TX
- ring write pointer
-Thread-Topic: [PATCH v2 1/2] mwifiex: Use non-posted PCI write when setting TX
- ring write pointer
-Thread-Index: AQHXqV6M5O4Kbg53iUSKSfgcb2dqbquwGdzg///+kQCAACPEAA==
-Date:   Wed, 22 Sep 2021 15:54:24 +0000
-Message-ID: <e0a4e0adc56148039f853ccb083be53a@AcuMS.aculab.com>
-References: <20210914114813.15404-1-verdre@v0yd.nl>
- <20210914114813.15404-2-verdre@v0yd.nl>
- <8f65f41a807c46d496bf1b45816077e4@AcuMS.aculab.com>
- <20210922142726.guviqler5k7wnm52@pali>
-In-Reply-To: <20210922142726.guviqler5k7wnm52@pali>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Wed, 22 Sep 2021 12:43:45 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13899C061574;
+        Wed, 22 Sep 2021 09:42:14 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id m3so14387013lfu.2;
+        Wed, 22 Sep 2021 09:42:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=HKbAlOc1Wlgw4HYxdNy1uVme/WyrLHbAhGlknTbllXY=;
+        b=eyMrjTEzwp1Aq4W+/svDhtPTt1yTmfh7El5bIVpJWXrWnkNKXfH7U7sBpSlQo6MfSZ
+         HDakQeZ3fUgNT9tozKNQObuCfadSdJCmGbGOCVM+rPQ/g5u6EBTutCe9YVYj1dt3mbQO
+         BkfEiPGOeJwDcVPyyVEiUM3GyiY1Xc1pgk/I2Sn5wM2vJ8B3jSmcNY3BXgkmsUa3a9XW
+         QP2TckccwKCTXGZCI0ua6hT81DK2OgU6h+IGOZ/pOyHMjbIh68bd8yefdvLjL3gU3udn
+         UY8xDoviAoP6GBwR6sW3+Ok1cbUSP2MOIffijnanx/hEBZfxldEAiVP755+WeXdHxm1n
+         +82A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=HKbAlOc1Wlgw4HYxdNy1uVme/WyrLHbAhGlknTbllXY=;
+        b=vSquOqm3Bb2c22DpvCp+4c9QF+haU2soPGu0+tf8wNF1NUuG9sslfn5Sh/UC/sgnuR
+         bjzF4s7Iv6hfrZb4+6RnI+WFt0GK0oY7beucH9wxgeBGXOfgOOVaY09XbMYJVTjckkmd
+         68Ye94mD2e65p5gJI9R+vMrBMBqtJbTCYvnjdqgYXs9KpyPTnVVCpSDTEc5AkpOAom2k
+         GH7LUX/mAVIzzGSm2ghOiub68qKdNFPamOV2OtNZwckMoQkeMcKBxqQMNwK9Eiprn3dq
+         B2DaotHIsfF13FNVAVZ3WF3zaxNGFKjWB2bwSgCNFb/gMjibgI5ZyHN7TJlF+iyPqpRb
+         tdMg==
+X-Gm-Message-State: AOAM5304YNJ6L1ol1Hzd6FbKObewzpldfPUQ306uPR2xK/sppkxPGNvb
+        5GGDBQLjY2AEWYzGnu8pYFk=
+X-Google-Smtp-Source: ABdhPJz7To6brLb+kZPYEp3gIZsc155MjryodCTCWDwyOXbQlRqN3tOncpVdU/Oa3pmBk91XHK8iXQ==
+X-Received: by 2002:a2e:94d0:: with SMTP id r16mr151073ljh.403.1632328932293;
+        Wed, 22 Sep 2021 09:42:12 -0700 (PDT)
+Received: from localhost.localdomain ([46.235.67.49])
+        by smtp.gmail.com with ESMTPSA id y11sm215791lfs.135.2021.09.22.09.42.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Sep 2021 09:42:11 -0700 (PDT)
+From:   Pavel Skripkin <paskripkin@gmail.com>
+To:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org, Sujith.Manoharan@atheros.com,
+        linville@tuxdriver.com, vasanth@atheros.com,
+        senthilkumar@atheros.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Pavel Skripkin <paskripkin@gmail.com>,
+        syzbot+03110230a11411024147@syzkaller.appspotmail.com,
+        syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+Subject: [PATCH RESEND] net: ath9k: fix use-after-free in ath9k_hif_usb_rx_cb
+Date:   Wed, 22 Sep 2021 19:42:04 +0300
+Message-Id: <20210922164204.32680-1-paskripkin@gmail.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <4e1374b1-74e4-22ea-d5e0-7cf592a0b65b@gmail.com>
+References: <4e1374b1-74e4-22ea-d5e0-7cf592a0b65b@gmail.com>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQpGcm9tOiBQYWxpIFJvaMOhcg0KPiBTZW50OiAyMiBTZXB0ZW1iZXIgMjAyMSAxNToyNw0KPiAN
-Cj4gT24gV2VkbmVzZGF5IDIyIFNlcHRlbWJlciAyMDIxIDE0OjAzOjI1IERhdmlkIExhaWdodCB3
-cm90ZToNCj4gPiBGcm9tOiBKb25hcyBEcmXDn2xlcg0KPiA+ID4gU2VudDogMTQgU2VwdGVtYmVy
-IDIwMjEgMTI6NDgNCj4gPiA+DQo+ID4gPiBPbiB0aGUgODhXODg5NyBjYXJkIGl0J3MgdmVyeSBp
-bXBvcnRhbnQgdGhlIFRYIHJpbmcgd3JpdGUgcG9pbnRlciBpcw0KPiA+ID4gdXBkYXRlZCBjb3Jy
-ZWN0bHkgdG8gaXRzIG5ldyB2YWx1ZSBiZWZvcmUgc2V0dGluZyB0aGUgVFggcmVhZHkNCj4gPiA+
-IGludGVycnVwdCwgb3RoZXJ3aXNlIHRoZSBmaXJtd2FyZSBhcHBlYXJzIHRvIGNyYXNoIChwcm9i
-YWJseSBiZWNhdXNlDQo+ID4gPiBpdCdzIHRyeWluZyB0byBETUEtcmVhZCBmcm9tIHRoZSB3cm9u
-ZyBwbGFjZSkuIFRoZSBpc3N1ZSBpcyBwcmVzZW50IGluDQo+ID4gPiB0aGUgbGF0ZXN0IGZpcm13
-YXJlIHZlcnNpb24gMTUuNjguMTkucDIxIG9mIHRoZSBwY2llK3VzYiBjYXJkLg0KPiA+ID4NCj4g
-PiA+IFNpbmNlIFBDSSB1c2VzICJwb3N0ZWQgd3JpdGVzIiB3aGVuIHdyaXRpbmcgdG8gYSByZWdp
-c3RlciwgaXQncyBub3QNCj4gPiA+IGd1YXJhbnRlZWQgdGhhdCBhIHdyaXRlIHdpbGwgaGFwcGVu
-IGltbWVkaWF0ZWx5LiBUaGF0IG1lYW5zIHRoZSBwb2ludGVyDQo+ID4gPiBtaWdodCBiZSBvdXRk
-YXRlZCB3aGVuIHNldHRpbmcgdGhlIFRYIHJlYWR5IGludGVycnVwdCwgbGVhZGluZyB0bw0KPiA+
-ID4gZmlybXdhcmUgY3Jhc2hlcyBlc3BlY2lhbGx5IHdoZW4gQVNQTSBMMSBhbmQgTDEgc3Vic3Rh
-dGVzIGFyZSBlbmFibGVkDQo+ID4gPiAoYmVjYXVzZSBvZiB0aGUgaGlnaGVyIGxpbmsgbGF0ZW5j
-eSwgdGhlIHdyaXRlIHdpbGwgcHJvYmFibHkgdGFrZQ0KPiA+ID4gbG9uZ2VyKS4NCj4gPiA+DQo+
-ID4gPiBTbyBmaXggdGhvc2UgZmlybXdhcmUgY3Jhc2hlcyBieSBhbHdheXMgdXNpbmcgYSBub24t
-cG9zdGVkIHdyaXRlIGZvcg0KPiA+ID4gdGhpcyBzcGVjaWZpYyByZWdpc3RlciB3cml0ZS4gV2Ug
-ZG8gdGhhdCBieSBzaW1wbHkgcmVhZGluZyBiYWNrIHRoZQ0KPiA+ID4gcmVnaXN0ZXIgYWZ0ZXIg
-d3JpdGluZyBpdCwganVzdCBhcyBhIGZldyBvdGhlciBQQ0kgZHJpdmVycyBkby4NCj4gPiA+DQo+
-ID4gPiBUaGlzIGZpeGVzIGEgYnVnIHdoZXJlIGR1cmluZyByeC90eCB0cmFmZmljIGFuZCB3aXRo
-IEFTUE0gTDEgc3Vic3RhdGVzDQo+ID4gPiBlbmFibGVkICh0aGUgZW5hYmxlZCBzdWJzdGF0ZXMg
-YXJlIHBsYXRmb3JtIGRlcGVuZGVudCksIHRoZSBmaXJtd2FyZQ0KPiA+ID4gY3Jhc2hlcyBhbmQg
-ZXZlbnR1YWxseSBhIGNvbW1hbmQgdGltZW91dCBhcHBlYXJzIGluIHRoZSBsb2dzLg0KPiA+DQo+
-ID4gSSB0aGluayB5b3UgbmVlZCB0byBjaGFuZ2UgeW91ciB0ZXJtaW5vbG9neS4NCj4gPiBQQ0ll
-IGRvZXMgaGF2ZSBzb21lIG5vbi1wb3N0ZWQgd3JpdGUgdHJhbnNhY3Rpb25zIC0gYnV0IEkgY2Fu
-J3QNCj4gPiByZW1lbWJlciB3aGVuIHRoZXkgYXJlIHVzZWQuDQo+IA0KPiBJbiBQQ0llIGFyZSBh
-bGwgbWVtb3J5IHdyaXRlIHJlcXVlc3RzIGFzIHBvc3RlZC4NCj4gDQo+IE5vbi1wb3N0ZWQgd3Jp
-dGVzIGluIFBDSWUgYXJlIHVzZWQgb25seSBmb3IgSU8gYW5kIGNvbmZpZyByZXF1ZXN0cy4gQnV0
-DQo+IHRoaXMgaXMgbm90IGNhc2UgZm9yIHByb3Bvc2VkIHBhdGNoIGNoYW5nZSBhcyBpdCBhY2Nl
-c3Mgb25seSBjYXJkJ3MNCj4gbWVtb3J5IHNwYWNlLg0KPiANCj4gVGVjaG5pY2FsbHkgdGhpcyBw
-YXRjaCBkb2VzIG5vdCB1c2Ugbm9uLXBvc3RlZCBtZW1vcnkgd3JpdGUgKGFzIFBDSWUNCj4gZG9l
-cyBub3Qgc3VwcG9ydCAvIHByb3ZpZGUgaXQpLCBqdXN0IGFkZHMgc29tZXRoaW5nIGxpa2UgYSBi
-YXJyaWVyIGFuZA0KPiBJJ20gbm90IHN1cmUgaWYgaXQgaXMgcmVhbGx5IGNvcnJlY3QgKHlvdSBh
-bHJlYWR5IHdyb3RlIG1vcmUgZGV0YWlscw0KPiBhYm91dCBpdCwgc28gSSB3aWxsIGxldCBpdCBi
-ZSkuDQo+IA0KPiBJJ20gbm90IHN1cmUgd2hhdCBpcyB0aGUgY29ycmVjdCB0ZXJtaW5vbG9neSwg
-SSBkbyBub3Qga25vdyBob3cgdGhpcw0KPiBraW5kIG9mIHdyaXRlLWZvbGxvd2VkLWJ5LXJlYWQg
-InRyaWNrIiBpcyBjb3JyZWN0bHkgY2FsbGVkLg0KDQpJIHRoaW5rIGl0IGlzIHByb2JhYmx5IGJl
-c3QgdG8gc2F5Og0KICAgImZsdXNoIHRoZSBwb3N0ZWQgd3JpdGUgd2hlbiBzZXR0aW5nIHRoZSBU
-WCByaW5nIHdyaXRlIHBvaW50ZXIiLg0KDQpUaGUgd3JpdGUgY2FuIGdldCBwb3N0ZWQgaW4gYW55
-L2FsbCBvZiB0aGUgZm9sbG93aW5nIHBsYWNlczoNCjEpIFRoZSBjcHUgc3RvcmUgYnVmZmVyLg0K
-MikgVGhlIFBDSWUgaG9zdCBicmlkZ2UuDQozKSBBbnkgb3RoZXIgUENJZSBicmlkZ2VzLg0KNCkg
-VGhlIFBDSWUgc2xhdmUgbG9naWMgaW4gdGhlIHRhcmdldC4NCiAgIFRoZXJlIGNvdWxkIGJlIHNl
-cGFyYXRlIGJ1ZmZlcnMgZm9yIGVhY2ggQkFSLA0KNSkgVGhlIGFjdHVhbCB0YXJnZXQgbG9naWMg
-Zm9yIHRoYXQgYWRkcmVzcyBibG9jay4NCiAgIFRoZSB0YXJnZXQgKHByb2JhYmx5KSB3aWxsIGxv
-b2sgYSBiaXQgbGlrZSBhbiBvbGQgZmFzaGlvbmVkIGNwdQ0KICAgbW90aGVyYm9hcmQgd2l0aCB0
-aGUgUENJZSBzbGF2ZSBsb2dpYyBhcyB0aGUgbWFpbiBidXMgbWFzdGVyLg0KDQpUaGUgcmVhZGJh
-Y2sgZm9yY2VzIGFsbCB0aGUgcG9zdGVkIHdyaXRlIGJ1ZmZlcnMgYmUgZmx1c2hlZC4NCg0KSW4g
-dGhpcyBjYXNlIEkgc3VzcGVjdCBpdCBpcyBlaXRoZXIgZmx1c2hpbmcgKDUpIG9yIHRoZSBleHRy
-YQ0KZGVsYXkgb2YgdGhlIHJlYWQgVExQIHByb2Nlc3NpbmcgdGhhdCAnZml4ZXMnIHRoZSBwcm9i
-bGVtLg0KDQpOb3RlIHRoYXQgZGVwZW5kaW5nIG9uIHRoZSBleGFjdCBjb2RlIGFuZCBob3N0IGNw
-dSB0aGUgc2Vjb25kDQp3cml0ZSBtYXkgbm90IG5lZWQgdG8gd2FpdCBmb3IgdGhlIHJlc3BvbnNl
-IHRvIHRoZSByZWFkIFRMUC4NClNvIHRoZSB3cml0ZSwgcmVhZGJhY2ssIHdyaXRlIFRMUCBtYXkg
-YmUgYmFjayB0byBiYWNrIG9uIHRoZQ0KYWN0dWFsIFBDSWUgbGluay4NCg0KQWx0aG91Z2ggSSBk
-b24ndCBoYXZlIGFjY2VzcyB0byBhbiBhY3R1YWwgUENJZSBtb25pdG9yIHdlDQpkbyBoYXZlIHRo
-ZSBhYmlsaXR5IHRvIHRyYWNlICdkYXRhJyBUTFAgaW50byBmcGdhIG1lbW9yeQ0Kb24gb25lIG9m
-IG91ciBzeXN0ZW1zLg0KVGhpcyBpcyBuZWFyIHJlYWwtdGltZSBidXQgdGhleSBhcmUgc2xpZ2h0
-bHkgbXVuZ2VkLg0KV2F0Y2hpbmcgdGhlIFRMUCBjYW4gYmUgaWxsdW1pbmF0aW5nIQ0KDQoJRGF2
-aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50
-IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTcz
-ODYgKFdhbGVzKQ0K
+Syzbot reported use-after-free Read in ath9k_hif_usb_rx_cb(). The
+problem was in incorrect htc_handle->drv_priv initialization.
+
+Probable call trace which can trigger use-after-free:
+
+ath9k_htc_probe_device()
+  /* htc_handle->drv_priv = priv; */
+  ath9k_htc_wait_for_target()      <--- Failed
+  ieee80211_free_hw()		   <--- priv pointer is freed
+
+<IRQ>
+...
+ath9k_hif_usb_rx_cb()
+  ath9k_hif_usb_rx_stream()
+   RX_STAT_INC()		<--- htc_handle->drv_priv access
+
+In order to not add fancy protection for drv_priv we can move
+htc_handle->drv_priv initialization at the end of the
+ath9k_htc_probe_device() and add helper macro to make
+all *_STAT_* macros NULL save.
+
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Reported-and-tested-by: syzbot+03110230a11411024147@syzkaller.appspotmail.com
+Reported-and-tested-by: syzbot+c6dde1f690b60e0b9fbe@syzkaller.appspotmail.com
+Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+---
+
+Why resend?
+	No activity on this patch since 8/6/21, Kalle Valo has asked around,
+	for review and no one claimed it.
+
+Resend changes:
+	1. Rebased on top of v5.15-rc2
+	2. Removed clean ups for macros
+	3. Added 1 more syzbot tag, since this patch has passed 2 syzbot
+	tests
+
+---
+ drivers/net/wireless/ath/ath9k/htc.h          | 10 +++++-----
+ drivers/net/wireless/ath/ath9k/htc_drv_init.c |  3 ++-
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
+index 0a1634238e67..c8cde2e05d77 100644
+--- a/drivers/net/wireless/ath/ath9k/htc.h
++++ b/drivers/net/wireless/ath/ath9k/htc.h
+@@ -325,11 +325,11 @@ static inline struct ath9k_htc_tx_ctl *HTC_SKB_CB(struct sk_buff *skb)
+ }
+ 
+ #ifdef CONFIG_ATH9K_HTC_DEBUGFS
+-
+-#define TX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
+-#define TX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
+-#define RX_STAT_INC(c) (hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
+-#define RX_STAT_ADD(c, a) (hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
++#define __STAT_SAVE(expr) (hif_dev->htc_handle->drv_priv ? (expr) : 0)
++#define TX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c++)
++#define TX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.tx_stats.c += a)
++#define RX_STAT_INC(c) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c++)
++#define RX_STAT_ADD(c, a) __STAT_SAVE(hif_dev->htc_handle->drv_priv->debug.skbrx_stats.c += a)
+ #define CAB_STAT_INC   priv->debug.tx_stats.cab_queued++
+ 
+ #define TX_QSTAT_INC(q) (priv->debug.tx_stats.queue_stats[q]++)
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_init.c b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+index ff61ae34ecdf..07ac88fb1c57 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_init.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+@@ -944,7 +944,6 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
+ 	priv->hw = hw;
+ 	priv->htc = htc_handle;
+ 	priv->dev = dev;
+-	htc_handle->drv_priv = priv;
+ 	SET_IEEE80211_DEV(hw, priv->dev);
+ 
+ 	ret = ath9k_htc_wait_for_target(priv);
+@@ -965,6 +964,8 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
+ 	if (ret)
+ 		goto err_init;
+ 
++	htc_handle->drv_priv = priv;
++
+ 	return 0;
+ 
+ err_init:
+-- 
+2.33.0
 
