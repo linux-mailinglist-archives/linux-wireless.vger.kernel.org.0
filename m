@@ -2,75 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AEC64163BC
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 18:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA2EF4163EE
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 19:10:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233256AbhIWQ77 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Sep 2021 12:59:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54958 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233070AbhIWQ76 (ORCPT
+        id S242466AbhIWRLb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Sep 2021 13:11:31 -0400
+Received: from mail-oo1-f49.google.com ([209.85.161.49]:42722 "EHLO
+        mail-oo1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242239AbhIWRLa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Sep 2021 12:59:58 -0400
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC026C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Sep 2021 09:58:26 -0700 (PDT)
-Received: by mail-vs1-xe2e.google.com with SMTP id l19so7210813vst.7
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Sep 2021 09:58:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=EBHbP83/CZFp2F2gENfmEXu6m8S2pw12piuqN6IlINY=;
-        b=eBBsOP6TWm7ptka7HQMlG0dlpqSwdW8eiibB8YyA5v61Np+vbAVBKvqhxAHcz3wjkK
-         +xmxSH7o0zzlEWTtJSD3z9gc4wKExiVMWr3pWDzo7T9l21+smsOT4b9zmZtP8trQ5/HH
-         5u0xaEnyYU7PxfTBReGxZDjaifQ2xOOw+1uIS2IjhFAZgOg1ANZAO7PF7msVI++TeDNd
-         focIFOhI5OrkCVs1nbupVcsIYOw/LuljNxm9li6KaBLLDri+imIBFCheFOEhwai9zfp4
-         eAhGY7mJQBrHcTqVEwT4qbWXwahO0y4GNaQyGqvl7GzomG5y0L0aTdinwxDqOTeFWJfr
-         /Y7A==
+        Thu, 23 Sep 2021 13:11:30 -0400
+Received: by mail-oo1-f49.google.com with SMTP id u15-20020a4a970f000000b0029aed4b0e4eso2352158ooi.9;
+        Thu, 23 Sep 2021 10:09:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=EBHbP83/CZFp2F2gENfmEXu6m8S2pw12piuqN6IlINY=;
-        b=IxcEelLj9TtFlIlo4PdwH5nor4CUk2aYGw7d681ig8TXylgCr93E+Nkh41h8ua5L2o
-         5midn+acuroMPis6V7PtoqxyRt6+jQp3RLEkKOPZTAk49S/IVLj8V6AhUd6nsSck5jKd
-         wBSCCLQIiINDvTd6yc+UkyJBVeHPzbe3IZYcGV2GiTXlFf/v2nqMyu4Uh05ksOyNDPWR
-         knYzMXQb2B29w0+njv6yYaVMx9iEVVhnQuJDanreFi/y6AG4TjWnxe65t6RwvstFjcQl
-         eaUZsO58NwGQdU50cwbixD4O4BNE3tgRNJC9KDRdYNSRhUzB0XlBCsO8tvGZ/Vxl/iPP
-         iMMw==
-X-Gm-Message-State: AOAM531DRkYHO1qDvZ1SVNguLCYuuVWnVLYFNbXfWaxfeUxdLK5t45N2
-        8ikjP6Ze3u/8jE9HjrhtnIozYvt6Y12yPefxh+E=
-X-Google-Smtp-Source: ABdhPJzziYPf6QpQm7Rqz65/d1nVCWMn2RK2lNOuMvVHxbcKgpSk5Z2aPnpDYPEGN7qrzCAAB11SXmLHb7yuHSkSLgk=
-X-Received: by 2002:a67:3388:: with SMTP id z130mr5485980vsz.34.1632416305692;
- Thu, 23 Sep 2021 09:58:25 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=aRKOgb/IptW6U1Mvub3XjCFxU2/8lUJIfk6QZum3jmM=;
+        b=4xCLeJ6u/hLAL6mGgnQMNNJpk6UEZQLEISjlJIButE+VmzNpVaH9OVId7sz1weaeo4
+         rWD5crJ0kL7tERIu0GxyERejOnkD/T6+AnOXz76ufqdUv5JCHCIP38UAME9lxwgj3D9X
+         Jnihg3t40LB+acQq1j/mMPRjxWRmEuv/2+0DwsXkXHGvmE5aVL5/fOVJX4vKmM5LY0gZ
+         byf4ykttEuY2f4TvSlMgBTqAgcikekw3yMJjIvXL48XsoLIGt3dI7N1hTjVAYtQ4fRdC
+         Gi08CBKtcl++6wQQt7GaWu2RQu4T1QZoeowT0hUEB4e9MOvN/WFEIjsJp8Q97dnD8eCh
+         +6kA==
+X-Gm-Message-State: AOAM532ho7mnee1TxBDl5gBeZF/tZBTyFqG/cRzifOvcrt1kAJWPQ45a
+        Z5XiVXL88BEAJL+8oM16Z//3ztFioQ==
+X-Google-Smtp-Source: ABdhPJw676lPJ7r9WEiBbldf9ALqBQhp0Wdivqz9FvDU+aldnL2DEOFeYcGq580EGuIyBGC7VXj2ZA==
+X-Received: by 2002:a4a:ba90:: with SMTP id d16mr2406809oop.31.1632416998498;
+        Thu, 23 Sep 2021 10:09:58 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id v16sm1453551oiv.23.2021.09.23.10.09.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Sep 2021 10:09:57 -0700 (PDT)
+Received: (nullmailer pid 3183978 invoked by uid 1000);
+        Thu, 23 Sep 2021 17:09:56 -0000
+Date:   Thu, 23 Sep 2021 12:09:56 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>, netdev@vger.kernel.org,
+        =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        devel@driverdev.osuosl.org, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-wireless@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v7 02/24] dt-bindings: introduce silabs,wfx.yaml
+Message-ID: <YUy05Kn2iCCBC6AF@robh.at.kernel.org>
+References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
+ <20210920161136.2398632-3-Jerome.Pouiller@silabs.com>
 MIME-Version: 1.0
-Received: by 2002:ab0:3316:0:0:0:0:0 with HTTP; Thu, 23 Sep 2021 09:58:25
- -0700 (PDT)
-Reply-To: tonysiruno9@gmail.com
-From:   Tony Siruno <dr.sb2014@gmail.com>
-Date:   Thu, 23 Sep 2021 16:58:25 +0000
-Message-ID: <CAL-+FQy7BMg==nKz-oN8-OXQ5fROYt=r-LyP2K2pkf0p+_pD6w@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210920161136.2398632-3-Jerome.Pouiller@silabs.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Warum schweigen Sie? Ich hoffe, es geht Ihnen gut, denn jetzt habe ich
-Ihnen diese Mail zweimal gesendet, ohne von Ihnen zu h=C3=B6ren. Heute
-komme ich von meiner Reise zur=C3=BCck und Sie schweigen =C3=BCber die Post=
-, die
-ich Ihnen seit letzter Woche gesendet habe. Bitte lassen Sie mich Ich
-kenne den Grund, warum Sie geschwiegen haben. Ich habe mir
-vorgestellt, warum Sie mir nicht sehr wichtig geantwortet haben.
-Bitte, Liebes, ich brauche Ihr ehrliches Vertrauen und Ihre Hilfe. Mit
-meiner guten Absicht kann ich Ihnen vertrauen, dass Sie die Summe von
-12.500.000,00 Millionen US-Dollar in =C3=BCberweisen Ihr Konto in Ihrem
-Land, wenn m=C3=B6glich, melden Sie sich bei mir, um weitere Informationen
-zu erhalten. Ich warte auf Ihre Antwort und bitte lassen Sie es mich
-wissen, als zu schweigen.
+On Mon, 20 Sep 2021 18:11:14 +0200, Jerome Pouiller wrote:
+> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> 
+> Prepare the inclusion of the wfx driver in the kernel.
+> 
+> Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> ---
+>  .../bindings/net/wireless/silabs,wfx.yaml     | 133 ++++++++++++++++++
+>  1 file changed, 133 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
+> 
 
-Herr Tony Siruno.
+Reviewed-by: Rob Herring <robh@kernel.org>
