@@ -2,102 +2,386 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7956415D09
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 13:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D6E84160E3
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 16:18:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240667AbhIWLvF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Sep 2021 07:51:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37680 "EHLO
+        id S241608AbhIWOUP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Sep 2021 10:20:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240619AbhIWLvF (ORCPT
+        with ESMTP id S241308AbhIWOUP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Sep 2021 07:51:05 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4139EC061574
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Sep 2021 04:49:33 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id x27so25608617lfu.5
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Sep 2021 04:49:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=OP3cZBOFWJ5enkgDFR8z6xkvNfG+FTamWowL85B20oo=;
-        b=ybXO6FrLb7Mhr22DoZiXGiXqcIqqZOtD8cM8Mdr3WfKM3N0VnpH8HSGMMK86YISudx
-         TxUB3AxCbzJQJi6ZbZXegjydmWr3DmqkQhuVjzYsi3QSsY+1pfzSA9b/Gu5VZJChzi4W
-         lpT6MYuUC3S1zoanNutspIP52aI8YdUyFzvmL1K95eAgwUyb9fRIFHKAaO8auw0xbr1x
-         UhGI39dlfrI15utMWXsuZgH8FjB81TXRU1OjDsxodGohwBSk51b3/TahN7zA9S/wSpxn
-         1NkmByMRC2dsf74yxoZsQ7Y6x6AOQvN1v2DW4EigAbh6jXBxFo20y017ST4HJxTNhlwB
-         mPqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=OP3cZBOFWJ5enkgDFR8z6xkvNfG+FTamWowL85B20oo=;
-        b=4teNInXUGZ560yJhrmTBt1/3ChijcLCDb0el8WUzQIDuiRUoDvCbYW4D6nYruI5ppZ
-         JIqg/vuL3C9mtDM0MHuM8irR3hDTXUKLDJwYmvtlgqTWBSVCFtYSGAW+TrEa9TsxgghM
-         JNm4MXmncbtaY0dG3w4XhZiZZPgX6Pw8u+OMLWRSjYBqbDiNQbs03oQwXLFMjpdZujTB
-         GZ/u5I5dGGrRf1LPLiv0OzZY0NlBJBsNqzKyJuSB16tf1lS2DzjPf1UTx8P0fu7HqXIy
-         2A1ozZEzFG5e0S7MAz60bSEn83Lua7ArgF7cVg1Gkg4GtQm3jnsFi+AXgTBDZlp7Xf+4
-         9Umw==
-X-Gm-Message-State: AOAM530IB6rilAXaRS0NLLQWE5PtnRzmGw6atAg/8joOUyzDyp1l2WBF
-        GyJLfV6MxnLpKrjw7mhDXXucbg==
-X-Google-Smtp-Source: ABdhPJwjkU/bPK0bUudkdduikwiIu+O3B4nNHlhjw85ScZhn+njUmt5C3zcuqsPUXBhbc7nNL5Rm3A==
-X-Received: by 2002:a2e:140f:: with SMTP id u15mr2711941ljd.25.1632397771552;
-        Thu, 23 Sep 2021 04:49:31 -0700 (PDT)
-Received: from localhost.localdomain (88-112-130-172.elisa-laajakaista.fi. [88.112.130.172])
-        by smtp.gmail.com with ESMTPSA id d17sm437370lfb.207.2021.09.23.04.49.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Sep 2021 04:49:31 -0700 (PDT)
-From:   Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-To:     Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Julien Wajsberg <felash@gmail.com>
-Subject: [PATCH] iwlwifi: pcie: add configuration of a Wi-Fi adapter on Dell XPS 15
-Date:   Thu, 23 Sep 2021 14:49:17 +0300
-Message-Id: <20210923114917.2153964-1-vladimir.zapolskiy@linaro.org>
-X-Mailer: git-send-email 2.33.0
+        Thu, 23 Sep 2021 10:20:15 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7A9C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Sep 2021 07:18:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=2/zMNLU4X/8jw+GDvCXH7BkGzNY/tHBQid/wJvdVzG0=; t=1632406723; x=1633616323; 
+        b=cnSAg4APC0hjOlyrkiM6YTv97bEQbR6k3iQs9G1N96A0IrB6qv9yhFhDtBUfabGSkg6zkbUq/WT
+        bitgRFrRqhWS0BuTxDOuh38c2T8o/ixm+sjF3fh0U8qdGjJsJuAeFczNeQWzLnicIkgHFjHrxPlg/
+        WsLpQtiCLoT4jFKpB07jnGBbkakgtHbDWLuhdk+jxIYy88RIvJ6PlT7/7hu8RMEGaGMJ6SDsVDMTW
+        hXlgrFht2zFDK/K61ray36VFVEWbq62sbYCO7/dWI9uOfWmtZ1Mu9uUhGDy+0HKIby82LjjI8xl3A
+        16WzKZtQQx/7iNG87Absf8Rs0mre2MeDOO2A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mTPYf-00AlS3-1p;
+        Thu, 23 Sep 2021 16:18:41 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] nl80211: don't put struct cfg80211_ap_settings on stack
+Date:   Thu, 23 Sep 2021 16:18:37 +0200
+Message-Id: <20210923161836.5813d881eae3.I0fc0f83905b0bfa332c4f1505e00c13abfca3545@changeid>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a Killer AX1650 2x2 Wi-Fi 6 and Bluetooth 5.1 wireless adapter
-found on Dell XPS 15 (9510) laptop, its configuration was present on
-Linux v5.7, however accidentally it has been removed from the list of
-supported devices, let's add it back.
+From: Johannes Berg <johannes.berg@intel.com>
 
-The problem is manifested on driver initialization:
+This struct has grown quite a bit, so dynamically allocate
+it instead of putting it on the stack.
 
-  Intel(R) Wireless WiFi driver for Linux
-  iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
-  iwlwifi: No config found for PCI dev 43f0/1651, rev=0x354, rfid=0x10a100
-  iwlwifi: probe of 0000:00:14.3 failed with error -22
-
-Bug: https://bugzilla.kernel.org/show_bug.cgi?id=213939
-Fixes: 3f910a25839b ("iwlwifi: pcie: convert all AX101 devices to the device tables")
-Cc: Julien Wajsberg <felash@gmail.com>
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/wireless/nl80211.c | 188 ++++++++++++++++++++++++-----------------
+ 1 file changed, 109 insertions(+), 79 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 61b2797a34a8..3e5052ed0c5c 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -549,6 +549,8 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 	IWL_DEV_INFO(0x43F0, 0x007C, iwl_ax201_cfg_qu_hr, NULL),
- 	IWL_DEV_INFO(0x43F0, 0x2074, iwl_ax201_cfg_qu_hr, NULL),
- 	IWL_DEV_INFO(0x43F0, 0x4070, iwl_ax201_cfg_qu_hr, NULL),
-+	IWL_DEV_INFO(0x43F0, 0x1651, killer1650s_2ax_cfg_qu_b0_hr_b0, NULL),
-+	IWL_DEV_INFO(0x43F0, 0x1652, killer1650i_2ax_cfg_qu_b0_hr_b0, NULL),
- 	IWL_DEV_INFO(0xA0F0, 0x0070, iwl_ax201_cfg_qu_hr, NULL),
- 	IWL_DEV_INFO(0xA0F0, 0x0074, iwl_ax201_cfg_qu_hr, NULL),
- 	IWL_DEV_INFO(0xA0F0, 0x0078, iwl_ax201_cfg_qu_hr, NULL),
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index e4787c74e80b..384244a9aca9 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -5323,7 +5323,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	struct net_device *dev = info->user_ptr[1];
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+-	struct cfg80211_ap_settings params;
++	struct cfg80211_ap_settings *params;
+ 	int err;
+ 
+ 	if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_AP &&
+@@ -5336,27 +5336,29 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	if (wdev->beacon_interval)
+ 		return -EALREADY;
+ 
+-	memset(&params, 0, sizeof(params));
+-
+ 	/* these are required for START_AP */
+ 	if (!info->attrs[NL80211_ATTR_BEACON_INTERVAL] ||
+ 	    !info->attrs[NL80211_ATTR_DTIM_PERIOD] ||
+ 	    !info->attrs[NL80211_ATTR_BEACON_HEAD])
+-		return -EINVAL;
++	    	return -EINVAL;
+ 
+-	err = nl80211_parse_beacon(rdev, info->attrs, &params.beacon);
++	params = kzalloc(sizeof(*params), GFP_KERNEL);
++	if (!params)
++		return -ENOMEM;
++
++	err = nl80211_parse_beacon(rdev, info->attrs, &params->beacon);
+ 	if (err)
+-		return err;
++		goto out;
+ 
+-	params.beacon_interval =
++	params->beacon_interval =
+ 		nla_get_u32(info->attrs[NL80211_ATTR_BEACON_INTERVAL]);
+-	params.dtim_period =
++	params->dtim_period =
+ 		nla_get_u32(info->attrs[NL80211_ATTR_DTIM_PERIOD]);
+ 
+ 	err = cfg80211_validate_beacon_int(rdev, dev->ieee80211_ptr->iftype,
+-					   params.beacon_interval);
++					   params->beacon_interval);
+ 	if (err)
+-		return err;
++		goto out;
+ 
+ 	/*
+ 	 * In theory, some of these attributes should be required here
+@@ -5366,129 +5368,156 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	 * additional information -- drivers must check!
+ 	 */
+ 	if (info->attrs[NL80211_ATTR_SSID]) {
+-		params.ssid = nla_data(info->attrs[NL80211_ATTR_SSID]);
+-		params.ssid_len =
++		params->ssid = nla_data(info->attrs[NL80211_ATTR_SSID]);
++		params->ssid_len =
+ 			nla_len(info->attrs[NL80211_ATTR_SSID]);
+-		if (params.ssid_len == 0)
+-			return -EINVAL;
++		if (params->ssid_len == 0) {
++			err = -EINVAL;
++			goto out;
++		}
+ 	}
+ 
+ 	if (info->attrs[NL80211_ATTR_HIDDEN_SSID])
+-		params.hidden_ssid = nla_get_u32(
++		params->hidden_ssid = nla_get_u32(
+ 			info->attrs[NL80211_ATTR_HIDDEN_SSID]);
+ 
+-	params.privacy = !!info->attrs[NL80211_ATTR_PRIVACY];
++	params->privacy = !!info->attrs[NL80211_ATTR_PRIVACY];
+ 
+ 	if (info->attrs[NL80211_ATTR_AUTH_TYPE]) {
+-		params.auth_type = nla_get_u32(
++		params->auth_type = nla_get_u32(
+ 			info->attrs[NL80211_ATTR_AUTH_TYPE]);
+-		if (!nl80211_valid_auth_type(rdev, params.auth_type,
+-					     NL80211_CMD_START_AP))
+-			return -EINVAL;
++		if (!nl80211_valid_auth_type(rdev, params->auth_type,
++					     NL80211_CMD_START_AP)) {
++			err = -EINVAL;
++			goto out;
++		}
+ 	} else
+-		params.auth_type = NL80211_AUTHTYPE_AUTOMATIC;
++		params->auth_type = NL80211_AUTHTYPE_AUTOMATIC;
+ 
+-	err = nl80211_crypto_settings(rdev, info, &params.crypto,
++	err = nl80211_crypto_settings(rdev, info, &params->crypto,
+ 				      NL80211_MAX_NR_CIPHER_SUITES);
+ 	if (err)
+-		return err;
++		goto out;
+ 
+ 	if (info->attrs[NL80211_ATTR_INACTIVITY_TIMEOUT]) {
+-		if (!(rdev->wiphy.features & NL80211_FEATURE_INACTIVITY_TIMER))
+-			return -EOPNOTSUPP;
+-		params.inactivity_timeout = nla_get_u16(
++		if (!(rdev->wiphy.features & NL80211_FEATURE_INACTIVITY_TIMER)) {
++			err = -EOPNOTSUPP;
++			goto out;
++		}
++		params->inactivity_timeout = nla_get_u16(
+ 			info->attrs[NL80211_ATTR_INACTIVITY_TIMEOUT]);
+ 	}
+ 
+ 	if (info->attrs[NL80211_ATTR_P2P_CTWINDOW]) {
+-		if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_GO)
+-			return -EINVAL;
+-		params.p2p_ctwindow =
++		if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_GO) {
++			err = -EINVAL;
++			goto out;
++		}
++		params->p2p_ctwindow =
+ 			nla_get_u8(info->attrs[NL80211_ATTR_P2P_CTWINDOW]);
+-		if (params.p2p_ctwindow != 0 &&
+-		    !(rdev->wiphy.features & NL80211_FEATURE_P2P_GO_CTWIN))
+-			return -EINVAL;
++		if (params->p2p_ctwindow != 0 &&
++		    !(rdev->wiphy.features & NL80211_FEATURE_P2P_GO_CTWIN)) {
++			err = -EINVAL;
++			goto out;
++		}
+ 	}
+ 
+ 	if (info->attrs[NL80211_ATTR_P2P_OPPPS]) {
+ 		u8 tmp;
+ 
+-		if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_GO)
+-			return -EINVAL;
++		if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_GO) {
++			err = -EINVAL;
++			goto out;
++		}
+ 		tmp = nla_get_u8(info->attrs[NL80211_ATTR_P2P_OPPPS]);
+-		params.p2p_opp_ps = tmp;
+-		if (params.p2p_opp_ps != 0 &&
+-		    !(rdev->wiphy.features & NL80211_FEATURE_P2P_GO_OPPPS))
+-			return -EINVAL;
++		params->p2p_opp_ps = tmp;
++		if (params->p2p_opp_ps != 0 &&
++		    !(rdev->wiphy.features & NL80211_FEATURE_P2P_GO_OPPPS)) {
++			err = -EINVAL;
++			goto out;
++		}
+ 	}
+ 
+ 	if (info->attrs[NL80211_ATTR_WIPHY_FREQ]) {
+-		err = nl80211_parse_chandef(rdev, info, &params.chandef);
++		err = nl80211_parse_chandef(rdev, info, &params->chandef);
+ 		if (err)
+-			return err;
++			goto out;
+ 	} else if (wdev->preset_chandef.chan) {
+-		params.chandef = wdev->preset_chandef;
+-	} else if (!nl80211_get_ap_channel(rdev, &params))
+-		return -EINVAL;
++		params->chandef = wdev->preset_chandef;
++	} else if (!nl80211_get_ap_channel(rdev, params)) {
++		err = -EINVAL;
++		goto out;
++	}
+ 
+-	if (!cfg80211_reg_can_beacon_relax(&rdev->wiphy, &params.chandef,
+-					   wdev->iftype))
+-		return -EINVAL;
++	if (!cfg80211_reg_can_beacon_relax(&rdev->wiphy, &params->chandef,
++					   wdev->iftype)) {
++		err = -EINVAL;
++		goto out;
++	}
+ 
+ 	if (info->attrs[NL80211_ATTR_TX_RATES]) {
+ 		err = nl80211_parse_tx_bitrate_mask(info, info->attrs,
+ 						    NL80211_ATTR_TX_RATES,
+-						    &params.beacon_rate,
++						    &params->beacon_rate,
+ 						    dev, false);
+ 		if (err)
+-			return err;
++			goto out;
+ 
+-		err = validate_beacon_tx_rate(rdev, params.chandef.chan->band,
+-					      &params.beacon_rate);
++		err = validate_beacon_tx_rate(rdev, params->chandef.chan->band,
++					      &params->beacon_rate);
+ 		if (err)
+-			return err;
++			goto out;
+ 	}
+ 
+ 	if (info->attrs[NL80211_ATTR_SMPS_MODE]) {
+-		params.smps_mode =
++		params->smps_mode =
+ 			nla_get_u8(info->attrs[NL80211_ATTR_SMPS_MODE]);
+-		switch (params.smps_mode) {
++		switch (params->smps_mode) {
+ 		case NL80211_SMPS_OFF:
+ 			break;
+ 		case NL80211_SMPS_STATIC:
+ 			if (!(rdev->wiphy.features &
+-			      NL80211_FEATURE_STATIC_SMPS))
+-				return -EINVAL;
++			      NL80211_FEATURE_STATIC_SMPS)) {
++				err = -EINVAL;
++				goto out;
++			}
+ 			break;
+ 		case NL80211_SMPS_DYNAMIC:
+ 			if (!(rdev->wiphy.features &
+-			      NL80211_FEATURE_DYNAMIC_SMPS))
+-				return -EINVAL;
++			      NL80211_FEATURE_DYNAMIC_SMPS)) {
++				err = -EINVAL;
++				goto out;
++			}
+ 			break;
+ 		default:
+-			return -EINVAL;
++			err = -EINVAL;
++			goto out;
+ 		}
+ 	} else {
+-		params.smps_mode = NL80211_SMPS_OFF;
++		params->smps_mode = NL80211_SMPS_OFF;
+ 	}
+ 
+-	params.pbss = nla_get_flag(info->attrs[NL80211_ATTR_PBSS]);
+-	if (params.pbss && !rdev->wiphy.bands[NL80211_BAND_60GHZ])
+-		return -EOPNOTSUPP;
++	params->pbss = nla_get_flag(info->attrs[NL80211_ATTR_PBSS]);
++	if (params->pbss && !rdev->wiphy.bands[NL80211_BAND_60GHZ]) {
++		err = -EOPNOTSUPP;
++		goto out;
++	}
+ 
+ 	if (info->attrs[NL80211_ATTR_ACL_POLICY]) {
+-		params.acl = parse_acl_data(&rdev->wiphy, info);
+-		if (IS_ERR(params.acl))
+-			return PTR_ERR(params.acl);
++		params->acl = parse_acl_data(&rdev->wiphy, info);
++		if (IS_ERR(params->acl)) {
++			err = PTR_ERR(params->acl);
++			goto out;
++		}
+ 	}
+ 
+-	params.twt_responder =
++	params->twt_responder =
+ 		    nla_get_flag(info->attrs[NL80211_ATTR_TWT_RESPONDER]);
+ 
+ 	if (info->attrs[NL80211_ATTR_HE_OBSS_PD]) {
+ 		err = nl80211_parse_he_obss_pd(
+ 					info->attrs[NL80211_ATTR_HE_OBSS_PD],
+-					&params.he_obss_pd);
++					&params->he_obss_pd);
+ 		if (err)
+ 			goto out;
+ 	}
+@@ -5496,7 +5525,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[NL80211_ATTR_HE_BSS_COLOR]) {
+ 		err = nl80211_parse_he_bss_color(
+ 					info->attrs[NL80211_ATTR_HE_BSS_COLOR],
+-					&params.he_bss_color);
++					&params->he_bss_color);
+ 		if (err)
+ 			goto out;
+ 	}
+@@ -5504,7 +5533,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[NL80211_ATTR_FILS_DISCOVERY]) {
+ 		err = nl80211_parse_fils_discovery(rdev,
+ 						   info->attrs[NL80211_ATTR_FILS_DISCOVERY],
+-						   &params);
++						   params);
+ 		if (err)
+ 			goto out;
+ 	}
+@@ -5512,24 +5541,24 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[NL80211_ATTR_UNSOL_BCAST_PROBE_RESP]) {
+ 		err = nl80211_parse_unsol_bcast_probe_resp(
+ 			rdev, info->attrs[NL80211_ATTR_UNSOL_BCAST_PROBE_RESP],
+-			&params);
++			params);
+ 		if (err)
+ 			goto out;
+ 	}
+ 
+-	nl80211_calculate_ap_params(&params);
++	nl80211_calculate_ap_params(params);
+ 
+ 	if (info->attrs[NL80211_ATTR_EXTERNAL_AUTH_SUPPORT])
+-		params.flags |= AP_SETTINGS_EXTERNAL_AUTH_SUPPORT;
++		params->flags |= AP_SETTINGS_EXTERNAL_AUTH_SUPPORT;
+ 
+ 	wdev_lock(wdev);
+-	err = rdev_start_ap(rdev, dev, &params);
++	err = rdev_start_ap(rdev, dev, params);
+ 	if (!err) {
+-		wdev->preset_chandef = params.chandef;
+-		wdev->beacon_interval = params.beacon_interval;
+-		wdev->chandef = params.chandef;
+-		wdev->ssid_len = params.ssid_len;
+-		memcpy(wdev->ssid, params.ssid, wdev->ssid_len);
++		wdev->preset_chandef = params->chandef;
++		wdev->beacon_interval = params->beacon_interval;
++		wdev->chandef = params->chandef;
++		wdev->ssid_len = params->ssid_len;
++		memcpy(wdev->ssid, params->ssid, wdev->ssid_len);
+ 
+ 		if (info->attrs[NL80211_ATTR_SOCKET_OWNER])
+ 			wdev->conn_owner_nlportid = info->snd_portid;
+@@ -5537,7 +5566,8 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	wdev_unlock(wdev);
+ 
+ out:
+-	kfree(params.acl);
++	kfree(params->acl);
++	kfree(params);
+ 
+ 	return err;
+ }
 -- 
-2.33.0
+2.31.1
 
