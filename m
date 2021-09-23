@@ -2,95 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA019416105
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 16:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAC4E416106
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 16:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241659AbhIWOby (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Sep 2021 10:31:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43836 "EHLO mail.kernel.org"
+        id S241501AbhIWOcB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Sep 2021 10:32:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43854 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241501AbhIWObx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Sep 2021 10:31:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C5225610C8;
-        Thu, 23 Sep 2021 14:30:20 +0000 (UTC)
+        id S241662AbhIWOb4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 23 Sep 2021 10:31:56 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 27ABE6115A;
+        Thu, 23 Sep 2021 14:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632407422;
-        bh=rhiK11k7hRsu0uixXkVim00XNZQGwjjIjuhvhjLUrD8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=YX4DetzHeV/ENAfqzxuYg2+IYmkbm3Uhr2iYxKRuEps6QyGbe486o5cL+GUv1ABmN
-         IKLh5JNVlBRUDQPmrtKANkSckl+4yZRkGBS475GdsWYv0ytJrNSdq5e+OseFRB4Gew
-         53yS/FCr02YqO5UEjCPrjiA95my6dsnlNBDb3UN/GepSm61/3D5h4BLo/3STRBPrwa
-         fynY0zgTvGqeh81yDLnTI3xg5/1IOmwMz1IfD6l4TyxJNWJI22Va+kcIcCYlQYN9em
-         spyIkSfk9quRPKL5r6nVP40tEDf1YSfB90IV0AeZ0+y6B/9oQaJcuXeK7SahNFfGEZ
-         67PnJoveAxEjA==
+        s=k20201202; t=1632407425;
+        bh=UUvp0y++zRuSucojfnFpvyPXoww/yUheTE3sYsz+M+E=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=n9MMZnZJzSnpxs8X3eR5L4jqetRtVDQQoZ9NJoUcI192yqxGyn+rf6usFuo8JHY6g
+         L4W3PbdNVSptbmOm5XNblsYmOtGNydtzJAxaT4MqsD32gke3qB+Vv8e8mxzAcR/gdy
+         dvp2iqm4eMStrAvhe8ht7noO5nG+LQJKumazscedq7Tddp2NIjJVsebUMJq1hJ4Z9Z
+         rwa/PcgLIBInDzUCy5b/Quk2STTlBznabXd4OUOMpUgySMVPJDlHEj1tdou2taKd4o
+         2J88JLAypb3WM5hZ34kPX/oizyZ/3bX0svR9cy8ZKzr/at3LDQIp1td1YfPAPBMJs4
+         hbY5fgBcqwduw==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         ryder.lee@mediatek.com, chui-hao.chiu@mediatek.com,
         evelyn.tsai@mediatek.com
-Subject: [PATCH v5 0/5] introduce individual TWT support in AP mode
-Date:   Thu, 23 Sep 2021 16:29:29 +0200
-Message-Id: <cover.1632406731.git.lorenzo@kernel.org>
+Subject: [PATCH v5 1/5] mt76: mt7915: introduce __mt7915_get_tsf routine
+Date:   Thu, 23 Sep 2021 16:29:30 +0200
+Message-Id: <e7b7ebed835f16957790021187ea2c249a584452.1632406731.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <cover.1632406731.git.lorenzo@kernel.org>
+References: <cover.1632406731.git.lorenzo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce TWT action frames parsing support to mac80211.
-Currently just individual TWT agreement are support in AP mode.
-Whenever the AP receives a TWT action frame from an associated client,
-after performing sanity checks, it will notify the underlay driver with
-requested parameters in order to check if they are supported and if there
-is enough room for a new agreement. The hw is expected to set agreement
-result and report it to mac80211.
-The two following drv callbacks have been added to mac80211:
-- add_twt_setup (mandatory)
-- twt_teardown_request (optional)
+Introduce an unlocked verion of mt7915_get_tsf routine.
+This is a preliminary patch to add TWT support to mt7915.
 
-mac80211 will send an action frame reply according to the result
-reported by the driver/fw.
-Add individual TWT support to mt7915 in AP mode.
+Tested-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Tested-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 20 ++++++++++++++-----
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 +-
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
-Changes since v4:
-- drop mac80211 patches since they are already applied
-- fix table_id configuration
-
-Changes since v3:
-- move twt_setup status management in ieee80211_report_used_skb() in order to
-  consider when the driver drops the frame on the tx path
-- minor changes
-
-Changes since v2:
-- introduce status_queue for twt status frame parsing
-- add tracing for add_twt_setup/twt_teardown_request
-- fix routine naming convention
-- always reply with reject frames for broadcast agrt requests
-
-Changes since v1:
-- fix rcu unbalance in mt7915/debugfs.c
-
-Changes since rfc:
-- run ieee80211_s1g_status_h_twt only for failed twt action frames
-- change add_twt_setup return value from int to void
-
-Lorenzo Bianconi (5):
-  mt76: mt7915: introduce __mt7915_get_tsf routine
-  mt76: mt7915: introduce mt7915_mcu_twt_agrt_update mcu command
-  mt76: mt7915: introduce mt7915_mac_add_twt_setup routine
-  mt76: mt7915: enable twt responder capability
-  mt76: mt7915: add twt_stats knob in debugfs
-
- .../wireless/mediatek/mt76/mt7915/debugfs.c   |  28 +++
- .../net/wireless/mediatek/mt76/mt7915/init.c  |   3 +
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 179 ++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7915/main.c  |  39 +++-
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  50 +++++
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   |   9 +
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  42 +++-
- 7 files changed, 344 insertions(+), 6 deletions(-)
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 0aea6272fd14..e2d876c96616 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -792,10 +792,8 @@ mt7915_get_stats(struct ieee80211_hw *hw,
+ 	return 0;
+ }
+ 
+-static u64
+-mt7915_get_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
++u64 __mt7915_get_tsf(struct ieee80211_hw *hw, struct mt7915_vif *mvif)
+ {
+-	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+ 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
+ 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
+ 	bool band = phy != &dev->phy;
+@@ -805,7 +803,7 @@ mt7915_get_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ 	} tsf;
+ 	u16 n;
+ 
+-	mutex_lock(&dev->mt76.mutex);
++	lockdep_assert_held(&dev->mt76.mutex);
+ 
+ 	n = mvif->omac_idx > HW_BSSID_MAX ? HW_BSSID_0 : mvif->omac_idx;
+ 	/* TSF software read */
+@@ -814,9 +812,21 @@ mt7915_get_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ 	tsf.t32[0] = mt76_rr(dev, MT_LPON_UTTR0(band));
+ 	tsf.t32[1] = mt76_rr(dev, MT_LPON_UTTR1(band));
+ 
++	return tsf.t64;
++}
++
++static u64
++mt7915_get_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
++{
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
++	struct mt7915_dev *dev = mt7915_hw_dev(hw);
++	u64 ret;
++
++	mutex_lock(&dev->mt76.mutex);
++	ret = __mt7915_get_tsf(hw, mvif);
+ 	mutex_unlock(&dev->mt76.mutex);
+ 
+-	return tsf.t64;
++	return ret;
+ }
+ 
+ static void
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index ab8fc27646e0..5367b92de864 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -273,7 +273,7 @@ extern const struct ieee80211_ops mt7915_ops;
+ extern const struct mt76_testmode_ops mt7915_testmode_ops;
+ 
+ u32 mt7915_reg_map(struct mt7915_dev *dev, u32 addr);
+-
++u64 __mt7915_get_tsf(struct ieee80211_hw *hw, struct mt7915_vif *mvif);
+ int mt7915_register_device(struct mt7915_dev *dev);
+ void mt7915_unregister_device(struct mt7915_dev *dev);
+ int mt7915_eeprom_init(struct mt7915_dev *dev);
 -- 
 2.31.1
 
