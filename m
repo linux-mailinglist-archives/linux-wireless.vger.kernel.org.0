@@ -2,159 +2,203 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C6564165EA
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 21:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D28DE4165FE
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 21:38:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242869AbhIWTVP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Sep 2021 15:21:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59478 "EHLO
+        id S242923AbhIWTkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Sep 2021 15:40:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242837AbhIWTVI (ORCPT
+        with ESMTP id S242796AbhIWTkN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Sep 2021 15:21:08 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB791C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Sep 2021 12:19:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=u02k0wx5/QZ3xMXkVuS41KTxRu1YfQsY1h8tFx9+Ahw=;
-        t=1632424774; x=1633634374; b=LKlNluaLyWR0TMtoAzpG1qnyvGaA7Krvva3y8x2QTPUmvr5
-        1BkUOqt5w6jVFHAqkikz4eyCcct5Z4QNWaOiccl/fF/AjZXGVqfL1GQuwrD1+9f5PFZxdzznrVG80
-        dxnibWt1vn6/v187v3nC+uof4EPWmhSHsW9FbmcnskNbyDQ9S9qC/wc5QPHiBDEEgkTXuJzhqSUJ0
-        5piP7GCSHlbwbqL1MRZmZ41+SePVeSN5hEkJc3pi8rEf4raYjjKB9fNod89pTRxY85jeCPCoy/mZQ
-        //cJCSqkM8A35wZ/CgEFxvHQAba3Rz1OlemdF89Kikh8dW1/YRTkSkfzTbqbmSbA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95-RC2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mTUFn-00AsUC-Fp;
-        Thu, 23 Sep 2021 21:19:31 +0200
-Message-ID: <93c0cb1f0870e7295c0beaf3658febd16882173e.camel@sipsolutions.net>
-Subject: Re: [EXTERNAL] Re: [RFC PATCH 1/1] Add control path virtualization
- in virt_wifi
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Guillaume Hetier <Guillaume.Hetier@microsoft.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "schuffelen@google.com" <schuffelen@google.com>,
-        Shwetha Bhat <shwbhat@microsoft.com>,
-        Andrew Beltrano <anbeltra@microsoft.com>,
-        Brian Perkins <Brian.Perkins@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Matteo Croce <mcroce@microsoft.com>
-Date:   Thu, 23 Sep 2021 21:19:30 +0200
-In-Reply-To: <CY4PR21MB15401F95BAED44381746C11F8FA39@CY4PR21MB1540.namprd21.prod.outlook.com>
-References: <CY4PR21MB15407FF4663D42C8CA3E1D678FD99@CY4PR21MB1540.namprd21.prod.outlook.com>
-         <254b35a0eb1e0c68cdc87fa54470c7c079d5dd6e.camel@sipsolutions.net>
-         <CY4PR21MB15401F95BAED44381746C11F8FA39@CY4PR21MB1540.namprd21.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Thu, 23 Sep 2021 15:40:13 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEA1FC061574;
+        Thu, 23 Sep 2021 12:38:41 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id eg28so27208597edb.1;
+        Thu, 23 Sep 2021 12:38:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Crfq7oYAoG8JFMvE676pL0/iUOz+9stc+tHZex6JUT8=;
+        b=cTwmisMFk6jl3/R1y3X+8Z5iyEHo2ZdRB1yMYKKM+o2149w/B1kEX5riLeICq7Cfm7
+         6WlRbCQ8r8P+BkEODJukPxf71p8KudEYRpOWie6unCSIRQeqyPtYsjY7t4beiIx+7KW+
+         jD5CBYiJd/2380IvVnPLFudYD/JTWSsD736bTkmZcrttSPstI8dos/fKhMd0CIPOUi3t
+         gVQX5V3NLCXpvbRlrRIxsr8kQJ+QePWN5LRwY4XR1ruYGmFexwWpGK5QMvdZRRUUgeK7
+         /Z3TxXh38C1rMh9gMsHMavaqQG2pMpo60YaIk5KzkYqARy81mjTgUBtFqNuRoJNEH9kS
+         uRmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Crfq7oYAoG8JFMvE676pL0/iUOz+9stc+tHZex6JUT8=;
+        b=P1RYhtVPzkcgrdkmStDfoxPq/Vlh/VD8h3IT+X7KFSwSRRz7/lIGiIAt2iVbYOCxEH
+         7jTrRGExzvGgwrMNXvgeOr9VuioaOuBx//f+LxDIEqNIGhfwbZBNrQ2B0p64btmghlfK
+         lS4KUf2iNtLgPqR0ektD2ljVppMoQ4uBnBg8e/hkSq2+JHtY9Dx4WjgS4iBz+F6Fcv2g
+         VtUgo+av3Fxvg7Ply3yDe0lpP5e43MIRl8WUxLskIGcaclY4jG00f+8MCyPDGM5GAYbu
+         OKhbscbI6fUnYWd68lkUOTksYcQKFMPIkfmUL2k1f30qp5ae5bTuKIaHYMKbXolAZOqd
+         PvkQ==
+X-Gm-Message-State: AOAM531M6o5d0hrjouMEDkmrMsE9jmMNpeNzCb92kPoBXrNc2em1XMuS
+        A/tZIUUYEXFliPm1E0r2u6BXoazfGVAEaJ7YMhg=
+X-Google-Smtp-Source: ABdhPJwyduLxYBBHBlpBM0b3Dvma9HOOm0+aDOcKahAlaet7awvdEC8JhTHGJRUUIw/qqtvgoDJUZw+wkVxNjdjdLuM=
+X-Received: by 2002:a17:906:2887:: with SMTP id o7mr7053776ejd.425.1632425920308;
+ Thu, 23 Sep 2021 12:38:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+References: <20210830123704.221494-1-verdre@v0yd.nl> <20210830123704.221494-2-verdre@v0yd.nl>
+ <CA+ASDXPKZ0i5Bi11Q=qqppY8OCgw=7m0dnPn0s+y+GAvvQodog@mail.gmail.com>
+ <CAHp75VdR4VC+Ojy9NjAtewAaPAgowq-3rffrr3uAdOeiN8gN-A@mail.gmail.com>
+ <CA+ASDXNGR2=sQ+w1LkMiY_UCfaYgQ5tcu2pbBn46R2asv83sSQ@mail.gmail.com>
+ <YS/rn8b0O3FPBbtm@google.com> <0ce93e7c-b041-d322-90cd-40ff5e0e8ef0@v0yd.nl>
+ <CA+ASDXNMhrxX-nFrr6kBo0a0c-25+Ge2gBP2uTjE8UWJMeQO2A@mail.gmail.com>
+ <bd64c142-93d0-c348-834c-34ed80c460f9@v0yd.nl> <e4cbf804-c374-79a3-53ac-8a0fbd8f75b8@v0yd.nl>
+In-Reply-To: <e4cbf804-c374-79a3-53ac-8a0fbd8f75b8@v0yd.nl>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 23 Sep 2021 22:37:40 +0300
+Message-ID: <CAHp75VdRWd9Oj_68BqewAdjtzhRz406eh=4M7FmjRvqhkaWaOw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mwifiex: Use non-posted PCI register writes
+To:     =?UTF-8?Q?Jonas_Dre=C3=9Fler?= <verdre@v0yd.nl>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev@vger.kernel.org,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Guillaume,
+On Thu, Sep 23, 2021 at 6:28 PM Jonas Dre=C3=9Fler <verdre@v0yd.nl> wrote:
+>
+> On 9/22/21 2:50 PM, Jonas Dre=C3=9Fler wrote:
+> > On 9/20/21 7:48 PM, Brian Norris wrote:
+> >> On Sat, Sep 18, 2021 at 12:37 AM Jonas Dre=C3=9Fler <verdre@v0yd.nl> w=
+rote:
+> >>> Thanks for the pointer to that commit Brian, it turns out this is
+> >>> actually the change that causes the "Firmware wakeup failed" issues t=
+hat
+> >>> I'm trying to fix with the second patch here.
+> >>
+> >> Huh. That's interesting, although I guess it makes some sense given
+> >> your theory of "dropped writes". FWIW, this strategy (post a single
+> >> write, then wait for wakeup) is the same used by some other
+> >> chips/drivers too (e.g., ath10k/pci), although in those cases card
+> >> wakeup is much much faster. But if the bus was dropping writes
+> >> somehow, those strategies would fail too.
+> >>
+> >>> Also my approach is a lot messier than just reverting
+> >>> 062e008a6e83e7c4da7df0a9c6aefdbc849e2bb3 and also appears to be block=
+ing
+> >>> even longer...
+> >>
+> >> For the record, in case you're talking about my data ("blocking even
+> >> longer"): I was only testing patch 1. Patch 2 isn't really relevant to
+> >> my particular systems (Rockchip RK3399 + Marvell 8997/PCIe), because
+> >> (a) I'm pretty sure my system isn't "dropping" any reads or writes
+> >> (b) all my delay is in the read-back; the Rockchip PCIe bus is waiting
+> >> indefinitely for the card to wake up, instead of timing out and
+> >> reporting all-1's like many x86 systems appear to do (I've tested
+> >> this).
+> >>
+> >> So, the 6ms delay is entirely sitting in the ioread32(), not a delay
+> >> loop.
+> >>
+> >> I haven't yet tried your version 2 (which avoids the blocking read to
+> >> wake up; good!), but it sounds like in theory it could solve your
+> >> problem while avoiding 6ms delays for me. I intend to test your v2
+> >> this week.
+> >>
+> >
+> > With "blocking even longer" I meant that (on my system) the delay-loop
+> > blocks even longer than waking up the card via mwifiex_read_reg() (both
+> > are in the orders of milliseconds). And given that in certain cases the
+> > card wakeup (or a write getting through to the card, I have no idea) ca=
+n
+> > take extremely long, I'd feel more confident going with the
+> > mwifiex_read_reg() method to wake up the card.
+> >
+> > Anyway, you know what's even weirder with all this: I've been testing
+> > the first commit of patch v2 (so just the single read-back instead of
+> > the big hammer) together with 062e008a6e83e7c4da7df0a9c6aefdbc849e2bb3
+> > reverted for a good week now and haven't seen any wakeup failure yet.
+> > Otoh I'm fairly sure the big hammer with reading back every write wasn'=
+t
+> > enough to fix the wakeup failures, otherwise I wouldn't even have
+> > started working on the second commit.
+> >
+> > So that would mean there's a difference between writing and then readin=
+g
+> > back vs only reading to wake up the card: Only the latter fixes the
+> > wakeup failures.
+> >
+> >>> Does anyone have an idea what could be the reason for the posted writ=
+e
+> >>> not going through, or could that also be a potential firmware bug in =
+the
+> >>> chip?
+> >>
+> >> I have no clue about that. That does sound downright horrible, but so
+> >> are many things when dealing with this family of hardware/firmware.
+> >> I'm not sure how to prove out whether this is a host bus problem, or
+> >> an endpoint/firmware problem, other than perhaps trying the same
+> >> module/firmware on another system, if that's possible.
+> >>
+> >> Anyway, to reiterate: I'm not fundamentally opposed to v2 (pending a
+> >> test run here), even if it is a bit ugly and perhaps not 100%
+> >> understood.
+> >>
+> >
+> > I'm not 100% sure about all this yet, I think I'm gonna try to confirm
+> > my older findings once again now and then we'll see. FTR, would you be
+> > fine with using the mwifiex_read_reg() method to wake up the card and
+> > somehow quirking your system to use write_reg()?
+> >
+> >> Brian
+> >>
+> >
+>
+> Okay, so I finally managed to find my exact reproducer for the bug again:
+>
+> 1) Make sure wifi powersaving is enabled (iw dev wlp1s0 set power_save on=
+)
+> 2) Connect to any wifi network (makes firmware go into wifi powersaving
+> mode, not deep sleep)
+> 3) Make sure bluetooth is turned off (to ensure the firmware actually
+> enters powersave mode and doesn't keep the radio active doing bluetooth
+> stuff)
+> 4) To confirm that wifi powersaving is entered ping a device on the LAN,
+> pings should be a few ms higher than without powersaving
+> 5) Run "while true; do iwconfig; sleep 0.0001; done", this wakes and
+> suspends the firmware extremely often
+> 6) Wait until things explode, for me it consistently takes <5 minutes
+>
+> Using this reproducer I was able to clear things up a bit:
+>
+> - There still are wakeup failures when using (only) mwifiex_read_reg()
+> to wake the card, so there's no weird difference between waking up using
+> read vs write+read-back
+>
+> - Just calling mwifiex_write_reg() once and then blocking until the card
+> wakes up using my delay-loop doesn't fix the issue, it's actually
+> writing multiple times that fixes the issue
+>
+> These observations sound a lot like writes (and even reads) are actually
+> being dropped, don't they?
 
-> Our target is to give the guest VM a similar level of control over WiFi as
-> other applications on the host.  The host OS keeps control of the NIC. Requests
-> from the guest are executed through calls to public host wlan APIs and the
-> result is returned to the guest driver.
-
-That makes some sense. I say some intentionally though, because consider
-the differences - a typical application on the host will definitely not
-care (even the browser, skype, etc. will not), unless they specifically
-want to do something with wifi such as for IOT onboarding or whatnot.
-
-A typical guest VM on the other hand will run a pretty typical operating
-system, and that *will* "care", in the sense that it always wants to use
-and control a wifi device (if present).
-
-This might just mean that it's continuously scanning for networks it
-knows about and can connect to, or it might mean that it's actually
-connecting to the networks that it knows about. The host, on the other
-hand, might have its own ideas about which networks you should be
-connected to? I fear that having both of this might conflict, so I was
-curious how you'd be solving that.
-
-> Since the host keeps control of the NIC, it handles multiple things trying to
-> use WiFi the same way it handles different host applications trying to use Wi-Fi.
-> This means the host OS can reject a command from the guest, or that the guest
-> VM could get disconnected if another program on the host initiates a connection
-> to a different Wi-Fi network.
-
-Right.
-
-I *think* that to some extent I'm actually thinking of "OS" vs.
-"applications" in too strict a separation, and on Windows it might
-actually be that the part of the OS that implements the wifi network
-selection is "just" an application? A la Intel ProSet (not that I know
-anything about it)?
 
 
-> Agreed, only one half doesn’t make a lot of sense.  We are in the process of
-> making our Windows host proxy implementation open source. It should be a matter
-> of days now.  I will send an update with a link when it is available.
-
-Oh, that's nice. I wasn't really even expecting that :)
-
-> Using netlink seems a great idea, thanks for the suggestion! :)
-> 
-> We also considered forwarding nl80211 messages directly, since it could avoid
-> the need for a specialized guest driver.  However, we wondered about
-> compatibility issues (what if the host and guest versions of nl80211 don’t
-> match?), and it seemed much more complex to implement, with significant changes
-> to cfg80211 and likely other parts of the wireless subsystem.  Overall, the
-> nl80211 forwarding option appears architecturally sound, but given the much
-> larger scope and impact, we focused on a more targeted solution in which the
-> guest driver doesn’t own the host NIC.  We feel this solution provides a middle
-> ground where the host can decide which parts of its wireless stack to proxy to
-> the guest.
-
-Ah, that's interesting. I had only considered this for the *guest*, and
-assumed that the host would handle the (nl80211) messages in a special
-device implementation software, not forward those directly to the host
-(Linux) kernel.
-
-It sounds like you considered the case of basically letting the guest
-applications direction talk nl80211 to the host kernel, which is far
-beyond what I considered!
-
-I completely agree here though - you definitely want some proxy on the
-host side.
-
-But like I said, I was just considering that as the guest side
-implementation. We don't have machinery for this right now in netlink,
-but I could see perhaps some way of allowing "pre_doit" to return say
-"1" to say "we abort here but please don't send a response to
-userspace". Then, the pre_doit() could call a driver method passing the
-nl80211 message down instead of calling the real operation, and the
-application using nl80211 would end up directly talking to the nl80211
-implementation of the device.
-
-I don't think the device _could_ even implement it by talking to the
-host kernel (even if it is Linux) because the netdev IDs and whatnot
-would be different, but it might be feasible for the guest
-implementation.
-
-The only place where this might run into trouble is with things that
-nl80211 supports (enum nl80211_protocol_features), which we handle
-directly, and so an updated guest kernel might support more than would
-actually end up working. But the truth is that we added _exactly_ one
-such feature (NL80211_PROTOCOL_FEATURE_SPLIT_WIPHY_DUMP), and wiphy
-discovery is of course something that would anyway have to be handled by
-the guest. So not sure this is such a big deal.
-
-Anyway, not saying it should be done one way or the other, was just
-considering this as one possible way of simply pushing _all_ the APIs
-though to the device, and then the nl80211 implementation in the device
-can decide what it supports and whatnot, just like on older kernels we
-don't support certain things. The *driver* would then be fairly simple
-and basically would never have to be extended, but the device
-implementation (in the hypervisor or wherever) might be more difficult.
-
-johannes
-
+--=20
+With Best Regards,
+Andy Shevchenko
