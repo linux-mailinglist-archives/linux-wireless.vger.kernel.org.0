@@ -2,62 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 387FA416678
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 22:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18D2F41668F
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 22:20:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243083AbhIWUSR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Sep 2021 16:18:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44094 "EHLO
+        id S243128AbhIWUWE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Sep 2021 16:22:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243068AbhIWUSQ (ORCPT
+        with ESMTP id S243083AbhIWUWE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Sep 2021 16:18:16 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4977C061574;
-        Thu, 23 Sep 2021 13:16:44 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id u18so20637595wrg.5;
-        Thu, 23 Sep 2021 13:16:44 -0700 (PDT)
+        Thu, 23 Sep 2021 16:22:04 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F76C061574;
+        Thu, 23 Sep 2021 13:20:31 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id t7so20515633wrw.13;
+        Thu, 23 Sep 2021 13:20:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=lO5y7J+2e+6BVRlT9qQH2I07/QUMRdA9/qbFd40Lwgk=;
-        b=DAtG2hIzsiOJnkLmRrmQ5FizE9g7gBFSaZ/36hF2rWVhUoc0H/wrMxMPoOVuCx5yUn
-         bIkNRc+i0c3kUTEf8Wfu2rn4STZXRjba4DMBxtbPsVnwV9tx2w0quKEVCo2+e2hCJsUY
-         Qh6OTYu/NuZKipkmzja4JaqsznKzDuAcsM141htzhgaHAp4w+Gs2/NSRkgkpHuw9XkXT
-         jS1prU1H19WTA4UaW0/Nn9okv4Kn1qly0F7rC1OkJGPJfAnJmeOMf5cpYKIfUw46fKJq
-         GEt+wlr+4dwD0Yw3rBzl500as+F2Tp9RYlBeJtYyeEYQrt4PWNt5WB3AKAqQAUCuj7Ls
-         Nuiw==
+        bh=mvQd80Q8N6XTLht8So1aPXzdw4e24dwYp1a6hARpPnQ=;
+        b=AIe4muyNOlKj3ugSMfEF1d7vXvkTj9mh3oyhP0ruzHUb/kT/a/qqQkzCAMkmptGMzu
+         SRY7JFnmJ27czzYqhocDFEhCdAbImZj2dEgvmhqF6sAsEKon3uSdCXLMGU5kfFBh6TDG
+         wNKzPigmSDs8sPRdw10OD8RjHBVfTqTO6NrEvdnKucRRlPepgol2NnSDgieZjS0afSIx
+         ijowystKpD4ApGJByOmdiBGjXoMtPxooBPzDZgk2tvFvahLxIF0do1aS7tBZHCqx7bVK
+         Fn8Yv08+L83cCNvcztiYcj+TqYfrOj8sBrBEAYEWkCyot/nXCkriOPTYeSKlrAh+2o/R
+         +L7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=lO5y7J+2e+6BVRlT9qQH2I07/QUMRdA9/qbFd40Lwgk=;
-        b=ySIWIOTqbrFaYw3C9GS2oK817yhRKYiZPOwAUUFRttNWZBWcGphgWfjndUWXBg+9op
-         N3+Y5i01n2emqNtIm+j76sGuX6pcwFYxIAuoHet7sq6R7HfkYuFyQuE4QpQ9uf6FCmoS
-         R6KFDZwWWTG/9WKJ/cA4QS6253YLxh6VnFOhCjHdaWn/HSIaDbAkMtFjVoZDXFSw7AGG
-         NRSvxxLLPKdnax87D7UhA8sTbe3zTGvh1IL8hrgCoh+BoQ1dVh6t3Li1IAzisgGYKkU0
-         SnWimsbAZLjLXQrOa/aU+zKwTtnVDGHBx8jLUchnsoCiwvToN2B4K+HWh9dQm5qrdz3A
-         4dlg==
-X-Gm-Message-State: AOAM5313xq3G7MRn3Biyteah6XNCMs/3xjEd8A1V77XpbckJYf365Zjv
-        G58zJTIk+M8WSEHytB9vdj8AGM2JToU=
-X-Google-Smtp-Source: ABdhPJzeCUi6Ar4ojCjqB0PoyCiU/ln4Rk4ZttuK0AfpB5N+4xmo/IsWKAlaPb0hWMAdvFKVhuJRGg==
-X-Received: by 2002:a05:6000:1447:: with SMTP id v7mr7802663wrx.344.1632428203151;
-        Thu, 23 Sep 2021 13:16:43 -0700 (PDT)
+        bh=mvQd80Q8N6XTLht8So1aPXzdw4e24dwYp1a6hARpPnQ=;
+        b=hA6LGbB9uVkd9OyZf4Hp6jIMVQqLKRB32E3ILzik7oVrDpvaf4qwdsHR/ejCfLGwxd
+         zYFb06AQrnpXDubnBXUdITWbulKFUKIQAJ8lcqt1XLSuk1qFHXf0wOWfJLarggx4d/Nw
+         VCmZFfWpmWZFPjyJfVD8BCVO5E8BWxks/M1FFa0tuPy4i63KB+z/TwJwjT+fA1Iks28O
+         qP0yXfkSU11xbxFk1WoSXldqs/sLclevsw3icZI8Co80sCXbSQ1IeoVFKLTkDINeMTMm
+         l6xXc+0KHorGFisz66QnOBdq2MOT7/29cLO32V9QoemBoVlBQ5ptIhbX8AyezDZlEFbT
+         inMg==
+X-Gm-Message-State: AOAM532LWjmTGQjWfhrnDJY7WKrjWWdq/eJPIA0NxH9aGPiC65/z05rl
+        p7Vey8e0hkBrq6T3BU5SRL6C3bQ78ZU=
+X-Google-Smtp-Source: ABdhPJwzZtG1Yc9xaRpgcrRsyrCUA7wfOEv1cqiClq33Wvr2eJs1ULRRkTijS+FREXo2qMRtOBiPUQ==
+X-Received: by 2002:a5d:444a:: with SMTP id x10mr7437517wrr.360.1632428430377;
+        Thu, 23 Sep 2021 13:20:30 -0700 (PDT)
 Received: from debian64.daheim (p200300d5ff115d00d63d7efffebde96e.dip0.t-ipconnect.de. [2003:d5:ff11:5d00:d63d:7eff:febd:e96e])
-        by smtp.gmail.com with ESMTPSA id r25sm6357184wra.76.2021.09.23.13.16.42
+        by smtp.gmail.com with ESMTPSA id i187sm6721443wma.0.2021.09.23.13.20.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Sep 2021 13:16:42 -0700 (PDT)
+        Thu, 23 Sep 2021 13:20:29 -0700 (PDT)
 Received: from chuck by debian64.daheim with local (Exim 4.95-RC2)
         (envelope-from <chunkeey@gmail.com>)
-        id 1mTV97-002PcL-Qn;
-        Thu, 23 Sep 2021 22:16:41 +0200
+        id 1mTVCn-002Pl1-4b;
+        Thu, 23 Sep 2021 22:20:29 +0200
 From:   Christian Lamparter <chunkeey@gmail.com>
 To:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org
 Cc:     Kalle Valo <kvalo@codeaurora.org>, Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH] dt-bindings: net: wireless: qca,ath9k: convert to the json-schema
-Date:   Thu, 23 Sep 2021 22:16:41 +0200
-Message-Id: <20210923201641.575124-1-chunkeey@gmail.com>
+Subject: [PATCH v3] dt-bindings: net: wireless: qca,ath9k: convert to the json-schema
+Date:   Thu, 23 Sep 2021 22:20:29 +0200
+Message-Id: <20210923202029.575660-1-chunkeey@gmail.com>
 X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -88,6 +88,10 @@ Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
 v1 -> v2:
 	- added second example (pci device - AR9220)
 	- added commented chip list from the qca,ath9k.txt+ath9k's pci.c
+
+v2 -> v3:
+	- forgot to include patch version in tag. Oops.
+	  (Please ignore the v2 with the missing v2 I just sent.)
 
 (I hope my changes didn't invalidate Rob's review there.
 I did run "make dt_binding_check" and no warning/error
