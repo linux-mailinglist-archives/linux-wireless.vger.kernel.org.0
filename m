@@ -2,270 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18D2F41668F
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 22:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCC7D41669E
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Sep 2021 22:22:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243128AbhIWUWE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Sep 2021 16:22:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45014 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243083AbhIWUWE (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Sep 2021 16:22:04 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F76C061574;
-        Thu, 23 Sep 2021 13:20:31 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id t7so20515633wrw.13;
-        Thu, 23 Sep 2021 13:20:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mvQd80Q8N6XTLht8So1aPXzdw4e24dwYp1a6hARpPnQ=;
-        b=AIe4muyNOlKj3ugSMfEF1d7vXvkTj9mh3oyhP0ruzHUb/kT/a/qqQkzCAMkmptGMzu
-         SRY7JFnmJ27czzYqhocDFEhCdAbImZj2dEgvmhqF6sAsEKon3uSdCXLMGU5kfFBh6TDG
-         wNKzPigmSDs8sPRdw10OD8RjHBVfTqTO6NrEvdnKucRRlPepgol2NnSDgieZjS0afSIx
-         ijowystKpD4ApGJByOmdiBGjXoMtPxooBPzDZgk2tvFvahLxIF0do1aS7tBZHCqx7bVK
-         Fn8Yv08+L83cCNvcztiYcj+TqYfrOj8sBrBEAYEWkCyot/nXCkriOPTYeSKlrAh+2o/R
-         +L7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mvQd80Q8N6XTLht8So1aPXzdw4e24dwYp1a6hARpPnQ=;
-        b=hA6LGbB9uVkd9OyZf4Hp6jIMVQqLKRB32E3ILzik7oVrDpvaf4qwdsHR/ejCfLGwxd
-         zYFb06AQrnpXDubnBXUdITWbulKFUKIQAJ8lcqt1XLSuk1qFHXf0wOWfJLarggx4d/Nw
-         VCmZFfWpmWZFPjyJfVD8BCVO5E8BWxks/M1FFa0tuPy4i63KB+z/TwJwjT+fA1Iks28O
-         qP0yXfkSU11xbxFk1WoSXldqs/sLclevsw3icZI8Co80sCXbSQ1IeoVFKLTkDINeMTMm
-         l6xXc+0KHorGFisz66QnOBdq2MOT7/29cLO32V9QoemBoVlBQ5ptIhbX8AyezDZlEFbT
-         inMg==
-X-Gm-Message-State: AOAM532LWjmTGQjWfhrnDJY7WKrjWWdq/eJPIA0NxH9aGPiC65/z05rl
-        p7Vey8e0hkBrq6T3BU5SRL6C3bQ78ZU=
-X-Google-Smtp-Source: ABdhPJwzZtG1Yc9xaRpgcrRsyrCUA7wfOEv1cqiClq33Wvr2eJs1ULRRkTijS+FREXo2qMRtOBiPUQ==
-X-Received: by 2002:a5d:444a:: with SMTP id x10mr7437517wrr.360.1632428430377;
-        Thu, 23 Sep 2021 13:20:30 -0700 (PDT)
-Received: from debian64.daheim (p200300d5ff115d00d63d7efffebde96e.dip0.t-ipconnect.de. [2003:d5:ff11:5d00:d63d:7eff:febd:e96e])
-        by smtp.gmail.com with ESMTPSA id i187sm6721443wma.0.2021.09.23.13.20.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Sep 2021 13:20:29 -0700 (PDT)
-Received: from chuck by debian64.daheim with local (Exim 4.95-RC2)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1mTVCn-002Pl1-4b;
-        Thu, 23 Sep 2021 22:20:29 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org
-Cc:     Kalle Valo <kvalo@codeaurora.org>, Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH v3] dt-bindings: net: wireless: qca,ath9k: convert to the json-schema
-Date:   Thu, 23 Sep 2021 22:20:29 +0200
-Message-Id: <20210923202029.575660-1-chunkeey@gmail.com>
-X-Mailer: git-send-email 2.33.0
+        id S243217AbhIWUYN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Sep 2021 16:24:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60872 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243173AbhIWUYG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 23 Sep 2021 16:24:06 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 152C361019;
+        Thu, 23 Sep 2021 20:22:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632428554;
+        bh=k3zPwqpim6rXUSX3FUMtpizfa7s/LUqUrCFSwGLVMl4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jl6LFI7LsmrIxAq+IbA9wLE6geSN0xdYvqr1ECzUp3i/VipRQiqfiG6iy9AnfEh0s
+         x5hjdUPf9VR1aTDUBkA/D3XPMoRvlJTX6DVGx8A7SXVg1a6WXzCzWQCsSnA54IVwWB
+         JR2OWHtAAIXnqkUOHOmDZBEEJBoHqQHiQuubeS7FPy8BL6s1gl8AHkc/3rekzE7sBA
+         8VfIP3T/mMhkSgz6EiySNZTHCgzQ9yv7zo0CiKNgc3P7NYFpPTMwVLmsolCU2325Tc
+         gdaZF7GfIKYvo8+1YarkNKpNyj9JXoIdGEwa3OLXsKi9VSfZnvgZuIkYb+pZZyqUiC
+         8ALyo4H4zrbqQ==
+Received: by pali.im (Postfix)
+        id 971AC7D5; Thu, 23 Sep 2021 22:22:31 +0200 (CEST)
+Date:   Thu, 23 Sep 2021 22:22:31 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonas =?utf-8?Q?Dre=C3=9Fler?= <verdre@v0yd.nl>,
+        Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev@vger.kernel.org,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH 1/2] mwifiex: Use non-posted PCI register writes
+Message-ID: <20210923202231.t2zjoejpxrbbe5hc@pali>
+References: <20210830123704.221494-2-verdre@v0yd.nl>
+ <CA+ASDXPKZ0i5Bi11Q=qqppY8OCgw=7m0dnPn0s+y+GAvvQodog@mail.gmail.com>
+ <CAHp75VdR4VC+Ojy9NjAtewAaPAgowq-3rffrr3uAdOeiN8gN-A@mail.gmail.com>
+ <CA+ASDXNGR2=sQ+w1LkMiY_UCfaYgQ5tcu2pbBn46R2asv83sSQ@mail.gmail.com>
+ <YS/rn8b0O3FPBbtm@google.com>
+ <0ce93e7c-b041-d322-90cd-40ff5e0e8ef0@v0yd.nl>
+ <CA+ASDXNMhrxX-nFrr6kBo0a0c-25+Ge2gBP2uTjE8UWJMeQO2A@mail.gmail.com>
+ <bd64c142-93d0-c348-834c-34ed80c460f9@v0yd.nl>
+ <e4cbf804-c374-79a3-53ac-8a0fbd8f75b8@v0yd.nl>
+ <CAHp75Vd5iCLELx8s+Zvcj8ufd2bN6CK26soDMkZyC1CwMO2Qeg@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75Vd5iCLELx8s+Zvcj8ufd2bN6CK26soDMkZyC1CwMO2Qeg@mail.gmail.com>
+User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This replaces the existing .txt binding file. Furthermore, this
-also helps with validating DTS files.
+On Thursday 23 September 2021 22:41:30 Andy Shevchenko wrote:
+> On Thu, Sep 23, 2021 at 6:28 PM Jonas Dreßler <verdre@v0yd.nl> wrote:
+> > On 9/22/21 2:50 PM, Jonas Dreßler wrote:
+> 
+> ...
+> 
+> > - Just calling mwifiex_write_reg() once and then blocking until the card
+> > wakes up using my delay-loop doesn't fix the issue, it's actually
+> > writing multiple times that fixes the issue
+> >
+> > These observations sound a lot like writes (and even reads) are actually
+> > being dropped, don't they?
+> 
+> It sounds like you're writing into a not ready (fully powered on) device.
 
-Introduced binding changes:
- 1. added inherited mac-address nvmem property
- 2. added inherited ieee80211-freq-limit property
- 3. added new calibration nvmem property
- 4. added second example (taken from the Netgear WNDR3700v2)
-    Reason: Setting qca,no-eeprom; takes presedence over
-    nvmem-cells. I think a different example is needed,
-    because the driver can only reads from one calibration
-    source per device.
- 5. (re-added) chip list (based on data from ath9k's pci.c)
+This reminds me a discussion with Bjorn about CRS response returned
+after firmware crash / reset when device is not ready yet:
+https://lore.kernel.org/linux-pci/20210922164803.GA203171@bhelgaas/
 
-Added binding .yaml to MAINTAINERS.
+Could not be this similar issue? You could check it via reading
+PCI_VENDOR_ID register from config space. And if it is not valid value
+then card is not really ready yet.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-
----
-v1 -> v2:
-	- added second example (pci device - AR9220)
-	- added commented chip list from the qca,ath9k.txt+ath9k's pci.c
-
-v2 -> v3:
-	- forgot to include patch version in tag. Oops.
-	  (Please ignore the v2 with the missing v2 I just sent.)
-
-(I hope my changes didn't invalidate Rob's review there.
-I did run "make dt_binding_check" and no warning/error
-came up.)
----
- .../bindings/net/wireless/qca,ath9k.txt       | 48 ----------
- .../bindings/net/wireless/qca,ath9k.yaml      | 90 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 3 files changed, 91 insertions(+), 48 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt
- create mode 100644 Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-
-diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt
-deleted file mode 100644
-index aaaeeb5f935b..000000000000
---- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt
-+++ /dev/null
-@@ -1,48 +0,0 @@
--* Qualcomm Atheros ath9k wireless devices
--
--This node provides properties for configuring the ath9k wireless device. The
--node is expected to be specified as a child node of the PCI controller to
--which the wireless chip is connected.
--
--Required properties:
--- compatible: For PCI and PCIe devices this should be an identifier following
--		the format as defined in "PCI Bus Binding to Open Firmware"
--		Revision 2.1. One of the possible formats is "pciVVVV,DDDD"
--		where VVVV is the PCI vendor ID and DDDD is PCI device ID.
--		Typically QCA's PCI vendor ID 168c is used while the PCI device
--		ID depends on the chipset - see the following (possibly
--		incomplete) list:
--			- 0023 for AR5416
--			- 0024 for AR5418
--			- 0027 for AR9160
--			- 0029 for AR9220 and AR9223
--			- 002a for AR9280 and AR9283
--			- 002b for AR9285
--			- 002c for AR2427
--			- 002d for AR9227
--			- 002e for AR9287
--			- 0030 for AR9380, AR9381 and AR9382
--			- 0032 for AR9485
--			- 0033 for AR9580 and AR9590
--			- 0034 for AR9462
--			- 0036 for AR9565
--			- 0037 for AR9485
--- reg: Address and length of the register set for the device.
--
--Optional properties:
--- qca,no-eeprom: Indicates that there is no physical EEPROM connected to the
--			ath9k wireless chip (in this case the calibration /
--			EEPROM data will be loaded from userspace using the
--			kernel firmware loader).
--
--The MAC address will be determined using the optional properties defined in
--net/ethernet.txt.
--
--In this example, the node is defined as child node of the PCI controller:
--&pci0 {
--	wifi@168c,002d {
--		compatible = "pci168c,002d";
--		reg = <0x7000 0 0 0 0x1000>;
--		qca,no-eeprom;
--	};
--};
-diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-new file mode 100644
-index 000000000000..7c78b070f48a
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-@@ -0,0 +1,90 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/wireless/qca,ath9k.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Qualcomm Atheros ath9k wireless devices Generic Binding
-+
-+maintainers:
-+  - Kalle Valo <kvalo@codeaurora.org>
-+
-+description: |
-+  This node provides properties for configuring the ath9k wireless device.
-+  The node is expected to be specified as a child node of the PCI controller
-+  to which the wireless chip is connected.
-+
-+allOf:
-+  - $ref: ieee80211.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - pci168c,0023	# AR5416
-+      - pci168c,0024	# AR5418
-+      - pci168c,0027	# AR9160
-+      - pci168c,0029	# AR9220 and AR9223
-+      - pci168c,002a	# AR9280 and AR9283
-+      - pci168c,002b	# AR9285
-+      - pci168c,002c	# AR2427 - 802.11n bonded out
-+      - pci168c,002d	# AR9227
-+      - pci168c,002e	# AR9287
-+      - pci168c,0030	# AR9380, AR9381 and AR9382
-+      - pci168c,0032	# AR9485
-+      - pci168c,0033	# AR9580 and AR9590
-+      - pci168c,0034	# AR9462
-+      - pci168c,0036	# AR9565
-+      - pci168c,0037	# AR1111 and AR9485
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  ieee80211-freq-limit: true
-+
-+  qca,no-eeprom:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Indicates that there is no physical EEPROM connected
-+
-+  nvmem-cells:
-+    items:
-+      - description: Reference to an nvmem node for the MAC address
-+      - description: Reference to an nvmem node for calibration data
-+
-+  nvmem-cell-names:
-+    items:
-+      - const: mac-address
-+      - const: calibration
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    pcie0 {
-+      #address-cells = <3>;
-+      #size-cells = <2>;
-+      wifi@0,0 {
-+        compatible = "pci168c,002d";
-+        reg = <0 0 0 0 0>;
-+        interrupts = <3>;
-+        qca,no-eeprom;
-+      };
-+    };
-+  - |
-+    pci0 {
-+      #address-cells = <3>;
-+      #size-cells = <2>;
-+      wifi@0,11 {
-+        compatible = "pci168c,0029";
-+        reg = <0x8800 0 0 0 0>;
-+        nvmem-cells = <&macaddr_art_c>, <&cal_art_1000>;
-+        nvmem-cell-names = "mac-address", "calibration";
-+      };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1a8e641d7edf..5a3af6b25000 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15457,6 +15457,7 @@ M:	ath9k-devel@qca.qualcomm.com
- L:	linux-wireless@vger.kernel.org
- S:	Supported
- W:	https://wireless.wiki.kernel.org/en/users/Drivers/ath9k
-+F:	Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
- F:	drivers/net/wireless/ath/ath9k/
- 
- QUALCOMM CAMERA SUBSYSTEM DRIVER
--- 
-2.33.0
-
+> To check this, try to put a busy loop for reading and check the value
+> till it gets 0.
+> 
+> Something like
+> 
+>   unsigned int count = 1000;
+> 
+>   do {
+>     if (mwifiex_read_reg(...) == 0)
+>       break;
+>   } while (--count);
+> 
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
