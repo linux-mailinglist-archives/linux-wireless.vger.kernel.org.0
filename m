@@ -2,115 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22592416821
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Sep 2021 00:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EE8D416B32
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Sep 2021 07:31:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243451AbhIWWjR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Sep 2021 18:39:17 -0400
-Received: from mail-ot1-f43.google.com ([209.85.210.43]:41739 "EHLO
-        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243435AbhIWWjR (ORCPT
+        id S244123AbhIXFcs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Sep 2021 01:32:48 -0400
+Received: from mailgw01.mediatek.com ([216.200.240.184]:18352 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244118AbhIXFcs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Sep 2021 18:39:17 -0400
-Received: by mail-ot1-f43.google.com with SMTP id 97-20020a9d006a000000b00545420bff9eso10640698ota.8;
-        Thu, 23 Sep 2021 15:37:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=UUg+xdONDeTpHdeqNZwfSRiohr9VRPnz8eYVI07uERI=;
-        b=66axoZfA5LrHLpL2/SB3joFkBMET6+sUcJOZ5If0+vI7hPG0m4e/Ht7Fqr5smJlmA8
-         wpd/ZQUQPE7U2AQ/hLgqvp2fhd8MH9WVMYhXj4yARiwhsG+vDASh+v0f9YJo6fgUZwUG
-         JdcdbnIZnGMprm3KtlgkT50SI+R+boaNiGjf+W/cXuOanlI6Ma7kzWrIN+/O8/hbr07v
-         8roLCCj+x+EQeAnQkg7ZIub47a0DGNBOqjRzqyEOvhI7J7cqSii13HM1JEeaC/YGMYgY
-         F7sGQdcp8/srjVd6WIRJU6P3Jex/e4Y/37xdJyAZe91pAkjq0Tl2HHBy7sf0AdnFI1RV
-         xmtA==
-X-Gm-Message-State: AOAM533/D392BFSpEZMyE07bUyt9Pubrd/IMldEglBTGNZfAJ9QZem1c
-        RugQgJO6wcaGoe6a8vEP/g==
-X-Google-Smtp-Source: ABdhPJyZ8hoIBge0ZaeV70lQTJxCI4FfxoE0mXxAaQE8jnnAmXa18YCoM0BMlHe9eQAboEEkj6arXw==
-X-Received: by 2002:a05:6830:358:: with SMTP id h24mr954358ote.159.1632436664563;
-        Thu, 23 Sep 2021 15:37:44 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id t80sm1722423oie.9.2021.09.23.15.37.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Sep 2021 15:37:44 -0700 (PDT)
-Received: (nullmailer pid 3653403 invoked by uid 1000);
-        Thu, 23 Sep 2021 22:37:43 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Christian Lamparter <chunkeey@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>, devicetree@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-In-Reply-To: <20210923202029.575660-1-chunkeey@gmail.com>
-References: <20210923202029.575660-1-chunkeey@gmail.com>
-Subject: Re: [PATCH v3] dt-bindings: net: wireless: qca,ath9k: convert to the json-schema
-Date:   Thu, 23 Sep 2021 17:37:43 -0500
-Message-Id: <1632436663.364411.3653402.nullmailer@robh.at.kernel.org>
+        Fri, 24 Sep 2021 01:32:48 -0400
+X-UUID: 7210a01ae8884473ac83a4c5d449a5af-20210923
+X-UUID: 7210a01ae8884473ac83a4c5d449a5af-20210923
+Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 2056894484; Thu, 23 Sep 2021 22:31:13 -0700
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ MTKMBS62N2.mediatek.inc (172.29.193.42) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 23 Sep 2021 22:30:01 -0700
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 24 Sep 2021 13:30:00 +0800
+From:   <sean.wang@mediatek.com>
+To:     <lorenzo.bianconi@redhat.com>
+CC:     <nbd@nbd.name>, <sean.wang@mediatek.com>,
+        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
+        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
+        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH v2 06/16] mt76: connac: move mcu reg access utility routines in mt76_connac_lib module
+Date:   Fri, 24 Sep 2021 13:30:00 +0800
+Message-ID: <1632461400-8440-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <YUW8KBTC7t3PHJwF@lore-desk--annotate>
+References: <YUW8KBTC7t3PHJwF@lore-desk--annotate>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 23 Sep 2021 22:20:29 +0200, Christian Lamparter wrote:
-> This replaces the existing .txt binding file. Furthermore, this
-> also helps with validating DTS files.
-> 
-> Introduced binding changes:
->  1. added inherited mac-address nvmem property
->  2. added inherited ieee80211-freq-limit property
->  3. added new calibration nvmem property
->  4. added second example (taken from the Netgear WNDR3700v2)
->     Reason: Setting qca,no-eeprom; takes presedence over
->     nvmem-cells. I think a different example is needed,
->     because the driver can only reads from one calibration
->     source per device.
->  5. (re-added) chip list (based on data from ath9k's pci.c)
-> 
-> Added binding .yaml to MAINTAINERS.
-> 
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-> 
-> ---
-> v1 -> v2:
-> 	- added second example (pci device - AR9220)
-> 	- added commented chip list from the qca,ath9k.txt+ath9k's pci.c
-> 
-> v2 -> v3:
-> 	- forgot to include patch version in tag. Oops.
-> 	  (Please ignore the v2 with the missing v2 I just sent.)
-> 
-> (I hope my changes didn't invalidate Rob's review there.
-> I did run "make dt_binding_check" and no warning/error
-> came up.)
-> ---
->  .../bindings/net/wireless/qca,ath9k.txt       | 48 ----------
->  .../bindings/net/wireless/qca,ath9k.yaml      | 90 +++++++++++++++++++
->  MAINTAINERS                                   |  1 +
->  3 files changed, 91 insertions(+), 48 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-> 
+From: Sean Wang <sean.wang@mediatek.com>
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+>> From: Sean Wang <sean.wang@mediatek.com>
+>>
+>> Move mcu reg access shared between mt7663s and mt7921s in
+>> mt76_connac_lib module.
+>>
+>> Tested-by: Deren Wu <deren.wu@mediatek.com>
+>> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+>> ---
+>>  .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 27
+>> +++++++++++++++++++  .../wireless/mediatek/mt76/mt76_connac_mcu.h  |
+>> 2 ++
+>>  2 files changed, 29 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+>> b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+>> index ae692052de97..a53f6344a184 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+>> @@ -2406,6 +2406,33 @@ void mt76_connac_mcu_set_suspend_iter(void
+>> *priv, u8 *mac,  }
+>> EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_suspend_iter);
+>>
+>> +u32 mt76_connac_mcu_reg_rr(struct mt76_dev *dev, u32 offset) {
+>> +	struct {
+>> +		__le32 addr;
+>> +		__le32 val;
+>> +	} __packed req = {
+>> +		.addr = cpu_to_le32(offset),
+>> +	};
+>> +
+>> +	return mt76_mcu_send_msg(dev, MCU_CMD_REG_READ, &req, sizeof(req),
+>> +				 true);
+>> +}
+>> +EXPORT_SYMBOL_GPL(mt76_connac_mcu_reg_rr);
+>
+>It seems quite a common code, does it worth to move them in mcu.c? (mt76 module)
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml:23:21: [error] syntax error: found character '\t' that cannot start any token (syntax)
+My understanding would be mt76/mcu.c only provides the framework that handle the
+pure software stuff and shouldn't contain any firmware or device related logic.
 
-dtschema/dtc warnings/errors:
+So I prefer to add those commands MCU_CMD_REG_READ and MCU_CMD_REG_WRITE to
+mt76_connac_mcu.c like the other commands we have added there.
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/1531944
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+>
+>Regards,
+>Lorenzo
+>
+>> +
+>> +void mt76_connac_mcu_reg_wr(struct mt76_dev *dev, u32 offset, u32
+>> +val) {
+>> +	struct {
+>> +		__le32 addr;
+>> +		__le32 val;
+>> +	} __packed req = {
+>> +		.addr = cpu_to_le32(offset),
+>> +		.val = cpu_to_le32(val),
+>> +	};
+>> +
+>> +	mt76_mcu_send_msg(dev, MCU_CMD_REG_WRITE, &req, sizeof(req), false);
+>> +} EXPORT_SYMBOL_GPL(mt76_connac_mcu_reg_wr);
+>>  #endif /* CONFIG_PM */
+>>
+>>  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>"); diff --git
+>> a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+>> b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+>> index ea46dde364e1..6c410c4a8d6e 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+>> @@ -1111,4 +1111,6 @@ void mt76_connac_mcu_coredump_event(struct
+>> mt76_dev *dev, struct sk_buff *skb,  int
+>> mt76_connac_mcu_set_rate_txpower(struct mt76_phy *phy);  int mt76_connac_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
+>>				  struct ieee80211_vif *vif);
+>> +u32 mt76_connac_mcu_reg_rr(struct mt76_dev *dev, u32 offset); void
+>> +mt76_connac_mcu_reg_wr(struct mt76_dev *dev, u32 offset, u32 val);
+>>  #endif /* __MT76_CONNAC_MCU_H */
+>> --
+>> 2.25.1
+>>
 
