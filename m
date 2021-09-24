@@ -2,51 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F8F5416EA6
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Sep 2021 11:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83307416EC8
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Sep 2021 11:21:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244859AbhIXJQM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Sep 2021 05:16:12 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:22818 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244422AbhIXJQM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Sep 2021 05:16:12 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632474879; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=8s7VVl139a3i809ATKepHde+IYqg4+OOS/K41mjPwTY=;
- b=CzHRiTZs+tEUFjESy6c/iHgprPiYQbI9eLoOTNIfN7l3J6GFUgXJAUveKBX0P9W94B4kbkgx
- XPPXcUGT12tEyUsudd7uihPNc+iS0406/O/+hH5t5ONPPG8siRfGNrsRAQhl25rNs47D9DzW
- DkmIO+TLDGXDzgfu6W/UQjuBgVU=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 614d96c644830700e1b5ee29 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 24 Sep 2021 09:13:42
- GMT
-Sender: youghand=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B6A5CC43617; Fri, 24 Sep 2021 09:13:42 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: youghand)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 248A1C4338F;
-        Fri, 24 Sep 2021 09:13:42 +0000 (UTC)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Fri, 24 Sep 2021 14:43:42 +0530
-From:   Youghandhar Chintala <youghand@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
+        id S244931AbhIXJWe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Sep 2021 05:22:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51668 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244555AbhIXJWa (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 24 Sep 2021 05:22:30 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC362C061574;
+        Fri, 24 Sep 2021 02:20:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=9GxW7f1PM4tlFV8GS6ENNCIsOWiZB1CGSgf0VxPfSxU=;
+        t=1632475257; x=1633684857; b=e078anP+jhgULPe4U63PVvoM+GFz5UJ/yXuNrvCEeTgl1ga
+        Ja6lV/8V6UseMEQw4SAG37s+gs3yiLDHjT6bDnliqT1SFEahJww/geeUmymE4OIDExNJ2HZx4Sihr
+        RYrWmN6vbsHJ5WtDd76kEgRXdiS2dudvqnpWDhxq08JkLXd3ogLZU1dgsR5UB69jm3wWuyqP/0nx5
+        iZz4/mP8crhWpX3T1Zr9f+ODm3Sm4p4yXgvlIrNSdz2qlmMcPBTccYQsSB0BRqpCsQRt9Kt2V9HT5
+        p152Wj+qHTckYXwQizwPX3JE59KKGfJ1xV5JCFHNF5hVOxTo/NsGuCUPetNQTAUw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mThNz-00B89x-JN;
+        Fri, 24 Sep 2021 11:20:51 +0200
+Message-ID: <90d3c3c8cedcf5f8baa77b3b6e94b18656fcd0be.camel@sipsolutions.net>
+Subject: Re: [PATCH 2/3] mac80211: Add support to trigger sta disconnect on
+ hardware restart
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Youghandhar Chintala <youghand@codeaurora.org>
 Cc:     Abhishek Kumar <kuabhs@chromium.org>, Felix Fietkau <nbd@nbd.name>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -57,63 +45,41 @@ Cc:     Abhishek Kumar <kuabhs@chromium.org>, Felix Fietkau <nbd@nbd.name>,
         Brian Norris <briannorris@chromium.org>,
         Rakesh Pillai <pillair@codeaurora.org>,
         Manikanta Pubbisetty <mpubbise@codeaurora.org>
-Subject: Re: [PATCH 2/3] mac80211: Add support to trigger sta disconnect on
- hardware restart
-In-Reply-To: <5826123db4731bde01594212101ed5dbbea4d54f.camel@sipsolutions.net>
+Date:   Fri, 24 Sep 2021 11:20:50 +0200
+In-Reply-To: <30fa98673ad816ec849f34853c9e1257@codeaurora.org>
 References: <20201215172352.5311-1-youghand@codeaurora.org>
- <f2089f3c-db96-87bc-d678-199b440c05be@nbd.name>
- <ba0e6a3b783722c22715ae21953b1036@codeaurora.org>
- <CACTWRwt0F24rkueS9Ydq6gY3M-oouKGpaL3rhWngQ7cTP0xHMA@mail.gmail.com>
- (sfid-20210205_225202_513086_43C9BBC9)
- <d5cfad1543f31b3e0d8e7a911d3741f3d5446c57.camel@sipsolutions.net>
- <66ba0f836dba111b8c7692f78da3f079@codeaurora.org>
- <5826123db4731bde01594212101ed5dbbea4d54f.camel@sipsolutions.net>
-Message-ID: <30fa98673ad816ec849f34853c9e1257@codeaurora.org>
-X-Sender: youghand@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+         <f2089f3c-db96-87bc-d678-199b440c05be@nbd.name>
+         <ba0e6a3b783722c22715ae21953b1036@codeaurora.org>
+         <CACTWRwt0F24rkueS9Ydq6gY3M-oouKGpaL3rhWngQ7cTP0xHMA@mail.gmail.com>
+         (sfid-20210205_225202_513086_43C9BBC9) <d5cfad1543f31b3e0d8e7a911d3741f3d5446c57.camel@sipsolutions.net>
+         <66ba0f836dba111b8c7692f78da3f079@codeaurora.org>
+         <5826123db4731bde01594212101ed5dbbea4d54f.camel@sipsolutions.net>
+         <30fa98673ad816ec849f34853c9e1257@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes
+Hi,
 
-We thought sending the delba would solve the problem as earlier thought 
-but the actual problem is with TX PN in a secure mode.
-It is not because of delba that the Seq number and TX PN are reset to 
-zero.
-It’s because of the HW restart, these parameters are reset to zero.
-Since FW/HW is the one which decides the TX PN, when it goes through 
-SSR, all these parameters are reset.
-The other peer say an AP, it does not know anything about the SSR on the 
-peer device. It expects the next TX PN to be current PN + 1.
-Since TX PN starts from zero after SSR, PN check at AP will fail and it 
-will silently drop all the packets.
 
-Regards,
-Youghandhar
+> We thought sending the delba would solve the problem as earlier thought 
+> but the actual problem is with TX PN in a secure mode.
+> It is not because of delba that the Seq number and TX PN are reset to 
+> zero.
+> It’s because of the HW restart, these parameters are reset to zero.
+> Since FW/HW is the one which decides the TX PN, when it goes through 
+> SSR, all these parameters are reset.
 
-On 2021-09-24 13:09, Johannes Berg wrote:
-> On Fri, 2021-09-24 at 13:07 +0530, Youghandhar Chintala wrote:
->> Hi Johannes and felix,
->> 
->> We have tested with DELBA experiment during post SSR, DUT packet seq
->> number and tx pn is resetting to 0 as expected but AP(Netgear R8000) 
->> is
->> not honoring the tx pn from DUT.
->> Whereas when we tested with DELBA experiment by making Linux android
->> device as SAP and DUT as STA with which we don’t see any issue. Ping 
->> got
->> resumed post SSR without disconnect.
-> 
-> Hm. That's a lot of data, and not a lot of explanation :)
-> 
-> I don't understand how DelBA and PN are related?
-> 
-> johannes
+Right, we solved this problem too - in a sense the driver reads the
+database (not just TX PN btw, also RX replay counters) when the firmware
+crashes, and sending it back after the restart. mac80211 has some hooks
+for that.
 
-Regards,
-Youghandhar
--- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a 
-member
-of Code Aurora Forum, hosted by The Linux Foundation
+johannes
+
+
