@@ -2,100 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B293416E7F
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Sep 2021 11:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F8F5416EA6
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Sep 2021 11:14:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245111AbhIXJJ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Sep 2021 05:09:26 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:59894 "EHLO m43-7.mailgun.net"
+        id S244859AbhIXJQM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Sep 2021 05:16:12 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:22818 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244418AbhIXJJY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Sep 2021 05:09:24 -0400
+        id S244422AbhIXJQM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 24 Sep 2021 05:16:12 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632474471; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=P3RD3M7+g2Yi/4ZTx3R1aVwoD6LBprfi6LPXWTp3dew=; b=VJoqYVZDyYMuVv/jRg84zz7DkAeTMSmFh9nC/dhIICHfhkefXnjLAAOmW4xSGvl5+iiNnv8d
- lsvCrQwAzzaCSd6K4J80C5C+yF9UezRiJwJk5kWfvYgTwjxGYi7apyeejo1Fb6xRxqz0x8ts
- WipybnuZWS5h+L5THWrVd8JZslE=
+ s=smtp; t=1632474879; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=8s7VVl139a3i809ATKepHde+IYqg4+OOS/K41mjPwTY=;
+ b=CzHRiTZs+tEUFjESy6c/iHgprPiYQbI9eLoOTNIfN7l3J6GFUgXJAUveKBX0P9W94B4kbkgx
+ XPPXcUGT12tEyUsudd7uihPNc+iS0406/O/+hH5t5ONPPG8siRfGNrsRAQhl25rNs47D9DzW
+ DkmIO+TLDGXDzgfu6W/UQjuBgVU=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 614d9564e0480a7d6faa6778 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 24 Sep 2021 09:07:48
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 614d96c644830700e1b5ee29 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 24 Sep 2021 09:13:42
  GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Sender: youghand=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EE3F6C43617; Fri, 24 Sep 2021 09:07:47 +0000 (UTC)
+        id B6A5CC43617; Fri, 24 Sep 2021 09:13:42 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 96D24C4360D;
-        Fri, 24 Sep 2021 09:07:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 96D24C4360D
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     Carl Huang <cjhuang@codeaurora.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        ath11k@lists.infradead.org,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: [regression] mhi: ath11k resume fails on some devices
-References: <871r5p0x2u.fsf@codeaurora.org>
-        <CAMZdPi8UJLvBFQd8-nf-iHAQh8cEuihq97PUFfZ7Q=rxRQoPsg@mail.gmail.com>
-        <20210916111218.GA12918@thinkpad>
-        <CAMZdPi94607mZorp+Zmkw3seWXak6p9Jr05CQ5hhfgKQoG8n7Q@mail.gmail.com>
-        <20210916163529.GA9027@thinkpad> <87k0jgxyjp.fsf@codeaurora.org>
-        <20210916171927.GB9027@thinkpad>
-        <b7c0906041dcafb43be215bd4f55326a@codeaurora.org>
-        <20210923085926.GD6083@thinkpad>
-Date:   Fri, 24 Sep 2021 12:07:41 +0300
-In-Reply-To: <20210923085926.GD6083@thinkpad> (Manivannan Sadhasivam's message
-        of "Thu, 23 Sep 2021 14:29:26 +0530")
-Message-ID: <8735putk82.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        (Authenticated sender: youghand)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 248A1C4338F;
+        Fri, 24 Sep 2021 09:13:42 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Fri, 24 Sep 2021 14:43:42 +0530
+From:   Youghandhar Chintala <youghand@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Abhishek Kumar <kuabhs@chromium.org>, Felix Fietkau <nbd@nbd.name>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Rakesh Pillai <pillair@codeaurora.org>,
+        Manikanta Pubbisetty <mpubbise@codeaurora.org>
+Subject: Re: [PATCH 2/3] mac80211: Add support to trigger sta disconnect on
+ hardware restart
+In-Reply-To: <5826123db4731bde01594212101ed5dbbea4d54f.camel@sipsolutions.net>
+References: <20201215172352.5311-1-youghand@codeaurora.org>
+ <f2089f3c-db96-87bc-d678-199b440c05be@nbd.name>
+ <ba0e6a3b783722c22715ae21953b1036@codeaurora.org>
+ <CACTWRwt0F24rkueS9Ydq6gY3M-oouKGpaL3rhWngQ7cTP0xHMA@mail.gmail.com>
+ (sfid-20210205_225202_513086_43C9BBC9)
+ <d5cfad1543f31b3e0d8e7a911d3741f3d5446c57.camel@sipsolutions.net>
+ <66ba0f836dba111b8c7692f78da3f079@codeaurora.org>
+ <5826123db4731bde01594212101ed5dbbea4d54f.camel@sipsolutions.net>
+Message-ID: <30fa98673ad816ec849f34853c9e1257@codeaurora.org>
+X-Sender: youghand@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+Hi Johannes
 
-> For aid debugging, please see the state the device is in during mhi_pm_resume().
-> You can use below diff:
->
-> diff --git a/drivers/bus/mhi/core/pm.c b/drivers/bus/mhi/core/pm.c
-> index fb99e3727155..482d55dd209e 100644
-> --- a/drivers/bus/mhi/core/pm.c
-> +++ b/drivers/bus/mhi/core/pm.c
-> @@ -898,6 +898,9 @@ int mhi_pm_resume(struct mhi_controller *mhi_cntrl)
->         if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state))
->                 return -EIO;
->  
-> +       dev_info(dev, "Device state: %s\n",
-> +                TO_MHI_STATE_STR(mhi_get_mhi_state(mhi_cntrl)));
-> +
->         if (mhi_get_mhi_state(mhi_cntrl) != MHI_STATE_M3)
->                 return -EINVAL;
+We thought sending the delba would solve the problem as earlier thought 
+but the actual problem is with TX PN in a secure mode.
+It is not because of delba that the Seq number and TX PN are reset to 
+zero.
+It’s because of the HW restart, these parameters are reset to zero.
+Since FW/HW is the one which decides the TX PN, when it goes through 
+SSR, all these parameters are reset.
+The other peer say an AP, it does not know anything about the SSR on the 
+peer device. It expects the next TX PN to be current PN + 1.
+Since TX PN starts from zero after SSR, PN check at AP will fail and it 
+will silently drop all the packets.
 
-This is what I get with my NUC testbox:
+Regards,
+Youghandhar
 
-[  970.488202] ACPI: EC: event unblocked
-[  970.492484] hpet: Lost 1587 RTC interrupts
-[  970.492749] mhi mhi0: Device state: RESET
-[  970.492805] ath11k_pci 0000:06:00.0: failed to set mhi state: RESUME(6)
+On 2021-09-24 13:09, Johannes Berg wrote:
+> On Fri, 2021-09-24 at 13:07 +0530, Youghandhar Chintala wrote:
+>> Hi Johannes and felix,
+>> 
+>> We have tested with DELBA experiment during post SSR, DUT packet seq
+>> number and tx pn is resetting to 0 as expected but AP(Netgear R8000) 
+>> is
+>> not honoring the tx pn from DUT.
+>> Whereas when we tested with DELBA experiment by making Linux android
+>> device as SAP and DUT as STA with which we don’t see any issue. Ping 
+>> got
+>> resumed post SSR without disconnect.
+> 
+> Hm. That's a lot of data, and not a lot of explanation :)
+> 
+> I don't understand how DelBA and PN are related?
+> 
+> johannes
 
+Regards,
+Youghandhar
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a 
+member
+of Code Aurora Forum, hosted by The Linux Foundation
