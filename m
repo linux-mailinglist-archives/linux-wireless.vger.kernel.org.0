@@ -2,116 +2,268 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15C94417D7C
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Sep 2021 00:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29C12417DCF
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Sep 2021 00:35:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344740AbhIXWIC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Sep 2021 18:08:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:55060 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344720AbhIXWIB (ORCPT
+        id S232695AbhIXWgq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Sep 2021 18:36:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37536 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230030AbhIXWgp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Sep 2021 18:08:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1632521187;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=hHoJmPfxSKttuuAnVsRjqgs+T2Fmc7TgpFTSsEj6CKM=;
-        b=d4JWMFv1+zGuabBYAPJ+M3AnSzRT7jqcq8315Lldrgsphgh8zh9oOuC2eMgDfl9J5weTXU
-        dZzev9aFMZ6VH5jrzUhyET/S5/6wZi6g9yTuogDMAO1DrRNe5TrwWB5UbUOh+mGxLKQjdx
-        3dCGHSc2ZXlV6xZXpNkAQg/lFo1H2GI=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-489-Ps9E9-IEMFawFfymR8IMUA-1; Fri, 24 Sep 2021 18:06:25 -0400
-X-MC-Unique: Ps9E9-IEMFawFfymR8IMUA-1
-Received: by mail-ed1-f72.google.com with SMTP id c36-20020a509fa7000000b003da5a9e5d68so999098edf.15
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Sep 2021 15:06:25 -0700 (PDT)
+        Fri, 24 Sep 2021 18:36:45 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C8D7C061571;
+        Fri, 24 Sep 2021 15:35:12 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id u18so31727235wrg.5;
+        Fri, 24 Sep 2021 15:35:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=K0GKjDtn5asb6lNaXzUohAN8fZzeKt2FTsd1KxqHHug=;
+        b=YIqxPfMfr8A9Lx+VIosjZXC88VpuzhKhs+4PdLfeiy3r42UanOOXSlfjLMCUb/tFeM
+         JGuGIphxb8yvRQ/7KjoGYFZNfC/EV1SLJMhfxaSYb2+DEN9HqYTTNuwBf+SZSQh2jGr4
+         Sb0SCGT67+uulUDiLtny3eG4uHw8ARYKz8uu1hO+vd/y5I0XoeA1flw1yOlqlb2nKa5D
+         abtSO+Tfau1AVQMzQOqzSyN3JFwvG8haPLEjrfTD0QIbW5cAdHQ9PfvhzwWMd0PkAZzg
+         UcUjTgz7F9NhgVxpJ24JEdu/JKllktAp+v6pS3U0HXcOQJASPXUymIVehPQ5jiWN+FmS
+         OX7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=hHoJmPfxSKttuuAnVsRjqgs+T2Fmc7TgpFTSsEj6CKM=;
-        b=j2okqFtXcmXpH7sFWNW9B4ZmS06hyrohIVG6RW/r+vYZ9x79r9foImUBrAQwLX0cmq
-         KOXiS7MWSV6L0OPyGJPcObNGjEd2alDPLlUmivgBPm2zm+KdxnCfehnOEpMltqpE2C54
-         pFeeL2TzM+GI7Cpdg2wwlXavUi4EPuuXi+nWAecLXG0J61k5YVdpbl1Mk8JJ0XRv8508
-         EO3fQVOAmNriHgKR5iy+sz1NLy+24zbAxS0jKxjpjcgTsjgHOP8HoBMSUr1u6A8pua65
-         6GDZkQtsmkz6bYNmKOMCSNtxVMG+QENbb+VBNvAeeprG+OlfYk2TZV2wQWBfAVGd9Wi8
-         BJKQ==
-X-Gm-Message-State: AOAM530s866OvBmOoy51Z8keCui3s8PTDrXZe4RLWAQ/xB+UUl9AXMy0
-        qkK1IRFy+DvRoOgeAZBB5bb4oRdK18cxiWJAuru+d4vtT+/gAe8GlFaRxtRwjaqXhafJaA3XIud
-        DpHhCnrrI2TJhlwAUMyuXN3uiLps=
-X-Received: by 2002:a17:906:1b15:: with SMTP id o21mr14136509ejg.473.1632521183984;
-        Fri, 24 Sep 2021 15:06:23 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzPEAanDT02cZdPZpWL4KZOqxiywwiaFscCLmVAfSUAtFITEMTLYa6CrPsn82hLZEh6FhffVA==
-X-Received: by 2002:a17:906:1b15:: with SMTP id o21mr14136492ejg.473.1632521183799;
-        Fri, 24 Sep 2021 15:06:23 -0700 (PDT)
-Received: from localhost (net-130-25-199-50.cust.vodafonedsl.it. [130.25.199.50])
-        by smtp.gmail.com with ESMTPSA id s18sm5620636ejc.52.2021.09.24.15.06.23
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=K0GKjDtn5asb6lNaXzUohAN8fZzeKt2FTsd1KxqHHug=;
+        b=T4EB8WnGfpQ+1QBL/VBWwANmiBeNMaIwfoBgEuNbMP20gDd2PF14cKwc6MpwT9xysI
+         tcOxPnyitrGOOUzOy70dHLxtRYT9yXN9CBTEY6UckXbmdF4CqJOXcUxw9heH2dqVZe/Y
+         aOFCuiJNSxZejCF4+fXJxLfc4hLMZFpjzqWEvGM5PhBY62Dz5tDPMESa8+a9c3e76s5K
+         IrZ19UiXqknFNMYAJ7kCXGPGIMhEfrlCt0p/9D5guP6U1KQeZXYVkKTV60Z3ePfOcGA4
+         jE08cxx8oI0WlDyi+29I23HeVsGc/4pIQrLvKbOn88yGl7Sc6S5d9kiDTzlrvONcQFdf
+         vQcg==
+X-Gm-Message-State: AOAM530Qj7Q8Jc6A3OnHbawBUucHsrbjO+ztmGI5FmXJpvNyNoXpyQXt
+        QsIAV/DaLZNcszUI9zmyXberotz8zwQ=
+X-Google-Smtp-Source: ABdhPJyN5RiLONv0EwfBUoVQL+Qel19fegnmnRaSgBnxNJdJfWOwjPEekEm8fPjmXS2AoYA3UMBLgQ==
+X-Received: by 2002:a7b:c7d3:: with SMTP id z19mr4356242wmk.86.1632522910349;
+        Fri, 24 Sep 2021 15:35:10 -0700 (PDT)
+Received: from debian64.daheim (p200300d5ff055c00d63d7efffebde96e.dip0.t-ipconnect.de. [2003:d5:ff05:5c00:d63d:7eff:febd:e96e])
+        by smtp.gmail.com with ESMTPSA id o7sm11732330wro.45.2021.09.24.15.35.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Sep 2021 15:06:23 -0700 (PDT)
-Date:   Sat, 25 Sep 2021 00:06:21 +0200
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com
-Subject: Re: [PATCH 0/2] introduce a dedicated mt7915 debugfs sub-dir for
- ext-phy
-Message-ID: <YU5L3bMC75BV0HaE@lore-desk>
-References: <cover.1632476677.git.lorenzo@kernel.org>
+        Fri, 24 Sep 2021 15:35:09 -0700 (PDT)
+Received: from chuck by debian64.daheim with local (Exim 4.95-RC2)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1mTtmf-000DfV-9j;
+        Sat, 25 Sep 2021 00:35:09 +0200
+From:   Christian Lamparter <chunkeey@gmail.com>
+To:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>, Rob Herring <robh+dt@kernel.org>
+Subject: [PATCH v4] dt-bindings: net: wireless: qca,ath9k: convert to the json-schema
+Date:   Sat, 25 Sep 2021 00:35:09 +0200
+Message-Id: <20210924223509.52525-1-chunkeey@gmail.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="2sv5gT7PavhV6wW4"
-Content-Disposition: inline
-In-Reply-To: <cover.1632476677.git.lorenzo@kernel.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+This replaces the existing .txt binding file. Furthermore, this
+also helps with validating DTS files.
 
---2sv5gT7PavhV6wW4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Introduced binding changes:
+ 1. added inherited mac-address nvmem property
+ 2. added inherited ieee80211-freq-limit property
+ 3. added new calibration nvmem property
+ 4. added second example (taken from the Netgear WNDR3700v2)
+    Reason: Setting qca,no-eeprom; takes presedence over
+    nvmem-cells. I think a different example is needed,
+    because the driver can only reads from one calibration
+    source per device.
+ 5. (re-added) chip list (based on data from ath9k's pci.c)
 
-> Introduce a dedicated mt76 debugfs sub-dir for ext-phy in dbdc mode for m=
-t7915
-> driver. This is a preliminary series to add zero-wait dfs support.
->=20
-> Lorenzo Bianconi (2):
->   mt76: rely on phy pointer in mt76_register_debugfs_fops routine
->     signature
->   mt76: mt7915: introduce mt76 debugfs sub-dir for ext-phy
+Added binding .yaml to MAINTAINERS.
 
-I will repost this series since it does not apply on the new mt76 tree.
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
 
-Regards,
-Lorenzo
+---
+v1 -> v2:
+	- added second example (pci device - AR9220)
+	- added commented chip list from the qca,ath9k.txt+ath9k's pci.c
 
->=20
->  drivers/net/wireless/mediatek/mt76/debugfs.c  |  5 +-
->  drivers/net/wireless/mediatek/mt76/mt76.h     |  4 +-
->  .../wireless/mediatek/mt76/mt7615/debugfs.c   |  2 +-
->  .../wireless/mediatek/mt76/mt7915/debugfs.c   | 63 ++++++++++---------
->  .../net/wireless/mediatek/mt76/mt7915/init.c  |  6 +-
->  .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 +-
->  .../wireless/mediatek/mt76/mt7921/debugfs.c   |  2 +-
->  7 files changed, 45 insertions(+), 39 deletions(-)
->=20
-> --=20
-> 2.31.1
->=20
+v2 -> v3:
+	- forgot to include patch version in tag. Oops.
 
---2sv5gT7PavhV6wW4
-Content-Type: application/pgp-signature; name="signature.asc"
+v3 -> v4:
+	- replaced tabs with 2 spaces (Rob - yamllint needs 2).
+---
+ .../bindings/net/wireless/qca,ath9k.txt       | 48 ----------
+ .../bindings/net/wireless/qca,ath9k.yaml      | 90 +++++++++++++++++++
+ MAINTAINERS                                   |  1 +
+ 3 files changed, 91 insertions(+), 48 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt
+ create mode 100644 Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYU5L1wAKCRA6cBh0uS2t
-rL09AP9EWHQoUIqE+lyvmMJwvnIvnNCNPWRwKBBVF5XzNZpnqAD9G7Ne04sVns/u
-tW/v+fAlJawS4QucKz6b25yu39ZTZgo=
-=r9+V
------END PGP SIGNATURE-----
-
---2sv5gT7PavhV6wW4--
+diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt
+deleted file mode 100644
+index aaaeeb5f935b..000000000000
+--- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.txt
++++ /dev/null
+@@ -1,48 +0,0 @@
+-* Qualcomm Atheros ath9k wireless devices
+-
+-This node provides properties for configuring the ath9k wireless device. The
+-node is expected to be specified as a child node of the PCI controller to
+-which the wireless chip is connected.
+-
+-Required properties:
+-- compatible: For PCI and PCIe devices this should be an identifier following
+-		the format as defined in "PCI Bus Binding to Open Firmware"
+-		Revision 2.1. One of the possible formats is "pciVVVV,DDDD"
+-		where VVVV is the PCI vendor ID and DDDD is PCI device ID.
+-		Typically QCA's PCI vendor ID 168c is used while the PCI device
+-		ID depends on the chipset - see the following (possibly
+-		incomplete) list:
+-			- 0023 for AR5416
+-			- 0024 for AR5418
+-			- 0027 for AR9160
+-			- 0029 for AR9220 and AR9223
+-			- 002a for AR9280 and AR9283
+-			- 002b for AR9285
+-			- 002c for AR2427
+-			- 002d for AR9227
+-			- 002e for AR9287
+-			- 0030 for AR9380, AR9381 and AR9382
+-			- 0032 for AR9485
+-			- 0033 for AR9580 and AR9590
+-			- 0034 for AR9462
+-			- 0036 for AR9565
+-			- 0037 for AR9485
+-- reg: Address and length of the register set for the device.
+-
+-Optional properties:
+-- qca,no-eeprom: Indicates that there is no physical EEPROM connected to the
+-			ath9k wireless chip (in this case the calibration /
+-			EEPROM data will be loaded from userspace using the
+-			kernel firmware loader).
+-
+-The MAC address will be determined using the optional properties defined in
+-net/ethernet.txt.
+-
+-In this example, the node is defined as child node of the PCI controller:
+-&pci0 {
+-	wifi@168c,002d {
+-		compatible = "pci168c,002d";
+-		reg = <0x7000 0 0 0 0x1000>;
+-		qca,no-eeprom;
+-	};
+-};
+diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+new file mode 100644
+index 000000000000..8cd0adbf7021
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+@@ -0,0 +1,90 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/wireless/qca,ath9k.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm Atheros ath9k wireless devices Generic Binding
++
++maintainers:
++  - Kalle Valo <kvalo@codeaurora.org>
++
++description: |
++  This node provides properties for configuring the ath9k wireless device.
++  The node is expected to be specified as a child node of the PCI controller
++  to which the wireless chip is connected.
++
++allOf:
++  - $ref: ieee80211.yaml#
++
++properties:
++  compatible:
++    enum:
++      - pci168c,0023  # AR5416
++      - pci168c,0024  # AR5418
++      - pci168c,0027  # AR9160
++      - pci168c,0029  # AR9220 and AR9223
++      - pci168c,002a  # AR9280 and AR9283
++      - pci168c,002b  # AR9285
++      - pci168c,002c  # AR2427 - 802.11n bonded out
++      - pci168c,002d  # AR9227
++      - pci168c,002e  # AR9287
++      - pci168c,0030  # AR9380, AR9381 and AR9382
++      - pci168c,0032  # AR9485
++      - pci168c,0033  # AR9580 and AR9590
++      - pci168c,0034  # AR9462
++      - pci168c,0036  # AR9565
++      - pci168c,0037  # AR1111 and AR9485
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  ieee80211-freq-limit: true
++
++  qca,no-eeprom:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      Indicates that there is no physical EEPROM connected
++
++  nvmem-cells:
++    items:
++      - description: Reference to an nvmem node for the MAC address
++      - description: Reference to an nvmem node for calibration data
++
++  nvmem-cell-names:
++    items:
++      - const: mac-address
++      - const: calibration
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    pcie0 {
++      #address-cells = <3>;
++      #size-cells = <2>;
++      wifi@0,0 {
++        compatible = "pci168c,002d";
++        reg = <0 0 0 0 0>;
++        interrupts = <3>;
++        qca,no-eeprom;
++      };
++    };
++  - |
++    pci0 {
++      #address-cells = <3>;
++      #size-cells = <2>;
++      wifi@0,11 {
++        compatible = "pci168c,0029";
++        reg = <0x8800 0 0 0 0>;
++        nvmem-cells = <&macaddr_art_c>, <&cal_art_1000>;
++        nvmem-cell-names = "mac-address", "calibration";
++      };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 58e3264b96c2..28da8421ad11 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15456,6 +15456,7 @@ M:	ath9k-devel@qca.qualcomm.com
+ L:	linux-wireless@vger.kernel.org
+ S:	Supported
+ W:	https://wireless.wiki.kernel.org/en/users/Drivers/ath9k
++F:	Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+ F:	drivers/net/wireless/ath/ath9k/
+ 
+ QUALCOMM CAMERA SUBSYSTEM DRIVER
+-- 
+2.33.0
 
