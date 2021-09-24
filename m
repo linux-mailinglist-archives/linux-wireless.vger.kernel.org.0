@@ -2,132 +2,191 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EE8D416B32
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Sep 2021 07:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3983B416CD2
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Sep 2021 09:29:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244123AbhIXFcs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Sep 2021 01:32:48 -0400
-Received: from mailgw01.mediatek.com ([216.200.240.184]:18352 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244118AbhIXFcs (ORCPT
+        id S231190AbhIXH3r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Sep 2021 03:29:47 -0400
+Received: from new3-smtp.messagingengine.com ([66.111.4.229]:57875 "EHLO
+        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237142AbhIXH3h (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Sep 2021 01:32:48 -0400
-X-UUID: 7210a01ae8884473ac83a4c5d449a5af-20210923
-X-UUID: 7210a01ae8884473ac83a4c5d449a5af-20210923
-Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2056894484; Thu, 23 Sep 2021 22:31:13 -0700
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- MTKMBS62N2.mediatek.inc (172.29.193.42) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 23 Sep 2021 22:30:01 -0700
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 24 Sep 2021 13:30:00 +0800
-From:   <sean.wang@mediatek.com>
-To:     <lorenzo.bianconi@redhat.com>
-CC:     <nbd@nbd.name>, <sean.wang@mediatek.com>,
-        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
-        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
-        <Stella.Chang@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH v2 06/16] mt76: connac: move mcu reg access utility routines in mt76_connac_lib module
-Date:   Fri, 24 Sep 2021 13:30:00 +0800
-Message-ID: <1632461400-8440-1-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <YUW8KBTC7t3PHJwF@lore-desk--annotate>
-References: <YUW8KBTC7t3PHJwF@lore-desk--annotate>
+        Fri, 24 Sep 2021 03:29:37 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 93105580F3A;
+        Fri, 24 Sep 2021 03:28:04 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Fri, 24 Sep 2021 03:28:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
+        from:to:cc:subject:date:message-id:in-reply-to:references
+        :mime-version:content-transfer-encoding; s=fm3; bh=42KPiA9o6F1jM
+        s8b/YN0eR5v0rC8lVUlITBUqZ+gpAk=; b=30UmSNETnSA1rVkshReILd/ybGt/d
+        o+tPZnDH10SbNaZCyi5UEeEF4I981p5InBGJ12W8DJNgOCfSv3Z63GVevDZIX62Z
+        q2izQsWkX+p18jgtWArbHeIQfdIhA/DdfFGiq9DmPtPpkNnk8Z1dDWgQ/I6nyhPM
+        /DPn8rjiY4dlPG7zPfw+H9nG8R4/xBFpFfB06P6p6dFTZmBf1MEpbpZMCcfzp6QW
+        EBebQH7k4Y6iCtwwLACfxFlw76YIgQKTdumWOP1JulIG0r8eGO1AyXAuCMnDUYF/
+        wNCvbUJ8rtpML9rtTSmaWGA17gki7RKa2Yxf7YqUCoedmP1gHrmPB3ZiA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :in-reply-to:message-id:mime-version:references:subject:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm3; bh=42KPiA9o6F1jMs8b/YN0eR5v0rC8lVUlITBUqZ+gpAk=; b=b60VlNH0
+        5vIDtx7ZaYWKOb+kZF06HYyyfBLshe9d3Ez7KwaOoVQ0JO4DVq5/IfDA0xzUXGL0
+        sl1qVerjyxSs7EUjVlSe5kalur9zZVOnrD1fsZv07pNQguYm5b+NtZjJRhUOMB2w
+        bAAbfHM5J/sGbOa1jLaTgnr7AqndmMmf5yCQmUKXA1ZcQXVxRG5OML7YQeIokGXZ
+        reuHtx4jLPVyD08M4HJyLUBoAIhKWF/xvWGmUxOUy7UYzjvA+TtEj1Mj6y03NrIg
+        CJFhEvuNIkCQw/FQYmFq+vG1JT4GcAac5yQbvYnUHgKlco1SVNly6oFIhEXhx3lW
+        OTTeLtUxAMngPg==
+X-ME-Sender: <xms:BH5NYR0lnb2tWfs1pGlM1FZE1JoufhXT-oYPUY0QuwldNhGBkCXJZg>
+    <xme:BH5NYYH38o8E62AntUj9-rq2kbb5rcchDhYphZ5Wdr5kw8F6HcDIXzj9GfIqDdPNW
+    0wP3rW7q8FNw6OyQns>
+X-ME-Received: <xmr:BH5NYR6gHZXSzj0N-dppSbTIzSjDaAoETmR9I9aVVc_Etry3fmYgV9a-koX5VYo5jClmlZk6PBId-WL6yo_4IByVmLYJ8Osdigmx>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudejtddguddujecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enogevohgrshhtrghlqdfhgeduvddqtddvucdludehtddmnecujfgurhephffvufffkffo
+    jghfggfgsedtkeertdertddtnecuhfhrohhmpeforgigihhmvgcutfhiphgrrhguuceomh
+    grgihimhgvsegtvghrnhhordhtvggthheqnecuggftrfgrthhtvghrnhepveejieejtdev
+    gfffgfejuefggfeutdelteekgeetueeftddutddtgfffhffgueffnecuffhomhgrihhnpe
+    guvghvihgtvghtrhgvvgdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgr
+    mhepmhgrihhlfhhrohhmpehmrgigihhmvgestggvrhhnohdrthgvtghh
+X-ME-Proxy: <xmx:BH5NYe2MAwDRWAG4flVu1h4_lOzu5sJtkZHjZCkhIsCRP4wZMo_0VA>
+    <xmx:BH5NYUGz397XGoshxw3qHfLvwBq1HSgjpbwFPQuTUB-ZbT13NT-prw>
+    <xmx:BH5NYf9UHv8iLcYqOtWz58UV59aqjEkBHMlPK2HY1jD-Q3b8mhV1eg>
+    <xmx:BH5NYYG3ggfJF6IP6l7KgYEKN939MckgiZ-RnN93BfA416qz7sIzLA>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 24 Sep 2021 03:28:03 -0400 (EDT)
+From:   Maxime Ripard <maxime@cerno.tech>
+To:     Chen-Yu Tsai <wens@csie.org>, Maxime Ripard <maxime@cerno.tech>,
+        =?UTF-8?q?Jernej=20=C5=A0krabec?= <jernej.skrabec@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>
+Cc:     linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-sunxi@lists.linux.dev,
+        "David S. Miller" <davem@davemloft.net>,
+        de Goede <hdegoede@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Rob Herring <robh@kernel.org>
+Subject: [RESEND v2 4/4] dt-bindings: net: wireless: Convert ESP ESP8089 binding to a schema
+Date:   Fri, 24 Sep 2021 09:27:56 +0200
+Message-Id: <20210924072756.869731-4-maxime@cerno.tech>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210924072756.869731-1-maxime@cerno.tech>
+References: <20210924072756.869731-1-maxime@cerno.tech>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+The ESP8089 Wireless Chip is supported by Linux (through an out-of-tree
+driver) thanks to its device tree binding.
 
->> From: Sean Wang <sean.wang@mediatek.com>
->>
->> Move mcu reg access shared between mt7663s and mt7921s in
->> mt76_connac_lib module.
->>
->> Tested-by: Deren Wu <deren.wu@mediatek.com>
->> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
->> ---
->>  .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 27
->> +++++++++++++++++++  .../wireless/mediatek/mt76/mt76_connac_mcu.h  |
->> 2 ++
->>  2 files changed, 29 insertions(+)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> index ae692052de97..a53f6344a184 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> @@ -2406,6 +2406,33 @@ void mt76_connac_mcu_set_suspend_iter(void
->> *priv, u8 *mac,  }
->> EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_suspend_iter);
->>
->> +u32 mt76_connac_mcu_reg_rr(struct mt76_dev *dev, u32 offset) {
->> +	struct {
->> +		__le32 addr;
->> +		__le32 val;
->> +	} __packed req = {
->> +		.addr = cpu_to_le32(offset),
->> +	};
->> +
->> +	return mt76_mcu_send_msg(dev, MCU_CMD_REG_READ, &req, sizeof(req),
->> +				 true);
->> +}
->> +EXPORT_SYMBOL_GPL(mt76_connac_mcu_reg_rr);
->
->It seems quite a common code, does it worth to move them in mcu.c? (mt76 module)
+Now that we have the DT validation in place, let's convert the device
+tree bindings for that driver over to a YAML schema.
 
-My understanding would be mt76/mcu.c only provides the framework that handle the
-pure software stuff and shouldn't contain any firmware or device related logic.
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: de Goede <hdegoede@redhat.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+---
+ .../bindings/net/wireless/esp,esp8089.txt     | 30 -------------
+ .../bindings/net/wireless/esp,esp8089.yaml    | 43 +++++++++++++++++++
+ 2 files changed, 43 insertions(+), 30 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/net/wireless/esp,esp8089.txt
+ create mode 100644 Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml
 
-So I prefer to add those commands MCU_CMD_REG_READ and MCU_CMD_REG_WRITE to
-mt76_connac_mcu.c like the other commands we have added there.
-
->
->Regards,
->Lorenzo
->
->> +
->> +void mt76_connac_mcu_reg_wr(struct mt76_dev *dev, u32 offset, u32
->> +val) {
->> +	struct {
->> +		__le32 addr;
->> +		__le32 val;
->> +	} __packed req = {
->> +		.addr = cpu_to_le32(offset),
->> +		.val = cpu_to_le32(val),
->> +	};
->> +
->> +	mt76_mcu_send_msg(dev, MCU_CMD_REG_WRITE, &req, sizeof(req), false);
->> +} EXPORT_SYMBOL_GPL(mt76_connac_mcu_reg_wr);
->>  #endif /* CONFIG_PM */
->>
->>  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>"); diff --git
->> a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
->> b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
->> index ea46dde364e1..6c410c4a8d6e 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
->> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
->> @@ -1111,4 +1111,6 @@ void mt76_connac_mcu_coredump_event(struct
->> mt76_dev *dev, struct sk_buff *skb,  int
->> mt76_connac_mcu_set_rate_txpower(struct mt76_phy *phy);  int mt76_connac_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
->>				  struct ieee80211_vif *vif);
->> +u32 mt76_connac_mcu_reg_rr(struct mt76_dev *dev, u32 offset); void
->> +mt76_connac_mcu_reg_wr(struct mt76_dev *dev, u32 offset, u32 val);
->>  #endif /* __MT76_CONNAC_MCU_H */
->> --
->> 2.25.1
->>
+diff --git a/Documentation/devicetree/bindings/net/wireless/esp,esp8089.txt b/Documentation/devicetree/bindings/net/wireless/esp,esp8089.txt
+deleted file mode 100644
+index 6830c4786f8a..000000000000
+--- a/Documentation/devicetree/bindings/net/wireless/esp,esp8089.txt
++++ /dev/null
+@@ -1,30 +0,0 @@
+-Espressif ESP8089 wireless SDIO devices
+-
+-This node provides properties for controlling the ESP8089 wireless device.
+-The node is expected to be specified as a child node to the SDIO controller
+-that connects the device to the system.
+-
+-Required properties:
+-
+- - compatible : Should be "esp,esp8089".
+-
+-Optional properties:
+- - esp,crystal-26M-en: Integer value for the crystal_26M_en firmware parameter
+-
+-Example:
+-
+-&mmc1 {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-
+-	vmmc-supply = <&reg_dldo1>;
+-	mmc-pwrseq = <&wifi_pwrseq>;
+-	bus-width = <4>;
+-	non-removable;
+-
+-	esp8089: sdio_wifi@1 {
+-		compatible = "esp,esp8089";
+-		reg = <1>;
+-		esp,crystal-26M-en = <2>;
+-	};
+-};
+diff --git a/Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml b/Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml
+new file mode 100644
+index 000000000000..284ef45add99
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/wireless/esp,esp8089.yaml
+@@ -0,0 +1,43 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/wireless/esp,esp8089.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Espressif ESP8089 Device Tree Bindings
++
++maintainers:
++  - Hans de Goede <hdegoede@redhat.com>
++
++properties:
++  compatible:
++    const: esp,esp8089
++
++  reg:
++    maxItems: 1
++
++  esp,crystal-26M-en:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: >
++      Value for the crystal_26M_en firmware parameter
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++      mmc {
++          #address-cells = <1>;
++          #size-cells = <0>;
++
++          wifi@1 {
++              compatible = "esp,esp8089";
++              reg = <1>;
++              esp,crystal-26M-en = <2>;
++          };
++      };
++
++...
+-- 
+2.31.1
 
