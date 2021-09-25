@@ -2,68 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6E54418200
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Sep 2021 14:46:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04931418248
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Sep 2021 15:27:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234877AbhIYMsH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Sep 2021 08:48:07 -0400
-Received: from mx24.baidu.com ([111.206.215.185]:40114 "EHLO baidu.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S237995AbhIYMsF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 Sep 2021 08:48:05 -0400
-Received: from BC-Mail-Ex11.internal.baidu.com (unknown [172.31.51.51])
-        by Forcepoint Email with ESMTPS id C0EEAAC7BC08A2D65228;
-        Sat, 25 Sep 2021 20:46:27 +0800 (CST)
-Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex11.internal.baidu.com (172.31.51.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Sat, 25 Sep 2021 20:46:27 +0800
-Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
- BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Sat, 25 Sep 2021 20:46:26 +0800
-From:   Cai Huoqing <caihuoqing@baidu.com>
-To:     <caihuoqing@baidu.com>
-CC:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] ipw2200: Fix a function name in print messages
-Date:   Sat, 25 Sep 2021 20:46:20 +0800
-Message-ID: <20210925124621.197-1-caihuoqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+        id S245603AbhIYN2v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 Sep 2021 09:28:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38256 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S245112AbhIYN2u (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 25 Sep 2021 09:28:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 57B9D60FDC;
+        Sat, 25 Sep 2021 13:27:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632576436;
+        bh=ckBsi+oCymeeY9PQYCUfWjfLEvf+9QPus5sCYcP/pnQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=XDmZuQTHuDbdjad/Vpo4c9+V7/VoSswVPjCGmKdeYnek8+z4uytDJpwsnNu3pQxr4
+         n7TgMqFX1aIHFXQsmWcW/hpV3tMX5lx3oOW2kjWK/xpS7US9hmUG1q3MAz+0hS7d75
+         0PbOCPVwHRiRmMfsPwvnSl2iKgbNHktpyEPrdAyrOiRj5p5K3ia/gopmSWyZIPyLWi
+         os0jClYn5cRF9uabFz4UXtG1TwLTya0spmIozdGy4+14AacaUjtdBHNbt0mPEXol1U
+         51bKzhDfd5zkHl/jbyok317yHQMpP562QVxgGjoaGv2cEH+2gv9K5JaBYBhybNrg3Y
+         H5dbeTQgQov9g==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: debugfs: improve queue node readability
+Date:   Sat, 25 Sep 2021 15:27:02 +0200
+Message-Id: <f796458c09c87be56d0ab7ecf60bb253b130f396.1632576343.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.31.63.8]
-X-ClientProxiedBy: BJHW-Mail-Ex01.internal.baidu.com (10.127.64.11) To
- BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use dma_alloc_coherent() instead of pci_alloc_consistent(),
-because only dma_alloc_coherent() is called here.
+Improve {xmit,rx}-queue debugfs node readability
 
-Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/intel/ipw2x00/ipw2200.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/debugfs.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-index ada6ce32c1f1..9a99f482c84a 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-@@ -3777,7 +3777,7 @@ static int ipw_queue_tx_init(struct ipw_priv *priv,
- 	    dma_alloc_coherent(&dev->dev, sizeof(q->bd[0]) * count,
- 			       &q->q.dma_addr, GFP_KERNEL);
- 	if (!q->bd) {
--		IPW_ERROR("pci_alloc_consistent(%zd) failed\n",
-+		IPW_ERROR("dma_alloc_coherent(%zd) failed\n",
- 			  sizeof(q->bd[0]) * count);
- 		kfree(q->txb);
- 		q->txb = NULL;
+diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/wireless/mediatek/mt76/debugfs.c
+index e23fabddec1f..b8bcf22a07fd 100644
+--- a/drivers/net/wireless/mediatek/mt76/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
+@@ -56,14 +56,14 @@ int mt76_queues_read(struct seq_file *s, void *data)
+ 	struct mt76_dev *dev = dev_get_drvdata(s->private);
+ 	int i;
+ 
++	seq_puts(s, "     queue | hw-queued |      head |      tail |\n");
+ 	for (i = 0; i < ARRAY_SIZE(dev->phy.q_tx); i++) {
+ 		struct mt76_queue *q = dev->phy.q_tx[i];
+ 
+ 		if (!q)
+ 			continue;
+ 
+-		seq_printf(s,
+-			   "%d:	queued=%d head=%d tail=%d\n",
++		seq_printf(s, " %9d | %9d | %9d | %9d |\n",
+ 			   i, q->queued, q->head, q->tail);
+ 	}
+ 
+@@ -76,12 +76,13 @@ static int mt76_rx_queues_read(struct seq_file *s, void *data)
+ 	struct mt76_dev *dev = dev_get_drvdata(s->private);
+ 	int i, queued;
+ 
++	seq_puts(s, "     queue | hw-queued |      head |      tail |\n");
+ 	mt76_for_each_q_rx(dev, i) {
+ 		struct mt76_queue *q = &dev->q_rx[i];
+ 
+ 		queued = mt76_is_usb(dev) ? q->ndesc - q->queued : q->queued;
+-		seq_printf(s, "%d:	queued=%d head=%d tail=%d\n",
+-			   i, queued, q->head, q->tail);
++		seq_printf(s, " %9d | %9d | %9d | %9d |\n",
++			   i, q->queued, q->head, q->tail);
+ 	}
+ 
+ 	return 0;
 -- 
-2.25.1
+2.31.1
 
