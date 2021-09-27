@@ -2,99 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20655418D79
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 03:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E4B418DF1
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 05:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232317AbhI0BaA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Sep 2021 21:30:00 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:39197 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230175AbhI0BaA (ORCPT
+        id S232503AbhI0Dgs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Sep 2021 23:36:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50336 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229572AbhI0Dgr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Sep 2021 21:30:00 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 18R1S8Fn8025807, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 18R1S8Fn8025807
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 27 Sep 2021 09:28:08 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Mon, 27 Sep 2021 09:28:08 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Mon, 27 Sep 2021 09:28:07 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
- RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Mon, 27 Sep 2021 09:28:07 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "andy200511@126.com" <andy200511@126.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: Authentication Failure when target WiFi's signal strength is below 40% (rtw89)
-Thread-Topic: Authentication Failure when target WiFi's signal strength is
- below 40% (rtw89)
-Thread-Index: AQHXscRxDEiLbdM4IESPiClNRvGXtqu3GE4g
-Date:   Mon, 27 Sep 2021 01:28:07 +0000
-Message-ID: <897b9605327946a0b0d774dd3c0dbdd2@realtek.com>
-References: <2931264.cLPqxE5pUp@omenarch>
-In-Reply-To: <2931264.cLPqxE5pUp@omenarch>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/9/26_=3F=3F_10:29:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Sun, 26 Sep 2021 23:36:47 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B4AC061570;
+        Sun, 26 Sep 2021 20:35:10 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id d13-20020a17090ad3cd00b0019e746f7bd4so9066918pjw.0;
+        Sun, 26 Sep 2021 20:35:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xJ8/f7J07TrLJL5jvwHsvtwj9CrW3RcVBkgRN85Urbg=;
+        b=JqGb1fDHwgiz42ZSzz+HOGCtEeMbx7afYtQyeMYzS+mcxfQ7SmxqKFtYBhNzIkoYFj
+         +o+pqR4NKMvYaZc8VTIk38hIXdO32M5ZnHm5vnXgbKzE6JP+Tdg6QxFisl9kcrz0daQt
+         hPXCIuCDGcNCtdiYZZj8KEzw45mziI3lTwW7C2CCS7Qi/3c0m1xj+E79sjJROPrcI5YV
+         2MRALAv8smB3u+rT2NSjKM0JLF0/TZyDv6lmD8BmS2VGG34IhFvjGgpcOS3qmh8BVDNx
+         12Q06XvNCoimmU8YzsY73pIEMj9a+bhqkgfLKTqVgjWKZN/E6szlq/40xL9utMA6hTGd
+         R2wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xJ8/f7J07TrLJL5jvwHsvtwj9CrW3RcVBkgRN85Urbg=;
+        b=q1aGqkRGvTuFHBn1pLBXkMi8nEsmC+KvdkxP94GGhxaJo2Ee43W58N6Ebw2a0DPCM1
+         opLfokcrtD1m2q3pFiLbaXwAawDPh5aPJG1ulfQHVDu4+nhhAuasRDqKBkwgSf2xnnnf
+         klvwq7jwq6eU+rykfam8GgHdvOwIZebIfH698RfXczWsNMtPSl8vriyvG2+LR4oYfsyD
+         bQNrm9rg1KxRMI1+YDVN7OjIKWYmDSvIUpNQM0encvq7Wf7feVCoQu7JA3XuCSSbpAhW
+         xYEZJTb4qh8ZTkq99bMUOs/P7A6t1AlT7E53iWvG0cU20eiFCantV2VFxlUkX5j2rYsP
+         IotA==
+X-Gm-Message-State: AOAM530NcZkN5GaB5lr3I0x4EfMQaLR28bnh7cTevh84ISNxNygNswhk
+        wV0+Cosin/OulqWtN8EoEPE=
+X-Google-Smtp-Source: ABdhPJzSplPkVJaCaXl+ZYVxi9p88xznm/FXpA2KQ/REwcmXoJP9STconydDNSae7+e060xpPpE3VQ==
+X-Received: by 2002:a17:903:1d2:b0:13d:c967:c14 with SMTP id e18-20020a17090301d200b0013dc9670c14mr20473445plh.52.1632713709756;
+        Sun, 26 Sep 2021 20:35:09 -0700 (PDT)
+Received: from localhost.localdomain ([210.99.160.97])
+        by smtp.googlemail.com with ESMTPSA id r206sm1404320pfc.218.2021.09.26.20.35.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Sep 2021 20:35:09 -0700 (PDT)
+From:   MichelleJin <shjy180909@gmail.com>
+To:     davem@davemloft.net, kuba@kernel.org, yoshfuji@linux-ipv6.org,
+        dsahern@kernel.org, johannes@sipsolutions.net
+Cc:     saeedm@nvidia.com, leon@kernel.org, roid@nvidia.com,
+        paulb@nvidia.com, ozsh@nvidia.com, lariel@nvidia.com,
+        cmi@nvidia.com, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH net-next v4 0/3] check return value of rhashtable_init in mlx5e, ipv6, mac80211
+Date:   Mon, 27 Sep 2021 03:34:54 +0000
+Message-Id: <20210927033457.1020967-1-shjy180909@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+When rhashtable_init() fails, it returns -EINVAL.
+However, since error return value of rhashtable_init is not checked,
+it can cause use of uninitialized pointers.
+So, fix unhandled errors of rhashtable_init.
+The three patches are essentially the same logic.
 
-> -----Original Message-----
-> From: andy200511@126.com <andy200511@126.com>
-> Sent: Saturday, September 25, 2021 11:48 AM
-> To: linux-wireless@vger.kernel.org
-> Subject: Authentication Failure when target WiFi's signal strength is below
-> 40% (rtw89)
-> 
-> Hello, dear Realtek engineers:
-> I am a user of the RTL8852AE card with the rtw89 kernel driver's unofficial
-> DKMS module AUR package
-> (https://aur.archlinux.org/packages/rtw89-dkms-git/). I have experienced
-> some issue of authentication when I tried to connect to a 5Ghz WiFi when its
-> signal strength is below 40%. The specific problem is even when I give the
-> correct password, the system keeps asking me to provide the password again
-> (using KDE's NetworkManager, unsure if it is related and have not yet tested
-> with other wifi managers). This issue solves when I move closer to my router
-> to gain more signal strength.
-> Here is the output of dmesg:
-> http://fars.ee/00U7
-> 
-> 
+v1->v2:
+ - change commit message
+ - fix possible memory leaks
+v2->v3:
+ - split patch into mlx5e, ipv6, mac80211
+v3->v4:
+ - fix newly created warnings due to patches in net/ipv6/seg6.c
 
-Hi,
 
-We have fixed similar symptom by v6 submitted on end of August, but
-the last update of DKMS module you took is 2021-07-08 06:29.
-So, I suggest to try the novel version of rtw89, and use the novel
-firmware as well. Please reference to [1]
+MichelleJin (3):
+  net/mlx5e: check return value of rhashtable_init
+  net: ipv6: check return value of rhashtable_init
+  net: mac80211: check return value of rhashtable_init
 
-[1] https://lore.kernel.org/linux-wireless/20210820043538.12424-1-pkshih@realtek.com/
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c | 14 +++++++++++---
+ net/ipv6/ila/ila_xlat.c                            |  6 +++++-
+ net/ipv6/seg6.c                                    |  8 ++++++--
+ net/ipv6/seg6_hmac.c                               |  4 +---
+ net/mac80211/mesh_pathtbl.c                        |  5 ++++-
+ 5 files changed, 27 insertions(+), 10 deletions(-)
 
---
-Ping-Ke
+-- 
+2.25.1
 
