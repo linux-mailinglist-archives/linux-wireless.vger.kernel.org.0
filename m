@@ -2,244 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 101644198E3
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 18:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52C48419D23
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 19:42:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235382AbhI0Qcz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Sep 2021 12:32:55 -0400
-Received: from mail-oln040093003012.outbound.protection.outlook.com ([40.93.3.12]:46849
-        "EHLO na01-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S235285AbhI0Qcy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Sep 2021 12:32:54 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cqBeOCATb371RwmJVqb+65Yph/sRTqwjpoQ0CK9Kq5jK0As4k36l8UjXugoZyunTRumKcAq+SQEkV++xfO3sGJG3p8/tQ6MowofEIyHfYQFy82/yZbaqEQhsvZARtwn7+CszJ9DXSW3tNC2bNU6UsECno6mn+aKMheigkBiYbL5osXGfVr7TPj9nzGv8Di6u5SKSGaXSIo0vCsXOm2A5lsT2hnBJxT6PzQwCb8e3M+Hw0Qnbx3l47WefExdQaRLgV8jBS4lt60N+eUO7HsSVFWsFwcWduAe+BUmcl41BKE5JsZzl/T0ozMHTyzTMbIHph9k9ONZ14hVB70UpcA3hDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QB8FiVLB1Qq6Jcz1u1B5bERwLVrqpPDDbmsIkHSph9c=;
- b=hHUBMCRGKSqOL3JiVXbF0j8MGEtI+ny//qjaSDZCKWpdaWm6XtKnLDEd6uERyOH+aa8T+wH5GZtFOH1zb6XWjopJuPTjc9LwYG9JaxJFJUqDt40vSUbDwav/xviaRyGQaEyNfiWBN6E7m+2hzJrvRO6YDPA0l7MQKcvP9hSTcUsNL5dVwiCeyRFqnXlNPdrB4yeXDe1yWWNzBd0eIdGhugoZpoFabVzEiXkRePtG9TgP/toY5//dn/N1wz8zKkWVCKykXGWs/wCOhnlEhkbVEd5lFjK+OcTCZ6Ybb0/yBStGHZTm7ZbTcgI2KKKVzAq+1N424ky5jH6487aInUAO+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QB8FiVLB1Qq6Jcz1u1B5bERwLVrqpPDDbmsIkHSph9c=;
- b=LHY8CSsfpg5pSVIHYUHxTOXXmRiHr8p+iDIZGNFeGGgUeZjL3FyrGj2DE4KjeDKftu5PQGA8HO3NZPp5KkJpEVtIYWHbeZylpjdpR3w8IBPi1sK3p1QeNVaoZWt13GQGpxWeozd/J0UIZRuSqoC87GL+LkoZRm9aXcYaSYMQLgQ=
-Received: from CY4PR21MB1540.namprd21.prod.outlook.com (2603:10b6:910:8a::20)
- by CY4PR21MB1555.namprd21.prod.outlook.com (2603:10b6:910:8c::26) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.3; Mon, 27 Sep
- 2021 16:31:13 +0000
-Received: from CY4PR21MB1540.namprd21.prod.outlook.com
- ([fe80::f904:4ba4:2052:793c]) by CY4PR21MB1540.namprd21.prod.outlook.com
- ([fe80::f904:4ba4:2052:793c%6]) with mapi id 15.20.4587.004; Mon, 27 Sep 2021
- 16:31:13 +0000
-From:   Guillaume Hetier <Guillaume.Hetier@microsoft.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
+        id S237083AbhI0RoM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Sep 2021 13:44:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45784 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236565AbhI0RoH (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 27 Sep 2021 13:44:07 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6697C00874B
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Sep 2021 10:17:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=DmzYsdNrHG1Gdx+gRxN4LjgRXb+ZEQJQnKzHYnq2yac=;
+        t=1632763027; x=1633972627; b=SYb0j9HK3w5V2x4jMpP3y3JNr637CDL+/qfdXi5B5Nd3xEZ
+        Ts6iem3o+/5HRJ3wuWjRdqwAVQEtduwtbFK/rbD/wgrPohFbGjFV+9O2PErymhuhkGMm4rlKCrTfH
+        AyxeRVd1Tz4WSukrXMndsyXsEqr39ejBqrED1vOnsUi/eO5Ukv+sa4z3PF8pF3tEDWxwDSVtiwIY7
+        YbSZYsZNx0L+lNoTHH+pjSwijx6BnPiLHm5o3s0zxoNjgd6ia+ZCV/zeOwirDWwZFQJ8H6sXPn4Lg
+        RtzcjcxAHMmqHSngPn3aODhGL6JRGjgHqrgvc6KNmxVJdhLFUKNan/OsRlYzIPkQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mUuFU-00CWEI-Pn;
+        Mon, 27 Sep 2021 19:17:04 +0200
+Message-ID: <2a2432235cbe51981bfd3d6201c2e803ff6aea7f.camel@sipsolutions.net>
+Subject: Re: [EXTERNAL] Re: [RFC PATCH 1/1] Add control path virtualization
+ in virt_wifi
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Guillaume Hetier <Guillaume.Hetier@microsoft.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
         "schuffelen@google.com" <schuffelen@google.com>,
         Shwetha Bhat <shwbhat@microsoft.com>,
         Andrew Beltrano <anbeltra@microsoft.com>,
         Brian Perkins <Brian.Perkins@microsoft.com>,
         KY Srinivasan <kys@microsoft.com>,
         Matteo Croce <mcroce@microsoft.com>
-Subject: RE: [EXTERNAL] Re: [RFC PATCH 1/1] Add control path virtualization in
- virt_wifi
-Thread-Topic: [EXTERNAL] Re: [RFC PATCH 1/1] Add control path virtualization
- in virt_wifi
-Thread-Index: Adeo4rOI8QazMW8KRJmQmRS8i5kvqwF38f+AAEvzQGAAL2mHAADDIb9g
-Date:   Mon, 27 Sep 2021 16:31:13 +0000
-Message-ID: <CY4PR21MB1540141B2CF45E93DC5707D18FA79@CY4PR21MB1540.namprd21.prod.outlook.com>
+Date:   Mon, 27 Sep 2021 19:17:03 +0200
+In-Reply-To: <CY4PR21MB1540141B2CF45E93DC5707D18FA79@CY4PR21MB1540.namprd21.prod.outlook.com>
 References: <CY4PR21MB15407FF4663D42C8CA3E1D678FD99@CY4PR21MB1540.namprd21.prod.outlook.com>
          <254b35a0eb1e0c68cdc87fa54470c7c079d5dd6e.camel@sipsolutions.net>
          <CY4PR21MB15401F95BAED44381746C11F8FA39@CY4PR21MB1540.namprd21.prod.outlook.com>
- <93c0cb1f0870e7295c0beaf3658febd16882173e.camel@sipsolutions.net>
-In-Reply-To: <93c0cb1f0870e7295c0beaf3658febd16882173e.camel@sipsolutions.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=7a2e4755-b944-496a-a7ad-f344ef01bd70;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2021-09-27T16:26:43Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c2707a0f-78a6-4993-507b-08d981d438a8
-x-ms-traffictypediagnostic: CY4PR21MB1555:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CY4PR21MB1555632EC5D678A07C7CBE408FA79@CY4PR21MB1555.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: nXFIReyQWIq+IaSCNuiIRmnkHjSrdeH6BHe6uO5b02GW+a8nfdfviYYBf1yoOPorYUzepRQKYe9VjU2MZjKTxOIvXF6ba8soHNWJC8DJa6rpOwfJ8CTDwP60Q+ECG3qJcbeKi6FVfpwwaT53e1vjEEATkuCJTFfp6ZlqgzwV7eQZGaxRaBbxtyy4V7ICwSoDMPMAvwWJDGmdEcfL0q47NwP4p8BLPHZV0/1QlX7tFjanGKAriCwHgMw1sa/2p4U5d72DeRFbjIEfp/zFxJcIGThaKhPcTVzlb+O60s1i4P4DktkilLf+nNJ1glzqpUZZuDVbMBUqTxE9/JMxeuvtVwVLuGCRomyjYJ4KMAcsze8H5NJd1AzdrSeyFCa2WpgvVaAzfQBUU6pPu7C1rCrUghEOCk1H0/OyjpmUnlav1zeBF0J+hlZx0R+5GV+JeyhBoWV3Q8TM3lm444nfJAIJsyXcK4uk5FLstTu9jzkavkk+YCQpMKr0lpGbgGeoCQzrTtDhnv1Oqq00BdBtC1x50VMBCAtHXQnzDukO1cNfOdMzBxPpNEyVzXt6sAiE89Xw3YFTaf447GE0Rojb8iK6sMHSECZW3IjhQEv1MC7gk0DVo0kUm0YbjoL0a7HeWEZgmK++9PMVMiIble+xFESHiPv1cDLPJWnzZTqIWRzrI+OYj3p2BF5lFp0R7TTBRirOkn0p6dH/gwgNhxUEhe6+hQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR21MB1540.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(4326008)(10290500003)(66574015)(9686003)(66476007)(66946007)(76116006)(107886003)(64756008)(66446008)(66556008)(71200400001)(83380400001)(8676002)(55016002)(86362001)(8936002)(508600001)(52536014)(7696005)(82960400001)(122000001)(54906003)(110136005)(6506007)(38070700005)(2906002)(316002)(8990500004)(186003)(82950400001)(33656002)(5660300002)(38100700002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?K3VORlJYSTZmMkU2SlJhbUdxQmsxWWY2aXAxY0N3eitJUTdDcTRZSkc2OEVU?=
- =?utf-8?B?dUJDbzdNSVIzbzNhZCtGeWNlcXRIN0ZLVlhYaUVDYjJibUN5VStTYTY0VWxL?=
- =?utf-8?B?WG5SNjFIclg3bCtaL0VqRFFqbjFjM3BTR1Fmd2ZRaXNrNkF2RE1SaHlralJu?=
- =?utf-8?B?bk90eUoyNUhXUEJnaTV3U3ZkZnhtb1hEWnF4VUlrNGc4aVRiT2RKck1FMEN5?=
- =?utf-8?B?bnAwbm42WHZ0Z01XS2pibk45cUFIQ2oxTlZmZXpxaEd5STFSRU52cG5NRHJX?=
- =?utf-8?B?N1UyUkNoL1lYNVA3cEthelJseUt6NGJZdjc3YVZ1dldwWnQ2dURaRzViQzRP?=
- =?utf-8?B?SlBkYzBjNGJQR3FheHJTT0xhOEVvSjQzWUhVVnhLdXFLY0piUWVVQkJ1MGpL?=
- =?utf-8?B?ZWN5Z0lVci9vUDQ5RjUrU0Vra2ZrSTFiOWkzZ04zNzlYYmg1bWtjcFFHdDl4?=
- =?utf-8?B?SXlna3hOWkxoL29QdEx1OEhhRDllbzRKOVZwcDRRNnNJSURsWHdlOXNMc0RP?=
- =?utf-8?B?cDNwTkpYUWtRNmg0NDZxWFZPTkFCWlJKaVV1V3hXbUlXZExYUHBiWFNPeHBC?=
- =?utf-8?B?N1JXN1orUEV5dUJ1NVdPN3N4L1Y3c0dzUU1RK1l5TnVVZFdQQ1gwZlY1dmpW?=
- =?utf-8?B?dlExdjBrL2pyeDVXc1FNYm0rVGhzSGNVcUhBNFF1OFF2TEtMVFFvTENVajBz?=
- =?utf-8?B?Um5TM0twTCs2a0NBRk5BY09SOXkrcXhyUG5zcUp1dXErYmVqbFhyUithaFlR?=
- =?utf-8?B?S1ZvYkVQVHBqcVU0WlVnVVpzRU84aFJaZklPQU5rRW9wWVZudHdsS2haYzkv?=
- =?utf-8?B?ckZDeTl3VkxlRktSc3lQTmZhbEVVVjlnOTBnMVdLbWg0Z0lPK3kraVFIZUt2?=
- =?utf-8?B?UTFvU0EyMVprZWl0YTU3KzVUaGI3TzNkV2dEUWI4VEx5Yi9pQjZUM2pydjZJ?=
- =?utf-8?B?NzRIUUFXUUhTcUNlbmtic1N3czZETnVXK256R014QWoycVk5a1Nhak94aXZu?=
- =?utf-8?B?QkNTcHhTdGY1VWZTRVJkbzkzYk05TUpaSW9FQndneDhDNE5rdDlsWEpnWGFq?=
- =?utf-8?B?cDNEaDFxUkJsNjBhbUhZVkdhaE9yQmZmaE9pVlRJMFp1dERpMzlaNlhBd1Uy?=
- =?utf-8?B?NzlmZkpPZityWVVZWi8waGU1M2g1Y3c5YnN6UXprNThaWU0rOWtuL2xmTE5E?=
- =?utf-8?B?UEdMQWJDektZNWJXSk1aZWlFeVUwaVVweU1wQzhUbzdETHVxcmliaFc2MS9P?=
- =?utf-8?B?ckl1QWdHYVMwOUxlai9qNTBMWGd1eGFvYThlNUhkbEFFeVFFQkRUWVBOVFFG?=
- =?utf-8?B?QW9ISU0xTW1OVktEV2w0dkZwT24xZkQxZ3RaYjFxb2VPRDMxQk5BMmpteHU5?=
- =?utf-8?B?QnRHOE5VSDl3Q1BSejdvM0VSeFFmb2Q2c1lGZzdBaXJ4bk42VHU2bE9ybi9X?=
- =?utf-8?B?V3E5V3RYbFEzRm9rVy9aNEtOL0I2VGxvM24zSFVHajI4NjFhaFk5U1R3Vk1Y?=
- =?utf-8?B?T1RsQUJiQlRsbmdzRWhHeW1NZU1nMlNxbnp0bXpjUHIyUmpkVVJJQzZEZHF2?=
- =?utf-8?B?S3JWWG1rSTJCTFU2a29vdlVTS0hHYW1wTFBaY0NPcXBxT3ZYcS9xd0txVWN2?=
- =?utf-8?B?Z05RK2d0bjJRNk54TE85NFpHR1YyTDRyZjgrckloTTdPRmJxNVlUWTMwWkd1?=
- =?utf-8?B?Ny9UT2tQd3pJMThxRit1ZDIrVitTaHk5M05scDFlL2tYN0d2bHYxZlQySVl5?=
- =?utf-8?B?U3VPY2ZYaEs4UXpTbkRIdmRYaU1saUh4N0JEeEJCWGVpbkVVbW5SZ2gxNUpR?=
- =?utf-8?Q?BmLVopxJJv7/RRwpNGHjjbtFb8oQpQDV8nxQ8=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+         <93c0cb1f0870e7295c0beaf3658febd16882173e.camel@sipsolutions.net>
+         <CY4PR21MB1540141B2CF45E93DC5707D18FA79@CY4PR21MB1540.namprd21.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR21MB1540.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c2707a0f-78a6-4993-507b-08d981d438a8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Sep 2021 16:31:13.1541
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jUtdpCx98zU9xH8GfRIwPiMKPATctSZ4GWON+ppkVLi0ZMCoIID2OLHLUKRp9WIK8hb9dB/tGav7iC+Ix+1LyA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR21MB1555
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGksDQoNCj4gRnJvbTogSm9oYW5uZXMgQmVyZyBqb2hhbm5lc0BzaXBzb2x1dGlvbnMubmV0IA0K
-PiBTZW50OiBUaHVyc2RheSwgU2VwdGVtYmVyIDIzLCAyMDIxIDEyOjIwDQo+DQo+PiBPdXIgdGFy
-Z2V0IGlzIHRvIGdpdmUgdGhlIGd1ZXN0IFZNIGEgc2ltaWxhciBsZXZlbCBvZiBjb250cm9sIG92
-ZXIgDQo+PiBXaUZpIGFzIG90aGVyIGFwcGxpY2F0aW9ucyBvbiB0aGUgaG9zdC4gIFRoZSBob3N0
-IE9TIGtlZXBzIGNvbnRyb2wgb2YgDQo+PiB0aGUgTklDLiBSZXF1ZXN0cyBmcm9tIHRoZSBndWVz
-dCBhcmUgZXhlY3V0ZWQgdGhyb3VnaCBjYWxscyB0byBwdWJsaWMgDQo+PiBob3N0IHdsYW4gQVBJ
-cyBhbmQgdGhlIHJlc3VsdCBpcyByZXR1cm5lZCB0byB0aGUgZ3Vlc3QgZHJpdmVyLg0KPg0KPiBU
-aGF0IG1ha2VzIHNvbWUgc2Vuc2UuIEkgc2F5IHNvbWUgaW50ZW50aW9uYWxseSB0aG91Z2gsIGJl
-Y2F1c2UgY29uc2lkZXIgdGhlIGRpZmZlcmVuY2VzIC0gYSB0eXBpY2FsIGFwcGxpY2F0aW9uIG9u
-IHRoZSBob3N0IHdpbGwgZGVmaW5pdGVseSBub3QgY2FyZSAoZXZlbiB0aGUgYnJvd3Nlciwgc2t5
-cGUsIGV0Yy4gd2lsbCBub3QpLCB1bmxlc3MgdGhleSBzcGVjaWZpY2FsbHkgd2FudCB0byBkbyBz
-b21ldGhpbmcgd2l0aCB3aWZpIHN1Y2ggYXMgZm9yIElPVCBvbmJvYXJkaW5nIG9yIHdoYXRub3Qu
-DQo+DQo+IEEgdHlwaWNhbCBndWVzdCBWTSBvbiB0aGUgb3RoZXIgaGFuZCB3aWxsIHJ1biBhIHBy
-ZXR0eSB0eXBpY2FsIG9wZXJhdGluZyBzeXN0ZW0sIGFuZCB0aGF0ICp3aWxsKiAiY2FyZSIsIGlu
-IHRoZSBzZW5zZSB0aGF0IGl0IGFsd2F5cyB3YW50cyB0byB1c2UgYW5kIGNvbnRyb2wgYSB3aWZp
-IGRldmljZSAoaWYgcHJlc2VudCkuDQo+DQo+IFRoaXMgbWlnaHQganVzdCBtZWFuIHRoYXQgaXQn
-cyBjb250aW51b3VzbHkgc2Nhbm5pbmcgZm9yIG5ldHdvcmtzIGl0IGtub3dzIGFib3V0IGFuZCBj
-YW4gY29ubmVjdCB0bywgb3IgaXQgbWlnaHQgbWVhbiB0aGF0IGl0J3MgYWN0dWFsbHkgY29ubmVj
-dGluZyB0byB0aGUgbmV0d29ya3MgdGhhdCBpdCBrbm93cyBhYm91dC4gVGhlIGhvc3QsIG9uIHRo
-ZSBvdGhlciBoYW5kLCBtaWdodCBoYXZlIGl0cyBvd24gaWRlYXMgYWJvdXQgd2hpY2ggbmV0d29y
-a3MgeW91IHNob3VsZCBiZSBjb25uZWN0ZWQgdG8/IEkgZmVhciB0aGF0IGhhdmluZyBib3RoIG9m
-IHRoaXMgbWlnaHQgY29uZmxpY3QsIHNvIEkgd2FzIGN1cmlvdXMgaG93IHlvdSdkIGJlIHNvbHZp
-bmcgdGhhdC4NCg0KWW91IGFyZSByaWdodCwgaWYgbmV0d29yayBtYW5hZ2VycyBydW4gYm90aCBv
-biB0aGUgaG9zdCBhbmQgdGhlIGd1ZXN0LCB0aGV5IG1heQ0KY29uZmxpY3QuIEluIG91ciBzY2Vu
-YXJpbywgc2luY2Ugd2UgZm9jdXMgb24gaGlnaGx5IGludGVncmF0ZWQgVk0gKHN1Y2ggYXMgV2lu
-ZG93cw0KU3Vic3lzdGVtIGZvciBMaW51eCksIHdlIGF2b2lkIHRoZSBpc3N1ZSBieSBkaXNhYmxp
-bmcgbmV0d29yayBtYW5hZ2VtZW50IGluIHRoZQ0KZ3Vlc3QuIFRoaXMgbGVhdmUgdXMgd2l0aCBv
-bmx5IGNvbm5lY3Rpb24gcmVxdWVzdHMgZnJvbSBwcm9ncmFtcyB0YXJnZXRpbmcNCnNwZWNpZmlj
-IG5ldHdvcmtzIGNvbWluZyBmcm9tIHRoZSBndWVzdC4NCg0KSSBndWVzcyBvdGhlciBwb2xpY2ll
-cyBjb3VsZCBhbHNvIGJlIGltcGxlbWVudGVkIGJ5IHRoZSBob3N0IGNvbXBvbmVudCwNCmRlcGVu
-ZGluZyBvbiB0aGUgZGVncmVlIG9mIGNvbnRyb2wgb25lIHdhbnQgdGhlIGd1ZXN0IHRvIGhhdmU6
-IGVpdGhlciBkaXNhYmxpbmcNCnRoZSBob3N0IG5ldHdvcmsgbWFuYWdlciwgb3IgZGVmaW5pbmcg
-c29tZSBwcmlvcml0eSBhbmQgZHJvcHBpbmcgdW53YW50ZWQNCnJlcXVlc3RzLi4uDQoNCj4+IFNp
-bmNlIHRoZSBob3N0IGtlZXBzIGNvbnRyb2wgb2YgdGhlIE5JQywgaXQgaGFuZGxlcyBtdWx0aXBs
-ZSB0aGluZ3MgDQo+PiB0cnlpbmcgdG8gdXNlIFdpRmkgdGhlIHNhbWUgd2F5IGl0IGhhbmRsZXMg
-ZGlmZmVyZW50IGhvc3QgYXBwbGljYXRpb25zIHRyeWluZyB0byB1c2UgV2ktRmkuDQo+PiBUaGlz
-IG1lYW5zIHRoZSBob3N0IE9TIGNhbiByZWplY3QgYSBjb21tYW5kIGZyb20gdGhlIGd1ZXN0LCBv
-ciB0aGF0IA0KPj4gdGhlIGd1ZXN0IFZNIGNvdWxkIGdldCBkaXNjb25uZWN0ZWQgaWYgYW5vdGhl
-ciBwcm9ncmFtIG9uIHRoZSBob3N0IA0KPj4gaW5pdGlhdGVzIGEgY29ubmVjdGlvbiB0byBhIGRp
-ZmZlcmVudCBXaS1GaSBuZXR3b3JrLg0KPg0KPiBSaWdodC4NCj4NCj4gSSAqdGhpbmsqIHRoYXQg
-dG8gc29tZSBleHRlbnQgSSdtIGFjdHVhbGx5IHRoaW5raW5nIG9mICJPUyIgdnMuDQo+ICJhcHBs
-aWNhdGlvbnMiIGluIHRvbyBzdHJpY3QgYSBzZXBhcmF0aW9uLCBhbmQgb24gV2luZG93cyBpdCBt
-aWdodCBhY3R1YWxseSBiZSB0aGF0IHRoZSBwYXJ0IG9mIHRoZSBPUyB0aGF0IGltcGxlbWVudHMg
-dGhlIHdpZmkgbmV0d29yayBzZWxlY3Rpb24gaXMgImp1c3QiIGFuIGFwcGxpY2F0aW9uPyBBIGxh
-IEludGVsIFByb1NldCAobm90IHRoYXQgSSBrbm93IGFueXRoaW5nIGFib3V0IGl0KT8NCg0KWW91
-ciBpbml0aWFsIHVuZGVyc3RhbmRpbmcgd2FzIGNvcnJlY3QsIG5ldHdvcmsgc2VsZWN0aW9uIGlu
-IFdpbmRvd3MgaXMgbW9zdGx5DQppbXBsZW1lbnRlZCBpbiBhIE9TIHNlcnZpY2UgKHdsYW5zdmMp
-LCBub3QgYW4gYXBwbGljYXRpb24uIEhvd2V2ZXIsIHRoZSBwcm94eQ0KaG9zdCBjb21wb25lbnQg
-aXMganVzdCBhbiBhcHBsaWNhdGlvbiB0aGF0IGNhbGxzIHRoaXMgc2VydmljZSBwdWJsaWMgQVBJ
-LiBTbywNCmZyb20gdGhlIHBvaW50IG9mIHZpZXcgb2Ygd2xhbnN2YyBhbmQgdGhlIGhvc3QgT1Ms
-IHRoZSBndWVzdCBpcyAianVzdCIgYW5vdGhlcg0KYXBwbGljYXRpb24gYXMgZmFyIGFzIHRoZSBX
-aS1GaSBjb250cm9sIHBhdGggaXMgY29uY2VybmVkLg0KDQo+PiBXZSBhbHNvIGNvbnNpZGVyZWQg
-Zm9yd2FyZGluZyBubDgwMjExIG1lc3NhZ2VzIGRpcmVjdGx5LCBzaW5jZSBpdCANCj4+IGNvdWxk
-IGF2b2lkIHRoZSBuZWVkIGZvciBhIHNwZWNpYWxpemVkIGd1ZXN0IGRyaXZlci4gIEhvd2V2ZXIs
-IHdlIA0KPj4gd29uZGVyZWQgYWJvdXQgY29tcGF0aWJpbGl0eSBpc3N1ZXMgKHdoYXQgaWYgdGhl
-IGhvc3QgYW5kIGd1ZXN0IA0KPj4gdmVyc2lvbnMgb2Ygbmw4MDIxMSBkb27igJl0IG1hdGNoPyks
-IGFuZCBpdCBzZWVtZWQgbXVjaCBtb3JlIGNvbXBsZXggdG8gDQo+PiBpbXBsZW1lbnQsIHdpdGgg
-c2lnbmlmaWNhbnQgY2hhbmdlcyB0byBjZmc4MDIxMSBhbmQgbGlrZWx5IG90aGVyIHBhcnRzIA0K
-Pj4gb2YgdGhlIHdpcmVsZXNzIHN1YnN5c3RlbS4gIE92ZXJhbGwsIHRoZQ0KPj4gbmw4MDIxMSBm
-b3J3YXJkaW5nIG9wdGlvbiBhcHBlYXJzIGFyY2hpdGVjdHVyYWxseSBzb3VuZCwgYnV0IGdpdmVu
-IHRoZSANCj4+IG11Y2ggbGFyZ2VyIHNjb3BlIGFuZCBpbXBhY3QsIHdlIGZvY3VzZWQgb24gYSBt
-b3JlIHRhcmdldGVkIHNvbHV0aW9uIA0KPj4gaW4gd2hpY2ggdGhlIGd1ZXN0IGRyaXZlciBkb2Vz
-buKAmXQgb3duIHRoZSBob3N0IE5JQy4gIFdlIGZlZWwgdGhpcyANCj4+IHNvbHV0aW9uIHByb3Zp
-ZGVzIGEgbWlkZGxlIGdyb3VuZCB3aGVyZSB0aGUgaG9zdCBjYW4gZGVjaWRlIHdoaWNoIA0KPj4g
-cGFydHMgb2YgaXRzIHdpcmVsZXNzIHN0YWNrIHRvIHByb3h5IHRvIHRoZSBndWVzdC4NCj4NCj4g
-QWgsIHRoYXQncyBpbnRlcmVzdGluZy4gSSBoYWQgb25seSBjb25zaWRlcmVkIHRoaXMgZm9yIHRo
-ZSAqZ3Vlc3QqLCBhbmQgYXNzdW1lZCB0aGF0IHRoZSBob3N0IHdvdWxkIGhhbmRsZSB0aGUgKG5s
-ODAyMTEpIG1lc3NhZ2VzIGluIGEgc3BlY2lhbCBkZXZpY2UgaW1wbGVtZW50YXRpb24gc29mdHdh
-cmUsIG5vdCBmb3J3YXJkIHRob3NlIGRpcmVjdGx5IHRvIHRoZSBob3N0DQo+IChMaW51eCkga2Vy
-bmVsLg0KPg0KPiBJdCBzb3VuZHMgbGlrZSB5b3UgY29uc2lkZXJlZCB0aGUgY2FzZSBvZiBiYXNp
-Y2FsbHkgbGV0dGluZyB0aGUgZ3Vlc3QgYXBwbGljYXRpb25zIGRpcmVjdGlvbiB0YWxrIG5sODAy
-MTEgdG8gdGhlIGhvc3Qga2VybmVsLCB3aGljaCBpcyBmYXIgYmV5b25kIHdoYXQgSSBjb25zaWRl
-cmVkIQ0KPg0KPiBJIGNvbXBsZXRlbHkgYWdyZWUgaGVyZSB0aG91Z2ggLSB5b3UgZGVmaW5pdGVs
-eSB3YW50IHNvbWUgcHJveHkgb24gdGhlIGhvc3Qgc2lkZS4NCj4NCj4gQnV0IGxpa2UgSSBzYWlk
-LCBJIHdhcyBqdXN0IGNvbnNpZGVyaW5nIHRoYXQgYXMgdGhlIGd1ZXN0IHNpZGUgaW1wbGVtZW50
-YXRpb24uIFdlIGRvbid0IGhhdmUgbWFjaGluZXJ5IGZvciB0aGlzIHJpZ2h0IG5vdyBpbiBuZXRs
-aW5rLCBidXQgSSBjb3VsZCBzZWUgcGVyaGFwcyBzb21lIHdheSBvZiBhbGxvd2luZyAicHJlX2Rv
-aXQiIHRvIHJldHVybiBzYXkgIjEiIHRvIHNheSAid2UgYWJvcnQgaGVyZSBidXQgcGxlYXNlIGRv
-bid0IHNlbmQgYSByZXNwb25zZSB0byB1c2Vyc3BhY2UiLiBUaGVuLCB0aGUgcHJlX2RvaXQoKSBj
-b3VsZCBjYWxsIGEgZHJpdmVyIG1ldGhvZCBwYXNzaW5nIHRoZQ0KPiBubDgwMjExIG1lc3NhZ2Ug
-ZG93biBpbnN0ZWFkIG9mIGNhbGxpbmcgdGhlIHJlYWwgb3BlcmF0aW9uLCBhbmQgdGhlIGFwcGxp
-Y2F0aW9uIHVzaW5nIG5sODAyMTEgd291bGQgZW5kIHVwIGRpcmVjdGx5IHRhbGtpbmcgdG8gdGhl
-IG5sODAyMTEgaW1wbGVtZW50YXRpb24gb2YgdGhlIGRldmljZS4NCj4NCj4gSSBkb24ndCB0aGlu
-ayB0aGUgZGV2aWNlIF9jb3VsZF8gZXZlbiBpbXBsZW1lbnQgaXQgYnkgdGFsa2luZyB0byB0aGUg
-aG9zdCBrZXJuZWwgKGV2ZW4gaWYgaXQgaXMgTGludXgpIGJlY2F1c2UgdGhlIG5ldGRldiBJRHMg
-YW5kIHdoYXRub3Qgd291bGQgYmUgZGlmZmVyZW50LCBidXQgaXQgbWlnaHQgYmUgZmVhc2libGUg
-Zm9yIHRoZSBndWVzdCBpbXBsZW1lbnRhdGlvbi4NCj4NCj4gVGhlIG9ubHkgcGxhY2Ugd2hlcmUg
-dGhpcyBtaWdodCBydW4gaW50byB0cm91YmxlIGlzIHdpdGggdGhpbmdzIHRoYXQNCj4gbmw4MDIx
-MSBzdXBwb3J0cyAoZW51bSBubDgwMjExX3Byb3RvY29sX2ZlYXR1cmVzKSwgd2hpY2ggd2UgaGFu
-ZGxlIGRpcmVjdGx5LCBhbmQgc28gYW4gdXBkYXRlZCBndWVzdCBrZXJuZWwgbWlnaHQgc3VwcG9y
-dCBtb3JlIHRoYW4gd291bGQgYWN0dWFsbHkgZW5kIHVwIHdvcmtpbmcuIEJ1dCB0aGUgdHJ1dGgg
-aXMgdGhhdCB3ZSBhZGRlZCBfZXhhY3RseV8gb25lIHN1Y2ggZmVhdHVyZSAoTkw4MDIxMV9QUk9U
-T0NPTF9GRUFUVVJFX1NQTElUX1dJUEhZX0RVTVApLCBhbmQgd2lwaHkgZGlzY292ZXJ5IGlzIG9m
-IGNvdXJzZSBzb21ldGhpbmcgdGhhdCB3b3VsZCBhbnl3YXkgaGF2ZSB0byBiZSBoYW5kbGVkIGJ5
-IHRoZSBndWVzdC4gU28gbm90IHN1cmUgdGhpcyBpcyBzdWNoIGEgYmlnIGRlYWwuDQo+DQo+IEFu
-eXdheSwgbm90IHNheWluZyBpdCBzaG91bGQgYmUgZG9uZSBvbmUgd2F5IG9yIHRoZSBvdGhlciwg
-d2FzIGp1c3QgY29uc2lkZXJpbmcgdGhpcyBhcyBvbmUgcG9zc2libGUgd2F5IG9mIHNpbXBseSBw
-dXNoaW5nIF9hbGxfIHRoZSBBUElzIHRob3VnaCB0byB0aGUgZGV2aWNlLCBhbmQgdGhlbiB0aGUg
-bmw4MDIxMSBpbXBsZW1lbnRhdGlvbiBpbiB0aGUgZGV2aWNlIGNhbiBkZWNpZGUgd2hhdCBpdCBz
-dXBwb3J0cyBhbmQgd2hhdG5vdCwganVzdCBsaWtlIG9uIG9sZGVyIGtlcm5lbHMgd2UgZG9uJ3Qg
-c3VwcG9ydCBjZXJ0YWluIHRoaW5ncy4gVGhlICpkcml2ZXIqIHdvdWxkIHRoZW4gYmUgZmFpcmx5
-IHNpbXBsZSBhbmQgYmFzaWNhbGx5IHdvdWxkIG5ldmVyIGhhdmUgdG8gYmUgZXh0ZW5kZWQsIGJ1
-dCB0aGUgZGV2aWNlIGltcGxlbWVudGF0aW9uIChpbiB0aGUgaHlwZXJ2aXNvciBvciB3aGVyZXZl
-cikgbWlnaHQgYmUgbW9yZSBkaWZmaWN1bHQuDQoNClRoYW5rcyBmb3IgZXhwbGFpbmluZyBmb3Ig
-aW4gZGV0YWlscywgSSB0aGluayBJIHVuZGVyc3RhbmQgYmV0dGVyIHlvdXIgaWRlYS4NCkFsbCBu
-bDgwMjExIG1lc3NhZ2VzIGJlaW5nIGZvcndhcmRlZCB0byB0aGUgaG9zdCB3b3VsZCBpbmRlZWQg
-YWRkIGEgbG90IG9mDQpjb21wbGV4aXR5IHRvIHRoZSBob3N0IGRldmljZSBpbXBsZW1lbnRhdGlv
-biwgYSBsb3Qgb2YgdGhlIHByb2Nlc3NpbmcgZG9uZSBieQ0KY2ZnODAyMTEgd291bGQgbGlrZWx5
-IGhhdmUgdG8gYmUgcmUtaW1wbGVtZW50ZWQuDQoNCkkgaW1hZ2luZSBpdCB3b3VsZCBnaXZlIG1v
-cmUgZnJlZWRvbSB0byB0aGUgaG9zdCBkZXZpY2UgaW1wbGVtZW50YXRpb24sIHRvby4NClRoaXMg
-Y291bGQgYmUgYW4gaW50ZXJlc3RpbmcgYWx0ZXJuYXRpdmUgaWYgYSBmdWxsLW1hYyBiYXNlZCBp
-bXBsZW1lbnRhdGlvbg0KZW5kcyB1cCBiZWluZyB0b28gcmVzdHJpY3RpdmUuDQoNCkJhc2VkIG9u
-IHRoZSBkaXNjdXNzaW9uLCB5b3VyIHJlY29tbWVuZGF0aW9ucyBjb25jZXJuaW5nIG91ciBpbml0
-aWFsIHF1ZXN0aW9ucyBzZWVtIHRvIGJlOg0KLSB3ZSBzaG91bGQgY3JlYXRlIGEgbmV3IGRyaXZl
-ciwgcmF0aGVyIHRoYW4gbW9kaWZ5aW5nIHZpcnRfd2lmaQ0KLSBuZXRsaW5rIGNvdWxkIGJlIHVz
-ZWQgYXMgYSBwcm90b2NvbCB0byBjb21tdW5pY2F0ZSB3aXRoIHRoZSBob3N0DQoNCklzIHRoYXQg
-Y29ycmVjdD8NCg0KVGhhbmtzLA0KR3VpbGxhdW1lDQoNCg==
+Hi,
+
+> You are right, if network managers run both on the host and the guest, they may
+> conflict. In our scenario, since we focus on highly integrated VM (such as Windows
+> Subsystem for Linux), we avoid the issue by disabling network management in the
+> guest. This leave us with only connection requests from programs targeting
+> specific networks coming from the guest.
+
+Right, I guess that makes sense. Though I don't know if there even are
+any common APIs in Linux, you'd probably have APIs for NetworkManager
+and other connection managers, but I'm not aware of a common API that
+applications would use.
+
+In fact, I know of very few *applications* that try to do WiFi related
+things, mostly those are network managers of sorts. Maybe some would
+show scan results, wireshark can set monitor mode and switch channels,
+etc. but still...
+
+Are there any specific applications you're thinking of?
+
+> I guess other policies could also be implemented by the host component,
+> depending on the degree of control one want the guest to have: either disabling
+> the host network manager, or defining some priority and dropping unwanted
+> requests...
+
+Right.
+
+> Your initial understanding was correct, network selection in Windows is mostly
+> implemented in a OS service (wlansvc), not an application. However, the proxy
+> host component is just an application that calls this service public API. So,
+> from the point of view of wlansvc and the host OS, the guest is "just" another
+> application as far as the Wi-Fi control path is concerned.
+
+Right, makes sense.
+
+> Thanks for explaining for in details, I think I understand better your idea.
+> All nl80211 messages being forwarded to the host would indeed add a lot of
+> complexity to the host device implementation, a lot of the processing done by
+> cfg80211 would likely have to be re-implemented.
+
+The good thing is there *isn't* a lot of processing in cfg80211 to start
+with :) OK, there's more now with the 6E scan processing, but still.
+
+> I imagine it would give more freedom to the host device implementation, too.
+
+Agree.
+
+> This could be an interesting alternative if a full-mac based implementation
+> ends up being too restrictive.
+
+Well it's kind of "full-MAC" either way - I was just thinking we could
+save some code on the guest side :)
+
+But, TBH, it's probably better integrated if we do have a proper driver
+there and actually see what's going on and how it interfaces with
+nl80211, rather than hiding all those bits in the host (device)
+implementation.
+
+> Based on the discussion, your recommendations concerning our initial questions seem to be:
+> - we should create a new driver, rather than modifying virt_wifi
+
+Yes, for sure, I don't think virt_wifi makes sense.
+
+> - netlink could be used as a protocol to communicate with the host
+
+That was just a thought really. I've done it before for hwsim's wmediumd
+virtio abstraction, and it's not all that bad, but you could just as
+well declare structs for communication and go that simple way. Might
+over time end up with more compatibility code on the device side though
+(assuming you want to keep old Linux kernels running) Ultimately, it
+doesn't really matter to us - I'd think of it as a device, and people
+come up with all kinds of strange hardware all the time ;-)
+
+(I even once briefly considered ASN.1 for communication with the Intel
+NICs :-) )
+
+johannes
+
