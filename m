@@ -2,102 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99B03418AF1
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Sep 2021 22:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2458F418D2E
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 02:00:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230099AbhIZUWp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Sep 2021 16:22:45 -0400
-Received: from mout.web.de ([212.227.15.4]:60423 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229894AbhIZUWo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Sep 2021 16:22:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1632687651;
-        bh=9o/e66vAWG/z2ECjYL1NyiGoc7RJt52pRYvR60FMngk=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=jsP+1sFnoXMIb3sNNXYOutEgzo64bqRHeyQP60oS/RDRX/N6X3sKNI4se83ExgAxF
-         Z29gyHBDgKsiIAzLsA7In7FKxHhoBALP6GDsbO6zxcwkCH59ib4mllo/ufNTsoaPFi
-         Ofn373r0TB6efKE3YLc7epzlmGVdiidOg2/ZollI=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [10.9.8.2] ([62.227.172.72]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MmQYX-1nClDG0Owr-00iJRf; Sun, 26
- Sep 2021 22:20:51 +0200
-Subject: Re: [BUG] Re: [PATCH] brcmfmac: use ISO3166 country code and 0 rev as
- fallback
-To:     Kalle Valo <kvalo@codeaurora.org>, Shawn Guo <shawn.guo@linaro.org>
-Cc:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>
-References: <20210425110200.3050-1-shawn.guo@linaro.org>
- <cb7ac252-3356-8ef7-fcf9-eb017f5f161f@web.de> <20210908010057.GB25255@dragon>
- <100f5bef-936c-43f1-9b3e-a477a0640d84@web.de> <20210909022033.GC25255@dragon>
- <56e9a81a-4e05-cf5e-a8df-782ac75fdbe6@web.de> <20210912015137.GD25255@dragon>
- <87pmt2uvxu.fsf@codeaurora.org>
-From:   Soeren Moch <smoch@web.de>
-Message-ID: <ffe146e8-a393-2388-0f31-2bd030a75812@web.de>
-Date:   Sun, 26 Sep 2021 22:20:48 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S230438AbhI0ABs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Sep 2021 20:01:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60164 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229468AbhI0ABr (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 26 Sep 2021 20:01:47 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA9BCC061570
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Sep 2021 17:00:10 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id y35so10550139ede.3
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Sep 2021 17:00:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=6WCOnuO9EnGFHUidx151/8oXjVQxPrxhqPSBcjejQQk=;
+        b=WZbTDzHgzZ3dEp5zORx1u4+VvGtPA0ne60cJMI4klZJPopWDN/lV2GVZW+wxcRrv/A
+         7Jeozw732pfUj3ispsPI2TAvX8w67/vvzkU+Z+wik9wh7hDgAmCuFHMxbqtBe/bW+Gng
+         HklKpez+3ofvay/b6pNb5y8SniHoRQKWCOewbdSIB26lxwlHsucd/4XI/vapwSqHcpll
+         leWji+CGQqvSXLhApxPH80kClnjEeGlP0jcYg1ctO/9tGJhzy3SWFMh3WUpspB1XkLKf
+         lCREXX5J8AlBAjF39uTRu3jL0ogXXWARgpid417gEb7nkfV6CGei6jOR9RLJW/+Y/YmP
+         XDWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=6WCOnuO9EnGFHUidx151/8oXjVQxPrxhqPSBcjejQQk=;
+        b=DpI4z27pMsOSuRYsc6z4T6p7Z7w52zp4kR+Rts6i3BeveRr84gItsVGH5qkWaKud6+
+         jswJv7QJ4LsqIp0ZEECw+mh8O7tyuyuHVuXsaXNBAblkLtpbooajl+gUrMuLxnu61Yn+
+         k3e6gE8+KEf3BO1UrRhpCIbmbU1zFSnGwuJ/Ybl0YTxKvBsKKUascIDnI2jz79EGlSq8
+         l/stN155cIlOMSaKuotTn4AbBa1hjoQiLJzHEkk4gkIwj+NY5ZbGR5KDCvMtYnPbuQm2
+         Wq2hwFW5rvD0LqDGgCaIs2xRIOJEcveMGQk9qL6byACGV6enSvHZlG4c5wsISlvKsAOw
+         xCWQ==
+X-Gm-Message-State: AOAM533rcOZbpkby1S9Pl5qHX/W9HHal/E2TbyLqv1/T+mbfGwUPdCRx
+        GqZyNwe3QK8gYvINBuOmM+sCaelI6FjvWH4LasM=
+X-Google-Smtp-Source: ABdhPJwKw536FO/1pioSUgnKllPrOyZkj+tX2oXgLbnmToybJredZWf4eVs8Qr8CUP8z3MGpDdVjKqJGAdFr6Y/N4o0=
+X-Received: by 2002:a17:906:1ec9:: with SMTP id m9mr23881111ejj.115.1632700809222;
+ Sun, 26 Sep 2021 17:00:09 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87pmt2uvxu.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-GB
-X-Provags-ID: V03:K1:xaz3Z1xGU/FK/ErZ/VHwScYBHhAAf/Wz3uXzw3rKTjaX9jJKLnM
- abFUKWeJORbgaPadeDVLaedD6HO25jRa3NmRorRM4IabQ87iQyb7m43idS7aaBex2cxc9/5
- LxwgzS2ZSu3wCpyrpcPalFbVSgeb6LJ7wuYHpFnf+KD483grJJk4cIj3CCMH6SB7ygvo1Ei
- kAOFSBHK48g/KzYTTZBvA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:DFz2lwZNGAw=:zbH7iSdhVjqiEUCj+tjfey
- LD6rygIFVCROy4Nxe0esCXUx3Tl131W4RfZ5NLxPyiRqjltu6sI5DhPwHfklIN6vL6KjNf2F/
- lJBCLiBPQJMQCzHIk7Gxycsyu63SCCnGX/EXmAe+aM9sqnL0fvUWy9cF8ucjMN1TB9K2UFp2g
- 9lg+7/OPty1j0mwmPrFuUhOMby0ud8YSPK7J9VL/9UO3xrsam/8g635f0s+wyPCZJyC5G5Grc
- 4fyWMi8IsBirwhoe3GPk928M9oWprhy2ZVkLKxjQtstoBwZzt/fBIEmz3zBgsZUauJDPnwmMv
- hVRP6NDjRosoEPK5kNkA3EcM1bvvnG7k3T6KN0De9pbdFgndn0qzaVUs7NCQt4XLPdQH1xbXz
- E+7jsRVTQ5xvHmG0Gz7n5tVwPORTkSk9yDRpEE1CASy0nt9DCRozCudszpC3w1QcyMrQYRDKE
- tsMtTLe109nIv4LJt1xVoJ+6j5iLmipuekPeJFjA4+NcUGcO1tc6XO+oJ3OarNRRWpgzIvLcR
- FBZ0yrZ1V7tMjCbK67TyfJA8XVL5NefVwUEHx5zhY9C1cIeWuHYphrQ8FD8TB7HVkwDA0CSiR
- HpuBEHCjpYXHG8UmiF1bvupdIItI6Vaw5mwVX9Wob5/5eVc2Yc31ROdIvIZn0G9MxNeXU/DDI
- hcDHFpjrp3N2BDo9xOc5etxemDCIgzLVD57KbgOVIXxwjYrUhZvVm0MUFBin8WKh4RuRYCJ0s
- SiFItiYnLHzanGfItUOjEmW4kzN1Ei7UNroH9M91ME6f0N8XRLS8YPUyRB4gtJzE9Ia31zIUV
- 7wfsYqejLN3Mv73OQGzQqWhlGeGOQrjEw70IIxwbj0t6QoygWzeAAGCr/yMV1jqUHc1vQesU7
- pmufhAGzRCb1mNgZ4VDwz1rJLdX5x6DamnuTUE8BsL0ow7c3GUqi4UCswNuYWHmPPkUWpQmke
- uPylkm+TOxmwDX0Mp932V/JlCX5Bk0ttXhR2E89KKFQIvgOXhFgzkgj+ckIzlQ84Y9aw6ggYc
- IjhDjnRSHJBK4xUyarpshRVN7itmPa9doxWuFIe8URY/yssMa+3ugz3VUyohQAppWG8IWPJwr
- OxYGYFZNOGZBnY=
+Reply-To: martinafrancis022@gmail.com
+Sender: nora38588@gmail.com
+Received: by 2002:a05:6400:5b95:0:0:0:0 with HTTP; Sun, 26 Sep 2021 17:00:08
+ -0700 (PDT)
+From:   Martina Francis <martinafrancis655@gmail.com>
+Date:   Sun, 26 Sep 2021 17:00:08 -0700
+X-Google-Sender-Auth: xoKdvKN9nt_ohVBXfnDz0SL-2xw
+Message-ID: <CANa4+1=aeQSy9c=gMMdJAWt8f3q9DJ2n=RPNj0=bp1xmKCOK4g@mail.gmail.com>
+Subject: =?UTF-8?B?RG9icsO9IGRlxYggbW9qYSBkcmFow6E=?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+--=20
+Dobr=C3=BD de=C5=88 moja drah=C3=A1
+Ako sa m=C3=A1=C5=A1 a tvoja rodina?
+Som pani Martina Francis, chor=C3=A1 vdova p=C3=AD=C5=A1=C3=BAca z nemocni=
+=C4=8Dn=C3=A9ho l=C3=B4=C5=BEka bez
+die=C5=A5a=C5=A5a. Kontaktujem v=C3=A1s, aby ste poznali moju t=C3=BA=C5=BE=
+bu darova=C5=A5 sumu (2
+700 000,00 MILI=C3=93N USD), ktor=C3=BA som zdedil po svojom zosnulom man=
+=C5=BEelovi
+na charitu, v s=C3=BA=C4=8Dasnosti je fond st=C3=A1le v banke. Ned=C3=A1vno=
+ mi m=C3=B4j lek=C3=A1r
+povedal, =C5=BEe m=C3=A1m v=C3=A1=C5=BEne rakovinov=C3=A9 ochorenie a m=C3=
+=B4j =C5=BEivot u=C5=BE nie je
+zaru=C4=8Den=C3=BD, a preto som sa rozhodol.
 
+Chcem, aby ste tento fond vyu=C5=BEili na chudobn=C3=BDch =C4=BEud=C3=AD, t=
+=C3=BDran=C3=A9 deti,
+menej privilegovan=C3=BDch, cirkvi, sirotince a trpiace vdovy v
+spolo=C4=8Dnosti.
 
-On 21.09.21 11:20, Kalle Valo wrote:
-> Shawn Guo <shawn.guo@linaro.org> writes:
->
->>> Is this not the usual DT policy, that missing optional properties should
->>> not prevent a device to work, that old dtbs should still work when new
->>> properties are added?
->>>
->>> I'm not sure what's the best way forward. A plain revert of this patch
->>> would at least bring back wifi support for RockPro64 devices with
->>> existing dtbs. Maybe someone else has a better proposal how to proceed.
->> Go ahead to revert if we do not hear a better solution, I would say.
-> Yes, please do send a revert. And remember to explain the regression in
-> the commit log.
->
-I sent a revert patch.
+Kontaktujte ma ihne=C4=8F po pre=C4=8D=C3=ADtan=C3=AD tejto spr=C3=A1vy a z=
+=C3=ADskajte =C4=8Fal=C5=A1ie
+podrobnosti o tejto humanit=C3=A1rnej agende.
 
-Sorry for the delay,
-Soeren
+Boh v=C3=A1m =C5=BEehnaj, k=C3=BDm =C4=8Dak=C3=A1m na va=C5=A1u odpove=C4=
+=8F.
+
+Va=C5=A1a sestra.
+Pani Martina Francis.
