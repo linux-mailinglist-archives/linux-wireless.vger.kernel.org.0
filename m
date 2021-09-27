@@ -2,93 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10D54418D39
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 02:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20655418D79
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 03:28:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232227AbhI0AKN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Sep 2021 20:10:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33750 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232201AbhI0AKN (ORCPT
+        id S232317AbhI0BaA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Sep 2021 21:30:00 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:39197 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230175AbhI0BaA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Sep 2021 20:10:13 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A6E5C061604
-        for <linux-wireless@vger.kernel.org>; Sun, 26 Sep 2021 17:08:36 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id y186so4729690pgd.0
-        for <linux-wireless@vger.kernel.org>; Sun, 26 Sep 2021 17:08:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=ZITki0Tlgr2SOixro8XnxB3qWg1irmvVm6UWMwcCgLY=;
-        b=r9nqq+3OdoQV3e1vn4PowWpeKZ7ylD4rWLhHVnCkJP417FnWIxEDgJhoCgkID6ihv1
-         usIsh1VFvVIRavVoe00+WMmx2tYWi/QD723QrCt9LZpR4/Mod7LMVfMWTClFddoljQEc
-         TEhnjOHX7bXrQeCh69iNqjK8E9j+13McwJdENTftglreWqiJ2YFUsWOa3bAggPw6johS
-         8oJK/UXUriiDjI7S10sQPHBxJpaM2ElHt7JCEH7/rLq5CFSlYuEmLcM7VQ56ZiuVf+sn
-         GFi/rzGBA1wjn9ESFjsdGsQu4Vz1v5DYt3Etzr8joN6jFAozZG16N4846jZNapfsntGv
-         jU1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ZITki0Tlgr2SOixro8XnxB3qWg1irmvVm6UWMwcCgLY=;
-        b=Mb92AZZoELWmX0Vnxtu8OmKSZUplBG683ND1Vkmh3uXWlVmLPAR2S/gOleDGSsYfIR
-         41N4ZkyzQth5wQQjJBw6L0pMZehQeRaqq9OV2A4OgVgYyanvyCKSLBqHZK+dv5pKBW2Z
-         Yx4We6KotcMbAE01QgI6Fj49i5D7xyOdZI1wiKualwDV0UDHZxRAw+BoZwmJxh7YK0pY
-         bdOnQmpdQMWngD9LM+VA8WDjqXSiC4v5jXT6tDiULNe0MuSIYPLf0yhGqyh1QlwOTX6g
-         zzIttPFJ3jmPQ2cwZYNfeuYAv3WS4WWHOKYaXO8+OFfVQxCUgsA1QrA6d4lTkmDvCVEd
-         8NOw==
-X-Gm-Message-State: AOAM530h8+tJ9bqnFESfolF7xpaCoSDzt6480QN7hzpm5ldg47GRwzmv
-        M34pqIOpZ7OBYyaY8WtSMU9hYw==
-X-Google-Smtp-Source: ABdhPJz0KqJsswBZcZk1GMY1L+3Mp/JKNhbpIZ8FC0/9c8ADjX/fqNNkL2mOqao3KlX8y8cpTT39nw==
-X-Received: by 2002:a05:6a00:4:b0:440:6476:bcb4 with SMTP id h4-20020a056a00000400b004406476bcb4mr20529491pfk.0.1632701315853;
-        Sun, 26 Sep 2021 17:08:35 -0700 (PDT)
-Received: from dragon (80.251.214.228.16clouds.com. [80.251.214.228])
-        by smtp.gmail.com with ESMTPSA id o14sm15485637pfh.84.2021.09.26.17.08.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 26 Sep 2021 17:08:35 -0700 (PDT)
-Date:   Mon, 27 Sep 2021 08:08:29 +0800
-From:   Shawn Guo <shawn.guo@linaro.org>
-To:     Soeren Moch <smoch@web.de>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, stable@vger.kernel.org,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Revert "brcmfmac: use ISO3166 country code and 0 rev as
- fallback"
-Message-ID: <20210927000828.GE9901@dragon>
-References: <20210926201905.211605-1-smoch@web.de>
+        Sun, 26 Sep 2021 21:30:00 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 18R1S8Fn8025807, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 18R1S8Fn8025807
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 27 Sep 2021 09:28:08 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Mon, 27 Sep 2021 09:28:08 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 27 Sep 2021 09:28:07 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Mon, 27 Sep 2021 09:28:07 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "andy200511@126.com" <andy200511@126.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: Authentication Failure when target WiFi's signal strength is below 40% (rtw89)
+Thread-Topic: Authentication Failure when target WiFi's signal strength is
+ below 40% (rtw89)
+Thread-Index: AQHXscRxDEiLbdM4IESPiClNRvGXtqu3GE4g
+Date:   Mon, 27 Sep 2021 01:28:07 +0000
+Message-ID: <897b9605327946a0b0d774dd3c0dbdd2@realtek.com>
+References: <2931264.cLPqxE5pUp@omenarch>
+In-Reply-To: <2931264.cLPqxE5pUp@omenarch>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/9/26_=3F=3F_10:29:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210926201905.211605-1-smoch@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Sep 26, 2021 at 10:19:05PM +0200, Soeren Moch wrote:
-> This reverts commit b0b524f079a23e440dd22b04e369368dde847533.
-> 
-> Commit b0b524f079a2 ("brcmfmac: use ISO3166 country code and 0 rev
-> as fallback") changes country setup to directly use ISO3166 country
-> codes if no more specific code is configured. This was done under
-> the assumption that brcmfmac firmwares can handle such simple
-> direct mapping from country codes to firmware ccode values.
-> 
-> Unfortunately this is not true for all chipset/firmware combinations.
-> E.g. BCM4359/9 devices stop working as access point with this change,
-> so revert the offending commit to avoid the regression.
-> 
-> Signed-off-by: Soeren Moch <smoch@web.de>
-> Cc: stable@vger.kernel.org  # 5.14.x
 
-Acked-by: Shawn Guo <shawn.guo@linaro.org>
+> -----Original Message-----
+> From: andy200511@126.com <andy200511@126.com>
+> Sent: Saturday, September 25, 2021 11:48 AM
+> To: linux-wireless@vger.kernel.org
+> Subject: Authentication Failure when target WiFi's signal strength is below
+> 40% (rtw89)
+> 
+> Hello, dear Realtek engineers:
+> I am a user of the RTL8852AE card with the rtw89 kernel driver's unofficial
+> DKMS module AUR package
+> (https://aur.archlinux.org/packages/rtw89-dkms-git/). I have experienced
+> some issue of authentication when I tried to connect to a 5Ghz WiFi when its
+> signal strength is below 40%. The specific problem is even when I give the
+> correct password, the system keeps asking me to provide the password again
+> (using KDE's NetworkManager, unsure if it is related and have not yet tested
+> with other wifi managers). This issue solves when I move closer to my router
+> to gain more signal strength.
+> Here is the output of dmesg:
+> http://fars.ee/00U7
+> 
+> 
+
+Hi,
+
+We have fixed similar symptom by v6 submitted on end of August, but
+the last update of DKMS module you took is 2021-07-08 06:29.
+So, I suggest to try the novel version of rtw89, and use the novel
+firmware as well. Please reference to [1]
+
+[1] https://lore.kernel.org/linux-wireless/20210820043538.12424-1-pkshih@realtek.com/
+
+--
+Ping-Ke
+
