@@ -2,43 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CDDA4191D5
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 11:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DC744191E6
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 11:58:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233771AbhI0JxL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Sep 2021 05:53:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49348 "EHLO
+        id S233724AbhI0KAW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Sep 2021 06:00:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233759AbhI0JxJ (ORCPT
+        with ESMTP id S233703AbhI0KAV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Sep 2021 05:53:09 -0400
+        Mon, 27 Sep 2021 06:00:21 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2A65C061740
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Sep 2021 02:51:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8605AC061575;
+        Mon, 27 Sep 2021 02:58:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
         Resent-Message-ID:In-Reply-To:References;
-        bh=/T1Aj2N0xKr8OOg9lsn9+kkb8pPApE0XkEhMFlzksGE=; t=1632736289; x=1633945889; 
-        b=BVG9LWSA9/hQEvSuHmU/HGUABaIW6wsAB+iyfwkpLZ8oSbFvR/mpa+43TqLbD95+IoML2c6jRbo
-        Zz5vfNYB2IB1ozZVVFDb9kFO4w30RZXNSuXRb67oeA6/8+vL9qA+c4S8a6iCcICxBUbtWNn+CaDz1
-        1gwd+SvQaFdIdA8r7jGg4Si3WSl6ZlIZd4D7kuAVPXjaonsxK6EPS/HzPLgAPiSfBP1WurFPJ5q3O
-        XePPUvBCZfTjnmYdyDdHHWcdhTAGEoD19TAhCTh5IrktWR9IwMqnFuhk5P6P5YrN/HnsxLrUtG+VE
-        Dh2oGbx1CcqXBRxdj6CQyTkGgI7gFmG3XHoQ==;
+        bh=/lx1hyTvCxGj53rEQ9WPNWOBGzLKtKut8eOy9Qi9d3k=; t=1632736723; x=1633946323; 
+        b=phN9WPCrQvmQ2P+MIIh3Q39uC3X2GLPjff5CF0x00qoc4yJoqER9N8cXV6gZnHaXpITCnNi/VXg
+        VynmMvY+3LcD+o99GTLtxSyA4BS3Qvd6xE6gPjfOw6IjDObvgvNSngBwGcJrPgpQ4cCiQ702XAZ/L
+        HBppL3DOZmrG/nKT7NFNjNwS0J+m5UOpkaSMFH6I552tes7ue/+1yJzkAyqC5xRZuiWpNFOleeWWU
+        VW51/zHq/vdw2RoweInOeR71tq5Exeyl85lwfDc7K+L6tAc6Z7H7HcknBSOwsjHSE+4sW9FgAxk+I
+        qRhQDeG/v7ypfDRpfZffl5URSaPHXUiSXeyg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95-RC2)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1mUnIF-00CMw6-0k;
-        Mon, 27 Sep 2021 11:51:27 +0200
+        id 1mUnPF-00CN3q-FX;
+        Mon, 27 Sep 2021 11:58:41 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH v3] mac80211: twt: don't use potentially unaligned pointer
-Date:   Mon, 27 Sep 2021 11:51:24 +0200
-Message-Id: <20210927115124.e1208694f37b.Ie3de9bcc5dde5a79e3ac81f3185beafe4d214e57@changeid>
+Cc:     Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org
+Subject: [PATCH] mac80211: fix use-after-free in CCMP/GCMP RX
+Date:   Mon, 27 Sep 2021 11:58:39 +0200
+Message-Id: <20210927115838.12b9ac6bb233.I1d066acd5408a662c3b6e828122cd314fcb28cdb@changeid>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -48,37 +46,51 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Since we're pointing into a frame, the pointer to the
-twt_agrt->req_type struct member is potentially not
-aligned properly. Open-code le16p_replace_bits() to
-avoid passing an unaligned pointer.
+When PN checking is done in mac80211, for fragmentation we need
+to copy the PN to the RX struct so we can later use it to do a
+comparison, since commit bf30ca922a0c ("mac80211: check defrag
+PN against current frame").
 
-Reported-by: kernel test robot <lkp@intel.com>
-Fixes: f5a4c24e689f ("mac80211: introduce individual TWT support in AP mode")
+Unfortunately, in that commit I used the 'hdr' variable without
+it being necessarily valid, so use-after-free could occur if it
+was necessary to reallocate (parts of) the frame.
+
+Fix this by reloading the variable after the code that results
+in the reallocations, if any.
+
+This fixes https://bugzilla.kernel.org/show_bug.cgi?id=214401.
+
+Cc: stable@vger.kernel.org
+Fixes: bf30ca922a0c ("mac80211: check defrag PN against current frame")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/s1g.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/mac80211/wpa.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/mac80211/s1g.c b/net/mac80211/s1g.c
-index 7e35ab5b6166..4141bc80cdfd 100644
---- a/net/mac80211/s1g.c
-+++ b/net/mac80211/s1g.c
-@@ -104,9 +104,11 @@ ieee80211_s1g_rx_twt_setup(struct ieee80211_sub_if_data *sdata,
- 
- 	/* broadcast TWT not supported yet */
- 	if (twt->control & IEEE80211_TWT_CONTROL_NEG_TYPE_BROADCAST) {
--		le16p_replace_bits(&twt_agrt->req_type,
--				   TWT_SETUP_CMD_REJECT,
--				   IEEE80211_TWT_REQTYPE_SETUP_CMD);
-+		twt_agrt->req_type &=
-+			~cpu_to_le16(IEEE80211_TWT_REQTYPE_SETUP_CMD);
-+		twt_agrt->req_type |=
-+			le16_encode_bits(TWT_SETUP_CMD_REJECT,
-+					 IEEE80211_TWT_REQTYPE_SETUP_CMD);
- 		goto out;
+diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
+index bca47fad5a16..4eed23e27610 100644
+--- a/net/mac80211/wpa.c
++++ b/net/mac80211/wpa.c
+@@ -520,6 +520,9 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
+ 			return RX_DROP_UNUSABLE;
  	}
  
++	/* reload hdr - skb might have been reallocated */
++	hdr = (void *)rx->skb->data;
++
+ 	data_len = skb->len - hdrlen - IEEE80211_CCMP_HDR_LEN - mic_len;
+ 	if (!rx->sta || data_len < 0)
+ 		return RX_DROP_UNUSABLE;
+@@ -749,6 +752,9 @@ ieee80211_crypto_gcmp_decrypt(struct ieee80211_rx_data *rx)
+ 			return RX_DROP_UNUSABLE;
+ 	}
+ 
++	/* reload hdr - skb might have been reallocated */
++	hdr = (void *)rx->skb->data;
++
+ 	data_len = skb->len - hdrlen - IEEE80211_GCMP_HDR_LEN - mic_len;
+ 	if (!rx->sta || data_len < 0)
+ 		return RX_DROP_UNUSABLE;
 -- 
 2.31.1
 
