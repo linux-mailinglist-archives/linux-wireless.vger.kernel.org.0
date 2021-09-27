@@ -2,86 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35084419547
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 15:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD8F541954A
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 15:43:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234403AbhI0Nob (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Sep 2021 09:44:31 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:14996 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234114AbhI0Noa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Sep 2021 09:44:30 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632750172; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=Z37yVYh8YICEJtn+fkhkvwtyMzcivSLYdi245wxWQ6w=; b=VJBrtdpGoT8NmOSb0VmjBbukFRXD9wYnlpbV9VtvUJ8LA4JYnMpMiSXG8TvQOr3W4lDJYlG8
- Iiov4FRTOxl4MhyinvWiyHY8aGBnp18Hi6a2OsZ8v/FQX5qeZCFE8KA+cLl183ZWGLE+rpWK
- zM0WgWxSvolzO99np8Mmo0pYdsc=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 6151ca24713d5d6f96d4ca94 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 27 Sep 2021 13:41:56
- GMT
-Sender: tmariyap=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 5774BC4338F; Mon, 27 Sep 2021 13:41:55 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from cdchalpyex0390930-lin.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: tmariyap)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5F0F2C4360C;
-        Mon, 27 Sep 2021 13:41:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 5F0F2C4360C
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Thiraviyam Mariyappan <tmariyap@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Thiraviyam Mariyappan <tmariyap@codeaurora.org>
-Subject: [PATCH] mac80211: fix incorrect nss config
-Date:   Mon, 27 Sep 2021 19:11:44 +0530
-Message-Id: <1632750104-1722-1-git-send-email-tmariyap@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S234584AbhI0No7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Sep 2021 09:44:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46560 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234114AbhI0No6 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 27 Sep 2021 09:44:58 -0400
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C4EC061575;
+        Mon, 27 Sep 2021 06:43:20 -0700 (PDT)
+Received: by mail-ot1-x32a.google.com with SMTP id 67-20020a9d0449000000b00546e5a8062aso24441007otc.9;
+        Mon, 27 Sep 2021 06:43:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=3HB/k/I8QIn61ekO+bGy12NdBrVnuuc7rW3xgyTXOkM=;
+        b=VMdzJOTMPuyYImQkcriovhY8uaX/CTuVP3a+mcriuHSJ/BHIWtMTaPiE5si3BJy54W
+         apvKBtQ0p1nmPcVZaLZOx2Te6rW5sPSsK9YnFyyegNnUKR5zF9/cD2hm35NhhzHF8/nd
+         RVymoZR/pWlVnxH/jOJVEXwsEgO9eVf6Ll233WFVu/QPdDsfDTFaiCRcioRdD88Yrzu9
+         0D0nTwp+MBlHsjsgOS6lNpi69emqPr/jJs1ff762IY3EK94sjzx7RoEXf5CyCQ87BC1A
+         9FpvEtllJifTeaxQOazInhBtqM6ahAe3UFTZmPkm3ifta2LTuM1db2N1WWzHcPs1Pn//
+         1UrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=3HB/k/I8QIn61ekO+bGy12NdBrVnuuc7rW3xgyTXOkM=;
+        b=ZHCzuene99ZElMqnfM3Hdx85K9VAZkc/qd3V5C4oc5KmbVQnTcKNWZhrMSMamWZ/FB
+         Rd/QWL/TpK0TaJuSfNnQO9/UrzsfioYCEbMQv3oCdGzonkAiFxwzbid9WwjAtYjtzDI9
+         bxczwDRzcb3VLIJqIPNhFRmkZAJdyXt6xBWS0DZ2YkFhdUBZ9zS/EF0+vzdEZnjT+SSm
+         G3UM7VGMf0hjXvULhccMYXaqy23RL19mE/rYfGqACpxyg+gScJwthsppgQ1HVA9Biq+U
+         HXLK1/YzdDjDnDhacMdLvfZfWFzUEn5hRf7vR+MGZWia+pyD2QR9kQaQRlASr1bNkZlw
+         czcA==
+X-Gm-Message-State: AOAM5319VCNynaXmLGzb0WGLhm0EP9w0EsSN9P1xPFWhs8j0JpjdyHoV
+        LzHq/isiYdZzTIsFBAcBln2XrO/iFcOcEQ==
+X-Google-Smtp-Source: ABdhPJxAkbVx4BQS9zLZUK5bRuTjTgvXhbNu7syGeBKaa3ntgxnYnlYpkm+fYXRGbhq5OTNu9dEAEw==
+X-Received: by 2002:a05:6830:793:: with SMTP id w19mr76512ots.23.1632750199971;
+        Mon, 27 Sep 2021 06:43:19 -0700 (PDT)
+Received: from Davids-MacBook-Pro.local ([8.48.134.30])
+        by smtp.googlemail.com with ESMTPSA id p9sm3728198ots.66.2021.09.27.06.43.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Sep 2021 06:43:19 -0700 (PDT)
+Subject: Re: [PATCH net-next v4 2/3] net: ipv6: check return value of
+ rhashtable_init
+To:     MichelleJin <shjy180909@gmail.com>, davem@davemloft.net,
+        kuba@kernel.org, yoshfuji@linux-ipv6.org, dsahern@kernel.org,
+        johannes@sipsolutions.net
+Cc:     saeedm@nvidia.com, leon@kernel.org, roid@nvidia.com,
+        paulb@nvidia.com, ozsh@nvidia.com, lariel@nvidia.com,
+        cmi@nvidia.com, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+References: <20210927033457.1020967-1-shjy180909@gmail.com>
+ <20210927033457.1020967-3-shjy180909@gmail.com>
+From:   David Ahern <dsahern@gmail.com>
+Message-ID: <f1e72a4a-3a85-71d9-81cc-8ca835565a50@gmail.com>
+Date:   Mon, 27 Sep 2021 07:43:17 -0600
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <20210927033457.1020967-3-shjy180909@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In HE capabilities, HE-MCS Rx map field filled with value 0x3 for all eight
-spatial streams if txrx chains configured as incorrect value.
-This patch changes configure at least single spatial stream for HE-MCS
-0 to 7 in all supported channel widths if nss configured as incorrect
-value.
+On 9/26/21 9:34 PM, MichelleJin wrote:
+> When rhashtable_init() fails, it returns -EINVAL.
+> However, since error return value of rhashtable_init is not checked,
+> it can cause use of uninitialized pointers.
+> So, fix unhandled errors of rhashtable_init.
+> 
+> Signed-off-by: MichelleJin <shjy180909@gmail.com>
+> ---
 
-Signed-off-by: Thiraviyam Mariyappan <tmariyap@codeaurora.org>
----
- net/mac80211/he.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/net/mac80211/he.c b/net/mac80211/he.c
-index c05af70..ee113ff5 100644
---- a/net/mac80211/he.c
-+++ b/net/mac80211/he.c
-@@ -151,6 +151,13 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
- 		       &he_cap_ie[sizeof(he_cap->he_cap_elem) + mcs_nss_size],
- 		       he_ppe_size);
- 
-+	if (he_cap->he_mcs_nss_supp.rx_mcs_80 == cpu_to_le16(0xFFFF)) {
-+		he_cap->has_he = false;
-+		sdata_info(sdata, "Ignoring HE IE from %pM due to incorrect rx_mcs_80\n",
-+			   sta->addr);
-+		return;
-+	}
-+
- 	he_cap->has_he = true;
- 
- 	sta->cur_max_bandwidth = ieee80211_sta_cap_rx_bw(sta);
--- 
-2.7.4
-
+Reviewed-by: David Ahern <dsahern@kernel.org>
