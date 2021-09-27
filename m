@@ -2,104 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86CC3418FC9
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 09:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A97E44191CE
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 11:50:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233183AbhI0HVD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Sep 2021 03:21:03 -0400
-Received: from mail-il1-f200.google.com ([209.85.166.200]:38623 "EHLO
-        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233137AbhI0HVC (ORCPT
+        id S233744AbhI0JwS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Sep 2021 05:52:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49160 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233738AbhI0JwS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Sep 2021 03:21:02 -0400
-Received: by mail-il1-f200.google.com with SMTP id r13-20020a92440d000000b002498d6b85c1so17777732ila.5
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Sep 2021 00:19:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=HJTwPJ+4jVvs82M6884XSo7mRxi3vygWxCFS8xlsnps=;
-        b=qGSmy6YRzqgROk27h9t/SZtMzKGMI3+owLNUkMWTxLwExgo3P/377Ro7YbxaL0gPJM
-         rGPV1bTBBIJA2ub3esadxiD3d3AAzHUm63g+91aTsTV5fMDqdi4FTeBvmWAxR//Oftl2
-         W69Y7RMElWO/6nI31xdKQxREBqQEf7Et6mt8nD/e7BZF+swbZTzjW9wyJOooXMoDI9Hy
-         oZt2z9j+rRtFdBM1otkf6QzTXroVTapzRgKREm5f/p5tHhJpEIbOl4aB3E2QbRhz9yeh
-         T5fOQ4mCn8Yzy+VJaoG66YrqQ0Z13yYFCo0bmrs1eH8iCENLUYhILDSQycueD9qFd/gq
-         PU8g==
-X-Gm-Message-State: AOAM531I3f7kJKIbYaFMohx7mWSg0OPwbYx5IyHULm85xh23k6xtf8o0
-        RN0e5OQoxXSIbyYOCjr42NRhw+ta4bZjSIiDXlva2ugmFe5g
-X-Google-Smtp-Source: ABdhPJx1KpI5cC2MlZsTn36lab01Zs89i7Ym8v75LignfGo/a8nhKA0r+Yk3XpU68iUo6TF9EWHgj/nFGuLMI17hwUahXxv0Fp0m
+        Mon, 27 Sep 2021 05:52:18 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F058C061575
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Sep 2021 02:50:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=lBDJhU5KTD6ZxBTw9xcA1esWLOPyh87yizlBWAgfm9I=; t=1632736240; x=1633945840; 
+        b=s2b0Tjd98R2G+2gnvF71HM9iNxdvUEt7qd7LhcRY0Tfc8XD6cVTEpmzuFr5NjGYYkNZxZRib9yF
+        aziW+qN+5B8i0TU6Fk2ov+XcW7YLgZSVcluWiilB+HtK2nrhQRGzIgpG85cPe2yy5+mtZ+MWYD5rr
+        AS1/tddIvtwX0Q4ku3W6feQPAJ4Uxo1uIcpK1jgCZIXzXR5erMfHpHvGTOTYo92S93aiofeyM+QJF
+        Sc0u2YwXlFByR1JCcl4mjHVIgHlCQD4cvkkwuFEvpMn5DuXz9rd2/xELOYR/cOS+lNtntk4iVl6GI
+        YeVNHDv7q4To9gq/g5mOvcdjFHI7Iqi1FJKA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mUnHR-00CMu3-0r;
+        Mon, 27 Sep 2021 11:50:37 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH] mac80211: twt: don't use potentially unaligned pointer
+Date:   Mon, 27 Sep 2021 11:50:34 +0200
+Message-Id: <20210927115033.b6d9b3172285.Ie3de9bcc5dde5a79e3ac81f3185beafe4d214e57@changeid>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:345:: with SMTP id w5mr13802057iou.49.1632727164973;
- Mon, 27 Sep 2021 00:19:24 -0700 (PDT)
-Date:   Mon, 27 Sep 2021 00:19:24 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000aef88205ccf4ea41@google.com>
-Subject: [syzbot] WARNING in cfg80211_bss_update (2)
-From:   syzbot <syzbot+0b4e1901856f4895db24@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+From: Johannes Berg <johannes.berg@intel.com>
 
-syzbot found the following issue on:
+Since we're pointing into a frame, the pointer to the
+twt_agrt->req_type struct member is potentially not
+aligned properly. Open-code le16p_replace_bits() to
+avoid passing an unaligned pointer.
 
-HEAD commit:    428168f99517 Merge branch 'mlxsw-trap-adjacency'
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=104c39d7300000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6d93fe4341f98704
-dashboard link: https://syzkaller.appspot.com/bug?extid=0b4e1901856f4895db24
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+0b4e1901856f4895db24@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 26433 at net/wireless/scan.c:1574 cfg80211_combine_bsses net/wireless/scan.c:1574 [inline]
-WARNING: CPU: 1 PID: 26433 at net/wireless/scan.c:1574 cfg80211_bss_update+0x19fe/0x2070 net/wireless/scan.c:1755
-Modules linked in:
-CPU: 1 PID: 26433 Comm: kworker/u4:10 Not tainted 5.15.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: phy15 ieee80211_iface_work
-RIP: 0010:cfg80211_combine_bsses net/wireless/scan.c:1574 [inline]
-RIP: 0010:cfg80211_bss_update+0x19fe/0x2070 net/wireless/scan.c:1755
-Code: ff e9 e3 fd ff ff e8 71 37 0b f9 48 8d 7b 98 e8 c8 59 ff ff e9 46 fe ff ff e8 5e 37 0b f9 0f 0b e9 08 f2 ff ff e8 52 37 0b f9 <0f> 0b 4c 89 ff e8 88 99 72 fb 31 ff 89 c6 88 44 24 70 e8 7b 3d 0b
-RSP: 0018:ffffc90004a7edc0 EFLAGS: 00010216
-RAX: 0000000000001394 RBX: 0000000000000001 RCX: ffffc9000e290000
-RDX: 0000000000040000 RSI: ffffffff886ad45e RDI: 0000000000000003
-RBP: ffff888019e74400 R08: 0000000000000000 R09: 0000000000000000
-R10: ffffffff886ac8f4 R11: 0000000000000000 R12: ffff888075a01468
-R13: 0000000000000005 R14: ffff888075a01400 R15: ffff888019e74410
-FS:  0000000000000000(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020000000 CR3: 000000001f5bb000 CR4: 00000000001506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- cfg80211_inform_single_bss_frame_data+0x6e8/0xee0 net/wireless/scan.c:2411
- cfg80211_inform_bss_frame_data+0xa7/0xb10 net/wireless/scan.c:2444
- ieee80211_bss_info_update+0x376/0xb60 net/mac80211/scan.c:190
- ieee80211_rx_bss_info net/mac80211/ibss.c:1119 [inline]
- ieee80211_rx_mgmt_probe_beacon+0xcce/0x17c0 net/mac80211/ibss.c:1608
- ieee80211_ibss_rx_queued_mgmt+0xd37/0x1610 net/mac80211/ibss.c:1635
- ieee80211_iface_process_skb net/mac80211/iface.c:1439 [inline]
- ieee80211_iface_work+0xa65/0xd00 net/mac80211/iface.c:1493
- process_one_work+0x9bf/0x16b0 kernel/workqueue.c:2297
- worker_thread+0x658/0x11f0 kernel/workqueue.c:2444
- kthread+0x3e5/0x4d0 kernel/kthread.c:319
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
-
-
+Reported-by: kernel test robot <lkp@intel.com>
+Fixes: f5a4c24e689f ("mac80211: introduce individual TWT support in AP mode")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ net/mac80211/s1g.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/net/mac80211/s1g.c b/net/mac80211/s1g.c
+index 7e35ab5b6166..01140dd42a8b 100644
+--- a/net/mac80211/s1g.c
++++ b/net/mac80211/s1g.c
+@@ -104,9 +104,10 @@ ieee80211_s1g_rx_twt_setup(struct ieee80211_sub_if_data *sdata,
+ 
+ 	/* broadcast TWT not supported yet */
+ 	if (twt->control & IEEE80211_TWT_CONTROL_NEG_TYPE_BROADCAST) {
+-		le16p_replace_bits(&twt_agrt->req_type,
+-				   TWT_SETUP_CMD_REJECT,
+-				   IEEE80211_TWT_REQTYPE_SETUP_CMD);
++		twt_agrt->req_type &=
++			~cpu_to_le16(IEEE80211_TWT_REQTYPE_SETUP_CMD);
++		twt_agrt |= le16_encode_bits(TWT_SETUP_CMD_REJECT,
++					     IEEE80211_TWT_REQTYPE_SETUP_CMD);
+ 		goto out;
+ 	}
+ 
+-- 
+2.31.1
+
