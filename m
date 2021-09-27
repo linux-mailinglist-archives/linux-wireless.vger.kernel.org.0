@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DC744191E6
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 11:58:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FF0541921E
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 12:21:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233724AbhI0KAW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Sep 2021 06:00:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50944 "EHLO
+        id S233775AbhI0KWj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Sep 2021 06:22:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233703AbhI0KAV (ORCPT
+        with ESMTP id S233757AbhI0KWi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Sep 2021 06:00:21 -0400
+        Mon, 27 Sep 2021 06:22:38 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8605AC061575;
-        Mon, 27 Sep 2021 02:58:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D1BC061575;
+        Mon, 27 Sep 2021 03:21:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
         Resent-Message-ID:In-Reply-To:References;
-        bh=/lx1hyTvCxGj53rEQ9WPNWOBGzLKtKut8eOy9Qi9d3k=; t=1632736723; x=1633946323; 
-        b=phN9WPCrQvmQ2P+MIIh3Q39uC3X2GLPjff5CF0x00qoc4yJoqER9N8cXV6gZnHaXpITCnNi/VXg
-        VynmMvY+3LcD+o99GTLtxSyA4BS3Qvd6xE6gPjfOw6IjDObvgvNSngBwGcJrPgpQ4cCiQ702XAZ/L
-        HBppL3DOZmrG/nKT7NFNjNwS0J+m5UOpkaSMFH6I552tes7ue/+1yJzkAyqC5xRZuiWpNFOleeWWU
-        VW51/zHq/vdw2RoweInOeR71tq5Exeyl85lwfDc7K+L6tAc6Z7H7HcknBSOwsjHSE+4sW9FgAxk+I
-        qRhQDeG/v7ypfDRpfZffl5URSaPHXUiSXeyg==;
+        bh=HbwYiyPrCUCdCR4r0G9Lbu1ysCwtS8TbwZ3arIhdYmU=; t=1632738061; x=1633947661; 
+        b=nJroi7iH/cQEPDBeyNmmaw46l97MOMDM9ym2RQl9b9hRYNPUBZqevOLaqAJoWY9sM4gFy9qAlRX
+        ilMWVrOWBrejlDtJUMyi/fWb8HSu4Ewd6R3wsKlmOsBqj8/6UjH7AQzjqtWQ1IcPXB7VALG5RKRTI
+        vJ3eyUACWBs2MeQcP7hxGW0BPjqrVtXcuewd7ZnLoYFc25NQa6N82hlxs1sD4w7TuT5MAL8ckdoPv
+        wXO88sAXx58VlEQlRX3+FauSGwJ2fbVOkwnnYG6WmfjuJdKKpg6SRWQCGkb9usSR2dk8rda3pNVFe
+        goDWxDRDF3oMA9KqKu9u+FvC6/spm5hAI8eQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.95-RC2)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1mUnPF-00CN3q-FX;
-        Mon, 27 Sep 2021 11:58:41 +0200
+        id 1mUnkp-00CNSS-Je;
+        Mon, 27 Sep 2021 12:20:59 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org
-Subject: [PATCH] mac80211: fix use-after-free in CCMP/GCMP RX
-Date:   Mon, 27 Sep 2021 11:58:39 +0200
-Message-Id: <20210927115838.12b9ac6bb233.I1d066acd5408a662c3b6e828122cd314fcb28cdb@changeid>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211 2021-09-27
+Date:   Mon, 27 Sep 2021 12:20:56 +0200
+Message-Id: <20210927102057.45765-1-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -44,53 +44,74 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hi,
 
-When PN checking is done in mac80211, for fragmentation we need
-to copy the PN to the RX struct so we can later use it to do a
-comparison, since commit bf30ca922a0c ("mac80211: check defrag
-PN against current frame").
+So somehow this time around we ended up with a larger than
+usual set of fixes - see below.
 
-Unfortunately, in that commit I used the 'hdr' variable without
-it being necessarily valid, so use-after-free could occur if it
-was necessary to reallocate (parts of) the frame.
+Please pull and let me know if there's any problem.
 
-Fix this by reloading the variable after the code that results
-in the reallocations, if any.
+Thanks,
+johannes
 
-This fixes https://bugzilla.kernel.org/show_bug.cgi?id=214401.
 
-Cc: stable@vger.kernel.org
-Fixes: bf30ca922a0c ("mac80211: check defrag PN against current frame")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/wpa.c | 6 ++++++
- 1 file changed, 6 insertions(+)
 
-diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
-index bca47fad5a16..4eed23e27610 100644
---- a/net/mac80211/wpa.c
-+++ b/net/mac80211/wpa.c
-@@ -520,6 +520,9 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
- 			return RX_DROP_UNUSABLE;
- 	}
- 
-+	/* reload hdr - skb might have been reallocated */
-+	hdr = (void *)rx->skb->data;
-+
- 	data_len = skb->len - hdrlen - IEEE80211_CCMP_HDR_LEN - mic_len;
- 	if (!rx->sta || data_len < 0)
- 		return RX_DROP_UNUSABLE;
-@@ -749,6 +752,9 @@ ieee80211_crypto_gcmp_decrypt(struct ieee80211_rx_data *rx)
- 			return RX_DROP_UNUSABLE;
- 	}
- 
-+	/* reload hdr - skb might have been reallocated */
-+	hdr = (void *)rx->skb->data;
-+
- 	data_len = skb->len - hdrlen - IEEE80211_GCMP_HDR_LEN - mic_len;
- 	if (!rx->sta || data_len < 0)
- 		return RX_DROP_UNUSABLE;
--- 
-2.31.1
+The following changes since commit 977d293e23b48a1129830d7968605f61c4af71a0:
+
+  mptcp: ensure tx skbs always have the MPTCP ext (2021-09-22 14:39:41 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2021-09-27
+
+for you to fetch changes up to 33092aca857bf35a8e9cac0e8340c685a4796e90:
+
+  mac80211: Fix Ptk0 rekey documentation (2021-09-27 12:02:54 +0200)
+
+----------------------------------------------------------------
+Some fixes:
+ * potential use-after-free in CCMP/GCMP RX processing
+ * potential use-after-free in TX A-MSDU processing
+ * revert to low data rates for no-ack as the commit
+   broke other things
+ * limit VHT MCS/NSS in radiotap injection
+ * drop frames with invalid addresses in IBSS mode
+ * check rhashtable_init() return value in mesh
+ * fix potentially unaligned access in mesh
+ * fix late beacon hrtimer handling in hwsim (syzbot)
+ * fix documentation for PTK0 rekeying
+
+----------------------------------------------------------------
+Alexander Wetzel (1):
+      mac80211: Fix Ptk0 rekey documentation
+
+Chih-Kang Chang (1):
+      mac80211: Fix ieee80211_amsdu_aggregate frag_tail bug
+
+Felix Fietkau (1):
+      Revert "mac80211: do not use low data rates for data frames with no ack flag"
+
+Johannes Berg (3):
+      mac80211: mesh: fix potentially unaligned access
+      mac80211-hwsim: fix late beacon hrtimer handling
+      mac80211: fix use-after-free in CCMP/GCMP RX
+
+Lorenzo Bianconi (1):
+      mac80211: limit injected vht mcs/nss in ieee80211_parse_tx_radiotap
+
+MichelleJin (1):
+      mac80211: check return value of rhashtable_init
+
+YueHaibing (1):
+      mac80211: Drop frames from invalid MAC address in ad-hoc mode
+
+ drivers/net/wireless/mac80211_hwsim.c |  4 ++--
+ include/net/mac80211.h                |  8 ++++----
+ net/mac80211/mesh_pathtbl.c           |  5 ++++-
+ net/mac80211/mesh_ps.c                |  3 ++-
+ net/mac80211/rate.c                   |  4 ----
+ net/mac80211/rx.c                     |  3 ++-
+ net/mac80211/tx.c                     | 12 ++++++++++++
+ net/mac80211/wpa.c                    |  6 ++++++
+ 8 files changed, 32 insertions(+), 13 deletions(-)
 
