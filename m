@@ -2,150 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD26341AD02
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 12:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B7EF41AD3E
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 12:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240251AbhI1Kd6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Sep 2021 06:33:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52276 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240238AbhI1Kd5 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Sep 2021 06:33:57 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBF39C061575
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Sep 2021 03:32:18 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mVAOh-0007IU-GX; Tue, 28 Sep 2021 12:31:39 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mVAOX-0002lF-WD; Tue, 28 Sep 2021 12:31:30 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mVAOX-0003v8-Tx; Tue, 28 Sep 2021 12:31:29 +0200
-Date:   Tue, 28 Sep 2021 12:31:29 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Simon Horman <simon.horman@corigine.com>
-Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
-        oss-drivers@corigine.com, Paul Mackerras <paulus@samba.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Salil Mehta <salil.mehta@huawei.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
-        Oliver O'Halloran <oohall@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v4 4/8] PCI: replace pci_dev::driver usage that gets the
- driver name
-Message-ID: <20210928103129.c3gcbnfbarezr3mm@pengutronix.de>
-References: <20210927204326.612555-1-uwe@kleine-koenig.org>
- <20210927204326.612555-5-uwe@kleine-koenig.org>
- <20210928100127.GA16801@corigine.com>
+        id S240264AbhI1Ksr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Sep 2021 06:48:47 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:56722 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240280AbhI1Ksp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 28 Sep 2021 06:48:45 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1632826026; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=5VxBcWj7WadgElMm3An2ujPwLljXKPv67MUI7mVEm28=; b=FTd8i+z/+tO3EdnS5IHvrF/FsUKZv8wGmVcoyWO0Viv3HPo1439gfcdJq6w0uRRxVvA+XdfG
+ 1AZfxPfiN7gZVc9CDJLLSNS5PxMKUntZ5Toc95zet4We8sBJdr/751hFJNs+m3KsZy8+Gc0C
+ pRhmu75AWV8iluU5DSKz7h5wK7w=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 6152f2a9713d5d6f96f7d4bc (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 28 Sep 2021 10:47:05
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id BD045C4360D; Tue, 28 Sep 2021 10:47:04 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E4E98C4338F;
+        Tue, 28 Sep 2021 10:47:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org E4E98C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jouni Malinen <jouni@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Rameshkumar Sundaram <ramess@codeaurora.org>,
+        Sathishkumar Muruganandam <murugana@codeaurora.org>
+Subject: Re: [PATCH 10/12] ath11k: Send PPDU_STATS_CFG with proper pdev mask to firmware
+References: <20210721212029.142388-1-jouni@codeaurora.org>
+        <20210721212029.142388-10-jouni@codeaurora.org>
+Date:   Tue, 28 Sep 2021 13:46:58 +0300
+In-Reply-To: <20210721212029.142388-10-jouni@codeaurora.org> (Jouni Malinen's
+        message of "Thu, 22 Jul 2021 00:20:27 +0300")
+Message-ID: <87a6jxq8nx.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="65t344eghsh2eaox"
-Content-Disposition: inline
-In-Reply-To: <20210928100127.GA16801@corigine.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Jouni Malinen <jouni@codeaurora.org> writes:
 
---65t344eghsh2eaox
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> From: Rameshkumar Sundaram <ramess@codeaurora.org>
+>
+> HTT_PPDU_STATS_CFG_PDEV_ID bit mask for target FW PPDU stats request
+> message was set as bit 8 to 15. Bit 8 is reserved for soc stats and
+> pdev id starts from bit 9. Hence change the bitmask as bit 9 to 15
+> and fill the proper pdev id in the request message.
+>
+> Tested on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01092-QCAHKSWPL_SILICONZ-1
+> Tested on: IPQ6018 hw1.0 WLAN.HK.2.5.0.1-01067-QCAHKSWPL_SILICONZ-1
+>
+> Fixes: 701e48a43e15 ("ath11k: add packet log support for QCA6390")
+>
+> Co-developed-by: Sathishkumar Muruganandam <murugana@codeaurora.org>
+> Signed-off-by: Sathishkumar Muruganandam <murugana@codeaurora.org>
+> Signed-off-by: Rameshkumar Sundaram <ramess@codeaurora.org>
+> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath11k/dp.h    | 3 ++-
+>  drivers/net/wireless/ath/ath11k/dp_tx.c | 2 +-
+>  2 files changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
+> index b2e7621969c5..522d3a6ce253 100644
+> --- a/drivers/net/wireless/ath/ath11k/dp.h
+> +++ b/drivers/net/wireless/ath/ath11k/dp.h
+> @@ -541,7 +541,8 @@ struct htt_ppdu_stats_cfg_cmd {
+>  } __packed;
+>  
+>  #define HTT_PPDU_STATS_CFG_MSG_TYPE		GENMASK(7, 0)
+> -#define HTT_PPDU_STATS_CFG_PDEV_ID		GENMASK(15, 8)
+> +#define HTT_PPDU_STATS_CFG_SOC_STATS		BIT(8)
+> +#define HTT_PPDU_STATS_CFG_PDEV_ID		GENMASK(15, 9)
 
-On Tue, Sep 28, 2021 at 12:01:28PM +0200, Simon Horman wrote:
-> On Mon, Sep 27, 2021 at 10:43:22PM +0200, Uwe Kleine-K=F6nig wrote:
-> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> >=20
-> > struct pci_dev::driver holds (apart from a constant offset) the same
-> > data as struct pci_dev::dev->driver. With the goal to remove struct
-> > pci_dev::driver to get rid of data duplication replace getting the
-> > driver name by dev_driver_string() which implicitly makes use of struct
-> > pci_dev::dev->driver.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> ...
->=20
-> > diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c b/dri=
-vers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > index 0685ece1f155..23dfb599c828 100644
-> > --- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > +++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > @@ -202,7 +202,7 @@ nfp_get_drvinfo(struct nfp_app *app, struct pci_dev=
- *pdev,
-> >  {
-> >  	char nsp_version[ETHTOOL_FWVERS_LEN] =3D {};
-> > =20
-> > -	strlcpy(drvinfo->driver, pdev->driver->name, sizeof(drvinfo->driver));
-> > +	strlcpy(drvinfo->driver, dev_driver_string(&pdev->dev), sizeof(drvinf=
-o->driver));
->=20
-> I'd slightly prefer to maintain lines under 80 columns wide.
-> But not nearly strongly enough to engage in a long debate about it.
+This part is clear after reading the commit log.
 
-:-)
+> --- a/drivers/net/wireless/ath/ath11k/dp_tx.c
+> +++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
+> @@ -906,7 +906,7 @@ int ath11k_dp_tx_htt_h2t_ppdu_stats_req(struct ath11k *ar, u32 mask)
+>  		cmd->msg = FIELD_PREP(HTT_PPDU_STATS_CFG_MSG_TYPE,
+>  				      HTT_H2T_MSG_TYPE_PPDU_STATS_CFG);
+>  
+> -		pdev_mask = 1 << (i + 1);
+> +		pdev_mask = 1 << (ar->pdev_idx + i);
+>  		cmd->msg |= FIELD_PREP(HTT_PPDU_STATS_CFG_PDEV_ID, pdev_mask);
+>  		cmd->msg |= FIELD_PREP(HTT_PPDU_STATS_CFG_TLV_TYPE_BITMASK, mask);
 
-Looking at the output of
+But this part isn't. All I can see in the commit log is a vague comment
+"and fill the proper pdev id in the request message" and nothing else.
+Please provide a proper explanation for this change and I can then add
+that to the commit log.
 
-	git grep strlcpy.\*sizeof
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-I wonder if it would be sensible to introduce something like
-
-	#define strlcpy_array(arr, src) (strlcpy(arr, src, sizeof(arr)) + __must_b=
-e_array(arr))
-
-but not sure this is possible without a long debate either (and this
-line is over 80 chars wide, too :-).
-
-> In any case, for the NFP portion of this patch.
->=20
-> Acked-by: Simon Horman <simon.horman@corigine.com>
-
-Thanks
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---65t344eghsh2eaox
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFS7v4ACgkQwfwUeK3K
-7Al9pwf+I6TDjUNhtsTqkV/J+f3tcMtnjPMZH0hCqv+jXSkmBqkwvn8wxEQXGFBL
-q6aNbMpy8LUCK3yn4+yes6FhZOK+CkMC6LgAv+Kzr43plzOCOvWTSDTi/nKx8sYf
-JqmAcctxmEA1hkAuort6dCBezIVcHHCpWrnsUuokesFvURNzLkytUGekUAkR5NNj
-g1aF021oqz88PJwyABeyfgrnCgwMSk8VlL39MdNJPUZewreVGija36YlIh/pFUyk
-3TvYaY4JrCgqq7AfYcZbZwiqCpi1AxWWY+ACJOQlG4IDCzQr2I7c8IWI+8yxow5o
-9j9Z8N/LPOHLfPGUNx5Cj8qLUoDiIw==
-=IxWL
------END PGP SIGNATURE-----
-
---65t344eghsh2eaox--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
