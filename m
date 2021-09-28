@@ -2,143 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2502441A0F4
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Sep 2021 23:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DB8A41A90C
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 08:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237095AbhI0VDC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Sep 2021 17:03:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37216 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233122AbhI0VDB (ORCPT
+        id S239000AbhI1GpW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Sep 2021 02:45:22 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:52525 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238924AbhI1GpV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Sep 2021 17:03:01 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EE3CC061575
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Sep 2021 14:01:23 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mUxik-0003sZ-Tr; Mon, 27 Sep 2021 22:59:30 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mUxia-0001cX-8M; Mon, 27 Sep 2021 22:59:20 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mUxia-0001SG-3t; Mon, 27 Sep 2021 22:59:20 +0200
-Date:   Mon, 27 Sep 2021 22:59:17 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sathya Prakash <sathya.prakash@broadcom.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Alexander Duyck <alexanderduyck@fb.com>,
-        Russell Currey <ruscur@russell.cc>, x86@kernel.org,
-        qat-linux@intel.com, oss-drivers@corigine.com,
-        Oliver O'Halloran <oohall@gmail.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Jiri Olsa <jolsa@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marco Chiappero <marco.chiappero@intel.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        linux-scsi@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-pci@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        Fiona Trahe <fiona.trahe@intel.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
+        Tue, 28 Sep 2021 02:45:21 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1632811423; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=x8KORn26l3Mm682yXCu4AC83A+TMlzb+xY8KDLZycGs=; b=wAl4vX/Byu9gRtRuBn3usxdAQt92vGFokTjCxJ+C/FI96C6OmcbLyluS9t8lGRnM86xSEE/s
+ xPG0+Gul6pB+/uSubwGKPNxfoFrm8zcAOqfF8Rtm0Xl0rGqFGo1KP1pug6G6k7ntRBPDCgYJ
+ 4Axc95FsX1Alkx03HJcYhIaVJuA=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 6152b99c8578ef11edda797a (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 28 Sep 2021 06:43:40
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4ED82C43617; Tue, 28 Sep 2021 06:43:39 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 71802C4338F;
+        Tue, 28 Sep 2021 06:43:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 71802C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
         Arnd Bergmann <arnd@arndb.de>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Jack Xu <jack.xu@intel.com>, Borislav Petkov <bp@alien8.de>,
-        Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Juergen Gross <jgross@suse.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        xen-devel@lists.xenproject.org, Vadym Kochan <vkochan@marvell.com>,
-        MPT-FusionLinux.pdl@broadcom.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org,
-        Wojciech Ziemba <wojciech.ziemba@intel.com>,
-        linux-kernel@vger.kernel.org,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
-        netdev@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Tomaszx Kowalik <tomaszx.kowalik@intel.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
         "David S. Miller" <davem@davemloft.net>,
-        linux-perf-users@vger.kernel.org, Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v4 0/8] PCI: Drop duplicated tracking of a pci_dev's
- bound driver
-Message-ID: <20210927205917.e763q5mojkwk6per@pengutronix.de>
-References: <20210927204326.612555-1-uwe@kleine-koenig.org>
+        Jakub Kicinski <kuba@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] mwifiex: avoid null-pointer-subtraction warning
+References: <20210927121656.940304-1-arnd@kernel.org>
+Date:   Tue, 28 Sep 2021 09:43:32 +0300
+In-Reply-To: <20210927121656.940304-1-arnd@kernel.org> (Arnd Bergmann's
+        message of "Mon, 27 Sep 2021 14:16:35 +0200")
+Message-ID: <87wnn1qjxn.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="upxcpc44c7obtcwt"
-Content-Disposition: inline
-In-Reply-To: <20210927204326.612555-1-uwe@kleine-koenig.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Arnd Bergmann <arnd@kernel.org> writes:
 
---upxcpc44c7obtcwt
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> clang complains about some NULL pointer arithmetic in this driver:
+>
+> drivers/net/wireless/marvell/mwifiex/sta_tx.c:65:59: error: performing pointer subtraction with a null pointer has undefined behavior [-Werror,-Wnull-pointer-subtraction]
+>         pad = ((void *)skb->data - (sizeof(*local_tx_pd) + hroom)-
+>                                                                  ^
+> drivers/net/wireless/marvell/mwifiex/uap_txrx.c:478:53: error: performing pointer subtraction with a null pointer has undefined behavior [-Werror,-Wnull-pointer-subtraction]
+>         pad = ((void *)skb->data - (sizeof(*txpd) + hroom) - NULL) &
+>
+> Rework that expression to do the same thing using a uintptr_t.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Hello,
+I'll queue this to v5.15.
 
-On Mon, Sep 27, 2021 at 10:43:18PM +0200, Uwe Kleine-K=F6nig wrote:
-> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-I sent the series from the wrong email address :-\ I should have used
-the above address as sender. Also I failed to add Christoph Hellwig to
-Cc: (fixed for this mail). I guess I'll have to send a v5, but I will
-wait a bit until the build bots are done with this series.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---upxcpc44c7obtcwt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFSMKIACgkQwfwUeK3K
-7AnalQgAlpBrfIgHu7fEFcJYkSR/33uv+V4CLZsCsu9MNXsSeds9vT38r8/y0bJl
-rOEKhsH1blIcq3bsV8/AulLrFkmjYRkkih/gA/y9CeoqpbV0/NzhrS4Xo9kMos8z
-n+0f+PzRO1qg1RVWyPL7K4pkXR5cMkqWGoie07ihkt3Y9mVY8ItYl9ny3oDxCRcU
-r8KFjr7Jw0Vo8eI3Kr9lu62KyFZFByf1DDBurR5crF8ZcWM7e9kOezvJrxOQxGPP
-Z82uFafVCkhtIkKaks/6/y9pMmJF9hzDd91ubgKfbkPIMvBjpL7n07Y/Sk4S34vM
-5wdHQGNinogsdgdebn8YdZCULLmXSQ==
-=/nd3
------END PGP SIGNATURE-----
-
---upxcpc44c7obtcwt--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
