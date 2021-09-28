@@ -2,85 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF6E741B7FD
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 22:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 076B441B884
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 22:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242563AbhI1UJy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Sep 2021 16:09:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39692 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242120AbhI1UJx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Sep 2021 16:09:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 13EEA61157;
-        Tue, 28 Sep 2021 20:08:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632859693;
-        bh=2q54bLyOqMkKWDejBRp+5bRZfTrKTSWJcV2n/WM7O5I=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=SJlILrO3fJ9ue8UvYpapX4ojkALIQWP0IhyvgGUEnmc2bU4/eR9Oz1WHf91TFCvXA
-         +AvaFLotNIk6GNVMTzMiHUmE0SECnG/DaFsMeYfbeJ4HnUD4sgFtdp1R5TXABKq/V5
-         4Gltdrd5KbjraDvTp7Dojw2UaOlvPdW7DYea08nUCxmciYyaMtdgK79OJikk1fI3dS
-         IQxjaLHV0wfoBer0BAfg32is1dAvMuIslQlV94SxW032Uh3Itk0NL7NQX8SiKEicB1
-         kZRIFonoYbzHfn7L/mtYQNU1K3C/vNR3V9ujP6yh2gmx56PtY428rmLhwG6a55K51M
-         NJoYyJGhopiig==
-Date:   Tue, 28 Sep 2021 15:08:11 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Russell Currey <ruscur@russell.cc>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
-        oss-drivers@corigine.com, Paul Mackerras <paulus@samba.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Salil Mehta <salil.mehta@huawei.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
-        Simon Horman <simon.horman@corigine.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v4 4/8] PCI: replace pci_dev::driver usage that gets the
- driver name
-Message-ID: <20210928200811.GA724823@bhelgaas>
+        id S242802AbhI1Um4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Sep 2021 16:42:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54534 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242734AbhI1Umz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 28 Sep 2021 16:42:55 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4BFFC06161C
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Sep 2021 13:41:15 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id g41so1431954lfv.1
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Sep 2021 13:41:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:from:subject:cc:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=6a9VrMEupMnYKAh2ZE2+a6Hw3bwXnoHKG1+wGsmFKSM=;
+        b=Ifc45YiMdo2WMqinyBnr8d4dlchkfcjvmOBTkDoE44fuyNGwa38btqpkQDnP26dKS9
+         0jQOxC74k3DZYFFC7WGHe/UXnWs+dx0gpoam/Jo3gQ2FJadOMv56+p5tSjje29gjgs02
+         aoTSQd5GrLkWz+Q9onPD+JDuC784+Fx/MnfDc9pwwAk9d9+8dCGU09q65BHrn8jdAr2s
+         A+rZNVcy4RliYxaPuwl6XwoGDPEwAs6Rc6nT+sJIPsOuqNUdM1+SCLfhP4inKCe4Wsga
+         KzLImH1Ja25/4RnxZ5sXC1X3iaKAVKU8XIbUICUNTENK1xqFj/pa4dIVOMmi73n+aIxM
+         13CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:to:from:subject:cc:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=6a9VrMEupMnYKAh2ZE2+a6Hw3bwXnoHKG1+wGsmFKSM=;
+        b=fe/NLwo1yzqPGBj6IMe70LR0PD3pBitTlp8EaY8lDgOt5YHWMlaiMAELGMGUkB1Dhg
+         XjxhNrTgbQ+Q1GxAa0rMr+YakHQ6YX+IqYjxj6GiszpRIqitQkoKXQ2zLcpOeATsiWhL
+         TiXK3vCnwv4MZrRpMvzKPSanD3AVJytQ/m9aZAv4bbr+rqM8Zkaksk4qDG54/vhWcFnB
+         wCll+OZW+HVe/kYlGySpml2t2aAekLZ3ztTVXMhsenD7JSIRs8RXRbcAD53TgBjqW8Nn
+         zY5O9EnNghhNFz2RY5P47wRFARQcuA1+chWXp/NE502PHlFplUgFR1Mac5ymIWeEkr5u
+         vC1Q==
+X-Gm-Message-State: AOAM530ZzpRxJFJ8OsBefjyCHM9XKjs88hfVMY1yfVpA7INWYoeIjh59
+        o5Zum8/dZjwDDd5bvRyLkfUDgckQSYM=
+X-Google-Smtp-Source: ABdhPJzrEUcXBmcmZbksjTQ7hRBfXNKSoQ3W/nsRQBN6gDclCe5gJoFiOourxh7g4tyZXUE04IAqNg==
+X-Received: by 2002:a05:6512:31c1:: with SMTP id j1mr8207632lfe.442.1632861673499;
+        Tue, 28 Sep 2021 13:41:13 -0700 (PDT)
+Received: from [192.168.2.145] (46-138-80-108.dynamic.spd-mgts.ru. [46.138.80.108])
+        by smtp.googlemail.com with ESMTPSA id j24sm5980lfh.302.2021.09.28.13.41.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Sep 2021 13:41:13 -0700 (PDT)
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        David Heidelberg <david@ixit.cz>,
+        Svyatoslav Ryhel <clamor95@gmail.com>,
+        andreas <hedmoo@yahoo.com>,
+        Maxim Schwalm <maxim.schwalm@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Subject: How to upstream Broadcom WiFi firmware files?
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Message-ID: <58d7f0c9-3869-4dbd-7de5-06fe6c729697@gmail.com>
+Date:   Tue, 28 Sep 2021 23:41:12 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210928192936.w5umyzivi4hs6q3r@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Sep 28, 2021 at 09:29:36PM +0200, Uwe Kleine-König wrote:
-> On Tue, Sep 28, 2021 at 12:17:59PM -0500, Bjorn Helgaas wrote:
-> > [+to Oliver, Russell for eeh_driver_name() question below]
-> > 
-> > On Mon, Sep 27, 2021 at 10:43:22PM +0200, Uwe Kleine-König wrote:
-> > > From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> > > 
-> > > struct pci_dev::driver holds (apart from a constant offset) the same
-> > > data as struct pci_dev::dev->driver. With the goal to remove struct
-> > > pci_dev::driver to get rid of data duplication replace getting the
-> > > driver name by dev_driver_string() which implicitly makes use of struct
-> > > pci_dev::dev->driver.
+Hi,
 
-> > Also, would you mind using "pci_dev.driver" instead of
-> > "pci_dev::driver"?  AFAIK, the "::" operator is not actually part of
-> > C, so I think it's more confusing than useful.
-> 
-> pci_dev.driver doesn't work either in C because pci_dev is a type and
-> not a variable.
-
-Sure, "pci_dev.driver" is not strictly acceptable C unless you have a
-"struct pci_dev pci_dev", but it's pretty common.
+We have Android devices that are well supported by upstream kernel and
+other upstreams. The biggest missing part is the WiFi firmware files of
+Broadcom chips, which don't work using stock binary firmware provided by
+linux-firmware package. We need per-board firmware files for them. The
+NVRAM configs are also missing. The main problem is that the license of
+those firmware files is unknown, the NVRAM files have copyrights and
+that's it. The devices in question are nearly 10 years old and are long
+time unsupported by vendors. Is it possible to upstream those firmware
+files and how it can be done?
