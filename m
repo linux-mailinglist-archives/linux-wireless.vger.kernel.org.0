@@ -2,80 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B0B041B2C2
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 17:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 426C041B2B6
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 17:14:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241392AbhI1PRM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Sep 2021 11:17:12 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:20720 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241450AbhI1PRK (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Sep 2021 11:17:10 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632842131; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=eY8XxRBIoR7Z9elJP5NpjavycPVgRhaiBBwg9/dEjBo=; b=iEt8RZMLR7W3+Kh5c3jsQLgli7S8LgCZzroqEh9/RWKMUNu5Ip3Ni4orAQIIYLFSaUOh/9/r
- ycKqvwTQwAR4X7hargxQ2xcjr9M02zuruWw8tDB5Y5wi+4vtpOku+uJhsJKSjA3ykDiVG9IH
- M999sx8SCr0x7BLUDqWd1CilhTo=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 6153315447d64efb6dd24f28 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 28 Sep 2021 15:14:28
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2DC69C43460; Tue, 28 Sep 2021 15:14:28 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7DDA3C4338F;
-        Tue, 28 Sep 2021 15:14:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 7DDA3C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Jouni Malinen <jouni@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Baochen Qiang <bqiang@codeaurora.org>
-Subject: Re: [PATCH 2/3] ath11k: change return buffer manager for QCA6390
-References: <20210914163726.38604-1-jouni@codeaurora.org>
-        <20210914163726.38604-2-jouni@codeaurora.org>
-Date:   Tue, 28 Sep 2021 18:14:22 +0300
-In-Reply-To: <20210914163726.38604-2-jouni@codeaurora.org> (Jouni Malinen's
-        message of "Tue, 14 Sep 2021 19:37:25 +0300")
-Message-ID: <87pmsspwa9.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S241290AbhI1PQ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Sep 2021 11:16:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46720 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S241080AbhI1PQ0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 28 Sep 2021 11:16:26 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CD84C6120D;
+        Tue, 28 Sep 2021 15:14:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632842087;
+        bh=x4sdbYlv2Fw2NBY7XGgKWNnqRMfVh408TP/JdMwdQWk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fD+tEbbFwJHO8UrFexH0fiWz6o5YIgqdneFlE3tW5fXhvGkkqTjVwgjV1WFlMZXvG
+         Xyu4bun1gUF2wIim+aWfXm7MrUNW61rUwmOKnErnzP0VV3sKv4k02CwdcQbd06iR4n
+         FfBOxZOZO8ruTPzSrfhAMB6zg/c9E6Q98x1wrsZ4u5B+Ln8zRhsXWAYOqJh7ZDQ7EP
+         1LzEIsGIknVD6eIbhsKfHbFTxEJhckB1MIhesIdjMYkNsJgAQqMyq1zHCdaEzu9WMz
+         Mn4nnXCRjFvoZqQruOgpCejrFn+al+t8zGjEchqGauj1Kq5dP6FlkoIJ1S9+7hYNjE
+         9/bHnz1vyb+SQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name, johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        ryder.lee@mediatek.com, evelyn.tsai@mediatek.com, john@phrozen.org
+Subject: [RFC 0/7] add offchannel monitor chain support
+Date:   Tue, 28 Sep 2021 17:14:31 +0200
+Message-Id: <cover.1632841652.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jouni Malinen <jouni@codeaurora.org> writes:
+Introduce the capability to configure a dedicated chain available for radar
+detection on some hw (e.g. mt7915). The driver is supposed to implement CAC
+management in sw or fw while hostapd (or iw) will implement the logic to
+select and configure the monitored channel.
+Using a dedicated chain to perform the CAC, the AP can avoid the CAC downtime
+switching to a new DFS channel.
 
-> From: Baochen Qiang <bqiang@codeaurora.org>
->
-> QCA6390 firmware uses HAL_RX_BUF_RBM_SW1_BM, not HAL_RX_BUF_RBM_SW3_BM.
->
-> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
->
-> Signed-off-by: Baochen Qiang <bqiang@codeaurora.org>
-> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+Lorenzo Bianconi (7):
+  mac80211: introduce set_offchan_chain callback
+  cfg80211: introduce nl80211_set_offchan_chain callback
+  cfg80211: introduce cfg80211_cac_offchan_event routine
+  mt76: mt7915: introduce mt7915_set_offchan_chain routine
+  mt76: mt7915: enable radar trigger on rdd2
+  mt76: mt7915: introduce rdd_monitor debugfs node
+  mt76: mt7915: add cac support for offchannel chain
 
-Same question as in patch 1, does this fix a bug or is just a
-theoretical issue found during code review?
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   | 37 +++++++++-
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |  4 ++
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 57 ++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 33 +++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 67 ++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   | 24 +++++++
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    | 10 +++
+ include/net/cfg80211.h                        | 19 ++++++
+ include/net/mac80211.h                        |  5 ++
+ include/uapi/linux/nl80211.h                  |  6 ++
+ net/mac80211/cfg.c                            | 13 ++++
+ net/wireless/mlme.c                           | 26 +++++++
+ net/wireless/nl80211.c                        | 41 ++++++++++++
+ net/wireless/rdev-ops.h                       | 17 +++++
+ net/wireless/trace.h                          | 19 ++++++
+ 15 files changed, 375 insertions(+), 3 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.31.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
