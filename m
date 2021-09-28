@@ -2,117 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49C4841AB72
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 11:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71AAD41AB7F
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 11:07:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239885AbhI1JHG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Sep 2021 05:07:06 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:34680 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239883AbhI1JHF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Sep 2021 05:07:05 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632819926; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=AEADEe6Ao53VNzkjzr4ASMukE0IbDTiq22jiTURIqwU=;
- b=wuxX+If9QDXDrh7AKKpcJGAyjneAkQDDgzi3bpcVEH7rvFYQR7Wc5RamMMLcHkZ7iQjpqb24
- qoCv9tltl5S4HKifYQ1MzRTPUskUPRimjcBKPSi98t024Mn9je2/zAhWAJ60Kb9fMSF7GNIR
- OTkI9Lx4eE7IWH84wEOiaUrlwwM=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 6152dacd9ffb413149962f05 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 28 Sep 2021 09:05:17
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E02F6C4360C; Tue, 28 Sep 2021 09:05:16 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 87F1EC43460;
-        Tue, 28 Sep 2021 09:05:16 +0000 (UTC)
+        id S239898AbhI1JIw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Sep 2021 05:08:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60506 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239793AbhI1JIu (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 28 Sep 2021 05:08:50 -0400
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A589C061575
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Sep 2021 02:07:11 -0700 (PDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id r4so30206387ybp.4
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Sep 2021 02:07:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Cgr0NudsllIuU4pYJfPAFPG4b+vxrvwuUcJfymOmGQ8=;
+        b=lYrUl/UGgbmR5JzVjzj6nhITSvgs5hWoh1caWwDlgwdKscrQ/B5aFei9WFHiKDzzFT
+         wKjMummwBxi3BeG2afmN0ESJRFN1/LfMjefGyXdCZjPAZFaoDwcOldNGGfDpFG+4creu
+         I6RI5A7aKs+xPln8EOx0BUktDVUXlZX4PQJEY/TrOXkMXcQO4A3ED9h86LHen6OhkfXs
+         r51pC3qdjgXThfsq4VSN9a0ZjSTFyjmgySkB5HyfXgr9pUGOztX6t+yIHVhAULCiwdRS
+         NytMFhNyCQNju3EUi0l2RWpbh1xWPUi44hcjfqsPQQd9pbwt51a0VlwUgSlLkfOlWIXa
+         OHWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Cgr0NudsllIuU4pYJfPAFPG4b+vxrvwuUcJfymOmGQ8=;
+        b=7rC60YCoBglE0boisFCz38R0AEUHEef2jRCJpN7oRMXaPC3X31ZUx4g18uySG4A4Ql
+         RCU26b8eNL6fLZZPy4ndRSNziEArpJHCfvofGm3MDS1IqGn0VM2QGmrwnu3Jn1kEbgTk
+         l9ktGNkLw9HEcOMkiS/xJt/42FJy298Bwv5rqK8oOv/xJd/u/dntEOM40QhOCH0+Bkr8
+         MCAY/Q8yfnnfE9iuH7DSeSXlNm8YjIZbcsQK+L+v/n3MCB3EFGsHjpOYaOG/i+9XT35F
+         47H1i1Igv1In9nZ9diO3rXaeH1Gw1N9ZNGR6KFoyF6HDjctWu/fsxSmZIYW7RxX2bZjx
+         /quQ==
+X-Gm-Message-State: AOAM531qmJs6PIbOHjFqrz8ZYq/6oEwuV87U65YcAaw+gFquvuExl1AF
+        u6YLdVk7XhRqtz32jqnIH+MWNnDkvvEWHkXW824=
+X-Google-Smtp-Source: ABdhPJxtfV9E/kynrP0431T92qyyeLK9oqhcdc4S0dR7gAlCoUshdtJ1xPufRRv3iX3L/txhRp5Zz59Fc3dOtXL3CNQ=
+X-Received: by 2002:a25:bb49:: with SMTP id b9mr5395793ybk.362.1632820029372;
+ Tue, 28 Sep 2021 02:07:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Tue, 28 Sep 2021 17:05:16 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v4 4/6] cfg80211: save power spectral density(psd) of
- regulatory rule
-In-Reply-To: <a4e56dbbe88771456bcf3051a0891d66d5e34fd4.camel@sipsolutions.net>
-References: <20210924100052.32029-1-wgong@codeaurora.org>
- <20210924100052.32029-5-wgong@codeaurora.org>
- <a4e56dbbe88771456bcf3051a0891d66d5e34fd4.camel@sipsolutions.net>
-Message-ID: <5b40dee9ca9d91bb0ca6aaa82deae370@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Received: by 2002:a26:c742:0:0:0:0:0 with HTTP; Tue, 28 Sep 2021 02:07:09
+ -0700 (PDT)
+Reply-To: assighassan@consultant.com
+From:   Abdwabbo Maddah <dklimowicz44@gmail.com>
+Date:   Tue, 28 Sep 2021 10:07:09 +0100
+Message-ID: <CA+QboxXKf0Vp4zAnMNGSbw-8gxVx6z5erTyGfGpu-umreYR4Sw@mail.gmail.com>
+Subject: DID YOU RECEIVE MY MAIL?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-09-27 19:27, Johannes Berg wrote:
-> On Fri, 2021-09-24 at 06:00 -0400, Wen Gong wrote:
->> The power spectral density(psd) of regulatory rule should be take
->> effect to the channels. This patch is to save the values to the
->> channel which has psd value.
->> 
->> Signed-off-by: Wen Gong <wgong@codeaurora.org>
->> ---
->>  net/wireless/reg.c | 17 +++++++++++++++++
->>  1 file changed, 17 insertions(+)
->> 
->> diff --git a/net/wireless/reg.c b/net/wireless/reg.c
->> index df87c7f3a049..8f765befb9bc 100644
->> --- a/net/wireless/reg.c
->> +++ b/net/wireless/reg.c
->> @@ -1590,6 +1590,8 @@ static u32 map_regdom_flags(u32 rd_flags)
->>  		channel_flags |= IEEE80211_CHAN_NO_160MHZ;
->>  	if (rd_flags & NL80211_RRF_NO_HE)
->>  		channel_flags |= IEEE80211_CHAN_NO_HE;
->> +	if (rd_flags & NL80211_RRF_PSD)
->> +		channel_flags |= IEEE80211_CHAN_PSD;
-> 
-> I went to go squash this with patch 3 and took a closer look, and then 
-> I
-> realized you're doing this weird.
-> 
-> Please when you resend also squash this - it's a bit weird to read in
-> two patches.
-> 
-> However, I think this is missing a lot of things - we already talked
-> about the regulatory database, and while that'd be nice, I guess I
-> conceded that you don't really have to do it now.
-> 
-> However, for visibility reasons, I *really* think you need to add
-> nl80211 attributes for all of this data - when the regdomain is dumped
-> in nl80211_put_regdom() you would have the flag now (it dumps the value
-> of reg_rule->flags in NL80211_ATTR_REG_RULE_FLAGS), but you didn't add
-> the value of reg_rule->psd which you've added.
-> 
-> Similarly, you're not adding the PSD flag nor the PSD value for the
-> *channel* in nl80211_msg_put_channel(), both of which I think you 
-> should
-> have for visibility into what's going on in the kernel/driver.
-> 
-> I've applied all the other patches, so please just resend 3 and 4,
-> squashed into a single patch, with the fixes.
-> 
+-- 
+Dear,
+I had sent you a mail but i don't think you received it that's why am
+writing you again.It is important you get back to me as soon as you
+can.
 
-Thanks
-
-I have sent "[PATCH v5] cfg80211: save power spectral density(psd) of 
-regulatory rule"
-for this.
-
-> johannes
+Abd-Wabbo Maddah
