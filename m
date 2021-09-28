@@ -2,32 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CEEF41A923
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 08:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A4C341A946
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 09:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239056AbhI1G6S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Sep 2021 02:58:18 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:26574 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239043AbhI1G6R (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Sep 2021 02:58:17 -0400
+        id S239050AbhI1HGQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Sep 2021 03:06:16 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:34762 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239048AbhI1HGP (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 28 Sep 2021 03:06:15 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632812199; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1632812676; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=iSoNn9rVBBCwIwnakNyJsEuzM1QdDkG7wWg95OqmLuo=; b=Vrdp142m4y+jKMLdChqo8d9t2VC1qWDXnFRbQ8lTr/M7fhTyw6WcYiTEvvmHYqrd10Rk2q6c
- sn2tcFaKSGIqn1fpM2ON37iDpBU2p0FctHFuf33r8wY+idQNlCA4vsE7qa2LM4aRmTY+Cx7N
- MTY0kSgCIQJp7HgW0mLc96DSmvU=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ bh=mcC+NI9lbMYVHDFKxEvKMLG3JdbT8e+is/T3jV6QeT8=; b=xMadentVRXOrfgWoF/8roy6TCoMrmXxVaK5KsZqtyDKVP9VcwN0N7yAfdlEWschpTh8UOVVA
+ cgik8PxJmevdPl7xzNT3YHikH6jnCmvLNMnl2d5fKk3dux2F67LLnsMO07bO13FPM3uqHe0Z
+ gad9m5uuVzUs07Wt2FEmAkifwn0=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 6152bc969ffb4131494eaf79 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 28 Sep 2021 06:56:22
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 6152be4b605ecf100b924377 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 28 Sep 2021 07:03:39
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7D431C4360C; Tue, 28 Sep 2021 06:56:21 +0000 (UTC)
+        id 30C25C4360C; Tue, 28 Sep 2021 07:03:39 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,24 +38,44 @@ Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D567FC4338F;
-        Tue, 28 Sep 2021 06:56:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org D567FC4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9DA53C4338F;
+        Tue, 28 Sep 2021 07:03:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 9DA53C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     akolli@codeaurora.org
-Cc:     Jouni Malinen <jouni@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/3] ath11k: add htt cmd to enable full monitor mode
-References: <20210721171905.61838-1-jouni@codeaurora.org>
-        <20210721171905.61838-2-jouni@codeaurora.org>
-        <87tuiaryhk.fsf@codeaurora.org>
-        <f01c7797e7072687ab6014ccba431eb9@codeaurora.org>
-Date:   Tue, 28 Sep 2021 09:56:13 +0300
-In-Reply-To: <f01c7797e7072687ab6014ccba431eb9@codeaurora.org> (akolli's
-        message of "Mon, 27 Sep 2021 09:49:45 +0530")
-Message-ID: <87sfxpqjci.fsf@codeaurora.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Rob Clark <robdclark@gmail.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Alex Elder <elder@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        iommu@lists.linux-foundation.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH] [RFC] qcom_scm: hide Kconfig symbol
+References: <20210927152412.2900928-1-arnd@kernel.org>
+Date:   Tue, 28 Sep 2021 10:03:25 +0300
+In-Reply-To: <20210927152412.2900928-1-arnd@kernel.org> (Arnd Bergmann's
+        message of "Mon, 27 Sep 2021 17:22:13 +0200")
+Message-ID: <87k0j1qj0i.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -62,39 +83,73 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-akolli@codeaurora.org writes:
+Arnd Bergmann <arnd@kernel.org> writes:
 
-> On 2021-09-24 17:12, Kalle Valo wrote:
->> Jouni Malinen <jouni@codeaurora.org> writes:
->>
->>> From: Anilkumar Kolli <akolli@codeaurora.org>
->>>
->>> Add a new hw_param full_monitor_mode to enable full monitor support
->>> for
->>> QCN9074. HTT_H2T_MSG_TYPE_RX_FULL_MONITOR_MODE cmd is sent to the
->>> firmware to enable the full monitor mode.
->>
->> Nowhere it's explained what "full monitor mode" means from an user's
->> point of view. Can someone give a high level summary what advantages
->> this feature has? For example, more frames delivered to user space or
->> what?
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-> Yes, more frames delivered with full monitor mode. The advantage with
-> full monitor mode is, hardware has status buffers available for all
-> the MPDUs in mon_dst_ring. Both status buffer and MPDUs from
-> mon_dst_ring is used to build the frame.
+> Now that SCM can be a loadable module, we have to add another
+> dependency to avoid link failures when ipa or adreno-gpu are
+> built-in:
+>
+> aarch64-linux-ld: drivers/net/ipa/ipa_main.o: in function `ipa_probe':
+> ipa_main.c:(.text+0xfc4): undefined reference to `qcom_scm_is_available'
+>
+> ld.lld: error: undefined symbol: qcom_scm_is_available
+>>>> referenced by adreno_gpu.c
+>>>>               gpu/drm/msm/adreno/adreno_gpu.o:(adreno_zap_shader_load)
+>>>> in archive drivers/built-in.a
+>
+> This can happen when CONFIG_ARCH_QCOM is disabled and we don't select
+> QCOM_MDT_LOADER, but some other module selects QCOM_SCM. Ideally we'd
+> use a similar dependency here to what we have for QCOM_RPROC_COMMON,
+> but that causes dependency loops from other things selecting QCOM_SCM.
+>
+> This appears to be an endless problem, so try something different this
+> time:
+>
+>  - CONFIG_QCOM_SCM becomes a hidden symbol that nothing 'depends on'
+>    but that is simply selected by all of its users
+>
+>  - All the stubs in include/linux/qcom_scm.h can go away
+>
+>  - arm-smccc.h needs to provide a stub for __arm_smccc_smc() to
+>    allow compile-testing QCOM_SCM on all architectures.
+>
+>  - To avoid a circular dependency chain involving RESET_CONTROLLER
+>    and PINCTRL_SUNXI, change the 'depends on RESET_CONTROLLER' in
+>    the latter one to 'select'.
+>
+> The last bit is rather annoying, as drivers should generally never
+> 'select' another subsystem, and about half the users of the reset
+> controller interface do this anyway.
+>
+> Nevertheless, this version seems to pass all my randconfig tests
+> and is more robust than any of the prior versions.
+>
+> Comments?
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Users, and developers outside of the wireless domain, have no clue what
-"MPDUs in mon_dst_ring" means, just as an example. Can you give a higher
-level summary of this feature and what benefit it brings, please? I'll
-then add that to the commit log.
+[...]
 
-For example, what kind of frames are we now able to deliver to the user
-space (which we before couldn't) and are there still some types of
-frames which we are not delivering?
+> diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
+> index 741289e385d5..ca007b800f75 100644
+> --- a/drivers/net/wireless/ath/ath10k/Kconfig
+> +++ b/drivers/net/wireless/ath/ath10k/Kconfig
+> @@ -44,7 +44,7 @@ config ATH10K_SNOC
+>  	tristate "Qualcomm ath10k SNOC support"
+>  	depends on ATH10K
+>  	depends on ARCH_QCOM || COMPILE_TEST
+> -	depends on QCOM_SCM || !QCOM_SCM #if QCOM_SCM=m this can't be =y
+> +	select QCOM_SCM
+>  	select QCOM_QMI_HELPERS
+>  	help
+>  	  This module adds support for integrated WCN3990 chip connected
 
-In other words, instead of technical low level jargon I'm looking for a
-summary in plain english which is understandable by everyone.
+I assume I can continue to build test ATH10K_SNOC with x86 as before?
+That's important for me. If yes, then:
+
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
