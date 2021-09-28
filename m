@@ -2,113 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3786F41ABB8
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 11:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF1D241AC3B
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Sep 2021 11:48:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239880AbhI1J0U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Sep 2021 05:26:20 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:34155 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239708AbhI1J0S (ORCPT
+        id S239844AbhI1JuH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Sep 2021 05:50:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41908 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239958AbhI1JuG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Sep 2021 05:26:18 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632821079; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=8g1WmO4zsI0Qad1a7UPKfzGAjqJuKEOek2wPadV/g+g=; b=oSEgOStPTwnPwp4heu/VJbXR3wFHHgq30Bq7E2e+pspZwKfwJgMoTsRUVgwQXCcBDVk/btSQ
- 9kBEZp8s6TxRdFgHLUlIxTGz1q9FfK0T9ZOSS+z02pCfjf/gP6PtXVg0/X1y2AfsWL1Mhz2V
- QmnQ22v/vWH4WSWtjYXnUNjVttQ=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 6152df4b713d5d6f96a30938 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 28 Sep 2021 09:24:27
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 70C56C4360D; Tue, 28 Sep 2021 09:24:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E3BFDC43460;
-        Tue, 28 Sep 2021 09:24:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org E3BFDC43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Anilkumar Kolli <akolli@codeaurora.org>
-Cc:     Jouni Malinen <jouni@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 4/4] ath11k: add caldata download support from EEPROM
-References: <20210721201927.100369-1-jouni@codeaurora.org>
-        <20210721201927.100369-5-jouni@codeaurora.org>
-        <875yuqrp4d.fsf@codeaurora.org>
-        <53726bfd2c5d7911dc8433e7fd82d238@codeaurora.org>
-Date:   Tue, 28 Sep 2021 12:24:22 +0300
-In-Reply-To: <53726bfd2c5d7911dc8433e7fd82d238@codeaurora.org> (Anilkumar
-        Kolli's message of "Mon, 27 Sep 2021 10:12:35 +0530")
-Message-ID: <87ee99qchl.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 28 Sep 2021 05:50:06 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F06C061575
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Sep 2021 02:48:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=nztK6MRG1RB7m4zyXQ6eLpNXY6AJQqCgJSixE5jGNyg=;
+        t=1632822507; x=1634032107; b=tCpV2GjUY1VeRGWpV4rk2WXHS83FopRrPSipyBukYF95y2s
+        7/mzwmB03PriFoMNvEyEAar4UnxBIvG3TlNZJJwawxUs9hK+XpL3DV6u0DASMrbToSJqD4VSXD8L7
+        NrNH42AbtKdBWMmQJIiK5wlIRt5T5W2j8bKZdGSpoC2MibVEpwBeGy0FjsoF8retLjCKiHgAfDvxw
+        69MMtSNw99/Nm7SZVh+5EiHRt1gkjYsRZta/igeqsw4ae4fHguMklCpNQ/Gxx4rJKxGB2aSDNzioL
+        nvsLPDdCHdI4D+/VXBAM7nniR9XAEO9UuYVnda3zmfFColW3WLI4YJtilBahxUMg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mV9ir-00Coyb-9F;
+        Tue, 28 Sep 2021 11:48:25 +0200
+Message-ID: <3da22bdc11ee028621ffa043ba37d4223e19c641.camel@sipsolutions.net>
+Subject: Re: [PATCH v12 3/4] mac80211: MBSSID and EMA support in beacon
+ handling
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aloka Dixit <alokad@codeaurora.org>, linux-wireless@vger.kernel.org
+Date:   Tue, 28 Sep 2021 11:48:24 +0200
+In-Reply-To: <20210916025437.29138-4-alokad@codeaurora.org>
+References: <20210916025437.29138-1-alokad@codeaurora.org>
+         <20210916025437.29138-4-alokad@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Anilkumar Kolli <akolli@codeaurora.org> writes:
+Hi,
 
-> On 2021-09-24 20:34, Kalle Valo wrote:
->> Jouni Malinen <jouni@codeaurora.org> writes:
->>
->>> From: Anilkumar Kolli <akolli@codeaurora.org>
->>>
->>> Firmware updates EEPROM support capability in QMI FW caps, send QMI
->>> BDF
->>> download request message with file type EEPROM, to get caldata
->>> download
->>> from EEPROM. Firmware takes more time to update cal data from
->>> EEPROM, so
->>> increase QMI timeout.
->>
->> The commit log would need more explanation how this patch works.
->>
->
-> FW advertizes calibration data support from EEPROM through
-> 'eeprom_read_timeout' in QMI FW Capability message. Ath11k sends BDF
-> download request with file type 'ATH11K_QMI_FILE_TYPE_EEPROM'. FW has
-> logic to read calibration data from EEPROM and process the calibration
-> data. FW takes more time to process the calibration data from EEPROM
-> so increase QMI timeout to 10msec.
+So I applied patches 1 and 2, but have some comments/questions here.
 
-Thanks, I now copied the updated commit log below. And do note that the
-timeout is 10 s, not 10 ms.
+>  static struct sk_buff *
+>  __ieee80211_beacon_get(struct ieee80211_hw *hw,
+>  		       struct ieee80211_vif *vif,
+>  		       struct ieee80211_mutable_offsets *offs,
+> -		       bool is_template)
+> +		       bool is_template,
+> +		       int ema_index)
+>  {
+>  	struct ieee80211_local *local = hw_to_local(hw);
+>  	struct beacon_data *beacon = NULL;
+> @@ -4995,13 +5038,11 @@ __ieee80211_beacon_get(struct ieee80211_hw *hw,
+>  	struct ieee80211_chanctx_conf *chanctx_conf;
+>  	int csa_off_base = 0;
+>  
+> 
+> 
+> 
+> -	rcu_read_lock();
 
-    ath11k: add caldata download support from EEPROM
-    
-    In some devices the calibration data is stored to EEPROM within the device so add
-    support for that.
-    
-    The firmware advertises the calibration data support from EEPROM through
-    'eeprom_read_timeout' in the QMI firmware capability message. ath11k sends
-    boardfile download request with file type 'ATH11K_QMI_FILE_TYPE_EEPROM'. The
-    firmware has logic to read calibration data from EEPROM and process the
-    calibration data.
-    
-    As now the firmware takes more time to process the calibration data from EEPROM
-    so increase QMI timeout to 10 seconds.
-    
-    Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1-01838-QCAHKSWPL_SILICONZ-1
+Why are you making this change that moves the RCU locking out? In two
+out of three places, you now have to
+
+	rcu_read_lock();
+	__ieee80211_beacon_get(...);
+	rcu_read_unlock();
+
+Not sure I see the point?
+> 
+>  	if (!ieee80211_sdata_running(sdata) || !chanctx_conf)
+> -		goto out;
+> +		return NULL;
+
+That also causes a lot of collateral changes that make it harder to read
+than it needs to be.
+
+Maybe split the locking change to a separate patch, if at all necessary?
+
+(but see below)
 
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+> +	rcu_read_lock();
+> ...
+> +		ema = kmalloc(sizeof(*ema), GFP_KERNEL);
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+This is obviously wrong - you should add a few more debug options to
+your test kernels :-)
+
+
+> +		if (!ema) {
+> +			ieee80211_beacon_free_ema_list(head);
+> +			cnt = 0;
+> +			goto out;
+
+break would be enough, and you could save the 'out' label?
+
+> +		}
+> +
+> +		ema->skb = __ieee80211_beacon_get(hw, vif, &ema->offs, true,
+> +						  cnt);
+> +		if (!ema->skb) {
+> +			kfree(ema);
+> +			break;
+> +		}
+> +		list_add_tail(&ema->list, head);
+> +		cnt++;
+> +	}
+> +out:
+> +	rcu_read_unlock();
+
+
+This is also the only place that uses the rcu_read_lock()/unlock() not
+directly around the __ieee80211_beacon_get(), but there's absolutely no
+point in that?
+
+I think what you intended here was correct, but it was done incorrectly.
+
+Really what it seems you (should have) _wanted_ with the RCU locking
+here is that the
+
+	beacon = rcu_dereference(ap->beacon);
+
+is only done *once*, so that you can really get a snapshot of *all*
+those MBSSID beacons, even if ap->beacon changed.
+
+However, that's not what you implemented. By moving the rcu_read_lock()
+outside, you've achieved nothing, since you still do a dereference
+inside, and it can change.
+
+It seems to me that to do this correctly you have to actually split
+__ieee80211_beacon_get() and do the dereference *outside* of it, then
+pass the 'beacon' pointer into it. Then, you can here do the dereference
+outside of the loop too (and in fact can do a much nicer for loop rather
+than the infinite loop).
+
+As it is, you've penalized the other cases (they now need to do the
+rcu_read_lock() manually), but haven't actually gained anything
+(functionally, at least, you save a few cycles by having the RCU stuff
+outside the loop, but that doesn't really count).
+
+johannes
+
+
