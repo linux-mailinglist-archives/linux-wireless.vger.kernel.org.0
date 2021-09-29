@@ -2,110 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98A8741CB15
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Sep 2021 19:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7266041CBA6
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Sep 2021 20:16:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343888AbhI2R32 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Sep 2021 13:29:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57278 "EHLO
+        id S1345878AbhI2SSX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Sep 2021 14:18:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244721AbhI2R31 (ORCPT
+        with ESMTP id S1344234AbhI2SSW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Sep 2021 13:29:27 -0400
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050::465:201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 396D8C06161C
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Sep 2021 10:27:46 -0700 (PDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4HKNcH0TzwzQlY2;
-        Wed, 29 Sep 2021 19:27:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gorani.run; s=MBO0001;
-        t=1632936459;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=7ZEK4wMXeUW5bEV7sbycmhopEv9Vlw1asfyGKcNSuLs=;
-        b=RPft8jbKpxBijxjjuCkPqWLkX5srkWUO8GavfP/mG+7ZB0TkkOuwb+aodEyZDwAvmonqN6
-        Snsb4FkiWq0WRv4QMRSMTe6yHJ9sKouLOf79vpB+P2o6TIRv0HZ64a04Dsua4TXk2V2x+E
-        aDmU9bteyczjoE45g/L+8XL8YXcNlEtDNXHYk3IwtRqobxJ8VHUo+MH336oBDkYAJs4Gc+
-        zMrSm+w5di/DY0JDKsItkTziU37RtQ9EV10d6qLRzEHfHOFOB0QwXUUCakUd7wjyyaU58P
-        jQX7Q3Qd7xdu3BZD+ZE7qXXvz/UFZRPNbN3HxdzbOnYFmiM1VFFuzeJpmnMBPw==
-From:   Sungbo Eo <mans0n@gorani.run>
-To:     sforshee@kernel.org
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Sungbo Eo <mans0n@gorani.run>
-Subject: [PATCH] wireless-regdb: Update regulatory rules for South Korea (KR)
-Date:   Thu, 30 Sep 2021 02:27:28 +0900
-Message-Id: <20210929172728.7512-1-mans0n@gorani.run>
+        Wed, 29 Sep 2021 14:18:22 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82277C061764
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Sep 2021 11:16:41 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id dn26so11947328edb.13
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Sep 2021 11:16:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=9l2EvdxFPK429F/rA4GmuQh+dj6YgmzG95mdI5lm0p4=;
+        b=k6exNCsGrukxqnmRAVo3R72wPIFc9RyCWNJiORe01eSqKiFwxsAfUGNk5JNjrMJDtp
+         9dPNsemsPgOMTrv/D5bHjQqtSIQ4CnLVt+XaobVR/Z0f8IsCcS7fBZMcL//FY1JY2+32
+         4Ol7ZK7iP8jDHfhbjH/v/uQiqWXqEOqbC8YpJ1W58mIs2pTOzgaqd6bQAMYtoBj6LHTH
+         gW2rdaKUR5tK/U0EoJZ5rtCHwZ67b+j5DG3PER4VPO4gLryrD9XDnqUpFi/T3Lgz3hub
+         GLU8lw2Mm41PJx/Zy25F5NSgBi2okGuEV3ffNZs0F34O7LkwiCT0fQZ6mqBoWA2w8EUQ
+         f1pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=9l2EvdxFPK429F/rA4GmuQh+dj6YgmzG95mdI5lm0p4=;
+        b=1uIGJs0XSjHYGxOJ6Ytk+kb26cgRk9us5vDPtUMl7S3gNuWIuXdmWg2fxhoDKIXXkb
+         qtPLOSe1Pq0grrtCDkEgnNozTteIKdzT8Scaf/Tm3nlJJkFprpl8AEf8l6ZGIGDtAXBk
+         CZB1LQ/QGqbZ6Gfli0FzA106OpKgubZELB1lWc7t7VxuZi/Yyx227oZiChal4mNRJgzx
+         2GG8HGRQoH1X0eYtT2sVLhhtCP/diO5delIvPZuxV1meZuvcmH2/2/JEQtJ/ROiFW1dj
+         4Pk6hKrdyLiEbuHEfNdPt1pdZGWu3zQ/ztIV3vG4/Agb1B09UH81A/mYKueS10INepVj
+         ZpiQ==
+X-Gm-Message-State: AOAM533gEzmHVj/9rmG6YKnJbiG7xM0IA4iQ7R1CyHaybTKcZWfObB0U
+        2ftgrZZi8dx6bL6boM5xZgUFtHEIHcBkrx9V1iM=
+X-Google-Smtp-Source: ABdhPJxKoSxAYmoWNuW0TVrSLZz3I18/aByPWwAesnrrXJVwkt8nOR3fVQsompHTQxzO+OxOOym9K16o3jVPIJU2QF8=
+X-Received: by 2002:a17:906:70c4:: with SMTP id g4mr492682ejk.363.1632939399882;
+ Wed, 29 Sep 2021 11:16:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BEF5C1702
+Sender: banmoonk@gmail.com
+Received: by 2002:a05:6400:5baa:0:0:0:0 with HTTP; Wed, 29 Sep 2021 11:16:39
+ -0700 (PDT)
+From:   "Mrs. Orgil Baatar" <mrs.orgilbaatar21@gmail.com>
+Date:   Wed, 29 Sep 2021 11:16:39 -0700
+X-Google-Sender-Auth: yWzfUuseZtTWblpp_I6UAOiKVBA
+Message-ID: <CA+6bzGpXBpmJw_gLmdA7sENWMBmWGY7RNHFVhOFzbb313EwLvg@mail.gmail.com>
+Subject: Your long awaited part payment of $2.5.000.00Usd
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch is based on MSIT Public Notification 2020-113 ("Unlicensed Radio
-Equipment Established Without Notice"), officially announced on 2021-01-06.
+Attention: Beneficiary,
 
-Extend the last 5 GHz frequency range to 5850 MHz.
+Your long awaited part payment of $2.5.000.00Usd (TWO MILLION FIVE
+Hundred Thousand United State Dollars) is ready for immediate release
+to you, and it was electronically credited into an ATM Visa Card for
+easy delivery.
 
-WiFi 6E is now allowed with the following restrictions:
-* Indoor: the full 1.2 GHz range, up to 160 MHz bandwidth and 250mW EIRP
-* Outdoor: the lower 500 MHz range, up to 160 MHz bandwidth and 25mW EIRP
-Here only the former entry is added.
+Your new Payment Reference No.- 6363836,
+Pin Code No: 1787
+Your Certificate of Merit Payment No: 05872,
+Released Code No: 1134;
 
-And also update the regulatory source links.
+Re-Confirm;
+Your Names: |
+Address: |
+Cell Phone: |
 
-Signed-off-by: Sungbo Eo <mans0n@gorani.run>
----
-I have two questions.
+Your immediate response is needed UBA Bank
 
-The regulation has one more restriction:
-  The TX power should not exceed 2.5 mW/MHz
-  when the frequency range includes the whole or a part of 5230-5250 MHz
-  and the bandwidth is equal to or less than 40 MHz.
-That leads to the followings:
-  5230-5250 @ 20 -> 17 dBm
-  5210-5250 @ 40 -> 20 dBm
-  5170-5250 @ 80 -> 23 dBm
-Is it possible to add this rule without lowering the TX power for 80 MHz bandwidth?
+Person to Contact:MR KELLY HALL the Director of the International
+Audit unit ATM Payment Center,
 
-And do we need AUTO-BW for 6E channels? I thought it is for merging adjacent frequency ranges.
----
- db.txt | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Email: uba-bf@e-ubabf.com
+TELEPHONE: +226 68251393
 
-diff --git a/db.txt b/db.txt
-index 6e8dbef..31052cf 100644
---- a/db.txt
-+++ b/db.txt
-@@ -862,15 +862,20 @@ country KP: DFS-JP
- 	(5490 - 5630 @ 20), (30), DFS
- 	(5735 - 5815 @ 20), (30)
- 
-+# Source:
-+# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196972
-+# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196973
-+# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196974
- country KR: DFS-JP
- 	# ref: https://www.rra.go.kr
- 	(2400 - 2483.5 @ 40), (23)
- 	(5150 - 5250 @ 80), (23), AUTO-BW
- 	(5250 - 5350 @ 80), (20), DFS, AUTO-BW
- 	(5470 - 5725 @ 160), (20), DFS
--	(5725 - 5835 @ 80), (23)
--	# 60 GHz band channels 1-4,
--	# ref: http://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/%EB%AC%B4%EC%84%A0%EC%84%A4%EB%B9%84%EA%B7%9C%EC%B9%99
-+	(5725 - 5850 @ 80), (23)
-+	# 6 GHz band
-+	(5925 - 7125 @ 160), (24), NO-OUTDOOR, AUTO-BW
-+	# 60 GHz band channels 1-4
- 	(57000 - 66000 @ 2160), (43)
- 
- country KW: DFS-ETSI
--- 
-2.33.0
+Your swift response will enhance our service,thanks for your co-operation;
 
+Regards.
+Mrs ORGIL BAATAR
