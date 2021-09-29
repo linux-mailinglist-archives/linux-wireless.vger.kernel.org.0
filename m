@@ -2,404 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB28941C743
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Sep 2021 16:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DA0741C83E
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Sep 2021 17:22:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344665AbhI2Owo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Sep 2021 10:52:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48394 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344647AbhI2Own (ORCPT
+        id S1345165AbhI2PXs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Sep 2021 11:23:48 -0400
+Received: from new1-smtp.messagingengine.com ([66.111.4.221]:57911 "EHLO
+        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1345161AbhI2PXr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Sep 2021 10:52:43 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C746C061762
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Sep 2021 07:51:02 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id l16-20020a9d6a90000000b0053b71f7dc83so3165934otq.7
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Sep 2021 07:51:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Tm91tkfGIvi0M2qTNvmitku73dp3NNYblsvi9BFfXNs=;
-        b=aD45K2qI23EDXi1OyN9HcRkACcRx5WGfxf5mRfRDDF1cHiJ2JT0O/aXogWzAWHgMeZ
-         lGkVSG04v0pYg1K273+2VHBKEqT5Lg1G6a1FUeBBid5Dl5AvMGzNhLmqkwa6bmdBTGSE
-         H/k1DZuwT5aHru9KNrgXF9vnC4Iw536aeLWgeaLylCFzqt8c9LxLlYXAyrN4YMFGnbdh
-         /1a95goEwKtNyoLIujDG4kufm12Fao17LXc5ZcU/FzDJNnii6fpoai8WpbkLcG6WzqRT
-         B6urt4QmUUBW9SVuS9fUVKIVU4dq1hUGv23MKHe1Z2PL7ioXO5TUNL9AjeLP1GeJB6vu
-         titA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Tm91tkfGIvi0M2qTNvmitku73dp3NNYblsvi9BFfXNs=;
-        b=1dpJTi0NtExvTQuU/bmlb6xKoiENCCXGk81aNxAFYSnSgr7gvleND38P257yeDonoL
-         StBXfYiQ5xVHURShX7bsC1bP6yNggPWApUYnZGqUthXHSiXXvkqSi47xszn2FWojUzlK
-         e5CSutEAExFzvl6TnjZnpnw96JUpw451TDTYJMLd3FH11T8IQChFXlXzsSeDIbIu4ZqG
-         hpOByvQRZIlnDPCg8Fuef8GAI1xiG1JufqD5lvW2+M5gW2NVlBVh0nw+fZt1rvlubkfD
-         d+8Xm8N/Qwvg/2OW/fUmwgR0/C/eEpbgEyW1+rdm/rLCQxuxX0YN3CIcTWrIWKvE2BrA
-         6k1Q==
-X-Gm-Message-State: AOAM532JPZCTSGkDdE8ksWblveDMJJ6JOuX/ubiWoWBfxtiWQRZWGl3U
-        eUVs6AnxhRhYLv++jskKZlANdg==
-X-Google-Smtp-Source: ABdhPJxlanevHNpfXvcrZZp77hyIhucBB0wBNtwFIdyGllVu2skfyiHdrRbk9borfFr6rvi5hDRd/g==
-X-Received: by 2002:a9d:192c:: with SMTP id j44mr375864ota.302.1632927061355;
-        Wed, 29 Sep 2021 07:51:01 -0700 (PDT)
-Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id a19sm491808oic.25.2021.09.29.07.50.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Sep 2021 07:51:00 -0700 (PDT)
-Date:   Wed, 29 Sep 2021 09:50:57 -0500
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Simon Trimmer <simont@opensource.cirrus.com>,
+        Wed, 29 Sep 2021 11:23:47 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 908EA580BD1;
+        Wed, 29 Sep 2021 11:22:05 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Wed, 29 Sep 2021 11:22:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; bh=D0IBY5Pj6/F0JNNHa8/d4D4dhFcHLMGCSTOY+LuBz
+        EA=; b=ZhuEp73RqBc+dT9dwPx5WFYuR7Gt0Z5v5JwZxAbdDiwVFqr1XKrU6RdqT
+        3rIoZ0CA9UXgji52+2PrjjTwfscTVJtNtaUNw4fuAiPKrcbpUMNPX+nbUdTlMNuo
+        UaNOlBBEIdPZdvCUm5E44mVcU0XNBF9ghUkUbjMwtk8eCdD0C5jk3+SwnJ6370BB
+        QgME+XdXif4rDMO/pgeg2l7pi1D3C/yDyz3uvu0xiYDNJw4CBYPifZEneb/EJw82
+        CIeEpqkNGZ0o97zwmk1ZQKBea3uhtd66i3eUUC6mqyYKw5ZNZrEiGUPGVcPsmtQJ
+        c5glFMBe4zEv4TdYBsw7o2ck4Y7Pw==
+X-ME-Sender: <xms:moRUYcIiQiek66OCH96DYUulnzjzdZQUThcHnOdDoDcRmeKGDlXjTg>
+    <xme:moRUYcI0MbGkED8qssdPRBiBWe_CrvaZAgkwunl6h6SPDjj1Nxxvi8lGvBHu2FgjH
+    55Xn4IWK7oq_YU>
+X-ME-Received: <xmr:moRUYcsakn1EZN6tshS1xq22hr0tGjDovRi3VpZjiEiXyTscCqvuL1Z2x-0vTKvY1JMClYZZLUhTFqgVM2ETrrkiuXTVYw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudekvddgkeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepkfguohcu
+    ufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrth
+    htvghrnhepvdffveekfeeiieeuieetudefkeevkeeuhfeuieduudetkeegleefvdegheej
+    hefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
+    guohhstghhsehiughoshgthhdrohhrgh
+X-ME-Proxy: <xmx:moRUYZY2T71Ye70VK0ZXT9k0rMv0XvUrClrZ-XxbCRE7b_iEWDrspw>
+    <xmx:moRUYTbGUGgYGvqoe_LLC_BahVB-nT9wy_dlTmqtTbk_4_48J7znPQ>
+    <xmx:moRUYVCFJwt-bPeKh9TD9dC-MuOE8-gqr0XNjl2JX7tu6qUkLlwV3g>
+    <xmx:nYRUYRaaJhOxHhrGXNsvKxWu6G5VIgXneeVfia8eaWBmOXFI-btEUQ>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 29 Sep 2021 11:22:01 -0400 (EDT)
+Date:   Wed, 29 Sep 2021 18:21:57 +0300
+From:   Ido Schimmel <idosch@idosch.org>
+To:     Ido Schimmel <idosch@nvidia.com>, u.kleine-koenig@pengutronix.de
+Cc:     Bjorn Helgaas <helgaas@kernel.org>, Christoph Hellwig <hch@lst.de>,
+        linux-pci@vger.kernel.org, kernel@pengutronix.de,
         Michael Ellerman <mpe@ellerman.id.au>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Joerg Roedel <joro@8bytes.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Alex Elder <elder@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, iommu@lists.linux-foundation.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH 2/2] [v2] qcom_scm: hide Kconfig symbol
-Message-ID: <YVR9UdzgUv43k5Og@yoga>
-References: <20210928075216.4193128-1-arnd@kernel.org>
- <20210928075216.4193128-2-arnd@kernel.org>
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Michael Buesch <m@bues.ch>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Alexander Duyck <alexanderduyck@fb.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-crypto@vger.kernel.org,
+        netdev@vger.kernel.org, oss-drivers@corigine.com
+Subject: Re: [PATCH v5 07/11] PCI: Replace pci_dev::driver usage that gets
+ the driver name
+Message-ID: <YVSElahmw2AMwnNH@shredder>
+References: <20210929085306.2203850-1-u.kleine-koenig@pengutronix.de>
+ <20210929085306.2203850-8-u.kleine-koenig@pengutronix.de>
+ <YVR74+8Rw6XmTqDD@shredder>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20210928075216.4193128-2-arnd@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YVR74+8Rw6XmTqDD@shredder>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue 28 Sep 02:50 CDT 2021, Arnd Bergmann wrote:
+On Wed, Sep 29, 2021 at 05:44:51PM +0300, Ido Schimmel wrote:
+> On Wed, Sep 29, 2021 at 10:53:02AM +0200, Uwe Kleine-König wrote:
+> > struct pci_dev::driver holds (apart from a constant offset) the same
+> > data as struct pci_dev::dev->driver. With the goal to remove struct
+> > pci_dev::driver to get rid of data duplication replace getting the
+> > driver name by dev_driver_string() which implicitly makes use of struct
+> > pci_dev::dev->driver.
+> > 
+> > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> 
+> For mlxsw:
+> 
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> Tested-by: Ido Schimmel <idosch@nvidia.com>
+> 
+> Thanks
 
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Now that SCM can be a loadable module, we have to add another
-> dependency to avoid link failures when ipa or adreno-gpu are
-> built-in:
-> 
-> aarch64-linux-ld: drivers/net/ipa/ipa_main.o: in function `ipa_probe':
-> ipa_main.c:(.text+0xfc4): undefined reference to `qcom_scm_is_available'
-> 
-> ld.lld: error: undefined symbol: qcom_scm_is_available
-> >>> referenced by adreno_gpu.c
-> >>>               gpu/drm/msm/adreno/adreno_gpu.o:(adreno_zap_shader_load) in archive drivers/built-in.a
-> 
-> This can happen when CONFIG_ARCH_QCOM is disabled and we don't select
-> QCOM_MDT_LOADER, but some other module selects QCOM_SCM. Ideally we'd
-> use a similar dependency here to what we have for QCOM_RPROC_COMMON,
-> but that causes dependency loops from other things selecting QCOM_SCM.
-> 
-> This appears to be an endless problem, so try something different this
-> time:
-> 
->  - CONFIG_QCOM_SCM becomes a hidden symbol that nothing 'depends on'
->    but that is simply selected by all of its users
-> 
->  - All the stubs in include/linux/qcom_scm.h can go away
-> 
->  - arm-smccc.h needs to provide a stub for __arm_smccc_smc() to
->    allow compile-testing QCOM_SCM on all architectures.
-> 
->  - To avoid a circular dependency chain involving RESET_CONTROLLER
->    and PINCTRL_SUNXI, drop the 'select RESET_CONTROLLER' statement.
->    According to my testing this still builds fine, and the QCOM
->    platform selects this symbol already.
-> 
-> Acked-by: Kalle Valo <kvalo@codeaurora.org>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> Changes in v2:
->   - drop the 'select RESET_CONTROLLER' line, rather than adding
->     more of the same
-> ---
->  drivers/firmware/Kconfig                |  5 +-
->  drivers/gpu/drm/msm/Kconfig             |  4 +-
->  drivers/iommu/Kconfig                   |  2 +-
->  drivers/media/platform/Kconfig          |  2 +-
->  drivers/mmc/host/Kconfig                |  2 +-
->  drivers/net/ipa/Kconfig                 |  1 +
->  drivers/net/wireless/ath/ath10k/Kconfig |  2 +-
->  drivers/pinctrl/qcom/Kconfig            |  3 +-
->  include/linux/arm-smccc.h               | 10 ++++
->  include/linux/qcom_scm.h                | 71 -------------------------
->  10 files changed, 20 insertions(+), 82 deletions(-)
-> 
-> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-> index 220a58cf0a44..cda7d7162cbb 100644
-> --- a/drivers/firmware/Kconfig
-> +++ b/drivers/firmware/Kconfig
-> @@ -203,10 +203,7 @@ config INTEL_STRATIX10_RSU
->  	  Say Y here if you want Intel RSU support.
->  
->  config QCOM_SCM
-> -	tristate "Qcom SCM driver"
-> -	depends on ARM || ARM64
-> -	depends on HAVE_ARM_SMCCC
-> -	select RESET_CONTROLLER
-> +	tristate
->  
->  config QCOM_SCM_DOWNLOAD_MODE_DEFAULT
->  	bool "Qualcomm download mode enabled by default"
-> diff --git a/drivers/gpu/drm/msm/Kconfig b/drivers/gpu/drm/msm/Kconfig
-> index e9c6af78b1d7..3ddf739a6f9b 100644
-> --- a/drivers/gpu/drm/msm/Kconfig
-> +++ b/drivers/gpu/drm/msm/Kconfig
-> @@ -17,7 +17,7 @@ config DRM_MSM
->  	select DRM_SCHED
->  	select SHMEM
->  	select TMPFS
-> -	select QCOM_SCM if ARCH_QCOM
-> +	select QCOM_SCM
->  	select WANT_DEV_COREDUMP
->  	select SND_SOC_HDMI_CODEC if SND_SOC
->  	select SYNC_FILE
-> @@ -55,7 +55,7 @@ config DRM_MSM_GPU_SUDO
->  
->  config DRM_MSM_HDMI_HDCP
->  	bool "Enable HDMI HDCP support in MSM DRM driver"
-> -	depends on DRM_MSM && QCOM_SCM
-> +	depends on DRM_MSM
->  	default y
->  	help
->  	  Choose this option to enable HDCP state machine
-> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-> index 124c41adeca1..989c83acbfee 100644
-> --- a/drivers/iommu/Kconfig
-> +++ b/drivers/iommu/Kconfig
-> @@ -308,7 +308,7 @@ config APPLE_DART
->  config ARM_SMMU
->  	tristate "ARM Ltd. System MMU (SMMU) Support"
->  	depends on ARM64 || ARM || (COMPILE_TEST && !GENERIC_ATOMIC64)
-> -	depends on QCOM_SCM || !QCOM_SCM #if QCOM_SCM=m this can't be =y
-> +	select QCOM_SCM
->  	select IOMMU_API
->  	select IOMMU_IO_PGTABLE_LPAE
->  	select ARM_DMA_USE_IOMMU if ARM
+Actually, I found out that after loading and executing another kernel
+(or the same one) via kexec I get this splat [1].
 
-As noted in the RFC, I think you also need to fix QCOM_IOMMU.
+[1]
+ BUG: unable to handle page fault for address: ffffffffffffffc8         
+ #PF: supervisor read access in kernel mode                       
+ #PF: error_code(0x0000) - not-present page
+ PGD 6e40c067 P4D 6e40c067 PUD 6e40e067 PMD 0 
+ Oops: 0000 [#1] SMP                                                    
+ CPU: 0 PID: 786 Comm: kexec Not tainted 5.15.0-rc2-custom-45114-g6b0effa5a61f #112
+ Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019                                                                              
+ RIP: 0010:pci_device_shutdown+0x16/0x40
+ Code: 01 00 31 d2 4c 89 e7 89 c6 e8 36 ce 01 00 41 89 c5 eb bb 90 55 48 8d af 40 ff ff ff 53 48 8b 47 68 48 89 fb 48 83 f8 78 74 0e <48> 8b 40 c8 48 85 c0 74 
+05 48 89 ef ff d0 80 3d 35 81 b7 01 00 74                                             
+ RSP: 0018:ffff95fec0d37db8 EFLAGS: 00010297                            
+ RAX: 0000000000000000 RBX: ffff8d70c0f1f0c0 RCX: 0000000000000004
+ RDX: ffff8d7115a03a00 RSI: 0000000000000206 RDI: ffff8d70c0f1f0c0      
+ RBP: ffff8d70c0f1f000 R08: 0000000000000002 R09: 0000000000000502
+ R10: 0000000000000000 R11: 0000000000000006 R12: ffff8d70c0f1f0c0                                                                                             
+ R13: ffff8d70c0f1f140 R14: 00000000fee1dead R15: 0000000000000000                                                                                             
+ FS:  00007fd3089e0b80(0000) GS:ffff8d7237c00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033                     
+ CR2: ffffffffffffffc8 CR3: 0000000155abb001 CR4: 00000000003706f0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ Call Trace:
+  device_shutdown+0x12e/0x180 
+  kernel_kexec+0x52/0xb0
+  __do_sys_reboot+0x1c0/0x210 
+  do_syscall_64+0x35/0x80
+  entry_SYSCALL_64_after_hwframe+0x44/0xae
+ RIP: 0033:0x7fd308afd557
+ Code: 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 89 fa be 69 19 12 28 bf ad de e1 fe b8 a9 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 
+c3 48 8b 15 f1 a8 0c 00 f7 d8 64 89 02 b8
+ RSP: 002b:00007fff7d01e0a8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a9
+ RAX: ffffffffffffffda RBX: 00005606db11d380 RCX: 00007fd308afd557
+ RDX: 0000000045584543 RSI: 0000000028121969 RDI: 00000000fee1dead
+ RBP: 0000000000000000 R08: 0000000000000007 R09: 00007fd308bc8a60
+ R10: 0000000000000021 R11: 0000000000000246 R12: 0000000000000003
+ R13: 00007fff7d01e1f0 R14: 00005606db11d8c0 R15: 00000000ffffffff
+ Modules linked in:
+ CR2: ffffffffffffffc8
+ ---[ end trace 0cb0bc633a6fde3e ]---
 
-In particular (iirc) since all the users of the iommu might be modules,
-which would prevent QCOM_IOMMU from being selected.
+Where:
 
-The rest looks good.
-
-Regards,
-Bjorn
-
-> diff --git a/drivers/media/platform/Kconfig b/drivers/media/platform/Kconfig
-> index 157c924686e4..80321e03809a 100644
-> --- a/drivers/media/platform/Kconfig
-> +++ b/drivers/media/platform/Kconfig
-> @@ -565,7 +565,7 @@ config VIDEO_QCOM_VENUS
->  	depends on VIDEO_DEV && VIDEO_V4L2 && QCOM_SMEM
->  	depends on (ARCH_QCOM && IOMMU_DMA) || COMPILE_TEST
->  	select QCOM_MDT_LOADER if ARCH_QCOM
-> -	select QCOM_SCM if ARCH_QCOM
-> +	select QCOM_SCM
->  	select VIDEOBUF2_DMA_CONTIG
->  	select V4L2_MEM2MEM_DEV
->  	help
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 71313961cc54..95b3511b0560 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -547,7 +547,7 @@ config MMC_SDHCI_MSM
->  	depends on MMC_SDHCI_PLTFM
->  	select MMC_SDHCI_IO_ACCESSORS
->  	select MMC_CQHCI
-> -	select QCOM_SCM if MMC_CRYPTO && ARCH_QCOM
-> +	select QCOM_SCM if MMC_CRYPTO
->  	help
->  	  This selects the Secure Digital Host Controller Interface (SDHCI)
->  	  support present in Qualcomm SOCs. The controller supports
-> diff --git a/drivers/net/ipa/Kconfig b/drivers/net/ipa/Kconfig
-> index 8f99cfa14680..d037682fb7ad 100644
-> --- a/drivers/net/ipa/Kconfig
-> +++ b/drivers/net/ipa/Kconfig
-> @@ -4,6 +4,7 @@ config QCOM_IPA
->  	depends on ARCH_QCOM || COMPILE_TEST
->  	depends on QCOM_RPROC_COMMON || (QCOM_RPROC_COMMON=n && COMPILE_TEST)
->  	select QCOM_MDT_LOADER if ARCH_QCOM
-> +	select QCOM_SCM
->  	select QCOM_QMI_HELPERS
->  	help
->  	  Choose Y or M here to include support for the Qualcomm
-> diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
-> index 741289e385d5..ca007b800f75 100644
-> --- a/drivers/net/wireless/ath/ath10k/Kconfig
-> +++ b/drivers/net/wireless/ath/ath10k/Kconfig
-> @@ -44,7 +44,7 @@ config ATH10K_SNOC
->  	tristate "Qualcomm ath10k SNOC support"
->  	depends on ATH10K
->  	depends on ARCH_QCOM || COMPILE_TEST
-> -	depends on QCOM_SCM || !QCOM_SCM #if QCOM_SCM=m this can't be =y
-> +	select QCOM_SCM
->  	select QCOM_QMI_HELPERS
->  	help
->  	  This module adds support for integrated WCN3990 chip connected
-> diff --git a/drivers/pinctrl/qcom/Kconfig b/drivers/pinctrl/qcom/Kconfig
-> index 32ea2a8ec02b..5ff4207df66e 100644
-> --- a/drivers/pinctrl/qcom/Kconfig
-> +++ b/drivers/pinctrl/qcom/Kconfig
-> @@ -3,7 +3,8 @@ if (ARCH_QCOM || COMPILE_TEST)
->  
->  config PINCTRL_MSM
->  	tristate "Qualcomm core pin controller driver"
-> -	depends on GPIOLIB && (QCOM_SCM || !QCOM_SCM) #if QCOM_SCM=m this can't be =y
-> +	depends on GPIOLIB
-> +	select QCOM_SCM
->  	select PINMUX
->  	select PINCONF
->  	select GENERIC_PINCONF
-> diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
-> index 7d1cabe15262..63ccb5252190 100644
-> --- a/include/linux/arm-smccc.h
-> +++ b/include/linux/arm-smccc.h
-> @@ -321,10 +321,20 @@ asmlinkage unsigned long __arm_smccc_sve_check(unsigned long x0);
->   * from register 0 to 3 on return from the SMC instruction.  An optional
->   * quirk structure provides vendor specific behavior.
->   */
-> +#ifdef CONFIG_HAVE_ARM_SMCCC
->  asmlinkage void __arm_smccc_smc(unsigned long a0, unsigned long a1,
->  			unsigned long a2, unsigned long a3, unsigned long a4,
->  			unsigned long a5, unsigned long a6, unsigned long a7,
->  			struct arm_smccc_res *res, struct arm_smccc_quirk *quirk);
-> +#else
-> +static inline void __arm_smccc_smc(unsigned long a0, unsigned long a1,
-> +			unsigned long a2, unsigned long a3, unsigned long a4,
-> +			unsigned long a5, unsigned long a6, unsigned long a7,
-> +			struct arm_smccc_res *res, struct arm_smccc_quirk *quirk)
-> +{
-> +	*res = (struct arm_smccc_res){};
-> +}
-> +#endif
->  
->  /**
->   * __arm_smccc_hvc() - make HVC calls
-> diff --git a/include/linux/qcom_scm.h b/include/linux/qcom_scm.h
-> index c0475d1c9885..81cad9e1e412 100644
-> --- a/include/linux/qcom_scm.h
-> +++ b/include/linux/qcom_scm.h
-> @@ -61,7 +61,6 @@ enum qcom_scm_ice_cipher {
->  #define QCOM_SCM_PERM_RW (QCOM_SCM_PERM_READ | QCOM_SCM_PERM_WRITE)
->  #define QCOM_SCM_PERM_RWX (QCOM_SCM_PERM_RW | QCOM_SCM_PERM_EXEC)
->  
-> -#if IS_ENABLED(CONFIG_QCOM_SCM)
->  extern bool qcom_scm_is_available(void);
->  
->  extern int qcom_scm_set_cold_boot_addr(void *entry, const cpumask_t *cpus);
-> @@ -115,74 +114,4 @@ extern int qcom_scm_lmh_dcvsh(u32 payload_fn, u32 payload_reg, u32 payload_val,
->  extern int qcom_scm_lmh_profile_change(u32 profile_id);
->  extern bool qcom_scm_lmh_dcvsh_available(void);
->  
-> -#else
-> -
-> -#include <linux/errno.h>
-> -
-> -static inline bool qcom_scm_is_available(void) { return false; }
-> -
-> -static inline int qcom_scm_set_cold_boot_addr(void *entry,
-> -		const cpumask_t *cpus) { return -ENODEV; }
-> -static inline int qcom_scm_set_warm_boot_addr(void *entry,
-> -		const cpumask_t *cpus) { return -ENODEV; }
-> -static inline void qcom_scm_cpu_power_down(u32 flags) {}
-> -static inline u32 qcom_scm_set_remote_state(u32 state,u32 id)
-> -		{ return -ENODEV; }
-> -
-> -static inline int qcom_scm_pas_init_image(u32 peripheral, const void *metadata,
-> -		size_t size) { return -ENODEV; }
-> -static inline int qcom_scm_pas_mem_setup(u32 peripheral, phys_addr_t addr,
-> -		phys_addr_t size) { return -ENODEV; }
-> -static inline int qcom_scm_pas_auth_and_reset(u32 peripheral)
-> -		{ return -ENODEV; }
-> -static inline int qcom_scm_pas_shutdown(u32 peripheral) { return -ENODEV; }
-> -static inline bool qcom_scm_pas_supported(u32 peripheral) { return false; }
-> -
-> -static inline int qcom_scm_io_readl(phys_addr_t addr, unsigned int *val)
-> -		{ return -ENODEV; }
-> -static inline int qcom_scm_io_writel(phys_addr_t addr, unsigned int val)
-> -		{ return -ENODEV; }
-> -
-> -static inline bool qcom_scm_restore_sec_cfg_available(void) { return false; }
-> -static inline int qcom_scm_restore_sec_cfg(u32 device_id, u32 spare)
-> -		{ return -ENODEV; }
-> -static inline int qcom_scm_iommu_secure_ptbl_size(u32 spare, size_t *size)
-> -		{ return -ENODEV; }
-> -static inline int qcom_scm_iommu_secure_ptbl_init(u64 addr, u32 size, u32 spare)
-> -		{ return -ENODEV; }
-> -extern inline int qcom_scm_mem_protect_video_var(u32 cp_start, u32 cp_size,
-> -						 u32 cp_nonpixel_start,
-> -						 u32 cp_nonpixel_size)
-> -		{ return -ENODEV; }
-> -static inline int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
-> -		unsigned int *src, const struct qcom_scm_vmperm *newvm,
-> -		unsigned int dest_cnt) { return -ENODEV; }
-> -
-> -static inline bool qcom_scm_ocmem_lock_available(void) { return false; }
-> -static inline int qcom_scm_ocmem_lock(enum qcom_scm_ocmem_client id, u32 offset,
-> -		u32 size, u32 mode) { return -ENODEV; }
-> -static inline int qcom_scm_ocmem_unlock(enum qcom_scm_ocmem_client id,
-> -		u32 offset, u32 size) { return -ENODEV; }
-> -
-> -static inline bool qcom_scm_ice_available(void) { return false; }
-> -static inline int qcom_scm_ice_invalidate_key(u32 index) { return -ENODEV; }
-> -static inline int qcom_scm_ice_set_key(u32 index, const u8 *key, u32 key_size,
-> -				       enum qcom_scm_ice_cipher cipher,
-> -				       u32 data_unit_size) { return -ENODEV; }
-> -
-> -static inline bool qcom_scm_hdcp_available(void) { return false; }
-> -static inline int qcom_scm_hdcp_req(struct qcom_scm_hdcp_req *req, u32 req_cnt,
-> -		u32 *resp) { return -ENODEV; }
-> -
-> -static inline int qcom_scm_qsmmu500_wait_safe_toggle(bool en)
-> -		{ return -ENODEV; }
-> -
-> -static inline int qcom_scm_lmh_dcvsh(u32 payload_fn, u32 payload_reg, u32 payload_val,
-> -				     u64 limit_node, u32 node_id, u64 version)
-> -		{ return -ENODEV; }
-> -
-> -static inline int qcom_scm_lmh_profile_change(u32 profile_id) { return -ENODEV; }
-> -
-> -static inline bool qcom_scm_lmh_dcvsh_available(void) { return -ENODEV; }
-> -#endif
->  #endif
-> -- 
-> 2.29.2
-> 
+(gdb) l *(pci_device_shutdown+0x16)
+0xffffffff8156abf6 is in pci_device_shutdown (drivers/pci/pci-driver.c:496).
+491             struct pci_dev *pci_dev = to_pci_dev(dev);
+492             struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
+493
+494             pm_runtime_resume(dev);
+495
+496             if (drv && drv->shutdown)
+497                     drv->shutdown(pci_dev);
+498
+499             /*
+500              * If this is a kexec reboot, turn off Bus Master bit on the
