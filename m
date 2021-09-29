@@ -2,192 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A073F41C144
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Sep 2021 11:04:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94C2841C1F5
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Sep 2021 11:47:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244976AbhI2JGX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Sep 2021 05:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52994 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244957AbhI2JGW (ORCPT
+        id S245145AbhI2JtS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Sep 2021 05:49:18 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:38668 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245117AbhI2JtR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Sep 2021 05:06:22 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4635CC06161C
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Sep 2021 02:04:41 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mVVVX-0003JP-91; Wed, 29 Sep 2021 11:04:07 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mVVVS-0004kK-3w; Wed, 29 Sep 2021 11:04:02 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mVVVS-0000V5-1n; Wed, 29 Sep 2021 11:04:02 +0200
-Date:   Wed, 29 Sep 2021 11:04:01 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Simon Horman <simon.horman@corigine.com>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Alexander Duyck <alexanderduyck@fb.com>,
-        oss-drivers@corigine.com, Paul Mackerras <paulus@samba.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Ido Schimmel <idosch@nvidia.com>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
-        Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Salil Mehta <salil.mehta@huawei.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
-        Oliver O'Halloran <oohall@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v4 4/8] PCI: replace pci_dev::driver usage that gets the
- driver name
-Message-ID: <20210929090401.qvpjng3jne76o6kw@pengutronix.de>
-References: <20210927204326.612555-1-uwe@kleine-koenig.org>
- <20210927204326.612555-5-uwe@kleine-koenig.org>
- <20210928100127.GA16801@corigine.com>
- <20210928103129.c3gcbnfbarezr3mm@pengutronix.de>
- <20210929080541.GA13506@corigine.com>
+        Wed, 29 Sep 2021 05:49:17 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 18T9lT481020604, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 18T9lT481020604
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 29 Sep 2021 17:47:29 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Wed, 29 Sep 2021 17:47:29 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 29 Sep
+ 2021 17:47:29 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
+Subject: [PATCH] rtw88: consider triggering state of simulating fw crash
+Date:   Wed, 29 Sep 2021 17:47:24 +0800
+Message-ID: <20210929094724.23595-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ey4ikhdxthigr5cx"
-Content-Disposition: inline
-In-Reply-To: <20210929080541.GA13506@corigine.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/29/2021 09:32:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzkvMjkgpFekyCAwNzoyODowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
---ey4ikhdxthigr5cx
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In certain cases, triggering fw crash simulation via fw_crash debugfs
+will take a while. If the state is queried too early before restart
+begins processing, it may mistakenly think restart process has been
+done. If some tests are started at this time, something unexpected
+might happen due to the follow-up restart process.
 
-Hello Simon,
+To avoid that, we consider the triggering state.
 
-On Wed, Sep 29, 2021 at 10:05:42AM +0200, Simon Horman wrote:
-> On Tue, Sep 28, 2021 at 12:31:29PM +0200, Uwe Kleine-K=F6nig wrote:
-> > On Tue, Sep 28, 2021 at 12:01:28PM +0200, Simon Horman wrote:
-> > > On Mon, Sep 27, 2021 at 10:43:22PM +0200, Uwe Kleine-K=F6nig wrote:
-> > > > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > > >=20
-> > > > struct pci_dev::driver holds (apart from a constant offset) the same
-> > > > data as struct pci_dev::dev->driver. With the goal to remove struct
-> > > > pci_dev::driver to get rid of data duplication replace getting the
-> > > > driver name by dev_driver_string() which implicitly makes use of st=
-ruct
-> > > > pci_dev::dev->driver.
-> > > >=20
-> > > > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > >=20
-> > > ...
-> > >=20
-> > > > diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c b=
-/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > > > index 0685ece1f155..23dfb599c828 100644
-> > > > --- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > > > +++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > > > @@ -202,7 +202,7 @@ nfp_get_drvinfo(struct nfp_app *app, struct pci=
-_dev *pdev,
-> > > >  {
-> > > >  	char nsp_version[ETHTOOL_FWVERS_LEN] =3D {};
-> > > > =20
-> > > > -	strlcpy(drvinfo->driver, pdev->driver->name, sizeof(drvinfo->driv=
-er));
-> > > > +	strlcpy(drvinfo->driver, dev_driver_string(&pdev->dev), sizeof(dr=
-vinfo->driver));
-> > >=20
-> > > I'd slightly prefer to maintain lines under 80 columns wide.
-> > > But not nearly strongly enough to engage in a long debate about it.
-> >=20
-> > :-)
-> >=20
-> > Looking at the output of
-> >=20
-> > 	git grep strlcpy.\*sizeof
-> >=20
-> > I wonder if it would be sensible to introduce something like
-> >=20
-> > 	#define strlcpy_array(arr, src) (strlcpy(arr, src, sizeof(arr)) + __mu=
-st_be_array(arr))
-> >=20
-> > but not sure this is possible without a long debate either (and this
-> > line is over 80 chars wide, too :-).
->=20
-> My main motivation for the 80 char limit in nfp_net_ethtool.c is
-> not that I think 80 char is universally a good limit (although that is tr=
-ue),
-> but rather that I expect that is the prevailing style in nfp_net_ethtool.=
-c.
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/debug.c | 5 ++++-
+ drivers/net/wireless/realtek/rtw88/main.c  | 1 +
+ drivers/net/wireless/realtek/rtw88/main.h  | 1 +
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-I sent out v5 with an additional line break now.
-=20
-> So a macro more than 80 car wide somewhere else is fine by me.
->=20
-> However, when running checkpatch --strict over the patch it told me:
->=20
->     WARNING: Prefer strscpy over strlcpy - see: https://lore.kernel.org/r=
-/CAHk-=3DwgfRnXz0W3D37d01q3JFkr_i_uTL=3DV6A6G1oUZcprmknw@mail.gmail.com/
->     #276: FILE: drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c:205:
->     +	strlcpy(drvinfo->driver, dev_driver_string(&pdev->dev), sizeof(drvi=
-nfo->driver));
->=20
->     total: 0 errors, 1 warnings, 0 checks, 80 lines checked
->=20
-> (Amusingly, more text wider than 80 column, perhaps suggesting the folly =
-of
->  my original comment, but lets move on from that.)
->=20
-> As your patch doesn't introduce the usage of strlcpy() I was considering a
-> follow-up patch to change it to strscpy(). And in general the email at the
-> link above suggests all usages of strlcpy() should do so. So perhaps
-> creating strscpy_array is a better idea?
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+index babf7fb238cc..682b23502e6e 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.c
++++ b/drivers/net/wireless/realtek/rtw88/debug.c
+@@ -886,6 +886,7 @@ static ssize_t rtw_debugfs_set_fw_crash(struct file *filp,
+ 
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtw_leave_lps_deep(rtwdev);
++	set_bit(RTW_FLAG_RESTART_TRIGGERING, rtwdev->flags);
+ 	rtw_write8(rtwdev, REG_HRCV_MSG, 1);
+ 	mutex_unlock(&rtwdev->mutex);
+ 
+@@ -897,7 +898,9 @@ static int rtw_debugfs_get_fw_crash(struct seq_file *m, void *v)
+ 	struct rtw_debugfs_priv *debugfs_priv = m->private;
+ 	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
+ 
+-	seq_printf(m, "%d\n", test_bit(RTW_FLAG_RESTARTING, rtwdev->flags));
++	seq_printf(m, "%d\n",
++		   test_bit(RTW_FLAG_RESTART_TRIGGERING, rtwdev->flags) ||
++		   test_bit(RTW_FLAG_RESTARTING, rtwdev->flags));
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index cee2acabb042..a0d4d6e31fb4 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -564,6 +564,7 @@ static void __fw_recovery_work(struct rtw_dev *rtwdev)
+ 	int ret = 0;
+ 
+ 	set_bit(RTW_FLAG_RESTARTING, rtwdev->flags);
++	clear_bit(RTW_FLAG_RESTART_TRIGGERING, rtwdev->flags);
+ 
+ 	ret = rtw_fwcd_prep(rtwdev);
+ 	if (ret)
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 723316347876..bbdd535b64e7 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -363,6 +363,7 @@ enum rtw_flags {
+ 	RTW_FLAG_BUSY_TRAFFIC,
+ 	RTW_FLAG_WOWLAN,
+ 	RTW_FLAG_RESTARTING,
++	RTW_FLAG_RESTART_TRIGGERING,
+ 
+ 	NUM_OF_RTW_FLAGS,
+ };
+-- 
+2.25.1
 
-What I read about strscpy() is that conversions for the sake of the
-conversion are not welcome. When such a conversion comes from someone
-involved with the driver that is also tested this is probably fine.
-=20
-> I have not thought about this much, and probably this just leads us to a
-> deeper part of the rabbit hole.
-
-I assume so, too.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ey4ikhdxthigr5cx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFUK/8ACgkQwfwUeK3K
-7AlkTwf/dkfubvexEL8hKb2Rh3bCdHj1QQgkHxBsDLSNCo4lhj+H8iJlt8IyS3H8
-+XjgTjDp2XDrOSbFVQug/BYE5Wk94BoOdy/6cprREtPJZ4oI3QgdaaikCtG1CdwW
-KzFBUgIiRQlfUsxTM/xz9zGA40xpfydtliziKS7R4Kwn1dqfSB0Cl3hm97kC5DEA
-O42j5CvC58tvuAmEV02PSFRtt8xMb20mgqTN43Q9kzPHM2ziW4g0R9U999fyNqmT
-0vHgrGgXXdRc5+VU3Jd1ZCnrTVzWJMpaKoOCzGZVBO47gcB/7/mH6iFzMVACIYKV
-f5p890vGJmfiOE9WD2VDNGj7w2NU/A==
-=vlM1
------END PGP SIGNATURE-----
-
---ey4ikhdxthigr5cx--
