@@ -2,104 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F3FD41BD8B
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Sep 2021 05:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FB4341C031
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Sep 2021 09:59:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242296AbhI2DjN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Sep 2021 23:39:13 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:59864 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240701AbhI2DjL (ORCPT
+        id S244268AbhI2IBT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Sep 2021 04:01:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38184 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243331AbhI2IBS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Sep 2021 23:39:11 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632886649; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=1Unl2lezQTicVBS8bzk/jaEWIlMos5NW7fIeXLB5YeA=;
- b=SezyoVkfNE788Yc5RIwJoS0sPdiAY1A6ETvytddApUqSj9yw2yG+bnkgtMj2YBaoryPmwg9B
- Alf0JtILxM4xUjyh/xCK01bg8r04UR8YxnQv1gGYrKIgOg9tNQEz4EZSIzDPrEdR5/lsBxVf
- ShOU5uygwbqhnWe8MGrvcgmg1S8=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 6153df6f713d5d6f9697fc60 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 29 Sep 2021 03:37:19
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B1A67C43617; Wed, 29 Sep 2021 03:37:18 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 11944C4338F;
-        Wed, 29 Sep 2021 03:37:17 +0000 (UTC)
+        Wed, 29 Sep 2021 04:01:18 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F326AC06161C
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Sep 2021 00:59:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=2ZKp51s15uoNIFh+hvjd+EX+5UY0Wg1Fop4dUszImz0=;
+        t=1632902378; x=1634111978; b=lPO8NDxyqfVm9vrS0b+T2jIP18GYT2dNLQM+5PmPZwXUDOi
+        FluopcrM8c3dSrIzGjIUzt1p74WeoNOwsMW7fPzvJ09ZctgwfSZKxIbT6R493VQM+Oo38lgdOkw6J
+        qhqkzBfETzcMV+P64/6BNVOAhjun+iV8IVgiJlSaPIZmJXkC9OFl/F0Xd2houaRb0/+MqDueuC0jj
+        057jTngPOijzqO0BtJiMY22l9Nnljb+7R+Td5p/laCLszqYa7BI2dz5rAHA/S2Etw17JOLW5el6vb
+        Il7fvENbl6Zt+qe0zoDEOgvqliKndmWH9ku3Y2m7RjZoZcOqpKq+kcTFo9PsWWkg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mVUV5-00DEIs-Gg;
+        Wed, 29 Sep 2021 09:59:35 +0200
+Message-ID: <7d5f49ca19369d3ed53faf14be07816d98690bf6.camel@sipsolutions.net>
+Subject: Re: [RFC PATCH 1/1] Add control path virtualization in virt_wifi
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Guillaume Hetier <Guillaume.Hetier@microsoft.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "schuffelen@google.com" <schuffelen@google.com>,
+        Shwetha Bhat <shwbhat@microsoft.com>,
+        Andrew Beltrano <anbeltra@microsoft.com>,
+        Brian Perkins <Brian.Perkins@microsoft.com>,
+        KY Srinivasan <kys@microsoft.com>,
+        Matteo Croce <mcroce@microsoft.com>
+Date:   Wed, 29 Sep 2021 09:59:34 +0200
+In-Reply-To: <MWHPR21MB1547EB364EFA35799C3B69A38FA89@MWHPR21MB1547.namprd21.prod.outlook.com>
+References: <MWHPR21MB1547EB364EFA35799C3B69A38FA89@MWHPR21MB1547.namprd21.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Wed, 29 Sep 2021 11:37:17 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     vnaralas@codeaurora.org
-Cc:     johannes@sipsolutions.net, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, wgong=codeaurora.org@codeaurora.org
-Subject: Re: [PATCH v5] cfg80211: save power spectral density(psd) of
- regulatory rule
-In-Reply-To: <bd649a3d2cf2ea9064d427d633055891@codeaurora.org>
-References: <20210928085211.26186-1-wgong@codeaurora.org>
- <bd649a3d2cf2ea9064d427d633055891@codeaurora.org>
-Message-ID: <cb20427eae96c4551084e4c899618b94@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-09-28 21:12, vnaralas@codeaurora.org wrote:
-> On 2021-09-28 14:22, Wen Gong wrote:
->> 6 GHz regulatory domains introduces power spectral density(psd).
->> The power spectral density(psd) of regulatory rule should be take
->> effect to the channels. Save the values to the channel which has
->> psd value and add nl80211 attributes for it.
->> 
->> Signed-off-by: Wen Gong <wgong@codeaurora.org>
->> ---
-...
->> 
->> @@ -2540,6 +2554,9 @@ static void handle_channel_custom(struct wiphy 
->> *wiphy,
->>  			chan->dfs_cac_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
->>  	}
->> 
->> +	if (chan->flags & IEEE80211_CHAN_PSD)
->> +		chan->psd = reg_rule->psd;
->> +
->>  	chan->max_power = chan->max_reg_power;
+On Tue, 2021-09-28 at 20:44 +0000, Guillaume Hetier wrote:
+> Hi,
 > 
-> What about the case AP + STA concurrency? are we going to overwrite
-> the PSD power and channel flags?
+> > Are there any specific applications you're thinking of?
 > 
+> Our main targets are programs setting up IOT devices: we want to give
+> the guest the capacity to connect to specific networks created by the
+> IOT device for the duration of their setup.
+> For that, we want to be able to scan, connect and reflect network
+> properties precisely enough to let the guest programs go forward with
+> the setup.
 
-Hi Venkateswara,
 
-This patch is not relation with AP + STA concurrency.
-For example, it also has other power intersection in 
-handle_channel_adjacent_rules().
+Makes sense. But are there such tools on Linux today? And if so, how do
+they work? I certainly haven't seen one on a general purpose Linux,
+obviously Android is a different matter (and if you wanted to support
+Android you could have a special network manager that mostly defers to
+the host)
 
-		chan->max_reg_power =
-			min_t(int, MBM_TO_DBM(power_rule1->max_eirp),
-			      MBM_TO_DBM(power_rule2->max_eirp));
+> We would like to make our solution as generic as possible to be
+> extendable and potentially support for complex use cases if possible,
+> but we are not aiming for generic network management from the guest.
 
-For AP + STA concurrency, it should to maintain 2 group of reg rules, 
-one is for AP, another is for STA.
-This patch is to handle PSD info in the same reg rules.
-It is to process only one reg rule in the reg rules.
-AP + STA concurrency is a higher level things than this patch.
->>  }
+:)
+
+johannes
+
