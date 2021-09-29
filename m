@@ -2,127 +2,181 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94C2841C1F5
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Sep 2021 11:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2877341C203
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Sep 2021 11:51:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245145AbhI2JtS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Sep 2021 05:49:18 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:38668 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245117AbhI2JtR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Sep 2021 05:49:17 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 18T9lT481020604, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 18T9lT481020604
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 29 Sep 2021 17:47:29 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Wed, 29 Sep 2021 17:47:29 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 29 Sep
- 2021 17:47:29 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH] rtw88: consider triggering state of simulating fw crash
-Date:   Wed, 29 Sep 2021 17:47:24 +0800
-Message-ID: <20210929094724.23595-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        id S245188AbhI2Jw5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Sep 2021 05:52:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38798 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S245079AbhI2Jw4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 29 Sep 2021 05:52:56 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B08BC613A5;
+        Wed, 29 Sep 2021 09:51:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632909075;
+        bh=TQQ+cjIN9++CtK9DgtuA6I+X1WnMjFRfMLxBOvN/9hI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RDOtNOVfqPdKvpSr/OsPhNB0fjENTcC6due2YIfIDrAMsow0opiYt1QHJew4ql2n1
+         fZH4NruBoG9wJO8wbT0XZJbvOC+xUiY29xWFOTMILMu96eFiy5sv/dZZ7M1arg9kJs
+         7GltsB1HljAlqeovMRCxLsp8lK6AS/SlkTAt5UjPTSLE3nvQDh8DTRk4hRPx/qY3Wu
+         Ljm7ukEFU/n7DLFsJw3WsBW0ZdKkSNdy4ty2WkKje0ftyfAwYt0JLv6bCNAmbKzOtE
+         71e19ToUqhiQJknv1dNPYIjXnX1N8db1jYZmFGrSBIsCKGj8DAhwjqiVCn57wl0taE
+         eBXytOfpUPuAw==
+Date:   Wed, 29 Sep 2021 10:51:07 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Rob Clark <robdclark@gmail.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Joerg Roedel <joro@8bytes.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Alex Elder <elder@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Andy Gross <agross@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        iommu@lists.linux-foundation.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH] [RFC] qcom_scm: hide Kconfig symbol
+Message-ID: <20210929095107.GA21057@willie-the-truck>
+References: <20210927152412.2900928-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 09/29/2021 09:32:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzkvMjkgpFekyCAwNzoyODowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210927152412.2900928-1-arnd@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+On Mon, Sep 27, 2021 at 05:22:13PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Now that SCM can be a loadable module, we have to add another
+> dependency to avoid link failures when ipa or adreno-gpu are
+> built-in:
+> 
+> aarch64-linux-ld: drivers/net/ipa/ipa_main.o: in function `ipa_probe':
+> ipa_main.c:(.text+0xfc4): undefined reference to `qcom_scm_is_available'
+> 
+> ld.lld: error: undefined symbol: qcom_scm_is_available
+> >>> referenced by adreno_gpu.c
+> >>>               gpu/drm/msm/adreno/adreno_gpu.o:(adreno_zap_shader_load) in archive drivers/built-in.a
+> 
+> This can happen when CONFIG_ARCH_QCOM is disabled and we don't select
+> QCOM_MDT_LOADER, but some other module selects QCOM_SCM. Ideally we'd
+> use a similar dependency here to what we have for QCOM_RPROC_COMMON,
+> but that causes dependency loops from other things selecting QCOM_SCM.
+> 
+> This appears to be an endless problem, so try something different this
+> time:
+> 
+>  - CONFIG_QCOM_SCM becomes a hidden symbol that nothing 'depends on'
+>    but that is simply selected by all of its users
+> 
+>  - All the stubs in include/linux/qcom_scm.h can go away
+> 
+>  - arm-smccc.h needs to provide a stub for __arm_smccc_smc() to
+>    allow compile-testing QCOM_SCM on all architectures.
+> 
+>  - To avoid a circular dependency chain involving RESET_CONTROLLER
+>    and PINCTRL_SUNXI, change the 'depends on RESET_CONTROLLER' in
+>    the latter one to 'select'.
+> 
+> The last bit is rather annoying, as drivers should generally never
+> 'select' another subsystem, and about half the users of the reset
+> controller interface do this anyway.
+> 
+> Nevertheless, this version seems to pass all my randconfig tests
+> and is more robust than any of the prior versions.
+> 
+> Comments?
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/firmware/Kconfig                |  4 +-
+>  drivers/gpu/drm/msm/Kconfig             |  4 +-
+>  drivers/iommu/Kconfig                   |  2 +-
+>  drivers/media/platform/Kconfig          |  2 +-
+>  drivers/mmc/host/Kconfig                |  2 +-
+>  drivers/net/ipa/Kconfig                 |  1 +
+>  drivers/net/wireless/ath/ath10k/Kconfig |  2 +-
+>  drivers/pinctrl/qcom/Kconfig            |  3 +-
+>  drivers/pinctrl/sunxi/Kconfig           |  6 +--
+>  include/linux/arm-smccc.h               | 10 ++++
+>  include/linux/qcom_scm.h                | 71 -------------------------
+>  11 files changed, 23 insertions(+), 84 deletions(-)
+> 
+> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+> index 220a58cf0a44..f7dd82ef0b9c 100644
+> --- a/drivers/firmware/Kconfig
+> +++ b/drivers/firmware/Kconfig
+> @@ -203,9 +203,7 @@ config INTEL_STRATIX10_RSU
+>  	  Say Y here if you want Intel RSU support.
+>  
+>  config QCOM_SCM
+> -	tristate "Qcom SCM driver"
+> -	depends on ARM || ARM64
+> -	depends on HAVE_ARM_SMCCC
+> +	tristate
+>  	select RESET_CONTROLLER
+>  
+>  config QCOM_SCM_DOWNLOAD_MODE_DEFAULT
+> diff --git a/drivers/gpu/drm/msm/Kconfig b/drivers/gpu/drm/msm/Kconfig
+> index e9c6af78b1d7..3ddf739a6f9b 100644
+> --- a/drivers/gpu/drm/msm/Kconfig
+> +++ b/drivers/gpu/drm/msm/Kconfig
+> @@ -17,7 +17,7 @@ config DRM_MSM
+>  	select DRM_SCHED
+>  	select SHMEM
+>  	select TMPFS
+> -	select QCOM_SCM if ARCH_QCOM
+> +	select QCOM_SCM
+>  	select WANT_DEV_COREDUMP
+>  	select SND_SOC_HDMI_CODEC if SND_SOC
+>  	select SYNC_FILE
+> @@ -55,7 +55,7 @@ config DRM_MSM_GPU_SUDO
+>  
+>  config DRM_MSM_HDMI_HDCP
+>  	bool "Enable HDMI HDCP support in MSM DRM driver"
+> -	depends on DRM_MSM && QCOM_SCM
+> +	depends on DRM_MSM
+>  	default y
+>  	help
+>  	  Choose this option to enable HDCP state machine
+> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+> index 124c41adeca1..989c83acbfee 100644
+> --- a/drivers/iommu/Kconfig
+> +++ b/drivers/iommu/Kconfig
+> @@ -308,7 +308,7 @@ config APPLE_DART
+>  config ARM_SMMU
+>  	tristate "ARM Ltd. System MMU (SMMU) Support"
+>  	depends on ARM64 || ARM || (COMPILE_TEST && !GENERIC_ATOMIC64)
+> -	depends on QCOM_SCM || !QCOM_SCM #if QCOM_SCM=m this can't be =y
+> +	select QCOM_SCM
+>  	select IOMMU_API
+>  	select IOMMU_IO_PGTABLE_LPAE
+>  	select ARM_DMA_USE_IOMMU if ARM
 
-In certain cases, triggering fw crash simulation via fw_crash debugfs
-will take a while. If the state is queried too early before restart
-begins processing, it may mistakenly think restart process has been
-done. If some tests are started at this time, something unexpected
-might happen due to the follow-up restart process.
+I don't want to get in the way of this patch because I'm also tired of the
+randconfig failures caused by QCOM_SCM. However, ARM_SMMU is applicable to
+a wide variety of (non-qcom) SoCs and so it seems a shame to require the
+QCOM_SCM code to be included for all of those when it's not strictly needed
+at all.
 
-To avoid that, we consider the triggering state.
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/debug.c | 5 ++++-
- drivers/net/wireless/realtek/rtw88/main.c  | 1 +
- drivers/net/wireless/realtek/rtw88/main.h  | 1 +
- 3 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index babf7fb238cc..682b23502e6e 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -886,6 +886,7 @@ static ssize_t rtw_debugfs_set_fw_crash(struct file *filp,
- 
- 	mutex_lock(&rtwdev->mutex);
- 	rtw_leave_lps_deep(rtwdev);
-+	set_bit(RTW_FLAG_RESTART_TRIGGERING, rtwdev->flags);
- 	rtw_write8(rtwdev, REG_HRCV_MSG, 1);
- 	mutex_unlock(&rtwdev->mutex);
- 
-@@ -897,7 +898,9 @@ static int rtw_debugfs_get_fw_crash(struct seq_file *m, void *v)
- 	struct rtw_debugfs_priv *debugfs_priv = m->private;
- 	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
- 
--	seq_printf(m, "%d\n", test_bit(RTW_FLAG_RESTARTING, rtwdev->flags));
-+	seq_printf(m, "%d\n",
-+		   test_bit(RTW_FLAG_RESTART_TRIGGERING, rtwdev->flags) ||
-+		   test_bit(RTW_FLAG_RESTARTING, rtwdev->flags));
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index cee2acabb042..a0d4d6e31fb4 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -564,6 +564,7 @@ static void __fw_recovery_work(struct rtw_dev *rtwdev)
- 	int ret = 0;
- 
- 	set_bit(RTW_FLAG_RESTARTING, rtwdev->flags);
-+	clear_bit(RTW_FLAG_RESTART_TRIGGERING, rtwdev->flags);
- 
- 	ret = rtw_fwcd_prep(rtwdev);
- 	if (ret)
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 723316347876..bbdd535b64e7 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -363,6 +363,7 @@ enum rtw_flags {
- 	RTW_FLAG_BUSY_TRAFFIC,
- 	RTW_FLAG_WOWLAN,
- 	RTW_FLAG_RESTARTING,
-+	RTW_FLAG_RESTART_TRIGGERING,
- 
- 	NUM_OF_RTW_FLAGS,
- };
--- 
-2.25.1
-
+Will
