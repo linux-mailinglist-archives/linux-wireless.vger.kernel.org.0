@@ -2,178 +2,246 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0CA441CBDB
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Sep 2021 20:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9754241CE9C
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 00:00:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346165AbhI2Scc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Sep 2021 14:32:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60364 "EHLO mail.kernel.org"
+        id S1346324AbhI2WBq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Sep 2021 18:01:46 -0400
+Received: from mga17.intel.com ([192.55.52.151]:60942 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345707AbhI2Scb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Sep 2021 14:32:31 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8816F61527;
-        Wed, 29 Sep 2021 18:30:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632940249;
-        bh=gjF28VMTIug2m1bl/FU/M9snQ4rR61AFv5fVsRKalNI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=CISl9Rl7R+M6haM6b37hM8Y55j2HAbcMi0eojp8x2X5LO3rMaVS5sudmIbZDpY2Fa
-         v3jkZlxqIQsgk7xdc/KNDPDNwnRYggSWDCUgB/s/FiZxlhlKX24dWHVpR7Wt0mlN/7
-         mhK6ym9B69BkMQdp4WI4pKJ+rr90hmai+tmZp9rhMJtK7ONWh9AhmLAFD2pHKhaUG3
-         HMRbEb2CCpVxIrKjjd6yE6ttU5SikyGGITOLPKJu1L7QFLNrx8p43TXVkgBvbCSBJk
-         HoUf+R5uDfbywO7AlRlXS5uX8pbpj5u56JSH5+uMScUwkPlS/zeQ1/1lCIAk541NMv
-         d88464bdH/fHQ==
-Received: by mail-wr1-f46.google.com with SMTP id s21so5795619wra.7;
-        Wed, 29 Sep 2021 11:30:49 -0700 (PDT)
-X-Gm-Message-State: AOAM533mlJSocCVOo/4P9J4qQuKiBP7NH/xEdDD9UUrSLsaNSwbRmlJY
-        BB6Hiwg8DRcMl0JsnYHnxRYjLAvza1+qy4aCjik=
-X-Google-Smtp-Source: ABdhPJznh64DeD5YLkqLyCdpGZrw2eJDCFhsGINcOBsXO/6p1u7dAzpxKDez727ElHRBigRMgHpji/X6aGMkMR1n8h4=
-X-Received: by 2002:a05:6000:1561:: with SMTP id 1mr1607418wrz.369.1632940247984;
- Wed, 29 Sep 2021 11:30:47 -0700 (PDT)
+        id S230458AbhI2WBp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 29 Sep 2021 18:01:45 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10122"; a="205196998"
+X-IronPort-AV: E=Sophos;i="5.85,334,1624345200"; 
+   d="scan'208";a="205196998"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2021 15:00:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,334,1624345200"; 
+   d="scan'208";a="563631050"
+Received: from lkp-server02.sh.intel.com (HELO f7acefbbae94) ([10.239.97.151])
+  by fmsmga002.fm.intel.com with ESMTP; 29 Sep 2021 15:00:02 -0700
+Received: from kbuild by f7acefbbae94 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mVhcP-0003NA-Ae; Wed, 29 Sep 2021 22:00:01 +0000
+Date:   Thu, 30 Sep 2021 05:59:46 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [jberg-mac80211:master] BUILD SUCCESS
+ f936bb42aeb94a069bec7c9e04100d199c372956
+Message-ID: <6154e1d2.ieHeZEROqb20cN5W%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20210927152412.2900928-1-arnd@kernel.org> <20210929095107.GA21057@willie-the-truck>
- <CAK8P3a2QnJkYCoEWhziYYXQusb-25_wUhA5ZTGtBsyfFx3NWzQ@mail.gmail.com> <YVR8Q7LO0weiFin+@yoga>
-In-Reply-To: <YVR8Q7LO0weiFin+@yoga>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Wed, 29 Sep 2021 20:30:30 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2Kk6Y1Hs98z2UFEis8cWekREFt8YKg2Nbu3G5WQJ7Fag@mail.gmail.com>
-Message-ID: <CAK8P3a2Kk6Y1Hs98z2UFEis8cWekREFt8YKg2Nbu3G5WQJ7Fag@mail.gmail.com>
-Subject: Re: [PATCH] [RFC] qcom_scm: hide Kconfig symbol
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Joerg Roedel <joro@8bytes.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Alex Elder <elder@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Andy Gross <agross@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        freedreno <freedreno@lists.freedesktop.org>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>, ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-sunxi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Sep 29, 2021 at 4:46 PM Bjorn Andersson
-<bjorn.andersson@linaro.org> wrote:
->
-> On Wed 29 Sep 05:04 CDT 2021, Arnd Bergmann wrote:
->
-> > On Wed, Sep 29, 2021 at 11:51 AM Will Deacon <will@kernel.org> wrote:
-> > > On Mon, Sep 27, 2021 at 05:22:13PM +0200, Arnd Bergmann wrote:
-> > > >
-> > > > diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-> > > > index 124c41adeca1..989c83acbfee 100644
-> > > > --- a/drivers/iommu/Kconfig
-> > > > +++ b/drivers/iommu/Kconfig
-> > > > @@ -308,7 +308,7 @@ config APPLE_DART
-> > > >  config ARM_SMMU
-> > > >       tristate "ARM Ltd. System MMU (SMMU) Support"
-> > > >       depends on ARM64 || ARM || (COMPILE_TEST && !GENERIC_ATOMIC64)
-> > > > -     depends on QCOM_SCM || !QCOM_SCM #if QCOM_SCM=m this can't be =y
-> > > > +     select QCOM_SCM
-> > > >       select IOMMU_API
-> > > >       select IOMMU_IO_PGTABLE_LPAE
-> > > >       select ARM_DMA_USE_IOMMU if ARM
-> > >
-> > > I don't want to get in the way of this patch because I'm also tired of the
-> > > randconfig failures caused by QCOM_SCM. However, ARM_SMMU is applicable to
-> > > a wide variety of (non-qcom) SoCs and so it seems a shame to require the
-> > > QCOM_SCM code to be included for all of those when it's not strictly needed
-> > > at all.
-> >
-> > Good point, I agree that needs to be fixed. I think this additional
-> > change should do the trick:
-> >
->
-> ARM_SMMU and QCOM_IOMMU are two separate implementations and both uses
-> QCOM_SCM. So both of them should select QCOM_SCM.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git master
+branch HEAD: f936bb42aeb94a069bec7c9e04100d199c372956  net: bridge: mcast: Associate the seqcount with its protecting lock.
 
-Right, I figured that out later as well.
+elapsed time: 1130m
 
-> "Unfortunately" the Qualcomm portion of ARM_SMMU is builtin
-> unconditionally, so going with something like select QCOM_SCM if
-> ARCH_QCOM would still require the stubs in qcom_scm.h.
+configs tested: 186
+configs skipped: 3
 
-Yes, sounds good. I also noticed that I still need one hack in there
-if I do this:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index 55690af1b25d..36c304a8fc9b 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -427,6 +427,9 @@ struct arm_smmu_device *qcom_smmu_impl_init(struct
-arm_smmu_device *smmu)
- {
-        const struct device_node *np = smmu->dev->of_node;
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20210929
+i386                 randconfig-c001-20210928
+powerpc                    sam440ep_defconfig
+sh                          rsk7203_defconfig
+powerpc                       ebony_defconfig
+mips                            ar7_defconfig
+xtensa                    smp_lx200_defconfig
+arm                          iop32x_defconfig
+sh                      rts7751r2d1_defconfig
+nios2                            alldefconfig
+arm                         s3c6400_defconfig
+mips                        qi_lb60_defconfig
+arm                          lpd270_defconfig
+powerpc                       ppc64_defconfig
+ia64                      gensparse_defconfig
+powerpc                      pmac32_defconfig
+powerpc                    amigaone_defconfig
+mips                         bigsur_defconfig
+arm                          collie_defconfig
+sh                         ap325rxa_defconfig
+powerpc                      mgcoge_defconfig
+mips                       lemote2f_defconfig
+sh                        sh7757lcr_defconfig
+arm                      pxa255-idp_defconfig
+arm                         lpc32xx_defconfig
+mips                      fuloong2e_defconfig
+sh                        edosk7760_defconfig
+mips                        maltaup_defconfig
+powerpc                       holly_defconfig
+arm                      footbridge_defconfig
+um                                  defconfig
+arc                          axs101_defconfig
+xtensa                    xip_kc705_defconfig
+ia64                          tiger_defconfig
+arm                           spitz_defconfig
+mips                        bcm47xx_defconfig
+sh                          lboxre2_defconfig
+ia64                                defconfig
+powerpc                     tqm8555_defconfig
+powerpc                   microwatt_defconfig
+microblaze                          defconfig
+arm                            qcom_defconfig
+powerpc                   lite5200b_defconfig
+arm                             rpc_defconfig
+sparc64                          alldefconfig
+sh                            shmin_defconfig
+xtensa                              defconfig
+h8300                       h8s-sim_defconfig
+arm                         hackkit_defconfig
+powerpc                     asp8347_defconfig
+mips                        jmr3927_defconfig
+sparc                       sparc32_defconfig
+powerpc                         ps3_defconfig
+sh                                  defconfig
+sh                 kfr2r09-romimage_defconfig
+arm                       imx_v6_v7_defconfig
+sh                   secureedge5410_defconfig
+mips                     loongson1c_defconfig
+mips                         mpc30x_defconfig
+riscv             nommu_k210_sdcard_defconfig
+powerpc                     tqm8560_defconfig
+sh                           se7722_defconfig
+sh                           se7751_defconfig
+arm                       cns3420vb_defconfig
+powerpc                          g5_defconfig
+sh                            hp6xx_defconfig
+arm                       spear13xx_defconfig
+xtensa                generic_kc705_defconfig
+arm                         s5pv210_defconfig
+ia64                         bigsur_defconfig
+mips                           ip22_defconfig
+mips                        bcm63xx_defconfig
+arm                         lpc18xx_defconfig
+powerpc                        cell_defconfig
+sh                           se7750_defconfig
+nds32                               defconfig
+parisc                           alldefconfig
+sh                          kfr2r09_defconfig
+arm                          simpad_defconfig
+arm                            mmp2_defconfig
+arm                         assabet_defconfig
+m68k                            mac_defconfig
+sh                           sh2007_defconfig
+arm                          ixp4xx_defconfig
+arm                       mainstone_defconfig
+mips                           ip27_defconfig
+powerpc                      walnut_defconfig
+powerpc                 xes_mpc85xx_defconfig
+m68k                         amcore_defconfig
+powerpc                    gamecube_defconfig
+powerpc                 linkstation_defconfig
+sh                             shx3_defconfig
+microblaze                      mmu_defconfig
+m68k                            q40_defconfig
+arm                           stm32_defconfig
+arm                           tegra_defconfig
+s390                          debug_defconfig
+nios2                         10m50_defconfig
+m68k                        mvme16x_defconfig
+powerpc                     taishan_defconfig
+ia64                             alldefconfig
+x86_64               randconfig-c001-20210929
+arm                  randconfig-c002-20210929
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+parisc                           allyesconfig
+s390                                defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                             allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a002-20210929
+x86_64               randconfig-a005-20210929
+x86_64               randconfig-a001-20210929
+x86_64               randconfig-a006-20210929
+x86_64               randconfig-a003-20210929
+x86_64               randconfig-a004-20210929
+i386                 randconfig-a001-20210929
+i386                 randconfig-a005-20210929
+i386                 randconfig-a002-20210929
+i386                 randconfig-a006-20210929
+i386                 randconfig-a004-20210929
+i386                 randconfig-a003-20210929
+arc                  randconfig-r043-20210929
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                           allyesconfig
 
-+       if (!IS_ENABLED(CONFIG_QCOM_SCM))
-+               return ERR_PTR(-ENXIO);
-+
- #ifdef CONFIG_ACPI
-        if (np == NULL) {
-                /* Match platform for ACPI boot */
+clang tested configs:
+powerpc              randconfig-c003-20210929
+mips                 randconfig-c004-20210929
+arm                  randconfig-c002-20210929
+x86_64               randconfig-c007-20210929
+riscv                randconfig-c006-20210929
+s390                 randconfig-c005-20210929
+i386                 randconfig-c001-20210929
+x86_64               randconfig-a014-20210929
+x86_64               randconfig-a011-20210929
+x86_64               randconfig-a013-20210929
+x86_64               randconfig-a015-20210929
+x86_64               randconfig-a012-20210929
+x86_64               randconfig-a016-20210929
+i386                 randconfig-a014-20210929
+i386                 randconfig-a013-20210929
+i386                 randconfig-a016-20210929
+i386                 randconfig-a011-20210929
+i386                 randconfig-a015-20210929
+i386                 randconfig-a012-20210929
+hexagon              randconfig-r045-20210929
+riscv                randconfig-r042-20210929
+hexagon              randconfig-r041-20210929
+s390                 randconfig-r044-20210929
 
-
-Otherwise it still breaks with ARM_SMMU=y and QCOM_SCM=m.
-
-Splitting out the qualcomm portion of the arm_smmu driver using
-a separate 'bool' symbol should also work, if  you prefer that
-and can suggest a name and help text for that symbol. It would
-look like
-
-diff --git a/drivers/iommu/arm/arm-smmu/Makefile
-b/drivers/iommu/arm/arm-smmu/Makefile
-index e240a7bcf310..b0cc01aa20c9 100644
---- a/drivers/iommu/arm/arm-smmu/Makefile
-+++ b/drivers/iommu/arm/arm-smmu/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_QCOM_IOMMU) += qcom_iommu.o
- obj-$(CONFIG_ARM_SMMU) += arm_smmu.o
--arm_smmu-objs += arm-smmu.o arm-smmu-impl.o arm-smmu-nvidia.o arm-smmu-qcom.o
-+arm_smmu-objs += arm-smmu.o arm-smmu-impl.o arm-smmu-nvidia.o
-+arm_smmu-$(CONFIG_ARM_SMMU_QCOM) += arm-smmu-qcom.o
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-index 9f465e146799..2c25cce38060 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-@@ -215,7 +215,8 @@ struct arm_smmu_device *arm_smmu_impl_init(struct
-arm_smmu_device *smmu)
-            of_device_is_compatible(np, "nvidia,tegra186-smmu"))
-                return nvidia_smmu_impl_init(smmu);
-
--       smmu = qcom_smmu_impl_init(smmu);
-+       if (IS_ENABLED(CONFIG_ARM_SMMU_QCOM))
-+               smmu = qcom_smmu_impl_init(smmu);
-
-        if (of_device_is_compatible(np, "marvell,ap806-smmu-500"))
-                smmu->impl = &mrvl_mmu500_impl;
-
-
-
-       Arnd
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
