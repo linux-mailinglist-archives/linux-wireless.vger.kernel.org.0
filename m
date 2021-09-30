@@ -2,83 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B38B641DFD6
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 19:13:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C660541E08D
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 20:04:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349738AbhI3RP2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Sep 2021 13:15:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47006 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349211AbhI3RP1 (ORCPT
+        id S1352986AbhI3SFw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Sep 2021 14:05:52 -0400
+Received: from mout-p-101.mailbox.org ([80.241.56.151]:36742 "EHLO
+        mout-p-101.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229699AbhI3SFw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Sep 2021 13:15:27 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762E3C06176A
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 10:13:44 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id y26so28473077lfa.11
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 10:13:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=BWti34dTxVGPf/KR5OFpfqALJWXVzy7q1mLNFB+b5BU=;
-        b=NuBOMAL0A8PCqnhsnmjU7/A/U6XKwmlkba3h4WpjxCCjEW2OBxC8ctlZZEL/CuykzC
-         O6lMPLKEU9Iw4zecU4G93Cln8Lcq+HZ9kVG2n1+ZpafG7uWqA0GyElYwO+nhzUWsselF
-         genTZujTdvLHCveKdd70tSMuXWONrrJhi7Tsrfs9tlO23AaCSgjgMid37A6nUNGeZvK0
-         ufTN6c/ps87c/+N5cjWpk2tt7RVeJJdqw0leipjh8ZM0luVoQswZV3eklP+UAsQ41No/
-         RT85cafiJbRjT+WYK15BUuEFsKAv4LIHQiOS9lP++Lgz78dSLMIW682wENJb0pv7dIYM
-         SX2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=BWti34dTxVGPf/KR5OFpfqALJWXVzy7q1mLNFB+b5BU=;
-        b=YNnp70dX7khPrZuohlrxozH3B+81CsIGOBqzLklU8bDNMmqgA1jkM+hsWbJpdtyJvC
-         wq6bGrk7aoaq9UOtyIR51Bm2aWhWWwE9Rm2MQF7cACISL+v1c0zdwPHxGabOHHmT0r2X
-         +3GzGhi5zwoSql62MLGajhjadWmHo8drGeAABKCwQBneBLN97XWgNyPNHeivcqARgWaK
-         0ACLo9dyl3NvhAs05U2DmEFr/v6F4xEwZeFwyck3jBGjK4J76DfmpXIY+ntx3IKNF6hw
-         /7G/9uY8LUpXookdFjxgCvOvoj80QZLTJSeGiM741JW5cr4HeC1spWtLSi4TujOVDbz8
-         azUA==
-X-Gm-Message-State: AOAM533C6NJTh+qp4mtvE2ni2fa7SPrHHgl7mG6PbwEB3+iHXm3JYof1
-        uRVjwS/n8V4+FfOZxXqC0NY2XSX2ZRH+4uSq6E8=
-X-Google-Smtp-Source: ABdhPJwMH1igImOycjikafsZOF0Yr7Sv6BC8NYzJtq1BmMatqtdHuCQzbuighmbrmX81d9AJtm9C7vnoWYlpsOxCw1s=
-X-Received: by 2002:a05:6512:303:: with SMTP id t3mr378494lfp.64.1633022022826;
- Thu, 30 Sep 2021 10:13:42 -0700 (PDT)
+        Thu, 30 Sep 2021 14:05:52 -0400
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4HL1Mq0ttGzQkBY;
+        Thu, 30 Sep 2021 20:04:07 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Subject: Re: [PATCH v2 2/2] mwifiex: Try waking the firmware until we get an
+ interrupt
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Brian Norris <briannorris@chromium.org>, stable@vger.kernel.org
+References: <20210914114813.15404-1-verdre@v0yd.nl>
+ <20210914114813.15404-3-verdre@v0yd.nl> <YUsRT1rmtITJiJRh@smile.fi.intel.com>
+From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
+Message-ID: <d9b1c8ea-99e2-7c3e-ec8e-61362e8ccfa7@v0yd.nl>
+Date:   Thu, 30 Sep 2021 20:04:00 +0200
 MIME-Version: 1.0
-Sender: karbiruahmed60@gmail.com
-Received: by 2002:a05:6520:47cb:b0:147:3de1:d15e with HTTP; Thu, 30 Sep 2021
- 10:13:42 -0700 (PDT)
-From:   Sal Kavar <salkavar2@gmail.com>
-Date:   Thu, 30 Sep 2021 18:13:42 +0100
-X-Google-Sender-Auth: GDsM_7sQQ-_sQ-hFBjUVHUv8V5c
-Message-ID: <CAOmUQf0z_juc3GuU9u8HMf-pZju5t835H=dHMtR+8O=2GUE3QQ@mail.gmail.com>
-Subject: Yours Faithful,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <YUsRT1rmtITJiJRh@smile.fi.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 839D1188F
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I assume you and your family are in good health. I am the foreign
-operations Manager
+On 9/22/21 1:19 PM, Andy Shevchenko wrote:
+> On Tue, Sep 14, 2021 at 01:48:13PM +0200, Jonas Dreßler wrote:
+>> It seems that the firmware of the 88W8897 card sometimes ignores or
+>> misses when we try to wake it up by writing to the firmware status
+>> register. This leads to the firmware wakeup timeout expiring and the
+>> driver resetting the card because we assume the firmware has hung up or
+>> crashed (unfortunately that's not unlikely with this card).
+>>
+>> Turns out that most of the time the firmware actually didn't hang up,
+>> but simply "missed" our wakeup request and didn't send us an AWAKE
+>> event.
+>>
+>> Trying again to read the firmware status register after a short timeout
+>> usually makes the firmware wake up as expected, so add a small retry
+>> loop to mwifiex_pm_wakeup_card() that looks at the interrupt status to
+>> check whether the card woke up.
+>>
+>> The number of tries and timeout lengths for this were determined
+>> experimentally: The firmware usually takes about 500 us to wake up
+>> after we attempt to read the status register. In some cases where the
+>> firmware is very busy (for example while doing a bluetooth scan) it
+>> might even miss our requests for multiple milliseconds, which is why
+>> after 15 tries the waiting time gets increased to 10 ms. The maximum
+>> number of tries it took to wake the firmware when testing this was
+>> around 20, so a maximum number of 50 tries should give us plenty of
+>> safety margin.
+>>
+>> A good reproducer for this issue is letting the firmware sleep and wake
+>> up in very short intervals, for example by pinging a device on the
+>> network every 0.1 seconds.
+> 
+> ...
+> 
+>> +	do {
+>> +		if (mwifiex_write_reg(adapter, reg->fw_status, FIRMWARE_READY_PCIE)) {
+>> +			mwifiex_dbg(adapter, ERROR,
+>> +				    "Writing fw_status register failed\n");
+>> +			return -EIO;
+>> +		}
+>> +
+>> +		n_tries++;
+>> +
+>> +		if (n_tries <= N_WAKEUP_TRIES_SHORT_INTERVAL)
+>> +			usleep_range(400, 700);
+>> +		else
+>> +			msleep(10);
+>> +	} while (n_tries <= N_WAKEUP_TRIES_SHORT_INTERVAL + N_WAKEUP_TRIES_LONG_INTERVAL &&
+>> +		 READ_ONCE(adapter->int_status) == 0);
+> 
+> Can't you use read_poll_timeout() twice instead of this custom approach?
+> 
 
-This being a wide world in which it can be difficult to make new
-acquaintances and because it is virtually impossible to know who is
-trustworthy and who can be believed, I have decided to repose
-confidence in you after much fasting and prayer. It is only because of
-this that I have decided to confide in you and to share with you this
-confidential business.
+I've tried this now, but read_poll_timeout() is not ideal for our 
+use-case. What we'd need would be read->sleep->poll->repeat instead of 
+read->poll->sleep->repeat. With read_poll_timeout() we always end up 
+doing one more (unnecessary) write.
 
-overdue and unclaimed sum of $15.5m, (Fifteen Million Five Hundred
-Thousand Dollars Only) when the account holder suddenly passed on, he
-left no beneficiary who would be entitled to the receipt of this fund.
-For this reason, I have found it expedient to transfer this fund to a
-trustworthy individual with capacity to act as foreign business
-partner.
+>> +	mwifiex_dbg(adapter, EVENT,
+>> +		    "event: Tried %d times until firmware woke up\n", n_tries);
+> 
 
-Thus I humbly request your assistance to claim this fund. Upon the
-transfer of this fund in your account, you will take 45% as your share
-from the total fund, 10% will be shared to Charity Organizations in
-both countries and 45% will be for me.
-
-Yours Faithful,
-Mr.Sal Kavar.
