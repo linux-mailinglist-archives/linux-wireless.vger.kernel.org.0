@@ -2,86 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4968041E323
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 23:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77F8741E43C
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 00:57:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349468AbhI3VSR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Sep 2021 17:18:17 -0400
-Received: from mga12.intel.com ([192.55.52.136]:18616 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1349413AbhI3VSP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Sep 2021 17:18:15 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10123"; a="204774280"
-X-IronPort-AV: E=Sophos;i="5.85,336,1624345200"; 
-   d="scan'208";a="204774280"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2021 14:16:31 -0700
-X-IronPort-AV: E=Sophos;i="5.85,336,1624345200"; 
-   d="scan'208";a="708231121"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2021 14:16:27 -0700
-Received: from andy by smile with local (Exim 4.95-RC2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mW3Pj-007GBl-F0;
-        Fri, 01 Oct 2021 00:16:23 +0300
-Date:   Fri, 1 Oct 2021 00:16:23 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonas =?iso-8859-1?Q?Dre=DFler?= <verdre@v0yd.nl>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Brian Norris <briannorris@chromium.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mwifiex: Try waking the firmware until we get an
- interrupt
-Message-ID: <YVYpJ4Thd0VHTDLT@smile.fi.intel.com>
-References: <20210914114813.15404-1-verdre@v0yd.nl>
- <20210914114813.15404-3-verdre@v0yd.nl>
- <YUsRT1rmtITJiJRh@smile.fi.intel.com>
- <d9b1c8ea-99e2-7c3e-ec8e-61362e8ccfa7@v0yd.nl>
- <YVYk/1+ftFUOoitF@smile.fi.intel.com>
- <98c1b772-ae6b-e435-030e-399f613061ba@v0yd.nl>
+        id S1347770AbhI3W7c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Sep 2021 18:59:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40572 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348997AbhI3W7Z (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 30 Sep 2021 18:59:25 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B31C061775
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 15:57:42 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id d6so12467498wrc.11
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 15:57:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=AnIUtRQtDgk3YDJAatwz+LXUKRWPbctJNdAprjwvZ5o=;
+        b=NbyMdHEZeBs3sGq/yDHhFme6/Fat2fIEs1FbuecL1VGVLNPFVKU5MMEzqqtmtv3lrT
+         LyW5uhTxAor2u02W/ObGaIVKkso13EmNkPeqEKWvp/MUMhviRWbZ8nckHCYJ556NudOp
+         CVsQD4dF9ZylhNVdYAbBqX0A0zUyE0K2pGMLE76ziizR4sORoxcFl/sLgtHo3wxalxgg
+         zVWop8qYFvchibQzEbMROBdDHjlzHZVZJ1FRfybhb6wrSwetzJb9THEFmdLn6gkHaAVz
+         dFyBj/yMHcUaz8lAQTBNC3OUOyaayX15aeEcmR3hIb43fnzJKw76ohBZCKh7LDPECDvY
+         Mt4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=AnIUtRQtDgk3YDJAatwz+LXUKRWPbctJNdAprjwvZ5o=;
+        b=nSjLRbfRf4beRj6h4FA66fChAu0TfRACbQbBGJd9fGHMC9SYAa8/2a+YI9Ju/fUkbo
+         CKj0qrGf3tVazuXqozJLAjVif8RDYR2+5+2bckvvfqMYo6CV3JvyOASjEhjEASqwHS7a
+         Tvre1MveoKpEbYhkPpKxCWeL2iUxSG3FeQX41lcuDwWo1TG82SmuF/C10dMYd5XB7Z2M
+         HHKkiLcqU1WgaVVp/3a0sE0R4vkHJn7xC61ehdbjpd12MXHdyMqK5AtVADXjUL87+Gin
+         t3b42A8vxZQ5DPkPIowCdUMSG5487Yho/4Kx/lIhCi109QQ6HgDhoinjhSlKXFr1eY4b
+         HAEA==
+X-Gm-Message-State: AOAM531Vl+e5luAjCUGbL0ZsGnpQ+oTASJuiplSbTiAkX16mhN/lq2X7
+        Y7yXV9SDT8qZT4QDwxam8SewVyx7LJ7pZ7tXcT3fVFbQo7lBX5KM
+X-Google-Smtp-Source: ABdhPJwtAjakrk22PhsocMynsw1dcpQi8Yyjww/qtw286RJir5/Sf5h95h400OE8CslcguyIOaDpjCBWapvMI27/7k0=
+X-Received: by 2002:a2e:5705:: with SMTP id l5mr8854699ljb.456.1633042649694;
+ Thu, 30 Sep 2021 15:57:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <98c1b772-ae6b-e435-030e-399f613061ba@v0yd.nl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Received: by 2002:a05:6512:5d8:0:0:0:0 with HTTP; Thu, 30 Sep 2021 15:57:29
+ -0700 (PDT)
+Reply-To: southwestloanco59@gmail.com
+From:   SOUTHWESTLOANCO <saniabdullahinng2020@gmail.com>
+Date:   Thu, 30 Sep 2021 15:57:29 -0700
+Message-ID: <CA+3X9TxSf18dxD51aJOg_UrukfudS2Vv1PZk=HxC5aHG_Y0JQg@mail.gmail.com>
+Subject: Dear owner,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Sep 30, 2021 at 11:07:09PM +0200, Jonas Dreßler wrote:
-> On 9/30/21 10:58 PM, Andy Shevchenko wrote:
-> > On Thu, Sep 30, 2021 at 08:04:00PM +0200, Jonas Dreßler wrote:
-
-...
-
-> > Second, what is the problem with having one write more or less?
-> > Your current code doesn't guarantee this either. It only decreases
-> > probability of such scenario. Am I wrong?
-> 
-> Indeed my approach just decreases the probability and we sometimes end up
-> writing twice to wakeup the card, but it would kinda bug me if we'd always
-> do one write too much.
-> 
-> Anyway, if you still prefer the read_poll_timeout() solution I'd be alright
-> with that of course.
-
-Yes, it will make code cleaner.
-
 -- 
-With Best Regards,
-Andy Shevchenko
+Good day,
+          Do you need a loan ? We offer any kind of loan to repay in
+6months with just 2% interest
 
+Kindly Reply with below information
 
+NAME...............
+ADDRESS..........
+OCCUPATION....
+AGE...................
+PHONE..............
+AMOUNT NEEDED......
+
+Regards
+
+Contact  Mr Gary Edward +13182955380
+
+Remittance Department southwestloanco59@gmail.com
