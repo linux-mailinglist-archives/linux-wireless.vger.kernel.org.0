@@ -2,102 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4564841D86E
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 13:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40F1E41D872
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 13:11:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350309AbhI3LLC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Sep 2021 07:11:02 -0400
-Received: from out2-smtp.messagingengine.com ([66.111.4.26]:58461 "EHLO
-        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1350266AbhI3LLB (ORCPT
+        id S1350418AbhI3LNZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Sep 2021 07:13:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45210 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1350266AbhI3LNJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Sep 2021 07:11:01 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id BA2645C0189
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 07:09:18 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Thu, 30 Sep 2021 07:09:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nowhere.ws; h=
-        message-id:date:mime-version:to:from:subject:content-type
-        :content-transfer-encoding; s=fm3; bh=msR4eh2uQRa/b108nOT/Xd6DG5
-        s5N+ICv2WL58DdTxI=; b=JLMm3+iw0zNSANfsNKeSzWQLlVspdp+42BxPg0gjcH
-        /ckQkQltPGR1KfpDXHvZlgTcZPtBOAh56tSQw01Yjds100ni9OYqo56D5rJXAcz7
-        WcRJa4+FmZ1YgXb8YpQRY5eJsHe2KNLJ8uJZ+jHm5Cy0oNGEsFBBs5IZ/cn1AHlo
-        76r7vCh3hhjwCi7n2Ll4TT7VbymvAs03xN8CqsaGZ4bH7epnqTRHvs6k1QvZuIfH
-        Km0tcOdxIL6JuF53nl+yN0PsOWHfESrb11Bgo30HpCuOosK5Na2VXOTwIX4wZVXU
-        w29k13tvjo96D/YbGmHQcR4MdeUWaXRfI0joO4wL6NNQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=content-transfer-encoding:content-type
-        :date:from:message-id:mime-version:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=msR4eh
-        2uQRa/b108nOT/Xd6DG5s5N+ICv2WL58DdTxI=; b=JVco8ZxWA6iVicC4b9kSWn
-        lK5vs/RrXDBWpEn927ICQI4wELdSkrUc6qvgsGguTTeijzMz+KYf87Ec8NydqfpY
-        ZD5Tr5pfAGJnMbXO99wrqYzpUk7Y0zZ2vYuIlzkPoQe/fdXdnc35YyV3ylxlJ5wq
-        aAhWZtk1RATLOzwcZdOJ9Fa+cI2NFzuFGip4hcYVqOemmTOV+9kQ/ZOmB9jGWusO
-        a1On/9RMhQWHvJWhNBcNAKxm6WMWkBBpLIWl0ixS/pcwtAvCt2fN+IYNpxvvCJRf
-        lqOUJDPufdwFQ2Wq9rUQ4tuBBSt3qPHTNgRD+x0WLj1q2lmtCpIjBOTjk4pm5Ynw
-        ==
-X-ME-Sender: <xms:3ppVYaG35Ysv3m2CYMU58YyEDzZCPceiKxZ-fzzUhucJjiu4jl1yYQ>
-    <xme:3ppVYbXxKyL9rU2zBwplNKSywIfeWrPmxy7Ki5THwQhl6uMMR0FoyNrLIQC0NmiJJ
-    BDq9P36lH3DlogWjtE>
-X-ME-Received: <xmr:3ppVYULgGsjpOWxOpjzZJ8i8VDF7NLzdZrTow47-zQTPEtQ9uhFeNO7Yuj3xCSD_YVTd-smfpW1P7OqIii4kEyhHHJrer7U>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudekgedgfeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdlgedtmdenucfjughrpefkff
-    ggfgfvhffutgfgsehtjeertddtfeejnecuhfhrohhmpeevhhhrihhsthhirghnucfhrhgr
-    nhhkvgcuoehnohgsohguhiesnhhofihhvghrvgdrfihsqeenucggtffrrghtthgvrhhnpe
-    fhteegvdekjedtueevgeeuueejvdevhfelfedvgfettdegjeeileeiveejgeefvdenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehnohgsohguhi
-    esnhhofihhvghrvgdrfihs
-X-ME-Proxy: <xmx:3ppVYUE0qJbXuD3oWkxeC4EA-k21--j4eZAB6E0n-o4Ej2M-zxt8xg>
-    <xmx:3ppVYQVqwAotzG9aJdTn7wSekk-qQODB_FWP5C2TQvam7D6i6_42aA>
-    <xmx:3ppVYXM-sAbNDBL60Fkfm3vkpQmE2pfVbCI3x547G6XkGOUo5MnPMA>
-    <xmx:3ppVYTDGtnwPIcmAsYfNSuWrIo1R60CW9P94VkoxTgj_a7Z3U4braQ>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA for
- <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 07:09:18 -0400 (EDT)
-Message-ID: <5d221757-372e-fd07-694a-b7207f448e67@nowhere.ws>
-Date:   Thu, 30 Sep 2021 13:09:16 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.1
-Content-Language: en-US-large
+        Thu, 30 Sep 2021 07:13:09 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E04F8C06176A;
+        Thu, 30 Sep 2021 04:11:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=YaAVZzMRlt2cuxF/VnOWuM/PzYC9bAHwPTryDdlLyvE=; t=1633000287; x=1634209887; 
+        b=RtSgdqAA7e0cN+Cf3QfpGgKIycrbkyTovJ5NLvVh1rmYYJ+iJ50HV+0XfeXb8g7YDX89RgxdpL6
+        pXkLnakatv9Um1U3+v47kzjkYSbuEOuVHYKLWeVsHa06DroHrR/GwTrR61LnelYN8J8W2Ynol+sc9
+        X/1o75+hYOU+nnuyhj3h8MCKwI1nrm+HJx9D8KCKQBc6cB9omE/h1qLEdtlv0mWODprIDdDGiySk9
+        Dl/c4s3ashNCvxrs/kv816Ai7q4KLAYP1so763dGl+vbl3uIMfb0gF1OwgazdsC+B6v8W9pQU8Y57
+        FbBXBvKDK9Pcz1/JtMucvzsYmYonJe5ufPZw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mVtyF-00Dlt4-Tk;
+        Thu, 30 Sep 2021 13:11:24 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-From:   Christian Franke <nobody@nowhere.ws>
-Subject: mt76: MT7612E dropouts on Ruckus R650
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Cc:     Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org
+Subject: [PATCH 1/2] mac80211: mesh: fix HE operation element length check
+Date:   Thu, 30 Sep 2021 13:11:20 +0200
+Message-Id: <20210930131120.b0f940976c56.I954e1be55e9f87cc303165bff5c906afe1e54648@changeid>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+From: Johannes Berg <johannes.berg@intel.com>
 
-we recently upgraded our office network to a Ruckus R650.
+The length check here was bad, if the length doesn't at
+least include the length of the fixed part, we cannot
+call ieee80211_he_oper_size() to determine the total.
+Fix this, and convert to cfg80211_find_ext_elem() while
+at it.
 
-With my MT7612E card, I frequently have dropouts on this new ap, they 
-all look something like this:
+Cc: stable@vger.kernel.org
+Fixes: 70debba3ab7d ("mac80211: save HE oper info in BSS config for mesh")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/mesh.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-64 bytes from 192.168.14.1: icmp_seq=237 ttl=64 time=1.35 ms
-64 bytes from 192.168.14.1: icmp_seq=238 ttl=64 time=1.48 ms
-64 bytes from 192.168.14.1: icmp_seq=239 ttl=64 time=4.60 ms
-64 bytes from 192.168.14.1: icmp_seq=241 ttl=64 time=1752 ms
-64 bytes from 192.168.14.1: icmp_seq=248 ttl=64 time=542 ms
-64 bytes from 192.168.14.1: icmp_seq=249 ttl=64 time=1.07 ms
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index a4212a333d61..15ac08d111ea 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -672,7 +672,7 @@ ieee80211_mesh_update_bss_params(struct ieee80211_sub_if_data *sdata,
+ 				 u8 *ie, u8 ie_len)
+ {
+ 	struct ieee80211_supported_band *sband;
+-	const u8 *cap;
++	const struct element *cap;
+ 	const struct ieee80211_he_operation *he_oper = NULL;
+ 
+ 	sband = ieee80211_get_sband(sdata);
+@@ -687,9 +687,10 @@ ieee80211_mesh_update_bss_params(struct ieee80211_sub_if_data *sdata,
+ 
+ 	sdata->vif.bss_conf.he_support = true;
+ 
+-	cap = cfg80211_find_ext_ie(WLAN_EID_EXT_HE_OPERATION, ie, ie_len);
+-	if (cap && cap[1] >= ieee80211_he_oper_size(&cap[3]))
+-		he_oper = (void *)(cap + 3);
++	cap = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_OPERATION, ie, ie_len);
++	if (cap && cap->datalen >= 1 + sizeof(*he_oper) &&
++	    cap->datalen >= 1 + ieee80211_he_oper_size(cap->data + 1))
++		he_oper = (void *)(cap->data + 1);
+ 
+ 	if (he_oper)
+ 		sdata->vif.bss_conf.he_oper.params =
+-- 
+2.31.1
 
-Whenever this happens, the following shows up in the kernel log:
-
-<6>[32244.957969] mt76x2e 0000:02:00.0: Firmware Version: 0.0.00
-<6>[32244.957984] mt76x2e 0000:02:00.0: Build: 1
-<6>[32244.957989] mt76x2e 0000:02:00.0: Build Time: 201507311614____
-<6>[32244.980544] mt76x2e 0000:02:00.0: Firmware running!
-<6>[32244.981660] ieee80211 phy0: Hardware restart was requested
-
-This is happening with distro kernel 5.14.7-arch1-1 on x86_64.
-
-I would be glad to investigate this further, however I don't know how to 
-best approach this.
-
-Any suggestions? :)
-
-Thank you,
-Chris
