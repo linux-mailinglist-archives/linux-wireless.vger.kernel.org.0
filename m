@@ -2,152 +2,188 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74AD541D54F
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 10:15:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84BA241D73B
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 12:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349046AbhI3IRe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Sep 2021 04:17:34 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:18888 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348949AbhI3IRd (ORCPT
+        id S1349750AbhI3KKS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Sep 2021 06:10:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58672 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349724AbhI3KKR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Sep 2021 04:17:33 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1632989751; h=Content-Transfer-Encoding: MIME-Version:
- Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=0xTZoD9OiNUYm0bAZkUfnj3+242hlNTrKosJKt38oYk=; b=KTa6eX9sa39h5WBEnijMWzmeiNZ+Gn4faY4BG0pKylK+xc1O6g3l5mfpn2Ig2CtgUvoKXq0y
- W4VI0gdunbOrORMnVMQYM1BWSW8SdjRm758AlQIGNwpY2uK3dj1Hruq0xePKLIulgO5BPr+I
- h5Sq+dNPdLxZwuqKzZUFxgxcgG8=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 6155722d9ffb413149b3efa1 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 30 Sep 2021 08:15:41
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3F453C4360C; Thu, 30 Sep 2021 08:15:41 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 43609C4338F;
-        Thu, 30 Sep 2021 08:15:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 43609C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     johannes@sipsolutions.net, ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH] cfg80211: seperate get channel number from ies
-Date:   Thu, 30 Sep 2021 04:15:33 -0400
-Message-Id: <20210930081533.4898-1-wgong@codeaurora.org>
-X-Mailer: git-send-email 2.31.1
+        Thu, 30 Sep 2021 06:10:17 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E1E4C06176A
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 03:08:34 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id b15so22869512lfe.7
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 03:08:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=mwTJIBSdS6R0C6OOzQhsYG/CA9Av8xCuOU1iydIZfq8=;
+        b=ivZCT+RSpG5Lr3g/DnUUf9qNfJjNYEBDbk0sXckN3US/d3v73YYcN23q0gW1WEDlCF
+         4QdzhSNaM0Lm9mjqyKiP/SvHhFGovDkoONIkjO6jEXsrqXkeuyGKcdG2dAh8vfVEmSRj
+         nke3WD52VbQKrXvU5FjyYTgmtUKEHPvQpiBan+Leef4aA7HQdSVd7xVwJ67rmFFTYmIt
+         zE+4gHgh7oa4RgNQvVReezvOaMgOIT+2CvBjbFAVrMr2Ej5UazkPfRl0orjBYUB0/MF5
+         4C2cUNV52DHLyVT8sMkGmEiMl7PP1Efg+OV9kaU8DlpmA6RXnUJOzKC55Om6qfkezQHS
+         mQgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=mwTJIBSdS6R0C6OOzQhsYG/CA9Av8xCuOU1iydIZfq8=;
+        b=gRVDBF096kCzQycZteg/WGzdvwtBrrZm5SsNR5ycg5YfELR4qVoXTYYA6a6w0QkHte
+         +Fm/erxjERTEZg/iBOw464fZYSMhOu4lThlpfvR540W+V6+l8b8eOTUYjA+vOwR/2GNw
+         vjofkso20YKKGiP/YFSI/JAhHYuGFlCp9zjUzN98ufl6BVhBIs7tOsNQ6IZ+ljmJ9qyf
+         SR9vmPniuOT3+JIwiQnRreE4oH+FAoujD0ApXIUjNPoohBFvAZHjlhnU61oOq/ScEwwy
+         DAvQEr3fZe/N6J3pBsUO0v6wMTbml4PzD5UFgCRkagJrWN/FVa7yNbjjTfc3r5AlHBSQ
+         94QA==
+X-Gm-Message-State: AOAM5323p3WKsaVggZMMTeYWa8H8elUb7w8OWa7KJd1Q7PldT6PdLh89
+        7ROQYWIsuKtmTAVTGufcrK5TD9g9+oBRcuUw5ZmtYA==
+X-Google-Smtp-Source: ABdhPJxp5GhGqokFxVNBLzc5wAxYntlHon3eHPcHlnoTTXeNni+3NFATmwx155GBOUerq63XPBnIf991pZVt2hJfQIM=
+X-Received: by 2002:a2e:898c:: with SMTP id c12mr5105509lji.16.1632996511275;
+ Thu, 30 Sep 2021 03:08:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com> <20210920161136.2398632-9-Jerome.Pouiller@silabs.com>
+In-Reply-To: <20210920161136.2398632-9-Jerome.Pouiller@silabs.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 30 Sep 2021 12:07:55 +0200
+Message-ID: <CAPDyKFp2_41mScO=-Ev+kvYD5xjShQdLugU_2FTTmvzgCxmEWA@mail.gmail.com>
+Subject: Re: [PATCH v7 08/24] wfx: add bus_sdio.c
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        driverdevel <devel@driverdev.osuosl.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        DTML <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Get channel number from ies is a common logic, so seperate it to a new
-function, which could also be used by lower driver.
+On Mon, 20 Sept 2021 at 18:12, Jerome Pouiller
+<Jerome.Pouiller@silabs.com> wrote:
+>
+> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>
+> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+> ---
+>  drivers/net/wireless/silabs/wfx/bus_sdio.c | 261 +++++++++++++++++++++
+>  1 file changed, 261 insertions(+)
+>  create mode 100644 drivers/net/wireless/silabs/wfx/bus_sdio.c
+>
+> diff --git a/drivers/net/wireless/silabs/wfx/bus_sdio.c b/drivers/net/wir=
+eless/silabs/wfx/bus_sdio.c
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
----
- include/net/cfg80211.h |  9 +++++++++
- net/wireless/scan.c    | 41 ++++++++++++++++++++++++++---------------
- 2 files changed, 35 insertions(+), 15 deletions(-)
+[...]
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 911fae42b0c0..2ed677d203a7 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -6268,6 +6268,15 @@ static inline void cfg80211_gen_new_bssid(const u8 *bssid, u8 max_bssid,
- 	u64_to_ether_addr(new_bssid_u64, new_bssid);
- }
- 
-+/**
-+ * cfg80211_get_ies_channel_number - returns the channel number from ies
-+ * @ie: ies
-+ * @ielen: length of IEs
-+ * @band: enum nl80211_band of the channel
-+ */
-+int cfg80211_get_ies_channel_number(const u8 *ie, size_t ielen,
-+				    enum nl80211_band band);
-+
- /**
-  * cfg80211_is_element_inherited - returns if element ID should be inherited
-  * @element: element to check
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 019952d4fc7d..a0dd4fa136eb 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1782,25 +1782,13 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 	return NULL;
- }
- 
--/*
-- * Update RX channel information based on the available frame payload
-- * information. This is mainly for the 2.4 GHz band where frames can be received
-- * from neighboring channels and the Beacon frames use the DSSS Parameter Set
-- * element to indicate the current (transmitting) channel, but this might also
-- * be needed on other bands if RX frequency does not match with the actual
-- * operating channel of a BSS.
-- */
--static struct ieee80211_channel *
--cfg80211_get_bss_channel(struct wiphy *wiphy, const u8 *ie, size_t ielen,
--			 struct ieee80211_channel *channel,
--			 enum nl80211_bss_scan_width scan_width)
-+int cfg80211_get_ies_channel_number(const u8 *ie, size_t ielen,
-+				    enum nl80211_band band)
- {
- 	const u8 *tmp;
--	u32 freq;
- 	int channel_number = -1;
--	struct ieee80211_channel *alt_channel;
- 
--	if (channel->band == NL80211_BAND_S1GHZ) {
-+	if (band == NL80211_BAND_S1GHZ) {
- 		tmp = cfg80211_find_ie(WLAN_EID_S1G_OPERATION, ie, ielen);
- 		if (tmp && tmp[1] >= sizeof(struct ieee80211_s1g_oper_ie)) {
- 			struct ieee80211_s1g_oper_ie *s1gop = (void *)(tmp + 2);
-@@ -1820,6 +1808,29 @@ cfg80211_get_bss_channel(struct wiphy *wiphy, const u8 *ie, size_t ielen,
- 			}
- 		}
- 	}
-+	return channel_number;
-+}
-+EXPORT_SYMBOL(cfg80211_get_ies_channel_number);
-+
-+/*
-+ * Update RX channel information based on the available frame payload
-+ * information. This is mainly for the 2.4 GHz band where frames can be received
-+ * from neighboring channels and the Beacon frames use the DSSS Parameter Set
-+ * element to indicate the current (transmitting) channel, but this might also
-+ * be needed on other bands if RX frequency does not match with the actual
-+ * operating channel of a BSS.
-+ */
-+static struct ieee80211_channel *
-+cfg80211_get_bss_channel(struct wiphy *wiphy, const u8 *ie, size_t ielen,
-+			 struct ieee80211_channel *channel,
-+			 enum nl80211_bss_scan_width scan_width)
-+{
-+	const u8 *tmp;
-+	u32 freq;
-+	int channel_number;
-+	struct ieee80211_channel *alt_channel;
-+
-+	channel_number = cfg80211_get_ies_channel_number(ie, ielen, channel->band);
- 
- 	if (channel_number < 0) {
- 		/* No channel information in frame payload */
--- 
-2.31.1
+> +
+> +static int wfx_sdio_probe(struct sdio_func *func,
+> +                         const struct sdio_device_id *id)
+> +{
+> +       struct device_node *np =3D func->dev.of_node;
+> +       struct wfx_sdio_priv *bus;
+> +       int ret;
+> +
+> +       if (func->num !=3D 1) {
+> +               dev_err(&func->dev, "SDIO function number is %d while it =
+should always be 1 (unsupported chip?)\n",
+> +                       func->num);
+> +               return -ENODEV;
+> +       }
+> +
+> +       bus =3D devm_kzalloc(&func->dev, sizeof(*bus), GFP_KERNEL);
+> +       if (!bus)
+> +               return -ENOMEM;
+> +
+> +       if (!np || !of_match_node(wfx_sdio_of_match, np)) {
+> +               dev_warn(&func->dev, "no compatible device found in DT\n"=
+);
+> +               return -ENODEV;
+> +       }
+> +
+> +       bus->func =3D func;
+> +       bus->of_irq =3D irq_of_parse_and_map(np, 0);
+> +       sdio_set_drvdata(func, bus);
+> +       func->card->quirks |=3D MMC_QUIRK_LENIENT_FN0 |
+> +                             MMC_QUIRK_BLKSZ_FOR_BYTE_MODE |
+> +                             MMC_QUIRK_BROKEN_BYTE_MODE_512;
 
+I would rather see that you add an SDIO_FIXUP for the SDIO card, to
+the sdio_fixup_methods[], in drivers/mmc/core/quirks.h, instead of
+this.
+
+> +
+> +       sdio_claim_host(func);
+> +       ret =3D sdio_enable_func(func);
+> +       /* Block of 64 bytes is more efficient than 512B for frame sizes =
+< 4k */
+> +       sdio_set_block_size(func, 64);
+> +       sdio_release_host(func);
+> +       if (ret)
+> +               return ret;
+> +
+> +       bus->core =3D wfx_init_common(&func->dev, &wfx_sdio_pdata,
+> +                                   &wfx_sdio_hwbus_ops, bus);
+> +       if (!bus->core) {
+> +               ret =3D -EIO;
+> +               goto sdio_release;
+> +       }
+> +
+> +       ret =3D wfx_probe(bus->core);
+> +       if (ret)
+> +               goto sdio_release;
+> +
+> +       return 0;
+> +
+> +sdio_release:
+> +       sdio_claim_host(func);
+> +       sdio_disable_func(func);
+> +       sdio_release_host(func);
+> +       return ret;
+> +}
+> +
+> +static void wfx_sdio_remove(struct sdio_func *func)
+> +{
+> +       struct wfx_sdio_priv *bus =3D sdio_get_drvdata(func);
+> +
+> +       wfx_release(bus->core);
+> +       sdio_claim_host(func);
+> +       sdio_disable_func(func);
+> +       sdio_release_host(func);
+> +}
+> +
+> +static const struct sdio_device_id wfx_sdio_ids[] =3D {
+> +       { SDIO_DEVICE(SDIO_VENDOR_ID_SILABS, SDIO_DEVICE_ID_SILABS_WF200)=
+ },
+> +       { },
+> +};
+> +MODULE_DEVICE_TABLE(sdio, wfx_sdio_ids);
+> +
+> +struct sdio_driver wfx_sdio_driver =3D {
+> +       .name =3D "wfx-sdio",
+> +       .id_table =3D wfx_sdio_ids,
+> +       .probe =3D wfx_sdio_probe,
+> +       .remove =3D wfx_sdio_remove,
+> +       .drv =3D {
+> +               .owner =3D THIS_MODULE,
+> +               .of_match_table =3D wfx_sdio_of_match,
+
+Is there no power management? Or do you intend to add that on top?
+
+> +       }
+> +};
+> --
+> 2.33.0
+>
+
+Kind regards
+Uffe
