@@ -2,126 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F40A41D802
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 12:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4564841D86E
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 13:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350100AbhI3KqS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Sep 2021 06:46:18 -0400
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:38986
-        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1350068AbhI3KqQ (ORCPT
+        id S1350309AbhI3LLC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Sep 2021 07:11:02 -0400
+Received: from out2-smtp.messagingengine.com ([66.111.4.26]:58461 "EHLO
+        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1350266AbhI3LLB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Sep 2021 06:46:16 -0400
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 654BE3F325
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 10:44:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1632998672;
-        bh=1+7qOmsUZM+kk+KMExa6VeC0uD5tDlWk3nuJO06+4ds=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=RX5a2EOsuvmNsHzokDCfmV7t41kcee9WeTgrYTT9JJJ4hvhRJi3YMe7B6dWmPmcxL
-         ZjQDsOPIByCDAN1DWjCMJTwA7DteOOsAu/pT0GOZAMJC22OvPP9Espowzt+neL4lDt
-         mzSBuKxBsqk1BD26J3YtDYQPRUJZt4odcEeFZucmYE0c29iaa47GqAL0DsYyuTvQOj
-         vly4o+lAIpp6QLzDOJyT6m8ZOmrmyiEvlpKF/sfvY2tKZveFURM8GqCuofc7kitzPF
-         kjc2cV1k6PE5u2XbGDHLinLgQ5wMwL0NsK9QdHTcqfDJrSRaVPOihODCShMocIh1mi
-         UeQ/Gff1lyk6Q==
-Received: by mail-pf1-f200.google.com with SMTP id a188-20020a627fc5000000b004446be17615so3648412pfd.7
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 03:44:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=1+7qOmsUZM+kk+KMExa6VeC0uD5tDlWk3nuJO06+4ds=;
-        b=oSyeABWO7wZAgzdkYtA5iq45q3/Is6SLszY+d5HtHUGSwrqTsErs7Vn4R2kEvaOCUk
-         rD8xpx7LMV3IAb1OtB96BGRSHs9jlnwRtNVzq1IUeaqHpsSRAHBDgeMVPl8AoanWz1EL
-         VnlSM93VyK90ditQeN5qfxeD2LcehhfRYeuyRXTuZlMcGoMFkpWE7MJAgarxrkOI6+kw
-         G4AVQ1109KQakP6AT/T80m+UBCAyQ90OU9xbFzO3z6W+gxkhrQTpxnobdcjHsaAunyaz
-         01J6x96pwAj+D6//VElxPu4ETGShnApCRbhhd/5rlZOm5iNP1cHRl+FcYLUsWFfGTqaB
-         1Yyw==
-X-Gm-Message-State: AOAM5333Lne2D4AmNSBEJl8gr8lpd+UxzmBuz6DOsPvrBn3VJTiGTNn7
-        QHPhMhr3qJqluoCDoy9WM5fTgjGwhuI2D/RUx1/QeqwDe+JcDlUOgfvsKEJ8PKfTNeXPGR0qvgt
-        faHGCI9e7xY+kKeVx4JNeDZWaYyY4+ftxqUnE26A+nAFE
-X-Received: by 2002:a17:90b:1d0f:: with SMTP id on15mr3834465pjb.77.1632998670707;
-        Thu, 30 Sep 2021 03:44:30 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwSQ7Rude9wGaP2b5cEB+yxk+8eHNpSDFIhYv0pHZ3q20W4ZKZy0lUJTrs9eS5unQFcg7kA2A==
-X-Received: by 2002:a17:90b:1d0f:: with SMTP id on15mr3834444pjb.77.1632998670456;
-        Thu, 30 Sep 2021 03:44:30 -0700 (PDT)
-Received: from localhost.localdomain (2001-b400-e255-baca-c7f7-191a-11a1-0473.emome-ip6.hinet.net. [2001:b400:e255:baca:c7f7:191a:11a1:473])
-        by smtp.gmail.com with ESMTPSA id c7sm2654844pfd.75.2021.09.30.03.44.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Sep 2021 03:44:30 -0700 (PDT)
-From:   Chris Chiu <chris.chiu@canonical.com>
-To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chris Chiu <chris.chiu@canonical.com>
-Subject: [PATCH] rtl8xxxu: Use lower tx rates for the ack packet
-Date:   Thu, 30 Sep 2021 18:44:22 +0800
-Message-Id: <20210930104422.968365-1-chris.chiu@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Thu, 30 Sep 2021 07:11:01 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id BA2645C0189
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 07:09:18 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Thu, 30 Sep 2021 07:09:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nowhere.ws; h=
+        message-id:date:mime-version:to:from:subject:content-type
+        :content-transfer-encoding; s=fm3; bh=msR4eh2uQRa/b108nOT/Xd6DG5
+        s5N+ICv2WL58DdTxI=; b=JLMm3+iw0zNSANfsNKeSzWQLlVspdp+42BxPg0gjcH
+        /ckQkQltPGR1KfpDXHvZlgTcZPtBOAh56tSQw01Yjds100ni9OYqo56D5rJXAcz7
+        WcRJa4+FmZ1YgXb8YpQRY5eJsHe2KNLJ8uJZ+jHm5Cy0oNGEsFBBs5IZ/cn1AHlo
+        76r7vCh3hhjwCi7n2Ll4TT7VbymvAs03xN8CqsaGZ4bH7epnqTRHvs6k1QvZuIfH
+        Km0tcOdxIL6JuF53nl+yN0PsOWHfESrb11Bgo30HpCuOosK5Na2VXOTwIX4wZVXU
+        w29k13tvjo96D/YbGmHQcR4MdeUWaXRfI0joO4wL6NNQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=content-transfer-encoding:content-type
+        :date:from:message-id:mime-version:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=msR4eh
+        2uQRa/b108nOT/Xd6DG5s5N+ICv2WL58DdTxI=; b=JVco8ZxWA6iVicC4b9kSWn
+        lK5vs/RrXDBWpEn927ICQI4wELdSkrUc6qvgsGguTTeijzMz+KYf87Ec8NydqfpY
+        ZD5Tr5pfAGJnMbXO99wrqYzpUk7Y0zZ2vYuIlzkPoQe/fdXdnc35YyV3ylxlJ5wq
+        aAhWZtk1RATLOzwcZdOJ9Fa+cI2NFzuFGip4hcYVqOemmTOV+9kQ/ZOmB9jGWusO
+        a1On/9RMhQWHvJWhNBcNAKxm6WMWkBBpLIWl0ixS/pcwtAvCt2fN+IYNpxvvCJRf
+        lqOUJDPufdwFQ2Wq9rUQ4tuBBSt3qPHTNgRD+x0WLj1q2lmtCpIjBOTjk4pm5Ynw
+        ==
+X-ME-Sender: <xms:3ppVYaG35Ysv3m2CYMU58YyEDzZCPceiKxZ-fzzUhucJjiu4jl1yYQ>
+    <xme:3ppVYbXxKyL9rU2zBwplNKSywIfeWrPmxy7Ki5THwQhl6uMMR0FoyNrLIQC0NmiJJ
+    BDq9P36lH3DlogWjtE>
+X-ME-Received: <xmr:3ppVYULgGsjpOWxOpjzZJ8i8VDF7NLzdZrTow47-zQTPEtQ9uhFeNO7Yuj3xCSD_YVTd-smfpW1P7OqIii4kEyhHHJrer7U>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudekgedgfeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdlgedtmdenucfjughrpefkff
+    ggfgfvhffutgfgsehtjeertddtfeejnecuhfhrohhmpeevhhhrihhsthhirghnucfhrhgr
+    nhhkvgcuoehnohgsohguhiesnhhofihhvghrvgdrfihsqeenucggtffrrghtthgvrhhnpe
+    fhteegvdekjedtueevgeeuueejvdevhfelfedvgfettdegjeeileeiveejgeefvdenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehnohgsohguhi
+    esnhhofihhvghrvgdrfihs
+X-ME-Proxy: <xmx:3ppVYUE0qJbXuD3oWkxeC4EA-k21--j4eZAB6E0n-o4Ej2M-zxt8xg>
+    <xmx:3ppVYQVqwAotzG9aJdTn7wSekk-qQODB_FWP5C2TQvam7D6i6_42aA>
+    <xmx:3ppVYXM-sAbNDBL60Fkfm3vkpQmE2pfVbCI3x547G6XkGOUo5MnPMA>
+    <xmx:3ppVYTDGtnwPIcmAsYfNSuWrIo1R60CW9P94VkoxTgj_a7Z3U4braQ>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA for
+ <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 07:09:18 -0400 (EDT)
+Message-ID: <5d221757-372e-fd07-694a-b7207f448e67@nowhere.ws>
+Date:   Thu, 30 Sep 2021 13:09:16 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.1
+Content-Language: en-US-large
+To:     linux-wireless@vger.kernel.org
+From:   Christian Franke <nobody@nowhere.ws>
+Subject: mt76: MT7612E dropouts on Ruckus R650
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-According to the Realtek propritary driver and the rtw88 driver, the
-tx rates of the ack (includes block ack) are initialized with lower
-tx rates (no HT rates) which is set by the RRSR register value. In
-real cases, ack rate higher than current tx rate could lead to
-difficulty for the receiving end to receive management/control frames.
-The retransmission rate would be higher then expected when the driver
-is acting as receiver and the RSSI is not good.
+Hello,
 
-Cross out higer rates for ack packet before implementing dynamic rrsr
-configuration
+we recently upgraded our office network to a Ruckus R650.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 7 ++++++-
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h | 2 ++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+With my MT7612E card, I frequently have dropouts on this new ap, they 
+all look something like this:
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 774341b0005a..413cccd88f5c 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4460,13 +4460,18 @@ void rtl8xxxu_gen1_init_aggregation(struct rtl8xxxu_priv *priv)
- 
- static void rtl8xxxu_set_basic_rates(struct rtl8xxxu_priv *priv, u32 rate_cfg)
- {
-+	struct ieee80211_hw *hw = priv->hw;
- 	u32 val32;
- 	u8 rate_idx = 0;
- 
- 	rate_cfg &= RESPONSE_RATE_BITMAP_ALL;
- 
- 	val32 = rtl8xxxu_read32(priv, REG_RESPONSE_RATE_SET);
--	val32 &= ~RESPONSE_RATE_BITMAP_ALL;
-+	       val32 = rtl8xxxu_read32(priv, REG_RESPONSE_RATE_SET);
-+	if (hw->conf.chandef.chan->band == NL80211_BAND_5GHZ)
-+		val32 &= RESPONSE_RATE_RRSR_INIT_5G;
-+	else
-+		val32 &= RESPONSE_RATE_RRSR_INIT_2G;
- 	val32 |= rate_cfg;
- 	rtl8xxxu_write32(priv, REG_RESPONSE_RATE_SET, val32);
- 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-index a2a31f374a82..438b65ba9640 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-@@ -516,6 +516,8 @@
- #define REG_RESPONSE_RATE_SET		0x0440
- #define  RESPONSE_RATE_BITMAP_ALL	0xfffff
- #define  RESPONSE_RATE_RRSR_CCK_ONLY_1M	0xffff1
-+#define  RESPONSE_RATE_RRSR_INIT_2G	0x15f
-+#define  RESPONSE_RATE_RRSR_INIT_5G	0x150
- #define  RSR_1M				BIT(0)
- #define  RSR_2M				BIT(1)
- #define  RSR_5_5M			BIT(2)
--- 
-2.20.1
+64 bytes from 192.168.14.1: icmp_seq=237 ttl=64 time=1.35 ms
+64 bytes from 192.168.14.1: icmp_seq=238 ttl=64 time=1.48 ms
+64 bytes from 192.168.14.1: icmp_seq=239 ttl=64 time=4.60 ms
+64 bytes from 192.168.14.1: icmp_seq=241 ttl=64 time=1752 ms
+64 bytes from 192.168.14.1: icmp_seq=248 ttl=64 time=542 ms
+64 bytes from 192.168.14.1: icmp_seq=249 ttl=64 time=1.07 ms
 
+Whenever this happens, the following shows up in the kernel log:
+
+<6>[32244.957969] mt76x2e 0000:02:00.0: Firmware Version: 0.0.00
+<6>[32244.957984] mt76x2e 0000:02:00.0: Build: 1
+<6>[32244.957989] mt76x2e 0000:02:00.0: Build Time: 201507311614____
+<6>[32244.980544] mt76x2e 0000:02:00.0: Firmware running!
+<6>[32244.981660] ieee80211 phy0: Hardware restart was requested
+
+This is happening with distro kernel 5.14.7-arch1-1 on x86_64.
+
+I would be glad to investigate this further, however I don't know how to 
+best approach this.
+
+Any suggestions? :)
+
+Thank you,
+Chris
