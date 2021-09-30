@@ -2,166 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FDAD41DC3C
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 16:27:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50ECF41DDB5
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 17:39:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349634AbhI3O3f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Sep 2021 10:29:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35528 "EHLO
+        id S1345014AbhI3Pkj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Sep 2021 11:40:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348233AbhI3O3e (ORCPT
+        with ESMTP id S1344621AbhI3Pkh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Sep 2021 10:29:34 -0400
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [IPv6:2001:67c:2050::465:102])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C65AC06176A;
-        Thu, 30 Sep 2021 07:27:51 -0700 (PDT)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:105:465:1:4:0])
+        Thu, 30 Sep 2021 11:40:37 -0400
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050::465:101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C5C6C06176A;
+        Thu, 30 Sep 2021 08:38:54 -0700 (PDT)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [80.241.60.233])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4HKwZD2LZLzQjf1;
-        Thu, 30 Sep 2021 16:27:48 +0200 (CEST)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4HKy8C3MNBzQk9N;
+        Thu, 30 Sep 2021 17:38:51 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
-Subject: Re: [PATCH v2 1/2] mwifiex: Use non-posted PCI write when setting TX
- ring write pointer
-To:     David Laight <David.Laight@ACULAB.COM>,
-        =?UTF-8?B?J1BhbGkgUm9ow6FyJw==?= <pali@kernel.org>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+Subject: Re: [PATCH 1/2] mwifiex: Use non-posted PCI register writes
+To:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
         Ganapathi Bhat <ganapathi017@gmail.com>,
         Xinming Hu <huxinming820@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Tsuchiya Yuto <kitakar@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev@vger.kernel.org,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
         Maximilian Luz <luzmaximilian@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Brian Norris <briannorris@chromium.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20210914114813.15404-1-verdre@v0yd.nl>
- <20210914114813.15404-2-verdre@v0yd.nl>
- <8f65f41a807c46d496bf1b45816077e4@AcuMS.aculab.com>
- <20210922142726.guviqler5k7wnm52@pali>
- <e0a4e0adc56148039f853ccb083be53a@AcuMS.aculab.com>
+        Bjorn Helgaas <bhelgaas@google.com>
+References: <20210830123704.221494-2-verdre@v0yd.nl>
+ <CA+ASDXPKZ0i5Bi11Q=qqppY8OCgw=7m0dnPn0s+y+GAvvQodog@mail.gmail.com>
+ <CAHp75VdR4VC+Ojy9NjAtewAaPAgowq-3rffrr3uAdOeiN8gN-A@mail.gmail.com>
+ <CA+ASDXNGR2=sQ+w1LkMiY_UCfaYgQ5tcu2pbBn46R2asv83sSQ@mail.gmail.com>
+ <YS/rn8b0O3FPBbtm@google.com> <0ce93e7c-b041-d322-90cd-40ff5e0e8ef0@v0yd.nl>
+ <CA+ASDXNMhrxX-nFrr6kBo0a0c-25+Ge2gBP2uTjE8UWJMeQO2A@mail.gmail.com>
+ <bd64c142-93d0-c348-834c-34ed80c460f9@v0yd.nl>
+ <e4cbf804-c374-79a3-53ac-8a0fbd8f75b8@v0yd.nl>
+ <CAHp75Vd5iCLELx8s+Zvcj8ufd2bN6CK26soDMkZyC1CwMO2Qeg@mail.gmail.com>
+ <20210923202231.t2zjoejpxrbbe5hc@pali>
 From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
-Message-ID: <ae8ca158-ad86-9c0d-7217-f9db3d2fc42e@v0yd.nl>
-Date:   Thu, 30 Sep 2021 16:27:40 +0200
+Message-ID: <db583b3c-6bfc-d765-a588-eb47c76cea31@v0yd.nl>
+Date:   Thu, 30 Sep 2021 17:38:43 +0200
 MIME-Version: 1.0
-In-Reply-To: <e0a4e0adc56148039f853ccb083be53a@AcuMS.aculab.com>
+In-Reply-To: <20210923202231.t2zjoejpxrbbe5hc@pali>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3267726B
+X-Rspamd-Queue-Id: 08D8D271
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/22/21 5:54 PM, David Laight wrote:
-> 
-> From: Pali Rohár
->> Sent: 22 September 2021 15:27
+On 9/23/21 10:22 PM, Pali Rohár wrote:
+> On Thursday 23 September 2021 22:41:30 Andy Shevchenko wrote:
+>> On Thu, Sep 23, 2021 at 6:28 PM Jonas Dreßler <verdre@v0yd.nl> wrote:
+>>> On 9/22/21 2:50 PM, Jonas Dreßler wrote:
 >>
->> On Wednesday 22 September 2021 14:03:25 David Laight wrote:
->>> From: Jonas Dreßler
->>>> Sent: 14 September 2021 12:48
->>>>
->>>> On the 88W8897 card it's very important the TX ring write pointer is
->>>> updated correctly to its new value before setting the TX ready
->>>> interrupt, otherwise the firmware appears to crash (probably because
->>>> it's trying to DMA-read from the wrong place). The issue is present in
->>>> the latest firmware version 15.68.19.p21 of the pcie+usb card.
->>>>
->>>> Since PCI uses "posted writes" when writing to a register, it's not
->>>> guaranteed that a write will happen immediately. That means the pointer
->>>> might be outdated when setting the TX ready interrupt, leading to
->>>> firmware crashes especially when ASPM L1 and L1 substates are enabled
->>>> (because of the higher link latency, the write will probably take
->>>> longer).
->>>>
->>>> So fix those firmware crashes by always using a non-posted write for
->>>> this specific register write. We do that by simply reading back the
->>>> register after writing it, just as a few other PCI drivers do.
->>>>
->>>> This fixes a bug where during rx/tx traffic and with ASPM L1 substates
->>>> enabled (the enabled substates are platform dependent), the firmware
->>>> crashes and eventually a command timeout appears in the logs.
+>> ...
+>>
+>>> - Just calling mwifiex_write_reg() once and then blocking until the card
+>>> wakes up using my delay-loop doesn't fix the issue, it's actually
+>>> writing multiple times that fixes the issue
 >>>
->>> I think you need to change your terminology.
->>> PCIe does have some non-posted write transactions - but I can't
->>> remember when they are used.
+>>> These observations sound a lot like writes (and even reads) are actually
+>>> being dropped, don't they?
 >>
->> In PCIe are all memory write requests as posted.
+>> It sounds like you're writing into a not ready (fully powered on) device.
+> 
+> This reminds me a discussion with Bjorn about CRS response returned
+> after firmware crash / reset when device is not ready yet:
+> https://lore.kernel.org/linux-pci/20210922164803.GA203171@bhelgaas/
+> 
+> Could not be this similar issue? You could check it via reading
+> PCI_VENDOR_ID register from config space. And if it is not valid value
+> then card is not really ready yet.
+> 
+>> To check this, try to put a busy loop for reading and check the value
+>> till it gets 0.
 >>
->> Non-posted writes in PCIe are used only for IO and config requests. But
->> this is not case for proposed patch change as it access only card's
->> memory space.
+>> Something like
 >>
->> Technically this patch does not use non-posted memory write (as PCIe
->> does not support / provide it), just adds something like a barrier and
->> I'm not sure if it is really correct (you already wrote more details
->> about it, so I will let it be).
+>>    unsigned int count = 1000;
 >>
->> I'm not sure what is the correct terminology, I do not know how this
->> kind of write-followed-by-read "trick" is correctly called.
-> 
-> I think it is probably best to say:
->     "flush the posted write when setting the TX ring write pointer".
-> 
-> The write can get posted in any/all of the following places:
-> 1) The cpu store buffer.
-> 2) The PCIe host bridge.
-> 3) Any other PCIe bridges.
-> 4) The PCIe slave logic in the target.
->     There could be separate buffers for each BAR,
-> 5) The actual target logic for that address block.
->     The target (probably) will look a bit like an old fashioned cpu
->     motherboard with the PCIe slave logic as the main bus master.
-> 
-> The readback forces all the posted write buffers be flushed.
-> 
-> In this case I suspect it is either flushing (5) or the extra
-> delay of the read TLP processing that 'fixes' the problem.
-> 
-> Note that depending on the exact code and host cpu the second
-> write may not need to wait for the response to the read TLP.
-> So the write, readback, write TLP may be back to back on the
-> actual PCIe link.
-> 
-> Although I don't have access to an actual PCIe monitor we
-> do have the ability to trace 'data' TLP into fpga memory
-> on one of our systems.
-> This is near real-time but they are slightly munged.
-> Watching the TLP can be illuminating!
-> 
-> 	David
-> 
-> -
-> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-> Registration No: 1397386 (Wales)
-> 
+>>    do {
+>>      if (mwifiex_read_reg(...) == 0)
+>>        break;
+>>    } while (--count);
+>>
+>>
+>> -- 
+>> With Best Regards,
+>> Andy Shevchenko
 
-Thanks for the detailed explanations, it looks like indeed the read-back 
-is not the real fix here, a simple udelay(50) before sending the "TX 
-ready" interrupt also does the trick.
+I've tried both reading PCI_VENDOR_ID and the firmware status using a 
+busy loop now, but sadly none of them worked. It looks like the card 
+always replies with the correct values even though it sometimes won't 
+wake up after that.
 
-                 } else {
-+                       udelay(50);
-+
-                         /* Send the TX ready interrupt */
-                         if (mwifiex_write_reg(adapter, PCIE_CPU_INT_EVENT,
-                                               CPU_INTR_DNLD_RDY)) {
+I do have one new observation though, although I've no clue what could 
+be happening here: When reading PCI_VENDOR_ID 1000 times to wakeup we 
+can "predict" the wakeup failure because exactly one (usually around the 
+20th) of those 1000 reads will fail. Maybe the firmware actually tries 
+to wake up, encounters an error somewhere in its wakeup routines and 
+then goes down a special failure code path. That code path keeps the 
+cards CPU so busy that at some point a PCI_VENDOR_ID request times out?
 
-I've tested that for a week now and haven't seen any firmware crashes. 
-Interestingly enough it looks like the delay can also be added after 
-setting the "TX ready" interrupt, just not before updating the TX ring 
-write pointer.
-
-I have no idea if 50 usecs is a good duration to wait here, from trying 
-different values I found that 10 to 20 usecs is not enough, but who 
-knows, maybe that's platform dependent?
+Or well, maybe the card actually wakes up fine, but we don't receive the 
+interrupt on our end, so many possibilities...
