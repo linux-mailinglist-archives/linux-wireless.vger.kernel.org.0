@@ -2,164 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5AD241DF2E
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 18:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F4A941DF95
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 18:51:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352167AbhI3Qku (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Sep 2021 12:40:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52276 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1352163AbhI3Qkt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Sep 2021 12:40:49 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 843FB615E0;
-        Thu, 30 Sep 2021 16:39:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633019946;
-        bh=l4psnDS2L4mNszZp3eSV39BLlsLnxaYRmZiaPEPx/DM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EDo+iZBLh61LjGBdXtXCGg7fsozqORH2v8dvTewaNZuP59U/Tsyw6NNHDzlLGYhBo
-         CF9isbBPlTNlRlq7dCzjxMalsuQvDx6tXPcmP6f16p2QZb2SabvCEmSBo06LdJWhTN
-         OojibY9LjoCfTYpycpQmrt4vdbw0OHqS0Wmn40pBQU6CLxnexuJf5LJKksESIdZAvF
-         XcddVlKSFw1KCtom961I8wGjttZ5Rpktiy3T4+cjjm9U0BIGTCy5WD2EPRNBEWtLNm
-         WJA8/cUlExi3NbnzJbwTjSmds5GYJzQKYu6z/Bskr/1+lWC+034E8CZXffMcc6Q/Bk
-         tBO+WvnLLZC+w==
-Received: by pali.im (Postfix)
-        id 466D7E79; Thu, 30 Sep 2021 18:39:04 +0200 (CEST)
-Date:   Thu, 30 Sep 2021 18:39:04 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Jonas =?utf-8?Q?Dre=C3=9Fler?= <verdre@v0yd.nl>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
+        id S1351809AbhI3QxB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Sep 2021 12:53:01 -0400
+Received: from mail-co1nam11on2075.outbound.protection.outlook.com ([40.107.220.75]:16835
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1348841AbhI3QxA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 30 Sep 2021 12:53:00 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MXz92w6UhK6Ux1zyGm84HC3mdO9VYjs98B20v1TyR2zxUFCFAaDB0B2Hup+1SF6OOLuLiGNILwb0PP7qv9qGRJ/eP/cVVlEixEmWrPCIu2M4hwF1TT2/9Dmu2PR85d1fhk5/DE0mQa2oYUa0ytnHeU79qGuc3u0j4Q4nO2V38juUXWYaFEzuLSzknQqrFOAXBWDeYyMMDvWQ8pOUyVKu34gZ81gdMZ3zs940kg2srWBF8eVKzZqcicWte5ATzmK0p2tIXFE2cm0VqX7w4+67B2chN7oToMy/6AYU+DQCz2AEx1fHMBbTFgMi62bxHTHybDN0lX7jx2kLeXDIDDKGDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=1Brt1fDPPt4N5kVu9ctsplROTbl64V512WvAliRfKaQ=;
+ b=RDTyXvpmxT3iSyxt+G+DSVfGPnZENx7QyvJGmvKkkO+UbtmD71APNbqMmWD5zPHt0AwtiMuL76n6NTp+/GlmVQwMFQp+o7hx3CXg/JXgNkWmJ4MsbHiCL4TGW/NqbXKh8hwYsVJOqeW/OI3Al4lMJf6qFJSmDlRdacqnz+FAFLQU+qcpUxzKjUDZk6oJGBgU5VK6q6o7vXnvEW1/Oc9WQ97Ny3k/m6KYvSf2sKuA41gaVOzrfHP5zDPflVEHC/5ku5Hw0XdPgWsvDNVuG1P9rr/q4uGWvWLL7jJwGf0ClLh7qT07UcJSpHnhF0/oB5+TP1Ai88fjcHxZ9cYhpysEkw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1Brt1fDPPt4N5kVu9ctsplROTbl64V512WvAliRfKaQ=;
+ b=KPfjET3UyGrnhSV54aGZeNLFeCWqm/39IcAfHP8kElyNypYWQd68mbcGQK8NPohXj2iSniTlDMEtEbF3abi0+U6naN0IbRDhGWQRwlSY1JI4QL0K54MFpy42uxMsfzMCpOLWYYuLpDmy7WygrrMX5WqFW833rtHpSgGz5arMzgI=
+Authentication-Results: linaro.org; dkim=none (message not signed)
+ header.d=none;linaro.org; dmarc=none action=none header.from=silabs.com;
+Received: from PH0PR11MB5657.namprd11.prod.outlook.com (2603:10b6:510:ee::19)
+ by PH0PR11MB5644.namprd11.prod.outlook.com (2603:10b6:510:ef::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.14; Thu, 30 Sep
+ 2021 16:51:15 +0000
+Received: from PH0PR11MB5657.namprd11.prod.outlook.com
+ ([fe80::31cb:3b13:b0e8:d8f4]) by PH0PR11MB5657.namprd11.prod.outlook.com
+ ([fe80::31cb:3b13:b0e8:d8f4%9]) with mapi id 15.20.4544.021; Thu, 30 Sep 2021
+ 16:51:15 +0000
+From:   =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev@vger.kernel.org,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH 1/2] mwifiex: Use non-posted PCI register writes
-Message-ID: <20210930163904.asr3ugj7oj7l2arx@pali>
-References: <CA+ASDXNMhrxX-nFrr6kBo0a0c-25+Ge2gBP2uTjE8UWJMeQO2A@mail.gmail.com>
- <bd64c142-93d0-c348-834c-34ed80c460f9@v0yd.nl>
- <e4cbf804-c374-79a3-53ac-8a0fbd8f75b8@v0yd.nl>
- <CAHp75Vd5iCLELx8s+Zvcj8ufd2bN6CK26soDMkZyC1CwMO2Qeg@mail.gmail.com>
- <20210923202231.t2zjoejpxrbbe5hc@pali>
- <db583b3c-6bfc-d765-a588-eb47c76cea31@v0yd.nl>
- <20210930154202.cvw3it3edv7pmqtb@pali>
- <6ba104fa-a659-c192-4dc0-291ca3413f99@v0yd.nl>
- <20210930161905.5a552go73c2o4e7l@pali>
- <4e4f3b6a-25c6-289f-2de0-660aeee2b695@v0yd.nl>
+        driverdevel <devel@driverdev.osuosl.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        DTML <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Pali =?ISO-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH v7 08/24] wfx: add bus_sdio.c
+Date:   Thu, 30 Sep 2021 18:51:09 +0200
+Message-ID: <19731906.ZuIkq4dnIL@pc-42>
+Organization: Silicon Labs
+In-Reply-To: <CAPDyKFp2_41mScO=-Ev+kvYD5xjShQdLugU_2FTTmvzgCxmEWA@mail.gmail.com>
+References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com> <20210920161136.2398632-9-Jerome.Pouiller@silabs.com> <CAPDyKFp2_41mScO=-Ev+kvYD5xjShQdLugU_2FTTmvzgCxmEWA@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-ClientProxiedBy: SA9P221CA0010.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:806:25::15) To PH0PR11MB5657.namprd11.prod.outlook.com
+ (2603:10b6:510:ee::19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4e4f3b6a-25c6-289f-2de0-660aeee2b695@v0yd.nl>
-User-Agent: NeoMutt/20180716
+Received: from pc-42.localnet (2a01:e34:ecb5:66a0:9876:e1d7:65be:d294) by SA9P221CA0010.NAMP221.PROD.OUTLOOK.COM (2603:10b6:806:25::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.17 via Frontend Transport; Thu, 30 Sep 2021 16:51:12 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 5049ece1-9f55-44cf-5c67-08d9843283e1
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5644:
+X-Microsoft-Antispam-PRVS: <PH0PR11MB5644589A68C4F30F318CFF9393AA9@PH0PR11MB5644.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: EKb5yy/7IZibqKPno8ZshaLkDTQF/vZFQ4ZMC0N5ZaiD6+LH+UD8WEuW99x5CYyndhWTYU3MHD6w7aUTBhNH+svHQjmY5kLf7VOlVr9y+Onklma088prO85Wpf2tX+WqiRy4OJGCoSlRkb2epRTrU5I8+VJ7hsJsQWlEBYA/ZUrPmP99tYMx36FFLIjbi9J8MB5sFZVUvghM4CWpQiUrf1p2eWZ5mzRFysln/cYO/byO7F22kGb2XGc7NStg4WIwcaLSxrJInPIirOslp4hLUaEQ2cN9VzeQqFivHPP/d71DX2+IBNzK9L/KTOcQzB8YZ1NROeL0bGfrHe+9yuL4JZo/8XYeth7e5nL9vMxQMJjaF5rjMnrjdadDAwUpc8yKpg2/ZgeOxUzFjrt4iKCFwGbXxrMVt5ty5sQmSgf4Nwjp5196HUOAraK40KoXooLVJY0SmDm8IBOC3aV75jTccVTE+yWOSzBmYRIzesguFxz4lX53RU3V2kxJfsZarRUeWrzjFtZjJgK6KNX/hxPfIQPkySzM/yOpw4HgefgzqTdYZcgx8DBlZG7ikpM/CeqamGf1dA+v+9p7uUjoWxhBTxBTnQBaKCe4QNSt2NjUZXDbuQAwEXrwRAzkieBP1VXV3+tkD1XAChG/o+KIM6+9HzqmjkFO07MVvpUFCLQ6c3LZBjcHwBnBQRnRD1aDp3s9NPaTw7b2E3I3VwlO6b7/W801Giu5L+ejW8sy3mzhabDJKtThn2XyfXwkqurFzSWoRoGTJL/0LhiQT7ectpwHgw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5657.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(36916002)(52116002)(6486002)(6512007)(54906003)(6506007)(5660300002)(508600001)(316002)(66574015)(9686003)(6666004)(33716001)(966005)(2906002)(66556008)(186003)(86362001)(38100700002)(4326008)(8936002)(66946007)(8676002)(66476007)(83380400001)(6916009)(7416002)(39026012);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?YyP6Sz9l84Oa32OmYnsqa0W3jNawHWlroCcNKBmvQ6lkRQWo7qOko0f4Jy?=
+ =?iso-8859-1?Q?+BCTvg+V81vFIQk8LgEVys7J5MGp3GuqGMUvGV7iOdvs6q7OdGHCDLnZ/W?=
+ =?iso-8859-1?Q?NHbjJiPy98XA2LKHwzpZ0hh1hh+ZZpNZR7AQUY+9wjVGaCPJ5WZRH9s4Hb?=
+ =?iso-8859-1?Q?+986lXLNBjcqP08VIsjH94RMiQxXfk21es+SqCp7W2xOlLfcQuslJ2gw7k?=
+ =?iso-8859-1?Q?fkpb8AqdHYiJqHNvSFj+7jlEny0FGHxSzvxvXUK632ZZ1ofSx5ud6eFNbN?=
+ =?iso-8859-1?Q?/1iDliW9qQyfNsu/YfQGNdJfa70pqyNt5gGpsjLeQAwu1SktBHtoVnQA0V?=
+ =?iso-8859-1?Q?aau8kr4O4An8u1pITUy8ZFpP0JHyHFu+EhWQ6cX3PXMQvIGXVcHel4ha/I?=
+ =?iso-8859-1?Q?ZsuxXx/g6D/b3R12TiLH3TkC4wKN6THSve4fOieHO+BFac4M4Q8b8E7fqH?=
+ =?iso-8859-1?Q?ThP+80jByFzscBrzIJJdiN9B6Mr6SOBP+I4XxSAlC01Htns4jaZJtizKsG?=
+ =?iso-8859-1?Q?OPS0bUotZEKBbH836CcNs849qcZnWKDjfr6P1TmPaUuj8yjkXkGDdYMA2G?=
+ =?iso-8859-1?Q?yJ0pfvWwGf30aQJqrnuUyI8Zw9qPbZG0pnq7OI+qnPMrm2INZc4IxoTolD?=
+ =?iso-8859-1?Q?BLBKz+VNYP6CoMYlmaWHCeITunc7DqbVntR1dXtOM7nAnsTRuAsYhqMDvo?=
+ =?iso-8859-1?Q?JEESUPNEJpudCR2PmhYlGNQsJGD9v2yZ+AkiNmWIBDg+5eZ8339eeWl+30?=
+ =?iso-8859-1?Q?Fplpys5d8u40gTHzapl1GJdaj30qSA/wqcJbYYTbv13q7+7etJMvT+h7no?=
+ =?iso-8859-1?Q?JGGGFS371zXcgAP7uxkcXQ0w/3t53aRz//xNh4vrExbRcf360LPJhXKUl+?=
+ =?iso-8859-1?Q?UgKlssyrv2IEHPSSfHWRGUw5lo3CVUw24p34UWaARduvOoxXNY6TsfidlD?=
+ =?iso-8859-1?Q?OS1alsSbymnfV9Verc/7HKwvuwaIkKnpWx121fDzzrS2aZCIaZoy38at7z?=
+ =?iso-8859-1?Q?9GhY92lm1f1Pcj377H6DvzKDGhkgXpnofc2O8xHvi7pwlCEBKffVsjrAhQ?=
+ =?iso-8859-1?Q?dkNlZfX+elCxDxAGGfue0zMemXDXIubeODXmg5RF3xsoRPXbGyh1PpF8Oc?=
+ =?iso-8859-1?Q?jlwkcl7sRoNmoYjNeH5BjWPOyQLe9Ik1YyQ7Ngqs/cGrB4k51cztLq38Bv?=
+ =?iso-8859-1?Q?TZV9Hd2iHbr5uebh5o8uyBajwHXjyQI03sgHE1uYhFMUXu6UQ0EjddqC9u?=
+ =?iso-8859-1?Q?M8G3E1gb3gNS6yqucf8UM62D119EfnIxIa7eiTbVzbSuPzhyCZ+rjeNfSG?=
+ =?iso-8859-1?Q?9+4TVDZ6V+lm5YJKZ3zDYg/1ZZ4yjjVy/MKBuhBs5CXt5fJ10D9zSPx8dv?=
+ =?iso-8859-1?Q?33Av1EF5rTW6NBoNN161U390s18AqosU5spOSJHmwjV4qzuE6UlfzCu3QL?=
+ =?iso-8859-1?Q?ztTHBAYmB/C4P1qO?=
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5049ece1-9f55-44cf-5c67-08d9843283e1
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5657.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2021 16:51:15.0285
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pzoP39Ei89GQb2qx93Y2ZzIatZ2aJMgtSF6Dx/shDjdkzaCtwy5RvRziT708ocDieyVs9iwAY3Ad+psoHSYcJA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5644
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thursday 30 September 2021 18:22:42 Jonas Dreßler wrote:
-> On 9/30/21 6:19 PM, Pali Rohár wrote:
-> > On Thursday 30 September 2021 18:14:04 Jonas Dreßler wrote:
-> > > On 9/30/21 5:42 PM, Pali Rohár wrote:
-> > > > On Thursday 30 September 2021 17:38:43 Jonas Dreßler wrote:
-> > > > > On 9/23/21 10:22 PM, Pali Rohár wrote:
-> > > > > > On Thursday 23 September 2021 22:41:30 Andy Shevchenko wrote:
-> > > > > > > On Thu, Sep 23, 2021 at 6:28 PM Jonas Dreßler <verdre@v0yd.nl> wrote:
-> > > > > > > > On 9/22/21 2:50 PM, Jonas Dreßler wrote:
-> > > > > > > 
-> > > > > > > ...
-> > > > > > > 
-> > > > > > > > - Just calling mwifiex_write_reg() once and then blocking until the card
-> > > > > > > > wakes up using my delay-loop doesn't fix the issue, it's actually
-> > > > > > > > writing multiple times that fixes the issue
-> > > > > > > > 
-> > > > > > > > These observations sound a lot like writes (and even reads) are actually
-> > > > > > > > being dropped, don't they?
-> > > > > > > 
-> > > > > > > It sounds like you're writing into a not ready (fully powered on) device.
-> > > > > > 
-> > > > > > This reminds me a discussion with Bjorn about CRS response returned
-> > > > > > after firmware crash / reset when device is not ready yet:
-> > > > > > https://lore.kernel.org/linux-pci/20210922164803.GA203171@bhelgaas/
-> > > > > > 
-> > > > > > Could not be this similar issue? You could check it via reading
-> > > > > > PCI_VENDOR_ID register from config space. And if it is not valid value
-> > > > > > then card is not really ready yet.
-> > > > > > 
-> > > > > > > To check this, try to put a busy loop for reading and check the value
-> > > > > > > till it gets 0.
-> > > > > > > 
-> > > > > > > Something like
-> > > > > > > 
-> > > > > > >      unsigned int count = 1000;
-> > > > > > > 
-> > > > > > >      do {
-> > > > > > >        if (mwifiex_read_reg(...) == 0)
-> > > > > > >          break;
-> > > > > > >      } while (--count);
-> > > > > > > 
-> > > > > > > 
-> > > > > > > -- 
-> > > > > > > With Best Regards,
-> > > > > > > Andy Shevchenko
-> > > > > 
-> > > > > I've tried both reading PCI_VENDOR_ID and the firmware status using a busy
-> > > > > loop now, but sadly none of them worked. It looks like the card always
-> > > > > replies with the correct values even though it sometimes won't wake up after
-> > > > > that.
-> > > > > 
-> > > > > I do have one new observation though, although I've no clue what could be
-> > > > > happening here: When reading PCI_VENDOR_ID 1000 times to wakeup we can
-> > > > > "predict" the wakeup failure because exactly one (usually around the 20th)
-> > > > > of those 1000 reads will fail.
-> > > > 
-> > > > What does "fail" means here?
-> > > 
-> > > ioread32() returns all ones, that's interpreted as failure by
-> > > mwifiex_read_reg().
-> > 
-> > Ok. And can you check if PCI Bridge above this card has enabled CRSSVE
-> > bit (CRSVisible in RootCtl+RootCap in lspci output)? To determinate if
-> > Bridge could convert CRS response to all-ones as failed transaction.
-> > 
-> 
-> Seems like that bit is disabled:
-> > RootCap: CRSVisible-
-> > RootCtl: ErrCorrectable- ErrNon-Fatal- ErrFatal- PMEIntEna+ CRSVisible-
+Hello Ulf,
 
-So it means that CRSSVE is unsupported by upper bridge. In case card
-returns CRS response to system (via bridge) that is not ready yet,
-bridge re-issue read request, and after some failures it returns to
-system all-ones to indicate failed transaction. But all-ones can be
-returned also by bridge when card does not send any response.
+On Thursday 30 September 2021 12:07:55 CEST Ulf Hansson wrote:
+> On Mon, 20 Sept 2021 at 18:12, Jerome Pouiller
+> <Jerome.Pouiller@silabs.com> wrote:
+> >
+> > From: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
+> >
+> > Signed-off-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
+> > ---
+> >  drivers/net/wireless/silabs/wfx/bus_sdio.c | 261 +++++++++++++++++++++
+> >  1 file changed, 261 insertions(+)
+> >  create mode 100644 drivers/net/wireless/silabs/wfx/bus_sdio.c
+> >
+> > diff --git a/drivers/net/wireless/silabs/wfx/bus_sdio.c b/drivers/net/w=
+ireless/silabs/wfx/bus_sdio.c
+>=20
+> [...]
+>=20
+> > +
+> > +static int wfx_sdio_probe(struct sdio_func *func,
+> > +                         const struct sdio_device_id *id)
+> > +{
+> > +       struct device_node *np =3D func->dev.of_node;
+> > +       struct wfx_sdio_priv *bus;
+> > +       int ret;
+> > +
+> > +       if (func->num !=3D 1) {
+> > +               dev_err(&func->dev, "SDIO function number is %d while i=
+t should always be 1 (unsupported chip?)\n",
+> > +                       func->num);
+> > +               return -ENODEV;
+> > +       }
+> > +
+> > +       bus =3D devm_kzalloc(&func->dev, sizeof(*bus), GFP_KERNEL);
+> > +       if (!bus)
+> > +               return -ENOMEM;
+> > +
+> > +       if (!np || !of_match_node(wfx_sdio_of_match, np)) {
+> > +               dev_warn(&func->dev, "no compatible device found in DT\=
+n");
+> > +               return -ENODEV;
+> > +       }
+> > +
+> > +       bus->func =3D func;
+> > +       bus->of_irq =3D irq_of_parse_and_map(np, 0);
+> > +       sdio_set_drvdata(func, bus);
+> > +       func->card->quirks |=3D MMC_QUIRK_LENIENT_FN0 |
+> > +                             MMC_QUIRK_BLKSZ_FOR_BYTE_MODE |
+> > +                             MMC_QUIRK_BROKEN_BYTE_MODE_512;
+>=20
+> I would rather see that you add an SDIO_FIXUP for the SDIO card, to
+> the sdio_fixup_methods[], in drivers/mmc/core/quirks.h, instead of
+> this.
 
-So from this test we do not know what happened. It would be nice to know
-it, but such test requires to connect this card into system which
-supports CRSSVE, in which case CRS response it passed directly to OS as
-value 0xffff0001. Look at the link above where I discussed with Bjorn
-about buggy wifi cards which resets internally, for more details.
+In the current patch, these quirks are applied only if the device appears
+in the device tree (see the condition above). If I implement them in
+drivers/mmc/core/quirks.h they will be applied as soon as the device is
+detected. Is it what we want?
 
-But in this setup when CRSSVE is not supported, I think there is no
-other option than just adding sleep prior accessing card...
+Note: we already have had a discussion about the strange VID/PID declared
+by this device:
+  https://www.spinics.net/lists/netdev/msg692577.html
 
-For debugging such issues I got the only advice to use PCIe analyzer and
-look at what is really happening on the bus. But required equipment for
-this debugging is not cheap...
 
-> > > > 
-> > > > > Maybe the firmware actually tries to wake up,
-> > > > > encounters an error somewhere in its wakeup routines and then goes down a
-> > > > > special failure code path. That code path keeps the cards CPU so busy that
-> > > > > at some point a PCI_VENDOR_ID request times out?
-> > > > > 
-> > > > > Or well, maybe the card actually wakes up fine, but we don't receive the
-> > > > > interrupt on our end, so many possibilities...
+[...]
+> > +
+> > +static const struct sdio_device_id wfx_sdio_ids[] =3D {
+> > +       { SDIO_DEVICE(SDIO_VENDOR_ID_SILABS, SDIO_DEVICE_ID_SILABS_WF20=
+0) },
+> > +       { },
+> > +};
+> > +MODULE_DEVICE_TABLE(sdio, wfx_sdio_ids);
+> > +
+> > +struct sdio_driver wfx_sdio_driver =3D {
+> > +       .name =3D "wfx-sdio",
+> > +       .id_table =3D wfx_sdio_ids,
+> > +       .probe =3D wfx_sdio_probe,
+> > +       .remove =3D wfx_sdio_remove,
+> > +       .drv =3D {
+> > +               .owner =3D THIS_MODULE,
+> > +               .of_match_table =3D wfx_sdio_of_match,
+>=20
+> Is there no power management? Or do you intend to add that on top?
+
+It seems we already have had this discussion:
+
+  https://lore.kernel.org/netdev/CAPDyKFqJf=3DvUqpQg3suDCadKrFTkQWFTY_qp=3D=
++yDK=3D_Lu9gJGg@mail.gmail.com/#r
+
+In this thread, Kalle said:
+> Many mac80211 drivers do so that the device is powered off during
+> interface down (ifconfig wlan0 down), and as mac80211 does interface
+> down automatically during suspend, suspend then works without extra
+> handlers.
+
+
+--=20
+J=E9r=F4me Pouiller
+
+
