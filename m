@@ -2,83 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2BB441D0F0
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 03:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85DCC41D1A5
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Sep 2021 04:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345243AbhI3B3U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Sep 2021 21:29:20 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:46980 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbhI3B3U (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Sep 2021 21:29:20 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 18U1RY5t8015413, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 18U1RY5t8015413
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 30 Sep 2021 09:27:34 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Thu, 30 Sep 2021 09:27:34 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 30 Sep 2021 09:27:33 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
- RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Thu, 30 Sep 2021 09:27:33 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Will Yang <willyangywt@gmail.com>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: rtw8822ce: support for miracast?
-Thread-Topic: rtw8822ce: support for miracast?
-Thread-Index: AQHXtRg8SJdUyyEd8kmmrthzAm82Dqu7ya2A
-Date:   Thu, 30 Sep 2021 01:27:33 +0000
-Message-ID: <a68ffbe845ad4867a0b14c811b2c5fbf@realtek.com>
-References: <CAKCvHdezdR29EXKS3eZMde3VgTEWMoxV5mc6gxZsCMhhbZhNZw@mail.gmail.com>
-In-Reply-To: <CAKCvHdezdR29EXKS3eZMde3VgTEWMoxV5mc6gxZsCMhhbZhNZw@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzkvMjkg5LiL5Y2IIDExOjI3OjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1347911AbhI3Czu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Sep 2021 22:55:50 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:23233 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1347890AbhI3Czu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 29 Sep 2021 22:55:50 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1632970448; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=ZKMe67P/2Bw1eWMhwJ5iUv3ZOQW99FDE4dvGTY8GNEw=;
+ b=GXTO0I73ZtWV+9vIyzi7Am7jZ1zIWfu/vXk0i3rpD6nth3G+n4MVBl2NPEyDLQRRYR9Ad6qF
+ UwKHGY5wXWSXs6zm9Js/HigaB0A7RyIxLnrr7HswxMg1AWqKL54dXBQIxm9ARYPX+RNFsU3D
+ nunINPz7xOV1GoU0TcuofddI2Yc=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 615526c18578ef11ed8864f6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 30 Sep 2021 02:53:53
+ GMT
+Sender: wgong=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id EC5EBC4360D; Thu, 30 Sep 2021 02:53:52 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3C024C4338F;
+        Thu, 30 Sep 2021 02:53:52 +0000 (UTC)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 30 Sep 2021 10:53:52 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Venkateswara Naralasetty <vnaralas@codeaurora.org>
+Cc:     johannes@sipsolutions.net, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, wgong=codeaurora.org@codeaurora.org
+Subject: Re: [PATCH v5] cfg80211: save power spectral density(psd) of
+ regulatory rule
+In-Reply-To: <2afb1bf6f06cb53f43fe0d354afa4e7c@codeaurora.org>
+References: <20210928085211.26186-1-wgong@codeaurora.org>
+ <bd649a3d2cf2ea9064d427d633055891@codeaurora.org>
+ <cb20427eae96c4551084e4c899618b94@codeaurora.org>
+ <2afb1bf6f06cb53f43fe0d354afa4e7c@codeaurora.org>
+Message-ID: <2ed76cff292dcca18326de0407a93821@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFdpbGwgWWFuZyA8d2lsbHlh
-bmd5d3RAZ21haWwuY29tPg0KPiBTZW50OiBXZWRuZXNkYXksIFNlcHRlbWJlciAyOSwgMjAyMSA1
-OjU2IFBNDQo+IFRvOiB0b255MDYyMGVtbWFAZ21haWwuY29tDQo+IENjOiBsaW51eC13aXJlbGVz
-c0B2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogcnR3ODgyMmNlOiBzdXBwb3J0IGZvciBtaXJh
-Y2FzdD8NCj4gDQo+IChJIGFtIHJlYWxseSBzb3JyeSBmb3IgdGhlIGR1cGxpY2F0aW9uIG9mIGVt
-YWlscywgaXQncyBqdXN0IEkga2VlcA0KPiByZWplY3RlZCBieSB0aGUgbGludXgtd2lyZWxlc3Mg
-bWFpbGluZyBsaXN0IGJlY2F1c2Ugb2Ygb3V0bG9vayBhbmQNCj4gSFRNTCBlbWFpbCkNCj4gSGkg
-dG9ueS1lbW1hLA0KPiANCj4gSSBhbSB1c2luZyBhIGZlZG9yYSBsaW51eCAzNCB3aXRoIGEgUlRM
-ODgyMkNFLCBhbmQgdGhpcyBuZXR3b3JrDQo+IGNvbnRyb2xsZXIgaXMgaGFyZHdhcmUgY2FwYWJs
-ZSBvZiBydW5uaW5nIG1pcmFjYXN0IChha2Egd2lmaSBwMnApLCBidXQNCj4gaXQgZG9lc24ndCBz
-ZWVtcyB0byBoYXZlIGRyaXZlciBzdXBwb3J0IGZvciBpdC4NCj4gDQo+IElzIHRoZSBzdXBwb3J0
-IGZvciBtaXJhY2FzdCBhbHJlYWR5IGluIHRoZSBrZXJuZWwgZHJpdmVyPyBJZiBub3QsIGNhbg0K
-PiBpdCBiZSBhZGRlZD8NCj4gDQo+IFRoYW5rIHlvdSENCj4gDQo+IGBpdyBwaHlgDQo+IFdpcGh5
-IHBoeTANCj4gU3VwcG9ydGVkIGludGVyZmFjZSBtb2RlczoNCj4gICogSUJTUw0KPiAgKiBtYW5h
-Z2VkDQo+ICAqIEFQDQo+ICAqIEFQL1ZMQU4NCj4gICogbW9uaXRvcg0KPiAgKiBtZXNoIHBvaW50
-DQo+IA0KPiBBdHRhY2hlZCBvdXRwdXQgb2YgYHN1ZG8gbHNwY2kgLXZ2YCBhbmQgYGl3IHBoeWAN
-Cg0KSGksDQoNClRoZSBydHc4OCBkcml2ZXIgZG9lc24ndCBzdXBwb3J0IFAyUCB5ZXQsIGJ1dCBp
-dCdzIHBvc3NpYmxlIHRvIG1ha2UgDQpydHc4ODIyY2Ugc3VwcG9ydCBtaXJhY2FzdC4gV2UnbGwg
-dHJ5IGZlZG9yYSBsaW51eCAzNCB0byBzZWUgd2hhdA0Kd2UgbmVlZCB0byBhZGQuDQoNCi0tDQpQ
-aW5nLUtlDQoNCg==
+On 2021-09-30 00:46, Venkateswara Naralasetty wrote:
+> On 2021-09-29 09:07, Wen Gong wrote:
+>> On 2021-09-28 21:12, vnaralas@codeaurora.org wrote:
+>>> On 2021-09-28 14:22, Wen Gong wrote:
+>>>> 6 GHz regulatory domains introduces power spectral density(psd).
+>>>> The power spectral density(psd) of regulatory rule should be take
+>>>> effect to the channels. Save the values to the channel which has
+>>>> psd value and add nl80211 attributes for it.
+>>>> 
+>>>> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+>>>> ---
+>> ...
+>>>> 
+>>>> @@ -2540,6 +2554,9 @@ static void handle_channel_custom(struct wiphy 
+>>>> *wiphy,
+>>>>  			chan->dfs_cac_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
+>>>>  	}
+>>>> 
+>>>> +	if (chan->flags & IEEE80211_CHAN_PSD)
+>>>> +		chan->psd = reg_rule->psd;
+>>>> +
+>>>>  	chan->max_power = chan->max_reg_power;
+>>> 
+>>> What about the case AP + STA concurrency? are we going to overwrite
+>>> the PSD power and channel flags?
+>>> 
+>> 
+>> Hi Venkateswara,
+>> 
+>> This patch is not relation with AP + STA concurrency.
+>> For example, it also has other power intersection in
+>> handle_channel_adjacent_rules().
+>> 
+>> 		chan->max_reg_power =
+>> 			min_t(int, MBM_TO_DBM(power_rule1->max_eirp),
+>> 			      MBM_TO_DBM(power_rule2->max_eirp));
+>> 
+>> For AP + STA concurrency, it should to maintain 2 group of reg rules,
+>> one is for AP, another is for STA.
+> 
+> Can we maintain two power rules in the same channel one for AP and one
+> for STA. In this way, we can update the power rules in the same
+> channel for both AP and STA from the reg rules.
+> 
+> Otherwise, we need to maintain multiple channel lists in sband for all
+> supported power mode combinations to apply the respective power rules
+> and build channel flags from the multiple reg rules.
+> right?
+
+If AP+STA is up in the same wiphy/ieee80211_hw, and AP's reg rules is 
+different
+with STA, then it should maintain muti channel list for each band of the 
+wiphy/ieee80211_hw
+by my understand.
+
+Currently there is only one "struct ieee80211_supported_band 
+*bands[NUM_NL80211_BANDS]"
+in "struct wiphy".
+
+I advise to discuss the AP + STA concurrency in another mail thread 
+since it is not
+relative with this patch.
+
+> 
+>> This patch is to handle PSD info in the same reg rules.
+>> It is to process only one reg rule in the reg rules.
+>> AP + STA concurrency is a higher level things than this patch.
+>>>>  }
