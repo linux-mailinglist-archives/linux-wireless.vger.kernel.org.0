@@ -2,45 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A965441EDA7
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 14:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BBD541EDB2
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 14:42:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354411AbhJAMlG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 08:41:06 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:48726 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354379AbhJAMlG (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 08:41:06 -0400
+        id S1353940AbhJAMoF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 08:44:05 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:40446 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1353853AbhJAMoE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 1 Oct 2021 08:44:04 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633091962; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=+LA/iPiXIb7Rh6nwCE/NZX+iTrBRh1ILVRGZiiUV9tQ=; b=k9UpxGEBMqXsGLqrempmL3NsRfHAVMYr6oqL0c37fCCJkld9T+4I8/p/Xjl5mvhJegQlE+di
- O/v5dKtxLdykLNcjlY17tN8JwTNYx5H81XRiVWZbrvHRXrlzHyRjBdhY6OCIiK93AsUnZ9db
- Nv0jMSLAZHgkKj6fc9JkjHH5Gdw=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ s=smtp; t=1633092140; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=oebx3fcM3g966gWCz22lzF59IX1zMeaSKJn177/dREs=; b=DE0FcAp3RHn5H3Y6mYsfpP7Up75cJ0kmejEEaD2vodKmzfQ3Uy71gaytJVXLmqnuYR6yvIuP
+ 2tmy+2pyXrX3xEmp2g2nI3GDcUCNwDk1SraXUQS29z+HGXJlwAAJkBWmO8G+Y7GeiSmY64qV
+ iP+J2AOp6CyUcUAwmMiBRAcJ4QI=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 61570171a3e8d3c64013b6a3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 12:39:13
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 6157022b8578ef11ed835005 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 12:42:19
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CB7C4C43616; Fri,  1 Oct 2021 12:39:12 +0000 (UTC)
+        id F029DC4360C; Fri,  1 Oct 2021 12:42:18 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
         URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B2F4FC4338F;
-        Fri,  1 Oct 2021 12:39:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B2F4FC4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 782CDC43460;
+        Fri,  1 Oct 2021 12:42:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 782CDC43460
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
@@ -53,65 +52,60 @@ Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-mmc@vger.kernel.org,
         Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v7 09/24] wfx: add hwio.c/hwio.h
+Subject: Re: [PATCH v7 00/24] wfx: get out from the staging area
 References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
-        <20210920161136.2398632-10-Jerome.Pouiller@silabs.com>
-        <87k0ixkr6z.fsf@codeaurora.org>
-Date:   Fri, 01 Oct 2021 15:39:03 +0300
-In-Reply-To: <87k0ixkr6z.fsf@codeaurora.org> (Kalle Valo's message of "Fri, 01
-        Oct 2021 12:52:20 +0300")
-Message-ID: <875yug6hso.fsf@tynnyri.adurom.net>
+Date:   Fri, 01 Oct 2021 15:42:13 +0300
+In-Reply-To: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com> (Jerome
+        Pouiller's message of "Mon, 20 Sep 2021 18:11:12 +0200")
+Message-ID: <87bl48kjbu.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
 
->> --- /dev/null
->> +++ b/drivers/net/wireless/silabs/wfx/hwio.h
->> @@ -0,0 +1,79 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +/*
->> + * Low-level I/O functions.
->> + *
->> + * Copyright (c) 2017-2020, Silicon Laboratories, Inc.
->> + * Copyright (c) 2010, ST-Ericsson
->> + */
->> +#ifndef WFX_HWIO_H
->> +#define WFX_HWIO_H
->> +
->> +#include <linux/types.h>
->> +
->> +struct wfx_dev;
->> +
->> +/* Caution: in the functions below, 'buf' will used with a DMA. So, it must be
->> + * kmalloc'd (do not use stack allocated buffers). In doubt, enable
->> + * CONFIG_DEBUG_SG to detect badly located buffer.
->> + */
->> +int wfx_data_read(struct wfx_dev *wdev, void *buf, size_t buf_len);
->> +int wfx_data_write(struct wfx_dev *wdev, const void *buf, size_t buf_len);
->> +
->> +int sram_buf_read(struct wfx_dev *wdev, u32 addr, void *buf, size_t len);
->> +int sram_buf_write(struct wfx_dev *wdev, u32 addr, const void *buf, size_t len);
->> +
->> +int ahb_buf_read(struct wfx_dev *wdev, u32 addr, void *buf, size_t len);
->> +int ahb_buf_write(struct wfx_dev *wdev, u32 addr, const void *buf, size_t len);
->> +
->> +int sram_reg_read(struct wfx_dev *wdev, u32 addr, u32 *val);
->> +int sram_reg_write(struct wfx_dev *wdev, u32 addr, u32 val);
->> +
->> +int ahb_reg_read(struct wfx_dev *wdev, u32 addr, u32 *val);
->> +int ahb_reg_write(struct wfx_dev *wdev, u32 addr, u32 val);
+> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
 >
-> "wfx_" prefix missing from these functions.
+> Hello,
+>
+> I think the wfx driver is now mature enough to be accepted in the
+> drivers/net/wireless directory.
+>
+> The firmware is now a part of the linux-firmware repository since relase
+> 20210315[1]. It had taken a bit of time because I have worked with the le=
+gal
+> department to simplify the redistribution terms of the firmware.
+>
+> [1]: https://lore.kernel.org/linux-firmware/2833354.gXvVfaC4I7@pc-42/
+>
+>
+> As requested by Kalle[2], I send one file per patch. At the end, all the
+> patches (or at least the patches 3 to 24) will be squashed (therefore, I
+> didn't bother to write real commit messages).
 
-I actually saw quite a few functions without wfx_ prefix. My preference
-is that all function names would have that prefix.
+I did another review of the driver and in general it looks pretty good.
+The use of Apache license, PDS file format and the missing firmware
+directory are the biggest issues I saw.
 
--- 
+> v7:
+>   - Update location of mmc-pwrseq-simple.txt (Rob)
+>
+> v6:
+>   - Rebase on last staging-next (roughtly somewhere after the 5.15
+>     merge window). So, this series include the patches from:
+>       https://lore.kernel.org/netdev/20210913130203.1903622-1-Jerome.Poui=
+ller@silabs.com/
+
+BTW, it would be nice to know what commit id are you using from
+staging-next, I prefer to also look at the full tree while I'm reviewing
+the patches.
+
+--=20
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
