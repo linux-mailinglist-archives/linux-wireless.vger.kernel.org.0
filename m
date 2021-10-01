@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D898641ED3A
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 14:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F015141ED83
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 14:32:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231449AbhJAMUX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 08:20:23 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:24789 "EHLO
+        id S1354384AbhJAMdo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 08:33:44 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:39604 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231380AbhJAMUW (ORCPT
+        with ESMTP id S231304AbhJAMdo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 08:20:22 -0400
+        Fri, 1 Oct 2021 08:33:44 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633090719; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=f/2eL919u3xkJmcRONnoLnVQIj2Az0TQ9zKpjUlTIQM=; b=g/aCULMwhI05i8oZM3cxViqwE8rts/1gcFt+EFmx+bJ2HxgSGNHGuw/fgEIRYmoq+FSk5fB/
- f2Z+b1xnr8/Xql0BtW3NycPGuf0IhrXi2MlrpwLCCmjq1WDnLDYHlKpKKFpOKL3AvRqeLVYb
- G+S7ITN1TRATcZwnpM1tMlw2owc=
+ s=smtp; t=1633091520; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=LxFT6+tXElMzzp7TNF5EckiX/nUtD1va2LinP/kg8SE=; b=vcQQ+95XNdDRfcbVCGt8TnPOiZ0OhGDpHbwr8DjtdktA5+kMvkeMhGjcnDfOxnDqC/jzdas8
+ +UYuJsiPbbd5/4jPBZyDyNSQrZDE1zluKw6AoH2z7IKT/GFfjylrtOfZI6Ed+6gcxsU3TN0M
+ 3qZLJ3P2W4fynX94i9T8v4lQlfE=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 6156fc8447d64efb6d54ab4e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 12:18:12
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 6156ffbefc6e34f8cde8390a (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 12:31:58
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 96070C4361C; Fri,  1 Oct 2021 12:18:11 +0000 (UTC)
+        id 88B79C43619; Fri,  1 Oct 2021 12:31:58 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,161 +38,149 @@ Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B0C26C43460;
-        Fri,  1 Oct 2021 12:18:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B0C26C43460
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7484DC43616;
+        Fri,  1 Oct 2021 12:31:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 7484DC43616
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        driverdevel <devel@driverdev.osuosl.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-mmc@vger.kernel.org,
-        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v7 05/24] wfx: add main.c/main.h
-References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
-        <20210920161136.2398632-6-Jerome.Pouiller@silabs.com>
-        <87y27dkslb.fsf@codeaurora.org> <2723787.uDASXpoAWK@pc-42>
-Date:   Fri, 01 Oct 2021 15:18:04 +0300
-In-Reply-To: <2723787.uDASXpoAWK@pc-42> (=?utf-8?B?IkrDqXLDtG1l?=
- Pouiller"'s message of "Fri,
-        01 Oct 2021 11:44:17 +0200")
-Message-ID: <87k0ixj5vn.fsf@codeaurora.org>
+        DTML <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>
+Subject: Re: [PATCH v5 08/24] wfx: add bus_sdio.c
+References: <20210315132501.441681-1-Jerome.Pouiller@silabs.com>
+        <4503971.bAhddQ8uqO@pc-42>
+        <CAPDyKFoXgV3m-rMKfjqRj91PNjOGaWg6odWG-EGdFKkL+dGWoA@mail.gmail.com>
+        <5713463.b6Cmjs1FeV@pc-42>
+        <CAPDyKFrONrUvbVVVF9iy4P17jZ_Fq+1pGMmsqM6C1hOXOWQnBw@mail.gmail.com>
+        <87pmz6mhim.fsf@codeaurora.org>
+        <CAPDyKFrgrSAz-B7wqNNPKk3kB8UqhGs=+bZ8RRhmqh8HuvhcEQ@mail.gmail.com>
+Date:   Fri, 01 Oct 2021 15:31:49 +0300
+In-Reply-To: <CAPDyKFrgrSAz-B7wqNNPKk3kB8UqhGs=+bZ8RRhmqh8HuvhcEQ@mail.gmail.com>
+        (Ulf Hansson's message of "Mon, 12 Apr 2021 10:22:47 +0200")
+Message-ID: <87fstlj58q.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
+Hi Ulf,
 
-> On Friday 1 October 2021 11:22:08 CEST Kalle Valo wrote:
->> Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
->>=20
->> > From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+sorry for the late reply, my Gnus tells me it took me 24 weeks to reply :)
+
+Ulf Hansson <ulf.hansson@linaro.org> writes:
+
+> On Wed, 7 Apr 2021 at 14:00, Kalle Valo <kvalo@codeaurora.org> wrote:
+>>
+>> Ulf Hansson <ulf.hansson@linaro.org> writes:
+>>
+>> >> If I follow what has been done in other drivers I would write something
+>> >> like:
+>> >>
+>> >>   static int wfx_sdio_suspend(struct device *dev)
+>> >>   {
+>> >>           struct sdio_func *func = dev_to_sdio_func(dev);
+>> >>           struct wfx_sdio_priv *bus = sdio_get_drvdata(func);
+>> >>
+>> >>           config_reg_write_bits(bus->core, CFG_IRQ_ENABLE_DATA, 0);
+>> >>           // Necessary to keep device firmware in RAM
+>> >>           return sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER);
 >> >
->> > Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
->>=20
->> [...]
->>=20
->> > +/* The device needs data about the antenna configuration. This inform=
-ation in
->> > + * provided by PDS (Platform Data Set, this is the wording used in WF=
-200
->> > + * documentation) files. For hardware integrators, the full process t=
-o create
->> > + * PDS files is described here:
->> > + *   https:github.com/SiliconLabs/wfx-firmware/blob/master/PDS/README=
-.md
->> > + *
->> > + * So this function aims to send PDS to the device. However, the PDS =
-file is
->> > + * often bigger than Rx buffers of the chip, so it has to be sent in =
-multiple
->> > + * parts.
->> > + *
->> > + * In add, the PDS data cannot be split anywhere. The PDS files conta=
-ins tree
->> > + * structures. Braces are used to enter/leave a level of the tree (in=
- a JSON
->> > + * fashion). PDS files can only been split between root nodes.
->> > + */
->> > +int wfx_send_pds(struct wfx_dev *wdev, u8 *buf, size_t len)
->> > +{
->> > +     int ret;
->> > +     int start, brace_level, i;
->> > +
->> > +     start =3D 0;
->> > +     brace_level =3D 0;
->> > +     if (buf[0] !=3D '{') {
->> > + dev_err(wdev->dev, "valid PDS start with '{'. Did you forget to
->> > compress it?\n");
->> > +             return -EINVAL;
->> > +     }
->> > +     for (i =3D 1; i < len - 1; i++) {
->> > +             if (buf[i] =3D=3D '{')
->> > +                     brace_level++;
->> > +             if (buf[i] =3D=3D '}')
->> > +                     brace_level--;
->> > +             if (buf[i] =3D=3D '}' && !brace_level) {
->> > +                     i++;
->> > +                     if (i - start + 1 > WFX_PDS_MAX_SIZE)
->> > +                             return -EFBIG;
->> > +                     buf[start] =3D '{';
->> > +                     buf[i] =3D 0;
->> > +                     dev_dbg(wdev->dev, "send PDS '%s}'\n", buf + sta=
-rt);
->> > +                     buf[i] =3D '}';
->> > +                     ret =3D hif_configuration(wdev, buf + start,
->> > +                                             i - start + 1);
->> > +                     if (ret > 0) {
->> > + dev_err(wdev->dev, "PDS bytes %d to %d: invalid data (unsupported
->> > options?)\n",
->> > +                                     start, i);
->> > +                             return -EINVAL;
->> > +                     }
->> > +                     if (ret =3D=3D -ETIMEDOUT) {
->> > + dev_err(wdev->dev, "PDS bytes %d to %d: chip didn't reply (corrupted
->> > file?)\n",
->> > +                                     start, i);
->> > +                             return ret;
->> > +                     }
->> > +                     if (ret) {
->> > + dev_err(wdev->dev, "PDS bytes %d to %d: chip returned an unknown
->> > error\n",
->> > +                                     start, i);
->> > +                             return -EIO;
->> > +                     }
->> > +                     buf[i] =3D ',';
->> > +                     start =3D i;
->> > +             }
->> > +     }
->> > +     return 0;
->> > +}
->>=20
->> I'm not really fond of having this kind of ASCII based parser in the
->> kernel. Do you have an example compressed file somewhere?
+>> > This will tell the mmc/sdio core to keep the SDIO card powered on
+>> > during system suspend. Thus, it doesn't need to re-initialize it at
+>> > system resume - and the firmware should not need to be re-programmed.
+>> >
+>> > On the other hand, if you don't plan to support system wakeups, it
+>> > would probably be better to power off the card, to avoid wasting
+>> > energy while the system is suspended. I assume that means you need to
+>> > re-program the firmware as well. Normally, it's these kinds of things
+>> > that need to be managed from a ->resume() callback.
+>>
+>> Many mac80211 drivers do so that the device is powered off during
+>> interface down (ifconfig wlan0 down), and as mac80211 does interface
+>> down automatically during suspend, suspend then works without extra
+>> handlers.
 >
-> An example of uncompressed configuration file can be found here[1]. Once
-> compressed with [2], you get:
+> That sounds simple. :-)
+
+Indeed, I was omitting a lot of details :) My comment was more like a
+general remark to all different bus techonologies, not just about SDIO.
+And I'm not saying that all wireless drivers do that, but some of them
+do. Though I don't have any numbers how many.
+
+> Would you mind elaborating on what is actually being powered off at
+> interface down - and thus also I am curious what happens at a typical
+> interface up?
+
+In general in the drivers that do we this the firmware is completely
+turned off and all memory is reset during interface down. And firmware
+is started from the scratch during interface up. Also one benefit from
+this is that firmware state is reset, the wireless firmwares are
+notarious being buggy.
+
+> Even if we don't want to use system wakeups (wake-on-lan), the SDIO
+> core and the SDIO func driver still need to somewhat agree on how to
+> manage the power for the card during system suspend, I think.
 >
->     {a:{a:4,b:1},b:{a:{a:4,b:0,c:0,d:0,e:A},b:{a:4,b:0,c:0,d:0,e:B},c:{a:=
-4,b:0,c:0,d:0,e:C},d:{a:4,b:0,c:0,d:0,e:D},e:{a:4,b:0,c:0,d:0,e:E},f:{a:4,b=
-:0,c:0,d:0,e:F},g:{a:4,b:0,c:0,d:0,e:G},h:{a:4,b:0,c:0,d:0,e:H},i:{a:4,b:0,=
-c:0,d:0,e:I},j:{a:4,b:0,c:0,d:0,e:J},k:{a:4,b:0,c:0,d:0,e:K},l:{a:4,b:0,c:0=
-,d:1,e:L},m:{a:4,b:0,c:0,d:1,e:M}},c:{a:{a:4},b:{a:6},c:{a:6,c:0},d:{a:6},e=
-:{a:6},f:{a:6}},e:{b:0,c:1},h:{e:0,a:50,b:0,d:0,c:[{a:1,b:[0,0,0,0,0,0]},{a=
-:2,b:[0,0,0,0,0,0]},{a:[3,9],b:[0,0,0,0,0,0]},{a:A,b:[0,0,0,0,0,0]},{a:B,b:=
-[0,0,0,0,0,0]},{a:[C,D],b:[0,0,0,0,0,0]},{a:E,b:[0,0,0,0,0,0]}]},j:{a:0,b:0=
-}}
-
-So what's the grand idea with this braces format? I'm not getting it.
-
-Usually the drivers just consider this kind of firmware configuration
-data as a binary blob and dump it to the firmware, without knowing what
-the data contains. Can't you do the same?
-
->> Does the device still work without these PDS files? I ask because my
->> suggestion is to remove this part altogether and revisit after the
->> initial driver is moved to drivers/net/wireless. A lot simpler to review
->> complex features separately.
+> For example, for a non-removable SDIO card, the SDIO/MMC core may
+> decide to power off the card in system suspend. Then it needs to
+> restore power to the card and re-initialize it at system resume, of
+> course. This doesn't mean that the actual corresponding struct device
+> for it, gets removed/re-added, thus the SDIO func driver isn't being
+> re-probed after the system has resumed. Although, since the SDIO card
+> was re-initialized, it's likely that the FW may need to be
+> re-programmed after the system has been resumed.
 >
-> I think we will be able to communicate with the chip. However, the chip w=
-on't
-> have any antenna parameters. Thus, I think the RF won't work properly.
+> Are you saying that re-programming the FW is always happening at
+> interface up, when there are none system suspend/resume callbacks
+> assigned for the SDIO func driver?
 
-RF not working properly is bad, so we can't drop PDS files for now. Too
-bad, it would have been so much faster if we would not need to worry
-about PDS files during review.
+Yes, that's what I was trying to say. But take all this with grain of
+salt, I'm not very familiar with SDIO! And funnily enough, I checked
+what we do in ath10k_sdio driver during suspend has conflicting code and
+documentation:
 
---=20
+/* Empty handlers so that mmc subsystem doesn't remove us entirely during
+ * suspend. We instead follow cfg80211 suspend/resume handlers.
+ */
+static int ath10k_sdio_pm_suspend(struct device *device)
+{
+	struct sdio_func *func = dev_to_sdio_func(device);
+	struct ath10k_sdio *ar_sdio = sdio_get_drvdata(func);
+	struct ath10k *ar = ar_sdio->ar;
+	mmc_pm_flag_t pm_flag, pm_caps;
+	int ret;
+
+	if (!device_may_wakeup(ar->dev))
+		return 0;
+
+	ath10k_sdio_set_mbox_sleep(ar, true);
+
+	pm_flag = MMC_PM_KEEP_POWER;
+
+	ret = sdio_set_host_pm_flags(func, pm_flag);
+	if (ret) {
+		pm_caps = sdio_get_host_pm_caps(func);
+		ath10k_warn(ar, "failed to set sdio host pm flags (0x%x, 0x%x): %d\n",
+			    pm_flag, pm_caps, ret);
+		return ret;
+	}
+
+	return ret;
+}
+
+-- 
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
