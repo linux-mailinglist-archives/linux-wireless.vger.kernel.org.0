@@ -2,78 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12A3A41F1E1
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 18:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E5141F1E7
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 18:13:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231675AbhJAQMw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 12:12:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49796 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231635AbhJAQMu (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 12:12:50 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E318C06177D;
-        Fri,  1 Oct 2021 09:11:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=laKyfFWU+cmryX08PIvbn5jn2uvTsnRUpE43WSwkwSI=;
-        t=1633104666; x=1634314266; b=Zq8eDjHS1Oej+xWRrosC0Kzb/xBxHTRubddttIc4bu5QHcD
-        HRJOapg4bhXjReY0OxDSnqNzPrhBRZgdNYZpAFVq3e1YTJupfe4P8Hg8npI970Mvu6HIk9i8awzI9
-        CVhk/6JEpvx+UEnD78gUql8OjEUvsqPuMT0ZC/HObKlZFZmg1SqUEL9nJK/Yyqrx8NLqxo9jFY8nr
-        po20DJq6Mao0NptOcezjpmcomeR8tmItx8Sg/wi8+XSz30t8o0T8LUesflUGZcPVgJAZFzThI1o9q
-        PPIT4oD42/kt0crjEtbYotHibH6C2oL9N/f7Hm2uMzWzGqYaqdkkY3QkuuijoUNQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95-RC2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mWL7m-00EHby-RI;
-        Fri, 01 Oct 2021 18:11:02 +0200
-Message-ID: <1058fe13a8b5ce56b0ec22039209c9b00d98dcc0.camel@sipsolutions.net>
-Subject: Re: [PATCH] nl80211: fix error pointer dereference in error handling
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Fri, 01 Oct 2021 18:11:02 +0200
-In-Reply-To: <20211001125616.GI2283@kili>
-References: <20211001125616.GI2283@kili>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S232111AbhJAQPF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 12:15:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53942 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232047AbhJAQPD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 1 Oct 2021 12:15:03 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C0C46619E7;
+        Fri,  1 Oct 2021 16:13:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633104799;
+        bh=mMEfl2DznOLS6As2JE8WI2CMTaAzNlFeLwPjlOMFh+M=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qtGKYpJVkWBpyfyIyf10q2LSp6HasZDVzScNFobfxXXMug+wL9eZareCzYk+rZb9q
+         Bp31Pex6eOAkyzHPX38/nYND0zavBfBuQLf5X9pR5y+icTLrveqPNhRfrkZb8ZooIy
+         /GTrNaYJiAxzqVgrk2dLPgxp1qkD1n+MiEWkz86PNnnm1Nod5545kqh8TzCw1pT547
+         wyIwuckD3T+tChy8asdoEfjyBw0Eu6Q/JJEE+KZNz+n9SrB93B+iHQWSLLXQYcPJzj
+         SL6prBx77BEXuIGdSRsDzZusFqGJFTqCSVyMR7/Pi4GIUPXm88fjSm0HJ1kcj8vGLD
+         kcEeoJ2NLE7tQ==
+Received: by pali.im (Postfix)
+        id 4384A821; Fri,  1 Oct 2021 18:13:16 +0200 (CEST)
+Date:   Fri, 1 Oct 2021 18:13:16 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v7 13/24] wfx: add hif_tx*.c/hif_tx*.h
+Message-ID: <20211001161316.w3cwsigacznjbowl@pali>
+References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
+ <20210920161136.2398632-14-Jerome.Pouiller@silabs.com>
+ <87fstlkr1m.fsf@codeaurora.org>
+ <2873071.CAOYYqaKbK@pc-42>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+In-Reply-To: <2873071.CAOYYqaKbK@pc-42>
+User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2021-10-01 at 15:56 +0300, Dan Carpenter wrote:
-> The error handling calls kfree(params->acl) so if "params->acl" is an
-> error pointer that will lead to an Oops.
+On Friday 01 October 2021 17:17:52 Jérôme Pouiller wrote:
+> On Friday 1 October 2021 11:55:33 CEST Kalle Valo wrote:
+> > CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe.
+> > 
+> > 
+> > Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
+> > 
+> > > From: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> > >
+> > > Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> > 
+> > [...]
+> > 
+> > > --- /dev/null
+> > > +++ b/drivers/net/wireless/silabs/wfx/hif_tx_mib.h
+> > > @@ -0,0 +1,49 @@
+> > > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > > +/*
+> > > + * Implementation of the host-to-chip MIBs of the hardware API.
+> > > + *
+> > > + * Copyright (c) 2017-2020, Silicon Laboratories, Inc.
+> > > + * Copyright (c) 2010, ST-Ericsson
+> > > + * Copyright (C) 2010, ST-Ericsson SA
+> > > + */
+> > > +#ifndef WFX_HIF_TX_MIB_H
+> > > +#define WFX_HIF_TX_MIB_H
+> > > +
+> > > +struct wfx_vif;
+> > > +struct sk_buff;
+> > > +
+> > > +int hif_set_output_power(struct wfx_vif *wvif, int val);
+> > > +int hif_set_beacon_wakeup_period(struct wfx_vif *wvif,
+> > > +                              unsigned int dtim_interval,
+> > > +                              unsigned int listen_interval);
+> > > +int hif_set_rcpi_rssi_threshold(struct wfx_vif *wvif,
+> > > +                             int rssi_thold, int rssi_hyst);
+> > > +int hif_get_counters_table(struct wfx_dev *wdev, int vif_id,
+> > > +                        struct hif_mib_extended_count_table *arg);
+> > > +int hif_set_macaddr(struct wfx_vif *wvif, u8 *mac);
+> > > +int hif_set_rx_filter(struct wfx_vif *wvif,
+> > > +                   bool filter_bssid, bool fwd_probe_req);
+> > > +int hif_set_beacon_filter_table(struct wfx_vif *wvif, int tbl_len,
+> > > +                             const struct hif_ie_table_entry *tbl);
+> > > +int hif_beacon_filter_control(struct wfx_vif *wvif,
+> > > +                           int enable, int beacon_count);
+> > > +int hif_set_operational_mode(struct wfx_dev *wdev, enum hif_op_power_mode mode);
+> > > +int hif_set_template_frame(struct wfx_vif *wvif, struct sk_buff *skb,
+> > > +                        u8 frame_type, int init_rate);
+> > > +int hif_set_mfp(struct wfx_vif *wvif, bool capable, bool required);
+> > > +int hif_set_block_ack_policy(struct wfx_vif *wvif,
+> > > +                          u8 tx_tid_policy, u8 rx_tid_policy);
+> > > +int hif_set_association_mode(struct wfx_vif *wvif, int ampdu_density,
+> > > +                          bool greenfield, bool short_preamble);
+> > > +int hif_set_tx_rate_retry_policy(struct wfx_vif *wvif,
+> > > +                              int policy_index, u8 *rates);
+> > > +int hif_keep_alive_period(struct wfx_vif *wvif, int period);
+> > > +int hif_set_arp_ipv4_filter(struct wfx_vif *wvif, int idx, __be32 *addr);
+> > > +int hif_use_multi_tx_conf(struct wfx_dev *wdev, bool enable);
+> > > +int hif_set_uapsd_info(struct wfx_vif *wvif, unsigned long val);
+> > > +int hif_erp_use_protection(struct wfx_vif *wvif, bool enable);
+> > > +int hif_slot_time(struct wfx_vif *wvif, int val);
+> > > +int hif_wep_default_key_id(struct wfx_vif *wvif, int val);
+> > > +int hif_rts_threshold(struct wfx_vif *wvif, int val);
+> > 
+> > "wfx_" prefix missing from quite a few functions.
 > 
-> Fixes: 9e263e193af7 ("nl80211: don't put struct cfg80211_ap_settings on stack")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  net/wireless/nl80211.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> index 0b4f29d689d2..962fb169a5fb 100644
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -5507,6 +5507,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
->  		params->acl = parse_acl_data(&rdev->wiphy, info);
->  		if (IS_ERR(params->acl)) {
->  			err = PTR_ERR(params->acl);
-> +			params->acl = NULL;
+> I didn't know it was mandatory to prefix all the functions with the
+> same prefix. With the rule of 80-columns, I think I will have to change
+> a bunch of code :( .
 
-Yeah. I think I had just applied the exact same patch:
-
-commit 05075fe7455a210769b266e62a0040ddc98b2739
-Author: Johannes Berg <johannes.berg@intel.com>
-Date:   Mon Sep 27 13:44:03 2021 +0200
-
-    nl80211: don't kfree() ERR_PTR() value
-
-johannes
-
+I think that new drivers can use 100 characters per line.
