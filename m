@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8557A41F211
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 18:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 786F641F21E
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 18:26:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354849AbhJAQWz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 12:22:55 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:30794 "EHLO
+        id S232107AbhJAQ2c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 12:28:32 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:61401 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354749AbhJAQWy (ORCPT
+        with ESMTP id S1353926AbhJAQ2c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 12:22:54 -0400
+        Fri, 1 Oct 2021 12:28:32 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633105269; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1633105607; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=E0TfD1T+crhBYlVEdefSLNiXIyvI7Fx9VpRjpfC1cY0=; b=pYZVWW03dKJqbPkY9YaRSuLLqhHZsS5h9K+ZRQFhUJ6SNBtQKlVXjUri8T3iwbiDrxrPxzO0
- Ui1l3OBGQzsbB5B9A1OfkmlQ+9td0+4nvF7C+COSPRSSxTapZtvE00ABghd7r6vdf/U7GWS1
- 7r0j3QX2vLvWekpweZc47Y1PYR0=
+ bh=zDIZm7tiCGJ2BQu6voFNyUciNkkPNIVPSpavjhKm6l8=; b=ealH8y+Glucakfd/08SXPT3VPatzg4HUI05XDQGmn80eGtg7iH/e86cB1Hs8EfVeWZQkV4pb
+ cpmE/bRA12gkYea6LYOwzQXXuY1qWTsTZ10s0p9QgtfVx05sl5g8zQ1d25hM6fLiFUb/4/lX
+ NKndxuf/d15FCcZJBaCxaO9voSk=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
  smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 6157356947d64efb6d84d938 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 16:20:57
+ 615736b947d64efb6d8c7e55 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 16:26:33
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7D11FC4360C; Fri,  1 Oct 2021 16:20:57 +0000 (UTC)
+        id AF56CC4360C; Fri,  1 Oct 2021 16:26:33 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,21 +38,21 @@ Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2D8AFC43460;
-        Fri,  1 Oct 2021 16:20:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 2D8AFC43460
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 66DC9C4338F;
+        Fri,  1 Oct 2021 16:26:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 66DC9C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     Ping-Ke Shih <pkshih@realtek.com>
 Cc:     <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v6 13/24] rtw89: 8852a: add 8852a specific files
+Subject: Re: [PATCH v6 03/24] rtw89: add core and trx files
 References: <20210820043538.12424-1-pkshih@realtek.com>
-        <20210820043538.12424-14-pkshih@realtek.com>
-Date:   Fri, 01 Oct 2021 19:20:53 +0300
-In-Reply-To: <20210820043538.12424-14-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Fri, 20 Aug 2021 12:35:27 +0800")
-Message-ID: <87bl48iumy.fsf@codeaurora.org>
+        <20210820043538.12424-4-pkshih@realtek.com>
+Date:   Fri, 01 Oct 2021 19:26:26 +0300
+In-Reply-To: <20210820043538.12424-4-pkshih@realtek.com> (Ping-Ke Shih's
+        message of "Fri, 20 Aug 2021 12:35:17 +0800")
+Message-ID: <877dewiudp.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -62,56 +62,67 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Ping-Ke Shih <pkshih@realtek.com> writes:
 
-> The 8852A specific chip info and ops are written in this file. The chip
-> info describes the chip specific capabilities, and chip ops are specific
-> efuse parser, FEM setup, set channel, RFK trigger, set TX power, and
-> WL/BT grant controlled by coex.
+> Implement main flows that contains register/unregister mac80211 hw with
+> hardware capability, power on/off sequence, STA state actions, and
+> TX/RX path.
+>
+> The chip info is read from efuse while probing PCI, and then it can be
+> used to induce supported channel, band, bitrate, ht/vht/he capability,
+> and etc. Then, we register hardware with these capabilities.
+>
+> When network interface is up, driver does power-on sequence to enable MAC,
+> BB and RF function blocks. Oppositely, do power-off sequence when
+> interface is going to down.
+>
+> To maintain STA state, five callbacks are implemented -- add, assoc,
+> disassoc, disconnect and remove. In which state, driver tells firmware STA
+> info via H2C.
+>
+> TX flow:
+> When a SKB is going to be transmitted, we must know its type first. If
+> the type is mgmt or fwcmd made by driver, SKB is queued into corresponding
+> DMA channel and PCI ring. The other type is data frame that is more
+> complex, because it needs to establish BA session to have better throughput
+> with AMPDU and AMSDU.
+> In order to have better PCI DMA efficiency, we don't kick off DMA every
+> SKB. With wake TX queue, kick off DMA after a bunch of SKBs are written.
+> To achieve this, we have two HCI ops -- tx_write and tx_kick_off.
+>
+> BA establishment work:
+> For data frames, we start to establish BA session if the STA is associated
+> with APMDU capability and the TID session isn't established, and then the
+> BA work is used to ask mac80211 to start AMPDU actions. Driver implements
+> AMPDU action callbacks to know the session is established, so that we can
+> set AGG_EN bit in TX descriptor to enable AMPDU.
+>
+> RX flow:
+> When a RX SKB is delivered from PCI, rtw89_core_rx() process it depneds on
+> its type -- WIFI, C2H or PPDU. If type is C2H, it's queued into a C2H
+> queue, and wake a work to handle the C2H packet. If type is WIFI, it's a
+> normal RX packet. When mgmt or data frame is received, it is queued
+> into pending RX SKB queue to wait for corresponding PPDU packet (another
+> RX packet with PPDU type) to fill its rx_status, like RSSI. And, then
+> indicate this packet to mac80211. When control frame is received, indicate
+> it to mac80211 immediately.
+>
+> Track work:
+> Use track work to monitor PHY status to know the changes of environment,
+> and then update RA status or do RFK accordingly.
 >
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
 [...]
 
-> +static struct rtw89_hfc_ch_cfg rtw8852a_hfc_chcfg_pcie[] = {
-> +	{128, 1896, grp_0}, /* ACH 0 */
-> +	{128, 1896, grp_0}, /* ACH 1 */
-> +	{128, 1896, grp_0}, /* ACH 2 */
-> +	{128, 1896, grp_0}, /* ACH 3 */
-> +	{128, 1896, grp_1}, /* ACH 4 */
-> +	{128, 1896, grp_1}, /* ACH 5 */
-> +	{128, 1896, grp_1}, /* ACH 6 */
-> +	{128, 1896, grp_1}, /* ACH 7 */
-> +	{32, 1896, grp_0}, /* B0MGQ */
-> +	{128, 1896, grp_0}, /* B0HIQ */
-> +	{32, 1896, grp_1}, /* B1MGQ */
-> +	{128, 1896, grp_1}, /* B1HIQ */
-> +	{40, 0, 0} /* FWCMDQ */
-> +};
+> +static __always_inline void RTW89_SET_TXWD(u8 *txdesc, u32 val, u8 offset, u32 mask)
+> +{
+> +	u32 *txd32 = (u32 *)txdesc;
 > +
-> +static struct rtw89_hfc_pub_cfg rtw8852a_hfc_pubcfg_pcie = {
-> +	1896, /* Group 0 */
-> +	1896, /* Group 1 */
-> +	3792, /* Public Max */
-> +	0 /* WP threshold */
-> +};
-> +
-> +static struct rtw89_hfc_param_ini rtw8852a_hfc_param_ini_pcie[] = {
-> +	[RTW89_QTA_SCC] = {rtw8852a_hfc_chcfg_pcie, &rtw8852a_hfc_pubcfg_pcie,
-> +			   &rtw_hfc_preccfg_pcie, RTW89_HCIFC_POH},
-> +	[RTW89_QTA_DLFW] = {NULL, NULL, &rtw_hfc_preccfg_pcie, RTW89_HCIFC_POH},
-> +	[RTW89_QTA_INVALID] = {NULL},
-> +};
-> +
-> +static struct rtw89_dle_mem rtw8852a_dle_mem_pcie[] = {
-> +	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &wde_size0, &ple_size0, &wde_qt0,
-> +			    &wde_qt0, &ple_qt4, &ple_qt5},
-> +	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &wde_size4, &ple_size4,
-> +			    &wde_qt4, &wde_qt4, &ple_qt13, &ple_qt13},
-> +	[RTW89_QTA_INVALID] = {RTW89_QTA_INVALID, NULL, NULL, NULL, NULL, NULL,
-> +			       NULL},
-> +};
+> +	le32p_replace_bits((__le32 *)(txd32 + offset), val, mask);
+> +}
 
-const? I also see more variables in this file which I suspect to be
-const, but running out of time. Please check those as well.
+I'm not convinced about this either, please just use inline.
+
+Also having functions in upper case is not really something I recommend.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
