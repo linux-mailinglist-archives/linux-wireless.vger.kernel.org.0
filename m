@@ -2,33 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7654041E966
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 11:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A653A41E98F
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 11:22:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352887AbhJAJIi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 05:08:38 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:35095 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352872AbhJAJIh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 05:08:37 -0400
+        id S1353004AbhJAJYZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 05:24:25 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:20538 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229824AbhJAJYY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 1 Oct 2021 05:24:24 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633079213; h=Content-Transfer-Encoding: Content-Type:
+ s=smtp; t=1633080161; h=Content-Transfer-Encoding: Content-Type:
  MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=6bQDWcDi7avoxUXWzlznZhXymgDiWCWV7nuIi3PdecU=; b=C1jGRp+cyzhyMrCnxr7i8E6pcsDZP8WOq4N+5NUtiN9ddjOVjoLE61QnM4755iazzlW7/icF
- bVRcdh25uOxyyE8E0SmLgbkJfio84OdNqEIwpBmr7unEvstDe2UvmOgYVj7js8DtKR5iCtIS
- T9Wh5NTG0gx7pRQrH4gAs5cSiuU=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ To: From: Sender; bh=iYvrZUrKg77KiOcHuyT/fMvLDJyxg91TZsc59MuYT9s=; b=NJR49LQdwz9FivahiTsDpvlr7OHuRBsuwqPa38JDs7fgj9wJ+NihTQBykDUQGYqw32itvhq6
+ HxtbTF333JRYOB95cjcxbcM34/6VgZrz4CEf2pAK4MEnKAzODeh/TqAGFKVl5zdnJwkJjtv/
+ rZWvfMoHY2xkU8q+zrbjGQjpRcc=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 6156cfa6519bd8dcf09be72b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 09:06:46
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 6156d3498578ef11edf7775d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 09:22:17
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AAE75C4360D; Fri,  1 Oct 2021 09:06:46 +0000 (UTC)
+        id 4710CC43617; Fri,  1 Oct 2021 09:22:16 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,9 +37,9 @@ Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 32F95C4338F;
-        Fri,  1 Oct 2021 09:06:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 32F95C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4765DC4338F;
+        Fri,  1 Oct 2021 09:22:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 4765DC4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
@@ -53,13 +52,13 @@ Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-mmc@vger.kernel.org,
         Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v7 03/24] wfx: add Makefile/Kconfig
+Subject: Re: [PATCH v7 05/24] wfx: add main.c/main.h
 References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
-        <20210920161136.2398632-4-Jerome.Pouiller@silabs.com>
-Date:   Fri, 01 Oct 2021 12:06:40 +0300
-In-Reply-To: <20210920161136.2398632-4-Jerome.Pouiller@silabs.com> (Jerome
-        Pouiller's message of "Mon, 20 Sep 2021 18:11:15 +0200")
-Message-ID: <8735plm7vj.fsf@codeaurora.org>
+        <20210920161136.2398632-6-Jerome.Pouiller@silabs.com>
+Date:   Fri, 01 Oct 2021 12:22:08 +0300
+In-Reply-To: <20210920161136.2398632-6-Jerome.Pouiller@silabs.com> (Jerome
+        Pouiller's message of "Mon, 20 Sep 2021 18:11:17 +0200")
+Message-ID: <87y27dkslb.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -76,22 +75,85 @@ Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
 
 [...]
 
-> --- /dev/null
-> +++ b/drivers/net/wireless/silabs/wfx/Makefile
-> @@ -0,0 +1,26 @@
-> +# SPDX-License-Identifier: GPL-2.0
+> +/* The device needs data about the antenna configuration. This informati=
+on in
+> + * provided by PDS (Platform Data Set, this is the wording used in WF200
+> + * documentation) files. For hardware integrators, the full process to c=
+reate
+> + * PDS files is described here:
+> + *   https:github.com/SiliconLabs/wfx-firmware/blob/master/PDS/README.md
+> + *
+> + * So this function aims to send PDS to the device. However, the PDS fil=
+e is
+> + * often bigger than Rx buffers of the chip, so it has to be sent in mul=
+tiple
+> + * parts.
+> + *
+> + * In add, the PDS data cannot be split anywhere. The PDS files contains=
+ tree
+> + * structures. Braces are used to enter/leave a level of the tree (in a =
+JSON
+> + * fashion). PDS files can only been split between root nodes.
+> + */
+> +int wfx_send_pds(struct wfx_dev *wdev, u8 *buf, size_t len)
+> +{
+> +	int ret;
+> +	int start, brace_level, i;
+> +
+> +	start =3D 0;
+> +	brace_level =3D 0;
+> +	if (buf[0] !=3D '{') {
+> + dev_err(wdev->dev, "valid PDS start with '{'. Did you forget to
+> compress it?\n");
+> +		return -EINVAL;
+> +	}
+> +	for (i =3D 1; i < len - 1; i++) {
+> +		if (buf[i] =3D=3D '{')
+> +			brace_level++;
+> +		if (buf[i] =3D=3D '}')
+> +			brace_level--;
+> +		if (buf[i] =3D=3D '}' && !brace_level) {
+> +			i++;
+> +			if (i - start + 1 > WFX_PDS_MAX_SIZE)
+> +				return -EFBIG;
+> +			buf[start] =3D '{';
+> +			buf[i] =3D 0;
+> +			dev_dbg(wdev->dev, "send PDS '%s}'\n", buf + start);
+> +			buf[i] =3D '}';
+> +			ret =3D hif_configuration(wdev, buf + start,
+> +						i - start + 1);
+> +			if (ret > 0) {
+> + dev_err(wdev->dev, "PDS bytes %d to %d: invalid data (unsupported
+> options?)\n",
+> +					start, i);
+> +				return -EINVAL;
+> +			}
+> +			if (ret =3D=3D -ETIMEDOUT) {
+> + dev_err(wdev->dev, "PDS bytes %d to %d: chip didn't reply (corrupted
+> file?)\n",
+> +					start, i);
+> +				return ret;
+> +			}
+> +			if (ret) {
+> + dev_err(wdev->dev, "PDS bytes %d to %d: chip returned an unknown
+> error\n",
+> +					start, i);
+> +				return -EIO;
+> +			}
+> +			buf[i] =3D ',';
+> +			start =3D i;
+> +		}
+> +	}
+> +	return 0;
+> +}
 
-All other files use GPL-2.0-only:
+I'm not really fond of having this kind of ASCII based parser in the
+kernel. Do you have an example compressed file somewhere?
 
-bh.c:// SPDX-License-Identifier: GPL-2.0-only
-bh.h:/* SPDX-License-Identifier: GPL-2.0-only */
-bus.h:/* SPDX-License-Identifier: GPL-2.0-only */
-bus_sdio.c:// SPDX-License-Identifier: GPL-2.0-only
-bus_spi.c:// SPDX-License-Identifier: GPL-2.0-only
-data_rx.c:// SPDX-License-Identifier: GPL-2.0-only
-
-I don't remember what's the difference, if any, but having consistent
-SPDX tags would be nice.
+Does the device still work without these PDS files? I ask because my
+suggestion is to remove this part altogether and revisit after the
+initial driver is moved to drivers/net/wireless. A lot simpler to review
+complex features separately.
 
 --=20
 https://patchwork.kernel.org/project/linux-wireless/list/
