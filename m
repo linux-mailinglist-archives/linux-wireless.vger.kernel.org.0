@@ -2,99 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D25CD41E7D9
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 09:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BCD741E90C
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 10:23:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352032AbhJAHDf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 03:03:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34432 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352394AbhJAHCz (ORCPT
+        id S1352701AbhJAIZB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 04:25:01 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:56541 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1352645AbhJAIZB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 03:02:55 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDC48C061776
-        for <linux-wireless@vger.kernel.org>; Fri,  1 Oct 2021 00:01:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=NJr5xpW7MZSkW7xFINyqHqDBDFCpW/nUdFRJKEADvuc=;
-        t=1633071670; x=1634281270; b=Uu7zYnJ3z2nsj7CKAa237RvdF5bQ9CAvT5bABwkita1J23X
-        mQiRAXKoaZUOYRaIHDrDJZCG3Ticq56j+y4IPTYWw2IGUabZ1K4EYdKybV8RelHYjn6LcC7yFsooC
-        OuGopY+DoDc03dbfm9JRIBNEHfyIjmRYe25h1pMatNsX1JxWWNDhyNti8A8hXjeSZjvm6bjtIcpGQ
-        d7hMzreIKv+pgld/sgfV0B0lJ09C2u9pKRd3NJdigLWKW7mkpyb5auQaXXuLJ7Q0On6qjnFA5a+c6
-        GOdE4N3b+AxVI0OPY9Mrh/RBt6A/F4MHlQIJgL/wXD8sunS/aQ/Hv9+/RqnnPi/g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95-RC2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mWCXX-00E6g7-PG;
-        Fri, 01 Oct 2021 09:01:03 +0200
-Message-ID: <93c99a81d89aafed21e8e22157b3bf21526be716.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 2/2] mac80211: do intersection with he mcs and nss
- set of peer and own
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kalle Valo <kvalo@codeaurora.org>, Wen Gong <wgong@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Date:   Fri, 01 Oct 2021 09:01:02 +0200
-In-Reply-To: <87bl49mf02.fsf@codeaurora.org>
-References: <1609816120-9411-1-git-send-email-wgong@codeaurora.org>
-         <1609816120-9411-3-git-send-email-wgong@codeaurora.org>
-         <b6c96c4ecdf9ec175d7f89e8600fb53768287cc2.camel@sipsolutions.net>
-         <facd18458a7ecfc0afbfd06c8a57d849@codeaurora.org>
-         <87bl49mf02.fsf@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        Fri, 1 Oct 2021 04:25:01 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1918N8uhC018152, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1918N8uhC018152
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 1 Oct 2021 16:23:08 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Fri, 1 Oct 2021 16:23:08 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 1 Oct 2021
+ 16:23:08 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
+Subject: [PATCH v2] rtw88: refine fw_crash debugfs to show non-zero while triggering
+Date:   Fri, 1 Oct 2021 16:23:01 +0800
+Message-ID: <20211001082301.4805-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/30/2021 01:34:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzkvMjkgpFWkyCAxMToyNzowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2021-10-01 at 09:32 +0300, Kalle Valo wrote:
-> > 
-> > Add "__packed" before the "__le16 *" should solve this warning by my
-> > understand like this:
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[snip]
-> > 
-> > -static void ieee80211_he_mcs_disable(__le16 *he_mcs)
-> > +static void ieee80211_he_mcs_disable(__packed __le16 *he_mcs)
-> > 
+The usage of fw_crash debugfs is to write 1 to it to trigger fw crash
+simulation and to read from it to check the state. When zero is read,
+it is supposed to mean fw crash/restart process is done. Then, some
+test plans can be designed for crash/restart.
+e.g.
+step 1. trigger fw crash simulation
+step 2. poll the state until zero is read
+step 3. check connection by ping test
 
-[snip]
+However, in certain connection cases, triggering fw crash simulation
+will take a while. If the state is queried too early before restart
+begins processing, it may mistakenly think restart process has been
+done. If some tests are started at this time, something unexpected
+might happen due to the follow-up restart process.
 
-> I don't know what Johannes thinks, but to me that looks like an ugly
-> hack. Wouldn't use get_unaligned() or similar be cleaner?
-> 
-Well, then we've have to pass an untyped pointer (void *), which I guess
-is fine? Since we do all kinds of le16_to_cpu() with it anyway, that'd
-just become get_unaligned_le16().
+To avoid that, let fw_crash also show non-zero when a simulation
+is still triggering.
 
-That's probably the better choice.
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+v2: modify title and commit log to have better explanation.
+---
+ drivers/net/wireless/realtek/rtw88/debug.c | 5 ++++-
+ drivers/net/wireless/realtek/rtw88/main.c  | 1 +
+ drivers/net/wireless/realtek/rtw88/main.h  | 1 +
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-But regardless, would the __packed even *work*? __attribute__((packed))
-is documented as:
-
-   This attribute, attached to a struct, union, or C++ class type
-   definition, specifies that each of its members (other than zero-width
-   bit-fields) is placed to minimize the memory required. This is
-   equivalent to specifying the packed attribute on each of the members.
-   
-   When attached to an enum definition, the packed attribute indicates that
-   the smallest integral type should be used. Specifying the -fshort-enums
-   flag on the command line is equivalent to specifying the packed
-   attribute on all enum definitions. 
-   
-   [snip example]
-   
-   You may only specify the packed attribute on the definition of an enum,
-   struct, union, or class, not on a typedef that does not also define the
-   enumerated type, structure, union, or class. 
-
-So I'm not convinced it would actually *do* anything here at all, in the
-proposed context?
-
-johannes
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+index babf7fb238cc..682b23502e6e 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.c
++++ b/drivers/net/wireless/realtek/rtw88/debug.c
+@@ -886,6 +886,7 @@ static ssize_t rtw_debugfs_set_fw_crash(struct file *filp,
+ 
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtw_leave_lps_deep(rtwdev);
++	set_bit(RTW_FLAG_RESTART_TRIGGERING, rtwdev->flags);
+ 	rtw_write8(rtwdev, REG_HRCV_MSG, 1);
+ 	mutex_unlock(&rtwdev->mutex);
+ 
+@@ -897,7 +898,9 @@ static int rtw_debugfs_get_fw_crash(struct seq_file *m, void *v)
+ 	struct rtw_debugfs_priv *debugfs_priv = m->private;
+ 	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
+ 
+-	seq_printf(m, "%d\n", test_bit(RTW_FLAG_RESTARTING, rtwdev->flags));
++	seq_printf(m, "%d\n",
++		   test_bit(RTW_FLAG_RESTART_TRIGGERING, rtwdev->flags) ||
++		   test_bit(RTW_FLAG_RESTARTING, rtwdev->flags));
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index cee2acabb042..a0d4d6e31fb4 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -564,6 +564,7 @@ static void __fw_recovery_work(struct rtw_dev *rtwdev)
+ 	int ret = 0;
+ 
+ 	set_bit(RTW_FLAG_RESTARTING, rtwdev->flags);
++	clear_bit(RTW_FLAG_RESTART_TRIGGERING, rtwdev->flags);
+ 
+ 	ret = rtw_fwcd_prep(rtwdev);
+ 	if (ret)
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 723316347876..bbdd535b64e7 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -363,6 +363,7 @@ enum rtw_flags {
+ 	RTW_FLAG_BUSY_TRAFFIC,
+ 	RTW_FLAG_WOWLAN,
+ 	RTW_FLAG_RESTARTING,
++	RTW_FLAG_RESTART_TRIGGERING,
+ 
+ 	NUM_OF_RTW_FLAGS,
+ };
+-- 
+2.25.1
 
