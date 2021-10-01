@@ -2,184 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 372BD41EA23
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 11:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B97941EA30
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 11:55:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353223AbhJAJzu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 05:55:50 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:34184 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1353079AbhJAJzs (ORCPT
+        id S1353208AbhJAJ5h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 05:57:37 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:28046 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1353148AbhJAJ5g (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 05:55:48 -0400
-X-UUID: ea2a3f43b1044b99b3f16fa094112b53-20211001
-X-UUID: ea2a3f43b1044b99b3f16fa094112b53-20211001
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 169611071; Fri, 01 Oct 2021 17:54:02 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 1 Oct 2021 17:54:01 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 1 Oct 2021 17:54:01 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH v5 8/8] mt76: mt7915: set muru platform type
-Date:   Fri, 1 Oct 2021 17:53:55 +0800
-Message-ID: <20211001095355.10598-8-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20211001095355.10598-1-shayne.chen@mediatek.com>
-References: <20211001095355.10598-1-shayne.chen@mediatek.com>
+        Fri, 1 Oct 2021 05:57:36 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1633082153; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=tMw5Hzb3ztdNEHxY4bAev68n6seU8HT3Mf7aFuIt4P8=; b=rdHIMJnrygDT4HQsdbk1vGLisqmAwBPTqYwmEkK/eo4DZs24rq3Y7FLPZ4rVfV4FcM+8uPFT
+ wxL8Jvi1IA/EC0OHna65u/Q0ZQuYHJq1X1mJJgKM7U/2La590uUKIEo6PYrnORyxYgqUiF6j
+ 2nbo57CndejHwtvijRNT+UUOWQQ=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 6156db1c605ecf100b49b610 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 09:55:40
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 910CFC43618; Fri,  1 Oct 2021 09:55:40 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E8C99C4338F;
+        Fri,  1 Oct 2021 09:55:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org E8C99C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-mmc@vger.kernel.org,
+        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v7 13/24] wfx: add hif_tx*.c/hif_tx*.h
+References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
+        <20210920161136.2398632-14-Jerome.Pouiller@silabs.com>
+Date:   Fri, 01 Oct 2021 12:55:33 +0300
+In-Reply-To: <20210920161136.2398632-14-Jerome.Pouiller@silabs.com> (Jerome
+        Pouiller's message of "Mon, 20 Sep 2021 18:11:25 +0200")
+Message-ID: <87fstlkr1m.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Set muru platform type by mcu cmd to notify fw to init corresponding
-algorithm.
+Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
 
-Suggested-by: Money Wang <money.wang@mediatek.com>
-Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
-v3: - fix endianess
-    - rework muru ctrl function
-v4: use put_unaligned_le32() to get rid of undefined behavior
-v5: rebase to staging tree
----
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 20 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   | 10 ++++++++++
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  1 +
- .../wireless/mediatek/mt76/mt7915/testmode.c  | 16 +++++----------
- .../wireless/mediatek/mt76/mt7915/testmode.h  |  4 ----
- 5 files changed, 36 insertions(+), 15 deletions(-)
+> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>
+> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index be875f100c6f..6ee9d2dfd930 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2909,6 +2909,21 @@ static int mt7915_mcu_set_mwds(struct mt7915_dev *dev, bool enabled)
- 				 sizeof(req), false);
- }
- 
-+int mt7915_mcu_set_muru_ctrl(struct mt7915_dev *dev, u32 cmd, u32 val)
-+{
-+	struct {
-+		__le32 cmd;
-+		u8 val[4];
-+	} __packed req = {
-+		.cmd = cpu_to_le32(cmd),
-+	};
-+
-+	put_unaligned_le32(val, req.val);
-+
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(MURU_CTRL), &req,
-+				 sizeof(req), false);
-+}
-+
- int mt7915_mcu_init(struct mt7915_dev *dev)
- {
- 	static const struct mt76_mcu_ops mt7915_mcu_ops = {
-@@ -2942,6 +2957,11 @@ int mt7915_mcu_init(struct mt7915_dev *dev)
- 	if (ret)
- 		return ret;
- 
-+	ret = mt7915_mcu_set_muru_ctrl(dev, MURU_SET_PLATFORM_TYPE,
-+				       MURU_PLATFORM_TYPE_PERF_LEVEL_2);
-+	if (ret)
-+		return ret;
-+
- 	return mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(SET),
- 				 MCU_WA_PARAM_RED, 0, 0);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 23a611873bfa..5d383918a2af 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -1091,6 +1091,16 @@ enum {
- 	MT_BF_MODULE_UPDATE = 25
- };
- 
-+enum {
-+	MURU_SET_ARB_OP_MODE = 14,
-+	MURU_SET_PLATFORM_TYPE = 25,
-+};
-+
-+enum {
-+	MURU_PLATFORM_TYPE_PERF_LEVEL_1 = 1,
-+	MURU_PLATFORM_TYPE_PERF_LEVEL_2,
-+};
-+
- #define MT7915_WTBL_UPDATE_MAX_SIZE	(sizeof(struct wtbl_req_hdr) +	\
- 					 sizeof(struct wtbl_generic) +	\
- 					 sizeof(struct wtbl_rx) +	\
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index e68ac8e6e148..904c711d4a3f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -358,6 +358,7 @@ int mt7915_mcu_set_pulse_th(struct mt7915_dev *dev,
- 			    const struct mt7915_dfs_pulse *pulse);
- int mt7915_mcu_set_radar_th(struct mt7915_dev *dev, int index,
- 			    const struct mt7915_dfs_pattern *pattern);
-+int mt7915_mcu_set_muru_ctrl(struct mt7915_dev *dev, u32 cmd, u32 val);
- int mt7915_mcu_apply_group_cal(struct mt7915_dev *dev);
- int mt7915_mcu_apply_tx_dpd(struct mt7915_phy *phy);
- int mt7915_mcu_get_chan_mib_info(struct mt7915_phy *phy, bool chan_switch);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-index 00dcc46b9082..89aae323d29e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-@@ -169,22 +169,16 @@ static int
- mt7915_tm_set_tam_arb(struct mt7915_phy *phy, bool enable, bool mu)
- {
- 	struct mt7915_dev *dev = phy->dev;
--	struct {
--		__le32 cmd;
--		u8 op_mode;
--	} __packed req = {
--		.cmd = cpu_to_le32(MURU_SET_ARB_OP_MODE),
--	};
-+	u32 op_mode;
- 
- 	if (!enable)
--		req.op_mode = TAM_ARB_OP_MODE_NORMAL;
-+		op_mode = TAM_ARB_OP_MODE_NORMAL;
- 	else if (mu)
--		req.op_mode = TAM_ARB_OP_MODE_TEST;
-+		op_mode = TAM_ARB_OP_MODE_TEST;
- 	else
--		req.op_mode = TAM_ARB_OP_MODE_FORCE_SU;
-+		op_mode = TAM_ARB_OP_MODE_FORCE_SU;
- 
--	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(MURU_CTRL), &req,
--				 sizeof(req), false);
-+	return mt7915_mcu_set_muru_ctrl(dev, MURU_SET_ARB_OP_MODE, op_mode);
- }
- 
- static int
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h
-index 107f0cf2505e..5573ac309363 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h
-@@ -102,8 +102,4 @@ enum {
- 	TAM_ARB_OP_MODE_FORCE_SU = 5,
- };
- 
--enum {
--	MURU_SET_ARB_OP_MODE = 14,
--};
--
- #endif
--- 
-2.25.1
+[...]
 
+> --- /dev/null
+> +++ b/drivers/net/wireless/silabs/wfx/hif_tx_mib.h
+> @@ -0,0 +1,49 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Implementation of the host-to-chip MIBs of the hardware API.
+> + *
+> + * Copyright (c) 2017-2020, Silicon Laboratories, Inc.
+> + * Copyright (c) 2010, ST-Ericsson
+> + * Copyright (C) 2010, ST-Ericsson SA
+> + */
+> +#ifndef WFX_HIF_TX_MIB_H
+> +#define WFX_HIF_TX_MIB_H
+> +
+> +struct wfx_vif;
+> +struct sk_buff;
+> +
+> +int hif_set_output_power(struct wfx_vif *wvif, int val);
+> +int hif_set_beacon_wakeup_period(struct wfx_vif *wvif,
+> +				 unsigned int dtim_interval,
+> +				 unsigned int listen_interval);
+> +int hif_set_rcpi_rssi_threshold(struct wfx_vif *wvif,
+> +				int rssi_thold, int rssi_hyst);
+> +int hif_get_counters_table(struct wfx_dev *wdev, int vif_id,
+> +			   struct hif_mib_extended_count_table *arg);
+> +int hif_set_macaddr(struct wfx_vif *wvif, u8 *mac);
+> +int hif_set_rx_filter(struct wfx_vif *wvif,
+> +		      bool filter_bssid, bool fwd_probe_req);
+> +int hif_set_beacon_filter_table(struct wfx_vif *wvif, int tbl_len,
+> +				const struct hif_ie_table_entry *tbl);
+> +int hif_beacon_filter_control(struct wfx_vif *wvif,
+> +			      int enable, int beacon_count);
+> +int hif_set_operational_mode(struct wfx_dev *wdev, enum hif_op_power_mod=
+e mode);
+> +int hif_set_template_frame(struct wfx_vif *wvif, struct sk_buff *skb,
+> +			   u8 frame_type, int init_rate);
+> +int hif_set_mfp(struct wfx_vif *wvif, bool capable, bool required);
+> +int hif_set_block_ack_policy(struct wfx_vif *wvif,
+> +			     u8 tx_tid_policy, u8 rx_tid_policy);
+> +int hif_set_association_mode(struct wfx_vif *wvif, int ampdu_density,
+> +			     bool greenfield, bool short_preamble);
+> +int hif_set_tx_rate_retry_policy(struct wfx_vif *wvif,
+> +				 int policy_index, u8 *rates);
+> +int hif_keep_alive_period(struct wfx_vif *wvif, int period);
+> +int hif_set_arp_ipv4_filter(struct wfx_vif *wvif, int idx, __be32 *addr);
+> +int hif_use_multi_tx_conf(struct wfx_dev *wdev, bool enable);
+> +int hif_set_uapsd_info(struct wfx_vif *wvif, unsigned long val);
+> +int hif_erp_use_protection(struct wfx_vif *wvif, bool enable);
+> +int hif_slot_time(struct wfx_vif *wvif, int val);
+> +int hif_wep_default_key_id(struct wfx_vif *wvif, int val);
+> +int hif_rts_threshold(struct wfx_vif *wvif, int val);
+
+"wfx_" prefix missing from quite a few functions.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
