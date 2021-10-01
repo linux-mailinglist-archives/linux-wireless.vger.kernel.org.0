@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9C0E41ECAD
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 13:59:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB7C941ECD0
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 14:01:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354181AbhJAMAu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 08:00:50 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:43125 "EHLO
+        id S1354246AbhJAMDX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 08:03:23 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:49270 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354162AbhJAMAr (ORCPT
+        with ESMTP id S1354251AbhJAMDN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 08:00:47 -0400
+        Fri, 1 Oct 2021 08:03:13 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633089543; h=Content-Transfer-Encoding: Content-Type:
+ s=smtp; t=1633089689; h=Content-Transfer-Encoding: Content-Type:
  MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=gh+rxO6W9CGfXjbfCmIpOQMXtVKYgt25V055BZp/pL8=; b=MQ6XeVot7FiO0w7m01FZrGfjPZYPrPe+tgN5mfuqFPpDxy5SXuYG705WrtorX+FPj4aeVVQ6
- ffW44HUrFT+D/BAGxBO1AthWDJB6quUCLcF+KqKK0jR76sjUfXPavYFeUruNxickvXDzuI9y
- VoVNOrlOZr5DUECQN8z1/6fNH4A=
+ To: From: Sender; bh=p2Ore5ulMIaePgcqUBJyw2WiETcga1BN2OxeVaOjVH4=; b=sYMHk6gIB5MYQtBkF9wHXdTql6Q26smcCXbcBajvctRLhoAu+RXa/CfO1rmpZS+boqgwXZDw
+ NmolIXtP4TlF8LrE6SCq4eILpNBwrm2KQeLuOHkyam/BcKTfPXrtYMcD22EKVTki1aO/fnvb
+ EwwbPpZe5AuPH93wkvJC1mwnO3I=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 6156f7f4a3e8d3c640dd85b2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 11:58:44
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 6156f897605ecf100bc57fd1 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 12:01:26
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E6B88C43619; Fri,  1 Oct 2021 11:58:43 +0000 (UTC)
+        id 84B00C43619; Fri,  1 Oct 2021 12:01:26 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,9 +38,9 @@ Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 32663C4338F;
-        Fri,  1 Oct 2021 11:58:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 32663C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 08EC7C4338F;
+        Fri,  1 Oct 2021 12:01:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 08EC7C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
@@ -53,13 +53,13 @@ Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-mmc@vger.kernel.org,
         Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v7 10/24] wfx: add fwio.c/fwio.h
+Subject: Re: [PATCH v7 21/24] wfx: add debug.c/debug.h
 References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
-        <20210920161136.2398632-11-Jerome.Pouiller@silabs.com>
-Date:   Fri, 01 Oct 2021 14:58:38 +0300
-In-Reply-To: <20210920161136.2398632-11-Jerome.Pouiller@silabs.com> (Jerome
-        Pouiller's message of "Mon, 20 Sep 2021 18:11:22 +0200")
-Message-ID: <87sfxlj6s1.fsf@codeaurora.org>
+        <20210920161136.2398632-22-Jerome.Pouiller@silabs.com>
+Date:   Fri, 01 Oct 2021 15:01:20 +0300
+In-Reply-To: <20210920161136.2398632-22-Jerome.Pouiller@silabs.com> (Jerome
+        Pouiller's message of "Mon, 20 Sep 2021 18:11:33 +0200")
+Message-ID: <87o889j6nj.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -76,45 +76,45 @@ Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
 
 [...]
 
-> +static int get_firmware(struct wfx_dev *wdev, u32 keyset_chip,
-> +			const struct firmware **fw, int *file_offset)
+> +static int wfx_ps_timeout_set(void *data, u64 val)
 > +{
-> +	int keyset_file;
-> +	char filename[256];
-> +	const char *data;
-> +	int ret;
+> +	struct wfx_dev *wdev =3D (struct wfx_dev *)data;
+> +	struct wfx_vif *wvif;
 > +
-> +	snprintf(filename, sizeof(filename), "%s_%02X.sec",
-> +		 wdev->pdata.file_fw, keyset_chip);
-> +	ret =3D firmware_request_nowarn(fw, filename, wdev->dev);
-> +	if (ret) {
-> +		dev_info(wdev->dev, "can't load %s, falling back to %s.sec\n",
-> +			 filename, wdev->pdata.file_fw);
-> +		snprintf(filename, sizeof(filename), "%s.sec",
-> +			 wdev->pdata.file_fw);
-> +		ret =3D request_firmware(fw, filename, wdev->dev);
-> +		if (ret) {
-> +			dev_err(wdev->dev, "can't load %s\n", filename);
-> +			*fw =3D NULL;
-> +			return ret;
-> +		}
-> +	}
+> +	wdev->force_ps_timeout =3D val;
+> +	wvif =3D NULL;
+> +	while ((wvif =3D wvif_iterate(wdev, wvif)) !=3D NULL)
+> +		wfx_update_pm(wvif);
+> +	return 0;
+> +}
+> +
+> +static int wfx_ps_timeout_get(void *data, u64 *val)
+> +{
+> +	struct wfx_dev *wdev =3D (struct wfx_dev *)data;
+> +
+> +	*val =3D wdev->force_ps_timeout;
+> +	return 0;
+> +}
+> +
+> +DEFINE_DEBUGFS_ATTRIBUTE(wfx_ps_timeout_fops, wfx_ps_timeout_get,
+> wfx_ps_timeout_set, "%lld\n");
+> +
+> +int wfx_debug_init(struct wfx_dev *wdev)
+> +{
+> +	struct dentry *d;
+> +
+> +	d =3D debugfs_create_dir("wfx", wdev->hw->wiphy->debugfsdir);
+> +	debugfs_create_file("counters", 0444, d, wdev, &wfx_counters_fops);
+> +	debugfs_create_file("rx_stats", 0444, d, wdev, &wfx_rx_stats_fops);
+> +	debugfs_create_file("tx_power_loop", 0444, d, wdev,
+> +			    &wfx_tx_power_loop_fops);
+> +	debugfs_create_file("send_pds", 0200, d, wdev, &wfx_send_pds_fops);
+> +	debugfs_create_file("send_hif_msg", 0600, d, wdev,
+> +			    &wfx_send_hif_msg_fops);
+> +	debugfs_create_file("ps_timeout", 0600, d, wdev, &wfx_ps_timeout_fops);
 
-How is this firmware file loading supposed to work? If I'm reading the
-code right, the driver tries to load file "wfm_wf200_??.sec" but in
-linux-firmware the file is silabs/wfm_wf200_C0.sec:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git=
-/tree/silabs
-
-That can't work automatically, unless I'm missing something of course.
-
-Also I would prefer to use directory name as the driver name wfx, but I
-guess silabs is also doable.
-
-Also I'm not seeing the PDS files in linux-firmware. The idea is that
-when user installs an upstream kernel and the linux-firmware everything
-will work automatically, without any manual file installations.
+ps_timeout sounds like something which should be in nl80211, not in
+debugfs. Please remove it until the driver is accepted.
 
 --=20
 https://patchwork.kernel.org/project/linux-wireless/list/
