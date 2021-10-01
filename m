@@ -2,134 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B98EB41E932
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 10:51:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D68C41E958
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 11:04:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352619AbhJAIxX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 04:53:23 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:25393 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352574AbhJAIxX (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 04:53:23 -0400
+        id S1352826AbhJAJGf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 05:06:35 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:60889 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1352797AbhJAJGe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 1 Oct 2021 05:06:34 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633078299; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=yvf0eEWaN//0sGes1n0U4Hwfvtq75t1JjVZA6uQ2nlc=; b=RE9Hp/2yFReUio1hOPw1BcPHBkkC/ib8yaynDcw4Bqd0MuwhfNC3yhMz01PrENdQVjFT+h92
- CswzFQ2lz6TVj2kbLfUZylddRI1Hh/m3nKtftesTFNUhgR5W5i6waASDCLKiDl4bLS48hOEL
- EY9AgQr7PgDIC20qpbGdYdtWzKM=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ s=smtp; t=1633079090; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=cpJfrVD21TBGi3vlqlhhncFFuVx/RfR2fTJK+8Jpqvs=; b=f56x5bB7huNxuKeQj9ygJ5wHbiXDevkTUuRHKOpJPahj6tDIL8yXdWiLwE0FuEaJPovTNVQM
+ UjMZaiHMGsRObM3Oyqz+xnOQvk+ZyKdLplSaeSr7vpM0kfblaNxU0rr2ArHZRNMG/X5lJGF0
+ 4iElxPJowI5RcZKfWwvCTsh/aak=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 6156cbbe713d5d6f964a85fb (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 08:50:06
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 6156cf31519bd8dcf0997cdb (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 09:04:49
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CD43EC4338F; Fri,  1 Oct 2021 08:50:05 +0000 (UTC)
+        id 31D58C4360D; Fri,  1 Oct 2021 09:04:49 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C2767C43460;
-        Fri,  1 Oct 2021 08:50:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C2767C43460
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B85A0C4338F;
+        Fri,  1 Oct 2021 09:04:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B85A0C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-2021-10-01
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20211001085005.CD43EC4338F@smtp.codeaurora.org>
-Date:   Fri,  1 Oct 2021 08:50:05 +0000 (UTC)
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-mmc@vger.kernel.org,
+        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v7 03/24] wfx: add Makefile/Kconfig
+References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
+        <20210920161136.2398632-4-Jerome.Pouiller@silabs.com>
+Date:   Fri, 01 Oct 2021 12:04:39 +0300
+In-Reply-To: <20210920161136.2398632-4-Jerome.Pouiller@silabs.com> (Jerome
+        Pouiller's message of "Mon, 20 Sep 2021 18:11:15 +0200")
+Message-ID: <877dexm7yw.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+>
+> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+> ---
+>  drivers/net/wireless/silabs/wfx/Kconfig  | 12 +++++++++++
+>  drivers/net/wireless/silabs/wfx/Makefile | 26 ++++++++++++++++++++++++
+>  2 files changed, 38 insertions(+)
+>  create mode 100644 drivers/net/wireless/silabs/wfx/Kconfig
+>  create mode 100644 drivers/net/wireless/silabs/wfx/Makefile
+>
+> diff --git a/drivers/net/wireless/silabs/wfx/Kconfig
+> b/drivers/net/wireless/silabs/wfx/Kconfig
+> new file mode 100644
+> index 000000000000..3be4b1e735e1
+> --- /dev/null
+> +++ b/drivers/net/wireless/silabs/wfx/Kconfig
+> @@ -0,0 +1,12 @@
+> +config WFX
+> +	tristate "Silicon Labs wireless chips WF200 and further"
 
-Kalle
+Kconfig file should have an SPDX tag as well.
 
-The following changes since commit 6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f:
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-  Linux 5.15-rc1 (2021-09-12 16:28:37 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-10-01
-
-for you to fetch changes up to 603a1621caa097be23c7784e36cb8edf23cd31db:
-
-  mwifiex: avoid null-pointer-subtraction warning (2021-09-28 17:42:26 +0300)
-
-----------------------------------------------------------------
-wireless-drivers fixes for v5.15
-
-Second set of fixes for v5.15, nothing major this time. Most important
-here are reverting a brcmfmac regression and a fix for an old rare
-ath5k build error.
-
-iwlwifi
-
-* fixes to NULL dereference, off by one and missing unlock
-
-* add support for Killer AX1650 on Dell XPS 15 (9510) laptop
-
-ath5k
-
-* build fix with LEDS=m
-
-brcmfmac
-
-* revert a regression causing BCM4359/9 devices stop working as access point
-
-mwifiex
-
-* fix clang warning about null pointer arithmetic
-
-----------------------------------------------------------------
-Arnd Bergmann (2):
-      ath5k: fix building with LEDS=m
-      mwifiex: avoid null-pointer-subtraction warning
-
-Dan Carpenter (2):
-      iwlwifi: mvm: d3: Fix off by ones in iwl_mvm_wowlan_get_rsc_v5_data()
-      iwlwifi: mvm: d3: missing unlock in iwl_mvm_wowlan_program_keys()
-
-Ilan Peer (1):
-      iwlwifi: mvm: Fix possible NULL dereference
-
-Krzysztof Kozlowski (1):
-      MAINTAINERS: Move Daniel Drake to credits
-
-Soeren Moch (1):
-      Revert "brcmfmac: use ISO3166 country code and 0 rev as fallback"
-
-Vladimir Zapolskiy (1):
-      iwlwifi: pcie: add configuration of a Wi-Fi adapter on Dell XPS 15
-
- CREDITS                                                 |  1 +
- MAINTAINERS                                             |  2 --
- drivers/net/wireless/ath/ath5k/Kconfig                  |  4 +---
- drivers/net/wireless/ath/ath5k/led.c                    | 10 ++++++----
- .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 17 ++++++-----------
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c             |  5 +++--
- drivers/net/wireless/intel/iwlwifi/mvm/time-event.c     |  3 ++-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c           |  2 ++
- drivers/net/wireless/marvell/mwifiex/sta_tx.c           |  4 ++--
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c         |  4 ++--
- 10 files changed, 25 insertions(+), 27 deletions(-)
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
