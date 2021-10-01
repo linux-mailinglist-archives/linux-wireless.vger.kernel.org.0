@@ -2,181 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57DEA41F155
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 17:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EF6F41F198
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 17:55:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355060AbhJAPkB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 11:40:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42100 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354979AbhJAPkB (ORCPT
+        id S231790AbhJAP53 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 11:57:29 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:50568 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231434AbhJAP53 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 11:40:01 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550D9C06177F
-        for <linux-wireless@vger.kernel.org>; Fri,  1 Oct 2021 08:38:16 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id y26so40577457lfa.11
-        for <linux-wireless@vger.kernel.org>; Fri, 01 Oct 2021 08:38:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=6A5eWZRYPq2y4phPK9+CWlezfURq0tv1a8DQf5ALkTk=;
-        b=O+MJpMdT+wGtP+L8d5YpDRq5uey0ctUtAD658N0P3a/rrf3cCwvjwKblyMc8BrpLKc
-         ZtlilAwX54jLce3m+AuzyBKpoBiblrSQtGPUanvdP+L3p/yGQp2/fR9Ras2oofTNACFE
-         5klqHeXe3dXV/7bw9GItNLb6s54DmQnNtkZlsTQysNE9BID/KXYNZNjL+YVGN90n6A/j
-         FVURrF/pCISPIYCn96pzNv/xglnMhTOvKtNak3d15JjtBnYG3QIHaPmm5C5qHkpQ3LKc
-         dzaMpVaomTHMZBGbLM+1e5i7ZOzCSZ4xbY40bR+E5g5Fa1Kg+GMFgpzCVZ4oX0Ahic0v
-         9p1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=6A5eWZRYPq2y4phPK9+CWlezfURq0tv1a8DQf5ALkTk=;
-        b=KDSky3AFRURv45x7pqVya2zL1KEsrL1FmHB8sGg0XK9jfYXlfArYoIFwKhNN9bpO6o
-         yHOkNcH9eRUKUQAuaxadpog6qxDPBZWn9LncSlh9/ootZKjT+fqqx5PeSjKIbiflp7mB
-         gZ0UXMjxcxipwvwOmas4sixc0eTfFYon6CMIGiA03fXBoefUSh8M1zaEEl+LHNh/8mFj
-         IF+A/RK9prjd9s06U/qHdH6diCS1uGLVKe5/asWPNS3pK4Bl9FsaobJiLvTPmqlGuFfz
-         a4Yf4C0tlRbB6E/hWt+cV+q+54aCr47nc0rXaSBfUd/+go6tQzX45T6gw6pzRvIHqg5k
-         03CQ==
-X-Gm-Message-State: AOAM530ZJXxNIZCztkJH9PCPfk2LokWP8+uTQZNmezb9ajI4Mv9+yE6U
-        lTQyqF+lAgVo0x3tn1JBIBbqPkIUln8Zs86CJ+vJXQ==
-X-Google-Smtp-Source: ABdhPJwoZz8ZbUHqp0gwTDx94pmhbFjVKS3zXTpbCPNRVrdBj9Exo6x5JROj2k8NVSQkldadAtO8LBiB11Huutsiuto=
-X-Received: by 2002:a05:651c:213:: with SMTP id y19mr12199656ljn.273.1633102694548;
- Fri, 01 Oct 2021 08:38:14 -0700 (PDT)
+        Fri, 1 Oct 2021 11:57:29 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1633103745; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=oloV5Ja6lf4KgMjKTFE3+2vpTpDYQj+Bi87L/1/Ou9c=; b=ovpd4qAI48BSM37ABhiU+cS4lsZD/Aaf3m1dxEo6V4/VREzC5OWNLgQbiJ12I90J6hkqsWXY
+ 4EP4DEv2ZAhmdiaZpXohvhappjGAusV3T95jNRfusA3C3LQw7VKEEbCNboxZam6a3/gjzxtz
+ gAD2ijVZHVTo2lHtIEw5K96LPBk=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 61572f768578ef11ed99f02b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 15:55:34
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 21A6AC4360D; Fri,  1 Oct 2021 15:55:34 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B9054C4338F;
+        Fri,  1 Oct 2021 15:55:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B9054C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v6 06/24] rtw89: add files to download and communicate with firmware
+References: <20210820043538.12424-1-pkshih@realtek.com>
+        <20210820043538.12424-7-pkshih@realtek.com>
+Date:   Fri, 01 Oct 2021 18:55:27 +0300
+In-Reply-To: <20210820043538.12424-7-pkshih@realtek.com> (Ping-Ke Shih's
+        message of "Fri, 20 Aug 2021 12:35:20 +0800")
+Message-ID: <87o888ivtc.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
- <20210920161136.2398632-9-Jerome.Pouiller@silabs.com> <CAPDyKFp2_41mScO=-Ev+kvYD5xjShQdLugU_2FTTmvzgCxmEWA@mail.gmail.com>
- <19731906.ZuIkq4dnIL@pc-42>
-In-Reply-To: <19731906.ZuIkq4dnIL@pc-42>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 1 Oct 2021 17:37:38 +0200
-Message-ID: <CAPDyKFpbZypaLVmE2J+rGzAXgdWp1koD8pRxBKo3kFK3NDTFWw@mail.gmail.com>
-Subject: Re: [PATCH v7 08/24] wfx: add bus_sdio.c
-To:     =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        driverdevel <devel@driverdev.osuosl.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        DTML <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 30 Sept 2021 at 18:51, J=C3=A9r=C3=B4me Pouiller
-<jerome.pouiller@silabs.com> wrote:
->
-> Hello Ulf,
->
-> On Thursday 30 September 2021 12:07:55 CEST Ulf Hansson wrote:
-> > On Mon, 20 Sept 2021 at 18:12, Jerome Pouiller
-> > <Jerome.Pouiller@silabs.com> wrote:
-> > >
-> > > From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
-> > >
-> > > Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
-> > > ---
-> > >  drivers/net/wireless/silabs/wfx/bus_sdio.c | 261 +++++++++++++++++++=
-++
-> > >  1 file changed, 261 insertions(+)
-> > >  create mode 100644 drivers/net/wireless/silabs/wfx/bus_sdio.c
-> > >
-> > > diff --git a/drivers/net/wireless/silabs/wfx/bus_sdio.c b/drivers/net=
-/wireless/silabs/wfx/bus_sdio.c
-> >
-> > [...]
-> >
-> > > +
-> > > +static int wfx_sdio_probe(struct sdio_func *func,
-> > > +                         const struct sdio_device_id *id)
-> > > +{
-> > > +       struct device_node *np =3D func->dev.of_node;
-> > > +       struct wfx_sdio_priv *bus;
-> > > +       int ret;
-> > > +
-> > > +       if (func->num !=3D 1) {
-> > > +               dev_err(&func->dev, "SDIO function number is %d while=
- it should always be 1 (unsupported chip?)\n",
-> > > +                       func->num);
-> > > +               return -ENODEV;
-> > > +       }
-> > > +
-> > > +       bus =3D devm_kzalloc(&func->dev, sizeof(*bus), GFP_KERNEL);
-> > > +       if (!bus)
-> > > +               return -ENOMEM;
-> > > +
-> > > +       if (!np || !of_match_node(wfx_sdio_of_match, np)) {
-> > > +               dev_warn(&func->dev, "no compatible device found in D=
-T\n");
-> > > +               return -ENODEV;
-> > > +       }
-> > > +
-> > > +       bus->func =3D func;
-> > > +       bus->of_irq =3D irq_of_parse_and_map(np, 0);
-> > > +       sdio_set_drvdata(func, bus);
-> > > +       func->card->quirks |=3D MMC_QUIRK_LENIENT_FN0 |
-> > > +                             MMC_QUIRK_BLKSZ_FOR_BYTE_MODE |
-> > > +                             MMC_QUIRK_BROKEN_BYTE_MODE_512;
-> >
-> > I would rather see that you add an SDIO_FIXUP for the SDIO card, to
-> > the sdio_fixup_methods[], in drivers/mmc/core/quirks.h, instead of
-> > this.
->
-> In the current patch, these quirks are applied only if the device appears
-> in the device tree (see the condition above). If I implement them in
-> drivers/mmc/core/quirks.h they will be applied as soon as the device is
-> detected. Is it what we want?
->
-> Note: we already have had a discussion about the strange VID/PID declared
-> by this device:
->   https://www.spinics.net/lists/netdev/msg692577.html
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Please, see my other reply to Pali.
-
+> The firmware must be downloaded right after HCI basic initialization, and
+> then we can obtain hardware capabilities that are used to do mac80211
+> register hw.
 >
+> To download firmware, we need to parse the header to know how many sections
+> the firmware has, and then download each section to proper location.
 >
-> [...]
-> > > +
-> > > +static const struct sdio_device_id wfx_sdio_ids[] =3D {
-> > > +       { SDIO_DEVICE(SDIO_VENDOR_ID_SILABS, SDIO_DEVICE_ID_SILABS_WF=
-200) },
-> > > +       { },
-> > > +};
-> > > +MODULE_DEVICE_TABLE(sdio, wfx_sdio_ids);
-> > > +
-> > > +struct sdio_driver wfx_sdio_driver =3D {
-> > > +       .name =3D "wfx-sdio",
-> > > +       .id_table =3D wfx_sdio_ids,
-> > > +       .probe =3D wfx_sdio_probe,
-> > > +       .remove =3D wfx_sdio_remove,
-> > > +       .drv =3D {
-> > > +               .owner =3D THIS_MODULE,
-> > > +               .of_match_table =3D wfx_sdio_of_match,
-> >
-> > Is there no power management? Or do you intend to add that on top?
+> We introduce H2C and C2H to do bi-direction communication with firmware,
+> and both support packet-based and register-based methods.
+> Normally, we use packet-based H2C/C2H, because it has no number and size
+> limits. In contrast, register-based H2C/C2H has only one message and
+> fix-four-dword in size.
 >
-> It seems we already have had this discussion:
+> Header size of packet-based H2C/C2H is eight bytes (two dwords), which uses
+> a hierarchical IDs, containing type, category, class and function, to
+> classify a H2C or C2H command.
 >
->   https://lore.kernel.org/netdev/CAPDyKFqJf=3DvUqpQg3suDCadKrFTkQWFTY_qp=
-=3D+yDK=3D_Lu9gJGg@mail.gmail.com/#r
+> When a C2H is received in interrupt context, we don't process it right
+> there, but queue the skb and wake up a ieee80211 work to handle the skb.
 >
-> In this thread, Kalle said:
-> > Many mac80211 drivers do so that the device is powered off during
-> > interface down (ifconfig wlan0 down), and as mac80211 does interface
-> > down automatically during suspend, suspend then works without extra
-> > handlers.
-
-Yeah, it's been a while since I looked at this, thanks for the pointer.
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
 [...]
 
-Kind regards
-Uffe
+> +static __always_inline void RTW89_SET_FWCMD(u8 *cmd, u32 val, u8 offset, u32 mask)
+> +{
+> +	u32 *cmd32 = (u32 *)cmd;
+> +
+> +	le32p_replace_bits((__le32 *)(cmd32 + offset), val, mask);
+> +}
+> +
+> +static __always_inline void RTW89_SET_FWCMD_UA8(u8 *cmd, u8 val, u8 offset, u32 mask)
+> +{
+> +	u8p_replace_bits(cmd + offset, val, mask);
+> +}
+> +
+> +static __always_inline void RTW89_SET_FWCMD_UA16(u8 *cmd, u16 val, u8
+> offset, u32 mask)
+> +{
+> +	le16p_replace_bits((__le16 *)(cmd + offset), val, mask);
+> +}
+> +
+> +static __always_inline void RTW89_SET_FWCMD_UA32(u8 *cmd, u32 val, u8
+> offset, u32 mask)
+> +{
+> +	le32p_replace_bits((__le32 *)(cmd + offset), val, mask);
+> +}
+
+Is __always_inline really necessary? I would say just use the regular
+inline keyword and let the compiler optimise as it sees fit.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
