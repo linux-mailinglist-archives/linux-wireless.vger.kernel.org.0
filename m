@@ -2,85 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 165D741F1A0
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 17:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A28AC41F1DA
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 18:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354664AbhJAP7G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 11:59:06 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:50568 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231992AbhJAP7F (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 11:59:05 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633103841; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=XLM2LfC4sJgcesDUGog/is9xx+HFPBiBUfH9x5Kj4+8=; b=akuOzjkLA2DDV10tMFMAq3uJHe8dvZ3Pj5XYCbvh9AJpUKziMkazpej3wk2xds0uHLcEzrsC
- uFNGEQGRzS8mVvtp43pRz0gTn19qPK+qdNftjhypmaq9G9MK+43qdJXLLOfHkf+bBmJRElRs
- 4tPKO+EaC2Xax8frr+r8ajdqTds=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 61572fd3713d5d6f96248575 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 15:57:07
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 09CB2C4338F; Fri,  1 Oct 2021 15:57:07 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DBBBCC4338F;
-        Fri,  1 Oct 2021 15:57:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org DBBBCC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v6 24/24] rtw89: add Kconfig and Makefile
-References: <20210820043538.12424-1-pkshih@realtek.com>
-        <20210820043538.12424-25-pkshih@realtek.com>
-Date:   Fri, 01 Oct 2021 18:57:03 +0300
-In-Reply-To: <20210820043538.12424-25-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Fri, 20 Aug 2021 12:35:38 +0800")
-Message-ID: <87k0iwivqo.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S231972AbhJAQKU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 12:10:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52236 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231675AbhJAQKT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 1 Oct 2021 12:10:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4651961452;
+        Fri,  1 Oct 2021 16:08:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633104515;
+        bh=7CRJ2vFylAq8uVkY++RDETUKk8nEfEIuz0JrlkfB8sI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oD7R+2XiopeULBOwycPhpvnbEoal/ni+kws6ZyAXytNkOWn9N0mQODpFiE/JMO+XO
+         mYG5gSJJDy9Qth2f+LYHxojz1HhNJBBrMNzudSSGNkcnx0iKZA7QiG3/CapjLlBprN
+         nPrXAl6I9Ii22Qpj4oWNidjl3C4Z5WZBrm+oV9xmzQ9uEPPXoG8upS35eJAO08I5ag
+         iJ9fgwDIqzN8gYEce+JLUgYuj+DOdj+cBHi8GRqsSL11JNHGnYLbjnktpFAoXsF8nc
+         XiScFG52br5SvcdG+skf6rWLax7d9hTc0x1EDuJzMIfgVKxgRMv4XVubKGQJwmoedf
+         4p3AjS+hdLMFQ==
+Received: by pali.im (Postfix)
+        id 0B989821; Fri,  1 Oct 2021 18:08:32 +0200 (CEST)
+Date:   Fri, 1 Oct 2021 18:08:32 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v7 10/24] wfx: add fwio.c/fwio.h
+Message-ID: <20211001160832.ozxc7bhlwlmjeqbo@pali>
+References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
+ <20210920161136.2398632-11-Jerome.Pouiller@silabs.com>
+ <87sfxlj6s1.fsf@codeaurora.org>
+ <2174509.SLDT7moDbM@pc-42>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2174509.SLDT7moDbM@pc-42>
+User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+On Friday 01 October 2021 17:09:41 Jérôme Pouiller wrote:
+> On Friday 1 October 2021 13:58:38 CEST Kalle Valo wrote:
+> > Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
+> > 
+> > > From: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> > >
+> > > Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> > 
+> > [...]
+> > 
+> > > +static int get_firmware(struct wfx_dev *wdev, u32 keyset_chip,
+> > > +                     const struct firmware **fw, int *file_offset)
+> > > +{
+> > > +     int keyset_file;
+> > > +     char filename[256];
+> > > +     const char *data;
+> > > +     int ret;
+> > > +
+> > > +     snprintf(filename, sizeof(filename), "%s_%02X.sec",
+> > > +              wdev->pdata.file_fw, keyset_chip);
+> > > +     ret = firmware_request_nowarn(fw, filename, wdev->dev);
+> > > +     if (ret) {
+> > > +             dev_info(wdev->dev, "can't load %s, falling back to %s.sec\n",
+> > > +                      filename, wdev->pdata.file_fw);
+> > > +             snprintf(filename, sizeof(filename), "%s.sec",
+> > > +                      wdev->pdata.file_fw);
+> > > +             ret = request_firmware(fw, filename, wdev->dev);
+> > > +             if (ret) {
+> > > +                     dev_err(wdev->dev, "can't load %s\n", filename);
+> > > +                     *fw = NULL;
+> > > +                     return ret;
+> > > +             }
+> > > +     }
+> > 
+> > How is this firmware file loading supposed to work? If I'm reading the
+> > code right, the driver tries to load file "wfm_wf200_??.sec" but in
+> > linux-firmware the file is silabs/wfm_wf200_C0.sec:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/silabs
+> > 
+> > That can't work automatically, unless I'm missing something of course.
+> 
+> The firmware are signed. "C0" is the key used to sign this firmware. This
+> key must match with the key burned into the chip. Fortunately, the driver
+> is able to read the key accepted by the chip and automatically choose the
+> right firmware.
+> 
+> We could imagine to add a attribute in the DT to choose the firmware to
+> load. However, it would be a pity to have to specify it manually whereas
+> the driver is able to detect it automatically.
+> 
+> Currently, the only possible key is C0. However, it exists some internal
+> parts with other keys. In addition, it is theoretically possible to ask
+> to Silabs to burn parts with a specific key in order to improve security
+> of a product. 
+> 
+> Obviously, for now, this feature mainly exists for the Silabs firmware
+> developers who have to work with other keys.
+>  
+> > Also I would prefer to use directory name as the driver name wfx, but I
+> > guess silabs is also doable.
+> 
+> I have no opinion.
+> 
+> 
+> > Also I'm not seeing the PDS files in linux-firmware. The idea is that
+> > when user installs an upstream kernel and the linux-firmware everything
+> > will work automatically, without any manual file installations.
+> 
+> WF200 is just a chip. Someone has to design an antenna before to be able
+> to use.
+> 
+> However, we have evaluation boards that have antennas and corresponding
+> PDS files[1]. Maybe linux-firmware should include the PDS for these boards
 
-> With Kconfig and Makefile, we can build rtw89 and support 8852AE chip.
->
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+So chip vendor provides firmware and card vendor provides PDS files. In
+my opinion all files should go into linux-firmware repository. If Silabs
+has PDS files for its devel boards (which are basically cards) then I
+think these files should go also into linux-firmware repository.
 
-[...]
+And based on some parameter, driver should load correct PDS file. Seems
+like DT can be a place where to put something which indicates which PDS
+file should be used.
 
-> --- /dev/null
-> +++ b/drivers/net/wireless/realtek/rtw89/Kconfig
-> @@ -0,0 +1,50 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
+But should be in DT directly name of PDS file? Or should be in DT just
+additional compatible string with card vendor name and then in driver
+itself should be mapping table from compatible string to filename? I do
+not know what is better.
 
-All other files are:
-
-SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-
-Only exception is this Kconfig file, any reason for that? I prefer that
-a driver has consistent license.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> and the DT should contains the name of the design. eg:
+> 
+>     compatible = "silabs,brd4001a", "silabs,wf200";
+> 
+> So the driver will know which PDS it should use. 
+> 
+> In fact, I am sure I had this idea in mind when I have started to write
+> the wfx driver. But with the time I have forgotten it. 
+> 
+> If you agree with that idea, I can work on it next week.
+> 
+> 
+> [1]: https://github.com/SiliconLabs/wfx-pds
+> 
+> -- 
+> Jérôme Pouiller
+> 
+> 
