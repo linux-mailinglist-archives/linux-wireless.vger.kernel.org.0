@@ -2,110 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C827E41E7CD
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 08:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D25CD41E7D9
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 09:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352360AbhJAG6e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 02:58:34 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:62583 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352317AbhJAG6d (ORCPT
+        id S1352032AbhJAHDf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 03:03:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34432 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1352394AbhJAHCz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 02:58:33 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633071409; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=LfWfxStH7Y3/3uGWypizgZzN/AsxwvYk5KwL5dOoAzE=; b=gt5YPof3HsMQJz4M2nwFs9JJ/oKGhD3ZBKQyr5H6U8a2oh0FShS4oYXaekWl6I90Uxgw99mn
- oFJj1TybGJlXZd6ZeitxuPDzVECOcPmw3fqiI96Y/0A+6amOm0x0aXbeuBGTEqWLqc/AChMW
- dCT16tHPKncVZ20AS7YsJeZpuUg=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 6156b12747d64efb6d69a754 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 06:56:39
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3472EC4360D; Fri,  1 Oct 2021 06:56:39 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D65BDC4338F;
-        Fri,  1 Oct 2021 06:56:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org D65BDC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Exuvo <exuvo@exuvo.se>
-Cc:     Stanislaw Gruszka <sgruszka@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        regressions@lists.linux.dev
-Subject: Re: rt2x00 regression
-References: <bff7d309-a816-6a75-51b6-5928ef4f7a8c@exuvo.se>
-        <20190927080303.GA7667@redhat.com>
-        <CA+GwT0B5SyRZnGLqwqOeuJK4CWMVc=dKaWre9VN8KQC6kBzKGw@mail.gmail.com>
-        <20191203075736.GA701@redhat.com>
-        <d74dab51-3a84-9035-d89e-ea8f63e89198@exuvo.se>
-        <a8eeb0bc-95da-291a-7fb9-5d15d1174c27@exuvo.se>
-        <c22673af-40e0-3af2-5ab7-69b23fc03598@exuvo.se>
-        <f935dc15-08bd-2e28-fc1b-b27634c618be@exuvo.se>
-Date:   Fri, 01 Oct 2021 09:56:32 +0300
-In-Reply-To: <f935dc15-08bd-2e28-fc1b-b27634c618be@exuvo.se> (Exuvo's message
-        of "Wed, 29 Sep 2021 10:22:50 +0200")
-Message-ID: <87czop5j33.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 1 Oct 2021 03:02:55 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDC48C061776
+        for <linux-wireless@vger.kernel.org>; Fri,  1 Oct 2021 00:01:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=NJr5xpW7MZSkW7xFINyqHqDBDFCpW/nUdFRJKEADvuc=;
+        t=1633071670; x=1634281270; b=Uu7zYnJ3z2nsj7CKAa237RvdF5bQ9CAvT5bABwkita1J23X
+        mQiRAXKoaZUOYRaIHDrDJZCG3Ticq56j+y4IPTYWw2IGUabZ1K4EYdKybV8RelHYjn6LcC7yFsooC
+        OuGopY+DoDc03dbfm9JRIBNEHfyIjmRYe25h1pMatNsX1JxWWNDhyNti8A8hXjeSZjvm6bjtIcpGQ
+        d7hMzreIKv+pgld/sgfV0B0lJ09C2u9pKRd3NJdigLWKW7mkpyb5auQaXXuLJ7Q0On6qjnFA5a+c6
+        GOdE4N3b+AxVI0OPY9Mrh/RBt6A/F4MHlQIJgL/wXD8sunS/aQ/Hv9+/RqnnPi/g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mWCXX-00E6g7-PG;
+        Fri, 01 Oct 2021 09:01:03 +0200
+Message-ID: <93c99a81d89aafed21e8e22157b3bf21526be716.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 2/2] mac80211: do intersection with he mcs and nss
+ set of peer and own
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Kalle Valo <kvalo@codeaurora.org>, Wen Gong <wgong@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Date:   Fri, 01 Oct 2021 09:01:02 +0200
+In-Reply-To: <87bl49mf02.fsf@codeaurora.org>
+References: <1609816120-9411-1-git-send-email-wgong@codeaurora.org>
+         <1609816120-9411-3-git-send-email-wgong@codeaurora.org>
+         <b6c96c4ecdf9ec175d7f89e8600fb53768287cc2.camel@sipsolutions.net>
+         <facd18458a7ecfc0afbfd06c8a57d849@codeaurora.org>
+         <87bl49mf02.fsf@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(adding regressions list for easier tracking)
+On Fri, 2021-10-01 at 09:32 +0300, Kalle Valo wrote:
+> > 
+> > Add "__packed" before the "__le16 *" should solve this warning by my
+> > understand like this:
 
-Exuvo <exuvo@exuvo.se> writes:
+[snip]
+> > 
+> > -static void ieee80211_he_mcs_disable(__le16 *he_mcs)
+> > +static void ieee80211_he_mcs_disable(__packed __le16 *he_mcs)
+> > 
 
-> I would like to get this resolved, is there any more information you need=
- from me?
->
-> I have been manually patching this all year with:
->
-> drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-> - if (rt2x00dev->num_proto_errs > 8)
-> -=C2=A0=C2=A0=C2=A0 return true;
->
-> It seems to just be some part of rt2800_load_firmware that is not
-> supported on my device and generating errors but it has been running
-> without problems in AP mode with daily usage.
+[snip]
 
-[...]
+> I don't know what Johannes thinks, but to me that looks like an ugly
+> hack. Wouldn't use get_unaligned() or similar be cleaner?
+> 
+Well, then we've have to pass an untyped pointer (void *), which I guess
+is fine? Since we do all kinds of le16_to_cpu() with it anyway, that'd
+just become get_unaligned_le16().
 
->>>>>>> This most likely is the problem introduced by commit:
->>>>>>>
->>>>>>> commit e383c70474db32b9d4a3de6dfbd08784d19e6751
->>>>>>> Author: Stanislaw Gruszka <sgruszka@redhat.com>
->>>>>>> Date:   Tue Mar 12 10:51:42 2019 +0100
->>>>>>>
->>>>>>>      rt2x00: check number of EPROTO errors
->>>>>>>
->>>>>>> Plase check below patch that increase number of EPROTO checks
->>>>>>> before marking device removed. If it does not help, plese
->>>>>>> check if reverting above commits helps.
+That's probably the better choice.
 
-Should we do a revert? Can someone submit that including an explanation
-of the regression.
+But regardless, would the __packed even *work*? __attribute__((packed))
+is documented as:
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+   This attribute, attached to a struct, union, or C++ class type
+   definition, specifies that each of its members (other than zero-width
+   bit-fields) is placed to minimize the memory required. This is
+   equivalent to specifying the packed attribute on each of the members.
+   
+   When attached to an enum definition, the packed attribute indicates that
+   the smallest integral type should be used. Specifying the -fshort-enums
+   flag on the command line is equivalent to specifying the packed
+   attribute on all enum definitions. 
+   
+   [snip example]
+   
+   You may only specify the packed attribute on the definition of an enum,
+   struct, union, or class, not on a typedef that does not also define the
+   enumerated type, structure, union, or class. 
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+So I'm not convinced it would actually *do* anything here at all, in the
+proposed context?
+
+johannes
+
