@@ -2,159 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A28AC41F1DA
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 18:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12A3A41F1E1
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 18:11:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231972AbhJAQKU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 12:10:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52236 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231675AbhJAQKT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 12:10:19 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4651961452;
-        Fri,  1 Oct 2021 16:08:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633104515;
-        bh=7CRJ2vFylAq8uVkY++RDETUKk8nEfEIuz0JrlkfB8sI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oD7R+2XiopeULBOwycPhpvnbEoal/ni+kws6ZyAXytNkOWn9N0mQODpFiE/JMO+XO
-         mYG5gSJJDy9Qth2f+LYHxojz1HhNJBBrMNzudSSGNkcnx0iKZA7QiG3/CapjLlBprN
-         nPrXAl6I9Ii22Qpj4oWNidjl3C4Z5WZBrm+oV9xmzQ9uEPPXoG8upS35eJAO08I5ag
-         iJ9fgwDIqzN8gYEce+JLUgYuj+DOdj+cBHi8GRqsSL11JNHGnYLbjnktpFAoXsF8nc
-         XiScFG52br5SvcdG+skf6rWLax7d9hTc0x1EDuJzMIfgVKxgRMv4XVubKGQJwmoedf
-         4p3AjS+hdLMFQ==
-Received: by pali.im (Postfix)
-        id 0B989821; Fri,  1 Oct 2021 18:08:32 +0200 (CEST)
-Date:   Fri, 1 Oct 2021 18:08:32 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v7 10/24] wfx: add fwio.c/fwio.h
-Message-ID: <20211001160832.ozxc7bhlwlmjeqbo@pali>
-References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
- <20210920161136.2398632-11-Jerome.Pouiller@silabs.com>
- <87sfxlj6s1.fsf@codeaurora.org>
- <2174509.SLDT7moDbM@pc-42>
+        id S231675AbhJAQMw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 12:12:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49796 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231635AbhJAQMu (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 1 Oct 2021 12:12:50 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E318C06177D;
+        Fri,  1 Oct 2021 09:11:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=laKyfFWU+cmryX08PIvbn5jn2uvTsnRUpE43WSwkwSI=;
+        t=1633104666; x=1634314266; b=Zq8eDjHS1Oej+xWRrosC0Kzb/xBxHTRubddttIc4bu5QHcD
+        HRJOapg4bhXjReY0OxDSnqNzPrhBRZgdNYZpAFVq3e1YTJupfe4P8Hg8npI970Mvu6HIk9i8awzI9
+        CVhk/6JEpvx+UEnD78gUql8OjEUvsqPuMT0ZC/HObKlZFZmg1SqUEL9nJK/Yyqrx8NLqxo9jFY8nr
+        po20DJq6Mao0NptOcezjpmcomeR8tmItx8Sg/wi8+XSz30t8o0T8LUesflUGZcPVgJAZFzThI1o9q
+        PPIT4oD42/kt0crjEtbYotHibH6C2oL9N/f7Hm2uMzWzGqYaqdkkY3QkuuijoUNQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95-RC2)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mWL7m-00EHby-RI;
+        Fri, 01 Oct 2021 18:11:02 +0200
+Message-ID: <1058fe13a8b5ce56b0ec22039209c9b00d98dcc0.camel@sipsolutions.net>
+Subject: Re: [PATCH] nl80211: fix error pointer dereference in error handling
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Date:   Fri, 01 Oct 2021 18:11:02 +0200
+In-Reply-To: <20211001125616.GI2283@kili>
+References: <20211001125616.GI2283@kili>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2174509.SLDT7moDbM@pc-42>
-User-Agent: NeoMutt/20180716
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Friday 01 October 2021 17:09:41 Jérôme Pouiller wrote:
-> On Friday 1 October 2021 13:58:38 CEST Kalle Valo wrote:
-> > Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
-> > 
-> > > From: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> > >
-> > > Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> > 
-> > [...]
-> > 
-> > > +static int get_firmware(struct wfx_dev *wdev, u32 keyset_chip,
-> > > +                     const struct firmware **fw, int *file_offset)
-> > > +{
-> > > +     int keyset_file;
-> > > +     char filename[256];
-> > > +     const char *data;
-> > > +     int ret;
-> > > +
-> > > +     snprintf(filename, sizeof(filename), "%s_%02X.sec",
-> > > +              wdev->pdata.file_fw, keyset_chip);
-> > > +     ret = firmware_request_nowarn(fw, filename, wdev->dev);
-> > > +     if (ret) {
-> > > +             dev_info(wdev->dev, "can't load %s, falling back to %s.sec\n",
-> > > +                      filename, wdev->pdata.file_fw);
-> > > +             snprintf(filename, sizeof(filename), "%s.sec",
-> > > +                      wdev->pdata.file_fw);
-> > > +             ret = request_firmware(fw, filename, wdev->dev);
-> > > +             if (ret) {
-> > > +                     dev_err(wdev->dev, "can't load %s\n", filename);
-> > > +                     *fw = NULL;
-> > > +                     return ret;
-> > > +             }
-> > > +     }
-> > 
-> > How is this firmware file loading supposed to work? If I'm reading the
-> > code right, the driver tries to load file "wfm_wf200_??.sec" but in
-> > linux-firmware the file is silabs/wfm_wf200_C0.sec:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/silabs
-> > 
-> > That can't work automatically, unless I'm missing something of course.
+On Fri, 2021-10-01 at 15:56 +0300, Dan Carpenter wrote:
+> The error handling calls kfree(params->acl) so if "params->acl" is an
+> error pointer that will lead to an Oops.
 > 
-> The firmware are signed. "C0" is the key used to sign this firmware. This
-> key must match with the key burned into the chip. Fortunately, the driver
-> is able to read the key accepted by the chip and automatically choose the
-> right firmware.
+> Fixes: 9e263e193af7 ("nl80211: don't put struct cfg80211_ap_settings on stack")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  net/wireless/nl80211.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> We could imagine to add a attribute in the DT to choose the firmware to
-> load. However, it would be a pity to have to specify it manually whereas
-> the driver is able to detect it automatically.
-> 
-> Currently, the only possible key is C0. However, it exists some internal
-> parts with other keys. In addition, it is theoretically possible to ask
-> to Silabs to burn parts with a specific key in order to improve security
-> of a product. 
-> 
-> Obviously, for now, this feature mainly exists for the Silabs firmware
-> developers who have to work with other keys.
->  
-> > Also I would prefer to use directory name as the driver name wfx, but I
-> > guess silabs is also doable.
-> 
-> I have no opinion.
-> 
-> 
-> > Also I'm not seeing the PDS files in linux-firmware. The idea is that
-> > when user installs an upstream kernel and the linux-firmware everything
-> > will work automatically, without any manual file installations.
-> 
-> WF200 is just a chip. Someone has to design an antenna before to be able
-> to use.
-> 
-> However, we have evaluation boards that have antennas and corresponding
-> PDS files[1]. Maybe linux-firmware should include the PDS for these boards
+> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> index 0b4f29d689d2..962fb169a5fb 100644
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
+> @@ -5507,6 +5507,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+>  		params->acl = parse_acl_data(&rdev->wiphy, info);
+>  		if (IS_ERR(params->acl)) {
+>  			err = PTR_ERR(params->acl);
+> +			params->acl = NULL;
 
-So chip vendor provides firmware and card vendor provides PDS files. In
-my opinion all files should go into linux-firmware repository. If Silabs
-has PDS files for its devel boards (which are basically cards) then I
-think these files should go also into linux-firmware repository.
+Yeah. I think I had just applied the exact same patch:
 
-And based on some parameter, driver should load correct PDS file. Seems
-like DT can be a place where to put something which indicates which PDS
-file should be used.
+commit 05075fe7455a210769b266e62a0040ddc98b2739
+Author: Johannes Berg <johannes.berg@intel.com>
+Date:   Mon Sep 27 13:44:03 2021 +0200
 
-But should be in DT directly name of PDS file? Or should be in DT just
-additional compatible string with card vendor name and then in driver
-itself should be mapping table from compatible string to filename? I do
-not know what is better.
+    nl80211: don't kfree() ERR_PTR() value
 
-> and the DT should contains the name of the design. eg:
-> 
->     compatible = "silabs,brd4001a", "silabs,wf200";
-> 
-> So the driver will know which PDS it should use. 
-> 
-> In fact, I am sure I had this idea in mind when I have started to write
-> the wfx driver. But with the time I have forgotten it. 
-> 
-> If you agree with that idea, I can work on it next week.
-> 
-> 
-> [1]: https://github.com/SiliconLabs/wfx-pds
-> 
-> -- 
-> Jérôme Pouiller
-> 
-> 
+johannes
+
