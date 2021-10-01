@@ -2,139 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9373A41E91B
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 10:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B98EB41E932
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 10:51:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352749AbhJAIcA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 04:32:00 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:56763 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352324AbhJAIcA (ORCPT
+        id S1352619AbhJAIxX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 04:53:23 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:25393 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1352574AbhJAIxX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 04:32:00 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1918UASo8018928, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1918UASo8018928
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 1 Oct 2021 16:30:10 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Fri, 1 Oct 2021 16:30:09 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 1 Oct 2021 16:30:09 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
- RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Fri, 1 Oct 2021 16:30:09 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Kevin Yang <kevin_yang@realtek.com>
-Subject: RE: [PATCH] rtw88: consider triggering state of simulating fw crash
-Thread-Topic: [PATCH] rtw88: consider triggering state of simulating fw crash
-Thread-Index: AQHXtRcLeZbBLSoEA0um9eDnHPVrpau9rlQwgAAipAA=
-Date:   Fri, 1 Oct 2021 08:30:09 +0000
-Message-ID: <c38681821bba424b845372b23e9e70e6@realtek.com>
-References: <20210929094724.23595-1-pkshih@realtek.com>
- <87o889mfna.fsf@codeaurora.org>
-In-Reply-To: <87o889mfna.fsf@codeaurora.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/9/29_=3F=3F_11:27:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Fri, 1 Oct 2021 04:53:23 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1633078299; h=Date: Message-Id: Cc: To: Subject: From:
+ Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
+ bh=yvf0eEWaN//0sGes1n0U4Hwfvtq75t1JjVZA6uQ2nlc=; b=RE9Hp/2yFReUio1hOPw1BcPHBkkC/ib8yaynDcw4Bqd0MuwhfNC3yhMz01PrENdQVjFT+h92
+ CswzFQ2lz6TVj2kbLfUZylddRI1Hh/m3nKtftesTFNUhgR5W5i6waASDCLKiDl4bLS48hOEL
+ EY9AgQr7PgDIC20qpbGdYdtWzKM=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 6156cbbe713d5d6f964a85fb (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 08:50:06
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CD43EC4338F; Fri,  1 Oct 2021 08:50:05 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C2767C43460;
+        Fri,  1 Oct 2021 08:50:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C2767C43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@codeaurora.org>
+Subject: pull-request: wireless-drivers-2021-10-01
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20211001085005.CD43EC4338F@smtp.codeaurora.org>
+Date:   Fri,  1 Oct 2021 08:50:05 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
-> -----Original Message-----
-> From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On
-> Behalf Of Kalle Valo
-> Sent: Friday, October 1, 2021 2:19 PM
-> To: Pkshih <pkshih@realtek.com>
-> Cc: tony0620emma@gmail.com; linux-wireless@vger.kernel.org; Kevin Yang
-> <kevin_yang@realtek.com>
-> Subject: Re: [PATCH] rtw88: consider triggering state of simulating fw crash
-> 
-> Ping-Ke Shih <pkshih@realtek.com> writes:
-> 
-> > From: Zong-Zhe Yang <kevin_yang@realtek.com>
-> >
-> > In certain cases, triggering fw crash simulation via fw_crash debugfs
-> > will take a while. If the state is queried too early before restart
-> > begins processing, it may mistakenly think restart process has been
-> > done. If some tests are started at this time, something unexpected
-> > might happen due to the follow-up restart process.
-> >
-> > To avoid that, we consider the triggering state.
-> >
-> > Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> > ---
-> >  drivers/net/wireless/realtek/rtw88/debug.c | 5 ++++-
-> >  drivers/net/wireless/realtek/rtw88/main.c  | 1 +
-> >  drivers/net/wireless/realtek/rtw88/main.h  | 1 +
-> >  3 files changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtw88/debug.c
-> b/drivers/net/wireless/realtek/rtw88/debug.c
-> > index babf7fb238cc..682b23502e6e 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/debug.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/debug.c
-> > @@ -886,6 +886,7 @@ static ssize_t rtw_debugfs_set_fw_crash(struct file *filp,
-> >
-> >  	mutex_lock(&rtwdev->mutex);
-> >  	rtw_leave_lps_deep(rtwdev);
-> > +	set_bit(RTW_FLAG_RESTART_TRIGGERING, rtwdev->flags);
-> >  	rtw_write8(rtwdev, REG_HRCV_MSG, 1);
-> >  	mutex_unlock(&rtwdev->mutex);
-> >
-> > @@ -897,7 +898,9 @@ static int rtw_debugfs_get_fw_crash(struct seq_file *m, void *v)
-> >  	struct rtw_debugfs_priv *debugfs_priv = m->private;
-> >  	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
-> >
-> > -	seq_printf(m, "%d\n", test_bit(RTW_FLAG_RESTARTING, rtwdev->flags));
-> > +	seq_printf(m, "%d\n",
-> > +		   test_bit(RTW_FLAG_RESTART_TRIGGERING, rtwdev->flags) ||
-> > +		   test_bit(RTW_FLAG_RESTARTING, rtwdev->flags));
-> >  	return 0;
-> >  }
-> 
-> You use the verb "consider" both in the title and the commit log, but
-> it's not really telling much (though I admit my english isn't very
-> good). From looking at the patch all I see is that it prints the state
-> of RTW_FLAG_RESTART_TRIGGERING flag. How is that "considering" anything
-> and how does that improve any of this?
-> 
-> Can you improve the commit log and explain this is in detail? And what's
-> "it" in this case?
-> 
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-In order to make it clear, we change the title and provide the detail
-by v2 [1].
+Kalle
 
-[1] https://lore.kernel.org/linux-wireless/20211001082301.4805-1-pkshih@realtek.com/T/#u
+The following changes since commit 6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f:
 
---
-Ping-Ke
+  Linux 5.15-rc1 (2021-09-12 16:28:37 -0700)
 
+are available in the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-10-01
+
+for you to fetch changes up to 603a1621caa097be23c7784e36cb8edf23cd31db:
+
+  mwifiex: avoid null-pointer-subtraction warning (2021-09-28 17:42:26 +0300)
+
+----------------------------------------------------------------
+wireless-drivers fixes for v5.15
+
+Second set of fixes for v5.15, nothing major this time. Most important
+here are reverting a brcmfmac regression and a fix for an old rare
+ath5k build error.
+
+iwlwifi
+
+* fixes to NULL dereference, off by one and missing unlock
+
+* add support for Killer AX1650 on Dell XPS 15 (9510) laptop
+
+ath5k
+
+* build fix with LEDS=m
+
+brcmfmac
+
+* revert a regression causing BCM4359/9 devices stop working as access point
+
+mwifiex
+
+* fix clang warning about null pointer arithmetic
+
+----------------------------------------------------------------
+Arnd Bergmann (2):
+      ath5k: fix building with LEDS=m
+      mwifiex: avoid null-pointer-subtraction warning
+
+Dan Carpenter (2):
+      iwlwifi: mvm: d3: Fix off by ones in iwl_mvm_wowlan_get_rsc_v5_data()
+      iwlwifi: mvm: d3: missing unlock in iwl_mvm_wowlan_program_keys()
+
+Ilan Peer (1):
+      iwlwifi: mvm: Fix possible NULL dereference
+
+Krzysztof Kozlowski (1):
+      MAINTAINERS: Move Daniel Drake to credits
+
+Soeren Moch (1):
+      Revert "brcmfmac: use ISO3166 country code and 0 rev as fallback"
+
+Vladimir Zapolskiy (1):
+      iwlwifi: pcie: add configuration of a Wi-Fi adapter on Dell XPS 15
+
+ CREDITS                                                 |  1 +
+ MAINTAINERS                                             |  2 --
+ drivers/net/wireless/ath/ath5k/Kconfig                  |  4 +---
+ drivers/net/wireless/ath/ath5k/led.c                    | 10 ++++++----
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 17 ++++++-----------
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c             |  5 +++--
+ drivers/net/wireless/intel/iwlwifi/mvm/time-event.c     |  3 ++-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c           |  2 ++
+ drivers/net/wireless/marvell/mwifiex/sta_tx.c           |  4 ++--
+ drivers/net/wireless/marvell/mwifiex/uap_txrx.c         |  4 ++--
+ 10 files changed, 25 insertions(+), 27 deletions(-)
