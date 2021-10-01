@@ -2,386 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1269741E52B
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 01:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26A4541E65A
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 06:01:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238615AbhJAAAQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Sep 2021 20:00:16 -0400
-Received: from mailgw02.mediatek.com ([216.200.240.185]:13393 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350800AbhJAAAM (ORCPT
+        id S234635AbhJAECn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 00:02:43 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:38046
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229563AbhJAECm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Sep 2021 20:00:12 -0400
-X-UUID: cdec54aacde74630bd163bb4712bcade-20210930
-X-UUID: cdec54aacde74630bd163bb4712bcade-20210930
-Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 397170662; Thu, 30 Sep 2021 16:58:25 -0700
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- MTKMBS62DR.mediatek.inc (172.29.94.18) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Thu, 30 Sep 2021 16:49:14 -0700
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 1 Oct 2021 07:49:13 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
-        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
-        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH v3 16/16] mt76: mt7921s: add reset support
-Date:   Fri, 1 Oct 2021 07:48:03 +0800
-Message-ID: <3061ff51808667d7c8ac6ed8564faacd7a946c9c.1632961096.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <cover.1632961096.git.objelf@gmail.com>
-References: <cover.1632961096.git.objelf@gmail.com>
+        Fri, 1 Oct 2021 00:02:42 -0400
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id D51694076E
+        for <linux-wireless@vger.kernel.org>; Fri,  1 Oct 2021 04:00:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1633060854;
+        bh=JZ+2UXfp4vFdd/kQjFqruaoyOogczScH1wvAY/k8T5w=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=UVio0W0Dx5nXnZ6AYI75Q6bIyp1WII8SyuOpaF+UGuhwVgctw/etKJL/9qAdBBEvz
+         27Sr+Rwbg7eQXMCVIiob+5XkuNS2srja0Zx+thjb8YRENGQM9D2AejB+rV9EJKkyNe
+         8TyC/El1deJj098w01ubxkRJlrwm8Yd4SESGXson1FfeCn7c41siedrT2Yb1pwDZp7
+         rnrIWcrPBvqoZXS1htWaH0KOyzD23WBv1Ugew7MvY10z0tBv/uQ3Vent/PJNHr/k9r
+         QCIshux7+Apvka8/CShDfbRJDPBFS47JrT6kt7cR0trdHrM9PTiFfjSjTMd6On3npE
+         VFB1Jbe1cQ3dw==
+Received: by mail-pl1-f197.google.com with SMTP id h3-20020a170902704300b0013dbfc88e14so4504024plt.13
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Sep 2021 21:00:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JZ+2UXfp4vFdd/kQjFqruaoyOogczScH1wvAY/k8T5w=;
+        b=hx0Cs5B5TMGF2oEgO93tbltQ7D0yMSGPoii1JkoWXRhiYqsOGqroojCIKP40IX104/
+         78COfBxZmsIXfR227Qih3LF4CMlkSUSdMbqN1GkVUAILBtU0kSew4hlnKaRHimPxuhQL
+         P+9ZIdQ8z8Bv/lnDiYnaF1mHKm1xOFsjV6p4hxwZMbn/Gy69AQI+gdPxZpWYci9V3bf/
+         TxwV4KtBx4OzeWOOadAC6g1kCB+fIEAySnNh8aBuVHUF6OcM1Jji6CnTf/qJRY8LG7Vm
+         FNEEPg5+2/L9xa92SdUWfQECn2/Epho/yG0N0Tf+BAih8767MsZ2SbUvE/Z05QVTK+Ge
+         JBTw==
+X-Gm-Message-State: AOAM5336fNKRQ28V8OzO9PaeI3n83qsfJYQeh3tmefzaxV0pM+eKC7bs
+        M2h1/otC/FReNkdBC5fTMO3iBbEsNsWK/M/rIUGmzenyRKi3MjuHUnboifli8RLtG+xlYwFX/8+
+        tiFrj4p7xShZ2J1v0irtK5JCHauMtiqy0hFoKag96FnKf
+X-Received: by 2002:a17:902:b583:b0:13d:e495:187a with SMTP id a3-20020a170902b58300b0013de495187amr7761241pls.9.1633060852993;
+        Thu, 30 Sep 2021 21:00:52 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxXdD/7zf8TEYKayuEFwFBsIgspnLZKaY5dIG+yY+dNHkcpE08ZwconX4SzR9J4F9l68crIXw==
+X-Received: by 2002:a17:902:b583:b0:13d:e495:187a with SMTP id a3-20020a170902b58300b0013de495187amr7761220pls.9.1633060852688;
+        Thu, 30 Sep 2021 21:00:52 -0700 (PDT)
+Received: from localhost.localdomain (2001-b400-e255-baca-c7f7-191a-11a1-0473.emome-ip6.hinet.net. [2001:b400:e255:baca:c7f7:191a:11a1:473])
+        by smtp.gmail.com with ESMTPSA id q1sm4672928pfu.4.2021.09.30.21.00.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Sep 2021 21:00:51 -0700 (PDT)
+From:   Chris Chiu <chris.chiu@canonical.com>
+To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     code@reto-schneider.ch, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chris Chiu <chris.chiu@canonical.com>
+Subject: [PATCH v2] rtl8xxxu: Use lower tx rates for the ack packet
+Date:   Fri,  1 Oct 2021 12:00:44 +0800
+Message-Id: <20211001040044.1028708-1-chris.chiu@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+According to the Realtek propritary driver and the rtw88 driver, the
+tx rates of the ack (includes block ack) are initialized with lower
+tx rates (no HT rates) which is set by the RRSR register value. In
+real cases, ack rate higher than current tx rate could lead to
+difficulty for the receiving end to receive management/control frames.
+The retransmission rate would be higher then expected when the driver
+is acting as receiver and the RSSI is not good.
 
-Introduce wifi chip reset support for mt7921 device to recover
-mcu hangs or abnormal wifi system.
+Cross out higer rates for ack packet before implementing dynamic rrsr
+configuration like the commit 4830872685f8 ("rtw88: add dynamic rrsr
+configuration").
 
-Tested-by: Deren Wu <deren.wu@mediatek.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h     |   2 +
- .../net/wireless/mediatek/mt76/mt7921/init.c  |   2 +
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |   1 +
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |   4 +
- .../net/wireless/mediatek/mt76/mt7921/sdio.c  |   3 +
- .../wireless/mediatek/mt76/mt7921/sdio_mac.c  | 133 ++++++++++++++++++
- .../wireless/mediatek/mt76/mt7921/sdio_mcu.c  |   8 ++
- .../net/wireless/mediatek/mt76/sdio_txrx.c    |  32 ++++-
- 8 files changed, 184 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 50743a2bb6a2..cebb4dd29640 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -507,6 +507,7 @@ struct mt76_sdio {
- 	void *intr_data;
- 	int intr_size;
- 	u8 hw_ver;
-+	wait_queue_head_t wait;
+Changelog:
+  v2:
+   - Specify the dynamic rrsr commit for reference
+   - Remove the unintentional twice reading of REG_RESPONSE_RATE_SET
+
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 6 +++++-
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h | 2 ++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 774341b0005a..a42e2081b75f 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4460,13 +4460,17 @@ void rtl8xxxu_gen1_init_aggregation(struct rtl8xxxu_priv *priv)
  
- 	struct {
- 		int pse_data_quota;
-@@ -1251,6 +1252,7 @@ int mt76s_alloc_queues(struct mt76_dev *dev);
- void mt76s_deinit(struct mt76_dev *dev);
- void mt76s_sdio_irq(struct sdio_func *func);
- void mt76s_txrx_worker(struct mt76_sdio *sdio);
-+bool mt76s_txqs_empty(struct mt76_dev *dev);
- int mt76s_hw_init(struct mt76_dev *dev, struct sdio_func *func,
- 		  int hw_ver);
- u32 mt76s_rr(struct mt76_dev *dev, u32 offset);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 2b7260be224f..87265045e2dd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -217,6 +217,8 @@ int mt7921_register_device(struct mt7921_dev *dev)
- 	spin_lock_init(&dev->pm.wake.lock);
- 	mutex_init(&dev->pm.mutex);
- 	init_waitqueue_head(&dev->pm.wait);
-+	if (mt76_is_sdio(&dev->mt76))
-+		init_waitqueue_head(&dev->mt76.sdio.wait);
- 	spin_lock_init(&dev->pm.txq_lock);
- 	INIT_DELAYED_WORK(&dev->mphy.mac_work, mt7921_mac_work);
- 	INIT_DELAYED_WORK(&dev->phy.scan_work, mt7921_scan_work);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 718f75f4fb76..908c01d41ca1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -438,6 +438,7 @@ mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
- 		mt7921_mcu_debug_msg_event(dev, skb);
- 		break;
- 	case MCU_EVENT_COREDUMP:
-+		dev->fw_assert = true;
- 		mt76_connac_mcu_coredump_event(&dev->mt76, skb,
- 					       &dev->coredump);
- 		return;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 6d0edb8ce1d6..c96d4e841e12 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -169,6 +169,7 @@ struct mt7921_dev {
- 	struct work_struct reset_work;
- 	bool hw_full_reset:1;
- 	bool hw_init_done:1;
-+	bool fw_assert:1;
+ static void rtl8xxxu_set_basic_rates(struct rtl8xxxu_priv *priv, u32 rate_cfg)
+ {
++	struct ieee80211_hw *hw = priv->hw;
+ 	u32 val32;
+ 	u8 rate_idx = 0;
  
- 	struct list_head sta_poll_list;
- 	spinlock_t sta_poll_lock;
-@@ -412,6 +413,9 @@ void mt7921e_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 			  struct sk_buff *skb);
- int mt7921e_mac_reset(struct mt7921_dev *dev);
- int mt7921e_mcu_init(struct mt7921_dev *dev);
-+int mt7921s_wfsys_reset(struct mt7921_dev *dev);
-+int mt7921s_mac_reset(struct mt7921_dev *dev);
-+int mt7921s_init_reset(struct mt7921_dev *dev);
- int mt7921e_mcu_drv_pmctrl(struct mt7921_dev *dev);
- int mt7921e_mcu_fw_pmctrl(struct mt7921_dev *dev);
+ 	rate_cfg &= RESPONSE_RATE_BITMAP_ALL;
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-index 87d0954a7989..d6aa4c07cc99 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-@@ -46,6 +46,7 @@ static void mt7921s_unregister_device(struct mt7921_dev *dev)
- 	cancel_work_sync(&pm->wake_work);
+ 	val32 = rtl8xxxu_read32(priv, REG_RESPONSE_RATE_SET);
+-	val32 &= ~RESPONSE_RATE_BITMAP_ALL;
++	if (hw->conf.chandef.chan->band == NL80211_BAND_5GHZ)
++		val32 &= RESPONSE_RATE_RRSR_INIT_5G;
++	else
++		val32 &= RESPONSE_RATE_RRSR_INIT_2G;
+ 	val32 |= rate_cfg;
+ 	rtl8xxxu_write32(priv, REG_RESPONSE_RATE_SET, val32);
  
- 	mt76s_deinit(&dev->mt76);
-+	mt7921s_wfsys_reset(dev);
- 	mt7921_mcu_exit(dev);
- 
- 	mt76_free_device(&dev->mt76);
-@@ -80,6 +81,8 @@ static int mt7921s_probe(struct sdio_func *func,
- 		.type = MT76_BUS_SDIO,
- 	};
- 	static const struct mt7921_hif_ops mt7921_sdio_ops = {
-+		.init_reset = mt7921s_init_reset,
-+		.reset = mt7921s_mac_reset,
- 		.mcu_init = mt7921s_mcu_init,
- 		.drv_own = mt7921s_mcu_drv_pmctrl,
- 		.fw_own = mt7921s_mcu_fw_pmctrl,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-index 91a7acd49ee4..137f86a6dbf8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-@@ -5,6 +5,139 @@
- #include <linux/mmc/sdio_func.h>
- #include "mt7921.h"
- #include "mac.h"
-+#include "../sdio.h"
-+
-+static void mt7921s_enable_irq(struct mt76_dev *dev)
-+{
-+	struct mt76_sdio *sdio = &dev->sdio;
-+
-+	sdio_claim_host(sdio->func);
-+	sdio_writel(sdio->func, WHLPCR_INT_EN_SET, MCR_WHLPCR, NULL);
-+	sdio_release_host(sdio->func);
-+}
-+
-+static void mt7921s_disable_irq(struct mt76_dev *dev)
-+{
-+	struct mt76_sdio *sdio = &dev->sdio;
-+
-+	sdio_claim_host(sdio->func);
-+	sdio_writel(sdio->func, WHLPCR_INT_EN_CLR, MCR_WHLPCR, NULL);
-+	sdio_release_host(sdio->func);
-+}
-+
-+static u32 mt7921s_read_whcr(struct mt76_dev *dev)
-+{
-+	return sdio_readl(dev->sdio.func, MCR_WHCR, NULL);
-+}
-+
-+int mt7921s_wfsys_reset(struct mt7921_dev *dev)
-+{
-+	struct mt76_sdio *sdio = &dev->mt76.sdio;
-+	u32 val, status;
-+
-+	mt7921s_mcu_drv_pmctrl(dev);
-+
-+	sdio_claim_host(sdio->func);
-+
-+	val = sdio_readl(sdio->func, MCR_WHCR, NULL);
-+	val &= ~WF_WHOLE_PATH_RSTB;
-+	sdio_writel(sdio->func, val, MCR_WHCR, NULL);
-+
-+	msleep(50);
-+
-+	val = sdio_readl(sdio->func, MCR_WHCR, NULL);
-+	val &= ~WF_SDIO_WF_PATH_RSTB;
-+	sdio_writel(sdio->func, val, MCR_WHCR, NULL);
-+
-+	usleep_range(1000, 2000);
-+
-+	val = sdio_readl(sdio->func, MCR_WHCR, NULL);
-+	val |= WF_WHOLE_PATH_RSTB;
-+	sdio_writel(sdio->func, val, MCR_WHCR, NULL);
-+
-+	readx_poll_timeout(mt7921s_read_whcr, &dev->mt76, status,
-+			   status & WF_RST_DONE, 50000, 2000000);
-+
-+	sdio_release_host(sdio->func);
-+
-+	/* activate mt7921s again */
-+	mt7921s_mcu_fw_pmctrl(dev);
-+	mt7921s_mcu_drv_pmctrl(dev);
-+
-+	return 0;
-+}
-+
-+int mt7921s_init_reset(struct mt7921_dev *dev)
-+{
-+	set_bit(MT76_MCU_RESET, &dev->mphy.state);
-+
-+	wake_up(&dev->mt76.mcu.wait);
-+	skb_queue_purge(&dev->mt76.mcu.res_q);
-+	wait_event_timeout(dev->mt76.sdio.wait,
-+			   mt76s_txqs_empty(&dev->mt76), 5 * HZ);
-+	mt76_worker_disable(&dev->mt76.sdio.txrx_worker);
-+
-+	mt7921s_disable_irq(&dev->mt76);
-+	mt7921s_wfsys_reset(dev);
-+
-+	mt76_worker_enable(&dev->mt76.sdio.txrx_worker);
-+	clear_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
-+	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
-+	mt7921s_enable_irq(&dev->mt76);
-+
-+	return 0;
-+}
-+
-+int mt7921s_mac_reset(struct mt7921_dev *dev)
-+{
-+	int err;
-+
-+	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
-+	mt76_txq_schedule_all(&dev->mphy);
-+	mt76_worker_disable(&dev->mt76.tx_worker);
-+	set_bit(MT76_RESET, &dev->mphy.state);
-+	set_bit(MT76_MCU_RESET, &dev->mphy.state);
-+	wake_up(&dev->mt76.mcu.wait);
-+	skb_queue_purge(&dev->mt76.mcu.res_q);
-+	wait_event_timeout(dev->mt76.sdio.wait,
-+			   mt76s_txqs_empty(&dev->mt76), 5 * HZ);
-+	mt76_worker_disable(&dev->mt76.sdio.txrx_worker);
-+	mt76_worker_disable(&dev->mt76.sdio.status_worker);
-+	mt76_worker_disable(&dev->mt76.sdio.net_worker);
-+	cancel_work_sync(&dev->mt76.sdio.stat_work);
-+
-+	mt7921s_disable_irq(&dev->mt76);
-+	mt7921s_wfsys_reset(dev);
-+
-+	mt76_worker_enable(&dev->mt76.sdio.txrx_worker);
-+	mt76_worker_enable(&dev->mt76.sdio.status_worker);
-+	mt76_worker_enable(&dev->mt76.sdio.net_worker);
-+
-+	dev->fw_assert = false;
-+	clear_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
-+	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
-+	mt7921s_enable_irq(&dev->mt76);
-+
-+	err = mt7921_run_firmware(dev);
-+	if (err)
-+		goto out;
-+
-+	err = mt7921_mcu_set_eeprom(dev);
-+	if (err)
-+		goto out;
-+
-+	err = mt7921_mac_init(dev);
-+	if (err)
-+		goto out;
-+
-+	err = __mt7921_start(&dev->phy);
-+out:
-+	clear_bit(MT76_RESET, &dev->mphy.state);
-+
-+	mt76_worker_enable(&dev->mt76.tx_worker);
-+
-+	return err;
-+}
- 
- static void
- mt7921s_write_txwi(struct mt7921_dev *dev, struct mt76_wcid *wcid,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-index 049e06d7c3fb..437cddad9a90 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-@@ -21,6 +21,14 @@ mt7921s_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
- 	enum mt76_mcuq_id txq = MT_MCUQ_WM;
- 	int ret, pad;
- 
-+	/* We just return in case firmware assertion to avoid blocking the
-+	 * common workqueue to run, for example, the coredump work might be
-+	 * blocked by mt7921_mac_work that is excuting register access via sdio
-+	 * bus.
-+	 */
-+	if (dev->fw_assert)
-+		return -EBUSY;
-+
- 	ret = mt7921_mcu_fill_message(mdev, skb, cmd, seq);
- 	if (ret)
- 		return ret;
-diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-index 8de84ec556a1..cdf1d7c15241 100644
---- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-+++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-@@ -272,6 +272,9 @@ static int mt76s_tx_run_queue(struct mt76_dev *dev, struct mt76_queue *q)
- 
- 		smp_rmb();
- 
-+		if (test_bit(MT76_MCU_RESET, &dev->phy.state))
-+			goto next;
-+
- 		if (!test_bit(MT76_STATE_MCU_RUNNING, &dev->phy.state)) {
- 			__skb_put_zero(e->skb, 4);
- 			err = __mt76s_xmit_queue(dev, e->skb->data,
-@@ -350,6 +353,13 @@ void mt76s_txrx_worker(struct mt76_sdio *sdio)
- 		ret = mt76s_rx_handler(dev);
- 		if (ret > 0)
- 			nframes += ret;
-+
-+		if (test_bit(MT76_MCU_RESET, &dev->phy.state)) {
-+			if (!mt76s_txqs_empty(dev))
-+				continue;
-+			else
-+				wake_up(&sdio->wait);
-+		}
- 	} while (nframes > 0);
- 
- 	/* enable interrupt */
-@@ -363,9 +373,29 @@ void mt76s_sdio_irq(struct sdio_func *func)
- 	struct mt76_dev *dev = sdio_get_drvdata(func);
- 	struct mt76_sdio *sdio = &dev->sdio;
- 
--	if (!test_bit(MT76_STATE_INITIALIZED, &dev->phy.state))
-+	if (!test_bit(MT76_STATE_INITIALIZED, &dev->phy.state) ||
-+	    test_bit(MT76_MCU_RESET, &dev->phy.state))
- 		return;
- 
- 	mt76_worker_schedule(&sdio->txrx_worker);
- }
- EXPORT_SYMBOL_GPL(mt76s_sdio_irq);
-+
-+bool mt76s_txqs_empty(struct mt76_dev *dev)
-+{
-+	struct mt76_queue *q;
-+	int i;
-+
-+	for (i = 0; i <= MT_TXQ_PSD + 1; i++) {
-+		if (i <= MT_TXQ_PSD)
-+			q = dev->phy.q_tx[i];
-+		else
-+			q = dev->q_mcu[MT_MCUQ_WM];
-+
-+		if (q->first != q->head)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+EXPORT_SYMBOL_GPL(mt76s_txqs_empty);
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+index a2a31f374a82..438b65ba9640 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+@@ -516,6 +516,8 @@
+ #define REG_RESPONSE_RATE_SET		0x0440
+ #define  RESPONSE_RATE_BITMAP_ALL	0xfffff
+ #define  RESPONSE_RATE_RRSR_CCK_ONLY_1M	0xffff1
++#define  RESPONSE_RATE_RRSR_INIT_2G	0x15f
++#define  RESPONSE_RATE_RRSR_INIT_5G	0x150
+ #define  RSR_1M				BIT(0)
+ #define  RSR_2M				BIT(1)
+ #define  RSR_5_5M			BIT(2)
 -- 
-2.25.1
+2.20.1
 
