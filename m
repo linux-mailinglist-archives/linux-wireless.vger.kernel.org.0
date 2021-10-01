@@ -2,134 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 124B941E9AA
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 11:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B441041E9B0
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Oct 2021 11:37:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353060AbhJAJhv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Oct 2021 05:37:51 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:12884 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1353051AbhJAJhu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Oct 2021 05:37:50 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633080966; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=BeCtPj+gAx1yb+qr7Piiqq97L5UNvZlh+6GnVLGIR9Q=; b=llTsoZcxrLrurcUw0FfXxByC9KhKJ+bb4ne2Nhp5SwgO01bpFCEkq/gHHL368UVVuDIPXadv
- TAL/HZbyANlo3sKdxjx1MpMd5fuM6/wnQYfsFs47CONBZ8ImDBpNBKHywrE5FQFMUT/zEF7O
- WaGo+KlD9XpXASEqStNJ58HIOnk=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 6156d66947d64efb6dd25f20 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 01 Oct 2021 09:35:37
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 399F7C4338F; Fri,  1 Oct 2021 09:35:37 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B05F2C4338F;
-        Fri,  1 Oct 2021 09:35:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B05F2C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-mmc@vger.kernel.org,
-        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v7 20/24] wfx: add scan.c/scan.h
-References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
-        <20210920161136.2398632-21-Jerome.Pouiller@silabs.com>
-Date:   Fri, 01 Oct 2021 12:35:28 +0300
-In-Reply-To: <20210920161136.2398632-21-Jerome.Pouiller@silabs.com> (Jerome
-        Pouiller's message of "Mon, 20 Sep 2021 18:11:32 +0200")
-Message-ID: <87r1d5krz3.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S1353071AbhJAJj1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Oct 2021 05:39:27 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:39386 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1352790AbhJAJj0 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 1 Oct 2021 05:39:26 -0400
+X-UUID: 0609553555314843a80af864e8aedb73-20211001
+X-UUID: 0609553555314843a80af864e8aedb73-20211001
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1374579807; Fri, 01 Oct 2021 17:37:39 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Fri, 1 Oct 2021 17:37:37 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 1 Oct 2021 17:37:37 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH v3 1/2] mt76: mt7915: add WA firmware log support
+Date:   Fri, 1 Oct 2021 17:36:35 +0800
+Message-ID: <20211001093636.10501-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
+Support to turn on/off WA firmware log from debugfs.
 
-> From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
->
-> Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   | 42 +++++++++++++++----
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 12 +++++-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  6 +++
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  5 ++-
+ 4 files changed, 52 insertions(+), 13 deletions(-)
 
-[...]
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 8c1725c00126..b9689762f529 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -82,7 +82,7 @@ DEFINE_DEBUGFS_ATTRIBUTE(fops_radar_trigger, NULL,
+ 			 mt7915_radar_trigger, "%lld\n");
+ 
+ static int
+-mt7915_fw_debug_set(void *data, u64 val)
++mt7915_fw_debug_wm_set(void *data, u64 val)
+ {
+ 	struct mt7915_dev *dev = data;
+ 	enum {
+@@ -93,28 +93,51 @@ mt7915_fw_debug_set(void *data, u64 val)
+ 		DEBUG_RPT_RX,
+ 	} debug;
+ 
+-	dev->fw_debug = !!val;
++	dev->fw_debug_wm = val ? MCU_FW_LOG_TO_HOST : 0;
+ 
+-	mt7915_mcu_fw_log_2_host(dev, dev->fw_debug ? 2 : 0);
++	mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WM, dev->fw_debug_wm);
+ 
+ 	for (debug = DEBUG_TXCMD; debug <= DEBUG_RPT_RX; debug++)
+-		mt7915_mcu_fw_dbg_ctrl(dev, debug, dev->fw_debug);
++		mt7915_mcu_fw_dbg_ctrl(dev, debug, !!dev->fw_debug_wm);
+ 
+ 	return 0;
+ }
+ 
+ static int
+-mt7915_fw_debug_get(void *data, u64 *val)
++mt7915_fw_debug_wm_get(void *data, u64 *val)
+ {
+ 	struct mt7915_dev *dev = data;
+ 
+-	*val = dev->fw_debug;
++	*val = dev->fw_debug_wm;
+ 
+ 	return 0;
+ }
+ 
+-DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_debug, mt7915_fw_debug_get,
+-			 mt7915_fw_debug_set, "%lld\n");
++DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_debug_wm, mt7915_fw_debug_wm_get,
++			 mt7915_fw_debug_wm_set, "%lld\n");
++
++static int
++mt7915_fw_debug_wa_set(void *data, u64 val)
++{
++	struct mt7915_dev *dev = data;
++
++	dev->fw_debug_wa = val ? MCU_FW_LOG_TO_HOST : 0;
++
++	return mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WA, dev->fw_debug_wa);
++}
++
++static int
++mt7915_fw_debug_wa_get(void *data, u64 *val)
++{
++	struct mt7915_dev *dev = data;
++
++	*val = dev->fw_debug_wa;
++
++	return 0;
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_fw_debug_wa, mt7915_fw_debug_wa_get,
++			 mt7915_fw_debug_wa_set, "%lld\n");
+ 
+ static void
+ mt7915_ampdu_stat_read_phy(struct mt7915_phy *phy,
+@@ -455,7 +478,8 @@ int mt7915_init_debugfs(struct mt7915_dev *dev)
+ 	debugfs_create_devm_seqfile(dev->mt76.dev, "hw-queues", dir,
+ 				    mt7915_hw_queues_read);
+ 	debugfs_create_file("tx_stats", 0400, dir, dev, &mt7915_tx_stats_fops);
+-	debugfs_create_file("fw_debug", 0600, dir, dev, &fops_fw_debug);
++	debugfs_create_file("fw_debug_wm", 0600, dir, dev, &fops_fw_debug_wm);
++	debugfs_create_file("fw_debug_wa", 0600, dir, dev, &fops_fw_debug_wa);
+ 	debugfs_create_file("implicit_txbf", 0600, dir, dev,
+ 			    &fops_implicit_txbf);
+ 	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 7415b9391175..419b2acad41d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2824,7 +2824,7 @@ static int mt7915_load_firmware(struct mt7915_dev *dev)
+ 	return 0;
+ }
+ 
+-int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 ctrl)
++int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 type, u8 ctrl)
+ {
+ 	struct {
+ 		u8 ctrl_val;
+@@ -2833,6 +2833,10 @@ int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 ctrl)
+ 		.ctrl_val = ctrl
+ 	};
+ 
++	if (type == MCU_FW_LOG_WA)
++		return mt76_mcu_send_msg(&dev->mt76, MCU_WA_EXT_CMD(FW_LOG_2_HOST),
++					 &data, sizeof(data), true);
++
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(FW_LOG_2_HOST), &data,
+ 				 sizeof(data), true);
+ }
+@@ -2889,7 +2893,11 @@ int mt7915_mcu_init(struct mt7915_dev *dev)
+ 		return ret;
+ 
+ 	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
+-	ret = mt7915_mcu_fw_log_2_host(dev, 0);
++	ret = mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WM, 0);
++	if (ret)
++		return ret;
++
++	ret = mt7915_mcu_fw_log_2_host(dev, MCU_FW_LOG_WA, 0);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index e02659272f9e..4a601bdee156 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -230,6 +230,12 @@ enum {
+ };
+ 
+ 
++enum {
++	MCU_FW_LOG_WM,
++	MCU_FW_LOG_WA,
++	MCU_FW_LOG_TO_HOST,
++};
++
+ #define __MCU_CMD_FIELD_ID	GENMASK(7, 0)
+ #define __MCU_CMD_FIELD_EXT_ID	GENMASK(15, 8)
+ #define __MCU_CMD_FIELD_QUERY	BIT(16)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index ff3be5ba2ce9..50c7c8c09d83 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -184,8 +184,9 @@ struct mt7915_dev {
+ 
+ 	bool dbdc_support;
+ 	bool flash_mode;
+-	bool fw_debug;
+ 	bool ibf;
++	u8 fw_debug_wm;
++	u8 fw_debug_wa;
+ 
+ 	void *cal;
+ };
+@@ -355,7 +356,7 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta, struct rate_info *rate);
+ int mt7915_mcu_rdd_cmd(struct mt7915_dev *dev, enum mt7915_rdd_cmd cmd,
+ 		       u8 index, u8 rx_sel, u8 val);
+-int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 ctrl);
++int mt7915_mcu_fw_log_2_host(struct mt7915_dev *dev, u8 type, u8 ctrl);
+ int mt7915_mcu_fw_dbg_ctrl(struct mt7915_dev *dev, u32 module, u8 level);
+ void mt7915_mcu_rx_event(struct mt7915_dev *dev, struct sk_buff *skb);
+ void mt7915_mcu_exit(struct mt7915_dev *dev);
+-- 
+2.25.1
 
-> +/* It is not really necessary to run scan request asynchronously. Howeve=
-r,
-> + * there is a bug in "iw scan" when ieee80211_scan_completed() is called=
- before
-> + * wfx_hw_scan() return
-> + */
-> +void wfx_hw_scan_work(struct work_struct *work)
-> +{
-> +	struct wfx_vif *wvif =3D container_of(work, struct wfx_vif, scan_work);
-> +	struct ieee80211_scan_request *hw_req =3D wvif->scan_req;
-> +	int chan_cur, ret, err;
-> +
-> +	mutex_lock(&wvif->wdev->conf_mutex);
-> +	mutex_lock(&wvif->scan_lock);
-> +	if (wvif->join_in_progress) {
-> +		dev_info(wvif->wdev->dev, "abort in-progress REQ_JOIN");
-> +		wfx_reset(wvif);
-> +	}
-> +	update_probe_tmpl(wvif, &hw_req->req);
-> +	chan_cur =3D 0;
-> +	err =3D 0;
-> +	do {
-> +		ret =3D send_scan_req(wvif, &hw_req->req, chan_cur);
-> +		if (ret > 0) {
-> +			chan_cur +=3D ret;
-> +			err =3D 0;
-> +		}
-> +		if (!ret)
-> +			err++;
-> +		if (err > 2) {
-> +			dev_err(wvif->wdev->dev, "scan has not been able to start\n");
-> +			ret =3D -ETIMEDOUT;
-> +		}
-> +	} while (ret >=3D 0 && chan_cur < hw_req->req.n_channels);
-> +	mutex_unlock(&wvif->scan_lock);
-> +	mutex_unlock(&wvif->wdev->conf_mutex);
-> +	__ieee80211_scan_completed_compat(wvif->wdev->hw, ret < 0);
-> +}
-> +
-> +int wfx_hw_scan(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-> +		struct ieee80211_scan_request *hw_req)
-> +{
-> +	struct wfx_vif *wvif =3D (struct wfx_vif *)vif->drv_priv;
-> +
-> +	WARN_ON(hw_req->req.n_channels > HIF_API_MAX_NB_CHANNELS);
-> +	wvif->scan_req =3D hw_req;
-> +	schedule_work(&wvif->scan_work);
-> +	return 0;
-> +}
-
-This scan logic looks fishy to me, but no time to investigate in detail.
-Though not a blocker.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
