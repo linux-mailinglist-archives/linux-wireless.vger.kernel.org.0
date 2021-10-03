@@ -2,171 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB92742010D
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Oct 2021 11:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93CBC42028B
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Oct 2021 18:03:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229875AbhJCJUQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 3 Oct 2021 05:20:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56510 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbhJCJUP (ORCPT
+        id S231158AbhJCQFT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 3 Oct 2021 12:05:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:38602 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230426AbhJCQFT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 3 Oct 2021 05:20:15 -0400
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [IPv6:2001:67c:2050::465:102])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 595BFC0613EC;
-        Sun,  3 Oct 2021 02:18:28 -0700 (PDT)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        Sun, 3 Oct 2021 12:05:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1633277011;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=mKlqbnV68ucu/9jGoGO5InU05AHLqBboI/a+lod6Kwo=;
+        b=HU+YO/x8kfPr+aff/likY6a36NlZ1xLEWKpkWtqcl/PaTkjJ6qHOjVMkN8xybYTOOhxwbn
+        xMqr1rxIxy6onA5Hmjnd4kP0xTzfADKOR70PPB/2DdA3iBsqTPMBDJfQCiCUlGfobXmu5a
+        BcDeTNFOIvTPKvlNRK+e1NsJoC2n9s8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-248-k7omOiuhN9-aw4Syjc8ycw-1; Sun, 03 Oct 2021 12:03:30 -0400
+X-MC-Unique: k7omOiuhN9-aw4Syjc8ycw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4HMdYs6NzvzQk90;
-        Sun,  3 Oct 2021 11:18:25 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Message-ID: <5f0b52be-8b9c-b015-6c5a-f2f470e37058@v0yd.nl>
-Date:   Sun, 3 Oct 2021 11:18:15 +0200
-MIME-Version: 1.0
-From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
-Subject: Re: [PATCH v2 2/2] mwifiex: Try waking the firmware until we get an
- interrupt
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BDC77362F8;
+        Sun,  3 Oct 2021 16:03:28 +0000 (UTC)
+Received: from x1.localdomain (unknown [10.39.192.35])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B0AD8608BA;
+        Sun,  3 Oct 2021 16:03:26 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Tsuchiya Yuto <kitakar@gmail.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Brian Norris <briannorris@chromium.org>, stable@vger.kernel.org
-References: <20210914114813.15404-1-verdre@v0yd.nl>
- <20210914114813.15404-3-verdre@v0yd.nl>
-Content-Language: en-US
-In-Reply-To: <20210914114813.15404-3-verdre@v0yd.nl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Chi-Hsien Lin <chi-hsien.lin@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: [PATCH] brcmfmac: firmware: Treat EFI nvram ccode=XT the same as ccode=XV
+Date:   Sun,  3 Oct 2021 18:03:25 +0200
+Message-Id: <20211003160325.119696-1-hdegoede@redhat.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3CFE718B4
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/14/21 13:48, Jonas Dreßler wrote:
-> It seems that the firmware of the 88W8897 card sometimes ignores or
-> misses when we try to wake it up by writing to the firmware status
-> register. This leads to the firmware wakeup timeout expiring and the
-> driver resetting the card because we assume the firmware has hung up or
-> crashed (unfortunately that's not unlikely with this card).
-> 
-> Turns out that most of the time the firmware actually didn't hang up,
-> but simply "missed" our wakeup request and didn't send us an AWAKE
-> event.
-> 
-> Trying again to read the firmware status register after a short timeout
-> usually makes the firmware wake up as expected, so add a small retry
-> loop to mwifiex_pm_wakeup_card() that looks at the interrupt status to
-> check whether the card woke up.
-> 
-> The number of tries and timeout lengths for this were determined
-> experimentally: The firmware usually takes about 500 us to wake up
-> after we attempt to read the status register. In some cases where the
-> firmware is very busy (for example while doing a bluetooth scan) it
-> might even miss our requests for multiple milliseconds, which is why
-> after 15 tries the waiting time gets increased to 10 ms. The maximum
-> number of tries it took to wake the firmware when testing this was
-> around 20, so a maximum number of 50 tries should give us plenty of
-> safety margin.
-> 
-> A good reproducer for this issue is letting the firmware sleep and wake
-> up in very short intervals, for example by pinging a device on the
-> network every 0.1 seconds.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
-> ---
->   drivers/net/wireless/marvell/mwifiex/pcie.c | 33 +++++++++++++++++----
->   1 file changed, 27 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-> index 0eff717ac5fa..7fea319e013c 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-> @@ -661,11 +661,15 @@ static void mwifiex_delay_for_sleep_cookie(struct mwifiex_adapter *adapter,
->   			    "max count reached while accessing sleep cookie\n");
->   }
->   
-> +#define N_WAKEUP_TRIES_SHORT_INTERVAL 15
-> +#define N_WAKEUP_TRIES_LONG_INTERVAL 35
-> +
->   /* This function wakes up the card by reading fw_status register. */
->   static int mwifiex_pm_wakeup_card(struct mwifiex_adapter *adapter)
->   {
->   	struct pcie_service_card *card = adapter->card;
->   	const struct mwifiex_pcie_card_reg *reg = card->pcie.reg;
-> +	int n_tries = 0;
->   
->   	mwifiex_dbg(adapter, EVENT,
->   		    "event: Wakeup device...\n");
-> @@ -673,12 +677,29 @@ static int mwifiex_pm_wakeup_card(struct mwifiex_adapter *adapter)
->   	if (reg->sleep_cookie)
->   		mwifiex_pcie_dev_wakeup_delay(adapter);
->   
-> -	/* Accessing fw_status register will wakeup device */
-> -	if (mwifiex_write_reg(adapter, reg->fw_status, FIRMWARE_READY_PCIE)) {
-> -		mwifiex_dbg(adapter, ERROR,
-> -			    "Writing fw_status register failed\n");
-> -		return -1;
-> -	}
-> +	/* Access the fw_status register to wake up the device.
-> +	 * Since the 88W8897 firmware sometimes appears to ignore or miss
-> +	 * that wakeup request, we continue trying until we receive an
-> +	 * interrupt from the card.
-> +	 */
-> +	do {
-> +		if (mwifiex_write_reg(adapter, reg->fw_status, FIRMWARE_READY_PCIE)) {
-> +			mwifiex_dbg(adapter, ERROR,
-> +				    "Writing fw_status register failed\n");
-> +			return -EIO;
-> +		}
-> +
-> +		n_tries++;
-> +
-> +		if (n_tries <= N_WAKEUP_TRIES_SHORT_INTERVAL)
-> +			usleep_range(400, 700);
-> +		else
-> +			msleep(10);
-> +	} while (n_tries <= N_WAKEUP_TRIES_SHORT_INTERVAL + N_WAKEUP_TRIES_LONG_INTERVAL &&
-> +		 READ_ONCE(adapter->int_status) == 0);
-> +
-> +	mwifiex_dbg(adapter, EVENT,
-> +		    "event: Tried %d times until firmware woke up\n", n_tries);
->   
->   	if (reg->sleep_cookie) {
->   		mwifiex_pcie_dev_wakeup_delay(adapter);
-> 
+In some cases the EFI-var stored nvram contains "ccode=ALL", "ccode=XV"
+or "ccode=XT", to specify "worldwide" compatible settings, but these
+ccode-s do not work properly. "ccode=ALL" causes channels 12 and 13 to
+not be available, "ccode=XV" / "ccode=XT" may cause all 5GHz channels
+to not be available.
 
-So I think I have another solution that might be a lot more elegant, how
-about this:
+ccode="ALL" and ccode="XV" where already being replaced with ccode="X2"
+with a bit of special handling for nvram settings coming from an EFI
+variable. Extend this handling to also deal with nvram settings from
+EFI variables which contain "ccode=XT", which has similar issues to
+"ccode=XV".
 
-try_again:
-	n_tries++;
+This fixes 5GHz wifi not working on the HP ElitePad 1000 G2.
 
-	mwifiex_write_reg(adapter, reg->fw_status, FIRMWARE_READY_PCIE);
+This was also tested on a Lenovo Thinkpad 8 tablet which also uses
+"ccode=XT" and this causes no adverse effects there.
 
-	if (wait_event_interruptible_timeout(adapter->card_wakeup_wait_q,
-					     READ_ONCE(adapter->int_status) != 0,
-					     WAKEUP_TRY_AGAIN_TIMEOUT) == 0 &&
-	    n_tries < MAX_N_WAKEUP_TRIES) {
-		goto try_again;
-	}
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ .../wireless/broadcom/brcm80211/brcmfmac/firmware.c    | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+index 0eb13e5df517..f150af8ede21 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+@@ -432,10 +432,10 @@ struct brcmf_fw {
+ };
+ 
+ #ifdef CONFIG_EFI
+-/* In some cases the EFI-var stored nvram contains "ccode=ALL" or "ccode=XV"
+- * to specify "worldwide" compatible settings, but these 2 ccode-s do not work
+- * properly. "ccode=ALL" causes channels 12 and 13 to not be available,
+- * "ccode=XV" causes all 5GHz channels to not be available. So we replace both
++/* In some cases the EFI-var stored nvram contains "ccode=ALL", "ccode=XV" or "ccode=XT",
++ * to specify "worldwide" compatible settings, but these ccode-s do not work properly.
++ * "ccode=ALL" causes channels 12 and 13 to not be available, "ccode=XV" / "ccode=XT"
++ * may cause all 5GHz channels to not be available. So we replace these
+  * with "ccode=X2" which allows channels 12+13 and 5Ghz channels in
+  * no-Initiate-Radiation mode. This means that we will never send on these
+  * channels without first having received valid wifi traffic on the channel.
+@@ -447,6 +447,8 @@ static void brcmf_fw_fix_efi_nvram_ccode(char *data, unsigned long data_len)
+ 	ccode = strnstr((char *)data, "ccode=ALL", data_len);
+ 	if (!ccode)
+ 		ccode = strnstr((char *)data, "ccode=XV\r", data_len);
++	if (!ccode)
++		ccode = strnstr((char *)data, "ccode=XT\r", data_len);
+ 	if (!ccode)
+ 		return;
+ 
+-- 
+2.31.1
 
-and then call wake_up_interruptible() in the mwifiex_interrupt_status()
-interrupt handler.
-
-This solution should make sure we always keep wakeup latency to a minimum
-and can still retry the register write if things didn't work.
