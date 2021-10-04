@@ -2,140 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB7D6420536
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Oct 2021 06:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90FCD4205F7
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Oct 2021 08:47:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232452AbhJDEZL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Oct 2021 00:25:11 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:44625 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232413AbhJDEZL (ORCPT
+        id S232788AbhJDGsx convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Oct 2021 02:48:53 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:43826 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232755AbhJDGsw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Oct 2021 00:25:11 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633321403; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=TgM8C0DI9hcG2ezxrSOzrJIHZklp8GdLdGqApBfSTaE=;
- b=t7KABxofwIZ9kXYZ2ppmpkOa6UaIC+fObecP2U17YIv8wcrI4N0JvK0wGzixcdDT7dnGLnIX
- 319pHNfdqsfeJ35RAvV1O2XOMVOHP8WqsY76F2sG8NU4COaWFwCt9xnRvcrpa+X6J4q80SHy
- Z25iRxf+gELfEOhA4/WmBWuUoi4=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 615a81b8713d5d6f9608ee0b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 04 Oct 2021 04:23:20
- GMT
-Sender: akolli=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 696B7C4360C; Mon,  4 Oct 2021 04:23:19 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: akolli)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 05445C4338F;
-        Mon,  4 Oct 2021 04:23:18 +0000 (UTC)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 04 Oct 2021 09:53:18 +0530
-From:   Anilkumar Kolli <akolli@codeaurora.org>
+        Mon, 4 Oct 2021 02:48:52 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1946kx5mB017297, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1946kx5mB017297
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 4 Oct 2021 14:46:59 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Mon, 4 Oct 2021 14:46:58 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Mon, 4 Oct 2021 14:46:57 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Mon, 4 Oct 2021 14:46:57 +0800
+From:   Pkshih <pkshih@realtek.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jouni Malinen <jouni@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        akolli=codeaurora.org@codeaurora.org
-Subject: Re: [PATCH 1/3] ath11k: add htt cmd to enable full monitor mode
-In-Reply-To: <190d91d77d24c708291111710d4667b0@codeaurora.org>
-References: <20210721171905.61838-1-jouni@codeaurora.org>
- <20210721171905.61838-2-jouni@codeaurora.org>
- <87tuiaryhk.fsf@codeaurora.org>
- <f01c7797e7072687ab6014ccba431eb9@codeaurora.org>
- <87sfxpqjci.fsf@codeaurora.org>
- <190d91d77d24c708291111710d4667b0@codeaurora.org>
-Message-ID: <88d088e700888eb9c97eb5c2984af65f@codeaurora.org>
-X-Sender: akolli@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
+Thread-Topic: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
+Thread-Index: AQHXlXz6iS5M0zbbfkSyaj358Nztiqu+mXDngAQPmeA=
+Date:   Mon, 4 Oct 2021 06:46:57 +0000
+Message-ID: <9b54e3c321a4414cbae62616d8a913f4@realtek.com>
+References: <20210820043538.12424-1-pkshih@realtek.com>
+ <8735pkiu0t.fsf@codeaurora.org>
+In-Reply-To: <8735pkiu0t.fsf@codeaurora.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/4_=3F=3F_04:51:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/04/2021 06:29:40
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166474 [Oct 04 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;git.kernel.org:7.1.1;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/04/2021 06:34:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-09-30 12:17, Anilkumar Kolli wrote:
-> On 2021-09-28 12:26, Kalle Valo wrote:
->> akolli@codeaurora.org writes:
->> 
->>> On 2021-09-24 17:12, Kalle Valo wrote:
->>>> Jouni Malinen <jouni@codeaurora.org> writes:
->>>> 
->>>>> From: Anilkumar Kolli <akolli@codeaurora.org>
->>>>> 
->>>>> Add a new hw_param full_monitor_mode to enable full monitor support
->>>>> for
->>>>> QCN9074. HTT_H2T_MSG_TYPE_RX_FULL_MONITOR_MODE cmd is sent to the
->>>>> firmware to enable the full monitor mode.
->>>> 
->>>> Nowhere it's explained what "full monitor mode" means from an user's
->>>> point of view. Can someone give a high level summary what advantages
->>>> this feature has? For example, more frames delivered to user space 
->>>> or
->>>> what?
->>> 
->>> Yes, more frames delivered with full monitor mode. The advantage with
->>> full monitor mode is, hardware has status buffers available for all
->>> the MPDUs in mon_dst_ring. Both status buffer and MPDUs from
->>> mon_dst_ring is used to build the frame.
->> 
->> Users, and developers outside of the wireless domain, have no clue 
->> what
->> "MPDUs in mon_dst_ring" means, just as an example. Can you give a 
->> higher
->> level summary of this feature and what benefit it brings, please? I'll
->> then add that to the commit log.
->> 
->> For example, what kind of frames are we now able to deliver to the 
->> user
->> space (which we before couldn't) and are there still some types of
->> frames which we are not delivering?
->> 
->> In other words, instead of technical low level jargon I'm looking for 
->> a
->> summary in plain english which is understandable by everyone.
+
+> -----Original Message-----
+> From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On
+> Behalf Of Kalle Valo
+> Sent: Saturday, October 2, 2021 12:34 AM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: linux-wireless@vger.kernel.org
+> Subject: Re: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
 > 
-> Full monitor mode is hardware enhancement for QCN9074. With this more
-> frames are delivered to mac80211.
+> Ping-Ke Shih <pkshih@realtek.com> writes:
 > 
-> In earlier hardware like IPQ8074, on each interrupt, reap complete
-> monitor status ring.
-> For each PPDU_DONE status, reap monitor destination ring, this needs
-> more processing on driver.
+> > This driver named rtw89, which is the next generation of rtw88, supports
+> > Realtek 8852AE 802.11ax 2x2 chip whose new features are OFDMA, DBCC,
+> > Spatial reuse, TWT and BSS coloring; now some of them aren't implemented
+> > though.
+> >
+> > The chip architecture is entirely different from the chips supported by
+> > rtw88 like RTL8822CE 802.11ac chip. First of all, register address ranges
+> > are totally redefined, so it's impossible to reuse register definition. To
+> > communicate with firmware, new H2C/C2H format is proposed. In order to have
+> > better utilization, TX DMA flow is changed to two stages DMA. To provide
+> > rich RX status information, additional RX PPDU packets are added.
+> >
+> > Since there are so many differences mentioned above, we decide to propose
+> > a new driver. It has many authors, they are listed in alphabetic order:
 > 
-> With full monitor, on Interrupt, there is no need to reap the complete
-> monitor status ring.
-> Instead only one PPDU is reap from monitor destination ring and
-> corresponding PPDU status is reaped.
+> I did a review now and this looks pretty good to me. Kconfig has a
+> different license and lots of static/extern variables which are not
+> const, otherwise I only saw smaller issues. But I do have to admit that
+> after mac.h (in alphabetical order) my review was more on the sloppy
+> side, this is a large driver.
+
+Thank you.
+I will revise the driver according to your comments.
+
 > 
-> In older approach, in noisy environments status buffers are missing
-> for few PPDU, even in that case
-> Host reaps monitor destination ring, which is not needed and these
-> frames are dropped.
+> The community has been testing this driver already, right?
+
+As Larry mentioned, end users use this driver. Since bugs found in v6,
+we have fixed them and driver is under QA. I plan to have that fixes in v7
+released this week.
+
+This version will also include fixes of your comments. 
+Does it work to you?
+
+> 
+> I pushed the driver to the pending branch for build testing:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?h=
+> pending&id=c9dfa866a9f4004fcbde9fc3ad8772ad417c6ad9
 > 
 
-Radiotap header is constructed from monitor status buffer tlvs. Since 
-there is
-no update of status buffer for few PPDU, complete 80211 frame is not 
-formed and
-is dropped in ath11k.
+--
+Ping-Ke
 
-> In full monitor mode, for all MPDUs in a PPDU, status is guaranteed,
-> this is achieved in hardware using lock-stepping.
-> So more frames delivered to mac80211 and more fames seen in sniffer. "
-> 
-
-
-- Anil.
