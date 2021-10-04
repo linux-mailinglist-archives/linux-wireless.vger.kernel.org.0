@@ -2,105 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C97F74213A2
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Oct 2021 18:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D57E9421591
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Oct 2021 19:52:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236407AbhJDQIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Oct 2021 12:08:36 -0400
-Received: from new3-smtp.messagingengine.com ([66.111.4.229]:34819 "EHLO
-        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235064AbhJDQIf (ORCPT
+        id S234817AbhJDRyN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Oct 2021 13:54:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41736 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233597AbhJDRyN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Oct 2021 12:08:35 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailnew.nyi.internal (Postfix) with ESMTP id DCB33580A24;
-        Mon,  4 Oct 2021 12:06:45 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Mon, 04 Oct 2021 12:06:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; bh=UUDC4YPuEtCCTitozLyUXSQK64PbAa0gIhVIGJmIS
-        k8=; b=gM59//UsggGrtqThRY9sJqyp8D+9kxjC+UvC7jenhj+AROpr2V0dfX/fq
-        h6ehvCOLyj1zbY13J0RFv4HpMy6SMAEX5K/uwt2bcfpRtPSpV3rFp+/j5p5rgavJ
-        NUyyosal30d0QXln5Q8fjxIIkwHXSAzv8sdGRmRetfikyw/8NylOSLiIaeHcXLZs
-        YnaQzu/hGWx1xjutunU4A8MqMaIbIvUXaFJWF+sjfSBezb9G0uo907QDhO7iF4aw
-        7fC70puO9Bw3YWecSEMZGNFm8zpFdi6oYbLiFHdf0ITrk8yAsZ2S/bYEurSItMlo
-        SOkfWQhrsVpq5DpSXCXcRtiveKNYA==
-X-ME-Sender: <xms:kiZbYZK76wrajKm36pl4y5bzwireSQ2PWq2QzmRyqpJBHcInWhTmoQ>
-    <xme:kiZbYVIlcj87gCVjNNPK5QPTqd8t1YcvnICIJfanlnR6x2MMVbKa5jV0o1rEMslHs
-    2KNk7EnlWn1VY0>
-X-ME-Received: <xmr:kiZbYRvoGQyS69DlOaXpRPdTlLNyTDyV8yIB-2TQIn8Qxic2MNEvxz1D6gmBj2QJR9O2mzQBZIJXGdgSNGBPLYHwahPH7w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudelvddgleefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepkfguohcu
-    ufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrth
-    htvghrnhepvdffveekfeeiieeuieetudefkeevkeeuhfeuieduudetkeegleefvdegheej
-    hefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
-    guohhstghhsehiughoshgthhdrohhrgh
-X-ME-Proxy: <xmx:kiZbYaaBVxWoLW4HGq7VH3nQiN1XEhlUkUC98apwzk7l6Fx4FErx0w>
-    <xmx:kiZbYQYcCWruVgLFP-TF0YGUHpZOeSxmY5m5m6oa68X5U2Ddai6Mag>
-    <xmx:kiZbYeDufN_iwdYLwtcWcpJme_iAsTm2JZudp2486KUXMZDUiY1Kzw>
-    <xmx:lSZbYbv6xGNDhED2lZiFwGSYztonTM5evW1J9XCSbgxJbNzywj8tBQ>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 4 Oct 2021 12:06:41 -0400 (EDT)
-Date:   Mon, 4 Oct 2021 19:06:38 +0300
-From:   Ido Schimmel <idosch@idosch.org>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
-        kernel@pengutronix.de, Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Michael Buesch <m@bues.ch>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Alexander Duyck <alexanderduyck@fb.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-crypto@vger.kernel.org,
-        netdev@vger.kernel.org, oss-drivers@corigine.com
-Subject: Re: [PATCH v6 07/11] PCI: Replace pci_dev::driver usage that gets
- the driver name
-Message-ID: <YVsmjpUYk8P1X6Fr@shredder>
-References: <20211004125935.2300113-1-u.kleine-koenig@pengutronix.de>
- <20211004125935.2300113-8-u.kleine-koenig@pengutronix.de>
+        Mon, 4 Oct 2021 13:54:13 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C04F7C061745
+        for <linux-wireless@vger.kernel.org>; Mon,  4 Oct 2021 10:52:23 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id p13so39962549edw.0
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Oct 2021 10:52:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=SVy+42avAMDVs9YXx1N0MW72e1XqpRIo0we4Jey6TgQ=;
+        b=USZyRilZz6erOG49DFYjzZ7yWgjOF6KTPmH52T4Gemm+QUM3Fsk9hCPuO1ae+CsKMy
+         5cxbMWN0+QWJ7TNvMS+xMUWtoLMWb5t6Z7EiTWRxNQI0EeXpbmWGUY7HPhtaBMFPRnN1
+         tyqo3akeIm/LNXB/Hnk8xMZ2sGRkMTJTjJrVs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=SVy+42avAMDVs9YXx1N0MW72e1XqpRIo0we4Jey6TgQ=;
+        b=ljma+VEP4vuYg50NdnNnPDKMCwFpfoLcz0w0Rq4VXVrLixo3R4V6O9DxGM+MDXVqnp
+         fX4FuxrPdg7gBQ/Rtbd3cpe9GPE3vDPPsHMax2aW5B/yjw90ci/mZmVjr5IdV5E6QwDe
+         0JO2psPsArJTuC+pNBAWzI7HOGKjciOIwBN9fcpuppaOvACph4XneacJgd9EOJsjgmmu
+         k1KYCeOGrk+DiyWKfNr1InbhHko85qnpRSRfVFn5IumOC3G5NSi/nT2nMB956s4ydP0s
+         HJj0+BhbsY0bHs7NFyv1WcUMUUzZG9beDeKAY0G0lRjgZ8ZBJx29fF5pHH+FumVLnav/
+         Oe5g==
+X-Gm-Message-State: AOAM531OLWrgf4+xPOEHVYggK+nhiulH5ADaXmekr22IRLP1a6CNNMAi
+        wj48cEhPV3Ng6xIDn6J6s8q0k1xJ6FqVEpROOgN+ZQ==
+X-Google-Smtp-Source: ABdhPJw473yRin1rcK/LShFHmhtAKymPp2Nzjft1z63Ov1VE3CPb6pN7T9mMOt0Y7yINQAzbdd9Z9LQmL/AJ4fFVqJE=
+X-Received: by 2002:a17:906:60c7:: with SMTP id f7mr18468620ejk.57.1633369942391;
+ Mon, 04 Oct 2021 10:52:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211004125935.2300113-8-u.kleine-koenig@pengutronix.de>
+References: <20210914114813.15404-1-verdre@v0yd.nl> <20210914114813.15404-3-verdre@v0yd.nl>
+ <5f0b52be-8b9c-b015-6c5a-f2f470e37058@v0yd.nl>
+In-Reply-To: <5f0b52be-8b9c-b015-6c5a-f2f470e37058@v0yd.nl>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Mon, 4 Oct 2021 10:52:11 -0700
+Message-ID: <CAOFLbXbK5LmZbLcEs5e-0twoSkxkyKy8S6ZJVsz9Ap_a_iGZPA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mwifiex: Try waking the firmware until we get an interrupt
+To:     =?UTF-8?Q?Jonas_Dre=C3=9Fler?= <verdre@v0yd.nl>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "# 9798ac6d32c1 mfd : cros_ec : Add cros_ec_cmd_xfer_status helper" 
+        <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Oct 04, 2021 at 02:59:31PM +0200, Uwe Kleine-König wrote:
-> struct pci_dev::driver holds (apart from a constant offset) the same
-> data as struct pci_dev::dev->driver. With the goal to remove struct
-> pci_dev::driver to get rid of data duplication replace getting the
-> driver name by dev_driver_string() which implicitly makes use of struct
-> pci_dev::dev->driver.
-> 
-> Acked-by: Simon Horman <simon.horman@corigine.com> (for NFP)
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Hi,
 
-For mlxsw:
+On Sun, Oct 3, 2021 at 2:18 AM Jonas Dre=C3=9Fler <verdre@v0yd.nl> wrote:
+> So I think I have another solution that might be a lot more elegant, how
+> about this:
+>
+> try_again:
+>         n_tries++;
+>
+>         mwifiex_write_reg(adapter, reg->fw_status, FIRMWARE_READY_PCIE);
+>
+>         if (wait_event_interruptible_timeout(adapter->card_wakeup_wait_q,
+>                                              READ_ONCE(adapter->int_statu=
+s) !=3D 0,
+>                                              WAKEUP_TRY_AGAIN_TIMEOUT) =
+=3D=3D 0 &&
+>             n_tries < MAX_N_WAKEUP_TRIES) {
+>                 goto try_again;
+>         }
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
+Isn't wait_event_interruptible_timeout()'s timeout in jiffies, which
+is not necessarily that predictable, and also a lot more
+coarse-grained than we want? (As in, if HZ=3D100, we're looking at
+precision on the order of 10ms, whereas the expected wakeup latency is
+~6ms.) That would be OK for well-behaved PCI cases, where we never
+miss a write, but it could ~double your latency for your bad systems
+that will need more than one run of the loop.
 
-Tested with the kexec flow that I mentioned last time. Works fine now.
+Also, feels like a do/while could be cleaner, but that's a lesser detail.
 
-Thanks
+> and then call wake_up_interruptible() in the mwifiex_interrupt_status()
+> interrupt handler.
+>
+> This solution should make sure we always keep wakeup latency to a minimum
+> and can still retry the register write if things didn't work.
+
+Brian
