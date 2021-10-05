@@ -2,33 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 772EC422A40
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Oct 2021 16:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47AC4422A48
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Oct 2021 16:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236494AbhJEOKA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Oct 2021 10:10:00 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:64894 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236310AbhJEOJ0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Oct 2021 10:09:26 -0400
+        id S235176AbhJEOMD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Oct 2021 10:12:03 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:24140 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233705AbhJEOMC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 5 Oct 2021 10:12:02 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633442832; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1633443012; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=Jg3m/g25bkbWNO+TyC8tvVbjrTAyib8vW1P1iQJqXDQ=; b=wvDpwTmGN/dNMrtiTSE5c7SwRMolLSUuREJJtSBsUEPd8enupWwqXXNuBesqPkh/UuWOG03x
- ZeB9rlwvUAopfTPkW5TwMnk1zbzn6zXcNoMYqmlWKUuDSnZELgUR/90o4UWPCk5XmZLCigoQ
- bKtWYyf7pj7GrcD44SZ29aMAo4U=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ bh=sAflXWHFCtPcPvvfMZVY7wWrYE1ggRKCVsd3OOu3EpA=; b=qk4dj3A8BNOSNAepw1+VYnNbdaFX4RDVeFuqZYIsc+1mqbKH4JnwArx2kDM8/jvr7uRO9Oik
+ LUGUm4gpWRMR8cHNyZ+JPwAFhYBdHmhlhx8evD+eXXMgrHBW9BM7P+DMa/vKADIzPXD5HVi2
+ sVCpugRhgs3sODnBFGL2pm9bgxU=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 615c5bd709ab553889b53350 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 05 Oct 2021 14:06:15
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 615c5cc28ea00a941f5d23d3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 05 Oct 2021 14:10:10
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 60B48C4360C; Tue,  5 Oct 2021 14:06:14 +0000 (UTC)
+        id 64F7AC43635; Tue,  5 Oct 2021 14:10:10 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,23 +37,24 @@ Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 82AE6C43460;
-        Tue,  5 Oct 2021 14:06:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 82AE6C43460
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id ED045C4360D;
+        Tue,  5 Oct 2021 14:10:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org ED045C4360D
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     bqiang@codeaurora.org
 Cc:     Jouni Malinen <jouni@codeaurora.org>, ath11k@lists.infradead.org,
         linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/3] ath11k: Change number of TCL rings to one for QCA6390
+Subject: Re: [PATCH 2/3] ath11k: change return buffer manager for QCA6390
 References: <20210914163726.38604-1-jouni@codeaurora.org>
-        <87tui4pwdz.fsf@codeaurora.org>
-        <42fa097a799050100b6978ef0ab4e8b8@codeaurora.org>
-Date:   Tue, 05 Oct 2021 17:06:09 +0300
-In-Reply-To: <42fa097a799050100b6978ef0ab4e8b8@codeaurora.org> (bqiang's
-        message of "Wed, 29 Sep 2021 10:15:45 +0800")
-Message-ID: <87ee8zftwu.fsf@codeaurora.org>
+        <20210914163726.38604-2-jouni@codeaurora.org>
+        <87pmsspwa9.fsf@codeaurora.org>
+        <43fd66ccc28fe80b3ef00e5f1c7e6fbb@codeaurora.org>
+Date:   Tue, 05 Oct 2021 17:10:06 +0300
+In-Reply-To: <43fd66ccc28fe80b3ef00e5f1c7e6fbb@codeaurora.org> (bqiang's
+        message of "Wed, 29 Sep 2021 10:42:43 +0800")
+Message-ID: <87a6jnftq9.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -64,14 +64,13 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 bqiang@codeaurora.org writes:
 
-> On 2021-09-28 23:12, Kalle Valo wrote:
+> On 2021-09-28 23:14, Kalle Valo wrote:
 >> Jouni Malinen <jouni@codeaurora.org> writes:
 >>
 >>> From: Baochen Qiang <bqiang@codeaurora.org>
 >>>
->>> Some targets, QCA6390 for example, use only one TCL ring,
->>> it is better to initialize only one ring and leave others
->>> untouched for such targets.
+>>> QCA6390 firmware uses HAL_RX_BUF_RBM_SW1_BM, not
+>>> HAL_RX_BUF_RBM_SW3_BM.
 >>>
 >>> Tested-on: QCA6390 hw2.0 PCI
 >>> WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
@@ -79,23 +78,16 @@ bqiang@codeaurora.org writes:
 >>> Signed-off-by: Baochen Qiang <bqiang@codeaurora.org>
 >>> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
 >>
->> It's better? Please be more specific. Does this fix a bug or is this
->> just a theoretical fix you found during code review?
+>> Same question as in patch 1, does this fix a bug or is just a
+>> theoretical issue found during code review?
 >
-> Yes, this is just a theoretical fix. By "better" I mean there is no
-> need to initialize
-> the other two TCL rings for QCA6390 since they are not used.
+> Yes, this patch did fix a bug.
+>
+> QCA6390 firmware expects some specific packets from WBM2SW1 ring,
+> which, however, will not happen because they are routed directly to
+> host through WBM2SW3 ring due to wrong configuration of RBM.
 
-Thanks, I changed the commit log now to this:
-
-    ath11k: Change number of TCL rings to one for QCA6390
-    
-    Some targets, QCA6390 for example, use only one TCL ring, it is better to
-    initialize only one ring and leave others untouched for such targets.
-    
-    This is a theoretical fix found during code review, no visible impact.
-    
-    Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+What specific packets exactly?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
