@@ -2,122 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F31E9422F62
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Oct 2021 19:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39FC44230F5
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Oct 2021 21:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234628AbhJERvx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Oct 2021 13:51:53 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:36074 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbhJERvx (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Oct 2021 13:51:53 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633456202; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=umNYz8pA01LGfst/ZDKb/BGeTkpsTgzCMazCvgWWhM4=; b=t5A2/u9w1e6hW7Z6gYXCGJ1gZxPcfqM75U0n6x47+Uq51pCQ+66fAHgjBsXM3F5rBKfdWDBS
- NCfji9Q7rJY/kJJKbKJutaKCrFKqalD2xCmmIPudRaxSvJVe80aadSZbvTvhAM95xBRaQEA0
- /crC2lWI4h9rS1zVdeGJQXd1WeY=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 615c903a003e680efbce267b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 05 Oct 2021 17:49:46
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9EE95C4338F; Tue,  5 Oct 2021 17:49:45 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E2E1DC4338F;
-        Tue,  5 Oct 2021 17:49:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org E2E1DC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-mmc@vger.kernel.org,
-        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v8 00/24] wfx: get out from the staging area
-References: <20211005135400.788058-1-Jerome.Pouiller@silabs.com>
-        <875yubfthh.fsf@codeaurora.org> <2810333.gDgIz5hftg@pc-42>
-Date:   Tue, 05 Oct 2021 20:49:37 +0300
-In-Reply-To: <2810333.gDgIz5hftg@pc-42> (=?utf-8?B?IkrDqXLDtG1l?=
- Pouiller"'s message of "Tue,
-        05 Oct 2021 18:22:31 +0200")
-Message-ID: <87o883e4zy.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S235520AbhJETu6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Oct 2021 15:50:58 -0400
+Received: from mail.imserv.org ([46.232.251.232]:60632 "EHLO mail.imserv.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235157AbhJETu5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 5 Oct 2021 15:50:57 -0400
+X-Greylist: delayed 338 seconds by postgrey-1.27 at vger.kernel.org; Tue, 05 Oct 2021 15:50:56 EDT
+To:     pali@kernel.org
+Cc:     ath10k@lists.infradead.org, bhelgaas@google.com,
+        ilias.apalodimas@linaro.org, kabel@kernel.org,
+        kvalo@codeaurora.org, kw@linux.com, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
+        robh@kernel.org, thomas.petazzoni@bootlin.com, toke@redhat.com,
+        vtolkm@gmail.com
+References: <20210505163357.16012-1-pali@kernel.org>
+Subject: Re: [PATCH v3] PCI: Disallow retraining link for Atheros chips on
+ non-Gen1 PCIe bridges
+From:   Jannis <jannis@imserv.org>
+Message-ID: <924d9193-4277-d443-b4f4-d726bc7747de@imserv.org>
+Date:   Tue, 5 Oct 2021 21:43:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210505163357.16012-1-pali@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results: ORIGINATING;
+        auth=pass smtp.auth=jannis@imserv.org smtp.mailfrom=jannis@imserv.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
+Hello!
 
-> On Tuesday 5 October 2021 16:15:22 CEST Kalle Valo wrote:
->> Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
->>=20
->> > From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
-> [...]
->> > v8:
->> >   - Change the way the DT is handled. The user can now specify the nam=
-e of
->> >     the board (=3D chip + antenna) he use. It easier for board designe=
-rs to
->> >     add new entries. I plan to send a PR to linux-firmware to include =
-PDS
->> >     files of the developpement boards belong the firmware (I also plan=
- to
->> >     relocate these file into wfx/ instead of silabs/). (Kalle, Pali)
->> >   - Prefix visible functions and structs with "wfx_". I mostly kept the
->> >     code under 80 columns. (Kalle, Pali, Greg)
->> >   - Remove support for force_ps_timeout for now. (Kalle)
->> >   - Fix licenses of Makefile, Kconfig and hif_api*.h. (Kalle)
->> >   - Do not mix and match endianess in struct hif_ind_startup. (Kalle)
->> >   - Remove magic values. (Kalle)
->> >   - Use IS_ALIGNED(). (BTW, PTR_IS_ALIGNED() does not exist?) (Kalle)
->> >   - I have also noticed that some headers files did not declare all the
->> >     struct they used.
->> >
->> >   These issues remain (I hope they are not blockers):
->> >   - I have currently no ideas how to improve/simplify the parsing PDS =
-file.
->> >     (Kalle)
->>=20
->> For the PDS file problem it would help if you could actually describe
->> what the firmware requires/needs and then we can start from that. I had
->> some questions about this in v7 but apparently you missed those.
->
-> Did you received this reply[1]?
->
-> [1]: https://lore.kernel.org/all/2723787.uDASXpoAWK@pc-42/
+Just tested this patch on the SolidRun Clearfog Pro with QCA988x based 
+WLE600VX wifi card. Fixes the PCI issues, works with no directly visible 
+side effects on (at least) kernel 5.10.y and 5.14.y.
 
-I did and I even made further questions:
+Tested-by: Jannis Finkler <jannis@imserv.org>
 
-https://lore.kernel.org/all/87k0ixj5vn.fsf@codeaurora.org/
 
-Can we please continue the discussion on that thread instead of passing
-out lore links to each other :)
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
