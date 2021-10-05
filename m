@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C9A5422ACC
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Oct 2021 16:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24B6F422AE4
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Oct 2021 16:20:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235268AbhJEOTK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Oct 2021 10:19:10 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:16736 "EHLO
+        id S234437AbhJEOWb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Oct 2021 10:22:31 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:16174 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236197AbhJEOSN (ORCPT
+        with ESMTP id S235294AbhJEOW3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Oct 2021 10:18:13 -0400
+        Tue, 5 Oct 2021 10:22:29 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633443382; h=Content-Transfer-Encoding: Content-Type:
+ s=smtp; t=1633443638; h=Content-Transfer-Encoding: Content-Type:
  MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=wbRlR3S9un/VrDX7Y3W0hcFvNCAKaY9PkJGHjSDPKeo=; b=YEXPnFrnYTAsl6xZ1+Li0/MltlffO47ShIchgs0F/cwk6EZRgLEM4llXEXE8BV3HrcOSyuAE
- can++eeEvpxwYyJQnXQTSqojwsi8jKd6Ukw5eJ7tKMEW/0dRsL77rcjzjBkspTaZPnK+XqM3
- D4C/kSnVOGr6ABj61bdew0D4Gmk=
+ To: From: Sender; bh=iXaHQCDcTat4B7XjXBM6ERGc8OaY+eIv7u8gl6/j0qg=; b=gTZFpQbN1GihyrgRYpCzbcJFJ2N3XYD1JYGgBqApliAOOC4zPWcxUZUDkuqQ91W69PLSODUD
+ Q1ByXG2XOnkSz7VXgWqeNQVJAnYzqsjIIXS/HwU9D11JilJKZRux5mRD8I5tH11X52G5giBZ
+ TlwpuUdjTnlCCT1NSrXLU6WZe8E=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 615c5e038ea00a941f676480 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 05 Oct 2021 14:15:31
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 615c5f2aff0285fb0ab466d8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 05 Oct 2021 14:20:26
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9913BC43150; Tue,  5 Oct 2021 14:15:31 +0000 (UTC)
+        id 087F0C4361B; Tue,  5 Oct 2021 14:20:26 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,9 +38,9 @@ Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0FB13C43164;
-        Tue,  5 Oct 2021 14:15:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 0FB13C43164
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EF3B7C4338F;
+        Tue,  5 Oct 2021 14:20:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org EF3B7C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
@@ -55,10 +55,10 @@ Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         Ulf Hansson <ulf.hansson@linaro.org>
 Subject: Re: [PATCH v8 00/24] wfx: get out from the staging area
 References: <20211005135400.788058-1-Jerome.Pouiller@silabs.com>
-Date:   Tue, 05 Oct 2021 17:15:22 +0300
+Date:   Tue, 05 Oct 2021 17:20:19 +0300
 In-Reply-To: <20211005135400.788058-1-Jerome.Pouiller@silabs.com> (Jerome
         Pouiller's message of "Tue, 5 Oct 2021 15:53:36 +0200")
-Message-ID: <875yubfthh.fsf@codeaurora.org>
+Message-ID: <871r4zft98.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -142,10 +142,12 @@ to
 >   - I have currently no ideas how to improve/simplify the parsing PDS fil=
 e.
 >     (Kalle)
+>   - We would like to relate the SDIO quirks into mmc/core/quirks.h, but t=
+he
+>     API to do that does not yet exist. (Ulf, Pali)
 
-For the PDS file problem it would help if you could actually describe
-what the firmware requires/needs and then we can start from that. I had
-some questions about this in v7 but apparently you missed those.
+So is this a direct version from staging-next? If yes, what commit id did
+you use? Or do you have your own set of patches on top of staging-next?
 
 --=20
 https://patchwork.kernel.org/project/linux-wireless/list/
