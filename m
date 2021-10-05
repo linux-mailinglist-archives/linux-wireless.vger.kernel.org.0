@@ -2,104 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3880422B08
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Oct 2021 16:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7CE3422B0C
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Oct 2021 16:30:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235038AbhJEObY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Oct 2021 10:31:24 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:51421 "EHLO m43-7.mailgun.net"
+        id S235301AbhJEOb7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Oct 2021 10:31:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52942 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234899AbhJEObW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Oct 2021 10:31:22 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633444172; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=FxJv+xfRfX0wiXpi4iHFEWoHOtv7gBTnYPqMLSJu+pQ=;
- b=UCJDCHW//Z6B7kz52+dNvmyFK5wQcG2vuwB5NcGEBUr5Z8oSapiY+6ja5J9xmcKGXD4heLFe
- fCO0HXD+KZm56vHQ9qUocUmDT7D9/Ft4Ypp0FGsDq1LqZUOwSfpTLcfBFROyHhxZDY+AeCjl
- qIPYkZmIhqh4msLqXU1c0W5MiUE=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 615c614a03355859c8c7a88a (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 05 Oct 2021 14:29:30
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6413FC43617; Tue,  5 Oct 2021 14:29:30 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A00F6C4338F;
-        Tue,  5 Oct 2021 14:29:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org A00F6C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S235090AbhJEOb6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 5 Oct 2021 10:31:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DA9E5610E6;
+        Tue,  5 Oct 2021 14:30:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1633444208;
+        bh=Q4C78fvfdtapqj0+ujYuGFESUu/lC0XDXFEMMgK8fHs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Pur8XdkWnVOmSOtPyy8GXHrjwlau8gzFOt2rZyqLOnQrdNNxHm4YwD2YCEyAXRj/X
+         dIZUAlq5a4IXS2Nst+jOkWLOfcwz3lN/v5R+wBYACLNeDZxaTaW1UsmwyCFlxTIgmZ
+         QipiGkB/xuo5IxammX9f+cQ6WxSO6VUzVXEXdIqk=
+Date:   Tue, 5 Oct 2021 16:30:06 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     "Luis R. Rodriguez" <mcgrof@kernel.org>
+Cc:     bp@suse.de, akpm@linux-foundation.org, josh@joshtriplett.org,
+        rishabhb@codeaurora.org, kubakici@wp.pl, maco@android.com,
+        david.brown@linaro.org, bjorn.andersson@linaro.org,
+        linux-wireless@vger.kernel.org, keescook@chromium.org,
+        shuah@kernel.org, mfuzzey@parkeon.com, zohar@linux.vnet.ibm.com,
+        dhowells@redhat.com, pali.rohar@gmail.com, tiwai@suse.de,
+        arend.vanspriel@broadcom.com, zajec5@gmail.com, nbroeking@me.com,
+        broonie@kernel.org, dmitry.torokhov@gmail.com, dwmw2@infradead.org,
+        torvalds@linux-foundation.org, Abhay_Salunke@dell.com,
+        jewalt@lgsinnovations.com, cantabile.desu@gmail.com, ast@fb.com,
+        andresx7@gmail.com, dan.rue@linaro.org, brendanhiggins@google.com,
+        yzaikin@google.com, sfr@canb.auug.org.au, rdunlap@infradead.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 04/14] firmware_loader: add built-in firmware kconfig
+ entry
+Message-ID: <YVxhbhmNd7tahLV7@kroah.com>
+References: <20210917182226.3532898-1-mcgrof@kernel.org>
+ <20210917182226.3532898-5-mcgrof@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Remove unused variable in
- ath11k_dp_rx_mon_merg_msdus()
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210927150743.19816-1-tim.gardner@canonical.com>
-References: <20210927150743.19816-1-tim.gardner@canonical.com>
-To:     Tim Gardner <tim.gardner@canonical.com>
-Cc:     ath11k@lists.infradead.org, tim.gardner@canonical.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20211005142930.6413FC43617@smtp.codeaurora.org>
-Date:   Tue,  5 Oct 2021 14:29:30 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210917182226.3532898-5-mcgrof@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tim Gardner <tim.gardner@canonical.com> wrote:
-
-> Coverity complains that a constant variable guards dead code. In fact,
-> mpdu_buf is set NULL and never updated.
+On Fri, Sep 17, 2021 at 11:22:16AM -0700, Luis R. Rodriguez wrote:
+> From: Luis Chamberlain <mcgrof@kernel.org>
 > 
-> 4834err_merge_fail:
->         null: At condition mpdu_buf, the value of mpdu_buf must be NULL.
->         dead_error_condition: The condition mpdu_buf cannot be true.
-> CID 92162 (#1 of 1): 'Constant' variable guards dead code (DEADCODE)
-> dead_error_line: Execution cannot reach the expression decap_format !=
->   DP_RX_DECAP_TYPE_RAW inside this statement: if (mpdu_buf && decap_forma....
-> Local variable mpdu_buf is assigned only once, to a constant value, making it
->   effectively constant throughout its scope. If this is not the intent, examine
->   the logic to see if there is a missing assignment that would make mpdu_buf not
->   remain constant.
-> 4835        if (mpdu_buf && decap_format != DP_RX_DECAP_TYPE_RAW) {
+> The built-in firmware is always supported when a user enables
+> FW_LOADER=y today, that is, it is built-in to the kernel. When the
+> firmware loader is built as a module, support for built-in firmware
+> is skipped. This requirement is not really clear to users or even
+> developers.
 > 
-> Fix this by removing mpdu_buf and unreachable code.
+> Also, by default the EXTRA_FIRMWARE is always set to an empty string
+> and so by default we really have nothing built-in to that kernel's
+> sections for built-in firmware, so today a all FW_LOADER=y kernels
+> spins their wheels on an empty set of built-in firmware for each
+> firmware request with no true need for it.
 > 
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: ath11k@lists.infradead.org
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Tim Gardner <tim.gardner@canonical.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Add a new kconfig entry to represent built-in firmware support more
+> clearly. This let's knock 3 birds with one stone:
+> 
+>  o Clarifies that support for built-in firmware requires the
+>    firmware loader to be built-in to the kernel
+> 
+>  o By default we now always skip built-in firmware even if a FW_LOADER=y
+> 
+>  o This also lets us make it clear that the EXTRA_FIRMWARE_DIR
+>    kconfig entry is only used for built-in firmware
+> 
+> Reviewed-by: Borislav Petkov <bp@suse.de>
+> Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+> ---
+>  .../driver-api/firmware/built-in-fw.rst       |  2 ++
+>  Documentation/x86/microcode.rst               |  5 ++--
+>  drivers/base/firmware_loader/Kconfig          | 25 +++++++++++++------
+>  drivers/base/firmware_loader/Makefile         |  3 +--
+>  drivers/base/firmware_loader/main.c           |  4 +--
+>  5 files changed, 26 insertions(+), 13 deletions(-)
+> 
+> diff --git a/Documentation/driver-api/firmware/built-in-fw.rst b/Documentation/driver-api/firmware/built-in-fw.rst
+> index bc1c961bace1..9dd2b1df44f0 100644
+> --- a/Documentation/driver-api/firmware/built-in-fw.rst
+> +++ b/Documentation/driver-api/firmware/built-in-fw.rst
+> @@ -8,6 +8,7 @@ the filesystem. Instead, firmware can be looked for inside the kernel
+>  directly. You can enable built-in firmware using the kernel configuration
+>  options:
+>  
+> +  * CONFIG_FW_LOADER_BUILTIN
+>    * CONFIG_EXTRA_FIRMWARE
+>    * CONFIG_EXTRA_FIRMWARE_DIR
+>  
+> @@ -17,6 +18,7 @@ into the kernel with CONFIG_EXTRA_FIRMWARE:
+>  * Speed
+>  * Firmware is needed for accessing the boot device, and the user doesn't
+>    want to stuff the firmware into the boot initramfs.
+> +* Testing built-in firmware
+>  
+>  Even if you have these needs there are a few reasons why you may not be
+>  able to make use of built-in firmware:
+> diff --git a/Documentation/x86/microcode.rst b/Documentation/x86/microcode.rst
+> index a320d37982ed..d199f0b98869 100644
+> --- a/Documentation/x86/microcode.rst
+> +++ b/Documentation/x86/microcode.rst
+> @@ -114,11 +114,12 @@ Builtin microcode
+>  =================
+>  
+>  The loader supports also loading of a builtin microcode supplied through
+> -the regular builtin firmware method CONFIG_EXTRA_FIRMWARE. Only 64-bit is
+> -currently supported.
+> +the regular builtin firmware method using CONFIG_FW_LOADER_BUILTIN and
+> +CONFIG_EXTRA_FIRMWARE. Only 64-bit is currently supported.
+>  
+>  Here's an example::
+>  
+> +  CONFIG_FW_LOADER_BUILTIN=y
+>    CONFIG_EXTRA_FIRMWARE="intel-ucode/06-3a-09 amd-ucode/microcode_amd_fam15h.bin"
+>    CONFIG_EXTRA_FIRMWARE_DIR="/lib/firmware"
+>  
+> diff --git a/drivers/base/firmware_loader/Kconfig b/drivers/base/firmware_loader/Kconfig
+> index 5b24f3959255..de4fcd9d41f3 100644
+> --- a/drivers/base/firmware_loader/Kconfig
+> +++ b/drivers/base/firmware_loader/Kconfig
+> @@ -29,8 +29,10 @@ if FW_LOADER
+>  config FW_LOADER_PAGED_BUF
+>  	bool
+>  
+> -config EXTRA_FIRMWARE
+> -	string "Build named firmware blobs into the kernel binary"
+> +config FW_LOADER_BUILTIN
+> +	bool "Enable support for built-in firmware"
+> +	default n
 
-Patch applied to ath-next branch of ath.git, thanks.
+n is always the default, no need to list it again.
 
-7210b4b77fe4 ath11k: Remove unused variable in ath11k_dp_rx_mon_merg_msdus()
+> +	depends on FW_LOADER=y
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210927150743.19816-1-tim.gardner@canonical.com/
+I don't see what this gets us to add another config option.  Are you
+making things easier later on?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Anyway, I took the first 3 patches here, please fix this up and rebase
+and resend.
 
+thanks,
+
+greg k-h
