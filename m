@@ -2,96 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C85D4236BB
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 05:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDC204236DC
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 06:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237389AbhJFD6Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Oct 2021 23:58:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32928 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237766AbhJFD5O (ORCPT
+        id S229621AbhJFELi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Oct 2021 00:11:38 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:39439 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229460AbhJFELh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Oct 2021 23:57:14 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD9BBC0613AA
-        for <linux-wireless@vger.kernel.org>; Tue,  5 Oct 2021 20:54:26 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id x27so4576415lfu.5
-        for <linux-wireless@vger.kernel.org>; Tue, 05 Oct 2021 20:54:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=DZOpdA3eYjpudg4OpQFFkH8jLHw3BxsNdxzTMff7kgw=;
-        b=Vqowca4UgiaC+fBXqBcu/uY1PBquzcLUSNLvI4m85X7UrokO3SMSU2VjgjwlLvMQmh
-         qsx0PVYwuS97nctSczbW0/EPVJ0QBpI8npXxHwrFMaNxAVtaIlRSrtfDr/01lMkJFIzk
-         NeLaREUo2x9NAHKctYTeKFJdcbLKG3DGrW4TE6vnxKsvxVRzGpwnzWZPAhbV6qTOP1TZ
-         8albRcafCq9VIoNGF5i1EtEgCzTR7YeJxiTMPsw8rZxBFCSGpBQwXD+jrBjbyyQnVjnb
-         ujZ8iI+IoHoh/d/5ZhPx+FNiAsGnS4MzGWDOWNQ3qbBfyZhavzipupkGO+MkveylWsCR
-         B8HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=DZOpdA3eYjpudg4OpQFFkH8jLHw3BxsNdxzTMff7kgw=;
-        b=H9aDS3yKoW2cdgr8FW68yaQe/U3CR1E+uoq51Mip1lijMoqCWBzmRSM3Objy0bwqfr
-         nH9qv4E+VruVFsDN4389pog1xiLhM7xX+UgeV0tXtHiCmbrnEVXHpwRFNTqAIz9WkBuq
-         XaknsPrd+GALeXobDKbhR5jLawUQdCxnna37neTwXiwH2Tm4JXPsO5tiYQmH5eO24OKD
-         dXsruUxjYo3mSd/y/0NmFDuslMG6STftNGj4jkfD8DWdyP5ckUH9DDHbEAGaz55ImtjW
-         sgjNhlZFs3QIYPNi9BozN9+2jRdK+sdqbR+kuq48mrGYYR/C+EcgPVV27gfm2dgz+yym
-         axWg==
-X-Gm-Message-State: AOAM533osxqHUjxEMTWj5ofgSalPC29yg+qinIO+qp6yQTNWAYqkxJm6
-        sZzurrTiaZVgGsdELjL7y4hiYQ==
-X-Google-Smtp-Source: ABdhPJzAuciR0Bs89UsVK2ICmqc78PA7gPD8wfVqylDag0DqJdI3Y1HguWHKaOEbTu8SD0HZCDgojQ==
-X-Received: by 2002:a2e:480a:: with SMTP id v10mr25910067lja.268.1633492465108;
-        Tue, 05 Oct 2021 20:54:25 -0700 (PDT)
-Received: from eriador.lan ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id s4sm2142967lfd.103.2021.10.05.20.54.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Oct 2021 20:54:24 -0700 (PDT)
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH v1 15/15] WIP: arm64: dts: qcom: qrb5165-rb5: add bus-pwrseq property to pcie0
-Date:   Wed,  6 Oct 2021 06:54:07 +0300
-Message-Id: <20211006035407.1147909-16-dmitry.baryshkov@linaro.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211006035407.1147909-1-dmitry.baryshkov@linaro.org>
-References: <20211006035407.1147909-1-dmitry.baryshkov@linaro.org>
+        Wed, 6 Oct 2021 00:11:37 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1633493386; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: To: From: Sender;
+ bh=Epb80q1QhIE8K+LvMuWKca8JFrzu/zlPQkAurP80fmo=; b=U4KIAUbEhM3xEjBJkVq1PG3mHHL4NXUoMgx/xWASKc4Mm16wLUp3ewqgqUSjiJrK33mLQ8di
+ +UkDD5q5F1062/0yLqgWONpCIpgwAi1/foiho1qbZuNrSwC+cTr86DVQS28/4FlTvzga6uc9
+ FgfcipTTYpkK/1P37ALDKG9sH3o=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 615d218a03355859c81b676b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 06 Oct 2021 04:09:45
+ GMT
+Sender: alokad=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A8AEBC4338F; Wed,  6 Oct 2021 04:09:45 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: alokad)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1F7CDC4338F;
+        Wed,  6 Oct 2021 04:09:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 1F7CDC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Aloka Dixit <alokad@codeaurora.org>
+To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: [v13 0/3] MBSSID and EMA support in AP mode
+Date:   Tue,  5 Oct 2021 21:09:35 -0700
+Message-Id: <20211006040938.9531-1-alokad@codeaurora.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 1 +
- 1 file changed, 1 insertion(+)
+This patchset adds support for multiple BSSID and
+enhanced multi-BSSID advertisements for AP mode.
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-index 326330f528fc..0c347cb6f8e0 100644
---- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-@@ -689,6 +689,7 @@ wifi-therm@1 {
- 
- &pcie0 {
- 	status = "okay";
-+	bus-pwrseq = <&qca_pwrseq 0>;
- };
- 
- &pcie0_phy {
+New patch added to split __ieee80211_beacon_get() first
+before MBSSID and EMA beacon handing.
+
+Aloka Dixit (1):
+  mac80211: split beacon retrieval functions
+
+John Crispin (2):
+  mac80211: MBSSID and EMA support in beacon handling
+  mac80211: MBSSID channel switch
+
+ include/net/mac80211.h     |  66 +++++++
+ net/mac80211/cfg.c         | 177 ++++++++++++++----
+ net/mac80211/ieee80211_i.h |   1 +
+ net/mac80211/tx.c          | 360 ++++++++++++++++++++++++++++---------
+ 4 files changed, 484 insertions(+), 120 deletions(-)
+
+
+base-commit: 171964252189d8ad5672c730f2197aa73092db6e
 -- 
-2.33.0
+2.31.1
 
