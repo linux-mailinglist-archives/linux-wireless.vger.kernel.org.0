@@ -2,182 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E19D242420D
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 18:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0CA9424259
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 18:14:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239315AbhJFQDG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Oct 2021 12:03:06 -0400
-Received: from mout-p-201.mailbox.org ([80.241.56.171]:17782 "EHLO
-        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239206AbhJFQDG (ORCPT
+        id S239342AbhJFQQl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Oct 2021 12:16:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34352 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231768AbhJFQQk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Oct 2021 12:03:06 -0400
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4HPfMB17jYzQlRX;
-        Wed,  6 Oct 2021 18:01:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Message-ID: <61b034e3-8d16-0488-d7e0-016e64f33b67@v0yd.nl>
-Date:   Wed, 6 Oct 2021 18:01:02 +0200
+        Wed, 6 Oct 2021 12:16:40 -0400
+Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22AE3C061746
+        for <linux-wireless@vger.kernel.org>; Wed,  6 Oct 2021 09:14:48 -0700 (PDT)
+Received: by bues.ch with esmtpsa (Exim 4.92)
+        (envelope-from <m@bues.ch>)
+        id 1mY9Z1-0002Y7-Es; Wed, 06 Oct 2021 18:14:39 +0200
+Date:   Wed, 6 Oct 2021 18:13:34 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, kernel-janitors@vger.kernel.org,
+        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org
+Subject: Re: [PATCH 2/2] b43: fix a lower bounds test
+Message-ID: <20211006181334.621ac10c@wiggum>
+In-Reply-To: <20211006073621.GE8404@kili>
+References: <20211006073542.GD8404@kili>
+        <20211006073621.GE8404@kili>
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/2] mwifiex: Use non-posted PCI write when setting TX
- ring write pointer
-Content-Language: en-US
-From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
-To:     David Laight <David.Laight@ACULAB.COM>,
-        =?UTF-8?B?J1BhbGkgUm9ow6FyJw==?= <pali@kernel.org>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Brian Norris <briannorris@chromium.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20210914114813.15404-1-verdre@v0yd.nl>
- <20210914114813.15404-2-verdre@v0yd.nl>
- <8f65f41a807c46d496bf1b45816077e4@AcuMS.aculab.com>
- <20210922142726.guviqler5k7wnm52@pali>
- <e0a4e0adc56148039f853ccb083be53a@AcuMS.aculab.com>
- <ae8ca158-ad86-9c0d-7217-f9db3d2fc42e@v0yd.nl>
-In-Reply-To: <ae8ca158-ad86-9c0d-7217-f9db3d2fc42e@v0yd.nl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6BD7322F
+Content-Type: multipart/signed; boundary="Sig_/QqtpiT/CB7f5fqDpH1ja61U";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 9/30/21 16:27, Jonas Dreßler wrote:
-> On 9/22/21 5:54 PM, David Laight wrote:
->>
->> From: Pali Rohár
->>> Sent: 22 September 2021 15:27
->>>
->>> On Wednesday 22 September 2021 14:03:25 David Laight wrote:
->>>> From: Jonas Dreßler
->>>>> Sent: 14 September 2021 12:48
->>>>>
->>>>> On the 88W8897 card it's very important the TX ring write pointer is
->>>>> updated correctly to its new value before setting the TX ready
->>>>> interrupt, otherwise the firmware appears to crash (probably because
->>>>> it's trying to DMA-read from the wrong place). The issue is present in
->>>>> the latest firmware version 15.68.19.p21 of the pcie+usb card.
->>>>>
->>>>> Since PCI uses "posted writes" when writing to a register, it's not
->>>>> guaranteed that a write will happen immediately. That means the pointer
->>>>> might be outdated when setting the TX ready interrupt, leading to
->>>>> firmware crashes especially when ASPM L1 and L1 substates are enabled
->>>>> (because of the higher link latency, the write will probably take
->>>>> longer).
->>>>>
->>>>> So fix those firmware crashes by always using a non-posted write for
->>>>> this specific register write. We do that by simply reading back the
->>>>> register after writing it, just as a few other PCI drivers do.
->>>>>
->>>>> This fixes a bug where during rx/tx traffic and with ASPM L1 substates
->>>>> enabled (the enabled substates are platform dependent), the firmware
->>>>> crashes and eventually a command timeout appears in the logs.
->>>>
->>>> I think you need to change your terminology.
->>>> PCIe does have some non-posted write transactions - but I can't
->>>> remember when they are used.
->>>
->>> In PCIe are all memory write requests as posted.
->>>
->>> Non-posted writes in PCIe are used only for IO and config requests. But
->>> this is not case for proposed patch change as it access only card's
->>> memory space.
->>>
->>> Technically this patch does not use non-posted memory write (as PCIe
->>> does not support / provide it), just adds something like a barrier and
->>> I'm not sure if it is really correct (you already wrote more details
->>> about it, so I will let it be).
->>>
->>> I'm not sure what is the correct terminology, I do not know how this
->>> kind of write-followed-by-read "trick" is correctly called.
->>
->> I think it is probably best to say:
->>     "flush the posted write when setting the TX ring write pointer".
->>
->> The write can get posted in any/all of the following places:
->> 1) The cpu store buffer.
->> 2) The PCIe host bridge.
->> 3) Any other PCIe bridges.
->> 4) The PCIe slave logic in the target.
->>     There could be separate buffers for each BAR,
->> 5) The actual target logic for that address block.
->>     The target (probably) will look a bit like an old fashioned cpu
->>     motherboard with the PCIe slave logic as the main bus master.
->>
->> The readback forces all the posted write buffers be flushed.
->>
->> In this case I suspect it is either flushing (5) or the extra
->> delay of the read TLP processing that 'fixes' the problem.
->>
->> Note that depending on the exact code and host cpu the second
->> write may not need to wait for the response to the read TLP.
->> So the write, readback, write TLP may be back to back on the
->> actual PCIe link.
->>
->> Although I don't have access to an actual PCIe monitor we
->> do have the ability to trace 'data' TLP into fpga memory
->> on one of our systems.
->> This is near real-time but they are slightly munged.
->> Watching the TLP can be illuminating!
->>
->>     David
->>
->> -
->> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
->> Registration No: 1397386 (Wales)
->>
-> 
-> Thanks for the detailed explanations, it looks like indeed the read-back is not the real fix here, a simple udelay(50) before sending the "TX ready" interrupt also does the trick.
-> 
->                  } else {
-> +                       udelay(50);
-> +
->                          /* Send the TX ready interrupt */
->                          if (mwifiex_write_reg(adapter, PCIE_CPU_INT_EVENT,
->                                                CPU_INTR_DNLD_RDY)) {
-> 
-> I've tested that for a week now and haven't seen any firmware crashes. Interestingly enough it looks like the delay can also be added after setting the "TX ready" interrupt, just not before updating the TX ring write pointer.
-> 
-> I have no idea if 50 usecs is a good duration to wait here, from trying different values I found that 10 to 20 usecs is not enough, but who knows, maybe that's platform dependent?
+--Sig_/QqtpiT/CB7f5fqDpH1ja61U
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-So I spent the last few days going slightly crazy while trying to dig deeper
-into this.
+On Wed, 6 Oct 2021 10:36:22 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-My theory was that the udelay() delays some subsequent register write or
-other communication with the card that would trigger the crash if executed
-too early after writing the TX ring write pointer. So I tried moving the
-udelay() around, carefully checking when the crash is gone and when it isn't.
+> The problem is that "channel" is an unsigned int, when it's less 5 the
+> value of "channel - 5" is not a negative number as one would expect but
+> is very high positive value instead.
+>=20
+> This means that "start" becomes a very high positive value.  The result
+> of that is that we never enter the "for (i =3D start; i <=3D end; i++) {"
+> loop.  Instead of storing the result from b43legacy_radio_aci_detect()
+> it just uses zero.
+>=20
+> Fixes: ef1a628d83fc ("b43: Implement dynamic PHY API")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/wireless/broadcom/b43/phy_g.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/wireless/broadcom/b43/phy_g.c b/drivers/net/wire=
+less/broadcom/b43/phy_g.c
+> index d5a1a5c58236..ac72ca39e409 100644
+> --- a/drivers/net/wireless/broadcom/b43/phy_g.c
+> +++ b/drivers/net/wireless/broadcom/b43/phy_g.c
+> @@ -2297,7 +2297,7 @@ static u8 b43_gphy_aci_scan(struct b43_wldev *dev)
+>  	b43_phy_mask(dev, B43_PHY_G_CRS, 0x7FFF);
+>  	b43_set_all_gains(dev, 3, 8, 1);
+> =20
+> -	start =3D (channel - 5 > 0) ? channel - 5 : 1;
+> +	start =3D (channel > 5) ? channel - 5 : 1;
+>  	end =3D (channel + 5 < 14) ? channel + 5 : 13;
+> =20
+>  	for (i =3D start; i <=3D end; i++) {
 
-In the end my theory turned out completely wrong, what I found was this:
-Pinning down the last place where the udelay() is effective gets us here
-(https://elixir.bootlin.com/linux/latest/source/drivers/net/wireless/marvell/mwifiex/main.c#L340),
-right before we bail out of the main process and idle.
+Nice finding.
 
-I tried adding the udelay() as the first thing we do on the next run of the
-while-loop after that break, but with that the crash came back.
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
 
-So what does this mean, we fix the crash by sleeping before idling? Sounds
-a bit counterintuitive to me...
 
-The only thing I can take away from this is that maybe the udelay() keeps
-the CPU from entering some powersaving state and with that the PCI bus from
-entering ASPM states (considering that the crash can also be fixed by
-disabling ASPM L1.2).
+--=20
+Michael
+
+https://bues.ch/
+
+--Sig_/QqtpiT/CB7f5fqDpH1ja61U
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmFdyy4ACgkQ9TK+HZCN
+iw4crQ//YkcAD+VIJxm2yzxA85cp8FKUG68UeFSuTudaxcEmwNxvgoM29sYjEk0C
+zT2gP0KOGrJ5WcjSEVeHs0x8MNJ0mjby9YYGJ30ggM4Mz/jWABF9SckOs4Vou2XA
+ssWJGPu9Qp44BbQrrJpds81piTlEjPtBuzAusYN58NfnHnI3jSOT+gPw59sQ17Re
+X7qRCRdNkTejmyE7FtZ19/r0zHhtxJ/cVeSewYRrPdrXr7mIMbXIQeQffRczoGER
+4ntZUyHSOTamVrwDNr6X1sg7+p2jYwN2PmQyhH53NYQZcdHEhWcPa9iFBIdBCUyb
+CXRVP+uZ1nmQ/muZ+tf85Wbm651RN8B20y3eoABozHOVST0wZAs0t5Ql7H1CJsWh
+3160MN9nzRG2rCuuXq5MIHzHv8QvPEIH5oev2lzBzH+O4iAjY6J07SKc1ajJtvlt
+fsfw3WsenslRrUE33js3mM3M8ZMxG0uV8QGbDsIY+xQo6zumN2hja5qaonYnUpkt
+ZRZM2kA+qTkNvsq0ZaRwiGQnCPpPGT5GCPsZ61woeL1NLPlAq1/nNsPG9skP38Om
+3FiwBuz7jbawgO+FOeizDmC1/rz2shzcQ1MLsHa2AvIYPQF9Zmg8VoNpCIBwddgo
+s6GbKK+1Mt0MOprjl8vAh7IaP02JYtecWFN0E5r9L5gGLqHRP5g=
+=o5Qg
+-----END PGP SIGNATURE-----
+
+--Sig_/QqtpiT/CB7f5fqDpH1ja61U--
