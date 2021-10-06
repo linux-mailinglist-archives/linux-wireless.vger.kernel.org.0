@@ -2,117 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0B734233C8
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 00:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 233384234CD
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 02:10:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236911AbhJEWsA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Oct 2021 18:48:00 -0400
-Received: from mail-oi1-f171.google.com ([209.85.167.171]:42821 "EHLO
-        mail-oi1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236820AbhJEWr7 (ORCPT
+        id S233540AbhJFAMI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Oct 2021 20:12:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39828 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230188AbhJFAMI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Oct 2021 18:47:59 -0400
-Received: by mail-oi1-f171.google.com with SMTP id x124so1358397oix.9;
-        Tue, 05 Oct 2021 15:46:08 -0700 (PDT)
+        Tue, 5 Oct 2021 20:12:08 -0400
+Received: from mail-oo1-xc2f.google.com (mail-oo1-xc2f.google.com [IPv6:2607:f8b0:4864:20::c2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C2DBC061749
+        for <linux-wireless@vger.kernel.org>; Tue,  5 Oct 2021 17:10:17 -0700 (PDT)
+Received: by mail-oo1-xc2f.google.com with SMTP id b5-20020a4ac285000000b0029038344c3dso314012ooq.8
+        for <linux-wireless@vger.kernel.org>; Tue, 05 Oct 2021 17:10:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ED1SxDey3Z4okNwRyGQyA6XxQlFLbzg8074JskrL5E8=;
+        b=d3G7oao7ay8wgeHKYFdjtMz6KumjAAZihQKAELWFeD0BU2Ha+BU9sAPCIlFRaVhOkE
+         CC2bOXLY9MX7UN0iMp1H4kFQtj4hnYJwGsfxHVi0xcLH4zTtYmM8ZYEZOVfIDq1mPhmt
+         /2qJvCCFazV+94KkH5t0i+rdjMOjc3AU1AV9A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=idk/OPLqOoxicS++8eNcVOO+4pet2v6UE8sH+4Sn+Fs=;
-        b=WyTt2CQ9yJFlHGsC8zVMPHHvq5DXj31iv+UOO1BmXHi63+boxFKUna0r6qh0YTQY1/
-         M6TlUdbENjmP7LKGWBkuEjexUxmMNRskHJcy8eU4pYWnCYPzV/Fs/ilhnlQbyID86q5a
-         hvadqI9on0eHQYE6O2A0GT2ydrplUF0O10uZd25G56AjOs/rAZ7lU/mqGC3Io6kjssSg
-         sekxx0qnJLKGOTterNuzRs8zgl217lLuLxLGt14WiOShWd8U8Fn7urS4M+9uiUvILwQA
-         B8TU7Fnns99SfJyDaEBZfWzSpF9TDVV0hlB1T1uOtZX/EitPCyLKOSA+/GFJnXrALjir
-         Xzog==
-X-Gm-Message-State: AOAM533xb7Cko15KkCkvj0LbQF//I+SDLs5IsG8PlTuU/rz11d6CEkgn
-        aOTdNXsO68c5Zfxs7/t/HQ==
-X-Google-Smtp-Source: ABdhPJzuCyAG5KCu9OI9pzfAoSNtgTk0/nwWINbsvAaJKNhig4buPmUm2PEwS2D8Cwi0GfG/C6nvPw==
-X-Received: by 2002:aca:2415:: with SMTP id n21mr4542248oic.27.1633473967660;
-        Tue, 05 Oct 2021 15:46:07 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id a9sm3775851otk.3.2021.10.05.15.46.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Oct 2021 15:46:06 -0700 (PDT)
-Received: (nullmailer pid 106780 invoked by uid 1000);
-        Tue, 05 Oct 2021 22:45:59 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     devicetree@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?utf-8?b?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
-        netdev@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devel@driverdev.osuosl.org,
-        =?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-kernel@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, linux-mmc@vger.kernel.org
-In-Reply-To: <20211005135400.788058-3-Jerome.Pouiller@silabs.com>
-References: <20211005135400.788058-1-Jerome.Pouiller@silabs.com> <20211005135400.788058-3-Jerome.Pouiller@silabs.com>
-Subject: Re: [PATCH v8 02/24] dt-bindings: introduce silabs,wfx.yaml
-Date:   Tue, 05 Oct 2021 17:45:59 -0500
-Message-Id: <1633473959.392405.106778.nullmailer@robh.at.kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ED1SxDey3Z4okNwRyGQyA6XxQlFLbzg8074JskrL5E8=;
+        b=j2zSYZhBMNUSpcuxBaRI84BrmGee+U0TJlDxLc8hlhtiR5blCDG3X4/sFFgKq8LkF3
+         cxo9eoCeFiMjYnnibeIMQLnZ36wI7+ln5Xw/TEsoLWzZ2F8nPNrKrqVuOCXz/lKCayJs
+         Lw9lkd7Ig/ph2bfZbRFXWvDjMH96/E2AS5K6NLF89tVBTARhVUb2RTPCAmFqwkFVtz/y
+         XCGeQhEcIZ9tzpWkYTIC6jcZSEsS8jg9jq8p91WUcbJLiDy+gsl+eoGOje4sgUpzCUwv
+         znKFjNiCXXXdwk7tSPyaRAY8vjbws4AiaaLfyPL5tX2t5gWhNVw6XGhcuL6klPjzGrbS
+         wN2Q==
+X-Gm-Message-State: AOAM533dLwkysQFHJd/ytjpTrqb1ZeZr0ic4hLTJmnGgHlu+lmkZBbTt
+        +5ydNdjF9c6jf0VDP3HfAzbZX7ZFQOLhXg==
+X-Google-Smtp-Source: ABdhPJxUcDLfD617IHrrU7BWtRqeO+L8z+cW+VDIG8SuO8rc6L9a1/mDspP/JnjN6tN9nV5gTlZ+5A==
+X-Received: by 2002:a4a:7610:: with SMTP id t16mr2016116ooc.42.1633479016090;
+        Tue, 05 Oct 2021 17:10:16 -0700 (PDT)
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com. [209.85.210.45])
+        by smtp.gmail.com with ESMTPSA id x28sm4110423ote.24.2021.10.05.17.10.14
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Oct 2021 17:10:15 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id 5-20020a9d0685000000b0054706d7b8e5so1017667otx.3
+        for <linux-wireless@vger.kernel.org>; Tue, 05 Oct 2021 17:10:14 -0700 (PDT)
+X-Received: by 2002:a9d:75c2:: with SMTP id c2mr17231628otl.230.1633479014381;
+ Tue, 05 Oct 2021 17:10:14 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210820043538.12424-1-pkshih@realtek.com> <8735pkiu0t.fsf@codeaurora.org>
+ <9b54e3c321a4414cbae62616d8a913f4@realtek.com> <877desggrm.fsf@codeaurora.org>
+In-Reply-To: <877desggrm.fsf@codeaurora.org>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Tue, 5 Oct 2021 17:10:03 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXPeNZVVWGPyYGAnxcf2nhhjXQE5yOxmgCKx1Hauj62NJg@mail.gmail.com>
+Message-ID: <CA+ASDXPeNZVVWGPyYGAnxcf2nhhjXQE5yOxmgCKx1Hauj62NJg@mail.gmail.com>
+Subject: Re: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Pkshih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 05 Oct 2021 15:53:38 +0200, Jerome Pouiller wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> 
-> Prepare the inclusion of the wfx driver in the kernel.
-> 
-> Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> ---
->  .../bindings/net/wireless/silabs,wfx.yaml     | 137 ++++++++++++++++++
->  1 file changed, 137 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
-> 
+On Mon, Oct 4, 2021 at 10:52 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+> This reminds me, if anyone has any objections about taking this to
+> wireless-drivers-next speak up now. Otherwise I assume everyone are
+> happy with the driver.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+I realize I never provided any formal tags to this series. I'm not
+sure I can count a full Reviewed-by, but we've been playing with it
+here for some time, and while not perfect, it's certainly a start:
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml:39:31: [error] syntax error: mapping values are not allowed here (syntax)
-
-dtschema/dtc warnings/errors:
-make[1]: *** Deleting file 'Documentation/devicetree/bindings/net/wireless/silabs,wfx.example.dts'
-Traceback (most recent call last):
-  File "/usr/local/bin/dt-extract-example", line 45, in <module>
-    binding = yaml.load(open(args.yamlfile, encoding='utf-8').read())
-  File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/main.py", line 434, in load
-    return constructor.get_single_data()
-  File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/constructor.py", line 120, in get_single_data
-    node = self.composer.get_single_node()
-  File "_ruamel_yaml.pyx", line 706, in _ruamel_yaml.CParser.get_single_node
-  File "_ruamel_yaml.pyx", line 724, in _ruamel_yaml.CParser._compose_document
-  File "_ruamel_yaml.pyx", line 775, in _ruamel_yaml.CParser._compose_node
-  File "_ruamel_yaml.pyx", line 889, in _ruamel_yaml.CParser._compose_mapping_node
-  File "_ruamel_yaml.pyx", line 775, in _ruamel_yaml.CParser._compose_node
-  File "_ruamel_yaml.pyx", line 891, in _ruamel_yaml.CParser._compose_mapping_node
-  File "_ruamel_yaml.pyx", line 904, in _ruamel_yaml.CParser._parse_next_event
-ruamel.yaml.scanner.ScannerError: mapping values are not allowed in this context
-  in "<unicode string>", line 39, column 31
-make[1]: *** [Documentation/devicetree/bindings/Makefile:20: Documentation/devicetree/bindings/net/wireless/silabs,wfx.example.dts] Error 1
-make[1]: *** Waiting for unfinished jobs....
-./Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml:  mapping values are not allowed in this context
-  in "<unicode string>", line 39, column 31
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml: ignoring, error parsing file
-warning: no schema found in file: ./Documentation/devicetree/bindings/net/wireless/silabs,wfx.yaml
-make: *** [Makefile:1441: dt_binding_check] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/1536655
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Tested-by: Brian Norris <briannorris@chromium.org>
