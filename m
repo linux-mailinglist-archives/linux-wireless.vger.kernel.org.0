@@ -2,119 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89E534247DA
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 22:20:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C29414248BC
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 23:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239435AbhJFUWE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Oct 2021 16:22:04 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:44558 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232273AbhJFUWD (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Oct 2021 16:22:03 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633551611; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=qKnVoVXIJvpVlqQWbP2fBZsvjO2Pe2LOuGkd23cSLWw=;
- b=hDI2UHt5lKZv0P5hcvWO5Xkw5v6JecFGZ5er08HM6/acFMds5DDoaXwNS+l0Gc4ZV/tNAdDv
- CX3ml/hz3ShMOiCZWEqi3JfmO+wO3X0UFijnH8kw8fAsGeJXRVyu4G9TbATfa7O+mwWz77pb
- oDI7CupZkf9jmY2VawI3JIZVQt4=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 615e04fa30ce13d2b4afd8aa (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 06 Oct 2021 20:20:10
- GMT
-Sender: alokad=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7D4E2C43460; Wed,  6 Oct 2021 20:20:10 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BD552C4338F;
-        Wed,  6 Oct 2021 20:20:09 +0000 (UTC)
+        id S239620AbhJFVUy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Oct 2021 17:20:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35596 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239603AbhJFVUx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 6 Oct 2021 17:20:53 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E861E611C1;
+        Wed,  6 Oct 2021 21:19:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633555141;
+        bh=KipSEYG2JvGtJbo74srEgGzL10+fE/pd4lI1kQ3DUIU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iZtn7a2KEujuB6uoCZSiskZvZnNvTgXfVm2vjy4MEDdHpQvWi3TAUzt3+afjjc5Uw
+         65/1xxHyq1enaT/vtUpLRumYLc+iZ5FP8zaZVMuSkVj5aNh5O6Rug0lj2/U4ogz+E9
+         7x/kjkRJQdcge2f44ygX24Gu83CY6xiMELSf3ETHneMtwy3Ot7fS8kGd6bRE+p+3NE
+         9XiZ1PY52byMEvtifsyeBGoqy0L1RWE9o6XU1HhQ/C3DpltpGngx+ghn6qYU14nU2J
+         nM0kGkaJ5bEA9BxfHykLTnXh046AxpF+3fPvWrXDDBD+SSn2tEOhoSv6dOdT4Lix0f
+         8TqM6/IraK06A==
+Date:   Wed, 6 Oct 2021 16:16:34 -0500
+From:   Seth Forshee <sforshee@kernel.org>
+To:     Sungbo Eo <mans0n@gorani.run>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [wireless-regdb] [PATCH] wireless-regdb: Update regulatory rules
+ for South Korea (KR)
+Message-ID: <YV4SMhi4BmFDMVgz@ubuntu-x1>
+References: <20210929172728.7512-1-mans0n@gorani.run>
+ <YV2tukujds7PodAf@ubuntu-x1>
+ <a4cb97fc-de32-4d15-47a5-a7ad26bd32ab@gorani.run>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Wed, 06 Oct 2021 13:20:09 -0700
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Cc:     alokad=codeaurora.org@codeaurora.org
-Subject: Re: [v13 1/3] mac80211: split beacon retrieval functions
-In-Reply-To: <20211006040938.9531-2-alokad@codeaurora.org>
-References: <20211006040938.9531-1-alokad@codeaurora.org>
- <20211006040938.9531-2-alokad@codeaurora.org>
-Message-ID: <ad3a3412669925daaa35c143f84172fb@codeaurora.org>
-X-Sender: alokad@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a4cb97fc-de32-4d15-47a5-a7ad26bd32ab@gorani.run>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-10-05 21:09, Aloka Dixit wrote:
-> Split __ieee80211_beacon_get() into a separate function for AP mode
-> ieee80211_beacon_get_ap().
-> Also, move the code common to all modes (AP, adhoc and mesh) to
-> a separate function ieee80211_beacon_get_finish().
+On Thu, Oct 07, 2021 at 04:18:01AM +0900, Sungbo Eo wrote:
+> On 2021-10-06 23:07, Seth Forshee wrote:
+> > On Thu, Sep 30, 2021 at 02:27:28AM +0900, Sungbo Eo wrote:
+> > > This patch is based on MSIT Public Notification 2020-113 ("Unlicensed Radio
+> > > Equipment Established Without Notice"), officially announced on 2021-01-06.
+> > > 
+> > > Extend the last 5 GHz frequency range to 5850 MHz.
+> > > 
+> > > WiFi 6E is now allowed with the following restrictions:
+> > > * Indoor: the full 1.2 GHz range, up to 160 MHz bandwidth and 250mW EIRP
+> > > * Outdoor: the lower 500 MHz range, up to 160 MHz bandwidth and 25mW EIRP
+> > > Here only the former entry is added.
+> > > 
+> > > And also update the regulatory source links.
+> > > 
+> > > Signed-off-by: Sungbo Eo <mans0n@gorani.run>
+> > > ---
+> > > I have two questions.
+> > > 
+> > > The regulation has one more restriction:
+> > >    The TX power should not exceed 2.5 mW/MHz
+> > >    when the frequency range includes the whole or a part of 5230-5250 MHz
+> > >    and the bandwidth is equal to or less than 40 MHz.
+> > > That leads to the followings:
+> > >    5230-5250 @ 20 -> 17 dBm
+> > >    5210-5250 @ 40 -> 20 dBm
+> > >    5170-5250 @ 80 -> 23 dBm
+> > > Is it possible to add this rule without lowering the TX power for 80 MHz bandwidth?
+> > 
+> > I've tried to look at the documents, but much of the information appears
+> > to be in images where machine translation doesn't work, and I haven't
+> > been able to find English versions.
 > 
-> Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
-> ---
-> v13:New addition to the patch series compared to v12.
-> This change is added in a separate patch for better readability.
+> Oops, sorry. I should have prepared it in more convertible format.
+> There's no English version of it, but at least I could find a HWP document
+> file [1] that contains regular tables instead of images. (The URL is from
+> the "attached files" tab in the source link.)
 > 
->  net/mac80211/tx.c | 203 +++++++++++++++++++++++++++-------------------
->  1 file changed, 118 insertions(+), 85 deletions(-)
+> You can open it with a dedicated viewer [2] or an online viewer [3]. But
+> those free viewers do not offer conversion to DOC or HTML. (It seems the
+> dedicated one has "print to PDF" feature, though.)
 > 
-> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-> index 2d1193ed3eb5..ac9ab007dc6f 100644
-> --- a/net/mac80211/tx.c
-> +++ b/net/mac80211/tx.c
-> @@ -4979,6 +4979,115 @@ static int ieee80211_beacon_protect(struct 
-> sk_buff *skb,
->  	return 0;
->  }
+> I also tried an online convert tool but it failed due to the long processing
+> time... I can send you converted versions myself if you prefer.
 > 
-> +static void
-> +ieee80211_beacon_get_finish(struct ieee80211_hw *hw,
-> +			    struct ieee80211_vif *vif,
-> +			    struct ieee80211_mutable_offsets *offs,
-> +			    struct beacon_data *beacon,
-> +			    struct sk_buff *skb,
-> +			    struct ieee80211_chanctx_conf *chanctx_conf,
-> +			    u16 csa_off_base)
-> +{
-> +	struct ieee80211_local *local = hw_to_local(hw);
-> +	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-> +	struct ieee80211_tx_info *info;
-> +	enum nl80211_band band;
-> +	struct ieee80211_tx_rate_control txrc;
-> +
-> +	/* CSA offsets */
-> +	if (offs && beacon) {
-> +		u16 i;
-> +
-> +		for (i = 0; i < IEEE80211_MAX_CNTDWN_COUNTERS_NUM; i++) {
-> +			u16 csa_off = beacon->cntdwn_counter_offsets[i];
-> +
-> +			if (!csa_off)
-> +				continue;
-> +
-> +			offs->cntdwn_counter_offs[i] = csa_off_base + csa_off;
-> +		}
-> +	}
-> +
+> [1] https://www.law.go.kr/LSW//flDownload.do?flSeq=93728653
+> [2] https://www.hancom.com/cs_center/csDownload.do
+> [3] https://hwp.polarisoffice.com/
+> 
+> > 
+> > Taking the above at face value, I actually get slightly lower EIRP
+> > values for a PSD of 2.5 mW/MHz (EIRP = PSD + 10 * log(bandwidth)): 16
+> > dBm for 20 MHz and 19 dBm for 40 MHz.
+> 
+> I thought log(2.5) equals 0.4? We also have 2.5 mW/MHz * 40 MHz = 100 mW.
 
-I just now realized that the CSA offset part can be moved to the AP 
-specific function.
-ieee80211_beacon_get_finish() won't even need csa_off_base as an input 
-in that case.
-Will wait for other comments and then move it.
+Yeah ... I did the math again and your numbers are right, guess I made a
+mistake the first time.
+
+> > We don't currently have any way to
+> > express PSD limits in the database nor a way to express different power
+> > limits for different bandwidths, so it's not possible to comply with the
+> > PSD limits for 20/40 MHz without also lowering the EIRP for 80 MHz.
+> 
+> Too bad. :( I'll prepare v2 soon.
+> 
+> > 
+> > > And do we need AUTO-BW for 6E channels? I thought it is for merging adjacent frequency ranges.
+> > 
+> > That is correct. Since there are no adjacent rules, AUTO-BW doesn't make
+> > sense.
+> 
+> Okay, thanks!
+> 
+> Regards,
+> Sungbo
+> 
+> > 
+> > Thanks,
+> > Seth
+> > 
+> 
+> _______________________________________________
+> wireless-regdb mailing list
+> wireless-regdb@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/wireless-regdb
