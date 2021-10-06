@@ -2,199 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2985423573
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 03:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA64A42365C
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 05:49:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236953AbhJFBhJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Oct 2021 21:37:09 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:51748 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231855AbhJFBhJ (ORCPT
+        id S231156AbhJFDv3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Oct 2021 23:51:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60068 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230141AbhJFDv1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Oct 2021 21:37:09 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1961Z4DB0016478, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1961Z4DB0016478
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 6 Oct 2021 09:35:04 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Wed, 6 Oct 2021 09:35:04 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Wed, 6 Oct 2021 09:35:03 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
- RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Wed, 6 Oct 2021 09:35:03 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH v6 03/24] rtw89: add core and trx files
-Thread-Topic: [PATCH v6 03/24] rtw89: add core and trx files
-Thread-Index: AQHXlXz/YnZ2oZOf0EqyX08JkH+H2au+l1CcgAWc+lCAABr9Wv//iXKAgACQu8D//4TRAIABd+2Q
-Date:   Wed, 6 Oct 2021 01:35:03 +0000
-Message-ID: <5d0cb19ab70348f88ab0924dad5c3e7e@realtek.com>
-References: <20210820043538.12424-1-pkshih@realtek.com>
- <20210820043538.12424-4-pkshih@realtek.com> <877dewiudp.fsf@codeaurora.org>
- <4b2f1c6b06e040d19b64d07500e0447b@realtek.com>
- <87pmsjgbhp.fsf@codeaurora.org>
- <CAK8P3a0T4iqtF0wj5+VUT6z3S2yGC4uaOr806NCiQTpYoPawUg@mail.gmail.com>
- <a8dd5e59fb8f491fb34e52d495cf4c85@realtek.com>
- <CAK8P3a1Zk4AgQ4Cyv3RmLH8Zuaj2uamFQ3hDZktrOVduZ90r6w@mail.gmail.com>
-In-Reply-To: <CAK8P3a1Zk4AgQ4Cyv3RmLH8Zuaj2uamFQ3hDZktrOVduZ90r6w@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzUg5LiL5Y2IIDEwOjUxOjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 5 Oct 2021 23:51:27 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17657C061753
+        for <linux-wireless@vger.kernel.org>; Tue,  5 Oct 2021 20:49:21 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id b20so4573700lfv.3
+        for <linux-wireless@vger.kernel.org>; Tue, 05 Oct 2021 20:49:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=l6uSTYKI1iDVQ1/5MVV35eiuQr3oTGL96afJoVN7XpE=;
+        b=XMP0oiRighob77xlb1PXIzbL2qu7sd7BzC0FticBn2Be9aA1nYfrnT70VCqohLdx3q
+         vA8YhA0yyD5li8ZRYbhNQz+bdNWHdMYyMIk/y4Ha2x3vA3udI+GGWlrbxZsA8V1I10i1
+         +QF/eMLISmlGltEdbr7NmJVTaVM6rHQWjAxJgTpetWPilWj8OFNsLi/Zcq240E8/V4Qh
+         FRNjGIq5x8LN0FTLd2H8v1Q5jPAVjGnYoo+hpozvUPnpE50RwWjatQsa30Z7S5s2o/jI
+         CNlW4Kha+zjkWTI/jp7b5/BBvFjjpVfJRGQ48r7KLmQhSADf9iuCcnB03Pjt5t5/Grtx
+         a2ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=l6uSTYKI1iDVQ1/5MVV35eiuQr3oTGL96afJoVN7XpE=;
+        b=M/iDLllPp+TNy85ZwjVQPguW00oowHpz2+sFTVvgtpzqaJmtfnDHf4l0WjLaWNg8ME
+         6pFuD3RXP8dj7f1uDfo9Tg7AgfYs1Ax0/jvuZlYZ337maaHsUOVH6tmDtYGUTJbApftt
+         94QYJgBODz0tfSerzoDr1n65GbK/QvSV703yHmZOMM+rImQoXutrhNJyE/mj2SNDSxWf
+         RHRhVgB6LSoROdGdVGDnYU0xQMaq0R8iFEsxIVpT0jJ5p/6ABgdor5P1Wz90wY26vF9d
+         lChC93GFPNSfGpBSMpiOhMp9lgmTMEd2xQ58iJWLRBIIfPc7GTZ8EdXgzBIV0OC+uloZ
+         KGcQ==
+X-Gm-Message-State: AOAM530H0P5exJUKGXG7MR8JsK3PPQaT4XiLQ30JDafAp4u+uuZe95iw
+        dSdS/G3ROoh9S5+GkdRht6DwlYUH9HGGOJf+vMelKg==
+X-Google-Smtp-Source: ABdhPJya/cHmu4jYQmBnP1nXJTIFK74KW21Myh3oIz3kpdEwg32cUPpqXnXVmYd4H6feMiKWwtLp8SDERd4E6oJYIJg=
+X-Received: by 2002:a2e:5442:: with SMTP id y2mr26848306ljd.436.1633492159155;
+ Tue, 05 Oct 2021 20:49:19 -0700 (PDT)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/06/2021 01:16:34
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 166534 [Oct 05 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/06/2021 01:19:00
+References: <20210829131305.534417-1-dmitry.baryshkov@linaro.org> <4a508fc1-6253-9c11-67fb-f84f17fd2719@kali.org>
+In-Reply-To: <4a508fc1-6253-9c11-67fb-f84f17fd2719@kali.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Wed, 6 Oct 2021 06:49:08 +0300
+Message-ID: <CAA8EJprsfzFWP1KH61UEkjJmY8rDFTN5i_53Mc0e9n3oxJsBNA@mail.gmail.com>
+Subject: Re: [RFC v2 00/13] create power sequencing subsystem
+To:     Steev Klimaszewski <steev@kali.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
+        <linux-arm-msm@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:BLUETOOTH SUBSYSTEM" <linux-bluetooth@vger.kernel.org>,
+        ath10k@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEFybmQgQmVyZ21hbm4gPGFy
-bmRAYXJuZGIuZGU+DQo+IFNlbnQ6IFR1ZXNkYXksIE9jdG9iZXIgNSwgMjAyMSA1OjU5IFBNDQo+
-IFRvOiBQa3NoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gQ2M6IEFybmQgQmVyZ21hbm4gPGFy
-bmRAYXJuZGIuZGU+OyBLYWxsZSBWYWxvIDxrdmFsb0Bjb2RlYXVyb3JhLm9yZz47DQo+IGxpbnV4
-LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHY2IDAzLzI0
-XSBydHc4OTogYWRkIGNvcmUgYW5kIHRyeCBmaWxlcw0KPiANCj4gT24gVHVlLCBPY3QgNSwgMjAy
-MSBhdCAxMTozMiBBTSBQa3NoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JvdGU6DQo+ID4gPiBD
-YzogUGtzaGloIDxwa3NoaWhAcmVhbHRlay5jb20+OyBBcm5kIEJlcmdtYW5uIDxhcm5kQGFybmRi
-LmRlPjsNCj4gbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+ID4gPiA+DQo+ID4gPiA+
-IEFybmQsIHdoYXQgZG8geW91IHN1Z2dlc3Q/IElzIF9fYWx3YXlzX2lubGluZSBnb29kIHNvbHV0
-aW9uIGZvciB0aGlzPyBJDQo+ID4gPiA+IHRoaW5rIHdlIHNob3VsZCBhdCBsZWFzdCBhZGQgYSBj
-b21tZW50IGV4cGxhaW5pbmcgd2h5IGl0J3MgbmVlZGVkLg0KPiA+ID4NCj4gPiA+IF9fYWx3YXlz
-X2lubGluZSBjYW4gbWFrZSBzZW5zZSB0byBmb3JjZSB0aGUgY29tcGlsZXIgdG8gYmVoYXZlDQo+
-ID4gPiBzYW5lbHkgaWYgaXQgZG9lc24ndCB3b3JrIGl0IG91dCBieSBpdHNlbGYsIGFuZCBJIHRo
-aW5rIHRoYXQgaXMgaG93IHRoaXMNCj4gPiA+IGZ1bmN0aW9uIHdhcyBtZWFudCB0byBiZSB1c2Vk
-OiB0aGUgX19jb21waWxldGltZV9lcnJvciBpbiBiaXRmaWVsZC5oDQo+ID4gPiBpcyBpbnRlbmRl
-ZCB0byBmaW5kIGFueSBjYWxsZXJzIHRoYXQgaGF2ZSBhIG5vbi1jb25zdGFudCBhcmd1bWVudCwN
-Cj4gPiA+IGJlY2F1c2UgdGhhdCB3b3VsZCByZXN1bHQgaW4gaG9ycmlibGUgY29kZS4NCj4gPiA+
-DQo+ID4gPiBJIHdvdWxkIHN1Z2dlc3QgbG9va2luZyBhdCB0aGUgb2JqZWN0IGNvZGUgdGhhdCB5
-b3UgZ2V0IHdpdGggLU9zIGFmdGVyDQo+ID4gPiB0aGUgYWRkZWQgX19hbHdheXNfaW5saW5lLCBq
-dXN0IHRvIG1ha2Ugc3VyZSB0aGF0IHRoaXMgaXNuJ3QgYWxzbw0KPiA+ID4gaG9ycmlibGUuDQo+
-ID4NCj4gPiBJIGNoZWNrIHRoZSBmdW5jdGlvbiBydHc4OV9jb3JlX2ZpbGxfdHhkZXNjKCkgd2hp
-Y2ggdXNlcyB0aGVzZSBtYWNyb3MuDQo+ID4gV2l0aCBpbmxpbmUsIHRoZSBvYmplY3QgY29kZSBz
-aXplIGlzIDB4MUFGLiBXaXRoIF9fYWx3YXlzX2lubGluZSBhbmQNCj4gPiAtT3MsIHRoZSBzaXpl
-IGlzIDB4MUE0LiAoeDg2LTY0IHBsYXRmb3JtKQ0KPiA+DQo+ID4gQ29tcGFyZSB0aGUgb2JqZWN0
-IGNvZGVzIHNpZGUtYnktc2lkZSwgdGhleSBhcmUgYWxtb3N0IHRoZSBzYW1lIGV4Y2VwdA0KPiA+
-IHRvIHNvbWUgaW5zdHJ1Y3Rpb25zLiBJIHRoaW5rIHRoaXMgaXMgYmVjYXVzZSB0aGUgaW5saW5l
-IGZ1bmN0aW9uDQo+ID4gSSBhcHBseSBfX2Fsd2F5c19pbmxpbmUgY29udGFpbnMgb25seSBhIHNp
-bXBsZSBzdGF0ZW1lbnQuDQo+IA0KPiBPay4gRGlkIHlvdSBjaGVjayB0aGUgb3V0cHV0IGZvciB0
-aGUgY29uZmlndXJhdGlvbiB0aGF0IHNob3dlZCB0aGUNCj4gcHJvYmxlbSBhcyB3ZWxsLCBhZnRl
-ciBhZGRpbmcgX19hbHdheXNfaW5saW5lPyBUaGVyZSBhcmUgY2VydGFpbg0KPiBjb21waWxlLXRp
-bWUgb3B0aW9ucyB0aGF0IGNvdWxkIGNhdXNlIHRoZSBjb2RlIHRvIGJlY29tZSB1bm9wdGltaXpl
-ZCwNCj4gZS5nLiBLQVNBTiwgaW4gYWRkaXRpb24gdG8gdGhlIE9QVElNSVpFX0ZPUl9TSVpFLg0K
-DQpTdW1tYXJpemUgb2JqZWN0IGNvZGUgc2l6ZSBvZiB0aGUgY29tYmluYXRpb25zOg0KDQpjY2Zs
-YWcgICAgICAgICAgICAgIGRlZmF1bHQgICAgICAgICAgIC1Pcw0KPT09PT09ICAgICAgICAgICAg
-ICA9PT09PT09ICAgICAgICAgICA9PT09PT09PT09PT09DQppbmxpbmUgICAgICAgICAgICAgIDB4
-MUFGICAgICAgICAgICAgIFgNCmFsd2F5c19pbmxpbmUgICAgICAweDFBQSAgICAgICAgICAgICAw
-eDFBNA0KDQpXaXRoIGRlZmF1bHQgY2NmbGFnLCB0aGUgZGlmZmVyZW5jZSBvZiBpbmxpbmUgYW5k
-IGFsd2F5c19pbmxpbmUgaXMgYQ0KamUvam5lIGluc3RydWN0aW9uIGZvciAnaWYgKCFkZXNjX2lu
-Zm8tPmVuX3dkX2luZm8pJy4gVGhlIGFsd2F5c19pbmxpbmUNCmRvZXNuJ3QgYWZmZWN0IHRoZSBw
-YXJ0IHRoYXQgdXNlIFJUVzg5X1NFVF9UWFdEKCkuDQoNCkNvbXBhcmUgYWx3YXlzX2lubGluZSBy
-b3csIHRoZSBjYXNlIG9mIGRlZmF1bHQgY2NmbGFnIHVzZXMgbW92emJsICg0IGJ5dGVzKSwNCmJ1
-dCAtT3MgY2FzZSB1c2VzIG1vdiAoMyBieXRlcykuDQoNCkJ5IHRoZSByZXN1bHRzLCAtT3MgYWZm
-ZWN0IHRoZSBvYmplY3QgY29kZSBzaXplLiBhbHdheXNfaW5saW5lIGRvZXNuJ3QNCmFmZmVjdCB0
-aGUgY29kZSwgYnV0IGFmZmVjdCB0aGUgaW5zdHJ1Y3Rpb24gKGplL2puZSkgbmVhcmJ5Lg0KDQoN
-CkkgdXNlIFVidW50dW4ga2VybmVsIHRoYXQgZG9lc24ndCBlbmFibGUgS0FTQU4uDQojIENPTkZJ
-R19LQVNBTiBpcyBub3Qgc2V0DQoNCj4gDQo+ID4gPiArI2RlZmluZSBSVFc4OV9TRVRfVFhXRF9C
-T0RZX1dQX09GRlNFVCh0eGRlc2MsIHZhbCkgXA0KPiA+ID4gKyBSVFc4OV9TRVRfVFhXRCh0eGRl
-c2MsIHZhbCwgMHgwMCwgR0VOTUFTSygzMSwgMjQpKQ0KPiA+ID4gKyNkZWZpbmUgUlRXODlfU0VU
-X1RYV0RfQk9EWV9NT1JFX0RBVEEodHhkZXNjLCB2YWwpIFwNCj4gPiA+ICsgUlRXODlfU0VUX1RY
-V0QodHhkZXNjLCB2YWwsIDB4MDAsIEJJVCgyMykpDQo+ID4gPiArI2RlZmluZSBSVFc4OV9TRVRf
-VFhXRF9CT0RZX1dEX0lORk9fRU4odHhkZXNjLCB2YWwpIFwNCj4gPiA+ICsgUlRXODlfU0VUX1RY
-V0QodHhkZXNjLCB2YWwsIDB4MDAsIEJJVCgyMikpDQo+ID4gPiArI2RlZmluZSBSVFc4OV9TRVRf
-VFhXRF9CT0RZX0ZXX0RMKHR4ZGVzYywgdmFsKSBcDQo+ID4gPiArIFJUVzg5X1NFVF9UWFdEKHR4
-ZGVzYywgdmFsLCAweDAwLCBCSVQoMjApKQ0KPiA+ID4NCj4gPiA+IEkgd291bGQgcGVyc29uYWxs
-eSB3cml0ZSB0aGlzIHdpdGhvdXQgdGhlIHdyYXBwZXJzLCBpbnN0ZWFkIGRlZmluaW5nIHRoZQ0K
-PiA+ID4gYml0bWFzayBtYWNyb3MgYXMgdGhlIG1hc2tzIGFuZCB0aGVuIG9wZW4tY29kaW5nIHRo
-ZQ0KPiA+ID4gbGUzMnBfcmVwbGFjZV9iaXRzKCkgY2FsbHMgaW5zdGVhZCwgd2hpY2ggSSB3b3Vs
-ZCBmaW5kIG1vcmUNCj4gPiA+IGludHVpdGl2ZSB3aGlsZSBpdCBhdm9pZHMgdGhlIHByb2JsZW0g
-d2l0aCB0aGUgYml0bWFza3MuDQo+ID4NCj4gPiBVc2UgdGhlc2UgbWFjcm9zIGNhbiBhZGRyZXNz
-IG9mZnNldCBhbmQgYml0IGZpZWxkcyBxdWlja2x5Lg0KPiA+IEhvdyBhYm91dCBJIHVzZSBtYWNy
-byBpbnN0ZWFkIG9mIGlubGluZSBmdW5jdGlvbj8gTGlrZSwNCj4gPg0KPiA+ICNkZWZpbmUgUlRX
-ODlfU0VUX1RYV0QgKHR4ZGVzYywgdmFsLCBvZmZzZXQsIG1hc2spIFwNCj4gPiBkbyB7IFwNCj4g
-PiAgICAgICAgIHUzMiAqdHhkMzIgPSAodTMyICopdHhkZXNjOyBcDQo+ID4gICAgICAgICBsZTMy
-cF9yZXBsYWNlX2JpdHMoKF9fbGUzMiAqKSh0eGQzMiArIG9mZnNldCksIHZhbCwgbWFzayk7IFwN
-Cj4gPiB9IHdoaWxlICgwKQ0KPiANCj4gVGhhdCB3b3VsZCBvYnZpb3VzbHkgYWRkcmVzcyB0aGUg
-aW1tZWRpYXRlIGJ1ZywgYnV0IEkgdGhpbmsNCj4gdXNpbmcgbGUzMnBfcmVwbGFjZV9iaXRzKCkg
-ZGlyZWN0bHkgaGVyZSB3b3VsZCBhY3R1YWxseSBiZQ0KPiBtb3JlIHJlYWRhYmxlLCBhZnRlciB5
-b3UgZGVmaW5lIHRoZSBkZXNjcmlwdG9yIGxheW91dCB1c2luZw0KPiBhIHN0cnVjdHVyZSB3aXRo
-IG5hbWVkIF9fbGUzMiBtZW1iZXJzIHRvIHJlcGxhY2UgdGhlIG9mZnNldC4NCg0KSSB3aWxsIHJl
-bW92ZSB0aGUgd3JhcHBlciBhbmQgdXNlIGxlMzJwX3JlcGxhY2VfYml0cygpIGRpcmVjdGx5Lg0K
-DQpJIGRvbid0IHBsYW4gdG8gdXNlIHN0cnVjdHVyZSwgYmVjYXVzZSB0aGVzZSBkYXRhIGNvbnRh
-aW4gYml0LWZpZWxkcy4NClRoZW4sIEkgbmVlZCB0byBtYWludGFpbiBsaXR0bGUtL2JpZy1lbmRp
-YW4gZm9ybWF0cywgbGlrZQ0KDQpzdHJ1Y3QgZm9vIHsNCiNpZiBCSUdfRU5ESU5BDQoJX19sZTMy
-IG1zYjoxOw0KCV9fbGUzMiByc3ZkOjMwOw0KCV9fbGUzMiBsc2I6MTsNCiNlbHNlDQoJX19sZTMy
-IGxzYjoxOw0KCV9fbGUzMiByc3ZkOjMwOw0KCV9fbGUzMiBtc2I6MTsNCiNlbmRpZg0KfTsNCg0K
-DQo+IA0KPiA+ID4gR29pbmcgYmFjayBvbmUgbW9yZSBzdGVwLCBJIHNlZSB0aGF0IHRoYXQgcnR3
-ODlfY29yZV9maWxsX3R4ZGVzYygpDQo+ID4gPiBtYW5pcHVsYXRlcyB0aGUgZGVzY3JpcHRvciBm
-aWVsZHMgaW4tbWVtb3J5LCB3aGljaCBhbHNvIHNlZW1zDQo+ID4gPiBsaWtlIGEgYmFkIGlkZWE6
-IFRoZSBkZXNjcmlwdG9yIGlzIG1hcHBlZCBhcyBjYWNoZS1jb2hlcmVudCwNCj4gPiA+IHNvIG9u
-IG1hY2hpbmVzIHdpdGggbm8gY29oZXJlbnQgRE1BIChpLmUuIG1vc3QgQVJNIG9yIE1JUFMNCj4g
-PiA+IG1hY2hpbmVzKSwgdGhhdCBpcyB1bmNhY2hlZCBtZW1vcnksIGFuZCB3cml0aW5nIHRoZSBk
-ZXNjcmlwdG9yDQo+ID4gPiB1c2luZyBhIHNlcmllcyBvZiByZWFkLW1vZGlmeS13cml0ZSBjeWNs
-ZXMgb24gdW5jYWNoZWQgbWVtb3J5DQo+ID4gPiB3aWxsIGJlIGF3ZnVsbHkgc2xvdy4gTWF5YmUg
-dGhlIGFuc3dlciBpcyB0byBqdXN0IGNvbXBsZXRlbHkNCj4gPiA+IHJlcGxhY2UgdGhlIGRlc2Ny
-aXB0b3IgYWNjZXNzLg0KPiA+DQo+ID4gSSdsbCB0aGluayBpZiB3ZSBjYW4gdXNlIGNoYWNoZWQg
-bWVtb3J5IHdpdGggc2luZ2xlX21hcC91bm1hcCBmb3INCj4gPiBkZXNjcmlwdG9yLiBUaGF0IHdv
-dWxkIGltcHJvdmUgdGhlIHBlcmZvcm1hbmNlLg0KPiANCj4gVXNpbmcgZG1hX3VubWFwX3Npbmds
-ZSgpIHdpdGggaXRzIGNhY2hlIGZsdXNoIG1heSBub3Qgd29yaw0KPiBjb3JyZWN0bHkgaWYgdGhl
-IGRlc2NyaXB0b3IgZmllbGRzIGhhdmUgdG8gYmUgd3JpdHRlbiBpbiBhIHBhcnRpY3VsYXINCj4g
-b3JkZXIuIFVzdWFsbHkgdGhlIGxhc3QgZmllbGQgaW4gYSBkZXNjcmlwdG9yIGNvbnRhaW5zIGEg
-J3ZhbGlkJw0KPiBiaXQgdGhhdCBtdXN0IG5vdCBiZSBvYnNlcnZlZCBieSB0aGUgaGFyZHdhcmUg
-YmVmb3JlIHRoZSByZXN0DQo+IGlzIHZpc2libGUuIFRoZSBjYWNoZSBmbHVzaCBob3dldmVyIHdv
-dWxkIG5vdCBndWFyYW50ZWUgdGhlDQo+IG9yZGVyIG9mIHRoZSB1cGRhdGUuDQoNCklzIGl0IHBv
-c3NpYmxlIHRvIGZsdXNoIGNhY2hlIHR3aWNlPyBXcml0aW5nIHRoZSBmaWVsZHMgb3RoZXINCnRo
-YW4gJ3ZhbGlkJyBiaXQsIGFuZCBkbyB3bWIoKSBhbmQgZmlyc3QgZmx1c2guIFRoZW4sIHNldCAn
-dmFsaWQnIGJpdCwNCmFuZCBkbyBzZWNvbmQgZmx1c2guDQoNCj4gDQo+IEl0IHdvdWxkIGFsc28g
-bGlrZWx5IGJlIHNsb3dlciB0aGFuIGRtYV9hbGxvY19jb2hlcmVudCgpIG9uDQo+IG1hY2hpbmVz
-IHRoYXQgaGF2ZSBjYWNoZS1jb2hlcmVudCBQQ0ksIHN1Y2ggYXMgbW9zdCB4ODYuDQo+IA0KPiBU
-aGUgYmVzdCB3YXkgaXMgdXN1YWxseSB0byBjb25zdHJ1Y3QgdGhlIGRlc2NyaXB0b3Igb25lIHdv
-cmQNCj4gYXQgYSB0aW1lIGluIHJlZ2lzdGVycywgYW5kIHdyaXRlIHRoYXQgd29yZCB1c2luZyBX
-UklURV9PTkNFKCksDQo+IHdpdGggYW4gZXhwbGljdCBkbWFfd21iKCkgYmVmb3JlIHRoZSBmaW5h
-bCB3cml0ZSB0aGF0IG1ha2VzDQo+IHRoZSBkZXNjcmlwdG9yIHZhbGlkLg0KPiANCg0KVGhhbmtz
-IGZvciB0aGUgZ3VpZGVsaW5lLiANCg0KRm9ydHVuYXRlbHksIGRlc2NyaXB0b3Igb2YgdGhpcyBo
-YXJkd2FyZSB1c2VzIGNpcmN1bGFyIHJpbmcgYnVmZmVyIHdpdGgNCnJlYWQvd3JpdGUgaW5kZXgg
-aW5zdGVhZCBvZiAndmFsaWQnIGJpdC4gVG8gaXNzdWUgYSBwYWNrZXQgd2l0aCBkZXNjcmlwdG9y
-DQp0byBoYXJkd2FyZSwgd2UgZmlsbCBkZXNjcmlwdG9yIGFuZCBmaWxsIGFkZHJlc3Mgb2Ygc2ti
-IGFzIHdlbGwsIGFuZCB0aGVuDQp1cGRhdGUgd3JpdGUgaW5kZXggKGEgcmVnaXN0ZXIpIHRvIHRy
-aWdnZXIgaGFyZHdhcmUgdG8gc3RhcnQgRE1BIHRoaXMNCnBhY2tldC4gU28sIEkgdGhpbmsgaXQg
-aXMgcG9zc2libGUgdG8gdXNlIGRtYV9tYXBfc2luZ2xlKCkuDQoNCkFueXdheSwgSSB3aWxsIHRy
-eSBib3RoIG1ldGhvZHMgbGF0ZXIuDQoNClRoYW5rIHlvdQ0KLS0NClBpbmctS2UNCg0KDQo=
+Hi Steev,
+
+On Tue, 14 Sept 2021 at 02:39, Steev Klimaszewski <steev@kali.org> wrote:
+>
+>
+> On 8/29/21 8:12 AM, Dmitry Baryshkov wrote:
+> > This is the second RFC on the proposed power sequencer subsystem. This
+> > is a generification of the MMC pwrseq code. The subsystem tries to
+> > abstract the idea of complex power-up/power-down/reset of the devices.
+> >
+> > To ease migration to pwrseq and to provide compatibility with older
+> > device trees, while keeping drivers simple, this iteration of RFC
+> > introduces pwrseq fallback support: pwrseq driver can register fallback
+> > providers. If another device driver requests pwrseq instance and none
+> > was declared, the pwrseq fallback code would go through the list of
+> > fallback providers and if the match is found, driver would return a
+> > crafted pwrseq instance. For now this mechanism is limited to the OF
+> > device matching, but it can be extended further to use any combination
+> > of device IDs.
+> >
+> > The primary set of devices that promted me to create this patchset is
+> > the Qualcomm BT+WiFi family of chips. They reside on serial+platform or
+> > serial + SDIO interfaces (older generations) or on serial+PCIe (newer
+> > generations).  They require a set of external voltage regulators to be
+> > powered on and (some of them) have separate WiFi and Bluetooth enable
+> > GPIOs.
+> >
+> > This patchset being an RFC tries to demonstrate the approach, design and
+> > usage of the pwrseq subsystem. Following issues are present in the RFC
+> > at this moment but will be fixed later if the overall approach would be
+> > viewed as acceptable:
+> >
+> >  - No documentation
+> >    While the code tries to be self-documenting proper documentation
+> >    would be required.
+> >
+> >  - Minimal device tree bindings changes
+> >    There are no proper updates for the DT bindings (thus neither Rob
+> >    Herring nor devicetree are included in the To/Cc lists). The dt
+> >    schema changes would be a part of v1.
+> >
+> >  - Lack of proper PCIe integration
+> >    At this moment support for PCIe is hacked up to be able to test the
+> >    PCIe part of qca6390. Proper PCIe support would require automatically
+> >    powering up the devices before the bus scan depending on the proper
+> >    device structure in the device tree.
+> >
+> > Changes since RFC v1:
+> >  - Provider pwrseq fallback support
+> >  - Implement fallback support in pwrseq_qca.
+> >  - Mmove susclk handling to pwrseq_qca.
+> >  - Significantly simplify hci_qca.c changes, by dropping all legacy
+> >    code. Now hci_qca uses only pwrseq calls to power up/down bluetooth
+> >    parts of the chip.
+> >
+> I tested this here, on the Lenovo Yoga C630, after creating a patch to
+> do basically the same thing as the db845c does.  One thing I noticed, if
+> PWRSEQ=y and the rest are =m, there is a build error.  I suppose once
+> the full set is posted and not RFC, I can send the patch for that.
+
+Please excuse me for the delay in the response. I was carried away by
+other duties. Yes, could you please provide a fixup patch.
+I'm going to send v1 now, containing mostly cosmetical and
+documentation changes. I'll include your patch in v2.
+
+> One question I have, if you don't mind, in patch 11, you add a second
+> channel to qca power sequencer.  I've added that here, but in the c630's
+> dts, "vreg_l23a_3p3: ldo23" is empty, so I added the same numbers in for
+> the regulator, and I'm wondering how to test that it's actually working
+> correctly?
+
+That's a good question. I have not looked in the details in the ath10k
+documentation. I'll try finding it.
+Maybe Kalle Valo can answer your question. Could you please duplicate
+your question on the ath10k mailing list?
+
+-- 
+With best wishes
+Dmitry
