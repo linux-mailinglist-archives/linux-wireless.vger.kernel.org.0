@@ -2,77 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AC71423BCE
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 12:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 497E1423FCE
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 16:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238075AbhJFK5Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Oct 2021 06:57:24 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:56812
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231240AbhJFK5X (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Oct 2021 06:57:23 -0400
-Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 16B823FFE5;
-        Wed,  6 Oct 2021 10:55:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1633517730;
-        bh=8iImzst3oOFXm9Ridza0PRSEBpaLF5YlJ5ZO5d+yCY0=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
-        b=eVGkOwC/tJzoy7QmH2ZnvQG/p4Wv1R6BDazR8DhPxXur8GhKxFh5IYb4bjUC6nTHE
-         l3PpoHoIgwufhajOGbxSBzmVT7YOGCCHV3LtqCfSkPqdZaa6JMjlWeptir81ksbg8q
-         7okq/Y0A3XbAUwgRIw3Le6GbuZmWfqSAtLQ1GKsvedYBqLMZS/MYLHcHoPrxyFc1eN
-         7s7SwDq19Z5rW5N78M5f24T2cxR5I31fsDPOubH/Q5L7i/kP5PoKgAnrkasTrVsX/j
-         AQvEjTtPTq5CZo40v/duepkPStREF9a87GcwwxGyu8U3wt5gXW4LxtSNMKOuYB2QmQ
-         MGleUrP35rXSg==
-From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Anilkumar Kolli <akolli@codeaurora.org>,
-        Jouni Malinen <jouni@codeaurora.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ath11k: Remove redundant assignment to variable fw_size
-Date:   Wed,  6 Oct 2021 11:55:29 +0100
-Message-Id: <20211006105529.1011239-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.32.0
+        id S231501AbhJFOJs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Oct 2021 10:09:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59554 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230131AbhJFOJr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 6 Oct 2021 10:09:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 505856105A;
+        Wed,  6 Oct 2021 14:07:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633529275;
+        bh=D95Vrcms+Yoi8Ioz1qWrqDjHU3r6PZ2x8C3FThMJW/I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FNWLw7ACi2OM/iQJ4YFBH8CYm60tLB/vH1aNikY7bpvinMHzkfJMec1+VzYdzJRLx
+         AR4ZADjQbRzp0LmWwEi7q13PS7KS5t0Hu4h4gm5A7FbHUf46Q0Amqxbz9jIuKziEPJ
+         5bPirVlzYNRXnpZikK06ikx9OWXz7HzM/g2D9IpC+D8A8B/AVe/lPVHweaX0dMUEML
+         b0U2VLK7kmM71KV3NMWMGYCNwg2pDYFFxWcC/NfhAY1aXHaHWb7tXV6TNAncjy4P1B
+         0zIluUWCV5xZH+J/R850906AmPrvEyXDzXc+35eIq4JR0loHjSCBlW/km2SBRWQ5D6
+         RL5xfMZ5/sDcA==
+Date:   Wed, 6 Oct 2021 09:07:54 -0500
+From:   Seth Forshee <sforshee@kernel.org>
+To:     Sungbo Eo <mans0n@gorani.run>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wireless-regdb: Update regulatory rules for South Korea
+ (KR)
+Message-ID: <YV2tukujds7PodAf@ubuntu-x1>
+References: <20210929172728.7512-1-mans0n@gorani.run>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210929172728.7512-1-mans0n@gorani.run>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Thu, Sep 30, 2021 at 02:27:28AM +0900, Sungbo Eo wrote:
+> This patch is based on MSIT Public Notification 2020-113 ("Unlicensed Radio
+> Equipment Established Without Notice"), officially announced on 2021-01-06.
+> 
+> Extend the last 5 GHz frequency range to 5850 MHz.
+> 
+> WiFi 6E is now allowed with the following restrictions:
+> * Indoor: the full 1.2 GHz range, up to 160 MHz bandwidth and 250mW EIRP
+> * Outdoor: the lower 500 MHz range, up to 160 MHz bandwidth and 25mW EIRP
+> Here only the former entry is added.
+> 
+> And also update the regulatory source links.
+> 
+> Signed-off-by: Sungbo Eo <mans0n@gorani.run>
+> ---
+> I have two questions.
+> 
+> The regulation has one more restriction:
+>   The TX power should not exceed 2.5 mW/MHz
+>   when the frequency range includes the whole or a part of 5230-5250 MHz
+>   and the bandwidth is equal to or less than 40 MHz.
+> That leads to the followings:
+>   5230-5250 @ 20 -> 17 dBm
+>   5210-5250 @ 40 -> 20 dBm
+>   5170-5250 @ 80 -> 23 dBm
+> Is it possible to add this rule without lowering the TX power for 80 MHz bandwidth?
 
-Variable fw_size is being assigned a value that is never read and
-being re-assigned a new value in the next statement. The assignment
-is redundant and can be removed.
+I've tried to look at the documents, but much of the information appears
+to be in images where machine translation doesn't work, and I haven't
+been able to find English versions.
 
-Addresses-Coverity: ("Unused value")
-Fixes: 336e7b53c82f ("ath11k: clean up BDF download functions")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/ath/ath11k/qmi.c | 1 -
- 1 file changed, 1 deletion(-)
+Taking the above at face value, I actually get slightly lower EIRP
+values for a PSD of 2.5 mW/MHz (EIRP = PSD + 10 * log(bandwidth)): 16
+dBm for 20 MHz and 19 dBm for 40 MHz. We don't currently have any way to
+express PSD limits in the database nor a way to express different power
+limits for different bandwidths, so it's not possible to comply with the
+PSD limits for 20/40 MHz without also lowering the EIRP for 80 MHz.
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 8c615bc788ca..fa73118de6db 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2135,7 +2135,6 @@ static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab)
- 
- 	ath11k_dbg(ab, ATH11K_DBG_QMI, "qmi bdf_type %d\n", bdf_type);
- 
--	fw_size = bd.len;
- 	fw_size = min_t(u32, ab->hw_params.fw.board_size, bd.len);
- 
- 	ret = ath11k_qmi_load_file_target_mem(ab, bd.data, fw_size, bdf_type);
--- 
-2.32.0
+> And do we need AUTO-BW for 6E channels? I thought it is for merging adjacent frequency ranges.
 
+That is correct. Since there are no adjacent rules, AUTO-BW doesn't make
+sense.
+
+Thanks,
+Seth
