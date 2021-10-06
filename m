@@ -2,230 +2,182 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2E4C424181
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 17:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E19D242420D
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 18:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232673AbhJFPo2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Oct 2021 11:44:28 -0400
-Received: from mail-bn8nam12on2070.outbound.protection.outlook.com ([40.107.237.70]:11617
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230014AbhJFPo1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Oct 2021 11:44:27 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KXE+7+fPdEeH0ft82BBrFjA10tyjlZOkq5mElfPUz2JMM/nwvdiSa/ATGpblHQ92SCkNk47EHsQ9RWn3xS+reGnviOKRJ9CQU51Ur+8ZPyzIoPgkH48Jbu1HEkJcnH3kghQihq8qL0EFkWx/3Ie0mIoujrdRAXLJ1lqoQqpl6EouTpNjv+jU31iNUKFG/nI/1kAZ74jbL3vh9DmjbPG7dclI9KU9jk487lbCGNA8eSMHZ0zPsd9ScMLg3iEd0LI/zZ/l5Xku8MVHTFjXLBywel/qATBCSs+D44Cf6LUi+pFJlVzGGCz254093oFcyefb3Gb+t7bbYLd+t+qfWBvuGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3O08tXLTo27ngpNbnQ38lXh/lzNsfRLmjjCRXbj2K5I=;
- b=MhI4O7/dPU0aH8VmajLg1smU6mnrt2U66Fsz+Lz4zJ//Q5ZMwmDmye2uPUTR9tl2eG/7lxTK7CR1Ll+1bWcoHmUeCihxj17ei6uzrORSAm4Pb3KRLOyTDUl4aiLNXFX3CHapx21oT4Ijx2Kacpa1MPB16B1NdThzV9GdrDoLj0WR3tOV8PZSUHlOApgsVbCtj3y/R+JWmAGhnOyZaXPnlD4vJitjydGa+MKD8aaI2q42YJOgKxUu8u0AnDozEGQCgkIs+7IfqM74x3sqEHpqp1+UjRvjJUO05zS1KFj9Euis20sEDd5Jmu2YEC2Nc98XeCoPyIl8EmX/wT8OX0Xw3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3O08tXLTo27ngpNbnQ38lXh/lzNsfRLmjjCRXbj2K5I=;
- b=M9z8rRJtXBWwrQ+3nkgz66OGBmAyPLKLuU8GsfFw9fZVsRwcRJxA3ZY1zsXUYrMiwj43Wc6hxs1uksjJk2uqSqJzeR6VpwHtOnJvxZWtFJ9K+jlVDfDrE7kqEssMIPZ8spes7Ig2A2NuLcNkbNANP/ygTUciXRjDDBr0naXosSI=
-Authentication-Results: linaro.org; dkim=none (message not signed)
- header.d=none;linaro.org; dmarc=none action=none header.from=silabs.com;
-Received: from PH0PR11MB5657.namprd11.prod.outlook.com (2603:10b6:510:ee::19)
- by PH0PR11MB5626.namprd11.prod.outlook.com (2603:10b6:510:ee::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18; Wed, 6 Oct
- 2021 15:42:33 +0000
-Received: from PH0PR11MB5657.namprd11.prod.outlook.com
- ([fe80::31cb:3b13:b0e8:d8f4]) by PH0PR11MB5657.namprd11.prod.outlook.com
- ([fe80::31cb:3b13:b0e8:d8f4%9]) with mapi id 15.20.4566.023; Wed, 6 Oct 2021
- 15:42:33 +0000
-From:   =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Pali =?ISO-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        driverdevel <devel@driverdev.osuosl.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        DTML <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>
-Subject: Re: [PATCH v7 08/24] wfx: add bus_sdio.c
-Date:   Wed, 06 Oct 2021 17:42:23 +0200
-Message-ID: <4117481.h6P39bWmWk@pc-42>
-Organization: Silicon Labs
-In-Reply-To: <CAPDyKFr62Kykg3=9WiXAV8UToqjw8gj4t6bbM7pGQ+iGGQRLmg@mail.gmail.com>
-References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com> <149139701.nbvtKH4F0p@pc-42> <CAPDyKFr62Kykg3=9WiXAV8UToqjw8gj4t6bbM7pGQ+iGGQRLmg@mail.gmail.com>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-ClientProxiedBy: PAZP264CA0029.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:122::16) To PH0PR11MB5657.namprd11.prod.outlook.com
- (2603:10b6:510:ee::19)
+        id S239315AbhJFQDG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Oct 2021 12:03:06 -0400
+Received: from mout-p-201.mailbox.org ([80.241.56.171]:17782 "EHLO
+        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239206AbhJFQDG (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 6 Oct 2021 12:03:06 -0400
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4HPfMB17jYzQlRX;
+        Wed,  6 Oct 2021 18:01:10 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Message-ID: <61b034e3-8d16-0488-d7e0-016e64f33b67@v0yd.nl>
+Date:   Wed, 6 Oct 2021 18:01:02 +0200
 MIME-Version: 1.0
-Received: from pc-42.localnet (37.71.187.125) by PAZP264CA0029.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:122::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18 via Frontend Transport; Wed, 6 Oct 2021 15:42:30 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5cf1c139-9e0f-45ca-d685-08d988dfe9c7
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5626:
-X-Microsoft-Antispam-PRVS: <PH0PR11MB5626AD0F8527CBD43D871E7593B09@PH0PR11MB5626.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EElQZ+rQh4Vn81qBoNlKdgFXZjsFui4jpeb/CPulidLlFLkSpiAdw+SE/2bfP0gCSWjtbynP2ibThU2R7eNmJrKCJXRgdJGO57zGgwFsiwNG7rjJfSKRmEB2usmM66B0MnXq9uvzCZ1agqOJmIKdNs2F8ShvOrGl4tH01wmcKrO3J7KnY8AAh1dgffA8h7nW3AqqAbeGuF04d45xtW01W8YW82TTP4UWb5kTSD7VJhkEIuJAcGgqFhSEydpegpL3V0R2XXOepSn915LlAZO39WqWaL88jCefghMUYusNDbzlwQltQBzjOKk74LW7Skk988ipblwP5whHX7cjJO0BMtesQW4mrurAZCN7HAUtVbbIGjnKLcMY1maq+fEWZge/RdrTaw8m6v/R+dcF3jthE2sn3m1fiaLpu//4mLUEc+s92C6XhCxqBqXzyjPXBK8xQep2ckkcYBOY+Wt/1l1fmY7KOWpIdkrXBPwAUXS2Ls4mUduitc+TIwk7FaD4k5tdMP/K8YlOyZme4r9PgKAggsABz4uL8uSFMeWgZzL+zOBpCBCgVJYlVQoLUm1ErIYOhmy/A9piQI5kd/MZTU96x9mILIr3BnIkRPdCPFL4GEVwC++hdgF8G3/p6JWARdZt1hdhhjf88P1Aeq+kTf17+GfUCyHTjQyKlfqVFI/64sProMcX2uWsHltvxnHDX6wXK1nnXs+36ToKNbGSxQgykPhTYicI5wmoNiJQRSRGm9XARPqx29x9kA9ZPfvydfjak/EGV5freZrGfZPLKXCQEQPICdCvN8pcXjLAfKIixPGT/gNqqCQS83wqRAiKtVop
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5657.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(956004)(6916009)(966005)(186003)(6666004)(2906002)(508600001)(86362001)(83380400001)(7416002)(66556008)(8936002)(66476007)(6506007)(33716001)(26005)(38100700002)(38350700002)(9686003)(6486002)(8676002)(54906003)(316002)(4326008)(66946007)(52116002)(36916002)(6512007)(5660300002)(39026012);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?al/cJ5AOd/FNXRx+OtVkoZbkNBidD9w4eytM7u1Elp2ROFsGo+vYjSr6w2?=
- =?iso-8859-1?Q?tfBH/SJZq3a4dp41qFtX9tGo79KElWRBQS6l9Z51CXRLxhoGD6Q0+rJ288?=
- =?iso-8859-1?Q?5uBPaWiOk7IIoV9H1OWn1hpL+IZakLi0gTItbsfZbjvYYdgtn9QlOoy1n3?=
- =?iso-8859-1?Q?UWnSRdOnsdNz7hYO6U0zeHfe6vzzx+ztu4ibwtLa/mTcmzxdGaCeSeInw1?=
- =?iso-8859-1?Q?knWvNUcHliBfs4V8A8fVuPuT2wx8NWikfjdlL4fJB3V2CV0RPqDwS/v2NO?=
- =?iso-8859-1?Q?q7vEjfYJZWE4A4iWk+Gfb06XZ8gJLaIDtvXSuTPb+aaD9In1vJZzFdbHYU?=
- =?iso-8859-1?Q?+I2WC6Eg1SJkH8EBg3ZFA/QxKHl05oxUuXUf5G+uU3jKIV7hYMkDD+zeDh?=
- =?iso-8859-1?Q?0bR79bz/pvJNAq7bAHhXaSpCRloPGB8Y8nnFd84dYjRwvyyjZpIOdXOLOM?=
- =?iso-8859-1?Q?o7ni2TaUHN3lcugmV78xQvITtXPXl6Jx5YxOj0Na3FzyokNOmL+5HotM+Q?=
- =?iso-8859-1?Q?u7UkPy25rGUfjMfDdL0RwD30r16BUquiGzWIO+eiK1hrN8NRWMUi3ues7U?=
- =?iso-8859-1?Q?Mj7fZq7mNOdd4eFAL2swOhMnuVKw+uJIJ8T/9Iy43zHX3dctdKTRNa+a38?=
- =?iso-8859-1?Q?7TfsuR23WOaDp4T9LB4i267jD3WBY8HQFnbOuPuL1+evFa2ZR4mJ3HyQ4w?=
- =?iso-8859-1?Q?0WzBzaeaJP4aW3WSjhSBrniH65u90LNXgC8pU2vyS4tZ19BT9uw66tPx+J?=
- =?iso-8859-1?Q?8AHyf1VOG6XqP27hNN1Kd9QBz2hjli5fGcUAKuC/KrVAvQ581g7vsicEGc?=
- =?iso-8859-1?Q?qIUBy/yClyxGP02CdVj0PhtMVbRPR5FhxGb8OkCvCAusrgQHJR2VECv0hy?=
- =?iso-8859-1?Q?6II9Pd6J59Sloctz1RKyKPvuVZl7E+YwJg0OO5DOj4lI6zuVT3/8QILlZW?=
- =?iso-8859-1?Q?XMktzRZEBGuaF30xLy37tn6F7/Aq2/C3I/xQItQKysk3ganqnShQUCIE6b?=
- =?iso-8859-1?Q?f7OxA2zelwI+e9Mgcjen1Kqzjbd7wtiRxl6/uiNzss5MUKVtiAjOylMiAx?=
- =?iso-8859-1?Q?OehdwNJcTHRUs1Ost88DiazodkheiVRDb8Pep4qnF0eq92fXhLkl146pBA?=
- =?iso-8859-1?Q?qsngEsWcO0KF15ks+XkosAgQqdhenwMk/idKFyNcq74LxjxABUnkdH7tFj?=
- =?iso-8859-1?Q?Lx0EFw4wfe67OEVawcTerV2shLv28juXeld+IU6XiIaDfiAUj+4AfcFgx0?=
- =?iso-8859-1?Q?nCZCZnFIHrPDisPMTW6pNarFpZ6yjWVZjIl8jaUXfP7amZbKvohncz1yFh?=
- =?iso-8859-1?Q?WLR2rOmvBuP3vyD8ZVI05/SdgyB08oe7tnXVXNvMYMypt2484Y3dLKb0dv?=
- =?iso-8859-1?Q?aURPWaTyuV?=
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5cf1c139-9e0f-45ca-d685-08d988dfe9c7
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5657.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2021 15:42:33.3447
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qflpWpE7DdUezm5mnOM0rhhFnObuj9Vny3WO+o+uZKauk6F5BMgqbf1zsvTOeD3TcvgmwdN31X/kDyNOy4aejQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5626
+Subject: Re: [PATCH v2 1/2] mwifiex: Use non-posted PCI write when setting TX
+ ring write pointer
+Content-Language: en-US
+From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
+To:     David Laight <David.Laight@ACULAB.COM>,
+        =?UTF-8?B?J1BhbGkgUm9ow6FyJw==?= <pali@kernel.org>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Brian Norris <briannorris@chromium.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20210914114813.15404-1-verdre@v0yd.nl>
+ <20210914114813.15404-2-verdre@v0yd.nl>
+ <8f65f41a807c46d496bf1b45816077e4@AcuMS.aculab.com>
+ <20210922142726.guviqler5k7wnm52@pali>
+ <e0a4e0adc56148039f853ccb083be53a@AcuMS.aculab.com>
+ <ae8ca158-ad86-9c0d-7217-f9db3d2fc42e@v0yd.nl>
+In-Reply-To: <ae8ca158-ad86-9c0d-7217-f9db3d2fc42e@v0yd.nl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6BD7322F
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wednesday 6 October 2021 17:02:07 CEST Ulf Hansson wrote:
-> On Tue, 5 Oct 2021 at 10:14, J=E9r=F4me Pouiller <jerome.pouiller@silabs.=
-com> wrote:
-> > On Friday 1 October 2021 17:23:16 CEST Ulf Hansson wrote:
-> > > On Thu, 30 Sept 2021 at 19:06, Pali Roh=E1r <pali@kernel.org> wrote:
-> > > > On Thursday 30 September 2021 18:51:09 J=E9r=F4me Pouiller wrote:
-> > > > > On Thursday 30 September 2021 12:07:55 CEST Ulf Hansson wrote:
-> > > > > > On Mon, 20 Sept 2021 at 18:12, Jerome Pouiller
-> > > > > > <Jerome.Pouiller@silabs.com> wrote:
-> > > > > > >
-> > > > > > > From: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
-> > > > > > >
-> > > > > > > Signed-off-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.co=
-m>
-> > > > > > > ---
-> > > > > > >  drivers/net/wireless/silabs/wfx/bus_sdio.c | 261 +++++++++++=
-++++++++++
-> > > > > > >  1 file changed, 261 insertions(+)
-> > > > > > >  create mode 100644 drivers/net/wireless/silabs/wfx/bus_sdio.=
-c
-> > > > > > >
-> > > > > > > diff --git a/drivers/net/wireless/silabs/wfx/bus_sdio.c b/dri=
-vers/net/wireless/silabs/wfx/bus_sdio.c
-> > > > > >
-> > > > > > [...]
-> > > > > >
-> > > > > > > +
-> > > > > > > +static int wfx_sdio_probe(struct sdio_func *func,
-> > > > > > > +                         const struct sdio_device_id *id)
-> > > > > > > +{
-> > > > > > > +       struct device_node *np =3D func->dev.of_node;
-> > > > > > > +       struct wfx_sdio_priv *bus;
-> > > > > > > +       int ret;
-> > > > > > > +
-> > > > > > > +       if (func->num !=3D 1) {
-> > > > > > > +               dev_err(&func->dev, "SDIO function number is =
-%d while it should always be 1 (unsupported chip?)\n",
-> > > > > > > +                       func->num);
-> > > > > > > +               return -ENODEV;
-> > > > > > > +       }
-> > > > > > > +
-> > > > > > > +       bus =3D devm_kzalloc(&func->dev, sizeof(*bus), GFP_KE=
-RNEL);
-> > > > > > > +       if (!bus)
-> > > > > > > +               return -ENOMEM;
-> > > > > > > +
-> > > > > > > +       if (!np || !of_match_node(wfx_sdio_of_match, np)) {
-> > > > > > > +               dev_warn(&func->dev, "no compatible device fo=
-und in DT\n");
-> > > > > > > +               return -ENODEV;
-> > > > > > > +       }
-> > > > > > > +
-> > > > > > > +       bus->func =3D func;
-> > > > > > > +       bus->of_irq =3D irq_of_parse_and_map(np, 0);
-> > > > > > > +       sdio_set_drvdata(func, bus);
-> > > > > > > +       func->card->quirks |=3D MMC_QUIRK_LENIENT_FN0 |
-> > > > > > > +                             MMC_QUIRK_BLKSZ_FOR_BYTE_MODE |
-> > > > > > > +                             MMC_QUIRK_BROKEN_BYTE_MODE_512;
-> > > > > >
-> > > > > > I would rather see that you add an SDIO_FIXUP for the SDIO card=
-, to
-> > > > > > the sdio_fixup_methods[], in drivers/mmc/core/quirks.h, instead=
- of
-> > > > > > this.
-> > > > >
-> > > > > In the current patch, these quirks are applied only if the device=
- appears
-> > > > > in the device tree (see the condition above). If I implement them=
- in
-> > > > > drivers/mmc/core/quirks.h they will be applied as soon as the dev=
-ice is
-> > > > > detected. Is it what we want?
-> > > > >
-> > > > > Note: we already have had a discussion about the strange VID/PID =
-declared
-> > > > > by this device:
-> > > > >   https://www.spinics.net/lists/netdev/msg692577.html
-> > > >
-> > > > Yes, vendor id 0x0000 is invalid per SDIO spec. So based on this ve=
-ndor
-> > > > id, it is not possible to write any quirk in mmc/sdio generic code.
-> > > >
-> > > > Ulf, but maybe it could be possible to write quirk based on OF
-> > > > compatible string?
-> > >
-> > > Yes, that would be better in my opinion.
-> > >
-> > > We already have DT bindings to describe embedded SDIO cards (a subnod=
-e
-> > > to the mmc controller node), so we should be able to extend that I
-> > > think.
-> >
-> > So, this feature does not yet exist? Do you consider it is a blocker fo=
-r
-> > the current patch?
->=20
-> Yes, sorry. I think we should avoid unnecessary hacks in SDIO func
-> drivers, especially those that deserve to be fixed in the mmc core.
->=20
-> Moreover, we already support the similar thing for eMMC cards, plus
-> that most parts are already done for SDIO too.
->=20
-> >
-> > To be honest, I don't really want to take over this change in mmc/core.
->=20
-> I understand. Allow me a couple of days, then I can post a patch to
-> help you out.
+On 9/30/21 16:27, Jonas Dreßler wrote:
+> On 9/22/21 5:54 PM, David Laight wrote:
+>>
+>> From: Pali Rohár
+>>> Sent: 22 September 2021 15:27
+>>>
+>>> On Wednesday 22 September 2021 14:03:25 David Laight wrote:
+>>>> From: Jonas Dreßler
+>>>>> Sent: 14 September 2021 12:48
+>>>>>
+>>>>> On the 88W8897 card it's very important the TX ring write pointer is
+>>>>> updated correctly to its new value before setting the TX ready
+>>>>> interrupt, otherwise the firmware appears to crash (probably because
+>>>>> it's trying to DMA-read from the wrong place). The issue is present in
+>>>>> the latest firmware version 15.68.19.p21 of the pcie+usb card.
+>>>>>
+>>>>> Since PCI uses "posted writes" when writing to a register, it's not
+>>>>> guaranteed that a write will happen immediately. That means the pointer
+>>>>> might be outdated when setting the TX ready interrupt, leading to
+>>>>> firmware crashes especially when ASPM L1 and L1 substates are enabled
+>>>>> (because of the higher link latency, the write will probably take
+>>>>> longer).
+>>>>>
+>>>>> So fix those firmware crashes by always using a non-posted write for
+>>>>> this specific register write. We do that by simply reading back the
+>>>>> register after writing it, just as a few other PCI drivers do.
+>>>>>
+>>>>> This fixes a bug where during rx/tx traffic and with ASPM L1 substates
+>>>>> enabled (the enabled substates are platform dependent), the firmware
+>>>>> crashes and eventually a command timeout appears in the logs.
+>>>>
+>>>> I think you need to change your terminology.
+>>>> PCIe does have some non-posted write transactions - but I can't
+>>>> remember when they are used.
+>>>
+>>> In PCIe are all memory write requests as posted.
+>>>
+>>> Non-posted writes in PCIe are used only for IO and config requests. But
+>>> this is not case for proposed patch change as it access only card's
+>>> memory space.
+>>>
+>>> Technically this patch does not use non-posted memory write (as PCIe
+>>> does not support / provide it), just adds something like a barrier and
+>>> I'm not sure if it is really correct (you already wrote more details
+>>> about it, so I will let it be).
+>>>
+>>> I'm not sure what is the correct terminology, I do not know how this
+>>> kind of write-followed-by-read "trick" is correctly called.
+>>
+>> I think it is probably best to say:
+>>     "flush the posted write when setting the TX ring write pointer".
+>>
+>> The write can get posted in any/all of the following places:
+>> 1) The cpu store buffer.
+>> 2) The PCIe host bridge.
+>> 3) Any other PCIe bridges.
+>> 4) The PCIe slave logic in the target.
+>>     There could be separate buffers for each BAR,
+>> 5) The actual target logic for that address block.
+>>     The target (probably) will look a bit like an old fashioned cpu
+>>     motherboard with the PCIe slave logic as the main bus master.
+>>
+>> The readback forces all the posted write buffers be flushed.
+>>
+>> In this case I suspect it is either flushing (5) or the extra
+>> delay of the read TLP processing that 'fixes' the problem.
+>>
+>> Note that depending on the exact code and host cpu the second
+>> write may not need to wait for the response to the read TLP.
+>> So the write, readback, write TLP may be back to back on the
+>> actual PCIe link.
+>>
+>> Although I don't have access to an actual PCIe monitor we
+>> do have the ability to trace 'data' TLP into fpga memory
+>> on one of our systems.
+>> This is near real-time but they are slightly munged.
+>> Watching the TLP can be illuminating!
+>>
+>>     David
+>>
+>> -
+>> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+>> Registration No: 1397386 (Wales)
+>>
+> 
+> Thanks for the detailed explanations, it looks like indeed the read-back is not the real fix here, a simple udelay(50) before sending the "TX ready" interrupt also does the trick.
+> 
+>                  } else {
+> +                       udelay(50);
+> +
+>                          /* Send the TX ready interrupt */
+>                          if (mwifiex_write_reg(adapter, PCIE_CPU_INT_EVENT,
+>                                                CPU_INTR_DNLD_RDY)) {
+> 
+> I've tested that for a week now and haven't seen any firmware crashes. Interestingly enough it looks like the delay can also be added after setting the "TX ready" interrupt, just not before updating the TX ring write pointer.
+> 
+> I have no idea if 50 usecs is a good duration to wait here, from trying different values I found that 10 to 20 usecs is not enough, but who knows, maybe that's platform dependent?
 
-Great! Thank you. I apologize for the extra work due to this invalid
-vendor id.
+So I spent the last few days going slightly crazy while trying to dig deeper
+into this.
 
---=20
-J=E9r=F4me Pouiller
+My theory was that the udelay() delays some subsequent register write or
+other communication with the card that would trigger the crash if executed
+too early after writing the TX ring write pointer. So I tried moving the
+udelay() around, carefully checking when the crash is gone and when it isn't.
 
+In the end my theory turned out completely wrong, what I found was this:
+Pinning down the last place where the udelay() is effective gets us here
+(https://elixir.bootlin.com/linux/latest/source/drivers/net/wireless/marvell/mwifiex/main.c#L340),
+right before we bail out of the main process and idle.
 
+I tried adding the udelay() as the first thing we do on the next run of the
+while-loop after that break, but with that the crash came back.
+
+So what does this mean, we fix the crash by sleeping before idling? Sounds
+a bit counterintuitive to me...
+
+The only thing I can take away from this is that maybe the udelay() keeps
+the CPU from entering some powersaving state and with that the PCI bus from
+entering ASPM states (considering that the crash can also be fixed by
+disabling ASPM L1.2).
