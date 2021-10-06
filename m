@@ -2,80 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B95A4245AE
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 20:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02312424697
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Oct 2021 21:18:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239064AbhJFSJw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Oct 2021 14:09:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42404 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229992AbhJFSJw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Oct 2021 14:09:52 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F174961039;
-        Wed,  6 Oct 2021 18:07:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633543679;
-        bh=4H3UbAzOvhL7VvGwxsIUhSjoYwJuXz+t9/UCE0IhIcA=;
-        h=Date:From:To:Cc:Subject:From;
-        b=A/Y1PTcGhYR2SWXNRvxtC7lddnL5VsWZ80djNr0oiFXb2HltlVb9hQaiTTsd0abpP
-         xmBVlcixn0lMZHFcOMtx1M9eLLABaseXSlE9NIlqoM/SGyD55xAVlkBH7l7x306x6d
-         2bNEQOklusyFgJqhpk8aJYWAlKG3FeXVAkbiejBlbu7SazegjcXXZaF1xUoHL5Htop
-         wqo8U+OEM0a12bY2L4xO4Ok9zYzIuHOgOG7Xkxkt2daPpUfRjIibM6mA7ww1vCSClN
-         g4VOrH6k+fbV6eRET7p6upCT5/3dt+85rKjoQgSIlVdTM6W9n7ENm2bLh+pkxdUlwF
-         pI+trbHwr/emw==
-Date:   Wed, 6 Oct 2021 13:12:04 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH][next] ath11k: Use kcalloc() instead of kzalloc()
-Message-ID: <20211006181204.GA913553@embeddedor>
+        id S239248AbhJFTUK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Oct 2021 15:20:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49350 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229926AbhJFTUK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 6 Oct 2021 15:20:10 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [IPv6:2001:67c:2050::465:202])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC865C061746
+        for <linux-wireless@vger.kernel.org>; Wed,  6 Oct 2021 12:18:17 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4HPkkZ2XR6zQkBf;
+        Wed,  6 Oct 2021 21:18:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gorani.run; s=MBO0001;
+        t=1633547892;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2JR3sxSadwbqy6GXWUkD+q3LL05/UAfpJRSr0hVWMI8=;
+        b=RJ1JAPnVOqmW60n2EQna5LJ50JGMl7A/KnTSmxOr9Z3RL/3csUBybi5WnFrl/K2rwLUokK
+        yv2OCs+JuTmWU6i4bDW5jDIM4/Tg81cQ0Yl8EAmjlcIONTC2wcrWBZmhsce7ERFIw175n3
+        MTDHOHbV8zP84rxtDQ5BYkhe+hyZlW3fDK47l8w6GkuTfo2iddigYulcosLMCHKHWE13MM
+        NidZ39iVIDdlUfhrKJfFCiQU4PUivI0nhQRk5ucGmpO+jVwbAHInpX168YeaVv218h+15h
+        Rzg6jhc74yxcUHklOENSP1ez1ScC/ZW7Rc9UjXVfxd6KguOu0kr9WnHbXUls3Q==
+Message-ID: <a4cb97fc-de32-4d15-47a5-a7ad26bd32ab@gorani.run>
+Date:   Thu, 7 Oct 2021 04:18:01 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Subject: Re: [PATCH] wireless-regdb: Update regulatory rules for South Korea
+ (KR)
+To:     Seth Forshee <sforshee@kernel.org>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <20210929172728.7512-1-mans0n@gorani.run>
+ <YV2tukujds7PodAf@ubuntu-x1>
+From:   Sungbo Eo <mans0n@gorani.run>
+In-Reply-To: <YV2tukujds7PodAf@ubuntu-x1>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: EA7E4188F
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use 2-factor multiplication argument form kcalloc() instead
-of kzalloc().
+On 2021-10-06 23:07, Seth Forshee wrote:
+> On Thu, Sep 30, 2021 at 02:27:28AM +0900, Sungbo Eo wrote:
+>> This patch is based on MSIT Public Notification 2020-113 ("Unlicensed Radio
+>> Equipment Established Without Notice"), officially announced on 2021-01-06.
+>>
+>> Extend the last 5 GHz frequency range to 5850 MHz.
+>>
+>> WiFi 6E is now allowed with the following restrictions:
+>> * Indoor: the full 1.2 GHz range, up to 160 MHz bandwidth and 250mW EIRP
+>> * Outdoor: the lower 500 MHz range, up to 160 MHz bandwidth and 25mW EIRP
+>> Here only the former entry is added.
+>>
+>> And also update the regulatory source links.
+>>
+>> Signed-off-by: Sungbo Eo <mans0n@gorani.run>
+>> ---
+>> I have two questions.
+>>
+>> The regulation has one more restriction:
+>>    The TX power should not exceed 2.5 mW/MHz
+>>    when the frequency range includes the whole or a part of 5230-5250 MHz
+>>    and the bandwidth is equal to or less than 40 MHz.
+>> That leads to the followings:
+>>    5230-5250 @ 20 -> 17 dBm
+>>    5210-5250 @ 40 -> 20 dBm
+>>    5170-5250 @ 80 -> 23 dBm
+>> Is it possible to add this rule without lowering the TX power for 80 MHz bandwidth?
+> 
+> I've tried to look at the documents, but much of the information appears
+> to be in images where machine translation doesn't work, and I haven't
+> been able to find English versions.
 
-Link: https://github.com/KSPP/linux/issues/162
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/ath/ath11k/wmi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Oops, sorry. I should have prepared it in more convertible format.
+There's no English version of it, but at least I could find a HWP 
+document file [1] that contains regular tables instead of images. (The 
+URL is from the "attached files" tab in the source link.)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 6c253eae9d06..0bbda81117df 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -4046,8 +4046,8 @@ static int ath11k_wmi_tlv_mac_phy_caps_parse(struct ath11k_base *soc,
- 
- 	len = min_t(u16, len, sizeof(struct wmi_mac_phy_capabilities));
- 	if (!svc_rdy_ext->n_mac_phy_caps) {
--		svc_rdy_ext->mac_phy_caps = kzalloc((svc_rdy_ext->tot_phy_id) * len,
--						    GFP_ATOMIC);
-+		svc_rdy_ext->mac_phy_caps = kcalloc(svc_rdy_ext->tot_phy_id,
-+						    len, GFP_ATOMIC);
- 		if (!svc_rdy_ext->mac_phy_caps)
- 			return -ENOMEM;
- 	}
-@@ -4447,8 +4447,8 @@ static struct cur_reg_rule
- 	struct cur_reg_rule *reg_rule_ptr;
- 	u32 count;
- 
--	reg_rule_ptr =  kzalloc((num_reg_rules * sizeof(*reg_rule_ptr)),
--				GFP_ATOMIC);
-+	reg_rule_ptr = kcalloc(num_reg_rules, sizeof(*reg_rule_ptr),
-+			       GFP_ATOMIC);
- 
- 	if (!reg_rule_ptr)
- 		return NULL;
--- 
-2.27.0
+You can open it with a dedicated viewer [2] or an online viewer [3]. But 
+those free viewers do not offer conversion to DOC or HTML. (It seems the 
+dedicated one has "print to PDF" feature, though.)
 
+I also tried an online convert tool but it failed due to the long 
+processing time... I can send you converted versions myself if you prefer.
+
+[1] https://www.law.go.kr/LSW//flDownload.do?flSeq=93728653
+[2] https://www.hancom.com/cs_center/csDownload.do
+[3] https://hwp.polarisoffice.com/
+
+> 
+> Taking the above at face value, I actually get slightly lower EIRP
+> values for a PSD of 2.5 mW/MHz (EIRP = PSD + 10 * log(bandwidth)): 16
+> dBm for 20 MHz and 19 dBm for 40 MHz.
+
+I thought log(2.5) equals 0.4? We also have 2.5 mW/MHz * 40 MHz = 100 mW.
+
+> We don't currently have any way to
+> express PSD limits in the database nor a way to express different power
+> limits for different bandwidths, so it's not possible to comply with the
+> PSD limits for 20/40 MHz without also lowering the EIRP for 80 MHz.
+
+Too bad. :( I'll prepare v2 soon.
+
+> 
+>> And do we need AUTO-BW for 6E channels? I thought it is for merging adjacent frequency ranges.
+> 
+> That is correct. Since there are no adjacent rules, AUTO-BW doesn't make
+> sense.
+
+Okay, thanks!
+
+Regards,
+Sungbo
+
+> 
+> Thanks,
+> Seth
+> 
