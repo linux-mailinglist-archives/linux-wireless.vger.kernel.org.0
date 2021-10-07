@@ -2,108 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10C72425052
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Oct 2021 11:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77DAE425073
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Oct 2021 11:52:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240465AbhJGJuc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Oct 2021 05:50:32 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:18146 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240569AbhJGJuc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Oct 2021 05:50:32 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633600118; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=vGI68wyoqpDAZBA89Pt6Cbg+azmy5aIwL+2+C+Cr1xA=; b=VQONH5PEtvJrVLkaE5qyYfD4oEDQRDUaxbYYt5Xwi+SmOawyG1Vj8X3EOTHM6sBHJDR42MpA
- elt/LKb7sFWAk0CBnZ3SZERYA87aN8RRs0q+fqHtOOOQ6lG2LwjwPWHx6r0ZdEy7JMMR+1SP
- rLOGCgLN4iiVRRbjlZ0D35CdvgM=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 615ec26ba45ca753078edd37 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 07 Oct 2021 09:48:27
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BDE82C43616; Thu,  7 Oct 2021 09:48:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 56A93C4338F;
-        Thu,  7 Oct 2021 09:48:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 56A93C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Loic Poulain <loic.poulain@linaro.org>
-Cc:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        regressions@lists.linux.dev, mhi <mhi@lists.linux.dev>
-Subject: Re: [regression] mhi: ath11k resume fails on some devices
-References: <871r5p0x2u.fsf@codeaurora.org>
-        <CAMZdPi8UJLvBFQd8-nf-iHAQh8cEuihq97PUFfZ7Q=rxRQoPsg@mail.gmail.com>
-        <877df6tlnq.fsf@codeaurora.org>
-        <CAMZdPi8P7YZPhPir+WfS3cY_a7He1m2Pq2uqBhczPdEeoNRb0Q@mail.gmail.com>
-Date:   Thu, 07 Oct 2021 12:48:19 +0300
-In-Reply-To: <CAMZdPi8P7YZPhPir+WfS3cY_a7He1m2Pq2uqBhczPdEeoNRb0Q@mail.gmail.com>
-        (Loic Poulain's message of "Fri, 24 Sep 2021 11:43:55 +0200")
-Message-ID: <87a6jl9ndo.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S240318AbhJGJyp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Oct 2021 05:54:45 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:37946 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231661AbhJGJyn (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 7 Oct 2021 05:54:43 -0400
+X-UUID: 5327b31abbcd45289e32fdcb148f939f-20211007
+X-UUID: 5327b31abbcd45289e32fdcb148f939f-20211007
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 620574454; Thu, 07 Oct 2021 17:52:44 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Thu, 7 Oct 2021 17:52:43 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 7 Oct 2021 17:52:43 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7915: enable HE UL MU-MIMO
+Date:   Thu, 7 Oct 2021 17:49:40 +0800
+Message-ID: <20211007094941.6641-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
 Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(adding the new mhi list, yay)
+Enable HE UL MU-MIMO in sta_rec_muru cmd based on station's cap.
 
-Hi Loic,
+For sending trigger frames, one of the conditions fw uses is to check if
+mib rx airtime meets the threshold.
+There's a main control of mib rx airtime report register in fw, so we
+need to enable the register by mcu cmd instead of directly writing it,
+otherwise it will still be disabled by fw.
 
-Loic Poulain <loic.poulain@linaro.org> writes:
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |  2 -
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 46 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  1 +
+ .../net/wireless/mediatek/mt76/mt7915/regs.h  |  1 -
+ 4 files changed, 47 insertions(+), 3 deletions(-)
 
->> Loic Poulain <loic.poulain@linaro.org> writes:
->>
->> > On Thu, 16 Sept 2021 at 10:00, Kalle Valo <kvalo@codeaurora.org> wrote:
->>
->> >> At the moment I'm running my tests with commit 020d3b26c07a reverted and
->> >> everything works without problems. Is there a simple way to fix this? Or
->> >> maybe we should just revert the commit? Commit log and kernel logs from
->> >> a failing case below.
->> >
->> > Do you have log of success case?
->>
->> A log from a successful case in the end of email, using v5.15-rc1 plus
->> revert of commit 020d3b26c07abe27.
->>
->> > To me, the device loses power, that is why MHI resuming is failing.
->> > Normally the device should be properly recovered/reinitialized. Before
->> > that patch the power loss was simply not detected (or handled at
->> > higher stack level).
->>
->> Currently in ath11k we always keep the firmware running when in suspend,
->> this is a workaround due to problems between mac80211 and MHI stack.
->> IIRC the problem was something related MHI creating struct device during
->> resume or something like that.
->
-> Could you give a try with the attached patch? It should solve your
-> issue without breaking modem support.
-
-Sorry for taking so long, but I now tested your patch on top of
-v5.15-rc3 and, as expected, everything works as before with QCA6390 on
-NUC x86 testbox.
-
-Tested-by: Kalle Valo <kvalo@codeaurora.org>
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 27dc5915a78c..24c4377e9681 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -386,8 +386,6 @@ mt7915_mac_init_band(struct mt7915_dev *dev, u8 band)
+ 	      FIELD_PREP(MT_MDP_RCFR1_RX_DROPPED_MCAST, MT_MDP_TO_HIF);
+ 	mt76_rmw(dev, MT_MDP_BNRCFR1(band), mask, set);
+ 
+-	mt76_set(dev, MT_WF_RMAC_MIB_AIRTIME0(band), MT_WF_RMAC_MIB_RXTIME_EN);
+-
+ 	mt76_rmw_field(dev, MT_DMA_DCR0(band), MT_DMA_DCR0_MAX_RX_LEN, 1536);
+ 	/* disable rx rate report by default due to hw issues */
+ 	mt76_clear(dev, MT_DMA_DCR0(band), MT_DMA_DCR0_RXD_G5_EN);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 6ee9d2dfd930..f48ece0fc569 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -1533,6 +1533,7 @@ mt7915_mcu_sta_muru_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 			       mvif->cap.he_mu_ebfer ||
+ 			       mvif->cap.vht_mu_ebfer ||
+ 			       mvif->cap.vht_mu_ebfee;
++	muru->cfg.mimo_ul_en = muru->cfg.mimo_dl_en;
+ 
+ 	muru->ofdma_dl.punc_pream_rx =
+ 		HE_PHY(CAP1_PREAMBLE_PUNC_RX_MASK, elem->phy_cap_info[1]);
+@@ -2924,6 +2925,47 @@ int mt7915_mcu_set_muru_ctrl(struct mt7915_dev *dev, u32 cmd, u32 val)
+ 				 sizeof(req), false);
+ }
+ 
++static int
++mt7915_mcu_init_rx_airtime(struct mt7915_dev *dev)
++{
++#define RX_AIRTIME_FEATURE_CTRL		1
++#define RX_AIRTIME_BITWISE_CTRL		2
++#define RX_AIRTIME_CLEAR_EN	1
++	struct {
++		__le16 field;
++		__le16 sub_field;
++		__le32 set_status;
++		__le32 get_status;
++		u8 _rsv[12];
++
++		bool airtime_en;
++		bool mibtime_en;
++		bool earlyend_en;
++		u8 _rsv1[9];
++
++		bool airtime_clear;
++		bool mibtime_clear;
++		u8 _rsv2[98];
++	} __packed req = {
++		.field = cpu_to_le16(RX_AIRTIME_BITWISE_CTRL),
++		.sub_field = cpu_to_le16(RX_AIRTIME_CLEAR_EN),
++		.airtime_clear = true,
++	};
++	int ret;
++
++	ret = mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(RX_AIRTIME_CTRL), &req,
++				sizeof(req), true);
++	if (ret)
++		return ret;
++
++	req.field = cpu_to_le16(RX_AIRTIME_FEATURE_CTRL);
++	req.sub_field = cpu_to_le16(RX_AIRTIME_CLEAR_EN);
++	req.airtime_en = true;
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(RX_AIRTIME_CTRL), &req,
++				 sizeof(req), true);
++}
++
+ int mt7915_mcu_init(struct mt7915_dev *dev)
+ {
+ 	static const struct mt76_mcu_ops mt7915_mcu_ops = {
+@@ -2962,6 +3004,10 @@ int mt7915_mcu_init(struct mt7915_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = mt7915_mcu_init_rx_airtime(dev);
++	if (ret)
++		return ret;
++
+ 	return mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(SET),
+ 				 MCU_WA_PARAM_RED, 0, 0);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index 5d383918a2af..617b7833e4a7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -277,6 +277,7 @@ enum {
+ 	MCU_EXT_CMD_MAC_INIT_CTRL = 0x46,
+ 	MCU_EXT_CMD_RX_HDR_TRANS = 0x47,
+ 	MCU_EXT_CMD_MUAR_UPDATE = 0x48,
++	MCU_EXT_CMD_RX_AIRTIME_CTRL = 0x4a,
+ 	MCU_EXT_CMD_SET_RX_PATH = 0x4e,
+ 	MCU_EXT_CMD_TX_POWER_FEATURE_CTRL = 0x58,
+ 	MCU_EXT_CMD_GET_MIB_INFO = 0x5a,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+index e161c5dc1f8d..abf96c9431d3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+@@ -259,7 +259,6 @@
+ 
+ #define MT_WF_RMAC_MIB_AIRTIME0(_band)	MT_WF_RMAC(_band, 0x0380)
+ #define MT_WF_RMAC_MIB_RXTIME_CLR	BIT(31)
+-#define MT_WF_RMAC_MIB_RXTIME_EN	BIT(30)
+ 
+ /* WFDMA0 */
+ #define MT_WFDMA0_BASE			0xd4000
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
