@@ -2,27 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 794CC426000
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 00:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7349F426013
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 00:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233339AbhJGWii (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Oct 2021 18:38:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57868 "EHLO
+        id S233143AbhJGW5A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Oct 2021 18:57:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232559AbhJGWih (ORCPT
+        with ESMTP id S231825AbhJGW5A (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Oct 2021 18:38:37 -0400
-Received: from fudo.makrotopia.org (fudo.makrotopia.org [IPv6:2a07:2ec0:3002::71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 511E5C061570
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Oct 2021 15:36:43 -0700 (PDT)
-Received: from local
-        by fudo.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-         (Exim 4.94.2)
-        (envelope-from <daniel@makrotopia.org>)
-        id 1mYc00-0003P2-Io; Fri, 08 Oct 2021 00:36:25 +0200
-Date:   Thu, 7 Oct 2021 23:36:10 +0100
-From:   Daniel Golle <daniel@makrotopia.org>
-To:     Nick Hainke <vincent@systemli.org>
+        Thu, 7 Oct 2021 18:57:00 -0400
+Received: from mail1.systemli.org (mail1.systemli.org [IPv6:2a00:c38:11e:ffff::a032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B84ADC061570;
+        Thu,  7 Oct 2021 15:55:05 -0700 (PDT)
+Message-ID: <9de61dcc-cf6e-aeed-a077-756b697fb534@systemli.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=systemli.org;
+        s=default; t=1633647302;
+        bh=e4EzXYaT64uH4mIE+8y/VnHFOhPneiui80T0S65fW+s=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=cxHuFn3uc0Nvx6xxmiT+pzHunfl5EblnogR2cqRVVzVVgS+JAD7kzkwmhdS2c3/19
+         +G0+bzqWFSEqE16ro2C6BvIm0VXufwPaaflTk9sXq6qdrgLvjpxftaBl+fCT051N8/
+         R/OdXtzRWctDzvtmuF+vcs0MrrkEZpNmHZ4fVE/mfD12VvwtI0qK7C+ybzQCWEdvDG
+         TthE2CELJ3tDXa/QtGk/GVTKySXHWyQzGwcEWqGnVfOL831qLOnMdkzUHJamZD/fau
+         8AYW76QyHKAQxVZZofAG3jqxu73qlRUHh8vyjQ3gyDEuq4FiTDDiv7p9xQC18r32bW
+         Gj8zccSxfzeEQ==
+Date:   Fri, 8 Oct 2021 00:54:57 +0200
+MIME-Version: 1.0
+Subject: Re: [RFC v1] mt76: mt7615: mt7622: fix adhoc and ibss mode
+Content-Language: en-US
+To:     Daniel Golle <daniel@makrotopia.org>
 Cc:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
         kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
         matthias.bgg@gmail.com, sean.wang@mediatek.com,
@@ -30,78 +38,25 @@ Cc:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
         netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
         Robert Foss <robert.foss@linaro.org>
-Subject: Re: [RFC v1] mt76: mt7615: mt7622: fix adhoc and ibss mode
-Message-ID: <YV92Wjo+3dZ49DL6@makrotopia.org>
 References: <20211007212323.1223602-1-vincent@systemli.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211007212323.1223602-1-vincent@systemli.org>
+ <YV92Wjo+3dZ49DL6@makrotopia.org>
+From:   Nick <vincent@systemli.org>
+In-Reply-To: <YV92Wjo+3dZ49DL6@makrotopia.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On Thu, Oct 07, 2021 at 11:23:23PM +0200, Nick Hainke wrote:
-> Subject: [RFC v1] mt76: mt7615: mt7622: fix adhoc and ibss mode
-Ad-Hoc and IBSS mode are synonyms.
-What probably meant to write 'fix adhoc and mesh mode', right?
+On 10/8/21 00:36, Daniel Golle wrote:
+> On Thu, Oct 07, 2021 at 11:23:23PM +0200, Nick Hainke wrote:
+>> Subject: [RFC v1] mt76: mt7615: mt7622: fix adhoc and ibss mode
+> Ad-Hoc and IBSS mode are synonyms.
+> What probably meant to write 'fix adhoc and mesh mode', right?
+>
+Yes. Or maybe even better "fix adhoc and meshpoint'. :)
+I will update.
 
-> Fixes: d8d59f66d136 ("mt76: mt7615: support 16 interfaces").
-> 
-> commit 7f4b7920318b ("mt76: mt7615: add ibss support") introduced IBSS
-> and commit f4ec7fdf7f83 ("mt76: mt7615: enable support for mesh")
-> meshpoint support.
-> 
-> Both used in the "get_omac_idx"-function:
-> 
-> 	if (~mask & BIT(HW_BSSID_0))
-> 		return HW_BSSID_0;
-> 
-> With commit d8d59f66d136 ("mt76: mt7615: support 16 interfaces") the
-> adhoc and meshpoint mode should "prefer hw bssid slot 1-3". However,
-> with that change the ibss or meshpoint mode will not send any beacon on
-> the mt7622 wifi anymore. Devices were still able to exchange data but
-> only if a bssid already existed. Two mt7622 devices will never be able
-> to communicate.
-> 
-> This commits reverts the preferation of slot 1-3 for adhoc and
-> meshpoint. Only NL80211_IFTYPE_STATION will still prefer slot 1-3.
-> 
-> Tested on Banana Pi R64.
-> 
-> Signed-off-by: Nick Hainke <vincent@systemli.org>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7615/main.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-> index dada43d6d879..51260a669d16 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-> @@ -135,8 +135,6 @@ static int get_omac_idx(enum nl80211_iftype type, u64 mask)
->  	int i;
->  
->  	switch (type) {
-> -	case NL80211_IFTYPE_MESH_POINT:
-> -	case NL80211_IFTYPE_ADHOC:
->  	case NL80211_IFTYPE_STATION:
->  		/* prefer hw bssid slot 1-3 */
->  		i = get_free_idx(mask, HW_BSSID_1, HW_BSSID_3);
-> @@ -160,6 +158,8 @@ static int get_omac_idx(enum nl80211_iftype type, u64 mask)
->  			return HW_BSSID_0;
->  
->  		break;
-> +	case NL80211_IFTYPE_ADHOC:
-> +	case NL80211_IFTYPE_MESH_POINT:
->  	case NL80211_IFTYPE_MONITOR:
->  	case NL80211_IFTYPE_AP:
->  		/* ap uses hw bssid 0 and ext bssid */
-> -- 
-> 2.33.0
-> 
-> 
-> _______________________________________________
-> Linux-mediatek mailing list
-> Linux-mediatek@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-mediatek
+Bests
+Nick
