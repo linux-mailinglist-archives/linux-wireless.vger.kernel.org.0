@@ -2,180 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBE5D424F95
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Oct 2021 10:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B68A942502B
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Oct 2021 11:35:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232604AbhJGI6e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Oct 2021 04:58:34 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:40558 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232573AbhJGI6d (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Oct 2021 04:58:33 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1978uRQP1003661, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1978uRQP1003661
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 7 Oct 2021 16:56:27 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Thu, 7 Oct 2021 16:56:26 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 7 Oct 2021
- 16:56:25 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>, <cjhuang@codeaurora.org>,
-        <kevin_yang@realtek.com>
-Subject: [PATCH] iw: add set sar_specs command
-Date:   Thu, 7 Oct 2021 16:56:15 +0800
-Message-ID: <20211007085615.40399-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        id S240711AbhJGJhL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Oct 2021 05:37:11 -0400
+Received: from mail-bn8nam12on2040.outbound.protection.outlook.com ([40.107.237.40]:9697
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S240541AbhJGJhL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 7 Oct 2021 05:37:11 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BnnbSECF3KRSQTazjk3aSmDnNvdGKriG75onF8ygDloW2SkzEuIE7hZ56q6l2dr6cs88L7avsx0wiXePxO3SjDPMWHpf00nTdBavZPt+LODS9gidpVdIeVWPMu71BW/EfubHLeHBKm6WfT0AyOD5RinoAeczyP7FUU+/iAkrrhqV7PDSRevwed2BXhX9/4FVvdY9OZs4lbncDNAy66gAqp0sCgfdPlvsJ+rZjaAbED3qP4PAHC8pNJOjQblLHsLjEqxKMkkZBEaf5+Wr3n67yqwZz1JEWVFbXe6mk47KPQ5zW07+s6Qu2l7zx0jAJ/TRW/9hr7uv1EJJJKsDrO+UoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5ARRECq5Ubls6yVVzUFu3l+hey7x8xQdAGH+iQ7LDGM=;
+ b=gIKqwd+oCXUlzPye7X6f/m4+l9agdAEdZeQxAeuIfkyXxdAxLrqUECb+KlOWCntWwYHg0M+QqINAdaEzIWyrpgfKfNICeIxfwst93CYvdbDUXJHrJyW60MH0n1GLbjQ5ZxvjdO3t4r3eHoSuC+U+/lcR/wTS3VX4RbY+UH24Ph+SGlUK5SA4WZ3beBV5pacHb6uTuBVWigabnSELw9zAYX/Iqsj5GsEwy9oOb9coH+pu4C9JDDGX8QAC5HoxNsjMo64Ws0PluZ2Mfp3qFbw9AzvWeKD2UptRu3C0Xof/VRYjkUAKBaAUtTgCmw3pr6KJJVUPyP+5IMrzgiCNr36mTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5ARRECq5Ubls6yVVzUFu3l+hey7x8xQdAGH+iQ7LDGM=;
+ b=JU7JvuM1d9fkuzWWXSDzbq3mMwX9tTFtof8eyO/azoI7M7rRsXQwcGEmqLxylrB7lcUWBRHTWPZAGDZ2qm9xJ4N4W8QEn2P+lufjmtHXDHojEDlRrxG3dZHdqNOIco/TGrMGWUK2uQNPiufQbFct/BpkdVqzFfPKB+EIDqE2Kp8=
+Authentication-Results: codeaurora.org; dkim=none (message not signed)
+ header.d=none;codeaurora.org; dmarc=none action=none header.from=silabs.com;
+Received: from PH0PR11MB5657.namprd11.prod.outlook.com (2603:10b6:510:ee::19)
+ by PH0PR11MB5627.namprd11.prod.outlook.com (2603:10b6:510:e4::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18; Thu, 7 Oct
+ 2021 09:35:15 +0000
+Received: from PH0PR11MB5657.namprd11.prod.outlook.com
+ ([fe80::31cb:3b13:b0e8:d8f4]) by PH0PR11MB5657.namprd11.prod.outlook.com
+ ([fe80::31cb:3b13:b0e8:d8f4%9]) with mapi id 15.20.4587.019; Thu, 7 Oct 2021
+ 09:35:15 +0000
+From:   =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-mmc@vger.kernel.org,
+        Pali =?ISO-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v7 10/24] wfx: add fwio.c/fwio.h
+Date:   Thu, 07 Oct 2021 11:35:06 +0200
+Message-ID: <6406115.Wd3412XU5f@pc-42>
+Organization: Silicon Labs
+In-Reply-To: <87tuhtcl4a.fsf@codeaurora.org>
+References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com> <2174509.SLDT7moDbM@pc-42> <87tuhtcl4a.fsf@codeaurora.org>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-ClientProxiedBy: PR0P264CA0199.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:100:1f::19) To PH0PR11MB5657.namprd11.prod.outlook.com
+ (2603:10b6:510:ee::19)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/07/2021 08:43:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzcgpFekyCAwNjo0MzowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/07/2021 08:45:46
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 166567 [Oct 07 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/07/2021 08:48:00
+Received: from pc-42.localnet (37.71.187.125) by PR0P264CA0199.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100:1f::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.15 via Frontend Transport; Thu, 7 Oct 2021 09:35:12 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 34fa7738-bc12-45ec-cb62-08d98975c46d
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5627:
+X-Microsoft-Antispam-PRVS: <PH0PR11MB5627AE6E443B5D4A54FE90F593B19@PH0PR11MB5627.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3826;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: jabjXYVeP4X+/EQJCL49f1kGhWSkiRHOgCAiB+bYWscywjjoGaOr8Ax8NMRSAbzDzt8wYNKWlSU81LPrEqJfvoMD0ULzM9KRR1c+Xhv4naFISyaP7w4kVhScqLcBP1dKIOgXFiKQ+vw2fmu99Yl50WS9zd9JwECkdU8bSkLTACrFHRwUwmzkKO2FKLaDwhAHywnvAX6FJSxlU+UB/FVOe38DZFc00d/y+ERnGPEITIM4NyvX1tyTSLQt8cOXATDbuzGJYUZXN0OdpNAk4aiFqdIrwVYgEHBnj/NYM5ONbErX8ZusDaDH/OixvCEG/Gk493VMbOqQJZFP8uPe/TFOCXNjBmGVDm4a3FvJDJIlDix9NCahMG4bIIp6uCCgPE2U+KtSjMrmqC7M5Pil2iKPlMcLana01veKt6XtjlRKQGcbQ7hgidpooebTVkTX7eyS1gSy7Ukif85zBZV+1SXTBLNr8glZmlHhyRboslzSnItYhyo/KZQnscXrzc0zUb9eVNWkJPyB4eeDSybBSDP+HhcTNMjRdZ4gDirOvXSSnSj6jWB8p+QgE5YQS32i+AiyB0EcNRomQXGUTfKl+kHpwFiLfZH7mHml+ShEOLICv/LKUFm9tdTWjbRy0/Wz4id6yigEYApwRG/X6T31zihdKi5Tgyju9XauLoq/a7U3vEkGnAxA7SjXkZhBNp4rlWWNNAOfViGsKq4lJeEPSRJUBHuEFjMA/cWo1AtlXD3fYVH+x45Ta4KOTR63keYh0kzcJpTVuwJYVYqhSz99yLNmTF+bPczEs0L8yMY0d+TzKIg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5657.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(6666004)(66574015)(8676002)(66476007)(2906002)(66946007)(508600001)(5660300002)(6486002)(66556008)(83380400001)(7416002)(86362001)(6512007)(9686003)(33716001)(36916002)(966005)(6506007)(6916009)(26005)(38350700002)(8936002)(316002)(54906003)(38100700002)(956004)(186003)(4326008)(52116002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?ChyTadVOQOVj7DhWOTJetE2r6z5pyyH9GhwcGLzLFyuQ8XV8mLUluhd6Kk?=
+ =?iso-8859-1?Q?ZYNyKl9/bEqKPpGg3vJ5WN0vHX6iQrNgY1GIayvebfFSBT1s94W0QEDfkW?=
+ =?iso-8859-1?Q?oHY1NV0kvR36WsriFJk+9xYWNtTKP1sD4KrO2z1ePAw0QSavXRwbXV3Yud?=
+ =?iso-8859-1?Q?cQuUmVA8LSLbQ687tUzwuD906cwcbWe6tKQszyMoiFYbMH8dphcdAxyG+i?=
+ =?iso-8859-1?Q?9cS5WIwxtfL0pUUImUacIV5J61c2aA0Va4e0jYkf/Wi41DT1vuMLQ2PDR/?=
+ =?iso-8859-1?Q?m8mPrYjucxrT4vHEQNSjdfai6mk3SWR92RXuIeVxCxLkCwdwI7dLdobOhf?=
+ =?iso-8859-1?Q?4Ow3SALzSBIl60otxtb55HQGFkUhfgp28vhgWG2PIdactLucejc910szrK?=
+ =?iso-8859-1?Q?CTmgpXSDeqFMZGx2TdwTjD9F+HTc3E99Vn+m9CtyxDN12C4a9SZR5josp1?=
+ =?iso-8859-1?Q?BGmHJf3X1IHwLPTSxNYysxiKaRCpXi2uShBl0jJg45wga7qhVTyrDR6Hkt?=
+ =?iso-8859-1?Q?ykZBpHSZwhgLrd+oktxFtookzVeMiYPvcQgSZAHuEDVAwKa7XoVOFvJmWK?=
+ =?iso-8859-1?Q?txHvpxgl0p9QVeN/eur4sT6XGDiEqz8N/YM0AQaxdH4VrLkVQEXubKJofL?=
+ =?iso-8859-1?Q?3ATh6PVl0ineVgcpbbuHl8YzwaVoEoZd3fpbZPsINHfXWuoKQPN8bWetLw?=
+ =?iso-8859-1?Q?twntmNb7OkYnnKcXYZOFnYP1USNhg/1Qp0Z7Ugx9M508TbOsmxEcOuUPEL?=
+ =?iso-8859-1?Q?S5FnNfQyvZUvPhyx37+ukf1FDGoMCnnvTXhT0qbJO8GKmNackmA7X/EkQK?=
+ =?iso-8859-1?Q?Z7nCxRObXJEHjlHo/MP1H2roDOYaCuX1FGpgSHpjVB0AJWavWrbakxu/H8?=
+ =?iso-8859-1?Q?zvUR7c14xUgkGwosGDDzEl6WDj6UY3PupcSbIXjBKegoQKj5RrunvtcQfD?=
+ =?iso-8859-1?Q?GI18AQR2c6XPcxGU/bsq0QDvwgqLgLKaOJXhBnHtgtGRM3md7ilhF90QCn?=
+ =?iso-8859-1?Q?x36WzAqWrYv3esUYIneHYrQBP/GbGg/NsL/UWoh2C2sVi3G60EUg66Vh3C?=
+ =?iso-8859-1?Q?W4nhmjAEo3UNeovmhP/jiqIvml62XzPbpVxeqO2/KiEG+GH4KC2NoYlUVC?=
+ =?iso-8859-1?Q?+fFVNCoVVfGwWeLW94JxoLXUe+11kQBCbTr6DSEBJNBXYI/TzQLWQ3NURd?=
+ =?iso-8859-1?Q?BkR8IUG2cioaxLrH67pt0zFZs+85uARG3AcQArGQbSk/dokSHqwWZewXIT?=
+ =?iso-8859-1?Q?shMqNeLicfZiLwX9zqJLaDKg1pHQc/AsaM2v9HY0VtW74Y1zZ2U0DMy9Ki?=
+ =?iso-8859-1?Q?GUHcSpX1XSg1ReFwxWpGClwRGKzFbDizftv8Q/2JhVi9EzARfDDbUuC5vn?=
+ =?iso-8859-1?Q?kXXx5wCFzk?=
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34fa7738-bc12-45ec-cb62-08d98975c46d
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5657.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2021 09:35:15.0857
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: c/Cuo0JcfCmbzAaRXBbXAKUolqM9ecZz8slrfWr8OnKZWaiSg23IF45fZejYZNel2WxkgM1rwYrx+ZvxBM3qqA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5627
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+On Thursday 7 October 2021 10:08:53 CEST Kalle Valo wrote:
+> J=E9r=F4me Pouiller <jerome.pouiller@silabs.com> writes:
+> > On Friday 1 October 2021 13:58:38 CEST Kalle Valo wrote:
+> >> Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
+> >>
+> >> > From: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
+> >> >
+> >> > Signed-off-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
+> >>
+> >> [...]
+> >>
+> >> > +static int get_firmware(struct wfx_dev *wdev, u32 keyset_chip,
+> >> > +                     const struct firmware **fw, int *file_offset)
+> >> > +{
+> >> > +     int keyset_file;
+> >> > +     char filename[256];
+> >> > +     const char *data;
+> >> > +     int ret;
+> >> > +
+> >> > +     snprintf(filename, sizeof(filename), "%s_%02X.sec",
+> >> > +              wdev->pdata.file_fw, keyset_chip);
+> >> > +     ret =3D firmware_request_nowarn(fw, filename, wdev->dev);
+> >> > +     if (ret) {
+> >> > +             dev_info(wdev->dev, "can't load %s, falling back to %s=
+.sec\n",
+> >> > +                      filename, wdev->pdata.file_fw);
+> >> > +             snprintf(filename, sizeof(filename), "%s.sec",
+> >> > +                      wdev->pdata.file_fw);
+> >> > +             ret =3D request_firmware(fw, filename, wdev->dev);
+> >> > +             if (ret) {
+> >> > +                     dev_err(wdev->dev, "can't load %s\n", filename=
+);
+> >> > +                     *fw =3D NULL;
+> >> > +                     return ret;
+> >> > +             }
+> >> > +     }
+> >>
+> >> How is this firmware file loading supposed to work? If I'm reading the
+> >> code right, the driver tries to load file "wfm_wf200_??.sec" but in
+> >> linux-firmware the file is silabs/wfm_wf200_C0.sec:
+> >>
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmwar=
+e.git/tree/silabs
+> >>
+> >> That can't work automatically, unless I'm missing something of course.
+> >
+> > The firmware are signed. "C0" is the key used to sign this firmware. Th=
+is
+> > key must match with the key burned into the chip. Fortunately, the driv=
+er
+> > is able to read the key accepted by the chip and automatically choose t=
+he
+> > right firmware.
+> >
+> > We could imagine to add a attribute in the DT to choose the firmware to
+> > load. However, it would be a pity to have to specify it manually wherea=
+s
+> > the driver is able to detect it automatically.
+> >
+> > Currently, the only possible key is C0. However, it exists some interna=
+l
+> > parts with other keys. In addition, it is theoretically possible to ask
+> > to Silabs to burn parts with a specific key in order to improve securit=
+y
+> > of a product.
+> >
+> > Obviously, for now, this feature mainly exists for the Silabs firmware
+> > developers who have to work with other keys.
+>=20
+> My point above was about the directory "silabs". If I read the code
+> correctly, wfx driver tries to load "foo.bin" but in the linux-firmware
+> file is "silabs/foo.bin". So the should also include directory name in
+> the request and use "silabs/foo.bin".
 
-Add set sar_specs command
+Oh! Absolutely. I had never noticed my firmware was not in silabs/ on my
+test setup.
 
-usage: iw <phy> set sar_specs <sar type> <range index:sar power>*
-e.g.
-iw phy0 set sar_specs 0 0:100 1:90 2:80...
-where sar type should correspond to wiphy's sar_capa,
-and range index should be valid in wiphy's sar_capa.
+[...]
+--=20
+J=E9r=F4me Pouiller
 
-For now, kernel sar type supports only 0 (NL80211_SAR_TYPE_POWER)
-which means that the sar power limitation is specified in 0.25dBm unit.
-
-Cc: Carl Huang <cjhuang@codeaurora.org>
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- sar.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 71 insertions(+)
- create mode 100644 sar.c
-
-diff --git a/sar.c b/sar.c
-new file mode 100644
-index 0000000..5ab54ec
---- /dev/null
-+++ b/sar.c
-@@ -0,0 +1,71 @@
-+#include <errno.h>
-+#include <string.h>
-+
-+#include <netlink/genl/genl.h>
-+#include <netlink/msg.h>
-+#include <netlink/attr.h>
-+
-+#include "nl80211.h"
-+#include "iw.h"
-+
-+static int set_sar_specs(struct nl80211_state *state,
-+			 struct nl_msg *msg,
-+			 int argc, char **argv,
-+			 enum id_input id)
-+{
-+	struct nlattr *nl_sar, *nl_specs, *nl_sub;
-+	enum nl80211_sar_type type;
-+	__u32 idx;
-+	__s32 pwr;
-+	char *tmp;
-+	int count, i;
-+
-+	if (argc <= 1)
-+		return -EINVAL;
-+
-+	type = atoi(argv[0]);
-+
-+	nl_sar = nla_nest_start(msg, NL80211_ATTR_SAR_SPEC);
-+	if (!nl_sar)
-+		goto nla_put_failure;
-+
-+	NLA_PUT_U32(msg, NL80211_SAR_ATTR_TYPE, type);
-+
-+	nl_specs = nla_nest_start(msg, NL80211_SAR_ATTR_SPECS);
-+	if (!nl_specs)
-+		goto nla_put_failure;
-+
-+	for (i = 1; i < argc; i++) {
-+		tmp = strchr(argv[i], ':');
-+		if (!tmp)
-+			return -EINVAL;
-+
-+		if (tmp != strrchr(argv[i], ':'))
-+			return -EINVAL;
-+
-+		count = sscanf(argv[i], "%u:%d", &idx, &pwr);
-+		if (count != 2)
-+			return -EINVAL;
-+
-+		nl_sub = nla_nest_start(msg, i - 1);
-+		if (!nl_sub)
-+			goto nla_put_failure;
-+
-+		NLA_PUT_U32(msg, NL80211_SAR_ATTR_SPECS_RANGE_INDEX, idx);
-+		NLA_PUT_S32(msg, NL80211_SAR_ATTR_SPECS_POWER, pwr);
-+
-+		nla_nest_end(msg, nl_sub);
-+	}
-+
-+	nla_nest_end(msg, nl_specs);
-+	nla_nest_end(msg, nl_sar);
-+
-+	return 0;
-+
-+ nla_put_failure:
-+	return -ENOBUFS;
-+}
-+
-+COMMAND(set, sar_specs, "<sar type> <range index:sar power>*",
-+	NL80211_CMD_SET_SAR_SPECS, 0, CIB_PHY, set_sar_specs,
-+	"Set SAR specs corresponding to SAR capa of wiphy.");
--- 
-2.25.1
 
