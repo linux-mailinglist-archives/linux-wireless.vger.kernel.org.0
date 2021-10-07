@@ -2,57 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97BF0425445
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Oct 2021 15:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0FCC42545E
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Oct 2021 15:38:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241654AbhJGNkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Oct 2021 09:40:14 -0400
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:51870
+        id S241695AbhJGNkR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Oct 2021 09:40:17 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:51888
         "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241609AbhJGNkN (ORCPT
+        by vger.kernel.org with ESMTP id S241678AbhJGNkP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Oct 2021 09:40:13 -0400
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+        Thu, 7 Oct 2021 09:40:15 -0400
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 80C2940004
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Oct 2021 13:38:19 +0000 (UTC)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id A72F540007
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Oct 2021 13:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1633613899;
-        bh=upOlM+YeqtC352ZviJAd3z51Fz6iHXHCRP6fI5EVtCE=;
-        h=From:To:Subject:Date:Message-Id:MIME-Version;
-        b=K5uPIBXYNqgj8WIbZHM0hMG99YXTHyO+Zovg4ikX+hRJC2O1bpHSFvA3kuTx9sSnO
-         VzhbizAApl2oBaiTMoD1M8r87qsbRPPHJ8iU6naqHZEbE8t9nZEBOMce5SvlQvtoQw
-         eYM7ZVfys1sbwbZrUKTcI20rb8b7YGUaOayHhX5Fc6bsWRXmiRi8+G9V+1loYzyM6i
-         PbkO9W6CPTxNCO2VkI4gE6RJ1ivFs7Mnrzsn629kzGx94QfPk+fUi3ITaCMOzwXThX
-         rpkg7yyPnSsR7HqMCSM5VrEV7tbLrUFmFvtef/BpjOLvpYeZPiJPPZ4E8s6XQ5UVMv
-         6tp0izuzWVg+g==
-Received: by mail-ed1-f70.google.com with SMTP id 1-20020a508741000000b003da559ba1eeso5917727edv.13
-        for <linux-wireless@vger.kernel.org>; Thu, 07 Oct 2021 06:38:19 -0700 (PDT)
+        s=20210705; t=1633613900;
+        bh=ndHuIo5nFcldvCZmAPd5aK6MbzHPb0ULZC78XTfsfz0=;
+        h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+         MIME-Version;
+        b=ejVACtcB6Lvp3DfFGj1ooxJ6P8DG++Jh07uolRlkXDgyn1vKPZEVOAFwrlDk8NE0W
+         Z27lpvBytF3z0/SFJpxOj1MBb5X/OlWtm5M3XhSkcB1589dyI9IeEsi0iG13c4icBh
+         l1lXkATZCb18++QRKtVnUv+Hd3SIJ1evtxT4kP+kEKnRpfwv5bDquW9Ua+V53c1FIQ
+         CoFQ+fvfLPzlOeWxMD3DknNtmUkriTkyhP1nLok271GMKiwrAEfHliuf2PCwef5yqm
+         qxkeBML8okM393SigaGLLhBy61Xwd93JDOgruC8DO27Gvr/yKCWIzKW0pxwb7DHbHj
+         I6RhLvfKxdaMg==
+Received: by mail-ed1-f69.google.com with SMTP id u24-20020aa7db98000000b003db57b1688aso538088edt.6
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Oct 2021 06:38:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=upOlM+YeqtC352ZviJAd3z51Fz6iHXHCRP6fI5EVtCE=;
-        b=RHhiT47hQs8rBwO1chL5zBAzFhshO712se6jCVIh+rJ3E0fUYLcJHyhZIXLbC3vQeF
-         J9g8LfjHah6Q5okE2j4FuIpgAS6WMAp1tbBHbzTDBIDvZ3Oit3nf47e6OyeduW4FSD9l
-         dSL7Revn7qKrHS1hrsXTaGAxhR3IZxp81BofajoBkvkzFGHjy9KmFG92QQEV8p7EbQJh
-         iLVf/BHWgvLyaIGuYsxkW/AZzkvWTPSSRHGuMmaNy5Ex48idZ8PDHdXlAB/eJ7A2QxXO
-         F/cxO4EXfyybOcofamNqIFCchKxlX35M+J/AY1vQSdXjP+kVfrzkO5qwwSWqPQeQqDmi
-         b+Wg==
-X-Gm-Message-State: AOAM533+mUozp1ZrcIC2aYf3QAZC+wcwDa0IaP9JkCRRtGBFttO0iibI
-        FZ8i8VE7DG9VZ9Td467SczAY+q9T8YPZ6RjvGadb/+NvIgYOkHMNAtcyb1lIsyiD4tpPmjPnbZt
-        phujfPWXnXjWryia5VdMlCQrSYr/Hh4YJqJ6skyDE0uaQ
-X-Received: by 2002:a17:906:2cc9:: with SMTP id r9mr5959249ejr.138.1633613899064;
-        Thu, 07 Oct 2021 06:38:19 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJysz8D0vmS0o8wE8Hx/CAwpkXQSt/jJcGqT2FQLo0gEaR7VKf/x4sZjGm1ZRgWQW1Xzl63ykg==
-X-Received: by 2002:a17:906:2cc9:: with SMTP id r9mr5959208ejr.138.1633613898754;
-        Thu, 07 Oct 2021 06:38:18 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ndHuIo5nFcldvCZmAPd5aK6MbzHPb0ULZC78XTfsfz0=;
+        b=iAoAmS/vlKLgJhGgi2yfbpbXIk03k08LZ7Dugfnb9LjeP8xeYijBDpzlNEKUb0WEKQ
+         SX3uztMYZvp41Mjd3mn+35tNuqX1HRWpbs47dBjFryjpub+bHoSVm+EXXNUO1exFdsSK
+         2qqgj/FR8TS8xZZy8n2F3RBzTO/oS1Bkb+NwFJZF4rzldL8IyR4aydZZiX1K5R/oBn/6
+         EE59ecdL3RqMZxBamCOeVpz0Ou9BpHOj2e4MKL1jHwNOlPaldqPZtpWKfhI0frU9Zwmy
+         xCvRHebA+RGlnp5vyS11GufcRSWbBMuspJ74U3PPD0vanTnN3Bs7tRMMfuICQtlGTkHl
+         lfQg==
+X-Gm-Message-State: AOAM530Vk7BgYR3+g2KfHpda1R/fl5HeC1p6bAS30K9LW4LueaXiI6DE
+        eiKIwkM2vaY0Escj0wNjWTJhC+UCJMc6Vmse2tntwlw2Rs1jTw8StOGAXG9/az1AgbCcSSMb8nz
+        Lg919VjxFDDT/iqxA+H94aAEQrYqw+dabkoO/M118azp5
+X-Received: by 2002:a50:9d83:: with SMTP id w3mr6348689ede.305.1633613900233;
+        Thu, 07 Oct 2021 06:38:20 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJx+2lzbgrpSYf0Bm9+xaq9reHmRjzruQ6CbNPpq0yupA9/X4jgdCPRG3hOW296xgT5Jy74b9g==
+X-Received: by 2002:a50:9d83:: with SMTP id w3mr6348661ede.305.1633613900031;
+        Thu, 07 Oct 2021 06:38:20 -0700 (PDT)
 Received: from localhost.localdomain (xdsl-188-155-186-13.adslplus.ch. [188.155.186.13])
         by smtp.gmail.com with ESMTPSA id ay19sm8585613edb.20.2021.10.07.06.38.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Oct 2021 06:38:18 -0700 (PDT)
+        Thu, 07 Oct 2021 06:38:19 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Krzysztof Opasiak <k.opasiak@samsung.com>,
@@ -61,56 +62,308 @@ To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Jakub Kicinski <kuba@kernel.org>, linux-nfc@lists.01.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-wireless@vger.kernel.org
-Subject: [RESEND PATCH v2 0/7] nfc: minor printk cleanup
-Date:   Thu,  7 Oct 2021 15:30:14 +0200
-Message-Id: <20211007133021.32704-1-krzysztof.kozlowski@canonical.com>
+Subject: [RESEND PATCH v2 1/7] nfc: drop unneeded debug prints
+Date:   Thu,  7 Oct 2021 15:30:15 +0200
+Message-Id: <20211007133021.32704-2-krzysztof.kozlowski@canonical.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211007133021.32704-1-krzysztof.kozlowski@canonical.com>
+References: <20211007133021.32704-1-krzysztof.kozlowski@canonical.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+ftrace is a preferred and standard way to debug entering and exiting
+functions so drop useless debug prints.
 
-This is a rebase and resend of v2. No other changes.
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+---
+ net/nfc/hci/command.c   | 16 ----------------
+ net/nfc/hci/llc_shdlc.c | 12 ------------
+ net/nfc/llcp_commands.c |  8 --------
+ net/nfc/llcp_core.c     |  5 +----
+ net/nfc/nci/core.c      |  4 ----
+ net/nfc/nci/hci.c       |  4 ----
+ net/nfc/nci/ntf.c       |  9 ---------
+ 7 files changed, 1 insertion(+), 57 deletions(-)
 
-Changes since v1:
-1. Remove unused variable in pn533 (reported by kbuild).
-
-Best regards,
-Krzysztof
-
-Krzysztof Kozlowski (7):
-  nfc: drop unneeded debug prints
-  nfc: nci: replace GPLv2 boilerplate with SPDX
-  nfc: s3fwrn5: simplify dereferencing pointer to struct device
-  nfc: st-nci: drop unneeded debug prints
-  nfc: st21nfca: drop unneeded debug prints
-  nfc: trf7970a: drop unneeded debug prints
-  nfc: microread: drop unneeded debug prints
-
- drivers/nfc/microread/i2c.c    |  4 ----
- drivers/nfc/microread/mei.c    |  2 --
- drivers/nfc/s3fwrn5/firmware.c | 29 +++++++++++------------------
- drivers/nfc/s3fwrn5/nci.c      | 18 +++++++-----------
- drivers/nfc/st-nci/i2c.c       |  4 ----
- drivers/nfc/st-nci/ndlc.c      |  4 ----
- drivers/nfc/st-nci/se.c        |  6 ------
- drivers/nfc/st-nci/spi.c       |  4 ----
- drivers/nfc/st21nfca/i2c.c     |  4 ----
- drivers/nfc/st21nfca/se.c      |  4 ----
- drivers/nfc/trf7970a.c         |  8 --------
- net/nfc/hci/command.c          | 16 ----------------
- net/nfc/hci/llc_shdlc.c        | 12 ------------
- net/nfc/llcp_commands.c        |  8 --------
- net/nfc/llcp_core.c            |  5 +----
- net/nfc/nci/core.c             |  4 ----
- net/nfc/nci/hci.c              |  4 ----
- net/nfc/nci/ntf.c              |  9 ---------
- net/nfc/nci/uart.c             | 16 ++--------------
- 19 files changed, 21 insertions(+), 140 deletions(-)
-
+diff --git a/net/nfc/hci/command.c b/net/nfc/hci/command.c
+index 3a89bd9b89fc..af6bacb3ba98 100644
+--- a/net/nfc/hci/command.c
++++ b/net/nfc/hci/command.c
+@@ -114,8 +114,6 @@ int nfc_hci_send_cmd(struct nfc_hci_dev *hdev, u8 gate, u8 cmd,
+ {
+ 	u8 pipe;
+ 
+-	pr_debug("\n");
+-
+ 	pipe = hdev->gate2pipe[gate];
+ 	if (pipe == NFC_HCI_INVALID_PIPE)
+ 		return -EADDRNOTAVAIL;
+@@ -130,8 +128,6 @@ int nfc_hci_send_cmd_async(struct nfc_hci_dev *hdev, u8 gate, u8 cmd,
+ {
+ 	u8 pipe;
+ 
+-	pr_debug("\n");
+-
+ 	pipe = hdev->gate2pipe[gate];
+ 	if (pipe == NFC_HCI_INVALID_PIPE)
+ 		return -EADDRNOTAVAIL;
+@@ -205,8 +201,6 @@ static int nfc_hci_open_pipe(struct nfc_hci_dev *hdev, u8 pipe)
+ 
+ static int nfc_hci_close_pipe(struct nfc_hci_dev *hdev, u8 pipe)
+ {
+-	pr_debug("\n");
+-
+ 	return nfc_hci_execute_cmd(hdev, pipe, NFC_HCI_ANY_CLOSE_PIPE,
+ 				   NULL, 0, NULL);
+ }
+@@ -242,8 +236,6 @@ static u8 nfc_hci_create_pipe(struct nfc_hci_dev *hdev, u8 dest_host,
+ 
+ static int nfc_hci_delete_pipe(struct nfc_hci_dev *hdev, u8 pipe)
+ {
+-	pr_debug("\n");
+-
+ 	return nfc_hci_execute_cmd(hdev, NFC_HCI_ADMIN_PIPE,
+ 				   NFC_HCI_ADM_DELETE_PIPE, &pipe, 1, NULL);
+ }
+@@ -256,8 +248,6 @@ static int nfc_hci_clear_all_pipes(struct nfc_hci_dev *hdev)
+ 	/* TODO: Find out what the identity reference data is
+ 	 * and fill param with it. HCI spec 6.1.3.5 */
+ 
+-	pr_debug("\n");
+-
+ 	if (test_bit(NFC_HCI_QUIRK_SHORT_CLEAR, &hdev->quirks))
+ 		param_len = 0;
+ 
+@@ -271,8 +261,6 @@ int nfc_hci_disconnect_gate(struct nfc_hci_dev *hdev, u8 gate)
+ 	int r;
+ 	u8 pipe = hdev->gate2pipe[gate];
+ 
+-	pr_debug("\n");
+-
+ 	if (pipe == NFC_HCI_INVALID_PIPE)
+ 		return -EADDRNOTAVAIL;
+ 
+@@ -296,8 +284,6 @@ int nfc_hci_disconnect_all_gates(struct nfc_hci_dev *hdev)
+ {
+ 	int r;
+ 
+-	pr_debug("\n");
+-
+ 	r = nfc_hci_clear_all_pipes(hdev);
+ 	if (r < 0)
+ 		return r;
+@@ -314,8 +300,6 @@ int nfc_hci_connect_gate(struct nfc_hci_dev *hdev, u8 dest_host, u8 dest_gate,
+ 	bool pipe_created = false;
+ 	int r;
+ 
+-	pr_debug("\n");
+-
+ 	if (pipe == NFC_HCI_DO_NOT_CREATE_PIPE)
+ 		return 0;
+ 
+diff --git a/net/nfc/hci/llc_shdlc.c b/net/nfc/hci/llc_shdlc.c
+index 71e10347e6a9..e90f70385813 100644
+--- a/net/nfc/hci/llc_shdlc.c
++++ b/net/nfc/hci/llc_shdlc.c
+@@ -363,8 +363,6 @@ static int llc_shdlc_connect_initiate(const struct llc_shdlc *shdlc)
+ {
+ 	struct sk_buff *skb;
+ 
+-	pr_debug("\n");
+-
+ 	skb = llc_shdlc_alloc_skb(shdlc, 2);
+ 	if (skb == NULL)
+ 		return -ENOMEM;
+@@ -379,8 +377,6 @@ static int llc_shdlc_connect_send_ua(const struct llc_shdlc *shdlc)
+ {
+ 	struct sk_buff *skb;
+ 
+-	pr_debug("\n");
+-
+ 	skb = llc_shdlc_alloc_skb(shdlc, 0);
+ 	if (skb == NULL)
+ 		return -ENOMEM;
+@@ -570,8 +566,6 @@ static void llc_shdlc_connect_timeout(struct timer_list *t)
+ {
+ 	struct llc_shdlc *shdlc = from_timer(shdlc, t, connect_timer);
+ 
+-	pr_debug("\n");
+-
+ 	schedule_work(&shdlc->sm_work);
+ }
+ 
+@@ -598,8 +592,6 @@ static void llc_shdlc_sm_work(struct work_struct *work)
+ 	struct llc_shdlc *shdlc = container_of(work, struct llc_shdlc, sm_work);
+ 	int r;
+ 
+-	pr_debug("\n");
+-
+ 	mutex_lock(&shdlc->state_mutex);
+ 
+ 	switch (shdlc->state) {
+@@ -681,8 +673,6 @@ static int llc_shdlc_connect(struct llc_shdlc *shdlc)
+ {
+ 	DECLARE_WAIT_QUEUE_HEAD_ONSTACK(connect_wq);
+ 
+-	pr_debug("\n");
+-
+ 	mutex_lock(&shdlc->state_mutex);
+ 
+ 	shdlc->state = SHDLC_CONNECTING;
+@@ -701,8 +691,6 @@ static int llc_shdlc_connect(struct llc_shdlc *shdlc)
+ 
+ static void llc_shdlc_disconnect(struct llc_shdlc *shdlc)
+ {
+-	pr_debug("\n");
+-
+ 	mutex_lock(&shdlc->state_mutex);
+ 
+ 	shdlc->state = SHDLC_DISCONNECTED;
+diff --git a/net/nfc/llcp_commands.c b/net/nfc/llcp_commands.c
+index 3c4172a5aeb5..41e3a20c8935 100644
+--- a/net/nfc/llcp_commands.c
++++ b/net/nfc/llcp_commands.c
+@@ -337,8 +337,6 @@ int nfc_llcp_send_disconnect(struct nfc_llcp_sock *sock)
+ 	struct nfc_dev *dev;
+ 	struct nfc_llcp_local *local;
+ 
+-	pr_debug("Sending DISC\n");
+-
+ 	local = sock->local;
+ 	if (local == NULL)
+ 		return -ENODEV;
+@@ -362,8 +360,6 @@ int nfc_llcp_send_symm(struct nfc_dev *dev)
+ 	struct nfc_llcp_local *local;
+ 	u16 size = 0;
+ 
+-	pr_debug("Sending SYMM\n");
+-
+ 	local = nfc_llcp_find_local(dev);
+ 	if (local == NULL)
+ 		return -ENODEV;
+@@ -399,8 +395,6 @@ int nfc_llcp_send_connect(struct nfc_llcp_sock *sock)
+ 	u16 size = 0;
+ 	__be16 miux;
+ 
+-	pr_debug("Sending CONNECT\n");
+-
+ 	local = sock->local;
+ 	if (local == NULL)
+ 		return -ENODEV;
+@@ -475,8 +469,6 @@ int nfc_llcp_send_cc(struct nfc_llcp_sock *sock)
+ 	u16 size = 0;
+ 	__be16 miux;
+ 
+-	pr_debug("Sending CC\n");
+-
+ 	local = sock->local;
+ 	if (local == NULL)
+ 		return -ENODEV;
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index eaeb2b1cfa6a..5ad5157aa9c5 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -45,8 +45,6 @@ static void nfc_llcp_socket_purge(struct nfc_llcp_sock *sock)
+ 	struct nfc_llcp_local *local = sock->local;
+ 	struct sk_buff *s, *tmp;
+ 
+-	pr_debug("%p\n", &sock->sk);
+-
+ 	skb_queue_purge(&sock->tx_queue);
+ 	skb_queue_purge(&sock->tx_pending_queue);
+ 
+@@ -1505,9 +1503,8 @@ void nfc_llcp_recv(void *data, struct sk_buff *skb, int err)
+ {
+ 	struct nfc_llcp_local *local = (struct nfc_llcp_local *) data;
+ 
+-	pr_debug("Received an LLCP PDU\n");
+ 	if (err < 0) {
+-		pr_err("err %d\n", err);
++		pr_err("LLCP PDU receive err %d\n", err);
+ 		return;
+ 	}
+ 
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 82ab39d80726..6fd873aa86be 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -930,8 +930,6 @@ static void nci_deactivate_target(struct nfc_dev *nfc_dev,
+ 	struct nci_dev *ndev = nfc_get_drvdata(nfc_dev);
+ 	unsigned long nci_mode = NCI_DEACTIVATE_TYPE_IDLE_MODE;
+ 
+-	pr_debug("entry\n");
+-
+ 	if (!ndev->target_active_prot) {
+ 		pr_err("unable to deactivate target, no active target\n");
+ 		return;
+@@ -977,8 +975,6 @@ static int nci_dep_link_down(struct nfc_dev *nfc_dev)
+ 	struct nci_dev *ndev = nfc_get_drvdata(nfc_dev);
+ 	int rc;
+ 
+-	pr_debug("entry\n");
+-
+ 	if (nfc_dev->rf_mode == NFC_RF_INITIATOR) {
+ 		nci_deactivate_target(nfc_dev, NULL, NCI_DEACTIVATE_TYPE_IDLE_MODE);
+ 	} else {
+diff --git a/net/nfc/nci/hci.c b/net/nfc/nci/hci.c
+index e199912ee1e5..19703a649b5a 100644
+--- a/net/nfc/nci/hci.c
++++ b/net/nfc/nci/hci.c
+@@ -432,8 +432,6 @@ void nci_hci_data_received_cb(void *context,
+ 	struct sk_buff *frag_skb;
+ 	int msg_len;
+ 
+-	pr_debug("\n");
+-
+ 	if (err) {
+ 		nci_req_complete(ndev, err);
+ 		return;
+@@ -547,8 +545,6 @@ static u8 nci_hci_create_pipe(struct nci_dev *ndev, u8 dest_host,
+ 
+ static int nci_hci_delete_pipe(struct nci_dev *ndev, u8 pipe)
+ {
+-	pr_debug("\n");
+-
+ 	return nci_hci_send_cmd(ndev, NCI_HCI_ADMIN_GATE,
+ 				NCI_HCI_ADM_DELETE_PIPE, &pipe, 1, NULL);
+ }
+diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
+index c5eacaac41ae..282c51051dcc 100644
+--- a/net/nfc/nci/ntf.c
++++ b/net/nfc/nci/ntf.c
+@@ -738,8 +738,6 @@ static void nci_nfcee_discover_ntf_packet(struct nci_dev *ndev,
+ 	const struct nci_nfcee_discover_ntf *nfcee_ntf =
+ 				(struct nci_nfcee_discover_ntf *)skb->data;
+ 
+-	pr_debug("\n");
+-
+ 	/* NFCForum NCI 9.2.1 HCI Network Specific Handling
+ 	 * If the NFCC supports the HCI Network, it SHALL return one,
+ 	 * and only one, NFCEE_DISCOVER_NTF with a Protocol type of
+@@ -751,12 +749,6 @@ static void nci_nfcee_discover_ntf_packet(struct nci_dev *ndev,
+ 	nci_req_complete(ndev, status);
+ }
+ 
+-static void nci_nfcee_action_ntf_packet(struct nci_dev *ndev,
+-					const struct sk_buff *skb)
+-{
+-	pr_debug("\n");
+-}
+-
+ void nci_ntf_packet(struct nci_dev *ndev, struct sk_buff *skb)
+ {
+ 	__u16 ntf_opcode = nci_opcode(skb->data);
+@@ -813,7 +805,6 @@ void nci_ntf_packet(struct nci_dev *ndev, struct sk_buff *skb)
+ 		break;
+ 
+ 	case NCI_OP_RF_NFCEE_ACTION_NTF:
+-		nci_nfcee_action_ntf_packet(ndev, skb);
+ 		break;
+ 
+ 	default:
 -- 
 2.30.2
 
