@@ -2,231 +2,180 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34733424F58
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Oct 2021 10:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBE5D424F95
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Oct 2021 10:56:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232445AbhJGIhv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Oct 2021 04:37:51 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:38298 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232459AbhJGIhu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Oct 2021 04:37:50 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633595757; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=THqy+F0YtKNfeYDAR6Uu0AL5jJ4BrmAfvTC+DB6h4Dw=; b=EjfAbrh/FhmOPJ6/BT9ZCjp89ZRPrxt65WmJGkWEfF+rxbLvXtVA4expr2Hj1PNa63eKdVs4
- /Q4B87MgGtdfwPPayupzyLJ201F5NwX7NwNA7yCzMDecNtgWyiQX6+a/S0omOG9iLKUamhvi
- UP+CfX3F5xeqmy1MLSw2hujUdxo=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 615eb169b8ab9916b3ee7adf (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 07 Oct 2021 08:35:53
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7136FC43616; Thu,  7 Oct 2021 08:35:52 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D47DBC4338F;
-        Thu,  7 Oct 2021 08:35:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org D47DBC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-mmc@vger.kernel.org,
-        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH v7 05/24] wfx: add main.c/main.h
-References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
-        <2723787.uDASXpoAWK@pc-42> <87k0ixj5vn.fsf@codeaurora.org>
-        <3570035.Z1gqkuQO5x@pc-42>
-Date:   Thu, 07 Oct 2021 11:35:43 +0300
-In-Reply-To: <3570035.Z1gqkuQO5x@pc-42> (=?utf-8?B?IkrDqXLDtG1l?=
- Pouiller"'s message of "Wed,
-        06 Oct 2021 09:32:49 +0200")
-Message-ID: <875yu9cjvk.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S232604AbhJGI6e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Oct 2021 04:58:34 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:40558 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232573AbhJGI6d (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 7 Oct 2021 04:58:33 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1978uRQP1003661, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1978uRQP1003661
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 7 Oct 2021 16:56:27 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Thu, 7 Oct 2021 16:56:26 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Thu, 7 Oct 2021
+ 16:56:25 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>, <cjhuang@codeaurora.org>,
+        <kevin_yang@realtek.com>
+Subject: [PATCH] iw: add set sar_specs command
+Date:   Thu, 7 Oct 2021 16:56:15 +0800
+Message-ID: <20211007085615.40399-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/07/2021 08:43:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzcgpFekyCAwNjo0MzowMA==?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/07/2021 08:45:46
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166567 [Oct 07 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/07/2021 08:48:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-> Hi Kalle,
->
-> On Friday 1 October 2021 14:18:04 CEST Kalle Valo wrote:
->> J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
->>=20
->> > On Friday 1 October 2021 11:22:08 CEST Kalle Valo wrote:
->> >> Jerome Pouiller <Jerome.Pouiller@silabs.com> writes:
->> >>=20
->> >> > From: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com>
->> >> >
->> >> > Signed-off-by: J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.co=
-m>
->> >>=20
->> >> [...]
->> >>=20
->> >> > +/* The device needs data about the antenna configuration. This inf=
-ormation in
->> >> > + * provided by PDS (Platform Data Set, this is the wording used in=
- WF200
->> >> > + * documentation) files. For hardware integrators, the full proces=
-s to create
->> >> > + * PDS files is described here:
->> >> > + *   https:github.com/SiliconLabs/wfx-firmware/blob/master/PDS/REA=
-DME.md
->> >> > + *
->> >> > + * So this function aims to send PDS to the device. However, the P=
-DS file is
->> >> > + * often bigger than Rx buffers of the chip, so it has to be sent =
-in multiple
->> >> > + * parts.
->> >> > + *
->> >> > + * In add, the PDS data cannot be split anywhere. The PDS files co=
-ntains tree
->> >> > + * structures. Braces are used to enter/leave a level of the tree =
-(in a JSON
->> >> > + * fashion). PDS files can only been split between root nodes.
->> >> > + */
->> >> > +int wfx_send_pds(struct wfx_dev *wdev, u8 *buf, size_t len)
->> >> > +{
->> >> > +     int ret;
->> >> > +     int start, brace_level, i;
->> >> > +
->> >> > +     start =3D 0;
->> >> > +     brace_level =3D 0;
->> >> > +     if (buf[0] !=3D '{') {
->> >> > + dev_err(wdev->dev, "valid PDS start with '{'. Did you forget to
->> >> > compress it?\n");
->> >> > +             return -EINVAL;
->> >> > +     }
->> >> > +     for (i =3D 1; i < len - 1; i++) {
->> >> > +             if (buf[i] =3D=3D '{')
->> >> > +                     brace_level++;
->> >> > +             if (buf[i] =3D=3D '}')
->> >> > +                     brace_level--;
->> >> > +             if (buf[i] =3D=3D '}' && !brace_level) {
->> >> > +                     i++;
->> >> > +                     if (i - start + 1 > WFX_PDS_MAX_SIZE)
->> >> > +                             return -EFBIG;
->> >> > +                     buf[start] =3D '{';
->> >> > +                     buf[i] =3D 0;
->> >> > +                     dev_dbg(wdev->dev, "send PDS '%s}'\n", buf + =
-start);
->> >> > +                     buf[i] =3D '}';
->> >> > +                     ret =3D hif_configuration(wdev, buf + start,
->> >> > +                                             i - start + 1);
->> >> > +                     if (ret > 0) {
->> >> > + dev_err(wdev->dev, "PDS bytes %d to %d: invalid data (unsupported
->> >> > options?)\n",
->> >> > +                                     start, i);
->> >> > +                             return -EINVAL;
->> >> > +                     }
->> >> > +                     if (ret =3D=3D -ETIMEDOUT) {
->> >> > + dev_err(wdev->dev, "PDS bytes %d to %d: chip didn't reply (corrup=
-ted
->> >> > file?)\n",
->> >> > +                                     start, i);
->> >> > +                             return ret;
->> >> > +                     }
->> >> > +                     if (ret) {
->> >> > + dev_err(wdev->dev, "PDS bytes %d to %d: chip returned an unknown
->> >> > error\n",
->> >> > +                                     start, i);
->> >> > +                             return -EIO;
->> >> > +                     }
->> >> > +                     buf[i] =3D ',';
->> >> > +                     start =3D i;
->> >> > +             }
->> >> > +     }
->> >> > +     return 0;
->> >> > +}
->> >>=20
->> >> I'm not really fond of having this kind of ASCII based parser in the
->> >> kernel. Do you have an example compressed file somewhere?
->> >
->> > An example of uncompressed configuration file can be found here[1]. On=
-ce
->> > compressed with [2], you get:
->> >
->> >     {a:{a:4,b:1},b:{a:{a:4,b:0,c:0,d:0,e:A},b:{a:4,b:0,c:0,d:0,e:B},c:=
-{a:4,b:0,c:0,d:0,e:C},d:{a:4,b:0,c:0,d:0,e:D},e:{a:4,b:0,c:0,d:0,e:E},f:{a:=
-4,b:0,c:0,d:0,e:F},g:{a:4,b:0,c:0,d:0,e:G},h:{a:4,b:0,c:0,d:0,e:H},i:{a:4,b=
-:0,c:0,d:0,e:I},j:{a:4,b:0,c:0,d:0,e:J},k:{a:4,b:0,c:0,d:0,e:K},l:{a:4,b:0,=
-c:0,d:1,e:L},m:{a:4,b:0,c:0,d:1,e:M}},c:{a:{a:4},b:{a:6},c:{a:6,c:0},d:{a:6=
-},e:{a:6},f:{a:6}},e:{b:0,c:1},h:{e:0,a:50,b:0,d:0,c:[{a:1,b:[0,0,0,0,0,0]}=
-,{a:2,b:[0,0,0,0,0,0]},{a:[3,9],b:[0,0,0,0,0,0]},{a:A,b:[0,0,0,0,0,0]},{a:B=
-,b:[0,0,0,0,0,0]},{a:[C,D],b:[0,0,0,0,0,0]},{a:E,b:[0,0,0,0,0,0]}]},j:{a:0,=
-b:0}}
->>=20
->> So what's the grand idea with this braces format? I'm not getting it.
->
->   - It allows to describe a tree structure
->   - It is ascii (easy to dump, easy to copy-paste)
->   - It is small (as I explain below, size matters)
->   - Since it is similar to JSON, the structure is obvious to many people
->
-> Anyway, I am not the author of that and I have to deal with it.
+Add set sar_specs command
 
-I'm a supported for JSON like formats, flexibility and all that. But
-they belong to user space, not kernel.
+usage: iw <phy> set sar_specs <sar type> <range index:sar power>*
+e.g.
+iw phy0 set sar_specs 0 0:100 1:90 2:80...
+where sar type should correspond to wiphy's sar_capa,
+and range index should be valid in wiphy's sar_capa.
 
->> Usually the drivers just consider this kind of firmware configuration
->> data as a binary blob and dump it to the firmware, without knowing what
->> the data contains. Can't you do the same?
->
-> [I didn't had received this mail :( ]
->
-> The idea was also to send it as a binary blob. However, the firmware use
-> a limited buffer (1500 bytes) to parse it. In most of case the PDS exceeds
-> this size. So, we have to split the PDS before to send it.
->
-> Unfortunately, we can't split it anywhere. The PDS is a tree structure and
-> the firmware expects to receive a well formatted tree.
->
-> So, the easiest way to send it to the firmware is to split the tree
-> between each root nodes and send each subtree separately (see also the
-> comment above wfx_send_pds()).
->
-> Anyway, someone has to cook this configuration before to send it to the
-> firmware. This could be done by a script outside of the kernel. Then we
-> could change the input format to simplify a bit the processing in the
-> kernel.
+For now, kernel sar type supports only 0 (NL80211_SAR_TYPE_POWER)
+which means that the sar power limitation is specified in 0.25dBm unit.
 
-I think a binary file with TLV format would be much better, but I'm sure
-there also other good choises.
+Cc: Carl Huang <cjhuang@codeaurora.org>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ sar.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
+ create mode 100644 sar.c
 
-> However, the driver has already some users and I worry that changing
-> the input format would lead to a mess.
+diff --git a/sar.c b/sar.c
+new file mode 100644
+index 0000000..5ab54ec
+--- /dev/null
++++ b/sar.c
+@@ -0,0 +1,71 @@
++#include <errno.h>
++#include <string.h>
++
++#include <netlink/genl/genl.h>
++#include <netlink/msg.h>
++#include <netlink/attr.h>
++
++#include "nl80211.h"
++#include "iw.h"
++
++static int set_sar_specs(struct nl80211_state *state,
++			 struct nl_msg *msg,
++			 int argc, char **argv,
++			 enum id_input id)
++{
++	struct nlattr *nl_sar, *nl_specs, *nl_sub;
++	enum nl80211_sar_type type;
++	__u32 idx;
++	__s32 pwr;
++	char *tmp;
++	int count, i;
++
++	if (argc <= 1)
++		return -EINVAL;
++
++	type = atoi(argv[0]);
++
++	nl_sar = nla_nest_start(msg, NL80211_ATTR_SAR_SPEC);
++	if (!nl_sar)
++		goto nla_put_failure;
++
++	NLA_PUT_U32(msg, NL80211_SAR_ATTR_TYPE, type);
++
++	nl_specs = nla_nest_start(msg, NL80211_SAR_ATTR_SPECS);
++	if (!nl_specs)
++		goto nla_put_failure;
++
++	for (i = 1; i < argc; i++) {
++		tmp = strchr(argv[i], ':');
++		if (!tmp)
++			return -EINVAL;
++
++		if (tmp != strrchr(argv[i], ':'))
++			return -EINVAL;
++
++		count = sscanf(argv[i], "%u:%d", &idx, &pwr);
++		if (count != 2)
++			return -EINVAL;
++
++		nl_sub = nla_nest_start(msg, i - 1);
++		if (!nl_sub)
++			goto nla_put_failure;
++
++		NLA_PUT_U32(msg, NL80211_SAR_ATTR_SPECS_RANGE_INDEX, idx);
++		NLA_PUT_S32(msg, NL80211_SAR_ATTR_SPECS_POWER, pwr);
++
++		nla_nest_end(msg, nl_sub);
++	}
++
++	nla_nest_end(msg, nl_specs);
++	nla_nest_end(msg, nl_sar);
++
++	return 0;
++
++ nla_put_failure:
++	return -ENOBUFS;
++}
++
++COMMAND(set, sar_specs, "<sar type> <range index:sar power>*",
++	NL80211_CMD_SET_SAR_SPECS, 0, CIB_PHY, set_sar_specs,
++	"Set SAR specs corresponding to SAR capa of wiphy.");
+-- 
+2.25.1
 
-You can implement a script which converts the old format to the new
-format. And you can use different naming scheme in the new format so
-that we don't accidentally load the old format. And even better if you
-add a some kind of signature in the new format and give a proper error
-from the driver if it doesn't match.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
