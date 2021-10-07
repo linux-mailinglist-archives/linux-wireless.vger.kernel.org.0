@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2312B425465
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Oct 2021 15:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62A23425463
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Oct 2021 15:38:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241848AbhJGNkp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Oct 2021 09:40:45 -0400
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:36856
+        id S241825AbhJGNkl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Oct 2021 09:40:41 -0400
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:36838
         "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241687AbhJGNkR (ORCPT
+        by vger.kernel.org with ESMTP id S241699AbhJGNkS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Oct 2021 09:40:17 -0400
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+        Thu, 7 Oct 2021 09:40:18 -0400
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 978713FFE9
-        for <linux-wireless@vger.kernel.org>; Thu,  7 Oct 2021 13:38:22 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 121003FFE9
+        for <linux-wireless@vger.kernel.org>; Thu,  7 Oct 2021 13:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1633613902;
-        bh=JDWMUU6nWDzDRnCxtysvffFNd9O3HT0+eb4C8TwA21k=;
+        s=20210705; t=1633613904;
+        bh=i5yc8KqEKBR9h1kRXiKNI/2N/o+Yq4m6PQJBbQ1oeXs=;
         h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
          MIME-Version;
-        b=VRfrgSXLGG8BB8pKB0KxZErT7XoZAtn1hdAVRSAPAij5SZyI02YeAuQpF5KW99uwp
-         m3jJFmtQc8+Q8w3oXXVNG83DFw+IdoV/FcE9E8jU4zK4Cohr8Gq+AYlt4caF/EOeeo
-         1g3FcQoLBzWji5OocHiNoCSRxEatdLAZ0k5TV/MErhE/Z7e44dEI2umhT5xKQtYfYd
-         JaKTQnNVukQgkMrJsG931xXW0PoRsHy2kKVTo88abIG3hAlXTTXzESQ949W6iQoMH5
-         46jfbdgtNA5D3+VIzpZk9f3I3Rz38xdzvySlFah7i/OhiAdUW0aSXY+whdqeCiWUe8
-         roT9wcwAjDQdg==
-Received: by mail-ed1-f70.google.com with SMTP id i7-20020a50d747000000b003db0225d219so5983325edj.0
-        for <linux-wireless@vger.kernel.org>; Thu, 07 Oct 2021 06:38:22 -0700 (PDT)
+        b=cIWw7m30yueycV8Yk3xGgPHPj6uyO1RUaBw1zUJ6U3AvS4quAAf0zJMq4esAvTTWI
+         WqjF8G3KRtZsUl35EPiX+hGhk/fdEkqh56yL892MNddS+7XXR1/3PulSyfHfoaMfo9
+         yQnR8bus9w1ZTgKmZVBYiLTwbzqeECyHKc1GDPuQ2f7TvtNINNTR9h+qabY4jd1Tyh
+         eUrw0Lwcwb+qOiZNVlPYMKc87Fq52mK7aRy/arA4nnHgUKqs1BQ1htsEePOQ+u+A13
+         5WRbf0/p0vlysI8UxuUsNry4iJmvcJZ/KsAcHOfcQB//9RUWvOvl95TpNyaiVBcoYC
+         Dir4Fhkh7q82g==
+Received: by mail-ed1-f71.google.com with SMTP id g28-20020a50d0dc000000b003dae69dfe3aso5911774edf.7
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Oct 2021 06:38:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=JDWMUU6nWDzDRnCxtysvffFNd9O3HT0+eb4C8TwA21k=;
-        b=e/qTPnu1WmgqsS5orrZvFMSN35ItTadSsmRlvi4oyhpmaCom7rCgUD2B+NMMreCy1C
-         0SU9MFCFKZc8CVTIMASBzC8Wy+nkJmUbmYzfHUNEMIwww2OyuoY4I6nl7Fv3d1Ky3RFh
-         x/DH0HJLtOUqoX38TeMBKkjNFqgRNkctwcOiNbQjkbueQqIZJs2Bqjcx6bULt4bLJTRS
-         peRFL0V3GAsPFkZNDE7/YNdIzkx+wiGFn7RqWWbXOqQxUZAmZinwjXMcgGOCTCei1PKc
-         kcjc3zOWggSOxlXuTTtF4cldEp1a0pLX3BLg6y891dqtc8a/f2GZZ8A859HQ2Msp+pjv
-         4Ikg==
-X-Gm-Message-State: AOAM53280mCEDmM1R+aCI757zKbTQJtPWgulubGE9agC5mprxhHJi6OY
-        RtuVW9tsiLPf5P90iqwDXJ0xdHQOG6/B8NNjfAKU4QsIExtNRH4puI7opb7z3v2gcU8/tHHg/ZW
-        FlBuoewyrVHnPUf2w8U1pyhEhKolgPvvs1MfGwecFbBuh
-X-Received: by 2002:a05:6402:2712:: with SMTP id y18mr4444408edd.116.1633613902278;
-        Thu, 07 Oct 2021 06:38:22 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzv4FgMtulJtwcgnKP6SV+zQWtSRhZ47Rprc4Rgu4G1MKFh/pf0XgcdmxEyl2RIifZgwOEZJA==
-X-Received: by 2002:a05:6402:2712:: with SMTP id y18mr4444381edd.116.1633613902075;
-        Thu, 07 Oct 2021 06:38:22 -0700 (PDT)
+        bh=i5yc8KqEKBR9h1kRXiKNI/2N/o+Yq4m6PQJBbQ1oeXs=;
+        b=meIQ2PVof9xCiG+fTEkrhBDYm0aYaIawkwKAl+E1Ld6B+nUxyBqHvRUHquGx5mCAB5
+         eTQ15Xi7FSYHzUgSTV6mIj2ccdiSzbshQBdClGOiaalekJtaxQY4AYb3FhPkhU6A9p/b
+         IyMIQC3MTVwRPjszi6BfPOnur/+M7K+M/3l2kLbE9qVKt9YysuUjhmSxKgCrBcV2rUnS
+         vuDnmQNLhfY2axHAYafCLOL1Y2bqGOGIeGETlliIzr+6pqneAbcgywfLwmqZOD6+Y9ux
+         sMnwHySGKjZxM3xj42WQ4H6D6JmjMs0UPnso/RZ81z4WMmQtcViehOmmvUOLKIpbLUNM
+         hnsw==
+X-Gm-Message-State: AOAM530aYbidEEoEk+Mn/5hxK/HW4yc/GnsuLB6FrkUixj05MckGtT9G
+        6HFIbYARWZBF4CYKxlzT+EFJCiZRRnlo0Le2NzyUd30dkU+lWEbHaa7HsthzQydRW4+JV0/Iuqb
+        NqB1NZ4XUD3mwlomSHRd3xhCG6jyOfeS42oXwkbRxn/WS
+X-Received: by 2002:a17:906:c0d4:: with SMTP id bn20mr5857705ejb.360.1633613903416;
+        Thu, 07 Oct 2021 06:38:23 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzGs83pPcxwRjT8XZwuGT/4eMaNDYr0PKnMg7lCK+FLOnIuti4ghrKQPTbVDfP50A00g7hgAg==
+X-Received: by 2002:a17:906:c0d4:: with SMTP id bn20mr5857680ejb.360.1633613903222;
+        Thu, 07 Oct 2021 06:38:23 -0700 (PDT)
 Received: from localhost.localdomain (xdsl-188-155-186-13.adslplus.ch. [188.155.186.13])
-        by smtp.gmail.com with ESMTPSA id ay19sm8585613edb.20.2021.10.07.06.38.20
+        by smtp.gmail.com with ESMTPSA id ay19sm8585613edb.20.2021.10.07.06.38.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Oct 2021 06:38:21 -0700 (PDT)
+        Thu, 07 Oct 2021 06:38:22 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Krzysztof Opasiak <k.opasiak@samsung.com>,
@@ -62,9 +62,9 @@ To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Jakub Kicinski <kuba@kernel.org>, linux-nfc@lists.01.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-wireless@vger.kernel.org
-Subject: [RESEND PATCH v2 3/7] nfc: s3fwrn5: simplify dereferencing pointer to struct device
-Date:   Thu,  7 Oct 2021 15:30:17 +0200
-Message-Id: <20211007133021.32704-4-krzysztof.kozlowski@canonical.com>
+Subject: [RESEND PATCH v2 4/7] nfc: st-nci: drop unneeded debug prints
+Date:   Thu,  7 Oct 2021 15:30:18 +0200
+Message-Id: <20211007133021.32704-5-krzysztof.kozlowski@canonical.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211007133021.32704-1-krzysztof.kozlowski@canonical.com>
 References: <20211007133021.32704-1-krzysztof.kozlowski@canonical.com>
@@ -74,178 +74,114 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Simplify the code dereferencing several pointers to reach the struct
-device.
+ftrace is a preferred and standard way to debug entering and exiting
+functions so drop useless debug prints.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 ---
- drivers/nfc/s3fwrn5/firmware.c | 29 +++++++++++------------------
- drivers/nfc/s3fwrn5/nci.c      | 18 +++++++-----------
- 2 files changed, 18 insertions(+), 29 deletions(-)
+ drivers/nfc/st-nci/i2c.c  | 4 ----
+ drivers/nfc/st-nci/ndlc.c | 4 ----
+ drivers/nfc/st-nci/se.c   | 6 ------
+ drivers/nfc/st-nci/spi.c  | 4 ----
+ 4 files changed, 18 deletions(-)
 
-diff --git a/drivers/nfc/s3fwrn5/firmware.c b/drivers/nfc/s3fwrn5/firmware.c
-index 1af7a1e632cf..c20fdbac51c5 100644
---- a/drivers/nfc/s3fwrn5/firmware.c
-+++ b/drivers/nfc/s3fwrn5/firmware.c
-@@ -357,6 +357,7 @@ s3fwrn5_fw_is_custom(const struct s3fwrn5_fw_cmd_get_bootinfo_rsp *bootinfo)
- 
- int s3fwrn5_fw_setup(struct s3fwrn5_fw_info *fw_info)
+diff --git a/drivers/nfc/st-nci/i2c.c b/drivers/nfc/st-nci/i2c.c
+index ccf6152ebb9f..cbd968f013c7 100644
+--- a/drivers/nfc/st-nci/i2c.c
++++ b/drivers/nfc/st-nci/i2c.c
+@@ -157,7 +157,6 @@ static int st_nci_i2c_read(struct st_nci_i2c_phy *phy,
+ static irqreturn_t st_nci_irq_thread_fn(int irq, void *phy_id)
  {
-+	struct device *dev = &fw_info->ndev->nfc_dev->dev;
- 	struct s3fwrn5_fw_cmd_get_bootinfo_rsp bootinfo;
- 	int ret;
+ 	struct st_nci_i2c_phy *phy = phy_id;
+-	struct i2c_client *client;
+ 	struct sk_buff *skb = NULL;
+ 	int r;
  
-@@ -364,8 +365,7 @@ int s3fwrn5_fw_setup(struct s3fwrn5_fw_info *fw_info)
- 
- 	ret = s3fwrn5_fw_get_bootinfo(fw_info, &bootinfo);
- 	if (ret < 0) {
--		dev_err(&fw_info->ndev->nfc_dev->dev,
--			"Failed to get bootinfo, ret=%02x\n", ret);
-+		dev_err(dev, "Failed to get bootinfo, ret=%02x\n", ret);
- 		goto err;
+@@ -166,9 +165,6 @@ static irqreturn_t st_nci_irq_thread_fn(int irq, void *phy_id)
+ 		return IRQ_NONE;
  	}
  
-@@ -373,8 +373,7 @@ int s3fwrn5_fw_setup(struct s3fwrn5_fw_info *fw_info)
+-	client = phy->i2c_dev;
+-	dev_dbg(&client->dev, "IRQ\n");
+-
+ 	if (phy->ndlc->hard_fault)
+ 		return IRQ_HANDLED;
  
- 	ret = s3fwrn5_fw_get_base_addr(&bootinfo, &fw_info->base_addr);
- 	if (ret < 0) {
--		dev_err(&fw_info->ndev->nfc_dev->dev,
--			"Unknown hardware version\n");
-+		dev_err(dev, "Unknown hardware version\n");
- 		goto err;
- 	}
- 
-@@ -409,6 +408,7 @@ bool s3fwrn5_fw_check_version(const struct s3fwrn5_fw_info *fw_info, u32 version
- 
- int s3fwrn5_fw_download(struct s3fwrn5_fw_info *fw_info)
+diff --git a/drivers/nfc/st-nci/ndlc.c b/drivers/nfc/st-nci/ndlc.c
+index e9dc313b333e..755460a73c0d 100644
+--- a/drivers/nfc/st-nci/ndlc.c
++++ b/drivers/nfc/st-nci/ndlc.c
+@@ -239,8 +239,6 @@ static void ndlc_t1_timeout(struct timer_list *t)
  {
-+	struct device *dev = &fw_info->ndev->nfc_dev->dev;
- 	struct s3fwrn5_fw_image *fw = &fw_info->fw;
- 	u8 hash_data[SHA1_DIGEST_SIZE];
- 	struct crypto_shash *tfm;
-@@ -421,8 +421,7 @@ int s3fwrn5_fw_download(struct s3fwrn5_fw_info *fw_info)
+ 	struct llt_ndlc *ndlc = from_timer(ndlc, t, t1_timer);
  
- 	tfm = crypto_alloc_shash("sha1", 0, 0);
- 	if (IS_ERR(tfm)) {
--		dev_err(&fw_info->ndev->nfc_dev->dev,
--			"Cannot allocate shash (code=%pe)\n", tfm);
-+		dev_err(dev, "Cannot allocate shash (code=%pe)\n", tfm);
- 		return PTR_ERR(tfm);
- 	}
- 
-@@ -430,21 +429,18 @@ int s3fwrn5_fw_download(struct s3fwrn5_fw_info *fw_info)
- 
- 	crypto_free_shash(tfm);
- 	if (ret) {
--		dev_err(&fw_info->ndev->nfc_dev->dev,
--			"Cannot compute hash (code=%d)\n", ret);
-+		dev_err(dev, "Cannot compute hash (code=%d)\n", ret);
- 		return ret;
- 	}
- 
- 	/* Firmware update process */
- 
--	dev_info(&fw_info->ndev->nfc_dev->dev,
--		"Firmware update: %s\n", fw_info->fw_name);
-+	dev_info(dev, "Firmware update: %s\n", fw_info->fw_name);
- 
- 	ret = s3fwrn5_fw_enter_update_mode(fw_info, hash_data,
- 		SHA1_DIGEST_SIZE, fw_info->sig, fw_info->sig_size);
- 	if (ret < 0) {
--		dev_err(&fw_info->ndev->nfc_dev->dev,
--			"Unable to enter update mode\n");
-+		dev_err(dev, "Unable to enter update mode\n");
- 		return ret;
- 	}
- 
-@@ -452,21 +448,18 @@ int s3fwrn5_fw_download(struct s3fwrn5_fw_info *fw_info)
- 		ret = s3fwrn5_fw_update_sector(fw_info,
- 			fw_info->base_addr + off, fw->image + off);
- 		if (ret < 0) {
--			dev_err(&fw_info->ndev->nfc_dev->dev,
--				"Firmware update error (code=%d)\n", ret);
-+			dev_err(dev, "Firmware update error (code=%d)\n", ret);
- 			return ret;
- 		}
- 	}
- 
- 	ret = s3fwrn5_fw_complete_update_mode(fw_info);
- 	if (ret < 0) {
--		dev_err(&fw_info->ndev->nfc_dev->dev,
--			"Unable to complete update mode\n");
-+		dev_err(dev, "Unable to complete update mode\n");
- 		return ret;
- 	}
- 
--	dev_info(&fw_info->ndev->nfc_dev->dev,
--		"Firmware update: success\n");
-+	dev_info(dev, "Firmware update: success\n");
- 
- 	return ret;
+-	pr_debug("\n");
+-
+ 	schedule_work(&ndlc->sm_work);
  }
-diff --git a/drivers/nfc/s3fwrn5/nci.c b/drivers/nfc/s3fwrn5/nci.c
-index e374e670b36b..ca6828f55ba0 100644
---- a/drivers/nfc/s3fwrn5/nci.c
-+++ b/drivers/nfc/s3fwrn5/nci.c
-@@ -47,6 +47,7 @@ const struct nci_driver_ops s3fwrn5_nci_prop_ops[4] = {
  
- int s3fwrn5_nci_rf_configure(struct s3fwrn5_info *info, const char *fw_name)
+@@ -248,8 +246,6 @@ static void ndlc_t2_timeout(struct timer_list *t)
  {
-+	struct device *dev = &info->ndev->nfc_dev->dev;
- 	const struct firmware *fw;
- 	struct nci_prop_fw_cfg_cmd fw_cfg;
- 	struct nci_prop_set_rfreg_cmd set_rfreg;
-@@ -55,7 +56,7 @@ int s3fwrn5_nci_rf_configure(struct s3fwrn5_info *info, const char *fw_name)
- 	int i, len;
- 	int ret;
+ 	struct llt_ndlc *ndlc = from_timer(ndlc, t, t2_timer);
  
--	ret = request_firmware(&fw, fw_name, &info->ndev->nfc_dev->dev);
-+	ret = request_firmware(&fw, fw_name, dev);
- 	if (ret < 0)
- 		return ret;
+-	pr_debug("\n");
+-
+ 	schedule_work(&ndlc->sm_work);
+ }
  
-@@ -77,13 +78,11 @@ int s3fwrn5_nci_rf_configure(struct s3fwrn5_info *info, const char *fw_name)
+diff --git a/drivers/nfc/st-nci/se.c b/drivers/nfc/st-nci/se.c
+index 5fd89f72969d..7764b1a4c3cf 100644
+--- a/drivers/nfc/st-nci/se.c
++++ b/drivers/nfc/st-nci/se.c
+@@ -638,8 +638,6 @@ int st_nci_se_io(struct nci_dev *ndev, u32 se_idx,
+ {
+ 	struct st_nci_info *info = nci_get_drvdata(ndev);
  
- 	/* Start rfreg configuration */
+-	pr_debug("\n");
+-
+ 	switch (se_idx) {
+ 	case ST_NCI_ESE_HOST_ID:
+ 		info->se_info.cb = cb;
+@@ -671,8 +669,6 @@ static void st_nci_se_wt_timeout(struct timer_list *t)
+ 	u8 param = 0x01;
+ 	struct st_nci_info *info = from_timer(info, t, se_info.bwi_timer);
  
--	dev_info(&info->ndev->nfc_dev->dev,
--		"rfreg configuration update: %s\n", fw_name);
-+	dev_info(dev, "rfreg configuration update: %s\n", fw_name);
+-	pr_debug("\n");
+-
+ 	info->se_info.bwi_active = false;
  
- 	ret = nci_prop_cmd(info->ndev, NCI_PROP_START_RFREG, 0, NULL);
- 	if (ret < 0) {
--		dev_err(&info->ndev->nfc_dev->dev,
--			"Unable to start rfreg update\n");
-+		dev_err(dev, "Unable to start rfreg update\n");
- 		goto out;
+ 	if (!info->se_info.xch_error) {
+@@ -692,8 +688,6 @@ static void st_nci_se_activation_timeout(struct timer_list *t)
+ 	struct st_nci_info *info = from_timer(info, t,
+ 					      se_info.se_active_timer);
+ 
+-	pr_debug("\n");
+-
+ 	info->se_info.se_active = false;
+ 
+ 	complete(&info->se_info.req_completion);
+diff --git a/drivers/nfc/st-nci/spi.c b/drivers/nfc/st-nci/spi.c
+index 0875b773fb41..4e723992e74c 100644
+--- a/drivers/nfc/st-nci/spi.c
++++ b/drivers/nfc/st-nci/spi.c
+@@ -169,7 +169,6 @@ static int st_nci_spi_read(struct st_nci_spi_phy *phy,
+ static irqreturn_t st_nci_irq_thread_fn(int irq, void *phy_id)
+ {
+ 	struct st_nci_spi_phy *phy = phy_id;
+-	struct spi_device *dev;
+ 	struct sk_buff *skb = NULL;
+ 	int r;
+ 
+@@ -178,9 +177,6 @@ static irqreturn_t st_nci_irq_thread_fn(int irq, void *phy_id)
+ 		return IRQ_NONE;
  	}
  
-@@ -97,8 +96,7 @@ int s3fwrn5_nci_rf_configure(struct s3fwrn5_info *info, const char *fw_name)
- 		ret = nci_prop_cmd(info->ndev, NCI_PROP_SET_RFREG,
- 			len+1, (__u8 *)&set_rfreg);
- 		if (ret < 0) {
--			dev_err(&info->ndev->nfc_dev->dev,
--				"rfreg update error (code=%d)\n", ret);
-+			dev_err(dev, "rfreg update error (code=%d)\n", ret);
- 			goto out;
- 		}
- 		set_rfreg.index++;
-@@ -110,13 +108,11 @@ int s3fwrn5_nci_rf_configure(struct s3fwrn5_info *info, const char *fw_name)
- 	ret = nci_prop_cmd(info->ndev, NCI_PROP_STOP_RFREG,
- 		sizeof(stop_rfreg), (__u8 *)&stop_rfreg);
- 	if (ret < 0) {
--		dev_err(&info->ndev->nfc_dev->dev,
--			"Unable to stop rfreg update\n");
-+		dev_err(dev, "Unable to stop rfreg update\n");
- 		goto out;
- 	}
+-	dev = phy->spi_dev;
+-	dev_dbg(&dev->dev, "IRQ\n");
+-
+ 	if (phy->ndlc->hard_fault)
+ 		return IRQ_HANDLED;
  
--	dev_info(&info->ndev->nfc_dev->dev,
--		"rfreg configuration update: success\n");
-+	dev_info(dev, "rfreg configuration update: success\n");
- out:
- 	release_firmware(fw);
- 	return ret;
 -- 
 2.30.2
 
