@@ -2,89 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2250D426D65
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 17:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BDD8426DFF
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 17:46:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242800AbhJHPWD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Oct 2021 11:22:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38966 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242662AbhJHPWC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Oct 2021 11:22:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 1C9A460FD8;
-        Fri,  8 Oct 2021 15:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633706407;
-        bh=XaoepD9pnpqvmvlNYkOauTaOInKIGi3EeI10E4+GpuA=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=LYVqtEzlITS9He8HreSE7lMmRr3pSD86Inmf9xioAt6/nrWgURw5UrLBxyH1cMqeD
-         Eklo73u6xQSSw1HlCYYOl5Piyfwa4K+/AZx+CYnw8KmxYVK6Y+7mV4mPvQ3gqi2OpE
-         oQZl7vfX1vOmLDM60W+ePxJmdurLPsVVWWQd67cpW3v9ueNgQp8XeeO0Q+neJhlfhr
-         Sva7GoHxZQ0sVraprAdNPd7X77UesX+c4pEFpB2ZowHi+2mEF+nbhmLGwirj4rag/e
-         lYHBeSKakEm+jtO/MrChPh9KseJz/J1C2aIL8NSvQFQXebUPVsOGoF2Xr1195cEVhl
-         3ZTvuzp/C5hhQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 0F4F460A44;
-        Fri,  8 Oct 2021 15:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S231147AbhJHPsL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Oct 2021 11:48:11 -0400
+Received: from mailgw02.mediatek.com ([216.200.240.185]:58914 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230523AbhJHPsJ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 8 Oct 2021 11:48:09 -0400
+X-Greylist: delayed 306 seconds by postgrey-1.27 at vger.kernel.org; Fri, 08 Oct 2021 11:48:09 EDT
+X-UUID: bf02149a884a4fc3b13cdbbfe2c33f25-20211008
+X-UUID: bf02149a884a4fc3b13cdbbfe2c33f25-20211008
+Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw02.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1842756440; Fri, 08 Oct 2021 08:41:06 -0700
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ MTKMBS62DR.mediatek.inc (172.29.94.18) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 8 Oct 2021 08:41:04 -0700
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 8 Oct 2021 23:41:04 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH] mt76: mt7921: add delay config for sched scan
+Date:   Fri, 8 Oct 2021 23:40:50 +0800
+Message-ID: <be717a2f0272ab8d339f4bc658fdde855eb78f0d.1633705676.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] ath11k: fix m68k and xtensa build failure in
- ath11k_peer_assoc_h_smps()
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <163370640705.31693.17970287687909944942.git-patchwork-notify@kernel.org>
-Date:   Fri, 08 Oct 2021 15:20:07 +0000
-References: <20211008143932.23884-1-kvalo@codeaurora.org>
-In-Reply-To: <20211008143932.23884-1-kvalo@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     netdev@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, sfr@canb.auug.org.au,
-        geert@linux-m68k.org
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+From: Deren Wu <deren.wu@mediatek.com>
 
-This patch was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
+Add a delay parameter for firmware to support delay scheduled scan.
 
-On Fri,  8 Oct 2021 17:39:32 +0300 you wrote:
-> Stephen reported that ath11k was failing to build on m68k and xtensa:
-> 
-> In file included from <command-line>:0:0:
-> In function 'ath11k_peer_assoc_h_smps',
->     inlined from 'ath11k_peer_assoc_prepare' at drivers/net/wireless/ath/ath11k/mac.c:2362:2:
-> include/linux/compiler_types.h:317:38: error: call to '__compiletime_assert_650' declared with attribute error: FIELD_GET: type of reg too small for mask
->   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
->                                       ^
-> include/linux/compiler_types.h:298:4: note: in definition of macro '__compiletime_assert'
->     prefix ## suffix();    \
->     ^
-> include/linux/compiler_types.h:317:2: note: in expansion of macro '_compiletime_assert'
->   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
->   ^
-> include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
->  #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
->                                      ^
-> include/linux/bitfield.h:52:3: note: in expansion of macro 'BUILD_BUG_ON_MSG'
->    BUILD_BUG_ON_MSG((_mask) > (typeof(_reg))~0ull,  \
->    ^
-> include/linux/bitfield.h:108:3: note: in expansion of macro '__BF_FIELD_CHECK'
->    __BF_FIELD_CHECK(_mask, _reg, 0U, "FIELD_GET: "); \
->    ^
-> drivers/net/wireless/ath/ath11k/mac.c:2079:10: note: in expansion of macro 'FIELD_GET'
->    smps = FIELD_GET(IEEE80211_HE_6GHZ_CAP_SM_PS,
-> 
-> [...]
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 4 +++-
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-Here is the summary with links:
-  - [net-next] ath11k: fix m68k and xtensa build failure in ath11k_peer_assoc_h_smps()
-    https://git.kernel.org/netdev/net-next/c/16bdce2ada5a
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 9c0f86eefd75..1f4fdb470578 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1540,8 +1540,10 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
+ 		get_random_mask_addr(addr, sreq->mac_addr,
+ 				     sreq->mac_addr_mask);
+ 	}
+-	if (is_mt7921(phy->dev))
++	if (is_mt7921(phy->dev)) {
+ 		req->mt7921.bss_idx = mvif->idx;
++		req->mt7921.delay = cpu_to_le32(sreq->delay);
++	}
+ 
+ 	req->ssids_num = sreq->n_ssids;
+ 	for (i = 0; i < req->ssids_num; i++) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index cb36dd39221c..5b75465bc05a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -805,7 +805,9 @@ struct mt76_connac_sched_scan_req {
+ 		} mt7663;
+ 		struct {
+ 			u8 bss_idx;
+-			u8 pad2[19];
++			u8 pad1[3];
++			__le32 delay;
++			u8 pad2[12];
+ 			u8 random_mac[ETH_ALEN];
+ 			u8 pad3[38];
+ 		} mt7921;
+-- 
+2.18.0
 
