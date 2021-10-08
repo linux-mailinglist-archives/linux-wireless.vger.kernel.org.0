@@ -2,62 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90C4A426380
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 05:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47EDB42638D
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 06:11:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233023AbhJHEAc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Oct 2021 00:00:32 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:43631 "EHLO
+        id S230013AbhJHENE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Oct 2021 00:13:04 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:44359 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232661AbhJHEAb (ORCPT
+        with ESMTP id S229470AbhJHEND (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Oct 2021 00:00:31 -0400
+        Fri, 8 Oct 2021 00:13:03 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1983wWLy9006685, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1984B5lpC009228, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1983wWLy9006685
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1984B5lpC009228
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 8 Oct 2021 11:58:32 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+        Fri, 8 Oct 2021 12:11:05 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
  RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Fri, 8 Oct 2021 11:58:32 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 8 Oct 2021
- 11:58:31 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v7 24/24] rtw89: add Kconfig and Makefile
-Date:   Fri, 8 Oct 2021 11:56:27 +0800
-Message-ID: <20211008035627.19463-25-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211008035627.19463-1-pkshih@realtek.com>
-References: <20211008035627.19463-1-pkshih@realtek.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/08/2021 03:41:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ 15.1.2308.14; Fri, 8 Oct 2021 12:11:04 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 8 Oct 2021 12:11:03 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Fri, 8 Oct 2021 12:11:03 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
+Thread-Topic: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
+Thread-Index: AQHXlXz6iS5M0zbbfkSyaj358Nztiqu+mXDngAQPmeCAAYZwOYAEmYxw
+Date:   Fri, 8 Oct 2021 04:11:03 +0000
+Message-ID: <b59b709da12e4c938745eddd73efeec7@realtek.com>
+References: <20210820043538.12424-1-pkshih@realtek.com>
+        <8735pkiu0t.fsf@codeaurora.org>
+        <9b54e3c321a4414cbae62616d8a913f4@realtek.com>
+ <877desggrm.fsf@codeaurora.org>
+In-Reply-To: <877desggrm.fsf@codeaurora.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
  rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzcgpFWkyCAxMToyMzowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/8_=3F=3F_02:36:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
 X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/08/2021 03:43:35
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/08/2021 03:53:37
 X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
 X-KSE-AntiSpam-Method: none
 X-KSE-AntiSpam-Rate: 0
@@ -66,7 +71,7 @@ X-KSE-AntiSpam-Info: Version: 5.9.20.0
 X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
 X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
 X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
 X-KSE-AntiSpam-Info: Rate: 0
 X-KSE-AntiSpam-Info: Status: not_detected
 X-KSE-AntiSpam-Info: Method: none
@@ -74,131 +79,40 @@ X-KSE-AntiSpam-Info: Auth:dkim=none
 X-KSE-Antiphishing-Info: Clean
 X-KSE-Antiphishing-ScanningType: Heuristic
 X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/08/2021 03:46:00
+X-KSE-Antiphishing-Bases: 10/08/2021 03:56:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With Kconfig and Makefile, we can build rtw89 and support 8852AE chip.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/Kconfig        |  1 +
- drivers/net/wireless/realtek/Makefile       |  1 +
- drivers/net/wireless/realtek/rtw89/Kconfig  | 50 +++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/Makefile | 25 +++++++++++
- 4 files changed, 77 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw89/Kconfig
- create mode 100644 drivers/net/wireless/realtek/rtw89/Makefile
+> -----Original Message-----
+> From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On
+> Behalf Of Kalle Valo
+> Sent: Tuesday, October 5, 2021 1:52 PM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: linux-wireless@vger.kernel.org
+> Subject: Re: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
+> 
+> Pkshih <pkshih@realtek.com> writes:
+> 
+> >> The community has been testing this driver already, right?
+> >
+> > As Larry mentioned, end users use this driver. Since bugs found in v6,
+> > we have fixed them and driver is under QA. I plan to have that fixes in v7
+> > released this week.
+> >
+> > This version will also include fixes of your comments.
+> > Does it work to you?
+> 
+> Sounds good to me. I hope the changes in v7 will be small in size,
+> bigger changes (especially new features) is better to do after the
+> driver is applied to wireless-drivers-next.
+> 
 
-diff --git a/drivers/net/wireless/realtek/Kconfig b/drivers/net/wireless/realtek/Kconfig
-index 474843277fa1..4a1f0e64df03 100644
---- a/drivers/net/wireless/realtek/Kconfig
-+++ b/drivers/net/wireless/realtek/Kconfig
-@@ -16,5 +16,6 @@ source "drivers/net/wireless/realtek/rtl818x/Kconfig"
- source "drivers/net/wireless/realtek/rtlwifi/Kconfig"
- source "drivers/net/wireless/realtek/rtl8xxxu/Kconfig"
- source "drivers/net/wireless/realtek/rtw88/Kconfig"
-+source "drivers/net/wireless/realtek/rtw89/Kconfig"
- 
- endif # WLAN_VENDOR_REALTEK
-diff --git a/drivers/net/wireless/realtek/Makefile b/drivers/net/wireless/realtek/Makefile
-index 888b5d594e79..ab25419f56c6 100644
---- a/drivers/net/wireless/realtek/Makefile
-+++ b/drivers/net/wireless/realtek/Makefile
-@@ -8,4 +8,5 @@ obj-$(CONFIG_RTL8187)		+= rtl818x/
- obj-$(CONFIG_RTLWIFI)		+= rtlwifi/
- obj-$(CONFIG_RTL8XXXU)		+= rtl8xxxu/
- obj-$(CONFIG_RTW88)		+= rtw88/
-+obj-$(CONFIG_RTW89)		+= rtw89/
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/Kconfig b/drivers/net/wireless/realtek/rtw89/Kconfig
-new file mode 100644
-index 000000000000..37e5def24d9f
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/Kconfig
-@@ -0,0 +1,50 @@
-+# SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+menuconfig RTW89
-+	tristate "Realtek 802.11ax wireless chips support"
-+	depends on MAC80211
-+	help
-+	  This module adds support for mac80211-based wireless drivers that
-+	  enables Realtek IEEE 802.11ax wireless chipsets.
-+
-+	  If you choose to build a module, it'll be called rtw89.
-+
-+if RTW89
-+
-+config RTW89_CORE
-+	tristate
-+
-+config RTW89_PCI
-+	tristate
-+
-+config RTW89_8852AE
-+	tristate "Realtek 8852AE PCI wireless network adapter"
-+	depends on PCI
-+	select RTW89_CORE
-+	select RTW89_PCI
-+	help
-+	  Select this option will enable support for 8852AE chipset
-+
-+	  802.11ax PCIe wireless network adapter
-+
-+config RTW89_DEBUG
-+	bool
-+
-+config RTW89_DEBUGMSG
-+	bool "Realtek rtw89 debug message support"
-+	depends on RTW89_CORE
-+	select RTW89_DEBUG
-+	help
-+	  Enable debug message support
-+
-+	  If unsure, say Y to simplify debug problems
-+
-+config RTW89_DEBUGFS
-+	bool "Realtek rtw89 debugfs support"
-+	depends on RTW89_CORE
-+	select RTW89_DEBUG
-+	help
-+	  Enable debugfs support
-+
-+	  If unsure, say Y to simplify debug problems
-+
-+endif
-diff --git a/drivers/net/wireless/realtek/rtw89/Makefile b/drivers/net/wireless/realtek/rtw89/Makefile
-new file mode 100644
-index 000000000000..077e8fe23f60
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/Makefile
-@@ -0,0 +1,25 @@
-+# SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+
-+obj-$(CONFIG_RTW89_CORE) += rtw89_core.o
-+rtw89_core-y += core.o \
-+		mac80211.o \
-+		mac.o \
-+		phy.o \
-+		fw.o \
-+		rtw8852a.o \
-+		rtw8852a_table.o \
-+		rtw8852a_rfk.o \
-+		rtw8852a_rfk_table.o \
-+		cam.o \
-+		efuse.o \
-+		regd.o \
-+		sar.o \
-+		coex.o \
-+		ps.o \
-+		ser.o
-+
-+rtw89_core-$(CONFIG_RTW89_DEBUG) += debug.o
-+
-+obj-$(CONFIG_RTW89_PCI) += rtw89_pci.o
-+rtw89_pci-y := pci.o
-+
--- 
-2.25.1
+I have fixed this driver according to all of your comments, so I
+don't reply the comments one by one. If this doesn't work to you,
+please let me know.
+
+--
+Ping-Ke
 
