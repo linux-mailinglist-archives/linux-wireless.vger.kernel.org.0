@@ -2,134 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7F644265AA
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 10:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9D1A4266F3
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 11:33:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233734AbhJHIQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Oct 2021 04:16:34 -0400
-Received: from mail-ua1-f45.google.com ([209.85.222.45]:34723 "EHLO
-        mail-ua1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233072AbhJHIQc (ORCPT
+        id S235969AbhJHJfk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Oct 2021 05:35:40 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:36629 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229863AbhJHJfk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Oct 2021 04:16:32 -0400
-Received: by mail-ua1-f45.google.com with SMTP id h4so6198069uaw.1;
-        Fri, 08 Oct 2021 01:14:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7wO+xcQh6vNN08iok37rOCPRwho9ClVLbVfs6DvZcoU=;
-        b=1V+mwmje0bbAVYIweZ9k+xoyyotUOqd0jO9GkvoXdg6/lVr/Bvc6/ykGQFLBE/BEm2
-         LdDqqh1LbwB8g5uDQkB8vTOOVvNMBKfqKyWhZkp9mpqIniq/jNlrp1sufYnkyyy7GGS3
-         jBvk+7QCLD2+oEKKAaOql3OEDuRpqrJAKpIKPNXNHlIVnFZva2qpJtKeu/84TVgFoMsq
-         Xq9PehJrJvSWAjnjLKjvLWk17nmu7oMfM3LJWMVaeu2n9Oc78YS8cfiAd6QF8xgwVg90
-         S5jMmhiiFhajs3ZBuHe3c62PV9Y3uPXEmywRwzK8makrR81SV4ENCI6LPgKUyEQ1Sfa1
-         Nvxw==
-X-Gm-Message-State: AOAM530UZyevZG0l6HMETNPC7NcScgs/sMbTv/b//XEycgYjweX09j9W
-        S+mqOcRkkyX1hXlj5g419Pip0EorYDALjJrX/MJHImVBioo=
-X-Google-Smtp-Source: ABdhPJxD3cm5x6NWNfsGlyqVJout9BqXENj3uvqqT6UeA6jfU03wynvPPBTZw2mQph2TScrcb7ByvBjOn/L2fjppPQ4=
-X-Received: by 2002:ab0:16d4:: with SMTP id g20mr1204838uaf.114.1633680876846;
- Fri, 08 Oct 2021 01:14:36 -0700 (PDT)
+        Fri, 8 Oct 2021 05:35:40 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1989XRspC006558, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1989XRspC006558
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 8 Oct 2021 17:33:27 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Fri, 8 Oct 2021 17:33:27 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Fri, 8 Oct 2021 17:33:26 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Fri, 8 Oct 2021 17:33:26 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Colin King <colin.king@canonical.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] rtlwifi: rtl8192ee: Remove redundant initialization of variable version
+Thread-Topic: [PATCH] rtlwifi: rtl8192ee: Remove redundant initialization of
+ variable version
+Thread-Index: AQHXu5mg/+PJRzRY4UCjzqpRjbSbYavI1rEA
+Date:   Fri, 8 Oct 2021 09:33:26 +0000
+Message-ID: <e16b11a8d8f640d9be4ae2be21370d8a@realtek.com>
+References: <20211007163722.20165-1-colin.king@canonical.com>
+In-Reply-To: <20211007163722.20165-1-colin.king@canonical.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzgg5LiK5Y2IIDA4OjMwOjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20211008162103.1921a7a7@canb.auug.org.au> <87tuhs5ah8.fsf@codeaurora.org>
-In-Reply-To: <87tuhs5ah8.fsf@codeaurora.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 8 Oct 2021 10:14:25 +0200
-Message-ID: <CAMuHMdUZa9o15_fGJ7Si_-bOQVcFOxtWgo_MOiKsV0FjoPeX6Q@mail.gmail.com>
-Subject: Re: linux-next: build failure after merge of the net-next tree
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        David Miller <davem@davemloft.net>,
-        Networking <netdev@vger.kernel.org>,
-        Jouni Malinen <jouni@codeaurora.org>,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        ath11k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/08/2021 09:18:19
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166594 [Oct 08 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/08/2021 09:22:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
-
-On Fri, Oct 8, 2021 at 7:55 AM Kalle Valo <kvalo@codeaurora.org> wrote:
-> Stephen Rothwell <sfr@canb.auug.org.au> writes:
->
-> > After merging the net-next tree, today's linux-next build (xtensa,
-> > m68k allmodconfig) failed like this:
-> >
-> > In file included from <command-line>:0:0:
-> > In function 'ath11k_peer_assoc_h_smps',
-> >     inlined from 'ath11k_peer_assoc_prepare' at drivers/net/wireless/ath/ath11k/mac.c:2362:2:
-> > include/linux/compiler_types.h:317:38: error: call to '__compiletime_assert_650' declared with attribute error: FIELD_GET: type of reg too small for mask
-> >   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-> >                                       ^
-> > include/linux/compiler_types.h:298:4: note: in definition of macro '__compiletime_assert'
-> >     prefix ## suffix();    \
-> >     ^
-> > include/linux/compiler_types.h:317:2: note: in expansion of macro '_compiletime_assert'
-> >   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-> >   ^
-> > include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-> >  #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-> >                                      ^
-> > include/linux/bitfield.h:52:3: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-> >    BUILD_BUG_ON_MSG((_mask) > (typeof(_reg))~0ull,  \
-> >    ^
-> > include/linux/bitfield.h:108:3: note: in expansion of macro '__BF_FIELD_CHECK'
-> >    __BF_FIELD_CHECK(_mask, _reg, 0U, "FIELD_GET: "); \
-> >    ^
-> > drivers/net/wireless/ath/ath11k/mac.c:2079:10: note: in expansion of macro 'FIELD_GET'
-> >    smps = FIELD_GET(IEEE80211_HE_6GHZ_CAP_SM_PS,
-> >           ^
-> >
-> > Caused by commit
-> >
-> >   6f4d70308e5e ("ath11k: support SMPS configuration for 6 GHz")
->
-> Thanks for the report, weird that I don't see it on x86. I can't look at
-> this in detail now, maybe later today, but I wonder if the diff below
-> fixes the issue?
-
-It seems to be related to passing "le16_to_cpu(sta->he_6ghz_capa.capa)".
-Probably typeof(le16_to_cpu(sta->he_6ghz_capa.capa)) goes berserk.
-le16_to_cpu() is a complex macro on big-endian. I had expected to see
-a similar issue on powerpc, but I don't.
-Using an intermediate "u16 capa = le16_to_cpu(sta->he_6ghz_capa.capa)"
-fixes the problem.
-
-> At least it's cleaner than using FIELD_GET(), actually ath11k should be
-> cleaned up to use xx_get_bits() all over.
->
-> Kalle
->
-> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-> index d897020dd52d..3e7e569f284b 100644
-> --- a/drivers/net/wireless/ath/ath11k/mac.c
-> +++ b/drivers/net/wireless/ath/ath11k/mac.c
-> @@ -2076,8 +2076,8 @@ static void ath11k_peer_assoc_h_smps(struct ieee80211_sta *sta,
->                 smps = ht_cap->cap & IEEE80211_HT_CAP_SM_PS;
->                 smps >>= IEEE80211_HT_CAP_SM_PS_SHIFT;
->         } else {
-> -               smps = FIELD_GET(IEEE80211_HE_6GHZ_CAP_SM_PS,
-> -                                le16_to_cpu(sta->he_6ghz_capa.capa));
-> +               smps = le16_get_bits(sta->he_6ghz_capa.capa,
-> +                                    IEEE80211_HE_6GHZ_CAP_SM_PS);
->         }
-
-Thanks, that works, too, so (compile)
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ29saW4gS2luZyA8Y29s
+aW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiBTZW50OiBGcmlkYXksIE9jdG9iZXIgOCwgMjAyMSAx
+MjozNyBBTQ0KPiBUbzogUGtzaGloIDxwa3NoaWhAcmVhbHRlay5jb20+OyBLYWxsZSBWYWxvIDxr
+dmFsb0Bjb2RlYXVyb3JhLm9yZz47IERhdmlkIFMgLiBNaWxsZXINCj4gPGRhdmVtQGRhdmVtbG9m
+dC5uZXQ+OyBKYWt1YiBLaWNpbnNraSA8a3ViYUBrZXJuZWwub3JnPjsgbGludXgtd2lyZWxlc3NA
+dmdlci5rZXJuZWwub3JnOw0KPiBuZXRkZXZAdmdlci5rZXJuZWwub3JnDQo+IENjOiBrZXJuZWwt
+amFuaXRvcnNAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+
+IFN1YmplY3Q6IFtQQVRDSF0gcnRsd2lmaTogcnRsODE5MmVlOiBSZW1vdmUgcmVkdW5kYW50IGlu
+aXRpYWxpemF0aW9uIG9mIHZhcmlhYmxlIHZlcnNpb24NCj4gDQo+IEZyb206IENvbGluIElhbiBL
+aW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+IA0KPiBUaGUgdmFyaWFibGUgdmVyc2lv
+biBpcyBiZWluZyBpbml0aWFsaXplZCB3aXRoIGEgdmFsdWUgdGhhdCBpcw0KPiBuZXZlciByZWFk
+LCBpdCBpcyBiZWluZyB1cGRhdGVkIGFmdGVyd2FyZHMgaW4gYm90aCBicmFuY2hlcyBvZg0KPiBh
+biBpZiBzdGF0ZW1lbnQuIFRoZSBhc3NpZ25tZW50IGlzIHJlZHVuZGFudCBhbmQgY2FuIGJlIHJl
+bW92ZWQuDQo+IA0KPiBBZGRyZXNzZXMtQ292ZXJpdHk6ICgiVW51c2VkIHZhbHVlIikNCj4gU2ln
+bmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCj4g
+LS0tDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmVlL2h3
+LmMgfCAyICstDQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24o
+LSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdp
+ZmkvcnRsODE5MmVlL2h3LmMNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdp
+ZmkvcnRsODE5MmVlL2h3LmMNCj4gaW5kZXggODhmYTJlNTkzZmVmLi43NjE4OTI4MzEwNGMgMTAw
+NjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTky
+ZWUvaHcuYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRs
+ODE5MmVlL2h3LmMNCj4gQEAgLTE0MzAsNyArMTQzMCw3IEBAIHN0YXRpYyBlbnVtIHZlcnNpb25f
+ODE5MmUgX3J0bDkyZWVfcmVhZF9jaGlwX3ZlcnNpb24oc3RydWN0IGllZWU4MDIxMV9odw0KPiAq
+aHcpDQo+ICB7DQo+ICAJc3RydWN0IHJ0bF9wcml2ICpydGxwcml2ID0gcnRsX3ByaXYoaHcpOw0K
+PiAgCXN0cnVjdCBydGxfcGh5ICpydGxwaHkgPSAmcnRscHJpdi0+cGh5Ow0KPiAtCWVudW0gdmVy
+c2lvbl84MTkyZSB2ZXJzaW9uID0gVkVSU0lPTl9VTktOT1dOOw0KPiArCWVudW0gdmVyc2lvbl84
+MTkyZSB2ZXJzaW9uOw0KPiAgCXUzMiB2YWx1ZTMyOw0KPiANCj4gIAlydGxwaHktPnJmX3R5cGUg
+PSBSRl8yVDJSOw0KPiAtLQ0KPiAyLjMyLjANCj4gDQo+IC0tLS0tLVBsZWFzZSBjb25zaWRlciB0
+aGUgZW52aXJvbm1lbnQgYmVmb3JlIHByaW50aW5nIHRoaXMgZS1tYWlsLg0KDQoNCkFja2VkLWJ5
+OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCg0KDQo=
