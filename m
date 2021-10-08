@@ -2,99 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BDD8426DFF
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 17:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2B75426FB4
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 19:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231147AbhJHPsL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Oct 2021 11:48:11 -0400
-Received: from mailgw02.mediatek.com ([216.200.240.185]:58914 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230523AbhJHPsJ (ORCPT
+        id S236109AbhJHRrS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Oct 2021 13:47:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:56370 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231237AbhJHRrR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Oct 2021 11:48:09 -0400
-X-Greylist: delayed 306 seconds by postgrey-1.27 at vger.kernel.org; Fri, 08 Oct 2021 11:48:09 EDT
-X-UUID: bf02149a884a4fc3b13cdbbfe2c33f25-20211008
-X-UUID: bf02149a884a4fc3b13cdbbfe2c33f25-20211008
-Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw02.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1842756440; Fri, 08 Oct 2021 08:41:06 -0700
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- MTKMBS62DR.mediatek.inc (172.29.94.18) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 8 Oct 2021 08:41:04 -0700
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 8 Oct 2021 23:41:04 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] mt76: mt7921: add delay config for sched scan
-Date:   Fri, 8 Oct 2021 23:40:50 +0800
-Message-ID: <be717a2f0272ab8d339f4bc658fdde855eb78f0d.1633705676.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Fri, 8 Oct 2021 13:47:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1633715121;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=0suhflFBkWX+ROdsQZsJ0FUFlsRFs43TIcGHOoe9WpM=;
+        b=Gu3Q6rQEBtkqDjHK2kQSpt70UOdDKkzC8ZsJFT4Ym4D1uf6r3behmHsTUMaRpHMzbLK4Pe
+        PiAsltiq8mDzr8JoUAA1vXfjvCBGjtfk7YShqNXFOHRIbrAKJ2AZDKXXCZkZ1dbEzGOtfi
+        Rjf0wKPgmaUylSu0wMN3ZXA53dO0fH8=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-538-qR-ZxMfFN2SvxyFLMm5kbg-1; Fri, 08 Oct 2021 13:45:20 -0400
+X-MC-Unique: qR-ZxMfFN2SvxyFLMm5kbg-1
+Received: by mail-ed1-f69.google.com with SMTP id d11-20020a50cd4b000000b003da63711a8aso9840803edj.20
+        for <linux-wireless@vger.kernel.org>; Fri, 08 Oct 2021 10:45:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=0suhflFBkWX+ROdsQZsJ0FUFlsRFs43TIcGHOoe9WpM=;
+        b=s3vAxZgD046xWUaAQxKeL70x73E8HRDluUaYexBPyMG4AMlg6z9mS3M+OShZWYImVU
+         2W0HWqIk+e0jfHLKvV7UjbC/5Hrzu4zg3P2zAnf83C381Ad7pF1nPB5q+MEmQJq2HiCp
+         vSz5Q/PI9kLtz5piVqSkoEdmLJQ8PIZ9iymGAsDmdYTnWUJnP4bYwPDC/bhLBCTSSsIm
+         9PapVNRp9lox7CnZ/EhphcvcNDGwEbc0UHLWHEYvgVK0V0jOaLhIKEXaC750uGZ9r5lt
+         uca1AyaQiDB9dAFSBk/dqhYb8gJIKHskgmFssMSMP3atiw/DTI7W3dvRm0nKYapuKXEI
+         +tTQ==
+X-Gm-Message-State: AOAM533W7FCUdoklP+YBklfck8xf6WWUd6hwLzf7R/RBBVlVlkthl25h
+        +ghWu2ttl8iu6zgabRSQl8BDToakgUAZKG95xToA/K6Wic3TIXFAENa32qhspHHRpIcGyI/iYvZ
+        PM1XYdLmkHE1mTaNW1w2DEQRPO44=
+X-Received: by 2002:a17:907:76e1:: with SMTP id kg1mr5817811ejc.329.1633715117173;
+        Fri, 08 Oct 2021 10:45:17 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzhfsZrMklIBWSv3Hf9rVrM9jDqfpTkNGV8r2F/JPDAA1QI3yF5L1XpjbWrH4X6fBDDSc3cqw==
+X-Received: by 2002:a17:907:76e1:: with SMTP id kg1mr5817686ejc.329.1633715116108;
+        Fri, 08 Oct 2021 10:45:16 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id g9sm1175560ejo.60.2021.10.08.10.45.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Oct 2021 10:45:15 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id CA95C180151; Fri,  8 Oct 2021 19:45:14 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v7 08/24] rtw89: implement mac80211 ops
+In-Reply-To: <20211008035627.19463-9-pkshih@realtek.com>
+References: <20211008035627.19463-1-pkshih@realtek.com>
+ <20211008035627.19463-9-pkshih@realtek.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Fri, 08 Oct 2021 19:45:14 +0200
+Message-ID: <87h7drl8b9.fsf@toke.dk>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Add a delay parameter for firmware to support delay scheduled scan.
+> To yield better TX performance, wake TX queue is implemented.
 
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 4 +++-
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+I went looking for this, and was happy to find it! :)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 9c0f86eefd75..1f4fdb470578 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1540,8 +1540,10 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
- 		get_random_mask_addr(addr, sreq->mac_addr,
- 				     sreq->mac_addr_mask);
- 	}
--	if (is_mt7921(phy->dev))
-+	if (is_mt7921(phy->dev)) {
- 		req->mt7921.bss_idx = mvif->idx;
-+		req->mt7921.delay = cpu_to_le32(sreq->delay);
-+	}
- 
- 	req->ssids_num = sreq->n_ssids;
- 	for (i = 0; i < req->ssids_num; i++) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index cb36dd39221c..5b75465bc05a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -805,7 +805,9 @@ struct mt76_connac_sched_scan_req {
- 		} mt7663;
- 		struct {
- 			u8 bss_idx;
--			u8 pad2[19];
-+			u8 pad1[3];
-+			__le32 delay;
-+			u8 pad2[12];
- 			u8 random_mac[ETH_ALEN];
- 			u8 pad3[38];
- 		} mt7921;
--- 
-2.18.0
+Do you also support airtime reporting and/or AQL? And if not, any plans
+to do so?
+
+One small nit below:
+
+> +static void rtw89_ops_wake_tx_queue(struct ieee80211_hw *hw,
+> +				    struct ieee80211_txq *txq)
+> +{
+> +	struct rtw89_dev *rtwdev = hw->priv;
+> +
+> +	ieee80211_schedule_txq(hw, txq);
+> +	queue_work(rtwdev->txq_wq, &rtwdev->txq_work);
+
+Why the call to ieee80211_schedule_txq()? mac80211 calls that before
+calling wake_tx_queue() (through the schedule_and_wake_txq() helper), so
+it seems a bit superfluous here?
+
+-Toke
 
