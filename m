@@ -2,103 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04CC4426396
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 06:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0611426446
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 07:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232661AbhJHEQg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Oct 2021 00:16:36 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:44446 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229932AbhJHEQf (ORCPT
+        id S231231AbhJHFzG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Oct 2021 01:55:06 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:38974 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229721AbhJHFzF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Oct 2021 00:16:35 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1984EZkZ4009514, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1984EZkZ4009514
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 8 Oct 2021 12:14:35 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Fri, 8 Oct 2021 12:14:34 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 8 Oct 2021 12:14:34 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
- RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Fri, 8 Oct 2021 12:14:34 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Brian Norris <briannorris@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
-Thread-Topic: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
-Thread-Index: AQHXlXz6iS5M0zbbfkSyaj358Nztiqu+mXDngAQPmeCAAYZwOYAArHWAgAPuLyA=
-Date:   Fri, 8 Oct 2021 04:14:34 +0000
-Message-ID: <bd869c651d984fb1b728185f77295a43@realtek.com>
-References: <20210820043538.12424-1-pkshih@realtek.com>
- <8735pkiu0t.fsf@codeaurora.org>
- <9b54e3c321a4414cbae62616d8a913f4@realtek.com>
- <877desggrm.fsf@codeaurora.org>
- <CA+ASDXPeNZVVWGPyYGAnxcf2nhhjXQE5yOxmgCKx1Hauj62NJg@mail.gmail.com>
-In-Reply-To: <CA+ASDXPeNZVVWGPyYGAnxcf2nhhjXQE5yOxmgCKx1Hauj62NJg@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzgg5LiK5Y2IIDAyOjM2OjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Fri, 8 Oct 2021 01:55:05 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1633672390; h=Content-Type: MIME-Version: Message-ID: Date:
+ References: In-Reply-To: Subject: Cc: To: From: Sender;
+ bh=rmh6oHI66td0Mu4wXsLqqmfSbirKcTqHHCrPMIVl3o0=; b=isCA25z/o1wZIbdXCCDtn62Vrc8pslkWhwf4aHCqiDi9mijrZVmvpMMXeCckY2k+/Fly2UAr
+ uGDIDgz1WrppiZlyMchCJWFsDo4zwkg7yXRnXlM8Jo3jsOFrhFH4X1di2p0lz9zFyvkKStSd
+ YSXoDVWjfy6cM7QWNyH19uUQ2Cs=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 615fdcbcf1c6896061454a9d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 08 Oct 2021 05:53:00
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C4D02C43616; Fri,  8 Oct 2021 05:52:59 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C09DFC43460;
+        Fri,  8 Oct 2021 05:52:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C09DFC43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     David Miller <davem@davemloft.net>,
+        Networking <netdev@vger.kernel.org>,
+        Jouni Malinen <jouni@codeaurora.org>,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: linux-next: build failure after merge of the net-next tree
+In-Reply-To: <20211008162103.1921a7a7@canb.auug.org.au> (Stephen Rothwell's
+        message of "Fri, 8 Oct 2021 16:21:03 +1100")
+References: <20211008162103.1921a7a7@canb.auug.org.au>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Fri, 08 Oct 2021 08:52:51 +0300
+Message-ID: <87tuhs5ah8.fsf@codeaurora.org>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/08/2021 03:53:37
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 166592 [Oct 07 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/08/2021 03:56:00
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEJyaWFuIE5vcnJpcyA8YnJp
-YW5ub3JyaXNAY2hyb21pdW0ub3JnPg0KPiBTZW50OiBXZWRuZXNkYXksIE9jdG9iZXIgNiwgMjAy
-MSA4OjEwIEFNDQo+IFRvOiBLYWxsZSBWYWxvIDxrdmFsb0Bjb2RlYXVyb3JhLm9yZz4NCj4gQ2M6
-IFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwu
-b3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjYgMDAvMjRdIHJ0dzg5OiBhZGQgUmVhbHRlayA4
-MDIuMTFheCBkcml2ZXINCj4gDQo+IE9uIE1vbiwgT2N0IDQsIDIwMjEgYXQgMTA6NTIgUE0gS2Fs
-bGUgVmFsbyA8a3ZhbG9AY29kZWF1cm9yYS5vcmc+IHdyb3RlOg0KPiA+IFRoaXMgcmVtaW5kcyBt
-ZSwgaWYgYW55b25lIGhhcyBhbnkgb2JqZWN0aW9ucyBhYm91dCB0YWtpbmcgdGhpcyB0bw0KPiA+
-IHdpcmVsZXNzLWRyaXZlcnMtbmV4dCBzcGVhayB1cCBub3cuIE90aGVyd2lzZSBJIGFzc3VtZSBl
-dmVyeW9uZSBhcmUNCj4gPiBoYXBweSB3aXRoIHRoZSBkcml2ZXIuDQo+IA0KPiBJIHJlYWxpemUg
-SSBuZXZlciBwcm92aWRlZCBhbnkgZm9ybWFsIHRhZ3MgdG8gdGhpcyBzZXJpZXMuIEknbSBub3QN
-Cj4gc3VyZSBJIGNhbiBjb3VudCBhIGZ1bGwgUmV2aWV3ZWQtYnksIGJ1dCB3ZSd2ZSBiZWVuIHBs
-YXlpbmcgd2l0aCBpdA0KPiBoZXJlIGZvciBzb21lIHRpbWUsIGFuZCB3aGlsZSBub3QgcGVyZmVj
-dCwgaXQncyBjZXJ0YWlubHkgYSBzdGFydDoNCj4gDQo+IFRlc3RlZC1ieTogQnJpYW4gTm9ycmlz
-IDxicmlhbm5vcnJpc0BjaHJvbWl1bS5vcmc+DQoNClRoYW5rIHlvdSwgQnJpYW4sDQpJIGFkZCB5
-b3VyIFRlc3RlZC1ieSB0byBjb3ZlciBsZXR0ZXIgb2YgdjcuIEkgdGhpbmsgdGhpcyB3b3VsZCBi
-ZQ0KY29udmVuaWVudCB0byBLYWxsZS4NCg0KLS0NClBpbmctS2UNCg0K
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
+
+> After merging the net-next tree, today's linux-next build (xtensa,
+> m68k allmodconfig) failed like this:
+>
+> In file included from <command-line>:0:0:
+> In function 'ath11k_peer_assoc_h_smps',
+>     inlined from 'ath11k_peer_assoc_prepare' at drivers/net/wireless/ath/ath11k/mac.c:2362:2:
+> include/linux/compiler_types.h:317:38: error: call to '__compiletime_assert_650' declared with attribute error: FIELD_GET: type of reg too small for mask
+>   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>                                       ^
+> include/linux/compiler_types.h:298:4: note: in definition of macro '__compiletime_assert'
+>     prefix ## suffix();    \
+>     ^
+> include/linux/compiler_types.h:317:2: note: in expansion of macro '_compiletime_assert'
+>   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>   ^
+> include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+>  #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+>                                      ^
+> include/linux/bitfield.h:52:3: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+>    BUILD_BUG_ON_MSG((_mask) > (typeof(_reg))~0ull,  \
+>    ^
+> include/linux/bitfield.h:108:3: note: in expansion of macro '__BF_FIELD_CHECK'
+>    __BF_FIELD_CHECK(_mask, _reg, 0U, "FIELD_GET: "); \
+>    ^
+> drivers/net/wireless/ath/ath11k/mac.c:2079:10: note: in expansion of macro 'FIELD_GET'
+>    smps = FIELD_GET(IEEE80211_HE_6GHZ_CAP_SM_PS,
+>           ^
+>
+> Caused by commit
+>
+>   6f4d70308e5e ("ath11k: support SMPS configuration for 6 GHz")
+
+Thanks for the report, weird that I don't see it on x86. I can't look at
+this in detail now, maybe later today, but I wonder if the diff below
+fixes the issue?
+
+At least it's cleaner than using FIELD_GET(), actually ath11k should be
+cleaned up to use xx_get_bits() all over.
+
+Kalle
+
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index d897020dd52d..3e7e569f284b 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -2076,8 +2076,8 @@ static void ath11k_peer_assoc_h_smps(struct ieee80211_sta *sta,
+ 		smps = ht_cap->cap & IEEE80211_HT_CAP_SM_PS;
+ 		smps >>= IEEE80211_HT_CAP_SM_PS_SHIFT;
+ 	} else {
+-		smps = FIELD_GET(IEEE80211_HE_6GHZ_CAP_SM_PS,
+-				 le16_to_cpu(sta->he_6ghz_capa.capa));
++		smps = le16_get_bits(sta->he_6ghz_capa.capa,
++				     IEEE80211_HE_6GHZ_CAP_SM_PS);
+ 	}
+ 
+ 	switch (smps) {
+
