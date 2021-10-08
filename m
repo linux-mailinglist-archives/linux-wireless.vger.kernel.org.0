@@ -2,60 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47EDB42638D
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 06:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04CC4426396
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 06:14:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230013AbhJHENE convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Oct 2021 00:13:04 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:44359 "EHLO
+        id S232661AbhJHEQg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Oct 2021 00:16:36 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:44446 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbhJHEND (ORCPT
+        with ESMTP id S229932AbhJHEQf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Oct 2021 00:13:03 -0400
+        Fri, 8 Oct 2021 00:16:35 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1984B5lpC009228, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1984EZkZ4009514, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1984B5lpC009228
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1984EZkZ4009514
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 8 Oct 2021 12:11:05 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+        Fri, 8 Oct 2021 12:14:35 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
  RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Fri, 8 Oct 2021 12:11:04 +0800
+ 15.1.2308.14; Fri, 8 Oct 2021 12:14:34 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 8 Oct 2021 12:11:03 +0800
+ 15.1.2106.2; Fri, 8 Oct 2021 12:14:34 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
  RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Fri, 8 Oct 2021 12:11:03 +0800
+ 15.01.2106.013; Fri, 8 Oct 2021 12:14:34 +0800
 From:   Pkshih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
+To:     Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>
 CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Subject: RE: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
 Thread-Topic: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
-Thread-Index: AQHXlXz6iS5M0zbbfkSyaj358Nztiqu+mXDngAQPmeCAAYZwOYAEmYxw
-Date:   Fri, 8 Oct 2021 04:11:03 +0000
-Message-ID: <b59b709da12e4c938745eddd73efeec7@realtek.com>
+Thread-Index: AQHXlXz6iS5M0zbbfkSyaj358Nztiqu+mXDngAQPmeCAAYZwOYAArHWAgAPuLyA=
+Date:   Fri, 8 Oct 2021 04:14:34 +0000
+Message-ID: <bd869c651d984fb1b728185f77295a43@realtek.com>
 References: <20210820043538.12424-1-pkshih@realtek.com>
-        <8735pkiu0t.fsf@codeaurora.org>
-        <9b54e3c321a4414cbae62616d8a913f4@realtek.com>
+ <8735pkiu0t.fsf@codeaurora.org>
+ <9b54e3c321a4414cbae62616d8a913f4@realtek.com>
  <877desggrm.fsf@codeaurora.org>
-In-Reply-To: <877desggrm.fsf@codeaurora.org>
+ <CA+ASDXPeNZVVWGPyYGAnxcf2nhhjXQE5yOxmgCKx1Hauj62NJg@mail.gmail.com>
+In-Reply-To: <CA+ASDXPeNZVVWGPyYGAnxcf2nhhjXQE5yOxmgCKx1Hauj62NJg@mail.gmail.com>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
 x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
  rules found
 x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/8_=3F=3F_02:36:00?=
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzgg5LiK5Y2IIDAyOjM2OjAw?=
 x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
@@ -84,35 +85,20 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-> -----Original Message-----
-> From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On
-> Behalf Of Kalle Valo
-> Sent: Tuesday, October 5, 2021 1:52 PM
-> To: Pkshih <pkshih@realtek.com>
-> Cc: linux-wireless@vger.kernel.org
-> Subject: Re: [PATCH v6 00/24] rtw89: add Realtek 802.11ax driver
-> 
-> Pkshih <pkshih@realtek.com> writes:
-> 
-> >> The community has been testing this driver already, right?
-> >
-> > As Larry mentioned, end users use this driver. Since bugs found in v6,
-> > we have fixed them and driver is under QA. I plan to have that fixes in v7
-> > released this week.
-> >
-> > This version will also include fixes of your comments.
-> > Does it work to you?
-> 
-> Sounds good to me. I hope the changes in v7 will be small in size,
-> bigger changes (especially new features) is better to do after the
-> driver is applied to wireless-drivers-next.
-> 
-
-I have fixed this driver according to all of your comments, so I
-don't reply the comments one by one. If this doesn't work to you,
-please let me know.
-
---
-Ping-Ke
-
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEJyaWFuIE5vcnJpcyA8YnJp
+YW5ub3JyaXNAY2hyb21pdW0ub3JnPg0KPiBTZW50OiBXZWRuZXNkYXksIE9jdG9iZXIgNiwgMjAy
+MSA4OjEwIEFNDQo+IFRvOiBLYWxsZSBWYWxvIDxrdmFsb0Bjb2RlYXVyb3JhLm9yZz4NCj4gQ2M6
+IFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwu
+b3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjYgMDAvMjRdIHJ0dzg5OiBhZGQgUmVhbHRlayA4
+MDIuMTFheCBkcml2ZXINCj4gDQo+IE9uIE1vbiwgT2N0IDQsIDIwMjEgYXQgMTA6NTIgUE0gS2Fs
+bGUgVmFsbyA8a3ZhbG9AY29kZWF1cm9yYS5vcmc+IHdyb3RlOg0KPiA+IFRoaXMgcmVtaW5kcyBt
+ZSwgaWYgYW55b25lIGhhcyBhbnkgb2JqZWN0aW9ucyBhYm91dCB0YWtpbmcgdGhpcyB0bw0KPiA+
+IHdpcmVsZXNzLWRyaXZlcnMtbmV4dCBzcGVhayB1cCBub3cuIE90aGVyd2lzZSBJIGFzc3VtZSBl
+dmVyeW9uZSBhcmUNCj4gPiBoYXBweSB3aXRoIHRoZSBkcml2ZXIuDQo+IA0KPiBJIHJlYWxpemUg
+SSBuZXZlciBwcm92aWRlZCBhbnkgZm9ybWFsIHRhZ3MgdG8gdGhpcyBzZXJpZXMuIEknbSBub3QN
+Cj4gc3VyZSBJIGNhbiBjb3VudCBhIGZ1bGwgUmV2aWV3ZWQtYnksIGJ1dCB3ZSd2ZSBiZWVuIHBs
+YXlpbmcgd2l0aCBpdA0KPiBoZXJlIGZvciBzb21lIHRpbWUsIGFuZCB3aGlsZSBub3QgcGVyZmVj
+dCwgaXQncyBjZXJ0YWlubHkgYSBzdGFydDoNCj4gDQo+IFRlc3RlZC1ieTogQnJpYW4gTm9ycmlz
+IDxicmlhbm5vcnJpc0BjaHJvbWl1bS5vcmc+DQoNClRoYW5rIHlvdSwgQnJpYW4sDQpJIGFkZCB5
+b3VyIFRlc3RlZC1ieSB0byBjb3ZlciBsZXR0ZXIgb2YgdjcuIEkgdGhpbmsgdGhpcyB3b3VsZCBi
+ZQ0KY29udmVuaWVudCB0byBLYWxsZS4NCg0KLS0NClBpbmctS2UNCg0K
