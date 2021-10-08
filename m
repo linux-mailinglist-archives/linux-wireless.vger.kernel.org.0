@@ -2,94 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2B75426FB4
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 19:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9D994272EC
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 23:15:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236109AbhJHRrS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Oct 2021 13:47:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:56370 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231237AbhJHRrR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Oct 2021 13:47:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1633715121;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0suhflFBkWX+ROdsQZsJ0FUFlsRFs43TIcGHOoe9WpM=;
-        b=Gu3Q6rQEBtkqDjHK2kQSpt70UOdDKkzC8ZsJFT4Ym4D1uf6r3behmHsTUMaRpHMzbLK4Pe
-        PiAsltiq8mDzr8JoUAA1vXfjvCBGjtfk7YShqNXFOHRIbrAKJ2AZDKXXCZkZ1dbEzGOtfi
-        Rjf0wKPgmaUylSu0wMN3ZXA53dO0fH8=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-538-qR-ZxMfFN2SvxyFLMm5kbg-1; Fri, 08 Oct 2021 13:45:20 -0400
-X-MC-Unique: qR-ZxMfFN2SvxyFLMm5kbg-1
-Received: by mail-ed1-f69.google.com with SMTP id d11-20020a50cd4b000000b003da63711a8aso9840803edj.20
-        for <linux-wireless@vger.kernel.org>; Fri, 08 Oct 2021 10:45:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=0suhflFBkWX+ROdsQZsJ0FUFlsRFs43TIcGHOoe9WpM=;
-        b=s3vAxZgD046xWUaAQxKeL70x73E8HRDluUaYexBPyMG4AMlg6z9mS3M+OShZWYImVU
-         2W0HWqIk+e0jfHLKvV7UjbC/5Hrzu4zg3P2zAnf83C381Ad7pF1nPB5q+MEmQJq2HiCp
-         vSz5Q/PI9kLtz5piVqSkoEdmLJQ8PIZ9iymGAsDmdYTnWUJnP4bYwPDC/bhLBCTSSsIm
-         9PapVNRp9lox7CnZ/EhphcvcNDGwEbc0UHLWHEYvgVK0V0jOaLhIKEXaC750uGZ9r5lt
-         uca1AyaQiDB9dAFSBk/dqhYb8gJIKHskgmFssMSMP3atiw/DTI7W3dvRm0nKYapuKXEI
-         +tTQ==
-X-Gm-Message-State: AOAM533W7FCUdoklP+YBklfck8xf6WWUd6hwLzf7R/RBBVlVlkthl25h
-        +ghWu2ttl8iu6zgabRSQl8BDToakgUAZKG95xToA/K6Wic3TIXFAENa32qhspHHRpIcGyI/iYvZ
-        PM1XYdLmkHE1mTaNW1w2DEQRPO44=
-X-Received: by 2002:a17:907:76e1:: with SMTP id kg1mr5817811ejc.329.1633715117173;
-        Fri, 08 Oct 2021 10:45:17 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzhfsZrMklIBWSv3Hf9rVrM9jDqfpTkNGV8r2F/JPDAA1QI3yF5L1XpjbWrH4X6fBDDSc3cqw==
-X-Received: by 2002:a17:907:76e1:: with SMTP id kg1mr5817686ejc.329.1633715116108;
-        Fri, 08 Oct 2021 10:45:16 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id g9sm1175560ejo.60.2021.10.08.10.45.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Oct 2021 10:45:15 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id CA95C180151; Fri,  8 Oct 2021 19:45:14 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v7 08/24] rtw89: implement mac80211 ops
-In-Reply-To: <20211008035627.19463-9-pkshih@realtek.com>
-References: <20211008035627.19463-1-pkshih@realtek.com>
- <20211008035627.19463-9-pkshih@realtek.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Fri, 08 Oct 2021 19:45:14 +0200
-Message-ID: <87h7drl8b9.fsf@toke.dk>
+        id S231721AbhJHVRY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Oct 2021 17:17:24 -0400
+Received: from phobos.denx.de ([85.214.62.61]:60206 "EHLO phobos.denx.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231696AbhJHVRY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 8 Oct 2021 17:17:24 -0400
+Received: from tr.lan (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id AB799832E8;
+        Fri,  8 Oct 2021 23:15:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1633727726;
+        bh=Ru6Asc7WL3umhKu8earbBiCrHfnXFhGEBWxbcruPTgY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=rkmMbidpm1YU+1gLYcjMdrIYtT5BYeW+fIZifRulkmdCXiWP1MmH8JB17OSkMV3B4
+         Gkq2AfraRqDImjWy+gcbuiF9J6Qr9woa1bQ49SHmOxzGW8kkvgo02R8tx1jSonv7km
+         Bnq0oAP+VMfTSAPbSNrPsgFCaNObPSr+SUoqrFoCqbASHDemP+V6hcWSanKnRKFRvL
+         i8kefo9Oz4QMLkUoI+8eJC48pc+CtnirxICGD/+DHU3r+FAfk7Vi6OWNkkgT5zbCml
+         cJxdPXCr465fuYV3dpg+jIj/4LO0RqVXq/ni3zVuLHLnORAVkGkQI7SW7r/z1ctvTG
+         ymMHIap92v4Zw==
+From:   Marek Vasut <marex@denx.de>
+To:     linux-wireless@vger.kernel.org
+Cc:     ch@denx.de, Marek Vasut <marex@denx.de>,
+        Dan Moulding <dmoulding@me.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Luca Coelho <luciano.coelho@intel.com>
+Subject: [PATCH] [RFC] iwlwifi: mvm: Ignore NVM write status 0x1000
+Date:   Fri,  8 Oct 2021 23:15:06 +0200
+Message-Id: <20211008211506.226806-1-marex@denx.de>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
+X-Virus-Status: Clean
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+When loading custom NVM file on Wireless-AC 9260 160MHz, REV=0x324
+8086:2526 (rev 29) Subsystem: 8086:001c firmware version 46.6b541b68.0
+9260-th-b0-jf-b0-46.ucode , the NVM_WRITE_OPCODE return status is 0x1000
+for all sections. What does this mean is unknown, however clearing the
+top 4 bits permits the NVM to be written and the card operates as it
+should.
 
-> To yield better TX performance, wake TX queue is implemented.
+Hexdump of the iNVM file is below, the iNVM file overrides antenna
+settings to only use AUX antenna and disables MIMO .
+00000000  54 4c 50 2a 2a 4d 56 4e  2c 11 00 00 08 10 21 20
+00000010  c0 00 00 02 03 03 02 11  2f 00 00 00 00 00 00 00
+00000020  00 00 00 00
 
-I went looking for this, and was happy to find it! :)
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Dan Moulding <dmoulding@me.com>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: Luca Coelho <luciano.coelho@intel.com>
+To: linux-wireless@vger.kernel.org
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Do you also support airtime reporting and/or AQL? And if not, any plans
-to do so?
-
-One small nit below:
-
-> +static void rtw89_ops_wake_tx_queue(struct ieee80211_hw *hw,
-> +				    struct ieee80211_txq *txq)
-> +{
-> +	struct rtw89_dev *rtwdev = hw->priv;
-> +
-> +	ieee80211_schedule_txq(hw, txq);
-> +	queue_work(rtwdev->txq_wq, &rtwdev->txq_work);
-
-Why the call to ieee80211_schedule_txq()? mac80211 calls that before
-calling wake_tx_queue() (through the schedule_and_wake_txq() helper), so
-it seems a bit superfluous here?
-
--Toke
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+index 60296a754af2..52921f7e735b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+@@ -116,7 +116,7 @@ static int iwl_nvm_write_chunk(struct iwl_mvm *mvm, u16 section,
+ 	pkt = cmd.resp_pkt;
+ 	/* Extract & check NVM write response */
+ 	nvm_resp = (void *)pkt->data;
+-	if (le16_to_cpu(nvm_resp->status) != READ_NVM_CHUNK_SUCCEED) {
++	if ((le16_to_cpu(nvm_resp->status) & 0xfff) != READ_NVM_CHUNK_SUCCEED) {
+ 		IWL_ERR(mvm,
+ 			"NVM access write command failed for section %u (status = 0x%x)\n",
+ 			section, le16_to_cpu(nvm_resp->status));
+-- 
+2.33.0
 
