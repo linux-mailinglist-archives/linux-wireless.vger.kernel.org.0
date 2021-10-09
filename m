@@ -2,84 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9D994272EC
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Oct 2021 23:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F48B427811
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Oct 2021 10:21:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231721AbhJHVRY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Oct 2021 17:17:24 -0400
-Received: from phobos.denx.de ([85.214.62.61]:60206 "EHLO phobos.denx.de"
+        id S229950AbhJIIXf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 Oct 2021 04:23:35 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:61136 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231696AbhJHVRY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Oct 2021 17:17:24 -0400
-Received: from tr.lan (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        id S229578AbhJIIXe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 9 Oct 2021 04:23:34 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1633767697; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=YlAnK3IM3BQUH+Tu9p8c0/UTXBE2/1+heAlfN5XtMh4=; b=egHj0Tw1d8FoTbGvCClu1qzaG08TN6yhwZYMsgprAOtzfMouYmXdBwfjf6W9t5/miFGeNybC
+ clYAu636cojHh8hwFfdmUVtIQP9WopaXBY3k9n4DamUYJiQmjTHH2p+NruOODgvUAgVxLSf+
+ Nct7Regnp/kiJ5EICyvwe4l2JdU=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 6161511022fe3a98e5eb2aa8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 09 Oct 2021 08:21:36
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id F05FEC43460; Sat,  9 Oct 2021 08:21:35 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id AB799832E8;
-        Fri,  8 Oct 2021 23:15:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1633727726;
-        bh=Ru6Asc7WL3umhKu8earbBiCrHfnXFhGEBWxbcruPTgY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=rkmMbidpm1YU+1gLYcjMdrIYtT5BYeW+fIZifRulkmdCXiWP1MmH8JB17OSkMV3B4
-         Gkq2AfraRqDImjWy+gcbuiF9J6Qr9woa1bQ49SHmOxzGW8kkvgo02R8tx1jSonv7km
-         Bnq0oAP+VMfTSAPbSNrPsgFCaNObPSr+SUoqrFoCqbASHDemP+V6hcWSanKnRKFRvL
-         i8kefo9Oz4QMLkUoI+8eJC48pc+CtnirxICGD/+DHU3r+FAfk7Vi6OWNkkgT5zbCml
-         cJxdPXCr465fuYV3dpg+jIj/4LO0RqVXq/ni3zVuLHLnORAVkGkQI7SW7r/z1ctvTG
-         ymMHIap92v4Zw==
-From:   Marek Vasut <marex@denx.de>
-To:     linux-wireless@vger.kernel.org
-Cc:     ch@denx.de, Marek Vasut <marex@denx.de>,
-        Dan Moulding <dmoulding@me.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Luca Coelho <luciano.coelho@intel.com>
-Subject: [PATCH] [RFC] iwlwifi: mvm: Ignore NVM write status 0x1000
-Date:   Fri,  8 Oct 2021 23:15:06 +0200
-Message-Id: <20211008211506.226806-1-marex@denx.de>
-X-Mailer: git-send-email 2.33.0
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 27543C4338F;
+        Sat,  9 Oct 2021 08:21:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 27543C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v7 00/24] rtw89: add Realtek 802.11ax driver
+References: <20211008035627.19463-1-pkshih@realtek.com>
+Date:   Sat, 09 Oct 2021 11:21:30 +0300
+In-Reply-To: <20211008035627.19463-1-pkshih@realtek.com> (Ping-Ke Shih's
+        message of "Fri, 8 Oct 2021 11:56:03 +0800")
+Message-ID: <87lf32622d.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When loading custom NVM file on Wireless-AC 9260 160MHz, REV=0x324
-8086:2526 (rev 29) Subsystem: 8086:001c firmware version 46.6b541b68.0
-9260-th-b0-jf-b0-46.ucode , the NVM_WRITE_OPCODE return status is 0x1000
-for all sections. What does this mean is unknown, however clearing the
-top 4 bits permits the NVM to be written and the card operates as it
-should.
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Hexdump of the iNVM file is below, the iNVM file overrides antenna
-settings to only use AUX antenna and disables MIMO .
-00000000  54 4c 50 2a 2a 4d 56 4e  2c 11 00 00 08 10 21 20
-00000010  c0 00 00 02 03 03 02 11  2f 00 00 00 00 00 00 00
-00000020  00 00 00 00
+> This driver named rtw89, which is the next generation of rtw88, supports
+> Realtek 8852AE 802.11ax 2x2 chip whose new features are OFDMA, DBCC,
+> Spatial reuse, TWT and BSS coloring; now some of them aren't implemented
+> though.
+>
+> The chip architecture is entirely different from the chips supported by
+> rtw88 like RTL8822CE 802.11ac chip. First of all, register address ranges
+> are totally redefined, so it's impossible to reuse register definition. To
+> communicate with firmware, new H2C/C2H format is proposed. In order to have
+> better utilization, TX DMA flow is changed to two stages DMA. To provide
+> rich RX status information, additional RX PPDU packets are added.
+>
+> Since there are so many differences mentioned above, we decide to propose
+> a new driver. It has many authors, they are listed in alphabetic order:
+>
+> Chin-Yen Lee <timlee@realtek.com>
+> Ping-Ke Shih <pkshih@realtek.com>
+> Po Hao Huang <phhuang@realtek.com>
+> Tzu-En Huang <tehuang@realtek.com>
+> Vincent Fann <vincent_fann@realtek.com>
+> Yan-Hsuan Chuang <tony0620emma@gmail.com>
+> Zong-Zhe Yang <kevin_yang@realtek.com>
+>
+> Tested-by: Brian Norris <briannorris@chromium.org>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+>
+> v7:
+>   - use consistent license of Kconfig
+>   - remove #ifdef and dummy functions from coex.c
+>   - C2H handler of coex uses meaningful naming insetad, and use le32_to_cpu()
+>     to convert the value.
+>   - add icmp packet notify to coex
+>   - use function call instead of a work to notify coex about traffic changed
+>   - fix dereference security CAM NULL pointer while disconnecting occasionally
+>   - fill tx descriptor once a 32 bits word (Suggested by Arnd. Thanks!)
+>   - use static pci PS, so remove pci link_ps 
+>   - make many mac tables constant
+>   - add early_h2c debugfs entry to notify firmware early
+>   - support new RA report format
+>   - configure retry_lowest_rate by band
+>   - avoid to use of whil(1) to parse power sequence
+>   - notify rfk before/after scanning to reset status
+>   - firmware: rtw89: 8852a: update fw to v0.13.30.0
+>     https://github.com/pkshih/linux-firmware.git 
+>     pick the commit 6595133a7cde82be932067afde834dcd036167f8
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Cc: Dan Moulding <dmoulding@me.com>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Luca Coelho <luciano.coelho@intel.com>
-To: linux-wireless@vger.kernel.org
----
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I have not reviewed this version yet, but I pushed it to the pending
+branch for build testing:
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-index 60296a754af2..52921f7e735b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-@@ -116,7 +116,7 @@ static int iwl_nvm_write_chunk(struct iwl_mvm *mvm, u16 section,
- 	pkt = cmd.resp_pkt;
- 	/* Extract & check NVM write response */
- 	nvm_resp = (void *)pkt->data;
--	if (le16_to_cpu(nvm_resp->status) != READ_NVM_CHUNK_SUCCEED) {
-+	if ((le16_to_cpu(nvm_resp->status) & 0xfff) != READ_NVM_CHUNK_SUCCEED) {
- 		IWL_ERR(mvm,
- 			"NVM access write command failed for section %u (status = 0x%x)\n",
- 			section, le16_to_cpu(nvm_resp->status));
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?h=pending&id=c321740f93af1a31d9e149ce5077e28bd4e859f7
+
+For the final commit my plan is to squash all patches into one big
+patch. I will do that after reviewing v7, if everything is ok of course.
+
+Are there more Tested-by or Reviewed-by tags?
+
 -- 
-2.33.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
