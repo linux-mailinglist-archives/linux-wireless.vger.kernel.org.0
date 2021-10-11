@@ -2,149 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 099EC4286B7
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 08:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4524428696
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 08:04:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234138AbhJKGUk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Oct 2021 02:20:40 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:56978 "EHLO m43-7.mailgun.net"
+        id S233990AbhJKGGp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Oct 2021 02:06:45 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:37418 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234133AbhJKGUi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Oct 2021 02:20:38 -0400
+        id S233444AbhJKGGn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 11 Oct 2021 02:06:43 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633933119; h=Content-Transfer-Encoding: MIME-Version:
- Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=EamqBaRBazvCb9XIvwzVIEFksV1A2LDT0Z8P1y+560w=; b=R2fbXXKPeOdLe7ms2KftY2RWeu6J1tvg1jj+OMC9vFIMbUECWodGg8vMj52wHYZKakty1VWg
- gSOapdug74ceCu90tfjedRAVOvhWyagL18PvE9Iv7h9VUVPrlbMFzBcfN1JTzf/BqJehdsBF
- cTN3q0Ca/YYNbPQdADLlueCfHxk=
+ s=smtp; t=1633932284; h=Date: Message-ID: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=er5IrrkOUDHmVjILIRqINntFeH/7+WS563hJtxyeM3I=;
+ b=ho6EEZGjr/FZ2z6q/sMPqg5e3Aoscf08zcCz3QFA1mnv3FBarDUnvi6fJofq+4rg8mdOAWx3
+ 7UN9YRaNGwvNt/nm3Sa6u83JOEPjAu4fmV86STTk4BgCl+QyEuiwxW/jbGJXJYh4R82w5azH
+ lhiWcQKO2o524g92qOOy8SOD/D0=
 X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 6163d73303355859c82a5f15 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Oct 2021 06:18:27
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 6163d3fb446c6db0cb7b4877 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Oct 2021 06:04:43
  GMT
-Sender: bqiang=codeaurora.org@mg.codeaurora.org
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D0A61C4338F; Mon, 11 Oct 2021 06:18:27 +0000 (UTC)
+        id E19C6C4361B; Mon, 11 Oct 2021 06:04:42 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from bqiang-Celadon-RN.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: bqiang)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1A3DDC4360D;
-        Mon, 11 Oct 2021 06:18:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 1A3DDC4360D
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B402DC4338F;
+        Mon, 11 Oct 2021 06:04:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B402DC4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Baochen Qiang <bqiang@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath11k: Advertise PLATFORM_CAP_PCIE_GLOBAL_RESET in qmi msg
-Date:   Mon, 11 Oct 2021 13:56:02 +0800
-Message-Id: <20211011055602.77342-1-bqiang@codeaurora.org>
-X-Mailer: git-send-email 2.25.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210307113550.7720-1-konrad.dybcio@somainline.org>
+References: <20210307113550.7720-1-konrad.dybcio@somainline.org>
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163393227439.11913.16736072075122117569.kvalo@codeaurora.org>
+Date:   Mon, 11 Oct 2021 06:04:42 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Inform firmware that host is capable of triggering a global reset.
-This is requested by firmware team.
+Konrad Dybcio <konrad.dybcio@somainline.org> wrote:
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+> Add support for BCM43596 dual-band AC chip, found in
+> SONY Xperia X Performance, XZ and XZs smartphones (and
+> *possibly* other devices from other manufacturers).
+> The chip doesn't require any special handling and seems to work
+> just fine OOTB.
+> 
+> PCIe IDs taken from: https://github.com/sonyxperiadev/kernel/commit/9e43fefbac8e43c3d7792e73ca52a052dd86d7e3.patch
+> 
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 
-Signed-off-by: Baochen Qiang <bqiang@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/core.c | 5 +++++
- drivers/net/wireless/ath/ath11k/hw.h   | 1 +
- drivers/net/wireless/ath/ath11k/qmi.c  | 4 ++++
- 3 files changed, 10 insertions(+)
+Failed to apply, please rebase on top of wireless-drivers-next and
+resend as v2.
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 969bf1a590d9..5601f758a0a6 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -71,6 +71,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_suspend = false,
- 		.hal_desc_sz = sizeof(struct hal_rx_desc_ipq8074),
- 		.fix_l1ss = true,
-+		.global_reset = false,
- 	},
- 	{
- 		.hw_rev = ATH11K_HW_IPQ6018_HW10,
-@@ -112,6 +113,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_suspend = false,
- 		.hal_desc_sz = sizeof(struct hal_rx_desc_ipq8074),
- 		.fix_l1ss = true,
-+		.global_reset = false,
- 	},
- 	{
- 		.name = "qca6390 hw2.0",
-@@ -152,6 +154,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_suspend = true,
- 		.hal_desc_sz = sizeof(struct hal_rx_desc_ipq8074),
- 		.fix_l1ss = true,
-+		.global_reset = true,
- 	},
- 	{
- 		.name = "qcn9074 hw1.0",
-@@ -190,6 +193,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_suspend = false,
- 		.hal_desc_sz = sizeof(struct hal_rx_desc_qcn9074),
- 		.fix_l1ss = true,
-+		.global_reset = false,
- 	},
- 	{
- 		.name = "wcn6855 hw2.0",
-@@ -230,6 +234,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_suspend = true,
- 		.hal_desc_sz = sizeof(struct hal_rx_desc_wcn6855),
- 		.fix_l1ss = false,
-+		.global_reset = true,
- 	},
- };
- 
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index 62f5978b3005..82952ef9abec 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -163,6 +163,7 @@ struct ath11k_hw_params {
- 	bool supports_suspend;
- 	u32 hal_desc_sz;
- 	bool fix_l1ss;
-+	bool global_reset;
- };
- 
- struct ath11k_hw_ops {
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index b5e34d670715..16f2adb54d03 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -13,6 +13,7 @@
- 
- #define SLEEP_CLOCK_SELECT_INTERNAL_BIT	0x02
- #define HOST_CSTATE_BIT			0x04
-+#define PLATFORM_CAP_PCIE_GLOBAL_RESET	0x08
- 
- bool ath11k_cold_boot_cal = 1;
- EXPORT_SYMBOL(ath11k_cold_boot_cal);
-@@ -1556,6 +1557,9 @@ static int ath11k_qmi_host_cap_send(struct ath11k_base *ab)
- 		req.nm_modem |= SLEEP_CLOCK_SELECT_INTERNAL_BIT;
- 	}
- 
-+	if (ab->hw_params.global_reset)
-+		req.nm_modem |= PLATFORM_CAP_PCIE_GLOBAL_RESET;
-+
- 	ath11k_dbg(ab, ATH11K_DBG_QMI, "qmi host cap request\n");
- 
- 	ret = qmi_txn_init(&ab->qmi.handle, &txn,
+Recorded preimage for 'drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c'
+error: Failed to merge in the changes.
+hint: Use 'git am --show-current-patch' to see the failed patch
+Applying: brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+Using index info to reconstruct a base tree...
+M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+M	drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+Patch failed at 0001 brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+
+Patch set to Changes Requested.
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20210307113550.7720-1-konrad.dybcio@somainline.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
