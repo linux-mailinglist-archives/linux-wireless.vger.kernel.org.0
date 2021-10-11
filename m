@@ -2,230 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DDF342951B
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 19:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F29274295CA
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 19:35:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233478AbhJKREV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Oct 2021 13:04:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46682 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232954AbhJKREU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Oct 2021 13:04:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B3F79606A5;
-        Mon, 11 Oct 2021 17:02:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633971740;
-        bh=+sw5vVvYzB9olZ/QfKHrBKLtJpmBFQ+mzziJlwpYm24=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HaZY28og8tI1/NuWbqAd1wxI/WmDvzz3qE12WZHII4SuxckNVP4s/8G9c/90KGEz2
-         MCbdEHemGkjr5yaZESU/9LGdQfZusr602hfmFM170uwJMvkhS5l3kilUuNMLDPLFj2
-         1z1QYP+ubJwTpGleScPwPOI3MU6uO+mULW5BdKQSMVNzYYdknkfhJd0MctezGgG0XA
-         bA/Cf3Bcu6q+DuZS9S/OqceSmpL0XTCeqAr/FiNv58wmpuJN897IeKrIJR4zQliIbE
-         8WHQKzLp+sFNFhMsbNcJ1CNF9DELxl4t0NWnqZZQcSt2KV9Gp3cpMj+tSV/d+WRSWK
-         lHxf2+dd3zztQ==
-Received: by pali.im (Postfix)
-        id A78F17C9; Mon, 11 Oct 2021 19:02:15 +0200 (CEST)
-Date:   Mon, 11 Oct 2021 19:02:15 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Jonas =?utf-8?Q?Dre=C3=9Fler?= <verdre@v0yd.nl>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Brian Norris <briannorris@chromium.org>,
-        David Laight <David.Laight@ACULAB.COM>
-Subject: Re: [PATCH] mwifiex: Add quirk resetting the PCI bridge on MS
- Surface devices
-Message-ID: <20211011170215.3bnmi6sa5yqux2r7@pali>
-References: <20211011134238.16551-1-verdre@v0yd.nl>
+        id S232403AbhJKRhv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Oct 2021 13:37:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59970 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231156AbhJKRhv (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 11 Oct 2021 13:37:51 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15B85C061570;
+        Mon, 11 Oct 2021 10:35:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=I6yZ9zx7B4CxK1FcMbBf4dNiqFWQUDhjJKBNKLinZKc=; b=WgW+i+lRiYG5w3GNHZdDYgD3h1
+        F7nq9T466tF0JFQMZxMvZQ5jMMkU1eR/NTRFGdIMYZvoIEov/A2Cm5VcbYz1tgt7fII1FtBj6VpJm
+        rysGbQJJWCPtiYCZLNqqeOAUKkF94GThwcjuFNOFXMPvCr2Toa1L5xhKY79+h+r5UPBlibjMe8j2E
+        svViCRTvnFmkM7iyiLK/ab3RzEsY1F6ZwvawjmK9ljM6EPnjYgxckX+J7cRowQaAYo4vnZ+g7QZdG
+        /Ek4B15RNLd6B0kqiK3irCZ3i3+eme7zVH8glMdZxdTbKgd/G6k4uS87PkAL+MjLJ06fxwExdYNYH
+        6BuPO3hg==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mZzD7-00AFE9-DQ; Mon, 11 Oct 2021 17:35:37 +0000
+Date:   Mon, 11 Oct 2021 10:35:37 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     bp@suse.de, akpm@linux-foundation.org, josh@joshtriplett.org,
+        rishabhb@codeaurora.org, kubakici@wp.pl, maco@android.com,
+        david.brown@linaro.org, bjorn.andersson@linaro.org,
+        linux-wireless@vger.kernel.org, keescook@chromium.org,
+        shuah@kernel.org, mfuzzey@parkeon.com, zohar@linux.vnet.ibm.com,
+        dhowells@redhat.com, pali.rohar@gmail.com, tiwai@suse.de,
+        arend.vanspriel@broadcom.com, zajec5@gmail.com, nbroeking@me.com,
+        broonie@kernel.org, dmitry.torokhov@gmail.com, dwmw2@infradead.org,
+        torvalds@linux-foundation.org, Abhay_Salunke@dell.com,
+        jewalt@lgsinnovations.com, cantabile.desu@gmail.com, ast@fb.com,
+        andresx7@gmail.com, dan.rue@linaro.org, brendanhiggins@google.com,
+        yzaikin@google.com, sfr@canb.auug.org.au, rdunlap@infradead.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 04/14] firmware_loader: add built-in firmware kconfig
+ entry
+Message-ID: <YWR16e/seTx/wxE+@bombadil.infradead.org>
+References: <20210917182226.3532898-1-mcgrof@kernel.org>
+ <20210917182226.3532898-5-mcgrof@kernel.org>
+ <YVxhbhmNd7tahLV7@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211011134238.16551-1-verdre@v0yd.nl>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <YVxhbhmNd7tahLV7@kroah.com>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Monday 11 October 2021 15:42:38 Jonas Dreßler wrote:
-> The most recent firmware (15.68.19.p21) of the 88W8897 PCIe+USB card
-> reports a hardcoded LTR value to the system during initialization,
-> probably as an (unsuccessful) attempt of the developers to fix firmware
-> crashes. This LTR value prevents most of the Microsoft Surface devices
-> from entering deep powersaving states (either platform C-State 10 or
-> S0ix state), because the exit latency of that state would be higher than
-> what the card can tolerate.
-
-This description looks like a generic issue in 88W8897 chip or its
-firmware and not something to Surface PCIe controller or Surface HW. But
-please correct me if I'm wrong here.
-
-Has somebody 88W8897-based PCIe card in non-Surface device and can check
-or verify if this issue happens also outside of the Surface device?
-
-It would be really nice to know if this is issue in Surface or in 8897.
-
-> Turns out the card works just the same (including the firmware crashes)
-> no matter if that hardcoded LTR value is reported or not, so it's kind
-> of useless and only prevents us from saving power.
+On Tue, Oct 05, 2021 at 04:30:06PM +0200, Greg KH wrote:
+> On Fri, Sep 17, 2021 at 11:22:16AM -0700, Luis R. Rodriguez wrote:
+> > From: Luis Chamberlain <mcgrof@kernel.org>
+> > 
+> > The built-in firmware is always supported when a user enables
+> > FW_LOADER=y today, that is, it is built-in to the kernel. When the
+> > firmware loader is built as a module, support for built-in firmware
+> > is skipped. This requirement is not really clear to users or even
+> > developers.
+> > 
+> > Also, by default the EXTRA_FIRMWARE is always set to an empty string
+> > and so by default we really have nothing built-in to that kernel's
+> > sections for built-in firmware, so today a all FW_LOADER=y kernels
+> > spins their wheels on an empty set of built-in firmware for each
+> > firmware request with no true need for it.
+> > 
+> > Add a new kconfig entry to represent built-in firmware support more
+> > clearly. This let's knock 3 birds with one stone:
+> > 
+> >  o Clarifies that support for built-in firmware requires the
+> >    firmware loader to be built-in to the kernel
+> > 
+> >  o By default we now always skip built-in firmware even if a FW_LOADER=y
+> > 
+> >  o This also lets us make it clear that the EXTRA_FIRMWARE_DIR
+> >    kconfig entry is only used for built-in firmware
+> > 
+> > Reviewed-by: Borislav Petkov <bp@suse.de>
+> > Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+> > ---
+> >  .../driver-api/firmware/built-in-fw.rst       |  2 ++
+> >  Documentation/x86/microcode.rst               |  5 ++--
+> >  drivers/base/firmware_loader/Kconfig          | 25 +++++++++++++------
+> >  drivers/base/firmware_loader/Makefile         |  3 +--
+> >  drivers/base/firmware_loader/main.c           |  4 +--
+> >  5 files changed, 26 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/Documentation/driver-api/firmware/built-in-fw.rst b/Documentation/driver-api/firmware/built-in-fw.rst
+> > index bc1c961bace1..9dd2b1df44f0 100644
+> > --- a/Documentation/driver-api/firmware/built-in-fw.rst
+> > +++ b/Documentation/driver-api/firmware/built-in-fw.rst
+> > @@ -8,6 +8,7 @@ the filesystem. Instead, firmware can be looked for inside the kernel
+> >  directly. You can enable built-in firmware using the kernel configuration
+> >  options:
+> >  
+> > +  * CONFIG_FW_LOADER_BUILTIN
+> >    * CONFIG_EXTRA_FIRMWARE
+> >    * CONFIG_EXTRA_FIRMWARE_DIR
+> >  
+> > @@ -17,6 +18,7 @@ into the kernel with CONFIG_EXTRA_FIRMWARE:
+> >  * Speed
+> >  * Firmware is needed for accessing the boot device, and the user doesn't
+> >    want to stuff the firmware into the boot initramfs.
+> > +* Testing built-in firmware
+> >  
+> >  Even if you have these needs there are a few reasons why you may not be
+> >  able to make use of built-in firmware:
+> > diff --git a/Documentation/x86/microcode.rst b/Documentation/x86/microcode.rst
+> > index a320d37982ed..d199f0b98869 100644
+> > --- a/Documentation/x86/microcode.rst
+> > +++ b/Documentation/x86/microcode.rst
+> > @@ -114,11 +114,12 @@ Builtin microcode
+> >  =================
+> >  
+> >  The loader supports also loading of a builtin microcode supplied through
+> > -the regular builtin firmware method CONFIG_EXTRA_FIRMWARE. Only 64-bit is
+> > -currently supported.
+> > +the regular builtin firmware method using CONFIG_FW_LOADER_BUILTIN and
+> > +CONFIG_EXTRA_FIRMWARE. Only 64-bit is currently supported.
+> >  
+> >  Here's an example::
+> >  
+> > +  CONFIG_FW_LOADER_BUILTIN=y
+> >    CONFIG_EXTRA_FIRMWARE="intel-ucode/06-3a-09 amd-ucode/microcode_amd_fam15h.bin"
+> >    CONFIG_EXTRA_FIRMWARE_DIR="/lib/firmware"
+> >  
+> > diff --git a/drivers/base/firmware_loader/Kconfig b/drivers/base/firmware_loader/Kconfig
+> > index 5b24f3959255..de4fcd9d41f3 100644
+> > --- a/drivers/base/firmware_loader/Kconfig
+> > +++ b/drivers/base/firmware_loader/Kconfig
+> > @@ -29,8 +29,10 @@ if FW_LOADER
+> >  config FW_LOADER_PAGED_BUF
+> >  	bool
+> >  
+> > -config EXTRA_FIRMWARE
+> > -	string "Build named firmware blobs into the kernel binary"
+> > +config FW_LOADER_BUILTIN
+> > +	bool "Enable support for built-in firmware"
+> > +	default n
 > 
-> To get rid of those hardcoded LTR requirements, it's possible to reset
-> the PCI bridge device after initializing the cards firmware. I'm not
-> exactly sure why that works, maybe the power management subsystem of the
-> PCH resets its stored LTR values when doing a function level reset of
-> the bridge device. Doing the reset once after starting the wifi firmware
-> works very well, probably because the firmware only reports that LTR
-> value a single time during firmware startup.
+> n is always the default, no need to list it again.
+
+Oh, alrighty, I'll remove that line.
+
+> > +	depends on FW_LOADER=y
 > 
-> Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
-> ---
->  drivers/net/wireless/marvell/mwifiex/pcie.c   | 12 +++++++++
->  .../wireless/marvell/mwifiex/pcie_quirks.c    | 26 +++++++++++++------
->  .../wireless/marvell/mwifiex/pcie_quirks.h    |  1 +
->  3 files changed, 31 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-> index c6ccce426b49..2506e7e49f0c 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-> @@ -1748,9 +1748,21 @@ mwifiex_pcie_send_boot_cmd(struct mwifiex_adapter *adapter, struct sk_buff *skb)
->  static int mwifiex_pcie_init_fw_port(struct mwifiex_adapter *adapter)
->  {
->  	struct pcie_service_card *card = adapter->card;
-> +	struct pci_dev *pdev = card->dev;
-> +	struct pci_dev *parent_pdev = pci_upstream_bridge(pdev);
->  	const struct mwifiex_pcie_card_reg *reg = card->pcie.reg;
->  	int tx_wrap = card->txbd_wrptr & reg->tx_wrap_mask;
->  
-> +	/* Trigger a function level reset of the PCI bridge device, this makes
-> +	 * the firmware (latest version 15.68.19.p21) of the 88W8897 PCIe+USB
-> +	 * card stop reporting a fixed LTR value that prevents the system from
-> +	 * entering package C10 and S0ix powersaving states.
-> +	 * We need to do it here because it must happen after firmware
-> +	 * initialization and this function is called right after that is done.
-> +	 */
-> +	if (card->quirks & QUIRK_DO_FLR_ON_BRIDGE)
-> +		pci_reset_function(parent_pdev);
-> +
->  	/* Write the RX ring read pointer in to reg->rx_rdptr */
->  	if (mwifiex_write_reg(adapter, reg->rx_rdptr, card->rxbd_rdptr |
->  			      tx_wrap)) {
-> diff --git a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
-> index 0234cf3c2974..cbf0565353ae 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.c
-> @@ -27,7 +27,8 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
->  			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
->  			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 4"),
->  		},
-> -		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
-> +		.driver_data = (void *)(QUIRK_FW_RST_D3COLD |
-> +					QUIRK_DO_FLR_ON_BRIDGE),
->  	},
->  	{
->  		.ident = "Surface Pro 5",
-> @@ -36,7 +37,8 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
->  			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
->  			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1796"),
->  		},
-> -		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
-> +		.driver_data = (void *)(QUIRK_FW_RST_D3COLD |
-> +					QUIRK_DO_FLR_ON_BRIDGE),
->  	},
->  	{
->  		.ident = "Surface Pro 5 (LTE)",
-> @@ -45,7 +47,8 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
->  			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
->  			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "Surface_Pro_1807"),
->  		},
-> -		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
-> +		.driver_data = (void *)(QUIRK_FW_RST_D3COLD |
-> +					QUIRK_DO_FLR_ON_BRIDGE),
->  	},
->  	{
->  		.ident = "Surface Pro 6",
-> @@ -53,7 +56,8 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
->  			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
->  			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 6"),
->  		},
-> -		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
-> +		.driver_data = (void *)(QUIRK_FW_RST_D3COLD |
-> +					QUIRK_DO_FLR_ON_BRIDGE),
->  	},
->  	{
->  		.ident = "Surface Book 1",
-> @@ -61,7 +65,8 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
->  			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
->  			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book"),
->  		},
-> -		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
-> +		.driver_data = (void *)(QUIRK_FW_RST_D3COLD |
-> +					QUIRK_DO_FLR_ON_BRIDGE),
->  	},
->  	{
->  		.ident = "Surface Book 2",
-> @@ -69,7 +74,8 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
->  			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
->  			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Book 2"),
->  		},
-> -		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
-> +		.driver_data = (void *)(QUIRK_FW_RST_D3COLD |
-> +					QUIRK_DO_FLR_ON_BRIDGE),
->  	},
->  	{
->  		.ident = "Surface Laptop 1",
-> @@ -77,7 +83,8 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
->  			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
->  			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop"),
->  		},
-> -		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
-> +		.driver_data = (void *)(QUIRK_FW_RST_D3COLD |
-> +					QUIRK_DO_FLR_ON_BRIDGE),
->  	},
->  	{
->  		.ident = "Surface Laptop 2",
-> @@ -85,7 +92,8 @@ static const struct dmi_system_id mwifiex_quirk_table[] = {
->  			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
->  			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Laptop 2"),
->  		},
-> -		.driver_data = (void *)QUIRK_FW_RST_D3COLD,
-> +		.driver_data = (void *)(QUIRK_FW_RST_D3COLD |
-> +					QUIRK_DO_FLR_ON_BRIDGE),
->  	},
->  	{}
->  };
-> @@ -103,6 +111,8 @@ void mwifiex_initialize_quirks(struct pcie_service_card *card)
->  		dev_info(&pdev->dev, "no quirks enabled\n");
->  	if (card->quirks & QUIRK_FW_RST_D3COLD)
->  		dev_info(&pdev->dev, "quirk reset_d3cold enabled\n");
-> +	if (card->quirks & QUIRK_DO_FLR_ON_BRIDGE)
-> +		dev_info(&pdev->dev, "quirk do_flr_on_bridge enabled\n");
->  }
->  
->  static void mwifiex_pcie_set_power_d3cold(struct pci_dev *pdev)
-> diff --git a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
-> index 8ec4176d698f..f8d463f4269a 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
-> +++ b/drivers/net/wireless/marvell/mwifiex/pcie_quirks.h
-> @@ -18,6 +18,7 @@
->  #include "pcie.h"
->  
->  #define QUIRK_FW_RST_D3COLD	BIT(0)
-> +#define QUIRK_DO_FLR_ON_BRIDGE	BIT(1)
->  
->  void mwifiex_initialize_quirks(struct pcie_service_card *card);
->  int mwifiex_pcie_reset_d3cold_quirk(struct pci_dev *pdev);
-> -- 
-> 2.31.1
-> 
+> I don't see what this gets us to add another config option.  Are you
+> making things easier later on?
+
+This makes a few things clearer for both developers and users.
+The code in question is a *feature* *only* when FW_LOADER=y, by
+adding a new kconfig to represent this and clearly makeing it
+depend on FW_LOADER=y it let's us:
+
+  o Clarify that support for built-in firmware requires
+    the firmware loader to be built-in to the kernel
+  o By default we now always skip built-in firmware even if a FW_LOADER=y
+  o This also lets us make it clear that the EXTRA_FIRMWARE_DIR
+    kconfig entry is only used for built-in firmware
+
+The above is not easily obvious to developers (including myself when
+I was reviewing this code) or users without this new kconfig entry.
+
+Should I re-send by just removing the one line you asked for?
+
+  Luis
