@@ -2,79 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C29C2428A91
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 12:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C462C428AAE
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 12:19:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235751AbhJKKMH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Oct 2021 06:12:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40872 "EHLO
+        id S235851AbhJKKV2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Oct 2021 06:21:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235712AbhJKKMG (ORCPT
+        with ESMTP id S235843AbhJKKV2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Oct 2021 06:12:06 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD7FAC061570
-        for <linux-wireless@vger.kernel.org>; Mon, 11 Oct 2021 03:10:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=CEp9SK2THAhiavjnyvyFXMvBhCVX42EpDIoO7m04Fuo=; b=paSEsLdqP962ly1Zvw/uCYX4US
-        70U2Xb0I1be/kTUtuMVgFu8aavkCqRPeGdlEkgZKwcj8AN0TDNARTX7SSlaAj/8WZGXcHLczMjGEg
-        sOk8lugkN6OXIrEkvxNbM5mBOxmq2lbKJlbuV/IZTSO1E5zqftnAKRqj9preA5S2cf8U=;
-Received: from p4ff1322b.dip0.t-ipconnect.de ([79.241.50.43] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1mZsFw-0007uD-F3
-        for linux-wireless@vger.kernel.org; Mon, 11 Oct 2021 12:10:04 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: do not access 802.11 header in ccmp check for 802.3 rx skbs
-Date:   Mon, 11 Oct 2021 12:10:02 +0200
-Message-Id: <20211011101002.53900-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.30.1
+        Mon, 11 Oct 2021 06:21:28 -0400
+Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74FB6C061570
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Oct 2021 03:19:28 -0700 (PDT)
+Received: by mail-qt1-x832.google.com with SMTP id b12so7854087qtq.3
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Oct 2021 03:19:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=sFqGxkPsvLgyKYtO8LM3BgAgzu/ZndcL6Uhn79oUxgQ=;
+        b=o0FOBA4JibRxsonrpIITpFh1hNoJvqbh5XU+ObA+3ccYw1w4PbU3Wepti7NUdk5sPg
+         zFiSVI2FEFqBGsN66wlLzULlUNzFftRlOfWKaZ5vVHl89Offd7PXKpgxkkRkmQkaHpes
+         CEGN/ivGCijws2iuNYqhXQSGkZc43rOhriYPPQEdA078HgjJCKCDIO1vuZVviu670wlP
+         WL829ChLfGrIlP/kgbf3QKeltbfZuWBBvnRd2ZRpGPll7VuKiMJ+3mwv8K4cjlRjIZop
+         ef2pacp3SbUHuXodpvhX3PjaXuApac0KSw43z+VE19oEXbyvhUCavZ52wLaEG8pBxG9b
+         PTXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=sFqGxkPsvLgyKYtO8LM3BgAgzu/ZndcL6Uhn79oUxgQ=;
+        b=wlOJ0BTWKxjw+1DryZCk4XrU+O5KYqpbFNj2KOgdB8OXclp9/+RwvxllxR4HoWlums
+         AtXJFuYZpeceQQkwciAKxWs6JmCrWkNGCM0EZI8tH68q8uxfeOMWnlDCSY1NaGspL+H0
+         Ort1pQYyhuMQv0ENcOLD0RBTbspf1sd6kkGiwCmRHQfvCu+MTrCxMip/dozik242gnBB
+         UD/PHNo7rYc5OjuMlXbuDYkQq161eh4fjqY/0WCASSr+0fBTJxJ7WwwpdnqPSMZcOJ28
+         5AnWfW/j/frlpvZByNplP06vFikMsJ41Db9UFR8Aiu8L2duuCu+Emzgd4/fhetcxoG3D
+         Jk+g==
+X-Gm-Message-State: AOAM532vtY7K9ynVgrIQP9+xEMlDvSIT/NwdfRJWOD3tEKsji1qcdth/
+        VtiVft7qUCTFETPoRCTWHUacXd3wYyf1K6lr2r8=
+X-Google-Smtp-Source: ABdhPJwQeoHFEkp9WrpA/+kcbfwJ+Zo+NcHZQWn5PuGp/nVCGtK0T0v0V6kINXvhZSMjGFVO4WVXuDCvZ4zNiPO1FDY=
+X-Received: by 2002:ac8:5e06:: with SMTP id h6mr9878444qtx.294.1633947567596;
+ Mon, 11 Oct 2021 03:19:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Sender: drrhamasalam8@gmail.com
+Received: by 2002:a0c:e742:0:0:0:0:0 with HTTP; Mon, 11 Oct 2021 03:19:27
+ -0700 (PDT)
+From:   MS VICKY WYNSLOW <wynslowvicky@gmail.com>
+Date:   Mon, 11 Oct 2021 03:19:27 -0700
+X-Google-Sender-Auth: LC0_iBymMew-QLLPX0B7oGhugtY
+Message-ID: <CALomdBaBXA7_V=jH+uj3OVbPBemEJz6B9yJ_8zuxHy9x3bUecA@mail.gmail.com>
+Subject: I NEED YOUR URGENT REPLY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Avoids false positive on detecting frags or encrypted mgmt frames
-
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 5a6608f36ebc..766681a4f89e 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -974,6 +974,10 @@ mt76_check_ccmp_pn(struct sk_buff *skb)
- 	if (!wcid || !wcid->rx_check_pn)
- 		return 0;
- 
-+	security_idx = status->qos_ctl & IEEE80211_QOS_CTL_TID_MASK;
-+	if (status->flag & RX_FLAG_8023)
-+		goto skip_hdr_check;
-+
- 	hdr = mt76_skb_get_hdr(skb);
- 	if (!(status->flag & RX_FLAG_IV_STRIPPED)) {
- 		/*
-@@ -994,9 +998,8 @@ mt76_check_ccmp_pn(struct sk_buff *skb)
- 	if (ieee80211_is_mgmt(hdr->frame_control) &&
- 	    !ieee80211_has_tods(hdr->frame_control))
- 		security_idx = IEEE80211_NUM_TIDS;
--	else
--		security_idx = status->qos_ctl & IEEE80211_QOS_CTL_TID_MASK;
- 
-+skip_hdr_check:
- 	BUILD_BUG_ON(sizeof(status->iv) != sizeof(wcid->rx_key_pn[0]));
- 	ret = memcmp(status->iv, wcid->rx_key_pn[security_idx],
- 		     sizeof(status->iv));
--- 
-2.30.1
-
+Hello, dear one
+Am sgt Vicky wynslow, I have something important for you, pls reply
+urgently for more details
+REDARDS
