@@ -2,145 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DEC74285AB
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 06:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBA4C4286A7
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 08:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230133AbhJKEIR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Oct 2021 00:08:17 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:51312 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232145AbhJKEIP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Oct 2021 00:08:15 -0400
+        id S233821AbhJKGNg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Oct 2021 02:13:36 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:54653 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230388AbhJKGNf (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 11 Oct 2021 02:13:35 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633925176; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=+56MsHvQUgwvmdOWMayKmrkXDzcge09CMTNZDQdtpZ0=;
- b=fUGjixsmboVsL1bTtCDXb6j1Y/chBmLXuH8ii5PkC25pT9B/NQAFst8AqDmKgTEilWk93XQs
- nmlVouqLdb9gydFmZcuMBx1RrxynRfYMwKZ1PZbGVo27YU+ybJUrVQplAq84zWAQjQST5x9E
- 0zHkfNOnjvd3FGrLQsJYMA7nadY=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ s=smtp; t=1633932696; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=xhj5dxu+eDLVZQYYajqtKXXzXLf5dHufW15/ovtEr8A=; b=k0jNCSb46hs9dlVmLecZeiqVCANHWe+iyNFTEDF2e93P5mj/ARxayZz5j9b9ruu43au3h+ct
+ pSDNnmCQEUdj+JoAbBkhJF6m2I9hp+YkQ5NyvQsR1cpuu0aNgsgZDseJX7hGj6tXUzXhQsjh
+ 0ONZm+bi3wnOi7R4+SFE57ZS+tU=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 6163b8338ea00a941f751be0 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Oct 2021 04:06:11
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 6163d58eab9da96e6427bc62 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Oct 2021 06:11:26
  GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
+Sender: bqiang=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 619F2C4360C; Mon, 11 Oct 2021 04:06:11 +0000 (UTC)
+        id ECFE2C4360C; Mon, 11 Oct 2021 06:11:25 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from bqiang-Celadon-RN.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AEAD4C4338F;
-        Mon, 11 Oct 2021 04:06:10 +0000 (UTC)
+        (Authenticated sender: bqiang)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D672AC4338F;
+        Mon, 11 Oct 2021 06:11:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org D672AC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Baochen Qiang <bqiang@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] ath11k: Identify DFS channel when sending scan channel list command
+Date:   Mon, 11 Oct 2021 13:49:19 +0800
+Message-Id: <20211011054919.77071-1-bqiang@codeaurora.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 11 Oct 2021 12:06:10 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Venkateswara Naralasetty <vnaralas@codeaurora.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        wgong=codeaurora.org@codeaurora.org
-Subject: Re: [PATCH v5] cfg80211: save power spectral density(psd) of
- regulatory rule
-In-Reply-To: <1222384c2bc7d80bf572b65ab17660477bb27300.camel@sipsolutions.net>
-References: <20210928085211.26186-1-wgong@codeaurora.org>
- <bd649a3d2cf2ea9064d427d633055891@codeaurora.org>
- <cb20427eae96c4551084e4c899618b94@codeaurora.org>
- <2afb1bf6f06cb53f43fe0d354afa4e7c@codeaurora.org>
- <2ed76cff292dcca18326de0407a93821@codeaurora.org>
- <1222384c2bc7d80bf572b65ab17660477bb27300.camel@sipsolutions.net>
-Message-ID: <562080d7fc3b7568811c47a8e8e79156@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-09-30 20:50, Johannes Berg wrote:
-> On Thu, 2021-09-30 at 10:53 +0800, Wen Gong wrote:
->> > >
->> > > 		chan->max_reg_power =
->> > > 			min_t(int, MBM_TO_DBM(power_rule1->max_eirp),
->> > > 			      MBM_TO_DBM(power_rule2->max_eirp));
->> > >
->> > > For AP + STA concurrency, it should to maintain 2 group of reg rules,
->> > > one is for AP, another is for STA.
->> >
->> > Can we maintain two power rules in the same channel one for AP and one
->> > for STA. In this way, we can update the power rules in the same
->> > channel for both AP and STA from the reg rules.
->> >
->> > Otherwise, we need to maintain multiple channel lists in sband for all
->> > supported power mode combinations to apply the respective power rules
->> > and build channel flags from the multiple reg rules.
->> > right?
->> 
->> If AP+STA is up in the same wiphy/ieee80211_hw, and AP's reg rules is
->> different
->> with STA, then it should maintain muti channel list for each band of 
->> the
->> wiphy/ieee80211_hw by my understand.
-> 
-> I don't think that's how it works. You can today have AP/STA 
-> concurrency
-> on a single wiphy with different netdevs, even with mesh or whatever.
-> 
->> Currently there is only one "struct ieee80211_supported_band
->> *bands[NUM_NL80211_BANDS]"
->> in "struct wiphy".
->> 
->> I advise to discuss the AP + STA concurrency in another mail thread
->> since it is not relative with this patch.
-> 
-> I actually explicitly pointed to this thread, but I'm not sure it's so
-> clear cut?
-> 
-> If we have completely separate rules here for AP and STA, we probably
-> should have different "max_reg_power" values for AP and STA? Maybe mesh
-> is treated like AP, maybe not?
-> 
-> But I don't know - does PSD really differ between AP and STA?
-> 
-> Maybe this discussion belongs rather to the power type patch? But that
-> didn't add any state!
-> 
-> 
-> So - does this PSD depend on mode? It kind of seems like it shouldn't
-> and then this *isn't* the right place to be discussing this, but if PSD
-> does in fact depend on the mode then we should be discussing it here?
-> 
-> Venkatesh seemed to be worried more about LPI/client power etc. as in
-> commit 405fca8a9461 ("ieee80211: add power type definition for 6 GHz"),
-> but that doesn't add state?
-> 
-> So what gives? From a regulatory POV it seems PSD should be 
-> independent,
-> but some other things might be dependent on mode?
-> 
+WMI_CHAN_INFO_DFS flag should be set when configuring a DFS channel
+included in scan channel list. Without it, firmware will not send a
+probe request frame which is needed in connection to an AP configured
+with hidden SSID/network_id. So fix this to allow probe request frames
+to be sent in cases where a beacon frame has been seen on the channel
+first.
 
-As I know, below values maybe all different for the AP and
-STATION in the same wiphy/ieee80211_hw, not only PSD.
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
 
-struct ieee80211_reg_rule {
-	struct ieee80211_freq_range freq_range;
-	struct ieee80211_power_rule power_rule;
-	struct ieee80211_wmm_rule wmm_rule;
-	u32 flags;
-	u32 dfs_cac_ms;
-	bool has_wmm;
-	s8 psd;
-};
+Signed-off-by: Baochen Qiang <bqiang@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/wmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-@Venkateswara, please feel free to give more info to Johannes:)
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 2d0acfb748cf..9781b69515dd 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -2371,6 +2371,8 @@ int ath11k_wmi_send_scan_chan_list_cmd(struct ath11k *ar,
+ 				chan_info->info |= WMI_CHAN_INFO_QUARTER_RATE;
+ 			if (tchan_info->psc_channel)
+ 				chan_info->info |= WMI_CHAN_INFO_PSC;
++			if (tchan_info->dfs_set)
++				chan_info->info |= WMI_CHAN_INFO_DFS;
+ 
+ 			chan_info->info |= FIELD_PREP(WMI_CHAN_INFO_MODE,
+ 						      tchan_info->phy_mode);
+-- 
+2.25.1
 
-> johannes
