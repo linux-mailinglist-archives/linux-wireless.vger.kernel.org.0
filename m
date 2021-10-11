@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ED804286CF
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 08:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC404286D1
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 08:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234172AbhJKG1o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Oct 2021 02:27:44 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:13885 "EHLO
+        id S234192AbhJKG2m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Oct 2021 02:28:42 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:11979 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234130AbhJKG1n (ORCPT
+        with ESMTP id S231839AbhJKG2l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Oct 2021 02:27:43 -0400
+        Mon, 11 Oct 2021 02:28:41 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633933544; h=Date: Message-ID: Cc: To: References:
+ s=smtp; t=1633933602; h=Date: Message-ID: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=vqRerw6jepTKl0s7qcA0sRoOaWNZI36gX/8yJK4zDK0=;
- b=eRPlU1QCyHlz4er6cdbl+MMPkK1QXKAtVCtrrNLrZ7HXoEHq/2lJ9DcZlHYtACe2gvA+2kGr
- Kt0WqiSKOFBLxX06SjZQ5ZVyWdBeJfOkwyngChGp5DUV7tr4fl1Msy0Kv1DZ+u7LooMrp3ek
- yMjPxbyU+CqzkdUf3X3cAk7WkeQ=
+ Content-Type: Sender; bh=ZVQrWonnh9hRM9Qxp6VLOIO41IBcRwVY8KNlil4vdIk=;
+ b=D1JAduLgYEmmosf0b5+nUkDKy84PiUe8ew198Im5sYUKH3N+mr8AKOhoVOmzrfu41lB39dQt
+ hYxrQk8h6HV3l30iSt87vtrSQWtRxUGkYzKxkTwT68686ICLrtWwFwt1hw0mTZKE3QnsyaRy
+ 9hX8E8cIrFxgCnezLEafBVhwYxo=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 6163d8ce060523968994a021 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Oct 2021 06:25:18
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 6163d90b4ccc4cf2c79b9895 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Oct 2021 06:26:19
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 92C0BC43616; Mon, 11 Oct 2021 06:25:17 +0000 (UTC)
+        id C9180C43616; Mon, 11 Oct 2021 06:26:19 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,47 +40,53 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2691BC43460;
-        Mon, 11 Oct 2021 06:25:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 2691BC43460
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B3848C4338F;
+        Mon, 11 Oct 2021 06:26:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B3848C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] ath11k: Use kcalloc() instead of kzalloc()
+Subject: Re: [PATCH] ath: dfs_pattern_detector: Fix possible null-pointer
+ dereference in channel_detector_create()
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20211006181204.GA913553@embeddedor>
-References: <20211006181204.GA913553@embeddedor>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
+In-Reply-To: <20210805153854.154066-1-islituo@gmail.com>
+References: <20210805153854.154066-1-islituo@gmail.com>
+To:     Tuo Li <islituo@gmail.com>
+Cc:     davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
+        linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
+        Tuo Li <islituo@gmail.com>, TOTE Robot <oslab@tsinghua.edu.cn>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163393351300.20318.18394119881469164997.kvalo@codeaurora.org>
-Date:   Mon, 11 Oct 2021 06:25:17 +0000 (UTC)
+Message-ID: <163393357512.20318.16433402434764020686.kvalo@codeaurora.org>
+Date:   Mon, 11 Oct 2021 06:26:19 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+Tuo Li <islituo@gmail.com> wrote:
 
-> Use 2-factor multiplication argument form kcalloc() instead
-> of kzalloc().
+> kzalloc() is used to allocate memory for cd->detectors, and if it fails,
+> channel_detector_exit() behind the label fail will be called:
+>   channel_detector_exit(dpd, cd);
 > 
-> Link: https://github.com/KSPP/linux/issues/162
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> In channel_detector_exit(), cd->detectors is dereferenced through:
+>   struct pri_detector *de = cd->detectors[i];
+> 
+> To fix this possible null-pointer dereference, check cd->detectors before
+> the for loop to dereference cd->detectors.
+> 
+> Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+> Signed-off-by: Tuo Li <islituo@gmail.com>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-ec4363384c3f ath11k: Use kcalloc() instead of kzalloc()
+4b6012a7830b ath: dfs_pattern_detector: Fix possible null-pointer dereference in channel_detector_create()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211006181204.GA913553@embeddedor/
+https://patchwork.kernel.org/project/linux-wireless/patch/20210805153854.154066-1-islituo@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
