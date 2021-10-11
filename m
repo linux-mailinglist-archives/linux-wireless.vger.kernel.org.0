@@ -2,62 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D42F1428B05
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 12:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BAF6428B13
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Oct 2021 12:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231240AbhJKKtp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Oct 2021 06:49:45 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:33936 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235985AbhJKKto (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Oct 2021 06:49:44 -0400
+        id S235981AbhJKKxI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Oct 2021 06:53:08 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:38199 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235971AbhJKKxH (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 11 Oct 2021 06:53:07 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633949264; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1633949467; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=zD0ZTFvkzSdGI4/2IPhEpqZkt0GWm5DmIuz4gsL8OjI=; b=o6YIcmtaH9Wt1dHK2L7316Qe0DGLUUrneJ/3bZSGQR3exMK37LCdso1fU7adgnyUJxKuYA91
- +S47h+UKyD/b6SHvvaoZ035dkU32xCMzu55dzfug4dECUqrAF42jr8s29kuVEayzrw6FW9O8
- KawVLXXoJY6zeLZDzIL9w74qVdI=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ bh=nc1TDV60QwmynKUq9rir3JrVGO3b0CrRN8D+EYDttNo=; b=i+VcrzfRMrbQdZcz3XJgCO7yCPqwA3U3kWCBbF3c0EOP820JSinNclVXYjHH1IsXuL4pvJ1e
+ nobWJ6q4TqtdP2lL7ML9ndNCwMsnEL4THkUiwR4n6qj9uE+EYGaCR1ELX/drZiOxHHCPjFqW
+ aLugFf07Y/e8kmAjFrIBrMfTHSE=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 6164163f8ea00a941f7290af (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Oct 2021 10:47:27
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 6164171aff0285fb0afe092f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Oct 2021 10:51:06
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6A022C4360C; Mon, 11 Oct 2021 10:47:27 +0000 (UTC)
+        id A6816C4338F; Mon, 11 Oct 2021 10:51:06 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
         URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 692A1C4338F;
-        Mon, 11 Oct 2021 10:47:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 692A1C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E6C21C4338F;
+        Mon, 11 Oct 2021 10:51:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org E6C21C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        Ping-Ke Shih <pkshih@realtek.com>, tony0620emma@gmail.com,
-        linux-wireless@vger.kernel.org, steventing@realtek.com,
-        David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: wireless: guidelines for user space interfaces
-References: <20210422030413.9738-1-pkshih@realtek.com>
-        <20210422030413.9738-2-pkshih@realtek.com>
-        <YMPqT8VH5alHQXXA@google.com> <87mtnf52z9.fsf_-_@codeaurora.org>
-        <f670553b-274e-0801-50b4-a8e9d7fcf54e@broadcom.com>
-Date:   Mon, 11 Oct 2021 13:47:22 +0300
-In-Reply-To: <f670553b-274e-0801-50b4-a8e9d7fcf54e@broadcom.com> (Arend van
-        Spriel's message of "Mon, 11 Oct 2021 11:40:40 +0200")
-Message-ID: <87ee8r4z45.fsf@codeaurora.org>
+To:     Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>
+Cc:     Luca Coelho <luca@coelho.fi>, johannes@sipsolutions.net,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 09/13] cfg80211: Save the regulatory domain when setting custom regulatory
+References: <20201129153055.1971298-1-luca@coelho.fi>
+        <iwlwifi.20201129172929.290fa5c5568a.Ic5732aa64de6ee97ae3578bd5779fc723ba489d1@changeid>
+        <e8e6afa6-275e-2cc5-6351-e1ed5eb0e0af@green-communications.fr>
+Date:   Mon, 11 Oct 2021 13:51:03 +0300
+In-Reply-To: <e8e6afa6-275e-2cc5-6351-e1ed5eb0e0af@green-communications.fr>
+        (Nicolas Cavallari's message of "Tue, 15 Jun 2021 16:42:20 +0200")
+Message-ID: <87ily325t4.fsf@tynnyri.adurom.net>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -65,78 +62,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arend van Spriel <arend.vanspriel@broadcom.com> writes:
+Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr> writes:
 
-> On 10/11/2021 11:23 AM, Kalle Valo wrote:
->> (changing subject, was "Re: [PATCH v2 2/2] rtw88: add debugfs to
->> force lowest basic rate")
+> On 29/11/2020 16:30, Luca Coelho wrote:
+>> From: Ilan Peer <ilan.peer@intel.com>
 >>
->> Brian Norris <briannorris@chromium.org> writes:
+>> When custom regulatory was set, only the channels setting was updated, but
+>> the regulatory domain was not saved. Fix it by saving it.
 >>
->>> BTW, if we have clear guidelines on debugfs, module parameters, etc.,
->>> maybe those should be going on the wiki? I know this came up before:
->>>
->>> https://lore.kernel.org/linux-wireless/87d09u7tyr.fsf@codeaurora.org/
->>>
->>> At this point, I'm willing to write such guidelines, if I get an ack
->>> from the relevant folks (I guess that's just Kalle?). It probably
->>> belongs somewhere in this tree:
->>>
->>> https://wireless.wiki.kernel.org/en/developers/documentation
->>>
->>> similar to this:
->>> https://wireless.wiki.kernel.org/en/developers/documentation/nl80211#vendor-specific_api
->>> except it's not really an nl80211 thing. Suggestions welcome.
+>> Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+>> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+>> ---
+>>   net/wireless/reg.c | 8 ++++++++
+>>   1 file changed, 8 insertions(+)
 >>
->> I think this is a very good idea. Having general guidelines for wireless
->> drivers using user space interfaces would help both people submitting
->> patches and also people like me reviewing the patches.
+>> diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+>> index a04fdfb35f07..094492b62f8a 100644
+>> --- a/net/wireless/reg.c
+>> +++ b/net/wireless/reg.c
+>> @@ -2547,6 +2547,7 @@ static void handle_band_custom(struct wiphy *wiphy,
+>>   void wiphy_apply_custom_regulatory(struct wiphy *wiphy,
+>>   				   const struct ieee80211_regdomain *regd)
+>>   {
+>> +	const struct ieee80211_regdomain *new_regd, *tmp;
+>>   	enum nl80211_band band;
+>>   	unsigned int bands_set = 0;
+>>   @@ -2566,6 +2567,13 @@ void wiphy_apply_custom_regulatory(struct
+>> wiphy *wiphy,
+>>   	 * on your device's supported bands.
+>>   	 */
+>>   	WARN_ON(!bands_set);
+>> +	new_regd = reg_copy_regd(regd);
+>> +	if (IS_ERR(new_regd))
+>> +		return;
+>> +
+>> +	tmp = get_wiphy_regdom(wiphy);
+>> +	rcu_assign_pointer(wiphy->regd, new_regd);
+>> +	rcu_free_regdom(tmp);
+>>   }
+>>   EXPORT_SYMBOL(wiphy_apply_custom_regulatory);
+>>   
 >>
->> We should try to get an ack for the guidelines at least from Johannes,
->> but I would prefer also involve Jakub and Dave (CCed) as they might have
->> some input from the network subsystem point of view.
->>
->> Just to get this started, here's a draft list I came up of different
->> user space interfaces upstream wireless drivers are using:
->>
->> * generic nl80211 (excluding testmode and vendor commands)
->>
->> * nl80211 testmode commands
->>
->> * nl80211 vendor commands
->>
->> * sysfs[1]
->>
->> * debugfs
->>
->> * relayfs
->>
->> * configfs[1]
->>
->> * module parameters
->>
->> * thermal subsystem
->>
->> * firmware_request()
->>
->> I'm not saying that we need to document all these in the first version,
->> I'm just trying to come up a comprehensive overview how wireless drivers
->> interact with the user space. And I'm sure I missed something. so please
->> do fill in.
 >
-> Not sure if all of the above can be considered user-space interfaces,
-> but wireless driver developers could benefit from guidelines for them
-> regardless.
-
-Maybe the name should be "Guidelines for wireless drivers" without being
-too specific?
-
-> Maybe following needs to be considered as well although I think
-> cfg80211 is taking care of it:
+> Hello,
 >
-> * rfkill
+> This patch somehow appears to break ath9k's eeprom hints and restrict
+> it to the world regulatory domain on v5.12.10.
+>
+> ath9k calls wiphy_apply_custom_regulatory() with its own kind of world
+> regulatory domain, before it decodes hints from the eeprom and uses
+> regulatory_hint() to request a specific alpha2.
+>
+> With this patch, applying the hint fails because wiphy->regd is already set.
+> If i revert this patch, ath9k works again.
 
-Yeah, it would be good to include rfkill.
+I have lost track, is this regression fixed now or is it sill
+unresolved?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
