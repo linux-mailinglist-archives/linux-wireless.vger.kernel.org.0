@@ -2,230 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF097429EA6
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Oct 2021 09:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92E9B42A011
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Oct 2021 10:40:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233926AbhJLHcd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Oct 2021 03:32:33 -0400
-Received: from mail-eopbgr130080.outbound.protection.outlook.com ([40.107.13.80]:32674
-        "EHLO EUR01-HE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233650AbhJLHca (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Oct 2021 03:32:30 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CXGD0ipQFPSOXrQ28M8l3IkcKhHu2+YYdqWxbIRfayUZp3t+i4sQVXDSJF3i+vNNZ7tFssIvu9lcoUTgw4lYokZIuTJOs3C+mDmIFwxldMr0uP9ak6V6thvNvyLtDrFaQUczZarJbOrWh0APBjMamEH2NAI0TCYRKAHaie+Z43sl0ovxrSNrWbSPAsEtoYZN9t6sEML4nK5K1EIXxqSZg/06Ko8/gD8PvD4D7zsXYz1GDd/HwDKiHnYHuAYlpxamZH2JXfqtJQeBrheIbne1AotCIlfNG4R5ipBkzR4Rnh1twP4BgCkZgjnmz7RRFAbj37iE8QjOilaY85s5GevSMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X1pR8kFn0FqVXJNXy7GAc6GNi1ZSEC4iIzw1KkX1cz4=;
- b=epg8NwNDap46at5JpkiFG/N8HdTeGLcJQUg8ZXdmeSlczgphMSLNueeDaQ8AJoB4CoqaB6CpVTkAzYWUSNrCGdyHxJS1Y+duhxSRg0kCLwhWfHO9UswtZtJeR/qPtoTpNikU7+FprCfauASfeMxYjHi6FHwduVmD7tuJUp4oz12MklEEtJmDCTHrm0L9yOR76wIQvEyewVo/Ccr2E6HjeFKqsWvOVUAcvAwkZOucKCGmErItXQeBd8KGQMEzSxVniNifrvzoTZcVbK0+8FFdXWbrOlpHhUIXcDq0iMVSlWPTPM6LkSS2sWw9SPgj+m3bqsWrHn3mjNNAKkjaUVtzeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
- dkim=pass header.d=westermo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=beijerelectronicsab.onmicrosoft.com;
- s=selector1-beijerelectronicsab-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X1pR8kFn0FqVXJNXy7GAc6GNi1ZSEC4iIzw1KkX1cz4=;
- b=SkDhwk1WfXHo2kEFpA1Kewu/3QC5Ob1R7ozwf5vjMDa/5yAqm958EdDhNfgaM7REgZE1OJwl8zNLEWt60g4YrIaR6+UmmJ49moP2jiVMGhmBdlkpTC5KDLeYrLG3ySdAsJSwrtYU53jpH4mpHQ4lP1oZtQAKOdIPJLBdj0bM1/Y=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=westermo.com;
-Received: from AM9P192MB1379.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:3a7::21)
- by AM9P192MB1061.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:1f9::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.19; Tue, 12 Oct
- 2021 07:30:26 +0000
-Received: from AM9P192MB1379.EURP192.PROD.OUTLOOK.COM
- ([fe80::e180:d6f5:b80c:42fd]) by AM9P192MB1379.EURP192.PROD.OUTLOOK.COM
- ([fe80::e180:d6f5:b80c:42fd%9]) with mapi id 15.20.4587.026; Tue, 12 Oct 2021
- 07:30:26 +0000
-To:     =?UTF-8?B?TcOhdGjDqSBLb3Bww6FueQ==?= <mathekoppany@gmail.com>
-References: <CALOm-MsEcY7=MwfoEzhCQqSUM6qANy=oP5xYmoPqHAaADcscwA@mail.gmail.com>
-From:   Matthias May <matthias.may@westermo.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: ath9k: unable to connect to hidden SSID on DFS channel
-Message-ID: <1c9e0038-d40d-40a0-ac70-5bfcc8d8b95d@westermo.com>
-Date:   Tue, 12 Oct 2021 09:30:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-In-Reply-To: <CALOm-MsEcY7=MwfoEzhCQqSUM6qANy=oP5xYmoPqHAaADcscwA@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="FAetPlTvIWh3OtUTOqXiH0YNzNatNJS9C"
-X-ClientProxiedBy: HE1PR0701CA0086.eurprd07.prod.outlook.com
- (2603:10a6:3:64::30) To AM9P192MB1379.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:3a7::21)
+        id S234686AbhJLImF convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Oct 2021 04:42:05 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:53203 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235122AbhJLImC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 Oct 2021 04:42:02 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19C8dkZcB022566, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19C8dkZcB022566
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 12 Oct 2021 16:39:46 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Tue, 12 Oct 2021 16:39:45 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Tue, 12 Oct 2021 16:39:45 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Tue, 12 Oct 2021 16:39:45 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     =?iso-8859-1?Q?Toke_H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH v7 08/24] rtw89: implement mac80211 ops
+Thread-Topic: [PATCH v7 08/24] rtw89: implement mac80211 ops
+Thread-Index: AQHXu/ifWPBlJj1udUquHUeAEk0B/qvI2nEAgAXGKOA=
+Date:   Tue, 12 Oct 2021 08:39:45 +0000
+Message-ID: <2301ebcf91804e6199e87a36a39c4deb@realtek.com>
+References: <20211008035627.19463-1-pkshih@realtek.com>
+ <20211008035627.19463-9-pkshih@realtek.com> <87h7drl8b9.fsf@toke.dk>
+In-Reply-To: <87h7drl8b9.fsf@toke.dk>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?iso-8859-1?Q?Clean,_bases:_2021/10/12_=3F=3F_06:00:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Received: from [172.29.101.174] (46.140.151.10) by HE1PR0701CA0086.eurprd07.prod.outlook.com (2603:10a6:3:64::30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.4 via Frontend Transport; Tue, 12 Oct 2021 07:30:25 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c82d0883-d50f-4d64-b8dc-08d98d5228c1
-X-MS-TrafficTypeDiagnostic: AM9P192MB1061:
-X-Microsoft-Antispam-PRVS: <AM9P192MB10618B1A525A75E51CD96344F1B69@AM9P192MB1061.EURP192.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ueNGEVcZ16NhcgbTtcxjdnFtc3Zl/tmgcL1t8SlHGy4HTqg0qINqPa3o/WOsPFGA5dCGBSU58k9QpBKNKJ5BsUISS1cLnqvJhLmZqDjpKRq9wGMIgnJ79Dw8sJFO+A02kezXDR1acF/N2pBmTazEhm/h5KwBolmMzioFG2MRMQHL6k4Q7KGgd7TpsbZKNoYeE81ECzju4TokSTW85qj4PoUd+S6CTMznZ5Xwh65xGieo2sVN65VTkfG41o7UtmnzKH2jAfuaCunmCBWSW5fT3fY6z3nno/jYLH2D1na8FlClJxNrzWUYa+2Cq/Rm1D6hemMSlTM1AjfdAh22lMLZf/lswWWhva1t8CkjpPmFSCTEBRCp3A1UYj4ct8HbnDHXqw/AkzQuMN2KS2MUhcaPwq/39w8BN67COM6G3xhvj9o9gj+mXrbT+ffvIR5QLgZTDMp58ghBb7H9OFcgO+ICa9eRFdHONFj1ZfPnObJBCusXblqc3RBYaMwNOxG+ixKNKMymloM9BG17pN4O9Fo3DOoMnyjEPUVmLerlGoQq4sDJ2iPnrVsibXeubnsVut/GRWUPrAvbdhAxcMT7YmC+yFQpfpZ0OHKNH4uvhSdXMX2+HZ6o1LNfnBa/Ti6tlwV50yJwAsqhxWgTqiZL2q88q+zo+4cgHZRhgCpaDsQ9TZrcHhsNpzI6lGrvoV6QZ/o6XcMAis8YAHpoLiCF1NQKCMFUTZRt5HfwbhADoyy+xIeea9RkSnQlZiNJR7YJXzepwrCbKHf7Z9zNkvw1z5+/9A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P192MB1379.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(4636009)(366004)(86362001)(31696002)(4326008)(83380400001)(8936002)(36756003)(53546011)(66556008)(956004)(52116002)(2616005)(508600001)(66476007)(66946007)(33964004)(21480400003)(2906002)(26005)(6916009)(316002)(8676002)(38350700002)(235185007)(31686004)(6486002)(16576012)(44832011)(186003)(5660300002)(38100700002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?K2F5NDA0R2ZFamt3cmc3UWNaNGdjT2VWaUZZWWNHenNPalBlZzNpT1JiL3hr?=
- =?utf-8?B?MlJWRnV5YlhIWmRGaDh1NlpVYVVxU2dVQ0c4V0FQZW53OFlmZHJVaUZ2eGFT?=
- =?utf-8?B?SlU4MHIyRHRQMEFLWWR0YVpXL3hXbGxDdVBLK2k2dXVYYWhSaDZhSFQrREEy?=
- =?utf-8?B?SWhQdDVaWUZiVVdIblRmZ05XalhMN3RmUGtzaXEzdGtUamIzQTF0b29pa2Fr?=
- =?utf-8?B?RDgxb3RFbDFFWFdCZDlkaVJ2c1pwdWhWTmtnREVuamJjZE9lbk56dWR1QWVL?=
- =?utf-8?B?c3E1c3pUL2dzU1RPL3RhMHBaVGJySDlwby9kOEtYRjAyY29hTE1PQnI1SVZy?=
- =?utf-8?B?Z296ZDBaYmQ5ZHYxa3M0WGY0RkxSaEtXempMeDZIZ2pkLzZ2ZWtxVU1ZbzNu?=
- =?utf-8?B?eUU4cWlWSlg3c2k0a1k3VkdzUStIZjFkRVhxeTFJem9kR0Q4SDRrQTlwVWNp?=
- =?utf-8?B?ODg0Ny96SDF1ZjhDQW9rVzgxZURBZFRFQnZMY1BSeVd1aTJXSFEzb21wa2xz?=
- =?utf-8?B?UFIzY1B2K0hzSXlzdEg5WWVIMmZzU29uNGlsR25jcWpaaEZIZDVkMTJZZWND?=
- =?utf-8?B?NjV0U3ozY3VSTUhIYjNJOHFYem5SQlVjS3BYTklDTi8rMlZtN3lseHdkM2lF?=
- =?utf-8?B?b3RqVnh5SFJaT0NMUTlBalpUd3MrWTlkWG1IMm11ejNPdWhGSDVsSE15NFVQ?=
- =?utf-8?B?Y2k5c01meW9zakpscWo5Y0t1UXlsMndGc2VZOVNtWks1QXNBNUcvY21jd1lH?=
- =?utf-8?B?ZjJyUUhiQ25NWm1kSkFTaGIySlZTUkQ2V1FYTHZrVUZuL0d5WnZPdGdlOFdF?=
- =?utf-8?B?b25ML0t1Y1hSSS9Pak8xNTF2ZTlsOGhYamtWR1Q3eVM0ellERGVkSk55R1F2?=
- =?utf-8?B?ZFZDMC9nakZ2bXlKa1JGdlNCL1RTYTFlS1BxZE5EcEIxVjdsY2s5NngrcU95?=
- =?utf-8?B?S0svNU5UTUVHNDZ6eXFFY0xIKy9jMzF5ei93OGZtQ0tIWnN1K2pvbnBaMG1u?=
- =?utf-8?B?SThSOUJ5WkhvL1Bza0FKWTVQUi9xNURNemE3OFN5UG5NL3VUSFl6MEEvWUJC?=
- =?utf-8?B?Vk14eExlVTREdmVSM2hsTlJVK3dkZlhOdHFCVXZJd2M0SHNTNllrVTBxSkRh?=
- =?utf-8?B?NWpEN1VETFR5TlRBZldtYUxIYmRsbCtzZGVFeThjbEc5b2ZjN3htOGhwMUhx?=
- =?utf-8?B?clBNRzlOMDgyMDBWT1h0MFdaNis2Q3hSUExxTndaZ1ZhRDBMN21BS29jYlVv?=
- =?utf-8?B?ZGNoOXJxQjJYeWlTbXdSNExFa3ZBdW9zcm1BYU9RMHFwNzNjQXJTR0dqZEs0?=
- =?utf-8?B?bHV1Wm1rMHd3Z1V1aEpWYW54UXRuRmFEQWJYUU5iaWhQS0FHcUFQcnhISEN4?=
- =?utf-8?B?b0ZBKzJtaG91MDI2bWNEakdXR0dsa2Q4NkhrZ3pDOEI0MUMyMXdxS09BRW14?=
- =?utf-8?B?L2xZVDJuczROREU0NjVrUitzM2duQTAvbE1Jdk51c1RjRm5ITXJ6bmluVDhK?=
- =?utf-8?B?VkNacG5HbHp2S0RPWStGYUtkaXlGN2xmT29JbXBKTElCdjExNlJrUlUzbXFa?=
- =?utf-8?B?bmR5a0c1WWw0WXl3aDI5UEw1Ry94b3o1MUlkaEVvMWNSSkpIdGRaSGl2bzJU?=
- =?utf-8?B?Mlhtb2xvZkt5cTg2d0htcE11ZW1FMk94eURzeVFjdFFReGZRNjNwVHpuMCtk?=
- =?utf-8?B?VncrM3lEaTQ5L2RDREF3L1RCZ2RLeG1DZEVoTENHVVZPNGJFU0N3NHVpMlYx?=
- =?utf-8?Q?BXhJqe0zyNLAVnP4W1uN7dVVpMSEC4uCyXH1/k2?=
-X-OriginatorOrg: westermo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c82d0883-d50f-4d64-b8dc-08d98d5228c1
-X-MS-Exchange-CrossTenant-AuthSource: AM9P192MB1379.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2021 07:30:26.1360
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C9tesCE/gF0glSCNARuUTab6RlJxLhFmQql4ubmd2aMZEwguIj3hIzr01/hOaq6bZJ9S+lDCNfNss+x5ykEVkA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB1061
-X-MS-Exchange-CrossPremises-AuthSource: AM9P192MB1379.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossPremises-AuthAs: Internal
-X-MS-Exchange-CrossPremises-AuthMechanism: 06
-X-MS-Exchange-CrossPremises-Mapi-Admin-Submission: 
-X-MS-Exchange-CrossPremises-MessageSource: StoreDriver
-X-MS-Exchange-CrossPremises-BCC: 
-X-MS-Exchange-CrossPremises-OriginalClientIPAddress: 46.140.151.10
-X-MS-Exchange-CrossPremises-TransportTrafficType: Email
-X-MS-Exchange-CrossPremises-Antispam-ScanContext: DIR:Originating;SFV:NSPM;SKIP:0;
-X-MS-Exchange-CrossPremises-SCL: 1
-X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
-X-OrganizationHeadersPreserved: AM9P192MB1061.EURP192.PROD.OUTLOOK.COM
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/12/2021 08:20:00
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166655 [Oct 12 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/12/2021 08:22:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---FAetPlTvIWh3OtUTOqXiH0YNzNatNJS9C
-Content-Type: multipart/mixed; boundary="P9vIujYLKtROrZ7xtw3I3D5QM9SUTNKTt";
- protected-headers="v1"
-From: Matthias May <matthias.may@westermo.com>
-To: =?UTF-8?B?TcOhdGjDqSBLb3Bww6FueQ==?= <mathekoppany@gmail.com>
-Cc: linux-wireless@vger.kernel.org
-Message-ID: <1c9e0038-d40d-40a0-ac70-5bfcc8d8b95d@westermo.com>
-Subject: Re: ath9k: unable to connect to hidden SSID on DFS channel
-References: <CALOm-MsEcY7=MwfoEzhCQqSUM6qANy=oP5xYmoPqHAaADcscwA@mail.gmail.com>
-In-Reply-To: <CALOm-MsEcY7=MwfoEzhCQqSUM6qANy=oP5xYmoPqHAaADcscwA@mail.gmail.com>
 
---P9vIujYLKtROrZ7xtw3I3D5QM9SUTNKTt
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+> -----Original Message-----
+> From: Toke Høiland-Jørgensen <toke@redhat.com>
+> Sent: Saturday, October 9, 2021 1:45 AM
+> To: Pkshih <pkshih@realtek.com>; kvalo@codeaurora.org
+> Cc: linux-wireless@vger.kernel.org
+> Subject: Re: [PATCH v7 08/24] rtw89: implement mac80211 ops
+> 
+> Ping-Ke Shih <pkshih@realtek.com> writes:
+> 
+> > To yield better TX performance, wake TX queue is implemented.
+> 
+> I went looking for this, and was happy to find it! :)
+> 
+> Do you also support airtime reporting and/or AQL? And if not, any plans
+> to do so?
 
-On 10/11/21 12:46 PM, M=C3=A1th=C3=A9 Kopp=C3=A1ny wrote:
-> Hello,
->=20
-> I have a project where I want to establish Wi-Fi connection to a
-> hidden SSID, on DFS channel.
->=20
-> I am running wpa_supplicant 2.9 on a device with:
-> "Linux 4.9.51-yocto-standard armv7l" and
-> "Network controller: Qualcomm Atheros AR958x 802.11abgn Wireless
-> Network Adapter (rev 01)"
->=20
-> Sounds an old project, I know, but want to bring this alive, if
-> possible. Unfortunately, connection to a hidden SSID on DFS channel
-> seems not working.
->=20
-> However, it works on a different, newer device, which has
-> "Linux raspberrypi 5.10.17-v7l+ armv7l" and
-> "PCI bridge: Broadcom Limited Device 2711 (rev 10)".
->=20
-> The wpa_supplicant on the two devices is mostly idem: same v2.9, same
-> runtime configuration, almost all config variables (wpa_cli dump)
-> match (not seen relevant difference). There might be compile option
-> difference, but don't think they are relevant.
-> The only thing I see is with driver flags, where the newer device
-> supports flags like DFS_OFFLOAD, BSS_SELECTION, or
-> 4WWAY_HANDSHAKE_PSK, but the older device does not offer these.
->=20
-> So I suspect the issue is due to some of the above missing features in
-> my ath9k driver (have default driver provided by kernel).
->=20
-> Questions:
-> - is it possible to enable the above driver flags/features for ath9k?
-> If so, how to enable and are there patches for these?
-> - any hint where to look in ath9k driver for passive scanning
-> implementation? Is there another module/location where passive
-> scanning is implemented?
-> - any suggestions for a solution to my issue?
->=20
-> Thanks,
-> Koppany
->=20
+Not yet. But, I can estimate the cost to make a plan.
 
-Hi
+Could I know the requirements of hardware? For now, this driver
+only reports simple information like TX/RX rate, RSSI and etc. Is it
+enough?
 
-Clients not being able to find hidden APs on DFS frequencies is not a bug=
-, but by design.
-
-Facts:
-* When enabling hidden SSID on an AP, the SSID is not sent in the beacons=
-=2E
-* Clients (non-master devices) are not allowed to transmit on a DFS frequ=
-ency unless an AP (master device) tells them it
-is ok.
-
-This means that a client can find new APs only by scanning passively.
-Since the beacons do not contain the SSID, the client will never find the=
- AP it is looking for.
-
-Some ways around:
-* Your client is a master and does radar detection (with all its downside=
-s), thus it is allowed to probe actively
-* You hack your beacons and add a custom SSID which allows the client to =
-get the SSID passively (hack both sides)
-* Your device behaves illegal and sends probe requests on DFS frequencies=
-
-* ???
-
-BR
-Matthias
+It seems like AQL configures weights of stations. Could I know how
+to verify this function?
 
 
---P9vIujYLKtROrZ7xtw3I3D5QM9SUTNKTt--
+> 
+> One small nit below:
+> 
+> > +static void rtw89_ops_wake_tx_queue(struct ieee80211_hw *hw,
+> > +				    struct ieee80211_txq *txq)
+> > +{
+> > +	struct rtw89_dev *rtwdev = hw->priv;
+> > +
+> > +	ieee80211_schedule_txq(hw, txq);
+> > +	queue_work(rtwdev->txq_wq, &rtwdev->txq_work);
+> 
+> Why the call to ieee80211_schedule_txq()? mac80211 calls that before
+> calling wake_tx_queue() (through the schedule_and_wake_txq() helper), so
+> it seems a bit superfluous here?
+> 
 
---FAetPlTvIWh3OtUTOqXiH0YNzNatNJS9C
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+You are right. I will remove it after v7 get merged.
 
------BEGIN PGP SIGNATURE-----
+--
+Ping-Ke
 
-wnsEABYIACMWIQR34wKNh4Jxr+4dJ/3fdrYEUzwNvgUCYWU5kAUDAAAAAAAKCRDfdrYEUzwNvtHr
-AQC+F4Z0ccz1Qj2f6ir1WV1uzbIyk+JveMncUkQy2iOCHAD/X4/2ArxTbfVYRML+jlZfY9UF8msN
-KA8Jm6iVgoUeIwI=
-=U177
------END PGP SIGNATURE-----
-
---FAetPlTvIWh3OtUTOqXiH0YNzNatNJS9C--
