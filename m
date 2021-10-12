@@ -2,76 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 043C742A082
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Oct 2021 11:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8C1842A0CD
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Oct 2021 11:14:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235386AbhJLJCl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Oct 2021 05:02:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40066 "EHLO mail.kernel.org"
+        id S235519AbhJLJQy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Oct 2021 05:16:54 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:26838 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232578AbhJLJCl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Oct 2021 05:02:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D6D7760E54;
-        Tue, 12 Oct 2021 09:00:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634029240;
-        bh=TVj9dloozAyW16amMZxZwPSuRXoQgPT1QTvMuSQGFX4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QC9WQeY+nVU75Hp+bftVBJ68Qsrc7UbaMkO8RAHotlG+QFh1ouPAmwWDHpi4t8m2u
-         hqysN2IEoNEXRtQFevKnS+QaoCYSHsSNdtwM5GHqXIGA/PlrQHny77emzrZ94kCpF4
-         DtHpKnX7DTg57ZQXGtaM2zmYTMfL5qmile3rdSErZkZSW1d+ixUcLWznEuajkkoDbp
-         fU8f5fyRbVmTnez/PTmCb9sBuMv8Es7cea95Is/QVQmhPpLHBINrM1tMpxDvuTmVEm
-         4Gg/F7PzGR/Ey9rK4T7tb4WUDupD2h0FBwzH76LGC5gKhVn6tOKXbNvyGaYkDtC5LH
-         //xj60vru9/1Q==
-Received: by pali.im (Postfix)
-        id 905885BC; Tue, 12 Oct 2021 11:00:37 +0200 (CEST)
-Date:   Tue, 12 Oct 2021 11:00:37 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Jonas =?utf-8?Q?Dre=C3=9Fler?= <verdre@v0yd.nl>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Brian Norris <briannorris@chromium.org>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Alex Williamson <alex.williamson@redhat.com>
-Subject: Re: [PATCH] mwifiex: Add quirk resetting the PCI bridge on MS
- Surface devices
-Message-ID: <20211012090037.v3w4za5hshtm253f@pali>
-References: <20211011165301.GA1650148@bhelgaas>
- <fee8b431-617f-3890-3ad2-67a61d3ffca2@v0yd.nl>
+        id S235528AbhJLJQx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 Oct 2021 05:16:53 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1634030092; h=Message-ID: Subject: Cc: To: From: Date:
+ Content-Transfer-Encoding: Content-Type: MIME-Version: Sender;
+ bh=WVAYj4pWS4vYz8R1uN6oSvdstfUkaZt7waIzqkcgYMk=; b=DYsiWiYu2qHAEYWuECkOeGDo8OC8uaS7034TJ8RoZ9wQW3fiDQDIDcbDaDGh/oYAvza1Xgip
+ GK8KYhi1YZELc4PaiTAQn/ChzeBitBYttmKtqWJg0Oil0oxWZGJlESd/ZlxrxPJXzpRlK9K3
+ QuzZLS88xNl8/zxwploZlOhJCaI=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 616551f18ea00a941f025dbe (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 12 Oct 2021 09:14:25
+ GMT
+Sender: bqiang=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C60F5C4360D; Tue, 12 Oct 2021 09:14:24 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bqiang)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 709BEC43460;
+        Tue, 12 Oct 2021 09:14:24 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fee8b431-617f-3890-3ad2-67a61d3ffca2@v0yd.nl>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 12 Oct 2021 17:14:24 +0800
+From:   Baochen Qiang <bqiang@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] ath11k: Advertise PLATFORM_CAP_PCIE_GLOBAL_RESET in qmi
+ msg
+Message-ID: <13074ee3556a72cd1f235a493c79f202@codeaurora.org>
+X-Sender: bqiang@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tuesday 12 October 2021 10:48:49 Jonas Dreßler wrote:
-> 1) Revert the cards firmware in linux-firmware back to the second-latest
-> version. That firmware didn't report a fixed LTR value and also doesn't
-> have any other obvious issues I know of compared to the latest one.
+On 2021-10-11 14:30, Kalle Valo wrote:
+> Baochen Qiang <bqiang@codeaurora.org> writes:
+> 
+>> Inform firmware that host is capable of triggering a global reset.
+>> This is requested by firmware team.
+> 
+> Why?
+> 
+> https://wireless.wiki.kernel.org/en/users/drivers/ath10k/submittingpatches#answer_to_why
 
-FYI, there are new bugs with new firmware versions for 8997 sent by NXP
-to linux-firmware repository... and questions what to do with it. Seems
-that NXP again do not respond to any questions after new version was
-merged into linux-firmware repo.
-
-https://lore.kernel.org/linux-firmware/edeb34bc-7c85-7f1d-79e4-e3e21df86334@gk2.net/
-
-So firmware revert also for other ex-Marvell / NXP chips is not
-something which could not happen.
+In some scenarios like rmmod/insmod, HW target needs to be completely 
+reset. On ARM platforms we can rely on WL_EN pin and other power 
+regulators to do this. However on x86 or some third party platforms, 
+this has to be done by ath11k host by writing HW register 
+PCIE_SOC_GLOBAL_RESET. But the problem is that some HW registers can not 
+be cleared/restored. With this flag PLATFORM_CAP_PCIE_GLOBAL_RESET in 
+QMI host_cap message, firmware can do some platform specific operations 
+to fix this issue.
