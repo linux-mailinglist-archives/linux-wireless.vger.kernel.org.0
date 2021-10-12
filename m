@@ -2,75 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8C1842A0CD
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Oct 2021 11:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10CD442A158
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Oct 2021 11:45:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235519AbhJLJQy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Oct 2021 05:16:54 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:26838 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235528AbhJLJQx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Oct 2021 05:16:53 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634030092; h=Message-ID: Subject: Cc: To: From: Date:
- Content-Transfer-Encoding: Content-Type: MIME-Version: Sender;
- bh=WVAYj4pWS4vYz8R1uN6oSvdstfUkaZt7waIzqkcgYMk=; b=DYsiWiYu2qHAEYWuECkOeGDo8OC8uaS7034TJ8RoZ9wQW3fiDQDIDcbDaDGh/oYAvza1Xgip
- GK8KYhi1YZELc4PaiTAQn/ChzeBitBYttmKtqWJg0Oil0oxWZGJlESd/ZlxrxPJXzpRlK9K3
- QuzZLS88xNl8/zxwploZlOhJCaI=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 616551f18ea00a941f025dbe (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 12 Oct 2021 09:14:25
- GMT
-Sender: bqiang=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C60F5C4360D; Tue, 12 Oct 2021 09:14:24 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: bqiang)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 709BEC43460;
-        Tue, 12 Oct 2021 09:14:24 +0000 (UTC)
+        id S235771AbhJLJrL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Oct 2021 05:47:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50786 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235581AbhJLJrK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 Oct 2021 05:47:10 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CFBC061570
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Oct 2021 02:45:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=65RWB032W8M+cqEQt5P+co8pnWM1dAOEoMjrB9AG3p4=; b=cCYyk3jegRpVbQUcEyLeDFVyB2
+        hZwXMKVlZJxPu9PD9OQx/6P6JPKo5SZNTcKvLs86Esh4El2D1VwqNmAipO4O/ne/24vUzmCY9Fj1H
+        ZCS66FxjyPS1E+/rf4NFntJHaI9toGDh7nd9iuobKN8pBFRl+P1l8m/OwzuIRsMC4v1c=;
+Received: from p4ff1322b.dip0.t-ipconnect.de ([79.241.50.43] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1maELK-0005SR-Vx; Tue, 12 Oct 2021 11:45:07 +0200
+Subject: Re: [PATCH] mt76: mt7915: add debugging for MCU command timeouts.
+To:     greearb@candelatech.com, linux-wireless@vger.kernel.org
+References: <20211011205406.23485-1-greearb@candelatech.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Message-ID: <aad5ddb8-97a5-4f65-f817-7daa36cca5a7@nbd.name>
+Date:   Tue, 12 Oct 2021 11:45:06 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+In-Reply-To: <20211011205406.23485-1-greearb@candelatech.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Date:   Tue, 12 Oct 2021 17:14:24 +0800
-From:   Baochen Qiang <bqiang@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] ath11k: Advertise PLATFORM_CAP_PCIE_GLOBAL_RESET in qmi
- msg
-Message-ID: <13074ee3556a72cd1f235a493c79f202@codeaurora.org>
-X-Sender: bqiang@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-10-11 14:30, Kalle Valo wrote:
-> Baochen Qiang <bqiang@codeaurora.org> writes:
-> 
->> Inform firmware that host is capable of triggering a global reset.
->> This is requested by firmware team.
-> 
-> Why?
-> 
-> https://wireless.wiki.kernel.org/en/users/drivers/ath10k/submittingpatches#answer_to_why
 
-In some scenarios like rmmod/insmod, HW target needs to be completely 
-reset. On ARM platforms we can rely on WL_EN pin and other power 
-regulators to do this. However on x86 or some third party platforms, 
-this has to be done by ath11k host by writing HW register 
-PCIE_SOC_GLOBAL_RESET. But the problem is that some HW registers can not 
-be cleared/restored. With this flag PLATFORM_CAP_PCIE_GLOBAL_RESET in 
-QMI host_cap message, firmware can do some platform specific operations 
-to fix this issue.
+On 2021-10-11 22:54, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
+> 
+> Print information about whether the message is the first timeout,
+> and also print info if we manage to recover after a timeout.
+> 
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+> 
+> NOTE:  Not sure this is really something folks would want upstream, but
+> maybe it helps someone else trying to debug this driver.
+I think it would be much more useful to add tracepoints for tx/rx mcu
+messages.
+
+- Felix
