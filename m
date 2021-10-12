@@ -2,290 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD23F42AD1E
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Oct 2021 21:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A32842AF9C
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 00:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233161AbhJLTPx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Oct 2021 15:15:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41252 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232462AbhJLTPw (ORCPT
+        id S232704AbhJLWX3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Oct 2021 18:23:29 -0400
+Received: from mailgw01.mediatek.com ([216.200.240.184]:51345 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229588AbhJLWX2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Oct 2021 15:15:52 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48A56C061570
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Oct 2021 12:13:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:Cc:To:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=uBmoHcvDAgOPh1Hmz56AsjMHkAXvyBgHcNr1XBB7fHc=; b=naTDaZFY8RHybDryQpVotmLIgG
-        NogSBjT6rqYXn2E2n5Aze0NBDH4plq4vxRqQNfq3dboIfobovZkxH+4m0ThfiFzSaK53u78VZOOxO
-        qky4AFCavaoXFG+TTzHRT/d1uCibdDviE9Dz8PLK5gouxWOEAYnRSQ57tOk2KkEhBsJg=;
-Received: from p4ff1322b.dip0.t-ipconnect.de ([79.241.50.43] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1maNDg-0007hI-JK; Tue, 12 Oct 2021 21:13:48 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-Subject: pull request: mt76 2021-10-11 v2
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Message-ID: <f595fe67-e3cc-4477-db79-5e2975c60160@nbd.name>
-Date:   Tue, 12 Oct 2021 21:13:47 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+        Tue, 12 Oct 2021 18:23:28 -0400
+X-UUID: 133671b1eaaf4d9fa14df74dc58db0f7-20211012
+X-UUID: 133671b1eaaf4d9fa14df74dc58db0f7-20211012
+Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 459727883; Tue, 12 Oct 2021 15:21:23 -0700
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ MTKMBS62N1.mediatek.inc (172.29.193.41) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 12 Oct 2021 15:12:13 -0700
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 13 Oct 2021 06:12:11 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <jemele@google.com>, <jsiuda@google.com>, <frankgor@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2] mt76: mt7921: add MU EDCA cmd support
+Date:   Wed, 13 Oct 2021 06:12:10 +0800
+Message-ID: <499bdaee6b9f19213f37f02997e50f2cad73e757.1634076287.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+From: Sean Wang <sean.wang@mediatek.com>
 
-here's an updated version of my first pull request for 5.16
+Add MU EDCA MCU command support to update MU AC parameter record field
+from the access point.
 
-- Felix
+Co-developed-by: Eric-SY Chang <Eric-SY.Chang@mediatek.com>
+Signed-off-by: Eric-SY Chang <Eric-SY.Chang@mediatek.com>
+Tested-by: Eric-SY Chang <Eric-SY.Chang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+v2: add the cosmetics changes suggested from Lorenzo
+---
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 55 ++++++++++++++++++-
+ 2 files changed, 53 insertions(+), 3 deletions(-)
 
-The following changes since commit 9b793db5fca44d01f72d3564a168171acf7c4076:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 848f43c44258..751e621a6f9b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -572,6 +572,7 @@ enum {
+ 	MCU_CMD_SCHED_SCAN_ENABLE = MCU_CE_PREFIX | 0x61,
+ 	MCU_CMD_SCHED_SCAN_REQ = MCU_CE_PREFIX | 0x62,
+ 	MCU_CMD_GET_NIC_CAPAB = MCU_CE_PREFIX | 0x8a,
++	MCU_CMD_SET_MU_EDCA_PARMS = MCU_CE_PREFIX | 0xb0,
+ 	MCU_CMD_REG_WRITE = MCU_CE_PREFIX | 0xc0,
+ 	MCU_CMD_REG_READ = MCU_CE_PREFIX | MCU_QUERY_MASK | 0xc0,
+ 	MCU_CMD_CHIP_CONFIG = MCU_CE_PREFIX | 0xca,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 3f6c9839d9d4..457365f40d30 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -974,7 +974,30 @@ int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif)
+ 		.total = IEEE80211_NUM_ACS,
+ 	};
+ 	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
+-	int ac;
++	struct mu_edca {
++		u8 cw_min;
++		u8 cw_max;
++		u8 aifsn;
++		u8 acm;
++		u8 timer;
++		u8 padding[3];
++	};
++	struct mt7921_mcu_mu_tx {
++		u8 ver;
++		u8 pad0;
++		__le16 len;
++		u8 bss_idx;
++		u8 qos;
++		u8 wmm_idx;
++		u8 pad1;
++		struct mu_edca edca[IEEE80211_NUM_ACS];
++		u8 pad3[32];
++	} __packed req_mu = {
++		.bss_idx = mvif->mt76.idx,
++		.qos = vif->bss_conf.qos,
++		.wmm_idx = mvif->mt76.wmm_idx,
++	};
++	int ac, ret;
+ 
+ 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
+ 		struct ieee80211_tx_queue_params *q = &mvif->queue_params[ac];
+@@ -995,8 +1018,34 @@ int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif)
+ 		else
+ 			e->cw_max = cpu_to_le16(10);
+ 	}
+-	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_EDCA_UPDATE, &req,
+-				 sizeof(req), true);
++
++	ret = mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_EDCA_UPDATE, &req,
++				sizeof(req), true);
++	if (ret)
++		return ret;
++
++	if (!vif->bss_conf.he_support)
++		return 0;
++
++	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
++		struct ieee80211_he_mu_edca_param_ac_rec *q;
++		struct mu_edca *e;
++		int to_aci[] = {1, 0, 2, 3};
++
++		if (!mvif->queue_params[ac].mu_edca)
++			break;
++
++		q = &mvif->queue_params[ac].mu_edca_param_rec;
++		e = &(req_mu.edca[to_aci[ac]]);
++
++		e->cw_min = q->ecw_min_max & 0xf;
++		e->cw_max = (q->ecw_min_max & 0xf0) >> 4;
++		e->aifsn = q->aifsn;
++		e->timer = q->mu_edca_timer;
++	}
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_MU_EDCA_PARMS, &req_mu,
++				 sizeof(req_mu), false);
+ }
+ 
+ int mt7921_mcu_set_chan_info(struct mt7921_phy *phy, int cmd)
+-- 
+2.25.1
 
-  b43: fix a lower bounds test (2021-10-11 09:09:30 +0300)
-
-are available in the Git repository at:
-
-  https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-10-12
-
-for you to fetch changes up to 39e333d657f49619c65b9f5b59aa6405f13abf35:
-
-  mt76: do not access 802.11 header in ccmp check for 802.3 rx skbs (2021-10-12 20:28:10 +0200)
-
-----------------------------------------------------------------
-mt76 patches for 5.16
-
-* various bugfixes
-* endian fixes
-* mt7921 aspm support
-* cleanup
-* mt7921 testmode support
-* rate handling fixes
-* tx status fixes/improvements
-* mt7921 power management improvements
-* mt7915 LED support
-* DBDC fixes
-* mt7921 6GHz support
-* support for eeprom data in DT
-* mt7915 TWT support
-
-----------------------------------------------------------------
-Ben Greear (9):
-      mt76: mt7915: fix he_mcs capabilities for 160mhz
-      mt76: mt7915: fix potential NPE in TXS processing
-      mt76: mt7915: fix hwmon temp sensor mem use-after-free
-      mt76: mt7915: add ethtool stats support
-      mt76: mt7915: add tx stats gathered from tx-status callbacks
-      mt76: mt7915: add some per-station tx stats to ethtool
-      mt76: mt7915: add tx mu/su counters to mib
-      mt76: mt7915: add more MIB registers
-      mt76: mt7915: add mib counters to ethtool stats
-
-Bo Jiao (2):
-      mt76: mt7915: fix calling mt76_wcid_alloc with incorrect parameter
-      mt76: mt7915: adapt new firmware to update BA winsize for Rx session
-
-Christophe JAILLET (1):
-      mt76: switch from 'pci_' to 'dma_' API
-
-Dan Carpenter (1):
-      mt76: mt7915: fix info leak in mt7915_mcu_set_pre_cal()
-
-Daniel Golle (2):
-      mt76: support reading EEPROM data embedded in fdt
-      dt: bindings: net: mt76: add eeprom-data property
-
-Deren Wu (4):
-      mt76: mt7921: Fix out of order process by invalid event pkt
-      mt76: mt7921: Add mt7922 support
-      mt76: mt7921: fix dma hang in rmmod
-      mt76: mt7921: add delay config for sched scan
-
-Felix Fietkau (4):
-      mt76: mt7615: fix skb use-after-free on mac reset
-      mt76: mt7915: fix WMM index on DBDC cards
-      mt76: disable BH around napi_schedule() calls
-      mt76: do not access 802.11 header in ccmp check for 802.3 rx skbs
-
-Leon Yen (2):
-      mt76: connac: fix mt76_connac_gtk_rekey_tlv usage
-      mt76: connac: fix GTK rekey offload failure on WPA mixed mode
-
-Lorenzo Bianconi (46):
-      mt76: mt7921: fix endianness in mt7921_mcu_tx_done_event
-      mt76: mt7921: avoid unnecessary spin_lock/spin_unlock in mt7921_mcu_tx_done_event
-      mt76: mt7915: fix endianness warning in mt7915_mac_add_txs_skb
-      mt76: mt7921: fix endianness warning in mt7921_update_txs
-      mt76: mt7615: fix endianness warning in mt7615_mac_write_txwi
-      mt76: mt7921: fix survey-dump reporting
-      mt76: mt76x02: fix endianness warnings in mt76x02_mac.c
-      mt76: mt7921: introduce testmode support
-      mt76: mt7921: get rid of monitor_vif
-      mt76: mt7921: get rid of mt7921_mac_set_beacon_filter
-      mt76: mt7921: introduce mt7921_mcu_set_beacon_filter utility routine
-      mt76: overwrite default reg_ops if necessary
-      mt76: mt7615: move mt7615_mcu_set_p2p_oppps in mt76_connac module
-      mt76: mt7921: fix endianness warnings in mt7921_mac_decode_he_mu_radiotap
-      mt76: mt7915: introduce bss coloring support
-      mt76: mt7915: improve code readability in mt7915_mcu_sta_bfer_ht
-      mt76: mt7921: move mt7921_queue_rx_skb to mac.c
-      mt76: mt7921: always wake device if necessary in debugfs
-      mt76: mt7921: update mib counters dumping phy stats
-      mt76: mt7921: start reworking tx rate reporting
-      mt76: mt7921: add support for tx status reporting
-      mt76: mt7921: report tx rate directly from tx status
-      mt76: mt7921: remove mcu rate reporting code
-      mt76: mt7921: remove mt7921_sta_stats
-      mt76: mt7915: honor all possible error conditions in mt7915_mcu_init()
-      mt76: mt7915: fix possible infinite loop release semaphore
-      mt76: connac: set 6G phymode in mt76_connac_get_phy_mode{,v2}
-      mt76: connac: enable 6GHz band for hw scan
-      mt76: connac: add 6GHz support to mt76_connac_mcu_set_channel_domain
-      mt76: connac: set 6G phymode in single-sku support
-      mt76: connac: add 6GHz support to mt76_connac_mcu_sta_tlv
-      mt76: connac: add 6GHz support to mt76_connac_mcu_uni_add_bss
-      mt76: connac: enable hw amsdu @ 6GHz
-      mt76: add 6GHz support
-      mt76: mt7921: add 6GHz support
-      mt76: introduce packet_id idr
-      mt76: remove mt76_wcid pointer from mt76_tx_status_check signature
-      mt76: substitute sk_buff_head status_list with spinlock_t status_lock
-      mt76: schedule status timeout at dma completion
-      mt76: introduce __mt76_mcu_send_firmware routine
-      mt76: mt7915: introduce __mt7915_get_tsf routine
-      mt76: mt7915: introduce mt7915_mcu_twt_agrt_update mcu command
-      mt76: mt7915: introduce mt7915_mac_add_twt_setup routine
-      mt76: mt7915: enable twt responder capability
-      mt76: mt7915: add twt_stats knob in debugfs
-      mt76: debugfs: improve queue node readability
-
-MeiChia Chiu (1):
-      mt76: mt7915: add LED support
-
-Ryder Lee (21):
-      mt76: mt7915: report HE MU radiotap
-      mt76: mt7915: fix an off-by-one bound check
-      mt76: mt7915: take RCU read lock when calling ieee80211_bss_get_elem()
-      mt76: mt7915: cleanup -Wunused-but-set-variable
-      mt76: mt7915: report tx rate directly from tx status
-      mt76: mt7915: remove mt7915_sta_stats
-      mt76: mt7915: add a missing HT flag for GI parsing
-      mt76: mt7915: add control knobs for thermal throttling
-      mt76: mt7915: send EAPOL frames at lowest rate
-      mt76: mt7921: send EAPOL frames at lowest rate
-      mt76: add support for setting mcast rate
-      mt76: mt7915: add HE-LTF into fixed rate command
-      mt76: mt7915: update mac timing settings
-      mt76: use IEEE80211_OFFLOAD_ENCAP_ENABLED instead of MT_DRV_AMSDU_OFFLOAD
-      mt76: add a bound check in mt76_calculate_default_rate()
-      mt76: mt7915: rework debugfs queue info
-      mt76: mt7915: rename debugfs tx-queues
-      mt76: fill boottime_ns in Rx path
-      mt76: mt7915: enable configured beacon tx rate
-      mt76: mt7615: fix hwmon temp sensor mem use-after-free
-      mt76: mt7615: fix monitor mode tear down crash
-
-Sean Wang (12):
-      mt76: mt7921: enable aspm by default
-      mt76: fix build error implicit enumeration conversion
-      mt76: add mt76_default_basic_rate more devices can rely on
-      mt76: mt7921: fix mgmt frame using unexpected bitrate
-      mt76: mt7915: fix mgmt frame using unexpected bitrate
-      mt76: mt7921: report HE MU radiotap
-      mt76: mt7921: fix firmware usage of RA info using legacy rates
-      mt76: mt7921: fix kernel warning from cfg80211_calculate_bitrate
-      mt76: mt7921: fix the inconsistent state between bind and unbind
-      mt76: mt7921: robustify hardware initialization flow
-      mt76: mt7921: fix retrying release semaphore without end
-      mt76: drop MCU header size from buffer size in __mt76_mcu_send_firmware
-
-Shayne Chen (3):
-      mt76: mt7915: fix potential overflow of eeprom page index
-      mt76: mt7915: switch proper tx arbiter mode in testmode
-      mt76: mt7915: fix bit fields for HT rate idx
-
-Xing Song (1):
-      mt76: use a separate CCMP PN receive counter for management frames
-
-Xingbang Liu (1):
-      mt76: move spin_lock_bh to spin_lock in tasklet
-
-YN Chen (2):
-      mt76: mt7921: add .set_sar_specs support
-      mt76: connac: add support for limiting to maximum regulatory Tx power
-
-jing yangyang (1):
-      mt76: fix boolreturn.cocci warnings
-
- Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml |   5 +
- drivers/net/wireless/mediatek/mt76/debugfs.c                      |  19 +-
- drivers/net/wireless/mediatek/mt76/eeprom.c                       |  14 ++
- drivers/net/wireless/mediatek/mt76/mac80211.c                     | 214 +++++++++++++++++++---
- drivers/net/wireless/mediatek/mt76/mcu.c                          |   8 +-
- drivers/net/wireless/mediatek/mt76/mt76.h                         |  82 +++++++--
- drivers/net/wireless/mediatek/mt76/mt7603/mac.c                   |  11 +-
- drivers/net/wireless/mediatek/mt76/mt7603/main.c                  |   3 +
- drivers/net/wireless/mediatek/mt76/mt7603/pci.c                   |   2 +-
- drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c               |  29 ++-
- drivers/net/wireless/mediatek/mt76/mt7615/init.c                  |   6 +-
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c                   |  62 ++++---
- drivers/net/wireless/mediatek/mt76/mt7615/main.c                  |   8 +-
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c                   |  40 ++--
- drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h                |   2 -
- drivers/net/wireless/mediatek/mt76/mt7615/pci.c                   |   4 +-
- drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c               |   5 +-
- drivers/net/wireless/mediatek/mt76/mt7615/sdio.c                  |   2 +-
- drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c              |   2 +-
- drivers/net/wireless/mediatek/mt76/mt76_connac.h                  |   7 +-
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c              | 258 +++++++++++++++++++++++---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h              |  34 +++-
- drivers/net/wireless/mediatek/mt76/mt76x0/pci.c                   |   4 +-
- drivers/net/wireless/mediatek/mt76/mt76x02_mac.c                  |  15 +-
- drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c                 |  12 +-
- drivers/net/wireless/mediatek/mt76/mt76x02_util.c                 |   3 +
- drivers/net/wireless/mediatek/mt76/mt76x2/pci.c                   |   5 +-
- drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c               | 289 +++++++++++++++++++----------
- drivers/net/wireless/mediatek/mt76/mt7915/init.c                  | 146 +++++++++++++--
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c                   | 635 +++++++++++++++++++++++++++++++++++++++++++++++++++++++---------
- drivers/net/wireless/mediatek/mt76/mt7915/mac.h                   |  11 +-
- drivers/net/wireless/mediatek/mt76/mt7915/main.c                  | 358 +++++++++++++++++++++++++++++++++---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c                   | 382 ++++++++++++++++----------------------
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.h                   |  76 +++-----
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c                  |   3 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h                | 124 ++++++++++---
- drivers/net/wireless/mediatek/mt76/mt7915/pci.c                   |   5 +-
- drivers/net/wireless/mediatek/mt76/mt7915/regs.h                  | 148 ++++++++++++++-
- drivers/net/wireless/mediatek/mt76/mt7915/testmode.c              |  29 +++
- drivers/net/wireless/mediatek/mt76/mt7915/testmode.h              |  10 +
- drivers/net/wireless/mediatek/mt76/mt7921/Makefile                |   1 +
- drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c               |  58 +++++-
- drivers/net/wireless/mediatek/mt76/mt7921/dma.c                   |  36 +---
- drivers/net/wireless/mediatek/mt76/mt7921/eeprom.c                |   1 +
- drivers/net/wireless/mediatek/mt76/mt7921/init.c                  |  86 +++++++--
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c                   | 556 +++++++++++++++++++++++++++++++++++++++-----------------
- drivers/net/wireless/mediatek/mt76/mt7921/mac.h                   |  28 +++
- drivers/net/wireless/mediatek/mt76/mt7921/main.c                  | 151 +++++++++------
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c                   | 274 +++++++++++-----------------
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.h                   |  63 +++----
- drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h                |  50 ++---
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c                   |  18 +-
- drivers/net/wireless/mediatek/mt76/mt7921/regs.h                  |   8 +-
- drivers/net/wireless/mediatek/mt76/mt7921/testmode.c              | 197 ++++++++++++++++++++
- drivers/net/wireless/mediatek/mt76/sdio.c                         |   2 +-
- drivers/net/wireless/mediatek/mt76/testmode.c                     |   4 +-
- drivers/net/wireless/mediatek/mt76/testmode.h                     |   7 +
- drivers/net/wireless/mediatek/mt76/tx.c                           |  84 ++++++---
- drivers/net/wireless/mediatek/mt76/usb.c                          |   2 +-
- 59 files changed, 3427 insertions(+), 1271 deletions(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
