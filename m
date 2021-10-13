@@ -2,192 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BD7E42BAF1
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 10:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2482442BAF7
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 10:55:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238704AbhJMIzY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Oct 2021 04:55:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56470 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238394AbhJMIzX (ORCPT
+        id S238394AbhJMI5k convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Oct 2021 04:57:40 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:53095 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229987AbhJMI5k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Oct 2021 04:55:23 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E374C061714
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Oct 2021 01:53:20 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1maZzE-0007An-3c; Wed, 13 Oct 2021 10:51:44 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1maZz1-0005Il-VI; Wed, 13 Oct 2021 10:51:31 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1maZz1-0006zY-R9; Wed, 13 Oct 2021 10:51:31 +0200
-Date:   Wed, 13 Oct 2021 10:51:31 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sathya Prakash <sathya.prakash@broadcom.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
-        Russell Currey <ruscur@russell.cc>, x86@kernel.org,
-        qat-linux@intel.com, oss-drivers@corigine.com,
-        Oliver O'Halloran <oohall@gmail.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Jiri Olsa <jolsa@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marco Chiappero <marco.chiappero@intel.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        linux-scsi@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        Fiona Trahe <fiona.trahe@intel.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Jack Xu <jack.xu@intel.com>, Borislav Petkov <bp@alien8.de>,
-        Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Juergen Gross <jgross@suse.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        xen-devel@lists.xenproject.org, Vadym Kochan <vkochan@marvell.com>,
-        MPT-FusionLinux.pdl@broadcom.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org,
-        Wojciech Ziemba <wojciech.ziemba@intel.com>,
-        linux-kernel@vger.kernel.org,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
-        netdev@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Tomaszx Kowalik <tomaszx.kowalik@intel.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-perf-users@vger.kernel.org
-Subject: Re: [PATCH v6 00/11] PCI: Drop duplicated tracking of a pci_dev's
- bound driver
-Message-ID: <20211013085131.5htnch5p6zv46mzn@pengutronix.de>
-References: <20211004125935.2300113-1-u.kleine-koenig@pengutronix.de>
- <20211012233212.GA1806189@bhelgaas>
+        Wed, 13 Oct 2021 04:57:40 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19D8tVRf9012750, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19D8tVRf9012750
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 13 Oct 2021 16:55:31 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Wed, 13 Oct 2021 16:55:30 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 13 Oct 2021 16:55:29 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Wed, 13 Oct 2021 16:55:29 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH v7 00/24] rtw89: add Realtek 802.11ax driver
+Thread-Topic: [PATCH v7 00/24] rtw89: add Realtek 802.11ax driver
+Thread-Index: AQHXu/iJAwMQQSujW0S+UB8Qd29qRavKVXS6gANjmPWAAN8qkIAB4am5gAAtd+A=
+Date:   Wed, 13 Oct 2021 08:55:29 +0000
+Message-ID: <adfb1ac4113c4ff08fd31596161a4146@realtek.com>
+References: <20211008035627.19463-1-pkshih@realtek.com>
+        <87lf32622d.fsf@codeaurora.org> <878ryz4vfw.fsf@codeaurora.org>
+        <72f1067becb44a7a962c5d43cefe189e@realtek.com>
+ <87h7dlwj58.fsf@codeaurora.org>
+In-Reply-To: <87h7dlwj58.fsf@codeaurora.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/13_=3F=3F_06:20:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jgo3ssjhgqy54b4n"
-Content-Disposition: inline
-In-Reply-To: <20211012233212.GA1806189@bhelgaas>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/13/2021 08:42:40
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166684 [Oct 13 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: github.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1;git.kernel.org:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/13/2021 08:46:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---jgo3ssjhgqy54b4n
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> -----Original Message-----
+> From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On
+> Behalf Of Kalle Valo
+> Sent: Wednesday, October 13, 2021 2:09 PM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: linux-wireless@vger.kernel.org
+> Subject: Re: [PATCH v7 00/24] rtw89: add Realtek 802.11ax driver
+> 
+> Pkshih <pkshih@realtek.com> writes:
+> 
+> >> -----Original Message-----
+> >> From: kvalo=codeaurora.org@mg.codeaurora.org
+> >> <kvalo=codeaurora.org@mg.codeaurora.org> On
+> >> Behalf Of Kalle Valo
+> >> Sent: Monday, October 11, 2021 8:07 PM
+> >> To: Pkshih <pkshih@realtek.com>
+> >> Cc: linux-wireless@vger.kernel.org
+> >> Subject: Re: [PATCH v7 00/24] rtw89: add Realtek 802.11ax driver
+> >>
+> >> Kalle Valo <kvalo@codeaurora.org> writes:
+> >>
+> >> > Ping-Ke Shih <pkshih@realtek.com> writes:
+> >> >
+> >> >> This driver named rtw89, which is the next generation of rtw88, supports
+> >> >> Realtek 8852AE 802.11ax 2x2 chip whose new features are OFDMA, DBCC,
+> >> >> Spatial reuse, TWT and BSS coloring; now some of them aren't implemented
+> >> >> though.
+> >> >>
+> >> >> The chip architecture is entirely different from the chips supported by
+> >> >> rtw88 like RTL8822CE 802.11ac chip. First of all, register address ranges
+> >> >> are totally redefined, so it's impossible to reuse register definition. To
+> >> >> communicate with firmware, new H2C/C2H format is proposed. In order to have
+> >> >> better utilization, TX DMA flow is changed to two stages DMA. To provide
+> >> >> rich RX status information, additional RX PPDU packets are added.
+> >> >>
+> >> >> Since there are so many differences mentioned above, we decide to propose
+> >> >> a new driver. It has many authors, they are listed in alphabetic order:
+> >> >>
+> >> >> Chin-Yen Lee <timlee@realtek.com>
+> >> >> Ping-Ke Shih <pkshih@realtek.com>
+> >> >> Po Hao Huang <phhuang@realtek.com>
+> >> >> Tzu-En Huang <tehuang@realtek.com>
+> >> >> Vincent Fann <vincent_fann@realtek.com>
+> >> >> Yan-Hsuan Chuang <tony0620emma@gmail.com>
+> >> >> Zong-Zhe Yang <kevin_yang@realtek.com>
+> >> >>
+> >> >> Tested-by: Brian Norris <briannorris@chromium.org>
+> >> >> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> >> >>
+> >> >> v7:
+> >> >>   - use consistent license of Kconfig
+> >> >>   - remove #ifdef and dummy functions from coex.c
+> >> >>   - C2H handler of coex uses meaningful naming insetad, and use le32_to_cpu()
+> >> >>     to convert the value.
+> >> >>   - add icmp packet notify to coex
+> >> >>   - use function call instead of a work to notify coex about traffic changed
+> >> >>   - fix dereference security CAM NULL pointer while disconnecting occasionally
+> >> >>   - fill tx descriptor once a 32 bits word (Suggested by Arnd. Thanks!)
+> >> >>   - use static pci PS, so remove pci link_ps
+> >> >>   - make many mac tables constant
+> >> >>   - add early_h2c debugfs entry to notify firmware early
+> >> >>   - support new RA report format
+> >> >>   - configure retry_lowest_rate by band
+> >> >>   - avoid to use of whil(1) to parse power sequence
+> >> >>   - notify rfk before/after scanning to reset status
+> >> >>   - firmware: rtw89: 8852a: update fw to v0.13.30.0
+> >> >>     https://github.com/pkshih/linux-firmware.git
+> >> >>     pick the commit 6595133a7cde82be932067afde834dcd036167f8
+> >> >
+> >> > I have not reviewed this version yet, but I pushed it to the pending
+> >> > branch for build testing:
+> >> >
+> >> >
+> >>
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?h=
+> >> pending&id=c321740f93af1a31d9e149ce5077e28bd4e859f7
+> >> >
+> >> > For the final commit my plan is to squash all patches into one big
+> >> > patch. I will do that after reviewing v7, if everything is ok of course.
+> >> >
+> >> > Are there more Tested-by or Reviewed-by tags?
+> >
+> > Sorry for the late reply. Because our National Day is Oct. 10th, and
+> > additional holiday on Oct. 11th.
+> >
+> > Aaron have tested v5 and a tag is given [1].
+> >
+> > Tested-by: Aaron Ma <aaron.ma@canonical.com>
+> 
+> I added Aaron to the commit log and pushed the driver to the master
+> branch:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?id
+> =e3ec7017f6a20d12ddd9fe23d345ebb7b8c104dd
+> 
+> So the driver is now officially accepted, a big thank you to everyone
+> who participated with the review and testing! Now let's see what kind of
+> reports we get from linux-next.
+> 
 
-On Tue, Oct 12, 2021 at 06:32:12PM -0500, Bjorn Helgaas wrote:
-> On Mon, Oct 04, 2021 at 02:59:24PM +0200, Uwe Kleine-K=F6nig wrote:
-> > Hello,
-> >=20
-> > this is v6 of the quest to drop the "driver" member from struct pci_dev
-> > which tracks the same data (apart from a constant offset) as dev.driver.
->=20
-> I like this a lot and applied it to pci/driver for v5.16, thanks!
->=20
-> I split some of the bigger patches apart so they only touched one
-> driver or subsystem at a time.  I also updated to_pci_driver() so it
-> returns NULL when given NULL, which makes some of the validations
-> quite a bit simpler, especially in the PM code in pci-driver.c.
+Thank you!
 
-OK.
+Should I add myself to the file MAINTAINERS?
 
-> Full interdiff from this v6 series:
->=20
-> diff --git a/arch/x86/kernel/probe_roms.c b/arch/x86/kernel/probe_roms.c
-> index deaaef6efe34..36e84d904260 100644
-> --- a/arch/x86/kernel/probe_roms.c
-> +++ b/arch/x86/kernel/probe_roms.c
-> @@ -80,17 +80,15 @@ static struct resource video_rom_resource =3D {
->   */
->  static bool match_id(struct pci_dev *pdev, unsigned short vendor, unsign=
-ed short device)
->  {
-> +	struct pci_driver *drv =3D to_pci_driver(pdev->dev.driver);
->  	const struct pci_device_id *id;
-> =20
->  	if (pdev->vendor =3D=3D vendor && pdev->device =3D=3D device)
->  		return true;
-> =20
-> -	if (pdev->dev.driver) {
-> -		struct pci_driver *drv =3D to_pci_driver(pdev->dev.driver);
-> -		for (id =3D drv->id_table; id && id->vendor; id++)
-> -			if (id->vendor =3D=3D vendor && id->device =3D=3D device)
-> -				break;
-> -	}
-> +	for (id =3D drv ? drv->id_table : NULL; id && id->vendor; id++)
-> +		if (id->vendor =3D=3D vendor && id->device =3D=3D device)
-> +			break;
-> =20
->  	return id && id->vendor;
->  }
-> diff --git a/drivers/misc/cxl/guest.c b/drivers/misc/cxl/guest.c
-> index d997c9c3ebb5..7eb3706cf42d 100644
-> --- a/drivers/misc/cxl/guest.c
-> +++ b/drivers/misc/cxl/guest.c
-> @@ -20,38 +20,38 @@ static void pci_error_handlers(struct cxl_afu *afu,
->  				pci_channel_state_t state)
->  {
->  	struct pci_dev *afu_dev;
-> +	struct pci_driver *afu_drv;
-> +	struct pci_error_handlers *err_handler;
+--
+Ping-Ke
 
-These two could be moved into the for loop (where afu_drv was with my
-patch already). This is also possible in a few other drivers.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---jgo3ssjhgqy54b4n
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFmng8ACgkQwfwUeK3K
-7AmPuQgAk6Dld3vvwdriW0ibspNDJTGfUcre3doNKax+JiXCiHbUthkO3jZ7kx1f
-rTKn9F/GlIOEH1uZZZPonJEaOLwVQmJz3OF8+BKCx7g1+0AqtNe2WefCf4Jl6ajR
-fuBtbNjjaCmBXFqToERlpAsB8kRfNy8Y5V7a/XqiX7ZDLiXle3V2AbuQVi5Ikmhp
-S72E0TV74YTVv77LeVSAA8275wN0GVI3gVT9F7w9ja0BjrapAALEVsk/s9pAl3Zq
-j9D63evuObSQ8ILnNmMOldPueBNZBIGCrXPD/EWKYWXjfstcmZUQtQqvyF6lK9ww
-AubKoQZ72JnZiuJZzVyJCsmBBRo2Vw==
-=Gp6y
------END PGP SIGNATURE-----
-
---jgo3ssjhgqy54b4n--
