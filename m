@@ -2,190 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C03842C155
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 15:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ED6B42C1BE
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 15:51:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234822AbhJMNZd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Oct 2021 09:25:33 -0400
-Received: from mga17.intel.com ([192.55.52.151]:29501 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233226AbhJMNZc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Oct 2021 09:25:32 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10135"; a="208223337"
-X-IronPort-AV: E=Sophos;i="5.85,371,1624345200"; 
-   d="scan'208";a="208223337"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2021 06:23:29 -0700
-X-IronPort-AV: E=Sophos;i="5.85,371,1624345200"; 
-   d="scan'208";a="626341116"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.159])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2021 06:23:15 -0700
-Received: from andy by smile with local (Exim 4.95)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1maeDt-000LPO-Od;
-        Wed, 13 Oct 2021 16:23:09 +0300
-Date:   Wed, 13 Oct 2021 16:23:09 +0300
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Alexander Duyck <alexanderduyck@fb.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Fiona Trahe <fiona.trahe@intel.com>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ido Schimmel <idosch@nvidia.com>,
-        Ingo Molnar <mingo@redhat.com>, Jack Xu <jack.xu@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Jiri Olsa <jolsa@redhat.com>, Jiri Pirko <jiri@nvidia.com>,
-        Juergen Gross <jgross@suse.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Marco Chiappero <marco.chiappero@intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Michael Buesch <m@bues.ch>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Russell Currey <ruscur@russell.cc>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Sathya Prakash <sathya.prakash@broadcom.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tomaszx Kowalik <tomaszx.kowalik@intel.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Wojciech Ziemba <wojciech.ziemba@intel.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        linux-crypto <linux-crypto@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-perf-users@vger.kernel.org,
-        "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" 
-        <linuxppc-dev@lists.ozlabs.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        MPT-FusionLinux.pdl@broadcom.com, netdev <netdev@vger.kernel.org>,
-        oss-drivers@corigine.com, qat-linux@intel.com,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 00/11] PCI: Drop duplicated tracking of a pci_dev's
- bound driver
-Message-ID: <YWbdvc7EWEZLVTHM@smile.fi.intel.com>
-References: <CAHp75Vd0uYEdfB0XaQuUV34V91qJdHR5ARku1hX_TCJLJHEjxQ@mail.gmail.com>
- <20211013113356.GA1891412@bhelgaas>
+        id S231644AbhJMNxP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Oct 2021 09:53:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40622 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229794AbhJMNxO (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 13 Oct 2021 09:53:14 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BA4AC061570
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Oct 2021 06:51:11 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id x27so12294991lfu.5
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Oct 2021 06:51:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=JWM7HJQktc4hfQyaBNIUbVvEde2pNZAzhiGnMp7nK0s=;
+        b=ov5gCm1YYpdupd2FjKo4Y4gPWSO3yMT/MhGdnusqWiwAsMvnGJL1yEgLp+OAX8qTwQ
+         t3z2VdVP81gT0gWJOKLRhl92yO4ECAH5vCmiAwqaGg2aVIJAaejMjnyn0tivRMcybIRT
+         RQYEnTxMvycJVy81aOa4t0Ss9WIVY36enKUBXZPgJE8b2SjhFIjKgewfdsLICJXvv36D
+         kD3VBm6gbx6Pa4NEgdg/tvEo4F9V5VKTmwIfyhPFRu6B7ZWOY7RCXzOQKfgL49FK5M7L
+         F9u5kaNRhZHRgrv89bVERu8V8Ty3E4ncCphwEt6+RLYRNXeyHGWVbx9myUAB3reqgQa+
+         hrvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=JWM7HJQktc4hfQyaBNIUbVvEde2pNZAzhiGnMp7nK0s=;
+        b=Kbh90jYglVQSE/TYd0Hz81G3/0J/pk48qnGVntqv29cQCozguU9q0MKgXtXBF+8dYh
+         RWGs8cX1wb8tbdFp/ds51yB8u4BzRREAl1R6AT0z3BOxrTG1RemGVtZwcqcVCWDjQ6Ol
+         swA98FGy+H7PamfDWQIZkku0mmmlvueCKXcmBvuhDSygX3cRrMAPwhaDN2AvyN8MMCm/
+         4Oor3ecPlNwTybwofas65olzuCDuKhIgx0CNJcz8b+aPKRGUzgDkbSpNT4/dqyoejL5q
+         tSOsM1sxetJQ/9wY1QU+tKJGa9pP8o+I8ronJc+Yjl8lD3kjx8P51wA8DXPdBipudtLE
+         33dg==
+X-Gm-Message-State: AOAM531hRLOvtns5hH2DKUTEcl4vH9hMZCLKbEm0C/084JEsnQTu+Zum
+        E9DUt5oJkwJEukJxJqw9lwaPa3WQhd4UlPTVWP3vcnb/uwA=
+X-Google-Smtp-Source: ABdhPJzLv9tMskdmSF5XmHZXO4svV0hg5MKYzdqVe0IbTytKhvGz2nVrE9Xv7QTLx+wpK+exeXzub73dCj8VnT1Fpvc=
+X-Received: by 2002:ac2:5fef:: with SMTP id s15mr38821985lfg.190.1634133069493;
+ Wed, 13 Oct 2021 06:51:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211013113356.GA1891412@bhelgaas>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <CALOm-MsEcY7=MwfoEzhCQqSUM6qANy=oP5xYmoPqHAaADcscwA@mail.gmail.com>
+ <1c9e0038-d40d-40a0-ac70-5bfcc8d8b95d@westermo.com>
+In-Reply-To: <1c9e0038-d40d-40a0-ac70-5bfcc8d8b95d@westermo.com>
+From:   =?UTF-8?B?TcOhdGjDqSBLb3Bww6FueQ==?= <mathekoppany@gmail.com>
+Date:   Wed, 13 Oct 2021 16:50:57 +0300
+Message-ID: <CALOm-Mug=Js5HUhpdJH_djDjPm9u-x-6dYrNMCOLP5gaRBYQZA@mail.gmail.com>
+Subject: Re: ath9k: unable to connect to hidden SSID on DFS channel
+To:     Matthias May <matthias.may@westermo.com>
+Cc:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 13, 2021 at 06:33:56AM -0500, Bjorn Helgaas wrote:
-> On Wed, Oct 13, 2021 at 12:26:42PM +0300, Andy Shevchenko wrote:
-> > On Wed, Oct 13, 2021 at 2:33 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > On Mon, Oct 04, 2021 at 02:59:24PM +0200, Uwe Kleine-König wrote:
+Hi Matthias,
 
-...
+Thanks for your fast and detailed answer.
 
-> > It's a bit unusual. Other to_*_dev() are not NULL-aware IIRC.
-> 
-> It is a little unusual.  I only found three of 77 that are NULL-aware:
-> 
->   to_moxtet_driver()
->   to_siox_driver()
->   to_spi_driver()
-> 
-> It seems worthwhile to me because it makes the patch and the resulting
-> code significantly cleaner.
+Could imagine my goal is something not allowed, or at least not the
+standard way. However, I still wonder what other devices do for
+achieving connection. Thought that this is just a limitation of the
+ath9k, but maybe they do something like you suggest.
 
-I'm not objecting the change, just a remark.
+From your hints, I'd look into:
+[*] wonder why probing on DFS channels would be illegal?
+My understanding was that this is prohibited only if there was no
+beacon received from the AP before.
+But if the client receives a beacon from the AP (no matter if it
+contains a SSID or not) this shows that the channel is "clear" from
+any radar signal, and that the client is allowed to send.
+Is my understanding wrong?
 
-...
+[**] would inspect the passive scanning code of ath9k, to see what my
+possibilities are to implement the above. Could you indicate some code
+to look into? I could not find it easily. Eventually, is some layer
+above ath9k also influencing the passive scanning?
 
-> > > +       for (id = drv ? drv->id_table : NULL; id && id->vendor; id++)
-> > > +               if (id->vendor == vendor && id->device == device)
-> > 
-> > > +                       break;
-> > 
-> > return true;
-> > 
-> > >         return id && id->vendor;
-> > 
-> > return false;
-> 
-> Good cleanup for a follow-up patch, but doesn't seem directly related
-> to the objective here.
+Regards,
+Koppany
 
-True. Maybe you can bake one while not forgotten?
-
-...
-
-> > > +       return drv && drv->resume ?
-> > > +                       drv->resume(pci_dev) : pci_pm_reenable_device(pci_dev);
-> > 
-> > One line?
-> 
-> I don't think I touched that line.
-
-Then why they are both in + section?
-
-...
-
-> > > +       struct pci_driver *drv = to_pci_driver(dev->dev.driver);
-> > >         const struct pci_error_handlers *err_handler =
-> > > -                       dev->dev.driver ? to_pci_driver(dev->dev.driver)->err_handler : NULL;
-> > > +                       drv ? drv->err_handler : NULL;
-> > 
-> > Isn't dev->driver == to_pci_driver(dev->dev.driver)?
-> 
-> Yes, I think so, but not sure what you're getting at here, can you
-> elaborate?
-
-Getting pointer from another pointer seems waste of resources, why we
-can't simply
-
-	struct pci_driver *drv = dev->driver;
-
-?
-
-...
-
-> > Stray change? Or is it in a separate patch in your tree?
-> 
-> Could be skipped.  The string now fits on one line so I combined it to
-> make it more greppable.
-
-This is inconsistency in your changes, in one case you are objecting of
-doing something close to the changed lines, in the other you are doing
-unrelated change.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+On Tue, Oct 12, 2021 at 10:30 AM Matthias May <matthias.may@westermo.com> w=
+rote:
+>
+> On 10/11/21 12:46 PM, M=C3=A1th=C3=A9 Kopp=C3=A1ny wrote:
+> > Hello,
+> >
+> > I have a project where I want to establish Wi-Fi connection to a
+> > hidden SSID, on DFS channel.
+> >
+> > I am running wpa_supplicant 2.9 on a device with:
+> > "Linux 4.9.51-yocto-standard armv7l" and
+> > "Network controller: Qualcomm Atheros AR958x 802.11abgn Wireless
+> > Network Adapter (rev 01)"
+> >
+> > Sounds an old project, I know, but want to bring this alive, if
+> > possible. Unfortunately, connection to a hidden SSID on DFS channel
+> > seems not working.
+> >
+> > However, it works on a different, newer device, which has
+> > "Linux raspberrypi 5.10.17-v7l+ armv7l" and
+> > "PCI bridge: Broadcom Limited Device 2711 (rev 10)".
+> >
+> > The wpa_supplicant on the two devices is mostly idem: same v2.9, same
+> > runtime configuration, almost all config variables (wpa_cli dump)
+> > match (not seen relevant difference). There might be compile option
+> > difference, but don't think they are relevant.
+> > The only thing I see is with driver flags, where the newer device
+> > supports flags like DFS_OFFLOAD, BSS_SELECTION, or
+> > 4WWAY_HANDSHAKE_PSK, but the older device does not offer these.
+> >
+> > So I suspect the issue is due to some of the above missing features in
+> > my ath9k driver (have default driver provided by kernel).
+> >
+> > Questions:
+> > - is it possible to enable the above driver flags/features for ath9k?
+> > If so, how to enable and are there patches for these?
+> > - any hint where to look in ath9k driver for passive scanning
+> > implementation? Is there another module/location where passive
+> > scanning is implemented?
+> > - any suggestions for a solution to my issue?
+> >
+> > Thanks,
+> > Koppany
+> >
+>
+> Hi
+>
+> Clients not being able to find hidden APs on DFS frequencies is not a bug=
+, but by design.
+>
+> Facts:
+> * When enabling hidden SSID on an AP, the SSID is not sent in the beacons=
+.
+> * Clients (non-master devices) are not allowed to transmit on a DFS frequ=
+ency unless an AP (master device) tells them it
+> is ok.
+>
+> This means that a client can find new APs only by scanning passively.
+> Since the beacons do not contain the SSID, the client will never find the=
+ AP it is looking for.
+>
+> Some ways around:
+> * Your client is a master and does radar detection (with all its downside=
+s), thus it is allowed to probe actively
+> * You hack your beacons and add a custom SSID which allows the client to =
+get the SSID passively (hack both sides)
+> * Your device behaves illegal and sends probe requests on DFS frequencies
+> * ???
+>
+> BR
+> Matthias
+>
