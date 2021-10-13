@@ -2,64 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2373942C02D
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 14:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5AD742C127
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 15:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231372AbhJMMi0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Oct 2021 08:38:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51196 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233627AbhJMMiQ (ORCPT
+        id S233015AbhJMNSa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Oct 2021 09:18:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:42373 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231294AbhJMNSa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Oct 2021 08:38:16 -0400
-Received: from bombadil.infradead.org (unknown [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF173C061570;
-        Wed, 13 Oct 2021 05:36:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=fV9peFlO4DUJLbO4CO9iO7X9j5LReCBT4N9P5VA0/+8=; b=UFmPeZsEQbq4JZ6BB6P/oc5MiB
-        eFuZ8G5HP5fh+qPoGHdWkUeCJXhkBORYR/Rlcne3hmhKeoOX6KIRfpvfCXlql9UCCjbC/L/fcLbnT
-        0PpDICr9KMgVEDCKzA3ArnJ4cZnrzYaw4/qrV0hxTceUSyP/gZA10NOb6WnuOOdNASO0bqXL/ytTc
-        G8jNtRduVAPqM8ZczldCKuXyMF8CKYF0xGIcKY/hJXPAPb4WmT5ut4eDRw4x+MmDVjsTIJFDHeMMI
-        JV3HIvZZRkNk8uvP3D7Uv8I/MInqNxTRdB+qHAteMvsbQVdr8pTMadd368I4b4AmXxc0BivyFK2UC
-        JvYo3YMg==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1madUQ-00GbDm-IK; Wed, 13 Oct 2021 12:36:10 +0000
-Date:   Wed, 13 Oct 2021 05:36:10 -0700
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Qing Wang <wangqing@vivo.com>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        Wed, 13 Oct 2021 09:18:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1634130986;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=3UweUBspHinuJSQhguEdx6WU40R4nh4wg670z3EQDCs=;
+        b=SE2eHZFv2EYRPciykUvuv3axb7IMWzper0DAABIFt4kpNGY+LNjiufZFUTwYqPW3KwlSp6
+        tnaRT2PPTk8FXujBxyCu3rEdmEwpIi3FOdugnLa6d5HGAY5wLPegbwPWuIFE1qK9/9wNDY
+        xeEcEn5Da35HmArD1DhU4zZs1UWwLKk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-397-51EXKiPTPNOe2wB9MiFWRQ-1; Wed, 13 Oct 2021 09:16:25 -0400
+X-MC-Unique: 51EXKiPTPNOe2wB9MiFWRQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 85FDA100A95A;
+        Wed, 13 Oct 2021 13:16:22 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.22.33.167])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6603219E7E;
+        Wed, 13 Oct 2021 13:16:20 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+        id DEFAB22023A; Wed, 13 Oct 2021 09:16:19 -0400 (EDT)
+Date:   Wed, 13 Oct 2021 09:16:19 -0400
+From:   Vivek Goyal <vgoyal@redhat.com>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Matt Mackall <mpm@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Gonglei <arei.gonglei@huawei.com>,
         "David S. Miller" <davem@davemloft.net>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        David Airlie <airlied@linux.ie>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Daniel Vetter <daniel@ffwll.ch>, Jie Deng <jie.deng@intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
         Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wireless: ath5k: replace snprintf in show functions with
- sysfs_emit
-Message-ID: <YWbSuuvR7HlPqjJG@bombadil.infradead.org>
-References: <1634095651-4273-1-git-send-email-wangqing@vivo.com>
+        Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        David Hildenbrand <david@redhat.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Eric Van Hensbergen <ericvh@gmail.com>,
+        Latchesar Ionkov <lucho@ionkov.net>,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-um@lists.infradead.org,
+        virtualization@lists.linux-foundation.org,
+        linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-i2c@vger.kernel.org, iommu@lists.linux-foundation.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        v9fs-developer@lists.sourceforge.net, kvm@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH RFC] virtio: wrap config->reset calls
+Message-ID: <YWbcI15YOkhnPh5x@redhat.com>
+References: <20211013105226.20225-1-mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1634095651-4273-1-git-send-email-wangqing@vivo.com>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
+In-Reply-To: <20211013105226.20225-1-mst@redhat.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 12, 2021 at 08:27:31PM -0700, Qing Wang wrote:
-> coccicheck complains about the use of snprintf() in sysfs show functions.
+On Wed, Oct 13, 2021 at 06:55:31AM -0400, Michael S. Tsirkin wrote:
+> This will enable cleanups down the road.
+> The idea is to disable cbs, then add "flush_queued_cbs" callback
+> as a parameter, this way drivers can flush any work
+> queued after callbacks have been disabled.
 > 
-> Fix the coccicheck warning:
-> WARNING: use scnprintf or sprintf.
-> 
-> Use sysfs_emit instead of scnprintf or sprintf makes more sense.
-> 
-> Signed-off-by: Qing Wang <wangqing@vivo.com>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
+>  arch/um/drivers/virt-pci.c                 | 2 +-
+>  drivers/block/virtio_blk.c                 | 4 ++--
+>  drivers/bluetooth/virtio_bt.c              | 2 +-
+>  drivers/char/hw_random/virtio-rng.c        | 2 +-
+>  drivers/char/virtio_console.c              | 4 ++--
+>  drivers/crypto/virtio/virtio_crypto_core.c | 8 ++++----
+>  drivers/firmware/arm_scmi/virtio.c         | 2 +-
+>  drivers/gpio/gpio-virtio.c                 | 2 +-
+>  drivers/gpu/drm/virtio/virtgpu_kms.c       | 2 +-
+>  drivers/i2c/busses/i2c-virtio.c            | 2 +-
+>  drivers/iommu/virtio-iommu.c               | 2 +-
+>  drivers/net/caif/caif_virtio.c             | 2 +-
+>  drivers/net/virtio_net.c                   | 4 ++--
+>  drivers/net/wireless/mac80211_hwsim.c      | 2 +-
+>  drivers/nvdimm/virtio_pmem.c               | 2 +-
+>  drivers/rpmsg/virtio_rpmsg_bus.c           | 2 +-
+>  drivers/scsi/virtio_scsi.c                 | 2 +-
+>  drivers/virtio/virtio.c                    | 5 +++++
+>  drivers/virtio/virtio_balloon.c            | 2 +-
+>  drivers/virtio/virtio_input.c              | 2 +-
+>  drivers/virtio/virtio_mem.c                | 2 +-
+>  fs/fuse/virtio_fs.c                        | 4 ++--
 
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+fs/fuse/virtio_fs.c changes look good to me.
 
-  Luis
+Reviewed-by: Vivek Goyal <vgoyal@redhat.com>
+
+Vivek
+
+[..]
+> diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
+> index 0ad89c6629d7..27c3b74070a2 100644
+> --- a/fs/fuse/virtio_fs.c
+> +++ b/fs/fuse/virtio_fs.c
+> @@ -895,7 +895,7 @@ static int virtio_fs_probe(struct virtio_device *vdev)
+>  	return 0;
+>  
+>  out_vqs:
+> -	vdev->config->reset(vdev);
+> +	virtio_reset_device(vdev);
+>  	virtio_fs_cleanup_vqs(vdev, fs);
+>  	kfree(fs->vqs);
+>  
+> @@ -927,7 +927,7 @@ static void virtio_fs_remove(struct virtio_device *vdev)
+>  	list_del_init(&fs->list);
+>  	virtio_fs_stop_all_queues(fs);
+>  	virtio_fs_drain_all_queues_locked(fs);
+> -	vdev->config->reset(vdev);
+> +	virtio_reset_device(vdev);
+>  	virtio_fs_cleanup_vqs(vdev, fs);
+>  
+>  	vdev->priv = NULL;
+
+
+Thanks
+Vivek
+
