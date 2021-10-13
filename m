@@ -2,192 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A33942BEA2
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 13:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD13742BEE9
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 13:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230453AbhJMLF7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Oct 2021 07:05:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:50980 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230158AbhJMLF4 (ORCPT
+        id S229836AbhJMLbb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Oct 2021 07:31:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35732 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229580AbhJMLb3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Oct 2021 07:05:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1634123032;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pm2HFBolkPmIutQKtnGVo/TAfScR5edRGy4d25/SdeA=;
-        b=KD+D5y+PkswhupKI4VOQaOnKEuL0aMqNbVXb4jdTD/yk8hDkQZlx+7FHmnoJ+lbV37WTzE
-        xEQc2FfXE1X0Q4auQ9u3G4Ba2FfjdP8q0Z5E22PxfYNzjaF8ppbeZkvzCaDBUfyJhJGVZH
-        yfr9txkvaxa/rd4zUSbTP5m+ZyV9MCw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-323-kyEmmHjiM8OVOGVcy6bnHA-1; Wed, 13 Oct 2021 07:03:51 -0400
-X-MC-Unique: kyEmmHjiM8OVOGVcy6bnHA-1
-Received: by mail-wr1-f71.google.com with SMTP id s18-20020adfbc12000000b00160b2d4d5ebso1693493wrg.7
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Oct 2021 04:03:51 -0700 (PDT)
+        Wed, 13 Oct 2021 07:31:29 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DA62C061749
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Oct 2021 04:29:26 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id m21so2000811pgu.13
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Oct 2021 04:29:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amikom.ac.id; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=YuWBjOBWFaZ9lrZUP7rUQNvD8WGdCrnx1RCHoRN4vG4=;
+        b=gvDJHW8xOgjDGJ68oY19cG8LUlkrOqdCnDFCI7u4mQv73QvzNAW1eZjZTsEUTTZSGt
+         wqDqupw1B9GLCtgi67kbpQhQShir3Aw845SOOspsEaOKWZLgC7P+Sq7WZfPiIOHYrfPn
+         uDJTBUVABgIyrClGmQPuq38oG5VAxzJMwqkvN4cqizJmY+7yZC7hb+31h53pM7TQDuKo
+         hOiV0CrEjzalhNu55lTbB3frXnelqHKizlqjx18DtIV5KHZcvqMVc3sWdOtzzHo6QHZX
+         q8sLvhaZwNdBaJUWTF7zvqAkN/HnVsDhXjtCTVxmcTB/E3R6dKUGvQ4lda2hjy/aily7
+         dNsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=pm2HFBolkPmIutQKtnGVo/TAfScR5edRGy4d25/SdeA=;
-        b=g80uHJA1uyI4jaYzkMApxF+PDgQTEmlHAo9Yrxvq/tN9JVOB2ba1QdF9yndlpWDGj8
-         BbT5Y91KFnp5EuBVsIpT9f8mE7eeobysInfdnZTSkqG829nwEK4+Oq71DYbV58t9u4gY
-         epL2JfFgM2Mehs1JgIA0eZTUVEeDpQVgJFUN6NUjJmsiqY/WLG761JhO8xgXcU9mPaVY
-         f6XRklJBNiJBrLgTRdAzErpo+l6kZn3+e9b13SlaxpZLM4+hK1MyUsEKNgRkseMneYAE
-         7A9wrgY880XFSlRdgNi/P2zljPh9WmpNIncKkSzG3qcrN3TapkqHzZ9Vxf0iVmGop+YQ
-         RIbA==
-X-Gm-Message-State: AOAM530pyodX7U76oqytczviw+GdPR70x8MOW1qHceZIHyfSC7RdpiWn
-        VhjOfPhWZoNUiTxsW1DunrAE1NCIMckom2VwXUotwKP5Gk00tlks28r2X/lgg9FGDySLR6qoDtd
-        HV2FnImllvtmxUCb73wtRXP2RPes=
-X-Received: by 2002:adf:a194:: with SMTP id u20mr39899221wru.275.1634123030389;
-        Wed, 13 Oct 2021 04:03:50 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJypxsxhU5d6LZPZIfUUDegUVRR2UQLEo64TMqEnAh5Ix5FGAFA1VDGCfrTQu99KLNCm64Sq/Q==
-X-Received: by 2002:adf:a194:: with SMTP id u20mr39899137wru.275.1634123030054;
-        Wed, 13 Oct 2021 04:03:50 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c6774.dip0.t-ipconnect.de. [91.12.103.116])
-        by smtp.gmail.com with ESMTPSA id m4sm5183560wrz.45.2021.10.13.04.03.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Oct 2021 04:03:49 -0700 (PDT)
-Subject: Re: [PATCH RFC] virtio: wrap config->reset calls
-To:     "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-Cc:     Jeff Dike <jdike@addtoit.com>, Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gonglei <arei.gonglei@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        David Airlie <airlied@linux.ie>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>, Jie Deng <jie.deng@intel.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=YuWBjOBWFaZ9lrZUP7rUQNvD8WGdCrnx1RCHoRN4vG4=;
+        b=1Cn+X6V1tJ1TfnrwQs6c+bh12Ra8bN9rA4R66OVbvCX8ug7qxYW7+PZDXu5NSPryVi
+         kF/25t33U5RPjHrtJidHSJ7tluoC8eYx9F5cDh1oe+HKI42GrYO0D5qqx4uyUsJPBp2b
+         PuGf8Vufxg7BhYLfLkE9SuDP/aHDQOG0EyX/rC1dlCd/RINie7KAwZtc3Qqnjc75oveg
+         zCmkJvQGllZ0xOcBXj+e3OR0xaiR0s4MXycBvdNgR5Ta1d9+j7xNRn59dmLuQGlRvrQS
+         wGTuficW6jZHHLrIcPKZ+Gy0nyE4n2GpjutR2cJ2o7dbsMQK24H0/BcSEh/8b2RblQLJ
+         aM9A==
+X-Gm-Message-State: AOAM5303vByvdDvTq8rHlVUfMxZZDemj/4xNhJf8SRzf4QMQwzETiyDR
+        1cNfAZeOgkTOnP7W7rIIavmO0w==
+X-Google-Smtp-Source: ABdhPJxSk/gxyRSi14qShY3arNwIDjljb6lcvx8WXPNb4o1XjlQzGEH08kKzO4L/554uHlqXYRm5LA==
+X-Received: by 2002:aa7:9523:0:b0:44c:c171:9ae with SMTP id c3-20020aa79523000000b0044cc17109aemr36174264pfp.75.1634124565321;
+        Wed, 13 Oct 2021 04:29:25 -0700 (PDT)
+Received: from localhost.localdomain ([182.2.74.1])
+        by smtp.gmail.com with ESMTPSA id u65sm6212700pfb.208.2021.10.13.04.29.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Oct 2021 04:29:24 -0700 (PDT)
+From:   Ammar Faizi <ammar.faizi@students.amikom.ac.id>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Eric Van Hensbergen <ericvh@gmail.com>,
-        Latchesar Ionkov <lucho@ionkov.net>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        Anton Yakovlev <anton.yakovlev@opensynergy.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-um@lists.infradead.org,
-        virtualization@lists.linux-foundation.org,
-        linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-i2c@vger.kernel.org, iommu@lists.linux-foundation.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        v9fs-developer@lists.sourceforge.net, kvm@vger.kernel.org,
-        alsa-devel@alsa-project.org
-References: <20211013105226.20225-1-mst@redhat.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Message-ID: <2060bd96-5884-a1b5-9f29-7fe670dc088d@redhat.com>
-Date:   Wed, 13 Oct 2021 13:03:46 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        "David S. Miller" <davem@davemloft.net>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        Vasanthakumar Thiagarajan <vthiagar@qca.qualcomm.com>,
+        Avraham Stern <avraham.stern@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: WARNING: CPU: 2 PID: 633 at net/wireless/sme.c:974 cfg80211_roamed+0x265/0x2a0 [cfg80211]
+Date:   Wed, 13 Oct 2021 18:27:09 +0700
+Message-Id: <20211013112709.636468-1-ammar.faizi@students.amikom.ac.id>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <874k9l1p19.fsf@tynnyri.adurom.net>
+References: <874k9l1p19.fsf@tynnyri.adurom.net>
 MIME-Version: 1.0
-In-Reply-To: <20211013105226.20225-1-mst@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 13.10.21 12:55, Michael S. Tsirkin wrote:
-> This will enable cleanups down the road.
-> The idea is to disable cbs, then add "flush_queued_cbs" callback
-> as a parameter, this way drivers can flush any work
-> queued after callbacks have been disabled.
-> 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
->   arch/um/drivers/virt-pci.c                 | 2 +-
->   drivers/block/virtio_blk.c                 | 4 ++--
->   drivers/bluetooth/virtio_bt.c              | 2 +-
->   drivers/char/hw_random/virtio-rng.c        | 2 +-
->   drivers/char/virtio_console.c              | 4 ++--
->   drivers/crypto/virtio/virtio_crypto_core.c | 8 ++++----
->   drivers/firmware/arm_scmi/virtio.c         | 2 +-
->   drivers/gpio/gpio-virtio.c                 | 2 +-
->   drivers/gpu/drm/virtio/virtgpu_kms.c       | 2 +-
->   drivers/i2c/busses/i2c-virtio.c            | 2 +-
->   drivers/iommu/virtio-iommu.c               | 2 +-
->   drivers/net/caif/caif_virtio.c             | 2 +-
->   drivers/net/virtio_net.c                   | 4 ++--
->   drivers/net/wireless/mac80211_hwsim.c      | 2 +-
->   drivers/nvdimm/virtio_pmem.c               | 2 +-
->   drivers/rpmsg/virtio_rpmsg_bus.c           | 2 +-
->   drivers/scsi/virtio_scsi.c                 | 2 +-
->   drivers/virtio/virtio.c                    | 5 +++++
->   drivers/virtio/virtio_balloon.c            | 2 +-
->   drivers/virtio/virtio_input.c              | 2 +-
->   drivers/virtio/virtio_mem.c                | 2 +-
->   fs/fuse/virtio_fs.c                        | 4 ++--
->   include/linux/virtio.h                     | 1 +
->   net/9p/trans_virtio.c                      | 2 +-
->   net/vmw_vsock/virtio_transport.c           | 4 ++--
->   sound/virtio/virtio_card.c                 | 4 ++--
->   26 files changed, 39 insertions(+), 33 deletions(-)
-> 
-> diff --git a/arch/um/drivers/virt-pci.c b/arch/um/drivers/virt-pci.c
-> index c08066633023..22c4d87c9c15 100644
-> --- a/arch/um/drivers/virt-pci.c
-> +++ b/arch/um/drivers/virt-pci.c
-> @@ -616,7 +616,7 @@ static void um_pci_virtio_remove(struct virtio_device *vdev)
->   	int i;
->   
->           /* Stop all virtqueues */
-> -        vdev->config->reset(vdev);
-> +        virtio_reset_device(vdev);
->           vdev->config->del_vqs(vdev);
+On Wed, Oct 13, 2021 at 12:18 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+> >
+> > Here is the log:
+> >
+> > <4>[266728.385936][  T633] ------------[ cut here ]------------
+> > <4>[266728.385946][  T633] WARNING: CPU: 2 PID: 633 at net/wireless/sme.c:974 cfg80211_roamed+0x265/0x2a0 [cfg80211]
+> > <4>[266728.386040][ T633] Modules linked in: rfcomm xt_CHECKSUM
+> > xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4 xt_tcpudp
+> > nft_compat nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6
+> > nf_defrag_ipv4 nft_counter nf_tables nfnetlink bridge stp llc bfq cmac
+> > algif_hash algif_skcipher af_alg bnep dm_multipath scsi_dh_rdac
+> > scsi_dh_emc scsi_dh_alua snd_hda_codec_realtek snd_hda_codec_hdmi
+> > uvcvideo snd_hda_codec_generic ledtrig_audio snd_hda_intel
+> > videobuf2_vmalloc snd_intel_dspcfg videobuf2_memops snd_intel_sdw_acpi
+> > btusb btrtl videobuf2_v4l2 videobuf2_common btbcm snd_hda_codec
+> > btintel videodev snd_hda_core bluetooth snd_hwdep wl(OE) mc snd_pcm
+> > ecdh_generic snd_seq_midi ecc snd_seq_midi_event edac_mce_amd
+> > snd_rawmidi kvm_amd acer_wmi snd_seq sparse_keymap kvm cfg80211
+> > wmi_bmof input_leds serio_raw snd_seq_device snd_timer snd soundcore
+> > ccp fam15h_power k10temp mac_hid sch_fq_codel msr ip_tables x_tables
+> > autofs4 btrfs blake2b_generic raid10 raid456 async_raid6_recov
+> > async_memcpy async_pq
+> > <4>[266728.386224][ T633] async_xor async_tx xor raid6_pq libcrc32c
+> > raid1 raid0 multipath linear amdgpu iommu_v2 gpu_sched radeon
+> > i2c_algo_bit drm_ttm_helper ttm hid_generic drm_kms_helper syscopyarea
+> > usbhid crct10dif_pclmul sysfillrect crc32_pclmul sysimgblt hid
+> > ghash_clmulni_intel fb_sys_fops cec aesni_intel rc_core rtsx_pci_sdmmc
+> > sdhci_pci crypto_simd cqhci r8169 cryptd psmouse ahci xhci_pci
+> > rtsx_pci realtek libahci drm sdhci i2c_piix4 xhci_pci_renesas wmi
+> > video
+> > <4>[266728.386330][ T633] CPU: 2 PID: 633 Comm: wl_event_handle
+> > Tainted: G W OE 5.15.0-rc4-for-5.16-io-uring-00060-g4922ab639eb6 #4
+> > 8b24b2500a34cedea2e69c8d84eb4c855e713e61
+> > <4>[266728.386337][  T633] Hardware name: Acer Aspire ES1-421/OLVIA_BE, BIOS V1.05 07/02/2015
+> > <4>[266728.386341][  T633] RIP: 0010:cfg80211_roamed+0x265/0x2a0 [cfg80211]
+> > <4>[266728.386408][ T633] Code: 4c 89 f7 49 8d 8d 22 01 00 00 45 0f b6
+> > 85 42 01 00 00 6a 02 48 8b 36 e8 79 ab fc ff 48 89 43 08 5a 48 85 c0
+> > 0f 85 d6 fd ff ff <0f> 0b 48 8d 65 d8 5b 41 5c 41 5d 41 5e 41 5f 5d c3
+> > 0f 0b 48 8b 73
+> > <4>[266728.386412][  T633] RSP: 0018:ffffc9000157bdd8 EFLAGS: 00010246
+> > <4>[266728.386418][  T633] RAX: 0000000000000000 RBX: ffffc9000157be20 RCX: 0000000000000000
+> > <4>[266728.386421][  T633] RDX: 0000000000000002 RSI: 0000000000000000 RDI: ffffffff8109ead2
+> > <4>[266728.386425][  T633] RBP: ffffc9000157be10 R08: 0000000000000001 R09: 0000000000000001
+> > <4>[266728.386428][  T633] R10: fffffffefb3c8d52 R11: ffff8881328b75b2 R12: 0000000000000cc0
+> > <4>[266728.386431][  T633] R13: ffff888105873800 R14: ffff8881328b6580 R15: dead000000000100
+> > <4>[266728.386435][  T633] FS:  0000000000000000(0000) GS:ffff888313d00000(0000) knlGS:0000000000000000
+> > <4>[266728.386439][  T633] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > <4>[266728.386443][  T633] CR2: 00007f3033edd000 CR3: 000000011a878000 CR4: 00000000000406e0
+> > <4>[266728.386447][  T633] Call Trace:
+> > <4>[266728.386456][  T633]  ? wl_update_bss_info.isra.0+0xf5/0x210 [wl 47ce17d152623ac79abb5e1d4a28d4375eb94473]
+> > <4>[266728.386555][  T633]  wl_bss_roaming_done.constprop.0+0xc4/0x100 [wl 47ce17d152623ac79abb5e1d4a28d4375eb94473]
+> > <4>[266728.386648][  T633]  wl_notify_roaming_status+0x3f/0x60 [wl 47ce17d152623ac79abb5e1d4a28d4375eb94473]
+> > <4>[266728.386730][  T633]  wl_event_handler+0x5f/0x140 [wl 47ce17d152623ac79abb5e1d4a28d4375eb94473]
+> > <4>[266728.386808][  T633]  ? wl_cfg80211_del_key+0x100/0x100 [wl 47ce17d152623ac79abb5e1d4a28d4375eb94473]
+>
+> What wireless device and driver you have? Based on the call trace it
+> looks like you are using Broadcom's out-of-tree driver called wl.
+>
 
-Nit: virtio_device_reset()?
+Yes, it is. Here is the info when I load the module.
 
-Because I see:
+<5>[329274.450461][T634003] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+<5>[329274.451011][T634003] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+<4>[329274.876411][T634003] wlan0: Broadcom BCM4365 802.11 Hybrid Wireless Controller 6.30.223.271 (r587334)
+<4>[329274.876424][T634003]
+<6>[329275.232559][T634007] wl 0000:02:00.0 wlp2s0: renamed from wlan0
+<6>[329294.320737][  T892] IPv6: ADDRCONF(NETDEV_CHANGE): wlp2s0: link becomes ready
 
-int virtio_device_freeze(struct virtio_device *dev);
-int virtio_device_restore(struct virtio_device *dev);
-void virtio_device_ready(struct virtio_device *dev)
-
-But well, there is:
-void virtio_break_device(struct virtio_device *dev);
+Any direction where to go or what to do?
 
 -- 
-Thanks,
-
-David / dhildenb
-
+Ammar Faizi
