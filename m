@@ -2,95 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA3BE42B704
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 08:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 372CE42B818
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 08:55:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237914AbhJMGY7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Oct 2021 02:24:59 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:14878 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231358AbhJMGY5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Oct 2021 02:24:57 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634106175; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=AhXYz1Ss+Q8rkEhE3NsNaZvgoGqRaJkpgTQWVFfUO3s=;
- b=RcT1WLmV/pmvvSI+qcExNjEumThmEUxrKSHq09VZq56MWKqq2Y+sEpn4lXl6G/XGMgGTpy/H
- LjEeWJpaKGQ9EEgxAbAvuzqF8JF0Q/6MqsPHw8KiYBg1eVvu96c3rMCpYXWhOoItdG8qOIR6
- dBzKAdrPCvTN3dTWaVB2EIuEvys=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 61667b2b22fe3a98e52006c0 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 13 Oct 2021 06:22:35
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3C689C43635; Wed, 13 Oct 2021 06:22:34 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9CEB0C4338F;
-        Wed, 13 Oct 2021 06:22:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 9CEB0C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S238095AbhJMG5z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Oct 2021 02:57:55 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:37526 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229905AbhJMG5y (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 13 Oct 2021 02:57:54 -0400
+X-UUID: 8277f3bcf4654394ab0f5dd6a9900b75-20211013
+X-UUID: 8277f3bcf4654394ab0f5dd6a9900b75-20211013
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1323289548; Wed, 13 Oct 2021 14:50:37 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Wed, 13 Oct 2021 14:50:36 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 13 Oct 2021 14:50:36 +0800
+Message-ID: <213a93b6360e8226b409d905e518154b1eade598.camel@mediatek.com>
+Subject: Re: [PATCH] MAINTAINERS: mt76: update MTK folks
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Date:   Wed, 13 Oct 2021 14:50:36 +0800
+In-Reply-To: <87y26xzbwh.fsf@tynnyri.adurom.net>
+References: <5b452d209fb97be1a39a2d7775557bc8f43bd07c.1634104734.git.ryder.lee@mediatek.com>
+         <87y26xzbwh.fsf@tynnyri.adurom.net>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wireless: Remove redundant 'flush_workqueue()' calls
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <0855d51423578ad019c0264dad3fe47a2e8af9c7.1633849511.git.christophe.jaillet@wanadoo.fr>
-References: <0855d51423578ad019c0264dad3fe47a2e8af9c7.1633849511.git.christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, kuba@kernel.org, stf_xl@wp.pl,
-        luciano.coelho@intel.com, amitkarwar@gmail.com,
-        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
-        huxinming820@gmail.com, ajay.kathat@microchip.com,
-        claudiu.beznea@microchip.com, imitsyanko@quantenna.com,
-        geomatsi@gmail.com, pkshih@realtek.com, jussi.kivilinna@iki.fi,
-        pizza@shaftnet.org, netdev@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163410614672.12983.17840128488800374930.kvalo@codeaurora.org>
-Date:   Wed, 13 Oct 2021 06:22:34 +0000 (UTC)
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
-
-> 'destroy_workqueue()' already drains the queue before destroying it, so
-> there is no need to flush it explicitly.
+On Wed, 2021-10-13 at 09:17 +0300, Kalle Valo wrote:
+> Ryder Lee <ryder.lee@mediatek.com> writes:
 > 
-> Remove the redundant 'flush_workqueue()' calls.
+> > Update entries for MTK folks.
+> > 
+> > Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+> > ---
+> >  MAINTAINERS | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index eeb4c70b3d5b..6745119b70bb 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -11818,7 +11818,9 @@ F:	drivers/mmc/host/mtk-sd.c
+> >  MEDIATEK MT76 WIRELESS LAN DRIVER
+> >  M:	Felix Fietkau <nbd@nbd.name>
+> >  M:	Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+> > -R:	Ryder Lee <ryder.lee@mediatek.com>
+> > +M:	Ryder Lee <ryder.lee@mediatek.com>
+> > +M:	Shayne Chen <shayne.chen@mediatek.com>
+> > +M:	Sean Wang <sean.wang@mediatek.com>
 > 
-> This was generated with coccinelle:
+> I don't really like of having five maintainers for a driver, that
+> just
+> usually ends up that nobody takes responsibility. I would rather have
+> just one, or maybe two, maintainers and no more.
 > 
-> @@
-> expression E;
-> @@
-> - 	flush_workqueue(E);
-> 	destroy_workqueue(E);
+> Reviewers are of course another matter, having more of them is just a
+> good thing.
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+What about 3M2R? We need at least one representative from MTK for some
+reasons.
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-ff1cc2fa3055 wireless: Remove redundant 'flush_workqueue()' calls
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/0855d51423578ad019c0264dad3fe47a2e8af9c7.1633849511.git.christophe.jaillet@wanadoo.fr/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Ryder
 
