@@ -2,244 +2,192 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 663CF42B97E
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 09:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BD7E42BAF1
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 10:53:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238623AbhJMHvE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Oct 2021 03:51:04 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:32558 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238599AbhJMHvB (ORCPT
+        id S238704AbhJMIzY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Oct 2021 04:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56470 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238394AbhJMIzX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Oct 2021 03:51:01 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634111339; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=7twakui2VTRYu28bivQ90YvAYoyEVWeg6ir/xewCbcM=; b=YvfDwK8OLNiCBOaPQBPnHzNPBNB/6olotgnsjOQB5w44dfSCkXlzhyt/l/WWHMJFKVP80C7D
- SVw8uvXqyRL3XP36AWbISr6iG3I5mdha5pBQzT46ix7VU9+WqGmF87yFrjF/yzumJuHZKj/6
- iWULAHwN1OQqJm6a+bLTS0OTfMo=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 61668f5dab9da96e64036c2c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 13 Oct 2021 07:48:45
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7ED05C43616; Wed, 13 Oct 2021 07:48:44 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CDF7BC4338F;
-        Wed, 13 Oct 2021 07:48:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org CDF7BC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH v2 3/3] ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base
-Date:   Wed, 13 Oct 2021 03:48:32 -0400
-Message-Id: <20211013074832.16200-4-wgong@codeaurora.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20211013074832.16200-1-wgong@codeaurora.org>
-References: <20211013074832.16200-1-wgong@codeaurora.org>
+        Wed, 13 Oct 2021 04:55:23 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E374C061714
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Oct 2021 01:53:20 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1maZzE-0007An-3c; Wed, 13 Oct 2021 10:51:44 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1maZz1-0005Il-VI; Wed, 13 Oct 2021 10:51:31 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1maZz1-0006zY-R9; Wed, 13 Oct 2021 10:51:31 +0200
+Date:   Wed, 13 Oct 2021 10:51:31 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
+        Russell Currey <ruscur@russell.cc>, x86@kernel.org,
+        qat-linux@intel.com, oss-drivers@corigine.com,
+        Oliver O'Halloran <oohall@gmail.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Jiri Olsa <jolsa@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marco Chiappero <marco.chiappero@intel.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        linux-scsi@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        Fiona Trahe <fiona.trahe@intel.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Jack Xu <jack.xu@intel.com>, Borislav Petkov <bp@alien8.de>,
+        Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Juergen Gross <jgross@suse.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        xen-devel@lists.xenproject.org, Vadym Kochan <vkochan@marvell.com>,
+        MPT-FusionLinux.pdl@broadcom.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org,
+        Wojciech Ziemba <wojciech.ziemba@intel.com>,
+        linux-kernel@vger.kernel.org,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
+        netdev@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Tomaszx Kowalik <tomaszx.kowalik@intel.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH v6 00/11] PCI: Drop duplicated tracking of a pci_dev's
+ bound driver
+Message-ID: <20211013085131.5htnch5p6zv46mzn@pengutronix.de>
+References: <20211004125935.2300113-1-u.kleine-koenig@pengutronix.de>
+ <20211012233212.GA1806189@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="jgo3ssjhgqy54b4n"
+Content-Disposition: inline
+In-Reply-To: <20211012233212.GA1806189@bhelgaas>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ieee80211_reconfig() of mac80211 is the main function for recovery of
-each ieee80211_hw and ath11k, and ath11k_core_reconfigure_on_crash()
-is the main function for recovery of ath11k_base, it has more than
-one ieee80211_hw and ath11k for each ath11k_base, so it need to add
-synchronization between them, otherwise it has many issue.
 
-For example, when ath11k_core_reconfigure_on_crash() is not complete,
-mac80211 send a hw scan request to ath11k, it leads firmware crash,
-because firmware has not been initialized at that moment, firmware
-is only finished downloaded and loaded, it can not receive scan
-command.
+--jgo3ssjhgqy54b4n
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+On Tue, Oct 12, 2021 at 06:32:12PM -0500, Bjorn Helgaas wrote:
+> On Mon, Oct 04, 2021 at 02:59:24PM +0200, Uwe Kleine-K=F6nig wrote:
+> > Hello,
+> >=20
+> > this is v6 of the quest to drop the "driver" member from struct pci_dev
+> > which tracks the same data (apart from a constant offset) as dev.driver.
+>=20
+> I like this a lot and applied it to pci/driver for v5.16, thanks!
+>=20
+> I split some of the bigger patches apart so they only touched one
+> driver or subsystem at a time.  I also updated to_pci_driver() so it
+> returns NULL when given NULL, which makes some of the validations
+> quite a bit simpler, especially in the PM code in pci-driver.c.
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/core.c | 52 ++++++++++++++++++++++----
- drivers/net/wireless/ath/ath11k/core.h |  5 +++
- drivers/net/wireless/ath/ath11k/mac.c  | 23 ++++++++++++
- 3 files changed, 72 insertions(+), 8 deletions(-)
+OK.
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index be788ec08200..0dc489d5c259 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -965,12 +965,11 @@ void ath11k_core_halt(struct ath11k *ar)
- 	idr_init(&ar->txmgmt_idr);
- }
- 
--static void ath11k_core_restart(struct work_struct *work)
-+static void ath11k_core_pre_reconfigure_recovery(struct ath11k_base *ab)
- {
--	struct ath11k_base *ab = container_of(work, struct ath11k_base, restart_work);
- 	struct ath11k *ar;
- 	struct ath11k_pdev *pdev;
--	int i, ret = 0;
-+	int i;
- 
- 	spin_lock_bh(&ab->base_lock);
- 	ab->stats.fw_crash_counter++;
-@@ -1002,12 +1001,13 @@ static void ath11k_core_restart(struct work_struct *work)
- 
- 	wake_up(&ab->wmi_ab.tx_credits_wq);
- 	wake_up(&ab->peer_mapping_wq);
-+}
- 
--	ret = ath11k_core_reconfigure_on_crash(ab);
--	if (ret) {
--		ath11k_err(ab, "failed to reconfigure driver on crash recovery\n");
--		return;
--	}
-+static void ath11k_core_post_reconfigure_recovery(struct ath11k_base *ab)
-+{
-+	struct ath11k *ar;
-+	struct ath11k_pdev *pdev;
-+	int i;
- 
- 	for (i = 0; i < ab->num_radios; i++) {
- 		pdev = &ab->pdevs[i];
-@@ -1043,6 +1043,27 @@ static void ath11k_core_restart(struct work_struct *work)
- 	complete(&ab->driver_recovery);
- }
- 
-+static void ath11k_core_restart(struct work_struct *work)
-+{
-+	struct ath11k_base *ab = container_of(work, struct ath11k_base, restart_work);
-+	int ret;
-+
-+	if (!ab->is_reset)
-+		ath11k_core_pre_reconfigure_recovery(ab);
-+
-+	ret = ath11k_core_reconfigure_on_crash(ab);
-+	if (ret) {
-+		ath11k_err(ab, "failed to reconfigure driver on crash recovery\n");
-+		return;
-+	}
-+
-+	if (ab->is_reset)
-+		complete_all(&ab->reconfigure_complete);
-+
-+	if (!ab->is_reset)
-+		ath11k_core_post_reconfigure_recovery(ab);
-+}
-+
- static void ath11k_core_reset(struct work_struct *work)
- {
- 	struct ath11k_base *ab = container_of(work, struct ath11k_base, reset_work);
-@@ -1095,6 +1116,19 @@ static void ath11k_core_reset(struct work_struct *work)
- 	ab->is_reset = true;
- 	atomic_set(&ab->recovery_count, 0);
- 
-+	ath11k_core_pre_reconfigure_recovery(ab);
-+
-+	reinit_completion(&ab->reconfigure_complete);
-+	ath11k_core_post_reconfigure_recovery(ab);
-+
-+	reinit_completion(&ab->recovery_start);
-+	atomic_set(&ab->recovery_start_count, 0);
-+
-+	ath11k_dbg(ab, ATH11K_DBG_BOOT, "waiting recovery start...\n");
-+
-+	time_left = wait_for_completion_timeout(&ab->recovery_start,
-+						ATH11K_RECOVER_START_TIMEOUT_HZ);
-+
- 	ath11k_hif_power_down(ab);
- 	ath11k_qmi_free_resource(ab);
- 	ath11k_hif_power_up(ab);
-@@ -1198,6 +1232,8 @@ struct ath11k_base *ath11k_core_alloc(struct device *dev, size_t priv_size,
- 	mutex_init(&ab->core_lock);
- 	spin_lock_init(&ab->base_lock);
- 	init_completion(&ab->reset_complete);
-+	init_completion(&ab->reconfigure_complete);
-+	init_completion(&ab->recovery_start);
- 
- 	INIT_LIST_HEAD(&ab->peers);
- 	init_waitqueue_head(&ab->peer_mapping_wq);
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 9a9f8f24d407..95b9ebcd0e35 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -43,6 +43,8 @@ extern unsigned int ath11k_frame_mode;
- #define ATH11K_RESET_MAX_FAIL_COUNT_FIRST 3
- #define ATH11K_RESET_MAX_FAIL_COUNT_FINAL 5
- #define ATH11K_RESET_FAIL_TIMEOUT_HZ (20 * HZ)
-+#define ATH11K_RECONFIGURE_TIMEOUT_HZ (10 * HZ)
-+#define ATH11K_RECOVER_START_TIMEOUT_HZ (20 * HZ)
- 
- enum ath11k_supported_bw {
- 	ATH11K_BW_20	= 0,
-@@ -742,8 +744,11 @@ struct ath11k_base {
- 	struct work_struct reset_work;
- 	atomic_t reset_count;
- 	atomic_t recovery_count;
-+	atomic_t recovery_start_count;
- 	bool is_reset;
- 	struct completion reset_complete;
-+	struct completion reconfigure_complete;
-+	struct completion recovery_start;
- 	/* continuous recovery fail count */
- 	atomic_t fail_cont_count;
- 	unsigned long reset_fail_timeout;
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index b0a2f257f328..97d685b6fd14 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -4377,6 +4377,28 @@ static int ath11k_mac_config_mon_status_default(struct ath11k *ar, bool enable)
- 	return ret;
- }
- 
-+static void ath11k_mac_wait_reconfigure(struct ath11k_base *ab)
-+{
-+	long time_left;
-+	int recovery_start_count;
-+
-+	if (!ab->is_reset)
-+		return;
-+
-+	recovery_start_count = atomic_inc_return(&ab->recovery_start_count);
-+	ath11k_dbg(ab, ATH11K_DBG_MAC, "recovery start count %d\n", recovery_start_count);
-+
-+	if (recovery_start_count == ab->num_radios) {
-+		complete(&ab->recovery_start);
-+		ath11k_dbg(ab, ATH11K_DBG_MAC, "recovery started success\n");
-+	}
-+
-+	ath11k_dbg(ab, ATH11K_DBG_MAC, "waiting reconfigure...\n");
-+
-+	time_left = wait_for_completion_timeout(&ab->reconfigure_complete,
-+						ATH11K_RECONFIGURE_TIMEOUT_HZ);
-+}
-+
- static int ath11k_mac_op_start(struct ieee80211_hw *hw)
- {
- 	struct ath11k *ar = hw->priv;
-@@ -4393,6 +4415,7 @@ static int ath11k_mac_op_start(struct ieee80211_hw *hw)
- 		break;
- 	case ATH11K_STATE_RESTARTING:
- 		ar->state = ATH11K_STATE_RESTARTED;
-+		ath11k_mac_wait_reconfigure(ab);
- 		break;
- 	case ATH11K_STATE_RESTARTED:
- 	case ATH11K_STATE_WEDGED:
--- 
-2.31.1
+> Full interdiff from this v6 series:
+>=20
+> diff --git a/arch/x86/kernel/probe_roms.c b/arch/x86/kernel/probe_roms.c
+> index deaaef6efe34..36e84d904260 100644
+> --- a/arch/x86/kernel/probe_roms.c
+> +++ b/arch/x86/kernel/probe_roms.c
+> @@ -80,17 +80,15 @@ static struct resource video_rom_resource =3D {
+>   */
+>  static bool match_id(struct pci_dev *pdev, unsigned short vendor, unsign=
+ed short device)
+>  {
+> +	struct pci_driver *drv =3D to_pci_driver(pdev->dev.driver);
+>  	const struct pci_device_id *id;
+> =20
+>  	if (pdev->vendor =3D=3D vendor && pdev->device =3D=3D device)
+>  		return true;
+> =20
+> -	if (pdev->dev.driver) {
+> -		struct pci_driver *drv =3D to_pci_driver(pdev->dev.driver);
+> -		for (id =3D drv->id_table; id && id->vendor; id++)
+> -			if (id->vendor =3D=3D vendor && id->device =3D=3D device)
+> -				break;
+> -	}
+> +	for (id =3D drv ? drv->id_table : NULL; id && id->vendor; id++)
+> +		if (id->vendor =3D=3D vendor && id->device =3D=3D device)
+> +			break;
+> =20
+>  	return id && id->vendor;
+>  }
+> diff --git a/drivers/misc/cxl/guest.c b/drivers/misc/cxl/guest.c
+> index d997c9c3ebb5..7eb3706cf42d 100644
+> --- a/drivers/misc/cxl/guest.c
+> +++ b/drivers/misc/cxl/guest.c
+> @@ -20,38 +20,38 @@ static void pci_error_handlers(struct cxl_afu *afu,
+>  				pci_channel_state_t state)
+>  {
+>  	struct pci_dev *afu_dev;
+> +	struct pci_driver *afu_drv;
+> +	struct pci_error_handlers *err_handler;
 
+These two could be moved into the for loop (where afu_drv was with my
+patch already). This is also possible in a few other drivers.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--jgo3ssjhgqy54b4n
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFmng8ACgkQwfwUeK3K
+7AmPuQgAk6Dld3vvwdriW0ibspNDJTGfUcre3doNKax+JiXCiHbUthkO3jZ7kx1f
+rTKn9F/GlIOEH1uZZZPonJEaOLwVQmJz3OF8+BKCx7g1+0AqtNe2WefCf4Jl6ajR
+fuBtbNjjaCmBXFqToERlpAsB8kRfNy8Y5V7a/XqiX7ZDLiXle3V2AbuQVi5Ikmhp
+S72E0TV74YTVv77LeVSAA8275wN0GVI3gVT9F7w9ja0BjrapAALEVsk/s9pAl3Zq
+j9D63evuObSQ8ILnNmMOldPueBNZBIGCrXPD/EWKYWXjfstcmZUQtQqvyF6lK9ww
+AubKoQZ72JnZiuJZzVyJCsmBBRo2Vw==
+=Gp6y
+-----END PGP SIGNATURE-----
+
+--jgo3ssjhgqy54b4n--
