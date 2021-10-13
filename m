@@ -2,78 +2,203 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80B1042C562
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 17:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43BFE42C594
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 18:00:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbhJMP67 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Oct 2021 11:58:59 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:33132 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229653AbhJMP67 (ORCPT
+        id S236976AbhJMQCM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Oct 2021 12:02:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:25081 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229915AbhJMQCL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Oct 2021 11:58:59 -0400
-X-UUID: 2bd223d179064fceae852238189dfbda-20211013
-X-UUID: 2bd223d179064fceae852238189dfbda-20211013
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 157776308; Wed, 13 Oct 2021 23:56:52 +0800
-Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 13 Oct 2021 23:56:50 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb02.mediatek.inc
- (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 13 Oct
- 2021 23:56:50 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 13 Oct 2021 23:56:50 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        "Ryder Lee" <ryder.lee@mediatek.com>
-Subject: [PATCH v2] MAINTAINERS: mt76: update MTK folks
-Date:   Wed, 13 Oct 2021 23:56:41 +0800
-Message-ID: <eb888ae0e43a980c2c1aaed372a9b5e8098ea4ef.1634107511.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 13 Oct 2021 12:02:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1634140807;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QCm5dOclxo0psHU4qKEkJZZeOXU3321uNZD2ahb33xs=;
+        b=hV+rLp02GtlYqJ3V/Cyk66xz8cHZr7hoHvNYGISNif5Jp/4Fo2gPOQTq1K++Q5WWQGagS7
+        lRA5czNcdoyVahy2FEO2M+P5BHAvEklhQNVT2eVUYz1JXTqOX5bUsl8mKrX6djPva2jVrR
+        l0ijp2gBlyx5Ly/vWJSQS+2BxxMQSfE=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-378-iU_AengSP2GcRaha26E0aA-1; Wed, 13 Oct 2021 12:00:06 -0400
+X-MC-Unique: iU_AengSP2GcRaha26E0aA-1
+Received: by mail-wr1-f69.google.com with SMTP id d13-20020adf9b8d000000b00160a94c235aso2378451wrc.2
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Oct 2021 09:00:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:organization:in-reply-to
+         :content-transfer-encoding;
+        bh=QCm5dOclxo0psHU4qKEkJZZeOXU3321uNZD2ahb33xs=;
+        b=vAZ1/OCZ8hkqCdOgBGEEO5nDkIPKoZpuz6OM+UHV9HBpOy8iKq89ovzHPbqa46qIxT
+         Gn2bN4vhMGWm4GtwOG9d+VlCy5OkfAXnm667O7ZJkqf9wBl4R30oc6IjLMmPc5wSjdY5
+         d6+jqzbMeL2gkI+CqzJuFc/07jOWIAmoahF1krXFgg41bxZ0oduYKj9PXIuhL3n/pdcZ
+         DYJDw9T5+YNsOG8ysYRyDUznHOqVAS6rlAThTWrFAu84G6Wl6jJeyY7JJE4xAVibvuXp
+         eshEIoAekUttdCtsXNRMBv1Aln+4drGR80SxpaJCIXsZdZou+PJ6pbPBxik/1tfwIoVV
+         LBnw==
+X-Gm-Message-State: AOAM531A7gA5qpoGWe96JI4vLXC8Ediq8sI/rFaGSef6UPUXXQYW2Ckk
+        6BNLLS+3woUe8iEiCygzQ5So0w91KzEvnNy9Mvr7jqEyvEn0YGeagyeoZNk34G97oTYWFaalr9/
+        dBbqL+rzGcYaD6reInQgZshfhZO4=
+X-Received: by 2002:adf:dc0d:: with SMTP id t13mr9679wri.158.1634140805539;
+        Wed, 13 Oct 2021 09:00:05 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyItkbAA3kGIqmmHgTgrrpf9fCG54WlJV2+wdefB9WU28Q546eZydpGXWHl2Ou3h6lUqYc/hA==
+X-Received: by 2002:adf:dc0d:: with SMTP id t13mr9603wri.158.1634140805309;
+        Wed, 13 Oct 2021 09:00:05 -0700 (PDT)
+Received: from [192.168.3.132] (p5b0c6774.dip0.t-ipconnect.de. [91.12.103.116])
+        by smtp.gmail.com with ESMTPSA id n17sm6521wrq.11.2021.10.13.09.00.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Oct 2021 09:00:04 -0700 (PDT)
+Message-ID: <cf511a7f-531f-4555-d7b4-cb171a615fdd@redhat.com>
+Date:   Wed, 13 Oct 2021 18:00:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.0
+Subject: Re: [PATCH RFC] virtio: wrap config->reset calls
+Content-Language: en-US
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, Jeff Dike <jdike@addtoit.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Matt Mackall <mpm@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Gonglei <arei.gonglei@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        David Airlie <airlied@linux.ie>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Daniel Vetter <daniel@ffwll.ch>, Jie Deng <jie.deng@intel.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Eric Van Hensbergen <ericvh@gmail.com>,
+        Latchesar Ionkov <lucho@ionkov.net>,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-um@lists.infradead.org,
+        virtualization@lists.linux-foundation.org,
+        linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-i2c@vger.kernel.org, iommu@lists.linux-foundation.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        v9fs-developer@lists.sourceforge.net, kvm@vger.kernel.org,
+        alsa-devel@alsa-project.org
+References: <20211013105226.20225-1-mst@redhat.com>
+ <2060bd96-5884-a1b5-9f29-7fe670dc088d@redhat.com>
+ <20211013081632-mutt-send-email-mst@kernel.org>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20211013081632-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add more MTK folks to actively maintain the wireless chipsets across
-segments. The work is becoming increasingly complicated and various
-and we can provides hardware related perspectives to offload 
-Felix's workload, especially for the 11ax and upcoming 11be devices
+On 13.10.21 14:17, Michael S. Tsirkin wrote:
+> On Wed, Oct 13, 2021 at 01:03:46PM +0200, David Hildenbrand wrote:
+>> On 13.10.21 12:55, Michael S. Tsirkin wrote:
+>>> This will enable cleanups down the road.
+>>> The idea is to disable cbs, then add "flush_queued_cbs" callback
+>>> as a parameter, this way drivers can flush any work
+>>> queued after callbacks have been disabled.
+>>>
+>>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+>>> ---
+>>>   arch/um/drivers/virt-pci.c                 | 2 +-
+>>>   drivers/block/virtio_blk.c                 | 4 ++--
+>>>   drivers/bluetooth/virtio_bt.c              | 2 +-
+>>>   drivers/char/hw_random/virtio-rng.c        | 2 +-
+>>>   drivers/char/virtio_console.c              | 4 ++--
+>>>   drivers/crypto/virtio/virtio_crypto_core.c | 8 ++++----
+>>>   drivers/firmware/arm_scmi/virtio.c         | 2 +-
+>>>   drivers/gpio/gpio-virtio.c                 | 2 +-
+>>>   drivers/gpu/drm/virtio/virtgpu_kms.c       | 2 +-
+>>>   drivers/i2c/busses/i2c-virtio.c            | 2 +-
+>>>   drivers/iommu/virtio-iommu.c               | 2 +-
+>>>   drivers/net/caif/caif_virtio.c             | 2 +-
+>>>   drivers/net/virtio_net.c                   | 4 ++--
+>>>   drivers/net/wireless/mac80211_hwsim.c      | 2 +-
+>>>   drivers/nvdimm/virtio_pmem.c               | 2 +-
+>>>   drivers/rpmsg/virtio_rpmsg_bus.c           | 2 +-
+>>>   drivers/scsi/virtio_scsi.c                 | 2 +-
+>>>   drivers/virtio/virtio.c                    | 5 +++++
+>>>   drivers/virtio/virtio_balloon.c            | 2 +-
+>>>   drivers/virtio/virtio_input.c              | 2 +-
+>>>   drivers/virtio/virtio_mem.c                | 2 +-
+>>>   fs/fuse/virtio_fs.c                        | 4 ++--
+>>>   include/linux/virtio.h                     | 1 +
+>>>   net/9p/trans_virtio.c                      | 2 +-
+>>>   net/vmw_vsock/virtio_transport.c           | 4 ++--
+>>>   sound/virtio/virtio_card.c                 | 4 ++--
+>>>   26 files changed, 39 insertions(+), 33 deletions(-)
+>>>
+>>> diff --git a/arch/um/drivers/virt-pci.c b/arch/um/drivers/virt-pci.c
+>>> index c08066633023..22c4d87c9c15 100644
+>>> --- a/arch/um/drivers/virt-pci.c
+>>> +++ b/arch/um/drivers/virt-pci.c
+>>> @@ -616,7 +616,7 @@ static void um_pci_virtio_remove(struct virtio_device *vdev)
+>>>   	int i;
+>>>           /* Stop all virtqueues */
+>>> -        vdev->config->reset(vdev);
+>>> +        virtio_reset_device(vdev);
+>>>           vdev->config->del_vqs(vdev);
+>>
+>> Nit: virtio_device_reset()?
+>>
+>> Because I see:
+>>
+>> int virtio_device_freeze(struct virtio_device *dev);
+>> int virtio_device_restore(struct virtio_device *dev);
+>> void virtio_device_ready(struct virtio_device *dev)
+>>
+>> But well, there is:
+>> void virtio_break_device(struct virtio_device *dev);
+> 
+> Exactly. I don't know what's best, so I opted for plain english :)
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-@Kalle, I explain some more in the commit and hope you can rethink this change.
-The name we list here will definitely take responsibility.
----
- MAINTAINERS | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Fair enough, LGTM
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index eeb4c70b3d5b..c2ebcf848205 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11818,7 +11818,9 @@ F:	drivers/mmc/host/mtk-sd.c
- MEDIATEK MT76 WIRELESS LAN DRIVER
- M:	Felix Fietkau <nbd@nbd.name>
- M:	Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
--R:	Ryder Lee <ryder.lee@mediatek.com>
-+M:	Ryder Lee <ryder.lee@mediatek.com>
-+R:	Shayne Chen <shayne.chen@mediatek.com>
-+R:	Sean Wang <sean.wang@mediatek.com>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
- F:	drivers/net/wireless/mediatek/mt76/
+Reviewed-by: David Hildenbrand <david@redhat.com>
+
+
 -- 
-2.29.2
+Thanks,
+
+David / dhildenb
 
