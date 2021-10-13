@@ -2,177 +2,300 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C070D42BB19
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 11:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6588042BB7E
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 11:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238640AbhJMJIW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Oct 2021 05:08:22 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:61895 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229987AbhJMJIT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Oct 2021 05:08:19 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634115976; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=1qHkShs3XALDPvHG18LqNTL7RYD4za3niK7KNl48j6E=; b=xNVObdoXJsSle5g+vqHop+TNiJZOEKgwjFhjJYjfrBlAlGMMBY+iE600bu8Jw51ZEyoF7Gkx
- I85xlQLyvPopnoIcqwbfFaJ7YnwxKLevVCPig65zFojD2V4+AquH0xmwcLOEX+2ZYHdKQ1xX
- eMuhGunCBvYBtkczalFm0db8PpY=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 6166a1880605239689dbd2f2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 13 Oct 2021 09:06:16
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D07B1C43460; Wed, 13 Oct 2021 09:06:15 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 687F5C4338F;
-        Wed, 13 Oct 2021 09:06:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 687F5C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v7 00/24] rtw89: add Realtek 802.11ax driver
-References: <20211008035627.19463-1-pkshih@realtek.com>
-        <87lf32622d.fsf@codeaurora.org> <878ryz4vfw.fsf@codeaurora.org>
-        <72f1067becb44a7a962c5d43cefe189e@realtek.com>
-        <87h7dlwj58.fsf@codeaurora.org>
-        <adfb1ac4113c4ff08fd31596161a4146@realtek.com>
-Date:   Wed, 13 Oct 2021 12:06:12 +0300
-In-Reply-To: <adfb1ac4113c4ff08fd31596161a4146@realtek.com> (Pkshih's message
-        of "Wed, 13 Oct 2021 08:55:29 +0000")
-Message-ID: <87czo9wayj.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S236501AbhJMJ3d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Oct 2021 05:29:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35964 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236145AbhJMJ3Y (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 13 Oct 2021 05:29:24 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A0A3C061570;
+        Wed, 13 Oct 2021 02:27:20 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id a25so7445359edx.8;
+        Wed, 13 Oct 2021 02:27:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=+/MfPZS60YJ0eap0AJdMs6gge+XO+BZUvon0pBTzNGA=;
+        b=evc4kDT+QZNhO898nkNWsOvYd5uoHISP2WxjXfUrXPc/LAvzY9eu3qYsrzHLMiVRP3
+         7ek8KrGpW83pP3+71f6NoTqJUNew57wgLSdZESolUuO3w3SjswV4oNuZrRCsx5d2Sz6Z
+         U6Dil/exw/Z01VwoZLKDTI9+cXYT6HoMhvbPnOyg97B0PkHUENz49VLf5qJ3twBM3fy6
+         bHXGjIYLA3Q6jVCBIp04R0UFvkX24frr6ijNGP3vuZmaos7c/PDqm98vd8l9QZ2VLZ00
+         0EBJxe8ZaQK4AqNo/Rk1lDSww7yrEMjrcnUEwQvCtD2OBAhLhOYcZrSIMXdkiq7GrIG/
+         lN/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=+/MfPZS60YJ0eap0AJdMs6gge+XO+BZUvon0pBTzNGA=;
+        b=sB4NJpdNsDPkUy6mxgmKe4HtKEN2nu+cK//OpsRyWcLfqCQ31MaLagEbI4kFORFqWT
+         DXbHANfm+km5qyLipWbKv5591O8apIQedw6yhqLc6B1Lu6kV3JmypGG4iKk2WO5NLkRa
+         zJbI6VauabL7kp7wxsO8rh1LG//nT89gz2Z0A/Ir7ZciqzBTL295g8CrovWFVz0JNd4K
+         KMhMg5Ydf7Xmdxs2sxIPMdWWfBLbKkwgNmHyJEe1KkptIjkS7UtgLwkWzDKnP6F1oiOm
+         4z+NWC8E31Hcy0XwUwG6HCd8EhncS4c00qRbwmTVYNuK5UhVy/FLe+YQo9dJvL2k0Srj
+         swAg==
+X-Gm-Message-State: AOAM531TZwmZkz1ZBJo16E9AqcvamrBTbCU10ocMMZ9lBNlzUFX1/LQp
+        +Azpq2TJkpSzwoXVZ2AYXYmrGbmWlW/LJhHRc6k=
+X-Google-Smtp-Source: ABdhPJzL0SqFZyZBLTfBNcE8CpMsywyY4boERpEcXyUfc9yUq7Z2mLOKk/hnon0PQ/WXXVk02NgEbEHqrWvW2H64g2s=
+X-Received: by 2002:a17:907:7601:: with SMTP id jx1mr40092015ejc.69.1634117238956;
+ Wed, 13 Oct 2021 02:27:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20211004125935.2300113-1-u.kleine-koenig@pengutronix.de> <20211012233212.GA1806189@bhelgaas>
+In-Reply-To: <20211012233212.GA1806189@bhelgaas>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 13 Oct 2021 12:26:42 +0300
+Message-ID: <CAHp75Vd0uYEdfB0XaQuUV34V91qJdHR5ARku1hX_TCJLJHEjxQ@mail.gmail.com>
+Subject: Re: [PATCH v6 00/11] PCI: Drop duplicated tracking of a pci_dev's
+ bound driver
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Alexander Duyck <alexanderduyck@fb.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Fiona Trahe <fiona.trahe@intel.com>,
+        Frederic Barrat <fbarrat@linux.ibm.com>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ido Schimmel <idosch@nvidia.com>,
+        Ingo Molnar <mingo@redhat.com>, Jack Xu <jack.xu@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Jiri Olsa <jolsa@redhat.com>, Jiri Pirko <jiri@nvidia.com>,
+        Juergen Gross <jgross@suse.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Marco Chiappero <marco.chiappero@intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Michael Buesch <m@bues.ch>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Russell Currey <ruscur@russell.cc>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tomaszx Kowalik <tomaszx.kowalik@intel.com>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Wojciech Ziemba <wojciech.ziemba@intel.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        linux-crypto <linux-crypto@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-perf-users@vger.kernel.org,
+        "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" 
+        <linuxppc-dev@lists.ozlabs.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        MPT-FusionLinux.pdl@broadcom.com, netdev <netdev@vger.kernel.org>,
+        oss-drivers@corigine.com, qat-linux@intel.com,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pkshih <pkshih@realtek.com> writes:
+On Wed, Oct 13, 2021 at 2:33 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> On Mon, Oct 04, 2021 at 02:59:24PM +0200, Uwe Kleine-K=C3=B6nig wrote:
 
->> -----Original Message-----
->> From: kvalo=codeaurora.org@mg.codeaurora.org
->> <kvalo=codeaurora.org@mg.codeaurora.org> On
->> Behalf Of Kalle Valo
->> Sent: Wednesday, October 13, 2021 2:09 PM
->> To: Pkshih <pkshih@realtek.com>
->> Cc: linux-wireless@vger.kernel.org
->> Subject: Re: [PATCH v7 00/24] rtw89: add Realtek 802.11ax driver
->> 
->> Pkshih <pkshih@realtek.com> writes:
->> 
->> >> -----Original Message-----
->> >> From: kvalo=codeaurora.org@mg.codeaurora.org
->> >> <kvalo=codeaurora.org@mg.codeaurora.org> On
->> >> Behalf Of Kalle Valo
->> >> Sent: Monday, October 11, 2021 8:07 PM
->> >> To: Pkshih <pkshih@realtek.com>
->> >> Cc: linux-wireless@vger.kernel.org
->> >> Subject: Re: [PATCH v7 00/24] rtw89: add Realtek 802.11ax driver
->> >>
->> >> Kalle Valo <kvalo@codeaurora.org> writes:
->> >>
->> >> > Ping-Ke Shih <pkshih@realtek.com> writes:
->> >> >
->> >> >> This driver named rtw89, which is the next generation of rtw88, supports
->> >> >> Realtek 8852AE 802.11ax 2x2 chip whose new features are OFDMA, DBCC,
->> >> >> Spatial reuse, TWT and BSS coloring; now some of them aren't implemented
->> >> >> though.
->> >> >>
->> >> >> The chip architecture is entirely different from the chips supported by
->> >> >> rtw88 like RTL8822CE 802.11ac chip. First of all, register address ranges
->> >> >> are totally redefined, so it's impossible to reuse register definition. To
->> >> >> communicate with firmware, new H2C/C2H format is proposed. In order to have
->> >> >> better utilization, TX DMA flow is changed to two stages DMA. To provide
->> >> >> rich RX status information, additional RX PPDU packets are added.
->> >> >>
->> >> >> Since there are so many differences mentioned above, we decide to propose
->> >> >> a new driver. It has many authors, they are listed in alphabetic order:
->> >> >>
->> >> >> Chin-Yen Lee <timlee@realtek.com>
->> >> >> Ping-Ke Shih <pkshih@realtek.com>
->> >> >> Po Hao Huang <phhuang@realtek.com>
->> >> >> Tzu-En Huang <tehuang@realtek.com>
->> >> >> Vincent Fann <vincent_fann@realtek.com>
->> >> >> Yan-Hsuan Chuang <tony0620emma@gmail.com>
->> >> >> Zong-Zhe Yang <kevin_yang@realtek.com>
->> >> >>
->> >> >> Tested-by: Brian Norris <briannorris@chromium.org>
->> >> >> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->> >> >>
->> >> >> v7:
->> >> >>   - use consistent license of Kconfig
->> >> >>   - remove #ifdef and dummy functions from coex.c
->> >> >>   - C2H handler of coex uses meaningful naming insetad, and use le32_to_cpu()
->> >> >>     to convert the value.
->> >> >>   - add icmp packet notify to coex
->> >> >>   - use function call instead of a work to notify coex about traffic changed
->> >> >>   - fix dereference security CAM NULL pointer while disconnecting occasionally
->> >> >>   - fill tx descriptor once a 32 bits word (Suggested by Arnd. Thanks!)
->> >> >>   - use static pci PS, so remove pci link_ps
->> >> >>   - make many mac tables constant
->> >> >>   - add early_h2c debugfs entry to notify firmware early
->> >> >>   - support new RA report format
->> >> >>   - configure retry_lowest_rate by band
->> >> >>   - avoid to use of whil(1) to parse power sequence
->> >> >>   - notify rfk before/after scanning to reset status
->> >> >>   - firmware: rtw89: 8852a: update fw to v0.13.30.0
->> >> >>     https://github.com/pkshih/linux-firmware.git
->> >> >>     pick the commit 6595133a7cde82be932067afde834dcd036167f8
->> >> >
->> >> > I have not reviewed this version yet, but I pushed it to the pending
->> >> > branch for build testing:
->> >> >
->> >> >
->> >>
->> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?h=
->> >> pending&id=c321740f93af1a31d9e149ce5077e28bd4e859f7
->> >> >
->> >> > For the final commit my plan is to squash all patches into one big
->> >> > patch. I will do that after reviewing v7, if everything is ok of course.
->> >> >
->> >> > Are there more Tested-by or Reviewed-by tags?
->> >
->> > Sorry for the late reply. Because our National Day is Oct. 10th, and
->> > additional holiday on Oct. 11th.
->> >
->> > Aaron have tested v5 and a tag is given [1].
->> >
->> > Tested-by: Aaron Ma <aaron.ma@canonical.com>
->> 
->> I added Aaron to the commit log and pushed the driver to the master
->> branch:
->> 
->> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?id
->> =e3ec7017f6a20d12ddd9fe23d345ebb7b8c104dd
->> 
->> So the driver is now officially accepted, a big thank you to everyone
->> who participated with the review and testing! Now let's see what kind of
->> reports we get from linux-next.
->> 
+> I split some of the bigger patches apart so they only touched one
+> driver or subsystem at a time.  I also updated to_pci_driver() so it
+> returns NULL when given NULL, which makes some of the validations
+> quite a bit simpler, especially in the PM code in pci-driver.c.
+
+It's a bit unusual. Other to_*_dev() are not NULL-aware IIRC.
+
+Below are some comments as well.
+
+...
+
+>  static bool match_id(struct pci_dev *pdev, unsigned short vendor, unsign=
+ed short device)
+>  {
+> +       struct pci_driver *drv =3D to_pci_driver(pdev->dev.driver);
+>         const struct pci_device_id *id;
 >
-> Thank you!
+>         if (pdev->vendor =3D=3D vendor && pdev->device =3D=3D device)
+>                 return true;
+
+> +       for (id =3D drv ? drv->id_table : NULL; id && id->vendor; id++)
+> +               if (id->vendor =3D=3D vendor && id->device =3D=3D device)
+
+> +                       break;
+
+return true;
+
+>         return id && id->vendor;
+
+return false;
+
+>  }
+
+...
+
+> +                       afu_result =3D err_handler->error_detected(afu_de=
+v,
+> +                                                                state);
+
+One line?
+
+...
+
+>         device_lock(&vf_dev->dev);
+> -       if (vf_dev->dev.driver) {
+> +       if (to_pci_driver(vf_dev->dev.driver)) {
+
+Hmm...
+
+...
+
+> +               if (!pci_dev->state_saved && pci_dev->current_state !=3D =
+PCI_D0
+
+> +                   && pci_dev->current_state !=3D PCI_UNKNOWN) {
+
+Can we keep && on the previous line?
+
+> +                       pci_WARN_ONCE(pci_dev, pci_dev->current_state !=
+=3D prev,
+> +                                     "PCI PM: Device state not saved by =
+%pS\n",
+> +                                     drv->suspend);
+>                 }
+
+...
+
+> +       return drv && drv->resume ?
+> +                       drv->resume(pci_dev) : pci_pm_reenable_device(pci=
+_dev);
+
+One line?
+
+...
+
+> +       struct pci_driver *drv =3D to_pci_driver(dev->dev.driver);
+>         const struct pci_error_handlers *err_handler =3D
+> -                       dev->dev.driver ? to_pci_driver(dev->dev.driver)-=
+>err_handler : NULL;
+> +                       drv ? drv->err_handler : NULL;
+
+Isn't dev->driver =3D=3D to_pci_driver(dev->dev.driver)?
+
+...
+
+> +       struct pci_driver *drv =3D to_pci_driver(dev->dev.driver);
+>         const struct pci_error_handlers *err_handler =3D
+> -                       dev->dev.driver ? to_pci_driver(dev->dev.driver)-=
+>err_handler : NULL;
+> +                       drv ? drv->err_handler : NULL;
+
+Ditto.
+
+...
+
+>         device_lock(&dev->dev);
+> +       pdrv =3D to_pci_driver(dev->dev.driver);
+>         if (!pci_dev_set_io_state(dev, state) ||
+> -               !dev->dev.driver ||
+> -               !(pdrv =3D to_pci_driver(dev->dev.driver))->err_handler |=
+|
+
+> +               !pdrv ||
+> +               !pdrv->err_handler ||
+
+One line now?
+
+>                 !pdrv->err_handler->error_detected) {
+
+Or this and the previous line?
+
+...
+
+> +       pdrv =3D to_pci_driver(dev->dev.driver);
+> +       if (!pdrv ||
+> +               !pdrv->err_handler ||
+>                 !pdrv->err_handler->mmio_enabled)
+>                 goto out;
+
+Ditto.
+
+...
+
+> +       pdrv =3D to_pci_driver(dev->dev.driver);
+> +       if (!pdrv ||
+> +               !pdrv->err_handler ||
+>                 !pdrv->err_handler->slot_reset)
+>                 goto out;
+
+Ditto.
+
+...
+
+>         if (!pci_dev_set_io_state(dev, pci_channel_io_normal) ||
+> -               !dev->dev.driver ||
+> -               !(pdrv =3D to_pci_driver(dev->dev.driver))->err_handler |=
+|
+> +               !pdrv ||
+> +               !pdrv->err_handler ||
+>                 !pdrv->err_handler->resume)
+>                 goto out;
+
+Ditto.
+
+> -       result =3D PCI_ERS_RESULT_NONE;
 >
-> Should I add myself to the file MAINTAINERS?
+>         pcidev =3D pci_get_domain_bus_and_slot(domain, bus, devfn);
+>         if (!pcidev || !pcidev->dev.driver) {
+>                 dev_err(&pdev->xdev->dev, "device or AER driver is NULL\n=
+");
+>                 pci_dev_put(pcidev);
+> -               return result;
+> +               return PCI_ERS_RESULT_NONE;
+>         }
+>         pdrv =3D to_pci_driver(pcidev->dev.driver);
 
-Heh, of course I forgot something. Good that you reminded about this :)
-Yes, please send a separate patch doing that.
+What about splitting the conditional to two with clear error message
+in each and use pci_err() in the second one?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+...
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>                 default:
+>                         dev_err(&pdev->xdev->dev,
+> -                               "bad request in aer recovery "
+> -                               "operation!\n");
+> +                               "bad request in AER recovery operation!\n=
+");
+
+Stray change? Or is it in a separate patch in your tree?
+
+--=20
+With Best Regards,
+Andy Shevchenko
