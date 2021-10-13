@@ -2,103 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABB1742BBE6
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 11:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91E8F42BDDD
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Oct 2021 12:54:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237487AbhJMJsG convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Oct 2021 05:48:06 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:56739 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235811AbhJMJsF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Oct 2021 05:48:05 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19D9jxpvF004789, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19D9jxpvF004789
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 13 Oct 2021 17:45:59 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Wed, 13 Oct 2021 17:45:58 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Wed, 13 Oct 2021 17:45:58 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
- RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Wed, 13 Oct 2021 17:45:58 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: pull request: rtw89: 8852a: update fw to v0.13.30.0
-Thread-Topic: pull request: rtw89: 8852a: update fw to v0.13.30.0
-Thread-Index: AdfAFs+Noya6ABOFSO2DBhPxcrac4Q==
-Date:   Wed, 13 Oct 2021 09:45:58 +0000
-Message-ID: <b3dc77916dc7486eb312e1e44119116b@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/13_=3F=3F_06:20:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S229881AbhJMK4i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Oct 2021 06:56:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55102 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229602AbhJMK4d (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 13 Oct 2021 06:56:33 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 85F6E60ED4;
+        Wed, 13 Oct 2021 10:54:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634122469;
+        bh=7iHTFHMgD8tHMQJ8um3MWnq2WmS30AxI0TP6/V1BtV4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=OqtFMqGMGFV4K9yVj94P1PdYhryA/CdqOslHcpNhaQ08AmoURmbWpdbwgGLpBRtvv
+         GOsgbbkXEnNemfGxenULuEuLWhQSBLZDlcXtsIPUtWRz0Xquu4nM3on/FjIIYLKVym
+         bnMheTYnvnPKKCMeJmHy92kqkk6lJLUVe2jWrwP9ZfoZxr9KzicovqTES+nvgUJrgd
+         CW5TCOmBqfvu1ALAWILVarLhtB0Ty7o6Te/0Wlj3D4Ep4xDYZe5KxmPTRIsD28cE8M
+         U3L0ny1u+JWyxeAAoH7731EvVOLTcEPfK9OIXkjw0dh6LOeY9oV0Ng9JEnXKuTIMCX
+         IWg5mdhv7zLQg==
+Date:   Wed, 13 Oct 2021 05:54:28 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
+        Russell Currey <ruscur@russell.cc>, x86@kernel.org,
+        qat-linux@intel.com, oss-drivers@corigine.com,
+        Oliver O'Halloran <oohall@gmail.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Jiri Olsa <jolsa@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marco Chiappero <marco.chiappero@intel.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        linux-scsi@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        Fiona Trahe <fiona.trahe@intel.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Jack Xu <jack.xu@intel.com>, Borislav Petkov <bp@alien8.de>,
+        Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Juergen Gross <jgross@suse.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        xen-devel@lists.xenproject.org, Vadym Kochan <vkochan@marvell.com>,
+        MPT-FusionLinux.pdl@broadcom.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org,
+        Wojciech Ziemba <wojciech.ziemba@intel.com>,
+        linux-kernel@vger.kernel.org,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
+        netdev@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Tomaszx Kowalik <tomaszx.kowalik@intel.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH v6 00/11] PCI: Drop duplicated tracking of a pci_dev's
+ bound driver
+Message-ID: <20211013105428.GA1890798@bhelgaas>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/13/2021 09:34:45
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 166685 [Oct 13 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: github.com:7.1.1;realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/13/2021 09:38:00
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211013085131.5htnch5p6zv46mzn@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Wed, Oct 13, 2021 at 10:51:31AM +0200, Uwe Kleine-König wrote:
+> On Tue, Oct 12, 2021 at 06:32:12PM -0500, Bjorn Helgaas wrote:
+> > On Mon, Oct 04, 2021 at 02:59:24PM +0200, Uwe Kleine-König wrote:
+> > > Hello,
+> > > 
+> > > this is v6 of the quest to drop the "driver" member from struct pci_dev
+> > > which tracks the same data (apart from a constant offset) as dev.driver.
+> > 
+> > I like this a lot and applied it to pci/driver for v5.16, thanks!
+> > 
+> > I split some of the bigger patches apart so they only touched one
+> > driver or subsystem at a time.  I also updated to_pci_driver() so it
+> > returns NULL when given NULL, which makes some of the validations
+> > quite a bit simpler, especially in the PM code in pci-driver.c.
+> 
+> OK.
+> 
+> > Full interdiff from this v6 series:
+> > 
+> > diff --git a/arch/x86/kernel/probe_roms.c b/arch/x86/kernel/probe_roms.c
+> > index deaaef6efe34..36e84d904260 100644
+> > --- a/arch/x86/kernel/probe_roms.c
+> > +++ b/arch/x86/kernel/probe_roms.c
+> > @@ -80,17 +80,15 @@ static struct resource video_rom_resource = {
+> >   */
+> >  static bool match_id(struct pci_dev *pdev, unsigned short vendor, unsigned short device)
+> >  {
+> > +	struct pci_driver *drv = to_pci_driver(pdev->dev.driver);
+> >  	const struct pci_device_id *id;
+> >  
+> >  	if (pdev->vendor == vendor && pdev->device == device)
+> >  		return true;
+> >  
+> > -	if (pdev->dev.driver) {
+> > -		struct pci_driver *drv = to_pci_driver(pdev->dev.driver);
+> > -		for (id = drv->id_table; id && id->vendor; id++)
+> > -			if (id->vendor == vendor && id->device == device)
+> > -				break;
+> > -	}
+> > +	for (id = drv ? drv->id_table : NULL; id && id->vendor; id++)
+> > +		if (id->vendor == vendor && id->device == device)
+> > +			break;
+> >  
+> >  	return id && id->vendor;
+> >  }
+> > diff --git a/drivers/misc/cxl/guest.c b/drivers/misc/cxl/guest.c
+> > index d997c9c3ebb5..7eb3706cf42d 100644
+> > --- a/drivers/misc/cxl/guest.c
+> > +++ b/drivers/misc/cxl/guest.c
+> > @@ -20,38 +20,38 @@ static void pci_error_handlers(struct cxl_afu *afu,
+> >  				pci_channel_state_t state)
+> >  {
+> >  	struct pci_dev *afu_dev;
+> > +	struct pci_driver *afu_drv;
+> > +	struct pci_error_handlers *err_handler;
+> 
+> These two could be moved into the for loop (where afu_drv was with my
+> patch already). This is also possible in a few other drivers.
 
-Update firmware of rtw89 driver that get merged.
+That's true, they could.  I tried to follow the prevailing style in
+the file.  At least in cxl, I didn't see any other cases of
+declarations being in the minimal scope like that.
 
-Ping-Ke
-
---
-
-The following changes since commit ec17b637b7ab928ca7ebc0389e0e3921f1cc7d17:
-
-  rtw89: 8852a: update fw to v0.13.30.0 (2021-10-13 17:40:46 +0800)
-
-are available in the Git repository at:
-
-  https://github.com/pkshih/linux-firmware.git
-
-for you to fetch changes up to ec17b637b7ab928ca7ebc0389e0e3921f1cc7d17:
-
-  rtw89: 8852a: update fw to v0.13.30.0 (2021-10-13 17:40:46 +0800)
-
-----------------------------------------------------------------
-
+Bjorn
