@@ -2,140 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D81042DA3B
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Oct 2021 15:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF91D42DB96
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Oct 2021 16:31:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231148AbhJNN0A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Oct 2021 09:26:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53090 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231268AbhJNNZ4 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Oct 2021 09:25:56 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83275C06174E;
-        Thu, 14 Oct 2021 06:23:51 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id i12so19447544wrb.7;
-        Thu, 14 Oct 2021 06:23:51 -0700 (PDT)
+        id S231687AbhJNOdE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Oct 2021 10:33:04 -0400
+Received: from mail-bn7nam10on2065.outbound.protection.outlook.com ([40.107.92.65]:13281
+        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S231640AbhJNOc7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 14 Oct 2021 10:32:59 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kwKT86D8XR35aBG5P1mWUOnb8ssJocjYlbmQ2vXs07CRg9JPZXRwu9kFpR96LV+AxHCnDPI9JnFIPpAk2D48eF2IcBegpr8sb0pKnpu+YPs8VB3EQ6fjDFs1CE4dw91hJbhhFj4yDoWv3cRQTTRczBLaT1bL0ZOfi2stKqVUy8pTFLJH2rIBe3zPyDEMKFLoqui61D/Z0IJ14AXr3FBYnHSQ60whPPio6vltZJ/puC31CNGaFT1VrvrZ1B32tJV6VGVnZWobwtyLYHZpN55TjY5BoWSdDR0s5w4D3GORPeEUtnJH/QWiHhic5YbTMeCZCdFRm0bNPJbbUuPO/FFuxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/fUKTfTAfwy+7eaWpDgFDrxaFUgPQXq/FXSbMTtXJ5g=;
+ b=CZR26VYut8Ywc6vh9ipmf0nLfucF983CwKOq2E/gtAIal944ayB7qhbNbyKCwEg5msZK/ZFQ/OQ//fuc/BEl62chYtwEeTeIhwtq7U7yZCA4TX2HhfJzWIrvAZiz94K8hTEfKy5YEEJVhPxRMLZ0lhXOU8qF8RZUqqFPmfR4ouk92ZIEnomBDz10fyyI4J101zJxMsr7h9iklVFAdJivBtV8bT+to80joLh/nFoz2xh8x3fne0AToMt7Hj5ABGRzBwP27VrgL/ycERKZhklXm0pMdy/GzRM89ToANDpdSu7EUjgsCctyD59kUeATZAUZVrX3BvQBd46RCldT4jtyKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Dn8qntTXephimx3LoXkKaClxMq8rV7tTytuW+aAxGys=;
-        b=TG4gKWLEl1HWM00/cvFeOgDj8WQYP1KCzXTGjFb7rZem/+WkoOb/xrGrkjvQRt7diq
-         zd8viGl3L5J9hmO2rGfQHR1gaQlNNR6UTGuKzPZLn8Xs5/JuRGRrK0ZWgPiDSpWLdPHv
-         DFfuIRHxQyvIHvztCAbcge5bZnpVDD1Lftk2hgMHufVFAFu3yOYsLA8ylcyzbkxTjEPV
-         XObLkUZnCoisWw1iprA8xD93a1QCc/ClQ0rqa/f/+wAVOssgskUwMkvT3YdnPlViC02L
-         gDuC6t1ugWwTWQNrILpaLsLBd9Eu0phGP8FW0E0kdaySSPMPPrCdltzLOlh+sqzFadVf
-         /iyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Dn8qntTXephimx3LoXkKaClxMq8rV7tTytuW+aAxGys=;
-        b=KQ1JJeejln5y16AuGmJqk1l9QmQEk1Xs2LNBtuZ01WvpPFq8xrPRMD1u5Fjw+NXI2B
-         i35dS81CYeKTT7xo/wPsuPk30YnSaO9z3K6Kt4t1JID3mV8syYuDdkvCbMv8IXWQyUe6
-         8xTvjajNTMtt+r6I0yCaVFS3bpapvlRkduZf8v0eVpPwABN3SOjD9qAnioaAhXwqKnch
-         UWDNBMoPdPIRH/W87/PyH/XW8kOrASAID4+AKOrhrhwc6MCBQ00hnL528Rd2WQw1C7kI
-         wpESH5e/QjqiK4Bv6zVrk2WcLYt5gU4jsusfjoNPJK936fIW0LZjAAQRuihvoSiWnPzu
-         7piQ==
-X-Gm-Message-State: AOAM530pxnQNORO4BbDUE8chc+8oxJ6EO5BpTpM9DD/1zOGk2NwxdnKp
-        D6VzygugXimulbf3ruyXUuIba6//3IU=
-X-Google-Smtp-Source: ABdhPJwSNoISoB6WHeruIs45RWZovGTfzvBYWEZ6vwQ1mL+wE7qCVNKa0oLduAeRRzzdMAyifMikeA==
-X-Received: by 2002:a05:600c:1c88:: with SMTP id k8mr5782455wms.169.1634217830036;
-        Thu, 14 Oct 2021 06:23:50 -0700 (PDT)
-Received: from debian64.daheim (p200300d5ff0f7400d63d7efffebde96e.dip0.t-ipconnect.de. [2003:d5:ff0f:7400:d63d:7eff:febd:e96e])
-        by smtp.gmail.com with ESMTPSA id f186sm7823662wma.46.2021.10.14.06.23.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Oct 2021 06:23:49 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1])
-        by debian64.daheim with esmtp (Exim 4.95)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1mb0i5-0009Kt-2o;
-        Thu, 14 Oct 2021 15:23:49 +0200
-Subject: Re: [PATCH] ath10k: support bus and device specific API 1 BDF
- selection
-To:     Robert Marko <robimarko@gmail.com>
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, open list <linux-kernel@vger.kernel.org>
-References: <20211009221711.2315352-1-robimarko@gmail.com>
- <ba520cf0-480e-245b-395f-7d3a5f771521@gmail.com>
- <CAOX2RU7VaxdU3VykTZER-pdpu6pnk3tbVrBmkGU=jPQo6rL3Xg@mail.gmail.com>
-From:   Christian Lamparter <chunkeey@gmail.com>
-Message-ID: <0180909b-1c62-208d-3dce-7ac34dbd584c@gmail.com>
-Date:   Thu, 14 Oct 2021 15:23:48 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/fUKTfTAfwy+7eaWpDgFDrxaFUgPQXq/FXSbMTtXJ5g=;
+ b=mjl/n8lFeeXR5yJuoBSczwD2IZnYmfXV3xyoTftKbQ7EHiZntVOuw1Vytf/P2syb7/rZQvKikAAeVuWils5k7n8StDkjYP9nH6RSIqL0qVfCbEpJ5KLCpkMT3DerurjJGETGni8vFEeQ7Y9wdUbaju65K+Aw26HsC81edby66U0=
+Authentication-Results: linaro.org; dkim=none (message not signed)
+ header.d=none;linaro.org; dmarc=none action=none header.from=silabs.com;
+Received: from PH0PR11MB5657.namprd11.prod.outlook.com (2603:10b6:510:ee::19)
+ by PH0PR11MB5643.namprd11.prod.outlook.com (2603:10b6:510:d5::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.19; Thu, 14 Oct
+ 2021 14:30:52 +0000
+Received: from PH0PR11MB5657.namprd11.prod.outlook.com
+ ([fe80::31cb:3b13:b0e8:d8f4]) by PH0PR11MB5657.namprd11.prod.outlook.com
+ ([fe80::31cb:3b13:b0e8:d8f4%9]) with mapi id 15.20.4587.026; Thu, 14 Oct 2021
+ 14:30:52 +0000
+From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>
+Subject: [RFC PATCH 0/2] mmc: allow to rely on the DT to apply quirks
+Date:   Thu, 14 Oct 2021 16:30:29 +0200
+Message-Id: <20211014143031.1313783-1-Jerome.Pouiller@silabs.com>
+X-Mailer: git-send-email 2.33.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-ClientProxiedBy: PAZP264CA0161.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:1f9::20) To PH0PR11MB5657.namprd11.prod.outlook.com
+ (2603:10b6:510:ee::19)
 MIME-Version: 1.0
-In-Reply-To: <CAOX2RU7VaxdU3VykTZER-pdpu6pnk3tbVrBmkGU=jPQo6rL3Xg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: from pc-42.silabs.com (37.71.187.125) by PAZP264CA0161.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1f9::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.15 via Frontend Transport; Thu, 14 Oct 2021 14:30:50 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: f455f4b6-d4ce-48c8-f763-08d98f1f3985
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5643:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <PH0PR11MB564300879A3FFEE8517F953F93B89@PH0PR11MB5643.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: muD8dzqGSMcaoAvGTjvBrVWiCyScCaqzefRNo0OhCICPWGicDuwv3JDqIHNSfQl2mP3u43ToSa1YW7wlMLaxmhwS9FswcDIi8Mgnimvo6noqK8z3I0WpKpD1EULOBE8LvWNpeYdV14yGHN+QAakIZu5UUC7/ENvp2iATlhozrdKnU3wMYGgCk8uuUeWCmNdcx26dDGpUOwup+MqZp8+vcBXMg8XUTB6hg2Is2G4nmliwHASwDzTKd0Z7u6+q5HlbQua+7gnVuOapximqf3TARwEFd3qlcU/E80zDGo9cyVj4mUnPeNu2sAohkEuC6s+YyG10zKWIxMVL+GTnM2/HrIREAyVn4JhD+mELENjR2gSc6OTSmm91klbeTLC8t3FgryC6C6TE+uUd+lUlX6Y3cYjrBn7b4pODz+ZvKe6eGgm+MCJLxtEuBlwdf2lko8RKceO5a8rBSKwU/+qCwzE6EqHhAnoq/Jlx9W6PxxJk8Vi2rpyDarR8A/8invkDKpj22dTND8L65lOU7EzCMDg+YEARq+Bp6ovtTNOJbNovSya/OwTGBe0BFVtJcmyYAxOKC9Q2lv1m9oG7vVyXycagVSpuJnbwVAhHXAuuG1zUwvjsNAj9FDMdt+1gfWI1PCJh+1L7TFPcxq1FOKXjtFjfcjds1z+gJYL+QtX6HAVBLFkIFAmH+84fZl7eQm08q+xDa0uH1LuN3QlEoUerxJ0H113AaHbi6qV+wmRqCpkmIJk/LzpNOYjVi4bJScfY5xl7GdOAzZ4N/j/LxwcIGVbc/A==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5657.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(6486002)(38350700002)(7696005)(508600001)(186003)(8676002)(316002)(966005)(956004)(38100700002)(6916009)(54906003)(66476007)(2906002)(6666004)(86362001)(36756003)(107886003)(8936002)(4326008)(26005)(66946007)(83380400001)(1076003)(2616005)(4744005)(66556008)(52116002)(5660300002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QkxQM0tuS3l0M3RkZ3I1bzY1cDlYem1LeElacnNsMzc0eWt0aXZoQWRFZ0hF?=
+ =?utf-8?B?ei93enFQM2lSaW04NGlrdmRPb2MwcHV4VGJwTVlNTkN0YzFIb0hkeVkrZnhv?=
+ =?utf-8?B?MnRaYk1JMzR1S0ZVbGVGUEJHY09WelU5SmxTT25Wb1ltZUxjbU45RVpybzNj?=
+ =?utf-8?B?Mi9XQ2p4WlRQaTZBK3BYYjBRc1ZQRGZ0SXhPMTVGZk5kSzcwSzlEcUhtWGdG?=
+ =?utf-8?B?Vzk5cEVjd01yZjE4bXVBc2VKeGtLSlhyODJFaHVidmlUT2s0bUpleGlxcnor?=
+ =?utf-8?B?bjFMb09hS21Yc2JmWkdlUVlDWjI1bVFSdTMwQTdoOWpHRnllS1A1VC9XM1FQ?=
+ =?utf-8?B?MFBKbzNrM21lbXBqZC91Y1p1dmdPUVFJR3VhbDF1Z1VwdEt2SnYwdkZ3U3Va?=
+ =?utf-8?B?Zm93bDJ1VmpyUHB0YTdkZFhlcnhLVk1WcnRNKzBobmpPbmRCTDNFbmlvd3JT?=
+ =?utf-8?B?TGdhUzkydGIyYWZiU1hEbnBjWGh5MDNLcVgvSi9qdGJmNGE4eTgxaFZ0T05S?=
+ =?utf-8?B?QnhpVm9GMG94ZnRXaXkrV0I5eEJlb083TzQ3U1VsaHhCVy83eU1yazA3Rmdr?=
+ =?utf-8?B?NUdIMGx0czg3VTdTa1NlMS84Y0dWNGhyQ3plaDR6ZFpXeE1tY042ZUdlZGxv?=
+ =?utf-8?B?S2dHOTJPWmtZZllWV1BiTnI2S2VlbXNMZEJSQ0hTblFLS1ZYR1ZqT1ZuVW1u?=
+ =?utf-8?B?Q1hCUmJoTGszOFNjOFdnY2d2djBKbW85SnV3QWkwdE5PRndnWjJCQ2RiRkZ0?=
+ =?utf-8?B?ekRKWmlDSDFYOElDZUJmY0p3VTRaTUNOYUFnODRhVHM5emYzR0R3NWJlWFlF?=
+ =?utf-8?B?U2FpamR6WnZFTDZHRVM4TGE1VW52OVVkS2xHczJkYm9Cc3NTMzZuUkpPa0Rr?=
+ =?utf-8?B?TG1sTWxXbGswU1pGSnY0TElHLzVGYTlvbzE4RmpsOEJBSElTRE1xbDM3QTJw?=
+ =?utf-8?B?M2d0NkNqM09hbVZBY2VMRXRBZjgzMFNsL2FSNWxzYVhuVlVBRnltbExiQ3Rk?=
+ =?utf-8?B?QVNZMy9KQkx3bS9tdDVHeUEzaU1ESFBVZFdvTlg2cW9LeENlbHVYWlNJZC9o?=
+ =?utf-8?B?ZU9nN05KYTJpLzlqRExDUVdWcnpVc2JwVjdncVBab0tIMFZXL3BsbFVvRHBv?=
+ =?utf-8?B?N1A3eFB3dXZUM2xWN0J6Tk9xY1d5N05aVW9nK2F2QmR0dm0wdjBVaW5OZ2xN?=
+ =?utf-8?B?RnB5Tmx6VE05aG83MWNiSGNHUTJMbnZxZHZtSFI1cGdxVGhQbVc3cStYc3I3?=
+ =?utf-8?B?RGw1eEdiKytUYW51RDV0Y2xhMytZYkNpODNFaHlxR3pVODFZbjFaRkowM1U2?=
+ =?utf-8?B?MlBsaUgyUWlTeHVsY2xueGNGSVY5dlk2eXM0L1BKbVUwTW50L1JhWGI2MzBG?=
+ =?utf-8?B?WE9hb25adEc2TktHS3BuRlVJSFZPSnJmVjV4Rk9Xa1lMaUFoVkE1cUw1V0c0?=
+ =?utf-8?B?Qkk2RFFQVkN3QUNqMkhvdmduU3I5SFVyYmREQVh3NXk4Zzk3L01EK2Y3SFMr?=
+ =?utf-8?B?MUVFSjMzemc5SEZOK2hDenFSU3l6cWM3eEJLWVBZZGptenF0d1VxZVJFcHBR?=
+ =?utf-8?B?VVRpL3NDK2N2RldQM1pBS3VEU0JpaUxVUmVuay8wSjhQV1RFcTlkZDRPSHhU?=
+ =?utf-8?B?Wk9Razl0Nmp6VkZSM0hQVExVOGdueXAzS0tjQytFQnIrdHM2bDdaNmkxK01H?=
+ =?utf-8?B?MlVBWS9ERDhGTnpqanRwTEh6ektjMGRqZUp5a2xCVG5wZ21UV2ZwUTZqMFBC?=
+ =?utf-8?Q?JKIjyPiSc+hw/O5oobLxf1i7DlQHp7LjZ/CvDSp?=
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f455f4b6-d4ce-48c8-f763-08d98f1f3985
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5657.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2021 14:30:52.4372
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oUVLcw8rTy8iFdu7zhAzLYu8RJg2w3il0wTWFEqnjktz7uWzoZH5Hnaey64aWhborRfe1EL2Sfs9GmFrbjEHGQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5643
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 14/10/2021 14:01, Robert Marko wrote:
-> On Thu, 14 Oct 2021 at 13:54, Christian Lamparter <chunkeey@gmail.com> wrote:
->>
->> On 10/10/2021 00:17, Robert Marko wrote:
->>> Some ath10k IPQ40xx devices like the MikroTik hAP ac2 and ac3 require the
->>> BDF-s to be extracted from the device storage instead of shipping packaged
->>> API 2 BDF-s.
->>>
->>> This is required as MikroTik has started shipping boards that require BDF-s
->>> to be updated, as otherwise their WLAN performance really suffers.
->>> This is however impossible as the devices that require this are release
->>> under the same revision and its not possible to differentiate them from
->>> devices using the older BDF-s.
->>>
->>> In OpenWrt we are extracting the calibration data during runtime and we are
->>> able to extract the BDF-s in the same manner, however we cannot package the
->>> BDF-s to API 2 format on the fly and can only use API 1 to provide BDF-s on
->>> the fly.
->>> This is an issue as the ath10k driver explicitly looks only for the
->>> board.bin file and not for something like board-bus-device.bin like it does
->>> for pre-cal data.
->>> Due to this we have no way of providing correct BDF-s on the fly, so lets
->>> extend the ath10k driver to first look for BDF-s in the
->>> board-bus-device.bin format, for example: board-ahb-a800000.wifi.bin
->>> If that fails, look for the default board file name as defined previously.
->>>
->>> Signed-off-by: Robert Marko <robimarko@gmail.com>
->>> ---
->>
->> As mentioned in Robert's OpenWrt Pull request:
->> https://github.com/openwrt/openwrt/pull/4679
->>
->> It looks like the data comes from an mtd-partition parser.
->> So the board data takes an extra detour through userspace
->> for this.
->>
->> Maybe it would be great, if that BDF (and likewise pre-cal)
->> files could be fetched via an nvmem-consumer there?
->> (Kalle: like the ath9k-nvmem patches)
-> 
-> Christian, in this case, NVMEM wont work as this is not just read from
-> an MTD device, it first needs to be parsed from the MikroTik TLV, and
-> then decompressed as they use LZO with RLE to compress the caldata
-> and BDF-s.
-
-For more context here (it's unrelated to the patch):
-There is more custom code than just the mtd splitter.
-I do fear that this could be turning into a dreaded "separation between
-mechanism vs policy"-proxy discussion with that in-kernel LZOR
-decompressor/extractor and the way that the board-data then has be
-rerouted through user-space back to ath10k.
-
----
-
-As for the proposed feature: Yeah, back in 2017/2018-ish, I would have
-really loved to have this "load separate board-1 based on device-location".
-Instead the QCA4019's board-2.bin is now bigger than the device's
-firmware itself. From what I can see, there are also more outstanding
-board-2.bin merge requests too, though some those are updates.
-
-Cheers,
-Christian
+RnJvbTogSsOpcsO0bWUgUG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgoKSGkg
+VWxmLAoKSSB0cnkgdG8gd3JpdGUgYSBwYXRjaCB0byBwcm9ibGVtIGRpc2N1c3NlZCBoZXJlWzFd
+LgoKVGhpcyBwYXRjaCBpcyBub3QgY29tcGxldGUuIEVzcGVjaWFsbHksIGl0IGRvZXMgbm90IGNv
+bnRhaW5zIHRoZSBuZWNlc3NhcnkKRklYVVAgbWFjcm8gaW4gY2FyZC5oLiBJIHdvdWxkIGxpa2Ug
+dG8gaGF2ZSB5b3VyIGNvbW1lbnQgb24gdGhlIGNvbmNlcHQuCgpbMV0gaHR0cHM6Ly9sb3JlLmtl
+cm5lbC5vcmcvbmV0ZGV2L0NBUER5S0ZyNjJLeWtnMz05V2lYQVY4VVRvcWp3OGdqNHQ2YmJNN3BH
+UStpR0dRUkxtZ0BtYWlsLmdtYWlsLmNvbS8KCkrDqXLDtG1lIFBvdWlsbGVyICgyKToKICBtbWM6
+IHJld3JpdGUgbW1jX2ZpeHVwX2RldmljZSgpCiAgbW1jOiBhbGxvdyB0byBtYXRjaCB0aGUgZGV2
+aWNlIHRyZWUgdG8gYXBwbHkgcXVpcmtzCgogZHJpdmVycy9tbWMvY29yZS9jYXJkLmggICB8ICAz
+ICsrCiBkcml2ZXJzL21tYy9jb3JlL3F1aXJrcy5oIHwgNTkgKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKy0tLS0tLS0tLS0tCiAyIGZpbGVzIGNoYW5nZWQsIDQ1IGluc2VydGlvbnMoKyksIDE3
+IGRlbGV0aW9ucygtKQoKLS0gCjIuMzMuMAoK
