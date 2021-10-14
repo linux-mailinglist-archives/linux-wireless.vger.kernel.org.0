@@ -2,133 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC6DF42D531
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Oct 2021 10:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8986C42D808
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Oct 2021 13:19:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230240AbhJNIik (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Oct 2021 04:38:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43648 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230078AbhJNIij (ORCPT
+        id S230373AbhJNLVd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Oct 2021 07:21:33 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:50540 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229691AbhJNLVc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Oct 2021 04:38:39 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9870DC061760
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Oct 2021 01:36:34 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id y3so17024908wrl.1
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Oct 2021 01:36:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=cfakvhen/wxw5fHdRu0DEuLT5DMfJlXe2a/johLjqxo=;
-        b=h40uJnzRy4bIKfqfvwm3i/kik60+Kgx2sfXbHxmv0MsZax7HkeDmryc9yctryM7xlU
-         37bg2VuoZWdH4kTXGosC95Fa3QYJayYirIbI/UeFVNH/Nzn2/7/VodB6g1hiMuG9zp+p
-         egl0Br7pM5vnKxSuUDa7BUq17cmPH9MsIYOosVtDeEDQMUaCZ6h+AWD2esXOH1LRk+zZ
-         X2uV1Nn3ulaudun/4f5AT6jS5oilV0myDq9ozSQAqUnytF1YgcEInQmj+cCLjl5OgT5o
-         004n5bwSXge4iP3a4skCS8avlQccw5QvPN8BVpAjam8zZmlkvShcDVpQvgmxjplGDMKz
-         pkRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=cfakvhen/wxw5fHdRu0DEuLT5DMfJlXe2a/johLjqxo=;
-        b=UEtCx41/EsJNjqnq8Ppf8RwJjQpbD5QKo43hpuVUSsiZCtLMfvSMQHhmenfPq3emIx
-         H00Alx7A45gAdcyjG7ymEu2mw1UYSggd4ib0haFvrXs/+96RJIt47p4LZ0p14B2VjALD
-         V7J0KZTENCb4KIf11vTohqnFwLAzOrnU4T9N5T1BvJkgiGuoaChf6OoV4RlezOelujKD
-         8FuGdnJ7Cp70MIeaI9gwMhkCfFlVcVmx+fQrhfnA41YxbNr7gl8mChDO08COhuRlJCps
-         ONxPN+J1BaU15k+yUBfrapAAIuO7lCteQwYYZ1yYDPjibFXQ842refxqgQsPMfNvKZmj
-         N5xQ==
-X-Gm-Message-State: AOAM5320dAwYGKzq9In5i0Rrvch2D3YLx7QIUjHQ+VXwGAD1tON+8i0P
-        AwjmMLWw5HlK3dPAsVlCpeEXYw==
-X-Google-Smtp-Source: ABdhPJzpVg8OIER+zTALG2ilasSHxD7bC/dTlVAeWBUDgRwrRvN9DCthCd2lRX0ZyZDpw2FTk6Hq6g==
-X-Received: by 2002:a5d:59a9:: with SMTP id p9mr5151873wrr.386.1634200593067;
-        Thu, 14 Oct 2021 01:36:33 -0700 (PDT)
-Received: from myrica (cpc92880-cmbg19-2-0-cust679.5-4.cable.virginm.net. [82.27.106.168])
-        by smtp.gmail.com with ESMTPSA id r4sm2299114wrz.58.2021.10.14.01.36.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Oct 2021 01:36:32 -0700 (PDT)
-Date:   Thu, 14 Oct 2021 09:36:09 +0100
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gonglei <arei.gonglei@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        David Airlie <airlied@linux.ie>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>, Jie Deng <jie.deng@intel.com>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        David Hildenbrand <david@redhat.com>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Eric Van Hensbergen <ericvh@gmail.com>,
-        Latchesar Ionkov <lucho@ionkov.net>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        Anton Yakovlev <anton.yakovlev@opensynergy.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-um@lists.infradead.org,
-        virtualization@lists.linux-foundation.org,
-        linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-i2c@vger.kernel.org, iommu@lists.linux-foundation.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        v9fs-developer@lists.sourceforge.net, kvm@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH RFC] virtio: wrap config->reset calls
-Message-ID: <YWfr+Z0wgpQ48yC5@myrica>
-References: <20211013105226.20225-1-mst@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211013105226.20225-1-mst@redhat.com>
+        Thu, 14 Oct 2021 07:21:32 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1634210367; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=vfOxo/5ZWmikGRxjNTGyGNlOO3G2Fx1sjLi+kLS524g=; b=tPOfvLi8QAyoXUI0RBsi+26TR5sVSHxbEU3KlatSID9KmW0ElvuRanj++6DeUEbxzmazVD0c
+ gk7uQ9s2EhVbeabveR3WtDW3ViHIciZDhUJ74qfRc0244BevsiCA6ZkybnQl5jlcRrTpaTV2
+ n9BfTcATUWnnO8PVhI6Fl8vOOTk=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 61681226f3e5b80f1ffddb88 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 Oct 2021 11:19:02
+ GMT
+Sender: vjakkam=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 271A6C4360D; Thu, 14 Oct 2021 11:19:02 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from hu-vjakkam-hyd.qualcomm.com (unknown [202.46.22.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: vjakkam)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5E6EBC43460;
+        Thu, 14 Oct 2021 11:19:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 5E6EBC43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Veerendranath Jakkam <vjakkam@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] nl80211: Indicate SA Query procedures offload for AP SME device
+Date:   Thu, 14 Oct 2021 16:48:51 +0530
+Message-Id: <1634210331-9001-1-git-send-email-vjakkam@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 13, 2021 at 06:55:31AM -0400, Michael S. Tsirkin wrote:
-> This will enable cleanups down the road.
-> The idea is to disable cbs, then add "flush_queued_cbs" callback
-> as a parameter, this way drivers can flush any work
-> queued after callbacks have been disabled.
-> 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
+Add AP SME device feature flag to advertise that the SA Query procedures
+are handled in driver.
 
->  drivers/iommu/virtio-iommu.c               | 2 +-
+If this flag is advertised SA Query request or response frames from peers
+are not reported to userspace. Thus userspace components shall skip SA
+Query specific validations.
 
-Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Ex: When AP started with Operating Channel Validation(OCV) support and
+channel switch occurs, hostapd starts SA Query timer for OCV enabled
+STAs. Hostapd sends deauth to the STAs which didn't send SA Query
+request before timeout, Hostapd can skip such validations when this flag
+advertised.
+
+Signed-off-by: Veerendranath Jakkam <vjakkam@codeaurora.org>
+---
+ include/uapi/linux/nl80211.h | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index eda608b..99746aa 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -5735,13 +5735,17 @@ enum nl80211_tdls_operation {
+ 	NL80211_TDLS_DISABLE_LINK,
+ };
+ 
+-/*
++/**
+  * enum nl80211_ap_sme_features - device-integrated AP features
+- * Reserved for future use, no bits are defined in
+- * NL80211_ATTR_DEVICE_AP_SME yet.
++ * @NL80211_DEVICE_AP_SME_SA_QUERY_OFFLOAD: Driver handles SA Query procedures.
++ *	If this flag is advertised by the driver, SA Query request/response
++ *	frames are handled within the driver and won't be reported to userspace.
++ *	Userspace shall skip SA Query specific validations if the driver is
++ *	advertizing this capability.
++ */
+ enum nl80211_ap_sme_features {
++	NL80211_DEVICE_AP_SME_SA_QUERY_OFFLOAD		= 1 << 0,
+ };
+- */
+ 
+ /**
+  * enum nl80211_feature_flags - device/driver features
+-- 
+2.7.4
+
