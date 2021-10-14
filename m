@@ -2,155 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E48D442DB9C
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Oct 2021 16:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54A1E42DDF6
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Oct 2021 17:20:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231861AbhJNOdH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Oct 2021 10:33:07 -0400
-Received: from mail-bn8nam08on2051.outbound.protection.outlook.com ([40.107.100.51]:59393
-        "EHLO NAM04-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231826AbhJNOdE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Oct 2021 10:33:04 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HZMVhpT/xPrQs+1sbAKP0cBgvSYRIYXhdaKpO8kQ6DEk+FGqkCI5qoIrA6LErhf4vK3/AVIPNE1+9aNCapE5EjY6gWT73mPbjsitxoI5d/KfvQiJCcCfMNS6dCAAYxdnM4Wjk9m7xC9dj0arXLbvx9amqkChg2o/NqGEIiC+PERGXXdQ83iaH0JDgkLxXAmzySUPJMs5uq7Ts1C5eb+pw6hsaHr89nPkyxFNx3pSlQRILDK02xyFXVZ5uyk2et2ZePg2YNMlOBIGEUzEUNYikzlx5+L4wIdXr29rD5zep5GhDN6EOctZc3z/2IkKBbnjQ1dQCOR/gBe5E2RkfYLG+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RHLhGUr47mbss20fprjnXML/wDBRZ+cnYgR/gwb5xvs=;
- b=D9KfcLqW1fVQdwum4IZ9v0HmUqGI+zhTSw07y58Fjw8/lag7fM8v5avxymZo64Fk+h/ZK6ywlJdpY4qBkh/K+TCbnajKtYpm1bkZDHFO0Vp1KFmgmichNQdo6uBH2xHUDNj8jZyEd5dkJ3136GmxzYMCQcvzqt/N8zqMC5DcniP9tK9SKIm0ZSNu+yvENIy/JaW6sQfeD4aAfjLkPlVWEToKw7M36UYFBvl0mzEBc6yn5VVbAUHXSc3DL6ZkbguvsoatQQOgyW+tYI95iZQogHyKLHxuFyU0EYfwIbJVIF3mCSLh6Za961axkLi2u+3JUIwstiWiBbBDs2WhItCKeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RHLhGUr47mbss20fprjnXML/wDBRZ+cnYgR/gwb5xvs=;
- b=nKHA1s+aOPkH5cEYJykH3tPRiQBZ1vGr5u91zXutE8VMfQ3N8vdakZqXQEUqr9/vl26ffwQvq9RT9ir/uTxLe97HwY2Ib2QrrT4X3pI93RvEuD/lNVagL2DNEot1t9u0LfzkFm38WWaapohK9V44Za+icvjwO49hNhVI0hGNApA=
-Authentication-Results: linaro.org; dkim=none (message not signed)
- header.d=none;linaro.org; dmarc=none action=none header.from=silabs.com;
-Received: from PH0PR11MB5657.namprd11.prod.outlook.com (2603:10b6:510:ee::19)
- by PH0PR11MB5660.namprd11.prod.outlook.com (2603:10b6:510:d5::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.19; Thu, 14 Oct
- 2021 14:30:56 +0000
-Received: from PH0PR11MB5657.namprd11.prod.outlook.com
- ([fe80::31cb:3b13:b0e8:d8f4]) by PH0PR11MB5657.namprd11.prod.outlook.com
- ([fe80::31cb:3b13:b0e8:d8f4%9]) with mapi id 15.20.4587.026; Thu, 14 Oct 2021
- 14:30:56 +0000
-From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>
-Subject: [RFC PATCH 2/2] mmc: allow to match the device tree to apply quirks
-Date:   Thu, 14 Oct 2021 16:30:31 +0200
-Message-Id: <20211014143031.1313783-3-Jerome.Pouiller@silabs.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211014143031.1313783-1-Jerome.Pouiller@silabs.com>
-References: <20211014143031.1313783-1-Jerome.Pouiller@silabs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-ClientProxiedBy: PAZP264CA0161.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:1f9::20) To PH0PR11MB5657.namprd11.prod.outlook.com
- (2603:10b6:510:ee::19)
+        id S231161AbhJNPWJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Oct 2021 11:22:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35840 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229994AbhJNPWI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 14 Oct 2021 11:22:08 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 14310610D2;
+        Thu, 14 Oct 2021 15:20:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634224803;
+        bh=VYCqIVUVVUsMWzox1bqZVOyNnSKlvQ1a176ODCqXzGU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=XS+XIa7xbINOL/CylHsEJXYkA9NwZHA4pll5txHXbD+BivBgeZqlJAWrPctwAZ7bp
+         sIuJwb+FA3OInWdMQBvcu1ncOl06d1RMSdie9kRPaxG5pTt74v5bCg9unxf81DnvwA
+         mNQ9ZjPVQGL0OZOqgmfDscJ0D1Koa6NZ7T0XhF0QUSJD9uQXGAKKsndxnIZ4XnLwrU
+         QETVYMZioOGLWK0W6eEXgTjcqWv+IpNjBjjI/4GNWssncqawIhf4vr1KsaiJFOWQVc
+         oJEXL972tswMmHWZSBkZpOy4v3/sV8GmXBplUxZAhrWDI7jY2vnl+uZR7D8eMP2so/
+         TxEG3rIv3tOKQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com
+Subject: [PATCH] mt76: connac: fix possible NULL pointer dereference in mt76_connac_get_phy_mode_v2
+Date:   Thu, 14 Oct 2021 17:19:53 +0200
+Message-Id: <f8ee5ce0e8f016e235828df2157963e76c6459a1.1634224710.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Received: from pc-42.silabs.com (37.71.187.125) by PAZP264CA0161.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1f9::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.15 via Frontend Transport; Thu, 14 Oct 2021 14:30:54 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8ab732ae-e2bf-44c5-8172-08d98f1f3bc6
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5660:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <PH0PR11MB56607DD3B6171B614F9DA46493B89@PH0PR11MB5660.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2089;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vvk7qAABwjGq1/DVzdZoCb6Ph6GuLeRKx5Om/aut26nkUK7P2VEeDYsYWhc0nGtouDzhOvjYpgxVFJlh5dwgt86QsbLQvuReYP5tkz+PfcVI/gwf0AA9I3pMhmSYqSdLFuw7LdCp4W7Xd97DDLKAUxYfL8zG3+E7mgmA7SYltR6ISyJyPi56ZIwmeFpGogHEF4CkYt78CwKw9/OGv4n7f8xqn4EYH+1exlTZ4r5MpGj0xpfIbPCYOZbMIVlg/IZ5raxVsfUYw+Sm2gN1R4E/8U8GDxFq3p/AFHegtysdjqj4gHKiKj2j0VVQ8KP9kzpkrh2rsnNRPha1PvqNzcEjo7pFzSO1ZRWdE1kcSsZIqPvuQWXsvAN8sGAv/gjJ7+2Va65FGrEXgkhXjAZctY8EvaRWtnHJ11APHJu2ktcjIsx5E5bfiaxQfq2Wl9YymAXxnY8C+Py1ahLj0j9pC7SWiPBeZMhv6LspOp2BjG1M0wpL91PBvYctuU9MzfBWytXDBlWvbkXxfGmWW3LxHgCyRZS6p4wWXRNimMF8Hl0E2zzn8fqz0MQiEbcJa8EXE4K+FWvdm9qOd7lJJ6v/9Yll+ftUKoU8tJT+oBW5R4x3UF0i2PTFXEBrSBV3yaV8Cteep1K0yAsvLR2UATAtUFzSH4m8lq5PEPY1o5qaeyhcv4k77p4qnzPWek/JImxJ6WxyLXtWpYkdy2k9yNKUIpVhvA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5657.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(54906003)(8936002)(66476007)(956004)(2616005)(36756003)(6486002)(508600001)(107886003)(4326008)(6666004)(26005)(316002)(7696005)(66556008)(5660300002)(186003)(6916009)(1076003)(2906002)(52116002)(38100700002)(8676002)(86362001)(38350700002)(66946007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZTFrU3ZXNlRUMUIwMjAwSGJhM0UzV2JsOThOY2xQdWN3bTlFdDJwblFoZU1C?=
- =?utf-8?B?OHNKbFlrQzJSUDRBRmVnbHg5NDBTSlhYYWNnbjNPRDhzU1JVUG5La2dQeGd5?=
- =?utf-8?B?WEpBSGNMZU5hNVowb2xSWll4SENuR2ZDNldCbmJoSEpWeEZud09zT0dxZWM5?=
- =?utf-8?B?SHkxcGk2bHVDQVBBbFRDMU4zWEZyTFRJaHNuTlRkbFhoUVpFeDFjSUxkVFg3?=
- =?utf-8?B?USsxN05PdURoT0dkUk0yY0pSL0VwVkRmWmxzMkgzd2I3REFaNjhtVjVtV0Jk?=
- =?utf-8?B?VklIeUJXUDAvUkM0V3laWGNmY1RNQ25zdmNFb3hUelN5S1JPNGhPcWc1bTF6?=
- =?utf-8?B?bW41M0NHalg3eWlsazRTMjJSWVc4VW5kcWxUcU9CS0IrZ0ZDdGFLcm1jYU8w?=
- =?utf-8?B?UnFBTW90SGcwaGJsMEFyd0ZhRGF6L2dxVlFLOVZTc0FORldNVzNudjU5dEo5?=
- =?utf-8?B?U3ROR3ozTDhwQ2lUdnJFenlRdGlNVlU2WGE5aFdUZU5nWXNaTFhaazF2cW05?=
- =?utf-8?B?SGhhVlZxcjlvdzZNYWxRWXRJM1BTdFZidlpIS2x3dnVHS3VzTVAzQk1Fc1RL?=
- =?utf-8?B?WWd5N1N0ZW1SMEZhRzZ5Rmhob1o1cHdoVEF5OWM2RTFVVUgyY2RjT3diRUVw?=
- =?utf-8?B?ak9SKytKQWMvUkdTQXF4aE5pbis1N2sxN2VsYk5zUVVpMTNFRnFOcy8xd2Ux?=
- =?utf-8?B?YnFBMUloMGJIK2s2Z0ZFTklyV0JJYlFsbEJzaXBlVU9tWElIbFhDd3U3SHEy?=
- =?utf-8?B?REc1bG0xWmJWMzAyTS9FOEhsRjdaZjBKamJKbkVUVUszVUd3dXBlR1FzaFlY?=
- =?utf-8?B?SDg2YThiS2t6ZE9yVHdFYlhRY2JLMWxVWlMvUXUvSzloYUJuNTlXeTZFZ2Qv?=
- =?utf-8?B?RmJTNUxLWCtYVTM1M3Y3OXBOM1VjRmR3b3Qza2Mva2hpWVFXclFCK3Y4K0RK?=
- =?utf-8?B?UHd2bjZudFltaHI3NUVwSXlKRTg5TzdiUHVaT01ld1ZQVzhObHRtMFNtSk9j?=
- =?utf-8?B?K2JmTjhZYXVBOTExMXdlYmk0L3lTcDZ2MnN3VVBuL0VWMlpiMi9xRjVEeWhw?=
- =?utf-8?B?OFVJU0tKSG1uWVBXTmpaTE11b2RCSkZpT1pBb01sM2gxWlZWL1NOTzlQMXV0?=
- =?utf-8?B?NXZva001aVFyRGNkWEN2VTZUS2ZPdjYvTHJCN2ErT3RqQVlwQ2k3VzZWeitF?=
- =?utf-8?B?NnJsVjE1bGxTMllPem1Ic1BGRnlnTlRmemtYN1ZtM2VRQmVzZTBwQUNvWURI?=
- =?utf-8?B?Q0h2bjZvWVgxWU5BbjhnRmNIU3dzaGdaVURGS2dEZ3lHZ2pCMjVMNGlWK3l2?=
- =?utf-8?B?WVFjVmVTK1pnUlRpRFMyT2tZK05aazVSUU5zYXZVYXZOTlpCVXFqOHNjMGlw?=
- =?utf-8?B?NXpJUUdZUkZmVnlKS0wxRHB4ck84Mys0dFhoT2dsdVk0azNvVWpQYkYvZFpj?=
- =?utf-8?B?TXp5K2RyZUFhZEYwN2FmWTh3akkzbEVuNWdlWVhPU2hiN0hnZHZvSDNGRGcw?=
- =?utf-8?B?NkhUTmhITHkzZnRkMjFTZHNIQmdWYnVFSng3eGNxQ3czMWFVRDJJeFZ1RERK?=
- =?utf-8?B?QWZJbkFIWmF1WUhnOHlDckpoR2lxWUhwVHg4WmI1blFaZXRNbXFPNU5sd1pn?=
- =?utf-8?B?cHRDc1d2blhGR0tUKzlCRDhXRDNaY05UbmFLcVlCM0ZrSHpSZExYSEltcHdN?=
- =?utf-8?B?d29mODdoQUt5TlA1TFM4eTRQNXhxbitnd1Q4aC9DKytwTkRxSUJPTXVTc3F0?=
- =?utf-8?Q?Zm9AkBmfH3ho5Jh41DaTFBnLKGC6c0s6h/Smq4U?=
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ab732ae-e2bf-44c5-8172-08d98f1f3bc6
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5657.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2021 14:30:56.0503
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nLeMYgC1GJh5XJD+DyNrOXczWEgW4iRiRBD1mtQ0Up188nY7BivGn/s96MatxI07QnE/QUrqdl7G4bMN6w5dxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5660
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogSsOpcsO0bWUgUG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgoKTU1D
-IHN1YnN5c3RlbSBwcm92aWRlcyBhIHdheSB0byBhcHBseSBxdWlya3Mgd2hlbiBhIGRldmljZSBt
-YXRjaCBzb21lCnByb3BlcnRpZXMgKFZJRCwgUElELCBldGMuLi4pIFVuZm9ydHVuYXRlbHksIHNv
-bWUgU0RJTyBkZXZpY2VzIGRvZXMgbm90CmNvbXBseSB3aXRoIHRoZSBTRElPIHNwZWNpZmljYXRp
-b24gYW5kIGRvZXMgbm90IHByb3ZpZGUgcmVsaWFibGUgVklEL1BJRAooZWcuIFNpbGFicyBXRjIw
-MCkuCgpTbywgdGhlIGRyaXZlcnMgZm9yIHRoZXNlIGRldmljZXMgcmVseSBvbiBkZXZpY2UgdHJl
-ZSB0byBpZGVudGlmeSB0aGUKZGV2aWNlLgoKVGhpcyBwYXRjaCBhbGxvd3MgdGhlIE1NQyB0byBh
-bHNvIHJlbHkgb24gdGhlIGRldmljZSB0cmVlIHRvIGFwcGx5IGEKcXVpcmsuCgpTaWduZWQtb2Zm
-LWJ5OiBKw6lyw7RtZSBQb3VpbGxlciA8amVyb21lLnBvdWlsbGVyQHNpbGFicy5jb20+Ci0tLQog
-ZHJpdmVycy9tbWMvY29yZS9jYXJkLmggICB8ICAzICsrKwogZHJpdmVycy9tbWMvY29yZS9xdWly
-a3MuaCB8IDE4ICsrKysrKysrKysrKysrKysrKwogMiBmaWxlcyBjaGFuZ2VkLCAyMSBpbnNlcnRp
-b25zKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tbWMvY29yZS9jYXJkLmggYi9kcml2ZXJzL21t
-Yy9jb3JlL2NhcmQuaAppbmRleCA3YmQzOTJkNTVjZmEuLjJmNzNmODU2N2UxNCAxMDA2NDQKLS0t
-IGEvZHJpdmVycy9tbWMvY29yZS9jYXJkLmgKKysrIGIvZHJpdmVycy9tbWMvY29yZS9jYXJkLmgK
-QEAgLTU5LDYgKzU5LDkgQEAgc3RydWN0IG1tY19maXh1cCB7CiAJLyogZm9yIE1NQyBjYXJkcyAq
-LwogCXVuc2lnbmVkIGludCBleHRfY3NkX3JldjsKIAorCS8qIE1hdGNoIGFnYWluc3QgZnVuY3Rp
-b25zIGRlY2xhcmVkIGluIGRldmljZSB0cmVlICovCisJY29uc3QgY2hhciAqY29uc3QgKm9mX2Nv
-bXBhdGlibGU7CisKIAl2b2lkICgqdmVuZG9yX2ZpeHVwKShzdHJ1Y3QgbW1jX2NhcmQgKmNhcmQs
-IGludCBkYXRhKTsKIAlpbnQgZGF0YTsKIH07CmRpZmYgLS1naXQgYS9kcml2ZXJzL21tYy9jb3Jl
-L3F1aXJrcy5oIGIvZHJpdmVycy9tbWMvY29yZS9xdWlya3MuaAppbmRleCBjN2VmMmQxNGIzNTku
-LmVmMzY4Mzg2ZTcxMSAxMDA2NDQKLS0tIGEvZHJpdmVycy9tbWMvY29yZS9xdWlya3MuaAorKysg
-Yi9kcml2ZXJzL21tYy9jb3JlL3F1aXJrcy5oCkBAIC0xMCw2ICsxMCw3IEBACiAgKgogICovCiAK
-KyNpbmNsdWRlIDxsaW51eC9vZi5oPgogI2luY2x1ZGUgPGxpbnV4L21tYy9zZGlvX2lkcy5oPgog
-CiAjaW5jbHVkZSAiY2FyZC5oIgpAQCAtMTQ1LDYgKzE0NiwyMCBAQCBzdGF0aWMgY29uc3Qgc3Ry
-dWN0IG1tY19maXh1cCBfX21heWJlX3VudXNlZCBzZGlvX2ZpeHVwX21ldGhvZHNbXSA9IHsKIAlF
-TkRfRklYVVAKIH07CiAKK3N0YXRpYyBpbmxpbmUgYm9vbCBtbWNfZml4dXBfb2ZfY29tcGF0aWJs
-ZV9tYXRjaChzdHJ1Y3QgbW1jX2NhcmQgKmNhcmQsCisJCQkJCQkgY29uc3QgY2hhciAqY29uc3Qg
-KmNvbXBhdF9saXN0KQoreworCXN0cnVjdCBkZXZpY2Vfbm9kZSAqb2Zfbm9kZTsKKwlpbnQgaTsK
-KworCWZvciAoaSA9IDA7IGkgPCA3OyBpKyspIHsKKwkJb2Zfbm9kZSA9IG1tY19vZl9maW5kX2No
-aWxkX2RldmljZShjYXJkLT5ob3N0LCBpKTsKKwkJaWYgKG9mX25vZGUgJiYgb2ZfZGV2aWNlX2Nv
-bXBhdGlibGVfbWF0Y2gob2Zfbm9kZSwgY29tcGF0X2xpc3QpKQorCQkJcmV0dXJuIHRydWU7CisJ
-fQorCXJldHVybiBmYWxzZTsKK30KKwogc3RhdGljIGlubGluZSB2b2lkIG1tY19maXh1cF9kZXZp
-Y2Uoc3RydWN0IG1tY19jYXJkICpjYXJkLAogCQkJCSAgICBjb25zdCBzdHJ1Y3QgbW1jX2ZpeHVw
-ICp0YWJsZSkKIHsKQEAgLTE3Myw2ICsxODgsOSBAQCBzdGF0aWMgaW5saW5lIHZvaWQgbW1jX2Zp
-eHVwX2RldmljZShzdHJ1Y3QgbW1jX2NhcmQgKmNhcmQsCiAJCQljb250aW51ZTsKIAkJaWYgKHJl
-diA8IGYtPnJldl9zdGFydCB8fCByZXYgPiBmLT5yZXZfZW5kKQogCQkJY29udGludWU7CisJCWlm
-IChmLT5vZl9jb21wYXRpYmxlICE9IE5VTEwgJiYKKwkJICAgICFtbWNfZml4dXBfb2ZfY29tcGF0
-aWJsZV9tYXRjaChjYXJkLCBmLT5vZl9jb21wYXRpYmxlKSkKKwkJCWNvbnRpbnVlOwogCiAJCWRl
-dl9kYmcoJmNhcmQtPmRldiwgImNhbGxpbmcgJXBzXG4iLCBmLT52ZW5kb3JfZml4dXApOwogCQlm
-LT52ZW5kb3JfZml4dXAoY2FyZCwgZi0+ZGF0YSk7Ci0tIAoyLjMzLjAKCg==
+Fix the following NULL pointer dereference in mt76_connac_get_phy_mode_v2
+routine triggered on mt7663s device when sta is NULL
+
+[    5.490700] mt7663s mmc0:0001:1: N9 Firmware Version: 3.1.1, Build Time: 20200604161656
+[    5.490815] mt7663s mmc0:0001:1: Region number: 0x4
+[    5.490868] mt7663s mmc0:0001:1: Parsing tailer Region: 0
+[    5.496251] mt7663s mmc0:0001:1: Region 0, override_addr = 0x00118000
+[    5.496419] mt7663s mmc0:0001:1: Parsing tailer Region: 1
+[    5.624027] mt7663s mmc0:0001:1: Parsing tailer Region: 2
+[    5.656999] mt7663s mmc0:0001:1: Parsing tailer Region: 3
+[    5.671876] mt7663s mmc0:0001:1: override_addr = 0x00118000, option = 3
+[    9.358658] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[    9.358775] #PF: supervisor read access in kernel mode
+[    9.358831] #PF: error_code(0x0000) - not-present page
+[    9.358886] PGD 0 P4D 0
+[    9.358917] Oops: 0000 [#1] SMP
+[    9.358960] CPU: 0 PID: 235 Comm: NetworkManager Not tainted 5.15.0-rc4-kvm-02151-g39e333d657f4-dirty #769
+[    9.359057] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.14.0-4.fc34 04/01/2014
+[    9.359150] RIP: 0010:mt76_connac_get_phy_mode_v2+0xc9/0x11c
+[    9.359473] RAX: 0000000000000013 RBX: 0000000000000000 RCX: 0000000000000027
+[    9.359546] RDX: ffff8881f9c17358 RSI: 0000000000000001 RDI: ffff8881f9c17350
+[    9.359624] RBP: ffff88810bac1ed4 R08: ffffffff822a4a48 R09: 0000000000000003
+[    9.359697] R10: ffffffff82234a60 R11: ffffffff82234a60 R12: ffff88810bac1eec
+[    9.359779] R13: 0000000000000000 R14: ffff88810bad1648 R15: ffff88810bac1eb8
+[    9.359859] FS:  00007f5f1e45bbc0(0000) GS:ffff8881f9c00000(0000) knlGS:0000000000000000
+[    9.359939] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    9.360003] CR2: 0000000000000000 CR3: 0000000105d5d000 CR4: 00000000000006b0
+[    9.360083] Call Trace:
+[    9.360116]  mt76_connac_mcu_uni_add_bss.cold+0x21/0x250
+[    9.360175]  ? schedule_preempt_disabled+0xa/0x10
+[    9.360232]  ? __mutex_lock.constprop.0+0x2ab/0x460
+[    9.360286]  mt7615_remove_interface+0x63/0x1d0
+[    9.360342]  drv_remove_interface+0x32/0xe0
+[    9.360385]  ieee80211_do_stop+0x5da/0x800
+[    9.360428]  ? dev_reset_queue+0x30/0x90
+[    9.360472]  ieee80211_stop+0x3b/0xb0
+[    9.360516]  __dev_close_many+0x7a/0xd0
+[    9.360559]  __dev_change_flags+0xd6/0x1f0
+[    9.360604]  dev_change_flags+0x21/0x60
+[    9.360648]  do_setlink+0x259/0xfb0
+[    9.360686]  ? __nla_validate_parse+0x51/0xb80
+[    9.360742]  __rtnl_newlink+0x5b3/0x960
+[    9.360785]  ? inet6_fill_ifla6_attrs+0x41d/0x470
+[    9.360841]  ? __kmalloc_track_caller+0x57/0x3c0
+[    9.360905]  ? netlink_trim+0x8a/0xb0
+[    9.360949]  ? skb_queue_tail+0x1b/0x50
+
+Fixes: 67aa27431c7f8 ("mt76: mt7921: rely on mt76_connac_mcu common library")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index c569e320f843..9a1af2ba7e8e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -706,7 +706,7 @@ mt76_connac_get_phy_mode_v2(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 		if (ht_cap->ht_supported)
+ 			mode |= PHY_TYPE_BIT_HT;
+ 
+-		if (he_cap->has_he)
++		if (he_cap && he_cap->has_he)
+ 			mode |= PHY_TYPE_BIT_HE;
+ 	} else if (band == NL80211_BAND_5GHZ || band == NL80211_BAND_6GHZ) {
+ 		mode |= PHY_TYPE_BIT_OFDM;
+@@ -717,7 +717,7 @@ mt76_connac_get_phy_mode_v2(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 		if (vht_cap->vht_supported)
+ 			mode |= PHY_TYPE_BIT_VHT;
+ 
+-		if (he_cap->has_he)
++		if (he_cap && he_cap->has_he)
+ 			mode |= PHY_TYPE_BIT_HE;
+ 	}
+ 
+-- 
+2.31.1
+
