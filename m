@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56DBA42F1F9
+	by mail.lfdr.de (Postfix) with ESMTP id B5C6842F1FA
 	for <lists+linux-wireless@lfdr.de>; Fri, 15 Oct 2021 15:15:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236194AbhJONRy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S239292AbhJONRy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 15 Oct 2021 09:17:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38008 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236203AbhJONRw (ORCPT
+        with ESMTP id S236237AbhJONRx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Oct 2021 09:17:52 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1520C061762
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Oct 2021 06:15:45 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id r10so26366303wra.12
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Oct 2021 06:15:45 -0700 (PDT)
+        Fri, 15 Oct 2021 09:17:53 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2B07C061570
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Oct 2021 06:15:46 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id o24-20020a05600c511800b0030d9da600aeso2378035wms.4
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Oct 2021 06:15:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=UHuhRsyo5I9tg994O+s+A8x/tyH5ZdCl1bmMze2pAnU=;
-        b=laUkFjTz3t6pC1ovKbp5JgO8lCUtujhpQa+xjjbbWLawmNYdE1g/9ekgqTm4W8jzOa
-         foPSTOdVpo8tlBF7eTxEyW//MPy+f18a8ch0UBY6zJ3SXP6cLApQ00a6jjS6fv81nuj7
-         thG30CCCKWlj/tm2exCsxBJ2vZCJhQwPZl4yGsKVHyHuyk12WdZ0DbkgfYrYTjiuftin
-         d5AqhE81uNWP5u+awyqQvPzvJytVD1MUN+OfQN1FV/u66PHYvBiqCUrl5lJYxhvLeais
-         55KaNvlvNtayZQehr9KYU/0VnKP1b8BA6gH+xpZcR7C677wslyH2gXVsTHVqyQkSDAvM
-         d2+Q==
+        bh=fIgJBzQ+9WDIc4/3t3RLCBc0AqZncO8wqablVL8xJh8=;
+        b=jqaE/kmlauY05WL5q3IpL/c2KwbmXazywzlqydwpMDBsjy0yfw6yWV8uBaFUOKBkLg
+         JtWfMSAgj71dyn2IlLekP4Pgls6z3wWwFNonJ83ZdeNVvxOBoe2zo82MLPxdVGY8U7Ac
+         D4DH92Y4O/PRraOX7Fmibkq6rC6jY3Qi8dbGNVAIx5ns+TRUuk8Iv2Ife3x7KVswvlow
+         Le+j3IGbl6QYpzEmUWwpiQRMFkpnyTTlqdblbjfQGhZVyR0geebtovGoyoeLjVZ0+0pe
+         REykH8HxD2JCYhGDkazOcbG32AVxchDNw2XprlOE1gjelORJ1C1DCsOTWOtnRk4id+vj
+         vA5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=UHuhRsyo5I9tg994O+s+A8x/tyH5ZdCl1bmMze2pAnU=;
-        b=f6ed9WFE3+EkPKI3GnDSdQ0SOX5J2r5D6kAksyUgvVKF3VVOydlQDWdOry6AeTEPno
-         1laEpE254opMB84EMQ/8Yp1Svj9HJBFPjIcaoWGYzRlW2/XcW/mzdVU5ynodLo6TBLAn
-         h731TChMcIvsIk5I1aboPuZv3xY4vqZ+XOGrKCWL7/NMBWzkltGP05wSl0Jl7dc2gmN5
-         o3j6QBdTbqO6cefLW6xFTRA6UnX681Zh4UETuwgljEX1xpGuDcrF/sYu/8kMHM7WlijL
-         duJMCjp/JvP7EqqTQmVrEGTLaVIntZzhx976wG9dWGM4FB/6mJUaJDa8GNWVjKCPs93/
-         B/TQ==
-X-Gm-Message-State: AOAM532DCEP2bnMpPUo0a88fIIIF0d9pn2u0Xk9dgQyoDSPK8R5mL69f
-        I4lCKI7rzYUYGEiGsTSVnSSL0w==
-X-Google-Smtp-Source: ABdhPJwoZ1vrQUl1TEORYABjSpTZ8cwVBJu5hdQt5I/fll3uHO+PwL4j/74t7WcqosBHnaq8ZPVmNw==
-X-Received: by 2002:a5d:6245:: with SMTP id m5mr14385783wrv.148.1634303744292;
-        Fri, 15 Oct 2021 06:15:44 -0700 (PDT)
+        bh=fIgJBzQ+9WDIc4/3t3RLCBc0AqZncO8wqablVL8xJh8=;
+        b=VnxIUqWg/V2NdPELy9u8x9SKrmNqt0x8vm5nTbEhH5RXcXealYuoZjEI2sQog5Hwtz
+         ACYrvtBtd9V1BD6v2G7DW+2kLLUQd9RYRpKxCL8WEf9FcijZ59h9rCDYG0sRf0Ia+6jH
+         1VhjfKxTK4ubqBLA46R+RBihJUwrIXZl7JfBeL1OS1sTvI80FUAyPR54f9xCPXIaTVa2
+         bPt1aTX5qKl4aozXejMI/Qi26OzN14gtc4xb7UCp/yr6cF2Q/rFxt9iBpI4VMMszFANj
+         Z8PfW81iIKM16KpTxU3G6qWC1K9GhRrrQzTTSzvF3ald5veKSGNPZerr+w8P1NNd6I5F
+         lmCQ==
+X-Gm-Message-State: AOAM531HliWfJW3pRQKAiSe2HULrjUN8W+os8f5nHteMLMnI8z6sKHEa
+        LJhFAEiKs/dnb3IB6GIivo2sTw==
+X-Google-Smtp-Source: ABdhPJxqEyLuQHS4lXBrCCpK3gDups+IJqnwpdcikaY1uMxOiI1HuLc9Y+F/c8DDnya13SO6fqwZEw==
+X-Received: by 2002:a7b:c1cb:: with SMTP id a11mr25657150wmj.39.1634303745310;
+        Fri, 15 Oct 2021 06:15:45 -0700 (PDT)
 Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id e8sm7091716wrg.48.2021.10.15.06.15.43
+        by smtp.gmail.com with ESMTPSA id e8sm7091716wrg.48.2021.10.15.06.15.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Oct 2021 06:15:43 -0700 (PDT)
+        Fri, 15 Oct 2021 06:15:44 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
         wcn36xx@lists.infradead.org
 Cc:     loic.poulain@linaro.org, benl@squareup.com,
         daniel.thompson@linaro.org, bryan.odonoghue@linaro.org
-Subject: [PATCH 1/4] wcn36xx: Fix DXE lock layering violation
-Date:   Fri, 15 Oct 2021 14:17:38 +0100
-Message-Id: <20211015131741.2455824-2-bryan.odonoghue@linaro.org>
+Subject: [PATCH 2/4] wcn36xx: Fix DXE/DMA channel enable/disable cycle
+Date:   Fri, 15 Oct 2021 14:17:39 +0100
+Message-Id: <20211015131741.2455824-3-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211015131741.2455824-1-bryan.odonoghue@linaro.org>
 References: <20211015131741.2455824-1-bryan.odonoghue@linaro.org>
@@ -65,113 +65,116 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Looking at the code here we see that txrx.c is taking the dxe.c lock to set
-and unset the current TX skbuff pointer.
+Right now we have a broken sequence where we enable DMA channel interrupts
+which can be left enabled and never disabled if we hit an error path.
 
-There is no obvious logical bug however, it is a layering violation to
-share locks like this.
-
-Lets tidy up the code a bit by making access functions to set and unset the
-TX sbuff. This makes it easier to read and reason about this code without
-having to switch between multiple files.
+Worse still when we stop WCNSS, the DMA channel interrupt bits are left
+intact. About the only saving grace here is that we do remember to disable
+the WCNSS interrupt when doing the stop.
 
 Fixes: 8e84c2582169 ("wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680 hardware")
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/wcn36xx/dxe.c  | 26 +++++++++++++++++++++++++
- drivers/net/wireless/ath/wcn36xx/dxe.h  |  2 ++
- drivers/net/wireless/ath/wcn36xx/txrx.c | 15 ++------------
- 3 files changed, 30 insertions(+), 13 deletions(-)
+ drivers/net/wireless/ath/wcn36xx/dxe.c | 38 ++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/wcn36xx/dxe.c b/drivers/net/wireless/ath/wcn36xx/dxe.c
-index 8e1dbfda65386..4e898bde1bb8c 100644
+index 4e898bde1bb8c..13e9a274fa26a 100644
 --- a/drivers/net/wireless/ath/wcn36xx/dxe.c
 +++ b/drivers/net/wireless/ath/wcn36xx/dxe.c
-@@ -831,6 +831,32 @@ int wcn36xx_dxe_tx_frame(struct wcn36xx *wcn,
- 	return ret;
+@@ -272,6 +272,21 @@ static int wcn36xx_dxe_enable_ch_int(struct wcn36xx *wcn, u16 wcn_ch)
+ 	return 0;
  }
  
-+int wcn36xx_dxe_set_tx_ack_skb(struct wcn36xx *wcn, struct sk_buff *skb)
++static void wcn36xx_dxe_disable_ch_int(struct wcn36xx *wcn, u16 wcn_ch)
 +{
-+	unsigned long flags;
++	int reg_data = 0;
 +
-+	spin_lock_irqsave(&wcn->dxe_lock, flags);
-+	if (wcn->tx_ack_skb) {
-+		spin_unlock_irqrestore(&wcn->dxe_lock, flags);
-+		wcn36xx_warn("tx_ack_skb already set\n");
-+		return -EINVAL;
-+	}
++	wcn36xx_dxe_read_register(wcn,
++				  WCN36XX_DXE_INT_MASK_REG,
++				  &reg_data);
 +
-+	wcn->tx_ack_skb = skb;
-+	spin_unlock_irqrestore(&wcn->dxe_lock, flags);
++	reg_data &= ~wcn_ch;
 +
-+	return 0;
++	wcn36xx_dxe_write_register(wcn,
++				   WCN36XX_DXE_INT_MASK_REG,
++				   (int)reg_data);
 +}
 +
-+void wcn36xx_dxe_unset_tx_ack_skb(struct wcn36xx *wcn)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&wcn->dxe_lock, flags);
-+	wcn->tx_ack_skb = NULL;
-+	spin_unlock_irqrestore(&wcn->dxe_lock, flags);
-+}
-+
- int wcn36xx_dxe_init(struct wcn36xx *wcn)
- {
- 	int reg_data = 0, ret;
-diff --git a/drivers/net/wireless/ath/wcn36xx/dxe.h b/drivers/net/wireless/ath/wcn36xx/dxe.h
-index 31b81b7547a32..083a95e7de576 100644
---- a/drivers/net/wireless/ath/wcn36xx/dxe.h
-+++ b/drivers/net/wireless/ath/wcn36xx/dxe.h
-@@ -467,4 +467,6 @@ int wcn36xx_dxe_tx_frame(struct wcn36xx *wcn,
- 			 struct sk_buff *skb,
- 			 bool is_low);
- void wcn36xx_dxe_tx_ack_ind(struct wcn36xx *wcn, u32 status);
-+int wcn36xx_dxe_set_tx_ack_skb(struct wcn36xx *wcn, struct sk_buff *skb);
-+void wcn36xx_dxe_unset_tx_ack_skb(struct wcn36xx *wcn);
- #endif	/* _DXE_H_ */
-diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
-index cab196bb38cd4..969210812cfbb 100644
---- a/drivers/net/wireless/ath/wcn36xx/txrx.c
-+++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
-@@ -502,7 +502,6 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct wcn36xx_vif *vif_priv = NULL;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
--	unsigned long flags;
- 	bool is_low = ieee80211_is_data(hdr->frame_control);
- 	bool bcast = is_broadcast_ether_addr(hdr->addr1) ||
- 		is_multicast_ether_addr(hdr->addr1);
-@@ -524,15 +523,8 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
- 	if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
- 		wcn36xx_dbg(WCN36XX_DBG_DXE, "TX_ACK status requested\n");
+ static int wcn36xx_dxe_fill_skb(struct device *dev,
+ 				struct wcn36xx_dxe_ctl *ctl,
+ 				gfp_t gfp)
+@@ -892,7 +907,6 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
+ 		WCN36XX_DXE_WQ_TX_L);
  
--		spin_lock_irqsave(&wcn->dxe_lock, flags);
--		if (wcn->tx_ack_skb) {
--			spin_unlock_irqrestore(&wcn->dxe_lock, flags);
--			wcn36xx_warn("tx_ack_skb already set\n");
-+		if (wcn36xx_dxe_set_tx_ack_skb(wcn, skb))
- 			return -EINVAL;
--		}
--
--		wcn->tx_ack_skb = skb;
--		spin_unlock_irqrestore(&wcn->dxe_lock, flags);
+ 	wcn36xx_dxe_read_register(wcn, WCN36XX_DXE_REG_CH_EN, &reg_data);
+-	wcn36xx_dxe_enable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_TX_L);
  
- 		/* Only one at a time is supported by fw. Stop the TX queues
- 		 * until the ack status gets back.
-@@ -562,10 +554,7 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
- 		/* If the skb has not been transmitted,
- 		 * don't keep a reference to it.
- 		 */
--		spin_lock_irqsave(&wcn->dxe_lock, flags);
--		wcn->tx_ack_skb = NULL;
--		spin_unlock_irqrestore(&wcn->dxe_lock, flags);
+ 	/***************************************/
+ 	/* Init descriptors for TX HIGH channel */
+@@ -916,9 +930,6 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
+ 
+ 	wcn36xx_dxe_read_register(wcn, WCN36XX_DXE_REG_CH_EN, &reg_data);
+ 
+-	/* Enable channel interrupts */
+-	wcn36xx_dxe_enable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_TX_H);
 -
-+		wcn36xx_dxe_unset_tx_ack_skb(wcn);
- 		ieee80211_wake_queues(wcn->hw);
+ 	/***************************************/
+ 	/* Init descriptors for RX LOW channel */
+ 	/***************************************/
+@@ -928,7 +939,6 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
+ 		goto out_err_rxl_ch;
  	}
  
+-
+ 	/* For RX we need to preallocated buffers */
+ 	wcn36xx_dxe_ch_alloc_skb(wcn, &wcn->dxe_rx_l_ch);
+ 
+@@ -951,9 +961,6 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
+ 		WCN36XX_DXE_REG_CTL_RX_L,
+ 		WCN36XX_DXE_CH_DEFAULT_CTL_RX_L);
+ 
+-	/* Enable channel interrupts */
+-	wcn36xx_dxe_enable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_RX_L);
+-
+ 	/***************************************/
+ 	/* Init descriptors for RX HIGH channel */
+ 	/***************************************/
+@@ -985,15 +992,18 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
+ 		WCN36XX_DXE_REG_CTL_RX_H,
+ 		WCN36XX_DXE_CH_DEFAULT_CTL_RX_H);
+ 
+-	/* Enable channel interrupts */
+-	wcn36xx_dxe_enable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_RX_H);
+-
+ 	ret = wcn36xx_dxe_request_irqs(wcn);
+ 	if (ret < 0)
+ 		goto out_err_irq;
+ 
+ 	timer_setup(&wcn->tx_ack_timer, wcn36xx_dxe_tx_timer, 0);
+ 
++	/* Enable channel interrupts */
++	wcn36xx_dxe_enable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_TX_L);
++	wcn36xx_dxe_enable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_TX_H);
++	wcn36xx_dxe_enable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_RX_L);
++	wcn36xx_dxe_enable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_RX_H);
++
+ 	return 0;
+ 
+ out_err_irq:
+@@ -1010,6 +1020,12 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
+ 
+ void wcn36xx_dxe_deinit(struct wcn36xx *wcn)
+ {
++	/* Disable channel interrupts */
++	wcn36xx_dxe_disable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_RX_H);
++	wcn36xx_dxe_disable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_RX_L);
++	wcn36xx_dxe_disable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_TX_H);
++	wcn36xx_dxe_disable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_TX_L);
++
+ 	free_irq(wcn->tx_irq, wcn);
+ 	free_irq(wcn->rx_irq, wcn);
+ 	del_timer(&wcn->tx_ack_timer);
 -- 
 2.33.0
 
