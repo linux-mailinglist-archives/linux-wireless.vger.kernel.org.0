@@ -2,81 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3009A42EF1B
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Oct 2021 12:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09F9642F1F8
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Oct 2021 15:15:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238087AbhJOKwO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Oct 2021 06:52:14 -0400
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:41668
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229690AbhJOKwM (ORCPT
+        id S239288AbhJONRx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Oct 2021 09:17:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38004 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236194AbhJONRv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Oct 2021 06:52:12 -0400
-Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 10FA43F22D;
-        Fri, 15 Oct 2021 10:50:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1634295005;
-        bh=X4YwiosBIxIOm7QIAfV/oUAM58MbArX1kagItuGPD/A=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
-        b=cyQR5Nu0KTe4743+qpozHm1TuFbgKrGIYGCDH/8HuXUpCaHAi3hhLLpc3XWv1wm0b
-         e9CXzE7xEMy/UP+EZdSdumFMCQ4FiO9hQZbxbvp5+5RD/4d+eNmLwLn2qE9BfWxysc
-         43DnhOZn2tt028Ve/2YPanHwhTrpTJ4hQuuLzxVaW2DaPMR/C/4F/wo9k7qR0A9tcQ
-         gUjrLxnOzWwa3Kgr9w8tER0qftLga73Py7UHcwagmpHGi9mJVTAjmQskEBqqkaeBTc
-         qQovsLRVgfvdM5VcNYBSUxqvsj9CFqLih95dqzE1hyJQYshZJnQoYMdGAPJjCKn7oz
-         NB2rKFpd+oX9Q==
-From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] rtw89: Fix two spelling mistakes in debug messages
-Date:   Fri, 15 Oct 2021 11:50:04 +0100
-Message-Id: <20211015105004.11817-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.32.0
+        Fri, 15 Oct 2021 09:17:51 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFD6FC061570
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Oct 2021 06:15:44 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id r7so26492122wrc.10
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Oct 2021 06:15:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cX6ee/zMZHAq3yMrIa9rFmJR1PDVem3FHyhI2fReY3k=;
+        b=zOWa4hAhdDGgUSv8hwQwPHdCT9+dVorGNtMNG3d4cvMgDEKy/ja8dimVWiy2e3t+dV
+         xV0P+lO/CXkegSVGK8KOu05VqACwWBHq1KvVr6ZEjZMObb1KW3SItd2MH/8cRiTfbyt2
+         O8MR1h38v3knt3APD2lMU4v7fZiRznQdBrrC9gFbO0vkPm3POchXGyYE0BKoD5Uypogt
+         8SdTGXDXkvPiZ3fVBsyyioUIx4+nq/5yRn97xHbGVBE40Vjk2Ad66NkLNTlbzj9HKQgf
+         hmMA48GQlEfTX0C6fapmyP/AB1Z5hoQVPnvjhPJFb6oMfMij5Z5X0Nk9PxSeFnKep+Jv
+         Pa6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cX6ee/zMZHAq3yMrIa9rFmJR1PDVem3FHyhI2fReY3k=;
+        b=VholfMtsZwmZnt7s+Y76Ou4NkZ8FRtgadIkfCJVSLS4J5s8JdzmYnJbZXF3hJ2OLKw
+         U2w1yxEQqMnbHyH5MIJjgPelhvRczlPUHR1Anh5Cjaz3/LKzta4uBNbHlGmul+RrK6k7
+         vJ11szANGgKPUXF3ccsV6V+kqIYKcB/9dcxEHVzeI2T2u7KoCuaDLz5jYFWAR0i0B+D+
+         FuBeDrNVYf9kov+1VX9ZBxHhVDq9Sp/7crUNRBUmrZ6Mab0/JfywaUkb7u22+jY58gA+
+         cv69CqAXq9eadOUgylRFZIASEM5FFr+lQ6T4zdg77Nd2sorq33UMQfmyt+G3FFyqssb+
+         gOLw==
+X-Gm-Message-State: AOAM533Z2ehCRi8zZ+GS9HFzBGPNBy6p0x5NQLyllXRUcsIYfOmAiipT
+        za/UgtAGqg5pcUvhuR7xtc3mXw==
+X-Google-Smtp-Source: ABdhPJy4cDpFVCyp/YZCUdG/Mqv32CkiljU3j3+TFthOOKFnc7DVUFLxtpAEbwDJInuVjApdb47QzA==
+X-Received: by 2002:adf:a48f:: with SMTP id g15mr13741561wrb.259.1634303743282;
+        Fri, 15 Oct 2021 06:15:43 -0700 (PDT)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id e8sm7091716wrg.48.2021.10.15.06.15.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Oct 2021 06:15:42 -0700 (PDT)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        wcn36xx@lists.infradead.org
+Cc:     loic.poulain@linaro.org, benl@squareup.com,
+        daniel.thompson@linaro.org, bryan.odonoghue@linaro.org
+Subject: [PATCH 0/4] wcn36xx: Fix DMA buffer allocation and free logic
+Date:   Fri, 15 Oct 2021 14:17:37 +0100
+Message-Id: <20211015131741.2455824-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Digging around through some bugs reported from an extensive testing cycle
+we've found that wcn36xx has a number of unexplained RX related oopses.
 
-There are two spelling mistakes in rtw89_debug messages. Fix them.
+In at least one case we appear to have DMA'd data to an unmapped region.
+The written data appears to be a correctly formed DMA buffer descriptor - a
+DXE BD in WCNSS parlance, with an AP beacon inside of it.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/realtek/rtw89/phy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reasoning about how such a situation might come about and reviewing the
+run-time code, there was no obvious path where we might free a BD or an
+skbuff pointed to by a BD, which DXE might not be aware of.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 53c36cc82c57..ab134856baac 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -1715,7 +1715,7 @@ static s32 rtw89_phy_multi_sta_cfo_calc(struct rtw89_dev *rtwdev)
- 			target_cfo = clamp(cfo_avg, max_cfo_lb, min_cfo_ub);
- 		} else {
- 			rtw89_debug(rtwdev, RTW89_DBG_CFO,
--				    "No intersection of cfo torlence windows\n");
-+				    "No intersection of cfo tolerance windows\n");
- 			target_cfo = phy_div(cfo_khz_all, (s32)sta_cnt);
- 		}
- 		for (i = 0; i < CFO_TRACK_MAX_USER; i++)
-@@ -2749,7 +2749,7 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev, u8 rssi,
- 			    dig->igi_rssi, final_rssi, under_region, val);
- 	} else {
- 		rtw89_debug(rtwdev, RTW89_DBG_DIG,
--			    "Dynamic PD th dsiabled, Set PD_low_bd=0\n");
-+			    "Dynamic PD th disabled, Set PD_low_bd=0\n");
- 	}
- 
- 	rtw89_phy_write32_mask(rtwdev, R_SEG0R_PD, B_SEG0R_PD_LOWER_BOUND_MSK,
+However looking at the ieee80211_ops.start and ieee80211_ops.stop callbacks
+in wcn36xx we can see a number of bugs associated with BD allocation, error
+handling and leaving the DMA engine active, despite freeing SKBs on the MSM
+side.
+
+This last mention - failure to quiesce potential DMA from the downstream
+agent - WCNSS DXE despite freeing the memory @ the skbuffs is a decent
+candidate for our unexplained upstream DMA transaction to unmapped memory.
+
+Since wcn36xx_stop and wcn36xx_start can be called a number of times by the
+controlling upper layers it means there is a potential gap between
+wcn36xx_stop and wcn36xx_start which could leave WCNSS in a state where it
+will try to DMA to memory we have freed.
+
+This series addresses the obvious bugs that jump out on the start()/stop()
+path.
+
+Patch #1
+  In order to make it easier to read the DXE code, I've moved all of the
+  lock taking and freeing for DXE into dxe.c
+
+Patch #2
+  Fixes a very obviously broken channel enable/disable cycle
+
+Patch #3
+  Fixes a very obvious memory leak with dma_alloc_coherent()
+
+Patch #4
+  Makes sure before we release skbuffs which we assigned to the RX channels
+  that we ensure the DXE block is put into reset
+
+Bryan O'Donoghue (4):
+  wcn36xx: Fix DXE lock layering violation
+  wcn36xx: Fix DXE/DMA channel enable/disable cycle
+  wcn36xx: Release DMA channel descriptor allocations
+  wcn36xx: Put DXE block into reset before freeing memory
+
+ drivers/net/wireless/ath/wcn36xx/dxe.c  | 75 +++++++++++++++++++++----
+ drivers/net/wireless/ath/wcn36xx/dxe.h  |  2 +
+ drivers/net/wireless/ath/wcn36xx/txrx.c | 15 +----
+ 3 files changed, 68 insertions(+), 24 deletions(-)
+
 -- 
-2.32.0
+2.33.0
 
