@@ -2,125 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B81342F1FC
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Oct 2021 15:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C936042F6F4
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Oct 2021 17:21:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239289AbhJONR7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Oct 2021 09:17:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38040 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239323AbhJONR7 (ORCPT
+        id S240945AbhJOPXW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Oct 2021 11:23:22 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:54156
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232267AbhJOPXW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Oct 2021 09:17:59 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDA0DC061570
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Oct 2021 06:15:52 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id t2so26487766wrb.8
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Oct 2021 06:15:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=6gmGyGZOX0tnnXnf/J6ROMaBVuBmbeJjJwd98SH6/w8=;
-        b=swD8uv4xh5lHBS/mXNWezLGFNq5/+jbSkjnBi3SmewcfhfUNU6KBN8YZrf5y6P9oiG
-         G9EqyKhBORWixMtktl3MD79UYQZfoP6fkdLOg5pYZHtJvTPynDjiabCD6dj6X6APxsY/
-         HOtexPglLxjkaaHuntyBwWEKbrXAlUZuLPuA5Kd58QTwkmSP59if6TPCoGu/6PXV61FU
-         i9KintPLyAis9oqHqNBdcrzYglqklDPRnOtAO61YWH2ELneLblnYcka9NcBUbJY5MhMK
-         aYBCQhRetRZgdH0imwVJI7mnoaRuiVboC5W49e4kwUOYjo2OLGPm0rHZePbW+BUkwWHF
-         VqEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=6gmGyGZOX0tnnXnf/J6ROMaBVuBmbeJjJwd98SH6/w8=;
-        b=M52c1UnpQJg/DKEOzvVvEO/2Fwtq8/oaHRdpx1dmtX1vUM14UdCXMKbCj/6xYcCCm6
-         g53PFhxzlRzs8IhfwgKWtHhN6HSKfO6PvfMFV3uaFjkYOydJ1m0SlZF+WwBZDsCiwwC1
-         xpA9tKGuX2FrMeUckZ3vKInIWc9uuLC43M7l/QgOWAUMOJMQnP5lMsaoOCuTL8j+KxBS
-         C98DbaFOdAJw8SRtStfkfmzBGg3s7I9HFZMgrg9fpsBNKd+1+DX7A/QUqqDnwbUkps1R
-         EPI2u48hvdNZU1+UE06a6DHijOq9CxxLkEx3zdm5D0sPfqZzuqifSGIuO29fbcPaRl8M
-         qaaA==
-X-Gm-Message-State: AOAM532l7Tgt6heWNEXM68R/MQJQ5t+cImokCoYGZcTABmTevLDFZHSP
-        5WeqfScoVityBHpOYNhyIrtjMw==
-X-Google-Smtp-Source: ABdhPJyxlNG5jcJ++CYVtKUg8kPWkHNgfsbTh2jiUAlU0PLgY50IBN/LOpXMNmmXirHBiXBuCPXAQA==
-X-Received: by 2002:adf:9c02:: with SMTP id f2mr14507888wrc.329.1634303747566;
-        Fri, 15 Oct 2021 06:15:47 -0700 (PDT)
-Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id e8sm7091716wrg.48.2021.10.15.06.15.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Oct 2021 06:15:47 -0700 (PDT)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        wcn36xx@lists.infradead.org
-Cc:     loic.poulain@linaro.org, benl@squareup.com,
-        daniel.thompson@linaro.org, bryan.odonoghue@linaro.org
-Subject: [PATCH 4/4] wcn36xx: Put DXE block into reset before freeing memory
-Date:   Fri, 15 Oct 2021 14:17:41 +0100
-Message-Id: <20211015131741.2455824-5-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211015131741.2455824-1-bryan.odonoghue@linaro.org>
-References: <20211015131741.2455824-1-bryan.odonoghue@linaro.org>
+        Fri, 15 Oct 2021 11:23:22 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 292F23FFE2;
+        Fri, 15 Oct 2021 15:21:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1634311274;
+        bh=NwvPoa2VhDuRpmSjf2vzHYXMiqvdYBCWvFv62Vu1wJE=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=dNCpLuocZL5UVcoNz/WxHnpq4p7Ofb4aBRgcm2ary8rlqtcbCO4gfsOkG0Ww4Wvby
+         vitmT0iKgUFJnuQnre8khHE88fxc+l31Dut5giNXnHCXyZWNmhPp7QoCJhMvr8iKhs
+         dDlAiS8Wq0j1cLdp+xHjEylDwMGP4PYSSHFGNWfZNM9Ocu13DUWXKt8KzkIpqBQUDb
+         k/xoHtKwKtFGjuRvPmmzCQDwRO7no9QoF5egnnDmIbQDVivZkd3fOvlw3Z5OCoEBGO
+         pwIVPjwbqExJf3zsuNTudFxOHGacWECNlHtcwsmu5WnlwR5VrkQuUSwgkbY8TVrW98
+         O+EQeAeHENRMQ==
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] rtw89: Remove redundant check of ret after call to rtw89_mac_enable_bb_rf
+Date:   Fri, 15 Oct 2021 16:21:13 +0100
+Message-Id: <20211015152113.33179-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When deiniting the DXE hardware we should reset the block to ensure there
-is no spurious DMA write transaction from the downstream WCNSS to upstream
-MSM at a skbuff address we will have released.
+From: Colin Ian King <colin.king@canonical.com>
 
-This is actually a pretty serious bug. Immediately after the reset we
-release skbs, skbs which are from the perspective of the WCNSS DXE still
-valid addresses for DMA.
+The function rtw89_mac_enable_bb_rf is a void return type, so there is
+no return error code to ret, so the following check for an error in ret
+is redundant dead code and can be removed.
 
-Without first placing the DXE block into reset, it is possible for an
-upstream DMA transaction to write to skbs we have freed.
-
-We have seen some backtraces from usage in testing on 50k+ devices which
-indicates an invalid RX of an APs beacon to unmapped memory.
-
-The logical conclusion is that an RX transaction happened to a region of
-memory that was previously valid but was subsequently released.
-
-The only time such a window of opportunity exists is when we have
-deallocated the skbs attached to the DMA BDs in other words after doing
-wcn36xx_stop().
-
-If we free the skbs on the DMA channel, we need to make sure we have
-quiesced potential DMA on that channel prior to freeing.
-
-This patch should eliminate that error.
-
-Fixes: 8e84c2582169 ("wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680 hardware")
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Addresses-Coverity: ("Logically dead code")
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/ath/wcn36xx/dxe.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/realtek/rtw89/mac.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/dxe.c b/drivers/net/wireless/ath/wcn36xx/dxe.c
-index e89002502869a..56f605c23f36c 100644
---- a/drivers/net/wireless/ath/wcn36xx/dxe.c
-+++ b/drivers/net/wireless/ath/wcn36xx/dxe.c
-@@ -1020,6 +1020,8 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 0171a5a7b1de..69384c43c046 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -2656,8 +2656,6 @@ int rtw89_mac_init(struct rtw89_dev *rtwdev)
+ 		goto fail;
  
- void wcn36xx_dxe_deinit(struct wcn36xx *wcn)
- {
-+	int reg_data = 0;
-+
- 	/* Disable channel interrupts */
- 	wcn36xx_dxe_disable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_RX_H);
- 	wcn36xx_dxe_disable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_RX_L);
-@@ -1035,6 +1037,10 @@ void wcn36xx_dxe_deinit(struct wcn36xx *wcn)
- 		wcn->tx_ack_skb = NULL;
- 	}
+ 	rtw89_mac_enable_bb_rf(rtwdev);
+-	if (ret)
+-		goto fail;
  
-+	/* Put the DXE block into reset before freeing memory */
-+	reg_data = WCN36XX_DXE_REG_RESET;
-+	wcn36xx_dxe_write_register(wcn, WCN36XX_DXE_REG_CSR_RESET, reg_data);
-+
- 	wcn36xx_dxe_ch_free_skbs(wcn, &wcn->dxe_rx_l_ch);
- 	wcn36xx_dxe_ch_free_skbs(wcn, &wcn->dxe_rx_h_ch);
- 
+ 	ret = rtw89_mac_sys_init(rtwdev);
+ 	if (ret)
 -- 
-2.33.0
+2.32.0
 
