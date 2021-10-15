@@ -2,31 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE2A642F89B
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Oct 2021 18:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFA0E42F8DE
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Oct 2021 18:53:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241596AbhJOQtD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Oct 2021 12:49:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60482 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241554AbhJOQtC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Oct 2021 12:49:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 34DF061164;
-        Fri, 15 Oct 2021 16:46:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634316415;
-        bh=UazkFhnF58o243B84E27T2Q0kziPCzNQlAM0EXnPs+0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=uJA4ra39P0Gv6naQSVcILGvPjCJywIq0xOMKparacmz05rvVX6Np5K3P9TBtMV+Q6
-         0fZMoqlsDqrvmOr81us08+gZah/AgsMkvZGLUZdvStWvkLQD9P6+IT1gNPD5kGzCTz
-         OqQa78pHkuTPX/IwPxuJYSyFJgvQojor9CCfmM0cFvkyP8yz7FerO3C6Xj6Ja6G65F
-         0JNWOrnI2B9XClHx9c5DgYXjOqp4IU9Zrxk/YET9tVYaYS+dnGehAv9e/YWKzwcbHz
-         D1LRfA0mXkjJ2/mnwlueLADrqQ5YuEa5UTY+rPKkoEu2iEn918jjZk3T8fIflFmK8o
-         yGBq7Ksq4IKXA==
-Date:   Fri, 15 Oct 2021 11:46:53 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        id S241719AbhJOQzn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Oct 2021 12:55:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33110 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236428AbhJOQzl (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 15 Oct 2021 12:55:41 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A57FCC061762;
+        Fri, 15 Oct 2021 09:53:34 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id y12so42189837eda.4;
+        Fri, 15 Oct 2021 09:53:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DFAfhL2wTnA/x1oOiRIEIccRhRGZWYerK6em4KwuQr0=;
+        b=WhznUYR2nkpwiwbTRwmHKoc047JsFdk3RvHIe/jtOLSDmdxX07MCX9Eow0Bi+yLoQp
+         EyU08OzLxLG5ZCsUs7GUsgWdhql+ygc3SL2hgpQj7qkueaPaH4FCl+VEJFbTT66B35gH
+         GDagaCdrbJmPFv3m1vjK25dlCo+SurtmwsJpbtn+lVZ1hUtQu8pPUJ/3APaMcce/rMb+
+         gK4/JKJga2A5DLyU3cXWQ467mYYMbHs26I04bEcKD9mvTuveZ0BpijvVaw9Fg5WzWNNW
+         l7COh3PfIisjI8gWM0rsyxYaukEsrZpFMim7hIuXFIwI4NkGZUXxkbzqxVTnksr3mpP4
+         SUYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DFAfhL2wTnA/x1oOiRIEIccRhRGZWYerK6em4KwuQr0=;
+        b=Pz66uXOYVPkKHpFryMN1vuv3PRaUUufVOktG/MXAyn+Mbnw67Hg+Y9A5/5ATuNWpbN
+         2apggTaSkDPxZ0TXvlb7Yc2fkPKHAqAH6cPp0ZRCyIhRq5T/Ga+wN92BZY22KWRL0px0
+         kr3ipbNNYsXFEfbnMnDFID1N0gdKA3BqLM+r9mGWrrMHp26dHnH2mwYGb/5/gQlnYc1Q
+         ArLpMWvshnVXU7a8w1Gp8dngNucMAhb62ma12skWTfwT7Kljvwc42Ges/nmkAMVmyRsa
+         FboJls257B2pG0z6DUpE/Rinw4YeDgbQmKpklsvYMMoCGqS84dFt7TluRpTUrsSBS1JO
+         lSow==
+X-Gm-Message-State: AOAM531fRDtVFQmGAgEdDX8QQ9FKZCV0/Fcr/6I7qlFhhfOBUo0iN3R/
+        2HQYIpNqVOsbxTFimIu3oU9vvzetwldYc5ybjC8=
+X-Google-Smtp-Source: ABdhPJw1GMYkf4/DzQ6xCdDldbViFURlmc0YnNdhDKa/6j1hrF7JWMyfM92nI6tIEj+fn7ChYTDQotvOC+uhf3cE48A=
+X-Received: by 2002:a50:e188:: with SMTP id k8mr19911628edl.119.1634316813165;
+ Fri, 15 Oct 2021 09:53:33 -0700 (PDT)
+MIME-Version: 1.0
+References: <YWbdvc7EWEZLVTHM@smile.fi.intel.com> <20211015164653.GA2108651@bhelgaas>
+In-Reply-To: <20211015164653.GA2108651@bhelgaas>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 15 Oct 2021 22:52:45 +0300
+Message-ID: <CAHp75VdpVwvOkjDWHcnWA-qZFm062UBp7VwdcpWbkdVR=i75Hw@mail.gmail.com>
+Subject: Re: [PATCH v6 00/11] PCI: Drop duplicated tracking of a pci_dev's
+ bound driver
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         linux-pci <linux-pci@vger.kernel.org>,
         Sascha Hauer <kernel@pengutronix.de>,
@@ -58,10 +85,10 @@ Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
         Michael Buesch <m@bues.ch>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Namhyung Kim <namhyung@kernel.org>,
-        Oliver O'Halloran <oohall@gmail.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
         Paul Mackerras <paulus@samba.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
         Russell Currey <ruscur@russell.cc>,
         Salil Mehta <salil.mehta@huawei.com>,
         Sathya Prakash <sathya.prakash@broadcom.com>,
@@ -89,97 +116,34 @@ Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
         oss-drivers@corigine.com, qat-linux@intel.com,
         "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
         xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 00/11] PCI: Drop duplicated tracking of a pci_dev's
- bound driver
-Message-ID: <20211015164653.GA2108651@bhelgaas>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YWbdvc7EWEZLVTHM@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 13, 2021 at 04:23:09PM +0300, Andy Shevchenko wrote:
-> On Wed, Oct 13, 2021 at 06:33:56AM -0500, Bjorn Helgaas wrote:
-> > On Wed, Oct 13, 2021 at 12:26:42PM +0300, Andy Shevchenko wrote:
-> > > On Wed, Oct 13, 2021 at 2:33 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > On Mon, Oct 04, 2021 at 02:59:24PM +0200, Uwe Kleine-König wrote:
+On Fri, Oct 15, 2021 at 7:46 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> On Wed, Oct 13, 2021 at 04:23:09PM +0300, Andy Shevchenko wrote:
 
-> > > > +       return drv && drv->resume ?
-> > > > +                       drv->resume(pci_dev) : pci_pm_reenable_device(pci_dev);
-> > > 
-> > > One line?
-> > 
-> > I don't think I touched that line.
-> 
-> Then why they are both in + section?
+...
 
-They're both in the + section of the interdiff because Uwe's v6 patch
-looks like this:
+> so compared to Uwe's v6, I restored that section to the original code.
+> My goal here was to make the patch as simple and easy to review as
+> possible.
 
-  static int pci_legacy_resume(struct device *dev)
-  {
-          struct pci_dev *pci_dev = to_pci_dev(dev);
-  -       return drv && drv->resume ?
-  -                       drv->resume(pci_dev) : pci_pm_reenable_device(pci_dev);
-  +       if (pci_dev->dev.driver) {
-  +               struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
-  +
-  +               if (drv->resume)
-  +                       return drv->resume(pci_dev);
-  +       }
-  +
-  +       return pci_pm_reenable_device(pci_dev);
+Thanks for elaboration. I have got it.
 
-and my revision looks like this:
+...
 
-   static int pci_legacy_resume(struct device *dev)
-   {
-	  struct pci_dev *pci_dev = to_pci_dev(dev);
-  -       struct pci_driver *drv = pci_dev->driver;
-  +       struct pci_driver *drv = to_pci_driver(dev->driver);
+> You're right, this didn't make much sense in that patch.  I moved the
+> line join to the previous patch, which unindented this section and
+> made space for this to fit on one line.  Here's the revised commit:
+>
+>   https://git.kernel.org/cgit/linux/kernel/git/helgaas/pci.git/commit/?id=34ab316d7287
 
-so compared to Uwe's v6, I restored that section to the original code.
-My goal here was to make the patch as simple and easy to review as
-possible.
+Side remark: default without break or return is error prone (okay, to
+some extent). Perhaps adding the return statement there will make
+things robust and clean.
 
-> > > > +       struct pci_driver *drv = to_pci_driver(dev->dev.driver);
-> > > >         const struct pci_error_handlers *err_handler =
-> > > > -                       dev->dev.driver ? to_pci_driver(dev->dev.driver)->err_handler : NULL;
-> > > > +                       drv ? drv->err_handler : NULL;
-> > > 
-> > > Isn't dev->driver == to_pci_driver(dev->dev.driver)?
-> > 
-> > Yes, I think so, but not sure what you're getting at here, can you
-> > elaborate?
-> 
-> Getting pointer from another pointer seems waste of resources, why we
-> can't simply
-> 
-> 	struct pci_driver *drv = dev->driver;
-
-I think this is in pci_dev_save_and_disable(), and "dev" here is a
-struct pci_dev *.  We're removing the dev->driver member.  Let me know
-if I'm still missing something.
-
-> > > > -                               "bad request in aer recovery "
-> > > > -                               "operation!\n");
-> > > > +                               "bad request in AER recovery operation!\n");
-
-> > > Stray change? Or is it in a separate patch in your tree?
-> > 
-> > Could be skipped.  The string now fits on one line so I combined it to
-> > make it more greppable.
-> 
-> This is inconsistency in your changes, in one case you are objecting of
-> doing something close to the changed lines, in the other you are doing
-> unrelated change.
-
-You're right, this didn't make much sense in that patch.  I moved the
-line join to the previous patch, which unindented this section and
-made space for this to fit on one line.  Here's the revised commit:
-
-  https://git.kernel.org/cgit/linux/kernel/git/helgaas/pci.git/commit/?id=34ab316d7287
-
+-- 
+With Best Regards,
+Andy Shevchenko
