@@ -2,89 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6BC742E778
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Oct 2021 06:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3009A42EF1B
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Oct 2021 12:50:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232597AbhJOEGj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Oct 2021 00:06:39 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:24319 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbhJOEGi (ORCPT
+        id S238087AbhJOKwO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Oct 2021 06:52:14 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:41668
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229690AbhJOKwM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Oct 2021 00:06:38 -0400
-Received: from dggeml757-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4HVswx4tqrzbcyb;
-        Fri, 15 Oct 2021 12:00:01 +0800 (CST)
-Received: from localhost.localdomain (10.175.104.82) by
- dggeml757-chm.china.huawei.com (10.1.199.137) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.8; Fri, 15 Oct 2021 12:04:30 +0800
-From:   Ziyang Xuan <william.xuanziyang@huawei.com>
-To:     <amitkarwar@gmail.com>, <siva8118@gmail.com>
-CC:     <kvalo@codeaurora.org>, <davem@davemloft.net>, <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH net] rsi: stop thread firstly in rsi_91x_init() error handling
-Date:   Fri, 15 Oct 2021 12:03:35 +0800
-Message-ID: <20211015040335.1021546-1-william.xuanziyang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 15 Oct 2021 06:52:12 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 10FA43F22D;
+        Fri, 15 Oct 2021 10:50:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1634295005;
+        bh=X4YwiosBIxIOm7QIAfV/oUAM58MbArX1kagItuGPD/A=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=cyQR5Nu0KTe4743+qpozHm1TuFbgKrGIYGCDH/8HuXUpCaHAi3hhLLpc3XWv1wm0b
+         e9CXzE7xEMy/UP+EZdSdumFMCQ4FiO9hQZbxbvp5+5RD/4d+eNmLwLn2qE9BfWxysc
+         43DnhOZn2tt028Ve/2YPanHwhTrpTJ4hQuuLzxVaW2DaPMR/C/4F/wo9k7qR0A9tcQ
+         gUjrLxnOzWwa3Kgr9w8tER0qftLga73Py7UHcwagmpHGi9mJVTAjmQskEBqqkaeBTc
+         qQovsLRVgfvdM5VcNYBSUxqvsj9CFqLih95dqzE1hyJQYshZJnQoYMdGAPJjCKn7oz
+         NB2rKFpd+oX9Q==
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] rtw89: Fix two spelling mistakes in debug messages
+Date:   Fri, 15 Oct 2021 11:50:04 +0100
+Message-Id: <20211015105004.11817-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.104.82]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggeml757-chm.china.huawei.com (10.1.199.137)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When fail to init coex module, free 'common' and 'adapter' directly, but
-common->tx_thread which will access 'common' and 'adapter' is running at
-the same time. That will trigger the UAF bug.
+From: Colin Ian King <colin.king@canonical.com>
 
-==================================================================
-BUG: KASAN: use-after-free in rsi_tx_scheduler_thread+0x50f/0x520 [rsi_91x]
-Read of size 8 at addr ffff8880076dc000 by task Tx-Thread/124777
-CPU: 0 PID: 124777 Comm: Tx-Thread Not tainted 5.15.0-rc5+ #19
-Call Trace:
- dump_stack_lvl+0xe2/0x152
- print_address_description.constprop.0+0x21/0x140
- ? rsi_tx_scheduler_thread+0x50f/0x520
- kasan_report.cold+0x7f/0x11b
- ? rsi_tx_scheduler_thread+0x50f/0x520
- rsi_tx_scheduler_thread+0x50f/0x520
-...
+There are two spelling mistakes in rtw89_debug messages. Fix them.
 
-Freed by task 111873:
- kasan_save_stack+0x1b/0x40
- kasan_set_track+0x1c/0x30
- kasan_set_free_info+0x20/0x30
- __kasan_slab_free+0x109/0x140
- kfree+0x117/0x4c0
- rsi_91x_init+0x741/0x8a0 [rsi_91x]
- rsi_probe+0x9f/0x1750 [rsi_usb]
-
-Stop thread before free 'common' and 'adapter' to fix it.
-
-Fixes: 2108df3c4b18 ("rsi: add coex support")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/rsi/rsi_91x_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw89/phy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_main.c b/drivers/net/wireless/rsi/rsi_91x_main.c
-index d98483298555..87f83def6c25 100644
---- a/drivers/net/wireless/rsi/rsi_91x_main.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_main.c
-@@ -359,6 +359,7 @@ struct rsi_hw *rsi_91x_init(u16 oper_mode)
- 	if (common->coex_mode > 1) {
- 		if (rsi_coex_attach(common)) {
- 			rsi_dbg(ERR_ZONE, "Failed to init coex module\n");
-+			rsi_kill_thread(&common->tx_thread);
- 			goto err;
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 53c36cc82c57..ab134856baac 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -1715,7 +1715,7 @@ static s32 rtw89_phy_multi_sta_cfo_calc(struct rtw89_dev *rtwdev)
+ 			target_cfo = clamp(cfo_avg, max_cfo_lb, min_cfo_ub);
+ 		} else {
+ 			rtw89_debug(rtwdev, RTW89_DBG_CFO,
+-				    "No intersection of cfo torlence windows\n");
++				    "No intersection of cfo tolerance windows\n");
+ 			target_cfo = phy_div(cfo_khz_all, (s32)sta_cnt);
  		}
+ 		for (i = 0; i < CFO_TRACK_MAX_USER; i++)
+@@ -2749,7 +2749,7 @@ static void rtw89_phy_dig_dyn_pd_th(struct rtw89_dev *rtwdev, u8 rssi,
+ 			    dig->igi_rssi, final_rssi, under_region, val);
+ 	} else {
+ 		rtw89_debug(rtwdev, RTW89_DBG_DIG,
+-			    "Dynamic PD th dsiabled, Set PD_low_bd=0\n");
++			    "Dynamic PD th disabled, Set PD_low_bd=0\n");
  	}
+ 
+ 	rtw89_phy_write32_mask(rtwdev, R_SEG0R_PD, B_SEG0R_PD_LOWER_BOUND_MSK,
 -- 
-2.25.1
+2.32.0
 
