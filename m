@@ -2,66 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C23B430136
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Oct 2021 10:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B95B4301C8
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Oct 2021 12:18:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243848AbhJPIqR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Oct 2021 04:46:17 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:52886 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S243841AbhJPIqQ (ORCPT
+        id S240219AbhJPKUN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Oct 2021 06:20:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38010 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235335AbhJPKUL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Oct 2021 04:46:16 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1mbfIV-000Xqv-91; Sat, 16 Oct 2021 11:44:07 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Sat, 16 Oct 2021 11:43:59 +0300
-Message-Id: <iwlwifi.20211016114029.8b5480113f53.I80b5b4ebea84e56f3b3143fc1ee7097be8b4ae78@changeid>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211016084359.246930-1-luca@coelho.fi>
-References: <20211016084359.246930-1-luca@coelho.fi>
+        Sat, 16 Oct 2021 06:20:11 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [IPv6:2001:67c:2050::465:202])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78632C061570;
+        Sat, 16 Oct 2021 03:18:03 -0700 (PDT)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [80.241.60.245])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4HWfGb46jszQk3H;
+        Sat, 16 Oct 2021 12:17:59 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+From:   =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+Subject: [PATCH 0/4] A few cleanups and a fix for mwifiex
+Date:   Sat, 16 Oct 2021 12:17:39 +0200
+Message-Id: <20211016101743.15565-1-verdre@v0yd.nl>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH for v5.15 5/5] iwlwifi: cfg: set low-latency-xtal for some integrated So devices
+X-Rspamd-Queue-Id: 7D98826A
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Just a few cleanups and a fix for incorrect DELBA requests (found that while 
+looking at on-air packets with wireshark) for mwifiex.
 
-The integrated So devices covered by the iwl_so_long_latency_trans_cfg
-configuration should all have low-latency-xtal enabled, so do that.
-While at it, remove the TODO, I've checked the other values as well.
+Jonas Dreßler (4):
+  mwifiex: Don't log error on suspend if wake-on-wlan is disabled
+  mwifiex: Log an error on command failure during key-material upload
+  mwifiex: Fix an incorrect comment
+  mwifiex: Send DELBA requests according to spec
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Fixes: 6f60fb03c8e7 ("iwlwifi: move SnJ and So rules to the new tables")
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/11n.c      |  7 ++++---
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 12 +++++++++---
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index d8231cc821ae..c18b27b0d60e 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -355,7 +355,7 @@ const struct iwl_cfg_trans_params iwl_so_long_latency_trans_cfg = {
- 	.base_params = &iwl_ax210_base_params,
- 	.umac_prph_offset = 0x300000,
- 	.integrated = true,
--	/* TODO: the following values need to be checked */
-+	.low_latency_xtal = true,
- 	.xtal_latency = 12000,
- 	.ltr_delay = IWL_CFG_TRANS_LTR_DELAY_2500US,
- };
 -- 
-2.33.0
+2.31.1
 
