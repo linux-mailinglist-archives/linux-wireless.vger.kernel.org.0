@@ -2,107 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9169A430363
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Oct 2021 17:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B47E84303B5
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Oct 2021 18:25:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238672AbhJPPfs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Oct 2021 11:35:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50310 "EHLO
+        id S240744AbhJPQ1Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Oct 2021 12:27:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238772AbhJPPfd (ORCPT
+        with ESMTP id S240663AbhJPQ1X (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Oct 2021 11:35:33 -0400
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [IPv6:2001:67c:2050::465:202])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B86EC06176E;
-        Sat, 16 Oct 2021 08:33:24 -0700 (PDT)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4HWnGV5JhCzQkB3;
-        Sat, 16 Oct 2021 17:33:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Message-ID: <33b1bd25-7ed7-4a45-8b18-9454f848b325@v0yd.nl>
-Date:   Sat, 16 Oct 2021 17:33:17 +0200
+        Sat, 16 Oct 2021 12:27:23 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABDF1C06176E
+        for <linux-wireless@vger.kernel.org>; Sat, 16 Oct 2021 09:25:14 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id r18so51157001edv.12
+        for <linux-wireless@vger.kernel.org>; Sat, 16 Oct 2021 09:25:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=PXDRqRXHhYJ9G2cpvs3vbJxoTINuAvYFHHfiK0UYON8=;
+        b=o2nRbaXvGvY7WbKlFMmVKHRKfHlV/tlu6rJZirHuH69aMffZrLNDqyFVherHp44bKt
+         18fSRI6/AoVJvHo7M9geXgocUBqsqEPLtJQ19Uj5KswayKN5VVf6esVg2KjnHMMXYnvh
+         ASUmAUJi4MbwTmzIkDwP7s9IOyxczMjzd+oyDqhNa5TGRCCct83Lykgd2uKy9phEuuCr
+         5aqobhqhUBb8EEQzC2mgJHoa2fXoBoLGc+Z8iFiAQBYlAAtnDzQiLPQSYFE9rXDridBk
+         jwKWTVKW24E4F/FRbSMlgiYJJcduq8AWPOCe+MhlYuGmcwOLUTSmekXpNLyadKTriJnJ
+         T6Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=PXDRqRXHhYJ9G2cpvs3vbJxoTINuAvYFHHfiK0UYON8=;
+        b=b/yu9mOIqPPov4UUNhmrj9pLvc7cNs/2jtA9jP5kPwWjPlgNGP99B6dF85GC7eBKVs
+         FCm5Pv6fsClcMxkanL6jTwOWMOeCM6jTetaKvZhXPKl+957XPtuxmyMfGT+cdKddLD2/
+         WVQRQRZuAU/0fJ8pTuII2/5KDDMz8uSlhyShBJc4qL5IYXfz4AT3NrOgEiQtDFz/0hHZ
+         6cVb63RscgOr+b+acKnfkZ8FOsdqbr1Iefvdg/fWjxApSSTETll5+R7pC1H5UXcXehjU
+         RKkkk9/ntXhknwvaHlmXCngaeWOA/0W4I1snVWrdOW+sM59SP6mC87PD7gIEho4rLPPc
+         PbqA==
+X-Gm-Message-State: AOAM530GHGG5iIvbsWgxqSJwH+vRdZhKmw70r6YbhWzE2DsF9S03mzWD
+        P8H3xftoms/feSaWT7wXa3KJVy9xW7voTJrgaEI=
+X-Google-Smtp-Source: ABdhPJzURrxwauAtjty+KaCUe4lihAvC4I3hHOz3jF4Vw0ybooDZK5BIjYt7Lqi2pXzg7HbyYk/+t9f3pu1zibn0AQA=
+X-Received: by 2002:a17:906:7c86:: with SMTP id w6mr15710724ejo.283.1634401513010;
+ Sat, 16 Oct 2021 09:25:13 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 4/5] mwifiex: Send DELBA requests according to spec
-Content-Language: en-US
-To:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-References: <20211016103656.16791-1-verdre@v0yd.nl>
- <20211016103656.16791-5-verdre@v0yd.nl>
- <20211016142809.tjezv4dpxrlmdp6v@pali>
-From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
-In-Reply-To: <20211016142809.tjezv4dpxrlmdp6v@pali>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CD5AC188C
+Received: by 2002:ab4:a24e:0:0:0:0:0 with HTTP; Sat, 16 Oct 2021 09:25:12
+ -0700 (PDT)
+Reply-To: drobafemiaina@gmail.com
+From:   Rev James William <officialunit11@gmail.com>
+Date:   Sat, 16 Oct 2021 09:25:12 -0700
+Message-ID: <CAFYe6wrDLryPU6DPS5hroc=1p=-gOr-9A88vq-ZVVyf2TGn8UA@mail.gmail.com>
+Subject: COMPENSATION PAYMENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/16/21 16:28, Pali Rohár wrote:
-> On Saturday 16 October 2021 12:36:55 Jonas Dreßler wrote:
->> While looking at on-air packets using Wireshark, I noticed we're never
->> setting the initiator bit when sending DELBA requests to the AP: While
->> we set the bit on our del_ba_param_set bitmask, we forget to actually
->> copy that bitmask over to the command struct, which means we never
->> actually set the initiator bit.
->>
->> Fix that and copy the bitmask over to the host_cmd_ds_11n_delba command
->> struct.
->>
->> Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
-> 
-> Hello! This looks like is fixing mwifiex_send_delba() function which was
-> added in initial mwifiex commit. So probably it should have following
-> tag:
-> 
-> Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
-> 
-
-Hi Pali,
-
-thanks a lot for the quick review, I just addressed this in v3!
-
->> ---
->>   drivers/net/wireless/marvell/mwifiex/11n.c | 5 +++--
->>   1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/wireless/marvell/mwifiex/11n.c b/drivers/net/wireless/marvell/mwifiex/11n.c
->> index b0695432b26a..9ff2058bcd7e 100644
->> --- a/drivers/net/wireless/marvell/mwifiex/11n.c
->> +++ b/drivers/net/wireless/marvell/mwifiex/11n.c
->> @@ -657,14 +657,15 @@ int mwifiex_send_delba(struct mwifiex_private *priv, int tid, u8 *peer_mac,
->>   	uint16_t del_ba_param_set;
->>   
->>   	memset(&delba, 0, sizeof(delba));
->> -	delba.del_ba_param_set = cpu_to_le16(tid << DELBA_TID_POS);
->>   
->> -	del_ba_param_set = le16_to_cpu(delba.del_ba_param_set);
->> +	del_ba_param_set = tid << DELBA_TID_POS;
->> +
->>   	if (initiator)
->>   		del_ba_param_set |= IEEE80211_DELBA_PARAM_INITIATOR_MASK;
->>   	else
->>   		del_ba_param_set &= ~IEEE80211_DELBA_PARAM_INITIATOR_MASK;
->>   
->> +	delba.del_ba_param_set = cpu_to_le16(del_ba_param_set);
->>   	memcpy(&delba.peer_mac_addr, peer_mac, ETH_ALEN);
->>   
->>   	/* We don't wait for the response of this command */
->> -- 
->> 2.31.1
->>
-
+COMPENSATION PAYMENT Your Name Was Among the Scam Victims Listed to Be
+Compensated by World Bank/IMF Via ATM Card Valued at ($950,000.00USD)
+Send Your Full: Name: ......................... Address:
+...................................... Mobile No:
+.................................. ID Proof: Reply me;
+drobafemiaina@gmail.com
+Regards,
+Rev James William
