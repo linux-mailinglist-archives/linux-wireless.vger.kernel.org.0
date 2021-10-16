@@ -2,69 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 218674301EE
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Oct 2021 12:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E74D430212
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Oct 2021 12:37:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240114AbhJPKYn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Oct 2021 06:24:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50178 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232450AbhJPKYm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Oct 2021 06:24:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7702360F11;
-        Sat, 16 Oct 2021 10:22:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634379754;
-        bh=3AKYeeLaRO1PCI7ZLk5LsPqfsYpKiDoI8Hkn1KpQNM8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=scKaX4BNUjPOb4Dbx2RvASMhuKqrmQuIlZuQY1mfO/35vXfqlCE70g44J/Acugtxl
-         tY70Uhp8aq9IMQjUowi6g0e73QY9NIRAv3/1yPC6eRuM2TRS/S/RrgtsYetApWUNUJ
-         wUdnGpDuQp6TFXvU89qlbiDkUDwORpD7SNfsQHRuGtYHMhLm/yIScGZT23C/EmOb5L
-         7oOGS/52o+aOJBfGVYkCWkFl+1d1GmxRms973YuWfcwHH+4x+ErtAhZhWCd+I6A2vz
-         s9VHySOdZCoxu7EDudO3G5vmw+3cfsgfJUK1reDY2CTuZNmYCAMRD0TWA6WOmiWSzA
-         SeGzv7CAkCD2Q==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7921: get rid of unused variable in mt7921_mac_tx_free
-Date:   Sat, 16 Oct 2021 12:22:24 +0200
-Message-Id: <31b0fee56b0ce1b009b637522197b81b4b269e9a.1634379664.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S244174AbhJPKjS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Oct 2021 06:39:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42342 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235855AbhJPKjR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 16 Oct 2021 06:39:17 -0400
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050::465:101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231FFC061570;
+        Sat, 16 Oct 2021 03:37:09 -0700 (PDT)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [80.241.60.245])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4HWfhf6sDdzQkBW;
+        Sat, 16 Oct 2021 12:37:06 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+From:   =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+Subject: [PATCH v2 0/5] A few more cleanups and fixes for mwifiex
+Date:   Sat, 16 Oct 2021 12:36:51 +0200
+Message-Id: <20211016103656.16791-1-verdre@v0yd.nl>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 90391353
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove unused phy variable in mt7921_mac_tx_free routine
+v1: https://lore.kernel.org/linux-wireless/20211016101743.15565-1-verdre@v0yd.nl/T/#t
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 2 --
- 1 file changed, 2 deletions(-)
+Changes between v1 and v2:
+ - Added another commit fixing a bug with host sleep when it was entered 
+explicitly instead of implicitly.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index ae67e93524c2..0659ff290af9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -1119,7 +1119,6 @@ mt7921_mac_tx_free(struct mt7921_dev *dev, struct sk_buff *skb)
- 		 */
- 		if (info & MT_TX_FREE_PAIR) {
- 			struct mt7921_sta *msta;
--			struct mt7921_phy *phy;
- 			struct mt76_wcid *wcid;
- 			u16 idx;
- 
-@@ -1131,7 +1130,6 @@ mt7921_mac_tx_free(struct mt7921_dev *dev, struct sk_buff *skb)
- 				continue;
- 
- 			msta = container_of(wcid, struct mt7921_sta, wcid);
--			phy = msta->vif->phy;
- 			spin_lock_bh(&dev->sta_poll_lock);
- 			if (list_empty(&msta->poll_list))
- 				list_add_tail(&msta->poll_list, &dev->sta_poll_list);
+Just a few more cleanups and two fixes for mwifiex.
+
+Jonas Dreßler (5):
+  mwifiex: Don't log error on suspend if wake-on-wlan is disabled
+  mwifiex: Log an error on command failure during key-material upload
+  mwifiex: Fix an incorrect comment
+  mwifiex: Send DELBA requests according to spec
+  mwifiex: Deactive host sleep using HSCFG after it was activated
+    manually
+
+ drivers/net/wireless/marvell/mwifiex/11n.c    |  7 ++++---
+ .../net/wireless/marvell/mwifiex/cfg80211.c   | 12 ++++++++---
+ drivers/net/wireless/marvell/mwifiex/cmdevt.c | 21 +++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/main.c   | 18 ++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/main.h   |  1 +
+ .../net/wireless/marvell/mwifiex/sta_cmd.c    |  4 ++++
+ 6 files changed, 57 insertions(+), 6 deletions(-)
+
 -- 
 2.31.1
 
