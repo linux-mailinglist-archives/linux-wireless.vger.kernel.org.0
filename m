@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDDB143078A
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Oct 2021 11:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3282343078B
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Oct 2021 11:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245178AbhJQJmr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 17 Oct 2021 05:42:47 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:53682 "EHLO
+        id S245184AbhJQJms (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 17 Oct 2021 05:42:48 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:53688 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S245173AbhJQJmm (ORCPT
+        with ESMTP id S245181AbhJQJmn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 17 Oct 2021 05:42:42 -0400
+        Sun, 17 Oct 2021 05:42:43 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <luca@coelho.fi>)
-        id 1mc2eb-000YUg-C9; Sun, 17 Oct 2021 12:40:29 +0300
+        id 1mc2ec-000YUg-A5; Sun, 17 Oct 2021 12:40:31 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Sun, 17 Oct 2021 12:40:15 +0300
-Message-Id: <iwlwifi.20211017123741.41563bea6610.I51a886fa75cca723c81877b386ba41b2a9db1122@changeid>
+Date:   Sun, 17 Oct 2021 12:40:16 +0300
+Message-Id: <iwlwifi.20211017123741.1ea5263dafec.Iadffe7cb26554d4c23c9242eb2ec8326306202a9@changeid>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211017094019.442271-1-luca@coelho.fi>
 References: <20211017094019.442271-1-luca@coelho.fi>
@@ -31,188 +31,264 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 08/12] iwlwifi: mvm: add definitions for new rate & flags
+Subject: [PATCH 09/12] iwlwifi: mvm: convert old rate & flags to the new format.
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-As a part of preparing to the new rate & flags,
-add new needed definitions.
+As part of the new rate & flags, convert an old format rate to
+the new. This is needed if the driver supports the new format
+but the FW supports the old one.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/rs.h    | 148 +++++++++++++++++-
- 1 file changed, 144 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/Makefile   |   2 +-
+ .../net/wireless/intel/iwlwifi/fw/api/rs.h    |   7 +
+ drivers/net/wireless/intel/iwlwifi/fw/rs.c    | 131 ++++++++++++++++++
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |  25 +---
+ 4 files changed, 141 insertions(+), 24 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/fw/rs.c
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/Makefile b/drivers/net/wireless/intel/iwlwifi/Makefile
+index d86918d162aa..0d4656efe908 100644
+--- a/drivers/net/wireless/intel/iwlwifi/Makefile
++++ b/drivers/net/wireless/intel/iwlwifi/Makefile
+@@ -15,7 +15,7 @@ iwlwifi-objs		+= iwl-dbg-tlv.o
+ iwlwifi-objs		+= iwl-trans.o
+ iwlwifi-objs		+= queue/tx.o
+ 
+-iwlwifi-objs		+= fw/img.o fw/notif-wait.o
++iwlwifi-objs		+= fw/img.o fw/notif-wait.o fw/rs.o
+ iwlwifi-objs		+= fw/dbg.o fw/pnvm.o fw/dump.o
+ iwlwifi-$(CONFIG_IWLMVM) += fw/paging.o fw/smem.o fw/init.o
+ iwlwifi-$(CONFIG_ACPI) += fw/acpi.o
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h b/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
-index c150bae761be..8d7198897535 100644
+index 8d7198897535..8b4f3c311634 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
-@@ -359,10 +359,6 @@ enum {
-  */
- #define RATE_MCS_CHAN_WIDTH_POS		11
- #define RATE_MCS_CHAN_WIDTH_MSK_V1	(3 << RATE_MCS_CHAN_WIDTH_POS)
--#define RATE_MCS_CHAN_WIDTH_20		(0 << RATE_MCS_CHAN_WIDTH_POS)
--#define RATE_MCS_CHAN_WIDTH_40		(1 << RATE_MCS_CHAN_WIDTH_POS)
--#define RATE_MCS_CHAN_WIDTH_80		(2 << RATE_MCS_CHAN_WIDTH_POS)
--#define RATE_MCS_CHAN_WIDTH_160		(3 << RATE_MCS_CHAN_WIDTH_POS)
+@@ -303,6 +303,7 @@ enum {
+ #define RATE_HT_MCS_RATE_CODE_MSK_V1	0x7
+ #define RATE_HT_MCS_NSS_POS_V1          3
+ #define RATE_HT_MCS_NSS_MSK_V1          (3 << RATE_HT_MCS_NSS_POS_V1)
++#define RATE_HT_MCS_MIMO2_MSK		BIT(RATE_HT_MCS_NSS_POS_V1)
  
- /* Bit 13: (1) Short guard interval (0.4 usec), (0) normal GI (0.8 usec) */
- #define RATE_MCS_SGI_POS_V1		13
-@@ -437,6 +433,150 @@ enum {
- #define RATE_MCS_CTS_REQUIRED_POS  (31)
- #define RATE_MCS_CTS_REQUIRED_MSK  (0x1 << RATE_MCS_CTS_REQUIRED_POS)
+ /* Bit 10: (1) Use Green Field preamble */
+ #define RATE_HT_MCS_GF_POS		10
+@@ -324,6 +325,7 @@ enum {
+ #define RATE_VHT_MCS_RATE_CODE_MSK	0xf
+ #define RATE_VHT_MCS_NSS_POS		4
+ #define RATE_VHT_MCS_NSS_MSK		(3 << RATE_VHT_MCS_NSS_POS)
++#define RATE_VHT_MCS_MIMO2_MSK		BIT(RATE_VHT_MCS_NSS_POS)
  
-+/* rate_n_flags bit field version 2
-+ *
-+ * The 32-bit value has different layouts in the low 8 bits depending on the
-+ * format. There are three formats, HT, VHT and legacy (11abg, with subformats
-+ * for CCK and OFDM).
-+ *
-+ */
+ /*
+  * Legacy OFDM rate format for bits 7:0
+@@ -545,6 +547,7 @@ enum {
+ #define RATE_MCS_HE_GI_LTF_MSK		(0x7 << RATE_MCS_HE_GI_LTF_POS)
+ #define RATE_MCS_SGI_POS		RATE_MCS_HE_GI_LTF_POS
+ #define RATE_MCS_SGI_MSK		(1 << RATE_MCS_SGI_POS)
++#define RATE_MCS_HE_SU_4_LTF		3
+ 
+ /* Bit 24-23: HE type. (0) SU, (1) SU_EXT, (2) MU, (3) trigger based */
+ #define RATE_MCS_HE_TYPE_POS		23
+@@ -694,4 +697,8 @@ struct iwl_lq_cmd {
+ 	__le32 ss_params;
+ }; /* LINK_QUALITY_CMD_API_S_VER_1 */
+ 
++u8 iwl_fw_rate_idx_to_plcp(int idx);
++u32 iwl_new_rate_from_v1(u32 rate_v1);
++u32 iwl_legacy_rate_to_fw_idx(u32 rate_n_flags);
 +
-+/* Bits 10-8: rate format
-+ * (0) Legacy CCK (1) Legacy OFDM (2) High-throughput (HT)
-+ * (3) Very High-throughput (VHT) (4) High-efficiency (HE)
-+ * (5) Extremely High-throughput (EHT)
-+ */
-+#define RATE_MCS_MOD_TYPE_POS		8
-+#define RATE_MCS_MOD_TYPE_MSK		(0x7 << RATE_MCS_MOD_TYPE_POS)
-+#define RATE_MCS_CCK_MSK		(0 << RATE_MCS_MOD_TYPE_POS)
-+#define RATE_MCS_LEGACY_OFDM_MSK	(1 << RATE_MCS_MOD_TYPE_POS)
-+#define RATE_MCS_HT_MSK			(2 << RATE_MCS_MOD_TYPE_POS)
-+#define RATE_MCS_VHT_MSK		(3 << RATE_MCS_MOD_TYPE_POS)
-+#define RATE_MCS_HE_MSK			(4 << RATE_MCS_MOD_TYPE_POS)
-+#define RATE_MCS_EHT_MSK		(5 << RATE_MCS_MOD_TYPE_POS)
-+
+ #endif /* __iwl_fw_api_rs_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/rs.c b/drivers/net/wireless/intel/iwlwifi/fw/rs.c
+new file mode 100644
+index 000000000000..4e066588d5ba
+--- /dev/null
++++ b/drivers/net/wireless/intel/iwlwifi/fw/rs.c
+@@ -0,0 +1,131 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
-+ * Legacy CCK rate format for bits 0:3:
-+ *
-+ * (0) 0xa - 1 Mbps
-+ * (1) 0x14 - 2 Mbps
-+ * (2) 0x37 - 5.5 Mbps
-+ * (3) 0x6e - 11 nbps
-+ *
-+ * Legacy OFDM rate format for bis 3:0:
-+ *
-+ * (0) 6 Mbps
-+ * (1) 9 Mbps
-+ * (2) 12 Mbps
-+ * (3) 18 Mbps
-+ * (4) 24 Mbps
-+ * (5) 36 Mbps
-+ * (6) 48 Mbps
-+ * (7) 54 Mbps
-+ *
++ * Copyright (C) 2021 Intel Corporation
 + */
-+#define RATE_LEGACY_RATE_MSK		0x7
 +
++#include <net/mac80211.h>
++#include "fw/api/rs.h"
++#include "iwl-drv.h"
++
++#define IWL_DECLARE_RATE_INFO(r) \
++	[IWL_RATE_##r##M_INDEX] = IWL_RATE_##r##M_PLCP
++
++u8 iwl_fw_rate_idx_to_plcp(int idx)
++{
 +/*
-+ * HT, VHT, HE, EHT rate format for bits 3:0
-+ * 3-0: MCS
-+ *
-+ */
-+#define RATE_HT_MCS_CODE_MSK		0x7
-+#define RATE_MCS_NSS_POS		4
-+#define RATE_MCS_NSS_MSK		(1 << RATE_MCS_NSS_POS)
-+#define RATE_MCS_CODE_MSK		0xf
-+#define RATE_HT_MCS_INDEX(r)		((((r) & RATE_MCS_NSS_MSK) >> 1) | \
-+					 ((r) & RATE_HT_MCS_CODE_MSK))
-+
-+/* Bits 7-5: reserved */
-+
-+/*
-+ * Bits 13-11: (0) 20MHz, (1) 40MHz, (2) 80MHz, (3) 160MHz, (4) 320MHz
-+ */
-+#define RATE_MCS_CHAN_WIDTH_MSK			(0x7 << RATE_MCS_CHAN_WIDTH_POS)
-+#define RATE_MCS_CHAN_WIDTH_20			(0 << RATE_MCS_CHAN_WIDTH_POS)
-+#define RATE_MCS_CHAN_WIDTH_40			(1 << RATE_MCS_CHAN_WIDTH_POS)
-+#define RATE_MCS_CHAN_WIDTH_80			(2 << RATE_MCS_CHAN_WIDTH_POS)
-+#define RATE_MCS_CHAN_WIDTH_160			(3 << RATE_MCS_CHAN_WIDTH_POS)
-+#define RATE_MCS_CHAN_WIDTH_320			(4 << RATE_MCS_CHAN_WIDTH_POS)
-+
-+/* Bit 15-14: Antenna selection:
-+ * Bit 14: Ant A active
-+ * Bit 15: Ant B active
-+ *
-+ * All relevant definitions are same as in v1
-+ */
-+
-+/* Bit 16 (1) LDPC enables, (0) LDPC disabled */
-+#define RATE_MCS_LDPC_POS	16
-+#define RATE_MCS_LDPC_MSK	(1 << RATE_MCS_LDPC_POS)
-+
-+/* Bit 17: (0) SS, (1) SS*2 (same as v1) */
-+
-+/* Bit 18: OFDM-HE dual carrier mode (same as v1) */
-+
-+/* Bit 19: (0) Beamforming is off, (1) Beamforming is on (same as v1) */
-+
-+/*
-+ * Bit 22-20: HE LTF type and guard interval
-+ * CCK:
-+ *	0			long preamble
-+ *	1			short preamble
-+ * HT/VHT:
-+ *	0			0.8us
-+ *	1			0.4us
-+ * HE (ext) SU:
-+ *	0			1xLTF+0.8us
-+ *	1			2xLTF+0.8us
-+ *	2			2xLTF+1.6us
-+ *	3			4xLTF+3.2us
-+ *	4			4xLTF+0.8us
-+ * HE MU:
-+ *	0			4xLTF+0.8us
-+ *	1			2xLTF+0.8us
-+ *	2			2xLTF+1.6us
-+ *	3			4xLTF+3.2us
-+ * HE TRIG:
-+ *	0			1xLTF+1.6us
-+ *	1			2xLTF+1.6us
-+ *	2			4xLTF+3.2us
++ * Translate from fw_rate_index (IWL_RATE_XXM_INDEX) to PLCP
 + * */
-+#define RATE_MCS_HE_GI_LTF_MSK		(0x7 << RATE_MCS_HE_GI_LTF_POS)
-+#define RATE_MCS_SGI_POS		RATE_MCS_HE_GI_LTF_POS
-+#define RATE_MCS_SGI_MSK		(1 << RATE_MCS_SGI_POS)
++static const u8 fw_rate_idx_to_plcp[IWL_RATE_COUNT] = {
++	IWL_DECLARE_RATE_INFO(1),
++	IWL_DECLARE_RATE_INFO(2),
++	IWL_DECLARE_RATE_INFO(5),
++	IWL_DECLARE_RATE_INFO(11),
++	IWL_DECLARE_RATE_INFO(6),
++	IWL_DECLARE_RATE_INFO(9),
++	IWL_DECLARE_RATE_INFO(12),
++	IWL_DECLARE_RATE_INFO(18),
++	IWL_DECLARE_RATE_INFO(24),
++	IWL_DECLARE_RATE_INFO(36),
++	IWL_DECLARE_RATE_INFO(48),
++	IWL_DECLARE_RATE_INFO(54),
++};
 +
-+/* Bit 24-23: HE type. (0) SU, (1) SU_EXT, (2) MU, (3) trigger based */
-+#define RATE_MCS_HE_TYPE_POS		23
-+#define RATE_MCS_HE_TYPE_SU		(0 << RATE_MCS_HE_TYPE_POS)
-+#define RATE_MCS_HE_TYPE_EXT_SU		(1 << RATE_MCS_HE_TYPE_POS)
-+#define RATE_MCS_HE_TYPE_MU		(2 << RATE_MCS_HE_TYPE_POS)
-+#define RATE_MCS_HE_TYPE_TRIG		(3 << RATE_MCS_HE_TYPE_POS)
-+#define RATE_MCS_HE_TYPE_MSK		(3 << RATE_MCS_HE_TYPE_POS)
++	return fw_rate_idx_to_plcp[idx];
++}
++IWL_EXPORT_SYMBOL(iwl_fw_rate_idx_to_plcp);
 +
-+/* Bit 25: duplicate channel enabled
-+ *
-+ * if this bit is set, duplicate is according to BW (bits 11-13):
-+ *
-+ * CCK:  2x 20MHz
-+ * OFDM Legacy: N x 20Mhz, (N = BW \ 2 , either 2, 4, 8, 16)
-+ * EHT: 2 x BW/2, (80 - 2x40, 160 - 2x80, 320 - 2x160)
-+ * */
-+#define RATE_MCS_DUP_POS		25
-+#define RATE_MCS_DUP_MSK		(1 << RATE_MCS_DUP_POS)
++u32 iwl_new_rate_from_v1(u32 rate_v1)
++{
++	u32 rate_v2 = 0;
++	u32 dup = 0;
 +
-+/* Bit 26: (1) 106-tone RX (8 MHz RU), (0) normal bandwidth */
-+#define RATE_MCS_HE_106T_POS		26
-+#define RATE_MCS_HE_106T_MSK		(1 << RATE_MCS_HE_106T_POS)
++	if (rate_v1 == 0)
++		return rate_v1;
++	/* convert rate */
++	if (rate_v1 & RATE_MCS_HT_MSK_V1) {
++		u32 nss = 0;
 +
-+/* Bit 27: EHT extra LTF:
-+ * instead of 1 LTF for SISO use 2 LTFs,
-+ * instead of 2 LTFs for NSTS=2 use 4 LTFs*/
-+#define RATE_MCS_EHT_EXTRA_LTF_POS	27
-+#define RATE_MCS_EHT_EXTRA_LTF_MSK	(1 << RATE_MCS_EHT_EXTRA_LTF_POS)
++		rate_v2 |= RATE_MCS_HT_MSK;
++		rate_v2 |=
++			rate_v1 & RATE_HT_MCS_RATE_CODE_MSK_V1;
++		nss = (rate_v1 & RATE_HT_MCS_MIMO2_MSK) >>
++			RATE_HT_MCS_NSS_POS_V1;
++		rate_v2 |= nss << RATE_MCS_NSS_POS;
++	} else if (rate_v1 & RATE_MCS_VHT_MSK_V1 ||
++		   rate_v1 & RATE_MCS_HE_MSK_V1) {
++		rate_v2 |= rate_v1 & RATE_VHT_MCS_RATE_CODE_MSK;
 +
-+/* Bit 31-28: reserved */
++		rate_v2 |= rate_v1 & RATE_VHT_MCS_MIMO2_MSK;
 +
- /* Link Quality definitions */
++		if (rate_v1 & RATE_MCS_HE_MSK_V1) {
++			u32 he_type_bits = rate_v1 & RATE_MCS_HE_TYPE_MSK_V1;
++			u32 he_type = he_type_bits >> RATE_MCS_HE_TYPE_POS_V1;
++			u32 he_106t = (rate_v1 & RATE_MCS_HE_106T_MSK_V1) >>
++				RATE_MCS_HE_106T_POS_V1;
++			u32 he_gi_ltf = (rate_v1 & RATE_MCS_HE_GI_LTF_MSK_V1) >>
++				RATE_MCS_HE_GI_LTF_POS;
++
++			if ((he_type_bits == RATE_MCS_HE_TYPE_SU ||
++			     he_type_bits == RATE_MCS_HE_TYPE_EXT_SU) &&
++			    he_gi_ltf == RATE_MCS_HE_SU_4_LTF)
++				/* the new rate have an additional bit to
++				 * represent the value 4 rather then using SGI
++				 * bit for this purpose - as it was done in the old
++				 * rate */
++				he_gi_ltf += (rate_v1 & RATE_MCS_SGI_MSK_V1) >>
++					RATE_MCS_SGI_POS_V1;
++
++			rate_v2 |= he_gi_ltf << RATE_MCS_HE_GI_LTF_POS;
++			rate_v2 |= he_type << RATE_MCS_HE_TYPE_POS;
++			rate_v2 |= he_106t << RATE_MCS_HE_106T_POS;
++			rate_v2 |= rate_v1 & RATE_HE_DUAL_CARRIER_MODE_MSK;
++			rate_v2 |= RATE_MCS_HE_MSK;
++		} else {
++			rate_v2 |= RATE_MCS_VHT_MSK;
++		}
++	/* if legacy format */
++	} else {
++		u32 legacy_rate = iwl_legacy_rate_to_fw_idx(rate_v1);
++
++		WARN_ON(legacy_rate < 0);
++		rate_v2 |= legacy_rate;
++		if (!(rate_v1 & RATE_MCS_CCK_MSK_V1))
++			rate_v2 |= RATE_MCS_LEGACY_OFDM_MSK;
++	}
++
++	/* convert flags */
++	if (rate_v1 & RATE_MCS_LDPC_MSK_V1)
++		rate_v2 |= RATE_MCS_LDPC_MSK;
++	rate_v2 |= (rate_v1 & RATE_MCS_CHAN_WIDTH_MSK_V1) |
++		(rate_v1 & RATE_MCS_ANT_AB_MSK) |
++		(rate_v1 & RATE_MCS_STBC_MSK) |
++		(rate_v1 & RATE_MCS_BF_MSK);
++
++	dup = (rate_v1 & RATE_MCS_DUP_MSK_V1) >> RATE_MCS_DUP_POS_V1;
++	if (dup) {
++		rate_v2 |= RATE_MCS_DUP_MSK;
++		rate_v2 |= dup << RATE_MCS_CHAN_WIDTH_POS;
++	}
++
++	if ((!(rate_v1 & RATE_MCS_HE_MSK_V1)) &&
++	    (rate_v1 & RATE_MCS_SGI_MSK_V1))
++		rate_v2 |= RATE_MCS_SGI_MSK;
++
++	return rate_v2;
++}
++IWL_EXPORT_SYMBOL(iwl_new_rate_from_v1);
++
++u32 iwl_legacy_rate_to_fw_idx(u32 rate_n_flags)
++{
++	int rate = rate_n_flags & RATE_LEGACY_RATE_MSK_V1;
++	int idx;
++	bool ofdm = !(rate_n_flags & RATE_MCS_CCK_MSK_V1);
++	int offset = ofdm ? IWL_FIRST_OFDM_RATE : 0;
++	int last = ofdm ? IWL_RATE_COUNT_LEGACY : IWL_FIRST_OFDM_RATE;
++
++	for (idx = offset; idx < last; idx++)
++		if (iwl_fw_rate_idx_to_plcp(idx) == rate)
++			return idx - offset;
++	return -1;
++}
++
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+index 70ca6d7a31bf..dc1727280248 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+@@ -135,27 +135,6 @@ int iwl_mvm_send_cmd_pdu_status(struct iwl_mvm *mvm, u32 id, u16 len,
+ 	return iwl_mvm_send_cmd_status(mvm, &cmd, status);
+ }
  
- /* # entries in rate scale table to support Tx retries */
+-#define IWL_DECLARE_RATE_INFO(r) \
+-	[IWL_RATE_##r##M_INDEX] = IWL_RATE_##r##M_PLCP
+-
+-/*
+- * Translate from fw_rate_index (IWL_RATE_XXM_INDEX) to PLCP
+- */
+-static const u8 fw_rate_idx_to_plcp[IWL_RATE_COUNT] = {
+-	IWL_DECLARE_RATE_INFO(1),
+-	IWL_DECLARE_RATE_INFO(2),
+-	IWL_DECLARE_RATE_INFO(5),
+-	IWL_DECLARE_RATE_INFO(11),
+-	IWL_DECLARE_RATE_INFO(6),
+-	IWL_DECLARE_RATE_INFO(9),
+-	IWL_DECLARE_RATE_INFO(12),
+-	IWL_DECLARE_RATE_INFO(18),
+-	IWL_DECLARE_RATE_INFO(24),
+-	IWL_DECLARE_RATE_INFO(36),
+-	IWL_DECLARE_RATE_INFO(48),
+-	IWL_DECLARE_RATE_INFO(54),
+-};
+-
+ int iwl_mvm_legacy_rate_to_mac80211_idx(u32 rate_n_flags,
+ 					enum nl80211_band band)
+ {
+@@ -167,7 +146,7 @@ int iwl_mvm_legacy_rate_to_mac80211_idx(u32 rate_n_flags,
+ 	if (band != NL80211_BAND_2GHZ)
+ 		band_offset = IWL_FIRST_OFDM_RATE;
+ 	for (idx = band_offset; idx < IWL_RATE_COUNT_LEGACY; idx++)
+-		if (fw_rate_idx_to_plcp[idx] == rate)
++		if (iwl_fw_rate_idx_to_plcp(idx) == rate)
+ 			return idx - band_offset;
+ 
+ 	return -1;
+@@ -176,7 +155,7 @@ int iwl_mvm_legacy_rate_to_mac80211_idx(u32 rate_n_flags,
+ u8 iwl_mvm_mac80211_idx_to_hwrate(int rate_idx)
+ {
+ 	/* Get PLCP rate for tx_cmd->rate_n_flags */
+-	return fw_rate_idx_to_plcp[rate_idx];
++	return iwl_fw_rate_idx_to_plcp(rate_idx);
+ }
+ 
+ u8 iwl_mvm_mac80211_ac_to_ucode_ac(enum ieee80211_ac_numbers ac)
 -- 
 2.33.0
 
