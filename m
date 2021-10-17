@@ -2,243 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D783E4305A7
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Oct 2021 01:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F38E84305D4
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Oct 2021 03:26:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241213AbhJPXsU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Oct 2021 19:48:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44442 "EHLO
+        id S244732AbhJQB2M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Oct 2021 21:28:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235646AbhJPXsU (ORCPT
+        with ESMTP id S230100AbhJQB2L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Oct 2021 19:48:20 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B58EC061765
-        for <linux-wireless@vger.kernel.org>; Sat, 16 Oct 2021 16:46:11 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id m42so5346310wms.2
-        for <linux-wireless@vger.kernel.org>; Sat, 16 Oct 2021 16:46:11 -0700 (PDT)
+        Sat, 16 Oct 2021 21:28:11 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4F3BC061765
+        for <linux-wireless@vger.kernel.org>; Sat, 16 Oct 2021 18:26:02 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id g39so1340503wmp.3
+        for <linux-wireless@vger.kernel.org>; Sat, 16 Oct 2021 18:26:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=XvNTZLNOzLgLjC4+6eG/G/iNgfR6PdkPdBydtJNakHc=;
-        b=eoOlDofeT6p4yzsDtCGTrsyK/n9M/HWVIfQBwNozC1HJwArLuemBuPcTkk4MEimZRr
-         D8JOVh5IEtUk9DA+O104H4Lx+ZeswjP+fTSfg7IXk74HJ8AFJgj6A2/dq9HsKBPEKXP1
-         0ZPHkY+bToo4R0us3MafQ2zLzvFgMJKgJA4rpBCodVtjtljG6MJgEuZUXY74OPdgZx6J
-         rEZHDDc0Vl6bs71LXv0ZQp/DP+SsG07hlPm2NjLucVlGxOdhtx9XE9cJKpN7M1xkhfVv
-         +LqkXcH2d6VKgznXAlX+C1n/yogJBp+JW+C3hOVIxJafTOakW0g5MpqjdW5CTFm3p2eV
-         J4gg==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=Rr3qZDMIl7pagGIdYlcp6tST/QiEXlZiT685jKY0/+k=;
+        b=OaalqhZEoWKxxtK2vLxQOE8a/ldnypSOmIGbuHmwCpFDDPStGgVYZOeZUQuW6OOVgs
+         LLjzHUaEEemXt0SyvpgD4r1j1YNULj6IJ0HIFV3yuLDCQT+SAfQMRQZDYaNSkrHb2Tce
+         eO+0FNP5a2kiGNbd4SINZybgeacXQ38daeqc/WOo8W7XDWVWTMuzRXYNYohqhL727ASp
+         yod/8kU7G9EGfiPt1GDNi4Rbr53+a1TJ7KbCgDNF5XmYaAU9o4WFxdhOAmJCR+jgpPgh
+         z5lGi8uoePzM69zMCpzf/nA76S5PIFxNOmnQ1gG+D0C4Z8XWm8lpqQLaKZNM1ukIIeSo
+         L5FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=XvNTZLNOzLgLjC4+6eG/G/iNgfR6PdkPdBydtJNakHc=;
-        b=E30T4T/I6EtcjKCVLhvSq974JAOk1lQfpwmBuShW3wWi/Rb+HckWKhxcgoXumzK4rt
-         CW0y7VfLU4M1BL6H98s6FhTpK++YCdegKro01D7UQ9vxI/WW80yzgrJzdG618pJ0KQln
-         ngxlw9tF91FQVhFzT3xoFpZ1mMKKrEMIdNPLLE+eoBCpCm1JKFOIgBIBjhY9E6vybnll
-         gA6ehU/9c23V/SkBw8rhlj5mPtdmnH5gAWPUthNm30grImn7EsIlEbpOzyjg+zYQHxSd
-         HwVwH06EKxS+CJBkX3QMNaF5rk5HtnesxsiIb2S0DHLIU9VihckmPwQxG9rgPdt8VtNB
-         Gd5w==
-X-Gm-Message-State: AOAM5333h32EQaxUBCqvYXd1ZaLtXCV+p+9R6aW0+U9EfbKlJ6ePDb5O
-        xdAwY1nAWSFl8TFgqnT6KhL+Zb4D4kE=
-X-Google-Smtp-Source: ABdhPJxrz7ieWrNWdOQq8ZgLN4yiznyLSXyALTpQwCNaZ72N07HCZGo2xWUGb4vj067U0TM8Nmsn4A==
-X-Received: by 2002:a05:600c:3223:: with SMTP id r35mr21074717wmp.32.1634427970033;
-        Sat, 16 Oct 2021 16:46:10 -0700 (PDT)
-Received: from debian64.daheim (p200300d5ff365c00d63d7efffebde96e.dip0.t-ipconnect.de. [2003:d5:ff36:5c00:d63d:7eff:febd:e96e])
-        by smtp.gmail.com with ESMTPSA id f18sm8385193wrg.3.2021.10.16.16.46.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Oct 2021 16:46:09 -0700 (PDT)
-Received: from chuck by debian64.daheim with local (Exim 4.95)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1mbtNR-006ZzY-5d;
-        Sun, 17 Oct 2021 01:46:09 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Cc:     Kalle Valo <kvalo@codeaurora.org>
-Subject: [PATCH v2] ath10k: fetch (pre-)calibration data via nvmem subsystem
-Date:   Sun, 17 Oct 2021 01:46:09 +0200
-Message-Id: <20211016234609.1568317-1-chunkeey@gmail.com>
-X-Mailer: git-send-email 2.33.0
+        bh=Rr3qZDMIl7pagGIdYlcp6tST/QiEXlZiT685jKY0/+k=;
+        b=md8pN0XfUExHu8ycX/8jiIyUhs3Td9TiMzEnmhcnGnGqwHBDdvbWlYI32wVlUb0Qnk
+         rvEzCNSX1WSB8x6hwlbkq+1KX2FlXGjSjCKp6rk+7uSlAmUyU8Np3XssV5KXCYkXuPhh
+         60rlvd74LaiSq1oy8zc31+XtJyVi0bfX1QiO9iP75ypG1dXu+GrAfPeg8WGRSIvTDyUN
+         7jAvB1OieWswCvEtpQXQNCn3+EuSRh6XgPq+zd/vjoxTQ0+VQ+S5+yZGuthd30Xx6yvp
+         odJZVB/CKvwCHVLsBZAXXlpq97oK+z1CGowc0vBTP+GESwEWtdf5h3vZ6Lsiaf926tV2
+         MOsg==
+X-Gm-Message-State: AOAM531cOJDxlXmOrRe4KNzI9JNq0qwO2yNEmXz5CXxcdzCf4ZtjjHMe
+        yOdfu3bM86OpV5iPLlkWTJZtRQ==
+X-Google-Smtp-Source: ABdhPJy/OwjLXQt1D42GAu1qBOdD08h2UIBxd/0omIDBUwqkENUoiQcHydycMLFWJvGZOVRGz768Nw==
+X-Received: by 2002:a1c:1dcb:: with SMTP id d194mr34183303wmd.161.1634433961231;
+        Sat, 16 Oct 2021 18:26:01 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id g25sm8571871wrc.88.2021.10.16.18.25.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 16 Oct 2021 18:26:00 -0700 (PDT)
+Message-ID: <86d286ad-2790-fa03-d879-a79101bd1ae9@linaro.org>
+Date:   Sun, 17 Oct 2021 02:28:00 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.1
+Subject: Re: [PATCH 4/4] wcn36xx: Put DXE block into reset before freeing
+ memory
+Content-Language: en-US
+To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        wcn36xx@lists.infradead.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     loic.poulain@linaro.org, benl@squareup.com,
+        daniel.thompson@linaro.org
+References: <20211015131741.2455824-1-bryan.odonoghue@linaro.org>
+ <20211015131741.2455824-5-bryan.odonoghue@linaro.org>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <20211015131741.2455824-5-bryan.odonoghue@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ATH10K chips are used it wide range of routers,
-accesspoints, range extenders, network appliances.
-On these embedded devices, calibration data is often
-stored on the main system's flash and was out of reach
-for the driver.
+On 15/10/2021 14:17, Bryan O'Donoghue wrote:
+> When deiniting the DXE hardware we should reset the block to ensure there
+> is no spurious DMA write transaction from the downstream WCNSS to upstream
+> MSM at a skbuff address we will have released.
+> 
+> This is actually a pretty serious bug. Immediately after the reset we
+> release skbs, skbs which are from the perspective of the WCNSS DXE still
+> valid addresses for DMA.
+> 
+> Without first placing the DXE block into reset, it is possible for an
+> upstream DMA transaction to write to skbs we have freed.
+> 
+> We have seen some backtraces from usage in testing on 50k+ devices which
+> indicates an invalid RX of an APs beacon to unmapped memory.
+> 
+> The logical conclusion is that an RX transaction happened to a region of
+> memory that was previously valid but was subsequently released.
+> 
+> The only time such a window of opportunity exists is when we have
+> deallocated the skbs attached to the DMA BDs in other words after doing
+> wcn36xx_stop().
+> 
+> If we free the skbs on the DMA channel, we need to make sure we have
+> quiesced potential DMA on that channel prior to freeing.
+> 
+> This patch should eliminate that error.
+> 
+> Fixes: 8e84c2582169 ("wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680 hardware")
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> ---
+>   drivers/net/wireless/ath/wcn36xx/dxe.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/wcn36xx/dxe.c b/drivers/net/wireless/ath/wcn36xx/dxe.c
+> index e89002502869a..56f605c23f36c 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/dxe.c
+> +++ b/drivers/net/wireless/ath/wcn36xx/dxe.c
+> @@ -1020,6 +1020,8 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
+>   
+>   void wcn36xx_dxe_deinit(struct wcn36xx *wcn)
+>   {
+> +	int reg_data = 0;
+> +
+>   	/* Disable channel interrupts */
+>   	wcn36xx_dxe_disable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_RX_H);
+>   	wcn36xx_dxe_disable_ch_int(wcn, WCN36XX_INT_MASK_CHAN_RX_L);
+> @@ -1035,6 +1037,10 @@ void wcn36xx_dxe_deinit(struct wcn36xx *wcn)
+>   		wcn->tx_ack_skb = NULL;
+>   	}
+>   
+> +	/* Put the DXE block into reset before freeing memory */
+> +	reg_data = WCN36XX_DXE_REG_RESET;
+> +	wcn36xx_dxe_write_register(wcn, WCN36XX_DXE_REG_CSR_RESET, reg_data);
+> +
+>   	wcn36xx_dxe_ch_free_skbs(wcn, &wcn->dxe_rx_l_ch);
+>   	wcn36xx_dxe_ch_free_skbs(wcn, &wcn->dxe_rx_h_ch);
+>   
+> 
 
-To bridge this gap, ath10k is getting extended to pull
-the (pre-)calibration data through nvmem subsystem.
-To do this, a nvmem-cell containing the information can
-either be specified in the platform data or via device-tree.
+Johannes asked me separately if we need to wait for the quiesence to 
+complete.
 
-Tested with:
-        Netgear EX6150v2 (IPQ4018 - pre-calibration method)
-        TP-Link Archer C7 v2 (QCA9880v2 - old calibration method)
+I don't see that downstream but, that doesn't mean we shouldn't do it.
 
-Cc: Robert Marko <robimarko@gmail.com>
-Cc: Thibaut VARÈNE <hacks@slashdirt.org>
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
----
+So I'll investigate that.
 
-v1 -> v2:
-	- use %zu and %u in the format string for size_t
-          and u32 types (catched by the "kernel test robot").
-	- reworded commit message + successfully tested on QCA9880v2
+Also - now that I look at this code, this being the second usage of the 
+CSR_RESET like this, also means the reset can be functionally decomposed 
+into a routine.
 
-I placed the nvmem code in front of the current "file" method
-(firmware_request). Reason is that this makes it easier for me
-to test it. If needed it can be moved to a different place.
----
- drivers/net/wireless/ath/ath10k/core.c | 64 +++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath10k/core.h |  6 +++
- 2 files changed, 68 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index c21e05549f61..9f0e3f010620 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -12,6 +12,7 @@
- #include <linux/dmi.h>
- #include <linux/ctype.h>
- #include <linux/pm_qos.h>
-+#include <linux/nvmem-consumer.h>
- #include <asm/byteorder.h>
- 
- #include "core.h"
-@@ -935,7 +936,8 @@ static int ath10k_core_get_board_id_from_otp(struct ath10k *ar)
- 	}
- 
- 	if (ar->cal_mode == ATH10K_PRE_CAL_MODE_DT ||
--	    ar->cal_mode == ATH10K_PRE_CAL_MODE_FILE)
-+	    ar->cal_mode == ATH10K_PRE_CAL_MODE_FILE ||
-+	    ar->cal_mode == ATH10K_PRE_CAL_MODE_NVMEM)
- 		bmi_board_id_param = BMI_PARAM_GET_FLASH_BOARD_ID;
- 	else
- 		bmi_board_id_param = BMI_PARAM_GET_EEPROM_BOARD_ID;
-@@ -1726,7 +1728,8 @@ static int ath10k_download_and_run_otp(struct ath10k *ar)
- 
- 	/* As of now pre-cal is valid for 10_4 variants */
- 	if (ar->cal_mode == ATH10K_PRE_CAL_MODE_DT ||
--	    ar->cal_mode == ATH10K_PRE_CAL_MODE_FILE)
-+	    ar->cal_mode == ATH10K_PRE_CAL_MODE_FILE ||
-+	    ar->cal_mode == ATH10K_PRE_CAL_MODE_NVMEM)
- 		bmi_otp_exe_param = BMI_PARAM_FLASH_SECTION_ALL;
- 
- 	ret = ath10k_bmi_execute(ar, address, bmi_otp_exe_param, &result);
-@@ -1853,6 +1856,39 @@ static int ath10k_download_cal_eeprom(struct ath10k *ar)
- 	return ret;
- }
- 
-+static int ath10k_download_cal_nvmem(struct ath10k *ar, const char *cell_name)
-+{
-+	struct nvmem_cell *cell;
-+	void *buf;
-+	size_t len;
-+	int ret;
-+
-+	cell = devm_nvmem_cell_get(ar->dev, cell_name);
-+	if (IS_ERR(cell)) {
-+		ret = PTR_ERR(cell);
-+		return ret;
-+	}
-+
-+	buf = nvmem_cell_read(cell, &len);
-+	if (IS_ERR(buf))
-+		return PTR_ERR(buf);
-+
-+	if (ar->hw_params.cal_data_len != len) {
-+		kfree(buf);
-+		ath10k_warn(ar, "invalid calibration data length in nvmem-cell '%s': %zu != %u\n",
-+			    cell_name, len, ar->hw_params.cal_data_len);
-+		return -EMSGSIZE;
-+	}
-+
-+	ret = ath10k_download_board_data(ar, buf, len);
-+	kfree(buf);
-+	if (ret)
-+		ath10k_warn(ar, "failed to download calibration data from nvmem-cell '%s': %d\n",
-+			    cell_name, ret);
-+
-+	return ret;
-+}
-+
- int ath10k_core_fetch_firmware_api_n(struct ath10k *ar, const char *name,
- 				     struct ath10k_fw_file *fw_file)
- {
-@@ -2087,6 +2123,18 @@ static int ath10k_core_pre_cal_download(struct ath10k *ar)
- {
- 	int ret;
- 
-+	ret = ath10k_download_cal_nvmem(ar, "pre-calibration");
-+	if (ret == 0) {
-+		ar->cal_mode = ATH10K_PRE_CAL_MODE_NVMEM;
-+		goto success;
-+	} else if (ret == -EPROBE_DEFER) {
-+		return ret;
-+	}
-+
-+	ath10k_dbg(ar, ATH10K_DBG_BOOT,
-+		   "boot did not find a pre-calibration nvmem-cell, try file next: %d\n",
-+		   ret);
-+
- 	ret = ath10k_download_cal_file(ar, ar->pre_cal_file);
- 	if (ret == 0) {
- 		ar->cal_mode = ATH10K_PRE_CAL_MODE_FILE;
-@@ -2153,6 +2201,18 @@ static int ath10k_download_cal_data(struct ath10k *ar)
- 		   "pre cal download procedure failed, try cal file: %d\n",
- 		   ret);
- 
-+	ret = ath10k_download_cal_nvmem(ar, "calibration");
-+	if (ret == 0) {
-+		ar->cal_mode = ATH10K_CAL_MODE_NVMEM;
-+		goto done;
-+	} else if (ret == -EPROBE_DEFER) {
-+		return ret;
-+	}
-+
-+	ath10k_dbg(ar, ATH10K_DBG_BOOT,
-+		   "boot did not find a calibration nvmem-cell, try file next: %d\n",
-+		   ret);
-+
- 	ret = ath10k_download_cal_file(ar, ar->cal_file);
- 	if (ret == 0) {
- 		ar->cal_mode = ATH10K_CAL_MODE_FILE;
-diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
-index 5aeff2d9f6cf..9f6680b3be0a 100644
---- a/drivers/net/wireless/ath/ath10k/core.h
-+++ b/drivers/net/wireless/ath/ath10k/core.h
-@@ -877,8 +877,10 @@ enum ath10k_cal_mode {
- 	ATH10K_CAL_MODE_FILE,
- 	ATH10K_CAL_MODE_OTP,
- 	ATH10K_CAL_MODE_DT,
-+	ATH10K_CAL_MODE_NVMEM,
- 	ATH10K_PRE_CAL_MODE_FILE,
- 	ATH10K_PRE_CAL_MODE_DT,
-+	ATH10K_PRE_CAL_MODE_NVMEM,
- 	ATH10K_CAL_MODE_EEPROM,
- };
- 
-@@ -898,10 +900,14 @@ static inline const char *ath10k_cal_mode_str(enum ath10k_cal_mode mode)
- 		return "otp";
- 	case ATH10K_CAL_MODE_DT:
- 		return "dt";
-+	case ATH10K_CAL_MODE_NVMEM:
-+		return "nvmem";
- 	case ATH10K_PRE_CAL_MODE_FILE:
- 		return "pre-cal-file";
- 	case ATH10K_PRE_CAL_MODE_DT:
- 		return "pre-cal-dt";
-+	case ATH10K_PRE_CAL_MODE_NVMEM:
-+		return "pre-cal-nvmem";
- 	case ATH10K_CAL_MODE_EEPROM:
- 		return "eeprom";
- 	}
--- 
-2.33.0
-
+So - I'll look into the first and definitely do the second as a V2
