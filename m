@@ -2,82 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56F254308A7
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Oct 2021 14:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F32430951
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Oct 2021 15:26:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245645AbhJQMa4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 17 Oct 2021 08:30:56 -0400
-Received: from mout.gmx.net ([212.227.15.15]:49225 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245634AbhJQMa4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 17 Oct 2021 08:30:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1634473696;
-        bh=cbmUGzU1hyhfVw27QCJZ4UFCSB3owM8yg3KH4pv2Meo=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=FgQF1bnMfZpqiLiWcwmo4tKY92EvGGpLSrDNF8O8Pl2Ok7TFaQFmXtHPkpiNnWcTb
-         +kVIye22YcImxnUMoO/R3nPQLDOuma5QAVqihArxeVkZUN0TWSjXk0iN1w4FOmzGg3
-         aVQFHOxFlgTm/24TudrTjM59RMRGfTkjOhDal5YA=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [157.180.225.22] ([157.180.225.22]) by web-mail.gmx.net
- (3c-app-gmx-bs33.server.lan [172.19.170.85]) (via HTTP); Sun, 17 Oct 2021
- 14:28:16 +0200
+        id S1343702AbhJQN2V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 17 Oct 2021 09:28:21 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:53834 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1343689AbhJQN2T (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 17 Oct 2021 09:28:19 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1mc6Av-000YdS-Cm; Sun, 17 Oct 2021 16:26:05 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+Date:   Sun, 17 Oct 2021 16:25:52 +0300
+Message-Id: <20211017132604.480251-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Message-ID: <trinity-b64203a5-8e23-4d1c-afd1-a29afa69f8f6-1634473696601@3c-app-gmx-bs33>
-From:   Frank Wunderlich <frank-w@public-files.de>
-To:     Daniel Golle <daniel@makrotopia.org>
-Cc:     Nick <vincent@systemli.org>, Kalle Valo <kvalo@codeaurora.org>,
-        nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        davem@davemloft.net, kuba@kernel.org, matthias.bgg@gmail.com,
-        sean.wang@mediatek.com, shayne.chen@mediatek.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Robert Foss <robert.foss@linaro.org>
-Subject: Aw: Re: [RFC v2] mt76: mt7615: mt7622: fix ibss and meshpoint
-Content-Type: text/plain; charset=UTF-8
-Date:   Sun, 17 Oct 2021 14:28:16 +0200
-Importance: normal
-Sensitivity: Normal
-In-Reply-To: <YWGXiExg1uBIFr2c@makrotopia.org>
-References: <20211007225725.2615-1-vincent@systemli.org>
- <87czoe61kh.fsf@codeaurora.org>
- <274013cd-29e4-9202-423b-bd2b2222d6b8@systemli.org>
- <YWGXiExg1uBIFr2c@makrotopia.org>
-X-UI-Message-Type: mail
-X-Priority: 3
-X-Provags-ID: V03:K1:fyBM2xVbitALniHvauTUD7yrO0uOEc4mCU0F1K23UQXJGTTN449orREFI7R6/jIwk2Gfz
- +/t5YHtCN79gYYBepZq88+TxCl9EOmLon24tVUZtoEA+yhKSKkYwyZfIMvm4BmHiBOooqXdvcPkN
- 2tiEOmsT8A75bnUmNG3cwMe2lVBuOhH9OQ96pnvWguNt1I8QU8ooFGKgHp7PWQok+ckMlwWMpQnU
- DCRkLgt6buZvFOvW9LKpt8RMxF+gVj07Jt+pnBeV6TmBIIY5cOfKzjCvRfR697xToQ48ZFR4+kSg
- Ec=
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:uRD9Evc6puo=:G4Jl5nlDqhYHEAGiTmwbT9
- B4HxHhEQJFhMTmBBoc65QLaRQ+84jKSXRdt59yACNSSbcCvyyGLvnrwSeO2xVx5jBnmJn/eMM
- z5HhMUlK4WpOrvAoD5QdWjiNvEiZrPiWfGk7WOXa+BDfgAP9dBZzeXQNRptwumLi1LDGEY0+3
- Q3jjuyfFqb4wN/PWx36xsnYAKK66Z7KL4z1nOmkhWc1UXcetmdrWzsYIb3h4YrWSPIC9gk+DP
- c4hILA67s3n35PnK2nQJkCHwqGB4ngTOQZBfSDAJXxxvghncAfXIAohXT+9pLtrgj2o4+MSCo
- VBJO8EtTsIMhJ/z6R1HxiHVOyi2RSGKvdY+fAQ5Y5Ptnb5R2pzM56i5wmIITBA+BPWtrsN0ei
- 1ZM+BPGhBZTsWFGii7Q5KOVsFm/KiNtwC4FpLXyRhhzEXADby7Wll0Iaorhx/AiY4xeF/7oIQ
- DuEOOSsnV5vltv7sEUCB00SIPWnSske6NpOh9hxMS150uB75Uy10lSVUddwQbWvC2IrZ4RkiE
- BRrlxcKZmA5IWfHBU8/4iMAFz2nLGmL4ySQ+0B0CC9xN521KUMjlFkGTxalvCq9mZ2b9muquX
- wsL7buDtbeD4iQVs8khWkueC1UyJMRmyL+wPVPsbQbvR2skb+cADRMI269FjG/+AUjmjox6aC
- EuTLt25a8zAvN1KGXCcEn/6StV8u8DB236SL04zPCNRwkhKrD/x5laTLaKYGcJUATGoIF/LKI
- xAzkrGay/GV/iFmBg9w26NP8IX8TfSCwKUKtp3iUHVI3b+wwpFXAX605EOdKFmo4FXPWTcEEs
- 4X+LBRj
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: [PATCH 00/12] iwlwifi: updates intended for v5.16 2021-10-17 part 3
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Gesendet: Samstag, 09. Oktober 2021 um 15:22 Uhr
-> Von: "Daniel Golle" <daniel@makrotopia.org>
+From: Luca Coelho <luciano.coelho@intel.com>
 
-> Does Mesh+AP or Ad-Hoc+AP also work on MT7622 and does it still work on
-> MT7615E card with your patch applied?
+Hi,
 
-tested bananapi-r2 with mt7615 and bananapi-r64 with internal mt7622-wmac
+Here's the third set of patches intended for v5.16.  It's the usual
+development, new features, cleanups and bugfixes.
 
-ibss/ad-hoc: working
-AP-Mode: still working
+The changes are:
 
-regards Frank
+* Continue implementation of new rate and flags format in the FW APIs;
+* Some fixes for BZ family initialization;
+* Fix session protection in some scenarios;
+* Some other small fixes, clean-ups and improvements.
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Johannes Berg (4):
+  iwlwifi: remove redundant iwl_finish_nic_init() argument
+  iwlwifi: mvm: remove session protection after auth/assoc
+  iwlwifi: allow rate-limited error messages
+  iwlwifi: mvm: reduce WARN_ON() in TX status path
+
+Luca Coelho (2):
+  iwlwifi: mvm: Support new rate_n_flags for REPLY_RX_MPDU_CMD and
+    RX_NO_DATA_NOTIF
+  iwlwifi: mvm: remove csi from iwl_mvm_pass_packet_to_mac80211()
+
+Miri Korenblit (4):
+  iwlwifi: mvm: Add support for new rate_n_flags in tx_cmd.
+  iwlwifi: mvm: Support new version of BEACON_TEMPLATE_CMD.
+  iwlwifi: mvm: Support new TX_RSP and COMPRESSED_BA_RES versions
+  iwlwifi: mvm: Add RTS and CTS flags to iwl_tx_cmd_flags.
+
+Roee Goldfiner (2):
+  iwlwifi: BZ Family BUS_MASTER_DISABLE_REQ code duplication
+  iwlwifi: BZ Family SW reset support
+
+ drivers/net/wireless/intel/iwlwifi/dvm/agn.h  |  11 +-
+ .../net/wireless/intel/iwlwifi/fw/api/rx.h    |  12 +-
+ .../net/wireless/intel/iwlwifi/fw/api/tx.h    |  37 +++--
+ drivers/net/wireless/intel/iwlwifi/fw/dump.c  |   2 +-
+ .../net/wireless/intel/iwlwifi/iwl-debug.c    |  24 ++-
+ .../net/wireless/intel/iwlwifi/iwl-debug.h    |  21 ++-
+ .../wireless/intel/iwlwifi/iwl-eeprom-read.c  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-io.c   |   4 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-io.h   |   5 +-
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |   8 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  30 +++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  16 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   9 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c   |   8 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 140 ++++++++++--------
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 107 ++++++++++---
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |  27 +++-
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |  30 +---
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  33 +++--
+ 19 files changed, 353 insertions(+), 175 deletions(-)
+
+-- 
+2.33.0
+
