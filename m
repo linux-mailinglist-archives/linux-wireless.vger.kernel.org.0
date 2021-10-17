@@ -2,99 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E3CD430729
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Oct 2021 10:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A3B0430745
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Oct 2021 10:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241495AbhJQILL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 17 Oct 2021 04:11:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37746 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232530AbhJQILK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 17 Oct 2021 04:11:10 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3D57F60F59;
-        Sun, 17 Oct 2021 08:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634458139;
-        bh=Vz/2aO/SIMqM/YfSkB1kYGreU/RsX8SFF/xBgFxyRRM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=k2l/PD6AzZ8ETexRR9meM/HF0d61U4WnD0mkpmuYjUt3u4t750pwVif1r7IKwVxJF
-         Uyb02llG+npCRafm6yxDH3TD+TEw6kWrdmf2Q67infHzckWj45tieMwhR8vrSL0tov
-         /RDbKT5LTvTIzQsODukhKv8SCbuBrGSe1oL1sCZ5bkMPskpo1BSJKIA+iyNc/E2REP
-         llPmDeRrDSt8snKOZ/t9qptpbs044hugNYv3SPaCPKpci3z8xTC6Celue8XhwWurWa
-         SbVobtBGphJqgn8DwB8IL27N+iHb+VZVscgGfMlJ0HLL58k4aHxAVYCfrJwYCZ8Qpj
-         C0MMHZj0jOS+w==
-Received: by pali.im (Postfix)
-        id C1E0110C4; Sun, 17 Oct 2021 10:08:56 +0200 (CEST)
-Date:   Sun, 17 Oct 2021 10:08:56 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Jonas =?utf-8?Q?Dre=C3=9Fler?= <verdre@v0yd.nl>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v3 4/5] mwifiex: Send DELBA requests according to spec
-Message-ID: <20211017080856.hy3cjszegur5gumy@pali>
-References: <20211016153244.24353-1-verdre@v0yd.nl>
- <20211016153244.24353-5-verdre@v0yd.nl>
+        id S245094AbhJQIqB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 17 Oct 2021 04:46:01 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:53544 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S234310AbhJQIqB (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 17 Oct 2021 04:46:01 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1mc1ll-000YRM-Ml; Sun, 17 Oct 2021 11:43:50 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+Date:   Sun, 17 Oct 2021 11:43:38 +0300
+Message-Id: <20211017084348.401570-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211016153244.24353-5-verdre@v0yd.nl>
-User-Agent: NeoMutt/20180716
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: [PATCH 00/10] iwlwifi: updates intended for v5.16 2021-10-17
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Saturday 16 October 2021 17:32:43 Jonas Dreßler wrote:
-> While looking at on-air packets using Wireshark, I noticed we're never
-> setting the initiator bit when sending DELBA requests to the AP: While
-> we set the bit on our del_ba_param_set bitmask, we forget to actually
-> copy that bitmask over to the command struct, which means we never
-> actually set the initiator bit.
-> 
-> Fix that and copy the bitmask over to the host_cmd_ds_11n_delba command
-> struct.
-> 
-> Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
-> Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Acked-by: Pali Rohár <pali@kernel.org>
+Hi,
 
-> ---
->  drivers/net/wireless/marvell/mwifiex/11n.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/11n.c b/drivers/net/wireless/marvell/mwifiex/11n.c
-> index b0695432b26a..9ff2058bcd7e 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/11n.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/11n.c
-> @@ -657,14 +657,15 @@ int mwifiex_send_delba(struct mwifiex_private *priv, int tid, u8 *peer_mac,
->  	uint16_t del_ba_param_set;
->  
->  	memset(&delba, 0, sizeof(delba));
-> -	delba.del_ba_param_set = cpu_to_le16(tid << DELBA_TID_POS);
->  
-> -	del_ba_param_set = le16_to_cpu(delba.del_ba_param_set);
-> +	del_ba_param_set = tid << DELBA_TID_POS;
-> +
->  	if (initiator)
->  		del_ba_param_set |= IEEE80211_DELBA_PARAM_INITIATOR_MASK;
->  	else
->  		del_ba_param_set &= ~IEEE80211_DELBA_PARAM_INITIATOR_MASK;
->  
-> +	delba.del_ba_param_set = cpu_to_le16(del_ba_param_set);
->  	memcpy(&delba.peer_mac_addr, peer_mac, ETH_ALEN);
->  
->  	/* We don't wait for the response of this command */
-> -- 
-> 2.31.1
-> 
+Here's the first set of patches intended for v5.16.  It's the usual
+development, new features, cleanups and bugfixes.
+
+The changes are:
+
+* Support for 160MHz in ranging measurements;
+* Some fixes in HE capabilities;
+* Fixes in vendor specific capabilities;
+* Add the PC of both processors in error dumps;
+* Some other small fixes, clean-ups and improvements.
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Avraham Stern (1):
+  iwlwifi: mvm: add support for 160Mhz in ranging measurements
+
+Johannes Berg (7):
+  iwlwifi: mvm: fix ieee80211_get_he_iftype_cap() iftype
+  iwlwifi: mvm: disable RX-diversity in powersave
+  iwlwifi: add vendor specific capabilities for some RFs
+  iwlwifi: add some missing kernel-doc in struct iwl_fw
+  iwlwifi: api: remove unused RX status bits
+  iwlwifi: remove MODULE_AUTHOR() statements
+  iwlwifi: remove contact information
+
+Miri Korenblit (1):
+  iwlwifi: mvm: Remove antenna c references
+
+Mordechay Goodstein (1):
+  iwlwifi: mvm: add lmac/umac PC info in case of error
+
+ drivers/net/wireless/intel/iwlwifi/cfg/1000.c |  5 ---
+ drivers/net/wireless/intel/iwlwifi/cfg/2000.c |  5 ---
+ drivers/net/wireless/intel/iwlwifi/cfg/5000.c |  5 ---
+ drivers/net/wireless/intel/iwlwifi/cfg/6000.c |  5 ---
+ .../net/wireless/intel/iwlwifi/dvm/debugfs.c  |  4 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/dev.h  |  5 ---
+ .../net/wireless/intel/iwlwifi/dvm/devices.c  |  5 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/led.c  |  5 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/led.h  |  5 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/lib.c  |  5 ---
+ .../net/wireless/intel/iwlwifi/dvm/mac80211.c |  5 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c |  6 ----
+ .../net/wireless/intel/iwlwifi/dvm/power.c    |  4 ---
+ .../net/wireless/intel/iwlwifi/dvm/power.h    |  4 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.c   |  5 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.h   |  5 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/rx.c   |  5 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/rxon.c |  5 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/scan.c |  4 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/sta.c  |  5 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/tt.c   |  4 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/tt.h   |  4 ---
+ drivers/net/wireless/intel/iwlwifi/dvm/tx.c   |  5 ---
+ .../net/wireless/intel/iwlwifi/dvm/ucode.c    |  5 ---
+ .../wireless/intel/iwlwifi/fw/api/location.h  |  3 +-
+ .../net/wireless/intel/iwlwifi/fw/api/rs.h    |  5 +--
+ .../net/wireless/intel/iwlwifi/fw/api/rx.h    | 19 ++----------
+ .../net/wireless/intel/iwlwifi/fw/api/tx.h    |  3 +-
+ drivers/net/wireless/intel/iwlwifi/fw/img.c   |  5 ---
+ drivers/net/wireless/intel/iwlwifi/fw/img.h   |  2 ++
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |  1 -
+ .../net/wireless/intel/iwlwifi/iwl-debug.h    |  5 ---
+ .../intel/iwlwifi/iwl-devtrace-data.h         |  5 ---
+ .../wireless/intel/iwlwifi/iwl-devtrace-io.h  |  5 ---
+ .../intel/iwlwifi/iwl-devtrace-iwlwifi.h      |  5 ---
+ .../wireless/intel/iwlwifi/iwl-devtrace-msg.h |  5 ---
+ .../intel/iwlwifi/iwl-devtrace-ucode.h        |  5 ---
+ .../net/wireless/intel/iwlwifi/iwl-devtrace.c |  5 ---
+ .../net/wireless/intel/iwlwifi/iwl-devtrace.h |  5 ---
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  1 -
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.h  |  3 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 17 ++++++++++
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |  7 ++---
+ .../intel/iwlwifi/mvm/ftm-initiator.c         | 12 +++++++
+ .../intel/iwlwifi/mvm/ftm-responder.c         | 15 +++++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 18 +++++++----
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  6 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  1 -
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    |  4 ---
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c   | 31 +++++--------------
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.h   |  5 ---
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 13 +++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  1 -
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  2 +-
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |  4 +++
+ 55 files changed, 85 insertions(+), 248 deletions(-)
+
+-- 
+2.33.0
+
