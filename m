@@ -2,68 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 082A843095B
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Oct 2021 15:26:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F047843097E
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Oct 2021 15:53:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343707AbhJQN22 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 17 Oct 2021 09:28:28 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:53906 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1343722AbhJQN21 (ORCPT
+        id S1343755AbhJQNz2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 17 Oct 2021 09:55:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58754 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242336AbhJQNz1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 17 Oct 2021 09:28:27 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1mc6B6-000YdS-B7; Sun, 17 Oct 2021 16:26:16 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Sun, 17 Oct 2021 16:26:04 +0300
-Message-Id: <iwlwifi.20211017162352.8d503387b523.Id2c82d023df5128e553b28c935d30df4d9411917@changeid>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211017132604.480251-1-luca@coelho.fi>
-References: <20211017132604.480251-1-luca@coelho.fi>
+        Sun, 17 Oct 2021 09:55:27 -0400
+Received: from fudo.makrotopia.org (fudo.makrotopia.org [IPv6:2a07:2ec0:3002::71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBCDDC061765;
+        Sun, 17 Oct 2021 06:53:17 -0700 (PDT)
+Received: from local
+        by fudo.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+         (Exim 4.94.2)
+        (envelope-from <daniel@makrotopia.org>)
+        id 1mc6au-0004Ux-Ep; Sun, 17 Oct 2021 15:52:58 +0200
+Date:   Sun, 17 Oct 2021 14:52:22 +0100
+From:   Daniel Golle <daniel@makrotopia.org>
+To:     Frank Wunderlich <frank-w@public-files.de>
+Cc:     Nick <vincent@systemli.org>, Kalle Valo <kvalo@codeaurora.org>,
+        nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        davem@davemloft.net, kuba@kernel.org, matthias.bgg@gmail.com,
+        sean.wang@mediatek.com, shayne.chen@mediatek.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Robert Foss <robert.foss@linaro.org>
+Subject: Re: Re: [RFC v2] mt76: mt7615: mt7622: fix ibss and meshpoint
+Message-ID: <YWwqlk6rGbEp1obc@makrotopia.org>
+References: <20211007225725.2615-1-vincent@systemli.org>
+ <87czoe61kh.fsf@codeaurora.org>
+ <274013cd-29e4-9202-423b-bd2b2222d6b8@systemli.org>
+ <YWGXiExg1uBIFr2c@makrotopia.org>
+ <trinity-b64203a5-8e23-4d1c-afd1-a29afa69f8f6-1634473696601@3c-app-gmx-bs33>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 12/12] iwlwifi: mvm: reduce WARN_ON() in TX status path
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <trinity-b64203a5-8e23-4d1c-afd1-a29afa69f8f6-1634473696601@3c-app-gmx-bs33>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Sun, Oct 17, 2021 at 02:28:16PM +0200, Frank Wunderlich wrote:
+> > Gesendet: Samstag, 09. Oktober 2021 um 15:22 Uhr
+> > Von: "Daniel Golle" <daniel@makrotopia.org>
+> 
+> > Does Mesh+AP or Ad-Hoc+AP also work on MT7622 and does it still work on
+> > MT7615E card with your patch applied?
+> 
+> tested bananapi-r2 with mt7615 and bananapi-r64 with internal mt7622-wmac
+> 
+> ibss/ad-hoc: working
+> AP-Mode: still working
 
-Evidently, it's possible to hit this issue, so reduce the
-noise from it by just having it print a (rate-limited)
-message instead. We don't really know yet why we hit it,
-but there's no value in having a WARN_ON() here.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 4cc543fb9596..bdd4ee432548 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1505,7 +1505,9 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
- 			/* the FW should have stopped the queue and not
- 			 * return this status
- 			 */
--			WARN_ON(1);
-+			IWL_ERR_LIMIT(mvm,
-+				      "FW reported TX filtered, status=0x%x, FC=0x%x\n",
-+				      status, le16_to_cpu(hdr->frame_control));
- 			info->flags |= IEEE80211_TX_STAT_TX_FILTERED;
- 			break;
- 		default:
--- 
-2.33.0
-
+Independently of each other or simultanously?
+What I meant was to ask if **simultanous** Mesh+AP or Ad-Hoc+AP still
+works on MT7615E (you can only test that with OpenWrt-patched hostapd
+or by using wpa_supplicant to setup the AP as well as mesh/ad-hoc
+interface by settings in wpa_supplicant.conf)
