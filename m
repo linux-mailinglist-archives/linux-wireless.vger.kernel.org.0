@@ -2,72 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA306432856
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 22:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6DC14328B5
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 23:00:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233984AbhJRUTh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 16:19:37 -0400
-Received: from mail-ot1-f51.google.com ([209.85.210.51]:44576 "EHLO
-        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234014AbhJRUTb (ORCPT
+        id S233865AbhJRVCx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 17:02:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54308 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232088AbhJRVCw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 16:19:31 -0400
-Received: by mail-ot1-f51.google.com with SMTP id d21-20020a9d4f15000000b0054e677e0ac5so1275662otl.11;
-        Mon, 18 Oct 2021 13:17:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=tXoif9oLGDuH3R1sbFjMjztHtwSA21PTGPYZHCDpZg4=;
-        b=ktEK0op17xX/Q7SttlnBKMcpmAWOgdRRcUxrFiakiMtZ5hcwHxJiV1gSmfnEk00SYf
-         YmEyNz2/VAVgNAMG5hD5vbCeo+2nxm1ZciO//ZsAVgnggewwUAK8aQKCOIFOKSJDZigr
-         T7tD0U1dq3AoDMC92zFVDzfn+justEhHmBjXsMkLSTcB3dPltYF706SaE0cvLDZfkDl5
-         d4iM5nj1RHHmSz6dRDzYnPyxBjqLYp8udFw3KHKtJsXc/4YWeg+zIaV2SXyiDCtY1HQM
-         YfEvhF+fjZWFFMXHCjtVZaEil7TpSfn6Sen/6NlFKbkm99FFQDqzkO3Nw6iDbIOCKgpN
-         b7mw==
-X-Gm-Message-State: AOAM533hDUrt8XVPd2aGcgxSCjsmPMr3gc+NIuLGDhba3nSWVlZ5k52Z
-        YqwwwizGGpDTBS38dnGcqA==
-X-Google-Smtp-Source: ABdhPJxSpH/ahGz47ZvSaDlc4OQyZOq4JN4U4Ips3ix1p1vrOvwOH/2k5MdpShjDYTwBH+JSE4OKWg==
-X-Received: by 2002:a9d:60cf:: with SMTP id b15mr1650017otk.282.1634588239667;
-        Mon, 18 Oct 2021 13:17:19 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id k2sm2704550oot.37.2021.10.18.13.17.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Oct 2021 13:17:19 -0700 (PDT)
-Received: (nullmailer pid 2884561 invoked by uid 1000);
-        Mon, 18 Oct 2021 20:17:18 -0000
-Date:   Mon, 18 Oct 2021 15:17:18 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        None@robh.at.kernel.org, Mark Greer <mgreer@animalcreek.com>,
-        Charles Gorand <charles.gorand@effinnov.com>,
-        netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        linux-nfc@lists.01.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 8/8] dt-bindings: nfc: marvell,nci: convert to dtschema
-Message-ID: <YW3WTmEN1GA228ng@robh.at.kernel.org>
-References: <20211011073934.34340-1-krzysztof.kozlowski@canonical.com>
- <20211011073934.34340-9-krzysztof.kozlowski@canonical.com>
+        Mon, 18 Oct 2021 17:02:52 -0400
+Received: from bombadil.infradead.org (unknown [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C85C06161C;
+        Mon, 18 Oct 2021 14:00:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=vLA6NvpHs1ov/wgNN4Rab4l5sS4rboEGv0iuEduXVbY=; b=iUT+DG6cCvFIzIKucTso+2Ougp
+        Fci5S7Y/smV3JigsBicWZK0xeRpcI0OObnF6g0WWc4B90SGX4LIhfXUwenB0aVXby+l49+dXLF0Dp
+        KJTFNdTn4rj3s5hDGrqfrqx7K3aRt8iTDHGmd8Dp9VNzxR/YxLcTXztzNhHdRycaM7YJfx0qyUasX
+        02Mwvp+athQKKv2q4XM4+nh9VaH7SzfFarj6DgGueWM7XYQt0DrGsYYqduGiVSLEAgEHwG1aonf+q
+        ZRfB6QtXUYxQl81R1uHKAoF3AepcMFJoyMh1Wl4c21KEts26bAZO5XgZJU2GqkmXPkdcgJ51qXadc
+        /0NTPxBA==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mcZk9-00HG7q-8A; Mon, 18 Oct 2021 21:00:25 +0000
+Date:   Mon, 18 Oct 2021 14:00:25 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     bp@suse.de, akpm@linux-foundation.org, josh@joshtriplett.org,
+        rishabhb@codeaurora.org, kubakici@wp.pl, maco@android.com,
+        david.brown@linaro.org, bjorn.andersson@linaro.org,
+        linux-wireless@vger.kernel.org, keescook@chromium.org,
+        shuah@kernel.org, mfuzzey@parkeon.com, zohar@linux.vnet.ibm.com,
+        dhowells@redhat.com, pali.rohar@gmail.com, tiwai@suse.de,
+        arend.vanspriel@broadcom.com, zajec5@gmail.com, nbroeking@me.com,
+        broonie@kernel.org, dmitry.torokhov@gmail.com, dwmw2@infradead.org,
+        torvalds@linux-foundation.org, Abhay_Salunke@dell.com,
+        jewalt@lgsinnovations.com, cantabile.desu@gmail.com, ast@fb.com,
+        andresx7@gmail.com, dan.rue@linaro.org, brendanhiggins@google.com,
+        yzaikin@google.com, sfr@canb.auug.org.au, rdunlap@infradead.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 04/14] firmware_loader: add built-in firmware kconfig
+ entry
+Message-ID: <YW3gae4HoUd9izyj@bombadil.infradead.org>
+References: <20210917182226.3532898-1-mcgrof@kernel.org>
+ <20210917182226.3532898-5-mcgrof@kernel.org>
+ <YVxhbhmNd7tahLV7@kroah.com>
+ <YWR16e/seTx/wxE+@bombadil.infradead.org>
+ <YWR4XKrC2Bkr4qKQ@kroah.com>
+ <YWS7ABDdBIpdt/84@bombadil.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211011073934.34340-9-krzysztof.kozlowski@canonical.com>
+In-Reply-To: <YWS7ABDdBIpdt/84@bombadil.infradead.org>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 11 Oct 2021 09:39:34 +0200, Krzysztof Kozlowski wrote:
-> Convert the Marvell NCI NFC controller to DT schema format.
+On Mon, Oct 11, 2021 at 03:30:24PM -0700, Luis Chamberlain wrote:
+> On Mon, Oct 11, 2021 at 07:46:04PM +0200, Greg KH wrote:
+> > >   o By default we now always skip built-in firmware even if a FW_LOADER=y
+> > 
+> > I do not understand, why would we ever want to skip built-in firmware?
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-> ---
->  .../bindings/net/nfc/marvell,nci.yaml         | 170 ++++++++++++++++++
->  .../devicetree/bindings/net/nfc/nfcmrvl.txt   |  84 ---------
->  2 files changed, 170 insertions(+), 84 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml
->  delete mode 100644 Documentation/devicetree/bindings/net/nfc/nfcmrvl.txt
-> 
+> Because it is done this way today only implicitly because
+> EXTRA_FIRMWARE is empty. Using a kconfig entry makes this
+> more obvious.
 
-Applied, thanks!
+Greg,
+
+The fact that it was not obvious to you we were effectively disabling
+the built-in firmware functionality by default using side kconfig
+symbols is a good reason to clarify this situation with its own kconfig
+symbol.
+
+And consider what I started below as well.
+
+Please let me know why on the other hand we should *not* add this new
+kconfig symbol?
+
+> > >   o This also lets us make it clear that the EXTRA_FIRMWARE_DIR
+> > >     kconfig entry is only used for built-in firmware
+> > 
+> > How was it ever used for anything else?  :)
+> 
+> Well later this patch set also renames this to something more
+> sensible, and so that change is clearer through this patch.
+> 
+> > I can not take this as-is, so yes :)
+> 
+> Well please let me know again once you read the above explanations.
+> 
+> I think the new kconfig is very well justified given the above.
+> 
+>   Luis
