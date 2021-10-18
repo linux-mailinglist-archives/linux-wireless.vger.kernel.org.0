@@ -2,87 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56258431925
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 14:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 307AF4318F5
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 14:22:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230526AbhJRMeI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 08:34:08 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:21445 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231301AbhJRMeG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 08:34:06 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634560315; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=JR9U6T89OgvtMGdfLytY6B9PP5hNdlPtQz41jb6E9Zc=;
- b=lcnW+To4/8HzTEyjku2g49NHAUY4FotQ54zZZYcvUes/DXtDIeBg7nSa0V4EHd2P42P7QL88
- Cg5MDHLeDU0+FHQJvhajVn1A+eezbtugQJzvGIqvOsZu0g+0kONMppYmgko87M6Af+xD3sJg
- Q4RA0Y0mL2uqG+PnqWpYEbnGJ6c=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 616d6933f3e5b80f1f0ed6d3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 18 Oct 2021 12:31:47
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 70F44C43460; Mon, 18 Oct 2021 12:31:47 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 055FCC4338F;
-        Mon, 18 Oct 2021 12:31:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 055FCC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] rtw89: Remove redundant check of ret after call to
- rtw89_mac_enable_bb_rf
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20211015152113.33179-1-colin.king@canonical.com>
-References: <20211015152113.33179-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163456030329.5790.17899781504247161319.kvalo@codeaurora.org>
-Date:   Mon, 18 Oct 2021 12:31:47 +0000 (UTC)
+        id S230346AbhJRMYO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 08:24:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47226 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229833AbhJRMYN (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Oct 2021 08:24:13 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B3CCC061714
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 05:22:02 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id t2so41091379wrb.8
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 05:22:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=Tsy0ou00jA9sgdD3QEDwwcOaq6zikEvYydKUg/U2lOI=;
+        b=tL4VHalKBtDnJmE/VJ+Mhf0hiohhiXU/SvdITVRh47oKKhPg6qptsGcIfSyxZYnb6h
+         Yu9Lxv4hXlNmEzDzvgiPJZVccK/oLo9uFgp/t3tdR6o/NRVl0nNE2Cr1CHmJbEPD0ntG
+         pxdasCLszZ2eCwKDACJTEUhMi2Zf5eqd4SVnzDnziRh3LHRTzFXQKKn/LHfz4srVphxI
+         c2Jx4jfuDHQbDJqwCFQ3EJUyZOtWP3+fpt5DIEndHdpH2OWGlooM532MEezKve1F5CTF
+         WNHIsN0wz9U4N+2PutWxEIHpdgIMTQyl2yk4milADMbGvOLvO0QCCFysb3Jf+sP0vR9c
+         hlXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Tsy0ou00jA9sgdD3QEDwwcOaq6zikEvYydKUg/U2lOI=;
+        b=OsIAqFQhO5TNuBVs7D+zuQEgVclFcDJpKA92o7UFLZToaOokQ8zcOu8XIT1E17pVxU
+         2hKIliRgDIQlSyk54Up+jhvlAJa/PG9OiOIY3KuHRWcLAckX0LNMQftQcj8Qe87C0ID4
+         wu1xiw98SdUV9eE52jFWSxkUm6eT1DTpgHAXDC7kl+53CRKLTWvm09QK/S+NJDFPXBva
+         fAuZ72HqWc9t17pDckzUgtjZI2Jrv92ypyobG2z52TlQ0FvrWFJTs17XzfXvCfcIhq5Q
+         OmS/1FleMYhaooj2fbAgK+S2Jc66by+vIkD6eDfzIZYERmLFRRMtM+fM72acSONlknSO
+         dpHQ==
+X-Gm-Message-State: AOAM5306iTcpGKEApP/+Y/lRLIzmhTUb4/DszPF83S1OXtGOWetk89gU
+        tXQQ05rAqKuF+Eg8heQcZJxSAMqKoikHAA==
+X-Google-Smtp-Source: ABdhPJxfXaof1I8NpiW93+giTN7/+c8qgc+weYNHGpnx1w2xIphm4XKvToGE6SyhhCovA1AIxtuPlw==
+X-Received: by 2002:adf:ab58:: with SMTP id r24mr34816657wrc.200.1634559721105;
+        Mon, 18 Oct 2021 05:22:01 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:e0a:82c:5f0:9df5:c752:530b:345b])
+        by smtp.gmail.com with ESMTPSA id s3sm12327725wrm.40.2021.10.18.05.22.00
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 18 Oct 2021 05:22:00 -0700 (PDT)
+From:   Loic Poulain <loic.poulain@linaro.org>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
+        bryan.odonoghue@linaro.org, Loic Poulain <loic.poulain@linaro.org>,
+        stable@vger.kernel.org
+Subject: [PATCH] wcn36xx: Fix (QoS) null data frame bitrate/modulation
+Date:   Mon, 18 Oct 2021 14:33:19 +0200
+Message-Id: <1634560399-15290-1-git-send-email-loic.poulain@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+We observe unexpected connection drops with some APs due to
+non-acked mac80211 generated null data frames (keep-alive).
+After debugging and capture, we noticed that null frames are
+submitted at standard data bitrate and that the given APs are
+in trouble with that.
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The function rtw89_mac_enable_bb_rf is a void return type, so there is
-> no return error code to ret, so the following check for an error in ret
-> is redundant dead code and can be removed.
-> 
-> Addresses-Coverity: ("Logically dead code")
-> Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+After setting the null frame bitrate to control bitrate, all
+null frames are acked as expected and connection is maintained.
 
-Patch applied to wireless-drivers-next.git, thanks.
+Not sure if it's a requirement of the specification, but it seems
+the right thing to do anyway, null frames are mostly used for control
+purpose (power-saving, keep-alive...), and submitting them with
+a slower/simpler bitrate/modulation is more robust.
 
-f7e7e440550b rtw89: Remove redundant check of ret after call to rtw89_mac_enable_bb_rf
+Cc: stable@vger.kernel.org
+Fixes: 512b191d9652 ("wcn36xx: Fix TX data path")
+Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+---
+ drivers/net/wireless/ath/wcn36xx/txrx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
+index ef1b133..ce4f631 100644
+--- a/drivers/net/wireless/ath/wcn36xx/txrx.c
++++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
+@@ -535,6 +535,7 @@ static void wcn36xx_set_tx_data(struct wcn36xx_tx_bd *bd,
+ 	if (ieee80211_is_any_nullfunc(hdr->frame_control)) {
+ 		/* Don't use a regular queue for null packet (no ampdu) */
+ 		bd->queue_id = WCN36XX_TX_U_WQ_ID;
++		bd->bd_rate = WCN36XX_BD_RATE_CTRL;
+ 	}
+ 
+ 	if (bcast) {
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211015152113.33179-1-colin.king@canonical.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.7.4
 
