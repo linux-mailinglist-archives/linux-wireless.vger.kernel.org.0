@@ -2,82 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AB88431A01
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 14:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2132F431A70
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 15:10:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231774AbhJRMvh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 08:51:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53800 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231713AbhJRMve (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 08:51:34 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AB8DC061765
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 05:49:23 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id r18so70863250edv.12
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 05:49:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Zxmlmcl2lFuiR0DGPZ71QqAckQHzxejuBprpG6HgtDc=;
-        b=dpN+kGjTQUOMWDOjvmpF8y/AngTO/VsnANBB1NmxdxXxE8fgWIdYv2nGX5ANokXmFy
-         ItmkLItwF0+MEvASbN9mFv7YFGytA16qlwBSPi1XJ8d/kCawcymLy409wzYWi0YhgWqS
-         HOX5RLSMSLrvj1lvQQ6zasRPfrU9sRg7ZVD9Vjs6K3F+kZlfJooTRkhVh3/XHBTQ9+2C
-         PWfJ5lA5eYN1m2+JE1qFjllPppuuK4fpaTLMgAfuNiRILIjMmfY19qbrtC8w7uvFsvG9
-         e4qwT4DEIQtJe6en1aus4DAcSAs9qpkuJGQKuO255BOsieUKgERp/E9gPJkarBEllVW0
-         Pg8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=Zxmlmcl2lFuiR0DGPZ71QqAckQHzxejuBprpG6HgtDc=;
-        b=JhkNCyHXSk/yzSIbJ0S1sL3VekEhMsxJyIfviGxyUBJCZBY0UttwpLg3rRibYXHqZy
-         4saIzzw0bwFKe3fnk6J2vAakYqgHCKMW0SVJiUnMX1BBIQwONn0IMMaQh2wv4dYaSDQl
-         FZxm4ri5gGDeKwi8cmv1pNo+xVpevch0mZDzzfAUViIPWpfoqFB+7TuKgKy5dq9Rs0/V
-         39/BwycOqn+P8oFUFak+UkQXlo7AT5UoQuyxgh8i8Nz6ZumsaGY/O7a3IyxOoaFbui72
-         lpNcGNGHF1fsQqu4P++YY6xN1NL1UYK+U4m7RnbjnsnUHtJbBm68Z2RqNUMNs0OMRz+8
-         ZxSw==
-X-Gm-Message-State: AOAM532pNyZ4KT9naQa1PqWd3cnLBi8+oAkhs8NBYUhJN+FcyM9j/XvL
-        rFEEmD0s/9iveygQfpASaMoyct7Q5rbkiGOoc+Q=
-X-Google-Smtp-Source: ABdhPJzQCjqGcuPnjRlVotwwk4hqZIg2l2PCwzr2gtgiwqjSO349tAYeFFFLKmUAiR6GHvcsNLqcwBHS8ym4xBJjrz0=
-X-Received: by 2002:a17:907:7f01:: with SMTP id qf1mr28821788ejc.190.1634561355128;
- Mon, 18 Oct 2021 05:49:15 -0700 (PDT)
+        id S231741AbhJRNM7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 09:12:59 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:32303 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229519AbhJRNM7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Oct 2021 09:12:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1634562648; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=2iZh5xPrIPUDbVFXGh7W2cb2/hGVEE7gEkCaxI5tQ2Y=; b=hS0uANKZd4oOmh+Y5BBJF6ajbSr55BRRE7Fr+Ts5qqjShvRa07xCCvuICypnpVJS0Ax2hoSY
+ dVgkIy7ETwf3DJjrucHt2waCyeZxZy74Ynn66G++wmrha2H+PLvHpkM4zOYg3Rk9r36LkSJ3
+ drnukEVCAnkP19jCd0qQ70+RI80=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 616d72490605239689a079b0 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 18 Oct 2021 13:10:33
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id AAA0BC4361C; Mon, 18 Oct 2021 13:10:32 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D04D4C4338F;
+        Mon, 18 Oct 2021 13:10:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org D04D4C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Alagu Sankar <alagusankar@silex-india.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Wen Gong <wgong@codeaurora.org>,
+        Tamizh Chelvam <tamizhr@codeaurora.org>,
+        Carl Huang <cjhuang@codeaurora.org>,
+        Miaoqing Pan <miaoqing@codeaurora.org>,
+        Ben Greear <greearb@candelatech.com>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Fabio Estevam <festevam@denx.de>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ath10k: fix invalid dma_addr_t token assignment
+References: <20211014075153.3655910-1-arnd@kernel.org>
+Date:   Mon, 18 Oct 2021 16:10:21 +0300
+In-Reply-To: <20211014075153.3655910-1-arnd@kernel.org> (Arnd Bergmann's
+        message of "Thu, 14 Oct 2021 09:51:15 +0200")
+Message-ID: <87fssytr5u.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a17:906:3085:0:0:0:0 with HTTP; Mon, 18 Oct 2021 05:49:14
- -0700 (PDT)
-Reply-To: mrs.mariaelisabeth.schaeffler77@hotmail.com
-From:   Maria Elisabeth Schaeffler <gregloren.loanfirm2@gmail.com>
-Date:   Mon, 18 Oct 2021 05:49:14 -0700
-Message-ID: <CAKW1hTeu=M+Cw3WDV0L8hEDErY+BKiGcJUy0pMsBiP4B1b=ggw@mail.gmail.com>
-Subject: Spende von Maria Elisabeth
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---=20
-Hallo,
+Arnd Bergmann <arnd@kernel.org> writes:
 
-Ich bin Frau Maria Elisabeth Schaeffler, ein deutscher
-Wirtschaftsmagnat, Investor und Philanthrop. Ich bin der Vorsitzende
-von Wipro Limited. Ich habe 25 Prozent meines pers=C3=B6nlichen Verm=C3=B6g=
-ens
-f=C3=BCr wohlt=C3=A4tige Zwecke ausgegeben. Und ich habe auch versprochen, =
-die
-restlichen 25% dieses Jahr 2021 an Einzelpersonen zu verschenken. Ich
-habe mich entschlossen, 1.000.000,00 Euro an Sie zu spenden. Wenn Sie
-an meiner Spende interessiert sind, kontaktieren Sie mich =C3=BCber  f=C3=
-=BCr
-weitere Informationen.
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> Using a kernel pointer in place of a dma_addr_t token can
+> lead to undefined behavior if that makes it into cache
+> management functions. The compiler caught one such attempt
+> in a cast:
+>
+> drivers/net/wireless/ath/ath10k/mac.c: In function 'ath10k_add_interface':
+> drivers/net/wireless/ath/ath10k/mac.c:5586:47: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
+>  5586 |                         arvif->beacon_paddr = (dma_addr_t)arvif->beacon_buf;
+>       |                                               ^
+>
+> Looking through how this gets used down the way, I'm fairly
+> sure that beacon_paddr is never accessed again for ATH10K_DEV_TYPE_HL
+> devices, and if it was accessed, that would be a bug.
 
-Sie k=C3=B6nnen auch =C3=BCber den folgenden Link mehr =C3=BCber mich lesen
+That's my understanding as well. beacon_paddr is only accessed in
+ath10k_wmi_event_host_swba() and only low latency (ATH10K_DEV_TYPE_LL)
+should use that function.
 
-https://en.wikipedia.org/wiki/Maria-Elisabeth_Schaeffler
+> Change the assignment to use a known-invalid address token
+> instead, which avoids the warning and makes it easier to catch
+> bugs if it does end up getting used.
+>
+> Fixes: e263bdab9c0e ("ath10k: high latency fixes for beacon buffer")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/net/wireless/ath/ath10k/mac.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+> index 7ca68c81d9b6..c0e78eaa65f8 100644
+> --- a/drivers/net/wireless/ath/ath10k/mac.c
+> +++ b/drivers/net/wireless/ath/ath10k/mac.c
+> @@ -5583,7 +5583,7 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
+>  		if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL) {
+>  			arvif->beacon_buf = kmalloc(IEEE80211_MAX_FRAME_LEN,
+>  						    GFP_KERNEL);
+> -			arvif->beacon_paddr = (dma_addr_t)arvif->beacon_buf;
+> +			arvif->beacon_paddr = DMA_MAPPING_ERROR;
 
-Gr=C3=BC=C3=9Fe
-Gesch=C3=A4ftsf=C3=BChrer Wipro Limited
-Maria-Elisabeth_Schaeffler
+In the pending branch I added a comment here:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=02a383c9bf959147a95c4efeaa4edf35c4450fac
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
