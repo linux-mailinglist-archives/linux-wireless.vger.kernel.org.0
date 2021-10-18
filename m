@@ -2,234 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA984431F57
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 16:18:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 131AF432283
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 17:17:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232912AbhJROUU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 10:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45022 "EHLO
+        id S232985AbhJRPTx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 11:19:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231905AbhJROUQ (ORCPT
+        with ESMTP id S232818AbhJRPTu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 10:20:16 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36EA5C0612F1
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 07:16:45 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id p21so8883754wmq.1
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 07:16:45 -0700 (PDT)
+        Mon, 18 Oct 2021 11:19:50 -0400
+Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB2DBC061745
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 08:17:38 -0700 (PDT)
+Received: by mail-ua1-x92a.google.com with SMTP id u5so7711433uao.13
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 08:17:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=LAd+S0Qnz+V8XxjM+PVfUF/cgcdX7dHn+MP2lN3vIGw=;
-        b=FSmnVMcfCwvzrHxPNyCK6iCEYmyR46utpI4L7WYoDcKbBm+DiVvKL3/8XrgSjZyy2P
-         kc9O9Mnd64saaasklTaWc4GVhXsNmYUCEPsAcxrxOOHKJatbqdfENrlGN0D0yq3dDoof
-         DEqYlLp0jDQNqAm4IEwN6Sjb7/q9i7YfxHA/q4tkcN9iSNeOmmLD/4a7AcYgRqI4SJZS
-         LQm4TFYcpWIJqgCmzQ9BljASZM9Jwzm5QK/NxpQBaOJvFgbvKG+bt2LTjg15ExK3y+q/
-         2TyVT3I2iyynFQOe9BzfRTJf6HMkn9uLYMNs08dpNFQemPYVWiZ9x/aU/l28S4U5/gle
-         eiZw==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=2Y8NayuLnfX3GwLkDMn7ZTyD7RtMsOyjIifS8+INynY=;
+        b=fIL3CMvlAAWryIgO72N8vNJvnlNFFagyPsEe2rwq4hFFSphyjCkzugTx5YWhjw0xvG
+         tkYmv/okVirY6EPKePKy8Zw97KG2cxt6wQTpLUHx2aQG8lHlaWI4exJaUzWixo/byOx8
+         tCZsV8RmZLPBAREZkJnGvo+97PbriWJHSDuAQjvclTx1Aqa1oaY3GAy75PAeDgcOiN+c
+         cUPBy/wZd6z58pPSY5CXK1VFPoQwIQITX5ST3C0ed6G4fDvu1Gb4ei+RtIsS18csG+p3
+         zMXZAsuLX+m8AtVV1TpKQe+pnfSfzsbwDRW1n37/1bHJE57FLEI1KMwPWX+7egQ5mOZK
+         ra7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=LAd+S0Qnz+V8XxjM+PVfUF/cgcdX7dHn+MP2lN3vIGw=;
-        b=FAXEeifHVQw2diUSAHDB189dF6qT5LZAB+OIRuaGtD+EPSem/xX7g94Yo2R5A6xrJa
-         iJdrY2dbN+cwGVPBWcitNV3750hN8/vrOKM2Algmh+p70U1YdICXi45HMOiJ4JLIre0e
-         Depmb88rLh+4IS62MQOvqkjKUKXtPgFV2MAk88s3GvHkEDQa8LRA67G0iX44nTPQJwco
-         b98PV9BrjiclPv3UtQgLFO3cPZwaY0Ry14mF3rvkxzd+O6eko3L+LwdzoRuWikJeKOJ1
-         bwtiLA7nPazEs8C7KmHBKlxy82zVd7imN/gfLJaeEHGLimuW1AiSnzGvpoBO4VgddtJu
-         rykg==
-X-Gm-Message-State: AOAM53155XbqqOuRDfLFTBbIHgikPZVQ8I6af5A6ZlFjwHpvLO7qKJTZ
-        9XRo9H534WzhNBHTip5P2K+79Q==
-X-Google-Smtp-Source: ABdhPJzABYktdw0zjlgeJ3AzNeoPQyZk7xqA/hSJMeTkJzF4o5LJqe0QUd6TsgF3nAtjzDXJCoPLJQ==
-X-Received: by 2002:a7b:c5d8:: with SMTP id n24mr31541462wmk.51.1634566603668;
-        Mon, 18 Oct 2021 07:16:43 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:e0a:82c:5f0:9df5:c752:530b:345b])
-        by smtp.gmail.com with ESMTPSA id v185sm18482862wme.35.2021.10.18.07.16.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 18 Oct 2021 07:16:43 -0700 (PDT)
-From:   Loic Poulain <loic.poulain@linaro.org>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
-        bryan.odonoghue@linaro.org, Loic Poulain <loic.poulain@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH v2] wcn36xx: Fix tx_status mechanism
-Date:   Mon, 18 Oct 2021 16:28:01 +0200
-Message-Id: <1634567281-28997-1-git-send-email-loic.poulain@linaro.org>
-X-Mailer: git-send-email 2.7.4
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=2Y8NayuLnfX3GwLkDMn7ZTyD7RtMsOyjIifS8+INynY=;
+        b=iod1qYUwqK/PFHsVEV5GlRVOvPCrUCuio5LRsjhHL1PMNKG/YbbTeRpG4MpKBWqTuT
+         +tjDLBwxtRQfK4jxJxdPuNrwMdJ2FQj3jxi3dbeg1CUlI9FUMy02uBiTVWk0SWP3PnzC
+         xi3uxrDWVIlPxLv5+sQpqlV6fazE8Qz4pU6ax8l40fpqebOHldF33em398X3EofRUirL
+         8e/kFPSqEybZD7DC6lxb/F8esT+7sxrzovfH0idTjapwdJdJC0LqNCPruQcE+q9EX0RA
+         TBvcOHV4e2FcJ/IqQBMv7EsgpsoKC+2BDFMp6eX3YxgwSAot+H3CsvRclgMnrrlaj/lP
+         AnkA==
+X-Gm-Message-State: AOAM530KOBUc4q19QRffZeuKxJ/yTLN98hn08giBaRvCByuinZR9+FJZ
+        HqUB4hpcDRb17GcBtt+w6rSQqy70KCO8IrpdBqw=
+X-Google-Smtp-Source: ABdhPJyty9rbPv8UL46flq3Kn1OHrkADsnV0N5XREMQhdDhtHpie3+8B8e+wGUvDkU3cM3g4pR+NaD8oQgrbndLRw6I=
+X-Received: by 2002:a67:d38e:: with SMTP id b14mr28403750vsj.34.1634570257912;
+ Mon, 18 Oct 2021 08:17:37 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a67:cb08:0:0:0:0:0 with HTTP; Mon, 18 Oct 2021 08:17:37
+ -0700 (PDT)
+Reply-To: mrsaishag45@gmail.com
+From:   Mrs Aisha Al-Qaddafi <faridafarah924@gmail.com>
+Date:   Mon, 18 Oct 2021 08:17:37 -0700
+Message-ID: <CAJAEg+sp5YL5mUYnqF2rUVDS3gzsOTdY=wPsKp89nC3YRg-bMA@mail.gmail.com>
+Subject: Dear Friend,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This change fix the TX ack mechanism in various ways:
+Dear Friend,
 
-- For NO_ACK tagged packets, we don't need to way for TX_ACK indication
-and so are not subject to the single packet ack limitation. So we don't
-have to stop the tx queue, and can call the tx status callback as soon
-as DMA transfer has completed.
+I came across your e-mail contact prior to a private search while in
+need of your assistance. I am Aisha Al-Qaddafi, the only biological
+Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
+single Mother and a Widow with three Children.
 
-- Fix skb ownership/reference. Only start status indication timeout
-once the DMA transfer has been completed. This avoids the skb to be
-both referenced in the DMA tx ring and by the tx_ack_skb pointer,
-preventing any use-after-free or double-free.
+I have investment funds worth Twenty Seven Million Five Hundred
+Thousand United State Dollar ($27.500.000.00 ) and i need a trusted
+investment Manager/Partner because of my current refugee status,
+however, I am interested in you for investment project assistance in
+your country, may be from there, we can build business relationship in
+the nearest future.
 
-- This adds a sanity (paranoia?) check on the skb tx ack pointer.
+I am willing to negotiate an investment/business profit sharing ratio
+with you based on the future investment earning profits.
 
-- Resume TX queue if TX status tagged packet TX fails.
-
-Cc: stable@vger.kernel.org
-Fixes: fdf21cc37149 ("wcn36xx: Add TX ack support")
-Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
----
- v2: Fix unused variable error/warning (flag)
-
- drivers/net/wireless/ath/wcn36xx/dxe.c  | 37 +++++++++++++--------------------
- drivers/net/wireless/ath/wcn36xx/txrx.c | 31 ++++++---------------------
- 2 files changed, 21 insertions(+), 47 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/wcn36xx/dxe.c b/drivers/net/wireless/ath/wcn36xx/dxe.c
-index 8e1dbfd..0e0bbcd 100644
---- a/drivers/net/wireless/ath/wcn36xx/dxe.c
-+++ b/drivers/net/wireless/ath/wcn36xx/dxe.c
-@@ -403,8 +403,21 @@ static void reap_tx_dxes(struct wcn36xx *wcn, struct wcn36xx_dxe_ch *ch)
- 			dma_unmap_single(wcn->dev, ctl->desc->src_addr_l,
- 					 ctl->skb->len, DMA_TO_DEVICE);
- 			info = IEEE80211_SKB_CB(ctl->skb);
--			if (!(info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS)) {
--				/* Keep frame until TX status comes */
-+			if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
-+				if (info->flags & IEEE80211_TX_CTL_NO_ACK) {
-+					info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
-+					ieee80211_tx_status_irqsafe(wcn->hw, ctl->skb);
-+				} else {
-+					/* Wait for the TX ack indication or timeout... */
-+					spin_lock(&wcn->dxe_lock);
-+					if (WARN_ON(wcn->tx_ack_skb))
-+						ieee80211_free_txskb(wcn->hw, wcn->tx_ack_skb);
-+					wcn->tx_ack_skb = ctl->skb; /* Tracking ref */
-+					mod_timer(&wcn->tx_ack_timer, jiffies + HZ / 10);
-+					spin_unlock(&wcn->dxe_lock);
-+				}
-+				/* do not free, ownership transferred to mac80211 status cb */
-+			} else {
- 				ieee80211_free_txskb(wcn->hw, ctl->skb);
- 			}
- 
-@@ -426,7 +439,6 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
- {
- 	struct wcn36xx *wcn = (struct wcn36xx *)dev;
- 	int int_src, int_reason;
--	bool transmitted = false;
- 
- 	wcn36xx_dxe_read_register(wcn, WCN36XX_DXE_INT_SRC_RAW_REG, &int_src);
- 
-@@ -466,7 +478,6 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
- 		if (int_reason & (WCN36XX_CH_STAT_INT_DONE_MASK |
- 				  WCN36XX_CH_STAT_INT_ED_MASK)) {
- 			reap_tx_dxes(wcn, &wcn->dxe_tx_h_ch);
--			transmitted = true;
- 		}
- 	}
- 
-@@ -479,7 +490,6 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
- 					   WCN36XX_DXE_0_INT_CLR,
- 					   WCN36XX_INT_MASK_CHAN_TX_L);
- 
--
- 		if (int_reason & WCN36XX_CH_STAT_INT_ERR_MASK ) {
- 			wcn36xx_dxe_write_register(wcn,
- 						   WCN36XX_DXE_0_INT_ERR_CLR,
-@@ -507,25 +517,8 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
- 		if (int_reason & (WCN36XX_CH_STAT_INT_DONE_MASK |
- 				  WCN36XX_CH_STAT_INT_ED_MASK)) {
- 			reap_tx_dxes(wcn, &wcn->dxe_tx_l_ch);
--			transmitted = true;
--		}
--	}
--
--	spin_lock(&wcn->dxe_lock);
--	if (wcn->tx_ack_skb && transmitted) {
--		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(wcn->tx_ack_skb);
--
--		/* TX complete, no need to wait for 802.11 ack indication */
--		if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS &&
--		    info->flags & IEEE80211_TX_CTL_NO_ACK) {
--			info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
--			del_timer(&wcn->tx_ack_timer);
--			ieee80211_tx_status_irqsafe(wcn->hw, wcn->tx_ack_skb);
--			wcn->tx_ack_skb = NULL;
--			ieee80211_wake_queues(wcn->hw);
- 		}
- 	}
--	spin_unlock(&wcn->dxe_lock);
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
-index 1edc703..f9d2fc3 100644
---- a/drivers/net/wireless/ath/wcn36xx/txrx.c
-+++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
-@@ -608,10 +608,11 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct wcn36xx_vif *vif_priv = NULL;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
--	unsigned long flags;
- 	bool is_low = ieee80211_is_data(hdr->frame_control);
- 	bool bcast = is_broadcast_ether_addr(hdr->addr1) ||
- 		is_multicast_ether_addr(hdr->addr1);
-+	bool ack_ind = (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) &&
-+					!(info->flags & IEEE80211_TX_CTL_NO_ACK);
- 	struct wcn36xx_tx_bd bd;
- 	int ret;
- 
-@@ -627,30 +628,16 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
- 
- 	bd.dpu_rf = WCN36XX_BMU_WQ_TX;
- 
--	if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
-+	if (unlikely(ack_ind)) {
- 		wcn36xx_dbg(WCN36XX_DBG_DXE, "TX_ACK status requested\n");
- 
--		spin_lock_irqsave(&wcn->dxe_lock, flags);
--		if (wcn->tx_ack_skb) {
--			spin_unlock_irqrestore(&wcn->dxe_lock, flags);
--			wcn36xx_warn("tx_ack_skb already set\n");
--			return -EINVAL;
--		}
--
--		wcn->tx_ack_skb = skb;
--		spin_unlock_irqrestore(&wcn->dxe_lock, flags);
--
- 		/* Only one at a time is supported by fw. Stop the TX queues
- 		 * until the ack status gets back.
- 		 */
- 		ieee80211_stop_queues(wcn->hw);
- 
--		/* TX watchdog if no TX irq or ack indication received  */
--		mod_timer(&wcn->tx_ack_timer, jiffies + HZ / 10);
--
- 		/* Request ack indication from the firmware */
--		if (!(info->flags & IEEE80211_TX_CTL_NO_ACK))
--			bd.tx_comp = 1;
-+		bd.tx_comp = 1;
- 	}
- 
- 	/* Data frames served first*/
-@@ -664,14 +651,8 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
- 	bd.tx_bd_sign = 0xbdbdbdbd;
- 
- 	ret = wcn36xx_dxe_tx_frame(wcn, vif_priv, &bd, skb, is_low);
--	if (ret && (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS)) {
--		/* If the skb has not been transmitted,
--		 * don't keep a reference to it.
--		 */
--		spin_lock_irqsave(&wcn->dxe_lock, flags);
--		wcn->tx_ack_skb = NULL;
--		spin_unlock_irqrestore(&wcn->dxe_lock, flags);
--
-+	if (unlikely(ret && ack_ind)) {
-+		/* If the skb has not been transmitted, resume TX queue */
- 		ieee80211_wake_queues(wcn->hw);
- 	}
- 
--- 
-2.7.4
-
+If you are willing to handle this project on my behalf kindly reply
+urgently to enable me to provide you more information about the
+investment funds.
+Best Regards
+Mrs Aisha Al-Qaddafi
