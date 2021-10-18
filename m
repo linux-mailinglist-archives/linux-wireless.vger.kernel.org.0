@@ -2,28 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C07C2432A21
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 01:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7C52432A47
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 01:20:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231454AbhJRXRY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 19:17:24 -0400
-Received: from mailgw01.mediatek.com ([216.200.240.184]:25617 "EHLO
+        id S231296AbhJRXWg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 19:22:36 -0400
+Received: from mailgw01.mediatek.com ([216.200.240.184]:42418 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbhJRXRX (ORCPT
+        with ESMTP id S229524AbhJRXWf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 19:17:23 -0400
-X-UUID: b6a31d5f84054886a25d98ba78d70fe2-20211018
-X-UUID: b6a31d5f84054886a25d98ba78d70fe2-20211018
+        Mon, 18 Oct 2021 19:22:35 -0400
+X-UUID: 48e571e35c8d43b493b5aab7c1928d6e-20211018
+X-UUID: 48e571e35c8d43b493b5aab7c1928d6e-20211018
 Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw01.mediatek.com
         (envelope-from <sean.wang@mediatek.com>)
         (musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 937409363; Mon, 18 Oct 2021 16:15:09 -0700
+        with ESMTP id 1105758733; Mon, 18 Oct 2021 16:20:21 -0700
 Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- MTKMBS62N2.mediatek.inc (172.29.193.42) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 18 Oct 2021 16:12:09 -0700
+ MTKMBS62DR.mediatek.inc (172.29.94.18) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 18 Oct 2021 16:12:12 -0700
 Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 19 Oct 2021 07:12:09 +0800
+ Transport; Tue, 19 Oct 2021 07:12:12 +0800
 From:   <sean.wang@mediatek.com>
 To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
 CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
@@ -39,9 +39,9 @@ CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
         <abhishekpandit@google.com>, <shawnku@google.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>
-Subject: [PATCH v5 06/17] mt76: connac: move mcu reg access utility routines in mt76_connac_lib module
-Date:   Tue, 19 Oct 2021 07:11:36 +0800
-Message-ID: <429a4e73846c70944c782acc053f439e283c199f.1634598341.git.objelf@gmail.com>
+Subject: [PATCH v5 07/17] mt76: mt7663s: rely on mcu reg access utility
+Date:   Tue, 19 Oct 2021 07:11:37 +0800
+Message-ID: <95bb420671155004cb395fffaf59d6be1caeb189.1634598341.git.objelf@gmail.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1634598341.git.objelf@gmail.com>
 References: <cover.1634598341.git.objelf@gmail.com>
@@ -54,66 +54,80 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Move mcu reg access shared between mt7663s and mt7921s in mt76_connac_lib
-module.
+rely on mcu reg access utility and drop the duplicated code.
 
-Tested-by: Deren Wu <deren.wu@mediatek.com>
 Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 27 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  2 ++
- 2 files changed, 29 insertions(+)
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 28 -------------------
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  2 --
+ .../wireless/mediatek/mt76/mt7615/sdio_mcu.c  |  4 +--
+ 3 files changed, 2 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 9a1af2ba7e8e..70d72dfa239e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -2412,6 +2412,33 @@ void mt76_connac_mcu_set_suspend_iter(void *priv, u8 *mac,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 2ba730808f3b..2cb3969e6432 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -2769,31 +2769,3 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_ROC, &req,
+ 				 sizeof(req), false);
  }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_suspend_iter);
+-
+-u32 mt7615_mcu_reg_rr(struct mt76_dev *dev, u32 offset)
+-{
+-	struct {
+-		__le32 addr;
+-		__le32 val;
+-	} __packed req = {
+-		.addr = cpu_to_le32(offset),
+-	};
+-
+-	return mt76_mcu_send_msg(dev, MCU_CMD_REG_READ, &req, sizeof(req),
+-				 true);
+-}
+-EXPORT_SYMBOL_GPL(mt7615_mcu_reg_rr);
+-
+-void mt7615_mcu_reg_wr(struct mt76_dev *dev, u32 offset, u32 val)
+-{
+-	struct {
+-		__le32 addr;
+-		__le32 val;
+-	} __packed req = {
+-		.addr = cpu_to_le32(offset),
+-		.val = cpu_to_le32(val),
+-	};
+-
+-	mt76_mcu_send_msg(dev, MCU_CMD_REG_WRITE, &req, sizeof(req), false);
+-}
+-EXPORT_SYMBOL_GPL(mt7615_mcu_reg_wr);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 58a98b5c0cbc..437f14f06e63 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -553,8 +553,6 @@ int mt7615_mac_set_beacon_filter(struct mt7615_phy *phy,
+ int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
+ 			  bool enable);
+ int __mt7663_load_firmware(struct mt7615_dev *dev);
+-u32 mt7615_mcu_reg_rr(struct mt76_dev *dev, u32 offset);
+-void mt7615_mcu_reg_wr(struct mt76_dev *dev, u32 offset, u32 val);
+ void mt7615_coredump_work(struct work_struct *work);
  
-+u32 mt76_connac_mcu_reg_rr(struct mt76_dev *dev, u32 offset)
-+{
-+	struct {
-+		__le32 addr;
-+		__le32 val;
-+	} __packed req = {
-+		.addr = cpu_to_le32(offset),
-+	};
-+
-+	return mt76_mcu_send_msg(dev, MCU_CMD_REG_READ, &req, sizeof(req),
-+				 true);
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_mcu_reg_rr);
-+
-+void mt76_connac_mcu_reg_wr(struct mt76_dev *dev, u32 offset, u32 val)
-+{
-+	struct {
-+		__le32 addr;
-+		__le32 val;
-+	} __packed req = {
-+		.addr = cpu_to_le32(offset),
-+		.val = cpu_to_le32(val),
-+	};
-+
-+	mt76_mcu_send_msg(dev, MCU_CMD_REG_WRITE, &req, sizeof(req), false);
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_mcu_reg_wr);
- #endif /* CONFIG_PM */
- 
- MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 751e621a6f9b..b89faab04996 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1114,4 +1114,6 @@ void mt76_connac_mcu_coredump_event(struct mt76_dev *dev, struct sk_buff *skb,
- int mt76_connac_mcu_set_rate_txpower(struct mt76_phy *phy);
- int mt76_connac_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
- 				  struct ieee80211_vif *vif);
-+u32 mt76_connac_mcu_reg_rr(struct mt76_dev *dev, u32 offset);
-+void mt76_connac_mcu_reg_wr(struct mt76_dev *dev, u32 offset, u32 val);
- #endif /* __MT76_CONNAC_MCU_H */
+ void mt7622_trigger_hif_int(struct mt7615_dev *dev, bool en);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
+index 45c1cd3b9f49..517419bb7772 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio_mcu.c
+@@ -137,8 +137,8 @@ int mt7663s_mcu_init(struct mt7615_dev *dev)
+ 		.mcu_skb_send_msg = mt7663s_mcu_send_message,
+ 		.mcu_parse_response = mt7615_mcu_parse_response,
+ 		.mcu_restart = mt7615_mcu_restart,
+-		.mcu_rr = mt7615_mcu_reg_rr,
+-		.mcu_wr = mt7615_mcu_reg_wr,
++		.mcu_rr = mt76_connac_mcu_reg_rr,
++		.mcu_wr = mt76_connac_mcu_reg_wr,
+ 	};
+ 	struct mt7615_mcu_ops *mcu_ops;
+ 	int ret;
 -- 
 2.25.1
 
