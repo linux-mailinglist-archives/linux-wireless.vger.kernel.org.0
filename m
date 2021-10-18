@@ -2,80 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 131AF432283
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 17:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DD0C4322FE
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 17:35:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232985AbhJRPTx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 11:19:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60416 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232818AbhJRPTu (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 11:19:50 -0400
-Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB2DBC061745
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 08:17:38 -0700 (PDT)
-Received: by mail-ua1-x92a.google.com with SMTP id u5so7711433uao.13
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 08:17:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=2Y8NayuLnfX3GwLkDMn7ZTyD7RtMsOyjIifS8+INynY=;
-        b=fIL3CMvlAAWryIgO72N8vNJvnlNFFagyPsEe2rwq4hFFSphyjCkzugTx5YWhjw0xvG
-         tkYmv/okVirY6EPKePKy8Zw97KG2cxt6wQTpLUHx2aQG8lHlaWI4exJaUzWixo/byOx8
-         tCZsV8RmZLPBAREZkJnGvo+97PbriWJHSDuAQjvclTx1Aqa1oaY3GAy75PAeDgcOiN+c
-         cUPBy/wZd6z58pPSY5CXK1VFPoQwIQITX5ST3C0ed6G4fDvu1Gb4ei+RtIsS18csG+p3
-         zMXZAsuLX+m8AtVV1TpKQe+pnfSfzsbwDRW1n37/1bHJE57FLEI1KMwPWX+7egQ5mOZK
-         ra7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=2Y8NayuLnfX3GwLkDMn7ZTyD7RtMsOyjIifS8+INynY=;
-        b=iod1qYUwqK/PFHsVEV5GlRVOvPCrUCuio5LRsjhHL1PMNKG/YbbTeRpG4MpKBWqTuT
-         +tjDLBwxtRQfK4jxJxdPuNrwMdJ2FQj3jxi3dbeg1CUlI9FUMy02uBiTVWk0SWP3PnzC
-         xi3uxrDWVIlPxLv5+sQpqlV6fazE8Qz4pU6ax8l40fpqebOHldF33em398X3EofRUirL
-         8e/kFPSqEybZD7DC6lxb/F8esT+7sxrzovfH0idTjapwdJdJC0LqNCPruQcE+q9EX0RA
-         TBvcOHV4e2FcJ/IqQBMv7EsgpsoKC+2BDFMp6eX3YxgwSAot+H3CsvRclgMnrrlaj/lP
-         AnkA==
-X-Gm-Message-State: AOAM530KOBUc4q19QRffZeuKxJ/yTLN98hn08giBaRvCByuinZR9+FJZ
-        HqUB4hpcDRb17GcBtt+w6rSQqy70KCO8IrpdBqw=
-X-Google-Smtp-Source: ABdhPJyty9rbPv8UL46flq3Kn1OHrkADsnV0N5XREMQhdDhtHpie3+8B8e+wGUvDkU3cM3g4pR+NaD8oQgrbndLRw6I=
-X-Received: by 2002:a67:d38e:: with SMTP id b14mr28403750vsj.34.1634570257912;
- Mon, 18 Oct 2021 08:17:37 -0700 (PDT)
+        id S232818AbhJRPhr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 11:37:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46374 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231893AbhJRPhm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Oct 2021 11:37:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C720B6103D;
+        Mon, 18 Oct 2021 15:35:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634571331;
+        bh=q7lcmruj3DqRwUoAeERdWNwhIR2lW91g6h7Kdo5lQp8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=Pvv8j5rrguCLZzOjZEgHhY0Txc2BPVnAj4d0dfiw6bV43dEU76xoOTxKNCA5XOFeZ
+         yHlL0Mqgywrqr5T8fNQq12o5APx8Zl2HGncM/4pFYOrRxVLbZM+lP03XqA0rpoRVso
+         l3BukXmaCXnliqfxezF07+nUVHExtbCmVbG7VpKL2wHlfQYE5Ogl6m/6IZNNhpGETb
+         d1Rv6QvwRmX7MtJ6/6GyKNAIAMq+5Towrzub7S7LaNAumjCmZ90nw394bZ970/cTZP
+         6JZryrPojvE8chSkiXvJjHZiLyz3zMr+wb0lylbqUIIZm+1Zs8UA1JWIsntfqRRgzI
+         zS91iUQ2HG0wA==
+Date:   Mon, 18 Oct 2021 10:35:29 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jonas =?iso-8859-1?Q?Dre=DFler?= <verdre@v0yd.nl>
+Cc:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Brian Norris <briannorris@chromium.org>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Vidya Sagar <vidyas@nvidia.com>,
+        Victor Ding <victording@google.com>
+Subject: Re: [PATCH] mwifiex: Add quirk resetting the PCI bridge on MS
+ Surface devices
+Message-ID: <20211018153529.GA2235731@bhelgaas>
 MIME-Version: 1.0
-Received: by 2002:a67:cb08:0:0:0:0:0 with HTTP; Mon, 18 Oct 2021 08:17:37
- -0700 (PDT)
-Reply-To: mrsaishag45@gmail.com
-From:   Mrs Aisha Al-Qaddafi <faridafarah924@gmail.com>
-Date:   Mon, 18 Oct 2021 08:17:37 -0700
-Message-ID: <CAJAEg+sp5YL5mUYnqF2rUVDS3gzsOTdY=wPsKp89nC3YRg-bMA@mail.gmail.com>
-Subject: Dear Friend,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e7983fec-f4f1-6d31-5e46-f5a427fe55cc@v0yd.nl>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear Friend,
+On Thu, Oct 14, 2021 at 12:08:31AM +0200, Jonas Dreßler wrote:
+> On 10/12/21 17:39, Bjorn Helgaas wrote:
+> > [+cc Vidya, Victor, ASPM L1.2 config issue; beginning of thread:
+> > https://lore.kernel.org/all/20211011134238.16551-1-verdre@v0yd.nl/]
 
-I came across your e-mail contact prior to a private search while in
-need of your assistance. I am Aisha Al-Qaddafi, the only biological
-Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
-single Mother and a Widow with three Children.
+> > I wonder if this reset quirk works because pci_reset_function() saves
+> > and restores much of config space, but it currently does *not* restore
+> > the L1 PM Substates capability, so those T_POWER_ON,
+> > Common_Mode_Restore_Time, and LTR_L1.2_THRESHOLD values probably get
+> > cleared out by the reset.  We did briefly save/restore it [1], but we
+> > had to revert that because of a regression that AFAIK was never
+> > resolved [2].  I expect we will eventually save/restore this, so if
+> > the quirk depends on it *not* being restored, that would be a problem.
+> > 
+> > You should be able to test whether this is the critical thing by
+> > clearing those registers with setpci instead of doing the reset.  Per
+> > spec, they can only be modified when L1.2 is disabled, so you would
+> > have to disable it via sysfs (for the endpoint, I think)
+> > /sys/.../l1_2_aspm and /sys/.../l1_2_pcipm, do the setpci on the root
+> > port, then re-enable L1.2.
+> > 
+> > [1] https://git.kernel.org/linus/4257f7e008ea
+> > [2] https://lore.kernel.org/all/20210127160449.2990506-1-helgaas@kernel.org/
+> 
+> Hmm, interesting, thanks for those links.
+> 
+> Are you sure the config values will get lost on the reset? If we only reset
+> the port by going into D3hot and back into D0, the device will remain powered
+> and won't lose the config space, will it?
 
-I have investment funds worth Twenty Seven Million Five Hundred
-Thousand United State Dollar ($27.500.000.00 ) and i need a trusted
-investment Manager/Partner because of my current refugee status,
-however, I am interested in you for investment project assistance in
-your country, may be from there, we can build business relationship in
-the nearest future.
-
-I am willing to negotiate an investment/business profit sharing ratio
-with you based on the future investment earning profits.
-
-If you are willing to handle this project on my behalf kindly reply
-urgently to enable me to provide you more information about the
-investment funds.
-Best Regards
-Mrs Aisha Al-Qaddafi
+I think you're doing a PM reset (transition to D3hot and back to D0).
+Linux only does this when PCI_PM_CTRL_NO_SOFT_RESET == 0.  The spec
+doesn't actually *require* the device to be reset; it only says the
+internal state of the device is undefined after these transitions.
