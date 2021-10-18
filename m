@@ -2,99 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6DC14328B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 23:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B40404328BE
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 23:04:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233865AbhJRVCx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 17:02:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54308 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232088AbhJRVCw (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 17:02:52 -0400
-Received: from bombadil.infradead.org (unknown [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C85C06161C;
-        Mon, 18 Oct 2021 14:00:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=vLA6NvpHs1ov/wgNN4Rab4l5sS4rboEGv0iuEduXVbY=; b=iUT+DG6cCvFIzIKucTso+2Ougp
-        Fci5S7Y/smV3JigsBicWZK0xeRpcI0OObnF6g0WWc4B90SGX4LIhfXUwenB0aVXby+l49+dXLF0Dp
-        KJTFNdTn4rj3s5hDGrqfrqx7K3aRt8iTDHGmd8Dp9VNzxR/YxLcTXztzNhHdRycaM7YJfx0qyUasX
-        02Mwvp+athQKKv2q4XM4+nh9VaH7SzfFarj6DgGueWM7XYQt0DrGsYYqduGiVSLEAgEHwG1aonf+q
-        ZRfB6QtXUYxQl81R1uHKAoF3AepcMFJoyMh1Wl4c21KEts26bAZO5XgZJU2GqkmXPkdcgJ51qXadc
-        /0NTPxBA==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mcZk9-00HG7q-8A; Mon, 18 Oct 2021 21:00:25 +0000
-Date:   Mon, 18 Oct 2021 14:00:25 -0700
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     bp@suse.de, akpm@linux-foundation.org, josh@joshtriplett.org,
-        rishabhb@codeaurora.org, kubakici@wp.pl, maco@android.com,
-        david.brown@linaro.org, bjorn.andersson@linaro.org,
-        linux-wireless@vger.kernel.org, keescook@chromium.org,
-        shuah@kernel.org, mfuzzey@parkeon.com, zohar@linux.vnet.ibm.com,
-        dhowells@redhat.com, pali.rohar@gmail.com, tiwai@suse.de,
-        arend.vanspriel@broadcom.com, zajec5@gmail.com, nbroeking@me.com,
-        broonie@kernel.org, dmitry.torokhov@gmail.com, dwmw2@infradead.org,
-        torvalds@linux-foundation.org, Abhay_Salunke@dell.com,
-        jewalt@lgsinnovations.com, cantabile.desu@gmail.com, ast@fb.com,
-        andresx7@gmail.com, dan.rue@linaro.org, brendanhiggins@google.com,
-        yzaikin@google.com, sfr@canb.auug.org.au, rdunlap@infradead.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 04/14] firmware_loader: add built-in firmware kconfig
- entry
-Message-ID: <YW3gae4HoUd9izyj@bombadil.infradead.org>
-References: <20210917182226.3532898-1-mcgrof@kernel.org>
- <20210917182226.3532898-5-mcgrof@kernel.org>
- <YVxhbhmNd7tahLV7@kroah.com>
- <YWR16e/seTx/wxE+@bombadil.infradead.org>
- <YWR4XKrC2Bkr4qKQ@kroah.com>
- <YWS7ABDdBIpdt/84@bombadil.infradead.org>
+        id S229555AbhJRVGu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 17:06:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57690 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229529AbhJRVGu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Oct 2021 17:06:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 52C9560FC3;
+        Mon, 18 Oct 2021 21:04:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634591078;
+        bh=VNh+iLTefjYB1dJLM3/f3OT4eYSLkDnSvr5ru6WGQ1I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FtxJeqFTHZ/ZM69DYb3iT0XfAc62YXmpvfVCVmX0tPMmpm469lNJC5uxzezknFjou
+         hjTKjYRFepfW9HCN7MjCMOM1SC7AsfV+vxxa9eRTHf5ko9+Y9FlJ8M6TcarwxonWMg
+         jr/suTyGpHfn7weQEI7BLYKZ3GgP68twwUaUR9ZnO/lUG7HM3VskTonoLvoYIvcmfz
+         9R5T+4sWelAlR6Gz9qACKZgOBhSUTETKN6/1PlNk2VtqX+1RcVf61VhTcQymObrPN1
+         R+oZYlvzhwE9KF/kfc80Tl3TdT8MtoUlXE8/5IuTaq1yb9dfXM4Z7pF4h+iip+GHr8
+         9frR1vkS1MCJQ==
+Date:   Mon, 18 Oct 2021 23:04:34 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com, greearb@candelatech.com
+Subject: Re: [PATCH 00/10] mt76: ethtool stats features and fixes
+Message-ID: <YW3hYr1Q6OlOAlhb@lore-desk>
+References: <cover.1634558817.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="+iAae6AE78u2m0wg"
 Content-Disposition: inline
-In-Reply-To: <YWS7ABDdBIpdt/84@bombadil.infradead.org>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
+In-Reply-To: <cover.1634558817.git.lorenzo@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Oct 11, 2021 at 03:30:24PM -0700, Luis Chamberlain wrote:
-> On Mon, Oct 11, 2021 at 07:46:04PM +0200, Greg KH wrote:
-> > >   o By default we now always skip built-in firmware even if a FW_LOADER=y
-> > 
-> > I do not understand, why would we ever want to skip built-in firmware?
-> 
-> Because it is done this way today only implicitly because
-> EXTRA_FIRMWARE is empty. Using a kconfig entry makes this
-> more obvious.
 
-Greg,
+--+iAae6AE78u2m0wg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The fact that it was not obvious to you we were effectively disabling
-the built-in firmware functionality by default using side kconfig
-symbols is a good reason to clarify this situation with its own kconfig
-symbol.
+> - mt7921: add ethtool support similar to mt7915 driver
+> - mt7915: some ethtool fixes
 
-And consider what I started below as well.
+Hi Felix,
 
-Please let me know why on the other hand we should *not* add this new
-kconfig symbol?
+please drop this series, I will post v2 addressing some bits.
 
-> > >   o This also lets us make it clear that the EXTRA_FIRMWARE_DIR
-> > >     kconfig entry is only used for built-in firmware
-> > 
-> > How was it ever used for anything else?  :)
-> 
-> Well later this patch set also renames this to something more
-> sensible, and so that change is clearer through this patch.
-> 
-> > I can not take this as-is, so yes :)
-> 
-> Well please let me know again once you read the above explanations.
-> 
-> I think the new kconfig is very well justified given the above.
-> 
->   Luis
+Regards,
+Lorenzo
+
+>=20
+> Lorenzo Bianconi (10):
+>   mt76: move mt76_sta_stats in mt76.h
+>   mt76: mt7921: add sta stats accounting in mt7921_mac_add_txs_skb
+>   mt76: mt7921: add some more MIB counters
+>   mt76: mt7921: introduce stats reporting through ethtool
+>   mt76: mt7921: move tx amsdu stats in mib_stats
+>   mt76: move mt76_ethtool_worker_info in mt76 module
+>   mt76: mt7921: add per-vif counters in ethtool
+>   mt76: mt7915: run mt7915_get_et_stats holding mt76 mutex
+>   mt76: mt7915: do not overwrite all mib counters in mt7915_get_stats
+>   mt76: mt7915: move tx amsdu stats in mib_stats
+>=20
+>  drivers/net/wireless/mediatek/mt76/mac80211.c |  28 +++
+>  drivers/net/wireless/mediatek/mt76/mt76.h     |  17 ++
+>  .../wireless/mediatek/mt76/mt7915/debugfs.c   |  24 +--
+>  .../net/wireless/mediatek/mt76/mt7915/mac.c   |  11 +-
+>  .../net/wireless/mediatek/mt76/mt7915/main.c  |  59 ++----
+>  .../wireless/mediatek/mt76/mt7915/mt7915.h    |  13 +-
+>  .../wireless/mediatek/mt76/mt7921/debugfs.c   |  27 ++-
+>  .../net/wireless/mediatek/mt76/mt7921/mac.c   |  49 ++++-
+>  .../net/wireless/mediatek/mt76/mt7921/main.c  | 169 +++++++++++++++++-
+>  .../wireless/mediatek/mt76/mt7921/mt7921.h    |  22 +++
+>  .../net/wireless/mediatek/mt76/mt7921/regs.h  |  28 +++
+>  11 files changed, 363 insertions(+), 84 deletions(-)
+>=20
+> --=20
+> 2.31.1
+>=20
+
+--+iAae6AE78u2m0wg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYW3hYgAKCRA6cBh0uS2t
+rIe/AQDQ67jQKh33IzDEAyVsshjguDeAvQXKaz0GMHmWMvYEswD9Fz1ySAIBThD4
+4Tcr1jvINRIEgkZKVXDMO5S/CmWJZw0=
+=ZOf2
+-----END PGP SIGNATURE-----
+
+--+iAae6AE78u2m0wg--
