@@ -2,131 +2,184 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94ECA4326F2
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 20:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB347432762
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 21:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233343AbhJRS6h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 14:58:37 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:50711 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232650AbhJRS6g (ORCPT
+        id S231739AbhJRTTp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 15:19:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59184 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231263AbhJRTTp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 14:58:36 -0400
-Received: by mail-io1-f71.google.com with SMTP id z18-20020a6b5c12000000b005dccad62545so11479877ioh.17
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 11:56:24 -0700 (PDT)
+        Mon, 18 Oct 2021 15:19:45 -0400
+Received: from mail-ua1-x935.google.com (mail-ua1-x935.google.com [IPv6:2607:f8b0:4864:20::935])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F78EC06161C
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 12:17:33 -0700 (PDT)
+Received: by mail-ua1-x935.google.com with SMTP id r17so3448858uaf.8
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 12:17:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=T/RSixTz+/RerBxKYGwrAm/L5qHkd/rSEBMpEbBiXRk=;
+        b=cipeCcJQRwYI3oXbj6uqHZNJJFHFgdRDnCVLrDnRQHFeEB2IYVqbdykxitJ6biXmtB
+         yvykrLDLBmLDiZ2cScbmYsjXGP5jHPNCEOn8SDlnc29z9lt8Wh75zsWakGz9V5dovEf8
+         /atP6j1NTmALXTu6BGGgGWNKvcMyGOigJKQ1SSd8LVHrx5UB1q7j5KV+kCytpveRnZJZ
+         NEVyEviJPOwVrcMDXl+L1YNfW91FdUzb8wd5fbYGJYGLiC7YTcCxfApaqooAT8J5LOIf
+         t8gwKxWdIt0//oMEFpWsdcoJMHlvkpODX7q9wDaMsgCxL01oGiqk/XwNowqco09jF/A/
+         YOiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=qrfb55jZpNwVAqJrVbLH1XCEOAgnpcHdVrtGXnqAP20=;
-        b=TlzR6NMFgX7bj/EDhJ+8X4jaBqteFh1U7T8WZEkmJjonxG/jKxgfvN/pMolWpwxz0K
-         q7Ppwhu1n3HW3EDAwpCuRqqt0tD3Hsaej1QDpDjwkiUapRHS/rCW9+dg3MZ6SP5JqpJD
-         96l197tWcLmqu6xRwnCQoJWKNSWwtxCj4I3H3Mn8RDDAjQd/jz61ffhdmTr1Fv0b+z5M
-         wSB+wQTceLV/zSS6u8fE6t05/wp5L3QHwOkg428JPsNFpnwc4vh4ObNuLQp7K7A4ZBUc
-         iWIXDwkHJ7+08fdrdvs1dUKpVGZaZ6YyFQnF7x6ly0XQiAx3cRNea2z5ogP0u5pKUfWH
-         DWgA==
-X-Gm-Message-State: AOAM532GY3rAFnvvUfijjhDIqMA4h8Ec6q9IJH9skxKjRQtC1rcHe7z8
-        9jixTHfvVZAcKDQPsQIy0w/2tuotl3ROlV56u8U7PUap+7Qs
-X-Google-Smtp-Source: ABdhPJz72nBghGjLut9waCZkNKD4/yd8i4XkP3TKRiLBsPdj890qMfwAgKdV6HQx4TqEH+t1LRkeYI5J7411P66ZLngomq4cbb9l
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=T/RSixTz+/RerBxKYGwrAm/L5qHkd/rSEBMpEbBiXRk=;
+        b=MnMY3BA4/HU4rW8Iq/oT0P4XYCEAWdsRVkmJFv5MoE8TiTxOeWFs3vu6vqKxNE73uP
+         3ociSS0b07GbP1qQe8S6AdlU8aoBl9D8l4hEjbTtjEVW5/4pQu9DO65Ty1uXumRF7hQl
+         CZXQfkeRLau74wmE+3qUC633lWdo/D9S6Vj7lMNL5Q8F779CLQWEyYzOOE/1fNBdTNSe
+         NWtwdsCNc7K8tuWv/4g2BqBN6q0mv4RyDhZTjCUINPLm2R3bpQSRTiXIfgA3i4AJgFDN
+         mHL6DBDgNT44DqSlTy7iUItDIoEh1+mQktbdi2V2POaEbl3dWtA+xrhpe/ttWSpjDa4N
+         yFAQ==
+X-Gm-Message-State: AOAM530UPr7xAuq1I8zSbNgnK+9SxzPsYQ29GWPuXsM6KZ1+wZefuZMi
+        6HGcKeCNpHv8fnbe6yYqJENUDgDzySlYanKGtpJ4/OWL
+X-Google-Smtp-Source: ABdhPJzPTOmR0SRp95KM3TO/gywlIhp3wZtPLie74fZp/NM9RUWQvP769PPGsxPSp0fZwRlLn5yCyzs4Dw/J9kCsagM=
+X-Received: by 2002:a05:6102:c0f:: with SMTP id x15mr30483821vss.57.1634584652361;
+ Mon, 18 Oct 2021 12:17:32 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:ac6:: with SMTP id m6mr1115607jab.28.1634583383840;
- Mon, 18 Oct 2021 11:56:23 -0700 (PDT)
-Date:   Mon, 18 Oct 2021 11:56:23 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000f3259005cea5199e@google.com>
-Subject: [syzbot] divide error in mac80211_hwsim_bss_info_changed (2)
-From:   syzbot <syzbot+5f110beab9fb01e48be5@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
+References: <20210811105541.43426-1-emmanuel.grumbach@intel.com>
+ <20210811105541.43426-2-emmanuel.grumbach@intel.com> <87lf2qvbg2.fsf@codeaurora.org>
+In-Reply-To: <87lf2qvbg2.fsf@codeaurora.org>
+From:   Emmanuel Grumbach <egrumbach@gmail.com>
+Date:   Mon, 18 Oct 2021 22:17:21 +0300
+Message-ID: <CANUX_P3F_fJK1wWRJPw+9SFeB0dfP0rUOA_gSPruuSnrtzmQ_g@mail.gmail.com>
+Subject: Re: [PATCH v6 2/7] iwlwifi: mei: add the driver to allow cooperation
+ with CSME
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On Mon, Oct 18, 2021 at 2:08 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Emmanuel Grumbach <emmanuel.grumbach@intel.com> writes:
+>
+> > CSME in two words
+> > -----------------
+> > CSME stands for Converged Security and Management Engine. It is
+> > a CPU on the chipset and runs a dedicated firmware.
+> > AMT (Active Management Technology) is one of the applications
+> > that run on that CPU. AMT allows to control the platform remotely.
+> > Here is a partial list of the use cases:
+> > * View the screen of the plaform, with keyboard and mouse (KVM)
+> > * Attach a remote IDE device
+> > * Have a serial console to the device
+> > * Query the state of the platform
+> > * Reset / shut down / boot the platform
+> >
+> > Networking in CSME
+> > ------------------
+> > For those uses cases, CSME's firmware has an embedded network
+> > stack and is able to use the network devices of the system: LAN
+> > and WLAN. This is thanks to the CSME's firmware WLAN driver.
+> >
+> > One can add a profile (SSID / key / certificate) to the CSME's OS
+> > and CSME will connect to that profile. Then, one can use the WLAN
+> > link to access the applications that run on CSME (AMT is one of
+> > them). Note that CSME is active during power state and power state
+> > transitions. For example, it is possible to have a KVM session
+> > open to the system while the system is rebooting and actually
+> > configure the BIOS remotely over WLAN thanks to AMT.
+> >
+> > How all this is related to Linux
+> > --------------------------------
+> > In Linux, there is a driver that allows the OS to talk to the
+> > CSME firmware, this driver is drivers/misc/mei. This driver
+> > advertises a bus that allows other kernel drivers or even user
+> > space) to talk to components inside the CSME firmware.
+> > In practice, the system advertises a PCI device that allows
+> > to send / receive data to / from the CSME firmware. The mei
+> > bus drivers in drivers/misc/mei is an abstration on top of
+> > this PCI device.
+> > The driver being added here is called iwlmei and talks to the
+> > WLAN driver inside the CSME firmware through the mei bus driver.
+> > Note that the mei bus driver only gives bus services, it doesn't
+> > define the content of the communication.
+> >
+> > Why do we need this driver?
+> > --------------------------
+> > CSME uses the same WLAN device that the OS is expecting to see
+> > hence we need an arbitration mechanism. This is what iwlmei is
+> > in charge of. iwlmei maintains the communication with the CSME
+> > firmware's WLAN driver. The language / protocol that is used
+> > between the CSME's firmware WLAN driver and iwlmei is OS agnostic
+> > and is called SAP which stands for Software Abritration Protocol.
+> > With SAP, iwlmei will be able to tell the CSME firmware's WLAN
+> > driver:
+> > 1) Please give me the device.
+> > 2) Please note that the SW/HW rfkill state change.
+> > 3) Please note that I am now associated to X.
+> > 4) Please note that I received this packet.
+> > etc...
+> >
+> > There are messages that go the opposite direction as well:
+> > 1) Please note that AMT is en/disable.
+> > 2) Please note that I believe the OS is broken and hence I'll take
+> >    the device *now*, whether you like it or not, to make sure that
+> >    connectivity is preserved.
+> > 3) Please note that I am willing to give the device if the OS
+> >    needs it.
+> > 4) Please give me any packet that is sent on UDP / TCP on IP address
+> >    XX.XX.XX.XX and an port ZZ.
+> > 5) Please send this packet.
+> > etc...
+> >
+> > Please check drivers/net/wireless/intel/iwlwifi/mei/sap.h for the
+> > full protocol specification.
+> >
+> > Arbitration is not the only purpose of iwlmei and SAP. SAP also
+> > allows to maintain the AMT's functionality even when the OS owns
+> > the device. To connect to AMT, one needs to initiate an HTTP
+> > connection to port 16992. iwlmei will listen to the Rx path and
+> > forward (through SAP) to the CSME firmware the data it got. Then,
+> > the embedded HTTP server in the chipset will reply to the request
+> > and send a SAP notification to ask iwlmei to send the reply.
+> > This way, AMT running on the CSME can still work.
+> >
+> > In practice this means that all the use cases quoted above (KVM,
+> > remote IDE device, etc...) will work even when the OS uses the
+> > WLAN device.
+> >
+> > How to disable all this?
+> > ---------------------------
+> > iwlmei won't be able to do anything if the CSME's networking stack
+> > is not enabled. By default, CSME's networking stack is disabled (this
+> > is a BIOS setting).
+> > In case the CSME's networking stack is disabled, iwlwifi will just
+> > get access to the device because there is no contention with any other
+> > actor and, hence, no arbitration is needed.
+> >
+> > In this patch, I only add the iwlmei driver. Integration with
+> > iwlwifi will be implemented in the next one.
+> >
+> > Co-Developed-by: Ayala Beker <ayala.beker@intel.com>
+> > Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+>
+> s-o-b missing from Ayala, same problem also in other patches in this
+> patchset.
+>
+> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
+>
 
-syzbot found the following issue on:
+I fixed all the comments and pushed to a branch in our tree to get a
+0-day run on it.
+One question though: there is currently a (small) diff between
+iwlwifi-next and wireless-driver-next that makes this series conflict.
+This is because of a fix that was applied on wireless-drivers-next
+directly and Luca hasn't merged your tree back to his yet.
+I can send v7 on either code base you like.
+I think 0-day tests iwlwifi patches against iwlwifi-next but I am not sure.
+Luca is on vacation until next week.
 
-HEAD commit:    fac3cb82a54a net: bridge: mcast: use multicast_membership_..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=144efe78b00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=bab9d35f204746a7
-dashboard link: https://syzkaller.appspot.com/bug?extid=5f110beab9fb01e48be5
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+5f110beab9fb01e48be5@syzkaller.appspotmail.com
-
-divide error: 0000 [#1] PREEMPT SMP KASAN
-CPU: 1 PID: 1140 Comm: kworker/u4:4 Not tainted 5.15.0-rc5-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: phy9 ieee80211_roc_work
-RIP: 0010:mac80211_hwsim_bss_info_changed+0xd37/0xf10 drivers/net/wireless/mac80211_hwsim.c:2033
-Code: 48 ba 00 00 00 00 00 fc ff df 48 c1 e9 03 80 3c 11 00 0f 85 96 01 00 00 49 8b b6 a0 3c 00 00 49 8d be 40 3d 00 00 31 d2 89 f1 <48> f7 f1 29 d6 b9 05 00 00 00 31 d2 48 69 f6 e8 03 00 00 e8 d1 1f
-RSP: 0018:ffffc9000550fb70 EFLAGS: 00010246
-RAX: 0005ce87f3fb02a5 RBX: 0000000000000200 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88807783efe0
-RBP: ffff88801af8e088 R08: 000000000000f8c6 R09: ffffffff8fcffa47
-R10: ffffffff8167242f R11: 0000000000000000 R12: ffff888077838d60
-R13: ffff88807783ef40 R14: ffff88807783b2a0 R15: ffff88807783b2a0
-FS:  0000000000000000(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffee3e2afcc CR3: 000000004efc2000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- drv_bss_info_changed+0x2c6/0x5f0 net/mac80211/driver-ops.h:177
- ieee80211_bss_info_change_notify+0x9a/0xc0 net/mac80211/main.c:210
- ieee80211_offchannel_return+0x330/0x4a0 net/mac80211/offchannel.c:158
- __ieee80211_roc_work+0x35a/0x3d0 net/mac80211/offchannel.c:444
- ieee80211_roc_work+0x2b/0x40 net/mac80211/offchannel.c:458
- process_one_work+0x9bf/0x16b0 kernel/workqueue.c:2297
- worker_thread+0x658/0x11f0 kernel/workqueue.c:2444
- kthread+0x3e5/0x4d0 kernel/kthread.c:319
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
-Modules linked in:
----[ end trace ff9a982d4a81be98 ]---
-RIP: 0010:mac80211_hwsim_bss_info_changed+0xd37/0xf10 drivers/net/wireless/mac80211_hwsim.c:2033
-Code: 48 ba 00 00 00 00 00 fc ff df 48 c1 e9 03 80 3c 11 00 0f 85 96 01 00 00 49 8b b6 a0 3c 00 00 49 8d be 40 3d 00 00 31 d2 89 f1 <48> f7 f1 29 d6 b9 05 00 00 00 31 d2 48 69 f6 e8 03 00 00 e8 d1 1f
-RSP: 0018:ffffc9000550fb70 EFLAGS: 00010246
-RAX: 0005ce87f3fb02a5 RBX: 0000000000000200 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88807783efe0
-RBP: ffff88801af8e088 R08: 000000000000f8c6 R09: ffffffff8fcffa47
-R10: ffffffff8167242f R11: 0000000000000000 R12: ffff888077838d60
-R13: ffff88807783ef40 R14: ffff88807783b2a0 R15: ffff88807783b2a0
-FS:  0000000000000000(0000) GS:ffff8880b9c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1b6573a218 CR3: 00000000271f2000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-----------------
-Code disassembly (best guess):
-   0:	48 ba 00 00 00 00 00 	movabs $0xdffffc0000000000,%rdx
-   7:	fc ff df
-   a:	48 c1 e9 03          	shr    $0x3,%rcx
-   e:	80 3c 11 00          	cmpb   $0x0,(%rcx,%rdx,1)
-  12:	0f 85 96 01 00 00    	jne    0x1ae
-  18:	49 8b b6 a0 3c 00 00 	mov    0x3ca0(%r14),%rsi
-  1f:	49 8d be 40 3d 00 00 	lea    0x3d40(%r14),%rdi
-  26:	31 d2                	xor    %edx,%edx
-  28:	89 f1                	mov    %esi,%ecx
-* 2a:	48 f7 f1             	div    %rcx <-- trapping instruction
-  2d:	29 d6                	sub    %edx,%esi
-  2f:	b9 05 00 00 00       	mov    $0x5,%ecx
-  34:	31 d2                	xor    %edx,%edx
-  36:	48 69 f6 e8 03 00 00 	imul   $0x3e8,%rsi,%rsi
-  3d:	e8                   	.byte 0xe8
-  3e:	d1 1f                	rcrl   (%rdi)
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Any option you'll choose will be fine by me. Just let me know.
