@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63A874318A7
+	by mail.lfdr.de (Postfix) with ESMTP id AD01B4318A8
 	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 14:14:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231615AbhJRMQg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 08:16:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32874 "EHLO mail.kernel.org"
+        id S231672AbhJRMQh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 08:16:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32898 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231648AbhJRMQf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 08:16:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CA7B36128E;
-        Mon, 18 Oct 2021 12:14:23 +0000 (UTC)
+        id S231648AbhJRMQh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Oct 2021 08:16:37 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 38E61610A3;
+        Mon, 18 Oct 2021 12:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634559264;
-        bh=0L63P3k7sRvPBaF3YsZPzvDK6AR2+06BgB+z85eyb+8=;
+        s=k20201202; t=1634559266;
+        bh=+G7spr0hpBbQYp1ngah2Y2L550U315sRoRAj5bsiH8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ap7S043M85kohwRxE7rRJ6IuMYO4F2uPl4kPNTb0gnqd22IcAGwMU4w3q0q3GouOu
-         1DdWri9X+bOiAaNlclaBB5YUBgF3U4mA7nJXnDxad4gYN5d0AB/iKh6b7SgraZaDrL
-         yQuw3JZKdxw7a1aIsA0apt1E4PpI8r7WIpVKIF5SCtYYzDT6R8BOYOhr6bqM9wP25n
-         6XmbuVZ4dhvYDmotnKUtH8DkU2VT8z8OQlrX7S4vPSzEphaHoSw+9jHDCCxHbuMKBA
-         Y/t+91QHOBP6N248dEWr1HKl2pRCufwDQuh5dfNMcWCv5/naHuES2dlBb9kfdUy1an
-         5wXBWDDZ9s9XQ==
+        b=AZXPmeL5uHgwPaDdzZp22nAql5xjPnyHmJNzzrrYylyeT+opDVQ1QU8JP0C/pLbCO
+         YFkhzc8Vl5gwqOYVdD/Q+eg/nhJkE6xC5afF1RL24i/0k/DBjG3nfAWUhRMbafMNhz
+         ZI4+5OPS0TlLfq+tZBlU/JNHZO1zkKQKQ0PnLveSSAcBQ8z6qqQ0GK9s3TJf6JsrU9
+         2PKvqJ7AO5hbyOAjEKWHUWopWVPEkHBN2qwHlFD6XNegBlsnxCsoOyN0S0id9jnrkF
+         m0M7kNeK9+U4SBhzlci9ED3V3dZmous4bBjSACK+BxsOce9xoKev+3KsZIZcQn0+/B
+         PJ+q4orM3AqHQ==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, greearb@candelatech.com
-Subject: [PATCH 06/10] mt76: move mt76_ethtool_worker_info in mt76 module
-Date:   Mon, 18 Oct 2021 14:14:05 +0200
-Message-Id: <9c16b69d1afe007739dbd18ba06fbdeb694d6f8c.1634558817.git.lorenzo@kernel.org>
+Subject: [PATCH 07/10] mt76: mt7921: add per-vif counters in ethtool
+Date:   Mon, 18 Oct 2021 14:14:06 +0200
+Message-Id: <350ad74a2911722f032842bc07dd8bb7d6ccb288.1634558817.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1634558817.git.lorenzo@kernel.org>
 References: <cover.1634558817.git.lorenzo@kernel.org>
@@ -39,160 +39,100 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move mt76_ethtool_worker_info in common code in order to be reused in
-mt7921 driver.
+Similar to mt7915 driver, add per-vif tx counters in ethtool.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mac80211.c | 28 +++++++++++
- drivers/net/wireless/mediatek/mt76/mt76.h     | 10 ++++
- .../net/wireless/mediatek/mt76/mt7915/main.c  | 47 +++----------------
- 3 files changed, 45 insertions(+), 40 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 53 ++++++++++++++++++-
+ 1 file changed, 52 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 766681a4f89e..62807dc311c1 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1508,3 +1508,31 @@ u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx)
- 	return rate->hw_value;
- }
- EXPORT_SYMBOL_GPL(mt76_calculate_default_rate);
-+
-+void mt76_ethtool_worker(struct mt76_ethtool_worker_info *wi,
-+			 struct mt76_sta_stats *stats)
-+{
-+	int i, ei = wi->initial_stat_idx;
-+	u64 *data = wi->data;
-+
-+	wi->sta_count++;
-+
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_CCK];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_OFDM];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HT];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HT_GF];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_VHT];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HE_SU];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HE_EXT_SU];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HE_TB];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HE_MU];
-+
-+	for (i = 0; i < ARRAY_SIZE(stats->tx_bw); i++)
-+		data[ei++] += stats->tx_bw[i];
-+
-+	for (i = 0; i < 12; i++)
-+		data[ei++] += stats->tx_mcs[i];
-+
-+	wi->worker_stat_count = ei - wi->initial_stat_idx;
-+}
-+EXPORT_SYMBOL_GPL(mt76_ethtool_worker);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index efb25fe36d4a..0f47d0a726dd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -780,6 +780,14 @@ struct mt76_sta_stats {
- 	u64 tx_mcs[16];		/* mcs idx */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 39ec3e62748b..6aaf255e87c9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -900,7 +900,33 @@ static const char mt7921_gstrings_stats[][ETH_GSTRING_LEN] = {
+ 	"rx_mpdu_cnt",
+ 	"rx_ampdu_cnt",
+ 	"rx_ampdu_bytes_cnt",
+-	"rx_ba_cnt"
++	"rx_ba_cnt",
++	/* per vif counters */
++	"v_tx_mode_cck",
++	"v_tx_mode_ofdm",
++	"v_tx_mode_ht",
++	"v_tx_mode_ht_gf",
++	"v_tx_mode_vht",
++	"v_tx_mode_he_su",
++	"v_tx_mode_he_ext_su",
++	"v_tx_mode_he_tb",
++	"v_tx_mode_he_mu",
++	"v_tx_bw_20",
++	"v_tx_bw_40",
++	"v_tx_bw_80",
++	"v_tx_bw_160",
++	"v_tx_mcs_0",
++	"v_tx_mcs_1",
++	"v_tx_mcs_2",
++	"v_tx_mcs_3",
++	"v_tx_mcs_4",
++	"v_tx_mcs_5",
++	"v_tx_mcs_6",
++	"v_tx_mcs_7",
++	"v_tx_mcs_8",
++	"v_tx_mcs_9",
++	"v_tx_mcs_10",
++	"v_tx_mcs_11",
  };
  
-+struct mt76_ethtool_worker_info {
-+	u64 *data;
-+	int idx;
-+	int initial_stat_idx;
-+	int worker_stat_count;
-+	int sta_count;
-+};
-+
- #define CCK_RATE(_idx, _rate) {					\
- 	.bitrate = _rate,					\
- 	.flags = IEEE80211_RATE_SHORT_PREAMBLE,			\
-@@ -1235,6 +1243,8 @@ mt76u_bulk_msg(struct mt76_dev *dev, void *data, int len, int *actual_len,
- 	return usb_bulk_msg(udev, pipe, data, len, actual_len, timeout);
+ static void
+@@ -920,13 +946,30 @@ mt7921_get_et_sset_count(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	return sset == ETH_SS_STATS ? ARRAY_SIZE(mt7921_gstrings_stats) : 0;
  }
  
-+void mt76_ethtool_worker(struct mt76_ethtool_worker_info *wi,
-+			 struct mt76_sta_stats *stats);
- int mt76_skb_adjust_pad(struct sk_buff *skb, int pad);
- int mt76u_vendor_request(struct mt76_dev *dev, u8 req,
- 			 u8 req_type, u16 val, u16 offset,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index b60f5adab6ae..4d5009f6954b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1187,45 +1187,15 @@ int mt7915_get_et_sset_count(struct ieee80211_hw *hw,
- 	return 0;
- }
- 
--struct mt7915_ethtool_worker_info {
--	u64 *data;
--	struct mt7915_vif *mvif;
--	int initial_stat_idx;
--	int worker_stat_count;
--	int sta_count;
--};
--
- static void mt7915_ethtool_worker(void *wi_data, struct ieee80211_sta *sta)
- {
--	struct mt7915_ethtool_worker_info *wi = wi_data;
++static void
++mt7921_ethtool_worker(void *wi_data, struct ieee80211_sta *sta)
++{
++	struct mt7921_sta *msta = (struct mt7921_sta *)sta->drv_priv;
 +	struct mt76_ethtool_worker_info *wi = wi_data;
- 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
--	struct mt76_sta_stats *mstats = &msta->stats;
--	int ei = wi->initial_stat_idx;
--	int q;
--	u64 *data = wi->data;
- 
--	if (msta->vif != wi->mvif)
-+	if (msta->vif->idx != wi->idx)
- 		return;
- 
--	wi->sta_count++;
--
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_CCK];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_OFDM];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HT];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HT_GF];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_VHT];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HE_SU];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HE_EXT_SU];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HE_TB];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HE_MU];
--
--	for (q = 0; q < ARRAY_SIZE(mstats->tx_bw); q++)
--		data[ei++] += mstats->tx_bw[q];
--
--	for (q = 0; q < 12; q++)
--		data[ei++] += mstats->tx_mcs[q];
--
--	wi->worker_stat_count = ei - wi->initial_stat_idx;
++
++	if (msta->vif->mt76.idx != wi->idx)
++		return;
++
 +	mt76_ethtool_worker(wi, &msta->stats);
- }
- 
++}
++
  static
-@@ -1236,9 +1206,11 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
- 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
- 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
--	struct mt7915_ethtool_worker_info wi;
+ void mt7921_get_et_stats(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			 struct ethtool_stats *stats, u64 *data)
+ {
++	struct mt7921_vif *mvif = (struct mt7921_vif *)vif->drv_priv;
+ 	struct mt7921_phy *phy = mt7921_hw_phy(hw);
+ 	struct mt7921_dev *dev = phy->dev;
+ 	struct mib_stats *mib = &phy->mib;
 +	struct mt76_ethtool_worker_info wi = {
 +		.data = data,
-+		.idx = mvif->idx,
++		.idx = mvif->mt76.idx,
 +	};
- 	struct mib_stats *mib = &phy->mib;
--
- 	/* See mt7915_ampdu_stat_read_phy, etc */
- 	bool ext_phy = phy != &dev->phy;
- 	int i, n;
-@@ -1307,12 +1279,7 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
+ 	int i, ei = 0;
+ 
+ 	mt7921_mutex_acquire(dev);
+@@ -965,8 +1008,16 @@ void mt7921_get_et_stats(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	data[ei++] = mib->rx_ampdu_bytes_cnt;
  	data[ei++] = mib->rx_ba_cnt;
  
- 	/* Add values for all stations owned by this vif */
--	wi.data = data;
--	wi.mvif = mvif;
- 	wi.initial_stat_idx = ei;
--	wi.worker_stat_count = 0;
--	wi.sta_count = 0;
--
- 	ieee80211_iterate_stations_atomic(hw, mt7915_ethtool_worker, &wi);
++	/* Add values for all stations owned by this vif */
++	wi.initial_stat_idx = ei;
++	ieee80211_iterate_stations_atomic(hw, mt7921_ethtool_worker, &wi);
++
+ 	mt7921_mutex_release(dev);
  
- 	if (wi.sta_count == 0)
++	if (!wi.sta_count)
++		return;
++
++	ei += wi.worker_stat_count;
+ 	if (ei != ARRAY_SIZE(mt7921_gstrings_stats))
+ 		dev_err(dev->mt76.dev, "ei: %d  SSTATS_LEN: %lu",
+ 			ei, ARRAY_SIZE(mt7921_gstrings_stats));
 -- 
 2.31.1
 
