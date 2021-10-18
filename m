@@ -2,404 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63DF643139B
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 11:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB61C431400
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 12:02:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231408AbhJRJmg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 05:42:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37456 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231213AbhJRJmf (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 05:42:35 -0400
-Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com [IPv6:2607:f8b0:4864:20::930])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D638FC06161C
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 02:40:20 -0700 (PDT)
-Received: by mail-ua1-x930.google.com with SMTP id a17so842717uax.12
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 02:40:20 -0700 (PDT)
+        id S230137AbhJRKEV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 06:04:21 -0400
+Received: from mail-eopbgr100111.outbound.protection.outlook.com ([40.107.10.111]:6221
+        "EHLO GBR01-LO2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229519AbhJRKEU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Oct 2021 06:04:20 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oUarUT1tk74fg2M8JEC2CwIJG7LllGK/JUZbkfEf6jz01PCTuNIUFDzlHN4M09oVcwHGNS7MOKG7vxw4j13dMXbHsvgIwODKRyTh+WecM8jTgR/Tuo5+afd0TtSPCr+2TkgSdUJCzb4gNHM4XLaRUOF0mcpT+DZULPVIJhJzWsXgbQYJJ7CCm8TRLgHJgC6Ese/uPZqe9G45AW+p7dsBc473kKlxXFLCCcMSx2szRlfdUL9zkX/dpEvfVGmxSCR28fv9YPAsLoCtPVlfBeHeJGbfbGwkUPW6og4JGPUlFvjHaI0Gev4j2G7V9YGbEe0mtCqCQjPb3A0B9BvFH2gMFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xMZj1/F+f7yZt6U3zTA8uqMWU4kf11PbadDXRBKc7fA=;
+ b=TjOQbY0IVD/t7cWVuIEkkZEUootl2T1GGYKHV2S92+xhyqus0pbMlYi7WtQZXitl2ztXCLGUd7De2BrfZwOB+0odU5qVZH+E9XC47lGu82ht+8pwLekIqrkaniTB8JgSqh1K302QXdFPott/kc/e+nGIAvYWbkw+f/93fIY/rOo4GDJVCfiu4aqXup/KXPmMSOZdREETDHb7mr6eWe7Uwpr/0EMzb3HEx5WXbL1VHaHPCaS8cdYWlz1zGvnkVxI5nZyha2ljI44BXpEukcQ0Z2SOkZfFqgIJaTJAc4dLf+xqMNlMr+G1VXWrrDMPZyt9OPq8Ngtoml6KWBIAQ8WzUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=purelifi.com; dmarc=pass action=none header.from=purelifi.com;
+ dkim=pass header.d=purelifi.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=66gYky4IhCR4bQAy5v7kOawA8tjJclQaeIWS/wSwzW8=;
-        b=h4Fm1Op4Jz1ibEy16t76a9YfpuT04AUwsuIYhOqFr7ucWxmtrCdMcUR3pMefP2+SBF
-         YSTmk4rIEfiFP+vHkfsNy1UjzvDe9zoncH5QMD6qHv99PYSEMxHaT+DiEGlt5nSZTkSk
-         Sh0qKd9c11YkH1S7i0AozwhXnAANiipz9s42CobAh5ljafHGi2UzfaBKYxKAl6WZjhep
-         TdO5cLhmNbWcZMPUTzwx1GHo+DRyymGAuTy/FvfbSrnp4gFwO/shFaK2kU+ZpAPACYas
-         O22owJ+TU5TS7z+EJXb/ppLmpIncWzMjDMZHj5MuoIQgO+62hyHAGljmdq+KNoGMa/Qt
-         dyaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=66gYky4IhCR4bQAy5v7kOawA8tjJclQaeIWS/wSwzW8=;
-        b=ZPupvZZFbmnFTTHabBba7GuZDFo3vsGDZds0k+S91nIAV3ALmVpybDr7TYb74ZBUgQ
-         dQvJjXd+tLB3b3AfM4AWtY85XTVQHtYEWJOTiwn6Lt/6c6NLdfbXPsBu6c0jRltvicsP
-         D9YWOOsdBGFsSSyhZz9+8QzQXvnfpxvSCHq2hEwTwbyjqTvlZ481iqGcV8GbI5aCfUT8
-         kvF6fAKXiuD6qJ6Haz1NiHvXccFbGC7JAIXq5SfU+B2bDIJzsze8ObIf1HmTxVBknypz
-         6damrlxXbBHhGBdb/KmSvP/dFYiz7naxWp6Ir1THI+4g22xGKlk69+1lQLYuZtF8qLiC
-         LN7w==
-X-Gm-Message-State: AOAM533WWi3ryBJ2g8dA3CvR5Xvle9SlAk2PC14HJLOtILV2v1zsQPKK
-        tFuIogosgsuGO2o6+yVVapNJm/d6sQx7tMgygJQ=
-X-Google-Smtp-Source: ABdhPJzIRQsF8Ig1PkMNiaUB+1OSDZAI8RBgGveAG3u9EhntQNpfhQgQoyso7yNXqWL0wm9/YSDLOnMjrAdkr2lW+NU=
-X-Received: by 2002:a05:6102:c0f:: with SMTP id x15mr26352187vss.57.1634550019767;
- Mon, 18 Oct 2021 02:40:19 -0700 (PDT)
+ d=purevlc.onmicrosoft.com; s=selector2-purevlc-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xMZj1/F+f7yZt6U3zTA8uqMWU4kf11PbadDXRBKc7fA=;
+ b=L+yHRK/RdOfIssxGjOgX9mT0KauDp0WFZoFhVFNirPbS12RlE9wo3Yrghyz3QF0fyWQtSVqw0ZAJmTqndQzOKEAqR3JkozBqJbETM17nmTQM9XTZYqwou64JbIIseIdVONZLhKFu1UiTel4FHdONsSGi0F7ITyNlZm9SsLNkeXs=
+Authentication-Results: purelifi.com; dkim=none (message not signed)
+ header.d=none;purelifi.com; dmarc=none action=none header.from=purelifi.com;
+Received: from CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:bb::9) by
+ CWLP265MB2244.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:61::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4608.17; Mon, 18 Oct 2021 10:02:08 +0000
+Received: from CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f424:5607:7815:ac8e]) by CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f424:5607:7815:ac8e%5]) with mapi id 15.20.4608.018; Mon, 18 Oct 2021
+ 10:02:08 +0000
+From:   Srinivasan Raju <srini.raju@purelifi.com>
+Cc:     mostafa.afgani@purelifi.com,
+        Srinivasan Raju <srini.raju@purelifi.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-kernel@vger.kernel.org (open list),
+        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
+Subject: [PATCH v20 0/2] wireless: New Driver submission for pureLiFi STA devices
+Date:   Mon, 18 Oct 2021 11:00:53 +0100
+Message-Id: <20211018100143.7565-1-srini.raju@purelifi.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200928102008.32568-1-srini.raju@purelifi.com>
+References: <20200928102008.32568-1-srini.raju@purelifi.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO2P265CA0046.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:61::34) To CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:bb::9)
 MIME-Version: 1.0
-References: <20210811105541.43426-1-emmanuel.grumbach@intel.com>
- <20210811105541.43426-2-emmanuel.grumbach@intel.com> <87y26qvg05.fsf@codeaurora.org>
-In-Reply-To: <87y26qvg05.fsf@codeaurora.org>
-From:   Emmanuel Grumbach <egrumbach@gmail.com>
-Date:   Mon, 18 Oct 2021 12:40:08 +0300
-Message-ID: <CANUX_P0CxotNk1omOELgFWWDTzJXMmzSBPKg6k1f_kbBookWuQ@mail.gmail.com>
-Subject: Re: [PATCH v6 2/7] iwlwifi: mei: add the driver to allow cooperation
- with CSME
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Received: from localhost.localdomain (82.34.80.192) by LO2P265CA0046.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:61::34) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.18 via Frontend Transport; Mon, 18 Oct 2021 10:02:07 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8cd14782-ede3-49c4-922b-08d9921e5848
+X-MS-TrafficTypeDiagnostic: CWLP265MB2244:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <CWLP265MB22441A406D8E3CD9FB785BB9E0BC9@CWLP265MB2244.GBRP265.PROD.OUTLOOK.COM>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 72A+gLZr5wHp4MaEy9SJqIYhAiqvKA+ddRp+F47ZAh7FUtUdBsvBHlB7d+11Plo8UH9JEvQ/f9yU+wRvtoBNFHTqZbt2su8n+SpHh80i1QO/+F0OjPASqmdCdhb5rVajSMV3nTdUI0v4N5OXhovlneJVJjSiJfUqwNP5XsE9PhPNazKQYekIukd8SVrgoZGdxzO6Yk7iaRSRHvA6jF5qOr9A3laCxy/gGHKkJX+CHNSr/Y0jlqIvYE+B+BWzhw39+OJwPHqisdIOHKYNkt9wOBzDocsnzIf5gx8izKxz1YCNhiGaFt9ptTFrkvbdSW/PnRyOTrlz1D1IQt1DcMrQY/IgwnVYz2chWInUNenuHpIZA+Q0R4bnq++XHJG+PiHcdvyBh5Ie3cuOM3V9UyD5kh6d0B/EyptRnSefIN+kG9eesLf/7SCmsNNuPAYFezgqUplj5o1mQews453HyoIOh1cTHU35mgSCwLPQruf5zesQTtOV9OgQI5Yelo6JHw621tGoghyZ7hOL9D0CUKmgtpMaWsvnU9EDZyPlkcoW9qQA1Y/mW++3W0iW8r2kz8h1xTFWio0wxsUx+Pm7dd87ZKTd/3COVnST0mcmDHKp8yhep0zbUphM+U6mry8rvlKR8MefEk7TKHzmYdkcgsdl6crNqirTjc5W4jUrL1oyOMgOqtE818FxL7s1rh7rJo+ZpHUtCgFhV0Nx+/ar2qMkZ8laOMaOWHX1fivzl9hryJc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(6029001)(4636009)(366004)(8676002)(508600001)(6506007)(26005)(66476007)(38350700002)(52116002)(6486002)(5660300002)(1076003)(109986005)(186003)(6666004)(83380400001)(86362001)(54906003)(2616005)(38100700002)(6512007)(66556008)(956004)(4326008)(2906002)(66946007)(316002)(8936002)(36756003)(266003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iuaC7hxYu+wH6ENJphbZZksHf2yoD0ic0OcpjwzU2GSOhPnOXW5S44kksxm9?=
+ =?us-ascii?Q?jWgxiPjHafmkgC+lag+2t22gw8jKaWbcTKYWTFukF+OxpxSR6QRXjCrYztsn?=
+ =?us-ascii?Q?ed8jMMweA/TMPf7vJbhVC2H/vcKe8/uERI+uLFj2kJiztohPMiMyfnXvdMgP?=
+ =?us-ascii?Q?Iqz4KnKDaJ3dB0k8o4xENY25ljllA5fTv624LCqeWmPIDbXLOZjI4BTvxCXl?=
+ =?us-ascii?Q?DbyCEZD2uPwoSt6ghb3B/4sezSuP6MlPLmfIyY4LlfWy5YeMuZrEpENtKcxh?=
+ =?us-ascii?Q?+d1w5XfDtffaHFFuPbJuuQRLIkJ+oVEBa+09BXeBgNHicF7W7ByE3YoPSvUd?=
+ =?us-ascii?Q?laWzEv18ypyN/aYNzofhPpqXW3a9QB14uE4NPLrQCRSZp+BdbnXhBASE/cur?=
+ =?us-ascii?Q?I7iHAElFeXlg6spS8DZEzS6JYQqY/UfYXvXWIvbTJ7K1NS4Lf2fhI0+zU7VV?=
+ =?us-ascii?Q?Tqm6Rk5z5Gad1Rpg78wZ4AtsWX4xFVYynlq9sbI2ZKbbX8QFd+pzaesR8l/B?=
+ =?us-ascii?Q?R+MBFw45v1efUC0bx8JryNKhsj3/5iftE5JtTZsBHO4yiBYIbE70v8iUPmqT?=
+ =?us-ascii?Q?tLeC3ualktmTqMQ/aLWdiiptuw2xSyizvOx9iH+YsKva0xmGMWspJzDT2Jpg?=
+ =?us-ascii?Q?GuAeQN5uV5B/BxvMfyGGHt9jgxwOepNLBkH/TWfbOfwdc6n33dhZ80m9QOwh?=
+ =?us-ascii?Q?KxEW4ayx0MM1dn606tqLaM5EwpeNAfsY6jkSw00l+Qm/VLp+lZWBlUYDMWaP?=
+ =?us-ascii?Q?wG8mrGiGeWabkmfA2SN/kd84ZatlH6TlaJdtDexwAfpkF1D588slB6LGoND5?=
+ =?us-ascii?Q?YlXws57RMwODUJy/LoLnYmzqDJSGYfjElSV1Ly04mJZJd0mMFSMAx3dbGsQN?=
+ =?us-ascii?Q?Dkq2N8reUr8EjrJNQp3KdP8Ee7dOwNiwjNVQwr7zOvcjiXQEtel9HCfzeJxp?=
+ =?us-ascii?Q?RpAD/6owQJojlhPYsClzp0yPd9NXcpV5Bm4IFHtZaIh188lu/d1upl6gD34x?=
+ =?us-ascii?Q?L2cmxnUqDKu5MoHLYp4RIdPQzyqDEtEOXSOzDVF/ihDlxEv0APwizaEfRIOR?=
+ =?us-ascii?Q?TXqb9hLMj7CANheh614/qAHWY27U7JrFMf23AkPQTHasL1duAjfam88LGNMH?=
+ =?us-ascii?Q?oxMC4PaVGLb7moRBgvUwBsQzeGLpgBkItYlJLcWlF/WU5C73zjyKzn0VKUGQ?=
+ =?us-ascii?Q?GhGLnH9U4QlB/JEOySGWHeul+8SZvFrrw/EpBsM+BAwqoKLvhXZWFs6S970P?=
+ =?us-ascii?Q?g0a+Vi/iiAjKM85cEI5mJWp3mLET8VL+h7r9ccuGAbEXhPThoxQ5Ie98ZTZU?=
+ =?us-ascii?Q?R8fa34/XWDZJWhtPf6Orjeui?=
+X-OriginatorOrg: purelifi.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8cd14782-ede3-49c4-922b-08d9921e5848
+X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB3217.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2021 10:02:07.9283
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5cf4eba2-7b8f-4236-bed4-a2ac41f1a6dc
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AbBWejQvudnwl/HN5NCo5Ug7UAhAgtthrJBKjbvDI/0sQ6PDwxNb6SA0JudEnotKOgnP1EBQ6SoM2+NyKLKnAg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2244
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+This introduces the pureLiFi LiFi driver for LiFi-X, LiFi-XC
+and LiFi-XL USB devices.
 
-Thanks for your time!
+LiFi is a mobile wireless technology that uses light 
+rather than radio frequencies to transmit data.
 
-On Mon, Oct 18, 2021 at 12:30 PM Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Emmanuel Grumbach <emmanuel.grumbach@intel.com> writes:
->
-> > CSME in two words
-> > -----------------
-> > CSME stands for Converged Security and Management Engine. It is
-> > a CPU on the chipset and runs a dedicated firmware.
-> > AMT (Active Management Technology) is one of the applications
-> > that run on that CPU. AMT allows to control the platform remotely.
-> > Here is a partial list of the use cases:
-> > * View the screen of the plaform, with keyboard and mouse (KVM)
-> > * Attach a remote IDE device
-> > * Have a serial console to the device
-> > * Query the state of the platform
-> > * Reset / shut down / boot the platform
-> >
-> > Networking in CSME
-> > ------------------
-> > For those uses cases, CSME's firmware has an embedded network
-> > stack and is able to use the network devices of the system: LAN
-> > and WLAN. This is thanks to the CSME's firmware WLAN driver.
-> >
-> > One can add a profile (SSID / key / certificate) to the CSME's OS
-> > and CSME will connect to that profile. Then, one can use the WLAN
-> > link to access the applications that run on CSME (AMT is one of
-> > them). Note that CSME is active during power state and power state
-> > transitions. For example, it is possible to have a KVM session
-> > open to the system while the system is rebooting and actually
-> > configure the BIOS remotely over WLAN thanks to AMT.
-> >
-> > How all this is related to Linux
-> > --------------------------------
-> > In Linux, there is a driver that allows the OS to talk to the
-> > CSME firmware, this driver is drivers/misc/mei. This driver
-> > advertises a bus that allows other kernel drivers or even user
-> > space) to talk to components inside the CSME firmware.
-> > In practice, the system advertises a PCI device that allows
-> > to send / receive data to / from the CSME firmware. The mei
-> > bus drivers in drivers/misc/mei is an abstration on top of
-> > this PCI device.
-> > The driver being added here is called iwlmei and talks to the
-> > WLAN driver inside the CSME firmware through the mei bus driver.
-> > Note that the mei bus driver only gives bus services, it doesn't
-> > define the content of the communication.
-> >
-> > Why do we need this driver?
-> > --------------------------
-> > CSME uses the same WLAN device that the OS is expecting to see
-> > hence we need an arbitration mechanism. This is what iwlmei is
-> > in charge of. iwlmei maintains the communication with the CSME
-> > firmware's WLAN driver. The language / protocol that is used
-> > between the CSME's firmware WLAN driver and iwlmei is OS agnostic
-> > and is called SAP which stands for Software Abritration Protocol.
-> > With SAP, iwlmei will be able to tell the CSME firmware's WLAN
-> > driver:
-> > 1) Please give me the device.
-> > 2) Please note that the SW/HW rfkill state change.
-> > 3) Please note that I am now associated to X.
-> > 4) Please note that I received this packet.
-> > etc...
-> >
-> > There are messages that go the opposite direction as well:
-> > 1) Please note that AMT is en/disable.
-> > 2) Please note that I believe the OS is broken and hence I'll take
-> >    the device *now*, whether you like it or not, to make sure that
-> >    connectivity is preserved.
-> > 3) Please note that I am willing to give the device if the OS
-> >    needs it.
-> > 4) Please give me any packet that is sent on UDP / TCP on IP address
-> >    XX.XX.XX.XX and an port ZZ.
-> > 5) Please send this packet.
-> > etc...
-> >
-> > Please check drivers/net/wireless/intel/iwlwifi/mei/sap.h for the
-> > full protocol specification.
-> >
-> > Arbitration is not the only purpose of iwlmei and SAP. SAP also
-> > allows to maintain the AMT's functionality even when the OS owns
-> > the device. To connect to AMT, one needs to initiate an HTTP
-> > connection to port 16992. iwlmei will listen to the Rx path and
-> > forward (through SAP) to the CSME firmware the data it got. Then,
-> > the embedded HTTP server in the chipset will reply to the request
-> > and send a SAP notification to ask iwlmei to send the reply.
-> > This way, AMT running on the CSME can still work.
-> >
-> > In practice this means that all the use cases quoted above (KVM,
-> > remote IDE device, etc...) will work even when the OS uses the
-> > WLAN device.
-> >
-> > How to disable all this?
-> > ---------------------------
-> > iwlmei won't be able to do anything if the CSME's networking stack
-> > is not enabled. By default, CSME's networking stack is disabled (this
-> > is a BIOS setting).
-> > In case the CSME's networking stack is disabled, iwlwifi will just
-> > get access to the device because there is no contention with any other
-> > actor and, hence, no arbitration is needed.
-> >
-> > In this patch, I only add the iwlmei driver. Integration with
-> > iwlwifi will be implemented in the next one.
-> >
-> > Co-Developed-by: Ayala Beker <ayala.beker@intel.com>
-> > Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
->
-> Comments for main.c:
->
-> > --- /dev/null
-> > +++ b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-> > @@ -0,0 +1,1872 @@
-> > +// SPDX-License-Identifier: GPL-2.0
->
-> Someconsistency with the license within iwlwifi would be nice, I see
-> that elsewhere in iwlwifi GPL-2.0-only is used instead of GPL-2.0:
+802.11 bb is focused on introducing necessary changes to 
+IEEE 802.11 Stds to enable communications in the light medium
 
-I'll check. Thanks.
+---
+v20:
+ - Remove unused static variable
+v19:
+ - Fix kmemdup null case
+v18:
+ - Use light communication band 
+v16:
+ - Fixed atomic variable misuses
+ - Fixed comments spacing
+ - Removed static variables used
+ - Moved #defines to header file
+ - Removed doxygen style comments
+ - Removed magic numbers and cleanup code
+v15:
+ - resubmit v14 of the patch
+v14:
+ - Endianess comments addressed
+ - Sparse checked and fixed warnings
+ - Firmware files renamed to lowercase
+ - All other review comments in v13 addressed
+v13:
+- Removed unused #defines
+v12:
+- Removed sysfs, procfs related code
+- Addressed race condition bug
+- Used macros instead of magic numbers in firmware.c
+- Added copyright in all files
+v11, v10:
+- Addressed review comment on readability
+- Changed firmware names to match products
+v9:
+- Addressed review comments on style and content defects
+- Used kmemdup instead of alloc and memcpy
+v7 , v8:
+- Magic numbers removed and used IEEE80211 macors
+- Other code style and timer function fixes (mod_timer)
+v6:
+- Code style fix patch from Joe Perches
+v5:
+- Code refactoring for clarity and redundnacy removal
+- Fix warnings from kernel test robot
+v4:
+- Code refactoring based on kernel code guidelines
+- Remove multi level macors and use kernel debug macros
+v3:
+- Code style fixes kconfig fix
+v2:
+- Driver submitted to wireless-next
+- Code style fixes and copyright statement fix
+v1:
+- Driver submitted to staging
 
->
-> grep -rh SPDX * | sort | uniq --count
->       4 # SPDX-License-Identifier: GPL-2.0
->       6 // SPDX-License-Identifier: GPL-2.0
->       1 # SPDX-License-Identifier: GPL-2.0-only
->      15 /* SPDX-License-Identifier: GPL-2.0-only */
->      22 // SPDX-License-Identifier: GPL-2.0-only
->      73 /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
->      62 // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
->
-> > +/*
-> > + * Since iwlwifi calls iwlmei without any context, hold a pointer to the
-> > + * mei_cl_device structure here.
-> > + * Define a mutex that will synchronize all the flows between iwlwifi and
-> > + * iwlmei.
-> > + */
-> > +static struct mei_cl_device *iwl_mei_global_cldev;
-> > +static DEFINE_MUTEX(iwl_mei_mutex);
-> > +static unsigned long iwl_mei_status;
->
-> static non-const variables are frowned upon in upstream. What if there
-> are multiple iwlwifi devices attached to the same host, how would this
-> work then?
+Srinivasan Raju (2):
+  [v20 1/2] nl80211: Add LC placeholder band definition to nl80211_band
+  [v20 2/2] wireless: Initial driver submission for pureLiFi STA devices
 
-iwlwifi is *not* a singleton, while iwlmei is and must be. IIRC, this
-is mentioned
-explicitly in a comment in code.
-iwlmei's instance is connected to the CSME firmware which is a singleton in the
-system (one single chipset).
+ MAINTAINERS                                   |   6 +
+ drivers/net/wireless/Kconfig                  |   1 +
+ drivers/net/wireless/Makefile                 |   1 +
+ drivers/net/wireless/purelifi/Kconfig         |  17 +
+ drivers/net/wireless/purelifi/Makefile        |   2 +
+ drivers/net/wireless/purelifi/plfxlc/Kconfig  |  14 +
+ drivers/net/wireless/purelifi/plfxlc/Makefile |   3 +
+ drivers/net/wireless/purelifi/plfxlc/chip.c   |  95 ++
+ drivers/net/wireless/purelifi/plfxlc/chip.h   |  89 ++
+ .../net/wireless/purelifi/plfxlc/firmware.c   | 275 +++++
+ drivers/net/wireless/purelifi/plfxlc/intf.h   |  52 +
+ drivers/net/wireless/purelifi/plfxlc/mac.c    | 770 ++++++++++++++
+ drivers/net/wireless/purelifi/plfxlc/mac.h    | 190 ++++
+ drivers/net/wireless/purelifi/plfxlc/usb.c    | 975 ++++++++++++++++++
+ drivers/net/wireless/purelifi/plfxlc/usb.h    | 196 ++++
+ include/uapi/linux/nl80211.h                  |   2 +
+ net/mac80211/mlme.c                           |   1 +
+ net/mac80211/sta_info.c                       |   1 +
+ net/mac80211/tx.c                             |   3 +-
+ net/wireless/nl80211.c                        |   1 +
+ net/wireless/util.c                           |   2 +
+ 21 files changed, 2695 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/wireless/purelifi/Kconfig
+ create mode 100644 drivers/net/wireless/purelifi/Makefile
+ create mode 100644 drivers/net/wireless/purelifi/plfxlc/Kconfig
+ create mode 100644 drivers/net/wireless/purelifi/plfxlc/Makefile
+ create mode 100644 drivers/net/wireless/purelifi/plfxlc/chip.c
+ create mode 100644 drivers/net/wireless/purelifi/plfxlc/chip.h
+ create mode 100644 drivers/net/wireless/purelifi/plfxlc/firmware.c
+ create mode 100644 drivers/net/wireless/purelifi/plfxlc/intf.h
+ create mode 100644 drivers/net/wireless/purelifi/plfxlc/mac.c
+ create mode 100644 drivers/net/wireless/purelifi/plfxlc/mac.h
+ create mode 100644 drivers/net/wireless/purelifi/plfxlc/usb.c
+ create mode 100644 drivers/net/wireless/purelifi/plfxlc/usb.h
 
->
-> > +/**
-> > + * iwl_mei_cache - cache for the parameters from iwlwifi
-> > + * @ops: Callbacks to iwlwifi.
-> > + * @netdev: The netdev that will be used to transmit / receive packets.
-> > + * @conn_info: The connection info message triggered by iwlwifi's association.
-> > + * @power_limit: pointer to an array of 10 elements (le16) represents the power
-> > + *   restrictions per chain.
-> > + * @rf_kill: rf kill state.
-> > + * @mcc: MCC info
-> > + * @mac_address: interface MAC address.
-> > + * @nvm_address: NVM MAC address.
-> > + * @priv: A pointer to iwlwifi.
-> > + *
-> > + * This used to cache the configurations coming from iwlwifi's way. The data
-> > + * is cached here so that we can buffer the configuration even if we don't have
-> > + * a bind from the mei bus and hence, on iwl_mei structure.
-> > + */
-> > +static struct {
-> > +     const struct iwl_mei_ops *ops;
-> > +     struct net_device __rcu *netdev;
-> > +     const struct iwl_sap_notif_connection_info *conn_info;
-> > +     const __le16 *power_limit;
-> > +     u32 rf_kill;
-> > +     u16 mcc;
-> > +     u8 mac_address[6];
-> > +     u8 nvm_address[6];
-> > +     void *priv;
-> > +} iwl_mei_cache = {
-> > +     .rf_kill = SAP_HW_RFKILL_DEASSERTED | SAP_SW_RFKILL_DEASSERTED
-> > +};
->
-> Same here, this is also static but non-const.
+-- 
+2.25.1
 
-Same answer.
-
->
-> > +static void iwl_mei_handle_sap_data(struct mei_cl_device *cldev,
-> > +                                 const u8 *q_head, u32 q_sz,
-> > +                                 u32 rd, u32 wr, ssize_t valid_rx_sz,
-> > +                                 struct sk_buff_head *tx_skbs)
-> > +{
-> > +     struct iwl_sap_hdr hdr;
-> > +     struct net_device *netdev =
-> > +             rcu_dereference_protected(iwl_mei_cache.netdev,
-> > +                                       lockdep_is_held(&iwl_mei_mutex));
-> > +
-> > +     if (!netdev)
-> > +             return;
-> > +
-> > +     while (valid_rx_sz >= sizeof(hdr)) {
-> > +             struct ethhdr *ethhdr;
-> > +             unsigned char *data;
-> > +             struct sk_buff *skb;
-> > +             u16 len;
-> > +
-> > +             iwl_mei_read_from_q(q_head, q_sz, &rd, wr, &hdr, sizeof(hdr));
-> > +             valid_rx_sz -= sizeof(hdr);
-> > +             len = le16_to_cpu(hdr.len);
-> > +
-> > +             if (valid_rx_sz < len) {
-> > +                     dev_err(&cldev->dev,
-> > +                             "Data queue is corrupted: valid data len %zd, len %d\n",
-> > +                             valid_rx_sz, len);
-> > +                     break;
-> > +             }
-> > +
-> > +             if (len < sizeof(*ethhdr)) {
-> > +                     dev_err(&cldev->dev,
-> > +                             "Data len is smaller than an ethernet header? len = %d\n",
-> > +                             len);
-> > +             }
-> > +
-> > +             valid_rx_sz -= len;
-> > +
-> > +             if (le16_to_cpu(hdr.type) != SAP_MSG_DATA_PACKET) {
-> > +                     dev_err(&cldev->dev, "Unsupported Rx data: type %d, len %d\n",
-> > +                             le16_to_cpu(hdr.type), len);
-> > +                     continue;
-> > +             }
-> > +
-> > +             /* We need enough room for the WiFi header + SNAP + IV */
-> > +             skb = netdev_alloc_skb(netdev, len + 26 + 8 + 8);
-> > +
-> > +             skb_reserve(skb, 26 + 8 + 8);
->
-> No magic numbers, please.
-
-It is explained right above: 26 is the Wifi header etc...
-But you're right, I'll use defines instead.
-
->
-> > +static void iwl_mei_remove(struct mei_cl_device *cldev)
-> > +{
-> > +     struct iwl_mei *mei = mei_cldev_get_drvdata(cldev);
-> > +     int i;
-> > +
-> > +     /*
-> > +      * We are being removed while the bus is active, it means we are
-> > +      * going to suspend/ shutdown, so the NIC will disappear.
-> > +      */
-> > +     if (mei_cldev_enabled(cldev) && iwl_mei_cache.ops)
-> > +             iwl_mei_cache.ops->nic_stolen(iwl_mei_cache.priv);
-> > +
-> > +     if (rcu_access_pointer(iwl_mei_cache.netdev)) {
-> > +             struct net_device *dev;
-> > +
-> > +             /*
-> > +              * If we are suspending and the wifi driver hasn't removed it's netdev
-> > +              * yet, do it now. In any case, don't change the cache.netdev pointer.
-> > +              */
-> > +             dev = rcu_dereference_protected(iwl_mei_cache.netdev,
-> > +                                             lockdep_is_held(&iwl_mei_mutex));
-> > +
-> > +             rtnl_lock();
-> > +             netdev_rx_handler_unregister(dev);
-> > +             rtnl_unlock();
-> > +     }
-> > +
-> > +     mutex_lock(&iwl_mei_mutex);
-> > +
-> > +     /*
-> > +      * Tell CSME that we are going down so that it won't access the
-> > +      * memory anymore, make sure this message goes through immediately.
-> > +      */
-> > +     mei->csa_throttled = false;
-> > +     iwl_mei_send_sap_msg(mei->cldev,
-> > +                          SAP_MSG_NOTIF_HOST_GOES_DOWN);
-> > +
-> > +     for (i = 0; i < 10; i++) {
->
-> Same here, a magic number.
-
-It is just a heuristic. I can add a define. Sure.
-
->
-> > +             if (!iwl_mei_host_to_me_data_pending(mei))
-> > +                     break;
-> > +
-> > +             msleep(5);
-> > +     }
-> > +
-> > +     /*
-> > +      * If we couldn't make sure that CSME saw the HOST_GOES_DOWN message,
-> > +      * it means that it will probably keep reading memory that we are going
-> > +      * to unmap and free, expect IOMMU error messages.
-> > +      */
-> > +     if (i == 10)
-> > +             dev_err(&mei->cldev->dev,
-> > +                     "Couldn't get ACK from CSME on HOST_GOES_DOWN message\n");
->
-> And here.
->
-> > +static struct mei_cl_device_id iwl_mei_tbl[] = {
-> > +     { KBUILD_MODNAME, MEI_WLAN_UUID, MEI_CL_VERSION_ANY},
-> > +
-> > +     /* required last entry */
-> > +     { }
-> > +};
->
-> This can be const, right?
-
-Yep. Thanks!
-
->
-> > +
-> > +/*
-> > + * Do not export the device table because this module is loaded by
-> > + * iwlwifi's dependency.
-> > + */
-> > +
-> > +static struct mei_cl_driver iwl_mei_cl_driver = {
-> > +     .id_table = iwl_mei_tbl,
-> > +     .name = KBUILD_MODNAME,
-> > +     .probe = iwl_mei_probe,
-> > +     .remove = iwl_mei_remove,
-> > +};
-> > +
-> > +module_mei_cl_driver(iwl_mei_cl_driver);
->
-> Not sure iwl_mei_cl_driver can be const or not, most probably not. But
-> please do check.
-
-I will.
-
-
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
