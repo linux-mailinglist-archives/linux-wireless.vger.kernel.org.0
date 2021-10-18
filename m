@@ -2,34 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90846431997
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 14:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95EBF4319C9
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 14:47:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231645AbhJRMrK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 08:47:10 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:29379 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231562AbhJRMrJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 08:47:09 -0400
+        id S230399AbhJRMtv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 08:49:51 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:44022 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229519AbhJRMtu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Oct 2021 08:49:50 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634561098; h=Date: Message-ID: Cc: To: References:
+ s=smtp; t=1634561259; h=Date: Message-ID: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=RLNXA35XJkkVy9dCYQdzgxU5Mr9XzVvEwaSLUq/vja4=;
- b=FK5IcrOvKo5IB3jn4UBLs6ioW+pZUimfTB2kM4e2vxGfOeXhcjEKbNrg8DE72BFQAQYuf7zc
- EhPuRr4WBxCJ2j67EheA6xwr1+c2VYqYpNPLqC348woxON0VArzgoguIbKiwNW8xmVRwSx0T
- ye63uVfT5JDTYQuOjIN2tm5Edpg=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ Content-Type: Sender; bh=0j+IfNmIKl8RYC/I1HBAehhfSRQaJld1SDjqTOGGquk=;
+ b=nXHU3POU1c+rYuD7dO6Zn/tv0Ff1/YHgS8FgBApud2NyGIjAelln+c9T1sj08Ii5nneJT+QS
+ c0E0RNcxSQ8lbmVUQbwiwo6YA9TTT/eZJy385gcDEClPkqR6NNMIoqc6lchAw6rs15scTQl+
+ rdhMLWfIxivYscNK4qd8zLefmSk=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 616d6c3df3e5b80f1f1afcd5 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 18 Oct 2021 12:44:45
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 616d6ceaab9da96e64ed0d8f (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 18 Oct 2021 12:47:38
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AE44EC43617; Mon, 18 Oct 2021 12:44:45 +0000 (UTC)
+        id DB14BC43460; Mon, 18 Oct 2021 12:47:37 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,73 +38,70 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EB19EC4338F;
-        Mon, 18 Oct 2021 12:44:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org EB19EC4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 89CC0C4338F;
+        Mon, 18 Oct 2021 12:47:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 89CC0C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net] mwifiex: Fix possible memleak in probe and disconnect
+Subject: Re: [PATCH] wcn36xx: Fix tx_status mechanism
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20211018063818.1895774-1-wanghai38@huawei.com>
-References: <20211018063818.1895774-1-wanghai38@huawei.com>
-To:     Wang Hai <wanghai38@huawei.com>
-Cc:     <davem@davemloft.net>, <kuba@kernel.org>, <shenyang39@huawei.com>,
-        <marcelo@kvack.org>, <linville@tuxdriver.com>,
-        <luisca@cozybit.com>, <libertas-dev@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
+In-Reply-To: <1634560260-15056-1-git-send-email-loic.poulain@linaro.org>
+References: <1634560260-15056-1-git-send-email-loic.poulain@linaro.org>
+To:     Loic Poulain <loic.poulain@linaro.org>
+Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
+        bryan.odonoghue@linaro.org, Loic Poulain <loic.poulain@linaro.org>,
+        stable@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163456107685.11105.13969946027999768773.kvalo@codeaurora.org>
-Date:   Mon, 18 Oct 2021 12:44:45 +0000 (UTC)
+Message-ID: <163456125238.11105.17236254354491324059.kvalo@codeaurora.org>
+Date:   Mon, 18 Oct 2021 12:47:37 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wang Hai <wanghai38@huawei.com> wrote:
+Loic Poulain <loic.poulain@linaro.org> wrote:
 
-> I got memory leak as follows when doing fault injection test:
+> This change fix the TX ack mechanism in various ways:
 > 
-> unreferenced object 0xffff888031c2f000 (size 512):
->   comm "kworker/0:2", pid 165, jiffies 4294922253 (age 391.180s)
->   hex dump (first 32 bytes):
->     00 20 f7 08 80 88 ff ff 01 00 00 00 00 00 00 00  . ..............
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace:
->     [<00000000537bdb86>] kmem_cache_alloc_trace+0x16d/0x360
->     [<0000000047666fab>] if_usb_probe+0x90/0x96e [usb8xxx]
->     [<00000000de44b4f0>] usb_probe_interface+0x31b/0x800 [usbcore]
->     [<000000009b1a1951>] really_probe+0x299/0xc30
->     [<0000000055b8ffce>] __driver_probe_device+0x357/0x500
->     [<00000000bb0c7161>] driver_probe_device+0x4e/0x140
->     [<00000000866d1730>] __device_attach_driver+0x257/0x340
->     [<0000000084e79b96>] bus_for_each_drv+0x166/0x1e0
->     [<000000009bad60ea>] __device_attach+0x272/0x420
->     [<00000000236b97c1>] bus_probe_device+0x1eb/0x2a0
->     [<000000008d77d7cf>] device_add+0xbf0/0x1cd0
->     [<000000004af6a3f0>] usb_set_configuration+0x10fb/0x18d0 [usbcore]
->     [<000000002ebdfdcd>] usb_generic_driver_probe+0xa2/0xe0 [usbcore]
->     [<00000000444f344d>] usb_probe_device+0xe4/0x2b0 [usbcore]
->     [<000000009b1a1951>] really_probe+0x299/0xc30
->     [<0000000055b8ffce>] __driver_probe_device+0x357/0x500
+> - For NO_ACK tagged packets, we don't need to way for TX_ACK indication
+> and so are not subject to the single packet ack limitation. So we don't
+> have to stop the tx queue, and can call the tx status callback as soon
+> as DMA transfer has completed.
 > 
-> cardp is missing being freed in the error handling path of the probe
-> and the path of the disconnect, which will cause kmemleak.
+> - Fix skb ownership/reference. Only start status indication timeout
+> once the DMA transfer has been completed. This avoids the skb to be
+> both referenced in the DMA tx ring and by the tx_ack_skb pointer,
+> preventing any use-after-free or double-free.
 > 
-> This patch adds the missing free().
+> - This adds a sanity (paranoia?) check on the skb tx ack pointer.
 > 
-> Fixes: 876c9d3aeb98 ("[PATCH] Marvell Libertas 8388 802.11b/g USB driver")
-> Fixes: c305a19a0d0a ("libertas_tf: usb specific functions")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wang Hai <wanghai38@huawei.com>
+> - Resume TX queue if TX status tagged packet TX fails.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: fdf21cc37149 ("wcn36xx: Add TX ack support")
+> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
 
-mwifiex patches are applied to wireless-drivers, not to the net tree. Please be
-careful how you mark your patches.
+Fails to build:
+
+drivers/net/wireless/ath/wcn36xx/txrx.c: In function 'wcn36xx_start_tx':
+drivers/net/wireless/ath/wcn36xx/txrx.c:611:23: error: unused variable 'flags' [-Werror=unused-variable]
+  611 |         unsigned long flags;
+      |                       ^~~~~
+cc1: all warnings being treated as errors
+make[5]: *** [scripts/Makefile.build:277: drivers/net/wireless/ath/wcn36xx/txrx.o] Error 1
+make[5]: *** Waiting for unfinished jobs....
+make[4]: *** [scripts/Makefile.build:540: drivers/net/wireless/ath/wcn36xx] Error 2
+make[3]: *** [scripts/Makefile.build:540: drivers/net/wireless/ath] Error 2
+make[2]: *** [scripts/Makefile.build:540: drivers/net/wireless] Error 2
+make[1]: *** [scripts/Makefile.build:540: drivers/net] Error 2
+make: *** [Makefile:1874: drivers] Error 2
+
+Patch set to Changes Requested.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211018063818.1895774-1-wanghai38@huawei.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/1634560260-15056-1-git-send-email-loic.poulain@linaro.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
