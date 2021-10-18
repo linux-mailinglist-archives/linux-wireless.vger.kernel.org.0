@@ -2,33 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F557431199
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 09:51:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 543824311A1
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 09:55:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230526AbhJRHxS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 03:53:18 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:50380 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230375AbhJRHxS (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 03:53:18 -0400
+        id S230471AbhJRH5d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 03:57:33 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:33480 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230484AbhJRH5d (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Oct 2021 03:57:33 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634543467; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: Date: References: In-Reply-To: Subject: Cc:
- To: From: Sender; bh=blwQMUM81bjPherhtwXGVnwXJBP6kPeC5A4jHR5OylY=; b=VPJE2iDszF+2rjEhgva0MYQqINqfO918iGX0YkpfxwH9laeRK89wl2gfmqf+fAqScGuACilT
- ClG0ZdZK9SHKdzaz13w+ZeUYiV7FQX0M1UzJsmOKTAL/m9/UHFfa7idQ8csthE040FazeLTH
- NcXFQknhdnU8rifQil2EAByfsX0=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ s=smtp; t=1634543722; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=hMsWIwLb78ruXZ6mKyePl03WLURSzzzymTNkRnN93bc=; b=CJg5WAlc5a4ELBeI25KNA3XUhFQUSAppZpWTvvAfj+KBTzXb1ay26c+1kK5ApIe0A0aPCVzs
+ Raxt2Wvd+J54mpYhNVKEo9IYvQS82MsVKXKlDVLI7rVrcRtP6YZ6WrVrnV7apN4U2Ejp4lD1
+ JNxmADvD84kTqVOQPeU8epsw8DY=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 616d276a8ea00a941f0afcc7 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 18 Oct 2021 07:51:06
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 616d285e835b7947c187ba2b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 18 Oct 2021 07:55:10
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 75CD9C43460; Mon, 18 Oct 2021 07:51:06 +0000 (UTC)
+        id DE20CC4360C; Mon, 18 Oct 2021 07:55:09 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,95 +37,51 @@ Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 571E9C4338F;
-        Mon, 18 Oct 2021 07:51:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 571E9C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CC901C4338F;
+        Mon, 18 Oct 2021 07:55:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org CC901C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     Luca Coelho <luca@coelho.fi>
 Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 08/12] iwlwifi: export DHC framework and add first public entry, twt_setup
-In-Reply-To: <3be8a0e1cbe82e0c4b55b00c7e7fe06d8014aa71.camel@coelho.fi> (Luca
-        Coelho's message of "Mon, 23 Aug 2021 11:57:45 +0300")
-References: <20210820110318.260751-1-luca@coelho.fi>
-        <iwlwifi.20210820140104.b5c7c6613634.I53b8d9fb194b88070a0df6613f7f57668ea0eaf8@changeid>
-        <87y28usxl0.fsf@codeaurora.org>
-        <3be8a0e1cbe82e0c4b55b00c7e7fe06d8014aa71.camel@coelho.fi>
+Subject: Re: [PATCH for v5.15 0/5] iwlwifi: fixes intended for v5.15 2021-10-16
+References: <20211016084359.246930-1-luca@coelho.fi>
+Date:   Mon, 18 Oct 2021 10:55:03 +0300
+In-Reply-To: <20211016084359.246930-1-luca@coelho.fi> (Luca Coelho's message
+        of "Sat, 16 Oct 2021 11:43:54 +0300")
+Message-ID: <8735oywyw8.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Mon, 18 Oct 2021 10:51:01 +0300
-Message-ID: <877deawz2y.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Luca Coelho <luca@coelho.fi> writes:
 
-> On Sat, 2021-08-21 at 17:04 +0300, Kalle Valo wrote:
->> Luca Coelho <luca@coelho.fi> writes:
->>=20
->> > From: Luca Coelho <luciano.coelho@intel.com>
->> >=20
->> > Export the debug host command framework and add the twt_setup entry.
->> > This will allow external parties to use these debugging features.
->> > More entries can be added later on.
->> >=20
->> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
->>=20
->> [...]
->>=20
->> > --- a/drivers/net/wireless/intel/iwlwifi/Kconfig
->> > +++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
->> > @@ -92,6 +92,12 @@ config IWLWIFI_BCAST_FILTERING
->> > =C2=A0	  If unsure, don't enable this option, as some programs might
->> > =C2=A0	  expect incoming broadcasts for their normal operations.
->> > =C2=A0
->> >=20
->> > +config IWLWIFI_DHC
->> > +	bool "Enable debug host commands"
->> > +	help
->> > +	  This option enables the debug host command API.  It's used
->> > +	  for debugging and validation purposes.
->> > +
->>=20
->> Why a new Kconfig option? Those should not be added lightly.
+> From: Luca Coelho <luciano.coelho@intel.com>
 >
-> This is a debugging feature that is not really needed in production
-> kernels, so we prefer to allow it to be removed so we don't waste
-> resources.
-
-What resources exactly? I would say if the admin or distro maintainer
-wants to save on resources he will disable IWLWIFI_DEBUGFS. Why do we
-need to have multiple Kconfig options for iwlwifi debugfs interface?
-
-> We're publishing this for a few reasons:
+> Hi,
 >
-> 1. it will help prevent rebasing mistakes when sending patches upstream
-> from our internal tree, because a lot of this code is spread around the
-> driver;
+> This is the first patchset with fixes for v5.15.
 >
-> 2. in some occasions, we may ask advanced users to enable it so we can
-> get more data and run more tests in case of tricky bugs;
+> The changes are:
 >
-> 3. for the specific case of twt_setup, this allows running some TWT
-> test scenarios with our driver that wouldn't be easily available
-> otherwise.
+> * Some memory handling fixes;
+> * Fix the device initialization configuration for So devices;
+> * Fix resume flow when iwlwifi resume fails;
+> * Fix device configuration for JnP edvices.
+>
+> As usual, I'm pushing this to a pending branch, for kbuild bot.  And
+> since these are fixes for the rc series, please take them directly to
+> wireless-drivers.git, as we agreed.  I'll assign them to you.
 
-Sure, I understand all that. The better debug features we have in
-upstream the better. But I don't understand why a new Kconfig option is
-needed for DHC feature.
+We are in -rc6 now and I'm not planning to send anymore fixes to v5.15,
+unless something really critical pops up. Can I take these to
+wireless-drivers-next?
 
-> Is it okay to keep it?
-
-In the past Linus has stated his dislike of adding pointless Kconfig
-options, with which I strongly agree, and to me it looks like
-IWLWIFI_DHC is exactly that. So I'm very hesitant about this.
-
---=20
+-- 
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
