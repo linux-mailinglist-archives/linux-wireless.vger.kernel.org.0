@@ -2,106 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95EBF4319C9
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 14:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AB88431A01
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 14:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230399AbhJRMtv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 08:49:51 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:44022 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229519AbhJRMtu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 08:49:50 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634561259; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=0j+IfNmIKl8RYC/I1HBAehhfSRQaJld1SDjqTOGGquk=;
- b=nXHU3POU1c+rYuD7dO6Zn/tv0Ff1/YHgS8FgBApud2NyGIjAelln+c9T1sj08Ii5nneJT+QS
- c0E0RNcxSQ8lbmVUQbwiwo6YA9TTT/eZJy385gcDEClPkqR6NNMIoqc6lchAw6rs15scTQl+
- rdhMLWfIxivYscNK4qd8zLefmSk=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 616d6ceaab9da96e64ed0d8f (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 18 Oct 2021 12:47:38
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DB14BC43460; Mon, 18 Oct 2021 12:47:37 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 89CC0C4338F;
-        Mon, 18 Oct 2021 12:47:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 89CC0C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S231774AbhJRMvh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 08:51:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53800 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231713AbhJRMve (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Oct 2021 08:51:34 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AB8DC061765
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 05:49:23 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id r18so70863250edv.12
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 05:49:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Zxmlmcl2lFuiR0DGPZ71QqAckQHzxejuBprpG6HgtDc=;
+        b=dpN+kGjTQUOMWDOjvmpF8y/AngTO/VsnANBB1NmxdxXxE8fgWIdYv2nGX5ANokXmFy
+         ItmkLItwF0+MEvASbN9mFv7YFGytA16qlwBSPi1XJ8d/kCawcymLy409wzYWi0YhgWqS
+         HOX5RLSMSLrvj1lvQQ6zasRPfrU9sRg7ZVD9Vjs6K3F+kZlfJooTRkhVh3/XHBTQ9+2C
+         PWfJ5lA5eYN1m2+JE1qFjllPppuuK4fpaTLMgAfuNiRILIjMmfY19qbrtC8w7uvFsvG9
+         e4qwT4DEIQtJe6en1aus4DAcSAs9qpkuJGQKuO255BOsieUKgERp/E9gPJkarBEllVW0
+         Pg8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=Zxmlmcl2lFuiR0DGPZ71QqAckQHzxejuBprpG6HgtDc=;
+        b=JhkNCyHXSk/yzSIbJ0S1sL3VekEhMsxJyIfviGxyUBJCZBY0UttwpLg3rRibYXHqZy
+         4saIzzw0bwFKe3fnk6J2vAakYqgHCKMW0SVJiUnMX1BBIQwONn0IMMaQh2wv4dYaSDQl
+         FZxm4ri5gGDeKwi8cmv1pNo+xVpevch0mZDzzfAUViIPWpfoqFB+7TuKgKy5dq9Rs0/V
+         39/BwycOqn+P8oFUFak+UkQXlo7AT5UoQuyxgh8i8Nz6ZumsaGY/O7a3IyxOoaFbui72
+         lpNcGNGHF1fsQqu4P++YY6xN1NL1UYK+U4m7RnbjnsnUHtJbBm68Z2RqNUMNs0OMRz+8
+         ZxSw==
+X-Gm-Message-State: AOAM532pNyZ4KT9naQa1PqWd3cnLBi8+oAkhs8NBYUhJN+FcyM9j/XvL
+        rFEEmD0s/9iveygQfpASaMoyct7Q5rbkiGOoc+Q=
+X-Google-Smtp-Source: ABdhPJzQCjqGcuPnjRlVotwwk4hqZIg2l2PCwzr2gtgiwqjSO349tAYeFFFLKmUAiR6GHvcsNLqcwBHS8ym4xBJjrz0=
+X-Received: by 2002:a17:907:7f01:: with SMTP id qf1mr28821788ejc.190.1634561355128;
+ Mon, 18 Oct 2021 05:49:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wcn36xx: Fix tx_status mechanism
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1634560260-15056-1-git-send-email-loic.poulain@linaro.org>
-References: <1634560260-15056-1-git-send-email-loic.poulain@linaro.org>
-To:     Loic Poulain <loic.poulain@linaro.org>
-Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
-        bryan.odonoghue@linaro.org, Loic Poulain <loic.poulain@linaro.org>,
-        stable@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163456125238.11105.17236254354491324059.kvalo@codeaurora.org>
-Date:   Mon, 18 Oct 2021 12:47:37 +0000 (UTC)
+Received: by 2002:a17:906:3085:0:0:0:0 with HTTP; Mon, 18 Oct 2021 05:49:14
+ -0700 (PDT)
+Reply-To: mrs.mariaelisabeth.schaeffler77@hotmail.com
+From:   Maria Elisabeth Schaeffler <gregloren.loanfirm2@gmail.com>
+Date:   Mon, 18 Oct 2021 05:49:14 -0700
+Message-ID: <CAKW1hTeu=M+Cw3WDV0L8hEDErY+BKiGcJUy0pMsBiP4B1b=ggw@mail.gmail.com>
+Subject: Spende von Maria Elisabeth
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Loic Poulain <loic.poulain@linaro.org> wrote:
+--=20
+Hallo,
 
-> This change fix the TX ack mechanism in various ways:
-> 
-> - For NO_ACK tagged packets, we don't need to way for TX_ACK indication
-> and so are not subject to the single packet ack limitation. So we don't
-> have to stop the tx queue, and can call the tx status callback as soon
-> as DMA transfer has completed.
-> 
-> - Fix skb ownership/reference. Only start status indication timeout
-> once the DMA transfer has been completed. This avoids the skb to be
-> both referenced in the DMA tx ring and by the tx_ack_skb pointer,
-> preventing any use-after-free or double-free.
-> 
-> - This adds a sanity (paranoia?) check on the skb tx ack pointer.
-> 
-> - Resume TX queue if TX status tagged packet TX fails.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: fdf21cc37149 ("wcn36xx: Add TX ack support")
-> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+Ich bin Frau Maria Elisabeth Schaeffler, ein deutscher
+Wirtschaftsmagnat, Investor und Philanthrop. Ich bin der Vorsitzende
+von Wipro Limited. Ich habe 25 Prozent meines pers=C3=B6nlichen Verm=C3=B6g=
+ens
+f=C3=BCr wohlt=C3=A4tige Zwecke ausgegeben. Und ich habe auch versprochen, =
+die
+restlichen 25% dieses Jahr 2021 an Einzelpersonen zu verschenken. Ich
+habe mich entschlossen, 1.000.000,00 Euro an Sie zu spenden. Wenn Sie
+an meiner Spende interessiert sind, kontaktieren Sie mich =C3=BCber  f=C3=
+=BCr
+weitere Informationen.
 
-Fails to build:
+Sie k=C3=B6nnen auch =C3=BCber den folgenden Link mehr =C3=BCber mich lesen
 
-drivers/net/wireless/ath/wcn36xx/txrx.c: In function 'wcn36xx_start_tx':
-drivers/net/wireless/ath/wcn36xx/txrx.c:611:23: error: unused variable 'flags' [-Werror=unused-variable]
-  611 |         unsigned long flags;
-      |                       ^~~~~
-cc1: all warnings being treated as errors
-make[5]: *** [scripts/Makefile.build:277: drivers/net/wireless/ath/wcn36xx/txrx.o] Error 1
-make[5]: *** Waiting for unfinished jobs....
-make[4]: *** [scripts/Makefile.build:540: drivers/net/wireless/ath/wcn36xx] Error 2
-make[3]: *** [scripts/Makefile.build:540: drivers/net/wireless/ath] Error 2
-make[2]: *** [scripts/Makefile.build:540: drivers/net/wireless] Error 2
-make[1]: *** [scripts/Makefile.build:540: drivers/net] Error 2
-make: *** [Makefile:1874: drivers] Error 2
+https://en.wikipedia.org/wiki/Maria-Elisabeth_Schaeffler
 
-Patch set to Changes Requested.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1634560260-15056-1-git-send-email-loic.poulain@linaro.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Gr=C3=BC=C3=9Fe
+Gesch=C3=A4ftsf=C3=BChrer Wipro Limited
+Maria-Elisabeth_Schaeffler
