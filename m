@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2B74432A82
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 01:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B327432A83
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 01:50:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233772AbhJRXwr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S233395AbhJRXwr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Mon, 18 Oct 2021 19:52:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35072 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:35060 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233309AbhJRXwn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S233452AbhJRXwn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 18 Oct 2021 19:52:43 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 50C7061250;
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 92BDB610C9;
         Mon, 18 Oct 2021 23:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=k20201202; t=1634601031;
-        bh=dE88fn6owS/u78BUKFz1R0smoxBiZvJ8wnfDQQe5xoc=;
+        bh=YMFq0DgrKnedKvOU0oWg0iFrHFF1hqJrmAgBziUbGRk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pL1mN36XvnbzWof7/iie+mTIz8Vho80rcn/+xKY65bdOHdiH+NErxQYc4CU19hFNA
-         DFwSO+sZjmn/8MCFtv/xpHxjPMQ3L4nfxKRzS1oNnRbiyIJRJ0qOqbOeqvgK1hfQFR
-         W6vJ+883SqCQxxzL6R/6vMdrlHrOiBGCBNujC7gQeF2P6pFpYS5v7aQjMo7oXMBE3q
-         Xvs+xR+02eE8HohbIgvStu38WnGH/IxRUkTXLP5J3rKPjM6m4W7y6ssiNVgWYWW202
-         x658RLY0qKcku1hacraLlDp6gEFHdS867VFmcvEqW65ZxnFWUKmEpn1o7eOz9Pp70p
-         /AnECQiQujzKw==
+        b=fN9AYYrWZlfW0FGC1/1EGl9aC7ik918Ib0EcSZw5d+pHLJ8MJWTMlYpkugnc7ay1c
+         XeoGdh2OE55OBncQVw+xS/DHGCWkPlWfu6u9ywkKEPWbxq8S0A53hwn7TMkZrZTM5+
+         zyQHpRLNd2pl9rEh9JIQ/3VPdsjzVXi9FJrFjyvqgIzYycGJNiqrmAc04XrqZralpj
+         x8E7mtk908/8QLnjboNtT1UIsZQQy2E+VbEpGq3zHdY0YDePrqsUbRUQ0D79/IfYDx
+         R9KDOYIJb1xEF7S/o3nt/HfBDTLzVu3sIO9+r8EPSobXo/HhZVgDwWg34uD2cZo5/8
+         SNL8djgE8HCUQ==
 From:   Jakub Kicinski <kuba@kernel.org>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 13/15] wireless: ray_cs: use eth_hw_addr_set()
-Date:   Mon, 18 Oct 2021 16:50:19 -0700
-Message-Id: <20211018235021.1279697-14-kuba@kernel.org>
+Subject: [PATCH 14/15] wireless: wl3501_cs: use eth_hw_addr_set()
+Date:   Mon, 18 Oct 2021 16:50:20 -0700
+Message-Id: <20211018235021.1279697-15-kuba@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211018235021.1279697-1-kuba@kernel.org>
 References: <20211018235021.1279697-1-kuba@kernel.org>
@@ -48,22 +48,23 @@ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 CC: kvalo@codeaurora.org
 CC: linux-wireless@vger.kernel.org
 ---
- drivers/net/wireless/ray_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/wl3501_cs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ray_cs.c b/drivers/net/wireless/ray_cs.c
-index 0f5009c47cd0..e3a3dc3e45b4 100644
---- a/drivers/net/wireless/ray_cs.c
-+++ b/drivers/net/wireless/ray_cs.c
-@@ -791,7 +791,7 @@ static int ray_dev_init(struct net_device *dev)
- #endif /* RAY_IMMEDIATE_INIT */
+diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
+index 672f5d5f3f2c..dad38fc04243 100644
+--- a/drivers/net/wireless/wl3501_cs.c
++++ b/drivers/net/wireless/wl3501_cs.c
+@@ -1945,8 +1945,7 @@ static int wl3501_config(struct pcmcia_device *link)
+ 		goto failed;
+ 	}
  
- 	/* copy mac and broadcast addresses to linux device */
--	memcpy(dev->dev_addr, &local->sparm.b4.a_mac_addr, ADDRLEN);
-+	eth_hw_addr_set(dev, local->sparm.b4.a_mac_addr);
- 	eth_broadcast_addr(dev->broadcast);
+-	for (i = 0; i < 6; i++)
+-		dev->dev_addr[i] = ((char *)&this->mac_addr)[i];
++	eth_hw_addr_set(dev, this->mac_addr);
  
- 	dev_dbg(&link->dev, "ray_dev_init ending\n");
+ 	/* print probe information */
+ 	printk(KERN_INFO "%s: wl3501 @ 0x%3.3x, IRQ %d, "
 -- 
 2.31.1
 
