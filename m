@@ -2,93 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3496543293B
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 23:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89B1F4329DB
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 00:49:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232495AbhJRVqi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 17:46:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35810 "EHLO
+        id S229790AbhJRWvm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 18:51:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232641AbhJRVqh (ORCPT
+        with ESMTP id S229524AbhJRWvl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 17:46:37 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4372FC061745
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 14:44:25 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id r10so43800094wra.12
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 14:44:25 -0700 (PDT)
+        Mon, 18 Oct 2021 18:51:41 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 121E6C06161C
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 15:49:30 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id m42so10040244wms.2
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 15:49:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=wiP9cqmeNhE3SS3r7/ImXkRP5I5mctQ3JZnalKD2HjA=;
-        b=nf6FwWRGGPGgWPUsuDdikgD0xgCWW8s3jEPffWWVX18J8s12PBLlY2LXkCSTKOB1xp
-         zji7o8MXCls6mkUQfp+6mq58cSn1c/kKKw23D1IjHw1LKDimzoSNXILwqAM6MkxSZIIg
-         UKG14qw4looKKFAZhIKJFXvPxAeEJyeQuWoSL7Nse4+qDMOSuHJ9xByHII/Eg2EkVw7y
-         2rd5w7tyTBcaAbAUEGiIbjOiQTWPrCX8rT0cfvhLLMmywYMXsxLuVkJpXWEZfIryPhhK
-         8D56G+0qTA9KdcDzzfNO32pzP9gFrkXrAMKl+jDPVgffr8yS8mnEm3DpUtwkTj7Gr0tg
-         aoHg==
+        bh=NejxxJSVx+N7WvGawaw2wRKa17AkR5l45WNynzXJxIc=;
+        b=kFwG9hhEfiyn5qL4AtyLPH6/YRyGVuELvA2RsTgWZfm5O5Zx3kdQ0Qcncb4L6zJ9Wo
+         mydxoF5pm0+5N25rmAFOX22I+n79BdsNYP12gkzC279VNuL2y9ibN3rMOxNT4roTnd2z
+         2CBgGP35EB6JPgv/j7THBGq5qZ787DCcQQXEWUIhOLiT420anb//jI8ab7ZrFEG9Jqqw
+         IkyG/4HEL3+C+Rc6wn4ytg5tZTrWBSZ/tr2b448V6bAvLrH8brmS9ABNMLkBG1xlE2re
+         DhWE0klMX2ojW75tXVQ0WYr+fiEkJs0a8rtL7IKWGVPO/c1tvWyEOEoOEniiw45Vvjor
+         BamQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=wiP9cqmeNhE3SS3r7/ImXkRP5I5mctQ3JZnalKD2HjA=;
-        b=z46OSyPNyuKjBlgbe3ttM4ku3IZH7Z3B9DvW4XIztctvQA7Sn9jacGuJkHBg39dIb2
-         9ZQTAYlRuYwk9MuDzGvGkreQhRjo9lkNM5P99soWxCbXstLa9GZ4Fd37hYpMHSYvYXXe
-         hhcl7IfFyxNXEUdbKNGECb7VFhgG239EDW3jClXj7qZQPDGu/NMMuguS52KeMaI8x91t
-         xufNLXiKHWQd6/M1RilWAfcuCulDJQdvHA2p+e4aEHFfgIlcHbRJRBmdQIMiVobcTO3n
-         iOWCp9iVY265K+HGcvkJaiT9BcJEO+Xhx6kP4kVvo4eCWGvFaYV6KtmaoZrNIXlRtWP8
-         izJw==
-X-Gm-Message-State: AOAM5332fzhGjIqOGqM1LdZpxaBVLmKOZWHYMIF2NF44qA/XQjgSPNZD
-        mA7aTuO2L6JH+lSCyExc8VgHiH6OeLqxIw==
-X-Google-Smtp-Source: ABdhPJweINqdwDLBIYpWgleW4JBTYsGWJagJbCR9SwgW/lRVZtsZQK/0jB0Ii1reLykzOGYmqgAC2Q==
-X-Received: by 2002:a05:6000:168d:: with SMTP id y13mr38864674wrd.172.1634593463853;
-        Mon, 18 Oct 2021 14:44:23 -0700 (PDT)
+        bh=NejxxJSVx+N7WvGawaw2wRKa17AkR5l45WNynzXJxIc=;
+        b=teIDmhYsLny3bqe3KcnhfmgOukC8YC/bPKXqvfbPyVaDstn5DTlooWhzURts0hIrn4
+         mDvxGmJKXhIJHWPaQxPLvzKyLwwPfxYkznlEAtEpi/jnYE6ZorI85GxqXWIgJn7Nqz16
+         y7bm5kX/+iIDk1YTT82fVz82vXmNMWjHljWs0LcH4dQBebJYRzETLBD1f1QTTffp0iIa
+         nRPWBNBz7uq0rSJe81YfhskTjvUWcJOuqTZc9vAXM6+em8+sAvvgAUTc7xGa41bI/hjW
+         tiFQm/dXXVskIkb2a2FEkcYKM7NHNmRh9nAFEWQ7Zk/SfjWYSQtJfBPyR1wE59gKbY+0
+         MqeA==
+X-Gm-Message-State: AOAM530I9UwBdAiCWiydfd+u0QSui917EGF+pI/rSGqPaa9XxYLVKwW0
+        A3Bz+RmCHbsHVVK6xBfs28/swtFoG3cdyg==
+X-Google-Smtp-Source: ABdhPJzjn0PXrS+w/lE3q2cg0o9jV6Hxd1kFNZ9dsDIOUn/zwGq2uywPCagu48bvvS/xJ09Y4CMdqg==
+X-Received: by 2002:a7b:c393:: with SMTP id s19mr1939169wmj.13.1634597368719;
+        Mon, 18 Oct 2021 15:49:28 -0700 (PDT)
 Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id m2sm557941wml.15.2021.10.18.14.44.22
+        by smtp.gmail.com with ESMTPSA id r9sm13204450wrn.95.2021.10.18.15.49.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Oct 2021 14:44:23 -0700 (PDT)
-Message-ID: <e5ccf59d-54a9-dbaf-1711-ae370879bd9a@linaro.org>
-Date:   Mon, 18 Oct 2021 22:46:23 +0100
+        Mon, 18 Oct 2021 15:49:27 -0700 (PDT)
+Message-ID: <d2128789-646f-1e02-0dd2-a9ac14b37cf7@linaro.org>
+Date:   Mon, 18 Oct 2021 23:51:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.1.1
-Subject: Re: [PATCH] wcn36xx: Add chained transfer support for AMSDU
+Subject: Re: [PATCH 1/2] wcn36xx: Correct band/freq reporting on RX
 Content-Language: en-US
 To:     Loic Poulain <loic.poulain@linaro.org>, kvalo@codeaurora.org
 Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <1634557705-11120-1-git-send-email-loic.poulain@linaro.org>
+References: <1634554678-7993-1-git-send-email-loic.poulain@linaro.org>
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <1634557705-11120-1-git-send-email-loic.poulain@linaro.org>
+In-Reply-To: <1634554678-7993-1-git-send-email-loic.poulain@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 18/10/2021 12:48, Loic Poulain wrote:
-> WCNSS RX DMA transfer support is limited to 3872 bytes, which is
-> enough for simple MPDUs (single MSDU), but not enough for cases
-> with A-MSDU (depending on max AMSDU size or max MPDU size).
-> 
-> In that case the MPDU is spread ove multiple transfers, with the
-> first transfer containing the MPDU header and (at least) the first
-> A-MSDU subframe and additional transfer(s) containing the following
-> A-MSDUs. This can be handled with a series of flags to tagging the
-> first and last A-MSDU transfers.
-> 
-> In that case we have to bufferize and re-linearize the A-MSDU buffers
-> into a proper MPDU skb before forwarding to mac80211 (in the same way
-> as it is done in ath10k).
-> 
-> This change also includes sanity check of the buffer descriptor to
-> prevent skb overflow.
+On 18/10/2021 11:57, Loic Poulain wrote:
+>   	    ieee80211_is_probe_resp(hdr->frame_control))
+>   		status.boottime_ns = ktime_get_boottime_ns();
 
-I like this patch and I think it plugs a gap we have but, my question 
-is, have we seen this code be triggered at least once ?
+I think this is dangling in your tree, doesn't apply cleanly for me anyway
 
-I'm a bit reticent about apply it upstream unless/until we have.
+Other than that
 
----
-bod
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
