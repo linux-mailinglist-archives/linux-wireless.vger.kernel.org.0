@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8893A432A7A
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 01:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0157D432A7B
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 01:50:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233423AbhJRXwm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 19:52:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34966 "EHLO mail.kernel.org"
+        id S233256AbhJRXwn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 19:52:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34974 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233214AbhJRXwk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S233225AbhJRXwk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 18 Oct 2021 19:52:40 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7B10861212;
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CE06361206;
         Mon, 18 Oct 2021 23:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634601028;
-        bh=jIuhnQdYPilsja0WYjDomP62jFeD4RXWayZ4HTtnz+o=;
+        s=k20201202; t=1634601029;
+        bh=DBQUeNzVSQKmMw1csFG8/5M8FZQUluIRCnZ5+nd6sjk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gh719nB2PJ+N78txqniyyeUouV96PACt4TWvnN6tSrigWS0x/OMUB6Vo4vZzkiLUN
-         rGxGhanh5ja+GHY/Z7Ati712lh29v9P5o2aV62qTlAoYyrtwq1x1lbGsEQzc63aVmZ
-         DUbGUOe1GtxhXoNzUGN+Vcf1uZ+cfxbw4cR7H4zPfS5U8HBRVwNpY85iUg7V66174Z
-         KoXhIL7PPYxNcUxYOxCHetetzxWCjarFkkdpZMFw0e4f7RXqMLpVT4/ErT7bMvVqse
-         eQKqTt0OsV7hDExKODSHaL+cFsmzs9obVcx8qsLPia0AVfOHFUTZid8m3jX72Nq7Hj
-         ImlqJiCaALxQw==
+        b=vGh89+VH/sifJi2xi7QPAhKGEBz4rhX5Qlc+jx2p5TQvyXK8oqWlt8cPyYoVQfmUT
+         veWslQCqCXBb0KmTokxqxeUOFbEHdVc7WIciYjSHQIw0dZc+YyQCNfZTR0Aj3bzodI
+         kk7UEPUvSYAU6l5RWseIGr0aMzY6RjmEURPK8PtUrsA9mWCFhxedQj7D+RNFknUTNl
+         CLNN97lLXbTWrTJdx5nYBbHuvdPCFUBlaTbDfzlnaxJiYvL8ae2ehecqWH0PI7klDB
+         COpyhfom7T1hB9qYgo2oZQEPMOqFuGpLuTS4lYg71bg7HCoyrAGUw+sez2yhSXx2ky
+         bderGkGKgypFg==
 From:   Jakub Kicinski <kuba@kernel.org>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        merez@codeaurora.org, wil6210@qti.qualcomm.com
-Subject: [PATCH 05/15] wireless: wil6210: use eth_hw_addr_set()
-Date:   Mon, 18 Oct 2021 16:50:11 -0700
-Message-Id: <20211018235021.1279697-6-kuba@kernel.org>
+        simon@thekelleys.org.uk
+Subject: [PATCH 06/15] wireless: atmel: use eth_hw_addr_set()
+Date:   Mon, 18 Oct 2021 16:50:12 -0700
+Message-Id: <20211018235021.1279697-7-kuba@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211018235021.1279697-1-kuba@kernel.org>
 References: <20211018235021.1279697-1-kuba@kernel.org>
@@ -44,65 +44,80 @@ of VLANs...") introduced a rbtree for faster Ethernet address look
 up. To maintain netdev->dev_addr in this tree we need to make all
 the writes to it got through appropriate helpers.
 
-Do the special encoding on the stack, then copy the address.
+Use a buffer on the stack. Note that atmel_get_mib() is a wrapper
+around atmel_copy_to_host(). For the to device direction we just
+need to make sure functions respect argument being cost.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
-CC: merez@codeaurora.org
+CC: simon@thekelleys.org.uk
 CC: kvalo@codeaurora.org
 CC: linux-wireless@vger.kernel.org
-CC: wil6210@qti.qualcomm.com
 ---
- drivers/net/wireless/ath/wil6210/cfg80211.c | 8 +++++---
- drivers/net/wireless/ath/wil6210/wil6210.h  | 2 +-
- drivers/net/wireless/ath/wil6210/wmi.c      | 2 +-
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/wireless/atmel/atmel.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
-index bd8d0a54af77..764d1d14132b 100644
---- a/drivers/net/wireless/ath/wil6210/cfg80211.c
-+++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
-@@ -725,9 +725,11 @@ wil_cfg80211_add_iface(struct wiphy *wiphy, const char *name,
- 	if (is_valid_ether_addr(params->macaddr)) {
- 		eth_hw_addr_set(ndev, params->macaddr);
- 	} else {
--		eth_hw_addr_set(ndev, ndev_main->perm_addr);
--		ndev->dev_addr[0] = (ndev->dev_addr[0] ^ (1 << vif->mid)) |
--			0x2; /* locally administered */
-+		u8 addr[ETH_ALEN];
-+
-+		ether_addr_copy(addr, ndev_main->perm_addr);
-+		addr[0] = (addr[0] ^ (1 << vif->mid)) |	0x2; /* locally administered */
-+		eth_hw_addr_set(ndev, addr);
- 	}
- 	wdev = vif_to_wdev(vif);
- 	ether_addr_copy(wdev->address, ndev->dev_addr);
-diff --git a/drivers/net/wireless/ath/wil6210/wil6210.h b/drivers/net/wireless/ath/wil6210/wil6210.h
-index 30392eb1cbbd..11946ecd0b99 100644
---- a/drivers/net/wireless/ath/wil6210/wil6210.h
-+++ b/drivers/net/wireless/ath/wil6210/wil6210.h
-@@ -1341,7 +1341,7 @@ struct wil6210_priv *wil_cfg80211_init(struct device *dev);
- void wil_cfg80211_deinit(struct wil6210_priv *wil);
- void wil_p2p_wdev_free(struct wil6210_priv *wil);
+diff --git a/drivers/net/wireless/atmel/atmel.c b/drivers/net/wireless/atmel/atmel.c
+index 8290cf881a1b..35c2e798d98b 100644
+--- a/drivers/net/wireless/atmel/atmel.c
++++ b/drivers/net/wireless/atmel/atmel.c
+@@ -600,7 +600,7 @@ static void atmel_set_mib8(struct atmel_private *priv, u8 type, u8 index,
+ static void atmel_set_mib16(struct atmel_private *priv, u8 type, u8 index,
+ 			    u16 data);
+ static void atmel_set_mib(struct atmel_private *priv, u8 type, u8 index,
+-			  u8 *data, int data_len);
++			  const u8 *data, int data_len);
+ static void atmel_get_mib(struct atmel_private *priv, u8 type, u8 index,
+ 			  u8 *data, int data_len);
+ static void atmel_scan(struct atmel_private *priv, int specific_ssid);
+@@ -3669,6 +3669,7 @@ static int probe_atmel_card(struct net_device *dev)
+ {
+ 	int rc = 0;
+ 	struct atmel_private *priv = netdev_priv(dev);
++	u8 addr[ETH_ALEN] = {};
  
--int wmi_set_mac_address(struct wil6210_priv *wil, void *addr);
-+int wmi_set_mac_address(struct wil6210_priv *wil, const void *addr);
- int wmi_pcp_start(struct wil6210_vif *vif, int bi, u8 wmi_nettype, u8 chan,
- 		  u8 edmg_chan, u8 hidden_ssid, u8 is_go);
- int wmi_pcp_stop(struct wil6210_vif *vif);
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
-index 2dc8406736f4..dd8abbb28849 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.c
-+++ b/drivers/net/wireless/ath/wil6210/wmi.c
-@@ -2097,7 +2097,7 @@ int wmi_echo(struct wil6210_priv *wil)
- 			WIL_WMI_CALL_GENERAL_TO_MS);
+ 	/* reset pccard */
+ 	if (priv->bus_type == BUS_TYPE_PCCARD)
+@@ -3693,7 +3694,9 @@ static int probe_atmel_card(struct net_device *dev)
+ 		if (i == 0) {
+ 			printk(KERN_ALERT "%s: MAC failed to boot MAC address reader.\n", dev->name);
+ 		} else {
+-			atmel_copy_to_host(dev, dev->dev_addr, atmel_read16(dev, MR2), 6);
++
++			atmel_copy_to_host(dev, addr, atmel_read16(dev, MR2), 6);
++			eth_hw_addr_set(dev, addr);
+ 			/* got address, now squash it again until the network
+ 			   interface is opened */
+ 			if (priv->bus_type == BUS_TYPE_PCCARD)
+@@ -3705,7 +3708,8 @@ static int probe_atmel_card(struct net_device *dev)
+ 		/* Mac address easy in this case. */
+ 		priv->card_type = CARD_TYPE_PARALLEL_FLASH;
+ 		atmel_write16(dev,  BSR, 1);
+-		atmel_copy_to_host(dev, dev->dev_addr, 0xc000, 6);
++		atmel_copy_to_host(dev, addr, 0xc000, 6);
++		eth_hw_addr_set(dev, addr);
+ 		atmel_write16(dev,  BSR, 0x200);
+ 		rc = 1;
+ 	} else {
+@@ -3713,7 +3717,8 @@ static int probe_atmel_card(struct net_device *dev)
+ 		   for the Mac Address */
+ 		priv->card_type = CARD_TYPE_SPI_FLASH;
+ 		if (atmel_wakeup_firmware(priv) == 0) {
+-			atmel_get_mib(priv, Mac_Address_Mib_Type, 0, dev->dev_addr, 6);
++			atmel_get_mib(priv, Mac_Address_Mib_Type, 0, addr, 6);
++			eth_hw_addr_set(dev, addr);
+ 
+ 			/* got address, now squash it again until the network
+ 			   interface is opened */
+@@ -4103,7 +4108,7 @@ static void atmel_set_mib16(struct atmel_private *priv, u8 type, u8 index,
  }
  
--int wmi_set_mac_address(struct wil6210_priv *wil, void *addr)
-+int wmi_set_mac_address(struct wil6210_priv *wil, const void *addr)
+ static void atmel_set_mib(struct atmel_private *priv, u8 type, u8 index,
+-			  u8 *data, int data_len)
++			  const u8 *data, int data_len)
  {
- 	struct wil6210_vif *vif = ndev_to_vif(wil->main_ndev);
- 	struct wmi_set_mac_address_cmd cmd;
+ 	struct get_set_mib m;
+ 	m.type = type;
 -- 
 2.31.1
 
