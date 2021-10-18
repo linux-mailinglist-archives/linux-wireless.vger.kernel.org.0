@@ -2,146 +2,234 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1B2A431EF4
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 16:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA984431F57
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 16:18:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235028AbhJROHk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 10:07:40 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:31409 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233576AbhJROFk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 10:05:40 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634565809; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=0Fj4oE9VmcQdSF7I96TQicw/pGH/Pcdi7r+NuocLYnU=; b=k18XbjNjPiknCv1FxWw7b+Ck6qbur6CvjUsCLdaDngjUSNoJvEwl3Z/Ip3GWHKAWJdhStaRd
- m0dHJDxWtTw2OOIasAegtWlRzrCpvUGf26ivU9R+0CB20uz/aAyzM7klecs/s0bTZDRC9k0n
- pqedEvC+QmJWa9o0IfrQpbvVIhI=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 616d7e75f922f9e77202c9bf (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 18 Oct 2021 14:02:29
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 31179C43616; Mon, 18 Oct 2021 14:02:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 41275C43616;
-        Mon, 18 Oct 2021 14:02:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 41275C43616
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: pull request: mt76 2021-10-11 v2
-References: <f595fe67-e3cc-4477-db79-5e2975c60160@nbd.name>
-Date:   Mon, 18 Oct 2021 17:02:22 +0300
-In-Reply-To: <f595fe67-e3cc-4477-db79-5e2975c60160@nbd.name> (Felix Fietkau's
-        message of "Tue, 12 Oct 2021 21:13:47 +0200")
-Message-ID: <874k9etor5.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        id S232912AbhJROUU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 10:20:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45022 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231905AbhJROUQ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Oct 2021 10:20:16 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36EA5C0612F1
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 07:16:45 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id p21so8883754wmq.1
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 07:16:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=LAd+S0Qnz+V8XxjM+PVfUF/cgcdX7dHn+MP2lN3vIGw=;
+        b=FSmnVMcfCwvzrHxPNyCK6iCEYmyR46utpI4L7WYoDcKbBm+DiVvKL3/8XrgSjZyy2P
+         kc9O9Mnd64saaasklTaWc4GVhXsNmYUCEPsAcxrxOOHKJatbqdfENrlGN0D0yq3dDoof
+         DEqYlLp0jDQNqAm4IEwN6Sjb7/q9i7YfxHA/q4tkcN9iSNeOmmLD/4a7AcYgRqI4SJZS
+         LQm4TFYcpWIJqgCmzQ9BljASZM9Jwzm5QK/NxpQBaOJvFgbvKG+bt2LTjg15ExK3y+q/
+         2TyVT3I2iyynFQOe9BzfRTJf6HMkn9uLYMNs08dpNFQemPYVWiZ9x/aU/l28S4U5/gle
+         eiZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=LAd+S0Qnz+V8XxjM+PVfUF/cgcdX7dHn+MP2lN3vIGw=;
+        b=FAXEeifHVQw2diUSAHDB189dF6qT5LZAB+OIRuaGtD+EPSem/xX7g94Yo2R5A6xrJa
+         iJdrY2dbN+cwGVPBWcitNV3750hN8/vrOKM2Algmh+p70U1YdICXi45HMOiJ4JLIre0e
+         Depmb88rLh+4IS62MQOvqkjKUKXtPgFV2MAk88s3GvHkEDQa8LRA67G0iX44nTPQJwco
+         b98PV9BrjiclPv3UtQgLFO3cPZwaY0Ry14mF3rvkxzd+O6eko3L+LwdzoRuWikJeKOJ1
+         bwtiLA7nPazEs8C7KmHBKlxy82zVd7imN/gfLJaeEHGLimuW1AiSnzGvpoBO4VgddtJu
+         rykg==
+X-Gm-Message-State: AOAM53155XbqqOuRDfLFTBbIHgikPZVQ8I6af5A6ZlFjwHpvLO7qKJTZ
+        9XRo9H534WzhNBHTip5P2K+79Q==
+X-Google-Smtp-Source: ABdhPJzABYktdw0zjlgeJ3AzNeoPQyZk7xqA/hSJMeTkJzF4o5LJqe0QUd6TsgF3nAtjzDXJCoPLJQ==
+X-Received: by 2002:a7b:c5d8:: with SMTP id n24mr31541462wmk.51.1634566603668;
+        Mon, 18 Oct 2021 07:16:43 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:e0a:82c:5f0:9df5:c752:530b:345b])
+        by smtp.gmail.com with ESMTPSA id v185sm18482862wme.35.2021.10.18.07.16.42
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 18 Oct 2021 07:16:43 -0700 (PDT)
+From:   Loic Poulain <loic.poulain@linaro.org>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
+        bryan.odonoghue@linaro.org, Loic Poulain <loic.poulain@linaro.org>,
+        stable@vger.kernel.org
+Subject: [PATCH v2] wcn36xx: Fix tx_status mechanism
+Date:   Mon, 18 Oct 2021 16:28:01 +0200
+Message-Id: <1634567281-28997-1-git-send-email-loic.poulain@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+This change fix the TX ack mechanism in various ways:
 
-> Hi Kalle,
->
-> here's an updated version of my first pull request for 5.16
->
-> - Felix
->
-> The following changes since commit 9b793db5fca44d01f72d3564a168171acf7c4076:
->
->   b43: fix a lower bounds test (2021-10-11 09:09:30 +0300)
->
-> are available in the Git repository at:
->
->   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-10-12
->
-> for you to fetch changes up to 39e333d657f49619c65b9f5b59aa6405f13abf35:
->
->   mt76: do not access 802.11 header in ccmp check for 802.3 rx skbs (2021-10-12 20:28:10 +0200)
->
-> ----------------------------------------------------------------
-> mt76 patches for 5.16
->
-> * various bugfixes
-> * endian fixes
-> * mt7921 aspm support
-> * cleanup
-> * mt7921 testmode support
-> * rate handling fixes
-> * tx status fixes/improvements
-> * mt7921 power management improvements
-> * mt7915 LED support
-> * DBDC fixes
-> * mt7921 6GHz support
-> * support for eeprom data in DT
-> * mt7915 TWT support
->
-> ----------------------------------------------------------------
+- For NO_ACK tagged packets, we don't need to way for TX_ACK indication
+and so are not subject to the single packet ack limitation. So we don't
+have to stop the tx queue, and can call the tx status callback as soon
+as DMA transfer has completed.
 
-There are few problems:
+- Fix skb ownership/reference. Only start status indication timeout
+once the DMA transfer has been completed. This avoids the skb to be
+both referenced in the DMA tx ring and by the tx_ack_skb pointer,
+preventing any use-after-free or double-free.
 
-In commit 4869b41c75770da466ed90eb8ac022175c5f72ce fixes tag have
-incorrect format:
+- This adds a sanity (paranoia?) check on the skb tx ack pointer.
 
-    Fixes: 1d8efc741df8 'mt76: mt7921: introduce Runtime PM support'
-    Fixes: de5ff3c9d1a2 'mt76: mt7615: introduce pm_power_save delayed work'
+- Resume TX queue if TX status tagged packet TX fails.
 
-In commit
+Cc: stable@vger.kernel.org
+Fixes: fdf21cc37149 ("wcn36xx: Add TX ack support")
+Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+---
+ v2: Fix unused variable error/warning (flag)
 
-  b7fce5823fd0 ("mt76: mt7921: fix the inconsistent state between bind and unbind")
+ drivers/net/wireless/ath/wcn36xx/dxe.c  | 37 +++++++++++++--------------------
+ drivers/net/wireless/ath/wcn36xx/txrx.c | 31 ++++++---------------------
+ 2 files changed, 21 insertions(+), 47 deletions(-)
 
-Fixes tag
-
-  Fixes: c1af184ba830 ("mt76: mt7921: fix dma hang in rmmod")
-
-has these problem(s):
-
-  - Target SHA1 does not exist
-
-In commit
-
-  34f3427bd233 ("mt76: add a bound check in mt76_calculate_default_rate()")
-
-Fixes tag
-
-  Fixes: 75fb2e62d444 (mt76: add mt76_default_basic_rate more devices can rely on)
-
-has these problem(s):
-
-  - Target SHA1 does not exist
-  
-In commit
-
-  787523c2b0bd ("mt76: mt7915: add a missing HT flag for GI parsing")
-
-Fixes tag
-
-  Fixes: 14b220c07188 ("mt76: mt7915: report tx rate directly from tx status")
-
-has these problem(s):
-
-  - Target SHA1 does not exist
-
+diff --git a/drivers/net/wireless/ath/wcn36xx/dxe.c b/drivers/net/wireless/ath/wcn36xx/dxe.c
+index 8e1dbfd..0e0bbcd 100644
+--- a/drivers/net/wireless/ath/wcn36xx/dxe.c
++++ b/drivers/net/wireless/ath/wcn36xx/dxe.c
+@@ -403,8 +403,21 @@ static void reap_tx_dxes(struct wcn36xx *wcn, struct wcn36xx_dxe_ch *ch)
+ 			dma_unmap_single(wcn->dev, ctl->desc->src_addr_l,
+ 					 ctl->skb->len, DMA_TO_DEVICE);
+ 			info = IEEE80211_SKB_CB(ctl->skb);
+-			if (!(info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS)) {
+-				/* Keep frame until TX status comes */
++			if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
++				if (info->flags & IEEE80211_TX_CTL_NO_ACK) {
++					info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
++					ieee80211_tx_status_irqsafe(wcn->hw, ctl->skb);
++				} else {
++					/* Wait for the TX ack indication or timeout... */
++					spin_lock(&wcn->dxe_lock);
++					if (WARN_ON(wcn->tx_ack_skb))
++						ieee80211_free_txskb(wcn->hw, wcn->tx_ack_skb);
++					wcn->tx_ack_skb = ctl->skb; /* Tracking ref */
++					mod_timer(&wcn->tx_ack_timer, jiffies + HZ / 10);
++					spin_unlock(&wcn->dxe_lock);
++				}
++				/* do not free, ownership transferred to mac80211 status cb */
++			} else {
+ 				ieee80211_free_txskb(wcn->hw, ctl->skb);
+ 			}
+ 
+@@ -426,7 +439,6 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
+ {
+ 	struct wcn36xx *wcn = (struct wcn36xx *)dev;
+ 	int int_src, int_reason;
+-	bool transmitted = false;
+ 
+ 	wcn36xx_dxe_read_register(wcn, WCN36XX_DXE_INT_SRC_RAW_REG, &int_src);
+ 
+@@ -466,7 +478,6 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
+ 		if (int_reason & (WCN36XX_CH_STAT_INT_DONE_MASK |
+ 				  WCN36XX_CH_STAT_INT_ED_MASK)) {
+ 			reap_tx_dxes(wcn, &wcn->dxe_tx_h_ch);
+-			transmitted = true;
+ 		}
+ 	}
+ 
+@@ -479,7 +490,6 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
+ 					   WCN36XX_DXE_0_INT_CLR,
+ 					   WCN36XX_INT_MASK_CHAN_TX_L);
+ 
+-
+ 		if (int_reason & WCN36XX_CH_STAT_INT_ERR_MASK ) {
+ 			wcn36xx_dxe_write_register(wcn,
+ 						   WCN36XX_DXE_0_INT_ERR_CLR,
+@@ -507,25 +517,8 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
+ 		if (int_reason & (WCN36XX_CH_STAT_INT_DONE_MASK |
+ 				  WCN36XX_CH_STAT_INT_ED_MASK)) {
+ 			reap_tx_dxes(wcn, &wcn->dxe_tx_l_ch);
+-			transmitted = true;
+-		}
+-	}
+-
+-	spin_lock(&wcn->dxe_lock);
+-	if (wcn->tx_ack_skb && transmitted) {
+-		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(wcn->tx_ack_skb);
+-
+-		/* TX complete, no need to wait for 802.11 ack indication */
+-		if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS &&
+-		    info->flags & IEEE80211_TX_CTL_NO_ACK) {
+-			info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
+-			del_timer(&wcn->tx_ack_timer);
+-			ieee80211_tx_status_irqsafe(wcn->hw, wcn->tx_ack_skb);
+-			wcn->tx_ack_skb = NULL;
+-			ieee80211_wake_queues(wcn->hw);
+ 		}
+ 	}
+-	spin_unlock(&wcn->dxe_lock);
+ 
+ 	return IRQ_HANDLED;
+ }
+diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
+index 1edc703..f9d2fc3 100644
+--- a/drivers/net/wireless/ath/wcn36xx/txrx.c
++++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
+@@ -608,10 +608,11 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 	struct wcn36xx_vif *vif_priv = NULL;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+-	unsigned long flags;
+ 	bool is_low = ieee80211_is_data(hdr->frame_control);
+ 	bool bcast = is_broadcast_ether_addr(hdr->addr1) ||
+ 		is_multicast_ether_addr(hdr->addr1);
++	bool ack_ind = (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) &&
++					!(info->flags & IEEE80211_TX_CTL_NO_ACK);
+ 	struct wcn36xx_tx_bd bd;
+ 	int ret;
+ 
+@@ -627,30 +628,16 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
+ 
+ 	bd.dpu_rf = WCN36XX_BMU_WQ_TX;
+ 
+-	if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
++	if (unlikely(ack_ind)) {
+ 		wcn36xx_dbg(WCN36XX_DBG_DXE, "TX_ACK status requested\n");
+ 
+-		spin_lock_irqsave(&wcn->dxe_lock, flags);
+-		if (wcn->tx_ack_skb) {
+-			spin_unlock_irqrestore(&wcn->dxe_lock, flags);
+-			wcn36xx_warn("tx_ack_skb already set\n");
+-			return -EINVAL;
+-		}
+-
+-		wcn->tx_ack_skb = skb;
+-		spin_unlock_irqrestore(&wcn->dxe_lock, flags);
+-
+ 		/* Only one at a time is supported by fw. Stop the TX queues
+ 		 * until the ack status gets back.
+ 		 */
+ 		ieee80211_stop_queues(wcn->hw);
+ 
+-		/* TX watchdog if no TX irq or ack indication received  */
+-		mod_timer(&wcn->tx_ack_timer, jiffies + HZ / 10);
+-
+ 		/* Request ack indication from the firmware */
+-		if (!(info->flags & IEEE80211_TX_CTL_NO_ACK))
+-			bd.tx_comp = 1;
++		bd.tx_comp = 1;
+ 	}
+ 
+ 	/* Data frames served first*/
+@@ -664,14 +651,8 @@ int wcn36xx_start_tx(struct wcn36xx *wcn,
+ 	bd.tx_bd_sign = 0xbdbdbdbd;
+ 
+ 	ret = wcn36xx_dxe_tx_frame(wcn, vif_priv, &bd, skb, is_low);
+-	if (ret && (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS)) {
+-		/* If the skb has not been transmitted,
+-		 * don't keep a reference to it.
+-		 */
+-		spin_lock_irqsave(&wcn->dxe_lock, flags);
+-		wcn->tx_ack_skb = NULL;
+-		spin_unlock_irqrestore(&wcn->dxe_lock, flags);
+-
++	if (unlikely(ret && ack_ind)) {
++		/* If the skb has not been transmitted, resume TX queue */
+ 		ieee80211_wake_queues(wcn->hw);
+ 	}
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.7.4
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
