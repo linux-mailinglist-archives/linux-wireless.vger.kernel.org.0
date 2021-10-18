@@ -2,96 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 307AF4318F5
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 14:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAF5E43192F
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Oct 2021 14:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230346AbhJRMYO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 08:24:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47226 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229833AbhJRMYN (ORCPT
+        id S231310AbhJRMg3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 08:36:29 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:44620 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231217AbhJRMg2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 08:24:13 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B3CCC061714
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 05:22:02 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id t2so41091379wrb.8
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 05:22:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=Tsy0ou00jA9sgdD3QEDwwcOaq6zikEvYydKUg/U2lOI=;
-        b=tL4VHalKBtDnJmE/VJ+Mhf0hiohhiXU/SvdITVRh47oKKhPg6qptsGcIfSyxZYnb6h
-         Yu9Lxv4hXlNmEzDzvgiPJZVccK/oLo9uFgp/t3tdR6o/NRVl0nNE2Cr1CHmJbEPD0ntG
-         pxdasCLszZ2eCwKDACJTEUhMi2Zf5eqd4SVnzDnziRh3LHRTzFXQKKn/LHfz4srVphxI
-         c2Jx4jfuDHQbDJqwCFQ3EJUyZOtWP3+fpt5DIEndHdpH2OWGlooM532MEezKve1F5CTF
-         WNHIsN0wz9U4N+2PutWxEIHpdgIMTQyl2yk4milADMbGvOLvO0QCCFysb3Jf+sP0vR9c
-         hlXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Tsy0ou00jA9sgdD3QEDwwcOaq6zikEvYydKUg/U2lOI=;
-        b=OsIAqFQhO5TNuBVs7D+zuQEgVclFcDJpKA92o7UFLZToaOokQ8zcOu8XIT1E17pVxU
-         2hKIliRgDIQlSyk54Up+jhvlAJa/PG9OiOIY3KuHRWcLAckX0LNMQftQcj8Qe87C0ID4
-         wu1xiw98SdUV9eE52jFWSxkUm6eT1DTpgHAXDC7kl+53CRKLTWvm09QK/S+NJDFPXBva
-         fAuZ72HqWc9t17pDckzUgtjZI2Jrv92ypyobG2z52TlQ0FvrWFJTs17XzfXvCfcIhq5Q
-         OmS/1FleMYhaooj2fbAgK+S2Jc66by+vIkD6eDfzIZYERmLFRRMtM+fM72acSONlknSO
-         dpHQ==
-X-Gm-Message-State: AOAM5306iTcpGKEApP/+Y/lRLIzmhTUb4/DszPF83S1OXtGOWetk89gU
-        tXQQ05rAqKuF+Eg8heQcZJxSAMqKoikHAA==
-X-Google-Smtp-Source: ABdhPJxfXaof1I8NpiW93+giTN7/+c8qgc+weYNHGpnx1w2xIphm4XKvToGE6SyhhCovA1AIxtuPlw==
-X-Received: by 2002:adf:ab58:: with SMTP id r24mr34816657wrc.200.1634559721105;
-        Mon, 18 Oct 2021 05:22:01 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:e0a:82c:5f0:9df5:c752:530b:345b])
-        by smtp.gmail.com with ESMTPSA id s3sm12327725wrm.40.2021.10.18.05.22.00
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 18 Oct 2021 05:22:00 -0700 (PDT)
-From:   Loic Poulain <loic.poulain@linaro.org>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
-        bryan.odonoghue@linaro.org, Loic Poulain <loic.poulain@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH] wcn36xx: Fix (QoS) null data frame bitrate/modulation
-Date:   Mon, 18 Oct 2021 14:33:19 +0200
-Message-Id: <1634560399-15290-1-git-send-email-loic.poulain@linaro.org>
-X-Mailer: git-send-email 2.7.4
+        Mon, 18 Oct 2021 08:36:28 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1634560457; h=Date: Message-ID: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=78huWSW48dpLsjExYLT1rNtU/f7bhv2g8eGApbb/7BE=;
+ b=XEFYweGaPkn7RKZaf20SSq+/xOsL88qfCCOwhkRAt9X5PWMaB2ykRqytGFe+avJXdCPpkaBl
+ +wYAmC2dUYMde85YkNq8YPI0r+guePE+owB1G5mhaRM6GDD5GJiYrDvrkN8EiI7bnGabq5wf
+ YuEeMnX6UiviZIsYDCVE6JzXyaY=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 616d69ba30ce13d2b4b16ea0 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 18 Oct 2021 12:34:02
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id BA6BDC4360C; Mon, 18 Oct 2021 12:34:02 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B8F3FC4338F;
+        Mon, 18 Oct 2021 12:33:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B8F3FC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wireless: ath5k: replace snprintf in show functions with
+ sysfs_emit
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1634095651-4273-1-git-send-email-wangqing@vivo.com>
+References: <1634095651-4273-1-git-send-email-wangqing@vivo.com>
+To:     Qing Wang <wangqing@vivo.com>
+Cc:     Jiri Slaby <jirislaby@kernel.org>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Qing Wang <wangqing@vivo.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163456043468.24652.4752103758451442171.kvalo@codeaurora.org>
+Date:   Mon, 18 Oct 2021 12:34:02 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We observe unexpected connection drops with some APs due to
-non-acked mac80211 generated null data frames (keep-alive).
-After debugging and capture, we noticed that null frames are
-submitted at standard data bitrate and that the given APs are
-in trouble with that.
+Qing Wang <wangqing@vivo.com> wrote:
 
-After setting the null frame bitrate to control bitrate, all
-null frames are acked as expected and connection is maintained.
+> coccicheck complains about the use of snprintf() in sysfs show functions.
+> 
+> Fix the coccicheck warning:
+> WARNING: use scnprintf or sprintf.
+> 
+> Use sysfs_emit instead of scnprintf or sprintf makes more sense.
+> 
+> Signed-off-by: Qing Wang <wangqing@vivo.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Not sure if it's a requirement of the specification, but it seems
-the right thing to do anyway, null frames are mostly used for control
-purpose (power-saving, keep-alive...), and submitting them with
-a slower/simpler bitrate/modulation is more robust.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Cc: stable@vger.kernel.org
-Fixes: 512b191d9652 ("wcn36xx: Fix TX data path")
-Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/txrx.c | 1 +
- 1 file changed, 1 insertion(+)
+65b4b8aa0f59 ath5k: replace snprintf in show functions with sysfs_emit
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
-index ef1b133..ce4f631 100644
---- a/drivers/net/wireless/ath/wcn36xx/txrx.c
-+++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
-@@ -535,6 +535,7 @@ static void wcn36xx_set_tx_data(struct wcn36xx_tx_bd *bd,
- 	if (ieee80211_is_any_nullfunc(hdr->frame_control)) {
- 		/* Don't use a regular queue for null packet (no ampdu) */
- 		bd->queue_id = WCN36XX_TX_U_WQ_ID;
-+		bd->bd_rate = WCN36XX_BD_RATE_CTRL;
- 	}
- 
- 	if (bcast) {
 -- 
-2.7.4
+https://patchwork.kernel.org/project/linux-wireless/patch/1634095651-4273-1-git-send-email-wangqing@vivo.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
