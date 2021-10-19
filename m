@@ -2,58 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B49D84340B8
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 23:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 105974340CF
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 23:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229639AbhJSVo4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 17:44:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51112 "EHLO
+        id S229544AbhJSVyi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 17:54:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbhJSVo4 (ORCPT
+        with ESMTP id S229483AbhJSVye (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 17:44:56 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D81C4C06161C
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Oct 2021 14:42:42 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id nn3-20020a17090b38c300b001a03bb6c4ebso960612pjb.1
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Oct 2021 14:42:42 -0700 (PDT)
+        Tue, 19 Oct 2021 17:54:34 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 035CAC06161C
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Oct 2021 14:52:20 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id y4so14710926plb.0
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Oct 2021 14:52:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:subject:from:to:date:user-agent:mime-version
          :content-transfer-encoding;
-        bh=qOouh8K8sZfZnSOuRjANJn5kqxbGB0K/IS/bI+y2tIQ=;
-        b=YX7XIxSBF6tCdBnEZcN8S9Jl+/EFuo79FbaP1JzPBZohsm5GE5/bNHZWq2iggVkGyX
-         cfDX+uOde4XXrQdaisBXIftHBaXNFIeqQ7dzAnhK/BYjefS4D/N0Sjq1slMrey1zZ1Kp
-         N59TkvHeSFAipRX0RhrQOX+QUXvcwOLV4swGxhGHt6mp6DbEIDkw1LGR9DGjo4s4ltfX
-         lzMVdaKpxUL4Y52plYYKBUTwk+Vda4BCxqyH7M9Vb5dOnqh6MY2j1aqDl1MhiHopnIpm
-         RthXUBbe6h+oimL6b13hjHfx8yd7IPdvnjSFcVs+u6xidw3uJpRPHPg4zpq1JIVc0bJ0
-         Slsg==
+        bh=O9IDZ0D8GKm/bErqw2ZE+yWUnfK4r6dVEZoythVTIk4=;
+        b=cEk/qXLCTxQgN0hZ98x6htdkpzB1m/U4unQTZAmVTEHsEJkzFq1BFK+qPSuioM5tWg
+         Nfus3JfvnfAyp6/Y8zFl+cimoOwjz9jmQbVh5xMXMhqyRdjAuuApjHg0vcWpY1GZJJYT
+         WbMWUFzqDYE1gI59VLr3VEMFYEOYULj0A31KnFWSXC9dzK9fRL8PmXBKPtUCIqg+YIy6
+         H3BPeySkWuXfnguHAUdmjUkvADX7/woVTsRmUp36oxn60WZTHO3IUWzDmFbo3zkP9vIC
+         RfSNCnqc1I8OxokrNol+XyO8h4/kEPOAyBX9KkdrHz327FLfTdhxLWZ6kvAAR6v0a9h9
+         sR5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:subject:from:to:date:user-agent
          :mime-version:content-transfer-encoding;
-        bh=qOouh8K8sZfZnSOuRjANJn5kqxbGB0K/IS/bI+y2tIQ=;
-        b=joYoy3mn7svLI2Pun1x0HRGTa3r6OuALBNDWjY82RyXnVsksZkY1BsuQh/K7t83TpG
-         iL9Jr2ElXsavHBMgE/MFE1s0j6fVsQAorR/VGrceGFdgRxPQLfNEqFNFBFpAbykZqcds
-         olxcFL9an1ijIGA7Dg417xPQmvx//Ey7wlYTVK4C9FjiVSex2dBKgq/QHslUC/Usepq6
-         tsdytTGoRtssKWsGBF2wxkKtLIJlPLyY+lClNdlbj6CZnS9yUD7ZORlPhKMTqcYW8fEe
-         9iLQTMWsxPQAYgcwM1xqXUMRNQ675CIn+Zue0Ey3jeFLOf6+Z2l0eL8uRrX/BTzZOVDR
-         MnUQ==
-X-Gm-Message-State: AOAM532w3tPkFDNFFFw3NVp/LWleyqwyDUYUnOrkAsQrZjgN939xYABU
-        pGhv4pM0NsHamvUnYNocALtD3fIL03Y=
-X-Google-Smtp-Source: ABdhPJxYwz+4Mld1iHqX1qVYDXoLJOTnU5GI+ptFIMvkpMvYUwGxPy+cUDxPDIGymDmqFIBok7XyLA==
-X-Received: by 2002:a17:902:c443:b0:13f:5507:bdc7 with SMTP id m3-20020a170902c44300b0013f5507bdc7mr35299341plm.50.1634679762198;
-        Tue, 19 Oct 2021 14:42:42 -0700 (PDT)
+        bh=O9IDZ0D8GKm/bErqw2ZE+yWUnfK4r6dVEZoythVTIk4=;
+        b=UrhuDNp4YudHXMWnsjMXplwtZi7wtRmw9sPQUV7hPPcWXTnsM9hzab+FAcI7hLKuuP
+         ngD7pz24Aawf/kvWoEVHKeNO6MthVbaPuKMGJkPDdxBqOy4OUoc5NkvZLtZHOniXaJ/T
+         EJpGspDpykjVvOrLcAbmDePoTuRt1Np+IPjQIN1porBoeqCgm5ivP5qbfJ0nMgU1hsEJ
+         234On51H/+Nm3VHJoE/gzs3ii/1pJwzcl+ER6fHyy0Q+hVTqyT43H1h2OYVH/0VF57WL
+         yc7kCAF3dtXPQK+CoLdpGPfZM+sxvAQmOErkaa9OzjsvFVfLcTt8bsrJDbhtBvTMPp2U
+         syQQ==
+X-Gm-Message-State: AOAM532MmmtKwDDCNdob/abgz/c/rl/eedjoBeqDCmgYl9gThRGtmft7
+        AHu602P5J5Xqmg2kIIwhO/GfMfDa8pc=
+X-Google-Smtp-Source: ABdhPJySlB0dYbIQji1DfQtj42es3K0gCgZqs7IB918tSzVo7r0A88PlFv5oH7QzPnse58aeRIsuew==
+X-Received: by 2002:a17:90a:c70d:: with SMTP id o13mr2786132pjt.143.1634680340218;
+        Tue, 19 Oct 2021 14:52:20 -0700 (PDT)
 Received: from [192.168.254.15] ([50.39.163.188])
-        by smtp.gmail.com with ESMTPSA id a21sm105840pju.57.2021.10.19.14.42.41
+        by smtp.gmail.com with ESMTPSA id t9sm3603784pjm.36.2021.10.19.14.52.19
         for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Oct 2021 14:42:41 -0700 (PDT)
-Message-ID: <14719251a15175e3ddf0dcb67ff0804073332898.camel@gmail.com>
-Subject: Bug - brcmfmac fails 4-way with OCVC set
+        Tue, 19 Oct 2021 14:52:19 -0700 (PDT)
+Message-ID: <66d0e0e76b3da052eb25199c9665ca74fefa3dbd.camel@gmail.com>
+Subject: Bug - brcmfmac STA fails to channel switch
 From:   James Prestwood <prestwoj@gmail.com>
 To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Tue, 19 Oct 2021 14:39:20 -0700
+Date:   Tue, 19 Oct 2021 14:48:58 -0700
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.40.4 (3.40.4-1.fc34) 
 MIME-Version: 1.0
@@ -64,15 +64,25 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-I've noticed brcmfmac (offload) fails the 4-way handshake if the OCVC
-bit is set in the RSN. Hostapd rejects because the card did not include
-the OCI.
+I've noticed some funny behavior on brcmfmac STA's when issuing a
+channel switch to hostapd.
 
-I would expect the card to:
+First, I tried this on a really old brcmfmac card. This got stuck in a
+loop: DEL_STATION, NEW_STATION, TX_STATUS, ROAM (repeat). I chalked it
+up to the card being old and unsupported.
 
-a) Include the proper OCI
-b) Reject CMD_CONNECT if OCVC is set
-c) Re-write the RSN to not set OCVC if the card is not capable.
+I then tried on a rpi3 and would get disconnected soon after issuing
+the channel switch to hostapd. No other events came, just a disconnect.
+
+In one case I issued a channel switch and saw hostapd responding to SA
+Query requests about once a second. But no other events came on the STA
+side. The card/FW seemed to be stuck in a loop sending SA Queries once
+per second but never issued a CHANNEL_SWITCH or ROAM event. This went
+on for about 5 minutes before I stopped the tests.
+
+If channel switching is not supported I think the disconnect behavior I
+saw is about all that can be done. As for the SA query loop, that seems
+like a bug to me.
 
 Thanks,
 James
