@@ -2,35 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AB0543334D
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 12:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33D5B43334E
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 12:13:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235179AbhJSKP1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 06:15:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58782 "EHLO mail.kernel.org"
+        id S235185AbhJSKP3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 06:15:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58800 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235176AbhJSKP0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 06:15:26 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4AA2A6137F;
-        Tue, 19 Oct 2021 10:13:13 +0000 (UTC)
+        id S235180AbhJSKP2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 19 Oct 2021 06:15:28 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D1B4E6137C;
+        Tue, 19 Oct 2021 10:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634638394;
-        bh=Bo0YfX2aJLJYYHWPVAD1Y+BgbssyG92ng++77KCWyb8=;
+        s=k20201202; t=1634638396;
+        bh=jCkKSt0tthJ8gCn38kUdGHx4fp6r6SdWk4es9vm5gag=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cx92WdYW5o8TedO/sTLHTjXwlz8d/ouL97DFdeaDAMJ3AgA0twU7KDwpcxM9j3wYi
-         +SEyPgRBsrDhLb6H79QQPOKMBqgyc/u19Dx1xAlkybtyT92mpQtDNezeSyxxihVdGo
-         5zDqvrGlJHRJzlwZPVDnHbxE+K9QgpMBKzNIN1QMXRWeop+wPuZNwA82L34+Xr+76f
-         pd0x1cQB9poxyCgU1UacfpcCesNy3z/rhplgzqn79vo6kTcKII3sxgnjFISQT3HtrS
-         RMqzLWajyMgFU1y6IgZBhightZEykgk7SwsSm+veBOddgNC15GZXCWZVa47MUT8tEY
-         7Ia1qj0ubNGgQ==
+        b=rzrkuIalIINZQ6nqltVfz33nWGhiXcJTiaG45c4acQaQt9TdXVrcHFTizLnojtMZP
+         cgd2dDZi+F5gUmQs+YpvAOPJKPETumFoemgDyDE2R7tGvr2j94c/OTMmwwAFt2v0Ks
+         NIog0qFrWXEF16KkGmzykCHiS6Ro7VeKscj5nnAGEcOpxkX/Vl6zzivJooIMJ9pK7+
+         n46Cmg+gzc/GZWbe6b/JCqyrttS1c0OX1zof8huAuZpmuCRXg1QBP4RRPBDcjvnOLY
+         J7WQtwrha/STwRHJUyrBq9qZBOetJmdCAI8780sy/j9vx0spg6yvXW+E6Qipew/A4S
+         pdivEX+6f59Yg==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, greearb@candelatech.com,
         ryder.lee@mediatek.com
-Subject: [PATCH v2 06/10] mt76: mt7921: add some more MIB counters
-Date:   Tue, 19 Oct 2021 12:12:28 +0200
-Message-Id: <8923bf23c506e3abb65464e5a487118d25d7d1be.1634637742.git.lorenzo@kernel.org>
+Subject: [PATCH v2 07/10] mt76: mt7921: introduce stats reporting through ethtool
+Date:   Tue, 19 Oct 2021 12:12:29 +0200
+Message-Id: <579c1b1d45e36615fc53a97d45338c8e1197b0a8.1634637742.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1634637742.git.lorenzo@kernel.org>
 References: <cover.1634637742.git.lorenzo@kernel.org>
@@ -40,142 +40,147 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a preliminary patch to introduce ethtool stats support to mt7921
-driver.
+Similar to mt7915 driver, add tx/rx statistics reporting through ethtool.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 26 ++++++++++++++++-
- .../wireless/mediatek/mt76/mt7921/mt7921.h    | 18 ++++++++++++
- .../net/wireless/mediatek/mt76/mt7921/regs.h  | 28 +++++++++++++++++++
- 3 files changed, 71 insertions(+), 1 deletion(-)
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 116 ++++++++++++++++++
+ 1 file changed, 116 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index f5b179601030..8a5b92b1e055 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -1326,6 +1326,7 @@ void mt7921_mac_update_mib_stats(struct mt7921_phy *phy)
- 	struct mt7921_dev *dev = phy->dev;
- 	struct mib_stats *mib = &phy->mib;
- 	int i, aggr0 = 0, aggr1;
-+	u32 val;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 22d5a0adb5ad..bd49cfd59617 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -861,6 +861,119 @@ mt7921_get_stats(struct ieee80211_hw *hw,
+ 	return 0;
+ }
  
- 	mib->fcs_err_cnt += mt76_get_field(dev, MT_MIB_SDR3(0),
- 					   MT_MIB_SDR3_FCS_ERR_MASK);
-@@ -1338,8 +1339,31 @@ void mt7921_mac_update_mib_stats(struct mt7921_phy *phy)
- 	mib->rts_retries_cnt += mt76_get_field(dev, MT_MIB_MB_BSDR1(0),
- 					       MT_MIB_RTS_FAIL_COUNT_MASK);
- 
-+	mib->tx_ampdu_cnt += mt76_rr(dev, MT_MIB_SDR12(0));
-+	mib->tx_mpdu_attempts_cnt += mt76_rr(dev, MT_MIB_SDR14(0));
-+	mib->tx_mpdu_success_cnt += mt76_rr(dev, MT_MIB_SDR15(0));
++static const char mt7921_gstrings_stats[][ETH_GSTRING_LEN] = {
++	/* tx counters */
++	"tx_ampdu_cnt",
++	"tx_mpdu_attempts",
++	"tx_mpdu_success",
++	"tx_pkt_ebf_cnt",
++	"tx_pkt_ibf_cnt",
++	"tx_ampdu_len:0-1",
++	"tx_ampdu_len:2-10",
++	"tx_ampdu_len:11-19",
++	"tx_ampdu_len:20-28",
++	"tx_ampdu_len:29-37",
++	"tx_ampdu_len:38-46",
++	"tx_ampdu_len:47-55",
++	"tx_ampdu_len:56-79",
++	"tx_ampdu_len:80-103",
++	"tx_ampdu_len:104-127",
++	"tx_ampdu_len:128-151",
++	"tx_ampdu_len:152-175",
++	"tx_ampdu_len:176-199",
++	"tx_ampdu_len:200-223",
++	"tx_ampdu_len:224-247",
++	"ba_miss_count",
++	"tx_beamformer_ppdu_iBF",
++	"tx_beamformer_ppdu_eBF",
++	"tx_beamformer_rx_feedback_all",
++	"tx_beamformer_rx_feedback_he",
++	"tx_beamformer_rx_feedback_vht",
++	"tx_beamformer_rx_feedback_ht",
++	"tx_msdu_pack_1",
++	"tx_msdu_pack_2",
++	"tx_msdu_pack_3",
++	"tx_msdu_pack_4",
++	"tx_msdu_pack_5",
++	"tx_msdu_pack_6",
++	"tx_msdu_pack_7",
++	"tx_msdu_pack_8",
++	/* rx counters */
++	"rx_mpdu_cnt",
++	"rx_ampdu_cnt",
++	"rx_ampdu_bytes_cnt",
++	"rx_ba_cnt"
++};
 +
-+	val = mt76_rr(dev, MT_MIB_SDR32(0));
-+	mib->tx_pkt_ebf_cnt += FIELD_GET(MT_MIB_SDR9_EBF_CNT_MASK, val);
-+	mib->tx_pkt_ibf_cnt += FIELD_GET(MT_MIB_SDR9_IBF_CNT_MASK, val);
++static void
++mt7921_get_et_strings(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++		      u32 sset, u8 *data)
++{
++	if (sset != ETH_SS_STATS)
++		return;
 +
-+	val = mt76_rr(dev, MT_ETBF_TX_APP_CNT(0));
-+	mib->tx_bf_ibf_ppdu_cnt += FIELD_GET(MT_ETBF_TX_IBF_CNT, val);
-+	mib->tx_bf_ebf_ppdu_cnt += FIELD_GET(MT_ETBF_TX_EBF_CNT, val);
++	memcpy(data, *mt7921_gstrings_stats, sizeof(mt7921_gstrings_stats));
++}
 +
-+	val = mt76_rr(dev, MT_ETBF_RX_FB_CNT(0));
-+	mib->tx_bf_rx_fb_all_cnt += FIELD_GET(MT_ETBF_RX_FB_ALL, val);
-+	mib->tx_bf_rx_fb_he_cnt += FIELD_GET(MT_ETBF_RX_FB_HE, val);
-+	mib->tx_bf_rx_fb_vht_cnt += FIELD_GET(MT_ETBF_RX_FB_VHT, val);
-+	mib->tx_bf_rx_fb_ht_cnt += FIELD_GET(MT_ETBF_RX_FB_HT, val);
++static int
++mt7921_get_et_sset_count(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++			 int sset)
++{
++	return sset == ETH_SS_STATS ? ARRAY_SIZE(mt7921_gstrings_stats) : 0;
++}
 +
-+	mib->rx_mpdu_cnt += mt76_rr(dev, MT_MIB_SDR5(0));
-+	mib->rx_ampdu_cnt += mt76_rr(dev, MT_MIB_SDR22(0));
-+	mib->rx_ampdu_bytes_cnt += mt76_rr(dev, MT_MIB_SDR23(0));
-+	mib->rx_ba_cnt += mt76_rr(dev, MT_MIB_SDR31(0));
++static
++void mt7921_get_et_stats(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++			 struct ethtool_stats *stats, u64 *data)
++{
++	struct mt7921_phy *phy = mt7921_hw_phy(hw);
++	struct mt7921_dev *dev = phy->dev;
++	struct mib_stats *mib = &phy->mib;
++	int i, ei = 0;
 +
- 	for (i = 0, aggr1 = aggr0 + 4; i < 4; i++) {
--		u32 val, val2;
-+		u32 val2;
- 
- 		val = mt76_rr(dev, MT_TX_AGG_CNT(0, i));
- 		val2 = mt76_rr(dev, MT_TX_AGG_CNT2(0, i));
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index eebf367be296..86c741569a9b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -129,6 +129,24 @@ struct mib_stats {
- 	u32 rts_cnt;
- 	u32 rts_retries_cnt;
- 	u32 ba_miss_cnt;
++	mt7921_mutex_acquire(dev);
 +
-+	u32 tx_bf_ibf_ppdu_cnt;
-+	u32 tx_bf_ebf_ppdu_cnt;
-+	u32 tx_bf_rx_fb_all_cnt;
-+	u32 tx_bf_rx_fb_he_cnt;
-+	u32 tx_bf_rx_fb_vht_cnt;
-+	u32 tx_bf_rx_fb_ht_cnt;
++	mt7921_mac_update_mib_stats(phy);
 +
-+	u32 tx_ampdu_cnt;
-+	u32 tx_mpdu_attempts_cnt;
-+	u32 tx_mpdu_success_cnt;
-+	u32 tx_pkt_ebf_cnt;
-+	u32 tx_pkt_ibf_cnt;
++	data[ei++] = mib->tx_ampdu_cnt;
++	data[ei++] = mib->tx_mpdu_attempts_cnt;
++	data[ei++] = mib->tx_mpdu_success_cnt;
++	data[ei++] = mib->tx_pkt_ebf_cnt;
++	data[ei++] = mib->tx_pkt_ibf_cnt;
 +
-+	u32 rx_mpdu_cnt;
-+	u32 rx_ampdu_cnt;
-+	u32 rx_ampdu_bytes_cnt;
-+	u32 rx_ba_cnt;
- };
- 
- struct mt7921_phy {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-index cb6069024320..cbd38122c510 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
-@@ -92,6 +92,20 @@
- #define MT_LPON_TCR_SW_MODE		GENMASK(1, 0)
- #define MT_LPON_TCR_SW_WRITE		BIT(0)
- 
-+/* ETBF: band 0(0x24000), band 1(0xa4000) */
-+#define MT_WF_ETBF_BASE(_band)		((_band) ? 0x820fa000 : 0x820ea000)
-+#define MT_WF_ETBF(_band, ofs)		(MT_WF_ETBF_BASE(_band) + (ofs))
++	/* Tx ampdu stat */
++	for (i = 0; i < 15; i++)
++		data[ei++] = dev->mt76.aggr_stats[i];
 +
-+#define MT_ETBF_TX_APP_CNT(_band)	MT_WF_ETBF(_band, 0x150)
-+#define MT_ETBF_TX_IBF_CNT		GENMASK(31, 16)
-+#define MT_ETBF_TX_EBF_CNT		GENMASK(15, 0)
++	data[ei++] = phy->mib.ba_miss_cnt;
 +
-+#define MT_ETBF_RX_FB_CNT(_band)	MT_WF_ETBF(_band, 0x158)
-+#define MT_ETBF_RX_FB_ALL		GENMASK(31, 24)
-+#define MT_ETBF_RX_FB_HE		GENMASK(23, 16)
-+#define MT_ETBF_RX_FB_VHT		GENMASK(15, 8)
-+#define MT_ETBF_RX_FB_HT		GENMASK(7, 0)
++	/* Tx Beamformer monitor */
++	data[ei++] = mib->tx_bf_ibf_ppdu_cnt;
++	data[ei++] = mib->tx_bf_ebf_ppdu_cnt;
 +
- /* MIB: band 0(0x24800), band 1(0xa4800) */
- #define MT_WF_MIB_BASE(_band)		((_band) ? 0x820fd000 : 0x820ed000)
- #define MT_WF_MIB(_band, ofs)		(MT_WF_MIB_BASE(_band) + (ofs))
-@@ -103,12 +117,26 @@
- #define MT_MIB_SDR3(_band)		MT_WF_MIB(_band, 0x698)
- #define MT_MIB_SDR3_FCS_ERR_MASK	GENMASK(31, 16)
- 
-+#define MT_MIB_SDR5(_band)		MT_WF_MIB(_band, 0x780)
++	/* Tx Beamformer Rx feedback monitor */
++	data[ei++] = mib->tx_bf_rx_fb_all_cnt;
++	data[ei++] = mib->tx_bf_rx_fb_he_cnt;
++	data[ei++] = mib->tx_bf_rx_fb_vht_cnt;
++	data[ei++] = mib->tx_bf_rx_fb_ht_cnt;
 +
- #define MT_MIB_SDR9(_band)		MT_WF_MIB(_band, 0x02c)
- #define MT_MIB_SDR9_BUSY_MASK		GENMASK(23, 0)
- 
-+#define MT_MIB_SDR12(_band)		MT_WF_MIB(_band, 0x558)
-+#define MT_MIB_SDR14(_band)		MT_WF_MIB(_band, 0x564)
-+#define MT_MIB_SDR15(_band)		MT_WF_MIB(_band, 0x568)
++	/* Tx amsdu info (pack-count histogram) */
++	for (i = 0; i < 8; i++)
++		data[ei++] = mt76_rr(dev,  MT_PLE_AMSDU_PACK_MSDU_CNT(i));
 +
- #define MT_MIB_SDR16(_band)		MT_WF_MIB(_band, 0x048)
- #define MT_MIB_SDR16_BUSY_MASK		GENMASK(23, 0)
- 
-+#define MT_MIB_SDR22(_band)		MT_WF_MIB(_band, 0x770)
-+#define MT_MIB_SDR23(_band)		MT_WF_MIB(_band, 0x774)
-+#define MT_MIB_SDR31(_band)		MT_WF_MIB(_band, 0x55c)
++	/* rx counters */
++	data[ei++] = mib->rx_mpdu_cnt;
++	data[ei++] = mib->rx_ampdu_cnt;
++	data[ei++] = mib->rx_ampdu_bytes_cnt;
++	data[ei++] = mib->rx_ba_cnt;
 +
-+#define MT_MIB_SDR32(_band)		MT_WF_MIB(_band, 0x7a8)
-+#define MT_MIB_SDR9_IBF_CNT_MASK	GENMASK(31, 16)
-+#define MT_MIB_SDR9_EBF_CNT_MASK	GENMASK(15, 0)
++	mt7921_mutex_release(dev);
 +
- #define MT_MIB_SDR34(_band)		MT_WF_MIB(_band, 0x090)
- #define MT_MIB_MU_BF_TX_CNT		GENMASK(15, 0)
- 
++	if (ei != ARRAY_SIZE(mt7921_gstrings_stats))
++		dev_err(dev->mt76.dev, "ei: %d  SSTATS_LEN: %lu",
++			ei, ARRAY_SIZE(mt7921_gstrings_stats));
++}
++
+ static u64
+ mt7921_get_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ {
+@@ -1230,6 +1343,9 @@ const struct ieee80211_ops mt7921_ops = {
+ 	.release_buffered_frames = mt76_release_buffered_frames,
+ 	.get_txpower = mt76_get_txpower,
+ 	.get_stats = mt7921_get_stats,
++	.get_et_sset_count = mt7921_get_et_sset_count,
++	.get_et_strings = mt7921_get_et_strings,
++	.get_et_stats = mt7921_get_et_stats,
+ 	.get_tsf = mt7921_get_tsf,
+ 	.set_tsf = mt7921_set_tsf,
+ 	.get_survey = mt76_get_survey,
 -- 
 2.31.1
 
