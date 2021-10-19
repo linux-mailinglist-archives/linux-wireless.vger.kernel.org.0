@@ -2,35 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D3F3433348
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 12:13:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16293433349
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 12:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235152AbhJSKPX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S235167AbhJSKPX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 19 Oct 2021 06:15:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58698 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:58720 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235150AbhJSKPU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 06:15:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 11CD761374;
-        Tue, 19 Oct 2021 10:13:06 +0000 (UTC)
+        id S235166AbhJSKPW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 19 Oct 2021 06:15:22 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9B3B16137C;
+        Tue, 19 Oct 2021 10:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634638388;
-        bh=lMYbLm4buof14xRT4477wVXZ/86S0QxT/PfVtKW3bFk=;
+        s=k20201202; t=1634638389;
+        bh=3tXRKb0n/fmzj+r29whG0hZdvaiqCsxyEu2emfzd+1w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OD9wO7hcvxQOMCPUt5ZNxDro/XbIJzOLCctyxLn8QDVvaGIY0Gk+epWjBIqRpUGxz
-         fTlvCStD7U5B4ZxyWFfV0MTW0Tod42+kMKvu8uDV9IQGbkqFCvvJi0s69V0tR1T7iw
-         pHBw5kOYFr4GizH5PpKLFGiLo4qSY6w1QWX9THdFIE90pEa5k3OPJC+F4xm6T3A2eq
-         u6XJQO0D47wpDE8yN7uG+rg+B4up8XsO6oNZTeswXMQrEUptiRMb0t5PKzdRwui22G
-         lyM4iGei8pVb8ZUpPPq2JOuXJPFqqK7W0/kTf/RIvgsEa9n/vFbemobliXjVd1yI7B
-         e9o2K1wfSRKgw==
+        b=EPDJVQZ9BkW1w5lUV+d1ApUXqERcE+FsMm2oz1rNwhD5+n8CHxKXMB90PwIcRD43k
+         dXolnwCppE3H6D8BkYCXm+MnIvu+sBUoz9A9XWe+25SOWDuMHsGurcMyBGCD+Q6CIE
+         U0vi4q6IB8hSJIrXDeRqsOL5B3TK6nBv5zAhcWIMG0vrU0JQBmOzYG3vZ3Xo6qxzbc
+         31+MQsCYEOsKTNvHCYk/uFTV7YzTs3ytH6BhSL0fpCJCyw7KL3YhFdkbHNsZJknKIJ
+         nNPc9pt9CLrPPOta8IHuxkyGy1W2xmIItuZjCGWawOw6/wcK5uHEeTWC9XU9XlDe9g
+         /VimQybuXdSHg==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, greearb@candelatech.com,
         ryder.lee@mediatek.com
-Subject: [PATCH v2 02/10] mt76: move mt76_ethtool_worker_info in mt76 module
-Date:   Tue, 19 Oct 2021 12:12:24 +0200
-Message-Id: <32bbf1f6e927629573ab8fe6ac418f542842945d.1634637742.git.lorenzo@kernel.org>
+Subject: [PATCH v2 03/10] mt76: mt7915: run mt7915_get_et_stats holding mt76 mutex
+Date:   Tue, 19 Oct 2021 12:12:25 +0200
+Message-Id: <44d66f15f3cb34939812fd665fa52cf443a8d73a.1634637742.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1634637742.git.lorenzo@kernel.org>
 References: <cover.1634637742.git.lorenzo@kernel.org>
@@ -40,160 +40,92 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move mt76_ethtool_worker_info in common code in order to be reused in
-mt7921 driver.
+Since it can run in parallel with mac_work, hold mutex lock in
+mt7915_get_et_stats. Moreover update mib counters running
+mt7915_get_et_stats.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mac80211.c | 28 +++++++++++
- drivers/net/wireless/mediatek/mt76/mt76.h     | 10 ++++
- .../net/wireless/mediatek/mt76/mt7915/main.c  | 47 +++----------------
- 3 files changed, 45 insertions(+), 40 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c | 5 +++++
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c     | 3 +--
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c    | 6 ++++++
+ drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h  | 1 +
+ 4 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 766681a4f89e..62807dc311c1 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1508,3 +1508,31 @@ u16 mt76_calculate_default_rate(struct mt76_phy *phy, int rateidx)
- 	return rate->hw_value;
- }
- EXPORT_SYMBOL_GPL(mt76_calculate_default_rate);
-+
-+void mt76_ethtool_worker(struct mt76_ethtool_worker_info *wi,
-+			 struct mt76_sta_stats *stats)
-+{
-+	int i, ei = wi->initial_stat_idx;
-+	u64 *data = wi->data;
-+
-+	wi->sta_count++;
-+
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_CCK];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_OFDM];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HT];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HT_GF];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_VHT];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HE_SU];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HE_EXT_SU];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HE_TB];
-+	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HE_MU];
-+
-+	for (i = 0; i < ARRAY_SIZE(stats->tx_bw); i++)
-+		data[ei++] += stats->tx_bw[i];
-+
-+	for (i = 0; i < 12; i++)
-+		data[ei++] += stats->tx_mcs[i];
-+
-+	wi->worker_stat_count = ei - wi->initial_stat_idx;
-+}
-+EXPORT_SYMBOL_GPL(mt76_ethtool_worker);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index ae6c3a735f49..e2da720a91b6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -786,6 +786,14 @@ struct mt76_sta_stats {
- 	u64 tx_mcs[16];		/* mcs idx */
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 6efa3d7e39be..a265069c4d4d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -201,7 +201,10 @@ mt7915_tx_stats_show(struct seq_file *file, void *data)
+ 	struct mt7915_dev *dev = phy->dev;
+ 	int stat[8], i, n;
  
-+struct mt76_ethtool_worker_info {
-+	u64 *data;
-+	int idx;
-+	int initial_stat_idx;
-+	int worker_stat_count;
-+	int sta_count;
-+};
++	mutex_lock(&dev->mt76.mutex);
 +
- #define CCK_RATE(_idx, _rate) {					\
- 	.bitrate = _rate,					\
- 	.flags = IEEE80211_RATE_SHORT_PREAMBLE,			\
-@@ -1241,6 +1249,8 @@ mt76u_bulk_msg(struct mt76_dev *dev, void *data, int len, int *actual_len,
- 	return usb_bulk_msg(udev, pipe, data, len, actual_len, timeout);
- }
+ 	mt7915_ampdu_stat_read_phy(phy, file);
++	mt7915_mac_update_stats(phy);
+ 	mt7915_txbf_stat_read_phy(phy, file);
  
-+void mt76_ethtool_worker(struct mt76_ethtool_worker_info *wi,
-+			 struct mt76_sta_stats *stats);
- int mt76_skb_adjust_pad(struct sk_buff *skb, int pad);
- int mt76u_vendor_request(struct mt76_dev *dev, u8 req,
- 			 u8 req_type, u16 val, u16 offset,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index bbf74e7452d8..f0fe4ee30e79 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1187,45 +1187,15 @@ int mt7915_get_et_sset_count(struct ieee80211_hw *hw,
+ 	/* Tx amsdu info */
+@@ -220,6 +223,8 @@ mt7915_tx_stats_show(struct seq_file *file, void *data)
+ 			seq_puts(file, "\n");
+ 	}
+ 
++	mutex_unlock(&dev->mt76.mutex);
++
  	return 0;
  }
  
--struct mt7915_ethtool_worker_info {
--	u64 *data;
--	struct mt7915_vif *mvif;
--	int initial_stat_idx;
--	int worker_stat_count;
--	int sta_count;
--};
--
- static void mt7915_ethtool_worker(void *wi_data, struct ieee80211_sta *sta)
- {
--	struct mt7915_ethtool_worker_info *wi = wi_data;
-+	struct mt76_ethtool_worker_info *wi = wi_data;
- 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
--	struct mt76_sta_stats *mstats = &msta->stats;
--	int ei = wi->initial_stat_idx;
--	int q;
--	u64 *data = wi->data;
- 
--	if (msta->vif != wi->mvif)
-+	if (msta->vif->idx != wi->idx)
- 		return;
- 
--	wi->sta_count++;
--
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_CCK];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_OFDM];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HT];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HT_GF];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_VHT];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HE_SU];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HE_EXT_SU];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HE_TB];
--	data[ei++] += mstats->tx_mode[MT_PHY_TYPE_HE_MU];
--
--	for (q = 0; q < ARRAY_SIZE(mstats->tx_bw); q++)
--		data[ei++] += mstats->tx_bw[q];
--
--	for (q = 0; q < 12; q++)
--		data[ei++] += mstats->tx_mcs[q];
--
--	wi->worker_stat_count = ei - wi->initial_stat_idx;
-+	mt76_ethtool_worker(wi, &msta->stats);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index edf62e0a7ff0..1fb0420276a1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1918,8 +1918,7 @@ void mt7915_mac_reset_work(struct work_struct *work)
+ 					     MT7915_WATCHDOG_TIME);
  }
  
- static
-@@ -1236,9 +1206,11 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
- 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
- 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
--	struct mt7915_ethtool_worker_info wi;
-+	struct mt76_ethtool_worker_info wi = {
-+		.data = data,
-+		.idx = mvif->idx,
-+	};
+-static void
+-mt7915_mac_update_stats(struct mt7915_phy *phy)
++void mt7915_mac_update_stats(struct mt7915_phy *phy)
+ {
+ 	struct mt7915_dev *dev = phy->dev;
  	struct mib_stats *mib = &phy->mib;
--
- 	/* See mt7915_ampdu_stat_read_phy, etc */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index f0fe4ee30e79..1159059f705a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1215,6 +1215,10 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
  	bool ext_phy = phy != &dev->phy;
  	int i, n, ei = 0;
-@@ -1303,12 +1275,7 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
- 	data[ei++] = mib->rx_ba_cnt;
  
- 	/* Add values for all stations owned by this vif */
--	wi.data = data;
--	wi.mvif = mvif;
++	mutex_lock(&dev->mt76.mutex);
++
++	mt7915_mac_update_stats(phy);
++
+ 	data[ei++] = mib->tx_ampdu_cnt;
+ 	data[ei++] = mib->tx_stop_q_empty_cnt;
+ 	data[ei++] = mib->tx_mpdu_attempts_cnt;
+@@ -1278,6 +1282,8 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
  	wi.initial_stat_idx = ei;
--	wi.worker_stat_count = 0;
--	wi.sta_count = 0;
--
  	ieee80211_iterate_stations_atomic(hw, mt7915_ethtool_worker, &wi);
  
++	mutex_unlock(&dev->mt76.mutex);
++
  	if (wi.sta_count == 0)
+ 		return;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 2acede0d5bf2..0a2dd2f18fe5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -481,6 +481,7 @@ void mt7915_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ void mt7915_mac_work(struct work_struct *work);
+ void mt7915_mac_reset_work(struct work_struct *work);
+ void mt7915_mac_sta_rc_work(struct work_struct *work);
++void mt7915_mac_update_stats(struct mt7915_phy *phy);
+ int mt7915_mmio_init(struct mt76_dev *mdev, void __iomem *mem_base, int irq);
+ void mt7915_mac_twt_teardown_flow(struct mt7915_dev *dev,
+ 				  struct mt7915_sta *msta,
 -- 
 2.31.1
 
