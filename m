@@ -2,113 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F7C1432F3B
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 09:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6092443303E
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 09:55:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234464AbhJSHWK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 03:22:10 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:37443 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234320AbhJSHWJ (ORCPT
+        id S234594AbhJSH5R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 03:57:17 -0400
+Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:40583 "EHLO
+        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230365AbhJSH5Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 03:22:09 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634627997; h=Content-Type: MIME-Version: Message-ID: Date:
- References: In-Reply-To: Subject: Cc: To: From: Sender;
- bh=uMYO89HCqmvjMOPfezlrMm2RtJkAxmAYfrETwCAbYcI=; b=RLVpvwREQAqv7hkDQUFkKEWMaV9Ts5369s0zRAP9hNOlBHimSRvi5EJJ3+kIUekwA4bjkdRR
- +veHMmywD6WJqHdKhOfaiv1/s2Tl7GCGCTPW+pYVyGWECUh357DaXDBU8OIoxVPr471F9W4u
- +BZguAOzziQl3RccLe1n/D7f3G4=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 616e71933416c2cb7067ece6 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 19 Oct 2021 07:19:47
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A57ADC43617; Tue, 19 Oct 2021 07:19:46 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 302F4C4338F;
-        Tue, 19 Oct 2021 07:19:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 302F4C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Nick Hainke <vincent@systemli.org>, lorenzo.bianconi83@gmail.com,
-        ryder.lee@mediatek.com, davem@davemloft.net, kuba@kernel.org,
-        matthias.bgg@gmail.com, sean.wang@mediatek.com,
-        shayne.chen@mediatek.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Robert Foss <robert.foss@linaro.org>
-Subject: Re: [RFC v2] mt76: mt7615: mt7622: fix ibss and meshpoint
-In-Reply-To: <569d434d-cf5b-6ab0-5931-41b21ab047b7@nbd.name> (Felix Fietkau's
-        message of "Mon, 18 Oct 2021 12:16:00 +0200")
-References: <20211007225725.2615-1-vincent@systemli.org>
-        <87czoe61kh.fsf@codeaurora.org>
-        <569d434d-cf5b-6ab0-5931-41b21ab047b7@nbd.name>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Tue, 19 Oct 2021 10:19:35 +0300
-Message-ID: <87bl3lqy60.fsf@codeaurora.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+        Tue, 19 Oct 2021 03:57:16 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R441e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0UstTzXf_1634630100;
+Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0UstTzXf_1634630100)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 19 Oct 2021 15:55:01 +0800
+From:   Yang Li <yang.lee@linux.alibaba.com>
+To:     davem@davemloft.net
+Cc:     kuba@kernel.org, pkshih@realtek.com, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>
+Subject: [PATCH -next] rtw89: remove unneeded semicolon
+Date:   Tue, 19 Oct 2021 15:54:54 +0800
+Message-Id: <1634630094-1156-1-git-send-email-yang.lee@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Eliminate the following coccicheck warning:
+./drivers/net/wireless/realtek/rtw89/pci.c:1348:2-3: Unneeded semicolon
 
-> On 2021-10-09 10:32, Kalle Valo wrote:
->> Nick Hainke <vincent@systemli.org> writes:
->>
->>> Fixes: d8d59f66d136 ("mt76: mt7615: support 16 interfaces").
->>
->> The fixes tag should be in the end, before Signed-off-by tags. But I can
->> fix that during commit.
->>
->>> commit 7f4b7920318b ("mt76: mt7615: add ibss support") introduced IBSS
->>> and commit f4ec7fdf7f83 ("mt76: mt7615: enable support for mesh")
->>> meshpoint support.
->>>
->>> Both used in the "get_omac_idx"-function:
->>>
->>> 	if (~mask & BIT(HW_BSSID_0))
->>> 		return HW_BSSID_0;
->>>
->>> With commit d8d59f66d136 ("mt76: mt7615: support 16 interfaces") the
->>> ibss and meshpoint mode should "prefer hw bssid slot 1-3". However,
->>> with that change the ibss or meshpoint mode will not send any beacon on
->>> the mt7622 wifi anymore. Devices were still able to exchange data but
->>> only if a bssid already existed. Two mt7622 devices will never be able
->>> to communicate.
->>>
->>> This commits reverts the preferation of slot 1-3 for ibss and
->>> meshpoint. Only NL80211_IFTYPE_STATION will still prefer slot 1-3.
->>>
->>> Tested on Banana Pi R64.
->>>
->>> Signed-off-by: Nick Hainke <vincent@systemli.org>
->>
->> Felix, can I take this to wireless-drivers? Ack?
->
-> Acked-by: Felix Fietkau <nbd@nbd.name>
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+---
+ drivers/net/wireless/realtek/rtw89/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks. We are in -rc6 now and I'm not planning to send any more fixes
-to v5.15 (unless very critical), so I'll take this to
-wireless-drivers-next instead.
-
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index e973101..2c94762 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -1345,7 +1345,7 @@ static int rtw89_pci_check_mdio(struct rtw89_dev *rtwdev, u8 addr, u8 speed, u16
+ 	default:
+ 		rtw89_err(rtwdev, "[ERR]Error Speed %d!\n", speed);
+ 		return -EINVAL;
+-	};
++	}
+ 	rtw89_write16(rtwdev, R_AX_MDIO_CFG, val);
+ 	rtw89_write16_set(rtwdev, R_AX_MDIO_CFG, rw_bit);
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+1.8.3.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
