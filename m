@@ -2,85 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25579432DFA
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 08:16:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F727432E22
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 08:24:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234125AbhJSGS3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 02:18:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48854 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233786AbhJSGS2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 02:18:28 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id ACB4E6115B;
-        Tue, 19 Oct 2021 06:16:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1634624176;
-        bh=FeG/qotMCAtt11mlzDTQUemMTc8grksOYH2YcYkz2NA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lg0afarjb/JXs+cYDe2ZtQnrFJR3J8h/C9seWBF8QOrfPEm6YSKILrheQecQ13sp/
-         XtQ4Ld/FMCpATfvZLaqjxSeTlpDtgQ8S3F31aewNRcQsifzyG9A+PBe5rqNWMcDdqS
-         kp4IF8+D53rd5pQi/7eTWLdwt6Z90NX9npx8yWn8=
-Date:   Tue, 19 Oct 2021 08:16:14 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Luis Chamberlain <mcgrof@kernel.org>
-Cc:     bp@suse.de, akpm@linux-foundation.org, josh@joshtriplett.org,
-        rishabhb@codeaurora.org, kubakici@wp.pl, maco@android.com,
-        david.brown@linaro.org, bjorn.andersson@linaro.org,
-        linux-wireless@vger.kernel.org, keescook@chromium.org,
-        shuah@kernel.org, mfuzzey@parkeon.com, zohar@linux.vnet.ibm.com,
-        dhowells@redhat.com, pali.rohar@gmail.com, tiwai@suse.de,
-        arend.vanspriel@broadcom.com, zajec5@gmail.com, nbroeking@me.com,
-        broonie@kernel.org, dmitry.torokhov@gmail.com, dwmw2@infradead.org,
-        torvalds@linux-foundation.org, Abhay_Salunke@dell.com,
-        jewalt@lgsinnovations.com, cantabile.desu@gmail.com, ast@fb.com,
-        andresx7@gmail.com, dan.rue@linaro.org, brendanhiggins@google.com,
-        yzaikin@google.com, sfr@canb.auug.org.au, rdunlap@infradead.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 04/14] firmware_loader: add built-in firmware kconfig
- entry
-Message-ID: <YW5irpRIIr0H/tXh@kroah.com>
-References: <20210917182226.3532898-1-mcgrof@kernel.org>
- <20210917182226.3532898-5-mcgrof@kernel.org>
- <YVxhbhmNd7tahLV7@kroah.com>
- <YWR16e/seTx/wxE+@bombadil.infradead.org>
- <YWR4XKrC2Bkr4qKQ@kroah.com>
- <YWS7ABDdBIpdt/84@bombadil.infradead.org>
- <YW3gae4HoUd9izyj@bombadil.infradead.org>
+        id S234165AbhJSG02 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 02:26:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37426 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233786AbhJSG01 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 19 Oct 2021 02:26:27 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 667D4C06161C
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 23:24:15 -0700 (PDT)
+Date:   Tue, 19 Oct 2021 08:24:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1634624652;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=JmonJHMmw4GJweFmaKQYoWKH7A+91AtuAa0M2axQW1Q=;
+        b=r90lG1FLnXPzmAgpW9dQeuAtPFIMsb2nIKdboT28Cpvfjg684ekb7Y/reqBg8ec+3kMeQs
+        Cl9z+X71DE20XkCunlZp0LXsaUl9yfYYw5Q+FFix8LQw9067SKuKf/M+UGhl5+Q2CjTlqF
+        l3sjdUO6ZazFNaHX6tbkbOUQFjCQlgszfHlI8vxOWPrFmxfZNr6sTypuRCLeyEfL4FuFCn
+        kA/XS+ZoRG8utNET4/d6esHiGBR+p/mUxwpUZH6IlZO3pXiEEv0YMFRRjwFitdZTluF7mg
+        hN95VGb1ypYj7U2Y6xII8YyMMAQhqWZv2iWbcab+JnKY0lxhjqx63VN2jZjqJA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1634624652;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=JmonJHMmw4GJweFmaKQYoWKH7A+91AtuAa0M2axQW1Q=;
+        b=kdTmGPp63//GoO47P6UIRWYwbu0WH2zG2U6PhbqVYM+zbgP5TVkSlRsBFv+ZAbp3cira/5
+        LqzcyIIzp4UrVADQ==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org, arnd@arndb.de
+Subject: Re: [PATCH 08/15] wireless: cisco: use eth_hw_addr_set()
+Message-ID: <20211019062410.ivoiqon45j6tbe5z@linutronix.de>
+References: <20211018235021.1279697-1-kuba@kernel.org>
+ <20211018235021.1279697-9-kuba@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YW3gae4HoUd9izyj@bombadil.infradead.org>
+In-Reply-To: <20211018235021.1279697-9-kuba@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Oct 18, 2021 at 02:00:25PM -0700, Luis Chamberlain wrote:
-> On Mon, Oct 11, 2021 at 03:30:24PM -0700, Luis Chamberlain wrote:
-> > On Mon, Oct 11, 2021 at 07:46:04PM +0200, Greg KH wrote:
-> > > >   o By default we now always skip built-in firmware even if a FW_LOADER=y
-> > > 
-> > > I do not understand, why would we ever want to skip built-in firmware?
-> > 
-> > Because it is done this way today only implicitly because
-> > EXTRA_FIRMWARE is empty. Using a kconfig entry makes this
-> > more obvious.
+On 2021-10-18 16:50:14 [-0700], Jakub Kicinski wrote:
+> Commit 406f42fa0d3c ("net-next: When a bond have a massive amount
+> of VLANs...") introduced a rbtree for faster Ethernet address look
+> up. To maintain netdev->dev_addr in this tree we need to make all
+> the writes to it got through appropriate helpers.
 > 
-> Greg,
+> Use dev_addr_set() to match the existing logic.
+> setup_card() is always passed netdev->dev_addr, so pass the netdev
+> pointer instead and assign the address using a helper there.
 > 
-> The fact that it was not obvious to you we were effectively disabling
-> the built-in firmware functionality by default using side kconfig
-> symbols is a good reason to clarify this situation with its own kconfig
-> symbol.
-> 
-> And consider what I started below as well.
-> 
-> Please let me know why on the other hand we should *not* add this new
-> kconfig symbol?
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-Because added complexity for no real good reason?  You need to justify
-why we need yet-another firmware kconfig option here.  We should be
-working to remove them, not add more, if at all possible.
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-thanks,
-
-greg k-h
+Sebastian
