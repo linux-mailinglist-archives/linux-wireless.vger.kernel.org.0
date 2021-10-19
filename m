@@ -2,66 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F727432E22
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 08:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F7C1432F3B
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 09:20:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234165AbhJSG02 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 02:26:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37426 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233786AbhJSG01 (ORCPT
+        id S234464AbhJSHWK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 03:22:10 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:37443 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234320AbhJSHWJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 02:26:27 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 667D4C06161C
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 23:24:15 -0700 (PDT)
-Date:   Tue, 19 Oct 2021 08:24:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1634624652;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=JmonJHMmw4GJweFmaKQYoWKH7A+91AtuAa0M2axQW1Q=;
-        b=r90lG1FLnXPzmAgpW9dQeuAtPFIMsb2nIKdboT28Cpvfjg684ekb7Y/reqBg8ec+3kMeQs
-        Cl9z+X71DE20XkCunlZp0LXsaUl9yfYYw5Q+FFix8LQw9067SKuKf/M+UGhl5+Q2CjTlqF
-        l3sjdUO6ZazFNaHX6tbkbOUQFjCQlgszfHlI8vxOWPrFmxfZNr6sTypuRCLeyEfL4FuFCn
-        kA/XS+ZoRG8utNET4/d6esHiGBR+p/mUxwpUZH6IlZO3pXiEEv0YMFRRjwFitdZTluF7mg
-        hN95VGb1ypYj7U2Y6xII8YyMMAQhqWZv2iWbcab+JnKY0lxhjqx63VN2jZjqJA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1634624652;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=JmonJHMmw4GJweFmaKQYoWKH7A+91AtuAa0M2axQW1Q=;
-        b=kdTmGPp63//GoO47P6UIRWYwbu0WH2zG2U6PhbqVYM+zbgP5TVkSlRsBFv+ZAbp3cira/5
-        LqzcyIIzp4UrVADQ==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org, arnd@arndb.de
-Subject: Re: [PATCH 08/15] wireless: cisco: use eth_hw_addr_set()
-Message-ID: <20211019062410.ivoiqon45j6tbe5z@linutronix.de>
-References: <20211018235021.1279697-1-kuba@kernel.org>
- <20211018235021.1279697-9-kuba@kernel.org>
+        Tue, 19 Oct 2021 03:22:09 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1634627997; h=Content-Type: MIME-Version: Message-ID: Date:
+ References: In-Reply-To: Subject: Cc: To: From: Sender;
+ bh=uMYO89HCqmvjMOPfezlrMm2RtJkAxmAYfrETwCAbYcI=; b=RLVpvwREQAqv7hkDQUFkKEWMaV9Ts5369s0zRAP9hNOlBHimSRvi5EJJ3+kIUekwA4bjkdRR
+ +veHMmywD6WJqHdKhOfaiv1/s2Tl7GCGCTPW+pYVyGWECUh357DaXDBU8OIoxVPr471F9W4u
+ +BZguAOzziQl3RccLe1n/D7f3G4=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 616e71933416c2cb7067ece6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 19 Oct 2021 07:19:47
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A57ADC43617; Tue, 19 Oct 2021 07:19:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 302F4C4338F;
+        Tue, 19 Oct 2021 07:19:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 302F4C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Nick Hainke <vincent@systemli.org>, lorenzo.bianconi83@gmail.com,
+        ryder.lee@mediatek.com, davem@davemloft.net, kuba@kernel.org,
+        matthias.bgg@gmail.com, sean.wang@mediatek.com,
+        shayne.chen@mediatek.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Robert Foss <robert.foss@linaro.org>
+Subject: Re: [RFC v2] mt76: mt7615: mt7622: fix ibss and meshpoint
+In-Reply-To: <569d434d-cf5b-6ab0-5931-41b21ab047b7@nbd.name> (Felix Fietkau's
+        message of "Mon, 18 Oct 2021 12:16:00 +0200")
+References: <20211007225725.2615-1-vincent@systemli.org>
+        <87czoe61kh.fsf@codeaurora.org>
+        <569d434d-cf5b-6ab0-5931-41b21ab047b7@nbd.name>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Tue, 19 Oct 2021 10:19:35 +0300
+Message-ID: <87bl3lqy60.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20211018235021.1279697-9-kuba@kernel.org>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-10-18 16:50:14 [-0700], Jakub Kicinski wrote:
-> Commit 406f42fa0d3c ("net-next: When a bond have a massive amount
-> of VLANs...") introduced a rbtree for faster Ethernet address look
-> up. To maintain netdev->dev_addr in this tree we need to make all
-> the writes to it got through appropriate helpers.
-> 
-> Use dev_addr_set() to match the existing logic.
-> setup_card() is always passed netdev->dev_addr, so pass the netdev
-> pointer instead and assign the address using a helper there.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Felix Fietkau <nbd@nbd.name> writes:
 
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> On 2021-10-09 10:32, Kalle Valo wrote:
+>> Nick Hainke <vincent@systemli.org> writes:
+>>
+>>> Fixes: d8d59f66d136 ("mt76: mt7615: support 16 interfaces").
+>>
+>> The fixes tag should be in the end, before Signed-off-by tags. But I can
+>> fix that during commit.
+>>
+>>> commit 7f4b7920318b ("mt76: mt7615: add ibss support") introduced IBSS
+>>> and commit f4ec7fdf7f83 ("mt76: mt7615: enable support for mesh")
+>>> meshpoint support.
+>>>
+>>> Both used in the "get_omac_idx"-function:
+>>>
+>>> 	if (~mask & BIT(HW_BSSID_0))
+>>> 		return HW_BSSID_0;
+>>>
+>>> With commit d8d59f66d136 ("mt76: mt7615: support 16 interfaces") the
+>>> ibss and meshpoint mode should "prefer hw bssid slot 1-3". However,
+>>> with that change the ibss or meshpoint mode will not send any beacon on
+>>> the mt7622 wifi anymore. Devices were still able to exchange data but
+>>> only if a bssid already existed. Two mt7622 devices will never be able
+>>> to communicate.
+>>>
+>>> This commits reverts the preferation of slot 1-3 for ibss and
+>>> meshpoint. Only NL80211_IFTYPE_STATION will still prefer slot 1-3.
+>>>
+>>> Tested on Banana Pi R64.
+>>>
+>>> Signed-off-by: Nick Hainke <vincent@systemli.org>
+>>
+>> Felix, can I take this to wireless-drivers? Ack?
+>
+> Acked-by: Felix Fietkau <nbd@nbd.name>
 
-Sebastian
+Thanks. We are in -rc6 now and I'm not planning to send any more fixes
+to v5.15 (unless very critical), so I'll take this to
+wireless-drivers-next instead.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
