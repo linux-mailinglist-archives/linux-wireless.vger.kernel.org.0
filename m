@@ -2,89 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E24F432B31
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 02:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62BF7432B3E
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 02:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229960AbhJSA2x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Oct 2021 20:28:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43396 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbhJSA2x (ORCPT
+        id S230187AbhJSApx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Oct 2021 20:45:53 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:52172 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229677AbhJSApx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Oct 2021 20:28:53 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39AFEC06161C
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 17:26:41 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id r10so44349149wra.12
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Oct 2021 17:26:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language
-         :from:to:cc:references:in-reply-to:content-transfer-encoding;
-        bh=9p8k4W16yh2rAlFMXFXO/asOzC99hZZfp/jxSe+3iQ8=;
-        b=JAJ1V9DMShBRDjCWfaSpHvr+re6vXZfIoll+S5weD8HorrVJiwk/3NzIqwVGcd9udt
-         lTEcxMw0uW74DIi/Iro6ppIvXGPPyDDv6QuXDanhEHPAWk7rD/7pA51e6UbYsp9ZIPOT
-         1fO5ZzMQqjmlRZg/kdaLR8GjJQ5CWMz1fTV65AbnyRpZjAn3nxYWgueMmN1ptZvbv/Re
-         96N3s2SgGQ8UuVVur8WQ/hYcU5J5vXf8C0y6uz91UQJLSt8C753Hp6qSNYC88Ii2l32G
-         K9GuWBkGdhxxoVv9bxQvzh7CUzrxgeWVJNNF6XvdL/AimSm71DjZtrwt0GPWI4e5dgf8
-         dJxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:from:to:cc:references:in-reply-to
-         :content-transfer-encoding;
-        bh=9p8k4W16yh2rAlFMXFXO/asOzC99hZZfp/jxSe+3iQ8=;
-        b=YYeBMugyBffLcTz2IQVm/IgvCgWeOEQJE5/+IY/2nt8thvnN9JQU65+H6oPKdLUSgN
-         7C3kXgyrMBaSLuPNtU4HNEceLho26PkdkIdyh3ENeORf6Jv7cb9BHwlEtwZsps4QAPwt
-         p+jxtY+XgMrXrFkkAHyw+hrQPyn4gTWZIL6EcdzBmq1tNxigU3dnuTa49bRH7cYmG92w
-         +VK46PbakOGJ+ympsZRVlywDTWiaEm2rXZzeJ4AZxmKFdJKbEpbL5YO9x0ErdajKeTC8
-         yuMZ47dE3R6b2kV+KJcz1GQzdC2hhxEHn5LEKW2NOvmPisAptlkde/PcG+6/9fZ4V0F5
-         +K6w==
-X-Gm-Message-State: AOAM531+0RTxTH7z+loHmdvrkjScvydnQ7uQkEmDG0xqMBR1JNnK3rM3
-        zmeLXIM+X/lZAt78a80ca60a/w==
-X-Google-Smtp-Source: ABdhPJyljTcUObqFlaEmWM9yICbkss0kziqVClkI9ELFQ5FHeSJfG6/wnG9Ns6ThnwrNLOSkeyAwig==
-X-Received: by 2002:adf:a1d7:: with SMTP id v23mr39507452wrv.171.1634603199874;
-        Mon, 18 Oct 2021 17:26:39 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id c18sm2751818wrr.60.2021.10.18.17.26.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Oct 2021 17:26:39 -0700 (PDT)
-Message-ID: <5a325d84-0d02-237b-a0a3-9eddd2e481de@linaro.org>
-Date:   Tue, 19 Oct 2021 01:28:39 +0100
+        Mon, 18 Oct 2021 20:45:53 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19J0hb923006053, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19J0hb923006053
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 19 Oct 2021 08:43:37 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Tue, 19 Oct 2021 08:43:36 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Mon, 18 Oct 2021 17:43:36 -0700
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Tue, 19 Oct 2021 08:43:36 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Josh Boyer <jwboyer@kernel.org>
+CC:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: pull request: rtw89: 8852a: update fw to v0.13.30.0
+Thread-Topic: pull request: rtw89: 8852a: update fw to v0.13.30.0
+Thread-Index: AdfAFs+Noya6ABOFSO2DBhPxcrac4QDx6n8AACjdoiA=
+Date:   Tue, 19 Oct 2021 00:43:36 +0000
+Message-ID: <2b6bb42ae75f4a6dae59e0773f21367a@realtek.com>
+References: <b3dc77916dc7486eb312e1e44119116b@realtek.com>
+ <CA+5PVA5qbQEr5d-dKa77vQWmztyRc_JrBi2WTCNcuL4BCQ=z7Q@mail.gmail.com>
+In-Reply-To: <CA+5PVA5qbQEr5d-dKa77vQWmztyRc_JrBi2WTCNcuL4BCQ=z7Q@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzE4IOS4i+WNiCAwODoyNjowMA==?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.1
-Subject: Re: [PATCH 1/2] wcn36xx: Correct band/freq reporting on RX
-Content-Language: en-US
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     Loic Poulain <loic.poulain@linaro.org>, kvalo@codeaurora.org
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <1634554678-7993-1-git-send-email-loic.poulain@linaro.org>
- <d2128789-646f-1e02-0dd2-a9ac14b37cf7@linaro.org>
-In-Reply-To: <d2128789-646f-1e02-0dd2-a9ac14b37cf7@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/19/2021 00:24:25
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166808 [Oct 18 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: github.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/19/2021 00:27:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 18/10/2021 23:51, Bryan O'Donoghue wrote:
-> On 18/10/2021 11:57, Loic Poulain wrote:
->>           ieee80211_is_probe_resp(hdr->frame_control))
->>           status.boottime_ns = ktime_get_boottime_ns();
-> 
-> I think this is dangling in your tree, doesn't apply cleanly for me anyway
-> 
-> Other than that
-> 
-> Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-
-Hmm.
-
-I'm told by a colleague with access to a router that has channel 144 - I 
-do not BTW - that 144 is not showing up with the firmware offload scan.
-
-We should probably hold off on applying for the time being :(
-
----
-bod
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEpvc2ggQm95ZXIgPGp3Ym95
+ZXJAa2VybmVsLm9yZz4NCj4gU2VudDogTW9uZGF5LCBPY3RvYmVyIDE4LCAyMDIxIDk6MTEgUE0N
+Cj4gVG86IFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiBDYzogbGludXgtZmlybXdhcmVA
+a2VybmVsLm9yZzsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJl
+OiBwdWxsIHJlcXVlc3Q6IHJ0dzg5OiA4ODUyYTogdXBkYXRlIGZ3IHRvIHYwLjEzLjMwLjANCj4g
+DQo+IE9uIFdlZCwgT2N0IDEzLCAyMDIxIGF0IDU6NDYgQU0gUGtzaGloIDxwa3NoaWhAcmVhbHRl
+ay5jb20+IHdyb3RlOg0KPiA+DQo+ID4gSGksDQo+ID4NCj4gPiBVcGRhdGUgZmlybXdhcmUgb2Yg
+cnR3ODkgZHJpdmVyIHRoYXQgZ2V0IG1lcmdlZC4NCj4gPg0KPiA+IFBpbmctS2UNCj4gPg0KPiA+
+IC0tDQo+ID4NCj4gPiBUaGUgZm9sbG93aW5nIGNoYW5nZXMgc2luY2UgY29tbWl0IGVjMTdiNjM3
+YjdhYjkyOGNhN2ViYzAzODllMGUzOTIxZjFjYzdkMTc6DQo+ID4NCj4gPiAgIHJ0dzg5OiA4ODUy
+YTogdXBkYXRlIGZ3IHRvIHYwLjEzLjMwLjAgKDIwMjEtMTAtMTMgMTc6NDA6NDYgKzA4MDApDQo+
+ID4NCj4gPiBhcmUgYXZhaWxhYmxlIGluIHRoZSBHaXQgcmVwb3NpdG9yeSBhdDoNCj4gPg0KPiA+
+ICAgaHR0cHM6Ly9naXRodWIuY29tL3Brc2hpaC9saW51eC1maXJtd2FyZS5naXQNCj4gPg0KPiA+
+IGZvciB5b3UgdG8gZmV0Y2ggY2hhbmdlcyB1cCB0byBlYzE3YjYzN2I3YWI5MjhjYTdlYmMwMzg5
+ZTBlMzkyMWYxY2M3ZDE3Og0KPiA+DQo+ID4gICBydHc4OTogODg1MmE6IHVwZGF0ZSBmdyB0byB2
+MC4xMy4zMC4wICgyMDIxLTEwLTEzIDE3OjQwOjQ2ICswODAwKQ0KPiANCj4gSXMgdGhpcyBmcm9t
+IHRoZSA4ODUyQUUtMC4xMy4zMC4wIGJyYW5jaD8gIFRoZSBnaXRodWIgcmVwbyBkZWZhdWx0cyB0
+bw0KPiA4ODUyQUUtdjYgd2hpY2ggZG9lcyBub3QgaGF2ZSB0aGlzIGNvbW1pdC4NCj4gDQoNClll
+cy4gVG8gYXZvaWQgY29uZnVzaW5nLCBJIHB1c2ggdGhpcyB0byBtYXN0ZXIgYnJhbmNoIGFuZCB1
+c2UgaXQgYXMgZGVmYXVsdC4NCg0KVGhhbmsgeW91DQotLQ0KUGluZy1LZQ0KDQo=
