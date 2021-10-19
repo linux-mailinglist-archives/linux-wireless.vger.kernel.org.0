@@ -2,119 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BEC0433588
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 14:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5593C433634
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 14:43:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235551AbhJSMO2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 08:14:28 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:30905 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230097AbhJSMO1 (ORCPT
+        id S235703AbhJSMpg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 08:45:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40316 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235661AbhJSMpf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 08:14:27 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634645535; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=oD8yCzrvHNN1ogSZeyYP+BbjUrlIhp1HkijKnjLBoV8=; b=CfAJeqakSepg6LzSL1Kn/Ncq6mKwCWxt2QJ4tqgPCmcgPEOWwINpDmjF30rEShw2gOP8SN/S
- YN3sqYxqzADy1SJ5A/hqMNRUqGz8mbwP3TvMz4HKR4aguCEhDMsrvpzd1t3S8EqxjgYxOsHN
- DlslMMbobjNbbmLjud/dySfNqnM=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 616eb61759612e01006269e3 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 19 Oct 2021 12:12:07
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1C49DC43616; Tue, 19 Oct 2021 12:12:07 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D1656C43460;
-        Tue, 19 Oct 2021 12:12:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org D1656C43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Loic Poulain <loic.poulain@linaro.org>
-Cc:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        regressions@lists.linux.dev, mhi <mhi@lists.linux.dev>
-Subject: Re: [regression] mhi: ath11k resume fails on some devices
-References: <871r5p0x2u.fsf@codeaurora.org>
-        <CAMZdPi8UJLvBFQd8-nf-iHAQh8cEuihq97PUFfZ7Q=rxRQoPsg@mail.gmail.com>
-        <877df6tlnq.fsf@codeaurora.org>
-        <CAMZdPi8P7YZPhPir+WfS3cY_a7He1m2Pq2uqBhczPdEeoNRb0Q@mail.gmail.com>
-        <87a6jl9ndo.fsf@codeaurora.org>
-Date:   Tue, 19 Oct 2021 15:12:01 +0300
-In-Reply-To: <87a6jl9ndo.fsf@codeaurora.org> (Kalle Valo's message of "Thu, 07
-        Oct 2021 12:48:19 +0300")
-Message-ID: <87ee8hgqni.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 19 Oct 2021 08:45:35 -0400
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65195C061749
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Oct 2021 05:43:22 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:b4c3:ba80:54db:46f])
+        by michel.telenet-ops.be with bizsmtp
+        id 7ojF2600T12AN0U06ojFz9; Tue, 19 Oct 2021 14:43:20 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mcoSZ-0069O3-4O; Tue, 19 Oct 2021 14:43:15 +0200
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mcoSY-00EESZ-FR; Tue, 19 Oct 2021 14:43:14 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Rob Herring <robh+dt@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        David Lechner <david@lechnology.com>,
+        Sebastian Reichel <sre@kernel.org>
+Cc:     devicetree@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 0/3] dt-bindings: net: TI wlcore json schema conversion and fix
+Date:   Tue, 19 Oct 2021 14:43:10 +0200
+Message-Id: <cover.1634646975.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+	Hi all,
 
-> (adding the new mhi list, yay)
->
-> Hi Loic,
->
-> Loic Poulain <loic.poulain@linaro.org> writes:
->
->>> Loic Poulain <loic.poulain@linaro.org> writes:
->>>
->>> > On Thu, 16 Sept 2021 at 10:00, Kalle Valo <kvalo@codeaurora.org> wrote:
->>>
->>> >> At the moment I'm running my tests with commit 020d3b26c07a reverted and
->>> >> everything works without problems. Is there a simple way to fix this? Or
->>> >> maybe we should just revert the commit? Commit log and kernel logs from
->>> >> a failing case below.
->>> >
->>> > Do you have log of success case?
->>>
->>> A log from a successful case in the end of email, using v5.15-rc1 plus
->>> revert of commit 020d3b26c07abe27.
->>>
->>> > To me, the device loses power, that is why MHI resuming is failing.
->>> > Normally the device should be properly recovered/reinitialized. Before
->>> > that patch the power loss was simply not detected (or handled at
->>> > higher stack level).
->>>
->>> Currently in ath11k we always keep the firmware running when in suspend,
->>> this is a workaround due to problems between mac80211 and MHI stack.
->>> IIRC the problem was something related MHI creating struct device during
->>> resume or something like that.
->>
->> Could you give a try with the attached patch? It should solve your
->> issue without breaking modem support.
->
-> Sorry for taking so long, but I now tested your patch on top of
-> v5.15-rc3 and, as expected, everything works as before with QCA6390 on
-> NUC x86 testbox.
->
-> Tested-by: Kalle Valo <kvalo@codeaurora.org>
+This patch series converts the Device Tree bindings for the Texas
+Instruments Wilink Wireless LAN and Bluetooth Controllers to
+json-schema, after fixing an issue in a Device Tree source file.
 
-I doubt we will find enough time to fully debug this mhi issue anytime
-soon. Can we commit Loic's patch so that this regression is resolved?
+Thanks for your comments!
 
-At the moment I'm doing all my regression testing with commit
-020d3b26c07abe27 reverted. That's a risk, I would prefer to do my
-testing without any hacks.
+Geert Uytterhoeven (3):
+  ARM: dts: motorola-mapphone: Drop second ti,wlcore compatible value
+  dt-bindings: net: wireless: ti,wlcore: Convert to json-schema
+  dt-bindings: net: ti,bluetooth: Convert to json-schema
+
+ .../devicetree/bindings/net/ti,bluetooth.yaml |  91 ++++++++++++
+ .../devicetree/bindings/net/ti-bluetooth.txt  |  60 --------
+ .../bindings/net/wireless/ti,wlcore,spi.txt   |  57 --------
+ .../bindings/net/wireless/ti,wlcore.txt       |  45 ------
+ .../bindings/net/wireless/ti,wlcore.yaml      | 134 ++++++++++++++++++
+ .../boot/dts/motorola-mapphone-common.dtsi    |   2 +-
+ arch/arm/boot/dts/omap3-gta04a5.dts           |   2 +-
+ 7 files changed, 227 insertions(+), 164 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/ti,bluetooth.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/ti-bluetooth.txt
+ delete mode 100644 Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
+ delete mode 100644 Documentation/devicetree/bindings/net/wireless/ti,wlcore.txt
+ create mode 100644 Documentation/devicetree/bindings/net/wireless/ti,wlcore.yaml
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
