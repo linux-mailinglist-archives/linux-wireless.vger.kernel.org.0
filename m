@@ -2,129 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D571432C82
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 06:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D23B0432D1C
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 07:21:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbhJSEGo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 00:06:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34672 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbhJSEGo (ORCPT
+        id S229742AbhJSFXz convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 01:23:55 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:49280 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229521AbhJSFXz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 00:06:44 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFFCCC06161C;
-        Mon, 18 Oct 2021 21:04:31 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id g5so12763311plg.1;
-        Mon, 18 Oct 2021 21:04:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=XS9ORBnn63Yq23RPWchbYr9vGt7B+kOMzPbvQkkhvmI=;
-        b=YHpTANS6vg3RZHwxyNQJKlRiNMTYfknVJtTWbzShiuTUzxKkjIBVnAII9GXWPB0FaK
-         /1ydbRfRZM8CUJ8ItWYZmhNm0s1tHhBHLfhoXae1J8wYXWSvKrTGSVwOxrqTcbmunMqs
-         88dAkE9k2WhgApLinjJ5VDGepRfuJO8luBTb6wSNa6QBjR4CFUfWdrVUbnLAw97IEtpF
-         dsIuZEytcjrH3C1HCnBQVaQeNUI3mJk0ZZMU190a0pGATeFHZtyTgOD7KljC3c2WlSz9
-         rG6k5RKUbtPIEao6UuzZoBjPUgsr7CuKjPGf14RB8PmrrvcKrVW46UBKFsmyHI9yU8qu
-         kMeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=XS9ORBnn63Yq23RPWchbYr9vGt7B+kOMzPbvQkkhvmI=;
-        b=peUYzXAXK4qLAOPfcJ7IpOC44YS+WM5uZ8WFh21B3k1eygJRV6NemxQQmjdRigM5Xb
-         SZdasfhjDoNHG52jkGOWZhVMCoZPVfL5CCh1fYAJBQNBEKAc2QahQEsEgpaB3BpywJQy
-         CzJZscjq4LnVGM+1GbiXTjCuNRDbRmVFKIrBXi32YDP08/Uaq65+s3ZL12yHBLYfp1QA
-         qNNZpGTX+KPvYgtr7D15VpISyNE2D7dz+HavYHy/Pk0cS5mWIMP7kvSGsQ5rK2i6nSYK
-         0I06umsPhnYE0nLkyBga51FgH/RjXttK+rcn7AoPg/1zeFDuoI1G/SKzBdwEXhx+LAGd
-         A/zA==
-X-Gm-Message-State: AOAM530T9RpKzvq12hvV0/KMtKIxD7qHD3VCdN3kpNJ5Runvv3QKAobW
-        lS28Di/GUMdZCvh4mUNZIWQ=
-X-Google-Smtp-Source: ABdhPJztjp9yXJgaitrms0AEdFpypTs/AYnq8cRwyyVF7qx8MiAQOBp9BL4Q34Y8q0CD3H9wBvm1dw==
-X-Received: by 2002:a17:90a:4b47:: with SMTP id o7mr3727468pjl.198.1634616271256;
-        Mon, 18 Oct 2021 21:04:31 -0700 (PDT)
-Received: from [192.168.86.235] (c-73-241-150-58.hsd1.ca.comcast.net. [73.241.150.58])
-        by smtp.gmail.com with ESMTPSA id y1sm14735953pfo.104.2021.10.18.21.04.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Oct 2021 21:04:30 -0700 (PDT)
-Subject: Re: [PATCH] mwifiex: Fix divide error in mwifiex_usb_dnld_fw
-To:     Wan Jiabing <wanjiabing@vivo.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     kael_w@yeah.net,
-        syzbot+4e7b6c94d22f4bfca9a0@syzkaller.appspotmail.com
-References: <20211019033101.27658-1-wanjiabing@vivo.com>
-From:   Eric Dumazet <eric.dumazet@gmail.com>
-Message-ID: <1ae64510-0519-4852-a2a0-5c32490a195c@gmail.com>
-Date:   Mon, 18 Oct 2021 21:04:27 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        Tue, 19 Oct 2021 01:23:55 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19J5LMzqC005662, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19J5LMzqC005662
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 19 Oct 2021 13:21:23 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Tue, 19 Oct 2021 13:21:22 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Mon, 18 Oct 2021 22:21:22 -0700
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Tue, 19 Oct 2021 13:21:21 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "cgel.zte@gmail.com" <cgel.zte@gmail.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
+CC:     "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "lv.ruyi@zte.com.cn" <lv.ruyi@zte.com.cn>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: RE: [PATCH] rtw89: fix error function parameter
+Thread-Topic: [PATCH] rtw89: fix error function parameter
+Thread-Index: AQHXxJzcl/L9Ey4To0qT1Twz/99G66vZyNbw
+Date:   Tue, 19 Oct 2021 05:21:21 +0000
+Message-ID: <90ac6c3911ef4f7385df3dde3d3b6d55@realtek.com>
+References: <20211019035311.974706-1-lv.ruyi@zte.com.cn>
+In-Reply-To: <20211019035311.974706-1-lv.ruyi@zte.com.cn>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/19_=3F=3F_03:04:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-In-Reply-To: <20211019033101.27658-1-wanjiabing@vivo.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/19/2021 04:58:50
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166808 [Oct 18 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/19/2021 05:02:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-
-On 10/18/21 8:31 PM, Wan Jiabing wrote:
-> This patch try to fix bug reported by syzkaller:
-> divide error: 0000 [#1] SMP KASAN
-> CPU: 1 PID: 17 Comm: kworker/1:0 Not tainted 5.15.0-rc5-syzkaller #0
-> Hardware name: Google Compute Engine, BIOS Google 01/01/2011
-> Workqueue: events request_firmware_work_func
-> RIP: 0010:mwifiex_write_data_sync drivers/net/wireless/marvell/mwifiex/usb.c:696 [inline]
-> RIP: 0010:mwifiex_prog_fw_w_helper drivers/net/wireless/marvell/mwifiex/usb.c:1437 [inline]
-> RIP: 0010:mwifiex_usb_dnld_fw+0xabd/0x11a0 drivers/net/wireless/marvell/mwifiex/usb.c:1518
-> Call Trace:
->  _mwifiex_fw_dpc+0x181/0x10a0 drivers/net/wireless/marvell/mwifiex/main.c:542
->  request_firmware_work_func+0x12c/0x230 drivers/base/firmware_loader/main.c:1081
->  process_one_work+0x9bf/0x1620 kernel/workqueue.c:2297
->  worker_thread+0x658/0x11f0 kernel/workqueue.c:2444
->  kthread+0x3c2/0x4a0 kernel/kthread.c:319
->  ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
+> -----Original Message-----
+> From: cgel.zte@gmail.com <cgel.zte@gmail.com>
+> Sent: Tuesday, October 19, 2021 11:53 AM
+> To: kvalo@codeaurora.org
+> Cc: davem@davemloft.net; kuba@kernel.org; Pkshih <pkshih@realtek.com>; lv.ruyi@zte.com.cn;
+> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Zeal
+> Robot <zealci@zte.com.cn>
+> Subject: [PATCH] rtw89: fix error function parameter
 > 
-> Link: https://syzkaller.appspot.com/bug?extid=4e7b6c94d22f4bfca9a0
+> From: Lv Ruyi <lv.ruyi@zte.com.cn>
+> 
+> This patch fixes the following Coccinelle warning:
+> drivers/net/wireless/realtek/rtw89/rtw8852a.c:753:
+> WARNING  possible condition with no effect (if == else)
+> 
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Lv Ruyi <lv.ruyi@zte.com.cn>
 
-Please provide a Fixes: tag
+Thanks for the catch.
 
-> Reported-and-tested-by: syzbot+4e7b6c94d22f4bfca9a0@syzkaller.appspotmail.com
-> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+
 > ---
->  drivers/net/wireless/marvell/mwifiex/usb.c | 2 +-
+>  drivers/net/wireless/realtek/rtw89/rtw8852a.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
-> index 426e39d4ccf0..c24ec27d4057 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/usb.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/usb.c
-> @@ -693,7 +693,7 @@ static int mwifiex_write_data_sync(struct mwifiex_adapter *adapter, u8 *pbuf,
->  	struct usb_card_rec *card = adapter->card;
->  	int actual_length, ret;
->  
-> -	if (!(*len % card->bulk_out_maxpktsize))
-> +	if (card->bulk_out_maxpktsize && !(*len % card->bulk_out_maxpktsize))
+> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+> b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+> index b1b87f0aadbb..5c6ffca3a324 100644
+> --- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+> +++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+> @@ -753,11 +753,11 @@ static void rtw8852a_ctrl_ch(struct rtw89_dev *rtwdev, u8 central_ch,
+>                 if (is_2g)
+>                         rtw89_phy_write32_idx(rtwdev, R_P1_MODE,
+>                                               B_P1_MODE_SEL,
+>                                               1, phy_idx);
+>  		else
+>  			rtw89_phy_write32_idx(rtwdev, R_P1_MODE,
+>  					      B_P1_MODE_SEL,
+> -					      1, phy_idx);
+> +					      0, phy_idx);
+>  		/* SCO compensate FC setting */
+>  		sco_comp = rtw8852a_sco_mapping(central_ch);
+>  		rtw89_phy_write32_idx(rtwdev, R_FC0_BW, B_FC0_BW_INV,
+> --
+> 2.25.1
 
-
-Are you sure this fix is not working around the real bug ?
-
-In which cases bulk_out_maxpktsize would be zero ?
-
-If this is a valid case, this needs to be explained in the changelog.
-
->  		(*len)++;
->  
->  	/* Send the data block */
-> 
