@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4307843353D
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 13:59:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C21143353F
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 13:59:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235471AbhJSMB6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 08:01:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40954 "EHLO mail.kernel.org"
+        id S235487AbhJSMB7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 08:01:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40990 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235389AbhJSMB5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 08:01:57 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AE90C6113B;
-        Tue, 19 Oct 2021 11:59:43 +0000 (UTC)
+        id S230514AbhJSMB6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 19 Oct 2021 08:01:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1DE926113D;
+        Tue, 19 Oct 2021 11:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634644784;
-        bh=OfSXV/7F3iDf3tnepvj9uYwVtnl/6iflvyR6nsj9LNo=;
+        s=k20201202; t=1634644786;
+        bh=tyaEHIND8wtVgCzYDUnjRRE9A+umQK4q8h0ga8CK+Vo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZpsgrU9/Sq6iR5L3UcrwlSO97Gb3kHEXLJS1O60hu0/moSpg7jpM9G6bG+cntOW3v
-         NYsq2MtI7nK/HyDQ0l+J+7HWI617vywLzgt0DQZUI/CqSqfmQxrmdcf91Py5kCK9DX
-         fA2MoQyRGbaePdtKlL9Pu/qykfupNO0cWjxLYFniiGSy6LXbbn7O5ADWMlMVxmtaD3
-         f+YKHM7bMg/+wHDm7ScNXjJzsSnhjyuAbr385yQVEriG198Agr94CldA8vUsSLG7zx
-         aNIDi26Qw5aFG9G/1m+48lDiJQpvxiAwv5z+StK0OXYkjRUW4ozkT2Nm/jhF32pYWv
-         UfZCVOljcfu1g==
+        b=Ks5sGGotgegwGkTxrZ89hBNlL4RS1Mp+5NBXcM5v4z4PIY5sYJwQ5s3G7Xfts1gbP
+         O1rNvFAAxQEV6AFoz+Fg+jY7iyrKV9BuNj208uQBNDJpkgaZzh2DQe6TAUg+DpMe29
+         b3xJC0EedfVjeAj+3hdsjX2l8oBPFFk2tYBiF5v3GJ/2w7EwJUmDsW4VFw83NOoXf6
+         gDrP6xXZZPu8YsjSkrkFMEKxAxbcZOhSQhjSPa0Xivtkj6l+8h/Bqkh+wI/cVm/CLp
+         ierhu1pXY0y0U5176roSClgllggyPFfAsVWYpNKnTmPty8NDY5LuRidrsaeoilwQjI
+         ZJx0V/275dQgQ==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     johannes@sipsolutions.net
 Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
         lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com
-Subject: [PATCH mac80211-next 1/4] mac80211: introduce set_radar_offchan callback
-Date:   Tue, 19 Oct 2021 13:59:04 +0200
-Message-Id: <951f403d4a0ae015295c6152622f155d6a7afa12.1634644309.git.lorenzo@kernel.org>
+Subject: [PATCH mac80211-next 2/4] cfg80211: introduce NL80211_ATTR_RADAR_OFFCHAN netlink attribute
+Date:   Tue, 19 Oct 2021 13:59:05 +0200
+Message-Id: <c3adad927a5d32003fd969edc32c566869673a34.1634644309.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1634644309.git.lorenzo@kernel.org>
 References: <cover.1634644309.git.lorenzo@kernel.org>
@@ -39,152 +39,79 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce set_radar_offchan callback in cfg80211/mac80211_ops in order to
-configure a dedicated chain available on some hw (e.g. mt7915) to
-perform offchannel CAC detection.
+Introduce NL80211_ATTR_RADAR_OFFCHAN netlink attribute in order to
+configure offchannel radar chain if supported by the underlay driver.
 
 Tested-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- include/net/cfg80211.h  |  6 ++++++
- include/net/mac80211.h  |  5 +++++
- net/mac80211/cfg.c      | 13 +++++++++++++
- net/wireless/rdev-ops.h | 17 +++++++++++++++++
- net/wireless/trace.h    | 19 +++++++++++++++++++
- 5 files changed, 60 insertions(+)
+ include/uapi/linux/nl80211.h |  6 ++++++
+ net/wireless/nl80211.c       | 12 ++++++++++--
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index e9e313aa991f..af62af6bf369 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -4072,6 +4072,10 @@ struct mgmt_frame_regs {
-  * @set_fils_aad: Set FILS AAD data to the AP driver so that the driver can use
-  *	those to decrypt (Re)Association Request and encrypt (Re)Association
-  *	Response frame.
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index eda608b1eb09..96e622777bb2 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2639,6 +2639,10 @@ enum nl80211_commands {
+  *	Mandatory parameter for the transmitting interface to enable MBSSID.
+  *	Optional for the non-transmitting interfaces.
+  *
++ * @NL80211_ATTR_RADAR_OFFCHAN: Configure dedicated chain available for radar
++ *	detection on some hw. The chain can't be used to transmits or receives
++ *	frames. The driver is supposed to implement CAC management in sw or fw.
 + *
-+ * @set_radar_offchan: Configure dedicated chain available for radar detection
-+ *	on some hw. The chain can't be used to transmits or receives frames.
-+ *	The driver is supposed to implement CAC management in sw or fw.
-  */
- struct cfg80211_ops {
- 	int	(*suspend)(struct wiphy *wiphy, struct cfg80211_wowlan *wow);
-@@ -4404,6 +4408,8 @@ struct cfg80211_ops {
- 				struct cfg80211_color_change_settings *params);
- 	int     (*set_fils_aad)(struct wiphy *wiphy, struct net_device *dev,
- 				struct cfg80211_fils_aad *fils_aad);
-+	int	(*set_radar_offchan)(struct wiphy *wiphy,
-+				     struct cfg80211_chan_def *chandef);
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3145,6 +3149,8 @@ enum nl80211_attrs {
+ 	NL80211_ATTR_MBSSID_CONFIG,
+ 	NL80211_ATTR_MBSSID_ELEMS,
+ 
++	NL80211_ATTR_RADAR_OFFCHAN,
++
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+ 	__NL80211_ATTR_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 3f37e4d5c5d2..a296f180624e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -776,6 +776,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MBSSID_CONFIG] =
+ 			NLA_POLICY_NESTED(nl80211_mbssid_config_policy),
+ 	[NL80211_ATTR_MBSSID_ELEMS] = { .type = NLA_NESTED },
++	[NL80211_ATTR_RADAR_OFFCHAN] = { .type = NLA_FLAG },
  };
  
- /*
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 13cad5e9e6c0..faf6ede80f2b 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -3944,6 +3944,9 @@ struct ieee80211_prep_tx_info {
-  *	twt structure.
-  * @twt_teardown_request: Update the hw with TWT teardown request received
-  *	from the peer.
-+ * @set_radar_offchan: Configure dedicated chain available for radar detection
-+ *	on some hw. The chain can't be used to transmits or receives frames.
-+ *	The driver is supposed to implement CAC management in sw or fw.
-  */
- struct ieee80211_ops {
- 	void (*tx)(struct ieee80211_hw *hw,
-@@ -4272,6 +4275,8 @@ struct ieee80211_ops {
- 			      struct ieee80211_twt_setup *twt);
- 	void (*twt_teardown_request)(struct ieee80211_hw *hw,
- 				     struct ieee80211_sta *sta, u8 flowid);
-+	int (*set_radar_offchan)(struct ieee80211_hw *hw,
-+				 struct cfg80211_chan_def *chandef);
- };
+ /* policy for the key attributes */
+@@ -9279,10 +9280,12 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 	if (err)
+ 		return err;
  
- /**
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index e2b791c37591..1ab84830a38f 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4379,6 +4379,18 @@ ieee80211_color_change(struct wiphy *wiphy, struct net_device *dev,
- 	return err;
- }
+-	if (netif_carrier_ok(dev))
++	if (!nla_get_flag(info->attrs[NL80211_ATTR_RADAR_OFFCHAN]) &&
++	    netif_carrier_ok(dev))
+ 		return -EBUSY;
  
-+static int
-+ieee80211_set_radar_offchan(struct wiphy *wiphy,
-+			    struct cfg80211_chan_def *chandef)
-+{
-+	struct ieee80211_local *local = wiphy_priv(wiphy);
-+
-+	if (!local->ops->set_radar_offchan)
-+		return -EOPNOTSUPP;
-+
-+	return local->ops->set_radar_offchan(&local->hw, chandef);
-+}
-+
- const struct cfg80211_ops mac80211_config_ops = {
- 	.add_virtual_intf = ieee80211_add_iface,
- 	.del_virtual_intf = ieee80211_del_iface,
-@@ -4483,4 +4495,5 @@ const struct cfg80211_ops mac80211_config_ops = {
- 	.reset_tid_config = ieee80211_reset_tid_config,
- 	.set_sar_specs = ieee80211_set_sar_specs,
- 	.color_change = ieee80211_color_change,
-+	.set_radar_offchan = ieee80211_set_radar_offchan,
- };
-diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-index cc1efec4b27b..8672b3ef99e4 100644
---- a/net/wireless/rdev-ops.h
-+++ b/net/wireless/rdev-ops.h
-@@ -1395,4 +1395,21 @@ rdev_set_fils_aad(struct cfg80211_registered_device *rdev,
- 	return ret;
- }
+-	if (wdev->cac_started)
++	if (!nla_get_flag(info->attrs[NL80211_ATTR_RADAR_OFFCHAN]) &&
++	    wdev->cac_started)
+ 		return -EBUSY;
  
-+static inline int
-+rdev_set_radar_offchan(struct cfg80211_registered_device *rdev,
-+		       struct cfg80211_chan_def *chandef)
-+{
-+	struct wiphy *wiphy = &rdev->wiphy;
-+	int ret;
-+
-+	if (!rdev->ops->set_radar_offchan)
-+		return -EOPNOTSUPP;
-+
-+	trace_rdev_set_radar_offchan(wiphy, chandef);
-+	ret = rdev->ops->set_radar_offchan(wiphy, chandef);
-+	trace_rdev_return_int(wiphy, ret);
-+
-+	return ret;
-+}
-+
- #endif /* __CFG80211_RDEV_OPS */
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index ad6c16a06bcb..0b27eaa14a18 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -3674,6 +3674,25 @@ TRACE_EVENT(cfg80211_bss_color_notify,
- 		  __entry->color_bitmap)
- );
+ 	err = cfg80211_chandef_dfs_required(wiphy, &chandef, wdev->iftype);
+@@ -9299,6 +9302,11 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 	if (wiphy_ext_feature_isset(wiphy, NL80211_EXT_FEATURE_DFS_OFFLOAD))
+ 		return -EOPNOTSUPP;
  
-+TRACE_EVENT(rdev_set_radar_offchan,
-+	TP_PROTO(struct wiphy *wiphy, struct cfg80211_chan_def *chandef),
++	if (nla_get_flag(info->attrs[NL80211_ATTR_RADAR_OFFCHAN])) {
++		/* offchannel radar detection */
++		return rdev_set_radar_offchan(rdev, &chandef);
++	}
 +
-+	TP_ARGS(wiphy, chandef),
-+
-+	TP_STRUCT__entry(
-+		WIPHY_ENTRY
-+		CHAN_DEF_ENTRY
-+	),
-+
-+	TP_fast_assign(
-+		WIPHY_ASSIGN;
-+		CHAN_DEF_ASSIGN(chandef)
-+	),
-+
-+	TP_printk(WIPHY_PR_FMT ", " CHAN_DEF_PR_FMT,
-+		  WIPHY_PR_ARG, CHAN_DEF_PR_ARG)
-+);
-+
- #endif /* !__RDEV_OPS_TRACE || TRACE_HEADER_MULTI_READ */
+ 	if (!rdev->ops->start_radar_detection)
+ 		return -EOPNOTSUPP;
  
- #undef TRACE_INCLUDE_PATH
 -- 
 2.31.1
 
