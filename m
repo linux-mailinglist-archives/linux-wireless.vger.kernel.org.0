@@ -2,117 +2,178 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C9C7433815
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 16:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF095433B16
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 17:49:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232773AbhJSOLl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 10:11:41 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:55858 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232717AbhJSOLk (ORCPT
+        id S229774AbhJSPv1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 11:51:27 -0400
+Received: from mail-ua1-f41.google.com ([209.85.222.41]:33781 "EHLO
+        mail-ua1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232738AbhJSPvM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 10:11:40 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634652567; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=WY2I3/9Ukehmx/Ml8RRSY/034uNGRLFMxiyy7ZlPyKo=; b=w29hNv4FRxFTPbMyQPfgMcAgQbvVdwrgXAn8II9d8UDevbMGINqvuGCR0oWGafZEyQPoqZFJ
- ydd32IVKItx10Nr9NKj+XwnDBnJZPqWFRo0YSnguzcI3hZo/1C9U7j9RMsr9ZaGnHPSVrpwg
- cY0NIA0odHFuE2hm97LEGmxz4oU=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
- 616ed0b8b03398c06c521e8c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 19 Oct 2021 14:05:44
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 386C5C4360C; Tue, 19 Oct 2021 14:05:44 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B3E66C4338F;
-        Tue, 19 Oct 2021 14:05:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B3E66C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
+        Tue, 19 Oct 2021 11:51:12 -0400
+Received: by mail-ua1-f41.google.com with SMTP id i15so908804uap.0;
+        Tue, 19 Oct 2021 08:48:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HNaCNDIMKi9f5orM5Jol9xHR3VahWyBHoZmsq1Eeb20=;
+        b=k+geyGmZIBzvsxD0ArpgebLewKURGVA+YsuQJqGJ8v1ya3qruj6PGFuAgrAftkT9Qe
+         2O9z/1M0ADg7XEhqYPgbTbuwfA35VWyj+lSbox+4PHjUNBWpcMBSNiwJ3ir9wMeIjws1
+         DKBTkIG1joKyARuMM94lLin6KTls4f1sq3pa3PaAqn1dztGIXOXbVwzneS8To8SlshpO
+         xGbJUFneKoywJawOaH3YcB6+H/WNT9mijVb3iYCT2OY0FT5olTNA8/S1BBOUyipKqE/G
+         45I0sJ9+vpnXe2dGcKOG6Lfd13Vw746iz/VXBtv2xWpo2+0F/WVoL2Zbr6L/TdoSIvDa
+         eoVQ==
+X-Gm-Message-State: AOAM533osZLaAPGd5OZmg70na7P781druF21xayNmZk22hCgZpKWmjsm
+        vrEFJdBN/20gqI8wtdeYuwyoPSDuXEW5ZA==
+X-Google-Smtp-Source: ABdhPJziWFXHbttaGhABKofRQCK6LlxVlvrspebAP2565jCfhx5Tnun1PrBhCjFF4mmreoo8EjQDTQ==
+X-Received: by 2002:ab0:212:: with SMTP id 18mr725437uas.103.1634658538771;
+        Tue, 19 Oct 2021 08:48:58 -0700 (PDT)
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
+        by smtp.gmail.com with ESMTPSA id u26sm11291347vsj.9.2021.10.19.08.48.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Oct 2021 08:48:58 -0700 (PDT)
+Received: by mail-ua1-f42.google.com with SMTP id f4so794095uad.4;
+        Tue, 19 Oct 2021 08:48:58 -0700 (PDT)
+X-Received: by 2002:ab0:3154:: with SMTP id e20mr854747uam.14.1634658537875;
+ Tue, 19 Oct 2021 08:48:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1634646975.git.geert+renesas@glider.be> <c1814db9aff7f09ea41b562a2da305312d8df2dd.1634646975.git.geert+renesas@glider.be>
+ <70d3efb8-e379-5d20-1873-4752e893f10b@lechnology.com>
+In-Reply-To: <70d3efb8-e379-5d20-1873-4752e893f10b@lechnology.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 19 Oct 2021 17:48:46 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWBwh6uZ_NtMsGjHcV4bTUgZfs0iKg-jCCLM8gkRcRi6g@mail.gmail.com>
+Message-ID: <CAMuHMdWBwh6uZ_NtMsGjHcV4bTUgZfs0iKg-jCCLM8gkRcRi6g@mail.gmail.com>
+Subject: Re: [PATCH 3/3] dt-bindings: net: ti,bluetooth: Convert to json-schema
+To:     David Lechner <david@lechnology.com>
 Cc:     Rob Herring <robh+dt@kernel.org>,
         "David S . Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        =?utf-8?Q?Beno?= =?utf-8?Q?=C3=AEt?= Cousson 
-        <bcousson@baylibre.com>, Tony Lindgren <tony@atomide.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
         Russell King <linux@armlinux.org.uk>,
-        David Lechner <david@lechnology.com>,
         Sebastian Reichel <sre@kernel.org>,
-        "open list\:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>, netdev <netdev@vger.kernel.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        "open list\:TI ETHERNET SWITCH DRIVER \(CPSW\)" 
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
         <linux-omap@vger.kernel.org>,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH 0/3] dt-bindings: net: TI wlcore json schema conversion and fix
-References: <cover.1634646975.git.geert+renesas@glider.be>
-        <87a6j5gmvg.fsf@codeaurora.org>
-        <CAMuHMdWEwsK=jUt=T8irpAdjocLtAjajBCacGHnu4fKKio6ZbA@mail.gmail.com>
-Date:   Tue, 19 Oct 2021 17:05:37 +0300
-In-Reply-To: <CAMuHMdWEwsK=jUt=T8irpAdjocLtAjajBCacGHnu4fKKio6ZbA@mail.gmail.com>
-        (Geert Uytterhoeven's message of "Tue, 19 Oct 2021 15:48:03 +0200")
-Message-ID: <8735oxgle6.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Geert Uytterhoeven <geert@linux-m68k.org> writes:
+Hi David,
 
-> On Tue, Oct 19, 2021 at 3:33 PM Kalle Valo <kvalo@codeaurora.org> wrote:
->> Geert Uytterhoeven <geert+renesas@glider.be> writes:
->> > This patch series converts the Device Tree bindings for the Texas
->> > Instruments Wilink Wireless LAN and Bluetooth Controllers to
->> > json-schema, after fixing an issue in a Device Tree source file.
->> >
->> > Thanks for your comments!
->> >
->> > Geert Uytterhoeven (3):
->> >   ARM: dts: motorola-mapphone: Drop second ti,wlcore compatible value
->> >   dt-bindings: net: wireless: ti,wlcore: Convert to json-schema
->> >   dt-bindings: net: ti,bluetooth: Convert to json-schema
->> >
->> >  .../devicetree/bindings/net/ti,bluetooth.yaml |  91 ++++++++++++
->> >  .../devicetree/bindings/net/ti-bluetooth.txt  |  60 --------
->> >  .../bindings/net/wireless/ti,wlcore,spi.txt   |  57 --------
->> >  .../bindings/net/wireless/ti,wlcore.txt       |  45 ------
->> >  .../bindings/net/wireless/ti,wlcore.yaml      | 134 ++++++++++++++++++
->> >  .../boot/dts/motorola-mapphone-common.dtsi    |   2 +-
->> >  arch/arm/boot/dts/omap3-gta04a5.dts           |   2 +-
->> >  7 files changed, 227 insertions(+), 164 deletions(-)
->> >  create mode 100644 Documentation/devicetree/bindings/net/ti,bluetooth.yaml
->> >  delete mode 100644 Documentation/devicetree/bindings/net/ti-bluetooth.txt
->> >  delete mode 100644 Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
->> >  delete mode 100644 Documentation/devicetree/bindings/net/wireless/ti,wlcore.txt
->> >  create mode 100644 Documentation/devicetree/bindings/net/wireless/ti,wlcore.yaml
->>
->> Via which tree should these go?
+On Tue, Oct 19, 2021 at 5:41 PM David Lechner <david@lechnology.com> wrote:
+> On 10/19/21 7:43 AM, Geert Uytterhoeven wrote:
+> > Convert the Texas Instruments serial-attached bluetooth Device Tree
+> > binding documentation to json-schema.
+> >
+> > Add missing max-speed property.
+> > Update the example.
+> >
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > ---
+> > I listed David as maintainer, as he wrote the original bindings.
+> > Please scream if not appropriate.
 >
-> The DTS change should go through the OMAP tree.
-> The binding changes through the net or DT trees.
+> I'm not affiliated with TI in any way, so if someone from TI
+> wants to take responsibility, that would probably be better.
 >
-> I kept everything together for an improved overview.
+> For for the time being...
+>
+> Acked-by: David Lechner <david@lechnology.com>
 
-Good, thanks. I'll then drop these from my queue.
+Thanks!
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/ti,bluetooth.yaml
+> > @@ -0,0 +1,91 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/ti,bluetooth.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Texas Instruments Bluetooth Chips
+> > +
+> > +maintainers:
+> > +  - David Lechner <david@lechnology.com>
+> > +
+> > +description: |
+> > +  This documents the binding structure and common properties for serial
+> > +  attached TI Bluetooth devices. The following chips are included in this
+> > +  binding:
+> > +
+> > +  * TI CC256x Bluetooth devices
+> > +  * TI WiLink 7/8 (wl12xx/wl18xx) Shared Transport BT/FM/GPS devices
+> > +
+> > +  TI WiLink devices have a UART interface for providing Bluetooth, FM radio,
+> > +  and GPS over what's called "shared transport". The shared transport is
+> > +  standard BT HCI protocol with additional channels for the other functions.
+> > +
+> > +  TI WiLink devices also have a separate WiFi interface as described in
+> > +  wireless/ti,wlcore.yaml.
+> > +
+> > +  This bindings follows the UART slave device binding in ../serial/serial.yaml.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - ti,cc2560
+> > +      - ti,wl1271-st
+> > +      - ti,wl1273-st
+> > +      - ti,wl1281-st
+> > +      - ti,wl1283-st
+> > +      - ti,wl1285-st
+> > +      - ti,wl1801-st
+> > +      - ti,wl1805-st
+> > +      - ti,wl1807-st
+> > +      - ti,wl1831-st
+> > +      - ti,wl1835-st
+> > +      - ti,wl1837-st
+> > +
+> > +  enable-gpios:
+> > +    maxItems: 1
+> > +
+> > +  vio-supply:
+> > +    description: Vio input supply (1.8V)
+> > +
+> > +  vbat-supply:
+> > +    description: Vbat input supply (2.9-4.8V)
+> > +
+> > +  clocks:
+> > +    maxItems: 1
+> > +
+> > +  clock-names:
+> > +    items:
+> > +      - const: ext_clock
+> > +
+> > +  max-speed: true
+>
+> Does this mean that max-speed from serial.yaml is supported
+> but current-speed is not?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+I added it because one DTS uses "max-speed", and the driver
+supports it.
+The driver does not support "current-speed", but seems to ask for
+an initial speed of 115200, and an operational speed of max-speed
+(default 3000000, perhaps that should be documented in the bindings):
+
+        hci_uart_set_speeds(hu, 115200, max_speed);
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
