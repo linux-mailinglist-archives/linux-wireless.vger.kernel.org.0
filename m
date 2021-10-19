@@ -2,137 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D23B0432D1C
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 07:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25579432DFA
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 08:16:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229742AbhJSFXz convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 01:23:55 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:49280 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbhJSFXz (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 01:23:55 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19J5LMzqC005662, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19J5LMzqC005662
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 19 Oct 2021 13:21:23 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Tue, 19 Oct 2021 13:21:22 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Mon, 18 Oct 2021 22:21:22 -0700
-Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
- RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
- 15.01.2106.013; Tue, 19 Oct 2021 13:21:21 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "cgel.zte@gmail.com" <cgel.zte@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
-CC:     "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "lv.ruyi@zte.com.cn" <lv.ruyi@zte.com.cn>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: RE: [PATCH] rtw89: fix error function parameter
-Thread-Topic: [PATCH] rtw89: fix error function parameter
-Thread-Index: AQHXxJzcl/L9Ey4To0qT1Twz/99G66vZyNbw
-Date:   Tue, 19 Oct 2021 05:21:21 +0000
-Message-ID: <90ac6c3911ef4f7385df3dde3d3b6d55@realtek.com>
-References: <20211019035311.974706-1-lv.ruyi@zte.com.cn>
-In-Reply-To: <20211019035311.974706-1-lv.ruyi@zte.com.cn>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/19_=3F=3F_03:04:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S234125AbhJSGS3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 02:18:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48854 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233786AbhJSGS2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 19 Oct 2021 02:18:28 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ACB4E6115B;
+        Tue, 19 Oct 2021 06:16:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1634624176;
+        bh=FeG/qotMCAtt11mlzDTQUemMTc8grksOYH2YcYkz2NA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=lg0afarjb/JXs+cYDe2ZtQnrFJR3J8h/C9seWBF8QOrfPEm6YSKILrheQecQ13sp/
+         XtQ4Ld/FMCpATfvZLaqjxSeTlpDtgQ8S3F31aewNRcQsifzyG9A+PBe5rqNWMcDdqS
+         kp4IF8+D53rd5pQi/7eTWLdwt6Z90NX9npx8yWn8=
+Date:   Tue, 19 Oct 2021 08:16:14 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Luis Chamberlain <mcgrof@kernel.org>
+Cc:     bp@suse.de, akpm@linux-foundation.org, josh@joshtriplett.org,
+        rishabhb@codeaurora.org, kubakici@wp.pl, maco@android.com,
+        david.brown@linaro.org, bjorn.andersson@linaro.org,
+        linux-wireless@vger.kernel.org, keescook@chromium.org,
+        shuah@kernel.org, mfuzzey@parkeon.com, zohar@linux.vnet.ibm.com,
+        dhowells@redhat.com, pali.rohar@gmail.com, tiwai@suse.de,
+        arend.vanspriel@broadcom.com, zajec5@gmail.com, nbroeking@me.com,
+        broonie@kernel.org, dmitry.torokhov@gmail.com, dwmw2@infradead.org,
+        torvalds@linux-foundation.org, Abhay_Salunke@dell.com,
+        jewalt@lgsinnovations.com, cantabile.desu@gmail.com, ast@fb.com,
+        andresx7@gmail.com, dan.rue@linaro.org, brendanhiggins@google.com,
+        yzaikin@google.com, sfr@canb.auug.org.au, rdunlap@infradead.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 04/14] firmware_loader: add built-in firmware kconfig
+ entry
+Message-ID: <YW5irpRIIr0H/tXh@kroah.com>
+References: <20210917182226.3532898-1-mcgrof@kernel.org>
+ <20210917182226.3532898-5-mcgrof@kernel.org>
+ <YVxhbhmNd7tahLV7@kroah.com>
+ <YWR16e/seTx/wxE+@bombadil.infradead.org>
+ <YWR4XKrC2Bkr4qKQ@kroah.com>
+ <YWS7ABDdBIpdt/84@bombadil.infradead.org>
+ <YW3gae4HoUd9izyj@bombadil.infradead.org>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/19/2021 04:58:50
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 166808 [Oct 18 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/19/2021 05:02:00
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YW3gae4HoUd9izyj@bombadil.infradead.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-> -----Original Message-----
-> From: cgel.zte@gmail.com <cgel.zte@gmail.com>
-> Sent: Tuesday, October 19, 2021 11:53 AM
-> To: kvalo@codeaurora.org
-> Cc: davem@davemloft.net; kuba@kernel.org; Pkshih <pkshih@realtek.com>; lv.ruyi@zte.com.cn;
-> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Zeal
-> Robot <zealci@zte.com.cn>
-> Subject: [PATCH] rtw89: fix error function parameter
+On Mon, Oct 18, 2021 at 02:00:25PM -0700, Luis Chamberlain wrote:
+> On Mon, Oct 11, 2021 at 03:30:24PM -0700, Luis Chamberlain wrote:
+> > On Mon, Oct 11, 2021 at 07:46:04PM +0200, Greg KH wrote:
+> > > >   o By default we now always skip built-in firmware even if a FW_LOADER=y
+> > > 
+> > > I do not understand, why would we ever want to skip built-in firmware?
+> > 
+> > Because it is done this way today only implicitly because
+> > EXTRA_FIRMWARE is empty. Using a kconfig entry makes this
+> > more obvious.
 > 
-> From: Lv Ruyi <lv.ruyi@zte.com.cn>
+> Greg,
 > 
-> This patch fixes the following Coccinelle warning:
-> drivers/net/wireless/realtek/rtw89/rtw8852a.c:753:
-> WARNING  possible condition with no effect (if == else)
+> The fact that it was not obvious to you we were effectively disabling
+> the built-in firmware functionality by default using side kconfig
+> symbols is a good reason to clarify this situation with its own kconfig
+> symbol.
 > 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Lv Ruyi <lv.ruyi@zte.com.cn>
-
-Thanks for the catch.
-
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-
-> ---
->  drivers/net/wireless/realtek/rtw89/rtw8852a.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> And consider what I started below as well.
 > 
-> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-> b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-> index b1b87f0aadbb..5c6ffca3a324 100644
-> --- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-> +++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-> @@ -753,11 +753,11 @@ static void rtw8852a_ctrl_ch(struct rtw89_dev *rtwdev, u8 central_ch,
->                 if (is_2g)
->                         rtw89_phy_write32_idx(rtwdev, R_P1_MODE,
->                                               B_P1_MODE_SEL,
->                                               1, phy_idx);
->  		else
->  			rtw89_phy_write32_idx(rtwdev, R_P1_MODE,
->  					      B_P1_MODE_SEL,
-> -					      1, phy_idx);
-> +					      0, phy_idx);
->  		/* SCO compensate FC setting */
->  		sco_comp = rtw8852a_sco_mapping(central_ch);
->  		rtw89_phy_write32_idx(rtwdev, R_FC0_BW, B_FC0_BW_INV,
-> --
-> 2.25.1
+> Please let me know why on the other hand we should *not* add this new
+> kconfig symbol?
 
+Because added complexity for no real good reason?  You need to justify
+why we need yet-another firmware kconfig option here.  We should be
+working to remove them, not add more, if at all possible.
+
+thanks,
+
+greg k-h
