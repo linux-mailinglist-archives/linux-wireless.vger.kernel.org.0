@@ -2,56 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6092443303E
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 09:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAEB4433107
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 10:24:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234594AbhJSH5R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 03:57:17 -0400
-Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:40583 "EHLO
-        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230365AbhJSH5Q (ORCPT
+        id S234721AbhJSI05 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 04:26:57 -0400
+Received: from hosted-by.rootlayer.net ([185.222.57.217]:61713 "EHLO
+        hosted-by.rootlayer.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S234699AbhJSI0z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 03:57:16 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R441e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0UstTzXf_1634630100;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0UstTzXf_1634630100)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 19 Oct 2021 15:55:01 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     davem@davemloft.net
-Cc:     kuba@kernel.org, pkshih@realtek.com, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>
-Subject: [PATCH -next] rtw89: remove unneeded semicolon
-Date:   Tue, 19 Oct 2021 15:54:54 +0800
-Message-Id: <1634630094-1156-1-git-send-email-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        Tue, 19 Oct 2021 04:26:55 -0400
+From:   Ava Hk chemlab <info@foschia.com.ar>
+To:     linux-wireless@vger.kernel.org
+Subject: HK pharmaceutical intermediate,chemicals jwh018, hexen crystal. Pub-Amb 99% purity
+Date:   19 Oct 2021 10:24:38 +0200
+Message-ID: <20211019102438.C6F826E1B7E6A5F6@foschia.com.ar>
+MIME-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Eliminate the following coccicheck warning:
-./drivers/net/wireless/realtek/rtw89/pci.c:1348:2-3: Unneeded semicolon
+Hong Kong ZD Chemical Lab
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- drivers/net/wireless/realtek/rtw89/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+specializes in exporting high quality Research chemical, medical intermediate, Pharmaceutical chemicals and so on. 99% purity
+Jwh018 powder white/yellow
+hexen crystal
+5cabp powder
+5fmdmb-2201. ADBB
+2-fdck crystal 2-Fluoroamphetamine powder
+Pure Etizolam
+wholesale Diclazepam powder
+MMB-022 strong powder CANNABINOIDS
+new products 4fadb white powder
+FUB-144 supplier best quality
+New product tmfuf powder
+MMB-fub strong seller wholesale and mmany more on website All the products listed on our site www.hk-chemlab.com are available in stock. Expect your order to be processed immediately when you send us your request. by email or whatsapp We can ship to you within just a few days depending on where you are. It basically takes us 4 days to deliver shipment in the UK and 7 to 9 days to ship items to the rest of the world. visit us at www.hk-chemlab.com
 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index e973101..2c94762 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -1345,7 +1345,7 @@ static int rtw89_pci_check_mdio(struct rtw89_dev *rtwdev, u8 addr, u8 speed, u16
- 	default:
- 		rtw89_err(rtwdev, "[ERR]Error Speed %d!\n", speed);
- 		return -EINVAL;
--	};
-+	}
- 	rtw89_write16(rtwdev, R_AX_MDIO_CFG, val);
- 	rtw89_write16_set(rtwdev, R_AX_MDIO_CFG, rw_bit);
- 
--- 
-1.8.3.1
+ best Regards
+Ava (Organic Chemist)
+HK CHEM LAB
+Ava@hk-chemlab.com contact
 
+Quality Certificate: CE, ISO9001, ISO9002, ACS, FDA, VDE, CSA, SSA, S-Mark, EN14619
