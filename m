@@ -2,178 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF095433B16
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 17:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A342B433B42
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 17:53:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229774AbhJSPv1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 11:51:27 -0400
-Received: from mail-ua1-f41.google.com ([209.85.222.41]:33781 "EHLO
-        mail-ua1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232738AbhJSPvM (ORCPT
+        id S230127AbhJSPzN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 11:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56324 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229789AbhJSPzM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 11:51:12 -0400
-Received: by mail-ua1-f41.google.com with SMTP id i15so908804uap.0;
-        Tue, 19 Oct 2021 08:48:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HNaCNDIMKi9f5orM5Jol9xHR3VahWyBHoZmsq1Eeb20=;
-        b=k+geyGmZIBzvsxD0ArpgebLewKURGVA+YsuQJqGJ8v1ya3qruj6PGFuAgrAftkT9Qe
-         2O9z/1M0ADg7XEhqYPgbTbuwfA35VWyj+lSbox+4PHjUNBWpcMBSNiwJ3ir9wMeIjws1
-         DKBTkIG1joKyARuMM94lLin6KTls4f1sq3pa3PaAqn1dztGIXOXbVwzneS8To8SlshpO
-         xGbJUFneKoywJawOaH3YcB6+H/WNT9mijVb3iYCT2OY0FT5olTNA8/S1BBOUyipKqE/G
-         45I0sJ9+vpnXe2dGcKOG6Lfd13Vw746iz/VXBtv2xWpo2+0F/WVoL2Zbr6L/TdoSIvDa
-         eoVQ==
-X-Gm-Message-State: AOAM533osZLaAPGd5OZmg70na7P781druF21xayNmZk22hCgZpKWmjsm
-        vrEFJdBN/20gqI8wtdeYuwyoPSDuXEW5ZA==
-X-Google-Smtp-Source: ABdhPJziWFXHbttaGhABKofRQCK6LlxVlvrspebAP2565jCfhx5Tnun1PrBhCjFF4mmreoo8EjQDTQ==
-X-Received: by 2002:ab0:212:: with SMTP id 18mr725437uas.103.1634658538771;
-        Tue, 19 Oct 2021 08:48:58 -0700 (PDT)
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
-        by smtp.gmail.com with ESMTPSA id u26sm11291347vsj.9.2021.10.19.08.48.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Oct 2021 08:48:58 -0700 (PDT)
-Received: by mail-ua1-f42.google.com with SMTP id f4so794095uad.4;
-        Tue, 19 Oct 2021 08:48:58 -0700 (PDT)
-X-Received: by 2002:ab0:3154:: with SMTP id e20mr854747uam.14.1634658537875;
- Tue, 19 Oct 2021 08:48:57 -0700 (PDT)
+        Tue, 19 Oct 2021 11:55:12 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1709AC06161C;
+        Tue, 19 Oct 2021 08:53:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=L/r8W7OeCFbqHVWl3EceBKDkVDU//3rCuUA5Z221DbI=; b=ufmSm0fgCXPpRU3kuJL6vdob+c
+        dOnKyAFlfO2R4WNkEkGoEI7LEqthAZgCjqmFPCVpSgu7sZ0uhYyKKU7zAMKZjgHo2IcsDvF6+RsIK
+        NKH0zZnEXHfm3rhGzDPvPJ5WlkOsXZmL8r3nSuIJbUjHv4FFIQgu+GsTqi9hDC8euY8KuVBv4af+3
+        YA1IjRVCsppJzdoU/+EmIPHhKB+daoMvsOw1r70oh1c1MybrTGUONYdxjYwqB8mMc12zBHLIPtx9Z
+        VWvTZafpQrwauVGjebkmX2QrOitVSWVoJbbd63MBMDklA/MX+AvyAqKX+ebIkw7RZZkPU9Rjg0Per
+        UN1xQFow==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mcrPu-001lY4-22; Tue, 19 Oct 2021 15:52:42 +0000
+Date:   Tue, 19 Oct 2021 08:52:42 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     bp@suse.de, akpm@linux-foundation.org, josh@joshtriplett.org,
+        rishabhb@codeaurora.org, kubakici@wp.pl, maco@android.com,
+        david.brown@linaro.org, bjorn.andersson@linaro.org,
+        linux-wireless@vger.kernel.org, keescook@chromium.org,
+        shuah@kernel.org, mfuzzey@parkeon.com, zohar@linux.vnet.ibm.com,
+        dhowells@redhat.com, pali.rohar@gmail.com, tiwai@suse.de,
+        arend.vanspriel@broadcom.com, zajec5@gmail.com, nbroeking@me.com,
+        broonie@kernel.org, dmitry.torokhov@gmail.com, dwmw2@infradead.org,
+        torvalds@linux-foundation.org, Abhay_Salunke@dell.com,
+        jewalt@lgsinnovations.com, cantabile.desu@gmail.com, ast@fb.com,
+        andresx7@gmail.com, dan.rue@linaro.org, brendanhiggins@google.com,
+        yzaikin@google.com, sfr@canb.auug.org.au, rdunlap@infradead.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 04/14] firmware_loader: add built-in firmware kconfig
+ entry
+Message-ID: <YW7pynWzRHE+MpTC@bombadil.infradead.org>
+References: <20210917182226.3532898-1-mcgrof@kernel.org>
+ <20210917182226.3532898-5-mcgrof@kernel.org>
+ <YVxhbhmNd7tahLV7@kroah.com>
+ <YWR16e/seTx/wxE+@bombadil.infradead.org>
+ <YWR4XKrC2Bkr4qKQ@kroah.com>
+ <YWS7ABDdBIpdt/84@bombadil.infradead.org>
+ <YW3gae4HoUd9izyj@bombadil.infradead.org>
+ <YW5irpRIIr0H/tXh@kroah.com>
 MIME-Version: 1.0
-References: <cover.1634646975.git.geert+renesas@glider.be> <c1814db9aff7f09ea41b562a2da305312d8df2dd.1634646975.git.geert+renesas@glider.be>
- <70d3efb8-e379-5d20-1873-4752e893f10b@lechnology.com>
-In-Reply-To: <70d3efb8-e379-5d20-1873-4752e893f10b@lechnology.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 19 Oct 2021 17:48:46 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWBwh6uZ_NtMsGjHcV4bTUgZfs0iKg-jCCLM8gkRcRi6g@mail.gmail.com>
-Message-ID: <CAMuHMdWBwh6uZ_NtMsGjHcV4bTUgZfs0iKg-jCCLM8gkRcRi6g@mail.gmail.com>
-Subject: Re: [PATCH 3/3] dt-bindings: net: ti,bluetooth: Convert to json-schema
-To:     David Lechner <david@lechnology.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Sebastian Reichel <sre@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, netdev <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
-        <linux-omap@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YW5irpRIIr0H/tXh@kroah.com>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi David,
+On Tue, Oct 19, 2021 at 08:16:14AM +0200, Greg KH wrote:
+> On Mon, Oct 18, 2021 at 02:00:25PM -0700, Luis Chamberlain wrote:
+> > On Mon, Oct 11, 2021 at 03:30:24PM -0700, Luis Chamberlain wrote:
+> > > On Mon, Oct 11, 2021 at 07:46:04PM +0200, Greg KH wrote:
+> > > > >   o By default we now always skip built-in firmware even if a FW_LOADER=y
+> > > > 
+> > > > I do not understand, why would we ever want to skip built-in firmware?
+> > > 
+> > > Because it is done this way today only implicitly because
+> > > EXTRA_FIRMWARE is empty. Using a kconfig entry makes this
+> > > more obvious.
+> > 
+> > Greg,
+> > 
+> > The fact that it was not obvious to you we were effectively disabling
+> > the built-in firmware functionality by default using side kconfig
+> > symbols is a good reason to clarify this situation with its own kconfig
+> > symbol.
+> > 
+> > And consider what I started below as well.
+> > 
+> > Please let me know why on the other hand we should *not* add this new
+> > kconfig symbol?
+> 
+> Because added complexity for no real good reason?  You need to justify
+> why we need yet-another firmware kconfig option here.  We should be
+> working to remove them, not add more, if at all possible.
 
-On Tue, Oct 19, 2021 at 5:41 PM David Lechner <david@lechnology.com> wrote:
-> On 10/19/21 7:43 AM, Geert Uytterhoeven wrote:
-> > Convert the Texas Instruments serial-attached bluetooth Device Tree
-> > binding documentation to json-schema.
-> >
-> > Add missing max-speed property.
-> > Update the example.
-> >
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > ---
-> > I listed David as maintainer, as he wrote the original bindings.
-> > Please scream if not appropriate.
->
-> I'm not affiliated with TI in any way, so if someone from TI
-> wants to take responsibility, that would probably be better.
->
-> For for the time being...
->
-> Acked-by: David Lechner <david@lechnology.com>
+I did, it actually simplifies things more and makes the fact that we
+disable the functionality of the built-in firmware by default clearer.
 
-Thanks!
+So no, this is not adding complexity.
 
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/net/ti,bluetooth.yaml
-> > @@ -0,0 +1,91 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/net/ti,bluetooth.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Texas Instruments Bluetooth Chips
-> > +
-> > +maintainers:
-> > +  - David Lechner <david@lechnology.com>
-> > +
-> > +description: |
-> > +  This documents the binding structure and common properties for serial
-> > +  attached TI Bluetooth devices. The following chips are included in this
-> > +  binding:
-> > +
-> > +  * TI CC256x Bluetooth devices
-> > +  * TI WiLink 7/8 (wl12xx/wl18xx) Shared Transport BT/FM/GPS devices
-> > +
-> > +  TI WiLink devices have a UART interface for providing Bluetooth, FM radio,
-> > +  and GPS over what's called "shared transport". The shared transport is
-> > +  standard BT HCI protocol with additional channels for the other functions.
-> > +
-> > +  TI WiLink devices also have a separate WiFi interface as described in
-> > +  wireless/ti,wlcore.yaml.
-> > +
-> > +  This bindings follows the UART slave device binding in ../serial/serial.yaml.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - ti,cc2560
-> > +      - ti,wl1271-st
-> > +      - ti,wl1273-st
-> > +      - ti,wl1281-st
-> > +      - ti,wl1283-st
-> > +      - ti,wl1285-st
-> > +      - ti,wl1801-st
-> > +      - ti,wl1805-st
-> > +      - ti,wl1807-st
-> > +      - ti,wl1831-st
-> > +      - ti,wl1835-st
-> > +      - ti,wl1837-st
-> > +
-> > +  enable-gpios:
-> > +    maxItems: 1
-> > +
-> > +  vio-supply:
-> > +    description: Vio input supply (1.8V)
-> > +
-> > +  vbat-supply:
-> > +    description: Vbat input supply (2.9-4.8V)
-> > +
-> > +  clocks:
-> > +    maxItems: 1
-> > +
-> > +  clock-names:
-> > +    items:
-> > +      - const: ext_clock
-> > +
-> > +  max-speed: true
->
-> Does this mean that max-speed from serial.yaml is supported
-> but current-speed is not?
-
-I added it because one DTS uses "max-speed", and the driver
-supports it.
-The driver does not support "current-speed", but seems to ask for
-an initial speed of 115200, and an operational speed of max-speed
-(default 3000000, perhaps that should be documented in the bindings):
-
-        hci_uart_set_speeds(hu, 115200, max_speed);
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+ Luis
