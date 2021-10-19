@@ -2,88 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 105974340CF
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 23:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D535443414A
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Oct 2021 00:24:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229544AbhJSVyi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 17:54:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53292 "EHLO
+        id S229784AbhJSW0P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 18:26:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbhJSVye (ORCPT
+        with ESMTP id S229548AbhJSW0O (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 17:54:34 -0400
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 035CAC06161C
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Oct 2021 14:52:20 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id y4so14710926plb.0
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Oct 2021 14:52:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:date:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=O9IDZ0D8GKm/bErqw2ZE+yWUnfK4r6dVEZoythVTIk4=;
-        b=cEk/qXLCTxQgN0hZ98x6htdkpzB1m/U4unQTZAmVTEHsEJkzFq1BFK+qPSuioM5tWg
-         Nfus3JfvnfAyp6/Y8zFl+cimoOwjz9jmQbVh5xMXMhqyRdjAuuApjHg0vcWpY1GZJJYT
-         WbMWUFzqDYE1gI59VLr3VEMFYEOYULj0A31KnFWSXC9dzK9fRL8PmXBKPtUCIqg+YIy6
-         H3BPeySkWuXfnguHAUdmjUkvADX7/woVTsRmUp36oxn60WZTHO3IUWzDmFbo3zkP9vIC
-         RfSNCnqc1I8OxokrNol+XyO8h4/kEPOAyBX9KkdrHz327FLfTdhxLWZ6kvAAR6v0a9h9
-         sR5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:date:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=O9IDZ0D8GKm/bErqw2ZE+yWUnfK4r6dVEZoythVTIk4=;
-        b=UrhuDNp4YudHXMWnsjMXplwtZi7wtRmw9sPQUV7hPPcWXTnsM9hzab+FAcI7hLKuuP
-         ngD7pz24Aawf/kvWoEVHKeNO6MthVbaPuKMGJkPDdxBqOy4OUoc5NkvZLtZHOniXaJ/T
-         EJpGspDpykjVvOrLcAbmDePoTuRt1Np+IPjQIN1porBoeqCgm5ivP5qbfJ0nMgU1hsEJ
-         234On51H/+Nm3VHJoE/gzs3ii/1pJwzcl+ER6fHyy0Q+hVTqyT43H1h2OYVH/0VF57WL
-         yc7kCAF3dtXPQK+CoLdpGPfZM+sxvAQmOErkaa9OzjsvFVfLcTt8bsrJDbhtBvTMPp2U
-         syQQ==
-X-Gm-Message-State: AOAM532MmmtKwDDCNdob/abgz/c/rl/eedjoBeqDCmgYl9gThRGtmft7
-        AHu602P5J5Xqmg2kIIwhO/GfMfDa8pc=
-X-Google-Smtp-Source: ABdhPJySlB0dYbIQji1DfQtj42es3K0gCgZqs7IB918tSzVo7r0A88PlFv5oH7QzPnse58aeRIsuew==
-X-Received: by 2002:a17:90a:c70d:: with SMTP id o13mr2786132pjt.143.1634680340218;
-        Tue, 19 Oct 2021 14:52:20 -0700 (PDT)
-Received: from [192.168.254.15] ([50.39.163.188])
-        by smtp.gmail.com with ESMTPSA id t9sm3603784pjm.36.2021.10.19.14.52.19
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Oct 2021 14:52:19 -0700 (PDT)
-Message-ID: <66d0e0e76b3da052eb25199c9665ca74fefa3dbd.camel@gmail.com>
-Subject: Bug - brcmfmac STA fails to channel switch
-From:   James Prestwood <prestwoj@gmail.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Tue, 19 Oct 2021 14:48:58 -0700
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4 (3.40.4-1.fc34) 
+        Tue, 19 Oct 2021 18:26:14 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A620C06161C;
+        Tue, 19 Oct 2021 15:24:00 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 859311F43E76
+Received: by earth.universe (Postfix, from userid 1000)
+        id 0842C3C0CA7; Wed, 20 Oct 2021 00:23:57 +0200 (CEST)
+Date:   Wed, 20 Oct 2021 00:23:56 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        David Lechner <david@lechnology.com>,
+        devicetree@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH 1/3] ARM: dts: motorola-mapphone: Drop second ti,wlcore
+ compatible value
+Message-ID: <20211019222356.ybx2dn6oaogichtv@earth.universe>
+References: <cover.1634646975.git.geert+renesas@glider.be>
+ <84f8e477015d73ce7fca7b8abdd1099f505ad972.1634646975.git.geert+renesas@glider.be>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="dtqfs7bs4eb7ghau"
+Content-Disposition: inline
+In-Reply-To: <84f8e477015d73ce7fca7b8abdd1099f505ad972.1634646975.git.geert+renesas@glider.be>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+
+--dtqfs7bs4eb7ghau
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
 Hi,
 
-I've noticed some funny behavior on brcmfmac STA's when issuing a
-channel switch to hostapd.
+On Tue, Oct 19, 2021 at 02:43:11PM +0200, Geert Uytterhoeven wrote:
+> The TI wlcore DT bindings specify using a single compatible value for
+> each variant, and the Linux kernel driver matches against the first
+> compatible value since commit 078b30da3f074f2e ("wlcore: add wl1285
+> compatible") in v4.13.
 
-First, I tried this on a really old brcmfmac card. This got stuck in a
-loop: DEL_STATION, NEW_STATION, TX_STATUS, ROAM (repeat). I chalked it
-up to the card being old and unsupported.
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-I then tried on a rpi3 and would get disconnected soon after issuing
-the channel switch to hostapd. No other events came, just a disconnect.
+-- Sebastian
 
-In one case I issued a channel switch and saw hostapd responding to SA
-Query requests about once a second. But no other events came on the STA
-side. The card/FW seemed to be stuck in a loop sending SA Queries once
-per second but never issued a CHANNEL_SWITCH or ROAM event. This went
-on for about 5 minutes before I stopped the tests.
+>  arch/arm/boot/dts/motorola-mapphone-common.dtsi | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/b=
+oot/dts/motorola-mapphone-common.dtsi
+> index a4423ff0df39264b..c7a1f3ffc48ca58e 100644
+> --- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+> +++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+> @@ -310,7 +310,7 @@ &mmc3 {
+>  	#address-cells =3D <1>;
+>  	#size-cells =3D <0>;
+>  	wlcore: wlcore@2 {
+> -		compatible =3D "ti,wl1285", "ti,wl1283";
+> +		compatible =3D "ti,wl1285";
+>  		reg =3D <2>;
+>  		/* gpio_100 with gpmc_wait2 pad as wakeirq */
+>  		interrupts-extended =3D <&gpio4 4 IRQ_TYPE_LEVEL_HIGH>,
+> --=20
+> 2.25.1
+>=20
 
-If channel switching is not supported I think the disconnect behavior I
-saw is about all that can be done. As for the SA query loop, that seems
-like a bug to me.
+--dtqfs7bs4eb7ghau
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
-James
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmFvRXkACgkQ2O7X88g7
++prCPw//aKM8e080CfIvvBYQqetwGG+1nS3TMtHR6VDiMOsEHjCGjsKX3W0ilf6s
++QUixW6xyIiuJDwpFsoVW0trtYVjfCdoDUgF1D8/0Kb+Q3aTwtqqaUqQLzCflXPT
+aO8nClN8JrLX1ewNkxjAE+tXa+Z0tEWun0avnRoXbaSYnUFN7OAnEzNY9RuksYiW
+xnaaGStczuIpsAZnTzOROxH9/yny+SM9XiZPl+dsCvAcjYOfF2F8H2eIjYzUI5dP
+B1lqo0GT11NrzUVBxLxZdWy7BbA8frRUw13wBcaQFt+GoJjcdsiU1pvssmg5FA7o
+FAM8xL3gx4k1QvtqpaVKw4usSC29wNYsL2DpsDAiN/T+lCvIWWPL8HuvB17nL2cv
+Wzui2ikkfkpAUQuSXpzeyETV2aH4xfWxTZTSC1FGPbcZptRQ5vyMWySfEo60OBW6
++E1pV6kWjmKnMiXIjUuqIASDTJq+JW9jk8FWCGRcHf8phCVnmkGxCRh9nAbQQ7QX
+LB8DhwA/LwqZ2wfcxm/DI+DjIQUSEynslvAdDtkod8i8py5HUN/+6fzR62Vmnc/T
+DzBdCmLMzZPqwBOAl4L46UUhkbjnvU7zRVLjUioTU9/TmtYpIjYcwU9giFYhhPto
+ZgNs5Y8R/kgWvMk4txkAIz8p1cyBWLfuScZ0Db8v+UMX3MnyTWU=
+=3UNY
+-----END PGP SIGNATURE-----
+
+--dtqfs7bs4eb7ghau--
