@@ -2,131 +2,184 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5188433B6E
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 17:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67372433B8B
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Oct 2021 18:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233497AbhJSQBr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Oct 2021 12:01:47 -0400
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:57601 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233353AbhJSQBn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Oct 2021 12:01:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1634659171; x=1666195171;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=odVpGGDv15O9wDy9TKdMNrqjQP+X5lRpCkAKPJtlTOY=;
-  b=LBKn2gKepKZSt3vLh/MXlRjCgENJcez/RwHpD3np99H8X2CxGJWA3wrt
-   iGwzmKVvX66JoUnMZyB2rwZ/XKov4DMt7aAwffckGp6DQ89f3YXmNzPtd
-   a29k9R0DfgYsr7q0gy5pzSxxKS7cdhoRNpdGorcG9OhrOYdciZHlsWn5K
-   w=;
-Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
-  by alexa-out.qualcomm.com with ESMTP; 19 Oct 2021 08:59:30 -0700
-X-QCInternal: smtphost
-Received: from nalasex01a.na.qualcomm.com ([10.47.209.196])
-  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2021 08:59:30 -0700
-Received: from [10.48.244.108] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7; Tue, 19 Oct 2021
- 08:59:28 -0700
-Message-ID: <9ac46348-23da-7180-3f80-6a223de97d0e@quicinc.com>
-Date:   Tue, 19 Oct 2021 08:59:28 -0700
+        id S233372AbhJSQFF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Oct 2021 12:05:05 -0400
+Received: from vern.gendns.com ([98.142.107.122]:54244 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230168AbhJSQFF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 19 Oct 2021 12:05:05 -0400
+X-Greylist: delayed 1302 seconds by postgrey-1.27 at vger.kernel.org; Tue, 19 Oct 2021 12:05:04 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=sZekwuwMwcMC0PSMG4u/OrHchR+x4Vkc9whNiwOFRTU=; b=swhCBTxRJxxtIgLi9/dq8+T6r/
+        vspvuy0rZ+pYE/Qr7xdcW7dMSI/fhJyFOTgCsFHKkFZIq7vke3zf0kLJMD6OaKLDB0tcBMhKIreMZ
+        TWm8HtLQ77oVsZG9+jOo1050N5P/oePr0JftFVFYXIJGnrjAFETDM4QkjUo0Il/DHCWbcISI0Drr2
+        v4iOonRLYFTRpN9itQVm4M3ksp2LbDdbZXS5azuxZeGMfKqZOAwvWs+IzmoZ/38wM6Ic+e0QDalm3
+        4v8/+gp+89DHOLr4iBQ1WIo712DB8mXH6lm0dezc1a4yPnPULwJ8YfzX4RWUaQCkjGRWJLKFWaZsK
+        l9RCwGfA==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:40992 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <david@lechnology.com>)
+        id 1mcrEb-0004JI-9h; Tue, 19 Oct 2021 11:41:06 -0400
+Subject: Re: [PATCH 3/3] dt-bindings: net: ti,bluetooth: Convert to
+ json-schema
+To:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh+dt@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Sebastian Reichel <sre@kernel.org>
+Cc:     devicetree@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+References: <cover.1634646975.git.geert+renesas@glider.be>
+ <c1814db9aff7f09ea41b562a2da305312d8df2dd.1634646975.git.geert+renesas@glider.be>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <70d3efb8-e379-5d20-1873-4752e893f10b@lechnology.com>
+Date:   Tue, 19 Oct 2021 10:41:03 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.0.1
-Subject: Re: [PATCH v2 0/5] wcn36xx: Fix DMA buffer allocation and free logic
+In-Reply-To: <c1814db9aff7f09ea41b562a2da305312d8df2dd.1634646975.git.geert+renesas@glider.be>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>,
-        <wcn36xx@lists.infradead.org>
-CC:     <loic.poulain@linaro.org>, <benl@squareup.com>,
-        <daniel.thompson@linaro.org>, <johannes@sipsolutions.net>
-References: <20211018231722.873525-1-bryan.odonoghue@linaro.org>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20211018231722.873525-1-bryan.odonoghue@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/18/2021 4:17 PM, Bryan O'Donoghue wrote:
-> V2:
-> - Functionally decomposes the DXE reset in an additional patch.
->    Since we call this logic more than once, it should be in a function.
+On 10/19/21 7:43 AM, Geert Uytterhoeven wrote:
+> Convert the Texas Instruments serial-attached bluetooth Device Tree
+> binding documentation to json-schema.
 > 
-> - Leaves as-is the DXE reset write.
+> Add missing max-speed property.
+> Update the example.
 > 
->    Johannes Berg asked me if we are sure by the time the write to the reset
->    register completes that DXE transactions will be suitably quiesced.
-> 
->    The answer is:
->    1. I believe these writes are non-posted writes
->    2. Downstream doesn't poll for DXE reset completion
-> 
->    So on #2 I have no real data for or against a polling operation, my tests
->    indicate the reset indication in the register is atomic and as far as I
->    can discern that also means DMA transactions are terminated.
-> 
-> V1:
-> Digging around through some bugs reported from an extensive testing cycle
-> we've found that wcn36xx has a number of unexplained RX related oopses.
-> 
-> In at least one case we appear to have DMA'd data to an unmapped region.
-> The written data appears to be a correctly formed DMA buffer descriptor - a
-> DXE BD in WCNSS parlance, with an AP beacon inside of it.
-> 
-> Reasoning about how such a situation might come about and reviewing the
-> run-time code, there was no obvious path where we might free a BD or an
-> skbuff pointed to by a BD, which DXE might not be aware of.
-> 
-> However looking at the ieee80211_ops.start and ieee80211_ops.stop callbacks
-> in wcn36xx we can see a number of bugs associated with BD allocation, error
-> handling and leaving the DMA engine active, despite freeing SKBs on the MSM
-> side.
-> 
-> This last mention - failure to quiesce potential DMA from the downstream
-> agent - WCNSS DXE despite freeing the memory @ the skbuffs is a decent
-> candidate for our unexplained upstream DMA transaction to unmapped memory.
-> 
-> Since wcn36xx_stop and wcn36xx_start can be called a number of times by the
-> controlling upper layers it means there is a potential gap between
-> wcn36xx_stop and wcn36xx_start which could leave WCNSS in a state where it
-> will try to DMA to memory we have freed.
-> 
-> This series addresses the obvious bugs that jump out on the start()/stop()
-> path.
-> 
-> Patch #1
->    In order to make it easier to read the DXE code, I've moved all of the
->    lock taking and freeing for DXE into dxe.c
-> 
-> Patch #2
->    Fixes a very obviously broken channel enable/disable cycle
-> 
-> Patch #3
->    Fixes a very obvious memory leak with dma_alloc_coherent()
-> 
-> Patch #4
->    Makes sure before we release skbuffs which we assigned to the RX channels
->    that we ensure the DXE block is put into reset
-> 
-> Bryan O'Donoghue (5):
->    wcn36xx: Fix dxe lock layering violation
->    wcn36xx: Fix DMA channel enable/disable cycle
->    wcn36xx: Release DMA channel descriptor allocations
->    wcn36xx: Functionally decompose DXE reset
->    wcn36xx: Put DXE block into reset before freeing memory
-> 
->   drivers/net/wireless/ath/wcn36xx/dxe.c  | 83 +++++++++++++++++++++----
->   drivers/net/wireless/ath/wcn36xx/dxe.h  |  2 +
->   drivers/net/wireless/ath/wcn36xx/txrx.c | 15 +----
->   3 files changed, 74 insertions(+), 26 deletions(-)
-> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> I listed David as maintainer, as he wrote the original bindings.
+> Please scream if not appropriate.
 
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+I'm not affiliated with TI in any way, so if someone from TI
+wants to take responsibility, that would probably be better.
+
+For for the time being...
+
+Acked-by: David Lechner <david@lechnology.com>
+
+
+> ---
+>   .../devicetree/bindings/net/ti,bluetooth.yaml | 91 +++++++++++++++++++
+>   .../devicetree/bindings/net/ti-bluetooth.txt  | 60 ------------
+>   2 files changed, 91 insertions(+), 60 deletions(-)
+>   create mode 100644 Documentation/devicetree/bindings/net/ti,bluetooth.yaml
+>   delete mode 100644 Documentation/devicetree/bindings/net/ti-bluetooth.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/net/ti,bluetooth.yaml b/Documentation/devicetree/bindings/net/ti,bluetooth.yaml
+> new file mode 100644
+> index 0000000000000000..9f6102977c9732d2
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/ti,bluetooth.yaml
+> @@ -0,0 +1,91 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/ti,bluetooth.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments Bluetooth Chips
+> +
+> +maintainers:
+> +  - David Lechner <david@lechnology.com>
+> +
+> +description: |
+> +  This documents the binding structure and common properties for serial
+> +  attached TI Bluetooth devices. The following chips are included in this
+> +  binding:
+> +
+> +  * TI CC256x Bluetooth devices
+> +  * TI WiLink 7/8 (wl12xx/wl18xx) Shared Transport BT/FM/GPS devices
+> +
+> +  TI WiLink devices have a UART interface for providing Bluetooth, FM radio,
+> +  and GPS over what's called "shared transport". The shared transport is
+> +  standard BT HCI protocol with additional channels for the other functions.
+> +
+> +  TI WiLink devices also have a separate WiFi interface as described in
+> +  wireless/ti,wlcore.yaml.
+> +
+> +  This bindings follows the UART slave device binding in ../serial/serial.yaml.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,cc2560
+> +      - ti,wl1271-st
+> +      - ti,wl1273-st
+> +      - ti,wl1281-st
+> +      - ti,wl1283-st
+> +      - ti,wl1285-st
+> +      - ti,wl1801-st
+> +      - ti,wl1805-st
+> +      - ti,wl1807-st
+> +      - ti,wl1831-st
+> +      - ti,wl1835-st
+> +      - ti,wl1837-st
+> +
+> +  enable-gpios:
+> +    maxItems: 1
+> +
+> +  vio-supply:
+> +    description: Vio input supply (1.8V)
+> +
+> +  vbat-supply:
+> +    description: Vbat input supply (2.9-4.8V)
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - const: ext_clock
+> +
+> +  max-speed: true
+
+Does this mean that max-speed from serial.yaml is supported
+but current-speed is not?
+
+> +
+> +  nvmem-cells:
+> +    maxItems: 1
+> +    description:
+> +      Nvmem data cell that contains a 6 byte BD address with the most
+> +      significant byte first (big-endian).
+> +
+> +  nvmem-cell-names:
+> +    items:
+> +      - const: bd-address
+> +
+> +required:
+> +  - compatible
+> +
+> +additionalProperties: false
+> +
