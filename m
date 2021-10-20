@@ -2,119 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C54E3434828
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Oct 2021 11:46:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C81C434880
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Oct 2021 12:03:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229919AbhJTJso (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Oct 2021 05:48:44 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:39147 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbhJTJsn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Oct 2021 05:48:43 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19K9kAowD011478, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19K9kAowD011478
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 20 Oct 2021 17:46:10 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Wed, 20 Oct 2021 17:46:10 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Wed, 20 Oct 2021 05:46:10 -0400
-Received: from RTEXMBS04.realtek.com.tw ([fe80::5cc6:b604:a3b5:9abe]) by
- RTEXMBS04.realtek.com.tw ([fe80::5cc6:b604:a3b5:9abe%5]) with mapi id
- 15.01.2308.008; Wed, 20 Oct 2021 17:46:09 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "cgel.zte@gmail.com" <cgel.zte@gmail.com>
-CC:     "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "lv.ruyi@zte.com.cn" <lv.ruyi@zte.com.cn>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        id S229943AbhJTKGE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Oct 2021 06:06:04 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:15763 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229555AbhJTKGD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 Oct 2021 06:06:03 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1634724229; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=o0gcgeYG2TFJIRmkEmj991GpVd5q7c0MmgaoWSpdXII=; b=ACszDfx8mktScAlzZ98VODIylFPXKzLQz9hpD7B1ZNxPVBeXCwka0T1CEr/mJ2TmVOhVXZwv
+ qa/oDT9UHZ1B+JZE+dC8/yeG3YUbn8y+IF5Ma3tkEODDXMuASTtcz28+/Bi4PzSkaCIGsLew
+ sAV2MSb9n53qGlfjFPD0O59G08c=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 616fe984b03398c06cf37808 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 20 Oct 2021 10:03:48
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 0F4C1C4360D; Wed, 20 Oct 2021 10:03:48 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 01675C4338F;
+        Wed, 20 Oct 2021 10:03:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 01675C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Pkshih <pkshih@realtek.com>
+Cc:     "cgel.zte\@gmail.com" <cgel.zte@gmail.com>,
+        "davem\@davemloft.net" <davem@davemloft.net>,
+        "kuba\@kernel.org" <kuba@kernel.org>,
+        "lv.ruyi\@zte.com.cn" <lv.ruyi@zte.com.cn>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Zeal Robot <zealci@zte.com.cn>
-Subject: RE: [PATCH] rtw89: fix error function parameter
-Thread-Topic: [PATCH] rtw89: fix error function parameter
-Thread-Index: AQHXxJzcl/L9Ey4To0qT1Twz/99G66vbD7qAgAAPjTA=
-Date:   Wed, 20 Oct 2021 09:46:09 +0000
-Message-ID: <3aa076f0e39a485ca090f8c14682b694@realtek.com>
+Subject: Re: [PATCH] rtw89: fix error function parameter
 References: <20211019035311.974706-1-lv.ruyi@zte.com.cn>
- <163471982441.1743.9901035714649893101.kvalo@codeaurora.org>
-In-Reply-To: <163471982441.1743.9901035714649893101.kvalo@codeaurora.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzIwIOS4iuWNiCAwNjoxMjowMA==?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        <163471982441.1743.9901035714649893101.kvalo@codeaurora.org>
+        <3aa076f0e39a485ca090f8c14682b694@realtek.com>
+Date:   Wed, 20 Oct 2021 13:03:43 +0300
+In-Reply-To: <3aa076f0e39a485ca090f8c14682b694@realtek.com> (Pkshih's message
+        of "Wed, 20 Oct 2021 09:46:09 +0000")
+Message-ID: <878ryof1xc.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/20/2021 09:28:46
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 166841 [Oct 20 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/20/2021 09:31:00
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGt2YWxvPWNvZGVhdXJvcmEu
-b3JnQG1nLmNvZGVhdXJvcmEub3JnIDxrdmFsbz1jb2RlYXVyb3JhLm9yZ0BtZy5jb2RlYXVyb3Jh
-Lm9yZz4gT24gQmVoYWxmIE9mIEthbGxlDQo+IFZhbG8NCj4gU2VudDogV2VkbmVzZGF5LCBPY3Rv
-YmVyIDIwLCAyMDIxIDQ6NTAgUE0NCj4gVG86IGNnZWwuenRlQGdtYWlsLmNvbQ0KPiBDYzogZGF2
-ZW1AZGF2ZW1sb2Z0Lm5ldDsga3ViYUBrZXJuZWwub3JnOyBQa3NoaWggPHBrc2hpaEByZWFsdGVr
-LmNvbT47IGx2LnJ1eWlAenRlLmNvbS5jbjsNCj4gbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwu
-b3JnOyBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3Jn
-OyBaZWFsIFJvYm90DQo+IDx6ZWFsY2lAenRlLmNvbS5jbj4NCj4gU3ViamVjdDogUmU6IFtQQVRD
-SF0gcnR3ODk6IGZpeCBlcnJvciBmdW5jdGlvbiBwYXJhbWV0ZXINCj4gDQo+IGNnZWwuenRlQGdt
-YWlsLmNvbSB3cm90ZToNCj4gDQo+ID4gRnJvbTogTHYgUnV5aSA8bHYucnV5aUB6dGUuY29tLmNu
-Pg0KPiA+DQo+ID4gVGhpcyBwYXRjaCBmaXhlcyB0aGUgZm9sbG93aW5nIENvY2NpbmVsbGUgd2Fy
-bmluZzoNCj4gPiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0dzg4NTJhLmM6
-NzUzOg0KPiA+IFdBUk5JTkcgIHBvc3NpYmxlIGNvbmRpdGlvbiB3aXRoIG5vIGVmZmVjdCAoaWYg
-PT0gZWxzZSkNCj4gPg0KPiA+IFJlcG9ydGVkLWJ5OiBaZWFsIFJvYm90IDx6ZWFsY2lAenRlLmNv
-bS5jbj4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBMdiBSdXlpIDxsdi5ydXlpQHp0ZS5jb20uY24+DQo+
-ID4gQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiANCj4gRmFp
-bGVkIHRvIGFwcGx5LCBwbGVhc2UgcmViYXNlIG9uIHRvcCBvZiB3aXJlbGVzcy1kcml2ZXJzLW5l
-eHQuDQo+IA0KPiBlcnJvcjogcGF0Y2ggZmFpbGVkOiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFs
-dGVrL3J0dzg5L3J0dzg4NTJhLmM6NzUzDQo+IGVycm9yOiBkcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0dzg5L3J0dzg4NTJhLmM6IHBhdGNoIGRvZXMgbm90IGFwcGx5DQo+IGVycm9yOiBE
-aWQgeW91IGhhbmQgZWRpdCB5b3VyIHBhdGNoPw0KPiBJdCBkb2VzIG5vdCBhcHBseSB0byBibG9i
-cyByZWNvcmRlZCBpbiBpdHMgaW5kZXguDQo+IGhpbnQ6IFVzZSAnZ2l0IGFtIC0tc2hvdy1jdXJy
-ZW50LXBhdGNoJyB0byBzZWUgdGhlIGZhaWxlZCBwYXRjaA0KPiBBcHBseWluZzogcnR3ODk6IGZp
-eCBlcnJvciBmdW5jdGlvbiBwYXJhbWV0ZXINCj4gVXNpbmcgaW5kZXggaW5mbyB0byByZWNvbnN0
-cnVjdCBhIGJhc2UgdHJlZS4uLg0KPiBQYXRjaCBmYWlsZWQgYXQgMDAwMSBydHc4OTogZml4IGVy
-cm9yIGZ1bmN0aW9uIHBhcmFtZXRlcg0KPiANCj4gUGF0Y2ggc2V0IHRvIENoYW5nZXMgUmVxdWVz
-dGVkLg0KPiANCg0KSSB0aGluayB0aGlzIGlzIGJlY2F1c2UgdGhlIHBhdGNoIGlzIHRyYW5zbGF0
-ZWQgaW50byBzcGFjZXMgaW5zdGVhZCBvZiB0YWJzLCANCmluIHRoaXMgYW5kIGZvbGxvd2luZyBz
-dGF0ZW1lbnRzLg0KIiAgICAgICAgICAgICAgICBpZiAoaXNfMmcpIg0KDQotLQ0KUGluZy1LZQ0K
-DQoNCg==
+Pkshih <pkshih@realtek.com> writes:
+
+>> -----Original Message-----
+>> From: kvalo=codeaurora.org@mg.codeaurora.org
+>> <kvalo=codeaurora.org@mg.codeaurora.org> On Behalf Of Kalle
+>> Valo
+>> Sent: Wednesday, October 20, 2021 4:50 PM
+>> To: cgel.zte@gmail.com
+>> Cc: davem@davemloft.net; kuba@kernel.org; Pkshih
+>> <pkshih@realtek.com>; lv.ruyi@zte.com.cn;
+>> linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+>> linux-kernel@vger.kernel.org; Zeal Robot
+>> <zealci@zte.com.cn>
+>> Subject: Re: [PATCH] rtw89: fix error function parameter
+>> 
+>> cgel.zte@gmail.com wrote:
+>> 
+>> > From: Lv Ruyi <lv.ruyi@zte.com.cn>
+>> >
+>> > This patch fixes the following Coccinelle warning:
+>> > drivers/net/wireless/realtek/rtw89/rtw8852a.c:753:
+>> > WARNING  possible condition with no effect (if == else)
+>> >
+>> > Reported-by: Zeal Robot <zealci@zte.com.cn>
+>> > Signed-off-by: Lv Ruyi <lv.ruyi@zte.com.cn>
+>> > Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+>> 
+>> Failed to apply, please rebase on top of wireless-drivers-next.
+>> 
+>> error: patch failed: drivers/net/wireless/realtek/rtw89/rtw8852a.c:753
+>> error: drivers/net/wireless/realtek/rtw89/rtw8852a.c: patch does not apply
+>> error: Did you hand edit your patch?
+>> It does not apply to blobs recorded in its index.
+>> hint: Use 'git am --show-current-patch' to see the failed patch
+>> Applying: rtw89: fix error function parameter
+>> Using index info to reconstruct a base tree...
+>> Patch failed at 0001 rtw89: fix error function parameter
+>> 
+>> Patch set to Changes Requested.
+>> 
+>
+> I think this is because the patch is translated into spaces instead of tabs, 
+> in this and following statements.
+> "                if (is_2g)"
+
+Ah, I did wonder why it failed as I didn't see any similar patches. We
+have an item about this in the wiki:
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#format_issues
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
