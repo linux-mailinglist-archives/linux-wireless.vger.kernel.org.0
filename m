@@ -2,107 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27E4F43501F
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Oct 2021 18:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DADCB435159
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Oct 2021 19:33:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230020AbhJTQ2n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Oct 2021 12:28:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50684 "EHLO
+        id S230372AbhJTRgK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Oct 2021 13:36:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229943AbhJTQ2m (ORCPT
+        with ESMTP id S230363AbhJTRgI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Oct 2021 12:28:42 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFFD3C06161C
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Oct 2021 09:26:27 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id o24so12813049wms.0
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Oct 2021 09:26:27 -0700 (PDT)
+        Wed, 20 Oct 2021 13:36:08 -0400
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83373C06174E
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Oct 2021 10:33:53 -0700 (PDT)
+Received: by mail-oi1-x233.google.com with SMTP id q129so10611737oib.0
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Oct 2021 10:33:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=3SQrn2nw1EiNhbPfAJK4wb6SICQN1Y4EQO0RwB7A/aQ=;
-        b=PYqg2tKF+l7xBbLepJ7MkZxUbHdeOgtBzPTuq6Uy1rop5nYVP2Ap6nqn21onEqNH1w
-         D2+BGSLnbldUPL0Zp8NvgKSNvj1gR3gvHGwSVz/JuTNshhg4PrVup+YCtXAO7Cr9tlNh
-         MzNfaJE9eBjMKOjWie9wZYL6WgBH892Xtl6iQBv45IplmdIqP7VPWuA47rqVwjXOGa4v
-         dqIkZCHJu6NeAOgOLXKZelSfjopE/hU9JTuDoyXeP5nI7WBFvuEWdZpglYiIg5rPKGus
-         CUN8R65AG5HNXcti/V5KsPb7G6PxSUM8LkRhG/W2x40QkFC5EBUqFnXAXM66DRVKInqT
-         lxHA==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fdaRz+/HIqoZ+D6ASe4LTEi6mTmOeWkSvY06s8Isgz0=;
+        b=dxr9ZT1SPRYkdpGZIuvRMH2pBK3dL8EwUNYym6mFO4Zteaqbxx45lA4PG5/RqNnACG
+         aqlkFhP6xgZ8zOz9Hw+Rg1pIdSF7d41jbaI+QJzqSgtDqI0lz3L+8cS3Vou1Q9ah4Qyt
+         BJxnV7DRjHZvXSXYNOuhPXGh4Bnp17F2LUU2o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=3SQrn2nw1EiNhbPfAJK4wb6SICQN1Y4EQO0RwB7A/aQ=;
-        b=DzLlqn8vyOFtg1PMAb9C9XuleSidnx2izt2jKdiRKTZ1pGR2+qn6+K82I9q2FJlvES
-         N6G8pfMFb2JN4/7ZVIa69IeF77I5/VdUFEfy4qlydbG+e0GvnJ7cpJW6uiPnW38Qom6v
-         8smxgcqeP1DZO12cQ29DzcmMKz59O8CGqZoQMDV99mZXQZOoyu7YUlNQjyX7e0jZRzEl
-         I+/u3DaHOkG6j8htbMQVL+sxrfMLvGNV1rzBfbI8N8brQhResQesYYl4O9WSyOzB+7/R
-         VScTrhrBELXOIu0+4RtVtk9p5quheLgxt4/C6Fds+pD/H0Ib5ttzmftObMZNmj86ePB3
-         brbw==
-X-Gm-Message-State: AOAM531IhVaKlpgXuIrOl9jXpKHZkE2dQ857Bvj57DlK01k7DL8VSUU8
-        LsXJgmBo813esNKwT9uy/4beLw==
-X-Google-Smtp-Source: ABdhPJxcsqeUgYAImPE9yXLqv4iYdDU+eKZah8KkHX0W3OgMUj/OSgJJD+Pjk+MeSGOJ7+N0ym0sqw==
-X-Received: by 2002:a7b:c114:: with SMTP id w20mr226490wmi.143.1634747186193;
-        Wed, 20 Oct 2021 09:26:26 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id y5sm2325112wrq.85.2021.10.20.09.26.24
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fdaRz+/HIqoZ+D6ASe4LTEi6mTmOeWkSvY06s8Isgz0=;
+        b=OH1/uLMqTZSiLpiqz58rRK67FfGgIcR8iBy5NP6VWNlajTFxQiIa5RedIhUrfQ8sPL
+         v2PwIatqN4/4+ha3GKCrxMqvIRrErjCT6ND3QYTaqM8SvMJ8FuduZTvft1mLgFrI1+Nz
+         QMg7DnTdrpDqLHOeP+AYAtf0Dup+2xEBqkztHdXQL6LdkVx7heeaj81+T0nqSrkAY6DN
+         3FR0LEmPmDni5vBfS0/sH1oGxvbwkz1jMt8y2/tchENmSayCBiXRoYYZbuvUM2uqsHif
+         7V0m9oOu0ygRBKy06oxTR0NlunnNKzbVYPK86Ykhwe8VS11gJTa9KYLIudTr1WPg1RjE
+         sJqg==
+X-Gm-Message-State: AOAM532PV2yg78GMT7lg/ysQfKRmJnnoi+bZcGEgeElhRk7Y93mXfIMB
+        H1G2kaQcMXL1xAzzxsk3rhW2gRjEpyWW6g==
+X-Google-Smtp-Source: ABdhPJypxB+44sqRfa9Xxp8+RP0E8DwMqMVR1uFCrkrbZJmuN5I7Hwovi6vb/rqOVPJr+t8CHLBRpg==
+X-Received: by 2002:aca:604:: with SMTP id 4mr683755oig.8.1634751232344;
+        Wed, 20 Oct 2021 10:33:52 -0700 (PDT)
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com. [209.85.167.173])
+        by smtp.gmail.com with ESMTPSA id l16sm495010oos.44.2021.10.20.10.33.48
+        for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Oct 2021 09:26:25 -0700 (PDT)
-Message-ID: <574368d8-ebfa-7765-ea0d-def99b855719@linaro.org>
-Date:   Wed, 20 Oct 2021 17:28:25 +0100
+        Wed, 20 Oct 2021 10:33:49 -0700 (PDT)
+Received: by mail-oi1-f173.google.com with SMTP id r6so10546278oiw.2
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Oct 2021 10:33:48 -0700 (PDT)
+X-Received: by 2002:a05:6808:1892:: with SMTP id bi18mr621637oib.105.1634751228418;
+ Wed, 20 Oct 2021 10:33:48 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.1
-Subject: Re: [PATCH 1/2] wcn36xx: Correct band/freq reporting on RX
-Content-Language: en-US
-To:     Loic Poulain <loic.poulain@linaro.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-References: <1634554678-7993-1-git-send-email-loic.poulain@linaro.org>
- <d2128789-646f-1e02-0dd2-a9ac14b37cf7@linaro.org>
- <5a325d84-0d02-237b-a0a3-9eddd2e481de@linaro.org>
- <CAMZdPi8Mh+pN=xExhY1TFYJYTKCDJmVApNG3oOMFtF5nLu770A@mail.gmail.com>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <CAMZdPi8Mh+pN=xExhY1TFYJYTKCDJmVApNG3oOMFtF5nLu770A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20211020120345.2016045-1-wanghai38@huawei.com>
+In-Reply-To: <20211020120345.2016045-1-wanghai38@huawei.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Wed, 20 Oct 2021 10:33:37 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXNUY_HevQm12Q0MZrYzcbb7br94xO6fkuFi0EuzdV_LjQ@mail.gmail.com>
+Message-ID: <CA+ASDXNUY_HevQm12Q0MZrYzcbb7br94xO6fkuFi0EuzdV_LjQ@mail.gmail.com>
+Subject: Re: [PATCH v2 wireless-drivers 0/2] libertas: Fix some memory leak bugs
+To:     Wang Hai <wanghai38@huawei.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, shenyang39@huawei.com,
+        marcelo@kvack.org, linville@tuxdriver.com, luisca@cozybit.com,
+        libertas-dev@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 20/10/2021 14:54, Loic Poulain wrote:
-> Hi Bryan, Kalle,
-> 
-> On Tue, 19 Oct 2021 at 02:26, Bryan O'Donoghue
-> <bryan.odonoghue@linaro.org> wrote:
->>
->> On 18/10/2021 23:51, Bryan O'Donoghue wrote:
->>> On 18/10/2021 11:57, Loic Poulain wrote:
->>>>            ieee80211_is_probe_resp(hdr->frame_control))
->>>>            status.boottime_ns = ktime_get_boottime_ns();
->>>
->>> I think this is dangling in your tree, doesn't apply cleanly for me anyway
->>>
->>> Other than that
->>>
->>> Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
->>
->> Hmm.
->>
->> I'm told by a colleague with access to a router that has channel 144 - I
->> do not BTW - that 144 is not showing up with the firmware offload scan.
->>
->> We should probably hold off on applying for the time being :(
-> 
-> So the missing channel 144 is due to a different problem, and is now fixed
-> in a subsequent patch:
->      wcn36xx: Channel list update before hardware scan
-> 
-> So I think we can go with this change :-).
-> 
-> Regards,
-> Loic
-> 
+On Wed, Oct 20, 2021 at 5:04 AM Wang Hai <wanghai38@huawei.com> wrote:
+> This patchset fixes some memory leak bugs by adding the missing kfree().
 
-Cool, nice job
+You could probably just as well switch the kzalloc()'s to be
+devm_kzalloc()'s, but either way works I guess.
+
+Reviewed-by: Brian Norris <briannorris@chromium.org>
