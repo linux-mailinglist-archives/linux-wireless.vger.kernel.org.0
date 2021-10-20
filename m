@@ -2,70 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFA824347F2
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Oct 2021 11:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69C374347F9
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Oct 2021 11:32:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230105AbhJTJb4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Oct 2021 05:31:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38808 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230049AbhJTJbw (ORCPT
+        id S229764AbhJTJes (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Oct 2021 05:34:48 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:49867 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229639AbhJTJel (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Oct 2021 05:31:52 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C370DC061749
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Oct 2021 02:29:37 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id d198-20020a1c1dcf000000b00322f53b9b89so8659973wmd.0
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Oct 2021 02:29:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=ykgdjxhAzVVgvIOev5ZjMvpn28ZknbgkcJ3ItmcQ13s=;
-        b=ZuicYaPmxSzyr6JBQhYORErvlkIchzupjXKbVq8YC9eszd6nhJi0Cf5Nq45YLUHCc1
-         n7cfCFpil4NuCKsncNgb+JJ3AaFwus1B2oSAsmfMEeB2Pouagjk+5VofjVITSqbxfBku
-         6x9pJ30KQyZtyG9fe2cDNPhJzMogJ9LQgHHp0z0qxzm8zYtds5sVeuAKeJ9pgtYEJwpK
-         rNn9OMRBfvh4IQ7ZJVKUTOKQwPdKM3vFhodqDwYyI0bnXEvV7kebV1GBCS+ghsVlFXWI
-         IAjemPBckf6SgjlCDjuH2AmU7WlxOzpIs5gMcC1cdVgfKSv1fgqVbGhFK1jkzIpWk4g7
-         aY/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=ykgdjxhAzVVgvIOev5ZjMvpn28ZknbgkcJ3ItmcQ13s=;
-        b=bxanjchDwTvfDg81oB8x0bKuducRChqoXGcp4E1bfyW34vXEwWpARBmJesDlIeTQBF
-         oAfm6pVMCrb3mxw3qthi5HMFq2Wx+rotA0tZAeKIrqt44Xvl6bVYWnfd7JoZpTmjuAv9
-         gmTKPF6YSM9/856NbithdVAJm9Sm20a6BW49Of5/5MjvuTH5Qm8P79cI0Yu02DN55TOs
-         ewYhAZ1YcSbBJxdxeBK79RxHhg6h52s8p2KBj7BafF+si0yM5+513r21e9TJt9ixPdfl
-         73z8nTy6TO+qMCW4sW6uBWsMnNQKKtXYVOP8oKFWFPnUJEYGqs86G4pUuI5bWpvVNOhw
-         oU3Q==
-X-Gm-Message-State: AOAM531bjUHG8jaVn/1DYXpJFzHHoN72V5YggkrH2YwFKtb+Otg8s6Zt
-        MoWW5caut/8DRKqnh8ljeVcHL8bNVVl9+UthHcI=
-X-Google-Smtp-Source: ABdhPJynahzsNfTmJNUersmZK5LOW9cbESAfSUmlUszkYq5g/gbXlkyY2wuA7JyNKC/vVAuNJ7d+d/C/fYWguYZVqTc=
-X-Received: by 2002:a05:600c:19cd:: with SMTP id u13mr12081006wmq.148.1634722176194;
- Wed, 20 Oct 2021 02:29:36 -0700 (PDT)
+        Wed, 20 Oct 2021 05:34:41 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1634722347; h=Date: Message-ID: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=jYR6KS5eDp3lpVQnxJL2uWkWNd+fNs2em1l4cSPYDIU=;
+ b=lVIKo2JPoB3tu949vefX8s6iUy0mn5Aa4ArTiRCx1mfzejYvUZoV39EDAFZOu1DvFVCGXzDF
+ R6x9XvdIE5mfioD35D/th/doOgH8zxlZMwDkkm1S8bIzRks+plFpEzr7l0y//Kh6LiWKKW5D
+ Mvl04XCUL8jbx8ivIsg58KGiBtQ=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 616fe20d321f240051461797 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 20 Oct 2021 09:31:57
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 39C89C4360C; Wed, 20 Oct 2021 09:31:57 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EF522C4338F;
+        Wed, 20 Oct 2021 09:31:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org EF522C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a7b:c14c:0:0:0:0:0 with HTTP; Wed, 20 Oct 2021 02:29:35
- -0700 (PDT)
-Reply-To: mauhin11@gmail.com
-From:   Maureen Hinckley <joycenyamweya5@gmail.com>
-Date:   Wed, 20 Oct 2021 12:29:35 +0300
-Message-ID: <CAOT2_Cy3W=onaBKJC+ZypsZes2PCE-qkppNit8hb-di16xLrEA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH for v5.15 1/5] iwlwifi: mvm: reset PM state on
+ unsuccessful
+ resume
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <iwlwifi.20211016114029.7ceb9eaca9f6.If0cbef38c6d07ec1ddce125878a4bdadcb35d2c9@changeid>
+References: <iwlwifi.20211016114029.7ceb9eaca9f6.If0cbef38c6d07ec1ddce125878a4bdadcb35d2c9@changeid>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163472231083.20863.4884048064570800740.kvalo@codeaurora.org>
+Date:   Wed, 20 Oct 2021 09:31:57 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---=20
-Hello,
+Luca Coelho <luca@coelho.fi> wrote:
 
-I am Maureen Hinckley and my foundation is donating ($2.2 Million.
-Dollars) to you. Contact us via my email at (mauhin11@gmail.com) for
-further details.
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> If resume fails for some reason, we need to set the PM state
+> back to normal so we're able to send commands during firmware
+> reset, rather than failing all of them because we're in D3.
+> 
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Fixes: 708a39aaca22 ("iwlwifi: mvm: don't send commands during suspend\resume transition")
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-Best Regards,
-Mrs. Maureen Hinckley,
-Copyright =C2=A92021 The Maureen Hinckley Foundation All Rights Reserved.
+5 patches applied to wireless-drivers-next.git, thanks.
+
+2f629a7772e2 iwlwifi: mvm: reset PM state on unsuccessful resume
+70382b0897ee iwlwifi: change all JnP to NO-160 configuration
+0f892441d8c3 iwlwifi: pnvm: don't kmemdup() more than we have
+e864a77f51d0 iwlwifi: pnvm: read EFI data only if long enough
+8bf26aa10a8e iwlwifi: cfg: set low-latency-xtal for some integrated So devices
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/iwlwifi.20211016114029.7ceb9eaca9f6.If0cbef38c6d07ec1ddce125878a4bdadcb35d2c9@changeid/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
