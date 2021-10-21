@@ -2,37 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACAED435848
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Oct 2021 03:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0644358DF
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Oct 2021 05:11:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231137AbhJUBg6 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Oct 2021 21:36:58 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:49759 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230293AbhJUBg6 (ORCPT
+        id S231144AbhJUDNY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Oct 2021 23:13:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54400 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231174AbhJUDM7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Oct 2021 21:36:58 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19L1YQX70030853, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19L1YQX70030853
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 21 Oct 2021 09:34:27 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Thu, 21 Oct 2021 09:34:26 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Wed, 20 Oct 2021 18:34:25 -0700
-Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
- RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
- 15.01.2308.015; Thu, 21 Oct 2021 09:34:25 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     "cgel.zte@gmail.com" <cgel.zte@gmail.com>,
+        Wed, 20 Oct 2021 23:12:59 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA78C06161C;
+        Wed, 20 Oct 2021 20:10:44 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id t11so17507046plq.11;
+        Wed, 20 Oct 2021 20:10:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:from:to:cc:subject:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=LKUtJj0x5HNA1lDir25VXzXO+gDs3DC1h02o1eB01cc=;
+        b=QzoDiFraU1a1PM00HOXBrZLVjITiJ2Jv1Q0V1vgMn5/16iiXPZuvU8IN2vbGDf0pvO
+         q0LogBW/dABYTTPI3SQ5RijZpzTbvyANGstUVipoavx4YIaxpEAvVd6x/eeY+dAcJCU1
+         Cicz90mRtrlJHGKXsYLvSqt1kOMrVEhYdTb+STBnmbX6rR4i2cHf8gGye8PwMew4hNBq
+         KX2FvSf7yC3iaWAe+8oyIOqmen7nOML78Jy6P8K/VKmSJ1JZ7PsC2wQSfK00P3oJXhaF
+         BiY4brpryRSXgIvcA6Zw+FPiwVXoRwHqjgkFngrkf2wH5jHtJjDqvJeAWWvplX15Tk0w
+         exZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:from:to:cc:subject:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=LKUtJj0x5HNA1lDir25VXzXO+gDs3DC1h02o1eB01cc=;
+        b=llQHv3ilggLD5JHyCV3ODJddokBVdBU8wDvoKU57wjYC6tjSPjH9w1Mh1q01O/jIV6
+         1kVidQh98mzBxN5ge8LPkJm6L5TBlEdlIcmhqQ0WG02+W4PAk1LQwWE8/KSs5RdThIZQ
+         TU7iK8+IzKnfcWUvM8T2zY86rlXWP8J5gm/RfOtx7kRyjRA8N5DToG4aY346fSaJ4J61
+         F6V4IMxGvHnjf9KAYiztn+eIlyG1kYOXhKJSMnWkFVgkOrzl2TE0RxW14iBi66mpm9wJ
+         1nkEwyRMn/XtBG9Gtg7nnR0rFXkbGjVwUcmO0g0rvSRcyrZipBF0VQRfQNdJTEWQdmTV
+         YyYQ==
+X-Gm-Message-State: AOAM533VUFzByMP74KCmCDsbfRm8aNWKAFaLSPsLycFIARA79hOiNaaG
+        GKBcCavyvZCLw9oSoT8yMG4=
+X-Google-Smtp-Source: ABdhPJw1r4kzM4NNvycTJ1Oekjgi9rZ0ViPsPoYnmwu08hWlyWjpGE1ii0KfUWYdSGYUushxmtPBjA==
+X-Received: by 2002:a17:90b:3a88:: with SMTP id om8mr3454187pjb.71.1634785844137;
+        Wed, 20 Oct 2021 20:10:44 -0700 (PDT)
+Received: from localhost ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id i18sm3976856pfq.198.2021.10.20.20.10.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Oct 2021 20:10:43 -0700 (PDT)
+Message-ID: <6170da33.1c69fb81.4050d.c355@mx.google.com>
+X-Google-Original-Message-ID: <20211021031041.GA1041483@cgel.zte@gmail.com>
+Date:   Thu, 21 Oct 2021 03:10:41 +0000
+From:   CGEL <cgel.zte@gmail.com>
+To:     Pkshih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "davem@davemloft.net" <davem@davemloft.net>,
         "kuba@kernel.org" <kuba@kernel.org>,
         "lv.ruyi@zte.com.cn" <lv.ruyi@zte.com.cn>,
@@ -40,127 +61,93 @@ CC:     "cgel.zte@gmail.com" <cgel.zte@gmail.com>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Zeal Robot <zealci@zte.com.cn>
-Subject: RE: [PATCH] rtw89: fix error function parameter
-Thread-Topic: [PATCH] rtw89: fix error function parameter
-Thread-Index: AQHXxJzcl/L9Ey4To0qT1Twz/99G66vbD7qAgAAPjTCAAIsVYIABAw9g
-Date:   Thu, 21 Oct 2021 01:34:25 +0000
-Message-ID: <3e121f8f6dd4411eace22a7030824ce4@realtek.com>
+Subject: Re: [PATCH] rtw89: fix error function parameter
 References: <20211019035311.974706-1-lv.ruyi@zte.com.cn>
-        <163471982441.1743.9901035714649893101.kvalo@codeaurora.org>
-        <3aa076f0e39a485ca090f8c14682b694@realtek.com>
+ <163471982441.1743.9901035714649893101.kvalo@codeaurora.org>
+ <3aa076f0e39a485ca090f8c14682b694@realtek.com>
  <878ryof1xc.fsf@codeaurora.org>
-In-Reply-To: <878ryof1xc.fsf@codeaurora.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/20_=3F=3F_11:54:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+ <3e121f8f6dd4411eace22a7030824ce4@realtek.com>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/21/2021 01:02:29
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 166865 [Oct 20 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;127.0.0.199:7.1.2;wireless.wiki.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/21/2021 01:05:00
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3e121f8f6dd4411eace22a7030824ce4@realtek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-> -----Original Message-----
-> From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On Behalf Of Kalle
-> Valo
-> Sent: Wednesday, October 20, 2021 6:04 PM
-> To: Pkshih <pkshih@realtek.com>
-> Cc: cgel.zte@gmail.com; davem@davemloft.net; kuba@kernel.org; lv.ruyi@zte.com.cn;
-> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Zeal Robot
-> <zealci@zte.com.cn>
-> Subject: Re: [PATCH] rtw89: fix error function parameter
+On Thu, Oct 21, 2021 at 01:34:25AM +0000, Pkshih wrote:
 > 
-> Pkshih <pkshih@realtek.com> writes:
+> > -----Original Message-----
+> > From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On Behalf Of Kalle
+> > Valo
+> > Sent: Wednesday, October 20, 2021 6:04 PM
+> > To: Pkshih <pkshih@realtek.com>
+> > Cc: cgel.zte@gmail.com; davem@davemloft.net; kuba@kernel.org; lv.ruyi@zte.com.cn;
+> > linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Zeal Robot
+> > <zealci@zte.com.cn>
+> > Subject: Re: [PATCH] rtw89: fix error function parameter
+> > 
+> > Pkshih <pkshih@realtek.com> writes:
+> > 
+> > >> -----Original Message-----
+> > >> From: kvalo=codeaurora.org@mg.codeaurora.org
+> > >> <kvalo=codeaurora.org@mg.codeaurora.org> On Behalf Of Kalle
+> > >> Valo
+> > >> Sent: Wednesday, October 20, 2021 4:50 PM
+> > >> To: cgel.zte@gmail.com
+> > >> Cc: davem@davemloft.net; kuba@kernel.org; Pkshih
+> > >> <pkshih@realtek.com>; lv.ruyi@zte.com.cn;
+> > >> linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+> > >> linux-kernel@vger.kernel.org; Zeal Robot
+> > >> <zealci@zte.com.cn>
+> > >> Subject: Re: [PATCH] rtw89: fix error function parameter
+> > >>
+> > >> cgel.zte@gmail.com wrote:
+> > >>
+> > >> > From: Lv Ruyi <lv.ruyi@zte.com.cn>
+> > >> >
+> > >> > This patch fixes the following Coccinelle warning:
+> > >> > drivers/net/wireless/realtek/rtw89/rtw8852a.c:753:
+> > >> > WARNING  possible condition with no effect (if == else)
+> > >> >
+> > >> > Reported-by: Zeal Robot <zealci@zte.com.cn>
+> > >> > Signed-off-by: Lv Ruyi <lv.ruyi@zte.com.cn>
+> > >> > Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> > >>
+> > >> Failed to apply, please rebase on top of wireless-drivers-next.
+> > >>
+> > >> error: patch failed: drivers/net/wireless/realtek/rtw89/rtw8852a.c:753
+> > >> error: drivers/net/wireless/realtek/rtw89/rtw8852a.c: patch does not apply
+> > >> error: Did you hand edit your patch?
+> > >> It does not apply to blobs recorded in its index.
+> > >> hint: Use 'git am --show-current-patch' to see the failed patch
+> > >> Applying: rtw89: fix error function parameter
+> > >> Using index info to reconstruct a base tree...
+> > >> Patch failed at 0001 rtw89: fix error function parameter
+> > >>
+> > >> Patch set to Changes Requested.
+> > >>
+> > >
+> > > I think this is because the patch is translated into spaces instead of tabs,
+> > > in this and following statements.
+> > > "                if (is_2g)"
+> > 
+> > Ah, I did wonder why it failed as I didn't see any similar patches. We
+> > have an item about this in the wiki:
+> > 
+> > https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#format_issues
+> > 
 > 
-> >> -----Original Message-----
-> >> From: kvalo=codeaurora.org@mg.codeaurora.org
-> >> <kvalo=codeaurora.org@mg.codeaurora.org> On Behalf Of Kalle
-> >> Valo
-> >> Sent: Wednesday, October 20, 2021 4:50 PM
-> >> To: cgel.zte@gmail.com
-> >> Cc: davem@davemloft.net; kuba@kernel.org; Pkshih
-> >> <pkshih@realtek.com>; lv.ruyi@zte.com.cn;
-> >> linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
-> >> linux-kernel@vger.kernel.org; Zeal Robot
-> >> <zealci@zte.com.cn>
-> >> Subject: Re: [PATCH] rtw89: fix error function parameter
-> >>
-> >> cgel.zte@gmail.com wrote:
-> >>
-> >> > From: Lv Ruyi <lv.ruyi@zte.com.cn>
-> >> >
-> >> > This patch fixes the following Coccinelle warning:
-> >> > drivers/net/wireless/realtek/rtw89/rtw8852a.c:753:
-> >> > WARNING  possible condition with no effect (if == else)
-> >> >
-> >> > Reported-by: Zeal Robot <zealci@zte.com.cn>
-> >> > Signed-off-by: Lv Ruyi <lv.ruyi@zte.com.cn>
-> >> > Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-> >>
-> >> Failed to apply, please rebase on top of wireless-drivers-next.
-> >>
-> >> error: patch failed: drivers/net/wireless/realtek/rtw89/rtw8852a.c:753
-> >> error: drivers/net/wireless/realtek/rtw89/rtw8852a.c: patch does not apply
-> >> error: Did you hand edit your patch?
-> >> It does not apply to blobs recorded in its index.
-> >> hint: Use 'git am --show-current-patch' to see the failed patch
-> >> Applying: rtw89: fix error function parameter
-> >> Using index info to reconstruct a base tree...
-> >> Patch failed at 0001 rtw89: fix error function parameter
-> >>
-> >> Patch set to Changes Requested.
-> >>
-> >
-> > I think this is because the patch is translated into spaces instead of tabs,
-> > in this and following statements.
-> > "                if (is_2g)"
+> I don't know why neither.
 > 
-> Ah, I did wonder why it failed as I didn't see any similar patches. We
-> have an item about this in the wiki:
+> I check the mail header of this patch, the mailer is
+> "X-Mailer: git-send-email 2.25.1". It should work properly.
 > 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#format_issues
+> Lv Ruyi, could you help to check what happens?
 > 
+> --
+> Ping-Ke
 
-I don't know why neither.
-
-I check the mail header of this patch, the mailer is
-"X-Mailer: git-send-email 2.25.1". It should work properly.
-
-Lv Ruyi, could you help to check what happens?
-
---
-Ping-Ke
-
+Thanks for Ping-Ke's suggestion,you are right.The previous patch
+is translated into spaces instead of tabs,and I will submitt a
+new correct one.
