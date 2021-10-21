@@ -2,159 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B037C436DB4
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 00:45:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AF84436DD8
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 01:01:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232056AbhJUWr3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Oct 2021 18:47:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40650 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229567AbhJUWr2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Oct 2021 18:47:28 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E60F46128E;
-        Thu, 21 Oct 2021 22:45:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634856312;
-        bh=m+qfnO/SBKNnY0uN/eCpqLaGQq20Fvm3i99u9LONZh4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LiiCwuF/Qwxl+7mNxxl3EIBsU58YVY3QuF+op5wV1Cjh/dF31MbVKVFBtp/GxXJMC
-         jlSzQGFAjneD1R/VP5DfNTj1lI/K10GSTeQxZxJn2BOpcmCucPqxzOKBPL64XC3Zgh
-         kdrsrNE/xAmQwdiD7i3wKURM3MSU02JZQuz9WF117Sq7dNNYO4WGCq5rhEiO1+w2qD
-         XXsZte8BIKCD1GyRvb26w9I+vAi6atbgbnD7ysCKtenZ+R+Wq61JtOird+5Dtq3tMm
-         oG//QDfIffvAKbz7ndZoX/H0rZWPS7uvJIfmhaybEe6QDw47rGYX3MGpTmw7G5pxUq
-         18D81NdV1gyCA==
-Date:   Fri, 22 Oct 2021 00:45:08 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: Re: linux-next: Tree for Oct 21
- (drivers/net/wireless/mediatek/mt76/sdio.o)
-Message-ID: <YXHtdI61S54Cm0S2@lore-desk>
-References: <20211021184300.30c77f51@canb.auug.org.au>
- <88795dab-d8a9-856e-a938-8da6acc944ea@infradead.org>
+        id S231967AbhJUXDR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Oct 2021 19:03:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44010 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229567AbhJUXDQ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 21 Oct 2021 19:03:16 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A24C061764
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Oct 2021 16:00:59 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id z14so894616wrg.6
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Oct 2021 16:00:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=UAOvT72nEzyjB3EaBfIB4vBLAlWNhJb9FUU2K5PC8fM=;
+        b=etVGqKiIllNvb+Y/DUJjzgXhbpwVhbDk9fYGyZ9OViOm602O+XcKsGgej2p87JfAKi
+         evPCSiTmYVyd+YHaVwzqcTzpFhzhfDgm/EwOSSJUC3xNYKKJtH04hIGQe2oNnzaql7Rl
+         q3L5eTt5O8z9bqCFC97q0r/cGU9QGYK16ikAxsv7wNe8JA5ZX4HS8wuuru1MHlg0EELf
+         Qhcd2oGDgcpKPHHk8tQwc48PeAfjQT6r7VcmT4q+BPOOC2l/SV5mcjQDaiXNqr9JBfut
+         jfeW98zUB3HN4x55LYb6KhiHGgMMyknh6qbXT3Vi/h7sPiJI0b6irRrYK0Om5OxLohdd
+         exjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=UAOvT72nEzyjB3EaBfIB4vBLAlWNhJb9FUU2K5PC8fM=;
+        b=DbrPi0PyFAFSld74gjQTbadr/XWfUU8JnEqwJ99qaID1oF3SsjPhDc1KdO9pOsi0BU
+         FN8bfMs2FO0hXSMOTNvbc/buB0kfKAo0L6B11njRAKKaeQ4GHANp8DW0gzDnJViPECFn
+         fea9KgJsZ6RezfjtOPw0QKkcQMah9reT+kCTUd43mWvXtP2Wcd1bIruxLdQdk6t5Y111
+         uK4RSaIG+9mRKbFV7dPqy0JPsriAtRdESCR6kWb6/SAGJ1n8t4yr7VRKmOq5EJ3w920/
+         /RNgbRC8zrZy7alsLUX4q9d97/v9GX1BXjVP/U/vMCVGRYHa38WsiTnJ2bSc+ApZi6F5
+         Ql9Q==
+X-Gm-Message-State: AOAM530jodLIQKOUrW8FYyJOi256+CryfQvXntZSwVu3OSs+M4XDJRcD
+        vE9GrUdjvDStvDIMCllaD5Non2CsU8MasQ6/ZCw=
+X-Google-Smtp-Source: ABdhPJwpBKwKOCTrm6F7p9ZdxVIq3yRjULqV/B2gWtIC0tqg6bFQAhsrsI2bdhLoTQnjDfPdV9HKul+cnOQ98r9WZjo=
+X-Received: by 2002:adf:d228:: with SMTP id k8mr6931029wrh.139.1634857258210;
+ Thu, 21 Oct 2021 16:00:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="8aYSJNaYc6oB2iRG"
-Content-Disposition: inline
-In-Reply-To: <88795dab-d8a9-856e-a938-8da6acc944ea@infradead.org>
+Reply-To: jennybezoss14@gmail.com
+Sender: mrs.bintousawadogo2015@gmail.com
+Received: by 2002:a5d:4dcf:0:0:0:0:0 with HTTP; Thu, 21 Oct 2021 16:00:57
+ -0700 (PDT)
+From:   Mrs Jenny Bezos <jennybezos1@gmail.com>
+Date:   Thu, 21 Oct 2021 23:00:57 +0000
+X-Google-Sender-Auth: wxOXX4IgRwGWoq48HBdJ0cQTC34
+Message-ID: <CA+ZUSh5Nm+q8qWWGR2rQnuwhg-eRwwC7MVBb5D2ac4zyOF6OMw@mail.gmail.com>
+Subject: Dearest Friend,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+-- 
+Dearest Friend,
 
---8aYSJNaYc6oB2iRG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I am Mrs. Jenny Bezos from America  USA, I decided to donate what I
+have to you  for investment towards the good work of charity
+organizations, and also  to help the motherless and the less
+privileged ones and to carry out charitable works in your Country and
+around the World on my Behalf.
 
-> On 10/21/21 12:43 AM, Stephen Rothwell wrote:
-> > Hi all,
-> >=20
-> > Changes since 20211020:
+I am diagnosing of throat Cancer, hospitalize for good 2 years and
+some months now and quite obvious that I have few days to live, and I
+am a Widow no child; I decided to will/donate the sum of $7.8 million
+to you for the good work of God, and also to help the motherless and
+less privilege and also forth assistance of the widows. At the moment
+I cannot take any telephone calls right now due to the fact that my
+relatives (who have squandered the funds for this purpose before) are
+around me and my health also. I have adjusted my will and my Bank  is
+aware.
 
-Hi Randy,
+ I have willed those properties to you by quoting my Personal File
+Routing and Account Information. And I have also notified the bank
+that I am willing to give that property to you for good, effective and
+prudent work. It is right to say that I have been directed to do this
+by God. I will be going in for a surgery soon and I want to make sure
+that I make this donation before undergoing this surgery.  I will need
+your support to make this dream come through, could you let me know
+your interest to enable me to give you further information. And I
+hereby advise you to contact me by this email address.
 
-can you please the patch below?
-
-Regards,
-Lorenzo
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/Kconfig
-index ce3a06227901..71154fc2a87c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
-@@ -19,6 +19,7 @@ config MT7921S
- 	select MT76_SDIO
- 	select MT7921_COMMON
- 	depends on MAC80211
-+	depends on MMC
- 	help
- 	  This adds support for MT7921S 802.11ax 2x2:2SS wireless devices.
-=20
-> >=20
->=20
-> on x86_64:
->=20
-> ld: drivers/net/wireless/mediatek/mt76/sdio.o: in function `mt76s_rr':
-> sdio.c:(.text+0x1263): undefined reference to `sdio_claim_host'
-> ld: sdio.c:(.text+0x1278): undefined reference to `sdio_writel'
-> ld: sdio.c:(.text+0x12c8): undefined reference to `sdio_writel'
-> ld: sdio.c:(.text+0x1327): undefined reference to `sdio_readl'
-> ld: sdio.c:(.text+0x134d): undefined reference to `sdio_writel'
-> ld: sdio.c:(.text+0x138c): undefined reference to `sdio_readl'
-> ld: sdio.c:(.text+0x140f): undefined reference to `sdio_readl'
-> ld: sdio.c:(.text+0x1498): undefined reference to `sdio_readl'
-> ld: sdio.c:(.text+0x14e5): undefined reference to `sdio_release_host'
-> ld: drivers/net/wireless/mediatek/mt76/sdio.o: in function `mt76s_wr':
-> sdio.c:(.text+0x1599): undefined reference to `sdio_claim_host'
-> ld: sdio.c:(.text+0x15ae): undefined reference to `sdio_writel'
-> ld: sdio.c:(.text+0x15f9): undefined reference to `sdio_writel'
-> ld: sdio.c:(.text+0x1646): undefined reference to `sdio_writel'
-> ld: sdio.c:(.text+0x16a5): undefined reference to `sdio_readl'
-> ld: sdio.c:(.text+0x16cb): undefined reference to `sdio_writel'
-> ld: sdio.c:(.text+0x170a): undefined reference to `sdio_readl'
-> ld: sdio.c:(.text+0x1782): undefined reference to `sdio_readl'
-> ld: sdio.c:(.text+0x17e9): undefined reference to `sdio_release_host'
-> ld: drivers/net/wireless/mediatek/mt76/sdio.o: in function `mt76s_hw_init=
-':
-> sdio.c:(.text+0x1a56): undefined reference to `sdio_claim_host'
-> ld: sdio.c:(.text+0x1a5e): undefined reference to `sdio_enable_func'
-> ld: sdio.c:(.text+0x1a81): undefined reference to `sdio_writel'
-> ld: sdio.c:(.text+0x1ae1): undefined reference to `sdio_readl'
-> ld: sdio.c:(.text+0x1b18): undefined reference to `sdio_readl'
-> ld: sdio.c:(.text+0x1b45): undefined reference to `sdio_set_block_size'
-> ld: sdio.c:(.text+0x1b9e): undefined reference to `sdio_writel'
-> ld: sdio.c:(.text+0x1bcb): undefined reference to `sdio_writel'
-> ld: sdio.c:(.text+0x1bef): undefined reference to `sdio_readl'
-> ld: sdio.c:(.text+0x1c10): undefined reference to `sdio_writel'
-> ld: sdio.c:(.text+0x1c27): undefined reference to `sdio_claim_irq'
-> ld: sdio.c:(.text+0x1c37): undefined reference to `sdio_release_host'
-> ld: sdio.c:(.text+0x1c43): undefined reference to `sdio_disable_func'
-> ld: sdio.c:(.text+0x1c4b): undefined reference to `sdio_release_host'
-> ld: sdio.c:(.text+0x1c5e): undefined reference to `sdio_writel'
-> ld: drivers/net/wireless/mediatek/mt76/sdio.o: in function `mt76s_deinit':
-> sdio.c:(.text+0x208e): undefined reference to `sdio_claim_host'
-> ld: sdio.c:(.text+0x20af): undefined reference to `sdio_release_irq'
-> ld: sdio.c:(.text+0x20d0): undefined reference to `sdio_release_host'
-> ld: drivers/net/wireless/mediatek/mt76/sdio.o: in function `mt76s_read_pc=
-r':
-> sdio.c:(.text+0x11bd): undefined reference to `sdio_readl'
-> ld: drivers/net/wireless/mediatek/mt76/sdio_txrx.o: in function `__mt76s_=
-xmit_queue':
-> sdio_txrx.c:(.text+0xf7): undefined reference to `sdio_writesb'
-> ld: drivers/net/wireless/mediatek/mt76/sdio_txrx.o: in function `mt76s_rx=
-_run_queue':
-> sdio_txrx.c:(.text+0xffc): undefined reference to `sdio_readsb'
-> ld: drivers/net/wireless/mediatek/mt76/sdio_txrx.o: in function `mt76s_tx=
-rx_worker':
-> sdio_txrx.c:(.text+0x1a18): undefined reference to `sdio_claim_host'
-> ld: sdio_txrx.c:(.text+0x1a4d): undefined reference to `sdio_writel'
-> ld: sdio_txrx.c:(.text+0x22c7): undefined reference to `sdio_writel'
-> ld: sdio_txrx.c:(.text+0x22e9): undefined reference to `sdio_release_host'
->=20
->=20
-> Full randconfig file is attached.
->=20
-> --=20
-> ~Randy
-
-
-
---8aYSJNaYc6oB2iRG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYXHtdAAKCRA6cBh0uS2t
-rMTTAQDPwBEhZ0z/llYiW+9LAvwvcs96cD9CVHIc55ZSbProGQEAzoIBKkh1cvSX
-2UhU4mRO1H8SOkskh8hyRpj4tUTCews=
-=PfpR
------END PGP SIGNATURE-----
-
---8aYSJNaYc6oB2iRG--
+Thanks
+Mrs. Jenny Bezos.
