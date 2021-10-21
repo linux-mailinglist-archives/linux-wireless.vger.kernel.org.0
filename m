@@ -2,138 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4978435E86
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Oct 2021 12:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE76E435E8D
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Oct 2021 12:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231534AbhJUKDc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Oct 2021 06:03:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33138 "EHLO
+        id S231599AbhJUKFZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Oct 2021 06:05:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231334AbhJUKDc (ORCPT
+        with ESMTP id S231447AbhJUKFZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Oct 2021 06:03:32 -0400
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83F17C061749
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Oct 2021 03:01:16 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id j190so18388717pgd.0
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Oct 2021 03:01:16 -0700 (PDT)
+        Thu, 21 Oct 2021 06:05:25 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A23CC061749
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Oct 2021 03:03:09 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id v20so40641plo.7
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Oct 2021 03:03:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=1hGQyf5rPoZMxlQ1aLuePLA0bIy/CXC3D2eGNLyDxIQ=;
-        b=LgD+MFA0VgMp3D2jgO6wM+Zvee6Bsy+fpa54RY3R+QTDElX3sL3drNdQaakSXKc0g+
-         vyuI4i7RveFDa2CMPCgq8ox9Ca5KQO2Puj/sVGvKvQGs+w9mEt5BYNE7pzTHFn/twwNq
-         14QKhEyH0i4NPyRZynrQwhL7XmOppkIrob0lU90iPvqbJLtc8jD2Bm/NVMNOQgcNTP+V
-         asxAKCTgpN+Qm7OikuEY7SOYzkDu9RKeLjGNfVTwpSvw0dYL9nbGlm91NTnFk+/096+C
-         dEQZ6wcFnjqCS67TA/FTq/Pf8Tnnq2rbBCDJSr0rGh9hfqSKYGNNTVC/JanqrScK8jbv
-         ierA==
+        bh=dyIzNS94yVFn26I1+Vs+X45Vc6HJjjNBIVAQhUczpSM=;
+        b=VWDF7tT1/ERaiy+hd0f6TMm9xFOihJIvjzaya/s3ODTaGnjpSPJdbYprA4nNTrVcbD
+         bGlCes4+wktbJ3qFkdxKX+pF3DSJZ3pwm1T+rFQES8zBRpNnOrXkgKXHJ2bue3r3p4G+
+         H69wUbUsY4TqDGOuFqhQvBvO6pAo8G6ZO6CEnUPDxxUOz6DdGTmalk5Q68ba/STSUsLs
+         cds7OJH3l3frdAhraIIVaAAqHEX+fjg63+fTS/Iv2xbAF5DLtfQp8/2JJG6vSVgCrzCp
+         biMIQFzCz+kKkNEb+g8wP/QnInQP1CRNTU7ldpMMsO8ZEgAaQcc58to35Vlx9L2XWw8h
+         b6aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=1hGQyf5rPoZMxlQ1aLuePLA0bIy/CXC3D2eGNLyDxIQ=;
-        b=ppjdWxuq1ZF/U4IHyWx3ZLR87B3RQKW5iuG/3WgnjtE58mQwSnRDvF7IaGZmUlU/ND
-         klQ8h/1m1JMjVQlMGcAc+kYnO7YHcIPZy/SLzO2x7sQw1zIYkVuLyRfVR6G8Fcy1Kz94
-         aF9SeFu+0jRJxIa2/wLLliMKoci4UVcdrMuBUwGSLw4Hr3n29b8I165ixv7lZZPsWPF6
-         qJhTlqThyAFZuEW98UqopuM5Syc76045QWnnhnF+HfWCkwvnxckuCfqGN8Xo7c6KBhch
-         L2D+z0eapf5AH/Yj/muxGHHdVFcz/sZMo6EceOkQiSh8x19OJjrdWNn2MLiMzmZ4zB/7
-         AuHw==
-X-Gm-Message-State: AOAM530bGQaLe5i+hLAOYez82Ki9vGi4FQr8M91h0lTofwi8eS6HBwkh
-        kQzj7MJvD9nJMiT9EjKJA3O8
-X-Google-Smtp-Source: ABdhPJwqwkiwpdpKBroxr8/GXh49GuysRlvA6YUSvh3qNewJDOS678tfSRj3DNxO+EWI4uKU91UUdg==
-X-Received: by 2002:aa7:811a:0:b0:44c:b9ef:f618 with SMTP id b26-20020aa7811a000000b0044cb9eff618mr4446153pfi.9.1634810475933;
-        Thu, 21 Oct 2021 03:01:15 -0700 (PDT)
+        bh=dyIzNS94yVFn26I1+Vs+X45Vc6HJjjNBIVAQhUczpSM=;
+        b=mH9HvuHv9NRQOua5+JeKslqtE0wVoW37XoS4oPWvmbPJAq/5ebzGT5Zie0yWrAPe3k
+         agMbbS0nCRb8oBp+yOS02CfbcsgAVffVtLtPbeqKfBxcgZ+3TyJqWJAbxXt1EkT3qiBf
+         cfVLpd68Pd112FnCOE+37qnCssJH7yz94ihIBoMTWk8MLdOi/TZK+qMSKQJ+7XTUj4fR
+         HWqINJ29PFyBI8Eh1PqikNW6em5GoHp8fY3jyXCs3TonjcbiA29+WFuqb/KZb0dbPzyM
+         E0e+KDTvRmCCfznS7Usg04XJa3w/Ne4n8JrRstITMXx3Dk2CA5btGHxIWtIL2+wKJzQW
+         sU7w==
+X-Gm-Message-State: AOAM530JG32APG07/0GoUIOZ9NiGMLdRbwlDH4yVWsGF1gG3lah2tI+B
+        QwCMNDpOgS63rxpWq+bXGmm3
+X-Google-Smtp-Source: ABdhPJzzDD1MByFwNyBzIySK4PYWZmbpJVSVMenRc0Dxbbe1gHD8Vc4vuRM4kZ/i3/h7/Lf0nSzXIA==
+X-Received: by 2002:a17:90b:1196:: with SMTP id gk22mr5654164pjb.126.1634810589002;
+        Thu, 21 Oct 2021 03:03:09 -0700 (PDT)
 Received: from workstation ([202.21.43.20])
-        by smtp.gmail.com with ESMTPSA id t14sm4618518pga.62.2021.10.21.03.01.13
+        by smtp.gmail.com with ESMTPSA id f33sm8717545pjk.42.2021.10.21.03.03.06
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 21 Oct 2021 03:01:15 -0700 (PDT)
-Date:   Thu, 21 Oct 2021 15:31:11 +0530
+        Thu, 21 Oct 2021 03:03:08 -0700 (PDT)
+Date:   Thu, 21 Oct 2021 15:33:05 +0530
 From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Carl Huang <cjhuang@codeaurora.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        ath11k@lists.infradead.org,
+Cc:     Loic Poulain <loic.poulain@linaro.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
         linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, regressions@lists.linux.dev,
-        mhi <mhi@lists.linux.dev>
+        regressions@lists.linux.dev, mhi <mhi@lists.linux.dev>
 Subject: Re: [regression] mhi: ath11k resume fails on some devices
-Message-ID: <20211021100111.GC7580@workstation>
-References: <20210916111218.GA12918@thinkpad>
- <CAMZdPi94607mZorp+Zmkw3seWXak6p9Jr05CQ5hhfgKQoG8n7Q@mail.gmail.com>
- <20210916163529.GA9027@thinkpad>
- <87k0jgxyjp.fsf@codeaurora.org>
- <20210916171927.GB9027@thinkpad>
- <b7c0906041dcafb43be215bd4f55326a@codeaurora.org>
- <20210923085926.GD6083@thinkpad>
- <8735putk82.fsf@codeaurora.org>
- <20210924095755.GB19050@workstation>
- <874k9t9n13.fsf@codeaurora.org>
+Message-ID: <20211021100305.GD7580@workstation>
+References: <871r5p0x2u.fsf@codeaurora.org>
+ <CAMZdPi8UJLvBFQd8-nf-iHAQh8cEuihq97PUFfZ7Q=rxRQoPsg@mail.gmail.com>
+ <877df6tlnq.fsf@codeaurora.org>
+ <CAMZdPi8P7YZPhPir+WfS3cY_a7He1m2Pq2uqBhczPdEeoNRb0Q@mail.gmail.com>
+ <87a6jl9ndo.fsf@codeaurora.org>
+ <87ee8hgqni.fsf@codeaurora.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <874k9t9n13.fsf@codeaurora.org>
+In-Reply-To: <87ee8hgqni.fsf@codeaurora.org>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 07, 2021 at 12:55:52PM +0300, Kalle Valo wrote:
-> (adding also mhi list)
+On Tue, Oct 19, 2021 at 03:12:01PM +0300, Kalle Valo wrote:
+> Kalle Valo <kvalo@codeaurora.org> writes:
 > 
-> Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
-> 
-> > On Fri, Sep 24, 2021 at 12:07:41PM +0300, Kalle Valo wrote:
-> >> Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
-> >> 
-> >> > For aid debugging, please see the state the device is in during mhi_pm_resume().
-> >> > You can use below diff:
-> >> >
-> >> > diff --git a/drivers/bus/mhi/core/pm.c b/drivers/bus/mhi/core/pm.c
-> >> > index fb99e3727155..482d55dd209e 100644
-> >> > --- a/drivers/bus/mhi/core/pm.c
-> >> > +++ b/drivers/bus/mhi/core/pm.c
-> >> > @@ -898,6 +898,9 @@ int mhi_pm_resume(struct mhi_controller *mhi_cntrl)
-> >> >         if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state))
-> >> >                 return -EIO;
-> >> >  
-> >> > +       dev_info(dev, "Device state: %s\n",
-> >> > +                TO_MHI_STATE_STR(mhi_get_mhi_state(mhi_cntrl)));
-> >> > +
-> >> >         if (mhi_get_mhi_state(mhi_cntrl) != MHI_STATE_M3)
-> >> >                 return -EINVAL;
-> >> 
-> >> This is what I get with my NUC testbox:
-> >> 
-> >> [  970.488202] ACPI: EC: event unblocked
-> >> [  970.492484] hpet: Lost 1587 RTC interrupts
-> >> [  970.492749] mhi mhi0: Device state: RESET
+> > (adding the new mhi list, yay)
 > >
-> > Looks like the MHI device went into RESET state! It also looks to be a
-> > firmware thing. But let's nail this down before adding any workaround in
-> > the MHI stack.
+> > Hi Loic,
 > >
-> > Can you also rebuild the kernel with MHI debug enabled and capture the
-> > logs in faliure case?
+> > Loic Poulain <loic.poulain@linaro.org> writes:
+> >
+> >>> Loic Poulain <loic.poulain@linaro.org> writes:
+> >>>
+> >>> > On Thu, 16 Sept 2021 at 10:00, Kalle Valo <kvalo@codeaurora.org> wrote:
+> >>>
+> >>> >> At the moment I'm running my tests with commit 020d3b26c07a reverted and
+> >>> >> everything works without problems. Is there a simple way to fix this? Or
+> >>> >> maybe we should just revert the commit? Commit log and kernel logs from
+> >>> >> a failing case below.
+> >>> >
+> >>> > Do you have log of success case?
+> >>>
+> >>> A log from a successful case in the end of email, using v5.15-rc1 plus
+> >>> revert of commit 020d3b26c07abe27.
+> >>>
+> >>> > To me, the device loses power, that is why MHI resuming is failing.
+> >>> > Normally the device should be properly recovered/reinitialized. Before
+> >>> > that patch the power loss was simply not detected (or handled at
+> >>> > higher stack level).
+> >>>
+> >>> Currently in ath11k we always keep the firmware running when in suspend,
+> >>> this is a workaround due to problems between mac80211 and MHI stack.
+> >>> IIRC the problem was something related MHI creating struct device during
+> >>> resume or something like that.
+> >>
+> >> Could you give a try with the attached patch? It should solve your
+> >> issue without breaking modem support.
+> >
+> > Sorry for taking so long, but I now tested your patch on top of
+> > v5.15-rc3 and, as expected, everything works as before with QCA6390 on
+> > NUC x86 testbox.
+> >
+> > Tested-by: Kalle Valo <kvalo@codeaurora.org>
 > 
-> So what I should exactly do to enable debug messages?
-> 
-> I have this in my Kconfig:
-> 
-> CONFIG_MHI_BUS=m
-> # CONFIG_MHI_BUS_DEBUG is not set
-> # CONFIG_MHI_BUS_PCI_GENERIC is not set
-> 
-> And AFAICS CONFIG_MHI_BUS_DEBUG only enables the debugfs interface, I
-> doubt you meant that.
+> I doubt we will find enough time to fully debug this mhi issue anytime
+> soon. Can we commit Loic's patch so that this regression is resolved?
 > 
 
-No. You should enable the dev_dbg messages in MHI core by adding the -DDEBUG
-flag to the Makefile or by CONFIG_DYNAMIC_DEBUG.
+Sorry no :( Eventhough Loic's patch is working, I want to understand the
+issue properly so that we could add a proper fix or patch the firmware
+if possible.
+
+Let's try to get the debug logs as I requested.
 
 Thanks,
 Mani
 
+> At the moment I'm doing all my regression testing with commit
+> 020d3b26c07abe27 reverted. That's a risk, I would prefer to do my
+> testing without any hacks.
+> 
 > -- 
 > https://patchwork.kernel.org/project/linux-wireless/list/
 > 
