@@ -2,109 +2,215 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 432B3435A6D
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Oct 2021 07:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1672435A73
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Oct 2021 07:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbhJUFrH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Oct 2021 01:47:07 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:53609 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbhJUFrG (ORCPT
+        id S230000AbhJUFss convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Oct 2021 01:48:48 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:47248 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229499AbhJUFsr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Oct 2021 01:47:06 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634795091; h=Content-Type: MIME-Version: Message-ID: Date:
- References: In-Reply-To: Subject: Cc: To: From: Sender;
- bh=gKWSbCXtOMCYa1zk/V70afMmHLAKVljvFD6faTNFv+g=; b=QWN3PXrBmbzqmFXv+HjAliwW03ARVZLFfTP3aVMfvjmRM98U1vP+zrLn4UYnoMxRAIdF6ews
- 2N6Hp0Ylkkka9dtfjhQ6l9rJFffPQSLkWv7mkWQw37/y50tJz1hb8+qw5GZ86Z1Xm36e4yFu
- P1DsELDATlP+/WhpJJrMo5yTjxs=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 6170fe4159612e01002cc007 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 21 Oct 2021 05:44:33
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 83824C4360D; Thu, 21 Oct 2021 05:44:32 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BB3AAC4338F;
-        Thu, 21 Oct 2021 05:44:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org BB3AAC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc:     Loic Poulain <loic.poulain@linaro.org>,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/2] wcn36xx: Correct band/freq reporting on RX
-In-Reply-To: <574368d8-ebfa-7765-ea0d-def99b855719@linaro.org> (Bryan
-        O'Donoghue's message of "Wed, 20 Oct 2021 17:28:25 +0100")
-References: <1634554678-7993-1-git-send-email-loic.poulain@linaro.org>
-        <d2128789-646f-1e02-0dd2-a9ac14b37cf7@linaro.org>
-        <5a325d84-0d02-237b-a0a3-9eddd2e481de@linaro.org>
-        <CAMZdPi8Mh+pN=xExhY1TFYJYTKCDJmVApNG3oOMFtF5nLu770A@mail.gmail.com>
-        <574368d8-ebfa-7765-ea0d-def99b855719@linaro.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-Date:   Thu, 21 Oct 2021 08:44:27 +0300
-Message-ID: <8735ovextw.fsf@codeaurora.org>
+        Thu, 21 Oct 2021 01:48:47 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19L5kGedD026158, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19L5kGedD026158
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 21 Oct 2021 13:46:16 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Thu, 21 Oct 2021 13:46:15 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Wed, 20 Oct 2021 22:46:15 -0700
+Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
+ RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
+ 15.01.2308.015; Thu, 21 Oct 2021 13:46:15 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     Colin King <colin.king@canonical.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+Thread-Topic: [PATCH][next] rtw89: Fix potential dereference of the null
+ pointer sta
+Thread-Index: AQHXwduziBNegQ3KtE6tzEeaYjpkJqvX/pCwgACwb0mAANdosIACEPZJgAFhaMA=
+Date:   Thu, 21 Oct 2021 05:46:15 +0000
+Message-ID: <35c096e5251f49c1abfbb51f761eab82@realtek.com>
+References: <20211015154530.34356-1-colin.king@canonical.com>
+        <9cc681c217a449519aee524b35e6b6bc@realtek.com>
+        <87pms2ttvi.fsf@codeaurora.org>
+        <abc2e3a274694d48aa468491df334349@realtek.com>
+ <87h7dcf5zj.fsf@codeaurora.org>
+In-Reply-To: <87h7dcf5zj.fsf@codeaurora.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/21_=3F=3F_03:10:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/21/2021 05:25:21
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166865 [Oct 20 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/21/2021 05:27:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
 
-> On 20/10/2021 14:54, Loic Poulain wrote:
->> Hi Bryan, Kalle,
->>
->> On Tue, 19 Oct 2021 at 02:26, Bryan O'Donoghue
->> <bryan.odonoghue@linaro.org> wrote:
->>>
->>> On 18/10/2021 23:51, Bryan O'Donoghue wrote:
->>>> On 18/10/2021 11:57, Loic Poulain wrote:
->>>>>            ieee80211_is_probe_resp(hdr->frame_control))
->>>>>            status.boottime_ns = ktime_get_boottime_ns();
->>>>
->>>> I think this is dangling in your tree, doesn't apply cleanly for me anyway
->>>>
->>>> Other than that
->>>>
->>>> Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
->>>
->>> Hmm.
->>>
->>> I'm told by a colleague with access to a router that has channel 144 - I
->>> do not BTW - that 144 is not showing up with the firmware offload scan.
->>>
->>> We should probably hold off on applying for the time being :(
->>
->> So the missing channel 144 is due to a different problem, and is now fixed
->> in a subsequent patch:
->>      wcn36xx: Channel list update before hardware scan
->>
->> So I think we can go with this change :-).
->>
->> Regards,
->> Loic
->>
->
-> Cool, nice job
+> -----Original Message-----
+> From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On Behalf Of Kalle
+> Valo
+> Sent: Wednesday, October 20, 2021 4:36 PM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: Colin King <colin.king@canonical.com>; David S . Miller <davem@davemloft.net>; Jakub Kicinski
+> <kuba@kernel.org>; linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+> kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+> 
+> Pkshih <pkshih@realtek.com> writes:
+> 
+> >> -----Original Message-----
+> >> From: kvalo=codeaurora.org@mg.codeaurora.org
+> >> <kvalo=codeaurora.org@mg.codeaurora.org> On
+> >> Behalf Of Kalle Valo
+> >> Sent: Monday, October 18, 2021 8:12 PM
+> >> To: Pkshih <pkshih@realtek.com>
+> >> Cc: Colin King <colin.king@canonical.com>; David S . Miller
+> >> <davem@davemloft.net>; Jakub
+> >> Kicinski <kuba@kernel.org>; linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+> >> kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> >> Subject: Re: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+> >>
+> >> Pkshih <pkshih@realtek.com> writes:
+> >>
+> >> >> -----Original Message-----
+> >> >> From: Colin King <colin.king@canonical.com>
+> >> >> Sent: Friday, October 15, 2021 11:46 PM
+> >> >> To: Kalle Valo <kvalo@codeaurora.org>; David S . Miller <davem@davemloft.net>; Jakub Kicinski
+> >> >> <kuba@kernel.org>; Pkshih <pkshih@realtek.com>; linux-wireless@vger.kernel.org;
+> >> >> netdev@vger.kernel.org
+> >> >> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> >> >> Subject: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+> >> >>
+> >> >> From: Colin Ian King <colin.king@canonical.com>
+> >> >>
+> >> >> The pointer rtwsta is dereferencing pointer sta before sta is
+> >> >> being null checked, so there is a potential null pointer deference
+> >> >> issue that may occur. Fix this by only assigning rtwsta after sta
+> >> >> has been null checked. Add in a null pointer check on rtwsta before
+> >> >> dereferencing it too.
+> >> >>
+> >> >> Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+> >> >> Addresses-Coverity: ("Dereference before null check")
+> >> >> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> >> >> ---
+> >> >>  drivers/net/wireless/realtek/rtw89/core.c | 9 +++++++--
+> >> >>  1 file changed, 7 insertions(+), 2 deletions(-)
+> >> >>
+> >> >> diff --git a/drivers/net/wireless/realtek/rtw89/core.c
+> >> >> b/drivers/net/wireless/realtek/rtw89/core.c
+> >> >> index 06fb6e5b1b37..26f52a25f545 100644
+> >> >> --- a/drivers/net/wireless/realtek/rtw89/core.c
+> >> >> +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> >> >> @@ -1534,9 +1534,14 @@ static bool rtw89_core_txq_agg_wait(struct rtw89_dev *rtwdev,
+> >> >>  {
+> >> >>  	struct rtw89_txq *rtwtxq = (struct rtw89_txq *)txq->drv_priv;
+> >> >>  	struct ieee80211_sta *sta = txq->sta;
+> >> >> -	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
+> >> >
+> >> > 'sta->drv_priv' is only a pointer, we don't really dereference the
+> >> > data right here, so I think this is safe. More, compiler can optimize
+> >> > this instruction that reorder it to the place just right before using.
+> >> > So, it seems like a false alarm.
+> >> >
+> >> >> +	struct rtw89_sta *rtwsta;
+> >> >>
+> >> >> -	if (!sta || rtwsta->max_agg_wait <= 0)
+> >> >> +	if (!sta)
+> >> >> +		return false;
+> >> >> +	rtwsta = (struct rtw89_sta *)sta->drv_priv;
+> >> >> +	if (!rtwsta)
+> >> >> +		return false;
+> >> >> +	if (rtwsta->max_agg_wait <= 0)
+> >> >>  		return false;
+> >> >>
+> >> >>  	if (rtwdev->stats.tx_tfc_lv <= RTW89_TFC_MID)
+> >> >
+> >> > I check the size of object files before/after this patch, and
+> >> > the original one is smaller.
+> >> >
+> >> >    text    data     bss     dec     hex filename
+> >> >   16781    3392       1   20174    4ece core-0.o  // original
+> >> >   16819    3392       1   20212    4ef4 core-1.o  // after this patch
+> >> >
+> >> > Do you think it is worth to apply this patch?
+> >>
+> >> I think that we should apply the patch. Even though the compiler _may_
+> >> reorder the code, it might choose not to do that.
+> >
+> > Understand.
+> >
+> > I have another way to fix this coverity warning, like:
+> >
+> > @@ -1617,7 +1617,7 @@ static bool rtw89_core_txq_agg_wait(struct rtw89_dev *rtwdev,
+> >  {
+> >         struct rtw89_txq *rtwtxq = (struct rtw89_txq *)txq->drv_priv;
+> >         struct ieee80211_sta *sta = txq->sta;
+> > -       struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
+> > +       struct rtw89_sta *rtwsta = sta ? (struct rtw89_sta *)sta->drv_priv : NULL;
+> >
+> >         if (!sta || rtwsta->max_agg_wait <= 0)
+> >                 return false;
+> >
+> > Is this acceptable?
+> > It has a little redundant checking of 'sta', but the code looks clean.
+> 
+> I feel that Colin's fix is more readable, but this is just matter of
+> taste. You can choose.
 
-I had already dropped this patch from my queue, but added it back now.
+I would like my version. 
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+There are three similar warnings reported by smatch, so I will fix them by
+myself. Please drop this patch. 
+But, still thank Colin to point out this issue.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+--
+Ping-Ke
+
+
