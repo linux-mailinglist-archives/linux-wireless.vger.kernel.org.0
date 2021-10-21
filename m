@@ -2,91 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AF84436DD8
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 01:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CCC3436E67
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 01:40:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231967AbhJUXDR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Oct 2021 19:03:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44010 "EHLO
+        id S232324AbhJUXmh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Oct 2021 19:42:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbhJUXDQ (ORCPT
+        with ESMTP id S229512AbhJUXmg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Oct 2021 19:03:16 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A24C061764
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Oct 2021 16:00:59 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id z14so894616wrg.6
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Oct 2021 16:00:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=UAOvT72nEzyjB3EaBfIB4vBLAlWNhJb9FUU2K5PC8fM=;
-        b=etVGqKiIllNvb+Y/DUJjzgXhbpwVhbDk9fYGyZ9OViOm602O+XcKsGgej2p87JfAKi
-         evPCSiTmYVyd+YHaVwzqcTzpFhzhfDgm/EwOSSJUC3xNYKKJtH04hIGQe2oNnzaql7Rl
-         q3L5eTt5O8z9bqCFC97q0r/cGU9QGYK16ikAxsv7wNe8JA5ZX4HS8wuuru1MHlg0EELf
-         Qhcd2oGDgcpKPHHk8tQwc48PeAfjQT6r7VcmT4q+BPOOC2l/SV5mcjQDaiXNqr9JBfut
-         jfeW98zUB3HN4x55LYb6KhiHGgMMyknh6qbXT3Vi/h7sPiJI0b6irRrYK0Om5OxLohdd
-         exjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=UAOvT72nEzyjB3EaBfIB4vBLAlWNhJb9FUU2K5PC8fM=;
-        b=DbrPi0PyFAFSld74gjQTbadr/XWfUU8JnEqwJ99qaID1oF3SsjPhDc1KdO9pOsi0BU
-         FN8bfMs2FO0hXSMOTNvbc/buB0kfKAo0L6B11njRAKKaeQ4GHANp8DW0gzDnJViPECFn
-         fea9KgJsZ6RezfjtOPw0QKkcQMah9reT+kCTUd43mWvXtP2Wcd1bIruxLdQdk6t5Y111
-         uK4RSaIG+9mRKbFV7dPqy0JPsriAtRdESCR6kWb6/SAGJ1n8t4yr7VRKmOq5EJ3w920/
-         /RNgbRC8zrZy7alsLUX4q9d97/v9GX1BXjVP/U/vMCVGRYHa38WsiTnJ2bSc+ApZi6F5
-         Ql9Q==
-X-Gm-Message-State: AOAM530jodLIQKOUrW8FYyJOi256+CryfQvXntZSwVu3OSs+M4XDJRcD
-        vE9GrUdjvDStvDIMCllaD5Non2CsU8MasQ6/ZCw=
-X-Google-Smtp-Source: ABdhPJwpBKwKOCTrm6F7p9ZdxVIq3yRjULqV/B2gWtIC0tqg6bFQAhsrsI2bdhLoTQnjDfPdV9HKul+cnOQ98r9WZjo=
-X-Received: by 2002:adf:d228:: with SMTP id k8mr6931029wrh.139.1634857258210;
- Thu, 21 Oct 2021 16:00:58 -0700 (PDT)
+        Thu, 21 Oct 2021 19:42:36 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64CC7C061764;
+        Thu, 21 Oct 2021 16:40:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description;
+        bh=OEUJmZNnx6E69Y9a/rMQD8aPaxuy5E3qagoQ7/1dgv8=; b=LeAL3jxJzHoChU3dqDXfik7tW8
+        jLoixIxsIvwW7KwwtQwc94gxDhK9X3ZMU24/u5k95/rYGlirlRdI6ByV/OHN+At6d5155OBddVgdn
+        RzBuAfjPG5zSz+IHKIwKPigl8mpFEgmZNiN14HTlrXi505YbZ43/dsfwA/ACN83toh67amsUsojnX
+        UsEuD6KT1o1lK9JXhu8G1fIwT6mDyzTmPu+fHHdOhNvgpnYw513CSQ2lzwR/JSy2y0IKSvAY/yXQ6
+        6TQYC1y+oESTeOT/mLC+Ektx8+GE7F/SgTlOY/m8tHI8MPBj9FRap0sl8rSNLW0BbsmZGyLT5Pfs0
+        DWfJ7g+A==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mdhfV-009Iqz-QT; Thu, 21 Oct 2021 23:40:17 +0000
+Subject: Re: linux-next: Tree for Oct 21
+ (drivers/net/wireless/mediatek/mt76/sdio.o)
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>
+References: <20211021184300.30c77f51@canb.auug.org.au>
+ <88795dab-d8a9-856e-a938-8da6acc944ea@infradead.org>
+ <YXHtdI61S54Cm0S2@lore-desk>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <831cb7e7-dd85-0883-dfcb-52aad52f8322@infradead.org>
+Date:   Thu, 21 Oct 2021 16:40:17 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Reply-To: jennybezoss14@gmail.com
-Sender: mrs.bintousawadogo2015@gmail.com
-Received: by 2002:a5d:4dcf:0:0:0:0:0 with HTTP; Thu, 21 Oct 2021 16:00:57
- -0700 (PDT)
-From:   Mrs Jenny Bezos <jennybezos1@gmail.com>
-Date:   Thu, 21 Oct 2021 23:00:57 +0000
-X-Google-Sender-Auth: wxOXX4IgRwGWoq48HBdJ0cQTC34
-Message-ID: <CA+ZUSh5Nm+q8qWWGR2rQnuwhg-eRwwC7MVBb5D2ac4zyOF6OMw@mail.gmail.com>
-Subject: Dearest Friend,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <YXHtdI61S54Cm0S2@lore-desk>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 10/21/21 3:45 PM, Lorenzo Bianconi wrote:
+>> On 10/21/21 12:43 AM, Stephen Rothwell wrote:
+>>> Hi all,
+>>>
+>>> Changes since 20211020:
+> 
+> Hi Randy,
+> 
+> can you please the patch below?
+> 
+> Regards,
+> Lorenzo
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+> index ce3a06227901..71154fc2a87c 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+> @@ -19,6 +19,7 @@ config MT7921S
+>   	select MT76_SDIO
+>   	select MT7921_COMMON>   	depends on MAC80211
+> +	depends on MMC
+>   	help
+>   	  This adds support for MT7921S 802.11ax 2x2:2SS wireless devices.
+
+Hi,
+Yes, that works. Thanks.
+
 -- 
-Dearest Friend,
-
-I am Mrs. Jenny Bezos from America  USA, I decided to donate what I
-have to you  for investment towards the good work of charity
-organizations, and also  to help the motherless and the less
-privileged ones and to carry out charitable works in your Country and
-around the World on my Behalf.
-
-I am diagnosing of throat Cancer, hospitalize for good 2 years and
-some months now and quite obvious that I have few days to live, and I
-am a Widow no child; I decided to will/donate the sum of $7.8 million
-to you for the good work of God, and also to help the motherless and
-less privilege and also forth assistance of the widows. At the moment
-I cannot take any telephone calls right now due to the fact that my
-relatives (who have squandered the funds for this purpose before) are
-around me and my health also. I have adjusted my will and my Bank  is
-aware.
-
- I have willed those properties to you by quoting my Personal File
-Routing and Account Information. And I have also notified the bank
-that I am willing to give that property to you for good, effective and
-prudent work. It is right to say that I have been directed to do this
-by God. I will be going in for a surgery soon and I want to make sure
-that I make this donation before undergoing this surgery.  I will need
-your support to make this dream come through, could you let me know
-your interest to enable me to give you further information. And I
-hereby advise you to contact me by this email address.
-
-Thanks
-Mrs. Jenny Bezos.
+~Randy
