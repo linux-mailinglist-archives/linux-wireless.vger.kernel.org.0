@@ -2,183 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5FF4356A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Oct 2021 02:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACAED435848
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Oct 2021 03:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230338AbhJUAI1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Oct 2021 20:08:27 -0400
-Received: from mga11.intel.com ([192.55.52.93]:17833 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231396AbhJUAIZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Oct 2021 20:08:25 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10143"; a="226369640"
-X-IronPort-AV: E=Sophos;i="5.87,168,1631602800"; 
-   d="scan'208";a="226369640"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2021 17:06:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,168,1631602800"; 
-   d="scan'208";a="662477780"
-Received: from lkp-server02.sh.intel.com (HELO 08b2c502c3de) ([10.239.97.151])
-  by orsmga005.jf.intel.com with ESMTP; 20 Oct 2021 17:06:08 -0700
-Received: from kbuild by 08b2c502c3de with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mdLax-000DmS-VH; Thu, 21 Oct 2021 00:06:07 +0000
-Date:   Thu, 21 Oct 2021 08:05:35 +0800
-From:   kernel test robot <lkp@intel.com>
+        id S231137AbhJUBg6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Oct 2021 21:36:58 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:49759 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230293AbhJUBg6 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 Oct 2021 21:36:58 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19L1YQX70030853, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19L1YQX70030853
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 21 Oct 2021 09:34:27 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Thu, 21 Oct 2021 09:34:26 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Wed, 20 Oct 2021 18:34:25 -0700
+Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
+ RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
+ 15.01.2308.015; Thu, 21 Oct 2021 09:34:25 +0800
+From:   Pkshih <pkshih@realtek.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [kvalo-wireless-drivers-next:pending] BUILD SUCCESS
- 070b142a6e09cff36641a34f339db49b6bffdec9
-Message-ID: <6170aecf.ECPRJF2vKgmdmrNH%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+CC:     "cgel.zte@gmail.com" <cgel.zte@gmail.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "lv.ruyi@zte.com.cn" <lv.ruyi@zte.com.cn>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: RE: [PATCH] rtw89: fix error function parameter
+Thread-Topic: [PATCH] rtw89: fix error function parameter
+Thread-Index: AQHXxJzcl/L9Ey4To0qT1Twz/99G66vbD7qAgAAPjTCAAIsVYIABAw9g
+Date:   Thu, 21 Oct 2021 01:34:25 +0000
+Message-ID: <3e121f8f6dd4411eace22a7030824ce4@realtek.com>
+References: <20211019035311.974706-1-lv.ruyi@zte.com.cn>
+        <163471982441.1743.9901035714649893101.kvalo@codeaurora.org>
+        <3aa076f0e39a485ca090f8c14682b694@realtek.com>
+ <878ryof1xc.fsf@codeaurora.org>
+In-Reply-To: <878ryof1xc.fsf@codeaurora.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/20_=3F=3F_11:54:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/21/2021 01:02:29
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166865 [Oct 20 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;127.0.0.199:7.1.2;wireless.wiki.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/21/2021 01:05:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
-branch HEAD: 070b142a6e09cff36641a34f339db49b6bffdec9  Merge tag 'mt76-for-kvalo-2021-10-20' of https://github.com/nbd168/wireless into pending
 
-elapsed time: 835m
+> -----Original Message-----
+> From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On Behalf Of Kalle
+> Valo
+> Sent: Wednesday, October 20, 2021 6:04 PM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: cgel.zte@gmail.com; davem@davemloft.net; kuba@kernel.org; lv.ruyi@zte.com.cn;
+> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Zeal Robot
+> <zealci@zte.com.cn>
+> Subject: Re: [PATCH] rtw89: fix error function parameter
+> 
+> Pkshih <pkshih@realtek.com> writes:
+> 
+> >> -----Original Message-----
+> >> From: kvalo=codeaurora.org@mg.codeaurora.org
+> >> <kvalo=codeaurora.org@mg.codeaurora.org> On Behalf Of Kalle
+> >> Valo
+> >> Sent: Wednesday, October 20, 2021 4:50 PM
+> >> To: cgel.zte@gmail.com
+> >> Cc: davem@davemloft.net; kuba@kernel.org; Pkshih
+> >> <pkshih@realtek.com>; lv.ruyi@zte.com.cn;
+> >> linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+> >> linux-kernel@vger.kernel.org; Zeal Robot
+> >> <zealci@zte.com.cn>
+> >> Subject: Re: [PATCH] rtw89: fix error function parameter
+> >>
+> >> cgel.zte@gmail.com wrote:
+> >>
+> >> > From: Lv Ruyi <lv.ruyi@zte.com.cn>
+> >> >
+> >> > This patch fixes the following Coccinelle warning:
+> >> > drivers/net/wireless/realtek/rtw89/rtw8852a.c:753:
+> >> > WARNING  possible condition with no effect (if == else)
+> >> >
+> >> > Reported-by: Zeal Robot <zealci@zte.com.cn>
+> >> > Signed-off-by: Lv Ruyi <lv.ruyi@zte.com.cn>
+> >> > Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> >>
+> >> Failed to apply, please rebase on top of wireless-drivers-next.
+> >>
+> >> error: patch failed: drivers/net/wireless/realtek/rtw89/rtw8852a.c:753
+> >> error: drivers/net/wireless/realtek/rtw89/rtw8852a.c: patch does not apply
+> >> error: Did you hand edit your patch?
+> >> It does not apply to blobs recorded in its index.
+> >> hint: Use 'git am --show-current-patch' to see the failed patch
+> >> Applying: rtw89: fix error function parameter
+> >> Using index info to reconstruct a base tree...
+> >> Patch failed at 0001 rtw89: fix error function parameter
+> >>
+> >> Patch set to Changes Requested.
+> >>
+> >
+> > I think this is because the patch is translated into spaces instead of tabs,
+> > in this and following statements.
+> > "                if (is_2g)"
+> 
+> Ah, I did wonder why it failed as I didn't see any similar patches. We
+> have an item about this in the wiki:
+> 
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#format_issues
+> 
 
-configs tested: 123
-configs skipped: 4
+I don't know why neither.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I check the mail header of this patch, the mailer is
+"X-Mailer: git-send-email 2.25.1". It should work properly.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20211019
-sh                           se7705_defconfig
-microblaze                          defconfig
-s390                                defconfig
-powerpc                     mpc5200_defconfig
-m68k                        mvme16x_defconfig
-openrisc                            defconfig
-h8300                     edosk2674_defconfig
-powerpc                 mpc834x_itx_defconfig
-mips                     decstation_defconfig
-sh                             espt_defconfig
-arc                           tb10x_defconfig
-arm                         palmz72_defconfig
-arm                             ezx_defconfig
-h8300                            alldefconfig
-sh                            hp6xx_defconfig
-nds32                             allnoconfig
-arm                         s3c6400_defconfig
-powerpc                   lite5200b_defconfig
-sh                           se7712_defconfig
-arm                        vexpress_defconfig
-i386                             alldefconfig
-parisc                              defconfig
-sh                             sh03_defconfig
-sh                   sh7770_generic_defconfig
-arm                  randconfig-c002-20211019
-x86_64               randconfig-c001-20211019
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-arc                              allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                             allmodconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a004-20211020
-i386                 randconfig-a003-20211020
-i386                 randconfig-a002-20211020
-i386                 randconfig-a005-20211020
-i386                 randconfig-a006-20211020
-i386                 randconfig-a001-20211020
-x86_64               randconfig-a015-20211019
-x86_64               randconfig-a012-20211019
-x86_64               randconfig-a016-20211019
-x86_64               randconfig-a014-20211019
-x86_64               randconfig-a013-20211019
-x86_64               randconfig-a011-20211019
-i386                 randconfig-a014-20211019
-i386                 randconfig-a016-20211019
-i386                 randconfig-a011-20211019
-i386                 randconfig-a015-20211019
-i386                 randconfig-a012-20211019
-i386                 randconfig-a013-20211019
-arc                  randconfig-r043-20211020
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+Lv Ruyi, could you help to check what happens?
 
-clang tested configs:
-arm                  randconfig-c002-20211019
-mips                 randconfig-c004-20211019
-i386                 randconfig-c001-20211019
-s390                 randconfig-c005-20211019
-x86_64               randconfig-c007-20211019
-riscv                randconfig-c006-20211019
-powerpc              randconfig-c003-20211019
-x86_64               randconfig-a004-20211019
-x86_64               randconfig-a006-20211019
-x86_64               randconfig-a005-20211019
-x86_64               randconfig-a001-20211019
-x86_64               randconfig-a002-20211019
-x86_64               randconfig-a003-20211019
-i386                 randconfig-a001-20211019
-i386                 randconfig-a003-20211019
-i386                 randconfig-a004-20211019
-i386                 randconfig-a005-20211019
-i386                 randconfig-a002-20211019
-i386                 randconfig-a006-20211019
-x86_64               randconfig-a013-20211020
-x86_64               randconfig-a015-20211020
-x86_64               randconfig-a011-20211020
-x86_64               randconfig-a014-20211020
-x86_64               randconfig-a016-20211020
-x86_64               randconfig-a012-20211020
-riscv                randconfig-r042-20211020
-s390                 randconfig-r044-20211020
-hexagon              randconfig-r045-20211020
-hexagon              randconfig-r041-20211020
-hexagon              randconfig-r041-20211019
-hexagon              randconfig-r045-20211019
+--
+Ping-Ke
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
