@@ -2,67 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36BCD437EA5
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 21:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 643D0437EB9
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 21:37:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233564AbhJVTc1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Oct 2021 15:32:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45492 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232029AbhJVTcZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Oct 2021 15:32:25 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 6F14A60E0C;
-        Fri, 22 Oct 2021 19:30:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634931007;
-        bh=rXNdZ6om4algPbKXIBCJVIWoWSyEw5YdXROTczTLvdg=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=s1ZXC14PZquLHgKIeOgMQnEc9bLxS3J6J0zauOpW9bbutbhiR03gYBIW4FHTnQTJw
-         09TsJ4N1IOWaVgtXDMbQvUezoEnLLjReQ35C+kU4FMOkaWWJsQWlGmYt11PxsORO7U
-         fmzFxkmyT7Nk9gg74p4w7PyzJg1LxsSbntcBUxu1wiYWMEgJt1s8+KmVD/ixxf7eEX
-         RwLEjzk9J32xuS0/2iAODW7DRBhh5S9V5zeOYlnVs66tqNrwmpSOmtILFGw1qbf6+X
-         NB5VHkwYt2rH9C5hXgcmUzpQFd2yBWXhXi3OZ15BpMaEVYPTXBZSwtf8YQhwOEZz1Q
-         f/wyL5YH/QqdQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 6198D609E7;
-        Fri, 22 Oct 2021 19:30:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S234159AbhJVTjb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Oct 2021 15:39:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39652 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234295AbhJVTjX (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 Oct 2021 15:39:23 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 192EEC061227;
+        Fri, 22 Oct 2021 12:36:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=JPIspCDfexT9JrVL4oywe0eeOUfqUKYAbsQowSBKIMs=;
+        t=1634931409; x=1636141009; b=fyWhWdQLPMAY5MnuBgK7yrNWHRF3cuNV2GtaBS4OQ00WiiF
+        /B3AEvAbWvJ5snzrowrHCPIx2MuEMllTafRMLUUORmra0gmNNNrF4pv2uj2orhQIkMiAi3sq4r4KE
+        7emdtvTAmtwZNRTp2Y66wljx6+FoYyRghSepjC4PUFWUETB0v2rfIj87LtPocOH3qY/cmjX8gq2dQ
+        r4ml7rT72LVaGkr7LjAJjt9taixRMAhSe/tjg6SkwXM9LE2TJ2C8Th9NBb/Ggi7HY9+t8dxaPkiuG
+        Gui1l7V4aPLq1celt7XTVXxgV1AKxs+1/2s3/J6xcIIYNio5OqhB4o5bMK8bMtog==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1me0LN-005ll2-7o;
+        Fri, 22 Oct 2021 21:36:45 +0200
+Message-ID: <5e093d1aa26f0b442dd37c293ae57fcc837e448a.camel@sipsolutions.net>
 Subject: Re: pull-request: mac80211 2021-10-21
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <163493100739.20489.10617693347363757800.git-patchwork-notify@kernel.org>
-Date:   Fri, 22 Oct 2021 19:30:07 +0000
-References: <20211021154351.134297-1-johannes@sipsolutions.net>
-In-Reply-To: <20211021154351.134297-1-johannes@sipsolutions.net>
-To:     Johannes Berg <johannes@sipsolutions.net>
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jakub Kicinski <kuba@kernel.org>
 Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Date:   Fri, 22 Oct 2021 21:36:44 +0200
+In-Reply-To: <163493100739.20489.10617693347363757800.git-patchwork-notify@kernel.org>
+References: <20211021154351.134297-1-johannes@sipsolutions.net>
+         <163493100739.20489.10617693347363757800.git-patchwork-notify@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+On Fri, 2021-10-22 at 19:30 +0000, patchwork-bot+netdevbpf@kernel.org
+wrote:
+> This pull request was applied to netdev/net.git (master)
+> by Jakub Kicinski <kuba@kernel.org>:
 
-This pull request was applied to netdev/net.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Thanks.
 
-On Thu, 21 Oct 2021 17:43:50 +0200 you wrote:
-> Hi,
-> 
-> So I had two fixes pending in my tree and forgot to send them before
-> going on vacation ... at least they've been there for a while now ;)
-> 
-> Please pull and let me know if there's any problem.
-> 
-> [...]
+I have a patch or two that are for -next but depend on this, any chance
+of pulling net into net-next some time, perhaps after it goes to Linus?
 
-Here is the summary with links:
-  - pull-request: mac80211 2021-10-21
-    https://git.kernel.org/netdev/net/c/7fcb1c950e98
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+johannes
 
