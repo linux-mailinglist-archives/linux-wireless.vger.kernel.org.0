@@ -2,123 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CEC4437193
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 08:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 238744371BC
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 08:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230086AbhJVGPV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Oct 2021 02:15:21 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:51595 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbhJVGPV (ORCPT
+        id S229609AbhJVG1w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Oct 2021 02:27:52 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:56950 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229944AbhJVG1v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Oct 2021 02:15:21 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19M6CopyE008625, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19M6CopyE008625
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 22 Oct 2021 14:12:50 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Fri, 22 Oct 2021 14:12:50 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Fri, 22 Oct
- 2021 14:12:49 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <colin.king@canonical.com>
-Subject: [PATCH] rtw89: Fix variable dereferenced before check 'sta'
-Date:   Fri, 22 Oct 2021 14:12:42 +0800
-Message-ID: <20211022061242.8383-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 22 Oct 2021 02:27:51 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1mdnzg-000beE-Fz; Fri, 22 Oct 2021 09:25:33 +0300
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/22/2021 06:01:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzIyIKRXpMggMDM6MzQ6MDA=?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/22/2021 05:58:47
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 166878 [Oct 22 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/22/2021 06:01:00
+Content-Transfer-Encoding: 7bit
+From:   Luca Coelho <luca@coelho.fi>
+In-Reply-To: <iwlwifi.20210826224715.820c2ae18c2b.Iec9b2e2615ce65e6aff5ce896589227a7030f4cf@changeid>
+References: <iwlwifi.20210826224715.820c2ae18c2b.Iec9b2e2615ce65e6aff5ce896589227a7030f4cf@changeid>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.9.7
+Message-Id: <E1mdnzg-000beE-Fz@farmhouse.coelho.fi>
+Date:   Fri, 22 Oct 2021 09:25:32 +0300
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v2 10/12] iwlwifi: Add support for getting rf id with
+ blank
+ otp
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The pointer rtwsta is dereferencing pointer sta before sta is being null
-checked. Fix this by assigning sta->drv_priv to rtwsta only if sta is not
-NULL, otherwise just NULL.
+Luca Coelho <luca@coelho.fi> wrote:
 
-Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
-Reported-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> From: Matti Gottlieb <matti.gottlieb@intel.com>
+> 
+> When having a blank OTP the only way to get the rf id
+> and the cdb info is from prph registers.
+> 
+> Currently there is some implementation for this, but it
+> is located in the wrong place in the code (should be before
+> trying to understand what HW is connected and not after),
+> and it has a partial implementation.
+> 
+> Signed-off-by: Matti Gottlieb <matti.gottlieb@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 06fb6e5b1b37..d02ec5a735cb 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1412,7 +1412,7 @@ static void rtw89_core_ba_work(struct work_struct *work)
- 	list_for_each_entry_safe(rtwtxq, tmp, &rtwdev->ba_list, list) {
- 		struct ieee80211_txq *txq = rtw89_txq_to_txq(rtwtxq);
- 		struct ieee80211_sta *sta = txq->sta;
--		struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
-+		struct rtw89_sta *rtwsta = sta ? (struct rtw89_sta *)sta->drv_priv : NULL;
- 		u8 tid = txq->tid;
- 
- 		if (!sta) {
-@@ -1462,7 +1462,7 @@ static void rtw89_core_txq_check_agg(struct rtw89_dev *rtwdev,
- 	struct ieee80211_hw *hw = rtwdev->hw;
- 	struct ieee80211_txq *txq = rtw89_txq_to_txq(rtwtxq);
- 	struct ieee80211_sta *sta = txq->sta;
--	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
-+	struct rtw89_sta *rtwsta = sta ? (struct rtw89_sta *)sta->drv_priv : NULL;
- 
- 	if (unlikely(skb_get_queue_mapping(skb) == IEEE80211_AC_VO))
- 		return;
-@@ -1534,7 +1534,7 @@ static bool rtw89_core_txq_agg_wait(struct rtw89_dev *rtwdev,
- {
- 	struct rtw89_txq *rtwtxq = (struct rtw89_txq *)txq->drv_priv;
- 	struct ieee80211_sta *sta = txq->sta;
--	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
-+	struct rtw89_sta *rtwsta = sta ? (struct rtw89_sta *)sta->drv_priv : NULL;
- 
- 	if (!sta || rtwsta->max_agg_wait <= 0)
- 		return false;
--- 
-2.25.1
+3 patches applied to iwlwifi-next.git, thanks.
+
+c5dd7b08bae0 iwlwifi: Add support for getting rf id with blank otp
+f2bc2f70292e iwlwifi: Add support for more BZ HWs
+ca5b81f972a8 iwlwifi: Start scratch debug register for Bz family
 
