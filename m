@@ -2,83 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50C6D437A2E
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 17:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E52A4437BA4
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 19:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233417AbhJVPlQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Oct 2021 11:41:16 -0400
-Received: from mga17.intel.com ([192.55.52.151]:5593 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233313AbhJVPlO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Oct 2021 11:41:14 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10144"; a="210112356"
-X-IronPort-AV: E=Sophos;i="5.87,173,1631602800"; 
-   d="scan'208";a="210112356"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2021 08:38:24 -0700
-X-IronPort-AV: E=Sophos;i="5.87,173,1631602800"; 
-   d="scan'208";a="569231738"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2021 08:38:21 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1mdwcI-00092C-F4;
-        Fri, 22 Oct 2021 18:37:58 +0300
-Date:   Fri, 22 Oct 2021 18:37:58 +0300
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com
-Subject: Re: [PATCH 14/14] net: wwan: t7xx: Add maintainers and documentation
-Message-ID: <YXLa1sQH9Mo83F0S@smile.fi.intel.com>
-References: <20211021202738.729-1-ricardo.martinez@linux.intel.com>
- <20211021202738.729-15-ricardo.martinez@linux.intel.com>
+        id S233734AbhJVRRh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Oct 2021 13:17:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35816 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233552AbhJVRRd (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 Oct 2021 13:17:33 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57F30C061764;
+        Fri, 22 Oct 2021 10:15:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=A2qIKzLmaHiruo4ITVd737DFb76HJfGU1G5yRr7n2nA=; b=rHoviyfXzd/lrQqDvJrWfUZPJb
+        khSzljNSmZgr6NeCLmL2ZONpCIRpKB4oHioCY+rox2FwEHu4Ywt0HONuXefuBv/3UpAur5nkRyFqH
+        J7hTmn+S8ptHG7GDNZkQsDxTGe7GNJdFCUMvsLXKyIEUrYxwnpCxBnNzSCRtUP63ii5JIHDdRbHiS
+        xItouevSX03vuGJ4AWRBwdEVidWlfR+a84nHSvDQSoLkasicCW9qV0Wdkc1U02fJ62Z5EX4JRkSYW
+        8YR2rsMzwlL7ahaWXhIDk4BP1EtoaXVSoklKfpcXL6qO3C3iIfQS4m2fEqm+Mp9587qQjSmZLJysz
+        8qltYNeA==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mdy8H-00BbTQ-Sx; Fri, 22 Oct 2021 17:15:05 +0000
+Date:   Fri, 22 Oct 2021 10:15:05 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     bp@suse.de, akpm@linux-foundation.org, josh@joshtriplett.org,
+        rishabhb@codeaurora.org, kubakici@wp.pl, maco@android.com,
+        david.brown@linaro.org, bjorn.andersson@linaro.org,
+        linux-wireless@vger.kernel.org, keescook@chromium.org,
+        shuah@kernel.org, mfuzzey@parkeon.com, zohar@linux.vnet.ibm.com,
+        dhowells@redhat.com, pali.rohar@gmail.com, tiwai@suse.de,
+        arend.vanspriel@broadcom.com, zajec5@gmail.com, nbroeking@me.com,
+        broonie@kernel.org, dmitry.torokhov@gmail.com, dwmw2@infradead.org,
+        torvalds@linux-foundation.org, Abhay_Salunke@dell.com,
+        jewalt@lgsinnovations.com, cantabile.desu@gmail.com, ast@fb.com,
+        andresx7@gmail.com, dan.rue@linaro.org, brendanhiggins@google.com,
+        yzaikin@google.com, sfr@canb.auug.org.au, rdunlap@infradead.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 08/10] firmware_loader: move builtin build helper to
+ shared library
+Message-ID: <YXLxmbxLU/+eV+JH@bombadil.infradead.org>
+References: <20211021155843.1969401-1-mcgrof@kernel.org>
+ <20211021155843.1969401-9-mcgrof@kernel.org>
+ <YXKq8gJsQE/U9ZKq@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211021202738.729-15-ricardo.martinez@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <YXKq8gJsQE/U9ZKq@kroah.com>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 21, 2021 at 01:27:38PM -0700, Ricardo Martinez wrote:
-> Adds maintainers and documentation for MediaTek t7xx 5G WWAN modem
-> device driver.
+On Fri, Oct 22, 2021 at 02:13:38PM +0200, Greg KH wrote:
+> On Thu, Oct 21, 2021 at 08:58:41AM -0700, Luis R. Rodriguez wrote:
+> > From: Luis Chamberlain <mcgrof@kernel.org>
+> > 
+> > If we wanted to use a different directory for building target
+> > builtin firmware it is easier if we just have a shared library
+> > Makefile, and each target directory can then just include it and
+> > populate the respective needed variables. This reduces clutter,
+> > makes things easier to read, and also most importantly allows
+> > us to not have to try to magically adjust only one target
+> > kconfig symbol for built-in firmware files. Trying to do this
+> > can easily end up causing odd build issues if the user is not
+> > careful.
+> > 
+> > As an example issue, if we are going to try to extend the
+> > FW_LOADER_BUILTIN_FILES list and FW_LOADER_BUILTIN_DIR in case
+> > of a new test firmware builtin support currently our only option
+> > would be modify the defaults of each of these in case test firmware
+> > builtin support was enabled. Defaults however won't augment a prior
+> > setting, and so if FW_LOADER_BUILTIN_DIR="/lib/firmware" and you
+> > and want this to be changed to something like
+> > FW_LOADER_BUILTIN_DIR="drivers/base/firmware_loader/test-builtin"
+> > the change will not take effect as a prior build already had it
+> > set, and the build would fail. Trying to augment / append the
+> > variables in the Makefile just makes this very difficult to
+> > read.
+> > 
+> > Using a library let's us split up possible built-in targets so
+> > that the user does not have to be involved. This will be used
+> > in a subsequent patch which will add another user to this
+> > built-in firmware library Makefile and demo how to use it outside
+> > of the default FW_LOADER_BUILTIN_DIR and FW_LOADER_BUILTIN_FILES.
+> > 
+> > Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 > 
-> Signed-off-by: Haijun Lio <haijun.liu@mediatek.com>
-> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+> I'm sorry, but I do not understand the need for this change at all.  You
+> are now building this as a library, but what uses this library?  The
+> patches after this series are just testing patches, to verify that the
+> code previous in this series is working correctly, it should not depend
+> on a new library that only the testing code requires, right?
 
-Are they co-developers or who? This SoB chain seems broken.
+The last patch adds support to test built-in firmware, but most kernels
+will have and do want EXTRA_FIRMWARE="", and so there cannot be anything
+that can be tested. And so we need aother two pair of kconfig symbols
+which are independent to test built-in firmware. The reason for this is
+explained in the commit log, if we try to augment the EXTRA_FIRMWARE
+when enabling testing built-in firmware we can easily end up with odd
+build issues.
 
-> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+So this patch moves the logic to enable us to re-use the same built-in
+magic for two independent kconfig test symbols.
 
-...
-
-> +MEDIATEK T7XX 5G WWAN MODEM DRIVER
-> +M:	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-> +M:	Intel Corporation <linuxwwan@intel.com>
-> +R:	Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>
-> +R:	Liu Haijun <haijun.liu@mediatek.com>
-> +R:	M Chetan Kumar <m.chetan.kumar@linux.intel.com>
-> +R:	Ricardo Martinez <ricardo.martinez@linux.intel.com>
-> +L:	netdev@vger.kernel.org
-
-> +S:	Maintained
-
-You are not getting paid for this?
-
-	Supported:   Someone is actually paid to look after this.
-	Maintained:  Someone actually looks after it.
-
-> +F:	drivers/net/wwan/t7xx/
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+  Luis
