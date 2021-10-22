@@ -2,95 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3154436F7D
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 03:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CEC4437193
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 08:13:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231336AbhJVBlV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Oct 2021 21:41:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51242 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230288AbhJVBlU (ORCPT
+        id S230086AbhJVGPV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Oct 2021 02:15:21 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:51595 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229484AbhJVGPV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Oct 2021 21:41:20 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE881C061764
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Oct 2021 18:39:03 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id j190so1951209pgd.0
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Oct 2021 18:39:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9MmDL5zAvqTX2YYbXvvZ3TXQ4huRanNDEQ01MoOAhto=;
-        b=nkCV2pEBEaJH24DNcKgorUf7oQFvPH6FmWtSJOHdIec4P0OXB+zi/C857K7cah3r4P
-         1EOCfIFfF3n9yEztr2RdmoJbf8jnbUPMt44EHqXgSog6KLf+PXC6k6Bo4wEUtbJKI9hf
-         HRtoI9DorGwD4WMIdfkW0ZJlShFH42NJ6PHiQVibv+3/E1AM1YzCsPWIfrfgNQOMyFMv
-         l1eH708JRftfal+PxlqHhiS1sa8pk/zn4pGXI2Cjf2VZ7k5JvBvGoE+E06O8yrCwFh+M
-         X321fihPEnlUZTSI6mP6mFX0gKQiw1hKaX/+Th3GqCRsJZTeMliz0jVS6kinccskh1gy
-         qXwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9MmDL5zAvqTX2YYbXvvZ3TXQ4huRanNDEQ01MoOAhto=;
-        b=k+cbWaBgf/wSrqvlNoW+mc0X4GHpqTGxbRRFIeOFPlKoFUBDwZ8/cRxU1ufboprd0f
-         cNN2R1KT8mqCodqWVmWn+iITyfZm4vKZft3lt39r1BqaZdih+JeTBR8Z7ndclHYDevX1
-         7Irgp3qY1OKytKbAG59TC5VI/3ynYp2/6EJX3DefDEqGNas7e/tfhDz1LrefBhEBy2j4
-         7sURr8xeWNB0Kg+ZcVA4jLuGIb3/O+KnNcxU7RkfMKAAkoAwzu/KyQfg0H48BywnATZC
-         urxNxYyhVaDFWrX4/+pq6o1h/ohEdzhS6Osap8YWoBdV7dMLujNEdohKnz8dmnDJHrOS
-         I3OQ==
-X-Gm-Message-State: AOAM533VBoeGnwB2xCd/HU6L9Vn6Eyw8I8XPHt4HxzBHlE3ZtogfVUM6
-        AXhOunfUXaSnkx4QCig+qMF76JgAHaniIZiQ
-X-Google-Smtp-Source: ABdhPJxnSdqi74DM/umGT88u7EvgoPA9Jz0ju5YvcZy4J39HJenyzY7bmyUAm7MUuF1RVMJY6WxCZg==
-X-Received: by 2002:a63:710d:: with SMTP id m13mr7015529pgc.467.1634866743424;
-        Thu, 21 Oct 2021 18:39:03 -0700 (PDT)
-Received: from localhost.localdomain ([112.20.112.18])
-        by smtp.gmail.com with ESMTPSA id f4sm6447370pgn.93.2021.10.21.18.38.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Oct 2021 18:39:03 -0700 (PDT)
-From:   Wang Haojun <jiangliuer01@gmail.com>
-X-Google-Original-From: Wang Haojun <wanghaojun@loongson.cn>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Wang Haojun <wanghaojun@loongson.cn>
-Subject: [PATCH] drivers:net:wireless:mediatek: fix build warning
-Date:   Fri, 22 Oct 2021 09:38:43 +0800
-Message-Id: <20211022013843.3643856-1-wanghaojun@loongson.cn>
-X-Mailer: git-send-email 2.27.0
+        Fri, 22 Oct 2021 02:15:21 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19M6CopyE008625, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19M6CopyE008625
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 22 Oct 2021 14:12:50 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Fri, 22 Oct 2021 14:12:50 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Fri, 22 Oct
+ 2021 14:12:49 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <colin.king@canonical.com>
+Subject: [PATCH] rtw89: Fix variable dereferenced before check 'sta'
+Date:   Fri, 22 Oct 2021 14:12:42 +0800
+Message-ID: <20211022061242.8383-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/22/2021 06:01:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzIyIKRXpMggMDM6MzQ6MDA=?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/22/2021 05:58:47
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166878 [Oct 22 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/22/2021 06:01:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-drivers/net/wireless/mediatek/mt76/mt7921/main.c: In function 'mt7921_get_et_stats':
-drivers/net/wireless/mediatek/mt76/mt7921/main.c:1024:26: warning: format '%lu' expects argument of type 'long unsigned int', but argument 4 has type 'unsigned int' [-Wformat=]
-   dev_err(dev->mt76.dev, "ei: %d  SSTATS_LEN: %lu",
+The pointer rtwsta is dereferencing pointer sta before sta is being null
+checked. Fix this by assigning sta->drv_priv to rtwsta only if sta is not
+NULL, otherwise just NULL.
 
-Signed-off-by: Wang Haojun <wanghaojun@loongson.cn>
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Reported-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 35a490c049e9..0b456431cb59 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1021,7 +1021,7 @@ void mt7921_get_et_stats(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 06fb6e5b1b37..d02ec5a735cb 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -1412,7 +1412,7 @@ static void rtw89_core_ba_work(struct work_struct *work)
+ 	list_for_each_entry_safe(rtwtxq, tmp, &rtwdev->ba_list, list) {
+ 		struct ieee80211_txq *txq = rtw89_txq_to_txq(rtwtxq);
+ 		struct ieee80211_sta *sta = txq->sta;
+-		struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
++		struct rtw89_sta *rtwsta = sta ? (struct rtw89_sta *)sta->drv_priv : NULL;
+ 		u8 tid = txq->tid;
  
- 	ei += wi.worker_stat_count;
- 	if (ei != ARRAY_SIZE(mt7921_gstrings_stats))
--		dev_err(dev->mt76.dev, "ei: %d  SSTATS_LEN: %lu",
-+		dev_err(dev->mt76.dev, "ei: %d  SSTATS_LEN: %u",
- 			ei, ARRAY_SIZE(mt7921_gstrings_stats));
- }
+ 		if (!sta) {
+@@ -1462,7 +1462,7 @@ static void rtw89_core_txq_check_agg(struct rtw89_dev *rtwdev,
+ 	struct ieee80211_hw *hw = rtwdev->hw;
+ 	struct ieee80211_txq *txq = rtw89_txq_to_txq(rtwtxq);
+ 	struct ieee80211_sta *sta = txq->sta;
+-	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
++	struct rtw89_sta *rtwsta = sta ? (struct rtw89_sta *)sta->drv_priv : NULL;
  
+ 	if (unlikely(skb_get_queue_mapping(skb) == IEEE80211_AC_VO))
+ 		return;
+@@ -1534,7 +1534,7 @@ static bool rtw89_core_txq_agg_wait(struct rtw89_dev *rtwdev,
+ {
+ 	struct rtw89_txq *rtwtxq = (struct rtw89_txq *)txq->drv_priv;
+ 	struct ieee80211_sta *sta = txq->sta;
+-	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
++	struct rtw89_sta *rtwsta = sta ? (struct rtw89_sta *)sta->drv_priv : NULL;
+ 
+ 	if (!sta || rtwsta->max_agg_wait <= 0)
+ 		return false;
 -- 
-2.27.0
+2.25.1
 
