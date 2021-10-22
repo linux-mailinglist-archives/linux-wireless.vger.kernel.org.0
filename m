@@ -2,79 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C1134380A9
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Oct 2021 01:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50E7A4380CA
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Oct 2021 01:58:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232008AbhJVXfL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Oct 2021 19:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35480 "EHLO
+        id S231960AbhJWAAk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Oct 2021 20:00:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230086AbhJVXfK (ORCPT
+        with ESMTP id S230086AbhJWAAk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Oct 2021 19:35:10 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D975C061764;
-        Fri, 22 Oct 2021 16:32:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=mvgazD9x12sIYpUGEvDFNeSjpKlhGbYxfsRm+y6UoMQ=; b=YWSpEHWXg/cmTacEC9Ikl/7Xc1
-        LDg2kS6QHEnSDgzHN7OoYPgUw2SCcn4kyWz/7hBwvO1/r0CrOLWUeZWko7BlcIEHyPCorMAnIpIkT
-        URNn11q7aSAi4416vTSt2xgJvFHumgpHX2F7lV7CP8dlpUZXHvxQtuvcvIV5PCmKrjroMsVevY7Y9
-        MIXjvQIbHau6EdhsnTk2T5eoCuZZOLb5ub97PrMseDtMVpg5dHJx6jUxWhD7SxTpo2bUYMcuZ2VTN
-        Ozg1pyQaheENfgcXt7ythIofUEnH8lHfI25cv9nt42IZvZ6P40FlD4+a7vpxAk9mQ8sRYPg22eHs5
-        48TO2SNA==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1me41r-00C8As-Ts; Fri, 22 Oct 2021 23:32:52 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     netdev@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: [PATCH net] wireless: mediatek: mt7921: fix Wformat build warning
-Date:   Fri, 22 Oct 2021 16:32:51 -0700
-Message-Id: <20211022233251.29987-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.31.1
+        Fri, 22 Oct 2021 20:00:40 -0400
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11483C061764
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Oct 2021 16:58:22 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id a8so5955041ilj.10
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Oct 2021 16:58:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=squareup.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Zag9BI4WnzwDMKirvs2JgqIo0CDKPVykBXhBbv4X39Y=;
+        b=esMSn5hJb8IItHgig97yRqtzEPLjQ5wvKy21dsq93D/9KdO5VckJBLoUjO6OKQn3nT
+         sjn/zPdbJbqZnBvCbkO0ga/S5+gs+MJxGh8knw2SyqQD9f4bZda4Jh/opwtwps8Zs8iZ
+         iDWlunooI0AvB6g2PubmbSUAa1aI+n4mDVSNw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Zag9BI4WnzwDMKirvs2JgqIo0CDKPVykBXhBbv4X39Y=;
+        b=uLLWk+3XG36D1PcgyAbiU0HPH0HAqc+VXBUdswFtuFNe08Ym83hkugmEqUVM3QNNrZ
+         5WkNlDjfIZ/CrZPLzEjQmehllrg7Bg5pW15cS6ArevJ7BOQh/HiIvZuLm2aS19n20Nou
+         PSOyXQksYlhUwzzukwb7lJFPqXGHywjmyJJk+UhI5zlPDFHf4SSmHwbi5j7u5kFpMGz2
+         yurR1MtOLAnn9NqTZkVlQwseAr8ShduRMxHNxB2e6YR0upyWsH9JYNerDwOZ7v36TDRi
+         CnKs/LnkqD63qgTpIrM0qGVRfqUR+AgfDqbHRnidemrTtcmn/gtz2EMMeHLjs4XE/mjh
+         rAwg==
+X-Gm-Message-State: AOAM532lsK0+16WduSou4j2irR/HpnTyWHZPrG6EE4rYyYMiz3rw8oB3
+        bU9GpfuBVymGlTlX/D7HxTZzGA==
+X-Google-Smtp-Source: ABdhPJyfL1SYIYp4iGWUhti94T+a/ZkkCY5DCwSKnOOb5IenpW3zYjR6X0q/mPfbnsxuNMOTOgM8uA==
+X-Received: by 2002:a05:6e02:156b:: with SMTP id k11mr1766148ilu.115.1634947101373;
+        Fri, 22 Oct 2021 16:58:21 -0700 (PDT)
+Received: from localhost ([2600:6c50:4d00:cd01::382])
+        by smtp.gmail.com with ESMTPSA id g1sm5163277ild.86.2021.10.22.16.58.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Oct 2021 16:58:20 -0700 (PDT)
+From:   Benjamin Li <benl@squareup.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        linux-arm-msm@vger.kernel.org, Benjamin Li <benl@squareup.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] wcn36xx: add missing 5GHz channels 136 and 144
+Date:   Fri, 22 Oct 2021 16:57:36 -0700
+Message-Id: <20211022235738.2970167-1-benl@squareup.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ARRAY_SIZE() is of type size_t, so the format specfier should
-be %zu instead of %lu.
+Think Bryan's commit was accidentally lost during upstreaming of his original
+WCN3680 support patches, so I've included it here.
 
-Fixes this build warning:
+Omitted Fixes: tag as this was a regression from downstream prima, but not a
+regression from previous versions of wcn36xx.
 
-../drivers/net/wireless/mediatek/mt76/mt7921/main.c: In function ‘mt7921_get_et_stats’:
-../drivers/net/wireless/mediatek/mt76/mt7921/main.c:1024:26: warning: format ‘%lu’ expects argument of type ‘long unsigned int’, but argument 4 has type ‘unsigned int’ [-Wformat=]
-   dev_err(dev->mt76.dev, "ei: %d  SSTATS_LEN: %lu",
+Benjamin Li (1):
+  wcn36xx: add missing 5GHz channels 136 and 144
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Sean Wang <sean.wang@mediatek.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>
-Cc: Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Cc: Ryder Lee <ryder.lee@mediatek.com>
-Cc: Kalle Valo <kvalo@codeaurora.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Bryan O'Donoghue (1):
+  wcn36xx: Switch on Antenna diversity feature bit
 
---- linux-next-20211022.orig/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ linux-next-20211022/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1021,7 +1021,7 @@ void mt7921_get_et_stats(struct ieee8021
- 
- 	ei += wi.worker_stat_count;
- 	if (ei != ARRAY_SIZE(mt7921_gstrings_stats))
--		dev_err(dev->mt76.dev, "ei: %d  SSTATS_LEN: %lu",
-+		dev_err(dev->mt76.dev, "ei: %d  SSTATS_LEN: %zu",
- 			ei, ARRAY_SIZE(mt7921_gstrings_stats));
- }
- 
+ drivers/net/wireless/ath/wcn36xx/main.c | 2 ++
+ drivers/net/wireless/ath/wcn36xx/smd.c  | 5 ++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+-- 
+2.25.1
+
