@@ -2,90 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C62AC4375E7
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 13:20:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E430B437694
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Oct 2021 14:13:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232673AbhJVLWo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Oct 2021 07:22:44 -0400
-Received: from static-109-72-52-77.cpe.sn.co.rs ([109.72.52.77]:52142 "EHLO
-        fx.arvanta.net" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232539AbhJVLWo (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Oct 2021 07:22:44 -0400
-X-Greylist: delayed 1785 seconds by postgrey-1.27 at vger.kernel.org; Fri, 22 Oct 2021 07:22:43 EDT
-Received: from elm.arvanta.net (arya.arvanta.net [10.5.1.6])
-        by fx.arvanta.net (Postfix) with ESMTP id 8492C250F9;
-        Fri, 22 Oct 2021 12:50:39 +0200 (CEST)
-Date:   Fri, 22 Oct 2021 12:50:39 +0200
-From:   Milan =?utf-8?Q?P=2E_Stani=C4=87?= <mps@arvanta.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>
-Subject: [BUG] mwifiex sdio wifi crashes on samsung peach pi chromebook
-Message-ID: <YXKXf1cBjPWqD1Aw@elm.arvanta.net>
+        id S231808AbhJVMP7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Oct 2021 08:15:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33074 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230471AbhJVMP6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 Oct 2021 08:15:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 73BFB6101C;
+        Fri, 22 Oct 2021 12:13:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1634904821;
+        bh=0Jm729A//8Gt6aSpcc+e0DHH9iZ1PE/6ep8ru4Kc8to=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jSFp2NVnT5t2g3+IA1M+f0gn8ac4es5WuyfjANrKbE6rlHjQZBE1RYCQ6URdbX2Tc
+         UaVKYOAb/DY7DT8VuJFuPSOKCTjSJKBPCHeItWSWlvznwo4Uz7XSlx0zeKhWrUvNXM
+         XoYa5Uo2ITzL/AuHPGeHTovMLFh4HOxTqVS0ia7g=
+Date:   Fri, 22 Oct 2021 14:13:38 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     "Luis R. Rodriguez" <mcgrof@kernel.org>
+Cc:     bp@suse.de, akpm@linux-foundation.org, josh@joshtriplett.org,
+        rishabhb@codeaurora.org, kubakici@wp.pl, maco@android.com,
+        david.brown@linaro.org, bjorn.andersson@linaro.org,
+        linux-wireless@vger.kernel.org, keescook@chromium.org,
+        shuah@kernel.org, mfuzzey@parkeon.com, zohar@linux.vnet.ibm.com,
+        dhowells@redhat.com, pali.rohar@gmail.com, tiwai@suse.de,
+        arend.vanspriel@broadcom.com, zajec5@gmail.com, nbroeking@me.com,
+        broonie@kernel.org, dmitry.torokhov@gmail.com, dwmw2@infradead.org,
+        torvalds@linux-foundation.org, Abhay_Salunke@dell.com,
+        jewalt@lgsinnovations.com, cantabile.desu@gmail.com, ast@fb.com,
+        andresx7@gmail.com, dan.rue@linaro.org, brendanhiggins@google.com,
+        yzaikin@google.com, sfr@canb.auug.org.au, rdunlap@infradead.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 08/10] firmware_loader: move builtin build helper to
+ shared library
+Message-ID: <YXKq8gJsQE/U9ZKq@kroah.com>
+References: <20211021155843.1969401-1-mcgrof@kernel.org>
+ <20211021155843.1969401-9-mcgrof@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20211021155843.1969401-9-mcgrof@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Thu, Oct 21, 2021 at 08:58:41AM -0700, Luis R. Rodriguez wrote:
+> From: Luis Chamberlain <mcgrof@kernel.org>
+> 
+> If we wanted to use a different directory for building target
+> builtin firmware it is easier if we just have a shared library
+> Makefile, and each target directory can then just include it and
+> populate the respective needed variables. This reduces clutter,
+> makes things easier to read, and also most importantly allows
+> us to not have to try to magically adjust only one target
+> kconfig symbol for built-in firmware files. Trying to do this
+> can easily end up causing odd build issues if the user is not
+> careful.
+> 
+> As an example issue, if we are going to try to extend the
+> FW_LOADER_BUILTIN_FILES list and FW_LOADER_BUILTIN_DIR in case
+> of a new test firmware builtin support currently our only option
+> would be modify the defaults of each of these in case test firmware
+> builtin support was enabled. Defaults however won't augment a prior
+> setting, and so if FW_LOADER_BUILTIN_DIR="/lib/firmware" and you
+> and want this to be changed to something like
+> FW_LOADER_BUILTIN_DIR="drivers/base/firmware_loader/test-builtin"
+> the change will not take effect as a prior build already had it
+> set, and the build would fail. Trying to augment / append the
+> variables in the Makefile just makes this very difficult to
+> read.
+> 
+> Using a library let's us split up possible built-in targets so
+> that the user does not have to be involved. This will be used
+> in a subsequent patch which will add another user to this
+> built-in firmware library Makefile and demo how to use it outside
+> of the default FW_LOADER_BUILTIN_DIR and FW_LOADER_BUILTIN_FILES.
+> 
+> Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 
-[ sorry if I send this to wrong address but you are listed as
-  maintainers for MARVELL MWIFIEX WIRELESS DRIVER ]
+I'm sorry, but I do not understand the need for this change at all.  You
+are now building this as a library, but what uses this library?  The
+patches after this series are just testing patches, to verify that the
+code previous in this series is working correctly, it should not depend
+on a new library that only the testing code requires, right?
 
-On my chromebook samsung peach pi (exynos-5800) wifi driver stops to
-work at random time, sometimes after few hours and sometimes after day
-or two.
+confused,
 
-dmesg shows this (and repeating till reboot):
-----------------------------------------------
-[ 3718.465572] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (1) failed: -110
-[ 3718.465925] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (2) failed: -110
-[ 3718.466262] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (3) failed: -110
-[ 3718.466340] mwifiex_sdio mmc1:0001:1: mwifiex_write_data_async failed: 0xFFFFFFFF
-[ 3718.916823] mwifiex_sdio mmc1:0001:1: read mp_regs failed
-[ 3718.917338] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (1) failed: -110
-[ 3718.917522] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (2) failed: -110
-[ 3718.917689] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (3) failed: -110
-[ 3718.917804] mwifiex_sdio mmc1:0001:1: mwifiex_write_data_async failed: 0xFFFFFFFF
-[ 3718.918096] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (1) failed: -110
-[ 3718.918371] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (2) failed: -110
-[ 3718.918501] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (3) failed: -110
-[ 3718.918546] mwifiex_sdio mmc1:0001:1: mwifiex_11n_aggregate_pkt: host_to_card failed: 0xffffffff
-[ 3719.245817] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (1) failed: -110
-[ 3719.246101] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (2) failed: -110
-[ 3719.246381] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (3) failed: -110
-[ 3719.246449] mwifiex_sdio mmc1:0001:1: mwifiex_write_data_async failed: 0xFFFFFFFF
-[ 3719.437566] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (1) failed: -110
-[ 3719.437842] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (2) failed: -110
-[ 3719.438119] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (3) failed: -110
-[ 3719.438184] mwifiex_sdio mmc1:0001:1: mwifiex_write_data_async failed: 0xFFFFFFFF
-[ 3719.935954] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (1) failed: -110
-[ 3719.936173] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (2) failed: -110
-[ 3719.936301] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (3) failed: -110
-[ 3719.936348] mwifiex_sdio mmc1:0001:1: mwifiex_write_data_async failed: 0xFFFFFFFF
-[ 3720.149548] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (1) failed: -110
-[ 3720.149870] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (2) failed: -110
-[ 3720.150212] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (3) failed: -110
-[ 3720.150477] mwifiex_sdio mmc1:0001:1: mwifiex_write_data_async failed: 0xFFFFFFFF
-[ 3720.269532] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (1) failed: -110
-[ 3720.269754] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (2) failed: -110
-[ 3720.269937] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (3) failed: -110
-[ 3720.269988] mwifiex_sdio mmc1:0001:1: mwifiex_write_data_async failed: 0xFFFFFFFF
-[ 3720.358851] mwifiex_sdio mmc1:0001:1: host_to_card, write iomem      (1) failed: -110
-----------------------------------------------
-
-kernel is mainline 5.14.4 without patches, but I recall that I noticed
-this crashes on older ones but can't remember exact version.
-
-I don't have idea how I could trigger this bug to appear because I din't
-find anything related which could trigger it.
-
-I'm ready to test patches if anyone made them but I don't have
-experience in kernel drivers programming so can't make fix.
-
-Thanks in advance
+greg k-h
