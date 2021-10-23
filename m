@@ -2,90 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82864438294
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Oct 2021 11:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2633E4382A1
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Oct 2021 11:31:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230267AbhJWJNw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Oct 2021 05:13:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60896 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230224AbhJWJNw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Oct 2021 05:13:52 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2A45F61073;
-        Sat, 23 Oct 2021 09:11:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634980293;
-        bh=2L8s2H3bU6sFrOhiOtFbYFeWrB/EluG4V/kioF6sqRM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A9QnRrpiMHamAyiFa6pcZpx6jlqOG6geIzhh5I2Lwspv2dLuWphWrermPujGzQwqH
-         /Vwhpb3mwv5dylWSkBPSzXX5Ae9qBgwnzyJunELph9uha8Wz+bv8bxWNUArbc2na78
-         mHNt3wRwPJ1eVR74uItT7Il2eFz3vPFc0mt+e0PJpaRL1ETCuKl+8IJ7trphK7caRA
-         GDhtcF4tledB2LGIdlI889NWlO/1PO020RZg5iR++LSeVbTP/Vy/vNs3rLJGpzTmgs
-         +Hex8+PxHOGqxJfgGSUf8hYJ/gp3uuDkY7QaPyUdOl1hnlLO+st7n/TPkxFmbbTndp
-         PrsITBBEERC+Q==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     johannes@sipsolutions.net
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com,
-        evelyn.tsai@mediatek.com
-Subject: [PATCH v2 mac80211-next 6/6] cfg80211: introduce NL80211_EXT_FEATURE_RADAR_OFFCHAN feature flag
-Date:   Sat, 23 Oct 2021 11:10:55 +0200
-Message-Id: <241849ccaf2c228873c6f8495bf87b19159ba458.1634979655.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1634979655.git.lorenzo@kernel.org>
-References: <cover.1634979655.git.lorenzo@kernel.org>
+        id S230081AbhJWJdT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Oct 2021 05:33:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50808 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229908AbhJWJdS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 23 Oct 2021 05:33:18 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9E82C061764
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Oct 2021 02:30:59 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id e12so2456509wra.4
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Oct 2021 02:30:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Tvcj3Tu7wZBfjgrOoHFPXrMVlJAmRlLA42ROSETHGug=;
+        b=V5p6oLcVx2jE3KGaP6Szf2WGKdL0fJxAcMhGDtG48dwixLh69aBsjuMnxxLQNLR6lu
+         DBBG9uhWqZomvSBeSkH32kkY7adskPwk616+R0GKMe9trfIrpxZsI7dTBQohJbY/TWQ8
+         BvhmwQRP+Ae0wod0yanrLl3l3lRUU91EqRew/ElG/Jmo6yAybjHqBPc2zzlcObgDGv7u
+         G7v2EdYJxQSoTbRjCbgHaqFzLnvKXvRcnMcnGcx6OCFmjKoXUfnhKVhfX59ItKQEaI3V
+         f3YqNE2oFa0GK2ptowuwxj+bPeliCdRb3OsnISS8SRL4pQ8KWwZZ/L48w4ZZos9qJSRT
+         wG3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Tvcj3Tu7wZBfjgrOoHFPXrMVlJAmRlLA42ROSETHGug=;
+        b=UoJVGbr84wXknk5iVwIz93fr/b0tYtldiAcLFGkmeT4Enxa29YDjxnMNOds9CRIrAH
+         hs4WV0ENa/HyrSvKk95zXoZm6FpIhAZzWeEOue2+Pa64q1IEDaXCLguPTASi0XLtd4l5
+         poRDB/DCcJOG9NBx3qQ1kYD3sT7wdLVR8iKxofu9JDWO2Ao0myvpilao1gB+PyRX4CM0
+         9cuGgZgaT1bQP/3mUwy+/lOwqnbQK1oKGpWSdri0QuVnT9gbzusrQWV/8CN/7X/i5owC
+         WaM2yPx40zq4hp9PU6LJoxn9AHylBfDsA0vl4CtpIHaMiwzvg3ydvgg8y0kGvnr35iGb
+         FcBw==
+X-Gm-Message-State: AOAM532hx3gi/HQAowJbXq46RAe644RkhbqLWHYDGTQvXpGJ57aUneUi
+        qSNRa5iDY3dWIW1yR2tRlAju+A==
+X-Google-Smtp-Source: ABdhPJzYW8dTZhtd3eBvM5+tYQwYlGRZ+/rXXOrKLPNwu1OqHfci/m8+LMt5V8wMlAWO/gYdhBN1gg==
+X-Received: by 2002:adf:f211:: with SMTP id p17mr6691862wro.37.1634981458211;
+        Sat, 23 Oct 2021 02:30:58 -0700 (PDT)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id t12sm11456977wmq.44.2021.10.23.02.30.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Oct 2021 02:30:57 -0700 (PDT)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        wcn36xx@lists.infradead.org
+Cc:     loic.poulain@linaro.org, benl@squareup.com,
+        daniel.thompson@linaro.org, bryan.odonoghue@linaro.org
+Subject: [PATCH v2 0/1] wcn36xx: Revert firmware link monitoring
+Date:   Sat, 23 Oct 2021 10:32:56 +0100
+Message-Id: <20211023093257.2849565-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce NL80211_EXT_FEATURE_RADAR_OFFCHAN feature flag in order to
-notify userland the underlay hw supports offchannel radar/CAC detection.
+V2:
+- Adds Fixes tag
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- include/uapi/linux/nl80211.h | 4 ++++
- net/wireless/mlme.c          | 4 ++++
- 2 files changed, 8 insertions(+)
+V1:
+We can get this working with
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 87ece3e68b8b..3e734826792f 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -6060,6 +6060,9 @@ enum nl80211_feature_flags {
-  *	frames. Userspace has to share FILS AAD details to the driver by using
-  *	@NL80211_CMD_SET_FILS_AAD.
-  *
-+ * @NL80211_EXT_FEATURE_RADAR_OFFCHAN: Device supports offchannel radar/CAC
-+ *	detection.
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -6126,6 +6129,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_PROT_RANGE_NEGO_AND_MEASURE,
- 	NL80211_EXT_FEATURE_BSS_COLOR,
- 	NL80211_EXT_FEATURE_FILS_CRYPTO_OFFLOAD,
-+	NL80211_EXT_FEATURE_RADAR_OFFCHAN,
- 
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 532df85d1c26..247ee0a01e8b 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -1040,6 +1040,10 @@ cfg80211_start_offchan_radar_detection(struct cfg80211_registered_device *rdev,
- 	unsigned int cac_time_ms;
- 	int err = -EBUSY;
- 
-+	if (!wiphy_ext_feature_isset(&rdev->wiphy,
-+				     NL80211_EXT_FEATURE_RADAR_OFFCHAN))
-+		return -EOPNOTSUPP;
-+
- 	mutex_lock(&rdev->offchan_mutex);
- 	if (rdev->offchan_radar_wdev)
- 		goto out;
+- Secure APs PS on/off
+- Open APs PS on
+
+by setting firmware feature bit WLANACTIVE_OFFLOAD 
+
+Open APs PS off though is non-functional even with the above bit enabled
+and three quaters of a wheel is useless.
+
+So unfortunately for now zap it off.
+
+Bryan O'Donoghue (1):
+  Revert "wcn36xx: Enable firmware link monitoring"
+
+ drivers/net/wireless/ath/wcn36xx/main.c | 1 -
+ 1 file changed, 1 deletion(-)
+
 -- 
-2.31.1
+2.33.0
 
