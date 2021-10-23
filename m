@@ -2,103 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DE13438232
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Oct 2021 09:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1CCD43828D
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Oct 2021 11:11:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230025AbhJWHc6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Oct 2021 03:32:58 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:19546 "EHLO m43-7.mailgun.net"
+        id S230047AbhJWJNm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Oct 2021 05:13:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60746 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229493AbhJWHc5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Oct 2021 03:32:57 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1634974239; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=6prkHAzg/ianVXk7VNqt9m/tBBvysRNdknkhwFj3piw=;
- b=uNKBukWTW7nQkuiAQCDAgK1PwZWGhhGB/v4EzonFS/17rQF4m5SYLmhpPzo+KvbnpyYdKL2w
- V7ENvyXll0+8fQq/LVjwaqwOBNoqPr2V21LeveCeQHUqix+2Xf+DUK22FMLj16JmISQPjufi
- lyLu19zHqQ8qGh1d9zQdOzJFmck=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 6173ba0167f107c611dbe0b2 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 23 Oct 2021 07:30:09
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7C0D2C43460; Sat, 23 Oct 2021 07:30:09 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C3F41C4338F;
-        Sat, 23 Oct 2021 07:30:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C3F41C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S229818AbhJWJNl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 23 Oct 2021 05:13:41 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0904A6101C;
+        Sat, 23 Oct 2021 09:11:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634980283;
+        bh=yRNcg5Cile/UzTcLetLbI53HyysdwSJZEpwNn54eGaM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=tMEWE0nHZo2iL9RCgJGpCDEe7chQXPHTsSNOppLIKrNA+tFmCvBCfXsFBnzo8vyNi
+         dVU3uNMpJVdN2HoYb76MRLtO0/ybZPwZPtntfG5tDLUldB0C2A1xRC3w9b1UBm9yPi
+         29LGChebCuw1RkFgudNtPHXWmDcELYOstS3ohN2stLLFV1kQYHaU/+JOGc+GgD86pT
+         PDFeEeDXR014+B96Jg5qZyW4RW1T88AdTQm6AhPsFK0z/qAtxGErIQxkHkymprJzhv
+         IY2Od/iOKu7Mn2DIKiwaAp3IR2jnZKXO9GBQTli3hTR45DkyH0KGMPCiAOucIfMn4t
+         LJwcQ5fVnwPnw==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     johannes@sipsolutions.net
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com,
+        evelyn.tsai@mediatek.com
+Subject: [PATCH v2 mac80211-next 0/6] add offchannel radar chain support
+Date:   Sat, 23 Oct 2021 11:10:49 +0200
+Message-Id: <cover.1634979655.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [RFC,v2] mt76: mt7615: mt7622: fix ibss and meshpoint
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20211007225725.2615-1-vincent@systemli.org>
-References: <20211007225725.2615-1-vincent@systemli.org>
-To:     Nick Hainke <vincent@systemli.org>
-Cc:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        davem@davemloft.net, kuba@kernel.org, matthias.bgg@gmail.com,
-        sean.wang@mediatek.com, shayne.chen@mediatek.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Robert Foss <robert.foss@linaro.org>,
-        Nick Hainke <vincent@systemli.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163497420151.29616.16838354269777236200.kvalo@codeaurora.org>
-Date:   Sat, 23 Oct 2021 07:30:09 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nick Hainke <vincent@systemli.org> wrote:
+Introduce the capability to configure a dedicated chain available for radar
+detection on some hw (e.g. mt7915). This chain can't be used to transmit or
+receive frames and it is bounded to a running wdev.
+Offchannel radar/CAC detection allows to avoid the CAC downtime switching
+to a different channel during CAC detection on the selected radar channel.
+hostapd will implement the logic to select and configure the monitored
+channel.
 
-> commit 7f4b7920318b ("mt76: mt7615: add ibss support") introduced IBSS
-> and commit f4ec7fdf7f83 ("mt76: mt7615: enable support for mesh")
-> meshpoint support.
-> 
-> Both used in the "get_omac_idx"-function:
-> 
-> 	if (~mask & BIT(HW_BSSID_0))
-> 		return HW_BSSID_0;
-> 
-> With commit d8d59f66d136 ("mt76: mt7615: support 16 interfaces") the
-> ibss and meshpoint mode should "prefer hw bssid slot 1-3". However,
-> with that change the ibss or meshpoint mode will not send any beacon on
-> the mt7622 wifi anymore. Devices were still able to exchange data but
-> only if a bssid already existed. Two mt7622 devices will never be able
-> to communicate.
-> 
-> This commits reverts the preferation of slot 1-3 for ibss and
-> meshpoint. Only NL80211_IFTYPE_STATION will still prefer slot 1-3.
-> 
-> Tested on Banana Pi R64.
-> 
-> Fixes: d8d59f66d136 ("mt76: mt7615: support 16 interfaces")
-> Signed-off-by: Nick Hainke <vincent@systemli.org>
-> Acked-by: Felix Fietkau <nbd@nbd.name>
+Changes since v1:
+- introduce offchanel chain ownership through offchan_radar_wdev pointer
+- spilt patch 1/5 in cfg80211 and mac80211 part
+- move cac work from driver code to cfg80211
 
-Patch applied to wireless-drivers-next.git, thanks.
+Changes since rfc:
+- rely on NL80211_CMD_RADAR_DETECT netlink msg to configure offchannel radar
+  chain
 
-753453afacc0 mt76: mt7615: mt7622: fix ibss and meshpoint
+Lorenzo Bianconi (6):
+  cfg80211: introduce set_radar_offchan callback
+  mac80211: introduce set_radar_offchan callback
+  cfg80211: introduce the capability to configure offchannel CAC
+    detection
+  cfg80211: introduce cfg80211_cac_offchan_event routine
+  cfg80211: introduce offchannel cac delayed work
+  cfg80211: introduce NL80211_EXT_FEATURE_RADAR_OFFCHAN feature flag
+
+ include/net/cfg80211.h       |  24 +++++++
+ include/net/mac80211.h       |  10 +++
+ include/uapi/linux/nl80211.h |  13 ++++
+ net/mac80211/cfg.c           |  13 ++++
+ net/wireless/ap.c            |   2 +
+ net/wireless/core.c          |   2 +
+ net/wireless/core.h          |  15 +++++
+ net/wireless/mlme.c          | 117 +++++++++++++++++++++++++++++++++++
+ net/wireless/nl80211.c       |  17 +++--
+ net/wireless/rdev-ops.h      |  18 ++++++
+ net/wireless/trace.h         |  19 ++++++
+ 11 files changed, 244 insertions(+), 6 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211007225725.2615-1-vincent@systemli.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.31.1
 
