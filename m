@@ -2,109 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A77ED4383E2
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Oct 2021 15:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 701D94388A5
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Oct 2021 13:38:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230327AbhJWNwO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Oct 2021 09:52:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48410 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230320AbhJWNwN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Oct 2021 09:52:13 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A4F4660FE3;
-        Sat, 23 Oct 2021 13:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634996994;
-        bh=sydh8B5e0hVv4DBbKuOJXv84Y8w5A7lZam+qirHyxCA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Lxbkw5H05oyiWGMlWDEabbDk6BWm6ZMEHjwAwNkLRxT0Zf+jLM7VZdipFMJWH02cZ
-         LDaLJ4y55ofAq4bPZwxMP9U0vgm0ya0M1QyPctXJ9SPB+UKtdy/9vRsCXl0J0yVgAH
-         tX0S/TaEJfTZXBaGiCn+WpAlzMAaCvtL+ef6bT1JYwYav1uhDKzfKbqdMhDkUhXTaM
-         CDagsTx21ffPvVIG7HN90FrTP5AapngM4hLRvQ01RQPABDbfgrxYlu3sgTYf4CqG2k
-         4zXav4HKopr++U+5i1tSG3q9rdVRfEYFk/njB5jML91Bko0FkhF/DtrNwmZBS5X2gg
-         jTzsbTDne3yFw==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        ryder.lee@mediatek.com
-Subject: [PATCH] mt76: mt7915: get rid of mt7915_mcu_set_fixed_rate routine
-Date:   Sat, 23 Oct 2021 15:49:38 +0200
-Message-Id: <d09619456ba3bf2d83b8929aefe00915ecce6b55.1634996863.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S230355AbhJXLlC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Oct 2021 07:41:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49848 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229867AbhJXLlC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 24 Oct 2021 07:41:02 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [IPv6:2001:67c:2050::465:202])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD418C061764
+        for <linux-wireless@vger.kernel.org>; Sun, 24 Oct 2021 04:38:40 -0700 (PDT)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [80.241.60.233])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4Hcbgw48pbzQkhP;
+        Sun, 24 Oct 2021 13:38:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gorani.run; s=MBO0001;
+        t=1635075514;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=QGT6ykfZsaUrzrAVyRseFnHpzDMoEPjeZ7gXrXgmWII=;
+        b=bwXTWEWUfDdnfHQCMFJEq1TYzF1gcAJ6REjFnZyTGHKXZ2TkGeMmdaL71U3ZkcpNGr/WjV
+        lwQJ2hXfGmvEw9Bu5ioa2EKzW0eiaVqvV5e8c22MrYIWa99ioAsbczafmvye5ffS8NS4hz
+        Dsdwxd4Gr2hNRC8sComGGdbPQhqdN6opa9JOcKI3VUUPpM/AudsPEdoMV2bZNxTkoXuymv
+        zKqghAXfx3M9O1PcqpDML3WQEnxfRPZ6aIJ3b/lx0FG4pk6lUApFV4uJjJyhxFEjcCYRJx
+        IjmjPWptnpR52v4/B8CGS4njUgSiVPcTk9MDxBvB20JM8MdCO79ArZKBRyOOtQ==
+From:   Sungbo Eo <mans0n@gorani.run>
+To:     sforshee@kernel.org
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Sungbo Eo <mans0n@gorani.run>
+Subject: [PATCH v2] wireless-regdb: Update regulatory rules for South Korea (KR)
+Date:   Sun, 24 Oct 2021 20:38:21 +0900
+Message-Id: <20211024113821.51538-1-mans0n@gorani.run>
+In-Reply-To: <20210929172728.7512-1-mans0n@gorani.run>
+References: <20210929172728.7512-1-mans0n@gorani.run>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 66FEF569
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following sparse warning removing mt7915_mcu_set_fixed_rate
-since it is no longer used:
-warning: symbol 'mt7915_mcu_set_fixed_rate' was not declared.
-Should it be static?
+This patch is based on MSIT Public Notification 2020-113 ("Unlicensed Radio
+Equipment Established Without Notice"), officially announced on 2021-01-06.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+The PSD must not exceed 2.5 mW/MHz if the frequency range includes all or
+part of 5230-5250 MHz and the bandwidth is equal to or less than 40 MHz.
+This leads to the following:
+* 5230-5250 @ 20 -> 17 dBm
+* 5210-5250 @ 40 -> 20 dBm
+Here the power limits for 80/160 MHz bandwidth are also lowered to 17 dBm,
+as it's not possible to set different power limits for different bandwidths
+at the moment.
+
+Extend the last 5 GHz frequency range to 5850 MHz.
+
+WiFi 6E is now allowed with the following restrictions:
+* Indoor: the full 1.2 GHz range, up to 160 MHz bandwidth and 250mW EIRP
+* Outdoor: the lower 500 MHz range, up to 160 MHz bandwidth and 25mW EIRP
+Here only the former entry is added.
+
+And also update the regulatory source links.
+
+Signed-off-by: Sungbo Eo <mans0n@gorani.run>
 ---
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 47 -------------------
- 1 file changed, 47 deletions(-)
+v2:
+* split 5150-5250 MHz band rule to accommodate the PSD limit
+* remove AUTO-BW flag from 6 GHz band rule
+---
+ db.txt | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 0b86ac2941d2..861099970aa3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2397,53 +2397,6 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
- 				     MCU_EXT_CMD(STA_REC_UPDATE), true);
- }
+diff --git a/db.txt b/db.txt
+index 6e8dbef..387ac93 100644
+--- a/db.txt
++++ b/db.txt
+@@ -862,15 +862,22 @@ country KP: DFS-JP
+ 	(5490 - 5630 @ 20), (30), DFS
+ 	(5735 - 5815 @ 20), (30)
  
--int mt7915_mcu_set_fixed_rate(struct mt7915_dev *dev,
--			      struct ieee80211_sta *sta, u32 rate)
--{
--	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
--	struct mt7915_vif *mvif = msta->vif;
--	struct sta_rec_ra_fixed *ra;
--	struct sk_buff *skb;
--	struct tlv *tlv;
--	int len = sizeof(struct sta_req_hdr) + sizeof(*ra);
--
--	skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta, len);
--	if (IS_ERR(skb))
--		return PTR_ERR(skb);
--
--	tlv = mt7915_mcu_add_tlv(skb, STA_REC_RA_UPDATE, sizeof(*ra));
--	ra = (struct sta_rec_ra_fixed *)tlv;
--
--	if (!rate) {
--		ra->field = cpu_to_le32(RATE_PARAM_AUTO);
--		goto out;
--	}
--
--	ra->field = cpu_to_le32(RATE_PARAM_FIXED);
--	ra->phy.type = FIELD_GET(RATE_CFG_PHY_TYPE, rate);
--	ra->phy.bw = FIELD_GET(RATE_CFG_BW, rate);
--	ra->phy.nss = FIELD_GET(RATE_CFG_NSS, rate);
--	ra->phy.mcs = FIELD_GET(RATE_CFG_MCS, rate);
--	ra->phy.stbc = FIELD_GET(RATE_CFG_STBC, rate);
--
--	if (ra->phy.bw)
--		ra->phy.ldpc = 7;
--	else
--		ra->phy.ldpc = FIELD_GET(RATE_CFG_LDPC, rate) * 7;
--
--	/* HT/VHT - SGI: 1, LGI: 0; HE - SGI: 0, MGI: 1, LGI: 2 */
--	if (ra->phy.type > MT_PHY_TYPE_VHT) {
--		ra->phy.he_ltf = FIELD_GET(RATE_CFG_HE_LTF, rate) * 85;
--		ra->phy.sgi = FIELD_GET(RATE_CFG_GI, rate) * 85;
--	} else {
--		ra->phy.sgi = FIELD_GET(RATE_CFG_GI, rate) * 15;
--	}
--
--out:
--	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
--				     MCU_EXT_CMD(STA_REC_UPDATE), true);
--}
--
- int mt7915_mcu_add_dev_info(struct mt7915_phy *phy,
- 			    struct ieee80211_vif *vif, bool enable)
- {
++# Source:
++# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196972
++# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196973
++# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196974
+ country KR: DFS-JP
+-	# ref: https://www.rra.go.kr
+ 	(2400 - 2483.5 @ 40), (23)
+-	(5150 - 5250 @ 80), (23), AUTO-BW
++	(5150 - 5210 @ 40), (23), AUTO-BW
++	# max. PSD 2.5 mW/MHz in 5230-5250 MHz frequency range
++	(5210 - 5230 @ 20), (20), AUTO-BW
++	(5230 - 5250 @ 20), (17), AUTO-BW
+ 	(5250 - 5350 @ 80), (20), DFS, AUTO-BW
+ 	(5470 - 5725 @ 160), (20), DFS
+-	(5725 - 5835 @ 80), (23)
+-	# 60 GHz band channels 1-4,
+-	# ref: http://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/%EB%AC%B4%EC%84%A0%EC%84%A4%EB%B9%84%EA%B7%9C%EC%B9%99
++	(5725 - 5850 @ 80), (23)
++	# 6 GHz band
++	(5925 - 7125 @ 160), (24), NO-OUTDOOR
++	# 60 GHz band channels 1-4
+ 	(57000 - 66000 @ 2160), (43)
+ 
+ country KW: DFS-ETSI
 -- 
-2.31.1
+2.33.1
 
