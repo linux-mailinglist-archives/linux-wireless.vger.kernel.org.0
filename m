@@ -2,117 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E2C43895C
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Oct 2021 15:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF8BD43898F
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Oct 2021 16:46:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231765AbhJXN5q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Oct 2021 09:57:46 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:58566 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231706AbhJXN5o (ORCPT
+        id S231535AbhJXOsK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Oct 2021 10:48:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33926 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229674AbhJXOsI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Oct 2021 09:57:44 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.lan)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1medy5-000cvJ-W0; Sun, 24 Oct 2021 16:55:22 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Sun, 24 Oct 2021 16:55:06 +0300
-Message-Id: <iwlwifi.20211024165252.21c90ba4fa5f.I2a30f62aa4685dc7623d3c69838909833c3f435c@changeid>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211024135506.285102-1-luca@coelho.fi>
-References: <20211024135506.285102-1-luca@coelho.fi>
+        Sun, 24 Oct 2021 10:48:08 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B17AC061745
+        for <linux-wireless@vger.kernel.org>; Sun, 24 Oct 2021 07:45:48 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id pi19-20020a17090b1e5300b0019fdd3557d3so6455404pjb.5
+        for <linux-wireless@vger.kernel.org>; Sun, 24 Oct 2021 07:45:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=+MDYu2cZk5y6qEtCDaD7IWEU7wQ5JsJjonx7gGHCu64=;
+        b=OwQQivrHWog+tRd2ANOmOPRDnSdwuvPvOpzGeLvR+w+KAIGtieffFe4ANk973VsLtf
+         wmM54Ni6keNBepGM6/dF4HjieS5Y0nSarCE4MIC8UGmOxOBocnKIPM9tYb9ZMLNP6T9W
+         gm1WJRLiMADk8Jsw3XWrFVANenvLY8onyMGLEOd4NGvbRWyXEPT2HxM/GpCpmp2cATQv
+         Ojr/cbUIcjE2cZy44feCAfKpnjRKCSomkND6mGynzhTG2UK1D82ats7PfSD5Q+kt6yEW
+         KzYOpFUZAMUo3gRD9mYs2I2ajuV2U7S6Cchc+CUgfcoFypZxbKAs8Csb4nfkQ8MPyP2/
+         hs7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=+MDYu2cZk5y6qEtCDaD7IWEU7wQ5JsJjonx7gGHCu64=;
+        b=rtHmqc5V+cusieCRQKTgMq548669ONFmn07S3WvQ9GorxkVZMyWuJJY0SJiF3bIIcc
+         wOwe1j9zsK5HsPbNYDWstg8XpTOGvPiooPVKL4wRip+igFKEHspyBzF6vtQsV61Z2FKj
+         108fmgUOT6+zwZAeNdllCnj5VQrLnx3FmzN4fl6C+aVZ7+hJyEsglrRmOmTKv2Ys7BYb
+         vkgR5vNqD7JBoWD9YSXHmIqiCx3nNbxzWvZYrj2O3A4dNHK8fVKlDF5GCNriQWThcASF
+         Kc3AXsaonoizuiOMjT8riz6Cz2oJU/RQNqVblVHX6G0EeYaOq38HVlOILvpk9LsuO4Zv
+         D6Ng==
+X-Gm-Message-State: AOAM531rOVbtUSBoEFtQMlsF5/pKvIVC+DRdRzDQMLyDq2LuosS9fg1V
+        n2QOWDubYAv8RQ1CAJQUSsTea47DIHsnYL0KbyU=
+X-Google-Smtp-Source: ABdhPJyC1uYax8TuFy9y+5TD23QUqHKxiWN5IuxpHLouWYj6pAOAvXzc7cw+0FuQc4dOMiGN6JhfzA2NN5aU70h/KnM=
+X-Received: by 2002:a17:903:2282:b0:140:406c:2635 with SMTP id
+ b2-20020a170903228200b00140406c2635mr5468805plh.21.1635086747468; Sun, 24 Oct
+ 2021 07:45:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 11/11] iwlwifi: dump host monitor data when NIC doesn't init
+Reply-To: mrakainkarim7@gmail.com
+Sender: linusgood455@gmail.com
+Received: by 2002:a17:90b:4f47:0:0:0:0 with HTTP; Sun, 24 Oct 2021 07:45:47
+ -0700 (PDT)
+From:   Mr Akain Karim <aeyuhlmy739@gmail.com>
+Date:   Sun, 24 Oct 2021 07:45:47 -0700
+X-Google-Sender-Auth: aiLuerPXDPJk9AXt1-IF--6acvc
+Message-ID: <CAP9cbURTUwDkwWp5Ntgg3_+9DdJ4KpyubNAXUiZNvA4GvR=jxw@mail.gmail.com>
+Subject: Greetings
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
-
-If the NIC cannot be initialized, dump host monitor data
-so we can analyze properly why it didn't initialize.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/iwl-io.c | 46 ++++++++++++++++++++-
- 1 file changed, 45 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-io.c b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
-index 6e96ee5bc261..46917b4216b3 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-io.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
-@@ -398,6 +398,47 @@ int iwl_dump_fh(struct iwl_trans *trans, char **buf)
- 	return 0;
- }
- 
-+#define IWL_HOST_MON_BLOCK_PEMON	0x00
-+#define IWL_HOST_MON_BLOCK_HIPM		0x22
-+
-+#define IWL_HOST_MON_BLOCK_PEMON_VEC0	0x00
-+#define IWL_HOST_MON_BLOCK_PEMON_VEC1	0x01
-+#define IWL_HOST_MON_BLOCK_PEMON_WFPM	0x06
-+
-+static void iwl_dump_host_monitor_block(struct iwl_trans *trans,
-+					u32 block, u32 vec, u32 iter)
-+{
-+	int i;
-+
-+	IWL_ERR(trans, "Host monitor block 0x%x vector 0x%x\n", block, vec);
-+	iwl_write32(trans, CSR_MONITOR_CFG_REG, (block << 8) | vec);
-+	for (i = 0; i < iter; i++)
-+		IWL_ERR(trans, "    value [iter %d]: 0x%08x\n",
-+			i, iwl_read32(trans, CSR_MONITOR_STATUS_REG));
-+}
-+
-+static void iwl_dump_host_monitor(struct iwl_trans *trans)
-+{
-+	switch (trans->trans_cfg->device_family) {
-+	case IWL_DEVICE_FAMILY_22000:
-+	case IWL_DEVICE_FAMILY_AX210:
-+		IWL_ERR(trans, "CSR_RESET = 0x%x\n",
-+			iwl_read32(trans, CSR_RESET));
-+		iwl_dump_host_monitor_block(trans, IWL_HOST_MON_BLOCK_PEMON,
-+					    IWL_HOST_MON_BLOCK_PEMON_VEC0, 15);
-+		iwl_dump_host_monitor_block(trans, IWL_HOST_MON_BLOCK_PEMON,
-+					    IWL_HOST_MON_BLOCK_PEMON_VEC1, 15);
-+		iwl_dump_host_monitor_block(trans, IWL_HOST_MON_BLOCK_PEMON,
-+					    IWL_HOST_MON_BLOCK_PEMON_WFPM, 15);
-+		iwl_dump_host_monitor_block(trans, IWL_HOST_MON_BLOCK_HIPM,
-+					    IWL_HOST_MON_BLOCK_PEMON_VEC0, 1);
-+		break;
-+	default:
-+		/* not supported yet */
-+		return;
-+	}
-+}
-+
- int iwl_finish_nic_init(struct iwl_trans *trans)
- {
- 	const struct iwl_cfg_trans_params *cfg_trans = trans->trans_cfg;
-@@ -433,9 +474,12 @@ int iwl_finish_nic_init(struct iwl_trans *trans)
- 	 * and accesses to uCode SRAM.
- 	 */
- 	err = iwl_poll_bit(trans, CSR_GP_CNTRL, poll_ready, poll_ready, 25000);
--	if (err < 0)
-+	if (err < 0) {
- 		IWL_DEBUG_INFO(trans, "Failed to wake NIC\n");
- 
-+		iwl_dump_host_monitor(trans);
-+	}
-+
- 	if (cfg_trans->bisr_workaround) {
- 		/* ensure BISR shift has finished */
- 		udelay(200);
 -- 
-2.33.0
-
+*Compliment of the day,I am Mr. Akain Karim,  I Have a Business Proposal of
+$10.5million for you and I  was compelled to use this medium due to the
+nature of this project, I have access to very vital information that can be
+used to transfer this huge amount of money, which may culminate into the
+investment of the said funds into your company or any lucrative venture in
+your country. If you will like to assist me as a partner then indicate your
+interest, after which we shall both discuss the modalities and the sharing
+percentage.Upon receipt of your reply on your expression of Interest.I will
+give you full details on how the business will be executed and I am open
+for negotiation.Thanks for your anticipated cooperation.Best RegardsMr. 	
+Akain Karim*  Please feel free to reach me on my e-mail:mrakainkarim7@gmail.com
