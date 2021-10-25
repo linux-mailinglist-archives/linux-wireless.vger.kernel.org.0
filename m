@@ -2,77 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E24164391D9
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 10:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7D294391F1
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 11:05:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232148AbhJYJBS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Oct 2021 05:01:18 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:62616 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232371AbhJYJBR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Oct 2021 05:01:17 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635152335; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=smjJzxF4bhXVE7UZPuY1ZT3BW79Rs8sGtRTd58u881E=; b=to0XcpkCaHLZiF/jCxduwUvwFaSlIWbl2/D9eGQ1GL4Bvde3HVA44LqxtsuXbbkGTabaw/8k
- Xb1SxqZQQwzXAVQfpKwwOm6JcuZs2OTdhZIflJZzBJ6HmopV6ocwn/mhNQVqj1pvRjztbx0W
- EnpgZKS8KeixaTca4a8aDXUqHoc=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 617671bb8e67b5f04e0e175b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Oct 2021 08:58:35
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 31BDCC43619; Mon, 25 Oct 2021 08:58:35 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 28892C4338F;
-        Mon, 25 Oct 2021 08:58:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 28892C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+        id S232216AbhJYJIU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Oct 2021 05:08:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50066 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230128AbhJYJIT (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Oct 2021 05:08:19 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 732D4C061745
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 02:05:57 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id m22so8214255wrb.0
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 02:05:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=cNXCepX+q4Z8flK+e607d2EIOPTdLNfsIAA9uW0a6FQ=;
+        b=UkdgIeQHI6yyLkhSM8YHOAHRbI3EHyb5QCnCk3x31MBQ0LjyTc7XCRJdx2z4MfRiqL
+         7mCTKLbwlfvU4+zlaejQE60E3CJQ3uvb1JEs1TZDMdwOWtfCUTFKG8QzztcDRtGw4DVV
+         ojFu1A8WZEzSXiLGDPmU6O8Jei8o7O6ezsd+d4AOtcvtHNbI1+/RZ+VpMubOXB9/aRoh
+         QFxr4hZpdOLDn2CuALHYEXOHZ6QMfABDnaHb50tsxAn1gsOOfEBeNbzmN9qO+riVjGBL
+         b7wZps/rPGseE0Ud8B52joY7M5LbsC3aGVjP6MjE4E3RHiKKVQCL20MuuX5mUOd/Ooey
+         eNOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=cNXCepX+q4Z8flK+e607d2EIOPTdLNfsIAA9uW0a6FQ=;
+        b=XLw5s8qkh8d1qPJbq/rC11Ly9ntg3o/GCzLPBt0nkAFZnCv8KZMQVpysmaQ1opx7EX
+         6kqRw5fkWPATgq7h6fcKmUmMtrrMLScsPibqr/bgQ6rDpqRPf3cyLlZyMoNC/TDQDAPF
+         UmtNIN6M9MeP5qhqt+HZZeozpmVquMDfEzgpt7wq+oLE3GYeVw3jiHiBXWpdLxuitxzl
+         820GtPAyOXgVSRk2wP32JgcrP3uGfGfOOOY4BUQLE/iYWsEIUAHlU131JPjxAFnM+x1Q
+         kx6VM0i4mUtAX5LwmULf1DBHX1aM+2tQErh5/nl/rvJpDvRhnIyisnv780dtrDQJe+K8
+         iVdA==
+X-Gm-Message-State: AOAM532tC2532lXhCOG8sNOOn885H5uSP6O/qIIXSvtIVAZZQqmjS7/3
+        1wBd3SaWghFXYIBiieNYq60mqg==
+X-Google-Smtp-Source: ABdhPJzOyeUyUvfQaq4xuV1EefgEcgmwWUmsXcM+gXl4OZ9LvSB2w4xyj6xXv49Ud5HZphhveQlKLw==
+X-Received: by 2002:a05:6000:1563:: with SMTP id 3mr22252606wrz.20.1635152755868;
+        Mon, 25 Oct 2021 02:05:55 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id s8sm15814633wrr.15.2021.10.25.02.05.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Oct 2021 02:05:27 -0700 (PDT)
+Message-ID: <fad96461-d8cd-374a-062d-2ff541928198@linaro.org>
+Date:   Mon, 25 Oct 2021 10:07:07 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.1
+Subject: Re: [PATCH 0/1] wcn36xx: Revert firmware link monitoring
+Content-Language: en-US
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
         loic.poulain@linaro.org, benl@squareup.com,
         daniel.thompson@linaro.org
-Subject: Re: [PATCH v2 1/1] Revert "wcn36xx: Enable firmware link monitoring"
-References: <20211023093257.2849565-1-bryan.odonoghue@linaro.org>
-        <20211023093257.2849565-2-bryan.odonoghue@linaro.org>
-Date:   Mon, 25 Oct 2021 11:58:29 +0300
-In-Reply-To: <20211023093257.2849565-2-bryan.odonoghue@linaro.org> (Bryan
-        O'Donoghue's message of "Sat, 23 Oct 2021 10:32:57 +0100")
-Message-ID: <87r1c9cwga.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+References: <20211022141008.2846454-1-bryan.odonoghue@linaro.org>
+ <874k95eba3.fsf@codeaurora.org>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <874k95eba3.fsf@codeaurora.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
+On 25/10/2021 09:52, Kalle Valo wrote:
+> Avoid using acronyms as much as possible, PS meaning power save might
+> not be clear for everyone.
+> 
+> And please try to be more specific, I'm not sure what power save feature
+> you are meaning here. (802.11 protocol power save, BMPS or what?)
 
-> This reverts commit c973fdad79f6eaf247d48b5fc77733e989eb01e1.
->
-> Fixes: c973fdad79f6 ("wcn36xx: Enable firmware link monitoring")
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> Signed-off-by: Benjamin Li <benl@squareup.com>
+Yep - the issue is on an Open AP when we enter BMPS link monitoring 
+stops working.
 
-Sorry, I missed you had sent v2 already. But please do check my comments
-from v1.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+I'll make that clear in a resend
