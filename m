@@ -2,143 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18F5943A69F
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Oct 2021 00:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F80943A87E
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Oct 2021 01:56:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234052AbhJYWfr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Oct 2021 18:35:47 -0400
-Received: from mail-io1-f70.google.com ([209.85.166.70]:41553 "EHLO
-        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233563AbhJYWfq (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Oct 2021 18:35:46 -0400
-Received: by mail-io1-f70.google.com with SMTP id f13-20020a5ec60d000000b005ddbc52304dso9864680iok.8
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 15:33:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=vyhnJoZIovOdZyzH8Y8MrbUmNDPLYUWR/YD6MJ+0O5M=;
-        b=B7TzFYb40tS/1HwnNm6o2OGgKU4uQwxi5E/EUcszU4TtgpjP4Gs8M5N73h2M5Yo6na
-         3HaVBHqyaezkBzz0I/ZDiD4vsQ4Usb3YubSHoyTAQIbLG+2wZeL+CU7oZlGjyjwzEoZB
-         00KQsk3FP9m/OLQra+Lo5aFo7y9XM91SFcL0BUr0eQxPPqaqDjSAf7jvauGVks433I93
-         9aW13SXYJFNIrMcBVV/SgYDTwKfZTP9LKrnvXviUVvkCv7CcybhQEuBeEQZfnLCWKGlk
-         IvA2hnHTGCfPOJPncu3papmY8xaBZP1B3h46QdK60tlj5thiab2y1GycS9lR1X/ifCQB
-         BF+A==
-X-Gm-Message-State: AOAM531LOuAyBQJWz4dUveDxsVh7uoHiI6Irfq4OWRlqShHFhEStMI8+
-        Zu+5izueEqmi00TyqQ7qiqfm6f1QGLMTkpghkkfk0Te/mDsC
-X-Google-Smtp-Source: ABdhPJxcekNuFURt+wY3TpojJBaYMtxjZZ9itMECXazo2bnY4iJCYwLHHeehCVLVTlUNB9ifOjIXhJzrR84h5WPzQ2a186BleC8D
+        id S235463AbhJYX6n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Oct 2021 19:58:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36322 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233035AbhJYX6m (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Oct 2021 19:58:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9E95B6023D;
+        Mon, 25 Oct 2021 23:56:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635206179;
+        bh=5sVIz5a+Xzu2l3KgJ0cgbWRxOKsx1Dxq1pkbOqzWM+A=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=ph2pOhD1D2bUUkTqoquiYKT2Bx3mmTfcXcm1toDQ4/OwSPXoAApSg9Jlz+U0mf2+f
+         Kv0LNn/8HpfyV9hVA3LOF4KXVKJoLinamMTJyNDPHt87GplvbREUoK/fEQofq2F5Ka
+         zSDKCF0CGI7wobpbA8Br8N7VhRLfvfbpuVhUNKipIbM3mbp5RwecbvU0cD9Dxj4rVR
+         yEdCseGDkUbSl0nfyvdaMlQi2l6gtGm6weyOviNPa7WS9DJZ/9VslihEm7ilXmd7iV
+         HJ3WESDp4Et57N5wF59iOyJZ9zHV0Oz2p8z75cc30hOD93wNoJO5HAz38rzgwh+OQ0
+         NlgiWFrLrP7yA==
+Date:   Mon, 25 Oct 2021 18:56:18 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jonas =?iso-8859-1?Q?Dre=DFler?= <verdre@v0yd.nl>
+Cc:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Brian Norris <briannorris@chromium.org>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Vidya Sagar <vidyas@nvidia.com>,
+        Victor Ding <victording@google.com>
+Subject: Re: [PATCH] mwifiex: Add quirk resetting the PCI bridge on MS
+ Surface devices
+Message-ID: <20211025235618.GA52139@bhelgaas>
 MIME-Version: 1.0
-X-Received: by 2002:a6b:8d8a:: with SMTP id p132mr12406022iod.96.1635201203634;
- Mon, 25 Oct 2021 15:33:23 -0700 (PDT)
-Date:   Mon, 25 Oct 2021 15:33:23 -0700
-In-Reply-To: <000000000000f632ba05c3cb12c2@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000e1063f05cf34f2a8@google.com>
-Subject: Re: [syzbot] memory leak in cfg80211_inform_single_bss_frame_data
-From:   syzbot <syzbot+7a942657a255a9d9b18a@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        mudongliangabcd@gmail.com, netdev@vger.kernel.org,
-        phind.uet@gmail.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2157749e-4e88-76c1-bdc9-f01656f5a292@v0yd.nl>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has found a reproducer for the following issue on:
+On Mon, Oct 25, 2021 at 06:45:29PM +0200, Jonas Dreßler wrote:
+> On 10/18/21 17:35, Bjorn Helgaas wrote:
+> > On Thu, Oct 14, 2021 at 12:08:31AM +0200, Jonas Dreßler wrote:
+> > > On 10/12/21 17:39, Bjorn Helgaas wrote:
+> > > > [+cc Vidya, Victor, ASPM L1.2 config issue; beginning of thread:
+> > > > https://lore.kernel.org/all/20211011134238.16551-1-verdre@v0yd.nl/]
+> > 
+> > > > I wonder if this reset quirk works because pci_reset_function() saves
+> > > > and restores much of config space, but it currently does *not* restore
+> > > > the L1 PM Substates capability, so those T_POWER_ON,
+> > > > Common_Mode_Restore_Time, and LTR_L1.2_THRESHOLD values probably get
+> > > > cleared out by the reset.  We did briefly save/restore it [1], but we
+> > > > had to revert that because of a regression that AFAIK was never
+> > > > resolved [2].  I expect we will eventually save/restore this, so if
+> > > > the quirk depends on it *not* being restored, that would be a problem.
+> > > > 
+> > > > You should be able to test whether this is the critical thing by
+> > > > clearing those registers with setpci instead of doing the reset.  Per
+> > > > spec, they can only be modified when L1.2 is disabled, so you would
+> > > > have to disable it via sysfs (for the endpoint, I think)
+> > > > /sys/.../l1_2_aspm and /sys/.../l1_2_pcipm, do the setpci on the root
+> > > > port, then re-enable L1.2.
+> > > > 
+> > > > [1] https://git.kernel.org/linus/4257f7e008ea
+> > > > [2] https://lore.kernel.org/all/20210127160449.2990506-1-helgaas@kernel.org/
+> > > 
+> > > Hmm, interesting, thanks for those links.
+> > > 
+> > > Are you sure the config values will get lost on the reset? If we
+> > > only reset the port by going into D3hot and back into D0, the
+> > > device will remain powered and won't lose the config space, will
+> > > it?
+> > 
+> > I think you're doing a PM reset (transition to D3hot and back to
+> > D0).  Linux only does this when PCI_PM_CTRL_NO_SOFT_RESET == 0.
+> > The spec doesn't actually *require* the device to be reset; it
+> > only says the internal state of the device is undefined after
+> > these transitions.
+> 
+> Not requiring the device to be reset sounds sensible to me given
+> that D3hot is what devices are transitioned into during suspend.
+> 
+> But anyway, that doesn't really get us any further except it
+> somewhat gives an explanation why the LTR is suddenly 0 after the
+> reset. Or are you making the point that we shouldn't rely on
+> "undefined state" for this hack because not all PCI bridges/ports
+> will necessarily behave the same?
 
-HEAD commit:    87066fdd2e30 Revert "mm/secretmem: use refcount_t instead ..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=16b55554b00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d25eeb482b0f99b
-dashboard link: https://syzkaller.appspot.com/bug?extid=7a942657a255a9d9b18a
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=171cf464b00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1396b19f300000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+7a942657a255a9d9b18a@syzkaller.appspotmail.com
-
-BUG: memory leak
-unreferenced object 0xffff88810f3c7980 (size 96):
-  comm "kworker/u4:0", pid 8, jiffies 4294948721 (age 17.180s)
-  hex dump (first 32 bytes):
-    e5 90 aa e8 34 cf 05 00 00 00 00 00 00 00 00 00  ....4...........
-    00 00 00 00 00 00 00 00 28 00 00 00 01 00 06 10  ........(.......
-  backtrace:
-    [<ffffffff83ee74a9>] cfg80211_inform_single_bss_frame_data+0x139/0x640 net/wireless/scan.c:2383
-    [<ffffffff83ee79fb>] cfg80211_inform_bss_frame_data+0x4b/0x470 net/wireless/scan.c:2444
-    [<ffffffff83f8865e>] ieee80211_bss_info_update+0x16e/0x460 net/mac80211/scan.c:190
-    [<ffffffff83f9687a>] ieee80211_rx_bss_info net/mac80211/ibss.c:1119 [inline]
-    [<ffffffff83f9687a>] ieee80211_rx_mgmt_probe_beacon+0x61a/0x970 net/mac80211/ibss.c:1608
-    [<ffffffff83f972dc>] ieee80211_ibss_rx_queued_mgmt+0x23c/0x6e0 net/mac80211/ibss.c:1635
-    [<ffffffff83f99347>] ieee80211_iface_process_skb net/mac80211/iface.c:1439 [inline]
-    [<ffffffff83f99347>] ieee80211_iface_work+0x5f7/0x770 net/mac80211/iface.c:1493
-    [<ffffffff81265dbf>] process_one_work+0x2cf/0x620 kernel/workqueue.c:2297
-    [<ffffffff812666c9>] worker_thread+0x59/0x5d0 kernel/workqueue.c:2444
-    [<ffffffff8126fc48>] kthread+0x188/0x1d0 kernel/kthread.c:319
-    [<ffffffff810022cf>] ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
-
-BUG: memory leak
-unreferenced object 0xffff88810f3c7b00 (size 96):
-  comm "kworker/u4:0", pid 8, jiffies 4294948721 (age 17.180s)
-  hex dump (first 32 bytes):
-    f5 90 aa e8 34 cf 05 00 00 00 00 00 00 00 00 00  ....4...........
-    00 00 00 00 00 00 00 00 28 00 00 00 01 00 06 10  ........(.......
-  backtrace:
-    [<ffffffff83ee74a9>] cfg80211_inform_single_bss_frame_data+0x139/0x640 net/wireless/scan.c:2383
-    [<ffffffff83ee79fb>] cfg80211_inform_bss_frame_data+0x4b/0x470 net/wireless/scan.c:2444
-    [<ffffffff83f8865e>] ieee80211_bss_info_update+0x16e/0x460 net/mac80211/scan.c:190
-    [<ffffffff83f9687a>] ieee80211_rx_bss_info net/mac80211/ibss.c:1119 [inline]
-    [<ffffffff83f9687a>] ieee80211_rx_mgmt_probe_beacon+0x61a/0x970 net/mac80211/ibss.c:1608
-    [<ffffffff83f972dc>] ieee80211_ibss_rx_queued_mgmt+0x23c/0x6e0 net/mac80211/ibss.c:1635
-    [<ffffffff83f99347>] ieee80211_iface_process_skb net/mac80211/iface.c:1439 [inline]
-    [<ffffffff83f99347>] ieee80211_iface_work+0x5f7/0x770 net/mac80211/iface.c:1493
-    [<ffffffff81265dbf>] process_one_work+0x2cf/0x620 kernel/workqueue.c:2297
-    [<ffffffff812666c9>] worker_thread+0x59/0x5d0 kernel/workqueue.c:2444
-    [<ffffffff8126fc48>] kthread+0x188/0x1d0 kernel/kthread.c:319
-    [<ffffffff810022cf>] ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
-
-BUG: memory leak
-unreferenced object 0xffff88810f3c7680 (size 96):
-  comm "kworker/u4:1", pid 146, jiffies 4294948731 (age 17.080s)
-  hex dump (first 32 bytes):
-    e9 20 ac e8 34 cf 05 00 00 00 00 00 00 00 00 00  . ..4...........
-    00 00 00 00 00 00 00 00 28 00 00 00 01 00 06 10  ........(.......
-  backtrace:
-    [<ffffffff83ee74a9>] cfg80211_inform_single_bss_frame_data+0x139/0x640 net/wireless/scan.c:2383
-    [<ffffffff83ee79fb>] cfg80211_inform_bss_frame_data+0x4b/0x470 net/wireless/scan.c:2444
-    [<ffffffff83f8865e>] ieee80211_bss_info_update+0x16e/0x460 net/mac80211/scan.c:190
-    [<ffffffff83f9687a>] ieee80211_rx_bss_info net/mac80211/ibss.c:1119 [inline]
-    [<ffffffff83f9687a>] ieee80211_rx_mgmt_probe_beacon+0x61a/0x970 net/mac80211/ibss.c:1608
-    [<ffffffff83f972dc>] ieee80211_ibss_rx_queued_mgmt+0x23c/0x6e0 net/mac80211/ibss.c:1635
-    [<ffffffff83f99347>] ieee80211_iface_process_skb net/mac80211/iface.c:1439 [inline]
-    [<ffffffff83f99347>] ieee80211_iface_work+0x5f7/0x770 net/mac80211/iface.c:1493
-    [<ffffffff81265dbf>] process_one_work+0x2cf/0x620 kernel/workqueue.c:2297
-    [<ffffffff812666c9>] worker_thread+0x59/0x5d0 kernel/workqueue.c:2444
-    [<ffffffff8126fc48>] kthread+0x188/0x1d0 kernel/kthread.c:319
-    [<ffffffff810022cf>] ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
-
-BUG: memory leak
-unreferenced object 0xffff888111520f80 (size 96):
-  comm "kworker/u4:1", pid 146, jiffies 4294948731 (age 17.080s)
-  hex dump (first 32 bytes):
-    fb 20 ac e8 34 cf 05 00 00 00 00 00 00 00 00 00  . ..4...........
-    00 00 00 00 00 00 00 00 28 00 00 00 01 00 06 10  ........(.......
-  backtrace:
-    [<ffffffff83ee74a9>] cfg80211_inform_single_bss_frame_data+0x139/0x640 net/wireless/scan.c:2383
-    [<ffffffff83ee79fb>] cfg80211_inform_bss_frame_data+0x4b/0x470 net/wireless/scan.c:2444
-    [<ffffffff83f8865e>] ieee80211_bss_info_update+0x16e/0x460 net/mac80211/scan.c:190
-    [<ffffffff83f9687a>] ieee80211_rx_bss_info net/mac80211/ibss.c:1119 [inline]
-    [<ffffffff83f9687a>] ieee80211_rx_mgmt_probe_beacon+0x61a/0x970 net/mac80211/ibss.c:1608
-    [<ffffffff83f972dc>] ieee80211_ibss_rx_queued_mgmt+0x23c/0x6e0 net/mac80211/ibss.c:1635
-    [<ffffffff83f99347>] ieee80211_iface_process_skb net/mac80211/iface.c:1439 [inline]
-    [<ffffffff83f99347>] ieee80211_iface_work+0x5f7/0x770 net/mac80211/iface.c:1493
-    [<ffffffff81265dbf>] process_one_work+0x2cf/0x620 kernel/workqueue.c:2297
-    [<ffffffff812666c9>] worker_thread+0x59/0x5d0 kernel/workqueue.c:2444
-    [<ffffffff8126fc48>] kthread+0x188/0x1d0 kernel/kthread.c:319
-    [<ffffffff810022cf>] ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
-
-
+I guess I'm just making the point that I don't understand why the
+bridge reset fixes something, and I'm not confident that the fix will
+work on every system and continue working even if/when the PCI core
+starts saving and restoring the L1 PM Substates capability.
