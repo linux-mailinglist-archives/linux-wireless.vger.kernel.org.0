@@ -2,120 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FAFB4390F2
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 10:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C153143912B
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 10:27:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232095AbhJYIQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Oct 2021 04:16:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38106 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231915AbhJYIQd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Oct 2021 04:16:33 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F87DC061745
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 01:14:11 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id e12so11243644wra.4
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 01:14:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=+hNUpViVOWM+kQGVZ8OCPBbFBkkztmAA/6VLjx/j7DQ=;
-        b=GyKzU0E/RinCdAIH7eRkenDlUrnAD3aQZf0EGaMe9X0wvhX3sYZ8CEA2ETxOugxF09
-         z4bf+XBpWbbORnyEirRzwOHHqQkJNVACF7EDqBGEu1uH2vc0/VNzU7qTUOrXlvfHeCD4
-         zyVolhL+4ex+BzdQHKuZnP85vjdkcTfY+ipM9qGUSWbyqX2ygGWYT6E9uWl/40Xp34DF
-         6is4BX7fyOa+/yQ9r4uBw/fOat/PDFSgTTHDsh1YCHtatKpSTGMKJWz29bvWuH+J+8PV
-         EEAlZoXJKfKA7rn4jgXdSpVQnCjilwI2eQnFYLWJS5djRPKtK+QvetvjRUmHwS1fB0HB
-         UpoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=+hNUpViVOWM+kQGVZ8OCPBbFBkkztmAA/6VLjx/j7DQ=;
-        b=oob2kS6YAScf0AbFyRr1N4VMHPm8aFWHeA/tdLXpfCvmRGQrxW1tOCDknZbyorHQyP
-         g5WIXnuqiNp7oIiD8kCjwksEka/GGzb5v6rhrpmBqbnbSkqe2RVdmOZxCVtw8gZIWln2
-         foLdPZScsrBJvj5PAHnfnYcxZAsvUpiiW2ZEKYV8yYikRZPXX/OREsrUDu3rAHTQkRkY
-         pCK4CrPJ+KMVzsW/gLhAdi49kXMzC18NtglQuBUkgo9j5h2vh5ApgEYie/M1pQsS4+/b
-         r1tKKEZxAyjcF9W7lUls00aI5W6BkZkUwafisk17V2QTWG39+6puEXVZxQXs+YUITwAC
-         0LBA==
-X-Gm-Message-State: AOAM531GGZ6y35daKUpTWGmLB0YYXC3ge+pasjCrac7YZ5WPsm1vp671
-        lFDKvH1Le3qI3UfD6XHShEmQ8Q==
-X-Google-Smtp-Source: ABdhPJzGT9kgbC4AhtAYDpfYVOKnN1Qe8IH9zoeGwW65vEo2+N0BfbZWKEJKl4aWTG0Qb3RtwPnaZQ==
-X-Received: by 2002:a5d:6481:: with SMTP id o1mr21356262wri.60.1635149649676;
-        Mon, 25 Oct 2021 01:14:09 -0700 (PDT)
-Received: from localhost.localdomain ([88.160.176.23])
-        by smtp.gmail.com with ESMTPSA id w10sm10956630wrq.88.2021.10.25.01.14.08
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 25 Oct 2021 01:14:09 -0700 (PDT)
-From:   Loic Poulain <loic.poulain@linaro.org>
-To:     kvalo@codeaurora.org
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        bryan.odonoghue@linaro.org, Loic Poulain <loic.poulain@linaro.org>
-Subject: [PATCH] wcn36xx: Fix discarded frames due to wrong sequence number
-Date:   Mon, 25 Oct 2021 10:25:36 +0200
-Message-Id: <1635150336-18736-1-git-send-email-loic.poulain@linaro.org>
-X-Mailer: git-send-email 2.7.4
+        id S231685AbhJYI3w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Oct 2021 04:29:52 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:50958 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231519AbhJYI3o (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Oct 2021 04:29:44 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1635150442; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=3oQbzqRRdL8+x0aQm5Jf5ctmhHZ6BiFyGzG+UwXMaQ4=;
+ b=vDN+HFbkdjAEPUjUnVmY3NHNDtJBvPX2RolBJdaV7af/6elHi5G/T6sNElFawR5ezCQ/zfoQ
+ LIfvfHIpC3ag4pePo35aD/2Jy969R2vPS/zQlNap9QBNBs2+Llj4uUO+Q6RocxNN+eXGiErU
+ 9y1r5VIBCTW2XdroK/v9QKHhBc8=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 61766a5cfd91319f0f13a6bf (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Oct 2021 08:27:08
+ GMT
+Sender: vjakkam=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id AD12AC43616; Mon, 25 Oct 2021 08:27:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: vjakkam)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 34D97C4360C;
+        Mon, 25 Oct 2021 08:27:07 +0000 (UTC)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 25 Oct 2021 13:57:07 +0530
+From:   vjakkam@codeaurora.org
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] nl80211: Indicate SA Query procedures offload for AP SME
+ device
+In-Reply-To: <69995d6c767edcea15ef7645fabc0e39c0dc7960.camel@sipsolutions.net>
+References: <1634210331-9001-1-git-send-email-vjakkam@codeaurora.org>
+ <612e80125878bae6fccbb72701381832a8a6029c.camel@sipsolutions.net>
+ <5a1f654e3406e99c816afbc762519fea@codeaurora.org>
+ <69995d6c767edcea15ef7645fabc0e39c0dc7960.camel@sipsolutions.net>
+Message-ID: <7c5b87329c58ac2b68329573f587f8d7@codeaurora.org>
+X-Sender: vjakkam@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The firmware is offering features such as ARP offload, for which
-firmware crafts its own (QoS)packets without waking up the host.
-Point is that the sequence numbers generated by the firmware are
-not in sync with the host mac80211 layer and can cause packets
-such as firmware ARP reponses to be dropped by the AP (too old SN).
+On 2021-10-22 18:59, Johannes Berg wrote:
+> On Fri, 2021-10-22 at 18:56 +0530, vjakkam@codeaurora.org wrote:
+>> >
+>> > So how's that going to work with older hostapd? It'll be offloaded, and
+>> > then hostapd doesn't know, so it's still going to disconnect them?
+>> >
+>> > So should be that hostapd also opts in to this driver behaviour?
+>> 
+>> yes, we have to update hostapd also with new implementation based on 
+>> the
+>> feature flag.
+> 
+> That wasn't my question. My question was what happens if you have a
+> hostapd that's *not* updated?>
+> 
+> johannes
 
-To fix this we need to let the firmware manages the sequence
-numbers by its own (except for QoS null frames). There is a SN
-counter for each QoS queue and one global/baseline counter for
-Non-QoS.
+Apologies for not clear answer in my previous reply.
+Yes, If hostapd is not updated, it's going to disconnect the STAs.
 
-Fixes: 84aff52e4f57 ("wcn36xx: Use sequence number allocated by mac80211")
-Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
----
- drivers/net/wireless/ath/wcn36xx/txrx.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+We should update hostapd also to opt in this driver behavior.
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
-index 81db90f..75951cc 100644
---- a/drivers/net/wireless/ath/wcn36xx/txrx.c
-+++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
-@@ -427,8 +427,6 @@ static void wcn36xx_set_tx_pdu(struct wcn36xx_tx_bd *bd,
- 		bd->pdu.mpdu_header_off;
- 	bd->pdu.mpdu_len = len;
- 	bd->pdu.tid = tid;
--	/* Use seq number generated by mac80211 */
--	bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_HOST;
- }
- 
- static inline struct wcn36xx_vif *get_vif_by_addr(struct wcn36xx *wcn,
-@@ -525,6 +523,9 @@ static void wcn36xx_set_tx_data(struct wcn36xx_tx_bd *bd,
- 		tid = ieee80211_get_tid(hdr);
- 		/* TID->QID is one-to-one mapping */
- 		bd->queue_id = tid;
-+		bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_DPU_QOS;
-+	} else {
-+		bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_DPU_NON_QOS;
- 	}
- 
- 	if (info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT ||
-@@ -536,6 +537,8 @@ static void wcn36xx_set_tx_data(struct wcn36xx_tx_bd *bd,
- 		/* Don't use a regular queue for null packet (no ampdu) */
- 		bd->queue_id = WCN36XX_TX_U_WQ_ID;
- 		bd->bd_rate = WCN36XX_BD_RATE_CTRL;
-+		if (ieee80211_is_qos_nullfunc(hdr->frame_control))
-+			bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_HOST;
- 	}
- 
- 	if (bcast) {
-@@ -595,6 +598,8 @@ static void wcn36xx_set_tx_mgmt(struct wcn36xx_tx_bd *bd,
- 		bd->queue_id = WCN36XX_TX_U_WQ_ID;
- 	*vif_priv = __vif_priv;
- 
-+	bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_DPU_NON_QOS;
-+
- 	wcn36xx_set_tx_pdu(bd,
- 			   ieee80211_is_data_qos(hdr->frame_control) ?
- 			   sizeof(struct ieee80211_qos_hdr) :
--- 
-2.7.4
-
+Thanks,
+Veeru
