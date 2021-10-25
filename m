@@ -2,119 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A8F2439191
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 10:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A59214391AA
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 10:44:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232262AbhJYIkb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Oct 2021 04:40:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43700 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232099AbhJYIka (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Oct 2021 04:40:30 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CCDDC061745
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 01:38:08 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id w15so7731593wra.3
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 01:38:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=bpFddSXicr1FOM7E1DSDsDLO4EvvjPdgYo/SwAWZ4CI=;
-        b=HsYo9mM67IAT2JW0UEFZJwI0o2A4VGquieEwA9MU26/6PzcXu+pfdzIxjmXObEvPQM
-         te/aGKHmrZZ1hIsPeWSQVuJ45tHvnBA0b/Ndupp4xBwo8d50DyeSt5+QIXxABJk9hgaM
-         uA+l55TIA1nSsjFyz5M8g49gwT60Yjgjpa+FLPb7cie+yLASxDe7asA/Gt9BKz/kF5yJ
-         3Q0YnFI5kofNdNXdWkdtO4gqJRcFzhCDj67nJcU0Nne7JbQtUNGeTgbqHx1FYoiInGL/
-         8cKRcpe+0vtnCwThoHAhACYi9XbDbRZC7/tJaly6sIhwKBCCYJbCVcyJJSYXYUAsa0vX
-         PnmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=bpFddSXicr1FOM7E1DSDsDLO4EvvjPdgYo/SwAWZ4CI=;
-        b=aoAu59CfHF/beUKu2T3F2KSXWo8cioHjrLiNY8fWirz7ZD1lwsrSP7Hy764/yEJpkC
-         rzl6/XC0lcgvtV6FEeBK4uegLquW5JXx79oK+3XYvmsiXlzACHt4eJZHviqeHUcOzbh3
-         kY5WyphrWeBP1BSyigJJt8lm2vjTrySVfbF50Camkgtt+9mjvDyGVi9uzQjPQo10zZpp
-         bBzs/LswbfQCQjvEpSXMNl5NdmJxR6ykvFx+PVZB8Hr+TvJVyFv/8DuNGkz3MNNjy8bu
-         U8YvtYJryHNpsB3QIQZh8xYBDt1i+FCYO6earoTZaMY2o1zoFnbU2++LhsplwbF+ImZ4
-         JS0g==
-X-Gm-Message-State: AOAM531nU67/i7IIapwYWTfa2PHG+gGEoaZfGfuo2gcUvLXLW7K96bfD
-        u9ZL5+6Wo44j8MVhtT9/kpd52Q==
-X-Google-Smtp-Source: ABdhPJwJQsTm18eA47qfr8YhUnx2IdC6QrR+dYrFLw0m0UG4HBjVqdt0CYvTKx1yHsWOdYvkCkOhRg==
-X-Received: by 2002:a05:6000:128f:: with SMTP id f15mr21726178wrx.143.1635151086698;
-        Mon, 25 Oct 2021 01:38:06 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id i6sm4602277wry.71.2021.10.25.01.38.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Oct 2021 01:38:06 -0700 (PDT)
-Message-ID: <03845fc8-17a4-22b2-52fa-4fb013432a7a@linaro.org>
-Date:   Mon, 25 Oct 2021 09:40:07 +0100
+        id S232262AbhJYIqd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Oct 2021 04:46:33 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:34957 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232207AbhJYIqd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Oct 2021 04:46:33 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1635151451; h=Date: Message-Id: Cc: To: Subject: From:
+ Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
+ bh=jW00js9lQVp/ry056QHRrwvOuRESTWyc4LDSdFjHa4g=; b=iZNJSXaQfeWYXCmkXK1mJoGd6P41qM0M11FI69YbFVqkZRNC+YDfZ9CfnDnYn4+5VD/vgQ3V
+ 2DGarkV7zzArPS09wkvUqYG6MPP4qlineV+V5U65au/r482TWhiaxIyJ1FOvzLdVakiS2TjG
+ JGFM4Oa1viApeGEk7wV+7HxbsZ8=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 61766e5a67f107c61127b460 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Oct 2021 08:44:10
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id BB75DC4360D; Mon, 25 Oct 2021 08:44:10 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C28E8C4338F;
+        Mon, 25 Oct 2021 08:44:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C28E8C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.1
-Subject: Re: [PATCH] wcn36xx: Fix packet drop on resume
-Content-Language: en-US
-To:     Loic Poulain <loic.poulain@linaro.org>, kvalo@codeaurora.org
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <1635150496-19290-1-git-send-email-loic.poulain@linaro.org>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <1635150496-19290-1-git-send-email-loic.poulain@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@codeaurora.org>
+Subject: pull-request: wireless-drivers-next-2021-10-25
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20211025084410.BB75DC4360D@smtp.codeaurora.org>
+Date:   Mon, 25 Oct 2021 08:44:10 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 25/10/2021 09:28, Loic Poulain wrote:
-> If the system is resumed because of an incoming packet, the wcn36xx RX
-> interrupts is fired before actual resuming of the wireless/mac80211
-> stack, causing any received packets to be simply dropped. E.g. a ping
-> request causes a system resume, but is dropped and so never forwarded
-> to the IP stack.
-> 
-> This change fixes that, disabling DMA interrupts on suspend to no pass
-> packets until mac80211 is resumed and ready to handle them.
-> 
-> Note that it's not incompatible with RX irq wake.
-> 
-> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
-> ---
->   drivers/net/wireless/ath/wcn36xx/main.c | 11 +++++++++++
->   1 file changed, 11 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-> index a42eae6..a650b9e 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/main.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-> @@ -1137,6 +1137,13 @@ static int wcn36xx_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wow)
->   			goto out;
->   		ret = wcn36xx_smd_wlan_host_suspend_ind(wcn);
->   	}
-> +
-> +	/* Disable IRQ, we don't want to handle any packet before mac80211 is
-> +	 * resumed and ready to receive packets.
-> +	 */
-> +	disable_irq(wcn->tx_irq);
-> +	disable_irq(wcn->rx_irq);
-> +
->   out:
->   	mutex_unlock(&wcn->conf_mutex);
->   	return ret;
-> @@ -1159,6 +1166,10 @@ static int wcn36xx_resume(struct ieee80211_hw *hw)
->   		wcn36xx_smd_ipv6_ns_offload(wcn, vif, false);
->   		wcn36xx_smd_arp_offload(wcn, vif, false);
->   	}
-> +
-> +	enable_irq(wcn->tx_irq);
-> +	enable_irq(wcn->rx_irq);
-> +
->   	mutex_unlock(&wcn->conf_mutex);
->   
->   	return 0;
-> 
+Hi,
 
-LGTM
+here's a pull request to net-next tree, more info below. Please let me know if
+there are any problems.
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Kalle
+
+The following changes since commit 47b068247aa7d76bb7abea796b72e18a4c6e35c3:
+
+  net: liquidio: Make use of the helper macro kthread_run() (2021-10-22 11:10:10 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git tags/wireless-drivers-next-2021-10-25
+
+for you to fetch changes up to 753453afacc0243bd45de45e34218a8d17493e8f:
+
+  mt76: mt7615: mt7622: fix ibss and meshpoint (2021-10-23 10:29:39 +0300)
+
+----------------------------------------------------------------
+wireless-drivers-next patches for v5.16
+
+Third set of patches for v5.16. This time we have a small one to
+quickly fix two mt76 build failures I had missed in my previous pull
+request.
+
+Major changes:
+
+mt76
+
+* fix linking when CONFIG_MMC is disabled
+
+* fix dev_err() format warning
+
+* mt7615: mt7622: fix ibss and meshpoint
+
+----------------------------------------------------------------
+Lorenzo Bianconi (1):
+      mt76: mt7921: fix mt7921s Kconfig
+
+Nick Hainke (1):
+      mt76: mt7615: mt7622: fix ibss and meshpoint
+
+Randy Dunlap (1):
+      mt76: mt7921: fix Wformat build warning
+
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c  | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7921/Kconfig | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c  | 2 +-
+ 3 files changed, 4 insertions(+), 3 deletions(-)
