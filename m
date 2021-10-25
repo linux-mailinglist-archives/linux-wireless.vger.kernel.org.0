@@ -2,94 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69782439775
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 15:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF98D439785
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 15:25:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231359AbhJYN1A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Oct 2021 09:27:00 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:45701 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229993AbhJYN07 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Oct 2021 09:26:59 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635168277; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=rFPpdhO36riHLMbK56Jbllxq+eIQQRnsZLDJ1p3HIH8=;
- b=UpBWHBJYIsDmB0pWB2HVY1tBoFPCmsTacuSuTSXvODWa49cW4tpIKeCIYt2ZepRSgLaREaTJ
- cYUSWVJ1pg0ktsIcjA+5QdgHsP/2P9U+8tpMXnQxmRVv5zQbtJyL4lRjoc044aZlTVKYmptB
- irYBSNF9vO3BJK02Z53oZcK/6iY=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 6176b0075baa84c77b7a97a4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Oct 2021 13:24:22
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EAE8FC43460; Mon, 25 Oct 2021 13:24:22 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 19AA7C4360D;
-        Mon, 25 Oct 2021 13:24:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 19AA7C4360D
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S232674AbhJYN1Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Oct 2021 09:27:24 -0400
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:25654 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232539AbhJYN1V (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Oct 2021 09:27:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1635168299; x=1666704299;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=fXJuwM6QfGlCo/Fbit7MSCqDMyOusa8Ik2tTKL4Hq1c=;
+  b=Gfdj+HtuQP/B5CCFblZGpy66FBq+83kc3ovtiMwwzVYDQVhIQHB/aFh2
+   L/TjKeeNysuOXSOSYmZBjUOttVJBeG2vU2Uc9XJN1QXyxv9JqHDxIOU9I
+   to6fSDjLyVR/GRwQKiccfQbiztxGOBg7lnPb+2DZi8L5dKVlW8Vd2cfmm
+   E=;
+Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
+  by alexa-out.qualcomm.com with ESMTP; 25 Oct 2021 06:24:59 -0700
+X-QCInternal: smtphost
+Received: from nalasex01a.na.qualcomm.com ([10.47.209.196])
+  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2021 06:24:58 -0700
+Received: from ppranees-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
+ Mon, 25 Oct 2021 06:24:56 -0700
+From:   P Praneesh <quic_ppranees@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        P Praneesh <quic_ppranees@quicinc.com>,
+        Lavanya Suresh <lavaks@codeaurora.org>
+Subject: [PATCH v2] ath11k: Increment pending_mgmt_tx count before tx send invoke
+Date:   Mon, 25 Oct 2021 18:54:42 +0530
+Message-ID: <1635168282-8845-1-git-send-email-quic_ppranees@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wcn36xx: Fix tx_status mechanism
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1634567281-28997-1-git-send-email-loic.poulain@linaro.org>
-References: <1634567281-28997-1-git-send-email-loic.poulain@linaro.org>
-To:     Loic Poulain <loic.poulain@linaro.org>
-Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
-        bryan.odonoghue@linaro.org, Loic Poulain <loic.poulain@linaro.org>,
-        stable@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163516825893.10163.17036044541624913571.kvalo@codeaurora.org>
-Date:   Mon, 25 Oct 2021 13:24:22 +0000 (UTC)
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Loic Poulain <loic.poulain@linaro.org> wrote:
+There is a race condition whereby the tx completion handler can be invoked
+before the 'num_pending_mgmt_tx" count is incremented. If that occurs, we
+could get warning trace indicating that 'num_pending_mgmt_tx' is 0 (because
+it was not yet incremented). Ideally, this trace should be seen only if
+mgmt tx has not happened but tx completion is received, and it is not
+expected in this race condition.
 
-> This change fix the TX ack mechanism in various ways:
-> 
-> - For NO_ACK tagged packets, we don't need to wait for TX_ACK indication
-> and so are not subject to the single packet ack limitation. So we don't
-> have to stop the tx queue, and can call the tx status callback as soon
-> as DMA transfer has completed.
-> 
-> - Fix skb ownership/reference. Only start status indication timeout
-> once the DMA transfer has been completed. This avoids the skb to be
-> both referenced in the DMA tx ring and by the tx_ack_skb pointer,
-> preventing any use-after-free or double-free.
-> 
-> - This adds a sanity (paranoia?) check on the skb tx ack pointer.
-> 
-> - Resume TX queue if TX status tagged packet TX fails.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: fdf21cc37149 ("wcn36xx: Add TX ack support")
-> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1-01386-QCAHKSWPL_SILICONZ-1
 
-Patch applied to ath-next branch of ath.git, thanks.
+Co-developed-by: Lavanya Suresh <lavaks@codeaurora.org>
+Signed-off-by: Lavanya Suresh <lavaks@codeaurora.org>
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+---
+v2: - corrected signed off detail.
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-a9e79b116cc4 wcn36xx: Fix tx_status mechanism
-
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 1cc5560..56f3208 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -5048,13 +5048,15 @@ static void ath11k_mgmt_over_wmi_tx_work(struct work_struct *work)
+ 		arvif = ath11k_vif_to_arvif(skb_cb->vif);
+ 		if (ar->allocated_vdev_map & (1LL << arvif->vdev_id) &&
+ 		    arvif->is_started) {
++			atomic_inc(&ar->num_pending_mgmt_tx);
+ 			ret = ath11k_mac_mgmt_tx_wmi(ar, arvif, skb);
+ 			if (ret) {
++				if (atomic_dec_if_positive(&ar->num_pending_mgmt_tx) < 0)
++					WARN_ON_ONCE(1);
++
+ 				ath11k_warn(ar->ab, "failed to tx mgmt frame, vdev_id %d :%d\n",
+ 					    arvif->vdev_id, ret);
+ 				ieee80211_free_txskb(ar->hw, skb);
+-			} else {
+-				atomic_inc(&ar->num_pending_mgmt_tx);
+ 			}
+ 		} else {
+ 			ath11k_warn(ar->ab,
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1634567281-28997-1-git-send-email-loic.poulain@linaro.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.7.4
 
