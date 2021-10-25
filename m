@@ -2,87 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C153143912B
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 10:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70BAB4390FB
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 10:16:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231685AbhJYI3w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Oct 2021 04:29:52 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:50958 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231519AbhJYI3o (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Oct 2021 04:29:44 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635150442; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=3oQbzqRRdL8+x0aQm5Jf5ctmhHZ6BiFyGzG+UwXMaQ4=;
- b=vDN+HFbkdjAEPUjUnVmY3NHNDtJBvPX2RolBJdaV7af/6elHi5G/T6sNElFawR5ezCQ/zfoQ
- LIfvfHIpC3ag4pePo35aD/2Jy969R2vPS/zQlNap9QBNBs2+Llj4uUO+Q6RocxNN+eXGiErU
- 9y1r5VIBCTW2XdroK/v9QKHhBc8=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 61766a5cfd91319f0f13a6bf (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Oct 2021 08:27:08
- GMT
-Sender: vjakkam=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AD12AC43616; Mon, 25 Oct 2021 08:27:08 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: vjakkam)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 34D97C4360C;
-        Mon, 25 Oct 2021 08:27:07 +0000 (UTC)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 25 Oct 2021 13:57:07 +0530
-From:   vjakkam@codeaurora.org
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] nl80211: Indicate SA Query procedures offload for AP SME
- device
-In-Reply-To: <69995d6c767edcea15ef7645fabc0e39c0dc7960.camel@sipsolutions.net>
-References: <1634210331-9001-1-git-send-email-vjakkam@codeaurora.org>
- <612e80125878bae6fccbb72701381832a8a6029c.camel@sipsolutions.net>
- <5a1f654e3406e99c816afbc762519fea@codeaurora.org>
- <69995d6c767edcea15ef7645fabc0e39c0dc7960.camel@sipsolutions.net>
-Message-ID: <7c5b87329c58ac2b68329573f587f8d7@codeaurora.org>
-X-Sender: vjakkam@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+        id S231251AbhJYITN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Oct 2021 04:19:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38756 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230338AbhJYITN (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Oct 2021 04:19:13 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7D9C061745
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 01:16:51 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id d3so7103036wrh.8
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 01:16:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=/ONHwovzGtX6c4QtNm3dsEQglHqM8sqBpiVTMmVOH/E=;
+        b=iSk33Ikv4ZsQOw+/PcaHGspL+SDokjPfkC0ZtGZIpGxaQyk4Sn3FNO7KwZ1IkeAY6C
+         Oqo1WlySWRS3Xx33kaIVxgE3PB00n8WCJSU4HWzsjkgcN5sGCnzdq7/UTff1oSEsntrc
+         pHViH+xb7/mUccTwDjtOK7bE/Op+TFLCyNn42OB2nTHFNqd3v2bTZBLK+Dp6gBLhpxmQ
+         kHRsoWXHZACOjz4KHFUEqlXG/yMKzB6M3BuFGlANcq1KIeJa0fHxRo64GYTdG3SSXv3N
+         iWCi3ZgJ90cTSBn0JlXCmf+5tOkvh3hAexJVP9iY0UFMUWimO3ihY0JcIGhGmgsOf/xl
+         MqKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=/ONHwovzGtX6c4QtNm3dsEQglHqM8sqBpiVTMmVOH/E=;
+        b=f36sCNKtPhgowvflYJaeXTC/bdEfX+Ch3xfi2ogcqjrqCtr3ZvpIIhng/7kim59528
+         gdpQLdTK11CyIPKnVqfCs/ThtC5yTQlT32WlIVimQxU5mHbS3zMLZeeKcrdmKtpBqKG8
+         PiFr0/QQrbIJfsFGRj6uwTuCoAlwWr6aTdtWKfNL987ZBQCO3cQoljVaMLAeIFj/WwD/
+         FQbyDMFKf3wvEH/7km9paftuc4P4nozzbe6MXRj6s2jqZz7byQhubtqDrMJbdm2FEfX3
+         c2k3iWQOTbsu9Aqano4S/Pe532TO9zVdgXK7r3y2fDDqLMYFG3lxz/7T0UlijyEGj8Ja
+         23OQ==
+X-Gm-Message-State: AOAM531lqK4aEaC0Yf4SkywSGuzKWJwKxovmSEOX5r5A/lzowJQ0rj6w
+        wgpr1kSsFkeS3qUmKqyKNW1P1w==
+X-Google-Smtp-Source: ABdhPJyaKZkr61uCpnaLAvqlIj+zkqC/xnMu2Er/c2CZOlrOm96Lut2Xne4rTrwQFGNsP0wZSaTwgA==
+X-Received: by 2002:adf:e0c1:: with SMTP id m1mr21987545wri.241.1635149809805;
+        Mon, 25 Oct 2021 01:16:49 -0700 (PDT)
+Received: from localhost.localdomain ([88.160.176.23])
+        by smtp.gmail.com with ESMTPSA id 12sm6409449wmk.34.2021.10.25.01.16.48
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 25 Oct 2021 01:16:49 -0700 (PDT)
+From:   Loic Poulain <loic.poulain@linaro.org>
+To:     kvalo@codeaurora.org
+Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        bryan.odonoghue@linaro.org, Loic Poulain <loic.poulain@linaro.org>
+Subject: [PATCH] wcn36xx: Fix packet drop on resume
+Date:   Mon, 25 Oct 2021 10:28:16 +0200
+Message-Id: <1635150496-19290-1-git-send-email-loic.poulain@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-10-22 18:59, Johannes Berg wrote:
-> On Fri, 2021-10-22 at 18:56 +0530, vjakkam@codeaurora.org wrote:
->> >
->> > So how's that going to work with older hostapd? It'll be offloaded, and
->> > then hostapd doesn't know, so it's still going to disconnect them?
->> >
->> > So should be that hostapd also opts in to this driver behaviour?
->> 
->> yes, we have to update hostapd also with new implementation based on 
->> the
->> feature flag.
-> 
-> That wasn't my question. My question was what happens if you have a
-> hostapd that's *not* updated?>
-> 
-> johannes
+If the system is resumed because of an incoming packet, the wcn36xx RX
+interrupts is fired before actual resuming of the wireless/mac80211
+stack, causing any received packets to be simply dropped. E.g. a ping
+request causes a system resume, but is dropped and so never forwarded
+to the IP stack.
 
-Apologies for not clear answer in my previous reply.
-Yes, If hostapd is not updated, it's going to disconnect the STAs.
+This change fixes that, disabling DMA interrupts on suspend to no pass
+packets until mac80211 is resumed and ready to handle them.
 
-We should update hostapd also to opt in this driver behavior.
+Note that it's not incompatible with RX irq wake.
 
-Thanks,
-Veeru
+Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+---
+ drivers/net/wireless/ath/wcn36xx/main.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index a42eae6..a650b9e 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -1137,6 +1137,13 @@ static int wcn36xx_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wow)
+ 			goto out;
+ 		ret = wcn36xx_smd_wlan_host_suspend_ind(wcn);
+ 	}
++
++	/* Disable IRQ, we don't want to handle any packet before mac80211 is
++	 * resumed and ready to receive packets.
++	 */
++	disable_irq(wcn->tx_irq);
++	disable_irq(wcn->rx_irq);
++
+ out:
+ 	mutex_unlock(&wcn->conf_mutex);
+ 	return ret;
+@@ -1159,6 +1166,10 @@ static int wcn36xx_resume(struct ieee80211_hw *hw)
+ 		wcn36xx_smd_ipv6_ns_offload(wcn, vif, false);
+ 		wcn36xx_smd_arp_offload(wcn, vif, false);
+ 	}
++
++	enable_irq(wcn->tx_irq);
++	enable_irq(wcn->rx_irq);
++
+ 	mutex_unlock(&wcn->conf_mutex);
+ 
+ 	return 0;
+-- 
+2.7.4
+
