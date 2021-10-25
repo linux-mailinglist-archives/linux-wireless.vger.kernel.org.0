@@ -2,78 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5A1A439183
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 10:36:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59C77439185
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Oct 2021 10:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232397AbhJYIiX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Oct 2021 04:38:23 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:42554 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232410AbhJYIhk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Oct 2021 04:37:40 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635150918; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=FcPQkAvg+feMWCtgEcIC885T9YZY5r1KJ4CdDD9gJFM=; b=E0rwld+pufzboZlK8YXcsRQ69UA4WAHqQtc7fdbkHc6UlQcoSoChTrSUO/ZgYGxekW06rXVn
- Qpbktz7lFJMugfqvedw8itqO/Yv8EmmWSV1/Kv4Pmwvh6PdjeFmsbtA3W0/MQRTHMhbLO4kt
- knZ/dnw7+DWiL3msd0zqcD+bjp0=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 61766c44c75c436a30a78b78 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Oct 2021 08:35:16
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 04C88C43616; Mon, 25 Oct 2021 08:35:16 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2A52FC4338F;
-        Mon, 25 Oct 2021 08:35:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 2A52FC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Benjamin Li <benl@squareup.com>
-Cc:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        linux-arm-msm@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] wcn36xx: add missing 5GHz channels 136 and 144
-References: <20211022235738.2970167-1-benl@squareup.com>
-        <20211022235738.2970167-3-benl@squareup.com>
-Date:   Mon, 25 Oct 2021 11:35:11 +0300
-In-Reply-To: <20211022235738.2970167-3-benl@squareup.com> (Benjamin Li's
-        message of "Fri, 22 Oct 2021 16:57:38 -0700")
-Message-ID: <878ryhec3k.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S232576AbhJYIia (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Oct 2021 04:38:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42744 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232759AbhJYIhs (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Oct 2021 04:37:48 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59118C061236
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 01:34:38 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id e4so11374206wrc.7
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 01:34:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=1M23eMjeOcIvlZCqIDv6O/BWoqWvfvNnXONg43EiCT8=;
+        b=y2EES1lwFzj7pUYntAGUZzwoT2J31grVG74BdwRIKEO4X5bYGxsV+A3IGBd2lvXXTC
+         HQifm866g7wvbPNDlg6NMkSU6Us2IjwPw4cSemaR+HE8KhPDywc1YwQMetDdCJUnpoYB
+         gslulh1HbXdtEN3cWFDIyKKyxcfTuVbvy5GLxO69z8EhVAZw9xXPIy+nZ0BhQ/Y0hY3h
+         jBVol5FAZdRh7vsB6kzMrCfaPM5L6T6EBv8flCjmF4fw5gScX7rYBx2JkgOF3fHVZuoh
+         Npe6L6eWYCdAqTkrW+Mpy+eOfsqUd+3fHzBfZjtGIC2iSUq8TOFpgnb7G2vHWssvuF4p
+         I6hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=1M23eMjeOcIvlZCqIDv6O/BWoqWvfvNnXONg43EiCT8=;
+        b=qkZBIIsVpRL47vdDcTWh6zRJFNApHBrb/26X86t84ObULWE7P+WEO7QhuovHLbunD9
+         ydWrCf01B5LTTPrn1Q5h00DqoTIVPLmFWbozAd7CXE+VX8/em6dMtJesEj8en0yMwf3X
+         oV5oRAh4oX/mWmQIdk3+FlQ0mmF3LnzNNKnPnfdhuLT0sbDGd6xY7F1FLV4Ihah2/kuJ
+         lPj/2aZewtH329KwzEsQE/LWt48+0V8tOwFjXXxpdcwxjvuK1708YfyxolaSYikzQ5JJ
+         azMCWoZjkB9I9Gf6CYWi8FmknUUjq5XKzzehgx5ZWoFnDSvXNuBQCgOih7I7KtdChbEK
+         2fuA==
+X-Gm-Message-State: AOAM532NFnO9Vxg7mF60caBKG6JVAoMo2jy5JoCMJDjhLQAGc7xb6Tfk
+        5I9cnlCebxp9ihomO1hRTdCygw==
+X-Google-Smtp-Source: ABdhPJwb/tTMeGJ3uFandX/o78PDTb+6lvi0XIbp5yRDowXDAG28M1JacV9+PWKyaNKLM6cV5uqTxw==
+X-Received: by 2002:a5d:584d:: with SMTP id i13mr20617782wrf.355.1635150876879;
+        Mon, 25 Oct 2021 01:34:36 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id p21sm4485815wmc.11.2021.10.25.01.34.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Oct 2021 01:34:36 -0700 (PDT)
+Message-ID: <2a858752-5727-95ca-1121-626e04500900@linaro.org>
+Date:   Mon, 25 Oct 2021 09:36:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.1
+Subject: Re: [PATCH] wcn36xx: Fix discarded frames due to wrong sequence
+ number
+Content-Language: en-US
+To:     Loic Poulain <loic.poulain@linaro.org>, kvalo@codeaurora.org
+Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <1635150336-18736-1-git-send-email-loic.poulain@linaro.org>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <1635150336-18736-1-git-send-email-loic.poulain@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Benjamin Li <benl@squareup.com> writes:
+On 25/10/2021 09:25, Loic Poulain wrote:
+> The firmware is offering features such as ARP offload, for which
+> firmware crafts its own (QoS)packets without waking up the host.
+> Point is that the sequence numbers generated by the firmware are
+> not in sync with the host mac80211 layer and can cause packets
+> such as firmware ARP reponses to be dropped by the AP (too old SN).
+> 
+> To fix this we need to let the firmware manages the sequence
+> numbers by its own (except for QoS null frames). There is a SN
+> counter for each QoS queue and one global/baseline counter for
+> Non-QoS.
+> 
+> Fixes: 84aff52e4f57 ("wcn36xx: Use sequence number allocated by mac80211")
+> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+> ---
+>   drivers/net/wireless/ath/wcn36xx/txrx.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
+> index 81db90f..75951cc 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/txrx.c
+> +++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
+> @@ -427,8 +427,6 @@ static void wcn36xx_set_tx_pdu(struct wcn36xx_tx_bd *bd,
+>   		bd->pdu.mpdu_header_off;
+>   	bd->pdu.mpdu_len = len;
+>   	bd->pdu.tid = tid;
+> -	/* Use seq number generated by mac80211 */
+> -	bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_HOST;
+>   }
+>   
+>   static inline struct wcn36xx_vif *get_vif_by_addr(struct wcn36xx *wcn,
+> @@ -525,6 +523,9 @@ static void wcn36xx_set_tx_data(struct wcn36xx_tx_bd *bd,
+>   		tid = ieee80211_get_tid(hdr);
+>   		/* TID->QID is one-to-one mapping */
+>   		bd->queue_id = tid;
+> +		bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_DPU_QOS;
+> +	} else {
+> +		bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_DPU_NON_QOS;
+>   	}
+>   
+>   	if (info->flags & IEEE80211_TX_INTFL_DONT_ENCRYPT ||
+> @@ -536,6 +537,8 @@ static void wcn36xx_set_tx_data(struct wcn36xx_tx_bd *bd,
+>   		/* Don't use a regular queue for null packet (no ampdu) */
+>   		bd->queue_id = WCN36XX_TX_U_WQ_ID;
+>   		bd->bd_rate = WCN36XX_BD_RATE_CTRL;
+> +		if (ieee80211_is_qos_nullfunc(hdr->frame_control))
+> +			bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_HOST;
+>   	}
+>   
+>   	if (bcast) {
+> @@ -595,6 +598,8 @@ static void wcn36xx_set_tx_mgmt(struct wcn36xx_tx_bd *bd,
+>   		bd->queue_id = WCN36XX_TX_U_WQ_ID;
+>   	*vif_priv = __vif_priv;
+>   
+> +	bd->pdu.bd_ssn = WCN36XX_TXBD_SSN_FILL_DPU_NON_QOS;
+> +
+>   	wcn36xx_set_tx_pdu(bd,
+>   			   ieee80211_is_data_qos(hdr->frame_control) ?
+>   			   sizeof(struct ieee80211_qos_hdr) :
+> 
 
-> These channels missing from scan results are a regression from downstream
-> prima.
-
-Please write commit logs in a way that everybody can understand, I doubt
-very few know what "are a regression from downstream prima" means.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
