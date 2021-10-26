@@ -2,85 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0B7943B971
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Oct 2021 20:22:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A41643BA91
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Oct 2021 21:18:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236800AbhJZSY6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Oct 2021 14:24:58 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:57670 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236765AbhJZSY5 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Oct 2021 14:24:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1635272552;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=kpSsBuI/yra5yOXYuL8UW9rcOksCsGQVxFgeLbgQfGs=;
-        b=DafVf0dhMTF9atvgEoEIYZ6Td7qBtIEEC55dFy7EEKcAZf5hvMcLNO6ySXPt+BwwVAk3Ks
-        bP5yz74e8MWfe1J2KpGkC17Z4tZpDetqISnQmz/HbazMaf21s/tB2+r7SnqfPWGY5dbczm
-        77dFrMkPT2M/p5TmSbYBHaqv7g4T4UI=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Karthikeyan Kathirvel <kathirve@codeaurora.org>
-Subject: Re: [PATCH] ath11k: clear the keys properly when DISABLE_KEY
-Date:   Tue, 26 Oct 2021 20:22:12 +0200
-Message-ID: <2140984.h3xd69cp4r@sven-l14>
-In-Reply-To: <20211026155446.457935-1-sven@narfation.org>
-References: <20211026155446.457935-1-sven@narfation.org>
+        id S236990AbhJZTUg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Oct 2021 15:20:36 -0400
+Received: from mga02.intel.com ([134.134.136.20]:48282 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234841AbhJZTUf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 26 Oct 2021 15:20:35 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10149"; a="217165708"
+X-IronPort-AV: E=Sophos;i="5.87,184,1631602800"; 
+   d="scan'208";a="217165708"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2021 12:18:11 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,184,1631602800"; 
+   d="scan'208";a="486322156"
+Received: from lkp-server01.sh.intel.com (HELO 072b454ebba8) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 26 Oct 2021 12:18:10 -0700
+Received: from kbuild by 072b454ebba8 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mfRxZ-0000LY-DL; Tue, 26 Oct 2021 19:18:09 +0000
+Date:   Wed, 27 Oct 2021 03:17:15 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [jberg-mac80211:master] BUILD SUCCESS
+ 689a0a9f505f7bffdefe6f17fddb41c8ab6344f6
+Message-ID: <6178543b.OgCnL06/ImsutnHh%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3042913.mnNX1PIVWj"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart3042913.mnNX1PIVWj
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Karthikeyan Kathirvel <kathirve@codeaurora.org>
-Subject: Re: [PATCH] ath11k: clear the keys properly when DISABLE_KEY
-Date: Tue, 26 Oct 2021 20:22:12 +0200
-Message-ID: <2140984.h3xd69cp4r@sven-l14>
-In-Reply-To: <20211026155446.457935-1-sven@narfation.org>
-References: <20211026155446.457935-1-sven@narfation.org>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git master
+branch HEAD: 689a0a9f505f7bffdefe6f17fddb41c8ab6344f6  cfg80211: correct bridge/4addr mode check
 
-On Tuesday, 26 October 2021 17:54:46 CEST Sven Eckelmann wrote:
-> Tested-on: IPQ6018 hw1.0 AHB WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
+elapsed time: 1735m
 
-I would like to retract this Tested-on. My test caused another problem which 
-resulted in a complete shutdown of the vdev. After fixing this problem, it 
-turned out that this change didn't fix anything (as far as I can see) on this 
-firmware version.
+configs tested: 52
+configs skipped: 3
 
-Kind regards,
-	Sven
---nextPart3042913.mnNX1PIVWj
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
------BEGIN PGP SIGNATURE-----
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+m68k                                defconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+xtensa                           allyesconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+parisc                              defconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                              debian-10.3
+nios2                               defconfig
+nds32                             allnoconfig
+arc                              allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+riscv                            allyesconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                           allyesconfig
 
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmF4R1QACgkQXYcKB8Em
-e0ZtmA/+NHgZ2CVrq5gZ2qvv+rj6FNvuZLBnmSaMH8gjr+lRibxXr+3x9W1ZS2fM
-ZDiQXeF7FCE9np2I7Nd8HdeAx08NMPu+Vqgw6hmsEd5ZRf6KOKp+S+5WMgU+fqKL
-uYzYGwTPTnsWzJ8ZIEwAa8nR1+zx4n1L6CzSAxBpmdxeWcp99icO5iHMme+0WW2W
-kqiOIzRJVlNzZBpu0gTybSnDTVR/unc25wTiQOktrw1FhJhjEkoJA/piZv7kFc6z
-MWS9zhQJmk1cEJD2+YoObfaFmoQ7XN1SoqTBHh/jqAkJnjOkLGv41bFBwmHOZnyT
-4vtFaAPYUqBfiCcsXlaxqHeYMIgOi2m2t6HtKXP6kDuddy1L/sO8vhHmkrQA4Gxe
-ls48r6GJwXsB5ZedHP4BE8puzLEyOTs94geco0mPntceYNVbBjNYNVBuaLVvDb99
-LdhYBiiNM6+fuQqh49WKfYuFmwa25etOPnHMV5PJgV7VViqgI5A6RtcJSOIfu9V2
-B4hT6Mjx6p8MxUXPSLzpQefo9KjXXOGksTiFblKGOXGZ78Jz8werAuTxzzRESRZT
-5e7tl+nNT+IHInbZufqTxf8+eYAC4U0M/Fq2lHbSbvT5498YFOm2FxqTirkl9b8V
-y+JLaC+sAIrPABdztXhZ4djO0+hdaL6jho9NLds/xD9AZh11CI8=
-=Ec1P
------END PGP SIGNATURE-----
-
---nextPart3042913.mnNX1PIVWj--
-
-
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
