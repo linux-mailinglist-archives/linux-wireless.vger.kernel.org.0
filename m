@@ -2,92 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C87EF43B65E
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Oct 2021 18:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1276843B82F
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Oct 2021 19:31:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237182AbhJZQGL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Oct 2021 12:06:11 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:55086 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235747AbhJZQGK (ORCPT
+        id S237785AbhJZRd1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Oct 2021 13:33:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41596 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236343AbhJZRdZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Oct 2021 12:06:10 -0400
-X-Greylist: delayed 521 seconds by postgrey-1.27 at vger.kernel.org; Tue, 26 Oct 2021 12:06:10 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1635263700;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=EFYjre+MfQX7mQPCg8PKk+XsrQb8WSPn2SjfK23Z5u4=;
-        b=DcDNDAZyus1lmDMF387JGZzpTXHzlH/0EgyYYzfby6qUpHyfT8BtvK03wpUUvQcVfOajeH
-        XAgiNA6eW44dWIJii/1zj18wICANlHYj0dJqclHKBWI26QZCroHuaBE7grX/g0eJFjJfKr
-        w7kki5ZJzO7qpMADcnXJas5/sEcGsqg=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Karthikeyan Kathirvel <kathirve@codeaurora.org>,
-        Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH] ath11k: clear the keys properly when DISABLE_KEY
-Date:   Tue, 26 Oct 2021 17:54:46 +0200
-Message-Id: <20211026155446.457935-1-sven@narfation.org>
-X-Mailer: git-send-email 2.30.2
+        Tue, 26 Oct 2021 13:33:25 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0457C061745
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Oct 2021 10:31:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=pfphubtXlVlvS9hX4ZJ7SgocMKfDYL4zV2zOpJgBDF0=;
+        t=1635269461; x=1636479061; b=uoPmpMFsD9kdTMUFldqWgP8l/6b/gA+UW3yOjZC68P0DOiL
+        rUjFoSSFACKJMMhQkEPxvipGLgkr63PLjt8yXd4s9Ha4bjr/TCK2Wgpa29uEX5/C0uyJCn/QrsznK
+        H+JuK7xsI1pnoqsLIJzNDlZSxXvRqG+p7fmQMHBnsz8SWE99l8FIQYyFZnSI2ImudP8Q5csayxM8+
+        HeN4bheKx8P8BfNt+ii0VTH68LOtX+NYgZECnsuNfvHypr0u+ZxGJZLfHFdlGqfN6c3PHd/nbLMYU
+        I6UoIRhRZcjY5HVTLIKWlYtWz5E31l0oFIO97r64gU3R8+sVqMJS4db+PQBiqrSg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mfQHr-007Ch8-Gg;
+        Tue, 26 Oct 2021 19:30:59 +0200
+Message-ID: <6c757e851f2cac76b0e63e10cc6aabe1839f07aa.camel@sipsolutions.net>
+Subject: Re: [RFC v2] mac80211: fix rx blockack session race condition
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jean-Pierre TOSONI <jp.tosoni@acksys.fr>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Tue, 26 Oct 2021 19:30:58 +0200
+In-Reply-To: <DB9PR01MB73541EC2ECFCEF6521B86AFFE4849@DB9PR01MB7354.eurprd01.prod.exchangelabs.com>
+References: <DB9PR01MB73541EC2ECFCEF6521B86AFFE4849@DB9PR01MB7354.eurprd01.prod.exchangelabs.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Karthikeyan Kathirvel <kathirve@codeaurora.org>
+On Tue, 2021-10-26 at 14:19 +0000, Jean-Pierre TOSONI wrote:
+> When used with ath10k, the following may happen:
+> a) radio card firmware receives ADDBA-REQ from peer
+> b) radio sends back ADDBA-RESP to peer and signals the ath10k driver
+> c) ath10k calls back ieee80211_manage_rx_ba_offl() in mac80211
+>    to signal rx ba offloading
+> d) mac80211::agg-rx.c::ieee80211_manage_rx_ba_offl()
+>   d1) sets a flag: sta->ampdu_mlme.tid_rx_manage_offl
+>   d2) queues a call to ht.c::ieee80211_ba_session_work()
+> e) ...scheduler runs...
+> f) ht.c::ieee80211_ba_session_work() checks the flag, clears it
+>    and sets up the rx ba session.
+> 
+> During (e), a fast peer may already have sent a BAREQ which is
+> propagated to rx.c::ieee80211_rx_h_ctrl(). Since the session is not
+> yet established, mac80211 sends back a DELBA to the peer, which can
+> hang the BA session.
+> 
+> The phenomenon can be observed between two QCA988X fw 10.2.4 radios,
+> using a loop of associate/arping from client to AP/disconnect. After
+> a few thousand loops, arping does not get a response and a sniffer
+> detects a DELBA action frame from the client, following an ADDBA.
+> 
+> Fix:
+> 1) check the offload flag in addition to the check for a valid
+>    aggregation session
+> 2) surround the checks with the existing dedicated mutex, to avoid
+>    interference from ieee80211_ba_session_work() during the check.
+> 
+> Note 1: there is another dubious DELBA generation in
+> ieee80211_rx_reorder_ampdu(), where the same kind of fix should fit,
+> but I did not fix it since I knew no easy way to test.
+> 
+> Note 2: this fix applies to wireless backports from 5.4-rc8.
+> ---
+> V2: remove debugging code leftovers, sorry for that
+> 
+> Index: b/net/mac80211/rx.c
+> ===================================================================
+> --- a/net/mac80211/rx.c
+> +++ b/net/mac80211/rx.c
+> Index: bp/net/mac80211/rx.c
+> ===================================================================
+> --- bp.orig/net/mac80211/rx.c
+> +++ bp/net/mac80211/rx.c
+> @@ -3008,11 +3008,18 @@ ieee80211_rx_h_ctrl(struct ieee80211_rx_
+>  
+> 
+>  		tid = le16_to_cpu(bar_data.control) >> 12;
+>  
+> 
+> +		mutex_lock(&rx->sta->ampdu_mlme.mtx);
 
-DISABLE_KEY sets the key_len to 0, firmware will not delete the keys if
-key_len is 0. Changing from security mode to open mode will cause mcast
-to be still encrypted without vdev restart.
+You cannot take a mutex in this context.
 
-Set the proper key_len for DISABLE_KEY cmd to clear the keys in
-firmware.
-
-Tested-on: IPQ6018 hw1.0 AHB WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Reported-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Karthikeyan Kathirvel <kathirve@codeaurora.org>
-[sven@narfation.org: Drop chunks which are for NSS and other parts QCA
- didn't upstream]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
----
- drivers/net/wireless/ath/ath11k/mac.c | 4 +---
- drivers/net/wireless/ath/ath11k/wmi.c | 3 ++-
- 2 files changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 1cc55602787b..cdee7545e876 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3316,9 +3316,7 @@ static int ath11k_install_key(struct ath11k_vif *arvif,
- 		return 0;
- 
- 	if (cmd == DISABLE_KEY) {
--		/* TODO: Check if FW expects  value other than NONE for del */
--		/* arg.key_cipher = WMI_CIPHER_NONE; */
--		arg.key_len = 0;
-+		arg.key_cipher = WMI_CIPHER_NONE;
- 		arg.key_data = NULL;
- 		goto install;
- 	}
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 5ae2ef4680d6..d97be60689be 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -1689,7 +1689,8 @@ int ath11k_wmi_vdev_install_key(struct ath11k *ar,
- 	tlv = (struct wmi_tlv *)(skb->data + sizeof(*cmd));
- 	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
- 		      FIELD_PREP(WMI_TLV_LEN, key_len_aligned);
--	memcpy(tlv->value, (u8 *)arg->key_data, key_len_aligned);
-+	if (arg->key_data)
-+		memcpy(tlv->value, (u8 *)arg->key_data, key_len_aligned);
- 
- 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_VDEV_INSTALL_KEY_CMDID);
- 	if (ret) {
--- 
-2.30.2
+johannes
 
