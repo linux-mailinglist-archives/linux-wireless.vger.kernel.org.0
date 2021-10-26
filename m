@@ -2,142 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B15FE43AB13
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Oct 2021 06:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3BF43AC19
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Oct 2021 08:13:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231222AbhJZEUC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Oct 2021 00:20:02 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:42774 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231164AbhJZEUB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Oct 2021 00:20:01 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635221858; h=Content-Transfer-Encoding: MIME-Version:
- Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=SKLngKpFsur3nfUpF13GoxuU1+g7qBfwoE4jGMjLIqo=; b=dT0Uj4+1QwZUL3pOO2Lg9pueih8ArNYXt8freOoyQUEtguw6b6+hA5bSm4za3kGbpE+5ltX2
- +/DEhnL402vKSd15aXtlfxKrCE30bkxtfAl2IWUW9sdBNJlRzhLCT6b9joj1D2ZbuSo42BZV
- ffsGYnqiegmcnb6nZJ7WBlD/nZU=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 6177816259612e010027cd2e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 26 Oct 2021 04:17:38
- GMT
-Sender: bqiang=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E317FC43616; Tue, 26 Oct 2021 04:17:37 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from bqiang-Celadon-RN.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: bqiang)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 750C1C43460;
-        Tue, 26 Oct 2021 04:17:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 750C1C43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Baochen Qiang <bqiang@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH 7/7] ath11k: Set IRQ affinity to CPU0 in case of one MSI vector
-Date:   Tue, 26 Oct 2021 12:17:32 +0800
-Message-Id: <20211026041732.5323-1-bqiang@codeaurora.org>
-X-Mailer: git-send-email 2.25.1
+        id S233181AbhJZGPy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Oct 2021 02:15:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55620 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232553AbhJZGPy (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 26 Oct 2021 02:15:54 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDF1BC061745
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 23:13:30 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id 5so9078607edw.7
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Oct 2021 23:13:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=35/sI5GFOqOz/eriEA4kI0EoAqM1EW851nbPRiqwX0E=;
+        b=TONrRwRSFs+DfoQcpW3gqM/6+Nm3VhtWfVEV6Ha/0icIlDhH/sKzT8GdTp/0IMGie7
+         hPpcAMU/fIKbCPgdq219iYpQfqmDAoeujAPz36LuYcZZZbYj1+3vAeOk06pWp2pPWrbP
+         X2a7AuRHc92VPz7qqPHUfknsWO1rBUnHM3WW/FQu4m/AQGZeTpv4Haf0hQ2Li5LeZVcW
+         B0BJUyaDG8akGT/tS2Xz8H1SIPDpiL13j7ckkWiurtvWfffaEc4CTFYXVvlza4ozBRq3
+         AXjVZwPcc9S6a2fSEImMmAYMv/1LpFLO68vT8GoabJnt4nneb1nmcUPIBOwnaXHbpX4q
+         vEqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=35/sI5GFOqOz/eriEA4kI0EoAqM1EW851nbPRiqwX0E=;
+        b=xyJDxi2uretBKDfTsKTIvGaF6v8bxF56Eh9trupOBiYfE4MpKm4n6qGJC7nfy0VMFS
+         JurQ4Ssb1b7MrUwJylBK/PpyMNO1CxEsuBekGJ1TEE3QrVAOPQ0Vg/ThaXlwh/bnF/ph
+         PWVRs4dpWIi5wzXoDt/WX9Ez8yWdNyLK99SCgEt+i5LJZdeyGu++Pb3XtsjKePeeMeCy
+         SJgLBLuZJQ9LnuQrijn2wNpSC1ASV6a7wxszUkx6BykS6OWwdXofyDxRq7vjzq9LNSLQ
+         G7WHlJcz7sY1zcJK5hIrJgo0Sdq0UzKKp6QvjaxgxTbaAhEV+6NrWP+kYv2mpx+p6Ejj
+         M9IA==
+X-Gm-Message-State: AOAM530bSvaX/2UbKXiZyvK4GbXngGVkjmqi57pVhZywC33ol/ap15kW
+        h6WHbB9FdIiOHafbEiN+LKZhxG2ttnD5gO7cIUM=
+X-Google-Smtp-Source: ABdhPJxzKWTwFsdUw5mrsn/yY4LwwuTV1gDZDS6MCnO+YJB0asid1QmhrWJtkub0DRCJAn5MsRIkCsgRBKrItITiuIA=
+X-Received: by 2002:a17:906:9b89:: with SMTP id dd9mr28465306ejc.15.1635228809221;
+ Mon, 25 Oct 2021 23:13:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a7c:84d4:0:b0:127:ef4:3fd6 with HTTP; Mon, 25 Oct 2021
+ 23:13:28 -0700 (PDT)
+Reply-To: mairarosa915@gmail.com
+From:   "Mrs. Maira Rosa" <upstartloans@gmail.com>
+Date:   Mon, 25 Oct 2021 23:13:28 -0700
+Message-ID: <CA+8sAbZjQoD2vf1mW8p1Ox5RXdVM=eaeLY5LH_PwZrP65iCN-w@mail.gmail.com>
+Subject: Re:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With VT-d disabled on Intel platform, ath11k gets only one MSI
-vector. In that case, ath11k does not free IRQ when doing suspend,
-hence the kernel has to migrate it to CPU0 (if it was affine to
-other CPUs) and allocates a new MSI vector. However, ath11k has
-no chance to reconfig it to HW srngs during this phase, thus
-ath11k fails to resume.
-
-This issue can be fixed by setting IRQ affinity to CPU0 before
-request_irq is called. With such affinity, migration will not
-happen and thus the vector keeps unchanged during suspend/resume.
-
-Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
-
-Signed-off-by: Baochen Qiang <bqiang@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/pci.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index b450b4ed35d1..1cad7545ceb9 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -840,6 +840,14 @@ static int ath11k_pci_ext_irq_config(struct ath11k_base *ab)
- 	return 0;
- }
- 
-+static int ath11k_pci_set_irq_affinity_hint(struct ath11k_pci *ab_pci, const struct cpumask *m)
-+{
-+	if (!test_bit(ATH11K_PCI_FLAG_MULTI_MSI_VECTORS, &ab_pci->flags))
-+		return irq_set_affinity_hint(ab_pci->pdev->irq, m);
-+
-+	return 0;
-+}
-+
- static int ath11k_pci_config_irq(struct ath11k_base *ab)
- {
- 	struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
-@@ -856,6 +864,12 @@ static int ath11k_pci_config_irq(struct ath11k_base *ab)
- 	if (ret)
- 		return ret;
- 
-+	ret = ath11k_pci_set_irq_affinity_hint(ab_pci, cpumask_of(0));
-+	if (ret) {
-+		ath11k_err(ab, "failed to set irq affinity %d\n", ret);
-+		return ret;
-+	}
-+
- 	/* Configure CE irqs */
- 	for (i = 0, msi_data_idx = 0; i < ab->hw_params.ce_count; i++) {
- 		if (ath11k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
-@@ -875,7 +889,7 @@ static int ath11k_pci_config_irq(struct ath11k_base *ab)
- 		if (ret) {
- 			ath11k_err(ab, "failed to request irq %d: %d\n",
- 				   irq_idx, ret);
--			return ret;
-+			goto err_irq_affinity_cleanup;
- 		}
- 
- 		ab->irq_num[irq_idx] = irq;
-@@ -886,9 +900,13 @@ static int ath11k_pci_config_irq(struct ath11k_base *ab)
- 
- 	ret = ath11k_pci_ext_irq_config(ab);
- 	if (ret)
--		return ret;
-+		goto err_irq_affinity_cleanup;
- 
- 	return 0;
-+
-+err_irq_affinity_cleanup:
-+	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
-+	return ret;
- }
- 
- static void ath11k_pci_init_qmi_ce_config(struct ath11k_base *ab)
-@@ -1475,6 +1493,8 @@ static void ath11k_pci_remove(struct pci_dev *pdev)
- 	struct ath11k_base *ab = pci_get_drvdata(pdev);
- 	struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
- 
-+	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
-+
- 	if (test_bit(ATH11K_FLAG_QMI_FAIL, &ab->dev_flags)) {
- 		ath11k_pci_power_down(ab);
- 		ath11k_debugfs_soc_destroy(ab);
--- 
-2.25.1
-
+--=20
+Meine Entscheidung, Sie zu kontaktieren, ist, weil bei mir vor kurzem
+Lungenkrebs diagnostiziert wurde und der Arzt sagte, dass ich weniger
+als 6 Wochen zu leben habe. Seit mir diese pl=C3=B6tzliche Nachricht
+bekannt wurde, denke ich =C3=BCber mein Leben in der Vergangenheit nach. Es
+ist schmerzlich, dass wir nach =C3=BCber 26 Jahren friedlicher Ehe mit
+meinem verstorbenen Ehemann Malachi das einzige Kind verloren haben,
+das unseren zahlreichen Reichtum geerbt h=C3=A4tte. In der Vergangenheit
+habe ich angemessene Spenden an die Opfer des Erdbebens in Haiti und
+k=C3=BCrzlich an dieselben Opfer in Japan und Thailand geleistet. Jetzt, wo
+sich mein Gesundheitszustand allm=C3=A4hlich verschlechtert, kann ich all
+dies nicht mehr alleine tun. Ich habe den starken Wunsch, den Armen
+und Bed=C3=BCrftigen die Hand zu reichen, aber ich w=C3=BCrde es vorziehen,=
+ dies
+mit der Hilfe einer freundlichen Person fortzusetzen. Ich m=C3=B6chte, dass
+Sie die folgenden Fragen beantworten: ((1) Wenn ich (15,5)F=C3=BCnfzehn
+Millionen f=C3=BCnfhunderttausend US-Dollar an Sie spende, k=C3=B6nnen Sie =
+diese
+dann sinnvoll einsetzen, um meinen Herzenswunsch zu erf=C3=BCllen, arme
+Menschen um Sie herum zu unterst=C3=BCtzen? (2) Werden Sie im Namen meines
+Mannes und mir eine Wohlt=C3=A4tigkeitsstiftung gr=C3=BCnden? Ich m=C3=B6ch=
+te, dass
+Sie in meiner Erinnerung ein Heim f=C3=BCr mutterlose Babys einrichten,
+wenn ich weg bin, und dann 40% f=C3=BCr Ihre Bem=C3=BChungen behalten. Bitt=
+e
+antworten Sie mir so schnell wie m=C3=B6glich f=C3=BCr weitere Details.
