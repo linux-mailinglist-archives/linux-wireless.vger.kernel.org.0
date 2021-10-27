@@ -2,88 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBDCC43CC63
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 16:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A80043CDBE
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 17:37:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238851AbhJ0Ok1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Oct 2021 10:40:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46076 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238908AbhJ0Ok0 (ORCPT
+        id S238605AbhJ0PkR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Oct 2021 11:40:17 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:25707 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236437AbhJ0PkR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Oct 2021 10:40:26 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79172C061570;
-        Wed, 27 Oct 2021 07:38:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=t24zkGGtpZN1OU7jf/ooKPLCofpu4nHbLEvJSrls7Zk=; t=1635345481; x=1636555081; 
-        b=uPMuS7umEWDL+U2NPJ7dBLxkph0xZg+S4yh5MJOTjE+e9QHAvXmHkHUqymyq8Dbkqqe+DrPw1mz
-        7A9LCqLgvQ0veeegcAJQwOI5BNqsTobDMfZIr/ZnI5QY5MX1MbTZA45segJ5B0ZogcRgwmpGsIult
-        dhAvwg+jBzW5hdfJ/2n6xpkN16E55OlfcMow2ulm35v7dymvAWMlw+SBAZf2ZZmXrc8fPY1BIXf/T
-        7cnmg6BMYhdpbMIVSougjv5iJwiACHswLwWbHoeSWX/HhK8iFCcT/36ZVidkj/30v9uRgBFhHoa6q
-        E7jzmnDUPDiuCvxSg9mNfpaAR/I514rjJ0Aw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mfk3z-007Yfx-6r;
-        Wed, 27 Oct 2021 16:37:59 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211 2021-10-27
-Date:   Wed, 27 Oct 2021 16:37:55 +0200
-Message-Id: <20211027143756.91711-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.31.1
+        Wed, 27 Oct 2021 11:40:17 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1635349071; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=gB2Fp8jnEq42aIVHIs5yhpiBQ0OjJlOTbPEgdx8qzEQ=; b=wdfdq5AOvqjNZc18RXCbyPXguHkPEDJ8BrfBw2+I2zQgn3Xxyx0H7JkK4B+zBTeqaKxm59ir
+ mg/j3/Kc83sQ06+WrYC+3JZUYzUuqYYjyGz/xjKGibc6foNIOFtYQgxMq8ozMBsaKm7GzyKJ
+ fA2fEJMWMDyCmvQZtucNjDAnD6I=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 617972452e144ac4d382428a (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 Oct 2021 15:37:41
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 17F5FC43460; Wed, 27 Oct 2021 15:37:41 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CDB8BC4338F;
+        Wed, 27 Oct 2021 15:37:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org CDB8BC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: pull request: mt76 2021-10-23
+References: <6d896d65-235c-41b8-89bd-8349f031dd53@nbd.name>
+Date:   Wed, 27 Oct 2021 18:37:34 +0300
+In-Reply-To: <6d896d65-235c-41b8-89bd-8349f031dd53@nbd.name> (Felix Fietkau's
+        message of "Sat, 23 Oct 2021 13:28:09 +0200")
+Message-ID: <8735om7a2p.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Felix Fietkau <nbd@nbd.name> writes:
 
-Two more fixes. Both issues have been around for a while though.
+> Hi Kalle,
+>
+> here's a pull request with some follow-up fixes for 5.16
+>
+> - Felix
+>
+> The following changes since commit 753453afacc0243bd45de45e34218a8d17493e8f:
+>
+>   mt76: mt7615: mt7622: fix ibss and meshpoint (2021-10-23 10:29:39 +0300)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-10-23
+>
+> for you to fetch changes up to 52a99a13cb880845cd77f1da7136d689347489ef:
+>
+>   mt76: connac: fix unresolved symbols when CONFIG_PM is unset (2021-10-23 13:23:45 +0200)
+>
+> ----------------------------------------------------------------
+> mt76 patches for 5.16
+>
+> * fix a compile error with !CONFIG_PM
+> * cleanups
+> * MT7915 DBDC fixes
+> * endian warning fixes
+>
+> ----------------------------------------------------------------
 
-Please pull and let me know if there's any problem.
+Pulled, thanks.
 
-Thanks,
-johannes
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
-
-The following changes since commit 95a359c9553342d36d408d35331ff0bfce75272f:
-
-  net: ethernet: microchip: lan743x: Fix dma allocation failure by using dma_set_mask_and_coherent (2021-10-24 13:38:56 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2021-10-27
-
-for you to fetch changes up to 689a0a9f505f7bffdefe6f17fddb41c8ab6344f6:
-
-  cfg80211: correct bridge/4addr mode check (2021-10-25 15:23:20 +0200)
-
-----------------------------------------------------------------
-Two fixes:
- * bridge vs. 4-addr mode check was wrong
- * management frame registrations locking was
-   wrong, causing list corruption/crashes
-
-----------------------------------------------------------------
-Janusz Dziedzic (1):
-      cfg80211: correct bridge/4addr mode check
-
-Johannes Berg (1):
-      cfg80211: fix management registrations locking
-
- include/net/cfg80211.h |  2 --
- net/wireless/core.c    |  2 +-
- net/wireless/core.h    |  2 ++
- net/wireless/mlme.c    | 26 ++++++++++++++------------
- net/wireless/util.c    | 14 +++++++-------
- 5 files changed, 24 insertions(+), 22 deletions(-)
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
