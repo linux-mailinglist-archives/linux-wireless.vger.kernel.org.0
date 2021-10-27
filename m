@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 720DB43C447
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 09:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18E3843C467
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 09:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240614AbhJ0Hsh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Oct 2021 03:48:37 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:41888 "EHLO
+        id S237182AbhJ0H4P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Oct 2021 03:56:15 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:58478 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240609AbhJ0Hsh (ORCPT
+        with ESMTP id S235729AbhJ0H4N (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Oct 2021 03:48:37 -0400
+        Wed, 27 Oct 2021 03:56:13 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635320772; h=Date: Message-ID: Cc: To: References:
+ s=smtp; t=1635321229; h=Date: Message-ID: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=fu6puPwG7dyrmRjTVF9HfJ5EInKqVBmbDWY72U01gd4=;
- b=TlKTJbVb/OLD/URv6RU8vhrHibNtuzkA5wBZbaXL2uoiKYolB4vparP0fyRnT/RXo/z08Bcr
- 6KFxnt0+K0sB5j/IzOO0hPot0FaGaJmVOlvOKHkocB1U4tljJtBP9AapB8b8di77jZ/MWZxD
- a1nND+NhtYe/rlJzKYyn1qq2DHM=
+ Content-Type: Sender; bh=OkgHr2Y6HEkj1kBlD9Tm89+Omnw4DhBiRqIgVdp5c8E=;
+ b=VEa42wK3fsFezPfOcCHbi/j2qtDh9yrvY3QIzGiP0AH2ei+VUNUB51vHEJ8YB57GdCis0Q0o
+ lwJDXRLETnuGIkEWLWdvoqEfpranQ5ySq9QI/sNrHMveNynNqXhclVpxccWcL15qF/rIhvxJ
+ svGdSZl4RR22KoY5O4yH+xT1B5E=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 617903c4fd91319f0f8f5d8d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 Oct 2021 07:46:12
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 61790581c75c436a30cdd23c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 Oct 2021 07:53:37
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id F0C38C4360D; Wed, 27 Oct 2021 07:46:11 +0000 (UTC)
+        id 2563BC43618; Wed, 27 Oct 2021 07:53:37 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -39,61 +39,78 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EEA48C4338F;
-        Wed, 27 Oct 2021 07:46:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org EEA48C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 05E46C4338F;
+        Wed, 27 Oct 2021 07:53:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 05E46C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/1] Revert "wcn36xx: Enable firmware link monitoring"
+Subject: Re: [PATCH 1/3] wcn36xx: add debug prints for sw_scan start/complete
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20211025093037.3966022-2-bryan.odonoghue@linaro.org>
-References: <20211025093037.3966022-2-bryan.odonoghue@linaro.org>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
-        loic.poulain@linaro.org, benl@squareup.com,
-        daniel.thompson@linaro.org, bryan.odonoghue@linaro.org
+In-Reply-To: <20211023003949.3082900-2-benl@squareup.com>
+References: <20211023003949.3082900-2-benl@squareup.com>
+To:     Benjamin Li <benl@squareup.com>
+Cc:     Joseph Gates <jgates@squareup.com>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        linux-arm-msm@vger.kernel.org, Benjamin Li <benl@squareup.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eugene Krasnikov <k.eugene.e@gmail.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163532076785.19793.546979079260828608.kvalo@codeaurora.org>
-Date:   Wed, 27 Oct 2021 07:46:11 +0000 (UTC)
+Message-ID: <163532120872.19793.15468481505724352001.kvalo@codeaurora.org>
+Date:   Wed, 27 Oct 2021 07:53:37 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org> wrote:
+Benjamin Li <benl@squareup.com> wrote:
 
-> Firmware link offload monitoring can be made to work in 3/4 cases by
-> switching on firmware feature bit WLANACTIVE_OFFLOAD
+> Add some MAC debug prints for more easily demarcating a software scan
+> when parsing logs.
 > 
-> - Secure power-save on
-> - Secure power-save off
-> - Open power-save on
-> 
-> However, with an open AP if we switch off power-saving - thus never
-> entering Beacon Mode Power Save - BMPS, firmware never forwards loss
-> of beacon upwards.
-> 
-> We had hoped that WLANACTIVE_OFFLOAD and some fixes for sequence numbers
-> would unblock this but, it hasn't and further investigation is required.
-> 
-> Its possible to have a complete set of Secure power-save on/off and Open
-> power-save on/off provided we use Linux' link monitoring mechanism.
-> 
-> While we debug the Open AP failure we need to fix upstream.
-> 
-> This reverts commit c973fdad79f6eaf247d48b5fc77733e989eb01e1.
-> 
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Signed-off-by: Benjamin Li <benl@squareup.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
+Failed to build:
 
-43ea9bd84f27 Revert "wcn36xx: Enable firmware link monitoring"
+In file included from ./include/linux/bitops.h:7,
+                 from ./include/linux/kernel.h:12,
+                 from ./include/linux/interrupt.h:6,
+                 from drivers/net/wireless/ath/wcn36xx/dxe.c:25:
+drivers/net/wireless/ath/wcn36xx/dxe.c: In function '_wcn36xx_dxe_tx_channel_is_empty':
+./include/linux/typecheck.h:12:25: error: comparison of distinct pointer types lacks a cast [-Werror]
+   12 |         (void)(&__dummy == &__dummy2); \
+      |                         ^~
+./include/linux/spinlock.h:255:17: note: in expansion of macro 'typecheck'
+  255 |                 typecheck(unsigned long, flags);        \
+      |                 ^~~~~~~~~
+./include/linux/spinlock.h:393:9: note: in expansion of macro 'raw_spin_lock_irqsave'
+  393 |         raw_spin_lock_irqsave(spinlock_check(lock), flags);     \
+      |         ^~~~~~~~~~~~~~~~~~~~~
+drivers/net/wireless/ath/wcn36xx/dxe.c:844:9: note: in expansion of macro 'spin_lock_irqsave'
+  844 |         spin_lock_irqsave(&ch->lock, flags);
+      |         ^~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[5]: *** [scripts/Makefile.build:277: drivers/net/wireless/ath/wcn36xx/dxe.o] Error 1
+make[4]: *** [scripts/Makefile.build:540: drivers/net/wireless/ath/wcn36xx] Error 2
+make[3]: *** [scripts/Makefile.build:540: drivers/net/wireless/ath] Error 2
+make[2]: *** [scripts/Makefile.build:540: drivers/net/wireless] Error 2
+make[1]: *** [scripts/Makefile.build:540: drivers/net] Error 2
+make: *** [Makefile:1868: drivers] Error 2
+
+3 patches set to Changes Requested.
+
+12579221 [1/3] wcn36xx: add debug prints for sw_scan start/complete
+12579223 [2/3] wcn36xx: implement flush op to speed up connected scan
+12579225 [3/3] wcn36xx: ensure pairing of init_scan/finish_scan and start_scan/end_scan
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211025093037.3966022-2-bryan.odonoghue@linaro.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211023003949.3082900-2-benl@squareup.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
