@@ -2,96 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09A6743CFE2
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 19:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3539943D045
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 20:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243332AbhJ0RlL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Oct 2021 13:41:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59734 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236752AbhJ0RlK (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Oct 2021 13:41:10 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49009C061570;
-        Wed, 27 Oct 2021 10:38:45 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id na16-20020a17090b4c1000b0019f5bb661f9so2669840pjb.0;
-        Wed, 27 Oct 2021 10:38:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=PkqSITbCIjnK7FZ/jf9UFsH0245UP24SRvOg2xF2AJ4=;
-        b=GkmIV3DcqQ+aCfRl4Y6y/2a5fIZC9mpAbKRbs9z1Y7tiYi1i831uFjOhbzAAWGysAO
-         3UPZVx7r2tGbZBrXZhSnVyBzvN8L5vH+M7r+clmkeUrb1++7B2uSf4d/xWTqoRQJiYmB
-         BRkNi6VDh2mDqTwvNIDfhbpe5lNHV2FwX3UpdN7vMHPuVbeU2LdqwW2qqKWVFdDq4HR4
-         L6DMIPQ0jXAzAzEsggn5zP3GSaXqurL/rmZD2GGlgq4wqCpDfVR+yEfQA4mpKZOgom+W
-         3vnDBumIMm3j6q0uONWzDJ2g0qMojsO3F++5E71NIMEJShqDX2Lhtsx/nPPHYLGUrIhX
-         K7kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=PkqSITbCIjnK7FZ/jf9UFsH0245UP24SRvOg2xF2AJ4=;
-        b=6rO3Q/FAD88ooAdwPzQAVJmoQOsa1w1BMg5jfL3XbZUDS7hkwO8KvTLE+F4m09S5Ec
-         A1EAti7JYryekV6GG+bxycUX3g+JCu5eFxpxdszbvw/t9Zvk4yV68g20TTulesp/8h3h
-         fLK1fqIxLuya5CiE0+WXR/f8isohGZRoR673yLecw/zFWaARjvnqtz+d5d30tTB09TM/
-         53sbph49WuATzdZuUeI5qHWYhY3b8WgNv3/Yv/JBV9HU0JUDY/RIq6VPiEDQVOJMJTNJ
-         mmYbtxdIDwoYaQze3D3GRZ4a+j76gQtJsBF3P17JTWYxUadVoq/qCZLZj7w5LsVVYUBJ
-         TO2w==
-X-Gm-Message-State: AOAM531xmh+1NwXMhnqY2HbVrmiY4Xki+HR115LE+hw7BguQASptHlFF
-        6TVI2n7uAKIc03jfzGEYq/1tXKfPgjtAPbGviIt6gQ==
-X-Google-Smtp-Source: ABdhPJxoHmywfRhLDYW7fzdNA0OKcl8KNKkB9+wieDqHTRiuQZd0w6YEh53/dC7aoVnN0xV0rLPI9Q==
-X-Received: by 2002:a17:90b:1e0b:: with SMTP id pg11mr7277222pjb.230.1635356324894;
-        Wed, 27 Oct 2021 10:38:44 -0700 (PDT)
-Received: from localhost.localdomain (bb42-60-144-185.singnet.com.sg. [42.60.144.185])
-        by smtp.gmail.com with ESMTPSA id b6sm572719pfv.171.2021.10.27.10.38.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Oct 2021 10:38:44 -0700 (PDT)
-From:   Nguyen Dinh Phi <phind.uet@gmail.com>
-To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
-Cc:     Nguyen Dinh Phi <phind.uet@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        syzbot+bbf402b783eeb6d908db@syzkaller.appspotmail.com
-Subject: [PATCH v2] net:wireless: call cfg80211_stop_ap when switch from P2P_GO type
-Date:   Thu, 28 Oct 2021 01:37:22 +0800
-Message-Id: <20211027173722.777287-1-phind.uet@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        id S238439AbhJ0SJE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Oct 2021 14:09:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51250 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230495AbhJ0SJE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Oct 2021 14:09:04 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 696E361040;
+        Wed, 27 Oct 2021 18:06:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635357998;
+        bh=9C4WXZSWSm8i+UevIYDwWe94/MoAul2XY6bUhMhBEaM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SL3rtRB6EVXMfxVVq77pIKnOKLw3j1/7bZLV8e9I6y+MrCQUBL64EjlwQNH15XQXk
+         zf4Fr66csbkoug8P8RQqB8GGCRWWmAwzReYA29RRz2UOa73pkHtQqL4gsFODm6mtze
+         /PLMYmshXw6lMLnRylqLbthCSY32pVnGLBin04QdNpNJzH1JZadmrRnAlvhAgwL8P3
+         WboQfeLOF555rGYTXrhcZGzx2ZGq6dttITzoDFfhy/50t34LUvLc+w9wrB4WaDBFPP
+         73ffivc0GUuCsFC/9HS3kmnaTVhsYIcNKUgsTUx9H1iwek9mWb5+MnTPUt3He9BUfY
+         7jVLjG0xfhXTQ==
+Date:   Wed, 27 Oct 2021 13:06:37 -0500
+From:   Seth Forshee <sforshee@kernel.org>
+To:     Sungbo Eo <mans0n@gorani.run>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2] wireless-regdb: Update regulatory rules for South
+ Korea (KR)
+Message-ID: <YXmVLUzVEgrAMLwL@ubuntu-x1>
+References: <20210929172728.7512-1-mans0n@gorani.run>
+ <20211024113821.51538-1-mans0n@gorani.run>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211024113821.51538-1-mans0n@gorani.run>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If the userspace tools switch from NL80211_IFTYPE_P2P_GO to
-NL80211_IFTYPE_ADHOC via send_msg(NL80211_CMD_SET_INTERFACE), it
-does not call the cleanup cfg80211_stop_ap(), this leads to the
-initialization of in-use data. For example, this path re-init the
-sdata->assigned_chanctx_list while it is still an element of 
-assigned_vifs list, and makes that linked list corrupt.
+On Sun, Oct 24, 2021 at 08:38:21PM +0900, Sungbo Eo wrote:
+> This patch is based on MSIT Public Notification 2020-113 ("Unlicensed Radio
+> Equipment Established Without Notice"), officially announced on 2021-01-06.
+> 
+> The PSD must not exceed 2.5 mW/MHz if the frequency range includes all or
+> part of 5230-5250 MHz and the bandwidth is equal to or less than 40 MHz.
+> This leads to the following:
+> * 5230-5250 @ 20 -> 17 dBm
+> * 5210-5250 @ 40 -> 20 dBm
+> Here the power limits for 80/160 MHz bandwidth are also lowered to 17 dBm,
+> as it's not possible to set different power limits for different bandwidths
+> at the moment.
+> 
+> Extend the last 5 GHz frequency range to 5850 MHz.
+> 
+> WiFi 6E is now allowed with the following restrictions:
+> * Indoor: the full 1.2 GHz range, up to 160 MHz bandwidth and 250mW EIRP
+> * Outdoor: the lower 500 MHz range, up to 160 MHz bandwidth and 25mW EIRP
+> Here only the former entry is added.
+> 
+> And also update the regulatory source links.
+> 
+> Signed-off-by: Sungbo Eo <mans0n@gorani.run>
+> ---
+> v2:
+> * split 5150-5250 MHz band rule to accommodate the PSD limit
+> * remove AUTO-BW flag from 6 GHz band rule
+> ---
+>  db.txt | 17 ++++++++++++-----
+>  1 file changed, 12 insertions(+), 5 deletions(-)
+> 
+> diff --git a/db.txt b/db.txt
+> index 6e8dbef..387ac93 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -862,15 +862,22 @@ country KP: DFS-JP
+>  	(5490 - 5630 @ 20), (30), DFS
+>  	(5735 - 5815 @ 20), (30)
+>  
+> +# Source:
+> +# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196972
+> +# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196973
+> +# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196974
+>  country KR: DFS-JP
+> -	# ref: https://www.rra.go.kr
+>  	(2400 - 2483.5 @ 40), (23)
+> -	(5150 - 5250 @ 80), (23), AUTO-BW
+> +	(5150 - 5210 @ 40), (23), AUTO-BW
+> +	# max. PSD 2.5 mW/MHz in 5230-5250 MHz frequency range
+> +	(5210 - 5230 @ 20), (20), AUTO-BW
+> +	(5230 - 5250 @ 20), (17), AUTO-BW
 
-Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
-Reported-by: syzbot+bbf402b783eeb6d908db@syzkaller.appspotmail.com
----
-V2:
-	- Fix wrong email address.
- net/wireless/util.c | 1 +
- 1 file changed, 1 insertion(+)
+Even with 5210-5230 split out like this, 5210-5250 @ 40 still gets
+limited to 17 dBm by the 5230-5250 rule. So why do we need to split out
+5210-5230 separate from 5150-5210?
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 18dba3d7c638..4fdf0877092d 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1044,6 +1044,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 
- 		switch (otype) {
- 		case NL80211_IFTYPE_AP:
-+		case NL80211_IFTYPE_P2P_GO:
- 			cfg80211_stop_ap(rdev, dev, true);
- 			break;
- 		case NL80211_IFTYPE_ADHOC:
--- 
-2.25.1
+Thanks,
+Seth
 
+>  	(5250 - 5350 @ 80), (20), DFS, AUTO-BW
+>  	(5470 - 5725 @ 160), (20), DFS
+> -	(5725 - 5835 @ 80), (23)
+> -	# 60 GHz band channels 1-4,
+> -	# ref: http://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/%EB%AC%B4%EC%84%A0%EC%84%A4%EB%B9%84%EA%B7%9C%EC%B9%99
+> +	(5725 - 5850 @ 80), (23)
+> +	# 6 GHz band
+> +	(5925 - 7125 @ 160), (24), NO-OUTDOOR
+> +	# 60 GHz band channels 1-4
+>  	(57000 - 66000 @ 2160), (43)
+>  
+>  country KW: DFS-ETSI
+> -- 
+> 2.33.1
+> 
