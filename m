@@ -2,103 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 652E943C4C0
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 10:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9539E43C623
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 11:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240826AbhJ0IOr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Oct 2021 04:14:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46468 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240787AbhJ0IOo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Oct 2021 04:14:44 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E85B1610A5;
-        Wed, 27 Oct 2021 08:12:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635322339;
-        bh=7IGUs5zBZQaPqlnohFXICy0HDLEn9Ux9E9JxKQ/UU7Y=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qg9CRHNl0+/AA6u/+gYSJ9xcpQdAe+BZU+xBdaaByltKipueylMMMXT282EUa6kYl
-         nRHN8PTCFCbqSFGOzz5DbrTnX88zPzV7TaDycbWpIJc4yaJeP+VQzA9XxJzameC/rj
-         Fg9LW+8Ax5oixOQPtMEJ3SaWJKRql2sa02QZMo+mtMQZpTpBcf6K10EREIYHCfuMn2
-         gr2UoyJjYTKsx0fQHkLduc+nkoHvJqMg4ln3tfAD+w9yVm2+S+UKSAgMUsU+nLaQaI
-         D95ahlTxxOgYpmMRRZSakmel1yIQyJw8LVnvr4/I3iLpnamKYR1Zsap4ChCa+63V7w
-         hjBdL0+VtcoDQ==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1mfe2S-0001lk-Vr; Wed, 27 Oct 2021 10:12:01 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan@kernel.org>, stable@vger.kernel.org,
-        Amitkumar Karwar <akarwar@marvell.com>
-Subject: [PATCH v2 3/3] mwifiex: fix division by zero in fw download path
-Date:   Wed, 27 Oct 2021 10:08:19 +0200
-Message-Id: <20211027080819.6675-4-johan@kernel.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211027080819.6675-1-johan@kernel.org>
-References: <20211027080819.6675-1-johan@kernel.org>
+        id S241183AbhJ0JML (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Oct 2021 05:12:11 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:58956 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S241170AbhJ0JMK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Oct 2021 05:12:10 -0400
+X-UUID: 05cba0b1299a43c5962cba66c43bb001-20211027
+X-UUID: 05cba0b1299a43c5962cba66c43bb001-20211027
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <bo.jiao@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1586080354; Wed, 27 Oct 2021 17:09:40 +0800
+Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Wed, 27 Oct 2021 17:09:39 +0800
+Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
+ (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 27 Oct
+ 2021 16:40:32 +0800
+Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
+ MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
+ 15.0.1497.2 via Frontend Transport; Wed, 27 Oct 2021 16:40:31 +0800
+From:   Bo Jiao <bo.jiao@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Xing Song <xing.song@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH 00/11] add mt7916 support
+Date:   Wed, 27 Oct 2021 16:40:08 +0800
+Message-ID: <cover.1635323366.git.Bo.Jiao@mediatek.com>
+X-Mailer: git-send-email 2.17.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add the missing endpoint sanity checks to probe() to avoid division by
-zero in mwifiex_write_data_sync() in case a malicious device has broken
-descriptors (or when doing descriptor fuzz testing).
+From: Bo Jiao <Bo.Jiao@mediatek.com>
 
-Only add checks for the firmware-download boot stage, which require both
-command endpoints, for now. The driver looks like it will handle a
-missing endpoint during normal operation without oopsing, albeit not
-very gracefully as it will try to submit URBs to the default pipe and
-fail.
+This adds support for mt7916 PCIe-based device, which shares the same
+driver with MT7915. The maximum number of client connections is extended
+to 512. mt7916 is capable of WIFI6@160MHz, simultaneous dual-band and
+all WiFi6 R2 features.
 
-Note that USB core will reject URBs submitted for endpoints with zero
-wMaxPacketSize but that drivers doing packet-size calculations still
-need to handle this (cf. commit 2548288b4fb0 ("USB: Fix: Don't skip
-endpoint descriptors with maxpacket=0")).
+Bo Jiao (11):
+  mt76: mt7915: add mt7915_mmio_probe() as a common probing function
+  mt76: mt7915: refine register definition
+  mt76: mt7915: rework dma.c to adapt mt7916 changes
+  mt76: mt7915: add firmware support for mt7916
+  mt76: mt7915: rework eeprom.c to adapt mt7916 changes
+  mt76: mt7915: enlarge wcid size to 544
+  mt76: mt7915: add txfree event v3
+  mt76: mt7915: update rx rate reporting for mt7916
+  mt76: mt7915: update mt7915_chan_mib_offs for mt7916
+  mt76: mt7915: add mt7916 calibrated data support
+  mt76: mt7915: add device id for mt7916
 
-Fixes: 4daffe354366 ("mwifiex: add support for Marvell USB8797 chipset")
-Cc: stable@vger.kernel.org      # 3.5
-Cc: Amitkumar Karwar <akarwar@marvell.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/net/wireless/marvell/mwifiex/usb.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/net/wireless/mediatek/mt76/dma.c      |  13 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |   6 +-
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   |  20 +-
+ .../net/wireless/mediatek/mt76/mt7915/dma.c   | 388 ++++++---
+ .../wireless/mediatek/mt76/mt7915/eeprom.c    |  94 ++-
+ .../wireless/mediatek/mt76/mt7915/eeprom.h    |   9 +-
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |  66 +-
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 273 ++++---
+ .../net/wireless/mediatek/mt76/mt7915/mac.h   |  14 +-
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |  11 +-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  98 ++-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |   8 +-
+ .../net/wireless/mediatek/mt76/mt7915/mmio.c  | 757 ++++++++++++++++--
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  37 +-
+ .../net/wireless/mediatek/mt76/mt7915/pci.c   | 243 +-----
+ .../net/wireless/mediatek/mt76/mt7915/regs.h  | 670 +++++++++++-----
+ .../wireless/mediatek/mt76/mt7915/testmode.c  |  58 +-
+ 17 files changed, 1907 insertions(+), 858 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
-index 426e39d4ccf0..9736aa0ab7fd 100644
---- a/drivers/net/wireless/marvell/mwifiex/usb.c
-+++ b/drivers/net/wireless/marvell/mwifiex/usb.c
-@@ -505,6 +505,22 @@ static int mwifiex_usb_probe(struct usb_interface *intf,
- 		}
- 	}
- 
-+	switch (card->usb_boot_state) {
-+	case USB8XXX_FW_DNLD:
-+		/* Reject broken descriptors. */
-+		if (!card->rx_cmd_ep || !card->tx_cmd_ep)
-+			return -ENODEV;
-+		if (card->bulk_out_maxpktsize == 0)
-+			return -ENODEV;
-+		break;
-+	case USB8XXX_FW_READY:
-+		/* Assume the driver can handle missing endpoints for now. */
-+		break;
-+	default:
-+		WARN_ON(1);
-+		return -ENODEV;
-+	}
-+
- 	usb_set_intfdata(intf, card);
- 
- 	ret = mwifiex_add_card(card, &card->fw_done, &usb_ops,
 -- 
-2.32.0
+2.18.0
 
