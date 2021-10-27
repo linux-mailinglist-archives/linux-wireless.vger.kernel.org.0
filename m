@@ -2,103 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B048C43C67B
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 11:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9FC843C69B
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 11:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbhJ0JfK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Oct 2021 05:35:10 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:40256 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241020AbhJ0JfJ (ORCPT
+        id S238859AbhJ0JlG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Oct 2021 05:41:06 -0400
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:35654 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234018AbhJ0JlF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Oct 2021 05:35:09 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635327164; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=mjw+FJ0C3ceDpUYn3K+CD6YvEM6VOlE6BPkSqy+5rcE=; b=bf4llXjw1Srvg377Bmy7UPAtk/CRwAZyD5k1x4QDSrLTkuVMldez8cmHE6CSx28P32cGW9lQ
- F3RuzUmQtI9HMsvdAMRgiDUd4dQqDRl4vnuwC+6QW35hUkGIuW+nMysvz+8HIHe0GmbCco1G
- A0zsX0Alh5aWtvRE1W8g/T5H3DE=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 61791ca79ef7bd81bdb2347d (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 Oct 2021 09:32:23
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9A67FC4360C; Wed, 27 Oct 2021 09:32:23 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3F098C4338F;
-        Wed, 27 Oct 2021 09:32:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 3F098C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: pull request: mt76 2021-10-23
-References: <6d896d65-235c-41b8-89bd-8349f031dd53@nbd.name>
-Date:   Wed, 27 Oct 2021 12:32:20 +0300
-In-Reply-To: <6d896d65-235c-41b8-89bd-8349f031dd53@nbd.name> (Felix Fietkau's
-        message of "Sat, 23 Oct 2021 13:28:09 +0200")
-Message-ID: <87bl3a7qzf.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 27 Oct 2021 05:41:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1635327521; x=1666863521;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OdC7LkPyp5AWTA7ablp9ZhOZuD4oCYcrlSj/zgD70NE=;
+  b=SF9MgelclQdneD61XTpI9Kn4L0QvCCOSQ77ulGK2vrQ0syRbkiQia837
+   jnhnDUksC2oBSQRTJuaqI4XkS0PBajRO4oVq1KoGOApBq6hwXtnLgjFQ+
+   Lu6Urhx03PYzgdvJw92nmbtMQt5Z2sKu2ZQ6DmN00joyuYH33/ePrdwDL
+   w=;
+Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
+  by alexa-out.qualcomm.com with ESMTP; 27 Oct 2021 02:38:40 -0700
+X-QCInternal: smtphost
+Received: from nalasex01a.na.qualcomm.com ([10.47.209.196])
+  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 02:38:41 -0700
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
+ Wed, 27 Oct 2021 02:38:39 -0700
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH] ath11k: move peer delete after vdev stop of station for QCA6390 and WCN6855
+Date:   Wed, 27 Oct 2021 05:38:25 -0400
+Message-ID: <20211027093825.12167-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+When station connect to AP, the wmi command sequence is:
+peer_create->vdev_start->vdev_up
+and sequence of station disconnect fo AP is:
+peer_delete->vdev_down->vdev_stop
+The sequence of disconnect is not opposite of connect, it caused firmware
+crash when it handle wmi vdev stop cmd when the AP is support TWT of
+802.11 ax, because firmware need access the bss peer for vdev stop cmd.
 
-> Hi Kalle,
->
-> here's a pull request with some follow-up fixes for 5.16
->
-> - Felix
->
-> The following changes since commit 753453afacc0243bd45de45e34218a8d17493e8f:
->
->   mt76: mt7615: mt7622: fix ibss and meshpoint (2021-10-23 10:29:39 +0300)
->
-> are available in the Git repository at:
->
->   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-10-23
->
-> for you to fetch changes up to 52a99a13cb880845cd77f1da7136d689347489ef:
->
->   mt76: connac: fix unresolved symbols when CONFIG_PM is unset (2021-10-23 13:23:45 +0200)
->
-> ----------------------------------------------------------------
-> mt76 patches for 5.16
->
-> * fix a compile error with !CONFIG_PM
-> * cleanups
-> * MT7915 DBDC fixes
-> * endian warning fixes
+kernel: [  390.438564] ath11k_pci 0000:05:00.0: wmi cmd send 0x6001 ret 0
+kernel: [  390.438567] ath11k_pci 0000:05:00.0: WMI peer create vdev_id 0 peer_addr c4:04:15:3b:e0:39
+kernel: [  390.472724] ath11k_pci 0000:05:00.0: mac vdev 0 start center_freq 2437 phymode 11ax-he20-2g
+kernel: [  390.472731] ath11k_pci 0000:05:00.0: wmi cmd send 0x5003 ret 0
+kernel: [  390.560849] ath11k_pci 0000:05:00.0: wmi cmd send 0x5005 ret 0
+kernel: [  390.560850] ath11k_pci 0000:05:00.0: WMI mgmt vdev up id 0x0 assoc id 1 bssid c4:04:15:3b:e0:39
 
-Unfortunately I had already applied some of the fixes directly:
+kernel: [  399.432896] ath11k_pci 0000:05:00.0: WMI peer delete vdev_id 0 peer_addr c4:04:15:3b:e0:39
+kernel: [  399.432902] ath11k_pci 0000:05:00.0: wmi cmd send 0x6002 ret 0
+kernel: [  399.441380] ath11k_pci 0000:05:00.0: wmi cmd send 0x5007 ret 0
+kernel: [  399.441381] ath11k_pci 0000:05:00.0: WMI vdev down id 0x0
+kernel: [  399.454681] ath11k_pci 0000:05:00.0: wmi cmd send 0x5006 ret 0
+kernel: [  399.454682] ath11k_pci 0000:05:00.0: WMI vdev stop id 0x0
 
-753453afacc0 mt76: mt7615: mt7622: fix ibss and meshpoint
-a88cae727b3e mt76: mt7921: fix Wformat build warning
-8603caaec98f mt76: mt7921: fix mt7921s Kconfig
+The opposite sequence of disconnect should be:
+vdev_down->vdev_stop->peer_delete
 
-Fortunately git-pull seems to handle this without problems so my plan is
-to pull this anyway, despite the the duplicate commits. But if you
-prefer to instead rebase your tree and send a new pull request, do let
-me know. Either way is fine for me.
+This patch change the sequence of disconnect for station as above
+opposite sequence for QCA6390, firmware not crash again with this patch.
 
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 47d0dc69463a..ad3510bec4da 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -3406,6 +3406,10 @@ static int ath11k_mac_op_sta_state(struct ieee80211_hw *hw,
+ 		    new_state == IEEE80211_STA_NOTEXIST)) {
+ 		ath11k_dp_peer_cleanup(ar, arvif->vdev_id, sta->addr);
+ 
++		if (ar->ab->hw_params.vdev_start_delay &&
++		    vif->type == NL80211_IFTYPE_STATION)
++			goto free;
++
+ 		ret = ath11k_peer_delete(ar, arvif->vdev_id, sta->addr);
+ 		if (ret)
+ 			ath11k_warn(ar->ab, "Failed to delete peer: %pM for VDEV: %d\n",
+@@ -3427,6 +3431,7 @@ static int ath11k_mac_op_sta_state(struct ieee80211_hw *hw,
+ 		}
+ 		spin_unlock_bh(&ar->ab->base_lock);
+ 
++free:
+ 		kfree(arsta->tx_stats);
+ 		arsta->tx_stats = NULL;
+ 
+@@ -6313,6 +6318,19 @@ ath11k_mac_op_unassign_vif_chanctx(struct ieee80211_hw *hw,
+ 
+ 	arvif->is_started = false;
+ 
++	if (ab->hw_params.vdev_start_delay &&
++	    arvif->vdev_type == WMI_VDEV_TYPE_STA) {
++		ret = ath11k_peer_delete(ar, arvif->vdev_id, arvif->bssid);
++		if (ret)
++			ath11k_warn(ar->ab,
++				    "delete peer fail: %pM for VDEV: %d\n",
++				    arvif->bssid, arvif->vdev_id);
++		else
++			ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
++				   "removed peer after vdev stop: %pM for VDEV: %d\n",
++				   arvif->bssid, arvif->vdev_id);
++	}
++
+ 	if (ab->hw_params.vdev_start_delay &&
+ 	    arvif->vdev_type == WMI_VDEV_TYPE_MONITOR)
+ 		ath11k_wmi_vdev_down(ar, arvif->vdev_id);
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.31.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
