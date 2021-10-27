@@ -2,130 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9FC843C69B
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 11:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D703543C6CA
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 11:48:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238859AbhJ0JlG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Oct 2021 05:41:06 -0400
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:35654 "EHLO
+        id S241274AbhJ0JvT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Oct 2021 05:51:19 -0400
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:36123 "EHLO
         alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234018AbhJ0JlF (ORCPT
+        with ESMTP id S241271AbhJ0JvT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Oct 2021 05:41:05 -0400
+        Wed, 27 Oct 2021 05:51:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1635327521; x=1666863521;
+  t=1635328134; x=1666864134;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=OdC7LkPyp5AWTA7ablp9ZhOZuD4oCYcrlSj/zgD70NE=;
-  b=SF9MgelclQdneD61XTpI9Kn4L0QvCCOSQ77ulGK2vrQ0syRbkiQia837
-   jnhnDUksC2oBSQRTJuaqI4XkS0PBajRO4oVq1KoGOApBq6hwXtnLgjFQ+
-   Lu6Urhx03PYzgdvJw92nmbtMQt5Z2sKu2ZQ6DmN00joyuYH33/ePrdwDL
-   w=;
-Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
-  by alexa-out.qualcomm.com with ESMTP; 27 Oct 2021 02:38:40 -0700
+  bh=N4WIC0PYLvAwbctoYHTdFtMV3c7neUJd/qJhuebSOKc=;
+  b=ATGegBWOSlm+ze8t/C2g/0B13/xXm2xrmgcjgyRPhdJkFSCFSEZT1/Is
+   FewOzH3w06+TRu8ZoTFlboW3l2jGJkfIeN3FkIOtzLGT0onqsZsu4WjOd
+   p/xrIEKSoAuoYrP/vZnZHf01Vu0KRgIScN4TQDmBu+43djUtRl9Hz9XLc
+   o=;
+Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
+  by alexa-out.qualcomm.com with ESMTP; 27 Oct 2021 02:48:54 -0700
 X-QCInternal: smtphost
 Received: from nalasex01a.na.qualcomm.com ([10.47.209.196])
-  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 02:38:41 -0700
+  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 02:48:54 -0700
 Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
- Wed, 27 Oct 2021 02:38:39 -0700
+ Wed, 27 Oct 2021 02:48:51 -0700
 From:   Wen Gong <quic_wgong@quicinc.com>
 To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
-Subject: [PATCH] ath11k: move peer delete after vdev stop of station for QCA6390 and WCN6855
-Date:   Wed, 27 Oct 2021 05:38:25 -0400
-Message-ID: <20211027093825.12167-1-quic_wgong@quicinc.com>
+Subject: [PATCH] ath11k: skip sending vdev down for channel switch
+Date:   Wed, 27 Oct 2021 05:48:36 -0400
+Message-ID: <20211027094836.12524-1-quic_wgong@quicinc.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When station connect to AP, the wmi command sequence is:
-peer_create->vdev_start->vdev_up
-and sequence of station disconnect fo AP is:
-peer_delete->vdev_down->vdev_stop
-The sequence of disconnect is not opposite of connect, it caused firmware
-crash when it handle wmi vdev stop cmd when the AP is support TWT of
-802.11 ax, because firmware need access the bss peer for vdev stop cmd.
+The ath11k driver currently sends vdev down to the firmware before
+updating the channel context, which is followed by a vdev restart
+command.
 
-kernel: [  390.438564] ath11k_pci 0000:05:00.0: wmi cmd send 0x6001 ret 0
-kernel: [  390.438567] ath11k_pci 0000:05:00.0: WMI peer create vdev_id 0 peer_addr c4:04:15:3b:e0:39
-kernel: [  390.472724] ath11k_pci 0000:05:00.0: mac vdev 0 start center_freq 2437 phymode 11ax-he20-2g
-kernel: [  390.472731] ath11k_pci 0000:05:00.0: wmi cmd send 0x5003 ret 0
-kernel: [  390.560849] ath11k_pci 0000:05:00.0: wmi cmd send 0x5005 ret 0
-kernel: [  390.560850] ath11k_pci 0000:05:00.0: WMI mgmt vdev up id 0x0 assoc id 1 bssid c4:04:15:3b:e0:39
+Sending vdev down is not required before sending a vdev restart,
+because the firmware internally does vdev down when ath11k sends
+a vdev restart command.
 
-kernel: [  399.432896] ath11k_pci 0000:05:00.0: WMI peer delete vdev_id 0 peer_addr c4:04:15:3b:e0:39
-kernel: [  399.432902] ath11k_pci 0000:05:00.0: wmi cmd send 0x6002 ret 0
-kernel: [  399.441380] ath11k_pci 0000:05:00.0: wmi cmd send 0x5007 ret 0
-kernel: [  399.441381] ath11k_pci 0000:05:00.0: WMI vdev down id 0x0
-kernel: [  399.454681] ath11k_pci 0000:05:00.0: wmi cmd send 0x5006 ret 0
-kernel: [  399.454682] ath11k_pci 0000:05:00.0: WMI vdev stop id 0x0
+Firmware will happen crash while channel switch without this change.
 
-The opposite sequence of disconnect should be:
-vdev_down->vdev_stop->peer_delete
-
-This patch change the sequence of disconnect for station as above
-opposite sequence for QCA6390, firmware not crash again with this patch.
+Hence skip the vdev down command sending when updating the channel
+context and then fix the firmware crash issue.
 
 Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
 
 Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/net/wireless/ath/ath11k/mac.c | 27 +--------------------------
+ 1 file changed, 1 insertion(+), 26 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 47d0dc69463a..ad3510bec4da 100644
+index 9e7cffc4dffa..f0f71e9c6e94 100644
 --- a/drivers/net/wireless/ath/ath11k/mac.c
 +++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3406,6 +3406,10 @@ static int ath11k_mac_op_sta_state(struct ieee80211_hw *hw,
- 		    new_state == IEEE80211_STA_NOTEXIST)) {
- 		ath11k_dp_peer_cleanup(ar, arvif->vdev_id, sta->addr);
+@@ -5440,32 +5440,7 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
  
-+		if (ar->ab->hw_params.vdev_start_delay &&
-+		    vif->type == NL80211_IFTYPE_STATION)
-+			goto free;
-+
- 		ret = ath11k_peer_delete(ar, arvif->vdev_id, sta->addr);
- 		if (ret)
- 			ath11k_warn(ar->ab, "Failed to delete peer: %pM for VDEV: %d\n",
-@@ -3427,6 +3431,7 @@ static int ath11k_mac_op_sta_state(struct ieee80211_hw *hw,
- 		}
- 		spin_unlock_bh(&ar->ab->base_lock);
+ 	lockdep_assert_held(&ar->conf_mutex);
  
-+free:
- 		kfree(arsta->tx_stats);
- 		arsta->tx_stats = NULL;
+-	for (i = 0; i < n_vifs; i++) {
+-		arvif = (void *)vifs[i].vif->drv_priv;
+-
+-		ath11k_dbg(ab, ATH11K_DBG_MAC,
+-			   "mac chanctx switch vdev_id %i freq %u->%u width %d->%d\n",
+-			   arvif->vdev_id,
+-			   vifs[i].old_ctx->def.chan->center_freq,
+-			   vifs[i].new_ctx->def.chan->center_freq,
+-			   vifs[i].old_ctx->def.width,
+-			   vifs[i].new_ctx->def.width);
+-
+-		if (WARN_ON(!arvif->is_started))
+-			continue;
+-
+-		if (WARN_ON(!arvif->is_up))
+-			continue;
+-
+-		ret = ath11k_wmi_vdev_down(ar, arvif->vdev_id);
+-		if (ret) {
+-			ath11k_warn(ab, "failed to down vdev %d: %d\n",
+-				    arvif->vdev_id, ret);
+-			continue;
+-		}
+-	}
+-
+-	/* All relevant vdevs are downed and associated channel resources
++	/* Associated channel resources of all relevant vdevs
+ 	 * should be available for the channel switch now.
+ 	 */
  
-@@ -6313,6 +6318,19 @@ ath11k_mac_op_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 
- 	arvif->is_started = false;
- 
-+	if (ab->hw_params.vdev_start_delay &&
-+	    arvif->vdev_type == WMI_VDEV_TYPE_STA) {
-+		ret = ath11k_peer_delete(ar, arvif->vdev_id, arvif->bssid);
-+		if (ret)
-+			ath11k_warn(ar->ab,
-+				    "delete peer fail: %pM for VDEV: %d\n",
-+				    arvif->bssid, arvif->vdev_id);
-+		else
-+			ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
-+				   "removed peer after vdev stop: %pM for VDEV: %d\n",
-+				   arvif->bssid, arvif->vdev_id);
-+	}
-+
- 	if (ab->hw_params.vdev_start_delay &&
- 	    arvif->vdev_type == WMI_VDEV_TYPE_MONITOR)
- 		ath11k_wmi_vdev_down(ar, arvif->vdev_id);
 -- 
 2.31.1
 
