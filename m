@@ -2,33 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD2BC43C443
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 09:45:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11E9943C445
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 09:45:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238935AbhJ0Hrw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Oct 2021 03:47:52 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:28255 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239031AbhJ0Hrv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Oct 2021 03:47:51 -0400
+        id S240608AbhJ0HsC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Oct 2021 03:48:02 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:41888 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240571AbhJ0HsB (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Oct 2021 03:48:01 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635320726; h=Date: Message-ID: Cc: To: References:
+ s=smtp; t=1635320736; h=Date: Message-ID: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=T7tTtNZI8VfAAqlOXJN9e2Ys7mOYcV10XjhE93eLjXw=;
- b=v5jGo7ZKe/YPwYAlhq+ns6u2jy0WXzZ61ra1On/eBFAaVf719aySTTjkgveg+l86PUkRaUD8
- MWviF8JSkqtKib2MTBmESoRQ5L3bBeioJxtMVGb0Hrux6JLATpjAijrSaYcynbHSRaVDOMne
- QBv8/BoO1GZxvUINnDnxm2ef6y0=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ Content-Type: Sender; bh=HNWOGMvWiGtyurAP/UHtAFZ8j6TzIDKE13ihQDPz+I4=;
+ b=ZCC9CdnELstv5EGPj66++LQKxHVf4wA4u0xMy8BYkqqJ4xSEwzNTZIdvU5czMTaL20Ok56Ar
+ awgSiGxKlSbVf29LtKEtDfIHcSlhHBW/d+OkKJ+ifHvxknzf3yubWtexXv3ojtcl4emjxIQX
+ bt9jBlCjbyDTBWFWjbatbBDWWA0=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 61790382308e0dd3301df78b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 Oct 2021 07:45:06
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 6179039f14914866fa9571d6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 Oct 2021 07:45:35
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E8FBCC43460; Wed, 27 Oct 2021 07:45:05 +0000 (UTC)
+        id DBE2EC4360C; Wed, 27 Oct 2021 07:45:34 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,53 +39,51 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 117EDC4338F;
-        Wed, 27 Oct 2021 07:45:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 117EDC4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 44A96C4338F;
+        Wed, 27 Oct 2021 07:45:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 44A96C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wcn36xx: Fix discarded frames due to wrong sequence
- number
+Subject: Re: [PATCH] wcn36xx: Fix packet drop on resume
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1635150336-18736-1-git-send-email-loic.poulain@linaro.org>
-References: <1635150336-18736-1-git-send-email-loic.poulain@linaro.org>
+In-Reply-To: <1635150496-19290-1-git-send-email-loic.poulain@linaro.org>
+References: <1635150496-19290-1-git-send-email-loic.poulain@linaro.org>
 To:     Loic Poulain <loic.poulain@linaro.org>
 Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
         bryan.odonoghue@linaro.org, Loic Poulain <loic.poulain@linaro.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163532069858.19793.2146079863327662408.kvalo@codeaurora.org>
-Date:   Wed, 27 Oct 2021 07:45:05 +0000 (UTC)
+Message-ID: <163532073140.19793.15142277234167188503.kvalo@codeaurora.org>
+Date:   Wed, 27 Oct 2021 07:45:34 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Loic Poulain <loic.poulain@linaro.org> wrote:
 
-> The firmware is offering features such as ARP offload, for which
-> firmware crafts its own (QoS)packets without waking up the host.
-> Point is that the sequence numbers generated by the firmware are
-> not in sync with the host mac80211 layer and can cause packets
-> such as firmware ARP reponses to be dropped by the AP (too old SN).
+> If the system is resumed because of an incoming packet, the wcn36xx RX
+> interrupts is fired before actual resuming of the wireless/mac80211
+> stack, causing any received packets to be simply dropped. E.g. a ping
+> request causes a system resume, but is dropped and so never forwarded
+> to the IP stack.
 > 
-> To fix this we need to let the firmware manages the sequence
-> numbers by its own (except for QoS null frames). There is a SN
-> counter for each QoS queue and one global/baseline counter for
-> Non-QoS.
+> This change fixes that, disabling DMA interrupts on suspend to no pass
+> packets until mac80211 is resumed and ready to handle them.
 > 
-> Fixes: 84aff52e4f57 ("wcn36xx: Use sequence number allocated by mac80211")
+> Note that it's not incompatible with RX irq wake.
+> 
 > Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
-> Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-113f304dbc16 wcn36xx: Fix discarded frames due to wrong sequence number
+df0697801d8a wcn36xx: Fix packet drop on resume
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1635150336-18736-1-git-send-email-loic.poulain@linaro.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/1635150496-19290-1-git-send-email-loic.poulain@linaro.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
