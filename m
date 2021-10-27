@@ -2,115 +2,265 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18E3843C467
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 09:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F80343C4AF
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 10:08:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237182AbhJ0H4P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Oct 2021 03:56:15 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:58478 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235729AbhJ0H4N (ORCPT
+        id S240761AbhJ0ILE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Oct 2021 04:11:04 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:37184 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231396AbhJ0ILE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Oct 2021 03:56:13 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635321229; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=OkgHr2Y6HEkj1kBlD9Tm89+Omnw4DhBiRqIgVdp5c8E=;
- b=VEa42wK3fsFezPfOcCHbi/j2qtDh9yrvY3QIzGiP0AH2ei+VUNUB51vHEJ8YB57GdCis0Q0o
- lwJDXRLETnuGIkEWLWdvoqEfpranQ5ySq9QI/sNrHMveNynNqXhclVpxccWcL15qF/rIhvxJ
- svGdSZl4RR22KoY5O4yH+xT1B5E=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 61790581c75c436a30cdd23c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 27 Oct 2021 07:53:37
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2563BC43618; Wed, 27 Oct 2021 07:53:37 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 05E46C4338F;
-        Wed, 27 Oct 2021 07:53:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 05E46C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Wed, 27 Oct 2021 04:11:04 -0400
+X-UUID: 75109b8a2abf440ca1f419c40b93c59a-20211027
+X-UUID: 75109b8a2abf440ca1f419c40b93c59a-20211027
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 170485711; Wed, 27 Oct 2021 16:08:34 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Wed, 27 Oct 2021 16:08:33 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 27 Oct 2021 16:08:32 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH] mt76: mt7915: add default calibrated data support
+Date:   Wed, 27 Oct 2021 16:07:47 +0800
+Message-ID: <20211027080747.24388-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/3] wcn36xx: add debug prints for sw_scan start/complete
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20211023003949.3082900-2-benl@squareup.com>
-References: <20211023003949.3082900-2-benl@squareup.com>
-To:     Benjamin Li <benl@squareup.com>
-Cc:     Joseph Gates <jgates@squareup.com>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        linux-arm-msm@vger.kernel.org, Benjamin Li <benl@squareup.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eugene Krasnikov <k.eugene.e@gmail.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163532120872.19793.15468481505724352001.kvalo@codeaurora.org>
-Date:   Wed, 27 Oct 2021 07:53:37 +0000 (UTC)
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Benjamin Li <benl@squareup.com> wrote:
+Load the default eeprom data when the content of flash/efuse is invalid.
+This could help to eliminate some issues due to incorrect or
+insufficient rf values.
 
-> Add some MAC debug prints for more easily demarcating a software scan
-> when parsing logs.
-> 
-> Signed-off-by: Benjamin Li <benl@squareup.com>
+Co-developed-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../wireless/mediatek/mt76/mt7915/eeprom.c    | 83 +++++++++++++++----
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 24 ++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  1 +
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 +
+ 4 files changed, 98 insertions(+), 14 deletions(-)
 
-Failed to build:
-
-In file included from ./include/linux/bitops.h:7,
-                 from ./include/linux/kernel.h:12,
-                 from ./include/linux/interrupt.h:6,
-                 from drivers/net/wireless/ath/wcn36xx/dxe.c:25:
-drivers/net/wireless/ath/wcn36xx/dxe.c: In function '_wcn36xx_dxe_tx_channel_is_empty':
-./include/linux/typecheck.h:12:25: error: comparison of distinct pointer types lacks a cast [-Werror]
-   12 |         (void)(&__dummy == &__dummy2); \
-      |                         ^~
-./include/linux/spinlock.h:255:17: note: in expansion of macro 'typecheck'
-  255 |                 typecheck(unsigned long, flags);        \
-      |                 ^~~~~~~~~
-./include/linux/spinlock.h:393:9: note: in expansion of macro 'raw_spin_lock_irqsave'
-  393 |         raw_spin_lock_irqsave(spinlock_check(lock), flags);     \
-      |         ^~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/ath/wcn36xx/dxe.c:844:9: note: in expansion of macro 'spin_lock_irqsave'
-  844 |         spin_lock_irqsave(&ch->lock, flags);
-      |         ^~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[5]: *** [scripts/Makefile.build:277: drivers/net/wireless/ath/wcn36xx/dxe.o] Error 1
-make[4]: *** [scripts/Makefile.build:540: drivers/net/wireless/ath/wcn36xx] Error 2
-make[3]: *** [scripts/Makefile.build:540: drivers/net/wireless/ath] Error 2
-make[2]: *** [scripts/Makefile.build:540: drivers/net/wireless] Error 2
-make[1]: *** [scripts/Makefile.build:540: drivers/net] Error 2
-make: *** [Makefile:1868: drivers] Error 2
-
-3 patches set to Changes Requested.
-
-12579221 [1/3] wcn36xx: add debug prints for sw_scan start/complete
-12579223 [2/3] wcn36xx: implement flush op to speed up connected scan
-12579225 [3/3] wcn36xx: ensure pairing of init_scan/finish_scan and start_scan/end_scan
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index ee3d644..626ea4a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: ISC
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
++#include <linux/firmware.h>
+ #include "mt7915.h"
+ #include "eeprom.h"
+ 
+@@ -10,6 +11,9 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
+ 	u8 *eeprom = mdev->eeprom.data;
+ 	u32 val = eeprom[MT_EE_DO_PRE_CAL];
+ 
++	if (!dev->flash_mode)
++		return 0;
++
+ 	if (val != (MT_EE_WIFI_CAL_DPD | MT_EE_WIFI_CAL_GROUP))
+ 		return 0;
+ 
+@@ -21,6 +25,49 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
+ 	return mt76_get_of_eeprom(mdev, dev->cal, MT_EE_PRECAL, val);
+ }
+ 
++static int mt7915_check_eeprom(struct mt7915_dev *dev)
++{
++	u8 *eeprom = dev->mt76.eeprom.data;
++	u16 val = get_unaligned_le16(eeprom);
++
++	switch (val) {
++	case 0x7915:
++		return 0;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int
++mt7915_eeprom_load_default(struct mt7915_dev *dev)
++{
++	char *default_bin = MT7915_EEPROM_DEFAULT;
++	u8 *eeprom = dev->mt76.eeprom.data;
++	const struct firmware *fw = NULL;
++	int ret;
++
++	if (dev->dbdc_support)
++		default_bin = MT7915_EEPROM_DEFAULT_DBDC;
++
++	ret = request_firmware(&fw, default_bin, dev->mt76.dev);
++	if (ret)
++		goto out;
++
++	if (!fw || !fw->data) {
++		dev_err(dev->mt76.dev, "Invalid default bin\n");
++		ret = -EINVAL;
++		goto out;
++	}
++
++	memcpy(eeprom, fw->data, MT7915_EEPROM_SIZE);
++	dev->flash_mode = true;
++
++out:
++	release_firmware(fw);
++
++	return ret;
++}
++
+ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ {
+ 	int ret;
+@@ -31,8 +78,8 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ 
+ 	if (ret) {
+ 		dev->flash_mode = true;
+-		ret = mt7915_eeprom_load_precal(dev);
+ 	} else {
++		/* read eeprom data from efuse */
+ 		u32 block_num, i;
+ 
+ 		block_num = DIV_ROUND_UP(MT7915_EEPROM_SIZE,
+@@ -42,20 +89,28 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ 					      i * MT7915_EEPROM_BLOCK_SIZE);
+ 	}
+ 
+-	return ret;
+-}
+-
+-static int mt7915_check_eeprom(struct mt7915_dev *dev)
+-{
+-	u8 *eeprom = dev->mt76.eeprom.data;
+-	u16 val = get_unaligned_le16(eeprom);
++	if (!dev->flash_mode) {
++		u8 free_block_num;
++
++		mt7915_mcu_get_eeprom_free_block(dev, &free_block_num);
++		if (free_block_num >= 29) {
++			dev_warn(dev->mt76.dev,
++				 "efuse info not enough, use default bin\n");
++			ret = mt7915_eeprom_load_default(dev);
++			if (ret)
++				return ret;
++		}
++	}
+ 
+-	switch (val) {
+-	case 0x7915:
+-		return 0;
+-	default:
+-		return -EINVAL;
++	ret = mt7915_check_eeprom(dev);
++	if (ret) {
++		dev_warn(dev->mt76.dev, "eeprom check fail, use default bin\n");
++		ret = mt7915_eeprom_load_default(dev);
++		if (ret)
++			return ret;
+ 	}
++
++	return ret;
+ }
+ 
+ void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
+@@ -120,7 +175,7 @@ int mt7915_eeprom_init(struct mt7915_dev *dev)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = mt7915_check_eeprom(dev);
++	ret = mt7915_eeprom_load_precal(dev);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index b054663..ee9952d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3580,6 +3580,30 @@ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset)
+ 	return 0;
+ }
+ 
++int mt7915_mcu_get_eeprom_free_block(struct mt7915_dev *dev, u8 *block_num)
++{
++	struct {
++		u8 _rsv;
++		u8 version;
++		u8 die_idx;
++		u8 _rsv2;
++	} __packed req = {
++		.version = 1,
++	};
++	struct sk_buff *skb;
++	int ret;
++
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_QUERY(EFUSE_FREE_BLOCK), &req,
++					sizeof(req), true, &skb);
++	if (ret)
++		return ret;
++
++	*block_num = *(u8 *)skb->data;
++	dev_kfree_skb(skb);
++
++	return 0;
++}
++
+ static int mt7915_mcu_set_pre_cal(struct mt7915_dev *dev, u8 idx,
+ 				  u8 *data, u32 len, int cmd)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index b563e7c..e9f39ed 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -278,6 +278,7 @@ enum {
+ 	MCU_EXT_CMD_MUAR_UPDATE = 0x48,
+ 	MCU_EXT_CMD_RX_AIRTIME_CTRL = 0x4a,
+ 	MCU_EXT_CMD_SET_RX_PATH = 0x4e,
++	MCU_EXT_CMD_EFUSE_FREE_BLOCK = 0x4f,
+ 	MCU_EXT_CMD_TX_POWER_FEATURE_CTRL = 0x58,
+ 	MCU_EXT_CMD_GET_MIB_INFO = 0x5a,
+ 	MCU_EXT_CMD_MWDS_SUPPORT = 0x80,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index e69b4c8..c6c846d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -30,6 +30,9 @@
+ #define MT7915_FIRMWARE_WM		"mediatek/mt7915_wm.bin"
+ #define MT7915_ROM_PATCH		"mediatek/mt7915_rom_patch.bin"
+ 
++#define MT7915_EEPROM_DEFAULT		"mediatek/mt7915_eeprom.bin"
++#define MT7915_EEPROM_DEFAULT_DBDC	"mediatek/mt7915_eeprom_dbdc.bin"
++
+ #define MT7915_EEPROM_SIZE		3584
+ #define MT7915_EEPROM_BLOCK_SIZE	16
+ #define MT7915_TOKEN_SIZE		8192
+@@ -423,6 +426,7 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
+ 				   void *data, u32 field);
+ int mt7915_mcu_set_eeprom(struct mt7915_dev *dev);
+ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset);
++int mt7915_mcu_get_eeprom_free_block(struct mt7915_dev *dev, u8 *block_num);
+ int mt7915_mcu_set_mac(struct mt7915_dev *dev, int band, bool enable,
+ 		       bool hdr_trans);
+ int mt7915_mcu_set_test_param(struct mt7915_dev *dev, u8 param, bool test_mode,
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211023003949.3082900-2-benl@squareup.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.25.1
 
