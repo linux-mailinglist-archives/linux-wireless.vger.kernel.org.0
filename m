@@ -2,120 +2,229 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF3C943C626
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 11:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EADC143C60A
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 11:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241184AbhJ0JMN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Oct 2021 05:12:13 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:53704 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S241180AbhJ0JML (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Oct 2021 05:12:11 -0400
-X-UUID: 74a4a6c78b984404bbb708c8a905db60-20211027
-X-UUID: 74a4a6c78b984404bbb708c8a905db60-20211027
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <bo.jiao@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 2128870852; Wed, 27 Oct 2021 17:09:44 +0800
-Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Wed, 27 Oct 2021 17:09:43 +0800
-Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
- (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 27 Oct
- 2021 16:40:38 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
- 15.0.1497.2 via Frontend Transport; Wed, 27 Oct 2021 16:40:38 +0800
-From:   Bo Jiao <bo.jiao@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Xing Song <xing.song@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: [PATCH 11/11] mt76: mt7915: add device id for mt7916
-Date:   Wed, 27 Oct 2021 16:40:19 +0800
-Message-ID: <65c8adaa746d711a5aa8d7ec01689001a1bd91fe.1635323366.git.Bo.Jiao@mediatek.com>
-X-Mailer: git-send-email 2.17.0
-In-Reply-To: <cover.1635323366.git.Bo.Jiao@mediatek.com>
-References: <cover.1635323366.git.Bo.Jiao@mediatek.com>
+        id S230350AbhJ0JGY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Oct 2021 05:06:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33196 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S241169AbhJ0JGW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Oct 2021 05:06:22 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1D52A61039;
+        Wed, 27 Oct 2021 09:03:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635325437;
+        bh=/egQCEPRE/eAy1USBty0X0DOrwXMjnUfOHnXn0v/EgA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZheQoqsH+DEX6WbAwGzAsBc74Tn49NAG8nEWqpF8JM+xy6y7ZV8YkN3G8Q+uqM37f
+         ZiGsj0jHqpefVKxV+f0kYxM5RLqTmeJEQOX32TiDqpjfpoOq5JitKE/V97Z1jaklAj
+         ahC2N2Gx8qS/W90Jv5g8s9LIMDn3HueMHf0pUgYEyIkLFbcKA59pyT8noiH8cqWEN5
+         ZBT24hGrSP68HFn+r/6ZeKhSr7znc4gnxMdvGhFeSWvH0PuNgvDQ7Xk7oljd5eh5B4
+         QDG6me0y85eSDvL0+bIxs8CytOOQdpv3dq3i+DFhWV0n0T5zA1chiZ1E06a7agyRB8
+         ahO5qWH8UK6CQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     johannes@sipsolutions.net
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com,
+        evelyn.tsai@mediatek.com
+Subject: [PATCH mac80211-next] cfg80211: move offchan_cac_event to a dedicate work
+Date:   Wed, 27 Oct 2021 11:03:42 +0200
+Message-Id: <6145c3d0f30400a568023f67981981d24c7c6133.1635325205.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Bo Jiao <Bo.Jiao@mediatek.com>
+In order to be run in atomic context, move offchan_cac_event to a
+dedicate work.
+Rename offchan_cac_work in offchan_cac_done_wk.
+Rename cfg80211_offchan_cac_event routine in cfg80211_offchan_cac_abort.
 
-Add pci_device_id to enable mt7916. Note that MT_HW_CHIPID is no
-longer used for further chips, so drop it accordingly.
-
-Co-developed-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/pci.c  | 7 +++++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ include/net/cfg80211.h | 14 +++--------
+ net/wireless/core.c    |  6 ++++-
+ net/wireless/core.h    |  7 ++++--
+ net/wireless/mlme.c    | 56 +++++++++++++++++++++++++++---------------
+ 4 files changed, 50 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 4c06ddf..7191790 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -534,7 +534,7 @@ static int mt7915_mmio_init(struct mt76_dev *mdev,
- 	bus_ops->rmw = mt7915_rmw;
- 	dev->mt76.bus = bus_ops;
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 908794b82a49..6528f49104c3 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -7647,19 +7647,13 @@ void cfg80211_cac_event(struct net_device *netdev,
+ 			enum nl80211_radar_event event, gfp_t gfp);
  
--	mdev->rev = (mt76_rr(dev, MT_HW_CHIPID) << 16) |
-+	mdev->rev = (device_id << 16) |
- 		    (mt76_rr(dev, MT_HW_REV) & 0xff);
- 	dev_dbg(mdev->dev, "ASIC revision: %04x\n", mdev->rev);
+ /**
+- * cfg80211_offchan_cac_event - Channel Availability Check (CAC) offchan event
++ * cfg80211_offchan_cac_abort - Channel Availability Check offchan abort event
+  * @wiphy: the wiphy
+- * @chandef: chandef for the current channel
+- * @event: type of event
+- *
+- * This function is called when a Channel Availability Check (CAC) is finished,
+- * started or aborted by a offchannel dedicated chain.
+  *
+- * Note that this acquires the wiphy lock.
++ * This function is called by the driver when a Channel Availability Check
++ * (CAC) is aborted by a offchannel dedicated chain.
+  */
+-void cfg80211_offchan_cac_event(struct wiphy *wiphy,
+-				const struct cfg80211_chan_def *chandef,
+-				enum nl80211_radar_event event);
++void cfg80211_offchan_cac_abort(struct wiphy *wiphy);
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-index 3134b46..8d1a811 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-@@ -18,11 +18,13 @@ static u32 hif_idx;
+ /**
+  * cfg80211_gtk_rekey_notify - notify userspace about driver rekeying
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 230f04a628b9..a924e7c2957d 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -544,7 +544,9 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
+ 	INIT_WORK(&rdev->rfkill_block, cfg80211_rfkill_block_work);
+ 	INIT_WORK(&rdev->conn_work, cfg80211_conn_work);
+ 	INIT_WORK(&rdev->event_work, cfg80211_event_work);
+-	INIT_DELAYED_WORK(&rdev->offchan_cac_work, cfg80211_offchan_cac_work);
++	INIT_WORK(&rdev->offchan_cac_abort_wk, cfg80211_offchan_cac_abort_wk);
++	INIT_DELAYED_WORK(&rdev->offchan_cac_done_wk,
++			  cfg80211_offchan_cac_done_wk);
  
- static const struct pci_device_id mt7915_pci_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7915) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7906) },
- 	{ },
- };
+ 	init_waitqueue_head(&rdev->dev_wait);
  
- static const struct pci_device_id mt7915_hif_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7916) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x790a) },
- 	{ },
- };
+@@ -1054,11 +1056,13 @@ void wiphy_unregister(struct wiphy *wiphy)
+ 	cancel_work_sync(&rdev->conn_work);
+ 	flush_work(&rdev->event_work);
+ 	cancel_delayed_work_sync(&rdev->dfs_update_channels_wk);
++	cancel_delayed_work_sync(&rdev->offchan_cac_done_wk);
+ 	flush_work(&rdev->destroy_work);
+ 	flush_work(&rdev->sched_scan_stop_wk);
+ 	flush_work(&rdev->propagate_radar_detect_wk);
+ 	flush_work(&rdev->propagate_cac_done_wk);
+ 	flush_work(&rdev->mgmt_registrations_update_wk);
++	flush_work(&rdev->offchan_cac_abort_wk);
  
-@@ -61,7 +63,8 @@ static void mt7915_put_hif2(struct mt7915_hif *hif)
- static struct mt7915_hif *mt7915_pci_init_hif2(struct pci_dev *pdev)
+ #ifdef CONFIG_PM
+ 	if (rdev->wiphy.wowlan_config && rdev->ops->set_wakeup)
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 48ebbece468c..2cde69da1f27 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -86,7 +86,8 @@ struct cfg80211_registered_device {
+ 
+ 	struct wireless_dev *offchan_radar_wdev;
+ 	struct cfg80211_chan_def offchan_radar_chandef;
+-	struct delayed_work offchan_cac_work;
++	struct delayed_work offchan_cac_done_wk;
++	struct work_struct offchan_cac_abort_wk;
+ 
+ 	/* netlink port which started critical protocol (0 means not started) */
+ 	u32 crit_proto_nlportid;
+@@ -500,7 +501,9 @@ cfg80211_start_offchan_radar_detection(struct cfg80211_registered_device *rdev,
+ 
+ void cfg80211_stop_offchan_radar_detection(struct wireless_dev *wdev);
+ 
+-void cfg80211_offchan_cac_work(struct work_struct *work);
++void cfg80211_offchan_cac_done_wk(struct work_struct *work);
++
++void cfg80211_offchan_cac_abort_wk(struct work_struct *work);
+ 
+ bool cfg80211_any_wiphy_oper_chan(struct wiphy *wiphy,
+ 				  struct ieee80211_channel *chan);
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 61512e201999..abf81e71210a 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -969,17 +969,6 @@ void cfg80211_cac_event(struct net_device *netdev,
+ }
+ EXPORT_SYMBOL(cfg80211_cac_event);
+ 
+-void cfg80211_offchan_cac_work(struct work_struct *work)
+-{
+-	struct delayed_work *delayed_work = to_delayed_work(work);
+-	struct cfg80211_registered_device *rdev;
+-
+-	rdev = container_of(delayed_work, struct cfg80211_registered_device,
+-			    offchan_cac_work);
+-	cfg80211_offchan_cac_event(&rdev->wiphy, &rdev->offchan_radar_chandef,
+-				   NL80211_RADAR_CAC_FINISHED);
+-}
+-
+ static void
+ __cfg80211_offchan_cac_event(struct cfg80211_registered_device *rdev,
+ 			     struct wireless_dev *wdev,
+@@ -1004,7 +993,7 @@ __cfg80211_offchan_cac_event(struct cfg80211_registered_device *rdev,
+ 		rdev->offchan_radar_wdev = NULL;
+ 		break;
+ 	case NL80211_RADAR_CAC_ABORTED:
+-		cancel_delayed_work(&rdev->offchan_cac_work);
++		cancel_delayed_work(&rdev->offchan_cac_done_wk);
+ 		wdev = rdev->offchan_radar_wdev;
+ 		rdev->offchan_radar_wdev = NULL;
+ 		break;
+@@ -1020,17 +1009,44 @@ __cfg80211_offchan_cac_event(struct cfg80211_registered_device *rdev,
+ 	nl80211_radar_notify(rdev, chandef, event, netdev, GFP_KERNEL);
+ }
+ 
+-void cfg80211_offchan_cac_event(struct wiphy *wiphy,
+-				const struct cfg80211_chan_def *chandef,
+-				enum nl80211_radar_event event)
++static void
++cfg80211_offchan_cac_event(struct cfg80211_registered_device *rdev,
++			   const struct cfg80211_chan_def *chandef,
++			   enum nl80211_radar_event event)
++{
++	wiphy_lock(&rdev->wiphy);
++	__cfg80211_offchan_cac_event(rdev, NULL, chandef, event);
++	wiphy_unlock(&rdev->wiphy);
++}
++
++void cfg80211_offchan_cac_done_wk(struct work_struct *work)
++{
++	struct delayed_work *delayed_work = to_delayed_work(work);
++	struct cfg80211_registered_device *rdev;
++
++	rdev = container_of(delayed_work, struct cfg80211_registered_device,
++			    offchan_cac_done_wk);
++	cfg80211_offchan_cac_event(rdev, &rdev->offchan_radar_chandef,
++				   NL80211_RADAR_CAC_FINISHED);
++}
++
++void cfg80211_offchan_cac_abort_wk(struct work_struct *work)
++{
++	struct cfg80211_registered_device *rdev;
++
++	rdev = container_of(work, struct cfg80211_registered_device,
++			    offchan_cac_abort_wk);
++	cfg80211_offchan_cac_event(rdev, &rdev->offchan_radar_chandef,
++				   NL80211_RADAR_CAC_ABORTED);
++}
++
++void cfg80211_offchan_cac_abort(struct wiphy *wiphy)
  {
- 	hif_idx++;
--	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7916, NULL))
-+	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7916, NULL) &&
-+	    !pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x790a, NULL))
- 		return NULL;
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
  
- 	writel(hif_idx | MT_PCIE_RECOG_ID_SEM,
-@@ -112,7 +115,7 @@ static int mt7915_pci_probe(struct pci_dev *pdev,
+-	wiphy_lock(wiphy);
+-	__cfg80211_offchan_cac_event(rdev, NULL, chandef, event);
+-	wiphy_unlock(wiphy);
++	queue_work(cfg80211_wq, &rdev->offchan_cac_abort_wk);
+ }
+-EXPORT_SYMBOL(cfg80211_offchan_cac_event);
++EXPORT_SYMBOL(cfg80211_offchan_cac_abort);
  
- 	mt76_pci_disable_aspm(pdev);
+ int
+ cfg80211_start_offchan_radar_detection(struct cfg80211_registered_device *rdev,
+@@ -1060,7 +1076,7 @@ cfg80211_start_offchan_radar_detection(struct cfg80211_registered_device *rdev,
+ 	rdev->offchan_radar_chandef = *chandef;
+ 	__cfg80211_offchan_cac_event(rdev, wdev, chandef,
+ 				     NL80211_RADAR_CAC_STARTED);
+-	queue_delayed_work(cfg80211_wq, &rdev->offchan_cac_work,
++	queue_delayed_work(cfg80211_wq, &rdev->offchan_cac_done_wk,
+ 			   msecs_to_jiffies(cac_time_ms));
  
--	if (id->device == 0x7916)
-+	if (id->device == 0x7916 || id->device == 0x790a)
- 		return mt7915_pci_hif2_probe(pdev);
- 
- 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
+ 	return 0;
 -- 
-2.18.0
+2.31.1
 
