@@ -2,62 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83B2843CFB7
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 19:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09A6743CFE2
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Oct 2021 19:38:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243318AbhJ0RcI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Oct 2021 13:32:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57598 "EHLO
+        id S243332AbhJ0RlL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Oct 2021 13:41:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243302AbhJ0RcE (ORCPT
+        with ESMTP id S236752AbhJ0RlK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Oct 2021 13:32:04 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74000C061220;
-        Wed, 27 Oct 2021 10:29:38 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id a26so3339135pfr.11;
-        Wed, 27 Oct 2021 10:29:38 -0700 (PDT)
+        Wed, 27 Oct 2021 13:41:10 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49009C061570;
+        Wed, 27 Oct 2021 10:38:45 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id na16-20020a17090b4c1000b0019f5bb661f9so2669840pjb.0;
+        Wed, 27 Oct 2021 10:38:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=j40i/oCuZ+1rQnHaCzvorYVDYCLy6jFivrWqUoKPoe0=;
-        b=L7IJFqH3yGUH1nGbQuvDjSN/Ogpu1tl1ga5eSHW+9H9QlhT0ClptqzgGWh/XU/Ked6
-         WlO07/L+cIP8rN9L+lgT6E7/HdNUropHrGkGCKumo5EJlOJILnnYOQKYROWjE6nM37Yx
-         qZGTVUrewB3pvu1L//BjbwS5RjCQ8/ZPRfR3fvSLWrwJPVPuPnf2coqPWk29X+l54eD4
-         KiGbHGNh604Gic7iu41s+HihkESkjpGx6gi166PH/0zwjn2PF5bCFu3eQQSIu75y7x9T
-         UqvGRB9WPqpiGVo61G8wp/9LLbzrWKGMR+hFmsjKkAM2OaeO10nfrkeqect5SzT5bWJ8
-         JmRg==
+        bh=PkqSITbCIjnK7FZ/jf9UFsH0245UP24SRvOg2xF2AJ4=;
+        b=GkmIV3DcqQ+aCfRl4Y6y/2a5fIZC9mpAbKRbs9z1Y7tiYi1i831uFjOhbzAAWGysAO
+         3UPZVx7r2tGbZBrXZhSnVyBzvN8L5vH+M7r+clmkeUrb1++7B2uSf4d/xWTqoRQJiYmB
+         BRkNi6VDh2mDqTwvNIDfhbpe5lNHV2FwX3UpdN7vMHPuVbeU2LdqwW2qqKWVFdDq4HR4
+         L6DMIPQ0jXAzAzEsggn5zP3GSaXqurL/rmZD2GGlgq4wqCpDfVR+yEfQA4mpKZOgom+W
+         3vnDBumIMm3j6q0uONWzDJ2g0qMojsO3F++5E71NIMEJShqDX2Lhtsx/nPPHYLGUrIhX
+         K7kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=j40i/oCuZ+1rQnHaCzvorYVDYCLy6jFivrWqUoKPoe0=;
-        b=QKnIRwcduaA8RSWsk2wL02pdH5amTC8geLEQ4aKV5ZLaWwVydjqTaAg65mfd+eFV/l
-         T7uAbxTmcC7bHxSHejlZUG+fpmHkFREASqEaw94lRX96sN3zTYtWrFOmB726bt37khXB
-         9Cp2LrydyTG8OHKtKU8+cRSIOtPngU9OulxazPm8a+wnGUCkCIClylw+bllMDISAuYmp
-         nTJPvqSJxIQUW5Y/BdpmhQQt2LjlZVR+bXPdY+b4UqRAXlTkeSBLhGh9E+AcKhQ6Com2
-         QCB7ZpI09aphRFuYPrhrr2U7nmLbgL0rK1ek3LqekN+8CGTOXd+lngUe18r5RZ7dArU2
-         /Reg==
-X-Gm-Message-State: AOAM530MoCUwIxQ0sMHVnysdMJZ1XIjBIuxejIwUlEFWYhWz6kEogk5z
-        31VmF6+ylUck1IJLAypBeD8=
-X-Google-Smtp-Source: ABdhPJynHJ1xIpnL8GLuMHoKCw5ZV77knl+cmxDorg8QA3litHg5RAzLEN8PX3TKcU/cw4gTKtX4+Q==
-X-Received: by 2002:a65:6a0f:: with SMTP id m15mr25290047pgu.298.1635355778018;
-        Wed, 27 Oct 2021 10:29:38 -0700 (PDT)
+        bh=PkqSITbCIjnK7FZ/jf9UFsH0245UP24SRvOg2xF2AJ4=;
+        b=6rO3Q/FAD88ooAdwPzQAVJmoQOsa1w1BMg5jfL3XbZUDS7hkwO8KvTLE+F4m09S5Ec
+         A1EAti7JYryekV6GG+bxycUX3g+JCu5eFxpxdszbvw/t9Zvk4yV68g20TTulesp/8h3h
+         fLK1fqIxLuya5CiE0+WXR/f8isohGZRoR673yLecw/zFWaARjvnqtz+d5d30tTB09TM/
+         53sbph49WuATzdZuUeI5qHWYhY3b8WgNv3/Yv/JBV9HU0JUDY/RIq6VPiEDQVOJMJTNJ
+         mmYbtxdIDwoYaQze3D3GRZ4a+j76gQtJsBF3P17JTWYxUadVoq/qCZLZj7w5LsVVYUBJ
+         TO2w==
+X-Gm-Message-State: AOAM531xmh+1NwXMhnqY2HbVrmiY4Xki+HR115LE+hw7BguQASptHlFF
+        6TVI2n7uAKIc03jfzGEYq/1tXKfPgjtAPbGviIt6gQ==
+X-Google-Smtp-Source: ABdhPJxoHmywfRhLDYW7fzdNA0OKcl8KNKkB9+wieDqHTRiuQZd0w6YEh53/dC7aoVnN0xV0rLPI9Q==
+X-Received: by 2002:a17:90b:1e0b:: with SMTP id pg11mr7277222pjb.230.1635356324894;
+        Wed, 27 Oct 2021 10:38:44 -0700 (PDT)
 Received: from localhost.localdomain (bb42-60-144-185.singnet.com.sg. [42.60.144.185])
-        by smtp.gmail.com with ESMTPSA id oc12sm341362pjb.17.2021.10.27.10.29.35
+        by smtp.gmail.com with ESMTPSA id b6sm572719pfv.171.2021.10.27.10.38.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Oct 2021 10:29:37 -0700 (PDT)
+        Wed, 27 Oct 2021 10:38:44 -0700 (PDT)
 From:   Nguyen Dinh Phi <phind.uet@gmail.com>
-To:     johannes@sipsolutions.ne, davem@davemloft.net, kuba@kernel.org
+To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
 Cc:     Nguyen Dinh Phi <phind.uet@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         linux-kernel-mentees@lists.linuxfoundation.org,
         syzbot+bbf402b783eeb6d908db@syzkaller.appspotmail.com
-Subject: [PATCH] net:wireless: call cfg80211_stop_ap when switch from P2P_GO type
-Date:   Thu, 28 Oct 2021 01:29:32 +0800
-Message-Id: <20211027172932.774040-1-phind.uet@gmail.com>
+Subject: [PATCH v2] net:wireless: call cfg80211_stop_ap when switch from P2P_GO type
+Date:   Thu, 28 Oct 2021 01:37:22 +0800
+Message-Id: <20211027173722.777287-1-phind.uet@gmail.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -75,6 +75,8 @@ assigned_vifs list, and makes that linked list corrupt.
 Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
 Reported-by: syzbot+bbf402b783eeb6d908db@syzkaller.appspotmail.com
 ---
+V2:
+	- Fix wrong email address.
  net/wireless/util.c | 1 +
  1 file changed, 1 insertion(+)
 
