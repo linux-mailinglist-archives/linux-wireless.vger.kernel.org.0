@@ -2,268 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4305043D68F
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 00:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A58043D774
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 01:23:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229727AbhJ0Wat (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Oct 2021 18:30:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41452 "EHLO
+        id S229479AbhJ0X0A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Oct 2021 19:26:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229642AbhJ0Wap (ORCPT
+        with ESMTP id S229469AbhJ0XZ6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Oct 2021 18:30:45 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0E05C061767
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Oct 2021 15:28:18 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id g7so5560739wrb.2
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Oct 2021 15:28:18 -0700 (PDT)
+        Wed, 27 Oct 2021 19:25:58 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D34E7C061745
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Oct 2021 16:23:31 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id k7so6748697wrd.13
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Oct 2021 16:23:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=71spJIGnFrqrdouSR+SowZM1rGrDszQ6QivBGBVwrxM=;
-        b=CTUPmzxFh7u7RgDqN9z2hrXSUAzMpZ6XCCvEeMXFpPcSv0lDRI0BQ3nj28WN0yuQRu
-         GaGFINjc/VD24q9cDUiGeC/cSJsAQ8HTSog1jaDuSD7RcxX6yDsQxvaMmTGZYjAffhcs
-         U9FiUYlL16euw8FAT0quJUzEkoTvec8rQlobr+5LY+euyXSCmXuNekCTtgzZSLbt10RF
-         cYIUH/daPyfEQLth/bFvuvCR/Re+aVNEt776fhMIrgqP+GW7y8v4mJPzLRDO7Wcymper
-         YfWjUdDNsiKM9V5LFXkBti3NoQHs3TIRJYxeK/m/ARe2znjSjhqU0lScULJgLJY3JySL
-         5KOQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=F1kzwP0JYJEJZtRxZX6aGDTnXu7MfQJRi7LeHOrAvTM=;
+        b=L6OkokghhCoD7PH2pbu4qrnD1/JZBiFujSS4Me9HOY68fZDOkoF53enf+xZiurYxyt
+         Cjw4CdK+lXZAOfkPbDKWUisC4E/pOebsGzuaGAABkPzW1PAdvBFP7MAsXyMmygtEG8LI
+         EfCDfcm0s0s1L0eh2aD3IlFNttKObqOoD/KwedlJYfCBwEBr/ukPqbE1l+4FP+RDeqqB
+         SRKKg3nmCX93AkvOV5cp5Ld7sh/WLJhdsjPkZbZAmzcktXiY+P6Hx3EKP56Ys9eqTJJX
+         VEZRIbhaH5vjG+w6RYSQKB/bnzyLDTXwWCPsppKMkyWlgyGve9Qby5PGIqcTjZ1vR0hb
+         yIDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=71spJIGnFrqrdouSR+SowZM1rGrDszQ6QivBGBVwrxM=;
-        b=dpjUYY22fDY0qAaRxQD2lIlk494Gmk8VWcpsKAAjchLZRdehUgmeB6ANgL1/KWfoyx
-         GVSgw9+kYPV9m5nvgXx72PhtbBQI3khwUicwxG8UpkOdU9ykeyKMRn2CezVIhy6WXPxV
-         U19ftqCouzodb2ICQ7IpspNAMCgbPjib7cKMTtK7DNieg76pmgvGJcab10k93nlXTust
-         Ex70J8B3isrtr8XrR4VEcI6mvrkNOVAip/4RE9YYNOISqvsnxlMz9PCOndIx5hHCV6t7
-         sd/unZgAS/S6p6FfQ6jGNflyHH4w3ni66B9ZVTX8BB+wyTY+2NNuqRwEhP6sCXDgvUeT
-         ws2g==
-X-Gm-Message-State: AOAM531AaH7pcEhmfsA5oPosLlR3tQrchDxeKsbaIuaMbddtteSliHzX
-        t5ue3+CkEkiP4uz/GT7sq67nEA==
-X-Google-Smtp-Source: ABdhPJyznMWKCylYXdBIPG4173zMZXiUWU+5cGReOY4rcfhKfnB9UIDX8nm/66H3Uau5uvpXFGpTBg==
-X-Received: by 2002:adf:ec88:: with SMTP id z8mr591890wrn.4.1635373697424;
-        Wed, 27 Oct 2021 15:28:17 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id q1sm916689wmj.20.2021.10.27.15.28.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Oct 2021 15:28:16 -0700 (PDT)
-Message-ID: <9a933103-afbc-3278-3d2e-ade77b0e4b09@linaro.org>
-Date:   Wed, 27 Oct 2021 23:30:18 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.1
-Subject: Re: [PATCH v2 3/3] wcn36xx: ensure pairing of init_scan/finish_scan
- and start_scan/end_scan
-Content-Language: en-US
-To:     Benjamin Li <benl@squareup.com>, Kalle Valo <kvalo@codeaurora.org>
-Cc:     Joseph Gates <jgates@squareup.com>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        linux-arm-msm@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eugene Krasnikov <k.eugene.e@gmail.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20211027170306.555535-1-benl@squareup.com>
- <20211027170306.555535-4-benl@squareup.com>
+        bh=F1kzwP0JYJEJZtRxZX6aGDTnXu7MfQJRi7LeHOrAvTM=;
+        b=nsPNsi6EdxtilJRyA8RYnDI6ODFEq/xs9nUatsk70BVaYR5sPfnPJ20Sab2/JQRX0F
+         yJpm3RRjB1oakWqtxkOuq6fmcwGpNPdgInZu6tvunYFoaKuiD6Ns6zQOmI7PMUjzrrkj
+         QTh7yTeArUOJfrgWXeAMA8WyCb1t5aFtUpRknEFd7lHKkUk8sAxLPYDe+WeUtjZp6+mK
+         +W1p7fchzN+O8JJ+PWz99M6vCuWEozfVbkzoQGQ/8bm5jNQAq96XGAhyJvIlSARh6TtZ
+         oUjttaZuPo2Lf//ha/dy4XVpSdXB9EOO9IxyvZsKLr/fewLV2MFKZPTSt8py55rJd4tT
+         eShQ==
+X-Gm-Message-State: AOAM532z4mf2bqUoNv3d/NmOY6Pox2XUCp+wCoAPLubwVQGmFquzr4Cq
+        yCgNnvOc6a5vQ7Ydl0oS9gJd/qiM2lCVig==
+X-Google-Smtp-Source: ABdhPJzzQOJXPQuyD2scAWy3q9+bqCDpU37w7gjHiBQag+DdVWqKeoZWpbmK1/19r9nG46yaBo5IJg==
+X-Received: by 2002:a05:6000:1866:: with SMTP id d6mr867656wri.226.1635377010436;
+        Wed, 27 Oct 2021 16:23:30 -0700 (PDT)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id o17sm4937435wmq.11.2021.10.27.16.23.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Oct 2021 16:23:29 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20211027170306.555535-4-benl@squareup.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        wcn36xx@lists.infradead.org
+Cc:     linux-arm-msm@vger.kernel.org, loic.poulain@linaro.org,
+        benl@squareup.com, bryan.odonoghue@linaro.org
+Subject: [PATCH] wcn36xx: Indicate beacon not connection loss on MISSED_BEACON_IND
+Date:   Thu, 28 Oct 2021 00:25:29 +0100
+Message-Id: <20211027232529.657764-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.33.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 27/10/2021 18:03, Benjamin Li wrote:
-> An SMD capture from the downstream prima driver on WCN3680B shows the
-> following command sequence for connected scans:
-> 
-> - init_scan_req
->      - start_scan_req, channel 1
->      - end_scan_req, channel 1
->      - start_scan_req, channel 2
->      - ...
->      - end_scan_req, channel 3
-> - finish_scan_req
-> - init_scan_req
->      - start_scan_req, channel 4
->      - ...
->      - end_scan_req, channel 6
-> - finish_scan_req
-> - ...
->      - end_scan_req, channel 165
-> - finish_scan_req
-> 
-> Upstream currently never calls wcn36xx_smd_end_scan, and in some cases[1]
-> still sends finish_scan_req twice in a row or before init_scan_req. A
-> typical connected scan looks like this:
-> 
-> - init_scan_req
->      - start_scan_req, channel 1
-> - finish_scan_req
-> - init_scan_req
->      - start_scan_req, channel 2
-> - ...
->      - start_scan_req, channel 165
-> - finish_scan_req
-> - finish_scan_req
-> 
-> This patch cleans up scanning so that init/finish and start/end are always
-> paired together and correctly nested.
-> 
-> - init_scan_req
->      - start_scan_req, channel 1
->      - end_scan_req, channel 1
-> - finish_scan_req
-> - init_scan_req
->      - start_scan_req, channel 2
->      - end_scan_req, channel 2
-> - ...
->      - start_scan_req, channel 165
->      - end_scan_req, channel 165
-> - finish_scan_req
-> 
-> Note that upstream will not do batching of 3 active-probe scans before
-> returning to the operating channel, and this patch does not change that.
-> To match downstream in this aspect, adjust IEEE80211_PROBE_DELAY and/or
-> the 125ms max off-channel time in ieee80211_scan_state_decision.
-> 
-> [1]: commit d195d7aac09b ("wcn36xx: Ensure finish scan is not requested
-> before start scan") addressed one case of finish_scan_req being sent
-> without a preceding init_scan_req (the case of the operating channel
-> coinciding with the first scan channel); two other cases are:
-> 1) if SW scan is started and aborted immediately, without scanning any
->     channels, we send a finish_scan_req without ever sending init_scan_req,
->     and
-> 2) as SW scan logic always returns us to the operating channel before
->     calling wcn36xx_sw_scan_complete, finish_scan_req is always sent twice
->     at the end of a SW scan
-> 
-> Fixes: 8e84c2582169 ("wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680 hardware")
-> Signed-off-by: Benjamin Li <benl@squareup.com>
-> ---
->   drivers/net/wireless/ath/wcn36xx/main.c    | 34 +++++++++++++++++-----
->   drivers/net/wireless/ath/wcn36xx/smd.c     |  4 +++
->   drivers/net/wireless/ath/wcn36xx/wcn36xx.h |  1 +
->   3 files changed, 32 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-> index 18383d0fc0933..37b4016f020c9 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/main.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-> @@ -400,6 +400,7 @@ static void wcn36xx_change_opchannel(struct wcn36xx *wcn, int ch)
->   static int wcn36xx_config(struct ieee80211_hw *hw, u32 changed)
->   {
->   	struct wcn36xx *wcn = hw->priv;
-> +	int ret;
->   
->   	wcn36xx_dbg(WCN36XX_DBG_MAC, "mac config changed 0x%08x\n", changed);
->   
-> @@ -415,17 +416,31 @@ static int wcn36xx_config(struct ieee80211_hw *hw, u32 changed)
->   			 * want to receive/transmit regular data packets, then
->   			 * simply stop the scan session and exit PS mode.
->   			 */
-> -			wcn36xx_smd_finish_scan(wcn, HAL_SYS_MODE_SCAN,
-> -						wcn->sw_scan_vif);
-> -			wcn->sw_scan_channel = 0;
-> +			if (wcn->sw_scan_channel)
-> +				wcn36xx_smd_end_scan(wcn, wcn->sw_scan_channel);
-> +			if (wcn->sw_scan_init) {
-> +				wcn36xx_smd_finish_scan(wcn, HAL_SYS_MODE_SCAN,
-> +							wcn->sw_scan_vif);
-> +			}
->   		} else if (wcn->sw_scan) {
->   			/* A scan is ongoing, do not change the operating
->   			 * channel, but start a scan session on the channel.
->   			 */
-> -			wcn36xx_smd_init_scan(wcn, HAL_SYS_MODE_SCAN,
-> -					      wcn->sw_scan_vif);
-> +			if (wcn->sw_scan_channel)
-> +				wcn36xx_smd_end_scan(wcn, wcn->sw_scan_channel);
-> +			if (!wcn->sw_scan_init) {
-> +				/* This can fail if we are unable to notify the
-> +				 * operating channel.
-> +				 */
-> +				ret = wcn36xx_smd_init_scan(wcn,
-> +							    HAL_SYS_MODE_SCAN,
-> +							    wcn->sw_scan_vif);
-> +				if (ret) {
-> +					mutex_unlock(&wcn->conf_mutex);
-> +					return -EIO;
-> +				}
-> +			}
->   			wcn36xx_smd_start_scan(wcn, ch);
-> -			wcn->sw_scan_channel = ch;
->   		} else {
->   			wcn36xx_change_opchannel(wcn, ch);
->   		}
-> @@ -723,7 +738,12 @@ static void wcn36xx_sw_scan_complete(struct ieee80211_hw *hw,
->   	wcn36xx_dbg(WCN36XX_DBG_MAC, "sw_scan_complete");
->   
->   	/* ensure that any scan session is finished */
-> -	wcn36xx_smd_finish_scan(wcn, HAL_SYS_MODE_SCAN, wcn->sw_scan_vif);
-> +	if (wcn->sw_scan_channel)
-> +		wcn36xx_smd_end_scan(wcn, wcn->sw_scan_channel);
-> +	if (wcn->sw_scan_init) {
-> +		wcn36xx_smd_finish_scan(wcn, HAL_SYS_MODE_SCAN,
-> +					wcn->sw_scan_vif);
-> +	}
->   	wcn->sw_scan = false;
->   	wcn->sw_scan_opchannel = 0;
->   }
-> diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-> index 3cecc8f9c9647..830341be72673 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/smd.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-> @@ -721,6 +721,7 @@ int wcn36xx_smd_init_scan(struct wcn36xx *wcn, enum wcn36xx_hal_sys_mode mode,
->   		wcn36xx_err("hal_init_scan response failed err=%d\n", ret);
->   		goto out;
->   	}
-> +	wcn->sw_scan_init = true;
->   out:
->   	mutex_unlock(&wcn->hal_mutex);
->   	return ret;
-> @@ -751,6 +752,7 @@ int wcn36xx_smd_start_scan(struct wcn36xx *wcn, u8 scan_channel)
->   		wcn36xx_err("hal_start_scan response failed err=%d\n", ret);
->   		goto out;
->   	}
-> +	wcn->sw_scan_channel = scan_channel;
->   out:
->   	mutex_unlock(&wcn->hal_mutex);
->   	return ret;
-> @@ -781,6 +783,7 @@ int wcn36xx_smd_end_scan(struct wcn36xx *wcn, u8 scan_channel)
->   		wcn36xx_err("hal_end_scan response failed err=%d\n", ret);
->   		goto out;
->   	}
-> +	wcn->sw_scan_channel = 0;
->   out:
->   	mutex_unlock(&wcn->hal_mutex);
->   	return ret;
-> @@ -822,6 +825,7 @@ int wcn36xx_smd_finish_scan(struct wcn36xx *wcn,
->   		wcn36xx_err("hal_finish_scan response failed err=%d\n", ret);
->   		goto out;
->   	}
-> +	wcn->sw_scan_init = false;
->   out:
->   	mutex_unlock(&wcn->hal_mutex);
->   	return ret;
-> diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-> index 1c8d918137da2..fbd0558c2c196 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-> +++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
-> @@ -248,6 +248,7 @@ struct wcn36xx {
->   	struct cfg80211_scan_request *scan_req;
->   	bool			sw_scan;
->   	u8			sw_scan_opchannel;
-> +	bool			sw_scan_init;
->   	u8			sw_scan_channel;
->   	struct ieee80211_vif	*sw_scan_vif;
->   	struct mutex		scan_lock;
-> 
+Firmware can trigger a missed beacon indication, this is not the same as a
+lost signal.
 
-LGTM
+Flag to Linux the missed beacon and let the WiFi stack decide for itself if
+the link is up or down by sending its own probe to determine this.
 
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+We should only be signalling the link is lost when the firmware indicates
+
+Fixes: 8e84c2582169 ("wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680 hardware")
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+---
+ drivers/net/wireless/ath/wcn36xx/smd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
+index 599cb220b150e..aee4123035d71 100644
+--- a/drivers/net/wireless/ath/wcn36xx/smd.c
++++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+@@ -2647,7 +2647,7 @@ static int wcn36xx_smd_missed_beacon_ind(struct wcn36xx *wcn,
+ 			wcn36xx_dbg(WCN36XX_DBG_HAL, "beacon missed bss_index %d\n",
+ 				    tmp->bss_index);
+ 			vif = wcn36xx_priv_to_vif(tmp);
+-			ieee80211_connection_loss(vif);
++			ieee80211_beacon_loss(vif);
+ 		}
+ 		return 0;
+ 	}
+@@ -2662,7 +2662,7 @@ static int wcn36xx_smd_missed_beacon_ind(struct wcn36xx *wcn,
+ 			wcn36xx_dbg(WCN36XX_DBG_HAL, "beacon missed bss_index %d\n",
+ 				    rsp->bss_index);
+ 			vif = wcn36xx_priv_to_vif(tmp);
+-			ieee80211_connection_loss(vif);
++			ieee80211_beacon_loss(vif);
+ 			return 0;
+ 		}
+ 	}
+-- 
+2.33.0
+
