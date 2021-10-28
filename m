@@ -2,90 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8C3B43DF60
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 12:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3966E43E007
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 13:31:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230213AbhJ1Kyw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 06:54:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37554 "EHLO
+        id S230157AbhJ1Ldd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 07:33:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230222AbhJ1Kyt (ORCPT
+        with ESMTP id S229578AbhJ1Ldc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 06:54:49 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DDE0C06122A
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 03:52:22 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id ee16so10053909edb.10
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 03:52:22 -0700 (PDT)
+        Thu, 28 Oct 2021 07:33:32 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E97CC061570
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 04:31:05 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id d3so9566579wrh.8
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 04:31:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
-        b=MqgQiMnth4O6zLvpsYbAhVLW1BorpgoCleWwfkY0/i+i6OSDuXRZO1jIKzpTTrmehO
-         XtsLWdXiTcL+XCe4naFtf2tTUJnbwwmDpuUkpvRhLd+LEnuxY7nNr11hmTRUVX1WOHsO
-         bN0u1arCg4gm9LHdXRMZFcXOD22U5gDGuBOuhPo6qvWbt6nA2j/p/5IZ88XFHrEsiSW3
-         12hentYJMlWeUfa2lUQkLm+5/fvMSizrI7wGoF2taOa3dgGUV5HKZWb0yAAH7nAXVevJ
-         tDC/xbHNLzSn310XeD3Gkoobjl6MPBQzT5DSLzerNBdTKOdmyp3xvfvOyo80qVUTZIED
-         gaRg==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=v45ZDvsCFAEFClI2WbhlvofL+jPYAH3IJRRv2CmKvZY=;
+        b=Dtp5BSb9RfS5Q4eAHJvIgnSeVRI0mFRwjSX9yXn/Sa3FQT1nKdOPINwHjwY5joS6bw
+         0eIi4/vNnwD7l/M194kArgX4XYRTK3wGwOk1/3ZY8SmsotdyzNnLbWlWI4AzSVcgaloO
+         PpX+Fa/RRGtn/VZkWTNFlLNmlUxUrkeEiUJVmsSBQH92B+XQdfEG9ma8Kq7rKTbsg3ab
+         y7p12BmbHUcHzdegTgjCyafL2Wsv8qG15CFQBTX2fM2mtQ8aItp1tqVhC4tSpokqui4o
+         Z4t5hevM59e9kflaaCJx2YeTXcQPkVaVppylYPjLxMaNCBR5F7fulQBrJe/+I3ZhOoV+
+         S+BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
-        b=HrHdlmc8gQSbJdZQ4evEN4A6erbuVJ/SEpcfnW+ha4/3xeLIBrH8h3fLWTG7YJlyJ8
-         4mznSnyLfNLlD3HpS2WztJC0cOLWIyyWfIAaXKln8kvZEEF1pQUlAJp8/uCrKZqyZQ0H
-         aVgXNqp5tS07nTje1joUUR2q+mKWbSzrQgiRquDODaxXxKraROiRjRMfuAtCbLc6OV7c
-         IgOuSfO2zpS9NlnHUMfnpnRg7Gy4M9Mt1DGRhESr+HnsXQ479BLktBF7Jt4FTV+rJn4c
-         v4L1NA+yCuTuWHcOdvWTJ/8OO+SHOxc8vwslEuQQ6uSdc3rkGxPgLsW3XePPgPIE+uuZ
-         3dcQ==
-X-Gm-Message-State: AOAM532/ToHICrdAFHYeZD7QFMiNhTJ/BbLBBOK5ePtr3SXjE8tCaUbN
-        1E0C5ZlNU5TPneXApqx2gnENy9M8qgPt/ILZrLBV5hla8XaPzWnt
-X-Google-Smtp-Source: ABdhPJw39EF9dJlXS9lAFrZ3adXxB8DVzXcygVzA3uRLiZxWlggxaB9ElCxkEB0P82xisoA6G442GD5iqMe2hCgLIt8=
-X-Received: by 2002:a2e:9a83:: with SMTP id p3mr3750290lji.145.1635418330269;
- Thu, 28 Oct 2021 03:52:10 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=v45ZDvsCFAEFClI2WbhlvofL+jPYAH3IJRRv2CmKvZY=;
+        b=53hIMDNznPE9/FjF+52aMTRJh75C6JLSxyyMU53OBIgLiDyaCVFFIpak8lW0rubrJ8
+         exCnS5oT6j2K0ykJrfVBkt2nBzpMljZ3SlRp3AxsdvoWGhnj9o6RwnbYjKc1gICTWPZx
+         aWJ+AXHQZZXl/8BdDUdViFqdPMmGEn+XntSEp7G9k9JbASekFJuTzwQkDsvCr/a4naUO
+         GV0gW7EQ1SDl0id3KjSFz8XV+8z1T5SEIFsUJeUHc6HtXAkpuxxDu9LD8TAnOjSJxZrb
+         c1LUaSsMHzjxCloIobID4JgR89r/As+V3PpgnAKpzHs5mqp1Z41GrcNXodO7YNVYy2Du
+         TXgw==
+X-Gm-Message-State: AOAM533wJF2rGS7UD0eGUGZImYbB/zYoygWNZWCtnT8d5+I9Ef+duuJb
+        FNNnKftGDyt2nc9KHsoH7e0Gx6NDuDQ=
+X-Google-Smtp-Source: ABdhPJw/1GYkx/Y2CbDy7KIVuyoIC0xF5Cv943IL2bvIf/Qr4SjNwh8qFyBBOVkIW6iQCRMTBjqlaQ==
+X-Received: by 2002:adf:f8c2:: with SMTP id f2mr5062194wrq.234.1635420664066;
+        Thu, 28 Oct 2021 04:31:04 -0700 (PDT)
+Received: from debian64.daheim (p5b0d7857.dip0.t-ipconnect.de. [91.13.120.87])
+        by smtp.gmail.com with ESMTPSA id m3sm2769475wrx.52.2021.10.28.04.31.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Oct 2021 04:31:03 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+        by debian64.daheim with esmtp (Exim 4.95)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1mg1jk-0006pt-1M;
+        Thu, 28 Oct 2021 13:31:03 +0200
+Message-ID: <3a8840ea-1499-950b-fb44-7546a32c586f@gmail.com>
+Date:   Thu, 28 Oct 2021 13:31:02 +0200
 MIME-Version: 1.0
-Received: by 2002:ab3:6f89:0:0:0:0:0 with HTTP; Thu, 28 Oct 2021 03:52:09
- -0700 (PDT)
-Reply-To: aabdulwalialhashmi@gmail.com
-From:   Abdulwali Alhashmi <husamalsayed.hs@gmail.com>
-Date:   Thu, 28 Oct 2021 03:52:09 -0700
-Message-ID: <CAF6yYCeS=rm8=_71-kMjVo4oaVK57w9X52R_yv1HDrBe7vh-sA@mail.gmail.com>
-Subject: PLEASE GET BACK TO ME IF I CAN I TRUST YOU
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH v2] ath10k: fetch (pre-)calibration data via nvmem
+ subsystem
+Content-Language: en-US
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        Ansuel Smith <ansuelsmth@gmail.com>
+References: <20211016234609.1568317-1-chunkeey@gmail.com>
+ <87ee855xwa.fsf@codeaurora.org>
+From:   Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <87ee855xwa.fsf@codeaurora.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-Greetings,
+On 28/10/2021 10:58, Kalle Valo wrote:
+> Christian Lamparter <chunkeey@gmail.com> writes:
+> 
+>> ATH10K chips are used it wide range of routers,
+>> accesspoints, range extenders, network appliances.
+>> On these embedded devices, calibration data is often
+>> stored on the main system's flash and was out of reach
+>> for the driver.
+>>
+>> To bridge this gap, ath10k is getting extended to pull
+>> the (pre-)calibration data through nvmem subsystem.
+>> To do this, a nvmem-cell containing the information can
+>> either be specified in the platform data or via device-tree.
+>>
+>> Tested with:
+>>          Netgear EX6150v2 (IPQ4018 - pre-calibration method)
+>>          TP-Link Archer C7 v2 (QCA9880v2 - old calibration method)
+>>
+>> Cc: Robert Marko <robimarko@gmail.com>
+>> Cc: Thibaut VARÈNE <hacks@slashdirt.org>
+>> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+>> ---
+>>
+>> v1 -> v2:
+>> 	- use %zu and %u in the format string for size_t
+>>            and u32 types (catched by the "kernel test robot").
+>> 	- reworded commit message + successfully tested on QCA9880v2
+>>
+>> I placed the nvmem code in front of the current "file" method
+>> (firmware_request). Reason is that this makes it easier for me
+>> to test it. If needed it can be moved to a different place.
+> 
+> Looks good to me. Before I apply this, I want to mention to that I have
+> had a long in my deferred queue related two patchsets:
 
-Firstly, I apologize for encroaching into your privacy in this manner
-as it may seem unethical though it is a matter of great importance.
 
-I am Abdulwali Alhashmi, I work with Cayman National Bank (Cayman Islands).
+> https://patchwork.kernel.org/project/linux-wireless/patch/20200927192515.86-1-ansuelsmth@gmail.com/
+> https://patchwork.kernel.org/project/linux-wireless/patch/20200927192515.86-2-ansuelsmth@gmail.com/
+Oh ok, serves me right for not looking thoroughly googling this first.
+Alban Bedel and Ansuel's work made this nvmem all possible. And indeed,
+the second patch here looks eerie similar.
 
-I am contacting you because my status would not permit me to do this
-alone as it is concerning our customer and an investment placed under
-our bank's management over 5 years ago.
+Do you want to go with his two patches instead? I'll change mine, so it
+just consists of the cal_mode for the older QCA9880v2,QCA9887 and
+add the -EPROBE_DEFER handling. This -EPROBE_DEFER only ever comes up
+with the Meraki gear. This is because Meraki likes putting the MACs-Values
+into SoC-connected AT24 eeproms-chips. Everyone else just have them in a
+proper FLASH partition. Though, this's usually nothing more than adding
+the following line:
 
-I have a proposal I would love to discuss with you which will be very
-beneficial to both of us. It's regarding my late client who has a huge
-deposit with my bank.
+if (ret == -EPROBER_DEFER)
+	return ret;
 
-He is from your country and shares the same last name with you.
+> https://patchwork.kernel.org/project/linux-wireless/patch/20200918181104.98-1-ansuelsmth@gmail.com/
+> https://patchwork.kernel.org/project/linux-wireless/patch/20200918181104.98-2-ansuelsmth@gmail.com/
 
-I want to seek your consent to present you as the next of kin to my
-late client who died and left a huge deposit with my bank.
+Ansuel's post: https://patchwork.kernel.org/project/linux-wireless/patch/20200918181104.98-2-ansuelsmth@gmail.com/#23639361
+ > You are right about nvmem... Problem is that nvmem for mtd is still not
+ > supported. I already sent a patch to fix this in the mtd mailing list but
+ > I'm waiting for review...
+ > If that will be accepted, I can convert this patch to use nvmem api.
 
-I would respectfully request that you keep the contents of this mail
-confidential and respect the integrity of the information you come by
-as a result of this mail.
+The nvmem api is there (which makes these two patches obsolete I think).
+Granted: The nvmem can't do all the same cases (From what I know, mtd
+partitions splitters and mtdparts through commandline is being worked on.
+But we always have userspace + firmware_request as a fallback).
 
-Please kindly get back to me for more details if I can TRUST YOU.{
-aabdulwalialhashmi@gmail.com }
-
-Regards
-Abdulwali Alhashmi
-Treasury and Deposit Management,
-Cayman National Bank Cayman Islands
+Cheers,
+Christian
