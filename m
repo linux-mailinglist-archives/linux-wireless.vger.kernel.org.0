@@ -2,121 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED4843DCEF
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 10:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7264843DD04
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 10:41:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229950AbhJ1IcI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 04:32:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33536 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbhJ1IcG (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 04:32:06 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B5BC061745;
-        Thu, 28 Oct 2021 01:29:39 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        id S229934AbhJ1In2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 04:43:28 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:31149 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229800AbhJ1In1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Oct 2021 04:43:27 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1635410461; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=O7AOKoJYSND+E4RnN3ie5X4QpUzInyFR/VVhy/H4E+Y=; b=HjDz95tcvrGZGZEIenasgZutZov7Zi45OTndqfOFuceSnbRb4hJp2ccR1hVOCtsnFbrq41Ij
+ 9HhJ6OW9jg3gWaXajQUrDNVuai2ygp8KkfSGrDKmSLL/trJ9EfqtJXWYYXi7MvaSRIa8mP2P
+ IWfcLXOnTnE9lqIYXdA+SRcX+Pw=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 617a6212648aeeca5cf3a13e (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Oct 2021 08:40:50
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 40677C4338F; Thu, 28 Oct 2021 08:40:50 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4HfzJ01H0fz4xcC;
-        Thu, 28 Oct 2021 19:29:36 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1635409777;
-        bh=X4uCS05x0BzlU2reBiuh8ykPwQkXGQAAbY+K+IifiSI=;
-        h=Date:From:To:Cc:Subject:From;
-        b=XR7XhmZ+7HCFRY/IO6tnCUMJbT2Pi13eORSgGN0/eK9lGQJzn9PAFckjqc5krfBH/
-         ofT4jFtjdO/1dgu4599n9kFi1yJs21noy3F9EL1iQLbw0xtFJn0yYXotfafAUetZOP
-         5+yIhklU/MKzi0j1fJONIsJzfWgpS2knQgcGrt57bCUT17bhDuJClwZWD1sHVMejNv
-         GP6I1D7gkXhBSKYT4/+bcmHRVNgVxMu0xV1OK+1zpkZg7TVxUK4scRV68MVRz2/p9C
-         Tg8aO0SIQrTkB/Xq60TfkzG0BxG3BALEpKHHmhj4Z/lfedto0kayj9Skv/IRQCGhHW
-         MR2gBMpf4RnLQ==
-Date:   Thu, 28 Oct 2021 19:29:34 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kees Cook <keescook@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Wireless <linux-wireless@vger.kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 639ECC4338F;
+        Thu, 28 Oct 2021 08:40:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 639ECC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux Next Mailing List <linux-next@vger.kernel.org>,
         Luca Coelho <luciano.coelho@intel.com>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: linux-next: manual merge of the kspp tree with the
- wireless-drivers-next tree
-Message-ID: <20211028192934.01520d7e@canb.auug.org.au>
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        David Miller <davem@davemloft.net>
+Subject: Re: linux-next: manual merge of the kspp tree with the wireless-drivers-next tree
+References: <20211028192934.01520d7e@canb.auug.org.au>
+Date:   Thu, 28 Oct 2021 11:40:42 +0300
+In-Reply-To: <20211028192934.01520d7e@canb.auug.org.au> (Stephen Rothwell's
+        message of "Thu, 28 Oct 2021 19:29:34 +1100")
+Message-ID: <87ilxh5yph.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/DOZuLkFxk_X_y2D5FQRhN18";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/DOZuLkFxk_X_y2D5FQRhN18
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+(adding Jakub and Dave so that they are aware of this)
 
-Hi all,
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
 
-Today's linux-next merge of the kspp tree got a conflict in:
+> Hi all,
+>
+> Today's linux-next merge of the kspp tree got a conflict in:
+>
+>   drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+>
+> between commit:
+>
+>   dc52fac37c87 ("iwlwifi: mvm: Support new TX_RSP and COMPRESSED_BA_RES versions")
+>
+> from the wireless-drivers-next tree and commit:
+>
+>   fa7845cfd53f ("treewide: Replace open-coded flex arrays in unions")
+>
+> from the kspp tree.
+>
+> I fixed it up (see below) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
 
-  drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+I don't know what kspp tree is and either I don't know why they didn't
+submit the patch to wireless-drivers-next, so I assume they will handle
+the conflict as well. But I really prefer that they would submit patches
+to wireless-drivers-next instead to avoid unnecessary conflicts like
+this.
 
-between commit:
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-  dc52fac37c87 ("iwlwifi: mvm: Support new TX_RSP and COMPRESSED_BA_RES ver=
-sions")
-
-from the wireless-drivers-next tree and commit:
-
-  fa7845cfd53f ("treewide: Replace open-coded flex arrays in unions")
-
-from the kspp tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-index 9b3bce83efb6,5fddfd391941..000000000000
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-@@@ -720,10 -715,11 +722,12 @@@ struct iwl_mvm_compressed_ba_notif=20
-  	__le32 tx_rate;
-  	__le16 tfd_cnt;
-  	__le16 ra_tid_cnt;
-- 	struct iwl_mvm_compressed_ba_ratid ra_tid[0];
-- 	struct iwl_mvm_compressed_ba_tfd tfd[];
-+ 	union {
-+ 		DECLARE_FLEX_ARRAY(struct iwl_mvm_compressed_ba_ratid, ra_tid);
-+ 		DECLARE_FLEX_ARRAY(struct iwl_mvm_compressed_ba_tfd, tfd);
-+ 	};
- -} __packed; /* COMPRESSED_BA_RES_API_S_VER_4 */
- +} __packed; /* COMPRESSED_BA_RES_API_S_VER_4,
- +	       COMPRESSED_BA_RES_API_S_VER_5 */
- =20
-  /**
-   * struct iwl_mac_beacon_cmd_v6 - beacon template command
-
---Sig_/DOZuLkFxk_X_y2D5FQRhN18
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmF6X24ACgkQAVBC80lX
-0GxeDgf/T3r+U+CZjL9KlT19vbpSRLwiT8w+XGLe0g66wEreQRWCqtU5mJMvtAND
-DoXEYjGVrSRF358gzMYbbubrHD8l55lT0z9LxB0Ug7m4H5ilrpg2huufzPL2C8ul
-H33zGMNoElTG5/bYih+1k5oeupOHqDMW4zEkbqb+BZc+M5VJ3xSFQ1lc3c+f6/aK
-SRjoFU76ykMIeNjx/WulA8rGPRWjVnr7aRuBEROt1dI9HBwa61Ae5uGB2TTd+uFs
-qFAn7LvgnzaHt5WfpLWBLwrv9vgsJ5kyuOjiFjJHcdjOsbZBfFZgDtuR3koYh/kX
-kj7oydHy4sDNLswqYguxsvZ6898XFA==
-=Di/1
------END PGP SIGNATURE-----
-
---Sig_/DOZuLkFxk_X_y2D5FQRhN18--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
