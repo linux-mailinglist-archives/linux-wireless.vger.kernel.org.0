@@ -2,124 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93FF543DCA6
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 10:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ED4843DCEF
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 10:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229946AbhJ1IKR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 04:10:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56806 "EHLO
+        id S229950AbhJ1IcI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 04:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbhJ1IKQ (ORCPT
+        with ESMTP id S229626AbhJ1IcG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 04:10:16 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90091C061570;
-        Thu, 28 Oct 2021 01:07:49 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id g10so21099142edj.1;
-        Thu, 28 Oct 2021 01:07:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=PQMilxdsobKkZotwzejJFonaMjfKjSknBXqsMZvx0wQ=;
-        b=AgFvAT9zwTDHSJqVCaMM2YgoGVQzzjcy7QBETqPIPji32DGYNI8PEyDIVqA8cJwvif
-         dmN3LV517QGqQqfx+HOix1xqkSSPk4Srl70wIICbhOLQcw/BWxWrsrGrODN1AZq83omx
-         J8w6NnMINGhee0OwIzXhNJQlcGyNoO8BbluvfQojTHRRATW6haxblgkLAHTZK0heCNTL
-         asMRvE7sTKQt+LOdF7mkxNCQZjVVYktDjaK/ib9E7zS+7BHkKgrxLrcByJsfWA9J2Dkj
-         eRDcfSu63in8CUEU5QJIht7nTNeQnFQDBaicKq8DdGg4uWSnJrAXShOCcjktCOAX4keQ
-         V83A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=PQMilxdsobKkZotwzejJFonaMjfKjSknBXqsMZvx0wQ=;
-        b=ddzb1ZB8m8uvv8fSajuAPrMUYxtbeFr9kKpm4PRV4QbqxHqtWCrom7rlH7vYtvGjE+
-         fGQgR7NTRdGjKJgi9EPj+GWLUgpVOX2kWIbQMcClYqstC3uQl2OIGw00hGtWAHxzPme5
-         7gwwtejQ1S0vr54ije9RA3rPlblq2Qw6HURl2E30Qx4vUQf/oUQLTRW85VSeDrIpJA6O
-         TKuoYNQMitwnIF6/oNzbCBdeyxw9g7IRLvxhB2ruPXyFNuwC7YgKGHbV3ky0HJPx76/M
-         Xc8C2HLxZOzBAaABmVl6cwCFCjFTByWKOqFEPABJdMq6Ls7mNW8zvDRWC8K4IQFzB2dY
-         wKSw==
-X-Gm-Message-State: AOAM530mK2ufKisRF4DSIZYArK/VT5JQ4h+dOJI5N5sEl12fd/fD8ATX
-        ludGKkSbc8Vc6oaFHx85Cw+JHms5K4I+t4K20hktXGVpvGo=
-X-Google-Smtp-Source: ABdhPJxP9iHBd7oEN+ZaEwTrOEY8H/DsYWGvPaQrRs80Sbt+ZjOPfv8zkxMu6fMkP9aMIIkj9DaNcJh2b12XhDuFEBY=
-X-Received: by 2002:a17:907:1c9e:: with SMTP id nb30mr3500564ejc.141.1635408468100;
- Thu, 28 Oct 2021 01:07:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20211028073729.24408-1-verdre@v0yd.nl>
-In-Reply-To: <20211028073729.24408-1-verdre@v0yd.nl>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 28 Oct 2021 11:07:11 +0300
-Message-ID: <CAHp75Ve3Rp7AziB8k8ESM41xEV8uNWD21Wh_MPcRqfDcJ0QR-w@mail.gmail.com>
-Subject: Re: [PATCH] mwifiex: Add quirk to disable deep sleep with certain
- hardware revision
-To:     =?UTF-8?Q?Jonas_Dre=C3=9Fler?= <verdre@v0yd.nl>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
+        Thu, 28 Oct 2021 04:32:06 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B5BC061745;
+        Thu, 28 Oct 2021 01:29:39 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4HfzJ01H0fz4xcC;
+        Thu, 28 Oct 2021 19:29:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1635409777;
+        bh=X4uCS05x0BzlU2reBiuh8ykPwQkXGQAAbY+K+IifiSI=;
+        h=Date:From:To:Cc:Subject:From;
+        b=XR7XhmZ+7HCFRY/IO6tnCUMJbT2Pi13eORSgGN0/eK9lGQJzn9PAFckjqc5krfBH/
+         ofT4jFtjdO/1dgu4599n9kFi1yJs21noy3F9EL1iQLbw0xtFJn0yYXotfafAUetZOP
+         5+yIhklU/MKzi0j1fJONIsJzfWgpS2knQgcGrt57bCUT17bhDuJClwZWD1sHVMejNv
+         GP6I1D7gkXhBSKYT4/+bcmHRVNgVxMu0xV1OK+1zpkZg7TVxUK4scRV68MVRz2/p9C
+         Tg8aO0SIQrTkB/Xq60TfkzG0BxG3BALEpKHHmhj4Z/lfedto0kayj9Skv/IRQCGhHW
+         MR2gBMpf4RnLQ==
+Date:   Thu, 28 Oct 2021 19:29:34 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kees Cook <keescook@chromium.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: linux-next: manual merge of the kspp tree with the
+ wireless-drivers-next tree
+Message-ID: <20211028192934.01520d7e@canb.auug.org.au>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/DOZuLkFxk_X_y2D5FQRhN18";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 28, 2021 at 10:38 AM Jonas Dre=C3=9Fler <verdre@v0yd.nl> wrote:
->
-> The 88W8897 PCIe+USB card in the hardware revision 20 apparently has a
-> hardware issue where the card wakes up from deep sleep randomly and very
-> often, somewhat depending on the card activity, maybe the hardware has a
-> floating wakeup pin or something.
->
-> Those continuous wakeups prevent the card from entering host sleep when
-> the computer suspends. And because the host won't answer to events from
-> the card anymore while it's suspended, the firmwares internal
-> powersaving state machine seems to get confused and the card can't sleep
+--Sig_/DOZuLkFxk_X_y2D5FQRhN18
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-power saving
+Hi all,
 
-> anymore at all after that.
->
-> Since we can't work around that hardware bug in the firmware, let's
-> get the hardware revision string from the firmware and match it with
-> known bad revisions. Then disable auto deep sleep for those revisions,
-> which makes sure we no longer get those spurious wakeups.
+Today's linux-next merge of the kspp tree got a conflict in:
 
-...
+  drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
 
-> +static void maybe_quirk_fw_disable_ds(struct mwifiex_adapter *adapter)
-> +{
-> +       struct mwifiex_private *priv =3D mwifiex_get_priv(adapter, MWIFIE=
-X_BSS_ROLE_STA);
-> +       struct mwifiex_ver_ext ver_ext;
+between commit:
 
-> +       set_bit(MWIFIEX_IS_REQUESTING_FW_VEREXT, &adapter->work_flags);
+  dc52fac37c87 ("iwlwifi: mvm: Support new TX_RSP and COMPRESSED_BA_RES ver=
+sions")
 
-This does not bring atomicity to this function.
-You need test_and_set_bit().
+from the wireless-drivers-next tree and commit:
 
-Otherwise the bit may very well be cleared already here. And function
-may enter here again.
+  fa7845cfd53f ("treewide: Replace open-coded flex arrays in unions")
 
-If this state machine is protected by lock or so, then why not use
-__set_bit() to show this clearly?
+from the kspp tree.
 
-> +       memset(&ver_ext, 0, sizeof(ver_ext));
-> +       ver_ext.version_str_sel =3D 1;
-> +       mwifiex_send_cmd(priv, HostCmd_CMD_VERSION_EXT,
-> +                        HostCmd_ACT_GEN_GET, 0, &ver_ext, false);
-> +}
-
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
 
 --=20
-With Best Regards,
-Andy Shevchenko
+Cheers,
+Stephen Rothwell
+
+diff --cc drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+index 9b3bce83efb6,5fddfd391941..000000000000
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+@@@ -720,10 -715,11 +722,12 @@@ struct iwl_mvm_compressed_ba_notif=20
+  	__le32 tx_rate;
+  	__le16 tfd_cnt;
+  	__le16 ra_tid_cnt;
+- 	struct iwl_mvm_compressed_ba_ratid ra_tid[0];
+- 	struct iwl_mvm_compressed_ba_tfd tfd[];
++ 	union {
++ 		DECLARE_FLEX_ARRAY(struct iwl_mvm_compressed_ba_ratid, ra_tid);
++ 		DECLARE_FLEX_ARRAY(struct iwl_mvm_compressed_ba_tfd, tfd);
++ 	};
+ -} __packed; /* COMPRESSED_BA_RES_API_S_VER_4 */
+ +} __packed; /* COMPRESSED_BA_RES_API_S_VER_4,
+ +	       COMPRESSED_BA_RES_API_S_VER_5 */
+ =20
+  /**
+   * struct iwl_mac_beacon_cmd_v6 - beacon template command
+
+--Sig_/DOZuLkFxk_X_y2D5FQRhN18
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmF6X24ACgkQAVBC80lX
+0GxeDgf/T3r+U+CZjL9KlT19vbpSRLwiT8w+XGLe0g66wEreQRWCqtU5mJMvtAND
+DoXEYjGVrSRF358gzMYbbubrHD8l55lT0z9LxB0Ug7m4H5ilrpg2huufzPL2C8ul
+H33zGMNoElTG5/bYih+1k5oeupOHqDMW4zEkbqb+BZc+M5VJ3xSFQ1lc3c+f6/aK
+SRjoFU76ykMIeNjx/WulA8rGPRWjVnr7aRuBEROt1dI9HBwa61Ae5uGB2TTd+uFs
+qFAn7LvgnzaHt5WfpLWBLwrv9vgsJ5kyuOjiFjJHcdjOsbZBfFZgDtuR3koYh/kX
+kj7oydHy4sDNLswqYguxsvZ6898XFA==
+=Di/1
+-----END PGP SIGNATURE-----
+
+--Sig_/DOZuLkFxk_X_y2D5FQRhN18--
