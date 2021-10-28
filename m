@@ -2,133 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CCBF43F2A4
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 00:21:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C599A43F2D4
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 00:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231476AbhJ1WYO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 18:24:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55134 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231298AbhJ1WYO (ORCPT
+        id S231468AbhJ1WfA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 18:35:00 -0400
+Received: from mailgw02.mediatek.com ([216.200.240.185]:35927 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231322AbhJ1Wew (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 18:24:14 -0400
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 828AFC061570;
-        Thu, 28 Oct 2021 15:21:46 -0700 (PDT)
-Received: by mail-qv1-xf31.google.com with SMTP id s9so2452944qvk.12;
-        Thu, 28 Oct 2021 15:21:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=/T5F9B07gErRjYPria9st2w4l8wiE8xoQUEOHVZGBvM=;
-        b=cqtX/zRCsu1o1qbVcFQmpDrYQ3+yL++ZD059O9aXErqM7s4r2YYk5G5k6k2MU4WCXU
-         5d9YWkx5fJDDC7hrEIMFECAkWrHvfrIPWk+geI54qxLUqmOAnVK02sc9AJISjJpvooQs
-         0zCZZuh/1T9etRR+mtyGLfqGY/vTqliOfMm36Hb3U+/PWjc+H8oXWfwGDaFpFbs2Sla3
-         u8ym2NCG/EC7t25SqQOUy3lpC//9B96QDlNOatYWD3nDfJZT2JIENAyIzoNuzazZ0g2t
-         VT3fwMoXDjzXR3zxawPSPtCA56kee46tlvy9mcwY2qRL7pmL+i765nXuC+YlA9C9kE5r
-         7IlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=/T5F9B07gErRjYPria9st2w4l8wiE8xoQUEOHVZGBvM=;
-        b=BQNbapo5Z+vF3qShO4lMIXUvXEfZe6TjaMpsUaTq/NuC8VJAou3WiUboWA9v5w1QT0
-         9v/c3Z839/ZPl8o72wzRmsZKnfvWAmC3LqdLu4NPISCVK4Dup/902JMPFhLWfMmYXzqk
-         aw7YMCOLFq3tXSx2Sl3wF4raNauE51LxlBBRL9q4yIRZr9/xlpju60W7ZVPTOrceYBfZ
-         ew2bBai3yHBhAnADb6yoG/U+2ckAGO8Wiq/YbEvvkaiO03NyOOaPsvvFW/Mm8C0IXdPW
-         j3MfmvXq45qR4pBlOT/00CRRzU1zbLARUNnY/iuePA39L6ULZvrSw9uijsjWRjwxTM6I
-         s2Lg==
-X-Gm-Message-State: AOAM531XxXhmoTgdR1PLckAS6OJC/qcKhJ9o5oh0IaK3U6ig+d79nBQE
-        Ns5ws9b4uKtdIfwxKB1mgLg9tS6PTzLuWQ==
-X-Google-Smtp-Source: ABdhPJxrFWd7ykakPW+atJE2BnfLAVVaBklvxy7ljS6mwW0kjUE7gDDiD31OnzQ/fxQohs1eq6P5kQ==
-X-Received: by 2002:a05:6214:5086:: with SMTP id kk6mr6749178qvb.63.1635459705668;
-        Thu, 28 Oct 2021 15:21:45 -0700 (PDT)
-Received: from 10-18-43-117.dynapool.wireless.nyu.edu (216-165-95-164.natpool.nyu.edu. [216.165.95.164])
-        by smtp.gmail.com with ESMTPSA id c10sm3067773qtd.27.2021.10.28.15.21.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Oct 2021 15:21:45 -0700 (PDT)
-Date:   Thu, 28 Oct 2021 18:21:42 -0400
-From:   Zekun Shen <bruceshenzk@gmail.com>
-To:     bruceshenzk@gmail.com
-Cc:     ath9k-devel@qca.qualcomm.com, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ath9k: Fix out-of-bound memcpy in ath9k_hif_usb_rx_stream
-Message-ID: <YXsidrRuK6zBJicZ@10-18-43-117.dynapool.wireless.nyu.edu>
+        Thu, 28 Oct 2021 18:34:52 -0400
+X-UUID: 89480cb97592480881c6403387d20050-20211028
+X-UUID: 89480cb97592480881c6403387d20050-20211028
+Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 225360187; Thu, 28 Oct 2021 15:32:22 -0700
+Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
+ MTKMBS62DR.mediatek.inc (172.29.94.18) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Thu, 28 Oct 2021 15:30:00 -0700
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
+ mtkmbs10n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Fri, 29 Oct 2021 06:30:00 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
+        <steve.lee@mediatek.com>, <jsiuda@google.com>,
+        <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH] mt76: mt7921: drop offload_flags overwritten
+Date:   Fri, 29 Oct 2021 06:29:58 +0800
+Message-ID: <6eb228b938338bc33c9c5b0eb05ea8d0587a704b.1635460021.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Large pkt_len can lead to out-out-bound memcpy. Current
-ath9k_hif_usb_rx_stream allows combining the content of two urb
-inputs to one pkt. The first input can indicate the size of the
-pkt. Any remaining size is saved in hif_dev->rx_remain_len.
-While processing the next input, memcpy is used with rx_remain_len.
+From: Sean Wang <sean.wang@mediatek.com>
 
-4-byte pkt_len can go up to 0xffff, while a single input is 0x4000
-maximum in size (MAX_RX_BUF_SIZE). Thus, the patch adds a check for
-pkt_len which must not exceed 2 * MAX_RX_BUG_SIZE.
+offload_flags have to be dropped for mt7921 because mt76.omac_idx 0 would
+always run as station mode that would cause Tx encapsulation setting
+is not applied to mac80211.
 
-BUG: KASAN: slab-out-of-bounds in ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
-Read of size 46393 at addr ffff888018798000 by task kworker/0:1/23
+Also, drop IEEE80211_OFFLOAD_ENCAP_4ADDR too because it is not really
+being supported.
 
-CPU: 0 PID: 23 Comm: kworker/0:1 Not tainted 5.6.0 #63
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS rel-1.10.2-0-g5f4c7b1-prebuilt.qemu-project.org 04/01/2014
-Workqueue: events request_firmware_work_func
-Call Trace:
- <IRQ>
- dump_stack+0x76/0xa0
- print_address_description.constprop.0+0x16/0x200
- ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
- ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
- __kasan_report.cold+0x37/0x7c
- ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
- kasan_report+0xe/0x20
- check_memory_region+0x15a/0x1d0
- memcpy+0x20/0x50
- ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
- ? hif_usb_mgmt_cb+0x2d9/0x2d9 [ath9k_htc]
- ? _raw_spin_lock_irqsave+0x7b/0xd0
- ? _raw_spin_trylock_bh+0x120/0x120
- ? __usb_unanchor_urb+0x12f/0x210
- __usb_hcd_giveback_urb+0x1e4/0x380
- usb_giveback_urb_bh+0x241/0x4f0
- ? __hrtimer_run_queues+0x316/0x740
- ? __usb_hcd_giveback_urb+0x380/0x380
- tasklet_action_common.isra.0+0x135/0x330
- __do_softirq+0x18c/0x634
- irq_exit+0x114/0x140
- smp_apic_timer_interrupt+0xde/0x380
- apic_timer_interrupt+0xf/0x20
-
-Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
+Fixes: e0f9fdda81bd ("mt76: mt7921: add ieee80211_ops")
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/ath/ath9k/hif_usb.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-index 860da13bf..0681bc5fa 100644
---- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-+++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -589,6 +589,12 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 			RX_STAT_INC(skb_dropped);
- 			return;
- 		}
-+		if (pkt_len > 2 * MAX_RX_BUF_SIZE) {
-+			dev_err(&hif_dev->udev->dev,
-+				"ath9k_htc: invalid pkt_len (%x)\n", pkt_len);
-+			RX_STAT_INC(skb_dropped);
-+			return;
-+		}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 633c6d2a57ac..b144f5491798 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -318,12 +318,6 @@ static int mt7921_add_interface(struct ieee80211_hw *hw,
+ 		mtxq->wcid = &mvif->sta.wcid;
+ 	}
  
- 		pad_len = 4 - (pkt_len & 0x3);
- 		if (pad_len == 4)
+-	if (vif->type != NL80211_IFTYPE_AP &&
+-	    (!mvif->mt76.omac_idx || mvif->mt76.omac_idx > 3))
+-		vif->offload_flags = 0;
+-
+-	vif->offload_flags |= IEEE80211_OFFLOAD_ENCAP_4ADDR;
+-
+ out:
+ 	mt7921_mutex_release(dev);
+ 
 -- 
 2.25.1
 
