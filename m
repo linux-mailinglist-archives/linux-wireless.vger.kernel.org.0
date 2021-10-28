@@ -2,109 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF76843F1A5
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 23:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BA1343F1C2
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 23:32:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231235AbhJ1V3v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 17:29:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42492 "EHLO
+        id S231453AbhJ1VfI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 17:35:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230476AbhJ1V3u (ORCPT
+        with ESMTP id S231520AbhJ1Vep (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 17:29:50 -0400
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A67C061570
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 14:27:22 -0700 (PDT)
-Received: by mail-oi1-x233.google.com with SMTP id x8so5963656oix.2
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 14:27:22 -0700 (PDT)
+        Thu, 28 Oct 2021 17:34:45 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E6CDC06118D
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 14:32:11 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id l13so331036pls.3
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 14:32:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ojtgT//7p7t10p7AJbgEBlvuMnFN3DnPO87emGYBPlo=;
-        b=dOBpw4p+OyNuZ2q2pbtiHIDy0of27aYm+errnGezomSb4EzF587zcp3XyKPZKn0xUD
-         spwGOEA/IRD4CkdZDRXcy2HiRDXyRPqihqHl9xr053n57sKFpi/ezlFFjKsWqjvvifdV
-         vOOacmOsQTpGvspg1qEgiSjw7oNKit2slbMHI=
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Uy4mRbBBqA+oiG8IXstn8KcE/N1G+FCE7sqsdumsmms=;
+        b=AyjigdjLgocQsgIuq8Ha1vmKHdVArVun9BzEHdA6o8NBbDsP7D4xtGjqa5F4lhuphX
+         fNQeGBADxcDGvgylDZeHtre71zUQlq2CLEzawVYj7LTm9gcA49bXpCdQHr8a2F5ieO7z
+         jWdWhywQ1F4B+TT5+tyjEWDj3LMPqQ6HDFmfA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ojtgT//7p7t10p7AJbgEBlvuMnFN3DnPO87emGYBPlo=;
-        b=4ua8VNXhc+Kh4QW8yUfCnGiskdJxolmovTQZ1r6Gb38QSNFTrV76Tfva/OWEAnKmMs
-         i9aIaLQUUBYCe42rjV7dQMPBZITmV/hN86L7BD/SswDe3bLuLSU9N8u++Fbk3OoQiwpE
-         PIuISSxtxKHXAJLh19JJhiulSJUQ9z36onNsePYWkT91hOnFoERZkTzfG1+FynmLgbVk
-         fUPpWcjDLspNDe6ti08NPzj+EzKLdyQJvbGe8rZ50YM28Q8eY2+F/azvX8Jo2bnuSCNI
-         WmxuQ4dBHVOFdxvoiCdlMUatvDUCM6kvfQRs68THxo15aBqMSQpspbc8h+WkGjuIKIHg
-         jbjA==
-X-Gm-Message-State: AOAM533JJHBDGf1+DnpvypmIJqUoC1h+0ITipH4lppDyAlIrYIhbqH8L
-        L1VpPqEBfPrn/j96ykhLwQO2wEpFHoULLw==
-X-Google-Smtp-Source: ABdhPJxGK29D5gbO1eVMicUva/TXc9FiZEvqXra6WJZ+jKGRYP4U5KmFuXwRsvZNqfl6OC2+u4rWDA==
-X-Received: by 2002:a05:6808:218e:: with SMTP id be14mr3546943oib.147.1635456440981;
-        Thu, 28 Oct 2021 14:27:20 -0700 (PDT)
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com. [209.85.210.49])
-        by smtp.gmail.com with ESMTPSA id r23sm1346996otg.71.2021.10.28.14.27.19
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Oct 2021 14:27:20 -0700 (PDT)
-Received: by mail-ot1-f49.google.com with SMTP id n13-20020a9d710d000000b005558709b70fso4076572otj.10
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 14:27:19 -0700 (PDT)
-X-Received: by 2002:a05:6830:4009:: with SMTP id h9mr5296087ots.186.1635456439298;
- Thu, 28 Oct 2021 14:27:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20211028073729.24408-1-verdre@v0yd.nl>
-In-Reply-To: <20211028073729.24408-1-verdre@v0yd.nl>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Uy4mRbBBqA+oiG8IXstn8KcE/N1G+FCE7sqsdumsmms=;
+        b=KmdnVY+qooFL60okW6gz8THHoYgvwql9v0oBlrGxd3WOnQP9p2LLTOBMp07h9c/O3p
+         HNbJ3sKCu6m3uYnzpCTuxpM9APSGlcNuhr24szLGlZIEfm6hoewjzVyOPsaTGEo7ld6o
+         P5Bgi5R4XetIWsS/SDj7xYPwXYU/uRazOlOAnIGstGEtjUiaPZkZg7PMJsw6k+XeuzYe
+         8q0Y6rvfABb+0NlRIcNFDzb1peMNGc9/HiSFF0a3rkOa6USJworDyx/42DfJuy1ZAh2/
+         9w9Q664ZaviRIfcjNRuTaYSMiXTRdzT7uKFV5j6sOiL89nhILsmqyIfF49h586Okh2g4
+         oHAQ==
+X-Gm-Message-State: AOAM532Dg1Q8bt3qbQXSwaTOv0Zja80QX/DrXX8zDTXDeowpVRmOxff7
+        t5K5xMz7uKrf2OSYp2PIYy9qCOvb9aUx6g==
+X-Google-Smtp-Source: ABdhPJwWVexu+q9+KrhJQxOn+ubq2XpJHScki+SynJ+d7Vk7PZNW3Y8qnXl8vPdXNVMdGCpGZmSy4g==
+X-Received: by 2002:a17:90a:b783:: with SMTP id m3mr15700631pjr.183.1635456730920;
+        Thu, 28 Oct 2021 14:32:10 -0700 (PDT)
+Received: from google.com ([2620:15c:202:201:dd0:1290:5368:ac15])
+        by smtp.gmail.com with ESMTPSA id k73sm2751154pgc.63.2021.10.28.14.32.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Oct 2021 14:32:10 -0700 (PDT)
+Date:   Thu, 28 Oct 2021 14:32:08 -0700
 From:   Brian Norris <briannorris@chromium.org>
-Date:   Thu, 28 Oct 2021 14:27:06 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXOrad3b=b8+vwuF6m3+ZcigVaoJySpDXXZOnC3O8CJBSw@mail.gmail.com>
-Message-ID: <CA+ASDXOrad3b=b8+vwuF6m3+ZcigVaoJySpDXXZOnC3O8CJBSw@mail.gmail.com>
-Subject: Re: [PATCH] mwifiex: Add quirk to disable deep sleep with certain
- hardware revision
-To:     =?UTF-8?Q?Jonas_Dre=C3=9Fler?= <verdre@v0yd.nl>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        kevin_yang@realtek.com
+Subject: Re: [PATCH 1/2] rtw89: update tx power limit/limit_ru tables to R54
+Message-ID: <YXsW2K1BWQjX1w4x@google.com>
+References: <20211028084054.12962-1-pkshih@realtek.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211028084054.12962-1-pkshih@realtek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 28, 2021 at 12:37 AM Jonas Dre=C3=9Fler <verdre@v0yd.nl> wrote:
->
-> The 88W8897 PCIe+USB card in the hardware revision 20 apparently has a
-> hardware issue where the card wakes up from deep sleep randomly and very
-> often, somewhat depending on the card activity, maybe the hardware has a
-> floating wakeup pin or something.
+Hi,
 
-What makes you think it's associated with the particular "hardware
-revision 20"? Have you used multiple revisions on the same platform
-and found that only certain ones fail in this way? Otherwise, your
-theory in the last part of your sentence sounds like a platform issue,
-where you might do a DMI match instead.
+On Thu, Oct 28, 2021 at 04:40:53PM +0800, Ping-Ke Shih wrote:
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+> 
+> Support QATAR in rtw89_regulation_type and reorder the enum.
+> Update tx power limit table and tx power limit_ru table to configure QATAR
+> and adjust indexes to align rtw89_regulation_type enum.
+> 
+> Besides, if an unassigned entry of limit/limit_ru tables is read,
+> return the corresponding WW value for the unconfigured case.
+> 
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+>  drivers/net/wireless/realtek/rtw89/core.h     |    9 +-
+>  drivers/net/wireless/realtek/rtw89/phy.c      |   12 +
+>  .../wireless/realtek/rtw89/rtw8852a_table.c   | 5199 +++++++++++------
+>  3 files changed, 3488 insertions(+), 1732 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+> index c2885e4dd882..3729abda04f9 100644
+> --- a/drivers/net/wireless/realtek/rtw89/core.h
+> +++ b/drivers/net/wireless/realtek/rtw89/core.h
+> @@ -411,12 +411,13 @@ enum rtw89_regulation_type {
+>  	RTW89_NA	= 4,
+>  	RTW89_IC	= 5,
+>  	RTW89_KCC	= 6,
+> -	RTW89_NCC	= 7,
+> -	RTW89_CHILE	= 8,
+> -	RTW89_ACMA	= 9,
+> -	RTW89_MEXICO	= 10,
+> +	RTW89_ACMA	= 7,
+> +	RTW89_NCC	= 8,
+> +	RTW89_MEXICO	= 9,
+> +	RTW89_CHILE	= 10,
+>  	RTW89_UKRAINE	= 11,
+>  	RTW89_CN	= 12,
+> +	RTW89_QATAR	= 13,
+>  	RTW89_REGD_NUM,
+>  };
+>  
+> diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+> index ab134856baac..0620ef02e275 100644
+> --- a/drivers/net/wireless/realtek/rtw89/phy.c
+> +++ b/drivers/net/wireless/realtek/rtw89/phy.c
 
-> --- a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
-> @@ -708,6 +708,22 @@ static int mwifiex_ret_ver_ext(struct mwifiex_privat=
-e *priv,
->  {
->         struct host_cmd_ds_version_ext *ver_ext =3D &resp->params.verext;
->
-> +       if (test_and_clear_bit(MWIFIEX_IS_REQUESTING_FW_VEREXT, &priv->ad=
-apter->work_flags)) {
-> +               if (strncmp(ver_ext->version_str, "ChipRev:20, BB:9b(10.0=
-0), RF:40(21)", 128) =3D=3D 0) {
+> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
+> index 3a4fe7207420..6a61549ffac7 100644
+> --- a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
+> +++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
+> @@ -43556,1346 +43556,1850 @@ const s8 rtw89_8852a_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+>  	[0][0][0][0][1][0] = 56,
+>  	[0][0][0][0][3][0] = 68,
+>  	[0][0][0][0][5][0] = 76,
+> -	[0][0][0][0][6][0] = 56,
+> -	[0][0][0][0][9][0] = 56,
+> -	[0][0][0][0][8][0] = 60,
+> +	[0][0][0][0][6][0] = 76,
+> +	[0][0][0][0][7][0] = 56,
+> +	[0][0][0][0][10][0] = 60,
+... 
 
-Rather than memorize the 128-size array here, maybe use
-sizeof(ver_ext->version_str) ?
+If one of these colums is based on an enum, you should probably *use*
+the enum in the table. Then this patch would probably much much smaller,
+and it would be clear what parts are changes and what parts are just
+renumbering...
+
+I'd suggest splitting this into at least one more patch, where the first
+patch should replace all the magic numbers (0..12) with the appropriate
+rtw89_regulation_type values.
 
 Brian
