@@ -2,92 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2B8E43E185
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 15:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7547F43E21B
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 15:27:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230380AbhJ1NEP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 09:04:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39190 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230367AbhJ1NEN (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 09:04:13 -0400
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93649C061767
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 06:01:46 -0700 (PDT)
-Received: by mail-oi1-x236.google.com with SMTP id y128so8127017oie.8
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 06:01:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=A3PFuF6YvLBcLpDR2wBX2gm8p1PRn5ff3+97DYxaVOE=;
-        b=REJWxnjRNMm3b2SNxFuOyFJm5Kky2tGBLRtTHdGMJQpEs66Cg7A4z9s3AVjOtoZyGH
-         QJ6o6VNYtxR3jMiWx1s3dyCzWvH8b6Q+diSYsv/Rmx7jr9CanBgSnt14zKnqL4hqojWY
-         u3/sinOenT9+fQyNQlekER3mANxZN20ufbKzdryAtvmtgQ+UpNvQ3ScfJHdqhfZgleBz
-         Kr0jMRSFL554Y3NF736FSvFsv62hsHu3vU+mFTsGEUywPO3S3aayn4e/Wv+f58jnaSnm
-         JtrGGhoyUvz8uYpKjAkBatqcMwnvs58+9x5/shB0B/TnrsEg3H7RT2NxOguornAVnr8i
-         z9Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=A3PFuF6YvLBcLpDR2wBX2gm8p1PRn5ff3+97DYxaVOE=;
-        b=lYV8c5B8vr7RlmzxMg9sVeVCvTUMbf4eJ3bfvGH1nX+Z96hBe6JRbHbzUsXOw64YQo
-         a8/Gw1Rd79/sOdEtmM7tXrju5YGjyGNHW05NUzQKnyfbqLu8Xli+dzR/mlTbiGWL574y
-         vlswQb6JOEaeyRfP5vmGtiNRjUrgh6tvujL4Pcu7dCjgCETrGxyYBNjqRMHceWYJbeai
-         6WVx28qzCyfrU0jWxwjgwbm9CUoYr+5L4UC/FBzVlT841M7Pme2MpmgbLcD75Uc1KgpC
-         hXTz69fs6cpBQyT8C4sggXpxGJ16zNbD+HtBdpKPKoqd8Wd4+MMwLD3dkMxI1PUoQgvz
-         +PjA==
-X-Gm-Message-State: AOAM533xsXGf+oTM2mxHh5Fiiy0A9lYvhPy3MT46j5ZZW14R8PKdjsLR
-        QTG6BIDQdVGzguFtYuz52PiSypKj/+ECFhoVxKdALQ==
-X-Google-Smtp-Source: ABdhPJwtTf2pAvokpijYpbMwmIt7HAzhD9jU4o+bGhJBmqWwSCnd3HeGQSvnphDQ9q7Ta/MXSsGvW9ZBxKKfe2d2Vg0=
-X-Received: by 2002:a54:4390:: with SMTP id u16mr2780487oiv.109.1635426105697;
- Thu, 28 Oct 2021 06:01:45 -0700 (PDT)
+        id S230340AbhJ1N30 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 09:29:26 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:12749 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230265AbhJ1N3Z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Oct 2021 09:29:25 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1635427618; h=Date: Message-ID: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=uHCxDRy0CnpAT24ZiF7PmTZGX6J9BLvsOGhtHcHUmSg=;
+ b=ts4xvUVHzNtarC8ArJPDOUq4EVkguJIPl+JTMkTXlUJ0BHfqOLcGN80Pd5R7LN2qDvnVg6Wk
+ vieoGhfmMvJec8RbssJv4Q15t5oIdSFIuIZUG4FU/cOJuGgM3RD1StODmYhj5El64gyF60JA
+ JuBYhvE3DcE+IDSzusmh+DAF/co=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 617aa51ac8c1b282a5bcc439 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Oct 2021 13:26:50
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C7A82C4361A; Thu, 28 Oct 2021 13:26:49 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8FC82C4338F;
+        Thu, 28 Oct 2021 13:26:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 8FC82C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <00000000000058e2f605b6d2ad46@google.com> <000000000000b6cfc405cf4860a7@google.com>
-In-Reply-To: <000000000000b6cfc405cf4860a7@google.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Thu, 28 Oct 2021 15:01:34 +0200
-Message-ID: <CACT4Y+ZDvKgc7Z-qKVie2mvoEw9FpA8hEZ3NyRaLDf-KnK+J7A@mail.gmail.com>
-Subject: Re: [syzbot] INFO: rcu detected stall in ieee80211_tasklet_handler
-To:     syzbot <syzbot+7bb955045fc0840decd3@syzkaller.appspotmail.com>
-Cc:     davem@davemloft.net, fweisbec@gmail.com, hdanton@sina.com,
-        johannes.berg@intel.com, johannes@sipsolutions.net,
-        kuba@kernel.org, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        mingo@kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com, tglx@linutronix.de
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 3/4] rtl8187: fix control-message timeouts
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20211025120522.6045-4-johan@kernel.org>
+References: <20211025120522.6045-4-johan@kernel.org>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Herton Ronaldo Krzesinski <herton@canonical.com>,
+        Hin-Tak Leung <htl10@users.sourceforge.net>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Johan Hovold <johan@kernel.org>, stable@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163542760369.5095.9529718902360790096.kvalo@codeaurora.org>
+Date:   Thu, 28 Oct 2021 13:26:49 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 26 Oct 2021 at 23:44, syzbot
-<syzbot+7bb955045fc0840decd3@syzkaller.appspotmail.com> wrote:
->
-> syzbot suspects this issue was fixed by commit:
->
-> commit 313bbd1990b6ddfdaa7da098d0c56b098a833572
-> Author: Johannes Berg <johannes.berg@intel.com>
-> Date:   Wed Sep 15 09:29:37 2021 +0000
->
->     mac80211-hwsim: fix late beacon hrtimer handling
->
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=151766bab00000
-> start commit:   835d31d319d9 Merge tag 'media/v5.15-1' of git://git.kernel..
-> git tree:       upstream
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=9c32e23fada3a0e4
-> dashboard link: https://syzkaller.appspot.com/bug?extid=7bb955045fc0840decd3
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15e08125300000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14b17dde300000
->
-> If the result looks correct, please mark the issue as fixed by replying with:
->
-> #syz fix: mac80211-hwsim: fix late beacon hrtimer handling
->
-> For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Johan Hovold <johan@kernel.org> wrote:
 
-Looks plausible:
+> USB control-message timeouts are specified in milliseconds and should
+> specifically not vary with CONFIG_HZ.
+> 
+> Fixes: 605bebe23bf6 ("[PATCH] Add rtl8187 wireless driver")
+> Cc: stable@vger.kernel.org      # 2.6.23
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-#syz fix: mac80211-hwsim: fix late beacon hrtimer handling
+2 patches applied to wireless-drivers-next.git, thanks.
+
+2e9be536a213 rtl8187: fix control-message timeouts
+541fd20c3ce5 rsi: fix control-message timeout
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20211025120522.6045-4-johan@kernel.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
