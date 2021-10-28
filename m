@@ -2,82 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B87F43E111
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 14:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A5F343E11F
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 14:43:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229981AbhJ1MlB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 08:41:01 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:63233 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229578AbhJ1MlB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 08:41:01 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635424714; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=OAbJK0hmNqFm9vcVvRcq6E/aTYQVuqr4Y4YCpajbbX0=; b=gSEPfFCM6ik91xsF+qXr+DYOzeOCiE8ctwHpZbKlrRFxk1bQbuL3vvzW7xCwSSUOkzTojhm8
- 3qejCFWohEnIQ1nySYUgqlq85oNmLkZ/YN15OCi8ZmFYeKxvQ3jKHJYQNa/xRxBacy0efNZt
- Z5MKJZPeJdpWOwZWoqCJmZUzb2o=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 617a99c9ff3eb667a78ea972 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Oct 2021 12:38:33
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 977CBC43617; Thu, 28 Oct 2021 12:38:33 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B472FC4338F;
-        Thu, 28 Oct 2021 12:38:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B472FC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Sven Eckelmann <sven@narfation.org>
+        id S230093AbhJ1Mpr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 08:45:47 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:52134 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229578AbhJ1Mpr (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Oct 2021 08:45:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1635424999;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=QoC3OLStbdQmvaOCAZZzBXCDyQBKZIDqUoI7nwVlY8I=;
+        b=zRm2ZI6QBNV6gGXFufelafWy8ObcMPbfARLivD/K8NdPZ5z8pHTNifc9+WErcZ6X/R3PVl
+        W9grdB0IpcoUzFmB1jNJXXfpF9jmdXypizFYI4LB7NHIcYLNmT/abruzmYxm3nzBA858ft
+        zJimoW54ApW1DH9unUJFiY/affwVMD4=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
         Karthikeyan Kathirvel <kathirve@codeaurora.org>
 Subject: Re: [PATCH] ath11k: clear the keys properly when DISABLE_KEY
-References: <20211026155446.457935-1-sven@narfation.org>
-        <26869605.A2Tbvc0WiF@ripper>
-Date:   Thu, 28 Oct 2021 15:38:27 +0300
-In-Reply-To: <26869605.A2Tbvc0WiF@ripper> (Sven Eckelmann's message of "Wed,
-        27 Oct 2021 08:12:35 +0200")
-Message-ID: <87sfwl494s.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Thu, 28 Oct 2021 14:43:16 +0200
+Message-ID: <4399157.2QDAq5Xuus@ripper>
+In-Reply-To: <87sfwl494s.fsf@codeaurora.org>
+References: <20211026155446.457935-1-sven@narfation.org> <26869605.A2Tbvc0WiF@ripper> <87sfwl494s.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="nextPart3426232.laXtC95Ive"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sven Eckelmann <sven@narfation.org> writes:
+--nextPart3426232.laXtC95Ive
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: Kalle Valo <kvalo@codeaurora.org>
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org, Karthikeyan Kathirvel <kathirve@codeaurora.org>
+Subject: Re: [PATCH] ath11k: clear the keys properly when DISABLE_KEY
+Date: Thu, 28 Oct 2021 14:43:16 +0200
+Message-ID: <4399157.2QDAq5Xuus@ripper>
+In-Reply-To: <87sfwl494s.fsf@codeaurora.org>
+References: <20211026155446.457935-1-sven@narfation.org> <26869605.A2Tbvc0WiF@ripper> <87sfwl494s.fsf@codeaurora.org>
 
-> On Tuesday, 26 October 2021 17:54:46 CEST Sven Eckelmann wrote:
->> Tested-on: IPQ6018 hw1.0 AHB WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
->
-> I would like to retract this Tested-on. My test caused another problem which 
-> resulted in a complete shutdown of the vdev. After fixing this problem, it 
-> turned out that this change didn't fix anything (as far as I can see) on this 
-> firmware version.
+On Thursday, 28 October 2021 14:38:27 CEST Kalle Valo wrote:
+[...]
+> But it doesn't either break anything either, right? So in that respect I
+> would like to keep the Tested-on tag in the commit log to document how
+> it was tested.
+> 
+> Though I'm not sure what I do now, do you think I should the patch still
+> or should I drop it?
 
-But it doesn't either break anything either, right? So in that respect I
-would like to keep the Tested-on tag in the commit log to document how
-it was tested.
+It seems like QCA wanted to have a look again at the problem. So I would 
+suggest to drop it or mark it as "Changes Requested".
 
-Though I'm not sure what I do now, do you think I should the patch still
-or should I drop it?
+I cannot make any statements about whether it actually clears anything 
+in the firmware because I neither have documentation nor source code of 
+it. So only persons which have more knowledge about it can work on this 
+problem.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Kind regards,
+	Sven
+--nextPart3426232.laXtC95Ive
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmF6muQACgkQXYcKB8Em
+e0Ybjg//UfH7a6x1M+B5p+UecsGikje4Z3pmYm6nbdZbseYEhgYra7DAdgi3wAZy
+v2EW914tFvNo2v1aW9ALhAEJG0sDBnPmmlp3RBvtyVd4y55NNtXlWeX/6eTjyRty
+K43725qiOa5EA4pTF4WINwzzZuUqQIx+XplPm9MI5PL7bW9hxR0FP3xMP/F4rtUQ
+cjlGL8XeD4NiugM48Y8BENgPFOLWwEsMtd+UbUyKxuOAXEHNO2dunQ9OqMdyMiLf
+U+KTTiTq65sS38KlrwOrPQD+Wnqlozd+TXYab1oIhpriYzabLoQMxMst4ak1sXaY
+2Pga+m95mAuxjX1qct3LlgpiZb3ei5DYEMki2BeSTTSZQ/dgL3CgfUbVuMhLoRXb
+99+Rw7G9+zLxXP+zPk4gRArGkRPFv/N15IYaOHNG/U2QYdokH1q7u62anbkmHfBt
+y7eheiGdP+NHvP4i7Mf2jmVNkMit2V7m7nMoPBq4vJOaJHbVk8e//1cLpN/6EUo8
+l+Q6NFL0uhusJhNJgejdqwQSXasqJSkjUaG+9/rE0ZzbQBkNwSEZL+7Siow+3mdy
+yirVqmCReuLmG4cIrSJb5baYU5IIt0q32zYoju2wdt0xIUQpgMiDcx0Grg8QzueX
+C7lAgXuYeqra72CVwUPLDs/krNg/LhFYdH6lUFU4Mukn9sXzuFI=
+=F+Gz
+-----END PGP SIGNATURE-----
+
+--nextPart3426232.laXtC95Ive--
+
+
+
