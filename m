@@ -2,111 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76F9543E5E6
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 18:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 607FF43E8A1
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 20:50:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230094AbhJ1QR1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 12:17:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56228 "EHLO
+        id S230481AbhJ1Swo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 14:52:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229764AbhJ1QR0 (ORCPT
+        with ESMTP id S230293AbhJ1Swo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 12:17:26 -0400
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E86FBC061767
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 09:14:59 -0700 (PDT)
-Received: by mail-pg1-x534.google.com with SMTP id s136so6870524pgs.4
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 09:14:59 -0700 (PDT)
+        Thu, 28 Oct 2021 14:52:44 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98DF3C061570
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 11:50:16 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id m42so6674041wms.2
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 11:50:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=RIRl/cX9bRAdZ2iE+RztTT8DUmuRWcio5MFjZ21K1SU=;
-        b=nZQ+/sqMzlDgKS5zdUiX4/1c2J50t2MBLiIi87+ZBwv2fDdhvgpM5rjvZ58uYYr7xP
-         6KB3YlG1RKTNIPUVynbJR5EASynlM6Bdk+d7mt5bp7JEgSEYFUlSUJ37ptcZvAkYDEy4
-         rEymG9WyGFP/L+JQw8xnn9HVzrqXW8627L8Uc=
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=r6DzYL06+c7rlETep7KeTkbRa0OqD6hohbE6YOoJ33U=;
+        b=ECziJepm37iXy00W7IOLUXMPeMYSWxmUnAUS5+VVMNesBi3R74sP8SOFPZJKnsdJBA
+         tHpICxn4a0GfjnjWFxGXS+EEdZxlkEbF/gqlHYTCwz3dEi02KKauGYDEeCq8TQ2gKjD3
+         GpOMCa1POOVwRQnfXPJr/+H59RWZ/1iyoLt2ui6jsyKnbNVh5PRQw7W5ly5XTOG3Pdm4
+         v74b3zx1KbXTLIDfWAos2mTibbz+IY31TOGNtAI5EX2zAwAJhlQR6zrDPbBlN4KmI7s2
+         Ob11h35aM/W05r+lYM3aKgdmyy+/bOe++5nFhNHVvECN2rL9jj+K4+UP9ocFc9ypCdFc
+         FVqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RIRl/cX9bRAdZ2iE+RztTT8DUmuRWcio5MFjZ21K1SU=;
-        b=TM1R0kLXQpSbSYxqq6QWjMDBeVmUpHP3HkTXEp8kaWGviDMGejX9BwGtylNg09imfq
-         MdL7mocdO/UUoBUP7HSy5g9+mJ08RodibRrgR8IbapGhuDFL9Ovmb/9IOzTWNmpnWkkX
-         qZ3lwc+C+wRg947AwDaDLTwTiiLTfLdKWdzFooiSUbTL9x3g+83rT8q6UwxfKu+D2hfb
-         M3gKxVGCiIZyZL4m1QMtpJc8PobEn3rv9z6VnbB41e16bs0j4H6/AK6zi7hLGILpe+kQ
-         nCzZM6/fBkH/1ALDHtDd1IWwMuiiAAwN0e8AIys9vG/4DBGPmheS1bird/8JrRB2IsaH
-         hrxA==
-X-Gm-Message-State: AOAM533g3GdiG6UHUnWFFmPBeRfRPiQsohyTJ5jcjM7m26VGBXzvPxAE
-        E0Ffic8wfY88pqH6FF2zyxM7//Mrv/ThoQ==
-X-Google-Smtp-Source: ABdhPJxE6O1c95Dnzr+CmiuzlG+RTD1Y7zdAwochLmVPTlvdhZQM1NIDVXTIExAraNX+vTUmR7ciOQ==
-X-Received: by 2002:a63:6e8f:: with SMTP id j137mr3854160pgc.381.1635437699460;
-        Thu, 28 Oct 2021 09:14:59 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id oj5sm8520291pjb.45.2021.10.28.09.14.58
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=r6DzYL06+c7rlETep7KeTkbRa0OqD6hohbE6YOoJ33U=;
+        b=1ZrXw6sjTx1dZNFeq1G0k4Mu+MKUkLxA09SHC+67Dgdtl3a/9Uv+dcCjV/VjGmBOPw
+         Ta4vv3TKQifaxfE7c4/sc3l2E/R6LTFALGdVNtWaKrQOjR6oQsaNvEDq8eNBWVzsEti/
+         vurXSul/ogBDyc1YaRxZRJkwVqHCA2k7MMS0X9cB8bixEKCHKQ8U+1yqoVkInEIHPQet
+         gQqJolAgKTgjaEMwsgUXrAwtVi3uYDo/LFevQrqlH1kZMMHoa0WRVRmctdK1Tw/lr6b5
+         0KCEIHvgCPpni/Rtixfm5ngHz6x/zOul5TEkmn6rqp56jEjsQ7A70A2f7pJw+7bpObNg
+         MooA==
+X-Gm-Message-State: AOAM5327c9om/JClo5NsvDMViQAwEuwf8wO6Retk30q9p0M9k5VboAYX
+        nLw2gQLPB9NvtSToMTH4YiOROYmdLZg=
+X-Google-Smtp-Source: ABdhPJxkGNHkV76AX3Kld0dxp1OA31WDo8PiiXoLkeqRyC1CpY/nEHlbcbS/OtYavgReiUi+9ntofw==
+X-Received: by 2002:a05:600c:35d0:: with SMTP id r16mr14356355wmq.97.1635447015112;
+        Thu, 28 Oct 2021 11:50:15 -0700 (PDT)
+Received: from debian64.daheim (p5b0d7857.dip0.t-ipconnect.de. [91.13.120.87])
+        by smtp.gmail.com with ESMTPSA id t6sm2596002wmq.31.2021.10.28.11.50.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Oct 2021 09:14:58 -0700 (PDT)
-Date:   Thu, 28 Oct 2021 09:14:58 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        David Miller <davem@davemloft.net>
-Subject: Re: linux-next: manual merge of the kspp tree with the
- wireless-drivers-next tree
-Message-ID: <202110280913.B8D76EF@keescook>
-References: <20211028192934.01520d7e@canb.auug.org.au>
- <87ilxh5yph.fsf@codeaurora.org>
+        Thu, 28 Oct 2021 11:50:14 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+        by debian64.daheim with esmtp (Exim 4.95)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1mg8al-000BEt-1J;
+        Thu, 28 Oct 2021 20:50:14 +0200
+Message-ID: <3aebb711-dc45-3cbf-43cb-12f59909baf0@gmail.com>
+Date:   Thu, 28 Oct 2021 20:50:13 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ilxh5yph.fsf@codeaurora.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH v2] ath10k: fetch (pre-)calibration data via nvmem
+ subsystem
+Content-Language: en-US
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        Ansuel Smith <ansuelsmth@gmail.com>
+References: <20211016234609.1568317-1-chunkeey@gmail.com>
+ <87ee855xwa.fsf@codeaurora.org>
+ <3a8840ea-1499-950b-fb44-7546a32c586f@gmail.com>
+ <875yth5pt3.fsf@codeaurora.org>
+From:   Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <875yth5pt3.fsf@codeaurora.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 28, 2021 at 11:40:42AM +0300, Kalle Valo wrote:
-> (adding Jakub and Dave so that they are aware of this)
-> 
-> Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> 
-> > Hi all,
-> >
-> > Today's linux-next merge of the kspp tree got a conflict in:
-> >
-> >   drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
-> >
-> > between commit:
-> >
-> >   dc52fac37c87 ("iwlwifi: mvm: Support new TX_RSP and COMPRESSED_BA_RES versions")
-> >
-> > from the wireless-drivers-next tree and commit:
-> >
-> >   fa7845cfd53f ("treewide: Replace open-coded flex arrays in unions")
-> >
-> > from the kspp tree.
-> >
-> > I fixed it up (see below) and can carry the fix as necessary. This
-> > is now fixed as far as linux-next is concerned, but any non trivial
-> > conflicts should be mentioned to your upstream maintainer when your tree
-> > is submitted for merging.  You may also want to consider cooperating
-> > with the maintainer of the conflicting tree to minimise any particularly
-> > complex conflicts.
-> 
-> I don't know what kspp tree is and either I don't know why they didn't
-> submit the patch to wireless-drivers-next, so I assume they will handle
-> the conflict as well. But I really prefer that they would submit patches
-> to wireless-drivers-next instead to avoid unnecessary conflicts like
-> this.
+On 28/10/2021 13:52, Kalle Valo wrote:
 
-This was a treewide replacement with a dependent macro that was supposed
-to be merged last cycle at rc1, but $shenanigans. Sorry for the conflict;
-I'll make sure it is adjusted or called out for Linus when I send my
-tree.
+>>>>
+>>>> v1 -> v2:
+>>>> 	- use %zu and %u in the format string for size_t
+>>>>             and u32 types (catched by the "kernel test robot").
+>>>> 	- reworded commit message + successfully tested on QCA9880v2
+>>>>
+>>>> I placed the nvmem code in front of the current "file" method
+>>>> (firmware_request). Reason is that this makes it easier for me
+>>>> to test it. If needed it can be moved to a different place.
+>>>
+>>> Looks good to me. Before I apply this, I want to mention to that I have
+>>> had a long in my deferred queue related two patchsets:
+>>
+>>
+>>> https://patchwork.kernel.org/project/linux-wireless/patch/20200927192515.86-1-ansuelsmth@gmail.com/
+>>> https://patchwork.kernel.org/project/linux-wireless/patch/20200927192515.86-2-ansuelsmth@gmail.com/
+>>
+>> Oh ok, serves me right for not looking thoroughly googling this first.
+>> Alban Bedel and Ansuel's work made this nvmem all possible. And indeed,
+>> the second patch here looks eerie similar.
+>>
+>> Do you want to go with his two patches instead?
+> 
+> I would prefer to take your patch.
 
--- 
-Kees Cook
+Ok.
+
+>> I'll change mine, so it just consists of the cal_mode for the older
+>> QCA9880v2,QCA9887 and add the -EPROBE_DEFER handling. This
+>> -EPROBE_DEFER only ever comes up with the Meraki gear. This is because
+>> Meraki likes putting the MACs-Values into SoC-connected AT24
+>> eeproms-chips. Everyone else just have them in a proper FLASH
+>> partition. Though, this's usually nothing more than adding the
+>> following line:
+>>
+>> if (ret == -EPROBER_DEFER)
+>> 	return ret;
+> 
+> So I'll drop this version and wait for v3?
+
+I guess that "waiting for v3" won't be necessary in this case.
+If @Ansuel doesn't voice any concerns, you might as well just
+apply v2.
+
+The "[1/2] ath10k: Try to get mac-address from dts" patch
+will need a respin, so it can apply cleanly.
+
+Is Anyone interested? If not, I can take a shot at it on Saturday.
+
+(There's the tiny question of that device_get_mac_address() which
+ath10k currently uses. It looks a lot like of_get_mac_address() too!
+but with extra ACPI (through FWNODE-which also includes OF), but
+without NVMEM.)
+
+Cheers,
+Christian
