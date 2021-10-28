@@ -2,51 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93D7F43DE6F
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 12:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F6D343DECC
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 12:25:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229898AbhJ1KKj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 06:10:39 -0400
-Received: from mail-eopbgr70095.outbound.protection.outlook.com ([40.107.7.95]:56551
-        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
+        id S229809AbhJ1K2G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 06:28:06 -0400
+Received: from mail-eopbgr150109.outbound.protection.outlook.com ([40.107.15.109]:50618
+        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229835AbhJ1KKi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 06:10:38 -0400
+        id S229626AbhJ1K2F (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Oct 2021 06:28:05 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fsL6i+XKAj4NXkeHzFUCT+smHqMk7Wc7IEHfyS/mB4TChoGiIcch/mvux9Iv9V8N7qFYAIpUEX1zziXmcHOnLOExrKO/L2cxcRmxKmDDDxuHGiOIC75lU96+gEnpHUWyr2gVNc0yefWI3RFsLt1yiZ2ukAjxjk/ethB3UZFkIRJ6lcL2ZXTq7I3mKdUXW4WBEmEgb3pyz5qmUtWh+dZH2XOBVqrpn4olO+nzHWI3TvoqxF3C7KEkWYvqlL6E+OpHUIUSkHNrjmNxVXiJQszfTJOV/D9SdpBjztzQWriJQCZmt9z8XEAZzhfh4dsBItbpY7ZMdjwXKjWu/crYDgts7A==
+ b=D9nIuw3LYNrNVdqvEvN/7s4giNeoHG/P67nf7+Dsl7nm2MbgUaAqXiMWL3E/AzHhgnvQxr2GEKbRMdPyfPWuqDLkH/eI5h5OdeHfQ7zaKZw40jumA7vvRZALbTlkcScboZvtE3BPbKwA8jBIaWEi3xLVucS4o9z02K1qRIrdxosbkcBboEGj75U5U4mU+DvWwwhinsOorXz/zFLl3rbNFS50d2FbPcR7p4fGBUjQ5WW+kQxE8AkjwEMoHuZhHcudd2Olnme3J5C3JS24pCErHq0uRNMsNQx5bRF7/9Mc8lDFZpE4CF0urzP4cbvjL8dsJdeLsYGCCNF6ywQLlk5Kiw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/bkP55mtJRVMyfvZ64QBQMZUmNQfKoi5HM0/tM0kEHc=;
- b=C68LDnqJPYLwZWQtgZ1sSE/qtLQEq7weiC71Y9MXaFu9ydAFNGInWvIb6BSNDVnls2LcSZ417tB8SjxrIeYN+8/znoYYqJ11rjTqUzUQPgP3vFVPOmBI2fbyjxqxUpI/AKVRX78bbtLRC/9LIFT+QGiCOJzCYDO4BMhA2sX9xBopYkjCrZoWs2xuXY0JX0/o0MJbTN4IJNXFsxDh2AsnGsM8z7in8ulPkNxDetEVhM7hsjSwvqgi3KbpJ3vHgNQV2MAdpQxCIlxC2VexAq6XmfK6P6odLFNPFgvb6ARCCugywUfBzBSeGUqUGZ4YqMFuzv+3qi0bYVQB8ZMt8wBzNA==
+ bh=eJRDza0DmJBpMbKtC5cCZefPfe38qbo67c7i6UA2DgY=;
+ b=XL5ti6Vq3p0QfjgBjb0KBBbLOcl8b/9vWw6iMPylSwqipfkcVoryVBlLwGLFlrRhutW/dFZ416PJRRjh8L1nMNSwLtRV9UgMCFnHwQaaroYSP+s1z4vhxdjyuvFYR+MuvTw2RPkPvE0AakVQJPsNdcdhd2a5e339a+yplfaa/vrzCevrxuBnTMqCleaUi7AlBcSdFoqpJKYdzCJ3pbg8B8fF6pV+4ZvtNw8CzDObYUg3KEEDt/DF5FKyCUeyOO7dToYQ0dshPOa8Xlr83wUarPG/muKO6NEhSTrCtB7wPiBtJtGLm2eoK8qDfaQLNOyMicZje9PdC8cHj20Kga37AQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=acksys.fr; dmarc=pass action=none header.from=acksys.fr;
  dkim=pass header.d=acksys.fr; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ACKSYS.onmicrosoft.com; s=selector2-ACKSYS-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/bkP55mtJRVMyfvZ64QBQMZUmNQfKoi5HM0/tM0kEHc=;
- b=Asjtp/ftWUS7Sao4YYJ1S0aO7gG+I8JvSTd/tcAevXwdbdQQRXJyWgPAecIn5pG9A1Lqg0UmtxHDstScM7f2M2xu9fRUHqCKgWNLLiuPos1+szW0+fQBR7Y2JQ2z9YVoyXUkU3H9hiQAzkejGE/1PUG/zzruivnpbcNqqY/O6Hc=
+ bh=eJRDza0DmJBpMbKtC5cCZefPfe38qbo67c7i6UA2DgY=;
+ b=PriW8V+xykbLPtQY+9RKjpJndjwYnzr/CtLW3wCPus0LSYUqJlfGYPmdPzZSWpwIsUZYQlOVe62aSKoMM22WLqUHOsZhj72Cz5oKSQAPdxV5j9+ymeU2c5GkYcNLqoMNL9Qp8FSW4yuup7Crw1165lAXFMXYLSaOGKCqrQG7cyM=
 Received: from DB9PR01MB7354.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:21d::7) by DB8PR01MB6438.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:156::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.18; Thu, 28 Oct
- 2021 10:08:09 +0000
+ (2603:10a6:10:21d::7) by DB6PR0101MB2376.eurprd01.prod.exchangelabs.com
+ (2603:10a6:4:3b::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.20; Thu, 28 Oct
+ 2021 10:25:36 +0000
 Received: from DB9PR01MB7354.eurprd01.prod.exchangelabs.com
  ([fe80::f007:df3d:1b84:f0fe]) by DB9PR01MB7354.eurprd01.prod.exchangelabs.com
  ([fe80::f007:df3d:1b84:f0fe%6]) with mapi id 15.20.4649.015; Thu, 28 Oct 2021
- 10:08:09 +0000
+ 10:25:36 +0000
 From:   Jean-Pierre TOSONI <jp.tosoni@acksys.fr>
 To:     "Johannes Berg (johannes@sipsolutions.net)" 
         <johannes@sipsolutions.net>,
         "'linux-wireless@vger.kernel.org'" <linux-wireless@vger.kernel.org>
-Subject: RE: [RFC v3] mac80211: fix rx blockack session race condition
-Thread-Topic: [RFC v3] mac80211: fix rx blockack session race condition
-Thread-Index: AdfL0tUGplDdZUWUTvSEilo32QEGpQAELkXg
-Date:   Thu, 28 Oct 2021 10:08:09 +0000
-Message-ID: <DB9PR01MB73545D195C51A3DDACE38E7CE4869@DB9PR01MB7354.eurprd01.prod.exchangelabs.com>
-References: <DB9PR01MB7354781F66D4D59611D256A6E4869@DB9PR01MB7354.eurprd01.prod.exchangelabs.com>
-In-Reply-To: <DB9PR01MB7354781F66D4D59611D256A6E4869@DB9PR01MB7354.eurprd01.prod.exchangelabs.com>
+Subject: [RFC v4] mac80211: fix rx blockack session race condition
+Thread-Topic: [RFC v4] mac80211: fix rx blockack session race condition
+Thread-Index: AdfL5NB40bniWIPCQwqcYHgT9opvcA==
+Date:   Thu, 28 Oct 2021 10:25:36 +0000
+Message-ID: <DB9PR01MB73541FED9E91AC3005D27DAEE4869@DB9PR01MB7354.eurprd01.prod.exchangelabs.com>
 Accept-Language: fr-FR, en-US
 Content-Language: fr-FR
 X-MS-Has-Attach: 
@@ -54,72 +52,61 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=acksys.fr;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 240eb837-ea5d-462b-939f-08d999fad7dd
-x-ms-traffictypediagnostic: DB8PR01MB6438:
-x-microsoft-antispam-prvs: <DB8PR01MB6438015357B37F9BD1610D11E4869@DB8PR01MB6438.eurprd01.prod.exchangelabs.com>
+x-ms-office365-filtering-correlation-id: 3ebc9538-085d-4f00-ef21-08d999fd47ee
+x-ms-traffictypediagnostic: DB6PR0101MB2376:
+x-microsoft-antispam-prvs: <DB6PR0101MB2376348C9782882AB5762063E4869@DB6PR0101MB2376.eurprd01.prod.exchangelabs.com>
 x-ms-oob-tlc-oobclassifiers: OLM:8882;
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: C+nuiChH5p8bFvlHp8gh7vKoCtbAO+HZEdbFGu/ck1Wg1BnctzvtntWU9NrJ+85dJvkrTsPXZB5aqB4ufoHMaxLX8M7qT4NHrllfvdcBMnSbIaDOCD36VNRpD1YK0zos9lwud4RaxE+uuZAoIoZJmbPyd3Bvl3PN41+lxaQ6NsVnjUfIycNmOYKSwHoVjKfRlI2FLY+oxxAnKPsdEpO7DK8KAQh47x87nGTd0pefSMhUjyLCC3h38ZCozWpkG6jn4pCsr/cYHkR1IdX/3X+21X4g5p5f/aB2630e2FrUnXfgsFv16fH6CCp6RjtKkM7SFZzwapKprdAhdlFZ1qEz+LBLTAjL84wgcIhycWWNAAHJK2REd+ntwaHc6DKHSUjUlXDe66RlSeV62oi068hMcVkZo+JTKar8KSTnQHNQDdMUq1SvtxDfeRf1xkoryDU3XHNULOfDdcUhqr/90/tXBC8vCgBX793S+F4I199M4nFOsiIN9BVU6zKifnGT6P4uPdHz3TjoPxcYwUmBreICpswsCaJA3RBuy5O7csEu2dKbhkQCIYLBc0UMWcCTlGGBm2J88mHA8DgnScV881r9tOCHPfTDmj5YGGch3ovDJRw+Jqyjo85WLBSxRWhbP8glelKk7qtHOvna4IeTUTnXeSnoQORdgy2JpZP9zu225AApwNqQ9kXZiA9OVHrA1+C3y89Kf2XLmgC3M5aKECgEiRd7qmN2otEESSc+CRskVZ4=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR01MB7354.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(39830400003)(366004)(396003)(136003)(346002)(376002)(66556008)(55016002)(66476007)(66946007)(76116006)(38100700002)(9686003)(316002)(7696005)(33656002)(8936002)(2906002)(52536014)(8676002)(122000001)(83380400001)(26005)(66446008)(6506007)(71200400001)(110136005)(2940100002)(186003)(38070700005)(5660300002)(508600001)(86362001)(64756008)(491001);DIR:OUT;SFP:1102;
+x-microsoft-antispam-message-info: lOJa5zbIQVLrPjG4t+YgzVmC+4Z8HfH1HnxqkmghQGzh47gFPwxHacNPFExYwx26ZTVcquo5axt+HLLZCJ+gZDah1m03uoyUL0cmE1j26N/dt/f/C4XE4JGrzxciV7QhHDM9ruY7en9vOl3ONSxvmE52t687he3FAmWLKE7lHPjpCoCV0qAQs0LzdxVGGJeNlqOI8OpfIiHrB9jtxx7CgtZM/IcavpOyFv+j2O09yco32VO23hBYFQ4bn3D+YTkbIS41PqkbPeo46AHq1JOPyfhxI7WFIjb/QSwfci4fIBdFG3DiTsJsk8v8ypor+oBQNL1HHpj8i7JacpZKwgneLYzJ2/qttIjchx7vyF4Sh7lOKYm1d6cW5pyWdNlzToOsX6sdv3R5xHXlKELmyxUtqQR/Fv4G03lF6zFpQwyN/QsPB6tmAqNr2dLbL993inU4rOu1aWlqYbuh6dl74+nmHirFEnsfDdJkU03+MaBU8avZsukWWgRKbrIYcpx3AIvsWcKCPN0TViltaXQTuv4rZBJC/WJk3/qiA8Xv4Dvm2218+leBTzL45nTRDtgLQ/jVZOquNLwwierHeKTa0QCTXN4dbLDLBfsgHoVOJeSwQN53jnjJppz67PZ71soq5PiVl0CY57HuixMHceLjjra8BFDlh7bmdp9xOc2bo2fE/UprIgQaTD0ruM3MquzTvB9A3VnZdqJNAdlJfhGUsDf+V1GpNU683qdjbU51UYfJsWk=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR01MB7354.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(39830400003)(346002)(366004)(376002)(396003)(136003)(83380400001)(8676002)(86362001)(508600001)(122000001)(66556008)(38100700002)(66476007)(33656002)(38070700005)(110136005)(76116006)(2906002)(186003)(66446008)(6506007)(8936002)(26005)(316002)(64756008)(52536014)(5660300002)(66946007)(9686003)(7696005)(55016002)(71200400001)(491001);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?B2SLA6+m2crCdyqF331g5p+2AM6y+8MUZR2x7+IKJnKCIAfPrubFqzp7/z?=
- =?iso-8859-1?Q?iIFZYoHrveih244xzvvUz+AazUDFeTQoQRv9A+qF4954M8zabC32hQ/T6O?=
- =?iso-8859-1?Q?UE1S0xgvgG42VVCq16bmHJdB6g1+mP/SZyQ6dSJ7cT2vGWvTp/bR5OpwZX?=
- =?iso-8859-1?Q?IveXjHakb6h1Uc3G7KWDJLiNaxjm9VOVMgoSOUlZBgDJeDPCgOA0OCY8Bk?=
- =?iso-8859-1?Q?uZu8MkEmlwc35awiaANz+9uKA1CpKo25+7qdUdJy8VGGM17NMNVB3R3Ere?=
- =?iso-8859-1?Q?Q0seR2WbybfcpRO/GxJpMmXfZKVemHjxi+9itM1zk3kkYvm4AyJEcqHCBI?=
- =?iso-8859-1?Q?QG4dMIzDyvvtZ2UQXEQKjZiqtjCkV3Scql7JL9/jLtIn+bYPOGHJzmrrF6?=
- =?iso-8859-1?Q?IFc70Hjg0JZlDwin5W91jTvcJraqA4M4yUn3TRkLJvgcBKiTNPfUCfULsA?=
- =?iso-8859-1?Q?YfrkjJ05WsHWMNFiVYVie93pnOG90Ugq4ytiln9DHwqeJApEt2fISQoZEM?=
- =?iso-8859-1?Q?vMXIkZ8oP/y/XwkXQGAX0PNfrgUWQOtxiF03OcF/LFA/CizkpX82WPcT7s?=
- =?iso-8859-1?Q?g9ikxg9UI7HWspq3sMtBtVWfPESwz8G4pfrwAFS1r3clBKiq3KdKiDLfZo?=
- =?iso-8859-1?Q?rlwDu5xbozBx5zZKHEXA47M8f5u84wp27LnwGfai1gpRYh5YhwRNnWEWU3?=
- =?iso-8859-1?Q?ZWSBAg1HEOgsaYGWDDI9Bcy6vJk1Gboj2k+EoRnzFrfLyAkIt/SEKrEfTa?=
- =?iso-8859-1?Q?cumtFcUkJ09PdZRTKuvNYN8B84JKnltJbCuWuPQm2Ddddn0C47qufNjWR0?=
- =?iso-8859-1?Q?+mWQAgAFFn1sYVyfdURjvkH2IeY9rz0aU1SkUERn1jnVyK5Fx4dXmlmnkn?=
- =?iso-8859-1?Q?I9W4BAwNuWQYDIwJ6KmDTP6vG61X1VCpDB5DOPev3A1xxYUsI12wMNOcKh?=
- =?iso-8859-1?Q?VJjS37XXJesudgJExey+vRs1tsJhmttvZMJe0n+bUFEMJ/ErME5j8VGJfR?=
- =?iso-8859-1?Q?R51dhse749I1k791wb/e1FGW/YkcotuYm+bzGcxo56EjA8zrfTusxk45Bs?=
- =?iso-8859-1?Q?DCu/QPxdbq5X/btKmj3weoKemwlLvE+YQDi5DfpqzSPqB+5/gGWG6INebj?=
- =?iso-8859-1?Q?7Hj1KOnlUohdo8OblILKutldHsk8PtE8loiFhhRY5PW+1JGRnVl2aKKvE4?=
- =?iso-8859-1?Q?RKVZfJqXq+vX7UA3D/YXj+dhKu7Bxt08On4dPyQ8X4pfSUWGBDBl5/UrHZ?=
- =?iso-8859-1?Q?aJ8AHf4y97sE1UpXgwk1hOFGfimXMiYvuNQbV4PcrAdPDO5MEywK6x45x2?=
- =?iso-8859-1?Q?8PRz3fL7mSFLAH5CngPsMCcg4OOWC+yYyqTREzHfvbrG+z5SzecV7N6Mfc?=
- =?iso-8859-1?Q?KMUDTciR0+ivEOx0QjMFdPD1l9PcyPknGwX00AWrPPJrmrueEYjCDs65As?=
- =?iso-8859-1?Q?vV/KiLUcurZdtJbSSK535cce4DwfForHySy3sJ9//E2nLrXF5H80v8scuX?=
- =?iso-8859-1?Q?v0teC2iwkZcK6yHop0xz55F3TFrOjgsYxvY70fsZWsQWX9UOyBadyyNp/u?=
- =?iso-8859-1?Q?h8d/Y6kAzWG5PCpmTKUu+MOyJrI2LK7g2AM2Uhmq6QGQum82w+Rcpi21BF?=
- =?iso-8859-1?Q?X5arXorW3iZsFwYEfchrCLZS53utaqwLsgp69PHb+7cq1kJkLWDSZukw?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?MyBlX7Ir15bRpEXdgZoKK4IfPayoWHbBXbuyw8KHUhQume8QgrbYUa8xSDVm?=
+ =?us-ascii?Q?guEq4LwYjwaYKaAcOOJ5OFouHkMzAhjPzz672A4U/GxJjU9supWWqh8HVL5g?=
+ =?us-ascii?Q?o1wh/YJ/R0ZIY9AuHcduxl7oHzpnw0BLMu43RyLxWKfHX5uBA7C7GreEYI8l?=
+ =?us-ascii?Q?nR94UnRS3UJsQgzbiPWTdCoIJUSN0gErDrESmehXnWGbU51yNq0b7w8fkzAH?=
+ =?us-ascii?Q?UjBP15JVJTdm+/IsSZDYyBIPWBt+I6cfUOF/JwM46WlBBfnovr2eHS9fLiFj?=
+ =?us-ascii?Q?aUJIj/FgcVjfl7pGR6L2Ol/r9bF8ZJbJJQwyjDVyj1tU+6T8XSbIA2//ujHF?=
+ =?us-ascii?Q?lg47ipiXg7HXuXZm/3kS1wepCo/CdguL9UXeRmZ8cmGWMbDGFG6wv9WIEiCl?=
+ =?us-ascii?Q?71BozT/2LV0E4zG+MXpMSXKnxrcZA/8V8QYB0NVuJCqsp0pr0eztNftC6Lqd?=
+ =?us-ascii?Q?Q11VBu305qfGS62USgGaUO80k5sId6ti/xM/CyY0sq39RH+ProCWAxuOJpBs?=
+ =?us-ascii?Q?/bdyzTuNgCEOVjdfpMPgI/PORsFY7adGnYukDcDZ/OByJ7mP0GYklejEoYs2?=
+ =?us-ascii?Q?LczXymMhCNCx+c5rQB0lTIVDvc2DwAaoPD3ZLOdTShHygQXnWc+g22VQGUmM?=
+ =?us-ascii?Q?/RmvaLPylqqZ+tuWt9eJPOf9KgXBnZYQMQ/x0TWsUC97yxH355KyjtT6SX9m?=
+ =?us-ascii?Q?nSfN1V5P7DHtOZ/k1rXJ+1H5xtp86Fvy8jQIR1Qxm9jqB2MkvDMQmN4d+OfG?=
+ =?us-ascii?Q?9+TossYv639gwskjES2c5h2VVCsbPdPuAmcOMn6qKgWoOggqRtHWkEaiKEFH?=
+ =?us-ascii?Q?K+NqlAmKsgUtKB1lbQaiLwjQaPUUsXAl5hO/PsIpaaJ1apFDGGwZXAaWvUcu?=
+ =?us-ascii?Q?rdjFS7CmY+jeNtUJzlbZzEQiQSmKhp+LaEu49mx3ezKn7CoIVO+ODx3SSd2R?=
+ =?us-ascii?Q?ppFaHRB5gW4qb3NKlQ2ZB8csFFS0S8bRc8FHp9wcVHSxZf7bzvYM1OOdJHiX?=
+ =?us-ascii?Q?/wRxA768LPlsrxhmOURwL04oehaTzPyOacR88qFHjFw+Bnsu02FCKmj3w0hD?=
+ =?us-ascii?Q?tuGRIiYuEOofIverNyzju0sJ3tH/zeJZ69Yf88QS1DERCpn2+ezj4ZvkxrG4?=
+ =?us-ascii?Q?XuVKlO/Nd1+/AitBN9If5azcrsEdriivcpiacmOYfbEEnWhhPcZg57ngguh+?=
+ =?us-ascii?Q?UAZbu0Mmqgawrru8sDpMn1uy+H1VhKOMXYgQvosKk96Ue6Pj7SnnO1/Ul5ho?=
+ =?us-ascii?Q?A7E1lr7HWwYFDgMSq4VaE2NijdTRH8+LitWVQIuM7EP2IssnO6OFmg8crX6B?=
+ =?us-ascii?Q?N60twXFwJSYVSGjpo7VRBx6bJOCm/BXLyGf41OfjLwog2P/pUA4vMAbcAxU+?=
+ =?us-ascii?Q?JIZXFuF1mVStN1x2RH6/45tBFXTl7kjz++2n7W/5sPOGM8V5kyz337Sq1zv2?=
+ =?us-ascii?Q?H6JzumU1FPPd3fgqSdmJyNjLLOCl3iJ5oa7rQR47RXMr3yxnjmS5PDbv8pTm?=
+ =?us-ascii?Q?PLnGUEDYrN9W37SjC6zTgghsQhwOQMrIHBFqJ5zh84mrQT6KFKdv1yrLGxI/?=
+ =?us-ascii?Q?fBW+8ntSdE5urWn5W1/3JzIiDkK6NgojadqwSBAldcuEzanWkKZvtICReCdD?=
+ =?us-ascii?Q?Ow=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: acksys.fr
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DB9PR01MB7354.eurprd01.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 240eb837-ea5d-462b-939f-08d999fad7dd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Oct 2021 10:08:09.0559
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ebc9538-085d-4f00-ef21-08d999fd47ee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Oct 2021 10:25:36.1037
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: f18a6414-d5f3-4b5c-9345-f30c01d87e32
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: bD5p31GT0BxfwSrPr6pLj6CiuOtnZ6AYewzyd+v2C6SnMLKBA03GLRb5J4o2J3K8cZe3arKAY/YOQM6yyXENEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR01MB6438
+X-MS-Exchange-CrossTenant-userprincipalname: C3mLRWkkXxDIVTbQ2tp2dyvOpzpikAjbJ82qh2QGsDASOLiPipUk9CFFu4uvD5yhG3IB2LvWN4+ZXvQ6scEk5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0101MB2376
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
-
-Please disregard this v3. The spinlock is misplaced in ht.c.
-Sorry.
-
------Message d'origine-----
-De=A0: Jean-Pierre TOSONI <jp.tosoni@acksys.fr>=20
-Envoy=E9=A0: jeudi 28 octobre 2021 11:15
-=C0=A0: Johannes Berg (johannes@sipsolutions.net) <johannes@sipsolutions.ne=
-t>; 'linux-wireless@vger.kernel.org' <linux-wireless@vger.kernel.org>
-Objet=A0: [RFC v3] mac80211: fix rx blockack session race condition
 
 When the mac80211 layer is used with ath10k, the following may happen:
 
@@ -154,17 +141,20 @@ Note 1: there is another dubious DELBA generation in
 ieee80211_rx_reorder_ampdu(), where the same kind of fix should fit,
 but I did not fix it since I knew no easy way to test.
 
-Note 2: this fix applies to wireless backports from 5.4-rc8.
+Note 2: this fix was tested against a wireless backport from 5.4-rc8.
+
+Signed-off-by: Jean-Pierre Tosoni <jp.tosoni@acksys.fr>
 ---
 V2: remove debugging code leftovers, sorry for that
 V3: use spin_lock_bh instead of a mutex
-
-Index: b/net/mac80211/rx.c
+V4: spinlock must protect ___ieee80211_start_rx_ba_session instead of
+    ___ieee80211_stop_rx_ba_session
+Index: bp/net/mac80211/rx.c
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
+--- bp.orig/net/mac80211/rx.c
++++ bp/net/mac80211/rx.c
 @@ -3085,11 +3085,18 @@ ieee80211_rx_h_ctrl(struct ieee80211_rx_
 =20
  		tid =3D le16_to_cpu(bar_data.control) >> 12;
@@ -185,32 +175,33 @@ Index: b/net/mac80211/rx.c
 =20
  		tid_agg_rx =3D rcu_dereference(rx->sta->ampdu_mlme.tid_rx[tid]);
  		if (!tid_agg_rx)
-Index: b/net/mac80211/ht.c
+Index: bp/net/mac80211/ht.c
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
---- a/net/mac80211/ht.c
-+++ b/net/mac80211/ht.c
-@@ -367,11 +367,13 @@ void ieee80211_ba_session_work(struct wo
- 							 IEEE80211_MAX_AMPDU_BUF_HT,
- 							 false, true, NULL);
+--- bp.orig/net/mac80211/ht.c
++++ bp/net/mac80211/ht.c
+@@ -360,12 +360,14 @@ void ieee80211_ba_session_work(struct wo
+ 				sta, tid, WLAN_BACK_RECIPIENT,
+ 				WLAN_REASON_UNSPECIFIED, true);
 =20
 +		spin_lock_bh(&sta->ampdu_mlme.rx_offl_lock);
- 		if (test_and_clear_bit(tid + IEEE80211_NUM_TIDS,
+ 		if (!blocked &&
+ 		    test_and_clear_bit(tid,
  				       sta->ampdu_mlme.tid_rx_manage_offl))
- 			___ieee80211_stop_rx_ba_session(
- 				sta, tid, WLAN_BACK_RECIPIENT,
- 				0, false);
+ 			___ieee80211_start_rx_ba_session(sta, 0, 0, 0, 1, tid,
+ 							 IEEE80211_MAX_AMPDU_BUF_HT,
+ 							 false, true, NULL);
 +		spin_unlock_bh(&sta->ampdu_mlme.rx_offl_lock);
 =20
- 		spin_lock_bh(&sta->lock);
-=20
-Index: b/net/mac80211/sta_info.c
+ 		if (test_and_clear_bit(tid + IEEE80211_NUM_TIDS,
+ 				       sta->ampdu_mlme.tid_rx_manage_offl))
+Index: bp/net/mac80211/sta_info.c
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
+--- bp.orig/net/mac80211/sta_info.c
++++ bp/net/mac80211/sta_info.c
 @@ -354,6 +354,7 @@ struct sta_info *sta_info_alloc(struct i
 =20
  	spin_lock_init(&sta->lock);
@@ -219,12 +210,12 @@ Index: b/net/mac80211/sta_info.c
  	INIT_WORK(&sta->drv_deliver_wk, sta_deliver_ps_frames);
  	INIT_WORK(&sta->ampdu_mlme.work, ieee80211_ba_session_work);
  	mutex_init(&sta->ampdu_mlme.mtx);
-Index: b/net/mac80211/sta_info.h
+Index: bp/net/mac80211/sta_info.h
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
+--- bp.orig/net/mac80211/sta_info.h
++++ bp/net/mac80211/sta_info.h
 @@ -266,6 +266,7 @@ struct tid_ampdu_rx {
   * @mtx: mutex to protect all TX data (except non-NULL assignments
   *	to tid_tx[idx], which are protected by the sta spinlock)
@@ -244,3 +235,4 @@ _valid
  	unsigned long tid_rx_timer_expired[BITS_TO_LONGS(IEEE80211_NUM_TIDS)];
 --
 quilt 0.63
+
