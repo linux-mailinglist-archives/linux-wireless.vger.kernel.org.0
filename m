@@ -2,530 +2,302 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EF4143DD08
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 10:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 376CF43DD24
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 10:47:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229992AbhJ1Int (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 04:43:49 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:56565 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230030AbhJ1Ins (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 04:43:48 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19S8fFIj9003328, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19S8fFIj9003328
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 28 Oct 2021 16:41:15 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Thu, 28 Oct 2021 16:41:15 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Thu, 28 Oct
- 2021 16:41:14 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 2/2] rtw89: update rtw89_regulatory map to R58-R31
-Date:   Thu, 28 Oct 2021 16:40:54 +0800
-Message-ID: <20211028084054.12962-2-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211028084054.12962-1-pkshih@realtek.com>
-References: <20211028084054.12962-1-pkshih@realtek.com>
+        id S229993AbhJ1Itt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 04:49:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39758 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229626AbhJ1Its (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Oct 2021 04:49:48 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 88C8C60551;
+        Thu, 28 Oct 2021 08:47:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635410842;
+        bh=gecdne1XAj7GaAChlzxHKs+r4b/HLyjtW86t5MSFcdk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UQvvB4qZFhCWeUaRKlyfjE6RmeXD4m0P4kFWAl887Pivbv3X/9uG3MVcmID/GZkk4
+         Q5kUGuwGWqIhUX2vgDGRqwvZC4xcXKajKJsaXibTV/9Hw4rhOxIenPOuO02yHzt2vk
+         lMAKX4Wp4W9fFQbTjGYCRrhrOZrmJpfkDXMXYZn50SBaSaZ3ct11Tt0kv55uLdW2j4
+         taNR9HAvwhivzAE9mXjJsuiK+g/CuM3eZc3c+SFq3GayZZzWOyI8kWDcH1I3+o8LVe
+         HjFOLBWP8DgCpaXnLnxprnbcB56iCy4Mi01mxc0aHWG9B5BZMaqn/GFEP1ofALtWoL
+         DGkVEf3pqmpLw==
+Date:   Thu, 28 Oct 2021 10:47:18 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Shayne Chen <shayne.chen@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: Re: [PATCH] mt76: mt7915: add default calibrated data support
+Message-ID: <YXpjlrp/4d2AruNE@lore-desk>
+References: <20211027080747.24388-1-shayne.chen@mediatek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/28/2021 08:30:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzI4IKRXpMggMDc6MTA6MDA=?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/28/2021 08:27:55
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 166954 [Oct 28 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/28/2021 08:30:00
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="53fIPWQhf2prwpyD"
+Content-Disposition: inline
+In-Reply-To: <20211027080747.24388-1-shayne.chen@mediatek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Start to configure entries with RTW89_QATAR, RTW89_UKRAINE, RTW89_CN.
-Adjust some entries with explicit rtw89_regulatory instead of RTW89_WW.
+--53fIPWQhf2prwpyD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/regd.c | 375 +++++++++++-----------
- 1 file changed, 188 insertions(+), 187 deletions(-)
+> Load the default eeprom data when the content of flash/efuse is invalid.
+> This could help to eliminate some issues due to incorrect or
+> insufficient rf values.
+>=20
+> Co-developed-by: Bo Jiao <Bo.Jiao@mediatek.com>
+> Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+> Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+> ---
+>  .../wireless/mediatek/mt76/mt7915/eeprom.c    | 83 +++++++++++++++----
+>  .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 24 ++++++
+>  .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  1 +
+>  .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 +
+>  4 files changed, 98 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers=
+/net/wireless/mediatek/mt76/mt7915/eeprom.c
+> index ee3d644..626ea4a 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: ISC
+>  /* Copyright (C) 2020 MediaTek Inc. */
+> =20
+> +#include <linux/firmware.h>
+>  #include "mt7915.h"
+>  #include "eeprom.h"
+> =20
+> @@ -10,6 +11,9 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev =
+*dev)
+>  	u8 *eeprom =3D mdev->eeprom.data;
+>  	u32 val =3D eeprom[MT_EE_DO_PRE_CAL];
+> =20
+> +	if (!dev->flash_mode)
+> +		return 0;
+> +
+>  	if (val !=3D (MT_EE_WIFI_CAL_DPD | MT_EE_WIFI_CAL_GROUP))
+>  		return 0;
+> =20
+> @@ -21,6 +25,49 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev=
+ *dev)
+>  	return mt76_get_of_eeprom(mdev, dev->cal, MT_EE_PRECAL, val);
+>  }
+> =20
+> +static int mt7915_check_eeprom(struct mt7915_dev *dev)
+> +{
+> +	u8 *eeprom =3D dev->mt76.eeprom.data;
+> +	u16 val =3D get_unaligned_le16(eeprom);
+> +
+> +	switch (val) {
+> +	case 0x7915:
+> +		return 0;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int
+> +mt7915_eeprom_load_default(struct mt7915_dev *dev)
+> +{
+> +	char *default_bin =3D MT7915_EEPROM_DEFAULT;
+> +	u8 *eeprom =3D dev->mt76.eeprom.data;
+> +	const struct firmware *fw =3D NULL;
+> +	int ret;
+> +
+> +	if (dev->dbdc_support)
+> +		default_bin =3D MT7915_EEPROM_DEFAULT_DBDC;
+> +
+> +	ret =3D request_firmware(&fw, default_bin, dev->mt76.dev);
+> +	if (ret)
+> +		goto out;
 
-diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
-index f00b94ecfff4..4c37e590e43c 100644
---- a/drivers/net/wireless/realtek/rtw89/regd.c
-+++ b/drivers/net/wireless/realtek/rtw89/regd.c
-@@ -15,243 +15,244 @@ static const struct rtw89_regulatory rtw89_ww_regd =
- 	COUNTRY_REGD("00", RTW89_WW, RTW89_WW);
- 
- static const struct rtw89_regulatory rtw89_regd_map[] = {
--	COUNTRY_REGD("AR", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("BO", RTW89_WW, RTW89_FCC),
-+	COUNTRY_REGD("AR", RTW89_MEXICO, RTW89_MEXICO),
-+	COUNTRY_REGD("BO", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("BR", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("CL", RTW89_WW, RTW89_CHILE),
-+	COUNTRY_REGD("CL", RTW89_CHILE, RTW89_CHILE),
- 	COUNTRY_REGD("CO", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("CR", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("EC", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("SV", RTW89_WW, RTW89_FCC),
-+	COUNTRY_REGD("SV", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("GT", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("HN", RTW89_WW, RTW89_FCC),
--	COUNTRY_REGD("MX", RTW89_FCC, RTW89_MEXICO),
-+	COUNTRY_REGD("HN", RTW89_FCC, RTW89_FCC),
-+	COUNTRY_REGD("MX", RTW89_MEXICO, RTW89_MEXICO),
- 	COUNTRY_REGD("NI", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("PA", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("PY", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("PE", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("US", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("UY", RTW89_WW, RTW89_FCC),
--	COUNTRY_REGD("VE", RTW89_WW, RTW89_FCC),
-+	COUNTRY_REGD("UY", RTW89_FCC, RTW89_FCC),
-+	COUNTRY_REGD("VE", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("PR", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("DO", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("AT", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("BE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("CY", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("CZ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("DK", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("EE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("FI", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("FR", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("DE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GR", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("HU", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("IS", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("IE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("IT", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("LV", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("LI", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("LT", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("LU", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MT", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MC", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("NL", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("NO", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("PL", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("PT", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("SK", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("SI", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("ES", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("SE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("CH", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GB", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("AL", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("AZ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("BH", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("BA", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("BG", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("HR", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("EG", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GH", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("IQ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("IL", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("JO", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("KZ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("KE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("KW", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("KG", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("LB", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("LS", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MK", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MA", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MZ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("NA", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("NG", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("OM", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("QA", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("RO", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("RU", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("SA", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("SN", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("RS", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("ME", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("ZA", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("TR", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("UA", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("AE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("YE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("ZW", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("BD", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("KH", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("CN", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("HK", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("IN", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("AT", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("BE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("CY", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("CZ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("DK", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("EE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("FI", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("FR", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("DE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GR", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("HU", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("IS", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("IE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("IT", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("LV", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("LI", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("LT", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("LU", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MT", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MC", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("NL", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("NO", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("PL", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("PT", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("SK", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("SI", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("ES", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("SE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("CH", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GB", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("AL", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("AZ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("BH", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("BA", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("BG", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("HR", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("EG", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GH", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("IQ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("IL", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("JO", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("KZ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("KE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("KW", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("KG", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("LB", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("LS", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MK", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MA", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MZ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("NA", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("NG", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("OM", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("QA", RTW89_QATAR, RTW89_QATAR),
-+	COUNTRY_REGD("RO", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("RU", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("SA", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("SN", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("RS", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("ME", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("ZA", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("TR", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("UA", RTW89_UKRAINE, RTW89_UKRAINE),
-+	COUNTRY_REGD("AE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("YE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("ZW", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("BD", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("KH", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("CN", RTW89_CN, RTW89_CN),
-+	COUNTRY_REGD("HK", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("IN", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("ID", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("KR", RTW89_KCC, RTW89_KCC),
--	COUNTRY_REGD("MY", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("PK", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("PH", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("SG", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("LK", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("MY", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("PK", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("PH", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("SG", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("LK", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("TW", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("TH", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("VN", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("AU", RTW89_WW, RTW89_ACMA),
--	COUNTRY_REGD("NZ", RTW89_WW, RTW89_ACMA),
--	COUNTRY_REGD("PG", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("TH", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("VN", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("AU", RTW89_ACMA, RTW89_ACMA),
-+	COUNTRY_REGD("NZ", RTW89_ACMA, RTW89_ACMA),
-+	COUNTRY_REGD("PG", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("CA", RTW89_IC, RTW89_IC),
- 	COUNTRY_REGD("JP", RTW89_MKK, RTW89_MKK),
--	COUNTRY_REGD("JM", RTW89_WW, RTW89_FCC),
-+	COUNTRY_REGD("JM", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("AN", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("TT", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("TN", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("TN", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("AF", RTW89_ETSI, RTW89_ETSI),
--	COUNTRY_REGD("DZ", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("DZ", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("AS", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("AD", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("AO", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("AI", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("AQ", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("AD", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("AO", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("AI", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("AQ", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("AG", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("AM", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("AM", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("AW", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("BS", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("BB", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("BY", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("BY", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("BZ", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("BJ", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("BJ", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("BM", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("BT", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("BW", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("BV", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("IO", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("BT", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("BW", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("BV", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("IO", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("VG", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("BN", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("BF", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MM", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("BI", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("CM", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("CV", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("BN", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("BF", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MM", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("BI", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("CM", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("CV", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("KY", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("CF", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("TD", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("CX", RTW89_WW, RTW89_ACMA),
--	COUNTRY_REGD("CC", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("KM", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("CG", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("CD", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("CK", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("CF", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("TD", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("CX", RTW89_ACMA, RTW89_ACMA),
-+	COUNTRY_REGD("CC", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("KM", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("CG", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("CD", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("CK", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("CI", RTW89_ETSI, RTW89_ETSI),
--	COUNTRY_REGD("DJ", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("DJ", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("DM", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("GQ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("ER", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("ET", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("FK", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("FO", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("GQ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("ER", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("ET", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("FK", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("FO", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("FJ", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("GF", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("PF", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("TF", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GA", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GM", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GI", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GL", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("GF", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("PF", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("TF", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GA", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GM", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GI", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GL", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("GD", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("GP", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("GP", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("GU", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("GG", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GN", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GW", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GY", RTW89_FCC, RTW89_NCC),
-+	COUNTRY_REGD("GG", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GN", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GW", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GY", RTW89_NCC, RTW89_NCC),
- 	COUNTRY_REGD("HT", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("HM", RTW89_WW, RTW89_ACMA),
--	COUNTRY_REGD("VA", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("IM", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("JE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("KI", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("LA", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("LR", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("LY", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MO", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MG", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MW", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MV", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("ML", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("HM", RTW89_ACMA, RTW89_ACMA),
-+	COUNTRY_REGD("VA", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("IM", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("JE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("KI", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("LA", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("LR", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("LY", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MO", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MG", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MW", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MV", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("ML", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("MH", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("MQ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MR", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MU", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("YT", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("MQ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MR", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MU", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("YT", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("FM", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("MD", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MN", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("MS", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("NR", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("NP", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("NC", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("NE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("NU", RTW89_WW, RTW89_ACMA),
--	COUNTRY_REGD("NF", RTW89_WW, RTW89_ACMA),
-+	COUNTRY_REGD("MD", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MN", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("MS", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("NR", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("NP", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("NC", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("NE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("NU", RTW89_ACMA, RTW89_ACMA),
-+	COUNTRY_REGD("NF", RTW89_ACMA, RTW89_ACMA),
- 	COUNTRY_REGD("MP", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("PW", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("RE", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("RW", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("SH", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("RE", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("RW", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("SH", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("KN", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("LC", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("MF", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("SX", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("PM", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("PM", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("VC", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("WS", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("SM", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("SM", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("ST", RTW89_FCC, RTW89_FCC),
- 	COUNTRY_REGD("SC", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("SL", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("SB", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("SO", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("GS", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("SL", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("SB", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("SO", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("GS", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("SR", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("SJ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("SZ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("TJ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("TZ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("TG", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("TK", RTW89_WW, RTW89_ACMA),
--	COUNTRY_REGD("TO", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("TM", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("TC", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("SJ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("SZ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("TJ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("TZ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("TG", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("TK", RTW89_ACMA, RTW89_ACMA),
-+	COUNTRY_REGD("TO", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("TM", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("TC", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("TV", RTW89_ETSI, RTW89_NA),
--	COUNTRY_REGD("UG", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("UG", RTW89_ETSI, RTW89_ETSI),
- 	COUNTRY_REGD("VI", RTW89_FCC, RTW89_FCC),
--	COUNTRY_REGD("UZ", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("VU", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("WF", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("EH", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("ZM", RTW89_WW, RTW89_ETSI),
--	COUNTRY_REGD("IR", RTW89_WW, RTW89_ETSI),
-+	COUNTRY_REGD("UZ", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("VU", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("WF", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("EH", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("ZM", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("IR", RTW89_ETSI, RTW89_ETSI),
-+	COUNTRY_REGD("PS", RTW89_ETSI, RTW89_ETSI),
- };
- 
- static const struct rtw89_regulatory *rtw89_regd_find_reg_by_name(char *alpha2)
--- 
-2.25.1
+nit: you can just drop goto and return ret here
 
+> +
+> +	if (!fw || !fw->data) {
+> +		dev_err(dev->mt76.dev, "Invalid default bin\n");
+> +		ret =3D -EINVAL;
+> +		goto out;
+> +	}
+> +
+> +	memcpy(eeprom, fw->data, MT7915_EEPROM_SIZE);
+> +	dev->flash_mode =3D true;
+> +
+> +out:
+> +	release_firmware(fw);
+> +
+> +	return ret;
+> +}
+> +
+>  static int mt7915_eeprom_load(struct mt7915_dev *dev)
+>  {
+>  	int ret;
+> @@ -31,8 +78,8 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+> =20
+>  	if (ret) {
+>  		dev->flash_mode =3D true;
+> -		ret =3D mt7915_eeprom_load_precal(dev);
+>  	} else {
+> +		/* read eeprom data from efuse */
+>  		u32 block_num, i;
+> =20
+>  		block_num =3D DIV_ROUND_UP(MT7915_EEPROM_SIZE,
+> @@ -42,20 +89,28 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+>  					      i * MT7915_EEPROM_BLOCK_SIZE);
+>  	}
+> =20
+> -	return ret;
+> -}
+> -
+> -static int mt7915_check_eeprom(struct mt7915_dev *dev)
+> -{
+> -	u8 *eeprom =3D dev->mt76.eeprom.data;
+> -	u16 val =3D get_unaligned_le16(eeprom);
+> +	if (!dev->flash_mode) {
+> +		u8 free_block_num;
+> +
+> +		mt7915_mcu_get_eeprom_free_block(dev, &free_block_num);
+> +		if (free_block_num >=3D 29) {
+> +			dev_warn(dev->mt76.dev,
+> +				 "efuse info not enough, use default bin\n");
+> +			ret =3D mt7915_eeprom_load_default(dev);
+> +			if (ret)
+> +				return ret;
+> +		}
+> +	}
+> =20
+> -	switch (val) {
+> -	case 0x7915:
+> -		return 0;
+> -	default:
+> -		return -EINVAL;
+> +	ret =3D mt7915_check_eeprom(dev);
+> +	if (ret) {
+> +		dev_warn(dev->mt76.dev, "eeprom check fail, use default bin\n");
+> +		ret =3D mt7915_eeprom_load_default(dev);
+> +		if (ret)
+> +			return ret;
+
+nit: drop return here or just return 0 at the end
+
+>  	}
+> +
+> +	return ret;
+>  }
+> =20
+>  void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
+> @@ -120,7 +175,7 @@ int mt7915_eeprom_init(struct mt7915_dev *dev)
+>  	if (ret < 0)
+>  		return ret;
+> =20
+> -	ret =3D mt7915_check_eeprom(dev);
+> +	ret =3D mt7915_eeprom_load_precal(dev);
+>  	if (ret)
+>  		return ret;
+> =20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7915/mcu.c
+> index b054663..ee9952d 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> @@ -3580,6 +3580,30 @@ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, =
+u32 offset)
+>  	return 0;
+>  }
+> =20
+> +int mt7915_mcu_get_eeprom_free_block(struct mt7915_dev *dev, u8 *block_n=
+um)
+> +{
+> +	struct {
+> +		u8 _rsv;
+> +		u8 version;
+> +		u8 die_idx;
+> +		u8 _rsv2;
+> +	} __packed req =3D {
+> +		.version =3D 1,
+> +	};
+> +	struct sk_buff *skb;
+> +	int ret;
+> +
+> +	ret =3D mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_QUERY(EFUSE_FREE_=
+BLOCK), &req,
+> +					sizeof(req), true, &skb);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*block_num =3D *(u8 *)skb->data;
+> +	dev_kfree_skb(skb);
+> +
+> +	return 0;
+> +}
+> +
+>  static int mt7915_mcu_set_pre_cal(struct mt7915_dev *dev, u8 idx,
+>  				  u8 *data, u32 len, int cmd)
+>  {
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/ne=
+t/wireless/mediatek/mt76/mt7915/mcu.h
+> index b563e7c..e9f39ed 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+> @@ -278,6 +278,7 @@ enum {
+>  	MCU_EXT_CMD_MUAR_UPDATE =3D 0x48,
+>  	MCU_EXT_CMD_RX_AIRTIME_CTRL =3D 0x4a,
+>  	MCU_EXT_CMD_SET_RX_PATH =3D 0x4e,
+> +	MCU_EXT_CMD_EFUSE_FREE_BLOCK =3D 0x4f,
+>  	MCU_EXT_CMD_TX_POWER_FEATURE_CTRL =3D 0x58,
+>  	MCU_EXT_CMD_GET_MIB_INFO =3D 0x5a,
+>  	MCU_EXT_CMD_MWDS_SUPPORT =3D 0x80,
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers=
+/net/wireless/mediatek/mt76/mt7915/mt7915.h
+> index e69b4c8..c6c846d 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+> @@ -30,6 +30,9 @@
+>  #define MT7915_FIRMWARE_WM		"mediatek/mt7915_wm.bin"
+>  #define MT7915_ROM_PATCH		"mediatek/mt7915_rom_patch.bin"
+> =20
+> +#define MT7915_EEPROM_DEFAULT		"mediatek/mt7915_eeprom.bin"
+> +#define MT7915_EEPROM_DEFAULT_DBDC	"mediatek/mt7915_eeprom_dbdc.bin"
+> +
+>  #define MT7915_EEPROM_SIZE		3584
+>  #define MT7915_EEPROM_BLOCK_SIZE	16
+>  #define MT7915_TOKEN_SIZE		8192
+> @@ -423,6 +426,7 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev =
+*dev,
+>  				   void *data, u32 field);
+>  int mt7915_mcu_set_eeprom(struct mt7915_dev *dev);
+>  int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset);
+> +int mt7915_mcu_get_eeprom_free_block(struct mt7915_dev *dev, u8 *block_n=
+um);
+>  int mt7915_mcu_set_mac(struct mt7915_dev *dev, int band, bool enable,
+>  		       bool hdr_trans);
+>  int mt7915_mcu_set_test_param(struct mt7915_dev *dev, u8 param, bool tes=
+t_mode,
+> --=20
+> 2.25.1
+>=20
+
+--53fIPWQhf2prwpyD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYXpjlgAKCRA6cBh0uS2t
+rMGbAQCSfDkJpP/YJAkg8yTcGa5L/NFjTc2pDv0SurGpAdTFbQD9GJ/GTeYi9nlM
+aBO/jSns/WnpobTEYku5EMCpeDG+Twk=
+=fC/D
+-----END PGP SIGNATURE-----
+
+--53fIPWQhf2prwpyD--
