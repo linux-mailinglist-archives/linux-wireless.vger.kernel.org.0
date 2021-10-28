@@ -2,237 +2,265 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F6D343DECC
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 12:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CED343DF1A
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 12:41:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229809AbhJ1K2G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 06:28:06 -0400
-Received: from mail-eopbgr150109.outbound.protection.outlook.com ([40.107.15.109]:50618
-        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229626AbhJ1K2F (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 06:28:05 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D9nIuw3LYNrNVdqvEvN/7s4giNeoHG/P67nf7+Dsl7nm2MbgUaAqXiMWL3E/AzHhgnvQxr2GEKbRMdPyfPWuqDLkH/eI5h5OdeHfQ7zaKZw40jumA7vvRZALbTlkcScboZvtE3BPbKwA8jBIaWEi3xLVucS4o9z02K1qRIrdxosbkcBboEGj75U5U4mU+DvWwwhinsOorXz/zFLl3rbNFS50d2FbPcR7p4fGBUjQ5WW+kQxE8AkjwEMoHuZhHcudd2Olnme3J5C3JS24pCErHq0uRNMsNQx5bRF7/9Mc8lDFZpE4CF0urzP4cbvjL8dsJdeLsYGCCNF6ywQLlk5Kiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eJRDza0DmJBpMbKtC5cCZefPfe38qbo67c7i6UA2DgY=;
- b=XL5ti6Vq3p0QfjgBjb0KBBbLOcl8b/9vWw6iMPylSwqipfkcVoryVBlLwGLFlrRhutW/dFZ416PJRRjh8L1nMNSwLtRV9UgMCFnHwQaaroYSP+s1z4vhxdjyuvFYR+MuvTw2RPkPvE0AakVQJPsNdcdhd2a5e339a+yplfaa/vrzCevrxuBnTMqCleaUi7AlBcSdFoqpJKYdzCJ3pbg8B8fF6pV+4ZvtNw8CzDObYUg3KEEDt/DF5FKyCUeyOO7dToYQ0dshPOa8Xlr83wUarPG/muKO6NEhSTrCtB7wPiBtJtGLm2eoK8qDfaQLNOyMicZje9PdC8cHj20Kga37AQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=acksys.fr; dmarc=pass action=none header.from=acksys.fr;
- dkim=pass header.d=acksys.fr; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ACKSYS.onmicrosoft.com; s=selector2-ACKSYS-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eJRDza0DmJBpMbKtC5cCZefPfe38qbo67c7i6UA2DgY=;
- b=PriW8V+xykbLPtQY+9RKjpJndjwYnzr/CtLW3wCPus0LSYUqJlfGYPmdPzZSWpwIsUZYQlOVe62aSKoMM22WLqUHOsZhj72Cz5oKSQAPdxV5j9+ymeU2c5GkYcNLqoMNL9Qp8FSW4yuup7Crw1165lAXFMXYLSaOGKCqrQG7cyM=
-Received: from DB9PR01MB7354.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:21d::7) by DB6PR0101MB2376.eurprd01.prod.exchangelabs.com
- (2603:10a6:4:3b::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.20; Thu, 28 Oct
- 2021 10:25:36 +0000
-Received: from DB9PR01MB7354.eurprd01.prod.exchangelabs.com
- ([fe80::f007:df3d:1b84:f0fe]) by DB9PR01MB7354.eurprd01.prod.exchangelabs.com
- ([fe80::f007:df3d:1b84:f0fe%6]) with mapi id 15.20.4649.015; Thu, 28 Oct 2021
- 10:25:36 +0000
-From:   Jean-Pierre TOSONI <jp.tosoni@acksys.fr>
-To:     "Johannes Berg (johannes@sipsolutions.net)" 
-        <johannes@sipsolutions.net>,
-        "'linux-wireless@vger.kernel.org'" <linux-wireless@vger.kernel.org>
-Subject: [RFC v4] mac80211: fix rx blockack session race condition
-Thread-Topic: [RFC v4] mac80211: fix rx blockack session race condition
-Thread-Index: AdfL5NB40bniWIPCQwqcYHgT9opvcA==
-Date:   Thu, 28 Oct 2021 10:25:36 +0000
-Message-ID: <DB9PR01MB73541FED9E91AC3005D27DAEE4869@DB9PR01MB7354.eurprd01.prod.exchangelabs.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=acksys.fr;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 3ebc9538-085d-4f00-ef21-08d999fd47ee
-x-ms-traffictypediagnostic: DB6PR0101MB2376:
-x-microsoft-antispam-prvs: <DB6PR0101MB2376348C9782882AB5762063E4869@DB6PR0101MB2376.eurprd01.prod.exchangelabs.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: lOJa5zbIQVLrPjG4t+YgzVmC+4Z8HfH1HnxqkmghQGzh47gFPwxHacNPFExYwx26ZTVcquo5axt+HLLZCJ+gZDah1m03uoyUL0cmE1j26N/dt/f/C4XE4JGrzxciV7QhHDM9ruY7en9vOl3ONSxvmE52t687he3FAmWLKE7lHPjpCoCV0qAQs0LzdxVGGJeNlqOI8OpfIiHrB9jtxx7CgtZM/IcavpOyFv+j2O09yco32VO23hBYFQ4bn3D+YTkbIS41PqkbPeo46AHq1JOPyfhxI7WFIjb/QSwfci4fIBdFG3DiTsJsk8v8ypor+oBQNL1HHpj8i7JacpZKwgneLYzJ2/qttIjchx7vyF4Sh7lOKYm1d6cW5pyWdNlzToOsX6sdv3R5xHXlKELmyxUtqQR/Fv4G03lF6zFpQwyN/QsPB6tmAqNr2dLbL993inU4rOu1aWlqYbuh6dl74+nmHirFEnsfDdJkU03+MaBU8avZsukWWgRKbrIYcpx3AIvsWcKCPN0TViltaXQTuv4rZBJC/WJk3/qiA8Xv4Dvm2218+leBTzL45nTRDtgLQ/jVZOquNLwwierHeKTa0QCTXN4dbLDLBfsgHoVOJeSwQN53jnjJppz67PZ71soq5PiVl0CY57HuixMHceLjjra8BFDlh7bmdp9xOc2bo2fE/UprIgQaTD0ruM3MquzTvB9A3VnZdqJNAdlJfhGUsDf+V1GpNU683qdjbU51UYfJsWk=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR01MB7354.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(39830400003)(346002)(366004)(376002)(396003)(136003)(83380400001)(8676002)(86362001)(508600001)(122000001)(66556008)(38100700002)(66476007)(33656002)(38070700005)(110136005)(76116006)(2906002)(186003)(66446008)(6506007)(8936002)(26005)(316002)(64756008)(52536014)(5660300002)(66946007)(9686003)(7696005)(55016002)(71200400001)(491001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?MyBlX7Ir15bRpEXdgZoKK4IfPayoWHbBXbuyw8KHUhQume8QgrbYUa8xSDVm?=
- =?us-ascii?Q?guEq4LwYjwaYKaAcOOJ5OFouHkMzAhjPzz672A4U/GxJjU9supWWqh8HVL5g?=
- =?us-ascii?Q?o1wh/YJ/R0ZIY9AuHcduxl7oHzpnw0BLMu43RyLxWKfHX5uBA7C7GreEYI8l?=
- =?us-ascii?Q?nR94UnRS3UJsQgzbiPWTdCoIJUSN0gErDrESmehXnWGbU51yNq0b7w8fkzAH?=
- =?us-ascii?Q?UjBP15JVJTdm+/IsSZDYyBIPWBt+I6cfUOF/JwM46WlBBfnovr2eHS9fLiFj?=
- =?us-ascii?Q?aUJIj/FgcVjfl7pGR6L2Ol/r9bF8ZJbJJQwyjDVyj1tU+6T8XSbIA2//ujHF?=
- =?us-ascii?Q?lg47ipiXg7HXuXZm/3kS1wepCo/CdguL9UXeRmZ8cmGWMbDGFG6wv9WIEiCl?=
- =?us-ascii?Q?71BozT/2LV0E4zG+MXpMSXKnxrcZA/8V8QYB0NVuJCqsp0pr0eztNftC6Lqd?=
- =?us-ascii?Q?Q11VBu305qfGS62USgGaUO80k5sId6ti/xM/CyY0sq39RH+ProCWAxuOJpBs?=
- =?us-ascii?Q?/bdyzTuNgCEOVjdfpMPgI/PORsFY7adGnYukDcDZ/OByJ7mP0GYklejEoYs2?=
- =?us-ascii?Q?LczXymMhCNCx+c5rQB0lTIVDvc2DwAaoPD3ZLOdTShHygQXnWc+g22VQGUmM?=
- =?us-ascii?Q?/RmvaLPylqqZ+tuWt9eJPOf9KgXBnZYQMQ/x0TWsUC97yxH355KyjtT6SX9m?=
- =?us-ascii?Q?nSfN1V5P7DHtOZ/k1rXJ+1H5xtp86Fvy8jQIR1Qxm9jqB2MkvDMQmN4d+OfG?=
- =?us-ascii?Q?9+TossYv639gwskjES2c5h2VVCsbPdPuAmcOMn6qKgWoOggqRtHWkEaiKEFH?=
- =?us-ascii?Q?K+NqlAmKsgUtKB1lbQaiLwjQaPUUsXAl5hO/PsIpaaJ1apFDGGwZXAaWvUcu?=
- =?us-ascii?Q?rdjFS7CmY+jeNtUJzlbZzEQiQSmKhp+LaEu49mx3ezKn7CoIVO+ODx3SSd2R?=
- =?us-ascii?Q?ppFaHRB5gW4qb3NKlQ2ZB8csFFS0S8bRc8FHp9wcVHSxZf7bzvYM1OOdJHiX?=
- =?us-ascii?Q?/wRxA768LPlsrxhmOURwL04oehaTzPyOacR88qFHjFw+Bnsu02FCKmj3w0hD?=
- =?us-ascii?Q?tuGRIiYuEOofIverNyzju0sJ3tH/zeJZ69Yf88QS1DERCpn2+ezj4ZvkxrG4?=
- =?us-ascii?Q?XuVKlO/Nd1+/AitBN9If5azcrsEdriivcpiacmOYfbEEnWhhPcZg57ngguh+?=
- =?us-ascii?Q?UAZbu0Mmqgawrru8sDpMn1uy+H1VhKOMXYgQvosKk96Ue6Pj7SnnO1/Ul5ho?=
- =?us-ascii?Q?A7E1lr7HWwYFDgMSq4VaE2NijdTRH8+LitWVQIuM7EP2IssnO6OFmg8crX6B?=
- =?us-ascii?Q?N60twXFwJSYVSGjpo7VRBx6bJOCm/BXLyGf41OfjLwog2P/pUA4vMAbcAxU+?=
- =?us-ascii?Q?JIZXFuF1mVStN1x2RH6/45tBFXTl7kjz++2n7W/5sPOGM8V5kyz337Sq1zv2?=
- =?us-ascii?Q?H6JzumU1FPPd3fgqSdmJyNjLLOCl3iJ5oa7rQR47RXMr3yxnjmS5PDbv8pTm?=
- =?us-ascii?Q?PLnGUEDYrN9W37SjC6zTgghsQhwOQMrIHBFqJ5zh84mrQT6KFKdv1yrLGxI/?=
- =?us-ascii?Q?fBW+8ntSdE5urWn5W1/3JzIiDkK6NgojadqwSBAldcuEzanWkKZvtICReCdD?=
- =?us-ascii?Q?Ow=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S229775AbhJ1KoC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 06:44:02 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:59068 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229835AbhJ1KoB (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Oct 2021 06:44:01 -0400
+X-UUID: 96d34b3098694bb5b0937d5446ff412f-20211028
+X-UUID: 96d34b3098694bb5b0937d5446ff412f-20211028
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1888420858; Thu, 28 Oct 2021 18:41:30 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Thu, 28 Oct 2021 18:41:29 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 28 Oct 2021 18:41:29 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH v2] mt76: mt7915: add default calibrated data support
+Date:   Thu, 28 Oct 2021 18:41:24 +0800
+Message-ID: <20211028104124.4872-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-OriginatorOrg: acksys.fr
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR01MB7354.eurprd01.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ebc9538-085d-4f00-ef21-08d999fd47ee
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Oct 2021 10:25:36.1037
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: f18a6414-d5f3-4b5c-9345-f30c01d87e32
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: C3mLRWkkXxDIVTbQ2tp2dyvOpzpikAjbJ82qh2QGsDASOLiPipUk9CFFu4uvD5yhG3IB2LvWN4+ZXvQ6scEk5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0101MB2376
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When the mac80211 layer is used with ath10k, the following may happen:
+Load the default eeprom data when the content of flash/efuse is invalid.
+This could help to eliminate some issues due to incorrect or
+insufficient rf values.
 
-a) radio card firmware receives ADDBA-REQ from peer
-b) radio sends back ADDBA-RESP to peer and signals the ath10k driver
-c) ath10k calls back ieee80211_manage_rx_ba_offl() in mac80211
-   to signal rx ba offloading
-d) mac80211::agg-rx.c::ieee80211_manage_rx_ba_offl()
-  d1) sets a flag: sta->ampdu_mlme.tid_rx_manage_offl
-  d2) queues a call to ht.c::ieee80211_ba_session_work()
-e) ...scheduler runs...
-f) ht.c::ieee80211_ba_session_work() checks the flag, clears it
-   and sets up the rx ba session.
-
-During (e), a fast peer may already have sent a BAREQ which is
-propagated to rx.c::ieee80211_rx_h_ctrl(). Since the session is not
-yet established, mac80211 sends back a DELBA to the peer, which can
-hang the BA session.
-
-The phenomenon can be observed between two QCA988X fw 10.2.4 radios,
-using a loop of associate/arping from client to AP/disconnect. After
-a few thousand loops, arping does not get a response and a sniffer
-detects a DELBA action frame from the client, following an ADDBA.
-
-Fix:
-1) check the offload flag in addition to the check for a valid
-   aggregation session
-2) protect the paired checks of (offload flag, valid aggregation session)
-   with a spinlock against interference from ieee80211_ba_session_work().
-
-Note 1: there is another dubious DELBA generation in
-ieee80211_rx_reorder_ampdu(), where the same kind of fix should fit,
-but I did not fix it since I knew no easy way to test.
-
-Note 2: this fix was tested against a wireless backport from 5.4-rc8.
-
-Signed-off-by: Jean-Pierre Tosoni <jp.tosoni@acksys.fr>
+Co-developed-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
-V2: remove debugging code leftovers, sorry for that
-V3: use spin_lock_bh instead of a mutex
-V4: spinlock must protect ___ieee80211_start_rx_ba_session instead of
-    ___ieee80211_stop_rx_ba_session
-Index: bp/net/mac80211/rx.c
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
---- bp.orig/net/mac80211/rx.c
-+++ bp/net/mac80211/rx.c
-@@ -3085,11 +3085,18 @@ ieee80211_rx_h_ctrl(struct ieee80211_rx_
-=20
- 		tid =3D le16_to_cpu(bar_data.control) >> 12;
-=20
-+		spin_lock_bh(&rx->sta->ampdu_mlme.rx_offl_lock);
- 		if (!test_bit(tid, rx->sta->ampdu_mlme.agg_session_valid) &&
--		    !test_and_set_bit(tid, rx->sta->ampdu_mlme.unexpected_agg))
-+		    /* back_req is allowed if the fw just received addba */
-+		    !test_bit(tid, rx->sta->ampdu_mlme.tid_rx_manage_offl) &&
-+		    !test_and_set_bit(tid, rx->sta->ampdu_mlme.unexpected_agg)) {
-+			spin_unlock_bh(&rx->sta->ampdu_mlme.rx_offl_lock);
- 			ieee80211_send_delba(rx->sdata, rx->sta->sta.addr, tid,
- 					     WLAN_BACK_RECIPIENT,
- 					     WLAN_REASON_QSTA_REQUIRE_SETUP);
-+		} else {
-+			spin_unlock_bh(&rx->sta->ampdu_mlme.rx_offl_lock);
+v2: drop unnecessary goto and return
+---
+ .../wireless/mediatek/mt76/mt7915/eeprom.c    | 81 +++++++++++++++----
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 24 ++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  1 +
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 +
+ 4 files changed, 96 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index ee3d644..a21a6fa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: ISC
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
++#include <linux/firmware.h>
+ #include "mt7915.h"
+ #include "eeprom.h"
+ 
+@@ -10,6 +11,9 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
+ 	u8 *eeprom = mdev->eeprom.data;
+ 	u32 val = eeprom[MT_EE_DO_PRE_CAL];
+ 
++	if (!dev->flash_mode)
++		return 0;
++
+ 	if (val != (MT_EE_WIFI_CAL_DPD | MT_EE_WIFI_CAL_GROUP))
+ 		return 0;
+ 
+@@ -21,6 +25,49 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
+ 	return mt76_get_of_eeprom(mdev, dev->cal, MT_EE_PRECAL, val);
+ }
+ 
++static int mt7915_check_eeprom(struct mt7915_dev *dev)
++{
++	u8 *eeprom = dev->mt76.eeprom.data;
++	u16 val = get_unaligned_le16(eeprom);
++
++	switch (val) {
++	case 0x7915:
++		return 0;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int
++mt7915_eeprom_load_default(struct mt7915_dev *dev)
++{
++	char *default_bin = MT7915_EEPROM_DEFAULT;
++	u8 *eeprom = dev->mt76.eeprom.data;
++	const struct firmware *fw = NULL;
++	int ret;
++
++	if (dev->dbdc_support)
++		default_bin = MT7915_EEPROM_DEFAULT_DBDC;
++
++	ret = request_firmware(&fw, default_bin, dev->mt76.dev);
++	if (ret)
++		return ret;
++
++	if (!fw || !fw->data) {
++		dev_err(dev->mt76.dev, "Invalid default bin\n");
++		ret = -EINVAL;
++		goto out;
++	}
++
++	memcpy(eeprom, fw->data, MT7915_EEPROM_SIZE);
++	dev->flash_mode = true;
++
++out:
++	release_firmware(fw);
++
++	return ret;
++}
++
+ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ {
+ 	int ret;
+@@ -31,8 +78,8 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ 
+ 	if (ret) {
+ 		dev->flash_mode = true;
+-		ret = mt7915_eeprom_load_precal(dev);
+ 	} else {
++		/* read eeprom data from efuse */
+ 		u32 block_num, i;
+ 
+ 		block_num = DIV_ROUND_UP(MT7915_EEPROM_SIZE,
+@@ -42,20 +89,26 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ 					      i * MT7915_EEPROM_BLOCK_SIZE);
+ 	}
+ 
+-	return ret;
+-}
+-
+-static int mt7915_check_eeprom(struct mt7915_dev *dev)
+-{
+-	u8 *eeprom = dev->mt76.eeprom.data;
+-	u16 val = get_unaligned_le16(eeprom);
++	if (!dev->flash_mode) {
++		u8 free_block_num;
++
++		mt7915_mcu_get_eeprom_free_block(dev, &free_block_num);
++		if (free_block_num >= 29) {
++			dev_warn(dev->mt76.dev,
++				 "efuse info not enough, use default bin\n");
++			ret = mt7915_eeprom_load_default(dev);
++			if (ret)
++				return ret;
 +		}
-=20
- 		tid_agg_rx =3D rcu_dereference(rx->sta->ampdu_mlme.tid_rx[tid]);
- 		if (!tid_agg_rx)
-Index: bp/net/mac80211/ht.c
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
---- bp.orig/net/mac80211/ht.c
-+++ bp/net/mac80211/ht.c
-@@ -360,12 +360,14 @@ void ieee80211_ba_session_work(struct wo
- 				sta, tid, WLAN_BACK_RECIPIENT,
- 				WLAN_REASON_UNSPECIFIED, true);
-=20
-+		spin_lock_bh(&sta->ampdu_mlme.rx_offl_lock);
- 		if (!blocked &&
- 		    test_and_clear_bit(tid,
- 				       sta->ampdu_mlme.tid_rx_manage_offl))
- 			___ieee80211_start_rx_ba_session(sta, 0, 0, 0, 1, tid,
- 							 IEEE80211_MAX_AMPDU_BUF_HT,
- 							 false, true, NULL);
-+		spin_unlock_bh(&sta->ampdu_mlme.rx_offl_lock);
-=20
- 		if (test_and_clear_bit(tid + IEEE80211_NUM_TIDS,
- 				       sta->ampdu_mlme.tid_rx_manage_offl))
-Index: bp/net/mac80211/sta_info.c
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
---- bp.orig/net/mac80211/sta_info.c
-+++ bp/net/mac80211/sta_info.c
-@@ -354,6 +354,7 @@ struct sta_info *sta_info_alloc(struct i
-=20
- 	spin_lock_init(&sta->lock);
- 	spin_lock_init(&sta->ps_lock);
-+	spin_lock_init(&sta->ampdu_mlme.rx_offl_lock);
- 	INIT_WORK(&sta->drv_deliver_wk, sta_deliver_ps_frames);
- 	INIT_WORK(&sta->ampdu_mlme.work, ieee80211_ba_session_work);
- 	mutex_init(&sta->ampdu_mlme.mtx);
-Index: bp/net/mac80211/sta_info.h
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
---- bp.orig/net/mac80211/sta_info.h
-+++ bp/net/mac80211/sta_info.h
-@@ -266,6 +266,7 @@ struct tid_ampdu_rx {
-  * @mtx: mutex to protect all TX data (except non-NULL assignments
-  *	to tid_tx[idx], which are protected by the sta spinlock)
-  *	tid_start_tx is also protected by sta->lock.
-+ * @rx_offl_lock: protects transfer from tid_rx_manage_offl to agg_session=
-_valid
-  * @tid_rx: aggregation info for Rx per TID -- RCU protected
-  * @tid_rx_token: dialog tokens for valid aggregation sessions
-  * @tid_rx_timer_expired: bitmap indicating on which TIDs the
-@@ -287,6 +288,7 @@ struct tid_ampdu_rx {
- struct sta_ampdu_mlme {
- 	struct mutex mtx;
- 	/* rx */
-+	spinlock_t rx_offl_lock;
- 	struct tid_ampdu_rx __rcu *tid_rx[IEEE80211_NUM_TIDS];
- 	u8 tid_rx_token[IEEE80211_NUM_TIDS];
- 	unsigned long tid_rx_timer_expired[BITS_TO_LONGS(IEEE80211_NUM_TIDS)];
---
-quilt 0.63
++	}
+ 
+-	switch (val) {
+-	case 0x7915:
+-		return 0;
+-	default:
+-		return -EINVAL;
++	ret = mt7915_check_eeprom(dev);
++	if (ret) {
++		dev_warn(dev->mt76.dev, "eeprom check fail, use default bin\n");
++		ret = mt7915_eeprom_load_default(dev);
+ 	}
++
++	return ret;
+ }
+ 
+ void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
+@@ -120,7 +173,7 @@ int mt7915_eeprom_init(struct mt7915_dev *dev)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = mt7915_check_eeprom(dev);
++	ret = mt7915_eeprom_load_precal(dev);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index b054663..ee9952d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3580,6 +3580,30 @@ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset)
+ 	return 0;
+ }
+ 
++int mt7915_mcu_get_eeprom_free_block(struct mt7915_dev *dev, u8 *block_num)
++{
++	struct {
++		u8 _rsv;
++		u8 version;
++		u8 die_idx;
++		u8 _rsv2;
++	} __packed req = {
++		.version = 1,
++	};
++	struct sk_buff *skb;
++	int ret;
++
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_QUERY(EFUSE_FREE_BLOCK), &req,
++					sizeof(req), true, &skb);
++	if (ret)
++		return ret;
++
++	*block_num = *(u8 *)skb->data;
++	dev_kfree_skb(skb);
++
++	return 0;
++}
++
+ static int mt7915_mcu_set_pre_cal(struct mt7915_dev *dev, u8 idx,
+ 				  u8 *data, u32 len, int cmd)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index b563e7c..e9f39ed 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -278,6 +278,7 @@ enum {
+ 	MCU_EXT_CMD_MUAR_UPDATE = 0x48,
+ 	MCU_EXT_CMD_RX_AIRTIME_CTRL = 0x4a,
+ 	MCU_EXT_CMD_SET_RX_PATH = 0x4e,
++	MCU_EXT_CMD_EFUSE_FREE_BLOCK = 0x4f,
+ 	MCU_EXT_CMD_TX_POWER_FEATURE_CTRL = 0x58,
+ 	MCU_EXT_CMD_GET_MIB_INFO = 0x5a,
+ 	MCU_EXT_CMD_MWDS_SUPPORT = 0x80,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index e69b4c8..c6c846d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -30,6 +30,9 @@
+ #define MT7915_FIRMWARE_WM		"mediatek/mt7915_wm.bin"
+ #define MT7915_ROM_PATCH		"mediatek/mt7915_rom_patch.bin"
+ 
++#define MT7915_EEPROM_DEFAULT		"mediatek/mt7915_eeprom.bin"
++#define MT7915_EEPROM_DEFAULT_DBDC	"mediatek/mt7915_eeprom_dbdc.bin"
++
+ #define MT7915_EEPROM_SIZE		3584
+ #define MT7915_EEPROM_BLOCK_SIZE	16
+ #define MT7915_TOKEN_SIZE		8192
+@@ -423,6 +426,7 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
+ 				   void *data, u32 field);
+ int mt7915_mcu_set_eeprom(struct mt7915_dev *dev);
+ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset);
++int mt7915_mcu_get_eeprom_free_block(struct mt7915_dev *dev, u8 *block_num);
+ int mt7915_mcu_set_mac(struct mt7915_dev *dev, int band, bool enable,
+ 		       bool hdr_trans);
+ int mt7915_mcu_set_test_param(struct mt7915_dev *dev, u8 param, bool test_mode,
+-- 
+2.25.1
 
