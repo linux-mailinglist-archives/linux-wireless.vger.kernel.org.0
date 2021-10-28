@@ -2,190 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB5CF43DDB6
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 11:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACB9F43DE6B
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 12:07:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbhJ1J2k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 05:28:40 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:32900 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229626AbhJ1J2j (ORCPT
+        id S229809AbhJ1KKD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 06:10:03 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:29034 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229775AbhJ1KKA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 05:28:39 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1mg1ff-000fWI-CK; Thu, 28 Oct 2021 12:26:11 +0300
-Message-ID: <dc1df61337fad1cb5a83789bc78da8b18541ef26.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, luca@coelho.fi
-Date:   Thu, 28 Oct 2021 12:26:01 +0300
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-uYjTaFHqS4XMehjDg/Ru"
-User-Agent: Evolution 3.42.0-2 
-MIME-Version: 1.0
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+        Thu, 28 Oct 2021 06:10:00 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1635415654; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=3AZaDE+Iw8g7xCcE9V3ga0XRcUE6ZHwB7hURcTld6+I=; b=hCSkHQUlPB+q4YLHBlGjdqXfQ/5vw2eVBsTu2GmEDSkQNOQ5oVNjuOqDcwhOZQLNpkDtT3V0
+ qJImCJOrzhqqEMH17TVhYh8p0I5q6lwxuA0qiiNbcrQfOWRFcDst4zZraFbAorpsrU/RpJup
+ 0SsfBS5rWT7KIBj7QyeWZeEYeSU=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 617a7656545d7d365ff7b912 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Oct 2021 10:07:18
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D6779C43460; Thu, 28 Oct 2021 10:07:17 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: pull-request: iwlwifi-next 2021-10-28
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 425CBC4338F;
+        Thu, 28 Oct 2021 10:07:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 425CBC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jouni Malinen <jouni@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Wen Gong <wgong@codeaurora.org>
+Subject: Re: [PATCH 3/3] ath11k: set correct NL80211_FEATURE_DYNAMIC_SMPS for WCN6855
+References: <20210914163726.38604-1-jouni@codeaurora.org>
+        <20210914163726.38604-3-jouni@codeaurora.org>
+Date:   Thu, 28 Oct 2021 13:07:11 +0300
+In-Reply-To: <20210914163726.38604-3-jouni@codeaurora.org> (Jouni Malinen's
+        message of "Tue, 14 Sep 2021 19:37:26 +0300")
+Message-ID: <87a6it5upc.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Jouni Malinen <jouni@codeaurora.org> writes:
 
---=-uYjTaFHqS4XMehjDg/Ru
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> From: Wen Gong <wgong@codeaurora.org>
+>
+> Commit "ath11k: support SMPS configuration for 6 GHz" changed "if
+> (ht_cap & WMI_HT_CAP_DYNAMIC_SMPS)" to "if (ht_cap &
+> WMI_HT_CAP_DYNAMIC_SMPS || ar->supports_6ghz)" which means
+> NL80211_FEATURE_DYNAMIC_SMPS is enabled for all chips which support 6
+> GHz. However, WCN6855 supports 6 GHz but it does not support feature
+> NL80211_FEATURE_DYNAMIC_SMPS, and this can lead to MU-MIMO test failures
+> for WCN6855.
+>
+> Disable NL80211_FEATURE_DYNAMIC_SMPS for WCN6855 since its ht_cap does
+> not support WMI_HT_CAP_DYNAMIC_SMPS.
+>
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+>
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath11k/core.c | 1 +
+>  drivers/net/wireless/ath/ath11k/hw.h   | 1 +
+>  drivers/net/wireless/ath/ath11k/mac.c  | 3 ++-
+>  3 files changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+> index 265ff225bd81..2bae8c5184d4 100644
+> --- a/drivers/net/wireless/ath/ath11k/core.c
+> +++ b/drivers/net/wireless/ath/ath11k/core.c
+> @@ -279,6 +279,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+>  		.sram_dump = &sram_dump_wcn6855,
+>  		.max_tx_ring = DP_TCL_NUM_RING_MAX_QCA6390,
+>  		.hal_params = &ath11k_hal_params_qca6390,
+> +		.check_dynamic_smps = true,
+>  	},
+>  };
+>  
+> diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+> index c6831fb110ba..7463b96770b7 100644
+> --- a/drivers/net/wireless/ath/ath11k/hw.h
+> +++ b/drivers/net/wireless/ath/ath11k/hw.h
+> @@ -180,6 +180,7 @@ struct ath11k_hw_params {
+>  	const struct ath11k_hw_sram_dump *sram_dump;
+>  	u8 max_tx_ring;
+>  	const struct hal_param *hal_params;
+> +	bool check_dynamic_smps;
+>  };
+>  
+>  struct ath11k_hw_ops {
+> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+> index 1f4765e43546..97a2c92b7b9b 100644
+> --- a/drivers/net/wireless/ath/ath11k/mac.c
+> +++ b/drivers/net/wireless/ath/ath11k/mac.c
+> @@ -7570,7 +7570,8 @@ static int __ath11k_mac_register(struct ath11k *ar)
+>  	 * for each band for a dual band capable radio. It will be tricky to
+>  	 * handle it when the ht capability different for each band.
+>  	 */
+> -	if (ht_cap & WMI_HT_CAP_DYNAMIC_SMPS || ar->supports_6ghz)
+> +	if (ht_cap & WMI_HT_CAP_DYNAMIC_SMPS ||
+> +	    (ar->supports_6ghz && !ab->hw_params.check_dynamic_smps))
+>  		ar->hw->wiphy->features |= NL80211_FEATURE_DYNAMIC_SMPS;
 
-Hi Kalle,
+Instead of a "negative" flag I reverted the test and renamed the flag to
+supports_dynamic_smps_6ghz. AFAIK QCN9074 is the only device supporting
+6 GHz band so I enabled the flag only for it.
 
-Here's my second pull request for v5.16 with the two patchsets I sent
-earlier, plus one patch for a new HW combination that I sent this
-morning.  I decided to leave out Bj=C3=B6rns patches, because there are
-still a few things Johannes and I are discussing about them.
+Please review my changes in the pending branch:
 
-Otherwise this is all normal development, new features, bugfixes and
-cleanups.  More details about the contents in the tag description.
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=cc692cfb9f2981691b39b601b37e4544ecf01136
 
-Please let me know if there are any issues.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Cheers,
-Luca.
-
-
-The following changes since commit a427aca0a931b8c65b47231bbf09e8873b29d554=
-:
-
-  Merge tag 'mt76-for-kvalo-2021-10-23' of https://github.com/nbd168/wirele=
-ss (2021-10-27 18:36:30 +0300)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git ta=
-gs/iwlwifi-next-for-kalle-2021-10-28
-
-for you to fetch changes up to cbaa6aeedee5f92dafa5982eceea2a1f98ce4f7d:
-
-  iwlwifi: bump FW API to 67 for AX devices (2021-10-28 12:04:12 +0300)
-
-----------------------------------------------------------------
-iwlwifi patches for v5.16
-
-* Support a new ACPI table revision;
-* Improvements in the device selection code;
-* New HW support;
-* Some fixes in the Geographic SAR implementation;
-* Support for WiFi 6E enablement via BIOS;
-* Support FW API version 67;
-* Improve debugging support;
-* Some fixes in session protection;
-* Some other small fixes, clean-ups and improvements.
-
-----------------------------------------------------------------
-Ayala Barazani (1):
-      iwlwifi: ACPI: support revision 3 WGDS tables
-
-Emmanuel Grumbach (1):
-      iwlwifi: mvm: fix some kerneldoc issues
-
-Gregory Greenman (1):
-      iwlwifi: mvm: update RFI TLV
-
-Ilan Peer (1):
-      iwlwifi: mvm: Use all Rx chains for roaming scan
-
-Johannes Berg (10):
-      iwlwifi: pcie: fix killer name matching for AX200
-      iwlwifi: pcie: remove duplicate entry
-      iwlwifi: pcie: refactor dev_info lookup
-      iwlwifi: pcie: remove two duplicate PNJ device entries
-      iwlwifi: pcie: simplify iwl_pci_find_dev_info()
-      iwlwifi: dump host monitor data when NIC doesn't init
-      iwlwifi: fw: uefi: add missing include guards
-      iwlwifi: mvm: d3: use internal data representation
-      iwlwifi: mvm: remove session protection on disassoc
-      iwlwifi: mvm: extend session protection on association
-
-Luca Coelho (5):
-      iwlwifi: mvm: read 6E enablement flags from DSM and pass to FW
-      iwlwifi: mvm: don't get address of mvm->fwrt just to dereference as a=
- pointer
-      iwlwifi: rename GEO_TX_POWER_LIMIT to PER_CHAIN_LIMIT_OFFSET_CMD
-      iwlwifi: mvm: fix WGDS table print in iwl_mvm_chub_update_mcc()
-      iwlwifi: bump FW API to 67 for AX devices
-
-Mike Golant (1):
-      iwlwifi: pcie: update sw error interrupt for BZ family
-
-Mukesh Sisodiya (1):
-      iwlwifi: yoyo: support for ROM usniffer
-
-Nathan Errera (1):
-      iwlwifi: rename CHANNEL_SWITCH_NOA_NOTIF to CHANNEL_SWITCH_START_NOTI=
-F
-
-Yaara Baruch (1):
-      iwlwifi: add new pci SoF with JF
-
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c      |   2 +-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c        | 150 ++++++++++++++++=
-++++++++++++-------------
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h        |  40 ++++++-----
- drivers/net/wireless/intel/iwlwifi/fw/api/d3.h      |  43 ------------
- drivers/net/wireless/intel/iwlwifi/fw/api/debug.h   |  17 +++++
- drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h |  10 +--
- drivers/net/wireless/intel/iwlwifi/fw/api/phy.h     |   6 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/power.h   |  55 +++++++++++----
- drivers/net/wireless/intel/iwlwifi/fw/api/sta.h     |   2 +
- drivers/net/wireless/intel/iwlwifi/fw/file.h        |   2 +-
- drivers/net/wireless/intel/iwlwifi/fw/runtime.h     |   2 +-
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h        |   5 +-
- drivers/net/wireless/intel/iwlwifi/iwl-csr.h        |   1 +
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c    |  92 ++++++++++++++++=
-++++-----
- drivers/net/wireless/intel/iwlwifi/iwl-io.c         |  46 ++++++++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c         | 357 ++++++++++++++++=
-++++++++++++++++++++++++++++++++++++++++++---------------------------------=
-------
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c         |  72 +++++++++++++++-=
-----
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c   |   6 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c   |  67 +++++++++++++---=
----
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h        |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c        |   5 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c        |  10 +--
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c       |   8 +++
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c       | 149 ++++++++++++++++=
-++++++++++++-------------
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c        |   9 ++-
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c     |  45 ++++++++++---
- 26 files changed, 804 insertions(+), 401 deletions(-)
-
-
---=-uYjTaFHqS4XMehjDg/Ru
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmF6bKkACgkQoUecoho8
-xfqLhA/7BH7LfJXvrufvzCDyv9SgLiiU9T3Ngf6qCjbENJ6EjgMRVzuN4/9QiiMQ
-1XnI/ILsMg8TSsPFv3+utGgQh84jnsOwAuevgl6tHyr7mMWfdmeVRy2Rt9+rSDqq
-/8o92OY2VYNx2WQH6J+NCQvGK9Ogl5n2dkQ/BnHmvKRxFOUxF27XHcVk+wfCquzC
-gNBlwf9h2o8NRPxt9znzLSTcuPLaBfaYMOhlDsEEQkvB8OvN/u7K9bJx1uLR76rG
-AJowXPsGL2jCsfn1LeBKoCwd34kS7MU+ySN/OpaDvh0m4g+kVV42l7XUIOyr9SF9
-ZH04sJgC/1Pv5tsuN2Lcvl4udVIS6DXlrTAbtscDuVBX487DWqWdgw3+KBMi9cHa
-8UJLaxEKEAS97fGsabLHmD+a5dPBfiaji5y8j++1Gv22FawezCsK1uhBNaGaF8fL
-HD6fzv2AB1nw+WaDGA5Eully6OPVMQhz8Lb/vAISBR/BwoEBc8rBQHLL9XRKZiWn
-u6psvrb8mQuV4pUwy13sGo7fVxNbThXQ4PW5VpZObi0uyjos50ogWZxCW6fap/rr
-nwU7/fJieVsadypRDxva2+fsxhR/aqlSYRIQgaWxdyJ0EXv0K2OZBsrio/SwlZc/
-Im9RfTjTLPbKCmNUC6tOR7HFrGNt/09sQySO3vI3SLQut/GMgC4=
-=cBxK
------END PGP SIGNATURE-----
-
---=-uYjTaFHqS4XMehjDg/Ru--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
