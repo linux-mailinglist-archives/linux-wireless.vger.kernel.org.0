@@ -2,135 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BA1343F1C2
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 23:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CCBF43F2A4
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 00:21:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231453AbhJ1VfI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 17:35:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43438 "EHLO
+        id S231476AbhJ1WYO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 18:24:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231520AbhJ1Vep (ORCPT
+        with ESMTP id S231298AbhJ1WYO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 17:34:45 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E6CDC06118D
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 14:32:11 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id l13so331036pls.3
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 14:32:11 -0700 (PDT)
+        Thu, 28 Oct 2021 18:24:14 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 828AFC061570;
+        Thu, 28 Oct 2021 15:21:46 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id s9so2452944qvk.12;
+        Thu, 28 Oct 2021 15:21:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Uy4mRbBBqA+oiG8IXstn8KcE/N1G+FCE7sqsdumsmms=;
-        b=AyjigdjLgocQsgIuq8Ha1vmKHdVArVun9BzEHdA6o8NBbDsP7D4xtGjqa5F4lhuphX
-         fNQeGBADxcDGvgylDZeHtre71zUQlq2CLEzawVYj7LTm9gcA49bXpCdQHr8a2F5ieO7z
-         jWdWhywQ1F4B+TT5+tyjEWDj3LMPqQ6HDFmfA=
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=/T5F9B07gErRjYPria9st2w4l8wiE8xoQUEOHVZGBvM=;
+        b=cqtX/zRCsu1o1qbVcFQmpDrYQ3+yL++ZD059O9aXErqM7s4r2YYk5G5k6k2MU4WCXU
+         5d9YWkx5fJDDC7hrEIMFECAkWrHvfrIPWk+geI54qxLUqmOAnVK02sc9AJISjJpvooQs
+         0zCZZuh/1T9etRR+mtyGLfqGY/vTqliOfMm36Hb3U+/PWjc+H8oXWfwGDaFpFbs2Sla3
+         u8ym2NCG/EC7t25SqQOUy3lpC//9B96QDlNOatYWD3nDfJZT2JIENAyIzoNuzazZ0g2t
+         VT3fwMoXDjzXR3zxawPSPtCA56kee46tlvy9mcwY2qRL7pmL+i765nXuC+YlA9C9kE5r
+         7IlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Uy4mRbBBqA+oiG8IXstn8KcE/N1G+FCE7sqsdumsmms=;
-        b=KmdnVY+qooFL60okW6gz8THHoYgvwql9v0oBlrGxd3WOnQP9p2LLTOBMp07h9c/O3p
-         HNbJ3sKCu6m3uYnzpCTuxpM9APSGlcNuhr24szLGlZIEfm6hoewjzVyOPsaTGEo7ld6o
-         P5Bgi5R4XetIWsS/SDj7xYPwXYU/uRazOlOAnIGstGEtjUiaPZkZg7PMJsw6k+XeuzYe
-         8q0Y6rvfABb+0NlRIcNFDzb1peMNGc9/HiSFF0a3rkOa6USJworDyx/42DfJuy1ZAh2/
-         9w9Q664ZaviRIfcjNRuTaYSMiXTRdzT7uKFV5j6sOiL89nhILsmqyIfF49h586Okh2g4
-         oHAQ==
-X-Gm-Message-State: AOAM532Dg1Q8bt3qbQXSwaTOv0Zja80QX/DrXX8zDTXDeowpVRmOxff7
-        t5K5xMz7uKrf2OSYp2PIYy9qCOvb9aUx6g==
-X-Google-Smtp-Source: ABdhPJwWVexu+q9+KrhJQxOn+ubq2XpJHScki+SynJ+d7Vk7PZNW3Y8qnXl8vPdXNVMdGCpGZmSy4g==
-X-Received: by 2002:a17:90a:b783:: with SMTP id m3mr15700631pjr.183.1635456730920;
-        Thu, 28 Oct 2021 14:32:10 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:dd0:1290:5368:ac15])
-        by smtp.gmail.com with ESMTPSA id k73sm2751154pgc.63.2021.10.28.14.32.09
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=/T5F9B07gErRjYPria9st2w4l8wiE8xoQUEOHVZGBvM=;
+        b=BQNbapo5Z+vF3qShO4lMIXUvXEfZe6TjaMpsUaTq/NuC8VJAou3WiUboWA9v5w1QT0
+         9v/c3Z839/ZPl8o72wzRmsZKnfvWAmC3LqdLu4NPISCVK4Dup/902JMPFhLWfMmYXzqk
+         aw7YMCOLFq3tXSx2Sl3wF4raNauE51LxlBBRL9q4yIRZr9/xlpju60W7ZVPTOrceYBfZ
+         ew2bBai3yHBhAnADb6yoG/U+2ckAGO8Wiq/YbEvvkaiO03NyOOaPsvvFW/Mm8C0IXdPW
+         j3MfmvXq45qR4pBlOT/00CRRzU1zbLARUNnY/iuePA39L6ULZvrSw9uijsjWRjwxTM6I
+         s2Lg==
+X-Gm-Message-State: AOAM531XxXhmoTgdR1PLckAS6OJC/qcKhJ9o5oh0IaK3U6ig+d79nBQE
+        Ns5ws9b4uKtdIfwxKB1mgLg9tS6PTzLuWQ==
+X-Google-Smtp-Source: ABdhPJxrFWd7ykakPW+atJE2BnfLAVVaBklvxy7ljS6mwW0kjUE7gDDiD31OnzQ/fxQohs1eq6P5kQ==
+X-Received: by 2002:a05:6214:5086:: with SMTP id kk6mr6749178qvb.63.1635459705668;
+        Thu, 28 Oct 2021 15:21:45 -0700 (PDT)
+Received: from 10-18-43-117.dynapool.wireless.nyu.edu (216-165-95-164.natpool.nyu.edu. [216.165.95.164])
+        by smtp.gmail.com with ESMTPSA id c10sm3067773qtd.27.2021.10.28.15.21.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Oct 2021 14:32:10 -0700 (PDT)
-Date:   Thu, 28 Oct 2021 14:32:08 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        kevin_yang@realtek.com
-Subject: Re: [PATCH 1/2] rtw89: update tx power limit/limit_ru tables to R54
-Message-ID: <YXsW2K1BWQjX1w4x@google.com>
-References: <20211028084054.12962-1-pkshih@realtek.com>
+        Thu, 28 Oct 2021 15:21:45 -0700 (PDT)
+Date:   Thu, 28 Oct 2021 18:21:42 -0400
+From:   Zekun Shen <bruceshenzk@gmail.com>
+To:     bruceshenzk@gmail.com
+Cc:     ath9k-devel@qca.qualcomm.com, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ath9k: Fix out-of-bound memcpy in ath9k_hif_usb_rx_stream
+Message-ID: <YXsidrRuK6zBJicZ@10-18-43-117.dynapool.wireless.nyu.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211028084054.12962-1-pkshih@realtek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Large pkt_len can lead to out-out-bound memcpy. Current
+ath9k_hif_usb_rx_stream allows combining the content of two urb
+inputs to one pkt. The first input can indicate the size of the
+pkt. Any remaining size is saved in hif_dev->rx_remain_len.
+While processing the next input, memcpy is used with rx_remain_len.
 
-On Thu, Oct 28, 2021 at 04:40:53PM +0800, Ping-Ke Shih wrote:
-> From: Zong-Zhe Yang <kevin_yang@realtek.com>
-> 
-> Support QATAR in rtw89_regulation_type and reorder the enum.
-> Update tx power limit table and tx power limit_ru table to configure QATAR
-> and adjust indexes to align rtw89_regulation_type enum.
-> 
-> Besides, if an unassigned entry of limit/limit_ru tables is read,
-> return the corresponding WW value for the unconfigured case.
-> 
-> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw89/core.h     |    9 +-
->  drivers/net/wireless/realtek/rtw89/phy.c      |   12 +
->  .../wireless/realtek/rtw89/rtw8852a_table.c   | 5199 +++++++++++------
->  3 files changed, 3488 insertions(+), 1732 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-> index c2885e4dd882..3729abda04f9 100644
-> --- a/drivers/net/wireless/realtek/rtw89/core.h
-> +++ b/drivers/net/wireless/realtek/rtw89/core.h
-> @@ -411,12 +411,13 @@ enum rtw89_regulation_type {
->  	RTW89_NA	= 4,
->  	RTW89_IC	= 5,
->  	RTW89_KCC	= 6,
-> -	RTW89_NCC	= 7,
-> -	RTW89_CHILE	= 8,
-> -	RTW89_ACMA	= 9,
-> -	RTW89_MEXICO	= 10,
-> +	RTW89_ACMA	= 7,
-> +	RTW89_NCC	= 8,
-> +	RTW89_MEXICO	= 9,
-> +	RTW89_CHILE	= 10,
->  	RTW89_UKRAINE	= 11,
->  	RTW89_CN	= 12,
-> +	RTW89_QATAR	= 13,
->  	RTW89_REGD_NUM,
->  };
->  
-> diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-> index ab134856baac..0620ef02e275 100644
-> --- a/drivers/net/wireless/realtek/rtw89/phy.c
-> +++ b/drivers/net/wireless/realtek/rtw89/phy.c
+4-byte pkt_len can go up to 0xffff, while a single input is 0x4000
+maximum in size (MAX_RX_BUF_SIZE). Thus, the patch adds a check for
+pkt_len which must not exceed 2 * MAX_RX_BUG_SIZE.
 
-> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
-> index 3a4fe7207420..6a61549ffac7 100644
-> --- a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
-> +++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
-> @@ -43556,1346 +43556,1850 @@ const s8 rtw89_8852a_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
->  	[0][0][0][0][1][0] = 56,
->  	[0][0][0][0][3][0] = 68,
->  	[0][0][0][0][5][0] = 76,
-> -	[0][0][0][0][6][0] = 56,
-> -	[0][0][0][0][9][0] = 56,
-> -	[0][0][0][0][8][0] = 60,
-> +	[0][0][0][0][6][0] = 76,
-> +	[0][0][0][0][7][0] = 56,
-> +	[0][0][0][0][10][0] = 60,
-... 
+BUG: KASAN: slab-out-of-bounds in ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+Read of size 46393 at addr ffff888018798000 by task kworker/0:1/23
 
-If one of these colums is based on an enum, you should probably *use*
-the enum in the table. Then this patch would probably much much smaller,
-and it would be clear what parts are changes and what parts are just
-renumbering...
+CPU: 0 PID: 23 Comm: kworker/0:1 Not tainted 5.6.0 #63
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS rel-1.10.2-0-g5f4c7b1-prebuilt.qemu-project.org 04/01/2014
+Workqueue: events request_firmware_work_func
+Call Trace:
+ <IRQ>
+ dump_stack+0x76/0xa0
+ print_address_description.constprop.0+0x16/0x200
+ ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+ ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+ __kasan_report.cold+0x37/0x7c
+ ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+ kasan_report+0xe/0x20
+ check_memory_region+0x15a/0x1d0
+ memcpy+0x20/0x50
+ ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+ ? hif_usb_mgmt_cb+0x2d9/0x2d9 [ath9k_htc]
+ ? _raw_spin_lock_irqsave+0x7b/0xd0
+ ? _raw_spin_trylock_bh+0x120/0x120
+ ? __usb_unanchor_urb+0x12f/0x210
+ __usb_hcd_giveback_urb+0x1e4/0x380
+ usb_giveback_urb_bh+0x241/0x4f0
+ ? __hrtimer_run_queues+0x316/0x740
+ ? __usb_hcd_giveback_urb+0x380/0x380
+ tasklet_action_common.isra.0+0x135/0x330
+ __do_softirq+0x18c/0x634
+ irq_exit+0x114/0x140
+ smp_apic_timer_interrupt+0xde/0x380
+ apic_timer_interrupt+0xf/0x20
 
-I'd suggest splitting this into at least one more patch, where the first
-patch should replace all the magic numbers (0..12) with the appropriate
-rtw89_regulation_type values.
+Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
+---
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Brian
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 860da13bf..0681bc5fa 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -589,6 +589,12 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
+ 			RX_STAT_INC(skb_dropped);
+ 			return;
+ 		}
++		if (pkt_len > 2 * MAX_RX_BUF_SIZE) {
++			dev_err(&hif_dev->udev->dev,
++				"ath9k_htc: invalid pkt_len (%x)\n", pkt_len);
++			RX_STAT_INC(skb_dropped);
++			return;
++		}
+ 
+ 		pad_len = 4 - (pkt_len & 0x3);
+ 		if (pad_len == 4)
+-- 
+2.25.1
+
