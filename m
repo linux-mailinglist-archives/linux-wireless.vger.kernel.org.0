@@ -2,97 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FDEA43DBDC
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 09:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23FFE43DBE9
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 09:24:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229915AbhJ1HXf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 03:23:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56026 "EHLO mail.kernel.org"
+        id S229833AbhJ1H05 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 03:26:57 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:20540 "EHLO m43-7.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229656AbhJ1HXf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 03:23:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 686F560E54;
-        Thu, 28 Oct 2021 07:21:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635405668;
-        bh=e/wyzVfkTV0dR6YteYW1jvF1J3q6I2+0CEvxKq0nxCE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JBkj/hcGqPxgoS4c4hfbNCE/wp/WzptPZxH+uLq1JsS0EkK8xuq2B+BFYT/M9kMdW
-         B4lilA5IPudFk9zJtUWeypRWHZ7ScqjZP4NOuaM9yorU8jk9wi/hIqpxA9d23HhHwP
-         C7RH/AcL97uMfN+5WAwkKf2+85pUtwc5Bcp05lYaO1hCYYYwnk0Q3u9p4ytVX0Kvef
-         mz7WaNfGSLj5r54b82U5boDP+OLa6+8TS2VerEyuxRIwCX5V07bCEvtvTPMSuBTaTY
-         D+D/jKbWRdviY1Qme+7BkNA36znep6njYk5ZeGs1LkQOkpyxmcXDRx0lAn4ZF71B34
-         0ujB0wUI0dsSA==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1mfziT-00023a-77; Thu, 28 Oct 2021 09:20:49 +0200
-Date:   Thu, 28 Oct 2021 09:20:49 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Amitkumar Karwar <akarwar@marvell.com>
-Subject: Re: [PATCH v2 3/3] mwifiex: fix division by zero in fw download path
-Message-ID: <YXpPUdj0wJG2L5ra@hovoldconsulting.com>
-References: <20211027080819.6675-1-johan@kernel.org>
- <20211027080819.6675-4-johan@kernel.org>
- <CA+ASDXMYbP3jQPeOpDDktHgp4X81AH41cgiLFgz-YHVPyZO1sw@mail.gmail.com>
+        id S229768AbhJ1H04 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 28 Oct 2021 03:26:56 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1635405870; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=jrehSSYLKeNPQqrmD7n/sxukHCpfxHWg81aqT6+joGs=; b=sxremxW8qQF56BBwRzHuAlbPVgFn5qu2Kw0s16+ZRabnDRXmjmc9YUZT2grcsBFkpZHS3S1n
+ V4yTbGMitGZP+3d90hNET2vyg3QkwmSF+X2FQBVIQ5xm+08xyBY4n+ouXp35Zfl6p2BoUjew
+ O+FobmD7akh6u2EV4BqRUPnZGNY=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 617a5025648aeeca5cc2e34d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Oct 2021 07:24:21
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id EF68FC4361A; Thu, 28 Oct 2021 07:24:20 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 501E7C43460;
+        Thu, 28 Oct 2021 07:24:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 501E7C43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Kari Argillander <kari.argillander@gmail.com>
+Cc:     Srinivasan Raju <srini.raju@purelifi.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list\:NETWORKING DRIVERS \(WIRELESS\)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list\:NETWORKING DRIVERS" <netdev@vger.kernel.org>
+Subject: Re: [PATCH v20 2/2] wireless: Initial driver submission for pureLiFi STA devices
+References: <20200928102008.32568-1-srini.raju@purelifi.com>
+        <20211018100143.7565-1-srini.raju@purelifi.com>
+        <20211018100143.7565-3-srini.raju@purelifi.com>
+        <20211027123839.6h3rgxsgk6p4ydg3@kari-VirtualBox>
+Date:   Thu, 28 Oct 2021 10:24:13 +0300
+In-Reply-To: <20211027123839.6h3rgxsgk6p4ydg3@kari-VirtualBox> (Kari
+        Argillander's message of "Wed, 27 Oct 2021 15:38:39 +0300")
+Message-ID: <87tuh1628y.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+ASDXMYbP3jQPeOpDDktHgp4X81AH41cgiLFgz-YHVPyZO1sw@mail.gmail.com>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Oct 27, 2021 at 11:22:39AM -0700, Brian Norris wrote:
-> On Wed, Oct 27, 2021 at 1:12 AM Johan Hovold <johan@kernel.org> wrote:
-> > --- a/drivers/net/wireless/marvell/mwifiex/usb.c
-> > +++ b/drivers/net/wireless/marvell/mwifiex/usb.c
-> > @@ -505,6 +505,22 @@ static int mwifiex_usb_probe(struct usb_interface *intf,
-> >                 }
-> >         }
-> >
-> > +       switch (card->usb_boot_state) {
-> > +       case USB8XXX_FW_DNLD:
-> > +               /* Reject broken descriptors. */
-> > +               if (!card->rx_cmd_ep || !card->tx_cmd_ep)
-> > +                       return -ENODEV;
-> 
-> ^^ These two conditions are applicable to USB8XXX_FW_READY too, right?
+Kari Argillander <kari.argillander@gmail.com> writes:
 
-Right, but I didn't want to add an incomplete set of constraints.
+> On Mon, Oct 18, 2021 at 11:00:55AM +0100, Srinivasan Raju wrote:
+>> This driver implementation has been based on the zd1211rw driver
+>> 
+>> Driver is based on 802.11 softMAC Architecture and uses
+>> native 802.11 for configuration and management
+>> 
+>> The driver is compiled and tested in ARM, x86 architectures and
+>> compiled in powerpc architecture
+>
+> Just small style issues in this review.
 
-I couldn't find any documentation (e.g. lsusb -v) for what the
-descriptors are supposed to look like, but judging from the code,
-something like
+Very good review comments, kiitos :)
 
-	if (!card->rx_cmd_ep || !card->tx_cmd_ep)
-		return -ENODEV;
-	if (!card->rx_data_ep || !card->port[0].tx_data_ep)
-		return -ENODEV;
+>> +static const struct ieee80211_ops plfxlc_ops = {
+>> +	.tx                 = plfxlc_op_tx,
+>> +	.start              = plfxlc_op_start,
+>> +	.stop               = plfxlc_op_stop,
+>> +	.add_interface      = plfxlc_op_add_interface,
+>> +	.remove_interface   = plfxlc_op_remove_interface,
+>> +	.set_rts_threshold  = purelifi_set_rts_threshold,
+>> +	.config             = plfxlc_op_config,
+>> +	.configure_filter   = plfxlc_op_configure_filter,
+>> +	.bss_info_changed   = plfxlc_op_bss_info_changed,
+>> +	.get_stats          = purelifi_get_stats,
+>> +	.get_et_sset_count  = purelifi_get_et_sset_count,
+>> +	.get_et_stats       = purelifi_get_et_stats,
+>> +	.get_et_strings     = purelifi_get_et_strings,
+>> +};
+>
+> Just asking why some prefixes are purelifi and some are plfxlc?
 
-should do. But I'm not sure about the second tx endpoint,
-card->port[1].tx_data_ep, for which support was added later and which
-the driver appears to be able to manage without.
+Good point, I guess this is because the driver was called purelifi
+before. I think throughout the driver "plfxlc_" should be used and
+"purelifi_" should be dropped altogether.
 
-Either way it has nothing to do with the division-by-zero and should be
-added separately.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-> > +               if (card->bulk_out_maxpktsize == 0)
-> > +                       return -ENODEV;
-> > +               break;
-> > +       case USB8XXX_FW_READY:
-> > +               /* Assume the driver can handle missing endpoints for now. */
-> > +               break;
-> > +       default:
-> > +               WARN_ON(1);
-> > +               return -ENODEV;
-> > +       }
-
-Johan
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
