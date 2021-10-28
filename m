@@ -2,66 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 672D743E98A
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 22:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08AE943E996
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 22:35:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231215AbhJ1UcC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 16:32:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57586 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231206AbhJ1UcB (ORCPT
+        id S231258AbhJ1UiO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 16:38:14 -0400
+Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.184]:58038 "EHLO
+        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230380AbhJ1UiN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 16:32:01 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60CCAC061745
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 13:29:34 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id z11-20020a1c7e0b000000b0030db7b70b6bso10554968wmc.1
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 13:29:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=UNdKYXhS7qV0l6wjFDAccaOC7L4yMliNcw90vERiz8Q=;
-        b=maxwUy6iRwTx4f2NDKdA3IJIrec8wTUIllsMDdNTPs6/SA8sJ+Fdoo5Y363JbyUzoH
-         RYHbMOaxAWzycLypTYL9pNdNo9G7qY3EzILR8mb+67aHcu9qFbldb7LEZsFyxrDUHFO9
-         D9I+0WUG194gfIPhyjmfRgoXEvU3bdbxEH7x5elx99La2MCPTVwPpmHzL0NCzxW0Gef1
-         DzwSf+d+ejquOursnI06rCrFG889ghsqK3ywx9BR3/VMXHH2yqwpvAkp/4G4+sNppu/1
-         uMJXUN/5HfJMnbzvjm7P812Z5q6Q0dzZ5yCwjr/Mfv1BMuyj9R564Z8l1kLIq0rOcvmS
-         aBoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=UNdKYXhS7qV0l6wjFDAccaOC7L4yMliNcw90vERiz8Q=;
-        b=axaUJgFCHfk0shj/GzbsKWqkzC4oMg8qVNr5QEOOLeNeffqdX52/DgZ/1b3N24II2T
-         WE8aNqVHJELPtD2GXykIIFY7EeyfFE7mdZFRr0mK9/+zXsc9rvsXnIt4ndUoF8rQcBsi
-         +M6oAECC4Qg3nFyShUY4HZGeT1LSRBabT7J2j6mWQvlYKypuZZIaxsb2qtdjSNrGRJQz
-         0UWRSO9YP8pnJ2jKLD4eQrBXPrpxeWm/P323Mz9kwKe0bAnHoePcwMghE+sdD8WuMy3+
-         OWqK+3K9BSnTs7NtPhgr1Bq3T+JPpAwy2+rClI4MoULv7WlIYFUYWNcyRHYj3xWINykr
-         EcBw==
-X-Gm-Message-State: AOAM530CBdcZpK9YweJEBOF98GM4nVNM8WhOGxl9X93PFGqZGjIZEVF2
-        d9x00rHTgSLfdwldYG8mfUoKeXxwchU=
-X-Google-Smtp-Source: ABdhPJwEzpK17orfuCeujJO9/8hy/wGOYVfWtt+rhkncma8YjBkMWhivmgTzWzhjPjN+OL5XnxhJvQ==
-X-Received: by 2002:a1c:a405:: with SMTP id n5mr6636097wme.49.1635452972946;
-        Thu, 28 Oct 2021 13:29:32 -0700 (PDT)
-Received: from debian64.daheim (p5b0d7857.dip0.t-ipconnect.de. [91.13.120.87])
-        by smtp.gmail.com with ESMTPSA id l20sm8476656wmq.42.2021.10.28.13.29.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Oct 2021 13:29:32 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1])
-        by debian64.daheim with esmtp (Exim 4.95)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1mgA8q-000CCq-U7;
-        Thu, 28 Oct 2021 22:29:31 +0200
-Message-ID: <e6936f55-6ca7-209c-8c3f-5eeae879c9dc@gmail.com>
-Date:   Thu, 28 Oct 2021 22:29:31 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
-Subject: new "[1/2] ath10k: Try to get mac-address from dts"
-Content-Language: en-US
-To:     Ansuel Smith <ansuelsmth@gmail.com>
+        Thu, 28 Oct 2021 16:38:13 -0400
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.179])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 0B5432A0064;
+        Thu, 28 Oct 2021 20:35:45 +0000 (UTC)
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8F6D2AC0104;
+        Thu, 28 Oct 2021 20:35:44 +0000 (UTC)
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id DB28C13C2B1;
+        Thu, 28 Oct 2021 13:35:43 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com DB28C13C2B1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1635453344;
+        bh=3wDN7YU3xvWl5RF2dX/juEVHlHc4Hb786bT6tcV/HmQ=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=nmRnxWJfmEu1MFU6QJkHV4VP1TeA4rQOAeY+lhxV3+DtMo3UJX9eURawtWiUgv8AW
+         2g6K8UmUPa0pcDT8//BkizpQYv1P2wlamId8VB+RdBkbEJbrfVa+8tDFnsdl7LtSD0
+         DEICdlvgy04IFPCAuVHoxJhn5PbkcqXA0dY5Dd58=
+Subject: Re: new "[1/2] ath10k: Try to get mac-address from dts"
+To:     Christian Lamparter <chunkeey@gmail.com>,
+        Ansuel Smith <ansuelsmth@gmail.com>
 Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
         ath10k@lists.infradead.org
 References: <20211016234609.1568317-1-chunkeey@gmail.com>
@@ -70,79 +43,61 @@ References: <20211016234609.1568317-1-chunkeey@gmail.com>
  <875yth5pt3.fsf@codeaurora.org>
  <3aebb711-dc45-3cbf-43cb-12f59909baf0@gmail.com>
  <CA+_ehUxFDUE6BU3TbngKOA-VKCBkTnpOv7ibTjtpur37KrQ4Jw@mail.gmail.com>
-From:   Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <CA+_ehUxFDUE6BU3TbngKOA-VKCBkTnpOv7ibTjtpur37KrQ4Jw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <e6936f55-6ca7-209c-8c3f-5eeae879c9dc@gmail.com>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <5a2bc68a-603c-9a8a-0e7c-eb69b3045dc7@candelatech.com>
+Date:   Thu, 28 Oct 2021 13:35:43 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
+MIME-Version: 1.0
+In-Reply-To: <e6936f55-6ca7-209c-8c3f-5eeae879c9dc@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-MDID: 1635453345-ZIwNKbTqYTkI
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 28/10/2021 20:57, Ansuel Smith wrote:
+On 10/28/21 1:29 PM, Christian Lamparter wrote:
+> On 28/10/2021 20:57, Ansuel Smith wrote:
+>>>
+>>> The "[1/2] ath10k: Try to get mac-address from dts" patch
+>>> will need a respin, so it can apply cleanly.
+>>>
+>>> Is Anyone interested? If not, I can take a shot at it on Saturday.
+>>>
 >>
->> The "[1/2] ath10k: Try to get mac-address from dts" patch
->> will need a respin, so it can apply cleanly.
->>
->> Is Anyone interested? If not, I can take a shot at it on Saturday.
->>
+>> A refreshed patch is applied to atk10k-ct repo so it would be good to
+>> have the same patch on normal ath10k. Many router would benefit
+>> from that.
 > 
-> A refreshed patch is applied to atk10k-ct repo so it would be good to
-> have the same patch on normal ath10k. Many router would benefit
-> from that.
-
-Found it!
-
-https://github.com/greearb/ath10k-ct/commit/e6a7d5b5b834737cd12e357b5efdc2e42d923bf6.patch
-
-Hmm, Author is now "Ben" and the whole commit message is gone.
-Now, adding the commit message back from your original patch
-is not a problem, but the missing "Signed-off-by" from him and
-you might be.
-...
-
-But then, do we need it? Because there might be the option to extend
-device_get_mac_address() instead?! ...
-
->> (There's the tiny question of that device_get_mac_address() which
->> ath10k currently uses. It looks a lot like of_get_mac_address() too!
->> but with extra ACPI (through FWNODE-which also includes OF), but
->> without NVMEM.)
->>
->> Cheers,
->> Christian
+> Found it!
 > 
-> About this I never manage to understand the priority... Should ACPI
-> variant have priority and fallback to the OF api or the OF api should
-> overwrite any mac if a nvmem cell is found?
+> https://github.com/greearb/ath10k-ct/commit/e6a7d5b5b834737cd12e357b5efdc2e42d923bf6.patch
+> 
+> Hmm, Author is now "Ben" and the whole commit message is gone.
+> Now, adding the commit message back from your original patch
+> is not a problem, but the missing "Signed-off-by" from him and
+> you might be.
+> ...
+> 
+> But then, do we need it? Because there might be the option to extend
+> device_get_mac_address() instead?! ...
 
-Hmm, from what I know the device_/fwnode_*() functions are just wrappers
-for either ACPI (on systems with ACPI - x86 and ARM) or OF (on systems with
-Device-tree) functions... (There is also "software nodes", I think these are
-the lookupd stuff that came up recently with APU2 + MX100)
+I applied this since owrt was using it and it decreased out-of-tree patches,
+and it does not break my (non-owrt) use case.  Other than that, I don't know much
+about this patch...
 
-This confused me too. But I might be able to show this in the context of
-ath10k-ct's current ath10k_core_probe_fw() and this threads new subject:
+If it is decided this patch should go away, please let me know so I can adjust
+ath10k-ct accordingly.
 
-<https://github.com/greearb/ath10k-ct/blob/e6a7d5b5b834737cd12e357b5efdc2e42d923bf6/ath10k-5.15/core.c#L4044>
-copied in here for a better reading experience:
-|
-|device_get_mac_address(ar->dev, ar->mac_addr, sizeof(ar->mac_addr));
-|
-|/* Try to get mac address from device node (from nvmem cell) */
-|of_get_mac_address(ar->dev->of_node, ar->mac_addr);
-|
+Thanks
+Ben
 
-The device_get_mac_address() will on OF platforms essentially check and
-process the same "mac-address", "local-mac-address" and "address" OF
-properties of the same device-tree node as the following of_get_mac_address()
-will do. There's no priority.
 
-I think now, that instead of adding of_get_mac_address() into ath10k,
-the time might be better spent asking what's the goal for device_get_mac_address() is.
-Is device_get_mac_address() poised to usurp of_get_mac_address()? And if it
-is: Should it be extended to get that "mac-address in nvmem-cell" as well?
-Because then we don't really need to touch ath10k at all (well, maybe except
-for -EPROBE_DEFER handling).
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
-Cheers,
-Christian
