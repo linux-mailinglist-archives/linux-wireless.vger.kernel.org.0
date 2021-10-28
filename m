@@ -2,94 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A5F343E11F
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 14:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2B8E43E185
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 15:02:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230093AbhJ1Mpr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 08:45:47 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:52134 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbhJ1Mpr (ORCPT
+        id S230380AbhJ1NEP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 09:04:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39190 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230367AbhJ1NEN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 08:45:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1635424999;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=QoC3OLStbdQmvaOCAZZzBXCDyQBKZIDqUoI7nwVlY8I=;
-        b=zRm2ZI6QBNV6gGXFufelafWy8ObcMPbfARLivD/K8NdPZ5z8pHTNifc9+WErcZ6X/R3PVl
-        W9grdB0IpcoUzFmB1jNJXXfpF9jmdXypizFYI4LB7NHIcYLNmT/abruzmYxm3nzBA858ft
-        zJimoW54ApW1DH9unUJFiY/affwVMD4=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Karthikeyan Kathirvel <kathirve@codeaurora.org>
-Subject: Re: [PATCH] ath11k: clear the keys properly when DISABLE_KEY
-Date:   Thu, 28 Oct 2021 14:43:16 +0200
-Message-ID: <4399157.2QDAq5Xuus@ripper>
-In-Reply-To: <87sfwl494s.fsf@codeaurora.org>
-References: <20211026155446.457935-1-sven@narfation.org> <26869605.A2Tbvc0WiF@ripper> <87sfwl494s.fsf@codeaurora.org>
+        Thu, 28 Oct 2021 09:04:13 -0400
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93649C061767
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 06:01:46 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id y128so8127017oie.8
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 06:01:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=A3PFuF6YvLBcLpDR2wBX2gm8p1PRn5ff3+97DYxaVOE=;
+        b=REJWxnjRNMm3b2SNxFuOyFJm5Kky2tGBLRtTHdGMJQpEs66Cg7A4z9s3AVjOtoZyGH
+         QJ6o6VNYtxR3jMiWx1s3dyCzWvH8b6Q+diSYsv/Rmx7jr9CanBgSnt14zKnqL4hqojWY
+         u3/sinOenT9+fQyNQlekER3mANxZN20ufbKzdryAtvmtgQ+UpNvQ3ScfJHdqhfZgleBz
+         Kr0jMRSFL554Y3NF736FSvFsv62hsHu3vU+mFTsGEUywPO3S3aayn4e/Wv+f58jnaSnm
+         JtrGGhoyUvz8uYpKjAkBatqcMwnvs58+9x5/shB0B/TnrsEg3H7RT2NxOguornAVnr8i
+         z9Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=A3PFuF6YvLBcLpDR2wBX2gm8p1PRn5ff3+97DYxaVOE=;
+        b=lYV8c5B8vr7RlmzxMg9sVeVCvTUMbf4eJ3bfvGH1nX+Z96hBe6JRbHbzUsXOw64YQo
+         a8/Gw1Rd79/sOdEtmM7tXrju5YGjyGNHW05NUzQKnyfbqLu8Xli+dzR/mlTbiGWL574y
+         vlswQb6JOEaeyRfP5vmGtiNRjUrgh6tvujL4Pcu7dCjgCETrGxyYBNjqRMHceWYJbeai
+         6WVx28qzCyfrU0jWxwjgwbm9CUoYr+5L4UC/FBzVlT841M7Pme2MpmgbLcD75Uc1KgpC
+         hXTz69fs6cpBQyT8C4sggXpxGJ16zNbD+HtBdpKPKoqd8Wd4+MMwLD3dkMxI1PUoQgvz
+         +PjA==
+X-Gm-Message-State: AOAM533xsXGf+oTM2mxHh5Fiiy0A9lYvhPy3MT46j5ZZW14R8PKdjsLR
+        QTG6BIDQdVGzguFtYuz52PiSypKj/+ECFhoVxKdALQ==
+X-Google-Smtp-Source: ABdhPJwtTf2pAvokpijYpbMwmIt7HAzhD9jU4o+bGhJBmqWwSCnd3HeGQSvnphDQ9q7Ta/MXSsGvW9ZBxKKfe2d2Vg0=
+X-Received: by 2002:a54:4390:: with SMTP id u16mr2780487oiv.109.1635426105697;
+ Thu, 28 Oct 2021 06:01:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3426232.laXtC95Ive"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+References: <00000000000058e2f605b6d2ad46@google.com> <000000000000b6cfc405cf4860a7@google.com>
+In-Reply-To: <000000000000b6cfc405cf4860a7@google.com>
+From:   Dmitry Vyukov <dvyukov@google.com>
+Date:   Thu, 28 Oct 2021 15:01:34 +0200
+Message-ID: <CACT4Y+ZDvKgc7Z-qKVie2mvoEw9FpA8hEZ3NyRaLDf-KnK+J7A@mail.gmail.com>
+Subject: Re: [syzbot] INFO: rcu detected stall in ieee80211_tasklet_handler
+To:     syzbot <syzbot+7bb955045fc0840decd3@syzkaller.appspotmail.com>
+Cc:     davem@davemloft.net, fweisbec@gmail.com, hdanton@sina.com,
+        johannes.berg@intel.com, johannes@sipsolutions.net,
+        kuba@kernel.org, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        mingo@kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com, tglx@linutronix.de
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart3426232.laXtC95Ive
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: Kalle Valo <kvalo@codeaurora.org>
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org, Karthikeyan Kathirvel <kathirve@codeaurora.org>
-Subject: Re: [PATCH] ath11k: clear the keys properly when DISABLE_KEY
-Date: Thu, 28 Oct 2021 14:43:16 +0200
-Message-ID: <4399157.2QDAq5Xuus@ripper>
-In-Reply-To: <87sfwl494s.fsf@codeaurora.org>
-References: <20211026155446.457935-1-sven@narfation.org> <26869605.A2Tbvc0WiF@ripper> <87sfwl494s.fsf@codeaurora.org>
+On Tue, 26 Oct 2021 at 23:44, syzbot
+<syzbot+7bb955045fc0840decd3@syzkaller.appspotmail.com> wrote:
+>
+> syzbot suspects this issue was fixed by commit:
+>
+> commit 313bbd1990b6ddfdaa7da098d0c56b098a833572
+> Author: Johannes Berg <johannes.berg@intel.com>
+> Date:   Wed Sep 15 09:29:37 2021 +0000
+>
+>     mac80211-hwsim: fix late beacon hrtimer handling
+>
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=151766bab00000
+> start commit:   835d31d319d9 Merge tag 'media/v5.15-1' of git://git.kernel..
+> git tree:       upstream
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=9c32e23fada3a0e4
+> dashboard link: https://syzkaller.appspot.com/bug?extid=7bb955045fc0840decd3
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15e08125300000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14b17dde300000
+>
+> If the result looks correct, please mark the issue as fixed by replying with:
+>
+> #syz fix: mac80211-hwsim: fix late beacon hrtimer handling
+>
+> For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
-On Thursday, 28 October 2021 14:38:27 CEST Kalle Valo wrote:
-[...]
-> But it doesn't either break anything either, right? So in that respect I
-> would like to keep the Tested-on tag in the commit log to document how
-> it was tested.
-> 
-> Though I'm not sure what I do now, do you think I should the patch still
-> or should I drop it?
+Looks plausible:
 
-It seems like QCA wanted to have a look again at the problem. So I would 
-suggest to drop it or mark it as "Changes Requested".
-
-I cannot make any statements about whether it actually clears anything 
-in the firmware because I neither have documentation nor source code of 
-it. So only persons which have more knowledge about it can work on this 
-problem.
-
-Kind regards,
-	Sven
---nextPart3426232.laXtC95Ive
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmF6muQACgkQXYcKB8Em
-e0Ybjg//UfH7a6x1M+B5p+UecsGikje4Z3pmYm6nbdZbseYEhgYra7DAdgi3wAZy
-v2EW914tFvNo2v1aW9ALhAEJG0sDBnPmmlp3RBvtyVd4y55NNtXlWeX/6eTjyRty
-K43725qiOa5EA4pTF4WINwzzZuUqQIx+XplPm9MI5PL7bW9hxR0FP3xMP/F4rtUQ
-cjlGL8XeD4NiugM48Y8BENgPFOLWwEsMtd+UbUyKxuOAXEHNO2dunQ9OqMdyMiLf
-U+KTTiTq65sS38KlrwOrPQD+Wnqlozd+TXYab1oIhpriYzabLoQMxMst4ak1sXaY
-2Pga+m95mAuxjX1qct3LlgpiZb3ei5DYEMki2BeSTTSZQ/dgL3CgfUbVuMhLoRXb
-99+Rw7G9+zLxXP+zPk4gRArGkRPFv/N15IYaOHNG/U2QYdokH1q7u62anbkmHfBt
-y7eheiGdP+NHvP4i7Mf2jmVNkMit2V7m7nMoPBq4vJOaJHbVk8e//1cLpN/6EUo8
-l+Q6NFL0uhusJhNJgejdqwQSXasqJSkjUaG+9/rE0ZzbQBkNwSEZL+7Siow+3mdy
-yirVqmCReuLmG4cIrSJb5baYU5IIt0q32zYoju2wdt0xIUQpgMiDcx0Grg8QzueX
-C7lAgXuYeqra72CVwUPLDs/krNg/LhFYdH6lUFU4Mukn9sXzuFI=
-=F+Gz
------END PGP SIGNATURE-----
-
---nextPart3426232.laXtC95Ive--
-
-
-
+#syz fix: mac80211-hwsim: fix late beacon hrtimer handling
