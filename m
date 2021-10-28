@@ -2,97 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5797743DC1E
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 09:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C65F43DC3A
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Oct 2021 09:37:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbhJ1HhF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 03:37:05 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:49454 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229836AbhJ1HhE (ORCPT
+        id S229813AbhJ1HkP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 03:40:15 -0400
+Received: from mout-p-102.mailbox.org ([80.241.56.152]:18652 "EHLO
+        mout-p-102.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229661AbhJ1HkN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 03:37:04 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635406478; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=wl1qlC5fvtysxEaHVIlbpR7cMqu7C52Vm/4PxNdMmFc=;
- b=ip3r4IefZPCccFmt/AYSqt6F8Qz16Q6nQHvB2j80+oEK8V3l57ZemHQYAOdPrYp/ec70XjaA
- luDdKHgHCHJx7dswX70br/cTat/yAn1pUl8uki4Maivc5XUudA/xbIPcGH6CIS9Uj8ZURfm1
- /EZm6QwVp39Kvtu/YWuR/REcmls=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
- 617a5287ff3eb667a7991460 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 28 Oct 2021 07:34:31
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id ADB3AC4338F; Thu, 28 Oct 2021 07:34:31 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Thu, 28 Oct 2021 03:40:13 -0400
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3700AC4338F;
-        Thu, 28 Oct 2021 07:34:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 3700AC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/3] ath10k: fix division by zero in send path
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20211027080819.6675-2-johan@kernel.org>
-References: <20211027080819.6675-2-johan@kernel.org>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4Hfy8820NFzQl1x;
+        Thu, 28 Oct 2021 09:37:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+From:   =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
         Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
         Xinming Hu <huxinming820@gmail.com>,
-        Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan@kernel.org>, stable@vger.kernel.org,
-        Erik Stromdahl <erik.stromdahl@gmail.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163540646648.24978.9801837945005945514.kvalo@codeaurora.org>
-Date:   Thu, 28 Oct 2021 07:34:31 +0000 (UTC)
+        linux-kernel@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+Subject: [PATCH] mwifiex: Add quirk to disable deep sleep with certain hardware revision
+Date:   Thu, 28 Oct 2021 09:37:29 +0200
+Message-Id: <20211028073729.24408-1-verdre@v0yd.nl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6340818B8
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johan Hovold <johan@kernel.org> wrote:
+The 88W8897 PCIe+USB card in the hardware revision 20 apparently has a
+hardware issue where the card wakes up from deep sleep randomly and very
+often, somewhat depending on the card activity, maybe the hardware has a
+floating wakeup pin or something.
 
-> Add the missing endpoint max-packet sanity check to probe() to avoid
-> division by zero in ath10k_usb_hif_tx_sg() in case a malicious device
-> has broken descriptors (or when doing descriptor fuzz testing).
-> 
-> Note that USB core will reject URBs submitted for endpoints with zero
-> wMaxPacketSize but that drivers doing packet-size calculations still
-> need to handle this (cf. commit 2548288b4fb0 ("USB: Fix: Don't skip
-> endpoint descriptors with maxpacket=0")).
-> 
-> Fixes: 4db66499df91 ("ath10k: add initial USB support")
-> Cc: stable@vger.kernel.org      # 4.14
-> Cc: Erik Stromdahl <erik.stromdahl@gmail.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Those continuous wakeups prevent the card from entering host sleep when
+the computer suspends. And because the host won't answer to events from
+the card anymore while it's suspended, the firmwares internal
+powersaving state machine seems to get confused and the card can't sleep
+anymore at all after that.
 
-2 patches applied to ath-next branch of ath.git, thanks.
+Since we can't work around that hardware bug in the firmware, let's
+get the hardware revision string from the firmware and match it with
+known bad revisions. Then disable auto deep sleep for those revisions,
+which makes sure we no longer get those spurious wakeups.
 
-a006acb93131 ath10k: fix division by zero in send path
-c1b9ca365dea ath6kl: fix division by zero in send path
+Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
+---
+ drivers/net/wireless/marvell/mwifiex/main.c      | 14 ++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/main.h      |  1 +
+ .../net/wireless/marvell/mwifiex/sta_cmdresp.c   | 16 ++++++++++++++++
+ 3 files changed, 31 insertions(+)
 
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
+index 19b996c6a260..5ab2ad4c7006 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.c
++++ b/drivers/net/wireless/marvell/mwifiex/main.c
+@@ -226,6 +226,19 @@ static int mwifiex_process_rx(struct mwifiex_adapter *adapter)
+ 	return 0;
+ }
+ 
++static void maybe_quirk_fw_disable_ds(struct mwifiex_adapter *adapter)
++{
++	struct mwifiex_private *priv = mwifiex_get_priv(adapter, MWIFIEX_BSS_ROLE_STA);
++	struct mwifiex_ver_ext ver_ext;
++
++	set_bit(MWIFIEX_IS_REQUESTING_FW_VEREXT, &adapter->work_flags);
++
++	memset(&ver_ext, 0, sizeof(ver_ext));
++	ver_ext.version_str_sel = 1;
++	mwifiex_send_cmd(priv, HostCmd_CMD_VERSION_EXT,
++			 HostCmd_ACT_GEN_GET, 0, &ver_ext, false);
++}
++
+ /*
+  * The main process.
+  *
+@@ -356,6 +369,7 @@ int mwifiex_main_process(struct mwifiex_adapter *adapter)
+ 			if (adapter->hw_status == MWIFIEX_HW_STATUS_INIT_DONE) {
+ 				adapter->hw_status = MWIFIEX_HW_STATUS_READY;
+ 				mwifiex_init_fw_complete(adapter);
++				maybe_quirk_fw_disable_ds(adapter);
+ 			}
+ 		}
+ 
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index 90012cbcfd15..1e829d84b1f6 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -524,6 +524,7 @@ enum mwifiex_adapter_work_flags {
+ 	MWIFIEX_IS_SUSPENDED,
+ 	MWIFIEX_IS_HS_CONFIGURED,
+ 	MWIFIEX_IS_HS_ENABLING,
++	MWIFIEX_IS_REQUESTING_FW_VEREXT,
+ };
+ 
+ struct mwifiex_band_config {
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
+index 6b5d35d9e69f..8e49ebca1847 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
+@@ -708,6 +708,22 @@ static int mwifiex_ret_ver_ext(struct mwifiex_private *priv,
+ {
+ 	struct host_cmd_ds_version_ext *ver_ext = &resp->params.verext;
+ 
++	if (test_and_clear_bit(MWIFIEX_IS_REQUESTING_FW_VEREXT, &priv->adapter->work_flags)) {
++		if (strncmp(ver_ext->version_str, "ChipRev:20, BB:9b(10.00), RF:40(21)", 128) == 0) {
++			struct mwifiex_ds_auto_ds auto_ds = {
++				.auto_ds = DEEP_SLEEP_OFF,
++			};
++
++			mwifiex_dbg(priv->adapter, MSG,
++				    "Bad HW revision detected, disabling deep sleep\n");
++
++			mwifiex_send_cmd(priv, HostCmd_CMD_802_11_PS_MODE_ENH,
++					 DIS_AUTO_PS, BITMAP_AUTO_DS, &auto_ds, false);
++		}
++
++		return 0;
++	}
++
+ 	if (version_ext) {
+ 		version_ext->version_str_sel = ver_ext->version_str_sel;
+ 		memcpy(version_ext->version_str, ver_ext->version_str,
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211027080819.6675-2-johan@kernel.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.31.1
 
