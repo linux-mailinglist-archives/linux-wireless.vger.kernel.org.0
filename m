@@ -2,173 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3460143F45B
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 03:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D730743F4FB
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 04:31:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231365AbhJ2BdL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 21:33:11 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:43185 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231269AbhJ2BdL (ORCPT
+        id S231521AbhJ2CdX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 22:33:23 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:37544 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231348AbhJ2CdW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 21:33:11 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19T1UZwmC008333, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19T1UZwmC008333
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 29 Oct 2021 09:30:35 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Fri, 29 Oct 2021 09:30:35 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Fri, 29 Oct 2021 09:30:34 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
- RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
- 15.01.2308.015; Fri, 29 Oct 2021 09:30:34 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Brian Norris <briannorris@chromium.org>
-CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Kevin Yang <kevin_yang@realtek.com>
-Subject: RE: [PATCH 1/2] rtw89: update tx power limit/limit_ru tables to R54
-Thread-Topic: [PATCH 1/2] rtw89: update tx power limit/limit_ru tables to R54
-Thread-Index: AQHXy9ebZBrW4JMwI0O6HEkKfS62rqvoaLkAgADIZdA=
-Date:   Fri, 29 Oct 2021 01:30:34 +0000
-Message-ID: <cbbc33c377be42c18b850d0322ad22af@realtek.com>
-References: <20211028084054.12962-1-pkshih@realtek.com>
- <YXsW2K1BWQjX1w4x@google.com>
-In-Reply-To: <YXsW2K1BWQjX1w4x@google.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/28_=3F=3F_05:55:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Thu, 28 Oct 2021 22:33:22 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1635474655; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=wcrDjJzQSDlZlOocrUwmswx3ElWAGGaa4tJSF8O252E=;
+ b=ObwCT6EUunJU6dFt11gUNeP1uJrje60NpcM3X3tZqMcnaLFyQoj5ZG0g7OcwJDv1eCi8nhlB
+ cxv1PKqMgDWt2QoESo77CMJBG8xQYjQwEoNPoyyU43Qetf+RLlYiFnK4a0U2wtDsKP3Z6bbG
+ W0OayiB6RybFTZxXrwaBZwGtKdk=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-east-1.postgun.com with SMTP id
+ 617b5ccb900d71ea1e75643b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 29 Oct 2021 02:30:35
+ GMT
+Sender: wgong=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C6B1FC43460; Fri, 29 Oct 2021 02:30:34 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 28E3FC4338F;
+        Fri, 29 Oct 2021 02:30:34 +0000 (UTC)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/29/2021 01:14:45
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 166975 [Oct 28 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/29/2021 01:18:00
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 29 Oct 2021 10:30:34 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Jouni Malinen <jouni@codeaurora.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 3/3] ath11k: set correct NL80211_FEATURE_DYNAMIC_SMPS for
+ WCN6855
+In-Reply-To: <87a6it5upc.fsf@codeaurora.org>
+References: <20210914163726.38604-1-jouni@codeaurora.org>
+ <20210914163726.38604-3-jouni@codeaurora.org>
+ <87a6it5upc.fsf@codeaurora.org>
+Message-ID: <50c21cd4f727e61c7602a61fe37258df@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-> -----Original Message-----
-> From: Brian Norris <briannorris@chromium.org>
-> Sent: Friday, October 29, 2021 5:32 AM
-> To: Pkshih <pkshih@realtek.com>
-> Cc: kvalo@codeaurora.org; linux-wireless@vger.kernel.org; Kevin Yang <kevin_yang@realtek.com>
-> Subject: Re: [PATCH 1/2] rtw89: update tx power limit/limit_ru tables to R54
+On 2021-10-28 18:07, Kalle Valo wrote:
+> Jouni Malinen <jouni@codeaurora.org> writes:
 > 
-> Hi,
+>> From: Wen Gong <wgong@codeaurora.org>
+>> 
+...
+>> diff --git a/drivers/net/wireless/ath/ath11k/mac.c 
+>> b/drivers/net/wireless/ath/ath11k/mac.c
+>> index 1f4765e43546..97a2c92b7b9b 100644
+>> --- a/drivers/net/wireless/ath/ath11k/mac.c
+>> +++ b/drivers/net/wireless/ath/ath11k/mac.c
+>> @@ -7570,7 +7570,8 @@ static int __ath11k_mac_register(struct ath11k 
+>> *ar)
+>>  	 * for each band for a dual band capable radio. It will be tricky to
+>>  	 * handle it when the ht capability different for each band.
+>>  	 */
+>> -	if (ht_cap & WMI_HT_CAP_DYNAMIC_SMPS || ar->supports_6ghz)
+>> +	if (ht_cap & WMI_HT_CAP_DYNAMIC_SMPS ||
+>> +	    (ar->supports_6ghz && !ab->hw_params.check_dynamic_smps))
+>>  		ar->hw->wiphy->features |= NL80211_FEATURE_DYNAMIC_SMPS;
 > 
-> On Thu, Oct 28, 2021 at 04:40:53PM +0800, Ping-Ke Shih wrote:
-> > From: Zong-Zhe Yang <kevin_yang@realtek.com>
-> >
-> > Support QATAR in rtw89_regulation_type and reorder the enum.
-> > Update tx power limit table and tx power limit_ru table to configure QATAR
-> > and adjust indexes to align rtw89_regulation_type enum.
-> >
-> > Besides, if an unassigned entry of limit/limit_ru tables is read,
-> > return the corresponding WW value for the unconfigured case.
-> >
-> > Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> > ---
-> >  drivers/net/wireless/realtek/rtw89/core.h     |    9 +-
-> >  drivers/net/wireless/realtek/rtw89/phy.c      |   12 +
-> >  .../wireless/realtek/rtw89/rtw8852a_table.c   | 5199 +++++++++++------
-> >  3 files changed, 3488 insertions(+), 1732 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-> > index c2885e4dd882..3729abda04f9 100644
-> > --- a/drivers/net/wireless/realtek/rtw89/core.h
-> > +++ b/drivers/net/wireless/realtek/rtw89/core.h
-> > @@ -411,12 +411,13 @@ enum rtw89_regulation_type {
-> >  	RTW89_NA	= 4,
-> >  	RTW89_IC	= 5,
-> >  	RTW89_KCC	= 6,
-> > -	RTW89_NCC	= 7,
-> > -	RTW89_CHILE	= 8,
-> > -	RTW89_ACMA	= 9,
-> > -	RTW89_MEXICO	= 10,
-> > +	RTW89_ACMA	= 7,
-> > +	RTW89_NCC	= 8,
-> > +	RTW89_MEXICO	= 9,
-> > +	RTW89_CHILE	= 10,
-> >  	RTW89_UKRAINE	= 11,
-> >  	RTW89_CN	= 12,
-> > +	RTW89_QATAR	= 13,
-> >  	RTW89_REGD_NUM,
-> >  };
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-> > index ab134856baac..0620ef02e275 100644
-> > --- a/drivers/net/wireless/realtek/rtw89/phy.c
-> > +++ b/drivers/net/wireless/realtek/rtw89/phy.c
+> Instead of a "negative" flag I reverted the test and renamed the flag 
+> to
+> supports_dynamic_smps_6ghz. AFAIK QCN9074 is the only device supporting
+> 6 GHz band so I enabled the flag only for it.
 > 
-> > diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
-> b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
-> > index 3a4fe7207420..6a61549ffac7 100644
-> > --- a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
-> > +++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
-> > @@ -43556,1346 +43556,1850 @@ const s8 rtw89_8852a_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
-> >  	[0][0][0][0][1][0] = 56,
-> >  	[0][0][0][0][3][0] = 68,
-> >  	[0][0][0][0][5][0] = 76,
-> > -	[0][0][0][0][6][0] = 56,
-> > -	[0][0][0][0][9][0] = 56,
-> > -	[0][0][0][0][8][0] = 60,
-> > +	[0][0][0][0][6][0] = 76,
-> > +	[0][0][0][0][7][0] = 56,
-> > +	[0][0][0][0][10][0] = 60,
-> ...
+> Please review my changes in the pending branch:
+Thanks.
+the change is OK for WCN6855/QCA6390.
 > 
-> If one of these colums is based on an enum, you should probably *use*
-> the enum in the table. Then this patch would probably much much smaller,
-> and it would be clear what parts are changes and what parts are just
-> renumbering...
-> 
-> I'd suggest splitting this into at least one more patch, where the first
-> patch should replace all the magic numbers (0..12) with the appropriate
-> rtw89_regulation_type values.
-> 
-
-Got it. 
-Thanks for the suggestion. We'll do it.
-
---
-Ping-Ke
-
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=cc692cfb9f2981691b39b601b37e4544ecf01136
