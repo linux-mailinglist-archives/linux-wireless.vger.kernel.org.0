@@ -2,90 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDAE543F58E
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 05:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B226243F777
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 08:48:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231721AbhJ2D4L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 23:56:11 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:49831 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231523AbhJ2D4J (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 23:56:09 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1635479621; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=svVJj/ptgEELOk5d+/buD8kNREVbrRN5Zobef5vXTGA=; b=bT7DCx85X+kg4UNSGdt4h+EwfOpTuKv+3qnqOfn5lJHI9vYH1OTYm4uQy8IW7UssskD4xAod
- zFIV+Hv3MxfIVukSjQxxLb5Shu+uRG5MrNHqSX6cr38qxmi00NmJ7eZWGvewjFsiWi1Zagd6
- fVaL8qofLUI9MeRxceyPzuvB0PE=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 617b703e648aeeca5c8479ff (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 29 Oct 2021 03:53:34
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 040ADC43460; Fri, 29 Oct 2021 03:53:34 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 00CA4C4338F;
-        Fri, 29 Oct 2021 03:53:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 00CA4C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Zekun Shen <bruceshenzk@gmail.com>
-Cc:     Pontus Fuchs <pontus.fuchs@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ar5523: Fix null-ptr-deref with unexpected WDCMSG_TARGET_START reply
-References: <YXsmPQ3awHFLuAj2@10-18-43-117.dynapool.wireless.nyu.edu>
-Date:   Fri, 29 Oct 2021 06:53:30 +0300
-In-Reply-To: <YXsmPQ3awHFLuAj2@10-18-43-117.dynapool.wireless.nyu.edu> (Zekun
-        Shen's message of "Thu, 28 Oct 2021 18:37:49 -0400")
-Message-ID: <87tuh0xz9h.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S232070AbhJ2GvM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Oct 2021 02:51:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53736 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230252AbhJ2GvL (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 Oct 2021 02:51:11 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B764DC061570
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 23:48:43 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id q74so15890556ybq.11
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 23:48:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Ifi/9SNZAu0gbnv5L3EHAA84dqbRTWYRyMMKD7Ea0/w=;
+        b=L/TUvY3MZaWiPhf4X7ugBEi1h43McYaWQYQ2ZsA2u4zQMHEhDJFsIEWLVH9pRXqDUK
+         bbHVQVxYNEUei5xp86DHZVyb+jKtXeLJ0uZmNcdvzY/PVFnZVz4KV/IabUbPyaYOO04t
+         ouf7Ylyx5dM5PBS3AvzbSkJN2GF15G3Ripu1gz068iiM8YpprerW8/fwBERLpip8MaZh
+         t2Q474GUgzEgekGtB55XUxMLBj+NnPdMdDT6/pM1JMCyPQQKTtONaftC9EItoKP//Jzt
+         7OWGCZDc2tsJjpaegUQ2xZQlTnxFXboK6ezTjzs0am9mdTwVuuqauLuRVBB5iZcgLWCp
+         F3Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=Ifi/9SNZAu0gbnv5L3EHAA84dqbRTWYRyMMKD7Ea0/w=;
+        b=2ok3OwCxGJATkndolQ7k8h5p7552nhtsv8Re5XTvMcJ/WoVOjQK6ivlV1zvFXKmmXj
+         +L/c2m0Y+bQPslL36NOtEFWAaJnf1sgCLh2QrX6SvVmjAbKopcj3MaM5TeNFdaGDf/fB
+         K2oCM9bB8NgOvD7MwqnYpqInyQeec53Mzxf6GfOZgod+/j3urCgoYwxFWn1oQ8O1lIyq
+         vl0VpKu66R9LjpmYtxUznvtVid43QzF9NgBLo4abMo+qQ8o7bRVqriy/gC775sdSxGbD
+         HreAoJF4kZ9E6jNtcKwjcAQMiQSorS3hRi7LW7k6ytfGxnYslpscNk2bODBo7JQPJUX1
+         NVQA==
+X-Gm-Message-State: AOAM532af2rRbbEYRjag0A5Hn1NFP/NGcqp7tBsQVPxL8Cz0iAuU+eoU
+        b/TV0ownUZoy73eyqQkp8QnlT7Eo42JleQ6OWP0=
+X-Google-Smtp-Source: ABdhPJwkYn6uN3J8JpF5Gp8dCR1ZXg7lNv9x1lQPLnSF0UcqTgOK4ANBBSJnlcbXE3WIscpj2KvGPF9EMbZAPR7RqL8=
+X-Received: by 2002:a25:bdce:: with SMTP id g14mr9724573ybk.352.1635490122712;
+ Thu, 28 Oct 2021 23:48:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+Received: by 2002:a05:7000:9d11:0:0:0:0 with HTTP; Thu, 28 Oct 2021 23:48:42
+ -0700 (PDT)
+Reply-To: mr.luisfernando5050@gmail.com
+From:   "Mr. Luis Fernando" <kasimmohamed50807@gmail.com>
+Date:   Thu, 28 Oct 2021 23:48:42 -0700
+Message-ID: <CAMj1GpiCBmPi8qp8ehmpVT8FJnbUknG6gv5=arWS0p9A0grD4w@mail.gmail.com>
+Subject: GOOD DAY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zekun Shen <bruceshenzk@gmail.com> writes:
-
-> Unexpected WDCMSG_TARGET_START replay can lead to null-ptr-deref
-> when ar->tx_cmd->odata is NULL. The patch adds a null check to
-> prevent such case.
->
-> KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
->  ar5523_cmd+0x46a/0x581 [ar5523]
->  ar5523_probe.cold+0x1b7/0x18da [ar5523]
->  ? ar5523_cmd_rx_cb+0x7a0/0x7a0 [ar5523]
->  ? __pm_runtime_set_status+0x54a/0x8f0
->  ? _raw_spin_trylock_bh+0x120/0x120
->  ? pm_runtime_barrier+0x220/0x220
->  ? __pm_runtime_resume+0xb1/0xf0
->  usb_probe_interface+0x25b/0x710
->  really_probe+0x209/0x5d0
->  driver_probe_device+0xc6/0x1b0
->  device_driver_attach+0xe2/0x120
->
-> Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
-
-How did you test this?
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+LS0gDQog7Lmc6rWs7JeQ6rKMLA0KDQrsnbjsgqzrp5AuDQoNCuyYpOuKmCDsnpgg7KeA64K06rOg
+IOyeiOuCmOyalD8NCg0K64+E7JuA7J20IO2VhOyalO2VoCDrlYwg6rCc7J24IOqygOyDieydhCDt
+lZjquLAg7KCE7JeQIOq3gO2VmOydmCDsnbTrqZTsnbwg7Jew65297LKY66W8IOuwnOqyrO2WiOyK
+teuLiOuLpC4NCuuLueyLoOydmCDrj4Tsm4AuIOuCtCDsnbTrpoTsnYAgTXIuS2FzaW0gTW9oYW1l
+ZCAn7JmAIO2VqOq7mCDsnbztlanri4jri6QuDQpVQkEgQmFuayBvZiBBZnJpY2HsnZgg6rCQ7IKs
+IOuwjyDtmozqs4Qg6rSA66as7J6QLA0K66qHIOuFhCDsoITsl5Ag7KCc6rCAIOuztOq0gO2VmOqz
+oCDsnojrjZgg7J20IOq4sOq4iOydtCDsnojsirXri4jri6QuDQrsnbQg7J6Q6riI7J2EIOq3gO2V
+mOydmCDsnYDtlokg6rOE7KKM66GcIOydtOyytO2VmOq4sCDsnITtlZwg6reA7ZWY7J2YIOyngOyb
+kA0K7Jqw66asIOuqqOuRkOyXkOqyjCDtj4nsg50g7Yis7J6Q7JeQIOuMgO2VnCDtmJztg53qs7wg
+6riI7JWh7J2AICjrr7jqta0NCjI3LDUwMOuLrOufrC4g67Cx66eMIOuLrOufrCkuDQoNCuuCmOuK
+lCDsnYDtlonsnbQg64u57Iug7J2EIOuvv+qzoCDrprTrpqzsiqTtlZjrj4TroZ0g66qo65OgIOus
+uOydmCDshLjrtoAg7IKs7ZWt7J2EIOqwgOyngOqzoCDsnojsirXri4jri6QuDQrsnYDtlokg7JeF
+66y07J28IOq4sOykgCA37J28IOydtOuCtOyXkCDqt4DtlZjsnZgg7J2A7ZaJIOqzhOyijOuhnCDs
+npDquIjsnYQNCuyEseqztSDtm4Qg64KY7JmA7J2YIOyZhOyghO2VnCDtmJHroKUNCuydgO2Wieyc
+vOuhnCDsnpDquIgg7J207LK0IOyEseqztSDtm4QgNTAlDQrqs4TsoJUg6rSc7LCu7JWELg0KDQrq
+t4DtlZjsnZgg7J2Y6rKs7J2EIOq4sOuLpOumrOqzoCDsnojsirXri4jri6QuDQrqsJDsgqwg7ZW0
+7JqULg0KDQrro6jsnbTsiqQg7Y6Y66W064Kc64+EIOyUqA0KDQoNCg0KDQrYtdiv2YrZgtmKINin
+2YTYudiy2YrYstiMDQoNCtiq2K3Zitin2KouDQoNCtmD2YrZgSDYrdin2YTZgyDYp9mE2YrZiNmF
+INij2KrZhdmG2Ykg2KPZhiDYqtmD2YjZhiDYqNiu2YrYsdifDQoNCtmE2YLYryDYtdin2K/Zgdiq
+INis2YfYqSDYp9iq2LXYp9mEINin2YTYqNix2YrYryDYp9mE2KXZhNmD2KrYsdmI2YbZiiDYp9mE
+2K7Yp9i12Kkg2KjZgyDZgtio2YQg2KXYrNix2KfYoSDYqNit2Ksg2K7Yp9i1INij2KvZhtin2KEg
+2KfZhNit2KfYrNipDQrZhdmGINmF2LPYp9i52K/YqtmDLiDYp9iz2YXZiiDYp9mE2LPZitivINmC
+2KfYs9mFINmF2K3ZhdivINij2LnZhdmEINmF2LkNCtmF2K/ZitixINmC2LPZhSDYp9mE2KrYr9mC
+2YrZgiDZiNin2YTZhdit2KfYs9io2Kkg2YfZhtinINmB2YogVUJBIEJhbmsgb2YgQWZyaWNhINiM
+DQrZh9mG2KfZgyDZh9iw2Kcg2KfZhNi12YbYr9mI2YIg2KfZhNiw2Yog2KfYrdiq2YHYuCDYqNmH
+INmB2Yog2LnZh9iv2Yog2YXZhtiwINiz2YbZiNin2Kog2YjYo9mG2Kcg2KjYrdin2KzYqSDYpdmE
+2YrZhw0K2YXYs9in2LnYr9iq2YMg2YHZiiDYqtit2YjZitmEINmH2LDYpyDYp9mE2YXYqNmE2Log
+2KXZhNmJINit2LPYp9io2YMg2KfZhNmF2LXYsdmB2YoNCtmE2YPZhNinINmF2YbYpyDYp9mE2KfY
+s9iq2YHYp9iv2Kkg2YXZhiDYp9mE2KfYs9iq2KvZhdin2LEg2YXYr9mJINin2YTYrdmK2KfYqSDZ
+iNin2YTZhdio2YTYuiAo2KfZhNmI2YTYp9mK2KfYqiDYp9mE2YXYqtit2K/YqQ0KMjc1MDAg2K/Z
+iNmE2KfYsS4g2YXZhNmK2YjZhiDYr9mI2YTYp9ixKS4NCg0K2YTYr9mKINmD2YQg2KrZgdin2LXZ
+itmEINin2YTYp9iz2KrZgdiz2KfYsSDZhNis2LnZhCDYp9mE2KjZhtmDINmK2LXYr9mC2YMg2YjZ
+iti32YTZgiDYs9ix2KfYrdmDDQrYqtit2YjZitmEINin2YTYo9mF2YjYp9mEINil2YTZiSDYrdiz
+2KfYqNmDINin2YTZhdi12LHZgdmKINmB2Yog2LrYttmI2YYgNyDYo9mK2KfZhSDYudmF2YQg2YXY
+tdix2YHZitipINmF2LkNCtiq2LnYp9mI2YbZgyDYp9mE2YPYp9mF2YQg2YXYudmKINio2LnYryDY
+p9mE2YbYrNin2K0g2YTYp9it2LggNTDZqiDZhdmGINij2KzZhNmDINij2KvZhtin2KENCjUw2aog
+2KjYp9mE2YbYs9io2Kkg2YTZiiDYqNi52K8g2YbYrNin2K0g2KrYrdmI2YrZhCDYp9mE2KPZhdmI
+2KfZhCDYpdmE2Ykg2KfZhNio2YbZgyDYp9mE2LDZiiDYqtiq2LnYp9mF2YQg2YXYudmHDQrYp9mE
+2K3Ys9in2Kgg2KjYrtmK2LEuDQoNCtmB2Yog2KfZhtiq2LjYp9ixINij2YYg2YbYs9mF2Lkg2YXZ
+htmDLg0K2LTZg9ix2KcuDQoNCtin2YTYs9mK2K8g2YTZiNmK2LMg2YHYsdmG2KfZhtiv2YgNCg==
