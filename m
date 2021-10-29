@@ -2,106 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 175CA43FD9B
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 15:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33A0243FEFE
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 17:05:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231468AbhJ2N4E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Oct 2021 09:56:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37052 "EHLO
+        id S229968AbhJ2PHj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Oct 2021 11:07:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229692AbhJ2N4A (ORCPT
+        with ESMTP id S230016AbhJ2PHe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Oct 2021 09:56:00 -0400
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D55F1C061570;
-        Fri, 29 Oct 2021 06:53:31 -0700 (PDT)
-Received: by mail-qv1-xf2b.google.com with SMTP id kd16so6375631qvb.0;
-        Fri, 29 Oct 2021 06:53:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Z+CF8McLJtZXo6SHz1nxgycF8ae/xOR5hUS+LP7jGG8=;
-        b=UN0Z0M+dhBwkt6q37PI/52rAjqga+C+ztLmr82Rnux6+JemIk7iBqqZlTOpuQA44kf
-         /ihey/8C7DeRqq3u4bOtR/iow4iYRLK6QIOzy2E0YiZUzPRwSXh+FTrQH+3eQxdLkQki
-         tsJJgLocQLDYzDkzWaEJtNHpXXjZw1bI2mVTjuWLozUFtRIu31vmFk90dW9vLncfRRkF
-         z5+S3uATHVZnnAYYEPiaef5n2uOA0s+69QRMlxdjiG4kl7bk1mHOKRnArPt4P4Q9ZNSj
-         gipG3c4clyWVBlDj5ZScf54k5GvPN4CD0Hwb8c/35NKoS6tQ6659IPSviBT+z7fxLLUG
-         rwzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Z+CF8McLJtZXo6SHz1nxgycF8ae/xOR5hUS+LP7jGG8=;
-        b=KZJHKlD/6QJ3XH8MZ0dIQEN9l5U1ckrTcD8PavyU3rJ64VeMfqW/cio16Vx3QMez3c
-         BGMQdyBOGLo5iUbcOZyf1wcbxDmIURL36bhHUHfiNbLlz65+RWlHgR/TQp2tQYG27j8s
-         Fj85K2d97tDE6hSDF70HwbOBuGPTAn2ueRK/7nV2ktV0biEotXc7l8yVKgtUlTPiBjiq
-         TIH0mag6iLhAnm6wCYRKm8gDSbZ7evl+p3fy8NfqZs/Ow4Pg+SYvO43rRe8q+I5U/nM3
-         hm/hamxspzUb1DzyQ4k/rClTycbmFV4P0JWjLFJhZJDKahG+PqpdV+6pHHVS8qpqJCt3
-         MGkg==
-X-Gm-Message-State: AOAM532AojaSCtlEPS8HYNg6CUip5p/R/e2Nk1+/lekv7cq3EPkcrSBq
-        galaYg+Kw8lNTWLhh1AoZ3w=
-X-Google-Smtp-Source: ABdhPJx6gNizjT3moPdCwjo/KPDiRGAqujQKL/z/JSuLaswrwaTXrXIMdIdAYHKSiSONMNxlBVRKyw==
-X-Received: by 2002:a05:6214:dcf:: with SMTP id 15mr11015072qvt.23.1635515611085;
-        Fri, 29 Oct 2021 06:53:31 -0700 (PDT)
-Received: from Zekuns-MBP-16.fios-router.home (cpe-74-73-56-100.nyc.res.rr.com. [74.73.56.100])
-        by smtp.gmail.com with ESMTPSA id u6sm444100qtc.86.2021.10.29.06.53.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Oct 2021 06:53:30 -0700 (PDT)
-Date:   Fri, 29 Oct 2021 09:53:28 -0400
-From:   Zekun Shen <bruceshenzk@gmail.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Pontus Fuchs <pontus.fuchs@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ar5523: Fix null-ptr-deref with unexpected
- WDCMSG_TARGET_START  =?ISO-8859-1?Q?=20reply=1B?=
-Message-ID: <YXv82KfKCW3eHhE6@Zekuns-MBP-16.fios-router.home>
-References: <YXsmPQ3awHFLuAj2@10-18-43-117.dynapool.wireless.nyu.edu>
- <87tuh0xz9h.fsf@tynnyri.adurom.net>
+        Fri, 29 Oct 2021 11:07:34 -0400
+X-Greylist: delayed 584 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 29 Oct 2021 08:05:05 PDT
+Received: from simonwunderlich.de (unknown [IPv6:2a01:4f8:c17:e8c0::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00721C061766
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Oct 2021 08:05:05 -0700 (PDT)
+Received: from [IPv6:2003:c5:973a:b0b8:1f6e:7eaa:c693:97eb] (p200300c5973aB0B81F6e7eAAC69397EB.dip0.t-ipconnect.de [IPv6:2003:c5:973a:b0b8:1f6e:7eaa:c693:97eb])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by simonwunderlich.de (Postfix) with ESMTPSA id 3A4A7FA152;
+        Fri, 29 Oct 2021 16:55:18 +0200 (CEST)
+Subject: iw reg get Not showing 6GHz channels in Germany
+From:   Sharadanand Karanjkar <sk@simonwunderlich.de>
+To:     luciano.coelho@intel.com
+References: <57f467ec-074c-8260-7872-84eccfdcc1c7@simonwunderlich.de>
+Cc:     linux-wireless@vger.kernel.org, se@simonwunderlich.de
+Message-ID: <dd512568-9d9f-289a-bc7b-9b6dfc1c0c8a@simonwunderlich.de>
+Date:   Fri, 29 Oct 2021 16:55:16 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87tuh0xz9h.fsf@tynnyri.adurom.net>
+In-Reply-To: <57f467ec-074c-8260-7872-84eccfdcc1c7@simonwunderlich.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Oct 29, 2021 at 06:53:30AM +0300, Kalle Valo wrote:
-> Zekun Shen <bruceshenzk@gmail.com> writes:
-> 
-> > Unexpected WDCMSG_TARGET_START replay can lead to null-ptr-deref
-> > when ar->tx_cmd->odata is NULL. The patch adds a null check to
-> > prevent such case.
-> >
-> > KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-> >  ar5523_cmd+0x46a/0x581 [ar5523]
-> >  ar5523_probe.cold+0x1b7/0x18da [ar5523]
-> >  ? ar5523_cmd_rx_cb+0x7a0/0x7a0 [ar5523]
-> >  ? __pm_runtime_set_status+0x54a/0x8f0
-> >  ? _raw_spin_trylock_bh+0x120/0x120
-> >  ? pm_runtime_barrier+0x220/0x220
-> >  ? __pm_runtime_resume+0xb1/0xf0
-> >  usb_probe_interface+0x25b/0x710
-> >  really_probe+0x209/0x5d0
-> >  driver_probe_device+0xc6/0x1b0
-> >  device_driver_attach+0xe2/0x120
-> >
-> > Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
-> 
-> How did you test this?
-I found the bug using a custome USBFuzz port. It's a research work
-to fuzz USB stack/drivers. I modified it to fuzz ath9k driver only,
-providing hand-crafted usb descriptors to QEMU.
-
-After fixing the code (fourth byte in usb packet) to WDCMSG_TARGET_START, 
-I got the null-ptr-deref bug. I believe the bug is triggerable whenever
-cmd->odata is NULL. After patching, I tested with the same input and no
-longer see the KASAN report.
-> 
-> -- 
-> https://patchwork.kernel.org/project/linux-wireless/list/
-> 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> Hi Luca,
+>
+> Greeting of the day!!
+> We are using Intels "ax210ngw" card with "iwlwifi-ty-a0-gf-a0-66.ucode"
+> firmware, we are using the kernel from "5.15.0-rc7" tag.
+> The problem we are facing is we are not able to enable 6GHz channels 
+> for Germany region. Following is the output for "iw reg get"
+>
+> country DE: DFS-ETSI
+>     (2400 - 2483 @ 40), (N/A, 20), (N/A)
+>     (5150 - 5250 @ 80), (N/A, 23), (N/A), NO-OUTDOOR, AUTO-BW
+>     (5250 - 5350 @ 80), (N/A, 20), (0 ms), NO-OUTDOOR, DFS, AUTO-BW
+>     (5470 - 5725 @ 160), (N/A, 26), (0 ms), DFS
+>     (5725 - 5875 @ 80), (N/A, 13), (N/A)
+>     (5945 - 6425 @ 160), (N/A, 23), (N/A), NO-OUTDOOR, AUTO-BW
+>     (57000 - 66000 @ 2160), (N/A, 40), (N/A)
+>
+> phy#0 (self-managed)
+> country DE: DFS-UNSET
+>     (2402 - 2437 @ 40), (6, 22), (N/A), AUTO-BW, NO-HT40MINUS, 
+> NO-80MHZ, NO-160MHZ
+>     (2422 - 2462 @ 40), (6, 22), (N/A), AUTO-BW, NO-80MHZ, NO-160MHZ
+>     (2447 - 2482 @ 40), (6, 22), (N/A), AUTO-BW, NO-HT40PLUS, 
+> NO-80MHZ, NO-160MHZ
+>     (5170 - 5190 @ 160), (6, 22), (N/A), NO-OUTDOOR, AUTO-BW, 
+> IR-CONCURRENT, NO-HT40MINUS, PASSIVE-SCAN
+>     (5190 - 5210 @ 160), (6, 22), (N/A), NO-OUTDOOR, AUTO-BW, 
+> IR-CONCURRENT, NO-HT40PLUS, PASSIVE-SCAN
+>     (5210 - 5230 @ 160), (6, 22), (N/A), NO-OUTDOOR, AUTO-BW, 
+> IR-CONCURRENT, NO-HT40MINUS, PASSIVE-SCAN
+>     (5230 - 5250 @ 160), (6, 22), (N/A), NO-OUTDOOR, AUTO-BW, 
+> IR-CONCURRENT, NO-HT40PLUS, PASSIVE-SCAN
+>     (5250 - 5270 @ 160), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40MINUS, 
+> PASSIVE-SCAN
+>     (5270 - 5290 @ 160), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40PLUS, 
+> PASSIVE-SCAN
+>     (5290 - 5310 @ 160), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40MINUS, 
+> PASSIVE-SCAN
+>     (5310 - 5330 @ 160), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40PLUS, 
+> PASSIVE-SCAN
+>     (5490 - 5510 @ 220), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40MINUS, 
+> PASSIVE-SCAN
+>     (5510 - 5530 @ 220), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40PLUS, 
+> PASSIVE-SCAN
+>     (5530 - 5550 @ 220), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40MINUS, 
+> PASSIVE-SCAN
+>     (5550 - 5570 @ 220), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40PLUS, 
+> PASSIVE-SCAN
+>     (5570 - 5590 @ 220), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40MINUS, 
+> PASSIVE-SCAN
+>     (5590 - 5610 @ 220), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40PLUS, 
+> PASSIVE-SCAN
+>     (5610 - 5630 @ 220), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40MINUS, 
+> PASSIVE-SCAN
+>     (5630 - 5650 @ 220), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40PLUS, 
+> PASSIVE-SCAN
+>     (5650 - 5670 @ 80), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40MINUS, 
+> NO-160MHZ, PASSIVE-SCAN
+>     (5670 - 5690 @ 80), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40PLUS, 
+> NO-160MHZ, PASSIVE-SCAN
+>     (5690 - 5710 @ 80), (6, 22), (0 ms), DFS, AUTO-BW, NO-HT40MINUS, 
+> NO-160MHZ, PASSIVE-SCAN
+>     (5735 - 5755 @ 80), (6, 22), (N/A), AUTO-BW, NO-HT40MINUS, NO-160MHZ
+>     (5755 - 5775 @ 80), (6, 22), (N/A), AUTO-BW, NO-HT40PLUS, NO-160MHZ
+>     (5775 - 5795 @ 80), (6, 22), (N/A), AUTO-BW, NO-HT40MINUS, NO-160MHZ
+>     (5795 - 5815 @ 80), (6, 22), (N/A), AUTO-BW, NO-HT40PLUS, NO-160MHZ
+>     (5815 - 5835 @ 40), (6, 22), (N/A), AUTO-BW, NO-HT40MINUS, 
+> NO-80MHZ, NO-160MHZ
+>
+> The iw phy# info also shows that the 6GHz channels are not enabled. We 
+> have found one commit which is included in the "5.15.0-rc7" tag which 
+> indicates that 6Ghz channels are now supported in the driver.
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git/commit/?id=cdf854d2ddca01bf126ac138a8ee3e5d6320086f 
+>
+>
+> From "iw reg get" output it looks like the intel firmware may not be 
+> supporting the 6GHz channels.
+> When we can we expect the support for 6GHz channels for Germany?
+>
+> Warm regards,
+> Sharadanand Karanjkar
+>
