@@ -2,82 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF38B43FFC6
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 17:43:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A818B440183
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 19:54:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229957AbhJ2Pph (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Oct 2021 11:45:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50556 "EHLO mail.kernel.org"
+        id S229655AbhJ2R4p convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Oct 2021 13:56:45 -0400
+Received: from mx2.hcg.gr ([84.205.254.49]:44978 "EHLO mx2.hcg.gr"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229607AbhJ2Ppf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Oct 2021 11:45:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3E1B861181;
-        Fri, 29 Oct 2021 15:43:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635522185;
-        bh=EKpljgVa5r5UmD2IEpypElISm7qojaXBWVSnqjIx8EI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=DUE9p0WKnSWBxCzU791qowB58og7xeQNSE+jvOr1AKoxKnhkoir2yzs78lYIslDXB
-         FkE/zSncUhI2lA2tKUexN3X3Q5AYvoam/0VqTPisHApFRfY6pSFASrjziUwf9cJw/J
-         5EqV9PzRuXmjhWYvbpOSI2a+sC27jG+66ztNgD0SlLfEnCP9xi7yZw5bnkU7zq1yNk
-         Zi0z7TpI3fQL3b2Xepxi1+kZRIozugkx+CwlqoEAJSOQXpXOELDKtHcvPADLl9vrx3
-         pZay4F1IeCUQPTS7H2FclvL4K6vt+ZMEB97l1RFIB+DbfJHN4Pz1kak4gspPq3KprB
-         AgktZwKqMjE0A==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Yaara Baruch <yaara.baruch@intel.com>,
-        Matti Gottlieb <matti.gottlieb@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: [PATCH] iwlwifi: pcie: fix constant-conversion warning
-Date:   Fri, 29 Oct 2021 17:42:29 +0200
-Message-Id: <20211029154253.3824677-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
+        id S229489AbhJ2R4o (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 Oct 2021 13:56:44 -0400
+X-AuditID: ac138d0e-8cad570000000931-cd-617c353754cf
+Received: from newmail.hcg.gr (Unknown_Domain [172.18.2.10])
+        (using TLS with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by mx2.hcg.gr (Symantec Messaging Gateway) with SMTP id 09.65.02353.7353C716; Fri, 29 Oct 2021 20:53:59 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+        by newmail.hcg.gr (Postfix) with ESMTP id 244273805D7AF8;
+        Fri, 29 Oct 2021 13:45:31 +0300 (EEST)
+Received: from newmail.hcg.gr ([127.0.0.1])
+        by localhost (newmail.hcg.gr [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id oAHsexunbeTF; Fri, 29 Oct 2021 13:45:30 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+        by newmail.hcg.gr (Postfix) with ESMTP id 4FDB93805E1712;
+        Fri, 29 Oct 2021 13:44:47 +0300 (EEST)
+X-Virus-Scanned: amavisd-new at newmail.hcg.gr
+Received: from newmail.hcg.gr ([127.0.0.1])
+        by localhost (newmail.hcg.gr [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id uDZV89eaPvVj; Fri, 29 Oct 2021 13:44:47 +0300 (EEST)
+Received: from [192.168.43.217] (unknown [197.211.61.16])
+        by newmail.hcg.gr (Postfix) with ESMTPSA id CAFAC3805D748C;
+        Fri, 29 Oct 2021 13:44:11 +0300 (EEST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Illuminati-Beamter
+To:     Recipients <Illuminati@newmail.hcg.gr>
+From:   Illuminati@newmail.hcg.gr
+Date:   Fri, 29 Oct 2021 18:44:05 +0800
+Reply-To: illuminatiofficial466@gmail.com
+Message-Id: <20211029104411.CAFAC3805D748C@newmail.hcg.gr>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrJIsWRmVeSWpSXmKPExsWyRoiJS9fctCbRYPJkAYvepn+sFp8XH2ex
+        uHNkC7PFus8PWC06721jsXgxX8rizYZONovL+w4wW6xaeY7FYtO3FnaLNyvusFvce3GX2eL8
+        8W+sFrPPNzJbXFv4lM1i+tydLBbHV+xjtXh5vpPR4vemRWwWE7oXsDuIeEx+spHJ4++Nt6we
+        S+euZveYOOUXo8fOWXfZPW6+/MLo8bjnDJvHovNHWTxur3rF5vF0WrnHosfBHp17L7N5TD+w
+        jdlj8cHNzB6fN8l5zJp1mClAMIrLJiU1J7MstUjfLoErY8uUfSwFZ1kqbt1Ta2B8w9zFyMkh
+        IWAisW7xJsYuRi4OIYGFTBJfGjpYIJypjBJfVl9kB6kSEtjGKHFnIR9cYtOsXkaIdj2J3Yfm
+        MkMkgIo+zl8ENWsBo8TcQ0vZuhg5OJgFNCXW79IHaeAVEJQ4OfMJC4jNLKAtsWzha2aIEjWJ
+        r10lIGFhAWmJVdemM4KERQS0JJo6K0DCbALyEt0/ZoGtZRFQldi/eTo7SIkQ0PBje5whhltJ
+        rDrwhnECo9AshLWzkKydhWTtLIS1CxhZVjFy5VYY6WUkp+ulF21iBMW+cC/fDsanb77qHWJk
+        4mA8xCjBwawkwntSuCZRiDclsbIqtSg/vqg0J7X4EKM0B4uSOO8CrYoEIYH0xJLU7NTUgtQi
+        mCwTB6dUA9Ny7vmJccdrgqOq9/vEm/wUz4+Sibt48kF9b/TlC/EcP08/NJqhtb14vb1+kcfV
+        gLQ5qs/9888u2DenI1Ulldm74N11wyyBbZ6VHXtW35S9zDP98bdJzzLXplz8eubc6YS9/nfj
+        NE98bogyOfv18ZvGXYfudQZnP7V6atcTV6zc8zdA4eKPn7cYZ1y8syU73ttqn7BVke/Xu2dX
+        8205sO5CUlrj6zcJss8PzbC7O0f0xOSXE3fEFgjN/PqpgEX4g9ELBYXq+U4Ln6hZWLdcOxN/
+        6OKnC9e1WMLfl6aFHvPUYHKzLPbuvB/4nj3x2N5G7gTDX+uvMTzbP3/5TJcvNSv+S2749kzq
+        OsO0ACHnN4XqSizFGYmGWsxFxYkA9KGppGwDAAA=
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
-
-clang points out a potential issue with integer overflow when
-the iwl_dev_info_table[] array is empty:
-
-drivers/net/wireless/intel/iwlwifi/pcie/drv.c:1344:42: error: implicit conversion from 'unsigned long' to 'int' changes value from 18446744073709551615 to -1 [-Werror,-Wconstant-conversion]
-        for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
-               ~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
-
-This is still harmless, as the loop correctly terminates, but adding
-an (int) cast makes that clearer to the compiler.
-
-Fixes: 3f7320428fa4 ("iwlwifi: pcie: simplify iwl_pci_find_dev_info()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index c574f041f096..81e8f2fc4982 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1341,7 +1341,7 @@ iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
- {
- 	int i;
- 
--	for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
-+	for (i = (int)ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
- 		const struct iwl_dev_info *dev_info = &iwl_dev_info_table[i];
- 
- 		if (dev_info->device != (u16)IWL_CFG_ANY &&
--- 
-2.29.2
-
+Hallo!!! Willst du ein Mitglied der großen Illuminaten sein und anfangen, monatlich 50.000.000 € zu erhalten und unter anderen beliebt zu sein und Reichtümer und Ruhm zu haben, ist dies die einzige Chance, zu den Illuminaten zu gehören 52 Mitglieder in die Illuminati zu bringen, ich habe 32 bekommen, also suchen wir 20, also versuche, unter den zwanzig Leuten zu sein, die reich und berühmt sind, WhatsApp Via; +4917629575254, oder Email Via: illuminatiofficial466@gmail.com  , damit wir mit dem Beitrittsprozess beginnen können!!!
