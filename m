@@ -2,117 +2,173 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A441643F445
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 03:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3460143F45B
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 03:30:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231468AbhJ2BMI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 21:12:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36066 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230211AbhJ2BMI (ORCPT
+        id S231365AbhJ2BdL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 21:33:11 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:43185 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231269AbhJ2BdL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 21:12:08 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D211C061570
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 18:09:40 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id b12so8914612wrh.4
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 18:09:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=lhYCin2TzRHtxXVH4Iykuf57kXTP5rSqqv5y4zrqtWU=;
-        b=Rvu01fsCuwhHv4hl4Sg6odzPQptg+qgHL7NR7EuEegZ69QatECFfTO01hVW3od8qNA
-         wpEIllOcottCYc76RTtWueF4qPbIM2t6Il7LUvk0TSSb5WpUHroa5phXjrJZwkDIZeFP
-         hss9npea1AW38RPdjyUkMd0lZbcBchkYiFiE4g3CPvd8n80DSwnPbpr4T8oZOAd/Jytn
-         xV+GJDRjHQY3NIkJ5oEsTF3qLH4+mF4cuha6xYjYDMmr1HSks6vFwcMAa8nUKpuwefEk
-         SpVmFHkEquZZeP8PvMEnrdiXQfKUtvB4ntc4GdzT/rw0FB1AbZFaYF9b7m+ISLDbMyZW
-         R1zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=lhYCin2TzRHtxXVH4Iykuf57kXTP5rSqqv5y4zrqtWU=;
-        b=2kv689WQnK+uP5+x4Yu+5swbn/sgWIJ8BOegcGp2wco1AjKLjeaz0CX3P6yhQBMJDx
-         3MywNLhVtBstuxzO379LXBOCqjGiL1etroVvVYJc5oVL5v6oVrArgsE4KgRgbAlCRvlj
-         5tQ+OmRKxWMQWhVxGAz+sLZ0aDeeTJfPWsrd95TvxdYwYK9PsRfbEJYf4BjV1FQfypYM
-         FYsAYEwRiqfPdPyC0RhAgJsa3hycfvWF1PILFrku71vEJymWy68TvFWOQXOW5GQnpDWK
-         sga6a2xTfSOgfp6gFk26Y0LueZ2bixqChb9P8+xPZof1u4BdWoKfueTEd7+H+YCoINLq
-         vyLQ==
-X-Gm-Message-State: AOAM5311d1oyHiFImvXiM9Seo9y1BhrjIAcy232eDn0CJOOIxJjHX7U+
-        XzkcxUVDTBjiUX7jg9uSVX2qtg==
-X-Google-Smtp-Source: ABdhPJxZsQk0ecSoGT5SZqDT/0Hc0hSGM4cAF81gCKity/kYkRSz1nfDgkLpat4il9Tx89OAgoasIw==
-X-Received: by 2002:a5d:59a9:: with SMTP id p9mr10659841wrr.386.1635469778934;
-        Thu, 28 Oct 2021 18:09:38 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id u10sm5784415wrs.5.2021.10.28.18.09.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Oct 2021 18:09:37 -0700 (PDT)
-Message-ID: <3e915b78-04df-43d4-e406-c129f61a33cf@linaro.org>
-Date:   Fri, 29 Oct 2021 02:11:38 +0100
+        Thu, 28 Oct 2021 21:33:11 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19T1UZwmC008333, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19T1UZwmC008333
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 29 Oct 2021 09:30:35 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Fri, 29 Oct 2021 09:30:35 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Fri, 29 Oct 2021 09:30:34 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
+ RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
+ 15.01.2308.015; Fri, 29 Oct 2021 09:30:34 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Brian Norris <briannorris@chromium.org>
+CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Kevin Yang <kevin_yang@realtek.com>
+Subject: RE: [PATCH 1/2] rtw89: update tx power limit/limit_ru tables to R54
+Thread-Topic: [PATCH 1/2] rtw89: update tx power limit/limit_ru tables to R54
+Thread-Index: AQHXy9ebZBrW4JMwI0O6HEkKfS62rqvoaLkAgADIZdA=
+Date:   Fri, 29 Oct 2021 01:30:34 +0000
+Message-ID: <cbbc33c377be42c18b850d0322ad22af@realtek.com>
+References: <20211028084054.12962-1-pkshih@realtek.com>
+ <YXsW2K1BWQjX1w4x@google.com>
+In-Reply-To: <YXsW2K1BWQjX1w4x@google.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/10/28_=3F=3F_05:55:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.1
-Subject: Re: [PATCH 2/2] wcn36xx: fix RX BD rate mapping for 5GHz legacy rates
-Content-Language: en-US
-To:     Benjamin Li <benl@squareup.com>, Kalle Valo <kvalo@codeaurora.org>
-Cc:     Loic Poulain <loic.poulain@linaro.org>,
-        linux-arm-msm@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20211028223131.897548-1-benl@squareup.com>
- <20211028223131.897548-2-benl@squareup.com>
- <b3473977-5bb6-06df-55c3-85f08a29a964@linaro.org>
- <631a3ab4-56d9-5c1d-be53-c885747e3f7b@squareup.com>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <631a3ab4-56d9-5c1d-be53-c885747e3f7b@squareup.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/29/2021 01:14:45
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166975 [Oct 28 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/29/2021 01:18:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 29/10/2021 01:39, Benjamin Li wrote:
-> On 10/28/21 5:30 PM, Bryan O'Donoghue wrote:
->> On 28/10/2021 23:31, Benjamin Li wrote:
->>> -            status.rate_idx >= sband->n_bitrates) {
->> This fix was applied because we were getting a negative index
->>
->> If you want to remove that, you'll need to do something about this
->>
->> status.rate_idx -= 4;
+
+> -----Original Message-----
+> From: Brian Norris <briannorris@chromium.org>
+> Sent: Friday, October 29, 2021 5:32 AM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: kvalo@codeaurora.org; linux-wireless@vger.kernel.org; Kevin Yang <kevin_yang@realtek.com>
+> Subject: Re: [PATCH 1/2] rtw89: update tx power limit/limit_ru tables to R54
 > 
-> Hmm... so you're saying there's a FW bug where sometimes we get
-> bd->rate_id = 0-7 (leading to status.rate_idx = 0-3) on a 5GHz
-> channel?
-
-My memory is I saw a negative index as a result of the -4 offset but, it 
-is quite some time ago and we have made all sorts of changes since.
-
-> static const struct wcn36xx_rate wcn36xx_rate_table[] = {
->      /* 11b rates */
->      {  10, 0, RX_ENC_LEGACY, 0, RATE_INFO_BW_20 },
->      {  20, 1, RX_ENC_LEGACY, 0, RATE_INFO_BW_20 },
->      {  55, 2, RX_ENC_LEGACY, 0, RATE_INFO_BW_20 },
->      { 110, 3, RX_ENC_LEGACY, 0, RATE_INFO_BW_20 },
+> Hi,
 > 
->      /* 11b SP (short preamble) */
->      {  10, 0, RX_ENC_LEGACY, RX_ENC_FLAG_SHORTPRE, RATE_INFO_BW_20 },
->      {  20, 1, RX_ENC_LEGACY, RX_ENC_FLAG_SHORTPRE, RATE_INFO_BW_20 },
->      {  55, 2, RX_ENC_LEGACY, RX_ENC_FLAG_SHORTPRE, RATE_INFO_BW_20 },
->      { 110, 3, RX_ENC_LEGACY, RX_ENC_FLAG_SHORTPRE, RATE_INFO_BW_20 },
+> On Thu, Oct 28, 2021 at 04:40:53PM +0800, Ping-Ke Shih wrote:
+> > From: Zong-Zhe Yang <kevin_yang@realtek.com>
+> >
+> > Support QATAR in rtw89_regulation_type and reorder the enum.
+> > Update tx power limit table and tx power limit_ru table to configure QATAR
+> > and adjust indexes to align rtw89_regulation_type enum.
+> >
+> > Besides, if an unassigned entry of limit/limit_ru tables is read,
+> > return the corresponding WW value for the unconfigured case.
+> >
+> > Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> > ---
+> >  drivers/net/wireless/realtek/rtw89/core.h     |    9 +-
+> >  drivers/net/wireless/realtek/rtw89/phy.c      |   12 +
+> >  .../wireless/realtek/rtw89/rtw8852a_table.c   | 5199 +++++++++++------
+> >  3 files changed, 3488 insertions(+), 1732 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+> > index c2885e4dd882..3729abda04f9 100644
+> > --- a/drivers/net/wireless/realtek/rtw89/core.h
+> > +++ b/drivers/net/wireless/realtek/rtw89/core.h
+> > @@ -411,12 +411,13 @@ enum rtw89_regulation_type {
+> >  	RTW89_NA	= 4,
+> >  	RTW89_IC	= 5,
+> >  	RTW89_KCC	= 6,
+> > -	RTW89_NCC	= 7,
+> > -	RTW89_CHILE	= 8,
+> > -	RTW89_ACMA	= 9,
+> > -	RTW89_MEXICO	= 10,
+> > +	RTW89_ACMA	= 7,
+> > +	RTW89_NCC	= 8,
+> > +	RTW89_MEXICO	= 9,
+> > +	RTW89_CHILE	= 10,
+> >  	RTW89_UKRAINE	= 11,
+> >  	RTW89_CN	= 12,
+> > +	RTW89_QATAR	= 13,
+> >  	RTW89_REGD_NUM,
+> >  };
+> >
+> > diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+> > index ab134856baac..0620ef02e275 100644
+> > --- a/drivers/net/wireless/realtek/rtw89/phy.c
+> > +++ b/drivers/net/wireless/realtek/rtw89/phy.c
 > 
-> It sounds like we should WARN and drop the frame in that case. If
-> you agree I'll send a v2.
+> > diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
+> b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
+> > index 3a4fe7207420..6a61549ffac7 100644
+> > --- a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
+> > +++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
+> > @@ -43556,1346 +43556,1850 @@ const s8 rtw89_8852a_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+> >  	[0][0][0][0][1][0] = 56,
+> >  	[0][0][0][0][3][0] = 68,
+> >  	[0][0][0][0][5][0] = 76,
+> > -	[0][0][0][0][6][0] = 56,
+> > -	[0][0][0][0][9][0] = 56,
+> > -	[0][0][0][0][8][0] = 60,
+> > +	[0][0][0][0][6][0] = 76,
+> > +	[0][0][0][0][7][0] = 56,
+> > +	[0][0][0][0][10][0] = 60,
+> ...
+> 
+> If one of these colums is based on an enum, you should probably *use*
+> the enum in the table. Then this patch would probably much much smaller,
+> and it would be clear what parts are changes and what parts are just
+> renumbering...
+> 
+> I'd suggest splitting this into at least one more patch, where the first
+> patch should replace all the magic numbers (0..12) with the appropriate
+> rtw89_regulation_type values.
+> 
 
-So,
+Got it. 
+Thanks for the suggestion. We'll do it.
 
-Let me see if I can replicate the previous bug - tomorrow - later this 
-morning in fact - in this timezone, and I'll get back to you.
-
----
-bod
+--
+Ping-Ke
 
