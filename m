@@ -2,105 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A985E43F3FF
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 02:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82C7E43F42C
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 02:56:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229950AbhJ2Ama (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Oct 2021 20:42:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57680 "EHLO
+        id S231286AbhJ2A6e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Oct 2021 20:58:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231157AbhJ2Am3 (ORCPT
+        with ESMTP id S230211AbhJ2A6e (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Oct 2021 20:42:29 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0DABC061714
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 17:40:01 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id p40so2760495pfh.8
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 17:40:01 -0700 (PDT)
+        Thu, 28 Oct 2021 20:58:34 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35D18C061570
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 17:56:06 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id ee16so19158782edb.10
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Oct 2021 17:56:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=squareup.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=U/3/zU2CXtqxH4uObJNtO1IPDFEIaX70RwRGvT/y3Q8=;
-        b=XtSaEE6gibGxlYqbVm1J4DQGTHkIDfTkcxnBXMWXB6kh7UTjqNoB6wOmzUpEmB/i4K
-         pjqKE0Bl+Hr4LixkEhWebb94v8uSg6pHYTX8gETORbPSRimnuUI33kAOVTJGtjoj9vIt
-         tJduRpPvcv8jHE4n4yt/BzJqXjZFxG+bpMDhU=
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=02iNYarIGivgAYG46j9hVKUgfe1wBVpz8bSFnnDAryo=;
+        b=lUdSPDlxpaJHm92JtgcD1+V87XBrSIHA10cIWbtsXBA5Rm04k1FNrk6cWnwkV1S+bC
+         r3TH58DMW3M6ebDvyidHUAcDv+GaSWMkwGYBBXoP2fBT1nH6AS/TBb4PrvQOPGlhS+zA
+         rw1X79Rv7FvU6eH19S2qcZfy8LZxMD6dNGRdiBzlkkSnqwTkN6xvG51XXLdoWm9vEn1F
+         YZfZgb+BpI3LzlZ6RZs0LUnaFJlZ5F75GwJB/j5h+k/7HJ8Q8VHA69bgPZG6f9IywDZc
+         y6+vzcBAk9bA6KLLeG0hKw6TVZTMcu0y0WANs7cYL8Xu4Hqm2pyged9wNz8HUB7FChtg
+         7YBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=U/3/zU2CXtqxH4uObJNtO1IPDFEIaX70RwRGvT/y3Q8=;
-        b=sS0VgTyBH/NJHMGYdTqVPqrXDHGqEeqdy+IVVeF+liYLXk6XWGNSQDe8UXbtMJ0ajf
-         3SjHPzsdMi2WcmzPZcENP5I1emWVRVxTdd835tLRk1c9GhyMisNSkm60ei2B/jJU1uP4
-         NOn+UiJc6CgkhpQZnqK1v0FFQeeXejNgYZm9TjctamljeJJGUwbHMXuYmvnZmITFhNAt
-         Zv/SK71BavQ6gCPFY/TL97EfMpmtF0rPF0iTwS9o8Vuy+6p+1S54zB0fBs4KXjtIg2Ua
-         G3Dr2DoiWzyIJpLZDav6r6Qz7SheyVA4IMeZVbZerZniAKzXnTrd+2pfSKL6WnJ30yLj
-         oqvQ==
-X-Gm-Message-State: AOAM533vBFBh+JRtiKfl6dfySHdcQ3i5Ho9BdDN7gplArvFJFimgXXn8
-        OSfCQD3Llm3dP18WIHUWIzjIOg==
-X-Google-Smtp-Source: ABdhPJxK3mBHFLkooF9WIEqiTF2Lo7tSsk/o+Jjxn7VPMabG7lfc3Wh4mZV8CdT9Mh9cnStkmAw2kA==
-X-Received: by 2002:a65:62cb:: with SMTP id m11mr5679692pgv.425.1635468000985;
-        Thu, 28 Oct 2021 17:40:00 -0700 (PDT)
-Received: from benl-m5lvdt.local ([2600:6c50:4d00:cd01:14ac:e7eb:3ffb:f82f])
-        by smtp.gmail.com with ESMTPSA id me18sm4025703pjb.33.2021.10.28.17.39.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Oct 2021 17:40:00 -0700 (PDT)
-Subject: Re: [PATCH 2/2] wcn36xx: fix RX BD rate mapping for 5GHz legacy rates
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Loic Poulain <loic.poulain@linaro.org>,
-        linux-arm-msm@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20211028223131.897548-1-benl@squareup.com>
- <20211028223131.897548-2-benl@squareup.com>
- <b3473977-5bb6-06df-55c3-85f08a29a964@linaro.org>
-From:   Benjamin Li <benl@squareup.com>
-Message-ID: <631a3ab4-56d9-5c1d-be53-c885747e3f7b@squareup.com>
-Date:   Thu, 28 Oct 2021 17:39:58 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=02iNYarIGivgAYG46j9hVKUgfe1wBVpz8bSFnnDAryo=;
+        b=tCj1eL6d2hjrs/UGix2JfnulEsyk8LDs1cXTgDwv3XAF4sYoHfwIBkwKHApubji4P+
+         HkxPJww3SYbjDZKbs06igZwu1nynJrHltE3acaFme/1EcjtK5hO4nfW7wZQ+vOFi/l8y
+         f0jxM81qEHRlrEkjZAjdaJQzbAi+w0+kULA4sl0/4pr/sAHJsC0ArPwz/0qGcFaobJqH
+         DcwHCQlfgFYvvWbPBZnUXEcw/q3vXaIccqx0S3MeSgjrm02MdW3kvvjIOnM76Atzd6lJ
+         kM6jOa0UncFIDQuzdrrRtNZBz8cHMDxvfQhLyYx1sPrENAz1TA4LAeLNjUFAWf+ffOPT
+         0fBQ==
+X-Gm-Message-State: AOAM533nev6XvsGMH4z+lWNijfntwL4uPpwdEr8uEP4vp/HmN9+jF0fJ
+        iyJYjHtoxOn1DfxoZ7oWDRBpLx0mkSjx4Yy2ocobLm+m
+X-Google-Smtp-Source: ABdhPJxNot0/izRy915/AnfoF3Z8790pgFFQ0WCKMhTkLn5eXNDGWsQ45zGAD5/9geVzA4WRGoEkwiSWE6bnEknkWjo=
+X-Received: by 2002:aa7:da84:: with SMTP id q4mr10703024eds.371.1635468964839;
+ Thu, 28 Oct 2021 17:56:04 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <b3473977-5bb6-06df-55c3-85f08a29a964@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20211027080747.24388-1-shayne.chen@mediatek.com>
+In-Reply-To: <20211027080747.24388-1-shayne.chen@mediatek.com>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Fri, 29 Oct 2021 11:55:52 +1100
+Message-ID: <CAGRGNgUvTU=yYfuKcB2VvHjqLBKVPpVJaLvMpxK926y=yniKsg@mail.gmail.com>
+Subject: Re: [PATCH] mt76: mt7915: add default calibrated data support
+To:     Shayne Chen <shayne.chen@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/28/21 5:30 PM, Bryan O'Donoghue wrote:
-> On 28/10/2021 23:31, Benjamin Li wrote:
->> -            status.rate_idx >= sband->n_bitrates) {
-> This fix was applied because we were getting a negative index
-> 
-> If you want to remove that, you'll need to do something about this
-> 
-> status.rate_idx -= 4;
+Hi Shayne,
 
-Hmm... so you're saying there's a FW bug where sometimes we get
-bd->rate_id = 0-7 (leading to status.rate_idx = 0-3) on a 5GHz
-channel?
-
-static const struct wcn36xx_rate wcn36xx_rate_table[] = {
-    /* 11b rates */
-    {  10, 0, RX_ENC_LEGACY, 0, RATE_INFO_BW_20 },
-    {  20, 1, RX_ENC_LEGACY, 0, RATE_INFO_BW_20 },
-    {  55, 2, RX_ENC_LEGACY, 0, RATE_INFO_BW_20 },
-    { 110, 3, RX_ENC_LEGACY, 0, RATE_INFO_BW_20 },
-
-    /* 11b SP (short preamble) */
-    {  10, 0, RX_ENC_LEGACY, RX_ENC_FLAG_SHORTPRE, RATE_INFO_BW_20 },
-    {  20, 1, RX_ENC_LEGACY, RX_ENC_FLAG_SHORTPRE, RATE_INFO_BW_20 },
-    {  55, 2, RX_ENC_LEGACY, RX_ENC_FLAG_SHORTPRE, RATE_INFO_BW_20 },
-    { 110, 3, RX_ENC_LEGACY, RX_ENC_FLAG_SHORTPRE, RATE_INFO_BW_20 },
-
-It sounds like we should WARN and drop the frame in that case. If
-you agree I'll send a v2.
-
-> 
+On Thu, Oct 28, 2021 at 6:25 AM Shayne Chen <shayne.chen@mediatek.com> wrote:
+>
+> Load the default eeprom data when the content of flash/efuse is invalid.
+> This could help to eliminate some issues due to incorrect or
+> insufficient rf values.
+>
+> Co-developed-by: Bo Jiao <Bo.Jiao@mediatek.com>
+> Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+> Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
 > ---
-> bod
+>  .../wireless/mediatek/mt76/mt7915/eeprom.c    | 83 +++++++++++++++----
+>  .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 24 ++++++
+>  .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  1 +
+>  .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 +
+>  4 files changed, 98 insertions(+), 14 deletions(-)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+> index ee3d644..626ea4a 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+> @@ -42,20 +89,28 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+>                                               i * MT7915_EEPROM_BLOCK_SIZE);
+>         }
+>
+> -       return ret;
+> -}
+> -
+> -static int mt7915_check_eeprom(struct mt7915_dev *dev)
+> -{
+> -       u8 *eeprom = dev->mt76.eeprom.data;
+> -       u16 val = get_unaligned_le16(eeprom);
+> +       if (!dev->flash_mode) {
+> +               u8 free_block_num;
+> +
+> +               mt7915_mcu_get_eeprom_free_block(dev, &free_block_num);
+> +               if (free_block_num >= 29) {
+> +                       dev_warn(dev->mt76.dev,
+> +                                "efuse info not enough, use default bin\n");
+> +                       ret = mt7915_eeprom_load_default(dev);
+> +                       if (ret)
+> +                               return ret;
+
+You've got two instances of the code where it tries to load the
+default if the EEPROM data isn't valid.
+
+You could potentially simplify this by structuring the code that calls
+this function so it's something like:
+
+ret = mt7915_eeprom_load();
+
+if (!ret) {
+    ret = mt7915_eeprom_load_default();
+}
+
+return ret;
+
+with mt7915_eeprom_load() just returning -EINVAL if the EEPROM
+contents aren't valid instead of trying to fix it itself.
+
+This would also make the code simpler if there ends up being another
+way to get EEPROM data in the future, e.g. an NVRAM partition
+referenced through the device tree, etc.
+
+> +               }
+> +       }
+>
+> -       switch (val) {
+> -       case 0x7915:
+> -               return 0;
+> -       default:
+> -               return -EINVAL;
+> +       ret = mt7915_check_eeprom(dev);
+> +       if (ret) {
+> +               dev_warn(dev->mt76.dev, "eeprom check fail, use default bin\n");
+> +               ret = mt7915_eeprom_load_default(dev);
+> +               if (ret)
+> +                       return ret;
+>         }
+> +
+> +       return ret;
+>  }
+>
+>  void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
+
+Thanks,
+
+-- 
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
