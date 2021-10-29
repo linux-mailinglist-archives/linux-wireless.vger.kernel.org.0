@@ -2,72 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD8AE43FA5E
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 11:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 181DB43FD08
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Oct 2021 15:05:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231690AbhJ2KBz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Oct 2021 06:01:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40178 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231629AbhJ2KBy (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Oct 2021 06:01:54 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D25B2C061570
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Oct 2021 02:59:25 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id q16so16025262ljg.3
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Oct 2021 02:59:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=+MDYu2cZk5y6qEtCDaD7IWEU7wQ5JsJjonx7gGHCu64=;
-        b=at38KMsK5/RWrhrDfPZ0abFFie6aSFadaPyD6m7BkRphQjpgVzaN9BA5X/IUO0yKGC
-         SoSo6L97hY8ZGJcccl62BGvgULFK0Ixy+tpgBKGcSoyeFz1RlB5MOWhwfiID5042xyUP
-         zEH8bOvo/PaqtqLmkGQsPxfZCtdVi//EgeMPw6xw81HFTnjnA6bc505ejWI8cxz9RK14
-         yDnhZVmg/gvl0CbOiKTz9YryOCi9oSzyW3fenKmd02gGBvsDgruNQ104HMFnbmbvp4DG
-         Gi7oeI1mrLqj1HK483aY83N2UkbEI+dVaDVvjEdUUmacGnzp+xPj2IgeaQmiLGtwGSN+
-         0BdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=+MDYu2cZk5y6qEtCDaD7IWEU7wQ5JsJjonx7gGHCu64=;
-        b=AyhiNZJ/UJNv/gJ52RB7nhZdFJeeV5zEzt1UK+XlZd1kR6erX24XbWZ82ZoDFaB6Tc
-         P4O/JCme4kq9nosO0c/h7wmK09QCFwNH2pl+0Lvg7AmoF3/9LGxj7UZzmqg7nBDqAsfV
-         6GkX91txXPwQtNqDQNnynus2OlyjFapXiKSu4rRWqvAj/5b3uL952oCnILnCvgcDOb5n
-         Rggqo5ENP0XufdQXrU2yQlkwSDrdRGB3g7nl0JmIGOW3mO6QCBgLwR+j7Iv77YkRGvqM
-         YwYX35LYIQe9cRGrqRIOal44WBde/fNaD+XJeIHRkq37gnR1dW1YmsbKGm2VBi322BwX
-         NP5w==
-X-Gm-Message-State: AOAM5327xi5AR/2kCh+R2fDDEKH6MK2A4aOrZ7jTvchHVBnokTaMx6IP
-        OZXfPy87DQTqoHMgsodiZG5MIJsca6IH9/D3NyU=
-X-Google-Smtp-Source: ABdhPJx/DVZSESmXGdHiSEWzcqVOqQjQH0a8Zei3uee/5Hs3bBjaEzh4c0QCqwTsEI9/bEVCS90VDYi+2GASrwVU4Bg=
-X-Received: by 2002:a2e:5306:: with SMTP id h6mr4762924ljb.137.1635501564251;
- Fri, 29 Oct 2021 02:59:24 -0700 (PDT)
+        id S231922AbhJ2NHf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Oct 2021 09:07:35 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:16015 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231969AbhJ2NHK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 Oct 2021 09:07:10 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1635512681; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=vnbg7uJQhyANUTZhJsUI3dIJ6wgzUUdV7/qGuCSCecs=; b=rz1XMDnrVkBrqEP86S8EJFsfQ9YMusOkPTISuds6BiN6Rl/gIv+6eKSH4/Ep9jQcSTjKzmq6
+ Shf5EZ9pkktLi8tCJK/xf0WIeA24Ul1HWNZEDDE6whGGFQdjcUnPfhYAxHimnRcmAeamC7m1
+ pO4Sa4RXKHwa6CFZNa1/klqKAsw=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 617bf169f6a3eeacf9554759 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 29 Oct 2021 13:04:41
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 26728C43639; Fri, 29 Oct 2021 13:04:39 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 46346C43617;
+        Fri, 29 Oct 2021 13:04:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 46346C43617
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc:     luciano.coelho@intel.com, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wlwifi: Fix missing error code in iwl_pci_probe()
+References: <1635501304-85589-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+Date:   Fri, 29 Oct 2021 16:04:32 +0300
+In-Reply-To: <1635501304-85589-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+        (Jiapeng Chong's message of "Fri, 29 Oct 2021 17:55:04 +0800")
+Message-ID: <87y26c2d9b.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Reply-To: mrakainkarim7@gmail.com
-Sender: arryod72@gmail.com
-Received: by 2002:a05:6520:4381:b0:14c:c75a:aa9a with HTTP; Fri, 29 Oct 2021
- 02:59:23 -0700 (PDT)
-From:   Mr Akain Karim <aeyuhlmy739@gmail.com>
-Date:   Fri, 29 Oct 2021 02:59:23 -0700
-X-Google-Sender-Auth: y7wwuC1VQqcSnnJH8yr4PEphX1w
-Message-ID: <CADS+2b4HJronS_Zopy_qQMssdCx-p3321aWg90dTis-Xap-Fsw@mail.gmail.com>
-Subject: Greetings
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Jiapeng Chong <jiapeng.chong@linux.alibaba.com> writes:
+
+> From: chongjiapeng <jiapeng.chong@linux.alibaba.com>
+>
+> The error code is missing in this code scenario, add the error code
+> '-EINVAL' to the return value 'ret'.
+>
+> Eliminate the follow smatch warning:
+>
+> drivers/net/wireless/intel/iwlwifi/pcie/drv.c:1376 iwl_pci_probe() warn:
+> missing error code 'ret'.
+>
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Fixes: 1f171f4f1437 ("iwlwifi: Add support for getting rf id with blank otp")
+> Signed-off-by: chongjiapeng <jiapeng.chong@linux.alibaba.com>
+
+The subject prefix should be "iwlwifi: ".
+
 -- 
-*Compliment of the day,I am Mr. Akain Karim,  I Have a Business Proposal of
-$10.5million for you and I  was compelled to use this medium due to the
-nature of this project, I have access to very vital information that can be
-used to transfer this huge amount of money, which may culminate into the
-investment of the said funds into your company or any lucrative venture in
-your country. If you will like to assist me as a partner then indicate your
-interest, after which we shall both discuss the modalities and the sharing
-percentage.Upon receipt of your reply on your expression of Interest.I will
-give you full details on how the business will be executed and I am open
-for negotiation.Thanks for your anticipated cooperation.Best RegardsMr. 	
-Akain Karim*  Please feel free to reach me on my e-mail:mrakainkarim7@gmail.com
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
