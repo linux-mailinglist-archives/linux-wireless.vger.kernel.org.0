@@ -2,262 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D44F440AAE
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Oct 2021 19:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76CA2440AE7
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Oct 2021 20:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230348AbhJ3Rnq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 30 Oct 2021 13:43:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36250 "EHLO
+        id S229863AbhJ3SLH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 30 Oct 2021 14:11:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229788AbhJ3Rnp (ORCPT
+        with ESMTP id S229474AbhJ3SLG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 30 Oct 2021 13:43:45 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626E6C061714;
-        Sat, 30 Oct 2021 10:41:14 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id o14so21625640wra.12;
-        Sat, 30 Oct 2021 10:41:14 -0700 (PDT)
+        Sat, 30 Oct 2021 14:11:06 -0400
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63902C061570
+        for <linux-wireless@vger.kernel.org>; Sat, 30 Oct 2021 11:08:36 -0700 (PDT)
+Received: by mail-ot1-x329.google.com with SMTP id x16-20020a9d7050000000b00553d5d169f7so16905152otj.6
+        for <linux-wireless@vger.kernel.org>; Sat, 30 Oct 2021 11:08:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=3J5zCyAt6QvIKFNQp8gVh7jk8fLM5Aizo3iPLsFee9o=;
-        b=FGsYUfG43J176+Wby1dMTYhS/jOfQLdjlI9Af0UIUdAaLAOwWFL5D3UJiqRlZWil+K
-         /bJU/ELJjNaRvP3ZHS1PE+eMLJEvLQ/ZhFYIsm1QjjrHLJtHWEkEWtZXDiqi3l4DCTEo
-         2M4zkExMBDMxNXa61yQqeWeq9xbX4OsNzvUzvFyrHVOxC2EkEkMpHN23n5kUanq+6baQ
-         hXe2PVL4AMakPLTXubeycSRi5dVHRKvDYEshr7kQZU6kyxmGQDWnTcRZc1Tnxk3juTkq
-         /4UIN+9OPvdWCCATNIBsAA707oVOIYPXJvWraLgS/uwAVePneJKbYyVMN/weYKmiyvPI
-         vqxg==
+        h=sender:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=HtmEJT6/085hefLqlC/l4EXVy9+WuvmexfYarfEXUnE=;
+        b=nYRvNj9LR+RqFJhYkJhixSeQWIg78aBSnwbBl5GIw+gA9843NOGTO5gv6ZX3UwqbjH
+         jZXsEj5/Wjz6UwrlbV+3rMZPRLUTMSc7iExKyFByHoWs7t87G1xrPyOEcImoZqRuGxGL
+         hXe4cabniWbcU0SmxjlItkLwC5r9le0iLxhC3uVcM9dQRUxp2MC9fbGrrQz73fJlq6Nj
+         XDwSJFAixxEEHVCFVylq0W1uj+xqvPpQ1wmQfKWsiFVA141U/F38xfvwLb16+e2Nl8ZQ
+         9sykcUByx6wGBYjnPUgSIukkJMf7SQKKNcIROpXK4GJoZonapPD7NfV6JtM9GhJK8Ylw
+         R1Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=3J5zCyAt6QvIKFNQp8gVh7jk8fLM5Aizo3iPLsFee9o=;
-        b=P5M18zmiHLYIt77lYnMnby5zkDmuHXZ/QswOjw6T0U24OEipOepSDhT0bcRM5OYb62
-         +OEuSVgE4+OU58y1Kur6CpRWOZc642337lHtvR9m2jjpJTApDSSjAQbIMbqG+197/CEW
-         TGKx0mA0BXK1nMUc05jaoTZtFatG4GaLU+43uEJaeO+8ZIC3DnFtwBvO8GciRSHD234d
-         cXZay0U7D9oe7RaHUykSX4DUWLqJrZGx7uIpzqMgcmxgi1rm+9C+H+OoSJfLmPP0rOI/
-         aoYquSzsZL4Dy0DHHkJnpm4UAb8pAC6O8uWz7F1+EMbfAxMo1f+KDj7B8owTRnskwInu
-         5YgA==
-X-Gm-Message-State: AOAM533OmLnKppU2eSjrLPeqfqKpFGWETQArL1ZJC8bKRpl8cMEyjeSi
-        HWXrwf8lPCiKa+18qMGwT1clX+HpVcw=
-X-Google-Smtp-Source: ABdhPJyrf16dZFwJdNSE5UE59V3nGeGUTMAiYMziacJ6hRNlzUXHlR0Gtz2bgLFgbW8IEn1AEMT4Ag==
-X-Received: by 2002:a5d:5651:: with SMTP id j17mr454977wrw.166.1635615672831;
-        Sat, 30 Oct 2021 10:41:12 -0700 (PDT)
-Received: from debian64.daheim (p5b0d7cd8.dip0.t-ipconnect.de. [91.13.124.216])
-        by smtp.gmail.com with ESMTPSA id q14sm8743778wrr.28.2021.10.30.10.41.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Oct 2021 10:41:12 -0700 (PDT)
-Received: from chuck by debian64.daheim with local (Exim 4.95)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1mgsLv-0060hg-SX;
-        Sat, 30 Oct 2021 19:41:11 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     netdev@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Cc:     Ansuel Smith <ansuelsmth@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>, Michael Walle <michael@walle.cc>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: [RFC net-next/wireless-next v1 2/2] ath10k: move device_get_mac_address() and pass errors up the chain
-Date:   Sat, 30 Oct 2021 19:41:11 +0200
-Message-Id: <20211030174111.1432663-2-chunkeey@gmail.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211030174111.1432663-1-chunkeey@gmail.com>
-References: <20211030174111.1432663-1-chunkeey@gmail.com>
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :subject:content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=HtmEJT6/085hefLqlC/l4EXVy9+WuvmexfYarfEXUnE=;
+        b=nS/Li+R6Gw0cx5mvJGD2ayK1hKrg0u6GU19B+WkgHH6GI8giFWrlXwAIFkBpa6IQ2S
+         ks2c46MuvnkoeFJT7StonyoecxDMVTD7Iokt8qQXTj24CCZ0CDjX5ZvIEnixubQgQ/z7
+         aW9cRmrmqwokD6FFPl3G9XngxA7q/4hH3keQ4+CiiGuxDCZ6amVD8ZoR9gsVF5vWycI0
+         F/Fzla8zmSXvuhg3Wz4TAiu3ae7oKBxql5ntctPhwQ19stsByN91hmPAsuREHyPbRmxK
+         +yZa7TBQVa++poMKi9B5z3FPF6L02PzcVd2+qCBzgJSGAGq6UIJgP7ZXtgNlY79eh5vb
+         PABA==
+X-Gm-Message-State: AOAM5311LPXpX17cWCAELhhZSxZC6Hnrf6Hz2WxVQqbP2+s8vHShPyHP
+        zKMqZ0thnP1usc86ZqkoaaIDR5ybZ17aXz++
+X-Google-Smtp-Source: ABdhPJzAUEOccpkzbs58NPUvEWrQ+qIscn1AWaTCFRXLxVwcowOhXDpwhJJAukdx4EO8x01Skqi17A==
+X-Received: by 2002:a9d:4d04:: with SMTP id n4mr14496259otf.363.1635617315677;
+        Sat, 30 Oct 2021 11:08:35 -0700 (PDT)
+Received: from ?IPV6:2603:8090:2005:39b3::101e? (2603-8090-2005-39b3-0000-0000-0000-101e.res6.spectrum.com. [2603:8090:2005:39b3::101e])
+        by smtp.gmail.com with ESMTPSA id m13sm1784432ooj.43.2021.10.30.11.08.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 30 Oct 2021 11:08:35 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <7e39369a-2e27-cc82-9c90-ba7ce2554d86@lwfinger.net>
+Date:   Sat, 30 Oct 2021 13:08:33 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: WiFi card not supported
+Content-Language: en-US
+To:     sladyrko@dir.bg, linux-wireless@vger.kernel.org
+References: <1635611921690688929@dir.bg>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <1635611921690688929@dir.bg>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-device_get_mac_address() can now return -EPROBE_DEFER.
-This has to be passed back to the device subsystem so
-the driver will be probed again at a later time.
+On 10/30/21 11:38, sladyrko@dir.bg wrote:
+> Hello, I got a new laptop and my WiFi card is not discovered.
+> This fixed it for me but it's inconvenient to make it every time I update kernel : https://github.com/lwfinger/rtw89 , please add the drivers in the kernel. Thank you.
 
-This was somewhat involved because the best place for this
-seemed in ath10k_core_create() right after allocation.
-Thing is that ath10k_core_create() was setup to either
-return a valid ath10k* instance, or NULL. So each ath10k
-implementation has to be modified to account for ERR_PTR.
+I am already regretting publishing this E-mail address to the rtw89 users at 
+GitHub!!
 
-This introduces a new side-effect: the returned error codes
-from ath10k_core_create() will now be passed along. It's no
-longer just -ENOMEM.
+In the README.md at the GitHub repo is the statement:
 
-Note: If device_get_mac_address() didn't get a valid MAC from
-either the DT/ACPI, nvmem, etc... the driver will just generate
-random MAC (same as it did before).
+"When you have problems where the driver builds and loads correctly, but fails 
+to work, a GitHub issue is NOT the best place to report it. I have no idea of 
+the internal workings of any of the chips, and the Realtek engineers who do will 
+not read these issues. To reach them, send E-mail to 
+linux-wireless@vger.kernel.org. Include a detailed description of any messages 
+in the kernel logs and any steps that you have taken to analyze or fix the 
+problem. If your description is not complete, you are unlikely to get any 
+satisfaction. One other thing - your mail MUST be plain test. HTML mail is 
+rejected."
 
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
----
-@Kalle from what I can tell, this is how nvmem-mac could be
-done with the existing device_get_mac_address() - at a
-different place. The reason for the move was that -EPROBE_DEFER
-needs to be returned by the pci/usb/snoc/ahb _probe functions().
-This wasn't possible in the old location. As ath10k deferres
-the "bring-up" process into a workqueue task which can't return
-any errors (it just printk/dev_err them at the end).
-Also, When I was asking around about this. The common consensus was
-to just post it and see. This is based on net-next + wireless-testing
+Your description is far from complete. In particular, you fail to note what 
+distro and version you are using. In addition, you are not reporting a failure 
+of the driver.
 
- drivers/net/wireless/ath/ath10k/ahb.c  |  8 +++++---
- drivers/net/wireless/ath/ath10k/core.c | 14 ++++++++------
- drivers/net/wireless/ath/ath10k/pci.c  |  8 +++++---
- drivers/net/wireless/ath/ath10k/sdio.c |  8 +++++---
- drivers/net/wireless/ath/ath10k/snoc.c |  8 +++++---
- drivers/net/wireless/ath/ath10k/usb.c  |  8 +++++---
- 6 files changed, 33 insertions(+), 21 deletions(-)
+Apparently, the following sequence, also from README.md, is too inconvenient for 
+you:
 
- 
+cd ~/rtw89
+git pull
+make
+sudo make install
 
-diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
-index ab8f77ae5e66..ad282a06b376 100644
---- a/drivers/net/wireless/ath/ath10k/ahb.c
-+++ b/drivers/net/wireless/ath/ath10k/ahb.c
-@@ -745,9 +745,11 @@ static int ath10k_ahb_probe(struct platform_device *pdev)
- 	size = sizeof(*ar_pci) + sizeof(*ar_ahb);
- 	ar = ath10k_core_create(size, &pdev->dev, ATH10K_BUS_AHB,
- 				hw_rev, &ath10k_ahb_hif_ops);
--	if (!ar) {
--		dev_err(&pdev->dev, "failed to allocate core\n");
--		return -ENOMEM;
-+	if (IS_ERR(ar)) {
-+		ret = PTR_ERR(ar);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(&pdev->dev, "failed to allocate core: %d\n", ret);
-+		return ret;
- 	}
- 
- 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "ahb probe\n");
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 72a366aa9f60..85d2e8143101 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -3291,8 +3291,6 @@ static int ath10k_core_probe_fw(struct ath10k *ar)
- 		ath10k_debug_print_board_info(ar);
- 	}
- 
--	device_get_mac_address(ar->dev, ar->mac_addr);
--
- 	ret = ath10k_core_init_firmware_features(ar);
- 	if (ret) {
- 		ath10k_err(ar, "fatal problem with firmware features: %d\n",
-@@ -3451,11 +3449,11 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
- 				  const struct ath10k_hif_ops *hif_ops)
- {
- 	struct ath10k *ar;
--	int ret;
-+	int ret = -ENOMEM;
- 
- 	ar = ath10k_mac_create(priv_size);
- 	if (!ar)
--		return NULL;
-+		goto err_out;
- 
- 	ar->ath_common.priv = ar;
- 	ar->ath_common.hw = ar->hw;
-@@ -3464,6 +3462,10 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
- 	ar->hif.ops = hif_ops;
- 	ar->hif.bus = bus;
- 
-+	ret = device_get_mac_address(dev, ar->mac_addr);
-+	if (ret == -EPROBE_DEFER)
-+		goto err_free_mac;
-+
- 	switch (hw_rev) {
- 	case ATH10K_HW_QCA988X:
- 	case ATH10K_HW_QCA9887:
-@@ -3580,8 +3582,8 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
- 	destroy_workqueue(ar->workqueue);
- err_free_mac:
- 	ath10k_mac_destroy(ar);
--
--	return NULL;
-+err_out:
-+	return ERR_PTR(ret);
- }
- EXPORT_SYMBOL(ath10k_core_create);
- 
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index 4d4e2f91e15c..f4736148a382 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -3602,9 +3602,11 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
- 
- 	ar = ath10k_core_create(sizeof(*ar_pci), &pdev->dev, ATH10K_BUS_PCI,
- 				hw_rev, &ath10k_pci_hif_ops);
--	if (!ar) {
--		dev_err(&pdev->dev, "failed to allocate core\n");
--		return -ENOMEM;
-+	if (IS_ERR(ar)) {
-+		ret = PTR_ERR(ar);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(&pdev->dev, "failed to allocate core: %d\n", ret);
-+		return ret;
- 	}
- 
- 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "pci probe %04x:%04x %04x:%04x\n",
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index 63e1c2d783c5..87941e047d07 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -2526,9 +2526,11 @@ static int ath10k_sdio_probe(struct sdio_func *func,
- 
- 	ar = ath10k_core_create(sizeof(*ar_sdio), &func->dev, ATH10K_BUS_SDIO,
- 				hw_rev, &ath10k_sdio_hif_ops);
--	if (!ar) {
--		dev_err(&func->dev, "failed to allocate core\n");
--		return -ENOMEM;
-+	if (IS_ERR(ar)) {
-+		ret = PTR_ERR(ar);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(&func->dev, "failed to allocate core: %d\n", ret);
-+		return ret;
- 	}
- 
- 	netif_napi_add(&ar->napi_dev, &ar->napi, ath10k_sdio_napi_poll,
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 9513ab696fff..b9ac89e226a2 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -1728,9 +1728,11 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
- 
- 	ar = ath10k_core_create(sizeof(*ar_snoc), dev, ATH10K_BUS_SNOC,
- 				drv_data->hw_rev, &ath10k_snoc_hif_ops);
--	if (!ar) {
--		dev_err(dev, "failed to allocate core\n");
--		return -ENOMEM;
-+	if (IS_ERR(ar)) {
-+		ret = PTR_ERR(ar);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(dev, "failed to allocate core: %d\n", ret);
-+		return ret;
- 	}
- 
- 	ar_snoc = ath10k_snoc_priv(ar);
-diff --git a/drivers/net/wireless/ath/ath10k/usb.c b/drivers/net/wireless/ath/ath10k/usb.c
-index 3d98f19c6ec8..d6dc830a6fa8 100644
---- a/drivers/net/wireless/ath/ath10k/usb.c
-+++ b/drivers/net/wireless/ath/ath10k/usb.c
-@@ -987,9 +987,11 @@ static int ath10k_usb_probe(struct usb_interface *interface,
- 
- 	ar = ath10k_core_create(sizeof(*ar_usb), &dev->dev, ATH10K_BUS_USB,
- 				hw_rev, &ath10k_usb_hif_ops);
--	if (!ar) {
--		dev_err(&dev->dev, "failed to allocate core\n");
--		return -ENOMEM;
-+	if (IS_ERR(ar)) {
-+		ret = PTR_ERR(ar);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(&dev->dev, "failed to allocate core: %d\n", ret);
-+		return ret;
- 	}
- 
- 	usb_get_dev(dev);
--- 
-2.33.1
+In that case, you should research the use of DKMS (the configuration file is in 
+the repo), or switch to a distro that already includes rtw89 in its kernel, or 
+as a standard package. Two examples are openSUSE Tumbleweed (in kernel) and 
+openSUSE Leap 15.3 (package). I am sure there are others, but like you, I do not 
+like doing much research!
 
+As to your request, a simple web search for "rtw89 linux"would have found the 
+following:
+https://www.phoronix.com/scan.php?page=news_item&px=Realtek-802.11ax-rtw89
+https://www.newsbreak.com/news/2404818553553/realtek-802-11ax-wifi-driver-rtw89-queued-ahead-of-linux-5-16
+
+Those articles report that the driver will be in kernel 5.16. That may not help 
+you for some time, as most distros run kernels that are far from "Bleeding 
+Edge". In addition, kernel 5.15 is not yet released. Once that happens, there 
+will be at least 10 weeks more before 5.16 would be r3eleased.
+
+Larry
