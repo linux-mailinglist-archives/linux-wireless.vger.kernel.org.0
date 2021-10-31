@@ -2,117 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76CA2440AE7
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Oct 2021 20:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 746EE440C8D
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Oct 2021 03:43:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbhJ3SLH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 30 Oct 2021 14:11:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42126 "EHLO
+        id S231236AbhJaCp0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 30 Oct 2021 22:45:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229474AbhJ3SLG (ORCPT
+        with ESMTP id S229752AbhJaCp0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 30 Oct 2021 14:11:06 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63902C061570
-        for <linux-wireless@vger.kernel.org>; Sat, 30 Oct 2021 11:08:36 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id x16-20020a9d7050000000b00553d5d169f7so16905152otj.6
-        for <linux-wireless@vger.kernel.org>; Sat, 30 Oct 2021 11:08:36 -0700 (PDT)
+        Sat, 30 Oct 2021 22:45:26 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0706DC061570;
+        Sat, 30 Oct 2021 19:42:55 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id t40so12916202qtc.6;
+        Sat, 30 Oct 2021 19:42:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=HtmEJT6/085hefLqlC/l4EXVy9+WuvmexfYarfEXUnE=;
-        b=nYRvNj9LR+RqFJhYkJhixSeQWIg78aBSnwbBl5GIw+gA9843NOGTO5gv6ZX3UwqbjH
-         jZXsEj5/Wjz6UwrlbV+3rMZPRLUTMSc7iExKyFByHoWs7t87G1xrPyOEcImoZqRuGxGL
-         hXe4cabniWbcU0SmxjlItkLwC5r9le0iLxhC3uVcM9dQRUxp2MC9fbGrrQz73fJlq6Nj
-         XDwSJFAixxEEHVCFVylq0W1uj+xqvPpQ1wmQfKWsiFVA141U/F38xfvwLb16+e2Nl8ZQ
-         9sykcUByx6wGBYjnPUgSIukkJMf7SQKKNcIROpXK4GJoZonapPD7NfV6JtM9GhJK8Ylw
-         R1Ag==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=4pTpNp+ctrU1VcOo9RHb5FHn9UkMoYaGEFwbc7czNlw=;
+        b=HI2oJgy7m5eV+XVozD3/C005/TKCpmoqYD90457YhJWPYqG4yxZOjMOHFjoeKPFmqC
+         XAlf1bQtsxs9YakyjiarZSgI/gJpbY9A95wjfpVZP60vR2z9EHB3C/7dU5uD1YeIJ7ax
+         WnU/EmOUPGg6EF5+c1SW3/q+NEIleSppP9tnUlqir6x3ljUnRz670+1ieKI3jv2pQKOv
+         jF2wfY++7sNeVcOVo+28L0FNlQ/AVzPpzfHmrJXYIlK16KEuvRJU8MTWRf09muFurjyg
+         813NbrzbI/SoNJLjkg9BVihrQTzvDT20id+OdmqD6K0vu/QDdQN6lSQpFguBavfPREgN
+         zABQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=HtmEJT6/085hefLqlC/l4EXVy9+WuvmexfYarfEXUnE=;
-        b=nS/Li+R6Gw0cx5mvJGD2ayK1hKrg0u6GU19B+WkgHH6GI8giFWrlXwAIFkBpa6IQ2S
-         ks2c46MuvnkoeFJT7StonyoecxDMVTD7Iokt8qQXTj24CCZ0CDjX5ZvIEnixubQgQ/z7
-         aW9cRmrmqwokD6FFPl3G9XngxA7q/4hH3keQ4+CiiGuxDCZ6amVD8ZoR9gsVF5vWycI0
-         F/Fzla8zmSXvuhg3Wz4TAiu3ae7oKBxql5ntctPhwQ19stsByN91hmPAsuREHyPbRmxK
-         +yZa7TBQVa++poMKi9B5z3FPF6L02PzcVd2+qCBzgJSGAGq6UIJgP7ZXtgNlY79eh5vb
-         PABA==
-X-Gm-Message-State: AOAM5311LPXpX17cWCAELhhZSxZC6Hnrf6Hz2WxVQqbP2+s8vHShPyHP
-        zKMqZ0thnP1usc86ZqkoaaIDR5ybZ17aXz++
-X-Google-Smtp-Source: ABdhPJzAUEOccpkzbs58NPUvEWrQ+qIscn1AWaTCFRXLxVwcowOhXDpwhJJAukdx4EO8x01Skqi17A==
-X-Received: by 2002:a9d:4d04:: with SMTP id n4mr14496259otf.363.1635617315677;
-        Sat, 30 Oct 2021 11:08:35 -0700 (PDT)
-Received: from ?IPV6:2603:8090:2005:39b3::101e? (2603-8090-2005-39b3-0000-0000-0000-101e.res6.spectrum.com. [2603:8090:2005:39b3::101e])
-        by smtp.gmail.com with ESMTPSA id m13sm1784432ooj.43.2021.10.30.11.08.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 Oct 2021 11:08:35 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <7e39369a-2e27-cc82-9c90-ba7ce2554d86@lwfinger.net>
-Date:   Sat, 30 Oct 2021 13:08:33 -0500
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=4pTpNp+ctrU1VcOo9RHb5FHn9UkMoYaGEFwbc7czNlw=;
+        b=3cu4PbUWmZha1Rf2+Fs1adszd2VwWH7QulnHDH+GDs72iXFRvuef4mGvStILlkMn73
+         pVPeWra9NbxkFU8LBHA85zXp9yVuGqc2h9tdaphRjd//eyUkcrNIE1pKmFAkWkA0ak1X
+         oaC9SmWRgCXr+NXJDwVdpZWPLruBD7L3oYbxsj5sj5e+QZJCoblhRTrie1uXnzsPjRJU
+         4lbBTt25VMdCFiw6xkUbQ1DQ8ZqzT5HC6V1Wd5Hjugu5J/DU0+wdnb8YbiImas4fF0OI
+         jcN+I1W+bNNKUeCO1q7aHgfTlr+XcdnmZ+VQQDB7xs8u6ZTdpeB/sEw9ja7u6ihqgPdX
+         NoLQ==
+X-Gm-Message-State: AOAM532+pq5ySIUIS9wKNe2cjxrjpZYXMJ+ADeS3xNDVFzfmwtcPKNPC
+        45/Iu0fHnz+YJ63C18UXnVk=
+X-Google-Smtp-Source: ABdhPJxetHAF/mKwh0e6XS/DQKI2r+ozbBPRlT3Sd2LEbpSrdmeBVMlbAgPHhvmsXm39F3v0zN2Bcw==
+X-Received: by 2002:ac8:5990:: with SMTP id e16mr21171559qte.38.1635648173944;
+        Sat, 30 Oct 2021 19:42:53 -0700 (PDT)
+Received: from Zekuns-MBP-16.fios-router.home (cpe-74-73-56-100.nyc.res.rr.com. [74.73.56.100])
+        by smtp.gmail.com with ESMTPSA id i12sm4116907qtx.1.2021.10.30.19.42.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 Oct 2021 19:42:53 -0700 (PDT)
+Date:   Sat, 30 Oct 2021 22:42:50 -0400
+From:   Zekun Shen <bruceshenzk@gmail.com>
+To:     bruceshenzk@gmail.com
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, brendandg@nyu.edu
+Subject: [PATCH] mwifiex_usb: Fix skb_over_panic in mwifiex_usb_recv
+Message-ID: <YX4CqjfRcTa6bVL+@Zekuns-MBP-16.fios-router.home>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: WiFi card not supported
-Content-Language: en-US
-To:     sladyrko@dir.bg, linux-wireless@vger.kernel.org
-References: <1635611921690688929@dir.bg>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <1635611921690688929@dir.bg>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/30/21 11:38, sladyrko@dir.bg wrote:
-> Hello, I got a new laptop and my WiFi card is not discovered.
-> This fixed it for me but it's inconvenient to make it every time I update kernel : https://github.com/lwfinger/rtw89 , please add the drivers in the kernel. Thank you.
+Currently, with an unknown recv_type, mwifiex_usb_recv
+just return -1 without restoring the skb. Next time
+mwifiex_usb_rx_complete is invoked with the same skb,
+calling skb_put causes skb_over_panic.
 
-I am already regretting publishing this E-mail address to the rtw89 users at 
-GitHub!!
+The bug is triggerable with a compromised/malfunctioning
+usb device. After applying the patch, skb_over_panic
+no longer shows up with the same input.
 
-In the README.md at the GitHub repo is the statement:
+Attached is the panic report from fuzzing.
+skbuff: skb_over_panic: text:000000003bf1b5fa
+ len:2048 put:4 head:00000000dd6a115b data:000000000a9445d8
+ tail:0x844 end:0x840 dev:<NULL>
+kernel BUG at net/core/skbuff.c:109!
+invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 PID: 198 Comm: in:imklog Not tainted 5.6.0 #60
+RIP: 0010:skb_panic+0x15f/0x161
+Call Trace:
+ <IRQ>
+ ? mwifiex_usb_rx_complete+0x26b/0xfcd [mwifiex_usb]
+ skb_put.cold+0x24/0x24
+ mwifiex_usb_rx_complete+0x26b/0xfcd [mwifiex_usb]
+ __usb_hcd_giveback_urb+0x1e4/0x380
+ usb_giveback_urb_bh+0x241/0x4f0
+ ? __hrtimer_run_queues+0x316/0x740
+ ? __usb_hcd_giveback_urb+0x380/0x380
+ tasklet_action_common.isra.0+0x135/0x330
+ __do_softirq+0x18c/0x634
+ irq_exit+0x114/0x140
+ smp_apic_timer_interrupt+0xde/0x380
+ apic_timer_interrupt+0xf/0x20
+ </IRQ>
 
-"When you have problems where the driver builds and loads correctly, but fails 
-to work, a GitHub issue is NOT the best place to report it. I have no idea of 
-the internal workings of any of the chips, and the Realtek engineers who do will 
-not read these issues. To reach them, send E-mail to 
-linux-wireless@vger.kernel.org. Include a detailed description of any messages 
-in the kernel logs and any steps that you have taken to analyze or fix the 
-problem. If your description is not complete, you are unlikely to get any 
-satisfaction. One other thing - your mail MUST be plain test. HTML mail is 
-rejected."
+Reported-by: Zekun Shen <bruceshenzk@gmail.com>
+Reported-by: Brendan Dolan-Gavitt <brendandg@nyu.edu>
+Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
+---
+ drivers/net/wireless/marvell/mwifiex/usb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Your description is far from complete. In particular, you fail to note what 
-distro and version you are using. In addition, you are not reporting a failure 
-of the driver.
+diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
+index 426e39d4c..6d81e8786 100644
+--- a/drivers/net/wireless/marvell/mwifiex/usb.c
++++ b/drivers/net/wireless/marvell/mwifiex/usb.c
+@@ -130,7 +130,8 @@ static int mwifiex_usb_recv(struct mwifiex_adapter *adapter,
+ 		default:
+ 			mwifiex_dbg(adapter, ERROR,
+ 				    "unknown recv_type %#x\n", recv_type);
+-			return -1;
++			ret = -1;
++			goto exit_restore_skb;
+ 		}
+ 		break;
+ 	case MWIFIEX_USB_EP_DATA:
+-- 
+2.25.1
 
-Apparently, the following sequence, also from README.md, is too inconvenient for 
-you:
-
-cd ~/rtw89
-git pull
-make
-sudo make install
-
-In that case, you should research the use of DKMS (the configuration file is in 
-the repo), or switch to a distro that already includes rtw89 in its kernel, or 
-as a standard package. Two examples are openSUSE Tumbleweed (in kernel) and 
-openSUSE Leap 15.3 (package). I am sure there are others, but like you, I do not 
-like doing much research!
-
-As to your request, a simple web search for "rtw89 linux"would have found the 
-following:
-https://www.phoronix.com/scan.php?page=news_item&px=Realtek-802.11ax-rtw89
-https://www.newsbreak.com/news/2404818553553/realtek-802-11ax-wifi-driver-rtw89-queued-ahead-of-linux-5-16
-
-Those articles report that the driver will be in kernel 5.16. That may not help 
-you for some time, as most distros run kernels that are far from "Bleeding 
-Edge". In addition, kernel 5.15 is not yet released. Once that happens, there 
-will be at least 10 weeks more before 5.16 would be r3eleased.
-
-Larry
