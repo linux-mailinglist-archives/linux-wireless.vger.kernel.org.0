@@ -2,108 +2,268 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7B3440FD6
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Oct 2021 18:41:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EE6E440FE6
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Oct 2021 18:48:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230326AbhJaRn7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 31 Oct 2021 13:43:59 -0400
-Received: from mail-il1-f199.google.com ([209.85.166.199]:35619 "EHLO
-        mail-il1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230356AbhJaRn4 (ORCPT
+        id S230178AbhJaRv0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 31 Oct 2021 13:51:26 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:35918 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229732AbhJaRvZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 31 Oct 2021 13:43:56 -0400
-Received: by mail-il1-f199.google.com with SMTP id h12-20020a056e021b8c00b0025aca6d29dfso8736459ili.2
-        for <linux-wireless@vger.kernel.org>; Sun, 31 Oct 2021 10:41:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=XZIexutBcQl4+tfwI5ceaURTk9hVCO5nBeCW0ejq1+c=;
-        b=W/DXecwu3cWOmz4SV0UKNC1oQfOE3HLtocCFBXLkmhvyWTI9Dn8peDWssWuQhPByIV
-         BHlvPijBPl92jFqlS942FIyNiRPex1deGdzytUGDKJS39Iqqg/IqR4A6SyhadLbfcj5T
-         xPIIurmef3NvPmkexMJLkZaLR0Mb+CGP3y9MEV8TyDmfiBi90U8fcq0OivWNbR/oFg2s
-         xe37WogEYwxvxVvLx7zJc/gNp0VcCuXjRXf4APl33pbgnj3K6Ste91zW/MHEJfnLTHnd
-         0U0xZZPk7wDda0MCJN9ZMg5Z1rhUdSyQoZ/UdQMO3Eds4Z/8SOIXCnGu2H5qBiAduRGb
-         Ne2A==
-X-Gm-Message-State: AOAM5322N8HUTjP0y5hdgldeRgin6u5UvlB7Wjrmnvvy7OmFY1h6z3Yg
-        /DCrJtGVrHT6AYtGs3dlS0AHiTMNY93nA13NYG5PtmaG1cTg
-X-Google-Smtp-Source: ABdhPJwPz9+jO4xrI2cjDlEWJ666m9x8lq5Dmb+29JHkXh493otH1nbQ8sRlcpFYnfdkGmCOtV2TjYgMqTnv7WbBVgl0dH+wnUUG
+        Sun, 31 Oct 2021 13:51:25 -0400
+X-UUID: dedf4ae4095f4c83bd468bf2b0a5e2c6-20211101
+X-UUID: dedf4ae4095f4c83bd468bf2b0a5e2c6-20211101
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1684661763; Mon, 01 Nov 2021 01:48:50 +0800
+Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 1 Nov 2021 01:48:49 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs10n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Mon, 1 Nov 2021 01:48:49 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH v3] mt76: mt7915: add default calibrated data support
+Date:   Mon, 1 Nov 2021 01:48:42 +0800
+Message-ID: <20211031174842.3503-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-Received: by 2002:a02:b807:: with SMTP id o7mr5718395jam.43.1635702084795;
- Sun, 31 Oct 2021 10:41:24 -0700 (PDT)
-Date:   Sun, 31 Oct 2021 10:41:24 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000b902e505cfa99115@google.com>
-Subject: [syzbot] WARNING in carl9170_usb_init_device/usb_submit_urb
-From:   syzbot <syzbot+e394db78ae0b0032cb4d@syzkaller.appspotmail.com>
-To:     chunkeey@googlemail.com, davem@davemloft.net, kuba@kernel.org,
-        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Load the default eeprom data when the content of flash/efuse is invalid.
+This could help to eliminate some issues due to incorrect or
+insufficient rf values.
 
-syzbot found the following issue on:
-
-HEAD commit:    1fc596a56b33 Merge tag 'trace-v5.15-rc6' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=100b3d64b00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e24661dcff16e3ec
-dashboard link: https://syzkaller.appspot.com/bug?extid=e394db78ae0b0032cb4d
-compiler:       Debian clang version 11.0.1-2, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=152ebd9ab00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=170d4408b00000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e394db78ae0b0032cb4d@syzkaller.appspotmail.com
-
-usb 1-1: device descriptor read/64, error -71
-usb 1-1: reset high-speed USB device number 2 using dummy_hcd
-usb 1-1: Using ep0 maxpacket: 8
-usb 1-1: driver   API: 1.9.9 2016-02-15 [1-1]
-usb 1-1: firmware API: 1.9.6 2012-07-07
-------------[ cut here ]------------
-usb 1-1: BOGUS urb xfer, pipe 1 != type 3
-WARNING: CPU: 0 PID: 1053 at drivers/usb/core/urb.c:503 usb_submit_urb+0xcd2/0x1970 drivers/usb/core/urb.c:502
-Modules linked in:
-CPU: 0 PID: 1053 Comm: kworker/0:2 Not tainted 5.15.0-rc7-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: events request_firmware_work_func
-RIP: 0010:usb_submit_urb+0xcd2/0x1970 drivers/usb/core/urb.c:502
-Code: d8 48 c1 e8 03 42 8a 04 20 84 c0 0f 85 89 09 00 00 44 8b 03 48 c7 c7 c0 2c 04 8b 4c 89 fe 4c 89 f2 89 e9 31 c0 e8 5e c7 6f fb <0f> 0b 4c 8b 7c 24 10 4c 8b 64 24 38 8b 5c 24 28 45 89 e6 4c 89 f7
-RSP: 0018:ffffc900045bfa20 EFLAGS: 00010246
-RAX: c0488d4b2013c100 RBX: ffffffff8b042a08 RCX: ffff88801c0eb900
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: 0000000000000001 R08: ffffffff81695fe2 R09: ffffed10173857a8
-R10: ffffed10173857a8 R11: 0000000000000000 R12: dffffc0000000000
-R13: ffff888014de4400 R14: ffff888012bb16b8 R15: ffffffff8b04cc80
-FS:  0000000000000000(0000) GS:ffff8880b9c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fffa69fe690 CR3: 0000000071447000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- carl9170_usb_send_rx_irq_urb drivers/net/wireless/ath/carl9170/usb.c:504 [inline]
- carl9170_usb_init_device+0x243/0x880 drivers/net/wireless/ath/carl9170/usb.c:939
- carl9170_usb_firmware_finish drivers/net/wireless/ath/carl9170/usb.c:999 [inline]
- carl9170_usb_firmware_step2+0xa5/0x260 drivers/net/wireless/ath/carl9170/usb.c:1028
- request_firmware_work_func+0x19b/0x270 drivers/base/firmware_loader/main.c:1081
- process_one_work+0x853/0x1140 kernel/workqueue.c:2297
- worker_thread+0xac1/0x1320 kernel/workqueue.c:2444
- kthread+0x453/0x480 kernel/kthread.c:319
- ret_from_fork+0x1f/0x30
-
-
+Co-developed-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+v2: drop unnecessary goto and return
+v3: simplify duplicate instances of mt7915_eeprom_load_default()
+---
+ .../wireless/mediatek/mt76/mt7915/eeprom.c    | 83 +++++++++++++++----
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 24 ++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  1 +
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 +
+ 4 files changed, 94 insertions(+), 18 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index ee3d644..edd74d0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: ISC
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
++#include <linux/firmware.h>
+ #include "mt7915.h"
+ #include "eeprom.h"
+ 
+@@ -10,6 +11,9 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
+ 	u8 *eeprom = mdev->eeprom.data;
+ 	u32 val = eeprom[MT_EE_DO_PRE_CAL];
+ 
++	if (!dev->flash_mode)
++		return 0;
++
+ 	if (val != (MT_EE_WIFI_CAL_DPD | MT_EE_WIFI_CAL_GROUP))
+ 		return 0;
+ 
+@@ -21,6 +25,49 @@ static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
+ 	return mt76_get_of_eeprom(mdev, dev->cal, MT_EE_PRECAL, val);
+ }
+ 
++static int mt7915_check_eeprom(struct mt7915_dev *dev)
++{
++	u8 *eeprom = dev->mt76.eeprom.data;
++	u16 val = get_unaligned_le16(eeprom);
++
++	switch (val) {
++	case 0x7915:
++		return 0;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int
++mt7915_eeprom_load_default(struct mt7915_dev *dev)
++{
++	char *default_bin = MT7915_EEPROM_DEFAULT;
++	u8 *eeprom = dev->mt76.eeprom.data;
++	const struct firmware *fw = NULL;
++	int ret;
++
++	if (dev->dbdc_support)
++		default_bin = MT7915_EEPROM_DEFAULT_DBDC;
++
++	ret = request_firmware(&fw, default_bin, dev->mt76.dev);
++	if (ret)
++		return ret;
++
++	if (!fw || !fw->data) {
++		dev_err(dev->mt76.dev, "Invalid default bin\n");
++		ret = -EINVAL;
++		goto out;
++	}
++
++	memcpy(eeprom, fw->data, MT7915_EEPROM_SIZE);
++	dev->flash_mode = true;
++
++out:
++	release_firmware(fw);
++
++	return ret;
++}
++
+ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ {
+ 	int ret;
+@@ -31,10 +78,16 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ 
+ 	if (ret) {
+ 		dev->flash_mode = true;
+-		ret = mt7915_eeprom_load_precal(dev);
+ 	} else {
++		u8 free_block_num;
+ 		u32 block_num, i;
+ 
++		mt7915_mcu_get_eeprom_free_block(dev, &free_block_num);
++		/* efuse info not enough */
++		if (free_block_num >= 29)
++			return -EINVAL;
++
++		/* read eeprom data from efuse */
+ 		block_num = DIV_ROUND_UP(MT7915_EEPROM_SIZE,
+ 					 MT7915_EEPROM_BLOCK_SIZE);
+ 		for (i = 0; i < block_num; i++)
+@@ -42,20 +95,7 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ 					      i * MT7915_EEPROM_BLOCK_SIZE);
+ 	}
+ 
+-	return ret;
+-}
+-
+-static int mt7915_check_eeprom(struct mt7915_dev *dev)
+-{
+-	u8 *eeprom = dev->mt76.eeprom.data;
+-	u16 val = get_unaligned_le16(eeprom);
+-
+-	switch (val) {
+-	case 0x7915:
+-		return 0;
+-	default:
+-		return -EINVAL;
+-	}
++	return mt7915_check_eeprom(dev);
+ }
+ 
+ void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
+@@ -117,10 +157,17 @@ int mt7915_eeprom_init(struct mt7915_dev *dev)
+ 	int ret;
+ 
+ 	ret = mt7915_eeprom_load(dev);
+-	if (ret < 0)
+-		return ret;
++	if (ret < 0) {
++		if (ret != -EINVAL)
++			return ret;
++
++		dev_warn(dev->mt76.dev, "eeprom load fail, use default bin\n");
++		ret = mt7915_eeprom_load_default(dev);
++		if (ret)
++			return ret;
++	}
+ 
+-	ret = mt7915_check_eeprom(dev);
++	ret = mt7915_eeprom_load_precal(dev);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index b054663..ee9952d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3580,6 +3580,30 @@ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset)
+ 	return 0;
+ }
+ 
++int mt7915_mcu_get_eeprom_free_block(struct mt7915_dev *dev, u8 *block_num)
++{
++	struct {
++		u8 _rsv;
++		u8 version;
++		u8 die_idx;
++		u8 _rsv2;
++	} __packed req = {
++		.version = 1,
++	};
++	struct sk_buff *skb;
++	int ret;
++
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_QUERY(EFUSE_FREE_BLOCK), &req,
++					sizeof(req), true, &skb);
++	if (ret)
++		return ret;
++
++	*block_num = *(u8 *)skb->data;
++	dev_kfree_skb(skb);
++
++	return 0;
++}
++
+ static int mt7915_mcu_set_pre_cal(struct mt7915_dev *dev, u8 idx,
+ 				  u8 *data, u32 len, int cmd)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index b563e7c..e9f39ed 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -278,6 +278,7 @@ enum {
+ 	MCU_EXT_CMD_MUAR_UPDATE = 0x48,
+ 	MCU_EXT_CMD_RX_AIRTIME_CTRL = 0x4a,
+ 	MCU_EXT_CMD_SET_RX_PATH = 0x4e,
++	MCU_EXT_CMD_EFUSE_FREE_BLOCK = 0x4f,
+ 	MCU_EXT_CMD_TX_POWER_FEATURE_CTRL = 0x58,
+ 	MCU_EXT_CMD_GET_MIB_INFO = 0x5a,
+ 	MCU_EXT_CMD_MWDS_SUPPORT = 0x80,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index e69b4c8..c6c846d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -30,6 +30,9 @@
+ #define MT7915_FIRMWARE_WM		"mediatek/mt7915_wm.bin"
+ #define MT7915_ROM_PATCH		"mediatek/mt7915_rom_patch.bin"
+ 
++#define MT7915_EEPROM_DEFAULT		"mediatek/mt7915_eeprom.bin"
++#define MT7915_EEPROM_DEFAULT_DBDC	"mediatek/mt7915_eeprom_dbdc.bin"
++
+ #define MT7915_EEPROM_SIZE		3584
+ #define MT7915_EEPROM_BLOCK_SIZE	16
+ #define MT7915_TOKEN_SIZE		8192
+@@ -423,6 +426,7 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
+ 				   void *data, u32 field);
+ int mt7915_mcu_set_eeprom(struct mt7915_dev *dev);
+ int mt7915_mcu_get_eeprom(struct mt7915_dev *dev, u32 offset);
++int mt7915_mcu_get_eeprom_free_block(struct mt7915_dev *dev, u8 *block_num);
+ int mt7915_mcu_set_mac(struct mt7915_dev *dev, int band, bool enable,
+ 		       bool hdr_trans);
+ int mt7915_mcu_set_test_param(struct mt7915_dev *dev, u8 param, bool test_mode,
+-- 
+2.25.1
+
