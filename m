@@ -2,41 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1B4A441202
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Nov 2021 03:01:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04808441237
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Nov 2021 03:47:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230233AbhKACET (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 31 Oct 2021 22:04:19 -0400
-Received: from mailgw01.mediatek.com ([60.244.123.138]:52504 "EHLO
+        id S230237AbhKACuN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 31 Oct 2021 22:50:13 -0400
+Received: from mailgw01.mediatek.com ([60.244.123.138]:43672 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230191AbhKACET (ORCPT
+        with ESMTP id S230222AbhKACuN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 31 Oct 2021 22:04:19 -0400
-X-UUID: 5f7ede9b752a4a96a61c574d7f46fe29-20211101
-X-UUID: 5f7ede9b752a4a96a61c574d7f46fe29-20211101
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
-        (envelope-from <chui-hao.chiu@mediatek.com>)
+        Sun, 31 Oct 2021 22:50:13 -0400
+X-UUID: 286032180a7f4191835d4c74214882ec-20211101
+X-UUID: 286032180a7f4191835d4c74214882ec-20211101
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
+        (envelope-from <xing.song@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1708474775; Mon, 01 Nov 2021 10:01:43 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 1 Nov 2021 10:01:42 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 1 Nov 2021 10:01:41 +0800
-From:   Peter Chiu <chui-hao.chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
+        with ESMTP id 1353409933; Mon, 01 Nov 2021 10:47:38 +0800
+Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Mon, 1 Nov 2021 10:47:36 +0800
+Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
+ (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 1 Nov
+ 2021 10:47:31 +0800
+Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
+ MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
+ 15.0.1497.2 via Frontend Transport; Mon, 1 Nov 2021 10:47:30 +0800
+From:   Xing Song <xing.song@mediatek.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Felix Fietkau <nbd@nbd.name>
 CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
         Shayne Chen <shayne.chen@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
         Evelyn Tsai <evelyn.tsai@mediatek.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH] mt76: mt7615: fix possible deadlock while mt7615_register_ext_phy()
-Date:   Mon, 1 Nov 2021 10:01:13 +0800
-Message-ID: <20211101020113.6199-1-chui-hao.chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Xing Song <xing.song@mediatek.com>
+Subject: [PATCH] mac80211: do not access the IV when it gets stripped
+Date:   Mon, 1 Nov 2021 10:46:57 +0800
+Message-ID: <20211101024657.143026-1-xing.song@mediatek.com>
+X-Mailer: git-send-email 2.17.0
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
@@ -44,43 +49,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ieee80211_register_hw() is called with rtnl_lock held, and this could be
-caused lockdep from a work item that's on a workqueue that is flushed
-with the rtnl held.
+ieee80211_get_keyid() will return false value if IV has been stripped,
+such as return 0 for IP/ARP frames due to LLC header, and return -EINVAL
+for disassociation frames due to its length... etc.
 
-Move mt7615_register_ext_phy() outside the init_work().
-
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Xing Song <xing.song@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/mac80211/rx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-index a2465b49..87b4aa52 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
-@@ -28,8 +28,6 @@ static void mt7615_pci_init_work(struct work_struct *work)
- 		return;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index c4071b015c18..ba3b82a72a60 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -1952,7 +1952,8 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
+ 		int keyid = rx->sta->ptk_idx;
+ 		sta_ptk = rcu_dereference(rx->sta->ptk[keyid]);
  
- 	mt7615_init_work(dev);
--	if (dev->dbdc_support)
--		mt7615_register_ext_phy(dev);
- }
- 
- static int mt7615_init_hardware(struct mt7615_dev *dev)
-@@ -160,6 +158,12 @@ int mt7615_register_device(struct mt7615_dev *dev)
- 	mt7615_init_txpower(dev, &dev->mphy.sband_2g.sband);
- 	mt7615_init_txpower(dev, &dev->mphy.sband_5g.sband);
- 
-+	if (dev->dbdc_support) {
-+		ret = mt7615_register_ext_phy(dev);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	return mt7615_init_debugfs(dev);
- }
+-		if (ieee80211_has_protected(fc)) {
++		if (ieee80211_has_protected(fc) &&
++		    !(status->flag & RX_FLAG_IV_STRIPPED)) {
+ 			cs = rx->sta->cipher_scheme;
+ 			keyid = ieee80211_get_keyid(rx->skb, cs);
  
 -- 
-2.29.2
+2.17.0
 
