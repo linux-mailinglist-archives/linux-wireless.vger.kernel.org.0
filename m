@@ -2,56 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C7284425A3
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Nov 2021 03:25:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 930174425A6
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Nov 2021 03:29:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232405AbhKBC1n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Nov 2021 22:27:43 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:49005 "EHLO
+        id S229612AbhKBCbw convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Nov 2021 22:31:52 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:49590 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232367AbhKBC1l (ORCPT
+        with ESMTP id S229498AbhKBCbv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Nov 2021 22:27:41 -0400
+        Mon, 1 Nov 2021 22:31:51 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1A22P1gnC031218, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1A22TAk04032299, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1A22P1gnC031218
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1A22TAk04032299
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 2 Nov 2021 10:25:01 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+        Tue, 2 Nov 2021 10:29:10 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
  RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Tue, 2 Nov 2021 10:25:00 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Tue, 2 Nov
- 2021 10:25:00 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <steventing@realtek.com>
-Subject: [PATCH v3 2/2] rtw88: add debugfs to force lowest basic rate
-Date:   Tue, 2 Nov 2021 10:24:54 +0800
-Message-ID: <20211102022454.10944-2-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211102022454.10944-1-pkshih@realtek.com>
-References: <20211102022454.10944-1-pkshih@realtek.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/02/2021 02:10:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ 15.1.2308.15; Tue, 2 Nov 2021 10:29:07 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Tue, 2 Nov 2021 10:29:07 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
+ RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
+ 15.01.2308.015; Tue, 2 Nov 2021 10:29:07 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Brian Norris <briannorris@chromium.org>
+CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "steventing@realtek.com" <steventing@realtek.com>
+Subject: RE: [PATCH v2 2/2] rtw88: add debugfs to force lowest basic rate
+Thread-Topic: [PATCH v2 2/2] rtw88: add debugfs to force lowest basic rate
+Thread-Index: AQHXNyRAk4gBeAyeS0qjcLM9a2bOoqsPNd6AgOB7deSAAQLDgA==
+Date:   Tue, 2 Nov 2021 02:29:06 +0000
+Message-ID: <655e0265105d43488ce19b471fe2fc22@realtek.com>
+References: <20210422030413.9738-1-pkshih@realtek.com>
+        <20210422030413.9738-2-pkshih@realtek.com>      <YMPqT8VH5alHQXXA@google.com>
+ <87k0hs2l9i.fsf@codeaurora.org>
+In-Reply-To: <87k0hs2l9i.fsf@codeaurora.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
  rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzExLzIgpFekyCAxMjo0MjowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/11/2_=3F=3F_12:42:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
 X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
@@ -65,8 +72,9 @@ X-KSE-AntiSpam-Info: Lua profiles 167045 [Nov 01 2021]
 X-KSE-AntiSpam-Info: Version: 5.9.20.0
 X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
 X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
 X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;patchwork.kernel.org:7.1.1;lore.kernel.org:7.1.1
 X-KSE-AntiSpam-Info: Rate: 0
 X-KSE-AntiSpam-Info: Status: not_detected
 X-KSE-AntiSpam-Info: Method: none
@@ -79,120 +87,71 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yu-Yen Ting <steventing@realtek.com>
 
-The management frame with high rate e.g. 24M may not be transmitted
-smoothly in long range environment.
-Add a debugfs to force to use the lowest basic rate
-in order to debug the reachability of transmitting management frame.
+> -----Original Message-----
+> From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On Behalf Of Kalle
+> Valo
+> Sent: Monday, November 1, 2021 7:01 PM
+> To: Brian Norris <briannorris@chromium.org>
+> Cc: Pkshih <pkshih@realtek.com>; tony0620emma@gmail.com; linux-wireless@vger.kernel.org;
+> steventing@realtek.com
+> Subject: Re: [PATCH v2 2/2] rtw88: add debugfs to force lowest basic rate
+> 
+> (replying to an old thread:
+> 
+> https://patchwork.kernel.org/project/linux-wireless/patch/20210422030413.9738-2-pkshih@realtek.com/ )
+> 
+> 
+> Brian Norris <briannorris@chromium.org> writes:
+> 
+> > On Thu, Apr 22, 2021 at 11:04:13AM +0800, Ping-Ke Shih wrote:
+> >> From: Yu-Yen Ting <steventing@realtek.com>
+> >>
+> >> The management frame with high rate e.g. 24M may not be transmitted
+> >> smoothly in long range environment.
+> >> Add a debugfs to force to use the lowest basic rate
+> >> in order to debug the reachability of transmitting management frame.
+> >>
+> >> obtain current setting
+> >> cat /sys/kernel/debug/ieee80211/phyX/rtw88/basic_rates
+> >>
+> >> force lowest rate:
+> >> echo 1 > /sys/kernel/debug/ieee80211/phyX/rtw88/basic_rates
+> >>
+> >> Signed-off-by: Yu-Yen Ting <steventing@realtek.com>
+> >> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> >
+> > I believe some initial objection to this was because it was unclear if
+> > this is for "production" use (e.g., recommending distros to play with
+> > this) or for debugging. I'll admit, I requested the feature for patch 1,
+> > because I've seen that for those networks where people *do* configure
+> > odd Basic Rates, they intend for stations to follow those, and not use
+> > the lowest (and most airtime-hogging) rates.
+> >
+> > And I can say, I don't see why distributions should be turning that back
+> > off. If the Basic Rates setting is wrong, then the that's up to the
+> > network admin to fix.
+> >
+> > All that is to say: I agree that this patch is purely for debugging, as
+> > stated, and that it belongs in debugfs. I also maintain a distribution,
+> > and I don't plan on using this beyond debugging.
+> >
+> > Therefore:
+> >
+> > Reviewed-by: Brian Norris <briannorris@chromium.org>
+> 
+> Ok, fair enough as long as this will not end up normal users using it. I
+> still would prefer to have extensive bitrate handling via nl80211 but
+> clearly it's not going anywhere.
+> 
+> But could the debugfs filename be more descriptive, for example
+> force_basic_rates or something like that?
+> 
 
-obtain current setting
-cat /sys/kernel/debug/ieee80211/phyX/rtw88/force_lowest_basic_rate
+OK. Use 'force_lowest_basic_rate' by v3 [1].
 
-force lowest rate:
-echo 1 > /sys/kernel/debug/ieee80211/phyX/rtw88/force_lowest_basic_rate
+[1] https://lore.kernel.org/linux-wireless/20211102022454.10944-1-pkshih@realtek.com/T/#t
 
-Signed-off-by: Yu-Yen Ting <steventing@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-v3: change the name of debugfs entry to force_lowest_basic_rate
----
- drivers/net/wireless/realtek/rtw88/debug.c | 39 ++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/main.h  |  1 +
- drivers/net/wireless/realtek/rtw88/tx.c    |  3 +-
- 3 files changed, 42 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index 682b23502e6e..37cf1439a8a0 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -904,6 +904,39 @@ static int rtw_debugfs_get_fw_crash(struct seq_file *m, void *v)
- 	return 0;
- }
- 
-+static ssize_t rtw_debugfs_set_force_lowest_basic_rate(struct file *filp,
-+						       const char __user *buffer,
-+						       size_t count, loff_t *loff)
-+{
-+	struct seq_file *seqpriv = (struct seq_file *)filp->private_data;
-+	struct rtw_debugfs_priv *debugfs_priv = seqpriv->private;
-+	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
-+	bool input;
-+	int err;
-+
-+	err = kstrtobool_from_user(buffer, count, &input);
-+	if (err)
-+		return err;
-+
-+	if (input)
-+		set_bit(RTW_FLAG_FORCE_LOWEST_RATE, rtwdev->flags);
-+	else
-+		clear_bit(RTW_FLAG_FORCE_LOWEST_RATE, rtwdev->flags);
-+
-+	return count;
-+}
-+
-+static int rtw_debugfs_get_force_lowest_basic_rate(struct seq_file *m, void *v)
-+{
-+	struct rtw_debugfs_priv *debugfs_priv = m->private;
-+	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
-+
-+	seq_printf(m, "force lowest basic rate: %d\n",
-+		   test_bit(RTW_FLAG_FORCE_LOWEST_RATE, rtwdev->flags));
-+
-+	return 0;
-+}
-+
- static ssize_t rtw_debugfs_set_dm_cap(struct file *filp,
- 				      const char __user *buffer,
- 				      size_t count, loff_t *loff)
-@@ -1094,6 +1127,11 @@ static struct rtw_debugfs_priv rtw_debug_priv_fw_crash = {
- 	.cb_read = rtw_debugfs_get_fw_crash,
- };
- 
-+static struct rtw_debugfs_priv rtw_debug_priv_force_lowest_basic_rate = {
-+	.cb_write = rtw_debugfs_set_force_lowest_basic_rate,
-+	.cb_read = rtw_debugfs_get_force_lowest_basic_rate,
-+};
-+
- static struct rtw_debugfs_priv rtw_debug_priv_dm_cap = {
- 	.cb_write = rtw_debugfs_set_dm_cap,
- 	.cb_read = rtw_debugfs_get_dm_cap,
-@@ -1174,6 +1212,7 @@ void rtw_debugfs_init(struct rtw_dev *rtwdev)
- 	rtw_debugfs_add_r(tx_pwr_tbl);
- 	rtw_debugfs_add_rw(edcca_enable);
- 	rtw_debugfs_add_rw(fw_crash);
-+	rtw_debugfs_add_rw(force_lowest_basic_rate);
- 	rtw_debugfs_add_rw(dm_cap);
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index bbdd535b64e7..c37f1d508882 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -364,6 +364,7 @@ enum rtw_flags {
- 	RTW_FLAG_WOWLAN,
- 	RTW_FLAG_RESTARTING,
- 	RTW_FLAG_RESTART_TRIGGERING,
-+	RTW_FLAG_FORCE_LOWEST_RATE,
- 
- 	NUM_OF_RTW_FLAGS,
- };
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
-index aace284e526e..f9332fa463ca 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -238,8 +238,9 @@ static u8 rtw_get_mgmt_rate(struct rtw_dev *rtwdev, struct sk_buff *skb,
- {
- 	struct ieee80211_tx_info *tx_info = IEEE80211_SKB_CB(skb);
- 	struct ieee80211_vif *vif = tx_info->control.vif;
-+	bool force_lowest = test_bit(RTW_FLAG_FORCE_LOWEST_RATE, rtwdev->flags);
- 
--	if (!vif || !vif->bss_conf.basic_rates || ignore_rate)
-+	if (!vif || !vif->bss_conf.basic_rates || ignore_rate || force_lowest)
- 		return lowest_rate;
- 
- 	return __ffs(vif->bss_conf.basic_rates) + lowest_rate;
--- 
-2.25.1
+--
+Ping-Ke
 
