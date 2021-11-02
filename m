@@ -2,143 +2,193 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE46E4426D7
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Nov 2021 06:42:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E0BE442809
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Nov 2021 08:16:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229497AbhKBFoU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Nov 2021 01:44:20 -0400
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:46993 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229486AbhKBFoT (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Nov 2021 01:44:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1635831705; x=1667367705;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=h/R3ybRNJOwRMKQUJ9PXBt3E9jGLPafBWDnsilxKGKI=;
-  b=FuOmHN781Igw4NPijeHd6WZ2HkOnepv7XqO4zDRCtxzLvyVW6kE0mMq5
-   0P1YyHulr8wGlYMmx3D1Jt2Oeqm2GeJCVEcG+5UecmaaNldj+U7OJEr9f
-   yZ7jRem/6MxuMrAF6NzxKjjIbvc2cFGjyZKyyXBHZtEyawpVFcEU0ZIyD
-   k=;
-Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 01 Nov 2021 22:41:44 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2021 22:41:44 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
- Mon, 1 Nov 2021 22:41:44 -0700
-Received: from ramess-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
- Mon, 1 Nov 2021 22:41:42 -0700
-From:   Rameshkumar Sundaram <quic_ramess@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Subject: [PATCH] ath11k: use cache line aligned buffers for dbring
-Date:   Tue, 2 Nov 2021 11:11:33 +0530
-Message-ID: <1635831693-15962-1-git-send-email-quic_ramess@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+        id S230324AbhKBHSd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Nov 2021 03:18:33 -0400
+Received: from mga02.intel.com ([134.134.136.20]:22772 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229577AbhKBHSc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 2 Nov 2021 03:18:32 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10155"; a="218394159"
+X-IronPort-AV: E=Sophos;i="5.87,202,1631602800"; 
+   d="scan'208";a="218394159"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2021 00:15:58 -0700
+X-IronPort-AV: E=Sophos;i="5.87,202,1631602800"; 
+   d="scan'208";a="638099973"
+Received: from egrumbac-mobl1.jer.intel.com ([10.13.16.230])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2021 00:15:55 -0700
+From:   Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH 1/6] mei: bus: add client dma interface
+Date:   Tue,  2 Nov 2021 09:15:44 +0200
+Message-Id: <20211102071549.5833-1-emmanuel.grumbach@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The DMA buffers of dbring which is used for spectral/cfr
-starts at certain offset from original kmalloc() returned buffer.
-This is not cache line aligned.
-And also driver tries to access the data that is immediately before
-this offset address (i.e. buff->paddr) after doing dma map.
-This will cause cache line sharing issues and data corruption,
-if CPU happen to write back cache after HW has dma'ed the data.
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-Fix this by mapping a cache line aligned buffer to dma.
+Expose the client dma mapping via mei client bus interface.
+The client dma has to be mapped before the device is enabled,
+therefore we need to create device linking already during mapping
+and we need to unmap after the client is disable hence we need to
+postpone the unlink and flush till unmapping or when
+destroying the device.
 
-Tested on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Co-developed-by: Tomas Winkler <tomas.winkler@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20210420172755.12178-1-emmanuel.grumbach@intel.com
 ---
- drivers/net/wireless/ath/ath11k/dbring.c | 16 ++++++++++++----
- drivers/net/wireless/ath/ath11k/dbring.h |  2 +-
- 2 files changed, 13 insertions(+), 5 deletions(-)
+ drivers/misc/mei/bus.c     | 67 ++++++++++++++++++++++++++++++++++++--
+ drivers/misc/mei/client.c  |  3 ++
+ drivers/misc/mei/hw.h      |  5 +++
+ include/linux/mei_cl_bus.h |  3 ++
+ 4 files changed, 75 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dbring.c b/drivers/net/wireless/ath/ath11k/dbring.c
-index fd98ba5..de220a1 100644
---- a/drivers/net/wireless/ath/ath11k/dbring.c
-+++ b/drivers/net/wireless/ath/ath11k/dbring.c
-@@ -87,17 +87,23 @@ static int ath11k_dbring_fill_bufs(struct ath11k *ar,
- 	req_entries = min(num_free, ring->bufs_max);
- 	num_remain = req_entries;
- 	align = ring->buf_align;
--	size = sizeof(*buff) + ring->buf_sz + align - 1;
-+	size = ring->buf_sz + align - 1;
+diff --git a/drivers/misc/mei/bus.c b/drivers/misc/mei/bus.c
+index 44bac4ad687c..46aa3554e97b 100644
+--- a/drivers/misc/mei/bus.c
++++ b/drivers/misc/mei/bus.c
+@@ -643,6 +643,64 @@ static void mei_cl_bus_vtag_free(struct mei_cl_device *cldev)
+ 	kfree(cl_vtag);
+ }
  
- 	while (num_remain > 0) {
--		buff = kzalloc(size, GFP_ATOMIC);
-+		buff = kzalloc(sizeof(*buff), GFP_ATOMIC);
- 		if (!buff)
- 			break;
++void *mei_cldev_dma_map(struct mei_cl_device *cldev, u8 buffer_id, size_t size)
++{
++	struct mei_device *bus;
++	struct mei_cl *cl;
++	int ret;
++
++	if (!cldev || !buffer_id || !size)
++		return ERR_PTR(-EINVAL);
++
++	if (!IS_ALIGNED(size, MEI_FW_PAGE_SIZE)) {
++		dev_err(&cldev->dev, "Map size should be aligned to %lu\n",
++			MEI_FW_PAGE_SIZE);
++		return ERR_PTR(-EINVAL);
++	}
++
++	cl = cldev->cl;
++	bus = cldev->bus;
++
++	mutex_lock(&bus->device_lock);
++	if (cl->state == MEI_FILE_UNINITIALIZED) {
++		ret = mei_cl_link(cl);
++		if (ret)
++			goto out;
++		/* update pointers */
++		cl->cldev = cldev;
++	}
++
++	ret = mei_cl_dma_alloc_and_map(cl, NULL, buffer_id, size);
++out:
++	mutex_unlock(&bus->device_lock);
++	if (ret)
++		return ERR_PTR(ret);
++	return cl->dma.vaddr;
++}
++EXPORT_SYMBOL_GPL(mei_cldev_dma_map);
++
++int mei_cldev_dma_unmap(struct mei_cl_device *cldev)
++{
++	struct mei_device *bus;
++	struct mei_cl *cl;
++	int ret;
++
++	if (!cldev)
++		return -EINVAL;
++
++	cl = cldev->cl;
++	bus = cldev->bus;
++
++	mutex_lock(&bus->device_lock);
++	ret = mei_cl_dma_unmap(cl, NULL);
++
++	mei_cl_flush_queues(cl, NULL);
++	mei_cl_unlink(cl);
++	mutex_unlock(&bus->device_lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mei_cldev_dma_unmap);
++
+ /**
+  * mei_cldev_enable - enable me client device
+  *     create connection with me client
+@@ -753,9 +811,11 @@ int mei_cldev_disable(struct mei_cl_device *cldev)
+ 		dev_err(bus->dev, "Could not disconnect from the ME client\n");
  
-+		buff->payload = kzalloc(size, GFP_ATOMIC);
-+		if (!buff->payload) {
-+			kfree(buff);
-+			break;
-+		}
- 		ret = ath11k_dbring_bufs_replenish(ar, ring, buff);
- 		if (ret) {
- 			ath11k_warn(ar->ab, "failed to replenish db ring num_remain %d req_ent %d\n",
- 				    num_remain, req_entries);
-+			kfree(buff->payload);
- 			kfree(buff);
- 			break;
- 		}
-@@ -282,7 +288,7 @@ int ath11k_dbring_buffer_release_event(struct ath11k_base *ab,
+ out:
+-	/* Flush queues and remove any pending read */
+-	mei_cl_flush_queues(cl, NULL);
+-	mei_cl_unlink(cl);
++	/* Flush queues and remove any pending read unless we have mapped DMA */
++	if (!cl->dma_mapped) {
++		mei_cl_flush_queues(cl, NULL);
++		mei_cl_unlink(cl);
++	}
  
- 	srng = &ab->hal.srng_list[ring->refill_srng.ring_id];
- 	num_entry = ev->fixed.num_buf_release_entry;
--	size = sizeof(*buff) + ring->buf_sz + ring->buf_align - 1;
-+	size = ring->buf_sz + ring->buf_align - 1;
- 	num_buff_reaped = 0;
+ 	mutex_unlock(&bus->device_lock);
+ 	return err;
+@@ -1052,6 +1112,7 @@ static void mei_cl_bus_dev_release(struct device *dev)
+ 	if (!cldev)
+ 		return;
  
- 	spin_lock_bh(&srng->lock);
-@@ -319,7 +325,8 @@ int ath11k_dbring_buffer_release_event(struct ath11k_base *ab,
- 			ring->handler(ar, &handler_data);
- 		}
++	mei_cl_flush_queues(cldev->cl, NULL);
+ 	mei_me_cl_put(cldev->me_cl);
+ 	mei_dev_bus_put(cldev->bus);
+ 	mei_cl_unlink(cldev->cl);
+diff --git a/drivers/misc/mei/client.c b/drivers/misc/mei/client.c
+index 96f4e59c32a5..0e90591235a6 100644
+--- a/drivers/misc/mei/client.c
++++ b/drivers/misc/mei/client.c
+@@ -700,6 +700,9 @@ int mei_cl_unlink(struct mei_cl *cl)
  
--		memset(buff, 0, size);
-+		buff->paddr = 0;
-+		memset(buff->payload, 0, size);
- 		ath11k_dbring_bufs_replenish(ar, ring, buff);
- 	}
+ 	cl_dbg(dev, cl, "unlink client");
  
-@@ -346,6 +353,7 @@ void ath11k_dbring_buf_cleanup(struct ath11k *ar, struct ath11k_dbring *ring)
- 		idr_remove(&ring->bufs_idr, buf_id);
- 		dma_unmap_single(ar->ab->dev, buff->paddr,
- 				 ring->buf_sz, DMA_FROM_DEVICE);
-+		kfree(buff->payload);
- 		kfree(buff);
- 	}
++	if (cl->state == MEI_FILE_UNINITIALIZED)
++		return 0;
++
+ 	if (dev->open_handle_count > 0)
+ 		dev->open_handle_count--;
  
-diff --git a/drivers/net/wireless/ath/ath11k/dbring.h b/drivers/net/wireless/ath/ath11k/dbring.h
-index f7fce9e..78a985f 100644
---- a/drivers/net/wireless/ath/ath11k/dbring.h
-+++ b/drivers/net/wireless/ath/ath11k/dbring.h
-@@ -13,7 +13,7 @@
+diff --git a/drivers/misc/mei/hw.h b/drivers/misc/mei/hw.h
+index dfd60c916da0..b46077b17114 100644
+--- a/drivers/misc/mei/hw.h
++++ b/drivers/misc/mei/hw.h
+@@ -22,6 +22,11 @@
+ #define MEI_D0I3_TIMEOUT            5  /* D0i3 set/unset max response time */
+ #define MEI_HBM_TIMEOUT             1  /* 1 second */
  
- struct ath11k_dbring_element {
- 	dma_addr_t paddr;
--	u8 payload[0];
-+	u8 *payload;
- };
++/*
++ * FW page size for DMA allocations
++ */
++#define MEI_FW_PAGE_SIZE 4096UL
++
+ /*
+  * MEI Version
+  */
+diff --git a/include/linux/mei_cl_bus.h b/include/linux/mei_cl_bus.h
+index c6786c12b207..df1fab44ea5c 100644
+--- a/include/linux/mei_cl_bus.h
++++ b/include/linux/mei_cl_bus.h
+@@ -117,4 +117,7 @@ int mei_cldev_enable(struct mei_cl_device *cldev);
+ int mei_cldev_disable(struct mei_cl_device *cldev);
+ bool mei_cldev_enabled(const struct mei_cl_device *cldev);
  
- struct ath11k_dbring_data {
++void *mei_cldev_dma_map(struct mei_cl_device *cldev, u8 buffer_id, size_t size);
++int mei_cldev_dma_unmap(struct mei_cl_device *cldev);
++
+ #endif /* _LINUX_MEI_CL_BUS_H */
 -- 
-2.7.4
+2.25.1
 
