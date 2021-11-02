@@ -2,62 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2CBA442FC5
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Nov 2021 15:05:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E1CC4431B1
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Nov 2021 16:27:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231278AbhKBOIO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Nov 2021 10:08:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36220 "EHLO
+        id S234616AbhKBP30 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Nov 2021 11:29:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230447AbhKBOIM (ORCPT
+        with ESMTP id S234398AbhKBP3Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Nov 2021 10:08:12 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBA96C0613F5
-        for <linux-wireless@vger.kernel.org>; Tue,  2 Nov 2021 07:05:34 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id b71so4261375wmd.2
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Nov 2021 07:05:34 -0700 (PDT)
+        Tue, 2 Nov 2021 11:29:24 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 970CAC061203
+        for <linux-wireless@vger.kernel.org>; Tue,  2 Nov 2021 08:26:49 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id s24so6614836lji.12
+        for <linux-wireless@vger.kernel.org>; Tue, 02 Nov 2021 08:26:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=+IYXwWS8RTx2nLZKN578GTrttVorrBmCdGgRqqEdI34=;
-        b=aDm24t85uRClN+XO1YGgcwD+8BAIZ3ICQ1+kxTfb0AC9ny1rPjXf71kfbXm7rFkw6M
-         mlrAqcVe7aGX96UQRA9prWqVGWvRj+ZlyMGHS3sUa7X7015IG1Ky5fTWFVeB4fT2G4sO
-         7eWEBF8QngyWKZpJzx4IXMGUX5JYeVk11faNoo34GcgiI2cQZqpLHWNIuziPzaygVoVE
-         n4HaIva8ek3caSnNkpkYw6UPm5yMoq4FbYj8qAAN3fR3yhEVAJrOBHan4jMO9qpYBAS9
-         9aXwFslzFJ6JLtT2+BGIOxNFDuICkdlFLtjweURXASUHpyifZ1eK1FRRXq5N59mO1pk+
-         2nTQ==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=fxVnPZH6b6L2I7aYk+0v0By0qTM5ney7UTSCmiLQK+A=;
+        b=x5JmB/0OUUm0n3pUNm0d3bDFVZ9zoYTwmC68+WhMKiYCDd8J6meh19KGHZHjteCmGj
+         Gb+poFRw+Q5O4+zzJh7M1JgxVnp1aEyWS9A6EwcLLgY1LpLfVZUgGn2Yl2smq1KttslG
+         jPUkrYMvywbQCMzI5XmPp3b7So9dWZKEff10PaYosjnRDQLTQFGGPrDw8wBORG8lCbKW
+         055tT1pMfjVah6HOGuwIlD2rt3+wAoJcH5D10pnUSYQaFdjeh/fCItdq489Cn5qMhSnu
+         pXYuysYzaAZvTPJAXCBoDBvy2nCrHmK0DLmb5ukSGYKQGQKHUnB+TYuHVt5IerDWDAHS
+         SkwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=+IYXwWS8RTx2nLZKN578GTrttVorrBmCdGgRqqEdI34=;
-        b=lk7NvP1fB694dCQY0U4zlRAmQ8hTKo2TtDriE/BtgeONOVfAtqbpRPqiXy+kyyp8Js
-         G9p5qQO7Nxg4wNcjoK4Sg1S1pzWDSzFq3u7zazHDg8CFxXBOG7uo0M8Cypa4ppAiZvJ1
-         LUwI1ButbnTsni2DUS2htG2i9goCTXe0trYhzUfPSLiGUInOqfza4oTVEttwVpROF57n
-         wzcClrlho6Re6FY7A6GMkYh1LcoeQqntSUqHSNOGRN0Ert4iwq4XyFuW3xCjfIDOl8ZQ
-         6gKNFcPEj/V3OInQmOjrtmg2q8OPXFQVwt1yL7L5DyOmW13sguUAnMcZ73DIZRL+QqR7
-         CBxQ==
-X-Gm-Message-State: AOAM530Jum6RcMHZ/DSxy//0rSZR2cgRCzzYolQ/69rDQPwaUna/vLIS
-        RtP0+Zd9DlYefTyHQKKslD30lQ==
-X-Google-Smtp-Source: ABdhPJzxg0SHqhkEzFQ1UmuimY5KEsGE4OUHBHVSwXpPdDc44Og9JozAJKDqnW7UGZNY5rLd2HpfGQ==
-X-Received: by 2002:a1c:a904:: with SMTP id s4mr7080812wme.163.1635861933267;
-        Tue, 02 Nov 2021 07:05:33 -0700 (PDT)
-Received: from [192.168.0.30] (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
-        by smtp.gmail.com with ESMTPSA id z12sm12443417wrv.78.2021.11.02.07.05.31
+        bh=fxVnPZH6b6L2I7aYk+0v0By0qTM5ney7UTSCmiLQK+A=;
+        b=71uL5bDFWP+GwFHPnVVBs2JeyLSRPoEDMCfcncT0IBS1ryNf9jTh+V5bpQBC311xhW
+         sIUq5cG6nhF6wANwtAVaE55W4rSVgDGZ5yCw3WC6M7rem5d7Jf5V3rBGjnv0OMbbZ6Dk
+         LIZNCQxodW6kXHt4/xpigQVMLaGyiy5+joFTM8beGEdsn8Zyi3QHFOq0Qlw4cYF355fa
+         eU8yaNdPhQTN9xhVFPg1M8dRdzZrPd+fYgXrv+Kl0bAzWqG9Y0sXFFeLNboVLSk1YZ4P
+         tHnAyaEjTiM8Ja84GhtlNKCE3mykQROboU0fFr58XF0t5k1dKTfzO8NMLO7CI9os2/kI
+         Qc4w==
+X-Gm-Message-State: AOAM5306tncZI5YqZMz26N+vPLZt2Rbf9lhGmA3etanYJlPIQUvW3JfC
+        xcrGofiBjHWVMSXWYSVZ2KiSOg==
+X-Google-Smtp-Source: ABdhPJywD1fXGsmUvzlGsbwzhNq/8e0eLaGhh844IKPxeN7lhccCNTjpZy9biEo0Bug7ay78GS+QVg==
+X-Received: by 2002:a2e:7210:: with SMTP id n16mr29186843ljc.155.1635866807510;
+        Tue, 02 Nov 2021 08:26:47 -0700 (PDT)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id c1sm1844823ljr.111.2021.11.02.08.26.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Nov 2021 07:05:32 -0700 (PDT)
-Message-ID: <df3c0fd1-5ec1-5cf7-f94c-1b2db2882333@linaro.org>
-Date:   Tue, 2 Nov 2021 14:05:31 +0000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v1 00/15] create power sequencing subsystem
-Content-Language: en-US
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Andy Gross <agross@kernel.org>,
+        Tue, 02 Nov 2021 08:26:46 -0700 (PDT)
+Subject: Re: [PATCH v1 01/15] dt-bindings: add pwrseq device tree bindings
+To:     Rob Herring <robh@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Marcel Holtmann <marcel@holtmann.org>,
@@ -66,66 +60,92 @@ To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <2h9GS3myO9uyX8sDYwU_43cDbBCW_SE1h5qolKQLKT9ZVvz0-K6z6cix50eVsgMsYLtgTLsW37DxF0lf78vxCA==@protonmail.internalid>
- <20211006035407.1147909-1-dmitry.baryshkov@linaro.org>
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <20211006035407.1147909-1-dmitry.baryshkov@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>,
+        ath10k@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>
+References: <20211006035407.1147909-1-dmitry.baryshkov@linaro.org>
+ <20211006035407.1147909-2-dmitry.baryshkov@linaro.org>
+ <YXf6TbV2IpPbB/0Y@robh.at.kernel.org>
+ <37b26090-945f-1e17-f6ab-52552a4b6d89@linaro.org>
+ <CAL_JsqLAnJqZ95_bf6_fFmPJFMjuy43UfP2UxzEmFMNnG_t-Ug@mail.gmail.com>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Message-ID: <31792ef1-20b0-b801-23b7-29f303b91def@linaro.org>
+Date:   Tue, 2 Nov 2021 18:26:45 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <CAL_JsqLAnJqZ95_bf6_fFmPJFMjuy43UfP2UxzEmFMNnG_t-Ug@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dmitry,
+On 28/10/2021 00:53, Rob Herring wrote:
+> On Tue, Oct 26, 2021 at 9:42 AM Dmitry Baryshkov
+> <dmitry.baryshkov@linaro.org> wrote:
+>>
+>> On 26/10/2021 15:53, Rob Herring wrote:
+>>> On Wed, Oct 06, 2021 at 06:53:53AM +0300, Dmitry Baryshkov wrote:
+>>>> Add device tree bindings for the new power sequencer subsystem.
+>>>> Consumers would reference pwrseq nodes using "foo-pwrseq" properties.
+>>>> Providers would use '#pwrseq-cells' property to declare the amount of
+>>>> cells in the pwrseq specifier.
+>>>
+>>> Please use get_maintainers.pl.
+>>>
+>>> This is not a pattern I want to encourage, so NAK on a common binding.
+>>
+>>
+>> Could you please spend a few more words, describing what is not
+>> encouraged? The whole foo-subsys/#subsys-cells structure?
+> 
+> No, that's generally how common provider/consumer style bindings work.
+> 
+>> Or just specifying the common binding?
+> 
+> If we could do it again, I would not have mmc pwrseq binding. The
+> properties belong in the device's node. So don't generalize the mmc
+> pwrseq binding.
+> 
+> It's a kernel problem if the firmware says there's a device on a
+> 'discoverable' bus and the kernel can't discover it. I know you have
+> the added complication of a device with 2 interfaces, but please,
+> let's solve one problem at a time.
 
-On 06/10/2021 04:53, Dmitry Baryshkov wrote:
-> This is a proposed power sequencer subsystem. This is a
-> generification of the MMC pwrseq code. The subsystem tries to abstract
-> the idea of complex power-up/power-down/reset of the devices.
-> 
-> The primary set of devices that promted me to create this patchset is
-> the Qualcomm BT+WiFi family of chips. They reside on serial+platform
-> or serial + SDIO interfaces (older generations) or on serial+PCIe (newer
-> generations).  They require a set of external voltage regulators to be
-> powered on and (some of them) have separate WiFi and Bluetooth enable
-> GPIOs.
-> 
-> The major drawback for now is the lack of proper PCIe integration
-> At this moment support for PCIe is hacked up to be able to test the
-> PCIe part of qca6390. Proper PCIe support would require automatically
-> powering up the devices before the scan basing on the proper device
-> structure in the device tree. This two last patches are noted as WIP and
-> are included into the patchset for the purpose of testing WiFi on newer
-> chips (like qca6390/qca6391).
-> 
-> Changes since RFC v2:
->   - Add documentation for the pwrseq code. Document data structures,
->     macros and exported functions.
->   - Export of_pwrseq_xlate_onecell()
->   - Add separate pwrseq_set_drvdata() function to follow the typical API
->     design
->   - Remove pwrseq_get_optional()/devm_pwrseq_get_optional()
->   - Moved code to handle old mmc-pwrseq binding to the MMC patch
->   - Split of_pwrseq_xlate_onecell() support to a separate patch
-> 
-> Changes since RFC v1:
->   - Provider pwrseq fallback support
->   - Implement fallback support in pwrseq_qca.
->   - Mmove susclk handling to pwrseq_qca.
->   - Significantly simplify hci_qca.c changes, by dropping all legacy
->     code. Now hci_qca uses only pwrseq calls to power up/down bluetooth
->     parts of the chip.
-> 
-> 
-> 
-Tested-by: Caleb Connolly <caleb.connolly@linaro.org>
-[Tested on the OnePlus 6]
+The PCI bus handling is a separate topic for now (as you have seen from 
+the clearly WIP patches targeting just testing of qca6390's wifi part).
+
+For me there are three parts of the device:
+- power regulator / device embedded power domain.
+- WiFi
+- Bluetooth
+
+With the power regulator being a complex and a bit nasty beast. It has 
+several regulators beneath, which have to be powered up in a proper way.
+Next platforms might bring additional requirements common to both WiFi 
+and BT parts (like having additional clocks, etc). It is externally 
+controlled (after providing power to it you have to tell, which part of 
+the chip is required by pulling up the WiFi and/or BT enable GPIOs.
+
+Having to duplicate this information in BT and WiFi cases results in 
+non-aligned bindings (with WiFi and BT parts using different set of 
+properties and different property names) and non-algined drivers (so the 
+result of the powerup would depend on the order of drivers probing).
+
+So far I still suppose that having a single separate entity controlling 
+the powerup of such chips is the right thing to do.
+
+I'd prefer to use the power-domain bindings (as the idea seems to be 
+aligned here), but as the power-domain is used for the in-chip power 
+domains, we had to invent the pwrseq name.
 
 -- 
-Kind Regards,
-Caleb (they/them)
+With best wishes
+Dmitry
