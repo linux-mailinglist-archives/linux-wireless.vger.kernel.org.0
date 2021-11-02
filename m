@@ -2,113 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88B1C4421BB
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Nov 2021 21:35:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 708BF44256C
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Nov 2021 03:03:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230317AbhKAUh4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Nov 2021 16:37:56 -0400
-Received: from mail-oi1-f174.google.com ([209.85.167.174]:44697 "EHLO
-        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229966AbhKAUhj (ORCPT
+        id S229505AbhKBCGJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 Nov 2021 22:06:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43592 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229526AbhKBCGI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Nov 2021 16:37:39 -0400
-Received: by mail-oi1-f174.google.com with SMTP id w1so286492oiw.11;
-        Mon, 01 Nov 2021 13:35:05 -0700 (PDT)
+        Mon, 1 Nov 2021 22:06:08 -0400
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94AE4C061767
+        for <linux-wireless@vger.kernel.org>; Mon,  1 Nov 2021 19:03:34 -0700 (PDT)
+Received: by mail-yb1-xb42.google.com with SMTP id v138so43743668ybb.8
+        for <linux-wireless@vger.kernel.org>; Mon, 01 Nov 2021 19:03:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
+        b=QAYRqexm7ae0TzZC28Cl4ShsUcrd2VpOHB6ajKwv6GLpJ4FaGYEe7QtCLGtAmZlATa
+         PhWq2lcs9ZA9FLnn84S/Cu3RhKsBB8AXsgYJ/lZny0ZkwTz6AcQiGGjAhCsi//0Y5Ff3
+         mWKc0dDs9MScEZjtGAeNRwkPCH8FGTarEBDLJL6S4a7LdL7HL9sRU0c655nhE6dglf2W
+         NRXI0xNCfn9zugKNNOr5ypqdrNGOH34iiVxUKYKZc07ja/Sv4+eNiveQXYzwP8d+zKcl
+         zWhfSdj6N50xMAQsXt4E9A6yiqjK+RoIBvU7nqLVBFEaa6/FYntQXphHr17aAijV92kF
+         E1bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=7jMCRGui2/Gum4mb5UjGuBVKQlP/7omX+39AlRJjhUM=;
-        b=ugWAqEAnFZ0rn/NsfstT2GleOz394lQTHdUtSB1EpO9SfSHcLnN34jD80Z954opKCc
-         bpthxVV2TYf8gjI8hBfTNSQBVdvAUzQVKlfLJfEnRYxQACZxXg+Y17bFkYhNwtR5hlKD
-         cHvUd1cy7Mq8cTGWgDlhijlrsXDIc/ZyGX9yrjhIXT4q/k/X5np29Mnp7sGXobI35vBm
-         8Nm4x/wEiwFdDY0UxqvxmYbd+rsIxTI4BgaRH6VabCMVqRzp0ebJblzX/xeeN1brvrzZ
-         7C5z9gF52op2uUBDiUaNvbFhDfc4VENiAqhXFHYRASq2g7Xn0NPvfU83fuF/qOisFJ2a
-         tg8A==
-X-Gm-Message-State: AOAM530KfEV5Qm5XgiByinnCs6d0J38LFX03l/LkPnxXiag3bPFsUAG3
-        JhVwOBpUl9BQ/ivBs2ryCQ==
-X-Google-Smtp-Source: ABdhPJyzobvdnowFNE2K2Dz5NpV+H/uhhJTM9QM+KIyZSoj/dye1t89/4YPEZgz3psioLjsPPZJeHg==
-X-Received: by 2002:aca:502:: with SMTP id 2mr1142915oif.121.1635798905160;
-        Mon, 01 Nov 2021 13:35:05 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id ay6sm1242483oob.17.2021.11.01.13.35.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Nov 2021 13:35:04 -0700 (PDT)
-Received: (nullmailer pid 1000398 invoked by uid 1000);
-        Mon, 01 Nov 2021 20:35:03 -0000
-Date:   Mon, 1 Nov 2021 15:35:03 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Anilkumar Kolli <akolli@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt: bindings: add new DT entry for ath11k PCI device
- support
-Message-ID: <YYBPd+Z/dA/pTReo@robh.at.kernel.org>
-References: <1635175648-23491-1-git-send-email-akolli@codeaurora.org>
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
+        b=0EyebEHqQtQa5NpHrMTt6rmUfgFID1qoxiC34hb1WcF4mKeNIuDiAcVQxTbZvbj7+r
+         GePrbMAuIKLJTJeu55w+4U1VE31Zsk72gkS2oLJbqj2A3yNgctCr8+BeH+axFVvOAXmN
+         IVIbrfq4G9KMwA0T8hxUJd3vZm83amCuDEVSwP/d+8tMq7GxCWGQn4Ct1fgEWXL/UTQ6
+         4d1B/ASuZATxqjF0dQ/AjbiES6y+ry2QEWPE8OLfLRaoFlaLlF+Mzr6v3tK6KN919guo
+         vv+FXFd78XEW9vmX5tmTRzpyuxIDcEvG/HYUsFSw6JL5SoY0qdd74mSeL4jqIoWLJt1e
+         ZcwA==
+X-Gm-Message-State: AOAM53242mkBCueDJBJH+A978XkBCpFtZZc8Yqqg2z45W1ENW4UZnzWt
+        QSTwFJIJlqvuUiVthL97Oeo/z7jDmH3aYf9JcnM=
+X-Google-Smtp-Source: ABdhPJyQyBohFaMMZgXXdv9Rq0bRcBNpNtLHZkCqW3GzNpaEXV3R+PrNJzmL0f/2SIollwo7BEM8VcqkH/OS7z0kctI=
+X-Received: by 2002:a25:c3c7:: with SMTP id t190mr22224297ybf.460.1635818613614;
+ Mon, 01 Nov 2021 19:03:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1635175648-23491-1-git-send-email-akolli@codeaurora.org>
+Sender: mr.azzizsalim@gmail.com
+Received: by 2002:a05:7110:1109:b0:103:9d17:37a0 with HTTP; Mon, 1 Nov 2021
+ 19:03:33 -0700 (PDT)
+From:   "Mr. Mustafa Ali." <muafalia@gmail.com>
+Date:   Tue, 2 Nov 2021 03:03:33 +0100
+X-Google-Sender-Auth: QXUHD1UsrX-lu1PX9PA-wL_j1UU
+Message-ID: <CADCzDA06jy4h0GT=voLx7hONgLUDGOrzW-2-eWByjHAwwGZJzg@mail.gmail.com>
+Subject: Greetings Dear Friend.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Oct 25, 2021 at 08:57:27PM +0530, Anilkumar Kolli wrote:
-> Ath11k driver supports PCI devices such as QCN9074/QCA6390.
-> Ath11k firmware uses host DDR memory, DT entry is used to reserve
-> these host DDR memory regions, send these memory base
-> addresses using DT entries.
-> 
-> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
-> ---
->  .../bindings/net/wireless/qcom,ath11k.yaml         | 38 ++++++++++++++++++++++
->  1 file changed, 38 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> index 5ac9616c9239..c7e6612e949c 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> @@ -19,6 +19,10 @@ description: |
->    These devices use HOST DDR memory, HOST DDR memory can be reserved
->    and send to ath11k driver from DT.
->  
-> +  ATH11K supports PCI devices like QCA6390,QCN9074.
-> +  These devices use host DDR memory, host DDR memory can be reserved
-> +  and send to ath11k driver from DT.
-> +
->  properties:
->    compatible:
->      enum:
-> @@ -177,6 +181,29 @@ properties:
->      description:
->        HOST DDR end address.
->  
-> +  qcom,base-addr:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Host DDR base address for firmware. QCN9074 firmware uses 45 MB of host
-> +      DDR memory in mode-0 and 15 MB of host DDR memory in mode-2.
-> +
-> +  qcom,caldb-addr:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Host DDR address to store CALDB. CALDB is calibration data base
-> +      for WLAN channel and tx power.
-> +
+Hello Friend,
 
-Use /reserved-memory entries for these.
+This message might meet you in utmost surprise. However, It's just my
+urgent need for a foreign partner that made me contact you for this
+transaction. I assured you of honesty and reliability to champion this
+business opportunity. I am a banker by profession in Turkey, and
+currently holding the post of Auditor in Standard Chartered Bank.
 
-> +  qcom,start-addr:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Host DDR start address. For example on x86 it is 0x0,
-> +      on IPQ8074 it is 0x41000000.
-> +
-> +  qcom,end-addr:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Host DDR end address.
+I have the opportunity of transferring the leftover funds ($15 Million
+Dollars) of one of my clients who died along with his entire family in
+a crisis in Myanmar Asia. I am inviting you for a business deal where
+this money can be shared between us if you agree to my business
+proposal.
 
-Nak. I don't know what you are doing with these 2, but it's wrong.
+Further details of the transfer will be forwarded to you immediately
+after I receive your return letter.
 
-Rob
+Best Regards,
+Mr. Mustafa Ali.
+mustafa.ali@rahroco.com
