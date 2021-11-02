@@ -2,156 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 930174425A6
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Nov 2021 03:29:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE46E4426D7
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Nov 2021 06:42:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229612AbhKBCbw convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 Nov 2021 22:31:52 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:49590 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbhKBCbv (ORCPT
+        id S229497AbhKBFoU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Nov 2021 01:44:20 -0400
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:46993 "EHLO
+        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229486AbhKBFoT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 Nov 2021 22:31:51 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1A22TAk04032299, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1A22TAk04032299
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 2 Nov 2021 10:29:10 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Tue, 2 Nov 2021 10:29:07 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Tue, 2 Nov 2021 10:29:07 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
- RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
- 15.01.2308.015; Tue, 2 Nov 2021 10:29:07 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Brian Norris <briannorris@chromium.org>
-CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "steventing@realtek.com" <steventing@realtek.com>
-Subject: RE: [PATCH v2 2/2] rtw88: add debugfs to force lowest basic rate
-Thread-Topic: [PATCH v2 2/2] rtw88: add debugfs to force lowest basic rate
-Thread-Index: AQHXNyRAk4gBeAyeS0qjcLM9a2bOoqsPNd6AgOB7deSAAQLDgA==
-Date:   Tue, 2 Nov 2021 02:29:06 +0000
-Message-ID: <655e0265105d43488ce19b471fe2fc22@realtek.com>
-References: <20210422030413.9738-1-pkshih@realtek.com>
-        <20210422030413.9738-2-pkshih@realtek.com>      <YMPqT8VH5alHQXXA@google.com>
- <87k0hs2l9i.fsf@codeaurora.org>
-In-Reply-To: <87k0hs2l9i.fsf@codeaurora.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/11/2_=3F=3F_12:42:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Tue, 2 Nov 2021 01:44:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1635831705; x=1667367705;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=h/R3ybRNJOwRMKQUJ9PXBt3E9jGLPafBWDnsilxKGKI=;
+  b=FuOmHN781Igw4NPijeHd6WZ2HkOnepv7XqO4zDRCtxzLvyVW6kE0mMq5
+   0P1YyHulr8wGlYMmx3D1Jt2Oeqm2GeJCVEcG+5UecmaaNldj+U7OJEr9f
+   yZ7jRem/6MxuMrAF6NzxKjjIbvc2cFGjyZKyyXBHZtEyawpVFcEU0ZIyD
+   k=;
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 01 Nov 2021 22:41:44 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2021 22:41:44 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
+ Mon, 1 Nov 2021 22:41:44 -0700
+Received: from ramess-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
+ Mon, 1 Nov 2021 22:41:42 -0700
+From:   Rameshkumar Sundaram <quic_ramess@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Subject: [PATCH] ath11k: use cache line aligned buffers for dbring
+Date:   Tue, 2 Nov 2021 11:11:33 +0530
+Message-ID: <1635831693-15962-1-git-send-email-quic_ramess@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/02/2021 02:06:56
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 167045 [Nov 01 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;patchwork.kernel.org:7.1.1;lore.kernel.org:7.1.1
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/02/2021 02:10:00
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+The DMA buffers of dbring which is used for spectral/cfr
+starts at certain offset from original kmalloc() returned buffer.
+This is not cache line aligned.
+And also driver tries to access the data that is immediately before
+this offset address (i.e. buff->paddr) after doing dma map.
+This will cause cache line sharing issues and data corruption,
+if CPU happen to write back cache after HW has dma'ed the data.
 
-> -----Original Message-----
-> From: kvalo=codeaurora.org@mg.codeaurora.org <kvalo=codeaurora.org@mg.codeaurora.org> On Behalf Of Kalle
-> Valo
-> Sent: Monday, November 1, 2021 7:01 PM
-> To: Brian Norris <briannorris@chromium.org>
-> Cc: Pkshih <pkshih@realtek.com>; tony0620emma@gmail.com; linux-wireless@vger.kernel.org;
-> steventing@realtek.com
-> Subject: Re: [PATCH v2 2/2] rtw88: add debugfs to force lowest basic rate
-> 
-> (replying to an old thread:
-> 
-> https://patchwork.kernel.org/project/linux-wireless/patch/20210422030413.9738-2-pkshih@realtek.com/ )
-> 
-> 
-> Brian Norris <briannorris@chromium.org> writes:
-> 
-> > On Thu, Apr 22, 2021 at 11:04:13AM +0800, Ping-Ke Shih wrote:
-> >> From: Yu-Yen Ting <steventing@realtek.com>
-> >>
-> >> The management frame with high rate e.g. 24M may not be transmitted
-> >> smoothly in long range environment.
-> >> Add a debugfs to force to use the lowest basic rate
-> >> in order to debug the reachability of transmitting management frame.
-> >>
-> >> obtain current setting
-> >> cat /sys/kernel/debug/ieee80211/phyX/rtw88/basic_rates
-> >>
-> >> force lowest rate:
-> >> echo 1 > /sys/kernel/debug/ieee80211/phyX/rtw88/basic_rates
-> >>
-> >> Signed-off-by: Yu-Yen Ting <steventing@realtek.com>
-> >> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> >
-> > I believe some initial objection to this was because it was unclear if
-> > this is for "production" use (e.g., recommending distros to play with
-> > this) or for debugging. I'll admit, I requested the feature for patch 1,
-> > because I've seen that for those networks where people *do* configure
-> > odd Basic Rates, they intend for stations to follow those, and not use
-> > the lowest (and most airtime-hogging) rates.
-> >
-> > And I can say, I don't see why distributions should be turning that back
-> > off. If the Basic Rates setting is wrong, then the that's up to the
-> > network admin to fix.
-> >
-> > All that is to say: I agree that this patch is purely for debugging, as
-> > stated, and that it belongs in debugfs. I also maintain a distribution,
-> > and I don't plan on using this beyond debugging.
-> >
-> > Therefore:
-> >
-> > Reviewed-by: Brian Norris <briannorris@chromium.org>
-> 
-> Ok, fair enough as long as this will not end up normal users using it. I
-> still would prefer to have extensive bitrate handling via nl80211 but
-> clearly it's not going anywhere.
-> 
-> But could the debugfs filename be more descriptive, for example
-> force_basic_rates or something like that?
-> 
+Fix this by mapping a cache line aligned buffer to dma.
 
-OK. Use 'force_lowest_basic_rate' by v3 [1].
+Tested on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
 
-[1] https://lore.kernel.org/linux-wireless/20211102022454.10944-1-pkshih@realtek.com/T/#t
+Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/dbring.c | 16 ++++++++++++----
+ drivers/net/wireless/ath/ath11k/dbring.h |  2 +-
+ 2 files changed, 13 insertions(+), 5 deletions(-)
 
---
-Ping-Ke
+diff --git a/drivers/net/wireless/ath/ath11k/dbring.c b/drivers/net/wireless/ath/ath11k/dbring.c
+index fd98ba5..de220a1 100644
+--- a/drivers/net/wireless/ath/ath11k/dbring.c
++++ b/drivers/net/wireless/ath/ath11k/dbring.c
+@@ -87,17 +87,23 @@ static int ath11k_dbring_fill_bufs(struct ath11k *ar,
+ 	req_entries = min(num_free, ring->bufs_max);
+ 	num_remain = req_entries;
+ 	align = ring->buf_align;
+-	size = sizeof(*buff) + ring->buf_sz + align - 1;
++	size = ring->buf_sz + align - 1;
+ 
+ 	while (num_remain > 0) {
+-		buff = kzalloc(size, GFP_ATOMIC);
++		buff = kzalloc(sizeof(*buff), GFP_ATOMIC);
+ 		if (!buff)
+ 			break;
+ 
++		buff->payload = kzalloc(size, GFP_ATOMIC);
++		if (!buff->payload) {
++			kfree(buff);
++			break;
++		}
+ 		ret = ath11k_dbring_bufs_replenish(ar, ring, buff);
+ 		if (ret) {
+ 			ath11k_warn(ar->ab, "failed to replenish db ring num_remain %d req_ent %d\n",
+ 				    num_remain, req_entries);
++			kfree(buff->payload);
+ 			kfree(buff);
+ 			break;
+ 		}
+@@ -282,7 +288,7 @@ int ath11k_dbring_buffer_release_event(struct ath11k_base *ab,
+ 
+ 	srng = &ab->hal.srng_list[ring->refill_srng.ring_id];
+ 	num_entry = ev->fixed.num_buf_release_entry;
+-	size = sizeof(*buff) + ring->buf_sz + ring->buf_align - 1;
++	size = ring->buf_sz + ring->buf_align - 1;
+ 	num_buff_reaped = 0;
+ 
+ 	spin_lock_bh(&srng->lock);
+@@ -319,7 +325,8 @@ int ath11k_dbring_buffer_release_event(struct ath11k_base *ab,
+ 			ring->handler(ar, &handler_data);
+ 		}
+ 
+-		memset(buff, 0, size);
++		buff->paddr = 0;
++		memset(buff->payload, 0, size);
+ 		ath11k_dbring_bufs_replenish(ar, ring, buff);
+ 	}
+ 
+@@ -346,6 +353,7 @@ void ath11k_dbring_buf_cleanup(struct ath11k *ar, struct ath11k_dbring *ring)
+ 		idr_remove(&ring->bufs_idr, buf_id);
+ 		dma_unmap_single(ar->ab->dev, buff->paddr,
+ 				 ring->buf_sz, DMA_FROM_DEVICE);
++		kfree(buff->payload);
+ 		kfree(buff);
+ 	}
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/dbring.h b/drivers/net/wireless/ath/ath11k/dbring.h
+index f7fce9e..78a985f 100644
+--- a/drivers/net/wireless/ath/ath11k/dbring.h
++++ b/drivers/net/wireless/ath/ath11k/dbring.h
+@@ -13,7 +13,7 @@
+ 
+ struct ath11k_dbring_element {
+ 	dma_addr_t paddr;
+-	u8 payload[0];
++	u8 *payload;
+ };
+ 
+ struct ath11k_dbring_data {
+-- 
+2.7.4
 
