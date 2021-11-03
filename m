@@ -2,274 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A44B443840
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Nov 2021 23:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A37443A43
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Nov 2021 01:08:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231304AbhKBWLW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Nov 2021 18:11:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35312 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231167AbhKBWLW (ORCPT
+        id S231325AbhKCALR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Nov 2021 20:11:17 -0400
+Received: from mailgw01.mediatek.com ([216.200.240.184]:61152 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230462AbhKCALR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Nov 2021 18:11:22 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7523EC061714
-        for <linux-wireless@vger.kernel.org>; Tue,  2 Nov 2021 15:08:46 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id c4so634522wrd.9
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Nov 2021 15:08:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kresin-me.20210112.gappssmtp.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=QQtsdMBTYCrx4ZIdrwpM406mJ59MqUemBaN1hkUC/SQ=;
-        b=h9YP238PcOXtz7wky3z+3DTOyYTZQKzPCN3N5rN6iMGWmpLjFBznmW5wgRIS+2TjeQ
-         wQ5PhXn+DvfpDYtJv2K/uuSP3Tv8Pq2ATyXDGohJxl4mSFtTY0LrzW7flJhSSHAn6NRY
-         5TfHOQn5gFnsWo7Jlts1+IDVQMXHnS5XeUwKE8s3il7yzbYuWybDbf9W4zAMB22MBYct
-         P+B4+iDUJV7sZ7izhB+3TCcnq63zyjih0gAgbcCjiq+SETdmD5g+mzDXhdA5259AtLLZ
-         3KLhBJL3bljuqYlr93ryn1B/4kD7ZDfYC9Mm/FF9GkCSZqs8IlnivToAq0GXT3l8C/ZT
-         /IBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=QQtsdMBTYCrx4ZIdrwpM406mJ59MqUemBaN1hkUC/SQ=;
-        b=N+tQUlwgL1lEX1DuRCPppFWPbkS2qPU4lHyxIBT2UyATE/QglXK/sSO8Vt3qA2o3Wl
-         OT2pazoSHk+XrZFfPo3IDFx6Mw+eojapc8/4imYcrUlOIKwP2sVp1TXiJ5gWUkr0bFDj
-         T8bO8q69mDa7AYKqSVC3uNPb77Cn6IPG7Ce3s4zbRXFeqHTwRppSJf6TISeTYXKgwALq
-         Srx5vROlhMhH0ONEtV0Q0XXcIg72Vi/FgStaXjkO9PsOXr/q2i+uHiL8c5cDUAj5Gxu4
-         qi0I4gRKNM3Icx3KpLaOZM1qFKNfWg1BRyULdYT7TqQKPWC8fOvABs54UwKiI2D7Mu7c
-         nYFQ==
-X-Gm-Message-State: AOAM5313IMHeJ83lqP3EeeJ9unp5XeUCAZ/s6IY9/wbUBLEKA2ExDGeL
-        IKPX48zPpIOkM/ROvfQ8cAQIwruNgWofLVnK1dniVA==
-X-Google-Smtp-Source: ABdhPJxUvC2/L/kChoDWTaNu+8S1bSxZ9jfOV9n1fXrshS6RY3O71hlhviL+BXHtA7AQ41UCBSrEHA==
-X-Received: by 2002:adf:f209:: with SMTP id p9mr47842973wro.191.1635890924929;
-        Tue, 02 Nov 2021 15:08:44 -0700 (PDT)
-Received: from ?IPv6:2003:ec:2f1f:8200:b487:4c63:5540:3502? (p200300ec2f1f8200b4874c6355403502.dip0.t-ipconnect.de. [2003:ec:2f1f:8200:b487:4c63:5540:3502])
-        by smtp.gmail.com with ESMTPSA id g3sm285760wri.45.2021.11.02.15.08.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Nov 2021 15:08:44 -0700 (PDT)
-Subject: Re: [RFC net-next/wireless-next v1 2/2] ath10k: move
- device_get_mac_address() and pass errors up the chain
-To:     Christian Lamparter <chunkeey@gmail.com>, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org
-Cc:     Ansuel Smith <ansuelsmth@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>, Michael Walle <michael@walle.cc>,
-        Arnd Bergmann <arnd@arndb.de>
-References: <20211030174111.1432663-1-chunkeey@gmail.com>
- <20211030174111.1432663-2-chunkeey@gmail.com>
-From:   Mathias Kresin <dev@kresin.me>
-Message-ID: <2caec4e0-94f4-915c-60d1-c78e7bdc5364@kresin.me>
-Date:   Tue, 2 Nov 2021 23:08:43 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        Tue, 2 Nov 2021 20:11:17 -0400
+X-UUID: 649f9799d1ed46c2b525eab5108a35b4-20211102
+X-UUID: 649f9799d1ed46c2b525eab5108a35b4-20211102
+Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1489918811; Tue, 02 Nov 2021 17:08:40 -0700
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ MTKMBS62DR.mediatek.inc (172.29.94.18) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 2 Nov 2021 17:05:30 -0700
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 3 Nov 2021 08:05:16 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
+        <steve.lee@mediatek.com>, <jsiuda@google.com>,
+        <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH] mt76: mt7921: fix MT7921E reset failure
+Date:   Wed, 3 Nov 2021 08:05:16 +0800
+Message-ID: <2932b5b4f3ab1604971ca93d2e3bc483ceb6a46a.1635897433.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-In-Reply-To: <20211030174111.1432663-2-chunkeey@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: de-DE
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hey Christian,
+From: Sean Wang <sean.wang@mediatek.com>
 
-just a drive-by comment inline.
+There is a missing mt7921e_driver_own in the MT7921E reset procedure
+since the mt7921 mcu.c has been refactored for MT7921S, that will
+result in MT7921E reset failure, so add it back now.
 
-Mathias
+Fixes: dfc7743de1eb ("mt76: mt7921: refactor mcu.c to be bus independent")
+Reported-by: YN Chen <YN.Chen@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h  | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c | 4 ++++
+ drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c | 2 +-
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-10/30/21 7:41 PM, Christian Lamparter:
-> device_get_mac_address() can now return -EPROBE_DEFER.
-> This has to be passed back to the device subsystem so
-> the driver will be probed again at a later time.
-> 
-> This was somewhat involved because the best place for this
-> seemed in ath10k_core_create() right after allocation.
-> Thing is that ath10k_core_create() was setup to either
-> return a valid ath10k* instance, or NULL. So each ath10k
-> implementation has to be modified to account for ERR_PTR.
-> 
-> This introduces a new side-effect: the returned error codes
-> from ath10k_core_create() will now be passed along. It's no
-> longer just -ENOMEM.
-> 
-> Note: If device_get_mac_address() didn't get a valid MAC from
-> either the DT/ACPI, nvmem, etc... the driver will just generate
-> random MAC (same as it did before).
-> 
-> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-> ---
-> @Kalle from what I can tell, this is how nvmem-mac could be
-> done with the existing device_get_mac_address() - at a
-> different place. The reason for the move was that -EPROBE_DEFER
-> needs to be returned by the pci/usb/snoc/ahb _probe functions().
-> This wasn't possible in the old location. As ath10k deferres
-> the "bring-up" process into a workqueue task which can't return
-> any errors (it just printk/dev_err them at the end).
-> Also, When I was asking around about this. The common consensus was
-> to just post it and see. This is based on net-next + wireless-testing
-> 
->   drivers/net/wireless/ath/ath10k/ahb.c  |  8 +++++---
->   drivers/net/wireless/ath/ath10k/core.c | 14 ++++++++------
->   drivers/net/wireless/ath/ath10k/pci.c  |  8 +++++---
->   drivers/net/wireless/ath/ath10k/sdio.c |  8 +++++---
->   drivers/net/wireless/ath/ath10k/snoc.c |  8 +++++---
->   drivers/net/wireless/ath/ath10k/usb.c  |  8 +++++---
->   6 files changed, 33 insertions(+), 21 deletions(-)
-> 
->   
-> 
-> diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
-> index ab8f77ae5e66..ad282a06b376 100644
-> --- a/drivers/net/wireless/ath/ath10k/ahb.c
-> +++ b/drivers/net/wireless/ath/ath10k/ahb.c
-> @@ -745,9 +745,11 @@ static int ath10k_ahb_probe(struct platform_device *pdev)
->   	size = sizeof(*ar_pci) + sizeof(*ar_ahb);
->   	ar = ath10k_core_create(size, &pdev->dev, ATH10K_BUS_AHB,
->   				hw_rev, &ath10k_ahb_hif_ops);
-> -	if (!ar) {
-> -		dev_err(&pdev->dev, "failed to allocate core\n");
-> -		return -ENOMEM;
-> +	if (IS_ERR(ar)) {
-> +		ret = PTR_ERR(ar);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&pdev->dev, "failed to allocate core: %d\n", ret);
-
-There's a helper for that: dev_err_probe().
-
-> +		return ret;
->   	}
->   
->   	ath10k_dbg(ar, ATH10K_DBG_BOOT, "ahb probe\n");
-> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-> index 72a366aa9f60..85d2e8143101 100644
-> --- a/drivers/net/wireless/ath/ath10k/core.c
-> +++ b/drivers/net/wireless/ath/ath10k/core.c
-> @@ -3291,8 +3291,6 @@ static int ath10k_core_probe_fw(struct ath10k *ar)
->   		ath10k_debug_print_board_info(ar);
->   	}
->   
-> -	device_get_mac_address(ar->dev, ar->mac_addr);
-> -
->   	ret = ath10k_core_init_firmware_features(ar);
->   	if (ret) {
->   		ath10k_err(ar, "fatal problem with firmware features: %d\n",
-> @@ -3451,11 +3449,11 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
->   				  const struct ath10k_hif_ops *hif_ops)
->   {
->   	struct ath10k *ar;
-> -	int ret;
-> +	int ret = -ENOMEM;
->   
->   	ar = ath10k_mac_create(priv_size);
->   	if (!ar)
-> -		return NULL;
-> +		goto err_out;
->   
->   	ar->ath_common.priv = ar;
->   	ar->ath_common.hw = ar->hw;
-> @@ -3464,6 +3462,10 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
->   	ar->hif.ops = hif_ops;
->   	ar->hif.bus = bus;
->   
-> +	ret = device_get_mac_address(dev, ar->mac_addr);
-> +	if (ret == -EPROBE_DEFER)
-> +		goto err_free_mac;
-> +
->   	switch (hw_rev) {
->   	case ATH10K_HW_QCA988X:
->   	case ATH10K_HW_QCA9887:
-> @@ -3580,8 +3582,8 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
->   	destroy_workqueue(ar->workqueue);
->   err_free_mac:
->   	ath10k_mac_destroy(ar);
-> -
-> -	return NULL;
-> +err_out:
-> +	return ERR_PTR(ret);
->   }
->   EXPORT_SYMBOL(ath10k_core_create);
->   
-> diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-> index 4d4e2f91e15c..f4736148a382 100644
-> --- a/drivers/net/wireless/ath/ath10k/pci.c
-> +++ b/drivers/net/wireless/ath/ath10k/pci.c
-> @@ -3602,9 +3602,11 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
->   
->   	ar = ath10k_core_create(sizeof(*ar_pci), &pdev->dev, ATH10K_BUS_PCI,
->   				hw_rev, &ath10k_pci_hif_ops);
-> -	if (!ar) {
-> -		dev_err(&pdev->dev, "failed to allocate core\n");
-> -		return -ENOMEM;
-> +	if (IS_ERR(ar)) {
-> +		ret = PTR_ERR(ar);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&pdev->dev, "failed to allocate core: %d\n", ret);
-> +		return ret;
->   	}
->   
->   	ath10k_dbg(ar, ATH10K_DBG_BOOT, "pci probe %04x:%04x %04x:%04x\n",
-> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-> index 63e1c2d783c5..87941e047d07 100644
-> --- a/drivers/net/wireless/ath/ath10k/sdio.c
-> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
-> @@ -2526,9 +2526,11 @@ static int ath10k_sdio_probe(struct sdio_func *func,
->   
->   	ar = ath10k_core_create(sizeof(*ar_sdio), &func->dev, ATH10K_BUS_SDIO,
->   				hw_rev, &ath10k_sdio_hif_ops);
-> -	if (!ar) {
-> -		dev_err(&func->dev, "failed to allocate core\n");
-> -		return -ENOMEM;
-> +	if (IS_ERR(ar)) {
-> +		ret = PTR_ERR(ar);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&func->dev, "failed to allocate core: %d\n", ret);
-> +		return ret;
->   	}
->   
->   	netif_napi_add(&ar->napi_dev, &ar->napi, ath10k_sdio_napi_poll,
-> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-> index 9513ab696fff..b9ac89e226a2 100644
-> --- a/drivers/net/wireless/ath/ath10k/snoc.c
-> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
-> @@ -1728,9 +1728,11 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
->   
->   	ar = ath10k_core_create(sizeof(*ar_snoc), dev, ATH10K_BUS_SNOC,
->   				drv_data->hw_rev, &ath10k_snoc_hif_ops);
-> -	if (!ar) {
-> -		dev_err(dev, "failed to allocate core\n");
-> -		return -ENOMEM;
-> +	if (IS_ERR(ar)) {
-> +		ret = PTR_ERR(ar);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(dev, "failed to allocate core: %d\n", ret);
-> +		return ret;
->   	}
->   
->   	ar_snoc = ath10k_snoc_priv(ar);
-> diff --git a/drivers/net/wireless/ath/ath10k/usb.c b/drivers/net/wireless/ath/ath10k/usb.c
-> index 3d98f19c6ec8..d6dc830a6fa8 100644
-> --- a/drivers/net/wireless/ath/ath10k/usb.c
-> +++ b/drivers/net/wireless/ath/ath10k/usb.c
-> @@ -987,9 +987,11 @@ static int ath10k_usb_probe(struct usb_interface *interface,
->   
->   	ar = ath10k_core_create(sizeof(*ar_usb), &dev->dev, ATH10K_BUS_USB,
->   				hw_rev, &ath10k_usb_hif_ops);
-> -	if (!ar) {
-> -		dev_err(&dev->dev, "failed to allocate core\n");
-> -		return -ENOMEM;
-> +	if (IS_ERR(ar)) {
-> +		ret = PTR_ERR(ar);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&dev->dev, "failed to allocate core: %d\n", ret);
-> +		return ret;
->   	}
->   
->   	usb_get_dev(dev);
-> 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index e9c7c3a19507..d6b823713ba3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -446,6 +446,7 @@ int mt7921_mcu_restart(struct mt76_dev *dev);
+ 
+ void mt7921e_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
+ 			  struct sk_buff *skb);
++int mt7921e_driver_own(struct mt7921_dev *dev);
+ int mt7921e_mac_reset(struct mt7921_dev *dev);
+ int mt7921e_mcu_init(struct mt7921_dev *dev);
+ int mt7921s_wfsys_reset(struct mt7921_dev *dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+index f9547d27356e..85286cc9add1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+@@ -321,6 +321,10 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
+ 		MT_INT_MCU_CMD);
+ 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
+ 
++	err = mt7921e_driver_own(dev);
++	if (err)
++		return err;
++
+ 	err = mt7921_run_firmware(dev);
+ 	if (err)
+ 		goto out;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+index 583a89a34734..7b34c7f2ab3a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+@@ -4,7 +4,7 @@
+ #include "mt7921.h"
+ #include "mcu.h"
+ 
+-static int mt7921e_driver_own(struct mt7921_dev *dev)
++int mt7921e_driver_own(struct mt7921_dev *dev)
+ {
+ 	u32 reg = mt7921_reg_map_l1(dev, MT_TOP_LPCR_HOST_BAND0);
+ 
+-- 
+2.25.1
 
