@@ -2,22 +2,22 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E87B444975
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Nov 2021 21:18:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCEEF4449EC
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Nov 2021 21:58:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231588AbhKCUU6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Nov 2021 16:20:58 -0400
-Received: from mout-p-101.mailbox.org ([80.241.56.151]:30018 "EHLO
-        mout-p-101.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231440AbhKCUU4 (ORCPT
+        id S231335AbhKCVBO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Nov 2021 17:01:14 -0400
+Received: from mout-p-201.mailbox.org ([80.241.56.171]:10690 "EHLO
+        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230172AbhKCVBO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Nov 2021 16:20:56 -0400
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [80.241.60.233])
+        Wed, 3 Nov 2021 17:01:14 -0400
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [80.241.60.245])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4Hkykx1D5bzQk1x;
-        Wed,  3 Nov 2021 21:18:17 +0100 (CET)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4HkzdR6K5VzQlYP;
+        Wed,  3 Nov 2021 21:58:35 +0100 (CET)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 From:   =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>
 To:     Amitkumar Karwar <amitkarwar@gmail.com>,
@@ -34,45 +34,80 @@ Cc:     =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
         =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-Subject: [PATCH v4 3/3] mwifiex: Ensure the version string from the firmware is 0-terminated
-Date:   Wed,  3 Nov 2021 21:18:00 +0100
-Message-Id: <20211103201800.13531-4-verdre@v0yd.nl>
-In-Reply-To: <20211103201800.13531-1-verdre@v0yd.nl>
-References: <20211103201800.13531-1-verdre@v0yd.nl>
+Subject: [PATCH] mwifiex: Ignore BTCOEX events from the 88W8897 firmware
+Date:   Wed,  3 Nov 2021 21:58:27 +0100
+Message-Id: <20211103205827.14559-1-verdre@v0yd.nl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0550FC0A
+X-Rspamd-Queue-Id: B71D826B
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We assume at a few places that priv->version_str is 0-terminated, but
-right now we trust the firmware that this is the case with the version
-string we get from it.
+The firmware of the 88W8897 PCIe+USB card sends those events very
+unreliably, sometimes bluetooth together with 2.4ghz-wifi is used and no
+COEX event comes in, and sometimes bluetooth is disabled but the
+coexistance mode doesn't get disabled.
 
-Let's rather ensure this ourselves and replace the last character with
-'\0'.
+This means we sometimes end up capping the rx/tx window size while
+bluetooth is not enabled anymore, artifically limiting wifi speeds even
+though bluetooth is not being used.
+
+Since we can't fix the firmware, let's just ignore those events on the
+88W8897 device. From some Wireshark capture sessions it seems that the
+Windows driver also doesn't change the rx/tx window sizes when bluetooth
+gets enabled or disabled, so this is fairly consistent with the Windows
+driver.
 
 Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
 ---
- drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/main.h      | 2 ++
+ drivers/net/wireless/marvell/mwifiex/pcie.c      | 3 +++
+ drivers/net/wireless/marvell/mwifiex/sta_event.c | 3 +++
+ 3 files changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
-index 6c7b0b9bc4e9..1a4ae8a42a31 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_cmdresp.c
-@@ -734,6 +734,9 @@ static int mwifiex_ret_ver_ext(struct mwifiex_private *priv,
- 		       MWIFIEX_VERSION_STR_LENGTH);
- 		memcpy(priv->version_str, ver_ext->version_str,
- 		       MWIFIEX_VERSION_STR_LENGTH);
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index 90012cbcfd15..486315691851 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -1055,6 +1055,8 @@ struct mwifiex_adapter {
+ 	void *devdump_data;
+ 	int devdump_len;
+ 	struct timer_list devdump_timer;
 +
-+		/* Ensure the version string from the firmware is 0-terminated */
-+		priv->version_str[MWIFIEX_VERSION_STR_LENGTH - 1] = '\0';
- 	}
++	bool ignore_btcoex_events;
+ };
+ 
+ void mwifiex_process_tx_queue(struct mwifiex_adapter *adapter);
+diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
+index c3f5583ea70d..d5fb29400bad 100644
+--- a/drivers/net/wireless/marvell/mwifiex/pcie.c
++++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
+@@ -3152,6 +3152,9 @@ static int mwifiex_init_pcie(struct mwifiex_adapter *adapter)
+ 	if (ret)
+ 		goto err_alloc_buffers;
+ 
++	if (pdev->device == PCIE_DEVICE_ID_MARVELL_88W8897)
++		adapter->ignore_btcoex_events = true;
++
  	return 0;
- }
+ 
+ err_alloc_buffers:
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_event.c b/drivers/net/wireless/marvell/mwifiex/sta_event.c
+index 68c63268e2e6..80e5d44bad9d 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_event.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_event.c
+@@ -1058,6 +1058,9 @@ int mwifiex_process_sta_event(struct mwifiex_private *priv)
+ 		break;
+ 	case EVENT_BT_COEX_WLAN_PARA_CHANGE:
+ 		dev_dbg(adapter->dev, "EVENT: BT coex wlan param update\n");
++		if (adapter->ignore_btcoex_events)
++			break;
++
+ 		mwifiex_bt_coex_wlan_param_update_event(priv,
+ 							adapter->event_skb);
+ 		break;
 -- 
 2.33.1
 
