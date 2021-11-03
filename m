@@ -2,109 +2,183 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A37443A43
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Nov 2021 01:08:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39246443A7B
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Nov 2021 01:36:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231325AbhKCALR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 Nov 2021 20:11:17 -0400
-Received: from mailgw01.mediatek.com ([216.200.240.184]:61152 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230462AbhKCALR (ORCPT
+        id S232854AbhKCAjR convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 2 Nov 2021 20:39:17 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:52358 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229804AbhKCAjR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 Nov 2021 20:11:17 -0400
-X-UUID: 649f9799d1ed46c2b525eab5108a35b4-20211102
-X-UUID: 649f9799d1ed46c2b525eab5108a35b4-20211102
-Received: from mtkcas66.mediatek.inc [(172.29.193.44)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1489918811; Tue, 02 Nov 2021 17:08:40 -0700
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- MTKMBS62DR.mediatek.inc (172.29.94.18) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 2 Nov 2021 17:05:30 -0700
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 3 Nov 2021 08:05:16 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
-        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
-        <steve.lee@mediatek.com>, <jsiuda@google.com>,
-        <frankgor@google.com>, <jemele@google.com>,
-        <abhishekpandit@google.com>, <shawnku@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] mt76: mt7921: fix MT7921E reset failure
-Date:   Wed, 3 Nov 2021 08:05:16 +0800
-Message-ID: <2932b5b4f3ab1604971ca93d2e3bc483ceb6a46a.1635897433.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        Tue, 2 Nov 2021 20:39:17 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1A30aI4D1002553, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1A30aI4D1002553
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 3 Nov 2021 08:36:18 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Wed, 3 Nov 2021 08:36:18 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Wed, 3 Nov 2021 08:36:17 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
+ RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
+ 15.01.2308.015; Wed, 3 Nov 2021 08:36:17 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     Colin King <colin.king@canonical.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+Thread-Topic: [PATCH][next] rtw89: Fix potential dereference of the null
+ pointer sta
+Thread-Index: AQHXwduziBNegQ3KtE6tzEeaYjpkJqvX/pCwgBfOyICAAT/CgA==
+Date:   Wed, 3 Nov 2021 00:36:17 +0000
+Message-ID: <c3de973999ea40cf967ffefe0ee56ed4@realtek.com>
+References: <20211015154530.34356-1-colin.king@canonical.com>
+ <9cc681c217a449519aee524b35e6b6bc@realtek.com> <20211102131437.GF2794@kadam>
+In-Reply-To: <20211102131437.GF2794@kadam>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/11/2_=3F=3F_10:50:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/03/2021 00:25:21
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 167068 [Nov 03 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/03/2021 00:28:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
 
-There is a missing mt7921e_driver_own in the MT7921E reset procedure
-since the mt7921 mcu.c has been refactored for MT7921S, that will
-result in MT7921E reset failure, so add it back now.
+> -----Original Message-----
+> From: Dan Carpenter <dan.carpenter@oracle.com>
+> Sent: Tuesday, November 2, 2021 9:15 PM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: Colin King <colin.king@canonical.com>; Kalle Valo <kvalo@codeaurora.org>; David S . Miller
+> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; linux-wireless@vger.kernel.org;
+> netdev@vger.kernel.org; kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+> 
+> On Mon, Oct 18, 2021 at 03:35:28AM +0000, Pkshih wrote:
+> >
+> > > -----Original Message-----
+> > > From: Colin King <colin.king@canonical.com>
+> > > Sent: Friday, October 15, 2021 11:46 PM
+> > > To: Kalle Valo <kvalo@codeaurora.org>; David S . Miller <davem@davemloft.net>; Jakub Kicinski
+> > > <kuba@kernel.org>; Pkshih <pkshih@realtek.com>; linux-wireless@vger.kernel.org;
+> > > netdev@vger.kernel.org
+> > > Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> > > Subject: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+> > >
+> > > From: Colin Ian King <colin.king@canonical.com>
+> > >
+> > > The pointer rtwsta is dereferencing pointer sta before sta is
+> > > being null checked, so there is a potential null pointer deference
+> > > issue that may occur. Fix this by only assigning rtwsta after sta
+> > > has been null checked. Add in a null pointer check on rtwsta before
+> > > dereferencing it too.
+> > >
+> > > Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+> > > Addresses-Coverity: ("Dereference before null check")
+> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > > ---
+> > >  drivers/net/wireless/realtek/rtw89/core.c | 9 +++++++--
+> > >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/net/wireless/realtek/rtw89/core.c
+> > > b/drivers/net/wireless/realtek/rtw89/core.c
+> > > index 06fb6e5b1b37..26f52a25f545 100644
+> > > --- a/drivers/net/wireless/realtek/rtw89/core.c
+> > > +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> > > @@ -1534,9 +1534,14 @@ static bool rtw89_core_txq_agg_wait(struct rtw89_dev *rtwdev,
+> > >  {
+> > >  	struct rtw89_txq *rtwtxq = (struct rtw89_txq *)txq->drv_priv;
+> > >  	struct ieee80211_sta *sta = txq->sta;
+> > > -	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
+> >
+> > 'sta->drv_priv' is only a pointer, we don't really dereference the
+> > data right here, so I think this is safe. More, compiler can optimize
+> > this instruction that reorder it to the place just right before using.
+> > So, it seems like a false alarm.
+> 
+> The warning is about "sta" not "sta->priv".  It's not a false positive.
+> 
+> I have heard discussions about compilers trying to work around these
+> bugs by re-ordering the code.  Is that an option in GCC?  It's not
+> something we should rely on, but I'm just curious if it exists in
+> released versions.
+> 
 
-Fixes: dfc7743de1eb ("mt76: mt7921: refactor mcu.c to be bus independent")
-Reported-by: YN Chen <YN.Chen@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h  | 1 +
- drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c | 4 ++++
- drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c | 2 +-
- 3 files changed, 6 insertions(+), 1 deletion(-)
+I say GCC does "reorder" the code, because the object codes of following
+two codes are identical with default or -Os ccflags.
+If I misuse the term, please correct me.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index e9c7c3a19507..d6b823713ba3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -446,6 +446,7 @@ int mt7921_mcu_restart(struct mt76_dev *dev);
- 
- void mt7921e_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 			  struct sk_buff *skb);
-+int mt7921e_driver_own(struct mt7921_dev *dev);
- int mt7921e_mac_reset(struct mt7921_dev *dev);
- int mt7921e_mcu_init(struct mt7921_dev *dev);
- int mt7921s_wfsys_reset(struct mt7921_dev *dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-index f9547d27356e..85286cc9add1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-@@ -321,6 +321,10 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
- 		MT_INT_MCU_CMD);
- 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
- 
-+	err = mt7921e_driver_own(dev);
-+	if (err)
-+		return err;
-+
- 	err = mt7921_run_firmware(dev);
- 	if (err)
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-index 583a89a34734..7b34c7f2ab3a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
-@@ -4,7 +4,7 @@
- #include "mt7921.h"
- #include "mcu.h"
- 
--static int mt7921e_driver_own(struct mt7921_dev *dev)
-+int mt7921e_driver_own(struct mt7921_dev *dev)
- {
- 	u32 reg = mt7921_reg_map_l1(dev, MT_TOP_LPCR_HOST_BAND0);
- 
--- 
-2.25.1
+Code-1:
+	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
+
+	if (!sta)
+		return false;
+
+	if (rtwsta->max_agg_wait <= 0)
+		return false;
+
+Code-2:
+	struct rtw89_sta *rtwsta;
+
+	if (!sta)
+		return false;
+
+	rtwsta = (struct rtw89_sta *)sta->drv_priv;
+	if (rtwsta->max_agg_wait <= 0)
+		return false;
+
+
+The code-1 is the original code Coverity and smatch warn use-before-check.
+The code-2 can avoid this warning without doubt.
+
+To be clear, I have sent a patch to fix this.
+
+--
+Ping-Ke
 
