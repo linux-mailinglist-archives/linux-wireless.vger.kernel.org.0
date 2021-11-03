@@ -2,82 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C578B4447DA
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Nov 2021 19:04:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0FCA444859
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Nov 2021 19:36:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbhKCSGo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Nov 2021 14:06:44 -0400
-Received: from mga03.intel.com ([134.134.136.65]:9730 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229558AbhKCSGn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Nov 2021 14:06:43 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10157"; a="231512207"
-X-IronPort-AV: E=Sophos;i="5.87,206,1631602800"; 
-   d="scan'208";a="231512207"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2021 11:03:56 -0700
-X-IronPort-AV: E=Sophos;i="5.87,206,1631602800"; 
-   d="scan'208";a="667620843"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2021 11:03:52 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1miKbp-003Kje-6e;
-        Wed, 03 Nov 2021 20:03:37 +0200
-Date:   Wed, 3 Nov 2021 20:03:36 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Jonas =?iso-8859-1?Q?Dre=DFler?= <verdre@v0yd.nl>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH v3 2/2] mwifiex: Add quirk to disable deep sleep with
- certain hardware revision
-Message-ID: <YYLO+A2Psg9wloN9@smile.fi.intel.com>
-References: <YYLJG1y8owwehew+@smile.fi.intel.com>
- <20211103174527.GA701082@bhelgaas>
+        id S231266AbhKCSjF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Nov 2021 14:39:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59060 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230353AbhKCSjF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 3 Nov 2021 14:39:05 -0400
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 785FCC061714
+        for <linux-wireless@vger.kernel.org>; Wed,  3 Nov 2021 11:36:28 -0700 (PDT)
+Received: by mail-ot1-x336.google.com with SMTP id p11-20020a9d4e0b000000b0055a5741bff7so4804345otf.2
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Nov 2021 11:36:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=hSioDWyJC1XuSNB5d2/2eDny4thKJlnYlP184y8q0mI=;
+        b=TPp/YIH7HMBf4BHwl5n03ifmyIivMXOef0+oAWRWrDvQ7wZQC8GdhEhkGFpFbdjKul
+         C9LJ1j7MEA/hLRqHwJHKeAHy+v7/suWjhWKf6YhjK70LPIa+i/ciNLJbU88wfiXBQQco
+         waGRBl45/YdskKnjCwyvm/kjZ+v0FKZNAf0BVHF5a44eoOvRlgU5s5fS/Mt96QAOZRK/
+         mrNBzjTVKiiX7tp5hWTCduA7NFwZhT8PF+gmR0/uSIYjWo20LW/nREbcRD3cBfMFftAZ
+         6zorIDy+VsfWpN+99igulNnPt/nwgZDZZZae8lvCSpJb51LNWa9u6TuhrjWob3/EfYPR
+         4sLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :subject:content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=hSioDWyJC1XuSNB5d2/2eDny4thKJlnYlP184y8q0mI=;
+        b=fgG2NND/XMostqsfSJtoloJyyZHxjwUNs+tmqe6FlXEOKcnKGv9l/m7FX7ojQfbq1l
+         Y/jRfGm/5DvMjqanuvlEBZOy+hVi98AmFp6LhzCsk7hg3nugi7qFluqAmG2vfLqXkkSf
+         cAOqw5TdjXGLZZ//mTxaAN1s+WWp3EQ4D6XRZz0XHgbt822rhlu0Bl/LAjN2GNIuBrvf
+         Yf1MKS3oXykUMyrofY3L0t3HZD5pnuFRSsyHv3nMNkzuhu27eYy5knB5BVPBxWd6SJso
+         3bTmw5oFbPlZJzHWZo/x7xUjSTAbuBbCrexqeLJ7YZxCj/gx8+9v/GgAnUFUJ5YB/lbe
+         v9rw==
+X-Gm-Message-State: AOAM531NBohdwPFU5bjVZovk3mcBbTzyEV+/rGl2WaVd7WDA5mpy95f9
+        pUTgSBT1IovJ4ZBqp69icMI=
+X-Google-Smtp-Source: ABdhPJwBroxvM08KdwhMBb7CeyZIMezcaUOfBfBttBR0QsS/w+y0nmyz0Lo5tPu7zxME2zjlf6xbkg==
+X-Received: by 2002:a9d:68cd:: with SMTP id i13mr6526790oto.142.1635964587884;
+        Wed, 03 Nov 2021 11:36:27 -0700 (PDT)
+Received: from [192.168.1.103] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
+        by smtp.gmail.com with ESMTPSA id i205sm794409oih.54.2021.11.03.11.36.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Nov 2021 11:36:27 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <514c3786-a00f-365d-b936-0f3d03d0034c@lwfinger.net>
+Date:   Wed, 3 Nov 2021 13:36:26 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211103174527.GA701082@bhelgaas>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: No support for Realtek 8821CE RFE Type 6
+Content-Language: en-US
+To:     Bogdan Nicolae <bogdan.nicolae@acm.org>,
+        Pkshih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <CA+ORkNR97EvqPzHu-CoJXwKGH-HQ4B++57RE88MEF-mG=D=Jeg@mail.gmail.com>
+ <46a80ab50f594ec1af1016ca272e82fd@realtek.com>
+ <CA+ORkNQ_shEZGYQUmRT-_uSp3xkFA2fvfUbyGXzGkP6AmqXf6Q@mail.gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <CA+ORkNQ_shEZGYQUmRT-_uSp3xkFA2fvfUbyGXzGkP6AmqXf6Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Nov 03, 2021 at 12:45:27PM -0500, Bjorn Helgaas wrote:
-> On Wed, Nov 03, 2021 at 07:38:35PM +0200, Andy Shevchenko wrote:
-> > On Wed, Nov 03, 2021 at 06:10:55PM +0100, Jonas Dreßler wrote:
-> 
-> > > +	if (mwifiex_send_cmd(priv, HostCmd_CMD_VERSION_EXT,
-> > > +			     HostCmd_ACT_GEN_GET, 0, &ver_ext, false)) {
-> > > +		mwifiex_dbg(priv->adapter, MSG,
-> > > +			    "Checking hardware revision failed.\n");
-> > > +	}
-> > 
-> > Checkpatch won't warn you if string literal even > 100. So move it to one line
-> > and drop curly braces. Ditto for the case(s) below.
-> 
-> I don't understand the advantage of making this one line.  I *do*
-> understand the advantage of joining a single string so grep can find
-> it more easily.  But that does make the code a little bit uglier, and
-> in a case like this, you don't get the benefit of better grepping, so
-> I don't see the point.
+On 11/3/21 12:25, Bogdan Nicolae wrote:
+> The Realtek Wifi 8821CE RFE Type 6 is used in a broad range of
+> embedded systems based on Intel Celeron J4125 SoCs. A popular example
+> is GK3 Mini PC, sold under a large number of brands, for example:
+> https://www.amazon.com/gp/product/B09FTCPBHK/
+> These systems are rising in popularity in favor of laptops, as people
+> tend to stay at home and are looking for affordable upgrades.
+> Unfortunately, lack of Wifi Linux support is a major drawback.
 
-Then disregard my comment. I've no hard feelings about it :-)
+Bogdan,
 
--- 
-With Best Regards,
-Andy Shevchenko
+That is a very interesting piece of hardware at $200. Does that quad-core 
+Celeron have enough power to handle Windows 10 with reasonable response? I used 
+to volunteer at refurbishing donated computers for resale to low-income users. 
+When Microsoft's refurbishing program stopped supporting Windows 7, we 
+immediately stopped installing Windows on anything lower than an i3. Quality 
+machines with less than that processor got Linux. Those machines were free to users.
 
-
+Larry
