@@ -2,112 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCEEF4449EC
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Nov 2021 21:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35AB5444A7C
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Nov 2021 22:51:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231335AbhKCVBO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Nov 2021 17:01:14 -0400
-Received: from mout-p-201.mailbox.org ([80.241.56.171]:10690 "EHLO
-        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230172AbhKCVBO (ORCPT
+        id S230363AbhKCVxq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Nov 2021 17:53:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46292 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229893AbhKCVxp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Nov 2021 17:01:14 -0400
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [80.241.60.245])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4HkzdR6K5VzQlYP;
-        Wed,  3 Nov 2021 21:58:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-From:   =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Wed, 3 Nov 2021 17:53:45 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1947AC061714;
+        Wed,  3 Nov 2021 14:51:08 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id j21so14196042edt.11;
+        Wed, 03 Nov 2021 14:51:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=7OcZIhudGFzvRt013KeFNV1kJPl7S2GSbEt5QowUR2E=;
+        b=VyP26HeYZr1T1u107XSYuTLIm+eXmHYvQewARi2F3OGauywNZtUiI53vrN3TZ5n4k9
+         mV+Cro3OFhIM+24VyFYNe4ApYy8d/43DVfB1TsVLEzTtpp+cdoLMa1fkbY1KsNdQ2UHH
+         xbNdWRL4Mv7Agwk7h6AzBmdpOrE6/B/p0ulEuC0zypCNVbIlWPMkNoA+dHCG6aznx6xN
+         eSJbkfAMxVjKK+k/jdTSVgRwTrLffncuCzBR3AR6zY/3tKkOWHMYQtnASLeORVWqxgHs
+         PXRenasXj6DNnoX7z/l6VhI19J7PJhw8KYNGqPnMxn4tH8tYzoBiFR1KvpefREwkHLw0
+         svRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=7OcZIhudGFzvRt013KeFNV1kJPl7S2GSbEt5QowUR2E=;
+        b=zK3QPyAuMDx0VbrAE8W2UEysceBjoPcR7sB78XeN1Z/bwsJ9PD7nGINraC9sc8dBjD
+         FSuEg42RUWX0tDbo2gSFRMNNI0hDXrGIbH/q4CiOiKNjegGr+5NZkcGmbvXXftl0IRWf
+         /tu7e+6IMINM979psR5zCg/RhkU3IUk+NtN1b/acU5nKgkEVCMChuDehD7xM3VQw2R35
+         baBHzMSi+i/lqaDWT6wc876gWwuVvK3ltVpo2mc4PqSkBJIafAxh0y9TM2ve8XDzN1rW
+         0dcD88IX94enGTKTx1w3DlMsl9f0h5qu9yi0B1sAq2VJirRnIqTi3LvdhIDGv8NiVOSL
+         Ka6Q==
+X-Gm-Message-State: AOAM533dQjuzojNlHgfntgTL8CSTkqrKKdpnNcdEuQr7+YoqY4sKBZWQ
+        mB/Noai3hWE4T9U2L+Gu8EzYTXTVmT+u7cuN2fw=
+X-Google-Smtp-Source: ABdhPJyIwYKcjVc7PLDW4XsdWFtHIEsVMr4uKCTCvtgwHzDRZ8qegkwwyYgwj7BOn8XgoNXIIbe8CRSo1pnELvFXFL4=
+X-Received: by 2002:a17:906:2887:: with SMTP id o7mr56276433ejd.425.1635976266640;
+ Wed, 03 Nov 2021 14:51:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <20211103201800.13531-1-verdre@v0yd.nl>
+In-Reply-To: <20211103201800.13531-1-verdre@v0yd.nl>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 3 Nov 2021 23:50:29 +0200
+Message-ID: <CAHp75VdmynnjFnmxy5ebJ44BpikYt+WaqEhVB6qkftVHGoa2FA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] mwifiex: Add quirk to disable deep sleep with
+ certain hardware revision
+To:     =?UTF-8?Q?Jonas_Dre=C3=9Fler?= <verdre@v0yd.nl>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
         Ganapathi Bhat <ganapathi017@gmail.com>,
         Xinming Hu <huxinming820@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
+        Jakub Kicinski <kuba@kernel.org>,
         Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Maximilian Luz <luzmaximilian@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-Subject: [PATCH] mwifiex: Ignore BTCOEX events from the 88W8897 firmware
-Date:   Wed,  3 Nov 2021 21:58:27 +0100
-Message-Id: <20211103205827.14559-1-verdre@v0yd.nl>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B71D826B
+        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The firmware of the 88W8897 PCIe+USB card sends those events very
-unreliably, sometimes bluetooth together with 2.4ghz-wifi is used and no
-COEX event comes in, and sometimes bluetooth is disabled but the
-coexistance mode doesn't get disabled.
+On Wed, Nov 3, 2021 at 10:19 PM Jonas Dre=C3=9Fler <verdre@v0yd.nl> wrote:
+>
+> Fourth revision of this patch.
+> v1: https://lore.kernel.org/linux-wireless/20211028073729.24408-1-verdre@=
+v0yd.nl/T/
+> v2: https://lore.kernel.org/linux-wireless/20211103135529.8537-1-verdre@v=
+0yd.nl/T/
+> v3: https://lore.kernel.org/linux-wireless/YYLJVoR9egoPpmLv@smile.fi.inte=
+l.com/T/
 
-This means we sometimes end up capping the rx/tx window size while
-bluetooth is not enabled anymore, artifically limiting wifi speeds even
-though bluetooth is not being used.
+Not sure why you ignored my tag...
+As we discussed with Bjorn, it's fine to me to leave messages splitted
+to two lines.
 
-Since we can't fix the firmware, let's just ignore those events on the
-88W8897 device. From some Wireshark capture sessions it seems that the
-Windows driver also doesn't change the rx/tx window sizes when bluetooth
-gets enabled or disabled, so this is fairly consistent with the Windows
-driver.
+> Changes between v3 and v4:
+>  - Add patch to ensure 0-termination of version string
 
-Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
----
- drivers/net/wireless/marvell/mwifiex/main.h      | 2 ++
- drivers/net/wireless/marvell/mwifiex/pcie.c      | 3 +++
- drivers/net/wireless/marvell/mwifiex/sta_event.c | 3 +++
- 3 files changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
-index 90012cbcfd15..486315691851 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.h
-+++ b/drivers/net/wireless/marvell/mwifiex/main.h
-@@ -1055,6 +1055,8 @@ struct mwifiex_adapter {
- 	void *devdump_data;
- 	int devdump_len;
- 	struct timer_list devdump_timer;
-+
-+	bool ignore_btcoex_events;
- };
- 
- void mwifiex_process_tx_queue(struct mwifiex_adapter *adapter);
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-index c3f5583ea70d..d5fb29400bad 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-@@ -3152,6 +3152,9 @@ static int mwifiex_init_pcie(struct mwifiex_adapter *adapter)
- 	if (ret)
- 		goto err_alloc_buffers;
- 
-+	if (pdev->device == PCIE_DEVICE_ID_MARVELL_88W8897)
-+		adapter->ignore_btcoex_events = true;
-+
- 	return 0;
- 
- err_alloc_buffers:
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_event.c b/drivers/net/wireless/marvell/mwifiex/sta_event.c
-index 68c63268e2e6..80e5d44bad9d 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_event.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_event.c
-@@ -1058,6 +1058,9 @@ int mwifiex_process_sta_event(struct mwifiex_private *priv)
- 		break;
- 	case EVENT_BT_COEX_WLAN_PARA_CHANGE:
- 		dev_dbg(adapter->dev, "EVENT: BT coex wlan param update\n");
-+		if (adapter->ignore_btcoex_events)
-+			break;
-+
- 		mwifiex_bt_coex_wlan_param_update_event(priv,
- 							adapter->event_skb);
- 		break;
--- 
-2.33.1
-
+--=20
+With Best Regards,
+Andy Shevchenko
