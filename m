@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83D13443C3A
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Nov 2021 05:32:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BABFD443C3C
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Nov 2021 05:32:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230326AbhKCEem (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Nov 2021 00:34:42 -0400
-Received: from mail-bo1ind01olkn0156.outbound.protection.outlook.com ([104.47.101.156]:21973
+        id S230152AbhKCEfa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Nov 2021 00:35:30 -0400
+Received: from mail-bo1ind01olkn0156.outbound.protection.outlook.com ([104.47.101.156]:53440
         "EHLO IND01-BO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229650AbhKCEel (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Nov 2021 00:34:41 -0400
+        id S229650AbhKCEfa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 3 Nov 2021 00:35:30 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=W+F/NVCUEe4XcXHs3aDIo9oJhRV9MMc15iZhq0zB5Y/Z8squ2o66dlh+vU7kNc1mHeVfbZPkYFaCv32QgxiMKUyyv50um6D4LyhYVNkND5qYPAqc5fDHF59JlzMmcwXkgB3D7aQ9pwSjO5XfDOEs7mGN151bIFryezn4csmKW4OlDBoFLTYGLRGjVMInCRDZl4/oqRsQrmAsD2QC5UgcbzyCdeiUbgDExEfekZfqoWNnPwamSWiQ9WweMMLnyXO+MC5BRDeTurOshPZELIzJzq5JrWfW/DqzWy6C5cJJsu5E2wLKPlfAlJOqGcCVHp5KA3cA1CnUUFi4gaay6t0ojQ==
+ b=RXj8pwCkQAQaclhUYFsAEVqBUpJ1ULDVAraLnbxw9wqRBU0qxS9o0tc2jFabbo5MR2BwBjuBKASOmz1KU52O6CcaKv59R/h5QZGVKZ6ATEG9H+60fPE1if6/L9Jj2p6LD3CbBhEhy3zxIZfFxT7S/PeNCbNdc8Q15VM5yS1dECYuAixpADGy+mslfg84ar4h0bP4Keb7dCf1fVmM/Ile3/PgpkAwdLgDMQ00IMKDUQI+KmYeIOKIWhOqCgHPKuGO7t2ovA8C84up3C2ne//a8mVN+r/RWOw/KxXEKLv3TLF+bK6ueIRBjr6etpEYId3Xnz8dWjz4gqSKXCueI93IKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D+7Y27stqYGa1VpjA0sUmeYnXAvjOqZUUoGHa2UEOB8=;
- b=bCKYGPzOdz3y1b4mho9FT1pehXFxCK42yxxVv8aEW1oUeE5FR9ayKQF0h+GegBeVKsS8cJvfspxWqv/GpgVSbxy3rLofsvkhggcvMsk2UQGg/CZfDjevEttZOHCA9gi83EUhIo2n29WEjE4lQ0rL9JIP2Ml6h5Efdusp+GbrpoSbo9MB/huhcf7N4wM+max0PdNj0uvidB/RXLDce1nZGsV0kkXFsJrfYaXVpeuZtmRG399FlXKVh3eNbLzfMoI2KatKXyiBHmC8MoxD9pYq6qp2E2gq37z0bbajTA4ke/GljkwBJUxkRJ3SLtn0ivYD1GPWxj+w+hUW8JdG1t/VAQ==
+ bh=HZvYxcE/09lCN/d26KOQu8Mvwnxp/onEvCAolLHLH1c=;
+ b=kpHAl1N9PPiaI/5MCSljqXltNq6sp62hMhgmd9jblkgsFX9GHxYx6D46AlyzUQoHOOxLjy0m1ix2BUKKzF8rd0mm2az/3PWVOsh1xmpeH11ODLEV3ArtpjYjwXU/rp4OUK+7VcaxG5BaDuMEWVxXA7l9jryWwbr4n6ex1WGtBy6a3Es/70Od0QfaEhqvP50lQJqvSWGxFHp+oQ6iceDEi1Ch9jEj6JZqx8xdhz/culnkVYzfj4UWXLStKtyzUJunKwhMl30WyZACEozHmOm7mGTnGtxt8FIUysY1a6lL23zRESdHAzlhe0MoUIWLhX9mS286w2h8hSceOlTYD7LX2A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D+7Y27stqYGa1VpjA0sUmeYnXAvjOqZUUoGHa2UEOB8=;
- b=M3fKxPGNKCKZbxzXtFz7YQ8FEJsZgBBi1bU/hdulKT8Vr4iYrEPgKZAiutTJdOIA7znnKwgfuj9clcgPaaVKE19RhflnJMJ8ZHxVWUxyabCAnSAyZS+NHTGMzkTSErZPP8ibgNP4ukxCRPngYWmxhBrGh1nDaMa/MFdIfbxCN0Jokj7TwWS9bJKjcT0+0HQN4VisFjqA836Miz7rW4SHigbW51PyUL1A2tqCiz2IFL+IEqsECIgxvOe7rbUYfXZRGLASOs996TDwF+UsGhsRN9o1oj7BYoFdR90BHUSwyNMEftKFBIqrwnUjaWM2ZT9JvbJrhh0HA7QFdV9Cy2tfmQ==
+ bh=HZvYxcE/09lCN/d26KOQu8Mvwnxp/onEvCAolLHLH1c=;
+ b=WIyBAvY4caeOaKRFIZjeSpizTy5otDOX//Vzr6hljxF50q1spPwBMJCDGWdwqEeifk4Vp/QQADu5aVyeSBKtshavhfI3YR+id6PNgrwjBhbUsesjQwBILOEf65zFJjP1yRou7FR8gkkxEJeATlY3MWZRYvQxQ01LI8rN88r0SpncI92o0/5p+oRJ0G/dq9F7JVgzuaXW89Q5RQEaykTFlXyYVoGzfqaSm+xOrbbz6s5QEInD85pFMGOFqFVWgMxvXVY0xwSm4mKKwzgaV7LtZxy8fZST414G98z0r2Q7DU3XHX7oiTxz8byArQqLd/repUdxzRxu6Ox7/mtQzSexyg==
 Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM (20.182.78.205) by
  PN1PR01MB0832.INDPRD01.PROD.OUTLOOK.COM (10.174.146.142) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4649.17; Wed, 3 Nov 2021 04:32:00 +0000
+ 15.20.4649.17; Wed, 3 Nov 2021 04:32:49 +0000
 Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
  ([fe80::cdc4:def5:dc73:28f7]) by PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
  ([fe80::cdc4:def5:dc73:28f7%6]) with mapi id 15.20.4649.020; Wed, 3 Nov 2021
- 04:32:00 +0000
+ 04:32:49 +0000
 From:   Aditya Garg <gargaditya08@live.com>
 To:     "aspriel@gmail.com" <aspriel@gmail.com>,
         "franky.lin@broadcom.com" <franky.lin@broadcom.com>,
@@ -45,38 +45,38 @@ CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         <brcm80211-dev-list.pdl@broadcom.com>,
         "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 2/3] brcmfmac: Add support for BCM4377 on Apple hardware.
-Thread-Topic: [PATCH v3 2/3] brcmfmac: Add support for BCM4377 on Apple
+Subject: [PATCH v3 3/3] brcmfmac: Add support for BCM4355 on Apple hardware.
+Thread-Topic: [PATCH v3 3/3] brcmfmac: Add support for BCM4355 on Apple
  hardware.
-Thread-Index: AQHX0Gu+lsbLJwElwk25UKkbzzSmHA==
-Date:   Wed, 3 Nov 2021 04:32:00 +0000
-Message-ID: <0F1947F9-0836-43A9-B58A-2EF561CEC7B7@live.com>
-References: <PNZPR01MB44158945D6957B942147A0D2B88A9@PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM>
- <PNZPR01MB4415A4F531F4A058D76C4064B88B9@PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM>
-In-Reply-To: <PNZPR01MB4415A4F531F4A058D76C4064B88B9@PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM>
+Thread-Index: AQHX0Gvbb+rSopgGIUuQy18nab02BA==
+Date:   Wed, 3 Nov 2021 04:32:49 +0000
+Message-ID: <0DE89E9A-36D4-4638-BD2A-CD4B404CF620@live.com>
+References: <PNZPR01MB441560BA8BBD148C882BA9EFB88A9@PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM>
+ <PNZPR01MB44158B4844B8224735985ABAB88B9@PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM>
+In-Reply-To: <PNZPR01MB44158B4844B8224735985ABAB88B9@PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn:  [NkAdsF8XBGAzbBYI9xFNIOh2qfE7ssUSvY8Bvz6nLvRknsHfIWNoa3CnxZyC6LaX]
+x-tmn:  [uGv559+TTCZhp9uTOsgdk+xeFlnnvY+smmBaZCUh0UGmdFest9IxKZACqDNX4NG2]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c0251b9e-b3c2-432d-f5cb-08d99e82e0bd
+x-ms-office365-filtering-correlation-id: 797ee0ea-3604-4e04-b28f-08d99e82fe2f
 x-ms-traffictypediagnostic: PN1PR01MB0832:
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: CKb9295cOpK/1Q/kqbD7b6XQUhFRRWSd25koShMaTOq2OLmSBPiV6Fy/sUL8grkXaFy0jwOmRJIVhmYqF4jTbay7SR6P/sPTwk4Y+MJO4s7lXkoK3uA2NFem3OPaZ8vJNz1oZPY3FON/+STihes3D1yNKQ/+q7uF21HhY10Px+M2MsEPO/+9BHVVhVq9IdZhyTTFp1Rlwf3GW2aEfY9ovlEKs7vS8q/MVfi0o14/sous4gJOv0vfoKKGKfSwSdw54QjUz4T9/ZQaggGD+ofY8khZ2gB/th89L0xNY8VF9YSuexl9Z1NABlAcVXGP8HNGltbWjoS1L1XoRhdiQGzWJjuamgFNoEXiFd9TPYIuoFZcoE7gHGNNP12npQY2KAdVKLTgvr2/wXkkiwL7s0qYxCkCEOupYa67fFt+uCys3dTA5mpSXw5pcZ50BXwM8WTho6P6Z8m8pJTE5vtjrh0WrXtn7yqMZN2HDAjnpcSyfHZ34ycln6x9nGxL01saRztfjKQ1Z/JgKnQkz1hXz45TApwoCGxaL6pcXZPQtdTFhgw=
+x-microsoft-antispam-message-info: ToGwYRo+/WPYq74YepWCWCMfWkQqM3BGNyNPlqKxBtSLFj8BuBiiZHkowHHMl4uYR5WQZ6Yc72gUqLffdDMS7JPa8odtoKLUafc581K8Gd8EFYs40Hw4ksMl6wYT4QsC3rXosjBHuB94XaPy0doLzjuYO3KeY3I0vudhb5YzoKL9dM25qWuoDYVEQqDOZkRmvdwyz9hinMMf8cEfzFsujfk1ajlRA6QwyVYYp8bJTsxC1XNR8jxGVn/WFG9l8IttLSjl5pxc/HkZrbEPwC/eY9ab+bO5+TScnIVtHsI35Tort2gyw9/v/8y5imitsG9WwsRcEX/0HK+etF/OVqAQcSKYrG67hqtDzIpx5jI1iH+gCTjsEbY4d0P315rggdGBA6JZrt0IhN9LaBFiFygliahEmHyQJ+V0vJ2Wx0gJgJ/i92uirOF0O9EekIPWxoHx7q0dLIXNABv8avnUkzFM1Evz6BUJCLF94xLDaROizA6BelKIK699gkcPhaAniZ29vViJKWdxp7iYpuInMHrwmuxPc2qWstj0kbjlzRukm9I=
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: WvedDxknup/f5PQvIzEljSViR2heCiOTUk/AKkJUGwmwxh+5547KHdfafo8gB+HG47wTwkvu2mdf6u0hihQfrnM5noRQUJLtZsel1HGanKlFOROtthQsZfek9GztFBtJ9GclgA1MMPHoCYjKnsV++YUZq4YZS7kZj4p5C6Ao930BrN0wZxiebfyRbvVydLSH1D7O6QF9S9Ty2ZLEgCxuzjoOaK4l5WMCwY9oi4elizrFszPutDFzeRnuL8PfYHxxdPbt67ceTCO5lvf5GNZd8g7Fm7aRex3pnwVnpVG8G8Je1kYxOm0xZygtsfidnD8ga4skCS9b0+C53F8+Yg6ADF6go++cie2rZLKLmwKTRByizLHB9M2xRcSQDV0OMbjTi8/NArbXP9kmdQ2mme6gt0YzL6mmL7/cN8ZiFjFBq6kAMjcbLFGjVDzxEzWzmVDs7pJ+Nfr5OL1eTdVp+lMhKBRaZcWHwBbSR7UuRYT3iM2xrz4zIzgSOHPdr+ua1CbkPTLskRkxdxtuI9iau/VFc6LunmpIPJL1nbKW1QaDq7qVfq9t5fmTQEgv+BtcZdL3tFe9ItRsVIgXZuPl3bNLIcxwsG1JO0L4l2G85tue/20/lyWIx+363ZEwt1UCsPmPi/ZDmjP9CM/Cky9qzvtm11OpKwx4vsu+m1CosMAIrDmM6i6B5ctz1tFsWFFvEv7557YpC4a0L9Ue5mawvGMnDEA77zbDkA4xoO5Ty8dIZlg9gvrOw70tLNJzwsi1l4NA/8bsBDLJTd66yNf3JSGrCw==
+x-ms-exchange-antispam-messagedata-0: 4s+VEDfo/xn5hns5QVRs6Jq+qDAXgtR6EAjlcu+Sh3Wk2ESd6r/QH6vPyWqX15ZebgXasyJiLqWYiigq2weTN5NeidNoKvleDzNQUf9NoQ6nbf7+VVgY/plSaSP6tlNiNM/Enw3vrSbj0dbwGnZfx/qv8gW3RGBZX4t2EHg1h6oiOLrua80Q2ZOaDrAQfioISbAAHKFoBJpgJWraxo43XyDAykwPPJ3cbEe3hqBOX+YWl68W84k5VW537GAiepqbBNqQQysKUcpaG7CV6q1smg7OiHfopuqokOlqfhRosR/01f79XEyD+Gbr26Qe8p21bm7A9EXBqcbaIPeSAcpsMPz3bX7aqhxZUeAYl3zy4tWKvimzmba9doPsr2CMZcqfOIY/SfkibY6dkO7kL/bS6f5CYQZ4r/XaIdQRV+QNWCSCsrntzrp9yyMAPycm+y+bAaXy0r8rG/WRdOxiCMUwyrNBQY0cTkq6mRRDRkW71TBnRICuQ6liVGoEw9J9lcK6SUfNWRbf3uWbtfVky76YCmFEaMg/aXFHYgeDEsGb51PmxnU7GtUddXTUtQRfVwklG/hnEy1bLCxH5tetmX0X2vWnDHiyFqFI2djAPJCrm775rG+cCBPMnqe9k/koqXvdwXNtT/dJpmlv6ZXuA6MzsikAmLSHT3Wi39r2ftmKeXk2vw8+b3nQ3MuyLpuwvBpDkbtiYbJ18iFTletgKRXCLpKNHFkOexkG9XnTaSTwZGgoKf5EnrNNXtquPmL/+RvSQrrRYoHsZB9XzOEIEBd54w==
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1D41675CB7399747A5EA9907FF37461A@INDPRD01.PROD.OUTLOOK.COM>
+Content-ID: <1BA20AFE67A0824CB363B21B327A7909@INDPRD01.PROD.OUTLOOK.COM>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: sct-15-20-3174-20-msonline-outlook-a1a1a.templateTenant
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0251b9e-b3c2-432d-f5cb-08d99e82e0bd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Nov 2021 04:32:00.2212
+X-MS-Exchange-CrossTenant-Network-Message-Id: 797ee0ea-3604-4e04-b28f-08d99e82fe2f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Nov 2021 04:32:49.6345
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -88,159 +88,85 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Aditya Garg <gargaditya08@live.com>
 
-This patch adds required ids to support BCM4377 Chip found on certain Apple=
- Macs with T2 chip.
+This patch adds the necessary ids required to support BCM4355 Chip on Apple=
+ Macs with T2 Chip
 
 V3- Make plain text
 
-Based on original patch by Aun-Ali Zaidi <admin@kodeit.net>
+This patch is based on the original patch by Aun-Ali Zaidi <admin@kodeit.ne=
+t>
 
 Signed-off-by: Aditya Garg <gargaditya08@live.com>
 ---
- .../broadcom/brcm80211/brcmfmac/chip.c        |  4 +++
- .../broadcom/brcm80211/brcmfmac/pcie.c        | 32 +++++++++++++++----
- .../broadcom/brcm80211/include/brcm_hw_ids.h  |  2 ++
- 3 files changed, 31 insertions(+), 7 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c       | 1 +
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c       | 3 +++
+ drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 2 ++
+ 3 files changed, 6 insertions(+)
 
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/driv=
 ers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-index 1bf0fa8f0..1e1b23bf4 100644
+index 1e1b23bf4..7086de030 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-@@ -727,6 +727,8 @@ static u32 brcmf_chip_tcm_rambase(struct brcmf_chip_pri=
+@@ -724,6 +724,7 @@ static u32 brcmf_chip_tcm_rambase(struct brcmf_chip_pri=
 v *ci)
+ 		return 0x200000;
+ 	case BRCM_CC_4359_CHIP_ID:
+ 		return (ci->pub.chiprev < 9) ? 0x180000 : 0x160000;
++	case BRCM_CC_4355_CHIP_ID:
+ 	case BRCM_CC_4364_CHIP_ID:
+ 	case CY_CC_4373_CHIP_ID:
  		return 0x160000;
- 	case CY_CC_43752_CHIP_ID:
- 		return 0x170000;
-+	case BRCM_CC_4377_CHIP_ID:
-+		return 0x170000;
- 	case BRCM_CC_4378_CHIP_ID:
- 		return 0x352000;
- 	default:
-@@ -1428,6 +1430,8 @@ bool brcmf_chip_sr_capable(struct brcmf_chip *pub)
- 		reg =3D chip->ops->read32(chip->ctx, addr);
- 		return (reg & (PMU_RCTL_MACPHY_DISABLE_MASK |
- 			       PMU_RCTL_LOGIC_DISABLE_MASK)) =3D=3D 0;
-+	case BRCM_CC_4377_CHIP_ID:
-+		return false;
- 	case BRCM_CC_4378_CHIP_ID:
- 		return false;
- 	}
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/driv=
 ers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index ce8c552c6..6f0166b33 100644
+index 6f0166b33..19e8238fe 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -59,6 +59,7 @@ BRCMF_FW_DEF(4365C, "brcmfmac4365c-pcie");
- BRCMF_FW_DEF(4366B, "brcmfmac4366b-pcie");
- BRCMF_FW_DEF(4366C, "brcmfmac4366c-pcie");
- BRCMF_FW_DEF(4371, "brcmfmac4371-pcie");
-+BRCMF_FW_DEF(4377, "brcmfmac4377-pcie");
- BRCMF_FW_DEF(4378, "brcmfmac4378-pcie");
-=20
- static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] =3D {
-@@ -81,6 +82,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwn=
+@@ -49,6 +49,7 @@ enum brcmf_pcie_state {
+ BRCMF_FW_DEF(43602, "brcmfmac43602-pcie");
+ BRCMF_FW_DEF(4350, "brcmfmac4350-pcie");
+ BRCMF_FW_DEF(4350C, "brcmfmac4350c2-pcie");
++BRCMF_FW_DEF(4355, "brcmfmac4355-pcie");
+ BRCMF_FW_CLM_DEF(4356, "brcmfmac4356-pcie");
+ BRCMF_FW_CLM_DEF(43570, "brcmfmac43570-pcie");
+ BRCMF_FW_DEF(4358, "brcmfmac4358-pcie");
+@@ -68,6 +69,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwn=
 ames[] =3D {
- 	BRCMF_FW_ENTRY(BRCM_CC_43664_CHIP_ID, 0xFFFFFFF0, 4366C),
- 	BRCMF_FW_ENTRY(BRCM_CC_43666_CHIP_ID, 0xFFFFFFF0, 4366C),
- 	BRCMF_FW_ENTRY(BRCM_CC_4371_CHIP_ID, 0xFFFFFFFF, 4371),
-+	BRCMF_FW_ENTRY(BRCM_CC_4377_CHIP_ID, 0xFFFFFFFF, 4377),
- 	BRCMF_FW_ENTRY(BRCM_CC_4378_CHIP_ID, 0xFFFFFFFF, 4378),
- };
-=20
-@@ -586,23 +588,33 @@ brcmf_pcie_reg_map(struct brcmf_pciedev_info *devinfo=
-, u32 reg)
- {
- 	switch(reg) {
- 	case BRCMF_PCIE_PCIE2REG_INTMASK:
--		if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
-+		if(devinfo->ci->chip =3D=3D BRCM_CC_4377_CHIP_ID)
-+			return BRCMF_PCIE_64_PCIE2REG_INTMASK;
-+		else if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
- 			return BRCMF_PCIE_64_PCIE2REG_INTMASK;
- 		return reg;
- 	case BRCMF_PCIE_PCIE2REG_MAILBOXINT:
--		if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
-+		if(devinfo->ci->chip =3D=3D BRCM_CC_4377_CHIP_ID)
-+			return BRCMF_PCIE_64_PCIE2REG_MAILBOXINT;
-+		else if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
- 			return BRCMF_PCIE_64_PCIE2REG_MAILBOXINT;
- 		return reg;
- 	case BRCMF_PCIE_PCIE2REG_MAILBOXMASK:
--		if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
-+		if(devinfo->ci->chip =3D=3D BRCM_CC_4377_CHIP_ID)
-+			return BRCMF_PCIE_64_PCIE2REG_MAILBOXMASK;
-+		else if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
- 			return BRCMF_PCIE_64_PCIE2REG_MAILBOXMASK;
- 		return reg;
- 	case BRCMF_PCIE_PCIE2REG_H2D_MAILBOX_0:
--		if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
-+		if(devinfo->ci->chip =3D=3D BRCM_CC_4377_CHIP_ID)
-+			return BRCMF_PCIE_64_PCIE2REG_H2D_MAILBOX_0;
-+		else if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
- 			return BRCMF_PCIE_64_PCIE2REG_H2D_MAILBOX_0;
- 		return reg;
- 	case BRCMF_PCIE_PCIE2REG_H2D_MAILBOX_1:
--		if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
-+		if(devinfo->ci->chip =3D=3D BRCM_CC_4377_CHIP_ID)
-+			return BRCMF_PCIE_64_PCIE2REG_H2D_MAILBOX_1;
-+		else if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
- 			return BRCMF_PCIE_64_PCIE2REG_H2D_MAILBOX_1;
- 		return reg;
- 	default:
-@@ -1018,7 +1030,10 @@ static void brcmf_pcie_intr_disable(struct brcmf_pci=
-edev_info *devinfo)
-=20
- static void brcmf_pcie_intr_enable(struct brcmf_pciedev_info *devinfo)
- {
--	if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
-+	if(devinfo->ci->chip =3D=3D BRCM_CC_4377_CHIP_ID)
-+		brcmf_pcie_write_reg32(devinfo, BRCMF_PCIE_64_PCIE2REG_MAILBOXMASK,
-+				       BRCMF_PCIE_64_MB_INT_D2H_DB);
-+	else if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
- 		brcmf_pcie_write_reg32(devinfo, BRCMF_PCIE_64_PCIE2REG_MAILBOXMASK,
- 				       BRCMF_PCIE_64_MB_INT_D2H_DB);
- 	else
-@@ -1053,7 +1068,9 @@ static irqreturn_t brcmf_pcie_isr_thread(int irq, voi=
-d *arg)
- 	struct brcmf_pciedev_info *devinfo =3D (struct brcmf_pciedev_info *)arg;
- 	u32 status, mask;
-=20
--	if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
-+	if(devinfo->ci->chip =3D=3D BRCM_CC_4377_CHIP_ID)
-+		mask =3D BRCMF_PCIE_64_MB_INT_D2H_DB;
-+	else if(devinfo->ci->chip =3D=3D BRCM_CC_4378_CHIP_ID)
- 		mask =3D BRCMF_PCIE_64_MB_INT_D2H_DB;
- 	else
- 		mask =3D BRCMF_PCIE_MB_INT_D2H_DB;
-@@ -2363,6 +2380,7 @@ static const struct pci_device_id brcmf_pcie_devid_ta=
+ 	BRCMF_FW_ENTRY(BRCM_CC_4350_CHIP_ID, 0x000000FF, 4350C),
+ 	BRCMF_FW_ENTRY(BRCM_CC_4350_CHIP_ID, 0xFFFFFF00, 4350),
+ 	BRCMF_FW_ENTRY(BRCM_CC_43525_CHIP_ID, 0xFFFFFFF0, 4365C),
++	BRCMF_FW_ENTRY(BRCM_CC_4355_CHIP_ID, 0xFFFFFFFF, 4355),
+ 	BRCMF_FW_ENTRY(BRCM_CC_4356_CHIP_ID, 0xFFFFFFFF, 4356),
+ 	BRCMF_FW_ENTRY(BRCM_CC_43567_CHIP_ID, 0xFFFFFFFF, 43570),
+ 	BRCMF_FW_ENTRY(BRCM_CC_43569_CHIP_ID, 0xFFFFFFFF, 43570),
+@@ -2362,6 +2364,7 @@ static const struct pci_device_id brcmf_pcie_devid_ta=
 ble[] =3D {
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4366_2G_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4366_5G_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4371_DEVICE_ID),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_4377_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4378_DEVICE_ID),
- 	{ /* end: all zeroes */ }
- };
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4350_DEVICE_ID),
+ 	BRCMF_PCIE_DEVICE_SUB(0x4355, BRCM_PCIE_VENDOR_ID_BROADCOM, 0x4355),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4354_RAW_DEVICE_ID),
++	BRCMF_PCIE_DEVICE(BRCM_PCIE_4355_DEVICE_ID),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4356_DEVICE_ID),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43567_DEVICE_ID),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43570_DEVICE_ID),
 diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h =
 b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-index 242df778f..eb3f361a2 100644
+index eb3f361a2..8536a285d 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
 +++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-@@ -50,6 +50,7 @@
- #define BRCM_CC_43664_CHIP_ID		43664
- #define BRCM_CC_43666_CHIP_ID		43666
- #define BRCM_CC_4371_CHIP_ID		0x4371
-+#define BRCM_CC_4377_CHIP_ID		0x4377
- #define BRCM_CC_4378_CHIP_ID		0x4378
- #define CY_CC_4373_CHIP_ID		0x4373
- #define CY_CC_43012_CHIP_ID		43012
-@@ -85,6 +86,7 @@
- #define BRCM_PCIE_4366_2G_DEVICE_ID	0x43c4
- #define BRCM_PCIE_4366_5G_DEVICE_ID	0x43c5
- #define BRCM_PCIE_4371_DEVICE_ID	0x440d
-+#define BRCM_PCIE_4377_DEVICE_ID	0x4488
- #define BRCM_PCIE_4378_DEVICE_ID	0x4425
-=20
-=20
+@@ -36,6 +36,7 @@
+ #define BRCM_CC_4350_CHIP_ID		0x4350
+ #define BRCM_CC_43525_CHIP_ID		43525
+ #define BRCM_CC_4354_CHIP_ID		0x4354
++#define BRCM_CC_4355_CHIP_ID		0x4355
+ #define BRCM_CC_4356_CHIP_ID		0x4356
+ #define BRCM_CC_43566_CHIP_ID		43566
+ #define BRCM_CC_43567_CHIP_ID		43567
+@@ -69,6 +70,7 @@
+ #define BRCM_PCIE_4350_DEVICE_ID	0x43a3
+ #define BRCM_PCIE_4354_DEVICE_ID	0x43df
+ #define BRCM_PCIE_4354_RAW_DEVICE_ID	0x4354
++#define BRCM_PCIE_4355_DEVICE_ID	0x43dc
+ #define BRCM_PCIE_4356_DEVICE_ID	0x43ec
+ #define BRCM_PCIE_43567_DEVICE_ID	0x43d3
+ #define BRCM_PCIE_43570_DEVICE_ID	0x43d9
 
