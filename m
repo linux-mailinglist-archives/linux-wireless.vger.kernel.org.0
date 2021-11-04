@@ -2,123 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3B6E445461
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 14:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 686A8445698
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 16:51:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231249AbhKDOAc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Nov 2021 10:00:32 -0400
-Received: from mout-p-102.mailbox.org ([80.241.56.152]:43940 "EHLO
-        mout-p-102.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbhKDOAc (ORCPT
+        id S231526AbhKDPxo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Nov 2021 11:53:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34112 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229770AbhKDPxo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Nov 2021 10:00:32 -0400
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4HlQFT3F3kzQjf7;
-        Thu,  4 Nov 2021 14:57:49 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Message-ID: <b7e15579-f899-d292-92e0-79ecdab1672e@v0yd.nl>
-Date:   Thu, 4 Nov 2021 14:57:41 +0100
+        Thu, 4 Nov 2021 11:53:44 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1068BC061714;
+        Thu,  4 Nov 2021 08:51:06 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id b12so9341890wrh.4;
+        Thu, 04 Nov 2021 08:51:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=WZb02HUNcpyrSV5l5/+XMe5AMoc6YwLyY8T5euRMbL8=;
+        b=kw1zp2Tegl4Kqb4SQ0i5nA93CA98pd7hYLtkw13rlOMEQZ+8Q418AzSmPVcyedY74C
+         ABTDfoiZNmd1s4NmsY4PWLZhgb3Y1XfqgBLaWDRnQH+/hLeAofrOwy7p8lZsjZSugL3F
+         qrmL7LzDpqv5BwpI1UxzYHz/nPrF7LPiHH5C3sKTPWd3H/lECZQohDF+Ynq7FWOlIIgS
+         /aPrZ/MhApbdHIyUnl4liqM7yWj9yl03OnkwXGaX+xZbE2IgwRGwXsJAmP+kvLNTw606
+         uTKDJKSeDBWCs1LcRwCwkV1jPQ1fCNcpeM/tbxb8ZP7j1CilcdcHqsXUIgJKjP9eWS94
+         FLxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=WZb02HUNcpyrSV5l5/+XMe5AMoc6YwLyY8T5euRMbL8=;
+        b=1KKrFWtD+EZHWIzSwdqf52hTvLKw/wojFNYVCtR8SZrVmFeua2LteKc8HAl+nQTZHl
+         KFNluKn/n92MRXzFO7iQ5Uc5YqDA7AfWA4t8yBMGq9cMCUnCOY509ixsbmEo3mIxUpSL
+         LzcYuHIdlpIAJKfiVY4Sol3DTwmdu+9a9vFTWuCL69BA8qQUDK77gOqXmArvqQrhLiyU
+         S2gKMP2sttSa7gYtd57tBJb26NArTH/B8zqfLkJzjybrRd3PuTJuRs6kDQBl7+vZAGVm
+         7y+xca0qbLPLGXOkKJf53MxN9oQHGdjqJLDrUr+QgzYEC19QAldngiBpumtwHt6W/Bt3
+         g6Yw==
+X-Gm-Message-State: AOAM532RPwX0ehD7tJFj+rkk3nCt7sgXwkbEAyjCO4rI801Mx38cORNU
+        Y9oIYjG+r3ZxVqGGXOEuACs=
+X-Google-Smtp-Source: ABdhPJyDTpRBmB3xRPfE1CErEHrPH0QFPa6OVsRksW9o7hV8xA9OzQNF3oJjV7lgeE4GnIlESrqjZA==
+X-Received: by 2002:adf:ce8b:: with SMTP id r11mr45456071wrn.294.1636041064535;
+        Thu, 04 Nov 2021 08:51:04 -0700 (PDT)
+Received: from debian64.daheim (p5b0d7fa5.dip0.t-ipconnect.de. [91.13.127.165])
+        by smtp.gmail.com with ESMTPSA id e12sm6714724wrq.20.2021.11.04.08.51.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Nov 2021 08:51:04 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+        by debian64.daheim with esmtp (Exim 4.95)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1mie48-00085z-QO;
+        Thu, 04 Nov 2021 16:51:03 +0100
+Message-ID: <179edf00-3ae0-3964-3433-015da8274aff@gmail.com>
+Date:   Thu, 4 Nov 2021 16:51:03 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH] mwifiex: Add quirk resetting the PCI bridge on MS Surface
- devices
-Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [RFC net-next/wireless-next v1 2/2] ath10k: move
+ device_get_mac_address() and pass errors up the chain
+Content-Language: de-DE
+To:     Mathias Kresin <dev@kresin.me>, netdev@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org
+Cc:     Ansuel Smith <ansuelsmth@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Brian Norris <briannorris@chromium.org>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Vidya Sagar <vidyas@nvidia.com>,
-        Victor Ding <victording@google.com>
-References: <20211025235618.GA52139@bhelgaas>
-From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
-In-Reply-To: <20211025235618.GA52139@bhelgaas>
+        "David S . Miller" <davem@davemloft.net>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>, Michael Walle <michael@walle.cc>,
+        Arnd Bergmann <arnd@arndb.de>
+References: <20211030174111.1432663-1-chunkeey@gmail.com>
+ <20211030174111.1432663-2-chunkeey@gmail.com>
+ <2caec4e0-94f4-915c-60d1-c78e7bdc5364@kresin.me>
+From:   Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <2caec4e0-94f4-915c-60d1-c78e7bdc5364@kresin.me>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 43B0F110B
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10/26/21 01:56, Bjorn Helgaas wrote:
-> On Mon, Oct 25, 2021 at 06:45:29PM +0200, Jonas Dreßler wrote:
->> On 10/18/21 17:35, Bjorn Helgaas wrote:
->>> On Thu, Oct 14, 2021 at 12:08:31AM +0200, Jonas Dreßler wrote:
->>>> On 10/12/21 17:39, Bjorn Helgaas wrote:
->>>>> [+cc Vidya, Victor, ASPM L1.2 config issue; beginning of thread:
->>>>> https://lore.kernel.org/all/20211011134238.16551-1-verdre@v0yd.nl/]
->>>
->>>>> I wonder if this reset quirk works because pci_reset_function() saves
->>>>> and restores much of config space, but it currently does *not* restore
->>>>> the L1 PM Substates capability, so those T_POWER_ON,
->>>>> Common_Mode_Restore_Time, and LTR_L1.2_THRESHOLD values probably get
->>>>> cleared out by the reset.  We did briefly save/restore it [1], but we
->>>>> had to revert that because of a regression that AFAIK was never
->>>>> resolved [2].  I expect we will eventually save/restore this, so if
->>>>> the quirk depends on it *not* being restored, that would be a problem.
->>>>>
->>>>> You should be able to test whether this is the critical thing by
->>>>> clearing those registers with setpci instead of doing the reset.  Per
->>>>> spec, they can only be modified when L1.2 is disabled, so you would
->>>>> have to disable it via sysfs (for the endpoint, I think)
->>>>> /sys/.../l1_2_aspm and /sys/.../l1_2_pcipm, do the setpci on the root
->>>>> port, then re-enable L1.2.
->>>>>
->>>>> [1] https://git.kernel.org/linus/4257f7e008ea
->>>>> [2] https://lore.kernel.org/all/20210127160449.2990506-1-helgaas@kernel.org/
->>>>
->>>> Hmm, interesting, thanks for those links.
->>>>
->>>> Are you sure the config values will get lost on the reset? If we
->>>> only reset the port by going into D3hot and back into D0, the
->>>> device will remain powered and won't lose the config space, will
->>>> it?
->>>
->>> I think you're doing a PM reset (transition to D3hot and back to
->>> D0).  Linux only does this when PCI_PM_CTRL_NO_SOFT_RESET == 0.
->>> The spec doesn't actually *require* the device to be reset; it
->>> only says the internal state of the device is undefined after
->>> these transitions.
->>
->> Not requiring the device to be reset sounds sensible to me given
->> that D3hot is what devices are transitioned into during suspend.
->>
->> But anyway, that doesn't really get us any further except it
->> somewhat gives an explanation why the LTR is suddenly 0 after the
->> reset. Or are you making the point that we shouldn't rely on
->> "undefined state" for this hack because not all PCI bridges/ports
->> will necessarily behave the same?
+Hi Mathias,
+
+On 02/11/2021 23:08, Mathias Kresin wrote:
+> 10/30/21 7:41 PM, Christian Lamparter:
+>> --- a/drivers/net/wireless/ath/ath10k/ahb.c
+>> +++ b/drivers/net/wireless/ath/ath10k/ahb.c
+>> @@ -745,9 +745,11 @@ static int ath10k_ahb_probe(struct platform_device *pdev)
+>>       size = sizeof(*ar_pci) + sizeof(*ar_ahb);
+>>       ar = ath10k_core_create(size, &pdev->dev, ATH10K_BUS_AHB,
+>>                   hw_rev, &ath10k_ahb_hif_ops);
+>> -    if (!ar) {
+>> -        dev_err(&pdev->dev, "failed to allocate core\n");
+>> -        return -ENOMEM;
+>> +    if (IS_ERR(ar)) {
+>> +        ret = PTR_ERR(ar);
+>> +        if (ret != -EPROBE_DEFER)
+>> +            dev_err(&pdev->dev, "failed to allocate core: %d\n", ret);
 > 
-> I guess I'm just making the point that I don't understand why the
-> bridge reset fixes something, and I'm not confident that the fix will
-> work on every system and continue working even if/when the PCI core
-> starts saving and restoring the L1 PM Substates capability.
-> 
+> There's a helper for that: dev_err_probe().
 
-FWIW, I've tested it with the restoring of L1 PM Substates enabled now
-and the bridge reset worked just as before.
+I was looking for that. Thank you! :-)
+(I need to check if this device_get_mac_address() all works
+with 5.15-next or not. It's probably easier to wait until
+5.16-rc1-wt gets released).
 
-But yeah I, too, have no clue why exactly the bridge reset does what it
-does...
-
-Anyway, I've also confirmed that it actually impacts the power usage by
-measuring consumed energy during idle over a few minutes: Applying either
-the bridge reset quirk or ignoring the LTR via pmc_core results in about
-7% less energy usage. Given that the overall energy usage was almost
-nothing to make the measurement easier, those 7% are not a lot, but
-nonetheless it confirms that the quirk works.
+Regards,
+Christian
