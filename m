@@ -2,141 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 666DD444D07
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 02:39:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60392444EA6
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 07:11:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232907AbhKDBlu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Nov 2021 21:41:50 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:52367 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231489AbhKDBlu (ORCPT
+        id S230261AbhKDGOL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Nov 2021 02:14:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43862 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229994AbhKDGOG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Nov 2021 21:41:50 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1A41cj9H3009888, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1A41cj9H3009888
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 4 Nov 2021 09:38:45 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Thu, 4 Nov 2021 09:38:44 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Thu, 4 Nov 2021 09:38:44 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
- RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
- 15.01.2308.015; Thu, 4 Nov 2021 09:38:44 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Colin King <colin.king@canonical.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
-Thread-Topic: [PATCH][next] rtw89: Fix potential dereference of the null
- pointer sta
-Thread-Index: AQHXwduziBNegQ3KtE6tzEeaYjpkJqvX/pCwgBfOyICAAT/CgIAAIjOAgAGF8cA=
-Date:   Thu, 4 Nov 2021 01:38:44 +0000
-Message-ID: <25510e071f6c46788bb3348251f9975b@realtek.com>
-References: <20211015154530.34356-1-colin.king@canonical.com>
- <9cc681c217a449519aee524b35e6b6bc@realtek.com> <20211102131437.GF2794@kadam>
- <c3de973999ea40cf967ffefe0ee56ed4@realtek.com> <20211103102128.GL2794@kadam>
-In-Reply-To: <20211103102128.GL2794@kadam>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/11/3_=3F=3F_11:29:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Thu, 4 Nov 2021 02:14:06 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 343DAC061714;
+        Wed,  3 Nov 2021 23:11:29 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id p18so5478501plf.13;
+        Wed, 03 Nov 2021 23:11:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OjnEPOzUPFVGMCkVUBCfucHinXUbvfA4ZiPiZdFe5fE=;
+        b=XmkgLy9WF+XWPTfg+VhTS0tA2at/XszKlLy7PvInlpvfaviSpNRiQ2uT2WEG+hi1cs
+         CfhlaWYG4Q/CoLxyrOTRDVvPyacema2lYk2Yi5IOJUF48QQl7JHrcuqbikbRnYXm6QQ0
+         igaNyTENS5uDlZvaCbal1HLqr1D/JtU0ikCA1ctWsWYGyNHTRjjXuT6o60qNW/DAnpdp
+         YwjHXFh/1jZHAttkv0n3HX7q3Wlyrpk1KVyoLNzWRd0/OymMJLGHTMBPi2sT4qKNkBh1
+         br7rhuT9HjxUBDL9EdM7YokSqvQIlS0U5tbqkNql7duKCZqrDUjZQRzBelHxPUscsLhm
+         lr7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OjnEPOzUPFVGMCkVUBCfucHinXUbvfA4ZiPiZdFe5fE=;
+        b=oVeu51dsKaS9hlPe322R4MQy0H3QncJoRLvWwksBJ33HoHNYCcF6ZG3p0d5erZ8DfM
+         S5MFpMMhpe5EQhwsPr/Z4BxUtgcm/TACtZ4zwG03pBLllZvu0jgI42646exPURcWbkHI
+         BzlEa2AfZJVgXnxi4vuj774xDeS+uSN5Xa8nNm0HQt27qztD+kPJ9CCcR9zBn52ccu9G
+         H44kUyaB7LwmnA90yrrKeqMgT1aaYhVbw9DZDaOCU956vcqMMmE4PJmXqWIe4hYD4m+4
+         +HhCCJlGKyOPUClP8gXd5MDFSImqTOcDbTd6B44jgWeE4lRXStzfabzTlgA10tUeUa/q
+         Xlqg==
+X-Gm-Message-State: AOAM5319D2SDsnu0Xq86n3ys28G1v/UXW9Nvmec0lNIO9/Bq0Or3vSh2
+        UbXjJ3LOgHzG8/6v4ym+hRw=
+X-Google-Smtp-Source: ABdhPJzyBGLpaLsRqTMYZCDVSew0TVLrzxI1xxC1OR5kuon+oe5k3/id6FRd9dZ0cZuq6Hxt/cq0kg==
+X-Received: by 2002:a17:90b:124d:: with SMTP id gx13mr19936360pjb.106.1636006288575;
+        Wed, 03 Nov 2021 23:11:28 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id s7sm4242655pfu.139.2021.11.03.23.11.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Nov 2021 23:11:28 -0700 (PDT)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: ye.guojin@zte.com.cn
+To:     pkshih@realtek.com
+Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ye Guojin <ye.guojin@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] rtw89: remove unnecessary conditional operators
+Date:   Thu,  4 Nov 2021 06:11:19 +0000
+Message-Id: <20211104061119.1685-1-ye.guojin@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/04/2021 01:15:49
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 167084 [Nov 03 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/04/2021 01:18:00
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Ye Guojin <ye.guojin@zte.com.cn>
 
-> -----Original Message-----
-> From: Dan Carpenter <dan.carpenter@oracle.com>
-> Sent: Wednesday, November 3, 2021 6:21 PM
-> To: Pkshih <pkshih@realtek.com>
-> Cc: Colin King <colin.king@canonical.com>; Kalle Valo <kvalo@codeaurora.org>; David S . Miller
-> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; linux-wireless@vger.kernel.org;
-> netdev@vger.kernel.org; kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
-> 
-> On Wed, Nov 03, 2021 at 12:36:17AM +0000, Pkshih wrote:
-> 
-> > > > > diff --git a/drivers/net/wireless/realtek/rtw89/core.c
-> > > > > b/drivers/net/wireless/realtek/rtw89/core.c
-> > > > > index 06fb6e5b1b37..26f52a25f545 100644
-> > > > > --- a/drivers/net/wireless/realtek/rtw89/core.c
-> > > > > +++ b/drivers/net/wireless/realtek/rtw89/core.c
-> > > > > @@ -1534,9 +1534,14 @@ static bool rtw89_core_txq_agg_wait(struct rtw89_dev *rtwdev,
-> > > > >  {
-> > > > >  	struct rtw89_txq *rtwtxq = (struct rtw89_txq *)txq->drv_priv;
-> > > > >  	struct ieee80211_sta *sta = txq->sta;
-> > > > > -	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
-> > > >
-> > > > 'sta->drv_priv' is only a pointer, we don't really dereference the
-> > > > data right here, so I think this is safe. More, compiler can optimize
-> > > > this instruction that reorder it to the place just right before using.
-> > > > So, it seems like a false alarm.
-> > >
-> > > The warning is about "sta" not "sta->priv".  It's not a false positive.
-> > >
-> > > I have heard discussions about compilers trying to work around these
-> > > bugs by re-ordering the code.  Is that an option in GCC?  It's not
-> > > something we should rely on, but I'm just curious if it exists in
-> > > released versions.
-> > >
-> >
-> > I say GCC does "reorder" the code, because the object codes of following
-> > two codes are identical with default or -Os ccflags.
-> 
-> Huh...  That's cool.  GCC doesn't re-order it for me, but I'm on GCC 8
-> so maybe it will work when I get to a more modern version.
-> 
+The conditional operator is unnecessary while assigning values to the
+bool variables.
 
-My GCC is 9.3.0. 
-But, I don't try other versions.
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Ye Guojin <ye.guojin@zte.com.cn>
+---
+ drivers/net/wireless/realtek/rtw89/debug.c    | 2 +-
+ drivers/net/wireless/realtek/rtw89/mac.c      | 2 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      | 2 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c | 4 ++--
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
---
-Ping-Ke
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+index 29eb188c888c..75f10627585b 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.c
++++ b/drivers/net/wireless/realtek/rtw89/debug.c
+@@ -814,7 +814,7 @@ rtw89_debug_priv_mac_dbg_port_dump_select(struct file *filp,
+ 		return -EINVAL;
+ 	}
+ 
+-	enable = set == 0 ? false : true;
++	enable = set != 0;
+ 	switch (sel) {
+ 	case 0:
+ 		debugfs_priv->dbgpkg_en.ss_dbg = enable;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index afcd07ab1de7..944c23293cb9 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -3695,7 +3695,7 @@ void _rtw89_mac_bf_monitor_track(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_traffic_stats *stats = &rtwdev->stats;
+ 	struct rtw89_vif *rtwvif;
+-	bool en = stats->tx_tfc_lv > stats->rx_tfc_lv ? false : true;
++	bool en = stats->tx_tfc_lv <= stats->rx_tfc_lv;
+ 	bool old = test_bit(RTW89_FLAG_BFEE_EN, rtwdev->flags);
+ 
+ 	if (en == old)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index ab134856baac..b7107eff9edc 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -1767,7 +1767,7 @@ static void rtw89_phy_cfo_dm(struct rtw89_dev *rtwdev)
+ 	}
+ 	rtw89_phy_cfo_crystal_cap_adjust(rtwdev, new_cfo);
+ 	cfo->cfo_avg_pre = new_cfo;
+-	x_cap_update =  cfo->crystal_cap == pre_x_cap ? false : true;
++	x_cap_update =  cfo->crystal_cap != pre_x_cap;
+ 	rtw89_debug(rtwdev, RTW89_DBG_CFO, "Xcap_up=%d\n", x_cap_update);
+ 	rtw89_debug(rtwdev, RTW89_DBG_CFO, "Xcap: D:%x C:%x->%x, ofst=%d\n",
+ 		    cfo->def_x_cap, pre_x_cap, cfo->crystal_cap,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 5c6ffca3a324..9e25e53f6c4a 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -1053,10 +1053,10 @@ static void rtw8852a_set_channel_bb(struct rtw89_dev *rtwdev,
+ 				    struct rtw89_channel_params *param,
+ 				    enum rtw89_phy_idx phy_idx)
+ {
+-	bool cck_en = param->center_chan > 14 ? false : true;
++	bool cck_en = param->center_chan <= 14;
+ 	u8 pri_ch_idx = param->pri_ch_idx;
+ 
+-	if (param->center_chan <= 14)
++	if (cck_en)
+ 		rtw8852a_ctrl_sco_cck(rtwdev, param->center_chan,
+ 				      param->primary_chan, param->bandwidth);
+ 
+-- 
+2.25.1
 
