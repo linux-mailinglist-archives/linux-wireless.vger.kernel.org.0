@@ -2,104 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69755444ED0
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 07:23:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FB45444F12
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 07:45:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230213AbhKDG0H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Nov 2021 02:26:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46580 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbhKDG0G (ORCPT
+        id S231381AbhKDGrk convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Nov 2021 02:47:40 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:49367 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231612AbhKDGqP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Nov 2021 02:26:06 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78DD0C061714;
-        Wed,  3 Nov 2021 23:23:29 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id m14so4847786pfc.9;
-        Wed, 03 Nov 2021 23:23:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HUMW1cGjIPuXunjJMEEPF7szJpJIYVokEK7muhPqkK8=;
-        b=dJjSSj4N8N1IXBF7t3zw0xHOd4LTebseW1fVICt0SxQvtZlg9uV0FvpDfTFZJKezQT
-         maWPfNe+3Wto8OwYj3t4rkHnGtn7Lm+Cx3VMPcejSVPzFnswdAO9G3vIJL1qhk1Xg8Mz
-         FIFJhn5pRgi0UD7wzNjLyJAgGI76zsYVz/0MKQDdArpurWbF2/1cCitrdr2Gxiaq7oWH
-         5d2TwNO1HrGraNFpu66hBAfEhPNlgfWkw+KlUxLXMkBtdpbiCBx5gJ+o6F5V8DhllVif
-         HvDALYMqdI26QdGfNIBbNhURxFfbb8gG51Vd8zg63YOusAtH740ozLuxFaK7FHykzfr3
-         XVyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HUMW1cGjIPuXunjJMEEPF7szJpJIYVokEK7muhPqkK8=;
-        b=Pyh33ipY4Fg6b8nmTgarTP0HYfZB5ookckMb8AkiXo17y4oKnY5SJsgSnAas2hEeDC
-         3p+UKHAAMb6TcLMRNUHuot9Ghu8FtEICEY4FXOboECn+5z1O7ZsAhuze3F0n/IhAImtc
-         w9mwQ/VlGTayvrAjOnLbIB/MUk+k0lGeDDAlSoZdBj+egZR7UWhVnTQA0t2F676GwSLT
-         +GfXt19uYCl0W+gQ5t1oYTP/Zkq1bO0K7KyilR9JUsoVZukHlYatOP+iX2Yd3Ul9rHiH
-         oPIxWUsH9XWG4DLHJbbnYgaHYZEqhjpSOUGpohd66K4+5y8DCbf/rY4amEm/B1CdLEc9
-         W4pg==
-X-Gm-Message-State: AOAM531Wae/k/wERpjiJblOl5A0hH9UtoJm6Z1AUPGJCwYyYKN8bIUMh
-        ZaogGnzuI8naNe3ix2mbn/k=
-X-Google-Smtp-Source: ABdhPJxDuRDqVcZGjmz8eHCE5U/kluVprOkKNubfN2s2ncZbYIA697E5Iiqp+pTIMFF1858E23eR7Q==
-X-Received: by 2002:a63:cd47:: with SMTP id a7mr11895862pgj.1.1636007009146;
-        Wed, 03 Nov 2021 23:23:29 -0700 (PDT)
-Received: from debian11-dev-61.localdomain (192.243.120.180.16clouds.com. [192.243.120.180])
-        by smtp.gmail.com with ESMTPSA id t38sm4403236pfg.61.2021.11.03.23.23.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Nov 2021 23:23:28 -0700 (PDT)
-From:   davidcomponentone@gmail.com
-X-Google-Original-From: yang.guang5@zte.com.cn
-To:     jirislaby@kernel.org
-Cc:     davidcomponentone@gmail.com, mickflemm@gmail.com,
-        mcgrof@kernel.org, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Yang Guang <yang.guang5@zte.com.cn>,
+        Thu, 4 Nov 2021 02:46:15 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1A46hAUH1009054, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1A46hAUH1009054
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 4 Nov 2021 14:43:10 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Thu, 4 Nov 2021 14:43:09 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Thu, 4 Nov 2021 02:43:09 -0400
+Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
+ RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
+ 15.01.2308.015; Thu, 4 Nov 2021 14:43:09 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "cgel.zte@gmail.com" <cgel.zte@gmail.com>
+CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Ye Guojin <ye.guojin@zte.com.cn>,
         Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] ath5k: use swap() to make code cleaner
-Date:   Thu,  4 Nov 2021 14:23:17 +0800
-Message-Id: <20211104062317.1506183-1-yang.guang5@zte.com.cn>
-X-Mailer: git-send-email 2.30.2
+Subject: RE: [PATCH] rtw89: remove unnecessary conditional operators
+Thread-Topic: [PATCH] rtw89: remove unnecessary conditional operators
+Thread-Index: AQHX0ULQZJxC+uGsq0GE1mLzw53Hj6vy67XQ
+Date:   Thu, 4 Nov 2021 06:43:09 +0000
+Message-ID: <a540a609d7e44993ac830d439e417835@realtek.com>
+References: <20211104061119.1685-1-ye.guojin@zte.com.cn>
+In-Reply-To: <20211104061119.1685-1-ye.guojin@zte.com.cn>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/11/4_=3F=3F_02:09:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/04/2021 06:26:06
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 167084 [Nov 03 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/04/2021 06:28:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yang Guang <yang.guang5@zte.com.cn>
 
-Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
-opencoding it.
+> -----Original Message-----
+> From: cgel.zte@gmail.com <cgel.zte@gmail.com>
+> Sent: Thursday, November 4, 2021 2:11 PM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: kvalo@codeaurora.org; davem@davemloft.net; kuba@kernel.org; linux-wireless@vger.kernel.org;
+> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Ye Guojin <ye.guojin@zte.com.cn>; Zeal Robot
+> <zealci@zte.com.cn>
+> Subject: [PATCH] rtw89: remove unnecessary conditional operators
+> 
+> From: Ye Guojin <ye.guojin@zte.com.cn>
+> 
+> The conditional operator is unnecessary while assigning values to the
+> bool variables.
+> 
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Ye Guojin <ye.guojin@zte.com.cn>
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
----
- drivers/net/wireless/ath/ath5k/phy.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-diff --git a/drivers/net/wireless/ath/ath5k/phy.c b/drivers/net/wireless/ath/ath5k/phy.c
-index 00f9e347d414..08dc12611f8d 100644
---- a/drivers/net/wireless/ath/ath5k/phy.c
-+++ b/drivers/net/wireless/ath/ath5k/phy.c
-@@ -1562,16 +1562,13 @@ static s16
- ath5k_hw_get_median_noise_floor(struct ath5k_hw *ah)
- {
- 	s16 sort[ATH5K_NF_CAL_HIST_MAX];
--	s16 tmp;
- 	int i, j;
- 
- 	memcpy(sort, ah->ah_nfcal_hist.nfval, sizeof(sort));
- 	for (i = 0; i < ATH5K_NF_CAL_HIST_MAX - 1; i++) {
- 		for (j = 1; j < ATH5K_NF_CAL_HIST_MAX - i; j++) {
- 			if (sort[j] > sort[j - 1]) {
--				tmp = sort[j];
--				sort[j] = sort[j - 1];
--				sort[j - 1] = tmp;
-+				swap(sort[j], sort[j - 1]);
- 			}
- 		}
- 	}
--- 
-2.30.2
+[...]
+
 
