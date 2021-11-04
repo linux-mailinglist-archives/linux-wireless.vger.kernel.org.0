@@ -2,106 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7994444CD9
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 02:06:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 666DD444D07
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 02:39:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232954AbhKDBIq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 Nov 2021 21:08:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33468 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232399AbhKDBIl (ORCPT
+        id S232907AbhKDBlu convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 Nov 2021 21:41:50 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:52367 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231489AbhKDBlu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 Nov 2021 21:08:41 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A531C061205
-        for <linux-wireless@vger.kernel.org>; Wed,  3 Nov 2021 18:06:04 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id k4so4481878plx.8
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Nov 2021 18:06:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=squareup.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=l0NodXMiXOc4ZwZnRHBZa9k+oUne0ZC0/wZzXhkZmZI=;
-        b=LnBaFBJxFiio4rB+3EcY9+ZKc8yrYBVGpc+8LUEODOn6EkbjC9Rd1SS0DAZO4C8/kz
-         roZT/aniOYMHrJwMTfF3MH53guYKahKXW0cs4dFF7Kaimzde79Kl19xAmaO5Tt48kQoh
-         LxWHEb1fQOkRdPpnevfIX9bo+wT2Be7rWIKP4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=l0NodXMiXOc4ZwZnRHBZa9k+oUne0ZC0/wZzXhkZmZI=;
-        b=UworlS7+0Oh70JJ9q2wsuYRY5s19LZqiBvbV/F5AhjEyrj7LPyWg2MirlrRHOdYH2b
-         TT4FYw38Z+NX+UmEkJToix7IJTw9tfsTTfpctz/Hd/kit4GMOVSwWoO2Nu/Tw2GK9qB/
-         rsylRIHgHqL2sRxH+P6QEDNGtwp9JPjuAo8QKowmqTqRXf2dD+2tCQaNTVGdcdR8hhQ6
-         DUjL+7R4kuronsIY9HrlGHL1et/nGXVqmOS4sU+HzDYj98SKpzU4Xo9nPIMl29i45ghV
-         XYZl9YLYI5ZQsFo4NZrfcQAUjnIXOQz392Qk3FTs8Or1NgU+IolVS7UY/LzQwh2fu1Hb
-         kglA==
-X-Gm-Message-State: AOAM533NZWQRZTNKRYJyL2BrG6CWDHzwSTZCXFJPLeccwQAo6nRQyx6E
-        gaEFxttZXsFMTHuFBTymJ+asbw==
-X-Google-Smtp-Source: ABdhPJw0acps+6sDCj/mXAWZyD90NnhnpiPfxAq1ztrvINgsCTh1aK2pVCUnS8RD2wT02f5+3ngXkg==
-X-Received: by 2002:a17:90a:e506:: with SMTP id t6mr16698467pjy.9.1635987963550;
-        Wed, 03 Nov 2021 18:06:03 -0700 (PDT)
-Received: from localhost ([2600:6c50:4d00:d401:aa7a:1484:c7d0:ae82])
-        by smtp.gmail.com with ESMTPSA id e8sm3667882pfn.45.2021.11.03.18.06.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Nov 2021 18:06:03 -0700 (PDT)
-From:   Benjamin Li <benl@squareup.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        linux-arm-msm@vger.kernel.org, Benjamin Li <benl@squareup.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, wcn36xx@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] wcn36xx: fix RX BD rate mapping for 5GHz legacy rates
-Date:   Wed,  3 Nov 2021 18:05:48 -0700
-Message-Id: <20211104010548.1107405-3-benl@squareup.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211104010548.1107405-1-benl@squareup.com>
-References: <20211104010548.1107405-1-benl@squareup.com>
+        Wed, 3 Nov 2021 21:41:50 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1A41cj9H3009888, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1A41cj9H3009888
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 4 Nov 2021 09:38:45 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Thu, 4 Nov 2021 09:38:44 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Thu, 4 Nov 2021 09:38:44 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
+ RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
+ 15.01.2308.015; Thu, 4 Nov 2021 09:38:44 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     Colin King <colin.king@canonical.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+Thread-Topic: [PATCH][next] rtw89: Fix potential dereference of the null
+ pointer sta
+Thread-Index: AQHXwduziBNegQ3KtE6tzEeaYjpkJqvX/pCwgBfOyICAAT/CgIAAIjOAgAGF8cA=
+Date:   Thu, 4 Nov 2021 01:38:44 +0000
+Message-ID: <25510e071f6c46788bb3348251f9975b@realtek.com>
+References: <20211015154530.34356-1-colin.king@canonical.com>
+ <9cc681c217a449519aee524b35e6b6bc@realtek.com> <20211102131437.GF2794@kadam>
+ <c3de973999ea40cf967ffefe0ee56ed4@realtek.com> <20211103102128.GL2794@kadam>
+In-Reply-To: <20211103102128.GL2794@kadam>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/11/3_=3F=3F_11:29:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/04/2021 01:15:49
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 167084 [Nov 03 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/04/2021 01:18:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The linear mapping between the BD rate field and the driver's 5GHz
-legacy rates table (wcn_5ghz_rates) does not only apply for the latter
-four rates -- it applies to all eight rates.
 
-Fixes: 6ea131acea98 ("wcn36xx: Fix warning due to bad rate_idx")
-Signed-off-by: Benjamin Li <benl@squareup.com>
----
- drivers/net/wireless/ath/wcn36xx/txrx.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+> -----Original Message-----
+> From: Dan Carpenter <dan.carpenter@oracle.com>
+> Sent: Wednesday, November 3, 2021 6:21 PM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: Colin King <colin.king@canonical.com>; Kalle Valo <kvalo@codeaurora.org>; David S . Miller
+> <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; linux-wireless@vger.kernel.org;
+> netdev@vger.kernel.org; kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH][next] rtw89: Fix potential dereference of the null pointer sta
+> 
+> On Wed, Nov 03, 2021 at 12:36:17AM +0000, Pkshih wrote:
+> 
+> > > > > diff --git a/drivers/net/wireless/realtek/rtw89/core.c
+> > > > > b/drivers/net/wireless/realtek/rtw89/core.c
+> > > > > index 06fb6e5b1b37..26f52a25f545 100644
+> > > > > --- a/drivers/net/wireless/realtek/rtw89/core.c
+> > > > > +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> > > > > @@ -1534,9 +1534,14 @@ static bool rtw89_core_txq_agg_wait(struct rtw89_dev *rtwdev,
+> > > > >  {
+> > > > >  	struct rtw89_txq *rtwtxq = (struct rtw89_txq *)txq->drv_priv;
+> > > > >  	struct ieee80211_sta *sta = txq->sta;
+> > > > > -	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
+> > > >
+> > > > 'sta->drv_priv' is only a pointer, we don't really dereference the
+> > > > data right here, so I think this is safe. More, compiler can optimize
+> > > > this instruction that reorder it to the place just right before using.
+> > > > So, it seems like a false alarm.
+> > >
+> > > The warning is about "sta" not "sta->priv".  It's not a false positive.
+> > >
+> > > I have heard discussions about compilers trying to work around these
+> > > bugs by re-ordering the code.  Is that an option in GCC?  It's not
+> > > something we should rely on, but I'm just curious if it exists in
+> > > released versions.
+> > >
+> >
+> > I say GCC does "reorder" the code, because the object codes of following
+> > two codes are identical with default or -Os ccflags.
+> 
+> Huh...  That's cool.  GCC doesn't re-order it for me, but I'm on GCC 8
+> so maybe it will work when I get to a more modern version.
+> 
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/txrx.c b/drivers/net/wireless/ath/wcn36xx/txrx.c
-index f0a9f069a92a9..dd58dde8c8363 100644
---- a/drivers/net/wireless/ath/wcn36xx/txrx.c
-+++ b/drivers/net/wireless/ath/wcn36xx/txrx.c
-@@ -272,7 +272,6 @@ int wcn36xx_rx_skb(struct wcn36xx *wcn, struct sk_buff *skb)
- 	const struct wcn36xx_rate *rate;
- 	struct ieee80211_hdr *hdr;
- 	struct wcn36xx_rx_bd *bd;
--	struct ieee80211_supported_band *sband;
- 	u16 fc, sn;
- 
- 	/*
-@@ -350,12 +349,11 @@ int wcn36xx_rx_skb(struct wcn36xx *wcn, struct sk_buff *skb)
- 		status.enc_flags = rate->encoding_flags;
- 		status.bw = rate->bw;
- 		status.rate_idx = rate->mcs_or_legacy_index;
--		sband = wcn->hw->wiphy->bands[status.band];
- 		status.nss = 1;
- 
- 		if (status.band == NL80211_BAND_5GHZ &&
- 		    status.encoding == RX_ENC_LEGACY &&
--		    status.rate_idx >= sband->n_bitrates) {
-+		    status.rate_idx >= 4) {
- 			/* no dsss rates in 5Ghz rates table */
- 			status.rate_idx -= 4;
- 		}
--- 
-2.25.1
+My GCC is 9.3.0. 
+But, I don't try other versions.
+
+--
+Ping-Ke
 
