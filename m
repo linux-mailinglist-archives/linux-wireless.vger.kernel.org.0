@@ -2,100 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1170B445141
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 10:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07613445417
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 14:37:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231132AbhKDJkp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Nov 2021 05:40:45 -0400
-Received: from mail-wm1-f54.google.com ([209.85.128.54]:37802 "EHLO
-        mail-wm1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230335AbhKDJko (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Nov 2021 05:40:44 -0400
-Received: by mail-wm1-f54.google.com with SMTP id y84-20020a1c7d57000000b00330cb84834fso6738263wmc.2;
-        Thu, 04 Nov 2021 02:38:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=86YdHPoZ6y6Ru6MbsuSkcT1lnyGjcnsjFoTTRMz3JdU=;
-        b=15M7upLe7zv2mneGPr0Ia9TyyBz3ebcEfC35BCEisrrFaS1vg6Zgw+H26+I1j4bvC+
-         htglYbKQl9IledpYKFvybZWExLNGFqj4pdvb2TgeHiATYJSIJN/oJ2dVN62IWbs69zyj
-         q6DEnEtsE1Su0UuxIXv49nul360TnZZu82yJHg8mZd2n+8leVxA10psGbFsvu68ykb92
-         DiyeKZrzAsGgKSsgmcjI9wlupz5Gp315dG9PjNxzE37K8isCTmG7pqVfjOFl0sFYN+uu
-         MVBEN7tpHOGp0klmwjB1LH8oaU4fGfriZR0xnZkU4yyivt9Acq4xc8WItt3k2qEFNH0h
-         W5pg==
-X-Gm-Message-State: AOAM5330HyOoGxfTJsp7qb+n91QpxPd/UYC4gtxGMFoFuGKGi8Rfrwuo
-        Q5wHzqstrH2F61cuZ6BWAqs=
-X-Google-Smtp-Source: ABdhPJyCNtPDsr+MRj6lhzkgTaIqgXRok9kcZ+7HLAcb9VUfiYOpDMbYuuMInuxhkeV3I9jNx9GV/Q==
-X-Received: by 2002:a7b:cf10:: with SMTP id l16mr22354509wmg.17.1636018685473;
-        Thu, 04 Nov 2021 02:38:05 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
-        by smtp.gmail.com with ESMTPSA id 8sm7898790wmg.24.2021.11.04.02.38.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Nov 2021 02:38:05 -0700 (PDT)
-Message-ID: <0c3acbd4-6ab2-5cc5-6293-54e30093cce2@kernel.org>
-Date:   Thu, 4 Nov 2021 10:38:03 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
-Subject: Re: [PATCH] ath5k: use swap() to make code cleaner
-Content-Language: en-US
-To:     davidcomponentone@gmail.com
-Cc:     mickflemm@gmail.com, mcgrof@kernel.org, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org,
+        id S231786AbhKDNk3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Nov 2021 09:40:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39398 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231565AbhKDNkS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 4 Nov 2021 09:40:18 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 743CD604DC;
+        Thu,  4 Nov 2021 13:37:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1636033060;
+        bh=EKpljgVa5r5UmD2IEpypElISm7qojaXBWVSnqjIx8EI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Oq2pjjsCWrJdrsqVekgDZs8m9kH32LUoC8KYN9R+FDLbqcxOAlTL8Nwbr22LdspX7
+         GxEqHb+dOFJnxoV5wKbGzGK71BTYy7Ty/bs5+tH5yAmuWRUPNb/pHtoquaMComxL66
+         LaN86i4HmrqiAE3BOkMwHWTuNs0jt6JOvHTHjAMwSpNLswVSxtJtDrEyikzNfPD26g
+         /f/rHYcgB+PzKnBe55SUu9ZeMKyTjdjnb9KOJQERdDaRVXrN778DzEoEmSWeQiZ9Ig
+         tRydd0tHAbVjBnW3UXTECmHBssu/vI+CyMXj3Il1eW1wqu8Bp0Z3GLGJqyNmNHRRpS
+         fkWZMtuL/RnEA==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Yaara Baruch <yaara.baruch@intel.com>,
+        Matti Gottlieb <matti.gottlieb@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yang Guang <yang.guang5@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-References: <20211104062317.1506183-1-yang.guang5@zte.com.cn>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20211104062317.1506183-1-yang.guang5@zte.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: [PATCH] iwlwifi: pcie: fix constant-conversion warning
+Date:   Thu,  4 Nov 2021 14:37:23 +0100
+Message-Id: <20211104133735.1223989-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 04. 11. 21, 7:23, davidcomponentone@gmail.com wrote:
-> From: Yang Guang <yang.guang5@zte.com.cn>
-> 
-> Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
-> opencoding it.
+From: Arnd Bergmann <arnd@arndb.de>
 
-Why not just use sort() instead of the double loop?
+clang points out a potential issue with integer overflow when
+the iwl_dev_info_table[] array is empty:
 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
-> ---
->   drivers/net/wireless/ath/ath5k/phy.c | 5 +----
->   1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath5k/phy.c b/drivers/net/wireless/ath/ath5k/phy.c
-> index 00f9e347d414..08dc12611f8d 100644
-> --- a/drivers/net/wireless/ath/ath5k/phy.c
-> +++ b/drivers/net/wireless/ath/ath5k/phy.c
-> @@ -1562,16 +1562,13 @@ static s16
->   ath5k_hw_get_median_noise_floor(struct ath5k_hw *ah)
->   {
->   	s16 sort[ATH5K_NF_CAL_HIST_MAX];
-> -	s16 tmp;
->   	int i, j;
->   
->   	memcpy(sort, ah->ah_nfcal_hist.nfval, sizeof(sort));
->   	for (i = 0; i < ATH5K_NF_CAL_HIST_MAX - 1; i++) {
->   		for (j = 1; j < ATH5K_NF_CAL_HIST_MAX - i; j++) {
->   			if (sort[j] > sort[j - 1]) {
-> -				tmp = sort[j];
-> -				sort[j] = sort[j - 1];
-> -				sort[j - 1] = tmp;
-> +				swap(sort[j], sort[j - 1]);
->   			}
->   		}
->   	}
-> 
+drivers/net/wireless/intel/iwlwifi/pcie/drv.c:1344:42: error: implicit conversion from 'unsigned long' to 'int' changes value from 18446744073709551615 to -1 [-Werror,-Wconstant-conversion]
+        for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
+               ~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
 
+This is still harmless, as the loop correctly terminates, but adding
+an (int) cast makes that clearer to the compiler.
 
+Fixes: 3f7320428fa4 ("iwlwifi: pcie: simplify iwl_pci_find_dev_info()")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index c574f041f096..81e8f2fc4982 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1341,7 +1341,7 @@ iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
+ {
+ 	int i;
+ 
+-	for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
++	for (i = (int)ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
+ 		const struct iwl_dev_info *dev_info = &iwl_dev_info_table[i];
+ 
+ 		if (dev_info->device != (u16)IWL_CFG_ANY &&
 -- 
-js
-suse labs
+2.29.2
+
