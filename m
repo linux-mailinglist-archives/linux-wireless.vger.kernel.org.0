@@ -2,378 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD46544583D
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 18:24:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED49C4459B4
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 19:26:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233798AbhKDR0p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Nov 2021 13:26:45 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:62320 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234974AbhKDR0e (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Nov 2021 13:26:34 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1636046636; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=1YiPpl4J7vIbbdhFQnykPuh2To04wA5uo1959Oq7Vlw=; b=qSimEce9S3uMl3yeSyWlWOHhiGqCjVJ4FqrWwvuyhFu4UzMMCKvxB8ai97PGQxmfPmULHfLR
- 01fqCam4lyGgShxE+FJoprEgroODkp1eFvLw4RSLWk6WLUxcuCb2Y9tHeIFCTljnl/nk4Q73
- Yq5OXBK9SxsGRqNbqDciBDXyprQ=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 61841727aea46563ff46446c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 04 Nov 2021 17:23:51
- GMT
-Sender: msinada=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7D374C4360D; Thu,  4 Nov 2021 17:23:51 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from msinada-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: msinada)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C4274C4338F;
-        Thu,  4 Nov 2021 17:23:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C4274C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Muna Sinada <msinada@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Muna Sinada <msinada@codeaurora.org>
-Subject: [PATCH v3] nl80211: Add HE UL MU settings used in UL Trigger
-Date:   Thu,  4 Nov 2021 10:23:40 -0700
-Message-Id: <1636046620-9663-1-git-send-email-msinada@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S232348AbhKDS33 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Nov 2021 14:29:29 -0400
+Received: from out1-smtp.messagingengine.com ([66.111.4.25]:46835 "EHLO
+        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232231AbhKDS33 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 4 Nov 2021 14:29:29 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id A7DB45C00C9;
+        Thu,  4 Nov 2021 14:26:50 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Thu, 04 Nov 2021 14:26:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dustymabe.com;
+         h=to:from:subject:cc:message-id:date:mime-version:content-type
+        :content-transfer-encoding; s=fm1; bh=/PUPvRlaa4VO1v/wmWpphO9Zqw
+        6tA3sbSyzVvv/H1Wg=; b=V83FRyEtea+x38EaUeNoxCpa1WXnVBk49uA/sGnfxo
+        0HtKUCcFiWrdArH7OJ9iMFkRsF/kLpKatQOmaTrpk+dDBO4L53NRmZHgT8IV4v8g
+        OkG+kHFxieeMqx9lgqSoG3KRa0cfGZgaA7ZSpEDVNx10w3mKxJw1zo2wTjy2xBtF
+        nbo+RNA76hxz4LBvCLimclV1p54DQsNk8YZYXkKT2y43TTgV9gwUzQfnh/uU0ti0
+        Q9SgWnh4wc4xspYjuVS+THkfxn1UVhAmHkUs5Ys8HRpZxZ9rUK9KVTosKa832WrP
+        cRi4wA/04zaM2/u+ejayJFck/exb32xCYeRFwNr1tHEg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:message-id:mime-version:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=/PUPvR
+        laa4VO1v/wmWpphO9Zqw6tA3sbSyzVvv/H1Wg=; b=bGYUCoKX1K+6gFsgOycxlY
+        R/OZaORCEgn654V+FY3zk3eivc/WlnLzImfPy/AOYRx2DLwgL/GaMQ6t12aTT+p4
+        7/CZZ92sHifMzLjPG94iK4z22XmVV3OXKnDvj7tRnTlQj9/V9DpzpIcDgbQJxrT8
+        m5KzpEpuHjynaB/6zX2MtfByrPUn39IJLzL7h9BLhigVt/wuEmVHG0KUgmTuU9Gm
+        pM1yfRKXnCjsuA0a7RjSswiDyiVtutN2APxBh0I003ZVLTsJZF1tBPDM27KPPmWh
+        6GZ9U1qfjFavrPCEqLuMj5wBDhGFe95vrj5bsctfzmdQHx2Bg1D+MpY3Va8BEIrQ
+        ==
+X-ME-Sender: <xms:6iWEYSHCKX9am5Mwoc6BlT0Z7fXMMOLs_XTd3dXrxrznvanEsCTvwQ>
+    <xme:6iWEYTVqk4XRl5VA3G_b1Eyr2tEnpgupo1-qyZkO6EHl7qGagUJyNUlHbQmH0Ebk5
+    7AQhqpgKR7iQ7rPmtE>
+X-ME-Received: <xmr:6iWEYcIubCfQkbd3NPfUuCDbLlLyXZgthbuTzJZnQpgBB3KFuDGFaDDaIo1xGa8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddrtdeggddutdekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefvhffukffffgggtgfgsehtjeertd
+    dtfeejnecuhfhrohhmpeffuhhsthihucforggsvgcuoeguuhhsthihseguuhhsthihmhgr
+    sggvrdgtohhmqeenucggtffrrghtthgvrhhnpeehgfelgfeiffehvefhgedtudelfedtud
+    euueehudffjeeigfejueejffegtdfgfeenucevlhhushhtvghrufhiiigvpedtnecurfgr
+    rhgrmhepmhgrihhlfhhrohhmpeguuhhsthihseguuhhsthihmhgrsggvrdgtohhm
+X-ME-Proxy: <xmx:6iWEYcGgzZbp3Ve8nz-GHezUSSZ7rOdIxKjL6bTqNtnTJONJZ_QC9w>
+    <xmx:6iWEYYWcKsCdX6S6Xz68SN0F3x03NxOCZ0jfNS2t_jIaXDrdR3Qr0A>
+    <xmx:6iWEYfO-Rjz9m7nip4oaYjALIykHHK4kyaaHeP605oycC6pfphvqoQ>
+    <xmx:6iWEYReiU67Mp965_6Ze-cra2fFnPWnlCXHdes_t2WklfWYWgMC1fg>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 4 Nov 2021 14:26:50 -0400 (EDT)
+To:     linux-wireless@vger.kernel.org
+From:   Dusty Mabe <dusty@dustymabe.com>
+Subject: iwlwifi: null pointer dereference RIP:
+ 0010:iwl_mvm_get_tx_rate+0xd3/0x100 [iwlmvm]
+Cc:     jforbes@fedoraproject.org
+Message-ID: <685581b8-3a0e-d794-ec57-5cfdee7a9e71@dustymabe.com>
+Date:   Thu, 4 Nov 2021 14:26:49 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds nl80211 definitions, policies and parsing code required
-to pass HE uplink MU fixed rate settings utiliized in UL trigger.
+Hi,
 
-Signed-off-by: Muna Sinada <msinada@codeaurora.org>
----
-v3:
- - restructured flow of passing uplink MU transmission settings. No
-   longer utilizing existing bitrate structures and attributes, new
-   ones are created for uplink MU transmission.
- - added HE LTF/GI/LDPC/STBC along with HE fixed rate setting for
-   uplink MU transmissions, which are part of the UL Trigger.
- - modified commit message from "nl80211: Add HE UL MU fixed rate
-   setting" in order to include all the rate settings related to UL
-   Trigger.
----
- include/net/cfg80211.h       | 17 ++++++++
- include/uapi/linux/nl80211.h | 45 +++++++++++++++++++++
- net/wireless/nl80211.c       | 96 ++++++++++++++++++++++++++++++++++++++++++++
- net/wireless/rdev-ops.h      | 12 ++++++
- net/wireless/trace.h         | 18 +++++++++
- 5 files changed, 188 insertions(+)
+I'm trying to track down a bug happening on my Intel NUC with a Fedora `5.14.13`
+kernel.
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 362da9f6bf39..a05ecd067e08 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -697,6 +697,18 @@ struct cfg80211_bitrate_mask {
- 	} control[NUM_NL80211_BANDS];
- };
- 
-+/*
-+ * cfg80211_ul_bitrate_mask - masks for MU uplink bitrate control
-+ */
-+struct cfg80211_ul_bitrate_mask {
-+	struct {
-+		u16 he_ul_mcs[NL80211_HE_NSS_MAX];
-+		enum nl80211_he_gi he_ul_gi;
-+		enum nl80211_he_ltf he_ul_ltf;
-+		bool he_ul_ldpc;
-+		bool he_ul_stbc;
-+	} control[NUM_NL80211_BANDS];
-+};
- 
- /**
-  * struct cfg80211_tid_cfg - TID specific configuration
-@@ -4233,6 +4245,11 @@ struct cfg80211_ops {
- 				    const u8 *peer,
- 				    const struct cfg80211_bitrate_mask *mask);
- 
-+	int	(*set_ul_bitrate_mask)(struct wiphy *wiphy,
-+				       struct net_device *dev,
-+				       const u8 *peer,
-+				       const struct cfg80211_ul_bitrate_mask *mask);
-+
- 	int	(*dump_survey)(struct wiphy *wiphy, struct net_device *netdev,
- 			int idx, struct survey_info *info);
- 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 3e734826792f..288e53903498 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -1232,6 +1232,10 @@
-  *	&NL80211_ATTR_FILS_NONCES - for FILS Nonces
-  *		(STA Nonce 16 bytes followed by AP Nonce 16 bytes)
-  *
-+ * @NL80211_CMD_SET_UL_BITRATE_MASK: Set the mask of rates to be used in MU
-+ *	uplink rate selection. %NL80211_ATTR_IFINDEX is used to specify the
-+ *	interface and @NL80211_ATTR_UL_RATES the set of allowed rates.
-+ *
-  * @NL80211_CMD_MAX: highest used command number
-  * @__NL80211_CMD_AFTER_LAST: internal use
-  */
-@@ -1474,6 +1478,7 @@ enum nl80211_commands {
- 
- 	NL80211_CMD_SET_FILS_AAD,
- 
-+	NL80211_CMD_SET_UL_BITRATE_MASK,
- 	/* add new commands above here */
- 
- 	/* used to define NL80211_CMD_MAX below */
-@@ -2646,6 +2651,13 @@ enum nl80211_commands {
-  *	switching on a different channel during CAC detection on the selected
-  *	radar channel.
-  *
-+ * @NL80211_ATTR_UL_RATES: Nested set of attributes
-+ *	(enum nl80211_ul_rate_attributes) describing MU uplink rates per
-+ *	specified band.	The enum nl80211_band value is used as the index
-+ *	nla_type() of the nested data. This attribute is used with
-+ *	%NL80211_CMD_SET_UL_BITRATE_MASK and it must specify just a single
-+ *	bitrate, which is to be used for MU uplink transmission.
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3154,6 +3166,7 @@ enum nl80211_attrs {
- 
- 	NL80211_ATTR_RADAR_OFFCHAN,
- 
-+	NL80211_ATTR_UL_RATES,
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-@@ -4981,6 +4994,38 @@ enum nl80211_txrate_gi {
- };
- 
- /**
-+ * enum nl80211_ul_rate_attributes - MU uplink rate set attributes
-+ * @NL80211_UL_RATE_HE: HE MU UL MCS rates for MU uplink traffic,
-+ *	see &struct nl80211_ul_rate_he
-+ * @NL80211_UL_RATE_HE_GI: configure HE UL GI, 0.8us, 1.6us and 3.2us.
-+ * @NL80211_UL_RATE_HE_LTF: configure HE UL LTF, 1XLTF, 2XLTF and 4XLTF.
-+ * @NL80211_UL_RATE_HE_LDPC: configure HE UL LDPC, enable and disable.
-+ * @NL80211_UL_RATE_HE_STBC: configure HE UL STBC, enable and disable.
-+ * @__NL80211_TXRATE_AFTER_LAST: internal
-+ * @NL80211_TXRATE_MAX: highest TX rate attribute
-+ */
-+enum nl80211_ul_rate_attributes {
-+	NL80211_UL_RATE_HE,
-+	NL80211_UL_RATE_HE_GI,
-+	NL80211_UL_RATE_HE_LTF,
-+	NL80211_UL_RATE_HE_LDPC,
-+	NL80211_UL_RATE_HE_STBC,
-+
-+	/* keep last */
-+	__NL80211_UL_RATE_AFTER_LAST,
-+	NL80211_UL_RATE_MAX = __NL80211_UL_RATE_AFTER_LAST - 1
-+};
-+
-+/**
-+ * struct nl80211_ul_rate_he - Uplink HE MCS/NSS rate bitmap for MU
-+ *	transmission.
-+ * @mcs: MCS bitmap table for each NSS (array index 0 for 1 stream, etc.)
-+ */
-+struct nl80211_ul_rate_he {
-+	__u16 mcs[NL80211_HE_NSS_MAX];
-+};
-+
-+/**
-  * enum nl80211_band - Frequency band
-  * @NL80211_BAND_2GHZ: 2.4 GHz ISM band
-  * @NL80211_BAND_5GHZ: around 5 GHz band (4.9 - 5.7 GHz)
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 25ee16558dfa..daaa6c98ea1e 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -386,6 +386,18 @@ static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
- 						   NL80211_RATE_INFO_HE_4XLTF),
- };
- 
-+static const struct nla_policy nl80211_ul_rate_attr_policy[NL80211_UL_RATE_MAX + 1] = {
-+	[NL80211_UL_RATE_HE] = NLA_POLICY_EXACT_LEN(sizeof(struct nl80211_ul_rate_he)),
-+	[NL80211_UL_RATE_HE_GI] =  NLA_POLICY_RANGE(NLA_U8,
-+						   NL80211_RATE_INFO_HE_GI_0_8,
-+						   NL80211_RATE_INFO_HE_GI_3_2),
-+	[NL80211_UL_RATE_HE_LTF] = NLA_POLICY_RANGE(NLA_U8,
-+						   NL80211_RATE_INFO_HE_1XLTF,
-+						   NL80211_RATE_INFO_HE_4XLTF),
-+	[NL80211_UL_RATE_HE_LDPC] = { .type = NLA_FLAG },
-+	[NL80211_UL_RATE_HE_STBC] = { .type = NLA_FLAG },
-+};
-+
- static const struct nla_policy
- nl80211_tid_config_attr_policy[NL80211_TID_CONFIG_ATTR_MAX + 1] = {
- 	[NL80211_TID_CONFIG_ATTR_VIF_SUPP] = { .type = NLA_U64 },
-@@ -4954,6 +4966,63 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
- 	return 0;
- }
- 
-+static int nl80211_parse_ul_bitrate_mask(struct genl_info *info,
-+					 struct nlattr *attrs[],
-+					 enum nl80211_attrs attr,
-+					 struct cfg80211_ul_bitrate_mask *mask,
-+					 struct net_device *dev,
-+					 bool default_all_enabled)
-+{
-+	struct nlattr *tb[NL80211_TXRATE_MAX + 1];
-+	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-+	struct wireless_dev *wdev = dev->ieee80211_ptr;
-+	int rem;
-+	struct nlattr *tx_rates;
-+	struct ieee80211_supported_band *sband;
-+
-+	memset(mask, 0, sizeof(*mask));
-+
-+	/* The nested attribute uses enum nl80211_band as the index. This maps
-+	 * directly to the enum nl80211_band values used in cfg80211.
-+	 */
-+	nla_for_each_nested(tx_rates, attrs[attr], rem) {
-+		enum nl80211_band band = nla_type(tx_rates);
-+		int err;
-+
-+		if (band < 0 || band >= NUM_NL80211_BANDS)
-+			return -EINVAL;
-+		sband = rdev->wiphy.bands[band];
-+		if (!sband)
-+			return -EINVAL;
-+		err = nla_parse_nested_deprecated(tb, NL80211_UL_RATE_MAX,
-+						  tx_rates,
-+						  nl80211_ul_rate_attr_policy,
-+						  info->extack);
-+		if (err)
-+			return err;
-+		if (tb[NL80211_UL_RATE_HE] &&
-+		    !he_set_mcs_mask(info, wdev, sband,
-+				     nla_data(tb[NL80211_UL_RATE_HE]),
-+				     mask->control[band].he_ul_mcs))
-+			return -EINVAL;
-+
-+		if (tb[NL80211_UL_RATE_HE_GI])
-+			mask->control[band].he_ul_gi =
-+				nla_get_u8(tb[NL80211_UL_RATE_HE_GI]);
-+		if (tb[NL80211_UL_RATE_HE_LTF])
-+			mask->control[band].he_ul_ltf =
-+				nla_get_u8(tb[NL80211_UL_RATE_HE_LTF]);
-+		if (tb[NL80211_UL_RATE_HE_LDPC])
-+			mask->control[band].he_ul_ldpc =
-+				!nla_get_flag(tb[NL80211_UL_RATE_HE_LDPC]);
-+		if (tb[NL80211_UL_RATE_HE_STBC])
-+			mask->control[band].he_ul_stbc =
-+				!nla_get_flag(tb[NL80211_UL_RATE_HE_STBC]);
-+	}
-+
-+	return 0;
-+}
-+
- static int validate_beacon_tx_rate(struct cfg80211_registered_device *rdev,
- 				   enum nl80211_band band,
- 				   struct cfg80211_bitrate_mask *beacon_rate)
-@@ -11546,6 +11615,26 @@ static int nl80211_set_tx_bitrate_mask(struct sk_buff *skb,
- 	return rdev_set_bitrate_mask(rdev, dev, NULL, &mask);
- }
- 
-+static int nl80211_set_ul_bitrate_mask(struct sk_buff *skb,
-+				       struct genl_info *info)
-+{
-+	struct cfg80211_ul_bitrate_mask mask;
-+	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-+	struct net_device *dev = info->user_ptr[1];
-+	int err;
-+
-+	if (!rdev->ops->set_bitrate_mask)
-+		return -EOPNOTSUPP;
-+
-+	err = nl80211_parse_ul_bitrate_mask(info, info->attrs,
-+					    NL80211_ATTR_UL_RATES, &mask,
-+					    dev, true);
-+	if (err)
-+		return err;
-+
-+	return rdev_set_ul_bitrate_mask(rdev, dev, NULL, &mask);
-+}
-+
- static int nl80211_register_mgmt(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-@@ -15740,6 +15829,13 @@ static const struct genl_small_ops nl80211_small_ops[] = {
- 		.internal_flags = NL80211_FLAG_NEED_NETDEV,
- 	},
- 	{
-+		.cmd = NL80211_CMD_SET_UL_BITRATE_MASK,
-+		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit = nl80211_set_ul_bitrate_mask,
-+		.flags = GENL_UNS_ADMIN_PERM,
-+		.internal_flags = NL80211_FLAG_NEED_NETDEV,
-+	},
-+	{
- 		.cmd = NL80211_CMD_REGISTER_FRAME,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = nl80211_register_mgmt,
-diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-index 8672b3ef99e4..418cb37c99a2 100644
---- a/net/wireless/rdev-ops.h
-+++ b/net/wireless/rdev-ops.h
-@@ -661,6 +661,18 @@ rdev_set_bitrate_mask(struct cfg80211_registered_device *rdev,
- 	return ret;
- }
- 
-+static inline int
-+rdev_set_ul_bitrate_mask(struct cfg80211_registered_device *rdev,
-+			 struct net_device *dev, const u8 *peer,
-+			 const struct cfg80211_ul_bitrate_mask *mask)
-+{
-+	int ret;
-+	trace_rdev_set_ul_bitrate_mask(&rdev->wiphy, dev, peer, mask);
-+	ret = rdev->ops->set_ul_bitrate_mask(&rdev->wiphy, dev, peer, mask);
-+	trace_rdev_return_int(&rdev->wiphy, ret);
-+	return ret;
-+}
-+
- static inline int rdev_dump_survey(struct cfg80211_registered_device *rdev,
- 				   struct net_device *netdev, int idx,
- 				   struct survey_info *info)
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 0b27eaa14a18..eb9a6e2641a1 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -1635,6 +1635,24 @@ TRACE_EVENT(rdev_set_bitrate_mask,
- 		  WIPHY_PR_ARG, NETDEV_PR_ARG, MAC_PR_ARG(peer))
- );
- 
-+TRACE_EVENT(rdev_set_ul_bitrate_mask,
-+	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
-+		 const u8 *peer, const struct cfg80211_ul_bitrate_mask *mask),
-+	TP_ARGS(wiphy, netdev, peer, mask),
-+	TP_STRUCT__entry(
-+		WIPHY_ENTRY
-+		NETDEV_ENTRY
-+		MAC_ENTRY(peer)
-+	),
-+	TP_fast_assign(
-+		WIPHY_ASSIGN;
-+		NETDEV_ASSIGN;
-+		MAC_ASSIGN(peer, peer);
-+	),
-+	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", peer: " MAC_PR_FMT,
-+		  WIPHY_PR_ARG, NETDEV_PR_ARG, MAC_PR_ARG(peer))
-+);
-+
- TRACE_EVENT(rdev_update_mgmt_frame_registrations,
- 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev,
- 		 struct mgmt_frame_regs *upd),
--- 
-2.7.4
+The trace looks something like:
 
+```
+[345514.404223] BUG: kernel NULL pointer dereference, address: 000000000000016c
+[345514.409853] #PF: supervisor read access in kernel mode
+[345514.415323] #PF: error_code(0x0000) - not-present page
+[345514.420718] PGD 0 P4D 0
+[345514.425995] Oops: 0000 [#1] SMP NOPTI
+[345514.431240] CPU: 2 PID: 774 Comm: irq/48-iwlwifi Kdump: loaded Tainted: G        W         5.14.13-300.fc35.x86_64 #1
+[345514.436529] Hardware name:  /NUC5i3RYB, BIOS RYBDWi35.86A.0350.2015.0812.1722 08/12/2015
+[345514.441734] RIP: 0010:iwl_mvm_get_tx_rate+0xd3/0x100 [iwlmvm]
+[345514.446884] Code: 08 74 09 80 3d db 25 05 00 00 74 19 0f be 5d 08 83 fb 0b 0f 87 5e ff ff ff 0f b6 45 04 eb a2 0f 0b 31 db eb f4 44 0f be 4d 08 <45> 8b 85 6c 01 00 00 0f b7 f2 0f b7 c9 48 c7 c7 38 a0 e2 c0 c6 05
+[345514.452177] RSP: 0018:ffffbe7fc0128cb8 EFLAGS: 00010246
+[345514.457251] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000050
+[345514.462313] RDX: 000000000000049b RSI: ffffbe7fc0128d88 RDI: ffff9e2c91a4a008
+[345514.467293] RBP: ffffbe7fc0128d88 R08: 0000000000000050 R09: 00000000ffffffed
+[345514.472227] R10: 0000000000000000 R11: 0000000000000050 R12: ffff9e2c91a4a008
+[345514.477112] R13: 0000000000000000 R14: ffffbe7fc0128d88 R15: ffff9e2ca78aa484
+[345514.481906] FS:  0000000000000000(0000) GS:ffff9e33b6d00000(0000) knlGS:0000000000000000
+[345514.486673] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[345514.491327] CR2: 000000000000016c CR3: 00000001cde10005 CR4: 00000000003706e0
+[345514.495957] Call Trace:
+[345514.500447]  <IRQ>
+[345514.504856]  iwl_mvm_set_tx_cmd_rate+0x66/0x140 [iwlmvm]
+[345514.509279]  iwl_mvm_set_tx_params+0x1a5/0x580 [iwlmvm]
+[345514.513627]  iwl_mvm_tx_skb_non_sta+0x16a/0x350 [iwlmvm]
+[345514.517898]  iwl_mvm_tx_skb+0x23/0x40 [iwlmvm]
+[345514.522081]  ieee80211_tx_frags+0x15c/0x220 [mac80211]
+[345514.526254]  __ieee80211_tx+0x76/0x140 [mac80211]
+[345514.530342]  ieee80211_tx+0xc7/0x110 [mac80211]
+[345514.534361]  ieee80211_tx_pending+0x9c/0x270 [mac80211]
+[345514.538316]  ? net_rx_action+0x223/0x2e0
+[345514.542147]  tasklet_action_common.constprop.0+0xbc/0x120
+[345514.545940]  __do_softirq+0xcd/0x282
+[345514.549643]  do_softirq+0x76/0x90
+[345514.553270]  </IRQ>
+[345514.556800]  __local_bh_enable_ip+0x4b/0x50
+[345514.560301]  iwl_pcie_irq_handler+0x493/0xad0 [iwlwifi]
+[345514.563751]  ? irq_thread_dtor+0xb0/0xb0
+[345514.567101]  irq_thread_fn+0x1d/0x60
+[345514.570380]  irq_thread+0xb9/0x150
+[345514.573574]  ? irq_finalize_oneshot.part.0+0xf0/0xf0
+[345514.576732]  ? irq_thread_check_affinity+0xc0/0xc0
+[345514.579822]  kthread+0x124/0x150
+[345514.582821]  ? set_kthread_struct+0x40/0x40
+[345514.585764]  ret_from_fork+0x1f/0x30
+[345514.588623] Modules linked in: tun overlay bridge stp llc intel_rapl_msr snd_hda_codec_hdmi intel_rapl_common iwlmvm x86_pkg_temp_thermal intel_powerclamp mac80211 i915 coretemp snd_usb_audio snd_hda_codec_realtek kvm_intel snd_hda_codec_generic libarc4 ledtrig_audio snd_hda_intel kvm snd_usbmidi_lib snd_intel_dspcfg snd_intel_sdw_acpi iwlwifi btusb snd_hda_codec snd_rawmidi mei_hdcp at24 btrtl iTCO_wdt intel_pmc_bxt btbcm iTCO_vendor_support btintel snd_seq_device snd_hda_core irqbypass mc bluetooth rapl intel_cstate snd_hwdep snd_pcm cfg80211 intel_uncore i2c_algo_bit ttm i2c_i801 mei_me snd_timer i2c_smbus lpc_ich drm_kms_helper ecdh_generic mei joydev rfkill snd ir_rc6_decoder cec soundcore rc_rc6_mce nuvoton_cir acpi_pad drm zram ip_tables xfs dm_multipath crct10dif_pclmul crc32_pclmul crc32c_intel e1000e ghash_clmulni_intel hid_microsoft ff_memless video fuse
+[345514.601061] CR2: 000000000000016c
+```
+
+I set up kdump and got a vmcore in /var/crash so we might be able to analyze that to find more
+information. I'm available on IRC (dustymabe on libera.chat) if anyone would like to dig in
+to the crashdump for more information.
+
+Thanks!
+Dusty Mabe
