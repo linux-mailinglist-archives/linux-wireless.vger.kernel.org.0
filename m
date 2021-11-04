@@ -2,112 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FB45444F12
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 07:45:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2351445060
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Nov 2021 09:33:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231381AbhKDGrk convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 Nov 2021 02:47:40 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:49367 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231612AbhKDGqP (ORCPT
+        id S230252AbhKDIfn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 Nov 2021 04:35:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47116 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230084AbhKDIfm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 Nov 2021 02:46:15 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1A46hAUH1009054, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1A46hAUH1009054
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 4 Nov 2021 14:43:10 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Thu, 4 Nov 2021 14:43:09 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Thu, 4 Nov 2021 02:43:09 -0400
-Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
- RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
- 15.01.2308.015; Thu, 4 Nov 2021 14:43:09 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "cgel.zte@gmail.com" <cgel.zte@gmail.com>
-CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ye Guojin <ye.guojin@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: RE: [PATCH] rtw89: remove unnecessary conditional operators
-Thread-Topic: [PATCH] rtw89: remove unnecessary conditional operators
-Thread-Index: AQHX0ULQZJxC+uGsq0GE1mLzw53Hj6vy67XQ
-Date:   Thu, 4 Nov 2021 06:43:09 +0000
-Message-ID: <a540a609d7e44993ac830d439e417835@realtek.com>
-References: <20211104061119.1685-1-ye.guojin@zte.com.cn>
-In-Reply-To: <20211104061119.1685-1-ye.guojin@zte.com.cn>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/11/4_=3F=3F_02:09:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Thu, 4 Nov 2021 04:35:42 -0400
+Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 447F0C061714
+        for <linux-wireless@vger.kernel.org>; Thu,  4 Nov 2021 01:33:05 -0700 (PDT)
+Received: by mail-oo1-xc33.google.com with SMTP id w23-20020a4a9d17000000b002bb72fd39f3so1683769ooj.11
+        for <linux-wireless@vger.kernel.org>; Thu, 04 Nov 2021 01:33:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=k6fomv0sdqyhGG3g2MPtJX0afBVvlWccl4oJlzfMn9Y=;
+        b=RaBTLN9Mqjn+alg+rHwCxuTHDmaKuvIcqe8NLLUp5xLYOA6BNPSjvCfAKZ864VUxiW
+         eqx97SUHSC+qwnyygoNWiUxrIGsS/niumRY5f3sWA6KjJG3EVF0Er2GyhaeitbsR8ZfW
+         nXCdagDCC/BQspenYUXmHWCuIEawRiIPl5DsXyDT5+izUld4R0gYZ/vOmx4cdU4gOE7E
+         Na7jxcyXQe42fIkbAdGQ5LULWlucBZm7HnnroDA8Yrf+zi6Vcf/dVElGWrOLGopeH4ci
+         2e5kr9M8dHJC11EYmsfbOQYZNWj2ZZw8WZRkWS+XrkGyXeQ11HfmwmciJEtzz1B20KU3
+         Kl9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=k6fomv0sdqyhGG3g2MPtJX0afBVvlWccl4oJlzfMn9Y=;
+        b=H/6pqi3+Reyzsjqg/V5DPNwHeljFBmp3qixgNjBJvmAGWq0bnEalo8qzZT4vdkUaJy
+         4CvhOx6EQ+ze7EgSX0P1mnfOLK718CYNPO5gUtjE1/WpopRd+fUbp2JmZcD+TH3rTcNC
+         NlAJiMFme8hN2CP9cLn1d03znsr4F/eA3pZrXF09ly1i+0vOerare8F/OxennSGkG+MG
+         MHh66+zv5CDLvWSLUtmsaTmws2qufBYrQWt/hgCbddQO5po3RhOhO1bLacERLkla3Cv1
+         3ei5bUMcF4aQktDm6LgpcyVJ+J1BIiqyAEXyfpLlcmqTNhL9bC2bZv8MyKQ/J3dXLbJi
+         OZzA==
+X-Gm-Message-State: AOAM5319Sez44pyOw84kFMEwoi0wUtZBdcn53NQnGUIh9IB7S71jsc7W
+        N+eCanBE9AC1JKzbxLAEeYYfWMv9XWGzoWOC+js=
+X-Google-Smtp-Source: ABdhPJzoZBcKUgSQc2nZ5p5l0f5dVVF9YjICVpXQATRCqquYrxZluA50ddEJEL5LIWZvGoJ8gQLIDuZYCYOJMVDSqb8=
+X-Received: by 2002:a4a:950e:: with SMTP id m14mr2212176ooi.98.1636014784317;
+ Thu, 04 Nov 2021 01:33:04 -0700 (PDT)
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/04/2021 06:26:06
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 167084 [Nov 03 2021]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
-X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/04/2021 06:28:00
+Received: by 2002:ac9:7f41:0:0:0:0:0 with HTTP; Thu, 4 Nov 2021 01:33:03 -0700 (PDT)
+Reply-To: asameraa950@gmail.com
+From:   Samera Ali <jeminaali147@gmail.com>
+Date:   Thu, 4 Nov 2021 01:33:03 -0700
+Message-ID: <CAG2sCxxeMB3co7h84aa1ci4mhuVxa0j8qh0OatR4=76=AEWobA@mail.gmail.com>
+Subject: Hey dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hey dear
 
-> -----Original Message-----
-> From: cgel.zte@gmail.com <cgel.zte@gmail.com>
-> Sent: Thursday, November 4, 2021 2:11 PM
-> To: Pkshih <pkshih@realtek.com>
-> Cc: kvalo@codeaurora.org; davem@davemloft.net; kuba@kernel.org; linux-wireless@vger.kernel.org;
-> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Ye Guojin <ye.guojin@zte.com.cn>; Zeal Robot
-> <zealci@zte.com.cn>
-> Subject: [PATCH] rtw89: remove unnecessary conditional operators
-> 
-> From: Ye Guojin <ye.guojin@zte.com.cn>
-> 
-> The conditional operator is unnecessary while assigning values to the
-> bool variables.
-> 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Ye Guojin <ye.guojin@zte.com.cn>
+Nice to meet you, Am Miss samera I found your email here in google
+search and I picked interest to contact you. I've something very
+important which I would like to discuss with you and I would
+appreciate if you respond back to me through my email address as to
+tell you more about me with my photos, my private email as fellows??
+[ asameraa950@gmail.com ]
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-
-[...]
-
-
+From, samera ali
