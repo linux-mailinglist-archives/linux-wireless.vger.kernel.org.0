@@ -2,105 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1113444641B
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Nov 2021 14:26:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD4BB44644E
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Nov 2021 14:42:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232870AbhKEN2l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Nov 2021 09:28:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40894 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232258AbhKEN2k (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Nov 2021 09:28:40 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1D2BC061714
-        for <linux-wireless@vger.kernel.org>; Fri,  5 Nov 2021 06:26:00 -0700 (PDT)
-Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1mizED-0007tg-Qy; Fri, 05 Nov 2021 14:25:57 +0100
-Message-ID: <6366d9bd-9752-dbc2-8970-442bdc6e8eea@leemhuis.info>
-Date:   Fri, 5 Nov 2021 14:25:57 +0100
+        id S232753AbhKENpW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Nov 2021 09:45:22 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:12127 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231933AbhKENpW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 5 Nov 2021 09:45:22 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1636119762; h=Date: Message-ID: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=97JDROl6nekEmikx5XRgFoJpVnsjC7pw9N4FbxjAHmg=;
+ b=nnsEl/JbZD30rKlIxNwRlmWruQX9oe+2hYzq6U0V1WqWZT1JBqlfkHWLMHwyAT7+8iOjFYhP
+ uXNUlbh3vPewzUPSF4hmPGb5gdP4UsgYxh6rOsVBt1zk8cEFAwOG+sYK8H3OdxwXGJM/tkFA
+ OJMtMQ1rRV3+cMHqZi3S04jzefg=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 618534d1045d18c075fd4085 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 05 Nov 2021 13:42:41
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7BB9EC43618; Fri,  5 Nov 2021 13:42:40 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CD44EC4338F;
+        Fri,  5 Nov 2021 13:42:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org CD44EC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Content-Language: en-BZ
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        regressions@lists.linux.dev, Kalle Valo <kvalo@codeaurora.org>,
-        Exuvo <exuvo@exuvo.se>
-References: <bff7d309-a816-6a75-51b6-5928ef4f7a8c@exuvo.se>
- <20190927080303.GA7667@redhat.com>
- <CA+GwT0B5SyRZnGLqwqOeuJK4CWMVc=dKaWre9VN8KQC6kBzKGw@mail.gmail.com>
- <20191203075736.GA701@redhat.com>
- <d74dab51-3a84-9035-d89e-ea8f63e89198@exuvo.se>
- <a8eeb0bc-95da-291a-7fb9-5d15d1174c27@exuvo.se>
- <c22673af-40e0-3af2-5ab7-69b23fc03598@exuvo.se>
- <f935dc15-08bd-2e28-fc1b-b27634c618be@exuvo.se>
- <87czop5j33.fsf@tynnyri.adurom.net>
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-Subject: Re: rt2x00 regression
-In-Reply-To: <87czop5j33.fsf@tynnyri.adurom.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1636118760;0098c353;
-X-HE-SMSGID: 1mizED-0007tg-Qy
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath9k: Fix out-of-bound memcpy in ath9k_hif_usb_rx_stream
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <YXsidrRuK6zBJicZ@10-18-43-117.dynapool.wireless.nyu.edu>
+References: <YXsidrRuK6zBJicZ@10-18-43-117.dynapool.wireless.nyu.edu>
+To:     Zekun Shen <bruceshenzk@gmail.com>
+Cc:     bruceshenzk@gmail.com, ath9k-devel@qca.qualcomm.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163611975427.24604.10345795952487961567.kvalo@codeaurora.org>
+Date:   Fri,  5 Nov 2021 13:42:40 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lo, this is your Linux kernel regression tracker speaking.
+Zekun Shen <bruceshenzk@gmail.com> wrote:
 
-On 01.10.21 08:56, Kalle Valo wrote:
-> (adding regressions list for easier tracking)
-
-Thx for this, that's how it got on the radar of regzbot, my Linux kernel
-regression tracking bot:
-https://linux-regtracking.leemhuis.info/regzbot/regression/87czop5j33.fsf@tynnyri.adurom.net/
-
-
-> Exuvo <exuvo@exuvo.se> writes:
+> Large pkt_len can lead to out-out-bound memcpy. Current
+> ath9k_hif_usb_rx_stream allows combining the content of two urb
+> inputs to one pkt. The first input can indicate the size of the
+> pkt. Any remaining size is saved in hif_dev->rx_remain_len.
+> While processing the next input, memcpy is used with rx_remain_len.
 > 
->> I would like to get this resolved, is there any more information you need from me?
->>
->> I have been manually patching this all year with:
->>
->> drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
->> - if (rt2x00dev->num_proto_errs > 8)
->> -    return true;
->>
->> It seems to just be some part of rt2800_load_firmware that is not
->> supported on my device and generating errors but it has been running
->> without problems in AP mode with daily usage.
+> 4-byte pkt_len can go up to 0xffff, while a single input is 0x4000
+> maximum in size (MAX_RX_BUF_SIZE). Thus, the patch adds a check for
+> pkt_len which must not exceed 2 * MAX_RX_BUG_SIZE.
 > 
-> [...]
+> BUG: KASAN: slab-out-of-bounds in ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+> Read of size 46393 at addr ffff888018798000 by task kworker/0:1/23
 > 
->>>>>>>> This most likely is the problem introduced by commit:
->>>>>>>>
->>>>>>>> commit e383c70474db32b9d4a3de6dfbd08784d19e6751
->>>>>>>> Author: Stanislaw Gruszka <sgruszka@redhat.com>
->>>>>>>> Date:   Tue Mar 12 10:51:42 2019 +0100
->>>>>>>>
->>>>>>>>      rt2x00: check number of EPROTO errors
->>>>>>>>
->>>>>>>> Plase check below patch that increase number of EPROTO checks
->>>>>>>> before marking device removed. If it does not help, plese
->>>>>>>> check if reverting above commits helps.
+> CPU: 0 PID: 23 Comm: kworker/0:1 Not tainted 5.6.0 #63
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+> BIOS rel-1.10.2-0-g5f4c7b1-prebuilt.qemu-project.org 04/01/2014
+> Workqueue: events request_firmware_work_func
+> Call Trace:
+>  <IRQ>
+>  dump_stack+0x76/0xa0
+>  print_address_description.constprop.0+0x16/0x200
+>  ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+>  ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+>  __kasan_report.cold+0x37/0x7c
+>  ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+>  kasan_report+0xe/0x20
+>  check_memory_region+0x15a/0x1d0
+>  memcpy+0x20/0x50
+>  ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
+>  ? hif_usb_mgmt_cb+0x2d9/0x2d9 [ath9k_htc]
+>  ? _raw_spin_lock_irqsave+0x7b/0xd0
+>  ? _raw_spin_trylock_bh+0x120/0x120
+>  ? __usb_unanchor_urb+0x12f/0x210
+>  __usb_hcd_giveback_urb+0x1e4/0x380
+>  usb_giveback_urb_bh+0x241/0x4f0
+>  ? __hrtimer_run_queues+0x316/0x740
+>  ? __usb_hcd_giveback_urb+0x380/0x380
+>  tasklet_action_common.isra.0+0x135/0x330
+>  __do_softirq+0x18c/0x634
+>  irq_exit+0x114/0x140
+>  smp_apic_timer_interrupt+0xde/0x380
+>  apic_timer_interrupt+0xf/0x20
 > 
-> Should we do a revert? Can someone submit that including an explanation
-> of the regression.
+> Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
 
-Afaics nothing happened since then. Or did I miss anything? How can we
-get the ball rolling again?
+I need to test this myself.
 
-Stanislaw, is there anything Exuvo (who offered to help afaics) could
-test to get us closer to a fix?
+Patch set to Deferred.
 
-Ciao, Thorsten
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/YXsidrRuK6zBJicZ@10-18-43-117.dynapool.wireless.nyu.edu/
 
-P.S.: I have no personal interest in this issue and watch it using
-regzbot. Hence, feel free to exclude me on further messages in this
-thread after the first reply, as I'm only posting this mail to hopefully
-get a status update and things rolling again.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-#regzbot poke
