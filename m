@@ -2,134 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F16844635E
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Nov 2021 13:29:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1113444641B
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Nov 2021 14:26:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232304AbhKEMcC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Nov 2021 08:32:02 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:62153 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232105AbhKEMcA (ORCPT
+        id S232870AbhKEN2l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Nov 2021 09:28:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40894 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232258AbhKEN2k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Nov 2021 08:32:00 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1636115361; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=5gyxY92i0U1AzI5x0lNZ8Y1r1eJlkSEZSR605FD4njQ=; b=HfA/Jm/vf5pozFUv0voKQxo7Df6b96Q3SRUbsKEXsNlMTXgkITQq8oL6l3C5jPiILL6+U5mx
- nDCAZWVRJnAps07I17bUzNPGLKl11wH3mc2yYv4KQDSPghdMBQwzepJUI84IEgGZ9u48Z2ZW
- scqwQ6ygLKNajjpG0xP0fcpcCdw=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 6185239dc797bc30ce9e46f1 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 05 Nov 2021 12:29:17
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EC2ACC43460; Fri,  5 Nov 2021 12:29:16 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9C6E3C4338F;
-        Fri,  5 Nov 2021 12:29:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 9C6E3C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     =?utf-8?B?5bCk5pmT5p2w?= <yxj790222@163.com>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: qca9984 fails to work
-References: <7fc1368d.53c6.17cda9721bb.Coremail.yxj790222@163.com>
-Date:   Fri, 05 Nov 2021 14:29:13 +0200
-In-Reply-To: <7fc1368d.53c6.17cda9721bb.Coremail.yxj790222@163.com>
- (=?utf-8?B?IuWwpOaZk+adsA==?=
-        "'s message of "Mon, 1 Nov 2021 16:21:50 +0800 (CST)")
-Message-ID: <87mtmiyeee.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 5 Nov 2021 09:28:40 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1D2BC061714
+        for <linux-wireless@vger.kernel.org>; Fri,  5 Nov 2021 06:26:00 -0700 (PDT)
+Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1mizED-0007tg-Qy; Fri, 05 Nov 2021 14:25:57 +0100
+Message-ID: <6366d9bd-9752-dbc2-8970-442bdc6e8eea@leemhuis.info>
+Date:   Fri, 5 Nov 2021 14:25:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Content-Language: en-BZ
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        regressions@lists.linux.dev, Kalle Valo <kvalo@codeaurora.org>,
+        Exuvo <exuvo@exuvo.se>
+References: <bff7d309-a816-6a75-51b6-5928ef4f7a8c@exuvo.se>
+ <20190927080303.GA7667@redhat.com>
+ <CA+GwT0B5SyRZnGLqwqOeuJK4CWMVc=dKaWre9VN8KQC6kBzKGw@mail.gmail.com>
+ <20191203075736.GA701@redhat.com>
+ <d74dab51-3a84-9035-d89e-ea8f63e89198@exuvo.se>
+ <a8eeb0bc-95da-291a-7fb9-5d15d1174c27@exuvo.se>
+ <c22673af-40e0-3af2-5ab7-69b23fc03598@exuvo.se>
+ <f935dc15-08bd-2e28-fc1b-b27634c618be@exuvo.se>
+ <87czop5j33.fsf@tynnyri.adurom.net>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: Re: rt2x00 regression
+In-Reply-To: <87czop5j33.fsf@tynnyri.adurom.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1636118760;0098c353;
+X-HE-SMSGID: 1mizED-0007tg-Qy
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-=E5=B0=A4=E6=99=93=E6=9D=B0 <yxj790222@163.com> writes:
+Lo, this is your Linux kernel regression tracker speaking.
 
-> before update, everthing is ok, after update kernel, qca9984 fails to wor=
-k.
-> dmesg|grep ath10k:
->
-> [ =C2=A0=C2=A0=C2=A04.764210] ath10k_pci 0000:07:00.0: enabling device (0=
-000 -> 0002)
->
-> [ =C2=A0=C2=A0=C2=A04.765527] ath10k_pci 0000:07:00.0: pci irq msi oper_i=
-rq_mode 2 irq_mode 0 reset_mode 0
->
-> [ =C2=A0=C2=A0=C2=A04.886828] ath10k_pci 0000:07:00.0: firmware: direct-l=
-oading
-> firmware ath10k/pre-cal-pci-0000:07:00.0.bin
->
-> [ =C2=A0=C2=A0=C2=A04.886844] ath10k_pci 0000:07:00.0: firmware: failed t=
-o load ath10k/QCA9984/hw1.0/firmware-6.bin (-2)
->
-> [ =C2=A0=C2=A0=C2=A04.888769] ath10k_pci 0000:07:00.0: firmware: direct-l=
-oading
-> firmware ath10k/QCA9984/hw1.0/firmware-5.bin
->
-> [ =C2=A0=C2=A0=C2=A04.888774] ath10k_pci 0000:07:00.0: qca9984/qca9994 hw=
-1.0 target
-> 0x01000000 chip_id 0x00000000 sub 168c:cafe
->
-> [ =C2=A0=C2=A0=C2=A04.888777] ath10k_pci 0000:07:00.0: kconfig debug 0 de=
-bugfs 0 tracing 0 dfs 0 testmode 0
->
-> [ =C2=A0=C2=A0=C2=A04.889124] ath10k_pci 0000:07:00.0: firmware ver
-> 10.4-3.9.0.2-00131 api 5 features
-> no-p2p,mfp,peer-flow-ctrl,btcoex-param,allows-mesh-bcast,no-ps,peer-fixed=
--rate,
-> iram-recovery crc32 23bd9e43
->
-> [ =C2=A0=C2=A0=C2=A07.170482] ath10k_pci 0000:07:00.0: firmware: direct-l=
-oading firmware ath10k/QCA9984/hw1.0/board-2.bin
->
-> [ =C2=A0=C2=A0=C2=A07.170600] ath10k_pci 0000:07:00.0: board_file api 2 b=
-mi_id 0:1 crc32 85498734
->
-> [ =C2=A0=C2=A010.810016] ath10k_pci 0000:07:00.0: failed to copy target i=
-ram contents: -12
->
-> [ =C2=A0=C2=A010.865295] ath10k_pci 0000:07:00.0: could not init core (-1=
-2)
->
-> [ =C2=A0=C2=A010.865332] ath10k_pci 0000:07:00.0: could not probe fw (-12)
->
-> kernel:
-> [ 0.000000] Linux version 5.14.0-3-amd64
-> (debian-kernel@lists.debian.org) (gcc-10 (Debian 10.3.0-11) 10.3.0,
-> GNU ld (GNU Binutils for Debian) 2.37) #1 SMP Debian 5.14.12-1
-> (2021-10-14)
-> [ 0.000000] Command line: BOOT_IMAGE=3D/boot/vmlinuz-5.14.0-3-amd64
-> root=3DUUID=3D6ad1bda4-9feb-4849-b1d9-4311c76e3522 ro quiet
-> [    0.000000] x86/fpu: Supporting XSAVE feature 0x001: 'x87 floating poi=
-nt registers'
-> [    0.000000] x86/fpu: Supporting XSAVE feature 0x002: 'SSE registers'
-> [    0.000000] x86/fpu: Supporting XSAVE feature 0x004: 'AVX registers'
-> [    0.000000] x86/fpu: xstate_offset[2]:  576, xstate_sizes[2]:  256
+On 01.10.21 08:56, Kalle Valo wrote:
+> (adding regressions list for easier tracking)
 
-This commit should fix it:
+Thx for this, that's how it got on the radar of regzbot, my Linux kernel
+regression tracking bot:
+https://linux-regtracking.leemhuis.info/regzbot/regression/87czop5j33.fsf@tynnyri.adurom.net/
 
-https://git.kernel.org/linus/6f8c8bf4c7c9
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+> Exuvo <exuvo@exuvo.se> writes:
+> 
+>> I would like to get this resolved, is there any more information you need from me?
+>>
+>> I have been manually patching this all year with:
+>>
+>> drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+>> - if (rt2x00dev->num_proto_errs > 8)
+>> -    return true;
+>>
+>> It seems to just be some part of rt2800_load_firmware that is not
+>> supported on my device and generating errors but it has been running
+>> without problems in AP mode with daily usage.
+> 
+> [...]
+> 
+>>>>>>>> This most likely is the problem introduced by commit:
+>>>>>>>>
+>>>>>>>> commit e383c70474db32b9d4a3de6dfbd08784d19e6751
+>>>>>>>> Author: Stanislaw Gruszka <sgruszka@redhat.com>
+>>>>>>>> Date:   Tue Mar 12 10:51:42 2019 +0100
+>>>>>>>>
+>>>>>>>>      rt2x00: check number of EPROTO errors
+>>>>>>>>
+>>>>>>>> Plase check below patch that increase number of EPROTO checks
+>>>>>>>> before marking device removed. If it does not help, plese
+>>>>>>>> check if reverting above commits helps.
+> 
+> Should we do a revert? Can someone submit that including an explanation
+> of the regression.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+Afaics nothing happened since then. Or did I miss anything? How can we
+get the ball rolling again?
+
+Stanislaw, is there anything Exuvo (who offered to help afaics) could
+test to get us closer to a fix?
+
+Ciao, Thorsten
+
+P.S.: I have no personal interest in this issue and watch it using
+regzbot. Hence, feel free to exclude me on further messages in this
+thread after the first reply, as I'm only posting this mail to hopefully
+get a status update and things rolling again.
+
+#regzbot poke
