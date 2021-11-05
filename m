@@ -2,121 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD4BB44644E
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Nov 2021 14:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 651D44464EF
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Nov 2021 15:28:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232753AbhKENpW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Nov 2021 09:45:22 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:12127 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231933AbhKENpW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Nov 2021 09:45:22 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1636119762; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=97JDROl6nekEmikx5XRgFoJpVnsjC7pw9N4FbxjAHmg=;
- b=nnsEl/JbZD30rKlIxNwRlmWruQX9oe+2hYzq6U0V1WqWZT1JBqlfkHWLMHwyAT7+8iOjFYhP
- uXNUlbh3vPewzUPSF4hmPGb5gdP4UsgYxh6rOsVBt1zk8cEFAwOG+sYK8H3OdxwXGJM/tkFA
- OJMtMQ1rRV3+cMHqZi3S04jzefg=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
- 618534d1045d18c075fd4085 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 05 Nov 2021 13:42:41
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7BB9EC43618; Fri,  5 Nov 2021 13:42:40 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CD44EC4338F;
-        Fri,  5 Nov 2021 13:42:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org CD44EC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+        id S233212AbhKEObf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Nov 2021 10:31:35 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:35266 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233170AbhKEObd (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 5 Nov 2021 10:31:33 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1A5ESeaJ6012927, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1A5ESeaJ6012927
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 5 Nov 2021 22:28:40 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.12; Fri, 5 Nov 2021 22:28:40 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Fri, 5 Nov 2021 22:28:39 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
+ RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
+ 15.01.2308.015; Fri, 5 Nov 2021 22:28:39 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "tiwai@suse.de" <tiwai@suse.de>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Larry.Finger@gmail.com" <Larry.Finger@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rtw89: Fix crash by loading compressed firmware file
+Thread-Topic: [PATCH] rtw89: Fix crash by loading compressed firmware file
+Thread-Index: AQHX0hU7VE24GGCl002qwvOXgdMXQqv0AUsAgACX6Q///34ogIAAjK5D///UggA=
+Date:   Fri, 5 Nov 2021 14:28:39 +0000
+Message-ID: <bd80d3b6cdc42d7818d7d5c6a5036d8188eb4a67.camel@realtek.com>
+References: <20211105071725.31539-1-tiwai@suse.de>
+         <s5hpmrfgj93.wl-tiwai@suse.de> <87zgqjqaae.fsf@codeaurora.org>
+         <s5hh7crgflg.wl-tiwai@suse.de> <87v917q8hw.fsf@codeaurora.org>
+In-Reply-To: <87v917q8hw.fsf@codeaurora.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [125.224.68.85]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzExLzUg5LiL5Y2IIDAxOjMxOjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
 Content-Type: text/plain; charset="utf-8"
+Content-ID: <D4E091EEC96FD749BB655CA55B8139B1@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath9k: Fix out-of-bound memcpy in ath9k_hif_usb_rx_stream
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <YXsidrRuK6zBJicZ@10-18-43-117.dynapool.wireless.nyu.edu>
-References: <YXsidrRuK6zBJicZ@10-18-43-117.dynapool.wireless.nyu.edu>
-To:     Zekun Shen <bruceshenzk@gmail.com>
-Cc:     bruceshenzk@gmail.com, ath9k-devel@qca.qualcomm.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163611975427.24604.10345795952487961567.kvalo@codeaurora.org>
-Date:   Fri,  5 Nov 2021 13:42:40 +0000 (UTC)
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/05/2021 14:09:25
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 167092 [Nov 05 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/05/2021 14:12:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zekun Shen <bruceshenzk@gmail.com> wrote:
-
-> Large pkt_len can lead to out-out-bound memcpy. Current
-> ath9k_hif_usb_rx_stream allows combining the content of two urb
-> inputs to one pkt. The first input can indicate the size of the
-> pkt. Any remaining size is saved in hif_dev->rx_remain_len.
-> While processing the next input, memcpy is used with rx_remain_len.
-> 
-> 4-byte pkt_len can go up to 0xffff, while a single input is 0x4000
-> maximum in size (MAX_RX_BUF_SIZE). Thus, the patch adds a check for
-> pkt_len which must not exceed 2 * MAX_RX_BUG_SIZE.
-> 
-> BUG: KASAN: slab-out-of-bounds in ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
-> Read of size 46393 at addr ffff888018798000 by task kworker/0:1/23
-> 
-> CPU: 0 PID: 23 Comm: kworker/0:1 Not tainted 5.6.0 #63
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-> BIOS rel-1.10.2-0-g5f4c7b1-prebuilt.qemu-project.org 04/01/2014
-> Workqueue: events request_firmware_work_func
-> Call Trace:
->  <IRQ>
->  dump_stack+0x76/0xa0
->  print_address_description.constprop.0+0x16/0x200
->  ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
->  ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
->  __kasan_report.cold+0x37/0x7c
->  ? ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
->  kasan_report+0xe/0x20
->  check_memory_region+0x15a/0x1d0
->  memcpy+0x20/0x50
->  ath9k_hif_usb_rx_cb+0x490/0xed7 [ath9k_htc]
->  ? hif_usb_mgmt_cb+0x2d9/0x2d9 [ath9k_htc]
->  ? _raw_spin_lock_irqsave+0x7b/0xd0
->  ? _raw_spin_trylock_bh+0x120/0x120
->  ? __usb_unanchor_urb+0x12f/0x210
->  __usb_hcd_giveback_urb+0x1e4/0x380
->  usb_giveback_urb_bh+0x241/0x4f0
->  ? __hrtimer_run_queues+0x316/0x740
->  ? __usb_hcd_giveback_urb+0x380/0x380
->  tasklet_action_common.isra.0+0x135/0x330
->  __do_softirq+0x18c/0x634
->  irq_exit+0x114/0x140
->  smp_apic_timer_interrupt+0xde/0x380
->  apic_timer_interrupt+0xf/0x20
-> 
-> Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
-
-I need to test this myself.
-
-Patch set to Deferred.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/YXsidrRuK6zBJicZ@10-18-43-117.dynapool.wireless.nyu.edu/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+T24gRnJpLCAyMDIxLTExLTA1IGF0IDExOjAzICswMjAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBU
+YWthc2hpIEl3YWkgPHRpd2FpQHN1c2UuZGU+IHdyaXRlczoNCj4gDQo+ID4gT24gRnJpLCAwNSBO
+b3YgMjAyMSAwOToyNToxMyArMDEwMCwNCj4gPiBLYWxsZSBWYWxvIHdyb3RlOg0KPiA+ID4gVGFr
+YXNoaSBJd2FpIDx0aXdhaUBzdXNlLmRlPiB3cml0ZXM6DQo+ID4gPiANCj4gPiA+ID4gT24gRnJp
+LCAwNSBOb3YgMjAyMSAwODoxNzoyNSArMDEwMCwNCj4gPiA+ID4gVGFrYXNoaSBJd2FpIHdyb3Rl
+Og0KPiA+ID4gPiA+IFdoZW4gYSBmaXJtd2FyZSBpcyBsb2FkZWQgaW4gdGhlIGNvbXByZXNzZWQg
+Zm9ybWF0IG9yIHZpYSB1c2VyLW1vZGUNCj4gPiA+ID4gPiBoZWxwZXIsIGl0J3MgbWFwcGVkIGlu
+IHJlYWQtb25seSwgYW5kIHRoZSBydHc4OSBkcml2ZXIgY3Jhc2hlcyBhdA0KPiA+ID4gPiA+IHJ0
+dzg5X2Z3X2Rvd25sb2FkKCkgd2hlbiBpdCB0cmllcyB0byBtb2RpZnkgc29tZSBkYXRhLg0KPiA+
+ID4gPiA+IA0KPiA+ID4gPiA+IFRoaXMgcGF0Y2ggaXMgYW4gYXR0ZW1wIHRvIGF2b2lkIHRoZSBj
+cmFzaCBieSByZS1hbGxvY2F0aW5nIHRoZSBkYXRhDQo+ID4gPiA+ID4gdmlhIHZtYWxsb2MoKSBm
+b3IgdGhlIGRhdGEgbW9kaWZpY2F0aW9uLg0KPiA+ID4gPiANCj4gPiA+ID4gQWx0ZXJuYXRpdmVs
+eSwgd2UgbWF5IGRyb3AgdGhlIGNvZGUgdGhhdCBtb2RpZmllcyB0aGUgbG9hZGVkIGZpcm13YXJl
+DQo+ID4gPiA+IGRhdGE/ICBBdCBsZWFzdCBTRVRfRldfSERSX1BBUlRfU0laRSgpIGluIHJ0dzg5
+X2Z3X2hkcl9wYXJzZXIoKSBsb29rcw0KPiA+ID4gPiB3cml0aW5nIGl0LCBhbmQgSSBoYXZlIG5v
+IGlkZWEgd2h5IHRoaXMgb3ZlcndyaXRlIGlzIG5lZWRlZC4NCj4gPiA+IA0KPiA+ID4gU3RyYW5n
+ZSwgaXNuJ3QgdGhlIGZpcm13YXJlIGRhdGEgbWFya2VkIGFzIGNvbnN0IGp1c3QgdG8gYXZvaWQg
+dGhpcyBraW5kDQo+ID4gPiBvZiBwcm9ibGVtPyBEb2VzIHJ0dzg5IGhhdmUgd3JvbmcgY2FzdHMg
+c29tZXdoZXJlIHdoaWNoIHJlbW92ZXMgdGhlDQo+ID4gPiBjb25zdD8NCj4gPiANCj4gPiBZZXMu
+ICBTRVRfRldfSERSX1BBUlRfU0laRSgpIGRvZXMgdGhlIGNhc3QsIGRyb3BwaW5nIHRoZSBjb25z
+dC4NCj4gDQo+IE9oIG1hbiwgYWxsIG9mIEdFVCBhbmQgU0VUIG1hY3JvcyBpbiBmdy5oIGhhdmUg
+dGhvc2UgY2FzdHM6DQo+IA0KPiAjZGVmaW5lIEdFVF9GV19IRFJfTUFKT1JfVkVSU0lPTihmd2hk
+cikJXA0KPiAJbGUzMl9nZXRfYml0cygqKChfX2xlMzIgKikoZndoZHIpICsgMSksIEdFTk1BU0so
+NywgMCkpDQo+ICNkZWZpbmUgR0VUX0ZXX0hEUl9NSU5PUl9WRVJTSU9OKGZ3aGRyKQlcDQo+IAls
+ZTMyX2dldF9iaXRzKCooKF9fbGUzMiAqKShmd2hkcikgKyAxKSwgR0VOTUFTSygxNSwgOCkpDQo+
+ICNkZWZpbmUgR0VUX0ZXX0hEUl9TVUJWRVJTSU9OKGZ3aGRyKQlcDQo+IAlsZTMyX2dldF9iaXRz
+KCooKF9fbGUzMiAqKShmd2hkcikgKyAxKSwgR0VOTUFTSygyMywgMTYpKQ0KPiANCj4gSSBkb24n
+dCBrbm93IGhvdyBJIG1pc3NlZCB0aG9zZSBkdXJpbmcgbXkgcmV2aWV3IDooIEJ1dCB0aGlzIGlz
+IGV4YWN0bHkNCj4gd2h5IEkgcHJlZmVyIGhhdmluZyBhIHByb3BlciBzdHJ1Y3QgZm9yIGNvbW1h
+bmRzIGFuZCBldmVudHMsIGluc3RlYWQgb2YNCj4gdTggYnVmIHVzZWQgd2l0aCB0aGVzZSBtYWNy
+b3MuDQo+IA0KDQoNCkkgY2FuIHVzZSBhIHN0cnVjdCB0byBhY2Nlc3MgZmlybXdhcmUgaGVhZGVy
+LCBiZWN1YXNlIHRoZWlyIGZpZWxkcw0KYXJlIG11bHRpcGxlIG9mIDggYml0cy4NCg0KQnV0LCB0
+aGUgImZpcm13YXJlIHNlY3Rpb24gaGVhZGVyIiB0aGF0IGlzIGFkZGl0aW9uYWwgaGVhZGVyIGZv
+bGxvd2VkDQpieSBmaXJtd2FyZSBoZWFkZXIsIGFuZCBpdCBjb250YWlucyBiaXQgZmllbGRzLCBs
+aWtlczoNCg0KI2RlZmluZSBHRVRfRldTRUNUSU9OX0hEUl9TRUNfU0laRShmd2hkcikJXA0KCWxl
+MzJfZ2V0X2JpdHMoKigoX19sZTMyICopKGZ3aGRyKSArIDEpLCBHRU5NQVNLKDIzLCAwKSkNCiNk
+ZWZpbmUgR0VUX0ZXU0VDVElPTl9IRFJfQ0hFQ0tTVU0oZndoZHIpCVwNCglsZTMyX2dldF9iaXRz
+KCooKF9fbGUzMiAqKShmd2hkcikgKyAxKSwgQklUKDI4KSkNCiNkZWZpbmUgR0VUX0ZXU0VDVElP
+Tl9IRFJfUkVETChmd2hkcikJXA0KCWxlMzJfZ2V0X2JpdHMoKigoX19sZTMyICopKGZ3aGRyKSAr
+IDEpLCBCSVQoMjkpKQ0KI2RlZmluZSBHRVRfRldTRUNUSU9OX0hEUl9ETF9BRERSKGZ3aGRyKQlc
+DQoJbGUzMl9nZXRfYml0cygqKChfX2xlMzIgKikoZndoZHIpKSwgR0VOTUFTSygzMSwgMCkpDQoN
+CklmIHdlIHVzZSBhIHN0cnVjdCwgaXQgbmVlZHMgYmlnLS9saXR0bGUtIGVuZGlhbnMgcGFydHMu
+DQoNClRoZW4sIHdlIHdpbGwgYWNjZXNzIGZpcm13YXJlIGhlYWRlciB3aXRoIHR3byBtZXRob2Rz
+OyBpcw0KaXQgcmVhc29uYWJsZT8NCg0KDQpUaGUgbWFjcm8gU0VUX0ZXX0hEUl9QQVJUX1NJWkUo
+KSBpcyB1c2VkIHRvIHNldCB0aGUgZmlybXdhcmUNCnBhcnRpdGlvbiBzaXplIHdlIGFyZSBnb2lu
+ZyB0byBkb3dubG9hZCwgYW5kIGl0IGlzIG9ubHkgdXNlZA0KYnkgcnR3ODlfZndfZG93bmxvYWRf
+aGRyKCkuIFNvLCBJIHdpbGwgc2V0IHRoZSBwYXJ0aXRpb24gc2l6ZQ0KYWZ0ZXIgY29weWluZyBj
+b25zdGFudCBmaXJtd2FyZSBoZWFkZXIgaW50byBza2ItPmRhdGEuDQoNCi0tDQpQaW5nLUtlDQoN
+Cg==
