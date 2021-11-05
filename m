@@ -2,78 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40E77446048
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Nov 2021 08:51:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18A0F44609D
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Nov 2021 09:25:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbhKEHye (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 Nov 2021 03:54:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50224 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232113AbhKEHyc (ORCPT
+        id S232685AbhKEI2E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 Nov 2021 04:28:04 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:35570 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231682AbhKEI2D (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 Nov 2021 03:54:32 -0400
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EAE6C061205
-        for <linux-wireless@vger.kernel.org>; Fri,  5 Nov 2021 00:51:53 -0700 (PDT)
-Received: by mail-yb1-xb44.google.com with SMTP id d10so20785263ybe.3
-        for <linux-wireless@vger.kernel.org>; Fri, 05 Nov 2021 00:51:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=VshUeeDSetU21+5KOh1TQAi9UpwH/OaoqJFGVrdYCmA=;
-        b=I3bpcbxSfdxtQqvUhCcGZEjnEf7dFO2R56aPcMAZ4OyLdbhj4QmI6dT1jEFDfMlUsS
-         VhitKM+4TRjmVZq5zFgM8MlgJu7V7V7EJ9X7axMQpD1B9h3uUQgaS9T5FPFZ2cBFG9pB
-         pMiwYC6BIta6PsT/D7NqWHcRgjDqeoH7pDTO2D7ZA4hjFvuNHHxopxkUmrJbZAZ4TObl
-         dz9LS0KiE7CTZfvRmwxzOVyZkbBUYb4yNh4WPruN52VhlfxekWl7KneTLbaaNhIS1Ngk
-         rFqudHSrapTn8k7EcMztGADem47lue68BSRU5CCqOEAijxdxgXv+T82xRVgziK9p+eUh
-         0CNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=VshUeeDSetU21+5KOh1TQAi9UpwH/OaoqJFGVrdYCmA=;
-        b=RAGn9/IqhwfRSyWScxebIU6gSIVsMHLLm0y+DSCGId9cIHGGyKdjMTWjHLEscRFkml
-         ghpLg/iPC3TBDCJMKuQWldHT2f5WoXvAWFqe+ICIyVGR6l6xHDxkiqsjq9WaYawPj1e5
-         1QaLvpBWrSR6kD0u7jNWCVl1T/LYbS6HgBeRvX6xTZM+y9IDAO8KlAgcphUB4gAl78zJ
-         rNEObVayGrSFvto8K4QXjPvZceTDWHdG7FXjAuQBvw3SqiuDUUwtZs8t992pLCdMSGn9
-         ptPcrmnrdno0ih9hQnz5wm3MrtW24GX3a2gsOU6ONse/es5bZ1amkQwvSmVykjv7JGf1
-         ZGow==
-X-Gm-Message-State: AOAM530ZMKKh75iMz+XgMOKr22/MdR/piUg0T/Fu/V5hpRFCpuq+5Dtf
-        /au8ngaQp4kaXxKfFIUeDgnEgkXERo0LNVIyNR0=
-X-Google-Smtp-Source: ABdhPJzDJr4Ms42pBsSB3dEJfI2TaxauRXfhuRlhDRnxXXlF6ZX8iuFNrvWQBltWjvuvIN4xqfi0ejMmuo8WaBssNd4=
-X-Received: by 2002:a25:9887:: with SMTP id l7mr59886618ybo.431.1636098712213;
- Fri, 05 Nov 2021 00:51:52 -0700 (PDT)
+        Fri, 5 Nov 2021 04:28:03 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1636100724; h=Content-Type: MIME-Version: Message-ID: Date:
+ References: In-Reply-To: Subject: Cc: To: From: Sender;
+ bh=PodyxWQ8aytFTJyLWgc6LTD5vO5t/jcyhMo21PoIjXk=; b=JOuwEYAyH/0az3J52Ey8r0MqwyvlHySMt77L+F2/0fLPqssGDjNv6KWpouAV2FWLxSVEffo8
+ sgmgE3gAiejXuXabvxZ8I3vwzKmIf7RPlN84MS6Yw+mmENwdd71XFIzNFnEMEu4VKdZf1L91
+ LV5Vf9eLJuWTxISCNQJ/b8bYe08=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 6184ea6e7d93184cc7b1b74b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 05 Nov 2021 08:25:18
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A0522C4360C; Fri,  5 Nov 2021 08:25:18 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F1B86C4338F;
+        Fri,  5 Nov 2021 08:25:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org F1B86C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Larry Finger <Larry.Finger@gmail.com>
+Subject: Re: [PATCH] rtw89: Fix crash by loading compressed firmware file
+In-Reply-To: <s5hpmrfgj93.wl-tiwai@suse.de> (Takashi Iwai's message of "Fri,
+        05 Nov 2021 08:21:44 +0100")
+References: <20211105071725.31539-1-tiwai@suse.de>
+        <s5hpmrfgj93.wl-tiwai@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Fri, 05 Nov 2021 10:25:13 +0200
+Message-ID: <87zgqjqaae.fsf@codeaurora.org>
 MIME-Version: 1.0
-Reply-To: mrmohammedmashab@gmail.com
-Sender: musa129ibrah@gmail.com
-Received: by 2002:a05:7000:8c19:0:0:0:0 with HTTP; Fri, 5 Nov 2021 00:51:51
- -0700 (PDT)
-From:   Mr Mohammed Mashab <mrmohammedmasha@gmail.com>
-Date:   Fri, 5 Nov 2021 00:51:51 -0700
-X-Google-Sender-Auth: PMBJvCxslXX5WvCu_qyLGaHZwaw
-Message-ID: <CALTZnk17veXWD6sf_VZDPNNOrVim0QYuLf5swP_5q4gAW+Xs8g@mail.gmail.com>
-Subject: From: Mr.Mohammed,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Good Day,
+Takashi Iwai <tiwai@suse.de> writes:
 
-I am Mr. Mohammed Mashab, account Manager with an investment bank here
-in Burkina Faso. There is a draft account opened in my firm by a
-long-time client of our bank. I have the opportunity of transferring
-the left over fund (15.8 Million Us Dollars) Fiftheen Million Eight
-Hundred Thousand United States of American Dollars.
+> On Fri, 05 Nov 2021 08:17:25 +0100,
+> Takashi Iwai wrote:
+>> 
+>> When a firmware is loaded in the compressed format or via user-mode
+>> helper, it's mapped in read-only, and the rtw89 driver crashes at
+>> rtw89_fw_download() when it tries to modify some data.
+>> 
+>> This patch is an attemp to avoid the crash by re-allocating the data
+>> via vmalloc() for the data modification.
+>
+> Alternatively, we may drop the code that modifies the loaded firmware
+> data?  At least SET_FW_HDR_PART_SIZE() in rtw89_fw_hdr_parser() looks
+> writing it, and I have no idea why this overwrite is needed.
 
-I want to invest this funds and introduce you to our bank for this
-deal and this will be executed under a legitimate arrangement that
-will protect us from any breach of the law. We will share the fund 40%
-for you,50% for me while 10% is for establishing of foundation for the
-poor children in your country. If you are really interested in my
-proposal further details of the fund transfer will be forwarded to
-you.
+Strange, isn't the firmware data marked as const just to avoid this kind
+of problem? Does rtw89 have wrong casts somewhere which removes the
+const?
 
-Yours Sincerely,
-Mr. Mohammed Mashab.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
