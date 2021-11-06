@@ -2,64 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AF3D446EF1
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Nov 2021 17:29:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D90D446FAC
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Nov 2021 19:00:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234557AbhKFQbp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 6 Nov 2021 12:31:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58658 "EHLO
+        id S233126AbhKFSCt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 6 Nov 2021 14:02:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231658AbhKFQbo (ORCPT
+        with ESMTP id S231979AbhKFSCr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 6 Nov 2021 12:31:44 -0400
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [IPv6:2001:67c:2050::465:202])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87C53C061570;
-        Sat,  6 Nov 2021 09:29:03 -0700 (PDT)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:105:465:1:3:0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4HmjVy1zQ3zQkBL;
-        Sat,  6 Nov 2021 17:28:58 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
-        t=1636216135;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=PZ4kkfynZudBA6x5CzdSYa/sTNo6et8L/IlL/tHsv2c=;
-        b=CKn2ghVEvL76onl6imviK2jW9i4SxJDGKzNcdVqjKOlqk+UpipKy8xhDYeXNFg6C6XGN/b
-        PvtgMwNv7fmpvqieoC4FENvaNxl3SlZ79a/UZAMbVULf49jxglxwCTzFivmrYnRHVXdxhV
-        LzNV8BXX5WmxHLOq2iTdMozC8rNe+KVju/YuHMvgGDx/4Cgxf/2oP15uuN7JMIknyuw/Qs
-        O8NpJWkjIryrObMcahHTacVF3IA2I4/VW6oK6ENnMSMyLVMZ8EJOIaPusw8914nSGvB0o1
-        MTmA7PYdReCPnUpaC+Yn5veAqIQHT5CDSRMIBJnukhQw/jf1jQOVTPscIEGg7A==
-To:     "backports@vger.kernel.org" <backports@vger.kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Subject: wireless backports 5.15-rc6-1 released
-Message-ID: <51da80fc-5d72-3bbf-2798-acb124aa8e94@hauke-m.de>
-Date:   Sat, 6 Nov 2021 17:28:53 +0100
+        Sat, 6 Nov 2021 14:02:47 -0400
+Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A577C061570;
+        Sat,  6 Nov 2021 11:00:06 -0700 (PDT)
+Received: by mail-ua1-x92d.google.com with SMTP id v3so23257329uam.10;
+        Sat, 06 Nov 2021 11:00:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=p2XfxNRZgR4DiadXacP1AebZVGAP3mlK1UDvz8JbFrc=;
+        b=ZNVMlILcAi1dKpydgkz1JPgGumaHBhEq9YGnQ5TbrCfU3eH/NOknskdSrvpjxbxWPZ
+         nuB6s/IuUngRVFdOrHddFOFu62JLo2EnmdXn/ixzsacTesiwInH5PPB6gM9l98gCAlh2
+         zr6syMNAiKxUUOQPsNEP5bnxVoy1rcuIOlHO2jh6GNfIshZF/wpjbyYWfewSG0lN0Nsl
+         woF4BRSkgqpiQnDib3GgOSU4GI/VVdtjBneOYjlrlPjA00ZPq2SXF7dykPW/MmoFWXTA
+         ncwLeMNES51zNMn30BI/BL7ZPcV5S+xWopxnPhhSbc3CP0mZIffUWyEIfUq8Mv5KI+CJ
+         Zluw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=p2XfxNRZgR4DiadXacP1AebZVGAP3mlK1UDvz8JbFrc=;
+        b=eg3qABL84uUXhYHVY88DX6U4rDiyadB62A4Nuc7KmuQgpvmvv0/rdPzm1HWiI+CYsk
+         vvHnJ6RSY2jEcv1Ddit6OFFZy5bnLB9+5pVG98foNfVM391eGtACUfaagXU1zk06qVCS
+         iQL/xCTDel1lvGUac07abO756Vcf4pu4+G+46RWGOwHXzV20NNfu5BVr1/+NA8/4xGT8
+         uNIwtHtNg8TV8FkFkOWlXaguvNGlhOOMZy3qkuHdgvX72G7eT4+GuwvlJxHgM/28ynfI
+         /2/4H55DwHroozqTSXPcstjY1zxgb27CV1cO8qwWYj4OFUX0W/Sr3j2zp9sCna7CA+z9
+         EcSQ==
+X-Gm-Message-State: AOAM532Kh8ezhM97FLzwx7R2vClO0ymXXzQy0FAC3iHKt59v33fyQ66x
+        Z5y3LeHIHvJwHCQnjLVcWgrVwvj7CoXTt5G7SvQ=
+X-Google-Smtp-Source: ABdhPJw0Vk3zsMtsuF9egnB8AZNYXWkYOmpdM17DWb7fQqDj7RqKH9kKpam412QKzgEEUn3Vs08udiAMLTVi3JG99QA=
+X-Received: by 2002:ab0:780c:: with SMTP id x12mr72342855uaq.45.1636221605274;
+ Sat, 06 Nov 2021 11:00:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C188556A
+References: <20211101035635.26999-1-ricardo.martinez@linux.intel.com> <20211101035635.26999-2-ricardo.martinez@linux.intel.com>
+In-Reply-To: <20211101035635.26999-2-ricardo.martinez@linux.intel.com>
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date:   Sat, 6 Nov 2021 21:01:08 +0300
+Message-ID: <CAHNKnsQg1rgiJHG-O9H5i9D8PGOpO5zdLKZQ-ynHE6xzjwj1WQ@mail.gmail.com>
+Subject: Re: [PATCH v2 01/14] net: wwan: Add default MTU size
+To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        chandrashekar.devegowda@intel.com,
+        Intel Corporation <linuxwwan@intel.com>,
+        chiranjeevi.rapolu@linux.intel.com, haijun.liu@mediatek.com,
+        amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
+        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
+        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
+        suresh.nagaraj@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+On Mon, Nov 1, 2021 at 6:57 AM Ricardo Martinez
+<ricardo.martinez@linux.intel.com> wrote:
+> Add a default MTU size definition that new WWAN drivers can refer to.
 
-backports-5.15-rc6-1 was released. This is based on Linux 5.15-rc6.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.15-rc6/backports-5.15-rc6-1.tar.xz
+[skipped]
 
-All versions after backports 5.10 will only work with kernel 4.4 and 
-later, support for older kernel versions was removed.
+> +/*
+> + * Default WWAN interface MTU value
+> + */
+> +#define WWAN_DEFAULT_MTU       1500
 
-There is now a updated wiki page with the releases:
-https://backports.wiki.kernel.org/index.php/Releases
+Why do you need another one macro for the 1500 bytes default MTU?
+Consider using ETH_DATA_LEN macro.
 
-The source code can be found here:
-https://git.kernel.org/cgit/linux/kernel/git/backports/backports.git/
-
-Hauke
+--
+Sergey
