@@ -2,121 +2,197 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8603C447239
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Nov 2021 09:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0FD8447293
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Nov 2021 11:45:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235254AbhKGIyC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 7 Nov 2021 03:54:02 -0500
-Received: from mail-io1-f70.google.com ([209.85.166.70]:39935 "EHLO
-        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230476AbhKGIyC (ORCPT
+        id S233813AbhKGKry (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 7 Nov 2021 05:47:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:27937 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232174AbhKGKry (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 7 Nov 2021 03:54:02 -0500
-Received: by mail-io1-f70.google.com with SMTP id r15-20020a6b600f000000b005dde03edc0cso9282027iog.6
-        for <linux-wireless@vger.kernel.org>; Sun, 07 Nov 2021 01:51:19 -0700 (PDT)
+        Sun, 7 Nov 2021 05:47:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1636281911;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=RE6EFAuJXOYv4UHVe2iYkIAN9i0e/KfF1f5Ap0JKFL4=;
+        b=UYaLUHaNDdXhr4pqdamEf9F4Bl92sOqb8m+eTFPxZs+RuBQCwTtIGPb00hUlk9tXLta6jK
+        Q0GNEbI8qAX7WPYEt6Vyfn76MTgbZYPfKNZNH6vLq8iHRkkKrc7WUijA6dZYgWYqRMFMKV
+        NQk9avgpmT/1uolURogw7H20KkN1VZ4=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-512-7du913Y1OkeTmNUp8c_m9w-1; Sun, 07 Nov 2021 05:45:10 -0500
+X-MC-Unique: 7du913Y1OkeTmNUp8c_m9w-1
+Received: by mail-ed1-f72.google.com with SMTP id v9-20020a50d849000000b003dcb31eabaaso12561221edj.13
+        for <linux-wireless@vger.kernel.org>; Sun, 07 Nov 2021 02:45:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=0snVIq2Bui/dySdfpi4a1QVUvDVLh4nBMkVbNdPRPao=;
-        b=4BgndhqbMD1UYT0Xk5xE1PY/0N2QA/FbtpbPy0RWu+pA2A/y+bUEiQoGfoezWJ6vYg
-         WFYYF7zoIyy/qOm0WglG+piS2V/HVac9TR5twzI9ZVqcgEpzxOx8FbmnnwWrwt9zdA4M
-         bAKlBtZyetDizwjQ5s7Fh+e+rTdoE0naqo++R66E0wqlEnbHUoz/7uMiW7JRVzm01768
-         aqL7H/ggIOmR/FP3Rqp3FmnqTE/pmCganv4Oa5oOVqIZe9uXvtduOIxwCOd7ie3SgRAC
-         2nN1js7NeM07BcB4H6ztExOfFJPwyzsNXAbRmTZ7vQ2ZuSS4Nr9KBgOLrnlrZatgseV5
-         xb4A==
-X-Gm-Message-State: AOAM531GGwe6dMT2m0HiQwTTzTd/M4c/NCTP9kjzzMdeY12p5JYmuTtK
-        d+T3ZapKc8JXPI1F8immTb0HQqtyRDnu5MW4pBrsxIC4kNDS
-X-Google-Smtp-Source: ABdhPJz82QBJIuHxfhU93K92SbySnNOqP/KWwQPZlEV33Vtpa3NIsbfwANaRVhpNxBwmLHW7Ej1jkpW9ZUjKewWowfTKTdVAcLzo
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=RE6EFAuJXOYv4UHVe2iYkIAN9i0e/KfF1f5Ap0JKFL4=;
+        b=2GEFxxZp3UHHzd9uc0wkRZBcHAcULZ3jQw3+E62evLWKunFZLPk5A/1nV6GQ6Gf5Yd
+         sWXIZJw/aG1fP0BKoe//VK9+VlQjFV68tvYG02XyfC0a5cnreslTSy63tWpNI+uPw2q+
+         8g29irje0Vui2XXZRHNfXNo/T4BERXFLGO/Ao/mSs2xHQgwD3YRZZl6cZ8jTUVXMYRW9
+         cukRO9+NEjc/fRNiTtUjDwIS+KADUWFM1U7rz7D76g763YkreZmd5Fj8dVvaYa6EgvQJ
+         qzykBTKLhvK4vOflfham7I+qTh/Smopi9Kml73fzi4jEP0wG3SghgpRoueVIhLn+67pg
+         lvCA==
+X-Gm-Message-State: AOAM530oNi6bM6o5nvA0BeRgwjM1E+4cJEmlw3JWQrecEEbDFqcVK2lN
+        hX0pWLJNjWqH+xScnB58agSGkrDaDrzuYb7q8MeRjbSQjr9TTyTFcbC/MTE6uclglxzhaKAL+d5
+        GfMhV8orNuF6cgNatJ9M6Tj+1mVA=
+X-Received: by 2002:aa7:cd8a:: with SMTP id x10mr52255672edv.3.1636281909173;
+        Sun, 07 Nov 2021 02:45:09 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJy4V9qqqwMnFSOOA4xPXMVq94YF5bwuZX+sW66L0U8om9LRXvWMJN5vnyhSCrVbIrMDGVTq+w==
+X-Received: by 2002:aa7:cd8a:: with SMTP id x10mr52255632edv.3.1636281908927;
+        Sun, 07 Nov 2021 02:45:08 -0800 (PST)
+Received: from localhost (net-37-119-217-95.cust.vodafonedsl.it. [37.119.217.95])
+        by smtp.gmail.com with ESMTPSA id j3sm6532546ejo.2.2021.11.07.02.45.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Nov 2021 02:45:08 -0800 (PST)
+Date:   Sun, 7 Nov 2021 11:45:06 +0100
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Deren Wu <Deren.Wu@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH] mt76: mt7921: introduce 160 MHz channel bandwidth support
+Message-ID: <YYeuMs+QD067Fc5R@lore-desk>
+References: <d4e93e0ffa11d7126b2ab48a34d0b4a4a17f2134.1636207928.git.deren.wu@mediatek.com>
 MIME-Version: 1.0
-X-Received: by 2002:a6b:6812:: with SMTP id d18mr1508988ioc.47.1636275079645;
- Sun, 07 Nov 2021 01:51:19 -0700 (PDT)
-Date:   Sun, 07 Nov 2021 01:51:19 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000e08e4a05d02efa66@google.com>
-Subject: [syzbot] WARNING: suspicious RCU usage in ieee80211_set_tx_power
-From:   syzbot <syzbot+79fbc232a705a30d93cd@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="pFtmkrBWDeyFXsfP"
+Content-Disposition: inline
+In-Reply-To: <d4e93e0ffa11d7126b2ab48a34d0b4a4a17f2134.1636207928.git.deren.wu@mediatek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
 
-syzbot found the following issue on:
+--pFtmkrBWDeyFXsfP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-HEAD commit:    cc0356d6a02e Merge tag 'x86_core_for_v5.16_rc1' of git://g..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=1414732eb00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a5d447cdc3ae81d9
-dashboard link: https://syzkaller.appspot.com/bug?extid=79fbc232a705a30d93cd
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+> From: Deren Wu <deren.wu@mediatek.com>
+>=20
+> Introduce the basic configuration for chips with BW160 capability
+>=20
+> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt76.h            |  1 +
+>  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |  1 +
+>  drivers/net/wireless/mediatek/mt76/mt7921/init.c     |  4 ++++
+>  drivers/net/wireless/mediatek/mt76/mt7921/main.c     | 12 ++++++++++++
+>  4 files changed, 18 insertions(+)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
+less/mediatek/mt76/mt76.h
+> index e2da720a91b6..babca8086027 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -346,6 +346,7 @@ struct mt76_hw_cap {
+>  	bool has_2ghz;
+>  	bool has_5ghz;
+>  	bool has_6ghz;
+> +	bool has_bw160;
+>  };
+> =20
+>  #define MT_DRV_TXWI_NO_FREE		BIT(0)
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drive=
+rs/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> index 26b4b875dcc0..4da20537aaf9 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> @@ -1775,6 +1775,7 @@ static void mt76_connac_mcu_parse_phy_cap(struct mt=
+76_dev *dev,
+>  	dev->phy.chainmask =3D dev->phy.antenna_mask;
+>  	dev->phy.cap.has_2ghz =3D cap->hw_path & BIT(WF0_24G);
+>  	dev->phy.cap.has_5ghz =3D cap->hw_path & BIT(WF0_5G);
+> +	dev->phy.cap.has_bw160 =3D (cap->max_bw >=3D IEEE80211_STA_RX_BW_160);
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Hi Deren,
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+79fbc232a705a30d93cd@syzkaller.appspotmail.com
+just out of my curiosity, what are the possible values of cap->max_bw here?
 
-netlink: 4 bytes leftover after parsing attributes in process `syz-executor.0'.
-=============================
-WARNING: suspicious RCU usage
-5.15.0-syzkaller #0 Not tainted
------------------------------
-net/mac80211/cfg.c:2710 suspicious rcu_dereference_protected() usage!
+Regards,
+Lorenzo
 
-other info that might help us debug this:
+>  }
+> =20
+>  int mt76_connac_mcu_get_nic_capability(struct mt76_phy *phy)
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7921/init.c
+> index 210998f086ab..30c0246fba3a 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> @@ -264,6 +264,10 @@ int mt7921_register_device(struct mt7921_dev *dev)
+>  			IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE |
+>  			IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE |
+>  			(3 << IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT);
+> +	if (dev->mt76.phy.cap.has_bw160)
+> +		dev->mphy.sband_5g.sband.vht_cap.cap |=3D
+> +			IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
+> +			IEEE80211_VHT_CAP_SHORT_GI_160;
+> =20
+>  	dev->mphy.hw->wiphy->available_antennas_rx =3D dev->mphy.chainmask;
+>  	dev->mphy.hw->wiphy->available_antennas_tx =3D dev->mphy.chainmask;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7921/main.c
+> index 633c6d2a57ac..af8c675f909f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> @@ -128,11 +128,23 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl=
+80211_band band,
+>  				IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU |
+>  				IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_COMP_SIGB |
+>  				IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_NON_COMP_SIGB;
+> +
+> +			if (phy->mt76->cap.has_bw160) {
+> +				he_cap_elem->phy_cap_info[0] |=3D
+> +					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G;
+> +				he_cap_elem->phy_cap_info[8] |=3D
+> +					IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
+> +					IEEE80211_HE_PHY_CAP8_80MHZ_IN_160MHZ_HE_PPDU;
+> +			}
+>  			break;
+>  		}
+> =20
+>  		he_mcs->rx_mcs_80 =3D cpu_to_le16(mcs_map);
+>  		he_mcs->tx_mcs_80 =3D cpu_to_le16(mcs_map);
+> +		if (phy->mt76->cap.has_bw160) {
+> +			he_mcs->rx_mcs_160 =3D cpu_to_le16(mcs_map);
+> +			he_mcs->tx_mcs_160 =3D cpu_to_le16(mcs_map);
+> +		}
+> =20
+>  		memset(he_cap->ppe_thres, 0, sizeof(he_cap->ppe_thres));
+>  		if (he_cap_elem->phy_cap_info[6] &
+> --=20
+> 2.18.0
+>=20
 
+--pFtmkrBWDeyFXsfP
+Content-Type: application/pgp-signature; name="signature.asc"
 
-rcu_scheduler_active = 2, debug_locks = 1
-2 locks held by syz-executor.0/25174:
- #0: ffffffff8d183890 (cb_lock){++++}-{3:3}, at: genl_rcv+0x15/0x40 net/netlink/genetlink.c:802
- #1: ffff88802ab60628 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/net/cfg80211.h:5377 [inline]
- #1: ffff88802ab60628 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: nl80211_set_wiphy+0x1c6/0x2c20 net/wireless/nl80211.c:3287
+-----BEGIN PGP SIGNATURE-----
 
-stack backtrace:
-CPU: 0 PID: 25174 Comm: syz-executor.0 Not tainted 5.15.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xcd/0x134 lib/dump_stack.c:106
- ieee80211_set_tx_power+0x74c/0x860 net/mac80211/cfg.c:2710
- rdev_set_tx_power net/wireless/rdev-ops.h:580 [inline]
- nl80211_set_wiphy+0xd5b/0x2c20 net/wireless/nl80211.c:3384
- genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:731
- genl_family_rcv_msg net/netlink/genetlink.c:775 [inline]
- genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:792
- netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2491
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:803
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x86d/0xda0 net/netlink/af_netlink.c:1916
- sock_sendmsg_nosec net/socket.c:704 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:724
- ____sys_sendmsg+0x6e8/0x810 net/socket.c:2409
- ___sys_sendmsg+0xf3/0x170 net/socket.c:2463
- __sys_sendmsg+0xe5/0x1b0 net/socket.c:2492
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x44/0xae
-RIP: 0033:0x7fbfe1b55ae9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 bc ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fbfdf0cb188 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fbfe1c68f60 RCX: 00007fbfe1b55ae9
-RDX: 0000000000000000 RSI: 0000000020000200 RDI: 0000000000000003
-RBP: 00007fbfe1baff25 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fff39e7553f R14: 00007fbfdf0cb300 R15: 0000000000022000
- </TASK>
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYYeuMgAKCRA6cBh0uS2t
+rDZRAPwKmeF6/0MuMzQcTou3JM4/mLpNEXiHQKOGPkIdpHk6VQD/dtMQo54IVMUP
+klNiHyYxzV/4+q+IExvrsnf65wJcbAo=
+=6xyL
+-----END PGP SIGNATURE-----
 
+--pFtmkrBWDeyFXsfP--
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
