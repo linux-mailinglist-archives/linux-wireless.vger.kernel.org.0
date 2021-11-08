@@ -2,33 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16517447F8B
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Nov 2021 13:38:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30554447F8C
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Nov 2021 13:38:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238209AbhKHMlR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Nov 2021 07:41:17 -0500
-Received: from so254-9.mailgun.net ([198.61.254.9]:31857 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231529AbhKHMlR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Nov 2021 07:41:17 -0500
+        id S238229AbhKHMlV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Nov 2021 07:41:21 -0500
+Received: from m43-7.mailgun.net ([69.72.43.7]:39385 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231529AbhKHMlV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Nov 2021 07:41:21 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1636375113; h=Content-Transfer-Encoding: MIME-Version:
- Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=6ozcYf0B2G31qBNR2RL9a+tqM8DVofWgqAwo7Jke7AY=; b=dZB8UI7E1+vQyUnhF9THZS50qsoZo5C/kdBiNYhg9pub5z0J0K4alq7jREwvJ2pwaY55YMKb
- pDQ5hrNO4kj7O+E56rCZJ4YN4rJTJnv071/7uPAKk0VY/9t1f8U02BammyJryQdkpRYgHOeH
- EtVKGjJ1remYhlaRLWU/UzaLFBA=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ s=smtp; t=1636375117; h=Content-Transfer-Encoding: MIME-Version:
+ References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=YSgQqZ+Hm9QjVo2U12v1rsGze0V5cI8AQnix9P72WSI=; b=KO1tRFqfKb70CrZwTW28GqnBjjjkrzE0tDWLV3X6f1rRI1tk8vh5wYksyx2fSJ4gTkfmnrYE
+ 6jA1cDb1os8t4dOunDsCdsoqebkM921KqJqCH9QlBFh2HC0Nb0I2J9QZ/XQVqrL9LC5ej83m
+ 7+ZcmQgqFPe3d6U+vkt1H9BFGV4=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 61891a469198e3b25675530c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Nov 2021 12:38:30
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 61891a48b882f8ab2fff6ac7 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 08 Nov 2021 12:38:32
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id ADCAEC43616; Mon,  8 Nov 2021 12:38:30 +0000 (UTC)
+        id 2A8B3C4338F; Mon,  8 Nov 2021 12:38:32 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,103 +37,233 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 681E5C4338F;
-        Mon,  8 Nov 2021 12:38:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 681E5C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AD601C4360D;
+        Mon,  8 Nov 2021 12:38:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org AD601C4360D
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH v2 1/2] ath11k: convert ath11k_wmi_pdev_set_ps_mode() to use enum wmi_sta_ps_mode
-Date:   Mon,  8 Nov 2021 14:38:25 +0200
-Message-Id: <20211108123826.8463-1-kvalo@codeaurora.org>
+Subject: [PATCH v2 2/2] ath11k: enable 802.11 power save mode in station mode
+Date:   Mon,  8 Nov 2021 14:38:26 +0200
+Message-Id: <20211108123826.8463-2-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20211108123826.8463-1-kvalo@codeaurora.org>
+References: <20211108123826.8463-1-kvalo@codeaurora.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It's more descriptive to use the actual enum used by the firmware instead of a
-boolean so change ath11k_wmi_pdev_set_ps_mode() to use a boolean.
+From: Carl Huang <cjhuang@codeaurora.org>
+
+To reduce power consumption enable 802.11 power save mode in station mode. This
+allows both radio and CPU to sleep more.
+
+Only enable the mode on QCA6390 and WCN6855, it's unknown how other hardware
+families support this feature.
+
+To test that power save mode is running run "iw dev wls1 set power_save off",
+check there is no NULL Data frame seen by a sniffer. And run "iw dev wls1 set power_save
+on" and check there is a NULL Data frame in sniffer.
 
 Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
 
+Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
 
 v2:
 
-* new patch
+* improve commit log
 
- drivers/net/wireless/ath/ath11k/mac.c | 3 ++-
- drivers/net/wireless/ath/ath11k/wmi.c | 7 ++++---
- drivers/net/wireless/ath/ath11k/wmi.h | 3 ++-
- 3 files changed, 8 insertions(+), 5 deletions(-)
+* use existing ath11k_wmi_pdev_set_ps_mode()
 
+* rename protocol_ps to supports_sta_ps
+
+* cosmetic changes
+
+ drivers/net/wireless/ath/ath11k/core.c |  5 ++
+ drivers/net/wireless/ath/ath11k/core.h |  1 +
+ drivers/net/wireless/ath/ath11k/hw.h   |  1 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 87 ++++++++++++++++++++++++++
+ 4 files changed, 94 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index b5a2af3ffc3e..a6c0d5ad7f9b 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -76,6 +76,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_monitor = true,
+ 		.supports_shadow_regs = false,
+ 		.idle_ps = false,
++		.supports_sta_ps = false,
+ 		.cold_boot_calib = true,
+ 		.supports_suspend = false,
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_ipq8074),
+@@ -125,6 +126,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_monitor = true,
+ 		.supports_shadow_regs = false,
+ 		.idle_ps = false,
++		.supports_sta_ps = false,
+ 		.cold_boot_calib = true,
+ 		.supports_suspend = false,
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_ipq8074),
+@@ -173,6 +175,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_monitor = false,
+ 		.supports_shadow_regs = true,
+ 		.idle_ps = true,
++		.supports_sta_ps = true,
+ 		.cold_boot_calib = false,
+ 		.supports_suspend = true,
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_ipq8074),
+@@ -221,6 +224,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_monitor = true,
+ 		.supports_shadow_regs = false,
+ 		.idle_ps = false,
++		.supports_sta_ps = false,
+ 		.cold_boot_calib = false,
+ 		.supports_suspend = false,
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_qcn9074),
+@@ -269,6 +273,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_monitor = false,
+ 		.supports_shadow_regs = true,
+ 		.idle_ps = true,
++		.supports_sta_ps = true,
+ 		.cold_boot_calib = false,
+ 		.supports_suspend = true,
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_wcn6855),
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 31d234a51c79..2f1e10b7cc17 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -240,6 +240,7 @@ struct ath11k_vif {
+ 	bool is_started;
+ 	bool is_up;
+ 	bool spectral_enabled;
++	bool ps;
+ 	u32 aid;
+ 	u8 bssid[ETH_ALEN];
+ 	struct cfg80211_bitrate_mask bitrate_mask;
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 19223d36846e..1c298c24b617 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -170,6 +170,7 @@ struct ath11k_hw_params {
+ 	bool supports_monitor;
+ 	bool supports_shadow_regs;
+ 	bool idle_ps;
++	bool supports_sta_ps;
+ 	bool cold_boot_calib;
+ 	bool supports_suspend;
+ 	u32 hal_desc_sz;
 diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 1cc55602787b..f6511fc8ae8c 100644
+index f6511fc8ae8c..82fd44f34df2 100644
 --- a/drivers/net/wireless/ath/ath11k/mac.c
 +++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -5638,7 +5638,8 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
- 			goto err_peer_del;
- 		}
- 
--		ret = ath11k_wmi_pdev_set_ps_mode(ar, arvif->vdev_id, false);
-+		ret = ath11k_wmi_pdev_set_ps_mode(ar, arvif->vdev_id,
-+						  WMI_STA_PS_MODE_DISABLED);
- 		if (ret) {
- 			ath11k_warn(ar->ab, "failed to disable vdev %d ps mode: %d\n",
- 				    arvif->vdev_id, ret);
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 5ae2ef4680d6..b9bfe0407cd7 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -1244,7 +1244,8 @@ int ath11k_wmi_pdev_set_param(struct ath11k *ar, u32 param_id,
- 	return ret;
+@@ -1049,6 +1049,83 @@ static int ath11k_mac_monitor_stop(struct ath11k *ar)
+ 	return 0;
  }
  
--int ath11k_wmi_pdev_set_ps_mode(struct ath11k *ar, int vdev_id, u32 enable)
-+int ath11k_wmi_pdev_set_ps_mode(struct ath11k *ar, int vdev_id,
-+				enum wmi_sta_ps_mode psmode)
++static int ath11k_mac_vif_setup_ps(struct ath11k_vif *arvif)
++{
++	struct ath11k *ar = arvif->ar;
++	struct ieee80211_vif *vif = arvif->vif;
++	struct ieee80211_conf *conf = &ar->hw->conf;
++	enum wmi_sta_powersave_param param;
++	enum wmi_sta_ps_mode psmode;
++	int ret;
++	int timeout;
++	bool enable_ps;
++
++	lockdep_assert_held(&arvif->ar->conf_mutex);
++
++	if (arvif->vif->type != NL80211_IFTYPE_STATION)
++		return 0;
++
++	enable_ps = arvif->ps;
++
++	if (!arvif->is_started) {
++		/* mac80211 can update vif powersave state while disconnected.
++		 * Firmware doesn't behave nicely and consumes more power than
++		 * necessary if PS is disabled on a non-started vdev. Hence
++		 * force-enable PS for non-running vdevs.
++		 */
++		psmode = WMI_STA_PS_MODE_ENABLED;
++	} else if (enable_ps) {
++		psmode = WMI_STA_PS_MODE_ENABLED;
++		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
++
++		timeout = conf->dynamic_ps_timeout;
++		if (timeout == 0) {
++			/* firmware doesn't like 0 */
++			timeout = ieee80211_tu_to_usec(vif->bss_conf.beacon_int) / 1000;
++		}
++
++		ret = ath11k_wmi_set_sta_ps_param(ar, arvif->vdev_id, param,
++						  timeout);
++		if (ret) {
++			ath11k_warn(ar->ab, "failed to set inactivity time for vdev %d: %i\n",
++				    arvif->vdev_id, ret);
++			return ret;
++		}
++	} else {
++		psmode = WMI_STA_PS_MODE_DISABLED;
++	}
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "mac vdev %d psmode %s\n",
++		   arvif->vdev_id, psmode ? "enable" : "disable");
++
++	ret = ath11k_wmi_pdev_set_ps_mode(ar, arvif->vdev_id, psmode);
++	if (ret) {
++		ath11k_warn(ar->ab, "failed to set sta power save mode %d for vdev %d: %d\n",
++			    psmode, arvif->vdev_id, ret);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int ath11k_mac_config_ps(struct ath11k *ar)
++{
++	struct ath11k_vif *arvif;
++	int ret = 0;
++
++	lockdep_assert_held(&ar->conf_mutex);
++
++	list_for_each_entry(arvif, &ar->arvifs, list) {
++		ret = ath11k_mac_vif_setup_ps(arvif);
++		if (ret) {
++			ath11k_warn(ar->ab, "failed to setup powersave: %d\n", ret);
++			break;
++		}
++	}
++
++	return ret;
++}
++
+ static int ath11k_mac_op_config(struct ieee80211_hw *hw, u32 changed)
  {
- 	struct ath11k_pdev_wmi *wmi = ar->wmi;
- 	struct wmi_pdev_set_ps_mode_cmd *cmd;
-@@ -1259,7 +1260,7 @@ int ath11k_wmi_pdev_set_ps_mode(struct ath11k *ar, int vdev_id, u32 enable)
- 	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_STA_POWERSAVE_MODE_CMD) |
- 			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
- 	cmd->vdev_id = vdev_id;
--	cmd->sta_ps_mode = enable;
-+	cmd->sta_ps_mode = psmode;
+ 	struct ath11k *ar = hw->priv;
+@@ -2942,6 +3019,16 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+ 		ath11k_mac_txpower_recalc(ar);
+ 	}
  
- 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_STA_POWERSAVE_MODE_CMDID);
- 	if (ret) {
-@@ -1269,7 +1270,7 @@ int ath11k_wmi_pdev_set_ps_mode(struct ath11k *ar, int vdev_id, u32 enable)
- 
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
- 		   "WMI vdev set psmode %d vdev id %d\n",
--		   enable, vdev_id);
-+		   psmode, vdev_id);
- 
- 	return ret;
- }
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 0584e68e7593..93e2992db862 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -5351,7 +5351,8 @@ int ath11k_wmi_set_peer_param(struct ath11k *ar, const u8 *peer_addr,
- 			      u32 vdev_id, u32 param_id, u32 param_val);
- int ath11k_wmi_pdev_set_param(struct ath11k *ar, u32 param_id,
- 			      u32 param_value, u8 pdev_id);
--int ath11k_wmi_pdev_set_ps_mode(struct ath11k *ar, int vdev_id, u32 enable);
-+int ath11k_wmi_pdev_set_ps_mode(struct ath11k *ar, int vdev_id,
-+				enum wmi_sta_ps_mode psmode);
- int ath11k_wmi_wait_for_unified_ready(struct ath11k_base *ab);
- int ath11k_wmi_cmd_init(struct ath11k_base *ab);
- int ath11k_wmi_wait_for_service_ready(struct ath11k_base *ab);
-
-base-commit: 042696e7d5cff4bf705caa191ea458352bcc07f3
++	if (changed & BSS_CHANGED_PS &&
++	    ar->ab->hw_params.supports_sta_ps) {
++		arvif->ps = vif->bss_conf.ps;
++
++		ret = ath11k_mac_config_ps(ar);
++		if (ret)
++			ath11k_warn(ar->ab, "failed to setup ps on vdev %i: %d\n",
++				    arvif->vdev_id, ret);
++	}
++
+ 	if (changed & BSS_CHANGED_MCAST_RATE &&
+ 	    !ath11k_mac_vif_chan(arvif->vif, &def)) {
+ 		band = def.chan->band;
 -- 
 2.20.1
 
