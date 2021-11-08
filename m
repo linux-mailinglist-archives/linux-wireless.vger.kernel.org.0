@@ -2,43 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2A6444A105
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 02:04:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27ADD44A11B
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 02:04:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239130AbhKIBHE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Nov 2021 20:07:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60366 "EHLO mail.kernel.org"
+        id S239787AbhKIBHc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Nov 2021 20:07:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60498 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237348AbhKIBFP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Nov 2021 20:05:15 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9579A619A6;
-        Tue,  9 Nov 2021 01:01:59 +0000 (UTC)
+        id S239277AbhKIBFt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Nov 2021 20:05:49 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3A347611C4;
+        Tue,  9 Nov 2021 01:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636419720;
-        bh=qT2SY6fv46Gn9/Bc1mnjMQbsZb5EuuRuEpMBD50gTC8=;
+        s=k20201202; t=1636419742;
+        bh=oE25VBAXKjug5zZ/ntNxpF9N4QRExlf1uT4rWOqGdyU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MD9SouZIMACddRu9W8hlyo2tuOJdqzhideu7kNo1o9MgQ3aMgatusjkDd8M9alWdr
-         Fid6szhIfNiuX1JC60bbrXAC5OqB+XDxXLjCwGe4ra8r3WHLFmHnBe4RIlgYHwl6JO
-         /V0XpNTNSxOW0Cg+1sjOzafmIVznUJzsjuh/eyWFqCAs8TTCzcYZttHPLSXRXK+4pJ
-         n0j6LtqvCRBOliwg9rmk9qBRWzuPI3HUm4W7O4HyCW0qyopL5vuVaNEnL3WKkfIOPj
-         9qJ5/xNmx61qIyi3ox0AdrhuFYtV4S78wEjGgtFgMbgvQnAKMmg+m2XK6+HA0XgSU7
-         hx1bms7D9nzqg==
+        b=J6zv0y8/YsqjUukf+BoNjtd/RDSHzfczeVnMEEGIhp0CsEPCiOwEkSRCjRqlodgEC
+         xfwl3efGD8McjPFhz56SnjxzwANxr6776erhn0NXiiwqiuJ+Idd4yJ7miu/CM3YJh8
+         Dl3+2qDC27uNALkMua4/Vv9jjSsjnDMWw7fZJrp8WfBa+rsmdemXfRQpD8/KAUxQCs
+         vfYQBxWtWkXPLpGClsTkGRke86zwaXX0bZ5Y3azaXL/owv/0HvnrjoVcX/FwSLX7uU
+         PpEpNBHLBorSJFD0wewU3/YMXQD4wlcAMdkDctdIijYcaBR8cHdDVf7vnWxfgWTGvv
+         yiVpbve3QKHlw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Seevalamuthu Mariappan <seevalam@codeaurora.org>,
-        Ritesh Singh <ritesi@codeaurora.org>,
-        Jouni Malinen <jouni@codeaurora.org>,
+Cc:     =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, davem@davemloft.net,
-        kuba@kernel.org, ath11k@lists.infradead.org,
+        Sasha Levin <sashal@kernel.org>, amitkarwar@gmail.com,
+        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
+        huxinming820@gmail.com, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.14 017/138] ath11k: Align bss_chan_info structure with firmware
-Date:   Mon,  8 Nov 2021 12:44:43 -0500
-Message-Id: <20211108174644.1187889-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.14 022/138] mwifiex: Run SET_BSS_MODE when changing from P2P to STATION vif-type
+Date:   Mon,  8 Nov 2021 12:44:48 -0500
+Message-Id: <20211108174644.1187889-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211108174644.1187889-1-sashal@kernel.org>
 References: <20211108174644.1187889-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -46,71 +46,72 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Seevalamuthu Mariappan <seevalam@codeaurora.org>
+From: Jonas Dreßler <verdre@v0yd.nl>
 
-[ Upstream commit feab5bb8f1d4621025dceae7eef62d5f92de34ac ]
+[ Upstream commit c2e9666cdffd347460a2b17988db4cfaf2a68fb9 ]
 
-pdev_id in structure 'wmi_pdev_bss_chan_info_event' is wrongly placed
-at the beginning. This causes invalid values in survey dump. Hence, align
-the structure with the firmware.
+We currently handle changing from the P2P to the STATION virtual
+interface type slightly different than changing from P2P to ADHOC: When
+changing to STATION, we don't send the SET_BSS_MODE command. We do send
+that command on all other type-changes though, and it probably makes
+sense to send the command since after all we just changed our BSS_MODE.
+Looking at prior changes to this part of the code, it seems that this is
+simply a leftover from old refactorings.
 
-Note: The firmware releases follow this order since the feature was
-implemented. Also, it is not changing across the branches including
-QCA6390.
+Since sending the SET_BSS_MODE command is the only difference between
+mwifiex_change_vif_to_sta_adhoc() and the current code, we can now use
+mwifiex_change_vif_to_sta_adhoc() for both switching to ADHOC and
+STATION interface type.
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-01228-QCAHKSWPL_SILICONZ-1
+This does not fix any particular bug and just "looked right", so there's
+a small chance it might be a regression.
 
-Signed-off-by: Ritesh Singh <ritesi@codeaurora.org>
-Signed-off-by: Seevalamuthu Mariappan <seevalam@codeaurora.org>
-Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210720214922.118078-3-jouni@codeaurora.org
+Link: https://lore.kernel.org/r/20210914195909.36035-4-verdre@v0yd.nl
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 1 +
- drivers/net/wireless/ath/ath11k/wmi.h | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ .../net/wireless/marvell/mwifiex/cfg80211.c   | 22 ++++---------------
+ 1 file changed, 4 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 6c253eae9d069..27c060dd3fb47 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -1339,6 +1339,7 @@ int ath11k_wmi_pdev_bss_chan_info_request(struct ath11k *ar,
- 				     WMI_TAG_PDEV_BSS_CHAN_INFO_REQUEST) |
- 			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
- 	cmd->req_type = type;
-+	cmd->pdev_id = ar->pdev->pdev_id;
- 
- 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
- 		   "WMI bss chan info req type %d\n", type);
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index d35c47e0b19d4..0b7d337b36930 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -2960,6 +2960,7 @@ struct wmi_pdev_bss_chan_info_req_cmd {
- 	u32 tlv_header;
- 	/* ref wmi_bss_chan_info_req_type */
- 	u32 req_type;
-+	u32 pdev_id;
- } __packed;
- 
- struct wmi_ap_ps_peer_cmd {
-@@ -4056,7 +4057,6 @@ struct wmi_vdev_stopped_event {
- } __packed;
- 
- struct wmi_pdev_bss_chan_info_event {
--	u32 pdev_id;
- 	u32 freq;	/* Units in MHz */
- 	u32 noise_floor;	/* units are dBm */
- 	/* rx clear - how often the channel was unused */
-@@ -4074,6 +4074,7 @@ struct wmi_pdev_bss_chan_info_event {
- 	/*rx_cycle cnt for my bss in 64bits format */
- 	u32 rx_bss_cycle_count_low;
- 	u32 rx_bss_cycle_count_high;
-+	u32 pdev_id;
- } __packed;
- 
- #define WMI_VDEV_INSTALL_KEY_COMPL_STATUS_SUCCESS 0
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index 0961f4a5e415c..93eb5f109949f 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -1229,29 +1229,15 @@ mwifiex_cfg80211_change_virtual_intf(struct wiphy *wiphy,
+ 		break;
+ 	case NL80211_IFTYPE_P2P_CLIENT:
+ 	case NL80211_IFTYPE_P2P_GO:
++		if (mwifiex_cfg80211_deinit_p2p(priv))
++			return -EFAULT;
++
+ 		switch (type) {
+-		case NL80211_IFTYPE_STATION:
+-			if (mwifiex_cfg80211_deinit_p2p(priv))
+-				return -EFAULT;
+-			priv->adapter->curr_iface_comb.p2p_intf--;
+-			priv->adapter->curr_iface_comb.sta_intf++;
+-			dev->ieee80211_ptr->iftype = type;
+-			if (mwifiex_deinit_priv_params(priv))
+-				return -1;
+-			if (mwifiex_init_new_priv_params(priv, dev, type))
+-				return -1;
+-			if (mwifiex_sta_init_cmd(priv, false, false))
+-				return -1;
+-			break;
+ 		case NL80211_IFTYPE_ADHOC:
+-			if (mwifiex_cfg80211_deinit_p2p(priv))
+-				return -EFAULT;
++		case NL80211_IFTYPE_STATION:
+ 			return mwifiex_change_vif_to_sta_adhoc(dev, curr_iftype,
+ 							       type, params);
+-			break;
+ 		case NL80211_IFTYPE_AP:
+-			if (mwifiex_cfg80211_deinit_p2p(priv))
+-				return -EFAULT;
+ 			return mwifiex_change_vif_to_ap(dev, curr_iftype, type,
+ 							params);
+ 		case NL80211_IFTYPE_UNSPECIFIED:
 -- 
 2.33.0
 
