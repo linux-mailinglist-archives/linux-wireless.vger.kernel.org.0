@@ -2,204 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA847449ABF
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Nov 2021 18:27:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF4A2449B45
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Nov 2021 19:00:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240258AbhKHRab (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Nov 2021 12:30:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53714 "EHLO
+        id S234506AbhKHSDR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Nov 2021 13:03:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240249AbhKHRaa (ORCPT
+        with ESMTP id S233811AbhKHSDI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Nov 2021 12:30:30 -0500
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0589C061764
-        for <linux-wireless@vger.kernel.org>; Mon,  8 Nov 2021 09:27:45 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id x27so37919486lfu.5
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Nov 2021 09:27:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DYDuAD6QjzlggLpTnY+4NCTz7rwvU+k2pOFw2vnJoQg=;
-        b=gZdmtDdET6KJkfr1o9JyaajLjAIxDfUneVgmjMUWVxtccdnR8KOTDCP/QcMfr1rT1c
-         KMv0hYzdHhxOcal7sXLxmN7AmvbVEZD/1rXPzxXlyVbgKE9hxbFk2p+l595O3FlnbHBU
-         YEUIctDzOvE4EblLCct+hYeQlkbW5JcqcpPDFY5hgy2C7Q3jy3d/o+JW8NgXdufKLWOl
-         TMvhoeks3yj+4UpAKs1Eq1znysr2cSBT/UuJdL+rKoJqlh/IqR3vStgf3CqF9R2NodT3
-         3B587i81UHEQIDFonvAbwazVHdQm3z9SUk6+c5aToj8bsSeUK9OllMdSDj4ADBKl9ZLX
-         wi7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DYDuAD6QjzlggLpTnY+4NCTz7rwvU+k2pOFw2vnJoQg=;
-        b=oUrlmoS3PFLnPH38J1v/E5deBVXh2C8e8GLRjW5Czu9wB3LdpBXxBtRJVnijeQhyBE
-         ybkixQFRWppcPdx2EFhol4qNSvp0DakoB8XmaoBcLo0EEA/Bh7Sy1ABuTzWskjFvSZcH
-         UorZVkP35yLllICo/7I05UpkS93HTH5Jr0Qhqswd9F1WZfPZKahPEZ/lHLu+FssgxW8s
-         idaJxvzNv/Nx1qF2q5J1+XmGNdVNcfXHVsp2oXAjXCN07RBVGkyKhvSL5gxE6fuzcc3o
-         wQOZj1SDwLf3/QMgXtDrb87apAdHQSVE5SwrkF1wsSVDoHTrCvYpbHbTdefPdZospyqS
-         oQ7w==
-X-Gm-Message-State: AOAM532TuUHCXXxw+eL3fz4Jz7SgHsTPMyvCOmeDEgxvs0Yp3O2RqlXO
-        2owTG1qpTs6KyYVCq3ixfpN2MqgUoLs2U7k71+GzCr44Te5ITw==
-X-Google-Smtp-Source: ABdhPJwPMBy21RwGfnSKmXaxDEIIDzdw2ubpg3s7yG3XcVkDzKpSnYYGbBLBHwTaZa0XexKAFw9FcGYiz8AyAu8fuKo=
-X-Received: by 2002:a19:ad4d:: with SMTP id s13mr813797lfd.373.1636392464046;
- Mon, 08 Nov 2021 09:27:44 -0800 (PST)
+        Mon, 8 Nov 2021 13:03:08 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E38C0C061570
+        for <linux-wireless@vger.kernel.org>; Mon,  8 Nov 2021 10:00:23 -0800 (PST)
+Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1mk8wP-0000qL-89; Mon, 08 Nov 2021 19:00:21 +0100
+Message-ID: <7d353dd2-2ffb-6d5e-9983-f983c8b4f6da@leemhuis.info>
+Date:   Mon, 8 Nov 2021 19:00:20 +0100
 MIME-Version: 1.0
-References: <20210315132501.441681-1-Jerome.Pouiller@silabs.com>
- <4503971.bAhddQ8uqO@pc-42> <CAPDyKFoXgV3m-rMKfjqRj91PNjOGaWg6odWG-EGdFKkL+dGWoA@mail.gmail.com>
- <5713463.b6Cmjs1FeV@pc-42> <CAPDyKFrONrUvbVVVF9iy4P17jZ_Fq+1pGMmsqM6C1hOXOWQnBw@mail.gmail.com>
- <87pmz6mhim.fsf@codeaurora.org> <CAPDyKFrgrSAz-B7wqNNPKk3kB8UqhGs=+bZ8RRhmqh8HuvhcEQ@mail.gmail.com>
- <87fstlj58q.fsf@codeaurora.org>
-In-Reply-To: <87fstlj58q.fsf@codeaurora.org>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 8 Nov 2021 18:27:06 +0100
-Message-ID: <CAPDyKFqnbya3+Pvg4yNzFkHdhO9q-Nnj9n9iDVyBqY5ZL_XmaA@mail.gmail.com>
-Subject: Re: [PATCH v5 08/24] wfx: add bus_sdio.c
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <Jerome.Pouiller@silabs.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        driverdevel <devel@driverdev.osuosl.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        DTML <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: rt2x00 regression
+Content-Language: en-BZ
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>
+Cc:     linux-wireless@vger.kernel.org,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        regressions@lists.linux.dev, Kalle Valo <kvalo@codeaurora.org>,
+        Exuvo <exuvo@exuvo.se>
+References: <bff7d309-a816-6a75-51b6-5928ef4f7a8c@exuvo.se>
+ <20190927080303.GA7667@redhat.com>
+ <CA+GwT0B5SyRZnGLqwqOeuJK4CWMVc=dKaWre9VN8KQC6kBzKGw@mail.gmail.com>
+ <20191203075736.GA701@redhat.com>
+ <d74dab51-3a84-9035-d89e-ea8f63e89198@exuvo.se>
+ <a8eeb0bc-95da-291a-7fb9-5d15d1174c27@exuvo.se>
+ <c22673af-40e0-3af2-5ab7-69b23fc03598@exuvo.se>
+ <f935dc15-08bd-2e28-fc1b-b27634c618be@exuvo.se>
+ <87czop5j33.fsf@tynnyri.adurom.net>
+ <6366d9bd-9752-dbc2-8970-442bdc6e8eea@leemhuis.info>
+In-Reply-To: <6366d9bd-9752-dbc2-8970-442bdc6e8eea@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1636394424;667cf593;
+X-HE-SMSGID: 1mk8wP-0000qL-89
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 1 Oct 2021 at 14:31, Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Hi Ulf,
->
-> sorry for the late reply, my Gnus tells me it took me 24 weeks to reply :)
->
-> Ulf Hansson <ulf.hansson@linaro.org> writes:
->
-> > On Wed, 7 Apr 2021 at 14:00, Kalle Valo <kvalo@codeaurora.org> wrote:
-> >>
-> >> Ulf Hansson <ulf.hansson@linaro.org> writes:
-> >>
-> >> >> If I follow what has been done in other drivers I would write something
-> >> >> like:
-> >> >>
-> >> >>   static int wfx_sdio_suspend(struct device *dev)
-> >> >>   {
-> >> >>           struct sdio_func *func = dev_to_sdio_func(dev);
-> >> >>           struct wfx_sdio_priv *bus = sdio_get_drvdata(func);
-> >> >>
-> >> >>           config_reg_write_bits(bus->core, CFG_IRQ_ENABLE_DATA, 0);
-> >> >>           // Necessary to keep device firmware in RAM
-> >> >>           return sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER);
-> >> >
-> >> > This will tell the mmc/sdio core to keep the SDIO card powered on
-> >> > during system suspend. Thus, it doesn't need to re-initialize it at
-> >> > system resume - and the firmware should not need to be re-programmed.
-> >> >
-> >> > On the other hand, if you don't plan to support system wakeups, it
-> >> > would probably be better to power off the card, to avoid wasting
-> >> > energy while the system is suspended. I assume that means you need to
-> >> > re-program the firmware as well. Normally, it's these kinds of things
-> >> > that need to be managed from a ->resume() callback.
-> >>
-> >> Many mac80211 drivers do so that the device is powered off during
-> >> interface down (ifconfig wlan0 down), and as mac80211 does interface
-> >> down automatically during suspend, suspend then works without extra
-> >> handlers.
-> >
-> > That sounds simple. :-)
->
-> Indeed, I was omitting a lot of details :) My comment was more like a
-> general remark to all different bus techonologies, not just about SDIO.
-> And I'm not saying that all wireless drivers do that, but some of them
-> do. Though I don't have any numbers how many.
->
-> > Would you mind elaborating on what is actually being powered off at
-> > interface down - and thus also I am curious what happens at a typical
-> > interface up?
->
-> In general in the drivers that do we this the firmware is completely
-> turned off and all memory is reset during interface down. And firmware
-> is started from the scratch during interface up. Also one benefit from
-> this is that firmware state is reset, the wireless firmwares are
-> notarious being buggy.
->
-> > Even if we don't want to use system wakeups (wake-on-lan), the SDIO
-> > core and the SDIO func driver still need to somewhat agree on how to
-> > manage the power for the card during system suspend, I think.
-> >
-> > For example, for a non-removable SDIO card, the SDIO/MMC core may
-> > decide to power off the card in system suspend. Then it needs to
-> > restore power to the card and re-initialize it at system resume, of
-> > course. This doesn't mean that the actual corresponding struct device
-> > for it, gets removed/re-added, thus the SDIO func driver isn't being
-> > re-probed after the system has resumed. Although, since the SDIO card
-> > was re-initialized, it's likely that the FW may need to be
-> > re-programmed after the system has been resumed.
-> >
-> > Are you saying that re-programming the FW is always happening at
-> > interface up, when there are none system suspend/resume callbacks
-> > assigned for the SDIO func driver?
->
-> Yes, that's what I was trying to say. But take all this with grain of
-> salt, I'm not very familiar with SDIO! And funnily enough, I checked
-> what we do in ath10k_sdio driver during suspend has conflicting code and
-> documentation:
->
-> /* Empty handlers so that mmc subsystem doesn't remove us entirely during
->  * suspend. We instead follow cfg80211 suspend/resume handlers.
->  */
-> static int ath10k_sdio_pm_suspend(struct device *device)
-> {
->         struct sdio_func *func = dev_to_sdio_func(device);
->         struct ath10k_sdio *ar_sdio = sdio_get_drvdata(func);
->         struct ath10k *ar = ar_sdio->ar;
->         mmc_pm_flag_t pm_flag, pm_caps;
->         int ret;
->
->         if (!device_may_wakeup(ar->dev))
->                 return 0;
->
->         ath10k_sdio_set_mbox_sleep(ar, true);
->
->         pm_flag = MMC_PM_KEEP_POWER;
->
->         ret = sdio_set_host_pm_flags(func, pm_flag);
->         if (ret) {
->                 pm_caps = sdio_get_host_pm_caps(func);
->                 ath10k_warn(ar, "failed to set sdio host pm flags (0x%x, 0x%x): %d\n",
->                             pm_flag, pm_caps, ret);
->                 return ret;
->         }
->
->         return ret;
+Sending this again, but this time also to Stanislaw's email address
+currently found in MAINTAINERS.
 
-Just to confirm, the code looks reasonable to me, even if the comment
-above looks a bit odd/outdated. :-)
+Stanislaw, can you help with this regression?
 
-*) Because the SDIO driver's ->suspend|resume() callbacks have been
-assigned, the mmc core will not remove the corresponding SDIO
-func/card's struct device.
+Helmut: or can you help somehow to get things rolling again?
 
-**) If system wakeup *isn't* going to be enabled, the early return
-with 0, will allow the mmc core to power off the SDIO card/func device
-during system suspend. Vice versa, it will then restore power to it
-and re-initialize it during system resume.
+Ciao, Thorsten, your Linux kernel regression tracker
 
-***) If system wakeup *is* going to be enabled, MMC_PM_KEEP_POWER flag
-will prevent the mmc core from powering off the SDIO card/func device
-during system suspend. Depending on if the wakeup irq is in-band or
-out-band, MMC_PM_WAKE_SDIO_IRQ could be set too.
+On 05.11.21 14:25, Thorsten Leemhuis wrote:
+> Lo, this is your Linux kernel regression tracker speaking.
+> 
+> On 01.10.21 08:56, Kalle Valo wrote:
+>> (adding regressions list for easier tracking)
+> 
+> Thx for this, that's how it got on the radar of regzbot, my Linux kernel
+> regression tracking bot:
+> https://linux-regtracking.leemhuis.info/regzbot/regression/87czop5j33.fsf@tynnyri.adurom.net/
+> 
+> 
+>> Exuvo <exuvo@exuvo.se> writes:
+>>
+>>> I would like to get this resolved, is there any more information you need from me?
+>>>
+>>> I have been manually patching this all year with:
+>>>
+>>> drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+>>> - if (rt2x00dev->num_proto_errs > 8)
+>>> -    return true;
+>>>
+>>> It seems to just be some part of rt2800_load_firmware that is not
+>>> supported on my device and generating errors but it has been running
+>>> without problems in AP mode with daily usage.
+>>
+>> [...]
+>>
+>>>>>>>>> This most likely is the problem introduced by commit:
+>>>>>>>>>
+>>>>>>>>> commit e383c70474db32b9d4a3de6dfbd08784d19e6751
+>>>>>>>>> Author: Stanislaw Gruszka <sgruszka@redhat.com>
+>>>>>>>>> Date:   Tue Mar 12 10:51:42 2019 +0100
+>>>>>>>>>
+>>>>>>>>>      rt2x00: check number of EPROTO errors
+>>>>>>>>>
+>>>>>>>>> Plase check below patch that increase number of EPROTO checks
+>>>>>>>>> before marking device removed. If it does not help, plese
+>>>>>>>>> check if reverting above commits helps.
+>>
+>> Should we do a revert? Can someone submit that including an explanation
+>> of the regression.
+> 
+> Afaics nothing happened since then. Or did I miss anything? How can we
+> get the ball rolling again?
+> 
+> Stanislaw, is there anything Exuvo (who offered to help afaics) could
+> test to get us closer to a fix?
+> 
+> Ciao, Thorsten
+> 
+> P.S.: I have no personal interest in this issue and watch it using
+> regzbot. Hence, feel free to exclude me on further messages in this
+> thread after the first reply, as I'm only posting this mail to hopefully
+> get a status update and things rolling again.
 
-That said, note that ->probe() of the SDIO func driver, will not be
-called for a non-removable SDIO func/card to re-program the FW after a
-system suspend/resume. That needs to be managed from the SDIO func
-driver's system resume callback - or deferring to upper common network
-layers (interface up?), which seems to be the case here.
-
-Kind regards
-Uffe
+#regzbot poke
