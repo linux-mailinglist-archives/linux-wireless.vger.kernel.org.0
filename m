@@ -2,117 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF4A2449B45
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Nov 2021 19:00:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 698AC449D4F
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Nov 2021 21:56:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234506AbhKHSDR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Nov 2021 13:03:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32972 "EHLO
+        id S236458AbhKHU6s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Nov 2021 15:58:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233811AbhKHSDI (ORCPT
+        with ESMTP id S236291AbhKHU6r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Nov 2021 13:03:08 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E38C0C061570
-        for <linux-wireless@vger.kernel.org>; Mon,  8 Nov 2021 10:00:23 -0800 (PST)
-Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1mk8wP-0000qL-89; Mon, 08 Nov 2021 19:00:21 +0100
-Message-ID: <7d353dd2-2ffb-6d5e-9983-f983c8b4f6da@leemhuis.info>
-Date:   Mon, 8 Nov 2021 19:00:20 +0100
+        Mon, 8 Nov 2021 15:58:47 -0500
+Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com [IPv6:2607:f8b0:4864:20::f41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A0CFC061714
+        for <linux-wireless@vger.kernel.org>; Mon,  8 Nov 2021 12:56:03 -0800 (PST)
+Received: by mail-qv1-xf41.google.com with SMTP id m17so614956qvx.8
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Nov 2021 12:56:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
+        b=RgVW/6nY6tRo8oLT3HMdM2Onil+yLpblD0rfBnrS9023tQHVGqROTu6pZmOFkMjGb4
+         lB3YwNb2ghmphunsUNJzox1De4LT6rx7FTxFrSxxuUa+Fe4asqqwAPhPUC1Zm7E35Qrb
+         MPRjU3BzOx34WLl5rRl1brREhZj/n31a1L18y4WttjL9/CONFeXquqmNFu47R+xpcvr4
+         WoFDfywwOssQ9QtnR7qnJ8cf0AyduDjou6oAU2vgPbgTRpeVPbystLLm6sKREQY8fhfT
+         kHtucyKDiWulwCAFnnYDLHBVuubRtP87Mzsc4Fr3+uSEXKLbabZYTFehyQeq5wxk6/I+
+         xpGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
+        b=f8mA8Ap4X1VkijZnJ1M3ATzwBhIxZF6jJ4J24jfIaXdNSOZk2OxtUbisdJ95S4DjRB
+         lvuHWYChqrn5jd0RiQcTINEG+9P11STUc11p4NH6l1x9qzhQ5i0f9251uwAoI2OHgDuv
+         uEiQ+MdcSCb1mp4rhKmah/NVWtNRmUcpYxwArBdhg8skHYa9zKh0JrLgd8dR4GUBMSwG
+         IARd40WgjWXPIobpaoMEzEc9ObmcIuTCVrfGyzhXg0KmZ41mzcsIHhEdluOBw0mAXJRa
+         UpfNn6VVVLszfkHVwwbS0amNHvC5WCQ37nqkvlk1OxyGK7DWt7C3elUdRIKd7wDJevYn
+         VRnw==
+X-Gm-Message-State: AOAM5303/Dfe6e7o4L4aRlnC+yag7jdwEKAgmiZbGCflUQ3lI4rP5PwW
+        o3jw0hT2gWPRHEaA+0/WD+PYwpG9P4C/apf3RC0=
+X-Google-Smtp-Source: ABdhPJybY8+sYfd8r7FE5IGm3hoBzA43DVuT9Xxx1oGMh+U8gdPjg8B4DNIGiNk3rM/tnX/kW6Dns1AZE407+Hg2Lbo=
+X-Received: by 2002:ad4:5cc1:: with SMTP id iu1mr2259087qvb.58.1636404962131;
+ Mon, 08 Nov 2021 12:56:02 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: rt2x00 regression
-Content-Language: en-BZ
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>
-Cc:     linux-wireless@vger.kernel.org,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        regressions@lists.linux.dev, Kalle Valo <kvalo@codeaurora.org>,
-        Exuvo <exuvo@exuvo.se>
-References: <bff7d309-a816-6a75-51b6-5928ef4f7a8c@exuvo.se>
- <20190927080303.GA7667@redhat.com>
- <CA+GwT0B5SyRZnGLqwqOeuJK4CWMVc=dKaWre9VN8KQC6kBzKGw@mail.gmail.com>
- <20191203075736.GA701@redhat.com>
- <d74dab51-3a84-9035-d89e-ea8f63e89198@exuvo.se>
- <a8eeb0bc-95da-291a-7fb9-5d15d1174c27@exuvo.se>
- <c22673af-40e0-3af2-5ab7-69b23fc03598@exuvo.se>
- <f935dc15-08bd-2e28-fc1b-b27634c618be@exuvo.se>
- <87czop5j33.fsf@tynnyri.adurom.net>
- <6366d9bd-9752-dbc2-8970-442bdc6e8eea@leemhuis.info>
-In-Reply-To: <6366d9bd-9752-dbc2-8970-442bdc6e8eea@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1636394424;667cf593;
-X-HE-SMSGID: 1mk8wP-0000qL-89
+Sender: dscottman3@gmail.com
+Received: by 2002:ad4:58b1:0:0:0:0:0 with HTTP; Mon, 8 Nov 2021 12:56:01 -0800 (PST)
+From:   "Mr. Mustafa Ali." <muafalia@gmail.com>
+Date:   Mon, 8 Nov 2021 21:56:01 +0100
+X-Google-Sender-Auth: ovF2O1iOufUdDlhdth7iVjkytOQ
+Message-ID: <CALrj6TkKSKE6KjfifUBMH9degL-DGd34CJWLEhoJkzfGB3aS0A@mail.gmail.com>
+Subject: Greetings Dear Friend.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sending this again, but this time also to Stanislaw's email address
-currently found in MAINTAINERS.
+Hello Friend,
 
-Stanislaw, can you help with this regression?
+This message might meet you in utmost surprise. However, It's just my
+urgent need for a foreign partner that made me contact you for this
+transaction. I assured you of honesty and reliability to champion this
+business opportunity. I am a banker by profession in Turkey, and
+currently holding the post of Auditor in Standard Chartered Bank.
 
-Helmut: or can you help somehow to get things rolling again?
+I have the opportunity of transferring the leftover funds ($15 Million
+Dollars) of one of my clients who died along with his entire family in
+a crisis in Myanmar Asia. I am inviting you for a business deal where
+this money can be shared between us if you agree to my business
+proposal.
 
-Ciao, Thorsten, your Linux kernel regression tracker
+Further details of the transfer will be forwarded to you immediately
+after I receive your return letter.
 
-On 05.11.21 14:25, Thorsten Leemhuis wrote:
-> Lo, this is your Linux kernel regression tracker speaking.
-> 
-> On 01.10.21 08:56, Kalle Valo wrote:
->> (adding regressions list for easier tracking)
-> 
-> Thx for this, that's how it got on the radar of regzbot, my Linux kernel
-> regression tracking bot:
-> https://linux-regtracking.leemhuis.info/regzbot/regression/87czop5j33.fsf@tynnyri.adurom.net/
-> 
-> 
->> Exuvo <exuvo@exuvo.se> writes:
->>
->>> I would like to get this resolved, is there any more information you need from me?
->>>
->>> I have been manually patching this all year with:
->>>
->>> drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
->>> - if (rt2x00dev->num_proto_errs > 8)
->>> -    return true;
->>>
->>> It seems to just be some part of rt2800_load_firmware that is not
->>> supported on my device and generating errors but it has been running
->>> without problems in AP mode with daily usage.
->>
->> [...]
->>
->>>>>>>>> This most likely is the problem introduced by commit:
->>>>>>>>>
->>>>>>>>> commit e383c70474db32b9d4a3de6dfbd08784d19e6751
->>>>>>>>> Author: Stanislaw Gruszka <sgruszka@redhat.com>
->>>>>>>>> Date:   Tue Mar 12 10:51:42 2019 +0100
->>>>>>>>>
->>>>>>>>>      rt2x00: check number of EPROTO errors
->>>>>>>>>
->>>>>>>>> Plase check below patch that increase number of EPROTO checks
->>>>>>>>> before marking device removed. If it does not help, plese
->>>>>>>>> check if reverting above commits helps.
->>
->> Should we do a revert? Can someone submit that including an explanation
->> of the regression.
-> 
-> Afaics nothing happened since then. Or did I miss anything? How can we
-> get the ball rolling again?
-> 
-> Stanislaw, is there anything Exuvo (who offered to help afaics) could
-> test to get us closer to a fix?
-> 
-> Ciao, Thorsten
-> 
-> P.S.: I have no personal interest in this issue and watch it using
-> regzbot. Hence, feel free to exclude me on further messages in this
-> thread after the first reply, as I'm only posting this mail to hopefully
-> get a status update and things rolling again.
-
-#regzbot poke
+Best Regards,
+Mr. Mustafa Ali.
+mustafa.ali@rahroco.com
