@@ -2,43 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3443244A1A7
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 02:09:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC9F644A26F
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 02:16:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242302AbhKIBLI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Nov 2021 20:11:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33602 "EHLO mail.kernel.org"
+        id S242041AbhKIBR1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Nov 2021 20:17:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39302 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242018AbhKIBIv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Nov 2021 20:08:51 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 95FD8619F6;
-        Tue,  9 Nov 2021 01:04:05 +0000 (UTC)
+        id S242361AbhKIBL2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Nov 2021 20:11:28 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2E36061A81;
+        Tue,  9 Nov 2021 01:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636419846;
-        bh=hmu+N6SDxU2j51vgWSqTSsSPerqeeMoo7dgvOvk2bBM=;
+        s=k20201202; t=1636419896;
+        bh=f3N/kgs6bo6MHjbx6q85/nXKf+mVH4MjV0F5rCvAmiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XyCmvsLamOHs8rDq2hD1q07Sg+k/9pgKOKWOS3+ADsaMugtK1oo6WaDh+7f06ZpDe
-         3J2KJ+xg2W/ysKXvzTM15tbpG9eOFuE9hb1iuyYT5AFVRdJJdlcTqOdSVfU3u0FYJk
-         DhaNiaSbo6y+v2J26WgtjkXO1HIVC5ppJCCfcmXJ7J8DI5xXuXn5j8E43b8fDz0Tme
-         tGmQutAtEg1CKhru8HJBDgC+L1+jWj0p0fwxW8iXUsDTn7XIUm+xs6KMnIOH8lB4KZ
-         Rl4zq0oqZ1vnH+ZMcWDXi+PbVA7YDBEbrtt5Zega5Z7WkfM0BXI+Uk7Lok7bAm8MlO
-         xQoJDulEU5pVg==
+        b=m3EmxIGP8+H97zUlHQQ/pQDQU7LAt3t8Sut970F66qSx8DMZO4rAdZqCVf4O+VbNE
+         Sva+lkwa6/g2O/0gMTx+OTKgYXlFLxiygu63FGQwDEYx7VgfgEGVDlgSwureA83C9f
+         N0EHVgRKPhCHSsBPvgKgasUMFJ/+r3VdXqhi2FNPhjBsRS4u1IcWkM61cnTCsgYfkm
+         InatpYBtVVgCj0f6jumu94OidijMNEnnK7X4x3seiUMmSDu2E4m2uoTrFyNxBLYPNh
+         dxkdWe1enYoe9lPVlKLa4g6DykFxNMmUR3vl1Kv+kK22qxBOlVPmdBnWPGsvBJJ01g
+         5rC4YGfG0qKbQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alagu Sankar <alagusankar@silex-india.com>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Fabio Estevam <festevam@denx.de>,
+Cc:     =?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, davem@davemloft.net,
-        kuba@kernel.org, ath10k@lists.infradead.org,
+        Sasha Levin <sashal@kernel.org>, amitkarwar@gmail.com,
+        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
+        huxinming820@gmail.com, davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 026/101] ath10k: high latency fixes for beacon buffer
-Date:   Mon,  8 Nov 2021 12:47:16 -0500
-Message-Id: <20211108174832.1189312-26-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 16/74] mwifiex: Run SET_BSS_MODE when changing from P2P to STATION vif-type
+Date:   Mon,  8 Nov 2021 12:48:43 -0500
+Message-Id: <20211108174942.1189927-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211108174832.1189312-1-sashal@kernel.org>
-References: <20211108174832.1189312-1-sashal@kernel.org>
+In-Reply-To: <20211108174942.1189927-1-sashal@kernel.org>
+References: <20211108174942.1189927-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -46,82 +46,72 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Alagu Sankar <alagusankar@silex-india.com>
+From: Jonas Dreßler <verdre@v0yd.nl>
 
-[ Upstream commit e263bdab9c0e8025fb7f41f153709a9cda51f6b6 ]
+[ Upstream commit c2e9666cdffd347460a2b17988db4cfaf2a68fb9 ]
 
-Beacon buffer for high latency devices does not use DMA. other similar
-buffer allocation methods in the driver have already been modified for
-high latency path. Fix the beacon buffer allocation left out in the
-earlier high latency changes.
+We currently handle changing from the P2P to the STATION virtual
+interface type slightly different than changing from P2P to ADHOC: When
+changing to STATION, we don't send the SET_BSS_MODE command. We do send
+that command on all other type-changes though, and it probably makes
+sense to send the command since after all we just changed our BSS_MODE.
+Looking at prior changes to this part of the code, it seems that this is
+simply a leftover from old refactorings.
 
-Signed-off-by: Alagu Sankar <alagusankar@silex-india.com>
-Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
-[fabio: adapt it to use ar->bus_param.dev_type ]
-Signed-off-by: Fabio Estevam <festevam@denx.de>
+Since sending the SET_BSS_MODE command is the only difference between
+mwifiex_change_vif_to_sta_adhoc() and the current code, we can now use
+mwifiex_change_vif_to_sta_adhoc() for both switching to ADHOC and
+STATION interface type.
+
+This does not fix any particular bug and just "looked right", so there's
+a small chance it might be a regression.
+
+Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210818232627.2040121-1-festevam@denx.de
+Link: https://lore.kernel.org/r/20210914195909.36035-4-verdre@v0yd.nl
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 31 ++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+ .../net/wireless/marvell/mwifiex/cfg80211.c   | 22 ++++---------------
+ 1 file changed, 4 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 36183fdfb7f03..90dc48f66fbfe 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -982,8 +982,12 @@ static void ath10k_mac_vif_beacon_cleanup(struct ath10k_vif *arvif)
- 	ath10k_mac_vif_beacon_free(arvif);
- 
- 	if (arvif->beacon_buf) {
--		dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
--				  arvif->beacon_buf, arvif->beacon_paddr);
-+		if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL)
-+			kfree(arvif->beacon_buf);
-+		else
-+			dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
-+					  arvif->beacon_buf,
-+					  arvif->beacon_paddr);
- 		arvif->beacon_buf = NULL;
- 	}
- }
-@@ -5466,10 +5470,17 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
- 	if (vif->type == NL80211_IFTYPE_ADHOC ||
- 	    vif->type == NL80211_IFTYPE_MESH_POINT ||
- 	    vif->type == NL80211_IFTYPE_AP) {
--		arvif->beacon_buf = dma_alloc_coherent(ar->dev,
--						       IEEE80211_MAX_FRAME_LEN,
--						       &arvif->beacon_paddr,
--						       GFP_ATOMIC);
-+		if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL) {
-+			arvif->beacon_buf = kmalloc(IEEE80211_MAX_FRAME_LEN,
-+						    GFP_KERNEL);
-+			arvif->beacon_paddr = (dma_addr_t)arvif->beacon_buf;
-+		} else {
-+			arvif->beacon_buf =
-+				dma_alloc_coherent(ar->dev,
-+						   IEEE80211_MAX_FRAME_LEN,
-+						   &arvif->beacon_paddr,
-+						   GFP_ATOMIC);
-+		}
- 		if (!arvif->beacon_buf) {
- 			ret = -ENOMEM;
- 			ath10k_warn(ar, "failed to allocate beacon buffer: %d\n",
-@@ -5684,8 +5695,12 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
- 
- err:
- 	if (arvif->beacon_buf) {
--		dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
--				  arvif->beacon_buf, arvif->beacon_paddr);
-+		if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL)
-+			kfree(arvif->beacon_buf);
-+		else
-+			dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
-+					  arvif->beacon_buf,
-+					  arvif->beacon_paddr);
- 		arvif->beacon_buf = NULL;
- 	}
- 
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index 9e6dc289ec3e8..b5134f11fc32b 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -1233,29 +1233,15 @@ mwifiex_cfg80211_change_virtual_intf(struct wiphy *wiphy,
+ 		break;
+ 	case NL80211_IFTYPE_P2P_CLIENT:
+ 	case NL80211_IFTYPE_P2P_GO:
++		if (mwifiex_cfg80211_deinit_p2p(priv))
++			return -EFAULT;
++
+ 		switch (type) {
+-		case NL80211_IFTYPE_STATION:
+-			if (mwifiex_cfg80211_deinit_p2p(priv))
+-				return -EFAULT;
+-			priv->adapter->curr_iface_comb.p2p_intf--;
+-			priv->adapter->curr_iface_comb.sta_intf++;
+-			dev->ieee80211_ptr->iftype = type;
+-			if (mwifiex_deinit_priv_params(priv))
+-				return -1;
+-			if (mwifiex_init_new_priv_params(priv, dev, type))
+-				return -1;
+-			if (mwifiex_sta_init_cmd(priv, false, false))
+-				return -1;
+-			break;
+ 		case NL80211_IFTYPE_ADHOC:
+-			if (mwifiex_cfg80211_deinit_p2p(priv))
+-				return -EFAULT;
++		case NL80211_IFTYPE_STATION:
+ 			return mwifiex_change_vif_to_sta_adhoc(dev, curr_iftype,
+ 							       type, params);
+-			break;
+ 		case NL80211_IFTYPE_AP:
+-			if (mwifiex_cfg80211_deinit_p2p(priv))
+-				return -EFAULT;
+ 			return mwifiex_change_vif_to_ap(dev, curr_iftype, type,
+ 							params);
+ 		case NL80211_IFTYPE_UNSPECIFIED:
 -- 
 2.33.0
 
