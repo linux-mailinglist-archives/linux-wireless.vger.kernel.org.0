@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2B9A44A0A0
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 02:02:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2A6444A105
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 02:04:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241815AbhKIBEa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Nov 2021 20:04:30 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60518 "EHLO mail.kernel.org"
+        id S239130AbhKIBHE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 Nov 2021 20:07:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60366 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241662AbhKIBDs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Nov 2021 20:03:48 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B92A361390;
-        Tue,  9 Nov 2021 01:01:00 +0000 (UTC)
+        id S237348AbhKIBFP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 8 Nov 2021 20:05:15 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9579A619A6;
+        Tue,  9 Nov 2021 01:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636419661;
-        bh=XufEztxeItGTehTrSkdJrWqgyzeYZCom6ctehxWgBGg=;
+        s=k20201202; t=1636419720;
+        bh=qT2SY6fv46Gn9/Bc1mnjMQbsZb5EuuRuEpMBD50gTC8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lxtjGfXzH2w1ouqVex0+QHG//ESnbZLAer7UrfcDDpvlwg4IaT3BryUwfM9NkzWyd
-         zGXpNvpf9vxJjf6hSnQFBLNsoqoeQGM5pbwVR/yBiA9y8rkLpmomR+DMX8w9nEM4Hg
-         1xmU1T0fWuxJWRqLptYtebSR4m31tvMrAz86zGdxx+kIVsxnnu9j49rft7+lXSJuW9
-         4pZ2Wlal3rKq5S7Gd53Bsqd4Lj3nlOtKLKhM4p6sT573zABsshyO3NopDabreMVZdD
-         j69NekDlV96f/am7Fvp5M0lNbA69NLilEBTTh0nWbW2G2b0oq5/SVETe7sqAq6878B
-         6dKcmBmegZeAw==
+        b=MD9SouZIMACddRu9W8hlyo2tuOJdqzhideu7kNo1o9MgQ3aMgatusjkDd8M9alWdr
+         Fid6szhIfNiuX1JC60bbrXAC5OqB+XDxXLjCwGe4ra8r3WHLFmHnBe4RIlgYHwl6JO
+         /V0XpNTNSxOW0Cg+1sjOzafmIVznUJzsjuh/eyWFqCAs8TTCzcYZttHPLSXRXK+4pJ
+         n0j6LtqvCRBOliwg9rmk9qBRWzuPI3HUm4W7O4HyCW0qyopL5vuVaNEnL3WKkfIOPj
+         9qJ5/xNmx61qIyi3ox0AdrhuFYtV4S78wEjGgtFgMbgvQnAKMmg+m2XK6+HA0XgSU7
+         hx1bms7D9nzqg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alagu Sankar <alagusankar@silex-india.com>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Fabio Estevam <festevam@denx.de>,
+Cc:     Seevalamuthu Mariappan <seevalam@codeaurora.org>,
+        Ritesh Singh <ritesi@codeaurora.org>,
+        Jouni Malinen <jouni@codeaurora.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>, davem@davemloft.net,
-        kuba@kernel.org, ath10k@lists.infradead.org,
+        kuba@kernel.org, ath11k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 036/146] ath10k: high latency fixes for beacon buffer
-Date:   Mon,  8 Nov 2021 12:43:03 -0500
-Message-Id: <20211108174453.1187052-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.14 017/138] ath11k: Align bss_chan_info structure with firmware
+Date:   Mon,  8 Nov 2021 12:44:43 -0500
+Message-Id: <20211108174644.1187889-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211108174453.1187052-1-sashal@kernel.org>
-References: <20211108174453.1187052-1-sashal@kernel.org>
+In-Reply-To: <20211108174644.1187889-1-sashal@kernel.org>
+References: <20211108174644.1187889-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -46,82 +46,71 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Alagu Sankar <alagusankar@silex-india.com>
+From: Seevalamuthu Mariappan <seevalam@codeaurora.org>
 
-[ Upstream commit e263bdab9c0e8025fb7f41f153709a9cda51f6b6 ]
+[ Upstream commit feab5bb8f1d4621025dceae7eef62d5f92de34ac ]
 
-Beacon buffer for high latency devices does not use DMA. other similar
-buffer allocation methods in the driver have already been modified for
-high latency path. Fix the beacon buffer allocation left out in the
-earlier high latency changes.
+pdev_id in structure 'wmi_pdev_bss_chan_info_event' is wrongly placed
+at the beginning. This causes invalid values in survey dump. Hence, align
+the structure with the firmware.
 
-Signed-off-by: Alagu Sankar <alagusankar@silex-india.com>
-Signed-off-by: Erik Stromdahl <erik.stromdahl@gmail.com>
-[fabio: adapt it to use ar->bus_param.dev_type ]
-Signed-off-by: Fabio Estevam <festevam@denx.de>
+Note: The firmware releases follow this order since the feature was
+implemented. Also, it is not changing across the branches including
+QCA6390.
+
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-01228-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Ritesh Singh <ritesi@codeaurora.org>
+Signed-off-by: Seevalamuthu Mariappan <seevalam@codeaurora.org>
+Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210818232627.2040121-1-festevam@denx.de
+Link: https://lore.kernel.org/r/20210720214922.118078-3-jouni@codeaurora.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 31 ++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c | 1 +
+ drivers/net/wireless/ath/ath11k/wmi.h | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index c272b290fa73d..7ca68c81d9b61 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -993,8 +993,12 @@ static void ath10k_mac_vif_beacon_cleanup(struct ath10k_vif *arvif)
- 	ath10k_mac_vif_beacon_free(arvif);
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 6c253eae9d069..27c060dd3fb47 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -1339,6 +1339,7 @@ int ath11k_wmi_pdev_bss_chan_info_request(struct ath11k *ar,
+ 				     WMI_TAG_PDEV_BSS_CHAN_INFO_REQUEST) |
+ 			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
+ 	cmd->req_type = type;
++	cmd->pdev_id = ar->pdev->pdev_id;
  
- 	if (arvif->beacon_buf) {
--		dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
--				  arvif->beacon_buf, arvif->beacon_paddr);
-+		if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL)
-+			kfree(arvif->beacon_buf);
-+		else
-+			dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
-+					  arvif->beacon_buf,
-+					  arvif->beacon_paddr);
- 		arvif->beacon_buf = NULL;
- 	}
- }
-@@ -5576,10 +5580,17 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
- 	if (vif->type == NL80211_IFTYPE_ADHOC ||
- 	    vif->type == NL80211_IFTYPE_MESH_POINT ||
- 	    vif->type == NL80211_IFTYPE_AP) {
--		arvif->beacon_buf = dma_alloc_coherent(ar->dev,
--						       IEEE80211_MAX_FRAME_LEN,
--						       &arvif->beacon_paddr,
--						       GFP_ATOMIC);
-+		if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL) {
-+			arvif->beacon_buf = kmalloc(IEEE80211_MAX_FRAME_LEN,
-+						    GFP_KERNEL);
-+			arvif->beacon_paddr = (dma_addr_t)arvif->beacon_buf;
-+		} else {
-+			arvif->beacon_buf =
-+				dma_alloc_coherent(ar->dev,
-+						   IEEE80211_MAX_FRAME_LEN,
-+						   &arvif->beacon_paddr,
-+						   GFP_ATOMIC);
-+		}
- 		if (!arvif->beacon_buf) {
- 			ret = -ENOMEM;
- 			ath10k_warn(ar, "failed to allocate beacon buffer: %d\n",
-@@ -5794,8 +5805,12 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+ 		   "WMI bss chan info req type %d\n", type);
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index d35c47e0b19d4..0b7d337b36930 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -2960,6 +2960,7 @@ struct wmi_pdev_bss_chan_info_req_cmd {
+ 	u32 tlv_header;
+ 	/* ref wmi_bss_chan_info_req_type */
+ 	u32 req_type;
++	u32 pdev_id;
+ } __packed;
  
- err:
- 	if (arvif->beacon_buf) {
--		dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
--				  arvif->beacon_buf, arvif->beacon_paddr);
-+		if (ar->bus_param.dev_type == ATH10K_DEV_TYPE_HL)
-+			kfree(arvif->beacon_buf);
-+		else
-+			dma_free_coherent(ar->dev, IEEE80211_MAX_FRAME_LEN,
-+					  arvif->beacon_buf,
-+					  arvif->beacon_paddr);
- 		arvif->beacon_buf = NULL;
- 	}
+ struct wmi_ap_ps_peer_cmd {
+@@ -4056,7 +4057,6 @@ struct wmi_vdev_stopped_event {
+ } __packed;
  
+ struct wmi_pdev_bss_chan_info_event {
+-	u32 pdev_id;
+ 	u32 freq;	/* Units in MHz */
+ 	u32 noise_floor;	/* units are dBm */
+ 	/* rx clear - how often the channel was unused */
+@@ -4074,6 +4074,7 @@ struct wmi_pdev_bss_chan_info_event {
+ 	/*rx_cycle cnt for my bss in 64bits format */
+ 	u32 rx_bss_cycle_count_low;
+ 	u32 rx_bss_cycle_count_high;
++	u32 pdev_id;
+ } __packed;
+ 
+ #define WMI_VDEV_INSTALL_KEY_COMPL_STATUS_SUCCESS 0
 -- 
 2.33.0
 
