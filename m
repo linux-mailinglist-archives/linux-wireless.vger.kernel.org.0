@@ -2,118 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C18D744B0EC
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 17:13:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38EC644B18B
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 17:49:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231161AbhKIQQY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Nov 2021 11:16:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52418 "EHLO
+        id S240534AbhKIQwL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Nov 2021 11:52:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238523AbhKIQQX (ORCPT
+        with ESMTP id S240354AbhKIQwL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Nov 2021 11:16:23 -0500
-Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BDE3C061764;
-        Tue,  9 Nov 2021 08:13:37 -0800 (PST)
-Received: by mail-ua1-x92b.google.com with SMTP id p2so550747uad.11;
-        Tue, 09 Nov 2021 08:13:37 -0800 (PST)
+        Tue, 9 Nov 2021 11:52:11 -0500
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D446C061764
+        for <linux-wireless@vger.kernel.org>; Tue,  9 Nov 2021 08:49:25 -0800 (PST)
+Received: by mail-qv1-xf29.google.com with SMTP id u25so14643983qve.2
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Nov 2021 08:49:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tzUBCRI0ZEiUTjI4kQ5UxbfpHunrGMBYtyyXAY2lvGg=;
-        b=oQhkxKUY2gj5xInLINgKaVx+p/wLVFabBC7fYFCIDQx0W6JIYXvo0jwaHBTa8RYCNC
-         dI6AAummztsVAF4+SqaSi0Z6lLliTs/1h9SRyn8Ac3OgKkKfl571n67ZfFPvBqDfJkEM
-         uLZ2kp632JLI7bZIBgo514Hj14HaZL2r63V6zpsiStjuIGYcWrs9YigDprMwlPcrwH7s
-         mWl5RrJTA49BA8UYwG2TJ6KNE3rC5Cn/AKm+WzVuUv6fEtus64XtW9q3q2R9W91CIF+b
-         /gPgH/FS7BPA9hwCuKr88ZrMt7kGoLD0rWVWlLdhPf7xtFcbaoEbYnijSqhQVIdtNaq2
-         pGZw==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=imgEyPKZJXioT57QZIHImgBbmP2LjKkzFSDJsibRDbM=;
+        b=aUFbrIbd0B31H37le3q58k7Na8ilm2R4jfWBLsV9YbTNX3FBkgxRrDDsq/Zazz/eFA
+         ZNg14ZrDYDRbaPFHaoldy8AulAurb3Wsf0szsi7sDeyLhsEfgW2H4ow1eXsO+Bfrp1iM
+         hzgC5rReWK5SSaPWBlgIvd53/neAtSBM4LV59eYQv8sFGDmHaXNifvX/nbXKoR/kRDvb
+         xtkXz3toqBQZpZjkVrfLC5Ou0aUrVirKg6c7tYEJpS+ehad8qjc7rF+OMPjp7qg2uI64
+         BPDaro3aYM+LhkMRKNsz5mZcxalHhCGkqTia73y0z91KoPjhtQODY5Me8av7fTNBXlmO
+         Au7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tzUBCRI0ZEiUTjI4kQ5UxbfpHunrGMBYtyyXAY2lvGg=;
-        b=DZsE+xZXzCY1FAxltv6+hp1JJKXymeZkLxRXTLPmpGnoblD4/KxpPweL/Lr92MF991
-         JloPp35IzC25koe5EkwCMC21HScb/NUNTG86QrDTX4HiAlnBotI2W7gtoeWCpA1sxKwu
-         MdoudCnqczFdx/kZ15Y/0/jThOQZumdz0sZMQ8nJ4w6sE5xHrRJawmBCHC9w9WAsw0ns
-         1eqzDHUeUNEfvqPOxUBXsDlZKrWIZm/fqzriBnwfOEznAcESS7SYVgrKpxYt8hoq+cut
-         atIlfYHagNIhVuix0BDtDNHCoSWTp58LG1HBfhn7tglXJL0cOIt8+nkRzSBUeQSBlpJI
-         qmRA==
-X-Gm-Message-State: AOAM531WG1LiYC2xfafEoVLDZrpHoI2OjBflppoo8WZGu4SA3fluMay7
-        ZPgZxe70L++NdFcXMdsc/JNB1hdLKBKbjqWZRudtl8q7
-X-Google-Smtp-Source: ABdhPJxJsA1OpsfRaeJj56kz8UpgIOw/68ZpDLgwd/qYQplYu8lGvuXPpsAPLvn+NEIdMLzetIp3L1Wnf9Ymq+Q0LF0=
-X-Received: by 2002:ab0:3898:: with SMTP id z24mr11672656uav.26.1636474416650;
- Tue, 09 Nov 2021 08:13:36 -0800 (PST)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=imgEyPKZJXioT57QZIHImgBbmP2LjKkzFSDJsibRDbM=;
+        b=r3JjUeBPPovxHwwP8Bav5ukvlVqGZ4xPeuSknMztfg0BAhAwhzOv0yp9c1LD0Er752
+         nQxVqOXOX+8F7Uw+cd1cNjUGnQwnuh8MLBZ4ILIWheu6mSAibzJfYbba/K0nEB+zYhz8
+         dZ8SQ+LmHlrM+9UcdOsW1uvSSutx/eJikyt+T1StsLFgVv0R7kwou5pyYaUiqjtONMu+
+         KyHD+zpwbloankAydRpi8Z0O0HJPlZyoZF+NKUXPAOAr7UWqUOits2L0F3eco0JkQ3O5
+         qCGw4eVTifi/+QcV5gZeA3TK9ZRDz2w2GbLgaLWJxFqYWwLQUXu1V85fR3Uf8jS1xkVv
+         5j8Q==
+X-Gm-Message-State: AOAM530LaCE6fhUErbOZ/K4iCkeJGlTvmObkxrzzl/Gx4aeQx3wFRGVk
+        GFT81+j5B8DHa4mkFKc+SuvjS5KHuKI98o2OOJlbYdR/lMw=
+X-Google-Smtp-Source: ABdhPJyuarqfPSeMV4PzoN+LeDiT0sxSyni1YBacPGBrO/5M5vHayEUi6L6PzJ/EeAIMAkG9SsqeSL9G7wCSocbkajM=
+X-Received: by 2002:a67:ed54:: with SMTP id m20mr110889689vsp.50.1636476552951;
+ Tue, 09 Nov 2021 08:49:12 -0800 (PST)
 MIME-Version: 1.0
-References: <20211109100203.c61007433ed6.I1dade57aba7de9c4f48d68249adbae62636fd98c@changeid>
-In-Reply-To: <20211109100203.c61007433ed6.I1dade57aba7de9c4f48d68249adbae62636fd98c@changeid>
-From:   Sid Hayn <sidhayn@gmail.com>
-Date:   Tue, 9 Nov 2021 11:13:26 -0500
-Message-ID: <CAM0KTbAHBkpdfK2DxnhbxvaqQYHJEF-iY7Nnt1___PUHk8y0Lg@mail.gmail.com>
-Subject: Re: [PATCH] mac80211: fix radiotap header generation
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org
+Sender: mrsabibatu88ali@gmail.com
+Received: by 2002:a59:d730:0:b0:246:873:64e9 with HTTP; Tue, 9 Nov 2021
+ 08:49:12 -0800 (PST)
+From:   Mrs bill Sma chantal <mrsbillsamchantal01@gmail.com>
+Date:   Tue, 9 Nov 2021 08:49:12 -0800
+X-Google-Sender-Auth: SqNRhkRQkdt_7LzxRuQN4Loxn60
+Message-ID: <CADrnmtxMeWkD9bfE+Dhmpp-u+=tKxY7YCzmTn6qh5o8nj0PDag@mail.gmail.com>
+Subject: GOOD NEWS
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Please add my tested-by as well.  I tested with and without this patch
-on multiple chipsets and everything appears functional now.  Thanks
-for the quick fix!
+hello....
 
-Tested-by: Sid Hayn <sidhayn@gmail.com>
+You have been compensated with the sum of 6.1 million dollars in this
+united nation the payment will be issue into atm visa  card and send
+to you from the santander bank we need your address and your
+Whatsapp number
 
-On Tue, Nov 9, 2021 at 4:02 AM Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> From: Johannes Berg <johannes.berg@intel.com>
->
-> In commit 8c89f7b3d3f2 ("mac80211: Use flex-array for radiotap header
-> bitmap") we accidentally pointed the position to the wrong place, so
-> we overwrite a present bitmap, and thus cause all kinds of trouble.
->
-> To see the issue, note that the previous code read:
->
->   pos = (void *)(it_present + 1);
->
-> The requirement now is that we need to calculate pos via it_optional,
-> to not trigger the compiler hardening checks, as:
->
->   pos = (void *)&rthdr->it_optional[...];
->
-> Rewriting the original expression, we get (obviously, since that just
-> adds "+ x - x" terms):
->
->   pos = (void *)(it_present + 1 + rthdr->it_optional - rthdr->it_optional)
->
-> and moving the "+ rthdr->it_optional" outside to be used as an array:
->
->   pos = (void *)&rthdr->it_optional[it_present + 1 - rthdr->it_optional];
->
-> The original is off by one, fix it.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 8c89f7b3d3f2 ("mac80211: Use flex-array for radiotap header bitmap")
-> Reported-by: Sid Hayn <sidhayn@gmail.com>
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
->  net/mac80211/rx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-> index fc5c608d02e2..3562730ea0f8 100644
-> --- a/net/mac80211/rx.c
-> +++ b/net/mac80211/rx.c
-> @@ -364,7 +364,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
->          * the compiler to think we have walked past the end of the
->          * struct member.
->          */
-> -       pos = (void *)&rthdr->it_optional[it_present - rthdr->it_optional];
-> +       pos = (void *)&rthdr->it_optional[it_present + 1 - rthdr->it_optional];
->
->         /* the order of the following fields is important */
->
-> --
-> 2.31.1
->
+Thanks my
+
+Mrs bill Sma chantal
