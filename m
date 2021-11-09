@@ -2,134 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9B5A44AAF6
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 10:51:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94CA844AB09
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 10:57:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245106AbhKIJya (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Nov 2021 04:54:30 -0500
-Received: from m43-7.mailgun.net ([69.72.43.7]:41484 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241827AbhKIJyR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Nov 2021 04:54:17 -0500
+        id S243772AbhKIKAM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Nov 2021 05:00:12 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:47392 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241704AbhKIKAL (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 9 Nov 2021 05:00:11 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1636451491; h=Message-ID: References: In-Reply-To: Subject:
+ s=smtp; t=1636451846; h=Message-ID: References: In-Reply-To: Subject:
  Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=MmotNd5wfk0LxABbGhf1k4uc8MqGoHWhxl0N0+F4Wmk=;
- b=fXs/Clwsihm1+qoR91BqvJ9/BgVj3DWMKV0pZdtXDwMj0c90vnLmIQkb0fSjIE/2lmxfSFQp
- hZMaa8lk/ylJsI6xkRNmWiTcO42yyQke5oyjO7bBexKT4VD8XHxQidWepOzBuNzIbv2sEFuE
- 5lNs9UP8E/U5d14B217OAYztJ1A=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ MIME-Version: Sender; bh=JqO118YMY9m3B/RF52ZBcw2MCflSgzOhZYVVhgi3NZQ=;
+ b=qkUqNFIGjgF6xak5Plf7ItoRDmJf/379oTF2ntW5iryLnmnmQ9CBCluAMd1STztU6yIiaCe0
+ mTvem23sD1vxQ88F9lGXTtwclsQlrsqBNuEIiN8h4AjXpzg/x9SOaIe6b9AOkoMZ1Z3KKYmw
+ C61doqUd9JlNNQXGIdKrSduOrOY=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 618a4494f6c5b6c8d5f821ce (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 09 Nov 2021 09:51:16
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 618a45f7facd20d795fb3210 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 09 Nov 2021 09:57:11
  GMT
 Sender: wgong=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id F1BCFC43150; Tue,  9 Nov 2021 09:51:15 +0000 (UTC)
+        id CB2C1C4361A; Tue,  9 Nov 2021 09:57:11 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
         (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A69B6C4314B;
-        Tue,  9 Nov 2021 09:51:13 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 09C81C4338F;
+        Tue,  9 Nov 2021 09:57:10 +0000 (UTC)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Tue, 09 Nov 2021 17:51:13 +0800
+Date:   Tue, 09 Nov 2021 17:57:10 +0800
 From:   Wen Gong <wgong@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jouni Malinen <jouni@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] ath11k: add string type to search board data in
- board-2.bin for WCN6855
-In-Reply-To: <87mtmepz3z.fsf@codeaurora.org>
-References: <20210913181131.194024-1-jouni@codeaurora.org>
- <87mtmepz3z.fsf@codeaurora.org>
-Message-ID: <802a09c8fb8f284a2961f229353b9590@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Venkateswara Naralasetty <vnaralas@qti.qualcomm.com>,
+        Venkateswara Naralasetty <vnaralas@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        wgong=codeaurora.org@codeaurora.org
+Subject: Re: [PATCH v5] cfg80211: save power spectral density(psd) of
+ regulatory rule
+In-Reply-To: <67936afa5545b9a5d6eb5ad6931026d7@codeaurora.org>
+References: <20210928085211.26186-1-wgong@codeaurora.org>
+ <bd649a3d2cf2ea9064d427d633055891@codeaurora.org>
+ <cb20427eae96c4551084e4c899618b94@codeaurora.org>
+ <2afb1bf6f06cb53f43fe0d354afa4e7c@codeaurora.org>
+ <2ed76cff292dcca18326de0407a93821@codeaurora.org>
+ <1222384c2bc7d80bf572b65ab17660477bb27300.camel@sipsolutions.net>
+ <562080d7fc3b7568811c47a8e8e79156@codeaurora.org>
+ <DM8PR02MB8154258563A4F7C805C84B4BE6B59@DM8PR02MB8154.namprd02.prod.outlook.com>
+ <0b05f6e555bcb89c49f56279c077ce63@codeaurora.org>
+ <18363bc18538ea9b7e8fe28f4c5595c54f3b93d3.camel@sipsolutions.net>
+ <67936afa5545b9a5d6eb5ad6931026d7@codeaurora.org>
+Message-ID: <6053b0963612057267f00b89e14b9e15@codeaurora.org>
 X-Sender: wgong@codeaurora.org
 User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-11-08 21:15, Kalle Valo wrote:
-> Jouni Malinen <jouni@codeaurora.org> writes:
-...
->> +	switch (ab->id.bdf_search) {
->> +	case ATH11K_BDF_SEARCH_BUS_AND_BOARD:
->> +		scnprintf(name, name_len,
->> +			  
->> "bus=%s,vendor=%04x,device=%04x,subsystem-vendor=%04x,subsystem-device=%04x,qmi-chip-id=%d,qmi-board-id=%d%s",
->> +			  ath11k_bus_str(ab->hif.bus),
->> +			  ab->id.vendor, ab->id.device,
->> +			  ab->id.subsystem_vendor,
->> +			  ab->id.subsystem_device,
->> +			  FIELD_GET(ATH11K_CHIP_ID_MASK, ab->qmi.target.chip_id),
->> +			  ab->qmi.target.board_id & 0xFF,
+Hi Johannes,
+
+do you have comments about my description for PSD?
+
+On 2021-10-26 19:26, Wen Gong wrote:
+> On 2021-10-26 04:09, Johannes Berg wrote:
+>> On Mon, 2021-10-11 at 15:48 +0800, Wen Gong wrote:
+>>> 
+>>> > IMO, Only power rules and PSD info might vary for AP and STATION. Rest
+>>> > of the rules will remains same right?
+>>> >
+>>> The freq_range may also be different for AP and STATION.
+>>> and reg_rules number also may also be different for AP and STATION.
+>>> 
+>>> for example:
+>>> SUBORDINATE CLIENT of STANDARD POWER reg rules number 2
+>>> reg rule 1: (5945 - 6425 @ 160) (0, 30) (FLAGS 0) (psd flag 1 EIRP 17
+>>> dB/MHz)
+>>> reg rule 2: (6525 - 6885 @ 160) (0, 30) (FLAGS 0) (psd flag 1 EIRP 17
+>>> dB/MHz)
+>>> 
+>>> INDOOR AP reg rules number 1
+>>> reg rule 1: (5945 - 7125 @ 160) (0, 24) (FLAGS 0) (psd flag 0 EIRP 0
+>>> dB/MHz)
+>> 
+>> That seems right, but isn't that an orthogonal question?
+>> 
+>> Here, on this patch, we're discussing what data we should have in the
+>> channel information, and it would seem that if it's different for
+>> AP/client, then we do need both information stored, so that we can 
+>> cope
+>> with concurrency between AP and client?
+>> 
+>> If we additionally need to have different data for the regulatory 
+>> rules
+>> for AP and client, that might mean we need to go back and actually
+>> change the code there *as well*, and then fill in the right fields in
+>> this patch?
+>> 
+>> Unless somehow we're convinced that for this feature we don't need to
+>> worry about concurrently using AP and client modes?
+>> 
+>> johannes
 > 
-> Why are chip_id and board_id masked? Why cannot we use values directly
-> provided by the firmware?
+> Currently these patches of mac80211/cfg80211/ieee80211 for LPI/SP/VLP 
+> is
+> the base patches, to enable the feature of LPI/SP/VLP, it still need 
+> other
+> patches of lower drivers such as ath11k to enable it. It will not have
+> LPI/SP/VLP without patches of ath11k, it means all these patches will
+> not take effect.
 > 
-below is the log for WCN6855 2.0, its chip_id is 0x2 and board_id is 
-0x106, but actually we need to
-find the board data with chip-id=0 and board-id=6, so we add mask here.
-
-[ 3000.176621] ath11k_pci 0000:05:00.0: chip_id 0x2 chip_family 0xb 
-board_id 0x106 soc_id 0x400c0200
-[ 3000.182361] ath11k_pci 0000:05:00.0: boot using board name 
-'bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=0,qmi-board-id=6'
-
-> And if we need to mask those, it's better to do them in qmi.c where 
-> they
-> are stored:
+> When lower driver such as ath11k set max_interfaces of
+> ieee80211_iface_combination
+> to 1, then it can not start more than 1 interface on the same
+> ieee80211_hw/wiphy.
+> When STATION interface is up, then AP interface can not start up. AP 
+> interface
+> can start up after STATION interfacedown. Also when AP interface is up,
+> STATION interface can not start up. STATION interface can start up 
+> after
+> AP interface down.
 > 
-Currenly logic of default: in ath11k_core_create_board_name() which is 
-introduced in 1st commit
-also use the chip_id and board_id, if mask them in qmi.c may effect the 
-logic of ath11k_core_create_board_name().
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/drivers/net/wireless/ath/ath11k?h=ath-next&id=d5c65159f2895379e11ca13f62feabe93278985d
-ath11k: driver for Qualcomm IEEE 802.11ax devices
-+static int ath11k_core_create_board_name(struct ath11k_base *ab, char 
-*name,
-+					 size_t name_len)
-+{
-+	/* Note: bus is fixed to ahb. When other bus type supported,
-+	 * make it to dynamic.
-+	 */
-+	scnprintf(name, name_len,
-+		  "bus=ahb,qmi-chip-id=%d,qmi-board-id=%d",
-+		  ab->qmi.target.chip_id,
-+		  ab->qmi.target.board_id);
-+
-+	ath11k_dbg(ab, ATH11K_DBG_BOOT, "boot using board name '%s'\n", name);
-+
-+	return 0;
-+}
-
-another thing is that, other bits of chip_id/board_id maybe also need 
-used by other place/feature, so we still need to
-store the total original value of chip_id/board_id instead of mask it 
-only for board data file.
-Then user can easily get their own mask from chip_id/board_id.
-
-> 	if (resp.chip_info_valid) {
-> 		ab->qmi.target.chip_id = resp.chip_info.chip_id;
-> 		ab->qmi.target.chip_family = resp.chip_info.chip_family;
-> 	}
+> I have sent out my ath11k
+> patches(https://lore.kernel.org/linux-wireless/20211026111913.7346-1-quic_wgong@quicinc.com/),
+> it will allow only one interface
+> up simultaneously for the chip which enable LPI/SP/VLP feature in this
+> patch: "ath11k: allow only one interface up simultaneously for WCN6855"
+> https://lore.kernel.org/linux-wireless/20211026111913.7346-5-quic_wgong@quicinc.com/
+> It means it will not have both AP/STA together and these patches of 
+> mac80211/
+> cfg80211/ieee80211 not need changes and it will not have bugs.
 > 
-> 	if (resp.board_info_valid)
-> 		ab->qmi.target.board_id = resp.board_info.board_id;
-> 	else
-> 		ab->qmi.target.board_id = 0xFF;
-
-
+> If there are some chip want to both enable LPI/SP/VLP feature and
+> enable AP/STA simultaneously in same ieee80211_hw/wiphy in future,
+> then he/she need to refine reg rules and channels of mac80211/cfg80211/
+> ieee80211, but at that moment, this patch "cfg80211: save power
+> spectral density(psd) of regulatory rule" still not need change.
+> Because this patch is change in each reg rule/each channel in a
+> low layer, the refine reg rules and channels is a high layer, they
+> have no intersection.
