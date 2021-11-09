@@ -2,128 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C2B644A7A8
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 08:38:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CD6C44A9C1
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 09:53:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231793AbhKIHk4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Nov 2021 02:40:56 -0500
-Received: from mx3.wp.pl ([212.77.101.10]:58388 "EHLO mx3.wp.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231136AbhKIHkz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Nov 2021 02:40:55 -0500
-X-Greylist: delayed 399 seconds by postgrey-1.27 at vger.kernel.org; Tue, 09 Nov 2021 02:40:54 EST
-Received: (wp-smtpd smtp.wp.pl 20783 invoked from network); 9 Nov 2021 08:31:27 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1636443087; bh=Y9jSDG8GSucvN6BUVYfUqMbru52N4/qD0TOZFAHchTU=;
-          h=From:To:Cc:Subject;
-          b=AwIYFdO0nR23eud+DI/ySXdHZM1l/MntyHP2yQvdR7A3OcbuMqxJ7u7uQ28ZdHkF7
-           4n83cvORdqJ9RGw8k8B4K/Jq2oE3ugiU5uJs9HbOlS79/RWqxHJlZxHVlH0GInV7uv
-           YkwkWj+p3Hax4DECdc7CQqG2E4Dr1x/vW8V6wVrE=
-Received: from 89-64-85-14.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.85.14])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <regressions@leemhuis.info>; 9 Nov 2021 08:31:27 +0100
-Date:   Tue, 9 Nov 2021 08:31:27 +0100
-From:   Stanislaw Gruszka <stf_xl@wp.pl>
-To:     Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     Stanislaw Gruszka <sgruszka@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        regressions@lists.linux.dev, Kalle Valo <kvalo@codeaurora.org>,
-        Exuvo <exuvo@exuvo.se>
-Subject: Re: rt2x00 regression
-Message-ID: <20211109073127.GA109212@wp.pl>
-References: <20190927080303.GA7667@redhat.com>
- <CA+GwT0B5SyRZnGLqwqOeuJK4CWMVc=dKaWre9VN8KQC6kBzKGw@mail.gmail.com>
- <20191203075736.GA701@redhat.com>
- <d74dab51-3a84-9035-d89e-ea8f63e89198@exuvo.se>
- <a8eeb0bc-95da-291a-7fb9-5d15d1174c27@exuvo.se>
- <c22673af-40e0-3af2-5ab7-69b23fc03598@exuvo.se>
- <f935dc15-08bd-2e28-fc1b-b27634c618be@exuvo.se>
- <87czop5j33.fsf@tynnyri.adurom.net>
- <6366d9bd-9752-dbc2-8970-442bdc6e8eea@leemhuis.info>
- <7d353dd2-2ffb-6d5e-9983-f983c8b4f6da@leemhuis.info>
+        id S244592AbhKII4K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Nov 2021 03:56:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36444 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244596AbhKII4C (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 9 Nov 2021 03:56:02 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08221C061764
+        for <linux-wireless@vger.kernel.org>; Tue,  9 Nov 2021 00:53:16 -0800 (PST)
+Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1mkMsU-0004Q1-88; Tue, 09 Nov 2021 09:53:14 +0100
+Message-ID: <27297ff6-d970-7b9a-01f0-d5261d553e6b@leemhuis.info>
+Date:   Tue, 9 Nov 2021 09:53:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: Re: [PATCH] ath10k: abstract htt_rx_desc structure
+To:     Francesco Magliocca <franciman12@gmail.com>,
+        ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, enrico@fracta.dev
+References: <CAH4F6us6kLs4WZVKVNQV69wZ=BA2AzOyacyKLB3RfVme=9uKvA@mail.gmail.com>
+Content-Language: en-BW
+In-Reply-To: <CAH4F6us6kLs4WZVKVNQV69wZ=BA2AzOyacyKLB3RfVme=9uKvA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7d353dd2-2ffb-6d5e-9983-f983c8b4f6da@leemhuis.info>
-X-WP-MailID: eecb398e44ed113b6bed9b16aa1a3176
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000001 [sbIh]                               
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1636447997;a9d42547;
+X-HE-SMSGID: 1mkMsU-0004Q1-88
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Nov 08, 2021 at 07:00:20PM +0100, Thorsten Leemhuis wrote:
-> Sending this again, but this time also to Stanislaw's email address
-> currently found in MAINTAINERS.
->
-> Stanislaw, can you help with this regression?
-
-Yes. 
-
-I'll check on mail archives what is the status and what can be done.
-
-Stanislaw
-
-> Helmut: or can you help somehow to get things rolling again?
+On 08.11.21 17:25, Francesco Magliocca wrote:
+> QCA6174 card often hangs with the current htt_rx_desc
+> memory layout in some circumstances, because its firmware
+> fails to handle length differences.
+> Therefore we must abstract the htt_rx_desc structure
+> and operations on it, to allow different wireless cards
+> to use different, unrelated rx descriptor structures.
 > 
-> Ciao, Thorsten, your Linux kernel regression tracker
+> Define a base htt_rx_desc structure and htt_rx_desc_qca_old
+> for use with the QCA family of ath10k supported cards
+> and htt_rx_desc_new for use with the WCN3990 card.
 > 
-> On 05.11.21 14:25, Thorsten Leemhuis wrote:
-> > Lo, this is your Linux kernel regression tracker speaking.
-> > 
-> > On 01.10.21 08:56, Kalle Valo wrote:
-> >> (adding regressions list for easier tracking)
-> > 
-> > Thx for this, that's how it got on the radar of regzbot, my Linux kernel
-> > regression tracking bot:
-> > https://linux-regtracking.leemhuis.info/regzbot/regression/87czop5j33.fsf@tynnyri.adurom.net/
-> > 
-> > 
-> >> Exuvo <exuvo@exuvo.se> writes:
-> >>
-> >>> I would like to get this resolved, is there any more information you need from me?
-> >>>
-> >>> I have been manually patching this all year with:
-> >>>
-> >>> drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-> >>> - if (rt2x00dev->num_proto_errs > 8)
-> >>> -    return true;
-> >>>
-> >>> It seems to just be some part of rt2800_load_firmware that is not
-> >>> supported on my device and generating errors but it has been running
-> >>> without problems in AP mode with daily usage.
-> >>
-> >> [...]
-> >>
-> >>>>>>>>> This most likely is the problem introduced by commit:
-> >>>>>>>>>
-> >>>>>>>>> commit e383c70474db32b9d4a3de6dfbd08784d19e6751
-> >>>>>>>>> Author: Stanislaw Gruszka <sgruszka@redhat.com>
-> >>>>>>>>> Date:   Tue Mar 12 10:51:42 2019 +0100
-> >>>>>>>>>
-> >>>>>>>>>      rt2x00: check number of EPROTO errors
-> >>>>>>>>>
-> >>>>>>>>> Plase check below patch that increase number of EPROTO checks
-> >>>>>>>>> before marking device removed. If it does not help, plese
-> >>>>>>>>> check if reverting above commits helps.
-> >>
-> >> Should we do a revert? Can someone submit that including an explanation
-> >> of the regression.
-> > 
-> > Afaics nothing happened since then. Or did I miss anything? How can we
-> > get the ball rolling again?
-> > 
-> > Stanislaw, is there anything Exuvo (who offered to help afaics) could
-> > test to get us closer to a fix?
-> > 
-> > Ciao, Thorsten
-> > 
-> > P.S.: I have no personal interest in this issue and watch it using
-> > regzbot. Hence, feel free to exclude me on further messages in this
-> > thread after the first reply, as I'm only posting this mail to hopefully
-> > get a status update and things rolling again.
+> Define htt_rx_desc_ops which contains the abstract operations
+> to access the generic htt_rx_desc, give implementations
+> for each card and update htt_rx.c to use the defined
+> abstract interface to rx descriptors.
 > 
-> #regzbot poke
+> Fixes: e3def6f7 ("ath10k: Update rx descriptor for WCN3990 target")
+> 
+> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
+> 
+> Co-developed-by: Enrico Lumetti <enrico@fracta.dev>
+> Signed-off-by: Enrico Lumetti <enrico@fracta.dev>
+> Signed-off-by: Francesco Magliocca <franciman12@gmail.com>
+
+As a Linux kernel regression tracker let me use this opportunity and
+say: Thanks for working on a fix for this regression.
+
+There is one small detail that could be improved: the commit message
+would benefit from a link to the regression report. This is explained in
+Documentation/process/submitting-patches.rst, which recently was changed
+slightly to make this aspect clearer:
+https://git.kernel.org/linus/1f57bd42b77c
+
+E.g. add something like this, just *without* the leading caret(Â¹):
+
+^Link:
+https://lore.kernel.org/ath10k/CAH4F6usFu8-A6k5Z7rU9__iENcSC6Zr-NtRhh_aypR74UvN1uQ@mail.gmail.com/
+
+Francesco, could you please do this in case you need to sent an improved
+version for other reasons? And if the patch is already good to go: could
+the subsystem maintainer please add it when applying?
+
+Thanks in advance.
+
+Let me use this opportunity to explain why I'm asking for this. Yes,
+that link is not really crucial; but it's good to have if someone needs
+to look into the backstory of this change sometime in the future. But I
+care for a different reason. I'm tracking this regression (and others)
+with regzbot, my Linux kernel regression tracking bot. This bot will
+notice if a patch with a Link: tag to a tracked regression gets posted
+and record that, which allowed anyone looking into a regression to
+quickly gasp the current status from the regzbot webui(Â²) or its
+reports. The bot will also notice if a commit with a Link: tag to a
+regression report is applied by Linus and then automatically mark the
+regression as resolved then.
+
+IOW: this tag makes my life easier, as I otherwise have to tell regzbot
+manually about the fix. ;-)
+
+BTW: feel free to drop me from the CC list after placing the Link tag,
+as I have no real interest in this.
+
+Ciao, Thorsten
+
+(Â¹) I used caret (the "^") before the "Link:" above, as that will make
+regzbot handle the parent mail as if it had contained a link to this
+regression and start to monitor this thread. At least I hope so, as I
+just added this functionally to regzbot, so this is the first test in
+the field.
+
+(Â²)
+https://linux-regtracking.leemhuis.info/regzbot/regression/CAH4F6usFu8-A6k5Z7rU9__iENcSC6Zr-NtRhh_aypR74UvN1uQ@mail.gmail.com/
