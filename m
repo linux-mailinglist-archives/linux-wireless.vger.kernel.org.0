@@ -2,163 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C62444A5A0
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 05:08:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9721D44A600
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 06:04:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236871AbhKIEL0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 Nov 2021 23:11:26 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:45384 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234521AbhKIELZ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 Nov 2021 23:11:25 -0500
-X-UUID: 10e83a2c3bec42448acb29577f16078e-20211109
-X-UUID: 10e83a2c3bec42448acb29577f16078e-20211109
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1145430567; Tue, 09 Nov 2021 12:08:36 +0800
-Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 9 Nov 2021 12:08:34 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs10n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Tue, 9 Nov 2021 12:08:34 +0800
-From:   Shayne Chen <shayne.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH] mt76: testmode: add support to set MAC
-Date:   Tue, 9 Nov 2021 12:08:30 +0800
-Message-ID: <20211109040830.27536-1-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S231747AbhKIFHB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Nov 2021 00:07:01 -0500
+Received: from m43-7.mailgun.net ([69.72.43.7]:45438 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230238AbhKIFHA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 9 Nov 2021 00:07:00 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1636434255; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=EktT4GpDSMg7u7QNcUdJTd4WqshYz7T+uzhoJXta5LM=;
+ b=ZHCzHSPitDtDzKh7v/cIv/a9KxlHkdPrz2v/gjIQK7Rq5BaRf80jLkAKrbQP153mIAkeVJuH
+ Fqc3SZgLcAXawhjV+veeTlF+WnQeglqAie5e0fxbS9PzMTi4008+3/kJlIJWvIvuFwzS+Fkf
+ CEUTTBB6sYiZ0fTQKWvd7lIYUx0=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 618a013f6b778b5a19ff7d7c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 09 Nov 2021 05:03:59
+ GMT
+Sender: akolli=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7F040C43617; Tue,  9 Nov 2021 05:03:59 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: akolli)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A80D4C4338F;
+        Tue,  9 Nov 2021 05:03:58 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 09 Nov 2021 10:33:58 +0530
+From:   Anilkumar Kolli <akolli@codeaurora.org>
+To:     Rob Herring <robh@kernel.org>, manivannan.sadhasivam@linaro.org
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org, mhi@lists.linux.dev
+Subject: Re: [PATCH 1/2] dt: bindings: add new DT entry for ath11k PCI device
+ support
+In-Reply-To: <YYBPd+Z/dA/pTReo@robh.at.kernel.org>
+References: <1635175648-23491-1-git-send-email-akolli@codeaurora.org>
+ <YYBPd+Z/dA/pTReo@robh.at.kernel.org>
+Message-ID: <b142a4850d9cbc3bb451a78b488688cc@codeaurora.org>
+X-Sender: akolli@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add support to set SA/DA/BSSID in testmode.
-During mass production stage, some test scripts or test equipments need
-to set fixed addresses to detect or parse if a test is passed.
-Also, MAC setting is necessary for some tx/rx tests with rx filter,
-to make sure rx site only receives expected packets.
+On 2021-11-02 02:05, Rob Herring wrote:
+> On Mon, Oct 25, 2021 at 08:57:27PM +0530, Anilkumar Kolli wrote:
+>> Ath11k driver supports PCI devices such as QCN9074/QCA6390.
+>> Ath11k firmware uses host DDR memory, DT entry is used to reserve
+>> these host DDR memory regions, send these memory base
+>> addresses using DT entries.
+>> 
+>> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+>> ---
+>>  .../bindings/net/wireless/qcom,ath11k.yaml         | 38 
+>> ++++++++++++++++++++++
+>>  1 file changed, 38 insertions(+)
+>> 
+>> diff --git 
+>> a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml 
+>> b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+>> index 5ac9616c9239..c7e6612e949c 100644
+>> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+>> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+>> @@ -19,6 +19,10 @@ description: |
+>>    These devices use HOST DDR memory, HOST DDR memory can be reserved
+>>    and send to ath11k driver from DT.
+>> 
+>> +  ATH11K supports PCI devices like QCA6390,QCN9074.
+>> +  These devices use host DDR memory, host DDR memory can be reserved
+>> +  and send to ath11k driver from DT.
+>> +
+>>  properties:
+>>    compatible:
+>>      enum:
+>> @@ -177,6 +181,29 @@ properties:
+>>      description:
+>>        HOST DDR end address.
+>> 
+>> +  qcom,base-addr:
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    description:
+>> +      Host DDR base address for firmware. QCN9074 firmware uses 45 MB 
+>> of host
+>> +      DDR memory in mode-0 and 15 MB of host DDR memory in mode-2.
+>> +
+>> +  qcom,caldb-addr:
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    description:
+>> +      Host DDR address to store CALDB. CALDB is calibration data base
+>> +      for WLAN channel and tx power.
+>> +
+> 
+> Use /reserved-memory entries for these.
+> 
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt76.h     |  2 ++
- drivers/net/wireless/mediatek/mt76/testmode.c | 36 +++++++++++++++++--
- drivers/net/wireless/mediatek/mt76/testmode.h |  4 +++
- 3 files changed, 39 insertions(+), 3 deletions(-)
+Sure.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index e2da720..e7ced94 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -599,6 +599,8 @@ struct mt76_testmode_data {
- 	u8 tx_power[4];
- 	u8 tx_power_control;
- 
-+	u8 addr[3][ETH_ALEN];
-+
- 	u32 tx_pending;
- 	u32 tx_queued;
- 	u16 tx_queued_limit;
-diff --git a/drivers/net/wireless/mediatek/mt76/testmode.c b/drivers/net/wireless/mediatek/mt76/testmode.c
-index 66afc2b..74621b9 100644
---- a/drivers/net/wireless/mediatek/mt76/testmode.c
-+++ b/drivers/net/wireless/mediatek/mt76/testmode.c
-@@ -126,9 +126,9 @@ int mt76_testmode_alloc_skb(struct mt76_phy *phy, u32 len)
- 
- 	hdr = __skb_put_zero(head, head_len);
- 	hdr->frame_control = cpu_to_le16(fc);
--	memcpy(hdr->addr1, phy->macaddr, sizeof(phy->macaddr));
--	memcpy(hdr->addr2, phy->macaddr, sizeof(phy->macaddr));
--	memcpy(hdr->addr3, phy->macaddr, sizeof(phy->macaddr));
-+	ether_addr_copy(hdr->addr1, td->addr[0]);
-+	ether_addr_copy(hdr->addr2, td->addr[1]);
-+	ether_addr_copy(hdr->addr3, td->addr[2]);
- 	skb_set_queue_mapping(head, IEEE80211_AC_BE);
- 
- 	info = IEEE80211_SKB_CB(head);
-@@ -318,6 +318,10 @@ mt76_testmode_init_defaults(struct mt76_phy *phy)
- 	td->tx_count = 1;
- 	td->tx_rate_mode = MT76_TM_TX_MODE_OFDM;
- 	td->tx_rate_nss = 1;
-+
-+	ether_addr_copy(td->addr[0], phy->macaddr);
-+	ether_addr_copy(td->addr[1], phy->macaddr);
-+	ether_addr_copy(td->addr[2], phy->macaddr);
- }
- 
- static int
-@@ -493,6 +497,20 @@ int mt76_testmode_cmd(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		}
- 	}
- 
-+	if (tb[MT76_TM_ATTR_MAC_ADDRS]) {
-+		struct nlattr *cur;
-+		int idx = 0;
-+		int rem;
-+
-+		nla_for_each_nested(cur, tb[MT76_TM_ATTR_MAC_ADDRS], rem) {
-+			if (nla_len(cur) != ETH_ALEN || idx >= 3)
-+				goto out;
-+
-+			memcpy(td->addr[idx], nla_data(cur), ETH_ALEN);
-+			idx++;
-+		}
-+	}
-+
- 	if (dev->test_ops->set_params) {
- 		err = dev->test_ops->set_params(phy, tb, state);
- 		if (err)
-@@ -635,6 +653,18 @@ int mt76_testmode_dump(struct ieee80211_hw *hw, struct sk_buff *msg,
- 		nla_nest_end(msg, a);
- 	}
- 
-+	if (mt76_testmode_param_present(td, MT76_TM_ATTR_MAC_ADDRS)) {
-+		a = nla_nest_start(msg, MT76_TM_ATTR_MAC_ADDRS);
-+		if (!a)
-+			goto out;
-+
-+		for (i = 0; i < 3 ; i++)
-+			if (nla_put(msg, i, ETH_ALEN, td->addr[i]))
-+				goto out;
-+
-+		nla_nest_end(msg, a);
-+	}
-+
- 	err = 0;
- 
- out:
-diff --git a/drivers/net/wireless/mediatek/mt76/testmode.h b/drivers/net/wireless/mediatek/mt76/testmode.h
-index d1f9c03..5e2792d 100644
---- a/drivers/net/wireless/mediatek/mt76/testmode.h
-+++ b/drivers/net/wireless/mediatek/mt76/testmode.h
-@@ -45,6 +45,8 @@
-  * @MT76_TM_ATTR_TX_TIME: packet transmission time, in unit of us (u32)
-  *
-  * @MT76_TM_ATTR_DRV_DATA: driver specific netlink attrs (nested)
-+ *
-+ * @MT76_TM_ATTR_MAC_ADDRS: array of nested MAC addresses (nested)
-  */
- enum mt76_testmode_attr {
- 	MT76_TM_ATTR_UNSPEC,
-@@ -81,6 +83,8 @@ enum mt76_testmode_attr {
- 
- 	MT76_TM_ATTR_DRV_DATA,
- 
-+	MT76_TM_ATTR_MAC_ADDRS,
-+
- 	/* keep last */
- 	NUM_MT76_TM_ATTRS,
- 	MT76_TM_ATTR_MAX = NUM_MT76_TM_ATTRS - 1,
--- 
-2.25.1
+>> +  qcom,start-addr:
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    description:
+>> +      Host DDR start address. For example on x86 it is 0x0,
+>> +      on IPQ8074 it is 0x41000000.
+>> +
+>> +  qcom,end-addr:
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    description:
+>> +      Host DDR end address.
+> 
+> Nak. I don't know what you are doing with these 2, but it's wrong.
+> 
 
+The DDR start address and end address are sent to MHI control bus,
+For x86 platform code snip in ath11k/mhi.c
+
+         mhi_ctrl->iova_start = 0;
+         mhi_ctrl->iova_stop = 0xffffffff;
+
+Similarly for ARM platfroms, send DDR addresses from DT entry.
+
+Thanks
+Anil
