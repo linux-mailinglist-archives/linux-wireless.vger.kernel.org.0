@@ -2,155 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94CA844AB09
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 10:57:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3922344ACC0
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 12:35:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243772AbhKIKAM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Nov 2021 05:00:12 -0500
-Received: from so254-9.mailgun.net ([198.61.254.9]:47392 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241704AbhKIKAL (ORCPT
+        id S1343540AbhKILij (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Nov 2021 06:38:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45866 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239543AbhKILii (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Nov 2021 05:00:11 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1636451846; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=JqO118YMY9m3B/RF52ZBcw2MCflSgzOhZYVVhgi3NZQ=;
- b=qkUqNFIGjgF6xak5Plf7ItoRDmJf/379oTF2ntW5iryLnmnmQ9CBCluAMd1STztU6yIiaCe0
- mTvem23sD1vxQ88F9lGXTtwclsQlrsqBNuEIiN8h4AjXpzg/x9SOaIe6b9AOkoMZ1Z3KKYmw
- C61doqUd9JlNNQXGIdKrSduOrOY=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 618a45f7facd20d795fb3210 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 09 Nov 2021 09:57:11
- GMT
-Sender: wgong=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CB2C1C4361A; Tue,  9 Nov 2021 09:57:11 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 09C81C4338F;
-        Tue,  9 Nov 2021 09:57:10 +0000 (UTC)
+        Tue, 9 Nov 2021 06:38:38 -0500
+Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89C7CC061764;
+        Tue,  9 Nov 2021 03:35:52 -0800 (PST)
+Received: by mail-vk1-xa33.google.com with SMTP id b125so9856366vkb.9;
+        Tue, 09 Nov 2021 03:35:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=c0Yph5k5PR6TeOU3I7k4EwQFxdX4oi2J5SYnWO8o0KU=;
+        b=Pe9oQC3BhxPWfC2irk/Tcu++9nUD29Fju0j/DACUlqjeF9TN/uoAczpOwrdY8t9WOp
+         DAB97v7IdKefWaPyLOHzbt+Y5DQ3hsr9T1OaDz9olA2Hz3v9XvUaFHHlheJhMOG3Y/4y
+         DyAy8cBueNt1q19JOoSJgAIp1EZHY771/qm+p0BPEDdxxxdEpdyr5vfvVRa36FK9F/VM
+         oI6BMDD8rL0DjqLTDlGPnGKLLSTCwuLn1a7OFVby+27FljKmAMq9e028vxoJ+KeaCt1a
+         7uRtX3BH7JC8KrJVSXZjsDX2XLCqj9JfkOjLZm1otzghtSPPYKDnnCep8I4yCfiOeh1P
+         a4xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=c0Yph5k5PR6TeOU3I7k4EwQFxdX4oi2J5SYnWO8o0KU=;
+        b=5zqYPd6iI7gJUsL4Dg4dOWYQqS68Rwpf/SKa+XqrxfApgfPkrsL0bsQYNHSvwiQd2H
+         VFG57scHgtxT/mTktroBZ0VHy/r/Sh4SeNi5kQ5herW5fy4ESXW11XDvAN3c8B548Ef0
+         vKsfPf5TvS0+bYFWVNBhFjdn+mDSKvAOjZZ/Lh5UYHSzAaFLwBM8TmGBsge/qTg0Twbk
+         qN6RY5D7AV1I34Jw6vqnEiIgXBG/jQIBoov12puX08bzjek59BlVxu+VskDDzRdFRPbj
+         MjCArJu1CP2UCuxoCho4sUUlrs2k+W5wQWIoSf+Pu3uxG5bo4M8l3yNcCUGia3pi3at/
+         Na8A==
+X-Gm-Message-State: AOAM530IzzrpKq/Rkc/AQdKnxTu7IXsskyuYAK1v7mZ2wcSGKZ3xb8qR
+        VZtTC9+BwYTePKXqB5lWW5VWU1YjEvuMkzf5DSs=
+X-Google-Smtp-Source: ABdhPJwNss78ZLB+AQwkHzhdek2GHqgMm+PdQbj3KqVC1K0SBPVvplyCCxFUXMetP2Ue+G2CApQvbDMyNCmseKgslUM=
+X-Received: by 2002:a05:6122:1803:: with SMTP id ay3mr10286237vkb.24.1636457751664;
+ Tue, 09 Nov 2021 03:35:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 09 Nov 2021 17:57:10 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Venkateswara Naralasetty <vnaralas@qti.qualcomm.com>,
-        Venkateswara Naralasetty <vnaralas@codeaurora.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        wgong=codeaurora.org@codeaurora.org
-Subject: Re: [PATCH v5] cfg80211: save power spectral density(psd) of
- regulatory rule
-In-Reply-To: <67936afa5545b9a5d6eb5ad6931026d7@codeaurora.org>
-References: <20210928085211.26186-1-wgong@codeaurora.org>
- <bd649a3d2cf2ea9064d427d633055891@codeaurora.org>
- <cb20427eae96c4551084e4c899618b94@codeaurora.org>
- <2afb1bf6f06cb53f43fe0d354afa4e7c@codeaurora.org>
- <2ed76cff292dcca18326de0407a93821@codeaurora.org>
- <1222384c2bc7d80bf572b65ab17660477bb27300.camel@sipsolutions.net>
- <562080d7fc3b7568811c47a8e8e79156@codeaurora.org>
- <DM8PR02MB8154258563A4F7C805C84B4BE6B59@DM8PR02MB8154.namprd02.prod.outlook.com>
- <0b05f6e555bcb89c49f56279c077ce63@codeaurora.org>
- <18363bc18538ea9b7e8fe28f4c5595c54f3b93d3.camel@sipsolutions.net>
- <67936afa5545b9a5d6eb5ad6931026d7@codeaurora.org>
-Message-ID: <6053b0963612057267f00b89e14b9e15@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+References: <20211101035635.26999-1-ricardo.martinez@linux.intel.com>
+ <CAHNKnsSW15BXq7WXmyG7SrrNA+Rqp_bKVneVNrpegJvDrh688Q@mail.gmail.com> <27811a97-6368-dab2-5163-cbd0169b8666@linux.intel.com>
+In-Reply-To: <27811a97-6368-dab2-5163-cbd0169b8666@linux.intel.com>
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date:   Tue, 9 Nov 2021 14:35:40 +0300
+Message-ID: <CAHNKnsQ8k-mKCfK2UEiC-EZn13-4VPU3ygoT3a3s4nUw5bHvhQ@mail.gmail.com>
+Subject: Re: [PATCH v2 00/14] net: wwan: t7xx: PCIe driver for MediaTek M.2 modem
+To:     "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        chandrashekar.devegowda@intel.com,
+        Intel Corporation <linuxwwan@intel.com>,
+        chiranjeevi.rapolu@linux.intel.com, haijun.liu@mediatek.com,
+        amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
+        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
+        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
+        suresh.nagaraj@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+On Tue, Nov 9, 2021 at 8:26 AM Martinez, Ricardo wrote:
+> On 11/6/2021 11:10 AM, Sergey Ryazanov wrote:
+>> A one nitpick that is common for the entire series. Please consider
+>> using a common prefix for all driver function names (e.g. t7xx_) to
+>> make them more specific. This should improve the code readability.
+>> Thus, any reader will know for sure that the called functions belong
+>> to the driver, and not to a generic kernel API. E.g. use the
+>> t7xx_cldma_hw_init() name for the  CLDMA initialization function
+>> instead of the too generic cldma_hw_init() name, etc.
+>
+> Does this apply to static functions as well?
 
-do you have comments about my description for PSD?
+As I wrote, this is a nitpick. As you can see in
+Documentation/process/coding-style.rst, there are no general rules for
+functions naming. My personal rule of thumb is that if  a function
+performs a very general operation (like averaging, interpolation,
+etc.), then a prefix can be omitted. If a function operation is
+specific for a module, then add a common module prefix to the function
+name. But again, this is my personal rule.
 
-On 2021-10-26 19:26, Wen Gong wrote:
-> On 2021-10-26 04:09, Johannes Berg wrote:
->> On Mon, 2021-10-11 at 15:48 +0800, Wen Gong wrote:
->>> 
->>> > IMO, Only power rules and PSD info might vary for AP and STATION. Rest
->>> > of the rules will remains same right?
->>> >
->>> The freq_range may also be different for AP and STATION.
->>> and reg_rules number also may also be different for AP and STATION.
->>> 
->>> for example:
->>> SUBORDINATE CLIENT of STANDARD POWER reg rules number 2
->>> reg rule 1: (5945 - 6425 @ 160) (0, 30) (FLAGS 0) (psd flag 1 EIRP 17
->>> dB/MHz)
->>> reg rule 2: (6525 - 6885 @ 160) (0, 30) (FLAGS 0) (psd flag 1 EIRP 17
->>> dB/MHz)
->>> 
->>> INDOOR AP reg rules number 1
->>> reg rule 1: (5945 - 7125 @ 160) (0, 24) (FLAGS 0) (psd flag 0 EIRP 0
->>> dB/MHz)
->> 
->> That seems right, but isn't that an orthogonal question?
->> 
->> Here, on this patch, we're discussing what data we should have in the
->> channel information, and it would seem that if it's different for
->> AP/client, then we do need both information stored, so that we can 
->> cope
->> with concurrency between AP and client?
->> 
->> If we additionally need to have different data for the regulatory 
->> rules
->> for AP and client, that might mean we need to go back and actually
->> change the code there *as well*, and then fill in the right fields in
->> this patch?
->> 
->> Unless somehow we're convinced that for this feature we don't need to
->> worry about concurrently using AP and client modes?
->> 
->> johannes
-> 
-> Currently these patches of mac80211/cfg80211/ieee80211 for LPI/SP/VLP 
-> is
-> the base patches, to enable the feature of LPI/SP/VLP, it still need 
-> other
-> patches of lower drivers such as ath11k to enable it. It will not have
-> LPI/SP/VLP without patches of ath11k, it means all these patches will
-> not take effect.
-> 
-> When lower driver such as ath11k set max_interfaces of
-> ieee80211_iface_combination
-> to 1, then it can not start more than 1 interface on the same
-> ieee80211_hw/wiphy.
-> When STATION interface is up, then AP interface can not start up. AP 
-> interface
-> can start up after STATION interfacedown. Also when AP interface is up,
-> STATION interface can not start up. STATION interface can start up 
-> after
-> AP interface down.
-> 
-> I have sent out my ath11k
-> patches(https://lore.kernel.org/linux-wireless/20211026111913.7346-1-quic_wgong@quicinc.com/),
-> it will allow only one interface
-> up simultaneously for the chip which enable LPI/SP/VLP feature in this
-> patch: "ath11k: allow only one interface up simultaneously for WCN6855"
-> https://lore.kernel.org/linux-wireless/20211026111913.7346-5-quic_wgong@quicinc.com/
-> It means it will not have both AP/STA together and these patches of 
-> mac80211/
-> cfg80211/ieee80211 not need changes and it will not have bugs.
-> 
-> If there are some chip want to both enable LPI/SP/VLP feature and
-> enable AP/STA simultaneously in same ieee80211_hw/wiphy in future,
-> then he/she need to refine reg rules and channels of mac80211/cfg80211/
-> ieee80211, but at that moment, this patch "cfg80211: save power
-> spectral density(psd) of regulatory rule" still not need change.
-> Because this patch is change in each reg rule/each channel in a
-> low layer, the refine reg rules and channels is a high layer, they
-> have no intersection.
+As for the driver, it was quite difficult to read the code that calls
+functions such as cldma_alloc(), cldma_init(). It was hard to figure
+out whether these functions are new kernel API or they are specific to
+the driver. A common way to solve such ambiguity issues is to prefix
+the driver function names. But again, this was just an attempt to draw
+your attention to the function naming. Feel free to name functions as
+you would like, just make the code readable for developers who are not
+familiar with the specific HW chip.
+
+>> Another common drawback is that the driver should break as soon as two
+>> modems are connected simultaneously. This should happen due to the use
+>> of multiple _global_ variables that keeps pointers to a modem runtime
+>> state. Out of curiosity, did you test the driver with two or more
+>> modems connected simultaneously?
+>
+> We haven't tested such configurations, we are focusing on platforms with one single modem.
+
+Now you are aware of the potential kernel crash due to the global
+variables misuse. Please fix it.
+
+-- 
+Sergey
