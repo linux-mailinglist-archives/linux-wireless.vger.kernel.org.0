@@ -2,154 +2,491 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38F5644A6A3
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 07:09:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CDB544A6DC
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Nov 2021 07:32:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243073AbhKIGMe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Nov 2021 01:12:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55990 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240611AbhKIGMc (ORCPT
+        id S241139AbhKIGfF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Nov 2021 01:35:05 -0500
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:29073 "EHLO
+        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234506AbhKIGfE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Nov 2021 01:12:32 -0500
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D34AC061764
-        for <linux-wireless@vger.kernel.org>; Mon,  8 Nov 2021 22:09:47 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id y1so18995060plk.10
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Nov 2021 22:09:47 -0800 (PST)
+        Tue, 9 Nov 2021 01:35:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=3UMQ+IMa+soVBoyYN64G/6OyoEqBBdIjr60HkQKpNx8=;
-        b=KZaPR85qHnb2yKJr4Zb3HksFeFbhp9G5ogo/MdQMtO2WH0hekoook0Vt4487LMv3DI
-         EZ0IKoPmpz97Jb1XZ4sLl3X7/CAkjjsXH2vl5hzq6NE9fJDEPnlKhvOa7B3kiDVm6oxW
-         EBstH3kSpqCyMwchR7NYBfno3q91DaVpBmKgc9HrHV8U9liDb+9Sz8Nvg/etv3fB0J82
-         J62zQAeQDIJuNE/w/tCzN41cPMRJGyxZGWn6tp4GSsf3Zs/fa33GTpD4LdPiEnwVbgzR
-         1PnxMKpiC510UXvkja82txpR8AqL0dO2xA1tZ/jotq5gaVtCGLxD0jKI7sv+7lc0W0EY
-         suzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=3UMQ+IMa+soVBoyYN64G/6OyoEqBBdIjr60HkQKpNx8=;
-        b=Bz62tBdwMCT1vQ0kbHvqdkljBIaaXctCBDS7G17TAHJQ0oj/hlOSQDtC//zIzQB0v3
-         aKpU6w8JyJFiPF8K9FLFeZE82OiSHFgaM/7ycRWSIAmNMpbGEukYrxX6vey9O+Gb8iPV
-         n0nn9+TSAf8TevpjAzL4cnczDZvPiN2KccbCfCEAC9vlwRHEuwbytAba1G5TxI0EsAzl
-         vh+efEITYpjueqxOIFjqjRcSSLueDlepo/jgyxZlATBRwPC304PlyyWwOQd6IHq3HeW4
-         Kxc+L8qu6ltgIYzRY2SrAYsOdpWQkh54CQ2PJo55AjsVajOPE0Pb9D7Tg214M8zmZVVJ
-         JOCA==
-X-Gm-Message-State: AOAM530kl+j5bKPXPId1zTJLJc2wzKG60vxSfH0DPbdBpwEEausfYdpA
-        XSVe/RLOI6earnToCAgKH+MZ
-X-Google-Smtp-Source: ABdhPJwNKVQwXClKhZuDD23mjW/GMmAAsVvWIADqtgxcYdFWepoXh4uyRFP3LuTv+g5FdbftBBcsaw==
-X-Received: by 2002:a17:903:2093:b0:142:7dff:f7de with SMTP id d19-20020a170903209300b001427dfff7demr4995953plc.75.1636438186599;
-        Mon, 08 Nov 2021 22:09:46 -0800 (PST)
-Received: from thinkpad ([117.217.177.76])
-        by smtp.gmail.com with ESMTPSA id l11sm18755948pfu.129.2021.11.08.22.09.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Nov 2021 22:09:46 -0800 (PST)
-Date:   Tue, 9 Nov 2021 11:39:38 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     Anilkumar Kolli <akolli@codeaurora.org>
-Cc:     Rob Herring <robh@kernel.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
-        mhi@lists.linux.dev
-Subject: Re: [PATCH 1/2] dt: bindings: add new DT entry for ath11k PCI device
- support
-Message-ID: <20211109060938.GA5235@thinkpad>
-References: <1635175648-23491-1-git-send-email-akolli@codeaurora.org>
- <YYBPd+Z/dA/pTReo@robh.at.kernel.org>
- <b142a4850d9cbc3bb451a78b488688cc@codeaurora.org>
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1636439539; x=1667975539;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=KeB6g/I6cJDn6ElVND8MyAu6Tq87yDMPOo5yCrs5INw=;
+  b=wrYpaIzUuyTPhIo1/QITFpEakePTpVdSVxYiCFocYRbnb95Ymd98K1JW
+   Cm4H1Yk4fH0AbRyepHAcSpM/LJyosbPrbLLofatZ3a3k/963pkY/tVaWY
+   fcuXaENK28X2Rvz6ho1Mbr1lWLv9IK/xVYz2PfpzLVlB29bwhn0OWDfgA
+   M=;
+Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 08 Nov 2021 22:32:19 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2021 22:32:19 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
+ Mon, 8 Nov 2021 22:32:18 -0800
+Received: from vnaralas-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
+ Mon, 8 Nov 2021 22:32:17 -0800
+From:   Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+Subject: [PATCH 1/2] ath11k: add dbring debug support
+Date:   Tue, 9 Nov 2021 12:02:01 +0530
+Message-ID: <1636439522-14509-1-git-send-email-quic_vnaralas@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b142a4850d9cbc3bb451a78b488688cc@codeaurora.org>
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 09, 2021 at 10:33:58AM +0530, Anilkumar Kolli wrote:
-> On 2021-11-02 02:05, Rob Herring wrote:
-> > On Mon, Oct 25, 2021 at 08:57:27PM +0530, Anilkumar Kolli wrote:
-> > > Ath11k driver supports PCI devices such as QCN9074/QCA6390.
-> > > Ath11k firmware uses host DDR memory, DT entry is used to reserve
-> > > these host DDR memory regions, send these memory base
-> > > addresses using DT entries.
-> > > 
-> > > Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
-> > > ---
-> > >  .../bindings/net/wireless/qcom,ath11k.yaml         | 38
-> > > ++++++++++++++++++++++
-> > >  1 file changed, 38 insertions(+)
-> > > 
-> > > diff --git
-> > > a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> > > b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> > > index 5ac9616c9239..c7e6612e949c 100644
-> > > --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> > > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> > > @@ -19,6 +19,10 @@ description: |
-> > >    These devices use HOST DDR memory, HOST DDR memory can be reserved
-> > >    and send to ath11k driver from DT.
-> > > 
-> > > +  ATH11K supports PCI devices like QCA6390,QCN9074.
-> > > +  These devices use host DDR memory, host DDR memory can be reserved
-> > > +  and send to ath11k driver from DT.
-> > > +
-> > >  properties:
-> > >    compatible:
-> > >      enum:
-> > > @@ -177,6 +181,29 @@ properties:
-> > >      description:
-> > >        HOST DDR end address.
-> > > 
-> > > +  qcom,base-addr:
-> > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > +    description:
-> > > +      Host DDR base address for firmware. QCN9074 firmware uses 45
-> > > MB of host
-> > > +      DDR memory in mode-0 and 15 MB of host DDR memory in mode-2.
-> > > +
-> > > +  qcom,caldb-addr:
-> > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > +    description:
-> > > +      Host DDR address to store CALDB. CALDB is calibration data base
-> > > +      for WLAN channel and tx power.
-> > > +
-> > 
-> > Use /reserved-memory entries for these.
-> > 
-> 
-> Sure.
-> 
-> > > +  qcom,start-addr:
-> > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > +    description:
-> > > +      Host DDR start address. For example on x86 it is 0x0,
-> > > +      on IPQ8074 it is 0x41000000.
-> > > +
-> > > +  qcom,end-addr:
-> > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > +    description:
-> > > +      Host DDR end address.
-> > 
-> > Nak. I don't know what you are doing with these 2, but it's wrong.
-> > 
-> 
-> The DDR start address and end address are sent to MHI control bus,
-> For x86 platform code snip in ath11k/mhi.c
-> 
->         mhi_ctrl->iova_start = 0;
->         mhi_ctrl->iova_stop = 0xffffffff;
-> 
-> Similarly for ARM platfroms, send DDR addresses from DT entry.
-> 
+Target copies spectral report and CFR report through dbring to
+host for further processing. This mechanism involves ring and
+buffer management in the Host, FW, and uCode, where improper
+tail pointer update issues are seen.
 
-You can use the reserved memory node for ddr address also. In the ath11k driver,
-use devicetree APIs for fetching the start and end addresses.
+This dbring debug support help to debug such issues by tracking
+head and tail pointer movement along with the timestamp at which
+each buffer is received and replenished.
 
-Thanks,
-Mani
+Usage:
 
-> Thanks
-> Anil
+echo <module_id> <val> > /sys/kernel/debug/ath11k/ipq8074_2/
+mac0/enable_dbr_debug
+
+module_id: 0 for spectral and 1 for CFR
+val: 0 - disable, 1 - enable.
+
+Tested-on: IPQ8074 WLAN.HK.2.4.0.1-01467-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/core.h    |   1 +
+ drivers/net/wireless/ath/ath11k/dbring.c  |  19 ++-
+ drivers/net/wireless/ath/ath11k/debugfs.c | 217 ++++++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/debugfs.h |  41 ++++++
+ 4 files changed, 272 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 31d234a..230c1e7 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -434,6 +434,7 @@ struct ath11k_debug {
+ 	u32 pktlog_peer_valid;
+ 	u8 pktlog_peer_addr[ETH_ALEN];
+ 	u32 rx_filter;
++	struct ath11k_db_module_debug *module_debug[WMI_DIRECT_BUF_MAX];
+ };
+ 
+ struct ath11k_per_peer_tx_stats {
+diff --git a/drivers/net/wireless/ath/ath11k/dbring.c b/drivers/net/wireless/ath/ath11k/dbring.c
+index fd98ba5..d043f4e 100644
+--- a/drivers/net/wireless/ath/ath11k/dbring.c
++++ b/drivers/net/wireless/ath/ath11k/dbring.c
+@@ -8,7 +8,8 @@
+ 
+ static int ath11k_dbring_bufs_replenish(struct ath11k *ar,
+ 					struct ath11k_dbring *ring,
+-					struct ath11k_dbring_element *buff)
++					struct ath11k_dbring_element *buff,
++					enum wmi_direct_buffer_module id)
+ {
+ 	struct ath11k_base *ab = ar->ab;
+ 	struct hal_srng *srng;
+@@ -54,6 +55,7 @@ static int ath11k_dbring_bufs_replenish(struct ath11k *ar,
+ 
+ 	ath11k_hal_rx_buf_addr_info_set(desc, paddr, cookie, 0);
+ 
++	ath11k_dbring_add_debug_entry(ar, id, DBR_RING_DEBUG_EVENT_REPLENISH, srng);
+ 	ath11k_hal_srng_access_end(ab, srng);
+ 
+ 	return 0;
+@@ -71,7 +73,8 @@ static int ath11k_dbring_bufs_replenish(struct ath11k *ar,
+ }
+ 
+ static int ath11k_dbring_fill_bufs(struct ath11k *ar,
+-				   struct ath11k_dbring *ring)
++				   struct ath11k_dbring *ring,
++				   enum wmi_direct_buffer_module id)
+ {
+ 	struct ath11k_dbring_element *buff;
+ 	struct hal_srng *srng;
+@@ -94,7 +97,7 @@ static int ath11k_dbring_fill_bufs(struct ath11k *ar,
+ 		if (!buff)
+ 			break;
+ 
+-		ret = ath11k_dbring_bufs_replenish(ar, ring, buff);
++		ret = ath11k_dbring_bufs_replenish(ar, ring, buff, id);
+ 		if (ret) {
+ 			ath11k_warn(ar->ab, "failed to replenish db ring num_remain %d req_ent %d\n",
+ 				    num_remain, req_entries);
+@@ -174,7 +177,7 @@ int ath11k_dbring_buf_setup(struct ath11k *ar,
+ 	ring->hp_addr = ath11k_hal_srng_get_hp_addr(ar->ab, srng);
+ 	ring->tp_addr = ath11k_hal_srng_get_tp_addr(ar->ab, srng);
+ 
+-	ret = ath11k_dbring_fill_bufs(ar, ring);
++	ret = ath11k_dbring_fill_bufs(ar, ring, db_cap->id);
+ 
+ 	return ret;
+ }
+@@ -234,7 +237,7 @@ int ath11k_dbring_buffer_release_event(struct ath11k_base *ab,
+ 	struct ath11k_buffer_addr desc;
+ 	u8 *vaddr_unalign;
+ 	u32 num_entry, num_buff_reaped;
+-	u8 pdev_idx, rbm;
++	u8 pdev_idx, rbm, module_id;
+ 	u32 cookie;
+ 	int buf_id;
+ 	int size;
+@@ -242,6 +245,7 @@ int ath11k_dbring_buffer_release_event(struct ath11k_base *ab,
+ 	int ret = 0;
+ 
+ 	pdev_idx = ev->fixed.pdev_id;
++	module_id = ev->fixed.module_id;
+ 
+ 	if (pdev_idx >= ab->num_radios) {
+ 		ath11k_warn(ab, "Invalid pdev id %d\n", pdev_idx);
+@@ -310,6 +314,9 @@ int ath11k_dbring_buffer_release_event(struct ath11k_base *ab,
+ 		dma_unmap_single(ab->dev, buff->paddr, ring->buf_sz,
+ 				 DMA_FROM_DEVICE);
+ 
++		ath11k_dbring_add_debug_entry(ar, module_id,
++					      DBR_RING_DEBUG_EVENT_RX, srng);
++
+ 		if (ring->handler) {
+ 			vaddr_unalign = buff->payload;
+ 			handler_data.data = PTR_ALIGN(vaddr_unalign,
+@@ -320,7 +327,7 @@ int ath11k_dbring_buffer_release_event(struct ath11k_base *ab,
+ 		}
+ 
+ 		memset(buff, 0, size);
+-		ath11k_dbring_bufs_replenish(ar, ring, buff);
++		ath11k_dbring_bufs_replenish(ar, ring, buff, module_id);
+ 	}
+ 
+ 	spin_unlock_bh(&srng->lock);
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
+index 80afd35..698200c 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs.c
++++ b/drivers/net/wireless/ath/ath11k/debugfs.c
+@@ -50,6 +50,45 @@ static const char *htt_bp_lmac_ring[HTT_SW_LMAC_RING_IDX_MAX] = {
+ 	"MONITOR_DEST_RING",
+ };
+ 
++void ath11k_dbring_add_debug_entry(struct ath11k *ar,
++				   enum wmi_direct_buffer_module id,
++				   enum ath11k_db_ring_dbg_event event,
++				   struct hal_srng *srng)
++{
++	struct ath11k_db_module_debug *db_module_debug;
++	struct ath11k_db_ring_debug *db_ring_debug;
++	struct ath11k_db_ring_debug_entry *entry;
++
++	if (id >= WMI_DIRECT_BUF_MAX || event >= DBR_RING_DEBUG_EVENT_MAX)
++		return;
++
++	db_module_debug = ar->debug.module_debug[id];
++	if (!db_module_debug)
++		return;
++
++	if (!db_module_debug->db_ring_debug_enabled)
++		return;
++
++	db_ring_debug = &db_module_debug->db_ring_debug;
++
++	spin_lock_bh(&db_ring_debug->lock);
++
++	if (db_ring_debug->entries) {
++		entry = &db_ring_debug->entries[db_ring_debug->db_ring_debug_idx];
++		entry->hp = srng->u.src_ring.hp;
++		entry->tp = *srng->u.src_ring.tp_addr;
++		entry->timestamp = jiffies;
++		entry->event = event;
++
++		db_ring_debug->db_ring_debug_idx++;
++		if (db_ring_debug->db_ring_debug_idx ==
++		    db_ring_debug->num_ring_debug_entries)
++			db_ring_debug->db_ring_debug_idx = 0;
++	}
++
++	spin_unlock_bh(&db_ring_debug->lock);
++}
++
+ static void ath11k_fw_stats_pdevs_free(struct list_head *head)
+ {
+ 	struct ath11k_fw_stats_pdev *i, *tmp;
+@@ -1068,6 +1107,166 @@ static const struct file_operations fops_simulate_radar = {
+ 	.open = simple_open
+ };
+ 
++static ssize_t ath11k_dbr_dump_debug_entries(struct file *file,
++					     char __user *user_buf,
++					     size_t count, loff_t *ppos)
++{
++	struct ath11k_db_ring_debug *db_ring_debug = file->private_data;
++	static const char * const event_id_to_string[] = {"empty", "Rx", "Replenish"};
++	int size = ATH11K_DBR_DEBUG_ENTRIES_MAX * 100;
++	char *buf;
++	int i, ret;
++	int len = 0;
++
++	buf = kzalloc(size, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++
++	len += scnprintf(buf + len, size - len, "------------------------------------\n");
++	len += scnprintf(buf + len, size - len, "| idx | hp | tp | timestamp | event|\n");
++	len += scnprintf(buf + len, size - len, "------------------------------------\n");
++
++	spin_lock_bh(&db_ring_debug->lock);
++
++	for (i = 0; i < db_ring_debug->num_ring_debug_entries; i++) {
++		len += scnprintf(buf + len, size - len,
++				 "|%4u|%8u|%8u|%11llu|%8s|\n", i,
++				 db_ring_debug->entries[i].hp,
++				 db_ring_debug->entries[i].tp,
++				 db_ring_debug->entries[i].timestamp,
++				 event_id_to_string[db_ring_debug->entries[i].event]);
++	}
++
++	spin_unlock_bh(&db_ring_debug->lock);
++
++	ret = simple_read_from_buffer(user_buf, count, ppos, buf, len);
++	kfree(buf);
++
++	return ret;
++}
++
++static const struct file_operations fops_dump_dbr_debug_entries = {
++	.read = ath11k_dbr_dump_debug_entries,
++	.open = simple_open,
++	.owner = THIS_MODULE,
++	.llseek = default_llseek,
++};
++
++static void ath11k_db_module_debugfs_destroy(struct ath11k *ar, int module_id)
++{
++	struct ath11k_db_module_debug *module_debug;
++	struct ath11k_db_ring_debug *db_ring_debug;
++
++	if (!ar->debug.module_debug[module_id])
++		return;
++
++	module_debug = ar->debug.module_debug[module_id];
++	db_ring_debug = &module_debug->db_ring_debug;
++
++	debugfs_remove_recursive(module_debug->module_debugfs);
++	kfree(db_ring_debug->entries);
++	kfree(module_debug);
++	ar->debug.module_debug[module_id] = NULL;
++}
++
++static int ath11k_db_module_debugfs_init(struct ath11k *ar, int module_id)
++{
++	struct ath11k_db_module_debug *module_debug;
++	struct ath11k_db_ring_debug *db_ring_debug;
++	static const char * const module_id_to_str[] = {"spectral", "CFR"};
++
++	if (ar->debug.module_debug[module_id])
++		return 0;
++
++	ar->debug.module_debug[module_id] = kzalloc(sizeof(*module_debug),
++						    GFP_KERNEL);
++
++	if (!ar->debug.module_debug[module_id])
++		return -ENOMEM;
++
++	module_debug = ar->debug.module_debug[module_id];
++	db_ring_debug = &module_debug->db_ring_debug;
++
++	if (module_debug->module_debugfs)
++		return 0;
++
++	module_debug->module_debugfs = debugfs_create_dir(module_id_to_str[module_id],
++							  ar->debug.debugfs_pdev);
++	if (IS_ERR_OR_NULL(module_debug->module_debugfs)) {
++		if (IS_ERR(module_debug->module_debugfs))
++			return PTR_ERR(module_debug->module_debugfs);
++		return -ENOMEM;
++	}
++
++	module_debug->db_ring_debug_enabled = true;
++	db_ring_debug->num_ring_debug_entries = ATH11K_DBR_DEBUG_ENTRIES_MAX;
++	db_ring_debug->db_ring_debug_idx = 0;
++	db_ring_debug->entries = kcalloc(ATH11K_DBR_DEBUG_ENTRIES_MAX,
++					 sizeof(struct ath11k_db_ring_debug_entry),
++					 GFP_KERNEL);
++	if (!db_ring_debug->entries)
++		return -ENOMEM;
++
++	spin_lock_init(&db_ring_debug->lock);
++
++	debugfs_create_file("dump_db_ring_debug", 0444, module_debug->module_debugfs,
++			    db_ring_debug, &fops_dump_dbr_debug_entries);
++
++	return 0;
++}
++
++static ssize_t ath11k_write_enable_dbr_debug(struct file *file,
++					     const char __user *ubuf,
++					     size_t count, loff_t *ppos)
++{
++	struct ath11k *ar = file->private_data;
++	char buf[32] = {0};
++	u32 module_id, enable;
++	int ret;
++
++	mutex_lock(&ar->conf_mutex);
++
++	if (ar->state != ATH11K_STATE_ON) {
++		ret = -ENETDOWN;
++		goto out;
++	}
++
++	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, ubuf, count);
++	if (ret < 0)
++		goto out;
++
++	buf[ret] = '\0';
++	ret = sscanf(buf, "%u %u", &module_id, &enable);
++	if (ret != 2 || module_id > 1 || enable > 1) {
++		ret = -EINVAL;
++		ath11k_warn(ar->ab, "usage: echo <module_id> <val> module_id:0-Spectral 1-CFR val:0-disable 1-enable\n");
++		goto out;
++	}
++
++	if (enable) {
++		ret = ath11k_db_module_debugfs_init(ar, module_id);
++		if (ret) {
++			ath11k_warn(ar->ab, "db ring module debugfs init failed: %d\n",
++				    ret);
++			goto out;
++		}
++	} else {
++		ath11k_db_module_debugfs_destroy(ar, module_id);
++	}
++
++	ret = count;
++out:
++	mutex_unlock(&ar->conf_mutex);
++	return ret;
++}
++
++static const struct file_operations fops_dbr_debug = {
++	.write = ath11k_write_enable_dbr_debug,
++	.open = simple_open,
++	.owner = THIS_MODULE,
++	.llseek = default_llseek,
++};
++
+ int ath11k_debugfs_register(struct ath11k *ar)
+ {
+ 	struct ath11k_base *ab = ar->ab;
+@@ -1107,9 +1306,27 @@ int ath11k_debugfs_register(struct ath11k *ar)
+ 				    &ar->dfs_block_radar_events);
+ 	}
+ 
++	debugfs_create_file("enable_dbr_debug", 0200, ar->debug.debugfs_pdev,
++			    ar, &fops_dbr_debug);
++
+ 	return 0;
+ }
+ 
+ void ath11k_debugfs_unregister(struct ath11k *ar)
+ {
++	struct ath11k_db_module_debug *module_debug;
++	struct ath11k_db_ring_debug *db_ring_debug;
++	int i;
++
++	for (i = 0; i < WMI_DIRECT_BUF_MAX; i++) {
++		module_debug = ar->debug.module_debug[i];
++		if (!module_debug)
++			continue;
++
++		db_ring_debug = &module_debug->db_ring_debug;
++		kfree(db_ring_debug->entries);
++		debugfs_remove_recursive(module_debug->module_debugfs);
++		kfree(module_debug);
++		ar->debug.module_debug[i] = NULL;
++	}
+ }
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs.h b/drivers/net/wireless/ath/ath11k/debugfs.h
+index ec743a0..7739915 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs.h
++++ b/drivers/net/wireless/ath/ath11k/debugfs.h
+@@ -47,6 +47,36 @@ enum ath11k_dbg_htt_ext_stats_type {
+ 	ATH11K_DBG_HTT_NUM_EXT_STATS,
+ };
+ 
++#define ATH11K_DBR_DEBUG_ENTRIES_MAX 512
++
++enum ath11k_db_ring_dbg_event {
++	DBR_RING_DEBUG_EVENT_INVALID,
++	DBR_RING_DEBUG_EVENT_RX,
++	DBR_RING_DEBUG_EVENT_REPLENISH,
++	DBR_RING_DEBUG_EVENT_MAX,
++};
++
++struct ath11k_db_ring_debug_entry {
++	u32 hp;
++	u32 tp;
++	u64 timestamp;
++	enum ath11k_db_ring_dbg_event event;
++};
++
++struct ath11k_db_ring_debug {
++	/* protects ath11k_db_ring_debug data */
++	spinlock_t lock;
++	struct ath11k_db_ring_debug_entry *entries;
++	u32 db_ring_debug_idx;
++	u32 num_ring_debug_entries;
++};
++
++struct ath11k_db_module_debug {
++	struct ath11k_db_ring_debug db_ring_debug;
++	struct dentry *module_debugfs;
++	bool db_ring_debug_enabled;
++};
++
+ struct debug_htt_stats_req {
+ 	bool done;
+ 	u8 pdev_id;
+@@ -149,6 +179,10 @@ static inline int ath11k_debugfs_rx_filter(struct ath11k *ar)
+ 	return ar->debug.rx_filter;
+ }
+ 
++void ath11k_dbring_add_debug_entry(struct ath11k *ar,
++				   enum wmi_direct_buffer_module id,
++				   enum ath11k_db_ring_dbg_event event,
++				   struct hal_srng *srng);
+ #else
+ static inline int ath11k_debugfs_soc_create(struct ath11k_base *ab)
+ {
+@@ -216,6 +250,13 @@ static inline int ath11k_debugfs_rx_filter(struct ath11k *ar)
+ 	return 0;
+ }
+ 
++static inline void
++ath11k_dbring_add_debug_entry(struct ath11k *ar,
++			      enum wmi_direct_buffer_module id,
++			      enum ath11k_db_ring_dbg_event event,
++			      struct hal_srng *srng)
++{
++}
+ #endif /* CONFIG_MAC80211_DEBUGFS*/
+ 
+ #endif /* _ATH11K_DEBUGFS_H_ */
+-- 
+2.7.4
+
