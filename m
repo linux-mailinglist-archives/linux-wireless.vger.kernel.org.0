@@ -2,88 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5390944CAA9
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 21:32:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8314444CB47
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 22:22:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232067AbhKJUfk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Nov 2021 15:35:40 -0500
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.48]:55646 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230230AbhKJUfk (ORCPT
+        id S233333AbhKJVYz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Nov 2021 16:24:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51714 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233321AbhKJVYy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Nov 2021 15:35:40 -0500
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.66.134])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 1BA671A007B
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 20:32:51 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id EEE5C68007E
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 20:32:50 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 6541D13C2B0
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 12:32:50 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 6541D13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1636576370;
-        bh=zPvpu4AoKbh0tlYEfUlhJG2XObzIPJEbgW8gdsXhywE=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=OmxCZZEDQO25Ffz0lvP5lgJ4EsvYbPMVQdWdhK5M0PmIqhuKNTXKBgt/St8l2Esr5
-         grIyg1hfVze2CYfnzRuVC1j7GrMC1YtSq0Ik9ukQmfEJo7S4IMc+c8a1YiXrUIlzKO
-         z+aokIzkIJlZge73I7+FxbtX2JWrxQV+UAsjcQq0=
-Subject: Re: [PATCH v3 2/2] mt76: mt7915: fix radar detector logic
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <20210820203531.20706-1-greearb@candelatech.com>
- <20210820203531.20706-2-greearb@candelatech.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <950c52e2-8422-36f0-9024-55e45ef2672c@candelatech.com>
-Date:   Wed, 10 Nov 2021 12:32:50 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Wed, 10 Nov 2021 16:24:54 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B203C061766
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 13:22:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=jHDvXQcNzSSJDvWeCzvjymSINyy0TXUY90dc3Fz5hBs=; b=jwRtPQA4lGDm3MngjrRh7LmIUF
+        /aAORiaENwQ/hvyshYutFLaNeCrXKW32GXwMcZSYa0ZEcjZVCXcRh7BsWUOS+I7oS8HcjnRwmiy63
+        aEELbn1GSUgHyk04JVdBsOLDnG0bdVc34ZOM73RaaVcbLMhfzSfP9/R7r+PdwT9bRygg=;
+Received: from p54ae9f3f.dip0.t-ipconnect.de ([84.174.159.63] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1mkv2h-0006mT-Kk; Wed, 10 Nov 2021 22:22:03 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, Mathy.Vanhoef@kuleuven.be
+Subject: [PATCH] mac80211: drop check for DONT_REORDER in __ieee80211_select_queue
+Date:   Wed, 10 Nov 2021 22:22:01 +0100
+Message-Id: <20211110212201.35452-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-In-Reply-To: <20210820203531.20706-2-greearb@candelatech.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-MDID: 1636576371-q2QZyQ1PgtQA
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 8/20/21 1:35 PM, greearb@candelatech.com wrote:
-> From: Ben Greear <greearb@candelatech.com>
-> 
-> Before this patch, if AP went from ch 100 to ch 36, the radar detector
-> logic in the firmware was not being disabled.  This made the AP appear
-> to be up, but no beacons were seen on air until module reload or
-> reboot.
-> 
-> To reproduce this, I change hostapd.conf and restart hostapd.  Others
-> on openwrt used their UI to make changes and problem was seen, but
-> stil others changed channels in some other way and/or had some other
-> difference and could *not* reproduce it.  So, something perhaps a
-> bit subtle.
-> 
-> To fix the problem, stop depending on comparing dfs_state, store last
-> freq/bandwidth to detect changes in that, and streamline code that
-> checks to enable/disable radar detection.  And add in error checking
-> and dev_dbg logic so one can see what is actually happening if need
-> to debug this again.
+When __ieee80211_select_queue is called, skb->cb has not been cleared yet,
+which means that info->control.flags can contain garbage.
+In some cases this leads to IEEE80211_TX_CTRL_DONT_REORDER being set, causing
+packets marked for other queues to randomly end up in BE instead.
 
-Back when I was working on this, someone sent me an email or chat or something
-about some other way to do this that was simpler and just relied on
-mac80211 timers.  But, I cannot find that email for the life of me.
+This flag only needs to be checked in ieee80211_select_queue_80211, since
+the radiotap parser is the only piece of code that sets it
 
-In case you are reading, please resend!  Evidently this 2/2 patch had
-some regression for someone so it is not acceptable upstream in
-current state...maybe the mac80211 option is best.
+Fixes: 66d06c84730c ("mac80211: adhere to Tx control flag that prevents frame reordering")
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ net/mac80211/wme.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Thanks,
-Ben
-
+diff --git a/net/mac80211/wme.c b/net/mac80211/wme.c
+index 9ea6004abe1b..62c6733e0792 100644
+--- a/net/mac80211/wme.c
++++ b/net/mac80211/wme.c
+@@ -143,7 +143,6 @@ u16 ieee80211_select_queue_80211(struct ieee80211_sub_if_data *sdata,
+ u16 __ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
+ 			     struct sta_info *sta, struct sk_buff *skb)
+ {
+-	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct mac80211_qos_map *qos_map;
+ 	bool qos;
+ 
+@@ -156,7 +155,7 @@ u16 __ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
+ 	else
+ 		qos = false;
+ 
+-	if (!qos || (info->control.flags & IEEE80211_TX_CTRL_DONT_REORDER)) {
++	if (!qos) {
+ 		skb->priority = 0; /* required for correct WPA/11i MIC */
+ 		return IEEE80211_AC_BE;
+ 	}
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.30.1
 
