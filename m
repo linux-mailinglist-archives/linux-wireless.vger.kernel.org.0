@@ -2,63 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E1DB44C1D4
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 14:05:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2B044C230
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 14:38:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231996AbhKJNIF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Nov 2021 08:08:05 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:41356 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231998AbhKJNIE (ORCPT
+        id S231526AbhKJNk6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Nov 2021 08:40:58 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:40712 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231210AbhKJNk6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Nov 2021 08:08:04 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.150])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1mknHv-000ogV-2K; Wed, 10 Nov 2021 15:05:16 +0200
-Message-ID: <1e1d3a7ee2abe2612a0120024a483590d050b3bf.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 10 Nov 2021 15:05:13 +0200
-In-Reply-To: <iwlwifi.20211110150132.57514296ecab.I52a0411774b700bdc7dedb124d8b59bf99456eb2@changeid>
-References: <iwlwifi.20211109192950.486dfa9c4f35.I52a0411774b700bdc7dedb124d8b59bf99456eb2@changeid>
-         <iwlwifi.20211110150132.57514296ecab.I52a0411774b700bdc7dedb124d8b59bf99456eb2@changeid>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.0-2 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+        Wed, 10 Nov 2021 08:40:58 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1636551490; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=7B862f6o0/eR9spFIWw0jZNTKRZeuG0U4+f110DkEyw=; b=SIXdo8qTWJjdUyq6VZzIHiORjV6E00uzapumFFpIUAzJH7z7d42XjAaqvksDqxd7TqFp0Vmg
+ sRHVf7EkVw3CBHV5zCx8WowVKTkRuqbXB1jukJF1yShB9i+PoZ3ng0yeWIgwK02Z1MhdTW3x
+ Tfq0iJNoXsx8eAPTSjWJ0KzySD8=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 618bcb410f34c3436a2b85f2 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Nov 2021 13:38:09
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E2FC8C4338F; Wed, 10 Nov 2021 13:38:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: Re: [PATCH v2] iwlwifi: mvm: retry init flow if failed
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C533EC43460;
+        Wed, 10 Nov 2021 13:38:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C533EC43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Thorsten Leemhuis <regressions@leemhuis.info>
+Cc:     Francesco Magliocca <franciman12@gmail.com>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        enrico@fracta.dev
+Subject: Re: [PATCH] ath10k: abstract htt_rx_desc structure
+References: <CAH4F6us6kLs4WZVKVNQV69wZ=BA2AzOyacyKLB3RfVme=9uKvA@mail.gmail.com>
+        <27297ff6-d970-7b9a-01f0-d5261d553e6b@leemhuis.info>
+Date:   Wed, 10 Nov 2021 15:38:03 +0200
+In-Reply-To: <27297ff6-d970-7b9a-01f0-d5261d553e6b@leemhuis.info> (Thorsten
+        Leemhuis's message of "Tue, 9 Nov 2021 09:53:13 +0100")
+Message-ID: <87wnlgm8qs.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-11-10 at 15:01 +0200, Luca Coelho wrote:
-> From: Mordechay Goodstein <mordechay.goodstein@intel.com>
-> 
-> In some very rare cases the init flow may fail.  In many cases, this is
-> recoverable, so we can retry.  Implement a loop to retry two more times
-> after the first attempt failed.
-> 
-> This can happen in two different situations, namely during probe and
-> during mac80211 start.  For the first case, a simple loop is enough.
-> For the second case, we need to add a flag to prevent mac80211 from
-> trying to restart it as well, leaving full control with the driver.
-> 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> ---
-> In v2: fixed a missing brace.
+Thorsten Leemhuis <regressions@leemhuis.info> writes:
 
-Kalle, sorry, I had a rebase damage in the previous version.  Fixed in
-v2.  I marked v1 as superseded and assigned v2 to you.
+> On 08.11.21 17:25, Francesco Magliocca wrote:
+>> QCA6174 card often hangs with the current htt_rx_desc
+>> memory layout in some circumstances, because its firmware
+>> fails to handle length differences.
+>> Therefore we must abstract the htt_rx_desc structure
+>> and operations on it, to allow different wireless cards
+>> to use different, unrelated rx descriptor structures.
+>>=20
+>> Define a base htt_rx_desc structure and htt_rx_desc_qca_old
+>> for use with the QCA family of ath10k supported cards
+>> and htt_rx_desc_new for use with the WCN3990 card.
+>>=20
+>> Define htt_rx_desc_ops which contains the abstract operations
+>> to access the generic htt_rx_desc, give implementations
+>> for each card and update htt_rx.c to use the defined
+>> abstract interface to rx descriptors.
+>>=20
+>> Fixes: e3def6f7 ("ath10k: Update rx descriptor for WCN3990 target")
 
---
-Cheers,
-Luca.
+This should be:
+
+Fixes: e3def6f7ddf8 ("ath10k: Update rx descriptor for WCN3990 target")
+
+I can fix that during commit.
+
+>> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
+>>=20
+>> Co-developed-by: Enrico Lumetti <enrico@fracta.dev>
+>> Signed-off-by: Enrico Lumetti <enrico@fracta.dev>
+>> Signed-off-by: Francesco Magliocca <franciman12@gmail.com>
+>
+> As a Linux kernel regression tracker let me use this opportunity and
+> say: Thanks for working on a fix for this regression.
+>
+> There is one small detail that could be improved: the commit message
+> would benefit from a link to the regression report. This is explained in
+> Documentation/process/submitting-patches.rst, which recently was changed
+> slightly to make this aspect clearer:
+> https://git.kernel.org/linus/1f57bd42b77c
+>
+> E.g. add something like this, just *without* the leading caret(=C2=B9):
+>
+> ^Link:
+> https://lore.kernel.org/ath10k/CAH4F6usFu8-A6k5Z7rU9__iENcSC6Zr-NtRhh_ayp=
+R74UvN1uQ@mail.gmail.com/
+>
+> Francesco, could you please do this in case you need to sent an improved
+> version for other reasons? And if the patch is already good to go: could
+> the subsystem maintainer please add it when applying?
+
+I have not had a chance to review the patch yet, but I can add the link
+during commit (if I'll apply this version).
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
