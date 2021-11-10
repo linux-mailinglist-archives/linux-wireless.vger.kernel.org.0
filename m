@@ -2,438 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF31644BAD0
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 05:19:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D779644BADD
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 05:37:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230360AbhKJEWd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 Nov 2021 23:22:33 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:54610 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230348AbhKJEWc (ORCPT
+        id S230364AbhKJEkn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 Nov 2021 23:40:43 -0500
+Received: from wout3-smtp.messagingengine.com ([64.147.123.19]:36989 "EHLO
+        wout3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230357AbhKJEkn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 Nov 2021 23:22:32 -0500
-X-UUID: bb22fa5a5ee84facad0058ff80361c74-20211110
-X-UUID: bb22fa5a5ee84facad0058ff80361c74-20211110
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
-        (envelope-from <xing.song@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 745979183; Wed, 10 Nov 2021 12:19:42 +0800
-Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Wed, 10 Nov 2021 12:19:40 +0800
-Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
- (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 10 Nov
- 2021 12:19:40 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
- 15.0.1497.2 via Frontend Transport; Wed, 10 Nov 2021 12:19:39 +0800
-From:   Xing Song <xing.song@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Xing Song <xing.song@mediatek.com>
-Subject: [PATCH] mt76: reverse the first fragmented frame to 802.11
-Date:   Wed, 10 Nov 2021 12:19:31 +0800
-Message-ID: <20211110041931.176788-1-xing.song@mediatek.com>
-X-Mailer: git-send-email 2.17.0
+        Tue, 9 Nov 2021 23:40:43 -0500
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.west.internal (Postfix) with ESMTP id 9BEB43201CD3;
+        Tue,  9 Nov 2021 23:37:55 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Tue, 09 Nov 2021 23:37:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dustymabe.com;
+         h=subject:from:to:cc:references:message-id:date:mime-version
+        :in-reply-to:content-type:content-transfer-encoding; s=fm1; bh=V
+        9932IHxqtF/1rRETEfVm9lzYHpbYdWta4Sshdl+xb4=; b=uRXVwfLp1pDxv95h8
+        tOcJ3yevN6Xiy2flZ68nFguKXZt845c7cwshJ2PvgIlF8dkI12UFzZjL9A5MY/0k
+        4QZTWL+GZL5bngVoXKNGTODfOcvrjqhsfLgtbEcPdIOJO6wcSvyEUBfbjEo4y2cR
+        ytQ899KzsBxVoE7PAzQ5aoD7PzTNdIPpZ2sciBpKwaxMCyuwI3A95oGRujgsMdr6
+        X0bDjB97tpEJ1pZ28zX3lQ4nRmVTzIaWlzpEfjSRPtwBt7WU14IpyJshFDAb+Wjs
+        SMlnMkDXDwQCPva6q6JauYWtxymOZg0ZApfbirSCjy2s1ViCoZFctC+it9vhmWd2
+        fanag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; bh=V9932IHxqtF/1rRETEfVm9lzYHpbYdWta4Sshdl+x
+        b4=; b=SYxB+1fTaOmZMCabdgZ5PL0LHytDhuDGNS8v2SNbXcOWq9cvz6M3K5fW/
+        CkEWYFFIdi6mJheByzU2VwNtTwNczeFAwrJri3+0KjPUx+sJRp8a0lXspXR2dox9
+        nJHgrbq7Ww+nzqMYYDG5/TzFLf0lDflyV3HOyJGddSRxcksfAGnKakG3bkANjZjl
+        QGGQxX8KYlj3IPfSXIwsjwekCwVNOe2Yan3/cvK47n7SzJCx4vWptd846B7DNcMf
+        Xkvkdjmy5ncNgYB4cZNolkhBrmhIlmptgonZVwO9anKrg5v3DDRi3e1SPaaJWBSh
+        ftZ08NqJqGDt77recq34i8R9BOwMQ==
+X-ME-Sender: <xms:okyLYbllZicE8i65JaDVco0UchLMn1MBmA6JVrEqKsNzy9E8dq7SCw>
+    <xme:okyLYe2hf0JpxM-gZybBoC5QzE6nuvtq6FqCr58coPhC_ourqE8SpGHzQ3eStPZEL
+    rBXre7kkp5kxeflbFY>
+X-ME-Received: <xmr:okyLYRo4r78qxt11Uk_cEPs8uDok-ygkyHIJKiXGl7M120Ih_8rfgdHBSIfEFQU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddrudehgdeikecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecunecujfgurhepuffhvfhfkffffgggjggtgfesthejre
+    dttdefjeenucfhrhhomhepffhushhthicuofgrsggvuceoughushhthiesughushhthihm
+    rggsvgdrtghomheqnecuggftrfgrthhtvghrnhephffgtdehhfekfefgudelvdevgefhgf
+    ffveegjefggeeludeuleefgedvleduheegnecuvehluhhsthgvrhfuihiivgeptdenucfr
+    rghrrghmpehmrghilhhfrhhomhepughushhthiesughushhthihmrggsvgdrtghomh
+X-ME-Proxy: <xmx:okyLYTmr3ZKQq5bImh9xyg59DifpDhFkllXDSHF2z_8_lXqYvZXFow>
+    <xmx:okyLYZ3hBjPNR1uDrQTxoGTtpB67Qi8CfcUApVPax6d1QXN_L1v_5A>
+    <xmx:okyLYSu6Q4y75_kp2bkhaFyNyRiEusr5vO7mEw58sq2deDj8jo9lGw>
+    <xmx:okyLYW9-ffN4pd8S_zRoZFgWF2W8rB_1ec9Pe5HIvOgbLQrKV5PWoQ>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 9 Nov 2021 23:37:54 -0500 (EST)
+Subject: Re: iwlwifi: null pointer dereference RIP:
+ 0010:iwl_mvm_get_tx_rate+0xd3/0x100 [iwlmvm]
+From:   Dusty Mabe <dusty@dustymabe.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     jforbes@fedoraproject.org
+References: <685581b8-3a0e-d794-ec57-5cfdee7a9e71@dustymabe.com>
+Message-ID: <2badde47-3a74-48a1-a1e7-bd7a77f78223@dustymabe.com>
+Date:   Tue, 9 Nov 2021 23:37:52 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+In-Reply-To: <685581b8-3a0e-d794-ec57-5cfdee7a9e71@dustymabe.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The HW can apply header translation to first fragmented frame, and
-ramaining fragmented frame can only keep 802.11 format. Check and
-reverse the first fragmented frame to  802.11 format to make sure
-them can be defragmented by mac80211.
+On 11/4/21 2:26 PM, Dusty Mabe wrote:
+> Hi,
+> 
+> I'm trying to track down a bug happening on my Intel NUC with a Fedora `5.14.13`
+> kernel.
+> 
+> The trace looks something like:
+> 
+> ```
+> [345514.404223] BUG: kernel NULL pointer dereference, address: 000000000000016c
+> [345514.409853] #PF: supervisor read access in kernel mode
+> [345514.415323] #PF: error_code(0x0000) - not-present page
+> [345514.420718] PGD 0 P4D 0
+> [345514.425995] Oops: 0000 [#1] SMP NOPTI
+> [345514.431240] CPU: 2 PID: 774 Comm: irq/48-iwlwifi Kdump: loaded Tainted: G        W         5.14.13-300.fc35.x86_64 #1
+> [345514.436529] Hardware name:  /NUC5i3RYB, BIOS RYBDWi35.86A.0350.2015.0812.1722 08/12/2015
+> [345514.441734] RIP: 0010:iwl_mvm_get_tx_rate+0xd3/0x100 [iwlmvm]
+> [345514.446884] Code: 08 74 09 80 3d db 25 05 00 00 74 19 0f be 5d 08 83 fb 0b 0f 87 5e ff ff ff 0f b6 45 04 eb a2 0f 0b 31 db eb f4 44 0f be 4d 08 <45> 8b 85 6c 01 00 00 0f b7 f2 0f b7 c9 48 c7 c7 38 a0 e2 c0 c6 05
+> [345514.452177] RSP: 0018:ffffbe7fc0128cb8 EFLAGS: 00010246
+> [345514.457251] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000050
+> [345514.462313] RDX: 000000000000049b RSI: ffffbe7fc0128d88 RDI: ffff9e2c91a4a008
+> [345514.467293] RBP: ffffbe7fc0128d88 R08: 0000000000000050 R09: 00000000ffffffed
+> [345514.472227] R10: 0000000000000000 R11: 0000000000000050 R12: ffff9e2c91a4a008
+> [345514.477112] R13: 0000000000000000 R14: ffffbe7fc0128d88 R15: ffff9e2ca78aa484
+> [345514.481906] FS:  0000000000000000(0000) GS:ffff9e33b6d00000(0000) knlGS:0000000000000000
+> [345514.486673] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [345514.491327] CR2: 000000000000016c CR3: 00000001cde10005 CR4: 00000000003706e0
+> [345514.495957] Call Trace:
+> [345514.500447]  <IRQ>
+> [345514.504856]  iwl_mvm_set_tx_cmd_rate+0x66/0x140 [iwlmvm]
+> [345514.509279]  iwl_mvm_set_tx_params+0x1a5/0x580 [iwlmvm]
+> [345514.513627]  iwl_mvm_tx_skb_non_sta+0x16a/0x350 [iwlmvm]
+> [345514.517898]  iwl_mvm_tx_skb+0x23/0x40 [iwlmvm]
+> [345514.522081]  ieee80211_tx_frags+0x15c/0x220 [mac80211]
+> [345514.526254]  __ieee80211_tx+0x76/0x140 [mac80211]
+> [345514.530342]  ieee80211_tx+0xc7/0x110 [mac80211]
+> [345514.534361]  ieee80211_tx_pending+0x9c/0x270 [mac80211]
+> [345514.538316]  ? net_rx_action+0x223/0x2e0
+> [345514.542147]  tasklet_action_common.constprop.0+0xbc/0x120
+> [345514.545940]  __do_softirq+0xcd/0x282
+> [345514.549643]  do_softirq+0x76/0x90
+> [345514.553270]  </IRQ>
+> [345514.556800]  __local_bh_enable_ip+0x4b/0x50
+> [345514.560301]  iwl_pcie_irq_handler+0x493/0xad0 [iwlwifi]
+> [345514.563751]  ? irq_thread_dtor+0xb0/0xb0
+> [345514.567101]  irq_thread_fn+0x1d/0x60
+> [345514.570380]  irq_thread+0xb9/0x150
+> [345514.573574]  ? irq_finalize_oneshot.part.0+0xf0/0xf0
+> [345514.576732]  ? irq_thread_check_affinity+0xc0/0xc0
+> [345514.579822]  kthread+0x124/0x150
+> [345514.582821]  ? set_kthread_struct+0x40/0x40
+> [345514.585764]  ret_from_fork+0x1f/0x30
+> [345514.588623] Modules linked in: tun overlay bridge stp llc intel_rapl_msr snd_hda_codec_hdmi intel_rapl_common iwlmvm x86_pkg_temp_thermal intel_powerclamp mac80211 i915 coretemp snd_usb_audio snd_hda_codec_realtek kvm_intel snd_hda_codec_generic libarc4 ledtrig_audio snd_hda_intel kvm snd_usbmidi_lib snd_intel_dspcfg snd_intel_sdw_acpi iwlwifi btusb snd_hda_codec snd_rawmidi mei_hdcp at24 btrtl iTCO_wdt intel_pmc_bxt btbcm iTCO_vendor_support btintel snd_seq_device snd_hda_core irqbypass mc bluetooth rapl intel_cstate snd_hwdep snd_pcm cfg80211 intel_uncore i2c_algo_bit ttm i2c_i801 mei_me snd_timer i2c_smbus lpc_ich drm_kms_helper ecdh_generic mei joydev rfkill snd ir_rc6_decoder cec soundcore rc_rc6_mce nuvoton_cir acpi_pad drm zram ip_tables xfs dm_multipath crct10dif_pclmul crc32_pclmul crc32c_intel e1000e ghash_clmulni_intel hid_microsoft ff_memless video fuse
+> [345514.601061] CR2: 000000000000016c
+> ```
+> 
+> I set up kdump and got a vmcore in /var/crash so we might be able to analyze that to find more
+> information. I'm available on IRC (dustymabe on libera.chat) if anyone would like to dig in
+> to the crashdump for more information.
 
-Signed-off-by: Xing Song <xing.song@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 90 ++++++++++++++++++-
- .../net/wireless/mediatek/mt76/mt7615/mac.h   |  2 +
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 90 ++++++++++++++++++-
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 90 ++++++++++++++++++-
- 4 files changed, 263 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 423f69015e3e..bd361c19557d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -249,6 +249,82 @@ static void mt7615_mac_fill_tm_rx(struct mt7615_phy *phy, __le32 *rxv)
- #endif
- }
- 
-+/* The HW does not translate the mac header to 802.3 for mesh point */
-+static int mt7615_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
-+{
-+	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-+	struct mt7615_sta *msta = (struct mt7615_sta *)status->wcid;
-+	struct ieee80211_sta *sta;
-+	struct ieee80211_vif *vif;
-+	struct ieee80211_hdr hdr;
-+	struct ethhdr eth_hdr;
-+	__le32 *rxd = (__le32 *)skb->data;
-+	__le32 qos_ctrl, ht_ctrl;
-+
-+	if (FIELD_GET(MT_RXD1_NORMAL_ADDR_TYPE, le32_to_cpu(rxd[1])) !=
-+	    MT_RXD1_NORMAL_U2M)
-+		return -EINVAL;
-+
-+	if (!(le32_to_cpu(rxd[0]) & MT_RXD0_NORMAL_GROUP_4))
-+		return -EINVAL;
-+
-+	if (!msta || !msta->vif)
-+		return -EINVAL;
-+
-+	sta = container_of((void *)msta, struct ieee80211_sta, drv_priv);
-+	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
-+
-+	/* store the info from RXD and ethhdr to avoid being overridden */
-+	memcpy(&eth_hdr, skb->data + hdr_gap, sizeof(eth_hdr));
-+	hdr.frame_control = FIELD_GET(MT_RXD4_FRAME_CONTROL, rxd[4]);
-+	hdr.seq_ctrl = FIELD_GET(MT_RXD6_SEQ_CTRL, rxd[6]);
-+	qos_ctrl = FIELD_GET(MT_RXD6_QOS_CTL, rxd[6]);
-+	ht_ctrl = FIELD_GET(MT_RXD7_HT_CONTROL, rxd[7]);
-+
-+	hdr.duration_id = 0;
-+	ether_addr_copy(hdr.addr1, vif->addr);
-+	ether_addr_copy(hdr.addr2, sta->addr);
-+	switch (le16_to_cpu(hdr.frame_control) &
-+		(IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS)) {
-+	case 0:
-+		ether_addr_copy(hdr.addr3, vif->bss_conf.bssid);
-+		break;
-+	case IEEE80211_FCTL_FROMDS:
-+		ether_addr_copy(hdr.addr3, eth_hdr.h_source);
-+		break;
-+	case IEEE80211_FCTL_TODS:
-+		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
-+		break;
-+	case IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS:
-+		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
-+		ether_addr_copy(hdr.addr4, eth_hdr.h_source);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	skb_pull(skb, hdr_gap + sizeof(struct ethhdr) - 2);
-+	if (eth_hdr.h_proto == htons(ETH_P_AARP) ||
-+	    eth_hdr.h_proto == htons(ETH_P_IPX))
-+		ether_addr_copy(skb_push(skb, ETH_ALEN), bridge_tunnel_header);
-+	else if (eth_hdr.h_proto >= htons(ETH_P_802_3_MIN))
-+		ether_addr_copy(skb_push(skb, ETH_ALEN), rfc1042_header);
-+	else
-+		skb_pull(skb, 2);
-+
-+	if (ieee80211_has_order(hdr.frame_control))
-+		memcpy(skb_push(skb, 2), &ht_ctrl, 2);
-+	if (ieee80211_is_data_qos(hdr.frame_control))
-+		memcpy(skb_push(skb, 2), &qos_ctrl, 2);
-+	if (ieee80211_has_a4(hdr.frame_control))
-+		memcpy(skb_push(skb, sizeof(hdr)), &hdr, sizeof(hdr));
-+	else
-+		memcpy(skb_push(skb, sizeof(hdr) - 6), &hdr, sizeof(hdr) - 6);
-+
-+	status->flag &= ~(RX_FLAG_RADIOTAP_HE | RX_FLAG_RADIOTAP_HE_MU);
-+	return 0;
-+}
-+
- static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
- {
- 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-@@ -263,6 +339,7 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
- 	u32 rxd2 = le32_to_cpu(rxd[2]);
- 	u32 csum_mask = MT_RXD0_NORMAL_IP_SUM | MT_RXD0_NORMAL_UDP_TCP_SUM;
- 	bool unicast, hdr_trans, remove_pad, insert_ccmp_hdr = false;
-+	u16 hdr_gap;
- 	int phy_idx;
- 	int i, idx;
- 	u8 chfreq, amsdu_info, qos_ctl = 0;
-@@ -503,14 +580,21 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
- 			return -EINVAL;
- 	}
- 
--	skb_pull(skb, (u8 *)rxd - skb->data + 2 * remove_pad);
--
- 	amsdu_info = FIELD_GET(MT_RXD1_NORMAL_PAYLOAD_FORMAT, rxd1);
- 	status->amsdu = !!amsdu_info;
- 	if (status->amsdu) {
- 		status->first_amsdu = amsdu_info == MT_RXD1_FIRST_AMSDU_FRAME;
- 		status->last_amsdu = amsdu_info == MT_RXD1_LAST_AMSDU_FRAME;
--		if (!hdr_trans) {
-+	}
-+
-+	hdr_gap = (u8 *)rxd - skb->data + 2 * remove_pad;
-+	if (hdr_trans && ieee80211_has_morefrags(fc)) {
-+		if (mt7615_reverse_frag0_hdr_trans(skb, hdr_gap))
-+			return -EINVAL;
-+		hdr_trans = false;
-+	} else {
-+		skb_pull(skb, hdr_gap);
-+		if (!hdr_trans && status->amsdu) {
- 			memmove(skb->data + 2, skb->data,
- 				ieee80211_get_hdrlen_from_skb(skb));
- 			skb_pull(skb, 2);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-index 46f283eb8d0f..e241c613091c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-@@ -86,6 +86,8 @@ enum rx_pkt_type {
- #define MT_RXD6_SEQ_CTRL		GENMASK(15, 0)
- #define MT_RXD6_QOS_CTL			GENMASK(31, 16)
- 
-+#define MT_RXD7_HT_CONTROL		GENMASK(31, 0)
-+
- #define MT_RXV1_ACID_DET_H		BIT(31)
- #define MT_RXV1_ACID_DET_L		BIT(30)
- #define MT_RXV1_VHTA2_B8_B3		GENMASK(29, 24)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 5fcf35f2d9fb..60e8340c8eeb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -384,6 +384,82 @@ mt7915_mac_decode_he_radiotap(struct sk_buff *skb,
- 	}
- }
- 
-+/* The HW does not translate the mac header to 802.3 for mesh point */
-+static int mt7915_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
-+{
-+	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-+	struct mt7915_sta *msta = (struct mt7915_sta *)status->wcid;
-+	struct ieee80211_sta *sta;
-+	struct ieee80211_vif *vif;
-+	struct ieee80211_hdr hdr;
-+	struct ethhdr eth_hdr;
-+	__le32 *rxd = (__le32 *)skb->data;
-+	__le32 qos_ctrl, ht_ctrl;
-+
-+	if (FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, le32_to_cpu(rxd[3])) !=
-+	    MT_RXD3_NORMAL_U2M)
-+		return -EINVAL;
-+
-+	if (!(le32_to_cpu(rxd[1]) & MT_RXD1_NORMAL_GROUP_4))
-+		return -EINVAL;
-+
-+	if (!msta || !msta->vif)
-+		return -EINVAL;
-+
-+	sta = container_of((void *)msta, struct ieee80211_sta, drv_priv);
-+	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
-+
-+	/* store the info from RXD and ethhdr to avoid being overridden */
-+	memcpy(&eth_hdr, skb->data + hdr_gap, sizeof(eth_hdr));
-+	hdr.frame_control = FIELD_GET(MT_RXD6_FRAME_CONTROL, rxd[6]);
-+	hdr.seq_ctrl = FIELD_GET(MT_RXD8_SEQ_CTRL, rxd[8]);
-+	qos_ctrl = FIELD_GET(MT_RXD8_QOS_CTL, rxd[8]);
-+	ht_ctrl = FIELD_GET(MT_RXD9_HT_CONTROL, rxd[9]);
-+
-+	hdr.duration_id = 0;
-+	ether_addr_copy(hdr.addr1, vif->addr);
-+	ether_addr_copy(hdr.addr2, sta->addr);
-+	switch (le16_to_cpu(hdr.frame_control) &
-+		(IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS)) {
-+	case 0:
-+		ether_addr_copy(hdr.addr3, vif->bss_conf.bssid);
-+		break;
-+	case IEEE80211_FCTL_FROMDS:
-+		ether_addr_copy(hdr.addr3, eth_hdr.h_source);
-+		break;
-+	case IEEE80211_FCTL_TODS:
-+		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
-+		break;
-+	case IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS:
-+		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
-+		ether_addr_copy(hdr.addr4, eth_hdr.h_source);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	skb_pull(skb, hdr_gap + sizeof(struct ethhdr) - 2);
-+	if (eth_hdr.h_proto == htons(ETH_P_AARP) ||
-+	    eth_hdr.h_proto == htons(ETH_P_IPX))
-+		ether_addr_copy(skb_push(skb, ETH_ALEN), bridge_tunnel_header);
-+	else if (eth_hdr.h_proto >= htons(ETH_P_802_3_MIN))
-+		ether_addr_copy(skb_push(skb, ETH_ALEN), rfc1042_header);
-+	else
-+		skb_pull(skb, 2);
-+
-+	if (ieee80211_has_order(hdr.frame_control))
-+		memcpy(skb_push(skb, 2), &ht_ctrl, 2);
-+	if (ieee80211_is_data_qos(hdr.frame_control))
-+		memcpy(skb_push(skb, 2), &qos_ctrl, 2);
-+	if (ieee80211_has_a4(hdr.frame_control))
-+		memcpy(skb_push(skb, sizeof(hdr)), &hdr, sizeof(hdr));
-+	else
-+		memcpy(skb_push(skb, sizeof(hdr) - 6), &hdr, sizeof(hdr) - 6);
-+
-+	status->flag &= ~(RX_FLAG_RADIOTAP_HE | RX_FLAG_RADIOTAP_HE_MU);
-+	return 0;
-+}
-+
- static int
- mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- {
-@@ -404,6 +480,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 	bool unicast, insert_ccmp_hdr = false;
- 	u8 remove_pad, amsdu_info;
- 	bool hdr_trans;
-+	u16 hdr_gap;
- 	u16 seq_ctrl = 0;
- 	u8 qos_ctl = 0;
- 	__le16 fc = 0;
-@@ -654,14 +731,21 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 		}
- 	}
- 
--	skb_pull(skb, (u8 *)rxd - skb->data + 2 * remove_pad);
--
- 	amsdu_info = FIELD_GET(MT_RXD4_NORMAL_PAYLOAD_FORMAT, rxd4);
- 	status->amsdu = !!amsdu_info;
- 	if (status->amsdu) {
- 		status->first_amsdu = amsdu_info == MT_RXD4_FIRST_AMSDU_FRAME;
- 		status->last_amsdu = amsdu_info == MT_RXD4_LAST_AMSDU_FRAME;
--		if (!hdr_trans) {
-+	}
-+
-+	hdr_gap = (u8 *)rxd - skb->data + 2 * remove_pad;
-+	if (hdr_trans && ieee80211_has_morefrags(fc)) {
-+		if (mt7915_reverse_frag0_hdr_trans(skb, hdr_gap))
-+			return -EINVAL;
-+		hdr_trans = false;
-+	} else {
-+		skb_pull(skb, hdr_gap);
-+		if (!hdr_trans && status->amsdu) {
- 			memmove(skb->data + 2, skb->data,
- 				ieee80211_get_hdrlen_from_skb(skb));
- 			skb_pull(skb, 2);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index db3302b1576a..d7ab41773035 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -395,6 +395,82 @@ mt7921_mac_assoc_rssi(struct mt7921_dev *dev, struct sk_buff *skb)
- 		mt7921_mac_rssi_iter, skb);
- }
- 
-+/* The HW does not translate the mac header to 802.3 for mesh point */
-+static int mt7921_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
-+{
-+	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-+	struct mt7921_sta *msta = (struct mt7921_sta *)status->wcid;
-+	struct ieee80211_sta *sta;
-+	struct ieee80211_vif *vif;
-+	struct ieee80211_hdr hdr;
-+	struct ethhdr eth_hdr;
-+	__le32 *rxd = (__le32 *)skb->data;
-+	__le32 qos_ctrl, ht_ctrl;
-+
-+	if (FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, le32_to_cpu(rxd[3])) !=
-+	    MT_RXD3_NORMAL_U2M)
-+		return -EINVAL;
-+
-+	if (!(le32_to_cpu(rxd[1]) & MT_RXD1_NORMAL_GROUP_4))
-+		return -EINVAL;
-+
-+	if (!msta || !msta->vif)
-+		return -EINVAL;
-+
-+	sta = container_of((void *)msta, struct ieee80211_sta, drv_priv);
-+	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
-+
-+	/* store the info from RXD and ethhdr to avoid being overridden */
-+	memcpy(&eth_hdr, skb->data + hdr_gap, sizeof(eth_hdr));
-+	hdr.frame_control = FIELD_GET(MT_RXD6_FRAME_CONTROL, rxd[6]);
-+	hdr.seq_ctrl = FIELD_GET(MT_RXD8_SEQ_CTRL, rxd[8]);
-+	qos_ctrl = FIELD_GET(MT_RXD8_QOS_CTL, rxd[8]);
-+	ht_ctrl = FIELD_GET(MT_RXD9_HT_CONTROL, rxd[9]);
-+
-+	hdr.duration_id = 0;
-+	ether_addr_copy(hdr.addr1, vif->addr);
-+	ether_addr_copy(hdr.addr2, sta->addr);
-+	switch (le16_to_cpu(hdr.frame_control) &
-+		(IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS)) {
-+	case 0:
-+		ether_addr_copy(hdr.addr3, vif->bss_conf.bssid);
-+		break;
-+	case IEEE80211_FCTL_FROMDS:
-+		ether_addr_copy(hdr.addr3, eth_hdr.h_source);
-+		break;
-+	case IEEE80211_FCTL_TODS:
-+		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
-+		break;
-+	case IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS:
-+		ether_addr_copy(hdr.addr3, eth_hdr.h_dest);
-+		ether_addr_copy(hdr.addr4, eth_hdr.h_source);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	skb_pull(skb, hdr_gap + sizeof(struct ethhdr) - 2);
-+	if (eth_hdr.h_proto == htons(ETH_P_AARP) ||
-+	    eth_hdr.h_proto == htons(ETH_P_IPX))
-+		ether_addr_copy(skb_push(skb, ETH_ALEN), bridge_tunnel_header);
-+	else if (eth_hdr.h_proto >= htons(ETH_P_802_3_MIN))
-+		ether_addr_copy(skb_push(skb, ETH_ALEN), rfc1042_header);
-+	else
-+		skb_pull(skb, 2);
-+
-+	if (ieee80211_has_order(hdr.frame_control))
-+		memcpy(skb_push(skb, 2), &ht_ctrl, 2);
-+	if (ieee80211_is_data_qos(hdr.frame_control))
-+		memcpy(skb_push(skb, 2), &qos_ctrl, 2);
-+	if (ieee80211_has_a4(hdr.frame_control))
-+		memcpy(skb_push(skb, sizeof(hdr)), &hdr, sizeof(hdr));
-+	else
-+		memcpy(skb_push(skb, sizeof(hdr) - 6), &hdr, sizeof(hdr) - 6);
-+
-+	status->flag &= ~(RX_FLAG_RADIOTAP_HE | RX_FLAG_RADIOTAP_HE_MU);
-+	return 0;
-+}
-+
- static int
- mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- {
-@@ -402,6 +478,7 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
- 	bool hdr_trans, unicast, insert_ccmp_hdr = false;
- 	u8 chfreq, qos_ctl = 0, remove_pad, amsdu_info;
-+	u16 hdr_gap;
- 	__le32 *rxv = NULL, *rxd = (__le32 *)skb->data;
- 	struct mt76_phy *mphy = &dev->mt76.phy;
- 	struct mt7921_phy *phy = &dev->phy;
-@@ -668,14 +745,21 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 		}
- 	}
- 
--	skb_pull(skb, (u8 *)rxd - skb->data + 2 * remove_pad);
--
- 	amsdu_info = FIELD_GET(MT_RXD4_NORMAL_PAYLOAD_FORMAT, rxd4);
- 	status->amsdu = !!amsdu_info;
- 	if (status->amsdu) {
- 		status->first_amsdu = amsdu_info == MT_RXD4_FIRST_AMSDU_FRAME;
- 		status->last_amsdu = amsdu_info == MT_RXD4_LAST_AMSDU_FRAME;
--		if (!hdr_trans) {
-+	}
-+
-+	hdr_gap = (u8 *)rxd - skb->data + 2 * remove_pad;
-+	if (hdr_trans && ieee80211_has_morefrags(fc)) {
-+		if (mt7921_reverse_frag0_hdr_trans(skb, hdr_gap))
-+			return -EINVAL;
-+		hdr_trans = false;
-+	} else {
-+		skb_pull(skb, hdr_gap);
-+		if (!hdr_trans && status->amsdu) {
- 			memmove(skb->data + 2, skb->data,
- 				ieee80211_get_hdrlen_from_skb(skb));
- 			skb_pull(skb, 2);
--- 
-2.18.0
+Bump - anybody interested in more information to see if we can track this one down.
 
+Since I have a vmcore from a kdump it might be a little easier to diagnose things.
+
+Dusty
