@@ -2,82 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8314444CB47
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 22:22:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81B4244CB59
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 22:38:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233333AbhKJVYz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Nov 2021 16:24:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51714 "EHLO
+        id S233444AbhKJVlO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Nov 2021 16:41:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233321AbhKJVYy (ORCPT
+        with ESMTP id S233321AbhKJVlO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Nov 2021 16:24:54 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B203C061766
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 13:22:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=jHDvXQcNzSSJDvWeCzvjymSINyy0TXUY90dc3Fz5hBs=; b=jwRtPQA4lGDm3MngjrRh7LmIUF
-        /aAORiaENwQ/hvyshYutFLaNeCrXKW32GXwMcZSYa0ZEcjZVCXcRh7BsWUOS+I7oS8HcjnRwmiy63
-        aEELbn1GSUgHyk04JVdBsOLDnG0bdVc34ZOM73RaaVcbLMhfzSfP9/R7r+PdwT9bRygg=;
-Received: from p54ae9f3f.dip0.t-ipconnect.de ([84.174.159.63] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1mkv2h-0006mT-Kk; Wed, 10 Nov 2021 22:22:03 +0100
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net, Mathy.Vanhoef@kuleuven.be
-Subject: [PATCH] mac80211: drop check for DONT_REORDER in __ieee80211_select_queue
-Date:   Wed, 10 Nov 2021 22:22:01 +0100
-Message-Id: <20211110212201.35452-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.30.1
+        Wed, 10 Nov 2021 16:41:14 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA6F9C061767
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 13:38:25 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id u11so9301888lfs.1
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 13:38:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=D1z6yFw1+0sjIG7f/nWzQHi2azAv8rrhzZz6SpWHNuM=;
+        b=WEIjO9suAw0S5n0/8xePw/9zyOCQ82BMKNODVfHoR78GTG3zeg6GkhFPCLJIsFCjvz
+         bJVm0yam2RSFMl3esknEdAS9ODHTqOy6amhxC12wyjiqlgdEelF/QpVTDjnrApktgtae
+         ZNBHIp4VnoNFbkYwJlv8VqK7o/V4J+shWCYxlKqY3dDyttmXnbPccPYE+njowYXo5fJX
+         qhDwePaO54X/c5iyD0ah9kw0f52od9wnZA3OOYLBr/7pH/AEmkc5xs5fotAaSDnUS+jK
+         P9nXANp5U4MtyprHHDl48a27zc++RXkCphZMYxvelIGof9UepJFEp4Ir631Sdg4LHk4A
+         hN1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=D1z6yFw1+0sjIG7f/nWzQHi2azAv8rrhzZz6SpWHNuM=;
+        b=VwXklvV1jkblIi34wg5TMsQbzjgupWllGJ6DSP3oTr5UX+GAOZ3H4jQbwP9eBRUY+R
+         V+EYBo397i2RM+x4flol/ZaaoIrOUn6JFgjdy5Bi941KoWmE5NW04+F/JbNaDtBwc1CJ
+         hHWh7FFQaqgvBdE4evox0uIOTGO4joaK7/RTReyN6HrP+L46kHa2iHvYCTee34i60Wcy
+         uVuRW1V21yEPajJbWG5bUkoZAgzHgt+nA1Dl7DH5WNrEGMA7Neo85V55R30Nf2zjvvzp
+         S3mR5cZ/wTia9FqCxtq5ienVAOW3g44HH3138SAliF2CJbMLUzBOY1zSY1NEYEeenm/l
+         NzeA==
+X-Gm-Message-State: AOAM533OOOOazkIFt2/IjWj6DWY82xHoC2gjvOgUe0wtVbaCvd9nQKH/
+        XEiolLGXFqaNi/n2v0FV7sLEMlWgiq2+pSGH+i7t1Q==
+X-Google-Smtp-Source: ABdhPJzjaFy5q9lDBd1wo9aZvGBOM/b8VEotHF5YZ79B0EbTM7S5RL5M93fguRMPKxqbWX/iwxlaCKZr5lO5Q3V9YmA=
+X-Received: by 2002:a05:6512:607:: with SMTP id b7mr2082726lfe.489.1636580303716;
+ Wed, 10 Nov 2021 13:38:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211104133735.1223989-1-arnd@kernel.org>
+In-Reply-To: <20211104133735.1223989-1-arnd@kernel.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 10 Nov 2021 13:38:11 -0800
+Message-ID: <CAKwvOd=vrUe7xWohkPZkfui2BM-uP2Q79v02NzTJs9XJJ1CTjw@mail.gmail.com>
+Subject: Re: [PATCH] iwlwifi: pcie: fix constant-conversion warning
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Yaara Baruch <yaara.baruch@intel.com>,
+        Matti Gottlieb <matti.gottlieb@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When __ieee80211_select_queue is called, skb->cb has not been cleared yet,
-which means that info->control.flags can contain garbage.
-In some cases this leads to IEEE80211_TX_CTRL_DONT_REORDER being set, causing
-packets marked for other queues to randomly end up in BE instead.
+On Thu, Nov 4, 2021 at 6:37 AM Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> clang points out a potential issue with integer overflow when
+> the iwl_dev_info_table[] array is empty:
+>
+> drivers/net/wireless/intel/iwlwifi/pcie/drv.c:1344:42: error: implicit conversion from 'unsigned long' to 'int' changes value from 18446744073709551615 to -1 [-Werror,-Wconstant-conversion]
+>         for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
+>                ~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+>
+> This is still harmless, as the loop correctly terminates, but adding
+> an (int) cast makes that clearer to the compiler.
+>
+> Fixes: 3f7320428fa4 ("iwlwifi: pcie: simplify iwl_pci_find_dev_info()")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> index c574f041f096..81e8f2fc4982 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> @@ -1341,7 +1341,7 @@ iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
+>  {
+>         int i;
+>
+> -       for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
+> +       for (i = (int)ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
 
-This flag only needs to be checked in ieee80211_select_queue_80211, since
-the radiotap parser is the only piece of code that sets it
+Perhaps `i` could be a `size_t` instead of an `int`?
 
-Fixes: 66d06c84730c ("mac80211: adhere to Tx control flag that prevents frame reordering")
-Cc: stable@vger.kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- net/mac80211/wme.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+size_t i = ARRAY_SIZE(iwl_dev_info_table);
+while (i--) {
+  ...
 
-diff --git a/net/mac80211/wme.c b/net/mac80211/wme.c
-index 9ea6004abe1b..62c6733e0792 100644
---- a/net/mac80211/wme.c
-+++ b/net/mac80211/wme.c
-@@ -143,7 +143,6 @@ u16 ieee80211_select_queue_80211(struct ieee80211_sub_if_data *sdata,
- u16 __ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
- 			     struct sta_info *sta, struct sk_buff *skb)
- {
--	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	struct mac80211_qos_map *qos_map;
- 	bool qos;
- 
-@@ -156,7 +155,7 @@ u16 __ieee80211_select_queue(struct ieee80211_sub_if_data *sdata,
- 	else
- 		qos = false;
- 
--	if (!qos || (info->control.flags & IEEE80211_TX_CTRL_DONT_REORDER)) {
-+	if (!qos) {
- 		skb->priority = 0; /* required for correct WPA/11i MIC */
- 		return IEEE80211_AC_BE;
- 	}
+>                 const struct iwl_dev_info *dev_info = &iwl_dev_info_table[i];
+>
+>                 if (dev_info->device != (u16)IWL_CFG_ANY &&
+> --
+> 2.29.2
+>
+
+
 -- 
-2.30.1
-
+Thanks,
+~Nick Desaulniers
