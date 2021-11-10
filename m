@@ -2,103 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD1144C106
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 13:11:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66F6644C178
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 13:41:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231551AbhKJMOi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Nov 2021 07:14:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38918 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231254AbhKJMOh (ORCPT
+        id S231723AbhKJMoA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Nov 2021 07:44:00 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:30280 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231232AbhKJMoA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Nov 2021 07:14:37 -0500
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9454C061766;
-        Wed, 10 Nov 2021 04:11:49 -0800 (PST)
-Received: by mail-pf1-x435.google.com with SMTP id x64so2486900pfd.6;
-        Wed, 10 Nov 2021 04:11:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Bd62kUhFHKorEdg0sPrkxQ7qB2nMKiUIB+3qfTaStf0=;
-        b=DXNNf6K83ULfqyjdU1hySEHbe4hiMeTVhtpocirou30jBV6NRaemNjAufpb0tBihXH
-         2DLCTDGVDwmndpCuL0aC+TyVpSh0yy+Tl74jpCmLyVKHLkx3smRG+s7UWFI85KXS/9+t
-         OCCn3trCcxjiJ4ZMMkpaxBIDqvctok7B3jDYyndKdUxHLDgGXKPlvUuRSUCnihxj1QJ4
-         V2cPeIS2lpgpcWx0aqOCAKjUO7y85sGSUKnMrF2jkc9EGBvaJ7RbL3wad61bmjg5f7gg
-         SJlnEcW7j5tEF//16yAuU9N++kKFJsjzLUrV9MaBfgBABUSy9bowEWa42WxhECguSn9Q
-         35Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Bd62kUhFHKorEdg0sPrkxQ7qB2nMKiUIB+3qfTaStf0=;
-        b=spN0YSUUZaxS5lajVZRXt/e1pnWbcTDgGg8b7qIOP3/SAzPV0lC8OnNbY94bAbuz4T
-         6NQTmHgDJtI1XPG4/NPVjP8HVG6RgmlPC6DzBxfyRW4w3V3KIuTDv5JT9q9eFR//WZMG
-         9vF0e+UQ3UIKtgL2f3HYSMOq8iU/HoAZe9TiYvdpoC/N4cu19Dpbo+YSvI0P3+1yCkwb
-         wrY/07NYS1O/5RqrowqDCJDDXd8vKb43P9012AYn/wMb5DqyEGFoiXcIBcird80hYJv6
-         WFZE9/5wAcyv8H5F0Iukjh+cdRhmDPFx47n4CF3LxL+/y2xe8WKO3AW8+wG0I9GDFv89
-         Xarw==
-X-Gm-Message-State: AOAM5330F2jzX3eHBTeKmxXEqxQEk+t7StSR1jj801VGHqCvHrzf7us3
-        jvtEwkccnn8qYBJqdncPark=
-X-Google-Smtp-Source: ABdhPJwr4wIOT77bNfmqObauPfPmEKjjSNks6dI4WNWcOOTv92WOABSsSJOe/B2ifrX8ypuaLuksyg==
-X-Received: by 2002:a05:6a00:10d1:b0:47b:aa9b:1e7a with SMTP id d17-20020a056a0010d100b0047baa9b1e7amr96981336pfu.57.1636546309355;
-        Wed, 10 Nov 2021 04:11:49 -0800 (PST)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id m19sm7935319pgh.75.2021.11.10.04.11.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Nov 2021 04:11:49 -0800 (PST)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: deng.changcheng@zte.com.cn
-To:     kvalo@codeaurora.org
-Cc:     davem@davemloft.net, kuba@kernel.org, deng.changcheng@zte.com.cn,
-        pkshih@realtek.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] rtw89: remove unneeded variable
-Date:   Wed, 10 Nov 2021 12:11:35 +0000
-Message-Id: <20211110121135.151187-1-deng.changcheng@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        Wed, 10 Nov 2021 07:44:00 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1636548073; h=Date: Message-ID: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=71jw/lvo7olzfBamJSKGYUkIRP6+OiLdjF2zXGUMSzE=;
+ b=AzS2Fbsvf76bXCNxpBDLUENrwkVvVV/HxGgBkxCTZILWH4kctEu3bUqQ5Znakrj9UDF+tWGD
+ 1705vjLiCQDLXuVAwfLM3hIOuUO5fd1lu1rf0S/o4Qdn8P8VCHBpBZ9aCezFviG5BQfJJlq2
+ Tx2zTPmUmJWvT1Pkbwn0+w4QUlo=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 618bbdd70f34c3436aef947b (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Nov 2021 12:40:55
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 655D7C43616; Wed, 10 Nov 2021 12:40:54 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2D745C4360D;
+        Wed, 10 Nov 2021 12:40:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 2D745C4360D
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/2] ath11k: convert ath11k_wmi_pdev_set_ps_mode() to
+ use
+ enum wmi_sta_ps_mode
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20211108123826.8463-1-kvalo@codeaurora.org>
+References: <20211108123826.8463-1-kvalo@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163654804727.31349.15237326190281352213.kvalo@codeaurora.org>
+Date:   Wed, 10 Nov 2021 12:40:54 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Changcheng Deng <deng.changcheng@zte.com.cn>
+Kalle Valo <kvalo@codeaurora.org> wrote:
 
-Fix the following coccicheck review:
-./drivers/net/wireless/realtek/rtw89/mac.c: 1096: 5-8: Unneeded variable
+> It's more descriptive to use the actual enum used by the firmware instead of a
+> boolean so change ath11k_wmi_pdev_set_ps_mode() to use a boolean.
+> 
+> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+> 
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Remove unneeded variable used to store return value.
+2 patches applied to ath-next branch of ath.git, thanks.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Changcheng Deng <deng.changcheng@zte.com.cn>
----
- drivers/net/wireless/realtek/rtw89/mac.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+af3d89649bb6 ath11k: convert ath11k_wmi_pdev_set_ps_mode() to use enum wmi_sta_ps_mode
+b2beffa7d9a6 ath11k: enable 802.11 power save mode in station mode
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 0171a5a7b1de..b93ac242b305 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1093,7 +1093,6 @@ static int cmac_func_en(struct rtw89_dev *rtwdev, u8 mac_idx, bool en)
- static int dmac_func_en(struct rtw89_dev *rtwdev)
- {
- 	u32 val32;
--	u32 ret = 0;
- 
- 	val32 = (B_AX_MAC_FUNC_EN | B_AX_DMAC_FUNC_EN | B_AX_MAC_SEC_EN |
- 		 B_AX_DISPATCHER_EN | B_AX_DLE_CPUIO_EN | B_AX_PKT_IN_EN |
-@@ -1107,7 +1106,7 @@ static int dmac_func_en(struct rtw89_dev *rtwdev)
- 		 B_AX_WD_RLS_CLK_EN);
- 	rtw89_write32(rtwdev, R_AX_DMAC_CLK_EN, val32);
- 
--	return ret;
-+	return 0;
- }
- 
- static int chip_func_en(struct rtw89_dev *rtwdev)
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20211108123826.8463-1-kvalo@codeaurora.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
