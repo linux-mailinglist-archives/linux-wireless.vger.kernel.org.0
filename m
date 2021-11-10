@@ -2,203 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08B1944BE17
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 10:52:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B3CD44BE2A
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 10:58:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230504AbhKJJyx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Nov 2021 04:54:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34642 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229831AbhKJJyu (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Nov 2021 04:54:50 -0500
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AA09C061764
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 01:52:03 -0800 (PST)
-Received: by mail-il1-x134.google.com with SMTP id l8so1861081ilv.3
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 01:52:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=t+lAFOyVdIksr8MunKT6lqiTF4RHOll8lIho7t9j0UU=;
-        b=ZSkEFvMWsebMRWDTvQdaFGQfVPqfk9hpsk5WiUuwGG+zMvGRVwl1HWf0YeeOlCG0mC
-         XoF146LDjHw866DB3TiOYROumcMyIhn0Hy+VV1wMAnYkFn8SE7kEUNPplJLXhdoThty9
-         6Cru9/IDIaLgCP6d9UGR5VMBI8cZVtruHVChKWm2+PWYsrI4HbexXcvDpOeGo0GEvsVm
-         /8/whhZ28dJdohtvr56LFdoBxzmICQTBVle2d9MbflYaL1zCpqg5hJu4SQz+KNWLOUS6
-         Bo640MB+rdDEDs4PGa4euaowMxvTosB2s3KOxiZo0/4FkZYSGmtQhoVvOSlAtGi61x8C
-         Prmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=t+lAFOyVdIksr8MunKT6lqiTF4RHOll8lIho7t9j0UU=;
-        b=udUp1yqB1WDIznefVjub6pel28Q4A/R7wNS1BirmlZUGyas0K859SQdjsEKM9A2Y1V
-         T1A52LV03aTEjrir4Kl7WDiMtSnlTvbNKo0tJcCwJf2xmUZViEV6kEqYziSYUIRxG7nU
-         zAgUl1aPtAA638JDuYMa3kNKosdjRgwMbUNqHVsZkvoUI3LsYKo5hIc+x61hCdxj//kG
-         aiEErx4G/IhNP4gN+Xsy75rlBwlgOv29d70/4txHxMAvYiZ81iIk+bJevIyGru+TiQ3g
-         YZ5l0pGhEOcsIQFb6H7tiHtFwzsAi5SCcUh53tUB6VNCsKVfQjloYngms0zBKHbM0MG1
-         FCKQ==
-X-Gm-Message-State: AOAM532FCRnRKZBHj6nHbMmW0YprzLOK0bXXZ73aqfraaJ7lSeZduGpg
-        1DjYF/lvrTMkUxJimdKivRsFHAYTKvNneZBd9ndJK29U
-X-Google-Smtp-Source: ABdhPJw/6FA0lZl9WBftCnyZEIF0CXvPqrmEZrxJBeljOsrbgG5XKlwXUIPjKhHjGkT3Ueq+Y9zjo+K00GuOPwDiTOg=
-X-Received: by 2002:a92:c562:: with SMTP id b2mr10234100ilj.30.1636537922719;
- Wed, 10 Nov 2021 01:52:02 -0800 (PST)
+        id S231126AbhKJKBm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Nov 2021 05:01:42 -0500
+Received: from m43-7.mailgun.net ([69.72.43.7]:53546 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230513AbhKJKBk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 10 Nov 2021 05:01:40 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1636538333; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=fcAghAoVZ0JxeVWaGkjHk7dhQU80Wv79lwRh7/w5leA=; b=YONSAFkIVy8MPKG2z45+r95oWH+g9iu1Quwgynf0h9lH1x46cg+RhfIjvsFA5Ud3X60ekyQV
+ 2zOP/cFtSfSFFAos1O/AgdsHgmAdR59spjFRI7jvoN6K6+ZOYLzwal5rwPk2xdMlMHBo1f3a
+ niEkXv0LXTgEfpVuA2JEKdGbNBs=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 618b97db0f34c3436a4a4aad (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Nov 2021 09:58:51
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8A01DC43616; Wed, 10 Nov 2021 09:58:50 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 85DE0C4338F;
+        Wed, 10 Nov 2021 09:58:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 85DE0C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     =?utf-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-mmc@vger.kernel.org,
+        Pali =?utf-8?Q?Roh?= =?utf-8?Q?=C3=A1r?= <pali@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH v7 05/24] wfx: add main.c/main.h
+References: <20210920161136.2398632-1-Jerome.Pouiller@silabs.com>
+        <87zgrl86cx.fsf@codeaurora.org> <87v92985ys.fsf@codeaurora.org>
+        <6117440.dvjIZRh6BQ@pc-42>
+Date:   Wed, 10 Nov 2021 11:58:41 +0200
+In-Reply-To: <6117440.dvjIZRh6BQ@pc-42> (=?utf-8?B?IkrDqXLDtG1l?=
+ Pouiller"'s message of "Thu,
+        07 Oct 2021 13:22:14 +0200")
+Message-ID: <87lf1wnxgu.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <20210811105541.43426-1-emmanuel.grumbach@intel.com>
- <20210811105541.43426-2-emmanuel.grumbach@intel.com> <87tuhevbx2.fsf@codeaurora.org>
- <CANUX_P2e80pVMJJRUuyPGoXZtYGMM9pJWqd5Ut6rW3aDRmr7cQ@mail.gmail.com>
- <87lf2of69j.fsf@codeaurora.org> <CANUX_P1h3rL8i7K_V5VKtO3A=6voL_GR8C+6u0kBosGDmU_vBg@mail.gmail.com>
- <87pmr8nyb7.fsf@codeaurora.org>
-In-Reply-To: <87pmr8nyb7.fsf@codeaurora.org>
-From:   Emmanuel Grumbach <egrumbach@gmail.com>
-Date:   Wed, 10 Nov 2021 11:51:51 +0200
-Message-ID: <CANUX_P137LnjGus5oO2JYyau-kMsAUOPZPx5JP_UW1jAjUC0ig@mail.gmail.com>
-Subject: Re: [PATCH v6 2/7] iwlwifi: mei: add the driver to allow cooperation
- with CSME
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Nov 10, 2021 at 11:40 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Emmanuel Grumbach <egrumbach@gmail.com> writes:
->
-> >>
-> >> Emmanuel Grumbach <egrumbach@gmail.com> writes:
-> >>
-> >> > On Mon, Oct 18, 2021 at 1:58 PM Kalle Valo <kvalo@codeaurora.org> wrote:
-> >> >>
-> >> >> Emmanuel Grumbach <emmanuel.grumbach@intel.com> writes:
-> >> >>
-> >> >> > CSME in two words
-> >> >> > -----------------
-> >> >> > CSME stands for Converged Security and Management Engine. It is
-> >> >> > a CPU on the chipset and runs a dedicated firmware.
-> >> >> > AMT (Active Management Technology) is one of the applications
-> >> >> > that run on that CPU. AMT allows to control the platform remotely.
-> >> >> > Here is a partial list of the use cases:
-> >> >> > * View the screen of the plaform, with keyboard and mouse (KVM)
-> >> >> > * Attach a remote IDE device
-> >> >> > * Have a serial console to the device
-> >> >> > * Query the state of the platform
-> >> >> > * Reset / shut down / boot the platform
-> >> >>
-> >> >> [...]
-> >> >>
-> >> >> > --- a/drivers/net/wireless/intel/iwlwifi/Kconfig
-> >> >> > +++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
-> >> >> > @@ -92,6 +92,23 @@ config IWLWIFI_BCAST_FILTERING
-> >> >> >         If unsure, don't enable this option, as some programs might
-> >> >> >         expect incoming broadcasts for their normal operations.
-> >> >> >
-> >> >> > +config IWLMEI
-> >> >> > +     tristate "Intel Management Engine communication over WLAN"
-> >> >> > +     depends on INTEL_MEI
-> >> >> > +     depends on PM
-> >> >> > +     depends on IWLMVM
-> >> >> > +     help
-> >> >> > +       Enables the iwlmei kernel module. This allows to communicate with
-> >> >> > +       the Intel Management Engine over Wifi. This is supported starting
-> >> >> > +       from Tiger Lake platforms and has been tested on 9260 devices only.
-> >> >> > +       Enabling this option on a platform that has a different device and
-> >> >> > +       has Wireless enabled on AMT can prevent WiFi from working correctly.
-> >> >>
-> >> >> I don't understand the last sentence, please elaborate. Are you saying
-> >> >> that enabling CONFIG_IWLMEI will break wi-fi in some cases?
-> >> >
-> >> > Since we don't support all the devices (yet), and we haven't integrated it
-> >> > with all our devices, then yes, it shouldn't be enabled unless you know
-> >> > exactly what platform this kernel runs on.
-> >>
-> >> So if I'm understanding correctly, enabling CONFIG_IWLMEI will break
-> >> existing iwlwifi setups? Or am I missing something?
-> >
-> > Ok, I'll share more details.
-> > The coexistence between iwlwifi and CSME has never really been taken care
-> > of. CSME is a feature meant for enterprise and those systems typically run
-> > Windows which is why the Windows driver has had this feature for years
-> > but not Linux.
-> > iwlmei will not do anything if you don't have CSME configured to use the
-> > WLAN device. Someone needs to actively configure CSME to use WLAN for
-> > this to happen. Very few systems have this configuration.
->
-> So in a case when CSME/AMT WLAN (or whatever the feature under
-> discussion is called) is disabled in the BIOS and CONFIG_IWLMEI is
-> enabled in the kernel build, iwlwifi will work as before? This is the
-> most important part for me, we must not break people's network access
-> when they upgrade the kernel.
+J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
 
-Yes.
-We need another fix that is not in v7 for a bug we found in our testing, but
-when the user doesn't use AMT, nothing will happen even if IWLMEI is compiled.
+> On Thursday 7 October 2021 12:49:47 CEST Kalle Valo wrote:
+>> CAUTION: This email originated from outside of the organization. Do
+>> not click links or open attachments unless you recognize the sender
+>> and know the content is safe.
+>>=20
+>>=20
+>> Kalle Valo <kvalo@codeaurora.org> writes:
+>>=20
+>> > J=C3=A9r=C3=B4me Pouiller <jerome.pouiller@silabs.com> writes:
+>> >
+>> >>> >> >> I'm not really fond of having this kind of ASCII based parser =
+in the
+>> >>> >> >> kernel. Do you have an example compressed file somewhere?
+>> >>> >> >
+>> >>> >> > An example of uncompressed configuration file can be found here=
+[1]. Once
+>> >>> >> > compressed with [2], you get:
+>> >>> >> >
+>> >>> >> >     {a:{a:4,b:1},b:{a:{a:4,b:0,c:0,d:0,e:A},b:{a:4,b:0,c:0,d:0,=
+e:B},c:{a:4,b:0,c:0,d:0,e:C},d:{a:4,b:0,c:0,d:0,e:D},e:{a:4,b:0,c:0,d:0,e:E=
+},f:{a:4,b:0,c:0,d:0,e:F},g:{a:4,b:0,c:0,d:0,e:G},h:{a:4,b:0,c:0,d:0,e:H},i=
+:{a:4,b:0,c:0,d:0,e:I},j:{a:4,b:0,c:0,d:0,e:J},k:{a:4,b:0,c:0,d:0,e:K},l:{a=
+:4,b:0,c:0,d:1,e:L},m:{a:4,b:0,c:0,d:1,e:M}},c:{a:{a:4},b:{a:6},c:{a:6,c:0}=
+,d:{a:6},e:{a:6},f:{a:6}},e:{b:0,c:1},h:{e:0,a:50,b:0,d:0,c:[{a:1,b:[0,0,0,=
+0,0,0]},{a:2,b:[0,0,0,0,0,0]},{a:[3,9],b:[0,0,0,0,0,0]},{a:A,b:[0,0,0,0,0,0=
+]},{a:B,b:[0,0,0,0,0,0]},{a:[C,D],b:[0,0,0,0,0,0]},{a:E,b:[0,0,0,0,0,0]}]},=
+j:{a:0,b:0}}
+>> >>> >>
+>> >>> >> So what's the grand idea with this braces format? I'm not getting=
+ it.
+>> >>> >
+>> >>> >   - It allows to describe a tree structure
+>> >>> >   - It is ascii (easy to dump, easy to copy-paste)
+>> >>> >   - It is small (as I explain below, size matters)
+>> >>> >   - Since it is similar to JSON, the structure is obvious to many =
+people
+>> >>> >
+>> >>> > Anyway, I am not the author of that and I have to deal with it.
+>> >>>
+>> >>> I'm a supported for JSON like formats, flexibility and all that. But
+>> >>> they belong to user space, not kernel.
+>> >>>
+>> >>> >> Usually the drivers just consider this kind of firmware configura=
+tion
+>> >>> >> data as a binary blob and dump it to the firmware, without knowin=
+g what
+>> >>> >> the data contains. Can't you do the same?
+>> >>> >
+>> >>> > [I didn't had received this mail :( ]
+>> >>> >
+>> >>> > The idea was also to send it as a binary blob. However, the firmwa=
+re use
+>> >>> > a limited buffer (1500 bytes) to parse it. In most of case the PDS=
+ exceeds
+>> >>> > this size. So, we have to split the PDS before to send it.
+>> >>> >
+>> >>> > Unfortunately, we can't split it anywhere. The PDS is a tree struc=
+ture and
+>> >>> > the firmware expects to receive a well formatted tree.
+>> >>> >
+>> >>> > So, the easiest way to send it to the firmware is to split the tree
+>> >>> > between each root nodes and send each subtree separately (see also=
+ the
+>> >>> > comment above wfx_send_pds()).
+>> >>> >
+>> >>> > Anyway, someone has to cook this configuration before to send it t=
+o the
+>> >>> > firmware. This could be done by a script outside of the kernel. Th=
+en we
+>> >>> > could change the input format to simplify a bit the processing in =
+the
+>> >>> > kernel.
+>> >>>
+>> >>> I think a binary file with TLV format would be much better, but I'm =
+sure
+>> >>> there also other good choises.
+>> >>>
+>> >>> > However, the driver has already some users and I worry that changi=
+ng
+>> >>> > the input format would lead to a mess.
+>> >>>
+>> >>> You can implement a script which converts the old format to the new
+>> >>> format. And you can use different naming scheme in the new format so
+>> >>> that we don't accidentally load the old format. And even better if y=
+ou
+>> >>> add a some kind of signature in the new format and give a proper err=
+or
+>> >>> from the driver if it doesn't match.
+>> >>
+>> >> Ok. I am going to change the input format. I think the new function is
+>> >> going to look like:
+>> >>
+>> >> int wfx_send_pds(struct wfx_dev *wdev, u8 *buf, size_t buf_len)
+>> >> {
+>> >>      int ret;
+>> >>      int start =3D 0;
+>> >>
+>> >>      if (buf[start] !=3D '{') {
+>> >>              dev_err(wdev->dev, "valid PDS start with '{'. Did you fo=
+rget to compress it?\n");
+>> >>              return -EINVAL;
+>> >>      }
+>> >>      while (start < buf_len) {
+>> >>              len =3D strnlen(buf + start, buf_len - start);
+>> >>              if (len > WFX_PDS_MAX_SIZE) {
+>> >>                      dev_err(wdev->dev, "PDS chunk is too big (legacy=
+ format?)\n");
+>> >>                      return -EINVAL;
+>> >>              }
+>> >>              dev_dbg(wdev->dev, "send PDS '%s'\n", buf + start);
+>> >>              ret =3D wfx_hif_configuration(wdev, buf + start, len);
+>> >>              /* FIXME: Add error handling here */
+>> >>              start +=3D len;
+>> >>      }
+>> >>      return 0;
+>> >
+>> > Did you read at all what I wrote above? Please ditch the ASCII format
+>> > completely.
+>>=20
+>> Sorry, I read this too hastily. I just saw "buf[start] !=3D '{'" and
+>> assumed this is the same ASCII format, but not sure anymore. Can you
+>> explain what changes you made now?
+>
+> The script I am going to write will compute where the PDS have to be split
+> (this work is currently done by the driver). The script will add a
+> separating character (let's say '\0') between each chunk.
+>
+> The driver will just have to find the separating character, send the
+> chunk and repeat.
 
->
-> > Now the question is what happens today (without iwlmei) when CSME is
-> > configured to use WLAN compared to what happens with iwlmei, or in other
-> > words, do we have a "regression"?
-> >
-> > Today: there is some mechanism that allows iwlwifi to tell CSME not to touch
-> > the device. This mechanism is not very well tested because only Linux uses it
-> > and the assumption in Linux has almost always been that CSME is not
-> > configured on systems that run Linux.
-> >
-> > with iwlmei: we will be using the same interface as windows towards CSME which
-> > is a well tested interface and we will be able to use the features
-> > that CSME provides
-> >
-> > Why the warning then? The integration with CSME has been done on 9260
-> > only and not on newer devices. We do have plans to add support for
-> > more devices but the current code doesn't support them.
-> >
-> > What will happen if a user enables iwlmei on a system that has a
-> > post-9260 device and CSME configured to use WLAN? Most probably, it'll
-> > work, but this has not been tested yet
->
-> I hope you are printing an understandable info message when CSME is
-> enabled so that the situation is easy to notice and debug.
->
-> > This configuration is far from the default and considered illegal by
-> > Intel at this point I know that a user can always do something stupid,
-> > but he can likewise disable mac80211 and complain that his wifi
-> > doesn't work.
->
-> A user cannot compile iwlwifi unless mac80211 is enabled and likewise
-> iwlwifi module won't load unless mac80211 is loaded first. So we do have
-> checks for a lot of stuff.
->
-> > My suggestion is to add a WARNING (or an dev_err print) in iwlwifi if
-> > we detect this situation so that it'll be very easy to catch this
-> > problem in the configuration.
->
-> Heh, exactly what I was thinking above.
+I would forget ASCII altogether and implement a proper binary format
+like TLV. For example, ath10k uses TLV with board-2.bin files (grep for
+enum ath10k_bd_ie_type).
 
-No problem. I'll do that.
-Our testing teams are right now working on testing more devices.
+Also I recommend changing the file "signature" ('{') to something else
+so that the driver detects incorrect formats. And maybe even use suffix
+.pds2 or something like that to make it more obvious and avoid
+confusion?
 
->
-> > The only way to prevent this situation would be to know what device
-> > the user has from iwlmei in the mei bus enumeration but this is
-> > unfortunately not possible.
-> >
-> > I hope that made things clearer. I know all this is confusing, many
-> > pieces of details that I hoped I wouldn't have to bore you with :)
->
-> It would have been a lot easier and faster to mention all this in the
-> commit logs from the beginning. Dumping me patches without commit logs
-> and no clear explanation is not really building confidence for me.
->
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-I understand. There are loads of details and I didn't really want to bother you
-with all of them, I guess I now know that you are the type of person who want
-the details and I'll be clearer the next time.
-
-Practically speaking, I owe you a v8 with the WARNING I mentioned plus
-the bugfix
-I talked about.
-
-Do you want it now or you want me to wait for more comments?
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
