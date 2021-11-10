@@ -2,165 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 589C944C2E9
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 15:23:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78FF244C379
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 15:57:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231731AbhKJO0h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Nov 2021 09:26:37 -0500
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:14849 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231340AbhKJO0g (ORCPT
+        id S232354AbhKJPAc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Nov 2021 10:00:32 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:40260 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232332AbhKJPA1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Nov 2021 09:26:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1636554229; x=1668090229;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=q3qNSKFcQq+TiIPXfvsf2+AVEG8VEuKs5xVYnQ4oWI0=;
-  b=SXVxYax89RRZWTSPmQQhljDYPqbb28zD3zYL5HKIsQpzvmzUBUgWYVO9
-   mFnmNWQxxHg3BO6taAjTlhP7nBOUzM+/1FLyx0/Z0JvsOfBnw4RG+wcOp
-   /T4FXYOTpwrvfYKJUEb9Z8le/+uNsJ9PMaXa22KPd2dJvunkI0RV9yhVq
-   A=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 10 Nov 2021 06:23:48 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2021 06:23:48 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
- Wed, 10 Nov 2021 06:23:48 -0800
-Received: from periyasa-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
- Wed, 10 Nov 2021 06:23:45 -0800
-From:   Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Subject: [PATCH] ath11k: fix fw crash due to peer get authorized before key install
-Date:   Wed, 10 Nov 2021 19:53:20 +0530
-Message-ID: <1636554200-12345-1-git-send-email-quic_periyasa@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+        Wed, 10 Nov 2021 10:00:27 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1636556260; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=dmIHW85tjPyxELq9nBNqjGH0mPhL4e4EOmNfAyJp0cs=; b=c+MTui/krbmzHbPtt3iHfLSFCyNHYJ2mWgnXgYl7YnYsWcw3Rd46LsEd6fxZqvdsepximL2G
+ xcGjSMCO8PVTBwmLS0irX+r3iNhMeLky8mjFwxORLlLUUiqTPxx50vdZM39Nipi2L/3Lc/Ww
+ B8fs2wrQFlz0oVi01ot2eig6B1Y=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 618bddbca4b510b38f197fe8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Nov 2021 14:57:00
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A7573C43616; Wed, 10 Nov 2021 14:56:58 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 32A49C4338F;
+        Wed, 10 Nov 2021 14:56:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 32A49C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Zekun Shen <bruceshenzk@gmail.com>
+Cc:     Pontus Fuchs <pontus.fuchs@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ar5523: Fix null-ptr-deref with unexpected WDCMSG_TARGET_START  =?ISO-8859-1?Q?=20r?=
+        =?ISO-8859-1?Q?eply=1B?=
+References: <YXsmPQ3awHFLuAj2@10-18-43-117.dynapool.wireless.nyu.edu>
+        <87tuh0xz9h.fsf@tynnyri.adurom.net>
+        <YXv82KfKCW3eHhE6@Zekuns-MBP-16.fios-router.home>
+Date:   Wed, 10 Nov 2021 16:56:52 +0200
+In-Reply-To: <YXv82KfKCW3eHhE6@Zekuns-MBP-16.fios-router.home> (Zekun Shen's
+        message of "Fri, 29 Oct 2021 09:53:28 -0400")
+Message-ID: <87czn8m53f.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Firmware expects host to authorize the peer after the successful key
-install. But host authorize the peer before the key install, this trigger
-the firmware assert which leads to Q6 crash. To avoid this Q6 crash, host
-should authorize the peer after the key install. So introduce is_authorized
-in peer object to identify that peer is authorize or not. When
-IEEE80211_STA_CONTROL_PORT flag is unset, peer move to authorize state
-before the vdev up. When the same flag is set then peer move to authorize
-state after vdev up. So added authorise check in ath11k_bss_assoc() to
-handle the earlier state transition case. Also added the WMI authorize
-procedure in ath11k_mac_op_sta_state() to handle the non-earlier state
-transition case.
+Zekun Shen <bruceshenzk@gmail.com> writes:
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01492-QCAHKSWPL_SILICONZ-1
+> On Fri, Oct 29, 2021 at 06:53:30AM +0300, Kalle Valo wrote:
+>> Zekun Shen <bruceshenzk@gmail.com> writes:
+>> 
+>> > Unexpected WDCMSG_TARGET_START replay can lead to null-ptr-deref
+>> > when ar->tx_cmd->odata is NULL. The patch adds a null check to
+>> > prevent such case.
+>> >
+>> > KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+>> >  ar5523_cmd+0x46a/0x581 [ar5523]
+>> >  ar5523_probe.cold+0x1b7/0x18da [ar5523]
+>> >  ? ar5523_cmd_rx_cb+0x7a0/0x7a0 [ar5523]
+>> >  ? __pm_runtime_set_status+0x54a/0x8f0
+>> >  ? _raw_spin_trylock_bh+0x120/0x120
+>> >  ? pm_runtime_barrier+0x220/0x220
+>> >  ? __pm_runtime_resume+0xb1/0xf0
+>> >  usb_probe_interface+0x25b/0x710
+>> >  really_probe+0x209/0x5d0
+>> >  driver_probe_device+0xc6/0x1b0
+>> >  device_driver_attach+0xe2/0x120
+>> >
+>> > Signed-off-by: Zekun Shen <bruceshenzk@gmail.com>
+>> 
+>> How did you test this?
+>
+> I found the bug using a custome USBFuzz port. It's a research work
+> to fuzz USB stack/drivers. I modified it to fuzz ath9k driver only,
+> providing hand-crafted usb descriptors to QEMU.
+>
+> After fixing the code (fourth byte in usb packet) to WDCMSG_TARGET_START, 
+> I got the null-ptr-deref bug. I believe the bug is triggerable whenever
+> cmd->odata is NULL. After patching, I tested with the same input and no
+> longer see the KASAN report.
 
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c  | 53 +++++++++++++++++++++++++++++-----
- drivers/net/wireless/ath/ath11k/peer.h |  1 +
- 2 files changed, 47 insertions(+), 7 deletions(-)
+Ok, so you didn't test this on a real device at all. I'll mention that
+in the commit log and also copy what you wrote above.
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 50a6f88..5d860fe 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -2397,6 +2397,8 @@ static void ath11k_bss_assoc(struct ieee80211_hw *hw,
- 	struct ath11k_vif *arvif = (void *)vif->drv_priv;
- 	struct peer_assoc_params peer_arg;
- 	struct ieee80211_sta *ap_sta;
-+	struct ath11k_peer *peer;
-+	bool is_auth = false;
- 	int ret;
- 
- 	lockdep_assert_held(&ar->conf_mutex);
-@@ -2458,13 +2460,22 @@ static void ath11k_bss_assoc(struct ieee80211_hw *hw,
- 		   "mac vdev %d up (associated) bssid %pM aid %d\n",
- 		   arvif->vdev_id, bss_conf->bssid, bss_conf->aid);
- 
--	/* Authorize BSS Peer */
--	ret = ath11k_wmi_set_peer_param(ar, arvif->bssid,
--					arvif->vdev_id,
--					WMI_PEER_AUTHORIZE,
--					1);
--	if (ret)
--		ath11k_warn(ar->ab, "Unable to authorize BSS peer: %d\n", ret);
-+	spin_lock_bh(&ar->ab->base_lock);
-+
-+	peer = ath11k_peer_find(ar->ab, arvif->vdev_id, arvif->bssid);
-+	if (peer && peer->is_authorized)
-+		is_auth = true;
-+
-+	spin_unlock_bh(&ar->ab->base_lock);
-+
-+	if (is_auth) {
-+		ret = ath11k_wmi_set_peer_param(ar, arvif->bssid,
-+						arvif->vdev_id,
-+						WMI_PEER_AUTHORIZE,
-+						1);
-+		if (ret)
-+			ath11k_warn(ar->ab, "Unable to authorize BSS peer: %d\n", ret);
-+	}
- 
- 	ret = ath11k_wmi_send_obss_spr_cmd(ar, arvif->vdev_id,
- 					   &bss_conf->he_obss_pd);
-@@ -4131,6 +4142,34 @@ static int ath11k_mac_op_sta_state(struct ieee80211_hw *hw,
- 			ath11k_warn(ar->ab, "Failed to associate station: %pM\n",
- 				    sta->addr);
- 	} else if (old_state == IEEE80211_STA_ASSOC &&
-+		   new_state == IEEE80211_STA_AUTHORIZED) {
-+		spin_lock_bh(&ar->ab->base_lock);
-+
-+		peer = ath11k_peer_find(ar->ab, arvif->vdev_id, sta->addr);
-+		if (peer)
-+			peer->is_authorized = true;
-+
-+		spin_unlock_bh(&ar->ab->base_lock);
-+
-+		if (vif->type == NL80211_IFTYPE_STATION && arvif->is_up) {
-+			ret = ath11k_wmi_set_peer_param(ar, sta->addr,
-+							arvif->vdev_id,
-+							WMI_PEER_AUTHORIZE,
-+							1);
-+			if (ret)
-+				ath11k_warn(ar->ab, "Unable to authorize peer %pM vdev %d: %d\n",
-+					    sta->addr, arvif->vdev_id, ret);
-+		}
-+	} else if (old_state == IEEE80211_STA_AUTHORIZED &&
-+		   new_state == IEEE80211_STA_ASSOC) {
-+		spin_lock_bh(&ar->ab->base_lock);
-+
-+		peer = ath11k_peer_find(ar->ab, arvif->vdev_id, sta->addr);
-+		if (peer)
-+			peer->is_authorized = false;
-+
-+		spin_unlock_bh(&ar->ab->base_lock);
-+	} else if (old_state == IEEE80211_STA_ASSOC &&
- 		   new_state == IEEE80211_STA_AUTH &&
- 		   (vif->type == NL80211_IFTYPE_AP ||
- 		    vif->type == NL80211_IFTYPE_MESH_POINT ||
-diff --git a/drivers/net/wireless/ath/ath11k/peer.h b/drivers/net/wireless/ath/ath11k/peer.h
-index 619db00..63fe566 100644
---- a/drivers/net/wireless/ath/ath11k/peer.h
-+++ b/drivers/net/wireless/ath/ath11k/peer.h
-@@ -28,6 +28,7 @@ struct ath11k_peer {
- 	u8 ucast_keyidx;
- 	u16 sec_type;
- 	u16 sec_type_grp;
-+	bool is_authorized;
- };
- 
- void ath11k_peer_unmap_event(struct ath11k_base *ab, u16 peer_id);
 -- 
-2.7.4
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
