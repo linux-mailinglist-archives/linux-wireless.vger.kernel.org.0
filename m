@@ -2,191 +2,184 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8321344BC9A
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 09:09:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E62644BDF3
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 10:40:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230031AbhKJIM3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Nov 2021 03:12:29 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:7556 "EHLO
-        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229582AbhKJIM2 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Nov 2021 03:12:28 -0500
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AA72bGI003762;
-        Wed, 10 Nov 2021 08:09:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : content-type : mime-version; s=corp-2021-07-09;
- bh=PldHrQXhHPwh4YE6rMcTWdlWoyQue8Lqro8luknb/3Q=;
- b=0DlvuDnqOvWy8J/X0eEYMGK/gJIuG9QvLLB7kn11pOJykNAg6V2vdP//GRo4lqEFFnAL
- inuo5i8N/OGGib9fLQ6RpfC38/DduseOTFpHXxh92jQ/tVt15HBL7pkmRDGgt5y/azii
- rpcYNcv7+riTYiiH8d2Ws/TE494YGU/nONMVzkYhC0G4tRWuJisLxi9vUV/hvBbaArVJ
- 9BbV5gcZLdmOg0Duk3jb6abYHPcttQWoq2vU99h1bzBRwSOf5PKt1WUPlSrrTKAPDImR
- RJqC8+14uuio6VvttfDcYMIKaqZ5EGhv6Z3EvYiT7zyYHSAdHr0VHMyUQ6DyUYJyexz4 xQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3c87vxgqea-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 10 Nov 2021 08:09:37 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 1AA81QgO088594;
-        Wed, 10 Nov 2021 08:09:36 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2102.outbound.protection.outlook.com [104.47.55.102])
-        by userp3030.oracle.com with ESMTP id 3c842bvyw8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 10 Nov 2021 08:09:36 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d5P3ihZ952dhjIsdiiWSRiBeknP6ypHgMlcX/A+Q6r1eQrG2IKbn76/VLjV6hkc+3AYMaLvNAkxhRr+HmZdqB68hnZ3AR6gDcxCTtiQ2WpOI5bWITU3U+oE3rKzocb+BNAjlv//VOKU6VjyCXK6O8iUl6OUiuTkqP4gBWiqbqNNVI4KygRCN7rFMNB7gItFBO+1xMk2CqA6RFQeYbVvXAudvW7DdLH9r5/AkdXMkesuS7uuA6AL+UapjYmtk/X4E1PpFwwp43JjPvMY5Ozijyrd5Dj8yxYewnhSmXLRozFpKy29wQy0qwRwjOkmXKdh4QfPbfrOy5IYw2mS1f3i+WA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PldHrQXhHPwh4YE6rMcTWdlWoyQue8Lqro8luknb/3Q=;
- b=TIYHH31givOQDxqJFgSduYzRkf4ddxKa7aNCLbu0GSktd/1W0edz5lIP/d1EFEkv8qg2lvBJHWzZ+2qgUcuYcbsb02jF8sAKBABK10QdS4VPgFk/9/M9uzr2S7D0D/BNAK3ahwHVztYnYv0TL1sxQCRrV0dhvhuWlhOZTUYwV+q5Ui31IP4Ze/WBS0sQDP/DMv2WWVILWBM/+k/pznJ3q0PZUl8TVdRxj9TcoeTZBLLSvj9BQXZDIgQRcmtnhp+mI5zFBZnHExlb4RVFyM7vrEvOrm88aM97BgEbkAFAvvwN2I+Z9J/jcedYDii3pPdFG5xb24EAr9q5A+5YPu8kYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PldHrQXhHPwh4YE6rMcTWdlWoyQue8Lqro8luknb/3Q=;
- b=vt6+A680+2H53q8D4QH3vLzokI+z61bXoawv4D3uM6/sZS2U2p1/0pi0AuaIwv6SUHX1COgfxCc3d4xStjHbwnEEzmPYEuBP2/+imlJgwAStvbKZH3QlR96QYlrZa8/T/iCvY0eA2kZWxYJRrMBDHA43HQ/+MPNUEQLhaXDZ9Ms=
-Authentication-Results: intel.com; dkim=none (message not signed)
- header.d=none;intel.com; dmarc=none action=none header.from=oracle.com;
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28) by MWHPR10MB1950.namprd10.prod.outlook.com
- (2603:10b6:300:10d::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4669.11; Wed, 10 Nov
- 2021 08:09:34 +0000
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::d409:11b5:5eb2:6be9]) by MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::d409:11b5:5eb2:6be9%5]) with mapi id 15.20.4690.016; Wed, 10 Nov 2021
- 08:09:34 +0000
-Date:   Wed, 10 Nov 2021 11:09:22 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Luca Coelho <luciano.coelho@intel.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Ayala Beker <ayala.beker@intel.com>,
-        Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] iwlwifi: mvm: clean up indenting in
- iwl_mvm_tlc_update_notif()
-Message-ID: <20211110080922.GF5176@kili>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: AM6PR10CA0004.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:209:89::17) To MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28)
+        id S230404AbhKJJno (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Nov 2021 04:43:44 -0500
+Received: from m43-7.mailgun.net ([69.72.43.7]:54447 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229456AbhKJJno (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 10 Nov 2021 04:43:44 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1636537257; h=Content-Type: MIME-Version: Message-ID: Date:
+ References: Subject: Cc: To: From: Sender;
+ bh=07QO91JxyxAYVQJxcDkyKDoiZGFWNy5xnj8FuOfbkAQ=; b=YtxxrB3SGdoelPAJ1rdlmM8zSsm9GWQaWTX4nEaxmlIpqAWsnf+KCrMy+BYzMRjaM9TLgfU7
+ X0nnLUjeL/Ybknd9S4h9a+OKEkVHxgWthxJONc4fNh34RmjMlKSZDPsLgRRAgyVJwdvB51rI
+ DRkWVd/QtF4WXEI36loKqpXEqmg=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 618b93920f34c3436a3c4e7d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 10 Nov 2021 09:40:34
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7AC6CC43460; Wed, 10 Nov 2021 09:40:33 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6F2B1C4338F;
+        Wed, 10 Nov 2021 09:40:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 6F2B1C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Emmanuel Grumbach <egrumbach@gmail.com>
+Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v6 2/7] iwlwifi: mei: add the driver to allow cooperation with CSME
+References: <20210811105541.43426-1-emmanuel.grumbach@intel.com>
+        <20210811105541.43426-2-emmanuel.grumbach@intel.com>
+        <87tuhevbx2.fsf@codeaurora.org>
+        <CANUX_P2e80pVMJJRUuyPGoXZtYGMM9pJWqd5Ut6rW3aDRmr7cQ@mail.gmail.com>
+        <87lf2of69j.fsf@codeaurora.org>
+        <CANUX_P1h3rL8i7K_V5VKtO3A=6voL_GR8C+6u0kBosGDmU_vBg@mail.gmail.com>
+Date:   Wed, 10 Nov 2021 11:40:28 +0200
+Message-ID: <87pmr8nyb7.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Received: from kili (102.222.70.114) by AM6PR10CA0004.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:209:89::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4690.15 via Frontend Transport; Wed, 10 Nov 2021 08:09:30 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d7c961a2-436c-4fc9-a7dc-08d9a4216e34
-X-MS-TrafficTypeDiagnostic: MWHPR10MB1950:
-X-Microsoft-Antispam-PRVS: <MWHPR10MB19509BE0291319D6BC0E77E08E939@MWHPR10MB1950.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:317;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: o94e324xoCbjzrKe1NJBjQs2LQoCWXWcB88wNGXR9su87tIs5urzvUgWeSWeqWUkmC1plEKSj0pxWokLBa8a1FQ4Kxt5tKBNj0d+EpO7oP7KWeMf9ONVk8lskBRlag2rt9vjtgp8TVxwhQlmFuwD7RFxMbR3ZdfGgxejTF1kK/GLxK1OygCou1H/U/QVAmHohyNIyc4fPrsu3dLo5GLPYOtORixB/VA8iu1kfUybW2VtaU5x0+cJQ93jeHt2nQ9MOfWP6grXl0g45Qz0FHYBeR8Mt5ZtClJMHrgGHzM970UbyOvDT6wSpuOF9DeVc3QQ0ku77yqOVAzyKvAH1FLoznUzt7NATWQa6Yt33+2TEGH9AS1G6y/TUBSHA2DfPC9CPd62idsL7zrekUd4mBqAceKVtRf7oD9z7iiWmWOiHf3AldpRA4MILyGernCKKgUnptKxo2J1x8SxqXh5xxp2y9CBz0edlR61+axchBEx4ukZIdstXoq1WIxHNWTDrfpqtQItyTSkf0z4x51WMw3KaasBYRZqTLho0qo6pdO1qaUFKEkwBUCdMd9G2RFJQmPNW93azf64Zcqj9REcUhctbW1154p5q3mC9HEAkZZvUmbL/S3AtLCFM2Y7ZPvBwNVbImynJ51m3d7R9Rhx/qfdxzCKVioZEMeSxcrw5kSGuSLekgIIPGNdFo9oPpYPNm7XGuhTk0oH9X5IjBkOFG8Ddg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(38350700002)(186003)(38100700002)(8676002)(6666004)(2906002)(33656002)(66556008)(1076003)(6916009)(86362001)(4326008)(66946007)(5660300002)(66476007)(33716001)(54906003)(9576002)(508600001)(956004)(55016002)(26005)(83380400001)(52116002)(6496006)(9686003)(8936002)(44832011)(316002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?B9SdfBZInQ5pTYqiSHORnQxCP48Wmpo2nudjAmlLswEtEF+kCGGc72rWm6HR?=
- =?us-ascii?Q?SzuPwOywnSgGk4JwVJO0O3CqPELWvvqBok7V36mvONZK3AguPAifsKScEmxm?=
- =?us-ascii?Q?d6ReW8vtWgURDgpILdJj4OfpMO/CbIGPFaQxX16dd+MhLtN5n7wlnb0NZQAJ?=
- =?us-ascii?Q?GalcM2vQ28GH/QFQk24J6dkFB4rKOGPOTm9hOhpW2VeklC76GREoSI2vFNlE?=
- =?us-ascii?Q?iEBkJkBNZgsZ1wqgn5E8uxEeIVcgevSoHhqmAUDTItoPzryvv1AEzdbv1Cx2?=
- =?us-ascii?Q?+EUTu30RbNlWA1lmj4M81j9HKIIWJzSKeOIfMa1E8EI65dziJ9R1o2Ew95dC?=
- =?us-ascii?Q?RWQZGP0RnLAA130r9RPf18O2Mp4zwoi/e5BjkqR9wesRQoNd1PMQzV2YxFY6?=
- =?us-ascii?Q?8H21UA9iaMP+KmngWsyanGT0gff6pCHeB42LcAGUPTDjLml7n1aOZ+vGt4yU?=
- =?us-ascii?Q?NylHdjO7knbBmy3sOvGTsYpiCRGyQJzjEUpmZtlAfvDB2bOQWULbiP1k64HN?=
- =?us-ascii?Q?AwrLSCugRgj2bCzCGXjBGELAEV6Ar08R3hy848+9KSlbH5sYV8wWE58eSddt?=
- =?us-ascii?Q?qQf1UO5ztTJLCSukO7t19mg2I8U9+RHWi7sET0rg6Q+QRe/AJEDA0FH2N/Mn?=
- =?us-ascii?Q?0enBfPVHOLkmoizYJ+Zb5oYp48rLAXSZgwWnLrP22RIbkTk3IVDfoc/uDxY2?=
- =?us-ascii?Q?9BvHF873t4ePaZW6ZVwBQlKXg2BgY6UNXy3iitxuzSkkWPcLaNUjnCv0TNGL?=
- =?us-ascii?Q?R+OHjgC9t2IEBf4sJcGw+xFboEFe69zmpnU+GHkHTWqhohiRHTbERxmrEWRz?=
- =?us-ascii?Q?0nz42fegDGURnYTyyj1VmSTRLVdyW+JzgpgOTsk0/HgKAhTVK4s06LLTaqaL?=
- =?us-ascii?Q?mBvsB7+fCYoJBz8516ficy/FC/Whrx0a7dXgK1N6CAcoSwlYQKONotGA+SOe?=
- =?us-ascii?Q?HRx/QOG8KeCHrZBJjq7MLALvA0NFg06wTgx9RWiS2gl7WEPw6RbAOmYXTV5W?=
- =?us-ascii?Q?DxOxurAN3fB0+qVdjp6ttmqMy7nSunq+4/RqdQFdLJ5fHhM6gDdgqmEwUiQ5?=
- =?us-ascii?Q?0TMoAWe9QHpySOn8OcM7PeOI6fmxTUDlRLR0s5f2RHWHfMPcWQqPoZGmeRbE?=
- =?us-ascii?Q?Gw3n2+k5DCt0SMBS+R3wwt+ZSbnP8ljHWCJ10nQKymnjyXPXkrB42DfvJRGM?=
- =?us-ascii?Q?Shym5WgxJfKAE5Mw8tfTW8kNPu0kTRe/6Sihpmp8EfBgDkl6ydeH92H9LJbj?=
- =?us-ascii?Q?FqN4oUo3YgBbeilTEFFA3UOLgUtex/4w9pviRdQ9IXj1SC5jNWNpEBgy9Ws7?=
- =?us-ascii?Q?1qkI7Cxj78q/tB/If5PYQk8E5iys0XTaRw89/lTheFAK6iE5tmU/sZ24KCcO?=
- =?us-ascii?Q?nr59+14LcB+5MEbCkn7rPkgrQyykt7RUvOA37eJkFSKv2pSFY95l1qUhw4C+?=
- =?us-ascii?Q?GUjrknjNB7RWNdf2xrXLDNX2ZFM8ThNPh825DyToi8DT86X1SIAEyM9PmdZ6?=
- =?us-ascii?Q?4Zmj3w9pshwHigWLbB+d2k4dUFMzmtPMMBe7JpSFuBmo3IAat2tPFIKLVQGT?=
- =?us-ascii?Q?LL22DQCV4mU9sigoalsRsLVPt2foWwl7xLkcG/QWrsijXrGX/fpxSpGkJlVe?=
- =?us-ascii?Q?RXXsGxsX8bZytM5+ZWDUMfoQmt3+R3upeljPVuzYgJ1mt8mtiXBenAbziuUt?=
- =?us-ascii?Q?XURhdM7puhid/HWe4/MQKsqPZgs=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d7c961a2-436c-4fc9-a7dc-08d9a4216e34
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2021 08:09:34.2184
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x09xHQ6SQbHIk5YwfdJGdmCI3n2CVy94gAKco+/cDUWfyZGrkkvaPS05Lvxv+eV169mJv4tzlDoCRueohoTPacahNA8uIDPBVcxZh710LDQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR10MB1950
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10163 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 spamscore=0
- suspectscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2111100043
-X-Proofpoint-ORIG-GUID: zKWpyia9gD1swfgCNd25cho6PqWpijJl
-X-Proofpoint-GUID: zKWpyia9gD1swfgCNd25cho6PqWpijJl
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-These lines need to be indented one more tab.
+Emmanuel Grumbach <egrumbach@gmail.com> writes:
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 25 ++++++++++---------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+>>
+>> Emmanuel Grumbach <egrumbach@gmail.com> writes:
+>>
+>> > On Mon, Oct 18, 2021 at 1:58 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+>> >>
+>> >> Emmanuel Grumbach <emmanuel.grumbach@intel.com> writes:
+>> >>
+>> >> > CSME in two words
+>> >> > -----------------
+>> >> > CSME stands for Converged Security and Management Engine. It is
+>> >> > a CPU on the chipset and runs a dedicated firmware.
+>> >> > AMT (Active Management Technology) is one of the applications
+>> >> > that run on that CPU. AMT allows to control the platform remotely.
+>> >> > Here is a partial list of the use cases:
+>> >> > * View the screen of the plaform, with keyboard and mouse (KVM)
+>> >> > * Attach a remote IDE device
+>> >> > * Have a serial console to the device
+>> >> > * Query the state of the platform
+>> >> > * Reset / shut down / boot the platform
+>> >>
+>> >> [...]
+>> >>
+>> >> > --- a/drivers/net/wireless/intel/iwlwifi/Kconfig
+>> >> > +++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
+>> >> > @@ -92,6 +92,23 @@ config IWLWIFI_BCAST_FILTERING
+>> >> >         If unsure, don't enable this option, as some programs might
+>> >> >         expect incoming broadcasts for their normal operations.
+>> >> >
+>> >> > +config IWLMEI
+>> >> > +     tristate "Intel Management Engine communication over WLAN"
+>> >> > +     depends on INTEL_MEI
+>> >> > +     depends on PM
+>> >> > +     depends on IWLMVM
+>> >> > +     help
+>> >> > +       Enables the iwlmei kernel module. This allows to communicate with
+>> >> > +       the Intel Management Engine over Wifi. This is supported starting
+>> >> > +       from Tiger Lake platforms and has been tested on 9260 devices only.
+>> >> > +       Enabling this option on a platform that has a different device and
+>> >> > +       has Wireless enabled on AMT can prevent WiFi from working correctly.
+>> >>
+>> >> I don't understand the last sentence, please elaborate. Are you saying
+>> >> that enabling CONFIG_IWLMEI will break wi-fi in some cases?
+>> >
+>> > Since we don't support all the devices (yet), and we haven't integrated it
+>> > with all our devices, then yes, it shouldn't be enabled unless you know
+>> > exactly what platform this kernel runs on.
+>>
+>> So if I'm understanding correctly, enabling CONFIG_IWLMEI will break
+>> existing iwlwifi setups? Or am I missing something?
+>
+> Ok, I'll share more details.
+> The coexistence between iwlwifi and CSME has never really been taken care
+> of. CSME is a feature meant for enterprise and those systems typically run
+> Windows which is why the Windows driver has had this feature for years
+> but not Linux.
+> iwlmei will not do anything if you don't have CSME configured to use the
+> WLAN device. Someone needs to actively configure CSME to use WLAN for
+> this to happen. Very few systems have this configuration.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-index 958702403a45..5c38451151fb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-@@ -311,18 +311,19 @@ void iwl_mvm_tlc_update_notif(struct iwl_mvm *mvm,
- 	if (flags & IWL_TLC_NOTIF_FLAG_RATE) {
- 		char pretty_rate[100];
- 
--	if (iwl_fw_lookup_notif_ver(mvm->fw, DATA_PATH_GROUP,
--				    TLC_MNG_UPDATE_NOTIF, 0) < 3) {
--		rs_pretty_print_rate_v1(pretty_rate, sizeof(pretty_rate),
--					le32_to_cpu(notif->rate));
--		IWL_DEBUG_RATE(mvm,
--			       "Got rate in old format. Rate: %s. Converting.\n",
--			       pretty_rate);
--		lq_sta->last_rate_n_flags =
--			iwl_new_rate_from_v1(le32_to_cpu(notif->rate));
--	} else {
--		lq_sta->last_rate_n_flags = le32_to_cpu(notif->rate);
--	}
-+		if (iwl_fw_lookup_notif_ver(mvm->fw, DATA_PATH_GROUP,
-+					    TLC_MNG_UPDATE_NOTIF, 0) < 3) {
-+			rs_pretty_print_rate_v1(pretty_rate,
-+						sizeof(pretty_rate),
-+						le32_to_cpu(notif->rate));
-+			IWL_DEBUG_RATE(mvm,
-+				       "Got rate in old format. Rate: %s. Converting.\n",
-+				       pretty_rate);
-+			lq_sta->last_rate_n_flags =
-+				iwl_new_rate_from_v1(le32_to_cpu(notif->rate));
-+		} else {
-+			lq_sta->last_rate_n_flags = le32_to_cpu(notif->rate);
-+		}
- 		rs_pretty_print_rate(pretty_rate, sizeof(pretty_rate),
- 				     lq_sta->last_rate_n_flags);
- 		IWL_DEBUG_RATE(mvm, "new rate: %s\n", pretty_rate);
+So in a case when CSME/AMT WLAN (or whatever the feature under
+discussion is called) is disabled in the BIOS and CONFIG_IWLMEI is
+enabled in the kernel build, iwlwifi will work as before? This is the
+most important part for me, we must not break people's network access
+when they upgrade the kernel.
+
+> Now the question is what happens today (without iwlmei) when CSME is
+> configured to use WLAN compared to what happens with iwlmei, or in other
+> words, do we have a "regression"?
+>
+> Today: there is some mechanism that allows iwlwifi to tell CSME not to touch
+> the device. This mechanism is not very well tested because only Linux uses it
+> and the assumption in Linux has almost always been that CSME is not
+> configured on systems that run Linux.
+>
+> with iwlmei: we will be using the same interface as windows towards CSME which
+> is a well tested interface and we will be able to use the features
+> that CSME provides
+>
+> Why the warning then? The integration with CSME has been done on 9260
+> only and not on newer devices. We do have plans to add support for
+> more devices but the current code doesn't support them.
+>
+> What will happen if a user enables iwlmei on a system that has a
+> post-9260 device and CSME configured to use WLAN? Most probably, it'll
+> work, but this has not been tested yet
+
+I hope you are printing an understandable info message when CSME is
+enabled so that the situation is easy to notice and debug.
+
+> This configuration is far from the default and considered illegal by
+> Intel at this point I know that a user can always do something stupid,
+> but he can likewise disable mac80211 and complain that his wifi
+> doesn't work.
+
+A user cannot compile iwlwifi unless mac80211 is enabled and likewise
+iwlwifi module won't load unless mac80211 is loaded first. So we do have
+checks for a lot of stuff.
+
+> My suggestion is to add a WARNING (or an dev_err print) in iwlwifi if
+> we detect this situation so that it'll be very easy to catch this
+> problem in the configuration.
+
+Heh, exactly what I was thinking above.
+
+> The only way to prevent this situation would be to know what device
+> the user has from iwlmei in the mei bus enumeration but this is
+> unfortunately not possible.
+>
+> I hope that made things clearer. I know all this is confusing, many
+> pieces of details that I hoped I wouldn't have to bore you with :)
+
+It would have been a lot easier and faster to mention all this in the
+commit logs from the beginning. Dumping me patches without commit logs
+and no clear explanation is not really building confidence for me.
+
 -- 
-2.20.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
