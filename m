@@ -2,131 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9D6744CB7E
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 22:57:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCF0644CCEF
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Nov 2021 23:36:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233513AbhKJWAk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Nov 2021 17:00:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59712 "EHLO
+        id S233705AbhKJWja (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Nov 2021 17:39:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233321AbhKJWAj (ORCPT
+        with ESMTP id S233569AbhKJWj3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Nov 2021 17:00:39 -0500
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56787C061766
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 13:57:51 -0800 (PST)
-Received: by mail-lj1-x22b.google.com with SMTP id h11so8070319ljk.1
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 13:57:51 -0800 (PST)
+        Wed, 10 Nov 2021 17:39:29 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F352C061766
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 14:36:41 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id br15so5768972lfb.9
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 14:36:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=5Z72NWCiAPtJ6rYr8/oM4tLeal/V8QeKwSl0mXUe0lI=;
-        b=8EBxBO2oFs6YS+tyNEiDUJ5+kQo9zDnUq9MxKDH+xArh70NZOBxH2C9m4mJILqEdiM
-         RPr2bEqFTahIwSi31BWW0oc+ireArKdVVnvVwwxDoVv8ShN0CTAqj/Ikz5nkTsEOQc0I
-         o9XC1ibbHhpoMt+CxgiD8ji2spSWnFps29fHROSrhr7Uqj58EhbaiByCPx220y8kDQxp
-         UWDwMw5/MbVVYzh6b3wMlXOIVwsCvB/QFduJuGNyk7A+/SzZy6Uq/MhWMQkFbZgv45mo
-         vA3Sva0iHLlxark/jzTcoFo/8TjtJPr9Aq4Pi8+lFCtJq58Ua+YTRVW/2ck8F8HHKaiO
-         gZcQ==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=67v8CYjUoqWXmr8UJo7fttpj4RphDD0fJcr4jA9b+dQ=;
+        b=jcMAZ5Dbl1y1hcNIFt/RfcTVbNYE46rtD/TmjyB50zYYyy36I4ahKH8AXLC3sMrPuU
+         jg/pwtzCeosMhHxppFObleLcygAf5yRZhRIj1b/eF1KUbd7L+l+iGUWKLgHUh4DJfSC2
+         IOppu7PjonS35UU3b6bwHAvl+/hyJqsNAlETljLt3+6ANgJhyovfS/KauHdiYY2qpX5h
+         JBBRD9ksMK7P/NVYLQdeLiohfJh1Yq8O8Cr+8tCpwPgq/YKIMEjmLvjhmVNYCZRzXMhx
+         adkbV/Yf8iv6GLBPiBJSY90X4jcIUJvO6E6xJO/GocQmwrvm+g0RDLmoY511aXRjEKM9
+         JRLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=5Z72NWCiAPtJ6rYr8/oM4tLeal/V8QeKwSl0mXUe0lI=;
-        b=eWTxzPVRAE6o2Lo0YKqY/8DGwcnG8sw2izwtehPKRc9K2YLxvOSibmz2g9F462ZfdQ
-         cRppDxgBUwQzn3SWRA34PlyoWZdpKFeGGSczX6djp5LmccjXbCN6N3LoGvmmO+vocEVE
-         UvHLeQ/rRnVzit0ViFpZ8yiqo1lSBnH1WfBy1tIhCx3dPjapgGDy2AiDGjoS4/gmrYHs
-         m92GikP3SWOsl67gc0g/5482Ngmt8mIX3Q+BUKwTfqm6EDEuRAqJ+4FjjoJx1iYrUBEb
-         MXC6Phg5G+Jnja/QZWMqHiwP4ZwpwfEU66CPm6VrnPaOjtq0SHqQpy+mHBmmb3MCwvDj
-         YeLQ==
-X-Gm-Message-State: AOAM531Yp2aEaRepDc76OQK0kMQE85ROyEI7O9javtO3fof6UxX39HcX
-        /thRwBUBxE6SoyZMfaHSip4W
-X-Google-Smtp-Source: ABdhPJwg5M64oHCxWZNpkjmGWW99MVFpcx7WXugm00AAA8BBMBiRl3myBOMp6XTMDvIsOJUjtV6SXg==
-X-Received: by 2002:a2e:9e93:: with SMTP id f19mr2230134ljk.311.1636581469644;
-        Wed, 10 Nov 2021 13:57:49 -0800 (PST)
-Received: from localhost.localdomain (public-gprs376873.centertel.pl. [37.47.103.106])
-        by smtp.gmail.com with ESMTPSA id w17sm87742ljh.15.2021.11.10.13.57.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Nov 2021 13:57:49 -0800 (PST)
-From:   Lukasz Bartosik <lb@semihalf.com>
-X-Google-Original-From: Lukasz Bartosik <lukasz.bartosik@semihalf.com>
-To:     Luca Coelho <luciano.coelho@intel.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>, upstream@semihalf.com
-Subject: [PATCH v1] iwlwifi: fix warnings produced by kernel debug options
-Date:   Wed, 10 Nov 2021 22:57:44 +0100
-Message-Id: <20211110215744.5487-1-lukasz.bartosik@semihalf.com>
-X-Mailer: git-send-email 2.17.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=67v8CYjUoqWXmr8UJo7fttpj4RphDD0fJcr4jA9b+dQ=;
+        b=V7D/J2+Tt4T0YE3JI/d1VeMunuKO8nQf/b6Wts2zJZP4Dr15HGGL6A6mOzMyjqX6x/
+         v0YrmTB6q5yy9uhOrKXImMC2w/KwXWK90cj13assHaDJqsHdAWB1UycUu3Z3zL9TztYB
+         LUBaZskNvEpDrioqtUkE5Vu0kuyKJGLwShAmbdi7OW/AIZdIyu8ojQuVXGFSGhZMgrqc
+         gPiVhIlD12x86qgA7dAcQS47wpwk+ZK8MRTSNaoLcsuXjQVeqJdFfpnCapPR73mjQI3F
+         MtT7r05QTp6nqrpge2IiReJ/0xZJREb4iak1TOc2CRk8uj/HUcaS1+3enEC0qdqH5XPV
+         s89Q==
+X-Gm-Message-State: AOAM533di8T+TdRV7Tu4UIKffVDpyZKm0sF3v/GJtG+FRZEI6+ZmPmF+
+        mPhPsHRwza7oZJBkjaOHIlFVMb3DMq2PKSUUmEQ=
+X-Google-Smtp-Source: ABdhPJwEnYgc6umu7stiqISVDMGNeGTafcOa4T4zJUhJ+27MqJJ4PpApJp6psbYqpKhfJUEZWKmaVrNR4tY3aOKVWfc=
+X-Received: by 2002:a05:6512:239c:: with SMTP id c28mr2441783lfv.502.1636583799837;
+ Wed, 10 Nov 2021 14:36:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20210820203531.20706-1-greearb@candelatech.com>
+ <20210820203531.20706-2-greearb@candelatech.com> <950c52e2-8422-36f0-9024-55e45ef2672c@candelatech.com>
+In-Reply-To: <950c52e2-8422-36f0-9024-55e45ef2672c@candelatech.com>
+From:   Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Date:   Wed, 10 Nov 2021 23:36:28 +0100
+Message-ID: <CAFED-jksc5480ZfX+RK+c1FUs43kRvnDJv+xA8BfFE7YN5i86Q@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] mt76: mt7915: fix radar detector logic
+To:     Ben Greear <greearb@candelatech.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Łukasz Bartosik <lb@semihalf.com>
+=C5=9Br., 10 lis 2021 o 21:36 Ben Greear <greearb@candelatech.com> napisa=
+=C5=82(a):
+>
+> On 8/20/21 1:35 PM, greearb@candelatech.com wrote:
+> > From: Ben Greear <greearb@candelatech.com>
+> >
+> > Before this patch, if AP went from ch 100 to ch 36, the radar detector
+> > logic in the firmware was not being disabled.  This made the AP appear
+> > to be up, but no beacons were seen on air until module reload or
+> > reboot.
+> >
+> > To reproduce this, I change hostapd.conf and restart hostapd.  Others
+> > on openwrt used their UI to make changes and problem was seen, but
+> > stil others changed channels in some other way and/or had some other
+> > difference and could *not* reproduce it.  So, something perhaps a
+> > bit subtle.
+> >
+> > To fix the problem, stop depending on comparing dfs_state, store last
+> > freq/bandwidth to detect changes in that, and streamline code that
+> > checks to enable/disable radar detection.  And add in error checking
+> > and dev_dbg logic so one can see what is actually happening if need
+> > to debug this again.
+>
+> Back when I was working on this, someone sent me an email or chat or some=
+thing
+> about some other way to do this that was simpler and just relied on
+> mac80211 timers.  But, I cannot find that email for the life of me.
+>
+> In case you are reading, please resend!  Evidently this 2/2 patch had
+> some regression for someone so it is not acceptable upstream in
+> current state...maybe the mac80211 option is best.
+>
+> Thanks,
 
-Fix warnings produced by:
-- lockdep_assert_wiphy() in function reg_process_self_managed_hint(),
-- wiphy_dereference() in function iwl_mvm_init_fw_regd().
-Both function are expected to be called in critical section.
+--- a/mt7615/mac.c
++++ b/mt7615/mac.c
+@@ -2034,6 +2034,11 @@ static int mt7615_dfs_start_radar_detect
+  phy->rdd_state |=3D BIT(1);
+  }
 
-The warnings were discovered when running v5.15 kernel
-with debug options enabled:
++   /* end CAC - upper layer will care about it, lock tx, beacon setup */
++   err =3D mt7615_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy, MT_RX_SEL0, 0);
++   if (err < 0)
++       return err;
++
+  return 0;
+ }
 
-1)
-Hardware name: Google Delbin/Delbin
-RIP: 0010:reg_process_self_managed_hint+0x254/0x347 [cfg80211]
-...
-Call Trace:
-regulatory_set_wiphy_regd_sync+0x3d/0xb0
-iwl_mvm_init_mcc+0x49d/0x5a2
-iwl_op_mode_mvm_start+0x1b58/0x2507
-? iwl_mvm_reprobe_wk+0x94/0x94
-_iwl_op_mode_start+0x146/0x1a3
-iwl_opmode_register+0xda/0x13d
-init_module+0x28/0x1000
+@@ -2104,11 +2109,7 @@ int mt7615_dfs_init_radar_detector(struc
+  phy->dfs_state =3D chandef->chan->dfs_state;
 
-2)
-drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:263 suspicious rcu_dereference_protected() usage!
-...
-Hardware name: Google Delbin/Delbin, BIOS Google_Delbin
-Call Trace:
-dump_stack_lvl+0xb1/0xe6
-iwl_mvm_init_fw_regd+0x2e7/0x379
-iwl_mvm_init_mcc+0x2c6/0x5a2
-iwl_op_mode_mvm_start+0x1b58/0x2507
-? iwl_mvm_reprobe_wk+0x94/0x94
-_iwl_op_mode_start+0x146/0x1a3
-iwl_opmode_register+0xda/0x13d
-init_module+0x28/0x100
+  if (chandef->chan->flags & IEEE80211_CHAN_RADAR) {
+-   if (chandef->chan->dfs_state !=3D NL80211_DFS_AVAILABLE)
+-     return mt7615_dfs_start_radar_detector(phy);
+-
+-   return mt7615_mcu_rdd_cmd(dev, RDD_CAC_END, ext_phy,
+-   MT_RX_SEL0, 0);
++   return mt7615_dfs_start_radar_detector(phy);
+  }
 
-Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
-Signed-off-by: Łukasz Bartosik <lb@semihalf.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 77ea2d0a3091..61dd75f9304d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -687,6 +687,7 @@ static int iwl_mvm_start_get_nvm(struct iwl_mvm *mvm)
- 	int ret;
- 
- 	rtnl_lock();
-+	wiphy_lock(mvm->hw->wiphy);
- 	mutex_lock(&mvm->mutex);
- 
- 	ret = iwl_run_init_mvm_ucode(mvm);
-@@ -702,6 +703,7 @@ static int iwl_mvm_start_get_nvm(struct iwl_mvm *mvm)
- 		iwl_mvm_stop_device(mvm);
- 
- 	mutex_unlock(&mvm->mutex);
-+	wiphy_unlock(mvm->hw->wiphy);
- 	rtnl_unlock();
- 
- 	if (ret < 0)
--- 
-2.34.0.rc0.344.g81b53c2807-goog
-
+--=20
+Janusz Dziedzic
