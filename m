@@ -2,117 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0659E44D91A
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Nov 2021 16:20:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 544EC44DBB5
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Nov 2021 19:43:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233823AbhKKPXI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Nov 2021 10:23:08 -0500
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:18789 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233766AbhKKPXG (ORCPT
+        id S233632AbhKKSq3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Nov 2021 13:46:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58260 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233728AbhKKSq2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Nov 2021 10:23:06 -0500
+        Thu, 11 Nov 2021 13:46:28 -0500
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4438AC061766
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Nov 2021 10:43:39 -0800 (PST)
+Received: by mail-ot1-x334.google.com with SMTP id b5-20020a9d60c5000000b0055c6349ff22so10154245otk.13
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Nov 2021 10:43:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1636644017; x=1668180017;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=3WhpqACNKff6MmXV5dNtvRocnnTl8mlXto095kLFgik=;
-  b=MvIswYtZgp64ZZecaBvaziXpQYO9IuDOLq1SyZJPq51Sho7Gnnj/NGhf
-   OUsiNOskDJn1k8H+P4vErxWIaj40/qkA98wHGeKYMH6EEbDprS6uVcX39
-   55JLureGA9eNfwIyUz0EaCuUNa0IWuyJGIGJINQ6OQdnoLcXiLdqJUwCa
-   Q=;
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 11 Nov 2021 07:20:16 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2021 07:20:16 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
- Thu, 11 Nov 2021 07:20:16 -0800
-Received: from vnaralas-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Thu, 11 Nov 2021 07:20:14 -0800
-From:   Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
-Subject: [PATCH] ath11k: fix target assert during channel switch
-Date:   Thu, 11 Nov 2021 20:50:02 +0530
-Message-ID: <1636644002-25446-1-git-send-email-quic_vnaralas@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+        d=gmail.com; s=20210112;
+        h=sender:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=eNvEDACItuf0bFWex6fZmN9pN/X1bGajMm1MvKPutWk=;
+        b=RZGAb63lzKD4EUCO18ZhsF70zRG815h0Bt6G+xU63VR8mYXo/aLXv5bCqmwzhtm3KG
+         gM1RyflpVFukR+kXANlrrx61p/xKBdI1zX0fodPUJQvkFAEyRlzH2S0ZPmpaqaR2nd/s
+         cjYeu7QyH5U7cAVvEJN+lk2E3CJHL6LlnbAqvfuFlLKKTZZNsVpvriu7SrLGZRPp7FLI
+         chKCPXQQZtIEsOeTlmWCKh9ka5DgrLaGjlZYNJogMlKuERgqv5UMv/AebAU9OTitmEvZ
+         3FHHGrhVWcVz3ARmk7HicuSPiKUnlt4dn32Vk3P0wVbMMej+YiEKNkaU0Uq+MJJwAxQp
+         m6tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :subject:content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=eNvEDACItuf0bFWex6fZmN9pN/X1bGajMm1MvKPutWk=;
+        b=Lj65zHK2P70uCdrDQdrK/n9/viGgyGeFIzRq5QRnAZvYaczhT4fTDwNmMJSEI0mfOl
+         QQATybJWIhhKORZ5F2pr83far6UWRF9b6mKouUPVeRI2N7SM6U6/NiRJ3kfNYHZDR/2K
+         IJUjl/xQ/Q7mgylNbP04ut4Sh6HSt4s9IWhBJUKqE2pJqC0rr+p7TxvTuU4cHwgrWn62
+         DQi1Y8qm1kQ931vqJTUQkUJdJq1LHNGqoAy13J2SGznsaDa8/tiSCbl4fja7AsG1oetd
+         Wb3reyVmRyKnAgNuMA9iD3jYM7jk9SJ+TO7Kxbtb27sQeltOoJ10AWoGVqXjWMd9i+D6
+         1Chg==
+X-Gm-Message-State: AOAM530g/nckuRcC4ss7rvYKxkspzqvqwu8m7vn5JLrS4SeFyfSpy9I3
+        6kI2eKOBWCM7uKR7SYRU5r0=
+X-Google-Smtp-Source: ABdhPJyY6hWtVPepe0Y8LE4zEJaYUrCSz2x8j0nMsf32cKgCJxV94U6CpzZJqgWgJLR6q5/RJbfqLQ==
+X-Received: by 2002:a9d:490e:: with SMTP id e14mr7454261otf.194.1636656218633;
+        Thu, 11 Nov 2021 10:43:38 -0800 (PST)
+Received: from [192.168.1.103] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
+        by smtp.gmail.com with ESMTPSA id j10sm656054ooq.5.2021.11.11.10.43.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Nov 2021 10:43:38 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <40821ab1-3e0a-4546-669f-0a6bdcaf9361@lwfinger.net>
+Date:   Thu, 11 Nov 2021 12:43:37 -0600
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH 0/3] rtw89: fix crash when loading firmware file on
+ certain platforms
+Content-Language: en-US
+To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, tiwai@suse.de
+References: <20211111021457.13776-1-pkshih@realtek.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20211111021457.13776-1-pkshih@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently the updated bandwidth for the peer will be configured
-to the firmware after channel switch from the sta_rc_update_wk.
-If the updated bandwidth is greater than the configured peer phymode
-during the peer assoc may result target assert.
+On 11/10/21 20:14, Ping-Ke Shih wrote:
+> First patch is to avoid writing "partition size" on read-only firmware
+> buffer, so it has to fix the crash.
+> The later two patches are used to make the semantics clear, but they don't
+> change the logic at all.
+> 
+> I hope at least first patch can be taken into 5.16-rc, so people can avoid
+> this crash.
 
-For example, initially AP is in HE40 mode and the peer phymode is
-configured as MODE_11AX_HE40 during peer assoc. Now user change the
-channel width to HE80 then, the peer bandwidth will be updated as
-HE80 to the firmware.
-
-This will trigger target assert due to peer bandwidth is greater than
-the peer phymode.
-
-Fix this issue by sending peer assoc command before setting the updated
-peer bw to fw.
-
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
----
-Depends-on: "ath11k: Clear auth flag only for actual association in security mode"
-
- drivers/net/wireless/ath/ath11k/mac.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index eba8cee..2e2a8ad 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3826,11 +3826,27 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 			   ath11k_mac_max_he_nss(he_mcs_mask)));
- 
- 	if (changed & IEEE80211_RC_BW_CHANGED) {
--		err = ath11k_wmi_set_peer_param(ar, sta->addr, arvif->vdev_id,
--						WMI_PEER_CHWIDTH, bw);
--		if (err)
--			ath11k_warn(ar->ab, "failed to update STA %pM peer bw %d: %d\n",
--				    sta->addr, bw, err);
-+		/* Send peer assoc command before set peer bandwidth param to
-+		 * avoid the mismatch between the peer phymode and the peer
-+		 * bandwidth.
-+		 */
-+		ath11k_peer_assoc_prepare(ar, arvif->vif, sta, &peer_arg, true);
-+
-+		peer_arg.is_assoc = false;
-+		err = ath11k_wmi_send_peer_assoc_cmd(ar, &peer_arg);
-+		if (err) {
-+			ath11k_warn(ar->ab, "failed to send peer assoc for STA %pM vdev %i: %d\n",
-+				    sta->addr, arvif->vdev_id, err);
-+		} else if (wait_for_completion_timeout(&ar->peer_assoc_done, 1 * HZ)) {
-+			err = ath11k_wmi_set_peer_param(ar, sta->addr, arvif->vdev_id,
-+							WMI_PEER_CHWIDTH, bw);
-+			if (err)
-+				ath11k_warn(ar->ab, "failed to update STA %pM peer bw %d: %d\n",
-+					    sta->addr, bw, err);
-+		} else {
-+			ath11k_warn(ar->ab, "failed to get peer assoc conf event for %pM vdev %i\n",
-+				    sta->addr, arvif->vdev_id);
-+		}
- 	}
- 
- 	if (changed & IEEE80211_RC_NSS_CHANGED) {
--- 
-2.7.4
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+> 
+> Ping-Ke Shih (3):
+>    rtw89: update partition size of firmware header on skb->data
+>    rtw89: add const in the cast of le32_get_bits()
+>    rtw89: use inline function instead macro to set H2C and CAM
+> 
+>   drivers/net/wireless/realtek/rtw89/cam.h  |  468 ++++--
+>   drivers/net/wireless/realtek/rtw89/fw.c   |    2 +-
+>   drivers/net/wireless/realtek/rtw89/fw.h   | 1768 ++++++++++++---------
+>   drivers/net/wireless/realtek/rtw89/txrx.h |   46 +-
+>   4 files changed, 1370 insertions(+), 914 deletions(-)
+> 
 
