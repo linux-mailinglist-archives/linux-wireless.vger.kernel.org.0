@@ -2,67 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7103F44CF0E
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Nov 2021 02:36:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0286744CFE1
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Nov 2021 03:15:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233445AbhKKBjU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Nov 2021 20:39:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53068 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233494AbhKKBjJ (ORCPT
+        id S232816AbhKKCS0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Nov 2021 21:18:26 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:50932 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233698AbhKKCST (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Nov 2021 20:39:09 -0500
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 456EFC0432CC
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 17:35:54 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id j75so11077543ybj.6
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Nov 2021 17:35:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/yJJ1eLjVEBxlbbxBTFqS43d212h+YIqOC0povopvFQ=;
-        b=e1saD3h8ZTiJz1WPc393lhDIWAvFZtOWzP/1iIN1KdicX4+NrvRlvNT+3PrCl1GqMN
-         hcyRC8y01agFcLW5+tsWKem8XisbU3NfgOVZTXj+yM8hm783rPU/i/YuMOt9WJM1GE4/
-         JRXGoJXzKJizIUuyrjE1Imm5mvbvZzUfUnW1ilSzedfFOByO23CsotOGz9ho9UMOpmPB
-         I35hgpS1ccJyAsx8SK8mX+7lwpZDhh/s7p2JF/JACrgRoEUXPKCti/8Mke+cScvETWuN
-         /H3UoZ8xmLIIfMcXfhtyxis8wgN5U5+dx/bvbJ1ofktMXKhL3cY0XXO1GPMja8d0F/uW
-         PaWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/yJJ1eLjVEBxlbbxBTFqS43d212h+YIqOC0povopvFQ=;
-        b=bXuobkLCcwCYKBc7FF1r1x8QCzhyrC/ELz6+33cZ3wloBLF2CZFcxxMIRQRDW92eor
-         2C5YXYheoq/tXnRnfyVPEZIh/sLE/6Fq+DhnbAPDGTJmzIoqEwqPRHQHSo/77t8wEXcR
-         NAzheFmGD4ux53PTxx2UZ3+/d6i+M3MOfES+ElFBMy2CZMXtNm3RG7HKt22YMVcKAj4m
-         FRtiRHEPW3eYk0D4YhV2j6iyeJ65gCYpl5n2JNarrtW9r+X47JRs7mjTaEHN2+Tj1afJ
-         /Gimc2erxPDxoiLaOxcNMIEFh3BtuxjTyYvqDb2uirhgTeJexoz5vrz1ftA9U1UsfC0r
-         r5hA==
-X-Gm-Message-State: AOAM533GfXE6wdy+XUOztJYtEDc/CXZpCxsKHRh6ZtZQ6FD2P3/DdfVz
-        YBUv1fcsw6XxYaxhv7YCSqQ5F1do4EU9uq28uwvxeKwqpjg=
-X-Google-Smtp-Source: ABdhPJwSvDsl6dRjntKMicOLsqdOi/dG2sfAv7B/U6vR9uOw26VAk/4zCWUkhL/n3HO29hhdK1BtX8sl0L4QCQV/QNc=
-X-Received: by 2002:a25:b20f:: with SMTP id i15mr3989503ybj.539.1636594542572;
- Wed, 10 Nov 2021 17:35:42 -0800 (PST)
+        Wed, 10 Nov 2021 21:18:19 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1AB2FIeD4003037, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1AB2FIeD4003037
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 11 Nov 2021 10:15:18 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.12; Thu, 11 Nov 2021 10:15:17 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Thu, 11 Nov
+ 2021 10:15:17 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <tiwai@suse.de>
+Subject: [PATCH 0/3] rtw89: fix crash when loading firmware file on certain platforms
+Date:   Thu, 11 Nov 2021 10:14:54 +0800
+Message-ID: <20211111021457.13776-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a05:7010:5d89:b0:1df:17ca:e9e5 with HTTP; Wed, 10 Nov 2021
- 17:35:42 -0800 (PST)
-Reply-To: mrsambamalick@gmail.com
-From:   MR MALICK <aiolaras@gmail.com>
-Date:   Thu, 11 Nov 2021 02:35:42 +0100
-Message-ID: <CAKPiy1pxkL9E+t6fr2OcMGeiHjuYbwx6xEB+HwOuJAUpiUddcw@mail.gmail.com>
-Subject: NOTIFICATION
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/11/2021 02:00:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzExLzExIKRXpMggMTI6MjM6MDA=?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/11/2021 01:57:39
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 167193 [Nov 11 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/11/2021 02:00:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-LOTTO WINNING AWARD,;,
+First patch is to avoid writing "partition size" on read-only firmware
+buffer, so it has to fix the crash.
+The later two patches are used to make the semantics clear, but they don't
+change the logic at all.
 
-Your email won 2.6 million dollars, Contact Barrister Marcel Cremer
-through his email here ( cremerrsolicitors@gmail.com) to claim your
-winning fund with your details as follows, your full name, your
-country, your home address and your phone number.
+I hope at least first patch can be taken into 5.16-rc, so people can avoid
+this crash.
 
-Regards,,
-Mr.  Malick Samba.
+Ping-Ke Shih (3):
+  rtw89: update partition size of firmware header on skb->data
+  rtw89: add const in the cast of le32_get_bits()
+  rtw89: use inline function instead macro to set H2C and CAM
+
+ drivers/net/wireless/realtek/rtw89/cam.h  |  468 ++++--
+ drivers/net/wireless/realtek/rtw89/fw.c   |    2 +-
+ drivers/net/wireless/realtek/rtw89/fw.h   | 1768 ++++++++++++---------
+ drivers/net/wireless/realtek/rtw89/txrx.h |   46 +-
+ 4 files changed, 1370 insertions(+), 914 deletions(-)
+
+-- 
+2.25.1
+
