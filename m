@@ -2,71 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81C1844D00D
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Nov 2021 03:28:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC2344D011
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Nov 2021 03:37:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233606AbhKKCbM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 Nov 2021 21:31:12 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:51728 "EHLO
+        id S233633AbhKKCkS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 Nov 2021 21:40:18 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:52884 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233633AbhKKCbI (ORCPT
+        with ESMTP id S233590AbhKKCkR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 Nov 2021 21:31:08 -0500
+        Wed, 10 Nov 2021 21:40:17 -0500
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1AB2SBPi8005815, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1AB2SBPi8005815
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1AB2bOyW5008580, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1AB2bOyW5008580
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 11 Nov 2021 10:28:11 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.12; Thu, 11 Nov 2021 10:28:10 +0800
+        Thu, 11 Nov 2021 10:37:24 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.14; Wed, 10 Nov 2021 18:28:10 -0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
- RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
- 15.01.2308.015; Thu, 11 Nov 2021 10:28:10 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Takashi Iwai <tiwai@suse.de>
-CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Larry.Finger@gmail.com" <Larry.Finger@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] rtw89: Fix crash by loading compressed firmware file
-Thread-Topic: [PATCH] rtw89: Fix crash by loading compressed firmware file
-Thread-Index: AQHX0hU7VE24GGCl002qwvOXgdMXQqv0AUsAgACX6Q///34ogIAAjK5D///UggCAAArHAIAJHR/Q
-Date:   Thu, 11 Nov 2021 02:28:09 +0000
-Message-ID: <68f61525b26f46578a62b2a54d775c17@realtek.com>
-References: <20211105071725.31539-1-tiwai@suse.de>
-        <s5hpmrfgj93.wl-tiwai@suse.de>  <87zgqjqaae.fsf@codeaurora.org>
-        <s5hh7crgflg.wl-tiwai@suse.de>  <87v917q8hw.fsf@codeaurora.org>
-        <bd80d3b6cdc42d7818d7d5c6a5036d8188eb4a67.camel@realtek.com>
- <s5h5yt6fxpf.wl-tiwai@suse.de>
-In-Reply-To: <s5h5yt6fxpf.wl-tiwai@suse.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/11/11_=3F=3F_12:23:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+ 15.1.2308.15; Thu, 11 Nov 2021 10:37:23 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Thu, 11 Nov
+ 2021 10:37:23 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <phhuang@realtek.com>
+Subject: [PATCH 0/2] rtw89: correct scan behavior and results
+Date:   Thu, 11 Nov 2021 10:37:04 +0800
+Message-ID: <20211111023706.14154-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/11/2021 02:24:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzExLzExIKRXpMggMTI6MjM6MDA=?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/11/2021 02:07:42
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/11/2021 02:21:48
 X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
 X-KSE-AntiSpam-Method: none
 X-KSE-AntiSpam-Rate: 0
@@ -74,9 +63,8 @@ X-KSE-AntiSpam-Info: Lua profiles 167193 [Nov 11 2021]
 X-KSE-AntiSpam-Info: Version: 5.9.20.0
 X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
 X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
 X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: realtek.com:7.1.1;lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;realtek.com:7.1.1
 X-KSE-AntiSpam-Info: Rate: 0
 X-KSE-AntiSpam-Info: Status: not_detected
 X-KSE-AntiSpam-Info: Method: none
@@ -84,63 +72,39 @@ X-KSE-AntiSpam-Info: Auth:dkim=none
 X-KSE-Antiphishing-Info: Clean
 X-KSE-Antiphishing-ScanningType: Heuristic
 X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/11/2021 02:11:00
+X-KSE-Antiphishing-Bases: 11/11/2021 02:24:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+First patch fixes no ack to probe response for randomize MAC sacn.
+The second one is to report correct frequency and rate while scanning.
 
-> -----Original Message-----
-> From: Takashi Iwai <tiwai@suse.de>
-> Sent: Friday, November 5, 2021 11:07 PM
-> To: Pkshih <pkshih@realtek.com>
-> Cc: kvalo@codeaurora.org; linux-wireless@vger.kernel.org; Larry.Finger@gmail.com;
-> linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH] rtw89: Fix crash by loading compressed firmware file
-> 
-> 
-> You should put const in the cast in le32_get_bits() invocations, at
-> least.
-> 
-> For the le32_replace_bits(), ideally it should be rewritten in some
-> better way the compiler can catch.  e.g. use an inline function to
-> take a void * argument without const,
-> 
-> static inline void RTW89_SET_FWCMD_CXRFK_TYPE(void *cmd, unsigned int val)
-> {
-> 	le32p_replace_bits((__le32 *)((u8 *)(cmd) + 2), val, GENMASK(17, 10));
-> }
-> 
-> Then the compiler will warn when you pass a const pointer there.
-> 
+Note: this patchset add some functions followed by the patchset
+      "rtw89: fix crash when loading firmware file on certain platforms"
 
-I have sent a patchset [1] to do these two things by patch 2 and 3.
+Ping-Ke Shih (1):
+  rtw89: update scan_mac_addr during scanning period
 
-> 
-> BTW, while reading your reply, I noticed that it's an unaligned access
-> to a 32bit value, which is another potential breakage on some
-> architectures.  So the whole stuff has to be rewritten in anyway...
-> 
+Po Hao Huang (1):
+  rtw89: fix incorrect channel info during scan
 
-We use these macros/inline function on skb->data mostly, and I 
-suppose skb->data is a 32bit aligned address. Since I don't have
-this kind of machine on hand, I would like to defer this work until
-I have one.
+ drivers/net/wireless/realtek/rtw89/cam.c      |  22 ++--
+ drivers/net/wireless/realtek/rtw89/cam.h      |   3 +-
+ drivers/net/wireless/realtek/rtw89/core.c     |  57 ++++++---
+ drivers/net/wireless/realtek/rtw89/core.h     |   4 +
+ drivers/net/wireless/realtek/rtw89/debug.c    |   2 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       |   5 +-
+ drivers/net/wireless/realtek/rtw89/fw.h       |   3 +-
+ drivers/net/wireless/realtek/rtw89/mac.c      |   4 +-
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   6 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      | 111 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/phy.h      |  60 ++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h      |  23 ++++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  19 +++
+ drivers/net/wireless/realtek/rtw89/txrx.h     |  45 +------
+ 14 files changed, 292 insertions(+), 72 deletions(-)
 
-> 
-> > The macro SET_FW_HDR_PART_SIZE() is used to set the firmware
-> > partition size we are going to download, and it is only used
-> > by rtw89_fw_download_hdr(). So, I will set the partition size
-> > after copying constant firmware header into skb->data.
-> 
-> Sounds good.
-> 
-
-Please check if my patch works on your platform.
-Thanks you.
-
-[1] https://lore.kernel.org/linux-wireless/20211111021457.13776-1-pkshih@realtek.com/T/#t
-
---
-Ping-Ke
+-- 
+2.25.1
 
