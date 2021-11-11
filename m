@@ -2,80 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11FE644D1C5
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Nov 2021 06:53:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9995F44D1F2
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Nov 2021 07:31:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230127AbhKKFzu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Nov 2021 00:55:50 -0500
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:23017 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbhKKFzt (ORCPT
+        id S229956AbhKKGd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Nov 2021 01:33:57 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:58230 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229533AbhKKGd4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Nov 2021 00:55:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1636609981; x=1668145981;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=kdcG9M1jEfEUbVcHne7k0qgSUkqp4rnMdn+E//9zTcU=;
-  b=Fb49G6CuEg7k1NgmD803nqc0BddYzWe4HErt3xACqDRlXO1QJgp4Cq0G
-   dirvhJAF6eT4iCxCS7uz5z9R96oEPwiGJjbpJjqQbdJVqAw6CG57VUlAP
-   nm0qaT1D8Aqerpnd4lZxy+MNvZle5rEjd6ee3csvEL8MDyMVLLeXvbOas
-   w=;
-Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
-  by alexa-out.qualcomm.com with ESMTP; 10 Nov 2021 21:53:00 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2021 21:53:00 -0800
-Received: from nalasex01b.na.qualcomm.com (10.47.209.197) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
- Wed, 10 Nov 2021 21:53:00 -0800
-Received: from seevalam-linux.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
- Wed, 10 Nov 2021 21:52:58 -0800
-From:   Seevalamuthu Mariappan <quic_seevalam@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Seevalamuthu Mariappan <quic_seevalam@quicinc.com>
-Subject: [PATCH] ath11k: Fix 'unused-but-set-parameter' error
-Date:   Thu, 11 Nov 2021 11:22:47 +0530
-Message-ID: <1636609967-5114-1-git-send-email-quic_seevalam@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
+        Thu, 11 Nov 2021 01:33:56 -0500
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id C2E461FD3E;
+        Thu, 11 Nov 2021 06:31:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1636612266; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=69ymtPsNq/3eZDHfNUePOVSowkMa13fiJITlUV6+ofo=;
+        b=UIdAWqj2GbiR3JP0DlmAgOiRts0q3wfu8W39R7vb72BY435rFWoCYs0vFk1p9qlQkZqahq
+        XFpsxg3YKyun94YhEhk+bI+857Vn6Np8uL2dyJWs4uVi2zULmzp9YnIqEL5cTnWhQ29Rh0
+        i3pw5Iod0nbWSAfdSBbVvHqtvvOvcEA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1636612266;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=69ymtPsNq/3eZDHfNUePOVSowkMa13fiJITlUV6+ofo=;
+        b=l6P9dnK0rd62R8j/D5puDWymcUHYY6hY1tTbgDZBfObJ5QfcNhW+mMJBhNUFZX8nMNMYak
+        FvRNDl2XwL0ErhCA==
+Received: from alsa1.suse.de (alsa1.suse.de [10.160.4.42])
+        by relay2.suse.de (Postfix) with ESMTP id B2170A3B81;
+        Thu, 11 Nov 2021 06:31:06 +0000 (UTC)
+Date:   Thu, 11 Nov 2021 07:31:06 +0100
+Message-ID: <s5hv90z5hlh.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Pkshih <pkshih@realtek.com>
+Cc:     Takashi Iwai <tiwai@suse.de>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Larry.Finger@gmail.com" <Larry.Finger@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rtw89: Fix crash by loading compressed firmware file
+In-Reply-To: <68f61525b26f46578a62b2a54d775c17@realtek.com>
+References: <20211105071725.31539-1-tiwai@suse.de>
+        <s5hpmrfgj93.wl-tiwai@suse.de>
+        <87zgqjqaae.fsf@codeaurora.org>
+        <s5hh7crgflg.wl-tiwai@suse.de>
+        <87v917q8hw.fsf@codeaurora.org>
+        <bd80d3b6cdc42d7818d7d5c6a5036d8188eb4a67.camel@realtek.com>
+        <s5h5yt6fxpf.wl-tiwai@suse.de>
+        <68f61525b26f46578a62b2a54d775c17@realtek.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Below compilation error is reported when built with W=1,
+On Thu, 11 Nov 2021 03:28:09 +0100,
+Pkshih wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Takashi Iwai <tiwai@suse.de>
+> > Sent: Friday, November 5, 2021 11:07 PM
+> > To: Pkshih <pkshih@realtek.com>
+> > Cc: kvalo@codeaurora.org; linux-wireless@vger.kernel.org; Larry.Finger@gmail.com;
+> > linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH] rtw89: Fix crash by loading compressed firmware file
+> > 
+> > 
+> > You should put const in the cast in le32_get_bits() invocations, at
+> > least.
+> > 
+> > For the le32_replace_bits(), ideally it should be rewritten in some
+> > better way the compiler can catch.  e.g. use an inline function to
+> > take a void * argument without const,
+> > 
+> > static inline void RTW89_SET_FWCMD_CXRFK_TYPE(void *cmd, unsigned int val)
+> > {
+> > 	le32p_replace_bits((__le32 *)((u8 *)(cmd) + 2), val, GENMASK(17, 10));
+> > }
+> > 
+> > Then the compiler will warn when you pass a const pointer there.
+> > 
+> 
+> I have sent a patchset [1] to do these two things by patch 2 and 3.
+> 
+> > 
+> > BTW, while reading your reply, I noticed that it's an unaligned access
+> > to a 32bit value, which is another potential breakage on some
+> > architectures.  So the whole stuff has to be rewritten in anyway...
+> > 
+> 
+> We use these macros/inline function on skb->data mostly, and I 
+> suppose skb->data is a 32bit aligned address. Since I don't have
+> this kind of machine on hand, I would like to defer this work until
+> I have one.
 
-drivers/net/wireless/ath/ath11k/mac.c:5408:22: error: parameter 'changed_flags' set but not used [-Werror,-Wunused-but-set-parameter]
+I actually misread the code.  The register offset is applied to __le32
+pointer, so this should be fine.
 
-changed_flags is set, but left unused. So, remove unnecessary set.
-Compile tested only.
+> > > partition size we are going to download, and it is only used
+> > > by rtw89_fw_download_hdr(). So, I will set the partition size
+> > > after copying constant firmware header into skb->data.
+> > 
+> > Sounds good.
+> > 
+> 
+> Please check if my patch works on your platform.
+> Thanks you.
+> 
+> [1] https://lore.kernel.org/linux-wireless/20211111021457.13776-1-pkshih@realtek.com/T/#t
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Seevalamuthu Mariappan <quic_seevalam@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 1 -
- 1 file changed, 1 deletion(-)
+Thanks.  I'll ask people testing those patches.
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 89810b2..6f3130d 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -5919,7 +5919,6 @@ static void ath11k_mac_op_configure_filter(struct ieee80211_hw *hw,
- 
- 	mutex_lock(&ar->conf_mutex);
- 
--	changed_flags &= SUPPORTED_FILTERS;
- 	*total_flags &= SUPPORTED_FILTERS;
- 	ar->filter_flags = *total_flags;
- 
--- 
-2.7.4
 
+Takashi
