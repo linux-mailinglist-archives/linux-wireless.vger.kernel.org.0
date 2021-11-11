@@ -2,94 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 544EC44DBB5
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Nov 2021 19:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 298D144DBE1
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Nov 2021 19:56:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233632AbhKKSq3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Nov 2021 13:46:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58260 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233728AbhKKSq2 (ORCPT
+        id S233891AbhKKS7G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Nov 2021 13:59:06 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:49020 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229785AbhKKS7F (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Nov 2021 13:46:28 -0500
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4438AC061766
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Nov 2021 10:43:39 -0800 (PST)
-Received: by mail-ot1-x334.google.com with SMTP id b5-20020a9d60c5000000b0055c6349ff22so10154245otk.13
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Nov 2021 10:43:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=eNvEDACItuf0bFWex6fZmN9pN/X1bGajMm1MvKPutWk=;
-        b=RZGAb63lzKD4EUCO18ZhsF70zRG815h0Bt6G+xU63VR8mYXo/aLXv5bCqmwzhtm3KG
-         gM1RyflpVFukR+kXANlrrx61p/xKBdI1zX0fodPUJQvkFAEyRlzH2S0ZPmpaqaR2nd/s
-         cjYeu7QyH5U7cAVvEJN+lk2E3CJHL6LlnbAqvfuFlLKKTZZNsVpvriu7SrLGZRPp7FLI
-         chKCPXQQZtIEsOeTlmWCKh9ka5DgrLaGjlZYNJogMlKuERgqv5UMv/AebAU9OTitmEvZ
-         3FHHGrhVWcVz3ARmk7HicuSPiKUnlt4dn32Vk3P0wVbMMej+YiEKNkaU0Uq+MJJwAxQp
-         m6tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=eNvEDACItuf0bFWex6fZmN9pN/X1bGajMm1MvKPutWk=;
-        b=Lj65zHK2P70uCdrDQdrK/n9/viGgyGeFIzRq5QRnAZvYaczhT4fTDwNmMJSEI0mfOl
-         QQATybJWIhhKORZ5F2pr83far6UWRF9b6mKouUPVeRI2N7SM6U6/NiRJ3kfNYHZDR/2K
-         IJUjl/xQ/Q7mgylNbP04ut4Sh6HSt4s9IWhBJUKqE2pJqC0rr+p7TxvTuU4cHwgrWn62
-         DQi1Y8qm1kQ931vqJTUQkUJdJq1LHNGqoAy13J2SGznsaDa8/tiSCbl4fja7AsG1oetd
-         Wb3reyVmRyKnAgNuMA9iD3jYM7jk9SJ+TO7Kxbtb27sQeltOoJ10AWoGVqXjWMd9i+D6
-         1Chg==
-X-Gm-Message-State: AOAM530g/nckuRcC4ss7rvYKxkspzqvqwu8m7vn5JLrS4SeFyfSpy9I3
-        6kI2eKOBWCM7uKR7SYRU5r0=
-X-Google-Smtp-Source: ABdhPJyY6hWtVPepe0Y8LE4zEJaYUrCSz2x8j0nMsf32cKgCJxV94U6CpzZJqgWgJLR6q5/RJbfqLQ==
-X-Received: by 2002:a9d:490e:: with SMTP id e14mr7454261otf.194.1636656218633;
-        Thu, 11 Nov 2021 10:43:38 -0800 (PST)
-Received: from [192.168.1.103] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
-        by smtp.gmail.com with ESMTPSA id j10sm656054ooq.5.2021.11.11.10.43.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Nov 2021 10:43:38 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <40821ab1-3e0a-4546-669f-0a6bdcaf9361@lwfinger.net>
-Date:   Thu, 11 Nov 2021 12:43:37 -0600
+        Thu, 11 Nov 2021 13:59:05 -0500
+X-UUID: 58acf91f55f54612809640a381b75fe8-20211112
+X-UUID: 58acf91f55f54612809640a381b75fe8-20211112
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1036677006; Fri, 12 Nov 2021 02:56:09 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Fri, 12 Nov 2021 02:56:08 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 12 Nov
+ 2021 02:56:08 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 12 Nov 2021 02:56:07 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        "Ryder Lee" <ryder.lee@mediatek.com>,
+        Fang Zhao <fang.zhao@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix SMPS operation fail
+Date:   Fri, 12 Nov 2021 02:56:06 +0800
+Message-ID: <4a2b49ea3821561416a546810cd3151fdc5aa86c.1636656394.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH 0/3] rtw89: fix crash when loading firmware file on
- certain platforms
-Content-Language: en-US
-To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, tiwai@suse.de
-References: <20211111021457.13776-1-pkshih@realtek.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <20211111021457.13776-1-pkshih@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/10/21 20:14, Ping-Ke Shih wrote:
-> First patch is to avoid writing "partition size" on read-only firmware
-> buffer, so it has to fix the crash.
-> The later two patches are used to make the semantics clear, but they don't
-> change the logic at all.
-> 
-> I hope at least first patch can be taken into 5.16-rc, so people can avoid
-> this crash.
+TGn fails sending SM power save mode action frame to the AP to switch
+from dynamic SMPS mode to static mode.
 
-Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
-> 
-> Ping-Ke Shih (3):
->    rtw89: update partition size of firmware header on skb->data
->    rtw89: add const in the cast of le32_get_bits()
->    rtw89: use inline function instead macro to set H2C and CAM
-> 
->   drivers/net/wireless/realtek/rtw89/cam.h  |  468 ++++--
->   drivers/net/wireless/realtek/rtw89/fw.c   |    2 +-
->   drivers/net/wireless/realtek/rtw89/fw.h   | 1768 ++++++++++++---------
->   drivers/net/wireless/realtek/rtw89/txrx.h |   46 +-
->   4 files changed, 1370 insertions(+), 914 deletions(-)
-> 
+Reported-by: Fang Zhao <fang.zhao@mediatek.com>
+Signed-off-by: Fang Zhao <fang.zhao@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 5 ++++-
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 6 +++++-
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.h | 1 +
+ 3 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 79081abf3329..5021c8fd2650 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -2135,8 +2135,11 @@ void mt7915_mac_sta_rc_work(struct work_struct *work)
+ 			       IEEE80211_RC_BW_CHANGED))
+ 			mt7915_mcu_add_rate_ctrl(dev, vif, sta, true);
+ 
+-		if (changed & IEEE80211_RC_SMPS_CHANGED)
++		if (changed & IEEE80211_RC_SMPS_CHANGED) {
+ 			mt7915_mcu_add_smps(dev, vif, sta);
++			mt7915_mcu_set_fixed_rate_ctrl(dev, vif, sta, NULL,
++						       RATE_PARAM_MMPS_UPDATE);
++		}
+ 
+ 		spin_lock_bh(&dev->sta_poll_lock);
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 3a496046fe21..92166679055f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2077,7 +2077,11 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
+ 	case RATE_PARAM_FIXED_MCS:
+ 	case RATE_PARAM_FIXED_GI:
+ 	case RATE_PARAM_FIXED_HE_LTF:
+-		ra->phy = *phy;
++		if (phy)
++			ra->phy = *phy;
++		break;
++	case RATE_PARAM_MMPS_UPDATE:
++		ra->mmps_mode = (sta->smps_mode == IEEE80211_SMPS_DYNAMIC);
+ 		break;
+ 	default:
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index e8501234f686..11728454b92c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -960,6 +960,7 @@ struct sta_rec_ra_fixed {
+ 
+ enum {
+ 	RATE_PARAM_FIXED = 3,
++	RATE_PARAM_MMPS_UPDATE = 5,
+ 	RATE_PARAM_FIXED_HE_LTF = 7,
+ 	RATE_PARAM_FIXED_MCS,
+ 	RATE_PARAM_FIXED_GI = 11,
+-- 
+2.29.2
 
