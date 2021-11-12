@@ -2,97 +2,237 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23E0B44E42E
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Nov 2021 10:51:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2A5044E505
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Nov 2021 11:56:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234793AbhKLJyh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Nov 2021 04:54:37 -0500
-Received: from m43-7.mailgun.net ([69.72.43.7]:15644 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234675AbhKLJyh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Nov 2021 04:54:37 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1636710706; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=/zCpRT63mnO+KjCn3Vvfhc6iabeFMMs2BFMUyiQmfik=;
- b=Kl7F2gvWnhZ3+7tXqCBZfHg1BF0qyeuaq9mHMYGCiVQ3TVcxNYjEtADqtfOp2/2tkoMY+f4W
- 0guUfFMlY5lDImBltHWKWracqnP6VzEA6hrFw2CLKWjEzunLy1YByLaCk0nj+Qhr5eDhgh9i
- Io6L547vahKxktFXnmHN4/i/bO8=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 618e392ea445961e72fcf0bb (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 12 Nov 2021 09:51:42
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 79528C43460; Fri, 12 Nov 2021 09:51:41 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CE41AC4360C;
-        Fri, 12 Nov 2021 09:51:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org CE41AC4360C
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S234825AbhKLK7I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Nov 2021 05:59:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48850 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234831AbhKLK7H (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 12 Nov 2021 05:59:07 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC558C061766
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Nov 2021 02:56:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=EXxwEFcuWOBDVGcO/1MpVReAvmiOHqRIvE6AIwTgGNM=; b=RKUwVXtuzQ9RREYFPlh8kv/QQH
+        reKCQMuuFklVePtVp4b/eE8BQcQABtHfI5f+wW6aK0RcP2N/PauzeafNHGmyRBO0mkG3Oc0HJ0Gih
+        y35D84eQ0m0jcoWPFQsfFzoJ71ZdddJXyvYTdpAKQzrk4tLjM56boV8FUD1KtecK2HW8=;
+Received: from p54ae9f3f.dip0.t-ipconnect.de ([84.174.159.63] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1mlUEA-0001iu-04; Fri, 12 Nov 2021 11:56:14 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH] mac80211: fix throughput LED trigger
+Date:   Fri, 12 Nov 2021 11:56:11 +0100
+Message-Id: <20211112105611.99991-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Add provision to configure rx hashmap
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1635164316-27055-1-git-send-email-quic_ppranees@quicinc.com>
-References: <1635164316-27055-1-git-send-email-quic_ppranees@quicinc.com>
-To:     P Praneesh <quic_ppranees@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        P Praneesh <quic_ppranees@quicinc.com>,
-        Sriram R <quic_srirrama@quicinc.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163671069706.11814.3105845576240199326.kvalo@codeaurora.org>
-Date:   Fri, 12 Nov 2021 09:51:41 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-P Praneesh <quic_ppranees@quicinc.com> wrote:
+The codepaths for rx with decap offload and tx with itxq were not updating
+the counters for the throughput led trigger.
 
-> Currently the hashmap is set to default during REO setup and all REO
-> rings are equally distributed across 32 hash values.
-> 
-> In multiple radio cases, 40MHz+80MHz+160MHz, distributing received
-> packets across all the CPU will cause CPU overhead. In this case,
-> during runtime we can span 40MHz and 80MHz among 2 cores and remaining
-> 2 cores are equally distributed for 160MHz by using register mapping.
-> 
-> Add provision to configure the hashmap during runtime through debugfs
-> for improving flexibility to control the destination HW rx queues/rings,
-> so that affinity could be used to assign those interrupts to specific
-> rings. Setting 0 will disable hash based steering.
-> 
-> echo "hashmap" > /sys/kernel/debug/ath11k/ipq8074\ hw2.0/rx_hash
-> 
-> Developers who are aware of hardware register mapping can leverage
-> this rx_hash debugfs.
-> 
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1.r2-00012-QCAHKSWPL_SILICONZ-1
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01695-QCAHKSWPL_SILICONZ-1
-> 
-> Co-developed-by: Sriram R <quic_srirrama@quicinc.com>
-> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ net/mac80211/led.h |  8 ++++----
+ net/mac80211/rx.c  |  7 ++++---
+ net/mac80211/tx.c  | 32 +++++++++++++++-----------------
+ 3 files changed, 23 insertions(+), 24 deletions(-)
 
-debugfs is for debugging and testing. To me it looks like this feature is for
-configuring the driver, not debugging.
-
+diff --git a/net/mac80211/led.h b/net/mac80211/led.h
+index fb3aaa3c5606..b71a1428d883 100644
+--- a/net/mac80211/led.h
++++ b/net/mac80211/led.h
+@@ -72,19 +72,19 @@ static inline void ieee80211_mod_tpt_led_trig(struct ieee80211_local *local,
+ #endif
+ 
+ static inline void
+-ieee80211_tpt_led_trig_tx(struct ieee80211_local *local, __le16 fc, int bytes)
++ieee80211_tpt_led_trig_tx(struct ieee80211_local *local, int bytes)
+ {
+ #ifdef CONFIG_MAC80211_LEDS
+-	if (ieee80211_is_data(fc) && atomic_read(&local->tpt_led_active))
++	if (atomic_read(&local->tpt_led_active))
+ 		local->tpt_led_trigger->tx_bytes += bytes;
+ #endif
+ }
+ 
+ static inline void
+-ieee80211_tpt_led_trig_rx(struct ieee80211_local *local, __le16 fc, int bytes)
++ieee80211_tpt_led_trig_rx(struct ieee80211_local *local, int bytes)
+ {
+ #ifdef CONFIG_MAC80211_LEDS
+-	if (ieee80211_is_data(fc) && atomic_read(&local->tpt_led_active))
++	if (atomic_read(&local->tpt_led_active))
+ 		local->tpt_led_trigger->rx_bytes += bytes;
+ #endif
+ }
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index fc5c608d02e2..3079328a30e8 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4863,6 +4863,7 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 	struct ieee80211_rate *rate = NULL;
+ 	struct ieee80211_supported_band *sband;
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 
+ 	WARN_ON_ONCE(softirq_count() == 0);
+ 
+@@ -4959,9 +4960,9 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 	if (!(status->flag & RX_FLAG_8023))
+ 		skb = ieee80211_rx_monitor(local, skb, rate);
+ 	if (skb) {
+-		ieee80211_tpt_led_trig_rx(local,
+-					  ((struct ieee80211_hdr *)skb->data)->frame_control,
+-					  skb->len);
++		if ((status->flag & RX_FLAG_8023) ||
++			ieee80211_is_data_present(hdr->frame_control))
++			ieee80211_tpt_led_trig_rx(local, skb->len);
+ 
+ 		if (status->flag & RX_FLAG_8023)
+ 			__ieee80211_rx_handle_8023(hw, pubsta, skb, list);
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index a756a197c770..5b968d0793a7 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1721,8 +1721,8 @@ static bool ieee80211_tx_frags(struct ieee80211_local *local,
+  * Returns false if the frame couldn't be transmitted but was queued instead.
+  */
+ static bool __ieee80211_tx(struct ieee80211_local *local,
+-			   struct sk_buff_head *skbs, int led_len,
+-			   struct sta_info *sta, bool txpending)
++			   struct sk_buff_head *skbs, struct sta_info *sta,
++			   bool txpending)
+ {
+ 	struct ieee80211_tx_info *info;
+ 	struct ieee80211_sub_if_data *sdata;
+@@ -1769,8 +1769,6 @@ static bool __ieee80211_tx(struct ieee80211_local *local,
+ 
+ 	result = ieee80211_tx_frags(local, vif, sta, skbs, txpending);
+ 
+-	ieee80211_tpt_led_trig_tx(local, fc, led_len);
+-
+ 	WARN_ON_ONCE(!skb_queue_empty(skbs));
+ 
+ 	return result;
+@@ -1920,7 +1918,6 @@ static bool ieee80211_tx(struct ieee80211_sub_if_data *sdata,
+ 	ieee80211_tx_result res_prepare;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	bool result = true;
+-	int led_len;
+ 
+ 	if (unlikely(skb->len < 10)) {
+ 		dev_kfree_skb(skb);
+@@ -1928,7 +1925,6 @@ static bool ieee80211_tx(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	/* initialises tx */
+-	led_len = skb->len;
+ 	res_prepare = ieee80211_tx_prepare(sdata, &tx, sta, skb);
+ 
+ 	if (unlikely(res_prepare == TX_DROP)) {
+@@ -1951,8 +1947,7 @@ static bool ieee80211_tx(struct ieee80211_sub_if_data *sdata,
+ 		return true;
+ 
+ 	if (!invoke_tx_handlers_late(&tx))
+-		result = __ieee80211_tx(local, &tx.skbs, led_len,
+-					tx.sta, txpending);
++		result = __ieee80211_tx(local, &tx.skbs, tx.sta, txpending);
+ 
+ 	return result;
+ }
+@@ -4175,6 +4170,7 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct sta_info *sta;
+ 	struct sk_buff *next;
++	int len = skb->len;
+ 
+ 	if (unlikely(skb->len < ETH_HLEN)) {
+ 		kfree_skb(skb);
+@@ -4221,10 +4217,8 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 		}
+ 	} else {
+ 		/* we cannot process non-linear frames on this path */
+-		if (skb_linearize(skb)) {
+-			kfree_skb(skb);
+-			goto out;
+-		}
++		if (skb_linearize(skb))
++			goto out_free;
+ 
+ 		/* the frame could be fragmented, software-encrypted, and other
+ 		 * things so we cannot really handle checksum offload with it -
+@@ -4258,7 +4252,10 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 	goto out;
+  out_free:
+ 	kfree_skb(skb);
++	len = 0;
+  out:
++	if (len)
++		ieee80211_tpt_led_trig_tx(local, len);
+ 	rcu_read_unlock();
+ }
+ 
+@@ -4396,8 +4393,7 @@ netdev_tx_t ieee80211_subif_start_xmit(struct sk_buff *skb,
+ }
+ 
+ static bool ieee80211_tx_8023(struct ieee80211_sub_if_data *sdata,
+-			      struct sk_buff *skb, int led_len,
+-			      struct sta_info *sta,
++			      struct sk_buff *skb, struct sta_info *sta,
+ 			      bool txpending)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+@@ -4410,6 +4406,8 @@ static bool ieee80211_tx_8023(struct ieee80211_sub_if_data *sdata,
+ 	if (sta)
+ 		sk_pacing_shift_update(skb->sk, local->hw.tx_sk_pacing_shift);
+ 
++	ieee80211_tpt_led_trig_tx(local, skb->len);
++
+ 	if (ieee80211_queue_skb(local, sdata, sta, skb))
+ 		return true;
+ 
+@@ -4498,7 +4496,7 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
+ 	if (key)
+ 		info->control.hw_key = &key->conf;
+ 
+-	ieee80211_tx_8023(sdata, skb, skb->len, sta, false);
++	ieee80211_tx_8023(sdata, skb, sta, false);
+ 
+ 	return;
+ 
+@@ -4637,7 +4635,7 @@ static bool ieee80211_tx_pending_skb(struct ieee80211_local *local,
+ 		if (IS_ERR(sta) || (sta && !sta->uploaded))
+ 			sta = NULL;
+ 
+-		result = ieee80211_tx_8023(sdata, skb, skb->len, sta, true);
++		result = ieee80211_tx_8023(sdata, skb, sta, true);
+ 	} else {
+ 		struct sk_buff_head skbs;
+ 
+@@ -4647,7 +4645,7 @@ static bool ieee80211_tx_pending_skb(struct ieee80211_local *local,
+ 		hdr = (struct ieee80211_hdr *)skb->data;
+ 		sta = sta_info_get(sdata, hdr->addr1);
+ 
+-		result = __ieee80211_tx(local, &skbs, skb->len, sta, true);
++		result = __ieee80211_tx(local, &skbs, sta, true);
+ 	}
+ 
+ 	return result;
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1635164316-27055-1-git-send-email-quic_ppranees@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.30.1
 
