@@ -2,131 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B58B144E2EB
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Nov 2021 09:19:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09CBC44E338
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Nov 2021 09:31:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232346AbhKLIWV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Nov 2021 03:22:21 -0500
-Received: from so254-9.mailgun.net ([198.61.254.9]:31987 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230464AbhKLIWU (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Nov 2021 03:22:20 -0500
+        id S234706AbhKLIeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Nov 2021 03:34:25 -0500
+Received: from m43-7.mailgun.net ([69.72.43.7]:61609 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234766AbhKLIeR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 12 Nov 2021 03:34:17 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1636705170; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=vJ8XMjUmB9hs5cs/fta2oLXbbtvRPmJPu2pUdlMQqRY=; b=TzxS0cRFP8wRwiYsBZRXZ+/noX4isVM9dgh8YgBMJHih+hadPWXRSiKEoGPZGwt8G1RyOBWk
- /PYL3w5QYYffR+pNf8r1LbumZ8GHPlK7oEcz2m3cfZP98LeYrue7xUHxh3FqlX7eC2FfXJF3
- zUTbsCDRUy2VvilVwPargzf1mAs=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ s=smtp; t=1636705887; h=Date: Message-ID: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=Bscd3c16R/hEOC7YJcDkDsPfos4+Hdbw1xj3IIDxf4k=;
+ b=ktHcxQH2ad15ujLX6JW58Y8B6+baibgdTkPpHFln+vkbG8HpwidBlCql3+1o1QK/iZqlH1o8
+ axgi8/EOGfflfxBDY1l4Lt7VNVIgYbI3A7pURK2o49sjE2XP3S3y8xjVUNXmJ5zlhZF0z96+
+ hXWtO++ADMLqFC1lijWLx2chFxo=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 618e239272f0f555984f8318 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 12 Nov 2021 08:19:30
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 618e265efacd20d795827198 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 12 Nov 2021 08:31:26
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AF23FC4360D; Fri, 12 Nov 2021 08:19:29 +0000 (UTC)
+        id D8041C43637; Fri, 12 Nov 2021 08:31:25 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8D8A8C4338F;
-        Fri, 12 Nov 2021 08:19:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 8D8A8C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D08ABC4314C;
+        Fri, 12 Nov 2021 08:31:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org D08ABC4314C
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Jouni Malinen <jouni@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Seevalamuthu Mariappan <seevalam@codeaurora.org>,
-        Anilkumar Kolli <akolli@codeaurora.org>
-Subject: Re: [PATCH 12/12] ath11k: Change QCN9074 firmware to operate in mode-2
-References: <20210721212029.142388-1-jouni@codeaurora.org>
-        <20210721212029.142388-12-jouni@codeaurora.org>
-Date:   Fri, 12 Nov 2021 10:19:23 +0200
-In-Reply-To: <20210721212029.142388-12-jouni@codeaurora.org> (Jouni Malinen's
-        message of "Thu, 22 Jul 2021 00:20:29 +0300")
-Message-ID: <871r3lkcqc.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 2/3] ath11k: Refactor update channel list function
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1634906227-22028-3-git-send-email-ppranees@codeaurora.org>
+References: <1634906227-22028-3-git-send-email-ppranees@codeaurora.org>
+To:     P Praneesh <ppranees@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, johannes@sipsolutions.net,
+        linux-wireless@vger.kernel.org,
+        P Praneesh <ppranees@codeaurora.org>,
+        Karthikeyan Periyasamy <periyasa@codeaurora.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163670587845.25141.12042890222760708077.kvalo@codeaurora.org>
+Date:   Fri, 12 Nov 2021 08:31:25 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jouni Malinen <jouni@codeaurora.org> writes:
+P Praneesh <ppranees@codeaurora.org> wrote:
 
-> From: Seevalamuthu Mariappan <seevalam@codeaurora.org>
->
-> In mode-2 QCN9074 firmware uses 15 MB of host memory and firmware
-> request 1 MB size segments in QMI, whereas in mode-0 firmware uses 45 MB
-> of host memory and each segment is of 2 MB size. In mode-2 firmware
-> operates with reduced number of vdevs and peers.
->
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1-01838-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Seevalamuthu Mariappan <seevalam@codeaurora.org>
-> Co-developed-by: Anilkumar Kolli <akolli@codeaurora.org>
-> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
-> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
-> ---
->  drivers/net/wireless/ath/ath11k/core.c | 23 ++++++++++++++++++++++-
->  drivers/net/wireless/ath/ath11k/core.h |  6 ++++++
->  drivers/net/wireless/ath/ath11k/hw.c   | 14 +++++++-------
->  drivers/net/wireless/ath/ath11k/hw.h   | 20 +++++++++++---------
->  drivers/net/wireless/ath/ath11k/mac.c  | 10 +++++-----
->  drivers/net/wireless/ath/ath11k/qmi.c  |  2 +-
->  6 files changed, 52 insertions(+), 23 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-> index d2ab3b134632..9f2c9795767e 100644
-> --- a/drivers/net/wireless/ath/ath11k/core.c
-> +++ b/drivers/net/wireless/ath/ath11k/core.c
-> @@ -77,6 +77,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
->  		.supports_shadow_regs = false,
->  		.idle_ps = false,
->  		.cold_boot_calib = true,
-> +		.fw_mem_mode = 0,
->  		.supports_suspend = false,
->  		.hal_desc_sz = sizeof(struct hal_rx_desc_ipq8074),
->  		.fix_l1ss = true,
+> For sending scan channel list command to firmware through wmi, remain on
+> channel's scan request parameter needs to be updated. Add scan_req_params
+> as an argument to the existing update_scan_chan_list to update scan request
+> parameter through wmi. Also, rename regulatory update scan channel list to
+> the ath11k_wmi_update_scan_chan_list since it is moved to wmi file.
+> 
+> Co-developed-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
+> Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
+> Signed-off-by: P Praneesh <ppranees@codeaurora.org>
 
-[...]
+Why is ath11k_reg_update_chan_list() moved to wmi.c? I couldn't figure
+out what's the reason for that.
 
-> +static const struct ath11k_num_vdevs_peers ath11k_vdevs_peers[] = {
-> +	{
-> +		.num_vdevs = (16 + 1),
-> +		.num_peers = 512,
-> +	},
-> +	{
-> +		.num_vdevs = (8 + 1),
-> +		.num_peers = 128,
-> +	},
-> +	{
-> +		.num_vdevs = 8,
-> +		.num_peers = 128,
-> +	},
-> +};
+2 patches set to Changes Requested.
 
-I am worried about this array. It implies that _all_ hardware support
-these modes but is that really the case? I would guess that these are
-very much hardware and firmware specific values.
-
-So because of that I would feel clearer to have num_vdevs and num_peers
-in ath11k_hw_params, to make it clear that the values are hardware
-specific. And then have fw_mem_mode, num_vdevs and num_peers in their
-own struct within struct ath11k_hw_params, just like spectral has
-grouped valued together.
+12577691 [v3,2/3] ath11k: Refactor update channel list function
+12577693 [v3,2/3] ath11k: Add ROC support for wide band scan
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/1634906227-22028-3-git-send-email-ppranees@codeaurora.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
