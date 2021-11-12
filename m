@@ -2,88 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09CBC44E338
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Nov 2021 09:31:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B909044E351
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Nov 2021 09:35:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234706AbhKLIeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Nov 2021 03:34:25 -0500
-Received: from m43-7.mailgun.net ([69.72.43.7]:61609 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234766AbhKLIeR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Nov 2021 03:34:17 -0500
+        id S234632AbhKLIi0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Nov 2021 03:38:26 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:25227 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234670AbhKLIi0 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 12 Nov 2021 03:38:26 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1636705887; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=Bscd3c16R/hEOC7YJcDkDsPfos4+Hdbw1xj3IIDxf4k=;
- b=ktHcxQH2ad15ujLX6JW58Y8B6+baibgdTkPpHFln+vkbG8HpwidBlCql3+1o1QK/iZqlH1o8
- axgi8/EOGfflfxBDY1l4Lt7VNVIgYbI3A7pURK2o49sjE2XP3S3y8xjVUNXmJ5zlhZF0z96+
- hXWtO++ADMLqFC1lijWLx2chFxo=
-X-Mailgun-Sending-Ip: 69.72.43.7
+ s=smtp; t=1636706135; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=zDBZZqPDeuoxjm1KFejo7u0R55YpZgn4I6H6JDOqu2o=; b=xRw49EO7aFAVmnxw5eH/KAHQh4zAScGJyF/ZKYbltGaQgs4zMW0fpvlCgM1ky6wDG+FERiUp
+ P7ZnP9s66tHL6SdCrsiqbzJSY8RcfdUbKa84QKtXQqc5EXTv2TMYTUXmlM9ZFS83FtpS6W8L
+ KlqgZtPyYaPT5/ApkXrf31XIn/s=
+X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 618e265efacd20d795827198 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 12 Nov 2021 08:31:26
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 618e2757a445961e72b06b66 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 12 Nov 2021 08:35:35
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D8041C43637; Fri, 12 Nov 2021 08:31:25 +0000 (UTC)
+        id 63E33C4338F; Fri, 12 Nov 2021 08:35:34 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D08ABC4314C;
-        Fri, 12 Nov 2021 08:31:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org D08ABC4314C
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8D354C4361A;
+        Fri, 12 Nov 2021 08:35:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 8D354C4361A
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 2/3] ath11k: Refactor update channel list function
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1634906227-22028-3-git-send-email-ppranees@codeaurora.org>
-References: <1634906227-22028-3-git-send-email-ppranees@codeaurora.org>
 To:     P Praneesh <ppranees@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org,
-        P Praneesh <ppranees@codeaurora.org>,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163670587845.25141.12042890222760708077.kvalo@codeaurora.org>
-Date:   Fri, 12 Nov 2021 08:31:25 +0000 (UTC)
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Sriram R <srirrama@codeaurora.org>,
+        Jouni Malinen <jouni@codeaurora.org>
+Subject: Re: [PATCH v3 03/12] ath11k: modify dp_rx desc access wrapper calls inline
+References: <1630560820-21905-1-git-send-email-ppranees@codeaurora.org>
+        <1630560820-21905-4-git-send-email-ppranees@codeaurora.org>
+Date:   Fri, 12 Nov 2021 10:35:30 +0200
+In-Reply-To: <1630560820-21905-4-git-send-email-ppranees@codeaurora.org> (P.
+        Praneesh's message of "Thu, 2 Sep 2021 11:03:31 +0530")
+Message-ID: <87wnldixf1.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-P Praneesh <ppranees@codeaurora.org> wrote:
+P Praneesh <ppranees@codeaurora.org> writes:
 
-> For sending scan channel list command to firmware through wmi, remain on
-> channel's scan request parameter needs to be updated. Add scan_req_params
-> as an argument to the existing update_scan_chan_list to update scan request
-> parameter through wmi. Also, rename regulatory update scan channel list to
-> the ath11k_wmi_update_scan_chan_list since it is moved to wmi file.
-> 
-> Co-developed-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
-> Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
+> In data path, to reduce the CPU cycles spending on descriptor access
+> wrapper function, changed those functions as static inline.
+>
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1.r2-00012-QCAHKSWPL_SILICONZ-1
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01695-QCAHKSWPL_SILICONZ-1
+>
+> Co-developed-by: Sriram R <srirrama@codeaurora.org>
+> Signed-off-by: Sriram R <srirrama@codeaurora.org>
+> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
 > Signed-off-by: P Praneesh <ppranees@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath11k/dp_rx.c | 114 +++++++++++++++++---------------
+>  1 file changed, 59 insertions(+), 55 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+> index 9a22481..b84c2db 100644
+> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
+> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+> @@ -20,13 +20,15 @@
+>  
+>  #define ATH11K_DP_RX_FRAGMENT_TIMEOUT_MS (2 * HZ)
+>  
+> -static u8 *ath11k_dp_rx_h_80211_hdr(struct ath11k_base *ab, struct hal_rx_desc *desc)
+> +static inline
+> +u8 *ath11k_dp_rx_h_80211_hdr(struct ath11k_base *ab, struct hal_rx_desc *desc)
+>  {
+>  	return ab->hw_params.hw_ops->rx_desc_get_hdr_status(desc);
+>  }
 
-Why is ath11k_reg_update_chan_list() moved to wmi.c? I couldn't figure
-out what's the reason for that.
-
-2 patches set to Changes Requested.
-
-12577691 [v3,2/3] ath11k: Refactor update channel list function
-12577693 [v3,2/3] ath11k: Add ROC support for wide band scan
+The compiler does not optimise small static functions like this
+automatically to inline? I'm surprised. Or are you using some really old
+compiler?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1634906227-22028-3-git-send-email-ppranees@codeaurora.org/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
