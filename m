@@ -2,165 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D2D444DC49
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Nov 2021 20:45:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3023444DF30
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Nov 2021 01:35:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231964AbhKKTs1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 Nov 2021 14:48:27 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:44162 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229710AbhKKTs0 (ORCPT
+        id S234506AbhKLAiU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 Nov 2021 19:38:20 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:40268 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234183AbhKLAiS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 Nov 2021 14:48:26 -0500
-X-UUID: dd39996186e64deab35f5291ed5187f2-20211112
-X-UUID: dd39996186e64deab35f5291ed5187f2-20211112
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1803779097; Fri, 12 Nov 2021 03:45:33 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Fri, 12 Nov 2021 03:45:32 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 12 Nov 2021 03:45:32 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        "Ryder Lee" <ryder.lee@mediatek.com>,
-        Fang Zhao <fang.zhao@mediatek.com>
-Subject: [PATCH v2] mt76: mt7915: fix SMPS operation fail
-Date:   Fri, 12 Nov 2021 03:45:31 +0800
-Message-ID: <71786d2c0201ca3304fd67c4a3ba9adb6c32bd2d.1636658341.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Thu, 11 Nov 2021 19:38:18 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1AC0ZC1J0001096, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1AC0ZC1J0001096
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 12 Nov 2021 08:35:12 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Fri, 12 Nov 2021 08:35:11 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Fri, 12 Nov
+ 2021 08:35:11 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <tiwai@suse.de>,
+        <Larry.Finger@lwfinger.net>
+Subject: [PATCH v2 0/3] rtw89: fix crash when loading firmware file on certain platforms
+Date:   Fri, 12 Nov 2021 08:34:50 +0800
+Message-ID: <20211112003453.5073-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/12/2021 00:17:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzExLzExIKRVpMggMTA6MzA6MDA=?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/12/2021 00:15:25
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 167215 [Nov 11 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/12/2021 00:17:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-TGn fails sending SM power save mode action frame to the AP to switch
-from dynamic SMPS mode to static mode.
+First patch is to avoid writing "partition size" on read-only firmware
+buffer, so it has to fix the crash.
+The later two patches are used to make the semantics clear, but they don't
+change the logic at all.
 
-Reported-by: Fang Zhao <fang.zhao@mediatek.com>
-Signed-off-by: Fang Zhao <fang.zhao@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-v2 - move RATE_PARAM_MMPS_UPDATE operation into mt7915_mcu_add_smps
----
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 66 +++++++++++--------
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  1 +
- 2 files changed, 39 insertions(+), 28 deletions(-)
+I hope at least first patch can be taken into 5.16-rc, so people can avoid
+this crash.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 3a496046fe21..72fffce3f24d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -1753,33 +1753,6 @@ int mt7915_mcu_sta_update_hdr_trans(struct mt7915_dev *dev,
- 				     true);
- }
- 
--int mt7915_mcu_add_smps(struct mt7915_dev *dev, struct ieee80211_vif *vif,
--			struct ieee80211_sta *sta)
--{
--	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
--	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
--	struct wtbl_req_hdr *wtbl_hdr;
--	struct tlv *sta_wtbl;
--	struct sk_buff *skb;
--
--	skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta,
--				       MT7915_STA_UPDATE_MAX_SIZE);
--	if (IS_ERR(skb))
--		return PTR_ERR(skb);
--
--	sta_wtbl = mt7915_mcu_add_tlv(skb, STA_REC_WTBL, sizeof(struct tlv));
--
--	wtbl_hdr = mt7915_mcu_alloc_wtbl_req(dev, msta, WTBL_SET, sta_wtbl,
--					     &skb);
--	if (IS_ERR(wtbl_hdr))
--		return PTR_ERR(wtbl_hdr);
--
--	mt7915_mcu_wtbl_smps_tlv(skb, sta, sta_wtbl, wtbl_hdr);
--
--	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
--				     MCU_EXT_CMD(STA_REC_UPDATE), true);
--}
--
- static inline bool
- mt7915_is_ebf_supported(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- 			struct ieee80211_sta *sta, bool bfee)
-@@ -2077,7 +2050,11 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
- 	case RATE_PARAM_FIXED_MCS:
- 	case RATE_PARAM_FIXED_GI:
- 	case RATE_PARAM_FIXED_HE_LTF:
--		ra->phy = *phy;
-+		if (phy)
-+			ra->phy = *phy;
-+		break;
-+	case RATE_PARAM_MMPS_UPDATE:
-+		ra->mmps_mode = (sta->smps_mode == IEEE80211_SMPS_DYNAMIC);
- 		break;
- 	default:
- 		break;
-@@ -2088,6 +2065,39 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
- 				     MCU_EXT_CMD(STA_REC_UPDATE), true);
- }
- 
-+int mt7915_mcu_add_smps(struct mt7915_dev *dev, struct ieee80211_vif *vif,
-+			struct ieee80211_sta *sta)
-+{
-+	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
-+	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
-+	struct wtbl_req_hdr *wtbl_hdr;
-+	struct tlv *sta_wtbl;
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	skb = mt7915_mcu_alloc_sta_req(dev, mvif, msta,
-+				       MT7915_STA_UPDATE_MAX_SIZE);
-+	if (IS_ERR(skb))
-+		return PTR_ERR(skb);
-+
-+	sta_wtbl = mt7915_mcu_add_tlv(skb, STA_REC_WTBL, sizeof(struct tlv));
-+
-+	wtbl_hdr = mt7915_mcu_alloc_wtbl_req(dev, msta, WTBL_SET, sta_wtbl,
-+					     &skb);
-+	if (IS_ERR(wtbl_hdr))
-+		return PTR_ERR(wtbl_hdr);
-+
-+	mt7915_mcu_wtbl_smps_tlv(skb, sta, sta_wtbl, wtbl_hdr);
-+
-+	ret = mt76_mcu_skb_send_msg(&dev->mt76, skb,
-+				    MCU_EXT_CMD(STA_REC_UPDATE), true);
-+	if (ret)
-+		return ret;
-+
-+	return mt7915_mcu_set_fixed_rate_ctrl(dev, vif, sta, NULL,
-+					      RATE_PARAM_MMPS_UPDATE);
-+}
-+
- static int
- mt7915_mcu_add_rate_ctrl_fixed(struct mt7915_dev *dev,
- 			       struct ieee80211_vif *vif,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index e8501234f686..11728454b92c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -960,6 +960,7 @@ struct sta_rec_ra_fixed {
- 
- enum {
- 	RATE_PARAM_FIXED = 3,
-+	RATE_PARAM_MMPS_UPDATE = 5,
- 	RATE_PARAM_FIXED_HE_LTF = 7,
- 	RATE_PARAM_FIXED_MCS,
- 	RATE_PARAM_FIXED_GI = 11,
+v2: Add Buglink and Tested-by tags.
+
+Ping-Ke Shih (3):
+  rtw89: update partition size of firmware header on skb->data
+  rtw89: add const in the cast of le32_get_bits()
+  rtw89: use inline function instead macro to set H2C and CAM
+
+ drivers/net/wireless/realtek/rtw89/cam.h  |  468 ++++--
+ drivers/net/wireless/realtek/rtw89/fw.c   |    2 +-
+ drivers/net/wireless/realtek/rtw89/fw.h   | 1768 ++++++++++++---------
+ drivers/net/wireless/realtek/rtw89/txrx.h |   46 +-
+ 4 files changed, 1370 insertions(+), 914 deletions(-)
+
 -- 
-2.29.2
+2.25.1
 
