@@ -2,121 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F26C944F2A4
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Nov 2021 12:06:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C8B644F3D9
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Nov 2021 16:20:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232003AbhKMLG4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 Nov 2021 06:06:56 -0500
-Received: from gimli.kloenk.dev ([195.39.247.182]:59128 "EHLO gimli.kloenk.dev"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231735AbhKMLGz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 Nov 2021 06:06:55 -0500
-X-Greylist: delayed 581 seconds by postgrey-1.27 at vger.kernel.org; Sat, 13 Nov 2021 06:06:55 EST
-Date:   Sat, 13 Nov 2021 11:54:18 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-        t=1636800860; bh=1FVZ6VoGSeZNL+Ck/OUnZE6eqju1Yj/iXfDu6YhRgEY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To;
-        b=mfJGslkdYwGkTl5Kfi02fcMIgehGYw8nX+e+RXOJVCFuwJcf7emUKwq0/mcayN2iV
-         eKvT8MP5IYboTMX1ZVa8dqcslC03pGYeeu+OBf0DJgPCRvPU9OsUjy3f9N6Gb89QEl
-         wtIw0s6AFop/5ovgFyjf2o2WobjSG071+jM7om+I=
-From:   Finn Behrens <me@kloenk.dev>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH v4] nl80211: reset regdom when reloading regdb
-Message-ID: <20210526112418.cdwkn7ed4twctimc@imap.mailbox.org>
+        id S231912AbhKMPVM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 Nov 2021 10:21:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58940 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231791AbhKMPVM (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 13 Nov 2021 10:21:12 -0500
+Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A06C061766
+        for <linux-wireless@vger.kernel.org>; Sat, 13 Nov 2021 07:18:19 -0800 (PST)
+Received: by mail-ua1-x92e.google.com with SMTP id p37so23451438uae.8
+        for <linux-wireless@vger.kernel.org>; Sat, 13 Nov 2021 07:18:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=KoseWHC1X1eUmhKmXE//peQwxmYp0XripPbl2Zk3A1o=;
+        b=bN9qaAR7Q2M6IRFuj1XeUfAFWT3pNhsv8w8chiqTuWVwJooWJlbWK+7KJs27PPR7oQ
+         f0J9+ggDAodGFMnVtZbqqLEz0gbnRyrD7aWSaDivEIUcm5gM/tnhk299CmJCt0rIMflr
+         DZrVNWHhOdPnK+NxpAcRTG/xHansY3Ex8g29zCmCo+WSP/1aaVN3o64zXbcZYo0h72IA
+         mnvkI7nhs9jJorBdF8Hvq5Vt43/+NRv1T2Kyb6kIR73T7rU4LLQkNtCyjWoEyQCrvF7s
+         hSDlisyl9g6LBD3g9jvPhvKp/ezk/wB8htTkb8PHtYi21U0K69uZVxLBQiXQssrUbZxq
+         yZVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=KoseWHC1X1eUmhKmXE//peQwxmYp0XripPbl2Zk3A1o=;
+        b=R5MHjg3wdKMn+52cfQytmQQ5p0ZUF5tZbw2axMfrFy0AdXnt9GTUGtFlSpLlKDC0Uh
+         YamWlpHm746fSKieEdduf1w31mgvh6FjBWoHCsZmUuQGrIAolTes+qyiD7hzHqSApzHn
+         Vn74QT238lxLRdTt9JiSN8fo3L+moSQ3yi85HJ42xHuamUOY9+kh+oF8YucUt1lDkDcn
+         q+kS30Q87TAQ+XAAmz/8ObA54MSN5rgJXw2iHDTQ5/+qffbf8pbnPukJuqVI6q7r4Q9y
+         qC6/Ya84A9DUnzxHI9C1Klwbl1RCjMcbU2bzRhmTOJXpOV3q58wXt8XJFd7jDQ9bqRQQ
+         85MA==
+X-Gm-Message-State: AOAM532k5LF9Yx4+8WgSc5vqsY6xZtQyIDVoXgHGOYEqCosqGRKNzF4L
+        H4ECStd28dFK4EY9qXZyCLT9wYpMcx09A5KvCbA=
+X-Google-Smtp-Source: ABdhPJxw4uM0Zt97X4HZNUWi+TZSF2Vi5bNAeGxz9vb9QKFKEJeplaoZjx7jF7tgDNPMo8l8shLyUKQ8yB4TSrafzmE=
+X-Received: by 2002:a67:af0a:: with SMTP id v10mr22230053vsl.35.1636816698764;
+ Sat, 13 Nov 2021 07:18:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <X7+F/ht8T7aGiIl7@bombur.kloenk.de>
+Received: by 2002:a67:df95:0:0:0:0:0 with HTTP; Sat, 13 Nov 2021 07:18:18
+ -0800 (PST)
+Reply-To: mstheresaheidi8@gmail.com
+From:   Ms Theresa Heidi <jhenagerb@gmail.com>
+Date:   Sat, 13 Nov 2021 15:18:18 +0000
+Message-ID: <CAOTP7XuM5ueMwZFxHEaWqS+xT51EU=k9TZuhq=Df2QmvtWU7Xw@mail.gmail.com>
+Subject: URGENT MATTER HELP!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-this reloads the regdom when the regulatory db is reloaded.
-Without this patch the user had to change the regulatoy domain to a
-different, and then reset it to the one the user is in, to have the new
-regulatory db take effect
+Dear Beloved One,
 
-Signed-off-by: Finn Behrens <fin@nyantec.com>
----
-Sorry for taking so long for a new version. The mail provider my company
-is using had some major problems connecting to the LKML.
-This is why I now are using my personal mail server.
+CHARITY DONATION Please read carefully, I know it is true that this
+letter may come to you as a surprise. I came across your e-mail
+contact through a private search while in need of your assistance. I
+am writing this mail to you with heavy sorrow in my heart, I have
+chose to reach you through Internet because it still remains the
+fastest medium of communication.
 
- include/net/regulatory.h |  1 +
- net/wireless/reg.c       | 26 +++++++++++++++++++++++++-
- 2 files changed, 26 insertions(+), 1 deletion(-)
+My Name is Mrs. Theresa Heidi I am native France currently
+hospitalized in a private hospital here in Israel as a result of lungs
+cancer I am 62 years old and I was diagnosed of lungs cancer for about
+4 years ago, immediately after the death of my husband, who has left
+me everything he worked for. I'm with my laptop in a hospital here in
+where I have been undergoing treatment for cancer of the lungs. I have
+some funds inherited from my late husband, the sum of Two Million Five
+Hundred Thousand Dollars Only (USD$2,500,000,00).Now it's clear that
+I=E2=80=99m approaching the last-days of my life and I don't think I need t=
+his
+money anymore. My doctor made me to understand that I would not last
+for the period of one year due to Lungs cancer problem.
 
-diff --git a/include/net/regulatory.h b/include/net/regulatory.h
-index 47f06f6f5a67..0cf9335431e0 100644
---- a/include/net/regulatory.h
-+++ b/include/net/regulatory.h
-@@ -83,6 +83,7 @@ struct regulatory_request {
- 	enum nl80211_dfs_regions dfs_region;
- 	bool intersect;
- 	bool processed;
-+	bool reload;
- 	enum environment_cap country_ie_env;
- 	struct list_head list;
- };
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 0406ce7334fa..3460c0e75c6d 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -133,6 +133,7 @@ static u32 reg_is_indoor_portid;
- 
- static void restore_regulatory_settings(bool reset_user, bool cached);
- static void print_regdomain(const struct ieee80211_regdomain *rd);
-+static void reg_process_hint(struct regulatory_request *reg_request);
- 
- static const struct ieee80211_regdomain *get_cfg80211_regdom(void)
- {
-@@ -1091,6 +1092,8 @@ int reg_reload_regdb(void)
- 	const struct firmware *fw;
- 	void *db;
- 	int err;
-+	const struct ieee80211_regdomain *current_regdomain;
-+	struct regulatory_request *request;
- 
- 	err = request_firmware(&fw, "regulatory.db", &reg_pdev->dev);
- 	if (err)
-@@ -1113,6 +1116,26 @@ int reg_reload_regdb(void)
- 	regdb = db;
- 	rtnl_unlock();
- 
-+	/* reset regulatory domain */
-+	current_regdomain = get_cfg80211_regdom();
-+
-+	request = kzalloc(sizeof(*request), GFP_KERNEL);
-+	if (!request) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
-+
-+	request->wiphy_idx = WIPHY_IDX_INVALID;
-+	request->alpha2[0] = current_regdomain->alpha2[0];
-+	request->alpha2[1] = current_regdomain->alpha2[1];
-+	request->initiator = NL80211_USER_REG_HINT_USER;
-+	request->user_reg_hint_type = NL80211_USER_REG_HINT_USER;
-+	request->reload = true;
-+
-+	rtnl_lock();
-+	reg_process_hint(request);
-+	rtnl_unlock();
-+
-  out:
- 	release_firmware(fw);
- 	return err;
-@@ -2683,7 +2706,8 @@ reg_process_hint_user(struct regulatory_request *user_request)
- 
- 	treatment = __reg_process_hint_user(user_request);
- 	if (treatment == REG_REQ_IGNORE ||
--	    treatment == REG_REQ_ALREADY_SET)
-+	    (treatment == REG_REQ_ALREADY_SET &&
-+				!user_request->reload))
- 		return REG_REQ_IGNORE;
- 
- 	user_request->intersect = treatment == REG_REQ_INTERSECT;
--- 
-2.31.1
+This money is still with the foreign bank and the management wrote me
+as the true owner to come forward to receive the money or rather issue
+a letter of authorization to somebody to receive it on my behalf since
+I can't come over because of my illness. Failure to act the bank may
+get fund confiscated for keeping it so long.
 
+I decided to contact you if you maybe willing and interested to help
+me withdraw this money from the foreign bank then use the funds for
+Charity works in helping the less privileged and also to fight against
+Covid-19 Pandemic in the society. I want you to handle these trust
+funds in good faith before anything happens to me. This is not a
+stolen money and there are no dangers involved is 100% risk free with
+full legal proof.
+
+I want you to take 45% of the total money for your personal used while
+55% of the money will go to charity work. I will appreciate your
+utmost trust and confidentiality in this matter to accomplish my heart
+desire, as I don't want anything that will jeopardize my last wish. I
+am very sorry if you received this letter in your spam, is due to
+recent connection error here in the country.
+
+Yours Beloved Sister.
+Mrs. Theresa Heidi
