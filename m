@@ -2,96 +2,252 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12AA044F137
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Nov 2021 05:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75E3D44F1D4
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Nov 2021 07:34:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232329AbhKMEcm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Nov 2021 23:32:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59960 "EHLO
+        id S230239AbhKMGhN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 Nov 2021 01:37:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230185AbhKMEcm (ORCPT
+        with ESMTP id S229487AbhKMGhL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Nov 2021 23:32:42 -0500
-Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D6FFC061766;
-        Fri, 12 Nov 2021 20:29:50 -0800 (PST)
-Received: by mail-vk1-xa2a.google.com with SMTP id d128so6196178vkf.11;
-        Fri, 12 Nov 2021 20:29:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=t9ihXgREX3InFvx1Wn5SZtm/TKfO4gpL5pKxnsJrr+Y=;
-        b=Q0fFGdVgO6Xy6yLtVUlFqZ9a+FUZ7t9zoo9c6CTrZIcBRKgvtb28d8KQlHnDQfPJ2Y
-         MTpiyX3lA4JnMglKD3YpTbqkjg+5WULGWOQFJHMCUIfWz+YNFxizRWiRv6Kk3SlEuJ4c
-         MWbnVtalGyniKlWgBPPWSOTz5ZWP2yuMntPHN2XgIhc8HO36OsnFICLFixrEs6D3ha5A
-         CBBL9CCGG7bqCK2kVHTEArrqLyR7l+D3/qtPaupywpUOdquDFRGqw5uP1zSjStKwRc3g
-         Q7NAh+vD4kAmt0TsnWKzEhqgpQwwQSC+Sq0iGeRGmM4WucT+hw4bg/taP68DA9m8T4dP
-         uCJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=t9ihXgREX3InFvx1Wn5SZtm/TKfO4gpL5pKxnsJrr+Y=;
-        b=AKACtYlCW2QiNRDa5e+hAGj8lMha2kEGNmVcGDfw0v2LA7c2cHxOUNcrlN7N1p87Fy
-         psxkx/qNIpo3w9e/n9kEGxIni7qkT8G2XyFHZY+ZryWW0SNJ87XTZx2NLct6VsEqujPL
-         PU0jCpHGsdIwDf2OBCG6mR0WA+NRt+5MrfYZYax1/lGtOX6qvDj8RnpQ9CAUFhikRH8/
-         J/bK4+8vgs2YNRYX3nol6Rlsa5WmWwVT4UEtn6yzAfW9QjUJB1RZmktIkwrWz7BF1L+K
-         gzP0BoBjLzTUUHMIQzIO4aoHVyHmh9N1OG229WbyI7s9QdV11NbvJzjRDa95c1jc5B1T
-         Y8vw==
-X-Gm-Message-State: AOAM531TSrtQBY8rl5166MfkphW5crC+zM6rujJ15Cmh+HDAdQ1uNzE2
-        q8FFZC1UXxcmi4/0gy2eTy0yM4OtpQd0puu+nHcsINpv
-X-Google-Smtp-Source: ABdhPJwpIwZulrijaJ+GTvy2HomLLz9P0P7tNQ/aVLgUxVJmb+VPMHHHA97IPFK/JyT7RLDUIEWzDBBzwEaNbqame2U=
-X-Received: by 2002:a1f:18cb:: with SMTP id 194mr30964756vky.16.1636777789386;
- Fri, 12 Nov 2021 20:29:49 -0800 (PST)
+        Sat, 13 Nov 2021 01:37:11 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C76CC061766
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Nov 2021 22:34:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=toEyUjVZUjbYM+bZTjw2cyW1Fb9jT9xjSRWIp9Z9n6c=; b=UuQaXNAtVRVFaYB7EBUQ3BaPSF
+        HIUx/FMK6s8Ew+myYV0QHX6Aq6AnDqpGnSTfgSQW31Lqf4YMHOvDkxcJXBjyOl2qycgA3V/AsbVku
+        jirB8hmIez9qG2j7eJ0sQN1YtMJTj6trFmveUaPkty4VYC1dSJoDJOh44xHvA4LxQQtc=;
+Received: from p54ae9f3f.dip0.t-ipconnect.de ([84.174.159.63] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1mlmcD-0006yS-81; Sat, 13 Nov 2021 07:34:17 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH v2] mac80211: fix throughput LED trigger
+Date:   Sat, 13 Nov 2021 07:34:15 +0100
+Message-Id: <20211113063415.55147-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-From:   Jupiter <jupiter.hce@gmail.com>
-Date:   Sat, 13 Nov 2021 15:29:13 +1100
-Message-ID: <CAA=hcWSRO7Khj8XZbq6fzA6sEN0urR4SeJZh2YcrGe6g8d9ZdA@mail.gmail.com>
-Subject: mwifiex_sdio and mwifiex failure
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-Cc:     netdev@vger.kernel.org, Nishant Sarmukadam <nishants@marvell.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+The codepaths for rx with decap offload and tx with itxq were not updating
+the counters for the throughput led trigger.
 
-I am work on a Linux embedded IoT device including both 4G LTE and
-WiFi modems, I use linux-firmware-sd8801 and Marvell driver
-mwifiex_sdio.ko and mwifiex.ko drivers, it works well for a couple of
-days, then the WiFi failed which could be caused by low WiFi signal
-strength level, but that should not cause the mwifiex_sdio errors.
-While the connman was able to switch from WiFi connection to 4G LTE
-connection automatically, following error messages popped up in
-console and kernel logs every second to consume lots of resources
-despite the 4G LTE being connected and worked perfectly.
-...............
-[924785.415505] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
-[924807.818102] mwifiex_sdio mmc0:0001:1: Ignore scan. Card removed or
-firmware in bad state
-[924808.406775] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
-...........
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+v2: fix unused-but-set variable reported by kernel test robot
 
-I am not quite sure if the error message indicated the mwifiex_sdio or
-kernel crash or not, but given the 4G LTE was connected fine, the
-device was still in good operation, I don't think it is a kernel crash
-sign.
+ net/mac80211/led.h |  8 ++++----
+ net/mac80211/rx.c  |  7 ++++---
+ net/mac80211/tx.c  | 34 +++++++++++++++-------------------
+ 3 files changed, 23 insertions(+), 26 deletions(-)
 
-My questions are:
+diff --git a/net/mac80211/led.h b/net/mac80211/led.h
+index fb3aaa3c5606..b71a1428d883 100644
+--- a/net/mac80211/led.h
++++ b/net/mac80211/led.h
+@@ -72,19 +72,19 @@ static inline void ieee80211_mod_tpt_led_trig(struct ieee80211_local *local,
+ #endif
+ 
+ static inline void
+-ieee80211_tpt_led_trig_tx(struct ieee80211_local *local, __le16 fc, int bytes)
++ieee80211_tpt_led_trig_tx(struct ieee80211_local *local, int bytes)
+ {
+ #ifdef CONFIG_MAC80211_LEDS
+-	if (ieee80211_is_data(fc) && atomic_read(&local->tpt_led_active))
++	if (atomic_read(&local->tpt_led_active))
+ 		local->tpt_led_trigger->tx_bytes += bytes;
+ #endif
+ }
+ 
+ static inline void
+-ieee80211_tpt_led_trig_rx(struct ieee80211_local *local, __le16 fc, int bytes)
++ieee80211_tpt_led_trig_rx(struct ieee80211_local *local, int bytes)
+ {
+ #ifdef CONFIG_MAC80211_LEDS
+-	if (ieee80211_is_data(fc) && atomic_read(&local->tpt_led_active))
++	if (atomic_read(&local->tpt_led_active))
+ 		local->tpt_led_trigger->rx_bytes += bytes;
+ #endif
+ }
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index fc5c608d02e2..3079328a30e8 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4863,6 +4863,7 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 	struct ieee80211_rate *rate = NULL;
+ 	struct ieee80211_supported_band *sband;
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 
+ 	WARN_ON_ONCE(softirq_count() == 0);
+ 
+@@ -4959,9 +4960,9 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 	if (!(status->flag & RX_FLAG_8023))
+ 		skb = ieee80211_rx_monitor(local, skb, rate);
+ 	if (skb) {
+-		ieee80211_tpt_led_trig_rx(local,
+-					  ((struct ieee80211_hdr *)skb->data)->frame_control,
+-					  skb->len);
++		if ((status->flag & RX_FLAG_8023) ||
++			ieee80211_is_data_present(hdr->frame_control))
++			ieee80211_tpt_led_trig_rx(local, skb->len);
+ 
+ 		if (status->flag & RX_FLAG_8023)
+ 			__ieee80211_rx_handle_8023(hw, pubsta, skb, list);
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index a756a197c770..278945e3e08a 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1721,21 +1721,19 @@ static bool ieee80211_tx_frags(struct ieee80211_local *local,
+  * Returns false if the frame couldn't be transmitted but was queued instead.
+  */
+ static bool __ieee80211_tx(struct ieee80211_local *local,
+-			   struct sk_buff_head *skbs, int led_len,
+-			   struct sta_info *sta, bool txpending)
++			   struct sk_buff_head *skbs, struct sta_info *sta,
++			   bool txpending)
+ {
+ 	struct ieee80211_tx_info *info;
+ 	struct ieee80211_sub_if_data *sdata;
+ 	struct ieee80211_vif *vif;
+ 	struct sk_buff *skb;
+ 	bool result;
+-	__le16 fc;
+ 
+ 	if (WARN_ON(skb_queue_empty(skbs)))
+ 		return true;
+ 
+ 	skb = skb_peek(skbs);
+-	fc = ((struct ieee80211_hdr *)skb->data)->frame_control;
+ 	info = IEEE80211_SKB_CB(skb);
+ 	sdata = vif_to_sdata(info->control.vif);
+ 	if (sta && !sta->uploaded)
+@@ -1769,8 +1767,6 @@ static bool __ieee80211_tx(struct ieee80211_local *local,
+ 
+ 	result = ieee80211_tx_frags(local, vif, sta, skbs, txpending);
+ 
+-	ieee80211_tpt_led_trig_tx(local, fc, led_len);
+-
+ 	WARN_ON_ONCE(!skb_queue_empty(skbs));
+ 
+ 	return result;
+@@ -1920,7 +1916,6 @@ static bool ieee80211_tx(struct ieee80211_sub_if_data *sdata,
+ 	ieee80211_tx_result res_prepare;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	bool result = true;
+-	int led_len;
+ 
+ 	if (unlikely(skb->len < 10)) {
+ 		dev_kfree_skb(skb);
+@@ -1928,7 +1923,6 @@ static bool ieee80211_tx(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	/* initialises tx */
+-	led_len = skb->len;
+ 	res_prepare = ieee80211_tx_prepare(sdata, &tx, sta, skb);
+ 
+ 	if (unlikely(res_prepare == TX_DROP)) {
+@@ -1951,8 +1945,7 @@ static bool ieee80211_tx(struct ieee80211_sub_if_data *sdata,
+ 		return true;
+ 
+ 	if (!invoke_tx_handlers_late(&tx))
+-		result = __ieee80211_tx(local, &tx.skbs, led_len,
+-					tx.sta, txpending);
++		result = __ieee80211_tx(local, &tx.skbs, tx.sta, txpending);
+ 
+ 	return result;
+ }
+@@ -4175,6 +4168,7 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct sta_info *sta;
+ 	struct sk_buff *next;
++	int len = skb->len;
+ 
+ 	if (unlikely(skb->len < ETH_HLEN)) {
+ 		kfree_skb(skb);
+@@ -4221,10 +4215,8 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 		}
+ 	} else {
+ 		/* we cannot process non-linear frames on this path */
+-		if (skb_linearize(skb)) {
+-			kfree_skb(skb);
+-			goto out;
+-		}
++		if (skb_linearize(skb))
++			goto out_free;
+ 
+ 		/* the frame could be fragmented, software-encrypted, and other
+ 		 * things so we cannot really handle checksum offload with it -
+@@ -4258,7 +4250,10 @@ void __ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 	goto out;
+  out_free:
+ 	kfree_skb(skb);
++	len = 0;
+  out:
++	if (len)
++		ieee80211_tpt_led_trig_tx(local, len);
+ 	rcu_read_unlock();
+ }
+ 
+@@ -4396,8 +4391,7 @@ netdev_tx_t ieee80211_subif_start_xmit(struct sk_buff *skb,
+ }
+ 
+ static bool ieee80211_tx_8023(struct ieee80211_sub_if_data *sdata,
+-			      struct sk_buff *skb, int led_len,
+-			      struct sta_info *sta,
++			      struct sk_buff *skb, struct sta_info *sta,
+ 			      bool txpending)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+@@ -4410,6 +4404,8 @@ static bool ieee80211_tx_8023(struct ieee80211_sub_if_data *sdata,
+ 	if (sta)
+ 		sk_pacing_shift_update(skb->sk, local->hw.tx_sk_pacing_shift);
+ 
++	ieee80211_tpt_led_trig_tx(local, skb->len);
++
+ 	if (ieee80211_queue_skb(local, sdata, sta, skb))
+ 		return true;
+ 
+@@ -4498,7 +4494,7 @@ static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
+ 	if (key)
+ 		info->control.hw_key = &key->conf;
+ 
+-	ieee80211_tx_8023(sdata, skb, skb->len, sta, false);
++	ieee80211_tx_8023(sdata, skb, sta, false);
+ 
+ 	return;
+ 
+@@ -4637,7 +4633,7 @@ static bool ieee80211_tx_pending_skb(struct ieee80211_local *local,
+ 		if (IS_ERR(sta) || (sta && !sta->uploaded))
+ 			sta = NULL;
+ 
+-		result = ieee80211_tx_8023(sdata, skb, skb->len, sta, true);
++		result = ieee80211_tx_8023(sdata, skb, sta, true);
+ 	} else {
+ 		struct sk_buff_head skbs;
+ 
+@@ -4647,7 +4643,7 @@ static bool ieee80211_tx_pending_skb(struct ieee80211_local *local,
+ 		hdr = (struct ieee80211_hdr *)skb->data;
+ 		sta = sta_info_get(sdata, hdr->addr1);
+ 
+-		result = __ieee80211_tx(local, &skbs, skb->len, sta, true);
++		result = __ieee80211_tx(local, &skbs, sta, true);
+ 	}
+ 
+ 	return result;
+-- 
+2.30.1
 
-(a) Is there any way to recover the mwifiex_sdio or reset
-mwifiex_sdio? I tried modprobe -r mwifiex_sdio, modprobe mwifiex_sdio
-and modprobe mwifiex, but that crashed my debug console despite the
-device was still in good operation. I could only make it recover by
-rebooting the device which was not a good solution as it was operated
-24 / 7.
-
-(b) If there is no way to recover or reset mwifiex_sdio, are there any
-methods to suppress mwifiex_sdio endless error messages to both debug
-console and to kernel logs?
-
-Thank you.
-
-Kind regards,
-
-- jh
