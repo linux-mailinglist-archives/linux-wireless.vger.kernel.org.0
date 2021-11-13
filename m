@@ -2,176 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91F6C44F11D
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Nov 2021 05:08:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12AA044F137
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Nov 2021 05:29:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235580AbhKMELE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 Nov 2021 23:11:04 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:33270 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232723AbhKMELE (ORCPT
+        id S232329AbhKMEcm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 Nov 2021 23:32:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59960 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230185AbhKMEcm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 Nov 2021 23:11:04 -0500
-X-UUID: 6636bcfa7f534bdca65ceb4f8391c5e4-20211113
-X-UUID: 6636bcfa7f534bdca65ceb4f8391c5e4-20211113
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 2045234080; Sat, 13 Nov 2021 12:08:09 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 13 Nov 2021 12:08:07 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 13 Nov 2021 12:08:07 +0800
-Message-ID: <ee169af76f1d45b6178204585489c187dae97757.camel@mediatek.com>
-Subject: Re: [PATCH v2] mt76: mt7921: introduce 160 MHz channel bandwidth
- support
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
-        "Lorenzo Bianconi" <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Date:   Sat, 13 Nov 2021 12:08:07 +0800
-In-Reply-To: <6978659235747261d652379d7d1a823f6b2f6505.camel@mediatek.com>
-References: <66edc3125e9a12dedeba1a61697d46322b0c004d.1636374449.git.deren.wu@mediatek.com>
-         <c622447038b06d8a4068ec8126c7ec674fafe383.camel@mediatek.com>
-         <6978659235747261d652379d7d1a823f6b2f6505.camel@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        Fri, 12 Nov 2021 23:32:42 -0500
+Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D6FFC061766;
+        Fri, 12 Nov 2021 20:29:50 -0800 (PST)
+Received: by mail-vk1-xa2a.google.com with SMTP id d128so6196178vkf.11;
+        Fri, 12 Nov 2021 20:29:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=t9ihXgREX3InFvx1Wn5SZtm/TKfO4gpL5pKxnsJrr+Y=;
+        b=Q0fFGdVgO6Xy6yLtVUlFqZ9a+FUZ7t9zoo9c6CTrZIcBRKgvtb28d8KQlHnDQfPJ2Y
+         MTpiyX3lA4JnMglKD3YpTbqkjg+5WULGWOQFJHMCUIfWz+YNFxizRWiRv6Kk3SlEuJ4c
+         MWbnVtalGyniKlWgBPPWSOTz5ZWP2yuMntPHN2XgIhc8HO36OsnFICLFixrEs6D3ha5A
+         CBBL9CCGG7bqCK2kVHTEArrqLyR7l+D3/qtPaupywpUOdquDFRGqw5uP1zSjStKwRc3g
+         Q7NAh+vD4kAmt0TsnWKzEhqgpQwwQSC+Sq0iGeRGmM4WucT+hw4bg/taP68DA9m8T4dP
+         uCJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=t9ihXgREX3InFvx1Wn5SZtm/TKfO4gpL5pKxnsJrr+Y=;
+        b=AKACtYlCW2QiNRDa5e+hAGj8lMha2kEGNmVcGDfw0v2LA7c2cHxOUNcrlN7N1p87Fy
+         psxkx/qNIpo3w9e/n9kEGxIni7qkT8G2XyFHZY+ZryWW0SNJ87XTZx2NLct6VsEqujPL
+         PU0jCpHGsdIwDf2OBCG6mR0WA+NRt+5MrfYZYax1/lGtOX6qvDj8RnpQ9CAUFhikRH8/
+         J/bK4+8vgs2YNRYX3nol6Rlsa5WmWwVT4UEtn6yzAfW9QjUJB1RZmktIkwrWz7BF1L+K
+         gzP0BoBjLzTUUHMIQzIO4aoHVyHmh9N1OG229WbyI7s9QdV11NbvJzjRDa95c1jc5B1T
+         Y8vw==
+X-Gm-Message-State: AOAM531TSrtQBY8rl5166MfkphW5crC+zM6rujJ15Cmh+HDAdQ1uNzE2
+        q8FFZC1UXxcmi4/0gy2eTy0yM4OtpQd0puu+nHcsINpv
+X-Google-Smtp-Source: ABdhPJwpIwZulrijaJ+GTvy2HomLLz9P0P7tNQ/aVLgUxVJmb+VPMHHHA97IPFK/JyT7RLDUIEWzDBBzwEaNbqame2U=
+X-Received: by 2002:a1f:18cb:: with SMTP id 194mr30964756vky.16.1636777789386;
+ Fri, 12 Nov 2021 20:29:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
+From:   Jupiter <jupiter.hce@gmail.com>
+Date:   Sat, 13 Nov 2021 15:29:13 +1100
+Message-ID: <CAA=hcWSRO7Khj8XZbq6fzA6sEN0urR4SeJZh2YcrGe6g8d9ZdA@mail.gmail.com>
+Subject: mwifiex_sdio and mwifiex failure
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     netdev@vger.kernel.org, Nishant Sarmukadam <nishants@marvell.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2021-11-13 at 11:39 +0800, Deren Wu wrote:
-> On Sat, 2021-11-13 at 03:12 +0800, Ryder Lee wrote:
-> > On Mon, 2021-11-08 at 22:41 +0800, Deren Wu wrote:
-> > > From: Deren Wu <deren.wu@mediatek.com>
-> > > 
-> > > Introduce the basic configuration for chips with BW160 capability
-> > > 
-> > > Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> > > ---
-> > >  drivers/net/wireless/mediatek/mt76/mt76.h            |  1 +
-> > >  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |  1 +
-> > >  drivers/net/wireless/mediatek/mt76/mt7921/init.c     |  4 ++++
-> > >  drivers/net/wireless/mediatek/mt76/mt7921/main.c     | 12
-> > > ++++++++++++
-> > >  4 files changed, 18 insertions(+)
-> > > 
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h
-> > > b/drivers/net/wireless/mediatek/mt76/mt76.h
-> > > index e2da720a91b6..babca8086027 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> > > @@ -346,6 +346,7 @@ struct mt76_hw_cap {
-> > >  	bool has_2ghz;
-> > >  	bool has_5ghz;
-> > >  	bool has_6ghz;
-> > > +	bool has_bw160;
-> > >  };
-> > >  
-> > >  #define MT_DRV_TXWI_NO_FREE		BIT(0)
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> > > b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> > > index 26b4b875dcc0..3b42e1e8e970 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> > > @@ -1775,6 +1775,7 @@ static void
-> > > mt76_connac_mcu_parse_phy_cap(struct mt76_dev *dev,
-> > >  	dev->phy.chainmask = dev->phy.antenna_mask;
-> > >  	dev->phy.cap.has_2ghz = cap->hw_path & BIT(WF0_24G);
-> > >  	dev->phy.cap.has_5ghz = cap->hw_path & BIT(WF0_5G);
-> > > +	dev->phy.cap.has_bw160 = cap->max_bw ==
-> > > IEEE80211_STA_RX_BW_160;
-> > >  }
-> > >  
-> > >  int mt76_connac_mcu_get_nic_capability(struct mt76_phy *phy)
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> > > b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> > > index 210998f086ab..30c0246fba3a 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> > > @@ -264,6 +264,10 @@ int mt7921_register_device(struct mt7921_dev
-> > > *dev)
-> > >  			IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE |
-> > >  			IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE |
-> > >  			(3 << IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT);
-> > > +	if (dev->mt76.phy.cap.has_bw160)
-> > > +		dev->mphy.sband_5g.sband.vht_cap.cap |=
-> > > +			IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
-> > > +			IEEE80211_VHT_CAP_SHORT_GI_160;
-> > >  
-> > >  	dev->mphy.hw->wiphy->available_antennas_rx = dev-
-> > > > mphy.chainmask;
-> > > 
-> > >  	dev->mphy.hw->wiphy->available_antennas_tx = dev-
-> > > > mphy.chainmask;
-> > > 
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > index 633c6d2a57ac..af8c675f909f 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > @@ -128,11 +128,23 @@ mt7921_init_he_caps(struct mt7921_phy *phy,
-> > > enum nl80211_band band,
-> > >  				IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_
-> > > THAN_242_TONE_RU |
-> > >  				IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USI
-> > > NG_MU_WITH_COMP_SIGB |
-> > >  				IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USI
-> > > NG_MU_WITH_NON_COMP_SIGB;
-> > > +
-> > > +			if (phy->mt76->cap.has_bw160) {
-> > > +				he_cap_elem->phy_cap_info[0] |=
-> > > +					IEEE80211_HE_PHY_CAP0_CHANNEL_W
-> > > IDTH_SET_160MHZ_IN_5G;
-> > > +				he_cap_elem->phy_cap_info[8] |=
-> > > +					IEEE80211_HE_PHY_CAP8_20MHZ_IN_
-> > > 160MHZ_HE_PPDU |
-> > > +					IEEE80211_HE_PHY_CAP8_80MHZ_IN_
-> > > 160MHZ_HE_PPDU;
-> > > +			}
-> > >  			break;
-> > >  		}
-> > >  
-> > >  		he_mcs->rx_mcs_80 = cpu_to_le16(mcs_map);
-> > >  		he_mcs->tx_mcs_80 = cpu_to_le16(mcs_map);
-> > > +		if (phy->mt76->cap.has_bw160) {
-> > > +			he_mcs->rx_mcs_160 = cpu_to_le16(mcs_map);
-> > > +			he_mcs->tx_mcs_160 = cpu_to_le16(mcs_map);
-> > > +		}
-> > >  
-> > 
-> > But what about 80p80Mhz case?
-> > 
-> > Ryder
-> > 
-> 
-> Since 80p80MHz is not supprted in mt7921, we should not register this
-> capability to mac80211. When the feature coming, we may have a new
-> config cap.has_bw80p80 to adapte the new flow.
-> 
-Then, how to tell 80p80M and 160M apart with only checking
-IEEE80211_STA_RX_BW_160? 
+Hi,
 
- * @IEEE80211_STA_RX_BW_160: station can receive up to 160 MHz
- *	(including 80+80 MHz)
+I am work on a Linux embedded IoT device including both 4G LTE and
+WiFi modems, I use linux-firmware-sd8801 and Marvell driver
+mwifiex_sdio.ko and mwifiex.ko drivers, it works well for a couple of
+days, then the WiFi failed which could be caused by low WiFi signal
+strength level, but that should not cause the mwifiex_sdio errors.
+While the connman was able to switch from WiFi connection to 4G LTE
+connection automatically, following error messages popped up in
+console and kernel logs every second to consume lots of resources
+despite the 4G LTE being connected and worked perfectly.
+...............
+[924785.415505] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+[924807.818102] mwifiex_sdio mmc0:0001:1: Ignore scan. Card removed or
+firmware in bad state
+[924808.406775] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+...........
 
-Maybe move has_bw80p80 into mt7921_dev as it is not generic to me?
+I am not quite sure if the error message indicated the mwifiex_sdio or
+kernel crash or not, but given the 4G LTE was connected fine, the
+device was still in good operation, I don't think it is a kernel crash
+sign.
 
+My questions are:
+
+(a) Is there any way to recover the mwifiex_sdio or reset
+mwifiex_sdio? I tried modprobe -r mwifiex_sdio, modprobe mwifiex_sdio
+and modprobe mwifiex, but that crashed my debug console despite the
+device was still in good operation. I could only make it recover by
+rebooting the device which was not a good solution as it was operated
+24 / 7.
+
+(b) If there is no way to recover or reset mwifiex_sdio, are there any
+methods to suppress mwifiex_sdio endless error messages to both debug
+console and to kernel logs?
+
+Thank you.
+
+Kind regards,
+
+- jh
