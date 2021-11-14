@@ -2,95 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03FE344F6BC
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Nov 2021 06:36:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A005244F7D7
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Nov 2021 13:24:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229830AbhKNFho (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 Nov 2021 00:37:44 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:59256 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229515AbhKNFhn (ORCPT
+        id S231147AbhKNM1V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 Nov 2021 07:27:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48618 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230267AbhKNM1U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 Nov 2021 00:37:43 -0500
-X-UUID: 3df06dc3d05747f6869622a8918f6fe0-20211114
-X-UUID: 3df06dc3d05747f6869622a8918f6fe0-20211114
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2064759205; Sun, 14 Nov 2021 13:34:47 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Sun, 14 Nov 2021 13:34:45 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sun, 14 Nov 2021 13:34:45 +0800
-Message-ID: <91230c580e09a192f32217ff6fed160bf1645594.camel@mediatek.com>
-Subject: Re: [PATCH v2] mt76: mt7921: introduce 160 MHz channel bandwidth
- support
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
-        "Lorenzo Bianconi" <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        "Shayne Chen" <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Date:   Sun, 14 Nov 2021 13:34:45 +0800
-In-Reply-To: <9385a730618c9c3f09120313280cdeb0b10154a2.camel@mediatek.com>
-References: <66edc3125e9a12dedeba1a61697d46322b0c004d.1636374449.git.deren.wu@mediatek.com>
-         <c622447038b06d8a4068ec8126c7ec674fafe383.camel@mediatek.com>
-         <6978659235747261d652379d7d1a823f6b2f6505.camel@mediatek.com>
-         <ee169af76f1d45b6178204585489c187dae97757.camel@mediatek.com>
-         <9385a730618c9c3f09120313280cdeb0b10154a2.camel@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        Sun, 14 Nov 2021 07:27:20 -0500
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCFB8C061746
+        for <linux-wireless@vger.kernel.org>; Sun, 14 Nov 2021 04:24:26 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id b13so12176923plg.2
+        for <linux-wireless@vger.kernel.org>; Sun, 14 Nov 2021 04:24:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=dpWoSA1RtNBULhc7J58XsGXi4NaMPI4hc/btfele3p4=;
+        b=Im66EooCBHzWjpZtovdsjFnBy3HpSRNk5L18TL6UxIRK3Yos7GTKEgAyCasxmt1nIv
+         Re1H50tz8SDEtmS0H7ySXXijyEvM0JP287a/+DwsyRs/tVCp8GNRpI2njH93Sx0dY8t0
+         LbrHCeS1xk5pRIFtuu7/VZ1bVT1GFoDjKWlGYZbxLz2z0RV/r7kVW2TG1/iYOs09Tva3
+         5aTGc9MiRYOb0bCqQMB9W/aq9T6y3+K7OmC0crck+XbZlWoyc+FgAxCpLZMn3kOpaGus
+         uMLM657NkZK6MKmo9t8sp6O7+/YtyFyBcoTn5p0hELdqjAka3STT+BI+b52kQ95RjcOo
+         BAtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=dpWoSA1RtNBULhc7J58XsGXi4NaMPI4hc/btfele3p4=;
+        b=uaOWaK0fX06BjoSsw3Bc+/5RAuauSP6cAzFI9W7zItqAowZjq3IJ/RA7afjTizlvcm
+         ycVgOwtcBUcpjj2TfMLBGGSuCmpcawcHRjpUy9E/sU0lcDJ2iqdSQM4Pp9Ym/djCJshh
+         FbR0IQaY+82JUlyDjWZD7LYcWm1Bxmxo818NuhbxdbNDh+KsvCEsitUK1YgUEKpBAJZs
+         1KvLHOiYDjJlN1CGhsqEviUpQvFstJFhCq1CXsTtUGZoKLrBbn8WKanEhKJmpk/lw3M2
+         8BG20pEykpJpnUrMaU+uEtuYe8ISSeCKRnQVT6WSnzLqD10mhnCXohDCFvc8/mXHfH7s
+         2VhQ==
+X-Gm-Message-State: AOAM533n5C84TTZ+wZxe2XaAZc8FjMiyMzy5kZTscktavq9epXFngiZZ
+        iGe+2nT3y3DmmG4o1Uc1H7bqjxWGtKN3bEpHkZU=
+X-Google-Smtp-Source: ABdhPJzKwZrUwWb3LzU4pe/CxQre5GvH7Po0CzzCsIGI2vWMDtLEOjrD2WTJ9NRg5Yg/rK5xicy5ZxjuIPWq+TbxIF0=
+X-Received: by 2002:a17:902:d505:b0:142:175d:1d4 with SMTP id
+ b5-20020a170902d50500b00142175d01d4mr25822475plg.50.1636892666390; Sun, 14
+ Nov 2021 04:24:26 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
+Received: by 2002:a17:90b:4a8b:0:0:0:0 with HTTP; Sun, 14 Nov 2021 04:24:25
+ -0800 (PST)
+Reply-To: mohammadahmed7760@gmail.com
+From:   Mohammad Ahmed <mohammad.ahmed1717@gmail.com>
+Date:   Sun, 14 Nov 2021 04:24:25 -0800
+Message-ID: <CAOPd3uDzgG3ykV-ubZv=4wZ3f7i=jkwBf6DgVa0S0N3eQrE+8A@mail.gmail.com>
+Subject: I NEED YOUR URGENT ASSISTANCE FROM MR.MOHAMMAD AHMED / CAN I TRUST YOU
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+My Dear friend.
 
-> > > 
-> > > Since 80p80MHz is not supprted in mt7921, we should not register
-> > > this
-> > > capability to mac80211. When the feature coming, we may have a
-> > > new
-> > > config cap.has_bw80p80 to adapte the new flow.
-> > > 
-> > 
-> > Then, how to tell 80p80M and 160M apart with only checking
-> > IEEE80211_STA_RX_BW_160? 
-> > 
-> >  * @IEEE80211_STA_RX_BW_160: station can receive up to 160 MHz
-> >  *	(including 80+80 MHz)
-> > 
-> > Maybe move has_bw80p80 into mt7921_dev as it is not generic to me?
-> > 
-> 
-> As you noted, both 80p80M and 160M are included in
-> IEEE80211_STA_RX_BW_160. We may not check two features
-> by IEEE80211_STA_RX_BW_160 only. That is why I prefer to have
-> .has_bw160 and .has_80p80 at next stage.
-> 
-> With the new feature, HW should report different result in the flow
-> of 
-> chip capability check. The check point should start from
-> mt76_connac_mcu_parse_XXXX_cap() and then we can know the real
-> capabilities of this HW chip.
-> 
+With all due respect, I know this message will come to you as a
+surprise, My name is Mr. Mohammad Ahmed a banker working with Bank of
+Africa Du Burkina Faso West Africa, i need your urgent assistance to
+transfer an abandoned Sum of 13.5 Millions USD into your account.
 
-What about using device id? I think we can easily determine the BW
-without adding .has_xx in to common core, and it looks more like a 7921specific stuff though.  
+I am contacting you independently of my investigation in my bank and
+no one is informed of this communication. I need your urgent
+assistance to reallocate the sum of $13.5Million Dollars to Your
+private account.
 
+The fund in question belongs to one of my late foreign customer who
+died a long time ago with his family in the plane crash year 2005.
+
+The fund has been here in our bank coffers lying dormant for years now
+without anybody coming to claim the fund as the late deceased Next of
+Kin for none of his family relation are a wear of the fund in our
+bank.
+
+I want you to come and stand as the late deceased Next of Kin and
+business partner to claim his balance in our bank no matter the
+country you come from bank will release and transfer the fund into
+your account and be rest assured to have my support during the claim
+for I am the late deceased account officer before he met his sudden
+death in the plane crash with his family on their way traveling to
+Summer Holidays.
+
+I am contacting you to come and claim the fund through my support as
+the deceased account officer because the bank laws here does not allow
+any inheritance fund to stay more than 16years in the bank coffers
+without claiming by the concerned family for the money will be
+recalled to the bank Treasury account as unclaimed funds.
+
+I am ready to share with you 50% for you and 50% for me and by
+indicating your interest and capability to execute the project with me
+after reading message,  I will send you more details on how the fund
+will be officially release and transfer in your account for the
+transaction will be execute in your favor without any problem for the
+only thing i want from you is to be honest with me during the
+transaction official process.
+
+I will be waiting for your urgent response after going through this
+message to enable me feed you with more details for us to proceed
+ahead.
+
+Thanks.
+
+Best Regards,
+
+
+Mr. Mohammad Ahmed
