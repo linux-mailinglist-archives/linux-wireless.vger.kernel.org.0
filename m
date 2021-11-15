@@ -2,112 +2,250 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58E584504B8
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Nov 2021 13:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49AC3450593
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Nov 2021 14:35:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231147AbhKOM4Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Nov 2021 07:56:16 -0500
-Received: from so254-9.mailgun.net ([198.61.254.9]:14210 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230170AbhKOM4J (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Nov 2021 07:56:09 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1636980794; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=MLo0Cr7KEDi5L0cuCBguP+bU0UNznjkDCKx2UliDxFw=; b=j+ou3Z5WAK78jJeRIeD+pDsHa6uMflwf+NAymd8+n6X21C9gjAjH8GPfSS0KXxbgi/35gz0V
- pR1Wli3eT5WXizfkxxRBAG0wy2DApI5D+3ojG+IUZDfuNVrKFzqYvRW2J4SQu2tYYZ1aYmkN
- 8SpTPZgeZqnWc/BiwYwG8Ajvz1Y=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 61925839c48ba488849cd3b8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 15 Nov 2021 12:53:13
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2E7F6C43460; Mon, 15 Nov 2021 12:53:13 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CF7A2C4338F;
-        Mon, 15 Nov 2021 12:53:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org CF7A2C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] ath11k: add feature for device recovery
-References: <20211015035459.14190-1-wgong@codeaurora.org>
-Date:   Mon, 15 Nov 2021 14:53:07 +0200
-In-Reply-To: <20211015035459.14190-1-wgong@codeaurora.org> (Wen Gong's message
-        of "Thu, 14 Oct 2021 23:54:56 -0400")
-Message-ID: <87h7cdh970.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S231490AbhKONiK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Nov 2021 08:38:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50192 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236264AbhKONgz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Nov 2021 08:36:55 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9C5E761130;
+        Mon, 15 Nov 2021 13:33:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1636983240;
+        bh=C+WixI5YrFrABUfZutRALMi64eZYp8i4DNKlYKLDQKw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QGG0zp6JfcSHd0XJFc8CubxgZokoQgh4hUKLwSVOV9HE6BwM/+RuVH54ngNW/0AnC
+         MArOsvf1a0mTzYe6wIPfw8E6yjADNb+Bi3QACKMfyQaezYrsJE6BD169ax3ByOm0Pd
+         VPb4G2OVqI8DhPtdy4NIls5BEA9CQIFCCTCufhS8zZL3ZuL73qe0cCa5hm06Szvhqx
+         uw5jnYfBfD5FaSUOE6UmkiYJdq09kkcF3S5Dp5Ii8VAOE+Id2qo5RqP+Sh3wzgtPAa
+         Lt6cY4nv30msd9yiXlJlcrM9L5sc0K4UKVTmvqx4fATAdUtvVzPHC+RAPcC3vZ4yLL
+         uTLNWlPHHOUxA==
+Date:   Mon, 15 Nov 2021 14:33:56 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless@vger.kernel.org, johannes@sipsolutions.net
+Subject: Re: [PATCH] mac80211: add support for .ndo_fill_forward_path
+Message-ID: <YZJhxKm5Yd/5YpqZ@lore-desk>
+References: <20211112112223.1209-1-nbd@nbd.name>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="z3GEtWHhO0qoKk9L"
+Content-Disposition: inline
+In-Reply-To: <20211112112223.1209-1-nbd@nbd.name>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <wgong@codeaurora.org> writes:
 
-> From: Wen Gong <quic_wgong@quicinc.com>
->
-> v3: remove time_left set but not used in
->     "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
->
-> v2: s/initilized/initialized in commit log of patch
->     "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
->
-> Add support for device recovery.
->
-> Wen Gong (3):
->   ath11k: add ath11k_qmi_free_resource() for recovery
->   ath11k: add support for device recovery for QCA6390
->   ath11k: add synchronization operation between reconfigure of mac80211
->     and ath11k_base
+--z3GEtWHhO0qoKk9L
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I did some quick testing (commit 4716d5bb1e16 in pending branch) and it
-does not seem to work for me:
+> This allows drivers to provide a destination device + info for flow offlo=
+ad
+> Only supported in combination with 802.3 encap offload
+>=20
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>  include/net/mac80211.h     |  7 +++++
+>  net/mac80211/driver-ops.h  | 22 ++++++++++++++
+>  net/mac80211/ieee80211_i.h |  2 +-
+>  net/mac80211/iface.c       | 61 ++++++++++++++++++++++++++++++++++++++
+>  net/mac80211/trace.h       |  7 +++++
+>  5 files changed, 98 insertions(+), 1 deletion(-)
 
-oot@nuc1:~# echo assert > /sys/kernel/debug/ath11k/qca6390\ hw2.0/simulate_fw_crash
-root@nuc1:~# iw wlan0 scan
-command failed: Connection timed out (-110)
-root@nuc1:~# 
+Tested-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Kernel logs have:
+>=20
+> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+> index 775dbb982654..10e6fe215f0f 100644
+> --- a/include/net/mac80211.h
+> +++ b/include/net/mac80211.h
+> @@ -3952,6 +3952,8 @@ struct ieee80211_prep_tx_info {
+>   *	radar channel.
+>   *	The caller is expected to set chandef pointer to NULL in order to
+>   *	disable offchannel CAC/radar detection.
+> + * @net_fill_forward_path: Called from .ndo_fill_forward_path in order to
+> + *	resolve a path for hardware flow offloading
+>   */
+>  struct ieee80211_ops {
+>  	void (*tx)(struct ieee80211_hw *hw,
+> @@ -4282,6 +4284,11 @@ struct ieee80211_ops {
+>  				     struct ieee80211_sta *sta, u8 flowid);
+>  	int (*set_radar_offchan)(struct ieee80211_hw *hw,
+>  				 struct cfg80211_chan_def *chandef);
+> +	int (*net_fill_forward_path)(struct ieee80211_hw *hw,
+> +				     struct ieee80211_vif *vif,
+> +				     struct ieee80211_sta *sta,
+> +				     struct net_device_path_ctx *ctx,
+> +				     struct net_device_path *path);
+>  };
+> =20
+>  /**
+> diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
+> index cd3731cbf6c6..50a0cdadceec 100644
+> --- a/net/mac80211/driver-ops.h
+> +++ b/net/mac80211/driver-ops.h
+> @@ -1483,4 +1483,26 @@ static inline void drv_twt_teardown_request(struct=
+ ieee80211_local *local,
+>  	trace_drv_return_void(local);
+>  }
+> =20
+> +static inline int drv_net_fill_forward_path(struct ieee80211_local *loca=
+l,
+> +					    struct ieee80211_sub_if_data *sdata,
+> +					    struct ieee80211_sta *sta,
+> +					    struct net_device_path_ctx *ctx,
+> +					    struct net_device_path *path)
+> +{
+> +	int ret =3D -EOPNOTSUPP;
+> +
+> +	sdata =3D get_bss_sdata(sdata);
+> +	if (!check_sdata_in_driver(sdata))
+> +		return -EIO;
+> +
+> +	trace_drv_net_fill_forward_path(local, sdata, sta);
+> +	if (local->ops->net_fill_forward_path)
+> +		ret =3D local->ops->net_fill_forward_path(&local->hw,
+> +							&sdata->vif, sta,
+> +							ctx, path);
+> +	trace_drv_return_int(local, ret);
+> +
+> +	return ret;
+> +}
+> +
+>  #endif /* __MAC80211_DRIVER_OPS */
+> diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+> index 5666bbb8860b..08c0542c93a3 100644
+> --- a/net/mac80211/ieee80211_i.h
+> +++ b/net/mac80211/ieee80211_i.h
+> @@ -1463,7 +1463,7 @@ struct ieee80211_local {
+>  };
+> =20
+>  static inline struct ieee80211_sub_if_data *
+> -IEEE80211_DEV_TO_SUB_IF(struct net_device *dev)
+> +IEEE80211_DEV_TO_SUB_IF(const struct net_device *dev)
+>  {
+>  	return netdev_priv(dev);
+>  }
+> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+> index 9a2145c8192b..6012442cd0d6 100644
+> --- a/net/mac80211/iface.c
+> +++ b/net/mac80211/iface.c
+> @@ -789,6 +789,66 @@ static const struct net_device_ops ieee80211_monitor=
+if_ops =3D {
+>  	.ndo_get_stats64	=3D ieee80211_get_stats64,
+>  };
+> =20
+> +
+> +static int ieee80211_netdev_fill_forward_path(struct net_device_path_ctx=
+ *ctx,
+> +					      struct net_device_path *path)
+> +{
+> +	struct ieee80211_sub_if_data *sdata;
+> +	struct ieee80211_local *local;
+> +	struct sta_info *sta;
+> +	int ret =3D -ENOENT;
+> +
+> +	sdata =3D IEEE80211_DEV_TO_SUB_IF(ctx->dev);
+> +	local =3D sdata->local;
+> +
+> +	if (!local->ops->net_fill_forward_path)
+> +		return -EOPNOTSUPP;
+> +
+> +	rcu_read_lock();
+> +	switch (sdata->vif.type) {
+> +	case NL80211_IFTYPE_AP_VLAN:
+> +		sta =3D rcu_dereference(sdata->u.vlan.sta);
+> +		if (sta)
+> +			break;
+> +		if (sdata->wdev.use_4addr)
+> +			goto out;
+> +		if (is_multicast_ether_addr(ctx->daddr))
+> +			goto out;
+> +		sta =3D sta_info_get_bss(sdata, ctx->daddr);
+> +		break;
+> +	case NL80211_IFTYPE_AP:
+> +		if (is_multicast_ether_addr(ctx->daddr))
+> +			goto out;
+> +		sta =3D sta_info_get(sdata, ctx->daddr);
+> +		break;
+> +	case NL80211_IFTYPE_STATION:
+> +		if (sdata->wdev.wiphy->flags & WIPHY_FLAG_SUPPORTS_TDLS) {
+> +			sta =3D sta_info_get(sdata, ctx->daddr);
+> +			if (sta && test_sta_flag(sta, WLAN_STA_TDLS_PEER)) {
+> +				if (!test_sta_flag(sta, WLAN_STA_TDLS_PEER_AUTH))
+> +					goto out;
+> +
+> +				break;
+> +			}
+> +		}
+> +
+> +		sta =3D sta_info_get(sdata, sdata->u.mgd.bssid);
+> +		break;
+> +	default:
+> +		goto out;
+> +	}
+> +
+> +	if (!sta)
+> +		goto out;
+> +
+> +	ret =3D drv_net_fill_forward_path(local, sdata, &sta->sta, ctx, path);
+> +out:
+> +	rcu_read_unlock();
+> +
+> +	return ret;
+> +}
+> +
+> +
+>  static const struct net_device_ops ieee80211_dataif_8023_ops =3D {
+>  	.ndo_open		=3D ieee80211_open,
+>  	.ndo_stop		=3D ieee80211_stop,
+> @@ -798,6 +858,7 @@ static const struct net_device_ops ieee80211_dataif_8=
+023_ops =3D {
+>  	.ndo_set_mac_address	=3D ieee80211_change_mac,
+>  	.ndo_select_queue	=3D ieee80211_netdev_select_queue,
+>  	.ndo_get_stats64	=3D ieee80211_get_stats64,
+> +	.ndo_fill_forward_path	=3D ieee80211_netdev_fill_forward_path,
+>  };
+> =20
+>  static bool ieee80211_iftype_supports_hdr_offload(enum nl80211_iftype if=
+type)
+> diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
+> index 9e8381bef7ed..d91498f77796 100644
+> --- a/net/mac80211/trace.h
+> +++ b/net/mac80211/trace.h
+> @@ -2892,6 +2892,13 @@ TRACE_EVENT(drv_twt_teardown_request,
+>  	)
+>  );
+> =20
+> +DEFINE_EVENT(sta_event, drv_net_fill_forward_path,
+> +	TP_PROTO(struct ieee80211_local *local,
+> +		 struct ieee80211_sub_if_data *sdata,
+> +		 struct ieee80211_sta *sta),
+> +	TP_ARGS(local, sdata, sta)
+> +);
+> +
+>  #endif /* !__MAC80211_DRIVER_TRACE || TRACE_HEADER_MULTI_READ */
+> =20
+>  #undef TRACE_INCLUDE_PATH
+> --=20
+> 2.30.1
+>=20
 
-[  118.903092] ath11k_pci 0000:06:00.0: BAR 0: assigned [mem 0xdb000000-0xdbffffff 64bit]
-[  118.925164] ath11k_pci 0000:06:00.0: MSI vectors: 32
-[  118.925285] ath11k_pci 0000:06:00.0: qca6390 hw2.0
-[  119.093214] mhi mhi0: Requested to power ON
-[  119.095430] mhi mhi0: Power on setup success
-[  119.423735] mhi mhi0: Wait for device to enter SBL or Mission mode
-[  119.543030] ath11k_pci 0000:06:00.0: chip_id 0x0 chip_family 0xb board_id 0xff soc_id 0xffffffff
-[  119.543197] ath11k_pci 0000:06:00.0: fw_version 0x101c06cc fw_build_timestamp 2020-06-24 19:50 fw_build_id 
-[  230.101077] ip (2367) used greatest stack depth: 24384 bytes left
-[  283.663895] ath11k_pci 0000:06:00.0: simulating firmware assert crash
-[  283.738422] ath11k_pci 0000:06:00.0: firmware crashed: MHI_CB_SYS_ERROR
-[  295.236831] ath11k_pci 0000:06:00.0: wmi command 12290 timeout
-[  295.237937] ath11k_pci 0000:06:00.0: failed to send WMI_STOP_SCAN_CMDID
-[  295.238467] ath11k_pci 0000:06:00.0: failed to stop wmi scan: -11
-[  295.240049] ath11k_pci 0000:06:00.0: failed to stop scan: -11
-[  295.240558] ath11k_pci 0000:06:00.0: failed to start hw scan: -110
+--z3GEtWHhO0qoKk9L
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Also there should be a clear ath11k_warn() message when firmware
-recovery was successful, I could not find one from patches.
+-----BEGIN PGP SIGNATURE-----
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYZJhxAAKCRA6cBh0uS2t
+rJkwAP0Vjm+aZOu2A0hweRS9Z/eW0zBMZabGjdMVNORxLmiqkwEA+OJLFWE+QwRO
+RNwy5z4KwF97nW9ytjS5kmjVvhMKHAM=
+=BBfw
+-----END PGP SIGNATURE-----
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+--z3GEtWHhO0qoKk9L--
