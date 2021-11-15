@@ -2,322 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A455544F9DB
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Nov 2021 18:59:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E9FB44FE99
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Nov 2021 07:09:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233755AbhKNSCB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 Nov 2021 13:02:01 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:59730 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230194AbhKNSB7 (ORCPT
+        id S231137AbhKOGMQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Nov 2021 01:12:16 -0500
+Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:59499 "EHLO
+        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230292AbhKOGML (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 Nov 2021 13:01:59 -0500
-X-UUID: 2841e92f97cd42a0b08bfe3a0b603ddd-20211115
-X-UUID: 2841e92f97cd42a0b08bfe3a0b603ddd-20211115
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1926861773; Mon, 15 Nov 2021 01:59:01 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Mon, 15 Nov 2021 01:59:00 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 15 Nov 2021 01:59:00 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        "Ryder Lee" <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: only set rx radiotap flag from within decoder functions
-Date:   Mon, 15 Nov 2021 01:58:58 +0800
-Message-ID: <08c9500ce8e1dfbd767032ba2ee4122a87a4b9de.1636912489.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+        Mon, 15 Nov 2021 01:12:11 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R701e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=cuibixuan@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0UwYcpfw_1636956548;
+Received: from VM20210331-25.tbsite.net(mailfrom:cuibixuan@linux.alibaba.com fp:SMTPD_---0UwYcpfw_1636956548)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 15 Nov 2021 14:09:14 +0800
+From:   Bixuan Cui <cuibixuan@linux.alibaba.com>
+To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Cc:     cuibixuan@linux.alibaba.com, johannes@sipsolutions.net,
+        davem@davemloft.ne, kuba@kernel.org
+Subject: [PATCH -next] mac80211: fix suspicious RCU usage in ieee80211_set_tx_power()
+Date:   Mon, 15 Nov 2021 14:09:08 +0800
+Message-Id: <1636956548-114723-1-git-send-email-cuibixuan@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Only set RX_FLAG_RADIOTAP_HE and RX_FLAG_RADIOTAP_HE_MU from with their
-own decoder functions to prevent header calculation error.
+Fix suspicious RCU usage warning:
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+=============================
+WARNING: suspicious RCU usage
+5.15.0-syzkaller #0 Not tainted
+-----------------------------
+net/mac80211/cfg.c:2710 suspicious rcu_dereference_protected() usage!
+
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+2 locks held by syz-executor.0/3744:
+ #0: ffffffff8d199ed0 (cb_lock){++++}-{3:3}, at: genl_rcv+0x15/0x40
+net/netlink/genetlink.c:802
+ #1: ffff8880282f8628 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock
+include/net/cfg80211.h:5377 [inline]
+ #1: ffff8880282f8628 (&rdev->wiphy.mtx){+.+.}-{3:3}, at:
+nl80211_set_wiphy+0x1c6/0x2c20 net/wireless/nl80211.c:3287
+
+stack backtrace:
+CPU: 0 PID: 3744 Comm: syz-executor.0 Not tainted 5.15.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
+Google 01/01/2011
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 lib/dump_stack.c:106
+ ieee80211_set_tx_power+0x74c/0x860 net/mac80211/cfg.c:2710
+ rdev_set_tx_power net/wireless/rdev-ops.h:580 [inline]
+ nl80211_set_wiphy+0xd5b/0x2c20 net/wireless/nl80211.c:3384
+ genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:731
+ genl_family_rcv_msg net/netlink/genetlink.c:775 [inline]
+ genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:792
+ netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2491
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:803
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x86d/0xda0 net/netlink/af_netlink.c:1916
+ sock_sendmsg_nosec net/socket.c:704 [inline]
+ sock_sendmsg+0xcf/0x120 net/socket.c:724
+ ____sys_sendmsg+0x6e8/0x810 net/socket.c:2409
+ ___sys_sendmsg+0xf3/0x170 net/socket.c:2463
+ __sys_sendmsg+0xe5/0x1b0 net/socket.c:2492
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+Reported-by: syzbot+79fbc232a705a30d93cd@syzkaller.appspotmail.com
+Signed-off-by: Bixuan Cui <cuibixuan@linux.alibaba.com>
 ---
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 44 ++++++++-----------
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 34 ++++++--------
- 2 files changed, 33 insertions(+), 45 deletions(-)
+ net/mac80211/cfg.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 60e8340c8eeb..c3262738dbad 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -268,10 +268,9 @@ mt7915_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
- }
- 
- static void
--mt7915_mac_decode_he_mu_radiotap(struct sk_buff *skb,
--				 struct mt76_rx_status *status,
--				 __le32 *rxv)
-+mt7915_mac_decode_he_mu_radiotap(struct sk_buff *skb, __le32 *rxv)
- {
-+	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
- 	static const struct ieee80211_radiotap_he_mu mu_known = {
- 		.flags1 = HE_BITS(MU_FLAGS1_SIG_B_MCS_KNOWN) |
- 			  HE_BITS(MU_FLAGS1_SIG_B_DCM_KNOWN) |
-@@ -281,6 +280,8 @@ mt7915_mac_decode_he_mu_radiotap(struct sk_buff *skb,
- 	};
- 	struct ieee80211_radiotap_he_mu *he_mu = NULL;
- 
-+	status->flag |= RX_FLAG_RADIOTAP_HE_MU;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 1ab8483..14fbe9e 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2702,14 +2702,19 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
+ 	enum nl80211_tx_power_setting txp_type = type;
+ 	bool update_txp_type = false;
+ 	bool has_monitor = false;
++	int ret = 0;
 +
- 	he_mu = skb_push(skb, sizeof(mu_known));
- 	memcpy(he_mu, &mu_known, sizeof(mu_known));
++	rtnl_lock();
  
-@@ -308,10 +309,9 @@ mt7915_mac_decode_he_mu_radiotap(struct sk_buff *skb,
- }
+ 	if (wdev) {
+ 		sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
  
- static void
--mt7915_mac_decode_he_radiotap(struct sk_buff *skb,
--			      struct mt76_rx_status *status,
--			      __le32 *rxv, u32 phy)
-+mt7915_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u32 mode)
- {
-+	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
- 	static const struct ieee80211_radiotap_he known = {
- 		.data1 = HE_BITS(DATA1_DATA_MCS_KNOWN) |
- 			 HE_BITS(DATA1_DATA_DCM_KNOWN) |
-@@ -329,6 +329,8 @@ mt7915_mac_decode_he_radiotap(struct sk_buff *skb,
- 	struct ieee80211_radiotap_he *he = NULL;
- 	u32 ltf_size = le32_get_bits(rxv[2], MT_CRXV_HE_LTF_SIZE) + 1;
- 
-+	status->flag |= RX_FLAG_RADIOTAP_HE;
-+
- 	he = skb_push(skb, sizeof(known));
- 	memcpy(he, &known, sizeof(known));
- 
-@@ -343,7 +345,7 @@ mt7915_mac_decode_he_radiotap(struct sk_buff *skb,
- 	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
- 		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
- 
--	switch (phy) {
-+	switch (mode) {
- 	case MT_PHY_TYPE_HE_SU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_SU) |
- 			     HE_BITS(DATA1_UL_DL_KNOWN) |
-@@ -366,6 +368,7 @@ mt7915_mac_decode_he_radiotap(struct sk_buff *skb,
- 		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[7]);
- 
- 		mt7915_mac_decode_he_radiotap_ru(status, he, rxv);
-+		mt7915_mac_decode_he_mu_radiotap(skb, rxv);
- 		break;
- 	case MT_PHY_TYPE_HE_TB:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_TRIG) |
-@@ -456,7 +459,6 @@ static int mt7915_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
- 	else
- 		memcpy(skb_push(skb, sizeof(hdr) - 6), &hdr, sizeof(hdr) - 6);
- 
--	status->flag &= ~(RX_FLAG_RADIOTAP_HE | RX_FLAG_RADIOTAP_HE_MU);
- 	return 0;
- }
- 
-@@ -467,7 +469,6 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 	struct mt76_phy *mphy = &dev->mt76.phy;
- 	struct mt7915_phy *phy = &dev->phy;
- 	struct ieee80211_supported_band *sband;
--	struct ieee80211_hdr *hdr;
- 	__le32 *rxd = (__le32 *)skb->data;
- 	__le32 *rxv = NULL;
- 	u32 mode = 0;
-@@ -681,15 +682,12 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 					return -EINVAL;
- 				break;
- 			case MT_PHY_TYPE_HE_MU:
--				status->flag |= RX_FLAG_RADIOTAP_HE_MU;
--				fallthrough;
- 			case MT_PHY_TYPE_HE_SU:
- 			case MT_PHY_TYPE_HE_EXT_SU:
- 			case MT_PHY_TYPE_HE_TB:
- 				status->nss =
- 					FIELD_GET(MT_PRXV_NSTS, v0) + 1;
- 				status->encoding = RX_ENC_HE;
--				status->flag |= RX_FLAG_RADIOTAP_HE;
- 				i &= GENMASK(3, 0);
- 
- 				if (gi <= NL80211_RATE_INFO_HE_GI_3_2)
-@@ -752,30 +750,26 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 		if (sdata->vif.type == NL80211_IFTYPE_MONITOR) {
+ 			sdata = rtnl_dereference(local->monitor_sdata);
+-			if (!sdata)
+-				return -EOPNOTSUPP;
++			if (!sdata) {
++				ret = -EOPNOTSUPP;
++				goto out;
++			}
  		}
- 	}
  
--	if (insert_ccmp_hdr && !hdr_trans) {
--		u8 key_id = FIELD_GET(MT_RXD1_NORMAL_KEY_ID, rxd1);
-+	if (!hdr_trans) {
-+		struct ieee80211_hdr *hdr = mt76_skb_get_hdr(skb);
- 
--		mt76_insert_ccmp_hdr(skb, key_id);
--	}
-+		if (insert_ccmp_hdr) {
-+			u8 key_id = FIELD_GET(MT_RXD1_NORMAL_KEY_ID, rxd1);
-+
-+			mt76_insert_ccmp_hdr(skb, key_id);
-+		}
- 
--	if (!hdr_trans) {
--		hdr = mt76_skb_get_hdr(skb);
- 		fc = hdr->frame_control;
- 		if (ieee80211_is_data_qos(fc)) {
- 			seq_ctrl = le16_to_cpu(hdr->seq_ctrl);
- 			qos_ctl = *ieee80211_get_qos_ctl(hdr);
- 		}
- 	} else {
--		status->flag &= ~(RX_FLAG_RADIOTAP_HE |
--				  RX_FLAG_RADIOTAP_HE_MU);
- 		status->flag |= RX_FLAG_8023;
- 	}
- 
--	if (rxv && status->flag & RX_FLAG_RADIOTAP_HE) {
--		mt7915_mac_decode_he_radiotap(skb, status, rxv, mode);
--		if (status->flag & RX_FLAG_RADIOTAP_HE_MU)
--			mt7915_mac_decode_he_mu_radiotap(skb, status, rxv);
--	}
-+	if (rxv && mode >= MT_PHY_TYPE_HE_SU)
-+		mt7915_mac_decode_he_radiotap(skb, rxv, mode);
- 
- 	if (!status->wcid || !ieee80211_is_data_qos(fc))
- 		return 0;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index d7ab41773035..bd10bd6dda7a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -218,10 +218,9 @@ mt7921_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
- }
- 
- static void
--mt7921_mac_decode_he_mu_radiotap(struct sk_buff *skb,
--				 struct mt76_rx_status *status,
--				 __le32 *rxv)
-+mt7921_mac_decode_he_mu_radiotap(struct sk_buff *skb, __le32 *rxv)
- {
-+	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
- 	static const struct ieee80211_radiotap_he_mu mu_known = {
- 		.flags1 = HE_BITS(MU_FLAGS1_SIG_B_MCS_KNOWN) |
- 			  HE_BITS(MU_FLAGS1_SIG_B_DCM_KNOWN) |
-@@ -233,6 +232,8 @@ mt7921_mac_decode_he_mu_radiotap(struct sk_buff *skb,
- 	};
- 	struct ieee80211_radiotap_he_mu *he_mu;
- 
-+	status->flag |= RX_FLAG_RADIOTAP_HE_MU;
-+
- 	he_mu = skb_push(skb, sizeof(mu_known));
- 	memcpy(he_mu, &mu_known, sizeof(mu_known));
- 
-@@ -263,10 +264,9 @@ mt7921_mac_decode_he_mu_radiotap(struct sk_buff *skb,
- }
- 
- static void
--mt7921_mac_decode_he_radiotap(struct sk_buff *skb,
--			      struct mt76_rx_status *status,
--			      __le32 *rxv, u32 phy)
-+mt7921_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u32 mode)
- {
-+	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
- 	static const struct ieee80211_radiotap_he known = {
- 		.data1 = HE_BITS(DATA1_DATA_MCS_KNOWN) |
- 			 HE_BITS(DATA1_DATA_DCM_KNOWN) |
-@@ -284,6 +284,8 @@ mt7921_mac_decode_he_radiotap(struct sk_buff *skb,
- 	struct ieee80211_radiotap_he *he = NULL;
- 	u32 ltf_size = le32_get_bits(rxv[2], MT_CRXV_HE_LTF_SIZE) + 1;
- 
-+	status->flag |= RX_FLAG_RADIOTAP_HE;
-+
- 	he = skb_push(skb, sizeof(known));
- 	memcpy(he, &known, sizeof(known));
- 
-@@ -298,7 +300,7 @@ mt7921_mac_decode_he_radiotap(struct sk_buff *skb,
- 	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
- 		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
- 
--	switch (phy) {
-+	switch (mode) {
- 	case MT_PHY_TYPE_HE_SU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_SU) |
- 			     HE_BITS(DATA1_UL_DL_KNOWN) |
-@@ -322,6 +324,7 @@ mt7921_mac_decode_he_radiotap(struct sk_buff *skb,
- 		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[7]);
- 
- 		mt7921_mac_decode_he_radiotap_ru(status, he, rxv);
-+		mt7921_mac_decode_he_mu_radiotap(skb, rxv);
- 		break;
- 	case MT_PHY_TYPE_HE_TB:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_TRIG) |
-@@ -467,7 +470,6 @@ static int mt7921_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
- 	else
- 		memcpy(skb_push(skb, sizeof(hdr) - 6), &hdr, sizeof(hdr) - 6);
- 
--	status->flag &= ~(RX_FLAG_RADIOTAP_HE | RX_FLAG_RADIOTAP_HE_MU);
- 	return 0;
- }
- 
-@@ -483,7 +485,6 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 	struct mt76_phy *mphy = &dev->mt76.phy;
- 	struct mt7921_phy *phy = &dev->phy;
- 	struct ieee80211_supported_band *sband;
--	struct ieee80211_hdr *hdr;
- 	u32 rxd0 = le32_to_cpu(rxd[0]);
- 	u32 rxd1 = le32_to_cpu(rxd[1]);
- 	u32 rxd2 = le32_to_cpu(rxd[2]);
-@@ -689,15 +690,12 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 				return -EINVAL;
+ 		switch (type) {
+@@ -2719,8 +2724,10 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
  			break;
- 		case MT_PHY_TYPE_HE_MU:
--			status->flag |= RX_FLAG_RADIOTAP_HE_MU;
--			fallthrough;
- 		case MT_PHY_TYPE_HE_SU:
- 		case MT_PHY_TYPE_HE_EXT_SU:
- 		case MT_PHY_TYPE_HE_TB:
- 			status->nss =
- 				FIELD_GET(MT_PRXV_NSTS, v0) + 1;
- 			status->encoding = RX_ENC_HE;
--			status->flag |= RX_FLAG_RADIOTAP_HE;
- 			i &= GENMASK(3, 0);
- 
- 			if (gi <= NL80211_RATE_INFO_HE_GI_3_2)
-@@ -767,6 +765,8 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 	}
- 
- 	if (!hdr_trans) {
-+		struct ieee80211_hdr *hdr = mt76_skb_get_hdr(skb);
-+
- 		if (insert_ccmp_hdr) {
- 			u8 key_id = FIELD_GET(MT_RXD1_NORMAL_KEY_ID, rxd1);
- 
-@@ -780,19 +780,13 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 			qos_ctl = *ieee80211_get_qos_ctl(hdr);
+ 		case NL80211_TX_POWER_LIMITED:
+ 		case NL80211_TX_POWER_FIXED:
+-			if (mbm < 0 || (mbm % 100))
+-				return -EOPNOTSUPP;
++			if (mbm < 0 || (mbm % 100)) {
++				ret = -EOPNOTSUPP;
++				goto out;
++			}
+ 			sdata->user_power_level = MBM_TO_DBM(mbm);
+ 			break;
  		}
- 	} else {
--		status->flag &= ~(RX_FLAG_RADIOTAP_HE |
--				  RX_FLAG_RADIOTAP_HE_MU);
- 		status->flag |= RX_FLAG_8023;
+@@ -2732,7 +2739,7 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
+ 
+ 		ieee80211_recalc_txpower(sdata, update_txp_type);
+ 
+-		return 0;
++		goto out;
  	}
  
- 	mt7921_mac_assoc_rssi(dev, skb);
+ 	switch (type) {
+@@ -2742,8 +2749,10 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
+ 		break;
+ 	case NL80211_TX_POWER_LIMITED:
+ 	case NL80211_TX_POWER_FIXED:
+-		if (mbm < 0 || (mbm % 100))
+-			return -EOPNOTSUPP;
++		if (mbm < 0 || (mbm % 100)) {
++			ret = -EOPNOTSUPP;
++			goto out;
++		}
+ 		local->user_power_level = MBM_TO_DBM(mbm);
+ 		break;
+ 	}
+@@ -2778,7 +2787,9 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
+ 		}
+ 	}
  
--	if (rxv && status->flag & RX_FLAG_RADIOTAP_HE) {
--		mt7921_mac_decode_he_radiotap(skb, status, rxv, mode);
--
--		if (status->flag & RX_FLAG_RADIOTAP_HE_MU)
--			mt7921_mac_decode_he_mu_radiotap(skb, status, rxv);
--	}
-+	if (rxv && mode >= MT_PHY_TYPE_HE_SU)
-+		mt7921_mac_decode_he_radiotap(skb, rxv, mode);
+-	return 0;
++out:
++	rtnl_unlock();
++	return ret;
+ }
  
- 	if (!status->wcid || !ieee80211_is_data_qos(fc))
- 		return 0;
+ static int ieee80211_get_tx_power(struct wiphy *wiphy,
 -- 
-2.29.2
+1.8.3.1
 
