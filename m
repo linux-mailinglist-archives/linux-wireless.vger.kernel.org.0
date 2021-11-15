@@ -2,158 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E9FB44FE99
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Nov 2021 07:09:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3B1744FF44
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Nov 2021 08:34:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231137AbhKOGMQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Nov 2021 01:12:16 -0500
-Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:59499 "EHLO
-        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230292AbhKOGML (ORCPT
+        id S230423AbhKOHhB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Nov 2021 02:37:01 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:47995 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229696AbhKOHg4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Nov 2021 01:12:11 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R701e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=cuibixuan@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0UwYcpfw_1636956548;
-Received: from VM20210331-25.tbsite.net(mailfrom:cuibixuan@linux.alibaba.com fp:SMTPD_---0UwYcpfw_1636956548)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Mon, 15 Nov 2021 14:09:14 +0800
-From:   Bixuan Cui <cuibixuan@linux.alibaba.com>
-To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Cc:     cuibixuan@linux.alibaba.com, johannes@sipsolutions.net,
-        davem@davemloft.ne, kuba@kernel.org
-Subject: [PATCH -next] mac80211: fix suspicious RCU usage in ieee80211_set_tx_power()
-Date:   Mon, 15 Nov 2021 14:09:08 +0800
-Message-Id: <1636956548-114723-1-git-send-email-cuibixuan@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        Mon, 15 Nov 2021 02:36:56 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1AF7XpR42004658, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1AF7XpR42004658
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 15 Nov 2021 15:33:51 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.12; Mon, 15 Nov 2021 15:33:50 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Mon, 15 Nov 2021 15:33:50 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
+ RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
+ 15.01.2308.015; Mon, 15 Nov 2021 15:33:50 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [bug report] rtw89: add Realtek 802.11ax driver
+Thread-Topic: [bug report] rtw89: add Realtek 802.11ax driver
+Thread-Index: AQHX15o4iaSmIG2pD0OVRczSh+nkKqwD9mBA
+Date:   Mon, 15 Nov 2021 07:33:49 +0000
+Message-ID: <09773676e8884a7689be81a46664ee1f@realtek.com>
+References: <20211112075159.GA15433@kili>
+In-Reply-To: <20211112075159.GA15433@kili>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/11/15_=3F=3F_06:12:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/15/2021 07:13:26
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 167236 [Nov 15 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/15/2021 07:15:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix suspicious RCU usage warning:
 
-=============================
-WARNING: suspicious RCU usage
-5.15.0-syzkaller #0 Not tainted
------------------------------
-net/mac80211/cfg.c:2710 suspicious rcu_dereference_protected() usage!
+> -----Original Message-----
+> From: Dan Carpenter <dan.carpenter@oracle.com>
+> Sent: Friday, November 12, 2021 3:52 PM
+> To: Pkshih <pkshih@realtek.com>
+> Cc: linux-wireless@vger.kernel.org
+> Subject: [bug report] rtw89: add Realtek 802.11ax driver
+> 
+> Hello Ping-Ke Shih,
+> 
+> The patch e3ec7017f6a2: "rtw89: add Realtek 802.11ax driver" from Oct
+> 11, 2021, leads to the following Smatch static checker warning:
+> 
+> 	drivers/net/wireless/realtek/rtw89/fw.c:1383 rtw89_fw_h2c_rf_reg()
+> 	error: buffer overflow 'info->rtw89_phy_config_rf_h2c' 3 <= 3
+> 
+> drivers/net/wireless/realtek/rtw89/phy.c
+>    662  static int rtw89_phy_config_rf_reg_fw(struct rtw89_dev *rtwdev,
+>    663                                        struct rtw89_fw_h2c_rf_reg_info *info)
+>    664  {
+>    665          u16 page = info->curr_idx / RTW89_H2C_RF_PAGE_SIZE;
+>    666          u16 len = (info->curr_idx % RTW89_H2C_RF_PAGE_SIZE) * 4;
+>    667          u8 i;
+>    668          int ret = 0;
+>    669
+>    670          if (page > RTW89_H2C_RF_PAGE_NUM) {
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> Lets assume "page == RTW89_H2C_RF_PAGE_NUM.
+> 
+>    671                  rtw89_warn(rtwdev,
+>    672                             "rf reg h2c total page num %d larger than %d (RTW89_H2C_RF_PAGE_NUM)\n",
+>    673                             page, RTW89_H2C_RF_PAGE_NUM);
+>    674                  return -EINVAL;
+>    675          }
+>    676
+>    677          for (i = 0; i < page; i++) {
+>                             ^^^^^^^^^
+> 
+>    678                  ret = rtw89_fw_h2c_rf_reg(rtwdev, info,
+>    679                                            RTW89_H2C_RF_PAGE_SIZE * 4, i);
+>    680                  if (ret)
+>    681                          return ret;
+>    682          }
+>    683          ret = rtw89_fw_h2c_rf_reg(rtwdev, info, len, i);
+>                                                              ^
+> So "i" is now RTW89_H2C_RF_PAGE_NUM and it leads to off by one out of
+> bounds error.
+> 
+>    684          if (ret)
+>    685                  return ret;
+>    686          info->curr_idx = 0;
+>    687
+>    688          return 0;
+>    689  }
+> 
 
-other info that might help us debug this:
+When the info->curr_idx is between RTW89_H2C_RF_PAGE_SIZE * RTW89_H2C_RF_PAGE_NUM and
+RTW89_H2C_RF_PAGE_SIZE * (RTW89_H2C_RF_PAGE_NUM + 1), it falls into the case
+you mentioned. Fortunately, the input is predictable if we don't change
+RF parameters, so it doesn't lead wrong situation for now.
 
-rcu_scheduler_active = 2, debug_locks = 1
-2 locks held by syz-executor.0/3744:
- #0: ffffffff8d199ed0 (cb_lock){++++}-{3:3}, at: genl_rcv+0x15/0x40
-net/netlink/genetlink.c:802
- #1: ffff8880282f8628 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock
-include/net/cfg80211.h:5377 [inline]
- #1: ffff8880282f8628 (&rdev->wiphy.mtx){+.+.}-{3:3}, at:
-nl80211_set_wiphy+0x1c6/0x2c20 net/wireless/nl80211.c:3287
+Anyway, I will refine this function to handle all cases. Thanks for
+your finding.
 
-stack backtrace:
-CPU: 0 PID: 3744 Comm: syz-executor.0 Not tainted 5.15.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
-Google 01/01/2011
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xcd/0x134 lib/dump_stack.c:106
- ieee80211_set_tx_power+0x74c/0x860 net/mac80211/cfg.c:2710
- rdev_set_tx_power net/wireless/rdev-ops.h:580 [inline]
- nl80211_set_wiphy+0xd5b/0x2c20 net/wireless/nl80211.c:3384
- genl_family_rcv_msg_doit+0x228/0x320 net/netlink/genetlink.c:731
- genl_family_rcv_msg net/netlink/genetlink.c:775 [inline]
- genl_rcv_msg+0x328/0x580 net/netlink/genetlink.c:792
- netlink_rcv_skb+0x153/0x420 net/netlink/af_netlink.c:2491
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:803
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x533/0x7d0 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x86d/0xda0 net/netlink/af_netlink.c:1916
- sock_sendmsg_nosec net/socket.c:704 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:724
- ____sys_sendmsg+0x6e8/0x810 net/socket.c:2409
- ___sys_sendmsg+0xf3/0x170 net/socket.c:2463
- __sys_sendmsg+0xe5/0x1b0 net/socket.c:2492
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x44/0xae
+--
+Ping-Ke
 
-Reported-by: syzbot+79fbc232a705a30d93cd@syzkaller.appspotmail.com
-Signed-off-by: Bixuan Cui <cuibixuan@linux.alibaba.com>
----
- net/mac80211/cfg.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 1ab8483..14fbe9e 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2702,14 +2702,19 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
- 	enum nl80211_tx_power_setting txp_type = type;
- 	bool update_txp_type = false;
- 	bool has_monitor = false;
-+	int ret = 0;
-+
-+	rtnl_lock();
- 
- 	if (wdev) {
- 		sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
- 
- 		if (sdata->vif.type == NL80211_IFTYPE_MONITOR) {
- 			sdata = rtnl_dereference(local->monitor_sdata);
--			if (!sdata)
--				return -EOPNOTSUPP;
-+			if (!sdata) {
-+				ret = -EOPNOTSUPP;
-+				goto out;
-+			}
- 		}
- 
- 		switch (type) {
-@@ -2719,8 +2724,10 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
- 			break;
- 		case NL80211_TX_POWER_LIMITED:
- 		case NL80211_TX_POWER_FIXED:
--			if (mbm < 0 || (mbm % 100))
--				return -EOPNOTSUPP;
-+			if (mbm < 0 || (mbm % 100)) {
-+				ret = -EOPNOTSUPP;
-+				goto out;
-+			}
- 			sdata->user_power_level = MBM_TO_DBM(mbm);
- 			break;
- 		}
-@@ -2732,7 +2739,7 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
- 
- 		ieee80211_recalc_txpower(sdata, update_txp_type);
- 
--		return 0;
-+		goto out;
- 	}
- 
- 	switch (type) {
-@@ -2742,8 +2749,10 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
- 		break;
- 	case NL80211_TX_POWER_LIMITED:
- 	case NL80211_TX_POWER_FIXED:
--		if (mbm < 0 || (mbm % 100))
--			return -EOPNOTSUPP;
-+		if (mbm < 0 || (mbm % 100)) {
-+			ret = -EOPNOTSUPP;
-+			goto out;
-+		}
- 		local->user_power_level = MBM_TO_DBM(mbm);
- 		break;
- 	}
-@@ -2778,7 +2787,9 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
- 		}
- 	}
- 
--	return 0;
-+out:
-+	rtnl_unlock();
-+	return ret;
- }
- 
- static int ieee80211_get_tx_power(struct wiphy *wiphy,
--- 
-1.8.3.1
 
