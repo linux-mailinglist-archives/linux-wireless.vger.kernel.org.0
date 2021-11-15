@@ -2,250 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49AC3450593
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Nov 2021 14:35:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37FBC451531
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Nov 2021 21:25:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231490AbhKONiK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Nov 2021 08:38:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50192 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236264AbhKONgz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Nov 2021 08:36:55 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9C5E761130;
-        Mon, 15 Nov 2021 13:33:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636983240;
-        bh=C+WixI5YrFrABUfZutRALMi64eZYp8i4DNKlYKLDQKw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QGG0zp6JfcSHd0XJFc8CubxgZokoQgh4hUKLwSVOV9HE6BwM/+RuVH54ngNW/0AnC
-         MArOsvf1a0mTzYe6wIPfw8E6yjADNb+Bi3QACKMfyQaezYrsJE6BD169ax3ByOm0Pd
-         VPb4G2OVqI8DhPtdy4NIls5BEA9CQIFCCTCufhS8zZL3ZuL73qe0cCa5hm06Szvhqx
-         uw5jnYfBfD5FaSUOE6UmkiYJdq09kkcF3S5Dp5Ii8VAOE+Id2qo5RqP+Sh3wzgtPAa
-         Lt6cY4nv30msd9yiXlJlcrM9L5sc0K4UKVTmvqx4fATAdUtvVzPHC+RAPcC3vZ4yLL
-         uTLNWlPHHOUxA==
-Date:   Mon, 15 Nov 2021 14:33:56 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org, johannes@sipsolutions.net
-Subject: Re: [PATCH] mac80211: add support for .ndo_fill_forward_path
-Message-ID: <YZJhxKm5Yd/5YpqZ@lore-desk>
-References: <20211112112223.1209-1-nbd@nbd.name>
+        id S1350900AbhKOU13 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Nov 2021 15:27:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35696 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245032AbhKOTSY (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 15 Nov 2021 14:18:24 -0500
+Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9D9BC0F26FC
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Nov 2021 10:07:10 -0800 (PST)
+Received: by mail-ua1-x936.google.com with SMTP id v3so36602069uam.10
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Nov 2021 10:07:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/vB+zIqT8j5KAmMYaveBxOOzpPrma7xI98QigkHD3iI=;
+        b=gqe8QktpnI8roZW6KYNIJ8/Y3W+h9FdUQFhjv4LLFmF4r7WVG9lQsHrTF7svpN/BhL
+         2Xob79i9j88j+sounItEVWNvwgCaWLLPsSgBmQpNwGiwSD3CMI6G1N+c+SNztt6lRJhq
+         RnW1tLqHJB8fk398dIQWe2hWIhhK9+dEU/REir4/MBQ01ZYGmbFOEMhsI7ynzhPeu9sx
+         FfTDaMuJIl2td637xy+xG08kPkQkElJdaq3BlghkTYoulKa4zPkkkJfQmR9a+BRNy7yI
+         X2wr41kZxvxoqj0xjsGtHKZ59G/oSb1OZFT92U7MPMGvTR+RFzY1dUbte74f3hAG25Ek
+         WDaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/vB+zIqT8j5KAmMYaveBxOOzpPrma7xI98QigkHD3iI=;
+        b=wX0pa1rAuZlG/wVcNVN9UjakN4j3NldZLbsIGrw0OzsWalcS8rG1GjRN0vj2I1ZsDZ
+         JkoM7DX8mEDidnUTxQ5OeDDOsoXQNdG9SGEg2hxP/i5qR8VHmhlBYU7iPzdS6hm0Ap+y
+         RY9uML46iF4c0xDLgYgXdR0EGpLBQ/4iLj9e789BFbDxZnP+yhb67nTsiZWpmIY1Lqmi
+         VJQYhFWxQEA7RbsdYO3/qtW0fAGIcQ/jNZzSzwgk651TiepciNBEd1dtQ5liY9dYVdNo
+         iH+QWa14bseWmYfJk5c9gO2cdd8mCjOsSCzQ8w4epvKqfKo94gEBPXHZexm/lCh/Oh+L
+         t57Q==
+X-Gm-Message-State: AOAM531+Ncz+cVDQ6IW/N5VJZDiPICLPsdpmt0j8AKg3reCg4mt+ZWsr
+        QIGIyHGscNyx1O3AOGUUjVqE9HOvE7n+NkZJC5Y=
+X-Google-Smtp-Source: ABdhPJxtzClkhrcNVb3o9Us9cwloMc1jwPxkiagE/ZZvAFUP3jjEaER5poFGYF/dubVwUxM6DtNzsmV1eKWoBnKMs1g=
+X-Received: by 2002:ab0:6f47:: with SMTP id r7mr1012299uat.85.1636999629868;
+ Mon, 15 Nov 2021 10:07:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="z3GEtWHhO0qoKk9L"
-Content-Disposition: inline
-In-Reply-To: <20211112112223.1209-1-nbd@nbd.name>
+References: <20210915160422.2839595-1-festevam@denx.de>
+In-Reply-To: <20210915160422.2839595-1-festevam@denx.de>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Mon, 15 Nov 2021 15:06:59 -0300
+Message-ID: <CAOMZO5AYUxJg4bWudT3L1P=qNR2UBcNR1zmjCf5O9_ExyPw4ww@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Clean the HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE flag
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Fabio Estevam <festevam@denx.de>, wgong@codeaurora.org,
+        ath10k@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        erik.stromdahl@gmail.com, alagusankar@silex-india.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi Kalle,
 
---z3GEtWHhO0qoKk9L
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, Sep 15, 2021 at 1:05 PM Fabio Estevam <festevam@denx.de> wrote:
+>
+> On an imx6dl-pico-pi board with a QCA9377 SDIO chip, the following
+> errors are observed when the board works in STA mode:
+>
+> Simply running "ssh user@192.168.0.1" causes:
+>
+> [   55.824159] ath10k_sdio mmc1:0001:1: failed to transmit packet, dropping: -12
+> [   55.832169] ath10k_sdio mmc1:0001:1: failed to submit frame: -12
+> [   55.838529] ath10k_sdio mmc1:0001:1: failed to push frame: -12
+> [   55.905863] ath10k_sdio mmc1:0001:1: failed to transmit packet, dropping: -12
+> [   55.913650] ath10k_sdio mmc1:0001:1: failed to submit frame: -12
+> [   55.919887] ath10k_sdio mmc1:0001:1: failed to push frame: -12
+>
+> and it is not possible to connect via ssh to the other machine.
+>
+> One user inspected the size of frames on Wireshark and reported
+> the followig:
+>
+> "I was able to narrow the issue down to the mtu. If I set the mtu for
+> the wlan0 device to 1486 instead of 1500, the issue does not happen.
+>
+> The size of frames that I see on Wireshark is exactly 1500 after
+> setting it to 1486."
+>
+> Clearing the HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE avoids the problem and
+> the ssh command works successfully after that.
+>
+> Tested with QCA9377 SDIO with firmware WLAN.TF.1.1.1-00061-QCATFSWPZ-1.
+>
+> Fixes: 2f918ea98606 ("ath10k: enable alt data of TX path for sdio")
+> Signed-off-by: Fabio Estevam <festevam@denx.de>
 
-> This allows drivers to provide a destination device + info for flow offlo=
-ad
-> Only supported in combination with 802.3 encap offload
->=20
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> ---
->  include/net/mac80211.h     |  7 +++++
->  net/mac80211/driver-ops.h  | 22 ++++++++++++++
->  net/mac80211/ieee80211_i.h |  2 +-
->  net/mac80211/iface.c       | 61 ++++++++++++++++++++++++++++++++++++++
->  net/mac80211/trace.h       |  7 +++++
->  5 files changed, 98 insertions(+), 1 deletion(-)
-
-Tested-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
->=20
-> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-> index 775dbb982654..10e6fe215f0f 100644
-> --- a/include/net/mac80211.h
-> +++ b/include/net/mac80211.h
-> @@ -3952,6 +3952,8 @@ struct ieee80211_prep_tx_info {
->   *	radar channel.
->   *	The caller is expected to set chandef pointer to NULL in order to
->   *	disable offchannel CAC/radar detection.
-> + * @net_fill_forward_path: Called from .ndo_fill_forward_path in order to
-> + *	resolve a path for hardware flow offloading
->   */
->  struct ieee80211_ops {
->  	void (*tx)(struct ieee80211_hw *hw,
-> @@ -4282,6 +4284,11 @@ struct ieee80211_ops {
->  				     struct ieee80211_sta *sta, u8 flowid);
->  	int (*set_radar_offchan)(struct ieee80211_hw *hw,
->  				 struct cfg80211_chan_def *chandef);
-> +	int (*net_fill_forward_path)(struct ieee80211_hw *hw,
-> +				     struct ieee80211_vif *vif,
-> +				     struct ieee80211_sta *sta,
-> +				     struct net_device_path_ctx *ctx,
-> +				     struct net_device_path *path);
->  };
-> =20
->  /**
-> diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-> index cd3731cbf6c6..50a0cdadceec 100644
-> --- a/net/mac80211/driver-ops.h
-> +++ b/net/mac80211/driver-ops.h
-> @@ -1483,4 +1483,26 @@ static inline void drv_twt_teardown_request(struct=
- ieee80211_local *local,
->  	trace_drv_return_void(local);
->  }
-> =20
-> +static inline int drv_net_fill_forward_path(struct ieee80211_local *loca=
-l,
-> +					    struct ieee80211_sub_if_data *sdata,
-> +					    struct ieee80211_sta *sta,
-> +					    struct net_device_path_ctx *ctx,
-> +					    struct net_device_path *path)
-> +{
-> +	int ret =3D -EOPNOTSUPP;
-> +
-> +	sdata =3D get_bss_sdata(sdata);
-> +	if (!check_sdata_in_driver(sdata))
-> +		return -EIO;
-> +
-> +	trace_drv_net_fill_forward_path(local, sdata, sta);
-> +	if (local->ops->net_fill_forward_path)
-> +		ret =3D local->ops->net_fill_forward_path(&local->hw,
-> +							&sdata->vif, sta,
-> +							ctx, path);
-> +	trace_drv_return_int(local, ret);
-> +
-> +	return ret;
-> +}
-> +
->  #endif /* __MAC80211_DRIVER_OPS */
-> diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-> index 5666bbb8860b..08c0542c93a3 100644
-> --- a/net/mac80211/ieee80211_i.h
-> +++ b/net/mac80211/ieee80211_i.h
-> @@ -1463,7 +1463,7 @@ struct ieee80211_local {
->  };
-> =20
->  static inline struct ieee80211_sub_if_data *
-> -IEEE80211_DEV_TO_SUB_IF(struct net_device *dev)
-> +IEEE80211_DEV_TO_SUB_IF(const struct net_device *dev)
->  {
->  	return netdev_priv(dev);
->  }
-> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-> index 9a2145c8192b..6012442cd0d6 100644
-> --- a/net/mac80211/iface.c
-> +++ b/net/mac80211/iface.c
-> @@ -789,6 +789,66 @@ static const struct net_device_ops ieee80211_monitor=
-if_ops =3D {
->  	.ndo_get_stats64	=3D ieee80211_get_stats64,
->  };
-> =20
-> +
-> +static int ieee80211_netdev_fill_forward_path(struct net_device_path_ctx=
- *ctx,
-> +					      struct net_device_path *path)
-> +{
-> +	struct ieee80211_sub_if_data *sdata;
-> +	struct ieee80211_local *local;
-> +	struct sta_info *sta;
-> +	int ret =3D -ENOENT;
-> +
-> +	sdata =3D IEEE80211_DEV_TO_SUB_IF(ctx->dev);
-> +	local =3D sdata->local;
-> +
-> +	if (!local->ops->net_fill_forward_path)
-> +		return -EOPNOTSUPP;
-> +
-> +	rcu_read_lock();
-> +	switch (sdata->vif.type) {
-> +	case NL80211_IFTYPE_AP_VLAN:
-> +		sta =3D rcu_dereference(sdata->u.vlan.sta);
-> +		if (sta)
-> +			break;
-> +		if (sdata->wdev.use_4addr)
-> +			goto out;
-> +		if (is_multicast_ether_addr(ctx->daddr))
-> +			goto out;
-> +		sta =3D sta_info_get_bss(sdata, ctx->daddr);
-> +		break;
-> +	case NL80211_IFTYPE_AP:
-> +		if (is_multicast_ether_addr(ctx->daddr))
-> +			goto out;
-> +		sta =3D sta_info_get(sdata, ctx->daddr);
-> +		break;
-> +	case NL80211_IFTYPE_STATION:
-> +		if (sdata->wdev.wiphy->flags & WIPHY_FLAG_SUPPORTS_TDLS) {
-> +			sta =3D sta_info_get(sdata, ctx->daddr);
-> +			if (sta && test_sta_flag(sta, WLAN_STA_TDLS_PEER)) {
-> +				if (!test_sta_flag(sta, WLAN_STA_TDLS_PEER_AUTH))
-> +					goto out;
-> +
-> +				break;
-> +			}
-> +		}
-> +
-> +		sta =3D sta_info_get(sdata, sdata->u.mgd.bssid);
-> +		break;
-> +	default:
-> +		goto out;
-> +	}
-> +
-> +	if (!sta)
-> +		goto out;
-> +
-> +	ret =3D drv_net_fill_forward_path(local, sdata, &sta->sta, ctx, path);
-> +out:
-> +	rcu_read_unlock();
-> +
-> +	return ret;
-> +}
-> +
-> +
->  static const struct net_device_ops ieee80211_dataif_8023_ops =3D {
->  	.ndo_open		=3D ieee80211_open,
->  	.ndo_stop		=3D ieee80211_stop,
-> @@ -798,6 +858,7 @@ static const struct net_device_ops ieee80211_dataif_8=
-023_ops =3D {
->  	.ndo_set_mac_address	=3D ieee80211_change_mac,
->  	.ndo_select_queue	=3D ieee80211_netdev_select_queue,
->  	.ndo_get_stats64	=3D ieee80211_get_stats64,
-> +	.ndo_fill_forward_path	=3D ieee80211_netdev_fill_forward_path,
->  };
-> =20
->  static bool ieee80211_iftype_supports_hdr_offload(enum nl80211_iftype if=
-type)
-> diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-> index 9e8381bef7ed..d91498f77796 100644
-> --- a/net/mac80211/trace.h
-> +++ b/net/mac80211/trace.h
-> @@ -2892,6 +2892,13 @@ TRACE_EVENT(drv_twt_teardown_request,
->  	)
->  );
-> =20
-> +DEFINE_EVENT(sta_event, drv_net_fill_forward_path,
-> +	TP_PROTO(struct ieee80211_local *local,
-> +		 struct ieee80211_sub_if_data *sdata,
-> +		 struct ieee80211_sta *sta),
-> +	TP_ARGS(local, sdata, sta)
-> +);
-> +
->  #endif /* !__MAC80211_DRIVER_TRACE || TRACE_HEADER_MULTI_READ */
-> =20
->  #undef TRACE_INCLUDE_PATH
-> --=20
-> 2.30.1
->=20
-
---z3GEtWHhO0qoKk9L
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYZJhxAAKCRA6cBh0uS2t
-rJkwAP0Vjm+aZOu2A0hweRS9Z/eW0zBMZabGjdMVNORxLmiqkwEA+OJLFWE+QwRO
-RNwy5z4KwF97nW9ytjS5kmjVvhMKHAM=
-=BBfw
------END PGP SIGNATURE-----
-
---z3GEtWHhO0qoKk9L--
+A gentle ping on this one.
