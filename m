@@ -2,93 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE4784501FB
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Nov 2021 11:05:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46F2C4501FC
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Nov 2021 11:06:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237418AbhKOKI2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Nov 2021 05:08:28 -0500
-Received: from dvalin.narfation.org ([213.160.73.56]:56288 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237563AbhKOKIU (ORCPT
+        id S230472AbhKOKJq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Nov 2021 05:09:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51748 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230419AbhKOKJq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Nov 2021 05:08:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1636970723;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=z1RAl74RSYfclV4BpJtdeHfE9dPo62tsTx2/FvVvZCw=;
-        b=pi7+u6YyE36e8SuvOZoyskLEgnLCLvocI5zh3rr0TbML/7Rnc5OIB5e3x8vuzLYRuT+jPS
-        GoSMYL1b3rXhOl6hbCHpAuKnvOCa0wwFvMnAvP4zwohaFfdFaA66xKtTXsg3PZnNxVM3hT
-        3mAYJjedsaXdroelxlHwo9CBxljCFIg=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Karthikeyan Kathirvel <kathirve@codeaurora.org>,
-        Venkateswara Naralasetty <vnaralas@codeaurora.org>,
-        Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH v2 2/2] ath11k: reset RSN/WPA present state for open BSS
-Date:   Mon, 15 Nov 2021 11:04:41 +0100
-Message-Id: <20211115100441.33771-2-sven@narfation.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211115100441.33771-1-sven@narfation.org>
-References: <20211115100441.33771-1-sven@narfation.org>
+        Mon, 15 Nov 2021 05:09:46 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D49F4C061746
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Nov 2021 02:06:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=h3CghpS4THPfvA+RWJNDA0/YctDKeZ4byMEXxSecqXc=;
+        t=1636970809; x=1638180409; b=PbSJUVjestyvq2v9c3T82k/GTY8gjvXI2p+HrI4geMBbOVw
+        Tv6JnDw/btwYMh8o41TL5iWLBm0F06z8NUrEcTO23JmNKCKKLtq8o7SbZKBxLem3lL2hkdfHlKCRH
+        pUG5H1TX5kguVqheq7C3IBPW1JaxxLlRwFEvg/CjX0J8Pkg9QGDVojNfzlIAdToTorV7XwjtI7M1t
+        w2KPS9WkoTkOL3Qk6R3OkGT/FUPnVzMSIxgSzRAWb5j/E4vJFZqeA89qpqGozNur71jnxarBI6aFS
+        kcaAl7hBPJrGh58/6q33M8ZvJ6Ort6hr9weXW2WxGx6NPjqFZgh9uKc8aH/m8OrQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mmYsy-00FXoZ-84;
+        Mon, 15 Nov 2021 11:06:48 +0100
+Message-ID: <2d3ef764f006af12216c663b7a0f532741a04dd6.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211: fix a memory leak where sta_info is not freed
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ahmed Zaki <anzaki@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Mon, 15 Nov 2021 11:06:47 +0100
+In-Reply-To: <20211002145329.3125293-1-anzaki@gmail.com>
+References: <20211002145329.3125293-1-anzaki@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Karthikeyan Kathirvel <kathirve@codeaurora.org>
+On Sat, 2021-10-02 at 08:53 -0600, Ahmed Zaki wrote:
+> 
+> +++ b/net/mac80211/sta_info.c
+> @@ -640,12 +640,14 @@ static int sta_info_insert_finish(struct sta_info *sta) __acquires(RCU)
+>  
+>  	/* check if STA exists already */
+>  	if (sta_info_get_bss(sdata, sta->sta.addr)) {
+> +		sta_info_free(local, sta);
+>  		err = -EEXIST;
+>  		goto out_err;
+>  	}
+>  
+>  	sinfo = kzalloc(sizeof(struct station_info), GFP_KERNEL);
+>  	if (!sinfo) {
+> +		sta_info_free(local, sta);
+>  		err = -ENOMEM;
+>  		goto out_err;
+>  	}
 
-The ath11k driver is caching the information about RSN/WPA IE in the
-configured beacon template. The cached information is used during
-associations to figure out whether 4-way PKT/2-way GTK peer flags need to
-be set or not.
+We already have a "out_drop_sta", that calls cleanup_single_sta(), so
+shouldn't we just add a label there ("out_free_sta") just before
+cleanup_single_sta() and then we don't need the extra call?
 
-But the code never cleared the state when no such IE was found. This can
-for example happen when moving from an WPA/RSN to an open setup. The
-(seemingly connected) peer was then not able to communicate over the
-link because the firmware assumed a different (encryption enabled) state
-for the peer.
-
-Tested-on: IPQ6018 hw1.0 AHB WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
-
-Fixes: 01e34233c645 ("ath11k: fix wmi peer flags in peer assoc command")
-Cc: Venkateswara Naralasetty <vnaralas@codeaurora.org>
-Reported-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Karthikeyan Kathirvel <kathirve@codeaurora.org>
-[sven@narfation.org: split into separate patches, clean up commit message]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
----
-v2:
-* add new patch to really fix the peer handling of the fw after PSK -> open
-  switch
-
- drivers/net/wireless/ath/ath11k/mac.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index cdee7545e876..9ed7eb09bdb7 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1137,11 +1137,15 @@ static int ath11k_mac_setup_bcn_tmpl(struct ath11k_vif *arvif)
- 
- 	if (cfg80211_find_ie(WLAN_EID_RSN, ies, (skb_tail_pointer(bcn) - ies)))
- 		arvif->rsnie_present = true;
-+	else
-+		arvif->rsnie_present = false;
- 
- 	if (cfg80211_find_vendor_ie(WLAN_OUI_MICROSOFT,
- 				    WLAN_OUI_TYPE_MICROSOFT_WPA,
- 				    ies, (skb_tail_pointer(bcn) - ies)))
- 		arvif->wpaie_present = true;
-+	else
-+		arvif->wpaie_present = false;
- 
- 	ret = ath11k_wmi_bcn_tmpl(ar, arvif->vdev_id, &offs, bcn);
- 
--- 
-2.30.2
-
+johannes
