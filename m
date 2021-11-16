@@ -2,33 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00E84453835
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Nov 2021 18:01:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3503345383C
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Nov 2021 18:02:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236985AbhKPREM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Nov 2021 12:04:12 -0500
-Received: from so254-9.mailgun.net ([198.61.254.9]:18858 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbhKPREM (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Nov 2021 12:04:12 -0500
+        id S237134AbhKPREn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Nov 2021 12:04:43 -0500
+Received: from m43-7.mailgun.net ([69.72.43.7]:38753 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229509AbhKPREl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 16 Nov 2021 12:04:41 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637082074; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=MrK9j2QZk1ZGDNZgY2wAkzH6DM7jjJ1uP/Qbz7v7jE0=; b=SNAtUK+Lr6Dmlbx2mBpdWMUn//t/qOrFm/dwL/N3sA8dg7oTHbJir/ZSQXeAAPtr3KtOD0it
- XoWNhFzhBEu5JEwX/o6G+setvosnZZdBztMyICvTOW7s6rn+fuY1yWELrOIeYz0y5HevcRkl
- 4a8O+v0KWOcbdjBFE0SYjtdGFrI=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ s=smtp; t=1637082104; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=Rop6+pKPEvQU+xQMfRti5sOltyR79Vc41v+uGCw1LOs=; b=eFJ6EL5GQ/PsZWIKyLBpmvBhstrhvSqLrMCCTyVX9Efd9QCkbzyytCjIhh8P/Uel9Y5bmM99
+ S1jv7TxJRsi/RAp9rCRF601ms7FcQCw0bF47cVm730Yc3CyT6z+m4hQVmkmuSdHP/4zOE2AB
+ muHz/c3eDZBmLomLY2clYAjT1lg=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 6193e3d811cd6d4077c4a49d (version=TLS1.2,
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 6193e3d8d8e58e6de1cd0648 (version=TLS1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 16 Nov 2021 17:01:12
  GMT
 Sender: akolli=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BF897C4360C; Tue, 16 Nov 2021 17:01:12 +0000 (UTC)
+        id 69EA9C4338F; Tue, 16 Nov 2021 17:01:10 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -38,266 +36,99 @@ Received: from akolli-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Out
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: akolli)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5EFA8C4360D;
-        Tue, 16 Nov 2021 17:01:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 5EFA8C4360D
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EF318C4338F;
+        Tue, 16 Nov 2021 17:01:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org EF318C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Anilkumar Kolli <akolli@codeaurora.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
         robh@kernel.org, Anilkumar Kolli <akolli@codeaurora.org>
-Subject: [PATCH v2 2/2] ath11k: Use reserved host DDR addresses from DT for PCI devices
-Date:   Tue, 16 Nov 2021 22:30:58 +0530
-Message-Id: <1637082058-6398-2-git-send-email-akolli@codeaurora.org>
+Subject: [PATCH v2 1/2] dt: bindings: add new DT entry for ath11k PCI device support
+Date:   Tue, 16 Nov 2021 22:30:57 +0530
+Message-Id: <1637082058-6398-1-git-send-email-akolli@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1637082058-6398-1-git-send-email-akolli@codeaurora.org>
-References: <1637082058-6398-1-git-send-email-akolli@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Host DDR memory (contiguous 45 MB in mode-0 or 15 MB in mode-2)
-is reserved through DT entries for firmware usage. Send the base
-address and size from DT entries.
-
-If DT entry is available, PCI devices work with
-fixed_mem_region else host allocates multiple segments.
-
-IPQ8074 on HK10 board supports multiple PCI devices.
-IPQ8074 + QCN9074 is tested with this patch.
-
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1-01838-QCAHKSWPL_SILICONZ-1
+Ath11k driver supports PCI devices such as QCN9074/QCA6390.
+Ath11k firmware uses host DDR memory. DT entry is used to reserve
+these host DDR memory regions, send these memory base
+addresses using DT entries.
 
 Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
 ---
 V2:
-  - Use of_ API to read from dt node (Rob)
+  - Use reserved-memory (Rob)
 
- drivers/net/wireless/ath/ath11k/mhi.c | 42 ++++++++++++++++++--
- drivers/net/wireless/ath/ath11k/pci.c | 10 ++++-
- drivers/net/wireless/ath/ath11k/qmi.c | 75 +++++++++++++++++++++++++++++++----
- drivers/net/wireless/ath/ath11k/qmi.h |  1 +
- 4 files changed, 116 insertions(+), 12 deletions(-)
+ .../bindings/net/wireless/qcom,ath11k.yaml         | 48 ++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index 26c7ae242db6..0ea6ab7edeb9 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -3,6 +3,7 @@
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+index 85c2f699d602..5a8994f6cb10 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+@@ -150,6 +150,12 @@ properties:
+       string to uniquely identify variant of the calibration data in the
+       board-2.bin for designs with colliding bus and device specific ids
  
- #include <linux/msi.h>
- #include <linux/pci.h>
-+#include <linux/of.h>
- 
- #include "core.h"
- #include "debug.h"
-@@ -316,7 +317,11 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
- 	struct ath11k_base *ab = ab_pci->ab;
- 	struct mhi_controller *mhi_ctrl;
- 	struct mhi_controller_config *ath11k_mhi_config;
--	int ret;
-+	struct device_node *np;
-+	int ret, len, sw, aw;
-+	u32 *reg, *reg_end;
-+	unsigned long start, size;
-+	bool no_dt_entry = 0;
- 
- 	mhi_ctrl = mhi_alloc_controller();
- 	if (!mhi_ctrl)
-@@ -339,8 +344,39 @@ int ath11k_mhi_register(struct ath11k_pci *ab_pci)
- 		return ret;
- 	}
- 
--	mhi_ctrl->iova_start = 0;
--	mhi_ctrl->iova_stop = 0xffffffff;
-+	np = of_find_node_by_type(NULL, "memory");
-+	if (!np) {
-+		no_dt_entry = 1;
-+		goto no_dt_entry;
-+	}
++  memory-region:
++    maxItems: 1
++    description:
++      phandle to a node describing reserved memory (System RAM memory)
++      used by ath11k firmware (see bindings/reserved-memory/reserved-memory.txt)
 +
-+	aw = of_n_addr_cells(np);
-+	sw = of_n_size_cells(np);
+ required:
+   - compatible
+   - reg
+@@ -279,3 +285,45 @@ examples:
+                           "tcl2host-status-ring";
+         qcom,rproc = <&q6v5_wcss>;
+     };
 +
-+	reg = (unsigned int *)of_get_property(np, "reg", &len);
-+	if (!reg) {
-+		no_dt_entry = 1;
-+		goto no_dt_entry;
-+	}
++    memory {
++        device_type = "memory";
++        reg = <0x0 0x40000000 0x0 0x20000000>;
++    };
 +
-+	reg_end = reg + len / (aw * sw);
++    reserved-memory {
++        #address-cells = <1>;
++        #size-cells = <1>;
++        ranges;
 +
-+	do {
-+		start = of_read_number(reg, aw);
-+		reg += aw;
-+		size = of_read_number(reg, sw);
-+		reg += sw;
-+	} while (reg < reg_end);
++        qcn9074_pcie0: qcn9074_pcie0@51100000 {
++            no-map;
++            reg = <0x0 0x51100000 0x0 0x03500000>;
++        };
 +
-+no_dt_entry:
-+	if (no_dt_entry) {
-+		mhi_ctrl->iova_start = 0;
-+		mhi_ctrl->iova_stop = 0xFFFFFFFF;
-+	} else {
-+		mhi_ctrl->iova_start = (dma_addr_t)(start + 0x1000000);
-+		mhi_ctrl->iova_stop = (dma_addr_t)(start + size);
-+	}
++        qcn9074_pcie1: qcn9074_pcie1@54600000 {
++            no-map;
++            reg = <0x0 0x54600000 0x0 0x03500000>;
++        };
++    };
 +
- 	mhi_ctrl->sbl_size = SZ_512K;
- 	mhi_ctrl->seg_len = SZ_512K;
- 	mhi_ctrl->fbc_download = true;
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index 3d353e7c9d5c..21d0a511d9c7 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -6,6 +6,7 @@
- #include <linux/module.h>
- #include <linux/msi.h>
- #include <linux/pci.h>
-+#include <linux/of.h>
- 
- #include "pci.h"
- #include "core.h"
-@@ -1225,7 +1226,7 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
- {
- 	struct ath11k_base *ab;
- 	struct ath11k_pci *ab_pci;
--	u32 soc_hw_version_major, soc_hw_version_minor;
-+	u32 soc_hw_version_major, soc_hw_version_minor, addr;
- 	int ret;
- 
- 	ab = ath11k_core_alloc(&pdev->dev, sizeof(*ab_pci), ATH11K_BUS_PCI,
-@@ -1245,6 +1246,13 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
- 	pci_set_drvdata(pdev, ab);
- 	spin_lock_init(&ab_pci->window_lock);
- 
-+	/* Set fixed_mem_region to true for platforms support reserved memory
-+	 * from DT. If memory is reserved from DT for FW, ath11k driver need not
-+	 * allocate memory.
-+	 */
-+	if (!of_property_read_u32(ab->dev->of_node, "memory-region", &addr))
-+		ab->bus_params.fixed_mem_region = true;
++    pcie0_rp: pcie0_rp {
++        reg = <0 0 0 0 0>;
 +
- 	ret = ath11k_pci_claim(ab_pci, pdev);
- 	if (ret) {
- 		ath11k_err(ab, "failed to claim device: %d\n", ret);
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index fa73118de6db..da58ce36b477 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1815,10 +1815,11 @@ static void ath11k_qmi_free_target_mem_chunk(struct ath11k_base *ab)
- {
- 	int i;
- 
--	if (ab->bus_params.fixed_mem_region)
--		return;
--
- 	for (i = 0; i < ab->qmi.mem_seg_count; i++) {
-+		if (ab->bus_params.fixed_mem_region &&
-+		    ab->qmi.target_mem[i].iaddr)
-+			iounmap(ab->qmi.target_mem[i].iaddr);
++        status = "ok";
++        ath11k_0: ath11k@0 {
++            reg = <0 0 0 0 0 >;
++            memory-region = <&qcn9074_pcie0>;
++        };
++    };
 +
- 		if (!ab->qmi.target_mem[i].vaddr)
- 			continue;
- 
-@@ -1866,10 +1867,62 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
- 
- static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
- {
--	int i, idx;
-+	struct device *dev = ab->dev;
-+	struct device_node *hremote_node = NULL;
-+	phandle hremote_phandle;
-+	int i, idx, len, sw, aw, host_ddr_sz;
-+	u32 *reg, *reg_end;
-+	u64 start, size;
- 
- 	for (i = 0, idx = 0; i < ab->qmi.mem_seg_count; i++) {
- 		switch (ab->qmi.target_mem[i].type) {
-+		case HOST_DDR_REGION_TYPE:
-+			if (of_property_read_u32(dev->of_node, "memory-region",
-+						 &hremote_phandle)) {
-+				ath11k_dbg(ab, ATH11K_DBG_QMI,
-+					   "qmi fail to get hremote phandle\n");
-+				return 0;
-+			}
++    pcie1_rp: pcie1_rp {
++        reg = <0 0 0 0 0>;
 +
-+			hremote_node = of_find_node_by_phandle(hremote_phandle);
-+			if (!hremote_node) {
-+				ath11k_dbg(ab, ATH11K_DBG_QMI,
-+					   "qmi fail to get hremote_node\n");
-+				return 0;
-+			}
++        status = "ok";
++        ath11k_1: ath11k@1 {
++            reg = <0 0 0 0 0 >;
++            memory-region = <&qcn9074_pcie1>;
++        };
++    };
 +
-+			aw = of_n_addr_cells(hremote_node);
-+			sw = of_n_size_cells(hremote_node);
-+
-+			reg = (unsigned int *)of_get_property(hremote_node, "reg", &len);
-+			if (!reg) {
-+				ath11k_dbg(ab, ATH11K_DBG_QMI,
-+					   "qmi fail to get reg from hremote\n");
-+				return 0;
-+			}
-+
-+			reg_end = reg + len / (aw * sw);
-+
-+			do {
-+				start = of_read_number(reg, aw);
-+				reg += aw;
-+				size = of_read_number(reg, sw);
-+				reg += sw;
-+			} while (reg < reg_end);
-+
-+			ath11k_dbg(ab, ATH11K_DBG_QMI,
-+				   "qmi ddr start addr is 0x%llx len is %lld\n",
-+				   start, size);
-+
-+			ab->qmi.target_mem[idx].paddr = start;
-+			ab->qmi.target_mem[idx].iaddr =
-+				ioremap(ab->qmi.target_mem[idx].paddr,
-+					ab->qmi.target_mem[i].size);
-+			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
-+			host_ddr_sz = ab->qmi.target_mem[i].size;
-+			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
-+			idx++;
-+			break;
- 		case BDF_MEM_REGION_TYPE:
- 			ab->qmi.target_mem[idx].paddr = ab->hw_params.bdf_addr;
- 			ab->qmi.target_mem[idx].vaddr = NULL;
-@@ -1884,10 +1937,16 @@ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
- 			}
- 
- 			if (ath11k_cold_boot_cal && ab->hw_params.cold_boot_calib) {
--				ab->qmi.target_mem[idx].paddr =
--						     ATH11K_QMI_CALDB_ADDRESS;
--				ab->qmi.target_mem[idx].vaddr =
--						     (void *)ATH11K_QMI_CALDB_ADDRESS;
-+				if (hremote_node) {
-+					ab->qmi.target_mem[idx].paddr =
-+							start + host_ddr_sz;
-+					ab->qmi.target_mem[idx].iaddr =
-+						ioremap(ab->qmi.target_mem[idx].paddr,
-+							ab->qmi.target_mem[i].size);
-+				} else {
-+					ab->qmi.target_mem[idx].paddr =
-+						ATH11K_QMI_CALDB_ADDRESS;
-+				}
- 			} else {
- 				ab->qmi.target_mem[idx].paddr = 0;
- 				ab->qmi.target_mem[idx].vaddr = NULL;
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
-index 3bb0f9ef7996..f8d45b7dc821 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.h
-+++ b/drivers/net/wireless/ath/ath11k/qmi.h
-@@ -95,6 +95,7 @@ struct target_mem_chunk {
- 	u32 type;
- 	dma_addr_t paddr;
- 	u32 *vaddr;
-+	void __iomem *iaddr;
- };
- 
- struct target_info {
 -- 
 2.7.4
 
