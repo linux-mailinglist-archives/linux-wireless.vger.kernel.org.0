@@ -2,133 +2,210 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3503345383C
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Nov 2021 18:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AC7E453B80
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Nov 2021 22:10:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237134AbhKPREn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Nov 2021 12:04:43 -0500
-Received: from m43-7.mailgun.net ([69.72.43.7]:38753 "EHLO m43-7.mailgun.net"
+        id S230494AbhKPVNt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Nov 2021 16:13:49 -0500
+Received: from mout.gmx.net ([212.227.15.19]:33995 "EHLO mout.gmx.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229509AbhKPREl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Nov 2021 12:04:41 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637082104; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=Rop6+pKPEvQU+xQMfRti5sOltyR79Vc41v+uGCw1LOs=; b=eFJ6EL5GQ/PsZWIKyLBpmvBhstrhvSqLrMCCTyVX9Efd9QCkbzyytCjIhh8P/Uel9Y5bmM99
- S1jv7TxJRsi/RAp9rCRF601ms7FcQCw0bF47cVm730Yc3CyT6z+m4hQVmkmuSdHP/4zOE2AB
- muHz/c3eDZBmLomLY2clYAjT1lg=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 6193e3d8d8e58e6de1cd0648 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 16 Nov 2021 17:01:12
- GMT
-Sender: akolli=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 69EA9C4338F; Tue, 16 Nov 2021 17:01:10 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from akolli-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: akolli)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EF318C4338F;
-        Tue, 16 Nov 2021 17:01:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org EF318C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Anilkumar Kolli <akolli@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
-        robh@kernel.org, Anilkumar Kolli <akolli@codeaurora.org>
-Subject: [PATCH v2 1/2] dt: bindings: add new DT entry for ath11k PCI device support
-Date:   Tue, 16 Nov 2021 22:30:57 +0530
-Message-Id: <1637082058-6398-1-git-send-email-akolli@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S229614AbhKPVNt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 16 Nov 2021 16:13:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1637097043;
+        bh=9FHexJsQQi5EAXe0TPRjZEvuF2/loC9zFCJlzIclsf8=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=TVSayi3685hj2NFsMeEwFBz5WU0Znzp9/FbWhdHBLuPNYn1y+HnmOif+kwt43Wzr7
+         AxY9Wga0BUanI6df/W0J6+tcNpt5JSF6DKpJkRwAtechSkA8A5C1oCPXCNxxJEuuSs
+         ewYcxK1HurBu+wTOylNVTFlfik8APdYlrTxcOV8I=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost ([62.216.209.243]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mel7v-1mDCg21E1N-00ap5o; Tue, 16
+ Nov 2021 22:10:43 +0100
+Date:   Tue, 16 Nov 2021 22:10:41 +0100
+From:   Peter Seiderer <ps.report@gmx.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Felix Fietkau <nbd@nbd.name>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [RFC v1] mac80211: minstrel_ht: respect RTS threshold setting
+Message-ID: <20211116221041.040c0fdb@gmx.net>
+In-Reply-To: <20211026204144.29250-1-ps.report@gmx.net>
+References: <20211026204144.29250-1-ps.report@gmx.net>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-suse-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Dy15umDskKaeojcGgNpv4KuNZX9z67eJHP9GYod4i8u7OyCChSl
+ bG4pW3Ht5snXQAgiFrzRzOuUDdxYGqOtM7YC4oXDClkMdnYUbKuoGQqTzrfqIenCHwR+7SY
+ C9YSs5xaDAZ7LwnEVUtJIoCFdrdci+F5RFS670dJH+wYwQbFzebcjWDvlWHP4NmPLo53H5p
+ SWPPajrFqeXB12XtDXs4A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:O31DY/JiVSM=:Y2YIrqGv/GgfDUX7lmUVfB
+ NJuvGWKglvua3UYtIES6cQzui/0GdQhQqtm3xsWtdi0ANEZ/fwW0BpvG01YVQf/yzDVAWPcJP
+ FNR6wNaCJOl+gQMM5Myl5Il1+mlJQL4joqRDPl9hCUziR2jLedQ5nP6YCFi7odz3n91uluxmk
+ cSxNLM3+aCFJq9VmpYHp/shhVq/wPDPzqto+OxxU3CvfXuzYyQq2Ux9npbPVvAV3CbpPGMcmV
+ RJFxVkmKizBdIBwRKIJlXnU901O9wllC+4VSAKheTto5Bwh33+J+50ESTiJheOUaHo71C0SZL
+ vBFhiBaW7yOHr5E0w5pXcVZ4VYLUigmR38tZ1K3FPC8VUZLBXqNJMPoocb0qly3ykxYlrxU0i
+ o6TmLlIJzlPHHa+KKMVzPyTjjMpW0HWguCx8c66Sh7+mAZvfl3U1lBARLMlwIffLSsMiYynD6
+ 0KKKCvG8gA7JlF7Gyu4IhANA1JYvu6x3M8BokoYTZNhkLh+rhQweLTbE/T5ScdA7LQfqv8Ee1
+ LKkMbL2bF6RFDbGKS/fgye8+Q2WwAjY5Ea2Fa1qCwOt6jd4Woz+cWvtIbxVce5JJolcB8K7aY
+ ukjytFlvZL87i/IeSBNl1HRMIctwfVWbIX8+s54bB0tYhrbJhZotPpbxa7GEh/tomT2pNGenx
+ wGF6mSew6meMuPQAKN+KgiRHSnjlIV/cCgmFtFTUpaC3WEBMxa/yn+TTXfaJ/aX4L8MFD1gtE
+ i2+xjZOHMoppmdT5wOUV0jnAgdNZDnhhGLqRw/mptUXj2SdUt+IsoYVimFkDqkVB8M/pJ8YwR
+ H/4MwiYV0fOpKrQPwhm9PBB79mFIuyOCl+1N2EB4wRuU2fCGyLcNWJ0g+5xtdxvFPJW0CvN13
+ fepu4mI6HM3tWBtRLLdV8sG1LyeWX1SIOqdKTeXcdEOQvidj6p7b4je3jP5iwaAA8c+9gu70u
+ 6gjLK19IpjTsALwLEv/BiUSimG5Ukyv9WpjcRBbIVHBuG9f1xI0LtLzAtBGixWEeD8hzCU1T4
+ Sc6ZczxiSwbJTaufvzUPn/c4/KtVSB03K36TGHKWI/1WQdcvjNSdx+KzJV/v6mAjcTkSrz5Rb
+ Vc4umRkhke7wV4=
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ath11k driver supports PCI devices such as QCN9074/QCA6390.
-Ath11k firmware uses host DDR memory. DT entry is used to reserve
-these host DDR memory regions, send these memory base
-addresses using DT entries.
+On Tue, 26 Oct 2021 22:41:44 +0200, Peter Seiderer <ps.report@gmx.net> wro=
+te:
 
-Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
----
-V2:
-  - Use reserved-memory (Rob)
+> Despite the 'RTS thr:off' setting a wireshark trace of IBSS
+> traffic with HT40 mode enabled between two ath9k cards revealed
+> some RTS/CTS traffic.
+>
+> Debug and code analysis showed that most places setting
+> IEEE80211_TX_RC_USE_RTS_CTS respect the RTS strategy by
+> evaluating rts_threshold, e.g. net/mac80211/tx.c:
+>
+>  698         /* set up RTS protection if desired */
+>  699         if (len > tx->local->hw.wiphy->rts_threshold) {
+>  700                 txrc.rts =3D true;
+>  701         }
+>  702
+>  703         info->control.use_rts =3D txrc.rts;
+>
+> or drivers/net/wireless/ath/ath9k/xmit.c
+>
+> 1238                 /*
+> 1239                  * Handle RTS threshold for unaggregated HT frames.
+> 1240                  */
+> 1241                 if (bf_isampdu(bf) && !bf_isaggr(bf) &&
+> 1242                     (rates[i].flags & IEEE80211_TX_RC_MCS) &&
+> 1243                     unlikely(rts_thresh !=3D (u32) -1)) {
+> 1244                         if (!rts_thresh || (len > rts_thresh))
+> 1245                                 rts =3D true;
+> 1246                 }
+>
+> The only place setting IEEE80211_TX_RC_USE_RTS_CTS unconditionally
+> was found in net/mac80211/rc80211_minstrel_ht.c.
+>
+> Fix this by propagating the calculated use_rts value to the
+> minstrel_ht_set_rate() function and evaluate it accordingly
+> before setting IEEE80211_TX_RC_USE_RTS_CTS.
 
- .../bindings/net/wireless/qcom,ath11k.yaml         | 48 ++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+Despite my believe after code review the use_rts value is only calculated
+after hitting the minstrel_ht code, so my preferred alternative solution
+would be to NOT requesting RTS/CTS from the minstrel_ht code (for the
+fallback rates case)...., updated patch will follow...
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-index 85c2f699d602..5a8994f6cb10 100644
---- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-@@ -150,6 +150,12 @@ properties:
-       string to uniquely identify variant of the calibration data in the
-       board-2.bin for designs with colliding bus and device specific ids
- 
-+  memory-region:
-+    maxItems: 1
-+    description:
-+      phandle to a node describing reserved memory (System RAM memory)
-+      used by ath11k firmware (see bindings/reserved-memory/reserved-memory.txt)
-+
- required:
-   - compatible
-   - reg
-@@ -279,3 +285,45 @@ examples:
-                           "tcl2host-status-ring";
-         qcom,rproc = <&q6v5_wcss>;
-     };
-+
-+    memory {
-+        device_type = "memory";
-+        reg = <0x0 0x40000000 0x0 0x20000000>;
-+    };
-+
-+    reserved-memory {
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+        ranges;
-+
-+        qcn9074_pcie0: qcn9074_pcie0@51100000 {
-+            no-map;
-+            reg = <0x0 0x51100000 0x0 0x03500000>;
-+        };
-+
-+        qcn9074_pcie1: qcn9074_pcie1@54600000 {
-+            no-map;
-+            reg = <0x0 0x54600000 0x0 0x03500000>;
-+        };
-+    };
-+
-+    pcie0_rp: pcie0_rp {
-+        reg = <0 0 0 0 0>;
-+
-+        status = "ok";
-+        ath11k_0: ath11k@0 {
-+            reg = <0 0 0 0 0 >;
-+            memory-region = <&qcn9074_pcie0>;
-+        };
-+    };
-+
-+    pcie1_rp: pcie1_rp {
-+        reg = <0 0 0 0 0>;
-+
-+        status = "ok";
-+        ath11k_1: ath11k@1 {
-+            reg = <0 0 0 0 0 >;
-+            memory-region = <&qcn9074_pcie1>;
-+        };
-+    };
-+
--- 
-2.7.4
+Regards,
+Peter
+
+>
+> Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+> ---
+>  net/mac80211/rc80211_minstrel_ht.c | 21 ++++++++++++---------
+>  1 file changed, 12 insertions(+), 9 deletions(-)
+>
+> diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_m=
+instrel_ht.c
+> index 72b44d4c42d0..f52edef443fa 100644
+> --- a/net/mac80211/rc80211_minstrel_ht.c
+> +++ b/net/mac80211/rc80211_minstrel_ht.c
+> @@ -276,7 +276,8 @@ static const u8 minstrel_sample_seq[] =3D {
+>  };
+>
+>  static void
+> -minstrel_ht_update_rates(struct minstrel_priv *mp, struct minstrel_ht_s=
+ta *mi);
+> +minstrel_ht_update_rates(struct minstrel_priv *mp, struct minstrel_ht_s=
+ta *mi,
+> +			 bool use_rts);
+>
+>  /*
+>   * Some VHT MCSes are invalid (when Ndbps / Nes is not an integer)
+> @@ -1254,7 +1255,7 @@ minstrel_ht_tx_status(void *priv, struct ieee80211=
+_supported_band *sband,
+>  	}
+>
+>  	if (update)
+> -		minstrel_ht_update_rates(mp, mi);
+> +		minstrel_ht_update_rates(mp, mi, info->control.use_rts);
+>  }
+>
+>  static void
+> @@ -1319,7 +1320,8 @@ minstrel_calc_retransmit(struct minstrel_priv *mp,=
+ struct minstrel_ht_sta *mi,
+>
+>  static void
+>  minstrel_ht_set_rate(struct minstrel_priv *mp, struct minstrel_ht_sta *=
+mi,
+> -                     struct ieee80211_sta_rates *ratetbl, int offset, i=
+nt index)
+> +		     struct ieee80211_sta_rates *ratetbl, int offset, int index,
+> +		     bool use_rts)
+>  {
+>  	int group_idx =3D MI_RATE_GROUP(index);
+>  	const struct mcs_group *group =3D &minstrel_mcs_groups[group_idx];
+> @@ -1357,7 +1359,7 @@ minstrel_ht_set_rate(struct minstrel_priv *mp, str=
+uct minstrel_ht_sta *mi,
+>  	 *  - if station is in dynamic SMPS (and streams > 1)
+>  	 *  - for fallback rates, to increase chances of getting through
+>  	 */
+> -	if (offset > 0 ||
+> +	if ((offset > 0 && use_rts) ||
+>  	    (mi->sta->smps_mode =3D=3D IEEE80211_SMPS_DYNAMIC &&
+>  	     group->streams > 1)) {
+>  		ratetbl->rate[offset].count =3D ratetbl->rate[offset].count_rts;
+> @@ -1426,7 +1428,8 @@ minstrel_ht_get_max_amsdu_len(struct minstrel_ht_s=
+ta *mi)
+>  }
+>
+>  static void
+> -minstrel_ht_update_rates(struct minstrel_priv *mp, struct minstrel_ht_s=
+ta *mi)
+> +minstrel_ht_update_rates(struct minstrel_priv *mp, struct minstrel_ht_s=
+ta *mi,
+> +			 bool use_rts)
+>  {
+>  	struct ieee80211_sta_rates *rates;
+>  	int i =3D 0;
+> @@ -1436,15 +1439,15 @@ minstrel_ht_update_rates(struct minstrel_priv *m=
+p, struct minstrel_ht_sta *mi)
+>  		return;
+>
+>  	/* Start with max_tp_rate[0] */
+> -	minstrel_ht_set_rate(mp, mi, rates, i++, mi->max_tp_rate[0]);
+> +	minstrel_ht_set_rate(mp, mi, rates, i++, mi->max_tp_rate[0], use_rts);
+>
+>  	if (mp->hw->max_rates >=3D 3) {
+>  		/* At least 3 tx rates supported, use max_tp_rate[1] next */
+> -		minstrel_ht_set_rate(mp, mi, rates, i++, mi->max_tp_rate[1]);
+> +		minstrel_ht_set_rate(mp, mi, rates, i++, mi->max_tp_rate[1], use_rts)=
+;
+>  	}
+>
+>  	if (mp->hw->max_rates >=3D 2) {
+> -		minstrel_ht_set_rate(mp, mi, rates, i++, mi->max_prob_rate);
+> +		minstrel_ht_set_rate(mp, mi, rates, i++, mi->max_prob_rate, use_rts);
+>  	}
+>
+>  	mi->sta->max_rc_amsdu_len =3D minstrel_ht_get_max_amsdu_len(mi);
+> @@ -1705,7 +1708,7 @@ minstrel_ht_update_caps(void *priv, struct ieee802=
+11_supported_band *sband,
+>
+>  	/* create an initial rate table with the lowest supported rates */
+>  	minstrel_ht_update_stats(mp, mi);
+> -	minstrel_ht_update_rates(mp, mi);
+> +	minstrel_ht_update_rates(mp, mi, false);
+>  }
+>
+>  static void
 
