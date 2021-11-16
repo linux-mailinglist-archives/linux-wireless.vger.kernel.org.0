@@ -2,46 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E91E45290C
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Nov 2021 05:17:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E7CF45290D
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Nov 2021 05:18:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240121AbhKPEUk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 Nov 2021 23:20:40 -0500
-Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:34052 "EHLO
-        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S242924AbhKPESg (ORCPT
+        id S241091AbhKPEUl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 Nov 2021 23:20:41 -0500
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:64402 "EHLO
+        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S242927AbhKPESn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 Nov 2021 23:18:36 -0500
+        Mon, 15 Nov 2021 23:18:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1637036139; x=1668572139;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=tYZQNCdcsTglnj/ZXC85v72g53P/7KsnHe9JgkuWwrI=;
-  b=iiSDof58kmnvHHTQEr3Gk1Do+O1RM07JKCAaLwbmUfqKeiGcglEARz74
-   9qhyWpm5nW1/xZYPR6/skKG5LuDPU107LBFOR18MosiBfTuuUPh6CYa4m
-   RZ7+c0MXu2tAecO7eEN08tbSL0BnnErCh/1hFKR+2podNXcXaNRvhiKgl
-   M=;
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 15 Nov 2021 20:15:38 -0800
+  t=1637036147; x=1668572147;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=9m3zVsDbVQIbdVbjuskoyiFhnDvd9jsNTpxSecNVDZ4=;
+  b=GU+EKj/OUieu4GgOWJpJ6hecx7pT2BF36WAiHf9LVMtujIlMyFEGCt4C
+   3oalhKEXhXpyl2rLsYHnHzUbd5H5WvsLifgM6UTSO6ip3Ps4NPHBJgUVp
+   pduQXa/ckkZJOtlAyYCaZArxgPHgNke55k4Q4ydoiqStvFHvii8uuIXdm
+   c=;
+Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 15 Nov 2021 20:15:40 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2021 20:15:38 -0800
+  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2021 20:15:40 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Mon, 15 Nov 2021 20:15:38 -0800
+ 15.2.922.19; Mon, 15 Nov 2021 20:15:39 -0800
 Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Mon, 15 Nov 2021 20:15:36 -0800
+ 15.2.922.19; Mon, 15 Nov 2021 20:15:38 -0800
 From:   Wen Gong <quic_wgong@quicinc.com>
 To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
-Subject: [PATCH v4 0/4] ath11k: add feature for device recovery
-Date:   Mon, 15 Nov 2021 23:15:18 -0500
-Message-ID: <20211116041522.23529-1-quic_wgong@quicinc.com>
+Subject: [PATCH v4 1/4] ath11k: add ath11k_qmi_free_resource() for recovery
+Date:   Mon, 15 Nov 2021 23:15:19 -0500
+Message-ID: <20211116041522.23529-2-quic_wgong@quicinc.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20211116041522.23529-1-quic_wgong@quicinc.com>
+References: <20211116041522.23529-1-quic_wgong@quicinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -52,35 +54,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-v4: add patch "ath11k: fix invalid m3 buffer address"
-    recovery will fail when download firmware without this patch
+ath11k_qmi_free_target_mem_chunk() and ath11k_qmi_m3_free() is static
+in qmi.c, they are needed for recovery, export them in a new function.
 
-v3: remove time_left set but not used in
-    "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
 
-v2: s/initilized/initialized in commit log of patch
-    "ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base"
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/qmi.c | 5 +++++
+ drivers/net/wireless/ath/ath11k/qmi.h | 1 +
+ 2 files changed, 6 insertions(+)
 
-Add support for device recovery.
-
-Carl Huang (1):
-  ath11k: fix invalid m3 buffer address
-
-Wen Gong (3):
-  ath11k: add ath11k_qmi_free_resource() for recovery
-  ath11k: add support for device recovery for QCA6390
-  ath11k: add synchronization operation between reconfigure of mac80211
-    and ath11k_base
-
- drivers/net/wireless/ath/ath11k/core.c | 119 +++++++++++++++++++++++--
- drivers/net/wireless/ath/ath11k/core.h |  18 ++++
- drivers/net/wireless/ath/ath11k/mac.c  |  40 +++++++++
- drivers/net/wireless/ath/ath11k/mhi.c  |  33 +++++++
- drivers/net/wireless/ath/ath11k/pci.c  |   3 +
- drivers/net/wireless/ath/ath11k/qmi.c  |   6 ++
- drivers/net/wireless/ath/ath11k/qmi.h  |   1 +
- 7 files changed, 212 insertions(+), 8 deletions(-)
-
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index b5e34d670715..1f474a10d1b0 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -2811,3 +2811,8 @@ void ath11k_qmi_deinit_service(struct ath11k_base *ab)
+ }
+ EXPORT_SYMBOL(ath11k_qmi_deinit_service);
+ 
++void ath11k_qmi_free_resource(struct ath11k_base *ab)
++{
++	ath11k_qmi_free_target_mem_chunk(ab);
++	ath11k_qmi_m3_free(ab);
++}
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
+index 3d5930330703..692e796ff839 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.h
++++ b/drivers/net/wireless/ath/ath11k/qmi.h
+@@ -471,5 +471,6 @@ void ath11k_qmi_event_work(struct work_struct *work);
+ void ath11k_qmi_msg_recv_work(struct work_struct *work);
+ void ath11k_qmi_deinit_service(struct ath11k_base *ab);
+ int ath11k_qmi_init_service(struct ath11k_base *ab);
++void ath11k_qmi_free_resource(struct ath11k_base *ab);
+ 
+ #endif
 -- 
 2.31.1
 
