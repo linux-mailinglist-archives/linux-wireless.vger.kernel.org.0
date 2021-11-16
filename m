@@ -2,265 +2,294 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8253A453395
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Nov 2021 15:04:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7A8A4533E5
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Nov 2021 15:15:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237013AbhKPOGy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Nov 2021 09:06:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36462 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237069AbhKPOGu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Nov 2021 09:06:50 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9F1F5610A8;
-        Tue, 16 Nov 2021 14:03:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637071434;
-        bh=+epf0iXgH1YkGgq1TMTqAHuIib9A/mXbSWxH9+518uU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=LpTxrGmHX7dNus6Fvi3UtnKF7QicmdcR0fLIg0Z/PqlN5KBtE2RPG8HifpE4OQEM5
-         VoISOsn1zJcaqwjDbHqzzpgEHIVVDMwJ1ChfKu54YWGCAUbOVpJSozf7Y5C1d3Uu0P
-         oSiFJSddoh9MH56DQ5JM6ijGc9BaNHmGFNH3rsWr79GM97Fx5/ibtlu5Z51um9Fh1J
-         uscus64tywWKZRoazqd//P02cDx3Y9/zCK3mhpty+MHlm+ZdMObMvyJ4bSLKAFJrxo
-         aBfpt0AyqaI3UkE7NdRoGTwEm0RyobWrsoixa9d+WhcPKkSwijtxa/2aqs1FtHV4HH
-         GHje1mv5pl5GQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     johannes@sipsolutions.net
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com,
-        evelyn.tsai@mediatek.com, owen.peng@mediatek.com
-Subject: [PATCH mac80211-next] cfg80211: allow continuous radar monitoring on offchannel chain
-Date:   Tue, 16 Nov 2021 15:03:36 +0100
-Message-Id: <d46217310a49b14ff0e9c002f0a6e0547d70fd2c.1637071350.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S237272AbhKPOR7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Nov 2021 09:17:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:37765 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237163AbhKPORt (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 16 Nov 2021 09:17:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1637072089;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=dZqFtPRB6VMq1+uLMOyMoAQ/XzYa98ZDgdqLYWHCBpc=;
+        b=GpTTQBU2FGX99qP1opoWmP6n0E74YMfOR3p2eZkDQ1BkeWJWqmfbajFo3iOVp7/lEkAcud
+        Yx8aW+d/RQxcs2rKJ0PNpxPiY5fn+TwJs7t2gM20xjaMDgU1eW0ouGjXsHOIVJrzbamDQn
+        fmDeBzMptRjdQqhiXdmaV7exoEc+wPs=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-150-EE57e-7aNwi0U7BNMRdyMA-1; Tue, 16 Nov 2021 09:14:47 -0500
+X-MC-Unique: EE57e-7aNwi0U7BNMRdyMA-1
+Received: by mail-ed1-f70.google.com with SMTP id w13-20020a05640234cd00b003e2fde5ff8aso17226168edc.14
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Nov 2021 06:14:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=dZqFtPRB6VMq1+uLMOyMoAQ/XzYa98ZDgdqLYWHCBpc=;
+        b=off04s6RtgitpE82Hf7prACxN3d2w31DR/FQOLujkCZ3l43C8UIgZIXfWQVrAQlJom
+         KPkcYvErtC/qj0cme1BgXNM11vZvMGbLWXPqfg3z/BZ2CjuC9a6wQ28k1a+HYLi2uH76
+         /8vF1yDS2PE3JoDKyu56kY05cI+MqK7mKZzHj9jIJ9cLeYiK3YgJSU091nd0qmjGUY0t
+         JebDCXwWTSKJWghNEQimxVc8zfnv1/bgi4WE2LLvX6G//HG8pr/USNoZxqzpTfl/FWQS
+         dPMorolU/TeKkAEjlSAwf9H7lwl0MGgySlCZTZ8SKJa4oKrqQKjVYXic37+bFOLp1nQo
+         3bBA==
+X-Gm-Message-State: AOAM530xQ9lK5wlJiBgu+8ZyA4np54FkzcCmf6FzqDlHKExUpN2nBCAh
+        VB+7b94mc3NAei34w7Nb6NIVbh1YfVqXN1x65lo+Kx0tfBvpEP1FJUrXwuZsizCFMN8S9bcnfVt
+        8f3eSSsQBEiMKvZIsytgko+54g60=
+X-Received: by 2002:a05:6402:5206:: with SMTP id s6mr5405374edd.113.1637072086616;
+        Tue, 16 Nov 2021 06:14:46 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzW3LgNlahxMx7wWsiqOBjZLOmYliC0cYm66ncbo3pSyuGMmPF+cnPJiF5hPxLVe00X5BIFdQ==
+X-Received: by 2002:a05:6402:5206:: with SMTP id s6mr5405341edd.113.1637072086358;
+        Tue, 16 Nov 2021 06:14:46 -0800 (PST)
+Received: from localhost (net-93-151-197-210.cust.vodafonedsl.it. [93.151.197.210])
+        by smtp.gmail.com with ESMTPSA id jy28sm3631717ejc.118.2021.11.16.06.14.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Nov 2021 06:14:45 -0800 (PST)
+Date:   Tue, 16 Nov 2021 15:14:44 +0100
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Felix Fietkau <nbd@nbd.name>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        ryder.lee@mediatek.com, evelyn.tsai@mediatek.com,
+        owen.peng@mediatek.com
+Subject: Re: [PATCH mac80211-next] cfg80211: schedule offchan_cac_abort_wk in
+ cfg80211_radar_event
+Message-ID: <YZO81KczA9gqh4bO@lore-desk>
+References: <3ff583e021e3343a3ced54a7b09b5e184d1880dc.1637062727.git.lorenzo@kernel.org>
+ <CAFED-j=i9wuN4JuiF4z2q5qbrhrLL_Php7pi6mpniMUeHHFUPA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="XBXuJ8M9uQUjuF10"
+Content-Disposition: inline
+In-Reply-To: <CAFED-j=i9wuN4JuiF4z2q5qbrhrLL_Php7pi6mpniMUeHHFUPA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Allow continuous radar detection on the offchannel chain in order
-to switch to the monitored channel whenever the underlay driver
-reports a radar pattern on the main channel.
 
-Tested-by: Owen Peng <owen.peng@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- net/wireless/chan.c    | 16 +++++++++++
- net/wireless/mlme.c    | 20 +++++++++-----
- net/wireless/nl80211.c | 62 ++++++++++++++++++++++++++++--------------
- 3 files changed, 71 insertions(+), 27 deletions(-)
+--XBXuJ8M9uQUjuF10
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 869c43d4414c..00fc7b78063c 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -712,6 +712,19 @@ static bool cfg80211_is_wiphy_oper_chan(struct wiphy *wiphy,
- 	return false;
- }
- 
-+static bool
-+cfg80211_offchan_chain_is_active(struct cfg80211_registered_device *rdev,
-+				 struct ieee80211_channel *channel)
-+{
-+	if (!rdev->offchan_radar_wdev)
-+		return false;
-+
-+	if (!cfg80211_chandef_valid(&rdev->offchan_radar_chandef))
-+		return false;
-+
-+	return cfg80211_is_sub_chan(&rdev->offchan_radar_chandef, channel);
-+}
-+
- bool cfg80211_any_wiphy_oper_chan(struct wiphy *wiphy,
- 				  struct ieee80211_channel *chan)
- {
-@@ -728,6 +741,9 @@ bool cfg80211_any_wiphy_oper_chan(struct wiphy *wiphy,
- 
- 		if (cfg80211_is_wiphy_oper_chan(&rdev->wiphy, chan))
- 			return true;
-+
-+		if (cfg80211_offchan_chain_is_active(rdev, chan))
-+			return true;
- 	}
- 
- 	return false;
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 450be1ec70b8..e970076e1098 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -988,7 +988,7 @@ __cfg80211_offchan_cac_event(struct cfg80211_registered_device *rdev,
- 	if (!cfg80211_chandef_valid(chandef))
- 		return;
- 
--	if (event != NL80211_RADAR_CAC_STARTED && !rdev->offchan_radar_wdev)
-+	if (!rdev->offchan_radar_wdev)
- 		return;
- 
- 	switch (event) {
-@@ -998,17 +998,13 @@ __cfg80211_offchan_cac_event(struct cfg80211_registered_device *rdev,
- 		queue_work(cfg80211_wq, &rdev->propagate_cac_done_wk);
- 		cfg80211_sched_dfs_chan_update(rdev);
- 		wdev = rdev->offchan_radar_wdev;
--		rdev->offchan_radar_wdev = NULL;
- 		break;
- 	case NL80211_RADAR_CAC_ABORTED:
- 		if (!cancel_delayed_work(&rdev->offchan_cac_done_wk))
- 			return;
- 		wdev = rdev->offchan_radar_wdev;
--		rdev->offchan_radar_wdev = NULL;
- 		break;
- 	case NL80211_RADAR_CAC_STARTED:
--		WARN_ON(!wdev);
--		rdev->offchan_radar_wdev = wdev;
- 		break;
- 	default:
- 		return;
-@@ -1024,7 +1020,8 @@ cfg80211_offchan_cac_event(struct cfg80211_registered_device *rdev,
- 			   enum nl80211_radar_event event)
- {
- 	wiphy_lock(&rdev->wiphy);
--	__cfg80211_offchan_cac_event(rdev, NULL, chandef, event);
-+	__cfg80211_offchan_cac_event(rdev, rdev->offchan_radar_wdev,
-+				     chandef, event);
- 	wiphy_unlock(&rdev->wiphy);
- }
- 
-@@ -1071,7 +1068,13 @@ cfg80211_start_offchan_radar_detection(struct cfg80211_registered_device *rdev,
- 				     NL80211_EXT_FEATURE_RADAR_OFFCHAN))
- 		return -EOPNOTSUPP;
- 
--	if (rdev->offchan_radar_wdev)
-+	/* Offchannel chain already locked by another wdev */
-+	if (rdev->offchan_radar_wdev && rdev->offchan_radar_wdev != wdev)
-+		return -EBUSY;
-+
-+	/* CAC already in progress on the offchannel chain */
-+	if (rdev->offchan_radar_wdev == wdev &&
-+	    delayed_work_pending(&rdev->offchan_cac_done_wk))
- 		return -EBUSY;
- 
- 	err = rdev_set_radar_offchan(rdev, chandef);
-@@ -1083,6 +1086,8 @@ cfg80211_start_offchan_radar_detection(struct cfg80211_registered_device *rdev,
- 		cac_time_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
- 
- 	rdev->offchan_radar_chandef = *chandef;
-+	rdev->offchan_radar_wdev = wdev; /* Get offchain ownership */
-+
- 	__cfg80211_offchan_cac_event(rdev, wdev, chandef,
- 				     NL80211_RADAR_CAC_STARTED);
- 	queue_delayed_work(cfg80211_wq, &rdev->offchan_cac_done_wk,
-@@ -1102,6 +1107,7 @@ void cfg80211_stop_offchan_radar_detection(struct wireless_dev *wdev)
- 		return;
- 
- 	rdev_set_radar_offchan(rdev, NULL);
-+	rdev->offchan_radar_wdev = NULL; /* Release offchain ownership */
- 
- 	__cfg80211_offchan_cac_event(rdev, wdev, &rdev->offchan_radar_chandef,
- 				     NL80211_RADAR_CAC_ABORTED);
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 25ee16558dfa..5ef1a374f7f1 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -9271,42 +9271,60 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
- 	struct cfg80211_chan_def chandef;
- 	enum nl80211_dfs_regions dfs_region;
- 	unsigned int cac_time_ms;
--	int err;
-+	int err = -EINVAL;
-+
-+	flush_delayed_work(&rdev->dfs_update_channels_wk);
-+
-+	wiphy_lock(wiphy);
- 
- 	dfs_region = reg_get_dfs_region(wiphy);
- 	if (dfs_region == NL80211_DFS_UNSET)
--		return -EINVAL;
-+		goto unlock;
- 
- 	err = nl80211_parse_chandef(rdev, info, &chandef);
- 	if (err)
--		return err;
-+		goto unlock;
- 
- 	err = cfg80211_chandef_dfs_required(wiphy, &chandef, wdev->iftype);
- 	if (err < 0)
--		return err;
-+		goto unlock;
- 
--	if (err == 0)
--		return -EINVAL;
-+	if (err == 0) {
-+		err = -EINVAL;
-+		goto unlock;
-+	}
- 
--	if (!cfg80211_chandef_dfs_usable(wiphy, &chandef))
--		return -EINVAL;
-+	if (!cfg80211_chandef_dfs_usable(wiphy, &chandef)) {
-+		err = -EINVAL;
-+		goto unlock;
-+	}
- 
--	if (nla_get_flag(info->attrs[NL80211_ATTR_RADAR_OFFCHAN]))
--		return cfg80211_start_offchan_radar_detection(rdev, wdev,
--							      &chandef);
-+	if (nla_get_flag(info->attrs[NL80211_ATTR_RADAR_OFFCHAN])) {
-+		err = cfg80211_start_offchan_radar_detection(rdev, wdev,
-+							     &chandef);
-+		goto unlock;
-+	}
- 
--	if (netif_carrier_ok(dev))
--		return -EBUSY;
-+	if (netif_carrier_ok(dev)) {
-+		err = -EBUSY;
-+		goto unlock;
-+	}
- 
--	if (wdev->cac_started)
--		return -EBUSY;
-+	if (wdev->cac_started) {
-+		err = -EBUSY;
-+		goto unlock;
-+	}
- 
- 	/* CAC start is offloaded to HW and can't be started manually */
--	if (wiphy_ext_feature_isset(wiphy, NL80211_EXT_FEATURE_DFS_OFFLOAD))
--		return -EOPNOTSUPP;
-+	if (wiphy_ext_feature_isset(wiphy, NL80211_EXT_FEATURE_DFS_OFFLOAD)) {
-+		err = -EOPNOTSUPP;
-+		goto unlock;
-+	}
- 
--	if (!rdev->ops->start_radar_detection)
--		return -EOPNOTSUPP;
-+	if (!rdev->ops->start_radar_detection) {
-+		err = -EOPNOTSUPP;
-+		goto unlock;
-+	}
- 
- 	cac_time_ms = cfg80211_chandef_dfs_cac_time(&rdev->wiphy, &chandef);
- 	if (WARN_ON(!cac_time_ms))
-@@ -9319,6 +9337,9 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
- 		wdev->cac_start_time = jiffies;
- 		wdev->cac_time_ms = cac_time_ms;
- 	}
-+unlock:
-+	wiphy_unlock(wiphy);
-+
- 	return err;
- }
- 
-@@ -15955,7 +15976,8 @@ static const struct genl_small_ops nl80211_small_ops[] = {
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = nl80211_start_radar_detection,
- 		.flags = GENL_UNS_ADMIN_PERM,
--		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP,
-+		.internal_flags = NL80211_FLAG_NEED_NETDEV_UP |
-+				  NL80211_FLAG_NO_WIPHY_MTX,
- 	},
- 	{
- 		.cmd = NL80211_CMD_GET_PROTOCOL_FEATURES,
--- 
-2.31.1
+> wt., 16 lis 2021 o 12:46 Lorenzo Bianconi <lorenzo@kernel.org> napisa=C5=
+=82(a):
+> >
+> > If necessary schedule offchan_cac_abort_wk work in cfg80211_radar_event
+> > routine adding offchan parameter to cfg80211_radar_event signature.
+> > Rename cfg80211_radar_event in __cfg80211_radar_event and introduce
+> > the two following inline helpers:
+> > - cfg80211_radar_event
+> > - cfg80211_offchan_radar_event
+> > Doing so the drv will not need to run cfg80211_offchan_cac_abort() after
+> > radar detection on the offchannel chain.
+> >
+> > Tested-by: Owen Peng <owen.peng@mediatek.com>
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > ---
+> >  include/net/cfg80211.h | 24 +++++++++++++++++++++---
+> >  net/wireless/mlme.c    | 16 ++++++++++------
+> >  net/wireless/trace.h   | 11 +++++++----
+> >  3 files changed, 38 insertions(+), 13 deletions(-)
+> >
+>=20
+> BTW, if we don't have user for this yet, maybe we should change name
+> offchannel -> background.
+> In ETSI spec
+> https://www.etsi.org/deliver/etsi_en/301800_301899/301893/02.01.01_60/en_=
+301893v020101p.pdf
+> we have off-channel CAC defined little bit different:
+>=20
+> "Off-Channel CAC is performed by a number of non-continuous checks
+> spread over a period in time. This period, which is required to
+> determine the presence of radar signals, is defined as the Off-Channel
+> CAC Time."
+>=20
+> And:
+> "Minimum Off-Channel CAC Time 6 minutes (see note 2) Maximum
+> Off-Channel CAC Time 4 hours (see note 2)"
+>=20
+> So, your implementation simple run "background CAC" - use one (or
+> more) chain for that.
+>=20
+> BR
+> Janusz
+
+Hi Janusz,
+
+I have just posted a patch [0] in order to allow continuous radar monitoring
+through the off-channel chain. I guess it is what you are referring to, rig=
+ht?
+
+Regards,
+Lorenzo
+
+[0] "cfg80211: allow continuous radar monitoring on offchannel chain"
+https://lore.kernel.org/linux-wireless/d46217310a49b14ff0e9c002f0a6e0547d70=
+fd2c.1637071350.git.lorenzo@kernel.org/T/#u
+
+>=20
+>=20
+>=20
+> > diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> > index 362da9f6bf39..a887086cb103 100644
+> > --- a/include/net/cfg80211.h
+> > +++ b/include/net/cfg80211.h
+> > @@ -7605,15 +7605,33 @@ void cfg80211_cqm_txe_notify(struct net_device =
+*dev, const u8 *peer,
+> >  void cfg80211_cqm_beacon_loss_notify(struct net_device *dev, gfp_t gfp=
+);
+> >
+> >  /**
+> > - * cfg80211_radar_event - radar detection event
+> > + * __cfg80211_radar_event - radar detection event
+> >   * @wiphy: the wiphy
+> >   * @chandef: chandef for the current channel
+> > + * @offchan: the radar has been detected on the offchannel chain
+> >   * @gfp: context flags
+> >   *
+> >   * This function is called when a radar is detected on the current cha=
+nenl.
+> >   */
+> > -void cfg80211_radar_event(struct wiphy *wiphy,
+> > -                         struct cfg80211_chan_def *chandef, gfp_t gfp);
+> > +void __cfg80211_radar_event(struct wiphy *wiphy,
+> > +                           struct cfg80211_chan_def *chandef,
+> > +                           bool offchan, gfp_t gfp);
+> > +
+> > +static inline void
+> > +cfg80211_radar_event(struct wiphy *wiphy,
+> > +                    struct cfg80211_chan_def *chandef,
+> > +                    gfp_t gfp)
+> > +{
+> > +       __cfg80211_radar_event(wiphy, chandef, false, gfp);
+> > +}
+> > +
+> > +static inline void
+> > +cfg80211_offchan_radar_event(struct wiphy *wiphy,
+> > +                            struct cfg80211_chan_def *chandef,
+> > +                            gfp_t gfp)
+> > +{
+> > +       __cfg80211_radar_event(wiphy, chandef, true, gfp);
+> > +}
+> >
+> >  /**
+> >   * cfg80211_sta_opmode_change_notify - STA's ht/vht operation mode cha=
+nge event
+> > diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+> > index ac2e5e732d94..450be1ec70b8 100644
+> > --- a/net/wireless/mlme.c
+> > +++ b/net/wireless/mlme.c
+> > @@ -905,13 +905,13 @@ void cfg80211_dfs_channels_update_work(struct wor=
+k_struct *work)
+> >  }
+> >
+> >
+> > -void cfg80211_radar_event(struct wiphy *wiphy,
+> > -                         struct cfg80211_chan_def *chandef,
+> > -                         gfp_t gfp)
+> > +void __cfg80211_radar_event(struct wiphy *wiphy,
+> > +                           struct cfg80211_chan_def *chandef,
+> > +                           bool offchan, gfp_t gfp)
+> >  {
+> >         struct cfg80211_registered_device *rdev =3D wiphy_to_rdev(wiphy=
+);
+> >
+> > -       trace_cfg80211_radar_event(wiphy, chandef);
+> > +       trace_cfg80211_radar_event(wiphy, chandef, offchan);
+> >
+> >         /* only set the chandef supplied channel to unavailable, in
+> >          * case the radar is detected on only one of multiple channels
+> > @@ -919,6 +919,9 @@ void cfg80211_radar_event(struct wiphy *wiphy,
+> >          */
+> >         cfg80211_set_dfs_state(wiphy, chandef, NL80211_DFS_UNAVAILABLE);
+> >
+> > +       if (offchan)
+> > +               queue_work(cfg80211_wq, &rdev->offchan_cac_abort_wk);
+> > +
+> >         cfg80211_sched_dfs_chan_update(rdev);
+> >
+> >         nl80211_radar_notify(rdev, chandef, NL80211_RADAR_DETECTED, NUL=
+L, gfp);
+> > @@ -926,7 +929,7 @@ void cfg80211_radar_event(struct wiphy *wiphy,
+> >         memcpy(&rdev->radar_chandef, chandef, sizeof(struct cfg80211_ch=
+an_def));
+> >         queue_work(cfg80211_wq, &rdev->propagate_radar_detect_wk);
+> >  }
+> > -EXPORT_SYMBOL(cfg80211_radar_event);
+> > +EXPORT_SYMBOL(__cfg80211_radar_event);
+> >
+> >  void cfg80211_cac_event(struct net_device *netdev,
+> >                         const struct cfg80211_chan_def *chandef,
+> > @@ -998,7 +1001,8 @@ __cfg80211_offchan_cac_event(struct cfg80211_regis=
+tered_device *rdev,
+> >                 rdev->offchan_radar_wdev =3D NULL;
+> >                 break;
+> >         case NL80211_RADAR_CAC_ABORTED:
+> > -               cancel_delayed_work(&rdev->offchan_cac_done_wk);
+> > +               if (!cancel_delayed_work(&rdev->offchan_cac_done_wk))
+> > +                       return;
+> >                 wdev =3D rdev->offchan_radar_wdev;
+> >                 rdev->offchan_radar_wdev =3D NULL;
+> >                 break;
+> > diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+> > index 0b27eaa14a18..e854d52db1a6 100644
+> > --- a/net/wireless/trace.h
+> > +++ b/net/wireless/trace.h
+> > @@ -3053,18 +3053,21 @@ TRACE_EVENT(cfg80211_ch_switch_started_notify,
+> >  );
+> >
+> >  TRACE_EVENT(cfg80211_radar_event,
+> > -       TP_PROTO(struct wiphy *wiphy, struct cfg80211_chan_def *chandef=
+),
+> > -       TP_ARGS(wiphy, chandef),
+> > +       TP_PROTO(struct wiphy *wiphy, struct cfg80211_chan_def *chandef,
+> > +                bool offchan),
+> > +       TP_ARGS(wiphy, chandef, offchan),
+> >         TP_STRUCT__entry(
+> >                 WIPHY_ENTRY
+> >                 CHAN_DEF_ENTRY
+> > +               __field(bool, offchan)
+> >         ),
+> >         TP_fast_assign(
+> >                 WIPHY_ASSIGN;
+> >                 CHAN_DEF_ASSIGN(chandef);
+> > +               __entry->offchan =3D offchan;
+> >         ),
+> > -       TP_printk(WIPHY_PR_FMT ", " CHAN_DEF_PR_FMT,
+> > -                 WIPHY_PR_ARG, CHAN_DEF_PR_ARG)
+> > +       TP_printk(WIPHY_PR_FMT ", " CHAN_DEF_PR_FMT ", offchan %d",
+> > +                 WIPHY_PR_ARG, CHAN_DEF_PR_ARG, __entry->offchan)
+> >  );
+> >
+> >  TRACE_EVENT(cfg80211_cac_event,
+> > --
+> > 2.31.1
+> >
+>=20
+>=20
+> --=20
+> Janusz Dziedzic
+>=20
+
+--XBXuJ8M9uQUjuF10
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYZO80wAKCRA6cBh0uS2t
+rDo4AP0aU5Nzu0qgQ4BBYO8ZQrkp++itvLW7IUNAF1Sn0axN/QEAywyeR2ehoGB+
+Np5gikJuG7BRLTaAp4FIPn+8c6AD6Qg=
+=ByID
+-----END PGP SIGNATURE-----
+
+--XBXuJ8M9uQUjuF10--
 
