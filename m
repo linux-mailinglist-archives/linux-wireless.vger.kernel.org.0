@@ -2,72 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E182453C26
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Nov 2021 23:13:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C7FF453D11
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Nov 2021 01:15:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231961AbhKPWPv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 Nov 2021 17:15:51 -0500
-Received: from mout.gmx.net ([212.227.15.18]:34037 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230484AbhKPWPv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 Nov 2021 17:15:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1637100766;
-        bh=BccBlK1Ruuzqsg+QAu3HJjwlyo+NyXNPJ95yePLNa4Y=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=BAus9mz4Z11wS0n5FERhJMqvlp3EQcJw/nldMzOiJZlHDOEM6jt69FXg4NFpDQmyL
-         64eezF6p4HsY8T7F8CqmvVEqWAL2oTTZrDwqVxUQQDUhQLZW1hypiXUCImILfPZumD
-         U84xRlWAePv9WIMFKbXygyI0tza20FXSWNA62U1M=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.fritz.box ([62.216.209.243]) by mail.gmx.net
- (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MGQjH-1msqvI3gdx-00GsE8; Tue, 16 Nov 2021 23:12:46 +0100
-From:   Peter Seiderer <ps.report@gmx.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH v1] mac80211: minstrel_ht: remove unused SAMPLE_SWITCH_THR define
-Date:   Tue, 16 Nov 2021 23:12:44 +0100
-Message-Id: <20211116221244.30844-1-ps.report@gmx.net>
-X-Mailer: git-send-email 2.33.1
+        id S230159AbhKQASo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 Nov 2021 19:18:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32868 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229544AbhKQASn (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 16 Nov 2021 19:18:43 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78FBCC061570;
+        Tue, 16 Nov 2021 16:15:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=xHzGWTvPEQ1U+gOdlDriApocLa4EZbPbJGHwXbh4KkA=; b=ZN92UcGhwrf0KUiyCgqy9+rzlt
+        +WWiE6W7asIJlrVIj9gTMljknHMbpZiMXRw5qGkQ7p4IrNRDdpe+WAEXCPoAgyhgWMd2kctagW9AO
+        qZdEDRQnSkAMfUXESSB0LQ9kHV8hYDW2nr8h/RA8uWt4gwnZG1rPmfz/W0NC+JDXsz7bn2kareEiQ
+        QmFHd7UZZkiCPwJWjVRcpVIhp/9xmFoeABBG6CzWnRCIOc3eoeL9+Jm0KhD6mcUDvktMW9Yu3xQXd
+        XhET3UM0vZ+eFtydGzhvi5iEvPWPPSQ1epwkB3lGsAo8NIqMozdNpN7QIUnAkzW9J7GT3B41bVCDx
+        JVbgRA7Q==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mn8bt-003170-F2; Wed, 17 Nov 2021 00:15:33 +0000
+Date:   Tue, 16 Nov 2021 16:15:33 -0800
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     gregkh@linuxfoundation.org
+Cc:     bp@suse.de, akpm@linux-foundation.org, josh@joshtriplett.org,
+        rishabhb@codeaurora.org, kubakici@wp.pl, maco@android.com,
+        david.brown@linaro.org, bjorn.andersson@linaro.org,
+        linux-wireless@vger.kernel.org, keescook@chromium.org,
+        shuah@kernel.org, mfuzzey@parkeon.com, zohar@linux.vnet.ibm.com,
+        dhowells@redhat.com, pali.rohar@gmail.com, tiwai@suse.de,
+        arend.vanspriel@broadcom.com, zajec5@gmail.com, nbroeking@me.com,
+        broonie@kernel.org, dmitry.torokhov@gmail.com, dwmw2@infradead.org,
+        torvalds@linux-foundation.org, Abhay_Salunke@dell.com,
+        jewalt@lgsinnovations.com, cantabile.desu@gmail.com, ast@fb.com,
+        andresx7@gmail.com, brendanhiggins@google.com, yzaikin@google.com,
+        sfr@canb.auug.org.au, rdunlap@infradead.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v4 0/4] firmware_loader: built-in API and make x86 use it
+Message-ID: <YZRJpcZ4LgBzhge0@bombadil.infradead.org>
+References: <20211025195031.4169165-1-mcgrof@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-X-Provags-ID: V03:K1:dpQUTq3IL3tnxxKPwfQypVkgjv7WAgl2Q41kibAYmwcWlJiatee
- eRZ/Dag1uyG8ORAwK6GTYsIzjZbFMyY0O21xrQunHO5My2orvChN8e+FBIBOLgyuHHIzR27
- 9iTXNrqnnQ5dHRqw4Zti0ReqtRi9l5lSa/B9oIc/NWzxPXNniqV2jMcj7NHwpmxKNaNxUTQ
- seN7t0U22fz7QeKWHtZBw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:qzCgml5Qd1Y=:xIYRCfAGKdS4O/D4JXvMNQ
- VLPh46VXzPhQ6c4K29HpuJRzE5YZRCR3FiIDzwoTDzpu4rwiYEOBh4VCX+41qL2X7bJL1sF3U
- Yh3LE3Pji0kFiM2cPNJGWaIpGZNzOx3+qoZa6uDXPACFdij5sCbmfX/X/fueyvBSF1RwffslM
- tfe9RmhktvVUNjC86tljJ5ZBq6nP29MJjMf3UrqOZumHDx2dRTY27+7KvyvMEndFQ7+/VrXO2
- Z8tYm+N0Ersu2RXu82mKSgPZ8DKjA2yLsnOizjxpx+BPlwBXGBIKznltarHv1C9xLZko9cLqV
- YBZLp/dPCgsI4/WYSJ4ZbxB1uHJEDVoblzc0KPRlIMVdTBeOW2mAKeqRpGr24aOVy20n1kvNJ
- /mJACSukC1UFssCRdK7ifvDqK2QkO5pjSZKajm+8CKPDY9Mjd3yQSg2h5pW83lTjtaFGK6znt
- 7yfRVL2eaLLdWEnj7HLwvXygcjbo4wtZMh6hOCq8LH9mvrc2UbkxuJwRwpGiMKQnc4BGfAua/
- 1AMl9Z8UCco8G59veqx1tn0DezOYeegOG8DxsbUsMGsI3ZDx9qcX0nZPwxYVxnaKdNcmi5GFM
- VEBOV2tOuECRPiJXF8cm/9/FvU4oltceW/M1P6+t1DpzdI6yYIuzesQwnmWZ7S9zNhmCHUUpV
- 2lB4cdWGTeWd/AQnSuq3kM66OlJJz/R+xkkJrbOsJvBVK/152sVr1MiVtPEsvJlfjBuo+OieX
- ojXrvy9iTxu6ew+lD2vcu0JgFPb0bw8KCyRizBq1FByUEGOia2+QdkXMVJTRmimCeaLQOj/Ll
- U6eOq16j4Kuc4HESnsjbWSQz3C513sgCgJtMUprnJXVdboXJSWl+JWwhaxJ1H7wRTwX9l9dfb
- Vuqy9jWzv1hULvnGolrzhD/gHn5livf3IZOGhTQCt2wc+YkCWZ1aSSmlYefldrTvNomnjxmEW
- 3p9ptLVk0bMFAoTwbAjpCSEi4LKbjsgqvVugPZjCculdT8f/6sJuRXvCrh0OR/X1olqJEX8VY
- cGmhoVUwIJBoI9SVYVladYZcjMCaahC9+sZWY/kjdCe8ZRZbLNBupPuu8x3uPm3Oobu124L+J
- FMz1WNrn/jWMqI=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211025195031.4169165-1-mcgrof@kernel.org>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-UmVtb3ZlIHVudXNlZCBTQU1QTEVfU1dJVENIX1RIUiBkZWZpbmUuCgpTaWduZWQtb2ZmLWJ5OiBQ
-ZXRlciBTZWlkZXJlciA8cHMucmVwb3J0QGdteC5uZXQ+Ci0tLQogbmV0L21hYzgwMjExL3JjODAy
-MTFfbWluc3RyZWxfaHQuYyB8IDIgLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGRlbGV0aW9ucygtKQoK
-ZGlmZiAtLWdpdCBhL25ldC9tYWM4MDIxMS9yYzgwMjExX21pbnN0cmVsX2h0LmMgYi9uZXQvbWFj
-ODAyMTEvcmM4MDIxMV9taW5zdHJlbF9odC5jCmluZGV4IDcyYjQ0ZDRjNDJkMC4uOWMzYjdmYzM3
-N2MxIDEwMDY0NAotLS0gYS9uZXQvbWFjODAyMTEvcmM4MDIxMV9taW5zdHJlbF9odC5jCisrKyBi
-L25ldC9tYWM4MDIxMS9yYzgwMjExX21pbnN0cmVsX2h0LmMKQEAgLTE4LDggKzE4LDYgQEAKICNk
-ZWZpbmUgQVZHX0FNUERVX1NJWkUJMTYKICNkZWZpbmUgQVZHX1BLVF9TSVpFCTEyMDAKIAotI2Rl
-ZmluZSBTQU1QTEVfU1dJVENIX1RIUgkxMDAKLQogLyogTnVtYmVyIG9mIGJpdHMgZm9yIGFuIGF2
-ZXJhZ2Ugc2l6ZWQgcGFja2V0ICovCiAjZGVmaW5lIE1DU19OQklUUyAoKEFWR19QS1RfU0laRSAq
-IEFWR19BTVBEVV9TSVpFKSA8PCAzKQogCi0tIAoyLjMzLjEKCg==
+On Mon, Oct 25, 2021 at 12:50:27PM -0700, Luis Chamberlain wrote:
+> The only change on this v4 is to fix a kconfig dependency
+> (EXTRA_FIRMWARE != "") which I missed to address on the v3 series.
+
+Hey Greg, now that the merge window is closed let me know if you'd like
+a resend of this or if you can take it as-is.
+
+  Luis
