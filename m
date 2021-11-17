@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAE834541D2
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Nov 2021 08:29:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A99184541D4
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Nov 2021 08:29:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233320AbhKQHao (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Nov 2021 02:30:44 -0500
+        id S233406AbhKQHbT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Nov 2021 02:31:19 -0500
 Received: from so254-9.mailgun.net ([198.61.254.9]:28239 "EHLO
         so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233284AbhKQHal (ORCPT
+        with ESMTP id S229957AbhKQHbT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Nov 2021 02:30:41 -0500
+        Wed, 17 Nov 2021 02:31:19 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637134063; h=Date: Message-ID: Cc: To: References:
+ s=smtp; t=1637134094; h=Date: Message-ID: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=hwDc6VXQecDCbbtqjpFiE+B2bvoB30ymVBFSC5L5fPk=;
- b=JghwdC5rSa+1YEaibSek3HLxER2ZYw9Z4maLI5XFKa0FtFjnEFAPF3kc6IQdzZ0kF8N2llvJ
- P9nU0swJSOHP4oJUeg+KHOYJ5sexgG2QFHpIVFr9JX8wQIIh41SJBe6tliSQ7d/luk1IYVWb
- 5h9XB0PJdpTGDX2x5Ek83Tn5QHw=
+ Content-Type: Sender; bh=XbO7mzpxWdT7BlrPjC/8KECIfX1n/8CZNR5jOCgeZgA=;
+ b=PIicr36CAgDSpehmOujYZAJT5dyP96UnUk3agqy4zIePyG65SZNNfjhCGt3fKs17orXHawBv
+ g1FOxtArOXvh7ueNeTb48+YdWde6ILxCgWN192cZqw442TqVljJr77njeAUeTkoMLaiI72Mj
+ KrTD9N406C2lNp9e/fH/dSecvYQ=
 X-Mailgun-Sending-Ip: 198.61.254.9
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 6194aeea665450d43aecc2ea (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 17 Nov 2021 07:27:38
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 6194af0d11cd6d40778f132d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 17 Nov 2021 07:28:13
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B672CC43618; Wed, 17 Nov 2021 07:27:37 +0000 (UTC)
+        id 2D99FC43616; Wed, 17 Nov 2021 07:28:13 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,109 +40,70 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 95CB3C43460;
-        Wed, 17 Nov 2021 07:27:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 95CB3C43460
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 857A3C43460;
+        Wed, 17 Nov 2021 07:28:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 857A3C43460
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Fix ETSI regd with weather radar overlap
+Subject: Re: [PATCH] ath11k: Disabling credit flow for WMI path
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20211112153116.1214421-1-sven@narfation.org>
-References: <20211112153116.1214421-1-sven@narfation.org>
-To:     Sven Eckelmann <sven@narfation.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Sven Eckelmann <sven@narfation.org>
+In-Reply-To: <1635156494-20059-1-git-send-email-quic_ppranees@quicinc.com>
+References: <1635156494-20059-1-git-send-email-quic_ppranees@quicinc.com>
+To:     P Praneesh <quic_ppranees@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        P Praneesh <quic_ppranees@quicinc.com>,
+        Pravas Kumar Panda <kumarpan@codeaurora.org>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163713405345.31320.10844437499755849817.kvalo@codeaurora.org>
-Date:   Wed, 17 Nov 2021 07:27:37 +0000 (UTC)
+Message-ID: <163713408935.31320.4287583545861916111.kvalo@codeaurora.org>
+Date:   Wed, 17 Nov 2021 07:28:13 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sven Eckelmann <sven@narfation.org> wrote:
+P Praneesh <quic_ppranees@quicinc.com> wrote:
 
-> Some ETSI countries have a small overlap in the wireless-regdb with an ETSI
-> channel (5590-5650). A good example is Australia:
+> Firmware credit flow control is enabled for WMI control services,
+> which expects available tokens should be acquired before sending a
+> command to the target. Also the token gets released when firmware
+> receives the command.
 > 
->   country AU: DFS-ETSI
->         (2400 - 2483.5 @ 40), (36)
->         (5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW
->         (5250 - 5350 @ 80), (20), NO-OUTDOOR, AUTO-BW, DFS
->         (5470 - 5600 @ 80), (27), DFS
->         (5650 - 5730 @ 80), (27), DFS
->         (5730 - 5850 @ 80), (36)
->         (57000 - 66000 @ 2160), (43), NO-OUTDOOR
+> This credit-based flow limits driver to send WMI command only
+> when the token available which is causing WMI commands to timeout and
+> return -EAGAIN, whereas firmware has enough capability to process the
+> WMI command. To fix this Tx starvation issue, introduce the ability to
+> disable the credit flow for the WMI path.
 > 
-> If the firmware (or the BDF) is shipped with these rules then there is only
-> a 10 MHz overlap with the weather radar:
+> The driver sends WMI configuration for disabling credit flow to firmware
+> by two ways.
+>         1. By using a global flag
+>                 (HTC_MSG_SETUP_COMPLETE_EX_ID msg type flags)
+>         2. By using a local flag
+>                 (ATH11K_HTC_CONN_FLAGS_DISABLE_CREDIT_FLOW_CTRL = 1 << 3)
 > 
-> * below: 5470 - 5590
-> * weather radar: 5590 - 5600
-> * above: (none for the rule "5470 - 5600 @ 80")
+> Ath11k uses both these configurations to disable credit flow for the
+> WMI path completely.
 > 
-> There are several wrong assumption in the ath11k code:
+> Also added a hw_param member for credit flow control by which we can
+> enable or disable it based on per-target basis. Currently we are disabling
+> credit flow for IPQ8074, IPQ6018, and QCN9074 as recommended by firmware.
 > 
-> * there is always a valid range below the weather radar
->   (actually: there could be no range below the weather radar range OR range
->    could be smaller than 20 MHz)
-> * intersected range in the weather radar range is valid
->   (actually: the range could be smaller than 20 MHz)
-> * range above weather radar is either empty or valid
->   (actually: the range could be smaller than 20 MHz)
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01492-QCAHKSWPL_SILICONZ-1
+> Tested-on: IPQ6018 hw1.0 AHB WLAN.HK.2.4.0.1-00330-QCAHKSWPL_SILICONZ-1
 > 
-> These wrong assumption will lead in this example to a rule
-> 
->   (5590 - 5600 @ 20), (N/A, 27), (600000 ms), DFS, AUTO-BW
-> 
-> which is invalid according to is_valid_reg_rule() because the freq_diff is
-> only 10 MHz but the max_bandwidth is set to 20 MHz. Which results in a
-> rejection like:
-> 
->   WARNING: at backports-20210222_001-4.4.60-b157d2276/net/wireless/reg.c:3984
->   [...]
->   Call trace:
->   [<ffffffbffc3d2e50>] reg_get_max_bandwidth+0x300/0x3a8 [cfg80211]
->   [<ffffffbffc3d3d0c>] regulatory_set_wiphy_regd_sync+0x3c/0x98 [cfg80211]
->   [<ffffffbffc651598>] ath11k_regd_update+0x1a8/0x210 [ath11k]
->   [<ffffffbffc652108>] ath11k_regd_update_work+0x18/0x20 [ath11k]
->   [<ffffffc0000a93e0>] process_one_work+0x1f8/0x340
->   [<ffffffc0000a9784>] worker_thread+0x25c/0x448
->   [<ffffffc0000aedc8>] kthread+0xd0/0xd8
->   [<ffffffc000085550>] ret_from_fork+0x10/0x40
->   ath11k c000000.wifi: failed to perform regd update : -22
->   Invalid regulatory domain detected
-> 
-> To avoid this, the algorithm has to be changed slightly. Instead of
-> splitting a rule which overlaps with the weather radar range into 3 pieces
-> and accepting the first two parts blindly, it must actually be checked for
-> each piece whether it is a valid range. And only if it is valid, add it to
-> the output array.
-> 
-> When these checks are in place, the processed rules for AU would end up as
-> 
->   country AU: DFS-ETSI
->           (2400 - 2483 @ 40), (N/A, 36), (N/A)
->           (5150 - 5250 @ 80), (6, 23), (N/A), NO-OUTDOOR, AUTO-BW
->           (5250 - 5350 @ 80), (6, 20), (0 ms), NO-OUTDOOR, DFS, AUTO-BW
->           (5470 - 5590 @ 80), (6, 27), (0 ms), DFS, AUTO-BW
->           (5650 - 5730 @ 80), (6, 27), (0 ms), DFS, AUTO-BW
->           (5730 - 5850 @ 80), (6, 36), (N/A), AUTO-BW
-> 
-> and will be accepted by the wireless regulatory code.
-> 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: Sven Eckelmann <sven@narfation.org>
+> Co-developed-by: Pravas Kumar Panda <kumarpan@codeaurora.org>
+> Signed-off-by: Pravas Kumar Panda <kumarpan@codeaurora.org>
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-086c921a3540 ath11k: Fix ETSI regd with weather radar overlap
+f951380a6022 ath11k: Disabling credit flow for WMI path
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211112153116.1214421-1-sven@narfation.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/1635156494-20059-1-git-send-email-quic_ppranees@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
