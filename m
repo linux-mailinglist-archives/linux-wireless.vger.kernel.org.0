@@ -2,94 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0303F45407F
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Nov 2021 06:55:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBA384540EE
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Nov 2021 07:37:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233426AbhKQF57 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Nov 2021 00:57:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51702 "EHLO
+        id S233660AbhKQGj0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Nov 2021 01:39:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230082AbhKQF57 (ORCPT
+        with ESMTP id S233135AbhKQGjZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Nov 2021 00:57:59 -0500
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 804DDC061746
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Nov 2021 21:55:01 -0800 (PST)
-Received: by mail-pl1-x642.google.com with SMTP id y8so1213292plg.1
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Nov 2021 21:55:01 -0800 (PST)
+        Wed, 17 Nov 2021 01:39:25 -0500
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3C57C061570;
+        Tue, 16 Nov 2021 22:36:27 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id u11so1283030plf.3;
+        Tue, 16 Nov 2021 22:36:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=WfrXUgSFI8fX3poHZCXyurnfnlLvKC2xRaygUoraNRE=;
-        b=kEgrFcoh5ZGGZ5YXMMER2rUeoznQSWHL01uGj1IOG/46InerXy3Q9z+uSzUHHrODY1
-         19I1XmagMCm3MBo1Boxp7nfTszjvAgMsceP5ghLu29qKeOstSed5THfghkK+qfHGa8n/
-         pWRZZycVPga8gA5KaXk60mQo/gG9auGTTm7BbNZphAtKW2eEpp4Zo+xnmhacS6RFNbWh
-         YCGDc3YdjqMszZ0kRXri+87J9yKtFAic8fcoCGL9YALNHpFfJshikpCQ0rlZ2RKNgKSA
-         NCxN/0eThojNjbJLDTw4S5K0lMmasHDGda6QoQieSqkVLqj0E1mUkvOgEhCiPU7Bopc7
-         pI3Q==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Lk2g9E/UqZh2uMhoLR6EkK47x8ZuyfZNR/2euLyi71Y=;
+        b=mKTrdafpDhDezv5nTtvQwcErLpJmmsBBzk6i+kGnHq6O05J8gQqq984hvR3eD8nOEc
+         1VzD0Vja007MaUAPWwl8Pgm6LfWb6Jf4rNtT6tAEufm7XR/l65qa6XvH9BvEHcrNmEm+
+         62WAZmAOAf2gjrJtoLrpjCu+7KFM8s+3AoR8V5hEihZ2C/xQjYjRMf5X7eVqoYTXRe9+
+         1kZWgREZgSWfkcF/hluNXdatATVMkSFDgZ8awpEAk0K6e58zb2e62kBt6ZPxN1IFKuUe
+         epf9sTRkmeOel+ct0jCgiT2A1vJTN7tYXQ4VQFocgu4cY7F1mt55Oah/QUpRLFsffsA3
+         Ka9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=WfrXUgSFI8fX3poHZCXyurnfnlLvKC2xRaygUoraNRE=;
-        b=icDop9E07g0BO1pXJIpuSAvqw7GXfiStvEFzlPRedLhYXQguxTWG0NXcp1v/B1VDa1
-         XTRgu3Kwx2yNtve6OlL3rg83mU7O7SUXrSM9YQTmVhguSoGa0G98BxgmUovv4lpD1BqO
-         XfUUdljR3TzSxrLw5KZ2A2PXiqODEZX6RYwYkQ/H+UDh/G9JfAbEGoMtV37VG8PijR6C
-         BYSOIRMitfhFPwxlI2MlydmqU0ZnfbnI3g7XmLW/FUrDZ/4/wCs3i02iAryQC2piXRGX
-         7YnO032+0u/NMKInzUFAoW5GH5fZ6w+7pAXb9A4ip4O0scCAZdOIqcVD26zMhJuwktj9
-         XrUQ==
-X-Gm-Message-State: AOAM530RSh9RK2bcBwlSPuZAM194O7H/LeIz3GoiIiEEZ7EY6UllVQcQ
-        tlhasomx4cmZ5F/nDm5p+A8rKVGMb0A8DdXQPM0=
-X-Google-Smtp-Source: ABdhPJzsjs1I6WnJQgnSkKYx9hhTghYk54GwM4oxioc3yezNwwCaI0j+slysNaS45sY9kWyB1mVeTmB1iLMezuI3cKk=
-X-Received: by 2002:a17:90b:20d:: with SMTP id fy13mr6490869pjb.47.1637128500907;
- Tue, 16 Nov 2021 21:55:00 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Lk2g9E/UqZh2uMhoLR6EkK47x8ZuyfZNR/2euLyi71Y=;
+        b=jBW4DkrBfDAnLpNUhMdyVXi939GbujJfsNVBGWuYio3rvhag1clYkW0cahM4Dki98p
+         yZ6T/T9TcG+WxxpCYssrpmtAvb7emYp6EtsGsdQLefmTZJd1tb3SF2Vf8gmDWOw+78+c
+         A1MrTT5gwY+ukMaFYZwAf5KJR14UD4v+ncA/ovg9pBJHGmnxy6hlPXV0OajNtVC8F8qM
+         bdKL7zeF4WFrV5UtHoCAAMh6fkY7thrXgJHX0aALz0NaWH5Bfs0ZgbE3fn4WNwMZXJjC
+         fE/EezSona4DPTpvbh5vOj3uf8QMu9YaLq7w5ZZ+h7veUOSGekODB1nL84I0DzvKfpBW
+         Qs8g==
+X-Gm-Message-State: AOAM533ff2eNaJWwOCXE6PCBqFE6xEvyh4+1Y5sqrmGC8QXBZ+PFktQr
+        b0uZdoyEIS2nRHATJkC7JVk=
+X-Google-Smtp-Source: ABdhPJwM/otgjYa51boTGlRd/bCVd+iUUdLif+7FKr0HaIK6a7VZkY6Y3r5V+VQz67NUBz5e33Fcsw==
+X-Received: by 2002:a17:902:b588:b0:143:b732:834 with SMTP id a8-20020a170902b58800b00143b7320834mr39033212pls.22.1637130987270;
+        Tue, 16 Nov 2021 22:36:27 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id b10sm22225515pfl.200.2021.11.16.22.36.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Nov 2021 22:36:26 -0800 (PST)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: ye.guojin@zte.com.cn
+To:     luciano.coelho@intel.com
+Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        miriam.rachel.korenblit@intel.com, ye.guojin@zte.com.cn,
+        johannes.berg@intel.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] iwlwifi: rs: fixup the return value type of iwl_legacy_rate_to_fw_idx()
+Date:   Wed, 17 Nov 2021 06:36:21 +0000
+Message-Id: <20211117063621.160695-1-ye.guojin@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a17:90a:1b64:0:0:0:0 with HTTP; Tue, 16 Nov 2021 21:55:00
- -0800 (PST)
-Reply-To: inforiaantim@planetmail.net
-From:   Riaan Samson <tawandajean@gmail.com>
-Date:   Wed, 17 Nov 2021 07:55:00 +0200
-Message-ID: <CAGZCLcg79+L7=da7mbebLjxnC-ahDTX8mjTvhttpqxGWUN2vpQ@mail.gmail.com>
-Subject: Inquiry
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+From: Ye Guojin <ye.guojin@zte.com.cn>
 
-It is my pleasure to contact you discreetly as to discuss a mutually
-beneficial business; I will want to have your trust and to go into
-partnership investment with you which must be built on confidentiality
-between us.
+This was found by coccicheck:
+./drivers/net/wireless/intel/iwlwifi/fw/rs.c, 147, 10-21, WARNING
+Unsigned expression compared with zero legacy_rate < 0
 
-I am the Contract Award Director of with a South African Government
-Department; my office is in charge of awarding contracts to
-international contractors, building and handling of government
-contract throughout the country.
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Ye Guojin <ye.guojin@zte.com.cn>
+---
+ drivers/net/wireless/intel/iwlwifi/fw/api/rs.h | 2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/rs.c     | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-I am in the position to transfer the sum of US$17M of which I have
-written a memo informing the Government that this fund belongs to a
-Contractor waiting to be paid his contract sum; I want to transfer and
-invest this fund into your company as an investment fund from South
-Africa to your country.
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h b/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
+index a09081d7ed45..7794cd6d289d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
+@@ -710,7 +710,7 @@ struct iwl_lq_cmd {
+ 
+ u8 iwl_fw_rate_idx_to_plcp(int idx);
+ u32 iwl_new_rate_from_v1(u32 rate_v1);
+-u32 iwl_legacy_rate_to_fw_idx(u32 rate_n_flags);
++int iwl_legacy_rate_to_fw_idx(u32 rate_n_flags);
+ const struct iwl_rate_mcs_info *iwl_rate_mcs(int idx);
+ const char *iwl_rs_pretty_ant(u8 ant);
+ const char *iwl_rs_pretty_bw(int bw);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/rs.c b/drivers/net/wireless/intel/iwlwifi/fw/rs.c
+index a21c3befd93b..3850881210e6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/rs.c
+@@ -142,7 +142,7 @@ u32 iwl_new_rate_from_v1(u32 rate_v1)
+ 		}
+ 	/* if legacy format */
+ 	} else {
+-		u32 legacy_rate = iwl_legacy_rate_to_fw_idx(rate_v1);
++		int legacy_rate = iwl_legacy_rate_to_fw_idx(rate_v1);
+ 
+ 		WARN_ON(legacy_rate < 0);
+ 		rate_v2 |= legacy_rate;
+@@ -172,7 +172,7 @@ u32 iwl_new_rate_from_v1(u32 rate_v1)
+ }
+ IWL_EXPORT_SYMBOL(iwl_new_rate_from_v1);
+ 
+-u32 iwl_legacy_rate_to_fw_idx(u32 rate_n_flags)
++int iwl_legacy_rate_to_fw_idx(u32 rate_n_flags)
+ {
+ 	int rate = rate_n_flags & RATE_LEGACY_RATE_MSK_V1;
+ 	int idx;
+-- 
+2.25.1
 
-The fund will be shared on the ratio of 60-40%; 40% for you on the
-assistance rendered. Please note that this fund will not be
-investigated or recalled in the near feature as all document to move
-this fund to your account will be legally obtained. You are to send me
-your company's name and address with your banking details where you
-want the fund to be transferred to.
-
-As soon as you agree to my proposition, I will send you my number to
-reach me. I want you to keep this private to yourself. Be assured that
-this is a legitimate fund and will be transferred legitimately.
-
-Thanks for your anticipated cooperation.
-
-Yours
-
-Mr. Riaan Tim Samson
-
-Note: Reply me through my private/secure email: inforiaantim@planetmail.net
