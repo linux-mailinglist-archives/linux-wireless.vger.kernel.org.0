@@ -2,34 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEA264542E5
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Nov 2021 09:47:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAEA84542F2
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Nov 2021 09:49:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234589AbhKQIuk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Nov 2021 03:50:40 -0500
-Received: from so254-9.mailgun.net ([198.61.254.9]:49006 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234575AbhKQIuj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Nov 2021 03:50:39 -0500
+        id S234613AbhKQIvy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Nov 2021 03:51:54 -0500
+Received: from m43-7.mailgun.net ([69.72.43.7]:14534 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234606AbhKQIvu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 17 Nov 2021 03:51:50 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637138861; h=Date: Message-ID: Cc: To: References:
+ s=smtp; t=1637138930; h=Date: Message-ID: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=r0//JU9f3mo3nPzQjL6r+ddUQ6S+5xMlwRZ4L0YQ4mQ=;
- b=cKygpZPGDJikcD2kJnn+rfyvh2dzlNX2Hat8Uees4IDjvYwFM70uCy+Pn2irUWYR0EDWsnVe
- MVC092OKkQJQN4Xilptyaf2KzzK+1vnoqi0utkuoNJsAjypXKEKdzh9Hp0/Sb3OQEt3iz35F
- zdbU4wCd53WiltysiGjbES3dsyc=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ Content-Type: Sender; bh=Va4OnKJJNqeV+RT0nY6jUwSah1RO4b+0ZmF3us1G63E=;
+ b=nokJyB74I/l2AmfqtCQWvZHD9ic0HpbWKx7KhBCVStcG0t3xK/NUDm4N46PIiHNRTCn10cEQ
+ LrHCCeBBG+l+N2HtoXwNosEf6OWuaL1J5x7yNGwDEyTLBS6IfzDDeMrBw5bvJaQrtQdj9xyr
+ 5T5o3ZQ9WOc8Is1+vSvIHzVp5EA=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 6194c1ac5bbbed1f706e2c35 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 17 Nov 2021 08:47:40
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 6194c1f1638a2f4d6141fae3 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 17 Nov 2021 08:48:49
  GMT
 Sender: kvalo=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6EADDC43617; Wed, 17 Nov 2021 08:47:40 +0000 (UTC)
+        id CD348C43460; Wed, 17 Nov 2021 08:48:48 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -40,48 +39,50 @@ Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 22975C4338F;
-        Wed, 17 Nov 2021 08:47:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 22975C4338F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 33E47C4338F;
+        Wed, 17 Nov 2021 08:48:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 33E47C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v1] ath9k: fix intr_txqs setting
+Subject: Re: [PATCH v4 1/4] ath11k: add ath11k_qmi_free_resource() for
+ recovery
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20211116220720.30145-1-ps.report@gmx.net>
-References: <20211116220720.30145-1-ps.report@gmx.net>
-To:     Peter Seiderer <ps.report@gmx.net>
-Cc:     linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
+In-Reply-To: <20211116041522.23529-2-quic_wgong@quicinc.com>
+References: <20211116041522.23529-2-quic_wgong@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_wgong@quicinc.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163713885373.10263.4223864617658431026.kvalo@codeaurora.org>
-Date:   Wed, 17 Nov 2021 08:47:40 +0000 (UTC)
+Message-ID: <163713892498.10263.2312396236754200205.kvalo@codeaurora.org>
+Date:   Wed, 17 Nov 2021 08:48:48 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Peter Seiderer <ps.report@gmx.net> wrote:
+Wen Gong <quic_wgong@quicinc.com> wrote:
 
-> The struct ath_hw member intr_txqs is never reset/assigned outside
-> of ath9k_hw_init_queues() and with the used bitwise-or in the interrupt
-> handling ar9002_hw_get_isr() accumulates all ever set interrupt flags.
+> ath11k_qmi_free_target_mem_chunk() and ath11k_qmi_m3_free() is static
+> in qmi.c, they are needed for recovery, export them in a new function.
 > 
-> Fix this by using a pure assign instead of bitwise-or for the
-> first line (note: intr_txqs is only evaluated in case ATH9K_INT_TX bit
-> is set).
+> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
 > 
-> Signed-off-by: Peter Seiderer <ps.report@gmx.net>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 
-How did you test this? I'm getting way too many ath9k patches which have not
-been tested on a real device.
+Wen mentioned me privately that some extra features are needed to get
+this working, so dropping the patchset.
+
+4 patches set to Changes Requested.
+
+12621327 [v4,1/4] ath11k: add ath11k_qmi_free_resource() for recovery
+12621331 [v4,2/4] ath11k: fix invalid m3 buffer address
+12621329 [v4,3/4] ath11k: add support for device recovery for QCA6390
+12621333 [v4,4/4] ath11k: add synchronization operation between reconfigure of mac80211 and ath11k_base
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211116220720.30145-1-ps.report@gmx.net/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211116041522.23529-2-quic_wgong@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
