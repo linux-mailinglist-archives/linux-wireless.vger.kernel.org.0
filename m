@@ -2,60 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 758F94549D6
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Nov 2021 16:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25C08454D65
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Nov 2021 19:47:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231338AbhKQP0Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 Nov 2021 10:26:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41336 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230243AbhKQP0P (ORCPT
+        id S235930AbhKQSug (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 Nov 2021 13:50:36 -0500
+Received: from mail-0301.mail-europe.com ([188.165.51.139]:58741 "EHLO
+        mail-0301.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240232AbhKQSuf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 Nov 2021 10:26:15 -0500
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47241C061570
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Nov 2021 07:23:17 -0800 (PST)
-Received: by mail-qt1-x833.google.com with SMTP id j17so2959755qtx.2
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Nov 2021 07:23:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=DkhOJxPGb96XhBNxvczEuJ4p+whH3mGtofLewGhWrCU=;
-        b=CZ31EWR+XwxW0/xWoMiTOiSKTtCExCVuhne9fr1EudmXxsn1OvwoXVHgT8VUKPyGET
-         XK0k+uxbcNNmPnhVYr9edn5ZV0GoM3BuRc1dTwu5lBAb8MdwpgJuJszqQhWlnrb8Meoy
-         MH02Ndi+ij0dlW7Ch+F6NFyiGHFt4B+CMtNA4l2TZmgSYLzKJesi8bieROXGOL3ymLmR
-         /Mn+TK7n6/xYvTXq/BDo0byBvpWJnpWVh00j55+5IJBeeyvEJrz3XL+UToXO9ciTA94f
-         FSmaOXp7YoazcVby7fhOaSZrsk9rZtwPr3ePG0Rhwi30klZMd46YG3yTu85DghfH/vCg
-         JPCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=DkhOJxPGb96XhBNxvczEuJ4p+whH3mGtofLewGhWrCU=;
-        b=Veu3x/GHUfc4pgPGf2BVxPLX6lhowcQgj1x4SoiJig4rD/2YR0xzUjqnFcrXTSMJQE
-         SR71lyU+4EZ0XDZ9jEnEGRWsQKd2rkoRgnmXsQXp9DUVtgV8QV9vfBgGPzxia/x/DT5l
-         cEcUGeHRKdrK+7i+PBYkof44vKROTqbaHLrAfQcpYWgc/0We3Ez1SK3t37xMeS9E4Bub
-         OTbOmYL1/0OhOPLuZIACDFZ17hWsgSLlU/qlLq84qdldguJ34UWQkshJD0DEKFDYFMLf
-         2j76f6SlyJFQWpAbp0xNokKXCtIUehtqlTAOPmVL4YoxZXWSnU3ZEVm66gEKLPuZydPR
-         gXdw==
-X-Gm-Message-State: AOAM533F/NsVFei0Wi7dKDpsKiuUqp5/eqbc2OLNnrGGa2mUUaWcbSt3
-        6WCZep/9n2qSVYO51qpLAPNbtq5BPKdD72vtMfQ=
-X-Google-Smtp-Source: ABdhPJyIYSVNlcgD2HRs3cOCyhXVvlT1S3xXZtYpB5HHec0yEfXEnqEpFf6o9vue95qjghkyLixB4sKR2ppBng4ucJI=
-X-Received: by 2002:ac8:5acb:: with SMTP id d11mr17851758qtd.109.1637162596425;
- Wed, 17 Nov 2021 07:23:16 -0800 (PST)
+        Wed, 17 Nov 2021 13:50:35 -0500
+Date:   Wed, 17 Nov 2021 18:47:31 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1637174852;
+        bh=HD/W+gyfJb37tDHDN2YwJ63ZhnnBg7Q8KnNp/DVt9Kc=;
+        h=Date:To:From:Reply-To:Subject:In-Reply-To:References:From;
+        b=G5Q68xGf1Vw+3Em/QTxeWnm44UNewgNhK3/23SaaFQEP8ba5oElcj08GZlynIkNY8
+         Zzeqr8ga7DS7m9TtjxsJVNF2bbJ0Z0EeSOnoWyVTarIVImxCfIIaupSN44Sdr+fvp4
+         RsYrqs1b6zaYSIoD7X3l2ElG5+OXnthz4FErgLuM=
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
+Reply-To: rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
+Subject: Re: rtw88: Guaranteed system freeze with RTL8821CE with RFE 2 type
+Message-ID: <9y_PDr3Fwwe-Tlg_OW2NgajfltnUS0Zflhoi19wd0p3OmpkAnqGqxuszx6ySZG9nBMg2JRGwnEgg59X1c0TFf6iqt951g3yqzSZ7CNDuXVQ=@protonmail.com>
+In-Reply-To: <Gm8GBswaSIZmUcurR4ygkbaFYfBiC8pIiBV5Ovz2GIorPykklbSraab7Z00LIX5pnfCJyWlI1-jUqnkl8NmxSuqfr-k_gYNhvWDg3kIkPkY=@protonmail.com>
+References: <vWuRjLpNOkVGXHNeCL6phN5YDcd6Oljm1WgEMO4vA9aufK8MxzN5itvDnRjPBWHZN0geAbRLAzgIj36kAiNtdHh5vg2RjUH_TzuqZ7WSYeE=@protonmail.com> <65c86fe7-f1f1-445f-40c2-25ceaa4e4fb6@lwfinger.net> <1jmF9EMZn2ywrHSGrNCzOUSAzllw9ox-Da2zfbSTnTULlX8Ha8F211TfKuxITBBtkfxiU_R0w7zUeFLdtDj4ejp6qPnCIhFj2U-rsCVNlMg=@protonmail.com> <Qg7Ae-IznoeEC_X2m_4XXKRlM-yT3O7dzdbZ0egHTsdEaA0uILKZ0uBymFMrN7aI38rz-ZTKSxTDUAU4tKJPIntXELdx9Rd0MIU5sSG_VCI=@protonmail.com> <ZJknGMd-LYMAOQNAoIsR9G59_Wlt9uYUPzzJ_v2p3W8kCQ_gIQ_ymF09TV83SN0h5Md0tyzlpIxTjCMkK88gXOkSI5UA_knH6RGUd4ITHrA=@protonmail.com> <d65a162e-9d0c-fff9-65e3-4553a1981ad3@lwfinger.net> <hXlLGR-ccu9ozKXl1rsCyt7jWfmH0ufgepYDXU9dkZUYJWDmwjflabUNuxh-XWDeey4GQRjaSmtSIEqFsY5mieunEOMCTawMpyFzW9dbA0A=@protonmail.com> <37f988a9-8966-3482-f0ad-812a8cecce00@lwfinger.net> <Gm8GBswaSIZmUcurR4ygkbaFYfBiC8pIiBV5Ovz2GIorPykklbSraab7Z00LIX5pnfCJyWlI1-jUqnkl8NmxSuqfr-k_gYNhvWDg3kIkPkY=@protonmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6214:cac:0:0:0:0 with HTTP; Wed, 17 Nov 2021 07:23:16
- -0800 (PST)
-Reply-To: fionahill.usa@hotmail.com
-From:   Fiona Hill <ivanroberti284@gmail.com>
-Date:   Wed, 17 Nov 2021 07:23:16 -0800
-Message-ID: <CAKp8dfqO_pj0xXUz2VUMGNadFNT2C09+iFprbyVWN_1KMyPTmQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.7 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-did you receive my message i send to you?
+=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original Me=
+ssage =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
+
+On Monday, June 7th, 2021 at 12:29 PM, rtl8821cerfe2 <rtl8821cerfe2@protonm=
+ail.com> wrote:
+
+> On Monday, June 7, 2021 5:40 AM, Larry Finger Larry.Finger@lwfinger.net w=
+rote:
+>
+> > I just push a patch from Realtek with the following commit message:
+> > 8821CE with ASPM cannot work properly on Protempo Ltd L116HTN6SPW. Add =
+a
+> > quirk to disable the cap.
+> > The reporter describes the symptom is that this module (driver) causes
+> > frequent freezes, randomly but usually within a few minutes of running
+> > (thus very soon after boot): screen display remains frozen, no response
+> > to either keyboard or mouse input. All I can do is to hold the power
+> > button to power off, then reboot.
+> > Please do a 'git pull' and try the new code. If you still have the prob=
+lem, the
+> > quirk may need to be extended for your system. Please run the command:
+> > sudo dmidecode > dmidecode.txt
+> > Then post that .txt file.
+> > Larry
+>
+> That patch seems to do the same thing as the rtw_pci option disable_aspm=
+=3D1. I tried that option, with and without disable_msi=3D1, and it didn't =
+help.
+>
+> I'm attaching dmidecode.txt.
+
+
+Recently I saw the instructions from Ping-Ke Shih in this Ubuntu bug report=
+:
+https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1927808
+and realised I never powered off the laptop when I tested disable_aspm=3D1.
+I always rebooted.
+
+So I added again "options rtw88_pci disable_aspm=3D1" in a file in /etc/mod=
+probe.d/
+and powered off the laptop. It seems to work. It's been 11 days with no fre=
+eze now.
+
+Here is my information for dmidecode again:
+System Information
+=09Manufacturer: HP
+=09Product Name: HP 250 G7 Notebook PC
