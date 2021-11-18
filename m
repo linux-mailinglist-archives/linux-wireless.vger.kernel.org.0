@@ -2,75 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37BCC4563A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 20:46:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87B09456401
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 21:24:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233464AbhKRTtY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Nov 2021 14:49:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32892 "EHLO
+        id S231754AbhKRU1U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Nov 2021 15:27:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233448AbhKRTtW (ORCPT
+        with ESMTP id S231934AbhKRU1U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Nov 2021 14:49:22 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8021C061574;
-        Thu, 18 Nov 2021 11:46:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=A0kpxeX3ux8Zs3KSSdktR+Xma0rIOEQOzFaFM8BnP6Q=;
-        t=1637264782; x=1638474382; b=WLtDSZd4KMnCQM2rCOr7Bgh66/jcy0qZRYucCmmolj7yEBK
-        1uupnbQQswUWGaEkfjDqswzcCvgrQd3S40nZ5ClLJMTfXob0wvC7D8dvxmXb/3A0Sx/nIpg3QGb+b
-        stWWufkR7LN51UJaBLLV88gPWA8+KAGE8yk3W/gDVmUvyX9SxRAhZ0YUvar+9sYLBKGRwZH7o++ZB
-        5T0YMPuG7iagZsxAYRjBUMb0jiQkaBYEoFhq0aydEttjT4bGwWfEDUVBJEfnejQbBB/Soff5XHkdY
-        Prltm/UqXDcX1cTwfqcNHSY+xANSL7KmOcRug3vFKIdB9OqijYqU4dpOPEfMsQww==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mnnML-00H8SF-9L;
-        Thu, 18 Nov 2021 20:46:13 +0100
-Message-ID: <c5d8c214b5df75b5b77450d71c7aec9f3bd97a67.camel@sipsolutions.net>
-Subject: Re: [PATCH] intersil: Use struct_group() for memcpy() region
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kees Cook <keescook@chromium.org>, Jouni Malinen <j@w1.fi>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Thu, 18 Nov 2021 15:27:20 -0500
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09046C06174A
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 12:24:20 -0800 (PST)
+Received: by mail-pg1-x52e.google.com with SMTP id 28so6449535pgq.8
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 12:24:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hMf1gD24yauyF3KjKslZWaFebiMpm2AYS7vHEx/kuE4=;
+        b=bryfhy3Nc6TJ17719nhq/O5sCfMOdnRykXJxQ9YepGvk5JLK83TDfVSPhR9ucyp16t
+         Zz03k6JIcai4+Wzo/DaNuqbLea/sCf/OlrjfbeLXeb9z8wNPvUyI5JVgjV0kiSsPP+HP
+         cmgNsUmIFo8pXtPaKiDbxDkdHRHNhDGoWAL48=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hMf1gD24yauyF3KjKslZWaFebiMpm2AYS7vHEx/kuE4=;
+        b=ZwIVsfoG88RiQ968ZrGKX5O3M9R+iHzSWm42bXtqKwII6TOnIsGX7aPy+i2oFsAguU
+         WAiK8vjrHWXyE1AsPFcU6BXdtlDiieVHzu6998r30dOCHZK+RjUV6v46S+ix0arP/rkm
+         0dUj+49+SxpZqzagR4FEe6s9OPw/wj7Jw0jup+dqG7jOANMg2yMiQLz+2MJWAsVWZenn
+         lUfWlGq2nEXUypZeC+TT94Kjm1dbA2GaGIKkS8acQyON6OuU1WnufOW04NgLjK1HtxtK
+         tp/I926iSXF4XRRjdqOhYSXmDHc+1P8NxuFSkPbhTWyyp1X2/Sq25BxkNpRadW6S+kxH
+         IBAg==
+X-Gm-Message-State: AOAM531hi/hkZ+Nzetl+kTKznMj5SHcGp6KytGWjJJX8ZJ69PyZCPlYK
+        Ag+tiDQcNmqY6J48jryBpIJPTA==
+X-Google-Smtp-Source: ABdhPJxKIqpIeEh5v/1ZnJSnPEj5hFi4bW/UQYeypi4NAfAxQoU+NV4DHrHpGVvINMedRZP5FQ1Glw==
+X-Received: by 2002:a05:6a00:230d:b0:49f:b8ad:ae23 with SMTP id h13-20020a056a00230d00b0049fb8adae23mr17761516pfh.80.1637267059566;
+        Thu, 18 Nov 2021 12:24:19 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id k2sm385162pfc.9.2021.11.18.12.24.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Nov 2021 12:24:19 -0800 (PST)
+From:   Kees Cook <keescook@chromium.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Kees Cook <keescook@chromium.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Allen Pais <allen.lkml@gmail.com>,
-        Romain Perier <romain.perier@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Vaibhav Gupta <vaibhavgupta40@gmail.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, linux-hardening@vger.kernel.org
-Date:   Thu, 18 Nov 2021 20:46:11 +0100
-In-Reply-To: <20211118184158.1284180-1-keescook@chromium.org>
-References: <20211118184158.1284180-1-keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
+Subject: [PATCH] ath11k: Use memset_startat() for clearing queue descriptors
+Date:   Thu, 18 Nov 2021 12:24:16 -0800
+Message-Id: <20211118202416.1286046-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3154; h=from:subject; bh=Z7ww62H2LCcWjbE7PDOS85aSn8pEtYcisufGb7NuKpM=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhlrZvPaK6H9IfHnqcjxvW6VHMgSx/+zSIUUBsGrBv LkmvTcGJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYZa2bwAKCRCJcvTf3G3AJl3SD/ 4pqvkd2z1L/ax9cY37TqcgdUqtA+JYMgutREFg1df1xVUyL5EsVAnS70cGNgGfY688VlzwH4K61UYN XCqte++H2Bfi2XOUmy5cG5cLVMno0eLpt9cMNt7URQR7oTrgQ8981uQHB0J6HEcrbv1jKBdX46EzXX s14R4t/cMGGV0DsqT4Aq+twUuWeaHNX7mYL7jDCEllw5asIe0TrZm6x7FDdAHhGGpGW9UgLPzyqdX/ GNEQZ0gNJv89AjPlYeCyP2YxFeNs4Q3KnWJ1EdOM5ArTTsbPOjYqcYK5UMjx18PWYTWB6IyAxzIJ/0 9ojSRaQbabNnn/DblIsUhEmzUcTUXAsGskbpnfa/Q16EMgyxF5r3s8I/hIL+oGzDnAqQSwW1mJyB8C xnX0gi3QzgR6kDHOFkrzrIJHO4b/lcsOZIHkN7RP/Mj34DgOmFcR9mWMBirn3tT9abIQIVbU83IC2c guZE+H0/Zh4BvIiDIsygyaOG9cb/yScax1g83Mr56XO7zGlNmjamPAtRX9Y+dpfik9P1rgJIWVBoZR 08QZpDXSW3nbYC71q4kGQQgeW5ZZnCRhJP6bwz721f5a5DSusAQmVtxpcpTFe6LgmtRAPiXgSfGGb7 wq1VyLZaDxM0twr/10q3AkOo3VYoyAUAh/MyPjd87n36C1EPX6DkRSugAVcQ==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2021-11-18 at 10:41 -0800, Kees Cook wrote:
-> 
->  	/* 802.11 */
-> -	__le16 frame_control; /* parts not used */
-> -	__le16 duration_id;
-> -	u8 addr1[ETH_ALEN];
-> -	u8 addr2[ETH_ALEN]; /* filled by firmware */
-> -	u8 addr3[ETH_ALEN];
-> -	__le16 seq_ctrl; /* filled by firmware */
-> +	struct_group(frame,
+In preparation for FORTIFY_SOURCE performing compile-time and run-time
+field bounds checking for memset(), avoid intentionally writing across
+neighboring fields.
 
-Arguably, that should be 'header' rather than 'frame' :)
+Use memset_startat() so memset() doesn't get confused about writing
+beyond the destination member that is intended to be the starting point
+of zeroing through the end of the struct. Additionally split up a later
+field-spanning memset() so that memset() can reason about the size.
 
-johannes
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ drivers/net/wireless/ath/ath11k/hal_rx.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.c b/drivers/net/wireless/ath/ath11k/hal_rx.c
+index 329c404cfa80..0e43e215c10a 100644
+--- a/drivers/net/wireless/ath/ath11k/hal_rx.c
++++ b/drivers/net/wireless/ath/ath11k/hal_rx.c
+@@ -29,8 +29,7 @@ static int ath11k_hal_reo_cmd_queue_stats(struct hal_tlv_hdr *tlv,
+ 		  FIELD_PREP(HAL_TLV_HDR_LEN, sizeof(*desc));
+ 
+ 	desc = (struct hal_reo_get_queue_stats *)tlv->value;
+-	memset(&desc->queue_addr_lo, 0,
+-	       (sizeof(*desc) - sizeof(struct hal_reo_cmd_hdr)));
++	memset_startat(desc, 0, queue_addr_lo);
+ 
+ 	desc->cmd.info0 &= ~HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED;
+ 	if (cmd->flag & HAL_REO_CMD_FLG_NEED_STATUS)
+@@ -62,8 +61,7 @@ static int ath11k_hal_reo_cmd_flush_cache(struct ath11k_hal *hal, struct hal_tlv
+ 		  FIELD_PREP(HAL_TLV_HDR_LEN, sizeof(*desc));
+ 
+ 	desc = (struct hal_reo_flush_cache *)tlv->value;
+-	memset(&desc->cache_addr_lo, 0,
+-	       (sizeof(*desc) - sizeof(struct hal_reo_cmd_hdr)));
++	memset_startat(desc, 0, cache_addr_lo);
+ 
+ 	desc->cmd.info0 &= ~HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED;
+ 	if (cmd->flag & HAL_REO_CMD_FLG_NEED_STATUS)
+@@ -101,8 +99,7 @@ static int ath11k_hal_reo_cmd_update_rx_queue(struct hal_tlv_hdr *tlv,
+ 		  FIELD_PREP(HAL_TLV_HDR_LEN, sizeof(*desc));
+ 
+ 	desc = (struct hal_reo_update_rx_queue *)tlv->value;
+-	memset(&desc->queue_addr_lo, 0,
+-	       (sizeof(*desc) - sizeof(struct hal_reo_cmd_hdr)));
++	memset_startat(desc, 0, queue_addr_lo);
+ 
+ 	desc->cmd.info0 &= ~HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED;
+ 	if (cmd->flag & HAL_REO_CMD_FLG_NEED_STATUS)
+@@ -764,15 +761,17 @@ void ath11k_hal_reo_qdesc_setup(void *vaddr, int tid, u32 ba_window_size,
+ 	 * size changes and also send WMI message to FW to change the REO
+ 	 * queue descriptor in Rx peer entry as part of dp_rx_tid_update.
+ 	 */
+-	memset(ext_desc, 0, 3 * sizeof(*ext_desc));
++	memset(ext_desc, 0, sizeof(*ext_desc));
+ 	ath11k_hal_reo_set_desc_hdr(&ext_desc->desc_hdr, HAL_DESC_REO_OWNED,
+ 				    HAL_DESC_REO_QUEUE_EXT_DESC,
+ 				    REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_1);
+ 	ext_desc++;
++	memset(ext_desc, 0, sizeof(*ext_desc));
+ 	ath11k_hal_reo_set_desc_hdr(&ext_desc->desc_hdr, HAL_DESC_REO_OWNED,
+ 				    HAL_DESC_REO_QUEUE_EXT_DESC,
+ 				    REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_2);
+ 	ext_desc++;
++	memset(ext_desc, 0, sizeof(*ext_desc));
+ 	ath11k_hal_reo_set_desc_hdr(&ext_desc->desc_hdr, HAL_DESC_REO_OWNED,
+ 				    HAL_DESC_REO_QUEUE_EXT_DESC,
+ 				    REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_3);
+-- 
+2.30.2
 
