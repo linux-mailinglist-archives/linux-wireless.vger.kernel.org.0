@@ -2,118 +2,332 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1DDE4560E8
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 17:46:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B2814560E2
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 17:46:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233706AbhKRQtW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Nov 2021 11:49:22 -0500
-Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.184]:44314 "EHLO
+        id S233687AbhKRQs7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Nov 2021 11:48:59 -0500
+Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.49]:54722 "EHLO
         dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233699AbhKRQtV (ORCPT
+        by vger.kernel.org with ESMTP id S233673AbhKRQs6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Nov 2021 11:49:21 -0500
+        Thu, 18 Nov 2021 11:48:58 -0500
 X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.167])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id EB0902A0067
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 16:46:09 +0000 (UTC)
+Received: from mx1-us1.ppe-hosted.com (unknown [10.7.64.218])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 158C02007B
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 16:45:57 +0000 (UTC)
 Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id B01ED240082
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 16:46:09 +0000 (UTC)
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id DF6BB840084
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 16:45:56 +0000 (UTC)
 Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 6859613C2B5;
+        by mail3.candelatech.com (Postfix) with ESMTP id 8E67813C2B7;
         Thu, 18 Nov 2021 08:45:56 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 6859613C2B5
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8E67813C2B7
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
         s=default; t=1637253956;
-        bh=vArxxPNXbGY3joL7CpHeqV0M9Qx2T/2xrZuPKIHS26o=;
+        bh=l7RwTlsYayibhWDs1pvddF96N5gTN/Hze7K5gewv2eg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rl7eumIGGBfAHMn8C9lp2qB+xmVlRQESgPD5SrcJrm0FJI/ZTyYsiKKY5XepnEOzw
-         9dXHEzfd0wRHcIkhgjVXzQs7LQel29CV1Brs51VLWLYidLB4az3UHFpkGujgOLzgP+
-         dV872EJYnaPaBf2KKuETNkqN7mH53iusbP7ald3w=
+        b=clhE9vuApdGaOybHCqHp8cz50nKER26c9g8YIzn6YXgLGUcK3/4GLhruMjBYUdIIo
+         lXJQvCSnwJkFf/xk+NDfvd/8Fufmu5XrR7pGnEzRMA5QAInWywuCB8P9qcLmykAyY1
+         7U9XOntuy5NNT9unOisystJRNutlbWZ6RtL45e6Y=
 From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 5/8] mt76: mt7915: txfree status to show txcount instead of latency
-Date:   Thu, 18 Nov 2021 08:45:46 -0800
-Message-Id: <20211118164549.3863-5-greearb@candelatech.com>
+Subject: [PATCH 6/8] mt76: mt7915: report tx-retries
+Date:   Thu, 18 Nov 2021 08:45:47 -0800
+Message-Id: <20211118164549.3863-6-greearb@candelatech.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20211118164549.3863-1-greearb@candelatech.com>
 References: <20211118164549.3863-1-greearb@candelatech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1637253970-LBfaXo9yw-DN
+X-MDID: 1637253957-CtvoOFaU0j6L
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ben Greear <greearb@candelatech.com>
 
-Latency is not obviously that useful, but txcount can let us deduce
-retries, which may be more interesting.
+mac80211 stack will only report tx-status for skb claiming to be ampdu heads,
+so lie a bit in mt7915 and set the flag so that mac80211 will record status
+for each skb.
+
+mt7915 appears to report retry status on an individual per-skb manner,
+so that method above seems to work.
+
+Re-constitute the txinfo status rate info so that the rix and flags
+is also at least close to correct.  No direct way to report HE
+rates that way, so mac80211 might could use some tweaking in
+the ieee80211_tx_status_ext to take both info and status->rate
+into account.
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 3 +++
- drivers/net/wireless/mediatek/mt76/mt7915/mac.h  | 8 +++++---
- drivers/net/wireless/mediatek/mt76/mt7915/regs.h | 8 ++++++++
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c |  4 +
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  5 +
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |  1 +
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 93 ++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7915/mac.h   |  4 +-
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |  4 +
+ drivers/net/wireless/mediatek/mt76/tx.c       |  6 +-
+ 7 files changed, 110 insertions(+), 7 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 62807dc311c1..a385c1850c61 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1517,6 +1517,10 @@ void mt76_ethtool_worker(struct mt76_ethtool_worker_info *wi,
+ 
+ 	wi->sta_count++;
+ 
++	data[ei++] += stats->tx_mpdu_attempts;
++	data[ei++] += stats->tx_mpdu_fail;
++	data[ei++] += stats->tx_mpdu_retry;
++	data[ei++] += stats->tx_mpdu_ok;
+ 	data[ei++] += stats->tx_mode[MT_PHY_TYPE_CCK];
+ 	data[ei++] += stats->tx_mode[MT_PHY_TYPE_OFDM];
+ 	data[ei++] += stats->tx_mode[MT_PHY_TYPE_HT];
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 7234703b3c60..5a431b39d5c1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -785,6 +785,11 @@ enum mt76_phy_type {
+ };
+ 
+ struct mt76_sta_stats {
++	unsigned long tx_mpdu_attempts; /* counting any retries */
++	unsigned long tx_mpdu_fail; /* frames that failed even after retry */
++	unsigned long tx_mpdu_ok; /* frames that succeeded,
++				     perhaps after retry */
++	unsigned long tx_mpdu_retry; /* number of times frames were retried */
+ 	u64 tx_mode[__MT_PHY_TYPE_HE_MAX];
+ 	u64 tx_bw[4];		/* 20, 40, 80, 160 */
+ 	u64 tx_nss[4];		/* 1, 2, 3, 4 */
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 0c41ea23d6b3..3b35ea245b33 100644
+index 3b35ea245b33..90aa62c64f3e 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -401,6 +401,9 @@ static void mt7915_mac_init(struct mt7915_dev *dev)
- 	/* enable hardware de-agg */
- 	mt76_set(dev, MT_MDP_DCR0, MT_MDP_DCR0_DAMSDU_EN);
+@@ -311,6 +311,7 @@ mt7915_init_wiphy(struct ieee80211_hw *hw)
+ 	struct wiphy *wiphy = hw->wiphy;
  
-+	/* disable Tx latency report to enable Tx count in txfree path */
-+	mt76_clear(dev, MT_PLE_HOST_RPT0, MT_PLE_HOST_RPT0_TX_LATENCY);
+ 	hw->queues = 4;
++	hw->max_report_rates = 1;
+ 	hw->max_rx_aggregation_subframes = IEEE80211_MAX_AMPDU_BUF;
+ 	hw->max_tx_aggregation_subframes = IEEE80211_MAX_AMPDU_BUF;
+ 	hw->netdev_features = NETIF_F_RXCSUM;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index e37e6b05c7a4..4f565a77770c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1246,17 +1246,22 @@ mt7915_txp_skb_unmap(struct mt76_dev *dev, struct mt76_txwi_cache *t)
+ 
+ static void
+ mt7915_txwi_free(struct mt7915_dev *dev, struct mt76_txwi_cache *t,
+-		 struct ieee80211_sta *sta, struct list_head *free_list)
++		 struct ieee80211_sta *sta, struct list_head *free_list,
++		 u32 tx_cnt, u32 tx_status, u32 ampdu)
+ {
+ 	struct mt76_dev *mdev = &dev->mt76;
+ 	struct mt76_wcid *wcid;
+ 	__le32 *txwi;
+ 	u16 wcid_idx;
++	struct ieee80211_tx_info *info;
++	struct ieee80211_tx_rate *rate;
+ 
+ 	mt7915_txp_skb_unmap(mdev, t);
+ 	if (!t->skb)
+ 		goto out;
+ 
++	rcu_read_lock(); /* protect wcid access */
 +
- 	for (i = 0; i < MT7915_WTBL_SIZE; i++)
- 		mt7915_mac_wtbl_update(dev, i,
- 				       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+ 	txwi = (__le32 *)mt76_get_txwi_ptr(mdev, t);
+ 	if (sta) {
+ 		wcid = (struct mt76_wcid *)sta->drv_priv;
+@@ -1266,6 +1271,75 @@ mt7915_txwi_free(struct mt7915_dev *dev, struct mt76_txwi_cache *t,
+ 			mt7915_tx_check_aggr(sta, txwi);
+ 	} else {
+ 		wcid_idx = FIELD_GET(MT_TXD1_WLAN_IDX, le32_to_cpu(txwi[1]));
++		wcid = rcu_dereference(mdev->wcid[wcid_idx]);
++	}
++
++	info = IEEE80211_SKB_CB(t->skb);
++
++	/* Cannot clear all of info->status, we need the driver private
++	 * status intact.
++	 */
++	info->status.is_valid_ack_signal = 0;
++
++	rate = &info->status.rates[0];
++	rate->idx = -1; /* will over-write below if we found wcid */
++	info->status.rates[1].idx = -1; /* terminate rate list */
++
++	/* force TX_STAT_AMPDU to be set, or mac80211 will ignore status */
++	if (ampdu || (info->flags & IEEE80211_TX_CTL_AMPDU)) {
++		info->flags |= IEEE80211_TX_STAT_AMPDU | IEEE80211_TX_CTL_AMPDU;
++		info->status.ampdu_len = 1;
++	}
++
++	/* update info status based on cached wcid rate info since
++	 * txfree path doesn't give us a lot of info.
++	 */
++	if (wcid) {
++		struct mt7915_sta *msta = container_of(wcid, struct mt7915_sta, wcid);
++		struct mt76_sta_stats *stats = &msta->stats;
++
++		if (wcid->rate.flags & RATE_INFO_FLAGS_MCS) {
++			rate->flags |= IEEE80211_TX_RC_MCS;
++			rate->idx = wcid->rate.mcs + wcid->rate.nss * 8;
++		} else if (wcid->rate.flags & RATE_INFO_FLAGS_VHT_MCS) {
++			rate->flags |= IEEE80211_TX_RC_VHT_MCS;
++			rate->idx = (wcid->rate.nss << 4) | wcid->rate.mcs;
++		} else if (wcid->rate.flags & RATE_INFO_FLAGS_HE_MCS) {
++			rate->idx = (wcid->rate.nss << 4) | wcid->rate.mcs;
++		} else {
++			rate->idx = wcid->rate.mcs;
++		}
++
++		switch (wcid->rate.bw) {
++		case RATE_INFO_BW_160:
++			rate->flags |= IEEE80211_TX_RC_160_MHZ_WIDTH;
++			break;
++		case RATE_INFO_BW_80:
++			rate->flags |= IEEE80211_TX_RC_80_MHZ_WIDTH;
++			break;
++		case RATE_INFO_BW_40:
++			rate->flags |= IEEE80211_TX_RC_40_MHZ_WIDTH;
++			break;
++		}
++
++		stats->tx_mpdu_attempts += tx_cnt;
++		stats->tx_mpdu_retry += tx_cnt - 1;
++
++		if (tx_status == 0)
++			stats->tx_mpdu_ok++;
++		else
++			stats->tx_mpdu_fail++;
++	}
++
++	rcu_read_unlock();
++
++	/* Apply the values that this txfree path reports */
++	rate->count = tx_cnt;
++	if (tx_status == 0) {
++		info->flags |= IEEE80211_TX_STAT_ACK;
++		info->status.ampdu_ack_len = 1;
++	} else {
++		info->flags &= ~IEEE80211_TX_STAT_ACK;
+ 	}
+ 
+ 	__mt76_tx_complete_skb(mdev, wcid_idx, t->skb, free_list);
+@@ -1285,7 +1359,8 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, struct sk_buff *skb)
+ 	struct ieee80211_sta *sta = NULL;
+ 	LIST_HEAD(free_list);
+ 	struct sk_buff *tmp;
+-	u8 i, count;
++	u8 i;
++	u16 count;
+ 	bool wake = false;
+ 
+ 	/* clean DMA queues and unmap buffers first */
+@@ -1301,9 +1376,12 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, struct sk_buff *skb)
+ 	 * to the time ack is received or dropped by hw (air + hw queue time).
+ 	 * Should avoid accessing WTBL to get Tx airtime, and use it instead.
+ 	 */
++	/* free->ctrl is high u16 of first DW in the txfree struct */
+ 	count = FIELD_GET(MT_TX_FREE_MSDU_CNT, le16_to_cpu(free->ctrl));
+ 	for (i = 0; i < count; i++) {
+-		u32 msdu, info = le32_to_cpu(free->info[i]);
++		u32 msdu, tx_cnt, tx_status;
++		u32 info = le32_to_cpu(free->info[i]); /* DW3+ */
++		u32 ampdu;
+ 
+ 		/*
+ 		 * 1'b1: new wcid pair.
+@@ -1334,7 +1412,12 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, struct sk_buff *skb)
+ 		if (!txwi)
+ 			continue;
+ 
+-		mt7915_txwi_free(dev, txwi, sta, &free_list);
++		tx_cnt = FIELD_GET(MT_TX_FREE_TXCNT, info);
++		/* 0 = success, 1 dropped-by-hw, 2 dropped-by-cpu */
++		tx_status = FIELD_GET(MT_TX_FREE_STATUS, info);
++		ampdu = FIELD_GET(MT_TX_FREE_HEAD_OF_PAGE, info);
++
++		mt7915_txwi_free(dev, txwi, sta, &free_list, tx_cnt, tx_status, ampdu);
+ 	}
+ 
+ 	mt7915_mac_sta_poll(dev);
+@@ -1839,7 +1922,7 @@ void mt7915_tx_token_put(struct mt7915_dev *dev)
+ 
+ 	spin_lock_bh(&dev->mt76.token_lock);
+ 	idr_for_each_entry(&dev->mt76.token, txwi, id) {
+-		mt7915_txwi_free(dev, txwi, NULL, NULL);
++		mt7915_txwi_free(dev, txwi, NULL, NULL, 0, 1, 0);
+ 		dev->mt76.token_count--;
+ 	}
+ 	spin_unlock_bh(&dev->mt76.token_lock);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
-index b66e740832e4..4ba5574cc6f3 100644
+index 4ba5574cc6f3..1b08bbe769c4 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
-@@ -305,13 +305,15 @@ struct mt7915_tx_free {
+@@ -300,7 +300,7 @@ struct mt7915_tx_free {
+ 	__le16 ctrl;
+ 	u8 txd_cnt;
+ 	u8 rsv[3];
+-	__le32 info[];
++	__le32 info[]; /* DW3+ */
+ } __packed __aligned(4);
  
  #define MT_TX_FREE_MSDU_CNT		GENMASK(9, 0)
- #define MT_TX_FREE_WLAN_ID		GENMASK(23, 14)
-+/* when configured for txfree latency mode.  See MT_PLE_HOST_RPT0_TX_LATENCY
-+ * Not enabled by default now.
-+ */
- #define MT_TX_FREE_LATENCY		GENMASK(12, 0)
--/* 0: success, others: dropped */
-+/* when configured for txcount mode.  See MT_PLE_HOST_RPT0_TX_LATENCY. */
-+#define MT_TX_FREE_TXCNT		GENMASK(12, 0)
+@@ -312,6 +312,8 @@ struct mt7915_tx_free {
+ /* when configured for txcount mode.  See MT_PLE_HOST_RPT0_TX_LATENCY. */
+ #define MT_TX_FREE_TXCNT		GENMASK(12, 0)
  #define MT_TX_FREE_STATUS		GENMASK(14, 13)
++/* 0:  not MPDU, 1:  MSDU is head pkt of TXD page (MPDU) */
++#define MT_TX_FREE_HEAD_OF_PAGE		BIT(15)
  #define MT_TX_FREE_MSDU_ID		GENMASK(30, 16)
  #define MT_TX_FREE_PAIR			BIT(31)
--/* will support this field in further revision */
--#define MT_TX_FREE_RATE			GENMASK(13, 0)
  
- #define MT_TXS0_FIXED_RATE		BIT(31)
- #define MT_TXS0_BW			GENMASK(30, 29)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 59693535b098..d23c669cc933 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -22,6 +22,14 @@
- #define MT_PLE_BASE			0x8000
- #define MT_PLE(ofs)			(MT_PLE_BASE + (ofs))
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 057ab27b7083..3d702dc899ba 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1140,6 +1140,10 @@ static const char mt7915_gstrings_stats[][ETH_GSTRING_LEN] = {
+ 	"rx_ba_cnt",
  
-+/* Modify whether txfree struct returns latency or txcount. */
-+#define MT_PLE_HOST_RPT0               MT_PLE(0x030)
-+#define MT_PLE_HOST_RPT0_TX_LATENCY    BIT(3)
-+
-+#define MT_PLE_FL_Q0_CTRL		MT_PLE(0x1b0)
-+#define MT_PLE_FL_Q1_CTRL		MT_PLE(0x1b4)
-+#define MT_PLE_FL_Q2_CTRL		MT_PLE(0x1b8)
-+
- #define MT_FL_Q_EMPTY			0x0b0
- #define MT_FL_Q0_CTRL			0x1b0
- #define MT_FL_Q2_CTRL			0x1b8
+ 	/* per vif counters */
++	"v_tx_mpdu_attempts", /* counting any retries */
++	"v_tx_mpdu_fail",  /* frames that failed even after retry */
++	"v_tx_mpdu_retry", /* number of times frames were retried */
++	"v_tx_mpdu_ok", /* frames that succeeded, perhaps after retry */
+ 	"v_tx_mode_cck",
+ 	"v_tx_mode_ofdm",
+ 	"v_tx_mode_ht",
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index 11719ef034d8..be3227008f57 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -229,6 +229,7 @@ void __mt76_tx_complete_skb(struct mt76_dev *dev, u16 wcid_idx, struct sk_buff *
+ 	struct ieee80211_tx_status status = {
+ 		.skb = skb,
+ 		.free_list = free_list,
++		.info = IEEE80211_SKB_CB(skb),
+ 	};
+ 	struct mt76_wcid *wcid = NULL;
+ 	struct ieee80211_hw *hw;
+@@ -236,8 +237,11 @@ void __mt76_tx_complete_skb(struct mt76_dev *dev, u16 wcid_idx, struct sk_buff *
+ 
+ 	rcu_read_lock();
+ 
+-	if (wcid_idx < ARRAY_SIZE(dev->wcid))
++	if (wcid_idx < ARRAY_SIZE(dev->wcid)) {
+ 		wcid = rcu_dereference(dev->wcid[wcid_idx]);
++		if (wcid)
++			status.rate = &wcid->rate;
++	}
+ 
+ 	mt76_tx_check_non_aql(dev, wcid, skb);
+ 
 -- 
 2.20.1
 
