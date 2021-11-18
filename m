@@ -2,98 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 237B9455DE0
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 15:21:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21436455F48
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 16:21:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232711AbhKROYb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Nov 2021 09:24:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45364 "EHLO mail.kernel.org"
+        id S229607AbhKRPYw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Nov 2021 10:24:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33820 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232554AbhKROYa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Nov 2021 09:24:30 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9D2B8610FB;
-        Thu, 18 Nov 2021 14:21:27 +0000 (UTC)
+        id S230098AbhKRPYv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 18 Nov 2021 10:24:51 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7F47F6126A;
+        Thu, 18 Nov 2021 15:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637245290;
-        bh=fWB+uwrmZcbW6kM5Y415Yic83y10eXZ6Qv7v9+poSe0=;
+        s=k20201202; t=1637248911;
+        bh=c2KW2ZsaiT2g1dXISSkTH5QLxnq5gzpfc+CH+hx6Pn4=;
         h=From:To:Cc:Subject:Date:From;
-        b=j7+frcX8se6gNR5EoEgrgNfpS9egBAE9np97ul75Q9HNWcqr3Yeadz1B4qgpeMgo9
-         Eqt6DOgHVFqdA77CGHEOW3vRtlxGgst94oWTv03nq85nfuK0+sbx4OI8zLreXIhBWm
-         eo2ynjD94dxiC88outwfZ/TEBuaNOshAj02mGe9ZgRKWxJJ4XUaSCLqt/x0YkYSz0g
-         nosDxzbHSKtzELI6GMmvJx9GIKBayxejrh+o6vcmPckAR3SWvJQYFq14fKy+N6tWNZ
-         vxk381jVpNiEtw3qzh1LYvCZ04tlUj4F7+/ra0OZAkBTbL88He0OpG+e4KCpbzEeIr
-         8IpZ73s+g1afw==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, kernel test robot <lkp@intel.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Yaara Baruch <yaara.baruch@intel.com>,
-        Matti Gottlieb <matti.gottlieb@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: [PATCH] [v3] iwlwifi: pcie: fix constant-conversion warning
-Date:   Thu, 18 Nov 2021 15:21:02 +0100
-Message-Id: <20211118142124.526901-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
+        b=Rrx1sbn+YbIUnpAdT5yztHIeAoeenKzdC52pBfLOLhgim0O1nrdX//azRwbJbc0de
+         uFUL/njM7CAO4l79LubKJZJ8w0LFigh90ams9DmnqmnhotCm1ONuplWPlZzP32XvVS
+         kDvIlnhAHWp8vBCVxX4FtxnAfC257a22oEwM9vvuDgjLMpmBdoy+011SqQ3vPPApdC
+         gOuXQis/AM4xgH1lAQAX5lCJQsfMXpkhZZ3VYxbJPzPruPUfs3vCEz1YmIIuavg4AN
+         otVqhtQjPaqZQHtMCWKBMq4Zv/2jsl23J21orRhFjSorGlhsWJQkasoSof/K26T/Ng
+         UXoej/JKNx/eQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com
+Subject: [PATCH] mt76: connac: remove PHY_MODE_AX_6G configuration in mt76_connac_get_phy_mode
+Date:   Thu, 18 Nov 2021 16:21:43 +0100
+Message-Id: <701b3fc0b1f398061cfc6ff9a131aeacc0e3681a.1637248657.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Get rid of PHY_MODE_AX_6G configuration in mt76_connac_get_phy_mode
+routine since mode is an u8 and PHY_MODE_AX_6G is set in phymode_ext
+field in mt76_connac_bss_basic_tlv.
 
-gcc-11 points out a potential issue with integer overflow when
-the iwl_dev_info_table[] array is empty:
-
-drivers/net/wireless/intel/iwlwifi/pcie/drv.c:1344:42: error: implicit conversion from 'unsigned long' to 'int' changes value from 18446744073709551615 to -1 [-Werror,-Wconstant-conversion]
-        for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
-               ~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
-
-This is still harmless, as the loop correctly terminates, but adding
-an extra range check makes that obvious to both readers and to the
-compiler.
-
-Fixes: 3f7320428fa4 ("iwlwifi: pcie: simplify iwl_pci_find_dev_info()")
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-Changes in v3:
-- make it actually work with gcc-11
-- fix commit message s/clang/gcc-11/
-
-Changes in v2:
-- replace int cast with a range check
+This patch must be applied on top of the following patch:
+"mt76: connac: fix a theoretical NULL pointer dereference in mt76_connac_get_phy_mode"
+https://lore.kernel.org/linux-wireless/d163b59d6628215f8f5889ef2c21a91c4d50d398.1637239699.git.lorenzo@kernel.org/T/#u
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 10 +++-------
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h |  3 ++-
+ 2 files changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index c574f041f096..395e328c6a07 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1339,9 +1339,13 @@ iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
- 		      u16 mac_type, u8 mac_step,
- 		      u16 rf_type, u8 cdb, u8 rf_id, u8 no_160, u8 cores)
- {
-+	int num_devices = ARRAY_SIZE(iwl_dev_info_table);
- 	int i;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index bcb596664b3e..eba827f99790 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1190,12 +1190,8 @@ mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		if (vht_cap->vht_supported)
+ 			mode |= PHY_MODE_AC;
  
--	for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
-+	if (!num_devices)
-+		return NULL;
+-		if (he_cap && he_cap->has_he) {
+-			if (band == NL80211_BAND_6GHZ)
+-				mode |= PHY_MODE_AX_6G;
+-			else
+-				mode |= PHY_MODE_AX_5G;
+-		}
++		if (he_cap && he_cap->has_he && band == NL80211_BAND_5GHZ)
++			mode |= PHY_MODE_AX_5G;
+ 	}
+ 
+ 	return mode;
+@@ -1318,7 +1314,7 @@ int mt76_connac_mcu_uni_add_bss(struct mt76_phy *phy,
+ 	idx = mvif->omac_idx > EXT_BSSID_START ? HW_BSSID_0 : mvif->omac_idx;
+ 	basic_req.basic.hw_bss_idx = idx;
+ 	if (band == NL80211_BAND_6GHZ)
+-		basic_req.basic.phymode_ext = BIT(0);
++		basic_req.basic.phymode_ext = PHY_MODE_AX_6G;
+ 
+ 	basic_phy = mt76_connac_get_phy_mode_v2(phy, vif, band, NULL);
+ 	basic_req.basic.nonht_basic_phy = cpu_to_le16(basic_phy);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 4e2c9dafd776..388bfcef3b14 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -423,7 +423,8 @@ enum {
+ #define PHY_MODE_AC				BIT(5)
+ #define PHY_MODE_AX_24G				BIT(6)
+ #define PHY_MODE_AX_5G				BIT(7)
+-#define PHY_MODE_AX_6G				BIT(8)
 +
-+	for (i = num_devices - 1; i >= 0; i--) {
- 		const struct iwl_dev_info *dev_info = &iwl_dev_info_table[i];
++#define PHY_MODE_AX_6G				BIT(0) /* phymode_ext */
  
- 		if (dev_info->device != (u16)IWL_CFG_ANY &&
+ #define MODE_CCK				BIT(0)
+ #define MODE_OFDM				BIT(1)
 -- 
-2.29.2
+2.31.1
 
