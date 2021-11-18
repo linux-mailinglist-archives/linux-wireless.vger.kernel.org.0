@@ -2,121 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D899F455F99
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 16:32:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91165456011
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 17:04:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232415AbhKRPfw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Nov 2021 10:35:52 -0500
-Received: from m43-7.mailgun.net ([69.72.43.7]:23752 "EHLO m43-7.mailgun.net"
+        id S232799AbhKRQHG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Nov 2021 11:07:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44332 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232226AbhKRPfv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Nov 2021 10:35:51 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637249571; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=NgvtXY9KWVGF6KT9hm449US8KRw0C+HqpFgweiRfv2s=; b=MaGDI9i8reEvH9s+JymOrC0L5QE9w/E5jNfmThVJgOoRBfRi+hGGmE/WvXzKrFnTFD5kzdkM
- I3aayRpFAA+6ovEy7q5fLpzzdLhhWk17IZ3i2JNFaX8LWC1CbBWjW+kclJDfj41PUZT52Ty3
- ucHHd61JaljR0ZP5qcW98XV5YFY=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 61967222638a2f4d61428a62 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 18 Nov 2021 15:32:50
- GMT
-Sender: akolli=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7662AC4360C; Thu, 18 Nov 2021 15:32:49 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from akolli-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: akolli)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BA322C4338F;
-        Thu, 18 Nov 2021 15:32:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org BA322C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Anilkumar Kolli <akolli@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Anilkumar Kolli <akolli@codeaurora.org>
-Subject: [PATCH] ath11k: Use host CE parameters for CE interrupts configuration
-Date:   Thu, 18 Nov 2021 21:02:38 +0530
-Message-Id: <1637249558-12793-1-git-send-email-akolli@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S229936AbhKRQHG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 18 Nov 2021 11:07:06 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1BD2B613A3;
+        Thu, 18 Nov 2021 16:04:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1637251445;
+        bh=oa7oSmJxHRoFc+bzoJMwa3+/zIjqvCBcVLfQMRXh6d4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cepdl9GxzCeJczoIb9omidGHLGmWsBUuiq31lUe/OvdnSh1CiOuhPyx/W6S+8szGJ
+         ZrCUzLyrcCNXtlhzWndtlnFyDq9nEmdztk2YN1fdtJuDzG12UU/W1PpVHP1cTYIgs+
+         InUTz28W7wy7dd9i7Zc/v7eQu+kIAozGh+mqyTFT12aEZpH+U9mbBg0TPd9Fcr4SSK
+         z8sPG4htZ+grxKcOMVB6OtNUd43RKijEBU/oHsz9cBsDVHAjoS9ClDOdqCcKWBKoEG
+         8MMWvB+K2MhSwiRsKtMnsafQQlm7f1iDRM9sfCj5hFgmEryQcpo37BYfP7PRVaAfo6
+         aYD6dXP1Jeq4A==
+Date:   Thu, 18 Nov 2021 09:03:59 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        kernel test robot <lkp@intel.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Yaara Baruch <yaara.baruch@intel.com>,
+        Matti Gottlieb <matti.gottlieb@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] [v3] iwlwifi: pcie: fix constant-conversion warning
+Message-ID: <YZZ5b0FoppEBRcdL@archlinux-ax161>
+References: <20211118142124.526901-1-arnd@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211118142124.526901-1-arnd@kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-CE interrupt configuration uses host ce parameters to assign/free
-interrupts. Use host ce parameters to enable/disable interrupts.
-This patch fixes below BUG,
+On Thu, Nov 18, 2021 at 03:21:02PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> gcc-11 points out a potential issue with integer overflow when
+> the iwl_dev_info_table[] array is empty:
+> 
+> drivers/net/wireless/intel/iwlwifi/pcie/drv.c:1344:42: error: implicit conversion from 'unsigned long' to 'int' changes value from 18446744073709551615 to -1 [-Werror,-Wconstant-conversion]
+>         for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
+>                ~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
 
-BUG: KASAN: global-out-of-bounds in 0xffffffbffdfb035c at addr
-ffffffbffde6eeac
- Read of size 4 by task kworker/u8:2/132
- Address belongs to variable ath11k_core_qmi_firmware_ready+0x1b0/0x5bc [ath11k]
+For what it's worth, I do see this warning with Clang when both
+CONFIG_IWLDVM and CONFIG_IWLMVM are disabled and looking through the GCC
+warning docs [1], I do not see a -Wconstant-conversion option? Maybe
+there is another warning that is similar but that warning right there
+appears to have come from clang, as it matches mine exactly.
 
-OOB is due to ath11k_ahb_ce_irqs_enable() iterates ce_count(which is 12)
-times and accessing 12th element in target_ce_config
-(which has only 11 elements) from ath11k_ahb_ce_irq_enable().
+drivers/net/wireless/intel/iwlwifi/pcie/drv.c:1344:42: error: implicit conversion from 'unsigned long' to 'int' changes value from 18446744073709551615 to -1 [-Werror,-Wconstant-conversion]
+        for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
+               ~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+1 error generated.
 
-With this change host ce configs are used to enable/disable interrupts.
+[1]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-00471-QCAHKSWPL_SILICONZ-1
+> This is still harmless, as the loop correctly terminates, but adding
+> an extra range check makes that obvious to both readers and to the
+> compiler.
+> 
+> Fixes: 3f7320428fa4 ("iwlwifi: pcie: simplify iwl_pci_find_dev_info()")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Cc: Nick Desaulniers <ndesaulniers@google.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Fixes: 967c1d1131fa ("ath11k: move target ce configs to hw_params")
+Regardless of above, this resolves the warning for clang.
 
-Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/ahb.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 8c9c781afc3e..096c502cce38 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -206,13 +206,13 @@ static void ath11k_ahb_clearbit32(struct ath11k_base *ab, u8 bit, u32 offset)
- 
- static void ath11k_ahb_ce_irq_enable(struct ath11k_base *ab, u16 ce_id)
- {
--	const struct ce_pipe_config *ce_config;
-+	const struct ce_attr *ce_attr;
- 
--	ce_config = &ab->hw_params.target_ce_config[ce_id];
--	if (__le32_to_cpu(ce_config->pipedir) & PIPEDIR_OUT)
-+	ce_attr = &ab->hw_params.host_ce_config[ce_id];
-+	if (ce_attr->src_nentries)
- 		ath11k_ahb_setbit32(ab, ce_id, CE_HOST_IE_ADDRESS);
- 
--	if (__le32_to_cpu(ce_config->pipedir) & PIPEDIR_IN) {
-+	if (ce_attr->dest_nentries) {
- 		ath11k_ahb_setbit32(ab, ce_id, CE_HOST_IE_2_ADDRESS);
- 		ath11k_ahb_setbit32(ab, ce_id + CE_HOST_IE_3_SHIFT,
- 				    CE_HOST_IE_3_ADDRESS);
-@@ -221,13 +221,13 @@ static void ath11k_ahb_ce_irq_enable(struct ath11k_base *ab, u16 ce_id)
- 
- static void ath11k_ahb_ce_irq_disable(struct ath11k_base *ab, u16 ce_id)
- {
--	const struct ce_pipe_config *ce_config;
-+	const struct ce_attr *ce_attr;
- 
--	ce_config = &ab->hw_params.target_ce_config[ce_id];
--	if (__le32_to_cpu(ce_config->pipedir) & PIPEDIR_OUT)
-+	ce_attr = &ab->hw_params.host_ce_config[ce_id];
-+	if (ce_attr->src_nentries)
- 		ath11k_ahb_clearbit32(ab, ce_id, CE_HOST_IE_ADDRESS);
- 
--	if (__le32_to_cpu(ce_config->pipedir) & PIPEDIR_IN) {
-+	if (ce_attr->dest_nentries) {
- 		ath11k_ahb_clearbit32(ab, ce_id, CE_HOST_IE_2_ADDRESS);
- 		ath11k_ahb_clearbit32(ab, ce_id + CE_HOST_IE_3_SHIFT,
- 				      CE_HOST_IE_3_ADDRESS);
--- 
-2.7.4
-
+> ---
+> Changes in v3:
+> - make it actually work with gcc-11
+> - fix commit message s/clang/gcc-11/
+> 
+> Changes in v2:
+> - replace int cast with a range check
+> ---
+>  drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> index c574f041f096..395e328c6a07 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> @@ -1339,9 +1339,13 @@ iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
+>  		      u16 mac_type, u8 mac_step,
+>  		      u16 rf_type, u8 cdb, u8 rf_id, u8 no_160, u8 cores)
+>  {
+> +	int num_devices = ARRAY_SIZE(iwl_dev_info_table);
+>  	int i;
+>  
+> -	for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
+> +	if (!num_devices)
+> +		return NULL;
+> +
+> +	for (i = num_devices - 1; i >= 0; i--) {
+>  		const struct iwl_dev_info *dev_info = &iwl_dev_info_table[i];
+>  
+>  		if (dev_info->device != (u16)IWL_CFG_ANY &&
+> -- 
+> 2.29.2
+> 
