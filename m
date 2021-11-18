@@ -2,69 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18A1145627C
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 19:37:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EC504562A0
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 19:41:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233662AbhKRSkE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Nov 2021 13:40:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45126 "EHLO
+        id S233694AbhKRSoH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Nov 2021 13:44:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233492AbhKRSkD (ORCPT
+        with ESMTP id S233534AbhKRSoG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Nov 2021 13:40:03 -0500
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60321C061748
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 10:37:03 -0800 (PST)
-Received: by mail-pg1-x531.google.com with SMTP id r5so6194064pgi.6
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 10:37:03 -0800 (PST)
+        Thu, 18 Nov 2021 13:44:06 -0500
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA3BC06174A
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 10:41:06 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id gx15-20020a17090b124f00b001a695f3734aso6568915pjb.0
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 10:41:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=I6ekFruXY8lIGWMZf7qN4Eac7dnlFefcLU1TGeXa9yM=;
-        b=gJLgEWs+Zlxn2gM0+aDb+bKNKLBRoNNPjxLi7lFzkT7wgTne7zM6N0Gjhq9+TS1Cwc
-         v/rpdCxqwHu0Ag4RH7rvtlto8WZv97NSmelcmcJwcWOlDafFoUZgOarsrlyaZ93Suwqt
-         9Htu7I3mRILBezuYT9HkfN02VUgJjGpOehSAg=
+        bh=FMXWh89VZYemVKOC1nOMHXOf0EkNJ7d1gpgnv25tUVA=;
+        b=e0gTQuWbEEtIR6jAswuqe+bkuCE6ahVYPnYSdcovJFIrFzZ/E5K/EHyURvZC+zqcR4
+         Ud0ZAXqm7TsnXdZci3MKz31N1Wl7VXOcibg3+0aUK3Ajr9vqznw44JW+gKqMiqJYqrur
+         yY0Y00qptmYuAtm918Hnbl0GEk/U430JYyiRk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=I6ekFruXY8lIGWMZf7qN4Eac7dnlFefcLU1TGeXa9yM=;
-        b=KSvCvmC3goRzBQzZE2E4+4RO7AUpwZdXNl66M+X6iAgRzFO3uom8al37Ib+BjIYwnu
-         qbzbbc9n2UI23kuvIStPJDY1Gev7LXn1MCs1tyaN0uq8Dw4pF9uYH2o9RgH3ZH8VXtcq
-         za8p6nAH3uxtKq6+zV5pbhLqTXaRe8tkZmdAm8pNV7pL99ukHQ+RrHXztJqtCdJLGSn2
-         wtZvVfnj67oW3jEx4riCUr33V+/7kG9ffXL3Fp6U6sskmU7cpF+G+dV0GlHU4uumBfLi
-         EplpnNtNFvQqgpovEkLCZwqhYXb30o1j5Ir0yw8wy4sO5sooxZsozWCaTH0Hz28us3df
-         kmuw==
-X-Gm-Message-State: AOAM532YeIM0snJh7k+C2Rs+bAaPOxJNEewZlJbivW5vylTqFkszl/Q9
-        Me84sXYsBvXCTKsFr0wE0Uj2rQ==
-X-Google-Smtp-Source: ABdhPJzzX6LgYiNnK8E4rzvPKJ5+yOssBccHjMbdhcFJWJuCQVTJuj3TQkAK7c6s2XKuTy2yHjdOoQ==
-X-Received: by 2002:a05:6a00:b8b:b0:481:16a1:abff with SMTP id g11-20020a056a000b8b00b0048116a1abffmr56701013pfj.77.1637260622973;
-        Thu, 18 Nov 2021 10:37:02 -0800 (PST)
+        bh=FMXWh89VZYemVKOC1nOMHXOf0EkNJ7d1gpgnv25tUVA=;
+        b=cj6UoD48aqtaGF5AyaRLE0EaG5CkGOjeEY2OBaGy/DacIziE4XdAOrGdfiHxbV9PUl
+         CMQ/aGPAyai1yGTMqvz7HNu4vp1F7/n6/mI1zaULvGN43/XQSeGXwwWn5FXuM5g+OWjy
+         aby0OdGicvfa0KoqG916/EEtHFGO4T8VbWk7GmImrfu2FN2fhn0X1IX8/UvIML722eSl
+         15YAtYh0hCX0o04xxDDGpO4AopyX5UvZIXQ7AMaxHjaMY0qPAZkygBB0O9t5gsE4OnO5
+         a/a6wn+XZWmZOAugjm+vLlhEJlnhrWOOPGsy17YV7PWWMx4hTctLVPRyWxr3jdM5Buzx
+         0lFA==
+X-Gm-Message-State: AOAM530EWdbS1ZIpg3YB3PicQLLGvCa0PeOTnha6n1Si2I1z/y3jemif
+        UI12RNyvA3Ma8ZIRrvRu+1r/LA==
+X-Google-Smtp-Source: ABdhPJzW+zKuM2db9SP+myHZwjczhP0UwUeIL3sioy/PloyCYSpO2ZFN4/7xzppaWZPkVNuT6wdSfQ==
+X-Received: by 2002:a17:902:9047:b0:143:6e5f:a480 with SMTP id w7-20020a170902904700b001436e5fa480mr69200036plz.66.1637260865870;
+        Thu, 18 Nov 2021 10:41:05 -0800 (PST)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id k1sm351727pfu.31.2021.11.18.10.37.02
+        by smtp.gmail.com with ESMTPSA id y4sm316063pfi.178.2021.11.18.10.41.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Nov 2021 10:37:02 -0800 (PST)
+        Thu, 18 Nov 2021 10:41:05 -0800 (PST)
 From:   Kees Cook <keescook@chromium.org>
-To:     Lennert Buytenhek <buytenh@wantstofly.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     Kees Cook <keescook@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        wengjianfeng <wengjianfeng@yulong.com>,
-        Lv Yunlong <lyl2019@mail.ustc.edu.cn>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Allen Pais <allen.lkml@gmail.com>,
-        Zheyu Ma <zheyuma97@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH] mwl8k: Use struct_group() for memcpy() region
-Date:   Thu, 18 Nov 2021 10:37:00 -0800
-Message-Id: <20211118183700.1282181-1-keescook@chromium.org>
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: [PATCH] libertas: Use struct_group() for memcpy() region
+Date:   Thu, 18 Nov 2021 10:41:04 -0800
+Message-Id: <20211118184104.1283637-1-keescook@chromium.org>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1790; h=from:subject; bh=pzNRqDVpvV2z7OSqkh40SqtMHCZaHfw6BUnOrjqD3ok=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhlp1MoXUKlRNJ2Va9QhfbHWCZM97MCpgyZRG7sa4a gcAMI0CJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYZadTAAKCRCJcvTf3G3AJrEdD/ 9szoKPL4TNkI7MCnaUDs+vUC7t0ifVLSvFCwSas7OesnDVh2+0TcejTJ92CxnB35CT6uzlD+F1j2pW ugYEujJznsKTV/5RNeJyAyJURA3b/aN/VUEjiCvIYT30i9rcvOIsjYHL7KrPjdrNKviHXOU/3ba1yt LcmZjAmU+X/z2TAfERAYnfG14FsQ/w2fb7tjKU9cHlFNG8rHZ6ieLF86zb04ZQP2N0rHe8YC09D+Gb I++Vk4XnBIWArniQAY6CFCHqanT0vHPgY5LJV9561stIwp4IHTUpcdH/c3zW/G8hbuR4XRC3AHMxbg iIqR1E0N1vnKbuxnFMx+kEZKmyYm97ilZDTe1YqHKV419xakd7F+DPk/I2KrVXGq2SdzhfMmAm1v4/ 1Nevfj/bU29tfwKGP38DGlIaiwPD3oz1vo6Z3EyIJ2fnCIPcFLOC7t7MSYFX+BWe46Nc/U0UtOR60B Zq/ebv1TDelHv307coOwZXjpLUSDuATiTWc4HdIdEbEMUTK3Em5fxRBWYcHCYH9/iVrtBo+0o7nY4n ITWVCeY5Fxf/0NqVoeSZAgWYmxrvs49BTdOSwPJr9pdU1qqAO/++21Y66pvpqUmeI8qgPVRfcQisbk /IwsVCExARys8Nk0p0J+B8xi2/gf60f2UboM0YL3g+sz3n6F5sa6X5amp04w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2740; h=from:subject; bh=aefCoJhV9lyPmgKpvdOWTp1eHgAAy3wtBLWPOfGvPCw=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhlp4/xcQA7hFiK/M9yqFXiZTlrkWV9wESsqNUkUC3 ENS25TmJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYZaePwAKCRCJcvTf3G3AJpVQD/ 9sfbXlovmw71iDiRDrMna0brdH2vsTbqkC/68UeZ2f5OthAyzd5wKbCPrZMdk8rRAwTgObYWAY+Hpu M3FLiHgD0jkpiyx5wHMTVKlmqSb6hin9nXuWshmEIIAcKh+PJcGgLAVjLa+g/QCyJPzH9dkSUt/7Yk Y8eXABrgwWnvNUvQc6sikL8b2jgJMR0Nr5yV44SxTstHd1OwFSi8FIk/q0nFcmk2hH3q46R2YlLV/Y 24aF3/ryOhyXvagYXYvxsi8g12kUXh0xVR98IcF/R29YNsEv/ZxrNUK8rIakUfuBi1LguyHjEFgyNc KGa0XOdHCCZ9EeLvIltgNYTUkgnS2yirWlBqOweZoLOd14b3NRhHYOdB9jMHt/m85Kas0rokjzikHZ 5SSg4mNgvAGuhST54qxVm5CYjI2R+8Yofr30tjtMJq0kYfjjdEH7YagXkzawvV5eVkwagv124BYBbh MB0avOFv7P3J170sM8LqUU+7QxF0TiIVUqCeaw3eNIeYWfB5bl4amU5sOxBFx7LajLHnQpnhwhe/hq jJgA4LFryoMmXs0vcgmRq/+n5EjpmVJvajEsP6PNO6fcnx15h0ozpmKelxVzynP9+FKZ6D7tILJG28 DYW0f65jkCsw8PJzgaZhPYdEABv1NMAVcQEXN9E+I8K8vuUztRSnjGha+0Vg==
 X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -75,48 +68,67 @@ In preparation for FORTIFY_SOURCE performing compile-time and run-time
 field bounds checking for memcpy(), memmove(), and memset(), avoid
 intentionally writing across neighboring fields.
 
-Use struct_group() in struct mwl8k_cmd_set_key around members
-key_material, tkip_tx_mic_key, and tkip_rx_mic_key so they can be
-referenced together. This will allow memcpy() and sizeof() to more easily
-reason about sizes, improve readability, and avoid future warnings about
-writing beyond the end of key_material.
+Use struct_group() in struct txpd around members tx_dest_addr_high
+and tx_dest_addr_low so they can be referenced together. This will
+allow memcpy() and sizeof() to more easily reason about sizes, improve
+readability, and avoid future warnings about writing beyond the end
+of queue_id.
 
-"pahole" shows no size nor member offset changes to struct
-mwl8k_cmd_set_key. "objdump -d" shows no object code changes.
+"pahole" shows no size nor member offset changes to struct txpd.
+"objdump -d" shows no object code changes.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/net/wireless/marvell/mwl8k.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/wireless/marvell/libertas/host.h | 10 ++++++----
+ drivers/net/wireless/marvell/libertas/tx.c   |  5 +++--
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index 529e325498cd..90e881655fb2 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -4225,9 +4225,11 @@ struct mwl8k_cmd_set_key {
- 	__le32 key_info;
- 	__le32 key_id;
- 	__le16 key_len;
--	__u8 key_material[MAX_ENCR_KEY_LENGTH];
--	__u8 tkip_tx_mic_key[MIC_KEY_LENGTH];
--	__u8 tkip_rx_mic_key[MIC_KEY_LENGTH];
-+	struct {
-+			__u8 key_material[MAX_ENCR_KEY_LENGTH];
-+			__u8 tkip_tx_mic_key[MIC_KEY_LENGTH];
-+			__u8 tkip_rx_mic_key[MIC_KEY_LENGTH];
-+	} tkip;
- 	__le16 tkip_rsc_low;
- 	__le32 tkip_rsc_high;
- 	__le16 tkip_tsc_low;
-@@ -4375,7 +4377,7 @@ static int mwl8k_cmd_encryption_set_key(struct ieee80211_hw *hw,
- 		goto done;
+diff --git a/drivers/net/wireless/marvell/libertas/host.h b/drivers/net/wireless/marvell/libertas/host.h
+index dfa22468b14a..af96bdba3b2b 100644
+--- a/drivers/net/wireless/marvell/libertas/host.h
++++ b/drivers/net/wireless/marvell/libertas/host.h
+@@ -308,10 +308,12 @@ struct txpd {
+ 	__le32 tx_packet_location;
+ 	/* Tx packet length */
+ 	__le16 tx_packet_length;
+-	/* First 2 byte of destination MAC address */
+-	u8 tx_dest_addr_high[2];
+-	/* Last 4 byte of destination MAC address */
+-	u8 tx_dest_addr_low[4];
++	struct_group(tx_dest_addr,
++		/* First 2 byte of destination MAC address */
++		u8 tx_dest_addr_high[2];
++		/* Last 4 byte of destination MAC address */
++		u8 tx_dest_addr_low[4];
++	);
+ 	/* Pkt Priority */
+ 	u8 priority;
+ 	/* Pkt Trasnit Power control */
+diff --git a/drivers/net/wireless/marvell/libertas/tx.c b/drivers/net/wireless/marvell/libertas/tx.c
+index aeb481740df6..27304a98787d 100644
+--- a/drivers/net/wireless/marvell/libertas/tx.c
++++ b/drivers/net/wireless/marvell/libertas/tx.c
+@@ -113,6 +113,7 @@ netdev_tx_t lbs_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	p802x_hdr = skb->data;
+ 	pkt_len = skb->len;
+ 
++	BUILD_BUG_ON(sizeof(txpd->tx_dest_addr) != ETH_ALEN);
+ 	if (priv->wdev->iftype == NL80211_IFTYPE_MONITOR) {
+ 		struct tx_radiotap_hdr *rtap_hdr = (void *)skb->data;
+ 
+@@ -124,10 +125,10 @@ netdev_tx_t lbs_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		pkt_len -= sizeof(*rtap_hdr);
+ 
+ 		/* copy destination address from 802.11 header */
+-		memcpy(txpd->tx_dest_addr_high, p802x_hdr + 4, ETH_ALEN);
++		memcpy(&txpd->tx_dest_addr, p802x_hdr + 4, ETH_ALEN);
+ 	} else {
+ 		/* copy destination address from 802.3 header */
+-		memcpy(txpd->tx_dest_addr_high, p802x_hdr, ETH_ALEN);
++		memcpy(&txpd->tx_dest_addr, p802x_hdr, ETH_ALEN);
  	}
  
--	memcpy(cmd->key_material, key->key, keymlen);
-+	memcpy(&cmd->tkip, key->key, keymlen);
- 	cmd->action = cpu_to_le32(action);
- 
- 	rc = mwl8k_post_pervif_cmd(hw, vif, &cmd->header);
+ 	txpd->tx_packet_length = cpu_to_le16(pkt_len);
 -- 
 2.30.2
 
