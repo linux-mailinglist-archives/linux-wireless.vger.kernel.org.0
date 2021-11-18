@@ -2,97 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21436455F48
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 16:21:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 825C1455F8C
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 16:31:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229607AbhKRPYw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Nov 2021 10:24:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33820 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230098AbhKRPYv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Nov 2021 10:24:51 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7F47F6126A;
-        Thu, 18 Nov 2021 15:21:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637248911;
-        bh=c2KW2ZsaiT2g1dXISSkTH5QLxnq5gzpfc+CH+hx6Pn4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Rrx1sbn+YbIUnpAdT5yztHIeAoeenKzdC52pBfLOLhgim0O1nrdX//azRwbJbc0de
-         uFUL/njM7CAO4l79LubKJZJ8w0LFigh90ams9DmnqmnhotCm1ONuplWPlZzP32XvVS
-         kDvIlnhAHWp8vBCVxX4FtxnAfC257a22oEwM9vvuDgjLMpmBdoy+011SqQ3vPPApdC
-         gOuXQis/AM4xgH1lAQAX5lCJQsfMXpkhZZ3VYxbJPzPruPUfs3vCEz1YmIIuavg4AN
-         otVqhtQjPaqZQHtMCWKBMq4Zv/2jsl23J21orRhFjSorGlhsWJQkasoSof/K26T/Ng
-         UXoej/JKNx/eQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH] mt76: connac: remove PHY_MODE_AX_6G configuration in mt76_connac_get_phy_mode
-Date:   Thu, 18 Nov 2021 16:21:43 +0100
-Message-Id: <701b3fc0b1f398061cfc6ff9a131aeacc0e3681a.1637248657.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S232313AbhKRPeA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Nov 2021 10:34:00 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:26687 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232338AbhKRPdy (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 18 Nov 2021 10:33:54 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1637249449; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=l1loVmW1RjXrsW56hTFBKN42k0XbXDloDMuDK0Tg1ks=; b=Qpkz80jDC9BKDIalCayd0f+nxuK+lNcPRolqqofOiDURnKerx69aeAZKKxD8GgdUOLbJJrlr
+ JgASUPctAcvKQlELqN0uTLqZLvY2EMLj+tQunT0IYv8325lJL33nQH7z4o7D2bZPUBpdLAjp
+ MK3EoQW10a80xEwGpSfq4VPoF3I=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 619671a4638a2f4d613df939 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 18 Nov 2021 15:30:44
+ GMT
+Sender: akolli=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D2CD0C43619; Thu, 18 Nov 2021 15:30:43 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from akolli-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: akolli)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0DD6EC43460;
+        Thu, 18 Nov 2021 15:30:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 0DD6EC43460
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Anilkumar Kolli <akolli@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Anilkumar Kolli <akolli@codeaurora.org>
+Subject: [PATCH] ath11k: Fix mon status ring rx tlv processing
+Date:   Thu, 18 Nov 2021 21:00:33 +0530
+Message-Id: <1637249433-10316-1-git-send-email-akolli@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Get rid of PHY_MODE_AX_6G configuration in mt76_connac_get_phy_mode
-routine since mode is an u8 and PHY_MODE_AX_6G is set in phymode_ext
-field in mt76_connac_bss_basic_tlv.
+In HE monitor capture, HAL_TLV_STATUS_PPDU_DONE is received
+on processing multiple skb. Do not clear the ppdu_info
+till the HAL_TLV_STATUS_PPDU_DONE is received.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-This patch must be applied on top of the following patch:
-"mt76: connac: fix a theoretical NULL pointer dereference in mt76_connac_get_phy_mode"
-https://lore.kernel.org/linux-wireless/d163b59d6628215f8f5889ef2c21a91c4d50d398.1637239699.git.lorenzo@kernel.org/T/#u
----
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 10 +++-------
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h |  3 ++-
- 2 files changed, 5 insertions(+), 8 deletions(-)
+This fixes below warning and packet drops in monitor mode.
+ "Rate marked as an HE rate but data is invalid: MCS: 6, NSS: 0"
+ WARNING: at
+ PC is at ieee80211_rx_napi+0x624/0x840 [mac80211]
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index bcb596664b3e..eba827f99790 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1190,12 +1190,8 @@ mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 		if (vht_cap->vht_supported)
- 			mode |= PHY_MODE_AC;
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01693-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index c5320847b80a..f7968aefaabc 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -3064,10 +3064,10 @@ int ath11k_dp_rx_process_mon_status(struct ath11k_base *ab, int mac_id,
+ 	if (!num_buffs_reaped)
+ 		goto exit;
  
--		if (he_cap && he_cap->has_he) {
--			if (band == NL80211_BAND_6GHZ)
--				mode |= PHY_MODE_AX_6G;
--			else
--				mode |= PHY_MODE_AX_5G;
--		}
-+		if (he_cap && he_cap->has_he && band == NL80211_BAND_5GHZ)
-+			mode |= PHY_MODE_AX_5G;
+-	while ((skb = __skb_dequeue(&skb_list))) {
+-		memset(&ppdu_info, 0, sizeof(ppdu_info));
+-		ppdu_info.peer_id = HAL_INVALID_PEERID;
++	memset(&ppdu_info, 0, sizeof(ppdu_info));
++	ppdu_info.peer_id = HAL_INVALID_PEERID;
+ 
++	while ((skb = __skb_dequeue(&skb_list))) {
+ 		if (ath11k_debugfs_is_pktlog_lite_mode_enabled(ar)) {
+ 			log_type = ATH11K_PKTLOG_TYPE_LITE_RX;
+ 			rx_buf_sz = DP_RX_BUFFER_SIZE_LITE;
+@@ -3095,10 +3095,7 @@ int ath11k_dp_rx_process_mon_status(struct ath11k_base *ab, int mac_id,
+ 			ath11k_dbg(ab, ATH11K_DBG_DATA,
+ 				   "failed to find the peer with peer_id %d\n",
+ 				   ppdu_info.peer_id);
+-			spin_unlock_bh(&ab->base_lock);
+-			rcu_read_unlock();
+-			dev_kfree_skb_any(skb);
+-			continue;
++			goto next_skb;
+ 		}
+ 
+ 		arsta = (struct ath11k_sta *)peer->sta->drv_priv;
+@@ -3107,10 +3104,13 @@ int ath11k_dp_rx_process_mon_status(struct ath11k_base *ab, int mac_id,
+ 		if (ath11k_debugfs_is_pktlog_peer_valid(ar, peer->addr))
+ 			trace_ath11k_htt_rxdesc(ar, skb->data, log_type, rx_buf_sz);
+ 
++next_skb:
+ 		spin_unlock_bh(&ab->base_lock);
+ 		rcu_read_unlock();
+ 
+ 		dev_kfree_skb_any(skb);
++		memset(&ppdu_info, 0, sizeof(ppdu_info));
++		ppdu_info.peer_id = HAL_INVALID_PEERID;
  	}
- 
- 	return mode;
-@@ -1318,7 +1314,7 @@ int mt76_connac_mcu_uni_add_bss(struct mt76_phy *phy,
- 	idx = mvif->omac_idx > EXT_BSSID_START ? HW_BSSID_0 : mvif->omac_idx;
- 	basic_req.basic.hw_bss_idx = idx;
- 	if (band == NL80211_BAND_6GHZ)
--		basic_req.basic.phymode_ext = BIT(0);
-+		basic_req.basic.phymode_ext = PHY_MODE_AX_6G;
- 
- 	basic_phy = mt76_connac_get_phy_mode_v2(phy, vif, band, NULL);
- 	basic_req.basic.nonht_basic_phy = cpu_to_le16(basic_phy);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 4e2c9dafd776..388bfcef3b14 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -423,7 +423,8 @@ enum {
- #define PHY_MODE_AC				BIT(5)
- #define PHY_MODE_AX_24G				BIT(6)
- #define PHY_MODE_AX_5G				BIT(7)
--#define PHY_MODE_AX_6G				BIT(8)
-+
-+#define PHY_MODE_AX_6G				BIT(0) /* phymode_ext */
- 
- #define MODE_CCK				BIT(0)
- #define MODE_OFDM				BIT(1)
+ exit:
+ 	return num_buffs_reaped;
 -- 
-2.31.1
+2.7.4
 
