@@ -2,32 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 825C1455F8C
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 16:31:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D899F455F99
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Nov 2021 16:32:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232313AbhKRPeA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Nov 2021 10:34:00 -0500
-Received: from so254-9.mailgun.net ([198.61.254.9]:26687 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232338AbhKRPdy (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Nov 2021 10:33:54 -0500
+        id S232415AbhKRPfw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Nov 2021 10:35:52 -0500
+Received: from m43-7.mailgun.net ([69.72.43.7]:23752 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232226AbhKRPfv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 18 Nov 2021 10:35:51 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637249449; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=l1loVmW1RjXrsW56hTFBKN42k0XbXDloDMuDK0Tg1ks=; b=Qpkz80jDC9BKDIalCayd0f+nxuK+lNcPRolqqofOiDURnKerx69aeAZKKxD8GgdUOLbJJrlr
- JgASUPctAcvKQlELqN0uTLqZLvY2EMLj+tQunT0IYv8325lJL33nQH7z4o7D2bZPUBpdLAjp
- MK3EoQW10a80xEwGpSfq4VPoF3I=
-X-Mailgun-Sending-Ip: 198.61.254.9
+ s=smtp; t=1637249571; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=NgvtXY9KWVGF6KT9hm449US8KRw0C+HqpFgweiRfv2s=; b=MaGDI9i8reEvH9s+JymOrC0L5QE9w/E5jNfmThVJgOoRBfRi+hGGmE/WvXzKrFnTFD5kzdkM
+ I3aayRpFAA+6ovEy7q5fLpzzdLhhWk17IZ3i2JNFaX8LWC1CbBWjW+kclJDfj41PUZT52Ty3
+ ucHHd61JaljR0ZP5qcW98XV5YFY=
+X-Mailgun-Sending-Ip: 69.72.43.7
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 619671a4638a2f4d613df939 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 18 Nov 2021 15:30:44
+ smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
+ 61967222638a2f4d61428a62 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 18 Nov 2021 15:32:50
  GMT
 Sender: akolli=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D2CD0C43619; Thu, 18 Nov 2021 15:30:43 +0000 (UTC)
+        id 7662AC4360C; Thu, 18 Nov 2021 15:32:49 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -37,83 +36,87 @@ Received: from akolli-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Out
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: akolli)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0DD6EC43460;
-        Thu, 18 Nov 2021 15:30:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 0DD6EC43460
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BA322C4338F;
+        Thu, 18 Nov 2021 15:32:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org BA322C4338F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
 From:   Anilkumar Kolli <akolli@codeaurora.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org,
         Anilkumar Kolli <akolli@codeaurora.org>
-Subject: [PATCH] ath11k: Fix mon status ring rx tlv processing
-Date:   Thu, 18 Nov 2021 21:00:33 +0530
-Message-Id: <1637249433-10316-1-git-send-email-akolli@codeaurora.org>
+Subject: [PATCH] ath11k: Use host CE parameters for CE interrupts configuration
+Date:   Thu, 18 Nov 2021 21:02:38 +0530
+Message-Id: <1637249558-12793-1-git-send-email-akolli@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In HE monitor capture, HAL_TLV_STATUS_PPDU_DONE is received
-on processing multiple skb. Do not clear the ppdu_info
-till the HAL_TLV_STATUS_PPDU_DONE is received.
+CE interrupt configuration uses host ce parameters to assign/free
+interrupts. Use host ce parameters to enable/disable interrupts.
+This patch fixes below BUG,
 
-This fixes below warning and packet drops in monitor mode.
- "Rate marked as an HE rate but data is invalid: MCS: 6, NSS: 0"
- WARNING: at
- PC is at ieee80211_rx_napi+0x624/0x840 [mac80211]
+BUG: KASAN: global-out-of-bounds in 0xffffffbffdfb035c at addr
+ffffffbffde6eeac
+ Read of size 4 by task kworker/u8:2/132
+ Address belongs to variable ath11k_core_qmi_firmware_ready+0x1b0/0x5bc [ath11k]
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01693-QCAHKSWPL_SILICONZ-1
+OOB is due to ath11k_ahb_ce_irqs_enable() iterates ce_count(which is 12)
+times and accessing 12th element in target_ce_config
+(which has only 11 elements) from ath11k_ahb_ce_irq_enable().
+
+With this change host ce configs are used to enable/disable interrupts.
+
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-00471-QCAHKSWPL_SILICONZ-1
+
+Fixes: 967c1d1131fa ("ath11k: move target ce configs to hw_params")
 
 Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/wireless/ath/ath11k/ahb.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index c5320847b80a..f7968aefaabc 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -3064,10 +3064,10 @@ int ath11k_dp_rx_process_mon_status(struct ath11k_base *ab, int mac_id,
- 	if (!num_buffs_reaped)
- 		goto exit;
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 8c9c781afc3e..096c502cce38 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -206,13 +206,13 @@ static void ath11k_ahb_clearbit32(struct ath11k_base *ab, u8 bit, u32 offset)
  
--	while ((skb = __skb_dequeue(&skb_list))) {
--		memset(&ppdu_info, 0, sizeof(ppdu_info));
--		ppdu_info.peer_id = HAL_INVALID_PEERID;
-+	memset(&ppdu_info, 0, sizeof(ppdu_info));
-+	ppdu_info.peer_id = HAL_INVALID_PEERID;
+ static void ath11k_ahb_ce_irq_enable(struct ath11k_base *ab, u16 ce_id)
+ {
+-	const struct ce_pipe_config *ce_config;
++	const struct ce_attr *ce_attr;
  
-+	while ((skb = __skb_dequeue(&skb_list))) {
- 		if (ath11k_debugfs_is_pktlog_lite_mode_enabled(ar)) {
- 			log_type = ATH11K_PKTLOG_TYPE_LITE_RX;
- 			rx_buf_sz = DP_RX_BUFFER_SIZE_LITE;
-@@ -3095,10 +3095,7 @@ int ath11k_dp_rx_process_mon_status(struct ath11k_base *ab, int mac_id,
- 			ath11k_dbg(ab, ATH11K_DBG_DATA,
- 				   "failed to find the peer with peer_id %d\n",
- 				   ppdu_info.peer_id);
--			spin_unlock_bh(&ab->base_lock);
--			rcu_read_unlock();
--			dev_kfree_skb_any(skb);
--			continue;
-+			goto next_skb;
- 		}
+-	ce_config = &ab->hw_params.target_ce_config[ce_id];
+-	if (__le32_to_cpu(ce_config->pipedir) & PIPEDIR_OUT)
++	ce_attr = &ab->hw_params.host_ce_config[ce_id];
++	if (ce_attr->src_nentries)
+ 		ath11k_ahb_setbit32(ab, ce_id, CE_HOST_IE_ADDRESS);
  
- 		arsta = (struct ath11k_sta *)peer->sta->drv_priv;
-@@ -3107,10 +3104,13 @@ int ath11k_dp_rx_process_mon_status(struct ath11k_base *ab, int mac_id,
- 		if (ath11k_debugfs_is_pktlog_peer_valid(ar, peer->addr))
- 			trace_ath11k_htt_rxdesc(ar, skb->data, log_type, rx_buf_sz);
+-	if (__le32_to_cpu(ce_config->pipedir) & PIPEDIR_IN) {
++	if (ce_attr->dest_nentries) {
+ 		ath11k_ahb_setbit32(ab, ce_id, CE_HOST_IE_2_ADDRESS);
+ 		ath11k_ahb_setbit32(ab, ce_id + CE_HOST_IE_3_SHIFT,
+ 				    CE_HOST_IE_3_ADDRESS);
+@@ -221,13 +221,13 @@ static void ath11k_ahb_ce_irq_enable(struct ath11k_base *ab, u16 ce_id)
  
-+next_skb:
- 		spin_unlock_bh(&ab->base_lock);
- 		rcu_read_unlock();
+ static void ath11k_ahb_ce_irq_disable(struct ath11k_base *ab, u16 ce_id)
+ {
+-	const struct ce_pipe_config *ce_config;
++	const struct ce_attr *ce_attr;
  
- 		dev_kfree_skb_any(skb);
-+		memset(&ppdu_info, 0, sizeof(ppdu_info));
-+		ppdu_info.peer_id = HAL_INVALID_PEERID;
- 	}
- exit:
- 	return num_buffs_reaped;
+-	ce_config = &ab->hw_params.target_ce_config[ce_id];
+-	if (__le32_to_cpu(ce_config->pipedir) & PIPEDIR_OUT)
++	ce_attr = &ab->hw_params.host_ce_config[ce_id];
++	if (ce_attr->src_nentries)
+ 		ath11k_ahb_clearbit32(ab, ce_id, CE_HOST_IE_ADDRESS);
+ 
+-	if (__le32_to_cpu(ce_config->pipedir) & PIPEDIR_IN) {
++	if (ce_attr->dest_nentries) {
+ 		ath11k_ahb_clearbit32(ab, ce_id, CE_HOST_IE_2_ADDRESS);
+ 		ath11k_ahb_clearbit32(ab, ce_id + CE_HOST_IE_3_SHIFT,
+ 				      CE_HOST_IE_3_ADDRESS);
 -- 
 2.7.4
 
