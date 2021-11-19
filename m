@@ -2,166 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81891457346
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 17:41:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3107E457612
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 18:48:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236602AbhKSQoz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Nov 2021 11:44:55 -0500
-Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.183]:43846 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235422AbhKSQoy (ORCPT
+        id S231477AbhKSRvC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Nov 2021 12:51:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49148 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229585AbhKSRvC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Nov 2021 11:44:54 -0500
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.171])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id B04432A0070;
-        Fri, 19 Nov 2021 16:41:51 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5FF029C0076;
-        Fri, 19 Nov 2021 16:41:51 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 3033F13C2B0;
-        Fri, 19 Nov 2021 08:41:42 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 3033F13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1637340102;
-        bh=N1ZFxU/kkNHhKhMayg8e/YxKyS5klPFwA2x8U6h1bU8=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Ya8b1sOv50SgOrurCWyomeH3pw2zIdE9lP2ePRVUBq4f1RuVSUq2+sDG2hthZ/ubg
-         dDFheg8sHAJSX3tSHw34BVzrLzMxp8ZI7InV81z6Yxi5aqDrdck53TokgoaZEN95cK
-         28ZrOgrBO5HINh8nlnN149y+f4of261fEF3ODyDw=
-Subject: Re: [PATCH 01/11] mt76: mt7915: add comments about rx descriptor
- parsing
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-References: <20211118164056.2965-1-greearb@candelatech.com>
- <YZfR1d2I6pqEzqT8@lore-desk>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <9c758bbb-bb0c-94be-f10b-a78f6a220f92@candelatech.com>
-Date:   Fri, 19 Nov 2021 08:41:41 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Fri, 19 Nov 2021 12:51:02 -0500
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B9B8C061574
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Nov 2021 09:48:00 -0800 (PST)
+Received: by mail-pg1-x52b.google.com with SMTP id g28so9265769pgg.3
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Nov 2021 09:48:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=w3R4jn+JdyCfriDU43U28OD+pROp2EMN2+zPCusor3Y=;
+        b=q1eWRcci6etFnPPGScqu02Dj1ArGxTorDZZDZH6odJl28AIujF1OqoTjljdddjynk7
+         d3vuljcSjpl0uxUD/p0vHIHOg/KqHCNNC3pjfnYbreI/KLdNGQgKz4S7TXi771Ay+KoB
+         s2JmqgpO8sdU8ncG3CyxA5NSscq7t/oONDaAOL84JZH65++QGv49FMDh91W8AnrFjyQo
+         Yoe19pE9tu5B6z5G58hC0swbwMu6BSsXZQQeJvvTkh6hraWFK4LARWe/LzIIOrebY98z
+         13uOXEO/RDtc+KBR3K/WGZ5DidWdLnBCtq2AWYGvUrfIUFTe2Swu2OR2B9TwanrYIaCq
+         4cQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=w3R4jn+JdyCfriDU43U28OD+pROp2EMN2+zPCusor3Y=;
+        b=SvHPkoGkZEbwEHt1vlOz9Nh2ei3RXeUghwZ1El7CBMY64AI0USSuzaeuF7Oht9ytL9
+         d8Oo2rW0UFnzKiUeoTberJlHsGeO3uND67KxLGLX2U+CROXFLFz4+q+B10OUnSrzGkLC
+         bqivw6MSaU3207x0pEdFK7N8xttMIx5uAqf0EFEMcL7F85FOsHIezZbNy4AUngs1UZki
+         HmmJ/z9M2fcWESePlBVLmj+w1aT0dEWFsE5KPsnWBpoGYiTq05s+wV86cy7lvLp95NWS
+         4lzwQMI5GRNdOm9+/6qMzQxBLAoFKukgAGGcwo7nX/0EFHj9LVb/tdDQDDQuVBVkKtYG
+         hOdw==
+X-Gm-Message-State: AOAM532K5WQe09NliruatZ+6SZIS3C2vESLcM/AnRoNiq4xpwb65HMXF
+        /zngDB1XeGMxEi4ebsEGBSVjkySsGHA=
+X-Google-Smtp-Source: ABdhPJwnRub92y/tTZ3QLQ0mFarCsj+DetAMA5g+W1ZMRdAyL2e3xOfVaa0YaWzl8t6g38i7yIwDFg==
+X-Received: by 2002:a63:d605:: with SMTP id q5mr18810600pgg.109.1637344080005;
+        Fri, 19 Nov 2021 09:48:00 -0800 (PST)
+Received: from [192.168.254.58] ([50.45.187.22])
+        by smtp.gmail.com with ESMTPSA id il13sm12635111pjb.52.2021.11.19.09.47.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Nov 2021 09:47:59 -0800 (PST)
+Message-ID: <91d38c40a62100dc6355c98e85b8b793ed8890df.camel@gmail.com>
+Subject: Re: Adding CMD_SET_CHANNEL for station iftypes
+From:   James Prestwood <prestwoj@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Fri, 19 Nov 2021 09:43:25 -0800
+In-Reply-To: <47ba74aa23a5c4fb42660d5b40e974c24acf24bf.camel@sipsolutions.net>
+References: <2b18f86924c3d64437aa139f6401ee2e7705eeb0.camel@gmail.com>
+         <47ba74aa23a5c4fb42660d5b40e974c24acf24bf.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4 (3.40.4-2.fc34) 
 MIME-Version: 1.0
-In-Reply-To: <YZfR1d2I6pqEzqT8@lore-desk>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-MDID: 1637340112-tUBySnv1etZu
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/19/21 8:33 AM, Lorenzo Bianconi wrote:
->> From: Ben Greear <greearb@candelatech.com>
->>
->> This is a tricky beast to understand, so add some notes for
->> next time someone is looking at this code and trying to compare
->> against documents.
->>
->> Signed-off-by: Ben Greear <greearb@candelatech.com>
->> ---
->>
->> txs and related patches rebased on top of 5.16
->>
->>   .../net/wireless/mediatek/mt76/mt7915/mac.c   | 23 +++++++++++++++----
->>   1 file changed, 18 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
->> index 8e5b87af2efb..6fbd58ae9c88 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
->> @@ -410,6 +410,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
->>   	__le32 *rxd = (__le32 *)skb->data;
->>   	__le32 *rxv = NULL;
->>   	u32 mode = 0;
->> +	/* table "PP -> HOST / X-CPU"  RX Format */
->>   	u32 rxd0 = le32_to_cpu(rxd[0]);
->>   	u32 rxd1 = le32_to_cpu(rxd[1]);
->>   	u32 rxd2 = le32_to_cpu(rxd[2]);
->> @@ -489,7 +490,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
->>   
->>   	rxd += 6;
->>   	if (rxd1 & MT_RXD1_NORMAL_GROUP_4) {
->> -		u32 v0 = le32_to_cpu(rxd[0]);
->> +		u32 v0 = le32_to_cpu(rxd[0]); /* DW6 */
->>   		u32 v2 = le32_to_cpu(rxd[2]);
->>   
->>   		fc = cpu_to_le16(FIELD_GET(MT_RXD6_FRAME_CONTROL, v0));
->> @@ -502,6 +503,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
->>   	}
->>   
->>   	if (rxd1 & MT_RXD1_NORMAL_GROUP_1) {
->> +		/* DW10, assuming Group-4 enabled */
->>   		u8 *data = (u8 *)rxd;
->>   
->>   		if (status->flag & RX_FLAG_DECRYPTED) {
->> @@ -533,6 +535,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
->>   	}
->>   
->>   	if (rxd1 & MT_RXD1_NORMAL_GROUP_2) {
->> +		/* DW14, assuming group-1,4 */
->>   		status->timestamp = le32_to_cpu(rxd[0]);
->>   		status->flag |= RX_FLAG_MACTIME_START;
->>   
->> @@ -558,18 +561,22 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
->>   	if (rxd1 & MT_RXD1_NORMAL_GROUP_3) {
->>   		u32 v0, v1, v2;
->>   
->> -		rxv = rxd;
->> +		rxv = rxd; /* DW16 assuming group 1,2,3,4 */
->>   		rxd += 2;
->>   		if ((u8 *)rxd - skb->data >= skb->len)
->>   			return -EINVAL;
->>   
->> -		v0 = le32_to_cpu(rxv[0]);
->> +		v0 = le32_to_cpu(rxv[0]);  /* DW16, P-VEC1 31:0 */
->> +		/* DW17, RX_RCPI copied over P-VEC 64:32 Per RX Format doc. */
+Hi Johannes,
+
+On Fri, 2021-11-19 at 09:31 +0100, Johannes Berg wrote:
+> On Thu, 2021-11-18 at 16:11 -0800, James Prestwood wrote:
+> > Hi,
+> > 
+> > I see CMD_SET_CHANNEL is only supported for AP-type iftypes (AP,
+> > P2P_GO, etc). While this definitely makes sense in most cases,
+> > protocols like p2p/dpp require going off channel for an
+> > undetermined
+> > amount of time.
+> > 
+> > I could go into the exact scenarios but in short your
+> > REMAIN_ON_CHANNEL
+> > could end at very inconvenient times.
+> > 
+> > Specifically when a station is not associated to any AP is there
+> > any
+> > harm in allowing CMD_SET_CHANNEL? Is this purely a software
+> > limitation
+> > or do drivers not allow this?
+> > 
+> > If this sounds reasonable (and possible)
 > 
-> This seems not so useful for everybody.
-
-It was put in for folks doing dev work on this driver, so just a handful
-of people in the whole world.  It doesn't need to be useful for lots
-of people.
-
+> I don't think this *works* because you don't have a way to say "I
+> want
+> to now go back to idle". And sitting on a channel arbitrarily can
+> consume quite a bit of power.
 > 
->>   		v1 = le32_to_cpu(rxv[1]);
->> -		v2 = le32_to_cpu(rxv[2]);
->> +		v2 = le32_to_cpu(rxv[2]); /* first DW of group-5, C-RXV */
->>   
->>   		if (v0 & MT_PRXV_HT_AD_CODE)
->>   			status->enc_flags |= RX_ENC_FLAG_LDPC;
->>   
->> +		/* TODO:  When group-5 is enabled, use nss (and stbc) to
->> +		 * calculate chains properly for this particular skb.
->> +		 */
->>   		status->chains = mphy->antenna_mask;
->>   		status->chain_signal[0] = to_rssi(MT_PRXV_RCPI0, v1);
->>   		status->chain_signal[1] = to_rssi(MT_PRXV_RCPI1, v1);
->> @@ -581,12 +588,18 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
->>   			if (!(status->chains & BIT(i)))
->>   				continue;
->>   
->> +			/* TODO:  Use db sum logic instead of max. */
-> 
-> This seems just a not for you :)
+> So you'd have to add an API to cancel it again, but then
+> realistically
+> we'd probably want to be able to cancel it if userspace forgets (ie.
+> give it a timeout), at which point it's basically equivalent to a
+> longer-than-you-needed remain-on-channel that you cancel after you're
+> done?
 
-Anyone wanting proper RSSI.  The current implementation is wrong
-and could be off by as much as 6db on a 4x4 radio.
+So the use case here is to become provisioned with DPP, or discover
+another P2P device. For example, you buy a light bulb, plug it in, and
+want to provision it. Going on channel for small amounts of time can
+only be detremental to the user experience since you are bound to miss
+these discovery type frames and delay the provisioning.
 
-I will fix it eventually if no one beats me to it.
+As far as power goes, for at least the above use case, there really
+isn't an argument. And its a stretch to find a use case of sitting idle
+as something that anyone wants to do at least for an unprovisioned
+device that is looking to be configured.
 
-Anyway, please apply anything you think is helpful, leave out
-the rest.
+Would there even be a noticable difference in power usage between the
+two scenarios?
+
+ - Sitting offchannel for 2 minutes
+ - Issuing REMAIN_ON_CHANNEL repeatedly for 2 minutes
+
+As far as cancelling CMD_SET_CHANNEL I totally agree. If a device wants
+to go idle for whatever reason that should definitely be possible. I
+think a timer could be avoided using SOCKET_OWNER. So if userspace
+really 'forgets' (crashes or what have you) the device could still be
+brought to idle if that socket closes.
 
 Thanks,
-Ben
+James
 
 
+> 
+> johannes
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
 
