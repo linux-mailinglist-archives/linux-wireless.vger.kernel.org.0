@@ -2,240 +2,224 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99D9845786F
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 23:01:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5834D45797D
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Nov 2021 00:22:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233983AbhKSWEb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Nov 2021 17:04:31 -0500
-Received: from mga07.intel.com ([134.134.136.100]:16025 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233746AbhKSWEa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Nov 2021 17:04:30 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10173"; a="297917575"
-X-IronPort-AV: E=Sophos;i="5.87,248,1631602800"; 
-   d="scan'208";a="297917575"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2021 14:01:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,248,1631602800"; 
-   d="scan'208";a="587907137"
-Received: from lkp-server02.sh.intel.com (HELO c20d8bc80006) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 19 Nov 2021 14:01:26 -0800
-Received: from kbuild by c20d8bc80006 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1moBwj-00050W-L0; Fri, 19 Nov 2021 22:01:25 +0000
-Date:   Sat, 20 Nov 2021 06:00:35 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [jberg-mac80211-next:master] BUILD SUCCESS
- 1507b153198137dfa9cb4bec7c5dee07089ec3af
-Message-ID: <61981e83.g3+ra7LTJmBEAvlN%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S233135AbhKSXZU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Nov 2021 18:25:20 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:34952 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230351AbhKSXZU (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 19 Nov 2021 18:25:20 -0500
+X-UUID: a79e7ef5bdc14dbbb313a66106faefcf-20211120
+X-UUID: a79e7ef5bdc14dbbb313a66106faefcf-20211120
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 737905656; Sat, 20 Nov 2021 07:22:14 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Sat, 20 Nov 2021 07:22:13 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 20 Nov 2021 07:22:13 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
+        <steve.lee@mediatek.com>, <jsiuda@google.com>,
+        <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH 1/2] mt76: mt7921: move mt76_connac_mcu_set_hif_suspend to bus-related files
+Date:   Sat, 20 Nov 2021 07:22:10 +0800
+Message-ID: <92851c34c3758b7d50f3eaa24b1a27adccde2b1a.1637363831.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git master
-branch HEAD: 1507b153198137dfa9cb4bec7c5dee07089ec3af  cfg80211: move offchan_cac_event to a dedicated work
+From: Sean Wang <sean.wang@mediatek.com>
 
-elapsed time: 722m
+This is a preliminary patch for the following patch
+("mt76: mt7921s: fix the device cannot sleep deeply in suspend).
 
-configs tested: 180
-configs skipped: 3
+mt76_connac_mcu_set_hif_suspend eventually would be handled in each
+bus-level suspend/resume handler in either mt7921/sdio.c or mt7921/pci.c
+depending on what type of the bus the device is running on. We can move
+mt76_connac_mcu_set_hif_suspend to bus-related files to simplify the logic.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20211119
-i386                 randconfig-c001-20211118
-mips                 randconfig-c004-20211118
-powerpc                 mpc836x_rdk_defconfig
-arm                  colibri_pxa300_defconfig
-arm                           h3600_defconfig
-arc                    vdk_hs38_smp_defconfig
-riscv                    nommu_virt_defconfig
-mips                   sb1250_swarm_defconfig
-powerpc                      pcm030_defconfig
-arm                     eseries_pxa_defconfig
-powerpc                     powernv_defconfig
-mips                malta_qemu_32r6_defconfig
-sh                           se7750_defconfig
-powerpc                   bluestone_defconfig
-mips                     loongson2k_defconfig
-arc                         haps_hs_defconfig
-sh                 kfr2r09-romimage_defconfig
-mips                           jazz_defconfig
-mips                       capcella_defconfig
-arm                         vf610m4_defconfig
-powerpc                 mpc836x_mds_defconfig
-powerpc                      chrp32_defconfig
-powerpc                     tqm8541_defconfig
-powerpc                 mpc834x_itx_defconfig
-arm                         s5pv210_defconfig
-m68k                        stmark2_defconfig
-nds32                               defconfig
-arm                       cns3420vb_defconfig
-arm                       netwinder_defconfig
-powerpc                      katmai_defconfig
-arm                      integrator_defconfig
-powerpc                     mpc5200_defconfig
-powerpc                       maple_defconfig
-mips                           gcw0_defconfig
-mips                           ip22_defconfig
-arm                        spear3xx_defconfig
-powerpc                  mpc885_ads_defconfig
-powerpc                      pasemi_defconfig
-powerpc                     rainier_defconfig
-sparc64                             defconfig
-riscv             nommu_k210_sdcard_defconfig
-arm                          collie_defconfig
-h8300                     edosk2674_defconfig
-arm                             mxs_defconfig
-sh                               allmodconfig
-arm                           stm32_defconfig
-arm                            hisi_defconfig
-mips                           ip27_defconfig
-powerpc                        warp_defconfig
-openrisc                 simple_smp_defconfig
-sh                   sh7724_generic_defconfig
-mips                         db1xxx_defconfig
-arm                        cerfcube_defconfig
-arm                          pxa168_defconfig
-m68k                          multi_defconfig
-arm                              alldefconfig
-powerpc                       holly_defconfig
-arm                        mini2440_defconfig
-i386                                defconfig
-x86_64                              defconfig
-mips                       bmips_be_defconfig
-sh                           se7619_defconfig
-arm                         cm_x300_defconfig
-sh                          r7780mp_defconfig
-powerpc                      obs600_defconfig
-csky                             alldefconfig
-mips                        bcm47xx_defconfig
-arm                       spear13xx_defconfig
-arm                           tegra_defconfig
-ia64                            zx1_defconfig
-arm                       imx_v6_v7_defconfig
-m68k                          sun3x_defconfig
-powerpc64                        alldefconfig
-powerpc                 mpc834x_mds_defconfig
-mips                 decstation_r4k_defconfig
-mips                           rs90_defconfig
-arm                         mv78xx0_defconfig
-ia64                             alldefconfig
-sh                        sh7785lcr_defconfig
-arm                  randconfig-c002-20211119
-arm                  randconfig-c002-20211118
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a005-20211119
-x86_64               randconfig-a003-20211119
-x86_64               randconfig-a002-20211119
-x86_64               randconfig-a001-20211119
-x86_64               randconfig-a006-20211119
-x86_64               randconfig-a004-20211119
-x86_64               randconfig-a015-20211118
-x86_64               randconfig-a012-20211118
-x86_64               randconfig-a011-20211118
-x86_64               randconfig-a013-20211118
-x86_64               randconfig-a016-20211118
-x86_64               randconfig-a014-20211118
-i386                 randconfig-a016-20211118
-i386                 randconfig-a014-20211118
-i386                 randconfig-a012-20211118
-i386                 randconfig-a011-20211118
-i386                 randconfig-a013-20211118
-i386                 randconfig-a015-20211118
-i386                 randconfig-a016-20211120
-i386                 randconfig-a015-20211120
-i386                 randconfig-a012-20211120
-i386                 randconfig-a013-20211120
-i386                 randconfig-a014-20211120
-i386                 randconfig-a011-20211120
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-
-clang tested configs:
-i386                 randconfig-c001-20211119
-x86_64               randconfig-c007-20211119
-arm                  randconfig-c002-20211119
-s390                 randconfig-c005-20211119
-powerpc              randconfig-c003-20211119
-riscv                randconfig-c006-20211119
-i386                 randconfig-a006-20211118
-i386                 randconfig-a003-20211118
-i386                 randconfig-a001-20211118
-i386                 randconfig-a005-20211118
-i386                 randconfig-a004-20211118
-i386                 randconfig-a002-20211118
-x86_64               randconfig-a005-20211118
-x86_64               randconfig-a003-20211118
-x86_64               randconfig-a001-20211118
-x86_64               randconfig-a002-20211118
-x86_64               randconfig-a006-20211118
-x86_64               randconfig-a004-20211118
-x86_64               randconfig-a015-20211119
-x86_64               randconfig-a011-20211119
-x86_64               randconfig-a012-20211119
-x86_64               randconfig-a013-20211119
-x86_64               randconfig-a016-20211119
-x86_64               randconfig-a014-20211119
-hexagon              randconfig-r045-20211119
-hexagon              randconfig-r041-20211119
-riscv                randconfig-r042-20211119
-s390                 randconfig-r044-20211119
-
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ .../net/wireless/mediatek/mt76/mt7921/main.c   | 13 ++-----------
+ .../net/wireless/mediatek/mt76/mt7921/pci.c    | 18 +++++-------------
+ .../net/wireless/mediatek/mt76/mt7921/sdio.c   | 18 +++++-------------
+ 3 files changed, 12 insertions(+), 37 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index b144f5491798..e022251b4006 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -1232,7 +1232,6 @@ static int mt7921_suspend(struct ieee80211_hw *hw,
+ {
+ 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
+ 	struct mt7921_phy *phy = mt7921_hw_phy(hw);
+-	int err;
+ 
+ 	cancel_delayed_work_sync(&phy->scan_work);
+ 	cancel_delayed_work_sync(&phy->mt76->mac_work);
+@@ -1250,25 +1249,18 @@ static int mt7921_suspend(struct ieee80211_hw *hw,
+ 					    mt76_connac_mcu_set_suspend_iter,
+ 					    &dev->mphy);
+ 
+-	err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true);
+-
+ 	mt7921_mutex_release(dev);
+ 
+-	return err;
++	return 0;
+ }
+ 
+ static int mt7921_resume(struct ieee80211_hw *hw)
+ {
+ 	struct mt7921_dev *dev = mt7921_hw_dev(hw);
+ 	struct mt7921_phy *phy = mt7921_hw_phy(hw);
+-	int err;
+ 
+ 	mt7921_mutex_acquire(dev);
+ 
+-	err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, false);
+-	if (err < 0)
+-		goto out;
+-
+ 	set_bit(MT76_STATE_RUNNING, &phy->mt76->state);
+ 	clear_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
+ 	ieee80211_iterate_active_interfaces(hw,
+@@ -1278,11 +1270,10 @@ static int mt7921_resume(struct ieee80211_hw *hw)
+ 
+ 	ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work,
+ 				     MT7921_WATCHDOG_TIME);
+-out:
+ 
+ 	mt7921_mutex_release(dev);
+ 
+-	return err;
++	return 0;
+ }
+ 
+ static void mt7921_set_wakeup(struct ieee80211_hw *hw, bool enabled)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 305b63fa1a8a..c29dde23d4ab 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -235,7 +235,6 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	struct mt76_dev *mdev = pci_get_drvdata(pdev);
+ 	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
+ 	struct mt76_connac_pm *pm = &dev->pm;
+-	bool hif_suspend;
+ 	int i, err;
+ 
+ 	pm->suspended = true;
+@@ -246,12 +245,9 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	if (err < 0)
+ 		goto restore_suspend;
+ 
+-	hif_suspend = !test_bit(MT76_STATE_SUSPEND, &dev->mphy.state);
+-	if (hif_suspend) {
+-		err = mt76_connac_mcu_set_hif_suspend(mdev, true);
+-		if (err)
+-			goto restore_suspend;
+-	}
++	err = mt76_connac_mcu_set_hif_suspend(mdev, true);
++	if (err)
++		goto restore_suspend;
+ 
+ 	/* always enable deep sleep during suspend to reduce
+ 	 * power consumption
+@@ -302,8 +298,7 @@ static int mt7921_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+ 
+-	if (hif_suspend)
+-		mt76_connac_mcu_set_hif_suspend(mdev, false);
++	mt76_connac_mcu_set_hif_suspend(mdev, false);
+ 
+ restore_suspend:
+ 	pm->suspended = false;
+@@ -356,10 +351,7 @@ static int mt7921_pci_resume(struct pci_dev *pdev)
+ 	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+ 
+-	if (!test_bit(MT76_STATE_SUSPEND, &dev->mphy.state))
+-		err = mt76_connac_mcu_set_hif_suspend(mdev, false);
+-
+-	return err;
++	return mt76_connac_mcu_set_hif_suspend(mdev, false);
+ }
+ #endif /* CONFIG_PM */
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index ddf0eeb8b688..5fee489c7a99 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -203,7 +203,6 @@ static int mt7921s_suspend(struct device *__dev)
+ 	struct mt7921_dev *dev = sdio_get_drvdata(func);
+ 	struct mt76_connac_pm *pm = &dev->pm;
+ 	struct mt76_dev *mdev = &dev->mt76;
+-	bool hif_suspend;
+ 	int err;
+ 
+ 	pm->suspended = true;
+@@ -214,12 +213,9 @@ static int mt7921s_suspend(struct device *__dev)
+ 	if (err < 0)
+ 		goto restore_suspend;
+ 
+-	hif_suspend = !test_bit(MT76_STATE_SUSPEND, &dev->mphy.state);
+-	if (hif_suspend) {
+-		err = mt76_connac_mcu_set_hif_suspend(mdev, true);
+-		if (err)
+-			goto restore_suspend;
+-	}
++	err = mt76_connac_mcu_set_hif_suspend(mdev, true);
++	if (err)
++		goto restore_suspend;
+ 
+ 	/* always enable deep sleep during suspend to reduce
+ 	 * power consumption
+@@ -253,8 +249,7 @@ static int mt7921s_suspend(struct device *__dev)
+ 	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(mdev, false);
+ 
+-	if (hif_suspend)
+-		mt76_connac_mcu_set_hif_suspend(mdev, false);
++	mt76_connac_mcu_set_hif_suspend(mdev, false);
+ 
+ restore_suspend:
+ 	pm->suspended = false;
+@@ -285,10 +280,7 @@ static int mt7921s_resume(struct device *__dev)
+ 	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(mdev, false);
+ 
+-	if (!test_bit(MT76_STATE_SUSPEND, &dev->mphy.state))
+-		err = mt76_connac_mcu_set_hif_suspend(mdev, false);
+-
+-	return err;
++	return mt76_connac_mcu_set_hif_suspend(mdev, false);
+ }
+ 
+ static const struct dev_pm_ops mt7921s_pm_ops = {
+-- 
+2.25.1
+
