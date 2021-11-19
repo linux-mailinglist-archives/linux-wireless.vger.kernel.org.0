@@ -2,156 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3E6C4569DD
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 06:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E483B4569DF
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 06:58:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231359AbhKSFwN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Nov 2021 00:52:13 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:39660 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229687AbhKSFwN (ORCPT
+        id S231127AbhKSGBC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Nov 2021 01:01:02 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:52524 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229687AbhKSGBC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Nov 2021 00:52:13 -0500
-X-UUID: 521dc10ac8b74c31b1326b2bdeec0009-20211119
-X-UUID: 521dc10ac8b74c31b1326b2bdeec0009-20211119
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <xing.song@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1666583642; Fri, 19 Nov 2021 13:49:08 +0800
-Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 19 Nov 2021 13:49:07 +0800
-Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
- (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 19 Nov
- 2021 13:49:04 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
- 15.0.1497.2 via Frontend Transport; Fri, 19 Nov 2021 13:49:04 +0800
-From:   Xing Song <xing.song@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Xing Song <xing.song@mediatek.com>
-Subject: [PATCH v3] mt76: do not pass the received frame with decryption error
-Date:   Fri, 19 Nov 2021 13:49:01 +0800
-Message-ID: <20211119054901.15765-1-xing.song@mediatek.com>
-X-Mailer: git-send-email 2.17.0
+        Fri, 19 Nov 2021 01:01:02 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1AJ5vnD13013378, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1AJ5vnD13013378
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 19 Nov 2021 13:57:49 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.12; Fri, 19 Nov 2021 13:57:48 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Fri, 19 Nov
+ 2021 13:57:47 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <dan.carpenter@oracle.com>
+Subject: [PATCH] rtw89: fix potentially access out of range of RF register array
+Date:   Fri, 19 Nov 2021 13:57:29 +0800
+Message-ID: <20211119055729.12826-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/19/2021 05:42:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzExLzE4IKRVpMggMTA6MzA6MDA=?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 11/19/2021 05:39:55
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 167351 [Nov 19 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/19/2021 05:42:00
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-MAC80211 doesn't care any decryption error in 802.3 path, so received
-frame will be dropped if HW tell us that the cipher configuration is not
-matched as well as the header has been translated to 802.3. This case only
-appears when IEEE80211_FCTL_PROTECTED is 1 and cipher suit is none in the
-corresponding HW entry.
+The RF register array is used to help firmware to restore RF settings.
+The original code can potentially access out of range, if the size is
+between (RTW89_H2C_RF_PAGE_SIZE * RTW89_H2C_RF_PAGE_NUM + 1) to
+((RTW89_H2C_RF_PAGE_SIZE + 1) * RTW89_H2C_RF_PAGE_NUM). Fortunately,
+current used size doesn't fall into the wrong case, and the size will not
+change if we don't update RF parameter.
 
-The received frame is only reported to monitor interface if HW decryption
-block tell us there is ICV error or CCMP/BIP/WPI MIC error. Note in this
-case the reported frame is decrypted 802.11 frame and the payload may be
-malformed due to mismatched key.
-
-Signed-off-by: Xing Song <xing.song@mediatek.com>
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
-v2: check for cipher mismatch or frame format error
-v3: remove the always false case (hdr_trans && MT_RXD*_NORMAL_CLM)
-    report the 802.11 frame with decryption error to monitor interface
----
- drivers/net/wireless/mediatek/mt76/mt7603/mac.c | 4 ++++
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 9 ++++++++-
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 9 ++++++++-
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 9 ++++++++-
- 4 files changed, 28 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c | 33 ++++++++++++++----------
+ 1 file changed, 19 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-index fe03e31989bb..a9ac61b9f854 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -525,6 +525,10 @@ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_buff *skb)
- 	if (rxd2 & MT_RXD2_NORMAL_TKIP_MIC_ERR)
- 		status->flag |= RX_FLAG_MMIC_ERROR;
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index ab134856baac7..d75e9de8df7c6 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -654,6 +654,12 @@ rtw89_phy_cofig_rf_reg_store(struct rtw89_dev *rtwdev,
+ 	u16 idx = info->curr_idx % RTW89_H2C_RF_PAGE_SIZE;
+ 	u8 page = info->curr_idx / RTW89_H2C_RF_PAGE_SIZE;
  
-+	/* ICV error or CCMP/BIP/WPI MIC error */
-+	if (rxd2 & MT_RXD2_NORMAL_ICV_ERR)
-+		status->flag |= RX_FLAG_ONLY_MONITOR;
++	if (page >= RTW89_H2C_RF_PAGE_NUM) {
++		rtw89_warn(rtwdev, "RF parameters exceed size. path=%d, idx=%d",
++			   rf_path, info->curr_idx);
++		return;
++	}
 +
- 	if (FIELD_GET(MT_RXD2_NORMAL_SEC_MODE, rxd2) != 0 &&
- 	    !(rxd2 & (MT_RXD2_NORMAL_CLM | MT_RXD2_NORMAL_CM))) {
- 		status->flag |= RX_FLAG_DECRYPTED;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 423f69015e3e..c79abce543f3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -286,9 +286,16 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
- 	if (rxd2 & MT_RXD2_NORMAL_AMSDU_ERR)
- 		return -EINVAL;
+ 	info->rtw89_phy_config_rf_h2c[page][idx] =
+ 		cpu_to_le32((reg->addr << 20) | reg->data);
+ 	info->curr_idx++;
+@@ -662,30 +668,29 @@ rtw89_phy_cofig_rf_reg_store(struct rtw89_dev *rtwdev,
+ static int rtw89_phy_config_rf_reg_fw(struct rtw89_dev *rtwdev,
+ 				      struct rtw89_fw_h2c_rf_reg_info *info)
+ {
+-	u16 page = info->curr_idx / RTW89_H2C_RF_PAGE_SIZE;
+-	u16 len = (info->curr_idx % RTW89_H2C_RF_PAGE_SIZE) * 4;
++	u16 remain = info->curr_idx;
++	u16 len = 0;
+ 	u8 i;
+ 	int ret = 0;
  
-+	hdr_trans = rxd1 & MT_RXD1_NORMAL_HDR_TRANS;
-+	if (hdr_trans && (rxd2 & MT_RXD2_NORMAL_CM))
-+		return -EINVAL;
-+
-+	/* ICV error or CCMP/BIP/WPI MIC error */
-+	if (rxd2 & MT_RXD2_NORMAL_ICV_ERR)
-+		status->flag |= RX_FLAG_ONLY_MONITOR;
-+
- 	unicast = (rxd1 & MT_RXD1_NORMAL_ADDR_TYPE) == MT_RXD1_NORMAL_U2M;
- 	idx = FIELD_GET(MT_RXD2_NORMAL_WLAN_IDX, rxd2);
--	hdr_trans = rxd1 & MT_RXD1_NORMAL_HDR_TRANS;
- 	status->wcid = mt7615_rx_get_wcid(dev, idx, unicast);
+-	if (page > RTW89_H2C_RF_PAGE_NUM) {
++	if (remain > RTW89_H2C_RF_PAGE_NUM * RTW89_H2C_RF_PAGE_SIZE) {
+ 		rtw89_warn(rtwdev,
+-			   "rf reg h2c total page num %d larger than %d (RTW89_H2C_RF_PAGE_NUM)\n",
+-			   page, RTW89_H2C_RF_PAGE_NUM);
+-		return -EINVAL;
++			   "rf reg h2c total len %d larger than %d\n",
++			   remain, RTW89_H2C_RF_PAGE_NUM * RTW89_H2C_RF_PAGE_SIZE);
++		ret = -EINVAL;
++		goto out;
+ 	}
  
- 	if (status->wcid) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 5fcf35f2d9fb..78a3cd3938b2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -426,9 +426,16 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
- 	if (rxd2 & MT_RXD2_NORMAL_AMSDU_ERR)
- 		return -EINVAL;
+-	for (i = 0; i < page; i++) {
+-		ret = rtw89_fw_h2c_rf_reg(rtwdev, info,
+-					  RTW89_H2C_RF_PAGE_SIZE * 4, i);
++	for (i = 0; i < RTW89_H2C_RF_PAGE_NUM && remain; i++, remain -= len) {
++		len = remain > RTW89_H2C_RF_PAGE_SIZE ? RTW89_H2C_RF_PAGE_SIZE : remain;
++		ret = rtw89_fw_h2c_rf_reg(rtwdev, info, len * 4, i);
+ 		if (ret)
+-			return ret;
++			goto out;
+ 	}
+-	ret = rtw89_fw_h2c_rf_reg(rtwdev, info, len, i);
+-	if (ret)
+-		return ret;
++out:
+ 	info->curr_idx = 0;
  
-+	hdr_trans = rxd2 & MT_RXD2_NORMAL_HDR_TRANS;
-+	if (hdr_trans && (rxd1 & MT_RXD1_NORMAL_CM))
-+		return -EINVAL;
-+
-+	/* ICV error or CCMP/BIP/WPI MIC error */
-+	if (rxd1 & MT_RXD1_NORMAL_ICV_ERR)
-+		status->flag |= RX_FLAG_ONLY_MONITOR;
-+
- 	unicast = FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) == MT_RXD3_NORMAL_U2M;
- 	idx = FIELD_GET(MT_RXD1_NORMAL_WLAN_IDX, rxd1);
--	hdr_trans = rxd2 & MT_RXD2_NORMAL_HDR_TRANS;
- 	status->wcid = mt7915_rx_get_wcid(dev, idx, unicast);
+-	return 0;
++	return ret;
+ }
  
- 	if (status->wcid) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index db3302b1576a..27550385c35f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -428,10 +428,17 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
- 	if (rxd2 & MT_RXD2_NORMAL_AMSDU_ERR)
- 		return -EINVAL;
- 
-+	hdr_trans = rxd2 & MT_RXD2_NORMAL_HDR_TRANS;
-+	if (hdr_trans && (rxd1 & MT_RXD1_NORMAL_CM))
-+		return -EINVAL;
-+
-+	/* ICV error or CCMP/BIP/WPI MIC error */
-+	if (rxd1 & MT_RXD1_NORMAL_ICV_ERR)
-+		status->flag |= RX_FLAG_ONLY_MONITOR;
-+
- 	chfreq = FIELD_GET(MT_RXD3_NORMAL_CH_FREQ, rxd3);
- 	unicast = FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) == MT_RXD3_NORMAL_U2M;
- 	idx = FIELD_GET(MT_RXD1_NORMAL_WLAN_IDX, rxd1);
--	hdr_trans = rxd2 & MT_RXD2_NORMAL_HDR_TRANS;
- 	status->wcid = mt7921_rx_get_wcid(dev, idx, unicast);
- 
- 	if (status->wcid) {
+ static void rtw89_phy_config_rf_reg(struct rtw89_dev *rtwdev,
 -- 
-2.17.0
+2.25.1
 
