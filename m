@@ -2,54 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C72644569E0
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 06:59:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 606B14569E6
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 07:02:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231204AbhKSGCo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Nov 2021 01:02:44 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:52677 "EHLO
+        id S232503AbhKSGFL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Nov 2021 01:05:11 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:52863 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229687AbhKSGCo (ORCPT
+        with ESMTP id S229629AbhKSGFK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Nov 2021 01:02:44 -0500
+        Fri, 19 Nov 2021 01:05:10 -0500
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1AJ5xdk67013972, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1AJ6207u8014587, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1AJ5xdk67013972
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1AJ6207u8014587
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 19 Nov 2021 13:59:39 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+        Fri, 19 Nov 2021 14:02:00 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
  RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.12; Fri, 19 Nov 2021 13:59:38 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Fri, 19 Nov
- 2021 13:59:38 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>
-Subject: [PATCH] rtw89: add AXIDMA and TX FIFO dump in mac_mem_dump
-Date:   Fri, 19 Nov 2021 13:59:19 +0800
-Message-ID: <20211119055919.12954-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/19/2021 05:42:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ 15.1.2242.12; Fri, 19 Nov 2021 14:01:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Thu, 18 Nov 2021 22:01:58 -0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584]) by
+ RTEXMBS04.realtek.com.tw ([fe80::dc53:1026:298b:c584%5]) with mapi id
+ 15.01.2308.015; Fri, 19 Nov 2021 14:01:58 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Pkshih <pkshih@realtek.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [bug report] rtw89: add Realtek 802.11ax driver
+Thread-Topic: [bug report] rtw89: add Realtek 802.11ax driver
+Thread-Index: AQHX15o4iaSmIG2pD0OVRczSh+nkKqwD9mBAgAZwCTA=
+Date:   Fri, 19 Nov 2021 06:01:58 +0000
+Message-ID: <c64e0cb0cae341dd9c70c869cf14a34c@realtek.com>
+References: <20211112075159.GA15433@kili>
+ <09773676e8884a7689be81a46664ee1f@realtek.com>
+In-Reply-To: <09773676e8884a7689be81a46664ee1f@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
  rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzExLzE4IKRVpMggMTA6MzA6MDA=?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2021/11/18_=3F=3F_10:30:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
 X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
@@ -63,8 +69,8 @@ X-KSE-AntiSpam-Info: Lua profiles 167351 [Nov 19 2021]
 X-KSE-AntiSpam-Info: Version: 5.9.20.0
 X-KSE-AntiSpam-Info: Envelope from: pkshih@realtek.com
 X-KSE-AntiSpam-Info: LuaCore: 465 465 eb31509370142567679dd183ac984a0cb2ee3296
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: lore.kernel.org:7.1.1;realtek.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
 X-KSE-AntiSpam-Info: Rate: 0
 X-KSE-AntiSpam-Info: Status: not_detected
 X-KSE-AntiSpam-Info: Method: none
@@ -77,81 +83,83 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chia-Yuan Li <leo.li@realtek.com>
 
-The AXIDMA is tx/rx packet transmission between PCIE host
-and device, and TX FIFO is MAC TX data.
-We dump them to ensure these memory buffers correct.
+> -----Original Message-----
+> From: Pkshih <pkshih@realtek.com>
+> Sent: Monday, November 15, 2021 3:34 PM
+> To: Dan Carpenter <dan.carpenter@oracle.com>
+> Cc: linux-wireless@vger.kernel.org
+> Subject: RE: [bug report] rtw89: add Realtek 802.11ax driver
+> 
+> > -----Original Message-----
+> > From: Dan Carpenter <dan.carpenter@oracle.com>
+> > Sent: Friday, November 12, 2021 3:52 PM
+> > To: Pkshih <pkshih@realtek.com>
+> > Cc: linux-wireless@vger.kernel.org
+> > Subject: [bug report] rtw89: add Realtek 802.11ax driver
+> >
+> > Hello Ping-Ke Shih,
+> >
+> > The patch e3ec7017f6a2: "rtw89: add Realtek 802.11ax driver" from Oct
+> > 11, 2021, leads to the following Smatch static checker warning:
+> >
+> > 	drivers/net/wireless/realtek/rtw89/fw.c:1383 rtw89_fw_h2c_rf_reg()
+> > 	error: buffer overflow 'info->rtw89_phy_config_rf_h2c' 3 <= 3
+> >
+> > drivers/net/wireless/realtek/rtw89/phy.c
+> >    662  static int rtw89_phy_config_rf_reg_fw(struct rtw89_dev *rtwdev,
+> >    663                                        struct rtw89_fw_h2c_rf_reg_info *info)
+> >    664  {
+> >    665          u16 page = info->curr_idx / RTW89_H2C_RF_PAGE_SIZE;
+> >    666          u16 len = (info->curr_idx % RTW89_H2C_RF_PAGE_SIZE) * 4;
+> >    667          u8 i;
+> >    668          int ret = 0;
+> >    669
+> >    670          if (page > RTW89_H2C_RF_PAGE_NUM) {
+> >                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > Lets assume "page == RTW89_H2C_RF_PAGE_NUM.
+> >
+> >    671                  rtw89_warn(rtwdev,
+> >    672                             "rf reg h2c total page num %d larger than %d
+> (RTW89_H2C_RF_PAGE_NUM)\n",
+> >    673                             page, RTW89_H2C_RF_PAGE_NUM);
+> >    674                  return -EINVAL;
+> >    675          }
+> >    676
+> >    677          for (i = 0; i < page; i++) {
+> >                             ^^^^^^^^^
+> >
+> >    678                  ret = rtw89_fw_h2c_rf_reg(rtwdev, info,
+> >    679                                            RTW89_H2C_RF_PAGE_SIZE * 4, i);
+> >    680                  if (ret)
+> >    681                          return ret;
+> >    682          }
+> >    683          ret = rtw89_fw_h2c_rf_reg(rtwdev, info, len, i);
+> >                                                              ^
+> > So "i" is now RTW89_H2C_RF_PAGE_NUM and it leads to off by one out of
+> > bounds error.
+> >
+> >    684          if (ret)
+> >    685                  return ret;
+> >    686          info->curr_idx = 0;
+> >    687
+> >    688          return 0;
+> >    689  }
+> >
+> 
+> When the info->curr_idx is between RTW89_H2C_RF_PAGE_SIZE * RTW89_H2C_RF_PAGE_NUM and
+> RTW89_H2C_RF_PAGE_SIZE * (RTW89_H2C_RF_PAGE_NUM + 1), it falls into the case
+> you mentioned. Fortunately, the input is predictable if we don't change
+> RF parameters, so it doesn't lead wrong situation for now.
+> 
+> Anyway, I will refine this function to handle all cases. Thanks for
+> your finding.
+> 
 
-Signed-off-by: Chia-Yuan Li <leo.li@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/debug.c |  5 +++++
- drivers/net/wireless/realtek/rtw89/mac.h   | 10 ++++++++++
- 2 files changed, 15 insertions(+)
+I have sent a patch [1] to fix this.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index 29eb188c888c7..dabee20b37c49 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -723,6 +723,7 @@ rtw89_debug_priv_mac_mem_dump_select(struct file *filp,
- }
- 
- static const u32 mac_mem_base_addr_table[RTW89_MAC_MEM_MAX] = {
-+	[RTW89_MAC_MEM_AXIDMA]	        = AXIDMA_BASE_ADDR,
- 	[RTW89_MAC_MEM_SHARED_BUF]	= SHARED_BUF_BASE_ADDR,
- 	[RTW89_MAC_MEM_DMAC_TBL]	= DMAC_TBL_BASE_ADDR,
- 	[RTW89_MAC_MEM_SHCUT_MACHDR]	= SHCUT_MACHDR_BASE_ADDR,
-@@ -735,6 +736,10 @@ static const u32 mac_mem_base_addr_table[RTW89_MAC_MEM_MAX] = {
- 	[RTW89_MAC_MEM_BA_CAM]		= BA_CAM_BASE_ADDR,
- 	[RTW89_MAC_MEM_BCN_IE_CAM0]	= BCN_IE_CAM0_BASE_ADDR,
- 	[RTW89_MAC_MEM_BCN_IE_CAM1]	= BCN_IE_CAM1_BASE_ADDR,
-+	[RTW89_MAC_MEM_TXD_FIFO_0]	= TXD_FIFO_0_BASE_ADDR,
-+	[RTW89_MAC_MEM_TXD_FIFO_1]	= TXD_FIFO_1_BASE_ADDR,
-+	[RTW89_MAC_MEM_TXDATA_FIFO_0]	= TXDATA_FIFO_0_BASE_ADDR,
-+	[RTW89_MAC_MEM_TXDATA_FIFO_1]	= TXDATA_FIFO_1_BASE_ADDR,
- };
- 
- static void rtw89_debug_dump_mac_mem(struct seq_file *m,
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 6f3db8a2a9c2a..94cd29bd83d77 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -227,6 +227,7 @@ enum rtw89_mac_dbg_port_sel {
- /* SRAM mem dump */
- #define R_AX_INDIR_ACCESS_ENTRY 0x40000
- 
-+#define	AXIDMA_BASE_ADDR		0x18006000
- #define	STA_SCHED_BASE_ADDR		0x18808000
- #define	RXPLD_FLTR_CAM_BASE_ADDR	0x18813000
- #define	SECURITY_CAM_BASE_ADDR		0x18814000
-@@ -240,10 +241,15 @@ enum rtw89_mac_dbg_port_sel {
- #define	DMAC_TBL_BASE_ADDR		0x18800000
- #define	SHCUT_MACHDR_BASE_ADDR		0x18800800
- #define	BCN_IE_CAM1_BASE_ADDR		0x188A0000
-+#define	TXD_FIFO_0_BASE_ADDR		0x18856200
-+#define	TXD_FIFO_1_BASE_ADDR		0x188A1080
-+#define	TXDATA_FIFO_0_BASE_ADDR		0x18856000
-+#define	TXDATA_FIFO_1_BASE_ADDR		0x188A1000
- 
- #define CCTL_INFO_SIZE		32
- 
- enum rtw89_mac_mem_sel {
-+	RTW89_MAC_MEM_AXIDMA,
- 	RTW89_MAC_MEM_SHARED_BUF,
- 	RTW89_MAC_MEM_DMAC_TBL,
- 	RTW89_MAC_MEM_SHCUT_MACHDR,
-@@ -256,6 +262,10 @@ enum rtw89_mac_mem_sel {
- 	RTW89_MAC_MEM_BA_CAM,
- 	RTW89_MAC_MEM_BCN_IE_CAM0,
- 	RTW89_MAC_MEM_BCN_IE_CAM1,
-+	RTW89_MAC_MEM_TXD_FIFO_0,
-+	RTW89_MAC_MEM_TXD_FIFO_1,
-+	RTW89_MAC_MEM_TXDATA_FIFO_0,
-+	RTW89_MAC_MEM_TXDATA_FIFO_1,
- 
- 	/* keep last */
- 	RTW89_MAC_MEM_LAST,
--- 
-2.25.1
+[1] https://lore.kernel.org/linux-wireless/20211119055729.12826-1-pkshih@realtek.com/T/#u
+
+--
+Ping-Ke
 
