@@ -2,93 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3CEA456BAD
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 09:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00F40456BB1
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 09:31:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231313AbhKSIcJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Nov 2021 03:32:09 -0500
-Received: from mga17.intel.com ([192.55.52.151]:46235 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234147AbhKSIcJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Nov 2021 03:32:09 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10172"; a="215094726"
-X-IronPort-AV: E=Sophos;i="5.87,246,1631602800"; 
-   d="scan'208";a="215094726"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2021 00:29:07 -0800
-X-IronPort-AV: E=Sophos;i="5.87,246,1631602800"; 
-   d="scan'208";a="455380711"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2021 00:28:58 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mnzGN-008TT0-2r;
-        Fri, 19 Nov 2021 10:28:51 +0200
-Date:   Fri, 19 Nov 2021 10:28:50 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
-        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
-        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
-        suresh.nagaraj@intel.com
-Subject: Re: [PATCH v2 02/14] net: wwan: t7xx: Add control DMA interface
-Message-ID: <YZdgQpiPZo2Xp1pB@smile.fi.intel.com>
-References: <20211101035635.26999-1-ricardo.martinez@linux.intel.com>
- <20211101035635.26999-3-ricardo.martinez@linux.intel.com>
- <YX/zmY81A9d0nIlO@smile.fi.intel.com>
- <30a536cc-5343-c719-0122-cbedcd7cd03f@linux.intel.com>
+        id S234147AbhKSIew (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Nov 2021 03:34:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34490 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229633AbhKSIev (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 19 Nov 2021 03:34:51 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8802EC061574
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Nov 2021 00:31:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=s/szsktVZIkmXcxmmuot84sy9JZdEWq/1m0i5Lod250=;
+        t=1637310710; x=1638520310; b=WguTdVSRZe2MH2LU3BeUHWJZKnDDZneCcCmGT0A4JBXWf4f
+        pxE+aip4jy7XUl17VDhcvTwBz4cKXvbxeffp1blAc1Ag5I+KHbyeTYJMKqiymFwWShn5QNPZzbmsk
+        m+cnxunCkB5fu9tJbVOWBlc9a5yjRGVG1ajrdYeFMxn4mMpkrKHZ497UhS6W+MC26uNO5JrHwImXY
+        X29huRQWXR38NtXE4BN1K3LfXbkZSu+S4+6UqtM0VXQ/7jzKqJ7EyA2HrTvJjr3vp1mCgsgdYYd94
+        t15egrhZ92orS7EVAlE6Aw/I/apeREBZkKv9VTKHFibS/+IgEAmvY0nnl6/L84GQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mnzJD-00HNEm-Pz;
+        Fri, 19 Nov 2021 09:31:47 +0100
+Message-ID: <47ba74aa23a5c4fb42660d5b40e974c24acf24bf.camel@sipsolutions.net>
+Subject: Re: Adding CMD_SET_CHANNEL for station iftypes
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     James Prestwood <prestwoj@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Date:   Fri, 19 Nov 2021 09:31:47 +0100
+In-Reply-To: <2b18f86924c3d64437aa139f6401ee2e7705eeb0.camel@gmail.com>
+References: <2b18f86924c3d64437aa139f6401ee2e7705eeb0.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <30a536cc-5343-c719-0122-cbedcd7cd03f@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Nov 18, 2021 at 10:36:32PM -0800, Martinez, Ricardo wrote:
-> On 11/1/2021 7:03 AM, Andy Shevchenko wrote:
-> > On Sun, Oct 31, 2021 at 08:56:23PM -0700, Ricardo Martinez wrote:
-
-...
-
-> > > +		ret = cldma_gpd_rx_from_queue(queue, budget, &over_budget);
-> > > +		if (ret == -ENODATA)
-> > > +			return 0;
-> > > +
-> > > +		if (ret)
-> > > +			return ret;
-> > Drop redundant blank line
+On Thu, 2021-11-18 at 16:11 -0800, James Prestwood wrote:
+> Hi,
 > 
-> The style followed is to keep a blank line after 'if' blocks.
+> I see CMD_SET_CHANNEL is only supported for AP-type iftypes (AP,
+> P2P_GO, etc). While this definitely makes sense in most cases,
+> protocols like p2p/dpp require going off channel for an undetermined
+> amount of time.
 > 
-> Is that acceptable as long as it is consistent across the driver?
-
-The idea behind suggestion is that you check for value returned from the call.
-So, both if:s are tighten to that call and can be considered as a whole.
-
-It doesn't mean you should blindly remove blank lines everywhere.
-
-...
-
-> > > +exit:
-> > Seems useless.
+> I could go into the exact scenarios but in short your REMAIN_ON_CHANNEL
+> could end at very inconvenient times.
 > 
-> This tag is used when the PM patch is introduced later in the same series.
+> Specifically when a station is not associated to any AP is there any
+> harm in allowing CMD_SET_CHANNEL? Is this purely a software limitation
+> or do drivers not allow this?
+> 
+> If this sounds reasonable (and possible)
 
-Can you give it better name?
+I don't think this *works* because you don't have a way to say "I want
+to now go back to idle". And sitting on a channel arbitrarily can
+consume quite a bit of power.
 
-> > +	return ret;
+So you'd have to add an API to cancel it again, but then realistically
+we'd probably want to be able to cancel it if userspace forgets (ie.
+give it a timeout), at which point it's basically equivalent to a
+longer-than-you-needed remain-on-channel that you cancel after you're
+done?
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+johannes
