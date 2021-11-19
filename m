@@ -2,132 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A198456A55
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 07:38:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 923D4456A53
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 07:37:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231610AbhKSGlD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Nov 2021 01:41:03 -0500
-Received: from mga12.intel.com ([192.55.52.136]:25273 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229457AbhKSGlC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Nov 2021 01:41:02 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10172"; a="214396636"
-X-IronPort-AV: E=Sophos;i="5.87,246,1631602800"; 
-   d="scan'208";a="214396636"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2021 22:36:34 -0800
-X-IronPort-AV: E=Sophos;i="5.87,246,1631602800"; 
-   d="scan'208";a="594105827"
-Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.212.190.52]) ([10.212.190.52])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2021 22:36:32 -0800
-Message-ID: <30a536cc-5343-c719-0122-cbedcd7cd03f@linux.intel.com>
-Date:   Thu, 18 Nov 2021 22:36:32 -0800
+        id S231575AbhKSGkV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Nov 2021 01:40:21 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:41790 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231573AbhKSGkQ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 19 Nov 2021 01:40:16 -0500
+X-UUID: 622e61e9dc6a4cf19e44247e7978a160-20211119
+X-UUID: 622e61e9dc6a4cf19e44247e7978a160-20211119
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <xing.song@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1229103905; Fri, 19 Nov 2021 14:37:10 +0800
+Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 19 Nov 2021 14:37:09 +0800
+Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
+ (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 19 Nov
+ 2021 14:37:08 +0800
+Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
+ MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
+ 15.0.1497.2 via Frontend Transport; Fri, 19 Nov 2021 14:37:08 +0800
+From:   Xing Song <xing.song@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Xing Song <xing.song@mediatek.com>
+Subject: [PATCH v4] mt76: do not pass the received frame with decryption error
+Date:   Fri, 19 Nov 2021 14:37:06 +0800
+Message-ID: <20211119063706.17643-1-xing.song@mediatek.com>
+X-Mailer: git-send-email 2.17.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
-Subject: Re: [PATCH v2 02/14] net: wwan: t7xx: Add control DMA interface
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
-        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
-        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
-        suresh.nagaraj@intel.com
-References: <20211101035635.26999-1-ricardo.martinez@linux.intel.com>
- <20211101035635.26999-3-ricardo.martinez@linux.intel.com>
- <YX/zmY81A9d0nIlO@smile.fi.intel.com>
-From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-In-Reply-To: <YX/zmY81A9d0nIlO@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+MAC80211 doesn't care any decryption error in 802.3 path, so received
+frame will be dropped if HW tell us that the cipher configuration is not
+matched as well as the header has been translated to 802.3. This case only
+appears when IEEE80211_FCTL_PROTECTED is 0 and cipher suit is not none in
+the corresponding HW entry.
 
-On 11/1/2021 7:03 AM, Andy Shevchenko wrote:
-> On Sun, Oct 31, 2021 at 08:56:23PM -0700, Ricardo Martinez wrote:
->> From: Haijun Lio <haijun.liu@mediatek.com>
->>
->> Cross Layer DMA (CLDMA) Hardware interface (HIF) enables the control
->> path of Host-Modem data transfers. CLDMA HIF layer provides a common
->> interface to the Port Layer.
->>
->> CLDMA manages 8 independent RX/TX physical channels with data flow
->> control in HW queues. CLDMA uses ring buffers of General Packet
->> Descriptors (GPD) for TX/RX. GPDs can represent multiple or single
->> data buffers (DB).
->>
->> CLDMA HIF initializes GPD rings, registers ISR handlers for CLDMA
->> interrupts, and initializes CLDMA HW registers.
->>
->> CLDMA TX flow:
->> 1. Port Layer write
->> 2. Get DB address
->> 3. Configure GPD
->> 4. Triggering processing via HW register write
->>
->> CLDMA RX flow:
->> 1. CLDMA HW sends a RX "done" to host
->> 2. Driver starts thread to safely read GPD
->> 3. DB is sent to Port layer
->> 4. Create a new buffer for GPD ring
-...
->
->> +void cldma_hw_reset(void __iomem *ao_base)
->> +{
->> +	iowrite32(ioread32(ao_base + REG_INFRA_RST4_SET) | RST4_CLDMA1_SW_RST_SET,
->> +		  ao_base + REG_INFRA_RST4_SET);
->> +	iowrite32(ioread32(ao_base + REG_INFRA_RST2_SET) | RST2_CLDMA1_AO_SW_RST_SET,
->> +		  ao_base + REG_INFRA_RST2_SET);
->> +	udelay(1);
->> +	iowrite32(ioread32(ao_base + REG_INFRA_RST4_CLR) | RST4_CLDMA1_SW_RST_CLR,
->> +		  ao_base + REG_INFRA_RST4_CLR);
->> +	iowrite32(ioread32(ao_base + REG_INFRA_RST2_CLR) | RST2_CLDMA1_AO_SW_RST_CLR,
->> +		  ao_base + REG_INFRA_RST2_CLR);
-> Setting and clearing are in the same order, is it okay?
-> Can we do it rather symmetrical?
-In this case, order does not matter.
+The received frame is only reported to monitor interface if HW decryption
+block tell us there is ICV error or CCMP/BIP/WPI MIC error. Note in this
+case the reported frame is decrypted 802.11 frame and the payload may be
+malformed due to mismatched key.
 
-This will be symmetrical in the next iteration.
+Signed-off-by: Xing Song <xing.song@mediatek.com>
+---
+v2: check for cipher mismatch or frame format error
+v3: remove the always false case (hdr_trans && MT_RXD*_NORMAL_CLM)
+    report the 802.11 frame with decryption error to monitor interface
+v4: fix the commit as below, sorry about that
+    "IEEE80211_FCTL_PROTECTED is (0) and cipher suit is (not) none"
+---
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c | 4 ++++
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 9 ++++++++-
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 9 ++++++++-
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 9 ++++++++-
+ 4 files changed, 28 insertions(+), 3 deletions(-)
 
->> +}
-> ...
->
->> +	mb(); /* prevents outstanding GPD updates */
-> Is there any counterpart of this barrier?
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index fe03e31989bb..a9ac61b9f854 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -525,6 +525,10 @@ mt7603_mac_fill_rx(struct mt7603_dev *dev, struct sk_buff *skb)
+ 	if (rxd2 & MT_RXD2_NORMAL_TKIP_MIC_ERR)
+ 		status->flag |= RX_FLAG_MMIC_ERROR;
+ 
++	/* ICV error or CCMP/BIP/WPI MIC error */
++	if (rxd2 & MT_RXD2_NORMAL_ICV_ERR)
++		status->flag |= RX_FLAG_ONLY_MONITOR;
++
+ 	if (FIELD_GET(MT_RXD2_NORMAL_SEC_MODE, rxd2) != 0 &&
+ 	    !(rxd2 & (MT_RXD2_NORMAL_CLM | MT_RXD2_NORMAL_CM))) {
+ 		status->flag |= RX_FLAG_DECRYPTED;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 423f69015e3e..c79abce543f3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -286,9 +286,16 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
+ 	if (rxd2 & MT_RXD2_NORMAL_AMSDU_ERR)
+ 		return -EINVAL;
+ 
++	hdr_trans = rxd1 & MT_RXD1_NORMAL_HDR_TRANS;
++	if (hdr_trans && (rxd2 & MT_RXD2_NORMAL_CM))
++		return -EINVAL;
++
++	/* ICV error or CCMP/BIP/WPI MIC error */
++	if (rxd2 & MT_RXD2_NORMAL_ICV_ERR)
++		status->flag |= RX_FLAG_ONLY_MONITOR;
++
+ 	unicast = (rxd1 & MT_RXD1_NORMAL_ADDR_TYPE) == MT_RXD1_NORMAL_U2M;
+ 	idx = FIELD_GET(MT_RXD2_NORMAL_WLAN_IDX, rxd2);
+-	hdr_trans = rxd1 & MT_RXD1_NORMAL_HDR_TRANS;
+ 	status->wcid = mt7615_rx_get_wcid(dev, idx, unicast);
+ 
+ 	if (status->wcid) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 5fcf35f2d9fb..78a3cd3938b2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -426,9 +426,16 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+ 	if (rxd2 & MT_RXD2_NORMAL_AMSDU_ERR)
+ 		return -EINVAL;
+ 
++	hdr_trans = rxd2 & MT_RXD2_NORMAL_HDR_TRANS;
++	if (hdr_trans && (rxd1 & MT_RXD1_NORMAL_CM))
++		return -EINVAL;
++
++	/* ICV error or CCMP/BIP/WPI MIC error */
++	if (rxd1 & MT_RXD1_NORMAL_ICV_ERR)
++		status->flag |= RX_FLAG_ONLY_MONITOR;
++
+ 	unicast = FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) == MT_RXD3_NORMAL_U2M;
+ 	idx = FIELD_GET(MT_RXD1_NORMAL_WLAN_IDX, rxd1);
+-	hdr_trans = rxd2 & MT_RXD2_NORMAL_HDR_TRANS;
+ 	status->wcid = mt7915_rx_get_wcid(dev, idx, unicast);
+ 
+ 	if (status->wcid) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index db3302b1576a..27550385c35f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -428,10 +428,17 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
+ 	if (rxd2 & MT_RXD2_NORMAL_AMSDU_ERR)
+ 		return -EINVAL;
+ 
++	hdr_trans = rxd2 & MT_RXD2_NORMAL_HDR_TRANS;
++	if (hdr_trans && (rxd1 & MT_RXD1_NORMAL_CM))
++		return -EINVAL;
++
++	/* ICV error or CCMP/BIP/WPI MIC error */
++	if (rxd1 & MT_RXD1_NORMAL_ICV_ERR)
++		status->flag |= RX_FLAG_ONLY_MONITOR;
++
+ 	chfreq = FIELD_GET(MT_RXD3_NORMAL_CH_FREQ, rxd3);
+ 	unicast = FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) == MT_RXD3_NORMAL_U2M;
+ 	idx = FIELD_GET(MT_RXD1_NORMAL_WLAN_IDX, rxd1);
+-	hdr_trans = rxd2 & MT_RXD2_NORMAL_HDR_TRANS;
+ 	status->wcid = mt7921_rx_get_wcid(dev, idx, unicast);
+ 
+ 	if (status->wcid) {
+-- 
+2.17.0
 
-This is not needed, removing it.
-
-...
-
->
->> +		ret = cldma_gpd_rx_from_queue(queue, budget, &over_budget);
->> +		if (ret == -ENODATA)
->> +			return 0;
->> +
->> +		if (ret)
->> +			return ret;
-> Drop redundant blank line
-
-The style followed is to keep a blank line after 'if' blocks.
-
-Is that acceptable as long as it is consistent across the driver?
->
->> +			/* greedy mode */
->> +			l2_rx_int = cldma_hw_int_status(hw_info, BIT(queue->index), true);
-...
->
->> +exit:
-> Seems useless.
-
-This tag is used when the PM patch is introduced later in the same series.
-
-> +	return ret;
-...
