@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E483B4569DF
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 06:58:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C72644569E0
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 06:59:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231127AbhKSGBC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Nov 2021 01:01:02 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:52524 "EHLO
+        id S231204AbhKSGCo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Nov 2021 01:02:44 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:52677 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229687AbhKSGBC (ORCPT
+        with ESMTP id S229687AbhKSGCo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Nov 2021 01:01:02 -0500
+        Fri, 19 Nov 2021 01:02:44 -0500
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1AJ5vnD13013378, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1AJ5xdk67013972, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1AJ5vnD13013378
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1AJ5xdk67013972
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 19 Nov 2021 13:57:49 +0800
+        Fri, 19 Nov 2021 13:59:39 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.12; Fri, 19 Nov 2021 13:57:48 +0800
+ 15.1.2242.12; Fri, 19 Nov 2021 13:59:38 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Fri, 19 Nov
- 2021 13:57:47 +0800
+ 2021 13:59:38 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <dan.carpenter@oracle.com>
-Subject: [PATCH] rtw89: fix potentially access out of range of RF register array
-Date:   Fri, 19 Nov 2021 13:57:29 +0800
-Message-ID: <20211119055729.12826-1-pkshih@realtek.com>
+CC:     <linux-wireless@vger.kernel.org>, <leo.li@realtek.com>
+Subject: [PATCH] rtw89: add AXIDMA and TX FIFO dump in mac_mem_dump
+Date:   Fri, 19 Nov 2021 13:59:19 +0800
+Message-ID: <20211119055919.12954-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -77,80 +77,81 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The RF register array is used to help firmware to restore RF settings.
-The original code can potentially access out of range, if the size is
-between (RTW89_H2C_RF_PAGE_SIZE * RTW89_H2C_RF_PAGE_NUM + 1) to
-((RTW89_H2C_RF_PAGE_SIZE + 1) * RTW89_H2C_RF_PAGE_NUM). Fortunately,
-current used size doesn't fall into the wrong case, and the size will not
-change if we don't update RF parameter.
+From: Chia-Yuan Li <leo.li@realtek.com>
 
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+The AXIDMA is tx/rx packet transmission between PCIE host
+and device, and TX FIFO is MAC TX data.
+We dump them to ensure these memory buffers correct.
+
+Signed-off-by: Chia-Yuan Li <leo.li@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/phy.c | 33 ++++++++++++++----------
- 1 file changed, 19 insertions(+), 14 deletions(-)
+ drivers/net/wireless/realtek/rtw89/debug.c |  5 +++++
+ drivers/net/wireless/realtek/rtw89/mac.h   | 10 ++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index ab134856baac7..d75e9de8df7c6 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -654,6 +654,12 @@ rtw89_phy_cofig_rf_reg_store(struct rtw89_dev *rtwdev,
- 	u16 idx = info->curr_idx % RTW89_H2C_RF_PAGE_SIZE;
- 	u8 page = info->curr_idx / RTW89_H2C_RF_PAGE_SIZE;
- 
-+	if (page >= RTW89_H2C_RF_PAGE_NUM) {
-+		rtw89_warn(rtwdev, "RF parameters exceed size. path=%d, idx=%d",
-+			   rf_path, info->curr_idx);
-+		return;
-+	}
-+
- 	info->rtw89_phy_config_rf_h2c[page][idx] =
- 		cpu_to_le32((reg->addr << 20) | reg->data);
- 	info->curr_idx++;
-@@ -662,30 +668,29 @@ rtw89_phy_cofig_rf_reg_store(struct rtw89_dev *rtwdev,
- static int rtw89_phy_config_rf_reg_fw(struct rtw89_dev *rtwdev,
- 				      struct rtw89_fw_h2c_rf_reg_info *info)
- {
--	u16 page = info->curr_idx / RTW89_H2C_RF_PAGE_SIZE;
--	u16 len = (info->curr_idx % RTW89_H2C_RF_PAGE_SIZE) * 4;
-+	u16 remain = info->curr_idx;
-+	u16 len = 0;
- 	u8 i;
- 	int ret = 0;
- 
--	if (page > RTW89_H2C_RF_PAGE_NUM) {
-+	if (remain > RTW89_H2C_RF_PAGE_NUM * RTW89_H2C_RF_PAGE_SIZE) {
- 		rtw89_warn(rtwdev,
--			   "rf reg h2c total page num %d larger than %d (RTW89_H2C_RF_PAGE_NUM)\n",
--			   page, RTW89_H2C_RF_PAGE_NUM);
--		return -EINVAL;
-+			   "rf reg h2c total len %d larger than %d\n",
-+			   remain, RTW89_H2C_RF_PAGE_NUM * RTW89_H2C_RF_PAGE_SIZE);
-+		ret = -EINVAL;
-+		goto out;
- 	}
- 
--	for (i = 0; i < page; i++) {
--		ret = rtw89_fw_h2c_rf_reg(rtwdev, info,
--					  RTW89_H2C_RF_PAGE_SIZE * 4, i);
-+	for (i = 0; i < RTW89_H2C_RF_PAGE_NUM && remain; i++, remain -= len) {
-+		len = remain > RTW89_H2C_RF_PAGE_SIZE ? RTW89_H2C_RF_PAGE_SIZE : remain;
-+		ret = rtw89_fw_h2c_rf_reg(rtwdev, info, len * 4, i);
- 		if (ret)
--			return ret;
-+			goto out;
- 	}
--	ret = rtw89_fw_h2c_rf_reg(rtwdev, info, len, i);
--	if (ret)
--		return ret;
-+out:
- 	info->curr_idx = 0;
- 
--	return 0;
-+	return ret;
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+index 29eb188c888c7..dabee20b37c49 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.c
++++ b/drivers/net/wireless/realtek/rtw89/debug.c
+@@ -723,6 +723,7 @@ rtw89_debug_priv_mac_mem_dump_select(struct file *filp,
  }
  
- static void rtw89_phy_config_rf_reg(struct rtw89_dev *rtwdev,
+ static const u32 mac_mem_base_addr_table[RTW89_MAC_MEM_MAX] = {
++	[RTW89_MAC_MEM_AXIDMA]	        = AXIDMA_BASE_ADDR,
+ 	[RTW89_MAC_MEM_SHARED_BUF]	= SHARED_BUF_BASE_ADDR,
+ 	[RTW89_MAC_MEM_DMAC_TBL]	= DMAC_TBL_BASE_ADDR,
+ 	[RTW89_MAC_MEM_SHCUT_MACHDR]	= SHCUT_MACHDR_BASE_ADDR,
+@@ -735,6 +736,10 @@ static const u32 mac_mem_base_addr_table[RTW89_MAC_MEM_MAX] = {
+ 	[RTW89_MAC_MEM_BA_CAM]		= BA_CAM_BASE_ADDR,
+ 	[RTW89_MAC_MEM_BCN_IE_CAM0]	= BCN_IE_CAM0_BASE_ADDR,
+ 	[RTW89_MAC_MEM_BCN_IE_CAM1]	= BCN_IE_CAM1_BASE_ADDR,
++	[RTW89_MAC_MEM_TXD_FIFO_0]	= TXD_FIFO_0_BASE_ADDR,
++	[RTW89_MAC_MEM_TXD_FIFO_1]	= TXD_FIFO_1_BASE_ADDR,
++	[RTW89_MAC_MEM_TXDATA_FIFO_0]	= TXDATA_FIFO_0_BASE_ADDR,
++	[RTW89_MAC_MEM_TXDATA_FIFO_1]	= TXDATA_FIFO_1_BASE_ADDR,
+ };
+ 
+ static void rtw89_debug_dump_mac_mem(struct seq_file *m,
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 6f3db8a2a9c2a..94cd29bd83d77 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -227,6 +227,7 @@ enum rtw89_mac_dbg_port_sel {
+ /* SRAM mem dump */
+ #define R_AX_INDIR_ACCESS_ENTRY 0x40000
+ 
++#define	AXIDMA_BASE_ADDR		0x18006000
+ #define	STA_SCHED_BASE_ADDR		0x18808000
+ #define	RXPLD_FLTR_CAM_BASE_ADDR	0x18813000
+ #define	SECURITY_CAM_BASE_ADDR		0x18814000
+@@ -240,10 +241,15 @@ enum rtw89_mac_dbg_port_sel {
+ #define	DMAC_TBL_BASE_ADDR		0x18800000
+ #define	SHCUT_MACHDR_BASE_ADDR		0x18800800
+ #define	BCN_IE_CAM1_BASE_ADDR		0x188A0000
++#define	TXD_FIFO_0_BASE_ADDR		0x18856200
++#define	TXD_FIFO_1_BASE_ADDR		0x188A1080
++#define	TXDATA_FIFO_0_BASE_ADDR		0x18856000
++#define	TXDATA_FIFO_1_BASE_ADDR		0x188A1000
+ 
+ #define CCTL_INFO_SIZE		32
+ 
+ enum rtw89_mac_mem_sel {
++	RTW89_MAC_MEM_AXIDMA,
+ 	RTW89_MAC_MEM_SHARED_BUF,
+ 	RTW89_MAC_MEM_DMAC_TBL,
+ 	RTW89_MAC_MEM_SHCUT_MACHDR,
+@@ -256,6 +262,10 @@ enum rtw89_mac_mem_sel {
+ 	RTW89_MAC_MEM_BA_CAM,
+ 	RTW89_MAC_MEM_BCN_IE_CAM0,
+ 	RTW89_MAC_MEM_BCN_IE_CAM1,
++	RTW89_MAC_MEM_TXD_FIFO_0,
++	RTW89_MAC_MEM_TXD_FIFO_1,
++	RTW89_MAC_MEM_TXDATA_FIFO_0,
++	RTW89_MAC_MEM_TXDATA_FIFO_1,
+ 
+ 	/* keep last */
+ 	RTW89_MAC_MEM_LAST,
 -- 
 2.25.1
 
