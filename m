@@ -2,71 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3420458548
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Nov 2021 18:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7602D45865D
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Nov 2021 21:44:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238306AbhKURQ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 Nov 2021 12:16:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46804 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbhKURQ6 (ORCPT
+        id S232923AbhKUUrz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 Nov 2021 15:47:55 -0500
+Received: from mx07-00227901.pphosted.com ([185.132.182.185]:50190 "EHLO
+        mx08-00227901.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S230421AbhKUUry (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 Nov 2021 12:16:58 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B92BC061574
-        for <linux-wireless@vger.kernel.org>; Sun, 21 Nov 2021 09:13:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=CEwcKOCTBD62Flf+A+wHLhM0ZeEGpWIW4/OgmHyinXc=; b=tokMm+gSsC/QIVMh7ftdwTXxrA
-        zoGJhR0QPmuV1Kc5OKzMgo/YH0Y1jirm2RavanI7t3Evx7Rrs9xsVWbBwtCvO7S1rrI/cUVS0JKOU
-        nqtqzQLGLmFzJ8s56geB7Ey+NFVsjwYgkDQNANkJqykJJcWZEMwbTFhTyPWc2yFahCBc=;
-Received: from p54ae9f3f.dip0.t-ipconnect.de ([84.174.159.63] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1moqPS-0002kN-AY; Sun, 21 Nov 2021 18:13:46 +0100
-Message-ID: <6b7327f2-4e29-ed23-cfcf-7d2e012c19a4@nbd.name>
-Date:   Sun, 21 Nov 2021 18:13:45 +0100
+        Sun, 21 Nov 2021 15:47:54 -0500
+X-Greylist: delayed 31417 seconds by postgrey-1.27 at vger.kernel.org; Sun, 21 Nov 2021 15:47:52 EST
+Received: from pps.filterd (m0097675.ppops.net [127.0.0.1])
+        by mx07-.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AJ7xOI5005994;
+        Fri, 19 Nov 2021 10:27:14 +0100
+Received: from zbw2k16ex01.bardusch.net ([185.80.186.174])
+        by mx07-.pphosted.com (PPS) with ESMTPS id 3cdjtyh6e0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Fri, 19 Nov 2021 10:27:14 +0100
+Received: from ZBW2K16EX01.bardusch.net (172.25.1.1) by
+ ZBW2K16EX01.bardusch.net (172.25.1.1) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.1.2308.20;
+ Fri, 19 Nov 2021 10:27:13 +0100
+Received: from User (172.25.1.131) by ZBW2K16EX01.bardusch.net (172.25.1.1)
+ with Microsoft SMTP Server id 15.1.2308.20 via Frontend Transport; Fri, 19
+ Nov 2021 10:27:03 +0100
+Reply-To: <josechoondak@gmail.com>
+From:   Joseph Choondak <info@ndd.co.mz>
+Subject: I hope this email finds you well.
+Date:   Fri, 19 Nov 2021 01:27:17 -0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.3.2
-Subject: Re: [PATCH] mt76: mt7915: fix NULL pointer dereference in
- mt7915_get_phy_mode
-Content-Language: en-US
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        ryder.lee@mediatek.com
-References: <ddae419a740f1fb9e48afd432035e9f394f512ee.1637239456.git.lorenzo@kernel.org>
- <YZeFx0s8HUNtaODw@lore-desk> <87y25kcpcz.fsf@codeaurora.org>
-From:   Felix Fietkau <nbd@nbd.name>
-In-Reply-To: <87y25kcpcz.fsf@codeaurora.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="Windows-1251"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <df3f24ed-6571-4db0-afaf-2f1171b46248@ZBW2K16EX01.bardusch.net>
+To:     Undisclosed recipients:;
+X-Proofpoint-ORIG-GUID: 64rehLaKfzm2AOk5eUTzKrlN8apD89hM
+X-Proofpoint-GUID: 64rehLaKfzm2AOk5eUTzKrlN8apD89hM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-19_08,2021-11-17_01,2020-04-07_01
+X-Proofpoint-Spam-Reason: orgsafe
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+May I please ask with considerable urgency for your kind assistance with the following matter.
+I'm a financial person, I think  I have something huge you might be interested in.
 
-On 2021-11-19 13:16, Kalle Valo wrote:
-> Lorenzo Bianconi <lorenzo@kernel.org> writes:
-> 
->>> Fix the following NULL pointer dereference in mt7915_get_phy_mode
->>> routine adding an ibss interface to the mt7915 driver.
->>
->> Hi Kalle and Felix,
->>
->> I guess we can apply this patch in wireless-drivers tree since the issue is
->> already in Linus's tree. What do you think?
-> 
-> Yeah, I agree that this should go to wireless-drivers. Felix, ack?
+Looking forward to hearing from you.
 
-Sure!
 
-Acked-by: Felix Fietkau <nbd@nbd.name>
-
-- Felix
+Respectfully!!
+Joseph Choondak
+Account Executive.
