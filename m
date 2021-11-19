@@ -2,163 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9A8C4576FA
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 20:22:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8D14457798
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 21:04:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230494AbhKSTZi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Nov 2021 14:25:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42004 "EHLO
+        id S233284AbhKSUHU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Nov 2021 15:07:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232926AbhKSTZh (ORCPT
+        with ESMTP id S230399AbhKSUHT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Nov 2021 14:25:37 -0500
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80DABC06174A
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Nov 2021 11:22:35 -0800 (PST)
-Received: by mail-pl1-x633.google.com with SMTP id z6so7671022plk.6
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Nov 2021 11:22:35 -0800 (PST)
+        Fri, 19 Nov 2021 15:07:19 -0500
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D4E5C061574
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Nov 2021 12:04:17 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id p3-20020a05600c1d8300b003334fab53afso11355045wms.3
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Nov 2021 12:04:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=GejJnaPkSdrFBUEbq1HDLo/AXrHzrj+OVR/ih9nOsZI=;
-        b=PSHqGmKsG+m7qQBnw3EW0+1KOv87ZgTDhqln7oOivL6UFHMBY7l4TfW2O2fsVfXGcI
-         s7bR4NUYnR2fH5y/GrcRhm7fRAbJS2tMpPr4AyyxrJy7CAQ4n3Ytx9lbX+HuCeZE8Acn
-         9uvPNWdAWVvsaoF+zv5Jcq8iiMx7tgsOVECII=
+        bh=YT8AkCkropj2MudxrKGPLWrAwxEDNGN+WH0+jujAC2c=;
+        b=BTW4p9q0RDEDOpqRPfjRlg9Jomspagmfth6sPj5wQSa4IxVgHBlBU7MpPvU5QbvMi0
+         IP4j4DgxiRzZGav2QBHCsUNJFgpuMeMku1sDt2j60TB2y15+6J/HO9SdLXWlfIjLj4eE
+         oPwqwpGHQr4l56/4HBvbhUONCZZ3O9505ULbbw1Ba8wZ0hkfQjLamQoPpaDb22fh5+rj
+         qeJu0gt2Onw9T8m+Ck/a3jLDXX2J7jCdFPXDI7DTyZEB7WsqfLmnumTMhRsYxZIgTuuw
+         TkjBJRqWiWCQ1Y9ksfNY54S4PX99qb41sgPetfWDpiruUmvfkxJem9gcGrH5e1KsTNvI
+         NoJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=GejJnaPkSdrFBUEbq1HDLo/AXrHzrj+OVR/ih9nOsZI=;
-        b=4Nw3nOG7tsMyp/imcKgKA8ypT2aMWhYJdygPkYCP7+hSPgaO4YIQ6pxu55pdSGqZAC
-         1R/Fw2GKJuN4yGxlAosUFDaJy3FOgpAGt/YlcIWNGQhXz7YymF8wB4LeeUX1B876+XWZ
-         6+W236TpluhDFFONWpkEE6KPncWXjEhT3/hGG4VcT8CmIpQqUuHOyamv0ju/ALoQU4kq
-         SVxE2HITLSzxR7JjXJWD4Vy0952VnwURKs4IYTA/VcwyCbQyT+zCBzaOPmC9Rvm+729x
-         LDYxC3qYw51GaRJWzV4LsFgNfAcS1wOZMl60MJFWd9OAYGN7kElVGYM9mmKlzaU/BS8Y
-         +3og==
-X-Gm-Message-State: AOAM531KK/88WiY9iliENuiMgOgpucoaNfSOE/pcr0eoFWxPxZ0I55mo
-        19WM9WukO1MxHTXVPAAf5fgyFA==
-X-Google-Smtp-Source: ABdhPJyKHIxH8p0bpnGSbVWFIXipL9g/p5kYWTvl/90i/NpfNdV1nleVUk34JWHLVyovxNwrMJzVNQ==
-X-Received: by 2002:a17:90a:d995:: with SMTP id d21mr2595804pjv.154.1637349754891;
-        Fri, 19 Nov 2021 11:22:34 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id q30sm350921pgl.46.2021.11.19.11.22.34
+        bh=YT8AkCkropj2MudxrKGPLWrAwxEDNGN+WH0+jujAC2c=;
+        b=UtJg1z9FY4HPT9O1kX3myBXXFiFTGAy3g2tSiSAT1d0YzhbGFhvFRp7KjGki3FSsDS
+         rmXbsyDQNSg3rGPWIDG/AEJW0AY098K+jl7KVBRNsZXgmuR6Vp70MiNahruwy35+ZVwk
+         eJeLeaBGihJAuvS3jW6n3N6eoxwlylSfVEZiROs63ZpS6KNuFyEAajN0o3csXWpWVgB5
+         mcxOlOL1wRJBFUp/V+jx44HztDtFJdNOZuePZvow1rGlrvdtYGFePZ1RtLbZPkFVF1r+
+         cbBA4NgOjqKn3f9RhRJT/FwlUArmUQtWSTMkCxcRTWQzuCdeG3HFXSQmvOMLxJ4nly2P
+         p2Yw==
+X-Gm-Message-State: AOAM532o+zzNfYwzP8qcoOIdGnL24W7cJSZjgRbbsZLDqDmlpFWGjA1N
+        ps2IR807yRTbI88TWSQUxwI=
+X-Google-Smtp-Source: ABdhPJw8Wx4irVqNaKm1cayl/qfYIVRpEbXS/5Esn4PzR8j5FSrpjfHygKbaKdJv6voaGPPnpwc6Bw==
+X-Received: by 2002:a1c:43c1:: with SMTP id q184mr2880415wma.153.1637352256124;
+        Fri, 19 Nov 2021 12:04:16 -0800 (PST)
+Received: from baligh-ThinkCentre-M720q.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.googlemail.com with ESMTPSA id be3sm12716741wmb.1.2021.11.19.12.04.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Nov 2021 11:22:34 -0800 (PST)
-From:   Kees Cook <keescook@chromium.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Colin Ian King <colin.king@canonical.com>,
-        Colin Ian King <colin.king@intel.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Kaixu Xia <kaixuxia@tencent.com>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH v3] rtlwifi: rtl8192de: Style clean-ups
-Date:   Fri, 19 Nov 2021 11:22:33 -0800
-Message-Id: <20211119192233.1021063-1-keescook@chromium.org>
-X-Mailer: git-send-email 2.30.2
+        Fri, 19 Nov 2021 12:04:15 -0800 (PST)
+From:   gasmibal@gmail.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, davem@davemloft.net,
+        kuba@kernel.org, Baligh Gasmi <gasmibal@gmail.com>
+Subject: [PATCH] mac80211: remove useless ieee80211_vif_is_mesh() check
+Date:   Fri, 19 Nov 2021 21:04:13 +0100
+Message-Id: <20211119200413.1236482-1-gasmibal@gmail.com>
+X-Mailer: git-send-email 2.34.0
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3433; h=from:subject; bh=eEEiVQZ8A0ttuPc+NS1yMiJkzEQSZvVCMArXF7UacbE=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhl/l45aCKMNhG3EDjrpaJL8xAaPqrQt/Q38fyqPMr 0+roXumJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYZf5eAAKCRCJcvTf3G3AJoTHEA CXQ5lFUssY2ECMJpO/wfh4002jlaJUm83BkQxBB1fHFsOfHoekMLh+iHH+dASVqHPWevbroCK8EUKP DC5iIonTvUkWKz8KTkMgFSCbptvpzDtjB4rtBswsrDPaIUJS9efI4f5Rgkmk03jRY0RoKq+LFKrN9y xTpX1Dip9B6CrFHZkkNKOf8nuA01t0tpn4yYArxP+alkdDgJQS6Nr4u3TKSEjH62fmqLnvZPgokztf WzvcEHABcQylkSIWw5uZ5+5ayBJo3OE2xW5hOissCM6mXvBh2cghrYTjlan0QNSWrHxo8BTsObm4Jv A6xmrsGwlzodq73Ardg5k91FpGfAOMo3PbxY8gH7JU+Y8DihuMxU1ruj7+6RefBHLEhXTZbCH90kZq C/cN1hNWt1wYtLDGRSxdHtrvLl6vPaFfJtX+HotWq4e1r2OTl9ikOgYcKKM1kh5wwWkwM8JeOdOdPM Xe/JD+rBsXhx0ERcs+yhqsAyWgBlfR3j4j76DzqW380ECf5ENK38FG40dWf7/Q92pgEReF/pz/p81e Ig9BQCb38qvxxufBc7Ke2gBpSXjyhUqatsi05pxRSsXHn5/PrPfooeO6/GKzGwI0dw5qxfoDtMoxw5 5lXGoo1iT3TSAZ9/c0P/HQSO+DpwmNJBh0eB0rTUgifemH2AsulWo5NA5SZQ==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Clean up some style issues:
-- Use ARRAY_SIZE() even though it's a u8 array.
-- Remove redundant CHANNEL_MAX_NUMBER_2G define.
-Additionally fix some dead code WARNs.
+From: Baligh Gasmi <gasmibal@gmail.com>
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://lore.kernel.org/lkml/57d0d1b6064342309f680f692192556c@realtek.com/
-Signed-off-by: Kees Cook <keescook@chromium.org>
+We check ieee80211_vif_is_mesh() at the top if() block,
+there's no need to check for it again.
 ---
-v2->v3: rebase, add ack
----
- .../wireless/realtek/rtlwifi/rtl8192de/phy.c    | 17 +++++++----------
- drivers/net/wireless/realtek/rtlwifi/wifi.h     |  1 -
- 2 files changed, 7 insertions(+), 11 deletions(-)
+ net/mac80211/sta_info.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index 9b83c710c9b8..51fe51bb0504 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -899,7 +899,7 @@ static u8 _rtl92c_phy_get_rightchnlplace(u8 chnl)
- 	u8 place = chnl;
- 
- 	if (chnl > 14) {
--		for (place = 14; place < sizeof(channel5g); place++) {
-+		for (place = 14; place < ARRAY_SIZE(channel5g); place++) {
- 			if (channel5g[place] == chnl) {
- 				place++;
- 				break;
-@@ -1366,7 +1366,7 @@ u8 rtl92d_get_rightchnlplace_for_iqk(u8 chnl)
- 	u8 place;
- 
- 	if (chnl > 14) {
--		for (place = 14; place < sizeof(channel_all); place++) {
-+		for (place = 14; place < ARRAY_SIZE(channel_all); place++) {
- 			if (channel_all[place] == chnl)
- 				return place - 13;
- 		}
-@@ -2428,7 +2428,7 @@ static bool _rtl92d_is_legal_5g_channel(struct ieee80211_hw *hw, u8 channel)
- 
- 	int i;
- 
--	for (i = 0; i < sizeof(channel5g); i++)
-+	for (i = 0; i < ARRAY_SIZE(channel5g); i++)
- 		if (channel == channel5g[i])
- 			return true;
- 	return false;
-@@ -2692,9 +2692,8 @@ void rtl92d_phy_reset_iqk_result(struct ieee80211_hw *hw)
- 	u8 i;
- 
- 	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
--		"settings regs %d default regs %d\n",
--		(int)(sizeof(rtlphy->iqk_matrix) /
--		      sizeof(struct iqk_matrix_regs)),
-+		"settings regs %zu default regs %d\n",
-+		ARRAY_SIZE(rtlphy->iqk_matrix),
- 		IQK_MATRIX_REG_NUM);
- 	/* 0xe94, 0xe9c, 0xea4, 0xeac, 0xeb4, 0xebc, 0xec4, 0xecc */
- 	for (i = 0; i < IQK_MATRIX_SETTINGS_NUM; i++) {
-@@ -2861,16 +2860,14 @@ u8 rtl92d_phy_sw_chnl(struct ieee80211_hw *hw)
- 	case BAND_ON_5G:
- 		/* Get first channel error when change between
- 		 * 5G and 2.4G band. */
--		if (channel <= 14)
-+		if (WARN_ONCE(channel <= 14, "rtl8192de: 5G but channel<=14\n"))
- 			return 0;
--		WARN_ONCE((channel <= 14), "rtl8192de: 5G but channel<=14\n");
- 		break;
- 	case BAND_ON_2_4G:
- 		/* Get first channel error when change between
- 		 * 5G and 2.4G band. */
--		if (channel > 14)
-+		if (WARN_ONCE(channel > 14, "rtl8192de: 2G but channel>14\n"))
- 			return 0;
--		WARN_ONCE((channel > 14), "rtl8192de: 2G but channel>14\n");
- 		break;
- 	default:
- 		WARN_ONCE(true, "rtl8192de: Invalid WirelessMode(%#x)!!\n",
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index aa07856411b1..31f9e9e5c680 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -108,7 +108,6 @@
- #define	CHANNEL_GROUP_IDX_5GM		6
- #define	CHANNEL_GROUP_IDX_5GH		9
- #define	CHANNEL_GROUP_MAX_5G		9
--#define CHANNEL_MAX_NUMBER_2G		14
- #define AVG_THERMAL_NUM			8
- #define AVG_THERMAL_NUM_88E		4
- #define AVG_THERMAL_NUM_8723BE		4
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 51b49f0d3ad4..b979778c6d76 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -364,8 +364,7 @@ struct sta_info *sta_info_alloc(struct ieee80211_sub_if_data *sdata,
+ 			goto free;
+ 		sta->mesh->plink_sta = sta;
+ 		spin_lock_init(&sta->mesh->plink_lock);
+-		if (ieee80211_vif_is_mesh(&sdata->vif) &&
+-		    !sdata->u.mesh.user_mpm)
++		if (!sdata->u.mesh.user_mpm)
+ 			timer_setup(&sta->mesh->plink_timer, mesh_plink_timer,
+ 				    0);
+ 		sta->mesh->nonpeer_pm = NL80211_MESH_POWER_ACTIVE;
 -- 
-2.30.2
+2.34.0
 
