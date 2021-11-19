@@ -2,86 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 309F54566E1
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 01:20:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B3FB4566FD
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 01:47:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233453AbhKSATQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 Nov 2021 19:19:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37244 "EHLO
+        id S233725AbhKSAt4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 Nov 2021 19:49:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232202AbhKSATQ (ORCPT
+        with ESMTP id S233583AbhKSAty (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 Nov 2021 19:19:16 -0500
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74498C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 16:16:15 -0800 (PST)
-Received: by mail-pj1-x1035.google.com with SMTP id np3so6516994pjb.4
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 16:16:15 -0800 (PST)
+        Thu, 18 Nov 2021 19:49:54 -0500
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC427C061748
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 16:46:53 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id gt5so6596709pjb.1
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Nov 2021 16:46:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:date:user-agent:mime-version
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=iuwwnMA6cvubz8EdCrjzJ01VvI9NjV+RtDHQRMkl53Y=;
-        b=bDb//A0ik1zLvtAiU0sjYAJKOsaUxjZcJfhfoCEbMo87rYNaCHx3ZnWof4+3TGNC2c
-         rMBYOGz4HFtkXz4Jd1wAv2/VinXKC0Q0Q+PlxR6v3JjuunLQJnHKwWhc7rs5VcaZ5hqh
-         YxtlVlcZD7Ghkm/krPFnQYcpPvdrl29jg4RNpqII+c/OSA5UNwG+De8WZ82tfyRppV6I
-         dz1b9xJZBixcMHOkIhHA81qU4rXkbalO53eC4mkUuE5cXGybLc2xvthA0Af+KWuEi1A0
-         FuqYsNQiwjGTF/a8DZWJfbnshYRSl9aRxG/7uex8xNUCN9gjVBKbld4TQh7Hkb+IEQNR
-         HKfg==
+        bh=ZT1iG7+0+T8P3rfUSOYrrKI2G5W7nv68HnCCWdsEXCw=;
+        b=HobjTeddfRRQcGJk+XkhzsQSfS58o+IU5voWeA3xC5zvznT5suEw9/WjTWzrrTkIlK
+         HISMB2VIJNAz6HIoMUjGQImgyb1ywoBmRMWbkfi/PzgH2962mnDehKbUdlTCwSX/gqWz
+         /84oh2aY9PIRzfgHNPP0/m3wRDtCJOmltGs14=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:date:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=iuwwnMA6cvubz8EdCrjzJ01VvI9NjV+RtDHQRMkl53Y=;
-        b=UHevO29DdxnOABBddYbWJ8zWTo5/c6UoEI1ii5CO0tF3XoU0rg6zR4m3q4PWAlpv2r
-         KwainweON1ZYYcXU8vUYqTBq2j6v3AqQB3/g9xViXR57x2Sz1mqAx2KXQju8AiGEgFRT
-         TwaezWQo+4hnzQuEbq0tNt3DW8W01xCC62IPIrW3dhN1TicPdSxBKV0CHva6fyCK+Svy
-         fX9uUbFV27+SUULGAWa1sENo1ZqO+RLpJI7OjAi7Xgq0ONlE7zaMqA4owMcSMd9zLNa4
-         Q7CM3lmAMunx8WmN73Y4/+D2SKZEwLm/I4nIK1siq+8bE6GHjhSFRFDiZShogX2EplGc
-         rHvw==
-X-Gm-Message-State: AOAM532lu+8NgLX6H1/vWabmFf5qc/aMdOvxe+5wceILoE2qT0Gu8smv
-        quO18lsZ3uATJYR1VP16MZV/irS2ZAo=
-X-Google-Smtp-Source: ABdhPJyZdgbQ1QlXhSezWUHvAps+S+x8CrXmAIy5UE8jkYgrIW4aubVFwTop4kLSxIb4zdo4OpZEPQ==
-X-Received: by 2002:a17:902:aa43:b0:142:6919:73da with SMTP id c3-20020a170902aa4300b00142691973damr71519065plr.39.1637280974783;
-        Thu, 18 Nov 2021 16:16:14 -0800 (PST)
-Received: from [192.168.254.58] ([50.45.187.22])
-        by smtp.gmail.com with ESMTPSA id z7sm747309pfe.77.2021.11.18.16.16.14
-        for <linux-wireless@vger.kernel.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ZT1iG7+0+T8P3rfUSOYrrKI2G5W7nv68HnCCWdsEXCw=;
+        b=fMzAjawGgn7EhVqxVXTXEcJ0FSYkZkzGI3dJHshWMk5uMGAFRf8CM+qojc7IX3QEwx
+         ssJ6r7uovybPeXJLIwGIn5eFKPp3tWnySTvldG6ZFn4jA7FpLpwwDiJhuQ3ss0kvLdPo
+         LcP/RKB/g6TRW+VdYsbiaVuXKwH4yhwuLbewoaTjYVlcdt/MDYm5VUZvpIVy87QWsbzv
+         9W0RTP3fafPyWcZurUSg7jBombiGe8Dde9ywYQgn0I6d6FClIuF0w2ns6VVBfAi7r6su
+         1Rj42bwvtvZAauMA07bTWC5gcdsUin/mEhct9Kztb212UKfx7JNLaic5ytFVN4pgxBkQ
+         +pfA==
+X-Gm-Message-State: AOAM530r3SK46VkNSbNRtszXqmxePesUmGBeMa2IDB3jdsavPEp3Phqe
+        nNfYAmgH98GhBL2TgAemA0FG3w==
+X-Google-Smtp-Source: ABdhPJyv639lg1pLRyYgeRdj3wF+Hn0NzW8M+lZTk58Npccq7L+pczv//omx8Da7ngXlDyZTotZpow==
+X-Received: by 2002:a17:90b:128e:: with SMTP id fw14mr135653pjb.173.1637282813204;
+        Thu, 18 Nov 2021 16:46:53 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id mg12sm9236477pjb.10.2021.11.18.16.46.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Nov 2021 16:16:14 -0800 (PST)
-Message-ID: <2b18f86924c3d64437aa139f6401ee2e7705eeb0.camel@gmail.com>
-Subject: Adding CMD_SET_CHANNEL for station iftypes
-From:   James Prestwood <prestwoj@gmail.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Thu, 18 Nov 2021 16:11:40 -0800
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4 (3.40.4-2.fc34) 
+        Thu, 18 Nov 2021 16:46:52 -0800 (PST)
+From:   Kees Cook <keescook@chromium.org>
+To:     Jouni Malinen <j@w1.fi>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Allen Pais <allen.lkml@gmail.com>,
+        Romain Perier <romain.perier@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: [PATCH v2] intersil: Use struct_group() for memcpy() region
+Date:   Thu, 18 Nov 2021 16:46:46 -0800
+Message-Id: <20211119004646.2347920-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2635; h=from:subject; bh=YsQ+ZCDrVqrDtxvnMcMU6Cxw83EB3GFNn/tVgcCBKYc=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhlvP2ybmT5SP1sgJUGnCcAz8QQT3eUQgvyBjXCASQ cKJDqb+JAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYZbz9gAKCRCJcvTf3G3AJiBYEA CwW65xXbKOStSluO7TqWoGVpcEZWUZB/l3IgGB5mD2EiwmapB2/xSO9Y8MLErgpFQjbZ5Il67td3yt 3/ysqTqflgTgYkfcAEOhVCglDluzqNBFuNTx+5f44BKcGtlgktJp8d/DyGtApELGq0sP9rDAPG+dps wGND8d0PHG3kyUzixHIuEM/pWrD5dstrsGxwEpPtg0fuv/Vwas+LeVzmsrNfZRiDQ7W3URhnfstPFC qHpIp8ES7JqETe8lj6tagAjdUfZqbX4Joni/ckCjGWBdq9sKxGK7silkOJXoQxFrDxzqCEAUVy8clU ei+E3A+O+B6PUWE4/X9e4htX7WxzhYEjvs5OMLT+I3PMv94bRRmZYyshHBqZRQLhtMvT3sWlhpuJ46 QZ/ywFVc5Tdz2alOZG4H+yhghMDPPX+71+OYQJX82mHrq++w6l23C6YfzrOPHt9gQlefpja4NPfCkO YKrUJesfbyjnvlt8pT2iiGXC7SUK1Sl9+iOCOsHVID94RDP6F09vwCCK47Evr8zfXNz2sYyLuYBdVF aWhg6VsBNrD22ETGVp2Tn6TrfWlWuByuH6vLQ7z2E2vjjDLZPixgPuXvlyrq5PsbmSUQlIfMq/c9lL yP84cPQ2j0tLWQ2TbxmGeLlr8dQtS/M2YHWjEWpTekpU+spz+pG4Xbzxl/fQ==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+In preparation for FORTIFY_SOURCE performing compile-time and run-time
+field bounds checking for memcpy(), memmove(), and memset(), avoid
+intentionally writing across neighboring fields.
 
-I see CMD_SET_CHANNEL is only supported for AP-type iftypes (AP,
-P2P_GO, etc). While this definitely makes sense in most cases,
-protocols like p2p/dpp require going off channel for an undetermined
-amount of time.
+Use struct_group() in struct hfa384x_tx_frame around members
+frame_control, duration_id, addr1, addr2, addr3, and seq_ctrl, so they
+can be referenced together. This will allow memcpy() and sizeof() to
+more easily reason about sizes, improve readability, and avoid future
+warnings about writing beyond the end of frame_control.
 
-I could go into the exact scenarios but in short your REMAIN_ON_CHANNEL
-could end at very inconvenient times.
+"pahole" shows no size nor member offset changes to struct
+hfa384x_tx_frame. "objdump -d" shows no object code changes.
 
-Specifically when a station is not associated to any AP is there any
-harm in allowing CMD_SET_CHANNEL? Is this purely a software limitation
-or do drivers not allow this?
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+v1->v2: rename "frame" to "header"
+---
+ drivers/net/wireless/intersil/hostap/hostap_hw.c   |  5 +++--
+ drivers/net/wireless/intersil/hostap/hostap_wlan.h | 14 ++++++++------
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-If this sounds reasonable (and possible) I would propose adding the
-station iftype to CMD_SET_CHANNEL in addition to an extended feature
-e.g. NL80211_EXT_FEATURE_STA_SET_CHANNEL so supplicants can detect
-support or fall back to using REMAIN_ON_CHANNEL for these specific use
-cases.
-
-Thanks,
-James
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_hw.c b/drivers/net/wireless/intersil/hostap/hostap_hw.c
+index e459e7192ae9..b74f4cb5d6d3 100644
+--- a/drivers/net/wireless/intersil/hostap/hostap_hw.c
++++ b/drivers/net/wireless/intersil/hostap/hostap_hw.c
+@@ -1815,8 +1815,9 @@ static int prism2_tx_80211(struct sk_buff *skb, struct net_device *dev)
+ 	memset(&txdesc, 0, sizeof(txdesc));
+ 
+ 	/* skb->data starts with txdesc->frame_control */
+-	hdr_len = 24;
+-	skb_copy_from_linear_data(skb, &txdesc.frame_control, hdr_len);
++	hdr_len = sizeof(txdesc.header);
++	BUILD_BUG_ON(hdr_len != 24);
++	skb_copy_from_linear_data(skb, &txdesc.header, hdr_len);
+ 	if (ieee80211_is_data(txdesc.frame_control) &&
+ 	    ieee80211_has_a4(txdesc.frame_control) &&
+ 	    skb->len >= 30) {
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_wlan.h b/drivers/net/wireless/intersil/hostap/hostap_wlan.h
+index dd2603d9b5d3..c25cd21d18bd 100644
+--- a/drivers/net/wireless/intersil/hostap/hostap_wlan.h
++++ b/drivers/net/wireless/intersil/hostap/hostap_wlan.h
+@@ -115,12 +115,14 @@ struct hfa384x_tx_frame {
+ 	__le16 tx_control; /* HFA384X_TX_CTRL_ flags */
+ 
+ 	/* 802.11 */
+-	__le16 frame_control; /* parts not used */
+-	__le16 duration_id;
+-	u8 addr1[ETH_ALEN];
+-	u8 addr2[ETH_ALEN]; /* filled by firmware */
+-	u8 addr3[ETH_ALEN];
+-	__le16 seq_ctrl; /* filled by firmware */
++	struct_group(header,
++		__le16 frame_control; /* parts not used */
++		__le16 duration_id;
++		u8 addr1[ETH_ALEN];
++		u8 addr2[ETH_ALEN]; /* filled by firmware */
++		u8 addr3[ETH_ALEN];
++		__le16 seq_ctrl; /* filled by firmware */
++	);
+ 	u8 addr4[ETH_ALEN];
+ 	__le16 data_len;
+ 
+-- 
+2.30.2
 
