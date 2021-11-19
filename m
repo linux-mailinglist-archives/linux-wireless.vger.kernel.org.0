@@ -2,159 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0540457799
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 21:06:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5401745782E
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 22:36:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231740AbhKSUJ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Nov 2021 15:09:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51986 "EHLO
+        id S235495AbhKSVjy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Nov 2021 16:39:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbhKSUJ6 (ORCPT
+        with ESMTP id S235475AbhKSVjx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Nov 2021 15:09:58 -0500
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E827C061574
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Nov 2021 12:06:56 -0800 (PST)
-Received: by mail-ot1-x332.google.com with SMTP id o15-20020a9d410f000000b0055c942cc7a0so18385570ote.8
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Nov 2021 12:06:56 -0800 (PST)
+        Fri, 19 Nov 2021 16:39:53 -0500
+Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 714EDC061574
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Nov 2021 13:36:51 -0800 (PST)
+Received: by mail-ua1-x92d.google.com with SMTP id y5so23951662ual.7
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Nov 2021 13:36:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=pvxZWWx0k9530SOnlZmD8e6OIIE+pMnqqr7akC7kFsg=;
-        b=CLfCZRFoY/KqNEr9DOKFmtsG3UAivBzYg2TSFPdbIKwGCOkLAJbO6IeQbpQssYapAr
-         GAfxA4K+J8WmRedCL7mCh2qNuMHaCjYXMKZsNQuDkktrrg8gIbxYnFj7Xp9boP6IyZAP
-         y2tWDxk/4KlF1anCT8FyjadaQdFqB0KugLq4cpK9j/Z477aa7fjB2LuTo2uWSM6Wh5aN
-         ENfRigqeOnZ2xeRYeFKhWcO0sa7bEccDRazdFvCTakI0cC3uz35ayznHZtVecpgD5zPD
-         DjW52V9iHrhEBuW7DSQOfj1Y84DJeLipZu9r4TNEVKAmkISlKC5V+pqkuMpAwA+jxg6R
-         9sWQ==
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=lOKLQrhvfUzPs56nlN4o6ujSoAcpqItEhmOXcbtgQdA=;
+        b=c5mt+ZIDXtzGGIYfOTNa4ggkKKNC+OLiymaUszGdfsDoOOIZtxGB4Hp7CCgG6JyGvy
+         kEgEP9pAVjRtxPOcPbARGWRmUt3ETfGXfSp/Cqk1veV0P8czE+gxqTqaF0Y4z4/Eszkr
+         HM92lipIRzyLoQCcFUg4S0NjPzW9R6eKUkVgwm4u8g7SGM405QWbKpivUi4TtUz/hK4S
+         IOfagnYHFRmuuArINGjNlzVgWnY92Ep5G9wmosdrx4/BkE+rdGuF5bjHX73hBXzMvYQg
+         2hnn8BiUEtLg1YFVguDKc1BSgIKu29PRdFaSWsnMw93S4JVR4XpIU+MY26ohKRKZU+eR
+         CqGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=pvxZWWx0k9530SOnlZmD8e6OIIE+pMnqqr7akC7kFsg=;
-        b=iAfAXOrnCLVG77/4Cd2fhpg6lQhkFycS1K6gKTK5LW8zIfQxmsu/BghX64PiQm7B7z
-         gkW1jqlXB3eUkFU+6hocd4yZRQcD1kvem2NeL7HEjOmY9UZw+97gXlQ+Wuc3XUPMQmD4
-         ULKWq3luMj7BXFjkURJ7cCTOZ0wmU/I4Nf2gDrkXgabGNLE8JR5Ol+3ZG5a8liS3m1L2
-         39ZnfBvWpTHsrWGONw6v3OuVA4NPdKnTPQgsgBajIEKP+xH9g4cZvEwdEh7GeoUp9drz
-         yveW8l5AN7Xjfb1TcruTDnjbXgdgwbwFccciWlLsT6T6g2ZSVw8488d3zuDGZoW3H+s4
-         ablw==
-X-Gm-Message-State: AOAM531ejmEHyCLEV6dH0NO3Ed5l3/pWp64eYkA9SBMjaYdD+ab0O2yB
-        y9Ooesmb3BYnvy1uhQpgoF0=
-X-Google-Smtp-Source: ABdhPJxCwRtYK+vCIYu5Akxr85IzEqx7vKJY6tcUXJTFjLP+w1mD1hquf7tlGrUvnjaL9a8txTHRFQ==
-X-Received: by 2002:a9d:6195:: with SMTP id g21mr7242684otk.289.1637352416046;
-        Fri, 19 Nov 2021 12:06:56 -0800 (PST)
-Received: from [192.168.1.103] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
-        by smtp.gmail.com with ESMTPSA id c3sm232010oiw.8.2021.11.19.12.06.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Nov 2021 12:06:55 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <2c354523-1603-0d0b-1880-1ff8dd00a58b@lwfinger.net>
-Date:   Fri, 19 Nov 2021 14:06:54 -0600
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=lOKLQrhvfUzPs56nlN4o6ujSoAcpqItEhmOXcbtgQdA=;
+        b=DG+CGdJMPq+aiDhLDbxuz0u7kjFbw5C7D3Q/2h8gJkeFGsmEx53Du2HChKvVhAqZKh
+         gVPlKPoYIEYirM5YJqZtDV98yd8cH4rtcvbn9lX9iJOuIkUzbqEbSK7aNrydwdMwQEKK
+         Eu6lIGcpthNp4ZRaKd0PVHysizUUPW+m+6kCjeYpHvjKphVeYRAtoCeOAe3o5AH9q2nY
+         3YNjKGOiFLi9UwC2eEKdqEuCNYfOj52H1f6VNxsjKCNIydcdLNQSjnsyO17+e1mQPO3k
+         nCvxMV8gGoQvcZSwyKjBIhNzWfXOLgGhqdUs8XO2RvYklhgMQTkYrrp+nvDSCYVIn+f0
+         zWig==
+X-Gm-Message-State: AOAM530H0/Y87hISja17ZEr6s44jvlEMuplYBuu4W8Fn15M/SJGSwVVQ
+        lGZ45UltXjlRLsXz+sWxt8+x+pDiyrhh/LK5lq5YR9lVAjY=
+X-Google-Smtp-Source: ABdhPJxOC60VaTRfSelm67+s0JG6BeeVjqH/i/0c1hddFjtd55yk4iNBtqcGub4e4QUNu0s8cuQ6d0emz+0nINJ+II8=
+X-Received: by 2002:a05:6102:214f:: with SMTP id h15mr98005962vsg.60.1637357810460;
+ Fri, 19 Nov 2021 13:36:50 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] rtw89: add AXIDMA and TX FIFO dump in mac_mem_dump
-Content-Language: en-US
-To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, leo.li@realtek.com
-References: <20211119055919.12954-1-pkshih@realtek.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <20211119055919.12954-1-pkshih@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From:   Jupiter <jupiter.hce@gmail.com>
+Date:   Sat, 20 Nov 2021 08:36:14 +1100
+Message-ID: <CAA=hcWT_dmKU1Uj4YmJ_rxZ+HsCVOEYJLSH-h3B3qqNhC1xi-g@mail.gmail.com>
+Subject: mwifiex reset buggy
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     Douglas Anderson <dianders@chromium.org>,
+        Amitkumar Karwar <akarwar@marvell.com>,
+        Ganapathi Bhat <gbhat@marvell.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/18/21 23:59, Ping-Ke Shih wrote:
-> From: Chia-Yuan Li <leo.li@realtek.com>
-> 
-> The AXIDMA is tx/rx packet transmission between PCIE host
-> and device, and TX FIFO is MAC TX data.
-> We dump them to ensure these memory buffers correct.
-> 
-> Signed-off-by: Chia-Yuan Li <leo.li@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Hi,
 
-The code in this patch is fine, but I think you may want to change the commit 
-message. Te mo, "We dump them to ensure these memory buffers correct" means that 
-the change here will fix the memory buffers. I think you want to say "We dump 
-them to verify that these memory buffers are correct." This means that you are 
-providing a way to dump the buffers so that their correctness can be determined.
+After days debugging, enabled CONFIG_MMC_DEBUG=y, I suspect the
+mwifiex reset issue could still  be a mwifiex bug.
 
-Reviewed-by: Larry Finger <Larry.Finger@lwfinger.net"
+I use firmware sd8801_uapsta.bin, it is able to connect to the WiFi
+network, but  reset either from WiFi modem or following command killed
+WiFi, disabled mwifiex and wiped off /sys/kernel/debug/mwifiex/mlan0:
 
-Larry
+# echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
 
-> ---
->   drivers/net/wireless/realtek/rtw89/debug.c |  5 +++++
->   drivers/net/wireless/realtek/rtw89/mac.h   | 10 ++++++++++
->   2 files changed, 15 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-> index 29eb188c888c7..dabee20b37c49 100644
-> --- a/drivers/net/wireless/realtek/rtw89/debug.c
-> +++ b/drivers/net/wireless/realtek/rtw89/debug.c
-> @@ -723,6 +723,7 @@ rtw89_debug_priv_mac_mem_dump_select(struct file *filp,
->   }
->   
->   static const u32 mac_mem_base_addr_table[RTW89_MAC_MEM_MAX] = {
-> +	[RTW89_MAC_MEM_AXIDMA]	        = AXIDMA_BASE_ADDR,
->   	[RTW89_MAC_MEM_SHARED_BUF]	= SHARED_BUF_BASE_ADDR,
->   	[RTW89_MAC_MEM_DMAC_TBL]	= DMAC_TBL_BASE_ADDR,
->   	[RTW89_MAC_MEM_SHCUT_MACHDR]	= SHCUT_MACHDR_BASE_ADDR,
-> @@ -735,6 +736,10 @@ static const u32 mac_mem_base_addr_table[RTW89_MAC_MEM_MAX] = {
->   	[RTW89_MAC_MEM_BA_CAM]		= BA_CAM_BASE_ADDR,
->   	[RTW89_MAC_MEM_BCN_IE_CAM0]	= BCN_IE_CAM0_BASE_ADDR,
->   	[RTW89_MAC_MEM_BCN_IE_CAM1]	= BCN_IE_CAM1_BASE_ADDR,
-> +	[RTW89_MAC_MEM_TXD_FIFO_0]	= TXD_FIFO_0_BASE_ADDR,
-> +	[RTW89_MAC_MEM_TXD_FIFO_1]	= TXD_FIFO_1_BASE_ADDR,
-> +	[RTW89_MAC_MEM_TXDATA_FIFO_0]	= TXDATA_FIFO_0_BASE_ADDR,
-> +	[RTW89_MAC_MEM_TXDATA_FIFO_1]	= TXDATA_FIFO_1_BASE_ADDR,
->   };
->   
->   static void rtw89_debug_dump_mac_mem(struct seq_file *m,
-> diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-> index 6f3db8a2a9c2a..94cd29bd83d77 100644
-> --- a/drivers/net/wireless/realtek/rtw89/mac.h
-> +++ b/drivers/net/wireless/realtek/rtw89/mac.h
-> @@ -227,6 +227,7 @@ enum rtw89_mac_dbg_port_sel {
->   /* SRAM mem dump */
->   #define R_AX_INDIR_ACCESS_ENTRY 0x40000
->   
-> +#define	AXIDMA_BASE_ADDR		0x18006000
->   #define	STA_SCHED_BASE_ADDR		0x18808000
->   #define	RXPLD_FLTR_CAM_BASE_ADDR	0x18813000
->   #define	SECURITY_CAM_BASE_ADDR		0x18814000
-> @@ -240,10 +241,15 @@ enum rtw89_mac_dbg_port_sel {
->   #define	DMAC_TBL_BASE_ADDR		0x18800000
->   #define	SHCUT_MACHDR_BASE_ADDR		0x18800800
->   #define	BCN_IE_CAM1_BASE_ADDR		0x188A0000
-> +#define	TXD_FIFO_0_BASE_ADDR		0x18856200
-> +#define	TXD_FIFO_1_BASE_ADDR		0x188A1080
-> +#define	TXDATA_FIFO_0_BASE_ADDR		0x18856000
-> +#define	TXDATA_FIFO_1_BASE_ADDR		0x188A1000
->   
->   #define CCTL_INFO_SIZE		32
->   
->   enum rtw89_mac_mem_sel {
-> +	RTW89_MAC_MEM_AXIDMA,
->   	RTW89_MAC_MEM_SHARED_BUF,
->   	RTW89_MAC_MEM_DMAC_TBL,
->   	RTW89_MAC_MEM_SHCUT_MACHDR,
-> @@ -256,6 +262,10 @@ enum rtw89_mac_mem_sel {
->   	RTW89_MAC_MEM_BA_CAM,
->   	RTW89_MAC_MEM_BCN_IE_CAM0,
->   	RTW89_MAC_MEM_BCN_IE_CAM1,
-> +	RTW89_MAC_MEM_TXD_FIFO_0,
-> +	RTW89_MAC_MEM_TXD_FIFO_1,
-> +	RTW89_MAC_MEM_TXDATA_FIFO_0,
-> +	RTW89_MAC_MEM_TXDATA_FIFO_1,
->   
->   	/* keep last */
->   	RTW89_MAC_MEM_LAST,
-> 
+[  416.311114] mwifiex_sdio mmc0:0001:1: Resetting per request
+[  416.333491] mwifiex_sdio mmc0:0001:1: info: successfully
+disconnected from 34:08:04:12:b1:a2: reason code 3
+[  416.366368] mwifiex_sdio mmc0:0001:1: info: shutdown mwifiex...
+[  416.374812] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+[  416.381431] mwifiex_sdio mmc0:0001:1: deleting the crypto keys
+[  416.387455] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+[  416.393423] mwifiex_sdio mmc0:0001:1: deleting the crypto keys
+[  416.399401] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+[  416.405364] mwifiex_sdio mmc0:0001:1: deleting the crypto keys
+[  416.411332] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+[  416.417410] mwifiex_sdio mmc0:0001:1: deleting the crypto keys
+[  416.423293] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+[  416.429349] mwifiex_sdio mmc0:0001:1: deleting the crypto keys
+root@solar:~# [  416.546386] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+[  416.583278] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+[  416.888906] IPv6: ADDRCONF(NETDEV_UP): sit0: link is not ready
+[  416.894822] IPv6: ADDRCONF(NETDEV_UP): wwan0: link is not ready
+[  417.302781] mwifiex_sdio mmc0:0001:1: WLAN FW already running! Skip FW dnld
+[  417.310149] mwifiex_sdio mmc0:0001:1: WLAN FW is active
+[  427.490344] mwifiex_sdio mmc0:0001:1: mwifiex_cmd_timeout_func:
+Timeout cmd id = 0xa9, act = 0x0
+[  427.499732] mwifiex_sdio mmc0:0001:1: num_data_h2c_failure = 0
+[  427.505825] mwifiex_sdio mmc0:0001:1: num_cmd_h2c_failure = 0
+[  427.511751] mwifiex_sdio mmc0:0001:1: is_cmd_timedout = 1
+[  427.517216] mwifiex_sdio mmc0:0001:1: num_tx_timeout = 0
+[  427.522686] mwifiex_sdio mmc0:0001:1: last_cmd_index = 1
+[  427.528063] mwifiex_sdio mmc0:0001:1: last_cmd_id: 28 00 a9 00 07
+01 07 01 24 00
+[  427.535612] mwifiex_sdio mmc0:0001:1: last_cmd_act: 13 00 00 00 00
+00 00 00 34 08
+[  427.543248] mwifiex_sdio mmc0:0001:1: last_cmd_resp_index = 0
+[  427.549058] mwifiex_sdio mmc0:0001:1: last_cmd_resp_id: 28 80 07 81
+07 81 07 81 24 80
+[  427.557033] mwifiex_sdio mmc0:0001:1: last_event_index = 3
+[  427.562670] mwifiex_sdio mmc0:0001:1: last_event: 0b 00 0a 00 0b 00
+0a 00 0a 00
+[  427.570045] mwifiex_sdio mmc0:0001:1: data_sent=0 cmd_sent=0
+[  427.575852] mwifiex_sdio mmc0:0001:1: ps_mode=0 ps_state=0
+[  427.591087] mwifiex_sdio mmc0:0001:1: info: _mwifiex_fw_dpc:
+unregister device
 
+The /sys/kernel/debug/mwifiex/mlan0 was deleted:
+
+# ls /sys/kernel/debug/mwifiex/
+
+Looked at Douglas Anderson post "Fix Marvell WiFi reset by adding SDIO
+API to replug card"
+https://patchwork.kernel.org/project/linux-mmc/cover/20190716164209.62320-1-dianders@chromium.org/,
+I believe mwifiex should be able to replug card after reset, is it
+still buggy or is it the firmware sd8801_uapsta.bin problem?
+
+Thank you.
+
+Kind regards,
+
+- JH
