@@ -2,160 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E80C456B8B
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 09:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3CEA456BAD
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Nov 2021 09:30:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234147AbhKSIYP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Nov 2021 03:24:15 -0500
-Received: from m43-7.mailgun.net ([69.72.43.7]:58784 "EHLO m43-7.mailgun.net"
+        id S231313AbhKSIcJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Nov 2021 03:32:09 -0500
+Received: from mga17.intel.com ([192.55.52.151]:46235 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234073AbhKSIYP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Nov 2021 03:24:15 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637310074; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=qPRQ8GT1EoqJcWnMwOwKF9zdY1ZKDhNu/XlFvKEQsVU=;
- b=bVszgf6zjEERem4mL6kCgJI7LSkt3ExnIw8ZkV39X64G8GMmqABIZG8wQ9JgzqZfWEM2BheA
- r8hwGplMJebejlvYLE6hvW3s4kz4LwbQyfo6jBlTODBlwarDAzFV2i8wLmhMrOYNrq2zI1aO
- 9OdaJgIcjMt+Vp8g+XMnGDApDQ0=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 61975e791e1d2f5233a2ab52 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 19 Nov 2021 08:21:13
- GMT
-Sender: akolli=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BBE35C4360C; Fri, 19 Nov 2021 08:21:13 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: akolli)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5DEADC4338F;
-        Fri, 19 Nov 2021 08:21:12 +0000 (UTC)
+        id S234147AbhKSIcJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 19 Nov 2021 03:32:09 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10172"; a="215094726"
+X-IronPort-AV: E=Sophos;i="5.87,246,1631602800"; 
+   d="scan'208";a="215094726"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2021 00:29:07 -0800
+X-IronPort-AV: E=Sophos;i="5.87,246,1631602800"; 
+   d="scan'208";a="455380711"
+Received: from smile.fi.intel.com ([10.237.72.184])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2021 00:28:58 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mnzGN-008TT0-2r;
+        Fri, 19 Nov 2021 10:28:51 +0200
+Date:   Fri, 19 Nov 2021 10:28:50 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
+        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
+        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
+        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
+        haijun.liu@mediatek.com, amir.hanania@intel.com,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
+        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
+        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
+        suresh.nagaraj@intel.com
+Subject: Re: [PATCH v2 02/14] net: wwan: t7xx: Add control DMA interface
+Message-ID: <YZdgQpiPZo2Xp1pB@smile.fi.intel.com>
+References: <20211101035635.26999-1-ricardo.martinez@linux.intel.com>
+ <20211101035635.26999-3-ricardo.martinez@linux.intel.com>
+ <YX/zmY81A9d0nIlO@smile.fi.intel.com>
+ <30a536cc-5343-c719-0122-cbedcd7cd03f@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 19 Nov 2021 13:51:12 +0530
-From:   Anilkumar Kolli <akolli@codeaurora.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATH v3 1/2] dt: bindings: add new DT entry for ath11k PCI
- device support
-In-Reply-To: <1637273394.267065.1841665.nullmailer@robh.at.kernel.org>
-References: <1637244892-27267-1-git-send-email-akolli@codeaurora.org>
- <1637273394.267065.1841665.nullmailer@robh.at.kernel.org>
-Message-ID: <c53e9299093a315f997c17048872aeff@codeaurora.org>
-X-Sender: akolli@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <30a536cc-5343-c719-0122-cbedcd7cd03f@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-11-19 03:39, Rob Herring wrote:
-> On Thu, 18 Nov 2021 19:44:51 +0530, Anilkumar Kolli wrote:
->> Ath11k driver supports PCI devices such as QCN9074/QCA6390.
->> Ath11k firmware uses host DDR memory, DT entry is used to reserve
->> these host DDR memory regions, send these memory base
->> addresses using DT entries.
->> 
->> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
->> ---
->> V2:
->>   - Use reserved-memory (Rob)
->> 
->>  .../bindings/net/wireless/qcom,ath11k.yaml         | 48 
->> ++++++++++++++++++++++
->>  1 file changed, 48 insertions(+)
->> 
-> 
-> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-> on your patch (DT_CHECKER_FLAGS is new in v5.13):
-> 
-> yamllint warnings/errors:
-> 
-> dtschema/dtc warnings/errors:
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts:160.13-31:
-> Warning (reg_format): /example-0/pcie0_rp:reg: property has invalid
-> length (20 bytes) (#address-cells == 1, #size-cells == 1)
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts:164.17-36:
-> Warning (reg_format): /example-0/pcie0_rp/ath11k@0:reg: property has
-> invalid length (20 bytes) (#address-cells == 2, #size-cells == 1)
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts:170.13-31:
-> Warning (reg_format): /example-0/pcie1_rp:reg: property has invalid
-> length (20 bytes) (#address-cells == 1, #size-cells == 1)
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts:174.17-36:
-> Warning (reg_format): /example-0/pcie1_rp/ath11k@1:reg: property has
-> invalid length (20 bytes) (#address-cells == 2, #size-cells == 1)
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts:138.16-141.11:
-> Warning (unit_address_vs_reg): /example-0/memory: node has a reg or
-> ranges property, but no unit name
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts:159.28-167.11:
-> Warning (unit_address_vs_reg): /example-0/pcie0_rp: node has a reg or
-> ranges property, but no unit name
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts:169.28-177.11:
-> Warning (unit_address_vs_reg): /example-0/pcie1_rp: node has a reg or
-> ranges property, but no unit name
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dt.yaml:
-> Warning (pci_device_reg): Failed prerequisite 'reg_format'
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dt.yaml:
-> Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dt.yaml:
-> Warning (simple_bus_reg): Failed prerequisite 'reg_format'
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dt.yaml:
-> Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dt.yaml:
-> Warning (spi_bus_reg): Failed prerequisite 'reg_format'
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts:163.32-166.15:
-> Warning (avoid_default_addr_size): /example-0/pcie0_rp/ath11k@0:
-> Relying on default #address-cells value
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts:163.32-166.15:
-> Warning (avoid_default_addr_size): /example-0/pcie0_rp/ath11k@0:
-> Relying on default #size-cells value
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts:173.32-176.15:
-> Warning (avoid_default_addr_size): /example-0/pcie1_rp/ath11k@1:
-> Relying on default #address-cells value
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dts:173.32-176.15:
-> Warning (avoid_default_addr_size): /example-0/pcie1_rp/ath11k@1:
-> Relying on default #size-cells value
-> Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dt.yaml:
-> Warning (unique_unit_address): Failed prerequisite
-> 'avoid_default_addr_size'
-> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dt.yaml:
-> reserved-memory: qcn9074_pcie0@51100000:reg:0: [0, 1360003072, 0,
-> 55574528] is too long
-> 	From schema: 
-> /usr/local/lib/python3.8/dist-packages/dtschema/schemas/reg.yaml
-> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dt.yaml:
-> reserved-memory: qcn9074_pcie1@54600000:reg:0: [0, 1415577600, 0,
-> 55574528] is too long
-> 	From schema: 
-> /usr/local/lib/python3.8/dist-packages/dtschema/schemas/reg.yaml
-> 
-> doc reference errors (make refcheckdocs):
-> 
-> See https://patchwork.ozlabs.org/patch/1556692
-> 
-> This check can fail if there are any dependencies. The base for a patch
-> series is generally the most recent rc1.
-> 
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
-> 
-> pip3 install dtschema --upgrade
-> 
-> Please check and re-submit.
+On Thu, Nov 18, 2021 at 10:36:32PM -0800, Martinez, Ricardo wrote:
+> On 11/1/2021 7:03 AM, Andy Shevchenko wrote:
+> > On Sun, Oct 31, 2021 at 08:56:23PM -0700, Ricardo Martinez wrote:
 
-Sure, I will post v2 with fixes.
+...
 
-- Anil.
+> > > +		ret = cldma_gpd_rx_from_queue(queue, budget, &over_budget);
+> > > +		if (ret == -ENODATA)
+> > > +			return 0;
+> > > +
+> > > +		if (ret)
+> > > +			return ret;
+> > Drop redundant blank line
+> 
+> The style followed is to keep a blank line after 'if' blocks.
+> 
+> Is that acceptable as long as it is consistent across the driver?
+
+The idea behind suggestion is that you check for value returned from the call.
+So, both if:s are tighten to that call and can be considered as a whole.
+
+It doesn't mean you should blindly remove blank lines everywhere.
+
+...
+
+> > > +exit:
+> > Seems useless.
+> 
+> This tag is used when the PM patch is introduced later in the same series.
+
+Can you give it better name?
+
+> > +	return ret;
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
