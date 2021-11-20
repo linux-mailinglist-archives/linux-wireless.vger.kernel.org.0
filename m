@@ -2,299 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D2CF457EB6
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Nov 2021 15:18:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D184457EDF
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Nov 2021 16:17:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237349AbhKTOVH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 Nov 2021 09:21:07 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54962 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237326AbhKTOVH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 Nov 2021 09:21:07 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7D7D260551;
-        Sat, 20 Nov 2021 14:18:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637417883;
-        bh=9KmAEb/uZZRR/mVTUiqW5ENHCLJFRB0/aBh1encn6fk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bPCoZnnZbkcndPsWfBEVQKOn+ywZ7Knc/vylReEn+t3XRxqIFWDpFtRtg/0dILlMw
-         RInW1Gb/6wrcCblUz0zAqsOspfpwxs45jbOwu2caCN0IcY/u91vTYuX45biEOBx4g/
-         S2ZZxopNeXnpjazUaRk/IQbe68cbuM2eBbq1VetKXBHE/l9OZHakM5GyFAigjAdrKR
-         C1Ip5PutI93Yh2GoyRrSqcXIgtvxiwefOpnrbFTb8zLwaPyXtkHEias5ae2AkqB/55
-         aChNI2W6eDuXcS5T+u82mx9oqRt3l12BHoIjEJMUmMsRDF480b8uu9+lpryYG922Vv
-         VA4a7N84sTb1A==
-Date:   Sat, 20 Nov 2021 15:18:00 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     sean.wang@mediatek.com
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com, Soul.Huang@mediatek.com,
-        YN.Chen@mediatek.com, Leon.Yen@mediatek.com,
-        Eric-SY.Chang@mediatek.com, Mark-YW.Chen@mediatek.com,
-        Deren.Wu@mediatek.com, km.lin@mediatek.com,
-        robin.chiu@mediatek.com, Eddie.Chen@mediatek.com,
-        ch.yeh@mediatek.com, posh.sun@mediatek.com, ted.huang@mediatek.com,
-        Eric.Liang@mediatek.com, Stella.Chang@mediatek.com,
-        Tom.Chou@mediatek.com, steve.lee@mediatek.com, jsiuda@google.com,
-        frankgor@google.com, jemele@google.com, abhishekpandit@google.com,
-        shawnku@google.com, linux-wireless@vger.kernel.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 2/2] mt76: mt7921s: fix the device cannot sleep deeply in
- suspend
-Message-ID: <YZkDmDIqnePjIF+O@lore-desk>
-References: <92851c34c3758b7d50f3eaa24b1a27adccde2b1a.1637363831.git.objelf@gmail.com>
- <a00f3858dd6896f56a5b730c457a8e825c664028.1637363831.git.objelf@gmail.com>
- <YZjxh5thdYgFV735@lore-desk>
+        id S237349AbhKTPUk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 Nov 2021 10:20:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49804 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230245AbhKTPUj (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 20 Nov 2021 10:20:39 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEC36C061574;
+        Sat, 20 Nov 2021 07:17:35 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id b184-20020a1c1bc1000000b0033140bf8dd5so9787493wmb.5;
+        Sat, 20 Nov 2021 07:17:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=SAdJR3WopYIrbK2mVVoGCJPSAiaXWVlXMd62fQtue4A=;
+        b=PSsn0O6gtR5fOZ4JoHKXHRExmTVUfBZ5OOy95GUS+1D7W4Y513R+9liuNOAg9FsMKl
+         xNsOErhQnz3D2jcojL2/BJdMSbNbCEYfBAZgkxIlwA8i5ZFpR2i434Ylw4lq4KPK8jSO
+         /EWxii2/DcaApGquGOeuiCyVBaKyDAGdTc6qq/egiLItRyDTIUyUaMMoIx3cDjCRiTtR
+         xE95rCgXO3CxmngCFNgm4G4/lGrECmdiaByQcrIsHTpHKEmu0/M5v6s0Za7OHeh9icaH
+         X5FFPS1DkeQwNBwHB+5KzywAEAPJ2gSvo+oGQzZWDE7sT45q+T+R8F4mHn6NBjdtSAcR
+         tL4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=SAdJR3WopYIrbK2mVVoGCJPSAiaXWVlXMd62fQtue4A=;
+        b=kTB8DsnVdYTK6dSDNLL2wZvZ/WVNbWf155NQnxuQEiMyvO4ctWOxRCNvY/HbMDKypz
+         y1gf0JipE2LxJNqnHpH7LPiuDkJVeqcj4zF5DqwJT/U+xjvunTnaON7py8U2SHBHOuDY
+         Isbb6RIO5pd/cfAEaKOrnyv6oNRwDMjobAD1Yua/oyszIjU1Yd4TvIlGAlA/Dsf5PV7E
+         hXvH0MIeMBOC2uQ1J6rV8wXaOPX7pfGI/J8KGKkch58CArWZkd8niLn0/zDX2Rd22FOC
+         1tLCvh7PrdNbxOwlz7MFfd2z6ZZS1OBG5Q8GvtPVwRLJs/GWl3rvpLfi384NGbv95Fo6
+         GbdQ==
+X-Gm-Message-State: AOAM533LneBdXSa8DRkGHUTt0OmI6VAVf13TFrbI3ettsbKKMjddpDY9
+        sd+387HL02aJyyj3EhjU7Lk=
+X-Google-Smtp-Source: ABdhPJzusnSUU9G8Bbwwvx4W0Wszg8PyY3GAgQQd9zVKOT7CM/P2i3nUjbJW0qJJN69eQ6svoeCzBw==
+X-Received: by 2002:a05:600c:6006:: with SMTP id az6mr11505759wmb.5.1637421454335;
+        Sat, 20 Nov 2021 07:17:34 -0800 (PST)
+Received: from debian64.daheim (p4fd09ac4.dip0.t-ipconnect.de. [79.208.154.196])
+        by smtp.gmail.com with ESMTPSA id l21sm3239781wrb.38.2021.11.20.07.17.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Nov 2021 07:17:33 -0800 (PST)
+Received: from localhost.daheim ([127.0.0.1])
+        by debian64.daheim with esmtp (Exim 4.95)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1moRyV-0001WH-Mj;
+        Sat, 20 Nov 2021 16:17:33 +0100
+Message-ID: <75be2d3b-99c4-f84b-4da5-da0f4c220359@gmail.com>
+Date:   Sat, 20 Nov 2021 16:17:33 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="0SpmjVgj5QLLuOCs"
-Content-Disposition: inline
-In-Reply-To: <YZjxh5thdYgFV735@lore-desk>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH] mac80211: Use memset_after() to clear tx status
+Content-Language: de-DE
+To:     Kees Cook <keescook@chromium.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <20211118203839.1289276-1-keescook@chromium.org>
+From:   Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <20211118203839.1289276-1-keescook@chromium.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---0SpmjVgj5QLLuOCs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> > From: Sean Wang <sean.wang@mediatek.com>
-> >=20
-> > According to the MT7921S firmware, the cmd MCU_UNI_CMD_HIF_CTRL have to
-> > be last MCU command to execute in suspend handler and all data traffic
-> > have to be stopped before the cmd MCU_UNI_CMD_HIF_CTRL starts as well
-> > in order that mt7921 can successfully fall into the deep sleep mode.
-> >=20
-> > Where we reuse the flag MT76_STATE_SUSPEND and avoid creating
-> > another global flag to stop all of the traffic onto the SDIO bus.
-> >=20
-> > Fixes: 48fab5bbef40 ("mt76: mt7921: introduce mt7921s support")
-> > Reported-by: Leon Yen <leon.yen@mediatek.com>
-> > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> > ---
-> >  .../wireless/mediatek/mt76/mt76_connac_mcu.c  |  2 +-
-> >  .../net/wireless/mediatek/mt76/mt7921/main.c  |  3 --
-> >  .../net/wireless/mediatek/mt76/mt7921/sdio.c  | 34 ++++++++++++-------
-> >  drivers/net/wireless/mediatek/mt76/sdio.c     |  3 +-
-> >  .../net/wireless/mediatek/mt76/sdio_txrx.c    |  3 +-
-> >  5 files changed, 27 insertions(+), 18 deletions(-)
-> >=20
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/dri=
-vers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> > index 26b4b875dcc0..61c4c86e79c8 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> > @@ -2461,7 +2461,7 @@ void mt76_connac_mcu_set_suspend_iter(void *priv,=
- u8 *mac,
-> >  				      struct ieee80211_vif *vif)
-> >  {
-> >  	struct mt76_phy *phy =3D priv;
-> > -	bool suspend =3D test_bit(MT76_STATE_SUSPEND, &phy->state);
-> > +	bool suspend =3D !test_bit(MT76_STATE_RUNNING, &phy->state);
-> >  	struct ieee80211_hw *hw =3D phy->hw;
-> >  	struct cfg80211_wowlan *wowlan =3D hw->wiphy->wowlan_config;
-> >  	int i;
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers=
-/net/wireless/mediatek/mt76/mt7921/main.c
-> > index e022251b4006..0b2a6b7f22ea 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > @@ -1242,8 +1242,6 @@ static int mt7921_suspend(struct ieee80211_hw *hw,
-> >  	mt7921_mutex_acquire(dev);
-> > =20
-> >  	clear_bit(MT76_STATE_RUNNING, &phy->mt76->state);
-> > -
-> > -	set_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
-> >  	ieee80211_iterate_active_interfaces(hw,
-> >  					    IEEE80211_IFACE_ITER_RESUME_ALL,
-> >  					    mt76_connac_mcu_set_suspend_iter,
-> > @@ -1262,7 +1260,6 @@ static int mt7921_resume(struct ieee80211_hw *hw)
-> >  	mt7921_mutex_acquire(dev);
-> > =20
-> >  	set_bit(MT76_STATE_RUNNING, &phy->mt76->state);
-> > -	clear_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
-> >  	ieee80211_iterate_active_interfaces(hw,
-> >  					    IEEE80211_IFACE_ITER_RESUME_ALL,
-> >  					    mt76_connac_mcu_set_suspend_iter,
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers=
-/net/wireless/mediatek/mt76/mt7921/sdio.c
-> > index 5fee489c7a99..5c88b6b8d097 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-> > @@ -206,6 +206,8 @@ static int mt7921s_suspend(struct device *__dev)
-> >  	int err;
-> > =20
-> >  	pm->suspended =3D true;
-> > +	set_bit(MT76_STATE_SUSPEND, &mdev->phy.state);
-> > +
-> >  	cancel_delayed_work_sync(&pm->ps_work);
-> >  	cancel_work_sync(&pm->wake_work);
-> > =20
-> > @@ -213,10 +215,6 @@ static int mt7921s_suspend(struct device *__dev)
-> >  	if (err < 0)
-> >  		goto restore_suspend;
-> > =20
-> > -	err =3D mt76_connac_mcu_set_hif_suspend(mdev, true);
-> > -	if (err)
-> > -		goto restore_suspend;
-> > -
-> >  	/* always enable deep sleep during suspend to reduce
-> >  	 * power consumption
-> >  	 */
-> > @@ -224,34 +222,45 @@ static int mt7921s_suspend(struct device *__dev)
-> > =20
-> >  	mt76_txq_schedule_all(&dev->mphy);
-> >  	mt76_worker_disable(&mdev->tx_worker);
-> > -	mt76_worker_disable(&mdev->sdio.txrx_worker);
-> >  	mt76_worker_disable(&mdev->sdio.status_worker);
-> > -	mt76_worker_disable(&mdev->sdio.net_worker);
-> >  	cancel_work_sync(&mdev->sdio.stat_work);
-> >  	clear_bit(MT76_READING_STATS, &dev->mphy.state);
-> > -
-> >  	mt76_tx_status_check(mdev, true);
-> > =20
-> > -	err =3D mt7921_mcu_fw_pmctrl(dev);
-> > +	mt76_worker_schedule(&mdev->sdio.txrx_worker);
->=20
-> I guess mt76_worker_disable() is supposed to do it, right?
-> I guess we can assume txrx_worker is no longer running here, right?
-
-I can see it now, txrx_worker can be running on the different cpu.
-I guess we need to add just the wait_event_timeout() and move
-mt76_connac_mcu_set_hif_suspend() below. What do you think?
-Can you please try the chunk below?
-
-Regards,
-Lorenzo
-
->=20
-> > +	wait_event_timeout(dev->mt76.sdio.wait,
-> > +			   mt76s_txqs_empty(&dev->mt76), 5 * HZ);
-> > +
-> > +	/* It is supposed that SDIO bus is idle at the point */
-> > +	err =3D mt76_connac_mcu_set_hif_suspend(mdev, true);
-> >  	if (err)
-> >  		goto restore_worker;
-> > =20
-> > +	mt76_worker_disable(&mdev->sdio.txrx_worker);
-> > +	mt76_worker_disable(&mdev->sdio.net_worker);
-> > +
-> > +	err =3D mt7921_mcu_fw_pmctrl(dev);
-> > +	if (err)
-> > +		goto restore_txrx_worker;
-> > +
-> >  	sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER);
-> > =20
-> >  	return 0;
-> > =20
-> > +restore_txrx_worker:
-> > +	mt76_worker_enable(&mdev->sdio.net_worker);
-> > +	mt76_worker_enable(&mdev->sdio.txrx_worker);
-> > +	mt76_connac_mcu_set_hif_suspend(mdev, false);
-> > +
-> >  restore_worker:
-> >  	mt76_worker_enable(&mdev->tx_worker);
-> > -	mt76_worker_enable(&mdev->sdio.txrx_worker);
-> >  	mt76_worker_enable(&mdev->sdio.status_worker);
-> > -	mt76_worker_enable(&mdev->sdio.net_worker);
-> > =20
-> >  	if (!pm->ds_enable)
-> >  		mt76_connac_mcu_set_deep_sleep(mdev, false);
-> > =20
-> > -	mt76_connac_mcu_set_hif_suspend(mdev, false);
-> > -
-> >  restore_suspend:
-> > +	clear_bit(MT76_STATE_SUSPEND, &mdev->phy.state);
-> >  	pm->suspended =3D false;
-> > =20
-> >  	return err;
-> > @@ -266,6 +275,7 @@ static int mt7921s_resume(struct device *__dev)
-> >  	int err;
-> > =20
-> >  	pm->suspended =3D false;
-> > +	clear_bit(MT76_STATE_SUSPEND, &mdev->phy.state);
-> > =20
-> >  	err =3D mt7921_mcu_drv_pmctrl(dev);
-> >  	if (err < 0)
-> > diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wi=
-reless/mediatek/mt76/sdio.c
-> > index c99acc21225e..b0bc7be0fb1f 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/sdio.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/sdio.c
-> > @@ -479,7 +479,8 @@ static void mt76s_status_worker(struct mt76_worker =
-*w)
-> >  			resched =3D true;
-> > =20
-> >  		if (dev->drv->tx_status_data &&
-> > -		    !test_and_set_bit(MT76_READING_STATS, &dev->phy.state))
-> > +		    !test_and_set_bit(MT76_READING_STATS, &dev->phy.state) &&
-> > +		    !test_bit(MT76_STATE_SUSPEND, &dev->phy.state))
-> >  			queue_work(dev->wq, &dev->sdio.stat_work);
-> >  	} while (nframes > 0);
-> > =20
-> > diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c b/drivers/n=
-et/wireless/mediatek/mt76/sdio_txrx.c
-> > index 649a56790b89..801590a0a334 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-> > @@ -317,7 +317,8 @@ void mt76s_txrx_worker(struct mt76_sdio *sdio)
-> >  		if (ret > 0)
-> >  			nframes +=3D ret;
-> > =20
-> > -		if (test_bit(MT76_MCU_RESET, &dev->phy.state)) {
-> > +		if (test_bit(MT76_MCU_RESET, &dev->phy.state) ||
-> > +		    test_bit(MT76_STATE_SUSPEND, &dev->phy.state)) {
-> >  			if (!mt76s_txqs_empty(dev))
-> >  				continue;
-> >  			else
->=20
-> since mt76s_tx_run_queue will not run if MT76_MCU_RESET is set, do we rea=
-lly
-> need to check it for each iteration or is fine something like:
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c b/drivers/net=
-/wireless/mediatek/mt76/sdio_txrx.c
-> index 649a56790b89..68f30a83fa5d 100644
-> --- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-> +++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
-> @@ -317,14 +317,12 @@ void mt76s_txrx_worker(struct mt76_sdio *sdio)
->  		if (ret > 0)
->  			nframes +=3D ret;
-> =20
-> -		if (test_bit(MT76_MCU_RESET, &dev->phy.state)) {
-> -			if (!mt76s_txqs_empty(dev))
-> -				continue;
-> -			else
-> -				wake_up(&sdio->wait);
-> -		}
->  	} while (nframes > 0);
-> =20
-> +	if (test_bit(MT76_MCU_RESET, &dev->phy.state) &&
-> +	    mt76s_txqs_empty(dev))
-> +		wake_up(&sdio->wait);
-> +
->  	/* enable interrupt */
->  	sdio_writel(sdio->func, WHLPCR_INT_EN_SET, MCR_WHLPCR, NULL);
->  	sdio_release_host(sdio->func);
->=20
-> Regards,
-> Lorenzo
->=20
-> > --=20
-> > 2.25.1
-> >=20
-
-
-
---0SpmjVgj5QLLuOCs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYZkDmAAKCRA6cBh0uS2t
-rK64AQDdCYF6KuDlm7BbIR0lnBY8vX/bSICZ2IxikOVtJrbZvAEAuPwMSckFPneg
-QT9VSAIm7GtyDDszWRWOLspIUNL+8wM=
-=hmjL
------END PGP SIGNATURE-----
-
---0SpmjVgj5QLLuOCs--
+On 18/11/2021 21:38, Kees Cook wrote:
+> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> field bounds checking for memset(), avoid intentionally writing across
+> neighboring fields.
+> 
+> Use memset_after() so memset() doesn't get confused about writing
+> beyond the destination member that is intended to be the starting point
+> of zeroing through the end of the struct.
+> 
+> Additionally fix the common helper, ieee80211_tx_info_clear_status(),
+> which was not clearing ack_signal, but the open-coded versions
+> did. Johannes Berg points out this bug was introduced by commit
+> e3e1a0bcb3f1 ("mac80211: reduce IEEE80211_TX_MAX_RATES") but was harmless.
+> 
+> Also drops the associated unneeded BUILD_BUG_ON()s, and adds a note to
+> carl9170 about usage.
+> 
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+Tested-by: Christian Lamparter <chunkeey@gmail.com> [both CARL9170+P54USB on real HW]
