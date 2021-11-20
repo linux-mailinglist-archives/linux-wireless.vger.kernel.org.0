@@ -2,98 +2,273 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2A7F457A10
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Nov 2021 01:16:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EFF6457A81
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Nov 2021 02:54:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236684AbhKTATw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 Nov 2021 19:19:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51548 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233135AbhKTATu (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 Nov 2021 19:19:50 -0500
-Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C16DC061757;
-        Fri, 19 Nov 2021 16:16:46 -0800 (PST)
-Received: by mail-vk1-xa2f.google.com with SMTP id k83so6838497vke.7;
-        Fri, 19 Nov 2021 16:16:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GDjafyM9XoUKTQu0bLhImEMbQzcwNVRdVAghZ4NG51E=;
-        b=RPkBqMr/avR5YL9/Y1NEnHje4VLopd3IPscNzZWwTCjydizd7ZecF0tp1kkSNGljCF
-         hUjUGUJZGxkfuGXT67OpQdheEg8PG/kyvVK1pub27ay/K9HUCEtLmORZRxDJfXqZ4w2w
-         EpijSqEvpcgCnLilXHpPEFvLS9Ss6TZIxqMLTLVclg32/NGSs7VKGMidRs43nY8IbhNq
-         FoTIndQBoAITLXOv3mYBo9IH/W/elPXsA45QcMRhJAANCv11KLqOmNYUE0WzIoKiP6BK
-         K3AMSIdupEubPMlwTA+yAL/o/SfRbfqS5xMXJ6tAdOa9xxj/DkVUln46iIrG/qlA7xt4
-         xaQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GDjafyM9XoUKTQu0bLhImEMbQzcwNVRdVAghZ4NG51E=;
-        b=eIe5F9C/hlRLiZgkz2avQehSGvkTBou8VvsiXe71XEBT/mRxDQ1i9vK70JoXB1tfvW
-         mhzl3TMlxmfRBZ4A1hr/ERWLYJEeNHeuBuMye/8KaeY9oXGBQfULOMLvvWf4gzoHtw25
-         GuuM0dRAEMMVUgK84AS+NQ2Y9Frp0SgjnHnHvmZuDKvd9k6hCPwcbGp/ZB6rtWoLWVfM
-         hP+yvgGx3wJIuVgp3TT8uGnCV4OaewVOJ6KJE12k1GbDWzBJMS4Kb9no8G4OOGPWHPYN
-         oY8LoalDz6lqalfkXiXr7FA7aKJ56c97TZzKtms1+vKZweRy1jlCUSmzbR8bXIX2+UP5
-         LM6g==
-X-Gm-Message-State: AOAM531vACSTm2mye6xDFzY3xv0akljKpxIgvJle8FREOuMrpoTnMVrA
-        lg/YwTPMdlXks0ECm6rwdUMFTHmCdSaOUz9XcGM=
-X-Google-Smtp-Source: ABdhPJyEZqvr7KpCYWkNDymJxnNqyMbRXh09Vn6NtqXovMfLf+UCE19UaNarjTzcCElW/luuVEUHwnDIyCaRT3CaZQc=
-X-Received: by 2002:a1f:18cb:: with SMTP id 194mr125262568vky.16.1637367404498;
- Fri, 19 Nov 2021 16:16:44 -0800 (PST)
+        id S236052AbhKTB5j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 Nov 2021 20:57:39 -0500
+Received: from mga06.intel.com ([134.134.136.31]:48508 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235856AbhKTB5i (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 19 Nov 2021 20:57:38 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10173"; a="295335351"
+X-IronPort-AV: E=Sophos;i="5.87,249,1631602800"; 
+   d="scan'208";a="295335351"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2021 17:54:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,249,1631602800"; 
+   d="scan'208";a="673415051"
+Received: from lkp-server02.sh.intel.com (HELO c20d8bc80006) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 19 Nov 2021 17:54:34 -0800
+Received: from kbuild by c20d8bc80006 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1moFaL-0005DB-GI; Sat, 20 Nov 2021 01:54:33 +0000
+Date:   Sat, 20 Nov 2021 09:54:12 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [kvalo-wireless-drivers-next:master] BUILD SUCCESS
+ 728e26c3ac89427de181c1e8400d27d7b6c3a8a5
+Message-ID: <61985544.0RCp7ozN7w+fHGAg%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <CAA=hcWT_dmKU1Uj4YmJ_rxZ+HsCVOEYJLSH-h3B3qqNhC1xi-g@mail.gmail.com>
- <CAD=FV=V3n95DNXFd4mHpkAAKapCs5UWZXUkw=1vWpfn6oXfouA@mail.gmail.com>
-In-Reply-To: <CAD=FV=V3n95DNXFd4mHpkAAKapCs5UWZXUkw=1vWpfn6oXfouA@mail.gmail.com>
-From:   Jupiter <jupiter.hce@gmail.com>
-Date:   Sat, 20 Nov 2021 11:16:08 +1100
-Message-ID: <CAA=hcWS91uL4kRK8r1uJ_2YLXi1ZuB067ACVPTDZKnF53jgrRQ@mail.gmail.com>
-Subject: Re: mwifiex reset buggy
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Amitkumar Karwar <amitkumar.karwar@nxp.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Doug,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+branch HEAD: 728e26c3ac89427de181c1e8400d27d7b6c3a8a5  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
 
-Thank you for your kindly response.
+elapsed time: 726m
 
-> I think I blocked most of this stuff out of my mind and it's also been
-> over 2 years. ;-) ...but any chance that Bluetooth could somehow be
-> involved, too? I seem to remember that things got complicated because
-> we could have both functions going at once. I think I advocated for
-> keeping it simple and always doing a full unplug / replug of the card
-> to reset it, but from notes I guess upstream landed it so you need to
-> handle the two cases (just WiFi vs WiFi+BT) in totally different ways.
+configs tested: 210
+configs skipped: 3
 
-I think the main issue is many of you tested the mwifiex reset on
-Marvell card (or BT?), unfortunately I am using uBlox Lily module
-which is a WiFi only no Bluetooth, it is a iMX6ULL custom design, MMC
-and SDIO are based on iMX6ULL EVK. I don't think anyone tested mwifiex
-reset on that card, to make it worse, I am new to mwifiex, I might be
-able to assist with debugging, but certainly not in the position to
-contribute to fixing it.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> It looks like there's ongoing discussion going on in
-> https://issuetracker.google.com/172214846. Maybe something there would
-> be helpful?
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211119
+i386                 randconfig-c001-20211118
+mips                 randconfig-c004-20211118
+arm                        spear6xx_defconfig
+powerpc                     tqm8555_defconfig
+xtensa                       common_defconfig
+sh                        dreamcast_defconfig
+powerpc                        cell_defconfig
+powerpc                 mpc836x_rdk_defconfig
+arm                  colibri_pxa300_defconfig
+arm                           h3600_defconfig
+arc                    vdk_hs38_smp_defconfig
+riscv                    nommu_virt_defconfig
+mips                   sb1250_swarm_defconfig
+powerpc                      walnut_defconfig
+mips                             allyesconfig
+arm                        mvebu_v5_defconfig
+mips                         mpc30x_defconfig
+powerpc                      acadia_defconfig
+s390                          debug_defconfig
+powerpc                 mpc8540_ads_defconfig
+mips                malta_qemu_32r6_defconfig
+arm                           omap1_defconfig
+arm                         palmz72_defconfig
+arc                     nsimosci_hs_defconfig
+sh                           se7750_defconfig
+powerpc                   bluestone_defconfig
+mips                     loongson2k_defconfig
+arc                         haps_hs_defconfig
+arc                 nsimosci_hs_smp_defconfig
+mips                           jazz_defconfig
+sh                          r7785rp_defconfig
+parisc                generic-64bit_defconfig
+sparc                       sparc32_defconfig
+xtensa                  cadence_csp_defconfig
+powerpc                      chrp32_defconfig
+powerpc                     tqm8541_defconfig
+powerpc                 mpc834x_itx_defconfig
+arm                         s5pv210_defconfig
+m68k                        stmark2_defconfig
+sh                           se7705_defconfig
+mips                        maltaup_defconfig
+arm                      footbridge_defconfig
+arc                           tb10x_defconfig
+x86_64                              defconfig
+arm                       cns3420vb_defconfig
+arm                       netwinder_defconfig
+powerpc                      katmai_defconfig
+arm                      integrator_defconfig
+powerpc                     mpc5200_defconfig
+powerpc                       maple_defconfig
+mips                           gcw0_defconfig
+mips                           ip22_defconfig
+arm                        spear3xx_defconfig
+sh                                  defconfig
+m68k                         amcore_defconfig
+mips                    maltaup_xpa_defconfig
+arm                     am200epdkit_defconfig
+sh                           se7343_defconfig
+powerpc                  mpc885_ads_defconfig
+powerpc                      pasemi_defconfig
+powerpc                     rainier_defconfig
+sparc64                             defconfig
+riscv             nommu_k210_sdcard_defconfig
+arm                          collie_defconfig
+h8300                     edosk2674_defconfig
+arm                             mxs_defconfig
+sh                               allmodconfig
+arm                           stm32_defconfig
+arm                            hisi_defconfig
+mips                  cavium_octeon_defconfig
+m68k                        m5407c3_defconfig
+arm                        vexpress_defconfig
+powerpc                 mpc837x_mds_defconfig
+mips                          rm200_defconfig
+sh                          sdk7786_defconfig
+arm                        oxnas_v6_defconfig
+sh                           se7780_defconfig
+sh                   sh7724_generic_defconfig
+mips                         db1xxx_defconfig
+arm                        cerfcube_defconfig
+arm                          pxa168_defconfig
+m68k                          multi_defconfig
+arm                              alldefconfig
+powerpc                       holly_defconfig
+arm                        mini2440_defconfig
+i386                                defconfig
+mips                       bmips_be_defconfig
+sh                           se7619_defconfig
+arm                           tegra_defconfig
+ia64                            zx1_defconfig
+arm                         hackkit_defconfig
+arm                     eseries_pxa_defconfig
+sh                        sh7763rdp_defconfig
+mips                           rs90_defconfig
+arm                         mv78xx0_defconfig
+ia64                             alldefconfig
+sh                        sh7785lcr_defconfig
+arm                  randconfig-c002-20211119
+arm                  randconfig-c002-20211118
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                              debian-10.3
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a005-20211119
+x86_64               randconfig-a003-20211119
+x86_64               randconfig-a002-20211119
+x86_64               randconfig-a001-20211119
+x86_64               randconfig-a006-20211119
+x86_64               randconfig-a004-20211119
+i386                 randconfig-a006-20211119
+i386                 randconfig-a003-20211119
+i386                 randconfig-a001-20211119
+i386                 randconfig-a005-20211119
+i386                 randconfig-a004-20211119
+i386                 randconfig-a002-20211119
+x86_64               randconfig-a015-20211118
+x86_64               randconfig-a012-20211118
+x86_64               randconfig-a011-20211118
+x86_64               randconfig-a013-20211118
+x86_64               randconfig-a016-20211118
+x86_64               randconfig-a014-20211118
+i386                 randconfig-a016-20211118
+i386                 randconfig-a014-20211118
+i386                 randconfig-a012-20211118
+i386                 randconfig-a011-20211118
+i386                 randconfig-a013-20211118
+i386                 randconfig-a015-20211118
+i386                 randconfig-a016-20211120
+i386                 randconfig-a015-20211120
+i386                 randconfig-a012-20211120
+i386                 randconfig-a013-20211120
+i386                 randconfig-a014-20211120
+i386                 randconfig-a011-20211120
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
 
-I am using mwifiex on kernel upstream v4.19.75, does that include your
-fix? Do you have a patch I can add to my Yocto build? Should I make
-comments to the discussion at
-https://issuetracker.google.com/172214846?
+clang tested configs:
+i386                 randconfig-c001-20211119
+x86_64               randconfig-c007-20211119
+arm                  randconfig-c002-20211119
+s390                 randconfig-c005-20211119
+powerpc              randconfig-c003-20211119
+riscv                randconfig-c006-20211119
+i386                 randconfig-c001-20211118
+x86_64               randconfig-c007-20211118
+arm                  randconfig-c002-20211118
+s390                 randconfig-c005-20211118
+powerpc              randconfig-c003-20211118
+riscv                randconfig-c006-20211118
+mips                 randconfig-c004-20211118
+i386                 randconfig-a006-20211118
+i386                 randconfig-a003-20211118
+i386                 randconfig-a001-20211118
+i386                 randconfig-a005-20211118
+i386                 randconfig-a004-20211118
+i386                 randconfig-a002-20211118
+x86_64               randconfig-a005-20211118
+x86_64               randconfig-a003-20211118
+x86_64               randconfig-a001-20211118
+x86_64               randconfig-a002-20211118
+x86_64               randconfig-a006-20211118
+x86_64               randconfig-a004-20211118
+x86_64               randconfig-a015-20211119
+x86_64               randconfig-a011-20211119
+x86_64               randconfig-a012-20211119
+x86_64               randconfig-a013-20211119
+x86_64               randconfig-a016-20211119
+x86_64               randconfig-a014-20211119
+hexagon              randconfig-r045-20211119
+hexagon              randconfig-r041-20211119
+riscv                randconfig-r042-20211119
+s390                 randconfig-r044-20211119
+hexagon              randconfig-r045-20211118
+hexagon              randconfig-r041-20211118
 
-Thank you very much Doug.
-
-- JH
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
