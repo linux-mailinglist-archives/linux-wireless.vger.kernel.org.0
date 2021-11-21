@@ -2,34 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C4ED458327
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Nov 2021 12:42:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 401E945833B
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Nov 2021 13:12:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238154AbhKULpN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 Nov 2021 06:45:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38180 "EHLO mail.kernel.org"
+        id S237965AbhKUMPq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 Nov 2021 07:15:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41068 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237944AbhKULpM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 Nov 2021 06:45:12 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0932160E54;
-        Sun, 21 Nov 2021 11:42:06 +0000 (UTC)
+        id S235783AbhKUMPq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 21 Nov 2021 07:15:46 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8074660E54;
+        Sun, 21 Nov 2021 12:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637494927;
-        bh=/PunNOW3O1jF6keNVQXOcZ2/sdekFic4HRR4zDfgjvQ=;
+        s=k20201202; t=1637496761;
+        bh=B3G7Nw2QezolTcZzRCa15Df9MdCCMXPnG7NbmZoSX94=;
         h=From:To:Cc:Subject:Date:From;
-        b=ofKg/eAR2lm/TH6QmNSOWNpQOTmCzl+LR3xR1DI2S9nTdIWLqkspw0CV/ROM2Lsis
-         o43YhCjaYRR5M6OLnrkH9p4gr0hx2lWIpDwCdmbb4cRDAfetgYblrb8v8BTZGQ2YXI
-         DVOtq1FQccHFv0rGEVKyHN4c94HlGqVs6o/TJSDmE2XqpOzHc6jhmeMEep1ldm76Hb
-         3PEMaUXLTRPBiVGX5bpcKmHfFiZH8pkPA2fqBL5Dz3HB3jehmtmP557cdubn+6xmki
-         GQ2srmvONV4KjxMrt3UGyxAaSiIwQEUR3fCiiuAGRzbAMpDMSv6hpRgXIRDNH1mY5H
-         quTunqM3Y4yfg==
+        b=tMmV+ecqnY4g1X8qBcpgntCCFFUnveH8DI00Xohck7EakHiYfANNZI81GrnTHGtI8
+         /Zy3bK9SJEiY34kuRwH5oghrmINefA5sd4700hAvSNln+GpsVM3WUFV1TbNgj7xjp+
+         cQbmXwRnF/dJQX3ZxOEv42HgRxfRyFr656NyZFOuIvRyLGLYju5Q6K55I/ewlp4Aut
+         U8vFKnY4ty4fUFg9x4ejJPzdzvsVGquBCFypKmNg3r3VIS9zAP1VqMJV7PdBMdMCMJ
+         auqDPRuwXdhp05ehFMZtOKtgm2ZvvenPgwUupYms8wBbnh73JjO3se3MBQJUf1RVMM
+         SN7GMVi/9wTuA==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        cjhuang@codeaurora.org
-Subject: [PATCH mac80211] cfg80211: check nla_parse_nested return code in nl80211_set_sar_specs
-Date:   Sun, 21 Nov 2021 12:41:56 +0100
-Message-Id: <3b6fee130e2d264242463cff063bcfb6d6f5da83.1637494779.git.lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH 0/2] introduce SAR support to mt76x02 drivers
+Date:   Sun, 21 Nov 2021 13:12:23 +0100
+Message-Id: <cover.1637496643.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -37,58 +36,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Check error code returned by nla_parse_nested in nl80211_set_sar_specs
-routine before parsing SAR sub-specs.
+Add SAR spec support to mt76x02 driver to allow configuring SAR power
+limitations on the frequency ranges from the userland.
 
-Fixes: 6bdb68cef7bf5 ("nl80211: add common API to configure SAR power limitations")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- net/wireless/nl80211.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+Lorenzo Bianconi (2):
+  mt76: move sar utilities to mt76-core module
+  mt76: mt76x02: introduce SAR support
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index a27b3b5fa210..c2b005d0d29a 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -15294,9 +15294,11 @@ static int nl80211_set_sar_specs(struct sk_buff *skb, struct genl_info *info)
- 	if (!info->attrs[NL80211_ATTR_SAR_SPEC])
- 		return -EINVAL;
- 
--	nla_parse_nested(tb, NL80211_SAR_ATTR_MAX,
--			 info->attrs[NL80211_ATTR_SAR_SPEC],
--			 NULL, NULL);
-+	err = nla_parse_nested(tb, NL80211_SAR_ATTR_MAX,
-+			       info->attrs[NL80211_ATTR_SAR_SPEC],
-+			       NULL, NULL);
-+	if (err)
-+		return err;
- 
- 	if (!tb[NL80211_SAR_ATTR_TYPE] || !tb[NL80211_SAR_ATTR_SPECS])
- 		return -EINVAL;
-@@ -15319,16 +15321,17 @@ static int nl80211_set_sar_specs(struct sk_buff *skb, struct genl_info *info)
- 	sar_spec->type = type;
- 	specs = 0;
- 	nla_for_each_nested(spec_list, tb[NL80211_SAR_ATTR_SPECS], rem) {
--		nla_parse_nested(spec, NL80211_SAR_ATTR_SPECS_MAX,
--				 spec_list, NULL, NULL);
-+		err = nla_parse_nested(spec, NL80211_SAR_ATTR_SPECS_MAX,
-+				       spec_list, NULL, NULL);
-+		if (err)
-+			goto error;
- 
- 		switch (type) {
- 		case NL80211_SAR_TYPE_POWER:
--			if (nl80211_set_sar_sub_specs(rdev, sar_spec,
--						      spec, specs)) {
--				err = -EINVAL;
-+			err = nl80211_set_sar_sub_specs(rdev, sar_spec, spec,
-+							specs);
-+			if (err)
- 				goto error;
--			}
- 			break;
- 		default:
- 			err = -EINVAL;
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 53 +++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  5 ++
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 27 +---------
+ .../net/wireless/mediatek/mt76/mt76x0/init.c  |  5 +-
+ .../net/wireless/mediatek/mt76/mt76x0/main.c  | 34 +++++++++++-
+ .../wireless/mediatek/mt76/mt76x0/mt76x0.h    |  2 +
+ .../net/wireless/mediatek/mt76/mt76x0/pci.c   |  1 +
+ .../net/wireless/mediatek/mt76/mt76x0/usb.c   |  1 +
+ drivers/net/wireless/mediatek/mt76/mt76x02.h  |  2 +-
+ .../net/wireless/mediatek/mt76/mt76x02_util.c | 11 +++-
+ .../net/wireless/mediatek/mt76/mt76x2/init.c  | 29 ++++++++++
+ .../wireless/mediatek/mt76/mt76x2/mt76x2.h    |  2 +
+ .../wireless/mediatek/mt76/mt76x2/pci_init.c  |  5 +-
+ .../wireless/mediatek/mt76/mt76x2/pci_main.c  |  7 ++-
+ .../wireless/mediatek/mt76/mt76x2/usb_init.c  |  4 +-
+ .../wireless/mediatek/mt76/mt76x2/usb_main.c  |  9 +++-
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 26 ++-------
+ 17 files changed, 164 insertions(+), 59 deletions(-)
+
 -- 
 2.31.1
 
