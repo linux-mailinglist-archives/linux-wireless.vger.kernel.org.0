@@ -2,60 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7602D45865D
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Nov 2021 21:44:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98254458627
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Nov 2021 20:38:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232923AbhKUUrz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 Nov 2021 15:47:55 -0500
-Received: from mx07-00227901.pphosted.com ([185.132.182.185]:50190 "EHLO
-        mx08-00227901.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S230421AbhKUUry (ORCPT
+        id S230449AbhKUTlK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 Nov 2021 14:41:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50228 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229640AbhKUTlK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 Nov 2021 15:47:54 -0500
-X-Greylist: delayed 31417 seconds by postgrey-1.27 at vger.kernel.org; Sun, 21 Nov 2021 15:47:52 EST
-Received: from pps.filterd (m0097675.ppops.net [127.0.0.1])
-        by mx07-.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AJ7xOI5005994;
-        Fri, 19 Nov 2021 10:27:14 +0100
-Received: from zbw2k16ex01.bardusch.net ([185.80.186.174])
-        by mx07-.pphosted.com (PPS) with ESMTPS id 3cdjtyh6e0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 19 Nov 2021 10:27:14 +0100
-Received: from ZBW2K16EX01.bardusch.net (172.25.1.1) by
- ZBW2K16EX01.bardusch.net (172.25.1.1) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.1.2308.20;
- Fri, 19 Nov 2021 10:27:13 +0100
-Received: from User (172.25.1.131) by ZBW2K16EX01.bardusch.net (172.25.1.1)
- with Microsoft SMTP Server id 15.1.2308.20 via Frontend Transport; Fri, 19
- Nov 2021 10:27:03 +0100
-Reply-To: <josechoondak@gmail.com>
-From:   Joseph Choondak <info@ndd.co.mz>
-Subject: I hope this email finds you well.
-Date:   Fri, 19 Nov 2021 01:27:17 -0800
+        Sun, 21 Nov 2021 14:41:10 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEBFDC061574;
+        Sun, 21 Nov 2021 11:38:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=X4ZdQLsHRGdzyKd89uTk5n2iF2RS6Cx5daUk9p5dFhU=; b=ZUdyI7Gp2CHH++7KcHrMBoQi7E
+        k3tHGmyvut+DI6fM3O7a71dCjKh/stiVfCfTVmSsfmOgmfCSAvPajyUXml/tInCjP+jhQtzjmJyzj
+        WkObs9kC4QT7bQig/f7j1V5dI4s1/AE8nkimoKJbcpSDqBdBXxIVDFWHf0XgyZjq8K3s=;
+Received: from p54ae9f3f.dip0.t-ipconnect.de ([84.174.159.63] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1mosex-0007Z5-Ld; Sun, 21 Nov 2021 20:37:55 +0100
+Message-ID: <31021122-d1c1-181b-0b95-2ef1c1592452@nbd.name>
+Date:   Sun, 21 Nov 2021 20:37:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+Subject: Re: [BISECTED REGRESSION] Wireless networking kernel crashes
+Content-Language: en-US
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+References: <20211118132556.GD334428@darkstar.musicnaut.iki.fi>
+From:   Felix Fietkau <nbd@nbd.name>
+In-Reply-To: <20211118132556.GD334428@darkstar.musicnaut.iki.fi>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <df3f24ed-6571-4db0-afaf-2f1171b46248@ZBW2K16EX01.bardusch.net>
-To:     Undisclosed recipients:;
-X-Proofpoint-ORIG-GUID: 64rehLaKfzm2AOk5eUTzKrlN8apD89hM
-X-Proofpoint-GUID: 64rehLaKfzm2AOk5eUTzKrlN8apD89hM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-19_08,2021-11-17_01,2020-04-07_01
-X-Proofpoint-Spam-Reason: orgsafe
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-May I please ask with considerable urgency for your kind assistance with the following matter.
-I'm a financial person, I think  I have something huge you might be interested in.
+On 2021-11-18 14:25, Aaro Koskinen wrote:
+> Hello,
+> 
+> I have tried to upgrade my wireless AP (Raspberry Pi with rt2x00usb)
+> from v5.9 to the current mainline, but now it keeps crashing every hour
+> or so, basically making my wireless network unusable.
+> 
+> I have bisected this to:
+> 
+> commit 03c3911d2d67a43ad4ffd15b534a5905d6ce5c59
+> Author: Ryder Lee <ryder.lee@mediatek.com>
+> Date:   Thu Jun 17 18:31:12 2021 +0200
+> 
+>      mac80211: call ieee80211_tx_h_rate_ctrl() when dequeue
+> 
+> With the previous commit the system stays up for weeks...
+> 
+> I just tried today's mainline, and it crashed after 10 minutes:
+Please test if this patch fixes the issue:
 
-Looking forward to hearing from you.
-
-
-Respectfully!!
-Joseph Choondak
-Account Executive.
+---
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1822,15 +1822,15 @@ static int invoke_tx_handlers_late(struct ieee80211_tx_data *tx)
+  	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx->skb);
+  	ieee80211_tx_result res = TX_CONTINUE;
+  
++	if (!ieee80211_hw_check(&tx->local->hw, HAS_RATE_CONTROL))
++		CALL_TXH(ieee80211_tx_h_rate_ctrl);
++
+  	if (unlikely(info->flags & IEEE80211_TX_INTFL_RETRANSMISSION)) {
+  		__skb_queue_tail(&tx->skbs, tx->skb);
+  		tx->skb = NULL;
+  		goto txh_done;
+  	}
+  
+-	if (!ieee80211_hw_check(&tx->local->hw, HAS_RATE_CONTROL))
+-		CALL_TXH(ieee80211_tx_h_rate_ctrl);
+-
+  	CALL_TXH(ieee80211_tx_h_michael_mic_add);
+  	CALL_TXH(ieee80211_tx_h_sequence);
+  	CALL_TXH(ieee80211_tx_h_fragment);
