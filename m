@@ -2,292 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8C4D45804F
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Nov 2021 21:29:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DA564582E1
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Nov 2021 11:14:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231791AbhKTUcd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 Nov 2021 15:32:33 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:58878 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231695AbhKTUcc (ORCPT
+        id S233735AbhKUKRS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 Nov 2021 05:17:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40062 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233509AbhKUKRQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 Nov 2021 15:32:32 -0500
-X-UUID: f1be02bdcdd446ba934e4f041a528c0b-20211121
-X-UUID: f1be02bdcdd446ba934e4f041a528c0b-20211121
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1273774290; Sun, 21 Nov 2021 04:29:24 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sun, 21 Nov 2021 04:29:22 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sun, 21 Nov 2021 04:29:22 +0800
-From:   <sean.wang@mediatek.com>
-To:     <lorenzo.bianconi@redhat.com>
-CC:     <nbd@nbd.name>, <sean.wang@mediatek.com>,
-        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
-        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
-        <Stella.Chang@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH 2/2] mt76: mt7921s: fix the device cannot sleep deeply in suspend
-Date:   Sun, 21 Nov 2021 04:29:21 +0800
-Message-ID: <1637440161-1946-1-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <YZkDmDIqnePjIF+O@lore-desk--annotate>
-References: <YZkDmDIqnePjIF+O@lore-desk--annotate>
+        Sun, 21 Nov 2021 05:17:16 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDD84C061574;
+        Sun, 21 Nov 2021 02:14:11 -0800 (PST)
+Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1mojrM-0000nz-FK; Sun, 21 Nov 2021 11:14:08 +0100
+Message-ID: <3006235f-7682-9109-b6bc-29def21406e3@leemhuis.info>
+Date:   Sun, 21 Nov 2021 11:14:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [BISECTED REGRESSION] Wireless networking kernel crashes
+Content-Language: en-BS
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <20211118132556.GD334428@darkstar.musicnaut.iki.fi>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <20211118132556.GD334428@darkstar.musicnaut.iki.fi>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1637489651;f674049a;
+X-HE-SMSGID: 1mojrM-0000nz-FK
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+Hi, this is your Linux kernel regression tracker speaking.
 
->> > From: Sean Wang <sean.wang@mediatek.com>
->> >
->> > According to the MT7921S firmware, the cmd MCU_UNI_CMD_HIF_CTRL have
->> > to be last MCU command to execute in suspend handler and all data
->> > traffic have to be stopped before the cmd MCU_UNI_CMD_HIF_CTRL
->> > starts as well in order that mt7921 can successfully fall into the deep sleep mode.
->> >
->> > Where we reuse the flag MT76_STATE_SUSPEND and avoid creating
->> > another global flag to stop all of the traffic onto the SDIO bus.
->> >
->> > Fixes: 48fab5bbef40 ("mt76: mt7921: introduce mt7921s support")
->> > Reported-by: Leon Yen <leon.yen@mediatek.com>
->> > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
->> > ---
->> >  .../wireless/mediatek/mt76/mt76_connac_mcu.c  |  2 +-
->> > .../net/wireless/mediatek/mt76/mt7921/main.c  |  3 --
->> > .../net/wireless/mediatek/mt76/mt7921/sdio.c  | 34 ++++++++++++-------
->> >  drivers/net/wireless/mediatek/mt76/sdio.c     |  3 +-
->> >  .../net/wireless/mediatek/mt76/sdio_txrx.c    |  3 +-
->> >  5 files changed, 27 insertions(+), 18 deletions(-)
->> >
->> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> > b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> > index 26b4b875dcc0..61c4c86e79c8 100644
->> > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
->> > @@ -2461,7 +2461,7 @@ void mt76_connac_mcu_set_suspend_iter(void *priv, u8 *mac,
->> >				      struct ieee80211_vif *vif)  {
->> >	struct mt76_phy *phy = priv;
->> > -	bool suspend = test_bit(MT76_STATE_SUSPEND, &phy->state);
->> > +	bool suspend = !test_bit(MT76_STATE_RUNNING, &phy->state);
->> >	struct ieee80211_hw *hw = phy->hw;
->> >	struct cfg80211_wowlan *wowlan = hw->wiphy->wowlan_config;
->> >	int i;
->> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
->> > b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
->> > index e022251b4006..0b2a6b7f22ea 100644
->> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
->> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
->> > @@ -1242,8 +1242,6 @@ static int mt7921_suspend(struct ieee80211_hw *hw,
->> >	mt7921_mutex_acquire(dev);
->> >
->> >	clear_bit(MT76_STATE_RUNNING, &phy->mt76->state);
->> > -
->> > -	set_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
->> >	ieee80211_iterate_active_interfaces(hw,
->> >					    IEEE80211_IFACE_ITER_RESUME_ALL,
->> >					    mt76_connac_mcu_set_suspend_iter, @@ -1262,7 +1260,6 @@
->> > static int mt7921_resume(struct ieee80211_hw *hw)
->> >	mt7921_mutex_acquire(dev);
->> >
->> >	set_bit(MT76_STATE_RUNNING, &phy->mt76->state);
->> > -	clear_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
->> >	ieee80211_iterate_active_interfaces(hw,
->> >					    IEEE80211_IFACE_ITER_RESUME_ALL,
->> >					    mt76_connac_mcu_set_suspend_iter, diff --git
->> > a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
->> > b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
->> > index 5fee489c7a99..5c88b6b8d097 100644
->> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
->> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
->> > @@ -206,6 +206,8 @@ static int mt7921s_suspend(struct device *__dev)
->> >	int err;
->> >
->> >	pm->suspended = true;
->> > +	set_bit(MT76_STATE_SUSPEND, &mdev->phy.state);
->> > +
->> >	cancel_delayed_work_sync(&pm->ps_work);
->> >	cancel_work_sync(&pm->wake_work);
->> >
->> > @@ -213,10 +215,6 @@ static int mt7921s_suspend(struct device *__dev)
->> >	if (err < 0)
->> >		goto restore_suspend;
->> >
->> > -	err = mt76_connac_mcu_set_hif_suspend(mdev, true);
->> > -	if (err)
->> > -		goto restore_suspend;
->> > -
->> >	/* always enable deep sleep during suspend to reduce
->> >	 * power consumption
->> >	 */
->> > @@ -224,34 +222,45 @@ static int mt7921s_suspend(struct device
->> > *__dev)
->> >
->> >	mt76_txq_schedule_all(&dev->mphy);
->> >	mt76_worker_disable(&mdev->tx_worker);
->> > -	mt76_worker_disable(&mdev->sdio.txrx_worker);
->> >	mt76_worker_disable(&mdev->sdio.status_worker);
->> > -	mt76_worker_disable(&mdev->sdio.net_worker);
->> >	cancel_work_sync(&mdev->sdio.stat_work);
->> >	clear_bit(MT76_READING_STATS, &dev->mphy.state);
->> > -
->> >	mt76_tx_status_check(mdev, true);
->> >
->> > -	err = mt7921_mcu_fw_pmctrl(dev);
->> > +	mt76_worker_schedule(&mdev->sdio.txrx_worker);
->>
->> I guess mt76_worker_disable() is supposed to do it, right?
->> I guess we can assume txrx_worker is no longer running here, right?
->
->I can see it now, txrx_worker can be running on the different cpu.
->I guess we need to add just the wait_event_timeout() and move
->mt76_connac_mcu_set_hif_suspend() below. What do you think?
->Can you please try the chunk below?
+CCing regression mailing list, which should be in the loop for all
+regressions, as explained here:
+https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html
 
-mt76_connac_mcu_set_hif_suspend have to rely on txrx_worker and net_worker to
-send the command MCU_UNI_CMD_HIF_CTRL and receive the corresponding event,
-so that is why we cannnot disable txrx_worker and net_worker with mt76_worker_disable
-until the mt76_connac_mcu_set_hif_suspend is done.
+On 18.11.21 14:25, Aaro Koskinen wrote:
+>
+> I have tried to upgrade my wireless AP (Raspberry Pi with rt2x00usb)
+> from v5.9 to the current mainline, but now it keeps crashing every hour
+> or so, basically making my wireless network unusable.
+> 
+> I have bisected this to:
+> 
+> commit 03c3911d2d67a43ad4ffd15b534a5905d6ce5c59
+> Author: Ryder Lee <ryder.lee@mediatek.com>
+> Date:   Thu Jun 17 18:31:12 2021 +0200
 
->
->Regards,
->Lorenzo
->
->>
->> > +	wait_event_timeout(dev->mt76.sdio.wait,
->> > +			   mt76s_txqs_empty(&dev->mt76), 5 * HZ);
->> > +
->> > +	/* It is supposed that SDIO bus is idle at the point */
->> > +	err = mt76_connac_mcu_set_hif_suspend(mdev, true);
->> >	if (err)
->> >		goto restore_worker;
->> >
->> > +	mt76_worker_disable(&mdev->sdio.txrx_worker);
->> > +	mt76_worker_disable(&mdev->sdio.net_worker);
->> > +
->> > +	err = mt7921_mcu_fw_pmctrl(dev);
->> > +	if (err)
->> > +		goto restore_txrx_worker;
->> > +
->> >	sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER);
->> >
->> >	return 0;
->> >
->> > +restore_txrx_worker:
->> > +	mt76_worker_enable(&mdev->sdio.net_worker);
->> > +	mt76_worker_enable(&mdev->sdio.txrx_worker);
->> > +	mt76_connac_mcu_set_hif_suspend(mdev, false);
->> > +
->> >  restore_worker:
->> >	mt76_worker_enable(&mdev->tx_worker);
->> > -	mt76_worker_enable(&mdev->sdio.txrx_worker);
->> >	mt76_worker_enable(&mdev->sdio.status_worker);
->> > -	mt76_worker_enable(&mdev->sdio.net_worker);
->> >
->> >	if (!pm->ds_enable)
->> >		mt76_connac_mcu_set_deep_sleep(mdev, false);
->> >
->> > -	mt76_connac_mcu_set_hif_suspend(mdev, false);
->> > -
->> >  restore_suspend:
->> > +	clear_bit(MT76_STATE_SUSPEND, &mdev->phy.state);
->> >	pm->suspended = false;
->> >
->> >	return err;
->> > @@ -266,6 +275,7 @@ static int mt7921s_resume(struct device *__dev)
->> >	int err;
->> >
->> >	pm->suspended = false;
->> > +	clear_bit(MT76_STATE_SUSPEND, &mdev->phy.state);
->> >
->> >	err = mt7921_mcu_drv_pmctrl(dev);
->> >	if (err < 0)
->> > diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c
->> > b/drivers/net/wireless/mediatek/mt76/sdio.c
->> > index c99acc21225e..b0bc7be0fb1f 100644
->> > --- a/drivers/net/wireless/mediatek/mt76/sdio.c
->> > +++ b/drivers/net/wireless/mediatek/mt76/sdio.c
->> > @@ -479,7 +479,8 @@ static void mt76s_status_worker(struct mt76_worker *w)
->> >			resched = true;
->> >
->> >		if (dev->drv->tx_status_data &&
->> > -		    !test_and_set_bit(MT76_READING_STATS, &dev->phy.state))
->> > +		    !test_and_set_bit(MT76_READING_STATS, &dev->phy.state) &&
->> > +		    !test_bit(MT76_STATE_SUSPEND, &dev->phy.state))
->> >			queue_work(dev->wq, &dev->sdio.stat_work);
->> >	} while (nframes > 0);
->> >
->> > diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
->> > b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
->> > index 649a56790b89..801590a0a334 100644
->> > --- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
->> > +++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
->> > @@ -317,7 +317,8 @@ void mt76s_txrx_worker(struct mt76_sdio *sdio)
->> >		if (ret > 0)
->> >			nframes += ret;
->> >
->> > -		if (test_bit(MT76_MCU_RESET, &dev->phy.state)) {
->> > +		if (test_bit(MT76_MCU_RESET, &dev->phy.state) ||
->> > +		    test_bit(MT76_STATE_SUSPEND, &dev->phy.state)) {
->> >			if (!mt76s_txqs_empty(dev))
->> >				continue;
->> >			else
->>
->> since mt76s_tx_run_queue will not run if MT76_MCU_RESET is set, do we
->> really need to check it for each iteration or is fine something like:
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
->> b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
->> index 649a56790b89..68f30a83fa5d 100644
->> --- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
->> +++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
->> @@ -317,14 +317,12 @@ void mt76s_txrx_worker(struct mt76_sdio *sdio)
->>		if (ret > 0)
->>			nframes += ret;
->>
->> -		if (test_bit(MT76_MCU_RESET, &dev->phy.state)) {
->> -			if (!mt76s_txqs_empty(dev))
->> -				continue;
->> -			else
->> -				wake_up(&sdio->wait);
->> -		}
->>	} while (nframes > 0);
->>
->> +	if (test_bit(MT76_MCU_RESET, &dev->phy.state) &&
->> +	    mt76s_txqs_empty(dev))
->> +		wake_up(&sdio->wait);
->> +
+TWIMC: To be sure this issue doesn't fall through the cracks unnoticed,
+I'm adding it to regzbot, my Linux kernel regression tracking bot:
 
-If doing so, mt76s_txqs_empty may not always be true because enqueuing packets
-to q_tx or MCU command to q_mcu simultanenously from the other contexts in
-different cpu is possible.
+#regzbot ^introduced 03c3911d2d67a43ad4ffd15b534a5905d6ce5c59
+#regzbot title wireless AP (Raspberry Pi with rt2x00usb) crashes every
+hour or so
+#regzbot ignore-activity
 
-It seemed to me we should check it for each iteration to guarantee that we can
-wake up the one that is waiting for the all the queues are empty at some time.
+Ciao, Thorsten, your Linux kernel regression tracker.
 
->>	/* enable interrupt */
->>	sdio_writel(sdio->func, WHLPCR_INT_EN_SET, MCR_WHLPCR, NULL);
->>	sdio_release_host(sdio->func);
->>
->> Regards,
->> Lorenzo
->>
->> > --
->> > 2.25.1
->> >
->
->
->
+
+P.S.: If you want to know more about regzbot, check out its
+web-interface, the getting start guide, and/or the references documentation:
+
+https://linux-regtracking.leemhuis.info/regzbot/
+https://gitlab.com/knurd42/regzbot/-/blob/main/docs/getting_started.md
+https://gitlab.com/knurd42/regzbot/-/blob/main/docs/reference.md
+
+The last two documents will explain how you can interact with regzbot
+yourself if your want to.
+
+Hint for the reporter: when reporting a regression it's in your interest
+to tell #regzbot about it in the report, as that will ensure the
+regression gets on the radar of regzbot and the regression tracker.
+That's in your interest, as they will make sure the report won't fall
+through the cracks unnoticed.
+
+Hint for developers: you normally don't need to care about regzbot, just
+fix the issue as you normally would. Just remember to include a 'Link:'
+tag to the report in the commit message, as explained in
+Documentation/process/submitting-patches.rst
+That aspect was recently was made more explicit in commit 1f57bd42b77c:
+https://git.kernel.org/linus/1f57bd42b77c
