@@ -2,102 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7125645842C
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Nov 2021 15:45:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3420458548
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Nov 2021 18:13:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238311AbhKUOsm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 Nov 2021 09:48:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42436 "EHLO
+        id S238306AbhKURQ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 Nov 2021 12:16:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238079AbhKUOsk (ORCPT
+        with ESMTP id S229770AbhKURQ6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 Nov 2021 09:48:40 -0500
-Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7580C061574
-        for <linux-wireless@vger.kernel.org>; Sun, 21 Nov 2021 06:45:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1637505932;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=k4ovVeGWykiyQqLdOt+pg9u4rBbCXU8KwSKQ8XinB3A=;
-        b=vsUBEawYM4Gp8jWqxtG3NKpkZcXp94og/56/aGYt+t9cNleA3gadxoAoqywr3kzp/TYUUl
-        JL2MuoAWC/AhwSCmXjAX4qyzSLWdOOcoFoT4bLbgpSdc7nOEc7I/vqOMqQeBD5Zv22sJ1l
-        Gq5piBcC56JZ88615JgZzp06qIUppYc=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath11k@lists.infradead.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
-        robh@kernel.org, Anilkumar Kolli <akolli@codeaurora.org>
-Subject: Re: [PATCH v4 2/2] ath11k: Use reserved host DDR addresses from DT for PCI devices
-Date:   Sun, 21 Nov 2021 15:45:29 +0100
-Message-ID: <1724585.GBsqGgcNsD@sven-l14>
-In-Reply-To: <1637504521-30997-2-git-send-email-akolli@codeaurora.org>
-References: <1637504521-30997-1-git-send-email-akolli@codeaurora.org> <1637504521-30997-2-git-send-email-akolli@codeaurora.org>
+        Sun, 21 Nov 2021 12:16:58 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B92BC061574
+        for <linux-wireless@vger.kernel.org>; Sun, 21 Nov 2021 09:13:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=CEwcKOCTBD62Flf+A+wHLhM0ZeEGpWIW4/OgmHyinXc=; b=tokMm+gSsC/QIVMh7ftdwTXxrA
+        zoGJhR0QPmuV1Kc5OKzMgo/YH0Y1jirm2RavanI7t3Evx7Rrs9xsVWbBwtCvO7S1rrI/cUVS0JKOU
+        nqtqzQLGLmFzJ8s56geB7Ey+NFVsjwYgkDQNANkJqykJJcWZEMwbTFhTyPWc2yFahCBc=;
+Received: from p54ae9f3f.dip0.t-ipconnect.de ([84.174.159.63] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1moqPS-0002kN-AY; Sun, 21 Nov 2021 18:13:46 +0100
+Message-ID: <6b7327f2-4e29-ed23-cfcf-7d2e012c19a4@nbd.name>
+Date:   Sun, 21 Nov 2021 18:13:45 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+Subject: Re: [PATCH] mt76: mt7915: fix NULL pointer dereference in
+ mt7915_get_phy_mode
+Content-Language: en-US
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        ryder.lee@mediatek.com
+References: <ddae419a740f1fb9e48afd432035e9f394f512ee.1637239456.git.lorenzo@kernel.org>
+ <YZeFx0s8HUNtaODw@lore-desk> <87y25kcpcz.fsf@codeaurora.org>
+From:   Felix Fietkau <nbd@nbd.name>
+In-Reply-To: <87y25kcpcz.fsf@codeaurora.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sunday, 21 November 2021 15:22:01 CET Anilkumar Kolli wrote:
-[...]
-> +static int ath11k_mhi_read_addr_from_dt(struct mhi_controller *mhi_ctrl)
-> +{
-> +	struct device_node *np;
-> +	dma_addr_t start;
-> +	u32 reg[4];
-> +	int ret;
-> +
-> +	np = of_find_node_by_type(NULL, "memory");
-> +	if (!np)
-> +		return -ENOENT;
-> +
-> +	ret = of_property_read_u32_array(np, "reg", reg, 4);
-> +	if (ret)
-> +		return ret;
-> +
-> +	start = reg[0] + reg[1];
-> +	mhi_ctrl->iova_start = start + 0x1000000;
-> +	mhi_ctrl->iova_stop = start + reg[2] + reg[3];
-> +
-> +	return 0;
-> +}
-> +
-[...]
-> +			ret = of_property_read_u32(dev->of_node, "memory-region",
-> +						   &hremote_phandle);
-> +			if (ret) {
-> +				ath11k_dbg(ab, ATH11K_DBG_QMI,
-> +					   "qmi fail to get hremote phandle\n");
-> +				return ret;
-> +			}
-> +
-> +			hremote_node = of_find_node_by_phandle(hremote_phandle);
-> +			if (!hremote_node) {
-> +				ath11k_dbg(ab, ATH11K_DBG_QMI,
-> +					   "qmi fail to get hremote_node\n");
-> +				return ret;
-> +			}
-> +
-> +			ret = of_property_read_u32_array(hremote_node, "reg", reg, 4);
-> +			if (ret) {
-> +				ath11k_dbg(ab, ATH11K_DBG_QMI,
-> +					   "qmi fail to get reg from hremote\n");
-> +				return ret;
-> +			}
-> +
-> +			start = reg[0] + reg[1];
-> +			size = reg[2] + reg[3];
 
-See my messages for v2 [1] and v3 [2]
+On 2021-11-19 13:16, Kalle Valo wrote:
+> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+> 
+>>> Fix the following NULL pointer dereference in mt7915_get_phy_mode
+>>> routine adding an ibss interface to the mt7915 driver.
+>>
+>> Hi Kalle and Felix,
+>>
+>> I guess we can apply this patch in wireless-drivers tree since the issue is
+>> already in Linus's tree. What do you think?
+> 
+> Yeah, I agree that this should go to wireless-drivers. Felix, ack?
 
-Kind regards,
-	Sven
+Sure!
 
-[1] https://patchwork.kernel.org/project/linux-wireless/patch/1637082058-6398-2-git-send-email-akolli@codeaurora.org/#24605391
-[2] https://patchwork.kernel.org/project/linux-wireless/patch/1637244892-27267-2-git-send-email-akolli@codeaurora.org/#24605417
+Acked-by: Felix Fietkau <nbd@nbd.name>
 
-
+- Felix
