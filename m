@@ -2,355 +2,204 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20DDC45833D
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Nov 2021 13:12:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FCBF4583DC
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Nov 2021 14:38:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238001AbhKUMPw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 Nov 2021 07:15:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41088 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235783AbhKUMPw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 Nov 2021 07:15:52 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C029660E54;
-        Sun, 21 Nov 2021 12:12:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637496767;
-        bh=8M+uUUTCRtudJ275CkcNk9kKGQRtCxuIQ+nqyk0eAc0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l1T1JalFt2J4a1Y9HnDwNPb4h4SKLS+RrXuHoqWBsAZ/0VQqUu2zleFVbsHUE1dW5
-         au6rXjh6U/OAbAbFXNGhL0kcGiZ2CINoMvnbyN9iIJo6MR+J3mqUbVzxFvjTXLhXNd
-         +kZWItKblvl0E0tGoCS6uj8+/UUG2EcS4ZTuV/6pAgyTbW4Vrn5k7rJL/yvLTeslnm
-         lB+uKxqMUeClrngnNkKYyAgi7L7K0AW9D5axF77ba40gRa19xUEhC5dorSLVLljqZ3
-         dxoGX4W4+G1sQ5lnoO7Zf0y29Bh8JrDwwEq4rWwVcQLBuSW63Y4vhbbVbD5GLSUEpp
-         b3o/uHfl0tAFA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH 2/2] mt76: mt76x02: introduce SAR support
-Date:   Sun, 21 Nov 2021 13:12:25 +0100
-Message-Id: <9e479a1e69f078de9986cca8c8901d5d83a12f0b.1637496644.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1637496643.git.lorenzo@kernel.org>
-References: <cover.1637496643.git.lorenzo@kernel.org>
+        id S238148AbhKUNlY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 Nov 2021 08:41:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56076 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237994AbhKUNlV (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 21 Nov 2021 08:41:21 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D70B3C061574
+        for <linux-wireless@vger.kernel.org>; Sun, 21 Nov 2021 05:38:08 -0800 (PST)
+Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1mon2k-0002Gr-1R; Sun, 21 Nov 2021 14:38:06 +0100
+Message-ID: <60b9dbe3-852b-9e63-2857-0264d7093930@leemhuis.info>
+Date:   Sun, 21 Nov 2021 14:38:02 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: Bug/Regression - Ralink RT2800 kernel deference issue since
+ kernel 5.14
+Content-Language: en-BS
+To:     Robert W <rwbugreport@lost-in-the-void.net>, xl@wp.pl,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>
+Cc:     linux-wireless@vger.kernel.org,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <c07b4142fb725ed87a2cef530bae9ee7@lost-in-the-void.net>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <c07b4142fb725ed87a2cef530bae9ee7@lost-in-the-void.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1637501888;d5ad771c;
+X-HE-SMSGID: 1mon2k-0002Gr-1R
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add SAR spec support to mt76x02 driver to allow configuring SAR power
-limitations on the frequency ranges from the userland.
+Hi, this is your Linux kernel regression tracker speaking.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt76x0/init.c  |  5 ++-
- .../net/wireless/mediatek/mt76/mt76x0/main.c  | 34 +++++++++++++++++--
- .../wireless/mediatek/mt76/mt76x0/mt76x0.h    |  2 ++
- .../net/wireless/mediatek/mt76/mt76x0/pci.c   |  1 +
- .../net/wireless/mediatek/mt76/mt76x0/usb.c   |  1 +
- drivers/net/wireless/mediatek/mt76/mt76x02.h  |  2 +-
- .../net/wireless/mediatek/mt76/mt76x02_util.c | 11 +++++-
- .../net/wireless/mediatek/mt76/mt76x2/init.c  | 29 ++++++++++++++++
- .../wireless/mediatek/mt76/mt76x2/mt76x2.h    |  2 ++
- .../wireless/mediatek/mt76/mt76x2/pci_init.c  |  5 +--
- .../wireless/mediatek/mt76/mt76x2/pci_main.c  |  7 +++-
- .../wireless/mediatek/mt76/mt76x2/usb_init.c  |  4 ++-
- .../wireless/mediatek/mt76/mt76x2/usb_main.c  |  9 +++--
- 13 files changed, 101 insertions(+), 11 deletions(-)
+CCing regression mailing list, which should be in the loop for all
+regressions, as explained here:
+https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/init.c b/drivers/net/wireless/mediatek/mt76/mt76x0/init.c
-index 0bac39bf3b66..66d47c70111a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/init.c
-@@ -237,7 +237,10 @@ int mt76x0_register_device(struct mt76x02_dev *dev)
- {
- 	int ret;
- 
--	mt76x02_init_device(dev);
-+	ret = mt76x02_init_device(dev);
-+	if (ret)
-+		return ret;
-+
- 	mt76x02_config_mac_addr_list(dev);
- 
- 	ret = mt76_register_device(&dev->mt76, true, mt76x02_rates,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/main.c b/drivers/net/wireless/mediatek/mt76/mt76x0/main.c
-index 700ae9c12f1d..07380cce8755 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/main.c
-@@ -31,6 +31,32 @@ mt76x0_set_channel(struct mt76x02_dev *dev, struct cfg80211_chan_def *chandef)
- 	mt76_txq_schedule_all(&dev->mphy);
- }
- 
-+int mt76x0_set_sar_specs(struct ieee80211_hw *hw,
-+			 const struct cfg80211_sar_specs *sar)
-+{
-+	int err = -EINVAL, power = hw->conf.power_level * 2;
-+	struct mt76x02_dev *dev = hw->priv;
-+	struct mt76_phy *mphy = &dev->mphy;
-+
-+	mutex_lock(&dev->mt76.mutex);
-+	if (!cfg80211_chandef_valid(&mphy->chandef))
-+		goto out;
-+
-+	err = mt76_init_sar_power(hw, sar);
-+	if (err)
-+		goto out;
-+
-+	dev->txpower_conf = mt76_get_sar_power(mphy, mphy->chandef.chan,
-+					       power);
-+	if (test_bit(MT76_STATE_RUNNING, &mphy->state))
-+		mt76x0_phy_set_txpower(dev);
-+out:
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(mt76x0_set_sar_specs);
-+
- int mt76x0_config(struct ieee80211_hw *hw, u32 changed)
- {
- 	struct mt76x02_dev *dev = hw->priv;
-@@ -44,9 +70,13 @@ int mt76x0_config(struct ieee80211_hw *hw, u32 changed)
- 	}
- 
- 	if (changed & IEEE80211_CONF_CHANGE_POWER) {
--		dev->txpower_conf = hw->conf.power_level * 2;
-+		struct mt76_phy *mphy = &dev->mphy;
- 
--		if (test_bit(MT76_STATE_RUNNING, &dev->mphy.state))
-+		dev->txpower_conf = hw->conf.power_level * 2;
-+		dev->txpower_conf = mt76_get_sar_power(mphy,
-+						       mphy->chandef.chan,
-+						       dev->txpower_conf);
-+		if (test_bit(MT76_STATE_RUNNING, &mphy->state))
- 			mt76x0_phy_set_txpower(dev);
- 	}
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h b/drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h
-index 6953f253a28a..99dcb8feb9f7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h
-@@ -49,6 +49,8 @@ void mt76x0_chip_onoff(struct mt76x02_dev *dev, bool enable, bool reset);
- void mt76x0_mac_stop(struct mt76x02_dev *dev);
- 
- int mt76x0_config(struct ieee80211_hw *hw, u32 changed);
-+int mt76x0_set_sar_specs(struct ieee80211_hw *hw,
-+			 const struct cfg80211_sar_specs *sar);
- 
- /* PHY */
- void mt76x0_phy_init(struct mt76x02_dev *dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-index f19228fc5a70..9277ff38b7a2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-@@ -85,6 +85,7 @@ static const struct ieee80211_ops mt76x0e_ops = {
- 	.set_rts_threshold = mt76x02_set_rts_threshold,
- 	.get_antenna = mt76_get_antenna,
- 	.reconfig_complete = mt76x02_reconfig_complete,
-+	.set_sar_specs = mt76x0_set_sar_specs,
- };
- 
- static int mt76x0e_init_hardware(struct mt76x02_dev *dev, bool resume)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-index f2b2fa733845..436daf6d6d86 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-@@ -141,6 +141,7 @@ static const struct ieee80211_ops mt76x0u_ops = {
- 	.set_tim = mt76_set_tim,
- 	.release_buffered_frames = mt76_release_buffered_frames,
- 	.get_antenna = mt76_get_antenna,
-+	.set_sar_specs = mt76x0_set_sar_specs,
- };
- 
- static int mt76x0u_init_hardware(struct mt76x02_dev *dev, bool reset)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02.h b/drivers/net/wireless/mediatek/mt76/mt76x02.h
-index 4d58c2c1c0ac..44d1a92d9a90 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02.h
-@@ -133,7 +133,7 @@ struct mt76x02_dev {
- 
- extern struct ieee80211_rate mt76x02_rates[12];
- 
--void mt76x02_init_device(struct mt76x02_dev *dev);
-+int mt76x02_init_device(struct mt76x02_dev *dev);
- void mt76x02_configure_filter(struct ieee80211_hw *hw,
- 			      unsigned int changed_flags,
- 			      unsigned int *total_flags, u64 multicast);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-index 1f17d86ff755..06f8fb883ead 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-@@ -138,7 +138,7 @@ mt76x02_led_set_brightness(struct led_classdev *led_cdev,
- 		mt76x02_led_set_config(mdev, 0xff, 0);
- }
- 
--void mt76x02_init_device(struct mt76x02_dev *dev)
-+int mt76x02_init_device(struct mt76x02_dev *dev)
- {
- 	struct ieee80211_hw *hw = mt76_hw(dev);
- 	struct wiphy *wiphy = hw->wiphy;
-@@ -174,6 +174,13 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
- 	}
- 
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
-+	wiphy->sar_capa = &mt76_sar_capa;
-+	dev->mt76.phy.frp = devm_kcalloc(dev->mt76.dev,
-+					 wiphy->sar_capa->num_freq_ranges,
-+					 sizeof(struct mt76_freq_range_power),
-+					 GFP_KERNEL);
-+	if (!dev->mt76.phy.frp)
-+		return -ENOMEM;
- 
- 	hw->sta_data_size = sizeof(struct mt76x02_sta);
- 	hw->vif_data_size = sizeof(struct mt76x02_vif);
-@@ -197,6 +204,8 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
- 		dev->mphy.chainmask = 0x101;
- 		dev->mphy.antenna_mask = 1;
- 	}
-+
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(mt76x02_init_device);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/init.c
-index a92a479aebaa..7b01a06d7f8d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/init.c
-@@ -8,6 +8,35 @@
- #include "eeprom.h"
- #include "../mt76x02_phy.h"
- 
-+int mt76x2_set_sar_specs(struct ieee80211_hw *hw,
-+			 const struct cfg80211_sar_specs *sar)
-+{
-+	int err = -EINVAL, power = hw->conf.power_level * 2;
-+	struct mt76x02_dev *dev = hw->priv;
-+	struct mt76_phy *mphy = &dev->mphy;
-+
-+	mutex_lock(&dev->mt76.mutex);
-+	if (!cfg80211_chandef_valid(&mphy->chandef))
-+		goto out;
-+
-+	err = mt76_init_sar_power(hw, sar);
-+	if (err)
-+		goto out;
-+
-+	dev->txpower_conf = mt76_get_sar_power(mphy, mphy->chandef.chan,
-+					       power);
-+	/* convert to per-chain power for 2x2 devices */
-+	dev->txpower_conf -= 6;
-+
-+	if (test_bit(MT76_STATE_RUNNING, &mphy->state))
-+		mt76x2_phy_set_txpower(dev);
-+out:
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(mt76x2_set_sar_specs);
-+
- static void
- mt76x2_set_wlan_state(struct mt76x02_dev *dev, bool enable)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h b/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h
-index d01f47c83eb1..be1217329a77 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h
-@@ -41,6 +41,8 @@ extern const struct ieee80211_ops mt76x2_ops;
- int mt76x2_register_device(struct mt76x02_dev *dev);
- int mt76x2_resume_device(struct mt76x02_dev *dev);
- 
-+int mt76x2_set_sar_specs(struct ieee80211_hw *hw,
-+			 const struct cfg80211_sar_specs *sar);
- void mt76x2_phy_power_on(struct mt76x02_dev *dev);
- void mt76x2_stop_hardware(struct mt76x02_dev *dev);
- int mt76x2_eeprom_init(struct mt76x02_dev *dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
-index c6fa8cf92529..e38e8e5685c2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
-@@ -292,8 +292,9 @@ int mt76x2_register_device(struct mt76x02_dev *dev)
- 	int ret;
- 
- 	INIT_DELAYED_WORK(&dev->cal_work, mt76x2_phy_calibrate);
--
--	mt76x02_init_device(dev);
-+	ret = mt76x02_init_device(dev);
-+	if (ret)
-+		return ret;
- 
- 	ret = mt76x2_init_hardware(dev);
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
-index 933125b07ea3..b38bb7a2362b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
-@@ -78,8 +78,12 @@ mt76x2_config(struct ieee80211_hw *hw, u32 changed)
- 	}
- 
- 	if (changed & IEEE80211_CONF_CHANGE_POWER) {
--		dev->txpower_conf = hw->conf.power_level * 2;
-+		struct mt76_phy *mphy = &dev->mphy;
- 
-+		dev->txpower_conf = hw->conf.power_level * 2;
-+		dev->txpower_conf = mt76_get_sar_power(mphy,
-+						       mphy->chandef.chan,
-+						       dev->txpower_conf);
- 		/* convert to per-chain power for 2x2 devices */
- 		dev->txpower_conf -= 6;
- 
-@@ -155,5 +159,6 @@ const struct ieee80211_ops mt76x2_ops = {
- 	.get_antenna = mt76_get_antenna,
- 	.set_rts_threshold = mt76x02_set_rts_threshold,
- 	.reconfig_complete = mt76x02_reconfig_complete,
-+	.set_sar_specs = mt76x2_set_sar_specs,
- };
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-index 85dcdc22fbeb..33a14365ec9b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-@@ -194,7 +194,9 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
- 	int err;
- 
- 	INIT_DELAYED_WORK(&dev->cal_work, mt76x2u_phy_calibrate);
--	mt76x02_init_device(dev);
-+	err = mt76x02_init_device(dev);
-+	if (err)
-+		return err;
- 
- 	err = mt76x2u_init_eeprom(dev);
- 	if (err < 0)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-index b66836928d9d..ac07ed1f63a3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-@@ -78,12 +78,16 @@ mt76x2u_config(struct ieee80211_hw *hw, u32 changed)
- 	}
- 
- 	if (changed & IEEE80211_CONF_CHANGE_POWER) {
--		dev->txpower_conf = hw->conf.power_level * 2;
-+		struct mt76_phy *mphy = &dev->mphy;
- 
-+		dev->txpower_conf = hw->conf.power_level * 2;
-+		dev->txpower_conf = mt76_get_sar_power(mphy,
-+						       mphy->chandef.chan,
-+						       dev->txpower_conf);
- 		/* convert to per-chain power for 2x2 devices */
- 		dev->txpower_conf -= 6;
- 
--		if (test_bit(MT76_STATE_RUNNING, &dev->mphy.state))
-+		if (test_bit(MT76_STATE_RUNNING, &mphy->state))
- 			mt76x2_phy_set_txpower(dev);
- 	}
- 
-@@ -121,4 +125,5 @@ const struct ieee80211_ops mt76x2u_ops = {
- 	.set_tim = mt76_set_tim,
- 	.release_buffered_frames = mt76_release_buffered_frames,
- 	.get_antenna = mt76_get_antenna,
-+	.set_sar_specs = mt76x2_set_sar_specs,
- };
--- 
-2.31.1
+Also adding Helmut and Stanislaw (or just a different of his
+addresses?), as afaics nothing happened since the report.
 
+On 12.11.21 22:21, Robert W wrote:
+> 
+> I have recently tried to upgrade a system to run the 5.14 kernel and
+> noticed that I was getting hangs on the system which seem to relate to
+> this wireless dongle which I am running hostapd against to provide a
+> small AP. Since that time kernel 5.15 was released and I have tested
+> that kernel as well and the problem persists.  The issue sometimes
+> occurs within an hour and other times it takes a few hours. I have tried
+> to narrow down what is causing the issue.  I thought it might be a
+> change elsewhere outside the mac80211/driver area so I tried to run the
+> wireless backports 5.15-rc6 on top of the last stable kernel of 5.13 so
+> as to have the smallest number of changes on the system. The backports
+> crashes with the same error.  I have included below the netconsole
+> output and the gdb of the kernel module in question. The capture was
+> from when I was using the backports, but the error  is the same.  I hope
+> the pastebins are okay to use on the list.  I did try to get some
+> assistance on linux-wireless IRC and some one asked for the outputs I
+> had for the information so I am reusing them here.
+> 
+> The following pastebin is the data sent to a netconsole instance.
+> 
+> https://pastebin.com/UxRrTtUh
+
+FWIW, it's better to have these things inline, that makes them easier
+accessible and makes sure they are archived properly (and thus are found
+by a search). Hence quoting from there:
+
+"""
+> [36666.334518] BUG: kernel NULL pointer dereference, address: 0000000000000008
+> [36666.337718]  __ieee80211_tx+0x76/0x140 [mac80211]
+> [36666.337718]  ieee80211_tx+0x105/0x150 [mac80211]
+> [36666.337718]  ieee80211_tx_pending+0xbb/0x2d0 [mac80211]
+> [36666.337718]  tasklet_action_common.constprop.0+0xbf/0x140
+> [36666.337718]  __do_softirq+0xcd/0x2c1
+> [36666.337718]  do_softirq+0x78/0x90
+> [36666.337718]  </IRQ>
+> [36666.337718]  __local_bh_enable_ip+0x56/0x60
+> [36666.337718]  rt2x00lib_rxdone+0x2ea/0x5a0 [rt2x00lib]
+> [36666.337718]  rt2x00usb_work_rxdone+0x6d/0xb0 [rt2x00usb]
+> [36666.337718]  process_one_work+0x1e0/0x3b0
+> [36666.337718]  worker_thread+0x50/0x3b0
+> [36666.337718]  ? process_one_work+0x3b0/0x3b0
+> [36666.337718]  kthread+0x130/0x160
+> [36666.337718]  ? set_kthread_struct+0x40/0x40
+> [36666.337718]  ret_from_fork+0x1f/0x30
+> [36666.337718] Modules linked in: tcp_veno rt2800usb(OE) rt2800mmio(OE) rt2800lib(OE) rt
+> 2500usb(OE) rt2x00usb(OE) rt2x00pci(OE) rt2x00mmio(OE) rt2x00lib(OE) mac80211(OE) cfg802
+> 11(OE) compat(OE) netconsole ccm rfkill libarc4 xt_MASQUERADE iptable_nat nf_nat xt_tcpu
+> dp xt_multiport xt_dscp xt_DSCP iptable_mangle xt_state xt_conntrack nf_conntrack sch_ca
+> ke nf_defrag_ipv6 nf_defrag_ipv4 cls_u32 sch_ingress iptable_filter ip_set_hash_ip act_m
+> irred ip_set ifb nfnetlink at24 iTCO_wdt gpio_ich intel_pmc_bxt iTCO_vendor_support snd_
+> hda_codec_via snd_hda_codec_generic ledtrig_audio snd_hda_intel snd_intel_dspcfg snd_int
+> el_sdw_acpi snd_hda_codec coretemp snd_hda_core i2c_i801 pcspkr i2c_smbus snd_hwdep snd_
+> pcm snd_timer lpc_ich e1000 e1000e snd soundcore intel_agp mac_hid f71882fg fuse ip_tabl
+> es x_tables xfs serio_raw atkbd libps2 xhci_pci i8042 serio i915 i2c_algo_bit intel_gtt 
+> video drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops cec drm agpgart raid1
+> 0 raid1 raid0 dm_raid raid456
+> [36666.337718]  async_raid6_recov async_memcpy async_pq async_xor xor async_tx raid6_pq 
+> dm_mod md_mod libcrc32c crc32c_generic [last unloaded: cfg80211]
+> [36666.337718] CR2: 0000000000000008
+> [36666.337718] ---[ end trace 73629cbca2cb5f49 ]---
+> [36666.337718] RIP: 0010:rt2x00queue_create_tx_descriptor+0x176/0x490 [rt2x00lib]
+> 36666.337718] Code: 8b 8b c8 00 00 00 4d 85 e4 0f 84 cf 02 00 00 41 8b 84 24 58 01 00 0
+> 0 89 45 18 41 0f b6 74 24 20 f6 43 32 01 0f 85 1e 02 00 00 <41> 0f b6 56 08 89 d0 66 89 
+> 55 0c 83 c8 08 f6 43 31 80 0f 44 c2 66
+> [36666.337718] RSP: 0018:ffffa95f80140ce0 EFLAGS: 00010246
+> [36666.337718] RAX: 0000000000000021 RBX: ffff8f97b7828600 RCX: ffff8f981955045c
+> [36666.337718] RDX: 0000000000013860 RSI: 0000000000000005 RDI: ffff8f98193d67e0
+> [36666.337718] RBP: ffffa95f80140d20 R08: 0000000000000001 R09: 0000000000000000
+> [36666.337718] R10: ffff8f9801ed5000 R11: ffffffff9b4060c0 R12: ffff8f9801ed5a58
+> [36666.337718] R13: ffff8f98193d67e0 R14: 0000000000000000 R15: ffff8f9802890878
+> [36666.337718] FS:  0000000000000000(0000) GS:ffff8f983bd00000(0000) knlGS:0000000000000
+> 000
+> [36666.337718] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [36666.337718] CR2: 0000000000000008 CR3: 0000000101faa000 CR4: 00000000000006e0
+> [36666.337718] Kernel panic - not syncing: Fatal exception in interrupt
+> [36666.337718] Kernel Offset: 0x18a00000 from 0xffffffff81000000 (relocation range: 0xff
+> ffffff80000000-0xffffffffbfffffff)
+> [36666.337718] Rebooting in 5 seconds..
+"""
+
+> The gdb debug of the kernel module suggests this section of code.
+> 
+> https://pastebin.com/iMzxWEVU
+
+To quote:
+"""
+> (gdb) list *(rt2x00queue_create_tx_descriptor+0x176)
+> 0x37e6 is in rt2x00queue_create_tx_descriptor (/home/robert/backport/backports-5.15-rc6-1/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c:324).
+> 319                      */
+> 320                     if (sta && txdesc->u.ht.mcs > 7 &&
+> 321                         sta->smps_mode == IEEE80211_SMPS_DYNAMIC)
+> 322                             __set_bit(ENTRY_TXD_HT_MIMO_PS, &txdesc->flags);
+> 323             } else {
+> 324                     txdesc->u.ht.mcs = rt2x00_get_rate_mcs(hwrate->mcs);
+> 325                     if (txrate->flags & IEEE80211_TX_RC_USE_SHORT_PREAMBLE)
+> 326                             txdesc->u.ht.mcs |= 0x08;
+> 327             }
+> 328
+"""
+
+> I am able to run further tests if required.  I am not a programmer, but
+> I can usually apply code patches and build the resulting code. Please
+> let me know if require any further information.
+
+TWIMC: To be sure this issue doesn't fall through the cracks unnoticed,
+I'm adding it to regzbot, my Linux kernel regression tracking bot:
+
+#regzbot ^introduced v5.13..v5.14
+#regzbot title Ralink RT2800 kernel deference issue since kernel 5.14
+#regzbot ignore-activity
+
+Ciao, Thorsten, your Linux kernel regression tracker.
+
+P.S.: If you want to know more about regzbot, check out its
+web-interface, the getting start guide, and/or the references documentation:
+
+https://linux-regtracking.leemhuis.info/regzbot/
+https://gitlab.com/knurd42/regzbot/-/blob/main/docs/getting_started.md
+https://gitlab.com/knurd42/regzbot/-/blob/main/docs/reference.md
+
+The last two documents will explain how you can interact with regzbot
+yourself if your want to.
+
+Hint for the reporter: when reporting a regression it's in your interest
+to tell #regzbot about it in the report, as that will ensure the
+regression gets on the radar of regzbot and the regression tracker.
+That's in your interest, as they will make sure the report won't fall
+through the cracks unnoticed.
+
+Hint for developers: you normally don't need to care about regzbot, just
+fix the issue as you normally would. Just remember to include a 'Link:'
+tag to the report in the commit message, as explained in
+Documentation/process/submitting-patches.rst
+That aspect was recently was made more explicit in commit 1f57bd42b77c:
+https://git.kernel.org/linus/1f57bd42b77c
+
+
+P.P.S.: As a Linux kernel regression tracker I'm getting a lot of
+reports on my table. I can only look briefly into most of them.
+Unfortunately therefore I sometimes will get things wrong or miss
+something important. I hope that's not the case here; if you think it
+is, don't hesitate to tell me about it in a public reply. That's in
+everyone's interest, as what I wrote above might be misleading to
+everyone reading this; any suggestion I gave they thus might sent
+someone reading this down the wrong rabbit hole, which none of us wants.
+
+BTW, I have no personal interest in this issue, which is tracked using
+regzbot, my Linux kernel regression tracking bot
+(https://linux-regtracking.leemhuis.info/regzbot/). I'm only posting
+this mail to get things rolling again and hence don't need to be CC on
+all further activities wrt to this regression.
