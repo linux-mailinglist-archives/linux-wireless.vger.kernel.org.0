@@ -2,146 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BAF0458AE7
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 09:53:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCA96458CB6
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 11:49:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234198AbhKVI4Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Nov 2021 03:56:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53930 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbhKVI4O (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Nov 2021 03:56:14 -0500
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53A6C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Nov 2021 00:53:08 -0800 (PST)
-Received: by mail-wr1-x42e.google.com with SMTP id a9so31246110wrr.8
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Nov 2021 00:53:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=BOwcu7/Nmet6CxNuJeudnGmrj2uw0wDmIhzt9tO75Mk=;
-        b=KwiPruVbEXhtabqgzgQtnBvCe3eurtdUB5SNTS2B2Cvzf800VjrV9fjCnKwDRvVasB
-         73c612+sb1uzZznJtcflNKynC6/bGbEOT7kikEdUpBV319BsQp+9NPKN9SdMSUsGrBdi
-         eHxIbSf2M5g0xIVn+bPcNEymL12iINfZ5SSOocmTr4skNmYV+hQ6KpRGUZVl9s3adUwB
-         eUAf0hRjtPDcH9lJPOeV56vbtoIArioY8RYykDhWzk4BroIrRRXZhRkrNfmZE058R9Qj
-         Xpz95sRHogXmu1tmbjpdgqyAf9zAIgU5dpy9fu2lp8XBDO+2mOHl9iw2mBi1g9QUuLZR
-         u1Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=BOwcu7/Nmet6CxNuJeudnGmrj2uw0wDmIhzt9tO75Mk=;
-        b=q32LNKPQNWph0ePEGqJbj4DBfpm1JmHLCyOYwK2waCevnIhbjUtuXqb5NZhf2540Yd
-         9nQFydZxvQhp8u3uK+4j1zbFafHywwK+8FOdkRUHN19V94WmX3KyuxUV3U4S2x8uDy6E
-         4y9ITOov4rc0VH2KrFLu+djDeOZ9qEpm8xluVPOU7qH8UhLriEjhdEvR4mGLoO8rOLtC
-         tjA6CmI/p/Md1h+o0Puo65kFQnxqWna9BWiHZfxHAuZJnmrsheKLuqdGLyWlO6xyNC87
-         0WJlVq8LePWKWfMW7YaE7MY2ahZIwKmWRDyDQFe9xIwJQlE7ZkY0nH7bDG4sqUP312pz
-         ZZHQ==
-X-Gm-Message-State: AOAM530AiknvGLk51U2iTQWpJ6fqZCY6j7uNP44d8lSAe/VIgziidNsH
-        yJ6LpV+rYG10wC/kHCjqp6bLdw==
-X-Google-Smtp-Source: ABdhPJy3b7re3t7RhW9tRFqIqn+dJjS+9D90aEaG7c7JGbF/guZQepNjA+x3YiqmKUSuKvoUQ47EHQ==
-X-Received: by 2002:adf:fe4b:: with SMTP id m11mr35003233wrs.136.1637571187262;
-        Mon, 22 Nov 2021 00:53:07 -0800 (PST)
-Received: from localhost.localdomain ([2a01:e0a:82c:5f0:d48:f7c8:670e:7ff4])
-        by smtp.gmail.com with ESMTPSA id u15sm9915581wmq.13.2021.11.22.00.53.06
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 22 Nov 2021 00:53:06 -0800 (PST)
-From:   Loic Poulain <loic.poulain@linaro.org>
-To:     aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
-        wright.feng@infineon.com, chung-hsien.hsu@infineon.com
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com, kvalo@codeaurora.org,
-        Loic Poulain <loic.poulain@linaro.org>
-Subject: [PATCH] brcmfmac: Configure keep-alive packet on suspend
-Date:   Mon, 22 Nov 2021 10:04:16 +0100
-Message-Id: <1637571856-1191-1-git-send-email-loic.poulain@linaro.org>
-X-Mailer: git-send-email 2.7.4
+        id S239380AbhKVKwh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Nov 2021 05:52:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34704 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239383AbhKVKwe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Nov 2021 05:52:34 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B6AEE60241;
+        Mon, 22 Nov 2021 10:49:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1637578168;
+        bh=6IZt0vZBL703Wzm5h/gihPzq2vaEooHapA9/mKWYmto=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=uUg/HxIaQdbcsRjngKrP/1yIJGL5oZ4Yg/2elYJtMTcd+Mloc9O8fmVK9ibcWU5Ca
+         Jm7hrS6LQqxIUggVJlT4B/fK/a9I1InOOKHFwd62VbJsCUnvwEvF0FkJQqCX5nCqG3
+         A7fgeu7GbuYdM6NgTMjZ9YgfEZ5AiIKdQlZ3sibG1b+ZLLPmiPe6yf7sImNNHOhA1T
+         aR9KQr33r90mDGwcs5ka14BFijbJXIEb37K62nBKxFivTyTKyOPCGj+COpuV+c5wSU
+         dH/D8q1RjGOTqeuW3Z6qkDduwR60z7aXmtRVVvkMaBATn8lXzn1I+kddG4kewSGsiY
+         N0gYFNKqHUs8A==
+Date:   Mon, 22 Nov 2021 11:49:24 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     sean.wang@mediatek.com
+Cc:     lorenzo.bianconi@redhat.com, nbd@nbd.name, Soul.Huang@mediatek.com,
+        YN.Chen@mediatek.com, Leon.Yen@mediatek.com,
+        Eric-SY.Chang@mediatek.com, Deren.Wu@mediatek.com,
+        km.lin@mediatek.com, robin.chiu@mediatek.com,
+        Eddie.Chen@mediatek.com, ch.yeh@mediatek.com,
+        posh.sun@mediatek.com, ted.huang@mediatek.com,
+        Eric.Liang@mediatek.com, Stella.Chang@mediatek.com,
+        steve.lee@mediatek.com, jsiuda@google.com, frankgor@google.com,
+        jemele@google.com, shawnku@google.com,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 2/2] mt76: mt7921s: fix the device cannot sleep deeply in
+ suspend
+Message-ID: <YZt1tEk0rS4evYtP@lore-desk>
+References: <YZq9cBbzwtvzEKyN@lore-desk--annotate>
+ <1637552808-24472-1-git-send-email-sean.wang@mediatek.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="XvgaRyxRn9W6Ups7"
+Content-Disposition: inline
+In-Reply-To: <1637552808-24472-1-git-send-email-sean.wang@mediatek.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When system enter suspend, there is no more wireless traffic, and
-if there is no incoming data, most of the AP kick-out the client
-station after few minutes because of inactivity.
 
-The usual way to prevent this is to submit a Null function frame
-periodically as a keep-alive. This is supported by brcm controllers
-and can be configured via the mkeep_alive IOVAR.
+--XvgaRyxRn9W6Ups7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
----
- .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 21 +++++++++++++++++++++
- .../broadcom/brcm80211/brcmfmac/fwil_types.h        | 19 +++++++++++++++++++
- 2 files changed, 40 insertions(+)
+> From: Sean Wang <sean.wang@mediatek.com>
+>=20
+>=20
+> <snip>
+>=20
+> >> >>
+> >> >> -		if (test_bit(MT76_MCU_RESET, &dev->phy.state)) {
+> >> >> -			if (!mt76s_txqs_empty(dev))
+> >> >> -				continue;
+> >> >> -			else
+> >> >> -				wake_up(&sdio->wait);
+> >> >> -		}
+> >> >>	} while (nframes > 0);
+> >> >>
+> >> >> +	if (test_bit(MT76_MCU_RESET, &dev->phy.state) &&
+> >> >> +	    mt76s_txqs_empty(dev))
+> >> >> +		wake_up(&sdio->wait);
+> >> >> +
+> >>
+> >> If doing so, mt76s_txqs_empty may not always be true because enqueuing
+> >> packets to q_tx or MCU command to q_mcu simultanenously from the other
+> >> contexts in different cpu is possible.
+> >>
+> >> It seemed to me we should check it for each iteration to guarantee
+> >> that we can wake up the one that is waiting for the all the queues are=
+ empty at some time.
+> >
+> >IIUC what we are interested here is there are no queued frames into the =
+hw queues during suspend or reset, right?
+>=20
+> That is not completely true. Take the suspend procedure on mt7921s as an =
+example.
+>=20
+> That should be "There are no queued frames into the hw queues right after=
+ mt76_connac_mcu_set_hif_suspend."
+>=20
+> The MCU data and WiFi are all handled in mt76s_txrx_worker so we should s=
+ynchronize all of
+> the Tx queues are all empty and then handle mt76_connac_mcu_set_hif_suspe=
+nd to guarantee
+> mt76_connac_mcu_set_hif_suspend is the last one to access the SDIO bus an=
+d there is no frame that accesses SDIO bus afterhand.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index fb72777..afa8ceda 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -3901,6 +3901,24 @@ static void brcmf_configure_wowl(struct brcmf_cfg80211_info *cfg,
- 	cfg->wowl.active = true;
- }
- 
-+int brcmf_keepalive_start(struct brcmf_if *ifp, unsigned int interval)
-+{
-+	struct brcmf_mkeep_alive_pkt_le kalive = {0};
-+	int ret = 0;
-+
-+	/* Configure Null function/data keepalive */
-+	kalive.version = cpu_to_le16(1);
-+	kalive.period_msec = cpu_to_le16(interval * MSEC_PER_SEC);
-+	kalive.len_bytes = cpu_to_le16(0);
-+	kalive.keep_alive_id = cpu_to_le16(0);
-+
-+	ret = brcmf_fil_iovar_data_set(ifp, "mkeep_alive", &kalive, sizeof(kalive));
-+	if (ret)
-+		brcmf_err("keep-alive packet config failed, ret=%d\n", ret);
-+
-+	return ret;
-+}
-+
- static s32 brcmf_cfg80211_suspend(struct wiphy *wiphy,
- 				  struct cfg80211_wowlan *wowl)
- {
-@@ -3947,6 +3965,9 @@ static s32 brcmf_cfg80211_suspend(struct wiphy *wiphy,
- 	} else {
- 		/* Configure WOWL paramaters */
- 		brcmf_configure_wowl(cfg, ifp, wowl);
-+
-+		/* Prevent disassociation due to inactivity with keep-alive */
-+		brcmf_keepalive_start(ifp, 30);
- 	}
- 
- exit:
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-index ff2ef55..e69d1e5 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-@@ -1052,4 +1052,23 @@ struct brcmf_gscan_config {
- 	struct brcmf_gscan_bucket_config bucket[1];
- };
- 
-+/**
-+ * struct brcmf_mkeep_alive_pkt_le - configuration data for keep-alive frame.
-+ *
-+ * @version: version for mkeep_alive
-+ * @length: length of fixed parameters in the structure.
-+ * @period_msec: keep-alive period in milliseconds.
-+ * @len_bytes: size of the data.
-+ * @keep_alive_id: ID  (0 - 3).
-+ * @data: keep-alive frame data.
-+ */
-+struct brcmf_mkeep_alive_pkt_le {
-+	__le16  version;
-+	__le16  length;
-+	__le32  period_msec;
-+	__le16  len_bytes;
-+	u8   keep_alive_id;
-+	u8   data[0];
-+} __packed;
-+
- #endif /* FWIL_TYPES_H_ */
--- 
-2.7.4
+ack, correct, "there are no queued frames into the hw queues right after
+mt76_connac_mcu_set_hif_suspend."
+What I mean is we are not really checking there are no frames in the hw que=
+ue
+here, but mt76 sdio has processed all the frames, got my point? maybe it is
+what we are looking for..
 
+Regards,
+Lorenzo
+
+>=20
+> >
+> >>
+> >> >>	/* enable interrupt */
+> >> >>	sdio_writel(sdio->func, WHLPCR_INT_EN_SET, MCR_WHLPCR, NULL);
+> >> >>	sdio_release_host(sdio->func);
+> >> >>
+> >> >> Regards,
+> >> >> Lorenzo
+> >> >>
+> >> >> > --
+> >> >> > 2.25.1
+> >> >> >
+> >> >
+> >> >
+> >> >
+> >>
+> >
+
+--XvgaRyxRn9W6Ups7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYZt1tAAKCRA6cBh0uS2t
+rIgUAP9cH8ze/XEp+miz+xtPvfgGccW2FQqPeK59A5pUSznO9gEAjWdLGp0yUamR
+m6kdq55y2RuFs7kd51MVV7DfrxldHww=
+=oCiO
+-----END PGP SIGNATURE-----
+
+--XvgaRyxRn9W6Ups7--
