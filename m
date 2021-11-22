@@ -2,109 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDC9A459113
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 16:14:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 800B6459171
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 16:32:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235082AbhKVPRx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Nov 2021 10:17:53 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50360 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232963AbhKVPRw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Nov 2021 10:17:52 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A726D60F25;
-        Mon, 22 Nov 2021 15:14:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637594086;
-        bh=OH6FgXhpWT9k5P7jfUy+KIL7OhDtxFhPgZSvVtlxFB4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BQW28OH0c9j2B2t3iZBaqmbW2icgiJZ4Xrkkl4fqk+nKprgwAZyBo1aiT4ZXedny0
-         SrcNuu1hXHnCC2fYRDktudRD0rKk+z4lPLyXj8fLLnKtx8p4G3NnVNSUU+ocM7PLBr
-         dAshLImWGiMen6dIGqpal9EAJ0PzmU3B3r+G5FK2w5kC7kD6mygii2TCIKV5xK4FSs
-         W1bjc9QzOiUVo1Wnpg06wFu6wKzkKDDFGkC121m/bZSoBLGqHtLNt3KjTjO5mnbWsa
-         NcIYosD/2BJSKPpFXfypc7BwGJpRIKdQRA0q75wIoPGExABWDxzTH78mvwf15QNRAz
-         nkdCPTjwmKVYw==
-Date:   Mon, 22 Nov 2021 16:14:42 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Deren Wu <Deren.Wu@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] mt76: mt7921: fix timestamp check in tx_status
-Message-ID: <YZuz4rJvinnT69tq@lore-desk>
-References: <934b51921e22ca6f8983d7cbd9feb5248f804303.1637590567.git.deren.wu@mediatek.com>
+        id S239883AbhKVPfx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Nov 2021 10:35:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60538 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234686AbhKVPfw (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Nov 2021 10:35:52 -0500
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87C32C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Nov 2021 07:32:46 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id gx15-20020a17090b124f00b001a695f3734aso227306pjb.0
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Nov 2021 07:32:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cWDyTNcT8WcAnoe7soRCvrakCJQbX9U0rVhDBNYZFS0=;
+        b=L7xZgki9KnfvpXp3Xlc5sQjykUZuZ5AUQVeHU/0YwM621agJI2xh5dUjuBAV/R/ro1
+         yLFvseX6nBZbgHUcLo7OpKd9PboSM/HBwJTICn2TNu+338QSg7fBuNlp89xs+CDp0eUV
+         LK1OVwqGJcFWvbPOtOhtc4fRD8f6ldCTvjRS4m5msHsTEFQ/mOp65yNXyjvX3aN9oACc
+         NR25izJgurQhk23RQZ41Ajd9GKEJ4bkaPWeP4dDxH73py5iUtdDrG+WwY5obmfzST32l
+         0S7y2Yv41oEq9wLZ3mmDhOfg/dLFKr8p3dFi8OyeiuMJ8lb4WSa3NGasI0vNz6RVX45P
+         XrSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cWDyTNcT8WcAnoe7soRCvrakCJQbX9U0rVhDBNYZFS0=;
+        b=akQQx1mmmr7q/ZgJSTDz+0DUonR3rk/BSEU3zOrdhpQlCObhrmSAHrnoJOJosdMlyT
+         mxoqRG4AIOrlTYxUe2XeCKdmysMcHW2y8kfYZMG1WqzpWRCD1G8wsDRfDHnASgVTNnbT
+         s1L/fuFF3EuMZUk+uqkI2BnSciF+L0y6CfxrBarI51NHN+NSbm0n+SseFUj8jZ1C4Rlj
+         uAdT91pjOnqzwX9uB3CFHgUYB+bAkuuyv/lA6lJYA+tii9Pz9FIg7e4C556O2ru6oTZK
+         r46JE2JSWy/zX3MrSq8GP8zIV+oU9P08VtxU+Yrg18RFQlVXpp07jP2wbIOIN7G/h2Y+
+         /CcQ==
+X-Gm-Message-State: AOAM530gfKfc78ZgpaIbW68IEkFpqIrT9yaHYK4o+QTQBiSAI/b/iNFc
+        qCPLka7cYklqA4jCssqj4ex7Qi7a6lZ2zbkPcXek+A==
+X-Google-Smtp-Source: ABdhPJzgjjFdn6NeBAtc63d+u475nCuSVIfDh44bvv49KZ3cQXrQH/1jhCXc6kFZp/v6Zb1HiLM2CbANsouBmo0eA1E=
+X-Received: by 2002:a17:90b:4d0c:: with SMTP id mw12mr32328085pjb.209.1637595165959;
+ Mon, 22 Nov 2021 07:32:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="673l5YOoA4Vyf7tW"
-Content-Disposition: inline
-In-Reply-To: <934b51921e22ca6f8983d7cbd9feb5248f804303.1637590567.git.deren.wu@mediatek.com>
+References: <1637571856-1191-1-git-send-email-loic.poulain@linaro.org>
+ <8735nobgje.fsf@codeaurora.org> <CAMZdPi9xWdJU_-k9mJxTkeyctsEmNCuzvBpdR-FMg=onEim+9w@mail.gmail.com>
+ <87sfvo8e1a.fsf@codeaurora.org>
+In-Reply-To: <87sfvo8e1a.fsf@codeaurora.org>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Mon, 22 Nov 2021 16:43:21 +0100
+Message-ID: <CAMZdPi-exG5vtm0qMPptK_NcRiHN3A3T9jExM9Qu=bE-GS91hA@mail.gmail.com>
+Subject: Re: [PATCH] brcmfmac: Configure keep-alive packet on suspend
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
+        wright.feng@infineon.com, chung-hsien.hsu@infineon.com,
+        linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Mon, 22 Nov 2021 at 15:23, Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Loic Poulain <loic.poulain@linaro.org> writes:
+>
+> > Hi Kalle,
+> >
+> > On Mon, 22 Nov 2021 at 12:01, Kalle Valo <kvalo@codeaurora.org> wrote:
+> >>
+> >> Loic Poulain <loic.poulain@linaro.org> writes:
+> >>
+> >> > When system enter suspend, there is no more wireless traffic, and
+> >> > if there is no incoming data, most of the AP kick-out the client
+> >> > station after few minutes because of inactivity.
+> >> >
+> >> > The usual way to prevent this is to submit a Null function frame
+> >> > periodically as a keep-alive. This is supported by brcm controllers
+> >> > and can be configured via the mkeep_alive IOVAR.
+> >>
+> >> This is with brcmfmac in client mode, right?
+> >
+> > Right, it's in client mode.
+> >
+> >> Wouldn't it make more sense to disconnect entirely during suspend?
+> >> Nobody is processing the data packets anyway during suspend.
+> >
+> > Disconnect is performed automatically when wowlan is not enabled,
+> > otherwise we may want to wake-up on events (disconnect,
+> > 4-way-handshake) or data packets (magic, unicast, etc...). Some
+> > devices use suspend aggressively such as Android in which the network
+> > link is expected to be maintained.
+>
+> Sure, for wowlan it makes sense but you didn't mention that in the
+> commit log so I assumed that was disabled.
 
---673l5YOoA4Vyf7tW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ah right, I'll do that in V2.
 
-> From: Deren Wu <deren.wu@mediatek.com>
->=20
-> Should keep SKBs only if timeout timestamp is still after jiffies.
-> Otherwise, report tx status and drop it direclty.
->=20
-> Fixes: bd1e3e7b693c ("mt76: introduce packet_id idr")
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> ---
-
-I guess this fix should go in wireless-drivers tree.
-
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
->  drivers/net/wireless/mediatek/mt76/tx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wirele=
-ss/mediatek/mt76/tx.c
-> index 11719ef034d8..6b8c9dc80542 100644
-> --- a/drivers/net/wireless/mediatek/mt76/tx.c
-> +++ b/drivers/net/wireless/mediatek/mt76/tx.c
-> @@ -173,7 +173,7 @@ mt76_tx_status_skb_get(struct mt76_dev *dev, struct m=
-t76_wcid *wcid, int pktid,
->  			if (!(cb->flags & MT_TX_CB_DMA_DONE))
->  				continue;
-> =20
-> -			if (!time_is_after_jiffies(cb->jiffies +
-> +			if (time_is_after_jiffies(cb->jiffies +
->  						   MT_TX_STATUS_SKB_TIMEOUT))
->  				continue;
->  		}
-> --=20
-> 2.18.0
->=20
-
---673l5YOoA4Vyf7tW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYZuz4gAKCRA6cBh0uS2t
-rEFuAP97vLFYKpu0U8Rl6cOHSd6z6G8TGo+93uHanRCsuZQ5WAEA0b0MKC462mlF
-w5IkoKlkba+PMqAWwyuq8Pm4RLG8pwA=
-=JGvl
------END PGP SIGNATURE-----
-
---673l5YOoA4Vyf7tW--
+Thanks,
+Loic
