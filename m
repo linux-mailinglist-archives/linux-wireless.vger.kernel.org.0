@@ -2,141 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCA96458CB6
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 11:49:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79A2D458CCD
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 11:56:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239380AbhKVKwh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Nov 2021 05:52:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34704 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239383AbhKVKwe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Nov 2021 05:52:34 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B6AEE60241;
-        Mon, 22 Nov 2021 10:49:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637578168;
-        bh=6IZt0vZBL703Wzm5h/gihPzq2vaEooHapA9/mKWYmto=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uUg/HxIaQdbcsRjngKrP/1yIJGL5oZ4Yg/2elYJtMTcd+Mloc9O8fmVK9ibcWU5Ca
-         Jm7hrS6LQqxIUggVJlT4B/fK/a9I1InOOKHFwd62VbJsCUnvwEvF0FkJQqCX5nCqG3
-         A7fgeu7GbuYdM6NgTMjZ9YgfEZ5AiIKdQlZ3sibG1b+ZLLPmiPe6yf7sImNNHOhA1T
-         aR9KQr33r90mDGwcs5ka14BFijbJXIEb37K62nBKxFivTyTKyOPCGj+COpuV+c5wSU
-         dH/D8q1RjGOTqeuW3Z6qkDduwR60z7aXmtRVVvkMaBATn8lXzn1I+kddG4kewSGsiY
-         N0gYFNKqHUs8A==
-Date:   Mon, 22 Nov 2021 11:49:24 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     sean.wang@mediatek.com
-Cc:     lorenzo.bianconi@redhat.com, nbd@nbd.name, Soul.Huang@mediatek.com,
-        YN.Chen@mediatek.com, Leon.Yen@mediatek.com,
-        Eric-SY.Chang@mediatek.com, Deren.Wu@mediatek.com,
-        km.lin@mediatek.com, robin.chiu@mediatek.com,
-        Eddie.Chen@mediatek.com, ch.yeh@mediatek.com,
-        posh.sun@mediatek.com, ted.huang@mediatek.com,
-        Eric.Liang@mediatek.com, Stella.Chang@mediatek.com,
-        steve.lee@mediatek.com, jsiuda@google.com, frankgor@google.com,
-        jemele@google.com, shawnku@google.com,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 2/2] mt76: mt7921s: fix the device cannot sleep deeply in
- suspend
-Message-ID: <YZt1tEk0rS4evYtP@lore-desk>
-References: <YZq9cBbzwtvzEKyN@lore-desk--annotate>
- <1637552808-24472-1-git-send-email-sean.wang@mediatek.com>
+        id S232674AbhKVK7m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Nov 2021 05:59:42 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:42748 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232171AbhKVK7l (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Nov 2021 05:59:41 -0500
+X-UUID: b4d983ca8dac42cf9686a1c5902d361a-20211122
+X-UUID: b4d983ca8dac42cf9686a1c5902d361a-20211122
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <meichia.chiu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 845642086; Mon, 22 Nov 2021 18:56:30 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Mon, 22 Nov 2021 18:56:29 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 22 Nov 2021 18:56:29 +0800
+From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        MeiChia Chiu <meichia.chiu@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix the wrong SMPS mode
+Date:   Mon, 22 Nov 2021 18:56:26 +0800
+Message-ID: <20211122105626.6275-1-MeiChia.Chiu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="XvgaRyxRn9W6Ups7"
-Content-Disposition: inline
-In-Reply-To: <1637552808-24472-1-git-send-email-sean.wang@mediatek.com>
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: MeiChia Chiu <meichia.chiu@mediatek.com>
 
---XvgaRyxRn9W6Ups7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Without this change, it sends the wrong SMPS mode to firmware
+when a station sends an action frame with disabled SMPS.
 
-> From: Sean Wang <sean.wang@mediatek.com>
->=20
->=20
-> <snip>
->=20
-> >> >>
-> >> >> -		if (test_bit(MT76_MCU_RESET, &dev->phy.state)) {
-> >> >> -			if (!mt76s_txqs_empty(dev))
-> >> >> -				continue;
-> >> >> -			else
-> >> >> -				wake_up(&sdio->wait);
-> >> >> -		}
-> >> >>	} while (nframes > 0);
-> >> >>
-> >> >> +	if (test_bit(MT76_MCU_RESET, &dev->phy.state) &&
-> >> >> +	    mt76s_txqs_empty(dev))
-> >> >> +		wake_up(&sdio->wait);
-> >> >> +
-> >>
-> >> If doing so, mt76s_txqs_empty may not always be true because enqueuing
-> >> packets to q_tx or MCU command to q_mcu simultanenously from the other
-> >> contexts in different cpu is possible.
-> >>
-> >> It seemed to me we should check it for each iteration to guarantee
-> >> that we can wake up the one that is waiting for the all the queues are=
- empty at some time.
-> >
-> >IIUC what we are interested here is there are no queued frames into the =
-hw queues during suspend or reset, right?
->=20
-> That is not completely true. Take the suspend procedure on mt7921s as an =
-example.
->=20
-> That should be "There are no queued frames into the hw queues right after=
- mt76_connac_mcu_set_hif_suspend."
->=20
-> The MCU data and WiFi are all handled in mt76s_txrx_worker so we should s=
-ynchronize all of
-> the Tx queues are all empty and then handle mt76_connac_mcu_set_hif_suspe=
-nd to guarantee
-> mt76_connac_mcu_set_hif_suspend is the last one to access the SDIO bus an=
-d there is no frame that accesses SDIO bus afterhand.
+Fixes: 427b09cd6bfa ("mt76: mt7915: fix SMPS operation fail")
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c | 17 ++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h |  7 +++++++
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
-ack, correct, "there are no queued frames into the hw queues right after
-mt76_connac_mcu_set_hif_suspend."
-What I mean is we are not really checking there are no frames in the hw que=
-ue
-here, but mt76 sdio has processed all the frames, got my point? maybe it is
-what we are looking for..
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index ceeb5e3f..f922265f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2022,6 +2022,21 @@ mt7915_mcu_sta_bfee_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
+ 	bfee->fb_identity_matrix = (nrow == 1 && tx_ant == 2);
+ }
+ 
++static enum mcu_mmps_mode
++mt7915_mcu_get_mmps_mode(enum ieee80211_smps_mode smps)
++{
++	switch (smps) {
++	case IEEE80211_SMPS_OFF:
++		return MCU_MMPS_DISABLE;
++	case IEEE80211_SMPS_STATIC:
++		return MCU_MMPS_STATIC;
++	case IEEE80211_SMPS_DYNAMIC:
++		return MCU_MMPS_DYNAMIC;
++	default:
++		return MCU_MMPS_DISABLE;
++	}
++}
++
+ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
+ 				   struct ieee80211_vif *vif,
+ 				   struct ieee80211_sta *sta,
+@@ -2053,7 +2068,7 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
+ 			ra->phy = *phy;
+ 		break;
+ 	case RATE_PARAM_MMPS_UPDATE:
+-		ra->mmps_mode = (sta->smps_mode == IEEE80211_SMPS_DYNAMIC);
++		ra->mmps_mode = mt7915_mcu_get_mmps_mode(sta->smps_mode);
+ 		break;
+ 	default:
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index 1beaba38..53fa0f01 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -365,6 +365,13 @@ enum {
+ 	MCU_PHY_STATE_OFDMLQ_CNINFO,
+ };
+ 
++enum mcu_mmps_mode {
++	MCU_MMPS_STATIC,
++	MCU_MMPS_DYNAMIC,
++	MCU_MMPS_RSV,
++	MCU_MMPS_DISABLE,
++};
++
+ #define STA_TYPE_STA			BIT(0)
+ #define STA_TYPE_AP			BIT(1)
+ #define STA_TYPE_ADHOC			BIT(2)
+-- 
+2.29.2
 
-Regards,
-Lorenzo
-
->=20
-> >
-> >>
-> >> >>	/* enable interrupt */
-> >> >>	sdio_writel(sdio->func, WHLPCR_INT_EN_SET, MCR_WHLPCR, NULL);
-> >> >>	sdio_release_host(sdio->func);
-> >> >>
-> >> >> Regards,
-> >> >> Lorenzo
-> >> >>
-> >> >> > --
-> >> >> > 2.25.1
-> >> >> >
-> >> >
-> >> >
-> >> >
-> >>
-> >
-
---XvgaRyxRn9W6Ups7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYZt1tAAKCRA6cBh0uS2t
-rIgUAP9cH8ze/XEp+miz+xtPvfgGccW2FQqPeK59A5pUSznO9gEAjWdLGp0yUamR
-m6kdq55y2RuFs7kd51MVV7DfrxldHww=
-=oCiO
------END PGP SIGNATURE-----
-
---XvgaRyxRn9W6Ups7--
