@@ -2,103 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E529459529
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 19:55:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA588459624
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 21:35:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231307AbhKVS6v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Nov 2021 13:58:51 -0500
-Received: from mx4.wp.pl ([212.77.101.11]:5014 "EHLO mx4.wp.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233806AbhKVS6s (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Nov 2021 13:58:48 -0500
-Received: (wp-smtpd smtp.wp.pl 25075 invoked from network); 22 Nov 2021 19:55:38 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1637607338; bh=/aiVtgsJvQemMMgznBzEJcslTpOzV+/MTlG713p8LlM=;
-          h=From:To:Cc:Subject;
-          b=NsbReASeJX5R49dEDoB5tanS0nFYy27Cv9UKMSGpymsgX2EzLDZeBws60BSuu8I4T
-           uIIfk7fmNAxvKRTq/B6nlYA/LwKMHC+nxLSow8aAfBKz7txKzkpTB3CTAga2mv1bTR
-           ulZUZaMxw0yLFciF9SROlhgq0hqYCegLZOlYPGQg=
-Received: from 89-74-82-70.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.74.82.70])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <regressions@leemhuis.info>; 22 Nov 2021 19:55:38 +0100
-Date:   Mon, 22 Nov 2021 19:55:37 +0100
-From:   Stanislaw Gruszka <stf_xl@wp.pl>
-To:     Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     Robert W <rwbugreport@lost-in-the-void.net>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        linux-wireless@vger.kernel.org,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: Bug/Regression - Ralink RT2800 kernel deference issue since
- kernel 5.14
-Message-ID: <20211122185515.GA289958@wp.pl>
-References: <c07b4142fb725ed87a2cef530bae9ee7@lost-in-the-void.net>
- <60b9dbe3-852b-9e63-2857-0264d7093930@leemhuis.info>
+        id S240166AbhKVUiM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Nov 2021 15:38:12 -0500
+Received: from fgw20-4.mail.saunalahti.fi ([62.142.5.107]:35191 "EHLO
+        fgw20-4.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240495AbhKVUh0 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Nov 2021 15:37:26 -0500
+Received: from darkstar.musicnaut.iki.fi (85-76-75-23-nat.elisa-mobile.fi [85.76.75.23])
+        by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+        id 8e077284-4bd3-11ec-8d6d-005056bd6ce9;
+        Mon, 22 Nov 2021 22:34:14 +0200 (EET)
+Date:   Mon, 22 Nov 2021 22:34:13 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [BISECTED REGRESSION] Wireless networking kernel crashes
+Message-ID: <20211122203413.GA576751@darkstar.musicnaut.iki.fi>
+References: <20211118132556.GD334428@darkstar.musicnaut.iki.fi>
+ <31021122-d1c1-181b-0b95-2ef1c1592452@nbd.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <60b9dbe3-852b-9e63-2857-0264d7093930@leemhuis.info>
-X-WP-MailID: a664ab15c8886e3e672fadde8f9c2a9a
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000001 [kXIW]                               
+In-Reply-To: <31021122-d1c1-181b-0b95-2ef1c1592452@nbd.name>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Nov 21, 2021 at 02:38:02PM +0100, Thorsten Leemhuis wrote:
-> Hi, this is your Linux kernel regression tracker speaking.
-> 
-> CCing regression mailing list, which should be in the loop for all
-> regressions, as explained here:
-> https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html
-> 
-> Also adding Helmut and Stanislaw (or just a different of his
-> addresses?), as afaics nothing happened since the report.
+Hi,
 
-FYI: stf_xl@wp.pl is the only valid public e-mail address currently
-used by me.
-
-> On 12.11.21 22:21, Robert W wrote:
+On Sun, Nov 21, 2021 at 08:37:54PM +0100, Felix Fietkau wrote:
+> On 2021-11-18 14:25, Aaro Koskinen wrote:
+> > I have tried to upgrade my wireless AP (Raspberry Pi with rt2x00usb)
+> > from v5.9 to the current mainline, but now it keeps crashing every hour
+> > or so, basically making my wireless network unusable.
 > > 
-> > I have recently tried to upgrade a system to run the 5.14 kernel and
-> > noticed that I was getting hangs on the system which seem to relate to
-> > this wireless dongle which I am running hostapd against to provide a
-> > small AP. Since that time kernel 5.15 was released and I have tested
-> > that kernel as well and the problem persists.  The issue sometimes
-> > occurs within an hour and other times it takes a few hours. I have tried
-> > to narrow down what is causing the issue.  I thought it might be a
-> > change elsewhere outside the mac80211/driver area so I tried to run the
-> > wireless backports 5.15-rc6 on top of the last stable kernel of 5.13 so
-> > as to have the smallest number of changes on the system. The backports
-> > crashes with the same error.  I have included below the netconsole
-> > output and the gdb of the kernel module in question. The capture was
-> > from when I was using the backports, but the error  is the same.  I hope
-> > the pastebins are okay to use on the list.  I did try to get some
-> > assistance on linux-wireless IRC and some one asked for the outputs I
-> > had for the information so I am reusing them here.
+> > I have bisected this to:
 > > 
-> > The following pastebin is the data sent to a netconsole instance.
+> > commit 03c3911d2d67a43ad4ffd15b534a5905d6ce5c59
+> > Author: Ryder Lee <ryder.lee@mediatek.com>
+> > Date:   Thu Jun 17 18:31:12 2021 +0200
 > > 
-> > https://pastebin.com/UxRrTtUh
-<snip>
-> > (gdb) list *(rt2x00queue_create_tx_descriptor+0x176)
-> > 0x37e6 is in rt2x00queue_create_tx_descriptor (/home/robert/backport/backports-5.15-rc6-1/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c:324).
-> > 319                      */
-> > 320                     if (sta && txdesc->u.ht.mcs > 7 &&
-> > 321                         sta->smps_mode == IEEE80211_SMPS_DYNAMIC)
-> > 322                             __set_bit(ENTRY_TXD_HT_MIMO_PS, &txdesc->flags);
-> > 323             } else {
-> > 324                     txdesc->u.ht.mcs = rt2x00_get_rate_mcs(hwrate->mcs);
-> > 325                     if (txrate->flags & IEEE80211_TX_RC_USE_SHORT_PREAMBLE)
-> > 326                             txdesc->u.ht.mcs |= 0x08;
-> > 327             }
-> > 328
+> >      mac80211: call ieee80211_tx_h_rate_ctrl() when dequeue
+> > 
+> > With the previous commit the system stays up for weeks...
+> > 
+> > I just tried today's mainline, and it crashed after 10 minutes:
+> Please test if this patch fixes the issue:
 
-Looking at the mailing list archives, seems Felix already provided
-patch for this. Hopefully patch fixes the problem. However if changes
-in the rt2x00 drivers are needed further, I can look at this.
+Thanks, that seems to help. I've been now running with this change
+roughly 24 hours, and still going fine...
 
-Regards
-Stanislaw
+A.
 
+
+> ---
+> --- a/net/mac80211/tx.c
+> +++ b/net/mac80211/tx.c
+> @@ -1822,15 +1822,15 @@ static int invoke_tx_handlers_late(struct ieee80211_tx_data *tx)
+>  	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx->skb);
+>  	ieee80211_tx_result res = TX_CONTINUE;
+> +	if (!ieee80211_hw_check(&tx->local->hw, HAS_RATE_CONTROL))
+> +		CALL_TXH(ieee80211_tx_h_rate_ctrl);
+> +
+>  	if (unlikely(info->flags & IEEE80211_TX_INTFL_RETRANSMISSION)) {
+>  		__skb_queue_tail(&tx->skbs, tx->skb);
+>  		tx->skb = NULL;
+>  		goto txh_done;
+>  	}
+> -	if (!ieee80211_hw_check(&tx->local->hw, HAS_RATE_CONTROL))
+> -		CALL_TXH(ieee80211_tx_h_rate_ctrl);
+> -
+>  	CALL_TXH(ieee80211_tx_h_michael_mic_add);
+>  	CALL_TXH(ieee80211_tx_h_sequence);
+>  	CALL_TXH(ieee80211_tx_h_fragment);
