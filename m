@@ -2,114 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79A2D458CCD
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 11:56:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBD3F458CDA
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 11:58:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232674AbhKVK7m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Nov 2021 05:59:42 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:42748 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S232171AbhKVK7l (ORCPT
+        id S233247AbhKVLBv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Nov 2021 06:01:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:33793 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229984AbhKVLBu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Nov 2021 05:59:41 -0500
-X-UUID: b4d983ca8dac42cf9686a1c5902d361a-20211122
-X-UUID: b4d983ca8dac42cf9686a1c5902d361a-20211122
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-        (envelope-from <meichia.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 845642086; Mon, 22 Nov 2021 18:56:30 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Mon, 22 Nov 2021 18:56:29 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 22 Nov 2021 18:56:29 +0800
-From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        MeiChia Chiu <meichia.chiu@mediatek.com>
-Subject: [PATCH] mt76: mt7915: fix the wrong SMPS mode
-Date:   Mon, 22 Nov 2021 18:56:26 +0800
-Message-ID: <20211122105626.6275-1-MeiChia.Chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Mon, 22 Nov 2021 06:01:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1637578723;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=aV21YnslcFFKasiSz2I/ZaKQ4SFsZW/x8CmqNDwJkU0=;
+        b=dweqfS7XUT7z4073EMZdocPSMhSEOd36aLO0YwFvTGdHD1d6m7KQwX5O4Pl7+ISGjde2ks
+        5DI0QGLN+lfLx+Dmh4MxCWZtOPWM9lKZhoJfetcWcBQ/+3YxMA8Bd0ZAYIzyzF1rJXqERP
+        Uc36fcvRf6NqdyDrMujMPWLImADKRlw=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-201-j-JIhN-vONyfjZGwI1z5bw-1; Mon, 22 Nov 2021 05:58:42 -0500
+X-MC-Unique: j-JIhN-vONyfjZGwI1z5bw-1
+Received: by mail-ed1-f71.google.com with SMTP id w18-20020a056402071200b003e61cbafdb4so14446216edx.4
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Nov 2021 02:58:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=aV21YnslcFFKasiSz2I/ZaKQ4SFsZW/x8CmqNDwJkU0=;
+        b=IhuUjG2hznJ5pORkhKsheeq2mQrn+C68PNvU3C0tWMxiGm4AOFGcatb5JjjP4Hqhbs
+         iyXJ1CIJwA69oFVSp6SiiSjyewvJwkLPajRclQlXAlNWIjqFzymgKcdaMp5fDmGtgAmP
+         7GvbI2sUYqsARWD+mTmbOXU6bZTJqn9dNmIMoAuLQnoElt3YIg5prPY7iToiLjqBDwS0
+         KszbcFwGin6U6Rnw1fNzii1+hOBDmBI+7wlk/indWZ/wU4lS/Y0ZX5iyM0BCgcIfFKob
+         1d0oMf43BhDvSoONWu9088SqYYs6EqltPpJ3P7fSl8Xj0KTwgdG/ETtHOcH5+Wph0m+x
+         tC3g==
+X-Gm-Message-State: AOAM531CHTFgX3FcI9RC87vuqUcxBWk7lWrEkCM9HNY7SEdPZd7uKXst
+        qB/qMisA6b5HRMafRmZJ7VmlHljOzfaRCc6uQRewuumibBjizrE+RUANXY0F2vwMzujFK/bRaJa
+        gnU4brG+zje3wud+zWuHSPwvoxJQ=
+X-Received: by 2002:a05:6402:3594:: with SMTP id y20mr64167027edc.328.1637578720721;
+        Mon, 22 Nov 2021 02:58:40 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwqvugdB/aT1inHUrGcSOuTp9gYKDN+k0jQJP02YHPKsPPSc9n/hJACN9XMBNx/pFyAhqjcqA==
+X-Received: by 2002:a05:6402:3594:: with SMTP id y20mr64167010edc.328.1637578720597;
+        Mon, 22 Nov 2021 02:58:40 -0800 (PST)
+Received: from localhost (net-93-151-197-210.cust.vodafonedsl.it. [93.151.197.210])
+        by smtp.gmail.com with ESMTPSA id de37sm3503171ejc.60.2021.11.22.02.58.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Nov 2021 02:58:40 -0800 (PST)
+Date:   Mon, 22 Nov 2021 11:58:38 +0100
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        linux-wireless@vger.kernel.org, cjhuang@codeaurora.org
+Subject: Re: [PATCH mac80211] cfg80211: check nla_parse_nested return code in
+ nl80211_set_sar_specs
+Message-ID: <YZt33qMzxkxSAAxY@lore-desk>
+References: <3b6fee130e2d264242463cff063bcfb6d6f5da83.1637494779.git.lorenzo@kernel.org>
+ <a54298c0b747ba562caa47f271f058b9831810ee.camel@sipsolutions.net>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="fxByCKSwajzW4WMX"
+Content-Disposition: inline
+In-Reply-To: <a54298c0b747ba562caa47f271f058b9831810ee.camel@sipsolutions.net>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: MeiChia Chiu <meichia.chiu@mediatek.com>
 
-Without this change, it sends the wrong SMPS mode to firmware
-when a station sends an action frame with disabled SMPS.
+--fxByCKSwajzW4WMX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 427b09cd6bfa ("mt76: mt7915: fix SMPS operation fail")
-Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/mcu.c | 17 ++++++++++++++++-
- .../net/wireless/mediatek/mt76/mt7915/mcu.h |  7 +++++++
- 2 files changed, 23 insertions(+), 1 deletion(-)
+> On Sun, 2021-11-21 at 12:41 +0100, Lorenzo Bianconi wrote:
+> > Check error code returned by nla_parse_nested in nl80211_set_sar_specs
+> > routine before parsing SAR sub-specs.
+> >=20
+>=20
+> I don't think we need to. The policy already states it:
+>=20
+>         [NL80211_ATTR_SAR_SPEC] =3D NLA_POLICY_NESTED(sar_policy),
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index ceeb5e3f..f922265f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2022,6 +2022,21 @@ mt7915_mcu_sta_bfee_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
- 	bfee->fb_identity_matrix = (nrow == 1 && tx_ant == 2);
- }
- 
-+static enum mcu_mmps_mode
-+mt7915_mcu_get_mmps_mode(enum ieee80211_smps_mode smps)
-+{
-+	switch (smps) {
-+	case IEEE80211_SMPS_OFF:
-+		return MCU_MMPS_DISABLE;
-+	case IEEE80211_SMPS_STATIC:
-+		return MCU_MMPS_STATIC;
-+	case IEEE80211_SMPS_DYNAMIC:
-+		return MCU_MMPS_DYNAMIC;
-+	default:
-+		return MCU_MMPS_DISABLE;
-+	}
-+}
-+
- int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_sta *sta,
-@@ -2053,7 +2068,7 @@ int mt7915_mcu_set_fixed_rate_ctrl(struct mt7915_dev *dev,
- 			ra->phy = *phy;
- 		break;
- 	case RATE_PARAM_MMPS_UPDATE:
--		ra->mmps_mode = (sta->smps_mode == IEEE80211_SMPS_DYNAMIC);
-+		ra->mmps_mode = mt7915_mcu_get_mmps_mode(sta->smps_mode);
- 		break;
- 	default:
- 		break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 1beaba38..53fa0f01 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -365,6 +365,13 @@ enum {
- 	MCU_PHY_STATE_OFDMLQ_CNINFO,
- };
- 
-+enum mcu_mmps_mode {
-+	MCU_MMPS_STATIC,
-+	MCU_MMPS_DYNAMIC,
-+	MCU_MMPS_RSV,
-+	MCU_MMPS_DISABLE,
-+};
-+
- #define STA_TYPE_STA			BIT(0)
- #define STA_TYPE_AP			BIT(1)
- #define STA_TYPE_ADHOC			BIT(2)
--- 
-2.29.2
+ack, right, I missed that. I guess we can drop the patch.
+
+Regards,
+Lorenzo
+
+>=20
+>=20
+> Since we always parse the top-level already in the generic netlink code,
+> it will recurse down here by way of that policy link, and then it will
+> already be validated as much as nla_parse_nested() can do again - so we
+> only do it again here to actually get access to the pointers.
+>=20
+> johannes
+>=20
+
+--fxByCKSwajzW4WMX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYZt33gAKCRA6cBh0uS2t
+rMicAP4iCS0Y4hxL6H396MSMyOcxY6Xx4etmrZ1L23l0pMUxSQD9GhzWCHpgPxqZ
+RwJ3ZB/HXTzmSdijjVC7g94wukGGsQ0=
+=Kc3Z
+-----END PGP SIGNATURE-----
+
+--fxByCKSwajzW4WMX--
 
