@@ -2,190 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA28F4591D9
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 16:56:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 537DC459290
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 17:00:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240207AbhKVP6U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Nov 2021 10:58:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37394 "EHLO
+        id S231787AbhKVQEC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Nov 2021 11:04:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240165AbhKVP6P (ORCPT
+        with ESMTP id S229911AbhKVQEB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Nov 2021 10:58:15 -0500
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20E91C061746
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Nov 2021 07:55:07 -0800 (PST)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:e4da:38c:79e9:48bf])
-        by michel.telenet-ops.be with bizsmtp
-        id MTuK2600Z4yPVd606TuK7s; Mon, 22 Nov 2021 16:55:06 +0100
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1mpBe6-00EL3u-UU; Mon, 22 Nov 2021 16:54:18 +0100
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1mpBe5-00HH2O-V9; Mon, 22 Nov 2021 16:54:17 +0100
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        Paul Walmsley <paul@pwsan.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Benoit Parrot <bparrot@ti.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-        alsa-devel@alsa-project.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH/RFC 17/17] rtw89: Use bitfield helpers
-Date:   Mon, 22 Nov 2021 16:54:10 +0100
-Message-Id: <f7b81122f7596fa004188bfae68f25a68c2d2392.1637592133.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1637592133.git.geert+renesas@glider.be>
-References: <cover.1637592133.git.geert+renesas@glider.be>
+        Mon, 22 Nov 2021 11:04:01 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48DB9C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Nov 2021 08:00:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=uXbufNDZ0pwEfKYFF6Q0fDxZoZYRcP1TVmZLW9EfnrQ=; b=gX3u5q07732M4he9dO4p37f1n8
+        asQX2OGj3VZM+CD38wgTVRiSL/C0wszl/H004ul+/X3SQ2YrmfBV9TqPbLOYH7ZAJshvLPzHfDAzF
+        LJhLsGVSeySiqZvHBhOb4HGfLeykHI3kvnqMPxF7VwWZO11tGDHttgmOI1Y03+TPFa00=;
+Received: from p54ae9f3f.dip0.t-ipconnect.de ([84.174.159.63] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1mpBkO-0000aO-W3; Mon, 22 Nov 2021 17:00:49 +0100
+Message-ID: <5acfea49-675b-c825-4bb4-29108d6095eb@nbd.name>
+Date:   Mon, 22 Nov 2021 17:00:47 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+Subject: Re: [PATCH] mt76: fix timestamp check in tx_status
+Content-Language: en-US
+To:     Deren Wu <Deren.Wu@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+References: <7e3784949c0b29a00465966b89fdb0192bd0298e.1637593492.git.deren.wu@mediatek.com>
+From:   Felix Fietkau <nbd@nbd.name>
+In-Reply-To: <7e3784949c0b29a00465966b89fdb0192bd0298e.1637593492.git.deren.wu@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use the field_{get,prep}() helpers, instead of open-coding the same
-operations.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-Compile-tested only.
-Marked RFC, as this depends on [PATCH 01/17], but follows a different
-path to upstream.
----
- drivers/net/wireless/realtek/rtw89/core.h | 38 ++++-------------------
- 1 file changed, 6 insertions(+), 32 deletions(-)
+On 2021-11-22 16:10, Deren Wu wrote:
+> From: Deren Wu <deren.wu@mediatek.com>
+> 
+> Should keep SKBs only if timeout timestamp is still after jiffies.
+> Otherwise, report tx status and drop it direclty.
+> 
+> Fixes: bd1e3e7b693c ("mt76: introduce packet_id idr")
+> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index c2885e4dd882f045..f9c0300ec373aaf2 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2994,81 +2994,55 @@ rtw89_write32_clr(struct rtw89_dev *rtwdev, u32 addr, u32 bit)
- static inline u32
- rtw89_read32_mask(struct rtw89_dev *rtwdev, u32 addr, u32 mask)
- {
--	u32 shift = __ffs(mask);
--	u32 orig;
--	u32 ret;
--
--	orig = rtw89_read32(rtwdev, addr);
--	ret = (orig & mask) >> shift;
--
--	return ret;
-+	return field_get(mask, rtw89_read32(rtwdev, addr));
- }
- 
- static inline u16
- rtw89_read16_mask(struct rtw89_dev *rtwdev, u32 addr, u32 mask)
- {
--	u32 shift = __ffs(mask);
--	u32 orig;
--	u32 ret;
--
--	orig = rtw89_read16(rtwdev, addr);
--	ret = (orig & mask) >> shift;
--
--	return ret;
-+	return field_get(mask, rtw89_read16(rtwdev, addr));
- }
- 
- static inline u8
- rtw89_read8_mask(struct rtw89_dev *rtwdev, u32 addr, u32 mask)
- {
--	u32 shift = __ffs(mask);
--	u32 orig;
--	u32 ret;
--
--	orig = rtw89_read8(rtwdev, addr);
--	ret = (orig & mask) >> shift;
--
--	return ret;
-+	return field_get(mask, rtw89_read8(rtwdev, addr));
- }
- 
- static inline void
- rtw89_write32_mask(struct rtw89_dev *rtwdev, u32 addr, u32 mask, u32 data)
- {
--	u32 shift = __ffs(mask);
- 	u32 orig;
- 	u32 set;
- 
- 	WARN(addr & 0x3, "should be 4-byte aligned, addr = 0x%08x\n", addr);
- 
- 	orig = rtw89_read32(rtwdev, addr);
--	set = (orig & ~mask) | ((data << shift) & mask);
-+	set = (orig & ~mask) | field_prep(mask, data);
- 	rtw89_write32(rtwdev, addr, set);
- }
- 
- static inline void
- rtw89_write16_mask(struct rtw89_dev *rtwdev, u32 addr, u32 mask, u16 data)
- {
--	u32 shift;
- 	u16 orig, set;
- 
- 	mask &= 0xffff;
--	shift = __ffs(mask);
- 
- 	orig = rtw89_read16(rtwdev, addr);
--	set = (orig & ~mask) | ((data << shift) & mask);
-+	set = (orig & ~mask) | field_prep(mask, data);
- 	rtw89_write16(rtwdev, addr, set);
- }
- 
- static inline void
- rtw89_write8_mask(struct rtw89_dev *rtwdev, u32 addr, u32 mask, u8 data)
- {
--	u32 shift;
- 	u8 orig, set;
- 
- 	mask &= 0xff;
--	shift = __ffs(mask);
- 
- 	orig = rtw89_read8(rtwdev, addr);
--	set = (orig & ~mask) | ((data << shift) & mask);
-+	set = (orig & ~mask) | field_prep(mask, data);
- 	rtw89_write8(rtwdev, addr, set);
- }
- 
--- 
-2.25.1
+Acked-by: Felix Fietkau <nbd@nbd.name>
 
+Kalle, please queue this for 5.16
+
+- Felix
