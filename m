@@ -2,142 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD9C459749
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Nov 2021 23:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8CA45999B
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Nov 2021 02:17:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233691AbhKVWZD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Nov 2021 17:25:03 -0500
-Received: from lave.lost-in-the-void.net ([213.229.87.129]:40826 "EHLO
-        lave.lost-in-the-void.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229868AbhKVWZC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Nov 2021 17:25:02 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by lave.lost-in-the-void.net (Postfix) with ESMTP id 09FC88025847
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Nov 2021 22:21:50 +0000 (GMT)
-Authentication-Results: lave.lost-in-the-void.net (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=lost-in-the-void.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        lost-in-the-void.net; h=user-agent:message-id:references
-        :in-reply-to:subject:subject:to:from:from:date:date
-        :content-transfer-encoding:content-type:content-type
-        :mime-version; s=dkim; t=1637619702; x=1638483703; bh=XoL56BWhDL
-        hsaeO/k8nMfMYyaH4a/cD27KACaAZT7og=; b=PUzTFpK0hXUr6x8NpJBpC5vHGt
-        oXGUNavmQ1pD/7zme4rZgdsiMAr5PKU/2Zq5hnAPjUN4cKSxfRK0oRr9wMhOyCIc
-        G8PkBVHJ337zHefCrYo13J5GJwI6FZ7A1PqaRgktzzLW7t8fPbYrKbm4VeiBaxN0
-        D4pk6BP4tlFrG5vu4=
-X-Virus-Scanned: amavisd-new at lave.lost-in-the-void.net
-Received: from lave.lost-in-the-void.net ([127.0.0.1])
-        by localhost (lave.lost-in-the-void.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 7zeE9kv36Zuz for <linux-wireless@vger.kernel.org>;
-        Mon, 22 Nov 2021 22:21:42 +0000 (GMT)
-Received: from lave.lost-in-the-void.net (localhost [127.0.0.1])
-        by lave.lost-in-the-void.net (Postfix) with ESMTPSA id CF5F88025842;
-        Mon, 22 Nov 2021 22:21:41 +0000 (GMT)
+        id S232292AbhKWBUv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Nov 2021 20:20:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53542 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229776AbhKWBUt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 22 Nov 2021 20:20:49 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7D9BC60FE7;
+        Tue, 23 Nov 2021 01:17:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1637630262;
+        bh=aoZBtBydzk0bAevU49rnDfe9zlt/fW7CJBCoU7dRxYA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=DP4A1u9wNAGb4TisYL/xclxXLCsu2eYg5z5kmYiYSKFhn68ml1u5EecsH0UtRKHqf
+         6WSeXmftsKJnT0cJoC45C1J/DRKEkyY8ZtRnMG5HUdipvmpB5FFIlmEIJvncTHRUsl
+         ZJL0QNbzVlJaWzKiVHfmtZTk38Yn3TlLB2z6CLXnGmgwi//WUT0SYP6cVTF8nOAJxN
+         15rOBhxuQkabwtldmp65OfJNj5TeFJmkuLPCAwUI0Dna0FEvAJIm2JVOaykJdOmzdN
+         ItdPFw828/65BBT1WXG3h6a2jxgAjBQ+Bbe/D392jq/wYgwXj4sze1/1CQib/FK9DM
+         tH9oaaLRu5SxA==
+Date:   Mon, 22 Nov 2021 17:17:39 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Rajendra Nayak <rnayak@codeaurora.org>,
+        Paul Walmsley <paul@pwsan.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Benoit Parrot <bparrot@ti.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Joel Stanley <joel@jms.id.au>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}()
+ helpers
+Message-ID: <20211122171739.03848154@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
+References: <cover.1637592133.git.geert+renesas@glider.be>
+        <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
+        <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Mon, 22 Nov 2021 22:21:41 +0000
-From:   Robert W <rwbugreport@lost-in-the-void.net>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     stf_xl@wp.pl, linux-wireless@vger.kernel.org
-Subject: Re: Bug/Regression - Ralink RT2800 kernel deference issue since
- kernel 5.14
-In-Reply-To: <5251bf43-a980-3398-80d6-9689f0efc926@nbd.name>
-References: <c07b4142fb725ed87a2cef530bae9ee7@lost-in-the-void.net>
- <5251bf43-a980-3398-80d6-9689f0efc926@nbd.name>
-Message-ID: <14a6cc0af2b352fc7add49ad01184868@lost-in-the-void.net>
-X-Sender: rwbugreport@lost-in-the-void.net
-User-Agent: Roundcube Webmail
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
-
-The patch did not want to apply without rejects. I manually edited the 
-file in the patch and has been running for a couple of hours yesterday 
-and for 8 hours so far today without issue. Yesterdays run was against 
-the backports wireless code running on 5.13 and today's due to extra 
-time was built and is running on 5.15.
-
-Thanks for your assistance and I will report back should I notice any 
-further issue(s) following the change.
-
----
-Robert
-
-  On 2021-11-21 19:46, Felix Fietkau wrote:
-
-> On 2021-⁠11-⁠12 22:21, Robert W wrote:
+On Mon, 22 Nov 2021 17:32:43 +0100 Johannes Berg wrote:
+> On Mon, 2021-11-22 at 16:53 +0100, Geert Uytterhoeven wrote:
+> > The existing FIELD_{GET,PREP}() macros are limited to compile-time
+> > constants.  However, it is very common to prepare or extract bitfield
+> > elements where the bitfield mask is not a compile-time constant.
 > 
->> Hi,
->> 
->> I have recently tried to upgrade a system to run the 5.14 kernel and
->> noticed that I was getting hangs on the system which seem to relate to
->> this wireless dongle which I am running hostapd against to provide a
->> small AP. Since that time kernel 5.15 was released and I have tested
->> that kernel as well and the problem persists. The issue sometimes
->> occurs within an hour and other times it takes a few hours. I have 
->> tried
->> to narrow down what is causing the issue. I thought it might be a
->> change elsewhere outside the mac80211/⁠driver area so I tried to run 
->> the
->> wireless backports 5.15-⁠rc6 on top of the last stable kernel of 5.13 
->> so
->> as to have the smallest number of changes on the system. The backports
->> crashes with the same error. I have included below the netconsole
->> output and the gdb of the kernel module in question. The capture was
->> from when I was using the backports, but the error is the same. I hope
->> the pastebins are okay to use on the list. I did try to get some
->> assistance on linux-⁠wireless IRC and some one asked for the outputs I
->> had for the information so I am reusing them here.
->> 
->> The following pastebin is the data sent to a netconsole instance.
->> 
->> https://pastebin.com/UxRrTtUh [1] [1 [1]]
->> 
->> The gdb debug of the kernel module suggests this section of code.
->> 
->> https://pastebin.com/iMzxWEVU [2] [2 [2]]
->> 
->> I am able to run further tests if required. I am not a programmer, but
->> I can usually apply code patches and build the resulting code. Please
->> let me know if require any further information.
-> 
-> Please try this patch:
-> 
-> diff -⁠-⁠git a/⁠net/⁠mac80211/⁠tx.c b/⁠net/⁠mac80211/⁠tx.c
-> index 278945e3e08a..e19f6e246642 100644
-> -⁠-⁠-⁠ a/⁠net/⁠mac80211/⁠tx.c
-> +++ b/⁠net/⁠mac80211/⁠tx.c
-> @@ -⁠1822,15 +1822,15 @@ static int invoke_tx_handlers_late(struct 
-> ieee80211_tx_data *tx)
-> struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx-⁠>skb);
-> ieee80211_tx_result res = TX_CONTINUE;
-> + if (!ieee80211_hw_check(&tx->local->hw, HAS_RATE_CONTROL))
-> + CALL_TXH(ieee80211_tx_h_rate_ctrl);
-> +
-> if (unlikely(info-⁠>flags & IEEE80211_TX_INTFL_RETRANSMISSION)) {
-> __skb_queue_tail(&tx-⁠>skbs, tx-⁠>skb);
-> tx-⁠>skb = NULL;
-> goto txh_done;
-> }
-> - if (!ieee80211_hw_check(&tx->local->hw, HAS_RATE_CONTROL))
-> -⁠ CALL_TXH(ieee80211_tx_h_rate_ctrl);
-> -⁠
-> CALL_TXH(ieee80211_tx_h_michael_mic_add);
-> CALL_TXH(ieee80211_tx_h_sequence);
-> CALL_TXH(ieee80211_tx_h_fragment);
+> I'm not sure it's really a good idea to add a third API here?
 
-  Links:
-  ------
-  [1] https://pastebin.com/UxRrTtUh [1]
-  [2] https://pastebin.com/iMzxWEVU [2]
++1
 
-Links:
-------
-[1] https://pastebin.com/UxRrTtUh
-[2] https://pastebin.com/iMzxWEVU
+> We have the upper-case (constant) versions, and already
+> {u32,...}_get_bits()/etc.
+> 
+> Also, you're using __ffs(), which doesn't work for 64-bit on 32-bit
+> architectures (afaict), so that seems a bit awkward.
+> 
+> Maybe we can make {u32,...}_get_bits() be doing compile-time only checks
+> if it is indeed a constant? The __field_overflow() usage is already only
+> done if __builtin_constant_p(v), so I guess we can do the same with
+> __bad_mask()?
+
+Either that or add decomposition macros. Are compilers still really bad
+at passing small structs by value?
