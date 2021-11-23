@@ -2,97 +2,173 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B971C45A367
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Nov 2021 14:01:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB35345A393
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Nov 2021 14:19:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236610AbhKWNEw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Nov 2021 08:04:52 -0500
-Received: from dvalin.narfation.org ([213.160.73.56]:45382 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232746AbhKWNEv (ORCPT
+        id S235846AbhKWNWy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Nov 2021 08:22:54 -0500
+Received: from mail-oo1-f46.google.com ([209.85.161.46]:43647 "EHLO
+        mail-oo1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233234AbhKWNWw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Nov 2021 08:04:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1637672502;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=3bXSoijhcsdVseGfeNV9VthAVOTN6+8WFm2JTxPImEc=;
-        b=t1qGzy6dQIGokgeXiy83J6z7zvdnHyXgIoP0i7C4RuTPoZcxErUDBOo2UDhMhgjdf5YvUP
-        /eOiAILGUpk1GW03KVRklb2BJXKsiOMOR8ODS1jcoWu0mhihlHETsqMjbIA5K8mAopGEAu
-        lEZ12cwDpXQuWp9vXXKzOS5YKEJ3n/s=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
-        robh@kernel.org, Anilkumar Kolli <akolli@codeaurora.org>
-Subject: Re: [PATCH v5 2/2] ath11k: Use reserved host DDR addresses from DT for PCI devices
-Date:   Tue, 23 Nov 2021 14:01:34 +0100
-Message-ID: <74442923.uYUSDj6SXF@ripper>
-In-Reply-To: <1637666940-30548-2-git-send-email-akolli@codeaurora.org>
-References: <1637666940-30548-1-git-send-email-akolli@codeaurora.org> <1637666940-30548-2-git-send-email-akolli@codeaurora.org>
+        Tue, 23 Nov 2021 08:22:52 -0500
+Received: by mail-oo1-f46.google.com with SMTP id w5-20020a4a2745000000b002c2649b8d5fso6966387oow.10;
+        Tue, 23 Nov 2021 05:19:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sxbm5nZuxDktECFOUcgXGTkmQEJlkXm+UQAvKfd0Kcw=;
+        b=mvIZSRRstoDDJUR3+mmLSzn8fqBURUL2JlI4/Frf4C5a1N1wjF+v56uIhWx1YQ6hIU
+         2dRlJni8qcx7RNXE/GL3pu+VAv4UTqUgv0o0BPxl1qPIMETntN/kFAcnpoZUrd76KegU
+         EKQW2pSud38zRmUCW7u3aRvEpqa57hx5kLNxJpFfSThGzmmlFeGfKmPN1gM2ntWdyv6r
+         2K2zy/YtYJXicIGjMq8lQO4aP9dlCmJCRrZ18lWH4dxrRs0a7kbT707/Ermt9GwlRTOZ
+         iHZj2FfFaNhu+t2/hEMpJXlTJejai2RmZvQ9M4xDAe0JogPrmv2xKN1LX2XKwKVhUUIN
+         EpOg==
+X-Gm-Message-State: AOAM531CX/cyV9bldIBySkzO0zA6rfPkTAyy3w7GuJYD/LNAvoOh+1Pk
+        WbbJ3XOnhaH2aQ5OION/ViKK3GF1OW9tVoWM0vM=
+X-Google-Smtp-Source: ABdhPJx4LJPjPNqz/sXcVDWL5tamzih4SOz6Sq7UGTbN97hIVt3zgoG90+osvpCrjRpDoZ3z/WaeE3Jdprr6Jm1J/tY=
+X-Received: by 2002:a4a:1d82:: with SMTP id 124mr2868847oog.91.1637673583839;
+ Tue, 23 Nov 2021 05:19:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart8316323.Rvb1ZgBP0e"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+References: <20210818060533.3569517-1-keescook@chromium.org> <20210818060533.3569517-13-keescook@chromium.org>
+In-Reply-To: <20210818060533.3569517-13-keescook@chromium.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 23 Nov 2021 14:19:25 +0100
+Message-ID: <CAJZ5v0iS3qMgdab1S-NzGfeLLXV=S6p5Qx8AaqJ50rsUngS=LA@mail.gmail.com>
+Subject: Re: [PATCH v2 12/63] thermal: intel: int340x_thermal: Use
+ struct_group() for memcpy() region
+To:     Kees Cook <keescook@chromium.org>, Zhang Rui <rui.zhang@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "open list:NETWORKING DRIVERS (WIRELESS)" 
+        <linux-wireless@vger.kernel.org>, netdev <netdev@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-staging@lists.linux.dev, linux-block@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart8316323.Rvb1ZgBP0e
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, robh@kernel.org, Anilkumar Kolli <akolli@codeaurora.org>
-Subject: Re: [PATCH v5 2/2] ath11k: Use reserved host DDR addresses from DT for PCI devices
-Date: Tue, 23 Nov 2021 14:01:34 +0100
-Message-ID: <74442923.uYUSDj6SXF@ripper>
-In-Reply-To: <1637666940-30548-2-git-send-email-akolli@codeaurora.org>
-References: <1637666940-30548-1-git-send-email-akolli@codeaurora.org> <1637666940-30548-2-git-send-email-akolli@codeaurora.org>
+On Wed, Aug 18, 2021 at 8:08 AM Kees Cook <keescook@chromium.org> wrote:
+>
+> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> field bounds checking for memcpy(), avoid intentionally writing across
+> neighboring fields.
+>
+> Use struct_group() in struct art around members weight, and ac[0-9]_max,
+> so they can be referenced together. This will allow memcpy() and sizeof()
+> to more easily reason about sizes, improve readability, and avoid future
+> warnings about writing beyond the end of weight.
+>
+> "pahole" shows no size nor member offset changes to struct art.
+> "objdump -d" shows no meaningful object code changes (i.e. only source
+> line number induced differences).
+>
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Amit Kucheria <amitk@kernel.org>
+> Cc: linux-pm@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-On Tuesday, 23 November 2021 12:29:00 CET Anilkumar Kolli wrote:
-> +                       ret = of_property_read_u32(dev->of_node, "memory-region",
-> +                                                  &hremote_phandle);
-> +                       if (ret) {
-> +                               ath11k_dbg(ab, ATH11K_DBG_QMI,
-> +                                          "qmi fail to get hremote phandle\n");
-> +                               return ret;
-> +                       }
-> +
-> +                       hremote_node = of_find_node_by_phandle(hremote_phandle);
-> +                       if (!hremote_node) {
-> +                               ath11k_dbg(ab, ATH11K_DBG_QMI,
-> +                                          "qmi fail to get hremote_node\n");
-> +                               return ret;
-> +                       }
+Rui, Srinivas, any comments here?
 
-Afaik, this can be combined via
-
-    hremote_node = of_parse_phandle(dev->of_node, "memory-region", 0);
-
-Kind regards,
-	Sven
---nextPart8316323.Rvb1ZgBP0e
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmGc5i4ACgkQXYcKB8Em
-e0ZyPQ/8CbZDas4jD05U2eurivg669Wkd8ldicZqVa9YAcUJWEYYE2zMgWFuVnfJ
-4z3fPpQd1Mtp8KRrayLCfOi5HOpK8uOGH+JLodjwX0aBewI8EZiHL/8onrpuqtNe
-tKEiWZG5WTA0ltntf6SqeV5TF2L5R+ySknNPk4LKYsP6/E7iZ4EM2TM6FTxzbc+h
-z2xeFWViRbGTw23qJBb0DKtagzQVScoGvEktpDy79HdAEntUbDlQSerS8kiXd7Ll
-yh+dgg+piQ9VS3E+KZ6NhR/2CnWYFI0xBFggxGIX5/VVJxD8GK+zlkkYTbtXUGPE
-vu1NoJtQNqfJsdzvVVxWMY5t6VFa8uBreo3C7PSUK+gR9Cg7vL1A13BYn8npdloH
-V4DcB/USCX8yyhozQMwfEojvCRfG5uvAM0untitGwYqNRAMrHsQgL57rJ/gdemhX
-SROOFG2wZI4VW5DQru/BRf5HEj2fTRNAqnctJX6mYZVjg9Kt5vdMij1AXQrvUl8A
-qrGuu634XlfqCHBld3CxTu08lxaK6tOlD34vRAZL3cC1MT7FMYY5zOd/9tcvpph8
-GgEk5fxrr6wXpw+S722w2Y4KCw+3tMAzl1mpKJ/V7+y/SdqZBBCPE720e9zf4w+L
-TYTN7y18wTfMVqF1n/WvhBc2ZYeBpxRnt7If7EIssZiB0RGJiPU=
-=LV2O
------END PGP SIGNATURE-----
-
---nextPart8316323.Rvb1ZgBP0e--
-
-
-
+> ---
+>  .../intel/int340x_thermal/acpi_thermal_rel.c  |  5 +-
+>  .../intel/int340x_thermal/acpi_thermal_rel.h  | 48 ++++++++++---------
+>  2 files changed, 29 insertions(+), 24 deletions(-)
+>
+> diff --git a/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c b/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c
+> index a478cff8162a..e90690a234c4 100644
+> --- a/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c
+> +++ b/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.c
+> @@ -250,8 +250,9 @@ static int fill_art(char __user *ubuf)
+>                 get_single_name(arts[i].source, art_user[i].source_device);
+>                 get_single_name(arts[i].target, art_user[i].target_device);
+>                 /* copy the rest int data in addition to source and target */
+> -               memcpy(&art_user[i].weight, &arts[i].weight,
+> -                       sizeof(u64) * (ACPI_NR_ART_ELEMENTS - 2));
+> +               BUILD_BUG_ON(sizeof(art_user[i].data) !=
+> +                            sizeof(u64) * (ACPI_NR_ART_ELEMENTS - 2));
+> +               memcpy(&art_user[i].data, &arts[i].data, sizeof(art_user[i].data));
+>         }
+>
+>         if (copy_to_user(ubuf, art_user, art_len))
+> diff --git a/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.h b/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.h
+> index 58822575fd54..78d942477035 100644
+> --- a/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.h
+> +++ b/drivers/thermal/intel/int340x_thermal/acpi_thermal_rel.h
+> @@ -17,17 +17,19 @@
+>  struct art {
+>         acpi_handle source;
+>         acpi_handle target;
+> -       u64 weight;
+> -       u64 ac0_max;
+> -       u64 ac1_max;
+> -       u64 ac2_max;
+> -       u64 ac3_max;
+> -       u64 ac4_max;
+> -       u64 ac5_max;
+> -       u64 ac6_max;
+> -       u64 ac7_max;
+> -       u64 ac8_max;
+> -       u64 ac9_max;
+> +       struct_group(data,
+> +               u64 weight;
+> +               u64 ac0_max;
+> +               u64 ac1_max;
+> +               u64 ac2_max;
+> +               u64 ac3_max;
+> +               u64 ac4_max;
+> +               u64 ac5_max;
+> +               u64 ac6_max;
+> +               u64 ac7_max;
+> +               u64 ac8_max;
+> +               u64 ac9_max;
+> +       );
+>  } __packed;
+>
+>  struct trt {
+> @@ -47,17 +49,19 @@ union art_object {
+>         struct {
+>                 char source_device[8]; /* ACPI single name */
+>                 char target_device[8]; /* ACPI single name */
+> -               u64 weight;
+> -               u64 ac0_max_level;
+> -               u64 ac1_max_level;
+> -               u64 ac2_max_level;
+> -               u64 ac3_max_level;
+> -               u64 ac4_max_level;
+> -               u64 ac5_max_level;
+> -               u64 ac6_max_level;
+> -               u64 ac7_max_level;
+> -               u64 ac8_max_level;
+> -               u64 ac9_max_level;
+> +               struct_group(data,
+> +                       u64 weight;
+> +                       u64 ac0_max_level;
+> +                       u64 ac1_max_level;
+> +                       u64 ac2_max_level;
+> +                       u64 ac3_max_level;
+> +                       u64 ac4_max_level;
+> +                       u64 ac5_max_level;
+> +                       u64 ac6_max_level;
+> +                       u64 ac7_max_level;
+> +                       u64 ac8_max_level;
+> +                       u64 ac9_max_level;
+> +               );
+>         };
+>         u64 __data[ACPI_NR_ART_ELEMENTS];
+>  };
+> --
+> 2.30.2
+>
