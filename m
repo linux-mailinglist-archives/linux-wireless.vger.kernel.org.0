@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0700645ABC9
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Nov 2021 19:52:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18BEF45ABCC
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Nov 2021 19:52:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238371AbhKWSzW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Nov 2021 13:55:22 -0500
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:15076 "EHLO
+        id S237181AbhKWSzY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Nov 2021 13:55:24 -0500
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:15079 "EHLO
         alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233876AbhKWSzU (ORCPT
+        by vger.kernel.org with ESMTP id S232655AbhKWSzU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 23 Nov 2021 13:55:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1637693531; x=1669229531;
+  t=1637693532; x=1669229532;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version;
-  bh=RSAzOsp5INzI4dXN9ZEirn6BQ4nQckkNyomjvzka2GQ=;
-  b=PwwRii262UVeHbeCh56HJQqKXJ8XEDjxx5tqHiPDGo4DY5f2FgO4Ak2F
-   ybvukB4n10TxN+cvy1C6JkX7eRyqHAoG6my7YEF92OZUADgBLxz4hXrIh
-   eyQzMEBLuImBAN/vpBUEPqEVKpWjQql9S+IYISx6n+/BnrrIianlXs6cT
-   Q=;
+  bh=vd7Mu+Deo52sg/0er2EFx4w5tyWY7WW1DBVae6mRvL0=;
+  b=qqbYJNIz9YAQ/ljfzFxRITgrQAXz7Kr3z0LVTUOHHSfbYUP5Vd3/qDcN
+   x6rw1waH6TiS4E4smSFDHwkKrwVJ22V2/XBba4J1wA0jgNDhgmhjyVS5h
+   Ky/1CxaWdcgmvA0uJomj3fI3RXv9CYnRgNmfarpPlYR6iLL1bZfN2+Bn3
+   g=;
 Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
   by alexa-out-sd-01.qualcomm.com with ESMTP; 23 Nov 2021 10:52:10 -0800
 X-QCInternal: smtphost
@@ -30,18 +30,18 @@ Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 23 Nov 2021 10:51:47 -0800
+ 15.2.922.19; Tue, 23 Nov 2021 10:51:50 -0800
 Received: from mpubbise-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 23 Nov 2021 10:51:45 -0800
+ 15.2.922.19; Tue, 23 Nov 2021 10:51:48 -0800
 From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <robh@kernel.org>, Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Subject: [PATCH 13/19] ath11k: Fix RX de-fragmentation issue on WCN6750
-Date:   Wed, 24 Nov 2021 00:20:28 +0530
-Message-ID: <1637693434-15462-14-git-send-email-quic_mpubbise@quicinc.com>
+Subject: [PATCH 14/19] ath11k: Do not put HW in DBS mode for WCN6750
+Date:   Wed, 24 Nov 2021 00:20:29 +0530
+Message-ID: <1637693434-15462-15-git-send-email-quic_mpubbise@quicinc.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1637693434-15462-1-git-send-email-quic_mpubbise@quicinc.com>
 References: <1637693434-15462-1-git-send-email-quic_mpubbise@quicinc.com>
@@ -54,12 +54,8 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The offset of REO register where the RX fragment destination ring
-is configured is different in WCN6750 as compared to WCN6855.
-Due to this differnce in offsets, on WCN6750, fragment destination
-ring will be configured incorrectly, leading to RX fragments not
-getting delivered to the driver. Fix this by defining HW specific
-offset for the REO MISC CTL register.
+Though WCN6750 is a single PDEV device, it is not a
+DBS solution. So, do not put HW in DBS mode for WCN6750.
 
 Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00573-QCAMSLSWPLZ-1
 Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
@@ -68,73 +64,44 @@ Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/hal.h |  2 +-
- drivers/net/wireless/ath/ath11k/hw.c  | 10 ++++++++--
- drivers/net/wireless/ath/ath11k/hw.h  |  1 +
- 3 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c | 2 +-
+ drivers/net/wireless/ath/ath11k/wmi.c  | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
-index b5be323..bd706f3 100644
---- a/drivers/net/wireless/ath/ath11k/hal.h
-+++ b/drivers/net/wireless/ath/ath11k/hal.h
-@@ -121,7 +121,7 @@ struct ath11k_base;
- #define HAL_REO1_DEST_RING_CTRL_IX_1		0x00000008
- #define HAL_REO1_DEST_RING_CTRL_IX_2		0x0000000c
- #define HAL_REO1_DEST_RING_CTRL_IX_3		0x00000010
--#define HAL_REO1_MISC_CTL			0x00000630
-+#define HAL_REO1_MISC_CTL(ab)			ab->hw_params.regs->hal_reo1_misc_ctl
- #define HAL_REO1_RING_BASE_LSB(ab)		ab->hw_params.regs->hal_reo1_ring_base_lsb
- #define HAL_REO1_RING_BASE_MSB(ab)		ab->hw_params.regs->hal_reo1_ring_base_msb
- #define HAL_REO1_RING_ID(ab)			ab->hw_params.regs->hal_reo1_ring_id
-diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
-index a3a141b..2ec80d0 100644
---- a/drivers/net/wireless/ath/ath11k/hw.c
-+++ b/drivers/net/wireless/ath/ath11k/hw.c
-@@ -759,10 +759,10 @@ static void ath11k_hw_wcn6855_reo_setup(struct ath11k_base *ab)
- 		FIELD_PREP(HAL_REO1_GEN_ENABLE_AGING_FLUSH_ENABLE, 1);
- 	ath11k_hif_write32(ab, reo_base + HAL_REO1_GEN_ENABLE, val);
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 351a19b..d9cc58a 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1027,7 +1027,7 @@ static int ath11k_core_start(struct ath11k_base *ab,
+ 	}
  
--	val = ath11k_hif_read32(ab, reo_base + HAL_REO1_MISC_CTL);
-+	val = ath11k_hif_read32(ab, reo_base + HAL_REO1_MISC_CTL(ab));
- 	val &= ~HAL_REO1_MISC_CTL_FRAGMENT_DST_RING;
- 	val |= FIELD_PREP(HAL_REO1_MISC_CTL_FRAGMENT_DST_RING, HAL_SRNG_RING_ID_REO2SW1);
--	ath11k_hif_write32(ab, reo_base + HAL_REO1_MISC_CTL, val);
-+	ath11k_hif_write32(ab, reo_base + HAL_REO1_MISC_CTL(ab), val);
+ 	/* put hardware to DBS mode */
+-	if (ab->hw_params.single_pdev_only) {
++	if (ab->hw_params.single_pdev_only && ab->hw_params.num_rxmda_per_pdev > 1) {
+ 		ret = ath11k_wmi_set_hw_mode(ab, WMI_HOST_HW_MODE_DBS);
+ 		if (ret) {
+ 			ath11k_err(ab, "failed to send dbs mode: %d\n", ret);
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 87351e0..1ba8650 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
++ * Copyright (c) 2021, Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ #include <linux/skbuff.h>
+ #include <linux/ctype.h>
+@@ -7491,7 +7492,7 @@ int ath11k_wmi_attach(struct ath11k_base *ab)
+ 	ab->wmi_ab.preferred_hw_mode = WMI_HOST_HW_MODE_MAX;
  
- 	ath11k_hif_write32(ab, reo_base + HAL_REO1_AGING_THRESH_IX_0(ab),
- 			   HAL_DEFAULT_REO_TIMEOUT_USEC);
-@@ -2205,6 +2205,9 @@ const struct ath11k_hw_regs wcn6855_regs = {
+ 	/* It's overwritten when service_ext_ready is handled */
+-	if (ab->hw_params.single_pdev_only)
++	if (ab->hw_params.single_pdev_only && ab->hw_params.num_rxmda_per_pdev > 1)
+ 		ab->wmi_ab.preferred_hw_mode = WMI_HOST_HW_MODE_SINGLE;
  
- 	/* Shadow register area */
- 	.hal_shadow_base_addr = 0x000008fc,
-+
-+	/* REO MISC CTRL */
-+	.hal_reo1_misc_ctl = 0x00000630,
- };
- 
- const struct ath11k_hw_regs wcn6750_regs = {
-@@ -2287,6 +2290,9 @@ const struct ath11k_hw_regs wcn6750_regs = {
- 
- 	/* Shadow register area */
- 	.hal_shadow_base_addr = 0x00000504,
-+
-+	/* REO MISC CTRL */
-+	.hal_reo1_misc_ctl = 0x000005d8,
- };
- 
- const struct ath11k_hw_hal_params ath11k_hw_hal_params_ipq8074 = {
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index a4067e7..c8d5951 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -349,6 +349,7 @@ struct ath11k_hw_regs {
- 	u32 pcie_pcs_osc_dtct_config_base;
- 
- 	u32 hal_shadow_base_addr;
-+	u32 hal_reo1_misc_ctl;
- };
- 
- extern const struct ath11k_hw_regs ipq8074_regs;
+ 	/* TODO: Init remaining wmi soc resources required */
 -- 
 2.7.4
 
