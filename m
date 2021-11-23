@@ -2,151 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5444459BCE
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Nov 2021 06:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0736E459BF6
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Nov 2021 06:53:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229947AbhKWFlt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Nov 2021 00:41:49 -0500
-Received: from mga01.intel.com ([192.55.52.88]:29561 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229569AbhKWFls (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Nov 2021 00:41:48 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10176"; a="258801543"
-X-IronPort-AV: E=Sophos;i="5.87,256,1631602800"; 
-   d="scan'208";a="258801543"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2021 21:38:40 -0800
-X-IronPort-AV: E=Sophos;i="5.87,256,1631602800"; 
-   d="scan'208";a="606690391"
-Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.212.139.118]) ([10.212.139.118])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2021 21:38:39 -0800
-Message-ID: <6007aad3-d831-297b-54f5-d0ed0c9c115e@linux.intel.com>
-Date:   Mon, 22 Nov 2021 21:38:39 -0800
+        id S233029AbhKWF4i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Nov 2021 00:56:38 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:35906 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229690AbhKWF4i (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 23 Nov 2021 00:56:38 -0500
+X-UUID: f725d6f0232b4958b9ee4a1f0b3bae15-20211123
+X-UUID: f725d6f0232b4958b9ee4a1f0b3bae15-20211123
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
+        (envelope-from <shayne.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 928026484; Tue, 23 Nov 2021 13:53:27 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 23 Nov 2021 13:53:26 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 23 Nov 2021 13:53:26 +0800
+From:   Shayne Chen <shayne.chen@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH] mt76: mt7615: fix unused tx antenna mask in testmode
+Date:   Tue, 23 Nov 2021 13:53:00 +0800
+Message-ID: <20211123055300.27903-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
-Subject: Re: [PATCH v2 03/14] net: wwan: t7xx: Add core components
-Content-Language: en-US
-References: <629b982a-874d-b75f-2800-81b84d569af7@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
-        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
-        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
-        suresh.nagaraj@intel.com
-From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-In-Reply-To: <629b982a-874d-b75f-2800-81b84d569af7@linux.intel.com>
-X-Forwarded-Message-Id: <629b982a-874d-b75f-2800-81b84d569af7@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+The mask variable is assigned but not used after testmode disabled:
+if (!en)
+	mask = phy->mt76->chainmask;
 
-Sorry for the spam. Re-sending as plain text.
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ .../wireless/mediatek/mt76/mt7615/testmode.c  | 21 +++++++++----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
+index 59d9926..f374d89 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
+@@ -185,36 +185,35 @@ mt7615_tm_set_tx_antenna(struct mt7615_phy *phy, bool en)
+ 	for (i = 0; i < 4; i++) {
+ 		mt76_rmw_field(dev, MT_WF_PHY_RFINTF3_0(i),
+ 			       MT_WF_PHY_RFINTF3_0_ANT,
+-			       (td->tx_antenna_mask & BIT(i)) ? 0 : 0xa);
+-
++			       (mask & BIT(i)) ? 0 : 0xa);
+ 	}
+ 
+ 	/* 2.4 GHz band */
+ 	mt76_rmw_field(dev, MT_ANT_SWITCH_CON(3), MT_ANT_SWITCH_CON_MODE(0),
+-		       (td->tx_antenna_mask & BIT(0)) ? 0x8 : 0x1b);
++		       (mask & BIT(0)) ? 0x8 : 0x1b);
+ 	mt76_rmw_field(dev, MT_ANT_SWITCH_CON(4), MT_ANT_SWITCH_CON_MODE(2),
+-		       (td->tx_antenna_mask & BIT(1)) ? 0xe : 0x1b);
++		       (mask & BIT(1)) ? 0xe : 0x1b);
+ 	mt76_rmw_field(dev, MT_ANT_SWITCH_CON(6), MT_ANT_SWITCH_CON_MODE1(0),
+-		       (td->tx_antenna_mask & BIT(2)) ? 0x0 : 0xf);
++		       (mask & BIT(2)) ? 0x0 : 0xf);
+ 	mt76_rmw_field(dev, MT_ANT_SWITCH_CON(7), MT_ANT_SWITCH_CON_MODE1(2),
+-		       (td->tx_antenna_mask & BIT(3)) ? 0x6 : 0xf);
++		       (mask & BIT(3)) ? 0x6 : 0xf);
+ 
+ 	/* 5 GHz band */
+ 	mt76_rmw_field(dev, MT_ANT_SWITCH_CON(4), MT_ANT_SWITCH_CON_MODE(1),
+-		       (td->tx_antenna_mask & BIT(0)) ? 0xd : 0x1b);
++		       (mask & BIT(0)) ? 0xd : 0x1b);
+ 	mt76_rmw_field(dev, MT_ANT_SWITCH_CON(2), MT_ANT_SWITCH_CON_MODE(3),
+-		       (td->tx_antenna_mask & BIT(1)) ? 0x13 : 0x1b);
++		       (mask & BIT(1)) ? 0x13 : 0x1b);
+ 	mt76_rmw_field(dev, MT_ANT_SWITCH_CON(7), MT_ANT_SWITCH_CON_MODE1(1),
+-		       (td->tx_antenna_mask & BIT(2)) ? 0x5 : 0xf);
++		       (mask & BIT(2)) ? 0x5 : 0xf);
+ 	mt76_rmw_field(dev, MT_ANT_SWITCH_CON(8), MT_ANT_SWITCH_CON_MODE1(3),
+-		       (td->tx_antenna_mask & BIT(3)) ? 0xb : 0xf);
++		       (mask & BIT(3)) ? 0xb : 0xf);
+ 
+ 	for (i = 0; i < 4; i++) {
+ 		u32 val;
+ 
+ 		val = mt7615_rf_rr(dev, i, 0x48);
+ 		val &= ~(0x3ff << 20);
+-		if (td->tx_antenna_mask & BIT(i))
++		if (mask & BIT(i))
+ 			val |= 3 << 20;
+ 		else
+ 			val |= (2 << 28) | (2 << 26) | (8 << 20);
+-- 
+2.25.1
 
-On 11/2/2021 8:46 AM, Andy Shevchenko wrote:
-> On Sun, Oct 31, 2021 at 08:56:24PM -0700, Ricardo Martinez wrote:
->> From: Haijun Lio<haijun.liu@mediatek.com>
->>
->> Registers the t7xx device driver with the kernel. Setup all the core
->> components: PCIe layer, Modem Host Cross Core Interface (MHCCIF),
->> modem control operations, modem state machine, and build
->> infrastructure.
->>
->> * PCIe layer code implements driver probe and removal.
->> * MHCCIF provides interrupt channels to communicate events
->> such as handshake, PM and port enumeration.
->> * Modem control implements the entry point for modem init,
->> reset and exit.
->> * The modem status monitor is a state machine used by modem control
->> to complete initialization and stop. It is used also to propagate
->> exception events reported by other components.
->> +#define CCCI_HEADER_NO_DATA 0xffffffff
-> Is this internal value to Linux or something which is given by hardware?
-
-It is hardware defined
-
-...
-
->> + spin_lock_irqsave(&md_info->exp_spinlock, flags);
-> Can it be called outside of IRQ context?
-
-Actually, it is not in IRQ context, this function is called by the 
-thread_fn passed to request_threaded_irq(),
-
-Maybe spin_lock_bh makes more sense.
-
->> + int_sta = get_interrupt_status(mtk_dev);
->> + md_info->exp_id |= int_sta;
->> +
->> + if (md_info->exp_id & D2H_INT_PORT_ENUM) {
->> + md_info->exp_id &= ~D2H_INT_PORT_ENUM;
->> + if (ctl->curr_state == CCCI_FSM_INIT ||
->> + ctl->curr_state == CCCI_FSM_PRE_START ||
->> + ctl->curr_state == CCCI_FSM_STOPPED)
->> + ccci_fsm_recv_md_interrupt(MD_IRQ_PORT_ENUM);
->> + }
->> +
->> + if (md_info->exp_id & D2H_INT_EXCEPTION_INIT) {
->> + if (ctl->md_state == MD_STATE_INVALID ||
->> + ctl->md_state == MD_STATE_WAITING_FOR_HS1 ||
->> + ctl->md_state == MD_STATE_WAITING_FOR_HS2 ||
->> + ctl->md_state == MD_STATE_READY) {
->> + md_info->exp_id &= ~D2H_INT_EXCEPTION_INIT;
->> + ccci_fsm_recv_md_interrupt(MD_IRQ_CCIF_EX);
->> + }
->> + } else if (ctl->md_state == MD_STATE_WAITING_FOR_HS1) {
->> + /* start handshake if MD not assert */
->> + mask = mhccif_mask_get(mtk_dev);
->> + if ((md_info->exp_id & D2H_INT_ASYNC_MD_HK) && !(mask & 
->> D2H_INT_ASYNC_MD_HK)) {
->> + md_info->exp_id &= ~D2H_INT_ASYNC_MD_HK;
->> + queue_work(md->handshake_wq, &md->handshake_work);
->> + }
->> + }
->> +
->> + spin_unlock_irqrestore(&md_info->exp_spinlock, flags);
->> +
->> + return 0;
->> +}
-...
->> + cmd = kmalloc(sizeof(*cmd),
->> + (in_irq() || in_softirq() || irqs_disabled()) ? GFP_ATOMIC : 
->> GFP_KERNEL);
-> Hmm...
-Looks like we can just use in_interrupt(), was that the concern?
-
->> + if (!cmd)
->> + return -ENOMEM;
->> + if (in_irq() || irqs_disabled())
->> + flag &= ~FSM_CMD_FLAG_WAITING_TO_COMPLETE;
-> Even more hmm...
->
->> + if (flag & FSM_CMD_FLAG_WAITING_TO_COMPLETE) {
->> + wait_event(cmd->complete_wq, cmd->result != FSM_CMD_RESULT_PENDING);
-> Is it okay in IRQ context?
-
-We know that the caller that sets FSM_CMD_FLAG_WAITING_TO_COMPLETE flag 
-it is not in IRQ context.
-
-If that's good enough then we could also remove the check that clears 
-that flag few lines above.
-
-The only calls using FSM_CMD_FLAG_WAITING_TO_COMPLETE are coming from 
-dev_pm_ops callbacks, and
-
-we are not setting pm_runtime_irq_safe().
-
-Otherwise we can use in_interrupt() to check here as well.
-
->> + if (cmd->result != FSM_CMD_RESULT_OK)
->> + result = -EINVAL;
