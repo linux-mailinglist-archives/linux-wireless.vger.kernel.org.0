@@ -2,119 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DACFD459D26
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Nov 2021 08:50:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD546459DC4
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Nov 2021 09:21:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234496AbhKWHyG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Nov 2021 02:54:06 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:56564 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234475AbhKWHxs (ORCPT
+        id S234664AbhKWIYB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Nov 2021 03:24:01 -0500
+Received: from mail-ot1-f43.google.com ([209.85.210.43]:37656 "EHLO
+        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230306AbhKWIXy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Nov 2021 02:53:48 -0500
-X-UUID: 579960f10432404ea09abd9e071df991-20211123
-X-UUID: 579960f10432404ea09abd9e071df991-20211123
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <bo.jiao@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2123702454; Tue, 23 Nov 2021 15:50:36 +0800
-Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 23 Nov 2021 15:50:36 +0800
-Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
- (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 23 Nov
- 2021 15:50:35 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
- 15.0.1497.2 via Frontend Transport; Tue, 23 Nov 2021 15:50:35 +0800
-From:   Bo Jiao <bo.jiao@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Xing Song <xing.song@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: [PATCH v3 11/11] mt76: mt7915: add device id for mt7916
-Date:   Tue, 23 Nov 2021 15:49:55 +0800
-Message-ID: <156e5d70ac787efde597351b904e9b3610e01da3.1637652742.git.Bo.Jiao@mediatek.com>
-X-Mailer: git-send-email 2.17.0
-In-Reply-To: <cover.1637652742.git.Bo.Jiao@mediatek.com>
-References: <cover.1637652742.git.Bo.Jiao@mediatek.com>
+        Tue, 23 Nov 2021 03:23:54 -0500
+Received: by mail-ot1-f43.google.com with SMTP id h19-20020a9d3e53000000b0056547b797b2so32710152otg.4;
+        Tue, 23 Nov 2021 00:20:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EqDPz0+moIASV8/u18qtwgFpVhcXgwVMGWtajI5MBd0=;
+        b=1+BrM5ab/nAOx38mqOY5EiIsoIHJshvpzrms3mNltCT/grGe1DZiRFqVnUrv+a9REA
+         2qPEOov7jWklahWSboLBlrmFkoUaUHOaWx1uE0R9vh4iB59KD9l89nlcXVUCOkECXKgd
+         cEBS96wc07XGbbnq9bZP9lWJvngwo6AWkkysfpKr+B9I+5lmSSHTHpWHFVtNSMKsIBKw
+         ukPkFG0Akro9oKI2kp9YBVa0rqiQ+Wo3MLzZK+DZPRY9/lTC1ir7G+Haq0yfwB2tme4C
+         Okundo4drrFPwChrNvQ1V+wRsETxqQmoPKZvM7UURzHeV9FkH2J46OiH0MpiabeOHARU
+         LKbw==
+X-Gm-Message-State: AOAM531zV7a2Bi5IYbemDickJkqZB8l7tHzJQdvOQsCm6uVtO+D+qfUH
+        k0YwZlGAKBLKiVy2syvjFeMl6/qhwvqQ+A==
+X-Google-Smtp-Source: ABdhPJwe9sx059Wb7JhFyeXY/CngRgc5BHN/QDbA5X094r9QBlKhv/BTVKvqe6nOczniqpfZc40LFQ==
+X-Received: by 2002:a9d:19e3:: with SMTP id k90mr2701498otk.99.1637655646043;
+        Tue, 23 Nov 2021 00:20:46 -0800 (PST)
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com. [209.85.210.42])
+        by smtp.gmail.com with ESMTPSA id w19sm2408417oih.44.2021.11.23.00.20.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Nov 2021 00:20:45 -0800 (PST)
+Received: by mail-ot1-f42.google.com with SMTP id a23-20020a9d4717000000b0056c15d6d0caso32654069otf.12;
+        Tue, 23 Nov 2021 00:20:45 -0800 (PST)
+X-Received: by 2002:a9f:248b:: with SMTP id 11mr5954157uar.14.1637655634916;
+ Tue, 23 Nov 2021 00:20:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+References: <cover.1637592133.git.geert+renesas@glider.be> <YZvYW1ElW7ZYZNTC@piout.net>
+In-Reply-To: <YZvYW1ElW7ZYZNTC@piout.net>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 23 Nov 2021 09:20:23 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWKHoBWm2XQmKwB0q8Ya8KzpCgA29D0igXJrGY8=3e8_A@mail.gmail.com>
+Message-ID: <CAMuHMdWKHoBWm2XQmKwB0q8Ya8KzpCgA29D0igXJrGY8=3e8_A@mail.gmail.com>
+Subject: Re: [PATCH 00/17] Non-const bitfield helper conversions
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Rajendra Nayak <rnayak@codeaurora.org>,
+        Paul Walmsley <paul@pwsan.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Benoit Parrot <bparrot@ti.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Joel Stanley <joel@jms.id.au>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Bo Jiao <Bo.Jiao@mediatek.com>
+Hi Alexandre,
 
-Add pci_device_id to enable mt7916. Note that MT_HW_CHIPID is no
-longer used for further chips, so drop it accordingly.
+On Mon, Nov 22, 2021 at 6:50 PM Alexandre Belloni
+<alexandre.belloni@bootlin.com> wrote:
+> On 22/11/2021 16:53:53+0100, Geert Uytterhoeven wrote:
+> > The existing FIELD_{GET,PREP}() macros are limited to compile-time
+> > constants.  However, it is very common to prepare or extract bitfield
+> > elements where the bitfield mask is not a compile-time constant.
+> > To avoid this limitation, the AT91 clock driver already has its own
+> > field_{prep,get}() macros.
+>
+> My understanding was that this (being compile time only) was actually
+> done on purpose. Did I misunderstand?
 
-Co-developed-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/pci.c  | 7 +++++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+Yes, it was done on purpose, to maximize type safety.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 7ba5b1f..d463b3c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -534,7 +534,7 @@ static int mt7915_mmio_init(struct mt76_dev *mdev,
- 	bus_ops->rmw = mt7915_rmw;
- 	dev->mt76.bus = bus_ops;
- 
--	mdev->rev = (mt76_rr(dev, MT_HW_CHIPID) << 16) |
-+	mdev->rev = (device_id << 16) |
- 		    (mt76_rr(dev, MT_HW_REV) & 0xff);
- 	dev_dbg(mdev->dev, "ASIC revision: %04x\n", mdev->rev);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-index 3134b46..8d1a811 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-@@ -18,11 +18,13 @@ static u32 hif_idx;
- 
- static const struct pci_device_id mt7915_pci_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7915) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7906) },
- 	{ },
- };
- 
- static const struct pci_device_id mt7915_hif_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7916) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x790a) },
- 	{ },
- };
- 
-@@ -61,7 +63,8 @@ static void mt7915_put_hif2(struct mt7915_hif *hif)
- static struct mt7915_hif *mt7915_pci_init_hif2(struct pci_dev *pdev)
- {
- 	hif_idx++;
--	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7916, NULL))
-+	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7916, NULL) &&
-+	    !pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x790a, NULL))
- 		return NULL;
- 
- 	writel(hif_idx | MT_PCIE_RECOG_ID_SEM,
-@@ -112,7 +115,7 @@ static int mt7915_pci_probe(struct pci_dev *pdev,
- 
- 	mt76_pci_disable_aspm(pdev);
- 
--	if (id->device == 0x7916)
-+	if (id->device == 0x7916 || id->device == 0x790a)
- 		return mt7915_pci_hif2_probe(pdev);
- 
- 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
--- 
-2.18.0
+However, this imposes a severe limitation: we cannot use them in case
+the mask is non-const (i.e. stored in some data structure).  This
+is a quite common use-case, given the examples I found and converted,
+and given you added field_{get,prep}() to the AT91 clock driver.
 
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
