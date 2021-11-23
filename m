@@ -2,111 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E745459A81
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Nov 2021 04:31:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A0D4459B47
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Nov 2021 05:39:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232785AbhKWDer (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 Nov 2021 22:34:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54208 "EHLO
+        id S229764AbhKWEma (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 Nov 2021 23:42:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229553AbhKWDer (ORCPT
+        with ESMTP id S229553AbhKWEma (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 Nov 2021 22:34:47 -0500
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF3CC061574;
-        Mon, 22 Nov 2021 19:31:39 -0800 (PST)
-Received: by mail-pj1-x102c.google.com with SMTP id v23so15465618pjr.5;
-        Mon, 22 Nov 2021 19:31:39 -0800 (PST)
+        Mon, 22 Nov 2021 23:42:30 -0500
+Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ACAFC061574;
+        Mon, 22 Nov 2021 20:39:22 -0800 (PST)
+Received: by mail-ua1-x92c.google.com with SMTP id p37so41119134uae.8;
+        Mon, 22 Nov 2021 20:39:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:subject:to:cc:message-id:date:user-agent:mime-version
-         :content-transfer-encoding:content-language;
-        bh=icOtuugrfzpgVtFsKDZNNx7UamHELVHx2dk5MoNq3vY=;
-        b=PFaFbETSI3vuvUA5p/7QfyjOKucgA2mJg9yjcgSrY/w7t6T7WDcSsI2eEnPDAsRUWr
-         adsLj/xIj6sGSNpI2dSag5d1MomItjou8eZklrxW0eU77AFp8pmhoj58dBuhPintiQL6
-         nRaXlwF027su70rmtcp7sRFcqQ55h/ChzrB9N2a0bdE/WyHqu5BAtc7iUGyl9i/JH5Te
-         OzlWoXcCKGhidmRkANmw0E666KGIZOoQItaUL2gD/RlMjga2VmmEIuZoJwaszoRaj//U
-         jwpniX9iWE1ch+6z3WCGBjdabgFGuvVDIC1AbDauHzKEmlRsvVJTkV73a23oInArg3Bt
-         z6Fw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=j5GdoLpX4+wjTgePS+FUzB17W3Yjovzx0eFuCdj5KDA=;
+        b=S1wJ2WPtsF+GwG8fgyIYpfJqmlsgjoL7lcKsHP5j/N4os2H6YV1r1+7VmRORm4yXul
+         dmd8ulZXdWguy6sxt0xIGcSQe5oN/2Fmc9e85lG0YO6c6xmkFpnhKdl5yaAhYiJHRH+A
+         poW1PilI8jMT2GSTTYzlzPh7H6qLdXUeo0DjMIWFmf4nGwsUhHb/BCTmfxhuwQtPph5t
+         BFjDzmkKbVwUjHyPfgG4K2ywtUV0UZGapgmDU2bMkCCV/51HX8I1GyacRJwK7RdPUhVO
+         46auYmGNeizpT5hcVREf7VURNo1ipueDtTXiW7YrinGhG4n2h7jhEBWlC6IdJM+8oe7e
+         LC5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
-         :mime-version:content-transfer-encoding:content-language;
-        bh=icOtuugrfzpgVtFsKDZNNx7UamHELVHx2dk5MoNq3vY=;
-        b=30RE4w7D9HFF0NHavRu1fR3i8rJDbTrgxoMMLgr+vk7/RXDt3jQypn0PXedwD+nWV+
-         eorg+xx+PNy1JxOG7FqbxKccNAfETtIbTUeaN49/jDXPD3gA3HVTI8O+5Uhwnp6RJ4XR
-         oKnc09HIq38qWGpuiit91s+krj/H7wk275KHi2tX333UCi4bI4VATgsJruQFM2iPxjCp
-         YBxJbZTKA6kb1/6Jsa/ip+BnvnmPqh4/SwGqCzlOmz+mgCgXP+shO0fRIFIuxre+UXn0
-         Ql7L/t35ANjxFk/haQN8yaJXl4+iWYiPEVq2AUDjN/vQIMsp0Yrx5Sq1H6neP9dIXrCY
-         furg==
-X-Gm-Message-State: AOAM530yzgKQQ6kvMzwNtOcNm8tGZUGvzqIGhPIfpCPxthirL3+RKlpl
-        TScBl2kesy+lxQS5bxRPPaQ9JEDQz1k=
-X-Google-Smtp-Source: ABdhPJyzf02Tv1mZ59ZW0L0QXYi/YYF9+L5BGzJ/b48/S63RIB/IYaIi6MIIHXUmgOo1rJOc0KyJrA==
-X-Received: by 2002:a17:90b:30c4:: with SMTP id hi4mr2680047pjb.12.1637638298949;
-        Mon, 22 Nov 2021 19:31:38 -0800 (PST)
-Received: from [166.111.139.123] ([166.111.139.123])
-        by smtp.gmail.com with ESMTPSA id e15sm9743430pfc.134.2021.11.22.19.31.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Nov 2021 19:31:38 -0800 (PST)
-From:   Jia-Ju Bai <baijiaju1990@gmail.com>
-Subject: [BUG] marvell: mwifiex: two possible ABBA deadlocks
-To:     amitkarwar@gmail.com, ganapathi017@gmail.com,
-        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
-        kvalo@codeaurora.org, David Miller <davem@davemloft.net>,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Message-ID: <0e495b14-efbb-e0da-37bd-af6bd677ee2c@gmail.com>
-Date:   Tue, 23 Nov 2021 11:31:34 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=j5GdoLpX4+wjTgePS+FUzB17W3Yjovzx0eFuCdj5KDA=;
+        b=QDpYXYd5439JTZMPlC7h07vAEeeKNCdJK2tiTkcwuH67E5m+HYWWWI+eEq4b4iEmOP
+         FejRraDSmwKG2boFtbGRMBfJJzTabuAwLWxNSBDmO9+mac1XGFF1+PvKHq0yAn/8fdII
+         za6B3rehB/bqe9n4J93QX4pi3mEuYZ3iRPB66jqzrfGPjdh/eek31EUvPfVai3K81td7
+         TZxP/nKA3+ZhYdgwbq++zin4VgPkOUfsZIn+taeeFp73fq5TCNDGOgO4E1HY7185LUj9
+         T+dW7ehvQ8thvPs0wUu4C/hUAIc0nADVBfkS4+n/VF+ZGddbFdl6aqKare3g0z4qHxDc
+         sMxg==
+X-Gm-Message-State: AOAM533cRKhBX4IdhJbYTY+5JH2GA/iv5MEhmu7pVQCApIwmv+FuBZ2H
+        mXj8jssf4a+Ar+ISntXDbAw1xHnNWa+4R3RkIuw=
+X-Google-Smtp-Source: ABdhPJxsOOl/7jciwGxrv5h/mSPJY2pkqJthOafpXIXJfb1GLJX8rLCmOQYn0XW+crCifn7vFG3S/t7PleZ1NksbQro=
+X-Received: by 2002:ab0:5b5d:: with SMTP id v29mr4042891uae.110.1637642361774;
+ Mon, 22 Nov 2021 20:39:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+References: <CAA=hcWT_dmKU1Uj4YmJ_rxZ+HsCVOEYJLSH-h3B3qqNhC1xi-g@mail.gmail.com>
+ <CAD=FV=V3n95DNXFd4mHpkAAKapCs5UWZXUkw=1vWpfn6oXfouA@mail.gmail.com> <CAA=hcWS91uL4kRK8r1uJ_2YLXi1ZuB067ACVPTDZKnF53jgrRQ@mail.gmail.com>
+In-Reply-To: <CAA=hcWS91uL4kRK8r1uJ_2YLXi1ZuB067ACVPTDZKnF53jgrRQ@mail.gmail.com>
+From:   Jupiter <jupiter.hce@gmail.com>
+Date:   Tue, 23 Nov 2021 15:38:45 +1100
+Message-ID: <CAA=hcWR+9rsoy-dCnpai+fw_+JcO6X6oMBNPHJGqpuRy8mJszw@mail.gmail.com>
+Subject: Re: mwifiex reset buggy
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Amitkumar Karwar <amitkumar.karwar@nxp.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Hi Doug,
 
-My static analysis tool reports two possible ABBA deadlocks in the 
-mwifiex driver in Linux 5.10:
+I have updated the kernel to 5.10.59 which should be guaranteed to
+include your reset patch.
 
-# DEADLOCK 1:
-mwifiex_dequeue_tx_packet()
-   spin_lock_bh(&priv->wmm.ra_list_spinlock); --> Line 1432 (Lock A)
-   mwifiex_send_addba()
-     spin_lock_bh(&priv->sta_list_spinlock); --> Line 608 (Lock B)
+But I could not connect to the WiFi.
 
-mwifiex_process_sta_tx_pause()
-   spin_lock_bh(&priv->sta_list_spinlock); --> Line 398 (Lock B)
-   mwifiex_update_ralist_tx_pause()
-     spin_lock_bh(&priv->wmm.ra_list_spinlock); --> Line 941 (Lock A)
+#  ifconfig mlan0 up
+[10262.988302] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+ (1) failed: -110
+[10262.996049] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+[10263.007337] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+ (2) failed: -110
+[10263.015299] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+[10263.021675] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+ (3) failed: -110
+[10263.029839] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+[10263.035386] mwifiex_sdio mmc0:0001:1: DNLD_CMD: host to card failed
 
-When mwifiex_dequeue_tx_packet() and mwifiex_process_sta_tx_pause() are 
-concurrently executed, the deadlock can occur.
+# echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
+[10517.451193] mwifiex_sdio mmc0:0001:1: Resetting per request
+[10517.479235] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+ (1) failed: -110
+[10517.490283] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+[10517.498995] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+ (2) failed: -110
+[10517.509257] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+[10517.517649] mwifiex_sdio mmc0:0001:1: host_to_card, write iomem
+ (3) failed: -110
+[10517.527838] mwifiex_sdio mmc0:0001:1: write CFG reg failed
+[10517.533765] mwifiex_sdio mmc0:0001:1: DNLD_CMD: host to card failed
 
-# DEADLOCK 2:
-mwifiex_dequeue_tx_packet()
-   spin_lock_bh(&priv->wmm.ra_list_spinlock); --> Line 1432 (Lock A)
-   mwifiex_send_addba()
-     spin_lock_bh(&priv->sta_list_spinlock); --> Line 608 (Lock B)
+[10529.871099] mwifiex_sdio mmc0:0001:1: cmd_wait_q terminated: -110
+[10529.883401] mwifiex_sdio mmc0:0001:1: PREP_CMD: FW in reset state
+[10529.890488] mwifiex_sdio mmc0:0001:1: deleting the crypto keys
+[10529.896573] mwifiex_sdio mmc0:0001:1: PREP_CMD: FW in reset state
+[10529.903316] mwifiex_sdio mmc0:0001:1: deleting the crypto keys
 
-mwifiex_process_uap_tx_pause()
-   spin_lock_bh(&priv->sta_list_spinlock); --> Line 363 (Lock B)
-   mwifiex_update_ralist_tx_pause()
-     spin_lock_bh(&priv->wmm.ra_list_spinlock); --> Line 941 (Lock A)
+[10530.014334] mwifiex_sdio mmc0:0001:1: DNLD_CMD: host to card failed
+[10530.049847] mwifiex_sdio mmc0:0001:1: info: shutdown mwifiex...
+[10530.239910] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+[10530.247919] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+[10530.268721] mwifiex_sdio mmc0:0001:1: PREP_CMD: card is removed
+[10531.665962] mwifiex_sdio mmc0:0001:1: info: FW download over, size
+255988 bytes
+[10531.911608] mwifiex_sdio mmc0:0001:1: WLAN FW is active
+[10531.964352] mwifiex_sdio mmc0:0001:1: CMD_RESP: cmd 0x242 error, result=0x2
+[10531.971894] mwifiex_sdio mmc0:0001:1: mwifiex_process_cmdresp: cmd
+0x242 failed during       initialization
+[10532.125947] mwifiex_sdio mmc0:0001:1: info: MWIFIEX VERSION:
+mwifiex 1.0 (14.68.36.p204)
+[10532.134573] mwifiex_sdio mmc0:0001:1: driver_version = mwifiex 1.0
+(14.68.36.p204)
 
-When mwifiex_dequeue_tx_packet() and mwifiex_process_uap_tx_pause() are 
-concurrently executed, the deadlock can occur.
+Again, the /sys/kernel/debug/mwifiex/mlan0 is removed, it is
+completely broken for both WiFi modem reset and
+/sys/kernel/debug/mwifiex/mlan0/reset, let me know your advice to
+debug it or modify mwifiex source files.
 
-I am not quite sure whether these possible deadlocks are real and how to 
-fix them if they are real.
-Any feedback would be appreciated, thanks :)
+Thank you.
 
-Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+Kind regards,
+
+- JH
+
+On 11/20/21, Jupiter <jupiter.hce@gmail.com> wrote:
+> Hi Doug,
+>
+> Thank you for your kindly response.
+>
+>> I think I blocked most of this stuff out of my mind and it's also been
+>> over 2 years. ;-) ...but any chance that Bluetooth could somehow be
+>> involved, too? I seem to remember that things got complicated because
+>> we could have both functions going at once. I think I advocated for
+>> keeping it simple and always doing a full unplug / replug of the card
+>> to reset it, but from notes I guess upstream landed it so you need to
+>> handle the two cases (just WiFi vs WiFi+BT) in totally different ways.
+>
+> I think the main issue is many of you tested the mwifiex reset on
+> Marvell card (or BT?), unfortunately I am using uBlox Lily module
+> which is a WiFi only no Bluetooth, it is a iMX6ULL custom design, MMC
+> and SDIO are based on iMX6ULL EVK. I don't think anyone tested mwifiex
+> reset on that card, to make it worse, I am new to mwifiex, I might be
+> able to assist with debugging, but certainly not in the position to
+> contribute to fixing it.
+>
+>> It looks like there's ongoing discussion going on in
+>> https://issuetracker.google.com/172214846. Maybe something there would
+>> be helpful?
+>
+> I am using mwifiex on kernel upstream v4.19.75, does that include your
+> fix? Do you have a patch I can add to my Yocto build? Should I make
+> comments to the discussion at
+> https://issuetracker.google.com/172214846?
+>
+> Thank you very much Doug.
+>
+> - JH
+>
 
 
-Best wishes,
-Jia-Ju Bai
+--
+"A man can fail many times, but he isn't a failure until he begins to
+blame somebody else."
+-- John Burroughs
