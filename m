@@ -2,79 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C73EA45CAC8
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Nov 2021 18:22:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81FC445CD97
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Nov 2021 20:59:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236567AbhKXRZO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Nov 2021 12:25:14 -0500
-Received: from m43-7.mailgun.net ([69.72.43.7]:47711 "EHLO m43-7.mailgun.net"
+        id S234835AbhKXUCO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Nov 2021 15:02:14 -0500
+Received: from mga06.intel.com ([134.134.136.31]:7536 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235332AbhKXRZL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Nov 2021 12:25:11 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637774522; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=7lobQJpuRZecXzbrrslrEHsNv81YnOY6OTOrarJRCp0=;
- b=MpDR1Ix5Wt9rqWwkEfbhf/ZX/RLs+wFO+2fvo3q9RyQhzu4DXy7bJvFKZ8OY6XNlsNJwdOQ5
- GEHJy2SzaKOn/32+m3/wy7RI5AMBaQ7rWPJYXOPg2bkFU4elb1VfVazTbllXCIZpNh8Hvz0Q
- RcrCxKLsX3Y0wMd2hrSKCtN8MlA=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n10.prod.us-east-1.postgun.com with SMTP id
- 619e74b83553c354be3a520e (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 24 Nov 2021 17:22:00
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AD406C4360C; Wed, 24 Nov 2021 17:21:59 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D42BCC43616;
-        Wed, 24 Nov 2021 17:21:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org D42BCC43616
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S236387AbhKXUCN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Nov 2021 15:02:13 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10178"; a="296168193"
+X-IronPort-AV: E=Sophos;i="5.87,261,1631602800"; 
+   d="scan'208";a="296168193"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2021 11:59:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,261,1631602800"; 
+   d="scan'208";a="674983695"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 24 Nov 2021 11:59:00 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mpyPz-0005GQ-SZ; Wed, 24 Nov 2021 19:58:59 +0000
+Date:   Thu, 25 Nov 2021 03:58:08 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name
+Cc:     kbuild-all@lists.01.org, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com
+Subject: Re: [PATCH] mt76: mt7915: introduce SAR support
+Message-ID: <202111250358.9Q5qPltH-lkp@intel.com>
+References: <ed704f40d9681041d330b1c55dcaf4b10f50c331.1637684612.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH wireless-drivers] mt76: fix possible pktid leak
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <a560caffcc24452fb48af53904bbe5c45ea5db93.1637602268.git.lorenzo@kernel.org>
-References: <a560caffcc24452fb48af53904bbe5c45ea5db93.1637602268.git.lorenzo@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
-        ryder.lee@mediatek.com
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163777451567.4686.3609119971518562275.kvalo@codeaurora.org>
-Date:   Wed, 24 Nov 2021 17:21:59 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ed704f40d9681041d330b1c55dcaf4b10f50c331.1637684612.git.lorenzo@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+Hi Lorenzo,
 
-> Fix a possible idr pkt-id leak if the packet is dropped on tx side
-> 
-> Fixes: bd1e3e7b693c ("mt76: introduce packet_id idr")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> Acked-by: Felix Fietkau <nbd@nbd.name>
+I love your patch! Yet something to improve:
 
-Patch applied to wireless-drivers.git, thanks.
+[auto build test ERROR on kvalo-wireless-drivers-next/master]
+[also build test ERROR on kvalo-wireless-drivers/master v5.16-rc2 next-20211124]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-2a9e9857473b mt76: fix possible pktid leak
+url:    https://github.com/0day-ci/linux/commits/Lorenzo-Bianconi/mt76-mt7915-introduce-SAR-support/20211124-002511
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+config: i386-allyesconfig (https://download.01.org/0day-ci/archive/20211125/202111250358.9Q5qPltH-lkp@intel.com/config)
+compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
+reproduce (this is a W=1 build):
+        # https://github.com/0day-ci/linux/commit/8f018463c8934b4706320982f195e3779ef4b25a
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Lorenzo-Bianconi/mt76-mt7915-introduce-SAR-support/20211124-002511
+        git checkout 8f018463c8934b4706320982f195e3779ef4b25a
+        # save the config file to linux build tree
+        make W=1 ARCH=i386 
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/a560caffcc24452fb48af53904bbe5c45ea5db93.1637602268.git.lorenzo@kernel.org/
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+All errors (new ones prefixed by >>):
 
+   drivers/net/wireless/mediatek/mt76/mt7915/main.c: In function 'mt7915_set_sar_specs':
+>> drivers/net/wireless/mediatek/mt76/mt7915/main.c:439:8: error: implicit declaration of function 'mt76_init_sar_power'; did you mean 'mt76_get_txpower'? [-Werror=implicit-function-declaration]
+     439 |  err = mt76_init_sar_power(hw, sar);
+         |        ^~~~~~~~~~~~~~~~~~~
+         |        mt76_get_txpower
+   cc1: some warnings being treated as errors
+--
+   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:2392:5: warning: no previous prototype for 'mt7915_mcu_set_fixed_rate' [-Wmissing-prototypes]
+    2392 | int mt7915_mcu_set_fixed_rate(struct mt7915_dev *dev,
+         |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c: In function 'mt7915_mcu_set_txpower_sku':
+>> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3859:13: error: implicit declaration of function 'mt76_get_sar_power'; did you mean 'mt76_get_txpower'? [-Werror=implicit-function-declaration]
+    3859 |  tx_power = mt76_get_sar_power(mphy, mphy->chandef.chan,
+         |             ^~~~~~~~~~~~~~~~~~
+         |             mt76_get_txpower
+   cc1: some warnings being treated as errors
+
+
+vim +439 drivers/net/wireless/mediatek/mt76/mt7915/main.c
+
+   427	
+   428	static int mt7915_set_sar_specs(struct ieee80211_hw *hw,
+   429					const struct cfg80211_sar_specs *sar)
+   430	{
+   431		struct mt7915_phy *phy = mt7915_hw_phy(hw);
+   432		struct mt7915_dev *dev = mt7915_hw_dev(hw);
+   433		int err = -EINVAL;
+   434	
+   435		mutex_lock(&dev->mt76.mutex);
+   436		if (!cfg80211_chandef_valid(&phy->mt76->chandef))
+   437			goto out;
+   438	
+ > 439		err = mt76_init_sar_power(hw, sar);
+   440		if (err)
+   441			goto out;
+   442	
+   443		err = mt7915_mcu_set_txpower_sku(phy);
+   444	out:
+   445		mutex_unlock(&dev->mt76.mutex);
+   446	
+   447		return err;
+   448	}
+   449	
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
