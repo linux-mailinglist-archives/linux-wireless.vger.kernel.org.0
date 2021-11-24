@@ -2,82 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C19745B184
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Nov 2021 02:58:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B05845B260
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Nov 2021 03:59:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239452AbhKXCBF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Nov 2021 21:01:05 -0500
-Received: from tartarus.angband.pl ([51.83.246.204]:45544 "EHLO
-        tartarus.angband.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239402AbhKXCBA (ORCPT
+        id S240791AbhKXDCn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Nov 2021 22:02:43 -0500
+Received: from mail-io1-f50.google.com ([209.85.166.50]:43752 "EHLO
+        mail-io1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231450AbhKXDCj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Nov 2021 21:01:00 -0500
-X-Greylist: delayed 2239 seconds by postgrey-1.27 at vger.kernel.org; Tue, 23 Nov 2021 21:01:00 EST
-Received: from 89-73-149-240.dynamic.chello.pl ([89.73.149.240] helo=barad-dur.angband.pl)
-        by tartarus.angband.pl with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <kilobyte@angband.pl>)
-        id 1mpgvH-00D8oj-Ld; Wed, 24 Nov 2021 02:18:10 +0100
-Received: from [2a02:a31c:8245:f980::4] (helo=valinor.angband.pl)
-        by barad-dur.angband.pl with esmtp (Exim 4.94.2)
-        (envelope-from <kilobyte@angband.pl>)
-        id 1mpgvG-0001mD-9C; Wed, 24 Nov 2021 02:18:06 +0100
-Received: from kilobyte by valinor.angband.pl with local (Exim 4.95)
-        (envelope-from <kilobyte@valinor.angband.pl>)
-        id 1mpgvD-0005px-0j;
-        Wed, 24 Nov 2021 02:18:03 +0100
-From:   Adam Borowski <kilobyte@angband.pl>
-To:     Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     Adam Borowski <kilobyte@angband.pl>
-Date:   Wed, 24 Nov 2021 02:17:54 +0100
-Message-Id: <20211124011754.22397-1-kilobyte@angband.pl>
-X-Mailer: git-send-email 2.34.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 89.73.149.240
-X-SA-Exim-Mail-From: kilobyte@angband.pl
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on tartarus.angband.pl
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00=-1.9,RDNS_NONE=0.793,
-        SPF_HELO_NONE=0.001,SPF_PASS=-0.001,TVD_RCVD_IP=0.001 autolearn=no
-        autolearn_force=no languages=en
-Subject: [PATCH] iwlwifi: pcie: fix a warning / build failure
-X-SA-Exim-Version: 4.2.1 (built Sat, 13 Feb 2021 17:57:42 +0000)
-X-SA-Exim-Scanned: Yes (on tartarus.angband.pl)
+        Tue, 23 Nov 2021 22:02:39 -0500
+Received: by mail-io1-f50.google.com with SMTP id z26so1294620iod.10;
+        Tue, 23 Nov 2021 18:59:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=hUyB8SMEZEe+wyhi5A4ravu9airL4cafjZQp9SXQVNw=;
+        b=IqVgIVYvlhWY18qCIn+Bzd4n2eHPsFKYqXXm4qnR1hzioaLNOpiMoPxvC7cFOaIWe8
+         APdpIlHrcwmVX+4MWlmecZ0n3wDXBBbC9qDC7peX7lqMGN3+RlCkQdh5Ye+Nrm7rdNcz
+         AoLdUO5oKLIDZSkeNeFzP+7czb0RIL7F1MXhw5h8YHMYPzZSuIkruvrgApb8BQazmyhd
+         7CiYwSEFXexMmPTfShx/cy+UQLQJI22Rsrway2ssWNllC9U+wdeVna0u9phoDayYEx5+
+         D7Pa/8vLi6zK8k+TsvVm/XVo/XIqZP0eZvs5eI1sVmmU5L72uawwXz9ilHkpqlwKLEQc
+         D5Jw==
+X-Gm-Message-State: AOAM531owkokzbNFqydZIZgBoqBHhafFKCKzcI2Cs8VdyQvTbTKl2va1
+        gXSYl8GSNtz1zo4VnChGdMR5/wpoIA==
+X-Google-Smtp-Source: ABdhPJxeQsgBpDAOtsETWCseXbp1sz848Ix20LrL1yEptsj4UjtqyKezE8HZZzhXVSIc9seyIhVb5g==
+X-Received: by 2002:a02:8663:: with SMTP id e90mr11391156jai.14.1637722769739;
+        Tue, 23 Nov 2021 18:59:29 -0800 (PST)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id ay13sm9089587iob.37.2021.11.23.18.59.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Nov 2021 18:59:29 -0800 (PST)
+Received: (nullmailer pid 888172 invoked by uid 1000);
+        Wed, 24 Nov 2021 02:59:21 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org
+In-Reply-To: <1637693434-15462-20-git-send-email-quic_mpubbise@quicinc.com>
+References: <1637693434-15462-1-git-send-email-quic_mpubbise@quicinc.com> <1637693434-15462-20-git-send-email-quic_mpubbise@quicinc.com>
+Subject: Re: [PATCH 19/19] dt: bindings: net: add bindings of WCN6750 for ath11k
+Date:   Tue, 23 Nov 2021 19:59:21 -0700
+Message-Id: <1637722761.019285.888171.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-drivers/net/wireless/intel/iwlwifi/pcie/drv.c:
-        In function ‘iwl_pci_find_dev_info’:
-./include/linux/kernel.h:46:25: error: overflow in conversion from
-        ‘long unsigned int’ to ‘int’ changes value from
-        ‘18446744073709551615’ to ‘-1’ [-Werror=overflow]
+On Wed, 24 Nov 2021 00:20:34 +0530, Manikanta Pubbisetty wrote:
+> Add WCN6750 wireless driver support, its based on ath11k driver.
+> 
+> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+> ---
+>  .../bindings/net/wireless/qcom,ath11k.yaml         | 333 ++++++++++++++-------
+>  1 file changed, 225 insertions(+), 108 deletions(-)
+> 
 
-Signed-off-by: Adam Borowski <kilobyte@angband.pl>
----
-Another option would be to #ifdef away iwl_pci_find_dev_info().
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml:57:9: [warning] wrong indentation: expected 6 but found 8 (indentation)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index c574f041f096..81e8f2fc4982 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1341,7 +1341,7 @@ iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
- {
- 	int i;
- 
--	for (i = ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
-+	for (i = (int)ARRAY_SIZE(iwl_dev_info_table) - 1; i >= 0; i--) {
- 		const struct iwl_dev_info *dev_info = &iwl_dev_info_table[i];
- 
- 		if (dev_info->device != (u16)IWL_CFG_ANY &&
--- 
-2.34.0
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dt.yaml:0:0: /example-1/remoteproc@8a00000: failed to match any schema with compatible: ['qcom,sc7280-wpss-pil']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1558747
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 
