@@ -2,137 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D23F245B602
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Nov 2021 08:55:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EDA845B603
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Nov 2021 08:56:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240749AbhKXH6b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Nov 2021 02:58:31 -0500
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:8569 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232959AbhKXH6b (ORCPT
+        id S240109AbhKXH71 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Nov 2021 02:59:27 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:41336 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232959AbhKXH71 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Nov 2021 02:58:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1637740522; x=1669276522;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=HLqFzv6cSMM7EHnavttffNHIaN8wJa94zAwkS/w/bbk=;
-  b=NtRqbtYp0gaoAgQ820uktyMptOZcZRZNd2t1OSaGbg6and58U+R03a9Q
-   mpxgfY+kc6mfZ9P8ZrddRxDzo2YVN1m7VCpPb6qt8lvrhxkVvBrPKxG+m
-   dr/iQNEFS/F6sNGZu3XMfxI0CgTm8UnKaLcsX5VfnGHKLmnS4exA75MFb
-   s=;
-Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
-  by alexa-out.qualcomm.com with ESMTP; 23 Nov 2021 23:55:22 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2021 23:55:21 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 23 Nov 2021 23:55:21 -0800
-Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Tue, 23 Nov
- 2021 23:55:19 -0800
-Message-ID: <5dc61605-2ada-3c0b-64de-ea16ad31efbc@quicinc.com>
-Date:   Wed, 24 Nov 2021 15:55:17 +0800
+        Wed, 24 Nov 2021 02:59:27 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1637740577; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=5t9tIvY11Eq0fURiPaPrJCYPJKTVN17WJRu+6+PU/Aw=; b=jWHfLiQzi6BgiILsznHRj8jakphGDHbJsRW99T8DPu+GaUU+b0tOTTgD1mKDb6iPKm/cAvSk
+ csFrFMCGGhwGI4EbzlYY1nizGkI7WVdF0eg4i/PZxQl7jYkp3WuVZcxteoL2naGl2SHkAjT2
+ HoAmbBL1KxpzvnzAkrWYAwTCh1I=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-east-1.postgun.com with SMTP id
+ 619df02186d0e4d888642680 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 24 Nov 2021 07:56:17
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id AB5A1C43616; Wed, 24 Nov 2021 07:56:16 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 56540C4338F;
+        Wed, 24 Nov 2021 07:56:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 56540C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     P Praneesh <ppranees@codeaurora.org>, <ath11k@lists.infradead.org>,
+        <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>,
+        "Karthikeyan Periyasamy" <periyasa@codeaurora.org>
+Subject: Re: [PATCH v3 2/3] ath11k: Refactor update channel list function
+References: <1634906227-22028-1-git-send-email-ppranees@codeaurora.org>
+        <1634906227-22028-3-git-send-email-ppranees@codeaurora.org>
+        <0fb4fec3-4fd0-6e92-b1d9-5bffc0958e97@quicinc.com>
+        <87pmqq6lyx.fsf@codeaurora.org>
+        <5929130a-7824-acd1-0182-da8fa304c576@quicinc.com>
+Date:   Wed, 24 Nov 2021 09:56:08 +0200
+In-Reply-To: <5929130a-7824-acd1-0182-da8fa304c576@quicinc.com> (Wen Gong's
+        message of "Wed, 24 Nov 2021 15:48:03 +0800")
+Message-ID: <87ee766l7r.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] ath10k: Clean the HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE flag
-Content-Language: en-US
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Fabio Estevam <festevam@gmail.com>
-CC:     Fabio Estevam <festevam@denx.de>, <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        <erik.stromdahl@gmail.com>, <alagusankar@silex-india.com>
-References: <20210915160422.2839595-1-festevam@denx.de>
- <CAOMZO5AYUxJg4bWudT3L1P=qNR2UBcNR1zmjCf5O9_ExyPw4ww@mail.gmail.com>
- <CAOMZO5AJ8q06YTHP=p84nJnKOYU+=MKVqJ3qz3XnUGcAg0xo=g@mail.gmail.com>
- <87ilwi6lo4.fsf@codeaurora.org>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <87ilwi6lo4.fsf@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/24/2021 3:46 PM, Kalle Valo wrote:
-> Fabio Estevam <festevam@gmail.com> writes:
->
->> Hi Kalle,
+Wen Gong <quic_wgong@quicinc.com> writes:
+
+> On 11/24/2021 3:39 PM, Kalle Valo wrote:
+>> Wen Gong <quic_wgong@quicinc.com> writes:
 >>
->> On Mon, Nov 15, 2021 at 3:06 PM Fabio Estevam <festevam@gmail.com> wrote:
->>> Hi Kalle,
+>>> On 10/22/2021 8:37 PM, P Praneesh wrote:
 >>>
->>> On Wed, Sep 15, 2021 at 1:05 PM Fabio Estevam <festevam@denx.de> wrote:
->>>> On an imx6dl-pico-pi board with a QCA9377 SDIO chip, the following
->>>> errors are observed when the board works in STA mode:
->>>>
->>>> Simply running "ssh user@192.168.0.1" causes:
->>>>
->>>> [   55.824159] ath10k_sdio mmc1:0001:1: failed to transmit packet, dropping: -12
->>>> [   55.832169] ath10k_sdio mmc1:0001:1: failed to submit frame: -12
->>>> [   55.838529] ath10k_sdio mmc1:0001:1: failed to push frame: -12
->>>> [   55.905863] ath10k_sdio mmc1:0001:1: failed to transmit packet, dropping: -12
->>>> [   55.913650] ath10k_sdio mmc1:0001:1: failed to submit frame: -12
->>>> [   55.919887] ath10k_sdio mmc1:0001:1: failed to push frame: -12
->>>>
->>>> and it is not possible to connect via ssh to the other machine.
->>>>
->>>> One user inspected the size of frames on Wireshark and reported
->>>> the followig:
->>>>
->>>> "I was able to narrow the issue down to the mtu. If I set the mtu for
->>>> the wlan0 device to 1486 instead of 1500, the issue does not happen.
->>>>
->>>> The size of frames that I see on Wireshark is exactly 1500 after
->>>> setting it to 1486."
->>>>
->>>> Clearing the HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE avoids the problem and
->>>> the ssh command works successfully after that.
->>>>
->>>> Tested with QCA9377 SDIO with firmware WLAN.TF.1.1.1-00061-QCATFSWPZ-1.
->>>>
->>>> Fixes: 2f918ea98606 ("ath10k: enable alt data of TX path for sdio")
->>>> Signed-off-by: Fabio Estevam <festevam@denx.de>
->>> A gentle ping on this one.
->> Any comments, please? Without this fix, we can not log via ssh to other machine.
-> I don't have much time for ath10k nowadays, so expect long delays in
-> reviews.
+>>> ...
+>>>
+>>>> ---
+>>>> ...
+>>>> -			ch->maxpower = channel->max_power * 2;
+>>>> -			ch->maxregpower = channel->max_reg_power * 2;
+>>>> -			ch->antennamax = channel->max_antenna_gain * 2;
+>>>> ...
+>>>>    +int ath11k_wmi_update_scan_chan_list(struct ath11k *ar,
+>>>> +				     struct scan_req_params *arg)
+>>>> ...
+>>>> +			ch->maxpower = channel->max_power;
+>>>> +			ch->maxregpower = channel->max_reg_power;
+>>>> +			ch->antennamax = channel->max_antenna_gain;
+>>>> +
+>>>> ...
+>>> I see it also have another patch to remove the "*2" for power.
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?id=9212c1b9e80a869e732769a4fe7f82d392b219be
+>>>
+>>> ath11k: send proper txpower and maxregpower values to firmware.
+>>>
+>>> so are you the same reason to remove "*2" ?
+>> I'm not quite getting what you are saying, can you elaborate more? Did
+>> this patch break something?
 >
-> I'm worried that this breaks QCA6174 SDIO support. Wen, what do you
-> think of this? Is this because of differences between firmware versions
-> or what?
+> Oh. Not see break anything.
+>
+> I just want to know why remove the "*2". Did you see any issue if NOT
+> remove "*2"?
 
-it is added by below commit, if disable it, will significant effect 
-performance.
+All I know is that commit 9212c1b9e80a ("ath11k: send proper txpower and
+maxregpower values to firmware") mentions about cca getting stuck:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/drivers/net/wireless/ath/ath11k?id=2f918ea98606100f3a6d47db7ff7c200838ec4f3
+ath11k: send proper txpower and maxregpower values to firmware
 
-ath10k: enable alt data of TX path for sdio
+Set proper values for max_regpower, max_power, max_antenna_gain as it
+is because firmware will convert power values to 0.5dbm steps by
+multiplying it with 2.
 
-The default credit size is 1792 bytes, but the IP mtu is 1500 bytes,
-then it has about 290 bytes's waste for each data packet on sdio
-transfer path for TX bundle, it will reduce the transmission utilization
-ratio for data packet.
+If txpower is not set, it will lead to cca stuck resulting in latency
+issues for QCN9074.
 
-This patch enable the small credit size in firmware, firmware will use
-the new credit size 1556 bytes, it will increase the transmission
-utilization ratio for data packet on TX patch. It results in significant
-performance improvement on TX path.
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.4.0.1-01386-QCAHKSWPL_SILICONZ-1
 
-This patch only effect sdio chip, it will not effect PCI, SNOC etc.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Tested with QCA6174 SDIO with firmware
-WLAN.RMH.4.4.1-00017-QCARMSWP-1.
-
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200410061400.14231-3-wgong@codeaurora.org
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
