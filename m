@@ -2,83 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B05845B260
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Nov 2021 03:59:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD72345B29F
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Nov 2021 04:26:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240791AbhKXDCn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 Nov 2021 22:02:43 -0500
-Received: from mail-io1-f50.google.com ([209.85.166.50]:43752 "EHLO
-        mail-io1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231450AbhKXDCj (ORCPT
+        id S240484AbhKXD3x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 Nov 2021 22:29:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43164 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229959AbhKXD3w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 Nov 2021 22:02:39 -0500
-Received: by mail-io1-f50.google.com with SMTP id z26so1294620iod.10;
-        Tue, 23 Nov 2021 18:59:30 -0800 (PST)
+        Tue, 23 Nov 2021 22:29:52 -0500
+Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com [IPv6:2607:f8b0:4864:20::930])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C596BC061574
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Nov 2021 19:26:43 -0800 (PST)
+Received: by mail-ua1-x930.google.com with SMTP id az37so2097273uab.13
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Nov 2021 19:26:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=klGilqjUZU6ZdsmEtW9xvGC+xGkfpuphyvZBpG8MLiQ=;
+        b=AWAjlDSuB3LCOnhqmu/VryPoQeaK3mhGhREEWvvfsTc5j1YNhwFkT+8Pgsqqp45uTa
+         yh0+BBAuWZLNVr364YPujdIQtelYFg9X25eWoKA7Pki+SX8a/N+RxylRlPwwUYIqP+D2
+         X9QfgeXiZmGGrZAPGrzB4dkSPwuTfD4y7Wea5mtxa+um2c1csyAtyApGT5blfYDZxUYO
+         QgtWStWY646NC+hTa90YVYTzPsmBQyrfCLGooVUV5QoKLEBhSZ/LqRGdfdnI8eKYQczM
+         iD6cWj3AVbKZQ9qarzZ6KFPGaqFgTUgQwc9WnqLONQQIJsInb+vbouHaDnKufVY0h40x
+         EjOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=hUyB8SMEZEe+wyhi5A4ravu9airL4cafjZQp9SXQVNw=;
-        b=IqVgIVYvlhWY18qCIn+Bzd4n2eHPsFKYqXXm4qnR1hzioaLNOpiMoPxvC7cFOaIWe8
-         APdpIlHrcwmVX+4MWlmecZ0n3wDXBBbC9qDC7peX7lqMGN3+RlCkQdh5Ye+Nrm7rdNcz
-         AoLdUO5oKLIDZSkeNeFzP+7czb0RIL7F1MXhw5h8YHMYPzZSuIkruvrgApb8BQazmyhd
-         7CiYwSEFXexMmPTfShx/cy+UQLQJI22Rsrway2ssWNllC9U+wdeVna0u9phoDayYEx5+
-         D7Pa/8vLi6zK8k+TsvVm/XVo/XIqZP0eZvs5eI1sVmmU5L72uawwXz9ilHkpqlwKLEQc
-         D5Jw==
-X-Gm-Message-State: AOAM531owkokzbNFqydZIZgBoqBHhafFKCKzcI2Cs8VdyQvTbTKl2va1
-        gXSYl8GSNtz1zo4VnChGdMR5/wpoIA==
-X-Google-Smtp-Source: ABdhPJxeQsgBpDAOtsETWCseXbp1sz848Ix20LrL1yEptsj4UjtqyKezE8HZZzhXVSIc9seyIhVb5g==
-X-Received: by 2002:a02:8663:: with SMTP id e90mr11391156jai.14.1637722769739;
-        Tue, 23 Nov 2021 18:59:29 -0800 (PST)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id ay13sm9089587iob.37.2021.11.23.18.59.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Nov 2021 18:59:29 -0800 (PST)
-Received: (nullmailer pid 888172 invoked by uid 1000);
-        Wed, 24 Nov 2021 02:59:21 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org
-In-Reply-To: <1637693434-15462-20-git-send-email-quic_mpubbise@quicinc.com>
-References: <1637693434-15462-1-git-send-email-quic_mpubbise@quicinc.com> <1637693434-15462-20-git-send-email-quic_mpubbise@quicinc.com>
-Subject: Re: [PATCH 19/19] dt: bindings: net: add bindings of WCN6750 for ath11k
-Date:   Tue, 23 Nov 2021 19:59:21 -0700
-Message-Id: <1637722761.019285.888171.nullmailer@robh.at.kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=klGilqjUZU6ZdsmEtW9xvGC+xGkfpuphyvZBpG8MLiQ=;
+        b=FTcZU5wap9EoA2psUdsP2t8P3cVRhkhzSSzY+zhns5KQMHWB8mH0VlmriYE40tyI5o
+         pThlVX9U+aR6NVIw3B63M4pvSZAEr5UZ9qVk1akXeo390cBsEN3XFlmB+gv06/y925WN
+         nHv68UaEte/kDsMg/B+jOod9+9ThA1vGRKfbvUGrL+aEWnTXCe2iwDN6+PBAAFeY7rUO
+         RTA/dSQgy32kRbDI1ZR6cOjEvQa7f7tZzEaT17lhet6wUxoLeBoVDKqWhHuTJKXjMMxW
+         XWwQn3goS0Kt4kW5F5Q9K9FDfvIgp35Fx/LlWGzJBrf8DajGbziHMiOk/brSNH6C4trv
+         XkVg==
+X-Gm-Message-State: AOAM532v0V9xWpkJ3LlF/mJqX9tVIWpH6fv3LX5LvWxb/PkiRe54uajO
+        sr0s3Pa87qBx8NdgMWixoGdzD7f2nQd/5XnDsdY=
+X-Google-Smtp-Source: ABdhPJz7DGhq8oqHGaOwKJW8EzBZqDhs2Y7wDuLhPhPq/CDuRyyctNW0yvUP4FA+VeBEUydRMAmcdhpjteTQupJhDa0=
+X-Received: by 2002:ab0:6eca:: with SMTP id c10mr4698623uav.118.1637724402914;
+ Tue, 23 Nov 2021 19:26:42 -0800 (PST)
+MIME-Version: 1.0
+References: <20210915160422.2839595-1-festevam@denx.de> <CAOMZO5AYUxJg4bWudT3L1P=qNR2UBcNR1zmjCf5O9_ExyPw4ww@mail.gmail.com>
+In-Reply-To: <CAOMZO5AYUxJg4bWudT3L1P=qNR2UBcNR1zmjCf5O9_ExyPw4ww@mail.gmail.com>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Wed, 24 Nov 2021 00:26:32 -0300
+Message-ID: <CAOMZO5AJ8q06YTHP=p84nJnKOYU+=MKVqJ3qz3XnUGcAg0xo=g@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Clean the HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE flag
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Fabio Estevam <festevam@denx.de>, wgong@codeaurora.org,
+        ath10k@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        erik.stromdahl@gmail.com, alagusankar@silex-india.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 24 Nov 2021 00:20:34 +0530, Manikanta Pubbisetty wrote:
-> Add WCN6750 wireless driver support, its based on ath11k driver.
-> 
-> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-> ---
->  .../bindings/net/wireless/qcom,ath11k.yaml         | 333 ++++++++++++++-------
->  1 file changed, 225 insertions(+), 108 deletions(-)
-> 
+Hi Kalle,
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+On Mon, Nov 15, 2021 at 3:06 PM Fabio Estevam <festevam@gmail.com> wrote:
+>
+> Hi Kalle,
+>
+> On Wed, Sep 15, 2021 at 1:05 PM Fabio Estevam <festevam@denx.de> wrote:
+> >
+> > On an imx6dl-pico-pi board with a QCA9377 SDIO chip, the following
+> > errors are observed when the board works in STA mode:
+> >
+> > Simply running "ssh user@192.168.0.1" causes:
+> >
+> > [   55.824159] ath10k_sdio mmc1:0001:1: failed to transmit packet, dropping: -12
+> > [   55.832169] ath10k_sdio mmc1:0001:1: failed to submit frame: -12
+> > [   55.838529] ath10k_sdio mmc1:0001:1: failed to push frame: -12
+> > [   55.905863] ath10k_sdio mmc1:0001:1: failed to transmit packet, dropping: -12
+> > [   55.913650] ath10k_sdio mmc1:0001:1: failed to submit frame: -12
+> > [   55.919887] ath10k_sdio mmc1:0001:1: failed to push frame: -12
+> >
+> > and it is not possible to connect via ssh to the other machine.
+> >
+> > One user inspected the size of frames on Wireshark and reported
+> > the followig:
+> >
+> > "I was able to narrow the issue down to the mtu. If I set the mtu for
+> > the wlan0 device to 1486 instead of 1500, the issue does not happen.
+> >
+> > The size of frames that I see on Wireshark is exactly 1500 after
+> > setting it to 1486."
+> >
+> > Clearing the HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE avoids the problem and
+> > the ssh command works successfully after that.
+> >
+> > Tested with QCA9377 SDIO with firmware WLAN.TF.1.1.1-00061-QCATFSWPZ-1.
+> >
+> > Fixes: 2f918ea98606 ("ath10k: enable alt data of TX path for sdio")
+> > Signed-off-by: Fabio Estevam <festevam@denx.de>
+>
+> A gentle ping on this one.
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml:57:9: [warning] wrong indentation: expected 6 but found 8 (indentation)
-
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dt.yaml:0:0: /example-1/remoteproc@8a00000: failed to match any schema with compatible: ['qcom,sc7280-wpss-pil']
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/1558747
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Any comments, please? Without this fix, we can not log via ssh to other machine.
