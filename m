@@ -2,139 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BE5845D9E3
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Nov 2021 13:18:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB4145DE4F
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Nov 2021 17:07:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239350AbhKYMVO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Nov 2021 07:21:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57768 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238867AbhKYMUS (ORCPT
+        id S234545AbhKYQK6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Nov 2021 11:10:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:24230 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1345575AbhKYQI5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Nov 2021 07:20:18 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C719C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Nov 2021 04:17:07 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id w1so24873830edc.6
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Nov 2021 04:17:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=4o3C4Sk+V1UppQCjOFwVyndxtOCFD/AG0RzxBZttkCw=;
-        b=h4jd43KmnCCXLn/F/DJfRz5oW9KMfPJ5LH0eNzPVZdt1sxlWOmsCuUZTdC6Y0+aY6h
-         cF1wdKpLNvUytKvEaD3Pc2saNvIb1LEYtlG9gjlZX3+LAzMXSqEcRPKodRCwe/6Yw7z1
-         VU6j53CKANzff8uilDjUui5MI6rUNYy5YVi8dbBLgFSWjYL+9ikteaML0Oppx5GrbojE
-         DZDTEwtKUWTGLT69ji0SE5OSIKyUoFjOpSNOMVylUlqMDEANIg8i/PLWmycTR9zm8Re8
-         49O3SPQz+EpHzSDmEZ7OSfvkOLalJJHRqn+i6BjsmZ+Zt4CtAIJIZG/UWrlu8oBYoT5v
-         /OxA==
+        Thu, 25 Nov 2021 11:08:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1637856345;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=kQAVBmCIUXbsnvYlnlq+/aIWUaqTO8/mr8RJ7oEZ8Rs=;
+        b=faR4lItzved3Aob456XgxdfKohELJqNIq/+qPIsF954MiNp7hH31iqwJwEM6DZgxCg+n6D
+        rT9Z2N1S/x7LL9EhbpEArchNpAWdjSktfJVs1s0Cuy5t2J1PYW7H6bSW0FZ4OTXOtBiDae
+        Ka2NRBZjTyHrPIQ6GCH3jQwK6ZHB9aY=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-14-Hzu8ogE6NR-C-WGKvcuLKg-1; Thu, 25 Nov 2021 11:05:44 -0500
+X-MC-Unique: Hzu8ogE6NR-C-WGKvcuLKg-1
+Received: by mail-ed1-f71.google.com with SMTP id m17-20020aa7d351000000b003e7c0bc8523so5851922edr.1
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Nov 2021 08:05:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=4o3C4Sk+V1UppQCjOFwVyndxtOCFD/AG0RzxBZttkCw=;
-        b=XyaatJg0I+fNZhVJoC9gbov8WpgSyWAqeWvbHDzbyniUJTARypAKlCRjYB1d0bq5/6
-         ZsJ4KmkzPal/35JCbnNPWioFH2p9NsUR4h+RnPaLqKXklU8GI6wg5okgUmEuAuDE8F2k
-         etn36hLlUQAR+hFICXtwbPptQE5oa9Zb3PVAyxiHCSexwYWZyMDLtKKWk271HQhYfIeq
-         ykNIpXnHJosoOx2oq3XL9U2aSIg6Uvs4u94//FSMh+c7t2iO2uS4nVeiRvU8uoq93zSN
-         QuBYBDqisghiCPKn83bcDKdkQ/Md9kOX+Ul9eNsydAWesOB7EFVa0j2glPa4mvdfyVo7
-         ybeQ==
-X-Gm-Message-State: AOAM532GWSH3/OxEVc/LQ8Ry1NGbx7YkBtK3nClA9okQR+vrykftQ6Cd
-        LkISllYWigcg3F3qrC/axj1dq2TnG+UaiQ==
-X-Google-Smtp-Source: ABdhPJxxKg7HKXTYxebSKqeEAGow2UsA+LYlGj9hbplNknK0TS9UmSOy1uxXUsRvVz+qGm5oo56Jqg==
-X-Received: by 2002:a17:907:3daa:: with SMTP id he42mr31238020ejc.160.1637842625736;
-        Thu, 25 Nov 2021 04:17:05 -0800 (PST)
-Received: from build-server.fritz.box (p200300c56f256b00880d3dfffedefb04.dip0.t-ipconnect.de. [2003:c5:6f25:6b00:880d:3dff:fede:fb04])
-        by smtp.gmail.com with ESMTPSA id b14sm1778853edw.6.2021.11.25.04.17.04
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=kQAVBmCIUXbsnvYlnlq+/aIWUaqTO8/mr8RJ7oEZ8Rs=;
+        b=TpsPro9Xjd6jCwv+BQBefkOhjzqaBcYXe4TvsyW1T9sPc+H72Q9ABhopPE7WsQbrOf
+         e1FF2jwQROqqS6EXeAFSfJ5Z1H/4RiWNvQcL13RyhCe1qEAyLUJQmfAMmK3S8A+4j5oK
+         OHAemHNADfnrSQO3oELHfl04qj+qSVURf2q6sUKCSy4auyWPzOTocEq9KkqsOVtx94xc
+         3+reAohkdfQ9+lzG3z9WhPNvbiyCMjeKECfrsRUlImS/+r/9KYMcGjUp08XO57QYTDlR
+         v1MJrpRuhyqoj9TZUjLIbUdjg6iKA8cj5MIx50FEyQ40uPetiOmFiwjwQuHfak2KMc4s
+         vJqw==
+X-Gm-Message-State: AOAM530zYHG07jQDa/cQrxempHT5LrTbMnVKW3TVaBnwwZyQatF6NfEQ
+        PJ8UjSAfAIMkZCaA9DYACqYbXGuwFK+RQN18SXyU90jw9RVJwhFP7oyBCHLFy3MoTXE1gKmZ8EL
+        i8ynL3koIOKjxXkmio5QQ8diYyW8=
+X-Received: by 2002:a17:906:398:: with SMTP id b24mr32522548eja.49.1637856343347;
+        Thu, 25 Nov 2021 08:05:43 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyJBTTNiYr8s6BLp8wYbM9XTJNmYGSwdJlYdB9t+x6iF0QE5GiFjXm4PKwWdHp5IuaF83OSbg==
+X-Received: by 2002:a17:906:398:: with SMTP id b24mr32522490eja.49.1637856342990;
+        Thu, 25 Nov 2021 08:05:42 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id lv19sm1961812ejb.54.2021.11.25.08.05.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Nov 2021 04:17:05 -0800 (PST)
-From:   Jonas Jelonek <jelonek.jonas@gmail.com>
-To:     linux-wireless@vger.kernel.org
+        Thu, 25 Nov 2021 08:05:42 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 441DF1802A0; Thu, 25 Nov 2021 17:05:41 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Jonas Jelonek <jelonek.jonas@gmail.com>,
+        linux-wireless@vger.kernel.org
 Cc:     kvalo@codeaurora.org, nbd@nbd.name,
         Jonas Jelonek <jelonek.jonas@gmail.com>,
         Thomas Huehn <thomas.huehn@hs-nordhausen.de>
-Subject: [PATCH] ath9k: switch to rate table based lookup
-Date:   Thu, 25 Nov 2021 13:16:52 +0100
-Message-Id: <20211125121652.6073-1-jelonek.jonas@gmail.com>
-X-Mailer: git-send-email 2.30.2
+Subject: Re: [PATCH] ath9k: switch to rate table based lookup
+In-Reply-To: <20211125121652.6073-1-jelonek.jonas@gmail.com>
+References: <20211125121652.6073-1-jelonek.jonas@gmail.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Thu, 25 Nov 2021 17:05:41 +0100
+Message-ID: <878rxcb4q2.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch changes mac80211 rate control for the ath9k driver.
-The rate lookup per packet is changed from legacy usage of
-ieee80211_get_tx_rates() to the new rate table based lookup
-in struct ieee80211_sta.rates.
+Jonas Jelonek <jelonek.jonas@gmail.com> writes:
 
-Co-developed-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-Co-developed-by: Thomas Huehn <thomas.huehn@hs-nordhausen.de>
-Signed-off-by: Thomas Huehn <thomas.huehn@hs-nordhausen.de>
----
- drivers/net/wireless/ath/ath9k/xmit.c | 45 +++++++++++++++++++++++++--
- 1 file changed, 43 insertions(+), 2 deletions(-)
+> This patch changes mac80211 rate control for the ath9k driver.
+> The rate lookup per packet is changed from legacy usage of
+> ieee80211_get_tx_rates() to the new rate table based lookup
+> in struct ieee80211_sta.rates.
 
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index 5691bd6eb82c..d0caf1de2bde 100644
---- a/drivers/net/wireless/ath/ath9k/xmit.c
-+++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -154,11 +154,52 @@ static void ath_send_bar(struct ath_atx_tid *tid, u16 seqno)
- 			   seqno << IEEE80211_SEQ_SEQ_SHIFT);
- }
- 
-+static bool ath_merge_ratetbl(struct ieee80211_sta *sta, struct ath_buf *bf,
-+			      struct ieee80211_tx_info *tx_info)
-+{
-+	struct ieee80211_sta_rates *ratetbl;
-+	u8 i;
-+
-+	if (!sta)
-+		return false;
-+
-+	ratetbl = rcu_dereference(sta->rates);
-+	if (!ratetbl)
-+		return false;
-+
-+	if (tx_info->control.rates[0].idx < 0 ||
-+	    tx_info->control.rates[0].count == 0)
-+	{
-+		i = 0;
-+	} else {
-+		bf->rates[0] = tx_info->control.rates[0];
-+		i = 1;
-+	}
-+
-+	for ( ; i < IEEE80211_TX_MAX_RATES; i++) {
-+		bf->rates[i].idx = ratetbl->rate[i].idx;
-+		bf->rates[i].flags = ratetbl->rate[i].flags;
-+		if (tx_info->control.use_rts)
-+			bf->rates[i].count = ratetbl->rate[i].count_rts;
-+		else if (tx_info->control.use_cts_prot)
-+			bf->rates[i].count = ratetbl->rate[i].count_cts;
-+		else
-+			bf->rates[i].count = ratetbl->rate[i].count;
-+	}
-+
-+	return true;
-+}
-+
- static void ath_set_rates(struct ieee80211_vif *vif, struct ieee80211_sta *sta,
- 			  struct ath_buf *bf)
- {
--	ieee80211_get_tx_rates(vif, sta, bf->bf_mpdu, bf->rates,
--			       ARRAY_SIZE(bf->rates));
-+	struct ieee80211_tx_info *tx_info;
-+
-+	tx_info = IEEE80211_SKB_CB(bf->bf_mpdu);
-+
-+	if (!ath_merge_ratetbl(sta, bf, tx_info))
-+		ieee80211_get_tx_rates(vif, sta, bf->bf_mpdu, bf->rates,
-+				       ARRAY_SIZE(bf->rates));
- }
- 
- static void ath_txq_skb_done(struct ath_softc *sc, struct ath_txq *txq,
--- 
-2.30.2
+What's the practical implication of this? Performance benefits, better
+rates selected, or what? Got any benchmark numbers?
+
+> Co-developed-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+> Co-developed-by: Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+> Signed-off-by: Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+
+You don't generally need a co-developed-by for yourself, and your S-o-b
+should go at the end when you're the submitter...
+
+-Toke
 
