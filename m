@@ -2,41 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 107C845D8A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Nov 2021 12:03:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EA2C45D8B5
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Nov 2021 12:03:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238680AbhKYLGV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Nov 2021 06:06:21 -0500
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:14303 "EHLO
+        id S239255AbhKYLGg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Nov 2021 06:06:36 -0500
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:26484 "EHLO
         alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344381AbhKYLES (ORCPT
+        with ESMTP id S1350217AbhKYLEd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Nov 2021 06:04:18 -0500
+        Thu, 25 Nov 2021 06:04:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1637838067; x=1669374067;
+  t=1637838083; x=1669374083;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=xSmKiNzx+YljSq6QsLsppoSM/bpVlO41k94i3j7v6iA=;
-  b=J+2pqpxpl1cK9oRIWx71iq0PnkFCVmFe0sumqAoz3JWo67+W+SGVWJJm
-   uNbPoaIDXgaQJ4z4MpkxSjE+vn3QNVcf2K3WqpWVHuVxx0Fmtl0PEw+YG
-   RoUHLf2mHlqZbtuzqsTXUn/1pER5YvmN2QroR7CBirD9KZ8m9S9HDkfv2
-   M=;
-Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
-  by alexa-out.qualcomm.com with ESMTP; 25 Nov 2021 03:01:07 -0800
+  bh=+k9s9kKikdZSyyorrt8K7iu8JdtYihS25/Lkkr4MmeM=;
+  b=OMJX+LACFvvE7AwyxeiNZ16RZqQNUlUm6yAmCX+hB2PAd37BoVQYvZns
+   qsQEX7t9ZbJQBZ4jiZDFHyet3i1G3ZA/8CaCI+DpmkpTLwljdqO39JxMx
+   V4C9Tpu5xkyrY4hEYVe6fLmIbtmn8tGfBHoOKDtUo6nkX730m4fPiI6Me
+   8=;
+Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
+  by alexa-out.qualcomm.com with ESMTP; 25 Nov 2021 03:01:22 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2021 03:01:07 -0800
+  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2021 03:01:22 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Thu, 25 Nov 2021 03:01:06 -0800
+ 15.2.922.19; Thu, 25 Nov 2021 03:01:22 -0800
 Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Thu, 25 Nov
- 2021 03:00:28 -0800
-Message-ID: <7488dae3-d605-f407-2cb8-8cdbbbfad9ea@quicinc.com>
-Date:   Thu, 25 Nov 2021 19:00:26 +0800
+ 2021 03:01:20 -0800
+Message-ID: <6cd986ed-8fa7-895e-2d9f-67886f9f8083@quicinc.com>
+Date:   Thu, 25 Nov 2021 19:01:18 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.3.0
@@ -58,8 +58,10 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I am afraid you hit the issue same with below patch, they looks similar, 
-but I am not sure it is same root cause.
+Hi Kalle,
+
+I am afraid you hit same issue of below patch, they looks similar, but I 
+am not sure they are the same root cause.
 
 https://patchwork.kernel.org/project/linux-wireless/patch/1608617166-17180-1-git-send-email-wgong@codeaurora.org/
 
