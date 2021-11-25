@@ -2,116 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81FC445CD97
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Nov 2021 20:59:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 078FB45D289
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Nov 2021 02:47:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234835AbhKXUCO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Nov 2021 15:02:14 -0500
-Received: from mga06.intel.com ([134.134.136.31]:7536 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236387AbhKXUCN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Nov 2021 15:02:13 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10178"; a="296168193"
-X-IronPort-AV: E=Sophos;i="5.87,261,1631602800"; 
-   d="scan'208";a="296168193"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2021 11:59:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,261,1631602800"; 
-   d="scan'208";a="674983695"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
-  by orsmga005.jf.intel.com with ESMTP; 24 Nov 2021 11:59:00 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mpyPz-0005GQ-SZ; Wed, 24 Nov 2021 19:58:59 +0000
-Date:   Thu, 25 Nov 2021 03:58:08 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name
-Cc:     kbuild-all@lists.01.org, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com
-Subject: Re: [PATCH] mt76: mt7915: introduce SAR support
-Message-ID: <202111250358.9Q5qPltH-lkp@intel.com>
-References: <ed704f40d9681041d330b1c55dcaf4b10f50c331.1637684612.git.lorenzo@kernel.org>
+        id S1348013AbhKYBuS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Nov 2021 20:50:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60226 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1352764AbhKYBsR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Nov 2021 20:48:17 -0500
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40436C07E5DB;
+        Wed, 24 Nov 2021 16:57:01 -0800 (PST)
+Received: by mail-pf1-x432.google.com with SMTP id z6so4243062pfe.7;
+        Wed, 24 Nov 2021 16:57:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xR2NYEIoPjbsCHjQ06YGxVuRr3wcloc+LodiEzZnzbE=;
+        b=BJ/vYCJVyBLPEbD48YT0t8joXeV3lz2LyX3dgnxGQ8QTUQV4nIUBZgmsb9ZIggmk8P
+         llUhJI7Nx90y5NALeCe1LgLbNz7vCj5K4dvDOu5DrAhkmI+qXGj/y8+106Bgx3mG39qL
+         532JPrXW0FFyau83M9hWz5ccvYqvldDQEBXaYeL3Lpr9iHSjoP4CMrYW5ftvOevb2G/2
+         wuSQlT/mDWSIm9s9KMjPuX0xuLNEuLK/CjyS2Tcf6cJ2F9blREb5lMxiVS/Xq8JUQ0uC
+         Zq8skAhHlcngT0ggs2IO0Ro0Q1wNHLrRyELO7yjWdga4fwmoDQU7q3rtvPhAbMc3cch+
+         HnPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xR2NYEIoPjbsCHjQ06YGxVuRr3wcloc+LodiEzZnzbE=;
+        b=Mh1C6CzsD88wzt8zngiETPb8bCtIMFPk+S04WAu9eLj3bEWXwycntrANU4san3r9Rw
+         FnZCgSr3FKoQUxKsk5aMZx7cnVba6FO4qo9GAiFWiE4Igyi9v0D7+iBCvbMTODMNv19x
+         Z8TcoxWldNXYX8g0gNRZl45tT0v+ZVE4y+3Xbng2dj/vQgsAvtEylSUi+uKqBfJLQcBm
+         ENyR9l3cQ/KwVd0r8WcjNrPOtsHwmswblwCYcfTRq3RIsU2I+GlduF3sDU3XKPiBx9cD
+         3Px8cU7NRn9IdMFiA2yDendTJtAkm8j0Wf/ek7WXadSko2uBznKbaD0+myj8hjLsj2N1
+         pqNA==
+X-Gm-Message-State: AOAM532s2MasFs7d34nW+V78XH6T2o/tIIywnfxQ3FujFC6P8mVYgNHt
+        jtTgs1JW38hS9AWCsAe3+8gt1cxwnQcezA==
+X-Google-Smtp-Source: ABdhPJzlZ0CVi6RCACpQrBBvvK0WH7o6F5mXb5hR2pWYL67OLlJArtTY++riobJtb8J7RVqsetWwJQ==
+X-Received: by 2002:a62:7803:0:b0:494:64ef:7bd7 with SMTP id t3-20020a627803000000b0049464ef7bd7mr10435904pfc.85.1637801820789;
+        Wed, 24 Nov 2021 16:57:00 -0800 (PST)
+Received: from debian11-dev-61.localdomain (192.243.120.180.16clouds.com. [192.243.120.180])
+        by smtp.gmail.com with ESMTPSA id e10sm940557pfv.140.2021.11.24.16.56.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Nov 2021 16:57:00 -0800 (PST)
+From:   davidcomponentone@gmail.com
+X-Google-Original-From: yang.guang5@zte.com.cn
+To:     pkshih@realtek.com
+Cc:     davidcomponentone@gmail.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yang Guang <yang.guang5@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] rtw89: remove unneeded conversion to bool
+Date:   Thu, 25 Nov 2021 08:56:46 +0800
+Message-Id: <d9492bb9bced106f20006edb49200926184c3763.1637739090.git.yang.guang5@zte.com.cn>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ed704f40d9681041d330b1c55dcaf4b10f50c331.1637684612.git.lorenzo@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Lorenzo,
+From: Yang Guang <yang.guang5@zte.com.cn>
 
-I love your patch! Yet something to improve:
+The coccinelle report
+./drivers/net/wireless/realtek/rtw89/debug.c:817:21-26:
+WARNING: conversion to bool not needed here
+./drivers/net/wireless/realtek/rtw89/mac.c:3698:49-54:
+WARNING: conversion to bool not needed here
+./drivers/net/wireless/realtek/rtw89/phy.c:1770:49-54:
+WARNING: conversion to bool not needed here
+./drivers/net/wireless/realtek/rtw89/rtw8852a.c:1056:41-46:
+WARNING: conversion to bool not needed here
 
-[auto build test ERROR on kvalo-wireless-drivers-next/master]
-[also build test ERROR on kvalo-wireless-drivers/master v5.16-rc2 next-20211124]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Relational and logical operators evaluate to bool,
+explicit conversion is overly verbose and unneeded.
 
-url:    https://github.com/0day-ci/linux/commits/Lorenzo-Bianconi/mt76-mt7915-introduce-SAR-support/20211124-002511
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-config: i386-allyesconfig (https://download.01.org/0day-ci/archive/20211125/202111250358.9Q5qPltH-lkp@intel.com/config)
-compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/0day-ci/linux/commit/8f018463c8934b4706320982f195e3779ef4b25a
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Lorenzo-Bianconi/mt76-mt7915-introduce-SAR-support/20211124-002511
-        git checkout 8f018463c8934b4706320982f195e3779ef4b25a
-        # save the config file to linux build tree
-        make W=1 ARCH=i386 
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   drivers/net/wireless/mediatek/mt76/mt7915/main.c: In function 'mt7915_set_sar_specs':
->> drivers/net/wireless/mediatek/mt76/mt7915/main.c:439:8: error: implicit declaration of function 'mt76_init_sar_power'; did you mean 'mt76_get_txpower'? [-Werror=implicit-function-declaration]
-     439 |  err = mt76_init_sar_power(hw, sar);
-         |        ^~~~~~~~~~~~~~~~~~~
-         |        mt76_get_txpower
-   cc1: some warnings being treated as errors
---
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:2392:5: warning: no previous prototype for 'mt7915_mcu_set_fixed_rate' [-Wmissing-prototypes]
-    2392 | int mt7915_mcu_set_fixed_rate(struct mt7915_dev *dev,
-         |     ^~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c: In function 'mt7915_mcu_set_txpower_sku':
->> drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:3859:13: error: implicit declaration of function 'mt76_get_sar_power'; did you mean 'mt76_get_txpower'? [-Werror=implicit-function-declaration]
-    3859 |  tx_power = mt76_get_sar_power(mphy, mphy->chandef.chan,
-         |             ^~~~~~~~~~~~~~~~~~
-         |             mt76_get_txpower
-   cc1: some warnings being treated as errors
-
-
-vim +439 drivers/net/wireless/mediatek/mt76/mt7915/main.c
-
-   427	
-   428	static int mt7915_set_sar_specs(struct ieee80211_hw *hw,
-   429					const struct cfg80211_sar_specs *sar)
-   430	{
-   431		struct mt7915_phy *phy = mt7915_hw_phy(hw);
-   432		struct mt7915_dev *dev = mt7915_hw_dev(hw);
-   433		int err = -EINVAL;
-   434	
-   435		mutex_lock(&dev->mt76.mutex);
-   436		if (!cfg80211_chandef_valid(&phy->mt76->chandef))
-   437			goto out;
-   438	
- > 439		err = mt76_init_sar_power(hw, sar);
-   440		if (err)
-   441			goto out;
-   442	
-   443		err = mt7915_mcu_set_txpower_sku(phy);
-   444	out:
-   445		mutex_unlock(&dev->mt76.mutex);
-   446	
-   447		return err;
-   448	}
-   449	
-
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/net/wireless/realtek/rtw89/debug.c    | 2 +-
+ drivers/net/wireless/realtek/rtw89/mac.c      | 2 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      | 2 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+index 29eb188c888c..75f10627585b 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.c
++++ b/drivers/net/wireless/realtek/rtw89/debug.c
+@@ -814,7 +814,7 @@ rtw89_debug_priv_mac_dbg_port_dump_select(struct file *filp,
+ 		return -EINVAL;
+ 	}
+ 
+-	enable = set == 0 ? false : true;
++	enable = set != 0;
+ 	switch (sel) {
+ 	case 0:
+ 		debugfs_priv->dbgpkg_en.ss_dbg = enable;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index afcd07ab1de7..944c23293cb9 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -3695,7 +3695,7 @@ void _rtw89_mac_bf_monitor_track(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_traffic_stats *stats = &rtwdev->stats;
+ 	struct rtw89_vif *rtwvif;
+-	bool en = stats->tx_tfc_lv > stats->rx_tfc_lv ? false : true;
++	bool en = stats->tx_tfc_lv <= stats->rx_tfc_lv;
+ 	bool old = test_bit(RTW89_FLAG_BFEE_EN, rtwdev->flags);
+ 
+ 	if (en == old)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index ab134856baac..b7107eff9edc 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -1767,7 +1767,7 @@ static void rtw89_phy_cfo_dm(struct rtw89_dev *rtwdev)
+ 	}
+ 	rtw89_phy_cfo_crystal_cap_adjust(rtwdev, new_cfo);
+ 	cfo->cfo_avg_pre = new_cfo;
+-	x_cap_update =  cfo->crystal_cap == pre_x_cap ? false : true;
++	x_cap_update =  cfo->crystal_cap != pre_x_cap;
+ 	rtw89_debug(rtwdev, RTW89_DBG_CFO, "Xcap_up=%d\n", x_cap_update);
+ 	rtw89_debug(rtwdev, RTW89_DBG_CFO, "Xcap: D:%x C:%x->%x, ofst=%d\n",
+ 		    cfo->def_x_cap, pre_x_cap, cfo->crystal_cap,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 5c6ffca3a324..b79e061d03e8 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -1053,7 +1053,7 @@ static void rtw8852a_set_channel_bb(struct rtw89_dev *rtwdev,
+ 				    struct rtw89_channel_params *param,
+ 				    enum rtw89_phy_idx phy_idx)
+ {
+-	bool cck_en = param->center_chan > 14 ? false : true;
++	bool cck_en = param->center_chan <= 14;
+ 	u8 pri_ch_idx = param->pri_ch_idx;
+ 
+ 	if (param->center_chan <= 14)
+-- 
+2.30.2
+
