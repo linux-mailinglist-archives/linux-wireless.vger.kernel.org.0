@@ -2,136 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CD4645D734
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Nov 2021 10:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CA0A45D73C
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Nov 2021 10:33:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353956AbhKYJe7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Nov 2021 04:34:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49382 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353692AbhKYJc7 (ORCPT
+        id S1349785AbhKYJgY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Nov 2021 04:36:24 -0500
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:5109 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235766AbhKYJeY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Nov 2021 04:32:59 -0500
-Received: from smtp14.infineon.com (smtp14.infineon.com [IPv6:2a00:18f0:1e00:4::6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65829C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Nov 2021 01:29:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1637832588; x=1669368588;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=NmqZsR3oy+T12zFLj/zilhgw7pxvv+BFhIed/PLZDbw=;
-  b=ixYsgK0ojx+RnigYfHP4V7hR4QEY0u0EfQ2WWUsId/khIcJiXVuRnCgt
-   2CNjLJkP31iwyIA2cuLi8n+fm+gVVrKtqWacD/Xxl5dNDzpAyFlV/eiAg
-   kmJrgmfZZVjsPrOFg7pyzj0zfjRckhH+Gmf5To9eKtFdoI2xq9beLn1/7
-   0=;
-IronPort-SDR: FXcWiabuUypQOIClNs0WpEE/T35ChMW+yUg474Tm0X8TB5EwA1CpfmCGV7B1zVHOHCHuDd2vzV
- ZE1XKA7eTdDfXqxGg3SY33RX2rxRJcc1J70kBfmYtML3qSofpyXi+Uza1DTkyXDBNMq7sgr8fg
- mZYWH7ZhW7okVepZbYLJmAB6cwQibMk4kDqZSg4tef312A9MUvGT9qjD/0GXBq8cyTPCLPexAS
- 6nOa9FYpTfEAa/8G13fvW1cjxBZiG6eIPqp4F2jM9usAwtogQl5DmbBq3F1bwJCaU6Y3/XIGIK
- ouA=
-X-SBRS: None
-X-IronPort-AV: E=McAfee;i="6200,9189,10178"; a="100016138"
-X-IronPort-AV: E=Sophos;i="5.87,262,1631570400"; 
-   d="scan'208";a="100016138"
-Received: from unknown (HELO mucxv003.muc.infineon.com) ([172.23.11.20])
-  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2021 10:29:32 +0100
-Received: from MUCSE822.infineon.com (MUCSE822.infineon.com [172.23.29.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mucxv003.muc.infineon.com (Postfix) with ESMTPS;
-        Thu, 25 Nov 2021 10:29:32 +0100 (CET)
-Received: from MUCSE704.infineon.com (172.23.7.78) by MUCSE822.infineon.com
- (172.23.29.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.858.15; Thu, 25 Nov
- 2021 10:29:32 +0100
-Received: from [10.234.36.221] (10.234.36.221) by MUCSE704.infineon.com
- (172.23.7.78) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P256) id 15.1.2176.14; Thu, 25
- Nov 2021 10:29:29 +0100
-Message-ID: <ca0b63d7-b50b-748e-1a3f-e07464eb3949@infineon.com>
-Date:   Thu, 25 Nov 2021 17:29:27 +0800
+        Thu, 25 Nov 2021 04:34:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1637832674; x=1669368674;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=pExRF07KYX+EqI/dBvb6OIl+hR4O4VfO7wuk2xpgjbE=;
+  b=zkcu3KedtM2jZ9c3x39/X0GX9PQuo6mzqKBUVrWsr6RNM9zB0kzBk2ek
+   LILscLoshH7QhWr3f8Tt9hhCKanmm39jx1tJpQ6jCB0IXd4MIdnvfUp6x
+   IhufXH30vhtOigLk7h+lht58WKwC8W0ONAhm9/JkuoQmbAtqehVfa+nWC
+   Q=;
+Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
+  by alexa-out.qualcomm.com with ESMTP; 25 Nov 2021 01:31:14 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2021 01:31:13 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Thu, 25 Nov 2021 01:31:13 -0800
+Received: from srirrama-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Thu, 25 Nov 2021 01:31:11 -0800
+From:   Sriram R <quic_srirrama@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Sriram R <quic_srirrama@quicinc.com>
+Subject: [PATCH] ath11k: Avoid NULL ptr access during mgmt tx cleanup
+Date:   Thu, 25 Nov 2021 15:00:14 +0530
+Message-ID: <1637832614-13831-1-git-send-email-quic_srirrama@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-Subject: Re: [PATCH] brcmfmac: add CYW43570 PCIE device
-Content-Language: en-US
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        <linux-wireless@vger.kernel.org>
-CC:     <brcm80211-dev-list@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        <Chi-Hsien.Lin@infineon.com>, <Wright.Feng@infineon.com>,
-        <Double.Lo@infineon.com>
-References: <3f57f2b0-82c2-e339-ee6a-1569186143d6@infineon.com>
- <d7d7c3dc-d8bb-e9ab-8357-f8c921fcdd75@broadcom.com>
-From:   "Lin Ian (CSSITB CSS ICW SW WFS / EE)" <ian.lin-ee@infineon.com>
-In-Reply-To: <d7d7c3dc-d8bb-e9ab-8357-f8c921fcdd75@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.234.36.221]
-X-ClientProxiedBy: MUCSE718.infineon.com (172.23.7.101) To
- MUCSE704.infineon.com (172.23.7.78)
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Currently 'ar' reference is not added in skb_cb during
+WMI mgmt tx. Though this is generally not used during tx completion
+callbacks, on interface removal the remaining idr cleanup callback
+uses the ar ptr from skb_cb from mgmt txmgmt_idr. Hence
+fill them during tx call for proper usage.
 
+Also free the skb which is missing currently in these
+callbacks.
 
-On 11/23/2021 8:32 PM, Arend van Spriel wrote:
-> On November 23, 2021 7:24:32 AM "Lin Ian (CSSITB CSS ICW SW WFS / EE)" 
-> <ian.lin-ee@infineon.com> wrote:
->
->> From: Soontak Lee <soontak.lee@cypress.com>
->>
->> CYW43570 is a 3-antenna, 2x2 MIMO,802.11a/b/g/n/ac, PCIe 3.0 for WLAN.
->> It is BT/WIFI combo.
->>
->> Signed-off-by: Soontak Lee <soontak.lee@cypress.com>
->> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
->
-> Missing signoff
->
->> Jira:SWLINUX-1213
->
-> Meaningless to the public so remove it when submitting to the community.
-I will send a new patch mail that modified the commit message, thank you.
+Crash_info:
 
->> ---
->>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c       | 1 +
->>  drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 1 +
->>  2 files changed, 2 insertions(+)
->>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> index 8b149996fc00..ceeb1f10752a 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> @@ -2106,6 +2106,7 @@ static const struct pci_device_id
->> brcmf_pcie_devid_table[] = {
->>      BRCMF_PCIE_DEVICE(BRCM_PCIE_4356_DEVICE_ID),
->>      BRCMF_PCIE_DEVICE(BRCM_PCIE_43567_DEVICE_ID),
->>      BRCMF_PCIE_DEVICE(BRCM_PCIE_43570_DEVICE_ID),
->> +    BRCMF_PCIE_DEVICE(BRCM_PCIE_43570_RAW_DEVICE_ID),
->>      BRCMF_PCIE_DEVICE(BRCM_PCIE_4358_DEVICE_ID),
->>      BRCMF_PCIE_DEVICE(BRCM_PCIE_4359_DEVICE_ID),
->>      BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_DEVICE_ID),
->> diff --git
->> a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
->> b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
->> index 9d81320164ce..3bbe2388ec54 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
->> +++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
->> @@ -71,6 +71,7 @@
->>  #define BRCM_PCIE_4356_DEVICE_ID    0x43ec
->>  #define BRCM_PCIE_43567_DEVICE_ID    0x43d3
->>  #define BRCM_PCIE_43570_DEVICE_ID    0x43d9
->> +#define BRCM_PCIE_43570_RAW_DEVICE_ID    0xaa31
->
-> It is just a name, but what does RAW mean here? Also 0xaa31 is 43569 
-> in decimal. Is this really a valid device ID or is this an 
-> unprogrammed device (without valid devid in OTP).
-It's a unprogrammed device, basically 0xaa31 is the id with blank OTP.
+[19282.489476] Unable to handle kernel NULL pointer dereference at virtual address 00000000
+[19282.489515] pgd = 91eb8000
+[19282.496702] [00000000] *pgd=00000000
+[19282.502524] Internal error: Oops: 5 [#1] PREEMPT SMP ARM
+[19282.783728] PC is at ath11k_mac_vif_txmgmt_idr_remove+0x28/0xd8 [ath11k]
+[19282.789170] LR is at idr_for_each+0xa0/0xc8
+
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-00729-QCAHKSWPL_SILICONZ-3 v2
+Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 35 ++++++++++++++++++++---------------
+ 1 file changed, 20 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 06d2065..0050e2c 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
++ * Copyright (c) 2021 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include <net/mac80211.h>
+@@ -5224,23 +5225,32 @@ static int __ath11k_set_antenna(struct ath11k *ar, u32 tx_ant, u32 rx_ant)
+ 	return 0;
+ }
+ 
+-int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx)
++static void ath11k_mac_tx_mgmt_free(struct ath11k *ar, int buf_id)
+ {
+-	struct sk_buff *msdu = skb;
++	struct sk_buff *msdu;
+ 	struct ieee80211_tx_info *info;
+-	struct ath11k *ar = ctx;
+-	struct ath11k_base *ab = ar->ab;
+ 
+ 	spin_lock_bh(&ar->txmgmt_idr_lock);
+-	idr_remove(&ar->txmgmt_idr, buf_id);
++	msdu = idr_remove(&ar->txmgmt_idr, buf_id);
+ 	spin_unlock_bh(&ar->txmgmt_idr_lock);
+-	dma_unmap_single(ab->dev, ATH11K_SKB_CB(msdu)->paddr, msdu->len,
++
++	if (!msdu)
++		return;
++
++	dma_unmap_single(ar->ab->dev, ATH11K_SKB_CB(msdu)->paddr, msdu->len,
+ 			 DMA_TO_DEVICE);
+ 
+ 	info = IEEE80211_SKB_CB(msdu);
+ 	memset(&info->status, 0, sizeof(info->status));
+ 
+ 	ieee80211_free_txskb(ar->hw, msdu);
++}
++
++int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx)
++{
++	struct ath11k *ar = ctx;
++
++	ath11k_mac_tx_mgmt_free(ar, buf_id);
+ 
+ 	return 0;
+ }
+@@ -5249,17 +5259,10 @@ static int ath11k_mac_vif_txmgmt_idr_remove(int buf_id, void *skb, void *ctx)
+ {
+ 	struct ieee80211_vif *vif = ctx;
+ 	struct ath11k_skb_cb *skb_cb = ATH11K_SKB_CB((struct sk_buff *)skb);
+-	struct sk_buff *msdu = skb;
+ 	struct ath11k *ar = skb_cb->ar;
+-	struct ath11k_base *ab = ar->ab;
+ 
+-	if (skb_cb->vif == vif) {
+-		spin_lock_bh(&ar->txmgmt_idr_lock);
+-		idr_remove(&ar->txmgmt_idr, buf_id);
+-		spin_unlock_bh(&ar->txmgmt_idr_lock);
+-		dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len,
+-				 DMA_TO_DEVICE);
+-	}
++	if (skb_cb->vif == vif)
++		ath11k_mac_tx_mgmt_free(ar, buf_id);
+ 
+ 	return 0;
+ }
+@@ -5274,6 +5277,8 @@ static int ath11k_mac_mgmt_tx_wmi(struct ath11k *ar, struct ath11k_vif *arvif,
+ 	int buf_id;
+ 	int ret;
+ 
++	ATH11K_SKB_CB(skb)->ar = ar;
++
+ 	spin_lock_bh(&ar->txmgmt_idr_lock);
+ 	buf_id = idr_alloc(&ar->txmgmt_idr, skb, 0,
+ 			   ATH11K_TX_MGMT_NUM_PENDING_MAX, GFP_ATOMIC);
+-- 
+2.7.4
 
