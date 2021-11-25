@@ -2,146 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 078FB45D289
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Nov 2021 02:47:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50FBA45D2ED
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Nov 2021 03:08:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348013AbhKYBuS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 Nov 2021 20:50:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60226 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352764AbhKYBsR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 Nov 2021 20:48:17 -0500
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40436C07E5DB;
-        Wed, 24 Nov 2021 16:57:01 -0800 (PST)
-Received: by mail-pf1-x432.google.com with SMTP id z6so4243062pfe.7;
-        Wed, 24 Nov 2021 16:57:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xR2NYEIoPjbsCHjQ06YGxVuRr3wcloc+LodiEzZnzbE=;
-        b=BJ/vYCJVyBLPEbD48YT0t8joXeV3lz2LyX3dgnxGQ8QTUQV4nIUBZgmsb9ZIggmk8P
-         llUhJI7Nx90y5NALeCe1LgLbNz7vCj5K4dvDOu5DrAhkmI+qXGj/y8+106Bgx3mG39qL
-         532JPrXW0FFyau83M9hWz5ccvYqvldDQEBXaYeL3Lpr9iHSjoP4CMrYW5ftvOevb2G/2
-         wuSQlT/mDWSIm9s9KMjPuX0xuLNEuLK/CjyS2Tcf6cJ2F9blREb5lMxiVS/Xq8JUQ0uC
-         Zq8skAhHlcngT0ggs2IO0Ro0Q1wNHLrRyELO7yjWdga4fwmoDQU7q3rtvPhAbMc3cch+
-         HnPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xR2NYEIoPjbsCHjQ06YGxVuRr3wcloc+LodiEzZnzbE=;
-        b=Mh1C6CzsD88wzt8zngiETPb8bCtIMFPk+S04WAu9eLj3bEWXwycntrANU4san3r9Rw
-         FnZCgSr3FKoQUxKsk5aMZx7cnVba6FO4qo9GAiFWiE4Igyi9v0D7+iBCvbMTODMNv19x
-         Z8TcoxWldNXYX8g0gNRZl45tT0v+ZVE4y+3Xbng2dj/vQgsAvtEylSUi+uKqBfJLQcBm
-         ENyR9l3cQ/KwVd0r8WcjNrPOtsHwmswblwCYcfTRq3RIsU2I+GlduF3sDU3XKPiBx9cD
-         3Px8cU7NRn9IdMFiA2yDendTJtAkm8j0Wf/ek7WXadSko2uBznKbaD0+myj8hjLsj2N1
-         pqNA==
-X-Gm-Message-State: AOAM532s2MasFs7d34nW+V78XH6T2o/tIIywnfxQ3FujFC6P8mVYgNHt
-        jtTgs1JW38hS9AWCsAe3+8gt1cxwnQcezA==
-X-Google-Smtp-Source: ABdhPJzlZ0CVi6RCACpQrBBvvK0WH7o6F5mXb5hR2pWYL67OLlJArtTY++riobJtb8J7RVqsetWwJQ==
-X-Received: by 2002:a62:7803:0:b0:494:64ef:7bd7 with SMTP id t3-20020a627803000000b0049464ef7bd7mr10435904pfc.85.1637801820789;
-        Wed, 24 Nov 2021 16:57:00 -0800 (PST)
-Received: from debian11-dev-61.localdomain (192.243.120.180.16clouds.com. [192.243.120.180])
-        by smtp.gmail.com with ESMTPSA id e10sm940557pfv.140.2021.11.24.16.56.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Nov 2021 16:57:00 -0800 (PST)
-From:   davidcomponentone@gmail.com
-X-Google-Original-From: yang.guang5@zte.com.cn
-To:     pkshih@realtek.com
-Cc:     davidcomponentone@gmail.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yang Guang <yang.guang5@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] rtw89: remove unneeded conversion to bool
-Date:   Thu, 25 Nov 2021 08:56:46 +0800
-Message-Id: <d9492bb9bced106f20006edb49200926184c3763.1637739090.git.yang.guang5@zte.com.cn>
-X-Mailer: git-send-email 2.30.2
+        id S233778AbhKYCLe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 Nov 2021 21:11:34 -0500
+Received: from foescog.com ([5.56.56.207]:38929 "EHLO foescog.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234991AbhKYCJb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 24 Nov 2021 21:09:31 -0500
+Received: from 42.91-116-32.dynamic.clientes.euskaltel.es (unknown [91.116.32.42])
+        by foescog.com (Postfix) with ESMTPSA id D0F762EF4DC
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Nov 2021 02:58:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foescog.com;
+        s=default; t=1637805520;
+        bh=/QdtepFZqmFRCVwpW5G9FzSpQ0uyk/GzjsYilKQXuj8=; l=2224;
+        h=From:To:Subject;
+        b=eLjBrxOGyyfRYJdXbPIcVux17wp3q6c4Bt3NG7ca+R/Odhm6g4o7MnjXkvADSmRDW
+         K5o4H5KEqZXcdP39spyyY1K7zXYx0FPR1z0MAwcd7Zj7s3FBrk9WCd6hJC5HtEwXKH
+         9boIvpbI9jd1R9Sylo4y54BKlr8++r2791AZtSqg=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From:   "FOESCO" <info6@foescog.com>
+Reply-To: info6@foescog.com
+To:     linux-wireless@vger.kernel.org
+Subject: Consulta muy urgente
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Smart_Send_4_3_3
+Date:   Thu, 25 Nov 2021 02:58:42 +0100
+Message-ID: <3880466410296315685860@DESKTOP-3O58G60>
+X-Priority: 1
+X-MSMail-Priority: High
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yang Guang <yang.guang5@zte.com.cn>
+Buenos d=EDas
 
-The coccinelle report
-./drivers/net/wireless/realtek/rtw89/debug.c:817:21-26:
-WARNING: conversion to bool not needed here
-./drivers/net/wireless/realtek/rtw89/mac.c:3698:49-54:
-WARNING: conversion to bool not needed here
-./drivers/net/wireless/realtek/rtw89/phy.c:1770:49-54:
-WARNING: conversion to bool not needed here
-./drivers/net/wireless/realtek/rtw89/rtw8852a.c:1056:41-46:
-WARNING: conversion to bool not needed here
 
-Relational and logical operators evaluate to bool,
-explicit conversion is overly verbose and unneeded.
+Soy Alex Pons, director de FOESCO (Formaci=F3n Estatal Continua).
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
----
- drivers/net/wireless/realtek/rtw89/debug.c    | 2 +-
- drivers/net/wireless/realtek/rtw89/mac.c      | 2 +-
- drivers/net/wireless/realtek/rtw89/phy.c      | 2 +-
- drivers/net/wireless/realtek/rtw89/rtw8852a.c | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+Nos ponemos en contacto con vosotros para informamos acerca de la =FAltima =
+convocatoria de Cursos 100% Bonificables disponibles para empleados.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index 29eb188c888c..75f10627585b 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -814,7 +814,7 @@ rtw89_debug_priv_mac_dbg_port_dump_select(struct file *filp,
- 		return -EINVAL;
- 	}
- 
--	enable = set == 0 ? false : true;
-+	enable = set != 0;
- 	switch (sel) {
- 	case 0:
- 		debugfs_priv->dbgpkg_en.ss_dbg = enable;
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index afcd07ab1de7..944c23293cb9 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -3695,7 +3695,7 @@ void _rtw89_mac_bf_monitor_track(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_traffic_stats *stats = &rtwdev->stats;
- 	struct rtw89_vif *rtwvif;
--	bool en = stats->tx_tfc_lv > stats->rx_tfc_lv ? false : true;
-+	bool en = stats->tx_tfc_lv <= stats->rx_tfc_lv;
- 	bool old = test_bit(RTW89_FLAG_BFEE_EN, rtwdev->flags);
- 
- 	if (en == old)
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index ab134856baac..b7107eff9edc 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -1767,7 +1767,7 @@ static void rtw89_phy_cfo_dm(struct rtw89_dev *rtwdev)
- 	}
- 	rtw89_phy_cfo_crystal_cap_adjust(rtwdev, new_cfo);
- 	cfo->cfo_avg_pre = new_cfo;
--	x_cap_update =  cfo->crystal_cap == pre_x_cap ? false : true;
-+	x_cap_update =  cfo->crystal_cap != pre_x_cap;
- 	rtw89_debug(rtwdev, RTW89_DBG_CFO, "Xcap_up=%d\n", x_cap_update);
- 	rtw89_debug(rtwdev, RTW89_DBG_CFO, "Xcap: D:%x C:%x->%x, ofst=%d\n",
- 		    cfo->def_x_cap, pre_x_cap, cfo->crystal_cap,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 5c6ffca3a324..b79e061d03e8 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -1053,7 +1053,7 @@ static void rtw8852a_set_channel_bb(struct rtw89_dev *rtwdev,
- 				    struct rtw89_channel_params *param,
- 				    enum rtw89_phy_idx phy_idx)
- {
--	bool cck_en = param->center_chan > 14 ? false : true;
-+	bool cck_en = param->center_chan <= 14;
- 	u8 pri_ch_idx = param->pri_ch_idx;
- 
- 	if (param->center_chan <= 14)
--- 
-2.30.2
+El plazo l=EDmite para poder solicitarlos finaliza el pr=F3ximo VIERNES 25,=
+ pasada esta fecha no podr=E1n tramitarse formaciones con cargo al Cr=E9dit=
+o de Formaci=F3n 2021.
 
+
+Precis=E1is recibir el listado de cursos disponibles=3F
+
+
+Quedamos a la espera de vuestra respuesta.
+
+
+Saludos cordiales.
+
+
+Alex Pons
+Director FOESCO
+
+Equipo FOESCO (Formaci=F3n Estatal Continua).
+Entidad Organizadora: B200592AA
+Tel:     910 323 794
+(Horario de 9h a 15h y de 17h a 20h de Lunes a Viernes)
+
+FOESCO ofrece formaci=F3n a empresas y trabajadores en activo a trav=E9s de=
+ cursos bonificados por la Fundaci=F3n Estatal para la Formaci=F3n en el Em=
+pleo (antiguo FORCEM) que gestiona las acciones formativas de FORMACI=D3N C=
+ONTINUA para trabajadores y se rige por la ley 30/2015 de 9 de Septiembre.
+
+Antes de imprimir este e-mail piense bien si es necesario hacerlo. La infor=
+maci=F3n transmitida en este mensaje est=E1 dirigida solamente a las person=
+as o entidades que figuran en el encabezamiento y contiene informaci=F3n co=
+nfidencial, por lo que, si usted lo recibiera por error, por favor destr=FA=
+yalo sin copiarlo, usarlo ni distribuirlo, comunic=E1ndolo inmediatamente a=
+l emisor del mensaje. De conformidad con lo dispuesto en el Reglamento Euro=
+peo del 2016/679, del 27 de Abril de 2016, FOESCO le informa que los datos =
+por usted suministrados ser=E1n tratados con las medidas de seguridad confo=
+rmes a la normativa vigente que se requiere. Dichos datos ser=E1n empleados=
+ con fines de gesti=F3n. Para el ejercicio de sus derechos de transparencia=
+, informaci=F3n, acceso, rectificaci=F3n, supresi=F3n o derecho al olvido, =
+limitaci=F3n del tratamiento , portabilidad de datos y oposici=F3n de sus d=
+atos de car=E1cter personal deber=E1 dirigirse a la direcci=F3n del Respons=
+able del tratamiento a C/ LAGUNA DEL MARQUESADO N=BA10, 28021, MADRID, "PUL=
+SANDO AQUI" <mailto:bajas@foesco.com=3FSubject=3DBAJA%20CORREOS> y "ENVIAR".
