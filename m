@@ -2,79 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AC9845F1C3
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 17:22:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B63545F248
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 17:38:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240349AbhKZQ0J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Nov 2021 11:26:09 -0500
-Received: from so254-9.mailgun.net ([198.61.254.9]:39387 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231773AbhKZQYJ (ORCPT
+        id S1378676AbhKZQlv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Nov 2021 11:41:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35554 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1378684AbhKZQjv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Nov 2021 11:24:09 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637943656; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=c3bmYoIA25RasimTxdzYwROg0K48DKwdRSMCDiUorMM=;
- b=nl1manYRvcjnqmcqYkWnmmWAQaMZkhTiOO668bEIV8o1rWynfboQmVtp5Zsng5dYjDBRw9Um
- lmXJHh1c8fjspeLwA7kzQnRleZcM3CuUnCCyug6vPy/5+UYY7RnkbVqNhFv0/r/U7d8vwCoo
- Hg/N7FGCIPl9APYZ+I5n9jqttmY=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
- 61a109634fca5da46d8b757b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 26 Nov 2021 16:20:51
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3B3F4C43618; Fri, 26 Nov 2021 16:20:51 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        Fri, 26 Nov 2021 11:39:51 -0500
+X-Greylist: delayed 3413 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 26 Nov 2021 08:23:11 PST
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E900C061399
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 08:23:11 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E3C89C4338F;
-        Fri, 26 Nov 2021 16:20:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org E3C89C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA8F0622B7
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 16:23:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD2AC93056;
+        Fri, 26 Nov 2021 16:23:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1637943790;
+        bh=UKKwM2m+sH+4g4wE7xatRpyzE9EhE/tXLP02E+/e4H8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=r9fvgA10fvbt6Qm/qQNZwNlrwUu+mYSEKP3bUrbY3ftlcK4AX45P5VdSAp1hm573y
+         ytqvcxjipj2NG8Y0N+r0i1Y4th5PkE02HRqXwP1uSS7aX80djJyuVQnfJBcbDAcx7l
+         /Z9HYtmh+3yAGWN2VrT6j/w3amaiSZWcJu3/hieMXSb97O7hdEj8K8YQL95QiuYl3c
+         CZt5qHFJ/4KbFLPMB3H0rImZPVFW/DlwsjOOeXrDnHXCGkMNsppc+rvWgt64Qe11sY
+         mxQiCCDwJ3I+bdjHGYFfG3EJG1TNzlm4J/qzljVwAZJY1rsh9s5k7a7USJhFio0qkr
+         3XVlVxJj4frvw==
+Date:   Fri, 26 Nov 2021 17:23:06 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
+        ryder.lee@mediatek.com
+Subject: Re: [PATCH wireless-drivers] mt76: fix possible pktid leak
+Message-ID: <YaEJ6hQ0uC32+Mts@lore-desk>
+References: <a560caffcc24452fb48af53904bbe5c45ea5db93.1637602268.git.lorenzo@kernel.org>
+ <163777451567.4686.3609119971518562275.kvalo@codeaurora.org>
+ <YaDo21+/MBeeuTDN@lore-desk>
+ <87fsrj3qxo.fsf@codeaurora.org>
+ <YaD8lT5csiLvmBzS@lore-desk>
+ <87sfvij4eh.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtw88: add quirk to disable pci caps on HP 250 G7
- Notebook PC
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20211119052437.8671-1-pkshih@realtek.com>
-References: <20211119052437.8671-1-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>, <rtl8821cerfe2@protonmail.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163794364821.10370.16121080855905942170.kvalo@codeaurora.org>
-Date:   Fri, 26 Nov 2021 16:20:51 +0000 (UTC)
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="0jlUeta7muUdJbMT"
+Content-Disposition: inline
+In-Reply-To: <87sfvij4eh.fsf@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> 8821CE causes random freezes on HP 250 G7 Notebook PC. Add a quirk
-> to disable pci ASPM capability.
-> 
-> Reported-by: rtl8821cerfe2 <rtl8821cerfe2@protonmail.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+--0jlUeta7muUdJbMT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Patch applied to wireless-drivers-next.git, thanks.
+> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+>=20
+> >> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+> >>=20
+> >> >> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+> >> >>=20
+> >> >> > Fix a possible idr pkt-id leak if the packet is dropped on tx side
+> >> >> >=20
+> >> >> > Fixes: bd1e3e7b693c ("mt76: introduce packet_id idr")
+> >> >> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> >> >> > Acked-by: Felix Fietkau <nbd@nbd.name>
+> >> >>=20
+> >> >> Patch applied to wireless-drivers.git, thanks.
+> >> >>=20
+> >> >> 2a9e9857473b mt76: fix possible pktid leak
+> >> >
+> >> > Hi Kalle,
+> >> >
+> >> > Unfortunately I found a regression introduced by this patch for mt76=
+63u (and I
+> >> > guess for mt7921s as well). Do you want me to post a fix or just a v=
+2?
+> >>=20
+> >> I don't rebase my trees, so please post a fix. I was planning to submit
+> >> a pull request to net tree today, but is this so serious that I should
+> >> skip that?
+> >
+> > I have already tested mt7663u but I do not have mt7921s hw for testing =
+(but the
+> > behaviour should be the same). I guess we can split the patch, just pos=
+t the
+> > fix for mt7663u and let Sean the time to test it on mt7921s (I am not s=
+ure
+> > mt7921s is already available on the market). In this way you can send t=
+he PR
+> > today. What do you think?
+>=20
+> I think it's best to wait, I prefer to have proper build testing on my
+> tree before I submit the pull request.
 
-c81edb8dddaa rtw88: add quirk to disable pci caps on HP 250 G7 Notebook PC
+ack, fine to me. Let's wait for Sean in this case.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211119052437.8671-1-pkshih@realtek.com/
+Regards,
+Lorenzo
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>=20
+> --=20
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>=20
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
 
+--0jlUeta7muUdJbMT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYaEJ6gAKCRA6cBh0uS2t
+rKWNAQCx4kXVMUxGJnwCQTkziK1f4UR+vvKJxRt9biH7MqnKBwD/RGAt4dEVj32h
+nOxB1DeJUX3/tPkhTFg+uLqQA7R64Qw=
+=GNIL
+-----END PGP SIGNATURE-----
+
+--0jlUeta7muUdJbMT--
