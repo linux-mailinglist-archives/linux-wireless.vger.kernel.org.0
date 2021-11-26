@@ -2,234 +2,245 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90C3D45EAC4
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 10:54:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 193DB45EB2D
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 11:18:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376425AbhKZJ5V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Nov 2021 04:57:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59426 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376492AbhKZJzV (ORCPT
+        id S1352966AbhKZKWB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Nov 2021 05:22:01 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:40122 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1376644AbhKZKUB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Nov 2021 04:55:21 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBD39C0613F6
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 01:48:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=EC1Ov/420zT4euqn0ZZTIxvZ4ZwVhU0s/8xRkdxEu2E=; t=1637920107; x=1639129707; 
-        b=ZyQFu3kh34FHOsF1O928RGK9YjbZ3Nd02ukEXTFJqki3B+/RYAj8jCBuu9CMh6PW2eLbK6ScLEe
-        4UxnDzr0+MUQSg0nY6qIeb38olmChhtMFZq59mTVXJpxg57dmv4rR+VVjJsbJ3k5fLWTEmu9j6Bq3
-        07FbmuTkSRFXa+dK6NV3AIZEvLKlIlpZI9Vn7oj3LYQYCgSqOg6rKOv9WwRXMAUL+UCnjwjuPDfKn
-        jAeIoaSqia1Rz4RraLs+MkyiCZ1m7gI6cy2Hn5xMxhZleoOvVhvivD70WKvd/vnFaohezHN8fe2LW
-        xgeKc6nyflIHLKlfx+FlEp/75Uja6cCNLJew==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mqXqA-00387S-Ki;
-        Fri, 26 Nov 2021 10:48:22 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH] ieee80211: change HE nominal packet padding value defines
-Date:   Fri, 26 Nov 2021 10:48:19 +0100
-Message-Id: <20211126104817.7c29a05b8eb5.I2ca9faf06e177e3035bec91e2ae53c2f91d41774@changeid>
-X-Mailer: git-send-email 2.33.1
+        Fri, 26 Nov 2021 05:20:01 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1637921808; h=Content-Type: MIME-Version: Message-ID: Date:
+ References: In-Reply-To: Subject: Cc: To: From: Sender;
+ bh=0gyYyj3E60srR37rnxeKVpgoau3J62kmCxQ0vQTWTKc=; b=i8YmzmmUZ5ArsBphe9mxqVbljcWwLlYRC5B2c+qNpT4rtnCMus6zH86KBdkI0N/CM7g7xST2
+ diXqzb+TMWnHlkkjB0ZsuF+0rJIcqRh0xB6nnhpjNRMtcohvqs0wo6hbwCgeh2y08TBq6wlz
+ 0lcc5nyO63zu+PID2o7NlKtW6B8=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 61a0b40f4fca5da46d46b23c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 26 Nov 2021 10:16:47
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 9EA22C4360D; Fri, 26 Nov 2021 10:16:47 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F0838C43616;
+        Fri, 26 Nov 2021 10:16:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org F0838C43616
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2] ath11k: report rssi of each chain to mac80211
+In-Reply-To: <20211118102331.10726-1-quic_wgong@quicinc.com> (Wen Gong's
+        message of "Thu, 18 Nov 2021 05:23:31 -0500")
+References: <20211118102331.10726-1-quic_wgong@quicinc.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Fri, 26 Nov 2021 12:16:40 +0200
+Message-ID: <871r335iif.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Wen Gong <quic_wgong@quicinc.com> writes:
 
-It's easier to use and understand, and to extend for EHT later,
-if we use the values here instead of the shifted values.
+> Command "iw wls1 station dump" does not show each chain's rssi currently.
+>
+> This patch is to change like this:
+> If the rssi of each chain from mon status is invalid, then ath11k send
+> wmi cmd WMI_REQUEST_STATS_CMDID with flag WMI_REQUEST_RSSI_PER_CHAIN_STAT
+> to firmware, and parse the rssi of chain in wmi WMI_UPDATE_STATS_EVENTID,
+> then report them to mac80211.
 
-Unfortunately, we need to add _POS so that we can use it in
-places like iwlwifi/mvm where constants are needed.
+A bit more information about the design would be nice. With mon status I
+guess you mean ath11k_hal_rx_parse_mon_status()? How is performance and
+power consumption affected here? Especially I'm worried how often this
+new WMI command is sent, is it only when ath11k_mac_op_sta_statistics()
+is called?
 
-While at it, fix the typo ("NOMIMAL") which also helps catch any
-conflicts.
+And I think this only works when CONFIG_ATH11K_DEBUGFS is enabled,
+right?
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- .../net/wireless/intel/iwlwifi/iwl-nvm-parse.c   |  6 ++++--
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c    | 16 ++++++++--------
- drivers/net/wireless/mediatek/mt76/mt7915/init.c |  3 ++-
- drivers/net/wireless/mediatek/mt76/mt7921/main.c |  3 ++-
- drivers/net/wireless/realtek/rtw89/core.c        |  3 ++-
- drivers/net/wireless/realtek/rtw89/fw.c          |  2 +-
- include/linux/ieee80211.h                        | 11 ++++++-----
- net/mac80211/debugfs_sta.c                       |  9 +++++----
- 8 files changed, 30 insertions(+), 23 deletions(-)
+> --- a/drivers/net/wireless/ath/ath11k/core.h
+> +++ b/drivers/net/wireless/ath/ath11k/core.h
+> @@ -382,6 +382,7 @@ struct ath11k_sta {
+>  	u64 rx_duration;
+>  	u64 tx_duration;
+>  	u8 rssi_comb;
+> +	s8 chain_signal[IEEE80211_MAX_CHAINS];
+>  	struct ath11k_htt_tx_stats *tx_stats;
+>  	struct ath11k_rx_peer_stats *rx_stats;
+>  
+> @@ -412,6 +413,12 @@ enum ath11k_state {
+>  /* Antenna noise floor */
+>  #define ATH11K_DEFAULT_NOISE_FLOOR -95
+>  
+> +/* signed value, 11111111h, it is full bit value, invalid */
+> +#define ATH11K_INVALID_RSSI_FULL -1
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index f470f9aea50f..881ede4a4aa2 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -607,7 +607,8 @@ static const struct ieee80211_sband_iftype_data iwl_he_capa[] = {
- 				.phy_cap_info[9] =
- 					IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_COMP_SIGB |
- 					IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_NON_COMP_SIGB |
--					IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_RESERVED,
-+					(IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_RESERVED <<
-+					IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_POS),
- 				.phy_cap_info[10] =
- 					IEEE80211_HE_PHY_CAP10_HE_MU_M1RU_MAX_LTF,
- 			},
-@@ -664,7 +665,8 @@ static const struct ieee80211_sband_iftype_data iwl_he_capa[] = {
- 					IEEE80211_HE_PHY_CAP8_HE_ER_SU_PPDU_4XLTF_AND_08_US_GI |
- 					IEEE80211_HE_PHY_CAP8_DCM_MAX_RU_242,
- 				.phy_cap_info[9] =
--					IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_RESERVED,
-+					IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_RESERVED
-+					<< IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_POS,
- 			},
- 			/*
- 			 * Set default Tx/Rx HE MCS NSS Support field.
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 9fb9c7dad314..b96ccabd1596 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -2126,24 +2126,24 @@ static void iwl_mvm_cfg_he_sta(struct iwl_mvm *mvm,
- 		}
- 
- 		flags |= STA_CTXT_HE_PACKET_EXT;
--	} else if ((sta->he_cap.he_cap_elem.phy_cap_info[9] &
--		    IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_MASK) !=
--		  IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_RESERVED) {
-+	} else if (u8_get_bits(sta->he_cap.he_cap_elem.phy_cap_info[9],
-+			       IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_MASK)
-+		   != IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_RESERVED) {
- 		int low_th = -1;
- 		int high_th = -1;
- 
- 		/* Take the PPE thresholds from the nominal padding info */
--		switch (sta->he_cap.he_cap_elem.phy_cap_info[9] &
--			IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_MASK) {
--		case IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_0US:
-+		switch (u8_get_bits(sta->he_cap.he_cap_elem.phy_cap_info[9],
-+				    IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_MASK)) {
-+		case IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_0US:
- 			low_th = IWL_HE_PKT_EXT_NONE;
- 			high_th = IWL_HE_PKT_EXT_NONE;
- 			break;
--		case IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_8US:
-+		case IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_8US:
- 			low_th = IWL_HE_PKT_EXT_BPSK;
- 			high_th = IWL_HE_PKT_EXT_NONE;
- 			break;
--		case IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_16US:
-+		case IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_16US:
- 			low_th = IWL_HE_PKT_EXT_NONE;
- 			high_th = IWL_HE_PKT_EXT_BPSK;
- 			break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 4fa8e7ba93e6..d054cdecd5f7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -853,7 +853,8 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
- 			mt7915_gen_ppe_thresh(he_cap->ppe_thres, nss);
- 		} else {
- 			he_cap_elem->phy_cap_info[9] |=
--				IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_16US;
-+				u8_encode_bits(IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_16US,
-+					       IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_MASK);
- 		}
- 		idx++;
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 633c6d2a57ac..e2eef9b5f63b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -140,7 +140,8 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
- 			mt7921_gen_ppe_thresh(he_cap->ppe_thres, nss);
- 		} else {
- 			he_cap_elem->phy_cap_info[9] |=
--				IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_16US;
-+				u8_encode_bits(IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_16US,
-+					       IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_MASK);
- 		}
- 
- 		if (band == NL80211_BAND_6GHZ) {
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index d02ec5a735cb..d5a4608d2d65 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2115,7 +2115,8 @@ static void rtw89_init_he_cap(struct rtw89_dev *rtwdev,
- 				  IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU |
- 				  IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_COMP_SIGB |
- 				  IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_NON_COMP_SIGB |
--				  IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_16US;
-+				  u8_encode_bits(IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_16US,
-+				  		 IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_MASK);
- 		if (i == NL80211_IFTYPE_STATION)
- 			phy_cap_info[9] |= IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU;
- 		he_cap->he_mcs_nss_supp.rx_mcs_80 = cpu_to_le16(mcs_map);
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 212aaf577d3c..460d63dd6779 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -780,7 +780,7 @@ static void __get_sta_he_pkt_padding(struct rtw89_dev *rtwdev,
- 	if (!ppe_th) {
- 		u8 pad;
- 
--		pad = FIELD_GET(IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_MASK,
-+		pad = FIELD_GET(IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_MASK,
- 				sta->he_cap.he_cap_elem.phy_cap_info[9]);
- 
- 		for (i = 0; i < RTW89_PPE_BW_NUM; i++)
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 11d7af260f20..559b6c644938 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -2258,11 +2258,12 @@ enum ieee80211_client_reg_power {
- #define IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU		0x08
- #define IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_COMP_SIGB	0x10
- #define IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_NON_COMP_SIGB	0x20
--#define IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_0US			0x00
--#define IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_8US			0x40
--#define IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_16US			0x80
--#define IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_RESERVED		0xc0
--#define IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_MASK			0xc0
-+#define IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_0US			0x0
-+#define IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_8US			0x1
-+#define IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_16US			0x2
-+#define IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_RESERVED		0x3
-+#define IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_POS			6
-+#define IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_MASK			0xc0
- 
- #define IEEE80211_HE_PHY_CAP10_HE_MU_M1RU_MAX_LTF			0x01
- 
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 481f01b0f65c..9479f2787ea7 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -936,14 +936,15 @@ static ssize_t sta_he_capa_read(struct file *file, char __user *userbuf,
- 	PFLAG(PHY, 9, RX_FULL_BW_SU_USING_MU_WITH_NON_COMP_SIGB,
- 	      "RX-FULL-BW-SU-USING-MU-WITH-NON-COMP-SIGB");
- 
--	switch (cap[9] & IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_MASK) {
--	case IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_0US:
-+	switch (u8_get_bits(cap[9],
-+			    IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_MASK)) {
-+	case IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_0US:
- 		PRINT("NOMINAL-PACKET-PADDING-0US");
- 		break;
--	case IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_8US:
-+	case IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_8US:
- 		PRINT("NOMINAL-PACKET-PADDING-8US");
- 		break;
--	case IEEE80211_HE_PHY_CAP9_NOMIMAL_PKT_PADDING_16US:
-+	case IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_16US:
- 		PRINT("NOMINAL-PACKET-PADDING-16US");
- 		break;
- 	}
+The comment is really providing any value, please remove.
+
+> +/* signed value, 10000000h, it is empty value, invalid */
+> +#define ATH11K_INVALID_RSSI_EMPTY -128
+
+Same here.
+
+> --- a/drivers/net/wireless/ath/ath11k/debugfs.h
+> +++ b/drivers/net/wireless/ath/ath11k/debugfs.h
+> @@ -117,6 +117,7 @@ void ath11k_debugfs_unregister(struct ath11k *ar);
+>  void ath11k_debugfs_fw_stats_process(struct ath11k_base *ab, struct sk_buff *skb);
+>  
+>  void ath11k_debugfs_fw_stats_init(struct ath11k *ar);
+> +int ath11k_debug_get_fw_stats(struct ath11k *ar, u32 pdev_id, u32 vdev_id, u32 stats_id);
+
+ath11k_debugfs_get_fw_stats
+
+> --- a/drivers/net/wireless/ath/ath11k/hal_rx.c
+> +++ b/drivers/net/wireless/ath/ath11k/hal_rx.c
+> @@ -1080,6 +1080,9 @@ ath11k_hal_rx_parse_mon_status_tlv(struct ath11k_base *ab,
+>  		break;
+>  	}
+>  	case HAL_PHYRX_RSSI_LEGACY: {
+> +		int i;
+> +		bool db2dbm = test_bit(WMI_TLV_SERVICE_HW_DB2DBM_CONVERSION_SUPPORT,
+> +				       ab->wmi_ab.svc_map);
+>  		struct hal_rx_phyrx_rssi_legacy_info *rssi =
+>  			(struct hal_rx_phyrx_rssi_legacy_info *)tlv_data;
+>  
+> @@ -1090,6 +1093,16 @@ ath11k_hal_rx_parse_mon_status_tlv(struct ath11k_base *ab,
+>  		ppdu_info->rssi_comb =
+>  			FIELD_GET(HAL_RX_PHYRX_RSSI_LEGACY_INFO_INFO1_RSSI_COMB,
+>  				  __le32_to_cpu(rssi->info0));
+> +
+> +		if (db2dbm) {
+> +			for (i = 0; i < ARRAY_SIZE(rssi->preamble); i++) {
+> +				u32 rssi2040 = __le32_to_cpu(rssi->preamble[i].rssi_2040);
+> +
+> +				ppdu_info->rssi_chain_pri20[i] =
+> +					FIELD_GET(HAL_RX_PHYRX_RSSI_PREAMBLE_PRI20,
+> +						  rssi2040);
+
+le32_get_bits() makes the code simpler.
+
+>  int ath11k_wmi_pull_fw_stats(struct ath11k_base *ab, struct sk_buff *skb,
+>  			     struct ath11k_fw_stats *stats)
+>  {
+> +	struct ath11k *ar;
+>  	const void **tb;
+>  	const struct wmi_stats_event *ev;
+> +	const struct wmi_per_chain_rssi_stats *rssi;
+> +	const struct wmi_rssi_stats *stats_rssi;
+> +	struct ieee80211_sta *sta;
+> +	struct ath11k_sta *arsta;
+>  	const void *data;
+> -	int i, ret;
+> +	const struct wmi_tlv *tlv;
+> +	u16 tlv_tag, tlv_len;
+> +	int i, ret, rssi_num = 0;
+>  	u32 len = skb->len;
+>  
+>  	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, len, GFP_ATOMIC);
+> @@ -5447,12 +5456,18 @@ int ath11k_wmi_pull_fw_stats(struct ath11k_base *ab, struct sk_buff *skb,
+>  
+>  	ev = tb[WMI_TAG_STATS_EVENT];
+>  	data = tb[WMI_TAG_ARRAY_BYTE];
+> +	rssi = tb[WMI_TAG_PER_CHAIN_RSSI_STATS];
+>  	if (!ev || !data) {
+>  		ath11k_warn(ab, "failed to fetch update stats ev");
+>  		kfree(tb);
+>  		return -EPROTO;
+>  	}
+>  
+> +	if (rssi && (ev->stats_id & WMI_REQUEST_RSSI_PER_CHAIN_STAT))
+> +		rssi_num = rssi->num_per_chain_rssi_stats;
+> +
+> +	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
+> +
+>  	ath11k_dbg(ab, ATH11K_DBG_WMI,
+>  		   "wmi stats update ev pdev_id %d pdev %i vdev %i bcn %i\n",
+>  		   ev->pdev_id,
+> @@ -5533,6 +5548,96 @@ int ath11k_wmi_pull_fw_stats(struct ath11k_base *ab, struct sk_buff *skb,
+>  		list_add_tail(&dst->list, &stats->bcn);
+>  	}
+>  
+> +	ath11k_dbg(ab, ATH11K_DBG_WMI,
+> +		   "wmi stats id 0x%x num chain %d\n",
+> +		   ev->stats_id,
+> +		   rssi_num);
+> +
+> +	if (rssi_num) {
+> +		/* This TLV of WMI_TAG_PER_CHAIN_RSSI_STATS is followed by
+> +		 * another TLV of array of structs
+> +		 * wmi_rssi_stats rssi_stats[num_per_chain_rssi_stats].
+> +		 * So add check integrity for the TLVs.
+> +		 * rssi is behind the TLV of WMI_TAG_PER_CHAIN_RSSI_STATS.
+> +		 */
+> +		tlv = (struct wmi_tlv *)((u8 *)rssi - sizeof(*tlv));
+> +		tlv_len = FIELD_GET(WMI_TLV_LEN, tlv->header);
+> +
+> +		/* Skip wmi_per_chain_rssi_stats to get the TLV of array structs */
+> +		tlv = (struct wmi_tlv *)((u8 *)rssi + tlv_len);
+> +		if (((u8 *)tlv - skb->data) >= skb->len)
+> +			goto fin;
+> +
+> +		tlv_tag = FIELD_GET(WMI_TLV_TAG, tlv->header);
+> +		if (tlv_tag != WMI_TAG_ARRAY_STRUCT)
+> +			rssi_num = 0;
+> +
+> +		/* Skip array struct TLV to get the array of structs */
+> +		tlv++;
+> +		if (((u8 *)tlv - skb->data) >= skb->len)
+> +			goto fin;
+> +
+> +		tlv_len = FIELD_GET(WMI_TLV_LEN, tlv->header);
+> +	}
+> +
+> +	for (i = 0; i < rssi_num; i++) {
+> +		struct ath11k_vif *arvif;
+> +		int j;
+> +
+> +		stats_rssi = (struct wmi_rssi_stats *)((u8 *)tlv + i *
+> +			(sizeof(*tlv) + tlv_len));
+> +		if (((u8 *)stats_rssi - skb->data) >= skb->len)
+> +			goto fin;
+> +
+> +		tlv_tag = FIELD_GET(WMI_TLV_TAG, stats_rssi->tlv_header);
+> +		if (tlv_tag != WMI_TAG_RSSI_STATS) {
+> +			ath11k_warn(ab, "invalid rssi stats TLV data\n");
+> +			break;
+> +		}
+
+In this function there's a lot of pointer arithmetic and casting, can't
+you use ath11k_wmi_tlv_parse_alloc() & friends for parsing the TLVs?
+
+> --- a/drivers/net/wireless/ath/ath11k/wmi.h
+> +++ b/drivers/net/wireless/ath/ath11k/wmi.h
+> @@ -4394,6 +4394,20 @@ struct wmi_stats_event {
+>  	u32 num_peer_extd2_stats;
+>  } __packed;
+>  
+> +#define WMI_MAX_CHAINS 8
+
+This is already defined on line 27.
+
 -- 
-2.33.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
