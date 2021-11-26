@@ -2,133 +2,293 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83E5B45E697
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 04:34:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD30645E816
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 07:51:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345942AbhKZDiB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Nov 2021 22:38:01 -0500
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:3895 "EHLO
+        id S233591AbhKZGzD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Nov 2021 01:55:03 -0500
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:56577 "EHLO
         alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235958AbhKZDgA (ORCPT
+        with ESMTP id S1352676AbhKZGxD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Nov 2021 22:36:00 -0500
+        Fri, 26 Nov 2021 01:53:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1637897569; x=1669433569;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=0IhZ8UJB7i6Tr0soNrmMZPqHEAbchv6aLfa3KGn+V/E=;
-  b=BwMWIaNyXclYT92/sDn09s7ypeoetMq2WrzRUBRfXmMZputx3ZRbqi3A
-   nDZLuibvAr2p04nY4vizx8xgHAmvZIDIX6zq5drJeDVKhgaUxk8FJDuzf
-   B3chKRcHS19Axa6gCxE1zvpaH64DUvNv7Nqa8qW9C9q1xFSUB3mmVU1Mq
-   E=;
-Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
-  by alexa-out.qualcomm.com with ESMTP; 25 Nov 2021 19:32:48 -0800
+  t=1637909391; x=1669445391;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pMcJcjMrsD+HMSsV3WhmZIqDs0mpcOAxQXqVbgzE9Zg=;
+  b=E+NC6aYb7ovVjEmnA4YIqtF8wKTF58Xu5UuIFH1xsGhCLQarpFAvGtsk
+   66kUKfIhCLEmagdeUqrm9EsmRIXK0wcfO9V6Jg8CjZ00Wh2XkzHz4YsgH
+   4ZmkBeLOQp+xuVU2x49ByLFDLppQ/AoD9/vZ4v4lXj5X1tMXM0DxwgpZH
+   0=;
+Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
+  by alexa-out.qualcomm.com with ESMTP; 25 Nov 2021 22:49:51 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2021 19:32:48 -0800
+  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2021 22:49:50 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Thu, 25 Nov 2021 19:32:48 -0800
-Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Thu, 25 Nov
- 2021 19:32:46 -0800
-Message-ID: <f19a7d40-02a4-f651-44c6-2e8f0c14ce9f@quicinc.com>
-Date:   Fri, 26 Nov 2021 11:32:43 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v2] ath11k: add wait operation for tx management packets
- for flush from mac80211
-Content-Language: en-US
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20211118095254.7916-1-quic_wgong@quicinc.com>
- <871r389ycu.fsf@codeaurora.org>
+ 15.2.922.19; Thu, 25 Nov 2021 22:49:50 -0800
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Thu, 25 Nov 2021 22:49:48 -0800
 From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <871r389ycu.fsf@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH v3] ath11k: add wait operation for tx management packets for flush from mac80211
+Date:   Fri, 26 Nov 2021 01:49:34 -0500
+Message-ID: <20211126064934.26490-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+In ath11k, tx of management packet is doing in a work queue. Sometimes
+the workqueue does not finish tx immediately, then it lead after the next
+step of vdev delete finished, it start to send the management packet to
+firmware and lead firmware crash.
 
-I have found the reason.
+ieee80211_set_disassoc() have logic of ieee80211_flush_queues() after
+it send_deauth_disassoc() to ath11k, its purpose is make sure the
+deauth was actually sent, so it need to change ath11k to match the
+purpose of mac80211.
 
-I will send new version to fix it.
+To address these issue wait for tx mgmt as well as tx data packets.
 
-It is because commit c0b0d2e87d91ce283c8766b4b3c2ec9ac90ebf96 (ath11k: 
-Increment pending_mgmt_tx count before tx send invoke) which commit at 
-Nov 15 11:25:52 2021.
+dmesg log of connect/disconnect to AP:
+[  307.522226] wls1: authenticate with 62:66:e4:e9:6a:a9
+[  307.586565] wls1: send auth to 62:66:e4:e9:6a:a9 (try 1/3)
+[  307.586581] ath11k_pci 0000:05:00.0: mac tx mgmt frame, buf id 0
+[  307.586922] ath11k_pci 0000:05:00.0: mac tx mgmt frame, vdev_id 0
+[  307.590179] ath11k_pci 0000:05:00.0: wmi mgmt tx comp pending 0 desc id 0
+[  307.590181] ath11k_pci 0000:05:00.0: mgmt tx compl ev pdev_id 2, desc_id 0, status 0
+[  307.598699] wls1: authenticated
+[  307.599483] wls1: associate with 62:66:e4:e9:6a:a9 (try 1/3)
+[  307.599506] ath11k_pci 0000:05:00.0: mac tx mgmt frame, buf id 0
+[  307.599519] ath11k_pci 0000:05:00.0: mac tx mgmt frame, vdev_id 0
+[  307.603059] ath11k_pci 0000:05:00.0: wmi mgmt tx comp pending 0 desc id 0
+[  307.603063] ath11k_pci 0000:05:00.0: mgmt tx compl ev pdev_id 2, desc_id 0, status 0
+[  307.637105] wls1: associated
+[  317.365239] wls1: deauthenticating from 62:66:e4:e9:6a:a9 by local choice (Reason: 3=DEAUTH_LEAVING)
+[  317.368104] ath11k_pci 0000:05:00.0: mac tx mgmt frame, buf id 0
+[  317.372622] ath11k_pci 0000:05:00.0: mac tx mgmt frame, vdev_id 0
+[  317.378320] ath11k_pci 0000:05:00.0: wmi mgmt tx comp pending 0 desc id 0
+[  317.378330] ath11k_pci 0000:05:00.0: mgmt tx compl ev pdev_id 2, desc_id 0, status 0
+[  317.378359] ath11k_pci 0000:05:00.0: mac mgmt tx flush mgmt pending 0
+[  317.421066] ath11k_pci 0000:05:00.0: mac mgmt tx flush mgmt pending 0
+[  317.421427] ath11k_pci 0000:05:00.0: mac remove interface (vdev 0)
 
-And my rebase is auto merged by git, then it inc twice for 
-num_pending_mgmt_tx.
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01230-QCAHSTSWPLZ_V2_TO_X86-1
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
 
-wgong@wgong-HP3-Z230-SFF-Workstation:~/ath11k/ath-upstream$ git 
-cherry-pick 0869610178a1
-Auto-merging drivers/net/wireless/ath/ath11k/wmi.c
-Auto-merging drivers/net/wireless/ath/ath11k/mac.c
-Auto-merging drivers/net/wireless/ath/ath11k/core.h
-Auto-merging drivers/net/wireless/ath/ath11k/core.c
-[add_wait_mgmt_ath-202111221436 954d233dbe34] ath11k: add wait operation 
-for tx management packets for flush from mac80211
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+---
+v3:
+   1. rebased to latest ath.git master ath-202111221436
+   2. fix the inc twice of num_pending_mgmt_tx issue
+   3. change commit log
 
-On 11/22/2021 8:19 PM, Kalle Valo wrote:
-> Wen Gong <quic_wgong@quicinc.com> writes:
->
->> In ath11k, tx of management packet is doing in a work queue. Sometimes
->> the workqueue does not finish tx immediately, then it lead after the next
->> step of vdev delete finished, it start to send the management packet to
->> firmware and lead firmware crash.
->>
->> ieee80211_set_disassoc have logic of ieee80211_flush_queues after it
->> send_deauth_disassoc to ath11k, its purpose is make sure the deauth
->> was actually sent, so it need to change ath11k to match the purpose
->> of mac80211.
->>
->> To address these issue wait for tx mgmt and tx data packets.
->>
->> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01230-QCAHSTSWPLZ_V2_TO_X86-1
->>
->> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> I sometimes see new warnings with this patch:
->
-> [  142.346474] ath11k_pci 0000:06:00.0: failed to flush mgmt transmit queue 0
-> [  147.466367] ath11k_pci 0000:06:00.0: failed to flush mgmt transmit queue 0
->
-> And more importantly this breaks suspend on my NUC testbox:
->
-> [  175.141820] PM: suspend entry (deep)
-> [  175.150512] Filesystems sync: 0.008 seconds
-> [  175.229703] Freezing user space processes ... (elapsed 0.003 seconds) done.
-> [  175.233506] OOM killer disabled.
-> [  175.233588] Freezing remaining freezable tasks ... (elapsed 0.001 seconds) done.
-> [  175.242457] printk: Suspending console(s) (use no_console_suspend to debug)
-> [  175.245269] wlan0: deauthenticating from 00:03:7f:48:81:59 by local choice (Reason: 3=DEAUTH_LEAVING)
-> [  175.285881] e1000e: EEE TX LPI TIMER: 00000011
-> [  180.745259] ath11k_pci 0000:06:00.0: failed to flush mgmt transmit queue 0
-> [  185.864977] ath11k_pci 0000:06:00.0: failed to flush mgmt transmit queue 0
-> [  185.970601] PM: Some devices failed to suspend, or early wake event detected
-> [  185.974081] usb usb3: root hub lost power or was reset
-> [  185.974135] usb usb4: root hub lost power or was reset
-> [  186.098870] nvme nvme0: 8/0/0 default/read/poll queues
-> [  186.297077] OOM killer enabled.
-> [  186.297361] Restarting tasks ... done.
-> [  186.343733] PM: suspend exit
->
-> My setup:
->
-> Tag:	ath-202111221111
->
-> [  151.123732] ath11k_pci 0000:06:00.0: MSI vectors: 32
-> [  151.123851] ath11k_pci 0000:06:00.0: qca6390 hw2.0
-> [  151.720618] ath11k_pci 0000:06:00.0: chip_id 0x0 chip_family 0xb board_id 0xff soc_id 0xffffffff
-> [  151.720912] ath11k_pci 0000:06:00.0: fw_version 0x101c06cc fw_build_timestamp 2020-06-24 19:50 fw_build_id
->
+v2: rebased to latest ath.git master ath-202111170737
+
+ drivers/net/wireless/ath/ath11k/core.c |  1 +
+ drivers/net/wireless/ath/ath11k/core.h |  1 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 51 +++++++++++++++++++++-----
+ drivers/net/wireless/ath/ath11k/wmi.c  | 12 +++++-
+ 4 files changed, 55 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index a3a9bfef0c38..c23264141e39 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1162,6 +1162,7 @@ static void ath11k_core_restart(struct work_struct *work)
+ 		idr_for_each(&ar->txmgmt_idr,
+ 			     ath11k_mac_tx_mgmt_pending_free, ar);
+ 		idr_destroy(&ar->txmgmt_idr);
++		wake_up(&ar->txmgmt_empty_waitq);
+ 	}
+ 
+ 	wake_up(&ab->wmi_ab.tx_credits_wq);
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 7b1770ae0e7c..f3624c9b1b11 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -549,6 +549,7 @@ struct ath11k {
+ 	/* protects txmgmt_idr data */
+ 	spinlock_t txmgmt_idr_lock;
+ 	atomic_t num_pending_mgmt_tx;
++	wait_queue_head_t txmgmt_empty_waitq;
+ 
+ 	/* cycle count is reported twice for each visited channel during scan.
+ 	 * access protected by data_lock
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 06d20658586a..9c77b08734af 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -5224,6 +5224,21 @@ static int __ath11k_set_antenna(struct ath11k *ar, u32 tx_ant, u32 rx_ant)
+ 	return 0;
+ }
+ 
++static void ath11k_mgmt_over_wmi_tx_drop(struct ath11k *ar, struct sk_buff *skb)
++{
++	int num_mgmt;
++
++	ieee80211_free_txskb(ar->hw, skb);
++
++	num_mgmt = atomic_dec_if_positive(&ar->num_pending_mgmt_tx);
++
++	if (num_mgmt < 0)
++		WARN_ON_ONCE(1);
++
++	if (!num_mgmt)
++		wake_up(&ar->txmgmt_empty_waitq);
++}
++
+ int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx)
+ {
+ 	struct sk_buff *msdu = skb;
+@@ -5240,7 +5255,7 @@ int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx)
+ 	info = IEEE80211_SKB_CB(msdu);
+ 	memset(&info->status, 0, sizeof(info->status));
+ 
+-	ieee80211_free_txskb(ar->hw, msdu);
++	ath11k_mgmt_over_wmi_tx_drop(ar, msdu);
+ 
+ 	return 0;
+ }
+@@ -5278,6 +5293,10 @@ static int ath11k_mac_mgmt_tx_wmi(struct ath11k *ar, struct ath11k_vif *arvif,
+ 	buf_id = idr_alloc(&ar->txmgmt_idr, skb, 0,
+ 			   ATH11K_TX_MGMT_NUM_PENDING_MAX, GFP_ATOMIC);
+ 	spin_unlock_bh(&ar->txmgmt_idr_lock);
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
++		   "mac tx mgmt frame, buf id %d\n", buf_id);
++
+ 	if (buf_id < 0)
+ 		return -ENOSPC;
+ 
+@@ -5324,7 +5343,7 @@ static void ath11k_mgmt_over_wmi_tx_purge(struct ath11k *ar)
+ 	struct sk_buff *skb;
+ 
+ 	while ((skb = skb_dequeue(&ar->wmi_mgmt_tx_queue)) != NULL)
+-		ieee80211_free_txskb(ar->hw, skb);
++		ath11k_mgmt_over_wmi_tx_drop(ar, skb);
+ }
+ 
+ static void ath11k_mgmt_over_wmi_tx_work(struct work_struct *work)
+@@ -5339,29 +5358,29 @@ static void ath11k_mgmt_over_wmi_tx_work(struct work_struct *work)
+ 		skb_cb = ATH11K_SKB_CB(skb);
+ 		if (!skb_cb->vif) {
+ 			ath11k_warn(ar->ab, "no vif found for mgmt frame\n");
+-			ieee80211_free_txskb(ar->hw, skb);
++			ath11k_mgmt_over_wmi_tx_drop(ar, skb);
+ 			continue;
+ 		}
+ 
+ 		arvif = ath11k_vif_to_arvif(skb_cb->vif);
+ 		if (ar->allocated_vdev_map & (1LL << arvif->vdev_id) &&
+ 		    arvif->is_started) {
+-			atomic_inc(&ar->num_pending_mgmt_tx);
+ 			ret = ath11k_mac_mgmt_tx_wmi(ar, arvif, skb);
+ 			if (ret) {
+-				if (atomic_dec_if_positive(&ar->num_pending_mgmt_tx) < 0)
+-					WARN_ON_ONCE(1);
+-
+ 				ath11k_warn(ar->ab, "failed to tx mgmt frame, vdev_id %d :%d\n",
+ 					    arvif->vdev_id, ret);
+-				ieee80211_free_txskb(ar->hw, skb);
++				ath11k_mgmt_over_wmi_tx_drop(ar, skb);
++			} else {
++				ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
++					   "mac tx mgmt frame, vdev_id %d\n",
++					   arvif->vdev_id);
+ 			}
+ 		} else {
+ 			ath11k_warn(ar->ab,
+ 				    "dropping mgmt frame for vdev %d, is_started %d\n",
+ 				    arvif->vdev_id,
+ 				    arvif->is_started);
+-			ieee80211_free_txskb(ar->hw, skb);
++			ath11k_mgmt_over_wmi_tx_drop(ar, skb);
+ 		}
+ 	}
+ }
+@@ -5392,6 +5411,7 @@ static int ath11k_mac_mgmt_tx(struct ath11k *ar, struct sk_buff *skb,
+ 	}
+ 
+ 	skb_queue_tail(q, skb);
++	atomic_inc(&ar->num_pending_mgmt_tx);
+ 	ieee80211_queue_work(ar->hw, &ar->wmi_mgmt_tx_work);
+ 
+ 	return 0;
+@@ -6850,6 +6870,17 @@ static void ath11k_mac_op_flush(struct ieee80211_hw *hw, struct ieee80211_vif *v
+ 				       ATH11K_FLUSH_TIMEOUT);
+ 	if (time_left == 0)
+ 		ath11k_warn(ar->ab, "failed to flush transmit queue %ld\n", time_left);
++
++	time_left = wait_event_timeout(ar->txmgmt_empty_waitq,
++				       (atomic_read(&ar->num_pending_mgmt_tx) == 0),
++				       ATH11K_FLUSH_TIMEOUT);
++	if (time_left == 0)
++		ath11k_warn(ar->ab, "failed to flush mgmt transmit queue %ld\n",
++			    time_left);
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
++		   "mac mgmt tx flush mgmt pending %d\n",
++		   atomic_read(&ar->num_pending_mgmt_tx));
+ }
+ 
+ static int
+@@ -8088,6 +8119,8 @@ int ath11k_mac_register(struct ath11k_base *ab)
+ 		ret = __ath11k_mac_register(ar);
+ 		if (ret)
+ 			goto err_cleanup;
++
++		init_waitqueue_head(&ar->txmgmt_empty_waitq);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 87351e0a269d..0e0487c7fec2 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -4873,6 +4873,7 @@ static int wmi_process_mgmt_tx_comp(struct ath11k *ar, u32 desc_id,
+ 	struct sk_buff *msdu;
+ 	struct ieee80211_tx_info *info;
+ 	struct ath11k_skb_cb *skb_cb;
++	int num_mgmt;
+ 
+ 	spin_lock_bh(&ar->txmgmt_idr_lock);
+ 	msdu = idr_find(&ar->txmgmt_idr, desc_id);
+@@ -4896,10 +4897,19 @@ static int wmi_process_mgmt_tx_comp(struct ath11k *ar, u32 desc_id,
+ 
+ 	ieee80211_tx_status_irqsafe(ar->hw, msdu);
+ 
++	num_mgmt = atomic_dec_if_positive(&ar->num_pending_mgmt_tx);
++
+ 	/* WARN when we received this event without doing any mgmt tx */
+-	if (atomic_dec_if_positive(&ar->num_pending_mgmt_tx) < 0)
++	if (num_mgmt < 0)
+ 		WARN_ON_ONCE(1);
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "wmi mgmt tx comp pending %d desc id %d\n",
++		   num_mgmt, desc_id);
++
++	if (!num_mgmt)
++		wake_up(&ar->txmgmt_empty_waitq);
++
+ 	return 0;
+ }
+ 
+-- 
+2.31.1
+
