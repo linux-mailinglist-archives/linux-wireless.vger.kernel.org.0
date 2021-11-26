@@ -2,92 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A10745EB92
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 11:29:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19DD745ECC0
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 12:36:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377069AbhKZKcI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Nov 2021 05:32:08 -0500
-Received: from so254-9.mailgun.net ([198.61.254.9]:42919 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377336AbhKZKaH (ORCPT
+        id S242061AbhKZLjY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Nov 2021 06:39:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53452 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242655AbhKZLhX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Nov 2021 05:30:07 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637922415; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=D36i+TEzYvAfF+8CwLgTruoyqqi5b/grJJSwC8YVulc=;
- b=vlvG2/+uQTJ1H7aKtcGVs4EDyhMaaMCzwGpdwVCKcC13XRFXUlBWBQ/JxShUyNYC+EjZSiWP
- FVYgwamAJ4ColJzhKTCSWJN3drRD29i9CF8wkiEUePySOI6/fCfygWK3NbjzJDepSYaLidTy
- 1OhXo6pR0P/3xnzHrQEYFsCqJyc=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
- 61a0b66e465c4a723bef9616 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 26 Nov 2021 10:26:54
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 24338C4363B; Fri, 26 Nov 2021 10:26:54 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C7042C4363B;
-        Fri, 26 Nov 2021 10:26:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C7042C4363B
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Fri, 26 Nov 2021 06:37:23 -0500
+Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54F7C061377
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 02:58:25 -0800 (PST)
+Received: by mail-ua1-x944.google.com with SMTP id p37so17751459uae.8
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 02:58:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=1mWmKyg34vlNfOejQ4Q/r+QB+22yx7RmVHSk6pM+Glg=;
+        b=HZyUhKado7lDRLcCXkBRMqcWZyIuEt6cbPeCEPVsTl6msZXz5r4Wdh4zEHOm4+HOlV
+         g1cs8zNF1ERcXB2+MxAU8bGXyVBnjKM0EvoZC+cerE2ild7vM9ZI6mUEyHOej7iBoHmX
+         iuAmifnvvM4cm/GCPd7ajKT3E6gbxAD9v1uNFhHqXf01YMR4MzsWfZgoEvBnZIfHZw+V
+         51quaZ9lFdE2039veV7rHDZf0nLJujbtB8P6df0OInf5Ocq5eUBh5nBk6HH9iK1C60Go
+         XG9wdpYY8gcIegWlgzE15L4URS9jUl60n9GtvKNwHEgoe0CgkU57YqnxBX4O0Ea4jDKM
+         3n/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=1mWmKyg34vlNfOejQ4Q/r+QB+22yx7RmVHSk6pM+Glg=;
+        b=fS3qZwiqRY+yV0YpNxM5eyn1fi9XuNzMEKlfAFBTe2nMjMTom/aMEX+QIYPvqixtFC
+         +2s/K2ORqXcQC22sIfo9fKs00i5j4uEtHUuLoZAbFsBi49xh1nLJj/AYHcVD+p8iobKK
+         ZPhas5IF+BMaiLDurK6DynhWJVZBbKK1KGTVMCPTGn5UBBVyhuryeqa8Z/ZDyaM2MN4L
+         ZG1bgqhVB9/NnfN3qoqzqL88njcAt0YnacYBGrWYMFNleRTq2rezfXf8kXKI0D71Rwem
+         hyO1fkVygYdcGOv8bpiLmDi3xJwnRbLZBakH445N/BmbqhSUhcpHWLjgA6LKPdXK5Fpz
+         clOA==
+X-Gm-Message-State: AOAM533ZtvXGBqBWjczdeYZ6lX5HBKRzJz873JX7Mofe/8FDvFwpN2k5
+        Uu6b+vb7dNXfYlNOmQ6K++QnQNGEFCfhlP9MXrA=
+X-Google-Smtp-Source: ABdhPJyVQ4JR1TFK1u46Tx3aoPHbx6wYpvy3QcRSKQKRORoLw7AjMZPyPRDkEWSdMawDwbreayGW9FWtq8b5YjupQuE=
+X-Received: by 2002:a05:6102:55a5:: with SMTP id dc37mr15894598vsb.62.1637924304659;
+ Fri, 26 Nov 2021 02:58:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 1/2] dt: bindings: add new DT entry for ath11k PCI
- device
- support
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1637839211-1503-1-git-send-email-akolli@codeaurora.org>
-References: <1637839211-1503-1-git-send-email-akolli@codeaurora.org>
-To:     Anilkumar Kolli <akolli@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org, robh@kernel.org,
-        Anilkumar Kolli <akolli@codeaurora.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163792240626.28516.5997258436480035214.kvalo@codeaurora.org>
-Date:   Fri, 26 Nov 2021 10:26:54 +0000 (UTC)
+Received: by 2002:ab0:20b3:0:0:0:0:0 with HTTP; Fri, 26 Nov 2021 02:58:24
+ -0800 (PST)
+Reply-To: uchennailobitenone@gmail.com
+From:   uchenna <robertanderson6016@gmail.com>
+Date:   Fri, 26 Nov 2021 02:58:24 -0800
+Message-ID: <CA+o7mw30wFMt=OPbwt3d4zm-XpUHW1NFWU51fa1xQku2ZpXniw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Anilkumar Kolli <akolli@codeaurora.org> wrote:
+May the Almighty Lord be with you....
+Am A WIDOW TO LATE MR David Lunner,  I AM 59 .YEARS OLD. My name is
+Josephine HOLLAND.  I am married to Late Mr. David HOLLAND, who worked
+in the France Embassy a here in Lome -Togo West Africa for nine years
+before he died in the
+year 2019.
 
-> Ath11k driver supports PCI devices such as QCN9074/QCA6390.
-> Ath11k firmware uses host DDR memory, DT entry is used to
-> reserve host DDR memory regions, send these memory base
-> addresses using DT entries.
-> 
-> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+You are chosen to Receive A Donation Cash Grant of my late husband
+that funds $5.7,000,  000,00 (Five Million Seven Hundred Thousand
+United States Dollars) to help the poor and orphanages through your
+sincere help before my death. I am suffering from long time cancer of
+the Breast, from all indication my conditions is really deteriorating
+and it is quite obvious that I wouldn't live any more longer according
+to my doctor because the cancer has gotten to a very bad stage that no
+hope for me to be a living person again, All i need from you is your
+sincerity to use this funds to do this project as i desired and I need
+your information as where My Bank will be sending the funds,
 
-Failed to apply, remember to use ath.git master branch as the baseline.
+such as:
+Receiver's name:_ Address:_ Phone
+number:_ Country:_
 
-error: patch failed: drivers/net/wireless/ath/ath11k/core.h:194
-error: drivers/net/wireless/ath/ath11k/core.h: patch does not apply
-error: patch failed: drivers/net/wireless/ath/ath11k/mhi.c:339
-error: drivers/net/wireless/ath/ath11k/mhi.c: patch does not apply
-stg import: Diff does not apply cleanly
+Please do not be offended by the way or manner I came to you as a
+stranger to do this, it is about the only way I could get to you after
+going through your contacts Id. I shall give you the contacts of the
+bank. For legitimacy with  a letter of authority that will establish
+you as my appointed beneficiary of this money.
 
-2 patches set to Changes Requested.
+I am waiting for your reply.
+From Sister Josephine HOLLAND.
 
-12638957 [v6,1/2] dt: bindings: add new DT entry for ath11k PCI device support
-12638955 [v6,2/2] ath11k: Use reserved host DDR addresses from DT for PCI devices
+You should contact me through my private email address:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1637839211-1503-1-git-send-email-akolli@codeaurora.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+mrsjosephineoneholland@gmail.com
