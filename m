@@ -2,103 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36ABC45F4B5
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 19:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A3A045F509
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 20:09:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240359AbhKZSi7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Nov 2021 13:38:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:41752 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241163AbhKZSg7 (ORCPT
+        id S233860AbhKZTMk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Nov 2021 14:12:40 -0500
+Received: from sv5122.xserver.jp ([202.254.236.123]:42042 "EHLO
+        sv5122.xserver.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229503AbhKZTKk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Nov 2021 13:36:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637951625;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Nq509O5VJBBOh3nT7tIsqnK6MK6HxW/KOgVMn9NaI7c=;
-        b=Jagzb+Cd2Dpo+0TQA4j7f7lz4dKbGnfor6IRAYQJZvMxR3tNwtbc3ooqyY59Qnv5KpC5Tk
-        8chUF6fCnTA08q9BnLZ3IaSf+A2iy3RnhPlZ9FcScOKLqqTVtScZ8ar26BLKifj+y0cJnd
-        Sq8Sy6YfjAbjcFAbK/iTqhtniU3BL/0=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-40-U-LOOHODPUqC9lZhLwtxrA-1; Fri, 26 Nov 2021 13:33:44 -0500
-X-MC-Unique: U-LOOHODPUqC9lZhLwtxrA-1
-Received: by mail-ed1-f71.google.com with SMTP id eg20-20020a056402289400b003eb56fcf6easo8565287edb.20
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 10:33:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=Nq509O5VJBBOh3nT7tIsqnK6MK6HxW/KOgVMn9NaI7c=;
-        b=YenWHUFoQnzgtx5RBp/Frvkb17qIJ+0KHRtMIKLdINSL813jBc0VM1+GzH5NZ4wUDt
-         rJOOdRdjo7yZzqAEoCZojtw57hPDOR7trAPmMOJttKQX1QrX2S6f0pf7u8FNzMJ0IvHz
-         YbrZOSiRFIS1DO78BZiUyiiYgvS4CYHUgBilqtYvW3HbZrFrbcRwN6BTpMF/bUo6Bo3R
-         Es4LT1dDycLHRVPSnge1fYkwOFySLUMdyg06oe+A1wKQrYc7cyrwALgjuDsg1do+5lXo
-         +Apvf4mY9LE5K+EDk+LTxcIY84zzEXmecwUkSTMPlkerybstMl4AVkN7+vYav6RGpkCd
-         qvDw==
-X-Gm-Message-State: AOAM530jwqPLkIVaVbjMsbx1M2idipsdIBUh3T3EBhxWVLrarfJZXW5T
-        Fi6TFCPBwFHvVK9dVSmL08/jyWlKXDFlly+zrdlV64U5rcsIBj40t7NRy9mKMnntAwQa85ccSKF
-        KZgf9ckeaZKhtu8ZF1iGkFJRymXY=
-X-Received: by 2002:a05:6402:1d50:: with SMTP id dz16mr48314631edb.309.1637951622668;
-        Fri, 26 Nov 2021 10:33:42 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyrEvKz5z8quBxIX6dxS95sO6nr347xEpoRJ/+f1sWE9m6gld50yPdn8Q0dtjDtcuDbAuDQ3Q==
-X-Received: by 2002:a05:6402:1d50:: with SMTP id dz16mr48314582edb.309.1637951622242;
-        Fri, 26 Nov 2021 10:33:42 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id ji14sm3585539ejc.89.2021.11.26.10.33.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Nov 2021 10:33:41 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id E6F731802A0; Fri, 26 Nov 2021 19:33:39 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Jonas Jelonek <jelonek.jonas@gmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "nbd@nbd.name" <nbd@nbd.name>,
-        Thomas Huehn <thomas.huehn@hs-nordhausen.de>
-Subject: Re: [PATCH] ath9k: switch to rate table based lookup
-In-Reply-To: <878rxb3qus.fsf@codeaurora.org>
-References: <20211125121652.6073-1-jelonek.jonas@gmail.com>
- <878rxcb4q2.fsf@toke.dk> <87a6hrwg1f.fsf@tynnyri.adurom.net>
- <CAChE-vTktHRW1JR8s1NNnLOqfBihd=5T2qXDsQDyBeecw95U0g@mail.gmail.com>
- <878rxb3qus.fsf@codeaurora.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Fri, 26 Nov 2021 19:33:39 +0100
-Message-ID: <87lf1aahrw.fsf@toke.dk>
+        Fri, 26 Nov 2021 14:10:40 -0500
+X-Greylist: delayed 469 seconds by postgrey-1.27 at vger.kernel.org; Fri, 26 Nov 2021 14:10:39 EST
+Received: from virusgw5001.xserver.jp (virusgw5001.xserver.jp [202.254.236.243])
+        by sv5122.xserver.jp (Postfix) with ESMTP id 8A8EC1837B6F2E
+        for <linux-wireless@vger.kernel.org>; Sat, 27 Nov 2021 03:59:36 +0900 (JST)
+Received: from sv5122.xserver.jp (202.254.236.123)
+ by virusgw5001.xserver.jp (F-Secure/fsigk_smtp/521/virusgw5001.xserver.jp);
+ Sat, 27 Nov 2021 03:59:36 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw5001.xserver.jp)
+Received: by sv5122.xserver.jp (Postfix, from userid 20129)
+        id 83E8C1837B6F2D; Sat, 27 Nov 2021 03:59:36 +0900 (JST)
+To:     linux-wireless@vger.kernel.org
+Subject: =?UTF-8?B?44CQ5qCq5byP5Lya56S+44Kq44Oq44Ko44Oz44K/44Or44CR44GK5ZWP44GE?=  =?UTF-8?B?5ZCI44KP44Gb44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ44CC?=
+Date:   Fri, 26 Nov 2021 18:59:36 +0000
+From:   =?UTF-8?B?5qCq5byP5Lya56S+44Kq44Oq44Ko44Oz44K/44Or?= 
+        <no-reply@orientalbattery.com>
+Message-ID: <qAeN4thXUZMQXtfDYadWS1HB3KvUqtFg9oqfSHA3RI@www.orientalbattery.com>
+X-Mailer: PHPMailer 6.5.0 (https://github.com/PHPMailer/PHPMailer)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+❤️ Alice want to meet you! Click Here: http://bit.do/fSGXu?v7if ❤️ 様
 
-> Jonas Jelonek <jelonek.jonas@gmail.com> writes:
->
->>> And how did you test this? Are both PCI and USB devices affected?
->>
->> I tested this on a 8devices Rambutan with QCA9558 SoC, but didn=E2=80=98t
->> explicitly test this with a USB device. I am not sure whether the
->> ath9k_htc is affected. First I tested this without the patch to get a
->> reference for comparison. I connected three devices via WiFi 2.4GHz
->> and 5GHz, generated traffic multiple times with iperf3 and captured
->> the rc_stats for each station. Then I applied the patch and did the
->> same again. The throughput was overall the same like without the
->> patch, compared to the first run of each station. Rate selection
->> worked fine, the stats were nearly identical, same rates selected in
->> both runs.
->
-> Thanks. Can someone review this from ath9k_htc point of view?
+本日、お問い合わせを受付致しました。
+お問い合わせ順に返信致しておりますが調査に時間が掛かる場合や
+多くのお問い合わせを頂いている場合は
+返信が遅れる場合がありますので予めご了承下さい。
 
-Pretty sure ath9k_htc devices do rate control in the firmware. Certainly
-ath9k_htc sets the HAS_RATE_CONTROL flag in mac80211, and the only calls
-to ath_set_rates are from within xmit.c, which is not used by ath9k_htc.
-So I think we're fine as far as that is concerned...
+▼送信内容は以下のとおりです。
+────────────────────────────
+お問合せ件名：mapkbuyu
+お名前：❤️ Alice want to meet you! Click Here: http://bit.do/fSGXu?v7if ❤️
+フリガナ：q8vfl39
+郵便番号：〒07069
+住所：aongqtgm
+電話：944023755336
+メールアドレス：linux-wireless@vger.kernel.org
+お問合せ内容：fk78qsl
 
--Toke
+────────────────────────────
+３営業日以上経過しても返信が届かない場合
+メール不達の可能性がありますので、お手数ではございますが
+ご連絡先のメールアドレスをご確認の上
+再度お問い合わせフォームよりご連絡をお願いいたします。
+
+メールサービスの設定やセキュリティソフトの受信設定などで
+当社からの返信メールが迷惑メールとして処理される可能性がございます。
+迷惑メールフォルダ等にメールが届いていないかどうか、ご確認下さい。
+
+それでは、当社スタッフからの返信をお待ちくださいます様、お願い致します。
 
