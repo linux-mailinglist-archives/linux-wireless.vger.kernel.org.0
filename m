@@ -2,122 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0961745E87A
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 08:27:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83C2945E8F6
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 09:04:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359196AbhKZHao (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Nov 2021 02:30:44 -0500
-Received: from so254-9.mailgun.net ([198.61.254.9]:42992 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244165AbhKZH2n (ORCPT
+        id S1353606AbhKZIHX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Nov 2021 03:07:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35976 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346525AbhKZIFX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Nov 2021 02:28:43 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637911531; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=MBMz0cO/oNQP/wB6HWt9zaLphI0aiUalenIK/sJd7II=; b=V72AMFh5Nv0U+t+NgiDhUs8rf3uxGFAlwPAbNh7aVH5yT9Ck3tV+4rYfQ2h59F7hk3ccYWtb
- xAU1BVSlM8d6L1N0xJl3GsdvXIi8qhPjPk25DX83o/O1afeKaCtvYXJbs6WBuJ9NliqTzySL
- ILgt3MtxanM7WOQ8qnlZTCi/3tw=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 61a08beae7d68470af0baded (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 26 Nov 2021 07:25:30
- GMT
-Sender: vjakkam=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 26F27C43616; Fri, 26 Nov 2021 07:25:30 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from hu-vjakkam-hyd.qualcomm.com (unknown [202.46.22.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: vjakkam)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B2126C4338F;
-        Fri, 26 Nov 2021 07:25:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B2126C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Veerendranath Jakkam <vjakkam@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH 2/2] nl80211: Add support to offload SA Query procedures for AP SME device
-Date:   Fri, 26 Nov 2021 12:55:19 +0530
-Message-Id: <1637911519-21306-2-git-send-email-vjakkam@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1637911519-21306-1-git-send-email-vjakkam@codeaurora.org>
-References: <1634210331-9001-1-git-send-email-vjakkam@codeaurora.org>
- <1637911519-21306-1-git-send-email-vjakkam@codeaurora.org>
+        Fri, 26 Nov 2021 03:05:23 -0500
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F5EC061574;
+        Fri, 26 Nov 2021 00:02:08 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id nh10-20020a17090b364a00b001a69adad5ebso7473097pjb.2;
+        Fri, 26 Nov 2021 00:02:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XzJnyLoKoL2r9pDH+TfKJ6Ptns8brv9wzjSrYeFUJRY=;
+        b=jYJZELPktFDX7CAoqTDsvJJLwcNzfbMrmElOJUr1wILVd3TKfNK9SZRHu6MReoeKzX
+         /xNnRvvMsmBCTVXsTz0Lh6qogczs0HrsLC9QTWkqPTzeax6bqmTisblUwI2vOc14olut
+         YZfoeuGCgOeDGY4RTJhzVx5Btag+g6ZO32+rEQ0Bc9cAk/pWJCHk8aWXybqa8gGj8qBc
+         NwOTsOjhhTV8KWOYIOm7HmFFqxOysUS/Y6GL0hIqyn2uKRiza7SXB5ePY+gL6EvJiRmS
+         S596D4sN38VUDzi5TfDZ/qWH3aOMjYePRr1l/gEMjXrfXeOEg3ekHoETIuUOEtQCEvls
+         PKIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XzJnyLoKoL2r9pDH+TfKJ6Ptns8brv9wzjSrYeFUJRY=;
+        b=OkMeh8lOVHfI0tcT8zqX9Kz/u4BiSOllKG33AylV5AIbKsyl5iCVL6SXE/8P2T3yhY
+         yPc3kViJN8bJgNGtb/ZLPCkzvUdX960+DnEgPqye0hnNMSjzFliiO8eJOssl0ZcMPmO2
+         6xeuvW86o0jdhF6/7thjtF5RwKWrxdPKBIWIkoyXswuC5cxzJbkNV6+PHwcwOG5QZOKZ
+         1mnsT4YjTG241ByWdvOgrEe7FmBj+RZCXUzSEPFawcKwHmG/VODXlI2zlG4pmIceBkvK
+         tjpaaOey9VkGwC8HcP5mp/27xjoOC3kl+GAXB0qlU/gHQ59FumUHhSe+qezeW/pL5zjX
+         OpFg==
+X-Gm-Message-State: AOAM530mxa0NxTBjfn4qwEoUZ5L5oAQeHBIGl80BFMIAob2GtNQfrGdL
+        0br4YsO0kXcSJ26y30o64qg=
+X-Google-Smtp-Source: ABdhPJyEIio+8d028r9zLBU0pWPVjuBfThCeUykJYzCCPF1yuy0UCnKT6HniyuVMlUo9f3fCyvvY3A==
+X-Received: by 2002:a17:902:ecc7:b0:141:e920:3b4c with SMTP id a7-20020a170902ecc700b00141e9203b4cmr36931831plh.64.1637913728169;
+        Fri, 26 Nov 2021 00:02:08 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id h128sm5589315pfg.212.2021.11.26.00.02.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Nov 2021 00:02:07 -0800 (PST)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: deng.changcheng@zte.com.cn
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        shayne.chen@mediatek.com, sean.wang@mediatek.com,
+        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
+        matthias.bgg@gmail.com, deren.wu@mediatek.com,
+        deng.changcheng@zte.com.cn, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] mt76: mt7921: fix boolreturn.cocci warning
+Date:   Fri, 26 Nov 2021 08:02:01 +0000
+Message-Id: <20211126080201.75259-1-deng.changcheng@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add a flag attribute to use in ap settings to indicate userspace
-supports offloading of SA Query procedures to driver. Also add AP SME
-device feature flag to advertise that the SA Query procedures offloaded
-to driver when userspace indicates support for offloading of SA Query
-procedures.
+From: Changcheng Deng <deng.changcheng@zte.com.cn>
 
-Driver handles SA Query procedures in driver's SME it self and skip
-sending SA Query request or response frames to userspace when userspace
-indicates support for SA Query procedures offload. But if userspace
-doesn't advertise support for SA Query procedures offload driver shall
-not offload SA Query procedures handling.
+./drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c: 223: 8-9: WARNING:
+return of 0/1 in function 'mt7921s_tx_status_data' with return type bool
 
-Also userspace with SA Query procedures offload capability shall skip SA
-Query specific validations when driver indicates support for handling SA
-Query procedures.
+Return statements in functions returning bool should use true/false
+instead of 1/0.
 
-Signed-off-by: Veerendranath Jakkam <vjakkam@codeaurora.org>
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Changcheng Deng <deng.changcheng@zte.com.cn>
 ---
- include/uapi/linux/nl80211.h | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 52ac549..96fbb60 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -5754,13 +5754,15 @@ enum nl80211_tdls_operation {
- 	NL80211_TDLS_DISABLE_LINK,
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+index 137f86a6dbf8..be17ce3ff06e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+@@ -216,5 +216,5 @@ bool mt7921s_tx_status_data(struct mt76_dev *mdev, u8 *update)
+ 	mt7921_mac_sta_poll(dev);
+ 	mt7921_mutex_release(dev);
  
--/*
-+/**
-  * enum nl80211_ap_sme_features - device-integrated AP features
-- * Reserved for future use, no bits are defined in
-- * NL80211_ATTR_DEVICE_AP_SME yet.
-+ * @NL80211_AP_SME_SA_QUERY_OFFLOAD: SA Query procedures offloaded to driver
-+ *	when user space indicates support for SA Query procedures offload during
-+ *	"start ap" with %NL80211_AP_SETTINGS_SA_QUERY_OFFLOAD_SUPPORT.
-+ */
- enum nl80211_ap_sme_features {
-+	NL80211_AP_SME_SA_QUERY_OFFLOAD		= 1 << 0,
- };
-- */
- 
- /**
-  * enum nl80211_feature_flags - device/driver features
-@@ -7488,9 +7490,15 @@ enum nl80211_mbssid_config_attributes {
-  *
-  * @NL80211_AP_SETTINGS_EXTERNAL_AUTH_SUPPORT: AP supports external
-  *	authentication.
-+ * @NL80211_AP_SETTINGS_SA_QUERY_OFFLOAD_SUPPORT: Userspace supports SA Query
-+ *	procedures offload to driver. If driver advertises
-+ *	%NL80211_AP_SME_SA_QUERY_OFFLOAD in AP SME features, userspace shall
-+ *	ignore SA Query procedures and validations when this flag is set by
-+ *	userspace.
-  */
- enum nl80211_ap_settings_flags {
- 	NL80211_AP_SETTINGS_EXTERNAL_AUTH_SUPPORT	= 1 << 0,
-+	NL80211_AP_SETTINGS_SA_QUERY_OFFLOAD_SUPPORT	= 1 << 1,
- };
- 
- #endif /* __LINUX_NL80211_H */
+-	return 0;
++	return false;
+ }
 -- 
-2.7.4
+2.25.1
 
