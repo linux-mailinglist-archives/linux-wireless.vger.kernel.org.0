@@ -2,115 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82C5E45EE4B
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 13:52:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 078DF45EF3B
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 14:36:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234345AbhKZMz1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Nov 2021 07:55:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42214 "EHLO
+        id S1349786AbhKZNji (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Nov 2021 08:39:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235914AbhKZMx1 (ORCPT
+        with ESMTP id S235745AbhKZNhi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Nov 2021 07:53:27 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3764DC08EB3B
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 04:08:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=n4Fm1DoCuwM+FHb+/LNaJokXU/GZLmeqzCZCy56FLcs=;
-        t=1637928532; x=1639138132; b=HmUQR+mU1nn8P+ZPjTeOZkd8jcsclTjqPXKXLj0el2cTzwV
-        27ykxSC0EhC0lHfW3OXNFR8PnoG9bGYyQqrkjm/cCBEhNPyh77TXDHKTn2BuPnzsGQkyQNugKvy7V
-        w0n++KBqtFdqAYpfX6GncQfre0vuDrsQa2XFURFgt53VoK5heWfRlIREl9Ow0tkVnVBKJmsfIvvur
-        XQax1UuSOrD72qyBdcK72Jy20g+CdVb5CvseAxsCrYwSR3EUiU0odDc0Fq1yjz8S1T+YsOtElnRXx
-        iWNHJuPUsed35gazv7j9dc8L4v2knpElTT7rZzkpN7kePSI9iDmaz3PM5tghwphw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mqa26-003Aat-Ef;
-        Fri, 26 Nov 2021 13:08:50 +0100
-Message-ID: <e870c4f0c0c04b3e4c95252b2d4722bf5dcba064.camel@sipsolutions.net>
-Subject: Re: [PATCH v4] nl80211: reset regdom when reloading regdb
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Finn Behrens <me@kloenk.dev>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 26 Nov 2021 13:08:49 +0100
-In-Reply-To: <20210526112418.cdwkn7ed4twctimc@imap.mailbox.org>
-References: <20210526112418.cdwkn7ed4twctimc@imap.mailbox.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
+        Fri, 26 Nov 2021 08:37:38 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0092FC061D60;
+        Fri, 26 Nov 2021 04:47:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:Subject:
+        From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+        :List-Post:List-Owner:List-Archive;
+        bh=yPU8L7bF8Dbr+OQK4JN8D/7w1vO9Hg+sl5nwkjTHnSI=; b=R4A997KMAT/PtNn+VO3qhUIEgc
+        2vA7QhsWK0ayenrF3vt6tR39lw3fJcvWlCn18DG7AOJxbNFd7xsn2Ho+E2lzJkVIevWdQ6WVV2o6H
+        ySAm4rygQ9bC3nif7/ECCGyxZMSZmc0mH27XBmIsVDYbVoRT3oBxKfJ9AjQ+pfXNs4nE=;
+Received: from p54ae9f3f.dip0.t-ipconnect.de ([84.174.159.63] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1mqadA-0005h2-JT; Fri, 26 Nov 2021 13:47:08 +0100
+Message-ID: <e098a58a-8ec0-f90d-dbc9-7b621e31d051@nbd.name>
+Date:   Fri, 26 Nov 2021 13:47:07 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+Content-Language: en-US
+To:     Peter Seiderer <ps.report@gmx.net>, linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+References: <20211116212828.27613-1-ps.report@gmx.net>
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: Re: [RFC v2] mac80211: minstrel_ht: do not set RTS/CTS flag for
+ fallback rates
+In-Reply-To: <20211116212828.27613-1-ps.report@gmx.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
 
-> Sorry for taking so long for a new version. The mail provider my company
-> is using had some major problems connecting to the LKML.
-> This is why I now are using my personal mail server.
-
-
-Did you resend this? Did I lose it before? Or maybe the list lost it and
-I had a copy? Confusing ...
-
-But anyway:
-
-> @@ -1113,6 +1116,26 @@ int reg_reload_regdb(void)
->  	regdb = db;
->  	rtnl_unlock();
->  
-> +	/* reset regulatory domain */
-> +	current_regdomain = get_cfg80211_regdom();
-
-
-This really is just
-
-	rcu_dereference_rtnl(cfg80211_regdomain);
-
-so it cannot be right that you just unlocked the RTNL and are not under
-RCU protection here?
-
-I guess we can just keep the RTNL, since ...
-
-
-> +	request = kzalloc(sizeof(*request), GFP_KERNEL);
-> +	if (!request) {
-> +		err = -ENOMEM;
-> +		goto out;
-> +	}
-> +
-> +	request->wiphy_idx = WIPHY_IDX_INVALID;
-> +	request->alpha2[0] = current_regdomain->alpha2[0];
-> +	request->alpha2[1] = current_regdomain->alpha2[1];
-> +	request->initiator = NL80211_USER_REG_HINT_USER;
-> +	request->user_reg_hint_type = NL80211_USER_REG_HINT_USER;
-> +	request->reload = true;
-> +
-> +	rtnl_lock();
-
-we acquire it again here anyway? Just need a new
-
-> +	reg_process_hint(request);
-
-out_unlock:
-> +	rtnl_unlock();
-
-label there.
-
+On 2021-11-16 22:28, Peter Seiderer wrote:
+> Despite the 'RTS thr:off' setting a wireshark trace of IBSS
+> traffic with HT40 mode enabled between two ath9k cards revealed
+> some RTS/CTS traffic.
 > 
-> @@ -2683,7 +2706,8 @@ reg_process_hint_user(struct regulatory_request *user_request)
->  
->  	treatment = __reg_process_hint_user(user_request);
->  	if (treatment == REG_REQ_IGNORE ||
-> -	    treatment == REG_REQ_ALREADY_SET)
-> +	    (treatment == REG_REQ_ALREADY_SET &&
-> +				!user_request->reload))
->  		return REG_REQ_IGNORE;
+> Debug and code analysis showed that most places setting
+> IEEE80211_TX_RC_USE_RTS_CTS respect the RTS strategy by
+> evaluating rts_threshold, e.g. net/mac80211/tx.c:
+> 
+>   698         /* set up RTS protection if desired */
+>   699         if (len > tx->local->hw.wiphy->rts_threshold) {
+>   700                 txrc.rts = true;
+>   701         }
+>   702
+>   703         info->control.use_rts = txrc.rts;
+> 
+> or drivers/net/wireless/ath/ath9k/xmit.c
+> 
+> 1238                 /*
+> 1239                  * Handle RTS threshold for unaggregated HT frames.
+> 1240                  */
+> 1241                 if (bf_isampdu(bf) && !bf_isaggr(bf) &&
+> 1242                     (rates[i].flags & IEEE80211_TX_RC_MCS) &&
+> 1243                     unlikely(rts_thresh != (u32) -1)) {
+> 1244                         if (!rts_thresh || (len > rts_thresh))
+> 1245                                 rts = true;
+> 1246                 }
+> 
+> The only place setting IEEE80211_TX_RC_USE_RTS_CTS unconditionally
+> was found in net/mac80211/rc80211_minstrel_ht.c.
+> 
+> As the use_rts value is only calculated after hitting the minstrel_ht code
+> preferre to not set IEEE80211_TX_RC_USE_RTS_CTS (and overruling the
+> RTS threshold setting) for the fallback rates case.
+The idea behind the this part of minstrel_ht code is to avoid the 
+overhead of RTS/CTS for transmissions using the primary rate and to 
+increase the reliability of retransmissions by adding it for fallback 
+rates. This is completely unrelated to the RTS threshold.
 
-That could use some nicer indentation :)
+If you don't want this behavior, I'm fine with adding a way to 
+explicitly disable it. However, I do think leaving it on by default 
+makes sense.
 
-johannes
+- Felix
