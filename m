@@ -2,98 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83C2945E8F6
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 09:04:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8A4745E9B3
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 09:54:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353606AbhKZIHX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Nov 2021 03:07:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35976 "EHLO
+        id S1359769AbhKZI6F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Nov 2021 03:58:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346525AbhKZIFX (ORCPT
+        with ESMTP id S1345831AbhKZI4E (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Nov 2021 03:05:23 -0500
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F5EC061574;
-        Fri, 26 Nov 2021 00:02:08 -0800 (PST)
-Received: by mail-pj1-x102f.google.com with SMTP id nh10-20020a17090b364a00b001a69adad5ebso7473097pjb.2;
-        Fri, 26 Nov 2021 00:02:08 -0800 (PST)
+        Fri, 26 Nov 2021 03:56:04 -0500
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C14C06174A
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 00:52:52 -0800 (PST)
+Received: by mail-ed1-x542.google.com with SMTP id w1so35944037edc.6
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 00:52:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=XzJnyLoKoL2r9pDH+TfKJ6Ptns8brv9wzjSrYeFUJRY=;
-        b=jYJZELPktFDX7CAoqTDsvJJLwcNzfbMrmElOJUr1wILVd3TKfNK9SZRHu6MReoeKzX
-         /xNnRvvMsmBCTVXsTz0Lh6qogczs0HrsLC9QTWkqPTzeax6bqmTisblUwI2vOc14olut
-         YZfoeuGCgOeDGY4RTJhzVx5Btag+g6ZO32+rEQ0Bc9cAk/pWJCHk8aWXybqa8gGj8qBc
-         NwOTsOjhhTV8KWOYIOm7HmFFqxOysUS/Y6GL0hIqyn2uKRiza7SXB5ePY+gL6EvJiRmS
-         S596D4sN38VUDzi5TfDZ/qWH3aOMjYePRr1l/gEMjXrfXeOEg3ekHoETIuUOEtQCEvls
-         PKIw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=zVlKoJV5QCc33RQJubZEDQDRV60YVKYMw2KVtAWGMJk=;
+        b=NM4yTnJE0+o3ugqNFxXEo4OV5mIAfzHUHFzC5zanm8KgSMfwYrWnbOoQrsH74nWOip
+         bALPWQlBGob9nbdY9cB+tUpPWX726hc2DftxNdRguXE2YaosbZFFVkArXx3xytU+jTVx
+         aTpOpZd/OhpQj9waqKrK65PWmozxQwr2Wp4T5OCLFNsuuF5Tz08iMqqJZunln83mgAnU
+         YcI81809lPE/fzb/lvr32Fp74eoiUkbIkzkKlP8DtxkoXc4Vsmz+cUB1MoX2yt3Ge1tg
+         NddOm69ha3VQgy35m8MSLzyZ4419RWav18IqoMe9m5Hns80VZTjTc7MDH+bgVALBxCb+
+         p1YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=XzJnyLoKoL2r9pDH+TfKJ6Ptns8brv9wzjSrYeFUJRY=;
-        b=OkMeh8lOVHfI0tcT8zqX9Kz/u4BiSOllKG33AylV5AIbKsyl5iCVL6SXE/8P2T3yhY
-         yPc3kViJN8bJgNGtb/ZLPCkzvUdX960+DnEgPqye0hnNMSjzFliiO8eJOssl0ZcMPmO2
-         6xeuvW86o0jdhF6/7thjtF5RwKWrxdPKBIWIkoyXswuC5cxzJbkNV6+PHwcwOG5QZOKZ
-         1mnsT4YjTG241ByWdvOgrEe7FmBj+RZCXUzSEPFawcKwHmG/VODXlI2zlG4pmIceBkvK
-         tjpaaOey9VkGwC8HcP5mp/27xjoOC3kl+GAXB0qlU/gHQ59FumUHhSe+qezeW/pL5zjX
-         OpFg==
-X-Gm-Message-State: AOAM530mxa0NxTBjfn4qwEoUZ5L5oAQeHBIGl80BFMIAob2GtNQfrGdL
-        0br4YsO0kXcSJ26y30o64qg=
-X-Google-Smtp-Source: ABdhPJyEIio+8d028r9zLBU0pWPVjuBfThCeUykJYzCCPF1yuy0UCnKT6HniyuVMlUo9f3fCyvvY3A==
-X-Received: by 2002:a17:902:ecc7:b0:141:e920:3b4c with SMTP id a7-20020a170902ecc700b00141e9203b4cmr36931831plh.64.1637913728169;
-        Fri, 26 Nov 2021 00:02:08 -0800 (PST)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id h128sm5589315pfg.212.2021.11.26.00.02.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Nov 2021 00:02:07 -0800 (PST)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: deng.changcheng@zte.com.cn
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        shayne.chen@mediatek.com, sean.wang@mediatek.com,
-        kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        matthias.bgg@gmail.com, deren.wu@mediatek.com,
-        deng.changcheng@zte.com.cn, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] mt76: mt7921: fix boolreturn.cocci warning
-Date:   Fri, 26 Nov 2021 08:02:01 +0000
-Message-Id: <20211126080201.75259-1-deng.changcheng@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=zVlKoJV5QCc33RQJubZEDQDRV60YVKYMw2KVtAWGMJk=;
+        b=QUBqTNG82DkF6e3or71ZzH7zwZzJpxKMsuLBY8Ybgl2YW3e4SGlvcaWq7LvHnTpjyb
+         qEBMN/R4PFuvkQ625KZgHLOfULHVk07KjI3FAFRcNhbBBeQ+lUSAVCcUB68GDfqHMM6A
+         iYjhJpgi7ic7+qdB1EpDYsuMIBAVFwS1SdenPU26g87WCpBM4C6QngYUpHyAGFFpAXRj
+         VGtBYiagyKQMkEBWWFkaV76Q9jI9hUUMIL8c5OgO+kCQ4mdFcBeTulsUSt0Y9rvv0jRS
+         dLv4g+08lSShKfLb//M62quE8vU9eJ1T0s8RNAenVMoQU8dIXdXl7qmrbNswSB6oiZwJ
+         jb7g==
+X-Gm-Message-State: AOAM533noRZZS6++4mR1sBLY95wUU47BpEcYur2IWBeQDV+1BQI93A/O
+        A6vmJac8DDkMW6SvEqUrC9hV5QS+IPpCGyohodw=
+X-Google-Smtp-Source: ABdhPJz01pTADrEoUWYeOTNxhDwZ+0FcAiysD9eZ4IbZx1cGLPgvTnE/WYwegnU3otOTqnXePLokCHeBMDZRcy3MOlw=
+X-Received: by 2002:a17:907:3f83:: with SMTP id hr3mr37856568ejc.555.1637916770475;
+ Fri, 26 Nov 2021 00:52:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a17:906:c194:0:0:0:0 with HTTP; Fri, 26 Nov 2021 00:52:49
+ -0800 (PST)
+Reply-To: mrsaishag45@gmail.com
+From:   Mrs Aisha Al-Qaddafi <asiha7154@gmail.com>
+Date:   Fri, 26 Nov 2021 00:52:49 -0800
+Message-ID: <CAFsn1c6y=4465FFZuMUb+VfXjB4YjxBOK+41HSRkMOyLbH4cEA@mail.gmail.com>
+Subject: Dear Friend,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Changcheng Deng <deng.changcheng@zte.com.cn>
+I came across your e-mail contact prior a private search while in need
+of your assistance. My name is Aisha Gaddafi a single
 
-./drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c: 223: 8-9: WARNING:
-return of 0/1 in function 'mt7921s_tx_status_data' with return type bool
+Mother and a Widow with three Children. I am the only biological
+Daughter of late Libyan President (Late Colonel Muammar
 
-Return statements in functions returning bool should use true/false
-instead of 1/0.
+Gaddafi).
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Changcheng Deng <deng.changcheng@zte.com.cn>
----
- drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I have investment funds worth Twenty Seven Million Five Hundred
+Thousand United State Dollar ($27.500.000.00 ) and i need a
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-index 137f86a6dbf8..be17ce3ff06e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-@@ -216,5 +216,5 @@ bool mt7921s_tx_status_data(struct mt76_dev *mdev, u8 *update)
- 	mt7921_mac_sta_poll(dev);
- 	mt7921_mutex_release(dev);
- 
--	return 0;
-+	return false;
- }
--- 
-2.25.1
+trusted investment Manager/Partner because of my current refugee
+status, however, I am interested in you for investment
 
+project assistance in your country, may be from there, we can build
+business relationship in the nearest future.
+
+I am willing to negotiate investment/business profit sharing ratio
+with you base on the future investment earning profits.
+If you are willing to handle this project on my behalf kindly reply
+urgent to enable me provide you more information about
+
+Best Regards
+Mrs Aisha Al-Qaddafi
