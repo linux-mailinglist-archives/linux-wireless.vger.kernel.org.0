@@ -2,180 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D47845F00A
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 15:40:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9D2E45EFE0
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 15:28:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377832AbhKZOnj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Nov 2021 09:43:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37550 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352938AbhKZOli (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Nov 2021 09:41:38 -0500
-X-Greylist: delayed 566 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 26 Nov 2021 06:11:38 PST
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90EE5C0698DC
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 06:11:38 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 97FDBB827E9
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 14:02:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39E6C93056;
-        Fri, 26 Nov 2021 14:02:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637935328;
-        bh=B3b6FkCqKoRuHAJc8ef4v3ZpBQerGLnSidN6gMgf2gU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lk+He6tNs4vB5v5r4S4YmUgFlM7UbxtwBVBG2sIvsBXuwfiE6HXaGfV91UU6FsFGS
-         IrRXKq6iuCtTT+VJmKgoaXNBoid+ygs6CJ1/q3pesDUD7QU8uJuS9uBjoHu/3aL9qu
-         1FRSq/W77SXw4KiO2sVVADW7Je0E/dr/sa1/0iTwgdaNYdCr5AamWFzj6C8O3HteYz
-         yG+CFK0f/7mhd4nldHrin+Q6J3JH5/tlcOQwbnaIauGW/SvG4VE5yAsTCuOqepA+b2
-         TAKwJAPpujUBY/zWEJAvSxoqQGVwmFCB9R14vVgwNKn0+CPBYXv7eRwLD4a9Uh9f7O
-         21nRpLsZvVmhA==
-Date:   Fri, 26 Nov 2021 15:02:03 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
-        ryder.lee@mediatek.com
-Subject: Re: [PATCH wireless-drivers] mt76: fix possible pktid leak
-Message-ID: <YaDo21+/MBeeuTDN@lore-desk>
-References: <a560caffcc24452fb48af53904bbe5c45ea5db93.1637602268.git.lorenzo@kernel.org>
- <163777451567.4686.3609119971518562275.kvalo@codeaurora.org>
+        id S1350822AbhKZObY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Nov 2021 09:31:24 -0500
+Received: from mout.gmx.net ([212.227.15.19]:50027 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1377680AbhKZO3Y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Nov 2021 09:29:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1637936761;
+        bh=RORlYk3nCRBTNpL3jgHcU3QrBA0W44b6IbvLH9lXNQA=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=hICtennXYLiECVSfC+rWTnPKZWhXA3V3kvXM4bP/WlO3JIchIhwr06zVfVmfys/Qd
+         epuuKyIYnWB6RJCxrAvKRZVTqmYGdqXbJHb7YnHC5FtXyVKmPfit7tbtbXJyOpY/vD
+         BYCU0NdXcnslqS9uEX5GxxOMeJrr6K9LXr9WXLgY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost ([62.216.209.164]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MXGvM-1n7Yut2gG6-00Ygws; Fri, 26
+ Nov 2021 15:26:01 +0100
+Date:   Fri, 26 Nov 2021 15:25:58 +0100
+From:   Peter Seiderer <ps.report@gmx.net>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [RFC v2] mac80211: minstrel_ht: do not set RTS/CTS flag for
+ fallback rates
+Message-ID: <20211126152558.4d9fbce3@gmx.net>
+In-Reply-To: <e098a58a-8ec0-f90d-dbc9-7b621e31d051@nbd.name>
+References: <20211116212828.27613-1-ps.report@gmx.net>
+        <e098a58a-8ec0-f90d-dbc9-7b621e31d051@nbd.name>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="S9AIYEuM7HvSKYM9"
-Content-Disposition: inline
-In-Reply-To: <163777451567.4686.3609119971518562275.kvalo@codeaurora.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0wYbdN4fhkxA4iepLxNMYjwuxCqluactjjNyhttz1I5sOv0NkEY
+ iYWF5PU1uhapP4Z6CDymiVDkD7xIuCf+6p//d6yfXIMjm8INQLyykUubjIh9ofnQr/r+WRX
+ Ulao9sRBulcIBIaOxvFOaxghSRrycsbAhKTGWHR1X11l9Stcor6np9PB4LpLh0BdgV1jkny
+ PaT9Ty8WuJolZKb0QmHaw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:kawEkXoYq94=:4WlTbTEqyqne8UDa1lQP1j
+ vHHHEt53IUvgOu+OILFiG77UeO4aMTLnuxF8GvTUWOpRZSkJO1816wxV4kDGxuOJKrIo4uFjM
+ 3b1D84asCHQnvBigs27wgYnMJ+2aSu5hxLXMSRw77UWbxMW+qI1Kve4vGjtifu63ZM8NrQN0r
+ GyqCzYT+8UOrRtMaq0HOIr7z0dsL/cK4r+/IZcgAEI+T+pQgq0aph0qvH0OiPEHZR148hHGbu
+ S8ZWLgB6XNpb0NZooYrSyh1VsX/5V1mV2PrPghEP1R6DKrPI5ImKtp8kJJ7lONPCkUNwd5Rk2
+ lWU74MGxxWTSEjeBf6BRXEoamIglUUwzN5BWr7u89Csv7BCYx6MPWDPeB76LCk0xrawVgXLzd
+ Llhk0NcKoe5l6Ri3NJR2DuryQ/+LnY+qbc5X5Bmy4zrbXGSHR1X1MBKt95x11wNMxTCtLUokD
+ cmxQvw8cuxOAbiB6h1ZZLpSf29PytcYfL+aInoqVB1psOMXW8VkJkD93IlbWUtbOd8WJLzEyQ
+ ziRe+4fbNb4EFhgQ42jFqJho7GRezWciASuQTCSg/3GB6EB3sejeRh6AvHHFo8AfQ91ZwSkqG
+ ZWveXxZj2qRgdrXNAg/rfqbGe3uiCLVUH+mXM3BOO70hOncVUANpilu1apWyexkWsr3JzLZcA
+ TkxV4sLuXPWPWmWONHWqdhWeoDzxCLXKBk8hjJvF1CTOau2mBrwUPc8YF395GECZPH4ohytS4
+ mL0D7RKwQAKkybZXrOQ4wQdytQkvdJRr/H88EYt1SBOfsWrmfZpyJM3B189tfzhiWkH9EQmS4
+ DTZ1M2rEz1OXUNUs6+EqXyT8K6/ctSQDiEjBk1bLHL1AX48deIKpePBQGBZxiCRAka6B3Zx/e
+ QFvT/krcCjCwMIddcbsA/ygTgLa8Wr/CmvDFaS/1VFRak78tSiLCzcBU2AB9OZII2ozRjFb27
+ O3qDGsioVoBDh7VjhsoaiR9+FcjijKwEFvXcIG2ff6aJ6XJ/5XXQ/UpBeKzR/qRzrf8BzJsiV
+ wfsPP5DW8M0C+4FTppaHfkLDiZTRCFmBkKELuxX7SSw7yScSR3gGIvqHcexw4KmUz9830+//b
+ cYnZUcMSQhripo=
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hello Felix,
 
---S9AIYEuM7HvSKYM9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Fri, 26 Nov 2021 13:47:07 +0100, Felix Fietkau <nbd@nbd.name> wrote:
 
-> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
->=20
-> > Fix a possible idr pkt-id leak if the packet is dropped on tx side
-> >=20
-> > Fixes: bd1e3e7b693c ("mt76: introduce packet_id idr")
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > Acked-by: Felix Fietkau <nbd@nbd.name>
->=20
-> Patch applied to wireless-drivers.git, thanks.
->=20
-> 2a9e9857473b mt76: fix possible pktid leak
+> On 2021-11-16 22:28, Peter Seiderer wrote:
+> > Despite the 'RTS thr:off' setting a wireshark trace of IBSS
+> > traffic with HT40 mode enabled between two ath9k cards revealed
+> > some RTS/CTS traffic.
+> >
+> > Debug and code analysis showed that most places setting
+> > IEEE80211_TX_RC_USE_RTS_CTS respect the RTS strategy by
+> > evaluating rts_threshold, e.g. net/mac80211/tx.c:
+> >
+> >   698         /* set up RTS protection if desired */
+> >   699         if (len > tx->local->hw.wiphy->rts_threshold) {
+> >   700                 txrc.rts =3D true;
+> >   701         }
+> >   702
+> >   703         info->control.use_rts =3D txrc.rts;
+> >
+> > or drivers/net/wireless/ath/ath9k/xmit.c
+> >
+> > 1238                 /*
+> > 1239                  * Handle RTS threshold for unaggregated HT frame=
+s.
+> > 1240                  */
+> > 1241                 if (bf_isampdu(bf) && !bf_isaggr(bf) &&
+> > 1242                     (rates[i].flags & IEEE80211_TX_RC_MCS) &&
+> > 1243                     unlikely(rts_thresh !=3D (u32) -1)) {
+> > 1244                         if (!rts_thresh || (len > rts_thresh))
+> > 1245                                 rts =3D true;
+> > 1246                 }
+> >
+> > The only place setting IEEE80211_TX_RC_USE_RTS_CTS unconditionally
+> > was found in net/mac80211/rc80211_minstrel_ht.c.
+> >
+> > As the use_rts value is only calculated after hitting the minstrel_ht =
+code
+> > preferre to not set IEEE80211_TX_RC_USE_RTS_CTS (and overruling the
+> > RTS threshold setting) for the fallback rates case.
+> The idea behind the this part of minstrel_ht code is to avoid the
+> overhead of RTS/CTS for transmissions using the primary rate and to
+> increase the reliability of retransmissions by adding it for fallback
+> rates. This is completely unrelated to the RTS threshold.
 
-Hi Kalle,
+How does it avoid RTS/CTS (if it is set independent by RTS threshold
+evaluation mac80211 and/or hardware driver)?
 
-Unfortunately I found a regression introduced by this patch for mt7663u (an=
-d I
-guess for mt7921s as well). Do you want me to post a fix or just a v2?
-Sorry for the noise.
+>
+> If you don't want this behavior, I'm fine with adding a way to
+> explicitly disable it. However, I do think leaving it on by default
+> makes sense.
 
-@Sean: can you please test the following patch on mt7921s? (I do not have t=
-he hw).
+I expected this (as otherwise the flag setting would not be there) ;-)
+
+Any hint how to implement an additional RTS/CTS on/off feature despite
+the RTS threshold one for use explicit by minstrel_ht? Configure option,
+module option, ...?
 
 Regards,
-Lorenzo
+Peter
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c b/drivers=
-/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-index bfe6c1579dc1..c51c1d82083e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
-@@ -43,10 +43,9 @@ EXPORT_SYMBOL_GPL(mt7663_usb_sdio_reg_map);
- static void
- mt7663_usb_sdio_write_txwi(struct mt7615_dev *dev, struct mt76_wcid *wcid,
- 			   enum mt76_txq_id qid, struct ieee80211_sta *sta,
--			   int pid, struct sk_buff *skb)
-+			   struct ieee80211_key_conf *key, int pid,
-+			   struct sk_buff *skb)
- {
--	struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
--	struct ieee80211_key_conf *key =3D info->control.hw_key;
- 	__le32 *txwi;
-=20
- 	txwi =3D (__le32 *)(skb->data - MT_USB_TXD_SIZE);
-@@ -188,6 +187,7 @@ int mt7663_usb_sdio_tx_prepare_skb(struct mt76_dev *mde=
-v, void *txwi_ptr,
- 	struct mt7615_dev *dev =3D container_of(mdev, struct mt7615_dev, mt76);
- 	struct sk_buff *skb =3D tx_info->skb;
- 	struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
-+	struct ieee80211_key_conf *key =3D info->control.hw_key;
- 	struct mt7615_sta *msta;
- 	int pad, err, pktid;
-=20
-@@ -205,7 +205,7 @@ int mt7663_usb_sdio_tx_prepare_skb(struct mt76_dev *mde=
-v, void *txwi_ptr,
- 	}
-=20
- 	pktid =3D mt76_tx_status_skb_add(&dev->mt76, wcid, skb);
--	mt7663_usb_sdio_write_txwi(dev, wcid, qid, sta, pktid, skb);
-+	mt7663_usb_sdio_write_txwi(dev, wcid, qid, sta, key, pktid, skb);
- 	if (mt76_is_usb(mdev)) {
- 		u32 len =3D skb->len;
-=20
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers=
-/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-index 85b3d88f8ecc..c7d54e5c8392 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-@@ -142,10 +142,9 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
- static void
- mt7921s_write_txwi(struct mt7921_dev *dev, struct mt76_wcid *wcid,
- 		   enum mt76_txq_id qid, struct ieee80211_sta *sta,
--		   int pid, struct sk_buff *skb)
-+		   struct ieee80211_key_conf *key, int pid,
-+		   struct sk_buff *skb)
- {
--	struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
--	struct ieee80211_key_conf *key =3D info->control.hw_key;
- 	__le32 *txwi;
-=20
- 	txwi =3D (__le32 *)(skb->data - MT_SDIO_TXD_SIZE);
-@@ -161,6 +160,7 @@ int mt7921s_tx_prepare_skb(struct mt76_dev *mdev, void =
-*txwi_ptr,
- {
- 	struct mt7921_dev *dev =3D container_of(mdev, struct mt7921_dev, mt76);
- 	struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(tx_info->skb);
-+	struct ieee80211_key_conf *key =3D info->control.hw_key;
- 	struct sk_buff *skb =3D tx_info->skb;
- 	int err, pad, pktid;
-=20
-@@ -180,7 +180,7 @@ int mt7921s_tx_prepare_skb(struct mt76_dev *mdev, void =
-*txwi_ptr,
- 	}
-=20
- 	pktid =3D mt76_tx_status_skb_add(&dev->mt76, wcid, skb);
--	mt7921s_write_txwi(dev, wcid, qid, sta, pktid, skb);
-+	mt7921s_write_txwi(dev, wcid, qid, sta, key, pktid, skb);
-=20
- 	mt7921_skb_add_sdio_hdr(skb, MT7921_SDIO_DATA);
- 	pad =3D round_up(skb->len, 4) - skb->len;
+>
+> - Felix
 
->=20
-> --=20
-> https://patchwork.kernel.org/project/linux-wireless/patch/a560caffcc24452=
-fb48af53904bbe5c45ea5db93.1637602268.git.lorenzo@kernel.org/
->=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
->=20
-
---S9AIYEuM7HvSKYM9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYaDo2wAKCRA6cBh0uS2t
-rLGHAQDoEWCdu8pgBsEra+Q+zZfimm7Nd9o8cpJZIVB/sAb4KwEAoZNP3z7yYE5j
-Wei6dEyWbPHuX5SJL5+qJN8GqgPTAwo=
-=xHP9
------END PGP SIGNATURE-----
-
---S9AIYEuM7HvSKYM9--
