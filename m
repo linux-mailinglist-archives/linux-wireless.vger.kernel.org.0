@@ -2,91 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C12F645EB38
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 11:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C91E45EBA8
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 11:32:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231382AbhKZKZM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Nov 2021 05:25:12 -0500
-Received: from m43-7.mailgun.net ([69.72.43.7]:42719 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230336AbhKZKXM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Nov 2021 05:23:12 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637922000; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=rf1Qj/gQ+mNKKp3kFoBiOBpr5ndsPA7Rx+um94+xG/g=;
- b=hHow+HuotFsO2Wl+8M/bl9xzy5mW/ph3W/Bu0kCS+eOWhtV5XjFydD2o2+WA7Xa5RNGUXoj2
- x05wlZomg09p6PwCUEcDtXPOG1VnTYFIMKZhKc2MjyFCsgaYz6JGUKF3YDwj22e+Ec8TtAJH
- 6ZldJnqwMRTBLF87HtCbGQcD7v0=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n10.prod.us-east-1.postgun.com with SMTP id
- 61a0b4ba3553c354be1efea4 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 26 Nov 2021 10:19:38
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 694BBC4360D; Fri, 26 Nov 2021 10:19:37 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D3F1CC43617;
-        Fri, 26 Nov 2021 10:19:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org D3F1CC43617
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1377148AbhKZKfV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Nov 2021 05:35:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40364 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1377345AbhKZKdV (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Nov 2021 05:33:21 -0500
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CDAC061746
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 02:20:51 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id r9-20020a7bc089000000b00332f4abf43fso7264703wmh.0
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Nov 2021 02:20:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flowbird.group; s=google;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=htHMI/IfeacFab0PI+tHJpaR3p/uUXIhLoo8ycBlalA=;
+        b=D8kok6+fJaatQa6jG2GJNdQQN4NSxGj+lYC0VRGnnkVG/tynRH7b1hBbOS3qO/BHsj
+         X1hiRPi7EEaa71RtzxZmtJQkDj980Wh2orpU+eTlheYKs+qm1hqvf28I8l58Kyr3ddSe
+         ZpTEHgGLjCjsQUoEMzm89dygYpAsiT64cEBZLI+ulXs9KEfwSLZGDz6xxPML36waj8Bv
+         kgYqvAaSGFmq/vjqc6/Y0MVNLY9BRog3dIK024vxo7JInCvuw7g2w/gzhta+4Z+pZetl
+         zQ7xHNolJHKSPgQ/3SwqUJ3W1BV3JP9myLEyKNRPZjDZAYSNl8xyaVVaolQ4bLToz4lT
+         TgdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=htHMI/IfeacFab0PI+tHJpaR3p/uUXIhLoo8ycBlalA=;
+        b=Gn8cjSFRQhK6poMxW+wz8Ls3w262zNq42yJQbUwE8vWgwuFKE79kcRXdhKu31VF49n
+         HzhIt41NRCzo5oL3dBm7xxuOQ7DW4hFQcBlh8GaAUjtXMCwp6iOfgehmbExIBKmmvVsS
+         JjDrTfRIt4xqIoLKg4DHDOsPRjaCQ+AzQkl/1/lF+KbChI479zJxSYLCd92IIE6pMxpB
+         wDzqszH4WesCwsdofrKaNNNktEVc7p3zxW+odRNS5JoP6TxYts53MIexsAj/DouIJZJn
+         EK9AB6yzN18ArkzULQyaJ6gAi9hQkXhQlV2p009ozKCXXhs4dC1RrJWityl4vH9sTRoT
+         JzWA==
+X-Gm-Message-State: AOAM530oG2XWPOmfkx6/wDcHhtSJ63jfgRc2aTOEyE3Ct9Gp3GzYVO2n
+        RFV8MlgypZ1SMxEEtosBkCfBwOizPlCt4YBht0E7gVPaj68rCA==
+X-Google-Smtp-Source: ABdhPJyGCo/fIJlneUBnMJeQzFdmuE2djELEIOqKBK9u4SE25XDzmw5lnYzgchpvqsm6HsZGKCrNCBhZok3PWdkUlXI=
+X-Received: by 2002:a1c:e918:: with SMTP id q24mr14573362wmc.108.1637922049639;
+ Fri, 26 Nov 2021 02:20:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wcn36xx: Use correct SSN for ADD BA request
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1637604251-11763-1-git-send-email-loic.poulain@linaro.org>
-References: <1637604251-11763-1-git-send-email-loic.poulain@linaro.org>
-To:     Loic Poulain <loic.poulain@linaro.org>
-Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
-        Loic Poulain <loic.poulain@linaro.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163792197409.23943.7303108798447763543.kvalo@codeaurora.org>
-Date:   Fri, 26 Nov 2021 10:19:37 +0000 (UTC)
+From:   "Fuzzey, Martin" <martin.fuzzey@flowbird.group>
+Date:   Fri, 26 Nov 2021 11:20:39 +0100
+Message-ID: <CANh8QzxPWN7uHGYaU1rpMF+J=vqjbLs+o325UcQc54+6OWiVHw@mail.gmail.com>
+Subject: [REGRESSION] mwifiex: mwifiex_get_chan_type noisy and possibly
+ incorrect after kernel upgrade
+To:     linux-wireless@vger.kernel.org
+Cc:     Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Loic Poulain <loic.poulain@linaro.org> wrote:
+Hi,
 
-> Since firmware uses its own sequence number counters, we need to
-> use firmware number as well when mac80211 generates the ADD_BA
-> request packet. Indeed the firmware sequence counters tend to
-> slightly drift from the mac80211 ones because of firmware offload
-> features like ARP responses. This causes the starting sequence
-> number field of the ADD_BA request to be unaligned, and can possibly
-> cause issues with strict/picky APs.
-> 
-> To fix this, we retrieve the current firmware sequence number for
-> a given TID through the smd_trigger_ba API, and use that number as
-> replacement of the mac80211 starting sequence number.
-> 
-> This change also ensures that any issue in the smd *ba procedures
-> will cause the ba action to properly fail, and remove useless call
-> to smd_trigger_ba() from IEEE80211_AMPDU_RX_START.
-> 
-> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+After upgrading an old system using a SD8787 wifi module from kernel
+4.4 to 5.4.143 I started getting error messages in the logs
+    mwifiex_sdio mmc2:0001:1: CMD_RESP: cmd 0x23f error, result=0x2
 
-Patch applied to ath-next branch of ath.git, thanks.
+The same error occurs on 5.15 too.
+With Android userspace this occurs every 3 seconds but can be
+reproduced with a Linux userspace too using the wpa_cli "signal_poll"
+command
+(Android polls that command via wpa_supplicant)
 
-23cddeb5a770 wcn36xx: Use correct SSN for ADD BA request
+root@hw-test:~# wpa_cli
+wpa_cli v2.8-devel
+Copyright (c) 2004-2019, Jouni Malinen <j@w1.fi> and contributors
+...
+Selected interface 'mlan0'
+Interactive mode
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1637604251-11763-1-git-send-email-loic.poulain@linaro.org/
+> signal_poll
+[  143.963217] mwifiex_sdio mmc2:0001:1: CMD_RESP: cmd 0x23f error, result=0x2
+RSSI=-5
+LINKSPEED=65
+NOISE=-75
+FREQUENCY=2437
+WIDTH=20 MHz
+CENTER_FRQ1=2437
+AVG_RSSI=-5
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Firmware version is 14.68.35.p66  (latest from linux-firmware git)
 
+The 0x23f command is HostCmd_CMD_STA_CONFIGURE and was added in 4.16 by
+    28bf8312a983 ("mwifiex: get_channel from firmware")
+
+I don't see anywhere in the code defining the 0x2 result code.
+
+The error occurs during processing of the netlink
+NL80211_CMD_GET_INTERFACE command which is part of
+wpa_supplicant's nl80211_signal_poll()
+
+Kernel side callstack is
+nl80211_get_interface
+    nl80211_send_iface
+        mwifiex_cfg80211_get_channel
+                mwifiex_get_chan_type
+                    mwifiex_get_chan_info
+                        mwifiex_send_cmd(HostCmd_CMD_STA_CONFIGURE,
+HostCmd_ACT_GEN_GET)
+
+
+In addition to the log spam the result is also potentially incorrect
+since when the command fails a 20MHz channel width is assumed.
+The connection still works correctly however
+
+Regards,
+
+Martin
