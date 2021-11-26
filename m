@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A81AE45E549
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 03:39:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C45DF45E5AC
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 04:00:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357840AbhKZClT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 Nov 2021 21:41:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48206 "EHLO mail.kernel.org"
+        id S1357778AbhKZCoJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 Nov 2021 21:44:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49808 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1357972AbhKZCjS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 Nov 2021 21:39:18 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DCBAE61216;
-        Fri, 26 Nov 2021 02:33:51 +0000 (UTC)
+        id S1358325AbhKZClg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 25 Nov 2021 21:41:36 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 919016125F;
+        Fri, 26 Nov 2021 02:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637894033;
-        bh=XcuOgcUdbTwCSa9SaaIdRMs1PJjFve2WsNdd9Ot6f5o=;
+        s=k20201202; t=1637894093;
+        bh=8n2IBl+k1S/Bq+MjR5lhlxC6Vz+D8xdsiTdby2ApKEc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gqBsFMumeRJdtQEJQ2v+Y8mwW1yVlpZPyZc+cd9VGcj1vxHwU6aKiFZUUDJrSBDws
-         lz2uPNmYxhazsXbyTePuqISnDLvIDoQ9AOrDT+VQMHPYZnoF3nYwE5291V41UEKE5T
-         Bh7y1n4rz3NmbpBOsJxue1WxNWktcg+dSCqEApbe9gvGOpRQeznBSPhrGcbyfa1Z8f
-         ooCgF4yXFxuyfwENvS+/7phH6vQ+moa7SmlUza8w+uy6Uc5+Gm6MEH8cf7pPAQ2C/j
-         SuhzyTLBmOAXO4lBtr1kVh/QmYKgBNYqG0O58HeTNZCSXAz+YKkMftsN9EYKpu/MQ2
-         Sp8/0n8/0R0CQ==
+        b=bt4+np51pe+p07qFgTRmCmrgZgXpZlcsRuZvHwUnb/Cc+n1YL5KduUgA1RiTY3Ej6
+         NztwP+pfJw023+3fFE7Vmo72VlBpOFWOnDeOCVN6zPyHONSnjcdqd7JNBVuC1IHnj/
+         8uy+j/KEEezU7uXvd4xWACHoy6fqE6KtZnKblfSObt7qUvTxXeatJ+PJR/McZle8Yd
+         MnAUy79pa4zSnTFSOfZhUVLilbEMjoIbUC5KIm/nMq7YyWL2YJ3CrfJaoK5aZk2xdl
+         TQHfPn+jYeqcPq85+k4irHh1EffK698u7vS8n4XBUYWeK0lEzaRKa9hizPfqJbjGJz
+         WD7LG11Cz4d+Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Xing Song <xing.song@mediatek.com>,
@@ -32,12 +32,12 @@ Cc:     Xing Song <xing.song@mediatek.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 05/28] mac80211: do not access the IV when it was stripped
-Date:   Thu, 25 Nov 2021 21:33:20 -0500
-Message-Id: <20211126023343.442045-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 03/19] mac80211: do not access the IV when it was stripped
+Date:   Thu, 25 Nov 2021 21:34:32 -0500
+Message-Id: <20211126023448.442529-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211126023343.442045-1-sashal@kernel.org>
-References: <20211126023343.442045-1-sashal@kernel.org>
+In-Reply-To: <20211126023448.442529-1-sashal@kernel.org>
+References: <20211126023448.442529-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -64,10 +64,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index b7979c0bffd0f..6a24431b90095 100644
+index c7e6bf7c22c78..282bf336b15a4 100644
 --- a/net/mac80211/rx.c
 +++ b/net/mac80211/rx.c
-@@ -1945,7 +1945,8 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
+@@ -1918,7 +1918,8 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
  		int keyid = rx->sta->ptk_idx;
  		sta_ptk = rcu_dereference(rx->sta->ptk[keyid]);
  
