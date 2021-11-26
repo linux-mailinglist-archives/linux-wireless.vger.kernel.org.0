@@ -2,117 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A9545E838
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 08:08:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A6F045E845
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Nov 2021 08:10:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359164AbhKZHLX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 Nov 2021 02:11:23 -0500
-Received: from mga17.intel.com ([192.55.52.151]:50230 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235855AbhKZHJT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 Nov 2021 02:09:19 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10179"; a="216329849"
-X-IronPort-AV: E=Sophos;i="5.87,265,1631602800"; 
-   d="scan'208";a="216329849"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2021 23:05:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,265,1631602800"; 
-   d="scan'208";a="475825212"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 25 Nov 2021 23:05:18 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mqVIL-0007ja-LQ; Fri, 26 Nov 2021 07:05:17 +0000
-Date:   Fri, 26 Nov 2021 15:04:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     MeiChia Chiu <MeiChia.Chiu@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>
-Cc:     kbuild-all@lists.01.org,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        MeiChia Chiu <meichia.chiu@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>
-Subject: Re: [PATCH] mt76: mt7915: update station's airtime and gi from event
-Message-ID: <202111261430.O1AAGfiL-lkp@intel.com>
-References: <20211125091330.27770-1-MeiChia.Chiu@mediatek.com>
+        id S1359247AbhKZHN2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 Nov 2021 02:13:28 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:34145 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1359165AbhKZHLY (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 26 Nov 2021 02:11:24 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1637910491; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=swNbSpL9NrkKIqUCrUAbzYrdHuaxTEssIoG3jn+q+Pg=; b=nGSYshvk1Pw8UMFtCCOjaXdASCRarmWabwauzHccHn0MiaDWAE3lcwoavMWU8v5LoUy+lm8j
+ RmNKWxw6ESk/2cLd90Px25Rctvm77GDIVzsaGFBPYReTvhjEO2lerHgTJaEOWeoGQF1PI97H
+ Vr8XJBrCTqHS1qUCsy8cLKQAFEQ=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 61a087d34fca5da46dd91232 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 26 Nov 2021 07:08:03
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D68F7C4360D; Fri, 26 Nov 2021 07:08:02 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BA87EC43618;
+        Fri, 26 Nov 2021 07:08:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org BA87EC43618
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Cc:     Jonas Jelonek <jelonek.jonas@gmail.com>,
+        linux-wireless@vger.kernel.org, kvalo@codeaurora.org, nbd@nbd.name,
+        Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+Subject: Re: [PATCH] ath9k: switch to rate table based lookup
+References: <20211125121652.6073-1-jelonek.jonas@gmail.com>
+        <878rxcb4q2.fsf@toke.dk>
+Date:   Fri, 26 Nov 2021 09:07:56 +0200
+In-Reply-To: <878rxcb4q2.fsf@toke.dk> ("Toke \=\?utf-8\?Q\?H\=C3\=B8iland-J\?\=
+ \=\?utf-8\?Q\?\=C3\=B8rgensen\=22's\?\= message of
+        "Thu, 25 Nov 2021 17:05:41 +0100")
+Message-ID: <87a6hrwg1f.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211125091330.27770-1-MeiChia.Chiu@mediatek.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi MeiChia,
+Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
 
-Thank you for the patch! Perhaps something to improve:
+> Jonas Jelonek <jelonek.jonas@gmail.com> writes:
+>
+>> This patch changes mac80211 rate control for the ath9k driver.
+>> The rate lookup per packet is changed from legacy usage of
+>> ieee80211_get_tx_rates() to the new rate table based lookup
+>> in struct ieee80211_sta.rates.
+>
+> What's the practical implication of this? Performance benefits, better
+> rates selected, or what? Got any benchmark numbers?
 
-[auto build test WARNING on kvalo-wireless-drivers-next/master]
-[also build test WARNING on kvalo-wireless-drivers/master v5.16-rc2 next-20211125]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+And how did you test this? Are both PCI and USB devices affected?
 
-url:    https://github.com/0day-ci/linux/commits/MeiChia-Chiu/mt76-mt7915-update-station-s-airtime-and-gi-from-event/20211125-171608
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-config: riscv-allyesconfig (https://download.01.org/0day-ci/archive/20211126/202111261430.O1AAGfiL-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/446d4941b6395463c374c2281241769ca0abaad9
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review MeiChia-Chiu/mt76-mt7915-update-station-s-airtime-and-gi-from-event/20211125-171608
-        git checkout 446d4941b6395463c374c2281241769ca0abaad9
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=riscv SHELL=/bin/bash drivers/net/wireless/
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-   In file included from drivers/net/wireless/mediatek/mt76/mt7915/main.c:9:
->> drivers/net/wireless/mediatek/mt76/mt7915/mcu.h:234:1: warning: no semicolon at end of struct or union
-     234 | };
-         | ^
---
-   In file included from drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:7:
->> drivers/net/wireless/mediatek/mt76/mt7915/mcu.h:234:1: warning: no semicolon at end of struct or union
-     234 | };
-         | ^
-   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c:2516:5: warning: no previous prototype for 'mt7915_mcu_set_fixed_rate' [-Wmissing-prototypes]
-    2516 | int mt7915_mcu_set_fixed_rate(struct mt7915_dev *dev,
-         |     ^~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +234 drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-
-   217	
-   218	struct mt7915_mcu_sta_stat {
-   219		u8 event_id;
-   220		u8 more_event;
-   221		__le16 sta_num;
-   222		union {
-   223			struct {
-   224				__le16 wlan_id;
-   225				__le32 tx_time[4];
-   226				__le32 rx_time[4];
-   227			} airtime[0];
-   228			struct {
-   229				__le16 wlan_id;
-   230				u8 gimode;
-   231				u8 rsv;
-   232			} gi[0];
-   233		}
- > 234	};
-   235	
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
