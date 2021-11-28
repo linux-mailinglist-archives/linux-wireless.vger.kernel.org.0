@@ -2,72 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EC31460816
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Nov 2021 18:33:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37D06460902
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Nov 2021 19:38:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345240AbhK1RgZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 28 Nov 2021 12:36:25 -0500
-Received: from mail-qk1-f181.google.com ([209.85.222.181]:35550 "EHLO
-        mail-qk1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346095AbhK1ReX (ORCPT
+        id S230218AbhK1Slv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 28 Nov 2021 13:41:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33624 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233918AbhK1Sju (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 28 Nov 2021 12:34:23 -0500
-Received: by mail-qk1-f181.google.com with SMTP id m192so20326344qke.2;
-        Sun, 28 Nov 2021 09:31:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=HOZnfEPnttr55dyGpAF+JeLswq5rht0r3DHq2CKTKuk=;
-        b=vCpf3eMWJiUxkhHkhreZjNxgtv5z/gN8zCRPUN92bioplJ/trEv/BZvXmIVE0Vd1uc
-         VxUh6I2VyJgWD8PpeJqJIwjA7SuarG86KNq8oAC6DOXt/Q13D2ssXM2Wa4hdbZ80gCq1
-         wmM15R80RHfYx7oFN8HVYSrVwtyqKGxoto0BVAKc9gvxPadpMYb0JmVYLt5AwJzdpdgx
-         vPqvhac+PfAZQmybL3b42ICZQFGDbTSPVbVOft7mWSXS/DajsfzuVeeuUjpc99JHPNdg
-         nJVFjH4LeiknoZfnufaZTWFBqcFEQtOTcOQZwqC/s05qdJD26Nd4clS0UOLf+BK6hypg
-         U0pQ==
-X-Gm-Message-State: AOAM531xMq7tuZBU45nqWCEeBWjkNcyKHkdGRcdHtNIv8yFM15GQ7RQ6
-        MQrXB3Xzy4kQ7388YkUN64HMr2CFxw==
-X-Google-Smtp-Source: ABdhPJw2+ifIMe/CTu4PVjr7v5xnwHL3/1YCQErz+a7uZySRa0cZy8m8hz+QmW2K3pxxRGtHLFXxnw==
-X-Received: by 2002:a05:620a:1a19:: with SMTP id bk25mr33386927qkb.479.1638120666584;
-        Sun, 28 Nov 2021 09:31:06 -0800 (PST)
-Received: from robh.at.kernel.org ([2607:fb90:2edc:4e01:e871:814a:5254:ea69])
-        by smtp.gmail.com with ESMTPSA id a17sm5824475qkp.108.2021.11.28.09.31.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Nov 2021 09:31:05 -0800 (PST)
-Received: (nullmailer pid 2774543 invoked by uid 1000);
-        Sun, 28 Nov 2021 17:31:03 -0000
-Date:   Sun, 28 Nov 2021 11:31:03 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Anilkumar Kolli <akolli@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH v6 1/2] dt: bindings: add new DT entry for ath11k PCI
- device support
-Message-ID: <YaO81+V2Mt/ImYxO@robh.at.kernel.org>
-References: <1637839211-1503-1-git-send-email-akolli@codeaurora.org>
+        Sun, 28 Nov 2021 13:39:50 -0500
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050::465:101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D17AC06175E
+        for <linux-wireless@vger.kernel.org>; Sun, 28 Nov 2021 10:34:37 -0800 (PST)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4J2HFg5CHxzQjgG;
+        Sun, 28 Nov 2021 19:34:31 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
+        t=1638124461;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=oA8D1lCU7CeyPITNQVRngT8Pi1cm3Q47+Grcj4jH22c=;
+        b=RhvH+bJWLyR+8EyBZAG+E+zn99aIXtL7iu/rwcPwG/oPRjmNcU4/cAFdSCslSYlpF8XUba
+        mfT4Mi1Ehhf7/wAgUMsrNkyzMNYy+/817a4qEKg6smEapqxDM2EUPaTtUShAiREGPqrPAa
+        IdONUAhnQ9CprbCg3cHNFgagugAcz8H24JESkAp0Yfji9EoFVSuqupSdh/6SZrke3tJleJ
+        pM6UmjTGttQ1uh/bgKwBVuQGF7FD7HtYmzXcN3yI69tCOHYUaQS3CDdox8DHv9/+rudj/K
+        RWeH0JwA49wx3VwGNza95umCexobqswJLGSdhwENFKr97hPoyDZQ+W9rEpKYWQ==
+Subject: Re: [PATCH v2] mt76: eeprom: tolerate corrected bit-flips
+To:     Daniel Golle <daniel@makrotopia.org>,
+        linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org
+Cc:     Ryder Lee <ryder.lee@mediatek.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
+References: <YZ/nv74JH/uQwpBt@makrotopia.org>
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Message-ID: <c544231a-4939-4924-ab94-f650c93a66a0@hauke-m.de>
+Date:   Sun, 28 Nov 2021 19:34:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1637839211-1503-1-git-send-email-akolli@codeaurora.org>
+In-Reply-To: <YZ/nv74JH/uQwpBt@makrotopia.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 25 Nov 2021 16:50:10 +0530, Anilkumar Kolli wrote:
-> Ath11k driver supports PCI devices such as QCN9074/QCA6390.
-> Ath11k firmware uses host DDR memory, DT entry is used to
-> reserve host DDR memory regions, send these memory base
-> addresses using DT entries.
+On 11/25/21 8:45 PM, Daniel Golle wrote:
+> mtd_read() returns -EUCLEAN in case of corrected bit-flips.
+> As data was read, don't error out in this case.
 > 
-> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+
+Acked-by: Hauke Mehrtens <hauke@hauke-m.de>
+
+I tried a similar patch on my device before and it solved the problem too.
+
 > ---
-> V4:
->   - Fix dt_binding_check warnings (Rob)
-> V2:
->   - Use reserved-memory (Rob)
+> v2: fix wrong variable name
 > 
->  .../bindings/net/wireless/qcom,ath11k.yaml         | 30 ++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
+>   drivers/net/wireless/mediatek/mt76/eeprom.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+> index 2d58aa31db934..4a5d14473ddc4 100644
+> --- a/drivers/net/wireless/mediatek/mt76/eeprom.c
+> +++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+> @@ -65,7 +65,7 @@ int mt76_get_of_eeprom(struct mt76_dev *dev, void *eep, int offset, int len)
+>   	offset = be32_to_cpup(list);
+>   	ret = mtd_read(mtd, offset, len, &retlen, eep);
+>   	put_mtd_device(mtd);
+> -	if (ret) {
+> +	if (ret && !mtd_is_bitflip(ret)) {
+>   		dev_err(dev->dev, "reading EEPROM from mtd %s failed: %i\n",
+>   			part, ret);
+>   		goto out_put_node;
 > 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
