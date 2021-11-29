@@ -2,68 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E039346158B
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 13:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64400461428
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 12:49:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232822AbhK2M4M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Nov 2021 07:56:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45200 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232891AbhK2MyM (ORCPT
+        id S238663AbhK2LwV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Nov 2021 06:52:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:60522 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236069AbhK2LuQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Nov 2021 07:54:12 -0500
-Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EA4BC08EAEE
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 03:35:43 -0800 (PST)
-Received: by mail-vk1-xa30.google.com with SMTP id s1so2369697vks.9
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 03:35:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=argLEM5PENDrg5kgQHigjDQKj69yQI8BEKRU8DCve18=;
-        b=Ydz1vsTGQdKpYz7X3XwufWI6xJm8Il0IhlOM2Ces53qcMbAWDXUA1Dqq1i0AcVGPci
-         xxH01+IXA5UWTz3gxD8Uc2ewsI3fbgKKfoGI8JPDBySqnh78t8zThndFM3SPvTl7xpHz
-         syAe81Ti14PRRwnJq9OZz70xnTydemmmu8IFmsJrGSRRwztuF435AAU1pN3gpxRCadmK
-         uwJtDL27aRhXhw1RiZDaHgihAj4Ya1gyhY1ZC1ZOGMhLlC9xQFIIpCYMA7idRD/5KucO
-         ZK7fjRUf42002MQhQxhcRkNOogd1T95l8jTu9+iqfHmStvBFkNLZW4V8f+Isb82I+njh
-         /B8A==
+        Mon, 29 Nov 2021 06:50:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1638186418;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mOhMvjNUpAatTJjpg94z43eovPBVGYPtIJjaf1OGP34=;
+        b=AQj7NeIEWxX1XgsnTAr4vGDB4gfaLaEfRtVmInngZ4Ffu28p5/Mm8oAD2Iu5avExjRst68
+        KDNkOXwFWphrBOb1uNghMMKU6kFWPibqQfqxo7yrZlcInIhx93fTpx/RFPMrt/D0Wjq1uJ
+        eqPSEihRwe+cKJipe5A//YXDTjOou70=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-276-s4_EuQAAMy6VzpGnujYQ3g-1; Mon, 29 Nov 2021 06:46:57 -0500
+X-MC-Unique: s4_EuQAAMy6VzpGnujYQ3g-1
+Received: by mail-ed1-f69.google.com with SMTP id m12-20020a056402430c00b003e9f10bbb7dso13450877edc.18
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 03:46:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=argLEM5PENDrg5kgQHigjDQKj69yQI8BEKRU8DCve18=;
-        b=pX+37pVnN+DYVNeDRCR9Og2ru7OuN3X0LHIKa1/SCNM8bmWNHci8hjAtU8/zngc2kJ
-         THZb6HUqX0OT2KZVagziMEL/W2S9Vi4Joo2vkycNQ9M58tvVFMwIU376ikGwO0j4WVHk
-         WH/VnTQmgy5B/0yRVWesfeOGnvqrX3K34buPdVODf4rvCL23n1h7aJ2IQxRmEMjQ6Ttd
-         iK3V1ird+/CL2pys2Y5jslKze/O2+b0vezXaO2LKT+duX8dio0hzIfgUPrwSAWepveph
-         VouUeT4bu/VofAYpOuW7Cd3VKjZeLosOWvRd/9zdEKu0tT/QlEX8mgMYy4bT/QxyWKre
-         5lDA==
-X-Gm-Message-State: AOAM532+UceyrZNHGkO+JPBjcmZiswp+Y9gTkqD8FjoHwgX+VUH7bVQB
-        1GKlliqrkTO/sAcH7JYhuoEbtL1qus1uOY4nzGA=
-X-Google-Smtp-Source: ABdhPJzHmxCO+HJx4UgcTabdvvL+rojiH7jJlbaBHl5R2i+aCbmiHVo8wQ0UoTeJXN58A8MyUf5rTRH/gTtGevHZMuY=
-X-Received: by 2002:a1f:2948:: with SMTP id p69mr35643223vkp.34.1638185742305;
- Mon, 29 Nov 2021 03:35:42 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=mOhMvjNUpAatTJjpg94z43eovPBVGYPtIJjaf1OGP34=;
+        b=mXDPgXf7xaa1mEL7yKpMifmYYDxyZ9LLc0OldjMygCModmro29NJVA2RXgszVwOi39
+         3Y/w9xjY0TFWf38/iu6ZvIjmBH7OGMOyhTO1ut0gg4SPGGFzy3VRPAzXYfrhAnjmpv0H
+         HHDWhb4v0mDBj0cE//8IEsKBSVj8odnO7qfX1XwwNktyNC2GaRydq5iIt2a8CGJ/scJp
+         guQuQc9ovXj2Rhu4m5NJFWcgEgrP9Y0QXYqvWOnT0dEEnbEtiQAVhRM4CR7uGBtXabWR
+         KOBtKG2MqnIe3MkrebMaQUEffRQtsrLTF/9RJOXtAWAJl8V8yFlF340a5yFFdutMTp5X
+         jbpA==
+X-Gm-Message-State: AOAM530g0z/uqw5TuiUfgJ7QgDVHQT+w6Jl7Y+L9x8wXQdTuiZIgveJd
+        wO1RvxyhhePmZkPIlWXAgntpJW96Ju89IJxfb1uz2Ku9x5XQqozOModiAGkSkpCARiqe23884d3
+        8xvzg8wNoJsJvZSAVQ7uA3I9v2fU=
+X-Received: by 2002:a05:6402:2814:: with SMTP id h20mr74150978ede.288.1638186415913;
+        Mon, 29 Nov 2021 03:46:55 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwJywMGjp72wdcWEKWJZtg0ZjVFVZf8EUNtBtzQtLSVMJUUbknoYpGWghdXGdNuLIU+P9WMRQ==
+X-Received: by 2002:a05:6402:2814:: with SMTP id h20mr74150934ede.288.1638186415563;
+        Mon, 29 Nov 2021 03:46:55 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id gn16sm7333737ejc.67.2021.11.29.03.46.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Nov 2021 03:46:54 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 53A971802A0; Mon, 29 Nov 2021 12:46:53 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Jonas Jelonek <jelonek.jonas@gmail.com>,
+        linux-wireless@vger.kernel.org
+Cc:     kvalo@codeaurora.org, nbd@nbd.name,
+        Jonas Jelonek <jelonek.jonas@gmail.com>,
+        Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+Subject: Re: [PATCH v2] ath9k: switch to rate table based lookup
+In-Reply-To: <20211128090753.958-1-jelonek.jonas@gmail.com>
+References: <20211128090753.958-1-jelonek.jonas@gmail.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Mon, 29 Nov 2021 12:46:53 +0100
+Message-ID: <87bl239ob6.fsf@toke.dk>
 MIME-Version: 1.0
-Received: by 2002:a59:ad85:0:b0:265:65f5:b62a with HTTP; Mon, 29 Nov 2021
- 03:35:41 -0800 (PST)
-Reply-To: c6715203@gmail.com
-From:   Maria-Elisabeth Schaeffler <dr6743078@gmail.com>
-Date:   Mon, 29 Nov 2021 14:35:41 +0300
-Message-ID: <CAM2gYk953zz+WFL-E28TYg6+wdkSs0Cs1mwyk-aXvgDDyFM8nw@mail.gmail.com>
-Subject: Spende
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---=20
-Hi,
-Ihre Spende in H=C3=B6he von 1.500.000,00 Euro von Maria-Frau Elisabeth
-Schaeffler steht Ihnen weiterhin zur Verf=C3=BCgung. kontaktieren Sie mich
-f=C3=BCr weitere Informationen.
+Jonas Jelonek <jelonek.jonas@gmail.com> writes:
 
-Mit freundlichen Gr=C3=BC=C3=9Fen
-Frau Maria-Elisabeth Schaeffler.
+> This patch changes mac80211 rate control for the ath9k driver.
+> The rate lookup per packet is changed from legacy usage of
+> ieee80211_get_tx_rates() to the new rate table based lookup in struct
+> ieee80211_sta->rates.
+>
+> The most recent rate control API (introduced with
+> 0d528d85c519b755b6f4e1bafa3a39984370e1c1) allows drivers to directly get
+> rates from ieee80211_sta->rates. This is not used by every driver yet,
+> the translation/merge is currently performed in ieee80211_get_tx_rates.
+> This patch changes the behaviour and avoids the call to
+> ieee80211_get_tx_rates and subsequent calls. ath9k now directly reads
+> rates from sta->rates into its rate table. Cause ath9k does not
+> expect rate selection in SKB->CB, the table merge does not consider rate
+> array in SKB->CB except for the first entry (used for probing).
+>
+> Tested with a 8devices Rambutan with QCA9558 SoC by performing two
+> runs, one without the patch and one with. Generated traffic between
+> AP and multiple STAs in each run, measured throughput and captured rc_sta=
+ts.
+> Comparison of both runs resulted in same rate selection and no
+> performance loss or other negative effects.
+>
+> Co-developed-by: Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+> Signed-off-by: Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+
+Better, thanks!
+
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+
