@@ -2,108 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7CBB461A1F
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 15:42:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02624461AEC
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 16:30:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378842AbhK2Opf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Nov 2021 09:45:35 -0500
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:55322
-        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1379124AbhK2OnZ (ORCPT
+        id S1343788AbhK2PdX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Nov 2021 10:33:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51306 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242857AbhK2PbU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Nov 2021 09:43:25 -0500
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Mon, 29 Nov 2021 10:31:20 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9519AC052922
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 05:41:56 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 905363F1B1
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 14:40:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1638196803;
-        bh=w6+BoYvnmAnd+GSm1CSG2oy2MCenL4FLdq4APeVFVSU=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=SSLBrO4hzgCknz6ZobYMdyV465cWrP+t1PQ0rWkP7d3I2eKnS/cvpV5Xeen3vztfj
-         ZOCCADslzkI4U5vZddG1VdsUud/hYbCRgnUNhFRvoO4YW20M/NZxoctqTFDy2H/6mr
-         t941Ig8jP+99IPNt8PU7WRicMM8bW9XxYzoD8mJPLs02RCFS61hTd1Ho25rYmU4A5j
-         zm/FvGcr/wiV9dnCpGh6l1FDg7E5z6B7c1w8bjUITwEmhX7JM+UlghGtOR7Z86SE/u
-         J8LbILLuEtqEWfUFT0VCLi2O15L5ma5YGqmzwUp0/X+L3upGgUiRPk/GYTyuKn5shP
-         Po0FuiMmTLAAw==
-Received: by mail-pg1-f198.google.com with SMTP id x30-20020a637c1e000000b00324ab629735so8575795pgc.17
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 06:40:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=w6+BoYvnmAnd+GSm1CSG2oy2MCenL4FLdq4APeVFVSU=;
-        b=n0m9l64sm0Q0RRwia3rB+qnOAAWvr/pE6Lw3YGU32z518uMYgHeMTafTBk+MC4Fd1Q
-         P34706AN5QL/Zu6MRgOthc8Z50M5GDOIRAD2+zBuuTjWsEKD51TCCTdY8/EKyxkcQc5B
-         Tyvmjc4yVIojO1WsLwvd5qyh5UySr53kSRhUzL584mrl0HYFi7fMy+Jqy6n8pC4zZCbS
-         lf5BpPtKyjkVdShCRBYkD28RpgmEsJ84cH0SpB3ZbJhYTPlcQhvzjLZqsf35C8nx4oYq
-         RHIYs+nm0GTSkJ8YnpnUysGZjyDH8ZgiDzx4NWmP8PxU4uthE05cONpR3rqf4p7UdLcG
-         LNsg==
-X-Gm-Message-State: AOAM5307bJt43EFqPRivw/e8+Ue9uBfGpjxOBKMvk3znE7CapNb5auNS
-        7RNE3QIYm9P4+2zqEdV2OQtnALgVwjFZvAMNvhMz+3GUcGBONAgTrovHqQsFRMIPIDNAeNkjlPv
-        E+gNVBfBPX8Xq/EuqtARDI2wbyyN9avQXYddOQ/28g9GM
-X-Received: by 2002:a17:90b:4c89:: with SMTP id my9mr38888788pjb.229.1638196801871;
-        Mon, 29 Nov 2021 06:40:01 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzu+OIHnSidQX9q38q/ISn/oYi/aZG1iV/zfzuNI9YibcOhqr2H6QmGitjdqa/6oOI6TNG41Q==
-X-Received: by 2002:a17:90b:4c89:: with SMTP id my9mr38888748pjb.229.1638196801543;
-        Mon, 29 Nov 2021 06:40:01 -0800 (PST)
-Received: from localhost.localdomain (2001-b400-e254-16ab-fe1c-26fe-b098-aa3d.emome-ip6.hinet.net. [2001:b400:e254:16ab:fe1c:26fe:b098:aa3d])
-        by smtp.gmail.com with ESMTPSA id p188sm16862766pfg.102.2021.11.29.06.39.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Nov 2021 06:40:01 -0800 (PST)
-From:   Chris Chiu <chris.chiu@canonical.com>
-To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chris Chiu <chris.chiu@canonical.com>
-Subject: [PATCH] rtl8xxxu: Improve the A-MPDU retransmission rate with RTS/CTS protection
-Date:   Mon, 29 Nov 2021 22:39:53 +0800
-Message-Id: <20211129143953.369557-1-chris.chiu@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5E2AEB8117B
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 13:41:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C9AC004E1;
+        Mon, 29 Nov 2021 13:41:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638193314;
+        bh=NU7svsJpEkEXNAbQ15qkOfhvMdL0zfBt54PNvUg1SZ4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=pN+2sjTT08gEQj2CpGVUpQqiIbXOFBPsB9dKg/a1xsgBL+3XzAnm6jI73ScFeWStZ
+         0t2UMxcv0roemdowl6SDv8SwOf75WZItVugUOvWk9Mag9dfkNgZVWRMy4NZL0EDxgp
+         aU/jzw3gP75POWqCi9pu3/pIaDCBt5iapDi9gpVRIPZjYRkLAt/1KGPds89YFqF+r9
+         Vn1grDSOv2jMbCJv705rdJoNuPRko5b8T8sjTYeXoDrakWr2na8dHh8EWXgnoitDse
+         kHNu1wxX+V3GF4X4l14qjt9sdJZlliKeqC6lD2GaJg5MgflT+nIBFrLsXEK3NEuqOm
+         85Djevhq2TDcg==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     kvalo@codeaurora.org
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
+        deren.wu@mediatek.com
+Subject: [PATCH wireless-drivers] mt76: fix key pointer overwrite in mt7921s_write_txwi/mt7663_usb_sdio_write_txwi
+Date:   Mon, 29 Nov 2021 14:41:48 +0100
+Message-Id: <eba40c84b6d114f618e2ae486cc6d0f2e9272cf9.1638193069.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The A-MPDU retransmission rate is always high (> 20%) even in a very
-clean environment. However, the vendor driver retransimission rate is
-< 10% in the same test bed. The different is the vendor driver starts
-the A-MPDU TXOP with initial RTS/CTS handshake which is observed in the
-air capture and the TX descriptor. Since there's no related field in
-TX descriptor to enable the L-SIG TXOP protection and the duration,
-applying the RTS/CTS protection instead helps to lower the retransmission
-rate from > 20% to ~12% in the same test setup.
+Fix pointer overwrite in mt7921s_tx_prepare_skb and
+mt7663_usb_sdio_tx_prepare_skb routines since in
+commit '2a9e9857473b ("mt76: fix possible pktid leak")
+mt76_tx_status_skb_add() has been moved out of
+mt7921s_write_txwi()/mt7663_usb_sdio_write_txwi() overwriting
+hw key pointer in ieee80211_tx_info structure. Fix the issue saving
+key pointer before running mt76_tx_status_skb_add().
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+Fixes: 2a9e9857473b ("mt76: fix possible pktid leak")
+Tested-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c | 11 +++++------
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c | 11 +++++------
+ 2 files changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index a42e2081b75f..06d59ffb7444 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4859,7 +4859,7 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 	 * rts_rate is zero if RTS/CTS or CTS to SELF are not enabled
- 	 */
- 	tx_desc->txdw4 |= cpu_to_le32(rts_rate << TXDESC32_RTS_RATE_SHIFT);
--	if (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS) {
-+	if (ampdu_enable || (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS)) {
- 		tx_desc->txdw4 |= cpu_to_le32(TXDESC32_RTS_CTS_ENABLE);
- 		tx_desc->txdw4 |= cpu_to_le32(TXDESC32_HW_RTS_ENABLE);
- 	} else if (rate_flags & IEEE80211_TX_RC_USE_CTS_PROTECT) {
-@@ -4930,7 +4930,7 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 	/*
- 	 * rts_rate is zero if RTS/CTS or CTS to SELF are not enabled
- 	 */
--	if (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS) {
-+	if (ampdu_enable || (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS)) {
- 		tx_desc40->txdw3 |= cpu_to_le32(TXDESC40_RTS_CTS_ENABLE);
- 		tx_desc40->txdw3 |= cpu_to_le32(TXDESC40_HW_RTS_ENABLE);
- 	} else if (rate_flags & IEEE80211_TX_RC_USE_CTS_PROTECT) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
+index bfe6c1579dc1..5a6d7829c6e0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
+@@ -43,13 +43,11 @@ EXPORT_SYMBOL_GPL(mt7663_usb_sdio_reg_map);
+ static void
+ mt7663_usb_sdio_write_txwi(struct mt7615_dev *dev, struct mt76_wcid *wcid,
+ 			   enum mt76_txq_id qid, struct ieee80211_sta *sta,
+-			   int pid, struct sk_buff *skb)
++			   struct ieee80211_key_conf *key, int pid,
++			   struct sk_buff *skb)
+ {
+-	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+-	struct ieee80211_key_conf *key = info->control.hw_key;
+-	__le32 *txwi;
++	__le32 *txwi = (__le32 *)(skb->data - MT_USB_TXD_SIZE);
+ 
+-	txwi = (__le32 *)(skb->data - MT_USB_TXD_SIZE);
+ 	memset(txwi, 0, MT_USB_TXD_SIZE);
+ 	mt7615_mac_write_txwi(dev, txwi, skb, wcid, sta, pid, key, false);
+ 	skb_push(skb, MT_USB_TXD_SIZE);
+@@ -188,6 +186,7 @@ int mt7663_usb_sdio_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
+ 	struct sk_buff *skb = tx_info->skb;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct ieee80211_key_conf *key = info->control.hw_key;
+ 	struct mt7615_sta *msta;
+ 	int pad, err, pktid;
+ 
+@@ -205,7 +204,7 @@ int mt7663_usb_sdio_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	}
+ 
+ 	pktid = mt76_tx_status_skb_add(&dev->mt76, wcid, skb);
+-	mt7663_usb_sdio_write_txwi(dev, wcid, qid, sta, pktid, skb);
++	mt7663_usb_sdio_write_txwi(dev, wcid, qid, sta, key, pktid, skb);
+ 	if (mt76_is_usb(mdev)) {
+ 		u32 len = skb->len;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+index 85b3d88f8ecc..bdec508b6b9f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+@@ -142,13 +142,11 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
+ static void
+ mt7921s_write_txwi(struct mt7921_dev *dev, struct mt76_wcid *wcid,
+ 		   enum mt76_txq_id qid, struct ieee80211_sta *sta,
+-		   int pid, struct sk_buff *skb)
++		   struct ieee80211_key_conf *key, int pid,
++		   struct sk_buff *skb)
+ {
+-	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+-	struct ieee80211_key_conf *key = info->control.hw_key;
+-	__le32 *txwi;
++	__le32 *txwi = (__le32 *)(skb->data - MT_SDIO_TXD_SIZE);
+ 
+-	txwi = (__le32 *)(skb->data - MT_SDIO_TXD_SIZE);
+ 	memset(txwi, 0, MT_SDIO_TXD_SIZE);
+ 	mt7921_mac_write_txwi(dev, txwi, skb, wcid, key, pid, false);
+ 	skb_push(skb, MT_SDIO_TXD_SIZE);
+@@ -161,6 +159,7 @@ int mt7921s_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ {
+ 	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_info->skb);
++	struct ieee80211_key_conf *key = info->control.hw_key;
+ 	struct sk_buff *skb = tx_info->skb;
+ 	int err, pad, pktid;
+ 
+@@ -180,7 +179,7 @@ int mt7921s_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	}
+ 
+ 	pktid = mt76_tx_status_skb_add(&dev->mt76, wcid, skb);
+-	mt7921s_write_txwi(dev, wcid, qid, sta, pktid, skb);
++	mt7921s_write_txwi(dev, wcid, qid, sta, key, pktid, skb);
+ 
+ 	mt7921_skb_add_sdio_hdr(skb, MT7921_SDIO_DATA);
+ 	pad = round_up(skb->len, 4) - skb->len;
 -- 
-2.25.1
+2.31.1
 
