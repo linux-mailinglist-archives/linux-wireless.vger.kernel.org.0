@@ -2,115 +2,371 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C74A14624BE
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 23:23:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51DF24624CD
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 23:25:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232659AbhK2W0Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Nov 2021 17:26:24 -0500
-Received: from titan58.planetwebservers.net ([51.79.1.102]:45199 "EHLO
-        titan58.planetwebservers.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234150AbhK2W0O (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Nov 2021 17:26:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lockie.ca;
-        s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=zsztU5pHTy5Mjyd8EEv1kEXiGxnHGq/OIW31d+2vN2o=; b=daeaFN0CAMTd2jX7HKzDDMGtq5
-        +Lfrp5lbZ3hHhSl7nEW/wDxyKO/aM1/rjhdLBJmtzNKt4eQGRkn69t3PhdZ6SC94gDLEpN0A0OHJs
-        IO9Oe8/ImNmahxnNc7as/Iui2dJ/XENai+ciN1g/ofclbaEZ6xP/iptULnoEYFnknrRBTtPyiSLow
-        F47gsyYIHQljQC2a7BZWuuN63G3MgpL/AjnzvD1scc4eRLVb2g9u5DJtbUk+QnUSUv0Azr/xtv6N1
-        5emFaQ5jfE4nQgikHwnyoiUFqel9tczU3YiWuGQCpwsKyDu3Ulid7nX/bzDg+qVG5KQEwZyJA1pd6
-        NRGm5qPQ==;
-Received: from [98.124.54.9] (port=59126 helo=[192.168.68.65])
-        by titan.planetwebservers.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <bjlockie@lockie.ca>)
-        id 1mrp30-00065p-LU; Tue, 30 Nov 2021 09:22:54 +1100
-Message-ID: <dac5960c-44f0-300e-d3d7-6ae23c3ae64f@lockie.ca>
-Date:   Mon, 29 Nov 2021 17:22:51 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
-Subject: Re: USB for rtw89 driver?
-Content-Language: en-US
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Pkshih <pkshih@realtek.com>
+        id S230132AbhK2W20 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Nov 2021 17:28:26 -0500
+Received: from mga02.intel.com ([134.134.136.20]:53884 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229933AbhK2W16 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Nov 2021 17:27:58 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="223316284"
+X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; 
+   d="scan'208";a="223316284"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2021 14:24:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; 
+   d="scan'208";a="458604387"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by orsmga003.jf.intel.com with ESMTP; 29 Nov 2021 14:24:22 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mrp4P-000CQ7-CR; Mon, 29 Nov 2021 22:24:21 +0000
+Date:   Tue, 30 Nov 2021 06:23:35 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
 Cc:     linux-wireless@vger.kernel.org
-References: <5bdf4393-273f-2ad2-40e0-556ec7dc6817@lockie.ca>
- <867f4b97151745d5a5fa0daa5ebcdbd2@realtek.com>
- <3fef8020-a496-41e3-8974-4d16ff4551b6@lockie.ca>
- <917dde5b-36c7-a079-6dc1-7441a2f90745@lwfinger.net>
-From:   James <bjlockie@lockie.ca>
-In-Reply-To: <917dde5b-36c7-a079-6dc1-7441a2f90745@lwfinger.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - titan.planetwebservers.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lockie.ca
-X-Get-Message-Sender-Via: titan.planetwebservers.net: authenticated_id: bjlockie@lockie.ca
-X-Authenticated-Sender: titan.planetwebservers.net: bjlockie@lockie.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-From-Rewrite: unmodified, already matched
+Subject: [jberg-mac80211:master] BUILD SUCCESS WITH WARNING
+ 1eda919126b420fee6b8d546f7f728fbbd4b8f11
+Message-ID: <61a552e7.I/DaJ4wJvKLaoKlD%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git master
+branch HEAD: 1eda919126b420fee6b8d546f7f728fbbd4b8f11  nl80211: reset regdom when reloading regdb
 
+Warning reports:
 
-On 2021-11-29 16:42, Larry Finger wrote:
-> On 11/29/21 08:24, James wrote:
->>
->>>> Does anyone know if the proprietary driver works on the Raspberry Pi4B
->>>> (Arm)?
->>>
->>> Don't have a proprietary driver neither.
->>
->> Dlink seems to have added USB support.
->> I assumed that is proprietary but I guess that is only x86.
->>
->> https://support.dlink.com/ProductInfo.aspx?m=DWA-181-US
->>
->> There is also an open source USB driver on github  but I don't think 
->> it is getting fixes like the lfinger github one.
->> https://github.com/neojou/rtw89-usb
->
-> The D-Link driver is for the rtl8822bu, not an rtl8852au. That would 
-> make it for rtw88, not rtw89. BTW, it will not compile under kernel 
-> 5.16.0-rc3, but the fixes would be minor.
->
-Is this statement in the readme of neojou not correct?
-"This driver is based on Realtek's rtw89 driver 
-<https://github.com/torvalds/linux/tree/master/drivers/net/wireless/realtek/rtw89> 
-in Linux main trunk. Or can refer to this lwfinger's github [rtw89] 
-(https://github.com/lwfinger/rtw89)"
+https://lore.kernel.org/linux-wireless/202111292027.ZZFNfeUA-lkp@intel.com
 
-I checked the dlink link and it is for a wifi5 device.
-I don't know how I got there. :-(
-There is no linux driver from dlink for the USB wifi6 device. :-(
-Oh well, maybe in 10 years. :-)
->
-> That driver is the usual collection of junk code published by the 
-> Realtek USB group for years. That code base is used to generate 
-> drivers for Windows, Linux, and FreeBSD.
->
-> A group is currently modifying the rtl8188eu driver in staging to 
-> convert it into reasonable Linux shape. This one would take the same 
-> effort to make it suitable.
-"Chipset:/RTL8188EU/ Standard: IEEE 802.11n"
-Would a good 8188eu driver make it easier to support wifi5 and wifi6 
-devices?
->
-> The basic USB driver in the neojou repo should work, but I do not have 
-> an rtl8852au device.
-Maybe it'll be in kernel eventually. :-)
+Warning in current branch:
 
-> Larry
->
+net/wireless/reg.c:1137:28: warning: implicit conversion from 'enum nl80211_user_reg_hint_type' to 'enum nl80211_reg_initiator' [-Wenum-conversion]
 
+Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allmodconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- alpha-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arc-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arc-buildonly-randconfig-r001-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arc-randconfig-r036-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm-allmodconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm-defconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm-exynos_defconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm-imx_v6_v7_defconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm-mvebu_v7_defconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm-omap2plus_defconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm-qcom_defconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm-randconfig-c023-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm-u8500_defconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm64-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm64-defconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm64-randconfig-r012-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm64-randconfig-r015-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- arm64-randconfig-r026-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- h8300-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- h8300-buildonly-randconfig-r005-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- ia64-allmodconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- ia64-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- ia64-buildonly-randconfig-r003-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- ia64-randconfig-c004-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- m68k-allmodconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- m68k-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- m68k-randconfig-r014-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- m68k-randconfig-r031-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- m68k-randconfig-r035-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- microblaze-allmodconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- microblaze-randconfig-r015-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- mips-allmodconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- mips-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- mips-gcw0_defconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- mips-maltaup_xpa_defconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- mips-randconfig-r005-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- nds32-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- nds32-randconfig-r004-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- nios2-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- nios2-randconfig-m031-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- nios2-randconfig-r025-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- openrisc-buildonly-randconfig-r006-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- openrisc-randconfig-r034-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- openrisc-randconfig-r035-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- parisc-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- parisc-randconfig-r003-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- parisc-randconfig-r026-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- parisc-randconfig-r033-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- parisc-randconfig-r034-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- powerpc-allmodconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- powerpc-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- riscv-allmodconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- riscv-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- sh-allmodconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- sh-randconfig-r013-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- sparc-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- sparc-randconfig-r024-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- sparc-randconfig-r036-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- sparc64-randconfig-r031-20211129
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- xtensa-allyesconfig
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+|-- xtensa-buildonly-randconfig-r006-20211128
+|   `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+`-- xtensa-randconfig-s032-20211128
+    `-- net-wireless-reg.c:warning:implicit-conversion-from-enum-nl80211_user_reg_hint_type-to-enum-nl80211_reg_initiator
+
+elapsed time: 723m
+
+configs tested: 174
+configs skipped: 3
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211128
+powerpc                   bluestone_defconfig
+sh                          rsk7269_defconfig
+sh                          sdk7780_defconfig
+powerpc                   lite5200b_defconfig
+powerpc                        warp_defconfig
+s390                          debug_defconfig
+arm                         axm55xx_defconfig
+sh                             espt_defconfig
+sh                        apsh4ad0a_defconfig
+arm                     davinci_all_defconfig
+mips                malta_qemu_32r6_defconfig
+powerpc                      cm5200_defconfig
+mips                        qi_lb60_defconfig
+sh                           se7619_defconfig
+sh                   rts7751r2dplus_defconfig
+powerpc                        icon_defconfig
+arm                              alldefconfig
+sparc                               defconfig
+mips                          rm200_defconfig
+arm                        magician_defconfig
+arm                          exynos_defconfig
+ia64                            zx1_defconfig
+mips                         tb0219_defconfig
+arm                            qcom_defconfig
+mips                           xway_defconfig
+parisc                generic-64bit_defconfig
+powerpc                      makalu_defconfig
+arm                        mvebu_v7_defconfig
+x86_64                              defconfig
+arm                       versatile_defconfig
+microblaze                      mmu_defconfig
+arm                         orion5x_defconfig
+mips                           ip22_defconfig
+arm                       imx_v4_v5_defconfig
+sh                                  defconfig
+arm                         s3c6400_defconfig
+powerpc                      ppc40x_defconfig
+arm                      jornada720_defconfig
+s390                       zfcpdump_defconfig
+powerpc                    socrates_defconfig
+riscv             nommu_k210_sdcard_defconfig
+sparc                       sparc32_defconfig
+mips                         cobalt_defconfig
+sh                           se7722_defconfig
+arc                                 defconfig
+mips                        omega2p_defconfig
+parisc                           allyesconfig
+powerpc                     tqm8541_defconfig
+i386                             alldefconfig
+sh                           se7712_defconfig
+mips                    maltaup_xpa_defconfig
+mips                           ip32_defconfig
+mips                           gcw0_defconfig
+arm                       imx_v6_v7_defconfig
+arm                           h5000_defconfig
+mips                           rs90_defconfig
+openrisc                            defconfig
+arm                          pcm027_defconfig
+mips                 decstation_r4k_defconfig
+arm                       omap2plus_defconfig
+mips                             allyesconfig
+arm                          iop32x_defconfig
+mips                          rb532_defconfig
+powerpc                  iss476-smp_defconfig
+arc                        vdk_hs38_defconfig
+arm                         socfpga_defconfig
+ia64                          tiger_defconfig
+powerpc64                        alldefconfig
+arm                         cm_x300_defconfig
+powerpc                     ep8248e_defconfig
+arm                         shannon_defconfig
+sh                          rsk7203_defconfig
+arm                           u8500_defconfig
+arm                        cerfcube_defconfig
+m68k                        m5272c3_defconfig
+arm                  randconfig-c002-20211128
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20211129
+i386                 randconfig-a002-20211129
+i386                 randconfig-a006-20211129
+i386                 randconfig-a005-20211129
+i386                 randconfig-a004-20211129
+i386                 randconfig-a003-20211129
+x86_64               randconfig-a011-20211128
+x86_64               randconfig-a012-20211128
+x86_64               randconfig-a013-20211128
+x86_64               randconfig-a015-20211128
+x86_64               randconfig-a014-20211128
+x86_64               randconfig-a016-20211128
+i386                 randconfig-a015-20211128
+i386                 randconfig-a016-20211128
+i386                 randconfig-a013-20211128
+i386                 randconfig-a012-20211128
+i386                 randconfig-a014-20211128
+i386                 randconfig-a011-20211128
+arc                  randconfig-r043-20211128
+s390                 randconfig-r044-20211128
+riscv                randconfig-r042-20211128
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+
+clang tested configs:
+s390                 randconfig-c005-20211128
+i386                 randconfig-c001-20211128
+riscv                randconfig-c006-20211128
+arm                  randconfig-c002-20211128
+powerpc              randconfig-c003-20211128
+x86_64               randconfig-c007-20211128
+mips                 randconfig-c004-20211128
+x86_64               randconfig-a001-20211128
+x86_64               randconfig-a006-20211128
+x86_64               randconfig-a003-20211128
+x86_64               randconfig-a005-20211128
+x86_64               randconfig-a004-20211128
+x86_64               randconfig-a002-20211128
+i386                 randconfig-a001-20211128
+i386                 randconfig-a002-20211128
+i386                 randconfig-a006-20211128
+i386                 randconfig-a005-20211128
+i386                 randconfig-a004-20211128
+i386                 randconfig-a003-20211128
+i386                 randconfig-a015-20211129
+i386                 randconfig-a016-20211129
+i386                 randconfig-a013-20211129
+i386                 randconfig-a012-20211129
+i386                 randconfig-a014-20211129
+i386                 randconfig-a011-20211129
+hexagon              randconfig-r045-20211129
+hexagon              randconfig-r041-20211129
+s390                 randconfig-r044-20211129
+riscv                randconfig-r042-20211129
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
