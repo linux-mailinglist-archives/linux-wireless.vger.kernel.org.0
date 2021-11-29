@@ -2,96 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE0446179E
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 15:11:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9069846160B
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 14:16:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239183AbhK2OPK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Nov 2021 09:15:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34230 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232110AbhK2ONK (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Nov 2021 09:13:10 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C089CC08EAD2;
-        Mon, 29 Nov 2021 04:49:23 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id j140-20020a1c2392000000b003399ae48f58so16717226wmj.5;
-        Mon, 29 Nov 2021 04:49:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=F0poFPJsWt+35ZjTKPTDqAWquj99j6P21+mLO9eANjc=;
-        b=I3hKvrFIpV9B6n8epfPsaPBOwhiF+v9Dqo0UZCSDDztmiIeVrboxg9Y/U8uVLCwsAf
-         0bacUL33sAdOklbyi+Eq2rJDYyjrOrNI3KAKLIovfpRVlc9Iw1+HjnM6BF/uliFuRAph
-         INeOzkQVrYEsqFem7A9d9kHDdHoFJ0h1rAhdbS23IZgZAJJArh/Yf6X5wRaUP98gWGMW
-         LS9zqOgLMVrhSKAhf/GPt+KuVgI4Ra+vr0gg6v4BdddtvMxJ9OveMWOCJ5t4ozyv+OE7
-         BJtfaVMD6ZFF46fH7tcAxb18+IH7maBtdmSp1pzLYPjVr3gdKaRKBDWH1ZdCU/vdFb+j
-         zCoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=F0poFPJsWt+35ZjTKPTDqAWquj99j6P21+mLO9eANjc=;
-        b=HgtDXTKGbyQ+LzCq2UCoEI2F41jcrQzkNIpUnMqdHy95SopPMihfN4BJmn3ZP7ImsP
-         pIwS3GEveqASk7kAnf7GP2Gof3I5F2OEW1+I+vpNAYQeJKQJ8tqQ/TrFbaL7wLydrbu2
-         3TPCmTr6E/wZTL46aOdXAhlTdELodRB/K7Ryu91kB1PxQf7PKYE0Kz1hxzGQVYo6v5SE
-         C4/lUXpzKpAFIzeBKr3xpzAJ+y1VMUEh2gh5Q2SRYfW+t8n0wJ1FHsdhyMk5K5ZfZDRo
-         4uG7KpKi1yegQJQwE4q71EX+GKcDAf/p9E+3CDbtxHYKhKQMTjRVFti9QBc1lySApfW9
-         uOaw==
-X-Gm-Message-State: AOAM533lc0XxBVn7xp9tT3xL2DF/gAjmhuXfHROXmZaltHKEOejO6cIc
-        kb0XALLoKbwcRw==
-X-Google-Smtp-Source: ABdhPJwyDHDSWQ4+H0d8lJOqJyR6Q1Wjwp2YNIkTFYzwztVdV2R+f1sLmz7AX/uYwADPN+ki1fw22w==
-X-Received: by 2002:a7b:c256:: with SMTP id b22mr10743444wmj.176.1638190162365;
-        Mon, 29 Nov 2021 04:49:22 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id t11sm13926384wrz.97.2021.11.29.04.49.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Nov 2021 04:49:21 -0800 (PST)
-From:   Colin Ian King <colin.i.king@googlemail.com>
-X-Google-Original-From: Colin Ian King <colin.i.king@gmail.com>
-To:     Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next][V2] iwlwifi: mei: Fix spelling mistake "req_ownserhip" -> "req_ownership"
-Date:   Mon, 29 Nov 2021 12:49:21 +0000
-Message-Id: <20211129124921.11817-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.33.1
+        id S240309AbhK2NT0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Nov 2021 08:19:26 -0500
+Received: from mga09.intel.com ([134.134.136.24]:44612 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1377397AbhK2NRZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Nov 2021 08:17:25 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10182"; a="235786610"
+X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; 
+   d="scan'208";a="235786610"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2021 05:06:11 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; 
+   d="scan'208";a="676344613"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 29 Nov 2021 05:06:09 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mrgMC-000Bxj-SM; Mon, 29 Nov 2021 13:06:08 +0000
+Date:   Mon, 29 Nov 2021 21:05:07 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Finn Behrens <me@kloenk.dev>
+Cc:     kbuild-all@lists.01.org, linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [jberg-mac80211:master 8/8] net/wireless/reg.c:1137:28: warning:
+ implicit conversion from 'enum nl80211_user_reg_hint_type' to 'enum
+ nl80211_reg_initiator'
+Message-ID: <202111292027.ZZFNfeUA-lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a spelling mistake in a debugfs filename. Fix it.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git master
+head:   1eda919126b420fee6b8d546f7f728fbbd4b8f11
+commit: 1eda919126b420fee6b8d546f7f728fbbd4b8f11 [8/8] nl80211: reset regdom when reloading regdb
+config: parisc-randconfig-r034-20211129 (https://download.01.org/0day-ci/archive/20211129/202111292027.ZZFNfeUA-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?id=1eda919126b420fee6b8d546f7f728fbbd4b8f11
+        git remote add jberg-mac80211 https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git
+        git fetch --no-tags jberg-mac80211 master
+        git checkout 1eda919126b420fee6b8d546f7f728fbbd4b8f11
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=parisc SHELL=/bin/bash net/wireless/
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   net/wireless/reg.c: In function 'reg_reload_regdb':
+>> net/wireless/reg.c:1137:28: warning: implicit conversion from 'enum nl80211_user_reg_hint_type' to 'enum nl80211_reg_initiator' [-Wenum-conversion]
+    1137 |         request->initiator = NL80211_USER_REG_HINT_USER;
+         |                            ^
+
+
+vim +1137 net/wireless/reg.c
+
+  1096	
+  1097	int reg_reload_regdb(void)
+  1098	{
+  1099		const struct firmware *fw;
+  1100		void *db;
+  1101		int err;
+  1102		const struct ieee80211_regdomain *current_regdomain;
+  1103		struct regulatory_request *request;
+  1104	
+  1105		err = request_firmware(&fw, "regulatory.db", &reg_pdev->dev);
+  1106		if (err)
+  1107			return err;
+  1108	
+  1109		if (!valid_regdb(fw->data, fw->size)) {
+  1110			err = -ENODATA;
+  1111			goto out;
+  1112		}
+  1113	
+  1114		db = kmemdup(fw->data, fw->size, GFP_KERNEL);
+  1115		if (!db) {
+  1116			err = -ENOMEM;
+  1117			goto out;
+  1118		}
+  1119	
+  1120		rtnl_lock();
+  1121		if (!IS_ERR_OR_NULL(regdb))
+  1122			kfree(regdb);
+  1123		regdb = db;
+  1124	
+  1125		/* reset regulatory domain */
+  1126		current_regdomain = get_cfg80211_regdom();
+  1127	
+  1128		request = kzalloc(sizeof(*request), GFP_KERNEL);
+  1129		if (!request) {
+  1130			err = -ENOMEM;
+  1131			goto out_unlock;
+  1132		}
+  1133	
+  1134		request->wiphy_idx = WIPHY_IDX_INVALID;
+  1135		request->alpha2[0] = current_regdomain->alpha2[0];
+  1136		request->alpha2[1] = current_regdomain->alpha2[1];
+> 1137		request->initiator = NL80211_USER_REG_HINT_USER;
+  1138		request->user_reg_hint_type = NL80211_USER_REG_HINT_USER;
+  1139		request->reload = true;
+  1140	
+  1141		reg_process_hint(request);
+  1142	
+  1143	out_unlock:
+  1144		rtnl_unlock();
+  1145	 out:
+  1146		release_firmware(fw);
+  1147		return err;
+  1148	}
+  1149	
+
 ---
- drivers/net/wireless/intel/iwlwifi/mei/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mei/main.c b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-index 112cc362e8e7..0865e4fb25da 100644
---- a/drivers/net/wireless/intel/iwlwifi/mei/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-@@ -1754,7 +1754,7 @@ static void iwl_mei_dbgfs_register(struct iwl_mei *mei)
- 			     mei->dbgfs_dir, &iwl_mei_status);
- 	debugfs_create_file("send_start_message", S_IWUSR, mei->dbgfs_dir,
- 			    mei, &iwl_mei_dbgfs_send_start_message_ops);
--	debugfs_create_file("req_ownserhip", S_IWUSR, mei->dbgfs_dir,
-+	debugfs_create_file("req_ownership", S_IWUSR, mei->dbgfs_dir,
- 			    mei, &iwl_mei_dbgfs_req_ownership_ops);
- }
- 
--- 
-V2: Just fix the debugfs spelling mistake, the error message has already been fixed.
-    Change commit message and subject line with correct information.
---
-
-2.33.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
