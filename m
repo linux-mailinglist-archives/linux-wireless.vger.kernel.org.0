@@ -2,70 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3D33461078
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 09:48:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9480461084
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 09:50:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349161AbhK2Ivv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Nov 2021 03:51:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48886 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240525AbhK2Its (ORCPT
+        id S243970AbhK2Ixa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Nov 2021 03:53:30 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:62038 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344142AbhK2Iv3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Nov 2021 03:49:48 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC48C061378;
-        Mon, 29 Nov 2021 00:35:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=BcgNBJ9HP80YhdHS2G7Gf7ThE36M72dxztlVKZ+y/iA=;
-        t=1638174905; x=1639384505; b=s9kg7p3UkUuprvBiw0y/Vz0NL+LOtTyi12e0mTory9EubXC
-        x9/iA9iOauQoAemGCSo52IcvhpyIlnO8BouPIq2LoFfHPrfLRvdYHXDukgmqq3bZYXP0CtaMiIzMG
-        jATNTXepzSaGYecpVgii/02jcWr9JaFeDXvd0/c7cBBeX78xqQmTrMZFFDnBSWiX/O7QcNL/s8wL8
-        jdcvWQaxvg49bI8kR716zVD8sGBvF63HFEC6Ym9YVaE1sRdo+ymMPkdRgovB1HRvD4NOVUxspi1v7
-        DZlnLC12V5+3g4SxN9QIbdUxncgtKqzI16hQ/QtHwl6i8Ax0lfhUy/WsdrD+oJ+g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mrc7i-004LRT-Or;
-        Mon, 29 Nov 2021 09:34:54 +0100
-Message-ID: <e257568948a1af079275df1a904ae04805ead4c7.camel@sipsolutions.net>
-Subject: Re: [RFC v2] mac80211: minstrel_ht: do not set RTS/CTS flag for
- fallback rates
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Peter Seiderer <ps.report@gmx.net>, Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
-Date:   Mon, 29 Nov 2021 09:34:53 +0100
-In-Reply-To: <20211126152558.4d9fbce3@gmx.net>
-References: <20211116212828.27613-1-ps.report@gmx.net>
-         <e098a58a-8ec0-f90d-dbc9-7b621e31d051@nbd.name>
-         <20211126152558.4d9fbce3@gmx.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
+        Mon, 29 Nov 2021 03:51:29 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1638175691; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=BVkdizxMGUzPX0vzCoaUsTUyB1Nf13v6HhEZxZH+k0k=; b=fzSldWC7JdOmuaC53lqJByui8dvvckCIR4XaU4Z9iRSIjUbyGHE2s+mmFo72IsLCE1/S4uin
+ J6KTTUZt9auh0vz90DlaPemAAdV0DLP3uoZxCgK6jFdJSDOGe8S2BB13Ki8KkPuCx5WRMNxG
+ 6C/ZAjPRDc7FUI2pceSQPx16aBI=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 61a493cb1abc6f02d048ed54 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 29 Nov 2021 08:48:11
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 06990C4361A; Mon, 29 Nov 2021 08:48:11 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 557C1C4338F;
+        Mon, 29 Nov 2021 08:48:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 557C1C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     max chee <maxchee@outlook.com>
+Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "amitkarwar\@gmail.com" <amitkarwar@gmail.com>,
+        "ganapathi017\@gmail.com" <ganapathi017@gmail.com>,
+        "sharvari.harisangam\@nxp.com" <sharvari.harisangam@nxp.com>,
+        "huxinming820\@gmail.com" <huxinming820@gmail.com>,
+        "davem\@davemloft.net" <davem@davemloft.net>,
+        "kuba\@kernel.org" <kuba@kernel.org>
+Subject: Re: Heap based overflow in Marvell Wifi mwifiex_cfg80211_start_ap function
+References: <SI2PR06MB4060AE27017D9205ADBC7140A3659@SI2PR06MB4060.apcprd06.prod.outlook.com>
+Date:   Mon, 29 Nov 2021 10:48:05 +0200
+In-Reply-To: <SI2PR06MB4060AE27017D9205ADBC7140A3659@SI2PR06MB4060.apcprd06.prod.outlook.com>
+        (max chee's message of "Sun, 28 Nov 2021 19:28:19 +0000")
+Message-ID: <87czmjgxfe.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2021-11-26 at 15:25 +0100, Peter Seiderer wrote:
-> 
-> > 
-> > If you don't want this behavior, I'm fine with adding a way to
-> > explicitly disable it. However, I do think leaving it on by default
-> > makes sense.
-> 
-> I expected this (as otherwise the flag setting would not be there) ;-)
-> 
+max chee <maxchee@outlook.com> writes:
 
-To be fair, that setting (RTS threshold) has been there for 20 years or
-more, and comes from a much simpler time when the reasoning for RTS/CTS
-was mostly about hidden stations, not about protecting the transmissions
-from older clients that don't understand the newer PHY protocols, etc.
+> I found a possible heap-based overflow through code review in marvell wifi chip driver in Linux
+> Kernel, allowing local users to cause a denial of service or possibly execute arbitrary code. Similar
+> to CVE-2019-14814, I think that the bug can be triggered by sending crafted packet via netlink.
+>
+> I believe this belongs to the Linux Wireless mailing list
+> (https://patchwork.kernel.org/project/linux-wireless/)
 
-johannes
+Please don't send HTML emails, our mailing lists drop them. I found this
+from my spam folder just by accident.
+
+> Description
+>
+>  
+>
+> ==========
+>
+>  
+>
+> [1]Heap Overflow in mwifiex_cfg80211_start_ap() function of Marvell Wifi Driver in Linux kernel
+>
+>  
+>
+>  
+>
+> The problem is inside mwifiex_cfg80211_start_ap() in
+> drivers/net/wireless/marvell/mwifiex/cfg80211.c
+>
+>  
+>
+> There is a memcpy calls in this function to copy params->ssid without checking length. This
+> would result in a heap overflow because params->ssid_len is from cfg80211_ap_settings which is
+> from user space.
+>
+>  
+>
+>  
+>
+> Recommended Patch in drivers/net/wireless/marvell/mwifiex/cfg80211.c
+>
+>  
+>
+> =====
+>
+>  
+>
+> +                             if (ssid_len > IEEE80211_MAX_SSID_LEN) {
+>
+> +                             mwifiex_dbg(priv->adapter, ERROR, "invalid SSID - aborting\n");
+>
+> +                             return -EINVAL;
+>
+> +             }
+>
+>                 if (params->ssid && params->ssid_len) {
+>
+>                                 memcpy(bss_cfg->ssid.ssid, params->ssid, params->ssid_len);
+>
+>                                 bss_cfg->ssid.ssid_len = params->ssid_len;
+>
+>  
+>
+>  
+>
+>  
+>
+> Credit
+>
+>  
+>
+> ==========
+>
+>  
+>
+> This issue was discovered by Max Chee
+
+Are you saying that cfg80211 does not check the SSID length from user
+space? I would be very surprised about that.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
