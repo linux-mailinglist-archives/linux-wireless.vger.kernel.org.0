@@ -2,96 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B7BB461B4C
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 16:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E32E5461FBB
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 19:58:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbhK2PwN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Nov 2021 10:52:13 -0500
-Received: from so254-9.mailgun.net ([198.61.254.9]:39519 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232332AbhK2PuG (ORCPT
+        id S1379199AbhK2TBl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Nov 2021 14:01:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40822 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236682AbhK2S7l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Nov 2021 10:50:06 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1638200808; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=vZUaxIxdjFlhWiYowHvoa+o2WN9GNEEMMdBJfyVcvgQ=;
- b=QmkXDBcFw4KuLO4KuPH0gvIqPJuwa6Gh9D2hiDjGd9W/Wp18mNWF4dRJfm3Ft76Ao3JcusHx
- 87XHXvo/fLn1UdbXHajDD2fjAdf4Snb/7fNCxQkFzBJqIdK9OKWkGYabtlvDupVHOSC30Dac
- BUR4H1c/wIzVWfa8+V+8qjLw/Jw=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-east-1.postgun.com with SMTP id
- 61a4f5e786d0e4d8889799b8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 29 Nov 2021 15:46:47
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2D4E1C4360C; Mon, 29 Nov 2021 15:46:47 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,SPF_FAIL,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AB28BC4338F;
-        Mon, 29 Nov 2021 15:46:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org AB28BC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Mon, 29 Nov 2021 13:59:41 -0500
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90761C04C324
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 07:25:23 -0800 (PST)
+Received: by mail-ed1-x542.google.com with SMTP id v1so73438335edx.2
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 07:25:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=h5SGxromuDQtUoJTnxkhza7HXaouvO2qwEGMHxx3weM=;
+        b=NC6pvYocPLbnJfJ+2xedtHW5+E8gTu4eQ15LIhZKt0C7emPfqtOxxhKjCtQoPqYN4e
+         7u37aHyJ6elgdlKw5QWT1LPlVSpZ2Eq9XL6rdl2dT3UM9d4eFBpCu21xkeEt4mF3YP/v
+         B2T4W4QP46awi/uP7BWrVfS6u/OkDzmvGLORvepNUaI5H8q/ueJnR8WRvDxDe3yXiavz
+         lSEOZeHyYNWKfS6NhZLEWWQ0cm1TbiewK/h6r7/cSKeCnuc6uiFO0eLqS2XuLTL1viOg
+         JxNoL3wG/R2awTdhD7rRRB2UFIwhc4ChFBQmjNVXQDE4d4e0HL53BCkVfQ/Lrn1KMsvW
+         4SZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=h5SGxromuDQtUoJTnxkhza7HXaouvO2qwEGMHxx3weM=;
+        b=I9TMqHsU4a+/s3zWUi1DQZYaHpCCFV0CQ6Xh4FpqYsf/z3e6ePeKh4SagCC+InbwBC
+         WeUo+opiKneLn/i8I5DcdnPYEwlUgmN0ZWc0yYOO5sVGyoe6C/Lr/ak8Z5CFDSZdqUKY
+         amS/tugI9m0yKWkY3sZZKreg0RvGAsAIFf0U27O79xj//hkX6Sn6yr1ZEqgu+l/YGxNh
+         SYI9dydt8PVQtvTRyZ37HxFm9Fcu3f/NbDuarKFEzl4tce91I2cpWLOxq0gwO37wl/Pt
+         uYOzTY+vfCwScfKmnZ/X/0pU4nl7nnAW3B4jY/7Cqr+Flh9EoxdVc2DvKsVJqWEBmqdz
+         lMyQ==
+X-Gm-Message-State: AOAM531BDaZO4DI+d5tEE1vf3FNjeozRkisV7C+mFhR+O1ZqS5Znaq9u
+        XHjq0vaFVuJ2wIswJQuExeKmtn1MTobzB3B6FbY=
+X-Google-Smtp-Source: ABdhPJzPk0es7mz8jGewCKFgIm+NU4s3gqWiu5EtnH8OISduBWLSgCLtixq5YLl+IBpMyppPwGzJuFCsjOKL6knW/H0=
+X-Received: by 2002:a50:d8cf:: with SMTP id y15mr76123197edj.66.1638199520782;
+ Mon, 29 Nov 2021 07:25:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Avoid NULL ptr access during mgmt tx cleanup
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1637832614-13831-1-git-send-email-quic_srirrama@quicinc.com>
-References: <1637832614-13831-1-git-send-email-quic_srirrama@quicinc.com>
-To:     Sriram R <quic_srirrama@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Sriram R <quic_srirrama@quicinc.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163820080368.7221.13211393859054966547.kvalo@codeaurora.org>
-Date:   Mon, 29 Nov 2021 15:46:47 +0000 (UTC)
+Received: by 2002:a7c:8ed2:0:b0:129:478e:a1e6 with HTTP; Mon, 29 Nov 2021
+ 07:25:20 -0800 (PST)
+Reply-To: evelyngaby76@gmail.com
+From:   Evelyn Gaby <gae01100223@gmail.com>
+Date:   Mon, 29 Nov 2021 15:25:20 +0000
+Message-ID: <CA+-Cv70HVtXwLL3fEmnDF66hx-Gbxca2m-PQiSEdMHb-=mTP2Q@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sriram R <quic_srirrama@quicinc.com> wrote:
+.
+Please get back to me for more details,
+I like to disclose something very important to you,
 
-> Currently 'ar' reference is not added in skb_cb during
-> WMI mgmt tx. Though this is generally not used during tx completion
-> callbacks, on interface removal the remaining idr cleanup callback
-> uses the ar ptr from skb_cb from mgmt txmgmt_idr. Hence
-> fill them during tx call for proper usage.
-> 
-> Also free the skb which is missing currently in these
-> callbacks.
-> 
-> Crash_info:
-> 
-> [19282.489476] Unable to handle kernel NULL pointer dereference at virtual address 00000000
-> [19282.489515] pgd = 91eb8000
-> [19282.496702] [00000000] *pgd=00000000
-> [19282.502524] Internal error: Oops: 5 [#1] PREEMPT SMP ARM
-> [19282.783728] PC is at ath11k_mac_vif_txmgmt_idr_remove+0x28/0xd8 [ath11k]
-> [19282.789170] LR is at idr_for_each+0xa0/0xc8
-> 
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-00729-QCAHKSWPL_SILICONZ-3 v2
-> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-
-Patch applied to ath-next branch of ath.git, thanks.
-
-a93789ae541c ath11k: Avoid NULL ptr access during mgmt tx cleanup
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1637832614-13831-1-git-send-email-quic_srirrama@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Regards.
+Mrs Evelyn Gaby.
