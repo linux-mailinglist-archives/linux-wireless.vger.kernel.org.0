@@ -2,74 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FEF9462867
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 00:37:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15B7C46286B
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 00:38:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232201AbhK2XlL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Nov 2021 18:41:11 -0500
-Received: from titan58.planetwebservers.net ([51.79.1.102]:46949 "EHLO
-        titan58.planetwebservers.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232149AbhK2Xk4 (ORCPT
+        id S232147AbhK2Xls (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Nov 2021 18:41:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49414 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230045AbhK2Xls (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Nov 2021 18:40:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lockie.ca;
-        s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Cc
-        :From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=HOVjB35jm+WFsYjlR4jt5YfmtXotWCaiMMZkESMQQ4g=; b=gl8rVjMG8UGxyEE6IUO++hyMs7
-        th8No6+8/s8SXu9Soq33cSBiHna4h7OFOgK8wLKnIP7LFhLk/D5z4jezH5k8h1P3X0sUvCo2GNQh8
-        4eXLU/qWbPnWc5m9PReiLxNvZb7Uwbt4q2C1ZMe2x490DO5j+U8iGyUDWSizpLsZVU++rvGKEP0RJ
-        aTKemUH5ZRKIVKaHTbe6x6VMLt5rLQR2h9ccyFuel+nQhIiCfRrVA8XHKzlYAURRyN/CFOnws7Eet
-        XH9BXoZRq0MluID27VqqM8eL7QEwMvGvTAFuoBNlFVrSlKPOj72VaqDhb40i3aTgkXcOrQq0r9MVz
-        UXF7AHkQ==;
-Received: from [98.124.54.9] (port=59128 helo=[192.168.68.65])
-        by titan.planetwebservers.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <bjlockie@lockie.ca>)
-        id 1mrqDI-00016r-Mv
-        for linux-wireless@vger.kernel.org; Tue, 30 Nov 2021 10:37:36 +1100
-Message-ID: <5e815a38-eb5c-7dac-7243-1d734c1acd3f@lockie.ca>
-Date:   Mon, 29 Nov 2021 18:37:35 -0500
+        Mon, 29 Nov 2021 18:41:48 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD792C061574;
+        Mon, 29 Nov 2021 15:38:29 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 0366CCE16B9;
+        Mon, 29 Nov 2021 23:38:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15BBC53FC7;
+        Mon, 29 Nov 2021 23:38:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638229106;
+        bh=Yf/yrcqa84AktFsnnvwR+QA+g8bUz4NRzA50pnGN5oM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=VBSzNbkS98dymG6V9Ul4cBFRGhr2K/BzHf4KscC0pqjIe894xR6UslfcnJ6kHILGk
+         aisz8MdpPHdQSB0aMlYwJ5feMvXg/+SM10YmHrR+hXo1xIT5+WDl8QnrSZxYnHy+vi
+         GoO6FAhJcDVAT9BwuJhSTDKcLXUmx6Ok633l3MSpLarlIN3J1cRK1ox4mlZvoI6YeQ
+         f5lbq47Tpdrn75LQhBVb/16OPS+dOcTnQ9P/ekRbQVAL3+TydnWj5S0omNA/MA/YZX
+         8brn/A70dk/7ad4ZbEvHJljIfo85g0+TzK7I+GVmocL1+IQEcnaMrLUGkaEryuWj+l
+         KGwR8d7Qr+RLw==
+Date:   Mon, 29 Nov 2021 17:38:24 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jonas =?iso-8859-1?Q?Dre=DFler?= <verdre@v0yd.nl>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH] mwifiex: Ignore BTCOEX events from the 88W8897 firmware
+Message-ID: <20211129233824.GA2703817@bhelgaas>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
-Subject: Re: USB for rtw89 driver?
-Content-Language: en-US
-From:   James <bjlockie@lockie.ca>
-Cc:     linux-wireless@vger.kernel.org
-References: <5bdf4393-273f-2ad2-40e0-556ec7dc6817@lockie.ca>
- <867f4b97151745d5a5fa0daa5ebcdbd2@realtek.com>
- <3fef8020-a496-41e3-8974-4d16ff4551b6@lockie.ca>
- <917dde5b-36c7-a079-6dc1-7441a2f90745@lwfinger.net>
- <dac5960c-44f0-300e-d3d7-6ae23c3ae64f@lockie.ca>
-In-Reply-To: <dac5960c-44f0-300e-d3d7-6ae23c3ae64f@lockie.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - titan.planetwebservers.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lockie.ca
-X-Get-Message-Sender-Via: titan.planetwebservers.net: authenticated_id: bjlockie@lockie.ca
-X-Authenticated-Sender: titan.planetwebservers.net: bjlockie@lockie.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-From-Rewrite: unmodified, already matched
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211129233209.GA2702252@bhelgaas>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Does anyone know what this is?
-The releasenotes pdf says it came from Realtek.
+On Mon, Nov 29, 2021 at 05:32:11PM -0600, Bjorn Helgaas wrote:
+> On Wed, Nov 03, 2021 at 09:58:27PM +0100, Jonas Dreßler wrote:
+> > The firmware of the 88W8897 PCIe+USB card sends those events very
+> > unreliably, sometimes bluetooth together with 2.4ghz-wifi is used and no
+> > COEX event comes in, and sometimes bluetooth is disabled but the
+> > coexistance mode doesn't get disabled.
+> 
+> s/sends those events/sends BTCOEX events/ so it reads well without the
+> subject.
+> 
+> s/coexistance/coexistence/
+> 
+> Is BTCOEX a standard Bluetooth thing?  Is there a spec reference that
+> could be useful here?  I've never seen those specs, so this is just
+> curiosity.  I did download the "Bluetooth Core Spec v5.3", which does
+> have a "Wireless Coexistence Signaling and Interfaces" chapter, but
+> "BTCOEX" doesn't appear in that doc.
+> 
+> > This means we sometimes end up capping the rx/tx window size while
+> > bluetooth is not enabled anymore, artifically limiting wifi speeds even
+> > though bluetooth is not being used.
+> 
+> s/artifically/artificially/
+> 
+> > Since we can't fix the firmware, let's just ignore those events on the
+> > 88W8897 device. From some Wireshark capture sessions it seems that the
+> > Windows driver also doesn't change the rx/tx window sizes when bluetooth
+> > gets enabled or disabled, so this is fairly consistent with the Windows
+> > driver.
 
-https://github.com/shiqishao/RTL8852AU_WiFi_linux_v1.15.0.1-0-g487ee886.20210714
-
-What are the roadblocks to getting USB support in the kernel driver?
-
-Is it possible to have a USB part of the driver that uses the kernel 
-part of the driver?
-
+I hadn't read far enough to see that the patch was already applied,
+sorry for the noise :)
