@@ -2,88 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B4D34616A3
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 14:35:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81D5E461696
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Nov 2021 14:35:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349509AbhK2Nid (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Nov 2021 08:38:33 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:49856 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1377768AbhK2Ng3 (ORCPT
+        id S1343504AbhK2NiX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Nov 2021 08:38:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:27662 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1377732AbhK2NgS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Nov 2021 08:36:29 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=kveik.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1mrgmJ-0012xo-4N; Mon, 29 Nov 2021 15:33:07 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     johannes@sipsolutions.net
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Mon, 29 Nov 2021 15:32:48 +0200
-Message-Id: <iwlwifi.20211129152938.faf291271590.I40ad9372a47cbad53b4aae7b5a6ccc0dc3fddf8b@changeid>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211129133248.83829-1-luca@coelho.fi>
-References: <20211129133248.83829-1-luca@coelho.fi>
+        Mon, 29 Nov 2021 08:36:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1638192780;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=cJMx36hpuC8venvJ4ex2axV7qDK8Q88x2lTV2gAMz6k=;
+        b=OfkPqlvdYJtZVcHVBaxUah26v6isY24NTOz86GI1UpC1YlaCq4zo7KzJehk1RYSR8yeXV3
+        By8KHGy4OPwZBQq5ZI2ZrBCMAxPiZpIGqNWIw0umaWKAZ7uIkeFIFef14wGF0+lHbiWwv9
+        z9h+r2j2sZeEVV0D05x3elkAdYbTQSE=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-429-_PrYFQmoMNiJ0SyWeVFqGA-1; Mon, 29 Nov 2021 08:32:58 -0500
+X-MC-Unique: _PrYFQmoMNiJ0SyWeVFqGA-1
+Received: by mail-ed1-f69.google.com with SMTP id a3-20020a05640213c300b003e7d12bb925so13786858edx.9
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 05:32:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=cJMx36hpuC8venvJ4ex2axV7qDK8Q88x2lTV2gAMz6k=;
+        b=j5ziJrk9oQmjXjMCR/nXYPoulbw/L2wT3G9YdDBjMbpZPz4PfwKE67f5LB7ZOGB8/y
+         N7vQ8edDhmj6Ye/Bbj5Wt84xnS+I2ffEFYXFA5H2GlcM09m0Q74A7JUr3UEnoci4RiAu
+         HUETXECn1bQvOCw2kvyNCTww6qXpvOnnr9kgOuUpiocXn3v4wvYFF5yjf58ieBVEuzF5
+         LgAj6sSR415HHOZADt3dkZCM7+Gmo4irMj64JqY/qFpE+/AHWnY3DNc1m6QAVwA8ex6b
+         SsZhCrnFE2UJCdqVQ2NbsWggMCXjmNtf6tGVtw8RiYZce+tjsXLMM7x0VX0Zrof/0W8/
+         PKiQ==
+X-Gm-Message-State: AOAM530vHyEoACsQrpdpqi4WgzVE4rRID/3ij0+s4zGLVQ0ESCOfDENS
+        tGNGENsRqWXJBUksWgqzWQh8rHaUx/hNhefQOjTjDpRYfpP/f134HJXM2k2RNGr/Vm/y7RzxE0X
+        KLnbddTAnR2G8fYEklpOS5jEsuWo=
+X-Received: by 2002:a05:6402:11d2:: with SMTP id j18mr74999591edw.318.1638192777520;
+        Mon, 29 Nov 2021 05:32:57 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxyGfILfLfkBUtV1feZBrWtakKaA1x2PQ1Q0eRA5mFdvbT4avY16MXcnhloTRwJqflNG7E9EQ==
+X-Received: by 2002:a05:6402:11d2:: with SMTP id j18mr74999565edw.318.1638192777353;
+        Mon, 29 Nov 2021 05:32:57 -0800 (PST)
+Received: from localhost (net-93-151-197-210.cust.vodafonedsl.it. [93.151.197.210])
+        by smtp.gmail.com with ESMTPSA id gt18sm7423034ejc.88.2021.11.29.05.32.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Nov 2021 05:32:56 -0800 (PST)
+Date:   Mon, 29 Nov 2021 14:32:54 +0100
+From:   lorenzo bianconi <lorenzo.bianconi@redhat.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, sean.wang@mediatek.com,
+        nbd@nbd.name, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com
+Subject: Re: [PATCH wireless-drivers] mt76: fix possible pktid leak
+Message-ID: <YaTWhgzLaOvr6PjB@lore-desk>
+References: <a560caffcc24452fb48af53904bbe5c45ea5db93.1637602268.git.lorenzo@kernel.org>
+ <163777451567.4686.3609119971518562275.kvalo@codeaurora.org>
+ <YaDo21+/MBeeuTDN@lore-desk>
+ <87fsrj3qxo.fsf@codeaurora.org>
+ <YaD8lT5csiLvmBzS@lore-desk>
+ <87sfvij4eh.fsf@codeaurora.org>
+ <YaEJ6hQ0uC32+Mts@lore-desk>
+ <YaJAUOkLoQ3mOjcQ@lore-desk>
+ <874k7vgx8r.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 16/16] cfg80211: Acquire wiphy mutex on regulatory work
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="D8qjOYejXFUcOPkb"
+Content-Disposition: inline
+In-Reply-To: <874k7vgx8r.fsf@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
 
-The function cfg80211_reg_can_beacon_relax() expects wiphy
-mutex to be held when it is being called. However, when
-reg_leave_invalid_chans() is called the mutex is not held.
-Fix it by acquiring the lock before calling the function.
+--D8qjOYejXFUcOPkb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- net/wireless/reg.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+>=20
+> >> > Lorenzo Bianconi <lorenzo@kernel.org> writes:
+> >> >=20
+> >> > >> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+> >> > >>=20
+> >> > >> >> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+> >> > >> >>=20
+> >> > >> >> > Fix a possible idr pkt-id leak if the packet is dropped on t=
+x side
+> >> > >> >> >=20
+> >> > >> >> > Fixes: bd1e3e7b693c ("mt76: introduce packet_id idr")
+> >> > >> >> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> >> > >> >> > Acked-by: Felix Fietkau <nbd@nbd.name>
+> >> > >> >>=20
+> >> > >> >> Patch applied to wireless-drivers.git, thanks.
+> >> > >> >>=20
+> >> > >> >> 2a9e9857473b mt76: fix possible pktid leak
+> >> > >> >
+> >> > >> > Hi Kalle,
+> >> > >> >
+> >> > >> > Unfortunately I found a regression introduced by this patch
+> >> > >> > for mt7663u (and I
+> >> > >> > guess for mt7921s as well). Do you want me to post a fix or jus=
+t a v2?
+> >> > >>=20
+> >> > >> I don't rebase my trees, so please post a fix. I was planning to =
+submit
+> >> > >> a pull request to net tree today, but is this so serious that I s=
+hould
+> >> > >> skip that?
+> >> > >
+> >> > > I have already tested mt7663u but I do not have mt7921s hw for tes=
+ting (but the
+> >> > > behaviour should be the same). I guess we can split the patch, jus=
+t post the
+> >> > > fix for mt7663u and let Sean the time to test it on mt7921s (I am =
+not sure
+> >> > > mt7921s is already available on the market). In this way you can s=
+end the PR
+> >> > > today. What do you think?
+> >> >=20
+> >> > I think it's best to wait, I prefer to have proper build testing on =
+my
+> >> > tree before I submit the pull request.
+> >>=20
+> >> ack, fine to me. Let's wait for Sean in this case.
+> >
+> > @Sean: if you want to test the code the patch is available here:
+> > https://github.com/LorenzoBianconi/wireless-drivers/commit/1ffda36c7cbe=
+3a6cfc31868895417d0cd6755306
+>=20
+> And if we can't find a quick fix let's just revert 2a9e9857473b. I can't
+> wait too long.
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index df87c7f3a049..6f6da1cedd80 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -2338,6 +2338,7 @@ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
- 	struct cfg80211_chan_def chandef = {};
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
- 	enum nl80211_iftype iftype;
-+	bool ret;
- 
- 	wdev_lock(wdev);
- 	iftype = wdev->iftype;
-@@ -2387,7 +2388,11 @@ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
- 	case NL80211_IFTYPE_AP:
- 	case NL80211_IFTYPE_P2P_GO:
- 	case NL80211_IFTYPE_ADHOC:
--		return cfg80211_reg_can_beacon_relax(wiphy, &chandef, iftype);
-+		wiphy_lock(wiphy);
-+		ret = cfg80211_reg_can_beacon_relax(wiphy, &chandef, iftype);
-+		wiphy_unlock(wiphy);
-+
-+		return ret;
- 	case NL80211_IFTYPE_STATION:
- 	case NL80211_IFTYPE_P2P_CLIENT:
- 		return cfg80211_chandef_usable(wiphy, &chandef,
-@@ -2409,7 +2414,6 @@ static void reg_leave_invalid_chans(struct wiphy *wiphy)
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
- 
- 	ASSERT_RTNL();
--
- 	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list)
- 		if (!reg_wdev_chan_valid(wiphy, wdev))
- 			cfg80211_leave(rdev, wdev);
--- 
-2.33.1
+ack, Deren verified the fix. I will post it now.
+
+Regards,
+Lorenzo
+
+>=20
+> --=20
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>=20
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
+>=20
+
+--D8qjOYejXFUcOPkb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYaTWhgAKCRA6cBh0uS2t
+rOSKAP9nqRN1ixJ6YG2t06EZ90Xm1xiSqz2Y+l3wB7DYpm4HfAEAsylhYX6Bg4VG
+npzp6y3CK2F87mzDE7dfg2JkeQrBQg8=
+=5+Hz
+-----END PGP SIGNATURE-----
+
+--D8qjOYejXFUcOPkb--
 
