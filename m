@@ -2,112 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CDD34631B9
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 12:00:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAAEE4631E0
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 12:12:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236720AbhK3LDS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Nov 2021 06:03:18 -0500
-Received: from mga12.intel.com ([192.55.52.136]:29776 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235667AbhK3LDS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Nov 2021 06:03:18 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="216207703"
-X-IronPort-AV: E=Sophos;i="5.87,275,1631602800"; 
-   d="scan'208";a="216207703"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 02:59:59 -0800
-X-IronPort-AV: E=Sophos;i="5.87,275,1631602800"; 
-   d="scan'208";a="512129906"
-Received: from azohar-mobl1.ger.corp.intel.com (HELO egrumbac-mobl1.intel.com) ([10.254.155.124])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 02:59:57 -0800
-From:   Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: [PATCH] iwlwifi: mvm: fix a possible NULL pointer deference
-Date:   Tue, 30 Nov 2021 12:59:51 +0200
-Message-Id: <20211130105951.85539-1-emmanuel.grumbach@intel.com>
-X-Mailer: git-send-email 2.25.1
+        id S237272AbhK3LQH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Nov 2021 06:16:07 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:49972 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232559AbhK3LQG (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 30 Nov 2021 06:16:06 -0500
+Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1ms13t-0013Xk-Ve; Tue, 30 Nov 2021 13:12:39 +0200
+Message-ID: <e947923fbeefd81d3b24acf009212d61864fac2c.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 30 Nov 2021 13:12:34 +0200
+In-Reply-To: <8735nf9ieg.fsf@toke.dk>
+References: <20211129133248.83829-1-luca@coelho.fi>
+         <iwlwifi.20211129152938.d5fceeb7e166.I555fef8e67d93fff3d9a304886c4a9f8b322e591@changeid>
+         <8735nf9ieg.fsf@toke.dk>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.1-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 15/16] mac80211: agg-tx: don't schedule_and_wake_txq()
+ under sta->lock
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Smatch spot a possible NULL pointer dereference. Fix it.
+On Mon, 2021-11-29 at 14:54 +0100, Toke Høiland-Jørgensen wrote:
+> Luca Coelho <luca@coelho.fi> writes:
+> 
+> > From: Johannes Berg <johannes.berg@intel.com>
+> > 
+> > When we call ieee80211_agg_start_txq(), that will in turn call
+> > schedule_and_wake_txq(). Called from ieee80211_stop_tx_ba_cb()
+> > this is done under sta->lock, which leads to certain circular
+> > lock dependencies, as reported by Chris Murphy:
+> > https://lore.kernel.org/r/CAJCQCtSXJ5qA4bqSPY=oLRMbv-irihVvP7A2uGutEbXQVkoNaw@mail.gmail.com
+> > 
+> > In general, ieee80211_agg_start_txq() is usually not called
+> > with sta->lock held, only in this one place. But it's always
+> > called with sta->ampdu_mlme.mtx held, and that's therefore
+> > clearly sufficient.
+> > 
+> > Change ieee80211_stop_tx_ba_cb() to also call it without the
+> > sta->lock held, by factoring it out of ieee80211_remove_tid_tx()
+> > (which is only called in this one place).
+> > 
+> > This breaks the locking chain and makes it less likely that
+> > we'll have similar locking chain problems in the future.
+> > 
+> > Reported-by: Chris Murphy <lists@colorremedies.com>
+> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> 
+> Does this need a fixes: tag?
 
-__iwl_mvm_mac_set_key can be called with sta = NULL
-Also add a NULL pointer check after memory allocation.
+Hi Toke,
 
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mei/main.c     |  2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 11 ++++++-----
- 2 files changed, 8 insertions(+), 5 deletions(-)
+Neither Johannes nor Chris pointed to any specific patch that this
+commit is fixing.  If you know the exact commit that broke this, I can
+add the tag and send v2.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mei/main.c b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-index 112cc362e8e7..7fa42fd2ba16 100644
---- a/drivers/net/wireless/intel/iwlwifi/mei/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-@@ -627,6 +627,8 @@ static void iwl_mei_handle_csme_filters(struct mei_cl_device *cldev,
- 					  lockdep_is_held(&iwl_mei_mutex));
- 
- 	new_filters = kzalloc(sizeof(*new_filters), GFP_KERNEL);
-+	if (!new_filters)
-+		return;
- 
- 	/* Copy the OOB filters */
- 	new_filters->filters = filters->filters;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index c96a0ece8066..6356752a8a3c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -3557,13 +3557,14 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
- {
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
- 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
--	struct iwl_mvm_sta *mvmsta;
-+	struct iwl_mvm_sta *mvmsta = NULL;
- 	struct iwl_mvm_key_pn *ptk_pn;
- 	int keyidx = key->keyidx;
- 	int ret, i;
- 	u8 key_offset;
- 
--	mvmsta = iwl_mvm_sta_from_mac80211(sta);
-+	if (sta)
-+		mvmsta = iwl_mvm_sta_from_mac80211(sta);
- 
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_TKIP:
-@@ -3665,7 +3666,7 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
- 		}
- 
- 		if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status) &&
--		    sta && iwl_mvm_has_new_rx_api(mvm) &&
-+		    mvmsta && iwl_mvm_has_new_rx_api(mvm) &&
- 		    key->flags & IEEE80211_KEY_FLAG_PAIRWISE &&
- 		    (key->cipher == WLAN_CIPHER_SUITE_CCMP ||
- 		     key->cipher == WLAN_CIPHER_SUITE_GCMP ||
-@@ -3699,7 +3700,7 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
- 		else
- 			key_offset = STA_KEY_IDX_INVALID;
- 
--		if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
-+		if (mvmsta && key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
- 			mvmsta->pairwise_cipher = key->cipher;
- 
- 		IWL_DEBUG_MAC80211(mvm, "set hwcrypto key\n");
-@@ -3742,7 +3743,7 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
- 			break;
- 		}
- 
--		if (sta && iwl_mvm_has_new_rx_api(mvm) &&
-+		if (mvmsta && iwl_mvm_has_new_rx_api(mvm) &&
- 		    key->flags & IEEE80211_KEY_FLAG_PAIRWISE &&
- 		    (key->cipher == WLAN_CIPHER_SUITE_CCMP ||
- 		     key->cipher == WLAN_CIPHER_SUITE_GCMP ||
--- 
-2.25.1
+Thanks!
 
+--
+Cheers,
+Luca.
