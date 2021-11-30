@@ -2,205 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D05F46288F
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 00:48:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B907462942
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 01:47:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233600AbhK2Xvo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Nov 2021 18:51:44 -0500
-Received: from mga03.intel.com ([134.134.136.65]:51182 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233265AbhK2Xvo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Nov 2021 18:51:44 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="236045808"
-X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; 
-   d="scan'208";a="236045808"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2021 15:48:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; 
-   d="scan'208";a="540197182"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 29 Nov 2021 15:48:24 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mrqNj-000CVP-MH; Mon, 29 Nov 2021 23:48:23 +0000
-Date:   Tue, 30 Nov 2021 07:47:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [kvalo-wireless-drivers-next:master] BUILD SUCCESS
- 69831173fcbbfebb7aa2d76523deaf0b87b8eddd
-Message-ID: <61a566a3.8isTCWhAmMmY99QC%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S234437AbhK3Auz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Nov 2021 19:50:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37092 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234390AbhK3Auz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 29 Nov 2021 19:50:55 -0500
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F8A4C061748
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 16:47:37 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id r130so18805371pfc.1
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 16:47:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=FNHzIeoNF4E/ChvY8iqCZpHku0EJ1HjjIEUDqrvYteE=;
+        b=hdoyQm+SZqT3VqIFKhsA87GHz6tPX+yEJy7VUqZ1vOh1fbV0K8hdAD8xEfN4BSZijq
+         UyhMIWU5P7CpypZVPwH7GbgIRGa04Hb+DK5SWapT9cbNBnpIqzg77bQj3AvHEk7ojrJh
+         6xH4pD1x9Ltc9c5yLj5yuWR+HZqdVVal7S35g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=FNHzIeoNF4E/ChvY8iqCZpHku0EJ1HjjIEUDqrvYteE=;
+        b=Tm8UX+CkvDcUeGsU+ewNOf0J2d8iyIZOVkOKFhzpVQ/2bMvYRKsIQvWhy+hNxvL01B
+         QmCf0RJuxGuwfBUITHSs3grJnzdK+TkoXnsMpXIHTrWnM215T5R+XDcf525mQAbED2F9
+         ooHK+4XzYORHw4i06ozwfpNpiv9B1ou0kNfA18ZmXUFE6U62Dj6oh7TIizDNXm1FNc5q
+         mDrXfPzidl/0DWl2j4kifjUqdoI8K/sd5QQFWLjwZ0PKJVMyLTzfoY7uVsyF8+7sMWw1
+         QnBIuFq03EN4CM4rjiygM7M9cRCCv+A/LFXD//f+sz0M5E8DDA2xfeYhUS+V93vpWv8Z
+         V+qA==
+X-Gm-Message-State: AOAM531TObDvNO/B2MZOsawuCdkO18GgldcIXGsw9RjUCHxLV9xrrSIa
+        AtJEW/viePfBhDeEPZjmOG00SQ==
+X-Google-Smtp-Source: ABdhPJzqbcpo6hlWldDlPjrL230SXiWqrqs/mRNPc8dujTRCS/HMUGkCX5XfHZw0PIVrhJ83oQCu0g==
+X-Received: by 2002:a63:554:: with SMTP id 81mr34328310pgf.298.1638233256675;
+        Mon, 29 Nov 2021 16:47:36 -0800 (PST)
+Received: from google.com ([2620:15c:202:201:8b47:583d:a0:4f2d])
+        by smtp.gmail.com with ESMTPSA id m12sm20441202pfk.27.2021.11.29.16.47.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Nov 2021 16:47:36 -0800 (PST)
+Date:   Mon, 29 Nov 2021 16:47:34 -0800
+From:   Brian Norris <briannorris@chromium.org>
+To:     Jia-Ju Bai <baijiaju1990@gmail.com>
+Cc:     amitkarwar@gmail.com, ganapathi017@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        kvalo@codeaurora.org, David Miller <davem@davemloft.net>,
+        kuba@kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Doug Anderson <dianders@chromium.org>
+Subject: [PATCH] mwifiex: Fix possible ABBA deadlock
+Message-ID: <YaV0pllJ5p/EuUat@google.com>
+References: <0e495b14-efbb-e0da-37bd-af6bd677ee2c@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <0e495b14-efbb-e0da-37bd-af6bd677ee2c@gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-branch HEAD: 69831173fcbbfebb7aa2d76523deaf0b87b8eddd  rtlwifi: rtl8192de: Style clean-ups
+Quoting Jia-Ju Bai <baijiaju1990@gmail.com>:
 
-elapsed time: 732m
+  mwifiex_dequeue_tx_packet()
+     spin_lock_bh(&priv->wmm.ra_list_spinlock); --> Line 1432 (Lock A)
+     mwifiex_send_addba()
+       spin_lock_bh(&priv->sta_list_spinlock); --> Line 608 (Lock B)
 
-configs tested: 147
-configs skipped: 3
+  mwifiex_process_sta_tx_pause()
+     spin_lock_bh(&priv->sta_list_spinlock); --> Line 398 (Lock B)
+     mwifiex_update_ralist_tx_pause()
+       spin_lock_bh(&priv->wmm.ra_list_spinlock); --> Line 941 (Lock A)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Similar report for mwifiex_process_uap_tx_pause().
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20211128
-arm                        multi_v5_defconfig
-m68k                           sun3_defconfig
-powerpc                     tqm8540_defconfig
-um                                  defconfig
-arm                     davinci_all_defconfig
-mips                malta_qemu_32r6_defconfig
-powerpc                      cm5200_defconfig
-mips                        qi_lb60_defconfig
-sh                           se7619_defconfig
-sh                   rts7751r2dplus_defconfig
-powerpc                        icon_defconfig
-arm                              alldefconfig
-arm                         s5pv210_defconfig
-arm                          imote2_defconfig
-powerpc                   currituck_defconfig
-mips                         tb0287_defconfig
-arm                        mvebu_v7_defconfig
-x86_64                              defconfig
-arm                       versatile_defconfig
-microblaze                      mmu_defconfig
-arm                         orion5x_defconfig
-mips                           ip22_defconfig
-s390                       zfcpdump_defconfig
-powerpc                    socrates_defconfig
-riscv             nommu_k210_sdcard_defconfig
-sparc                       sparc32_defconfig
-mips                         cobalt_defconfig
-powerpc                      makalu_defconfig
-sh                           se7722_defconfig
-arc                                 defconfig
-mips                        omega2p_defconfig
-parisc                           allyesconfig
-mips                           gcw0_defconfig
-arm                       imx_v6_v7_defconfig
-arm                           h5000_defconfig
-mips                           rs90_defconfig
-openrisc                            defconfig
-arm                          pcm027_defconfig
-powerpc                        warp_defconfig
-mips                 decstation_r4k_defconfig
-arm                         axm55xx_defconfig
-arc                        vdk_hs38_defconfig
-arm                         socfpga_defconfig
-ia64                          tiger_defconfig
-powerpc64                        alldefconfig
-arm                         shannon_defconfig
-sh                          rsk7203_defconfig
-arm                           u8500_defconfig
-arm                        cerfcube_defconfig
-m68k                        m5272c3_defconfig
-arm                  randconfig-c002-20211128
-arm                  randconfig-c002-20211130
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20211129
-i386                 randconfig-a002-20211129
-i386                 randconfig-a006-20211129
-i386                 randconfig-a005-20211129
-i386                 randconfig-a004-20211129
-i386                 randconfig-a003-20211129
-x86_64               randconfig-a011-20211128
-x86_64               randconfig-a014-20211128
-x86_64               randconfig-a012-20211128
-x86_64               randconfig-a016-20211128
-x86_64               randconfig-a013-20211128
-x86_64               randconfig-a015-20211128
-i386                 randconfig-a015-20211128
-i386                 randconfig-a016-20211128
-i386                 randconfig-a013-20211128
-i386                 randconfig-a012-20211128
-i386                 randconfig-a014-20211128
-i386                 randconfig-a011-20211128
-arc                  randconfig-r043-20211128
-s390                 randconfig-r044-20211128
-riscv                randconfig-r042-20211128
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
+While the locking expectations in this driver are a bit unclear, the
+Fixed commit only intended to protect the sta_ptr, so we can drop the
+lock as soon as we're done with it.
 
-clang tested configs:
-x86_64               randconfig-a001-20211128
-x86_64               randconfig-a006-20211128
-x86_64               randconfig-a003-20211128
-x86_64               randconfig-a005-20211128
-x86_64               randconfig-a004-20211128
-x86_64               randconfig-a002-20211128
-i386                 randconfig-a001-20211128
-i386                 randconfig-a002-20211128
-i386                 randconfig-a006-20211128
-i386                 randconfig-a005-20211128
-i386                 randconfig-a004-20211128
-i386                 randconfig-a003-20211128
-i386                 randconfig-a015-20211129
-i386                 randconfig-a016-20211129
-i386                 randconfig-a013-20211129
-i386                 randconfig-a012-20211129
-i386                 randconfig-a014-20211129
-i386                 randconfig-a011-20211129
-hexagon              randconfig-r045-20211129
-hexagon              randconfig-r041-20211129
-s390                 randconfig-r044-20211129
-riscv                randconfig-r042-20211129
+IIUC, this deadlock cannot actually happen, because command event
+processing (which calls mwifiex_process_sta_tx_pause()) is
+sequentialized with TX packet processing (e.g.,
+mwifiex_dequeue_tx_packet()) via the main loop (mwifiex_main_process()).
+But it's good not to leave this potential issue lurking.
 
+Fixes: ("f0f7c2275fb9 mwifiex: minor cleanups w/ sta_list_spinlock in cfg80211.c")
+Cc: Douglas Anderson <dianders@chromium.org>
+Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+Link: https://lore.kernel.org/linux-wireless/0e495b14-efbb-e0da-37bd-af6bd677ee2c@gmail.com/
+Signed-off-by: Brian Norris <briannorris@chromium.org>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+
+On Tue, Nov 23, 2021 at 11:31:34AM +0800, Jia-Ju Bai wrote:
+> I am not quite sure whether these possible deadlocks are real and how to fix
+> them if they are real.
+> Any feedback would be appreciated, thanks :)
+
+I think these are at least theoretically real, and so we should take
+something like the $subject patch probably. But I don't believe we can
+actually hit this due to the main-loop structure of this driver.
+
+Anyway, see the surrounding patch.
+
+Thanks,
+Brian
+
+
+ drivers/net/wireless/marvell/mwifiex/sta_event.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_event.c b/drivers/net/wireless/marvell/mwifiex/sta_event.c
+index 80e5d44bad9d..7d42c5d2dbf6 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_event.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_event.c
+@@ -365,10 +365,12 @@ static void mwifiex_process_uap_tx_pause(struct mwifiex_private *priv,
+ 		sta_ptr = mwifiex_get_sta_entry(priv, tp->peermac);
+ 		if (sta_ptr && sta_ptr->tx_pause != tp->tx_pause) {
+ 			sta_ptr->tx_pause = tp->tx_pause;
++			spin_unlock_bh(&priv->sta_list_spinlock);
+ 			mwifiex_update_ralist_tx_pause(priv, tp->peermac,
+ 						       tp->tx_pause);
++		} else {
++			spin_unlock_bh(&priv->sta_list_spinlock);
+ 		}
+-		spin_unlock_bh(&priv->sta_list_spinlock);
+ 	}
+ }
+ 
+@@ -400,11 +402,13 @@ static void mwifiex_process_sta_tx_pause(struct mwifiex_private *priv,
+ 			sta_ptr = mwifiex_get_sta_entry(priv, tp->peermac);
+ 			if (sta_ptr && sta_ptr->tx_pause != tp->tx_pause) {
+ 				sta_ptr->tx_pause = tp->tx_pause;
++				spin_unlock_bh(&priv->sta_list_spinlock);
+ 				mwifiex_update_ralist_tx_pause(priv,
+ 							       tp->peermac,
+ 							       tp->tx_pause);
++			} else {
++				spin_unlock_bh(&priv->sta_list_spinlock);
+ 			}
+-			spin_unlock_bh(&priv->sta_list_spinlock);
+ 		}
+ 	}
+ }
+-- 
+2.34.0.rc2.393.gf8c9666880-goog
