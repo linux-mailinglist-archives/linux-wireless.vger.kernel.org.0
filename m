@@ -2,82 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70503462FD0
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 10:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBB474630CF
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 11:15:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240281AbhK3Jjs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Nov 2021 04:39:48 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:57764 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235582AbhK3Jjs (ORCPT
+        id S231545AbhK3KSm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Nov 2021 05:18:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52292 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230039AbhK3KSk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Nov 2021 04:39:48 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Tue, 30 Nov 2021 05:18:40 -0500
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050::465:201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34F6C061574;
+        Tue, 30 Nov 2021 02:15:21 -0800 (PST)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F1087B817F7
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Nov 2021 09:36:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7EAC53FCB;
-        Tue, 30 Nov 2021 09:36:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638264987;
-        bh=gIiTF47+ybBL2RplebhTka24BvMjeJ28TMX1bCTkHZs=;
-        h=From:To:Cc:Subject:Date:From;
-        b=TzYWTv7Su8v62hf7TRMlHJTWCZTWIjJ/2IterNMY5BADKDtVVPRsLK3FicOsG9qd8
-         QGi4NGc0mpj/ovSMRq6kecsYphzVk0icz2j/FbtRVPHoUh5PtzK4JPqgwbAEjhOrE0
-         Sx1T6SI3K9SckzUPj3B4BZrbM81VcdurzlIfPYire6DAXAVYo6zvPHGZ8/tItKXJbC
-         TnybwKUwOpbRjDoQfdrI4l2c+T/Bg/b+k24oza88w3s7BE793+HYyWWiyr5eACYEt2
-         YcbAEUZtZZqOXhSCrTrHIMkdpzpAv5e4eSqRYeTQgtvgssdsLrdlgFmkZp3FgnREsQ
-         kwtwYmVM6zCvA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, deren.wu@mediatek.com
-Subject: [PATCH] mt76: connac: fix last_chan configuration in mt76_connac_mcu_rate_txpower_band
-Date:   Tue, 30 Nov 2021 10:36:15 +0100
-Message-Id: <05dfc592c246c47c61495380680342148c9de29d.1638264847.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4J3J4l0hhwzQlXs;
+        Tue, 30 Nov 2021 11:15:19 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Message-ID: <6da022c5-5ee5-b8b8-9642-bd0edf6240fa@v0yd.nl>
+Date:   Tue, 30 Nov 2021 11:15:11 +0100
 MIME-Version: 1.0
+Subject: Re: [PATCH] mwifiex: Ignore BTCOEX events from the 88W8897 firmware
+Content-Language: en-US
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
+References: <20211129233824.GA2703817@bhelgaas>
+From:   =?UTF-8?Q?Jonas_Dre=c3=9fler?= <verdre@v0yd.nl>
+In-Reply-To: <20211129233824.GA2703817@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-last_ch configuration must not be dependent on the current configured band
-but it is defined by hw capabilities since the fw always expects the
-following order:
-- 2GHz
-- 5GHz
-- 6GHz
+On 30.11.21 00:38, Bjorn Helgaas wrote:
+> On Mon, Nov 29, 2021 at 05:32:11PM -0600, Bjorn Helgaas wrote:
+>> On Wed, Nov 03, 2021 at 09:58:27PM +0100, Jonas Dreßler wrote:
+>>> The firmware of the 88W8897 PCIe+USB card sends those events very
+>>> unreliably, sometimes bluetooth together with 2.4ghz-wifi is used and no
+>>> COEX event comes in, and sometimes bluetooth is disabled but the
+>>> coexistance mode doesn't get disabled.
+>>
+>> s/sends those events/sends BTCOEX events/ so it reads well without the
+>> subject.
+>>
+>> s/coexistance/coexistence/
+>>
+>> Is BTCOEX a standard Bluetooth thing?  Is there a spec reference that
+>> could be useful here?  I've never seen those specs, so this is just
+>> curiosity.  I did download the "Bluetooth Core Spec v5.3", which does
+>> have a "Wireless Coexistence Signaling and Interfaces" chapter, but
+>> "BTCOEX" doesn't appear in that doc.
+>>
+>>> This means we sometimes end up capping the rx/tx window size while
+>>> bluetooth is not enabled anymore, artifically limiting wifi speeds even
+>>> though bluetooth is not being used.
+>>
+>> s/artifically/artificially/
+>>
+>>> Since we can't fix the firmware, let's just ignore those events on the
+>>> 88W8897 device. From some Wireshark capture sessions it seems that the
+>>> Windows driver also doesn't change the rx/tx window sizes when bluetooth
+>>> gets enabled or disabled, so this is fairly consistent with the Windows
+>>> driver.
+> 
+> I hadn't read far enough to see that the patch was already applied,
+> sorry for the noise :)
+> 
+No problem, in case you still want to know about BTCOEX:
 
-Fixes: 9b2ea8eee42a1 ("mt76: connac: set 6G phymode in single-sku support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ From what I've seen that's not something defined in any standards, but
+it's usually the name of the (sometimes patented) tricks every manufacturer
+has to make wifi and bt (which are both on the 2.4ghz band) behave well
+together.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 8198f177d59b..e5e4af1b404c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1980,12 +1980,12 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
- 	}
- 	batch_size = DIV_ROUND_UP(n_chan, batch_len);
- 
--	if (!phy->cap.has_5ghz)
--		last_ch = chan_list_2ghz[n_chan - 1];
--	else if (phy->cap.has_6ghz)
--		last_ch = chan_list_6ghz[n_chan - 1];
-+	if (phy->cap.has_6ghz)
-+		last_ch = chan_list_6ghz[ARRAY_SIZE(chan_list_6ghz) - 1];
-+	else if (phy->cap.has_5ghz)
-+		last_ch = chan_list_5ghz[ARRAY_SIZE(chan_list_5ghz) - 1];
- 	else
--		last_ch = chan_list_5ghz[n_chan - 1];
-+		last_ch = chan_list_2ghz[ARRAY_SIZE(chan_list_2ghz) - 1];
- 
- 	for (i = 0; i < batch_size; i++) {
- 		struct mt76_connac_tx_power_limit_tlv tx_power_tlv = {};
--- 
-2.31.1
+In almost every wifi driver you'll find functionality named
+btcoex/coexist/coexistence. The way it usually works is that the card
+sends an event to the kernel driver (in our case that event is called
+BTCOEX), and then the driver decides which quirks to apply to make wifi
+more interference-resistant (here's where the patents come in because
+some of those quirks are quite tricky, see for example
+https://patents.google.com/patent/US9226102B1/en).
 
+Now with our Marvell card the firmware is buggy and sends those events
+so unreliably (the card "forgets" to inform us that the BT connection
+has ended) that we're better off ignoring them.
