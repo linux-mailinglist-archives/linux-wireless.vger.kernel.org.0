@@ -2,96 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 958C8463DDA
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 19:32:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C5B5463E8A
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 20:17:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239550AbhK3Sfj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Nov 2021 13:35:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56358 "EHLO
+        id S245734AbhK3TUX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Nov 2021 14:20:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234761AbhK3Sfi (ORCPT
+        with ESMTP id S1343499AbhK3TUQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Nov 2021 13:35:38 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD710C061574
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Nov 2021 10:32:16 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2801CB81875
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Nov 2021 18:32:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FFCC53FCC;
-        Tue, 30 Nov 2021 18:32:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638297133;
-        bh=CL1JsLrNj91T3hCHEOM5FMzrebrCpdWGN18ObZv1xTQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OQyxbDSpvzOaXQ8X+NNUkxy4HV70UxWQj7s8ogxPwUEvJrFUTTL1OiSwtjqKUO8wF
-         aT0DJioso0azxmIZbJ/vjQhY73dzrlyu/uzLFAtZN1AKINQbDWALKjKQn/j4jVD1Jk
-         99nvJ1PYRQ2LGa+DI+xgRlZRlTtKedmWVJgSPa/2Jje5usANY7LeB+RgreL06EMgjP
-         ePXRTt53WbjkhPiFRLhQ5RPIrRvo1on+jcyePk+i6e+CXR7ss9892UGkD8vVubNVAl
-         MVruczNirAqN4C542IGtqgIVYvEKblh9FY5RTypY6WSXxJKHP/FwVBqazhQkb4mc5z
-         QsleeK5v8BPiA==
-Date:   Tue, 30 Nov 2021 11:32:09 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Finn Behrens <me@kloenk.dev>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        llvm@lists.linux.dev
-Subject: Re: [PATCH v5] nl80211: reset regdom when reloading regdb
-Message-ID: <YaZuKYM5bfWe2Urn@archlinux-ax161>
-References: <20210526112418.cdwkn7ed4twctimc@imap.mailbox.org>
- <YaIIZfxHgqc/UTA7@gimli.kloenk.dev>
- <YaZLEEj2pUU/DhZD@archlinux-ax161>
- <6BAD2771-7C01-408E-98BE-76A1CAF3A810@kloenk.dev>
+        Tue, 30 Nov 2021 14:20:16 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D2A9C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Nov 2021 11:16:56 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id o13so46593509wrs.12
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Nov 2021 11:16:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=ke6qYn4L1dD4yyUdywk/RaQttoSjgqO/YSfbUwxrZn4=;
+        b=bruIPCVqgHj+pTxMLgHWSeTsTVmKuQl2WzKrxkKUQrBDWvE8VfkMM7TQO9z36BJNCr
+         ceO/Zq1qhKI2nL/kL7Azu937FiFMsBC5jWeyznPc3DosqeBqegdXHHoM+UavEdcpk7u7
+         UWrXdrrkpK++3bRF0bNeuqjUc7h7UzbHb5Gz12BPNKsJ2k59ppbiFR/QK0jPnB6Qdnp9
+         m0T1s+rrvXh2cUPRuPujDDxJDKwp4zN2hEgLsTES/ZztvlD9DbpOrQHJoxsJdfH4jr+a
+         +hU7FUiYT8ItWp/vq8PqT1y6L+XzT4C+BRlXiF/ClIyCBddUu3Owa6bYIc73lMrOPoOC
+         gwxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=ke6qYn4L1dD4yyUdywk/RaQttoSjgqO/YSfbUwxrZn4=;
+        b=FLbZ/sLc6kN1L4EKC0H2bEnJ/+ebNwLYbbMGWYBTU3AO1FvpbA5j8I7Y5jPc6dJy5m
+         ltsLqXXp2RZHQrejjrDQ8W7H6PvQCTUl+moD95miOq/uQ2gzNqpQlN9/vgUkQGVAU5JH
+         8E+nhmaFTJX53RE6opQqa9vZshiBqNsLWBY5EBTTUp31PUKlP6YohcXqJ8C2n+jG7twE
+         cGiuxy8atzEq4bgOdSqbxuAeFADAPO3EoSxk+glF1uQ8hcAyseuP0cQvV8efUHw5di16
+         QhbPOEmle9kWzp4e/8aDYyNzwFzn4RNoAgzLRWPW7rUsxlnTulod1/Ccvdf2GT0C2Sap
+         2jIw==
+X-Gm-Message-State: AOAM530Z7iQC2azZ3rW1TGMNrFbnvNFGA8svqcQydhyOeiGC6Hf4/fJV
+        QNhA3uk+lJO3QamG5NiR4Vub4VjHYCSWu47bkw6e0NoPxZ8bVA==
+X-Google-Smtp-Source: ABdhPJw7LeH257sOEAZmQEbdPlVJdOFmJqCWuWk5Lk13ViiDlDoK6ZJu34gnFrerO14LGgfbwjY98ziXJos+1Hr2PMo=
+X-Received: by 2002:adf:f60e:: with SMTP id t14mr1079269wrp.112.1638299814507;
+ Tue, 30 Nov 2021 11:16:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6BAD2771-7C01-408E-98BE-76A1CAF3A810@kloenk.dev>
+From:   Jeff Clay <jeffclay@gmail.com>
+Date:   Tue, 30 Nov 2021 13:16:18 -0600
+Message-ID: <CACJOGMP0k1AH9Coz2DjZjkeoxPGjSyP60MYMSHrMN-hSJrrvTQ@mail.gmail.com>
+Subject: Latency spikes in rtw89
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 30, 2021 at 05:50:58PM +0100, Finn Behrens wrote:
-> > On 30. Nov 2021, at 17:02, Nathan Chancellor <nathan@kernel.org> wrote:
-> > On Sat, Nov 27, 2021 at 11:28:53AM +0100, Finn Behrens wrote:
-> >> this reloads the regdom when the regulatory db is reloaded.
-> >> Without this patch the user had to change the regulatoy domain to a
-> >> different, and then reset it to the one the user is in, to have the new
-> >> regulatory db take effect
-> >> 
-> >> Signed-off-by: Finn Behrens <fin@nyantec.com>
-> > 
-> > This patch as commit 1eda919126b4 ("nl80211: reset regdom when reloading
-> > regdb") in -next causes the following clang warning/error:
-> > 
-> > net/wireless/reg.c:1137:23: error: implicit conversion from enumeration type 'enum nl80211_user_reg_hint_type' to different enumeration type 'enum nl80211_reg_initiator' [-Werror,-Wenum-conversion]
-> >        request->initiator = NL80211_USER_REG_HINT_USER;
-> >                           ~ ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> > 1 error generated.
-> > 
-> > Should that be NL80211_REGDOM_SET_BY_CORE (same value, 0) or something
-> > different?
-> 
-> I think It should have been NL80211_REGDOM_SET_BY_USER, as the reload
-> flag check is currently implemented in the user hint function. But If
-> I see it correctly right now. We could remove the reload flag, and
-> NL80211_REGDOM_SET_BY_CORE should work as well. As the
-> reg_query_database function is called unconditionally there.
-
-If you tested the current version of your patch and it worked fine, then
-it seems like you should just revert the addition of the reload flag and
-change
-
-request->initiator = NL80211_USER_REG_HINT_USER;
-
-to
-
-request->initiator = NL80211_REGDOM_SET_BY_CORE;
-
-given that is what is happening right now. The warning is basically
-pointing out that reg_process_hint() is calling reg_process_hint_core()
-instead of reg_process_hint_user() because NL80211_USER_REG_HINT_USER =
-NL80211_REGDOM_SET_BY_CORE = 0. Hopefully that makes sense.
-
-Cheers,
-Nathan
+Hi, I am using the rtw89 driver for Realtek 8852AE in my Lenovo T14
+AMD Gen2. I have obtained and installed this driver from source at
+https://github.com/lwfinger/rtw89/tree/main I am having an issue where
+the latency during a ping test to hosts on my LAN spikes to 200ms or
+above. According to lwfinger, this is known and acceptable
+https://github.com/lwfinger/rtw89/issues/85  However, I am hoping I
+may be able to work with you to resolve this issue as a tester.
