@@ -2,183 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D514463D40
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 18:51:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 958C8463DDA
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 19:32:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244852AbhK3Ryq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Nov 2021 12:54:46 -0500
-Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:33632 "EHLO
-        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S245202AbhK3Ryl (ORCPT
+        id S239550AbhK3Sfj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Nov 2021 13:35:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56358 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234761AbhK3Sfi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Nov 2021 12:54:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1638294682; x=1669830682;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version;
-  bh=7C9yaLF8HRZcTFko5EAEXspKBHdav//DPFs6qRGyTRg=;
-  b=UoFIX4wuwIx5m6vyPEuXLTmZVxevCjL38q3WtBeKBWNm5mGp8mov34u2
-   M3cFl5MppDE+vYLgHdcJl5fpe772bvy2aPtmgS3060UkTM5I7PzCGx5vI
-   GoLJgFkCr6AJURJF3gPXt0s7jbi1Z7vjrB/pQthlF/WsgAecprpgn/XQE
-   o=;
-Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 30 Nov 2021 09:51:21 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 09:51:21 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 30 Nov 2021 09:51:21 -0800
-Received: from ppranees-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 30 Nov 2021 09:51:19 -0800
-From:   P Praneesh <quic_ppranees@quicinc.com>
-To:     <ath11k@lists.infradead.org>, <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>,
-        P Praneesh <quic_ppranees@quicinc.com>
-Subject: [PATCH 2/2] ath11k: add LDPC FEC type in 802.11 radiotap header
-Date:   Tue, 30 Nov 2021 23:20:48 +0530
-Message-ID: <1638294648-844-3-git-send-email-quic_ppranees@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1638294648-844-1-git-send-email-quic_ppranees@quicinc.com>
-References: <1638294648-844-1-git-send-email-quic_ppranees@quicinc.com>
+        Tue, 30 Nov 2021 13:35:38 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD710C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Nov 2021 10:32:16 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2801CB81875
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Nov 2021 18:32:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FFCC53FCC;
+        Tue, 30 Nov 2021 18:32:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638297133;
+        bh=CL1JsLrNj91T3hCHEOM5FMzrebrCpdWGN18ObZv1xTQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=OQyxbDSpvzOaXQ8X+NNUkxy4HV70UxWQj7s8ogxPwUEvJrFUTTL1OiSwtjqKUO8wF
+         aT0DJioso0azxmIZbJ/vjQhY73dzrlyu/uzLFAtZN1AKINQbDWALKjKQn/j4jVD1Jk
+         99nvJ1PYRQ2LGa+DI+xgRlZRlTtKedmWVJgSPa/2Jje5usANY7LeB+RgreL06EMgjP
+         ePXRTt53WbjkhPiFRLhQ5RPIrRvo1on+jcyePk+i6e+CXR7ss9892UGkD8vVubNVAl
+         MVruczNirAqN4C542IGtqgIVYvEKblh9FY5RTypY6WSXxJKHP/FwVBqazhQkb4mc5z
+         QsleeK5v8BPiA==
+Date:   Tue, 30 Nov 2021 11:32:09 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Finn Behrens <me@kloenk.dev>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: Re: [PATCH v5] nl80211: reset regdom when reloading regdb
+Message-ID: <YaZuKYM5bfWe2Urn@archlinux-ax161>
+References: <20210526112418.cdwkn7ed4twctimc@imap.mailbox.org>
+ <YaIIZfxHgqc/UTA7@gimli.kloenk.dev>
+ <YaZLEEj2pUU/DhZD@archlinux-ax161>
+ <6BAD2771-7C01-408E-98BE-76A1CAF3A810@kloenk.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6BAD2771-7C01-408E-98BE-76A1CAF3A810@kloenk.dev>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-LDPC is one the FEC type advertised in msdu_start info2 for HT packet
-type. Hence, add hardware specific callback for fetching LDPC
-support from msdu start and enable RX_ENC_FLAG_LDPC flag while passing
-rx status to mac80211.
+On Tue, Nov 30, 2021 at 05:50:58PM +0100, Finn Behrens wrote:
+> > On 30. Nov 2021, at 17:02, Nathan Chancellor <nathan@kernel.org> wrote:
+> > On Sat, Nov 27, 2021 at 11:28:53AM +0100, Finn Behrens wrote:
+> >> this reloads the regdom when the regulatory db is reloaded.
+> >> Without this patch the user had to change the regulatoy domain to a
+> >> different, and then reset it to the one the user is in, to have the new
+> >> regulatory db take effect
+> >> 
+> >> Signed-off-by: Finn Behrens <fin@nyantec.com>
+> > 
+> > This patch as commit 1eda919126b4 ("nl80211: reset regdom when reloading
+> > regdb") in -next causes the following clang warning/error:
+> > 
+> > net/wireless/reg.c:1137:23: error: implicit conversion from enumeration type 'enum nl80211_user_reg_hint_type' to different enumeration type 'enum nl80211_reg_initiator' [-Werror,-Wenum-conversion]
+> >        request->initiator = NL80211_USER_REG_HINT_USER;
+> >                           ~ ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> > 1 error generated.
+> > 
+> > Should that be NL80211_REGDOM_SET_BY_CORE (same value, 0) or something
+> > different?
+> 
+> I think It should have been NL80211_REGDOM_SET_BY_USER, as the reload
+> flag check is currently implemented in the user hint function. But If
+> I see it correctly right now. We could remove the reload flag, and
+> NL80211_REGDOM_SET_BY_CORE should work as well. As the
+> reg_query_database function is called unconditionally there.
 
-Tested-on: IPQ8074 WLAN.HK.2.4.0.1-01467-QCAHKSWPL_SILICONZ-1
+If you tested the current version of your patch and it worked fine, then
+it seems like you should just revert the addition of the reload flag and
+change
 
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/dp_rx.c | 12 +++++++++++-
- drivers/net/wireless/ath/ath11k/hw.c    | 16 ++++++++++++++++
- drivers/net/wireless/ath/ath11k/hw.h    |  1 +
- 3 files changed, 28 insertions(+), 1 deletion(-)
+request->initiator = NL80211_USER_REG_HINT_USER;
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 40f1c86..ed14a90 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -43,6 +43,13 @@ static inline u8 ath11k_dp_rx_h_msdu_start_decap_type(struct ath11k_base *ab,
- }
- 
- static inline
-+bool ath11k_dp_rx_h_msdu_start_ldpc_support(struct ath11k_base *ab,
-+					    struct hal_rx_desc *desc)
-+{
-+	return ab->hw_params.hw_ops->rx_desc_get_ldpc_support(desc);
-+}
-+
-+static inline
- u8 ath11k_dp_rx_h_msdu_start_mesh_ctl_present(struct ath11k_base *ab,
- 					      struct hal_rx_desc *desc)
- {
-@@ -2331,7 +2338,7 @@ static void ath11k_dp_rx_h_rate(struct ath11k *ar, struct hal_rx_desc *rx_desc,
- 	u8 bw;
- 	u8 rate_mcs, nss;
- 	u8 sgi;
--	bool is_cck;
-+	bool is_cck, is_ldpc;
- 
- 	pkt_type = ath11k_dp_rx_h_msdu_start_pkt_type(ar->ab, rx_desc);
- 	bw = ath11k_dp_rx_h_msdu_start_rx_bw(ar->ab, rx_desc);
-@@ -2373,6 +2380,9 @@ static void ath11k_dp_rx_h_rate(struct ath11k *ar, struct hal_rx_desc *rx_desc,
- 		if (sgi)
- 			rx_status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
- 		rx_status->bw = ath11k_mac_bw_to_mac80211_bw(bw);
-+		is_ldpc = ath11k_dp_rx_h_msdu_start_ldpc_support(ar->ab, rx_desc);
-+		if (is_ldpc)
-+			rx_status->enc_flags |= RX_ENC_FLAG_LDPC;
- 		break;
- 	case RX_MSDU_START_PKT_TYPE_11AX:
- 		rx_status->rate_idx = rate_mcs;
-diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
-index 2f0b526..25e902d 100644
---- a/drivers/net/wireless/ath/ath11k/hw.c
-+++ b/drivers/net/wireless/ath/ath11k/hw.c
-@@ -273,6 +273,12 @@ static u8 ath11k_hw_ipq8074_rx_desc_get_mesh_ctl(struct hal_rx_desc *desc)
- 			 __le32_to_cpu(desc->u.ipq8074.msdu_start.info2));
- }
- 
-+static bool ath11k_hw_ipq8074_rx_desc_get_ldpc_support(struct hal_rx_desc *desc)
-+{
-+	return FIELD_GET(RX_MSDU_START_INFO2_LDPC,
-+			 __le32_to_cpu(desc->u.ipq8074.msdu_start.info2));
-+}
-+
- static bool ath11k_hw_ipq8074_rx_desc_get_mpdu_seq_ctl_vld(struct hal_rx_desc *desc)
- {
- 	return !!FIELD_GET(RX_MPDU_START_INFO1_MPDU_SEQ_CTRL_VALID,
-@@ -444,6 +450,12 @@ static u8 ath11k_hw_qcn9074_rx_desc_get_mesh_ctl(struct hal_rx_desc *desc)
- 			 __le32_to_cpu(desc->u.qcn9074.msdu_start.info2));
- }
- 
-+static bool ath11k_hw_qcn9074_rx_desc_get_ldpc_support(struct hal_rx_desc *desc)
-+{
-+	return FIELD_GET(RX_MSDU_START_INFO2_LDPC,
-+			 __le32_to_cpu(desc->u.qcn9074.msdu_start.info2));
-+}
-+
- static bool ath11k_hw_qcn9074_rx_desc_get_mpdu_seq_ctl_vld(struct hal_rx_desc *desc)
- {
- 	return !!FIELD_GET(RX_MPDU_START_INFO11_MPDU_SEQ_CTRL_VALID,
-@@ -815,6 +827,7 @@ const struct ath11k_hw_ops ipq8074_ops = {
- 	.rx_desc_get_encrypt_type = ath11k_hw_ipq8074_rx_desc_get_encrypt_type,
- 	.rx_desc_get_decap_type = ath11k_hw_ipq8074_rx_desc_get_decap_type,
- 	.rx_desc_get_mesh_ctl = ath11k_hw_ipq8074_rx_desc_get_mesh_ctl,
-+	.rx_desc_get_ldpc_support = ath11k_hw_ipq8074_rx_desc_get_ldpc_support,
- 	.rx_desc_get_mpdu_seq_ctl_vld = ath11k_hw_ipq8074_rx_desc_get_mpdu_seq_ctl_vld,
- 	.rx_desc_get_mpdu_fc_valid = ath11k_hw_ipq8074_rx_desc_get_mpdu_fc_valid,
- 	.rx_desc_get_mpdu_start_seq_no = ath11k_hw_ipq8074_rx_desc_get_mpdu_start_seq_no,
-@@ -853,6 +866,7 @@ const struct ath11k_hw_ops ipq6018_ops = {
- 	.rx_desc_get_encrypt_type = ath11k_hw_ipq8074_rx_desc_get_encrypt_type,
- 	.rx_desc_get_decap_type = ath11k_hw_ipq8074_rx_desc_get_decap_type,
- 	.rx_desc_get_mesh_ctl = ath11k_hw_ipq8074_rx_desc_get_mesh_ctl,
-+	.rx_desc_get_ldpc_support = ath11k_hw_ipq8074_rx_desc_get_ldpc_support,
- 	.rx_desc_get_mpdu_seq_ctl_vld = ath11k_hw_ipq8074_rx_desc_get_mpdu_seq_ctl_vld,
- 	.rx_desc_get_mpdu_fc_valid = ath11k_hw_ipq8074_rx_desc_get_mpdu_fc_valid,
- 	.rx_desc_get_mpdu_start_seq_no = ath11k_hw_ipq8074_rx_desc_get_mpdu_start_seq_no,
-@@ -891,6 +905,7 @@ const struct ath11k_hw_ops qca6390_ops = {
- 	.rx_desc_get_encrypt_type = ath11k_hw_ipq8074_rx_desc_get_encrypt_type,
- 	.rx_desc_get_decap_type = ath11k_hw_ipq8074_rx_desc_get_decap_type,
- 	.rx_desc_get_mesh_ctl = ath11k_hw_ipq8074_rx_desc_get_mesh_ctl,
-+	.rx_desc_get_ldpc_support = ath11k_hw_ipq8074_rx_desc_get_ldpc_support,
- 	.rx_desc_get_mpdu_seq_ctl_vld = ath11k_hw_ipq8074_rx_desc_get_mpdu_seq_ctl_vld,
- 	.rx_desc_get_mpdu_fc_valid = ath11k_hw_ipq8074_rx_desc_get_mpdu_fc_valid,
- 	.rx_desc_get_mpdu_start_seq_no = ath11k_hw_ipq8074_rx_desc_get_mpdu_start_seq_no,
-@@ -929,6 +944,7 @@ const struct ath11k_hw_ops qcn9074_ops = {
- 	.rx_desc_get_encrypt_type = ath11k_hw_qcn9074_rx_desc_get_encrypt_type,
- 	.rx_desc_get_decap_type = ath11k_hw_qcn9074_rx_desc_get_decap_type,
- 	.rx_desc_get_mesh_ctl = ath11k_hw_qcn9074_rx_desc_get_mesh_ctl,
-+	.rx_desc_get_ldpc_support = ath11k_hw_qcn9074_rx_desc_get_ldpc_support,
- 	.rx_desc_get_mpdu_seq_ctl_vld = ath11k_hw_qcn9074_rx_desc_get_mpdu_seq_ctl_vld,
- 	.rx_desc_get_mpdu_fc_valid = ath11k_hw_qcn9074_rx_desc_get_mpdu_fc_valid,
- 	.rx_desc_get_mpdu_start_seq_no = ath11k_hw_qcn9074_rx_desc_get_mpdu_start_seq_no,
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index 2c9d232..e025eda 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -199,6 +199,7 @@ struct ath11k_hw_ops {
- 	u32 (*rx_desc_get_encrypt_type)(struct hal_rx_desc *desc);
- 	u8 (*rx_desc_get_decap_type)(struct hal_rx_desc *desc);
- 	u8 (*rx_desc_get_mesh_ctl)(struct hal_rx_desc *desc);
-+	bool (*rx_desc_get_ldpc_support)(struct hal_rx_desc *desc);
- 	bool (*rx_desc_get_mpdu_seq_ctl_vld)(struct hal_rx_desc *desc);
- 	bool (*rx_desc_get_mpdu_fc_valid)(struct hal_rx_desc *desc);
- 	u16 (*rx_desc_get_mpdu_start_seq_no)(struct hal_rx_desc *desc);
--- 
-2.7.4
+to
 
+request->initiator = NL80211_REGDOM_SET_BY_CORE;
+
+given that is what is happening right now. The warning is basically
+pointing out that reg_process_hint() is calling reg_process_hint_core()
+instead of reg_process_hint_user() because NL80211_USER_REG_HINT_USER =
+NL80211_REGDOM_SET_BY_CORE = 0. Hopefully that makes sense.
+
+Cheers,
+Nathan
