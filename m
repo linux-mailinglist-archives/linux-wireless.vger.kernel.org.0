@@ -2,151 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B907462942
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 01:47:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F9A0462983
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 02:16:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234437AbhK3Auz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 Nov 2021 19:50:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37092 "EHLO
+        id S235286AbhK3BTs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 Nov 2021 20:19:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234390AbhK3Auz (ORCPT
+        with ESMTP id S230248AbhK3BTs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 Nov 2021 19:50:55 -0500
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F8A4C061748
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 16:47:37 -0800 (PST)
-Received: by mail-pf1-x431.google.com with SMTP id r130so18805371pfc.1
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 16:47:37 -0800 (PST)
+        Mon, 29 Nov 2021 20:19:48 -0500
+Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A980C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 17:16:30 -0800 (PST)
+Received: by mail-oo1-xc32.google.com with SMTP id g11-20020a4a754b000000b002c679a02b18so6216063oof.3
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Nov 2021 17:16:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=FNHzIeoNF4E/ChvY8iqCZpHku0EJ1HjjIEUDqrvYteE=;
-        b=hdoyQm+SZqT3VqIFKhsA87GHz6tPX+yEJy7VUqZ1vOh1fbV0K8hdAD8xEfN4BSZijq
-         UyhMIWU5P7CpypZVPwH7GbgIRGa04Hb+DK5SWapT9cbNBnpIqzg77bQj3AvHEk7ojrJh
-         6xH4pD1x9Ltc9c5yLj5yuWR+HZqdVVal7S35g=
+        d=gmail.com; s=20210112;
+        h=sender:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=sdW3Kbj3OWp+L5WnGoFaw+Ow73vwNrzGyp5sXG5EouU=;
+        b=cIbiYmtSqyJCI1V+tXhS8uo4tf5xqRXhkPiUKITkWrXPidOJIWGw2So37QmjK8/yS3
+         /3hvf9bY+lnSgnAqfs9Ng2+Xftnikfhb1WgnCn5DLgv8Q303ouaHP4WEFo0GXMQ+1zsv
+         Y+P+wsR/U/zlOrpAyrMJB7ftHM8oO1I0vKpFjjVrWGbo+8tUEv7CAjepFbKH4noz3ptJ
+         S/jM6W74l3N0kn840aOyZeR+YmuP4pm7xxzJGbuiSa7ejuGk94TwVGGkm6V7vb6Mk2TD
+         0+aEk5NCejvOgbcJ9TgimSRfjyBz7grNbO5+kQAhY4F9aPPIesaEZrvl9umW9DBxrl6o
+         5SYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=FNHzIeoNF4E/ChvY8iqCZpHku0EJ1HjjIEUDqrvYteE=;
-        b=Tm8UX+CkvDcUeGsU+ewNOf0J2d8iyIZOVkOKFhzpVQ/2bMvYRKsIQvWhy+hNxvL01B
-         QmCf0RJuxGuwfBUITHSs3grJnzdK+TkoXnsMpXIHTrWnM215T5R+XDcf525mQAbED2F9
-         ooHK+4XzYORHw4i06ozwfpNpiv9B1ou0kNfA18ZmXUFE6U62Dj6oh7TIizDNXm1FNc5q
-         mDrXfPzidl/0DWl2j4kifjUqdoI8K/sd5QQFWLjwZ0PKJVMyLTzfoY7uVsyF8+7sMWw1
-         QnBIuFq03EN4CM4rjiygM7M9cRCCv+A/LFXD//f+sz0M5E8DDA2xfeYhUS+V93vpWv8Z
-         V+qA==
-X-Gm-Message-State: AOAM531TObDvNO/B2MZOsawuCdkO18GgldcIXGsw9RjUCHxLV9xrrSIa
-        AtJEW/viePfBhDeEPZjmOG00SQ==
-X-Google-Smtp-Source: ABdhPJzqbcpo6hlWldDlPjrL230SXiWqrqs/mRNPc8dujTRCS/HMUGkCX5XfHZw0PIVrhJ83oQCu0g==
-X-Received: by 2002:a63:554:: with SMTP id 81mr34328310pgf.298.1638233256675;
-        Mon, 29 Nov 2021 16:47:36 -0800 (PST)
-Received: from google.com ([2620:15c:202:201:8b47:583d:a0:4f2d])
-        by smtp.gmail.com with ESMTPSA id m12sm20441202pfk.27.2021.11.29.16.47.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Nov 2021 16:47:36 -0800 (PST)
-Date:   Mon, 29 Nov 2021 16:47:34 -0800
-From:   Brian Norris <briannorris@chromium.org>
-To:     Jia-Ju Bai <baijiaju1990@gmail.com>
-Cc:     amitkarwar@gmail.com, ganapathi017@gmail.com,
-        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
-        kvalo@codeaurora.org, David Miller <davem@davemloft.net>,
-        kuba@kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Doug Anderson <dianders@chromium.org>
-Subject: [PATCH] mwifiex: Fix possible ABBA deadlock
-Message-ID: <YaV0pllJ5p/EuUat@google.com>
-References: <0e495b14-efbb-e0da-37bd-af6bd677ee2c@gmail.com>
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :subject:content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=sdW3Kbj3OWp+L5WnGoFaw+Ow73vwNrzGyp5sXG5EouU=;
+        b=EqudALO2ow93m6RtXesbMRWlvBFHMZ7cJkxDDybnQ3/9ZJ+kgtDVnl7SqSfiZXqn+U
+         lrs2qdel6mzly6h1q2ThxqWvgEQTSrdkITgDr7vzMO6LmdQlztRPdbLtCcS2vrw13/x8
+         Ih1VGCIG2f3Fe05ZjYRXPDTMg7iOy58iVI+E4fuYI+FDaTDU08zrv0lNQooSM++50pLz
+         zKTdC9+fh1IbAG/S4UCd2HKoxczReGBOLdKx+fnuxVx1mfyI0gZwEDLqP6D6hdetVtgL
+         nh05vQidjmsJdC8oo5aLDZuPGPd1bVot2fMD+AWVjbnYVkJWzJH9nZZFcC8F2nQSYAmT
+         j5Gw==
+X-Gm-Message-State: AOAM531r6c4qSydrP2Ub9+7awVHq9YLAwqqb4WXHYCV6rhT1HblnZVn1
+        7K4dlIHA2McDKvVc3ca8LWpa90BgQzjcKB+p
+X-Google-Smtp-Source: ABdhPJz+XO/THy0iX8FCV2NFpWTurgxpWpHjlg0H0iuYHm2aDEa5NiKEq7nv5rbx51D0LfE4JWG+cg==
+X-Received: by 2002:a4a:e50e:: with SMTP id r14mr34469363oot.27.1638234989586;
+        Mon, 29 Nov 2021 17:16:29 -0800 (PST)
+Received: from [10.62.118.101] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
+        by smtp.gmail.com with ESMTPSA id s13sm2989612otv.34.2021.11.29.17.16.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Nov 2021 17:16:28 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <ea1afcf4-ff5b-9b32-ec4b-421a898f809d@lwfinger.net>
+Date:   Mon, 29 Nov 2021 19:16:27 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0e495b14-efbb-e0da-37bd-af6bd677ee2c@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: USB for rtw89 driver?
+Content-Language: en-US
+To:     James <bjlockie@lockie.ca>, Pkshih <pkshih@realtek.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <5bdf4393-273f-2ad2-40e0-556ec7dc6817@lockie.ca>
+ <867f4b97151745d5a5fa0daa5ebcdbd2@realtek.com>
+ <3fef8020-a496-41e3-8974-4d16ff4551b6@lockie.ca>
+ <917dde5b-36c7-a079-6dc1-7441a2f90745@lwfinger.net>
+ <dac5960c-44f0-300e-d3d7-6ae23c3ae64f@lockie.ca>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <dac5960c-44f0-300e-d3d7-6ae23c3ae64f@lockie.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Quoting Jia-Ju Bai <baijiaju1990@gmail.com>:
+On 11/29/21 16:22, James wrote:
+> 
+> 
+> On 2021-11-29 16:42, Larry Finger wrote:
+>> On 11/29/21 08:24, James wrote:
+>>>
+>>>>> Does anyone know if the proprietary driver works on the Raspberry Pi4B
+>>>>> (Arm)?
+>>>>
+>>>> Don't have a proprietary driver neither.
+>>>
+>>> Dlink seems to have added USB support.
+>>> I assumed that is proprietary but I guess that is only x86.
+>>>
+>>> https://support.dlink.com/ProductInfo.aspx?m=DWA-181-US
+>>>
+>>> There is also an open source USB driver on github  but I don't think it is 
+>>> getting fixes like the lfinger github one.
+>>> https://github.com/neojou/rtw89-usb
+>>
+>> The D-Link driver is for the rtl8822bu, not an rtl8852au. That would make it 
+>> for rtw88, not rtw89. BTW, it will not compile under kernel 5.16.0-rc3, but 
+>> the fixes would be minor.
+>>
+> Is this statement in the readme of neojou not correct?
+> "This driver is based on Realtek's rtw89 driver 
+> <https://github.com/torvalds/linux/tree/master/drivers/net/wireless/realtek/rtw89> 
+> in Linux main trunk. Or can refer to this lwfinger's github [rtw89] 
+> (https://github.com/lwfinger/rtw89)"
 
-  mwifiex_dequeue_tx_packet()
-     spin_lock_bh(&priv->wmm.ra_list_spinlock); --> Line 1432 (Lock A)
-     mwifiex_send_addba()
-       spin_lock_bh(&priv->sta_list_spinlock); --> Line 608 (Lock B)
+That is correct. What has been done there, and in the equivalent rtw88-usb 
+version, is replace the PCI I/O calls with the equivalent USB library calls. 
+What cannot be determined outside the Realtek halls is whether there are changes 
+in the NIC chip itself between the two versions. Certainly, there are 
+differences between the setup of the rtl8192ce and the rtl8192cu. I would expect 
+the same here.
+> 
+> I checked the dlink link and it is for a wifi5 device.
+> I don't know how I got there. :-(
+> There is no linux driver from dlink for the USB wifi6 device. :-(
+> Oh well, maybe in 10 years. :-)
+>>
+>> That driver is the usual collection of junk code published by the Realtek USB 
+>> group for years. That code base is used to generate drivers for Windows, 
+>> Linux, and FreeBSD.
+>>
+>> A group is currently modifying the rtl8188eu driver in staging to convert it 
+>> into reasonable Linux shape. This one would take the same effort to make it 
+>> suitable.
+> "Chipset:/RTL8188EU/ Standard: IEEE 802.11n"
+> Would a good 8188eu driver make it easier to support wifi5 and wifi6 devices?
 
-  mwifiex_process_sta_tx_pause()
-     spin_lock_bh(&priv->sta_list_spinlock); --> Line 398 (Lock B)
-     mwifiex_update_ralist_tx_pause()
-       spin_lock_bh(&priv->wmm.ra_list_spinlock); --> Line 941 (Lock A)
+Not really. That hardware is wifi4 (802.11n) and has no higher capabilities. The 
+basic silicon and firmware could not handle the higher protocols.
+>>
+>> The basic USB driver in the neojou repo should work, but I do not have an 
+>> rtl8852au device.
+> Maybe it'll be in kernel eventually. :-)
 
-Similar report for mwifiex_process_uap_tx_pause().
+Perhaps. That will depend on the PCI group from Realtek deciding to tackle that 
+project.
 
-While the locking expectations in this driver are a bit unclear, the
-Fixed commit only intended to protect the sta_ptr, so we can drop the
-lock as soon as we're done with it.
+Larry
 
-IIUC, this deadlock cannot actually happen, because command event
-processing (which calls mwifiex_process_sta_tx_pause()) is
-sequentialized with TX packet processing (e.g.,
-mwifiex_dequeue_tx_packet()) via the main loop (mwifiex_main_process()).
-But it's good not to leave this potential issue lurking.
-
-Fixes: ("f0f7c2275fb9 mwifiex: minor cleanups w/ sta_list_spinlock in cfg80211.c")
-Cc: Douglas Anderson <dianders@chromium.org>
-Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-Link: https://lore.kernel.org/linux-wireless/0e495b14-efbb-e0da-37bd-af6bd677ee2c@gmail.com/
-Signed-off-by: Brian Norris <briannorris@chromium.org>
----
-
-On Tue, Nov 23, 2021 at 11:31:34AM +0800, Jia-Ju Bai wrote:
-> I am not quite sure whether these possible deadlocks are real and how to fix
-> them if they are real.
-> Any feedback would be appreciated, thanks :)
-
-I think these are at least theoretically real, and so we should take
-something like the $subject patch probably. But I don't believe we can
-actually hit this due to the main-loop structure of this driver.
-
-Anyway, see the surrounding patch.
-
-Thanks,
-Brian
-
-
- drivers/net/wireless/marvell/mwifiex/sta_event.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_event.c b/drivers/net/wireless/marvell/mwifiex/sta_event.c
-index 80e5d44bad9d..7d42c5d2dbf6 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_event.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_event.c
-@@ -365,10 +365,12 @@ static void mwifiex_process_uap_tx_pause(struct mwifiex_private *priv,
- 		sta_ptr = mwifiex_get_sta_entry(priv, tp->peermac);
- 		if (sta_ptr && sta_ptr->tx_pause != tp->tx_pause) {
- 			sta_ptr->tx_pause = tp->tx_pause;
-+			spin_unlock_bh(&priv->sta_list_spinlock);
- 			mwifiex_update_ralist_tx_pause(priv, tp->peermac,
- 						       tp->tx_pause);
-+		} else {
-+			spin_unlock_bh(&priv->sta_list_spinlock);
- 		}
--		spin_unlock_bh(&priv->sta_list_spinlock);
- 	}
- }
- 
-@@ -400,11 +402,13 @@ static void mwifiex_process_sta_tx_pause(struct mwifiex_private *priv,
- 			sta_ptr = mwifiex_get_sta_entry(priv, tp->peermac);
- 			if (sta_ptr && sta_ptr->tx_pause != tp->tx_pause) {
- 				sta_ptr->tx_pause = tp->tx_pause;
-+				spin_unlock_bh(&priv->sta_list_spinlock);
- 				mwifiex_update_ralist_tx_pause(priv,
- 							       tp->peermac,
- 							       tp->tx_pause);
-+			} else {
-+				spin_unlock_bh(&priv->sta_list_spinlock);
- 			}
--			spin_unlock_bh(&priv->sta_list_spinlock);
- 		}
- 	}
- }
--- 
-2.34.0.rc2.393.gf8c9666880-goog
