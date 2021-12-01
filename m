@@ -2,117 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B8C34651EE
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 16:43:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDBCB465308
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 17:41:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350892AbhLAPqm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 10:46:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34700 "EHLO
+        id S239491AbhLAQpT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 11:45:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236266AbhLAPqj (ORCPT
+        with ESMTP id S238010AbhLAQpS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 10:46:39 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1759C061574
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 07:43:18 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 0AB73CE1F9B
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 15:43:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD23C53FAD;
-        Wed,  1 Dec 2021 15:43:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638373395;
-        bh=NAMP2HxFAsdZULRAdB5/dDV+rG4r51+lPU/6v3OIhoA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QLesWZDIk4RmQ1B+QGjqXMTi7z4kMnRqDInK+x8oTli8UsAKsuYd5gFBY1cpB8nAN
-         UOJ0SxkIxbSzsTPwzMj9jpB9p1HHTD4VifZco8N1IOMoW0fmuF0yiKBX3t2nmV1cge
-         w20W6AJTUDSCPOf7vpNWC8r24ImmFRwEIr9F+wci0Rlnl1lo2SoaaanIqyZXPBb8c4
-         RJzYJmqzeEhFgbID5Klfsp/sUr2dTKhpfOt7g/n+jCuRsqqLje8Sxz3ZoyRY6M/8IG
-         /DDRGroKMtzuXL7F/nDKyBJijTrpI+tOff0SjIPEUGISHT7LNUEy5zx1ogpJ0nikoK
-         y9b9LibfN5eWQ==
-Date:   Wed, 1 Dec 2021 08:43:10 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Finn Behrens <me@kloenk.de>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] nl80211: remove reload flag from regulatory_request
-Message-ID: <YaeYDmN8DhADXOSg@archlinux-ax161>
-References: <YadvTolO8rQcNCd/@gimli.kloenk.dev>
+        Wed, 1 Dec 2021 11:45:18 -0500
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DE1C061574
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 08:41:57 -0800 (PST)
+Received: by mail-pf1-x430.google.com with SMTP id b68so25067921pfg.11
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 08:41:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=wR5jjKLsTieAQ8C8yQzasyYIBAjy3LjmXgCG+jqKvYU=;
+        b=IsTe367/uQD2PQQWH11ENZcGTkH8hxo+1dW1nykj9YEXJF16z60OuV0Iiyhu6OCK9O
+         I52CUJe6xpby/mULup6QtXJnbaiZEE0/K6D0gbzzzkIVvHscfB6tzD5m9e4CnRvfmNC+
+         DAuLDz4khGG83C0l0kvKTJfKE7RjbrcEopRlM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=wR5jjKLsTieAQ8C8yQzasyYIBAjy3LjmXgCG+jqKvYU=;
+        b=5Wu+oqsalbYdQU3e1rgzP0iMipYO/GqPkau0EFMZVcL9mNfhZzH1vBAUPXitPn/+Ri
+         vgnt0yxd2bHGjk403khArhz+w1dxjbRR5QpBsHCJK7AcHWTSFuTqO8c2LUq05CASYMmr
+         GfT8FXvducD3gqiYi5yIq0dK5jDLHsv1kWfmO52gaYDjM0gEmXbFOQR0AZJhJeXOYD3X
+         f7tU16UpDCnZdkhvOsvvhu+QksIpyV5sr+m08boi9bnr4D6YsW2FEP/HAG2Jk7a9VPoc
+         gCS9/z9UN2WSZ+9iNEeuinSUS8Qe+9YddBlg1LMP4Vp2YhZDiHaH1CAxfaGng6KFIntR
+         5csA==
+X-Gm-Message-State: AOAM5338mPzBG5pkIi84dpphTfqHztOuGqrHemePzGt45XNeCzC437dp
+        yMZoKEcQQG2c1xlsmtjxQoWVKwDc/eA/Ig==
+X-Google-Smtp-Source: ABdhPJyYljkuWVQRv6cQ55aDNMtTmqmFU6iEfKXxnsDFSRMl1U5XoCenoXqnHJppbFS6DJrK1RScXw==
+X-Received: by 2002:a63:34f:: with SMTP id 76mr5325125pgd.609.1638376916947;
+        Wed, 01 Dec 2021 08:41:56 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id 15sm180735pgv.65.2021.12.01.08.41.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Dec 2021 08:41:56 -0800 (PST)
+Date:   Wed, 1 Dec 2021 08:41:55 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     kernel test robot <lkp@intel.com>, kbuild-all@lists.01.org,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [linux-next:master 3615/4301]
+ include/linux/compiler_types.h:335:45: error: call to
+ '__compiletime_assert_314' declared with attribute error: BUILD_BUG_ON
+ failed: sizeof(txpd->tx_dest_addr) != ETH_ALEN
+Message-ID: <202112010840.0AD4D41162@keescook>
+References: <202111302102.apaePz2J-lkp@intel.com>
+ <87pmqgsrcq.fsf@codeaurora.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YadvTolO8rQcNCd/@gimli.kloenk.dev>
+In-Reply-To: <87pmqgsrcq.fsf@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Dec 01, 2021 at 01:49:18PM +0100, Finn Behrens wrote:
-> This removes the previously unused reload flag, which was introduced in
-> 1eda919126b4.
-> The request is handled as NL80211_REGDOM_SET_BY_CORE, which is parsed
-> unconditionally.
+On Wed, Dec 01, 2021 at 09:43:01AM +0200, Kalle Valo wrote:
+> + linux-wireless
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Nathan Chancellor <nathan@kernel.org>
-> Fixes: 1eda919126b4 ("nl80211: reset regdom when reloading regdb")
-> Link: https://lore.kernel.org/all/YaZuKYM5bfWe2Urn@archlinux-ax161/
-> Signed-off-by: Finn Behrens <me@kloenk.de>
+> kernel test robot <lkp@intel.com> writes:
+> 
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> > head:   34f255a1e91ab44ff8926cf8294ff9144e62e861
+> > commit: 5fd32ae0433a7af37eac27ace3aabae8cb7c2fc4 [3615/4301] libertas: Use struct_group() for memcpy() region
+> > config: arm-randconfig-r011-20211129 (https://download.01.org/0day-ci/archive/20211130/202111302102.apaePz2J-lkp@intel.com/config)
+> > compiler: arm-linux-gnueabi-gcc (GCC) 11.2.0
+> > reproduce (this is a W=1 build):
+> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+> >         chmod +x ~/bin/make.cross
+> >         # https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=5fd32ae0433a7af37eac27ace3aabae8cb7c2fc4
+> >         git remote add linux-next https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+> >         git fetch --no-tags linux-next master
+> >         git checkout 5fd32ae0433a7af37eac27ace3aabae8cb7c2fc4
+> >         # save the config file to linux build tree
+> >         mkdir build_dir
+> >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=arm SHELL=/bin/bash drivers/net/
+> >
+> > If you fix the issue, kindly add following tag as appropriate
+> > Reported-by: kernel test robot <lkp@intel.com>
+> >
+> > All errors (new ones prefixed by >>):
+> >
+> >    In file included from <command-line>:
+> >    drivers/net/wireless/marvell/libertas/tx.c: In function 'lbs_hard_start_xmit':
+> >>> include/linux/compiler_types.h:335:45: error: call to '__compiletime_assert_314' declared with attribute error: BUILD_BUG_ON failed: sizeof(txpd->tx_dest_addr) != ETH_ALEN
+> >      335 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+> >          |                                             ^
+> >    include/linux/compiler_types.h:316:25: note: in definition of macro '__compiletime_assert'
+> >      316 |                         prefix ## suffix();                             \
+> >          |                         ^~~~~~
+> >    include/linux/compiler_types.h:335:9: note: in expansion of macro '_compiletime_assert'
+> >      335 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+> >          |         ^~~~~~~~~~~~~~~~~~~
+> >    include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+> >       39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+> >          |                                     ^~~~~~~~~~~~~~~~~~
+> >    include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+> >       50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+> >          |         ^~~~~~~~~~~~~~~~
+> >    drivers/net/wireless/marvell/libertas/tx.c:116:9: note: in expansion of macro 'BUILD_BUG_ON'
+> >      116 |         BUILD_BUG_ON(sizeof(txpd->tx_dest_addr) != ETH_ALEN);
+> >          |         ^~~~~~~~~~~~
+> 
+> Kees, can you take a look at this build error? You added the
+> BUILD_BUG_ON(), right?
 
-Thank you for the quick patch, it seems to make sense to me.
+I will investigate! Given this doesn't happen on allmodconfig but
+a randconfig trips it, this might be finding a legit issue, but I'll
+report back more details.
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Thanks for the heads-up!
 
-> ---
-> Hi,
-> 
-> I removed the reload flag, and set it to NL80211_REGDOM_SET_BY_CORE, as
-> it already was by accident.
-> 
-> Thanks,
-> Finn
-> 
->  include/net/regulatory.h | 1 -
->  net/wireless/reg.c       | 6 ++----
->  2 files changed, 2 insertions(+), 5 deletions(-)
-> 
-> diff --git a/include/net/regulatory.h b/include/net/regulatory.h
-> index 0cf9335431e0..47f06f6f5a67 100644
-> --- a/include/net/regulatory.h
-> +++ b/include/net/regulatory.h
-> @@ -83,7 +83,6 @@ struct regulatory_request {
->  	enum nl80211_dfs_regions dfs_region;
->  	bool intersect;
->  	bool processed;
-> -	bool reload;
->  	enum environment_cap country_ie_env;
->  	struct list_head list;
->  };
-> diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-> index 61f1bf1bc4a7..8148a3b5f607 100644
-> --- a/net/wireless/reg.c
-> +++ b/net/wireless/reg.c
-> @@ -1134,9 +1134,8 @@ int reg_reload_regdb(void)
->  	request->wiphy_idx = WIPHY_IDX_INVALID;
->  	request->alpha2[0] = current_regdomain->alpha2[0];
->  	request->alpha2[1] = current_regdomain->alpha2[1];
-> -	request->initiator = NL80211_USER_REG_HINT_USER;
-> +	request->initiator = NL80211_REGDOM_SET_BY_CORE;
->  	request->user_reg_hint_type = NL80211_USER_REG_HINT_USER;
-> -	request->reload = true;
->  
->  	reg_process_hint(request);
->  
-> @@ -2712,8 +2711,7 @@ reg_process_hint_user(struct regulatory_request *user_request)
->  
->  	treatment = __reg_process_hint_user(user_request);
->  	if (treatment == REG_REQ_IGNORE ||
-> -	    (treatment == REG_REQ_ALREADY_SET &&
-> -	     !user_request->reload))
-> +	    treatment == REG_REQ_ALREADY_SET)
->  		return REG_REQ_IGNORE;
->  
->  	user_request->intersect = treatment == REG_REQ_INTERSECT;
-> -- 
-> 2.31.1
-> 
+-- 
+Kees Cook
