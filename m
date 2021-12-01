@@ -2,78 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBE0B464CCF
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 12:34:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ACA6464CF8
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 12:34:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348989AbhLALhh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 06:37:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33512 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348926AbhLALhc (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 06:37:32 -0500
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F8FC061758
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 03:34:10 -0800 (PST)
-Received: by mail-pj1-x1029.google.com with SMTP id iq11so17763898pjb.3
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 03:34:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
-        b=nKE9e+4jEQRb21OhoYPSbxPLfJ2IuSmNXU0U6wmcP4ykCacrWpdbtE0jjuz/hSLLGi
-         3CHjeG+lFmWzoULwCsmlhVFgDEk5dLFaYb51pw7bXGjZ9H8t0j91dP9aL17MRQYkMPZK
-         Snvty/Yp8/ZrWZr2EuFXHqBxUdbU8X39ik45viERJ1Dn7qW8BPCFp2vlafV2okU0kn5j
-         QPTIDY8QJSy8zAVbK10d6+AY0lky+mrQRAAg0uS1DacQStzD/dQtt/uBz/RlGIdZCai/
-         BHep24kmiLdl1nvBvHYMFonu8NoJvJlErv7lbZlg2+2c277BpkzmDA4WwPZoxzlIf0Mh
-         Af5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
-        b=dnmGCunwqzu+3YQgEVAduJWd/VvqxjqeoG6W09fCVY+JuV15i0lrwppOSRcl6Xib7s
-         GkcmKEhyS0WoAdoGvbqcXjX3dRPWJvgnNZAFiFtn4fsMFbSnL5yvyDech38wkysVpyEi
-         94QAT+j3DCaIjVh58iLTB/J9WvfOuspg6yZObCMJ/mJl/hxmSmrNTwacyYCB86J228MJ
-         L0SCV5/eupZgK9uDaisH1V3kmZmNZ6hklKmCHe5EAfSvWBtTAhv9A2DVmXqfPFJy3v/v
-         PJPGuYwxdJeEJ2sCX3Dga2ZyCtvDatiWBaMuvq8RIeE1+eL3g9eZ3vO/DD4zuAXxuL/L
-         ZuGw==
-X-Gm-Message-State: AOAM531prShhXmrRkYXhZMYeBRWDaDvrEHGyGcq3CKx/FZVPHcr3e0ma
-        KpmyjhzJEfeMGmF9L0E+QFOXaAskCK+6q78K9w8xPS897ws=
-X-Google-Smtp-Source: ABdhPJwK+H50pzFgfv5CJPfAwBzUdMqIKHh+Ckkuju2lG2knVlJrzqINPiiwPjc/Uz6xuSJez7Fkn5YZPcfa5CPpvro=
-X-Received: by 2002:a67:ef4d:: with SMTP id k13mr6266305vsr.4.1638358439020;
- Wed, 01 Dec 2021 03:33:59 -0800 (PST)
+        id S1348968AbhLALhw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 06:37:52 -0500
+Received: from mga11.intel.com ([192.55.52.93]:46248 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1349043AbhLALhn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 1 Dec 2021 06:37:43 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10184"; a="233942408"
+X-IronPort-AV: E=Sophos;i="5.87,278,1631602800"; 
+   d="scan'208";a="233942408"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2021 03:34:22 -0800
+X-IronPort-AV: E=Sophos;i="5.87,278,1631602800"; 
+   d="scan'208";a="500213133"
+Received: from vkerner-mobl2.ger.corp.intel.com (HELO egrumbac-mobl1.intel.com) ([10.255.204.12])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2021 03:34:20 -0800
+From:   Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, luca@coelho.fi,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH] iwlwifi: mei: fix linking when tracing is not enabled
+Date:   Wed,  1 Dec 2021 13:34:10 +0200
+Message-Id: <20211201113411.130409-1-emmanuel.grumbach@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Sender: unitednationawardwinner@gmail.com
-Received: by 2002:ab0:6c55:0:0:0:0:0 with HTTP; Wed, 1 Dec 2021 03:33:58 -0800 (PST)
-From:   "Mrs. Orgil Baatar" <mrs.orgilbaatar21@gmail.com>
-Date:   Wed, 1 Dec 2021 03:33:58 -0800
-X-Google-Sender-Auth: uTQ_nfkzXaWGWaTWp1BSFqK3Ucs
-Message-ID: <CAJ4dHaSrD-X=xpfKNZV-hXSiMV6mNYrgy5vWCNkKm6iu5RQStg@mail.gmail.com>
-Subject: Your long awaited part payment of $2.5.000.00Usd
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Attention: Beneficiary, Your long awaited part payment of
-$2.5.000.00Usd (TWO MILLION FIVE Hundred Thousand United State
-Dollars) is ready for immediate release to you, and it was
-electronically credited into an ATM Visa Card for easy delivery.
+I forgot to add stubs in case tracing is disabled.
 
-Your new Payment Reference No.- 6363836,
-Pin Code No: 1787
-Your Certificate of Merit Payment No: 05872,
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+---
+ .../net/wireless/intel/iwlwifi/mei/trace-data.h    | 13 +++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mei/trace.h     | 14 ++++++++++++++
+ 2 files changed, 27 insertions(+)
 
-Your Names: |
-Address: |
+diff --git a/drivers/net/wireless/intel/iwlwifi/mei/trace-data.h b/drivers/net/wireless/intel/iwlwifi/mei/trace-data.h
+index 0a0078a79c7e..83639c6225ca 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mei/trace-data.h
++++ b/drivers/net/wireless/intel/iwlwifi/mei/trace-data.h
+@@ -3,6 +3,12 @@
+  * Copyright(c) 2021        Intel Corporation
+  */
+ 
++#if !defined(CONFIG_IWLWIFI_DEVICE_TRACING)
++
++#define trace_iwlmei_sap_data(...)
++
++#else
++
+ #if !defined(__IWLWIFI_DEVICE_TRACE_IWLWIFI_SAP_DATA) || defined(TRACE_HEADER_MULTI_READ)
+ 
+ #ifndef __IWLWIFI_DEVICE_TRACE_IWLWIFI_SAP_DATA
+@@ -60,6 +66,11 @@ TRACE_EVENT(iwlmei_sap_data,
+ 		  __entry->trace_type, __get_dynamic_array_len(data))
+ );
+ 
++/*
++ * If you add something here, add a stub in case
++ * !defined(CONFIG_IWLWIFI_DEVICE_TRACING)
++ */
++
+ #endif /* __IWLWIFI_DEVICE_TRACE_IWLWIFI_SAP_DATA */
+ 
+ #undef TRACE_INCLUDE_PATH
+@@ -67,3 +78,5 @@ TRACE_EVENT(iwlmei_sap_data,
+ #undef TRACE_INCLUDE_FILE
+ #define TRACE_INCLUDE_FILE trace-data
+ #include <trace/define_trace.h>
++
++#endif /* CONFIG_IWLWIFI_DEVICE_TRACING */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mei/trace.h b/drivers/net/wireless/intel/iwlwifi/mei/trace.h
+index 6f673f2817ad..45ecb22ec84a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mei/trace.h
++++ b/drivers/net/wireless/intel/iwlwifi/mei/trace.h
+@@ -3,6 +3,13 @@
+  * Copyright(c) 2021        Intel Corporation
+  */
+ 
++#if !defined(CONFIG_IWLWIFI_DEVICE_TRACING)
++
++#define trace_iwlmei_sap_cmd(...)
++#define trace_iwlmei_me_msg(...)
++
++#else
++
+ #if !defined(__IWLWIFI_DEVICE_TRACE_IWLWIFI_SAP_CMD) || defined(TRACE_HEADER_MULTI_READ)
+ #define __IWLWIFI_DEVICE_TRACE_IWLWIFI_SAP_CMD
+ 
+@@ -53,6 +60,11 @@ TRACE_EVENT(iwlmei_me_msg,
+ 		  __entry->type, __entry->seq_num)
+ );
+ 
++/*
++ * If you add something here, add a stub in case
++ * !defined(CONFIG_IWLWIFI_DEVICE_TRACING)
++ */
++
+ #endif /* __IWLWIFI_DEVICE_TRACE_IWLWIFI_SAP_CMD */
+ 
+ #undef TRACE_INCLUDE_PATH
+@@ -60,3 +72,5 @@ TRACE_EVENT(iwlmei_me_msg,
+ #undef TRACE_INCLUDE_FILE
+ #define TRACE_INCLUDE_FILE trace
+ #include <trace/define_trace.h>
++
++#endif /* CONFIG_IWLWIFI_DEVICE_TRACING */
+-- 
+2.25.1
 
-Person to Contact:MR KELLY HALL the Director of the International
-Audit unit ATM Payment Center,
-
-Email: uba-bf@e-ubabf.com
-TELEPHONE: +226 64865611 You can whatsApp the bank
-
-Regards.
-Mrs ORGIL BAATAR
