@@ -2,79 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 712874653F6
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 18:30:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 520C24653FA
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 18:32:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351879AbhLARd0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 12:33:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59612 "EHLO
+        id S1351899AbhLARgE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 12:36:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232537AbhLARdZ (ORCPT
+        with ESMTP id S1351883AbhLARgD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 12:33:25 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E6CCC061574
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 09:30:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=3+enRW4wqvxQSzs2ckAuZdLgTzu8Rxf6BfXjB+5YXoI=;
-        t=1638379804; x=1639589404; b=lu8ZoCajPlRMDIYuWR2wvSZRLsps1m7F63960AdI++i82H9
-        mcKd1O5q1UdH80nyukBAaph37nSziMe45vVormOl6LsW/mDDYpNv+s4KofAr1ZZVNFLlVqIwb8L49
-        2BqX0h0EGXQoYN5WNWszJhSwu+Hwz6qP4k1SQS7lWsPD/4tzO7OoIyAc+kcz/Nbs5LJamZ2GkZuRB
-        BiI6Q1ekJE9mMyZOcoGn3NVXoCKnXTY25XZQgptR5qbHravIuGmGbXIWmjjk/KhcDnuriY0AoMeGs
-        Y9rRiOjckDS9lXAOirKKW4VlNOES68oe5lyjyLxu2Jy0F6dXBmePAAWzFbx3QQRw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1msTQU-005Vc0-PL;
-        Wed, 01 Dec 2021 18:29:50 +0100
-Message-ID: <17ccfc4f9f9e74e1d6b48366a87cbcf887521dab.camel@sipsolutions.net>
-Subject: Re: [linux-next:master 3615/4301]
- include/linux/compiler_types.h:335:45: error: call to
- '__compiletime_assert_314' declared with attribute error: BUILD_BUG_ON
- failed: sizeof(txpd->tx_dest_addr) != ETH_ALEN
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kees Cook <keescook@chromium.org>, Kalle Valo <kvalo@kernel.org>
-Cc:     kernel test robot <lkp@intel.com>, kbuild-all@lists.01.org,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-wireless@vger.kernel.org
-Date:   Wed, 01 Dec 2021 18:29:49 +0100
-In-Reply-To: <202112010840.0AD4D41162@keescook>
-References: <202111302102.apaePz2J-lkp@intel.com>
-         <87pmqgsrcq.fsf@codeaurora.org> <202112010840.0AD4D41162@keescook>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
+        Wed, 1 Dec 2021 12:36:03 -0500
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E00CC061748
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 09:32:42 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id nh10-20020a17090b364a00b001a69adad5ebso2243753pjb.2
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 09:32:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tajQG2IXpUHOG7d+miPPm5Ju3aS6NAnj/QtfwuMOwXg=;
+        b=GEL1WBg4yORHo7VkJOAeMBB68Lc3oYTCpp7roLVtCyZazxTQ5exS58YJMD+3XHstP6
+         dyxhIbalDDAC3n2NLc+UptdNFwQnPXWs3I1Rb67dIOwgSocvl63YMcdwMzivL6q5YbdH
+         ueNoGNlUIsnf7qyM5ONAc0fTmX4dcj//t3y+s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tajQG2IXpUHOG7d+miPPm5Ju3aS6NAnj/QtfwuMOwXg=;
+        b=Qj50YT12rFrVaF40a4rMButlSViyNKHgzZ64yi4kicMLzxBNVGfxXGirN8l/11etez
+         hkJw6dtas98MjKTS4kQf0Ni+MLJQFY4haUWw8Tc6QizvVboVcs/Mpzw8T6KiLtlGbiBh
+         2W8hm4qjmIwYSibwJfNVDeMjRgHnqep6CWjUAYZPEvEX0ISi8muKYQBcoJOk5GB/DveJ
+         CFFU093QLTOjaxsLmJ70BcWEHlqZhr19Mhz7M039VZVopGdqZyU56uXQSU2jfEzMxc31
+         5J6dywfjuU9L+dowu+ewyzlaIsHR5q448KNtJZfhEgfOoelwVbA5r18++q1lXM2HzNMn
+         YIQA==
+X-Gm-Message-State: AOAM532A3f2ZqP6eczOo8bBDwltFOyecDvPLYSfvPVQgRD8xmXLMLPBP
+        aKogPGcaYW3SbN/F4dXbAxcL2Bc5XQLXTg==
+X-Google-Smtp-Source: ABdhPJw377FYs7Bam0Ge86fDRJS0060N6Ojrxv+gWS71vLLMRkZQUD+oAORaFCnKrokjw9+mXK1qLA==
+X-Received: by 2002:a17:90a:7e10:: with SMTP id i16mr9129659pjl.185.1638379961966;
+        Wed, 01 Dec 2021 09:32:41 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id 11sm421586pfl.41.2021.12.01.09.32.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Dec 2021 09:32:41 -0800 (PST)
+From:   Kees Cook <keescook@chromium.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        kernel test robot <lkp@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Wan Jiabing <wanjiabing@vivo.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        Luis Carlos Cobo <luisca@cozybit.com>,
+        linux-kernel@vger.kernel.org, libertas-dev@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH 0/2] libertas: Add missing __packed annotations
+Date:   Wed,  1 Dec 2021 09:32:32 -0800
+Message-Id: <20211201173234.578124-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+X-Developer-Signature: v=1; a=openpgp-sha256; l=518; h=from:subject; bh=+kcRJJV1GaFXSrqsIlMFvUEF240ydaxafS7OunQQo9g=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhp7Gxc8kO30ddGOKhJj3+ChMvNemOr3iGJfWUrQ39 FGOcDQKJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYaexsQAKCRCJcvTf3G3AJoRND/ 9z9BEZhmtixAwSO2m5O0kiScfiEPDQCeZ2RdC9s9F1cwnMedyQ7s3oeOxMqidTCYmiNhhqwL7DjImG 1JzZN2ZQlawe3lZQP/hcbEMTuWatbW0DtHTX+hs/pqz3YWrQJeX1ZIZnMq+Oeb9GKv2JHME9AFcB7D /ti6vP+H08K7t039k0jkL52vhipzi3kvbhmetbtfJS/nx0cKB/rNpAIHai4MRxT+SdVXbB7+cye3wd j/mEXg4cyElDDB4srOXRFqk9E391MTL4RDlgGtgqpnXA516uaIng3zrY9e/VnwEfIozwGtVcRlnuEv c4/Ap+xghhcCc8dj81mcc4jr/JPjC7Edkb09x34kvKqQomR1fvbsTjGydlqXSV3DBWFASTo5SxG9Ak 03gmuoZTRC5uWhATuV3A2yMQ9Rkk8FVzoG70iHyIoZw7IYooIdfe+Vk6ZotnJLbZ2GNzQmUHHvozOA v81upMXs6oHPOJAcTl+TeGCzzhZ/OjEIhdBDwEcUOT3X7zQdlrZlXpvtq+WQmMJdz0HSsxiDpZgVsz 544/LqsMTlIITiwIN7nMuPDpbZHOAj26AE9z6EDKiinMxLh8ltInulYs7GNSzdES/Xc5V6aLNLv6TW kS1M0itYLY1VckSbw+LlzmoW3ORGzrDWxSMoPZKw4le0ZgZzJqqN923LgaRQ==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-12-01 at 08:41 -0800, Kees Cook wrote:
-> 
-> > >    drivers/net/wireless/marvell/libertas/tx.c:116:9: note: in expansion of macro 'BUILD_BUG_ON'
-> > >      116 |         BUILD_BUG_ON(sizeof(txpd->tx_dest_addr) != ETH_ALEN);
-> > >          |         ^~~~~~~~~~~~
-> > 
-> > Kees, can you take a look at this build error? You added the
-> > BUILD_BUG_ON(), right?
-> 
-> I will investigate! Given this doesn't happen on allmodconfig but
-> a randconfig trips it, this might be finding a legit issue, but I'll
-> report back more details.
-> 
+Hi,
 
-It's probably some alignment thing - note it happened on a specific ARM
-with a specific compiler?
+This fixes the missing __packed annotations in libertas and libertas_af
+noticed by lkp:
+https://lore.kernel.org/linux-mm/202111302102.apaePz2J-lkp@intel.com
 
-But there's not really a good reason to even have the struct_group here,
-we only use it as if it was
+Thanks!
 
-	u8 tx_dest_addr[ETH_ALEN];
+-Kees
 
-anyway?
+Kees Cook (2):
+  libertas: Add missing __packed annotation with struct_group()
+  libertas_tf: Add missing __packed annotations
 
-johannes
+ drivers/net/wireless/marvell/libertas/host.h  |  2 +-
+ .../marvell/libertas_tf/libertas_tf.h         | 28 +++++++++----------
+ 2 files changed, 15 insertions(+), 15 deletions(-)
+
+-- 
+2.30.2
+
