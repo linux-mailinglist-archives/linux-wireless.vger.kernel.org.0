@@ -2,125 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDBCB465308
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 17:41:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E62C74653B6
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 18:14:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239491AbhLAQpT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 11:45:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48368 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238010AbhLAQpS (ORCPT
+        id S1351542AbhLARSE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 12:18:04 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:44258 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1351651AbhLARSB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 11:45:18 -0500
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DE1C061574
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 08:41:57 -0800 (PST)
-Received: by mail-pf1-x430.google.com with SMTP id b68so25067921pfg.11
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 08:41:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=wR5jjKLsTieAQ8C8yQzasyYIBAjy3LjmXgCG+jqKvYU=;
-        b=IsTe367/uQD2PQQWH11ENZcGTkH8hxo+1dW1nykj9YEXJF16z60OuV0Iiyhu6OCK9O
-         I52CUJe6xpby/mULup6QtXJnbaiZEE0/K6D0gbzzzkIVvHscfB6tzD5m9e4CnRvfmNC+
-         DAuLDz4khGG83C0l0kvKTJfKE7RjbrcEopRlM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=wR5jjKLsTieAQ8C8yQzasyYIBAjy3LjmXgCG+jqKvYU=;
-        b=5Wu+oqsalbYdQU3e1rgzP0iMipYO/GqPkau0EFMZVcL9mNfhZzH1vBAUPXitPn/+Ri
-         vgnt0yxd2bHGjk403khArhz+w1dxjbRR5QpBsHCJK7AcHWTSFuTqO8c2LUq05CASYMmr
-         GfT8FXvducD3gqiYi5yIq0dK5jDLHsv1kWfmO52gaYDjM0gEmXbFOQR0AZJhJeXOYD3X
-         f7tU16UpDCnZdkhvOsvvhu+QksIpyV5sr+m08boi9bnr4D6YsW2FEP/HAG2Jk7a9VPoc
-         gCS9/z9UN2WSZ+9iNEeuinSUS8Qe+9YddBlg1LMP4Vp2YhZDiHaH1CAxfaGng6KFIntR
-         5csA==
-X-Gm-Message-State: AOAM5338mPzBG5pkIi84dpphTfqHztOuGqrHemePzGt45XNeCzC437dp
-        yMZoKEcQQG2c1xlsmtjxQoWVKwDc/eA/Ig==
-X-Google-Smtp-Source: ABdhPJyYljkuWVQRv6cQ55aDNMtTmqmFU6iEfKXxnsDFSRMl1U5XoCenoXqnHJppbFS6DJrK1RScXw==
-X-Received: by 2002:a63:34f:: with SMTP id 76mr5325125pgd.609.1638376916947;
-        Wed, 01 Dec 2021 08:41:56 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id 15sm180735pgv.65.2021.12.01.08.41.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Dec 2021 08:41:56 -0800 (PST)
-Date:   Wed, 1 Dec 2021 08:41:55 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     kernel test robot <lkp@intel.com>, kbuild-all@lists.01.org,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [linux-next:master 3615/4301]
- include/linux/compiler_types.h:335:45: error: call to
- '__compiletime_assert_314' declared with attribute error: BUILD_BUG_ON
- failed: sizeof(txpd->tx_dest_addr) != ETH_ALEN
-Message-ID: <202112010840.0AD4D41162@keescook>
-References: <202111302102.apaePz2J-lkp@intel.com>
- <87pmqgsrcq.fsf@codeaurora.org>
+        Wed, 1 Dec 2021 12:18:01 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0FC1CB8205D
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 17:14:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC93C53FAD;
+        Wed,  1 Dec 2021 17:14:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638378878;
+        bh=/CjyHcPeYB1YK0NTivDnJHNtWZS+dxZPjeRtisOz3io=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jGI+W9OEhGdHD+DrcTG+KUMls3pXs0LIRluJoHiKKm1ZC8h7zIHd9Nco9BqGs1EZ/
+         +dbdWkOywG3Zi5tJ/vMSNsTtenX+xjgqPeezVi0smRQmzb5FDInioL2xEPuxp9nJ2D
+         hBkuVBocKt62OAR2QzsxAS5v8jJWpmMvOOJPa0wmpnWiq2NYsjdpsXRD+dzdpZdgKk
+         FpqZ+iKNtmcoLTVUETm6/MiuE83jugSmPq9Xr4hI8B3wsREJuMIUTdnSGXt2cXnZf2
+         CnGzIyTFE/j4f+r07h+Klv5uOmlxBJCKMVqqnzuz5VHqFQzGiTqfssCeXLOU11t++f
+         8jz2zLsS4Y1PA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: move sar_capa configuration in common code
+Date:   Wed,  1 Dec 2021 18:14:31 +0100
+Message-Id: <f7026884beb5158e1f910836a2c574ed7aa5a85e.1638378814.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87pmqgsrcq.fsf@codeaurora.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Dec 01, 2021 at 09:43:01AM +0200, Kalle Valo wrote:
-> + linux-wireless
-> 
-> kernel test robot <lkp@intel.com> writes:
-> 
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> > head:   34f255a1e91ab44ff8926cf8294ff9144e62e861
-> > commit: 5fd32ae0433a7af37eac27ace3aabae8cb7c2fc4 [3615/4301] libertas: Use struct_group() for memcpy() region
-> > config: arm-randconfig-r011-20211129 (https://download.01.org/0day-ci/archive/20211130/202111302102.apaePz2J-lkp@intel.com/config)
-> > compiler: arm-linux-gnueabi-gcc (GCC) 11.2.0
-> > reproduce (this is a W=1 build):
-> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> >         chmod +x ~/bin/make.cross
-> >         # https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=5fd32ae0433a7af37eac27ace3aabae8cb7c2fc4
-> >         git remote add linux-next https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-> >         git fetch --no-tags linux-next master
-> >         git checkout 5fd32ae0433a7af37eac27ace3aabae8cb7c2fc4
-> >         # save the config file to linux build tree
-> >         mkdir build_dir
-> >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=arm SHELL=/bin/bash drivers/net/
-> >
-> > If you fix the issue, kindly add following tag as appropriate
-> > Reported-by: kernel test robot <lkp@intel.com>
-> >
-> > All errors (new ones prefixed by >>):
-> >
-> >    In file included from <command-line>:
-> >    drivers/net/wireless/marvell/libertas/tx.c: In function 'lbs_hard_start_xmit':
-> >>> include/linux/compiler_types.h:335:45: error: call to '__compiletime_assert_314' declared with attribute error: BUILD_BUG_ON failed: sizeof(txpd->tx_dest_addr) != ETH_ALEN
-> >      335 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-> >          |                                             ^
-> >    include/linux/compiler_types.h:316:25: note: in definition of macro '__compiletime_assert'
-> >      316 |                         prefix ## suffix();                             \
-> >          |                         ^~~~~~
-> >    include/linux/compiler_types.h:335:9: note: in expansion of macro '_compiletime_assert'
-> >      335 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-> >          |         ^~~~~~~~~~~~~~~~~~~
-> >    include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-> >       39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-> >          |                                     ^~~~~~~~~~~~~~~~~~
-> >    include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-> >       50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-> >          |         ^~~~~~~~~~~~~~~~
-> >    drivers/net/wireless/marvell/libertas/tx.c:116:9: note: in expansion of macro 'BUILD_BUG_ON'
-> >      116 |         BUILD_BUG_ON(sizeof(txpd->tx_dest_addr) != ETH_ALEN);
-> >          |         ^~~~~~~~~~~~
-> 
-> Kees, can you take a look at this build error? You added the
-> BUILD_BUG_ON(), right?
+Move wiphy SAR capability configuration in mt76 module and remove
+duplicated code.
 
-I will investigate! Given this doesn't happen on allmodconfig but
-a randconfig trips it, this might be finding a legit issue, but I'll
-report back more details.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 20 +++++++++++++++----
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  1 -
+ .../net/wireless/mediatek/mt76/mt76x02_util.c |  7 -------
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  8 --------
+ 4 files changed, 16 insertions(+), 20 deletions(-)
 
-Thanks for the heads-up!
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index acf400fa8469..20e952cf6e64 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -185,7 +185,6 @@ const struct cfg80211_sar_capa mt76_sar_capa = {
+ 	.num_freq_ranges = ARRAY_SIZE(mt76_sar_freq_ranges),
+ 	.freq_ranges = &mt76_sar_freq_ranges[0],
+ };
+-EXPORT_SYMBOL_GPL(mt76_sar_capa);
+ 
+ static int mt76_led_init(struct mt76_dev *dev)
+ {
+@@ -393,7 +392,7 @@ mt76_check_sband(struct mt76_phy *phy, struct mt76_sband *msband,
+ 	phy->hw->wiphy->bands[band] = NULL;
+ }
+ 
+-static void
++static int
+ mt76_phy_init(struct mt76_phy *phy, struct ieee80211_hw *hw)
+ {
+ 	struct mt76_dev *dev = phy->dev;
+@@ -414,6 +413,13 @@ mt76_phy_init(struct mt76_phy *phy, struct ieee80211_hw *hw)
+ 	wiphy->available_antennas_tx = phy->antenna_mask;
+ 	wiphy->available_antennas_rx = phy->antenna_mask;
+ 
++	wiphy->sar_capa = &mt76_sar_capa;
++	phy->frp = devm_kcalloc(dev->dev, wiphy->sar_capa->num_freq_ranges,
++				sizeof(struct mt76_freq_range_power),
++				GFP_KERNEL);
++	if (!phy->frp)
++		return -ENOMEM;
++
+ 	hw->txq_data_size = sizeof(struct mt76_txq);
+ 	hw->uapsd_max_sp_len = IEEE80211_WMM_IE_STA_QOSINFO_SP_ALL;
+ 
+@@ -432,6 +438,8 @@ mt76_phy_init(struct mt76_phy *phy, struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, MFP_CAPABLE);
+ 	ieee80211_hw_set(hw, AP_LINK_PS);
+ 	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
++
++	return 0;
+ }
+ 
+ struct mt76_phy *
+@@ -472,7 +480,9 @@ int mt76_register_phy(struct mt76_phy *phy, bool vht,
+ {
+ 	int ret;
+ 
+-	mt76_phy_init(phy, phy->hw);
++	ret = mt76_phy_init(phy, phy->hw);
++	if (ret)
++		return ret;
+ 
+ 	if (phy->cap.has_2ghz) {
+ 		ret = mt76_init_sband_2g(phy, rates, n_rates);
+@@ -591,7 +601,9 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
+ 	int ret;
+ 
+ 	dev_set_drvdata(dev->dev, dev);
+-	mt76_phy_init(phy, hw);
++	ret = mt76_phy_init(phy, hw);
++	if (ret)
++		return ret;
+ 
+ 	if (phy->cap.has_2ghz) {
+ 		ret = mt76_init_sband_2g(phy, rates, n_rates);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 3acb00840d03..239742112e16 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -810,7 +810,6 @@ struct mt76_ethtool_worker_info {
+ }
+ 
+ extern struct ieee80211_rate mt76_rates[12];
+-extern const struct cfg80211_sar_capa mt76_sar_capa;
+ 
+ #define __mt76_rr(dev, ...)	(dev)->bus->rr((dev), __VA_ARGS__)
+ #define __mt76_wr(dev, ...)	(dev)->bus->wr((dev), __VA_ARGS__)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+index 06f8fb883ead..dd30f537676d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+@@ -174,13 +174,6 @@ int mt76x02_init_device(struct mt76x02_dev *dev)
+ 	}
+ 
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
+-	wiphy->sar_capa = &mt76_sar_capa;
+-	dev->mt76.phy.frp = devm_kcalloc(dev->mt76.dev,
+-					 wiphy->sar_capa->num_freq_ranges,
+-					 sizeof(struct mt76_freq_range_power),
+-					 GFP_KERNEL);
+-	if (!dev->mt76.phy.frp)
+-		return -ENOMEM;
+ 
+ 	hw->sta_data_size = sizeof(struct mt76x02_sta);
+ 	hw->vif_data_size = sizeof(struct mt76x02_vif);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index b23067a8326c..ad59ef9839dc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -76,14 +76,6 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
+ 	wiphy->max_sched_scan_reqs = 1;
+ 	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
+ 	wiphy->reg_notifier = mt7921_regd_notifier;
+-	wiphy->sar_capa = &mt76_sar_capa;
+-
+-	phy->mt76->frp = devm_kcalloc(dev->mt76.dev,
+-				      wiphy->sar_capa->num_freq_ranges,
+-				      sizeof(struct mt76_freq_range_power),
+-				      GFP_KERNEL);
+-	if (!phy->mt76->frp)
+-		return -ENOMEM;
+ 
+ 	wiphy->features |= NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR |
+ 			   NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
 -- 
-Kees Cook
+2.31.1
+
