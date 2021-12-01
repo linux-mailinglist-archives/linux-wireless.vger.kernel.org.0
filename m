@@ -2,61 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C5B5463E8A
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Nov 2021 20:17:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77B2346448A
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 02:33:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245734AbhK3TUX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 Nov 2021 14:20:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38206 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343499AbhK3TUQ (ORCPT
+        id S241111AbhLABhP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 Nov 2021 20:37:15 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:43176 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230044AbhLABhG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 Nov 2021 14:20:16 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D2A9C061574
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Nov 2021 11:16:56 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id o13so46593509wrs.12
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Nov 2021 11:16:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=ke6qYn4L1dD4yyUdywk/RaQttoSjgqO/YSfbUwxrZn4=;
-        b=bruIPCVqgHj+pTxMLgHWSeTsTVmKuQl2WzKrxkKUQrBDWvE8VfkMM7TQO9z36BJNCr
-         ceO/Zq1qhKI2nL/kL7Azu937FiFMsBC5jWeyznPc3DosqeBqegdXHHoM+UavEdcpk7u7
-         UWrXdrrkpK++3bRF0bNeuqjUc7h7UzbHb5Gz12BPNKsJ2k59ppbiFR/QK0jPnB6Qdnp9
-         m0T1s+rrvXh2cUPRuPujDDxJDKwp4zN2hEgLsTES/ZztvlD9DbpOrQHJoxsJdfH4jr+a
-         +hU7FUiYT8ItWp/vq8PqT1y6L+XzT4C+BRlXiF/ClIyCBddUu3Owa6bYIc73lMrOPoOC
-         gwxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=ke6qYn4L1dD4yyUdywk/RaQttoSjgqO/YSfbUwxrZn4=;
-        b=FLbZ/sLc6kN1L4EKC0H2bEnJ/+ebNwLYbbMGWYBTU3AO1FvpbA5j8I7Y5jPc6dJy5m
-         ltsLqXXp2RZHQrejjrDQ8W7H6PvQCTUl+moD95miOq/uQ2gzNqpQlN9/vgUkQGVAU5JH
-         8E+nhmaFTJX53RE6opQqa9vZshiBqNsLWBY5EBTTUp31PUKlP6YohcXqJ8C2n+jG7twE
-         cGiuxy8atzEq4bgOdSqbxuAeFADAPO3EoSxk+glF1uQ8hcAyseuP0cQvV8efUHw5di16
-         QhbPOEmle9kWzp4e/8aDYyNzwFzn4RNoAgzLRWPW7rUsxlnTulod1/Ccvdf2GT0C2Sap
-         2jIw==
-X-Gm-Message-State: AOAM530Z7iQC2azZ3rW1TGMNrFbnvNFGA8svqcQydhyOeiGC6Hf4/fJV
-        QNhA3uk+lJO3QamG5NiR4Vub4VjHYCSWu47bkw6e0NoPxZ8bVA==
-X-Google-Smtp-Source: ABdhPJw7LeH257sOEAZmQEbdPlVJdOFmJqCWuWk5Lk13ViiDlDoK6ZJu34gnFrerO14LGgfbwjY98ziXJos+1Hr2PMo=
-X-Received: by 2002:adf:f60e:: with SMTP id t14mr1079269wrp.112.1638299814507;
- Tue, 30 Nov 2021 11:16:54 -0800 (PST)
+        Tue, 30 Nov 2021 20:37:06 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1B11Xc7S2019570, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1B11Xc7S2019570
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 1 Dec 2021 09:33:38 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Wed, 1 Dec 2021 09:33:38 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Tue, 30 Nov 2021 20:33:37 -0500
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e095:6756:b2cf:3baa]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e095:6756:b2cf:3baa%5]) with mapi id
+ 15.01.2308.015; Wed, 1 Dec 2021 09:33:37 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Jeff Clay <jeffclay@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: Latency spikes in rtw89
+Thread-Topic: Latency spikes in rtw89
+Thread-Index: AQHX5h7gz1lunSxdRkC17cf5rz61Cqwc15RA
+Date:   Wed, 1 Dec 2021 01:33:37 +0000
+Message-ID: <74887ec8f49846f5ae8b40b4c213d2da@realtek.com>
+References: <CACJOGMP0k1AH9Coz2DjZjkeoxPGjSyP60MYMSHrMN-hSJrrvTQ@mail.gmail.com>
+In-Reply-To: <CACJOGMP0k1AH9Coz2DjZjkeoxPGjSyP60MYMSHrMN-hSJrrvTQ@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzExLzMwIOS4i+WNiCAxMToxNjowMA==?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-From:   Jeff Clay <jeffclay@gmail.com>
-Date:   Tue, 30 Nov 2021 13:16:18 -0600
-Message-ID: <CACJOGMP0k1AH9Coz2DjZjkeoxPGjSyP60MYMSHrMN-hSJrrvTQ@mail.gmail.com>
-Subject: Latency spikes in rtw89
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, I am using the rtw89 driver for Realtek 8852AE in my Lenovo T14
-AMD Gen2. I have obtained and installed this driver from source at
-https://github.com/lwfinger/rtw89/tree/main I am having an issue where
-the latency during a ping test to hosts on my LAN spikes to 200ms or
-above. According to lwfinger, this is known and acceptable
-https://github.com/lwfinger/rtw89/issues/85  However, I am hoping I
-may be able to work with you to resolve this issue as a tester.
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEplZmYgQ2xheSA8amVmZmNs
+YXlAZ21haWwuY29tPg0KPiBTZW50OiBXZWRuZXNkYXksIERlY2VtYmVyIDEsIDIwMjEgMzoxNiBB
+TQ0KPiBUbzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IExhdGVu
+Y3kgc3Bpa2VzIGluIHJ0dzg5DQo+IA0KPiBIaSwgSSBhbSB1c2luZyB0aGUgcnR3ODkgZHJpdmVy
+IGZvciBSZWFsdGVrIDg4NTJBRSBpbiBteSBMZW5vdm8gVDE0DQo+IEFNRCBHZW4yLiBJIGhhdmUg
+b2J0YWluZWQgYW5kIGluc3RhbGxlZCB0aGlzIGRyaXZlciBmcm9tIHNvdXJjZSBhdA0KPiBodHRw
+czovL2dpdGh1Yi5jb20vbHdmaW5nZXIvcnR3ODkvdHJlZS9tYWluIEkgYW0gaGF2aW5nIGFuIGlz
+c3VlIHdoZXJlDQo+IHRoZSBsYXRlbmN5IGR1cmluZyBhIHBpbmcgdGVzdCB0byBob3N0cyBvbiBt
+eSBMQU4gc3Bpa2VzIHRvIDIwMG1zIG9yDQo+IGFib3ZlLiBBY2NvcmRpbmcgdG8gbHdmaW5nZXIs
+IHRoaXMgaXMga25vd24gYW5kIGFjY2VwdGFibGUNCj4gaHR0cHM6Ly9naXRodWIuY29tL2x3Zmlu
+Z2VyL3J0dzg5L2lzc3Vlcy84NSAgSG93ZXZlciwgSSBhbSBob3BpbmcgSQ0KPiBtYXkgYmUgYWJs
+ZSB0byB3b3JrIHdpdGggeW91IHRvIHJlc29sdmUgdGhpcyBpc3N1ZSBhcyBhIHRlc3Rlci4NCg0K
+V2Uga25vdyB0aGlzLCBhbmQgaXQgaXMgZHVlIHRvIHBvd2VyIHNhdmluZzsgaS5lLiB0cmFkZW9m
+ZiBiZXR3ZWVuDQpsYXRlbmN5IGFuZCBwb3dlciBzYXZpbmcuIFdlIGFyZSB0aGlua2luZyBob3cg
+dG8gaW1wcm92ZSBpdCBlbnRpcmVseS4NCg0KLS0NClBpbmctS2UNCg0K
