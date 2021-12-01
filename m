@@ -2,118 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09A6446575E
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 21:47:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3C3E465826
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 22:09:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234241AbhLAUvA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 15:51:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49332 "EHLO
+        id S240310AbhLAVM7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 16:12:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353129AbhLAUtc (ORCPT
+        with ESMTP id S233009AbhLAVM7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 15:49:32 -0500
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C4C7C0613FB;
-        Wed,  1 Dec 2021 12:45:58 -0800 (PST)
-Received: by mail-ua1-x931.google.com with SMTP id a14so51792315uak.0;
-        Wed, 01 Dec 2021 12:45:58 -0800 (PST)
+        Wed, 1 Dec 2021 16:12:59 -0500
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACE20C061574
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 13:09:37 -0800 (PST)
+Received: by mail-io1-xd2a.google.com with SMTP id w22so32782230ioa.1
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 13:09:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=3gsFnP+ZnxQscLfmhBB0/p1c5J9Ak8k7rgkq4hSbtPQ=;
-        b=YtVeQMqgjlOKpjN7MT2MGh1HqrZnG7ce/h1z66L++jDUBQvVjYZxt3OovOfBy9Ml3P
-         QiHjq9T43KZHl3QtzNaqQ8+dRGcqDGYfd6b7qKlq9QeuhPM/K7jvsOvv94Xmys17Qmc5
-         V0gKny8+hjMzx2cY3rzhrERvJmggeujnvUEa9j/eTFtq7zggicoUNDCzCCZa12Zu15KN
-         2N7lqxKHWqm2uV2Mzt20reBxADCBond0JmogF3dzzFSoY3nZFeCTaNrbycUYIW/7joQL
-         uA4kpWIzIcDCS092/lPuzKExkEhmBSXJJSuzmy5cr1g0B3D/Av3OixBXWBUctQThRQqd
-         nZzA==
+        bh=SDcnRnl8WP6Hhxu22CYqrzttmdFEJ6bFnF0IuQOZgnM=;
+        b=HIo8SsAV/jdz9Ezru0XkiaGCYNseoT0H9XCbHbUEUQxxnhdW+xPryVmgZIs8RchCVS
+         iVjIkQfiWSh3hFCK3p5QzB243IfIiojauSMYHCnbtSyBlDlAOxTbjKOkl4xk0dvFGjNb
+         +S8xtG82gzw4TCMF/rs/NDRUeqgrwF5zbweeA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3gsFnP+ZnxQscLfmhBB0/p1c5J9Ak8k7rgkq4hSbtPQ=;
-        b=rlNW99qWoBUlKDeO908raGtygLaqxwB/c3yIeps+IftHg7X58/C1TQj4s6TASgya3C
-         zF7guB1xBgdUgE3P2EFs7GPRMS9R6NRycoMUMJu4ae/wyH1KrcTCXObM7clE1Fmxk4hQ
-         9Qvu47pSaVR4riuMGretONo2AsyQ30ayVPlJf69TWAXY2xjBB0A+J8/3e8HOz7Xh9Btl
-         VRE7yVBnn6oMplvgagj1gbrs7C5bhqaUAtYRxnAF0IMokEQz1+UuVtOFU0Mh1zpVibio
-         OmX+nLzLq9YnPvBMc9VpAQwpw/Kvei4xlKgLJGBgQWhhdwEgdKm25V5SFvXOZIirHb4F
-         aaaA==
-X-Gm-Message-State: AOAM533FIuziqfWJJWVNN7iwmA1kt+exZF1huSici83na35JicivAx7K
-        vT8VktI2wdwkmX+Y4sLKIVmLCvlhquusDzwImX8=
-X-Google-Smtp-Source: ABdhPJwoznrM0H9yVzZ4pUHufuowilbQu6Bp3EUJlTqGs2pwfxnx+da5GUzNrVQZAXPfp3YIq3RV00iZgMcfdJkla5Q=
-X-Received: by 2002:a05:6102:c4e:: with SMTP id y14mr11489182vss.61.1638391558160;
- Wed, 01 Dec 2021 12:45:58 -0800 (PST)
+        bh=SDcnRnl8WP6Hhxu22CYqrzttmdFEJ6bFnF0IuQOZgnM=;
+        b=YVs26Z1PB4DCfOFazZnnQdfmXXabf13+7k5BlroMyxjUVfJfj3laT4nt6yW15Iixfy
+         ryWHiTd741SWxBbxjTiYO5TFna8vxLqh0BwTweacrQl+xpQHa5QB8jrM3VbQI5M6P3Ui
+         awhhdHRMSbhuPcEyZ1zzBRSZFuqHwx2hy+PYQ463RHzbkRfAaAFAeUcThkUSckLUZE6W
+         eCTQy7zZMzA7OTW7tcNzGnaJlAGbCG+q98k2Cndt25Xa72bZqwfvSUd8LL5S0HQ1PWov
+         WBbGQ4lEneU5WWJCy0c3eKbrUQ3pFVu5yKcj+osyN8pgEkxcxZJRXMnl3MWmGfVPdeGR
+         bjJQ==
+X-Gm-Message-State: AOAM532gOw/TVgoKuGfxBmrE3pg/gZYSOkw2HtZ5+0ey0sRGBiCrt3+O
+        P90oCU4PkiUYntZLTXCRXAVYZzKdRn2kTA==
+X-Google-Smtp-Source: ABdhPJzoMbgXxqKr8bthZjHCrkVAgzdqlCNirziORTu5DF/+KTyiyLGVGsmf39gPMwmtWoPKBbJwOg==
+X-Received: by 2002:a5e:8514:: with SMTP id i20mr11245389ioj.95.1638392976922;
+        Wed, 01 Dec 2021 13:09:36 -0800 (PST)
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com. [209.85.166.182])
+        by smtp.gmail.com with ESMTPSA id w10sm745380ill.36.2021.12.01.13.09.36
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Dec 2021 13:09:36 -0800 (PST)
+Received: by mail-il1-f182.google.com with SMTP id 15so17742426ilq.2
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 13:09:36 -0800 (PST)
+X-Received: by 2002:a92:ca0e:: with SMTP id j14mr10532883ils.27.1638392976093;
+ Wed, 01 Dec 2021 13:09:36 -0800 (PST)
 MIME-Version: 1.0
-References: <20211101035635.26999-1-ricardo.martinez@linux.intel.com>
- <20211101035635.26999-7-ricardo.martinez@linux.intel.com> <CAHNKnsRe-88_jXvW4=0rPSDhVTbnJnDoeLpjHS4ouDv3pJXWSg@mail.gmail.com>
- <a9f1237c-78d5-d64e-6980-a7c7c5f6f5f9@linux.intel.com>
-In-Reply-To: <a9f1237c-78d5-d64e-6980-a7c7c5f6f5f9@linux.intel.com>
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Wed, 1 Dec 2021 23:45:47 +0300
-Message-ID: <CAHNKnsSn9TRHdZiih6Y0geSD+e5CdY-uUeuvAvWdA0==e8GEEw@mail.gmail.com>
-Subject: Re: [PATCH v2 06/14] net: wwan: t7xx: Add AT and MBIM WWAN ports
-To:     "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        M Chetan Kumar <m.chetan.kumar@intel.com>,
-        chandrashekar.devegowda@intel.com,
-        Intel Corporation <linuxwwan@intel.com>,
-        chiranjeevi.rapolu@linux.intel.com, haijun.liu@mediatek.com,
-        amir.hanania@intel.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
-        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
-        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
-        suresh.nagaraj@intel.com
+References: <0e495b14-efbb-e0da-37bd-af6bd677ee2c@gmail.com> <YaV0pllJ5p/EuUat@google.com>
+In-Reply-To: <YaV0pllJ5p/EuUat@google.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Wed, 1 Dec 2021 13:09:24 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=UEA8JG8=tNWMdv2p9jgEm6KCGUeMCi1O4T7eVVnefZjg@mail.gmail.com>
+Message-ID: <CAD=FV=UEA8JG8=tNWMdv2p9jgEm6KCGUeMCi1O4T7eVVnefZjg@mail.gmail.com>
+Subject: Re: [PATCH] mwifiex: Fix possible ABBA deadlock
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Jia-Ju Bai <baijiaju1990@gmail.com>, amitkarwar@gmail.com,
+        ganapathi017@gmail.com, sharvari.harisangam@nxp.com,
+        huxinming820@gmail.com, kvalo@codeaurora.org,
+        David Miller <davem@davemloft.net>, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Ricardo,
+Hi,
 
-On Wed, Dec 1, 2021 at 9:14 AM Martinez, Ricardo
-<ricardo.martinez@linux.intel.com> wrote:
-> On 11/9/2021 4:06 AM, Sergey Ryazanov wrote:
->> On Mon, Nov 1, 2021 at 6:57 AM Ricardo Martinez wrote:
->>> ...
->>>   static struct t7xx_port md_ccci_ports[] = {
->>> +       {CCCI_UART2_TX, CCCI_UART2_RX, DATA_AT_CMD_Q, DATA_AT_CMD_Q, 0xff,
->>> +        0xff, ID_CLDMA1, PORT_F_RX_CHAR_NODE, &wwan_sub_port_ops, 0, "ttyC0", WWAN_PORT_AT},
->>> +       {CCCI_MBIM_TX, CCCI_MBIM_RX, 2, 2, 0, 0, ID_CLDMA1,
->>> +        PORT_F_RX_CHAR_NODE, &wwan_sub_port_ops, 10, "ttyCMBIM0", WWAN_PORT_MBIM},
->>> ...
->>> +               if (count + CCCI_H_ELEN > txq_mtu &&
->>> +                   (port_ccci->tx_ch == CCCI_MBIM_TX ||
->>> +                    (port_ccci->tx_ch >= CCCI_DSS0_TX && port_ccci->tx_ch <= CCCI_DSS7_TX)))
->>> +                       multi_packet = DIV_ROUND_UP(count, txq_mtu - CCCI_H_ELEN);
->>
->> I am just wondering, the chip does support MBIM message fragmentation,
->> but does not support AT commands stream (CCCI_UART2_TX) fragmentation.
->> Is that the correct conclusion from the code above?
+On Mon, Nov 29, 2021 at 4:47 PM Brian Norris <briannorris@chromium.org> wrote:
 >
-> Yes, that is correct.
+> Quoting Jia-Ju Bai <baijiaju1990@gmail.com>:
+>
+>   mwifiex_dequeue_tx_packet()
+>      spin_lock_bh(&priv->wmm.ra_list_spinlock); --> Line 1432 (Lock A)
+>      mwifiex_send_addba()
+>        spin_lock_bh(&priv->sta_list_spinlock); --> Line 608 (Lock B)
+>
+>   mwifiex_process_sta_tx_pause()
+>      spin_lock_bh(&priv->sta_list_spinlock); --> Line 398 (Lock B)
+>      mwifiex_update_ralist_tx_pause()
+>        spin_lock_bh(&priv->wmm.ra_list_spinlock); --> Line 941 (Lock A)
+>
+> Similar report for mwifiex_process_uap_tx_pause().
+>
+> While the locking expectations in this driver are a bit unclear, the
+> Fixed commit only intended to protect the sta_ptr, so we can drop the
+> lock as soon as we're done with it.
+>
+> IIUC, this deadlock cannot actually happen, because command event
+> processing (which calls mwifiex_process_sta_tx_pause()) is
+> sequentialized with TX packet processing (e.g.,
+> mwifiex_dequeue_tx_packet()) via the main loop (mwifiex_main_process()).
+> But it's good not to leave this potential issue lurking.
+>
+> Fixes: ("f0f7c2275fb9 mwifiex: minor cleanups w/ sta_list_spinlock in cfg80211.c")
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+> Link: https://lore.kernel.org/linux-wireless/0e495b14-efbb-e0da-37bd-af6bd677ee2c@gmail.com/
+> Signed-off-by: Brian Norris <briannorris@chromium.org>
+> ---
+>
+> On Tue, Nov 23, 2021 at 11:31:34AM +0800, Jia-Ju Bai wrote:
+> > I am not quite sure whether these possible deadlocks are real and how to fix
+> > them if they are real.
+> > Any feedback would be appreciated, thanks :)
+>
+> I think these are at least theoretically real, and so we should take
+> something like the $subject patch probably. But I don't believe we can
+> actually hit this due to the main-loop structure of this driver.
+>
+> Anyway, see the surrounding patch.
+>
+> Thanks,
+> Brian
+>
+>
+>  drivers/net/wireless/marvell/mwifiex/sta_event.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 
-Are you sure that the modem does not support AT command fragmentation?
-The AT commands interface is a stream of chars by its nature. It is
-designed to work over serial lines. Some modem configuration software
-even writes commands to a port in a char-by-char manner, i.e. it
-writes no more than one char at a time to the port.
+Though I'm by no means an expert on this code and I wrote the patch in
+question a long time ago, this seems reasonable to me. Thanks for
+fixing.
 
-The mechanism that is implemented in the driver to split user input
-into individual messages is not a true fragmentation mechanism since
-it does not preserve the original user input length. It just cuts the
-user input into individual messages and sends them to the modem
-independently. So, the modem firmware has no way to distinguish
-whether the user input has been "fragmented" by the user or the
-driver. How, then, does the modem firmware deal with an AT command
-"fragmented" by a user? Will the modem firmware ignore the AT command
-that is received in the char-by-char manner?
-
--- 
-Sergey
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
