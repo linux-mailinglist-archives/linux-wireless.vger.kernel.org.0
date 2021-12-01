@@ -2,214 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 951D44653FB
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 18:32:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0EEE465425
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 18:39:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351908AbhLARgF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 12:36:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60192 "EHLO
+        id S243999AbhLARmq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 12:42:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351897AbhLARgE (ORCPT
+        with ESMTP id S231499AbhLARmp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 12:36:04 -0500
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5E98C06175C
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 09:32:42 -0800 (PST)
-Received: by mail-pg1-x536.google.com with SMTP id m15so24358521pgu.11
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 09:32:42 -0800 (PST)
+        Wed, 1 Dec 2021 12:42:45 -0500
+Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61A8C061574
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 09:39:24 -0800 (PST)
+Received: by mail-oo1-xc34.google.com with SMTP id d1-20020a4a3c01000000b002c2612c8e1eso8057352ooa.6
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 09:39:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=FzyE9HFngcWzXGJ+JVnIrmxG1xx/EuzgUUTbOa+7gYU=;
-        b=lQRoGsMb8BnKx/YWkYkML4540gVv9fz6kmXXHWXRgVHR1T7lPDpydrc52ygvnu27cw
-         Nf8oTR/7J0J3QoAKEH+NZZS7HfZqcW3ypo72iyn7g2Ye/tjnp9xEGdmMfZogcpq5E5f5
-         DNSRmv5MdgAV+Jc6cAWNQgtYpHYX789vOupvc=
+        d=gmail.com; s=20210112;
+        h=sender:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=/cNut1odEz58+5WQpjXbh5Y9M+BW4+Q22MxZye+tdpc=;
+        b=T4Z2Ykqs4ogTIETvF9wdO3RMBKV61jDmUdanwFudXfF7HohR4TNPi0Pv/qGpexLjBE
+         risgyv7H9BvbfwciBWl9KKh+nSUvxAkriJfsBFaufYxBUy3avQ7+w23b91WOnBGTLEni
+         Tivhe6iKKEWA4rBmOHDGZa5EvYnziAgMx4L96gKtxmho2pAxen20mn4M7LvIXRL5wscT
+         nNR/gF1r1P8yUyB2J6MVlKzrpZU0mc7zLSg1xUpm2qbHR/zDgOEnmZXusHTRDc1LdYqo
+         TVDcSktZyS0z6or9KiiCPUCBvme5nZEZw3ZqqgnZUgnV/no2VdNkCI2NW4Q6mSOeec5e
+         j9ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=FzyE9HFngcWzXGJ+JVnIrmxG1xx/EuzgUUTbOa+7gYU=;
-        b=et46jBNyr37rv6GOrzRoK/T38F/yt0IwnTd54/hf5w2AzGBxKhbWyBtwP1A2rnwcuv
-         HcSVh8aSV2uDUAeMzScJOxpvx6n9j0Qh/qkPzmq1G/V4UmmoHywVM9xMtD+le6cyF1fe
-         fheiUFpffgoERI/ClHgkFjOubUO4gFoHYC8LluCm6Suey02gqOA2H9DwucF6yFstQBc3
-         WpzFvz0/CP0nyIB1arkEeuslT1obVCrw47kF52C1aGu+KOSwKKhbzmBgrbn4rw99FmlD
-         8A9iFrs8F0TB98rjg3XctxB9D/COUQACJpZds1jzUgQ8DVY6D4lmFGUPXHdVCLMVmbru
-         +Fgw==
-X-Gm-Message-State: AOAM532BG8paAtntr9ShRW6Sp5Jj8SsJKmLZvabg7wmtq2zS9VWKACcs
-        xnq9+aqyeLg3lPUZnJZEJKhvzw==
-X-Google-Smtp-Source: ABdhPJz4A7LJfnLMUj+4iQ5zPOYMTFU15+euUd/GNHT0BiCxqBmAqWC7rBjUyX3tUTSrXDeVa46wbw==
-X-Received: by 2002:aa7:8883:0:b0:49f:f87a:95de with SMTP id z3-20020aa78883000000b0049ff87a95demr7319034pfe.53.1638379962272;
-        Wed, 01 Dec 2021 09:32:42 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id ml24sm191408pjb.16.2021.12.01.09.32.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Dec 2021 09:32:41 -0800 (PST)
-From:   Kees Cook <keescook@chromium.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Kees Cook <keescook@chromium.org>,
-        kernel test robot <lkp@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Wan Jiabing <wanjiabing@vivo.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Luis Carlos Cobo <luisca@cozybit.com>,
-        linux-kernel@vger.kernel.org, libertas-dev@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH 2/2] libertas_tf: Add missing __packed annotations
-Date:   Wed,  1 Dec 2021 09:32:34 -0800
-Message-Id: <20211201173234.578124-3-keescook@chromium.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211201173234.578124-1-keescook@chromium.org>
-References: <20211201173234.578124-1-keescook@chromium.org>
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :subject:content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=/cNut1odEz58+5WQpjXbh5Y9M+BW4+Q22MxZye+tdpc=;
+        b=RMCX1D9NWUeKu2KOiDVRzV6wmmyN/TDlBtnYQx+9Ie1xK2BFBjlDNmZTVKcsWg9Ebi
+         PprdxJVGmBiSJM9cS9Wnfo90qz+ijcI7De8en49jEVsUd7DICOIrVJJon7cu3bXHTQ7t
+         4gmDF971STOM7zDsKyk+prr7RzsvC6xyTNEgJt6gwe+9jazUSpGDZKPGzNHqZCAz5kZt
+         DkAukegmvRu5GUF0LKOYmY7MhE0D3JHuLJ8fQb5m6UfISI6n39+BD9TUCbaJ5C1/aM39
+         iXuuzhzrAvzyfzPHAOju0OBo3Cl/85Jv3BZ6qGoS0br641RlRmMZ2PXZyc67fCA84CNr
+         rT/A==
+X-Gm-Message-State: AOAM531vWPEUnyvwq5yBmIsllQdw4DNBR7uWJudDJWjgPoyWhxkLhkPX
+        i9JYaZCWmAZ5CrLbDnkJHD4xk6QQtAmFF7+L
+X-Google-Smtp-Source: ABdhPJyHf7jO/IracVwTSgnDN7lmS+0Go7vytwELHXdOMR6GWtspzKH3j8eAJ20B59vHCBeQxj1Yig==
+X-Received: by 2002:a05:6820:388:: with SMTP id r8mr5304735ooj.0.1638380364155;
+        Wed, 01 Dec 2021 09:39:24 -0800 (PST)
+Received: from [10.62.118.101] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
+        by smtp.gmail.com with ESMTPSA id p23sm151504otf.37.2021.12.01.09.39.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Dec 2021 09:39:23 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <5dc56416-7564-6a11-d477-9841b27a7123@lwfinger.net>
+Date:   Wed, 1 Dec 2021 11:39:22 -0600
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3543; h=from:subject; bh=2tGVFx8Insnm3c0UY7JXrxmXYfUn1BDPwA2uzEQkk94=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhp7Gy5qOMgVEOvMQuG8T64wdYryY5VwpNynjJn43H kbDhSn6JAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYaexsgAKCRCJcvTf3G3AJsHwD/ 990Bey9pUtkfjcJomJzp7SfME2jkcVLPDwof+Fbu4OLxOC7pAz2sbGTNpVHkwA/cxz9lwMtPi0akGt QUtMW6QlZJAkiIijvHETej7YIAXMK7XEg5TefmjCUWypw5qVJBrY1BxcL6rlpTUAs8hVfTGHqLGxTq 4BNpysfs5kgjAt4v16mRj42S6SMU11tzNUVVPKVy1iv8LzV02nXfAyIIfHUpjgnQRUGUMJKSi95QPN W/3v0W4vL/95UQA9OPtTkMpXx/5ZGsQ4SJCB4EGPiYMX0aZCdyNM7OWCQnHNKnypP1VrAmHuiYdJze M7I7Q+VQD+rVVaj9DVlL/V/lJdI456tCcVj4ejFEm4LsybKoBtGFMPJo9YOFOu+Mfz8yjmUhYB07+/ xoDAwiQrrsezUhMy+ccbCI6LxlkX3PF9Nfl5xAFW8HAW0YZ3l5HrOg2dnn6+gJskYsHm5Ztd6b/bYy kU5Gl4eJDn9sq1KX3R4U04szWwKlQVqXzaSPP4T4gBaxrtNDsrYLXefofk7E40KJ990RxiThbr4eqx XllVocubnCL1WvKVS4AHGxmQOlK77yqLqJq9ZqdXYtC4biuL5J0v7QYNBzx7VgiSuTth2M+0RZCgK4 J2uUY2bpEPIe45yBdmyhKNG5ZeuN4bdiDPPNTAW0AVji1AWuH83q2Dp2Z5DA==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: Latency spikes in rtw89
+Content-Language: en-US
+To:     Jeff Clay <jeffclay@gmail.com>, Pkshih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <CACJOGMP0k1AH9Coz2DjZjkeoxPGjSyP60MYMSHrMN-hSJrrvTQ@mail.gmail.com>
+ <74887ec8f49846f5ae8b40b4c213d2da@realtek.com>
+ <CACJOGMOBaQ+vc37dnpS8JYEnE4v4bufSkw+_Or5FEzkTiKXfBQ@mail.gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <CACJOGMOBaQ+vc37dnpS8JYEnE4v4bufSkw+_Or5FEzkTiKXfBQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The earlier __packed annotations added in commit d71038c05970 ("libertas:
-Fix alignment issues in libertas core") were not duplicated when
-libertas_af was added in commit 7670e62c7ed6 ("libertas_tf: header file"),
-even though they share several structure definitions. Add the missing
-annotations which commit 642a57475b30 ("libertas_tf: Use struct_group()
-for memcpy() region") exposed. Quoting the prior libertas fix: "Data
-structures that come over the wire from the WLAN firmware must be
-packed."
+On 12/1/21 08:48, Jeff Clay wrote:
+> Thank you for the information. Would the issue persist if I were to
+> disable wireless power management?
 
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/linux-mm/202111302102.apaePz2J-lkp@intel.com
-Fixes: 642a57475b30 ("libertas_tf: Use struct_group() for memcpy() region")
-Fixes: 7670e62c7ed6 ("libertas_tf: header file")
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- .../marvell/libertas_tf/libertas_tf.h         | 28 +++++++++----------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+That is an easy experiment to try. Use the "disable_ps_mode=y' module option for 
+rtw89core.
 
-diff --git a/drivers/net/wireless/marvell/libertas_tf/libertas_tf.h b/drivers/net/wireless/marvell/libertas_tf/libertas_tf.h
-index b2af2ddb6bc4..631b5da09f86 100644
---- a/drivers/net/wireless/marvell/libertas_tf/libertas_tf.h
-+++ b/drivers/net/wireless/marvell/libertas_tf/libertas_tf.h
-@@ -268,7 +268,7 @@ struct txpd {
- 	__le32 tx_packet_location;
- 	/* Tx packet length */
- 	__le16 tx_packet_length;
--	struct_group(tx_dest_addr,
-+	struct_group_attr(tx_dest_addr, __packed,
- 		/* First 2 byte of destination MAC address */
- 		u8 tx_dest_addr_high[2];
- 		/* Last 4 byte of destination MAC address */
-@@ -282,7 +282,7 @@ struct txpd {
- 	u8 pktdelay_2ms;
- 	/* reserved */
- 	u8 reserved1;
--};
-+} __packed;
- 
- /* RxPD Descriptor */
- struct rxpd {
-@@ -313,7 +313,7 @@ struct rxpd {
- 	/* Pkt Priority */
- 	u8 priority;
- 	u8 reserved[3];
--};
-+} __packed;
- 
- struct cmd_header {
- 	__le16 command;
-@@ -379,14 +379,14 @@ struct cmd_ds_mac_control {
- 	struct cmd_header hdr;
- 	__le16 action;
- 	u16 reserved;
--};
-+} __packed;
- 
- struct cmd_ds_802_11_mac_address {
- 	struct cmd_header hdr;
- 
- 	__le16 action;
- 	uint8_t macadd[ETH_ALEN];
--};
-+} __packed;
- 
- struct cmd_ds_mac_multicast_addr {
- 	struct cmd_header hdr;
-@@ -394,27 +394,27 @@ struct cmd_ds_mac_multicast_addr {
- 	__le16 action;
- 	__le16 nr_of_adrs;
- 	u8 maclist[ETH_ALEN * MRVDRV_MAX_MULTICAST_LIST_SIZE];
--};
-+} __packed;
- 
- struct cmd_ds_set_mode {
- 	struct cmd_header hdr;
- 
- 	__le16 mode;
--};
-+} __packed;
- 
- struct cmd_ds_set_bssid {
- 	struct cmd_header hdr;
- 
- 	u8 bssid[6];
- 	u8 activate;
--};
-+} __packed;
- 
- struct cmd_ds_802_11_radio_control {
- 	struct cmd_header hdr;
- 
- 	__le16 action;
- 	__le16 control;
--};
-+} __packed;
- 
- 
- struct cmd_ds_802_11_rf_channel {
-@@ -425,20 +425,20 @@ struct cmd_ds_802_11_rf_channel {
- 	__le16 rftype;      /* unused */
- 	__le16 reserved;    /* unused */
- 	u8 channellist[32]; /* unused */
--};
-+} __packed;
- 
- struct cmd_ds_set_boot2_ver {
- 	struct cmd_header hdr;
- 
- 	__le16 action;
- 	__le16 version;
--};
-+} __packed;
- 
- struct cmd_ds_802_11_reset {
- 	struct cmd_header hdr;
- 
- 	__le16 action;
--};
-+} __packed;
- 
- struct cmd_ds_802_11_beacon_control {
- 	struct cmd_header hdr;
-@@ -446,14 +446,14 @@ struct cmd_ds_802_11_beacon_control {
- 	__le16 action;
- 	__le16 beacon_enable;
- 	__le16 beacon_period;
--};
-+} __packed;
- 
- struct cmd_ds_802_11_beacon_set {
- 	struct cmd_header hdr;
- 
- 	__le16 len;
- 	u8 beacon[MRVL_MAX_BCN_SIZE];
--};
-+} __packed;
- 
- struct cmd_ctrl_node;
- 
--- 
-2.30.2
+Larry
 
