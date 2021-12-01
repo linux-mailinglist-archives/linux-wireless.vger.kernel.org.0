@@ -2,81 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0EEE465425
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 18:39:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CC10465601
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 20:04:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243999AbhLARmq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 12:42:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33494 "EHLO
+        id S245035AbhLATHs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 14:07:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231499AbhLARmp (ORCPT
+        with ESMTP id S244994AbhLATHs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 12:42:45 -0500
-Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61A8C061574
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 09:39:24 -0800 (PST)
-Received: by mail-oo1-xc34.google.com with SMTP id d1-20020a4a3c01000000b002c2612c8e1eso8057352ooa.6
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 09:39:24 -0800 (PST)
+        Wed, 1 Dec 2021 14:07:48 -0500
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D736C061574
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 11:04:27 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id y14-20020a17090a2b4e00b001a5824f4918so468340pjc.4
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 11:04:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=/cNut1odEz58+5WQpjXbh5Y9M+BW4+Q22MxZye+tdpc=;
-        b=T4Z2Ykqs4ogTIETvF9wdO3RMBKV61jDmUdanwFudXfF7HohR4TNPi0Pv/qGpexLjBE
-         risgyv7H9BvbfwciBWl9KKh+nSUvxAkriJfsBFaufYxBUy3avQ7+w23b91WOnBGTLEni
-         Tivhe6iKKEWA4rBmOHDGZa5EvYnziAgMx4L96gKtxmho2pAxen20mn4M7LvIXRL5wscT
-         nNR/gF1r1P8yUyB2J6MVlKzrpZU0mc7zLSg1xUpm2qbHR/zDgOEnmZXusHTRDc1LdYqo
-         TVDcSktZyS0z6or9KiiCPUCBvme5nZEZw3ZqqgnZUgnV/no2VdNkCI2NW4Q6mSOeec5e
-         j9ZQ==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=7Tf41EDVklcHjoVJH2bJZx09qWT8e2ZOrmXZk1vPBcw=;
+        b=Lz3r8wmwEYFcNsJ3s8aUqTVYKCeup8K784xFhF8aj4SSJWkxl82PhkX+fvAhi5ZC35
+         ZcrXFzzvtkqLii06p+oU2KL4dEXy3lz/tymYFXaEWfKmHCYP1+WxA4uUZQ0N7XOCbYkf
+         ETq6DxuMPeg0Yn9AGcOED/Ri37H/t2GOlaKsg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :subject:content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=/cNut1odEz58+5WQpjXbh5Y9M+BW4+Q22MxZye+tdpc=;
-        b=RMCX1D9NWUeKu2KOiDVRzV6wmmyN/TDlBtnYQx+9Ie1xK2BFBjlDNmZTVKcsWg9Ebi
-         PprdxJVGmBiSJM9cS9Wnfo90qz+ijcI7De8en49jEVsUd7DICOIrVJJon7cu3bXHTQ7t
-         4gmDF971STOM7zDsKyk+prr7RzsvC6xyTNEgJt6gwe+9jazUSpGDZKPGzNHqZCAz5kZt
-         DkAukegmvRu5GUF0LKOYmY7MhE0D3JHuLJ8fQb5m6UfISI6n39+BD9TUCbaJ5C1/aM39
-         iXuuzhzrAvzyfzPHAOju0OBo3Cl/85Jv3BZ6qGoS0br641RlRmMZ2PXZyc67fCA84CNr
-         rT/A==
-X-Gm-Message-State: AOAM531vWPEUnyvwq5yBmIsllQdw4DNBR7uWJudDJWjgPoyWhxkLhkPX
-        i9JYaZCWmAZ5CrLbDnkJHD4xk6QQtAmFF7+L
-X-Google-Smtp-Source: ABdhPJyHf7jO/IracVwTSgnDN7lmS+0Go7vytwELHXdOMR6GWtspzKH3j8eAJ20B59vHCBeQxj1Yig==
-X-Received: by 2002:a05:6820:388:: with SMTP id r8mr5304735ooj.0.1638380364155;
-        Wed, 01 Dec 2021 09:39:24 -0800 (PST)
-Received: from [10.62.118.101] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
-        by smtp.gmail.com with ESMTPSA id p23sm151504otf.37.2021.12.01.09.39.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Dec 2021 09:39:23 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <5dc56416-7564-6a11-d477-9841b27a7123@lwfinger.net>
-Date:   Wed, 1 Dec 2021 11:39:22 -0600
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=7Tf41EDVklcHjoVJH2bJZx09qWT8e2ZOrmXZk1vPBcw=;
+        b=sookkvJqw5Ca8VLdnGebLEGkP6n1JICNnDTH9HuZmBcM2jk0tiI1e60Ef6wuyrV+Fb
+         aFzkyi3BjNDCJuNNp7d5DtrqYTSe3FSuVWBZfnDfy++bW3lwZrW/cGl/E8hNDuT74nrZ
+         4mmSFbNlIRdx+4WglW4D9YmMGMEf0ZoYhDBIKlp3ZY1eMUHPEt0KbiXAy8frt2uMETZk
+         wUji3DGeZCs2A5ZCyHwPb8UXkihAw31eBSBXHDitzmSnkdEh2FDgFv3wCFCHo15eSaVF
+         P9FbW2hJpuQwzGgmSoipbw02Fx1qcOzKsjaYNHDSqiRFJfOH2Yas/wnvbeeKdMebECIj
+         WByg==
+X-Gm-Message-State: AOAM530L2pBsIhh2bH6rX3PfRyJqkha85WJFZUcrDnvro7A48XgbvIYk
+        9B82NxopswNp6wgWhApfPLnpYw==
+X-Google-Smtp-Source: ABdhPJzyQALX0ue/ROXvyT8pRDYJXc8SnppHpn3XNEbsEVMux8u7MHN276hIxPFTo/+TE3CAGd7ATg==
+X-Received: by 2002:a17:902:c20d:b0:142:21e:b1e8 with SMTP id 13-20020a170902c20d00b00142021eb1e8mr9628260pll.27.1638385466670;
+        Wed, 01 Dec 2021 11:04:26 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id oa17sm69545pjb.37.2021.12.01.11.04.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Dec 2021 11:04:26 -0800 (PST)
+Date:   Wed, 1 Dec 2021 11:04:25 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Kalle Valo <kvalo@kernel.org>, kernel test robot <lkp@intel.com>,
+        kbuild-all@lists.01.org,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [linux-next:master 3615/4301]
+ include/linux/compiler_types.h:335:45: error: call to
+ '__compiletime_assert_314' declared with attribute error: BUILD_BUG_ON
+ failed: sizeof(txpd->tx_dest_addr) != ETH_ALEN
+Message-ID: <202112011059.1F60C79D@keescook>
+References: <202111302102.apaePz2J-lkp@intel.com>
+ <87pmqgsrcq.fsf@codeaurora.org>
+ <202112010840.0AD4D41162@keescook>
+ <17ccfc4f9f9e74e1d6b48366a87cbcf887521dab.camel@sipsolutions.net>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-Subject: Re: Latency spikes in rtw89
-Content-Language: en-US
-To:     Jeff Clay <jeffclay@gmail.com>, Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <CACJOGMP0k1AH9Coz2DjZjkeoxPGjSyP60MYMSHrMN-hSJrrvTQ@mail.gmail.com>
- <74887ec8f49846f5ae8b40b4c213d2da@realtek.com>
- <CACJOGMOBaQ+vc37dnpS8JYEnE4v4bufSkw+_Or5FEzkTiKXfBQ@mail.gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <CACJOGMOBaQ+vc37dnpS8JYEnE4v4bufSkw+_Or5FEzkTiKXfBQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17ccfc4f9f9e74e1d6b48366a87cbcf887521dab.camel@sipsolutions.net>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/1/21 08:48, Jeff Clay wrote:
-> Thank you for the information. Would the issue persist if I were to
-> disable wireless power management?
+On Wed, Dec 01, 2021 at 06:29:49PM +0100, Johannes Berg wrote:
+> On Wed, 2021-12-01 at 08:41 -0800, Kees Cook wrote:
+> > 
+> > > >    drivers/net/wireless/marvell/libertas/tx.c:116:9: note: in expansion of macro 'BUILD_BUG_ON'
+> > > >      116 |         BUILD_BUG_ON(sizeof(txpd->tx_dest_addr) != ETH_ALEN);
+> > > >          |         ^~~~~~~~~~~~
+> > > 
+> > > Kees, can you take a look at this build error? You added the
+> > > BUILD_BUG_ON(), right?
+> > 
+> > I will investigate! Given this doesn't happen on allmodconfig but
+> > a randconfig trips it, this might be finding a legit issue, but I'll
+> > report back more details.
+> > 
+> 
+> It's probably some alignment thing - note it happened on a specific ARM
+> with a specific compiler?
 
-That is an easy experiment to try. Use the "disable_ps_mode=y' module option for 
-rtw89core.
+Yup, that was it. It's an interesting bit of "accidentally correct"
+problems that I think I've now fixed with this series:
+https://lore.kernel.org/all/20211201173234.578124-1-keescook@chromium.org/
 
-Larry
+My pahole before/after testing appears to have been too limited and
+missed this case. :( I'm currently reviewing all the others I've sent as
+well.
 
+> But there's not really a good reason to even have the struct_group here,
+> we only use it as if it was
+> 
+> 	u8 tx_dest_addr[ETH_ALEN];
+> 
+> anyway?
+
+Ah yeah, nothing uses tx_dest_addr_high nor tx_dest_addr_low. Should I
+send another patch to just rip out the struct_group entirely?
+
+-- 
+Kees Cook
