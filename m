@@ -2,86 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D10465066
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 15:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C6EF46515C
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 16:20:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239633AbhLAOwr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 09:52:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49868 "EHLO
+        id S243710AbhLAPXv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 10:23:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239069AbhLAOwq (ORCPT
+        with ESMTP id S244006AbhLAPXq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 09:52:46 -0500
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB61AC061748
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 06:49:25 -0800 (PST)
-Received: by mail-wr1-x433.google.com with SMTP id q3so29978295wru.5
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 06:49:25 -0800 (PST)
+        Wed, 1 Dec 2021 10:23:46 -0500
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D999C061748
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Dec 2021 07:20:25 -0800 (PST)
+Received: by mail-oi1-x22f.google.com with SMTP id be32so49120013oib.11
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Dec 2021 07:20:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Xt3T5vfNow3BwvaK+nGuJ71E64yKHfyAgkgC4Ws3fQ0=;
-        b=ZH7LO3V+kDGPmyYVE6KJmsgtK4a8hqJ53OIVoZa4fRqSgE/paLHYYUVp1MFeMsy4h4
-         RnWmwaV/86kVf8DQpC9ukj7IwXGXBPKIbQctm+SR9PYCsXPMNECi6eSNY9h46mNd0wRM
-         gc2Y6HJeEditTEJ9FG3cD31SfOdXVmw/Cs5JIpTnv+dMFeFkMZseHUETxtYGvNPnSC3d
-         A6J+IE8iLPH+Vl7Isj4hq1X8rnRa111ldBJdxOfSwOaJTt/A5VilllhFqpXMnkerR9IH
-         DP6l8dUdGnFrVPKx2krhNNmhMXtDxxr9f5+gOt6eL2dshnQvq43+y3SljbGP97UClqdp
-         eijw==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=mMoZRpc18ow16H87raC/fpe8KcP8u0OJghztqJpLHW4=;
+        b=GNl2xtphtEo6SyCt/qjP/mhDFk/r/OWaL/AoC4fLlRfaBlzbG0lbp584R8LXWi7ACm
+         T9Gv0VM/YhVCaGVCzOmGTvTm9D2OIhDfUSWO98/FCCaKgimGI90ArsOQDgEfhQ3odCFu
+         nopNWqcpnbFiud1NFddsbaSx8FVXh6yyvo9scyUlzlswS9zwEZVUtHciE1wq4f2m1rE3
+         aPmVolLZy7UVrX7qFjZgfeTB33uD4I2qaaL7YV6ETXS649kCb49qnQ953p7Wcz6YMZ0E
+         6ghlUsCOJp+T+Qbo/SB5BlYwaItPYV6oBStw4ePK246bzzl6W+eJ3NWRwdQRLAsIO9O+
+         xzYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Xt3T5vfNow3BwvaK+nGuJ71E64yKHfyAgkgC4Ws3fQ0=;
-        b=y376CKLttsGy7P3W4zu2DB/Qlb6u4vR7KZpP9bw9vGhE1sAeI2U7MVJto4WkNs7jj1
-         GEeZpcqIiJMHq1OVOEPTj9VA1wX7DxqAO6pd9pdve2JGBah0tB94wQK50L4TOnLXsNHf
-         lQfc3fgZVL/DZDLrHL5hXqrJZcyH+rTBQm1aGi5aOeSD9r4pl+5xlTh8GUHKRszggXm4
-         idlcVrEfdsVMhl0ZfYmStxKD/TCeXq6NAcJs8S6mO7uSI9JGjmB9ESU2G4WrCoehoE12
-         Jt1hgTfOA60c+kjKAP+heN+JdaW/j5T8OG97WLyf83eWvl0/c+NN5oiRUG0c9fcuJNGn
-         F58A==
-X-Gm-Message-State: AOAM531NI4aNH9LxsAWqf0xUFlFBDsyQPNA0lTD8GHjXW3BLPS7JIzF0
-        lRQK49EqoZYCNgWVL/nxOzqvoWbW1MJXqm4HgZ6+GGt5CGOYZg==
-X-Google-Smtp-Source: ABdhPJzvYiES2x9d8VsHHbw9j0lmIyLvbkFIRw5/kQlTf15N7yR2tUirRASh7CkM2dSslGdWmcxATCww8AeZqyfvnsA=
-X-Received: by 2002:a5d:6508:: with SMTP id x8mr7017945wru.388.1638370164352;
- Wed, 01 Dec 2021 06:49:24 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=mMoZRpc18ow16H87raC/fpe8KcP8u0OJghztqJpLHW4=;
+        b=gmz3xD4XDewo6LbgxLcQA1bpmx92rTAdcY4o9YGhIU7qP614KqBb01Zd+IsH6TujPg
+         6wSTMQ+yP08/0V5g/CQtWvk0f/mRwgz3HnvW2bJzKRg09xIqeKH22ZX5i5Hgi3I/GxQ4
+         Q0mbq3ovwEEcgT1uIke0Zbhvak2j13DwunoezeWAXhWzW0kj0MuS/QYKIBo3r1Y78X/8
+         9Peqp4yMBHunYTYpQ1vVhYUmqf6PRfmB/b4BX1UdR4GAhgsBEYFKKN61g0UBw5TXc/Za
+         E89gCQlTKuIU6axMvwNvQlp5x60W18nPryjnVCywlaHB5XIGOBxFES1vV5nhJzQoNL5k
+         if1A==
+X-Gm-Message-State: AOAM532y89nWgAt4E2pjS5kbf27MkH6iowpcAaDp8IqDauHXeteGRjQn
+        rWvmNGLEEG4E5Guw1r4jCFdDaJCZhOVCL7sdoLY=
+X-Google-Smtp-Source: ABdhPJwBtbsFCQNhRZht556ONXWlFfIpZOf/9C4159MUtSoDDImpFUsXWsgqznSoJMgUO6kLJMf2JXoR6ec3k9Lw0Xc=
+X-Received: by 2002:aca:502:: with SMTP id 2mr6622789oif.121.1638372024818;
+ Wed, 01 Dec 2021 07:20:24 -0800 (PST)
 MIME-Version: 1.0
-References: <CACJOGMP0k1AH9Coz2DjZjkeoxPGjSyP60MYMSHrMN-hSJrrvTQ@mail.gmail.com>
- <74887ec8f49846f5ae8b40b4c213d2da@realtek.com>
-In-Reply-To: <74887ec8f49846f5ae8b40b4c213d2da@realtek.com>
-From:   Jeff Clay <jeffclay@gmail.com>
-Date:   Wed, 1 Dec 2021 08:48:48 -0600
-Message-ID: <CACJOGMOBaQ+vc37dnpS8JYEnE4v4bufSkw+_Or5FEzkTiKXfBQ@mail.gmail.com>
-Subject: Re: Latency spikes in rtw89
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Received: by 2002:a8a:4c:0:0:0:0:0 with HTTP; Wed, 1 Dec 2021 07:20:24 -0800 (PST)
+Reply-To: mrs.francioskone@aol.com
+From:   "Mrs. Francios Kone" <monaalzman@gmail.com>
+Date:   Wed, 1 Dec 2021 15:20:24 +0000
+Message-ID: <CAMdxXpkwEATc=n2Hn2uWfUGLV9XWXFPG_Fcbi2aaoyyd+dPvGg@mail.gmail.com>
+Subject: YOUR COMPENSATION FUND
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thank you for the information. Would the issue persist if I were to
-disable wireless power management?
+Hello Dear,
+Permit me to introduce myself.
+I am Mrs. Francios Kone, Telex director, Central Bank of Burkina Faso.
 
-On Tue, Nov 30, 2021 at 7:33 PM Pkshih <pkshih@realtek.com> wrote:
->
->
-> > -----Original Message-----
-> > From: Jeff Clay <jeffclay@gmail.com>
-> > Sent: Wednesday, December 1, 2021 3:16 AM
-> > To: linux-wireless@vger.kernel.org
-> > Subject: Latency spikes in rtw89
-> >
-> > Hi, I am using the rtw89 driver for Realtek 8852AE in my Lenovo T14
-> > AMD Gen2. I have obtained and installed this driver from source at
-> > https://github.com/lwfinger/rtw89/tree/main I am having an issue where
-> > the latency during a ping test to hosts on my LAN spikes to 200ms or
-> > above. According to lwfinger, this is known and acceptable
-> > https://github.com/lwfinger/rtw89/issues/85  However, I am hoping I
-> > may be able to work with you to resolve this issue as a tester.
->
-> We know this, and it is due to power saving; i.e. tradeoff between
-> latency and power saving. We are thinking how to improve it entirely.
->
-> --
-> Ping-Ke
->
+I was mandated to contact you in the respect to overdue payment
+reserved for you. Actually, during the October UN and AU bilateral
+meeting focused on joint efforts to eradicate scam in Africa, the
+security watchdog were set up and inaugurated in Addis Ababa, and
+following the huge amount of money approved by the UN/AU for the
+purpose of compensating some affected foreigners, it was decided that
+BANK OF AFRICA will be in charge of transmitting the fund into the
+account of the respective beneficiaries while the Central Bank of West
+Africa Burkina Faso will oversee the payment exercises.
+
+ The $2.6b offset by the UN is meant to repay and compensate the
+detected victims of scam and some foreign contractors who executed
+contracts in Africa and were not paid. In a nutshell, my department
+was appointed to oversee the payment exercise. Having seen that your
+email was among the emails in the list of the categories of people
+selected to benefit $5.8 Million each as compensation, you are advised
+to quickly send the below details to enable us set up your payment
+files and forward the said files to the Bank of Africa remittance
+department for immediate transfer of your compensation benefits.
+Full name=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6.
+Address=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6
+Country=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6..
+Occupation=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6
+Age=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6.
+Phone number=E2=80=A6=E2=80=A6.
+
+Francios Kone,
+(CBB Telex Director),
+BCEAO
+Registered number: 1026167,
