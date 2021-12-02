@@ -2,73 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 248D2465D60
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 05:24:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5AC9465D9A
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 05:50:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355312AbhLBE1V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 23:27:21 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:52535 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344930AbhLBE1T (ORCPT
+        id S1345062AbhLBExw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 23:53:52 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:39462 "EHLO
+        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345177AbhLBExj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 23:27:19 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1B24NqQqA016832, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1B24NqQqA016832
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 2 Dec 2021 12:23:52 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Thu, 2 Dec 2021 12:23:52 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Thu, 2 Dec 2021 12:23:51 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::f915:ec6f:35f1:6b04]) by
- RTEXMBS04.realtek.com.tw ([fe80::f915:ec6f:35f1:6b04%5]) with mapi id
- 15.01.2308.015; Thu, 2 Dec 2021 12:23:51 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     James <bjlockie@lockie.ca>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: RE: Realtek naming
-Thread-Topic: Realtek naming
-Thread-Index: AQHX5ymL3Dg/8mHUakey1FE/UAjqJKwehqzA//+LZICAAIfW8A==
-Date:   Thu, 2 Dec 2021 04:23:51 +0000
-Message-ID: <df720ee8b8354501ac40483a93fedc10@realtek.com>
-References: <789b4af2-9853-031b-72e2-962174620116@lockie.ca>
- <3b1b8fd6e21c43f3ad7ce9d455db00a0@realtek.com>
- <acc80379-4e2b-4bf4-a5ae-728081d53bfb@lockie.ca>
-In-Reply-To: <acc80379-4e2b-4bf4-a5ae-728081d53bfb@lockie.ca>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzIg5LiK5Y2IIDAzOjEwOjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Wed, 1 Dec 2021 23:53:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
+        h=from:subject:mime-version:to:cc:content-transfer-encoding:
+        content-type;
+        s=sgd; bh=V+rt97Ma1A4UbCvm3uO5ua9m0ulcAqxqdZw+J3rZCwI=;
+        b=Lx8UIrjFU4IGIZkzFgTI7JUosgizwYqwCIPY/nVYepOMj5dLL1LoPgnqbOiejr78zR6k
+        xhg9ICeX6CEWjSDYHIp2ms5Gc4hCTdCrbQJwsn+8GBoC4L7lfbUuz8OVvW2RpKeGjZl+dJ
+        YqkiHGSzzLLy8nIRwUGp/2zuFnNEVndy5iacyXJhM6Y/IZmJ/Yx5+3WZ+cvfSOkspQSHLL
+        spvX0BcvNfrzC0QEY12kHNSApG+JMVZuPjtXmZB50o1din512B9i8Ld2O2WhsaUM6QBzmi
+        u9AHxjivNs0okSgFWBcDRcIo2kJ8VFo7bIFj3Bb9VE3T4OB+obCqgMWLkQ8n2sKA==
+Received: by filterdrecv-64fcb979b9-ds7qn with SMTP id filterdrecv-64fcb979b9-ds7qn-1-61A85080-1A
+        2021-12-02 04:50:09.051111042 +0000 UTC m=+6843203.979711569
+Received: from pearl.egauge.net (unknown)
+        by geopod-ismtpd-6-0 (SG)
+        with ESMTP
+        id Zn13KC9PRh2A2BycfNBQfA
+        Thu, 02 Dec 2021 04:50:08.802 +0000 (UTC)
+Received: by pearl.egauge.net (Postfix, from userid 1000)
+        id 777B9700280; Wed,  1 Dec 2021 21:50:06 -0700 (MST)
+From:   David Mosberger-Tang <davidm@egauge.net>
+Subject: [PATCH] wilc1000: Add id_table to spi_driver
+Date:   Thu, 02 Dec 2021 04:50:09 +0000 (UTC)
+Message-Id: <20211202045001.2901903-1-davidm@egauge.net>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvFUO26UYtrY3fq4tZ?=
+ =?us-ascii?Q?RSGLd0N8Ue0pAwWsK8z9wfwxmsh=2FJiH7coen+AR?=
+ =?us-ascii?Q?S72BgC5KehvSCik7mvkEZyg3FXMvooh0Hpeo00Z?=
+ =?us-ascii?Q?bzWRSpyJ5IrKnBNk253CD5XtYLaNm8efpb4mY87?=
+ =?us-ascii?Q?AEw9ReCx+VjpYL4mr1yhIkqohdhBm7+uF80tUH1?=
+ =?us-ascii?Q?dSstthVb+vO2P7mXah4TA=3D=3D?=
+To:     Ajay Singh <ajay.kathat@microchip.com>
+Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        David Mosberger-Tang <davidm@egauge.net>
+X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEphbWVzIDxiamxvY2tpZUBs
-b2NraWUuY2E+DQo+IFNlbnQ6IFRodXJzZGF5LCBEZWNlbWJlciAyLCAyMDIxIDEyOjE2IFBNDQo+
-IFRvOiBQa3NoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gQ2M6IGxpbnV4LXdpcmVsZXNzIDxs
-aW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc+DQo+IFN1YmplY3Q6IFJFOiBSZWFsdGVrIG5h
-bWluZw0KPiANCj4gLg0KPiA+IFRoZSA4ODUyQnggaXMgYW5vdGhlciAobmV4dCkgc2VyaWVzIG9m
-IDgwMi4xMUFYIGNoaXAgd2hvc2UgaGFyZHdhcmUgY2FwYWJpbGl0aWVzDQo+ID4gYXJlIGRpZmZl
-cmVudCBmcm9tIDg4NTJBeC4NCj4gV2lsbCB0aGUgcnR3ODkgZHJpdmVyIHN1cHBvcnQgdGhlIDg4
-NTJCeCs/DQoNCk5leHQgY2hpcCB0aGUgcnR3ODkgd2lsbCBzdXBwb3J0IGlzIDg4NTJDRSwgYW5k
-IDg4NTJCRSB3aWxsIGJlIHN1cHBvcnRlZCBhZnRlciB0aGF0Lg0KDQotLQ0KUGluZy1LZQ0KDQo=
+This eliminates warning message:
+
+	SPI driver WILC_SPI has no spi_device_id for microchip,wilc1000
+
+and makes device-tree autoloading work.
+
+Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
+---
+ drivers/net/wireless/microchip/wilc1000/spi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
+index 640850f989dd..6e7fd18c14e7 100644
+--- a/drivers/net/wireless/microchip/wilc1000/spi.c
++++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+@@ -203,11 +203,18 @@ static const struct of_device_id wilc_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, wilc_of_match);
+ 
++static const struct spi_device_id wilc_spi_id[] = {
++	{ "wilc1000", 0 },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(spi, wilc_spi_id);
++
+ static struct spi_driver wilc_spi_driver = {
+ 	.driver = {
+ 		.name = MODALIAS,
+ 		.of_match_table = wilc_of_match,
+ 	},
++	.id_table = wilc_spi_id,
+ 	.probe =  wilc_bus_probe,
+ 	.remove = wilc_bus_remove,
+ };
+-- 
+2.25.1
+
