@@ -2,73 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 208C64663EA
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 13:45:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6786D466479
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 14:26:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357899AbhLBMtB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Dec 2021 07:49:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347388AbhLBMtB (ORCPT
+        id S1346955AbhLBN3y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Dec 2021 08:29:54 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:50162 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1346690AbhLBN3x (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Dec 2021 07:49:01 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8C1FC06174A
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Dec 2021 04:45:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=UqVvLWu0sH5FAOODdodaDcVsuTJjWJskFGY7QVevO0w=; b=Zc4AvSTjx2GXMl3bYPyuLJQOl5
-        UwIVHNd2cTMNr+k+OX9YrkGTZ55tDr7B7Hh7zqqkNmn1EM3y0SZmF9zeuDA8QwuaJsqlu0qvZ5DiZ
-        RqtIEburckwSryNHYH7eE0j3XpDZf94H4l9G7dtHY+9SSG0d34B3FCx7EosNHEJ/L6Wc=;
-Received: from p54ae943f.dip0.t-ipconnect.de ([84.174.148.63] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1mslSy-00083i-Ty; Thu, 02 Dec 2021 13:45:37 +0100
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: [PATCH 5.16] mac80211: send ADDBA requests using the tid/queue of the aggregation session
-Date:   Thu,  2 Dec 2021 13:45:33 +0100
-Message-Id: <20211202124533.80388-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.30.1
+        Thu, 2 Dec 2021 08:29:53 -0500
+Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=kveik.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1msm6W-0015Ii-Qy; Thu, 02 Dec 2021 15:26:29 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     johannes@sipsolutions.net
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+Date:   Thu,  2 Dec 2021 15:26:25 +0200
+Message-Id: <iwlwifi.20211202152554.f519884c8784.I555fef8e67d93fff3d9a304886c4a9f8b322e591@changeid>
+X-Mailer: git-send-email 2.33.1
+In-Reply-To: <iwlwifi.20211129152938.d5fceeb7e166.I555fef8e67d93fff3d9a304886c4a9f8b322e591@changeid>
+References: <iwlwifi.20211129152938.d5fceeb7e166.I555fef8e67d93fff3d9a304886c4a9f8b322e591@changeid>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: [PATCH v2] mac80211: agg-tx: don't schedule_and_wake_txq() under sta->lock
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sending them out on a different queue can cause a race condition where a
-number of packets in the queue may be discarded by the receiver, because
-the ADDBA request is sent too early.
-This affects any driver with software A-MPDU setup which does not allocate
-packet seqno in hardware on tx, regardless of whether iTXQ is used or not.
-The only driver I've seen that explicitly deals with this issue internally
-is mwl8k.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+When we call ieee80211_agg_start_txq(), that will in turn call
+schedule_and_wake_txq(). Called from ieee80211_stop_tx_ba_cb()
+this is done under sta->lock, which leads to certain circular
+lock dependencies, as reported by Chris Murphy:
+https://lore.kernel.org/r/CAJCQCtSXJ5qA4bqSPY=oLRMbv-irihVvP7A2uGutEbXQVkoNaw@mail.gmail.com
+
+In general, ieee80211_agg_start_txq() is usually not called
+with sta->lock held, only in this one place. But it's always
+called with sta->ampdu_mlme.mtx held, and that's therefore
+clearly sufficient.
+
+Change ieee80211_stop_tx_ba_cb() to also call it without the
+sta->lock held, by factoring it out of ieee80211_remove_tid_tx()
+(which is only called in this one place).
+
+This breaks the locking chain and makes it less likely that
+we'll have similar locking chain problems in the future.
+
+Fixes: ba8c3d6f16a1 ("mac80211: add an intermediate software queue implementation")
+Reported-by: Chris Murphy <lists@colorremedies.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- net/mac80211/agg-tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+
+In v2:
+    * Added fixes tag.
+
+net/mac80211/agg-tx.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
-index c1558dd2d244..58761ca7da3c 100644
+index 430a58587538..4dd56daed89b 100644
 --- a/net/mac80211/agg-tx.c
 +++ b/net/mac80211/agg-tx.c
-@@ -106,7 +106,7 @@ static void ieee80211_send_addba_request(struct ieee80211_sub_if_data *sdata,
- 	mgmt->u.action.u.addba_req.start_seq_num =
- 					cpu_to_le16(start_seq_num << 4);
+@@ -9,7 +9,7 @@
+  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
+  * Copyright 2007-2010, Intel Corporation
+  * Copyright(c) 2015-2017 Intel Deutschland GmbH
+- * Copyright (C) 2018 - 2020 Intel Corporation
++ * Copyright (C) 2018 - 2021 Intel Corporation
+  */
  
--	ieee80211_tx_skb(sdata, skb);
-+	ieee80211_tx_skb_tid(sdata, skb, tid);
+ #include <linux/ieee80211.h>
+@@ -213,6 +213,8 @@ ieee80211_agg_start_txq(struct sta_info *sta, int tid, bool enable)
+ 	struct ieee80211_txq *txq = sta->sta.txq[tid];
+ 	struct txq_info *txqi;
+ 
++	lockdep_assert_held(&sta->ampdu_mlme.mtx);
++
+ 	if (!txq)
+ 		return;
+ 
+@@ -290,7 +292,6 @@ static void ieee80211_remove_tid_tx(struct sta_info *sta, int tid)
+ 	ieee80211_assign_tid_tx(sta, tid, NULL);
+ 
+ 	ieee80211_agg_splice_finish(sta->sdata, tid);
+-	ieee80211_agg_start_txq(sta, tid, false);
+ 
+ 	kfree_rcu(tid_tx, rcu_head);
  }
+@@ -889,6 +890,7 @@ void ieee80211_stop_tx_ba_cb(struct sta_info *sta, int tid,
+ {
+ 	struct ieee80211_sub_if_data *sdata = sta->sdata;
+ 	bool send_delba = false;
++	bool start_txq = false;
  
- void ieee80211_send_bar(struct ieee80211_vif *vif, u8 *ra, u16 tid, u16 ssn)
+ 	ht_dbg(sdata, "Stopping Tx BA session for %pM tid %d\n",
+ 	       sta->sta.addr, tid);
+@@ -906,10 +908,14 @@ void ieee80211_stop_tx_ba_cb(struct sta_info *sta, int tid,
+ 		send_delba = true;
+ 
+ 	ieee80211_remove_tid_tx(sta, tid);
++	start_txq = true;
+ 
+  unlock_sta:
+ 	spin_unlock_bh(&sta->lock);
+ 
++	if (start_txq)
++		ieee80211_agg_start_txq(sta, tid, false);
++
+ 	if (send_delba)
+ 		ieee80211_send_delba(sdata, sta->sta.addr, tid,
+ 			WLAN_BACK_INITIATOR, WLAN_REASON_QSTA_NOT_USE);
 -- 
-2.30.1
+2.33.1
 
