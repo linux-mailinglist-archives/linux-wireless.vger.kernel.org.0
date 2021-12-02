@@ -2,98 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05AAE4658DD
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Dec 2021 23:05:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC1A465A88
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 01:16:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353254AbhLAWJQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 17:09:16 -0500
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:60857 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353549AbhLAWIl (ORCPT
+        id S1354059AbhLBATh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 19:19:37 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:38594 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354057AbhLBATg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 17:08:41 -0500
-Received: from pop-os.home ([86.243.171.122])
-        by smtp.orange.fr with ESMTPA
-        id sXj2ml4As65jHsXj3mTVw0; Wed, 01 Dec 2021 23:05:17 +0100
-X-ME-Helo: pop-os.home
-X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Wed, 01 Dec 2021 23:05:17 +0100
-X-ME-IP: 86.243.171.122
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     chunkeey@googlemail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] carl9170: Use the bitmap API when applicable
-Date:   Wed,  1 Dec 2021 23:05:15 +0100
-Message-Id: <1fe18fb73f71d855043c40c83865ad539f326478.1638396221.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.30.2
+        Wed, 1 Dec 2021 19:19:36 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1B20G4RZ0031585, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.139])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1B20G4RZ0031585
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Thu, 2 Dec 2021 08:16:04 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36503.realtek.com.tw (172.21.6.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Thu, 2 Dec 2021 08:16:03 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.15; Wed, 1 Dec 2021 19:16:03 -0500
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e095:6756:b2cf:3baa]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e095:6756:b2cf:3baa%5]) with mapi id
+ 15.01.2308.015; Thu, 2 Dec 2021 08:16:03 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Jeff Clay <jeffclay@gmail.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: Latency spikes in rtw89
+Thread-Topic: Latency spikes in rtw89
+Thread-Index: AQHX5h7gz1lunSxdRkC17cf5rz61Cqwc15RAgABbKgCAAC+oAIAA9LOQ
+Date:   Thu, 2 Dec 2021 00:16:03 +0000
+Message-ID: <9214bf22984642549219cd1810dca88f@realtek.com>
+References: <CACJOGMP0k1AH9Coz2DjZjkeoxPGjSyP60MYMSHrMN-hSJrrvTQ@mail.gmail.com>
+ <74887ec8f49846f5ae8b40b4c213d2da@realtek.com>
+ <CACJOGMOBaQ+vc37dnpS8JYEnE4v4bufSkw+_Or5FEzkTiKXfBQ@mail.gmail.com>
+ <5dc56416-7564-6a11-d477-9841b27a7123@lwfinger.net>
+In-Reply-To: <5dc56416-7564-6a11-d477-9841b27a7123@lwfinger.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzEg5LiL5Y2IIDEwOjU1OjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use 'bitmap_zalloc()' to simplify code, improve the semantic and avoid some
-open-coded arithmetic in allocator arguments.
-
-Note, that this 'bitmap_zalloc()' divides by BITS_PER_LONG the amount of
-memory allocated.
-The 'roundup()' used to computed the number of needed long should have
-been a DIV_ROUND_UP.
-
-
-Also change the corresponding 'kfree()' into 'bitmap_free()' to keep
-consistency.
-
-Use 'bitmap_zero()' to avoid hand writing it.
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-All uses of 'mem_bitmap' in 'carl9170/debug.c', 'carl9170/main.c' and
-'carl9170/tx.c' are consistent with a 'ar->fw.mem_blocks' bits long bitmap.
-
-So the smaller memory allocation of this patch looks correct to me.
-... but review with care :)
----
- drivers/net/wireless/ath/carl9170/main.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/carl9170/main.c b/drivers/net/wireless/ath/carl9170/main.c
-index cca3b086aa70..49f7ee1c912b 100644
---- a/drivers/net/wireless/ath/carl9170/main.c
-+++ b/drivers/net/wireless/ath/carl9170/main.c
-@@ -307,8 +307,7 @@ static void carl9170_zap_queues(struct ar9170 *ar)
- 	for (i = 0; i < ar->hw->queues; i++)
- 		ar->tx_stats[i].limit = CARL9170_NUM_TX_LIMIT_HARD;
- 
--	for (i = 0; i < DIV_ROUND_UP(ar->fw.mem_blocks, BITS_PER_LONG); i++)
--		ar->mem_bitmap[i] = 0;
-+	bitmap_zero(ar->mem_bitmap, ar->fw.mem_blocks);
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(cvif, &ar->vif_list, list) {
-@@ -1968,9 +1967,7 @@ int carl9170_register(struct ar9170 *ar)
- 	if (WARN_ON(ar->mem_bitmap))
- 		return -EINVAL;
- 
--	ar->mem_bitmap = kcalloc(roundup(ar->fw.mem_blocks, BITS_PER_LONG),
--				 sizeof(unsigned long),
--				 GFP_KERNEL);
-+	ar->mem_bitmap = bitmap_zalloc(ar->fw.mem_blocks, GFP_KERNEL);
- 
- 	if (!ar->mem_bitmap)
- 		return -ENOMEM;
-@@ -2085,7 +2082,7 @@ void carl9170_free(struct ar9170 *ar)
- 	kfree_skb(ar->rx_failover);
- 	ar->rx_failover = NULL;
- 
--	kfree(ar->mem_bitmap);
-+	bitmap_free(ar->mem_bitmap);
- 	ar->mem_bitmap = NULL;
- 
- 	kfree(ar->survey);
--- 
-2.30.2
-
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IExhcnJ5IEZpbmdlciA8bGFy
+cnkuZmluZ2VyQGdtYWlsLmNvbT4gT24gQmVoYWxmIE9mIExhcnJ5IEZpbmdlcg0KPiBTZW50OiBU
+aHVyc2RheSwgRGVjZW1iZXIgMiwgMjAyMSAxOjM5IEFNDQo+IFRvOiBKZWZmIENsYXkgPGplZmZj
+bGF5QGdtYWlsLmNvbT47IFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiBDYzogbGludXgt
+d2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBMYXRlbmN5IHNwaWtlcyBp
+biBydHc4OQ0KPiANCj4gT24gMTIvMS8yMSAwODo0OCwgSmVmZiBDbGF5IHdyb3RlOg0KPiA+IFRo
+YW5rIHlvdSBmb3IgdGhlIGluZm9ybWF0aW9uLiBXb3VsZCB0aGUgaXNzdWUgcGVyc2lzdCBpZiBJ
+IHdlcmUgdG8NCj4gPiBkaXNhYmxlIHdpcmVsZXNzIHBvd2VyIG1hbmFnZW1lbnQ/DQo+IA0KPiBU
+aGF0IGlzIGFuIGVhc3kgZXhwZXJpbWVudCB0byB0cnkuIFVzZSB0aGUgImRpc2FibGVfcHNfbW9k
+ZT15JyBtb2R1bGUgb3B0aW9uIGZvcg0KPiBydHc4OWNvcmUuDQo+IA0KDQpBbm90aGVyIHdheSBp
+cyB0byB1c2UgJ2l3IHdsYW4wIHNldCBwb3dlcl9zYXZlIG9mZicuDQoNCi0tDQpQaW5nLUtlDQoN
+Cg==
