@@ -2,65 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4905D465C6E
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 04:06:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2770E465C87
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 04:10:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344639AbhLBDJU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 22:09:20 -0500
-Received: from titan58.planetwebservers.net ([51.79.1.102]:49327 "EHLO
-        titan58.planetwebservers.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344481AbhLBDJS (ORCPT
+        id S1355038AbhLBDOS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 22:14:18 -0500
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:23292 "EHLO
+        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1355069AbhLBDOP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 22:09:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lockie.ca;
-        s=default; h=Content-Transfer-Encoding:Content-Type:Subject:From:To:
-        MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Q7wGYK872XSPFp5pDmZCAu0chhoaN72qBFHhZqgzW2M=; b=YSj1LnmQKhfJe9ar9gFrrILfI0
-        liSGKV1IEfMzgAhtRBXRF/cjyh745CLQyXo4S3Bx7ZaWYXdo1dyVIxrSzPDgTjmo8RzOjxAc6yL1s
-        4nSAI5zBwbVh8Qlv/hYAhQlyjkmE2CG3xI0kiyGLXMM3A7wZLJZlb2V7KwzGR5VR7yl0DwMifEG9S
-        2WSVG1k6KK9m9XibaxLjAamuU0cxeK//UTtkWaTdGfUCKZoNo4Ot3ftg/l0VwP75u+LO/uOuMRLer
-        BdabKI/dJN5I0447rPT6mhlWXCz7CqonjCTmYiG4qb/hHuir7yCszsu49oiSkUm76BCCL0yoLQWZ6
-        +j/LGAcA==;
-Received: from [98.124.54.9] (port=35028 helo=[192.168.68.65])
-        by titan.planetwebservers.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <bjlockie@lockie.ca>)
-        id 1mscQ1-00014c-2x
-        for linux-wireless@vger.kernel.org; Thu, 02 Dec 2021 14:05:55 +1100
-Message-ID: <789b4af2-9853-031b-72e2-962174620116@lockie.ca>
-Date:   Wed, 1 Dec 2021 22:05:54 -0500
+        Wed, 1 Dec 2021 22:14:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1638414654; x=1669950654;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=YEDLJoTCAsBp+M3JgQD45uLv2yfCKVYia8n2l6RpX/0=;
+  b=zLh0/QDYMZleSg501JOUqOllifRlb3+SiDpb3171DllO5pSpUQhez3DJ
+   AxLiz7iAm0iMmvdHvDFb0MyUVfKUSG5MQQEceEShO7azeVqArgKO8p+iO
+   YNAv+46KjZWz7kblmAdIeiYTVq5NKDTrlgfPVlO7TtcgSHFHkMGXrGYOY
+   Y=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 01 Dec 2021 19:10:52 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2021 19:10:52 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Wed, 1 Dec 2021 19:10:52 -0800
+Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Wed, 1 Dec 2021
+ 19:10:50 -0800
+Message-ID: <c3769eeb-accd-2e31-78e4-d792e491b727@quicinc.com>
+Date:   Thu, 2 Dec 2021 11:10:47 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v3] ath11k: add wait operation for tx management packets
+ for flush from mac80211
 Content-Language: en-US
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-From:   James <bjlockie@lockie.ca>
-Subject: Realtek naming
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20211126064934.26490-1-quic_wgong@quicinc.com>
+ <163836730490.316.5064011158500804861.kvalo@kernel.org>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <163836730490.316.5064011158500804861.kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - titan.planetwebservers.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lockie.ca
-X-Get-Message-Sender-Via: titan.planetwebservers.net: authenticated_id: bjlockie@lockie.ca
-X-Authenticated-Sender: titan.planetwebservers.net: bjlockie@lockie.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-From-Rewrite: unmodified, already matched
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-https://wikidevi.wi-cat.ru/Realtek
+On 12/1/2021 10:01 PM, Kalle Valo wrote:
+> Wen Gong <quic_wgong@quicinc.com> wrote:
+>
+>> ...
+> Fails to apply:
+>
+> error: patch failed: drivers/net/wireless/ath/ath11k/mac.c:5224
+> error: drivers/net/wireless/ath/ath11k/mac.c: patch does not apply
+> stg import: Diff does not apply cleanly
+>
+> Patch set to Changes Requested.
 
-Besides the RTL8832AU (USB) being USB, what is the difference from the 
-RTL8852AE (PCI)?
+The conflict is caused by below commit which commit on 2021-11-29, my v3 
+patch is sent on 2021-11-26.
 
-How is the RTL8852AU (USB) different than the 8832AU?
+I will rebase it.
 
-Do the 8852BE and 8852BU fix bugs in the 8852Ax?
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/drivers/net/wireless/ath/ath11k/mac.c?id=a93789ae541c7d5c1c2a4942013adb6bcc5e2848
+
+ath11k: Avoid NULL ptr access during mgmt tx cleanupath
+
