@@ -2,91 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1A07465C63
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 04:03:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4905D465C6E
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 04:06:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229957AbhLBDHB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Dec 2021 22:07:01 -0500
-Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132]:39114 "EHLO
-        out30-132.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1355118AbhLBDEv (ORCPT
+        id S1344639AbhLBDJU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Dec 2021 22:09:20 -0500
+Received: from titan58.planetwebservers.net ([51.79.1.102]:49327 "EHLO
+        titan58.planetwebservers.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1344481AbhLBDJS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Dec 2021 22:04:51 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0Uz76wRn_1638414085;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0Uz76wRn_1638414085)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Thu, 02 Dec 2021 11:01:27 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     davem@davemloft.net
-Cc:     kuba@kernel.org, amitkarwar@gmail.com, ganapathi017@gmail.com,
-        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
-        kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Yang Li <yang.lee@linux.alibaba.com>
-Subject: [PATCH -next] wireless: Clean up some inconsistent indenting
-Date:   Thu,  2 Dec 2021 11:01:16 +0800
-Message-Id: <1638414076-53227-1-git-send-email-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        Wed, 1 Dec 2021 22:09:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lockie.ca;
+        s=default; h=Content-Transfer-Encoding:Content-Type:Subject:From:To:
+        MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Q7wGYK872XSPFp5pDmZCAu0chhoaN72qBFHhZqgzW2M=; b=YSj1LnmQKhfJe9ar9gFrrILfI0
+        liSGKV1IEfMzgAhtRBXRF/cjyh745CLQyXo4S3Bx7ZaWYXdo1dyVIxrSzPDgTjmo8RzOjxAc6yL1s
+        4nSAI5zBwbVh8Qlv/hYAhQlyjkmE2CG3xI0kiyGLXMM3A7wZLJZlb2V7KwzGR5VR7yl0DwMifEG9S
+        2WSVG1k6KK9m9XibaxLjAamuU0cxeK//UTtkWaTdGfUCKZoNo4Ot3ftg/l0VwP75u+LO/uOuMRLer
+        BdabKI/dJN5I0447rPT6mhlWXCz7CqonjCTmYiG4qb/hHuir7yCszsu49oiSkUm76BCCL0yoLQWZ6
+        +j/LGAcA==;
+Received: from [98.124.54.9] (port=35028 helo=[192.168.68.65])
+        by titan.planetwebservers.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <bjlockie@lockie.ca>)
+        id 1mscQ1-00014c-2x
+        for linux-wireless@vger.kernel.org; Thu, 02 Dec 2021 14:05:55 +1100
+Message-ID: <789b4af2-9853-031b-72e2-962174620116@lockie.ca>
+Date:   Wed, 1 Dec 2021 22:05:54 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.1
+Content-Language: en-US
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+From:   James <bjlockie@lockie.ca>
+Subject: Realtek naming
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - titan.planetwebservers.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lockie.ca
+X-Get-Message-Sender-Via: titan.planetwebservers.net: authenticated_id: bjlockie@lockie.ca
+X-Authenticated-Sender: titan.planetwebservers.net: bjlockie@lockie.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-From-Rewrite: unmodified, already matched
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Eliminate the follow smatch warnings:
+https://wikidevi.wi-cat.ru/Realtek
 
-drivers/net/wireless/marvell/mwifiex/pcie.c:3376
-mwifiex_unregister_dev() warn: inconsistent indenting
-drivers/net/wireless/marvell/mwifiex/uap_event.c:285
-mwifiex_process_uap_event() warn: inconsistent indenting
-drivers/net/wireless/marvell/mwifiex/sta_event.c:797
-mwifiex_process_sta_event() warn: inconsistent indenting
+Besides the RTL8832AU (USB) being USB, what is the difference from the 
+RTL8852AE (PCI)?
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- drivers/net/wireless/marvell/mwifiex/pcie.c      | 2 +-
- drivers/net/wireless/marvell/mwifiex/sta_event.c | 2 +-
- drivers/net/wireless/marvell/mwifiex/uap_event.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+How is the RTL8852AU (USB) different than the 8832AU?
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-index d5fb294..43bdcbc 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-@@ -3373,7 +3373,7 @@ static void mwifiex_unregister_dev(struct mwifiex_adapter *adapter)
- 	} else {
- 		mwifiex_dbg(adapter, INFO,
- 			    "%s(): calling free_irq()\n", __func__);
--	       free_irq(card->dev->irq, &card->share_irq_ctx);
-+		free_irq(card->dev->irq, &card->share_irq_ctx);
- 
- 		if (card->msi_enable)
- 			pci_disable_msi(pdev);
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_event.c b/drivers/net/wireless/marvell/mwifiex/sta_event.c
-index 80e5d44..9a3fbfb 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_event.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_event.c
-@@ -794,7 +794,7 @@ int mwifiex_process_sta_event(struct mwifiex_private *priv)
- 					 MWIFIEX_TxPD_POWER_MGMT_LAST_PACKET))
- 						adapter->ps_state =
- 							PS_STATE_SLEEP;
--					return 0;
-+				return 0;
- 			}
- 		}
- 		adapter->ps_state = PS_STATE_AWAKE;
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_event.c b/drivers/net/wireless/marvell/mwifiex/uap_event.c
-index 2e25d72..e31de7a 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_event.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_event.c
-@@ -282,7 +282,7 @@ int mwifiex_process_uap_event(struct mwifiex_private *priv)
- 					 MWIFIEX_TxPD_POWER_MGMT_LAST_PACKET))
- 						adapter->ps_state =
- 							PS_STATE_SLEEP;
--					return 0;
-+				return 0;
- 			}
- 		}
- 		adapter->ps_state = PS_STATE_AWAKE;
--- 
-1.8.3.1
-
+Do the 8852BE and 8852BU fix bugs in the 8852Ax?
