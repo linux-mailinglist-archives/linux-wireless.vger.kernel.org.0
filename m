@@ -2,68 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E59E466A8A
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 20:36:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E497B466B0A
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 21:44:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242525AbhLBTj1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Dec 2021 14:39:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50762 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229793AbhLBTj0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Dec 2021 14:39:26 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E180C06174A
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Dec 2021 11:36:04 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A0D8362782
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Dec 2021 19:36:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37520C00446;
-        Thu,  2 Dec 2021 19:36:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638473763;
-        bh=YGZ+XD91BKvj+H6n4PEhbm/jDp6JoOiuUIe09XP5XQY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ppZRFieaORCKpAq5zbqmfuYOlg9gGB1XL0hlWIFGTxXk2yr7YI0HX6wdvf6VWJdRg
-         0HbjHDYUECdCQ6svJ18WDrGdNiPakqawUD2HX8bXRTp1+uEZldZlaJcztd41RUQ4/q
-         X4zTtDSFUwLVLJkCuA+ri+9FvlEJrVfovcVIWwfgJsYxQcdetbBvKYPnSluEw4FXl/
-         +VTZ0wAzvkCm17VpJWXL2o24AI9DBXUNoqQImWS6GA66A7a1/DsUWSJu5zmXIC1DMa
-         i4ilBQDfGvIFpJj5Km3R2sspNIVHSczGwJd4AE5g0D4up25ywwT/fxDYsI+7z+ACjB
-         DPqyKHSL5lizQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] mt76: mt7663: disable 4addr capability
-Date:   Thu,  2 Dec 2021 20:35:57 +0100
-Message-Id: <009c6c2bc8436f38de85e125cdd7157f1b21a2cf.1638473687.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.31.1
+        id S1348976AbhLBUsK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Dec 2021 15:48:10 -0500
+Received: from mga18.intel.com ([134.134.136.126]:38920 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1348949AbhLBUsI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 2 Dec 2021 15:48:08 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10185"; a="223698848"
+X-IronPort-AV: E=Sophos;i="5.87,282,1631602800"; 
+   d="scan'208";a="223698848"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2021 12:44:45 -0800
+X-IronPort-AV: E=Sophos;i="5.87,282,1631602800"; 
+   d="scan'208";a="541371774"
+Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.209.114.198]) ([10.209.114.198])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2021 12:44:44 -0800
+Message-ID: <46938937-0c73-6249-45f8-b0f65bfaf971@linux.intel.com>
+Date:   Thu, 2 Dec 2021 12:44:31 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: [PATCH v2 09/14] net: wwan: t7xx: Add WWAN network interface
+Content-Language: en-US
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        chandrashekar.devegowda@intel.com,
+        Intel Corporation <linuxwwan@intel.com>,
+        chiranjeevi.rapolu@linux.intel.com, haijun.liu@mediatek.com,
+        amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
+        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
+        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
+        suresh.nagaraj@intel.com
+References: <20211101035635.26999-1-ricardo.martinez@linux.intel.com>
+ <20211101035635.26999-10-ricardo.martinez@linux.intel.com>
+ <CAHNKnsTAj8OHzoyK3SHhA_yXJrqc38bYmY6pYZf9fwUemcK7iQ@mail.gmail.com>
+ <5755abe9-7b3c-0361-4eea-e0c125811eae@linux.intel.com>
+ <CAHNKnsTARNNeiCBtDxmiMx2gUkKDb-V3e+xtfgsc-imeWv0CLA@mail.gmail.com>
+From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
+In-Reply-To: <CAHNKnsTARNNeiCBtDxmiMx2gUkKDb-V3e+xtfgsc-imeWv0CLA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-4addr is not supported by the driver/firmware yet
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7615/init.c | 1 +
- 1 file changed, 1 insertion(+)
+Hi Sergey,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 47f23ac905a3..52182ab6d240 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -378,6 +378,7 @@ mt7615_init_wiphy(struct ieee80211_hw *hw)
- 	if (is_mt7663(&phy->dev->mt76)) {
- 		wiphy->iface_combinations = if_comb;
- 		wiphy->n_iface_combinations = ARRAY_SIZE(if_comb);
-+		wiphy->flags &= ~WIPHY_FLAG_4ADDR_STATION;
- 	} else {
- 		wiphy->iface_combinations = if_comb_radar;
- 		wiphy->n_iface_combinations = ARRAY_SIZE(if_comb_radar);
--- 
-2.31.1
+On 12/1/2021 1:09 PM, Sergey Ryazanov wrote:
+> On Wed, Dec 1, 2021 at 9:06 AM Martinez, Ricardo
+> <ricardo.martinez@linux.intel.com> wrote:
+>> On 11/6/2021 11:08 AM, Sergey Ryazanov wrote:
+>>> On Mon, Nov 1, 2021 at 6:57 AM Ricardo Martinez wrote:
+>>>> +#define IPV4_VERSION           0x40
+>>>> +#define IPV6_VERSION           0x60
+>>> Just curious why the _VERSION suffix? Why not, for example, PKT_TYPE_ prefix?
+>> Nothing special about _VERSION, but it does look a bit weird, will use
+>> PKT_TYPE_  as suggested
+> I checked the driver code again and found that these constants are
+> really used to distinguish between IPv4 and IPv6 packets by checking
+> the first byte of the data packet (IP header version field).
+>
+> Now I am wondering, does the modem firmware report a packet type in
+> one of the BAT or PIT headers? If the modem is already reporting a
+> packet type, then it is better to use the provided information instead
+> of touching the packet data. Otherwise, if the modem does not
+> explicitly report a packet type, and you have to check the version
+> field of the IP header, then it seems Ok to keep the names of these
+> constants as they are (with the _VERSION suffix).
+
+Actually, there is a bit in the PIT header for the packet type, I'll 
+make the driver
+
+use it instead of looking at the data packet.
 
