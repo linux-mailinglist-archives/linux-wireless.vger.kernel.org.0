@@ -2,130 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F56846603C
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 10:18:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0DB346612F
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 11:08:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353491AbhLBJWD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Dec 2021 04:22:03 -0500
-Received: from m140-81.mailgun.net ([159.135.140.81]:24292 "EHLO
-        m140-81.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241170AbhLBJWD (ORCPT
+        id S1346231AbhLBKLu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Dec 2021 05:11:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60936 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346149AbhLBKLt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Dec 2021 04:22:03 -0500
-X-Greylist: delayed 302 seconds by postgrey-1.27 at vger.kernel.org; Thu, 02 Dec 2021 04:22:02 EST
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=hewittfamily.org.uk;
- q=dns/txt; s=s1; t=1638436720; h=To: References: Message-Id:
- Content-Transfer-Encoding: Cc: Date: In-Reply-To: From: Subject:
- Mime-Version: Content-Type: Sender;
- bh=2vOVk68Ph++JwLUuZn4K2WTAKDYQG6OoLbjPJyPmMwo=; b=gFXnUdjykXoOMFWYhkJ+2hDuzuNRsGUCLdmqdDITmja05GagyFbb0FhAvyiIvdZTyoTsLj6F
- AYXnC0araNTHnCErnWSvt/YPQ7FHohwCvr4Va5jzUtzezaEIFOKy5Ng1Rqy037Rp4wQKYUm9
- 3t/Sf8yn890pTvMfiic1qaCGQYKDrYx343gR4ahx9rS6SANRxloWtSXKpYTGKOjswd4mQilh
- WC4+7zS0bz7s8PCU+oyXd0RJQchO9lU4XecNPBfA5OcfCcWfWlP4NP5IIKTffr2r7jemNFjl
- aAtiJrLfweO4SFI3LYrl8FycsqABXF5ecQi2kSPu2Qg0NUgsmSxUyQ==
-X-Mailgun-Sending-Ip: 159.135.140.81
-X-Mailgun-Sid: WyJkZGUwZCIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiZTM3MjAiXQ==
-Received: from mail.hewittfamily.org.uk (<unknown> [87.200.95.144]) by
- smtp-out-n04.prod.eu-central-1.postgun.com with SMTP id
- 61a88e40ce333ed70fe662cf (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 02 Dec 2021 09:13:36
- GMT
-Sender: andrew@hewittfamily.org.uk
-Received: from [172.16.20.20] (unknown [87.200.95.144])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.hewittfamily.org.uk (Postfix) with ESMTPSA id 588F565FF5C;
-        Thu,  2 Dec 2021 13:13:34 +0400 (+04)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.7\))
-Subject: Re: [PATCH v3] ath10k: Fix the MTU size on QCA9377 SDIO
-From:   Christian Hewitt <andrew@hewittfamily.org.uk>
-In-Reply-To: <87sfvcl7t0.fsf@codeaurora.org>
-Date:   Thu, 2 Dec 2021 13:13:33 +0400
-Cc:     Fabio Estevam <festevam@denx.de>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <DFDFA699-65BD-47AC-852D-09ABF44567BD@hewittfamily.org.uk>
-References: <20211124131047.713756-1-festevam@denx.de>
- <87sfvcl7t0.fsf@codeaurora.org>
-To:     Kalle Valo <kvalo@kernel.org>
-X-Mailer: Apple Mail (2.3608.120.23.2.7)
-X-Synology-Spam-Status: score=0.399, required 5, MID_RHS_MATCH_FROM 0, FROM_HAS_DN 0, TO_DN_SOME 0, MV_CASE 0.5, TO_MATCH_ENVRCPT_ALL 0, MIME_GOOD -0.1, __THREADED 0, RCPT_COUNT_FIVE 0, RCVD_COUNT_ZERO 0, FROM_EQ_ENVFROM 0, MIME_TRACE 0, __NOT_SPOOFED 0, __BODY_URI_ONLY 0, __HDRS_LCASE_KNOWN 0, NO_RECEIVED -0.001
-X-Synology-Spam-Flag: no
-X-Synology-Virus-Status: no
+        Thu, 2 Dec 2021 05:11:49 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B412EC06174A
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Dec 2021 02:08:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+        Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=m93bZXnn0ptcKyOblSvacBdPrGTPrIFdEuo/yL258tw=; b=X8pAOI1vI2MbkjRmspqSnAgp7x
+        XwjG7ZUFnRTqXSNyyRx022hX14l4ino/5nXN/5+V661zgi6QNl8N4goAS4Pccy0lkarp2cR/0irEf
+        3dTW1kZ6OK8zzYT6uwJW4Y+SYjcglqjV67GCTLnO6xT/AYh8D1vNYqrFQSsdL3zfHJXU=;
+Received: from p54ae943f.dip0.t-ipconnect.de ([84.174.148.63] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1msj0n-0002sV-BI; Thu, 02 Dec 2021 11:08:21 +0100
+Message-ID: <4e21b944-398a-8960-08fd-a515f58af1cb@nbd.name>
+Date:   Thu, 2 Dec 2021 11:08:19 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+Subject: Re: [PATCH] mt76: fix 802.3 RX fail by hdr_trans
+Content-Language: en-US
+From:   Felix Fietkau <nbd@nbd.name>
+To:     Deren Wu <Deren.Wu@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+References: <0b88b34cc5103e247c134901f9c39614128eb599.1638424783.git.deren.wu@mediatek.com>
+ <4994484d-a053-a870-65e6-6461979ef74f@nbd.name>
+In-Reply-To: <4994484d-a053-a870-65e6-6461979ef74f@nbd.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-> On 1 Dec 2021, at 6:27 pm, Kalle Valo <kvalo@kernel.org> wrote:
->=20
-> Fabio Estevam <festevam@denx.de> writes:
->=20
->> On an imx6dl-pico-pi board with a QCA9377 SDIO chip, simply trying to
->> connect via ssh to another machine causes:
->>=20
->> [   55.824159] ath10k_sdio mmc1:0001:1: failed to transmit packet, =
-dropping: -12
->> [   55.832169] ath10k_sdio mmc1:0001:1: failed to submit frame: -12
->> [   55.838529] ath10k_sdio mmc1:0001:1: failed to push frame: -12
->> [   55.905863] ath10k_sdio mmc1:0001:1: failed to transmit packet, =
-dropping: -12
->> [   55.913650] ath10k_sdio mmc1:0001:1: failed to submit frame: -12
->> [   55.919887] ath10k_sdio mmc1:0001:1: failed to push frame: -12
->>=20
->> , leading to an ssh connection failure.
->>=20
->> One user inspected the size of frames on Wireshark and reported
->> the followig:
->>=20
->> "I was able to narrow the issue down to the mtu. If I set the mtu for
->> the wlan0 device to 1486 instead of 1500, the issue does not happen.
->>=20
->> The size of frames that I see on Wireshark is exactly 1500 after
->> setting it to 1486."
->>=20
->> Clearing the HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE avoids the problem and
->> the ssh command works successfully after that.
->>=20
->> Introduce a 'credit_size_workaround' field to ath10k_hw_params for
->> the QCA9377 SDIO, so that the HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE
->> is not set in this case.
->>=20
->> Tested with QCA9377 SDIO with firmware =
-WLAN.TF.1.1.1-00061-QCATFSWPZ-1.
->>=20
->> Fixes: 2f918ea98606 ("ath10k: enable alt data of TX path for sdio")
->> Signed-off-by: Fabio Estevam <festevam@denx.de>
+On 2021-12-02 09:37, Felix Fietkau wrote:
+> 
+> On 2021-12-02 08:40, Deren Wu wrote:
+>> From: Deren Wu <deren.wu@mediatek.com>
+>> 
+>> Should not run hdr_trans process for 802.3 packets,
+>> this would cause all data frame RX fail.
+>> 
+>> Fixes: d9930ec65b9f ("mt76: only set rx radiotap flag from within decoder functions")
+>> Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+>> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 >> ---
->> Changes since v2:
->> - Set the credit_size_workaround field as true for QCA9377 SDIO.
->>=20
->> drivers/net/wireless/ath/ath10k/core.c | 4 +++-
->> drivers/net/wireless/ath/ath10k/hw.h   | 3 +++
->> 2 files changed, 6 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/drivers/net/wireless/ath/ath10k/core.c =
-b/drivers/net/wireless/ath/ath10k/core.c
->> index 72a366aa9f60..8a325ae97b0e 100644
->> --- a/drivers/net/wireless/ath/ath10k/core.c
->> +++ b/drivers/net/wireless/ath/ath10k/core.c
->> @@ -571,6 +571,7 @@ static const struct ath10k_hw_params =
-ath10k_hw_params_list[] =3D {
->> 		.ast_skid_limit =3D 0x10,
->> 		.num_wds_entries =3D 0x20,
->> 		.uart_pin_workaround =3D true,
->> +		.credit_size_workaround =3D true,
->=20
-> I prefer to have also the false cases for every hardware so in the
-> pending branch I added those:
->=20
-> =
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=3D=
-pending&id=3Dafbf52bffb36bc25e7a1e81e1f975bb75696d3c8
+>>   drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 2 +-
+>>   drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 3 +--
+>>   2 files changed, 2 insertions(+), 3 deletions(-)
+>> 
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+>> index 6c14cb1cfd5a..5757284b24a5 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+>> @@ -794,7 +794,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb)
+>>   		status->flag |= RX_FLAG_8023;
+>>   	}
+>>   
+>> -	if (rxv && mode >= MT_PHY_TYPE_HE_SU)
+>> +	if (rxv && mode >= MT_PHY_TYPE_HE_SU && !(status->flag & RX_FLAG_8023))
+>>   		mt7915_mac_decode_he_radiotap(skb, rxv, mode);
+>>   
+>>   	if (!status->wcid || !ieee80211_is_data_qos(fc))
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>> index e17c8f4c9747..eaffe665cb28 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+>> @@ -780,7 +780,6 @@ mt7921_mac_fill_rx(struct mt7921_dev *dev, struct sk_buff *skb)
+>>   			mt76_insert_ccmp_hdr(skb, key_id);
+>>   		}
+>>   
+>> -		hdr = mt76_skb_get_hdr(skb);
+> This line is not safe to remove, since mt76_insert_ccmp_hdr moves the
+> header. However, there is a redundant call to mt76_skb_get_hdr above
+> this part, which you can remove. Please do that in a separate patch
+> though, since it has nothing to do with the rest of the changes.
+I folded this patch into the commit that it fixes (excluding the
+mt76_skb_get_hdr bit).
 
-^ for the patch in the pending branch, tested with an Amlogic S905D
-TV box with QCA9377 SDIO module:
-
-Tested-by: Christian Hewitt <christianshewitt@gmail.com>
-
+- Felix
