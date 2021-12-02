@@ -2,106 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E3FC466BF8
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 23:13:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00870466D1E
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Dec 2021 23:42:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232335AbhLBWRC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Dec 2021 17:17:02 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:40106 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232152AbhLBWRB (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Dec 2021 17:17:01 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 5A1B2CE2430
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Dec 2021 22:13:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A01C53FCC;
-        Thu,  2 Dec 2021 22:13:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638483215;
-        bh=A3raQgcb+4L8AD7EbGTwN4lEFvWI8rGV3Y+jJbN62ZU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IQ00CU7BoXkCTj19d0qfpwmwcaqBCHzBdPJrXMN3AE5QCtuD4zdM29JlicRbkLFPb
-         3CzkXGlLAZ5R/RsFUIKRxH+nMll7Vjg0aGm+jzTWS0rNDMcXBqm7canP1SNugNgB9H
-         uuN7BR8paFJ/9B7X/I+d/SQqCu8T7jeTE15tRBiizFxmRwfceWbskvlJ7aDxpi+pfB
-         1MeCMV+qpfkRri9bA65ewI+7tggP8nxeaaERJ09VHeLbKDrRtxa4AGhwE/pHFmPld1
-         4JlYP2gf5eZcf9iIZRTGo6gW6xrACPgWK8mzBaO+a3/9EraH6XHHhF0o4JDUb29Qse
-         v9YNIAL8YYPqA==
-Date:   Thu, 2 Dec 2021 23:13:31 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jan Fuchs <jf@simonwunderlich.de>
-Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Subject: Re: mt76: MT7921K monitor mode not working
-Message-ID: <YalFC7UlCPsCSZqE@lore-desk>
-References: <7e156597-a206-b236-e4c8-d476614de7ef@simonwunderlich.de>
+        id S1377452AbhLBWqJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Dec 2021 17:46:09 -0500
+Received: from mga04.intel.com ([192.55.52.120]:51276 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1377333AbhLBWqJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 2 Dec 2021 17:46:09 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10186"; a="235595164"
+X-IronPort-AV: E=Sophos;i="5.87,283,1631602800"; 
+   d="scan'208";a="235595164"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2021 14:42:45 -0800
+X-IronPort-AV: E=Sophos;i="5.87,283,1631602800"; 
+   d="scan'208";a="541405470"
+Received: from rmarti10-mobl2.amr.corp.intel.com (HELO [10.209.114.198]) ([10.209.114.198])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2021 14:42:44 -0800
+Message-ID: <7ed54978-5a64-f932-e1dc-dd8b47b67d63@linux.intel.com>
+Date:   Thu, 2 Dec 2021 14:42:44 -0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="MoRz4FRtRneXt4LG"
-Content-Disposition: inline
-In-Reply-To: <7e156597-a206-b236-e4c8-d476614de7ef@simonwunderlich.de>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: [PATCH v2 03/14] net: wwan: t7xx: Add core components
+Content-Language: en-US
+To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        chandrashekar.devegowda@intel.com,
+        Intel Corporation <linuxwwan@intel.com>,
+        chiranjeevi.rapolu@linux.intel.com, haijun.liu@mediatek.com,
+        amir.hanania@intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        dinesh.sharma@intel.com, eliot.lee@intel.com,
+        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
+        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
+        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
+        suresh.nagaraj@intel.com
+References: <20211101035635.26999-1-ricardo.martinez@linux.intel.com>
+ <20211101035635.26999-4-ricardo.martinez@linux.intel.com>
+ <CAHNKnsTd0-AwXwmPmXy_oKjYJA5vGDHo7VJbn5NqTngmhSpmfw@mail.gmail.com>
+From:   "Martinez, Ricardo" <ricardo.martinez@linux.intel.com>
+In-Reply-To: <CAHNKnsTd0-AwXwmPmXy_oKjYJA5vGDHo7VJbn5NqTngmhSpmfw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---MoRz4FRtRneXt4LG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 11/6/2021 11:05 AM, Sergey Ryazanov wrote:
+> On Mon, Nov 1, 2021 at 6:57 AM Ricardo Martinez
+> <ricardo.martinez@linux.intel.com> wrote:
+>> Registers the t7xx device driver with the kernel. Setup all the core
+>> components: PCIe layer, Modem Host Cross Core Interface (MHCCIF),
+>> modem control operations, modem state machine, and build
+>> infrastructure.
+>>
+>> * PCIe layer code implements driver probe and removal.
+>> * MHCCIF provides interrupt channels to communicate events
+>>    such as handshake, PM and port enumeration.
+>> * Modem control implements the entry point for modem init,
+>>    reset and exit.
+>> * The modem status monitor is a state machine used by modem control
+>>    to complete initialization and stop. It is used also to propagate
+>>    exception events reported by other components.
+> [skipped]
+>
+>>   drivers/net/wwan/t7xx/t7xx_monitor.h       | 144 +++++
+>> ...
+>>   drivers/net/wwan/t7xx/t7xx_state_monitor.c | 598 +++++++++++++++++++++
+> Out of curiosity, why is this file called t7xx_state_monitor.c, while
+> the corresponding header file is called simply t7xx_monitor.h? Are any
+> other monitors planed?
+>
+> [skipped]
 
-> Hi,
+No other monitors, I'll rename it to make it consistent.
 
-Hi Jan,
+[skipped]
 
->=20
-> we are not able to obtain any packets when packet capturing with the
-> Mediatek MT7921K in monitor mode on 2.4, 5 and 6 GHz.
-> tcpdump will show you 0 recorded packets. When doing a "iw dev wls1 scan"=
- on
-> a parallel running managed interface on the same phy, the packet capture
-> will contain beacons and probe responses from the scan though.
-> Can anyone confirm that?
->=20
-> mt76 (https://github.com/openwrt/mt76/commits/master): commit
-> 6fad970893dd26ef6e6c8344b958344254f6362a (HEAD -> master, origin/master,
-> origin/HEAD)
-> Kernel: 5.16.0-rc2-next-20211124+
-> WM Firmware Version: ____010000, Build Time: 20211014150922
+>
+>> diff --git a/drivers/net/wwan/t7xx/t7xx_skb_util.c b/drivers/net/wwan/t7xx/t7xx_skb_util.c
+>> ...
+>> +static struct sk_buff *alloc_skb_from_pool(struct skb_pools *pools, size_t size)
+>> +{
+>> +       if (size > MTK_SKB_4K)
+>> +               return ccci_skb_dequeue(pools->reload_work_queue, &pools->skb_pool_64k);
+>> +       else if (size > MTK_SKB_16)
+>> +               return ccci_skb_dequeue(pools->reload_work_queue, &pools->skb_pool_4k);
+>> +       else if (size > 0)
+>> +               return ccci_skb_dequeue(pools->reload_work_queue, &pools->skb_pool_16);
+>> +
+>> +       return NULL;
+>> +}
+>> +
+>> +static struct sk_buff *alloc_skb_from_kernel(size_t size, gfp_t gfp_mask)
+>> +{
+>> +       if (size > MTK_SKB_4K)
+>> +               return __dev_alloc_skb(MTK_SKB_64K, gfp_mask);
+>> +       else if (size > MTK_SKB_1_5K)
+>> +               return __dev_alloc_skb(MTK_SKB_4K, gfp_mask);
+>> +       else if (size > MTK_SKB_16)
+>> +               return __dev_alloc_skb(MTK_SKB_1_5K, gfp_mask);
+>> +       else if (size > 0)
+>> +               return __dev_alloc_skb(MTK_SKB_16, gfp_mask);
+>> +
+>> +       return NULL;
+>> +}
+> I am wondering what performance gains have you achieved with these skb
+> pools? Can we see any numbers?
+>
+> I do not think the control path performance is worth the complexity of
+> the multilayer skb allocation. In the data packet Rx path, you need to
+> allocate skb anyway as soon as the driver passes them to the stack. So
+> what is the gain?
+>
+> [skipped]
 
-IIRC you need to disable runtime-pm and deep-sleep to proper enable monitor
-mode:
+Agree, we are removing the skb pools for the control path.
 
-echo 0 > /sys/kernel/debug/ieee80211/phy<x>/mt76/runtime-pm
-echo 0 > /sys/kernel/debug/ieee80211/phy<x>/mt76/deep-sleep
+Regarding Rx data path, we'll get some numbers to see if the pool is 
+worth it,
 
-Can you please give it whirl?
+otherwise remove it too.
 
-Regards,
-Lorenzo
+[skipped]
 
->=20
-> Steps to reproduce:
-> sudo iw dev wls1 del
-> sudo iw phy phy0 interface add mon0 type monitor
-> sudo ip link set dev mon0 up
-> sudo iw dev mon0 set freq 6115
-> sudo tcpdump -i mon0 -w 6g-capture.pcap
->=20
-> Kinds regards, Jan
->=20
 
---MoRz4FRtRneXt4LG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYalFCwAKCRA6cBh0uS2t
-rA9fAQCjuXbjvrk8usgB2jb4Xufp0ODoUjWxtaFKIaacNVV8hwEAo1cq+5rXGfHy
-t2QTactR7cLbUSQIL1/MmaqsKzqCIAI=
-=Gtqe
------END PGP SIGNATURE-----
-
---MoRz4FRtRneXt4LG--
