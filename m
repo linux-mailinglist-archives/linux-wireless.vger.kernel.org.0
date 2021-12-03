@@ -2,82 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DDF246731A
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Dec 2021 09:08:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8C0467349
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Dec 2021 09:32:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379121AbhLCIMA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Dec 2021 03:12:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50546 "EHLO
+        id S1379212AbhLCIfe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Dec 2021 03:35:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351103AbhLCIMA (ORCPT
+        with ESMTP id S1379208AbhLCIfd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Dec 2021 03:12:00 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7091AC06173E
-        for <linux-wireless@vger.kernel.org>; Fri,  3 Dec 2021 00:08:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=Bd+CBI+rwfqV6PWnqG4nfx1zEIIehYAYXfIYAzAyHoE=;
-        t=1638518916; x=1639728516; b=terBg66k4pEtfM/4lJWQbhvrGJRZSuFROuMIOU3yWE/wybn
-        43ZIWIzOFjgUY2beP6EoEDcvB2DS0Npv2zQOSp+m1MRktgVnCKBjIxtODF5oRD/gdlke8rwy6YmFy
-        J7k+1aOxv8A1j9gsjl2ewwwpVVZzMK3Mda4WzhRM7QaGAYox5Ek8Xa9THwX6GSumS4WPG3tZ+i6yu
-        e770/dgR6TYmXSv1mMgzy4PWTEJKog2yUk9LIbPnTbj3nzfuOFS/cl2rEsX33jdkoigt/UHpx89PL
-        QvDG1Wcykg1nmtChgLEiWYomtsnKK9HdlroLJgi9Vi1AvZ0fqwxtbdS30KGfOGkg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mt3cP-006Gg1-Tf;
-        Fri, 03 Dec 2021 09:08:34 +0100
-Message-ID: <3a4fc4398a5dfe03933de8d695a8b605d700a94b.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: disable BSS color collision detection in case
- of no free colors
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Lavanya Suresh <lavaks@codeaurora.org>
-Date:   Fri, 03 Dec 2021 09:08:32 +0100
-In-Reply-To: <1638506507-21139-1-git-send-email-quic_ramess@quicinc.com>
-References: <1638506507-21139-1-git-send-email-quic_ramess@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
+        Fri, 3 Dec 2021 03:35:33 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AF51C06174A
+        for <linux-wireless@vger.kernel.org>; Fri,  3 Dec 2021 00:32:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ikqmK0qvVk8WlbaMK7Xubih/crf4hNNMYHxH+qucySs=; b=jAqA5mfPGcBqQ8B7tnCvpFjEQ8
+        WAkrs7Wjnxut9TJCvTo5jqIfA3csrDbVmkDxBdPMZDMHX/GRbe3x0DjIV6qzon3mEZ0KIwVzjcaur
+        eCgFtfgwfNzU/CeF7JKBXvQnrdsvg2jtrAKs3rwHcJjphJ2hTjoDO2lIjDiz8tlNP+C8=;
+Received: from p54ae943f.dip0.t-ipconnect.de ([84.174.148.63] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1mt3zE-0006BV-6B; Fri, 03 Dec 2021 09:32:08 +0100
+Message-ID: <59de5a7b-8933-03c7-7ce5-fe58279c7457@nbd.name>
+Date:   Fri, 3 Dec 2021 09:32:04 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+Subject: Re: [PATCH] mt76: mt7663: disable 4addr capability
+Content-Language: en-US
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+References: <009c6c2bc8436f38de85e125cdd7157f1b21a2cf.1638473687.git.lorenzo@kernel.org>
+From:   Felix Fietkau <nbd@nbd.name>
+In-Reply-To: <009c6c2bc8436f38de85e125cdd7157f1b21a2cf.1638473687.git.lorenzo@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2021-12-03 at 10:11 +0530, Rameshkumar Sundaram wrote:
+
+On 2021-12-02 20:35, Lorenzo Bianconi wrote:
+> 4addr is not supported by the driver/firmware yet
 > 
-> +++ b/net/mac80211/cfg.c
-> @@ -995,6 +995,8 @@ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
->  	struct beacon_data *new, *old;
->  	int new_head_len, new_tail_len;
->  	int size, err;
-> +	const u8 *cap;
-> +	struct ieee80211_he_operation *he_oper = NULL;
->  	u32 changed = BSS_CHANGED_BEACON;
->  
->  	old = sdata_dereference(sdata->u.ap.beacon, sdata);
-> @@ -1082,6 +1084,27 @@ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
->  		changed |= BSS_CHANGED_FTM_RESPONDER;
->  	}
->  
-> +	if (sdata->vif.bss_conf.he_support) {
-> +		cap = cfg80211_find_ext_ie(WLAN_EID_EXT_HE_OPERATION,
-> +					   params->tail, params->tail_len);
-> +		if (cap && cap[1] >= sizeof(*he_oper) + 1)
-> +			he_oper = (void *)(cap + 3);
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt7615/init.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> index 47f23ac905a3..52182ab6d240 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> @@ -378,6 +378,7 @@ mt7615_init_wiphy(struct ieee80211_hw *hw)
+>   	if (is_mt7663(&phy->dev->mt76)) {
+>   		wiphy->iface_combinations = if_comb;
+>   		wiphy->n_iface_combinations = ARRAY_SIZE(if_comb);
+> +		wiphy->flags &= ~WIPHY_FLAG_4ADDR_STATION;
+Shouldn't this be done for the offload firmware only?
 
-I'm not sure I like this mechanism - in ieee80211_start_ap() we
-explicitly take it from the parameters given via nl80211, so it feels
-the same should be true here. Why isn't it done that way?
-
-(And if we decide it should be this way then you should be using a new
-"const struct element *cap" instead of "const u8 *cap", with the better
-helpers functions etc.)
-
-johannes
+- Felix
