@@ -2,100 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA7FD467DB9
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Dec 2021 20:02:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6B9F4680D6
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Dec 2021 00:45:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243231AbhLCTGM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Dec 2021 14:06:12 -0500
-Received: from gimli.kloenk.dev ([195.39.247.182]:59166 "EHLO gimli.kloenk.dev"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238521AbhLCTGM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Dec 2021 14:06:12 -0500
-Content-Type: text/plain;
-        charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-        t=1638558160; bh=PJHqZmjT3PnRyKxLBEa+PZQKrzNlbhOqvNAuE9mhDOs=;
-        h=Subject:From:In-Reply-To:Date:Cc:References:To;
-        b=sOLaR4R9vIPwFEJjSjtLPLGE25SIm7tqOMgaCmB5kmfT2OQ1gWqqgwEsrHjMmq8+1
-         bXt9cR2IsJW2958D4HkPWNhazRQF+TZlQ+fByCzP0QSC7oUjGGHfJzW5PJQVfC3hFM
-         /UnHs9ApwCgX1ACoQED5yqWoZ4cHHnC+uuTVp4dk=
-Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.20.0.1.32\))
-Subject: Re: [PATCH] nl80211: use correct enum type in reg_reload_regdb
-From:   Finn Behrens <me@kloenk.dev>
-In-Reply-To: <20211203185700.756121-1-arnd@kernel.org>
-Date:   Fri, 3 Dec 2021 20:02:38 +0100
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Ilan Peer <ilan.peer@intel.com>,
-        Bhaskar Chowdhury <unixbhaskar@gmail.com>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Sriram R <srirrama@codeaurora.org>,
-        Qiheng Lin <linqiheng@huawei.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E95BFD18-CB51-4CA5-A6A8-370444F9E714@kloenk.dev>
-References: <20211203185700.756121-1-arnd@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
+        id S1344828AbhLCXsq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Dec 2021 18:48:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38660 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230023AbhLCXsp (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 3 Dec 2021 18:48:45 -0500
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E49A9C061751
+        for <linux-wireless@vger.kernel.org>; Fri,  3 Dec 2021 15:45:19 -0800 (PST)
+Received: by mail-il1-x144.google.com with SMTP id w4so4279301ilv.12
+        for <linux-wireless@vger.kernel.org>; Fri, 03 Dec 2021 15:45:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=t+k1vMicazZQGgJua3VBr5ex8kbXiYjORBm2hnGSMD4=;
+        b=S775dntnCufItxCoGc41iZDNYd/W93RtOrn3BSPQDYn87EJYgxuJI79toDB1oh5MuR
+         mNMh50eK/qxcIT4Qi6efTRH74V2z1NM0yJ0tEdvTCkIZpIT+06llLfg+e0avtsXpGt4m
+         Dc4gmErtA9K3CB0UElMFykX0kjsbobhuOXpfAiUbAcJY1hiw3lidotuYRxDoNbWGFrB9
+         +5Ysq1uecjmm4vT17iKx4UUCB5jbHvLpwVgHtANmakNAycJ+iTAq32s2LYpR37y/cemJ
+         SQW3GfLXnD/d+vDbKPjT+wRCUXFERvQAb7dsGT10TJ1pFbKmquloyrTURkP4HRDcoBwB
+         DEOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=t+k1vMicazZQGgJua3VBr5ex8kbXiYjORBm2hnGSMD4=;
+        b=xAbIHkvFlySTfRfspfjkLVr/w1G0U65YZzj1gOZEn+bfK9Gzp09dej3x6Tm7IjRySD
+         uTYTfPGkfkvYO1U/khb7HXV0wNpp3Jkd1waijn0mV2aSY794wYuh6Bjfirroj/E45nY8
+         mA/+KfCriaqOhw9sg6sak+Jufee+GH2DCIWM8VF7V+48cEbLg9EQmR7t7X5FdUCvf105
+         mc1TFSXsDeuRobc0Bf7hlGPhpuNAkdfFJGgPYCIy8yZfdLUE3idtrKF/6YMDKUEmzwjH
+         lkqctLaOROIpzf9qL5EU8fI3w2z2FBmeR33PEcnfnUmijzOAEKf3MshAv4LdVJix3C+T
+         EJjQ==
+X-Gm-Message-State: AOAM533/d9dlwFpCQZyDeTt/OJ4D6q9llG/+ny7IJyEH3BRSlbKzx9dB
+        SkfKzdq7LhdoDQRtdmjjjgo3JqQ4A7J8o77gGoc=
+X-Google-Smtp-Source: ABdhPJyLycjo4DXOIhG75SjiRkAtHSDrmGqIkoMflVmwI4RvyB7QG2Wj7boOmjIgNTraWr6g3aK10qZHO7OkfIEj7U8=
+X-Received: by 2002:a05:6e02:18ca:: with SMTP id s10mr21456525ilu.166.1638575119019;
+ Fri, 03 Dec 2021 15:45:19 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a05:6e04:228f:0:0:0:0 with HTTP; Fri, 3 Dec 2021 15:45:18
+ -0800 (PST)
+Reply-To: lindajonathan993@gmail.com
+From:   Miss Linda <fankjonson1o1o1@gmail.com>
+Date:   Fri, 3 Dec 2021 23:45:18 +0000
+Message-ID: <CABb-7_H8U4LOxcGnk2SfiY7NzeFo=aG4VKw9EP5njbW7Yc2mvg@mail.gmail.com>
+Subject: Hi my love
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hey dear
 
+Nice to meet you, Am Miss Linda I found your email here in google
+search and I picked
+interest to contact you. I've something very important which I would like
+to discuss with you and I would appreciate if you respond back to me
+through my email address as to tell you more
 
-> On 3. Dec 2021, at 19:56, Arnd Bergmann <arnd@kernel.org> wrote:
->=20
-> From: Arnd Bergmann <arnd@arndb.de>
->=20
-> NL80211_USER_REG_HINT_USER is not something that can be
-> assigned to an 'enum nl80211_reg_initiator', as pointed out
-> by gcc.
->=20
-> net/wireless/reg.c: In function 'reg_reload_regdb':
-> net/wireless/reg.c:1137:28: error: implicit conversion from 'enum =
-nl80211_user_reg_hint_type' to 'enum nl80211_reg_initiator' =
-[-Werror=3Denum-conversion]
->=20
-> I don't know what was intended here, most likely it was either
-> NL80211_REGDOM_SET_BY_CORE (same numeric value) or
-> NL80211_REGDOM_SET_BY_USER (most similar name), so I pick the former
-> here, leaving the behavior unchanged while avoiding the warning.
->=20
-> Fixes: 1eda919126b4 ("nl80211: reset regdom when reloading regdb")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
+about me with my
+photos, my private email as fellows??   lindajonathan993@gmail.com
 
-Thanks,
-I did miss it somehow, but after Intels robot mail about it, I did write =
-a proper patch, as this is a different value as I wanted for the =
-original proposed patch. But It works better this way.
-See =
-https://lore.kernel.org/linux-wireless/YadvTolO8rQcNCd%2F@gimli.kloenk.dev=
-/
-
-Cheers,
-Finn
-
-> net/wireless/reg.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-> index 61f1bf1bc4a7..edb2081f75e8 100644
-> --- a/net/wireless/reg.c
-> +++ b/net/wireless/reg.c
-> @@ -1134,7 +1134,7 @@ int reg_reload_regdb(void)
-> 	request->wiphy_idx =3D WIPHY_IDX_INVALID;
-> 	request->alpha2[0] =3D current_regdomain->alpha2[0];
-> 	request->alpha2[1] =3D current_regdomain->alpha2[1];
-> -	request->initiator =3D NL80211_USER_REG_HINT_USER;
-> +	request->initiator =3D NL80211_REGDOM_SET_BY_CORE;
-> 	request->user_reg_hint_type =3D NL80211_USER_REG_HINT_USER;
-> 	request->reload =3D true;
->=20
-> --=20
-> 2.29.2
->=20
-
+From, Linda
