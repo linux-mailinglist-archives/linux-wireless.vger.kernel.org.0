@@ -2,122 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E82A2466DFD
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Dec 2021 00:47:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69788466EB1
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Dec 2021 01:47:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377603AbhLBXup (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Dec 2021 18:50:45 -0500
-Received: from mail-io1-f71.google.com ([209.85.166.71]:43853 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232981AbhLBXup (ORCPT
+        id S1350202AbhLCAuV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Dec 2021 19:50:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36078 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238220AbhLCAuU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Dec 2021 18:50:45 -0500
-Received: by mail-io1-f71.google.com with SMTP id j13-20020a0566022ccd00b005e9684c80c6so909204iow.10
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Dec 2021 15:47:22 -0800 (PST)
+        Thu, 2 Dec 2021 19:50:20 -0500
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CF46C06174A;
+        Thu,  2 Dec 2021 16:46:57 -0800 (PST)
+Received: by mail-oi1-x231.google.com with SMTP id r26so2616031oiw.5;
+        Thu, 02 Dec 2021 16:46:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=F9YxeZiJ+WKn4fcYHsHDT9P9am1xvNy0JY5/QKITgX4=;
+        b=e2ZLv2WBNhT3RK/eb+1EqoiBAjfYomOMDdjt++zFyOs+IUaGbZAxFnnCrKkwWbJf4R
+         wjxJCkJJZarsKXseA9yXtww72J5j8NS3eEmUS5viFfHC310pPuSHLum2KUJglhPDYBgJ
+         iTolOB3W+gcWMk0xqC7ebrDi23zKdhe5CEi4kI8ooayzah/+2MNWvMtIVQQknwaPH1ep
+         Jo3Z99WnGmzkAAlYe29qOFUMyQLuFFkhasN/Ej2tv8kJcKXJkrn1ZbOSPzhun3X0/RF5
+         JUVMV6I7jxGkF74CWEgqsVwJhYZYAfmvr8tf3uS/1b+YayFBv1Tw4qIGofGUVL0wl0sf
+         JS3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=ARLQXRQ3vGLI5tqgE5JCO+5Ssy6hqYcNjGBxU79YdC0=;
-        b=kLoQ4+FZO2n0OCHJPEoFQyrYH47ZCPMTcuJ2/DOzdwG6WBM5MAXAw/h4d0zRb3qw4+
-         64FY42U2bjtFAOZGMa3FtGeFn3m6CAHzDmNoQ36jVifTGoAp9aqehtMp3XvGU8Cgg93K
-         tCO0GY9PORfQDKjMmn3hjF/KxxijVkU9ZDD/JrubGyVc0DwUfR6M12Wm3Bt3g/M9MdLg
-         6qMy98NZliO7uyAHDLZxuHh06EivGcD+LjVHhOp2qaAfUXIn1QExunoN3nnNat2YMj/t
-         C2JUOR5p4A6zi1WZFP7gUUeGioTAsKoKIrYFTbB7f43BHhmRsybbRU2cmSA7XOCM2VSa
-         uKvQ==
-X-Gm-Message-State: AOAM532fQ/XkZ9kStirsNRVcWlk4kFk/MFbvbHGUKGRmo/cWk0wGxfS4
-        U6uXABLKzIvZKiCl5b2+JqIr65HD+7sspmwAnfQsvfk+vOnN
-X-Google-Smtp-Source: ABdhPJyfueGHO8wx+XsXa2i6YsfNSgD5OYIf+nn4DzEx4Vj1Ba2fFuSDCGZniCHXxs3xeE68mbs2NZqiQaPAdTj2y3+9XdQ+Eog7
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :subject:content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=F9YxeZiJ+WKn4fcYHsHDT9P9am1xvNy0JY5/QKITgX4=;
+        b=C26aZvpMj5QQZAJIL8U2LSbZw949Omo8CUpFwuMbwbFW2xYCKQGuqyn6Ljyof5eCbv
+         ZZohghTIuBMH5n6BTfPHH0wHujO/xqhWXcwTd+UnyB00xmN3GjuUXNuOtcu7jclQeAC0
+         KXpqbWgSHIaCYCIXUf0fjbdeDO499y05prhRuXdHaDN6z1R8f5e8GdZmTTbpuYLwb9Qe
+         E/4MQ+3fjbzMBkNp9RI9eyC2HNRgQYv0whFvPRlRvYmVoX9v73ds9OfViKtvatnoQhus
+         Lix/ZTLu2AazIckBLzMdomwZWJv9qPuje1dVDwiyfkhKi3Gr5b3/4W1uQClQQztnLSm+
+         XHKA==
+X-Gm-Message-State: AOAM5310RcxIJ4HihWY6CLpeCMqY8EQ6fM3MVItm+U4TPTJ41aU6zyey
+        JMA0vBNEOZoKh0sEcw3ZqQf7tl2JRTpusznh
+X-Google-Smtp-Source: ABdhPJzmgwanPP5Q+Rn2Uf546Q8FxlzzuoCxLFr83vlBmlTCxY1U7uDOwkWv1BhDxrQIBwo9NPWwVQ==
+X-Received: by 2002:aca:4307:: with SMTP id q7mr6968573oia.3.1638492416473;
+        Thu, 02 Dec 2021 16:46:56 -0800 (PST)
+Received: from [10.62.118.101] (cpe-24-31-246-181.kc.res.rr.com. [24.31.246.181])
+        by smtp.gmail.com with ESMTPSA id bd6sm473671oib.53.2021.12.02.16.46.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Dec 2021 16:46:55 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <0db18565-6309-06d3-474a-88b5410072b3@lwfinger.net>
+Date:   Thu, 2 Dec 2021 18:46:54 -0600
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:2c83:: with SMTP id i3mr18453619iow.54.1638488841849;
- Thu, 02 Dec 2021 15:47:21 -0800 (PST)
-Date:   Thu, 02 Dec 2021 15:47:21 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000630d8505d2326961@google.com>
-Subject: [syzbot] WARNING in rtl92cu_hw_init
-From:   syzbot <syzbot+cce1ee31614c171f5595@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, kuba@kernel.org, kvalo@codeaurora.org,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: [syzbot] WARNING in rtl92cu_hw_init
+Content-Language: en-US
+To:     syzbot <syzbot+cce1ee31614c171f5595@syzkaller.appspotmail.com>,
+        davem@davemloft.net, kuba@kernel.org, kvalo@codeaurora.org,
         linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         pkshih@realtek.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+References: <000000000000630d8505d2326961@google.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <000000000000630d8505d2326961@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On 12/2/21 17:47, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    c4bc515d73b5 usb: dwc2: gadget: use existing helper
+> git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+> console output: https://syzkaller.appspot.com/x/log.txt?x=12c7d311b00000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=1fa54650ce78e6dc
+> dashboard link: https://syzkaller.appspot.com/bug?extid=cce1ee31614c171f5595
+> compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+> 
+> Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+cce1ee31614c171f5595@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> raw_local_irq_restore() called with IRQs enabled
+> WARNING: CPU: 1 PID: 1206 at kernel/locking/irqflag-debug.c:10 warn_bogus_irq_restore+0x1d/0x20 kernel/locking/irqflag-debug.c:10
+> Modules linked in:
+> CPU: 1 PID: 1206 Comm: dhcpcd Not tainted 5.16.0-rc1-syzkaller #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+> RIP: 0010:warn_bogus_irq_restore+0x1d/0x20 kernel/locking/irqflag-debug.c:10
+> Code: d3 ff cc cc cc cc cc cc cc cc cc cc cc 80 3d e7 4e dc 02 00 74 01 c3 48 c7 c7 a0 85 27 86 c6 05 d6 4e dc 02 01 e8 fd 13 d3 ff <0f> 0b c3 44 8b 05 75 05 e7 02 55 53 65 48 8b 1c 25 80 6f 02 00 45
+> RSP: 0018:ffffc90000f0f6a8 EFLAGS: 00010286
+> RAX: 0000000000000000 RBX: 0000000000000200 RCX: 0000000000000000
+> RDX: ffff8881100f1c00 RSI: ffffffff812bae78 RDI: fffff520001e1ec7
+> RBP: 0000000000000200 R08: 0000000000000000 R09: 0000000000000001
+> R10: ffffffff812b4c4e R11: 0000000000000000 R12: ffff88814b2047c0
+> R13: 0000000000000000 R14: 0000000000000000 R15: 00000000ffffffff
+> FS:  00007f0d4252e740(0000) GS:ffff8881f6900000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007fd8c7ba7718 CR3: 0000000117bd2000 CR4: 00000000003506e0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> Call Trace:
+>   <TASK>
+>   rtl92cu_hw_init.cold+0x119f/0x34c5 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c:1003
 
-syzbot found the following issue on:
+I think I understand this warning:
 
-HEAD commit:    c4bc515d73b5 usb: dwc2: gadget: use existing helper
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=12c7d311b00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1fa54650ce78e6dc
-dashboard link: https://syzkaller.appspot.com/bug?extid=cce1ee31614c171f5595
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+The routine in question is the following comment and code:
 
-Unfortunately, I don't have any reproducer for this issue yet.
+         /* As this function can take a very long time (up to 350 ms)
+          * and can be called with irqs disabled, reenable the irqs
+          * to let the other devices continue being serviced.
+          *
+          * It is safe doing so since our own interrupts will only be enabled
+          * in a subsequent step.
+          */
+         local_save_flags(flags);
+         local_irq_enable();
+...
+exit:
+         local_irq_restore(flags);
+         return err;
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+cce1ee31614c171f5595@syzkaller.appspotmail.com
+It seems to me that this would lead to the "raw_local_irq_restore() called with 
+IRQs enabled" warning.
 
-------------[ cut here ]------------
-raw_local_irq_restore() called with IRQs enabled
-WARNING: CPU: 1 PID: 1206 at kernel/locking/irqflag-debug.c:10 warn_bogus_irq_restore+0x1d/0x20 kernel/locking/irqflag-debug.c:10
-Modules linked in:
-CPU: 1 PID: 1206 Comm: dhcpcd Not tainted 5.16.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:warn_bogus_irq_restore+0x1d/0x20 kernel/locking/irqflag-debug.c:10
-Code: d3 ff cc cc cc cc cc cc cc cc cc cc cc 80 3d e7 4e dc 02 00 74 01 c3 48 c7 c7 a0 85 27 86 c6 05 d6 4e dc 02 01 e8 fd 13 d3 ff <0f> 0b c3 44 8b 05 75 05 e7 02 55 53 65 48 8b 1c 25 80 6f 02 00 45
-RSP: 0018:ffffc90000f0f6a8 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 0000000000000200 RCX: 0000000000000000
-RDX: ffff8881100f1c00 RSI: ffffffff812bae78 RDI: fffff520001e1ec7
-RBP: 0000000000000200 R08: 0000000000000000 R09: 0000000000000001
-R10: ffffffff812b4c4e R11: 0000000000000000 R12: ffff88814b2047c0
-R13: 0000000000000000 R14: 0000000000000000 R15: 00000000ffffffff
-FS:  00007f0d4252e740(0000) GS:ffff8881f6900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fd8c7ba7718 CR3: 0000000117bd2000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- rtl92cu_hw_init.cold+0x119f/0x34c5 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c:1003
- rtl_usb_start+0xaf/0x740 drivers/net/wireless/realtek/rtlwifi/usb.c:743
- rtl_op_start+0x139/0x1b0 drivers/net/wireless/realtek/rtlwifi/core.c:140
- drv_start+0x168/0x440 net/mac80211/driver-ops.c:23
- ieee80211_do_open+0xae4/0x2430 net/mac80211/iface.c:1125
- ieee80211_open net/mac80211/iface.c:362 [inline]
- ieee80211_open+0x1a0/0x240 net/mac80211/iface.c:348
- __dev_open+0x2bc/0x4d0 net/core/dev.c:1490
- __dev_change_flags+0x583/0x750 net/core/dev.c:8793
- dev_change_flags+0x93/0x170 net/core/dev.c:8864
- devinet_ioctl+0x15d1/0x1ca0 net/ipv4/devinet.c:1144
- inet_ioctl+0x1e6/0x320 net/ipv4/af_inet.c:969
- sock_do_ioctl+0xcc/0x230 net/socket.c:1118
- sock_ioctl+0x2f1/0x640 net/socket.c:1235
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:874 [inline]
- __se_sys_ioctl fs/ioctl.c:860 [inline]
- __x64_sys_ioctl+0x193/0x200 fs/ioctl.c:860
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x44/0xae
-RIP: 0033:0x7f0d4261c0e7
-Code: 3c 1c e8 1c ff ff ff 85 c0 79 87 49 c7 c4 ff ff ff ff 5b 5d 4c 89 e0 41 5c c3 66 0f 1f 84 00 00 00 00 00 b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 61 9d 0c 00 f7 d8 64 89 01 48
-RSP: 002b:00007ffcb59c0a08 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f0d4252e6c8 RCX: 00007f0d4261c0e7
-RDX: 00007ffcb59d0bf8 RSI: 0000000000008914 RDI: 0000000000000005
-RBP: 00007ffcb59e0da8 R08: 00007ffcb59d0bb8 R09: 00007ffcb59d0b68
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffcb59d0bf8 R14: 0000000000000028 R15: 0000000000008914
- </TASK>
+A brute-force method would be to insert a "local_irq_disable()" call just before 
+the local_irq_restore() call. Would that work? Is there a more elegant solution?
 
+Thanks,
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Larry
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
