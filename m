@@ -2,112 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C062468459
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Dec 2021 12:10:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 293FD46845A
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Dec 2021 12:10:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353956AbhLDLOW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 Dec 2021 06:14:22 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:50360 "EHLO
+        id S1354131AbhLDLOX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 Dec 2021 06:14:23 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:50366 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1350310AbhLDLOV (ORCPT
+        with ESMTP id S1353891AbhLDLOW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 Dec 2021 06:14:21 -0500
+        Sat, 4 Dec 2021 06:14:22 -0500
 Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <luca@coelho.fi>)
-        id 1mtSwQ-0017RD-9C; Sat, 04 Dec 2021 13:10:55 +0200
+        id 1mtSwR-0017RD-EG; Sat, 04 Dec 2021 13:10:56 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Sat,  4 Dec 2021 13:10:41 +0200
-Message-Id: <20211204111053.852455-1-luca@coelho.fi>
+Date:   Sat,  4 Dec 2021 13:10:42 +0200
+Message-Id: <iwlwifi.20211204130722.483977310ca2.If7eba02594f20dabd22d758e1c917fbca54b2ddd@changeid>
 X-Mailer: git-send-email 2.33.1
+In-Reply-To: <20211204111053.852455-1-luca@coelho.fi>
+References: <20211204111053.852455-1-luca@coelho.fi>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 00/12] iwlwifi: updates intended for v5.16 2021-12-04 part 2
+Subject: [PATCH 01/12] iwlwifi: mvm: remove session protection upon station removal
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Hi,
+When the station is removed we need to remove the session protection
+that may be still running.
+Note that we need also to remove the session protection upon unassoc in
+case the station is kept in the AUTH state.
 
-Here's the second set of patches intended for v5.17.  It's the usual
-development, new features, cleanups and bugfixes.
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-The changes are:
-
-* Support some new FW API command versions;
-* Fix WGDS revision 3 reading bug;
-* Some firmware debugging improvements;
-* Fixes for in device configuration structures;
-* Improvements in the session protection code;
-* Some other small fixes, clean-ups and improvements.
-
-As usual, I'm pushing this to a pending branch, for kbuild bot, and
-will send a pull-request later.
-
-Please review.
-
-Cheers,
-Luca.
-
-
-Emmanuel Grumbach (1):
-  iwlwifi: mvm: remove session protection upon station removal
-
-Ilan Peer (2):
-  iwlwifi: mvm: Fix wrong documentation for scan request command
-  iwlwifi: mvm: Add support for a new version of scan request command
-
-Johannes Berg (1):
-  iwlwifi: mvm: add some missing command strings
-
-Luca Coelho (1):
-  iwlwifi: add missing entries for Gf4 with So and SoF
-
-Miri Korenblit (1):
-  iwlwifi: acpi: fix wgds rev 3 size
-
-Mordechay Goodstein (3):
-  iwlwifi: mvm: add support for statistics update version 15
-  iwlwifi: mvm: update rate scale in moving back to assoc state
-  iwlwifi: fw: add support for splitting region type bits
-
-Mukesh Sisodiya (1):
-  iwlwifi: yoyo: support for DBGC4 for dram
-
-Shaul Triebitz (1):
-  iwlwifi: mvm: avoid clearing a just saved session protection id
-
-Yaara Baruch (1):
-  iwlwifi: swap 1650i and 1650s killer struct names
-
- .../net/wireless/intel/iwlwifi/cfg/22000.c    |   8 +-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |   2 +-
- .../wireless/intel/iwlwifi/fw/api/commands.h  |   3 +-
- .../wireless/intel/iwlwifi/fw/api/dbg-tlv.h   |  10 +-
- .../net/wireless/intel/iwlwifi/fw/api/scan.h  |  48 ++--
- .../net/wireless/intel/iwlwifi/fw/api/stats.h |  92 +++++-
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |  14 +-
- .../wireless/intel/iwlwifi/fw/error-dump.h    |  18 ++
- .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  |  10 +-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  11 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   2 +
- .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    |   8 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 261 +++++++++++++-----
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c |  51 ++--
- .../wireless/intel/iwlwifi/mvm/time-event.c   |  12 +-
- .../net/wireless/intel/iwlwifi/mvm/utils.c    |  51 +++-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  10 +
- 17 files changed, 477 insertions(+), 134 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 9d84be991469..cb8104503091 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3405,16 +3405,16 @@ static int iwl_mvm_mac_sta_state(struct ieee80211_hw *hw,
+ 		if (vif->type == NL80211_IFTYPE_AP) {
+ 			mvmvif->ap_assoc_sta_count--;
+ 			iwl_mvm_mac_ctxt_changed(mvm, vif, false, NULL);
+-		} else if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls) {
+-			/* remove session protection if still running */
++		} else if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
+ 			iwl_mvm_stop_session_protection(mvm, vif);
+-		}
+ 		ret = 0;
+ 	} else if (old_state == IEEE80211_STA_AUTH &&
+ 		   new_state == IEEE80211_STA_NONE) {
+ 		ret = 0;
+ 	} else if (old_state == IEEE80211_STA_NONE &&
+ 		   new_state == IEEE80211_STA_NOTEXIST) {
++		if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
++			iwl_mvm_stop_session_protection(mvm, vif);
+ 		ret = iwl_mvm_rm_sta(mvm, vif, sta);
+ 		if (sta->tdls) {
+ 			iwl_mvm_recalc_tdls_state(mvm, vif, false);
 -- 
 2.33.1
 
