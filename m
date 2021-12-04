@@ -2,70 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6B9F4680D6
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Dec 2021 00:45:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 670A046819D
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Dec 2021 01:57:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344828AbhLCXsq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Dec 2021 18:48:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38660 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230023AbhLCXsp (ORCPT
+        id S1383940AbhLDBBR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Dec 2021 20:01:17 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:53308 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1383932AbhLDBBP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Dec 2021 18:48:45 -0500
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E49A9C061751
-        for <linux-wireless@vger.kernel.org>; Fri,  3 Dec 2021 15:45:19 -0800 (PST)
-Received: by mail-il1-x144.google.com with SMTP id w4so4279301ilv.12
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Dec 2021 15:45:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=t+k1vMicazZQGgJua3VBr5ex8kbXiYjORBm2hnGSMD4=;
-        b=S775dntnCufItxCoGc41iZDNYd/W93RtOrn3BSPQDYn87EJYgxuJI79toDB1oh5MuR
-         mNMh50eK/qxcIT4Qi6efTRH74V2z1NM0yJ0tEdvTCkIZpIT+06llLfg+e0avtsXpGt4m
-         Dc4gmErtA9K3CB0UElMFykX0kjsbobhuOXpfAiUbAcJY1hiw3lidotuYRxDoNbWGFrB9
-         +5Ysq1uecjmm4vT17iKx4UUCB5jbHvLpwVgHtANmakNAycJ+iTAq32s2LYpR37y/cemJ
-         SQW3GfLXnD/d+vDbKPjT+wRCUXFERvQAb7dsGT10TJ1pFbKmquloyrTURkP4HRDcoBwB
-         DEOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=t+k1vMicazZQGgJua3VBr5ex8kbXiYjORBm2hnGSMD4=;
-        b=xAbIHkvFlySTfRfspfjkLVr/w1G0U65YZzj1gOZEn+bfK9Gzp09dej3x6Tm7IjRySD
-         uTYTfPGkfkvYO1U/khb7HXV0wNpp3Jkd1waijn0mV2aSY794wYuh6Bjfirroj/E45nY8
-         mA/+KfCriaqOhw9sg6sak+Jufee+GH2DCIWM8VF7V+48cEbLg9EQmR7t7X5FdUCvf105
-         mc1TFSXsDeuRobc0Bf7hlGPhpuNAkdfFJGgPYCIy8yZfdLUE3idtrKF/6YMDKUEmzwjH
-         lkqctLaOROIpzf9qL5EU8fI3w2z2FBmeR33PEcnfnUmijzOAEKf3MshAv4LdVJix3C+T
-         EJjQ==
-X-Gm-Message-State: AOAM533/d9dlwFpCQZyDeTt/OJ4D6q9llG/+ny7IJyEH3BRSlbKzx9dB
-        SkfKzdq7LhdoDQRtdmjjjgo3JqQ4A7J8o77gGoc=
-X-Google-Smtp-Source: ABdhPJyLycjo4DXOIhG75SjiRkAtHSDrmGqIkoMflVmwI4RvyB7QG2Wj7boOmjIgNTraWr6g3aK10qZHO7OkfIEj7U8=
-X-Received: by 2002:a05:6e02:18ca:: with SMTP id s10mr21456525ilu.166.1638575119019;
- Fri, 03 Dec 2021 15:45:19 -0800 (PST)
+        Fri, 3 Dec 2021 20:01:15 -0500
+X-UUID: dee51072620a46068c8b402c3580d68b-20211204
+X-UUID: dee51072620a46068c8b402c3580d68b-20211204
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 294837326; Sat, 04 Dec 2021 08:57:48 +0800
+Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 4 Dec 2021 08:57:26 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb01.mediatek.inc
+ (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Sat, 4 Dec
+ 2021 08:55:05 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 4 Dec 2021 08:55:04 +0800
+From:   <sean.wang@mediatek.com>
+To:     <lorenzo.bianconi@redhat.com>
+CC:     <nbd@nbd.name>, <sven@narfation.org>, <jf@simonwunderlich.de>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        "Sean Wang" <sean.wang@mediatek.com>
+Subject: Re: mt76: MT7921K monitor mode not working
+Date:   Sat, 4 Dec 2021 08:55:04 +0800
+Message-ID: <1638579304-17794-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <YapTmM3EztojTS9F@lore-desk--annotate>
+References: <YapTmM3EztojTS9F@lore-desk--annotate>
 MIME-Version: 1.0
-Received: by 2002:a05:6e04:228f:0:0:0:0 with HTTP; Fri, 3 Dec 2021 15:45:18
- -0800 (PST)
-Reply-To: lindajonathan993@gmail.com
-From:   Miss Linda <fankjonson1o1o1@gmail.com>
-Date:   Fri, 3 Dec 2021 23:45:18 +0000
-Message-ID: <CABb-7_H8U4LOxcGnk2SfiY7NzeFo=aG4VKw9EP5njbW7Yc2mvg@mail.gmail.com>
-Subject: Hi my love
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hey dear
+From: Sean Wang <sean.wang@mediatek.com>
 
-Nice to meet you, Am Miss Linda I found your email here in google
-search and I picked
-interest to contact you. I've something very important which I would like
-to discuss with you and I would appreciate if you respond back to me
-through my email address as to tell you more
+>> From: Sean Wang <sean.wang@mediatek.com>
+>>
+>> >> On Thursday, 2 December 2021 23:13:31 CET Lorenzo Bianconi wrote:
+>> >> > IIRC you need to disable runtime-pm and deep-sleep to proper
+>> >> > enable monitor
+>> >> > mode:
+>> >> >
+>> >> > echo 0 > /sys/kernel/debug/ieee80211/phy<x>/mt76/runtime-pm
+>> >> > echo 0 > /sys/kernel/debug/ieee80211/phy<x>/mt76/deep-sleep
+>> >> >
+>> >> > Can you please give it whirl?
+>> >>
+>> >> Jan gave me the card. I've set it to a rather busy channel (2.4GHz
+>> >> channel 11), created a monitor interface, attached tcpdump and then
+>> >> waited what happens. I didn't get anything and then I've tried to
+>> >> set runtime-pm and deep- sleep to 0. This didn't change the
+>> >> behavior for me at lot. I saw two packets and then it went silent again.
+>> >>
+>> >> I wanted to try the same on a different card (ath11k) in the same
+>> >> system. But it crashed my complete system - so I had to recreate
+>> >> the test setup. This time, I've set runtime-pm + deep-sleep to 0
+>> >> before creating mon0. After doing this, it seemed to work.
+>> >
+>> >interesting, adding Sean to the loop here.
+>> >It seems the fw is mainting a different state in this case.
+>>
+>> fw cannot receive any frame on monitor mode in deeply doze mode
+>>
+>> so it seemed to me we need a patch to explicitly disable pm runtime in driver when monitor interface is enabled until it is being disabled.
+>
+>ack, I agree, but I guess the point here is what is the difference (from the fw pov) if you disable runtime-pm/deep-sleep before/after the vif is added. I guess it is supposed to be the same, right?
 
-about me with my
-photos, my private email as fellows??   lindajonathan993@gmail.com
+yes, it is supposed to be the same.
 
-From, Linda
+>
+>Regards,
+>Lorenzo
+>
+>>
+>> >
+>> >@Sean: any pointers?
+>> >
+>> >Regards,
+>> >Lorenzo
+>> >
+>> >>
+>> >> Kind regards,
+>> >>	Sven
+>> >
+>>
+>
