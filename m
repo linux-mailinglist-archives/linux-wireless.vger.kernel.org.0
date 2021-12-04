@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E11594682F4
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Dec 2021 07:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 560FC4682F6
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Dec 2021 07:36:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239878AbhLDGja (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 Dec 2021 01:39:30 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:50278 "EHLO
+        id S240582AbhLDGjb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 Dec 2021 01:39:31 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:50284 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S238276AbhLDGj3 (ORCPT
+        with ESMTP id S229784AbhLDGja (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 Dec 2021 01:39:29 -0500
+        Sat, 4 Dec 2021 01:39:30 -0500
 Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <luca@coelho.fi>)
-        id 1mtOeQ-0017AH-Qg; Sat, 04 Dec 2021 08:36:03 +0200
+        id 1mtOeR-0017AH-LK; Sat, 04 Dec 2021 08:36:04 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Sat,  4 Dec 2021 08:35:45 +0200
-Message-Id: <iwlwifi.20211204083238.51aea5b79ea4.I88a44798efda16e9fe480fb3e94224931d311b29@changeid>
+Date:   Sat,  4 Dec 2021 08:35:46 +0200
+Message-Id: <iwlwifi.20211204083238.64d2ea8b61f2.Ia5287e37fb3439d805336837361f6491f958e465@changeid>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211204063555.769822-1-luca@coelho.fi>
 References: <20211204063555.769822-1-luca@coelho.fi>
@@ -31,70 +31,234 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 02/12] iwlwifi: mvm: synchronize with FW after multicast commands
+Subject: [PATCH 03/12] iwlwifi: properly support 4-bit MAC step
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Mike Golant <michael.golant@intel.com>
 
-If userspace installs a lot of multicast groups very quickly, then
-we may run out of command queue space as we send the updates in an
-asynchronous fashion (due to locking concerns), and the CPU can
-create them faster than the firmware can process them. This is true
-even when mac80211 has a work struct that gets scheduled.
+Properly support 4-bit MAC step by refactoring all the current
+handling of the MAC step/dash.
 
-Fix this by synchronizing with the firmware after sending all those
-commands - outside of the iteration we can send a synchronous echo
-command that just has the effect of the CPU waiting for the prior
-asynchronous commands to finish. This also will cause fewer of the
-commands to be sent to the firmware overall, because the work will
-only run once when rescheduled multiple times while it's running.
+Already from family 8000 and up the dash (bits 0-1) no longer exist
+and the step (until 8000 bits 2-3) consists of also the dash bits.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=213649
-Suggested-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reported-by: Maximilian Ernestus <maximilian@ernestus.de>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+To do this remove the CSR_HW_REV_STEP and the CSR_HW_REV_DASH
+macros, replace them with CSR_HW_REV_STEP_DASH and add hw_rev_step
+into the trans struct.
+
+In addition remove the CSR_HW_IF_CONFIG_REG_MSK_MAC_STEP and
+CSR_HW_IF_CONFIG_REG_MSK_MAC_DASH macros and create a new macro
+combining the 2 (this way we don't need shifting or anything else.)
+
+Signed-off-by: Matti Gottlieb <matti.gottlieb@intel.com>
+Signed-off-by: Mike Golant <michael.golant@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c   | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c      |  8 ++------
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c        |  4 ++--
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h       | 14 ++++++--------
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c       |  4 ++--
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h     |  2 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c       | 10 +++-------
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c      |  2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |  5 +++--
+ 9 files changed, 22 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 20422e640059..9d84be991469 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1710,6 +1710,7 @@ static void iwl_mvm_recalc_multicast(struct iwl_mvm *mvm)
- 	struct iwl_mvm_mc_iter_data iter_data = {
- 		.mvm = mvm,
- 	};
-+	int ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index fbd57a2b2bd5..90b9becd1673 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -1974,12 +1974,8 @@ static void iwl_nic_config(struct iwl_op_mode *op_mode)
  
- 	lockdep_assert_held(&mvm->mutex);
+ 	/* SKU Control */
+ 	iwl_trans_set_bits_mask(priv->trans, CSR_HW_IF_CONFIG_REG,
+-				CSR_HW_IF_CONFIG_REG_MSK_MAC_DASH |
+-				CSR_HW_IF_CONFIG_REG_MSK_MAC_STEP,
+-				(CSR_HW_REV_STEP(priv->trans->hw_rev) <<
+-					CSR_HW_IF_CONFIG_REG_POS_MAC_STEP) |
+-				(CSR_HW_REV_DASH(priv->trans->hw_rev) <<
+-					CSR_HW_IF_CONFIG_REG_POS_MAC_DASH));
++				CSR_HW_IF_CONFIG_REG_MSK_MAC_STEP_DASH,
++				CSR_HW_REV_STEP_DASH(priv->trans->hw_rev));
  
-@@ -1719,6 +1720,22 @@ static void iwl_mvm_recalc_multicast(struct iwl_mvm *mvm)
- 	ieee80211_iterate_active_interfaces_atomic(
- 		mvm->hw, IEEE80211_IFACE_ITER_NORMAL,
- 		iwl_mvm_mc_iface_iterator, &iter_data);
-+
-+	/*
-+	 * Send a (synchronous) ech command so that we wait for the
-+	 * multiple asynchronous MCAST_FILTER_CMD commands sent by
-+	 * the interface iterator. Otherwise, we might get here over
-+	 * and over again (by userspace just sending a lot of these)
-+	 * and the CPU can send them faster than the firmware can
-+	 * process them.
-+	 * Note that the CPU is still faster - but with this we'll
-+	 * actually send fewer commands overall because the CPU will
-+	 * not schedule the work in mac80211 as frequently if it's
-+	 * still running when rescheduled (possibly multiple times).
-+	 */
-+	ret = iwl_mvm_send_cmd_pdu(mvm, ECHO_CMD, 0, 0, NULL);
-+	if (ret)
-+		IWL_ERR(mvm, "Failed to synchronize multicast groups update\n");
- }
+ 	/* write radio config values to register */
+ 	if (priv->nvm_data->radio_cfg_type <= EEPROM_RF_CONFIG_TYPE_MAX) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index a39013c401c9..c8a08bdfefa4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -880,7 +880,7 @@ iwl_fw_error_dump_file(struct iwl_fw_runtime *fwrt,
+ 		dump_info->hw_type =
+ 			cpu_to_le32(CSR_HW_REV_TYPE(fwrt->trans->hw_rev));
+ 		dump_info->hw_step =
+-			cpu_to_le32(CSR_HW_REV_STEP(fwrt->trans->hw_rev));
++			cpu_to_le32(fwrt->trans->hw_rev_step);
+ 		memcpy(dump_info->fw_human_readable, fwrt->fw->human_readable,
+ 		       sizeof(dump_info->fw_human_readable));
+ 		strncpy(dump_info->dev_human_readable, fwrt->trans->name,
+@@ -2099,7 +2099,7 @@ static u32 iwl_dump_ini_info(struct iwl_fw_runtime *fwrt,
+ 	dump->ver_type = cpu_to_le32(fwrt->dump.fw_ver.type);
+ 	dump->ver_subtype = cpu_to_le32(fwrt->dump.fw_ver.subtype);
  
- static u64 iwl_mvm_prepare_multicast(struct ieee80211_hw *hw,
+-	dump->hw_step = cpu_to_le32(CSR_HW_REV_STEP(fwrt->trans->hw_rev));
++	dump->hw_step = cpu_to_le32(fwrt->trans->hw_rev_step);
+ 
+ 	/*
+ 	 * Several HWs all have type == 0x42, so we'll override this value
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
+index ff79a2ecb242..cfea20e507b3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
+@@ -143,8 +143,7 @@
+ #define CSR_FUNC_SCRATCH_INIT_VALUE		(0x01010101)
+ 
+ /* Bits for CSR_HW_IF_CONFIG_REG */
+-#define CSR_HW_IF_CONFIG_REG_MSK_MAC_DASH	(0x00000003)
+-#define CSR_HW_IF_CONFIG_REG_MSK_MAC_STEP	(0x0000000C)
++#define CSR_HW_IF_CONFIG_REG_MSK_MAC_STEP_DASH	(0x0000000F)
+ #define CSR_HW_IF_CONFIG_REG_BIT_MONITOR_SRAM	(0x00000080)
+ #define CSR_HW_IF_CONFIG_REG_MSK_BOARD_VER	(0x000000C0)
+ #define CSR_HW_IF_CONFIG_REG_BIT_MAC_SI		(0x00000100)
+@@ -287,8 +286,7 @@
+ #define CSR_GP_CNTRL_REG_FLAG_SW_RESET			BIT(31)
+ 
+ /* HW REV */
+-#define CSR_HW_REV_DASH(_val)          (((_val) & 0x0000003) >> 0)
+-#define CSR_HW_REV_STEP(_val)          (((_val) & 0x000000C) >> 2)
++#define CSR_HW_REV_STEP_DASH(_val)     ((_val) & CSR_HW_IF_CONFIG_REG_MSK_MAC_STEP_DASH)
+ #define CSR_HW_REV_TYPE(_val)          (((_val) & 0x000FFF0) >> 4)
+ 
+ /* HW RFID */
+@@ -328,10 +326,10 @@ enum {
+ #define CSR_HW_REV_TYPE_7265D		(0x0000210)
+ #define CSR_HW_REV_TYPE_NONE		(0x00001F0)
+ #define CSR_HW_REV_TYPE_QNJ		(0x0000360)
+-#define CSR_HW_REV_TYPE_QNJ_B0		(0x0000364)
+-#define CSR_HW_REV_TYPE_QU_B0		(0x0000334)
+-#define CSR_HW_REV_TYPE_QU_C0		(0x0000338)
+-#define CSR_HW_REV_TYPE_QUZ		(0x0000354)
++#define CSR_HW_REV_TYPE_QNJ_B0		(0x0000361)
++#define CSR_HW_REV_TYPE_QU_B0		(0x0000331)
++#define CSR_HW_REV_TYPE_QU_C0		(0x0000332)
++#define CSR_HW_REV_TYPE_QUZ		(0x0000351)
+ #define CSR_HW_REV_TYPE_HR_CDB		(0x0000340)
+ #define CSR_HW_REV_TYPE_SO		(0x0000370)
+ #define CSR_HW_REV_TYPE_TY		(0x0000420)
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 36196e07b1a0..026116629040 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -163,8 +163,8 @@ static int iwl_request_firmware(struct iwl_drv *drv, bool first)
+ 	char tag[8];
+ 
+ 	if (drv->trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_9000 &&
+-	    (CSR_HW_REV_STEP(drv->trans->hw_rev) != SILICON_B_STEP &&
+-	     CSR_HW_REV_STEP(drv->trans->hw_rev) != SILICON_C_STEP)) {
++	    (drv->trans->hw_rev_step != SILICON_B_STEP &&
++	     drv->trans->hw_rev_step != SILICON_C_STEP)) {
+ 		IWL_ERR(drv,
+ 			"Only HW steps B and C are currently supported (0x%0x)\n",
+ 			drv->trans->hw_rev);
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index 0cd4718372f5..9ef89ff09105 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -1609,7 +1609,7 @@ int iwl_read_external_nvm(struct iwl_trans *trans,
+ 
+ 		/* nvm file validation, dword_buff[2] holds the file version */
+ 		if (trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_8000 &&
+-		    CSR_HW_REV_STEP(trans->hw_rev) == SILICON_C_STEP &&
++		    trans->hw_rev_step == SILICON_C_STEP &&
+ 		    le32_to_cpu(dword_buff[2]) < 0xE4A) {
+ 			ret = -EFAULT;
+ 			goto out;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index a4060af50201..947ed82b7f19 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -938,6 +938,7 @@ struct iwl_trans_txqs {
+  * @hw_id: a u32 with the ID of the device / sub-device.
+  *	Set during transport allocation.
+  * @hw_id_str: a string with info about HW ID. Set during transport allocation.
++ * @hw_rev_step: The mac step of the HW
+  * @pm_support: set to true in start_hw if link pm is supported
+  * @ltr_enabled: set to true if the LTR is enabled
+  * @wide_cmd_header: true when ucode supports wide command header format
+@@ -971,6 +972,7 @@ struct iwl_trans {
+ 	struct device *dev;
+ 	u32 max_skb_frags;
+ 	u32 hw_rev;
++	u32 hw_rev_step;
+ 	u32 hw_rf_id;
+ 	u32 hw_id;
+ 	char hw_id_str[52];
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 3ab0217abeea..cd04f24dd7fa 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -78,7 +78,7 @@ static void iwl_mvm_nic_config(struct iwl_op_mode *op_mode)
+ {
+ 	struct iwl_mvm *mvm = IWL_OP_MODE_GET_MVM(op_mode);
+ 	u8 radio_cfg_type, radio_cfg_step, radio_cfg_dash;
+-	u32 reg_val = 0;
++	u32 reg_val;
+ 	u32 phy_config = iwl_mvm_get_phy_config(mvm);
+ 
+ 	radio_cfg_type = (phy_config & FW_PHY_CFG_RADIO_TYPE) >>
+@@ -89,10 +89,7 @@ static void iwl_mvm_nic_config(struct iwl_op_mode *op_mode)
+ 			 FW_PHY_CFG_RADIO_DASH_POS;
+ 
+ 	/* SKU control */
+-	reg_val |= CSR_HW_REV_STEP(mvm->trans->hw_rev) <<
+-				CSR_HW_IF_CONFIG_REG_POS_MAC_STEP;
+-	reg_val |= CSR_HW_REV_DASH(mvm->trans->hw_rev) <<
+-				CSR_HW_IF_CONFIG_REG_POS_MAC_DASH;
++	reg_val = CSR_HW_REV_STEP_DASH(mvm->trans->hw_rev);
+ 
+ 	/* radio configuration */
+ 	reg_val |= radio_cfg_type << CSR_HW_IF_CONFIG_REG_POS_PHY_TYPE;
+@@ -117,8 +114,7 @@ static void iwl_mvm_nic_config(struct iwl_op_mode *op_mode)
+ 		reg_val |= CSR_HW_IF_CONFIG_REG_D3_DEBUG;
+ 
+ 	iwl_trans_set_bits_mask(mvm->trans, CSR_HW_IF_CONFIG_REG,
+-				CSR_HW_IF_CONFIG_REG_MSK_MAC_DASH |
+-				CSR_HW_IF_CONFIG_REG_MSK_MAC_STEP |
++				CSR_HW_IF_CONFIG_REG_MSK_MAC_STEP_DASH |
+ 				CSR_HW_IF_CONFIG_REG_MSK_PHY_TYPE |
+ 				CSR_HW_IF_CONFIG_REG_MSK_PHY_STEP |
+ 				CSR_HW_IF_CONFIG_REG_MSK_PHY_DASH |
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 5c56da36fc84..db8b62e432eb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1450,7 +1450,7 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	dev_info = iwl_pci_find_dev_info(pdev->device, pdev->subsystem_device,
+ 					 CSR_HW_REV_TYPE(iwl_trans->hw_rev),
+-					 CSR_HW_REV_STEP(iwl_trans->hw_rev),
++					 iwl_trans->hw_rev_step,
+ 					 CSR_HW_RFID_TYPE(iwl_trans->hw_rf_id),
+ 					 CSR_HW_RFID_IS_CDB(iwl_trans->hw_rf_id),
+ 					 IWL_SUBDEVICE_RF_ID(pdev->subsystem_device),
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 451b28de1392..f607edd41baa 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -3616,8 +3616,9 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 	 * in the old format.
+ 	 */
+ 	if (cfg_trans->device_family >= IWL_DEVICE_FAMILY_8000)
+-		trans->hw_rev = (trans->hw_rev & 0xfff0) |
+-				(CSR_HW_REV_STEP(trans->hw_rev << 2) << 2);
++		trans->hw_rev_step = trans->hw_rev & 0xF;
++	else
++		trans->hw_rev_step = (trans->hw_rev & 0xC) >> 2;
+ 
+ 	IWL_DEBUG_INFO(trans, "HW REV: 0x%0x\n", trans->hw_rev);
+ 
 -- 
 2.33.1
 
