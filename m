@@ -2,101 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4411C4689D0
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Dec 2021 08:12:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 231FA468A4A
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Dec 2021 10:58:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232041AbhLEHPZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Dec 2021 02:15:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53764 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232064AbhLEHPY (ORCPT
+        id S232792AbhLEKCP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Dec 2021 05:02:15 -0500
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:53038
+        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232727AbhLEKCP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Dec 2021 02:15:24 -0500
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FA8EC061D7F
-        for <linux-wireless@vger.kernel.org>; Sat,  4 Dec 2021 23:11:57 -0800 (PST)
-Received: by mail-il1-x130.google.com with SMTP id i9so7064576ilu.1
-        for <linux-wireless@vger.kernel.org>; Sat, 04 Dec 2021 23:11:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=psYEFFpu8xn04aefBoXIBB6mHRDvveDqOKDF4bLgYZg=;
-        b=aXJ+OznZzvu2oYfcO6/qbJ6DNxg0iyrBIj65BPvp3y0vViuILxzIRUyMpyZVZ5p6cf
-         4fPdggzzAJ/mMG9bb3te0x1RcMXXy2zAzOnLT3PXOHzR3Y8ac9e0sMTMHldMYCuy949B
-         lFKCNwOJkg3tHEwbaNi7qwuSt6mTBSUGtL/6fjYRsj3ltxw3Zeuu6CJVfNsmTJQKLZoh
-         g5c8FwJrdo7Xx6WWTils0oUi0QAXvrK0wVn7svFhuv43u/AmxsEmtPsJfHdQ3c+wAXbE
-         TTS7RbxB/1nycYcMLVd2S5XIVbvL6VKpROkpDjpcmdgh/DvwuI2HNGcOejcR99gVnK87
-         4jqg==
+        Sun, 5 Dec 2021 05:02:15 -0500
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id DC0253F1BC
+        for <linux-wireless@vger.kernel.org>; Sun,  5 Dec 2021 09:58:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1638698325;
+        bh=w6+BoYvnmAnd+GSm1CSG2oy2MCenL4FLdq4APeVFVSU=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=YirH2heYguefpEbbKOSS7mRhsNhyxQaZmnwNUITgmKDkeVdBto3C9+1hlcAabfmyr
+         nqLsHGruIZ952H9mE3t1eIE2gXi6AVmsxqqk4syJmBwsbv/I54f96IjjHeduMV65E+
+         pwhLG/31g89jd3K0J5j46zwjfRqhN2ru4f25xkW1q6mpU19O5PXmbTDE2K8L7mIWvg
+         ihE561bLNaN8FLMPzhFhMCilDli1xSia6uaf7fzpFgToFH3RbVmZMV1KXhWXmpJUqp
+         MObMlbuXenTERKfVrxGjM+sTThMoULegZb5WvCjjRTBQCT+y/oCsHPR+AskxNiZQcT
+         kwiK2c8G6yRIg==
+Received: by mail-pf1-f200.google.com with SMTP id f206-20020a6238d7000000b004a02dd7156bso4815456pfa.5
+        for <linux-wireless@vger.kernel.org>; Sun, 05 Dec 2021 01:58:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=psYEFFpu8xn04aefBoXIBB6mHRDvveDqOKDF4bLgYZg=;
-        b=RfarFhpx1PS9eRzGco+qKQCa/PdS2QsbEnxQexZQddba4GHwr0KCrkPf+JhhlhA+zD
-         cA0uuPWx6tB3qzPywgRe+E/uyjw4H5Ruxrn+Ot2SYI83s3r8wuNH936tlHiG0hJLZGo9
-         vWPB2Xt4Uv+DTq1Xv0pERiESwKr+CfnZnWp7t/h8nVzQUqmcjEAkO5XMLgOFYtcBTYDQ
-         0pwJwUgp/9SauPhWlAJpjkzfAomczugUI4F1RLHPq3JP4QCuflNedyi5fFnukWZQjAPv
-         FSP50Ryz1Gb3HnDHRmhy5XEhgKkWdqSAA+YzVArtRhT5zp8tq0acDT1CnL7TPT6mgkEX
-         2qBg==
-X-Gm-Message-State: AOAM530dl2nCc4kRGFs3yy6Vt3HTdc6yZlCP7AnuFTAzEg/bh2/6NDmc
-        dp+Y2XBuadnul4m2JTtToFq6qHLLUSTsGmhLDPw=
-X-Google-Smtp-Source: ABdhPJx5hqAJgucFpqBT5pTeQTVu+QaTL6oK5E5TKs1Byq/tm1gf4EJ1nnZRpRoEMhWJM2q+mgAc15DREMJkiEdttRE=
-X-Received: by 2002:a05:6e02:b2a:: with SMTP id e10mr4159830ilu.80.1638688316532;
- Sat, 04 Dec 2021 23:11:56 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=w6+BoYvnmAnd+GSm1CSG2oy2MCenL4FLdq4APeVFVSU=;
+        b=PGYl/P9R+y7mFUEMS2kaP2CUWzYSQ1zOQvCfkO6zM0oKIt6RNs7vz1XX4l0g/hERmQ
+         bD3F0ch6afQ+T2a8konlVI1KcFgH+qKzbYJ+pCOpi4jovBUSgeY+WT9Rn0WPYYoSDsBB
+         MyeOFPub5WEgzARbEMH90GS6lT+OFNXs4/jZQu1I2SK0jVfxg8R7ceD2vjeIVMn37ecl
+         gqvVHrGu9T2Jk2PnmTFtiQMq4J+dBqrKLRO/egZRd2dnGrjHVp2w0ZEB70AA7LpDcje2
+         cgjiOlqEX4yvdEM73gr5J4A8JZyp40DZCTarsG3CMjtWReB+1+q3SoyxZCBch/HAOuH/
+         RR3Q==
+X-Gm-Message-State: AOAM532d5Qi+jjxvuFkYcW5n0PzE4cZ9CRoX91BEwB1D1ihVabpxRuzp
+        +nyG74y0sfHyXkSz5YXaBtSqXjvW20s0xgWTrIQK68oxa88Sqc79IuF5xB9FOxLEJLjIoOIqop3
+        fIuGkRbgBa0dTNi0coAx75ytnrChZ+pkxMVYUijDZ9bQ2
+X-Received: by 2002:a17:90b:2309:: with SMTP id mt9mr28922899pjb.213.1638698324297;
+        Sun, 05 Dec 2021 01:58:44 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxrc9ZXCA/OWrksKqJj/Yc/lW+qDW0JLGL6vWbPZBjDotrMYhiJGa9oqA+YnQYbTSwbJxyfPg==
+X-Received: by 2002:a17:90b:2309:: with SMTP id mt9mr28922872pjb.213.1638698323970;
+        Sun, 05 Dec 2021 01:58:43 -0800 (PST)
+Received: from localhost.localdomain (2001-b011-3814-fb66-6609-6116-8fb8-c749.dynamic-ip6.hinet.net. [2001:b011:3814:fb66:6609:6116:8fb8:c749])
+        by smtp.gmail.com with ESMTPSA id n16sm7028882pja.46.2021.12.05.01.58.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Dec 2021 01:58:43 -0800 (PST)
+From:   Chris Chiu <chris.chiu@canonical.com>
+To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org
+Cc:     code@reto-schneider.ch, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chris Chiu <chris.chiu@canonical.com>
+Subject: [PATCH] rtl8xxxu: Improve the A-MPDU retransmission rate with RTS/CTS protection
+Date:   Sun,  5 Dec 2021 17:58:36 +0800
+Message-Id: <20211205095836.417258-1-chris.chiu@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:ac0:8151:0:0:0:0:0 with HTTP; Sat, 4 Dec 2021 23:11:56 -0800 (PST)
-Reply-To: ibaassana67@gmail.com
-From:   Assana Ibrahim <abbttnb30@gmail.com>
-Date:   Sat, 4 Dec 2021 23:11:56 -0800
-Message-ID: <CAFzD0xj72EKiDfG9qNxEH--V6YQu7xgGyBUhBDQJkWrN3j1r9Q@mail.gmail.com>
-Subject: Good day!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greetings to you and your family.
+The A-MPDU retransmission rate is always high (> 20%) even in a very
+clean environment. However, the vendor driver retransimission rate is
+< 10% in the same test bed. The different is the vendor driver starts
+the A-MPDU TXOP with initial RTS/CTS handshake which is observed in the
+air capture and the TX descriptor. Since there's no related field in
+TX descriptor to enable the L-SIG TXOP protection and the duration,
+applying the RTS/CTS protection instead helps to lower the retransmission
+rate from > 20% to ~12% in the same test setup.
 
-With all due respect I got your details from an online directory and
-having  been motivated by your personal status, I decided to approach
-you  I am
-Mrs. Assana Ibrahim; I have decided to donate what I have to you /
-Motherless babies/Less privileged/Widows' because I am dying and
-diagnosed
-for cancer for about 2 years ago. I have been touched by God Almighty
-to donate from what I have inherited from my late husband to you for
-good work
-of God Almighty. I have asked Almighty God to forgive me and believe
-he has, because he is a Merciful God I will be going in for an
-operation
-surgery soon.
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I decided to will/donate the sum of ($ 8.1 million DOLLARS) to you for
-the good work of God Almighty, and also to help the motherless and
-less
-privilege and also forth assistance of the widows. At the moment I
-cannot take any telephone calls right now due to the fact that my
-relatives (that
-have squandered the funds gave them for this purpose before) are
-around me and my health status also. I have adjusted my will and my
-lawyer is aware.
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index a42e2081b75f..06d59ffb7444 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4859,7 +4859,7 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ 	 * rts_rate is zero if RTS/CTS or CTS to SELF are not enabled
+ 	 */
+ 	tx_desc->txdw4 |= cpu_to_le32(rts_rate << TXDESC32_RTS_RATE_SHIFT);
+-	if (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS) {
++	if (ampdu_enable || (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS)) {
+ 		tx_desc->txdw4 |= cpu_to_le32(TXDESC32_RTS_CTS_ENABLE);
+ 		tx_desc->txdw4 |= cpu_to_le32(TXDESC32_HW_RTS_ENABLE);
+ 	} else if (rate_flags & IEEE80211_TX_RC_USE_CTS_PROTECT) {
+@@ -4930,7 +4930,7 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+ 	/*
+ 	 * rts_rate is zero if RTS/CTS or CTS to SELF are not enabled
+ 	 */
+-	if (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS) {
++	if (ampdu_enable || (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS)) {
+ 		tx_desc40->txdw3 |= cpu_to_le32(TXDESC40_RTS_CTS_ENABLE);
+ 		tx_desc40->txdw3 |= cpu_to_le32(TXDESC40_HW_RTS_ENABLE);
+ 	} else if (rate_flags & IEEE80211_TX_RC_USE_CTS_PROTECT) {
+-- 
+2.25.1
 
-I wish you all the best and May the good Lord bless you abundantly,
-and please use the funds judiciously and always extend the good work
-to others.
-As soon as you get back to me, I shall give you info on what I need
-from you, then you will contact the bank and tell them I have willed
-those
-properties to you by quoting my personal file routing and account
-information. And I have also notified the bank that I am willing that
-properties to you for a good, effective and prudent work. I know I
-don't know you but I have been directed to do this by God Almighty.
-
-I Have all my Hospital document which i can send to you as prove to
-what am tell you and my seriousness to this. If you are interested in
-carrying out
-this task, get back to me for more details on this noble project of mine.
-
-Yours Faithfully,
-Mrs. Assana Ibrahim
