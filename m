@@ -2,109 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 231FA468A4A
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Dec 2021 10:58:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E1A6468AA9
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Dec 2021 12:55:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232792AbhLEKCP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Dec 2021 05:02:15 -0500
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:53038
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232727AbhLEKCP (ORCPT
+        id S233479AbhLEL7U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Dec 2021 06:59:20 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:50930 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233115AbhLEL7T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Dec 2021 05:02:15 -0500
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Sun, 5 Dec 2021 06:59:19 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id DC0253F1BC
-        for <linux-wireless@vger.kernel.org>; Sun,  5 Dec 2021 09:58:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1638698325;
-        bh=w6+BoYvnmAnd+GSm1CSG2oy2MCenL4FLdq4APeVFVSU=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=YirH2heYguefpEbbKOSS7mRhsNhyxQaZmnwNUITgmKDkeVdBto3C9+1hlcAabfmyr
-         nqLsHGruIZ952H9mE3t1eIE2gXi6AVmsxqqk4syJmBwsbv/I54f96IjjHeduMV65E+
-         pwhLG/31g89jd3K0J5j46zwjfRqhN2ru4f25xkW1q6mpU19O5PXmbTDE2K8L7mIWvg
-         ihE561bLNaN8FLMPzhFhMCilDli1xSia6uaf7fzpFgToFH3RbVmZMV1KXhWXmpJUqp
-         MObMlbuXenTERKfVrxGjM+sTThMoULegZb5WvCjjRTBQCT+y/oCsHPR+AskxNiZQcT
-         kwiK2c8G6yRIg==
-Received: by mail-pf1-f200.google.com with SMTP id f206-20020a6238d7000000b004a02dd7156bso4815456pfa.5
-        for <linux-wireless@vger.kernel.org>; Sun, 05 Dec 2021 01:58:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=w6+BoYvnmAnd+GSm1CSG2oy2MCenL4FLdq4APeVFVSU=;
-        b=PGYl/P9R+y7mFUEMS2kaP2CUWzYSQ1zOQvCfkO6zM0oKIt6RNs7vz1XX4l0g/hERmQ
-         bD3F0ch6afQ+T2a8konlVI1KcFgH+qKzbYJ+pCOpi4jovBUSgeY+WT9Rn0WPYYoSDsBB
-         MyeOFPub5WEgzARbEMH90GS6lT+OFNXs4/jZQu1I2SK0jVfxg8R7ceD2vjeIVMn37ecl
-         gqvVHrGu9T2Jk2PnmTFtiQMq4J+dBqrKLRO/egZRd2dnGrjHVp2w0ZEB70AA7LpDcje2
-         cgjiOlqEX4yvdEM73gr5J4A8JZyp40DZCTarsG3CMjtWReB+1+q3SoyxZCBch/HAOuH/
-         RR3Q==
-X-Gm-Message-State: AOAM532d5Qi+jjxvuFkYcW5n0PzE4cZ9CRoX91BEwB1D1ihVabpxRuzp
-        +nyG74y0sfHyXkSz5YXaBtSqXjvW20s0xgWTrIQK68oxa88Sqc79IuF5xB9FOxLEJLjIoOIqop3
-        fIuGkRbgBa0dTNi0coAx75ytnrChZ+pkxMVYUijDZ9bQ2
-X-Received: by 2002:a17:90b:2309:: with SMTP id mt9mr28922899pjb.213.1638698324297;
-        Sun, 05 Dec 2021 01:58:44 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxrc9ZXCA/OWrksKqJj/Yc/lW+qDW0JLGL6vWbPZBjDotrMYhiJGa9oqA+YnQYbTSwbJxyfPg==
-X-Received: by 2002:a17:90b:2309:: with SMTP id mt9mr28922872pjb.213.1638698323970;
-        Sun, 05 Dec 2021 01:58:43 -0800 (PST)
-Received: from localhost.localdomain (2001-b011-3814-fb66-6609-6116-8fb8-c749.dynamic-ip6.hinet.net. [2001:b011:3814:fb66:6609:6116:8fb8:c749])
-        by smtp.gmail.com with ESMTPSA id n16sm7028882pja.46.2021.12.05.01.58.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Dec 2021 01:58:43 -0800 (PST)
-From:   Chris Chiu <chris.chiu@canonical.com>
-To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org
-Cc:     code@reto-schneider.ch, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chris Chiu <chris.chiu@canonical.com>
-Subject: [PATCH] rtl8xxxu: Improve the A-MPDU retransmission rate with RTS/CTS protection
-Date:   Sun,  5 Dec 2021 17:58:36 +0800
-Message-Id: <20211205095836.417258-1-chris.chiu@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        by ams.source.kernel.org (Postfix) with ESMTPS id F3DD4B80E1B
+        for <linux-wireless@vger.kernel.org>; Sun,  5 Dec 2021 11:55:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F659C341C5;
+        Sun,  5 Dec 2021 11:55:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638705350;
+        bh=0STyjYmxvY7/1S64unB/r/tpzztEvqBC31sjLegZrWc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=B+/dS0qgCQuXQ0CzSiIhuF9kxpVVJOp78JBB8qCVgP5r/5RSNtrp4YZD9ThPSEXcq
+         vuAHq05ZeCm9yBZRHOoxb74ynMbJYYWP+6qNXw8Mt6PmOZiOophsxqd7cS3catCJJN
+         wlFA8KRf0gSmKqPFULNBuNQShoJsXJcuoCy/8mC7dyk4nOMRYMHcAD/ditSRJCh3j+
+         WFHneQ44FWVUBifFIyzbYgTDSE5fnVIHJUP2ShA6x6GW1mKI92LbhXp+U+8EjR0irc
+         j4i3E/g6+00N65VIhTt+hADdq2twgEmW41t4NJJ7LLX8i9XaXVq7A/dxIsUOPwhghZ
+         Uk9G/OBIAKt7A==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: iwlwifi: mei: fix linking when tracing is not enabled
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20211201113411.130409-1-emmanuel.grumbach@intel.com>
+References: <20211201113411.130409-1-emmanuel.grumbach@intel.com>
+To:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        luca@coelho.fi, Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163870534660.7494.4418786998373022628.kvalo@kernel.org>
+Date:   Sun,  5 Dec 2021 11:55:49 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The A-MPDU retransmission rate is always high (> 20%) even in a very
-clean environment. However, the vendor driver retransimission rate is
-< 10% in the same test bed. The different is the vendor driver starts
-the A-MPDU TXOP with initial RTS/CTS handshake which is observed in the
-air capture and the TX descriptor. Since there's no related field in
-TX descriptor to enable the L-SIG TXOP protection and the duration,
-applying the RTS/CTS protection instead helps to lower the retransmission
-rate from > 20% to ~12% in the same test setup.
+Emmanuel Grumbach <emmanuel.grumbach@intel.com> wrote:
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> I forgot to add stubs in case tracing is disabled which caused linking errors:
+> 
+> ERROR: modpost: "__SCT__tp_func_iwlmei_sap_data" [drivers/net/wireless/intel/iwlwifi/mei/iwlmei.ko] undefined!
+> ERROR: modpost: "__SCT__tp_func_iwlmei_me_msg" [drivers/net/wireless/intel/iwlwifi/mei/iwlmei.ko] undefined!
+> ERROR: modpost: "__tracepoint_iwlmei_sap_cmd" [drivers/net/wireless/intel/iwlwifi/mei/iwlmei.ko] undefined!
+> ERROR: modpost: "__tracepoint_iwlmei_me_msg" [drivers/net/wireless/intel/iwlwifi/mei/iwlmei.ko] undefined!
+> ERROR: modpost: "__SCK__tp_func_iwlmei_me_msg" [drivers/net/wireless/intel/iwlwifi/mei/iwlmei.ko] undefined!
+> ERROR: modpost: "__SCK__tp_func_iwlmei_sap_data" [drivers/net/wireless/intel/iwlwifi/mei/iwlmei.ko] undefined!
+> ERROR: modpost: "__tracepoint_iwlmei_sap_data" [drivers/net/wireless/intel/iwlwifi/mei/iwlmei.ko] undefined!
+> ERROR: modpost: "__SCT__tp_func_iwlmei_sap_cmd" [drivers/net/wireless/intel/iwlwifi/mei/iwlmei.ko] undefined!
+> ERROR: modpost: "__SCK__tp_func_iwlmei_sap_cmd" [drivers/net/wireless/intel/iwlwifi/mei/iwlmei.ko] undefined!
+> 
+> Fixes: 2da4366f9e2c ("iwlwifi: mei: add the driver to allow cooperation with CSME")
+> Reported-by: Jiri Slaby <jirislaby@kernel.org>
+> Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+> Acked-by: Luca Coelho <luciano.coelho@intel.com>
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index a42e2081b75f..06d59ffb7444 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4859,7 +4859,7 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 	 * rts_rate is zero if RTS/CTS or CTS to SELF are not enabled
- 	 */
- 	tx_desc->txdw4 |= cpu_to_le32(rts_rate << TXDESC32_RTS_RATE_SHIFT);
--	if (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS) {
-+	if (ampdu_enable || (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS)) {
- 		tx_desc->txdw4 |= cpu_to_le32(TXDESC32_RTS_CTS_ENABLE);
- 		tx_desc->txdw4 |= cpu_to_le32(TXDESC32_HW_RTS_ENABLE);
- 	} else if (rate_flags & IEEE80211_TX_RC_USE_CTS_PROTECT) {
-@@ -4930,7 +4930,7 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
- 	/*
- 	 * rts_rate is zero if RTS/CTS or CTS to SELF are not enabled
- 	 */
--	if (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS) {
-+	if (ampdu_enable || (rate_flags & IEEE80211_TX_RC_USE_RTS_CTS)) {
- 		tx_desc40->txdw3 |= cpu_to_le32(TXDESC40_RTS_CTS_ENABLE);
- 		tx_desc40->txdw3 |= cpu_to_le32(TXDESC40_HW_RTS_ENABLE);
- 	} else if (rate_flags & IEEE80211_TX_RC_USE_CTS_PROTECT) {
+Patch applied to wireless-drivers-next.git, thanks.
+
+fe6db7eda930 iwlwifi: mei: fix linking when tracing is not enabled
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20211201113411.130409-1-emmanuel.grumbach@intel.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
