@@ -2,89 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50931469E80
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Dec 2021 16:39:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F4E946A0FD
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Dec 2021 17:15:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345779AbhLFPjS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Dec 2021 10:39:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59962 "EHLO
+        id S1386793AbhLFQTN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Dec 2021 11:19:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378959AbhLFPgt (ORCPT
+        with ESMTP id S1382208AbhLFQSq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Dec 2021 10:36:49 -0500
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DF0AC08EACF
-        for <linux-wireless@vger.kernel.org>; Mon,  6 Dec 2021 07:22:44 -0800 (PST)
-Received: by mail-lj1-x22a.google.com with SMTP id u22so21612170lju.7
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Dec 2021 07:22:44 -0800 (PST)
+        Mon, 6 Dec 2021 11:18:46 -0500
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E2E1C08E844
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Dec 2021 08:11:07 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id n26so10603413pff.3
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Dec 2021 08:11:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=gziXnhcHCbRpEdv8VZ2t+6xlu2j9BNGY4yMdlHoXQBQ=;
-        b=kGh0E0jiXoRA84QjOMspvHsjoRys4WOW8ekVFyV5/+i/fcdGLmrEijjqtBRO0FoAEm
-         45loYROic8TuuxpCwI6eXIZ2+lM9j7/Apv7rGikj2oEZwrTXzui/MBJhwIQ4yvOaF2qj
-         Z11slXj0HzcGodENDPqgVCBjq6eQLBhiWFomNa6ofWCdMxOfABCQ8+vim8CzZD5kdCEH
-         gIzl6O/8Kn8qrVd5K1yGk+ZaTaX5drBDRbhtSbNvU/SHaQ1qf3972axGM7yBKD7tRUYc
-         YQmRlbYKDWRnKrLHkQtj6+FkGDibmArKdbVKVmggTFEGAYwhPtaMEcZQwyM1WFMaUoxd
-         3Vrg==
+        bh=/dZMe5fXW3JmkstQUnuTxaguikQO8croA43e/A9yBnw=;
+        b=wsxIo8iRiao/IrGDfq47xrllVJ4TjbrPMq5pi3ujnxN/VKCJ3gsfxKRCeoeCqPfYQu
+         kOwY5U32UUnpRggGW8w10rv9Qb+gMMChBODZE8cet49sqH0aXLIuy3Hy/fNcF2I49xtW
+         w/tPBkVH6OZ0gml4qbyNHA2LKoSRu2Duh75QZw7O02/WxlK7y7iu/eS+gRwq5vnZ0TMf
+         4NrQWs80FVlPsg+02Ay9mkBOTx6d4n9cp8+8F0Dpa7NfdGkA7BMrgrVXUDuNa+sp9Oa0
+         tBWh2Wm8WKIWHNKf1R7ackwqOJUltuACyxAA6XpX27PTUDAPkFN9K/s0tPCDvwcBdLVB
+         v8Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=gziXnhcHCbRpEdv8VZ2t+6xlu2j9BNGY4yMdlHoXQBQ=;
-        b=Z5IQ6PTcib6J+JeUEtzBXJHicWxQkne1jdqZ1Lgs50H13HmpjLgrP+D+9LnG+8QGyv
-         BQ2C6KLa/lriFotAa0hPmv8QVsYbsPaD8rw9+JzL1JwjX9ojF5mh+gxqwftbg6uqgcrv
-         YtmhoNdlEWIDzuqSkKTub0tYpTJcuWmnVCIZpfl7MAcieVPc+l6lbCYOhPkRzrrBBGeM
-         dulrWp0+4NxHATxDY2XAdqivSUmJtYKvgPOWgktc2N+izRtuvKjn9WCvxcRNh59OummG
-         Bw5TmYLEbJUD/ur+dme+dXTZO42WnP1Bp4rBM6l5/D24kE0JjL5DrcWBbHADfUdxYSTO
-         hRKw==
-X-Gm-Message-State: AOAM531tmc/0mOKtxFQ6oB6AxIoo7Cg+Bh5WTdfSWPKTzZ6KvRIC/JgY
-        23QBn6NOZSF/CnU8T/o574TDDGgf9KCE9zFdMQ==
-X-Google-Smtp-Source: ABdhPJykII0h8Rgo45fB49ekTV0P0Nmd2/IIJTEhVU2mAqC0wjcjL4V8hEEiM7ZSkiTYzjtrco/EnMmhBrpBeNkYkaY=
-X-Received: by 2002:a2e:a6a0:: with SMTP id q32mr37012227lje.148.1638804162154;
- Mon, 06 Dec 2021 07:22:42 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/dZMe5fXW3JmkstQUnuTxaguikQO8croA43e/A9yBnw=;
+        b=ND8Qb7XzDXlHZWIEOAw7zNpPqxEID9SXjezmpR9g0OjypudOh0kp22CLPDZhMyg0jD
+         vXDYXeb0+bc7ayF0meRWgon7OU+PbbJK1fkQ8NxIHl45o020MdtABd9pyHPatu4dsYFm
+         0KGpTpYoq+aleZT3ETHoY5Alf0tj0ElSEAHV8BwQkxHhzfoWMDXGueSTfZ5Iua0YdyZP
+         eFDQoCwmr2WxGjO2vCMY3oVsrkugUTwL31P8dZlicchiWFfiZjxzUHFpaaq5WrcyqBhI
+         pBO9UxlH7jgjQx2fKqDTQKQRq8sGiAzh5hOlvK3FpwR3jc3J0kjayiEx/ZzFIZX2ZxYR
+         BVNg==
+X-Gm-Message-State: AOAM531K31B3vOknf8ouNaKOp2brZbUsYxs7n3UTXSjKu2oFZPB5Vukn
+        xArnTGyhCDTJULn+46BWdYRY
+X-Google-Smtp-Source: ABdhPJzHztOd8XGPiN1RUx+EQUVKeXqRT/D1cHtxog5GiB7PeT8WgTwjvv+39GKJ//C4Nqx58PR66g==
+X-Received: by 2002:a05:6a00:1594:b0:4ae:dc6:f344 with SMTP id u20-20020a056a00159400b004ae0dc6f344mr7919655pfk.56.1638807066912;
+        Mon, 06 Dec 2021 08:11:06 -0800 (PST)
+Received: from localhost.localdomain ([117.217.176.38])
+        by smtp.gmail.com with ESMTPSA id lr6sm11288968pjb.0.2021.12.06.08.11.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Dec 2021 08:11:06 -0800 (PST)
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     mhi@lists.linux.dev
+Cc:     hemantk@codeaurora.org, bbhatt@codeaurora.org,
+        loic.poulain@linaro.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
+        stable@vger.kernel.org, Pengyu Ma <mapengyu@gmail.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH] bus: mhi: core: Add support for forced PM resume
+Date:   Mon,  6 Dec 2021 21:40:59 +0530
+Message-Id: <20211206161059.107007-1-manivannan.sadhasivam@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a2e:9189:0:0:0:0:0 with HTTP; Mon, 6 Dec 2021 07:22:41 -0800 (PST)
-Reply-To: mr.luisfernando5050@gmail.com
-From:   "Mr. Luis Fernando" <ellaemiantor2@gmail.com>
-Date:   Mon, 6 Dec 2021 07:22:41 -0800
-Message-ID: <CAHRdPM7gxxremOe3xn-RarGZ-KELydkJbydC9aQn2ReEX_Vu5Q@mail.gmail.com>
-Subject: THE AMOUNT IS 27.5 MILLIOMS USD
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-LS0gDQrmiJHmmK/ot6/mmJPmlq/Ct+i0ueWwlOWNl+WkmuWFiOeUnw0KDQrll6jvvIzmnIvlj4vv
-vIzmiJHlnKjluIPln7rnurPms5XntKLnmoTkuIDlrrbpnZ7mtLLpk7booYwgKEJPQSkg5bel5L2c
-DQoNCuaIkeaDs+mAmui/hyBBVE0gVklTQSBDQVJEIOWwhuS4gOeslOW6n+W8g+eahCAyNzUwIOS4
-h+e+juWFg+i9rOe7meaCqO+8jDAuNTAlIOWwhuaYr+e7meaCqOeahOOAgiDkuI3mtonlj4rpo47p
-manjgIINCg0KDQrorrjlpJrpnZ7mtLLmlL/lrqLliKnnlKggKEJPQSkg6ZO26KGM5bCG6LWE6YeR
-77yI5pS/5a6i5o6g5aS65LqG6LaF6L+HIDUwDQrkur/nvo7lhYPvvInovaznp7vliLDku5bku6zn
-moTlpJblm73otKbmiLfvvIzku5bku6zkuZ/mh5Llvpfnn6XpgZPovaznp7vkuoblpJrlsJHvvIzl
-m6DkuLrov5nkupvotYTph5HlsZ7kuo7igJzlm73lrrbigJ0NCuS4uuS7gOS5iOaIkei/mOWGs+Wu
-muaKiueOsOWcqOmVv+acn+S/neeuoeWcqOaIkeS7rOmTtuihjOeahDI3NTDkuIfnvo7lhYPliIbl
-vIDvvIENCg0KICDmiJHlv4Xpobvnu5nkvaDmiYDmnInlv4XopoHnmoTmjIflr7zmlrnpkojvvIzo
-v5nmoLfkvaDlsLHkuI3kvJrniq/ku7vkvZXplJnor6/jgIIg5aaC5p6c5oKo5pyJ6IO95Yqb5aSE
-55CG5Lqk5piT77yM6K+36IGU57O75oiR5LqG6Kej5pu05aSa6K+m5oOF44CCIOivt+WbnuWkjeaI
-keeahOWkh+eUqOeUteWtkOmCruS7tuWcsOWdgA0KKG1yLmx1aXNmZXJuYW5kbzUwNTBAZ21haWwu
-Y29tKSBNci5sdWlzIEZlcm5hbmRvDQoNCg0KDQoNCkkgYW0gTXIubHVpcyBmZXJuYW5kbw0KDQpI
-aSBGcmllbmQgSSB3b3JrIGluIGEgQmFuayBmb3IgQWZyaWNhIChCT0EpIGhlcmUgaW4gQlVSS0lO
-QSBGQVNPDQoNCkkgd2FudHMgdG8gdHJhbnNmZXIgYW4gYWJhbmRvbmVkIHN1bSBvZiAyNy41IG1p
-bGxpb25zIFVTRCB0byB5b3UNCnRocm91Z2ggQVRNIFZJU0EgQ0FSRCAuNTAlIHdpbGwgYmUgZm9y
-IHlvdS4gTm8gcmlzayBpbnZvbHZlZC4NCg0KDQpUaGUgKEJPQSkgYmFuayB3YXMgYmVpbmcgdXNl
-ZCBieSBtYW55IEFmcmljYW4gUG9saXRpY2lhbnMgdG8gZGl2ZXJ0DQpmdW5kcyAodGhlIFBvbGl0
-aWNpYW5zIGxvb3RlZCBvdmVyNWJpbGxpb24gVW5pdGVkIFN0YXRlcyBkb2xsYXJzKSB0bw0KdGhl
-aXIgZm9yZWlnbiBhY2NvdW50cyBhbmQgdGhleSBkaWQgTm90IGJvdGhlciB0byBrbm93IGhvdyBt
-dWNoIHdhcw0KdHJhbnNmZXJyZWQgYmVjYXVzZSB0aGUgZnVuZHMgYmVsb25nZWQgdG8gdGhlICdT
-dGF0ZScgdGhhdCBpcyB3aHkgSQ0KYWxzbyBkZWNpZGVkIHRvIHB1dCBhcGFydCB0aGUgc3VtIG9m
-ICAkMjcuNW1pbGxpb24gRG9sbGFycyB3aGljaCBpcw0Kc3RpbGwgaW4gb3VyIGJhbmsgdW5kZXIg
-bXkgY3VzdG9keSBmb3IgYSBsb25nIHBlcmlvZCBub3chDQoNCiBJIGhhdmUgdG8gZ2l2ZSB5b3Ug
-YWxsIHRoZSByZXF1aXJlZCBndWlkZWxpbmVzIHNvIHRoYXQgeW91IGRvIG5vdA0KbWFrZSBhbnkg
-bWlzdGFrZS4gSWYgeW91IGFyZSBjYXBhYmxlIHRvIGhhbmRsZSB0aGUgdHJhbnNhY3Rpb24gQ29u
-dGFjdA0KbWUgZm9yIG1vcmUgZGV0YWlscy4gS2luZGx5IHJlcGx5IG1lIGJhY2sgdG8gbXkgYWx0
-ZXJuYXRpdmUgZW1haWwNCmFkZHJlc3MgKG1yLmx1aXNmZXJuYW5kbzUwNTBAZ21haWwuY29tKSBN
-ci5sdWlzIEZlcm5hbmRvDQo=
+From: Loic Poulain <loic.poulain@linaro.org>
+
+For whatever reason, some devices like QCA6390, WCN6855 using ath11k
+are not in M3 state during PM resume, but still functional. The
+mhi_pm_resume should then not fail in those cases, and let the higher
+level device specific stack continue resuming process.
+
+Add a new parameter to mhi_pm_resume, to force resuming, whatever the
+current MHI state is. This fixes a regression with non functional
+ath11k WiFi after suspend/resume cycle on some machines.
+
+Bug report: https://bugzilla.kernel.org/show_bug.cgi?id=214179
+
+Cc: stable@vger.kernel.org #5.13
+Fixes: 020d3b26c07a ("bus: mhi: Early MHI resume failure in non M3 state")
+Reported-by: Kalle Valo <kvalo@codeaurora.org>
+Reported-by: Pengyu Ma <mapengyu@gmail.com>
+Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+[mani: Added comment, bug report, added reported-by tags and CCed stable]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+ drivers/bus/mhi/core/pm.c             | 10 +++++++---
+ drivers/bus/mhi/pci_generic.c         |  2 +-
+ drivers/net/wireless/ath/ath11k/mhi.c |  6 +++++-
+ include/linux/mhi.h                   |  3 ++-
+ 4 files changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/bus/mhi/core/pm.c b/drivers/bus/mhi/core/pm.c
+index 7464f5d09973..4ddd266e042e 100644
+--- a/drivers/bus/mhi/core/pm.c
++++ b/drivers/bus/mhi/core/pm.c
+@@ -881,7 +881,7 @@ int mhi_pm_suspend(struct mhi_controller *mhi_cntrl)
+ }
+ EXPORT_SYMBOL_GPL(mhi_pm_suspend);
+ 
+-int mhi_pm_resume(struct mhi_controller *mhi_cntrl)
++int mhi_pm_resume(struct mhi_controller *mhi_cntrl, bool force)
+ {
+ 	struct mhi_chan *itr, *tmp;
+ 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+@@ -898,8 +898,12 @@ int mhi_pm_resume(struct mhi_controller *mhi_cntrl)
+ 	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state))
+ 		return -EIO;
+ 
+-	if (mhi_get_mhi_state(mhi_cntrl) != MHI_STATE_M3)
+-		return -EINVAL;
++	if (mhi_get_mhi_state(mhi_cntrl) != MHI_STATE_M3) {
++		dev_warn(dev, "Resuming from non M3 state (%s)\n",
++			 TO_MHI_STATE_STR(mhi_get_mhi_state(mhi_cntrl)));
++		if (!force)
++			return -EINVAL;
++	}
+ 
+ 	/* Notify clients about exiting LPM */
+ 	list_for_each_entry_safe(itr, tmp, &mhi_cntrl->lpm_chans, node) {
+diff --git a/drivers/bus/mhi/pci_generic.c b/drivers/bus/mhi/pci_generic.c
+index 9ef41354237c..efd1da66fdf9 100644
+--- a/drivers/bus/mhi/pci_generic.c
++++ b/drivers/bus/mhi/pci_generic.c
+@@ -959,7 +959,7 @@ static int __maybe_unused mhi_pci_runtime_resume(struct device *dev)
+ 		return 0; /* Nothing to do at MHI level */
+ 
+ 	/* Exit M3, transition to M0 state */
+-	err = mhi_pm_resume(mhi_cntrl);
++	err = mhi_pm_resume(mhi_cntrl, false);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "failed to resume device: %d\n", err);
+ 		goto err_recovery;
+diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+index 26c7ae242db6..f1f2fa2d690d 100644
+--- a/drivers/net/wireless/ath/ath11k/mhi.c
++++ b/drivers/net/wireless/ath/ath11k/mhi.c
+@@ -533,7 +533,11 @@ static int ath11k_mhi_set_state(struct ath11k_pci *ab_pci,
+ 		ret = mhi_pm_suspend(ab_pci->mhi_ctrl);
+ 		break;
+ 	case ATH11K_MHI_RESUME:
+-		ret = mhi_pm_resume(ab_pci->mhi_ctrl);
++		/* Do force MHI resume as some devices like QCA6390, WCN6855
++		 * are not in M3 state but they are functional. So just ignore
++		 * the MHI state while resuming.
++		 */
++		ret = mhi_pm_resume(ab_pci->mhi_ctrl, true);
+ 		break;
+ 	case ATH11K_MHI_TRIGGER_RDDM:
+ 		ret = mhi_force_rddm_mode(ab_pci->mhi_ctrl);
+diff --git a/include/linux/mhi.h b/include/linux/mhi.h
+index 723985879035..102303288cee 100644
+--- a/include/linux/mhi.h
++++ b/include/linux/mhi.h
+@@ -660,8 +660,9 @@ int mhi_pm_suspend(struct mhi_controller *mhi_cntrl);
+ /**
+  * mhi_pm_resume - Resume MHI from suspended state
+  * @mhi_cntrl: MHI controller
++ * @force: Force resuming to M0 irrespective of the device MHI state
+  */
+-int mhi_pm_resume(struct mhi_controller *mhi_cntrl);
++int mhi_pm_resume(struct mhi_controller *mhi_cntrl, bool force);
+ 
+ /**
+  * mhi_download_rddm_image - Download ramdump image from device for
+-- 
+2.25.1
+
