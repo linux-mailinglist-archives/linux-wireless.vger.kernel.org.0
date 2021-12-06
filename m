@@ -2,460 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DBFA469822
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Dec 2021 15:10:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45B46469957
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Dec 2021 15:44:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245646AbhLFOOO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Dec 2021 09:14:14 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:54532 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S245673AbhLFOOH (ORCPT
+        id S1344536AbhLFOr4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Dec 2021 09:47:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48582 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238895AbhLFOrw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Dec 2021 09:14:07 -0500
-X-UUID: 5dde3c35272f4919a7a6d53679afc9cc-20211206
-X-UUID: 5dde3c35272f4919a7a6d53679afc9cc-20211206
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <meichia.chiu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 710644008; Mon, 06 Dec 2021 22:10:34 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Mon, 6 Dec 2021 22:10:33 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 6 Dec 2021 22:10:33 +0800
-From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Money Wang <Money.Wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        MeiChia Chiu <meichia.chiu@mediatek.com>
-Subject: [PATCH] mt76: mt7915: add mu-mimo and ofdma debugfs knobs
-Date:   Mon, 6 Dec 2021 22:10:06 +0800
-Message-ID: <20211206141006.29632-1-MeiChia.Chiu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Mon, 6 Dec 2021 09:47:52 -0500
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA94C061746
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Dec 2021 06:44:24 -0800 (PST)
+Received: by mail-lj1-x232.google.com with SMTP id e11so21308562ljo.13
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Dec 2021 06:44:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=7Z4bIWUJcNwasnOvZT//wASf4/xDxe1Cc4BxfIfuhGs=;
+        b=KF7LwYmPne6Xorhn0oztICq+VirZWa2r4Nl1jeG4iaoTWU2sao80grxX9m30emJgG7
+         CUjBQ9a3ki2JUmD7RGNG7FX7CbiWqEnsTIxqzjwrwLYOpGLxzb/qkSZh84XBIhbph/z9
+         RDVj+89g4mhPePp0mTzbBUUZB8EbWDL4te7A2wFcX+3KJNyTA5H+CAZwr3xPtCRnZeWI
+         knlp/PD1yEVXyIBZgHLxl1kpqo5hF08Cnc+kzDB6xFbVlA/g9VXvg3oiw6PaVUCtuGtn
+         9exbQDTiC8NZh330guzNvLvT1GedEUuzWj5aq2xV8PsofaKpg5XDR5VJTdvRFPaxg3mm
+         FGPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=7Z4bIWUJcNwasnOvZT//wASf4/xDxe1Cc4BxfIfuhGs=;
+        b=oHITZmZCVTyBqoQn6rwTcaoEmxJqrWynweGVxeQubhOxb/0vveuppb+RbOMcSmsFQS
+         O2SK9j9J3hPdUR0vP+2Qqxkj7r+3Jqd6Lt6h3rkZPIr/GAx3RLl3t9GMslHJLY1lvw66
+         r/Y9JfxL8cUiqr8iTGnVr+q13hGz89B5mtoleiEZVMAVQ7eMbXUS7DBUD4CA3VU1VWdO
+         xuKZ9Te6yOV2vU3dWlVyvW4U1a1E/+vtabgn4Fo+fp0e+//KXv0FSmq+gTzD/qvCoNG+
+         ABuCiaJ89pJ7zDV1hRLAlBT7xHlkKkoLNGHF6/GZuBCLnvfzRAE2XN1j5hty/KYaCG1D
+         wKCA==
+X-Gm-Message-State: AOAM532mhJN+KbWysqRSb4/vnZeJ6+yf85lqMGs/vAQjc8M+9JghoQ6g
+        Lt4QUmkCah42+7H4om7mynQfXSV2TFUXB7yX2ew=
+X-Google-Smtp-Source: ABdhPJxohaPaTW+Xu0dJ4YK+tIt8j3cx6TCNl9R3TGf8AANnBWZEs1dz3ZMIMBsCyDMt+zfTcCscqGy+YadSPrKBhdY=
+X-Received: by 2002:a2e:9c58:: with SMTP id t24mr35651043ljj.506.1638801862207;
+ Mon, 06 Dec 2021 06:44:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Received: by 2002:ac2:5ec6:0:0:0:0:0 with HTTP; Mon, 6 Dec 2021 06:44:21 -0800 (PST)
+Reply-To: mohammedshamekh24@gmail.com
+From:   Mrmohammed shamekh <expoimpo2000@gmail.com>
+Date:   Mon, 6 Dec 2021 06:44:21 -0800
+Message-ID: <CANOAVM3HTYw=T9-V=GOKJ9n_KsZe2A_X06bENODuud4ecs_GMg@mail.gmail.com>
+Subject: THE AMOUNT IS 27.5 MILLIOMS USD
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: MeiChia Chiu <meichia.chiu@mediatek.com>
-
-Add mu-mimo and ofdma packet counters statistics.
-
-Reviewed-by: Money Wang <money.wang@mediatek.com>
-Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7915/debugfs.c | 242 ++++++++++++++++++++++++++++++++++++++++++++++-
- .../net/wireless/mediatek/mt76/mt7915/mcu.c     |  41 ++++++++
- .../net/wireless/mediatek/mt76/mt7915/mcu.h     |  45 +++++++++
- .../net/wireless/mediatek/mt76/mt7915/mt7915.h  |   3 +
- 4 files changed, 330 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index a15aa256..b57818b3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -81,6 +81,244 @@ mt7915_radar_trigger(void *data, u64 val)
- DEFINE_DEBUGFS_ATTRIBUTE(fops_radar_trigger, NULL,
- 			 mt7915_radar_trigger, "%lld\n");
- 
-+static int
-+mt7915_muru_debug_set(void *data, u64 val)
-+{
-+	struct mt7915_dev *dev = data;
-+
-+	dev->muru_debug = val;
-+	mt7915_mcu_muru_debug_set(dev, data);
-+
-+	return 0;
-+}
-+
-+static int
-+mt7915_muru_debug_get(void *data, u64 *val)
-+{
-+	struct mt7915_dev *dev = data;
-+
-+	*val = dev->muru_debug;
-+
-+	return 0;
-+}
-+
-+DEFINE_DEBUGFS_ATTRIBUTE(fops_muru_debug, mt7915_muru_debug_get,
-+			 mt7915_muru_debug_set, "%lld\n");
-+
-+static int mt7915_muru_stat_show(struct seq_file *file, void *data)
-+{
-+	struct mt7915_phy *phy = file->private;
-+	struct mt7915_dev *dev = phy->dev;
-+	struct mt7915_mcu_muru_stats mu_stats = {};
-+	static const char * const dl_non_he_type[] = {
-+		"CCK", "OFDM", "HT MIX", "HT GF",
-+		"VHT SU", "VHT 2MU", "VHT 3MU", "VHT 4MU"
-+	};
-+	static const char * const dl_he_type[] = {
-+		"HE SU", "HE EXT", "HE 2MU", "HE 3MU", "HE 4MU",
-+		"HE 2RU", "HE 3RU", "HE 4RU", "HE 5-8RU", "HE 9-16RU",
-+		"HE >16RU"
-+	};
-+	static const char * const ul_he_type[] = {
-+		"HE 2MU", "HE 3MU", "HE 4MU", "HE SU", "HE 2RU",
-+		"HE 3RU", "HE 4RU", "HE 5-8RU", "HE 9-16RU", "HE >16RU"
-+	};
-+	int ret, i;
-+	__le32 total_ppdu_cnt;
-+
-+	if (!dev->muru_debug) {
-+		seq_puts(file, "Please enable muru_debug first.\n");
-+		return 0;
-+	}
-+
-+	mutex_lock(&dev->mt76.mutex);
-+
-+	ret = mt7915_mcu_muru_debug_get(phy, &mu_stats);
-+	if (ret)
-+		goto exit;
-+
-+#define __ms_ratio(s)	(!total_ppdu_cnt ? 0 :			  \
-+		le32_to_cpu(s) * 100 / le32_to_cpu(total_ppdu_cnt))
-+
-+	/* Non-HE Downlink*/
-+	total_ppdu_cnt = mu_stats.dl.cck_cnt +
-+		mu_stats.dl.ofdm_cnt +
-+		mu_stats.dl.htmix_cnt +
-+		mu_stats.dl.htgf_cnt +
-+		mu_stats.dl.vht_su_cnt +
-+		mu_stats.dl.vht_2mu_cnt +
-+		mu_stats.dl.vht_3mu_cnt +
-+		mu_stats.dl.vht_4mu_cnt;
-+
-+	seq_puts(file, "[Non-HE]\nDownlink\nData Type:  ");
-+
-+	for (i = 0; i < 5; i++)
-+		seq_printf(file, "%8s | ", dl_non_he_type[i]);
-+
-+	seq_puts(file, "\nTotal Cnt:  ");
-+	seq_printf(file, "%8u | %8u | %8u | %8u | %8u | ",
-+		   le32_to_cpu(mu_stats.dl.cck_cnt),
-+		   le32_to_cpu(mu_stats.dl.ofdm_cnt),
-+		   le32_to_cpu(mu_stats.dl.htmix_cnt),
-+		   le32_to_cpu(mu_stats.dl.htgf_cnt),
-+		   le32_to_cpu(mu_stats.dl.vht_su_cnt));
-+
-+	seq_puts(file, "\nRatio    :  ");
-+	seq_printf(file, "%7d%% | %7d%% | %7d%% | %7d%% | %7d%% | ",
-+		   __ms_ratio(mu_stats.dl.cck_cnt),
-+		   __ms_ratio(mu_stats.dl.ofdm_cnt),
-+		   __ms_ratio(mu_stats.dl.htmix_cnt),
-+		   __ms_ratio(mu_stats.dl.htgf_cnt),
-+		   __ms_ratio(mu_stats.dl.vht_su_cnt));
-+
-+	seq_puts(file, "\nDownlink MU-MIMO\nData Type:  ");
-+
-+	for (i = 5; i < 8; i++)
-+		seq_printf(file, "%8s | ", dl_non_he_type[i]);
-+
-+	seq_puts(file, "\nTotal Cnt:  ");
-+	seq_printf(file, "%8u | %8u | %8u | ",
-+		   le32_to_cpu(mu_stats.dl.vht_2mu_cnt),
-+		   le32_to_cpu(mu_stats.dl.vht_3mu_cnt),
-+		   le32_to_cpu(mu_stats.dl.vht_4mu_cnt));
-+
-+	seq_puts(file, "\nRatio    :  ");
-+	seq_printf(file, "%7d%% | %7d%% | %7d%% | ",
-+		   __ms_ratio(mu_stats.dl.vht_2mu_cnt),
-+		   __ms_ratio(mu_stats.dl.vht_3mu_cnt),
-+		   __ms_ratio(mu_stats.dl.vht_4mu_cnt));
-+
-+	/* HE Downlink */
-+	total_ppdu_cnt = mu_stats.dl.he_su_cnt +
-+		mu_stats.dl.he_ext_su_cnt +
-+		mu_stats.dl.he_2mu_cnt +
-+		mu_stats.dl.he_3mu_cnt +
-+		mu_stats.dl.he_4mu_cnt +
-+		mu_stats.dl.he_2ru_cnt +
-+		mu_stats.dl.he_3ru_cnt +
-+		mu_stats.dl.he_4ru_cnt +
-+		mu_stats.dl.he_5to8ru_cnt +
-+		mu_stats.dl.he_9to16ru_cnt +
-+		mu_stats.dl.he_gtr16ru_cnt;
-+
-+	seq_puts(file, "\n\n[HE]\nDownlink\nData Type:  ");
-+
-+	for (i = 0; i < 2; i++)
-+		seq_printf(file, "%8s | ", dl_he_type[i]);
-+
-+	seq_puts(file, "\nTotal Cnt:  ");
-+	seq_printf(file, "%8u | %8u | ",
-+		   le32_to_cpu(mu_stats.dl.he_su_cnt),
-+		   le32_to_cpu(mu_stats.dl.he_ext_su_cnt));
-+
-+	seq_puts(file, "\nRatio    :  ");
-+	seq_printf(file, "%7d%% | %7d%% | ",
-+		   __ms_ratio(mu_stats.dl.he_su_cnt),
-+		   __ms_ratio(mu_stats.dl.he_ext_su_cnt));
-+
-+	seq_puts(file, "\nDownlink MU-MIMO\nData Type:  ");
-+
-+	for (i = 2; i < 5; i++)
-+		seq_printf(file, "%8s | ", dl_he_type[i]);
-+
-+	seq_puts(file, "\nTotal Cnt:  ");
-+	seq_printf(file, "%8u | %8u | %8u | ",
-+		   le32_to_cpu(mu_stats.dl.he_2mu_cnt),
-+		   le32_to_cpu(mu_stats.dl.he_3mu_cnt),
-+		   le32_to_cpu(mu_stats.dl.he_4mu_cnt));
-+
-+	seq_puts(file, "\nRatio    :  ");
-+	seq_printf(file, "%7d%% | %7d%% | %7d%% | ",
-+		   __ms_ratio(mu_stats.dl.he_2mu_cnt),
-+		   __ms_ratio(mu_stats.dl.he_3mu_cnt),
-+		   __ms_ratio(mu_stats.dl.he_4mu_cnt));
-+
-+	seq_puts(file, "\nDownlink OFDMA\nData Type:  ");
-+
-+	for (i = 5; i < 11; i++)
-+		seq_printf(file, "%8s | ", dl_he_type[i]);
-+
-+	seq_puts(file, "\nTotal Cnt:  ");
-+	seq_printf(file, "%8u | %8u | %8u | %8u | %9u | %8u | ",
-+		   le32_to_cpu(mu_stats.dl.he_2ru_cnt),
-+		   le32_to_cpu(mu_stats.dl.he_3ru_cnt),
-+		   le32_to_cpu(mu_stats.dl.he_4ru_cnt),
-+		   le32_to_cpu(mu_stats.dl.he_5to8ru_cnt),
-+		   le32_to_cpu(mu_stats.dl.he_9to16ru_cnt),
-+		   le32_to_cpu(mu_stats.dl.he_gtr16ru_cnt));
-+
-+	seq_puts(file, "\nRatio    :  ");
-+	seq_printf(file, "%7d%% | %7d%% | %7d%% | %7d%% | %8d%% | %7d%% | ",
-+		   __ms_ratio(mu_stats.dl.he_2ru_cnt),
-+		   __ms_ratio(mu_stats.dl.he_3ru_cnt),
-+		   __ms_ratio(mu_stats.dl.he_4ru_cnt),
-+		   __ms_ratio(mu_stats.dl.he_5to8ru_cnt),
-+		   __ms_ratio(mu_stats.dl.he_9to16ru_cnt),
-+		   __ms_ratio(mu_stats.dl.he_gtr16ru_cnt));
-+
-+	/* HE Uplink */
-+	total_ppdu_cnt = mu_stats.ul.hetrig_2ru_cnt +
-+		mu_stats.ul.hetrig_3ru_cnt +
-+		mu_stats.ul.hetrig_4ru_cnt +
-+		mu_stats.ul.hetrig_5to8ru_cnt +
-+		mu_stats.ul.hetrig_9to16ru_cnt +
-+		mu_stats.ul.hetrig_gtr16ru_cnt +
-+		mu_stats.ul.hetrig_su_cnt +
-+		mu_stats.ul.hetrig_2mu_cnt +
-+		mu_stats.ul.hetrig_3mu_cnt +
-+		mu_stats.ul.hetrig_4mu_cnt;
-+
-+	seq_puts(file, "\n\nUplink\nData Type:  ");
-+	seq_puts(file, "\nTrigger-based Uplink MU-MIMO\nData Type:  ");
-+
-+	for (i = 0; i < 3; i++)
-+		seq_printf(file, "%8s | ", ul_he_type[i]);
-+
-+	seq_puts(file, "\nTotal Cnt:  ");
-+	seq_printf(file, "%8u | %8u | %8u | ",
-+		   le32_to_cpu(mu_stats.ul.hetrig_2mu_cnt),
-+		   le32_to_cpu(mu_stats.ul.hetrig_3mu_cnt),
-+		   le32_to_cpu(mu_stats.ul.hetrig_4mu_cnt));
-+
-+	seq_puts(file, "\nRatio    :  ");
-+	seq_printf(file, "%7d%% | %7d%% | %7d%% | ",
-+		   __ms_ratio(mu_stats.ul.hetrig_2mu_cnt),
-+		   __ms_ratio(mu_stats.ul.hetrig_3mu_cnt),
-+		   __ms_ratio(mu_stats.ul.hetrig_4mu_cnt));
-+
-+	seq_puts(file, "\nTrigger-based Uplink OFDMA\nData Type:  ");
-+
-+	for (i = 3; i < 10; i++)
-+		seq_printf(file, "%8s | ", ul_he_type[i]);
-+
-+	seq_puts(file, "\nTotal Cnt:  ");
-+	seq_printf(file, "%8u | %8u | %8u | %8u | %8u | %9u |  %7u | ",
-+		   le32_to_cpu(mu_stats.ul.hetrig_su_cnt),
-+		   le32_to_cpu(mu_stats.ul.hetrig_2ru_cnt),
-+		   le32_to_cpu(mu_stats.ul.hetrig_3ru_cnt),
-+		   le32_to_cpu(mu_stats.ul.hetrig_4ru_cnt),
-+		   le32_to_cpu(mu_stats.ul.hetrig_5to8ru_cnt),
-+		   le32_to_cpu(mu_stats.ul.hetrig_9to16ru_cnt),
-+		   le32_to_cpu(mu_stats.ul.hetrig_gtr16ru_cnt));
-+
-+	seq_puts(file, "\nRatio    :  ");
-+	seq_printf(file, "%7d%% | %7d%% | %7d%% | %7d%% | %7d%% |  %7d%% | %7d%% |\n",
-+		   __ms_ratio(mu_stats.ul.hetrig_su_cnt),
-+		   __ms_ratio(mu_stats.ul.hetrig_2ru_cnt),
-+		   __ms_ratio(mu_stats.ul.hetrig_3ru_cnt),
-+		   __ms_ratio(mu_stats.ul.hetrig_4ru_cnt),
-+		   __ms_ratio(mu_stats.ul.hetrig_5to8ru_cnt),
-+		   __ms_ratio(mu_stats.ul.hetrig_9to16ru_cnt),
-+		   __ms_ratio(mu_stats.ul.hetrig_gtr16ru_cnt));
-+#undef __ms_ratio
-+
-+exit:
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	return ret;
-+}
-+DEFINE_SHOW_ATTRIBUTE(mt7915_muru_stat);
-+
- static int
- mt7915_fw_debug_wm_set(void *data, u64 val)
- {
-@@ -528,7 +766,9 @@ int mt7915_init_debugfs(struct mt7915_phy *phy)
- 	dir = mt76_register_debugfs_fops(phy->mt76, NULL);
- 	if (!dir)
- 		return -ENOMEM;
--
-+	debugfs_create_file("muru_debug", 0600, dir, dev, &fops_muru_debug);
-+	debugfs_create_file("muru_stat", 0400, dir, phy,
-+			    &mt7915_muru_stat_fops);
- 	debugfs_create_file("hw-queues", 0400, dir, phy,
- 			    &mt7915_hw_queues_fops);
- 	debugfs_create_file("xmit-queues", 0400, dir, phy,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 73a11448..a32d2199 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2993,6 +2993,47 @@ int mt7915_mcu_fw_dbg_ctrl(struct mt7915_dev *dev, u32 module, u8 level)
- 				 sizeof(data), false);
- }
- 
-+int mt7915_mcu_muru_debug_set(struct mt7915_dev *dev, bool enabled)
-+{
-+	struct {
-+		__le32 cmd;
-+		u8 enable;
-+	} data = {
-+		.cmd = cpu_to_le32(MURU_SET_TXC_TX_STATS_EN),
-+		.enable = enabled,
-+	};
-+
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(MURU_CTRL), &data,
-+				sizeof(data), false);
-+}
-+
-+int mt7915_mcu_muru_debug_get(struct mt7915_phy *phy, void *ms)
-+{
-+	struct mt7915_dev *dev = phy->dev;
-+	struct sk_buff *skb;
-+	struct mt7915_mcu_muru_stats *mu_stats =
-+				(struct mt7915_mcu_muru_stats *)ms;
-+	int ret;
-+
-+	struct {
-+		__le32 cmd;
-+		u8 band_idx;
-+	} req = {
-+		.cmd = cpu_to_le32(MURU_GET_TXC_TX_STATS),
-+		.band_idx = phy != &dev->phy,
-+	};
-+
-+	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_CMD(MURU_CTRL),
-+					&req, sizeof(req), true, &skb);
-+	if (ret)
-+		return ret;
-+
-+	memcpy(mu_stats, skb->data, sizeof(struct mt7915_mcu_muru_stats));
-+	dev_kfree_skb(skb);
-+
-+	return 0;
-+}
-+
- static int mt7915_mcu_set_mwds(struct mt7915_dev *dev, bool enabled)
- {
- 	struct {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 4636b7dc..60b18457 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -44,6 +44,13 @@ enum {
- 	MCU_EXT_EVENT_RDD_REPORT = 0x3a,
- 	MCU_EXT_EVENT_CSA_NOTIFY = 0x4f,
- 	MCU_EXT_EVENT_BCC_NOTIFY = 0x75,
-+	MCU_EXT_EVENT_MURU_CTRL = 0x9f,
-+};
-+
-+/* tx cmd tx statistics */
-+enum {
-+	MURU_SET_TXC_TX_STATS_EN = 150,
-+	MURU_GET_TXC_TX_STATS = 151,
- };
- 
- enum {
-@@ -206,6 +213,44 @@ struct mt7915_mcu_tx {
- 	struct edca edca[IEEE80211_NUM_ACS];
- } __packed;
- 
-+struct mt7915_mcu_muru_stats {
-+	__le32 event_id;
-+	struct {
-+		__le32 cck_cnt;
-+		__le32 ofdm_cnt;
-+		__le32 htmix_cnt;
-+		__le32 htgf_cnt;
-+		__le32 vht_su_cnt;
-+		__le32 vht_2mu_cnt;
-+		__le32 vht_3mu_cnt;
-+		__le32 vht_4mu_cnt;
-+		__le32 he_su_cnt;
-+		__le32 he_ext_su_cnt;
-+		__le32 he_2ru_cnt;
-+		__le32 he_2mu_cnt;
-+		__le32 he_3ru_cnt;
-+		__le32 he_3mu_cnt;
-+		__le32 he_4ru_cnt;
-+		__le32 he_4mu_cnt;
-+		__le32 he_5to8ru_cnt;
-+		__le32 he_9to16ru_cnt;
-+		__le32 he_gtr16ru_cnt;
-+	} dl;
-+
-+	struct {
-+		__le32 hetrig_su_cnt;
-+		__le32 hetrig_2ru_cnt;
-+		__le32 hetrig_3ru_cnt;
-+		__le32 hetrig_4ru_cnt;
-+		__le32 hetrig_5to8ru_cnt;
-+		__le32 hetrig_9to16ru_cnt;
-+		__le32 hetrig_gtr16ru_cnt;
-+		__le32 hetrig_2mu_cnt;
-+		__le32 hetrig_3mu_cnt;
-+		__le32 hetrig_4mu_cnt;
-+	} ul;
-+};
-+
- #define WMM_AIFS_SET		BIT(0)
- #define WMM_CW_MIN_SET		BIT(1)
- #define WMM_CW_MAX_SET		BIT(2)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index c6c846d1..81f1ab18 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -273,6 +273,7 @@ struct mt7915_dev {
- 
- 	bool dbdc_support;
- 	bool flash_mode;
-+	bool muru_debug;
- 	bool ibf;
- 	u8 fw_debug_wm;
- 	u8 fw_debug_wa;
-@@ -526,6 +527,8 @@ int mt7915_dfs_init_radar_detector(struct mt7915_phy *phy);
- void mt7915_set_stream_he_caps(struct mt7915_phy *phy);
- void mt7915_set_stream_vht_txbf_caps(struct mt7915_phy *phy);
- void mt7915_update_channel(struct mt76_phy *mphy);
-+int mt7915_mcu_muru_debug_set(struct mt7915_dev *dev, bool enable);
-+int mt7915_mcu_muru_debug_get(struct mt7915_phy *phy, void *ms);
- int mt7915_init_debugfs(struct mt7915_phy *phy);
- #ifdef CONFIG_MAC80211_DEBUGFS
- void mt7915_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
--- 
-2.29.2
-
+RGVhcsKgRnJpZW5kLA0KDQpHcmVldGluZ3MuDQoNCkhvd8KgYXJlwqB5b3XCoGRvaW5nwqB0b2Rh
+ecKgacKgaG9wZcKgZmluZT8NCg0KScKgY2FtZcKgYWNyb3NzwqB5b3VywqBlLW1haWzCoGNvbnRh
+Y3TCoHByaW9ywqBhwqBwcml2YXRlwqBzZWFyY2jCoHdoaWxlwqBpbsKgbmVlZA0Kb2bCoHlvdXLC
+oGFzc2lzdGFuY2UuwqBNecKgbmFtZcKgIE1yICBtb2hhbW1lZCAgIHNoYW1la2ggIOKAmcKgScKg
+d29ya8Kgd2l0aMKgdGhlDQpkZXBhcnRtZW50wqBvZsKgQXVkaXTCoGFuZMKgYWNjb3VudGluZ8Kg
+bWFuYWdlcsKgaGVyZcKgaW7CoFVCQcKgQmFua8Kgb2bCoEFmcmljYSwNClRoZXJlwqBpc8KgdGhp
+c8KgZnVuZMKgdGhhdMKgd2FzwqBrZWVwwqBpbsKgbXnCoGN1c3RvZHnCoHllYXJzwqBhZ2/CoGFu
+ZMKgScKgbmVlZA0KeW91csKgYXNzaXN0YW5jZcKgZm9ywqB0aGXCoHRyYW5zZmVycmluZ8Kgb2bC
+oHRoaXPCoGZ1bmTCoHRvwqB5b3VywqBiYW5rwqBhY2NvdW50DQpmb3LCoGJvdGjCoG9mwqB1c8Kg
+YmVuZWZpdMKgZm9ywqBsaWZlwqB0aW1lwqBpbnZlc3RtZW50wqBhbmTCoHRoZcKgYW1vdW50wqBp
+c8KgKFVTDQokMjcsNTAwLsKgTWlsbGlvbsKgRG9sbGFycykuDQoNCknCoGhhdmXCoGV2ZXJ5wqBp
+bnF1aXJ5wqBkZXRhaWxzwqB0b8KgbWFrZcKgdGhlwqBiYW5rwqBiZWxpZXZlwqB5b3XCoGFuZMKg
+cmVsZWFzZQ0KdGhlwqBmdW5kwqB0b8KgeW91csKgYmFua8KgYWNjb3VudMKgaW7CoHdpdGhpbsKg
+N8KgYmFua2luZ8Kgd29ya2luZ8KgZGF5c8Kgd2l0aA0KeW91csKgZnVsbMKgY28tb3BlcmF0aW9u
+wqB3aXRowqBtZcKgYWZ0ZXLCoHN1Y2Nlc3PCoE5vdGXCoDUwJcKgZm9ywqB5b3XCoHdoaWxlDQo1
+MCXCoGZvcsKgbWXCoGFmdGVywqBzdWNjZXNzwqBvZsKgdGhlwqB0cmFuc2ZlcsKgb2bCoHRoZcKg
+ZnVuZHPCoHRvwqB5b3VywqBiYW5rDQphY2NvdW50wqBva2F5Lg0KDQpXQUlUSU5HwqBUT8KgSEVB
+UsKgRlJPTcKgWU9VLg0KVEhBTktTLg0KDQogTXIgIG1vaGFtbWVkICAgc2hhbWVraCAsDQo=
