@@ -2,91 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7099346A19C
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Dec 2021 17:43:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0B7346A324
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Dec 2021 18:39:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230391AbhLFQrO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Dec 2021 11:47:14 -0500
-Received: from dispatch1-us1.ppe-hosted.com ([67.231.154.184]:57638 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230445AbhLFQrO (ORCPT
+        id S243691AbhLFRmz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Dec 2021 12:42:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36354 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243631AbhLFRmy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Dec 2021 11:47:14 -0500
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.110.51.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 9136C1A0065;
-        Mon,  6 Dec 2021 16:43:44 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id ACCFE20007F;
-        Mon,  6 Dec 2021 16:43:43 +0000 (UTC)
-Received: from [192.168.1.115] (unknown [98.97.71.183])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 8345013C2B0;
-        Mon,  6 Dec 2021 08:43:42 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8345013C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1638809023;
-        bh=np4Kl8GmuBDzrnUel5OsncrVAHrzKSAOfRMvGQ5jMGo=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=aN2suCBu+kriULJRA2QHq0rE7QxtsS9xR4Was4e7iI3MNDItSZXPsuNLaw1cHpHzb
-         heq/HMGxA6bzqDxf8RjX8/JyilganIe7DE6M6gHXUDwof/RDGK8n4AqY24faKBLU29
-         R9HLiLGP7gG2605uxVf2nUM65OMVBxA0+ueVcQ6s=
-Subject: Re: [PATCH] mt76: mt7915: add mu-mimo and ofdma debugfs knobs
-To:     MeiChia Chiu <MeiChia.Chiu@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Money Wang <Money.Wang@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <20211206141006.29632-1-MeiChia.Chiu@mediatek.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <7158a937-57f3-2bd8-591e-124a18d2d8e8@candelatech.com>
-Date:   Mon, 6 Dec 2021 08:43:36 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        Mon, 6 Dec 2021 12:42:54 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A957C061746;
+        Mon,  6 Dec 2021 09:39:24 -0800 (PST)
+Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1muHxR-0004bW-B6; Mon, 06 Dec 2021 18:39:21 +0100
+Message-ID: <2a181fd4-9248-d68d-7eee-43b19db96461@leemhuis.info>
+Date:   Mon, 6 Dec 2021 18:39:19 +0100
 MIME-Version: 1.0
-In-Reply-To: <20211206141006.29632-1-MeiChia.Chiu@mediatek.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
-X-MDID: 1638809025-cW1BdMLclNrt
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH] bus: mhi: core: Add support for forced PM resume
+Content-Language: en-BS
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        mhi@lists.linux.dev
+Cc:     hemantk@codeaurora.org, bbhatt@codeaurora.org,
+        loic.poulain@linaro.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
+        stable@vger.kernel.org, Pengyu Ma <mapengyu@gmail.com>
+References: <20211206161059.107007-1-manivannan.sadhasivam@linaro.org>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <20211206161059.107007-1-manivannan.sadhasivam@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1638812365;83c3bb91;
+X-HE-SMSGID: 1muHxR-0004bW-B6
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/6/21 6:10 AM, MeiChia Chiu wrote:
-> From: MeiChia Chiu <meichia.chiu@mediatek.com>
+
+Hi, this is your Linux kernel regression tracker speaking.
+
+On 06.12.21 17:10, Manivannan Sadhasivam wrote:
+> From: Loic Poulain <loic.poulain@linaro.org>
 > 
-> Add mu-mimo and ofdma packet counters statistics.
-
-Hello,
-
-Are these stats clear-on-read in the firmware?  If so, then we need to accumulate
-them in the driver.
-
-Is there any significant downside to enabling the stats?  For instance, a performance
-degradation in the firmware/hardware?
-
-Thanks,
-Ben
-
+> For whatever reason, some devices like QCA6390, WCN6855 using ath11k
+> are not in M3 state during PM resume, but still functional. The
+> mhi_pm_resume should then not fail in those cases, and let the higher
+> level device specific stack continue resuming process.
 > 
-> Reviewed-by: Money Wang <money.wang@mediatek.com>
-> Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
-> Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
-> ---
->   .../net/wireless/mediatek/mt76/mt7915/debugfs.c | 242 ++++++++++++++++++++++++++++++++++++++++++++++-
->   .../net/wireless/mediatek/mt76/mt7915/mcu.c     |  41 ++++++++
->   .../net/wireless/mediatek/mt76/mt7915/mcu.h     |  45 +++++++++
->   .../net/wireless/mediatek/mt76/mt7915/mt7915.h  |   3 +
->   4 files changed, 330 insertions(+), 1 deletion(-)
+> Add a new parameter to mhi_pm_resume, to force resuming, whatever the
+> current MHI state is. This fixes a regression with non functional
+> ath11k WiFi after suspend/resume cycle on some machines.
 > 
+> Bug report: https://bugzilla.kernel.org/show_bug.cgi?id=214179
+> 
+> Cc: stable@vger.kernel.org #5.13
+> Fixes: 020d3b26c07a ("bus: mhi: Early MHI resume failure in non M3 state")
+> Reported-by: Kalle Valo <kvalo@codeaurora.org>
+> Reported-by: Pengyu Ma <mapengyu@gmail.com>
 
+FWIW: In case you need to send an improved patch, could you please add
+this before the 'Reported-by:' (see (¹) below for the reasoning):
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Link: https://lore.kernel.org/regressions/871r5p0x2u.fsf@codeaurora.org/
+
+And if the patch is already good to go: could the subsystem maintainer
+please add it when applying? See(¹) for the reasoning.
+
+Thx.
+
+Ciao, Thorsten, your Linux kernel regression tracker.
+
+(¹) Long story: The commit message would benefit from a link to the
+regression report on the mailing list, for reasons explained in
+Documentation/process/submitting-patches.rst. To quote:
+
+```
+If related discussions or any other background information behind the
+change can be found on the web, add 'Link:' tags pointing to it. In case
+your patch fixes a bug, for example, add a tag with a URL referencing
+the report in the mailing list archives or a bug tracker;
+```
+
+This concept is old, but the text was reworked recently to make this use
+case for the Link: tag clearer. For details see:
+https://git.kernel.org/linus/1f57bd42b77c
+
+Yes, that "Link:" is not really crucial; but it's good to have if
+someone needs to look into the backstory of this change sometime in the
+future. But I care for a different reason. I'm tracking this regression
+(and others) with regzbot, my Linux kernel regression tracking bot. This
+bot will notice if a patch with a Link: tag to a tracked regression gets
+posted and record that, which allowed anyone looking into the regression
+to quickly gasp the current status from regzbot's webui
+(https://linux-regtracking.leemhuis.info/regzbot ) or its reports. The
+bot will also notice if a commit with a Link: tag to a regression report
+is applied by Linus and then automatically mark the regression as
+resolved then.
+
+IOW: this tag makes my life a regression tracker a lot easier, as I
+otherwise have to tell regzbot manually when the fix lands. :-/
+
+P.S.: As a Linux kernel regression tracker I'm getting a lot of reports
+on my table. I can only look briefly into most of them. Unfortunately
+therefore I sometimes will get things wrong or miss something important.
+I hope that's not the case here; if you think it is, don't hesitate to
+tell me about it in a public reply. That's in everyone's interest, as
+what I wrote above might be misleading to everyone reading this; any
+suggestion I gave they thus might sent someone reading this down the
+wrong rabbit hole, which none of us wants.
+
+BTW, I have no personal interest in this issue, which is tracked using
+regzbot, my Linux kernel regression tracking bot
+(https://linux-regtracking.leemhuis.info/regzbot/). I'm only posting
+this mail to get things rolling again and hence don't need to be CC on
+all further activities wrt to this regression.
+
+#regzbot ^backmonitor:
+https://lore.kernel.org/regressions/871r5p0x2u.fsf@codeaurora.org/
