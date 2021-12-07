@@ -2,48 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 740D946AE72
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 00:27:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31BEF46AF1E
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 01:26:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377338AbhLFXbQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Dec 2021 18:31:16 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:28036 "EHLO
+        id S1378370AbhLGA3b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Dec 2021 19:29:31 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:55740 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377312AbhLFXbG (ORCPT
+        with ESMTP id S243724AbhLGA3b (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Dec 2021 18:31:06 -0500
+        Mon, 6 Dec 2021 19:29:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-        h=from:subject:in-reply-to:references:mime-version:to:cc:
-        content-transfer-encoding:content-type;
-        s=sgd; bh=1yeWtbQKA16U/4DtwdaL3D+xToU11fWNWT9PPXPJ9cc=;
-        b=oPEOeEXCepYHp83F5WX/IjdUSBVFWiUEzaYxd1GeNKs4gx09C6I+1ORhYQZy9TfOih3U
-        sttNjN9yALYBXfwhkLKcquZ3uZXmj0esopb0DsXwuG5pUyPkCV2PNoM80IV+fQYjKT9erY
-        2WD0Jc9wbvzSE73Cwf/GBPoWHcmgrVgxpfrdaymUczjoUH5a9KjXww3bXFtNo7Tx2olXL3
-        kI00S4unuXvcm1WUqo+MZJBV3irKS1gt3cxO6B18GaHQMv5wis27waQ2vL0lWxy3YozXjX
-        A+FElrIiXCT/r5rjs/H3cfWAkqcjikTcirPWLnpXPtzlVLT5TivcqN+VcIist38g==
-Received: by filterdrecv-canary-776d44b74b-grhrq with SMTP id filterdrecv-canary-776d44b74b-grhrq-1-61AE9C68-3
-        2021-12-06 23:27:36.11826919 +0000 UTC m=+8379752.411627175
+        h=from:subject:mime-version:to:cc:content-transfer-encoding:
+        content-type;
+        s=sgd; bh=17BlQ0Nc/a+f1SmI1dQY55iIXTlU1Vab0be80pxxgjc=;
+        b=BCwU9Dx7kFHgDgSQb3fZmq8HYm8wg0LcmxrL4LV9E/RRxGKEwHQycLLOfeiou0kndDHv
+        nrwh8+mcaqcwu+eQdZq6wNlnfsEVIBL2HGfX9AmqFrlpRYbugyjAmd86lH0/FGLSPyMWuk
+        gu3aWLUtPgraK3NQWgGa+jOcC2uLM6mqfjYOtR4BG27FQ7IdqAZ0ahcDfgQSRE8G6nvfiP
+        DKfCRkyJswpD1GMg/Xh4lvD4ih/uZ7MiDeFblJJYBAQ28GGbdAbQHnmEn7Meqv4eSRT/fp
+        bnI21MlVUJLVPXSLFZzKnsRx0pqPG6xMXK88SqxFy8iboK4OLvYA+2C36GZRHxGw==
+Received: by filterdrecv-canary-dcfc8db9-hnrtr with SMTP id filterdrecv-canary-dcfc8db9-hnrtr-1-61AEAA19-13
+        2021-12-07 00:26:01.36851827 +0000 UTC m=+8383258.497984442
 Received: from pearl.egauge.net (unknown)
-        by ismtpd0064p1las1.sendgrid.net (SG) with ESMTP
-        id 9cGHdJ5gSdiL9M3rm73uQQ
-        Mon, 06 Dec 2021 23:27:35.886 +0000 (UTC)
+        by geopod-ismtpd-2-1 (SG)
+        with ESMTP
+        id qnwCZ_EJQvyS1gCHRjon5w
+        Tue, 07 Dec 2021 00:26:01.127 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 65E8870016C; Mon,  6 Dec 2021 16:27:35 -0700 (MST)
+        id 7CA9B70016C; Mon,  6 Dec 2021 17:25:59 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH 2/2] wilc1000: Fix missing newline in error message
-Date:   Mon, 06 Dec 2021 23:27:36 +0000 (UTC)
-Message-Id: <20211206232709.3192856-3-davidm@egauge.net>
+Subject: [PATCH] wilc1000: Remove misleading USE_SPI_DMA macro
+Date:   Tue, 07 Dec 2021 00:26:01 +0000 (UTC)
+Message-Id: <20211207002453.3193737-1-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211206232709.3192856-1-davidm@egauge.net>
-References: <20211206232709.3192856-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvBrLXqrGP55smawYI?=
- =?us-ascii?Q?kooO0FRxDy6ykXHu=2FGLtf0a23Z9x7+W8kY=2F4a5W?=
- =?us-ascii?Q?4SxmnJUzRbiRaYX8Sv+hwJnE7HOUPMRSNTcYlLB?=
- =?us-ascii?Q?=2FYMt4nTljODXub=2Fyw8wJpXoHoZUBAFAfRyHLY9r?=
- =?us-ascii?Q?UcMcZVeblamtLMLKlgM6RbuBc6HGo+dVFZmekiE?=
- =?us-ascii?Q?Pf0FfEcZ1vxSupLvx=2Fd+w=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvP7RECUpeCnGI29Sb?=
+ =?us-ascii?Q?wPu+Fjg3RkyFVa+cuNilBksvlON6kjOTr6b8xFt?=
+ =?us-ascii?Q?+3LSe5HkXQt67nxkaYhXbmKjnXXIdnOK5dXfEr7?=
+ =?us-ascii?Q?wt2noCFVXY4CS0WPRzf9Ita67yMmvKPndV1CpEk?=
+ =?us-ascii?Q?qS98FHcnyYkyjhwZkLr4jrK8KQ7jwhm84k2fC52?=
+ =?us-ascii?Q?J9Brf50ZaLyr2bevxNfuA=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@codeaurora.org>,
@@ -59,26 +58,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add missing newline in pr_err() message.
+The USE_SPI_DMA macro name suggests that it could be set to 1 to
+control whether or not SPI DMA should be used.  However, that's not
+what it does.  If set to 1, it'll set the SPI messages'
+"is_dma_mapped" flag to true, even though the tx/rx buffers aren't
+actually DMA mapped by the driver.  In other words, setting this flag
+to 1 will break the driver.
+
+Best to clean up this confusion by removing the macro altogether.
+There is no need to explicitly initialize "is_dma_mapped" because the
+message is cleared to zero anyhow, so "is_dma_mapped" is set to false
+by default.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- drivers/net/wireless/microchip/wilc1000/netdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/microchip/wilc1000/spi.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 690572e01a2a..633cb3a43f6a 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -27,7 +27,7 @@ static irqreturn_t isr_uh_routine(int irq, void *user_data)
- 	struct wilc *wilc = user_data;
+diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
+index 640850f989dd..1856525b9834 100644
+--- a/drivers/net/wireless/microchip/wilc1000/spi.c
++++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+@@ -99,8 +99,6 @@ static int wilc_spi_reset(struct wilc *wilc);
+ #define DATA_PKT_LOG_SZ				DATA_PKT_LOG_SZ_MAX
+ #define DATA_PKT_SZ				(1 << DATA_PKT_LOG_SZ)
  
- 	if (wilc->close) {
--		pr_err("Can't handle UH interrupt");
-+		pr_err("Can't handle UH interrupt\n");
- 		return IRQ_HANDLED;
- 	}
- 	return IRQ_WAKE_THREAD;
+-#define USE_SPI_DMA				0
+-
+ #define WILC_SPI_COMMAND_STAT_SUCCESS		0
+ #define WILC_GET_RESP_HDR_START(h)		(((h) >> 4) & 0xf)
+ 
+@@ -240,7 +238,6 @@ static int wilc_spi_tx(struct wilc *wilc, u8 *b, u32 len)
+ 		memset(&msg, 0, sizeof(msg));
+ 		spi_message_init(&msg);
+ 		msg.spi = spi;
+-		msg.is_dma_mapped = USE_SPI_DMA;
+ 		spi_message_add_tail(&tr, &msg);
+ 
+ 		ret = spi_sync(spi, &msg);
+@@ -284,7 +281,6 @@ static int wilc_spi_rx(struct wilc *wilc, u8 *rb, u32 rlen)
+ 		memset(&msg, 0, sizeof(msg));
+ 		spi_message_init(&msg);
+ 		msg.spi = spi;
+-		msg.is_dma_mapped = USE_SPI_DMA;
+ 		spi_message_add_tail(&tr, &msg);
+ 
+ 		ret = spi_sync(spi, &msg);
+@@ -323,7 +319,6 @@ static int wilc_spi_tx_rx(struct wilc *wilc, u8 *wb, u8 *rb, u32 rlen)
+ 		memset(&msg, 0, sizeof(msg));
+ 		spi_message_init(&msg);
+ 		msg.spi = spi;
+-		msg.is_dma_mapped = USE_SPI_DMA;
+ 
+ 		spi_message_add_tail(&tr, &msg);
+ 		ret = spi_sync(spi, &msg);
 -- 
 2.25.1
 
