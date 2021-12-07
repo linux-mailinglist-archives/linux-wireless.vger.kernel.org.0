@@ -2,194 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0039E46B783
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 10:36:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 167F146B878
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 11:09:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231231AbhLGJkE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Dec 2021 04:40:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60242 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229807AbhLGJkD (ORCPT
+        id S234807AbhLGKM2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Dec 2021 05:12:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:55251 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234785AbhLGKM1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Dec 2021 04:40:03 -0500
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B270DC061746
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Dec 2021 01:36:33 -0800 (PST)
-Received: by mail-pf1-x42f.google.com with SMTP id r130so12952306pfc.1
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Dec 2021 01:36:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TfqI9JObO4SWvcqok/tVBR3YBTRedUXs7Q39D8brpTk=;
-        b=ypkeVCNj1fwIlXktnU5RbRm0DuRdNKEegAsxWRDx4pBk0oKCpGcZerZd71lOib+t8L
-         7Jkkm7aveZ+4U5F5JCnTQ5FDiLsvKiq9w0bRWIpW6lA8LdAo6anMvkThzuXPFQWsYffS
-         Owfd3xgXZrFjcgAnZpzR2fEx2uLs1xoi8KTdd98ZyMuhooP1KlBqe6NhkZ+fxk4uecFN
-         U/DnrzKXQOyyOA+eCidGMi35440+l/i/EyKBwTmW4v6DnGSj/DoetSOZh3l9WBhrdjNk
-         Yv8vUnXg2KVorK9+VTsjDnqU2Dl30Bkj5osuElgUIorTHEyQvzfAu0MZgizkpyrvQI77
-         qWYQ==
+        Tue, 7 Dec 2021 05:12:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1638871737;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Y1qc17Wzkg9QMJ9/oH1d2JR/jyCeyLONuO+KPdMgSh4=;
+        b=Gba/ysmCyO99ootlAolnTSp1byV1ROn+6sNn62WA/9k9nfJvFuJGJltK5wNNU63U8JRXhW
+        rkOOi4Lyp7svaciMLShajzUXB6OMpE+OxpC+LwoEIdPljE7JfEoXLh23NgiUx0WsE8UFeM
+        XxsT4ovbc/qh0sPUC4VYDnXpMLEhY6U=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-525-V1zgQJVSPBay8_Ncey3Ykg-1; Tue, 07 Dec 2021 05:08:53 -0500
+X-MC-Unique: V1zgQJVSPBay8_Ncey3Ykg-1
+Received: by mail-wr1-f72.google.com with SMTP id q17-20020adfcd91000000b0017bcb12ad4fso2752092wrj.12
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Dec 2021 02:08:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TfqI9JObO4SWvcqok/tVBR3YBTRedUXs7Q39D8brpTk=;
-        b=AzRlsAwntfYEL74yeyO87t4exXf2OxNsoEO2jzlyp2fe1dzUxmTW9GJorYcWUbVEZl
-         7EUgd/IFrJDVdz5HQrBNi/ZK8ZXIBNjqKLWUiHsxEC+eM+W8irekL8aIEX4uNkpy72Vx
-         lsldxT9uW5ZqTRnW6mZo2nNJSJpmVw7kDFxR7s0160z0SbqSLAG8ta4jsbLRhdniBMEK
-         VTg8D7Nea3Zyy0f3yoTVviCXxMlIRRuaPa7rUYR2BPIfu7ReoX3yVTzOWQ/TbyLHBye9
-         rfoN51i4/bNFiiMou32eRIGuz2BswjNHVTbalVBKv0lEVn8kNXj+2Y2VdAf9M27+Qc3r
-         FVUw==
-X-Gm-Message-State: AOAM533WSFjrwxqnISZz4rLhF+VU/Xk6VdSuS8btunJ9eKHhCG6rGmEF
-        V0/q44EuVNOD/Dl9SXhO/OLkrX2mKr3xDl4IfOfayuQw0JJPSw==
-X-Google-Smtp-Source: ABdhPJx/3Rr9y9lpdBFWsQVsmhiqkhESwRErw8TplUo/2I2ko2HSSByzprJBXbezR6DYogHfyJr5tG40usf3DBeDlLA=
-X-Received: by 2002:a05:6a00:26ca:b0:4a8:3129:84e with SMTP id
- p10-20020a056a0026ca00b004a83129084emr42570419pfw.74.1638869793117; Tue, 07
- Dec 2021 01:36:33 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Y1qc17Wzkg9QMJ9/oH1d2JR/jyCeyLONuO+KPdMgSh4=;
+        b=5/2xlPZdBn+NRpnLT4drmdFMpMlGVbAkWv/mC6zKhBDUkIx37VYjg2LntYZ7gN49Ub
+         XrRddoRFnKHOWW2xScfxzSMGhVaWj7Z9so1gd6YGQJHaDh2fRRky46EGHQeiit5YHR9b
+         DS5Dr0oqlJY0uMbA/kTcsHtjTrYm67O6RFx3dYkl7ouFtPMaifVg4QZgM5PcedUlYaKE
+         XtXVUXWnggsUyzV16zk9R6+YsmeI6UkJLU0XAFKQHkWtGPOyGAd3E9ap911fELrIYPrf
+         faCNTboi0RPw/LR2D8IkaMUUDLbfTb7I8zex8rvLHbtYisXe+0gPQg2NOFhxAps5AwP9
+         jDpQ==
+X-Gm-Message-State: AOAM5337hbbw5mCNoCi01KAd3/718d9vLb1wU9torws9prnzwlZJJLwl
+        EuivB9c9Tp9C2qiOriRjHT3+eYGfAcbTKMxtPxFJElpDdsEkXiI2O7MKQMuvgu4+GrKLkv9IdZG
+        yYclW4np73bGUeQfbZMc7RDNeHgo=
+X-Received: by 2002:a5d:4843:: with SMTP id n3mr48648883wrs.335.1638871731835;
+        Tue, 07 Dec 2021 02:08:51 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxC3Wg4ZRZ5NwLZWUnPZjez4JLkBG0PxpuxKgTsBZotBk5ER9r/VoLvB8Lo0nqag9Mw3b9xTA==
+X-Received: by 2002:a5d:4843:: with SMTP id n3mr48648844wrs.335.1638871731649;
+        Tue, 07 Dec 2021 02:08:51 -0800 (PST)
+Received: from localhost (net-37-182-17-175.cust.vodafonedsl.it. [37.182.17.175])
+        by smtp.gmail.com with ESMTPSA id g5sm18307403wri.45.2021.12.07.02.08.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Dec 2021 02:08:50 -0800 (PST)
+Date:   Tue, 7 Dec 2021 11:08:49 +0100
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     sean.wang@mediatek.com
+Cc:     nbd@nbd.name, Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
+        Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
+        Mark-YW.Chen@mediatek.com, Deren.Wu@mediatek.com,
+        km.lin@mediatek.com, robin.chiu@mediatek.com,
+        Eddie.Chen@mediatek.com, ch.yeh@mediatek.com,
+        posh.sun@mediatek.com, ted.huang@mediatek.com,
+        Eric.Liang@mediatek.com, Stella.Chang@mediatek.com,
+        Tom.Chou@mediatek.com, steve.lee@mediatek.com, jsiuda@google.com,
+        frankgor@google.com, jemele@google.com, abhishekpandit@google.com,
+        shawnku@google.com, linux-wireless@vger.kernel.org,
+        linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] mt76: mt7921: fix possible resume failure
+Message-ID: <Ya8ysehFjoEGGEf+@lore-desk>
+References: <ff1e35dcaa0a56c04339bba2ebd2c68bf815919c.1638844068.git.objelf@gmail.com>
 MIME-Version: 1.0
-References: <20211207024711.2765-1-ricardo.martinez@linux.intel.com> <20211207024711.2765-6-ricardo.martinez@linux.intel.com>
-In-Reply-To: <20211207024711.2765-6-ricardo.martinez@linux.intel.com>
-From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Tue, 7 Dec 2021 10:48:06 +0100
-Message-ID: <CAMZdPi9w6KyK2snaMEDL1go7+McExgs+Vm+eSp=K5yugDcFQJA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 05/12] net: wwan: t7xx: Add AT and MBIM WWAN ports
-To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, m.chetan.kumar@intel.com,
-        chandrashekar.devegowda@intel.com, linuxwwan@intel.com,
-        chiranjeevi.rapolu@linux.intel.com, haijun.liu@mediatek.com,
-        amir.hanania@intel.com, andriy.shevchenko@linux.intel.com,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
-        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
-        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
-        suresh.nagaraj@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7oJp8/YxkC2x5kNk"
+Content-Disposition: inline
+In-Reply-To: <ff1e35dcaa0a56c04339bba2ebd2c68bf815919c.1638844068.git.objelf@gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Ricardo,
 
-Overall, it looks good, but:
+--7oJp8/YxkC2x5kNk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 7 Dec 2021 at 03:48, Ricardo Martinez
-<ricardo.martinez@linux.intel.com> wrote:
->
-> From: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
->
-> Adds AT and MBIM ports to the port proxy infrastructure.
-> The initialization method is responsible for creating the corresponding
-> ports using the WWAN framework infrastructure. The implemented WWAN port
-> operations are start, stop, and TX.
->
-> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
-> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> From: Sean Wang <sean.wang@mediatek.com>
+>=20
+> Fix the possible resume failure due to mt76_connac_mcu_set_hif_suspend
+> timeout.
+>=20
+> That is because clearing the flag pm->suspended too early opened up a race
+> window, where mt7921_poll_tx/rx scheduled a ps_work to put the device in
+> doze mode, that is unexpected for the device is being resumed from the
+> suspend state and would make the remaining MCU comamnds in resume handler
+> failed to execute.
+
+do we have a similar issue in mt7921s_resume()?
+
+>=20
+> Fixes: ffa1bf97425b ("mt76: mt7921: introduce PM support")
+> Co-developed-by: YN Chen <YN.Chen@mediatek.com>
+> Signed-off-by: YN Chen <YN.Chen@mediatek.com>
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 > ---
->  drivers/net/wwan/t7xx/Makefile          |   1 +
->  drivers/net/wwan/t7xx/t7xx_port_proxy.c |  24 +++
->  drivers/net/wwan/t7xx/t7xx_port_proxy.h |   1 +
->  drivers/net/wwan/t7xx/t7xx_port_wwan.c  | 258 ++++++++++++++++++++++++
->  4 files changed, 284 insertions(+)
->  create mode 100644 drivers/net/wwan/t7xx/t7xx_port_wwan.c
->
-[...]
-> +static int t7xx_port_ctrl_tx(struct wwan_port *port, struct sk_buff *skb)
-> +{
-> +       struct t7xx_port *port_private = wwan_port_get_drvdata(port);
-> +       size_t actual_count = 0, alloc_size = 0, txq_mtu = 0;
-> +       struct t7xx_port_static *port_static;
-> +       int i, multi_packet = 1, ret = 0;
-> +       struct sk_buff *skb_ccci = NULL;
-> +       struct t7xx_fsm_ctl *ctl;
-> +       enum md_state md_state;
-> +       unsigned int count;
-> +       bool port_multi;
+>  drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7921/pci.c
+> index 5635de3c80b1..21a48f02ab60 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> @@ -315,7 +315,6 @@ static int mt7921_pci_resume(struct pci_dev *pdev)
+>  	struct mt76_connac_pm *pm =3D &dev->pm;
+>  	int i, err;
+> =20
+> -	pm->suspended =3D false;
+>  	err =3D pci_set_power_state(pdev, PCI_D0);
+>  	if (err)
+>  		return err;
+> @@ -353,7 +352,11 @@ static int mt7921_pci_resume(struct pci_dev *pdev)
+>  	if (!pm->ds_enable)
+>  		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+> =20
+> -	return mt76_connac_mcu_set_hif_suspend(mdev, false);
+> +	err =3D mt76_connac_mcu_set_hif_suspend(mdev, false);
 > +
-> +       count = skb->len;
-> +       if (!count)
-> +               return -EINVAL;
+> +	pm->suspended =3D false;
 > +
-> +       port_static = port_private->port_static;
-> +       ctl = port_private->t7xx_dev->md->fsm_ctl;
-> +       md_state = t7xx_fsm_get_md_state(ctl);
-> +       if (md_state == MD_STATE_WAITING_FOR_HS1 || md_state == MD_STATE_WAITING_FOR_HS2) {
-> +               dev_warn(port_private->dev, "Cannot write to %s port when md_state=%d\n",
-> +                        port_static->name, md_state);
-> +               return -ENODEV;
-> +       }
-> +
-> +       txq_mtu = CLDMA_TXQ_MTU;
-> +
-> +       if (port_private->flags & PORT_F_USER_HEADER) {
-> +               if (port_private->flags & PORT_F_USER_HEADER && count > txq_mtu) {
-> +                       dev_err(port_private->dev, "Packet %u larger than MTU on %s port\n",
-> +                               count, port_static->name);
-> +                       return -ENOMEM;
-> +               }
-> +
-> +               alloc_size = min_t(size_t, txq_mtu, count);
-> +               actual_count = alloc_size;
-> +       } else {
-> +               alloc_size = min_t(size_t, txq_mtu, count + CCCI_H_ELEN);
-> +               actual_count = alloc_size - CCCI_H_ELEN;
-> +               port_multi = t7xx_port_wwan_multipkt_capable(port_static);
-> +               if ((count + CCCI_H_ELEN > txq_mtu) && port_multi)
-> +                       multi_packet = DIV_ROUND_UP(count, txq_mtu - CCCI_H_ELEN);
-> +       }
-> +
-> +       for (i = 0; i < multi_packet; i++) {
-> +               struct ccci_header *ccci_h = NULL;
-> +
-> +               if (multi_packet > 1 && multi_packet == i + 1) {
-> +                       actual_count = count % (txq_mtu - CCCI_H_ELEN);
-> +                       alloc_size = actual_count + CCCI_H_ELEN;
-> +               }
-> +
-> +               skb_ccci = __dev_alloc_skb(alloc_size, GFP_KERNEL);
-> +               if (!skb_ccci)
-> +                       return -ENOMEM;
-> +
-> +               ccci_h = skb_put(skb_ccci, CCCI_H_LEN);
-> +               ccci_h->packet_header = 0;
-> +               ccci_h->packet_len = cpu_to_le32(actual_count + CCCI_H_LEN);
-> +               ccci_h->status &= cpu_to_le32(~HDR_FLD_CHN);
-> +               ccci_h->status |= cpu_to_le32(FIELD_PREP(HDR_FLD_CHN, port_static->tx_ch));
-> +               ccci_h->ex_msg = 0;
-> +
-> +               memcpy(skb_put(skb_ccci, actual_count), skb->data + i * (txq_mtu - CCCI_H_ELEN),
-> +                      actual_count);
-> +
-> +               t7xx_port_proxy_set_seq_num(port_private, ccci_h);
-> +
-> +               ret = t7xx_port_send_skb_to_md(port_private, skb_ccci, true);
-> +               if (ret)
-> +                       goto err_free_skb;
-> +
-> +               port_private->seq_nums[MTK_TX]++;
-> +
-> +               if (multi_packet == 1)
-> +                       return actual_count;
-> +               else if (multi_packet == i + 1)
-> +                       return count;
+> +	return err;
+>  }
+>  #endif /* CONFIG_PM */
+> =20
+> --=20
+> 2.25.1
+>=20
 
-wwan port tx ops is supposed to return 0 on success, and release the
-processed skb. In your case it works because wwan core does:
+--7oJp8/YxkC2x5kNk
+Content-Type: application/pgp-signature; name="signature.asc"
 
-ret = wwan_port_op_tx(port, skb, !!(filp->f_flags & O_NONBLOCK));
-if (ret) {
-        kfree_skb(skb);
-        return ret;
-}
+-----BEGIN PGP SIGNATURE-----
 
-So returning a positive value here (count) makes the core enter the
-error case, release the skb for you and return your count value to
-write fops. Eventually, you land on your feet, but it's not what was
-expected from tx ops. You should simply return 0 on success and
-release the skb. Alternatively, if you think partial TX is something
-we need, it should be somewhat documented in the wwan_port_fops_write
-function or tx_ops definition.
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYa8ysQAKCRA6cBh0uS2t
+rGBdAQDY8aCjO7iCtMqaQQL5IrkI60tKUwqIm9xROabHgiY61gD/XyTTgv5OrKa9
+xbm/p9w5lGdB8sZghE+yq7urQ3vowQg=
+=VfrE
+-----END PGP SIGNATURE-----
 
-Regards,
-Loic
+--7oJp8/YxkC2x5kNk--
+
