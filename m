@@ -2,146 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 298D246BF00
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 16:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4050E46BF0A
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 16:16:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234291AbhLGPSh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Dec 2021 10:18:37 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:38506 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229818AbhLGPSg (ORCPT
+        id S234560AbhLGPUR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Dec 2021 10:20:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56404 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229818AbhLGPUQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Dec 2021 10:18:36 -0500
+        Tue, 7 Dec 2021 10:20:16 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCBB8C061574
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Dec 2021 07:16:45 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CB8FBB80782;
-        Tue,  7 Dec 2021 15:15:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51959C341C1;
-        Tue,  7 Dec 2021 15:15:01 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 153E1CE1B68
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Dec 2021 15:16:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E32C341C3;
+        Tue,  7 Dec 2021 15:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638890103;
-        bh=xxF6Nm2aBsMxEff2TkdoXeMHocqjOshQ8GbBna8ovUY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=qXQflwPi4XW0XAwlgafUg1Sq0TeYe27GgLJm4wNYJUfUK2N6ICN8hq8sD2/ZcRg/v
-         WHTDBsSH4zvlUICZVXLzlbimjg9keWa2yEL4mg85vLh3arSz/H7lL653jE5VjZPX9c
-         7W5gIRRYGy/QHfpjvmR1r9hFYJns7QDIqs/85W3p5JWtCZRci9pYBvdc2IGX7zgTYN
-         hOqzwtIyR1G12qXRAj0DQfU+lioEyDfywNxbqJL5vQVFxDRO3PBy3jfVR1osUdkSN/
-         OnTK/fmIhg5qr8UWZpTisuPccqRnmmiQzDbToQOwtrIPMO70C9/BctFD29orWb+x9g
-         amxcPAh1WLV3A==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Luca Coelho <luciano.coelho@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ayala Beker <ayala.beker@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] [v2] iwlwifi: work around reverse dependency on MEI
-Date:   Tue,  7 Dec 2021 16:14:36 +0100
-Message-Id: <20211207151447.3338818-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
+        s=k20201202; t=1638890202;
+        bh=jiYx5o6IIdoldqcXdrP/KfJy6PT8qz5O7TD1XGGkbzg=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=UlE6nsN30ID55UaCkw5TQ2CcxUKE3XEnv4yDc/m+40DF73dCIKJ8fLaOkeQXjAgpH
+         UilviKcJOOxlFSDmnYNYsfwD4vdoRrxpb1hRdMk2wlYuT70bJ7aEDc29ee/Xk7Iul8
+         Q/H7bOEKLKmyUUopYeYKpDgTqG7iHM7gf33/TUj2wJE8Vy1FMk9cjbTIZdA/fgmrhR
+         /T/Go6+aELgJRJu7h/cUOfvEGluku517Lt5MaQYEZpUdGDXHZ9n8KVnGeN8hjv3rM4
+         /0DQz4meYG57On6e21/T+JazI5c0YzmlA/nUaEP+xrU2qhGyZ2LMuOgM+PjKouRuPe
+         cr7EuLcyO1tWg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] ath9k: switch to rate table based lookup
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20211128090753.958-1-jelonek.jonas@gmail.com>
+References: <20211128090753.958-1-jelonek.jonas@gmail.com>
+To:     Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, kvalo@codeaurora.org, nbd@nbd.name,
+        toke@redhat.com, Jonas Jelonek <jelonek.jonas@gmail.com>,
+        Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163889019720.23771.16292116056725581861.kvalo@kernel.org>
+Date:   Tue,  7 Dec 2021 15:16:40 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Jonas Jelonek <jelonek.jonas@gmail.com> wrote:
 
-If the iwlmei code is a loadable module, the main iwlwifi driver
-cannot be built-in:
+> This patch changes mac80211 rate control for the ath9k driver.  The rate lookup
+> per packet is changed from legacy usage of ieee80211_get_tx_rates() to the new
+> rate table based lookup in struct ieee80211_sta->rates.
+> 
+> The most recent rate control API, introduced with commit 0d528d85c519
+> ("mac80211: improve the rate control API"), allows drivers to directly get
+> rates from ieee80211_sta->rates. This is not used by every driver yet, the
+> translation/merge is currently performed in ieee80211_get_tx_rates.  This patch
+> changes the behaviour and avoids the call to ieee80211_get_tx_rates and
+> subsequent calls. ath9k now directly reads rates from sta->rates into its rate
+> table. Cause ath9k does not expect rate selection in SKB->CB, the table merge
+> does not consider rate array in SKB->CB except for the first entry (used for
+> probing).
+> 
+> Tested with a 8devices Rambutan with QCA9558 SoC by performing two runs, one
+> without the patch and one with. Generated traffic between AP and multiple STAs
+> in each run, measured throughput and captured rc_stats.  Comparison of both
+> runs resulted in same rate selection and no performance loss or other negative
+> effects.
+> 
+> Co-developed-by: Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+> Signed-off-by: Thomas Huehn <thomas.huehn@hs-nordhausen.de>
+> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+> Acked-by: Toke Høiland-Jørgensen <toke@redhat.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-x86_64-linux-ld: drivers/net/wireless/intel/iwlwifi/pcie/trans.o: in function `iwl_pcie_prepare_card_hw':
-trans.c:(.text+0x4158): undefined reference to `iwl_mei_is_connected'
+Patch applied to ath-next branch of ath.git, thanks.
 
-Unfortunately, Kconfig enforces the opposite, forcing the MEI driver to
-not be built-in if iwlwifi is a module.
+7f3a6f5dd207 ath9k: switch to rate table based lookup
 
-To work around this, decouple iwlmei from iwlwifi and add the
-dependency in the other direction.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/net/wireless/intel/iwlwifi/Kconfig | 52 +++++++++++-----------
- 1 file changed, 26 insertions(+), 26 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
-index cf1125d84929..c21c0c68849a 100644
---- a/drivers/net/wireless/intel/iwlwifi/Kconfig
-+++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
-@@ -2,6 +2,7 @@
- config IWLWIFI
- 	tristate "Intel Wireless WiFi Next Gen AGN - Wireless-N/Advanced-N/Ultimate-N (iwlwifi) "
- 	depends on PCI && HAS_IOMEM && CFG80211
-+	depends on IWLMEI || !IWLMEI
- 	select FW_LOADER
- 	help
- 	  Select to build the driver supporting the:
-@@ -92,32 +93,6 @@ config IWLWIFI_BCAST_FILTERING
- 	  If unsure, don't enable this option, as some programs might
- 	  expect incoming broadcasts for their normal operations.
- 
--config IWLMEI
--	tristate "Intel Management Engine communication over WLAN"
--	depends on INTEL_MEI
--	depends on PM
--	depends on IWLMVM
--	help
--	  Enables the iwlmei kernel module.
--
--	  CSME stands for Converged Security and Management Engine. It is a CPU
--	  on the chipset and runs a dedicated firmware. AMT (Active Management
--	  Technology) is one of the applications that run on that CPU. AMT
--	  allows to control the platform remotely.
--
--	  This kernel module allows to communicate with the Intel Management
--	  Engine over Wifi. This is supported starting from Tiger Lake
--	  platforms and has been tested on 9260 devices only.
--	  If AMT is configured not to use the wireless device, this module is
--	  harmless (and useless).
--	  Enabling this option on a platform that has a different device and
--	  has Wireless enabled on AMT can prevent WiFi from working correctly.
--
--	  For more information see
--	  <https://software.intel.com/en-us/manageability/>
--
--	  If unsure, say N.
--
- menu "Debugging Options"
- 
- config IWLWIFI_DEBUG
-@@ -172,3 +147,28 @@ config IWLWIFI_DEVICE_TRACING
- endmenu
- 
- endif
-+
-+config IWLMEI
-+	tristate "Intel Management Engine communication over WLAN"
-+	depends on INTEL_MEI
-+	depends on PM
-+	help
-+	  Enables the iwlmei kernel module.
-+
-+	  CSME stands for Converged Security and Management Engine. It is a CPU
-+	  on the chipset and runs a dedicated firmware. AMT (Active Management
-+	  Technology) is one of the applications that run on that CPU. AMT
-+	  allows to control the platform remotely.
-+
-+	  This kernel module allows to communicate with the Intel Management
-+	  Engine over Wifi. This is supported starting from Tiger Lake
-+	  platforms and has been tested on 9260 devices only.
-+	  If AMT is configured not to use the wireless device, this module is
-+	  harmless (and useless).
-+	  Enabling this option on a platform that has a different device and
-+	  has Wireless enabled on AMT can prevent WiFi from working correctly.
-+
-+	  For more information see
-+	  <https://software.intel.com/en-us/manageability/>
-+
-+	  If unsure, say N.
 -- 
-2.29.2
+https://patchwork.kernel.org/project/linux-wireless/patch/20211128090753.958-1-jelonek.jonas@gmail.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
