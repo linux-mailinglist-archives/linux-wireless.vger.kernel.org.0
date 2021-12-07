@@ -2,93 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D76A46BE1B
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 15:47:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F398646BE52
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 15:57:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238211AbhLGOvW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Dec 2021 09:51:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49234 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238208AbhLGOvW (ORCPT
+        id S238302AbhLGPAs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Dec 2021 10:00:48 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:52632 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232266AbhLGPAs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Dec 2021 09:51:22 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB652C061574;
-        Tue,  7 Dec 2021 06:47:51 -0800 (PST)
+        Tue, 7 Dec 2021 10:00:48 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 91D6CCE1B19;
-        Tue,  7 Dec 2021 14:47:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E422C341C5;
-        Tue,  7 Dec 2021 14:47:44 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 371C6CE1B23;
+        Tue,  7 Dec 2021 14:57:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C34C341C5;
+        Tue,  7 Dec 2021 14:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638888467;
-        bh=u4WpnIP/o6TXEfTfxB1pdkIBKTMxbE9JzDtO7Q8LGY8=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=BHwzZaUvYEJBPdkY29edXrrIzNxbqF3c2GIHQhelBbf0o83fviJEkGmWTcjamgyqm
-         mrgcdS4nNcZdIC+5w7HVXtKw33DnoQLYytjDdEoz459JmfnOLhg7QDmxQ2AlQG4CY/
-         DwucZPElGRLQMCkh936aYOUdUogaDvh+fYCKTrc9q2XLcbWr/kQKWuO5D/sRVsaf5y
-         nrqvOuLYM0/r+MCq+ZgPXDgZO7y672LcoUblh1I3jiiKGbF2Mmu+fdtGRwTK0PywMe
-         lGgv7c6AD40cKjRWSdIJc47ZIIEWiAhlGvc0vZxCm6MjV3EY6M9OIEndS9Gj79UJPt
-         +8bvZikxOHiyQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     mhi@lists.linux.dev, hemantk@codeaurora.org, bbhatt@codeaurora.org,
-        loic.poulain@linaro.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org,
-        Pengyu Ma <mapengyu@gmail.com>
-Subject: Re: [PATCH] bus: mhi: core: Add support for forced PM resume
-References: <20211206161059.107007-1-manivannan.sadhasivam@linaro.org>
-Date:   Tue, 07 Dec 2021 16:47:42 +0200
-In-Reply-To: <20211206161059.107007-1-manivannan.sadhasivam@linaro.org>
-        (Manivannan Sadhasivam's message of "Mon, 6 Dec 2021 21:40:59 +0530")
-Message-ID: <871r2otqsx.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1638889034;
+        bh=8X9IIQ927yf7quFBclyWEsUDPFz0AyOg8V9PcZ9FaD8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=OZSEJZn1JvoXxSpJOeq99WP/AU27anuWoXH+2t907gzrQA7eqb0gV6AJaXZ+mSzZi
+         rxJH1Zv1JoKlb+vbbE+J7YRmNbKOak82743q0ACp7chsQF6LQ8HCEFGj++Ki1X/w8z
+         3lcj3ZY2paTD9NHgqJDTh1HWhyVPnexyE5z8c4lD0N+x/Nym2BfIGn69tWG9lJ37qS
+         O4e7JQdZS7dM1E4SxuRM7fAbS/mQOnhj7mppeWU6zQvpe2qQhgcUQ9i/yOZhE8jwlw
+         JpyvsZhkFPMtY6J9kipTdfKjgIjVgZncsNdrYuipehgf+XTKD1vwyYW1jjw0sffJhY
+         SFuf1uVee8Efg==
+Received: by mail-wr1-f53.google.com with SMTP id c4so30010062wrd.9;
+        Tue, 07 Dec 2021 06:57:14 -0800 (PST)
+X-Gm-Message-State: AOAM533n4n5O3v3lzU7eTJJaodyTyG+8ahPDZ48hmCawy38fPJn61+zk
+        jRSXv3IZcR+Et60+8KyRFw4uAkwSWsnuXpooxAk=
+X-Google-Smtp-Source: ABdhPJy9YhTP+B4BabbmAtiU6wefpmhItbH/apCdy3BE5pONXd1pMcTyA/0MoUkyyXEOz0BrdrzNxTWp1Ycm2Wq5rdc=
+X-Received: by 2002:adf:d091:: with SMTP id y17mr54628673wrh.418.1638889032670;
+ Tue, 07 Dec 2021 06:57:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20211207125430.2423871-1-arnd@kernel.org> <SA1PR11MB58258D60F7C1334471E2F434F26E9@SA1PR11MB5825.namprd11.prod.outlook.com>
+ <CAK8P3a35HHPs2sMsfQ_SrX4DTKmzidFUOczu8khzwJJTAy++yw@mail.gmail.com> <5ed6ad0f5d4fed1cb0a49ecfd7f6b35dbe0f0803.camel@sipsolutions.net>
+In-Reply-To: <5ed6ad0f5d4fed1cb0a49ecfd7f6b35dbe0f0803.camel@sipsolutions.net>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Tue, 7 Dec 2021 15:56:56 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a0dPZDSN_C9-J4k0oFFh4z+XSa64D_R0EhYwBBFQLV8vg@mail.gmail.com>
+Message-ID: <CAK8P3a0dPZDSN_C9-J4k0oFFh4z+XSa64D_R0EhYwBBFQLV8vg@mail.gmail.com>
+Subject: Re: [PATCH] iwlwifi: work around reverse dependency on MEI
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
+        "Coelho, Luciano" <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Beker, Ayala" <ayala.beker@intel.com>,
+        "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
-
-> From: Loic Poulain <loic.poulain@linaro.org>
+On Tue, Dec 7, 2021 at 3:40 PM Johannes Berg <johannes@sipsolutions.net> wrote:
 >
-> For whatever reason, some devices like QCA6390, WCN6855 using ath11k
-> are not in M3 state during PM resume, but still functional. The
-> mhi_pm_resume should then not fail in those cases, and let the higher
-> level device specific stack continue resuming process.
+> On Tue, 2021-12-07 at 14:25 +0100, Arnd Bergmann wrote:
 >
-> Add a new parameter to mhi_pm_resume, to force resuming, whatever the
-> current MHI state is. This fixes a regression with non functional
-> ath11k WiFi after suspend/resume cycle on some machines.
+> > > >  config IWLMEI
+> > > > -     tristate "Intel Management Engine communication over WLAN"
+> > > > -     depends on INTEL_MEI
+> > > > +     bool "Intel Management Engine communication over WLAN"
+> > > > +     depends on INTEL_MEI=y || INTEL_MEI=IWLMVM
+> > > > +     depends on IWLMVM=y || IWLWIFI=m
+> > > >       depends on PM
+> > > > -     depends on IWLMVM
+> > > >       help
+> > > >         Enables the iwlmei kernel module.
+> > >
+> > > Johannes suggested to make IWLMVM depend on IWLMEI || !IWLMEI
+> > > That worked as well, I just had issues with this in our internal backport based tree.
+> > > I need to spend a bit more time on this, but I admit my total ignorance in Kconfig's dialect.
+> >
+> > It's still not enough, the dependency is in iwlwifi, not in iwlmvm, so it
+> > would remain broken for IWLWIFI=y IWLMVM=m IWLMEI=m.
+> >
 >
-> Bug report: https://bugzilla.kernel.org/show_bug.cgi?id=214179
+> I missed the pcie/trans.c dependency, and the others are (I think) in
+> mvm...
 >
-> Cc: stable@vger.kernel.org #5.13
-> Fixes: 020d3b26c07a ("bus: mhi: Early MHI resume failure in non M3 state")
-> Reported-by: Kalle Valo <kvalo@codeaurora.org>
-> Reported-by: Pengyu Ma <mapengyu@gmail.com>
-> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
-> [mani: Added comment, bug report, added reported-by tags and CCed stable]
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> but then we can do
+>
+> config IWLWIFI
+>         ...
+>         depends on IWLMEI || !IWLMEI
+>         ...
+>
+> no? That way, we exclude IWLWIFI=y && IWLMEI=m, which I believe causes
+> the issue? And IWLMVM already depends on IWLWIFI (via the if clause), so
+> that
 
-Thanks! I now tested this patch on top v5.16-rc4 using QCA6390 and
-firmware WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1, no issues found:
+Right, that should work. Testing with that version now.
 
-Tested-by: Kalle Valo <kvalo@kernel.org>
-
-I'm not expecting any conflicts with ath11k, so please take this via the
-mhi tree. It would be really good to get this regression fixed in v5.16,
-so is it possible to send this to -rc releases?
-
-For the ath11k part:
-
-Acked-by: Kalle Valo <kvalo@kernel.org>
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+         Arnd
