@@ -2,72 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5112F46BCEF
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 14:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5178946BD88
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 15:24:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237334AbhLGNw5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Dec 2021 08:52:57 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:33422 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237327AbhLGNw4 (ORCPT
+        id S233270AbhLGO1w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Dec 2021 09:27:52 -0500
+Received: from tynnyri.adurom.net ([51.15.11.48]:56512 "EHLO
+        tynnyri.adurom.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233302AbhLGO1w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Dec 2021 08:52:56 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 39643CE1ABB
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Dec 2021 13:49:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A96C341C3;
-        Tue,  7 Dec 2021 13:49:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638884963;
-        bh=V8VoBJxYId+sKBjS5PF5NdRKMMlwLuxNpsGZ+XpfvIk=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ALsWLY/mrBJtg/3wcN336mB8IUbHkcafF+hr2WJm56bd/LG6XkiiT6AvxhiwkCdrz
-         0tWySHpP75mPLFdRRbdgD1Gq+fJIGwCQPKYaDsFdSjMHLijW6WYkJ+wM5K4pgPKINB
-         QxWg703dZwlkGP9M9Mv/67AWp/YpfuX1YuWLZ/4iMVm5LqDH9VR+tQHLhTEjAhHl6e
-         H+n8GPgQzsnABc5ZE63DMM61fkvtuLJ7B4wnVczAaoLFNdPwk3gc97RyYkh4CQgX3u
-         EXHnlkhQOIhXEQQOxycj+VjFbb86snIqN4lerI+aaeud6l8conD95Nf3IsXOSX+crv
-         HRt48GND9Zg+Q==
-From:   Kalle Valo <kvalo@kernel.org>
+        Tue, 7 Dec 2021 09:27:52 -0500
+X-Greylist: delayed 1482 seconds by postgrey-1.27 at vger.kernel.org; Tue, 07 Dec 2021 09:27:51 EST
+Received: from localhost ([::1] helo=tynnyri.adurom.net)
+        by tynnyri.adurom.net with esmtp (Exim 4.92)
+        (envelope-from <kvalo@adurom.com>)
+        id 1muazg-0005zN-N1; Tue, 07 Dec 2021 15:59:03 +0200
+From:   Kalle Valo <kvalo@adurom.com>
 To:     Luca Coelho <luca@coelho.fi>
 Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 00/12] iwlwifi: updates intended for v5.16 2021-12-04 part 1
+Subject: Re: [PATCH 03/12] iwlwifi: properly support 4-bit MAC step
 References: <20211204063555.769822-1-luca@coelho.fi>
-Date:   Tue, 07 Dec 2021 15:49:21 +0200
-In-Reply-To: <20211204063555.769822-1-luca@coelho.fi> (Luca Coelho's message
-        of "Sat, 4 Dec 2021 08:35:43 +0200")
-Message-ID: <875ys0tti6.fsf@codeaurora.org>
+        <iwlwifi.20211204083238.64d2ea8b61f2.Ia5287e37fb3439d805336837361f6491f958e465@changeid>
+        <87a6hcttpu.fsf@codeaurora.org>
+        <f82d3481495a371aaa993b73598f36869a014976.camel@coelho.fi>
+Date:   Tue, 07 Dec 2021 15:58:56 +0200
+In-Reply-To: <f82d3481495a371aaa993b73598f36869a014976.camel@coelho.fi> (Luca
+        Coelho's message of "Tue, 07 Dec 2021 15:49:19 +0200")
+Message-ID: <87k0ggo6sf.fsf@tynnyri.adurom.net>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Spam_score: -2.9
+X-Spam_bar: --
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Luca Coelho <luca@coelho.fi> writes:
 
-> From: Luca Coelho <luciano.coelho@intel.com>
+> On Tue, 2021-12-07 at 15:44 +0200, Kalle Valo wrote:
+>> Luca Coelho <luca@coelho.fi> writes:
+>> 
+>> > From: Mike Golant <michael.golant@intel.com>
+>> > 
+>> > Properly support 4-bit MAC step by refactoring all the current
+>> > handling of the MAC step/dash.
+>> 
+>> What is 4-bit MAC step?
 >
-> Hi,
+> Maybe a bit bad wording.  We have a MAC component (which is inside the
+> SoC) and it has several different HW steps.  3 bits used to be enough
+> but now we need 4-bits to represent all the different steps.
 >
-> Here's the first set of patches intended for v5.17.  It's the usual
-> development, new features, cleanups and bugfixes.
->
-> The changes are:
->
-> * Some improvements in D3;
-> * Support for new FW API commands;
-> * Fixes and cleanups in device configurations;
-> * Some other small fixes, clean-ups and improvements.
->
-> As usual, I'm pushing this to a pending branch, for kbuild bot, and
-> will send a pull-request later.
->
-> Please review.
+> Do you want me to reword the commit message?
 
-BTW, I switched my email to kvalo@kernel.org. Please update your address
-book.
+Yeah, please add what you wrote above to the commit log so that people
+outside Intel understand what this is about.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
