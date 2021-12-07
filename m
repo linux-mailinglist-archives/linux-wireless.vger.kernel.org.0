@@ -2,160 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 671C746B2F9
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 07:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33EBC46B358
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 08:05:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236919AbhLGGjK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Dec 2021 01:39:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45352 "EHLO
+        id S229921AbhLGHIf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Dec 2021 02:08:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236898AbhLGGjK (ORCPT
+        with ESMTP id S229551AbhLGHIf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Dec 2021 01:39:10 -0500
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859D6C061359
-        for <linux-wireless@vger.kernel.org>; Mon,  6 Dec 2021 22:35:40 -0800 (PST)
-Received: by mail-pf1-x432.google.com with SMTP id z6so12484893pfe.7
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Dec 2021 22:35:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DOVDJjmjj4hLTjat7OUu9/MMuAZJaeKFjI5VvP80Sr0=;
-        b=Kbe1be42VDtOUWuyAxH9naNFdn22bhb0PWWRnKlhU4LRtbk5C3qQ1yWv5O8Tf1xaYm
-         oHi75nahMVk+pBVru/TX8Evu++VydsdeYq4KncKE32NwgMXW7KZEu/m12afu5PmFMK5V
-         z++MP4jZY3iPRd8TfjF6XCTaajLbIfaaPW3Ns=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DOVDJjmjj4hLTjat7OUu9/MMuAZJaeKFjI5VvP80Sr0=;
-        b=VCSJSpGIJThHM2Xu3r+4MLIPTNj2Dh9QjQHB2J0Yd9ETbu1v8gra/gsDglvNQ5M2PT
-         sIEeTEB+YSa07gAWnOI9jEXY7PXyBCGwWE2fceUAYVkRxkNPsW3GVuMnit29F1LPzlBK
-         crchz6Iyg0zNt4XR3RlmGQ8fnevyeIlOoIuyKC1yq82QZ8keH5nQi6FTMWDh8OOfQplR
-         jyPonVgWNDJDT89XyT9p7WgHPl+bwSVfApyTzt41ZmP/0CLAJZjEZLpUtufww5aoWBMU
-         s6MDTO0QKwGG6OCQuFyqiIFCGKhIaOfJVc3AoSwc7VTKTMlPqWDWCkjcR4OGuRdRP42J
-         rxHg==
-X-Gm-Message-State: AOAM531TEsFKOJ9/cEWOgvpnrRJmoMPOhPTewGpkL1gsW6Ez+lgSGetX
-        VPWQG6RqtaT9VRYcMOy/FUTChw==
-X-Google-Smtp-Source: ABdhPJw4OdnTlYTah6sMJYxRBKcOVLvja72f+MUSEBWLwv5PThpZtJKcMzEeXc4VyCMZMsdCKAQGDQ==
-X-Received: by 2002:a05:6a00:cc4:b0:4a0:e97:fe97 with SMTP id b4-20020a056a000cc400b004a00e97fe97mr41656686pfv.74.1638858940040;
-        Mon, 06 Dec 2021 22:35:40 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id b19sm14938169pfv.63.2021.12.06.22.35.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Dec 2021 22:35:39 -0800 (PST)
-From:   Kees Cook <keescook@chromium.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Kees Cook <keescook@chromium.org>,
+        Tue, 7 Dec 2021 02:08:35 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55284C061746;
+        Mon,  6 Dec 2021 23:05:05 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DB6C2B812A7;
+        Tue,  7 Dec 2021 07:05:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0391EC341C3;
+        Tue,  7 Dec 2021 07:04:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638860702;
+        bh=yWzt1aeH4MsSwkVPM8nWDF34gvx3pob6VEdOOSFPds8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=YZeC7ZwcgZB7JAui1TaysBm8KP7oTxOJsIWO7AtwiVlgdXWdD/3LG/U28Es8vyDLn
+         Sk3Vk2DZ0QR9Q7UfQKsXffIYv1/Ksy9MvjH1Pb8HrCf1SvdKDCeiChQcPeQf2Uty4G
+         OfYrebBOT747Clx5eiOscyAQ2ACzjiKwGEg1+tMCf2+eDWk9BKG1MPK2OwgVyF4xja
+         B9OwXkLSfSO4Ib6m+trpA3HqEXv4Ug7ee91cFX/B49hh4jX1cR7oXAmkCNaUb+GjwC
+         xwvAYOdb2YrcnErfFCcdgH//Gna9w3JzxKWStmD4TCOendMEyD6MMIyZcDNIVssdTH
+         KzYCsjPWyyd/w==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Stanislaw Gruszka <stf_xl@wp.pl>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Ayala Beker <ayala.beker@intel.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH] ath6kl: Use struct_group() to avoid size-mismatched casting
-Date:   Mon,  6 Dec 2021 22:35:38 -0800
-Message-Id: <20211207063538.2767954-1-keescook@chromium.org>
-X-Mailer: git-send-email 2.30.2
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] iwlwifi: fix LED dependencies
+References: <20211204173848.873293-1-arnd@kernel.org>
+Date:   Tue, 07 Dec 2021 09:04:56 +0200
+In-Reply-To: <20211204173848.873293-1-arnd@kernel.org> (Arnd Bergmann's
+        message of "Sat, 4 Dec 2021 18:38:33 +0100")
+Message-ID: <87ilw0uc87.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3525; h=from:subject; bh=gMIiB4KaTnR35ffD7gt6zl0cwWYPiUE9+pb15EV8f5A=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhrwC5FoqRGEH5aDrVc1O409fT3C87dkmvAVyNkfWg ZVhquVyJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYa8AuQAKCRCJcvTf3G3AJnR+EA CkJOBiiicx3wiHCrpJQgpwZg2CYcsFxGkaBGzqJj9pwuDubqibmw8T03RfGOjv8cthmZC2VnZP/s+E +ocDnRJgesw6aS9nRoiASGvg+/LjOPt6HUjSYywpy9oyWtBU6/pBAIOxa8Q3PKb6DBgL0+xobEL8k1 m5kJ1MEBDp1dZLVI/cvi8HKamvKUErNmHpaSCmi3mFlz+JNING9jMIWBXcyc26N5DC+mGxXheinDQi 5YSi/t1iWcVLP6IEsVgD3bH2ycFQbaNk5ZNKpxWGr6sitiMKZHR2D63a64TaOPCt03pJx6VGDrbilj 52XKn9NvCJ/+k8431PPZUOJHVZPOGnPr9gV0arRLbqjrmbBHBYIRjUd6p9ewMz/TeKhjKt0HFQntSE IZsOsix+AgMKLct3z/HpB1X4svJt6Lpn0y8auu1KCCkuNrCA4Ou99KgK/0KJPqTEMHuVlRqocjvup7 J/0FwBIsAvUhAzUmhdj59DqS5XlwvgNfpEQP+PWWyM44v/Bv912v0SiwJio6wmX3OZ716n7keVdIpX vo4lIosDNj7bfx23VkByP8CxQDUxScCxZkfzOxrnPtW41VVLn/RYBJQorUGS/f0nW0+vYGraGCsE56 1Kwv5JnFhQDBZ6QkJmUCzwtQE4f5so0PBFIU9oRZ8c2grEJZOC5eGgbVRzTQ==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In builds with -Warray-bounds, casts from smaller objects to larger
-objects will produce warnings. These can be overly conservative, but since
--Warray-bounds has been finding legitimate bugs, it is desirable to turn
-it on globally. Instead of casting a u32 to a larger object, redefine
-the u32 portion of the header to a separate struct that can be used for
-both u32 operations and the distinct header fields. Silences this warning:
+Arnd Bergmann <arnd@kernel.org> writes:
 
-drivers/net/wireless/ath/ath6kl/htc_mbox.c: In function 'htc_wait_for_ctrl_msg':
-drivers/net/wireless/ath/ath6kl/htc_mbox.c:2275:20: error: array subscript 'struct htc_frame_hdr[0]' is partly outside array bounds of 'u32[1]' {aka 'unsigned int[1]'} [-Werror=array-bounds]
- 2275 |         if (htc_hdr->eid != ENDPOINT_0)
-      |                    ^~
-drivers/net/wireless/ath/ath6kl/htc_mbox.c:2264:13: note: while referencing 'look_ahead'
- 2264 |         u32 look_ahead;
-      |             ^~~~~~~~~~
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The dependencies for LED configuration are highly inconsistent and too
+> complicated at the moment. One of the results is a randconfig failure I
+> get very rarely when LEDS_CLASS is in a loadable module, but the wireless
+> core is built-in:
+>
+> WARNING: unmet direct dependencies detected for MAC80211_LEDS
+>   Depends on [n]: NET [=y] && WIRELESS [=y] && MAC80211 [=y] && (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=MAC80211 [=y])
+>   Selected by [m]:
+>   - IWLEGACY [=m] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_INTEL [=y]
+>   - IWLWIFI_LEDS [=y] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_INTEL [=y] && IWLWIFI [=m] && (LEDS_CLASS [=m]=y || LEDS_CLASS [=m]=IWLWIFI [=m]) && (IWLMVM [=m] || IWLDVM [=m])
+>
+> aarch64-linux-ld: drivers/net/wireless/ath/ath5k/led.o: in function `ath5k_register_led':
+> led.c:(.text+0x60): undefined reference to `led_classdev_register_ext'
+> aarch64-linux-ld: drivers/net/wireless/ath/ath5k/led.o: in function `ath5k_unregister_leds':
+> led.c:(.text+0x200): undefined reference to `led_classdev_unregister'
+>
+> For iwlwifi, the dependency is wrong, since this config prevents the
+> MAC80211_LEDS code from being part of a built-in MAC80211 driver.
+>
+> For iwlegacy, this is worse because the driver tries to force-enable
+> the other subsystems, which is both a layering violation and a bug
+> because it will still fail with MAC80211=y and IWLEGACY=m, leading
+> to LEDS_CLASS being a module as well.
+>
+> The actual link failure in the ath5k driver is a result of MAC80211_LEDS
+> being enabled but not usable. With the Kconfig logic fixed in the
+> Intel drivers, the ath5k driver works as expected again.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-This change results in no executable instruction differences.
+Luca, I would like to take this to wireless-drivers. Ack?
 
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- drivers/net/wireless/ath/ath6kl/htc.h      | 19 +++++++++++++------
- drivers/net/wireless/ath/ath6kl/htc_mbox.c | 15 ++++++---------
- 2 files changed, 19 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath6kl/htc.h b/drivers/net/wireless/ath/ath6kl/htc.h
-index 112d8a9b8d43..d3534a29c4f0 100644
---- a/drivers/net/wireless/ath/ath6kl/htc.h
-+++ b/drivers/net/wireless/ath/ath6kl/htc.h
-@@ -153,12 +153,19 @@
-  * implementations.
-  */
- struct htc_frame_hdr {
--	u8 eid;
--	u8 flags;
--
--	/* length of data (including trailer) that follows the header */
--	__le16 payld_len;
--
-+	struct_group_tagged(htc_frame_look_ahead, header,
-+		union {
-+			struct {
-+				u8 eid;
-+				u8 flags;
-+
-+				/* length of data (including trailer) that follows the header */
-+				__le16 payld_len;
-+
-+			};
-+			u32 word;
-+		};
-+	);
- 	/* end of 4-byte lookahead */
- 
- 	u8 ctrl[2];
-diff --git a/drivers/net/wireless/ath/ath6kl/htc_mbox.c b/drivers/net/wireless/ath/ath6kl/htc_mbox.c
-index 998947ef63b6..e3874421c4c0 100644
---- a/drivers/net/wireless/ath/ath6kl/htc_mbox.c
-+++ b/drivers/net/wireless/ath/ath6kl/htc_mbox.c
-@@ -2260,19 +2260,16 @@ int ath6kl_htc_rxmsg_pending_handler(struct htc_target *target,
- static struct htc_packet *htc_wait_for_ctrl_msg(struct htc_target *target)
- {
- 	struct htc_packet *packet = NULL;
--	struct htc_frame_hdr *htc_hdr;
--	u32 look_ahead;
-+	struct htc_frame_look_ahead look_ahead;
- 
--	if (ath6kl_hif_poll_mboxmsg_rx(target->dev, &look_ahead,
-+	if (ath6kl_hif_poll_mboxmsg_rx(target->dev, &look_ahead.word,
- 				       HTC_TARGET_RESPONSE_TIMEOUT))
- 		return NULL;
- 
- 	ath6kl_dbg(ATH6KL_DBG_HTC,
--		   "htc rx wait ctrl look_ahead 0x%X\n", look_ahead);
--
--	htc_hdr = (struct htc_frame_hdr *)&look_ahead;
-+		   "htc rx wait ctrl look_ahead 0x%X\n", look_ahead.word);
- 
--	if (htc_hdr->eid != ENDPOINT_0)
-+	if (look_ahead.eid != ENDPOINT_0)
- 		return NULL;
- 
- 	packet = htc_get_control_buf(target, false);
-@@ -2281,8 +2278,8 @@ static struct htc_packet *htc_wait_for_ctrl_msg(struct htc_target *target)
- 		return NULL;
- 
- 	packet->info.rx.rx_flags = 0;
--	packet->info.rx.exp_hdr = look_ahead;
--	packet->act_len = le16_to_cpu(htc_hdr->payld_len) + HTC_HDR_LENGTH;
-+	packet->info.rx.exp_hdr = look_ahead.word;
-+	packet->act_len = le16_to_cpu(look_ahead.payld_len) + HTC_HDR_LENGTH;
- 
- 	if (packet->act_len > packet->buf_len)
- 		goto fail_ctrl_rx;
 -- 
-2.30.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
