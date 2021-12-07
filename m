@@ -2,93 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73B3946BEEA
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 16:11:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 298D246BF00
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 16:15:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238650AbhLGPOT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Dec 2021 10:14:19 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:57680 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238590AbhLGPNs (ORCPT
+        id S234291AbhLGPSh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Dec 2021 10:18:37 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:38506 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229818AbhLGPSg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Dec 2021 10:13:48 -0500
+        Tue, 7 Dec 2021 10:18:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 076B2CE1B75
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Dec 2021 15:10:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99596C341CA;
-        Tue,  7 Dec 2021 15:10:13 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CB8FBB80782;
+        Tue,  7 Dec 2021 15:15:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51959C341C1;
+        Tue,  7 Dec 2021 15:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638889815;
-        bh=TpCeGBjQ3MUWVEA4q7VntxzPfqsdrgI5h/iHZsSD7fc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=BtiDYtKPoZuZdaSwVe+gVAmimmwPUBzF65uJ4fBsuhfHSS0CiQBJBVK0xYlWUAY/6
-         WbqO+EgJx9HrUBE9ctkmr5PInYoxuyH35oSydaGvVaJbI7sDuvCvTN0KX+WWuUmGLl
-         5BPbbQpIEmVpvveN8v5i/XhNiVsI9Z20DiSdXSjjRwC+/m4z4I8tGyWHFuFCsOsWRc
-         BBlPkhiCGohWi+kHgh0wEnD7MwlAshMweAin6VTJfTNwgeehlv2KCUwN3mmIsbKNo+
-         IZU2IzHuBzTDXxsbLjoyh+4iuZqw93Tmf3Hx0GVIGShdpuRH61kduybG1lTI6t5H+v
-         FMoYP1PNRL/jA==
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1638890103;
+        bh=xxF6Nm2aBsMxEff2TkdoXeMHocqjOshQ8GbBna8ovUY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qXQflwPi4XW0XAwlgafUg1Sq0TeYe27GgLJm4wNYJUfUK2N6ICN8hq8sD2/ZcRg/v
+         WHTDBsSH4zvlUICZVXLzlbimjg9keWa2yEL4mg85vLh3arSz/H7lL653jE5VjZPX9c
+         7W5gIRRYGy/QHfpjvmR1r9hFYJns7QDIqs/85W3p5JWtCZRci9pYBvdc2IGX7zgTYN
+         hOqzwtIyR1G12qXRAj0DQfU+lioEyDfywNxbqJL5vQVFxDRO3PBy3jfVR1osUdkSN/
+         OnTK/fmIhg5qr8UWZpTisuPccqRnmmiQzDbToQOwtrIPMO70C9/BctFD29orWb+x9g
+         amxcPAh1WLV3A==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Ayala Beker <ayala.beker@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] [v2] iwlwifi: work around reverse dependency on MEI
+Date:   Tue,  7 Dec 2021 16:14:36 +0100
+Message-Id: <20211207151447.3338818-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3] ath10k: Fix the MTU size on QCA9377 SDIO
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211124131047.713756-1-festevam@denx.de>
-References: <20211124131047.713756-1-festevam@denx.de>
-To:     Fabio Estevam <festevam@denx.de>
-Cc:     kvalo@codeaurora.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, wgong@codeaurora.org,
-        Fabio Estevam <festevam@denx.de>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163888981163.18601.16356465928600024719.kvalo@kernel.org>
-Date:   Tue,  7 Dec 2021 15:10:13 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fabio Estevam <festevam@denx.de> wrote:
+From: Arnd Bergmann <arnd@arndb.de>
 
-> On an imx6dl-pico-pi board with a QCA9377 SDIO chip, simply trying to
-> connect via ssh to another machine causes:
-> 
-> [   55.824159] ath10k_sdio mmc1:0001:1: failed to transmit packet, dropping: -12
-> [   55.832169] ath10k_sdio mmc1:0001:1: failed to submit frame: -12
-> [   55.838529] ath10k_sdio mmc1:0001:1: failed to push frame: -12
-> [   55.905863] ath10k_sdio mmc1:0001:1: failed to transmit packet, dropping: -12
-> [   55.913650] ath10k_sdio mmc1:0001:1: failed to submit frame: -12
-> [   55.919887] ath10k_sdio mmc1:0001:1: failed to push frame: -12
-> 
-> , leading to an ssh connection failure.
-> 
-> One user inspected the size of frames on Wireshark and reported
-> the followig:
-> 
-> "I was able to narrow the issue down to the mtu. If I set the mtu for
-> the wlan0 device to 1486 instead of 1500, the issue does not happen.
-> 
-> The size of frames that I see on Wireshark is exactly 1500 after
-> setting it to 1486."
-> 
-> Clearing the HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE avoids the problem and
-> the ssh command works successfully after that.
-> 
-> Introduce a 'credit_size_workaround' field to ath10k_hw_params for
-> the QCA9377 SDIO, so that the HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE
-> is not set in this case.
-> 
-> Tested with QCA9377 SDIO with firmware WLAN.TF.1.1.1-00061-QCATFSWPZ-1.
-> 
-> Fixes: 2f918ea98606 ("ath10k: enable alt data of TX path for sdio")
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+If the iwlmei code is a loadable module, the main iwlwifi driver
+cannot be built-in:
 
-Patch applied to ath-next branch of ath.git, thanks.
+x86_64-linux-ld: drivers/net/wireless/intel/iwlwifi/pcie/trans.o: in function `iwl_pcie_prepare_card_hw':
+trans.c:(.text+0x4158): undefined reference to `iwl_mei_is_connected'
 
-09b8cd69edcf ath10k: Fix the MTU size on QCA9377 SDIO
+Unfortunately, Kconfig enforces the opposite, forcing the MEI driver to
+not be built-in if iwlwifi is a module.
 
+To work around this, decouple iwlmei from iwlwifi and add the
+dependency in the other direction.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/intel/iwlwifi/Kconfig | 52 +++++++++++-----------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
+index cf1125d84929..c21c0c68849a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/Kconfig
++++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
+@@ -2,6 +2,7 @@
+ config IWLWIFI
+ 	tristate "Intel Wireless WiFi Next Gen AGN - Wireless-N/Advanced-N/Ultimate-N (iwlwifi) "
+ 	depends on PCI && HAS_IOMEM && CFG80211
++	depends on IWLMEI || !IWLMEI
+ 	select FW_LOADER
+ 	help
+ 	  Select to build the driver supporting the:
+@@ -92,32 +93,6 @@ config IWLWIFI_BCAST_FILTERING
+ 	  If unsure, don't enable this option, as some programs might
+ 	  expect incoming broadcasts for their normal operations.
+ 
+-config IWLMEI
+-	tristate "Intel Management Engine communication over WLAN"
+-	depends on INTEL_MEI
+-	depends on PM
+-	depends on IWLMVM
+-	help
+-	  Enables the iwlmei kernel module.
+-
+-	  CSME stands for Converged Security and Management Engine. It is a CPU
+-	  on the chipset and runs a dedicated firmware. AMT (Active Management
+-	  Technology) is one of the applications that run on that CPU. AMT
+-	  allows to control the platform remotely.
+-
+-	  This kernel module allows to communicate with the Intel Management
+-	  Engine over Wifi. This is supported starting from Tiger Lake
+-	  platforms and has been tested on 9260 devices only.
+-	  If AMT is configured not to use the wireless device, this module is
+-	  harmless (and useless).
+-	  Enabling this option on a platform that has a different device and
+-	  has Wireless enabled on AMT can prevent WiFi from working correctly.
+-
+-	  For more information see
+-	  <https://software.intel.com/en-us/manageability/>
+-
+-	  If unsure, say N.
+-
+ menu "Debugging Options"
+ 
+ config IWLWIFI_DEBUG
+@@ -172,3 +147,28 @@ config IWLWIFI_DEVICE_TRACING
+ endmenu
+ 
+ endif
++
++config IWLMEI
++	tristate "Intel Management Engine communication over WLAN"
++	depends on INTEL_MEI
++	depends on PM
++	help
++	  Enables the iwlmei kernel module.
++
++	  CSME stands for Converged Security and Management Engine. It is a CPU
++	  on the chipset and runs a dedicated firmware. AMT (Active Management
++	  Technology) is one of the applications that run on that CPU. AMT
++	  allows to control the platform remotely.
++
++	  This kernel module allows to communicate with the Intel Management
++	  Engine over Wifi. This is supported starting from Tiger Lake
++	  platforms and has been tested on 9260 devices only.
++	  If AMT is configured not to use the wireless device, this module is
++	  harmless (and useless).
++	  Enabling this option on a platform that has a different device and
++	  has Wireless enabled on AMT can prevent WiFi from working correctly.
++
++	  For more information see
++	  <https://software.intel.com/en-us/manageability/>
++
++	  If unsure, say N.
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211124131047.713756-1-festevam@denx.de/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.29.2
 
