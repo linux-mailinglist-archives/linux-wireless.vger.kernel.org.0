@@ -2,77 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2465F46C214
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 18:47:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC29D46C239
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 18:58:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235514AbhLGRvM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Dec 2021 12:51:12 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:54396 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230181AbhLGRvL (ORCPT
+        id S240281AbhLGSBe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Dec 2021 13:01:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39078 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240264AbhLGSBd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Dec 2021 12:51:11 -0500
+        Tue, 7 Dec 2021 13:01:33 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0629C061574
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Dec 2021 09:58:02 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 54ACACE1C53
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Dec 2021 17:47:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EBFC341C1;
-        Tue,  7 Dec 2021 17:47:37 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 35E66CE1C95
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Dec 2021 17:58:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A1CC341C1;
+        Tue,  7 Dec 2021 17:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638899258;
-        bh=vwyuVDyRBHBHtjQAZ0ZBqofJI6JV7zSH7jyMIsKuZlE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=PGC8T9lEsGcGN8u6gM+p+Gc/cBo7GLJS5f7xxIiDZXktDGjL0MHhEmTXElK/DeG0i
-         j7i4F686dqs3m2UIF4IF2ZqzsCCdwhIAC5b0a49y0oXpYhqUXwTI8OCrfy1+t+E8Jp
-         Jtdue/IrzoKoFfvERNAWPMbkQMr08n51+Ryan9CgeKElzy188IO6coYE354+SKyY+o
-         fnorzYjiHQ51BS/jbfAyACjun5DOs7X4f5xmTtZvggU8NnunPJ/VUrUfaYAVbQ3Zr4
-         mFsEJ2+l+UBv1ieEqlnVZR/spWxmGa3uxFxIhrY0ci78qZVIFaDZUaGKKGaV28NGoN
-         AGudRklTs8eQA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jouni Malinen <jouni@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Baochen Qiang <bqiang@codeaurora.org>
-Subject: Re: [PATCH 2/3] ath11k: Move pdev debugfs creation ahead
-References: <20210913180902.193874-1-jouni@codeaurora.org>
-        <20210913180902.193874-3-jouni@codeaurora.org>
-Date:   Tue, 07 Dec 2021 19:47:34 +0200
-In-Reply-To: <20210913180902.193874-3-jouni@codeaurora.org> (Jouni Malinen's
-        message of "Mon, 13 Sep 2021 21:09:01 +0300")
-Message-ID: <87pmq8joi1.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1638899879;
+        bh=fz2nEJk5rFpWz4JegCbvPXaQuPKi9Cp81JShqbULKqI=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=hS5wK5xnyEEFGjyO7T6SPiwH5fUqd9iLr4ZvN2fZFyKfYEWkTdS6qJT/68b1pMgrb
+         WaC4G62Aj419ye0AEFeJd9zxigy6WeBIw4iTwClF27urKZlt66DZdkdlYZuf5BeQnk
+         xl194dHnRFMdJYw5DF/DMyVtJN5VVeFzQkEnE3qbyNPnWFgEUDSI7pJ+UqA5RWEisf
+         3i7JVCos8xBBmUOdnbzey2Rod52ADqqv/wTKDLjOSNN4uR70WWW7Z3RPJeISTNiiaU
+         y/hbBOhp1VdQBhT4fXzHBg7g58QpNOwZCBT0/bxMoW0olgd4dPh9sJA64yoQnNtRi2
+         7JOEZrskz/WTA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath10k: drop beacon and probe response which leak from
+ other
+ channel
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20211026025114.26313-1-quic_wgong@quicinc.com>
+References: <20211026025114.26313-1-quic_wgong@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_wgong@quicinc.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163889987494.24891.11641687858291703677.kvalo@kernel.org>
+Date:   Tue,  7 Dec 2021 17:57:58 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jouni Malinen <jouni@codeaurora.org> writes:
+Wen Gong <quic_wgong@quicinc.com> wrote:
 
-> From: Baochen Qiang <bqiang@codeaurora.org>
->
-> The sram dump debugfs interface has to be put under pdev directory
-> located under /sys/kernel/debug/ath11k/<pdev name>. Currently pdev directory
-> is created after firmware is ready, this is too late for sram dump.
-> Suppose that if errors happen and ath11k fails to reach firmware
-> ready, we have no way to dump sram content to debug cause the
-> interface has not been created yet. So move it ahead.
+> When scan request on channel 1, it also receive beacon from other
+> channels, and the beacon also indicate to mac80211 and wpa_supplicant,
+> and then the bss info appears in radio measurement report of radio
+> measurement sent from wpa_supplicant, thus lead RRM case fail.
+> 
+> This is to drop the beacon and probe response which is not the same
+> channel of scanning.
+> 
+> Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00049
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Reported-by: kernel test robot <lkp@intel.com>
 
-I'm not sure about this. What will happen with other debugfs files now
-that they are created before the firmware is ready, doesn't that create
-race conditions?
+Fails to apply:
 
-Also we need to do some refactoring in debugfs, for example see Anil's
-patch:
+error: patch failed: drivers/net/wireless/ath/ath10k/wmi.c:2610
+error: drivers/net/wireless/ath/ath10k/wmi.c: patch does not apply
+stg import: Diff does not apply cleanly
 
-https://patchwork.kernel.org/project/linux-wireless/patch/1614160542-27882-1-git-send-email-akolli@codeaurora.org/
-
-So I recommend dropping patch 2 for now and get the basic sram dump
-functionality ready first. After that we can discuss how to handle
-firmware crashes during driver initialisation, maybe coredump would be a
-better approach?
+Patch set to Changes Requested.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211026025114.26313-1-quic_wgong@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
