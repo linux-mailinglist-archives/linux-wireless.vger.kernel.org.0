@@ -2,103 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D677F46C115
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 17:55:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9727D46C150
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Dec 2021 18:05:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238821AbhLGQ70 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Dec 2021 11:59:26 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:37212 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235127AbhLGQ70 (ORCPT
+        id S239816AbhLGRIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Dec 2021 12:08:36 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:37218 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S239804AbhLGRIf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Dec 2021 11:59:26 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id CAA8BCE1C64
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Dec 2021 16:55:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E1CC341C3;
-        Tue,  7 Dec 2021 16:55:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638896152;
-        bh=9wwvZs+yVczrOqKsz4pGQrP1UKcx4uLoOGbsJoo8H2M=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=nphsx6Rd66rCNlNGdY6Dp8ERYk2ICqU46OAl6F5yIA+xN3Cl9+fIX9AeAtqMAshAi
-         lvYfYhC/qmypiJUwE2QPpRLpctqMYHq7Psygdx3PGPLt/o+lp0pUDf70QAxpJIbPzV
-         y7vbiT2IXaXTrA8JYpFulTEFMPsk8q5WMAXETD9Jpi6XrtUDEZOox6luwIjyg5U1KT
-         AsfR+16jrxtfexkKLPaPvQxtCnWkv9F2H7nndbopwSryDxUxDsQkaaV0ozMr3rp5ir
-         Y2DIBaRb9usDvYsoqru/h+N2HbVYcsXMTJcn0uJmJcW6HL/4NlSO5w5sMfpEL4fEF1
-         JQVnkA0sjjHcQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCHv2 2/2] ath11k: add spectral/CFR buffer validation support
-References: <1637312901-10279-1-git-send-email-quic_vnaralas@quicinc.com>
-        <1637312901-10279-2-git-send-email-quic_vnaralas@quicinc.com>
-Date:   Tue, 07 Dec 2021 18:55:46 +0200
-In-Reply-To: <1637312901-10279-2-git-send-email-quic_vnaralas@quicinc.com>
-        (Venkateswara Naralasetty's message of "Fri, 19 Nov 2021 14:38:21
-        +0530")
-Message-ID: <87y24wmk19.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 7 Dec 2021 12:08:35 -0500
+X-UUID: 7c60a3b67ff747d098b876ac2103c27d-20211208
+X-UUID: 7c60a3b67ff747d098b876ac2103c27d-20211208
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 766183075; Wed, 08 Dec 2021 01:05:01 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Wed, 8 Dec 2021 01:05:00 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 8 Dec 2021 01:05:00 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Shayne Chen" <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH] mt76: mt7921: fix network buffer leak by txs missing
+Date:   Wed, 8 Dec 2021 01:04:44 +0800
+Message-ID: <7f6efbd8e749b21bec2257c54b8258ebe89738fe.1638795555.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
 Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Venkateswara Naralasetty <quic_vnaralas@quicinc.com> writes:
+From: Deren Wu <deren.wu@mediatek.com>
 
-> Currently there is no validation on the spectral/CFR report
-> over the db ring buffers from the hardware. Improper/incomplete
-> DMA by the target can result in invalid data received by host.
-> Due to this we may populate incorrect data to user space.
->
-> This buffer validation support fix this issues by filling some
-> magic value in the buffer during buffer replenish and check for
-> the magic value in the buffer received by the target. If host
-> detect magic value in the received buffer it will drop the buffer.
->
-> Tested-on: IPQ8074 WLAN.HK.2.4.0.1-01467-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
-> ---
-> v2:
->  * Rebased on TOT
->
->  drivers/net/wireless/ath/ath11k/dbring.c   | 32 ++++++++++++++++++++++++++++++
->  drivers/net/wireless/ath/ath11k/dbring.h   |  1 +
->  drivers/net/wireless/ath/ath11k/spectral.c | 10 ++++++++++
->  3 files changed, 43 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/dbring.c b/drivers/net/wireless/ath/ath11k/dbring.c
-> index 31cf7ac..5c07442 100644
-> --- a/drivers/net/wireless/ath/ath11k/dbring.c
-> +++ b/drivers/net/wireless/ath/ath11k/dbring.c
-> @@ -6,6 +6,37 @@
->  #include "core.h"
->  #include "debug.h"
->  
-> +#define ATH11K_DB_MAGIC_VALUE 0xdeadbeaf
-> +
-> +int ath11k_dbring_validate_buffer(struct ath11k *ar, void *buffer, u32 size)
-> +{
-> +	u32 *temp;
-> +	int idx;
-> +
-> +	size = size >> 2;
-> +
-> +	for (idx = 0, temp = buffer; idx < size; idx++, temp++) {
-> +		if (*temp == ATH11K_DB_MAGIC_VALUE) {
-> +			ath11k_warn(ar->ab, "found magic value in the buffer\n");
+TXS in mt7921 may be forwared to tx_done event. Should try to catch
+TXS information in tx_done event as well.
 
-I moved the warning message to the callers to make it easier to identify
-where the corruption is happening and also added the word "dropping" to
-make the message clearer for the user.
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 17 ++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   | 27 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
+ 4 files changed, 46 insertions(+), 1 deletion(-)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=6c90df4c7aca225c4c486f31ca956ae6c08abe59
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index edf54b192f37..2514708e9ac8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1150,7 +1150,7 @@ mt7921_mac_add_txs_skb(struct mt7921_dev *dev, struct mt76_wcid *wcid, int pid,
+ 	return !!skb;
+ }
+ 
+-static void mt7921_mac_add_txs(struct mt7921_dev *dev, void *data)
++void mt7921_mac_add_txs(struct mt7921_dev *dev, void *data)
+ {
+ 	struct mt7921_sta *msta = NULL;
+ 	struct mt76_wcid *wcid;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 1227d626e9d3..8f58af4e29c6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -418,6 +418,20 @@ mt7921_mcu_low_power_event(struct mt7921_dev *dev, struct sk_buff *skb)
+ 	trace_lp_event(dev, event->state);
+ }
+ 
++static void
++mt7921_mcu_tx_done_event(struct mt7921_dev *dev, struct sk_buff *skb)
++{
++	struct mt7921_mcu_tx_done_event *event;
++
++	skb_pull(skb, sizeof(struct mt7921_mcu_rxd));
++	event = (struct mt7921_mcu_tx_done_event *)skb->data;
++
++	if (event->pid < MT_PACKET_ID_FIRST)
++		return;
++
++	mt7921_mac_add_txs(dev, event->txs);
++}
++
+ static void
+ mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
+ {
+@@ -445,6 +459,9 @@ mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
+ 	case MCU_EVENT_LP_INFO:
+ 		mt7921_mcu_low_power_event(dev, skb);
+ 		break;
++	case MCU_EVENT_TX_DONE:
++		mt7921_mcu_tx_done_event(dev, skb);
++		break;
+ 	default:
+ 		break;
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+index edc0c73f8c01..821af6e8d99a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+@@ -91,6 +91,33 @@ enum {
+ 	MCU_EVENT_COREDUMP = 0xf0,
+ };
+ 
++struct mt7921_mcu_tx_done_event {
++	u8 pid;
++	u8 status;
++	u16 seq;
++
++	u8 wlan_idx;
++	u8 tx_cnt;
++	u16 tx_rate;
++
++	u8 flag;
++	u8 tid;
++	u8 rsp_rate;
++	u8 mcs;
++
++	u8 bw;
++	u8 tx_pwr;
++	u8 reason;
++	u8 rsv0[1];
++
++	u32 delay;
++	u32 timestamp;
++	u32 applied_flag;
++	u8 txs[28];
++
++	u8 rsv1[32];
++} __packed;
++
+ /* ext event table */
+ enum {
+ 	MCU_EXT_EVENT_RATE_REPORT = 0x87,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index d6b823713ba3..96647801850a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -464,4 +464,5 @@ int mt7921s_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 			   struct mt76_tx_info *tx_info);
+ void mt7921s_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e);
+ bool mt7921s_tx_status_data(struct mt76_dev *mdev, u8 *update);
++void mt7921_mac_add_txs(struct mt7921_dev *dev, void *data);
+ #endif
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.18.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
