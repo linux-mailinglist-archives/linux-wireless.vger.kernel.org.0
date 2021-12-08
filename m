@@ -2,171 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ECF546D653
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 16:00:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48D2946D671
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 16:08:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233020AbhLHPDs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Dec 2021 10:03:48 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:41620 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S233763AbhLHPDq (ORCPT
+        id S234767AbhLHPMP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Dec 2021 10:12:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50862 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232243AbhLHPMP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Dec 2021 10:03:46 -0500
-X-UUID: ff080bc9babf426fa05fd564a6490834-20211208
-X-UUID: ff080bc9babf426fa05fd564a6490834-20211208
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1176648723; Wed, 08 Dec 2021 23:00:12 +0800
-Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 8 Dec 2021 23:00:10 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb01.mediatek.inc
- (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 8 Dec
- 2021 23:00:10 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 8 Dec 2021 23:00:10 +0800
-From:   Deren Wu <Deren.Wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
-        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        "Shayne Chen" <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH v2] mt76: mt7921: fix network buffer leak by txs missing
-Date:   Wed, 8 Dec 2021 22:59:55 +0800
-Message-ID: <f7ea8ae1ec5b7247b105818f981b67bcd61ac4f6.1638975314.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 8 Dec 2021 10:12:15 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 666BEC061746;
+        Wed,  8 Dec 2021 07:08:43 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id AEC9ECE2204;
+        Wed,  8 Dec 2021 15:08:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAB6C00446;
+        Wed,  8 Dec 2021 15:08:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638976119;
+        bh=ywKjLn27Q6Oh1nBhf+3mln3+BMCyTjnFwGC0TcO+TkM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Dr8Ac2LstfRkIamrj60wdve4k9bqFfwdVTS/MWc6rqjFkkasHR1nCoX+J+oGEdpRh
+         HKRK7sCTV2oE9MaeCDZ+QrFDJ58kOCX07lyk/iWRQv8ygnXY8csobsQZWiNlBTyq/g
+         SiWNz51IxlhusDB3h3jUPFfQHbDWfK4jNwrMRYWRRTN8dwee8V8clwW/W5At0hzi/t
+         nlqqZks3/i+80DpPJtnug0iBSbj6s+CDt8xyA/8AgujsRM/lnN5uz4Ziam3tesuHLB
+         1GzfKH5ZQXcp2DNXfAmgmYZN1gjENdKC4otwzDEgfOMY3diiJrGCeWTdexQnha85zD
+         VhnY+KOK89eEQ==
+Date:   Wed, 8 Dec 2021 07:08:38 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: wireless-drivers-next-2021-12-07
+Message-ID: <20211208070838.53892e8a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20211208065025.7060225d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+References: <20211207144211.A9949C341C1@smtp.kernel.org>
+        <20211207211412.13c78ace@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        <87tufjfrw0.fsf@codeaurora.org>
+        <20211208065025.7060225d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+On Wed, 8 Dec 2021 06:50:25 -0800 Jakub Kicinski wrote:
+> drivers/net/wireless/intel/iwlwifi/mvm/ops.c:684:12: warning: context imbalance in 'iwl_mvm_start_get_nvm' - wrong count at exit
 
-TXS in mt7921 may be forwared to tx_done event. Should try to catch
-TXS information in tx_done event as well.
-
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
-v2:
-  * remove redundant pid check
-  * fix endianness of mt7921_mcu_tx_done_event
----
- .../net/wireless/mediatek/mt76/mt7921/mac.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 14 ++++++++++
- .../net/wireless/mediatek/mt76/mt7921/mcu.h   | 27 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
- 4 files changed, 43 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index edf54b192f37..2514708e9ac8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -1150,7 +1150,7 @@ mt7921_mac_add_txs_skb(struct mt7921_dev *dev, struct mt76_wcid *wcid, int pid,
- 	return !!skb;
- }
- 
--static void mt7921_mac_add_txs(struct mt7921_dev *dev, void *data)
-+void mt7921_mac_add_txs(struct mt7921_dev *dev, void *data)
- {
- 	struct mt7921_sta *msta = NULL;
- 	struct mt76_wcid *wcid;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 1227d626e9d3..0412aa9676e3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -418,6 +418,17 @@ mt7921_mcu_low_power_event(struct mt7921_dev *dev, struct sk_buff *skb)
- 	trace_lp_event(dev, event->state);
- }
- 
-+static void
-+mt7921_mcu_tx_done_event(struct mt7921_dev *dev, struct sk_buff *skb)
-+{
-+	struct mt7921_mcu_tx_done_event *event;
-+
-+	skb_pull(skb, sizeof(struct mt7921_mcu_rxd));
-+	event = (struct mt7921_mcu_tx_done_event *)skb->data;
-+
-+	mt7921_mac_add_txs(dev, event->txs);
-+}
-+
- static void
- mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
- {
-@@ -445,6 +456,9 @@ mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
- 	case MCU_EVENT_LP_INFO:
- 		mt7921_mcu_low_power_event(dev, skb);
- 		break;
-+	case MCU_EVENT_TX_DONE:
-+		mt7921_mcu_tx_done_event(dev, skb);
-+		break;
- 	default:
- 		break;
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-index edc0c73f8c01..68cb0ce013db 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
-@@ -91,6 +91,33 @@ enum {
- 	MCU_EVENT_COREDUMP = 0xf0,
- };
- 
-+struct mt7921_mcu_tx_done_event {
-+	u8 pid;
-+	u8 status;
-+	__le16 seq;
-+
-+	u8 wlan_idx;
-+	u8 tx_cnt;
-+	__le16 tx_rate;
-+
-+	u8 flag;
-+	u8 tid;
-+	u8 rsp_rate;
-+	u8 mcs;
-+
-+	u8 bw;
-+	u8 tx_pwr;
-+	u8 reason;
-+	u8 rsv0[1];
-+
-+	__le32 delay;
-+	__le32 timestamp;
-+	__le32 applied_flag;
-+	u8 txs[28];
-+
-+	u8 rsv1[32];
-+} __packed;
-+
- /* ext event table */
- enum {
- 	MCU_EXT_EVENT_RATE_REPORT = 0x87,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index d6b823713ba3..96647801850a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -464,4 +464,5 @@ int mt7921s_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 			   struct mt76_tx_info *tx_info);
- void mt7921s_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e);
- bool mt7921s_tx_status_data(struct mt76_dev *mdev, u8 *update);
-+void mt7921_mac_add_txs(struct mt7921_dev *dev, void *data);
- #endif
--- 
-2.18.0
-
+I haven't looked at the code, but sparse is not great at understanding
+locking so this one may be ignorable. 
