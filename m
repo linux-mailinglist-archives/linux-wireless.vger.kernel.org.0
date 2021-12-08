@@ -2,124 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CF5E46CD96
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 07:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4183F46CDB8
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 07:27:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237581AbhLHGVp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Dec 2021 01:21:45 -0500
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:17284 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235080AbhLHGVo (ORCPT
+        id S239930AbhLHGb1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Dec 2021 01:31:27 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:57530 "EHLO
+        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239797AbhLHGb0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Dec 2021 01:21:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1638944293; x=1670480293;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=7JYL/fSf6uoFqLWx5PNjKqv5+3ggL/lvl93PP8sngqs=;
-  b=yYoizFt993aR8uGAICPjmUKQhHNHzgtsPKSq4v6Emcd/hwnf5sVQHsbn
-   HN/IfUwsZOryq+VyUra5eYACyqDWCg52AfL/LvbXIIxWH2rCSdxgMgDAz
-   NWKBS3ZpdRxbUgGJ7NfIGipQjnhf8q92dtyULZCxot5jKuEiHRjxzfQ7l
-   k=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 07 Dec 2021 22:18:13 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2021 22:18:12 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 7 Dec 2021 22:18:12 -0800
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 7 Dec 2021 22:18:10 -0800
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     <ath10k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
-Subject: [PATCH v2] ath10k: drop beacon and probe response which leak from other channel
-Date:   Wed, 8 Dec 2021 01:17:52 -0500
-Message-ID: <20211208061752.16564-1-quic_wgong@quicinc.com>
-X-Mailer: git-send-email 2.31.1
+        Wed, 8 Dec 2021 01:31:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
+        h=from:subject:mime-version:to:cc:content-transfer-encoding:
+        content-type;
+        s=sgd; bh=cU7a7l2hUokyjWAVxGR44X/SZoxT7Ra+h9paRR3oMk8=;
+        b=RKz31+dhMlqjVtbHKq3Wkm+rsoOCTedN2hh2w6Qt4IhHNEr6zJ4KHdfbEUaJsmYOojf+
+        to0u/CCPVNkrJi/kdWANeS1x955qFm3Vlk9Hg6wMcF8qEsVbWXkuIULi5VZAtu9NRVqyiW
+        tggNCt5IwMAcCYVHLl7+p6scR/jkuXuLQq09zKDSJXEWO/nci3WQOgIFn+wdh2znidhkBP
+        bR4XfEttWxX1euFO9z2M1uVeyhEa86C+EX5Qj9dqJhgIF/XpIZQGupd3mwRosTXutUKVJk
+        r2Md0Rezyn9kkKBit6Ab09CUouGUwQ88dGJYQBSGLvxYN5S9Rfu3af0A66TpLP8Q==
+Received: by filterdrecv-7bc86b958d-n76s9 with SMTP id filterdrecv-7bc86b958d-n76s9-1-61B0506A-31
+        2021-12-08 06:27:55.052284633 +0000 UTC m=+8410090.793158700
+Received: from pearl.egauge.net (unknown)
+        by ismtpd0057p1las1.sendgrid.net (SG) with ESMTP
+        id NpgNFnvoT5aqygQKbqhhUA
+        Wed, 08 Dec 2021 06:27:54.773 +0000 (UTC)
+Received: by pearl.egauge.net (Postfix, from userid 1000)
+        id CE68E700371; Tue,  7 Dec 2021 23:27:53 -0700 (MST)
+From:   David Mosberger-Tang <davidm@egauge.net>
+Subject: [PATCH] wilc1000: Fix spurious "FW not responding" error
+Date:   Wed, 08 Dec 2021 06:27:55 +0000 (UTC)
+Message-Id: <20211208062747.3405221-1-davidm@egauge.net>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvLjPqF1dYkzQ4i9aT?=
+ =?us-ascii?Q?AfhF9bpA1AGHFo=2FBAzRPqqedO32QpdHnxgt4WSB?=
+ =?us-ascii?Q?QT0BdUhpMaN3ttCdobzcgqUTuy7CrfecfHdjm5a?=
+ =?us-ascii?Q?s43Hre61Q8khGWqf1hoxVVfQ8nKTjNoc1G6JJJ=2F?=
+ =?us-ascii?Q?1gXZGDzmm7etMFUJ=2FNMbMCvlLw6=2FYadvfU18oxW?=
+ =?us-ascii?Q?LWO9bojgt35JEpSx7wAUA=3D=3D?=
+To:     Ajay Singh <ajay.kathat@microchip.com>
+Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        David Mosberger-Tang <davidm@egauge.net>
+X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When scan request on channel 1, it also receive beacon from other
-channels, and the beacon also indicate to mac80211 and wpa_supplicant,
-and then the bss info appears in radio measurement report of radio
-measurement sent from wpa_supplicant, thus lead RRM case fail.
+When deinitializing the driver, one or more "FW not responding" error
+appears on the console.  This appears to be due to wilc_wlan_stop()
+disabling host/WILC1000 communication, but then right afterwards, it
+tries to release the bus with chip-sleep enabled.  The problem is
+enabling the chip-sleep cannot success once host/WILC1000
+communication is disabled.  Fix by only releasing the bus.
 
-This is to drop the beacon and probe response which is not the same
-channel of scanning.
-
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00049
-
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
-v2: rebased to ath.git ath-202112071521
+ drivers/net/wireless/microchip/wilc1000/wlan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- drivers/net/wireless/ath/ath10k/wmi.c | 28 ++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 7c1c2658cb5f..07764ee409fe 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -2610,10 +2610,32 @@ int ath10k_wmi_event_mgmt_rx(struct ath10k *ar, struct sk_buff *skb)
- 	if (ieee80211_is_beacon(hdr->frame_control))
- 		ath10k_mac_handle_beacon(ar, skb);
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index f1e4ac3a2ad5..5d7f5b52f6de 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -1224,7 +1224,8 @@ int wilc_wlan_stop(struct wilc *wilc, struct wilc_vif *vif)
  
-+
- 	if (ieee80211_is_beacon(hdr->frame_control) ||
--	    ieee80211_is_probe_resp(hdr->frame_control))
-+	    ieee80211_is_probe_resp(hdr->frame_control)) {
-+		struct ieee80211_mgmt *mgmt = (void *)skb->data;
-+		u8 *ies;
-+		int ies_ch;
-+
- 		status->boottime_ns = ktime_get_boottime_ns();
+ 	ret = 0;
+ release:
+-	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
++	/* host comm is disabled - we can't issue sleep command anymore: */
++	release_bus(wilc, WILC_BUS_RELEASE_ONLY);
  
-+		if (!ar->scan_channel)
-+			goto drop;
-+
-+		ies = mgmt->u.beacon.variable;
-+
-+		ies_ch = cfg80211_get_ies_channel_number(mgmt->u.beacon.variable,
-+							 skb_tail_pointer(skb) - ies,
-+							 sband->band);
-+
-+		if (ies_ch > 0 && ies_ch != channel) {
-+			ath10k_dbg(ar, ATH10K_DBG_MGMT,
-+				   "channel mismatched ds channel %d scan channel %d\n",
-+				   ies_ch, channel);
-+			goto drop;
-+		}
-+	}
-+
- 	ath10k_dbg(ar, ATH10K_DBG_MGMT,
- 		   "event mgmt rx skb %pK len %d ftype %02x stype %02x\n",
- 		   skb, skb->len,
-@@ -2627,6 +2649,10 @@ int ath10k_wmi_event_mgmt_rx(struct ath10k *ar, struct sk_buff *skb)
- 	ieee80211_rx_ni(ar->hw, skb);
- 
- 	return 0;
-+
-+drop:
-+	dev_kfree_skb(skb);
-+	return 0;
+ 	return ret;
  }
- 
- static int freq_to_idx(struct ath10k *ar, int freq)
-
-base-commit: 4f4f8aee394b73abf5e5f98c63187fdbf1d627f0
 -- 
-2.31.1
+2.25.1
 
