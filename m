@@ -2,133 +2,270 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E7BE46D513
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 15:07:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C28B46D589
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 15:19:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234732AbhLHOLC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Dec 2021 09:11:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36148 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231363AbhLHOLB (ORCPT
+        id S231658AbhLHOWs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Dec 2021 09:22:48 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:50726 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230142AbhLHOWr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Dec 2021 09:11:01 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE24C061746;
-        Wed,  8 Dec 2021 06:07:29 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id o13so4224689wrs.12;
-        Wed, 08 Dec 2021 06:07:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=flO2O8RvdMi4zDyJ0phVtOeQZBpULAZ1IhqXyVEqyzA=;
-        b=Egk86bCKE8ZJa9Cxbm7c7hc3MxfwwPpQfeTlLF1zqfn9EQxmPANDyOI9rBxigF1gBy
-         z0FE1yf7TsZp7sXnDofJIAaW3rKF5aWJTc2kZHUF/+hZGbcz89t52kGQ+4inbIqHUxA9
-         clPpkb7qZ3s+Try2LP26Z+XTyvMinh/mBP8uXl4PW56FpmeQJsCaW6UMLdXT2YjiNy7F
-         kWjZJyTJ9lLjPyC6KqoZyjfNEZnCLMSfz+diNnPIKVPeSN0AxW7wOc/ca8xCQQZTLAVT
-         Sthi0dRPwE9h0DAZ6lxO+R/qjVfz3vrj7Uv77+3ZPG6bRQFgGSjejt76DkRKR0EIjOEL
-         MTsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=flO2O8RvdMi4zDyJ0phVtOeQZBpULAZ1IhqXyVEqyzA=;
-        b=mkxLxsp4EnOeUbH2BJdUYh8VqHpVK+xHu1s7mDrU5KkBtwOZrOpjG6QTKMHC3l2/xB
-         EtVv9mHjXmHug0v1f62N+oHTpCizrI2k6GK0IVJMS5PELmOcGWHFoE0R9ndJBbC0ZB+c
-         /TTlqCixXlU3GX7Y3Gen4/BPKey5Jj/ebTwPdGhB6DcLlMDllp2Pmjc3vxCZ/qAQ2Kre
-         2u8OxHKhqagOHtyn2BcObKlJe1C6X74Ot8hsIWVaXsEU4p7wAG1YlN63+l5OB8Nr5nlT
-         LWrJsL6/N+Ttci/M1W7OH52SvbNrTzhIeTlPLYD0kYkinoe6p+WIp/P9AIdi3o1s4Xes
-         02SQ==
-X-Gm-Message-State: AOAM530h6FMvPU7O9zIRLKx6Di87w+eH0RgtCAjVJ/NcBhsfr3QJuMEn
-        eQ9NpimbxhAVuqtx6fxsHyc=
-X-Google-Smtp-Source: ABdhPJxwrd+qCdOIbLO5MeObmUldpC0bKJPA1DSjSX0ZaTkODCFhRslJ7yErIE3qwCprCkUf/wLWgw==
-X-Received: by 2002:a05:6000:181:: with SMTP id p1mr60216470wrx.292.1638972448449;
-        Wed, 08 Dec 2021 06:07:28 -0800 (PST)
-Received: from debian64.daheim (p5b0d797a.dip0.t-ipconnect.de. [91.13.121.122])
-        by smtp.gmail.com with ESMTPSA id c10sm3101318wrb.81.2021.12.08.06.07.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Dec 2021 06:07:27 -0800 (PST)
-Received: from localhost.daheim ([127.0.0.1])
-        by debian64.daheim with esmtp (Exim 4.95)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1muwdv-0008Oc-Ou;
-        Wed, 08 Dec 2021 15:07:24 +0100
-Message-ID: <09a27912-9ea4-fe75-df72-41ba0fa5fd4e@gmail.com>
-Date:   Wed, 8 Dec 2021 15:07:24 +0100
+        Wed, 8 Dec 2021 09:22:47 -0500
+Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=[192.168.100.150])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1muxmr-001C6D-1r; Wed, 08 Dec 2021 16:19:14 +0200
+Message-ID: <0ee53b7977ca2cd1c1d5deb100fb9cdbfe2acd0b.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, luca@coelho.fi
+Date:   Wed, 08 Dec 2021 16:19:10 +0200
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-DwlaWSaItyGcu0ShPbOw"
+User-Agent: Evolution 3.42.1-1 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH] ath10k: support bus and device specific API 1 BDF
- selection
-Content-Language: de-DE
-To:     Robert Marko <robimarko@gmail.com>, Kalle Valo <kvalo@kernel.org>
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, open list <linux-kernel@vger.kernel.org>
-References: <20211009221711.2315352-1-robimarko@gmail.com>
- <163890036783.24891.8718291787865192280.kvalo@kernel.org>
- <CAOX2RU5mqUfPRDsQNSpVPdiz6sE_68KN5Ae+2bC_t1cQzdzgTA@mail.gmail.com>
-From:   Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <CAOX2RU5mqUfPRDsQNSpVPdiz6sE_68KN5Ae+2bC_t1cQzdzgTA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
+Subject: pull-request: iwlwifi-next 2021-12-08
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 08/12/2021 13:21, Robert Marko wrote:
-> On Tue, 7 Dec 2021 at 19:06, Kalle Valo <kvalo@kernel.org> wrote:
->>
->> Robert Marko <robimarko@gmail.com> wrote:
->>
->>> Some ath10k IPQ40xx devices like the MikroTik hAP ac2 and ac3 require the
->>> BDF-s to be extracted from the device storage instead of shipping packaged
->>> API 2 BDF-s.
->>>
->>> This is required as MikroTik has started shipping boards that require BDF-s
->>> to be updated, as otherwise their WLAN performance really suffers.
->>> This is however impossible as the devices that require this are release
->>> under the same revision and its not possible to differentiate them from
->>> devices using the older BDF-s.
->>>
->>> In OpenWrt we are extracting the calibration data during runtime and we are
->>> able to extract the BDF-s in the same manner, however we cannot package the
->>> BDF-s to API 2 format on the fly and can only use API 1 to provide BDF-s on
->>> the fly.
->>> This is an issue as the ath10k driver explicitly looks only for the
->>> board.bin file and not for something like board-bus-device.bin like it does
->>> for pre-cal data.
->>> Due to this we have no way of providing correct BDF-s on the fly, so lets
->>> extend the ath10k driver to first look for BDF-s in the
->>> board-bus-device.bin format, for example: board-ahb-a800000.wifi.bin
->>> If that fails, look for the default board file name as defined previously.
->>>
->>> Signed-off-by: Robert Marko <robimarko@gmail.com>
->>
->> Can someone review this, please? I understand the need for this, but the board
->> handling is getting quite complex in ath10k so I'm hesitant.
->>
->> What about QCA6390 and other devices. Will they still work?
-> Hi Kalle,
-> everything else should just continue working as before unless the
-> board-bus-device.bin file
-> exists it will just use the current method to fetch the BDF.
-> 
-> Also, this only applies to API1 BDF-s.
-> 
-> We are really needing this as currently there are devices with the
-> wrong BDF being loaded as
-> we have no way of knowing where MikroTik changed it and dynamic
-> loading would resolve
-> all of that since they are one of the rare vendors that embed the
-> BDF-s next to calibration data.
 
-Isn't the only user of this the non-upstreamable rb_hardconfig
-mikrotik platform driver? So, in your case the devices in question
-needs to setup a detour through the userspace firmware (helper+scripts)
-to pull on the sysfs of that mikrotik platform driver? Wouldn't it
-be possible to do this more directly?
+--=-DwlaWSaItyGcu0ShPbOw
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Kalle,
+
+Here's my first pull request for v5.17 with the three patchsets I sent
+earlier, plus a few patches to fix small issues introduced when iwlmei
+was merged and a couple of other patches sent by the community some
+time ago that were still pending.
+
+Otherwise this is all normal development, new features, bugfixes and
+cleanups.  More details about the contents in the tag description.
+
+Please let me know if there are any issues.
 
 Cheers,
-Christian
+Luca.
+
+
+The following changes since commit fe6db7eda9306d665f7b8fc3decdb556ec10fb85=
+:
+
+  iwlwifi: mei: fix linking when tracing is not enabled (2021-12-05 13:55:1=
+5 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git ta=
+gs/iwlwifi-next-for-kalle-2021-12-08
+
+for you to fetch changes up to 977df8bd5844c9370c26a9477418165b870da27c:
+
+  iwlwifi: work around reverse dependency on MEI (2021-12-07 20:18:06 +0200=
+)
+
+----------------------------------------------------------------
+first set of iwlwifi patches for v5.17
+
+* A few mei fixes;
+* Some improvements in D3;
+* Support for new FW API commands;
+* Fixes and cleanups in device configurations;
+* Support some new FW API command versions;
+* Fix WGDS revision 3 reading bug;
+* Some firmware debugging improvements;
+* Fixes for in device configuration structures;
+* Improvements in the session protection code;
+* Support SAR GEO Offset Mapping (SGOM) via BIOS;
+* Continued work on the new Bz device family;
+* Some more firmware debugging improvements;
+* Support new FW API version 68;
+* Add some new device IDs;
+* Some other small fixes, clean-ups and improvements.
+
+----------------------------------------------------------------
+Arnd Bergmann (1):
+      iwlwifi: work around reverse dependency on MEI
+
+Ayala Barazani (1):
+      iwlwifi: support SAR GEO Offset Mapping override via BIOS
+
+Colin Ian King (1):
+      iwlwifi: mei: Fix spelling mistake "req_ownserhip" -> "req_ownership"
+
+Emmanuel Grumbach (3):
+      iwlwifi: mei: don't rely on the size from the shared area
+      iwlwifi: mvm: fix a possible NULL pointer deference
+      iwlwifi: mvm: remove session protection upon station removal
+
+Haim Dreyfuss (1):
+      iwlwifi: pcie: support Bz suspend/resume trigger
+
+Ilan Peer (2):
+      iwlwifi: mvm: Fix wrong documentation for scan request command
+      iwlwifi: mvm: Add support for a new version of scan request command
+
+Johannes Berg (15):
+      iwlwifi: mvm: fix delBA vs. NSSN queue sync race
+      iwlwifi: mvm: synchronize with FW after multicast commands
+      iwlwifi: mvm: d3: move GTK rekeys condition
+      iwlwifi: mvm: parse firmware alive message version 6
+      iwlwifi: mvm: d3: support v12 wowlan status
+      iwlwifi: mvm: support RLC configuration command
+      iwlwifi: fw: api: add link to PHY context command struct v1
+      iwlwifi: mvm: add support for PHY context command v4
+      iwlwifi: mvm: add some missing command strings
+      iwlwifi: mvm/api: define system control command
+      iwlwifi: mvm: always use 4K RB size by default
+      iwlwifi: pcie: retake ownership after reset
+      iwlwifi: implement reset flow for Bz devices
+      iwlwifi: fw: correctly detect HW-SMEM region subtype
+      iwlwifi: mvm: optionally suppress assert log
+
+Luca Coelho (3):
+      iwlwifi: remove unused iwlax210_2ax_cfg_so_hr_a0 structure
+      iwlwifi: add missing entries for Gf4 with So and SoF
+      iwlwifi: bump FW API to 68 for AX devices
+
+Lv Yunlong (1):
+      wireless: iwlwifi: Fix a double free in iwl_txq_dyn_alloc_dma
+
+Matti Gottlieb (1):
+      iwlwifi: Fix FW name for gl
+
+Mike Golant (2):
+      iwlwifi: support 4-bits in MAC step value
+      iwlwifi: add support for Bz-Z HW
+
+Miri Korenblit (1):
+      iwlwifi: acpi: fix wgds rev 3 size
+
+Mordechay Goodstein (3):
+      iwlwifi: mvm: add support for statistics update version 15
+      iwlwifi: mvm: update rate scale in moving back to assoc state
+      iwlwifi: fw: add support for splitting region type bits
+
+Mukesh Sisodiya (2):
+      iwlwifi: yoyo: support for DBGC4 for dram
+      iwlwifi: dbg: disable ini debug in 8000 family and below
+
+Shaul Triebitz (1):
+      iwlwifi: mvm: avoid clearing a just saved session protection id
+
+Yaara Baruch (3):
+      iwlwifi: swap 1650i and 1650s killer struct names
+      iwlwifi: add new Qu-Hr device
+      iwlwifi: add new ax1650 killer device
+
+Yang Shen (1):
+      iwlwifi: mvm: demote non-compliant kernel-doc header
+
+ drivers/net/wireless/intel/iwlwifi/Kconfig                    |  52 ++++++=
+++---------
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c                |  29 +++++-=
+----
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c                 |   8 +--
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c                  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/alive.h             |  17 +++++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/commands.h          |  13 ++++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/d3.h                |  81 ++++++=
++++++++++++++++++++--
+ drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h          |  62 ++++++=
++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h           |  13 ++++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h           |   5 ++
+ drivers/net/wireless/intel/iwlwifi/fw/api/phy-ctxt.h          |   9 +--
+ drivers/net/wireless/intel/iwlwifi/fw/api/power.h             |  14 +++++
+ drivers/net/wireless/intel/iwlwifi/fw/api/scan.h              |  48 ++++++=
+++++------
+ drivers/net/wireless/intel/iwlwifi/fw/api/stats.h             |  92 ++++++=
++++++++++++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/{soc.h =3D> system.h} |  16 ++++=
+--
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c                   |  21 ++++--=
+-
+ drivers/net/wireless/intel/iwlwifi/fw/dump.c                  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/error-dump.h            |  18 ++++++
+ drivers/net/wireless/intel/iwlwifi/fw/init.c                  |   2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/runtime.h               |   4 ++
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c                  |  88 ++++++=
++++++++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h                  |  20 ++++++=
++
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h               |   2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h                  |  19 ++++--=
+-
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c              |  12 ++--
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c                  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c            |   2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h                 |   7 +++
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h                |  13 ++++-
+ drivers/net/wireless/intel/iwlwifi/mei/main.c                 |  30 ++++++=
+----
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c                   | 184 ++++++=
+++++++++++++++++++++++++++++++++++++++++++++++--------
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c              |   8 +++
+ drivers/net/wireless/intel/iwlwifi/mvm/fw-api.h               |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c                   |  55 ++++++=
++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c             |  39 ++++++=
+++++---
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h                  |  10 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c                  |  30 +++++-=
+----
+ drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c             |  62 ++++++=
++++++++++++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c                  |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c                |   8 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c                   | 261 ++++++=
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------=
+-----
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c                 |   5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c                 |  51 ++++++=
++++++------
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c                  |  10 ++++
+ drivers/net/wireless/intel/iwlwifi/mvm/time-event.c           |  12 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/utils.c                |  51 ++++++=
++++++++++--
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c                 |  40 ++++++=
+++------
+ drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c          |  13 +++--
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c               | 115 ++++++=
+++++++++++++++++----------------
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c                 |   8 ++-
+ 50 files changed, 1321 insertions(+), 354 deletions(-)
+ rename drivers/net/wireless/intel/iwlwifi/fw/api/{soc.h =3D> system.h} (70=
+%)
+
+
+--=-DwlaWSaItyGcu0ShPbOw
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAmGwvt4ACgkQoUecoho8
+xfpAdw/+I4Vi34l2IpEcFIlaCQ2KNFFUjKfSG1uHHmxvGLRzzXO+rzrzt3f2MecI
+ItR5StvCRsE06JTYkrmUWaVIp6FqmRPrFVy9FDzpf+MHfQIHJim6CbPw50WZ6xOc
+qBCJ0NAM5+PmwgAHtvHLAp+fluoDRn4pfMQ40r7GXiOT//pt2ggIFAa+kVewaRJ0
+ZcPG/Vk08mJqTYru35U27/17G8nEQqvL2vnoet/2PXszKq4JROxKQk2ruT4AXZaU
+UpA+yEK1GdcPSpMHdDs67s5h8TsQdNtgK9AAlTJYINbjetiPWAE04uPL35jtKtEo
+Q9hipWHshQhj+5deyutyzVOpvqNlGIl20IHzgUm0sKxwmVtOr1ABxxolJqkjnUUJ
+qYR6fgHWvMylx3X52ll7jDZ44Mcn8JZQgz55FsNCsTGFHZbjTYGmSaGSBt79J/2k
+z9MTlxaxfgRBSE22QZPGXms8Dt8xglz4gbKNB18OQc4lzCLAjzxA7U0RMw6PwDTY
+wm5VTaMHB5ZQM3J3cqV3Run62IIRBu84425LZbBSUElGiu+NePVUJDJi1Z3jKtMv
+xuBGdKHoW+dlYV28RJxyMY6T9v/+0fngYLj75LiaD+joRjjrTk5E8mBi2nt+ysJs
+0SpB0eOBRT6vN9gRMlsNoX8QYIS22Dos4+aJReEmhqXqmprgeJM=
+=oj5b
+-----END PGP SIGNATURE-----
+
+--=-DwlaWSaItyGcu0ShPbOw--
