@@ -2,111 +2,171 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31DC646D618
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 15:50:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ECF546D653
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 16:00:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235467AbhLHOyB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Dec 2021 09:54:01 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:50388 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235460AbhLHOyA (ORCPT
+        id S233020AbhLHPDs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Dec 2021 10:03:48 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:41620 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S233763AbhLHPDq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Dec 2021 09:54:00 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1CE71B81CF1;
-        Wed,  8 Dec 2021 14:50:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A4AC00446;
-        Wed,  8 Dec 2021 14:50:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638975026;
-        bh=xCd+Ek+0L9WQ4tTA1dWnfyB0nv+bIPj5lTDb8/UQHLw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=PElFEWn144eCM/ziMqXPbYVOGAZHWOC8+swB4dzmCTx6vwqY0ePpOCCz1VsSlgO8V
-         Rg3gZxSknogfu0aMEQEXzACQAl2Of1sTvEpFUK7rx0nvsSwfCa+PbigRv+l9h8GyVz
-         HvC5ugHOFXjXfzGQ5LgHO8XM7LtBxJVdRXHHbDizJCAfPhpJ7m3Oss5Z0lZQf9wYvq
-         bzBeOwFRsWyLAm3RU940O78nDtz5quHOEIRCIb/DFb0jUZRoJikOzCvHgoRmukQKBL
-         eBwbZuZuPxPfEkJfjo7r1+zmiFGhndNKlZ7uQX/mIUcNzEg0xcvPdMj9776wpe4NWR
-         PRA/gP8mWv4HA==
-Date:   Wed, 8 Dec 2021 06:50:25 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: pull-request: wireless-drivers-next-2021-12-07
-Message-ID: <20211208065025.7060225d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <87tufjfrw0.fsf@codeaurora.org>
-References: <20211207144211.A9949C341C1@smtp.kernel.org>
-        <20211207211412.13c78ace@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <87tufjfrw0.fsf@codeaurora.org>
+        Wed, 8 Dec 2021 10:03:46 -0500
+X-UUID: ff080bc9babf426fa05fd564a6490834-20211208
+X-UUID: ff080bc9babf426fa05fd564a6490834-20211208
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1176648723; Wed, 08 Dec 2021 23:00:12 +0800
+Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 8 Dec 2021 23:00:10 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb01.mediatek.inc
+ (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 8 Dec
+ 2021 23:00:10 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 8 Dec 2021 23:00:10 +0800
+From:   Deren Wu <Deren.Wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Eric Liang <Eric.Liang@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Shayne Chen" <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH v2] mt76: mt7921: fix network buffer leak by txs missing
+Date:   Wed, 8 Dec 2021 22:59:55 +0800
+Message-ID: <f7ea8ae1ec5b7247b105818f981b67bcd61ac4f6.1638975314.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 08 Dec 2021 10:00:15 +0200 Kalle Valo wrote:
-> Jakub Kicinski <kuba@kernel.org> writes:
-> 
-> > On Tue,  7 Dec 2021 14:42:11 +0000 (UTC) Kalle Valo wrote:  
-> >> here's a pull request to net-next tree, more info below. Please let me know if
-> >> there are any problems.  
-> >
-> > Pulled, thanks! Could you chase the appropriate people so that the new
-> > W=1 C=1 warnings get resolved before the merge window's here?
-> >
-> > https://patchwork.kernel.org/project/netdevbpf/patch/20211207144211.A9949C341C1@smtp.kernel.org/  
-> 
-> Just so that I understand right, you are referring to this patchwork
-> test:
-> 
->   Errors and warnings before: 111 this patch: 115
-> 
->   https://patchwork.hopto.org/static/nipa/591659/12662005/build_32bit/
-> 
-> And you want the four new warnings to be fixed? That can be quite time
-> consuming, to be honest I would rather revert the commits than using a
-> lot of my time trying to get people fix the warnings. Is there an easy
-> way to find what are the new warnings?
+From: Deren Wu <deren.wu@mediatek.com>
 
-Yeah, scroll down, there is a diff of the old warnings vs new ones, and
-a summary of which files have changed their warning count:
+TXS in mt7921 may be forwared to tx_done event. Should try to catch
+TXS information in tx_done event as well.
 
-+      2 ../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+      3 ../drivers/net/wireless/intel/iwlwifi/mei/main.c
--      1 ../drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+      2 ../drivers/net/wireless/intel/iwlwifi/mvm/ops.c
--      2 ../drivers/net/wireless/microchip/wilc1000/wlan.c
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+v2:
+  * remove redundant pid check
+  * fix endianness of mt7921_mcu_tx_done_event
+---
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 14 ++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   | 27 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
+ 4 files changed, 43 insertions(+), 1 deletion(-)
 
-So presumably these are the warnings that were added:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index edf54b192f37..2514708e9ac8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1150,7 +1150,7 @@ mt7921_mac_add_txs_skb(struct mt7921_dev *dev, struct mt76_wcid *wcid, int pid,
+ 	return !!skb;
+ }
+ 
+-static void mt7921_mac_add_txs(struct mt7921_dev *dev, void *data)
++void mt7921_mac_add_txs(struct mt7921_dev *dev, void *data)
+ {
+ 	struct mt7921_sta *msta = NULL;
+ 	struct mt76_wcid *wcid;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 1227d626e9d3..0412aa9676e3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -418,6 +418,17 @@ mt7921_mcu_low_power_event(struct mt7921_dev *dev, struct sk_buff *skb)
+ 	trace_lp_event(dev, event->state);
+ }
+ 
++static void
++mt7921_mcu_tx_done_event(struct mt7921_dev *dev, struct sk_buff *skb)
++{
++	struct mt7921_mcu_tx_done_event *event;
++
++	skb_pull(skb, sizeof(struct mt7921_mcu_rxd));
++	event = (struct mt7921_mcu_tx_done_event *)skb->data;
++
++	mt7921_mac_add_txs(dev, event->txs);
++}
++
+ static void
+ mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
+ {
+@@ -445,6 +456,9 @@ mt7921_mcu_rx_unsolicited_event(struct mt7921_dev *dev, struct sk_buff *skb)
+ 	case MCU_EVENT_LP_INFO:
+ 		mt7921_mcu_low_power_event(dev, skb);
+ 		break;
++	case MCU_EVENT_TX_DONE:
++		mt7921_mcu_tx_done_event(dev, skb);
++		break;
+ 	default:
+ 		break;
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+index edc0c73f8c01..68cb0ce013db 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+@@ -91,6 +91,33 @@ enum {
+ 	MCU_EVENT_COREDUMP = 0xf0,
+ };
+ 
++struct mt7921_mcu_tx_done_event {
++	u8 pid;
++	u8 status;
++	__le16 seq;
++
++	u8 wlan_idx;
++	u8 tx_cnt;
++	__le16 tx_rate;
++
++	u8 flag;
++	u8 tid;
++	u8 rsp_rate;
++	u8 mcs;
++
++	u8 bw;
++	u8 tx_pwr;
++	u8 reason;
++	u8 rsv0[1];
++
++	__le32 delay;
++	__le32 timestamp;
++	__le32 applied_flag;
++	u8 txs[28];
++
++	u8 rsv1[32];
++} __packed;
++
+ /* ext event table */
+ enum {
+ 	MCU_EXT_EVENT_RATE_REPORT = 0x87,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index d6b823713ba3..96647801850a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -464,4 +464,5 @@ int mt7921s_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 			   struct mt76_tx_info *tx_info);
+ void mt7921s_tx_complete_skb(struct mt76_dev *mdev, struct mt76_queue_entry *e);
+ bool mt7921s_tx_status_data(struct mt76_dev *mdev, u8 *update);
++void mt7921_mac_add_txs(struct mt7921_dev *dev, void *data);
+ #endif
+-- 
+2.18.0
 
-drivers/net/wireless/intel/iwlwifi/mei/main.c:193: warning: cannot understand function prototype: 'struct '
-drivers/net/wireless/intel/iwlwifi/mei/main.c:1784: warning: Function parameter or member 'cldev' not described in 'iwl_mei_probe'
-drivers/net/wireless/intel/iwlwifi/mei/main.c:1784: warning: Function parameter or member 'id' not described in 'iwl_mei_probe'
-
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3911:28: warning: incorrect type in assignment (different base types)
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3911:28:    expected restricted __le32 [assigned] [usertype] period_msec
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3911:28:    got restricted __le16 [usertype]
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3913:30: warning: incorrect type in assignment (different base types)
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3913:30:    expected unsigned char [assigned] [usertype] keep_alive_id
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3913:30:    got restricted __le16 [usertype]
-
-drivers/net/wireless/intel/iwlwifi/mvm/ops.c:684:12: warning: context imbalance in 'iwl_mvm_start_get_nvm' - wrong count at exit
-
-> But in the big picture are you saying the net trees now have a rule that
-> no new W=1 and C=1 warnings are allowed? I do test ath10k and ath11k
-> drivers for W=1 and C=1 warnings, but all other drivers are on their own
-> in this regard. At the moment I have no tooling in place to check all
-> wireless drivers.
-
-For the code we merge directly we try to make sure there are no new
-warnings. I realize it's quite a bit of work for larger trees unless 
-you have the infra so not a hard requirement (for you).
-
-FWIW the build bot we wrote is available on GH:
-
-https://github.com/kuba-moo/nipa
-
-But it currently hard codes tree matching logic for bpf and netdev,
-so would probably take a few hours to adopt it.
