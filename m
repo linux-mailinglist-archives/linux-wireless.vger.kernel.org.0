@@ -2,80 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4003946CE9D
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 09:00:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9FA846CEBF
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 09:16:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244623AbhLHID5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Dec 2021 03:03:57 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:33024 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbhLHID4 (ORCPT
+        id S244701AbhLHITh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Dec 2021 03:19:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38874 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235924AbhLHITh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Dec 2021 03:03:56 -0500
+        Wed, 8 Dec 2021 03:19:37 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA15C061574
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Dec 2021 00:16:05 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 6E193CE2033;
-        Wed,  8 Dec 2021 08:00:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B49C00446;
-        Wed,  8 Dec 2021 08:00:20 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 1D3BFCE200A
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Dec 2021 08:16:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BC4C00446;
+        Wed,  8 Dec 2021 08:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638950421;
-        bh=itzCqr3xP1lv5NYDibFoL0Ql5Ms0lNbRWSc011NXcsg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=mHhbDnH23FZWc/ZsMIilwRaHuR8M2fbHuYeq49W8axFWIWUSqSVZB/PXqiBnUg6QY
-         svWn84ZXzM13cedrjigTrtPJMmLPWSZHYSDovzQficyr/IgiFghbyqEP1QUHBKU1mP
-         CThO5+iNemjnPUG4RiHKz0Xw5ybwec0Y9rYJYxUnPz/g5zMqOwkt6jzxgkC87CQPfM
-         DsQ0PKEPABPX1lebnn5G7J37oT/BvZxJh65usQqeQ5glCkFuocPnGWeBfJhC5X/iq9
-         eFVYbF63+zq/MaLLgIcBOZkZrPyW6TIYIgQqGT2rpMWa04c4z8z8Assxwdw8ut35DV
-         hwgHH/yr6vJAw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: pull-request: wireless-drivers-next-2021-12-07
-References: <20211207144211.A9949C341C1@smtp.kernel.org>
-        <20211207211412.13c78ace@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Date:   Wed, 08 Dec 2021 10:00:15 +0200
-In-Reply-To: <20211207211412.13c78ace@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        (Jakub Kicinski's message of "Tue, 7 Dec 2021 21:14:12 -0800")
-Message-ID: <87tufjfrw0.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1638951362;
+        bh=+pJ69idPT2x0MrraTw0JqUqJMITFA71icoOACygOFZc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=lx+NxWZ1HoD3EJeucQCTE4eZTvpTly1DvG/ZMTUKBJDX3HqmZgAV2wS7E9E5NIj7A
+         qoF5NT+zEeX71KCSexYz8Ai/1a6TfZDGNiLL4t9wv9Ql0+PteomTHgMt5JXEiH6IE8
+         9RZP9Gt2rAtL0wopVpUk+6Tfo2oJdHdabWmwcZ8eC2PQtGBINPnoHE1sOqKPstG/r+
+         3z8UUKKycKpVy69TrQu2SvSBe6rvzGXPABf3ZEfE540LRNW1ORKeOnfDdzSdKsLeOW
+         rnJGBF4xOdGc02MeO/cdjxwX2epC+X5mSdd9Me7J1wE+57elk+adCqm/H5k8CP85o7
+         /t9m2Wzu975fQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath11k: enable IEEE80211_HW_SINGLE_SCAN_ON_ALL_BANDS for
+ WCN6855
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20211129101309.2931-1-quic_wgong@quicinc.com>
+References: <20211129101309.2931-1-quic_wgong@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_wgong@quicinc.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163895135713.29041.4980786229647025244.kvalo@kernel.org>
+Date:   Wed,  8 Dec 2021 08:16:01 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Wen Gong <quic_wgong@quicinc.com> wrote:
 
-> On Tue,  7 Dec 2021 14:42:11 +0000 (UTC) Kalle Valo wrote:
->> here's a pull request to net-next tree, more info below. Please let me know if
->> there are any problems.
->
-> Pulled, thanks! Could you chase the appropriate people so that the new
-> W=1 C=1 warnings get resolved before the merge window's here?
->
-> https://patchwork.kernel.org/project/netdevbpf/patch/20211207144211.A9949C341C1@smtp.kernel.org/
+> Currently mac80211 will send 3 scan request for each scan of WCN6855,
+> they are 2.4 GHz/5 GHz/6 GHz band scan. Firmware of WCN6855 will
+> cache the RNR IE(Reduced Neighbor Report element) which exist in the
+> beacon of 2.4 GHz/5 GHz of the AP which is co-located with 6 GHz,
+> and then use the cache to scan in 6 GHz band scan if the 6 GHz scan
+> is in the same scan with the 2.4 GHz/5 GHz band, this will helpful to
+> search more AP of 6 GHz. Also it will decrease the time cost of scan
+> because firmware will use dual-band scan for the 2.4 GHz/5 GHz, it
+> means the 2.4 GHz and 5 GHz scans are doing simultaneously.
+> 
+> Set the flag IEEE80211_HW_SINGLE_SCAN_ON_ALL_BANDS for WCN6855 since
+> it supports 2.4 GHz/5 GHz/6 GHz and it is single pdev which means
+> all the 2.4 GHz/5 GHz/6 GHz exist in the same wiphy/ieee80211_hw.
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Just so that I understand right, you are referring to this patchwork
-test:
-
-  Errors and warnings before: 111 this patch: 115
-
-  https://patchwork.hopto.org/static/nipa/591659/12662005/build_32bit/
-
-And you want the four new warnings to be fixed? That can be quite time
-consuming, to be honest I would rather revert the commits than using a
-lot of my time trying to get people fix the warnings. Is there an easy
-way to find what are the new warnings?
-
-But in the big picture are you saying the net trees now have a rule that
-no new W=1 and C=1 warnings are allowed? I do test ath10k and ath11k
-drivers for W=1 and C=1 warnings, but all other drivers are on their own
-in this regard. At the moment I have no tooling in place to check all
-wireless drivers.
+Sven, after your memory corruption fix is this good to take?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211129101309.2931-1-quic_wgong@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
