@@ -2,79 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9FA846CEBF
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 09:16:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2B2346CEC6
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 09:19:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244701AbhLHITh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Dec 2021 03:19:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38874 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235924AbhLHITh (ORCPT
+        id S244724AbhLHIXE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Dec 2021 03:23:04 -0500
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:5772 "EHLO
+        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231496AbhLHIXE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Dec 2021 03:19:37 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA15C061574
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Dec 2021 00:16:05 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 1D3BFCE200A
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Dec 2021 08:16:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BC4C00446;
-        Wed,  8 Dec 2021 08:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638951362;
-        bh=+pJ69idPT2x0MrraTw0JqUqJMITFA71icoOACygOFZc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=lx+NxWZ1HoD3EJeucQCTE4eZTvpTly1DvG/ZMTUKBJDX3HqmZgAV2wS7E9E5NIj7A
-         qoF5NT+zEeX71KCSexYz8Ai/1a6TfZDGNiLL4t9wv9Ql0+PteomTHgMt5JXEiH6IE8
-         9RZP9Gt2rAtL0wopVpUk+6Tfo2oJdHdabWmwcZ8eC2PQtGBINPnoHE1sOqKPstG/r+
-         3z8UUKKycKpVy69TrQu2SvSBe6rvzGXPABf3ZEfE540LRNW1ORKeOnfDdzSdKsLeOW
-         rnJGBF4xOdGc02MeO/cdjxwX2epC+X5mSdd9Me7J1wE+57elk+adCqm/H5k8CP85o7
-         /t9m2Wzu975fQ==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 8 Dec 2021 03:23:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1638951573; x=1670487573;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=AQLk6FGdAOv4GB5ViUS7ddtCiscd01jYhDNM/LUKU8g=;
+  b=oIoQN9gc481S7lMcniYhsMIapxCP2toFECSzd+mbsP9o5qzHuCV7AOoL
+   L9MKi5fGb+vfrbXRHP3LuG7cc5RTOtaZsQY4dyjW0EhYJ1SqT+f9EQdhn
+   JMB1RddYbk4Iok3Wskm0ojtbdUg6lanb81Nl8HwXOlqZ/c1OQQhuF1iow
+   w=;
+Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 08 Dec 2021 00:19:32 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2021 00:19:32 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Wed, 8 Dec 2021 00:19:32 -0800
+Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Wed, 8 Dec 2021
+ 00:19:31 -0800
+Message-ID: <463b4075-e98f-d51a-d305-a7adadc8a585@quicinc.com>
+Date:   Wed, 8 Dec 2021 16:19:28 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
 Subject: Re: [PATCH] ath11k: enable IEEE80211_HW_SINGLE_SCAN_ON_ALL_BANDS for
  WCN6855
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211129101309.2931-1-quic_wgong@quicinc.com>
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
 References: <20211129101309.2931-1-quic_wgong@quicinc.com>
-To:     Wen Gong <quic_wgong@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <quic_wgong@quicinc.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163895135713.29041.4980786229647025244.kvalo@kernel.org>
-Date:   Wed,  8 Dec 2021 08:16:01 +0000 (UTC)
+ <163895135713.29041.4980786229647025244.kvalo@kernel.org>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <163895135713.29041.4980786229647025244.kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <quic_wgong@quicinc.com> wrote:
+On 12/8/2021 4:16 PM, Kalle Valo wrote:
+> Wen Gong <quic_wgong@quicinc.com> wrote:
+...
+> Sven, after your memory corruption fix is this good to take?
 
-> Currently mac80211 will send 3 scan request for each scan of WCN6855,
-> they are 2.4 GHz/5 GHz/6 GHz band scan. Firmware of WCN6855 will
-> cache the RNR IE(Reduced Neighbor Report element) which exist in the
-> beacon of 2.4 GHz/5 GHz of the AP which is co-located with 6 GHz,
-> and then use the cache to scan in 6 GHz band scan if the 6 GHz scan
-> is in the same scan with the 2.4 GHz/5 GHz band, this will helpful to
-> search more AP of 6 GHz. Also it will decrease the time cost of scan
-> because firmware will use dual-band scan for the 2.4 GHz/5 GHz, it
-> means the 2.4 GHz and 5 GHz scans are doing simultaneously.
-> 
-> Set the flag IEEE80211_HW_SINGLE_SCAN_ON_ALL_BANDS for WCN6855 since
-> it supports 2.4 GHz/5 GHz/6 GHz and it is single pdev which means
-> all the 2.4 GHz/5 GHz/6 GHz exist in the same wiphy/ieee80211_hw.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-> 
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+After Sven's fix "ath11k: Fix buffer overflow when scanning with 
+extraie", it will not happen kernel crash.
 
-Sven, after your memory corruption fix is this good to take?
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211129101309.2931-1-quic_wgong@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+But it need Sven's confirm.
 
