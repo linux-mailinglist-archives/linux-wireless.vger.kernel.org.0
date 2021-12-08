@@ -2,79 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7893446C8AF
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 01:29:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A66B46CA10
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 02:34:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238556AbhLHAc4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Dec 2021 19:32:56 -0500
-Received: from relay026.a.hostedemail.com ([64.99.140.26]:51746 "EHLO
-        relay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229503AbhLHAc4 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Dec 2021 19:32:56 -0500
-X-Greylist: delayed 361 seconds by postgrey-1.27 at vger.kernel.org; Tue, 07 Dec 2021 19:32:55 EST
-Received: from omf09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-        by unirelay09.hostedemail.com (Postfix) with ESMTP id 37F7E20FC5;
-        Wed,  8 Dec 2021 00:23:22 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf09.hostedemail.com (Postfix) with ESMTPA id A41C52002A;
-        Wed,  8 Dec 2021 00:23:20 +0000 (UTC)
-Message-ID: <5b44cebddcda765942aa118d25740a074137d0f8.camel@perches.com>
-Subject: Re: [PATCH 2/2] wilc1000: Fix missing newline in error message
-From:   Joe Perches <joe@perches.com>
-To:     David Mosberger-Tang <davidm@egauge.net>,
-        Ajay Singh <ajay.kathat@microchip.com>
-Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 07 Dec 2021 16:23:18 -0800
-In-Reply-To: <00d44cb3-3b38-7bb6-474f-c819c2403b6a@egauge.net>
-References: <20211206232709.3192856-1-davidm@egauge.net>
-         <20211206232709.3192856-3-davidm@egauge.net>
-         <4687b01640eaaba01b3db455a7951a534572ee31.camel@perches.com>
-         <00d44cb3-3b38-7bb6-474f-c819c2403b6a@egauge.net>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.40.4-1ubuntu2 
+        id S239445AbhLHBiL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Dec 2021 20:38:11 -0500
+Received: from m43-7.mailgun.net ([69.72.43.7]:37525 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239621AbhLHBiK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 Dec 2021 20:38:10 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1638927279; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=E1xMeWN7axQWVodiwYidbZo5oGTp0MZISH2KuPx2d3Y=;
+ b=psUYFNZ4Z1Dgq9anbmDJStGJ8oUqmidRlcXbact96x2vQTeafgn4kXwNNDHr6UW/z8AlF7iu
+ 6+XwgkpbIFTRfBHKNfG5W+gawYkhgAoig88Gy6Pu2EeEVsfehuCIJGbYcLDrA04U1HX1PMk4
+ XDG+hUUKZ7sXtLwKwRy1jXbHez8=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n08.prod.us-east-1.postgun.com with SMTP id
+ 61b00baee7d68470af682eee (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 08 Dec 2021 01:34:38
+ GMT
+Sender: bqiang=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 028A5C4361A; Wed,  8 Dec 2021 01:34:37 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bqiang)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 31C55C4360D;
+        Wed,  8 Dec 2021 01:34:37 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A41C52002A
-X-Spam-Status: No, score=-4.35
-X-Stat-Signature: kqwa4ns4rtai67cewqax5n5aisczig7o
-X-Rspamd-Server: rspamout08
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1+9Fk+jLiyLjv0vbVVIihJWAYk+EQJbxQw=
-X-HE-Tag: 1638923000-80965
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 08 Dec 2021 09:34:37 +0800
+From:   Baochen Qiang <bqiang@codeaurora.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Jouni Malinen <jouni@codeaurora.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 2/3] ath11k: Move pdev debugfs creation ahead
+In-Reply-To: <87pmq8joi1.fsf@codeaurora.org>
+References: <20210913180902.193874-1-jouni@codeaurora.org>
+ <20210913180902.193874-3-jouni@codeaurora.org>
+ <87pmq8joi1.fsf@codeaurora.org>
+Message-ID: <ea9d43d501eac8b9f7268899992e9d41@codeaurora.org>
+X-Sender: bqiang@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2021-12-07 at 15:58 -0700, David Mosberger-Tang wrote:
-> On 12/6/21 6:33 PM, Joe Perches wrote:
+On 2021-12-08 01:47, Kalle Valo wrote:
+> Jouni Malinen <jouni@codeaurora.org> writes:
 > 
-> > On Mon, 2021-12-06 at 23:27 +0000, David Mosberger-Tang wrote:
-> > > Add missing newline in pr_err() message.
-> > []
-> > > diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-> > []
-> > > @@ -27,7 +27,7 @@ static irqreturn_t isr_uh_routine(int irq, void *user_data)
-> > >   	struct wilc *wilc = user_data;
-> > >   
-> > >   	if (wilc->close) {
-> > > -		pr_err("Can't handle UH interrupt");
-> > > +		pr_err("Can't handle UH interrupt\n");
-> > Ideally this would use wiphy_<level>:
-> > 
-> > 		wiphy_err(wilc->wiphy, "Can't handle UH interrupt\n");
+>> From: Baochen Qiang <bqiang@codeaurora.org>
+>> 
+>> The sram dump debugfs interface has to be put under pdev directory
+>> located under /sys/kernel/debug/ath11k/<pdev name>. Currently pdev 
+>> directory
+>> is created after firmware is ready, this is too late for sram dump.
+>> Suppose that if errors happen and ath11k fails to reach firmware
+>> ready, we have no way to dump sram content to debug cause the
+>> interface has not been created yet. So move it ahead.
 > 
-> Sure, but that's orthogonal to this bug fix.
+> I'm not sure about this. What will happen with other debugfs files now
+> that they are created before the firmware is ready, doesn't that create
+> race conditions?
+> 
+> Also we need to do some refactoring in debugfs, for example see Anil's
+> patch:
+> 
+> https://patchwork.kernel.org/project/linux-wireless/patch/1614160542-27882-1-git-send-email-akolli@codeaurora.org/
+> 
+> So I recommend dropping patch 2 for now and get the basic sram dump
+> functionality ready first. After that we can discuss how to handle
+> firmware crashes during driver initialisation, maybe coredump would be 
+> a
+> better approach?
 
-Of course.
-
-> I do have a "cleanups" 
-> branch with various cleanups of this sort.  I'll look into fixing pr_*() 
-> calls in the cleanups branch (there are several of them, unsurprisingly).
-
-netdev_<level> -> wiphy_<level> conversions too where feasible please.
-
+Sure, Kalle, let's get basic functionality ready first.
