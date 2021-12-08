@@ -2,69 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6582E46DB20
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 19:31:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 022B346DB29
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 19:33:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235141AbhLHSfB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Dec 2021 13:35:01 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:44204 "EHLO
+        id S238980AbhLHShD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Dec 2021 13:37:03 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:45012 "EHLO
         sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238925AbhLHSfB (ORCPT
+        with ESMTP id S238962AbhLHShB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Dec 2021 13:35:01 -0500
+        Wed, 8 Dec 2021 13:37:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 3A937CE2328
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Dec 2021 18:31:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9123BC00446;
-        Wed,  8 Dec 2021 18:31:25 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id E4F4DCE2033;
+        Wed,  8 Dec 2021 18:33:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B184C341C8;
+        Wed,  8 Dec 2021 18:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638988286;
-        bh=IYQKbvNuWTDxoZnjGxiIuIBQcWtLfeiEN1OYVs8UaHM=;
+        s=k20201202; t=1638988406;
+        bh=IcuKnQleuYG1JCOQ8yF0rJR0KfoG234u39zEPO2nxhM=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=u+ttsxn7fKxSOCYOrhs8eFaB22xsDQd186F7Owpf76lBOTGJ2uF+A0Yww+7OWWwXF
-         DF/UA2jVct1k66Zs4wRbkZG1HG+xK6K7VUbDZRSe5Y2o31Q2AbeC+nv1C7RxvSY8HL
-         kMG0Jx6/9n31EhutRR8REE11YQZpSHsFX/LTbo7P8kYcdXUFHXCzhJ5ROPPfx4f5oZ
-         xy2zl+gdFS6MVB78Sx0+Z1hcnQ22y029vo2C7uaNuqAWRBKcM3l4WN6foObmLTHSm1
-         Vql1fKBY6CvkkzjPifXKfgXpIKUOfsc+9eP4Pvt2j0gSNUuimqp9q073uCS/cDlnf+
-         ISK+3i9jMdzgg==
+        b=P/Vy0IFyL5DR1lESTbGVKO2KNnsfl0+Do6oWKXYdQ92LyM4/pve4wM5ZL/xJtJ0ZO
+         S/rAJgZmc11UnI0DPiVir/gqaxzeWQWCw4nB4h/Uz/JUle05aHD9Qv05jiJ/0X/OG4
+         uFar3YwoUGlMlQ5TlKAFDF5Gcv9pAEWMDRrsSMqvKkok7dgiANSC+vMPzMCI2mjDZF
+         wwSukwJ1Zt5BuCBXaE8krFHqCqN/2g/79KW9uME2TOmdbtj2IMUiM9W02PO4DJEslI
+         nb6CLid2u5hTmnLqbB2nI9keRVAbriaRO7QpjXpXU4CdqGwR84XCUl6mI3iaN1nClz
+         6wNGnFaSWIPAA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtw89: don't kick off TX DMA if failed to write skb
+Subject: Re: [PATCH] wilc1000: Add id_table to spi_driver
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211201093816.13806-1-pkshih@realtek.com>
-References: <20211201093816.13806-1-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>,
-        <dan.carpenter@oracle.com>
+In-Reply-To: <20211202045001.2901903-1-davidm@egauge.net>
+References: <20211202045001.2901903-1-davidm@egauge.net>
+To:     David Mosberger-Tang <davidm@egauge.net>
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        David Mosberger-Tang <davidm@egauge.net>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163898828387.25635.4513505665745914358.kvalo@kernel.org>
-Date:   Wed,  8 Dec 2021 18:31:25 +0000 (UTC)
+Message-ID: <163898840113.25635.6371266090909098470.kvalo@kernel.org>
+Date:   Wed,  8 Dec 2021 18:33:23 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+David Mosberger-Tang <davidm@egauge.net> wrote:
 
-> This is found by Smatch static checker warning:
-> 	drivers/net/wireless/realtek/rtw89/mac80211.c:31 rtw89_ops_tx()
-> 	error: uninitialized symbol 'qsel'.
+> This eliminates warning message:
 > 
-> The warning is because 'qsel' isn't filled by rtw89_core_tx_write() due to
-> failed to write. The way to fix it is to avoid kicking off TX DMA, so add
-> 'return' to the failure case.
+> 	SPI driver WILC_SPI has no spi_device_id for microchip,wilc1000
 > 
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> and makes device-tree autoloading work.
+> 
+> Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-a58fdb7c843a rtw89: don't kick off TX DMA if failed to write skb
+f2f16ae9cc9c wilc1000: Add id_table to spi_driver
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211201093816.13806-1-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211202045001.2901903-1-davidm@egauge.net/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
