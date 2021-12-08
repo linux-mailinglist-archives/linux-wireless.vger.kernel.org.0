@@ -2,115 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D752646D334
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 13:22:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9BB946D36E
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 13:39:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233293AbhLHMZc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Dec 2021 07:25:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39484 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231708AbhLHMZb (ORCPT
+        id S232200AbhLHMnY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Dec 2021 07:43:24 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:32616 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229498AbhLHMnX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Dec 2021 07:25:31 -0500
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 971ADC061746;
-        Wed,  8 Dec 2021 04:21:59 -0800 (PST)
-Received: by mail-qv1-xf2a.google.com with SMTP id gu12so2078274qvb.6;
-        Wed, 08 Dec 2021 04:21:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8uy0DZF7lXHvcBRiAIjRsLK9cNEa6jf/rNNhdNudo5w=;
-        b=cHX2O0p2l777DDyIx13QKGz8UX24Uk7UaRJHIphrFXhWQpCdBq/STZ3JU+jBVhQXFQ
-         eEK73FHRc8ykrxIkcW7EwsQYpWU6hiH7uV8aTrQq5q6z9MvamNo8ByD3T0Q1O+bwdX9d
-         mrsXJpL6z7KG9Q+Tf/oWyZrkkY+sClbYwIw5oqyQ0fK7+JQrmG45imzLDKke4y2afb2Q
-         fZnfzwPckqBkkd1mqT5N+uYOuijVavructJJmCmCZHWTC9gwdoAAKeI8aKLjO1IBrob+
-         8x/McZkGWEFExIhOMVDwl+XJQT24Tq3BHUhgUtO0J+N9HOzAtgD0z8aYTJYyWd3YbQxd
-         HpMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8uy0DZF7lXHvcBRiAIjRsLK9cNEa6jf/rNNhdNudo5w=;
-        b=SgBqHCNhYLhlpFCPDif1zn63HLwkPeSV985+RUerw2ZadxthamHH9nHpZhU6JtBI1S
-         l1pWX25fKYugZRdJiShbAl82FrP0Pm7Gs/TG6wxQs7c1fLPgfwdptIDb8zYvqIxLV1o3
-         CQI9IY9SeYkQp2TNu0UswfvgKIdCvgTsmQ62Eic7NzA4Lot+NEdgvh11JZVbih9uxCNV
-         UsO78XqD281WJjAECNjS0B6gVwXDpc4anhvcC0amCsUKKVY//MoOJOL4QV5//87CS6CI
-         MKmEPekjOWgWffjY7DcU2WHR55+L7elFdUETgtEgrcUDacbKVVDRLhDceTZhlzXtQJrj
-         i0tw==
-X-Gm-Message-State: AOAM533GfvkG+SPGjevCeiREgxIk/8BQOhMl0WpyKA3BbwSdXdwlqocz
-        f2N16j288/79i96p1iHk9AwQ2HYcZYUkL+pS0tA=
-X-Google-Smtp-Source: ABdhPJw4YNDPavQA3I/O4k+Cm2sSpqxXToag596Tt+4b8OC+lHeBZ071Vp1j5+4JZaFFBqijN0cyCd68ufQr4+BQKxY=
-X-Received: by 2002:a05:6214:1909:: with SMTP id er9mr6882300qvb.118.1638966118601;
- Wed, 08 Dec 2021 04:21:58 -0800 (PST)
+        Wed, 8 Dec 2021 07:43:23 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1638967192; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=y6ZVfcg+sVRy5P1hPdcn6foFe/ecLIz95SvVzkTCvfw=;
+ b=uq4p+fiYxf2rX75Nu1RwSecavvMkR4lv+XAC0BotiZLzodU90HOlOZ+rVMsT19To5PQ3G37E
+ wbn6ZMi/wktbl595QZG/IK1t7JZhdVLWuvU5BoBgG+TrXx5wBIGqR2nNCxUkd9vJrHGAcVHA
+ PWXtYS2eIgE/YRm1vMk3zk/N0v8=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n10.prod.us-east-1.postgun.com with SMTP id
+ 61b0a797642caac31880dfe8 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 08 Dec 2021 12:39:51
+ GMT
+Sender: akolli=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 82281C4360C; Wed,  8 Dec 2021 12:39:50 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: akolli)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C4942C4338F;
+        Wed,  8 Dec 2021 12:39:49 +0000 (UTC)
 MIME-Version: 1.0
-References: <20211009221711.2315352-1-robimarko@gmail.com> <163890036783.24891.8718291787865192280.kvalo@kernel.org>
-In-Reply-To: <163890036783.24891.8718291787865192280.kvalo@kernel.org>
-From:   Robert Marko <robimarko@gmail.com>
-Date:   Wed, 8 Dec 2021 13:21:47 +0100
-Message-ID: <CAOX2RU5mqUfPRDsQNSpVPdiz6sE_68KN5Ae+2bC_t1cQzdzgTA@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: support bus and device specific API 1 BDF selection
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 08 Dec 2021 18:09:49 +0530
+From:   Anilkumar Kolli <akolli@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Jouni Malinen <jouni@codeaurora.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        Seevalamuthu Mariappan <seevalam@codeaurora.org>
+Subject: Re: [PATCH 12/12] ath11k: Change QCN9074 firmware to operate in
+ mode-2
+In-Reply-To: <871r3lkcqc.fsf@codeaurora.org>
+References: <20210721212029.142388-1-jouni@codeaurora.org>
+ <20210721212029.142388-12-jouni@codeaurora.org>
+ <871r3lkcqc.fsf@codeaurora.org>
+Message-ID: <2918b38bca0d8d1fac8f1edabe5ecce0@codeaurora.org>
+X-Sender: akolli@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 7 Dec 2021 at 19:06, Kalle Valo <kvalo@kernel.org> wrote:
->
-> Robert Marko <robimarko@gmail.com> wrote:
->
-> > Some ath10k IPQ40xx devices like the MikroTik hAP ac2 and ac3 require the
-> > BDF-s to be extracted from the device storage instead of shipping packaged
-> > API 2 BDF-s.
-> >
-> > This is required as MikroTik has started shipping boards that require BDF-s
-> > to be updated, as otherwise their WLAN performance really suffers.
-> > This is however impossible as the devices that require this are release
-> > under the same revision and its not possible to differentiate them from
-> > devices using the older BDF-s.
-> >
-> > In OpenWrt we are extracting the calibration data during runtime and we are
-> > able to extract the BDF-s in the same manner, however we cannot package the
-> > BDF-s to API 2 format on the fly and can only use API 1 to provide BDF-s on
-> > the fly.
-> > This is an issue as the ath10k driver explicitly looks only for the
-> > board.bin file and not for something like board-bus-device.bin like it does
-> > for pre-cal data.
-> > Due to this we have no way of providing correct BDF-s on the fly, so lets
-> > extend the ath10k driver to first look for BDF-s in the
-> > board-bus-device.bin format, for example: board-ahb-a800000.wifi.bin
-> > If that fails, look for the default board file name as defined previously.
-> >
-> > Signed-off-by: Robert Marko <robimarko@gmail.com>
->
-> Can someone review this, please? I understand the need for this, but the board
-> handling is getting quite complex in ath10k so I'm hesitant.
->
-> What about QCA6390 and other devices. Will they still work?
-Hi Kalle,
-everything else should just continue working as before unless the
-board-bus-device.bin file
-exists it will just use the current method to fetch the BDF.
+On 2021-11-12 13:49, Kalle Valo wrote:
+> Jouni Malinen <jouni@codeaurora.org> writes:
+> 
+>> From: Seevalamuthu Mariappan <seevalam@codeaurora.org>
+>> 
+>> In mode-2 QCN9074 firmware uses 15 MB of host memory and firmware
+>> request 1 MB size segments in QMI, whereas in mode-0 firmware uses 45 
+>> MB
+>> of host memory and each segment is of 2 MB size. In mode-2 firmware
+>> operates with reduced number of vdevs and peers.
+>> 
+>> Tested-on: QCN9074 hw1.0 PCI 
+>> WLAN.HK.2.4.0.1-01838-QCAHKSWPL_SILICONZ-1
+>> 
+>> Signed-off-by: Seevalamuthu Mariappan <seevalam@codeaurora.org>
+>> Co-developed-by: Anilkumar Kolli <akolli@codeaurora.org>
+>> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+>> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+>> ---
+>>  drivers/net/wireless/ath/ath11k/core.c | 23 ++++++++++++++++++++++-
+>>  drivers/net/wireless/ath/ath11k/core.h |  6 ++++++
+>>  drivers/net/wireless/ath/ath11k/hw.c   | 14 +++++++-------
+>>  drivers/net/wireless/ath/ath11k/hw.h   | 20 +++++++++++---------
+>>  drivers/net/wireless/ath/ath11k/mac.c  | 10 +++++-----
+>>  drivers/net/wireless/ath/ath11k/qmi.c  |  2 +-
+>>  6 files changed, 52 insertions(+), 23 deletions(-)
+>> 
+>> diff --git a/drivers/net/wireless/ath/ath11k/core.c 
+>> b/drivers/net/wireless/ath/ath11k/core.c
+>> index d2ab3b134632..9f2c9795767e 100644
+>> --- a/drivers/net/wireless/ath/ath11k/core.c
+>> +++ b/drivers/net/wireless/ath/ath11k/core.c
+>> @@ -77,6 +77,7 @@ static const struct ath11k_hw_params 
+>> ath11k_hw_params[] = {
+>>  		.supports_shadow_regs = false,
+>>  		.idle_ps = false,
+>>  		.cold_boot_calib = true,
+>> +		.fw_mem_mode = 0,
+>>  		.supports_suspend = false,
+>>  		.hal_desc_sz = sizeof(struct hal_rx_desc_ipq8074),
+>>  		.fix_l1ss = true,
+> 
+> [...]
+> 
+>> +static const struct ath11k_num_vdevs_peers ath11k_vdevs_peers[] = {
+>> +	{
+>> +		.num_vdevs = (16 + 1),
+>> +		.num_peers = 512,
+>> +	},
+>> +	{
+>> +		.num_vdevs = (8 + 1),
+>> +		.num_peers = 128,
+>> +	},
+>> +	{
+>> +		.num_vdevs = 8,
+>> +		.num_peers = 128,
+>> +	},
+>> +};
+> 
+> I am worried about this array. It implies that _all_ hardware support
+> these modes but is that really the case? I would guess that these are
+> very much hardware and firmware specific values.
+> 
+> So because of that I would feel clearer to have num_vdevs and num_peers
+> in ath11k_hw_params, to make it clear that the values are hardware
+> specific. And then have fw_mem_mode, num_vdevs and num_peers in their
+> own struct within struct ath11k_hw_params, just like spectral has
+> grouped valued together.
+> 
 
-Also, this only applies to API1 BDF-s.
+Sorry for the delayed response. I will make num_vdevs and num_peers part 
+of hw_params.
+and post next version.
 
-We are really needing this as currently there are devices with the
-wrong BDF being loaded as
-we have no way of knowing where MikroTik changed it and dynamic
-loading would resolve
-all of that since they are one of the rare vendors that embed the
-BDF-s next to calibration data.
-
-Regards,
-Robert
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/patch/20211009221711.2315352-1-robimarko@gmail.com/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
->
+Thanks
+Anil
