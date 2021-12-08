@@ -2,108 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8FDD46CD8C
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 07:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CF5E46CD96
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 07:18:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237712AbhLHGTq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Dec 2021 01:19:46 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:45742 "EHLO
-        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237546AbhLHGTo (ORCPT
+        id S237581AbhLHGVp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Dec 2021 01:21:45 -0500
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:17284 "EHLO
+        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235080AbhLHGVo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Dec 2021 01:19:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-        h=from:subject:in-reply-to:references:mime-version:to:cc:
-        content-transfer-encoding:content-type;
-        s=sgd; bh=9O84YlDTJBrDvppEZlV/mmasG/m+M/ZBthbQsXfcgJM=;
-        b=AI2On6MNhsKORHTwS7K/yPsiVBkKzciZzGu0Zscuh62HCqAHeLZS6AYmxT4R/1jKWt6j
-        kjezu1NxlPypWdapEX8UUdlfN9Xt03E4Iyd9aV7mzcqXDMkVaoND+S66qno3MYxXGEHWol
-        fdYGaJx8lzodHVsqCYq2EyQAVdTR7jR0d9XmfC+1xMqzdYOW6B4/GrJCGNe9gwxpvUa5go
-        TI7l+uyigUJLaObsEPSGkQ8Hic1l7OEX+uRYYgli/mjjGmsAP960Xuh959aFc+W3OUaXjT
-        nFwZ9LPhdB2z+L9yOyxXN9rmFQEVXA4X4Rx6aJZpLZ99nC5LSV/BY8TGWc67hg+w==
-Received: by filterdrecv-64fcb979b9-tjknx with SMTP id filterdrecv-64fcb979b9-tjknx-1-61B04DAC-5
-        2021-12-08 06:16:12.120358724 +0000 UTC m=+7366714.923877139
-Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-5-0 (SG)
-        with ESMTP
-        id fktlyEjKRAOSgOxelA7WCA
-        Wed, 08 Dec 2021 06:16:11.911 +0000 (UTC)
-Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 649C2700371; Tue,  7 Dec 2021 23:16:11 -0700 (MST)
-From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 2/2] wilc1000: Document enable-gpios and reset-gpios
- properties
-Date:   Wed, 08 Dec 2021 06:16:12 +0000 (UTC)
-Message-Id: <20211208061559.3404738-3-davidm@egauge.net>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211208061559.3404738-1-davidm@egauge.net>
-References: <20211208061559.3404738-1-davidm@egauge.net>
+        Wed, 8 Dec 2021 01:21:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1638944293; x=1670480293;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7JYL/fSf6uoFqLWx5PNjKqv5+3ggL/lvl93PP8sngqs=;
+  b=yYoizFt993aR8uGAICPjmUKQhHNHzgtsPKSq4v6Emcd/hwnf5sVQHsbn
+   HN/IfUwsZOryq+VyUra5eYACyqDWCg52AfL/LvbXIIxWH2rCSdxgMgDAz
+   NWKBS3ZpdRxbUgGJ7NfIGipQjnhf8q92dtyULZCxot5jKuEiHRjxzfQ7l
+   k=;
+Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 07 Dec 2021 22:18:13 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2021 22:18:12 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Tue, 7 Dec 2021 22:18:12 -0800
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Tue, 7 Dec 2021 22:18:10 -0800
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath10k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH v2] ath10k: drop beacon and probe response which leak from other channel
+Date:   Wed, 8 Dec 2021 01:17:52 -0500
+Message-ID: <20211208061752.16564-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvHDkHtRhmBzQDo+NU?=
- =?us-ascii?Q?s0KNI7fyoAERCfLen8t3LrrHc2oVhzYWo0vWwGP?=
- =?us-ascii?Q?TscrxfSDDs5HaTjLzmPLRN39PI=2FULZ8vuDvkQq2?=
- =?us-ascii?Q?CpkTcrhDRU34AJq9tlB+2AaSeZ8kc=2F0YfGTHVo5?=
- =?us-ascii?Q?WKs+E5ZBUqV8fw8UfDmYp3qacNPYfSV1OihlP5G?=
- =?us-ascii?Q?menImA8f2gkxko6dxgJ0Q=3D=3D?=
-To:     Ajay Singh <ajay.kathat@microchip.com>
-Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Adham Abozaeid <adham.abozaeid@microchip.com>,
-        devicetree@vger.kernel.org,
-        David Mosberger-Tang <davidm@egauge.net>
-X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add documentation for the ENABLE and RESET GPIOs that may be needed by
-wilc1000-spi.
+When scan request on channel 1, it also receive beacon from other
+channels, and the beacon also indicate to mac80211 and wpa_supplicant,
+and then the bss info appears in radio measurement report of radio
+measurement sent from wpa_supplicant, thus lead RRM case fail.
 
-Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
+This is to drop the beacon and probe response which is not the same
+channel of scanning.
+
+Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00049
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 ---
- .../bindings/net/wireless/microchip,wilc1000.yaml | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+v2: rebased to ath.git ath-202112071521
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-index 6c35682377e6..e4da2a58fcb2 100644
---- a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-@@ -32,6 +32,19 @@ properties:
-   clock-names:
-     const: rtc
+ drivers/net/wireless/ath/ath10k/wmi.c | 28 ++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 7c1c2658cb5f..07764ee409fe 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -2610,10 +2610,32 @@ int ath10k_wmi_event_mgmt_rx(struct ath10k *ar, struct sk_buff *skb)
+ 	if (ieee80211_is_beacon(hdr->frame_control))
+ 		ath10k_mac_handle_beacon(ar, skb);
  
-+  enable-gpios:
-+    maxItems: 1
-+    description: Used by wilc1000-spi to determine the GPIO line
-+      connected to the ENABLE line.  Unless special external circuitry
-+      is used, reset-gpios must be specified when enable-gpios is
-+      specified as otherwise the driver cannot ensure the proper
-+      ENABLE/RESET sequence when enabling the chip.
 +
-+  reset-gpios:
-+    maxItems: 1
-+    description: Used by wilc1000-spi to determine the GPIO line
-+      connected to the RESET line.
+ 	if (ieee80211_is_beacon(hdr->frame_control) ||
+-	    ieee80211_is_probe_resp(hdr->frame_control))
++	    ieee80211_is_probe_resp(hdr->frame_control)) {
++		struct ieee80211_mgmt *mgmt = (void *)skb->data;
++		u8 *ies;
++		int ies_ch;
 +
- required:
-   - compatible
-   - interrupts
-@@ -51,6 +64,8 @@ examples:
-         interrupts = <27 0>;
-         clocks = <&pck1>;
-         clock-names = "rtc";
-+        enable-gpios = <&pioA 5 0>;
-+        reset-gpios = <&pioA 6 0>;
-       };
-     };
+ 		status->boottime_ns = ktime_get_boottime_ns();
  
++		if (!ar->scan_channel)
++			goto drop;
++
++		ies = mgmt->u.beacon.variable;
++
++		ies_ch = cfg80211_get_ies_channel_number(mgmt->u.beacon.variable,
++							 skb_tail_pointer(skb) - ies,
++							 sband->band);
++
++		if (ies_ch > 0 && ies_ch != channel) {
++			ath10k_dbg(ar, ATH10K_DBG_MGMT,
++				   "channel mismatched ds channel %d scan channel %d\n",
++				   ies_ch, channel);
++			goto drop;
++		}
++	}
++
+ 	ath10k_dbg(ar, ATH10K_DBG_MGMT,
+ 		   "event mgmt rx skb %pK len %d ftype %02x stype %02x\n",
+ 		   skb, skb->len,
+@@ -2627,6 +2649,10 @@ int ath10k_wmi_event_mgmt_rx(struct ath10k *ar, struct sk_buff *skb)
+ 	ieee80211_rx_ni(ar->hw, skb);
+ 
+ 	return 0;
++
++drop:
++	dev_kfree_skb(skb);
++	return 0;
+ }
+ 
+ static int freq_to_idx(struct ath10k *ar, int freq)
+
+base-commit: 4f4f8aee394b73abf5e5f98c63187fdbf1d627f0
 -- 
-2.25.1
+2.31.1
 
