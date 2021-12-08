@@ -2,56 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48D2946D671
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 16:08:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BFD946D733
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 16:41:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234767AbhLHPMP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Dec 2021 10:12:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50862 "EHLO
+        id S233602AbhLHPoz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Dec 2021 10:44:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232243AbhLHPMP (ORCPT
+        with ESMTP id S233479AbhLHPoy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Dec 2021 10:12:15 -0500
+        Wed, 8 Dec 2021 10:44:54 -0500
 Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 666BEC061746;
-        Wed,  8 Dec 2021 07:08:43 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 029F9C061746
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Dec 2021 07:41:22 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id AEC9ECE2204;
-        Wed,  8 Dec 2021 15:08:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAB6C00446;
-        Wed,  8 Dec 2021 15:08:39 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 40532CE1FAC
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Dec 2021 15:41:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17207C00446;
+        Wed,  8 Dec 2021 15:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638976119;
-        bh=ywKjLn27Q6Oh1nBhf+3mln3+BMCyTjnFwGC0TcO+TkM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Dr8Ac2LstfRkIamrj60wdve4k9bqFfwdVTS/MWc6rqjFkkasHR1nCoX+J+oGEdpRh
-         HKRK7sCTV2oE9MaeCDZ+QrFDJ58kOCX07lyk/iWRQv8ygnXY8csobsQZWiNlBTyq/g
-         SiWNz51IxlhusDB3h3jUPFfQHbDWfK4jNwrMRYWRRTN8dwee8V8clwW/W5At0hzi/t
-         nlqqZks3/i+80DpPJtnug0iBSbj6s+CDt8xyA/8AgujsRM/lnN5uz4Ziam3tesuHLB
-         1GzfKH5ZQXcp2DNXfAmgmYZN1gjENdKC4otwzDEgfOMY3diiJrGCeWTdexQnha85zD
-         VhnY+KOK89eEQ==
-Date:   Wed, 8 Dec 2021 07:08:38 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: pull-request: wireless-drivers-next-2021-12-07
-Message-ID: <20211208070838.53892e8a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20211208065025.7060225d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <20211207144211.A9949C341C1@smtp.kernel.org>
-        <20211207211412.13c78ace@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <87tufjfrw0.fsf@codeaurora.org>
-        <20211208065025.7060225d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        s=k20201202; t=1638978078;
+        bh=3qaV02N+c2xkdfF2KhkjlcHBGBbrD+nsu321FHilB+g=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=mPYP970hRieP9/dOfgET7o771y+ro9TdCewwKxLihZ63/9d2E2hLTYVS6KsGcxcLC
+         uHM5sL+tlBZukRAmkEuAEwXEU0FpW/tgKD9WkDYY92l4mEnRvlrOTfSwJ7APRtAhWs
+         tiZREK1FdoWY6fPQP56awNjqEEN05Twwo/S3Itp1Wid3xoIi+Rq8me61liIR5CbEkl
+         7t8OmO4nbAWiSZsEoNcY4lEDmk8nVNcsyQ+9JR2ke+BhcrQyEO5eLifQkQ66smwMqY
+         6v/kyz01A3ohP/6HJo8hUVsjMW+PK6OZVXD+XcxXEIZB6EpSFEp5P186KkN8a9FHEf
+         6cQHjEVFodEMQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v9 1/3] ath11k: switch to using ieee80211_tx_status_ext()
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20210404125235.5589-2-pradeepc@codeaurora.org>
+References: <20210404125235.5589-2-pradeepc@codeaurora.org>
+To:     Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Miles Hu <milehu@codeaurora.org>,
+        John Crispin <john@phrozen.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163897807415.29276.3770719545792112108.kvalo@kernel.org>
+Date:   Wed,  8 Dec 2021 15:41:16 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 8 Dec 2021 06:50:25 -0800 Jakub Kicinski wrote:
-> drivers/net/wireless/intel/iwlwifi/mvm/ops.c:684:12: warning: context imbalance in 'iwl_mvm_start_get_nvm' - wrong count at exit
+Pradeep Kumar Chitrapu <pradeepc@codeaurora.org> wrote:
 
-I haven't looked at the code, but sparse is not great at understanding
-locking so this one may be ignorable. 
+> This allows us to pass HE rates down into the stack.
+> 
+> Co-developed-by: Miles Hu <milehu@codeaurora.org>
+> Signed-off-by: Miles Hu <milehu@codeaurora.org>
+> Signed-off-by: John Crispin <john@phrozen.org>
+> Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+
+Doesn't apply anymore, please rebase.
+
+error: patch failed: drivers/net/wireless/ath/ath11k/dp_tx.c:483
+error: drivers/net/wireless/ath/ath11k/dp_tx.c: patch does not apply
+stg import: Diff does not apply cleanly
+
+3 patches set to Changes Requested.
+
+12182277 [v9,1/3] ath11k: switch to using ieee80211_tx_status_ext()
+12182281 [v9,2/3] ath11k: decode HE status tlv
+12182279 [v9,3/3] ath11k: translate HE status to radiotap format
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210404125235.5589-2-pradeepc@codeaurora.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
