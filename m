@@ -2,69 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2B2346CEC6
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 09:19:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0E0346CF04
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Dec 2021 09:30:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244724AbhLHIXE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Dec 2021 03:23:04 -0500
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:5772 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231496AbhLHIXE (ORCPT
+        id S244866AbhLHIeR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Dec 2021 03:34:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42232 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244816AbhLHIeQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Dec 2021 03:23:04 -0500
+        Wed, 8 Dec 2021 03:34:16 -0500
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D570C061746
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Dec 2021 00:30:45 -0800 (PST)
+Received: by mail-pg1-x52e.google.com with SMTP id g16so1474196pgi.1
+        for <linux-wireless@vger.kernel.org>; Wed, 08 Dec 2021 00:30:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1638951573; x=1670487573;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=AQLk6FGdAOv4GB5ViUS7ddtCiscd01jYhDNM/LUKU8g=;
-  b=oIoQN9gc481S7lMcniYhsMIapxCP2toFECSzd+mbsP9o5qzHuCV7AOoL
-   L9MKi5fGb+vfrbXRHP3LuG7cc5RTOtaZsQY4dyjW0EhYJ1SqT+f9EQdhn
-   JMB1RddYbk4Iok3Wskm0ojtbdUg6lanb81Nl8HwXOlqZ/c1OQQhuF1iow
-   w=;
-Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 08 Dec 2021 00:19:32 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2021 00:19:32 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Wed, 8 Dec 2021 00:19:32 -0800
-Received: from [10.231.195.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Wed, 8 Dec 2021
- 00:19:31 -0800
-Message-ID: <463b4075-e98f-d51a-d305-a7adadc8a585@quicinc.com>
-Date:   Wed, 8 Dec 2021 16:19:28 +0800
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=RRzI4Iei17Ahggjstaqb1wov493fOuSguTH2Wc+bkwI=;
+        b=ZlrqYumsXJ26Tvh0dTMnaSXivpjkDZvaj8K4es5g8PFBhjcf2pkZlVXbThCYAHMYYC
+         7RLoLdhOwvUfYhlBz1G8UAR0hw2PN/hACdXrH8Nmcw9ZpvUhons9s9mA8jE3crhs75Fm
+         /wcNAZ27E9xS/UXTiCeNQU7zq/5wDyZexd0kUoHpBeIy7tqdxGtuCdPzhkDTTwUnis6R
+         se8Tanwa/vMQhFUrN+gpQRIM6zEWKTcyE19eNULgZb/000Y4GhCulAe9rBfskrk2pTdq
+         Pp1NrDl5o6c2uCpfLk1++rDpJNB6NdRNw+D56AJbKnOx/rsxrSEE2v3J1sV/ZJHkX4gC
+         69VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=RRzI4Iei17Ahggjstaqb1wov493fOuSguTH2Wc+bkwI=;
+        b=Ik178iC87HNml9GG2/MFZMiDSAwAFDBLlSVtFc2HzzBtI1sAoTKfzBXRN/EJ9csplU
+         NUZXCA2WTQMvCdW5att66S+AKufJepFgNJqMkS4OG60JrNs0MxX/ChXcLBnGWXUsrCOh
+         6xFQfA8bC4OaKocEvA6A35cRkySlwkWJZjcCVceGfd6TgMBjCbkwQfmGbukvOGElXtrt
+         AxWV17CuYHtJwT04ymHfQOrzTQ6T/IASkgkGu0NzxBjoclmyCScy+LfateZbdf1ruQM8
+         N4zCdvYEBtddef7CG3CbmGmHa89nmR5eIJ0d0oJJFWkGXCs1iaRudUv71dEWqF8sNPlk
+         Oedw==
+X-Gm-Message-State: AOAM530BM8ysirZRyefkzwYpFsp6skEPWOEmRm9fAqjFX9t1hFeGO3Ab
+        kj4sEjM5dpRJ81OM9jje/sSy
+X-Google-Smtp-Source: ABdhPJxGzy9Z2ZMkn1bf7beooiLm6AWWW1bSqP0UhkmlyfZ2EcXB2dbbvnFb/xvteJJ/lcrb/FdDHw==
+X-Received: by 2002:a63:5b24:: with SMTP id p36mr15366637pgb.258.1638952244983;
+        Wed, 08 Dec 2021 00:30:44 -0800 (PST)
+Received: from thinkpad ([117.202.189.59])
+        by smtp.gmail.com with ESMTPSA id s19sm2408544pfu.104.2021.12.08.00.30.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Dec 2021 00:30:44 -0800 (PST)
+Date:   Wed, 8 Dec 2021 14:00:37 +0530
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     Hemant Kumar <hemantk@codeaurora.org>
+Cc:     mhi@lists.linux.dev, bbhatt@codeaurora.org,
+        loic.poulain@linaro.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
+        stable@vger.kernel.org, Pengyu Ma <mapengyu@gmail.com>
+Subject: Re: [PATCH] bus: mhi: core: Add support for forced PM resume
+Message-ID: <20211208083037.GD70121@thinkpad>
+References: <20211206161059.107007-1-manivannan.sadhasivam@linaro.org>
+ <7eb05d7c-ddda-5ec1-73a0-e696d2b5a236@codeaurora.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-Subject: Re: [PATCH] ath11k: enable IEEE80211_HW_SINGLE_SCAN_ON_ALL_BANDS for
- WCN6855
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20211129101309.2931-1-quic_wgong@quicinc.com>
- <163895135713.29041.4980786229647025244.kvalo@kernel.org>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <163895135713.29041.4980786229647025244.kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7eb05d7c-ddda-5ec1-73a0-e696d2b5a236@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/8/2021 4:16 PM, Kalle Valo wrote:
-> Wen Gong <quic_wgong@quicinc.com> wrote:
-...
-> Sven, after your memory corruption fix is this good to take?
+On Tue, Dec 07, 2021 at 03:41:42PM -0800, Hemant Kumar wrote:
+> Hi Mani,
+> 
+> On 12/6/2021 8:10 AM, Manivannan Sadhasivam wrote:
+> > From: Loic Poulain <loic.poulain@linaro.org>
+> > 
+> > For whatever reason, some devices like QCA6390, WCN6855 using ath11k
+> > are not in M3 state during PM resume, but still functional. The
+> > mhi_pm_resume should then not fail in those cases, and let the higher
+> > level device specific stack continue resuming process.
+> > 
+> > Add a new parameter to mhi_pm_resume, to force resuming, whatever the
+> > current MHI state is. This fixes a regression with non functional
+> > ath11k WiFi after suspend/resume cycle on some machines.
+> > 
+> > Bug report: https://bugzilla.kernel.org/show_bug.cgi?id=214179
+> > 
+> > Cc: stable@vger.kernel.org #5.13
+> > Fixes: 020d3b26c07a ("bus: mhi: Early MHI resume failure in non M3 state")
+> > Reported-by: Kalle Valo <kvalo@codeaurora.org>
+> > Reported-by: Pengyu Ma <mapengyu@gmail.com>
+> > Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+> > [mani: Added comment, bug report, added reported-by tags and CCed stable]
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > ---
+> >   drivers/bus/mhi/core/pm.c             | 10 +++++++---
+> >   drivers/bus/mhi/pci_generic.c         |  2 +-
+> >   drivers/net/wireless/ath/ath11k/mhi.c |  6 +++++-
+> >   include/linux/mhi.h                   |  3 ++-
+> >   4 files changed, 15 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/bus/mhi/core/pm.c b/drivers/bus/mhi/core/pm.c
+> > index 7464f5d09973..4ddd266e042e 100644
+> > --- a/drivers/bus/mhi/core/pm.c
+> > +++ b/drivers/bus/mhi/core/pm.c
+> > @@ -881,7 +881,7 @@ int mhi_pm_suspend(struct mhi_controller *mhi_cntrl)
+> >   }
+> >   EXPORT_SYMBOL_GPL(mhi_pm_suspend);
+> > -int mhi_pm_resume(struct mhi_controller *mhi_cntrl)
+> > +int mhi_pm_resume(struct mhi_controller *mhi_cntrl, bool force)
+> >   {
+> >   	struct mhi_chan *itr, *tmp;
+> >   	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+> > @@ -898,8 +898,12 @@ int mhi_pm_resume(struct mhi_controller *mhi_cntrl)
+> >   	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state))
+> >   		return -EIO;
+> > -	if (mhi_get_mhi_state(mhi_cntrl) != MHI_STATE_M3)
+> > -		return -EINVAL;
+> > +	if (mhi_get_mhi_state(mhi_cntrl) != MHI_STATE_M3) {
+> 	in case if mhi_get_mhi_state(mhi_cntrl) returns SYS_ERR (assuming while
+> doing this check SYS_ERR is set) do we still want to continue pm resume when
+> force is true? Just want to make sure SYS_ERR handling with and without this
+> change remains the same or atleast does not cause any regression with this
+> change. or if we need to continue pm resume only for MHI_STATE_RESET when
+> MHI_STATE_M3 is not set?
 
-After Sven's fix "ath11k: Fix buffer overflow when scanning with 
-extraie", it will not happen kernel crash.
+SYS_ERR state is a valid case while resuming from suspend. The "force" flag is
+supposed to be used by controllers that goes to a weird state like RESET. If we
+just add check for RESET, then we might get another scenario in future. That's
+why the "force" flag made sense to me.
 
-But it need Sven's confirm.
+If we want to handle SYS_ERR then we need to check for that before M3 and that
+can be done in a separate patch. But since we didn't hit this scenario till now,
+let's handle it later if needed.
 
+Thanks,
+Mani
+
+> > +		dev_warn(dev, "Resuming from non M3 state (%s)\n",
+> > +			 TO_MHI_STATE_STR(mhi_get_mhi_state(mhi_cntrl)));
+> > +		if (!force)
+> > +			return -EINVAL;
+> > +	}
+> [..]
+> 
+> Thanks,
+> Hemant
+> -- 
+> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum, a
+> Linux Foundation Collaborative Project
