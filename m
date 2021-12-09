@@ -2,43 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 177C646EA8E
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 16:04:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3351046EAA5
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 16:07:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239165AbhLIPHn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 10:07:43 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:54856 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239160AbhLIPHj (ORCPT
+        id S234035AbhLIPLM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 10:11:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42402 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233549AbhLIPLM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 10:07:39 -0500
+        Thu, 9 Dec 2021 10:11:12 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77B4DC061746
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 07:07:38 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 69F13B82489
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 15:04:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716EDC004DD;
-        Thu,  9 Dec 2021 15:04:03 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 24084B8249D
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 15:07:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08874C004DD;
+        Thu,  9 Dec 2021 15:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639062244;
-        bh=8xs4YTLGZ98iWqV7F/ovnNkGI8pHbnjD07YgrV2I5Ig=;
+        s=k20201202; t=1639062455;
+        bh=yUyk/DQFlEUejBdWzLfLiyyUs9+ywlMtyny1127mUxs=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Y7nwfi+WLw9TyfVMQlQNfxkmQ1nTz44aFxVPOGXtel5T545sCFFMiIIPY6K05YRI/
-         NRUw6o/56PWKvkjrFJu7eUP9jGCA4PBjB69idBCP+ZnSfswckC43iwmvgNKjU8rWSg
-         wx6+q2lkkHCkmz++8YruJXityKNjhxW7MG9T57yCySrUZXMFr8BJdBgQ4iH57LjPKR
-         /lFhPGRtAIigYKcI6/KPtv6odKj15nPIRkC2cgGijWSS2DJwE40K3xJAY8wY2li09z
-         836jElyuEu4tDMHifSuLLQEDGdzx5qH0lLpHUzDg2BZwTOCzRXs7EvhNupLzaJbN0w
-         Ehk9S7kWsqz6g==
+        b=UQRgzOXBF7XOEwQd9gwPReORcf00ZiKAIKMhtdGZlc5AueAPgy9mIdczGPiGTMV4d
+         Em4jHdLJs/e9ksXqKb4/REuORjG/wOVXR1B/4QylU2PenuKQIImD5ZeMhq9LERTHqI
+         1+S+Kvb8MX5fSWirvqt4FG7ben0L+fIfF8KdWRGpmm9Ci50/B+QQ0z5nTMC/AtYXAj
+         GPi7FoDB1snfNaDcHk4RN3U56tsk5Q7WD6DS3tLXPmBbCPktkW7MMm2IDtHhc1Azsy
+         3fYUDvl+RPBqbd/SLkTc7hJTR3gD5prL4xsFjyhkuI6eCMg+0NJvfnr3TyjgxyYrZK
+         k4ThmmfHKc76w==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Carl Huang <cjhuang@codeaurora.org>
 Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 2/6] ath11k: Add WoW net-detect functionality
+Subject: Re: [PATCH 3/6] ath11k: implement hw data filter
 References: <20211011193750.4891-1-cjhuang@codeaurora.org>
-        <20211011193750.4891-3-cjhuang@codeaurora.org>
-Date:   Thu, 09 Dec 2021 17:03:59 +0200
-In-Reply-To: <20211011193750.4891-3-cjhuang@codeaurora.org> (Carl Huang's
-        message of "Mon, 11 Oct 2021 15:37:46 -0400")
-Message-ID: <874k7h2528.fsf@codeaurora.org>
+        <20211011193750.4891-4-cjhuang@codeaurora.org>
+Date:   Thu, 09 Dec 2021 17:07:31 +0200
+In-Reply-To: <20211011193750.4891-4-cjhuang@codeaurora.org> (Carl Huang's
+        message of "Mon, 11 Oct 2021 15:37:47 -0400")
+Message-ID: <87zgp9zuj0.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -48,50 +51,17 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Carl Huang <cjhuang@codeaurora.org> writes:
 
-> Implement net-detect feature by setting flag
-> WIPHY_WOWLAN_NET_DETECT if firmware supports this
-> feature. Driver sets the related PNO configuration
-> to firmware before entering WoW and firmware then
-> scans periodically and wakes up host if a specific
-> SSID is found.
->
-> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
->
-> Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
+> Host needs to set hw data filter before entering WoW to
+> let firmware drop needless bc/mc frames to avoid frequent wakeup.
+> Host clears hw data filter when leaving WoW.
 
-[...]
+Please try to use full words to keep the commit log readable:
 
-> +static int ath11k_wmi_pno_check_and_convert(struct ath11k *ar, u32 vdev_id,
-> +					    struct cfg80211_sched_scan_request *nd_config,
-> +					    struct wmi_pno_scan_req *pno)
-> +{
-> +	int i, j;
-> +	u8 ssid_len;
-> +
-> +	pno->enable = 1;
-> +	pno->vdev_id = vdev_id;
-> +	pno->uc_networks_count = nd_config->n_match_sets;
-> +
-> +	if (!pno->uc_networks_count ||
-> +	    pno->uc_networks_count > WMI_PNO_MAX_SUPP_NETWORKS)
-> +		return -EINVAL;
-> +
-> +	if (nd_config->n_channels > WMI_PNO_MAX_NETW_CHANNELS_EX)
-> +		return -EINVAL;
-> +
-> +	/* Filling per profile params */
-> +	for (i = 0; i < pno->uc_networks_count; i++) {
-> +		ssid_len = nd_config->match_sets[i].ssid.ssid_len;
-> +
-> +		if (ssid_len == 0 || ssid_len > 32)
-> +			return -EINVAL;
+ath11k: implement hardware data filter
 
-A define for 32 would be nice, WMI_MAC_MAX_SSID_LENGTH has a bad name
-but I couldn't find anything better from wmi.h. sizeof(struct
-wmi_ssid.ssid) might be other alternative.
-
-But length from cfg80211 should be trustworthy anyway, so I'm not sure
-if the check is even needed?
+Host needs to set hardware data filter before entering WoW to let
+firmware drop needless broadcast/multicast frames to avoid frequent
+wakeup. Host clears the hardware data filter when leaving WoW.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
