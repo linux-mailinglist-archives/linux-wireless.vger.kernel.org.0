@@ -2,131 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFB0646EA74
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 15:59:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 177C646EA8E
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 16:04:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239053AbhLIPCl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 10:02:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40418 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230312AbhLIPCl (ORCPT
+        id S239165AbhLIPHn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 10:07:43 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:54856 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239160AbhLIPHj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 10:02:41 -0500
-X-Greylist: delayed 20273 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 09 Dec 2021 06:59:07 PST
-Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F9C4C061746;
-        Thu,  9 Dec 2021 06:59:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1639061944;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=J8rslS1FwdC6+mnfMg8oxAldamxYdPmhK7VgY20Z0JM=;
-        b=IzcZtoVd3D39YHEGONQtIMkASDH+SBLZfKC2ANEC0PXE0/0RSpFrV/enBt7NJV8IjMWNPO
-        tsko/yGGBLH2Pu6W7VQUGL43r5TzSxGYVbf/15J3n5ChE+91GctpAN5fVu0oKJONPrAVOs
-        bAz2uN1XEMPnUQ/uyiZtVtXwq0WcUL0=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     jwboyer@kernel.org, dwmw2@infradead.org, ben@decadent.org.uk,
-        Felix Fietkau <nbd@nbd.name>, Deren Wu <Deren.Wu@mediatek.com>,
-        Mark-YW Chen <Mark-YW.Chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        YN Chen <YN.Chen@mediatek.com>, KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Eric Liang <Eric.Liang@mediatek.com>, jemele@google.com,
-        linux-firmware <linux-firmware@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        jf@simonwunderlich.de
-Subject: Re: [PATCH] linux-firmware: update firmware for MT7921 WiFi device
-Date:   Thu, 09 Dec 2021 15:59:01 +0100
-Message-ID: <3198471.FQF0JACdhR@ripper>
-In-Reply-To: <YbIPFIaya1vKF6bM@lore-desk>
-References: <67f30cd5235e2065e6c20cfb4662e4ac72ef6395.1639037336.git.deren.wu@mediatek.com> <3841963.FhVex8QpIh@ripper> <YbIPFIaya1vKF6bM@lore-desk>
+        Thu, 9 Dec 2021 10:07:39 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 69F13B82489
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 15:04:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716EDC004DD;
+        Thu,  9 Dec 2021 15:04:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639062244;
+        bh=8xs4YTLGZ98iWqV7F/ovnNkGI8pHbnjD07YgrV2I5Ig=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Y7nwfi+WLw9TyfVMQlQNfxkmQ1nTz44aFxVPOGXtel5T545sCFFMiIIPY6K05YRI/
+         NRUw6o/56PWKvkjrFJu7eUP9jGCA4PBjB69idBCP+ZnSfswckC43iwmvgNKjU8rWSg
+         wx6+q2lkkHCkmz++8YruJXityKNjhxW7MG9T57yCySrUZXMFr8BJdBgQ4iH57LjPKR
+         /lFhPGRtAIigYKcI6/KPtv6odKj15nPIRkC2cgGijWSS2DJwE40K3xJAY8wY2li09z
+         836jElyuEu4tDMHifSuLLQEDGdzx5qH0lLpHUzDg2BZwTOCzRXs7EvhNupLzaJbN0w
+         Ehk9S7kWsqz6g==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Carl Huang <cjhuang@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 2/6] ath11k: Add WoW net-detect functionality
+References: <20211011193750.4891-1-cjhuang@codeaurora.org>
+        <20211011193750.4891-3-cjhuang@codeaurora.org>
+Date:   Thu, 09 Dec 2021 17:03:59 +0200
+In-Reply-To: <20211011193750.4891-3-cjhuang@codeaurora.org> (Carl Huang's
+        message of "Mon, 11 Oct 2021 15:37:46 -0400")
+Message-ID: <874k7h2528.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart28758891.yo5t8FPOW8"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart28758891.yo5t8FPOW8
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc: jwboyer@kernel.org, dwmw2@infradead.org, ben@decadent.org.uk, Felix Fietkau <nbd@nbd.name>, Deren Wu <Deren.Wu@mediatek.com>, Mark-YW Chen <Mark-YW.Chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Soul Huang <Soul.Huang@mediatek.com>, YN Chen <YN.Chen@mediatek.com>, KM Lin <km.lin@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, Eric Liang <Eric.Liang@mediatek.com>, jemele@google.com, linux-firmware <linux-firmware@kernel.org>, linux-wireless <linux-wireless@vger.kernel.org>, linux-mediatek <linux-mediatek@lists.infradead.org>, linux-kernel <linux-kernel@vger.kernel.org>, jf@simonwunderlich.de
-Subject: Re: [PATCH] linux-firmware: update firmware for MT7921 WiFi device
-Date: Thu, 09 Dec 2021 15:59:01 +0100
-Message-ID: <3198471.FQF0JACdhR@ripper>
-In-Reply-To: <YbIPFIaya1vKF6bM@lore-desk>
-References: <67f30cd5235e2065e6c20cfb4662e4ac72ef6395.1639037336.git.deren.wu@mediatek.com> <3841963.FhVex8QpIh@ripper> <YbIPFIaya1vKF6bM@lore-desk>
+Carl Huang <cjhuang@codeaurora.org> writes:
 
-On Thursday, 9 December 2021 15:13:40 CET Lorenzo Bianconi wrote:
-> does it occur with an older fw?
+> Implement net-detect feature by setting flag
+> WIPHY_WOWLAN_NET_DETECT if firmware supports this
+> feature. Driver sets the related PNO configuration
+> to firmware before entering WoW and firmware then
+> scans periodically and wakes up host if a specific
+> SSID is found.
+>
+> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+>
+> Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
 
-Before this version, I've used WM Firmware Version: ____010000, Build Time: 
-20211014150922. This version was not able to connect (and stay connected) to 
-6GHz at all (so I've used 2.4GHz/5GHz).
+[...]
 
-But the old firmware version worked fine as station on 2.4GHz/5GHz with 
-runtime-pm/deep-sleep set to 1. And I didn't see these crashes when starting/
-stopping wpa_supplicant. But I've just reran it with the new firmware and
-it seems like this is not 100% reproducible all the time. But when stopping 
-the wpa_supplicant would leak to a crash with the new firmware then was also 
-a problem to receive packets (not sure about the TX part).
+> +static int ath11k_wmi_pno_check_and_convert(struct ath11k *ar, u32 vdev_id,
+> +					    struct cfg80211_sched_scan_request *nd_config,
+> +					    struct wmi_pno_scan_req *pno)
+> +{
+> +	int i, j;
+> +	u8 ssid_len;
+> +
+> +	pno->enable = 1;
+> +	pno->vdev_id = vdev_id;
+> +	pno->uc_networks_count = nd_config->n_match_sets;
+> +
+> +	if (!pno->uc_networks_count ||
+> +	    pno->uc_networks_count > WMI_PNO_MAX_SUPP_NETWORKS)
+> +		return -EINVAL;
+> +
+> +	if (nd_config->n_channels > WMI_PNO_MAX_NETW_CHANNELS_EX)
+> +		return -EINVAL;
+> +
+> +	/* Filling per profile params */
+> +	for (i = 0; i < pno->uc_networks_count; i++) {
+> +		ssid_len = nd_config->match_sets[i].ssid.ssid_len;
+> +
+> +		if (ssid_len == 0 || ssid_len > 32)
+> +			return -EINVAL;
 
-I also didn't see the crash when using runtime-pm/deep-sleep == 0 and then 
-setting up the mon0 interface with the old firmware.
+A define for 32 would be nice, WMI_MAC_MAX_SSID_LENGTH has a bad name
+but I couldn't find anything better from wmi.h. sizeof(struct
+wmi_ssid.ssid) might be other alternative.
 
-But interestingly, i could also see these crashes when
-runtime-pm/deep-sleep == 1 and then starting/stopping wpa_supplicant. Just 
-didn't notice it because I've never used this configuration before.
+But length from cfg80211 should be trustworthy anyway, so I'm not sure
+if the check is even needed?
 
-    [   95.246429] mt7921e 0000:05:00.0: Message 00000046 (seq 8) timeout
-    [   95.252734] mt7921e 0000:05:00.0: chip reset
-    [   95.386747] mt7921e 0000:05:00.0: HW/SW Version: 0x8a108a10, Build 
-Time: 20211014150838a
-    [   95.386747] 
-    [   95.407850] mt7921e 0000:05:00.0: WM Firmware Version: ____010000, 
-Build Time: 20211014150922
-    [   95.447509] mt7921e 0000:05:00.0: Firmware init done
-    [  102.403012] wlp5s0: authenticate with 4a:13:65:00:0c:92
-    [  102.524727] wlp5s0: send auth to 4a:13:65:00:0c:92 (try 1/3)
-    [  102.536201] wlp5s0: authenticated
-    [  102.542294] wlp5s0: associate with 4a:13:65:00:0c:92 (try 1/3)
-    [  102.555600] wlp5s0: RX AssocResp from 4a:13:65:00:0c:92 (capab=0x431 
-status=0 aid=2)
-    [  102.582864] wlp5s0: associated
-    [  102.716868] IPv6: ADDRCONF(NETDEV_CHANGE): wlp5s0: link becomes ready
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Kind regards,
-	Sven
---nextPart28758891.yo5t8FPOW8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmGyGbUACgkQXYcKB8Em
-e0YDyg//WHZBiTC9+jIIJdjPUNzZ+MhRdLrrCnREj8Cs1rZiGja0nd8btXkWvUpz
-h7MHwEAj0Ka4gNj3XWdl4NDqQCNCAeNS/J3cFjyrc9rhOts1tAtGc4AsMNO2O/Zs
-judT4R+SMhX+ZQSayalzDgc5sQ13NJNdmSwYAXcbFMuv2xX8oHwDtYQd9053STZC
-pGqP6oe8FQUKBMy+yVgZit11rknDYC+MVlqta5y4SdlK2VIAx/SWFvcotlgZsnx4
-ueLrAnQu0MyikjgbKbVkxFZhbhYF66H++yeAXPQq/Pv0i7g1g6yv3TJaftOMDGWw
-vhoh6GBr9ldLd7f2nPWf8yo8ersHbleuGiWbDBG2O1KToMGPJrPCaIuwtGgPy2N/
-8omO9forOEdrwChyavOl1uiZAeSxnSIyV64mWJh3zsj3v/VXG+P/yJD7D/Cg6XUx
-CONmgDfHPfPQZv438k2Z7EAVdISDV62yQRLkx4VLi77NduB7jnwo2DgjVCaBfITx
-mBL+DUZ21jm4m4cd4uW6mq7WDUyo0KwMgc2rb0x19MAvk7tzA2Owi6uWWUTmk65D
-xWMUMz0YcNelbUqWqAlMDqP0OleT8iSN9FzCpC3IEF3P9O79FSiqtadn3p5ZVyzU
-MppRQX2uA/TBIOQy12VvzPm0j9RRlVrHqWJf3k0umPfHQXmXCZQ=
-=meGf
------END PGP SIGNATURE-----
-
---nextPart28758891.yo5t8FPOW8--
-
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
