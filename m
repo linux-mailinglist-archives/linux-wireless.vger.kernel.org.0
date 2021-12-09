@@ -2,46 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5667F46ECB7
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 17:08:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D21D146ECE5
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 17:16:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241120AbhLIQLR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 11:11:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57552 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240779AbhLIQLG (ORCPT
+        id S240887AbhLIQU1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 11:20:27 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:57632 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240808AbhLIQUV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 11:11:06 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DE8CC061B38
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 08:07:32 -0800 (PST)
+        Thu, 9 Dec 2021 11:20:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id D125BCE26C5
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 16:07:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F994C004DD;
-        Thu,  9 Dec 2021 16:07:28 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id D74D6CE26DC
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 16:16:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492DAC341C3;
+        Thu,  9 Dec 2021 16:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639066049;
-        bh=QCfB1mvMTh0V1PcUo+MWU8dN62cEufkqQVYOA2m8uvk=;
+        s=k20201202; t=1639066605;
+        bh=vIafIP6C3RpogBuFFp1t3jgJ2dzSziVrRC/XH3biL8c=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=H6mi4U+guBFBGURzaZS3BNm2ESfqf1fik/rYmMuSMK6CRfcqatu/kCM4BzYDqgb1Y
-         dUNrB6T8lIwxUIC7sS1i1+gdzMf/cv1SVpuP9yVQsST8NMyRAc2G7i7Z9kJkKVD9dm
-         5N8fKA875JCIxh68RFo8OijNwkL35XSrG/+ToBFxUl51OnZCLHrRdqeWVu0KvcOLMw
-         cupF2e/t/fy1YQzVyqh4NR6wwMWRaRYhk4XPZ0A7UbGsx5sZkIyxTYWwbGAD6odyAA
-         67stpxAdfpppqHlCBY0lQuU7zXruiKJWmf8laXboWoz+f8ESKpHyHV8o+G0iGQFbNb
-         eC61Te9ZtRqjA==
+        b=GcfEwhKmiTJvQQ5Y0fKoT15Y9A1t0xqh1GG/ENdGwU9mE6DeNp2c1AKkVoGzrikw9
+         4cMeyUhadDPh8QmpDaiqHmAjLbend0c40d/M7yyi2CaRd5oj/0sqxITMoJty6SbTol
+         ZdIVG3uoflGskKwkMcdMFqm81zmMXPaDQMd9LhZHxh9/6lteI7DadFvnTESmNpC6pR
+         iKQx5XXfomA+zjCwPWXKnl8Rfdkz1o0mRZsarR1Uf4XIvJWIPlmsxt5ywVRpMWqc4s
+         HOdEWEcjuxosrmqJhy1rAQNDiZ3Qm4zMbRNl7ylVTiRS0Vkt3XAqrIf6YyZIoJZ8uW
+         OtFl7RxGn+OlA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Carl Huang <cjhuang@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 5/6] ath11k: support ARP and NS offload
-References: <20211011193750.4891-1-cjhuang@codeaurora.org>
-        <20211011193750.4891-6-cjhuang@codeaurora.org>
-Date:   Thu, 09 Dec 2021 18:07:26 +0200
-In-Reply-To: <20211011193750.4891-6-cjhuang@codeaurora.org> (Carl Huang's
-        message of "Mon, 11 Oct 2021 15:37:49 -0400")
-Message-ID: <87h7bhyd6p.fsf@codeaurora.org>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 01/15] ath11k: add support for extended wmi service bit
+References: <20211026111913.7346-1-quic_wgong@quicinc.com>
+        <20211026111913.7346-2-quic_wgong@quicinc.com>
+Date:   Thu, 09 Dec 2021 18:16:41 +0200
+In-Reply-To: <20211026111913.7346-2-quic_wgong@quicinc.com> (Wen Gong's
+        message of "Tue, 26 Oct 2021 07:18:59 -0400")
+Message-ID: <87fsr1wy6u.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -49,31 +46,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Carl Huang <cjhuang@codeaurora.org> writes:
+Wen Gong <quic_wgong@quicinc.com> writes:
 
-> Support ARP and NS offload in WoW state.
+> The max wmi service bit is 256 in ath11k, Extend it
+> for more wmi service bit.
 >
-> Tested this way: put machineA with QCA6390 to WoW state,
-> ping/ping6 machineA from another machineB, check sniffer to see
-> any ARP response and Neighbour advertisement from machineA.
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
 >
-> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
->
-> Signed-off-by: Carl Huang <cjhuang@codeaurora.org>
-> Signed-off-by: Baochen Qiang <bqiang@codeaurora.org>
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 
 [...]
 
-> +static int ath11k_wow_protocol_offload(struct ath11k *ar, bool enable)
-> +{
-> +	int ret;
+> --- a/drivers/net/wireless/ath/ath11k/wmi.h
+> +++ b/drivers/net/wireless/ath/ath11k/wmi.h
+> @@ -2059,7 +2059,9 @@ enum wmi_tlv_service {
+>  	WMI_TLV_SERVICE_EXT2_MSG = 220,
+>  	WMI_TLV_SERVICE_SRG_SRP_SPATIAL_REUSE_SUPPORT = 249,
+>  
+> -	WMI_MAX_EXT_SERVICE
+> +	WMI_MAX_EXT_SERVICE = 256,
 > +
-> +	ret = ath11k_wow_arp_ns_offload(ar, enable);
-> +
-> +	return ret;
+> +	WMI_MAX_EXT2_SERVICE
+>  };
+>  
+>  enum {
+> @@ -5066,7 +5068,7 @@ struct ath11k_wmi_base {
+>  
+>  	struct completion service_ready;
+>  	struct completion unified_ready;
+> -	DECLARE_BITMAP(svc_map, WMI_MAX_EXT_SERVICE);
+> +	DECLARE_BITMAP(svc_map, WMI_MAX_EXT2_SERVICE);
 
-For consistency, please add error handling for
-ath11k_wow_arp_ns_offload().
+I don't get this, why do we need two MAX enums? Please explain in the
+commit log.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
