@@ -2,108 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9973246E894
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 13:38:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F311546E8C4
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 14:06:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237473AbhLIMmI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 07:42:08 -0500
-Received: from mga01.intel.com ([192.55.52.88]:14664 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230094AbhLIMmH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 07:42:07 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10192"; a="262192313"
-X-IronPort-AV: E=Sophos;i="5.88,192,1635231600"; 
-   d="scan'208";a="262192313"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2021 04:38:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,192,1635231600"; 
-   d="scan'208";a="480324314"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga002.jf.intel.com with ESMTP; 09 Dec 2021 04:38:28 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 657E7329; Thu,  9 Dec 2021 14:38:34 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        heikki.krogerus@linux.intel.com
-Subject: [PATCH v1 1/1] include/linux/unaligned: Replace kernel.h with the necessary inclusions
-Date:   Thu,  9 Dec 2021 14:38:23 +0200
-Message-Id: <20211209123823.20425-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.33.0
+        id S237551AbhLINKV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 08:10:21 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:38960 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237546AbhLINKV (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Dec 2021 08:10:21 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 56658CE2557
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 13:06:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BF6C004DD;
+        Thu,  9 Dec 2021 13:06:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639055204;
+        bh=vTl5qsNxQEps9jQJ9/tCRpeWgfNDTTLGGQTJciczFfQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=B8jCgOhsxUSistaEHWZOPhXwJKvSSt8QIGbyyeQCla00gEI67AiPb/qVLXhXGkKRs
+         7Oxq3C7jyDS+6NtlZ+z+LdR4Nh0iViFWw5l+d8KDMbMJq1n2dt31Th1Cx8GAzHUmq+
+         CyqAZS6fxhdrk2tJmupkvqjruXB/Eaw1zCBE5mMHE32dscHT+1Z9L4ikOtIFWFAPPJ
+         O+pLidE66Vv7Oafi9DAsekK31qBEHJoeZrJ0Q4o6Smw0uEqf9eXTSZ5CVeX++HU0YF
+         6i3REXBjItrcr+RuW1WDGwt2FfNCsmgqclCkfwrLu9r5krEY9uz4TRxM3Z/MjcteTn
+         JjE9n8UlzBHJA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com, deren.wu@mediatek.com,
+        ryder.lee@mediatek.com, evelyn.tsai@mediatek.com
+Subject: [PATCH 0/7] rework mt76_connac_mcu definitions
+Date:   Thu,  9 Dec 2021 14:06:22 +0100
+Message-Id: <cover.1639054861.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When kernel.h is used in the headers it adds a lot into dependency hell,
-especially when there are circular dependencies are involved.
+This is a preliminary series to reuse mt76_connac module in mt7915 driver.
 
-Replace kernel.h inclusion with the list of what is really being used.
+Lorenzo Bianconi (7):
+  mt76: connac: introduce MCU_EXT macros
+  mt76: connac: align MCU_EXT definitions with 7915 driver
+  mt76: connac: remove MCU_FW_PREFIX bit
+  mt76: connac: introduce MCU_UNI_CMD macro
+  mt76: connac: introduce MCU_CE_CMD macro
+  mt76: connac: rely on MCU_CMD macro
+  mt76: mt7915: rely on mt76_connac definitions
 
-The rest of the changes are induced by the above and may not be split.
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |   4 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 200 ++---
+ .../net/wireless/mediatek/mt76/mt7615/mcu.h   | 127 ---
+ .../wireless/mediatek/mt76/mt7615/testmode.c  |   4 +-
+ .../wireless/mediatek/mt76/mt7615/usb_mcu.c   |   2 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 111 +--
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 517 +++++++++++-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  17 +-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h   | 796 +-----------------
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  14 -
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |   6 +-
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 128 ++-
+ .../net/wireless/mediatek/mt76/mt7921/mcu.h   | 128 ---
+ .../wireless/mediatek/mt76/mt7921/pci_mcu.c   |   2 +-
+ .../wireless/mediatek/mt76/mt7921/sdio_mcu.c  |   2 +-
+ .../wireless/mediatek/mt76/mt7921/testmode.c  |   4 +-
+ 16 files changed, 694 insertions(+), 1368 deletions(-)
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/xtlv.c | 2 ++
- include/linux/unaligned/packed_struct.h                 | 2 +-
- lib/lz4/lz4defs.h                                       | 2 ++
- 3 files changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/xtlv.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/xtlv.c
-index 2f3c451148db..2f8908074303 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/xtlv.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/xtlv.c
-@@ -4,6 +4,8 @@
-  */
- 
- #include <asm/unaligned.h>
-+
-+#include <linux/math.h>
- #include <linux/string.h>
- #include <linux/bug.h>
- 
-diff --git a/include/linux/unaligned/packed_struct.h b/include/linux/unaligned/packed_struct.h
-index c0d817de4df2..f4c8eaf4d012 100644
---- a/include/linux/unaligned/packed_struct.h
-+++ b/include/linux/unaligned/packed_struct.h
-@@ -1,7 +1,7 @@
- #ifndef _LINUX_UNALIGNED_PACKED_STRUCT_H
- #define _LINUX_UNALIGNED_PACKED_STRUCT_H
- 
--#include <linux/kernel.h>
-+#include <linux/types.h>
- 
- struct __una_u16 { u16 x; } __packed;
- struct __una_u32 { u32 x; } __packed;
-diff --git a/lib/lz4/lz4defs.h b/lib/lz4/lz4defs.h
-index 673bd206aa98..330aa539b46e 100644
---- a/lib/lz4/lz4defs.h
-+++ b/lib/lz4/lz4defs.h
-@@ -36,6 +36,8 @@
-  */
- 
- #include <asm/unaligned.h>
-+
-+#include <linux/bitops.h>
- #include <linux/string.h>	 /* memset, memcpy */
- 
- #define FORCE_INLINE __always_inline
 -- 
-2.33.0
+2.31.1
 
