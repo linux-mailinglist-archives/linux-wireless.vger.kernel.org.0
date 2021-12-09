@@ -2,104 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACAC446EA14
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 15:35:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C5046EA33
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 15:42:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238695AbhLIOjL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 09:39:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35098 "EHLO
+        id S233760AbhLIOpu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 09:45:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232389AbhLIOjL (ORCPT
+        with ESMTP id S231863AbhLIOpu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 09:39:11 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67112C061746;
-        Thu,  9 Dec 2021 06:35:37 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 33C94CE25F9;
-        Thu,  9 Dec 2021 14:35:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C625FC004DD;
-        Thu,  9 Dec 2021 14:35:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639060533;
-        bh=VwQ1u7crT9tT2d+BvG1u1dd1ZTTVlRbYTyboOZjY+2U=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=XRlSUYtInzZ/0oU2tmL9L3RnBGehjLPN3akfPhmYyn+TWDOwoxOnJmvhmtKLxONr+
-         B9MSL2XrYtlcOky2Q4AHIJdu78ZPyBOhnXU8e1nBWMpLTgeN+DlBHsqZg9fEn9xIer
-         28+yc/qdQIzX/5BPht4AiSZmBqe90zPaFvToxgQe6sTYeVEF7bACsTV0YEcTxuM9W3
-         1shsjsfStzRavL5pvVZR5xDtdYXmluIjwZp2f8tT5nWsdgjgjW10xKI4KDg+b+EYTa
-         RM8wN9sIcTO788kJ/1yszTfeMzyuz8+WikXuohnep8HXXtAjybJry7DDAbymSXWTv+
-         vBOjSToSXzwEA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     gregkh@linuxfoundation.org, mhi@lists.linux.dev,
-        hemantk@codeaurora.org, bbhatt@codeaurora.org,
-        loic.poulain@linaro.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org,
-        Pengyu Ma <mapengyu@gmail.com>
-Subject: Re: [PATCH v2] bus: mhi: core: Add support for forced PM resume
-References: <20211209131633.4168-1-manivannan.sadhasivam@linaro.org>
-Date:   Thu, 09 Dec 2021 16:35:25 +0200
-In-Reply-To: <20211209131633.4168-1-manivannan.sadhasivam@linaro.org>
-        (Manivannan Sadhasivam's message of "Thu, 9 Dec 2021 18:46:33 +0530")
-Message-ID: <87fsr13kya.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 9 Dec 2021 09:45:50 -0500
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B5B8C061746
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 06:42:16 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id l25so20269888eda.11
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Dec 2021 06:42:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=E+VUcCP4ypJMbrZuxu++4BUCyHCy//YP6VJ3/gJoQuc=;
+        b=FhkMP7KoAtAwj5VwR4v5ZylFTpX5gO1cKK1FNtAjTSxhVIfq6Z1xQXUKM1dkX9Mv/g
+         A7ZhDr0f1Npe42nlUzdD2t9GuisgAneCQHzMh2hKlXW+8Hbo/VEwbTd4cXvbKe2PToAA
+         9vNSRNSSSFbZrkXYBu+I7mzOzLrCWMwDLQaSYtKJ39x6toqtJhvcCnSbxHQeoDgiN3qk
+         An9ibGy7+Y2+T1A9o5/Xs7Sz0Bo4Fc+mtLY8MTY+JRVwxKGtvDrKgQaVMB2zB9NAtc0Z
+         ez8PNS+RhwzGRtpQiONznO+SRYX2G654pWKOewgkP2Yy4KrGK7rYLlxp8jOXvdlaLh7R
+         umgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=E+VUcCP4ypJMbrZuxu++4BUCyHCy//YP6VJ3/gJoQuc=;
+        b=WQNX57nXXW9dnHw1Aeha7VHyryKHebuyX0xB6ukN3OOTUWOsFQwYO4/6S0vAXkAOXv
+         25IA8HOXfJRMMPbl2zPWn8mWmXnP+n2vLM7YysauBZNz98xPzvF9BYtWB6YCG9dUcACV
+         zSVqaY8yjFemyrSGJh8NgPWRNJq+/iYwurDoEMPR90fgdu3FukR10bXSQGItQGtigORC
+         w5N+q6BSwMkW9idQ6Up7eCzvpNnWHPQuRVpTwYonF1/VZMk5XU2pvfIYQCp03jkRaZg+
+         3eGqzVQDE/lcqThNVAaVkxv3K7URMpiqn9oTvzG8sALI2Slc8wHnkWd/5xReNJ2AgvuE
+         8wlw==
+X-Gm-Message-State: AOAM532HhOxCmnn7/hUhiZJGHpQbF8+KXEP5CUXlmUfWewp2MJImwIIg
+        cBTinerB/Y6ghcZRd/nCzeO9EBlY09tbX+wNrgoBgceiyK0=
+X-Google-Smtp-Source: ABdhPJz5UYeFoPsmz5R1zq7IhAfP7Qh9PF0hVCih6mSrK+/hLTVaRWwMAB1cr7k/pTcqKAzkoA+r7hswDIVFqZJOp8U=
+X-Received: by 2002:a17:907:6e1a:: with SMTP id sd26mr15921032ejc.529.1639060874722;
+ Thu, 09 Dec 2021 06:41:14 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+From:   Roberto Riggio <roberto.riggio@gmail.com>
+Date:   Thu, 9 Dec 2021 15:41:03 +0100
+Message-ID: <CAKkT90b_C+B-2RY2BDO9tiQJh_Vv8y95JuVGADhc+ML-bSqxmQ@mail.gmail.com>
+Subject: Frame injection on ath9k
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+Hi,
 
-> From: Loic Poulain <loic.poulain@linaro.org>
->
-> For whatever reason, some devices like QCA6390, WCN6855 using ath11k
-> are not in M3 state during PM resume, but still functional. The
-> mhi_pm_resume should then not fail in those cases, and let the higher
-> level device specific stack continue resuming process.
->
-> Add an API mhi_pm_resume_force(), to force resuming irrespective of the
-> current MHI state. This fixes a regression with non functional ath11k WiFi
-> after suspend/resume cycle on some machines.
->
-> Bug report: https://bugzilla.kernel.org/show_bug.cgi?id=214179
->
-> Fixes: 020d3b26c07a ("bus: mhi: Early MHI resume failure in non M3 state")
-> Cc: stable@vger.kernel.org #5.13
-> Link: https://lore.kernel.org/regressions/871r5p0x2u.fsf@codeaurora.org/
-> Reported-by: Kalle Valo <kvalo@codeaurora.org>
-> Reported-by: Pengyu Ma <mapengyu@gmail.com>
-> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
-> [mani: Switched to API, added bug report, reported-by tags and CCed stable]
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
->
-> Changes in v2:
->
-> * Switched to a new API "mhi_pm_resume_force()" instead of the "force" flag as
->   suggested by Greg. The "force" flag is now used inside the API.
->
-> Greg: I'm sending this patch directly to you so that you can apply it to
-> char-misc once we get an ACK from Kalle.
+a while ago I wrote some patches for the frame injection section of
+ath9k (the tx.c file). Now I wanted to refresh those patches for the
+latest version of the driver but I saw that the code changed quite a
+bit. Could somebody be so kind to provide me with some pointers about
+where the frame injection at arbitrary rates from a radiotap header is
+implemented now?
 
-Thanks! I now tested this patch on top v5.16-rc4 using QCA6390 and
-firmware WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1, no issues found:
+Thanks very much.
 
-Tested-by: Kalle Valo <kvalo@kernel.org>
-
-I'm not expecting any conflicts with ath11k, so please take this via
-Greg's tree. It would be really good to get this regression fixed in
-v5.16, so is it possible to send this to -rc releases?
-
-For the ath11k part:
-
-Acked-by: Kalle Valo <kvalo@kernel.org>
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+R.
