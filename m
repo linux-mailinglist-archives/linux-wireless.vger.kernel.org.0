@@ -2,41 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 334EB46E8CB
+	by mail.lfdr.de (Postfix) with ESMTP id 7CFD746E8CC
 	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 14:07:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237562AbhLINKe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 08:10:34 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:51046 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237559AbhLINKd (ORCPT
+        id S237571AbhLINKj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 08:10:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42746 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237559AbhLINKi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 08:10:33 -0500
+        Thu, 9 Dec 2021 08:10:38 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F0BC061746
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 05:07:05 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7D544B823B9
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 13:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27E4C341C3;
-        Thu,  9 Dec 2021 13:06:56 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 1EB50CE2557
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 13:07:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32516C004DD;
+        Thu,  9 Dec 2021 13:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639055218;
-        bh=vzKMDumVUfbeuYv3wxKZNII7hB0Hp6b8zQ0qHUMf0aQ=;
+        s=k20201202; t=1639055220;
+        bh=V/Q5wjkAyHzyKLKTJxK1w7QNQfi7sp8+7Zt9XYv0cqs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nQEHGfVOoL5893kRibcZoQZaMxGFaxpJe7+zoa75rHXqr3vgDW6Bp0s5njkshayaG
-         pZj1M9ZPT2nMFmWlxKfR2txS2Oem2luz3ymjeaufGyu7000lqrp/zkFx4B2c1lgW5D
-         L5fqXnyeqIxT+Hew1R0ef8q8ZTUX/gJK5UdLgI9mxuwZY57wsmjMYdABQVrWOcqMGK
-         +HQxS/IIBMixPwXjiI4UMrFD735QOUxghfVz0fOrzhZZ0P5dEf1UWhXqswATFLjpUl
-         WSY2WmMfnVfg1/Yq5xbYeIktq0E7V+UHFCm20jsvIgdxRThlSjk41glyvj8VcYley0
-         bUkKbISoXi4pA==
+        b=q0qkTYjsC8eKWrSyAoOTP34W8WC1GJrsa45LKZHUfXE8eAs1LqKs7CJs0FX/qEwFM
+         kqvRKtBQw+pbKYWicwSm3FKUuFwipLu2WJHWIbFJ5KIqRR0bpiT9eA/CJ3C0dE3sv5
+         +qVxrAzzf/7Asji5wdzBRza7Bk4E1Pc/LFd/XEyD+DX1nNRsDAHsGRfX1lJ7ICUaKn
+         QrEZMN6Su3+w3xLpBOFf7wEZZMh3AUjxflt6GuEV1KkyxD74WpjubimXBLwilqpO5K
+         +B0bQwXuNC1IJo/tPjkT6HmqLzvliZHnClU/gNQ+v47RV54Th0pXygR+pMsQ7MgUU6
+         bh5wI0N9/9xEQ==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, deren.wu@mediatek.com,
         ryder.lee@mediatek.com, evelyn.tsai@mediatek.com
-Subject: [PATCH 5/7] mt76: connac: introduce MCU_CE_CMD macro
-Date:   Thu,  9 Dec 2021 14:06:27 +0100
-Message-Id: <c91bd20cb6966d68be870f21338359a37581ad36.1639054861.git.lorenzo@kernel.org>
+Subject: [PATCH 6/7] mt76: connac: rely on MCU_CMD macro
+Date:   Thu,  9 Dec 2021 14:06:28 +0100
+Message-Id: <bfce763d628e738d825f97ae7f1f46179d12ab36.1639054861.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1639054861.git.lorenzo@kernel.org>
 References: <cover.1639054861.git.lorenzo@kernel.org>
@@ -46,388 +49,214 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Similar to MCU_EXT_CMD, introduce MCU_CE_CMD for CE commands
+Similar to mt7915 driver, rely on MCU_CMD macro and do not command
+definitions directly
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 16 +++----
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 47 ++++++++++--------
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 48 ++++++++++---------
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 24 +++++-----
- .../wireless/mediatek/mt76/mt7921/testmode.c  |  4 +-
- 5 files changed, 73 insertions(+), 66 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  | 12 ++++++------
+ .../net/wireless/mediatek/mt76/mt7615/usb_mcu.c  |  2 +-
+ .../net/wireless/mediatek/mt76/mt76_connac_mcu.c | 16 ++++++++--------
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c  | 10 +++++-----
+ .../net/wireless/mediatek/mt76/mt7921/pci_mcu.c  |  2 +-
+ .../net/wireless/mediatek/mt76/mt7921/sdio_mcu.c |  2 +-
+ 6 files changed, 22 insertions(+), 22 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index fcbcfc9f5a04..58be537adb1f 100644
+index 58be537adb1f..3a6fa6c8d471 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -145,7 +145,7 @@ void mt7615_mcu_fill_msg(struct mt7615_dev *dev, struct sk_buff *skb,
- 	mcu_txd->cid = mcu_cmd;
- 	mcu_txd->ext_cid = FIELD_GET(__MCU_CMD_FIELD_EXT_ID, cmd);
+@@ -106,7 +106,7 @@ void mt7615_mcu_fill_msg(struct mt7615_dev *dev, struct sk_buff *skb,
+ 	txd_len = cmd & __MCU_CMD_FIELD_UNI ? sizeof(*uni_txd) : sizeof(*mcu_txd);
+ 	txd = (__le32 *)skb_push(skb, txd_len);
  
--	if (mcu_txd->ext_cid || (cmd & MCU_CE_PREFIX)) {
-+	if (mcu_txd->ext_cid || (cmd & __MCU_CMD_FIELD_CE)) {
- 		if (cmd & __MCU_CMD_FIELD_QUERY)
- 			mcu_txd->set_query = MCU_Q_QUERY;
- 		else
-@@ -193,7 +193,7 @@ int mt7615_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 		skb_pull(skb, sizeof(*rxd));
- 		event = (struct mt7615_mcu_uni_event *)skb->data;
- 		ret = le32_to_cpu(event->status);
--	} else if (cmd == MCU_CMD_REG_READ) {
-+	} else if (cmd == MCU_CE_QUERY(REG_READ)) {
- 		struct mt7615_mcu_reg_event *event;
+-	if (cmd != MCU_CMD_FW_SCATTER) {
++	if (cmd != MCU_CMD(FW_SCATTER)) {
+ 		q_idx = MT_TX_MCU_PORT_RX_Q0;
+ 		pkt_fmt = MT_TX_TYPE_CMD;
+ 	} else {
+@@ -173,7 +173,7 @@ int mt7615_mcu_parse_response(struct mt76_dev *mdev, int cmd,
+ 	if (seq != rxd->seq)
+ 		return -EAGAIN;
  
- 		skb_pull(skb, sizeof(*rxd));
-@@ -2737,13 +2737,13 @@ int mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 	if (vif->type != NL80211_IFTYPE_STATION)
- 		return 0;
+-	if (cmd == MCU_CMD_PATCH_SEM_CONTROL) {
++	if (cmd == MCU_CMD(PATCH_SEM_CONTROL)) {
+ 		skb_pull(skb, sizeof(*rxd) - 4);
+ 		ret = *skb->data;
+ 	} else if (cmd == MCU_EXT_CMD(THERMAL_CTRL)) {
+@@ -1377,7 +1377,7 @@ static const struct mt7615_mcu_ops uni_update_ops = {
  
--	err = mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_ABORT, &req_hdr,
--				sizeof(req_hdr), false);
-+	err = mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_BSS_ABORT),
-+				&req_hdr, sizeof(req_hdr), false);
- 	if (err < 0 || !enable)
- 		return err;
- 
--	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_CONNECTED, &req,
--				 sizeof(req), false);
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_BSS_CONNECTED),
-+				 &req, sizeof(req), false);
+ int mt7615_mcu_restart(struct mt76_dev *dev)
+ {
+-	return mt76_mcu_send_msg(dev, MCU_CMD_RESTART_DL_REQ, NULL, 0, true);
++	return mt76_mcu_send_msg(dev, MCU_CMD(RESTART_DL_REQ), NULL, 0, true);
  }
+ EXPORT_SYMBOL_GPL(mt7615_mcu_restart);
  
- int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
-@@ -2762,6 +2762,6 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+@@ -1423,7 +1423,7 @@ static int mt7615_load_patch(struct mt7615_dev *dev, u32 addr, const char *name)
+ 		goto out;
+ 	}
  
- 	phy->roc_grant = false;
+-	ret = mt76_mcu_send_firmware(&dev->mt76, MCU_CMD_FW_SCATTER,
++	ret = mt76_mcu_send_firmware(&dev->mt76, MCU_CMD(FW_SCATTER),
+ 				     fw->data + sizeof(*hdr), len);
+ 	if (ret) {
+ 		dev_err(dev->mt76.dev, "Failed to send firmware to device\n");
+@@ -1486,7 +1486,7 @@ mt7615_mcu_send_ram_firmware(struct mt7615_dev *dev,
+ 			return err;
+ 		}
  
--	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_ROC, &req,
--				 sizeof(req), false);
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_ROC),
-+				 &req, sizeof(req), false);
- }
+-		err = mt76_mcu_send_firmware(&dev->mt76, MCU_CMD_FW_SCATTER,
++		err = mt76_mcu_send_firmware(&dev->mt76, MCU_CMD(FW_SCATTER),
+ 					     data + offset, len);
+ 		if (err) {
+ 			dev_err(dev->mt76.dev, "Failed to send firmware to device\n");
+@@ -1734,7 +1734,7 @@ static int mt7663_load_n9(struct mt7615_dev *dev, const char *name)
+ 			goto out;
+ 		}
+ 
+-		ret = mt76_mcu_send_firmware(&dev->mt76, MCU_CMD_FW_SCATTER,
++		ret = mt76_mcu_send_firmware(&dev->mt76, MCU_CMD(FW_SCATTER),
+ 					     fw->data + offset, len);
+ 		if (ret) {
+ 			dev_err(dev->mt76.dev, "Failed to send firmware\n");
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
+index 028ff432d811..0ebb4c3c336a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
+@@ -21,7 +21,7 @@ mt7663u_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 	int ret, ep, len, pad;
+ 
+ 	mt7615_mcu_fill_msg(dev, skb, cmd, seq);
+-	if (cmd != MCU_CMD_FW_SCATTER)
++	if (cmd != MCU_CMD(FW_SCATTER))
+ 		ep = MT_EP_OUT_INBAND_CMD;
+ 	else
+ 		ep = MT_EP_OUT_AC_BE;
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 4a693368a4bf..71896e56256e 100644
+index 71896e56256e..93480f448d85 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -160,7 +160,8 @@ int mt76_connac_mcu_set_channel_domain(struct mt76_phy *phy)
- 
- 	memcpy(__skb_push(skb, sizeof(hdr)), &hdr, sizeof(hdr));
- 
--	return mt76_mcu_skb_send_msg(dev, skb, MCU_CMD_SET_CHAN_DOMAIN, false);
-+	return mt76_mcu_skb_send_msg(dev, skb, MCU_CE_CMD(SET_CHAN_DOMAIN),
-+				     false);
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_channel_domain);
- 
-@@ -198,8 +199,8 @@ int mt76_connac_mcu_set_vif_ps(struct mt76_dev *dev, struct ieee80211_vif *vif)
- 	if (vif->type != NL80211_IFTYPE_STATION)
- 		return -EOPNOTSUPP;
- 
--	return mt76_mcu_send_msg(dev, MCU_CMD_SET_PS_PROFILE, &req,
--				 sizeof(req), false);
-+	return mt76_mcu_send_msg(dev, MCU_CE_CMD(SET_PS_PROFILE),
-+				 &req, sizeof(req), false);
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_vif_ps);
- 
-@@ -1519,7 +1520,8 @@ int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 		req->scan_func |= SCAN_FUNC_RANDOM_MAC;
- 	}
- 
--	err = mt76_mcu_skb_send_msg(mdev, skb, MCU_CMD_START_HW_SCAN, false);
-+	err = mt76_mcu_skb_send_msg(mdev, skb, MCU_CE_CMD(START_HW_SCAN),
-+				    false);
- 	if (err < 0)
- 		clear_bit(MT76_HW_SCANNING, &phy->state);
- 
-@@ -1547,8 +1549,8 @@ int mt76_connac_mcu_cancel_hw_scan(struct mt76_phy *phy,
- 		ieee80211_scan_completed(phy->hw, &info);
- 	}
- 
--	return mt76_mcu_send_msg(phy->dev, MCU_CMD_CANCEL_HW_SCAN, &req,
--				 sizeof(req), false);
-+	return mt76_mcu_send_msg(phy->dev, MCU_CE_CMD(CANCEL_HW_SCAN),
-+				 &req, sizeof(req), false);
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_cancel_hw_scan);
- 
-@@ -1634,7 +1636,8 @@ int mt76_connac_mcu_sched_scan_req(struct mt76_phy *phy,
- 		memcpy(skb_put(skb, sreq->ie_len), sreq->ie, sreq->ie_len);
- 	}
- 
--	return mt76_mcu_skb_send_msg(mdev, skb, MCU_CMD_SCHED_SCAN_REQ, false);
-+	return mt76_mcu_skb_send_msg(mdev, skb, MCU_CE_CMD(SCHED_SCAN_REQ),
-+				     false);
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_sched_scan_req);
- 
-@@ -1654,8 +1657,8 @@ int mt76_connac_mcu_sched_scan_enable(struct mt76_phy *phy,
- 	else
- 		clear_bit(MT76_HW_SCHED_SCANNING, &phy->state);
- 
--	return mt76_mcu_send_msg(phy->dev, MCU_CMD_SCHED_SCAN_ENABLE, &req,
--				 sizeof(req), false);
-+	return mt76_mcu_send_msg(phy->dev, MCU_CE_CMD(SCHED_SCAN_ENABLE),
-+				 &req, sizeof(req), false);
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_sched_scan_enable);
- 
-@@ -1667,8 +1670,8 @@ int mt76_connac_mcu_chip_config(struct mt76_dev *dev)
- 
- 	memcpy(req.data, "assert", 7);
- 
--	return mt76_mcu_send_msg(dev, MCU_CMD_CHIP_CONFIG, &req, sizeof(req),
--				 false);
-+	return mt76_mcu_send_msg(dev, MCU_CE_CMD(CHIP_CONFIG),
-+				 &req, sizeof(req), false);
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_chip_config);
- 
-@@ -1680,8 +1683,8 @@ int mt76_connac_mcu_set_deep_sleep(struct mt76_dev *dev, bool enable)
- 
- 	snprintf(req.data, sizeof(req.data), "KeepFullPwr %d", !enable);
- 
--	return mt76_mcu_send_msg(dev, MCU_CMD_CHIP_CONFIG, &req, sizeof(req),
--				 false);
-+	return mt76_mcu_send_msg(dev, MCU_CE_CMD(CHIP_CONFIG),
-+				 &req, sizeof(req), false);
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_deep_sleep);
- 
-@@ -1783,8 +1786,8 @@ int mt76_connac_mcu_get_nic_capability(struct mt76_phy *phy)
- 	struct sk_buff *skb;
- 	int ret, i;
- 
--	ret = mt76_mcu_send_and_get_msg(phy->dev, MCU_CMD_GET_NIC_CAPAB, NULL,
--					0, true, &skb);
-+	ret = mt76_mcu_send_and_get_msg(phy->dev, MCU_CE_CMD(GET_NIC_CAPAB),
-+					NULL, 0, true, &skb);
- 	if (ret)
- 		return ret;
- 
-@@ -2042,7 +2045,8 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
- 		memcpy(skb->data, &tx_power_tlv, sizeof(tx_power_tlv));
- 
- 		err = mt76_mcu_skb_send_msg(dev, skb,
--					    MCU_CMD_SET_RATE_TX_POWER, false);
-+					    MCU_CE_CMD(SET_RATE_TX_POWER),
-+					    false);
- 		if (err < 0)
- 			return err;
- 	}
-@@ -2134,8 +2138,8 @@ int mt76_connac_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
- 		.bss_idx = mvif->idx,
+@@ -13,8 +13,8 @@ int mt76_connac_mcu_start_firmware(struct mt76_dev *dev, u32 addr, u32 option)
+ 		.addr = cpu_to_le32(addr),
  	};
  
--	return mt76_mcu_send_msg(phy->dev, MCU_CMD_SET_P2P_OPPPS, &req,
--				 sizeof(req), false);
-+	return mt76_mcu_send_msg(phy->dev, MCU_CE_CMD(SET_P2P_OPPPS),
-+				 &req, sizeof(req), false);
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_p2p_oppps);
- 
-@@ -2461,8 +2465,8 @@ u32 mt76_connac_mcu_reg_rr(struct mt76_dev *dev, u32 offset)
- 		.addr = cpu_to_le32(offset),
- 	};
- 
--	return mt76_mcu_send_msg(dev, MCU_CMD_REG_READ, &req, sizeof(req),
+-	return mt76_mcu_send_msg(dev, MCU_CMD_FW_START_REQ, &req, sizeof(req),
 -				 true);
-+	return mt76_mcu_send_msg(dev, MCU_CE_QUERY(REG_READ), &req,
++	return mt76_mcu_send_msg(dev, MCU_CMD(FW_START_REQ), &req,
 +				 sizeof(req), true);
  }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_reg_rr);
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_start_firmware);
  
-@@ -2476,7 +2480,8 @@ void mt76_connac_mcu_reg_wr(struct mt76_dev *dev, u32 offset, u32 val)
- 		.val = cpu_to_le32(val),
+@@ -27,8 +27,8 @@ int mt76_connac_mcu_patch_sem_ctrl(struct mt76_dev *dev, bool get)
+ 		.op = cpu_to_le32(op),
  	};
  
--	mt76_mcu_send_msg(dev, MCU_CMD_REG_WRITE, &req, sizeof(req), false);
-+	mt76_mcu_send_msg(dev, MCU_CE_CMD(REG_WRITE), &req,
-+			  sizeof(req), false);
+-	return mt76_mcu_send_msg(dev, MCU_CMD_PATCH_SEM_CONTROL, &req,
+-				 sizeof(req), true);
++	return mt76_mcu_send_msg(dev, MCU_CMD(PATCH_SEM_CONTROL),
++				 &req, sizeof(req), true);
  }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_reg_wr);
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_patch_sem_ctrl);
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 655dfd955310..039e228e0435 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -497,13 +497,11 @@ enum {
- #define MCU_CMD_UNI_EXT_ACK			(MCU_CMD_ACK | MCU_CMD_UNI | \
- 						 MCU_CMD_QUERY)
+@@ -41,8 +41,8 @@ int mt76_connac_mcu_start_patch(struct mt76_dev *dev)
+ 		.check_crc = 0,
+ 	};
  
--#define MCU_CE_PREFIX				BIT(29)
--#define MCU_CMD_MASK				~(MCU_CE_PREFIX)
--
- #define __MCU_CMD_FIELD_ID			GENMASK(7, 0)
- #define __MCU_CMD_FIELD_EXT_ID			GENMASK(15, 8)
- #define __MCU_CMD_FIELD_QUERY			BIT(16)
- #define __MCU_CMD_FIELD_UNI			BIT(17)
-+#define __MCU_CMD_FIELD_CE			BIT(18)
+-	return mt76_mcu_send_msg(dev, MCU_CMD_PATCH_FINISH_REQ, &req,
+-				 sizeof(req), true);
++	return mt76_mcu_send_msg(dev, MCU_CMD(PATCH_FINISH_REQ),
++				 &req, sizeof(req), true);
+ }
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_start_patch);
  
- #define MCU_CMD(_t)				FIELD_PREP(__MCU_CMD_FIELD_ID,		\
- 							   MCU_CMD_##_t)
-@@ -514,6 +512,10 @@ enum {
- #define MCU_UNI_CMD(_t)				(__MCU_CMD_FIELD_UNI |			\
- 						 FIELD_PREP(__MCU_CMD_FIELD_ID,		\
- 							    MCU_UNI_CMD_##_t))
-+#define MCU_CE_CMD(_t)				(__MCU_CMD_FIELD_CE |			\
-+						 FIELD_PREP(__MCU_CMD_FIELD_ID,		\
-+							   MCU_CE_CMD_##_t))
-+#define MCU_CE_QUERY(_t)			(MCU_CE_CMD(_t) | __MCU_CMD_FIELD_QUERY)
+@@ -64,9 +64,9 @@ int mt76_connac_mcu_init_download(struct mt76_dev *dev, u32 addr, u32 len,
  
- enum {
- 	MCU_EXT_CMD_EFUSE_ACCESS = 0x01,
-@@ -590,26 +592,26 @@ enum {
+ 	if (is_mt7921(dev) &&
+ 	    (req.addr == cpu_to_le32(MCU_PATCH_ADDRESS) || addr == 0x900000))
+-		cmd = MCU_CMD_PATCH_START_REQ;
++		cmd = MCU_CMD(PATCH_START_REQ);
+ 	else
+-		cmd = MCU_CMD_TARGET_ADDRESS_LEN_REQ;
++		cmd = MCU_CMD(TARGET_ADDRESS_LEN_REQ);
  
- /* offload mcu commands */
- enum {
--	MCU_CMD_TEST_CTRL = MCU_CE_PREFIX | 0x01,
--	MCU_CMD_START_HW_SCAN = MCU_CE_PREFIX | 0x03,
--	MCU_CMD_SET_PS_PROFILE = MCU_CE_PREFIX | 0x05,
--	MCU_CMD_SET_CHAN_DOMAIN = MCU_CE_PREFIX | 0x0f,
--	MCU_CMD_SET_BSS_CONNECTED = MCU_CE_PREFIX | 0x16,
--	MCU_CMD_SET_BSS_ABORT = MCU_CE_PREFIX | 0x17,
--	MCU_CMD_CANCEL_HW_SCAN = MCU_CE_PREFIX | 0x1b,
--	MCU_CMD_SET_ROC = MCU_CE_PREFIX | 0x1d,
--	MCU_CMD_SET_P2P_OPPPS = MCU_CE_PREFIX | 0x33,
--	MCU_CMD_SET_RATE_TX_POWER = MCU_CE_PREFIX | 0x5d,
--	MCU_CMD_SCHED_SCAN_ENABLE = MCU_CE_PREFIX | 0x61,
--	MCU_CMD_SCHED_SCAN_REQ = MCU_CE_PREFIX | 0x62,
--	MCU_CMD_GET_NIC_CAPAB = MCU_CE_PREFIX | 0x8a,
--	MCU_CMD_SET_MU_EDCA_PARMS = MCU_CE_PREFIX | 0xb0,
--	MCU_CMD_REG_WRITE = MCU_CE_PREFIX | 0xc0,
--	MCU_CMD_REG_READ = MCU_CE_PREFIX | __MCU_CMD_FIELD_QUERY | 0xc0,
--	MCU_CMD_CHIP_CONFIG = MCU_CE_PREFIX | 0xca,
--	MCU_CMD_FWLOG_2_HOST = MCU_CE_PREFIX | 0xc5,
--	MCU_CMD_GET_WTBL = MCU_CE_PREFIX | 0xcd,
--	MCU_CMD_GET_TXPWR = MCU_CE_PREFIX | 0xd0,
-+	MCU_CE_CMD_TEST_CTRL = 0x01,
-+	MCU_CE_CMD_START_HW_SCAN = 0x03,
-+	MCU_CE_CMD_SET_PS_PROFILE = 0x05,
-+	MCU_CE_CMD_SET_CHAN_DOMAIN = 0x0f,
-+	MCU_CE_CMD_SET_BSS_CONNECTED = 0x16,
-+	MCU_CE_CMD_SET_BSS_ABORT = 0x17,
-+	MCU_CE_CMD_CANCEL_HW_SCAN = 0x1b,
-+	MCU_CE_CMD_SET_ROC = 0x1d,
-+	MCU_CE_CMD_SET_P2P_OPPPS = 0x33,
-+	MCU_CE_CMD_SET_RATE_TX_POWER = 0x5d,
-+	MCU_CE_CMD_SCHED_SCAN_ENABLE = 0x61,
-+	MCU_CE_CMD_SCHED_SCAN_REQ = 0x62,
-+	MCU_CE_CMD_GET_NIC_CAPAB = 0x8a,
-+	MCU_CE_CMD_SET_MU_EDCA_PARMS = 0xb0,
-+	MCU_CE_CMD_REG_WRITE = 0xc0,
-+	MCU_CE_CMD_REG_READ = 0xc0,
-+	MCU_CE_CMD_CHIP_CONFIG = 0xca,
-+	MCU_CE_CMD_FWLOG_2_HOST = 0xc5,
-+	MCU_CE_CMD_GET_WTBL = 0xcd,
-+	MCU_CE_CMD_GET_TXPWR = 0xd0,
- };
- 
- enum {
+ 	return mt76_mcu_send_msg(dev, cmd, &req, sizeof(req), true);
+ }
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index e2fcd175f7d4..da77e4697c9f 100644
+index da77e4697c9f..c4a8fe31197d 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -163,8 +163,8 @@ mt7921_mcu_parse_eeprom(struct mt76_dev *dev, struct sk_buff *skb)
- int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 			      struct sk_buff *skb, int seq)
- {
-+	int mcu_cmd = FIELD_GET(__MCU_CMD_FIELD_ID, cmd);
- 	struct mt7921_mcu_rxd *rxd;
--	int mcu_cmd = cmd & MCU_CMD_MASK;
- 	int ret = 0;
+@@ -179,7 +179,7 @@ int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
+ 	if (seq != rxd->seq)
+ 		return -EAGAIN;
  
- 	if (!skb) {
-@@ -201,7 +201,7 @@ int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 		/* skip invalid event */
- 		if (mcu_cmd != event->cid)
- 			ret = -EAGAIN;
--	} else if (cmd == MCU_CMD_REG_READ) {
-+	} else if (cmd == MCU_CE_QUERY(REG_READ)) {
- 		struct mt7921_mcu_reg_event *event;
+-	if (cmd == MCU_CMD_PATCH_SEM_CONTROL) {
++	if (cmd == MCU_CMD(PATCH_SEM_CONTROL)) {
+ 		skb_pull(skb, sizeof(*rxd) - 4);
+ 		ret = *skb->data;
+ 	} else if (cmd == MCU_EXT_CMD(THERMAL_CTRL)) {
+@@ -237,7 +237,7 @@ int mt7921_mcu_fill_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 	if (!seq)
+ 		seq = ++dev->mt76.mcu.msg_seq & 0xf;
  
- 		skb_pull(skb, sizeof(*rxd));
-@@ -274,7 +274,7 @@ int mt7921_mcu_fill_message(struct mt76_dev *mdev, struct sk_buff *skb,
- 	mcu_txd->s2d_index = MCU_S2D_H2N;
- 	mcu_txd->ext_cid = FIELD_GET(__MCU_CMD_FIELD_EXT_ID, cmd);
+-	if (cmd == MCU_CMD_FW_SCATTER)
++	if (cmd == MCU_CMD(FW_SCATTER))
+ 		goto exit;
  
--	if (mcu_txd->ext_cid || (cmd & MCU_CE_PREFIX)) {
-+	if (mcu_txd->ext_cid || (cmd & __MCU_CMD_FIELD_CE)) {
- 		if (cmd & __MCU_CMD_FIELD_QUERY)
- 			mcu_txd->set_query = MCU_Q_QUERY;
- 		else
-@@ -897,8 +897,8 @@ int mt7921_mcu_fw_log_2_host(struct mt7921_dev *dev, u8 ctrl)
- 		.ctrl_val = ctrl
+ 	txd_len = cmd & __MCU_CMD_FIELD_UNI ? sizeof(*uni_txd) : sizeof(*mcu_txd);
+@@ -592,7 +592,7 @@ int mt7921_mcu_restart(struct mt76_dev *dev)
+ 		.power_mode = 1,
  	};
  
--	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_FWLOG_2_HOST, &data,
--				 sizeof(data), false);
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(FWLOG_2_HOST),
-+				 &data, sizeof(data), false);
+-	return mt76_mcu_send_msg(dev, MCU_CMD_NIC_POWER_CTRL, &req,
++	return mt76_mcu_send_msg(dev, MCU_CMD(NIC_POWER_CTRL), &req,
+ 				 sizeof(req), false);
  }
+ EXPORT_SYMBOL_GPL(mt7921_mcu_restart);
+@@ -698,7 +698,7 @@ static int mt7921_load_patch(struct mt7921_dev *dev)
+ 			goto out;
+ 		}
  
- int mt7921_run_firmware(struct mt7921_dev *dev)
-@@ -1023,8 +1023,8 @@ int mt7921_mcu_set_tx(struct mt7921_dev *dev, struct ieee80211_vif *vif)
- 		e->timer = q->mu_edca_timer;
- 	}
+-		ret = __mt76_mcu_send_firmware(&dev->mt76, MCU_CMD_FW_SCATTER,
++		ret = __mt76_mcu_send_firmware(&dev->mt76, MCU_CMD(FW_SCATTER),
+ 					       dl, len, max_len);
+ 		if (ret) {
+ 			dev_err(dev->mt76.dev, "Failed to send patch\n");
+@@ -783,7 +783,7 @@ mt7921_mcu_send_ram_firmware(struct mt7921_dev *dev,
+ 			return err;
+ 		}
  
--	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_MU_EDCA_PARMS, &req_mu,
--				 sizeof(req_mu), false);
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_MU_EDCA_PARMS),
-+				 &req_mu, sizeof(req_mu), false);
- }
- 
- int mt7921_mcu_set_chan_info(struct mt7921_phy *phy, int cmd)
-@@ -1228,13 +1228,13 @@ mt7921_mcu_set_bss_pm(struct mt7921_dev *dev, struct ieee80211_vif *vif,
- 	if (vif->type != NL80211_IFTYPE_STATION)
- 		return 0;
- 
--	err = mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_ABORT, &req_hdr,
--				sizeof(req_hdr), false);
-+	err = mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_BSS_ABORT),
-+				&req_hdr, sizeof(req_hdr), false);
- 	if (err < 0 || !enable)
- 		return err;
- 
--	return mt76_mcu_send_msg(&dev->mt76, MCU_CMD_SET_BSS_CONNECTED, &req,
--				 sizeof(req), false);
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_BSS_CONNECTED),
-+				 &req, sizeof(req), false);
- }
- 
- int mt7921_mcu_sta_update(struct mt7921_dev *dev, struct ieee80211_sta *sta,
-@@ -1344,7 +1344,7 @@ int mt7921_get_txpwr_info(struct mt7921_dev *dev, struct mt7921_txpwr *txpwr)
- 	struct sk_buff *skb;
- 	int ret;
- 
--	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_CMD_GET_TXPWR,
-+	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_CE_CMD(GET_TXPWR),
- 					&req, sizeof(req), true, &skb);
+-		err = __mt76_mcu_send_firmware(&dev->mt76, MCU_CMD_FW_SCATTER,
++		err = __mt76_mcu_send_firmware(&dev->mt76, MCU_CMD(FW_SCATTER),
+ 					       data + offset, len, max_len);
+ 		if (err) {
+ 			dev_err(dev->mt76.dev, "Failed to send firmware.\n");
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+index 7b34c7f2ab3a..a020352122a1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+@@ -30,7 +30,7 @@ mt7921_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
  	if (ret)
  		return ret;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
-index 8bd43879dd6f..bdec8684ce94 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
-@@ -66,7 +66,7 @@ mt7921_tm_set(struct mt7921_dev *dev, struct mt7921_tm_cmd *req)
- 	if (!mt76_testmode_enabled(phy))
- 		goto out;
  
--	ret = mt76_mcu_send_msg(&dev->mt76, MCU_CMD_TEST_CTRL, &cmd,
-+	ret = mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(TEST_CTRL), &cmd,
- 				sizeof(cmd), false);
- 	if (ret)
- 		goto out;
-@@ -95,7 +95,7 @@ mt7921_tm_query(struct mt7921_dev *dev, struct mt7921_tm_cmd *req,
- 	struct sk_buff *skb;
- 	int ret;
+-	if (cmd == MCU_CMD_FW_SCATTER)
++	if (cmd == MCU_CMD(FW_SCATTER))
+ 		txq = MT_MCUQ_FWDL;
  
--	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_CMD_TEST_CTRL,
-+	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_CE_CMD(TEST_CTRL),
- 					&cmd, sizeof(cmd), true, &skb);
+ 	return mt76_tx_queue_skb_raw(dev, mdev->q_mcu[txq], skb, 0);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
+index 437cddad9a90..d20f2ff01be1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
+@@ -33,7 +33,7 @@ mt7921s_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
  	if (ret)
- 		goto out;
+ 		return ret;
+ 
+-	if (cmd == MCU_CMD_FW_SCATTER)
++	if (cmd == MCU_CMD(FW_SCATTER))
+ 		type = MT7921_SDIO_FWDL;
+ 
+ 	mt7921_skb_add_sdio_hdr(skb, type);
 -- 
 2.31.1
 
