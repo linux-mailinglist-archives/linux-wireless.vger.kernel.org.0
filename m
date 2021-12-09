@@ -2,58 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9410946E9D2
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 15:18:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACAC446EA14
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 15:35:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233025AbhLIOVu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 09:21:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59308 "EHLO
+        id S238695AbhLIOjL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 09:39:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232049AbhLIOVt (ORCPT
+        with ESMTP id S232389AbhLIOjL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 09:21:49 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CCEFC061746;
-        Thu,  9 Dec 2021 06:18:15 -0800 (PST)
+        Thu, 9 Dec 2021 09:39:11 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67112C061746;
+        Thu,  9 Dec 2021 06:35:37 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 54203B8232B;
-        Thu,  9 Dec 2021 14:18:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D23C004DD;
-        Thu,  9 Dec 2021 14:18:09 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 33C94CE25F9;
+        Thu,  9 Dec 2021 14:35:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C625FC004DD;
+        Thu,  9 Dec 2021 14:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639059493;
-        bh=NDR1+cOTjE99IH1//NVh1k6K3xUweDemHi2a82+imkk=;
+        s=k20201202; t=1639060533;
+        bh=VwQ1u7crT9tT2d+BvG1u1dd1ZTTVlRbYTyboOZjY+2U=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=qj8JyAZtc7gMMZWgvtZTSHmuLTPaYZBaDRaxz/gppSHJ3Sd8oSzwSjNreIU8trau3
-         GOqOPorBav5iDKjDSEMd9+Lg+nDF2iivV2Mj4FsWsp4ERTOGKqIPqvqpedFvRstgyx
-         l0uo9MqyEkrS3QIG2Mi8jUyMhOAKgUM98betLHb1Ijjq5RWfjqG7KG1osB3LNjmLPa
-         2cxsC1mHLzpUPcBauUpEE9H7+oTEgV1YHnSj0Qg3G/rVi+yh2aFU2UTKtUTRwSuQtj
-         Oa6Gy2YUtNEE2+QZ1Quh97XJrXfaDrxohRMz5FPZmiXtJEeBnZkWJEoYxE8nqzwwxF
-         /ol4bN8z4oSuQ==
+        b=XRlSUYtInzZ/0oU2tmL9L3RnBGehjLPN3akfPhmYyn+TWDOwoxOnJmvhmtKLxONr+
+         B9MSL2XrYtlcOky2Q4AHIJdu78ZPyBOhnXU8e1nBWMpLTgeN+DlBHsqZg9fEn9xIer
+         28+yc/qdQIzX/5BPht4AiSZmBqe90zPaFvToxgQe6sTYeVEF7bACsTV0YEcTxuM9W3
+         1shsjsfStzRavL5pvVZR5xDtdYXmluIjwZp2f8tT5nWsdgjgjW10xKI4KDg+b+EYTa
+         RM8wN9sIcTO788kJ/1yszTfeMzyuz8+WikXuohnep8HXXtAjybJry7DDAbymSXWTv+
+         vBOjSToSXzwEA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH v1 1/1] include/linux/unaligned: Replace kernel.h with the necessary inclusions
-References: <20211209123823.20425-1-andriy.shevchenko@linux.intel.com>
-Date:   Thu, 09 Dec 2021 16:18:05 +0200
-In-Reply-To: <20211209123823.20425-1-andriy.shevchenko@linux.intel.com> (Andy
-        Shevchenko's message of "Thu, 9 Dec 2021 14:38:23 +0200")
-Message-ID: <87lf0t3lr6.fsf@codeaurora.org>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     gregkh@linuxfoundation.org, mhi@lists.linux.dev,
+        hemantk@codeaurora.org, bbhatt@codeaurora.org,
+        loic.poulain@linaro.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, stable@vger.kernel.org,
+        Pengyu Ma <mapengyu@gmail.com>
+Subject: Re: [PATCH v2] bus: mhi: core: Add support for forced PM resume
+References: <20211209131633.4168-1-manivannan.sadhasivam@linaro.org>
+Date:   Thu, 09 Dec 2021 16:35:25 +0200
+In-Reply-To: <20211209131633.4168-1-manivannan.sadhasivam@linaro.org>
+        (Manivannan Sadhasivam's message of "Thu, 9 Dec 2021 18:46:33 +0530")
+Message-ID: <87fsr13kya.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -61,23 +53,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
 
-> When kernel.h is used in the headers it adds a lot into dependency hell,
-> especially when there are circular dependencies are involved.
+> From: Loic Poulain <loic.poulain@linaro.org>
 >
-> Replace kernel.h inclusion with the list of what is really being used.
+> For whatever reason, some devices like QCA6390, WCN6855 using ath11k
+> are not in M3 state during PM resume, but still functional. The
+> mhi_pm_resume should then not fail in those cases, and let the higher
+> level device specific stack continue resuming process.
 >
-> The rest of the changes are induced by the above and may not be split.
+> Add an API mhi_pm_resume_force(), to force resuming irrespective of the
+> current MHI state. This fixes a regression with non functional ath11k WiFi
+> after suspend/resume cycle on some machines.
 >
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Bug report: https://bugzilla.kernel.org/show_bug.cgi?id=214179
+>
+> Fixes: 020d3b26c07a ("bus: mhi: Early MHI resume failure in non M3 state")
+> Cc: stable@vger.kernel.org #5.13
+> Link: https://lore.kernel.org/regressions/871r5p0x2u.fsf@codeaurora.org/
+> Reported-by: Kalle Valo <kvalo@codeaurora.org>
+> Reported-by: Pengyu Ma <mapengyu@gmail.com>
+> Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+> [mani: Switched to API, added bug report, reported-by tags and CCed stable]
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > ---
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/xtlv.c | 2 ++
->  include/linux/unaligned/packed_struct.h                 | 2 +-
->  lib/lz4/lz4defs.h                                       | 2 ++
->  3 files changed, 5 insertions(+), 1 deletion(-)
+>
+> Changes in v2:
+>
+> * Switched to a new API "mhi_pm_resume_force()" instead of the "force" flag as
+>   suggested by Greg. The "force" flag is now used inside the API.
+>
+> Greg: I'm sending this patch directly to you so that you can apply it to
+> char-misc once we get an ACK from Kalle.
 
-I assume this will go via some other tree:
+Thanks! I now tested this patch on top v5.16-rc4 using QCA6390 and
+firmware WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1, no issues found:
+
+Tested-by: Kalle Valo <kvalo@kernel.org>
+
+I'm not expecting any conflicts with ath11k, so please take this via
+Greg's tree. It would be really good to get this regression fixed in
+v5.16, so is it possible to send this to -rc releases?
+
+For the ath11k part:
 
 Acked-by: Kalle Valo <kvalo@kernel.org>
 
