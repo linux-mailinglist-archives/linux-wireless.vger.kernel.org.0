@@ -2,195 +2,220 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E4F046E8EF
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 14:16:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43C9546E904
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 14:19:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237748AbhLINUQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 08:20:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44960 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237708AbhLINUP (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 08:20:15 -0500
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC34BC061746
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 05:16:41 -0800 (PST)
-Received: by mail-pl1-x631.google.com with SMTP id b11so3831799pld.12
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Dec 2021 05:16:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=JdDY5ij0RZVpRPH4PPkpJNHpzmZFEQMl/Zl2mv0q3gY=;
-        b=lDl1VuXtMXA7wRFoKDUgDn3q4xhysFr5zJMACY+32x88H0EOmVtCZE34vaTW79/KJb
-         qKIRo8w9JCRojsRqtmeZ7IM1HreQv4j1s21YPkanWoQ7c43yKaMUw2nztLkTflJz8lEJ
-         VhRRzUKp00tXFBeQP8vBQ7P0KseWxGLBz6OnKZmP5Bs89UNVDEEJG4K3DQVjbPDTKYqW
-         rgUPPOSlDM81fOld08rILF7VqxrexIeRJ5s1QCSfVUzri8nNII/l4biOrFz2+oUpwL10
-         dQC8i7tsHf4voyvnOH4Co2MiX6kI08s/+qT4WiFxXwg78SoIYzT+iJZBLKfK0KLz0Tfq
-         +DVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=JdDY5ij0RZVpRPH4PPkpJNHpzmZFEQMl/Zl2mv0q3gY=;
-        b=triwzaQoIJ7MxxQm2hFP9fC6I+J8kNX2Zla6eU3njxjJ0xkrBpIO0sP+nVhR444m0c
-         YpGhYgD5SXhUeXJI7DkD2cdthq/iVKXl0SwMadLASowiMhm0994inXzhQ5yA6UXkXQjp
-         Ild/DcdGmAWr2rwn1Bojw02x2b8fhqld5wccJlsvuFB5lVnqAPkvjYFJq815lYlNVmMN
-         WT//k2OMeTIg5cJILaUBDRCyGNhxRpwRdwdYTwqXFN3FSAAaLbqB32jAFgkVgvhXYEHz
-         k7KsWiO0XYFKbG07akT1aK9LJNZiQKzs1Dbo5wSjrF6xGrCQfIMnvMV+VrABVLvmkNnA
-         o8bQ==
-X-Gm-Message-State: AOAM532plPFEuuwsz1vLbamj25jG/yxTkgVocA/z5b49fJTL0WN06eeA
-        +vG2q8/L8HDZk0xQgXGhmupL
-X-Google-Smtp-Source: ABdhPJwoPqUPuxXvgZszBjudXWUF9FIm/paRD0EaLXFP5jSKiuwj93WOjzmB1wi7bg5tOXdMiOoSRA==
-X-Received: by 2002:a17:90b:4f49:: with SMTP id pj9mr15037953pjb.159.1639055801240;
-        Thu, 09 Dec 2021 05:16:41 -0800 (PST)
-Received: from localhost.localdomain ([202.21.42.41])
-        by smtp.gmail.com with ESMTPSA id q6sm5591169pgs.19.2021.12.09.05.16.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Dec 2021 05:16:40 -0800 (PST)
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     gregkh@linuxfoundation.org
-Cc:     mhi@lists.linux.dev, hemantk@codeaurora.org, bbhatt@codeaurora.org,
-        loic.poulain@linaro.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
-        stable@vger.kernel.org, Pengyu Ma <mapengyu@gmail.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH v2] bus: mhi: core: Add support for forced PM resume
-Date:   Thu,  9 Dec 2021 18:46:33 +0530
-Message-Id: <20211209131633.4168-1-manivannan.sadhasivam@linaro.org>
-X-Mailer: git-send-email 2.25.1
+        id S237889AbhLINWE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 08:22:04 -0500
+Received: from mga09.intel.com ([134.134.136.24]:51105 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237863AbhLINWC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Dec 2021 08:22:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1639055909; x=1670591909;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RQF2cIsT5+92HYK74sxhOnYAEbeSFbKBCR+ynsKolhk=;
+  b=SkroDb88f70NWslPtp+oDivGvWNn+WI+xAEa3wakeWQHs21AmrkvAelW
+   9QmepaPdFooGG1qvG7jQkFCwlS1RUWk01+y0DWqbA2RoCcWP3xK0WnQRF
+   Bl2Wo+tgsdVj9lyq0eq8xXbxDjoxmAvHx6HYWXUEH1xDYgA1XCx8dP801
+   mczV0qVeBDEh85ADo8pLzbHmZzsIwfhXVvwXVTjqS3/fImd5bfGrX5SrQ
+   lWOpbKu6yGuRfelECA2T/74zOBAAkG61Iiux/PSH3NGCEE4R5VEmSmfp9
+   Z49WTvDrMFIjfDfBGnivWS4PLuw946fumJ5Mlg7xj7YrGAd6iN/dMlchz
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10192"; a="237899592"
+X-IronPort-AV: E=Sophos;i="5.88,192,1635231600"; 
+   d="scan'208";a="237899592"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2021 05:18:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,192,1635231600"; 
+   d="scan'208";a="680323986"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 09 Dec 2021 05:18:27 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mvJJa-0001x5-Ov; Thu, 09 Dec 2021 13:18:26 +0000
+Date:   Thu, 09 Dec 2021 21:17:24 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [kvalo-wireless-drivers-next:master] BUILD SUCCESS
+ 05db148ee9a7c7d2a690ff2862fac77be06ce667
+Message-ID: <61b201e4.Xtu2tEiwuwY+FKXz%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Loic Poulain <loic.poulain@linaro.org>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+branch HEAD: 05db148ee9a7c7d2a690ff2862fac77be06ce667  libertas_tf: Add missing __packed annotations
 
-For whatever reason, some devices like QCA6390, WCN6855 using ath11k
-are not in M3 state during PM resume, but still functional. The
-mhi_pm_resume should then not fail in those cases, and let the higher
-level device specific stack continue resuming process.
+elapsed time: 1065m
 
-Add an API mhi_pm_resume_force(), to force resuming irrespective of the
-current MHI state. This fixes a regression with non functional ath11k WiFi
-after suspend/resume cycle on some machines.
+configs tested: 147
+configs skipped: 3
 
-Bug report: https://bugzilla.kernel.org/show_bug.cgi?id=214179
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Fixes: 020d3b26c07a ("bus: mhi: Early MHI resume failure in non M3 state")
-Cc: stable@vger.kernel.org #5.13
-Link: https://lore.kernel.org/regressions/871r5p0x2u.fsf@codeaurora.org/
-Reported-by: Kalle Valo <kvalo@codeaurora.org>
-Reported-by: Pengyu Ma <mapengyu@gmail.com>
-Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
-[mani: Switched to API, added bug report, reported-by tags and CCed stable]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211209
+powerpc                      mgcoge_defconfig
+arm                        mvebu_v7_defconfig
+m68k                        stmark2_defconfig
+arm                          imote2_defconfig
+arm                       imx_v6_v7_defconfig
+sh                             espt_defconfig
+powerpc                   microwatt_defconfig
+arm                          exynos_defconfig
+sh                     magicpanelr2_defconfig
+powerpc                      chrp32_defconfig
+arm                         hackkit_defconfig
+arm                             mxs_defconfig
+powerpc                       holly_defconfig
+mips                         mpc30x_defconfig
+sh                           se7206_defconfig
+arc                      axs103_smp_defconfig
+mips                           mtx1_defconfig
+m68k                       m5249evb_defconfig
+arm                           spitz_defconfig
+powerpc64                        alldefconfig
+sh                            titan_defconfig
+powerpc                  storcenter_defconfig
+arm                          lpd270_defconfig
+powerpc                    sam440ep_defconfig
+mips                          rm200_defconfig
+arm                        keystone_defconfig
+mips                      loongson3_defconfig
+xtensa                  nommu_kc705_defconfig
+mips                     loongson2k_defconfig
+sh                          kfr2r09_defconfig
+arc                 nsimosci_hs_smp_defconfig
+arm                            dove_defconfig
+powerpc                     tqm8548_defconfig
+mips                         tb0287_defconfig
+sh                          landisk_defconfig
+powerpc                 mpc8313_rdb_defconfig
+arm                      pxa255-idp_defconfig
+mips                       lemote2f_defconfig
+riscv                               defconfig
+arm                        clps711x_defconfig
+sh                     sh7710voipgw_defconfig
+arm                      integrator_defconfig
+powerpc                      makalu_defconfig
+m68k                             alldefconfig
+arm                           sama5_defconfig
+powerpc                          g5_defconfig
+powerpc                     sequoia_defconfig
+arm                        multi_v5_defconfig
+h8300                       h8s-sim_defconfig
+sh                   sh7724_generic_defconfig
+powerpc               mpc834x_itxgp_defconfig
+um                                  defconfig
+arc                     nsimosci_hs_defconfig
+sh                          lboxre2_defconfig
+arm                         cm_x300_defconfig
+arm                      tct_hammer_defconfig
+powerpc                      ppc6xx_defconfig
+m68k                        m5272c3_defconfig
+arm                  randconfig-c002-20211209
+arm                  randconfig-c002-20211207
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20211209
+x86_64               randconfig-a005-20211209
+x86_64               randconfig-a001-20211209
+x86_64               randconfig-a002-20211209
+x86_64               randconfig-a004-20211209
+x86_64               randconfig-a003-20211209
+x86_64               randconfig-a006-20211207
+x86_64               randconfig-a005-20211207
+x86_64               randconfig-a001-20211207
+x86_64               randconfig-a002-20211207
+x86_64               randconfig-a004-20211207
+x86_64               randconfig-a003-20211207
+i386                 randconfig-a001-20211209
+i386                 randconfig-a005-20211209
+i386                 randconfig-a003-20211209
+i386                 randconfig-a002-20211209
+i386                 randconfig-a006-20211209
+i386                 randconfig-a004-20211209
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+
+clang tested configs:
+arm                  randconfig-c002-20211209
+x86_64               randconfig-c007-20211209
+riscv                randconfig-c006-20211209
+i386                 randconfig-c001-20211209
+mips                 randconfig-c004-20211209
+powerpc              randconfig-c003-20211209
+s390                 randconfig-c005-20211209
+i386                 randconfig-a013-20211209
+i386                 randconfig-a016-20211209
+i386                 randconfig-a011-20211209
+i386                 randconfig-a014-20211209
+i386                 randconfig-a012-20211209
+i386                 randconfig-a015-20211209
+hexagon              randconfig-r045-20211209
+s390                 randconfig-r044-20211209
+hexagon              randconfig-r041-20211209
+riscv                randconfig-r042-20211209
+
 ---
-
-Changes in v2:
-
-* Switched to a new API "mhi_pm_resume_force()" instead of the "force" flag as
-  suggested by Greg. The "force" flag is now used inside the API.
-
-Greg: I'm sending this patch directly to you so that you can apply it to
-char-misc once we get an ACK from Kalle.
-
- drivers/bus/mhi/core/pm.c             | 21 ++++++++++++++++++---
- drivers/net/wireless/ath/ath11k/mhi.c |  6 +++++-
- include/linux/mhi.h                   | 13 +++++++++++++
- 3 files changed, 36 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/bus/mhi/core/pm.c b/drivers/bus/mhi/core/pm.c
-index fb99e3727155..547e6e769546 100644
---- a/drivers/bus/mhi/core/pm.c
-+++ b/drivers/bus/mhi/core/pm.c
-@@ -881,7 +881,7 @@ int mhi_pm_suspend(struct mhi_controller *mhi_cntrl)
- }
- EXPORT_SYMBOL_GPL(mhi_pm_suspend);
- 
--int mhi_pm_resume(struct mhi_controller *mhi_cntrl)
-+static int __mhi_pm_resume(struct mhi_controller *mhi_cntrl, bool force)
- {
- 	struct mhi_chan *itr, *tmp;
- 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-@@ -898,8 +898,12 @@ int mhi_pm_resume(struct mhi_controller *mhi_cntrl)
- 	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state))
- 		return -EIO;
- 
--	if (mhi_get_mhi_state(mhi_cntrl) != MHI_STATE_M3)
--		return -EINVAL;
-+	if (mhi_get_mhi_state(mhi_cntrl) != MHI_STATE_M3) {
-+		dev_warn(dev, "Resuming from non M3 state (%s)\n",
-+			 TO_MHI_STATE_STR(mhi_get_mhi_state(mhi_cntrl)));
-+		if (!force)
-+			return -EINVAL;
-+	}
- 
- 	/* Notify clients about exiting LPM */
- 	list_for_each_entry_safe(itr, tmp, &mhi_cntrl->lpm_chans, node) {
-@@ -940,8 +944,19 @@ int mhi_pm_resume(struct mhi_controller *mhi_cntrl)
- 
- 	return 0;
- }
-+
-+int mhi_pm_resume(struct mhi_controller *mhi_cntrl)
-+{
-+	return __mhi_pm_resume(mhi_cntrl, false);
-+}
- EXPORT_SYMBOL_GPL(mhi_pm_resume);
- 
-+int mhi_pm_resume_force(struct mhi_controller *mhi_cntrl)
-+{
-+	return __mhi_pm_resume(mhi_cntrl, true);
-+}
-+EXPORT_SYMBOL_GPL(mhi_pm_resume_force);
-+
- int __mhi_device_get_sync(struct mhi_controller *mhi_cntrl)
- {
- 	int ret;
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index 26c7ae242db6..49c0b1ad40a0 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -533,7 +533,11 @@ static int ath11k_mhi_set_state(struct ath11k_pci *ab_pci,
- 		ret = mhi_pm_suspend(ab_pci->mhi_ctrl);
- 		break;
- 	case ATH11K_MHI_RESUME:
--		ret = mhi_pm_resume(ab_pci->mhi_ctrl);
-+		/* Do force MHI resume as some devices like QCA6390, WCN6855
-+		 * are not in M3 state but they are functional. So just ignore
-+		 * the MHI state while resuming.
-+		 */
-+		ret = mhi_pm_resume_force(ab_pci->mhi_ctrl);
- 		break;
- 	case ATH11K_MHI_TRIGGER_RDDM:
- 		ret = mhi_force_rddm_mode(ab_pci->mhi_ctrl);
-diff --git a/include/linux/mhi.h b/include/linux/mhi.h
-index 723985879035..a5cc4cdf9cc8 100644
---- a/include/linux/mhi.h
-+++ b/include/linux/mhi.h
-@@ -663,6 +663,19 @@ int mhi_pm_suspend(struct mhi_controller *mhi_cntrl);
-  */
- int mhi_pm_resume(struct mhi_controller *mhi_cntrl);
- 
-+/**
-+ * mhi_pm_resume_force - Force resume MHI from suspended state
-+ * @mhi_cntrl: MHI controller
-+ *
-+ * Resume the device irrespective of its MHI state. As per the MHI spec, devices
-+ * has to be in M3 state during resume. But some devices seem to be in a
-+ * different MHI state other than M3 but they continue working fine if allowed.
-+ * This API is intented to be used for such devices.
-+ *
-+ * Return: 0 if the resume succeeds, a negative error code otherwise
-+ */
-+int mhi_pm_resume_force(struct mhi_controller *mhi_cntrl);
-+
- /**
-  * mhi_download_rddm_image - Download ramdump image from device for
-  *                           debugging purpose.
--- 
-2.25.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
