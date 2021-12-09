@@ -2,146 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CE4C46E313
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 08:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1637846E397
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 08:59:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233664AbhLIHXp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 02:23:45 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:45700 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233625AbhLIHXo (ORCPT
+        id S234129AbhLIIC5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 03:02:57 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:42730 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232168AbhLIIC5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 02:23:44 -0500
+        Thu, 9 Dec 2021 03:02:57 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DEF9DB823C2
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 07:20:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0141C004DD;
-        Thu,  9 Dec 2021 07:20:08 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id A2C55CE241A;
+        Thu,  9 Dec 2021 07:59:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C78C004DD;
+        Thu,  9 Dec 2021 07:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639034409;
-        bh=akpGOJR1KdtmiSD/C2I1NPdeDmGcVtGewL8lxJAgHbM=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=fxdRs2jXbuXF5hM8my0h/u27ZOW0w9QwCfHi6fjI7DLyRdfe1oIejamcC/JIo3Q28
-         e7oY4b/N/Sg0p0ivzF/Vhzfb53ESKg+COVV81bGfR/iry8t9Z4Sv0XKZxcZDgC9PTS
-         WLbuHvqqDMZDgHsUURrnkxY4dfG66soR2OuqWuX39Jzrj18qLNU7UTUDfe9VQHB46A
-         tlPN/dAE5oXsvDBOEMf0Cc7TSxdyWMD9YfkpimfKcwRO96LCMNlaGQIh1FLyxm1VLl
-         oKxO2xrG9+SvjAir7B61G8Y5BrIo5AzcxCBMBeFHOhmLyJeqL08pcagIq1hY+KeLDB
-         Exuq4pDf8VFrw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     David Mosberger-Tang <davidm@egauge.net>
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: RFC: wilc1000 module parameter to disable chip sleep
-References: <0baed35e98144bc7e29681264caf954b659cd481.camel@egauge.net>
-Date:   Thu, 09 Dec 2021 09:20:06 +0200
-In-Reply-To: <0baed35e98144bc7e29681264caf954b659cd481.camel@egauge.net>
-        (David Mosberger-Tang's message of "Wed, 08 Dec 2021 11:50:00 -0700")
-Message-ID: <87bl1qnt21.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1639036760;
+        bh=7usM8Vbzbt7a1NhxXqycqXWoO9LCXTfcFvZdVhjm9/U=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Mf9H26Oyq6oVoTZpwcFL+iPOu0W2niMsBMuhcrJg/36GCepmIKD8APRtzCU3a7BWy
+         DZwr88C76kvk611BGBUGXCHjOaOiAXu2NHBkVJSkedoRrwj4/DZHq6S28yMJmmp1pX
+         OGJvCBUqv/dy9buOCqjt+ImxIGjVA7AQBtpjEko8yNbu4x4bWlXMOqgM0bJggtiz3u
+         GZ4l0PPbrNL9lLbqITb8hXrH7K7d4/NrhtlbX32CNrobn19W/ojq6MV0jg+jlVTGcB
+         JqcU3IGwCn/0LRHOw/la5pbiRUW93RbUP0t8fkuCmDPXVOHFHIMs2wsz5tupcS1at9
+         3xGAvFdgAdFbA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath11k: Fix buffer overflow when scanning with extraie
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20211207142913.1734635-1-sven@narfation.org>
+References: <20211207142913.1734635-1-sven@narfation.org>
+To:     Sven Eckelmann <sven@narfation.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Wen Gong <quic_wgong@quicinc.com>,
+        Sven Eckelmann <sven@narfation.org>, stable@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163903675519.20904.4795349677435567607.kvalo@kernel.org>
+Date:   Thu,  9 Dec 2021 07:59:19 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-David Mosberger-Tang <davidm@egauge.net> writes:
+Sven Eckelmann <sven@narfation.org> wrote:
 
-> At least on our SAMA5-based platform, the chip-sleep in the wilc1000
-> driver degrades WILC1000 transmit throughput by more than three times,
-> without providing significant power-savings.  Because of that, I have
-> been considering adding a module parameter that would make the chip
-> sleep optional.  Something along these lines:
->
-> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-> index 757bd4471fd4..421672488100 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-> @@ -10,6 +10,12 @@
->  #include "cfg80211.h"
->  #include "wlan_cfg.h"
->  
-> +static bool enable_sleep;
-> +module_param(enable_sleep, bool, 0644);
-> +MODULE_PARM_DESC(enable_sleep,
-> +		 "Enable chip sleep whenever the host is done communicating\n"
-> +		 "\t\t\twith the WILC1000 chip.");
-> +
->  static inline bool is_wilc1000(u32 id)
->  {
->  	return (id & (~WILC_CHIP_REV_FIELD)) == WILC_1000_BASE_ID;
-> @@ -18,13 +24,13 @@ static inline bool is_wilc1000(u32 id)
->  static inline void acquire_bus(struct wilc *wilc, enum bus_acquire acquire)
->  {
->  	mutex_lock(&wilc->hif_cs);
-> -	if (acquire == WILC_BUS_ACQUIRE_AND_WAKEUP)
-> +	if (enable_sleep && acquire == WILC_BUS_ACQUIRE_AND_WAKEUP)
->  		chip_wakeup(wilc);
->  }
->  
->  static inline void release_bus(struct wilc *wilc, enum bus_release release)
->  {
-> -	if (release == WILC_BUS_RELEASE_ALLOW_SLEEP)
-> +	if (enable_sleep && release == WILC_BUS_RELEASE_ALLOW_SLEEP)
->  		chip_allow_sleep(wilc);
->  	mutex_unlock(&wilc->hif_cs);
->  }
->
-> However, based on the numbers below, I'm now wondering if it wouldn't
-> make more sense to remove the chip-sleep code altogether.
->
-> Here is what I see: on a system configured for minimum power consumption
-> (all unnecessary daemons disabled, Ethernet unplugged) I measured 1,180 mW
-> when the WILC chip is in RESET (the ENABLE pin is always high on our platform).
->
-> With the wilc1000-spi/wilc1000 modules loaded and the WILC chip
-> running but without being associated with a WLAN network, measured
-> power consumption was 1,460 mW, regardless of whether chip sleep was
-> enabled or disabled.
->
-> On the other hand, chip-sleep makes a huge difference for TX
-> throughput and also reduces RX throughput, but to a smaller
-> extent.  Specifically, I used ttcp to measure throughput on the
-> test system 5 times in a row, both in TX and RX direction
-> (TX meaning "ttcp -t" is run from the test system to a desktop
-> machine):
->
-> TX throughput ("./ttcp -t DESKTOPIPADDR" on the DUT):
-> enable_sleep=1: 16777216 bytes in 41.22 real seconds = 397.50 KB/sec +++
-> enable_sleep=1: 16777216 bytes in 40.67 real seconds = 402.81 KB/sec +++
-> enable_sleep=1: 16777216 bytes in 41.08 real seconds = 398.83 KB/sec +++
-> enable_sleep=1: 16777216 bytes in 41.35 real seconds = 396.25 KB/sec +++
->
-> enable_sleep=0: 16777216 bytes in 11.12 real seconds = 1472.78 KB/sec +++
-> enable_sleep=0: 16777216 bytes in 10.76 real seconds = 1523.10 KB/sec +++
-> enable_sleep=0: 16777216 bytes in 11.83 real seconds = 1385.21 KB/sec +++
-> enable_sleep=0: 16777216 bytes in 10.94 real seconds = 1497.66 KB/sec +++
-> enable_sleep=0: 16777216 bytes in 10.13 real seconds = 1617.21 KB/sec +++
->
-> RX throughput ("./ttcp -r" on the DUT):
->
-> enable_sleep=1: 16777216 bytes in 8.44 real seconds = 1941.97 KB/sec +++
-> enable_sleep=1: wilc1000, w/ sleep: 16777216 bytes in 12.69 real seconds = 1290.94 KB/sec +++
-> enable_sleep=1: 16777216 bytes in 12.79 real seconds = 1280.93 KB/sec +++
-> enable_sleep=1: 16777216 bytes in 12.39 real seconds = 1322.33 KB/sec +++
->
-> enable_sleep=0: 16777216 bytes in 5.83 real seconds = 2811.94 KB/sec +++
-> enable_sleep=0: 16777216 bytes in 5.75 real seconds = 2848.09 KB/sec +++
-> enable_sleep=0: 16777216 bytes in 5.97 real seconds = 2744.44 KB/sec +++
-> enable_sleep=0: 16777216 bytes in 6.11 real seconds = 2681.96 KB/sec +++
-> enable_sleep=0: 16777216 bytes in 6.01 real seconds = 2724.09 KB/sec +++
->
->>From what I can tell, the chip-sleep code either isn't working or the chip
-> sleep just isn't making any real difference in power consumption.
->
-> Given this, is there any reason to keep the chip-sleep code around?
+> If cfg80211 is providing extraie's for a scanning process then ath11k will
+> copy that over to the firmware. The extraie.len is a 32 bit value in struct
+> element_info and describes the amount of bytes for the vendor information
+> elements.
+> 
+> The WMI_TLV packet is having a special WMI_TAG_ARRAY_BYTE section. This
+> section can have a (payload) length up to 65535 bytes because the
+> WMI_TLV_LEN can store up to 16 bits. The code was missing such a check and
+> could have created a scan request which cannot be parsed correctly by the
+> firmware.
+> 
+> But the bigger problem was the allocation of the buffer. It has to align
+> the TLV sections by 4 bytes. But the code was using an u8 to store the
+> newly calculated length of this section (with alignment). And the new
+> calculated length was then used to allocate the skbuff. But the actual code
+> to copy in the data is using the extraie.len and not the calculated
+> "aligned" length.
+> 
+> The length of extraie with IEEE80211_HW_SINGLE_SCAN_ON_ALL_BANDS enabled
+> was 264 bytes during tests with a QCA Milan card. But it only allocated 8
+> bytes (264 bytes % 256) for it. As consequence, the code to memcpy the
+> extraie into the skb was then just overwriting data after skb->end. Things
+> like shinfo were therefore corrupted. This could usually be seen by a crash
+> in skb_zcopy_clear which tried to call a ubuf_info callback (using a bogus
+> address).
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-02892.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Signed-off-by: Sven Eckelmann <sven@narfation.org>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-If it doesn't work I would just remove it to keep things simple. It can
-always added back if somebody fixes it.
+Patch applied to ath-next branch of ath.git, thanks.
+
+a658c929ded7 ath11k: Fix buffer overflow when scanning with extraie
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211207142913.1734635-1-sven@narfation.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
