@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7585546E44B
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 09:33:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0380C46E44C
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 09:33:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234918AbhLIIhC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 03:37:02 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:37357 "EHLO
+        id S234950AbhLIIhE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 03:37:04 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:37359 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235022AbhLIIhB (ORCPT
+        with ESMTP id S234917AbhLIIhD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 03:37:01 -0500
+        Thu, 9 Dec 2021 03:37:03 -0500
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1B98XO1H0006465, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1B98XO1H0006465
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1B98XQTz8006469, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1B98XQTz8006469
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 9 Dec 2021 16:33:24 +0800
+        Thu, 9 Dec 2021 16:33:26 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Thu, 9 Dec 2021 16:33:24 +0800
+ 15.1.2308.20; Thu, 9 Dec 2021 16:33:26 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Thu, 9 Dec
- 2021 16:33:23 +0800
+ 2021 16:33:26 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <ku920601@realtek.com>
-Subject: [PATCH 6/7] rtw89: coex: Cancel PS leaving while C2H comes
-Date:   Thu, 9 Dec 2021 16:32:28 +0800
-Message-ID: <20211209083229.10815-7-pkshih@realtek.com>
+Subject: [PATCH 7/7] rtw89: coex: Update COEX to 5.5.8
+Date:   Thu, 9 Dec 2021 16:32:29 +0800
+Message-ID: <20211209083229.10815-8-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211209083229.10815-1-pkshih@realtek.com>
 References: <20211209083229.10815-1-pkshih@realtek.com>
@@ -52,7 +52,7 @@ X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
 X-KSE-Antivirus-Interceptor-Info: scan successful
 X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzkgpFekyCAwNjozMjowMA==?=
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
@@ -62,33 +62,27 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ching-Te Ku <ku920601@realtek.com>
 
-It's unnecessary to leave WL PS while C2H comes.
+Update COEX version.
 
 Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 929818c3a776b..9f7d4f8d0c56f 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -4553,14 +4553,12 @@ void rtw89_btc_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
- 			    "[BTC], handle C2H BT INFO with data %8ph\n", buf);
- 		btc->cx.cnt_bt[BTC_BCNT_INFOUPDATE]++;
--		rtw89_leave_ps_mode(rtwdev);
- 		_update_bt_info(rtwdev, buf, len);
- 		break;
- 	case BTF_EVNT_BT_SCBD:
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
- 			    "[BTC], handle C2H BT SCBD with data %8ph\n", buf);
- 		btc->cx.cnt_bt[BTC_BCNT_SCBDUPDATE]++;
--		rtw89_leave_ps_mode(rtwdev);
- 		_update_bt_scbd(rtwdev, false);
- 		break;
- 	case BTF_EVNT_BT_PSD:
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 5ec13ae0abcdb..6b75e4bc73523 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -2031,7 +2031,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
+ 	.limit_efuse_size	= 1152,
+ 	.phycap_addr		= 0x580,
+ 	.phycap_size		= 128,
+-	.para_ver		= 0x05050764,
++	.para_ver		= 0x05050864,
+ 	.wlcx_desired		= 0x05050000,
+ 	.btcx_desired		= 0x5,
+ 	.scbd			= 0x1,
 -- 
 2.25.1
 
