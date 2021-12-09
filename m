@@ -2,73 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4670446F2CE
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 19:10:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FAED46F2D6
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Dec 2021 19:16:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243143AbhLISNx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 13:13:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60328 "EHLO
+        id S241733AbhLISTd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 13:19:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242961AbhLISNw (ORCPT
+        with ESMTP id S237501AbhLISTb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 13:13:52 -0500
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1402EC0617A2
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 10:10:19 -0800 (PST)
-Received: by mail-io1-xd29.google.com with SMTP id c3so7628318iob.6
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Dec 2021 10:10:19 -0800 (PST)
+        Thu, 9 Dec 2021 13:19:31 -0500
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45013C061746
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 10:15:58 -0800 (PST)
+Received: by mail-il1-x12d.google.com with SMTP id d14so3770587ila.1
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Dec 2021 10:15:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=egauge.net; s=google;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :organization:user-agent:mime-version;
-        bh=6zY6sGFCH897+MuLK3bN1StqwLLhauvra45Jzw13JvI=;
-        b=BEA6gqTK5d61nG8QFSOynF6LmTMAyDjD45GOmKcN8I7QK0p4vNIaOVoSvtfh0BJ21v
-         ett3ByP9AXK9bN1BsGattJWuSMmshpVyE3eyivU2WW0CuZL53haFzx6vxGL4Uuju1X2b
-         80c9OTVYQzkICta+QykS10hLOkGc4E/4TTpjcMC4tEMXSeNNNLrU/LvXNqN3B0uILTzF
-         RT9fX2dIPJ0OdN+APmUG/BxsoL83shv9s9HleEdeue/RZ1qBfTMYtRP/aQXkca8tfjkN
-         InwW4UYgf4/N3QyrGv/2Hhaf/bvF0dBCyh1/nV10OPEvXFzmGfOOi3mzu041ty5GqEYn
-         tbBQ==
+         :organization:user-agent:mime-version:content-transfer-encoding;
+        bh=dFns64ufLqL975ldn7IT9bs+MSnRRPtkiO/EFdARXbk=;
+        b=ont+UNLfF7BxKeGp4GahNh0FU9a1g4B8psf1iUv6es1RBt/BHgb+CMwjytQEomFRlU
+         MAPgMRmtYkJEtdgNrsc8WjdHw+cYrb0szTTJt46XfQSv4ar1XIc+3HHhTomksMXy7iVz
+         QXdFRElkbaLWqmsntOWgTXPT4E0XqYIbaZEcMzlg3jsA+HX0XxuRvhvQGoZEsiRTTn9m
+         M3NxVh6Anxg+QEzBlDvgqe/EGIjMLK1txrKL2wyLKy2cr/Rj0Iy33jqFYkyPkn9gM4gD
+         /rKQLv7ysxwLdRZ6f/ffh09olR1o2HjOW7VaN22l2I3i95gpPpPKkXJeG5QUsEz18dIQ
+         tccQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:organization:user-agent:mime-version;
-        bh=6zY6sGFCH897+MuLK3bN1StqwLLhauvra45Jzw13JvI=;
-        b=xFQMBaETgLs1YbuOrFLYwl6TlK/SPy/My1hnCMlOCNlWSUo9UWsss1v4v0xmKmS9Av
-         mhmoCeAqkZbzF2VE2DngvMfp112WStu1AIV5ocw6lsKfqC0/Bbv6t+zoXBOjDrOSSePZ
-         qotjkVUiILMm7I9FDCny05hR1OYpsEYCpThxw3zI5/XBmTFeDC71rAmlT2/JippfmmSa
-         JwF0XnHLf31jGfr9NsD4JTtyJezVuQ0zwCDqHDc6vU8sEsY5vbHnYb7ZQc7h9EDhhsBU
-         14nK6FjCoefwqpnopdgjHsle30RS1jr1R9cbX0GCVHn/CTHgja9sw416vxPNwirfIs3I
-         14og==
-X-Gm-Message-State: AOAM5319k4Vw05t0DBfk/++/LX2Fs9vO6a3JZaVKZQqmRVoawKMMg/ea
-        NT6J//05eYMZkfTACXB3edOy
-X-Google-Smtp-Source: ABdhPJy7sukabRFKVLw9eINYlBCIeOe8i93C3Wcxp6nzaoi+gNbrIz3zHGU0LhmaAtIXcDAjcNWH0A==
-X-Received: by 2002:a5d:818a:: with SMTP id u10mr15493285ion.140.1639073418324;
-        Thu, 09 Dec 2021 10:10:18 -0800 (PST)
+         :references:organization:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=dFns64ufLqL975ldn7IT9bs+MSnRRPtkiO/EFdARXbk=;
+        b=UUaMJzSgPIWhDHkJqm0xMRNc3zAqfbL93Lf/QYVAcuOG/iZ5ZixKHVky/e7Ji7pBBC
+         RSG/uiRyCBhBu7elKgf0ofokFMhCx30dp/y5InYyIEJkd0Gy+Q1umDiqhoBZiR/QDGan
+         hGTT2CNpc53UYhi5R2YiG+2Vt1Tz1JptPE/E5mZgeLTgdDhX4Gp2s7akkOAcZymbIzAs
+         rjiE8m/p7VZivbEP4wgj/JPfNO6r/7UrOWJ1u6M8jqCEAkqCHg4qADUi9NDZO0G7iQmf
+         J10i1lSuxgr5WOW9cFRd01Upz8Yrbr/LDrKAvpqcJPVtZ4BEzPTtu+eVmQoQiZqboHij
+         ybOw==
+X-Gm-Message-State: AOAM531/224DfHCtFL0N56SaS8Gil/mwE29hWl4J4kSzsaTIpWeF8m7d
+        g2aQFGvab+/2Vb/z7P8uu6QZ
+X-Google-Smtp-Source: ABdhPJxdvuc9q9RFwGbbi129JLHMfVd2JJc50vOFOCfvK3AOayW88hNHuhSkQNYL4E1hRhGoOuIXdQ==
+X-Received: by 2002:a92:ca46:: with SMTP id q6mr14067120ilo.54.1639073757472;
+        Thu, 09 Dec 2021 10:15:57 -0800 (PST)
 Received: from bixby.lan (c-73-181-115-211.hsd1.co.comcast.net. [73.181.115.211])
-        by smtp.gmail.com with ESMTPSA id i10sm263682ilu.84.2021.12.09.10.10.15
+        by smtp.gmail.com with ESMTPSA id b25sm248812iob.27.2021.12.09.10.15.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Dec 2021 10:10:16 -0800 (PST)
-Message-ID: <bea03361e0571723f7ef04a0b97ff81086938e96.camel@egauge.net>
+        Thu, 09 Dec 2021 10:15:57 -0800 (PST)
+Message-ID: <a03e133e46ff305dbad796913b79c994c91581d5.camel@egauge.net>
 Subject: Re: RFC: wilc1000 module parameter to disable chip sleep
 From:   David Mosberger-Tang <davidm@egauge.net>
 To:     Ajay.Kathat@microchip.com
 Cc:     Claudiu.Beznea@microchip.com, linux-wireless@vger.kernel.org
-Date:   Thu, 09 Dec 2021 11:10:12 -0700
+Date:   Thu, 09 Dec 2021 11:15:56 -0700
 In-Reply-To: <4bf158ac-18d0-6feb-fbef-dc0739d74487@microchip.com>
 References: <0baed35e98144bc7e29681264caf954b659cd481.camel@egauge.net>
          <4bf158ac-18d0-6feb-fbef-dc0739d74487@microchip.com>
 Organization: eGauge Systems LLC
-Content-Type: multipart/mixed; boundary="=-NEP7zPgnw7hDlwUwcHcm"
+Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---=-NEP7zPgnw7hDlwUwcHcm
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+[Sorry, my first email was accidentally had the patch appended as a MIME
+ attachment.]
 
 On Thu, 2021-12-09 at 09:20 +0000, Ajay.Kathat@microchip.com wrote:
 > On 09/12/21 00:20, David Mosberger-Tang wrote:
@@ -127,50 +127,61 @@ In terms of power consumption:
 
   --david
 
-
---=-NEP7zPgnw7hDlwUwcHcm
-Content-Disposition: attachment; filename="wip-chip-sleep.diff"
-Content-Type: text/x-patch; name="wip-chip-sleep.diff"; charset="UTF-8"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21pY3JvY2hpcC93aWxjMTAwMC9oaWYu
-YyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21pY3JvY2hpcC93aWxjMTAwMC9oaWYuYwppbmRleCA0
-NGU5M2NkNWUzZGYuLjA5YWE1Y2VkMTlkMyAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvbWljcm9jaGlwL3dpbGMxMDAwL2hpZi5jCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21p
-Y3JvY2hpcC93aWxjMTAwMC9oaWYuYwpAQCAtMTkxMiw2ICsxOTEyLDcgQEAgaW50IHdpbGNfZWRp
-dF9zdGF0aW9uKHN0cnVjdCB3aWxjX3ZpZiAqdmlmLCBjb25zdCB1OCAqbWFjLAogCiBpbnQgd2ls
-Y19zZXRfcG93ZXJfbWdtdChzdHJ1Y3Qgd2lsY192aWYgKnZpZiwgYm9vbCBlbmFibGVkLCB1MzIg
-dGltZW91dCkKIHsKKwlzdHJ1Y3Qgd2lsYyAqd2lsYyA9IHZpZi0+d2lsYzsKIAlzdHJ1Y3Qgd2lk
-IHdpZDsKIAlpbnQgcmVzdWx0OwogCXM4IHBvd2VyX21vZGU7CkBAIC0xOTI3LDYgKzE5MjgsOCBA
-QCBpbnQgd2lsY19zZXRfcG93ZXJfbWdtdChzdHJ1Y3Qgd2lsY192aWYgKnZpZiwgYm9vbCBlbmFi
-bGVkLCB1MzIgdGltZW91dCkKIAlyZXN1bHQgPSB3aWxjX3NlbmRfY29uZmlnX3BrdCh2aWYsIFdJ
-TENfU0VUX0NGRywgJndpZCwgMSk7CiAJaWYgKHJlc3VsdCkKIAkJbmV0ZGV2X2Vycih2aWYtPm5k
-ZXYsICJGYWlsZWQgdG8gc2VuZCBwb3dlciBtYW5hZ2VtZW50XG4iKTsKKwllbHNlCisJCXdpbGMt
-PnBvd2VyX3NhdmVfbW9kZSA9IGVuYWJsZWQ7CiAKIAlyZXR1cm4gcmVzdWx0OwogfQpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlwL3dpbGMxMDAwL25ldGRldi5oIGIv
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlwL3dpbGMxMDAwL25ldGRldi5oCmluZGV4IDE1
-MjQwODIzMmQ1MS4uZGIxNDlhYmM1ZDBkIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVz
-cy9taWNyb2NoaXAvd2lsYzEwMDAvbmV0ZGV2LmgKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWljcm9jaGlwL3dpbGMxMDAwL25ldGRldi5oCkBAIC0yNjcsNiArMjY3LDcgQEAgc3RydWN0IHdp
-bGMgewogCiAJaW50IGNsaWVudHNfY291bnQ7CiAJc3RydWN0IHdvcmtxdWV1ZV9zdHJ1Y3QgKmhp
-Zl93b3JrcXVldWU7CisJYm9vbCBwb3dlcl9zYXZlX21vZGU7CiAJZW51bSBjaGlwX3BzX3N0YXRl
-cyBjaGlwX3BzX3N0YXRlOwogCXN0cnVjdCB3aWxjX2NmZyBjZmc7CiAJdm9pZCAqYnVzX2RhdGE7
-CmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9taWNyb2NoaXAvd2lsYzEwMDAvd2xh
-bi5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlwL3dpbGMxMDAwL3dsYW4uYwppbmRl
-eCBkZGQzODI5OTYyNzUuLjBlMGUzMjVkMzk2ZSAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvbWljcm9jaGlwL3dpbGMxMDAwL3dsYW4uYworKysgYi9kcml2ZXJzL25ldC93aXJlbGVz
-cy9taWNyb2NoaXAvd2lsYzEwMDAvd2xhbi5jCkBAIC0xOCwxMyArMTgsMTMgQEAgc3RhdGljIGlu
-bGluZSBib29sIGlzX3dpbGMxMDAwKHUzMiBpZCkKIHN0YXRpYyBpbmxpbmUgdm9pZCBhY3F1aXJl
-X2J1cyhzdHJ1Y3Qgd2lsYyAqd2lsYywgZW51bSBidXNfYWNxdWlyZSBhY3F1aXJlKQogewogCW11
-dGV4X2xvY2soJndpbGMtPmhpZl9jcyk7Ci0JaWYgKGFjcXVpcmUgPT0gV0lMQ19CVVNfQUNRVUlS
-RV9BTkRfV0FLRVVQKQorCWlmIChhY3F1aXJlID09IFdJTENfQlVTX0FDUVVJUkVfQU5EX1dBS0VV
-UCAmJiB3aWxjLT5wb3dlcl9zYXZlX21vZGUpCiAJCWNoaXBfd2FrZXVwKHdpbGMpOwogfQogCiBz
-dGF0aWMgaW5saW5lIHZvaWQgcmVsZWFzZV9idXMoc3RydWN0IHdpbGMgKndpbGMsIGVudW0gYnVz
-X3JlbGVhc2UgcmVsZWFzZSkKIHsKLQlpZiAocmVsZWFzZSA9PSBXSUxDX0JVU19SRUxFQVNFX0FM
-TE9XX1NMRUVQKQorCWlmIChyZWxlYXNlID09IFdJTENfQlVTX1JFTEVBU0VfQUxMT1dfU0xFRVAg
-JiYgd2lsYy0+cG93ZXJfc2F2ZV9tb2RlKQogCQljaGlwX2FsbG93X3NsZWVwKHdpbGMpOwogCW11
-dGV4X3VubG9jaygmd2lsYy0+aGlmX2NzKTsKIH0K
-
-
---=-NEP7zPgnw7hDlwUwcHcm--
+diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c
+b/drivers/net/wireless/microchip/wilc1000/hif.c
+index 44e93cd5e3df..09aa5ced19d3 100644
+--- a/drivers/net/wireless/microchip/wilc1000/hif.c
++++ b/drivers/net/wireless/microchip/wilc1000/hif.c
+@@ -1912,6 +1912,7 @@ int wilc_edit_station(struct wilc_vif *vif, const u8 *mac,
+ 
+ int wilc_set_power_mgmt(struct wilc_vif *vif, bool enabled, u32 timeout)
+ {
++	struct wilc *wilc = vif->wilc;
+ 	struct wid wid;
+ 	int result;
+ 	s8 power_mode;
+@@ -1927,6 +1928,8 @@ int wilc_set_power_mgmt(struct wilc_vif *vif, bool
+enabled, u32 timeout)
+ 	result = wilc_send_config_pkt(vif, WILC_SET_CFG, &wid, 1);
+ 	if (result)
+ 		netdev_err(vif->ndev, "Failed to send power management\n");
++	else
++		wilc->power_save_mode = enabled;
+ 
+ 	return result;
+ }
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h
+b/drivers/net/wireless/microchip/wilc1000/netdev.h
+index 152408232d51..db149abc5d0d 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.h
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
+@@ -267,6 +267,7 @@ struct wilc {
+ 
+ 	int clients_count;
+ 	struct workqueue_struct *hif_workqueue;
++	bool power_save_mode;
+ 	enum chip_ps_states chip_ps_state;
+ 	struct wilc_cfg cfg;
+ 	void *bus_data;
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c
+b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index ddd382996275..0e0e325d396e 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -18,13 +18,13 @@ static inline bool is_wilc1000(u32 id)
+ static inline void acquire_bus(struct wilc *wilc, enum bus_acquire acquire)
+ {
+ 	mutex_lock(&wilc->hif_cs);
+-	if (acquire == WILC_BUS_ACQUIRE_AND_WAKEUP)
++	if (acquire == WILC_BUS_ACQUIRE_AND_WAKEUP && wilc->power_save_mode)
+ 		chip_wakeup(wilc);
+ }
+ 
+ static inline void release_bus(struct wilc *wilc, enum bus_release release)
+ {
+-	if (release == WILC_BUS_RELEASE_ALLOW_SLEEP)
++	if (release == WILC_BUS_RELEASE_ALLOW_SLEEP && wilc->power_save_mode)
+ 		chip_allow_sleep(wilc);
+ 	mutex_unlock(&wilc->hif_cs);
+ }
 
