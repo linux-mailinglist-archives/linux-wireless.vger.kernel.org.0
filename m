@@ -2,72 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A62746FB17
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Dec 2021 08:06:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4BFB46FC89
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Dec 2021 09:19:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234937AbhLJHKK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Dec 2021 02:10:10 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:50858 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231790AbhLJHKJ (ORCPT
+        id S238405AbhLJIXD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Dec 2021 03:23:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54302 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238393AbhLJIXC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Dec 2021 02:10:09 -0500
-Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=kveik.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1mvZzF-001F9v-PC; Fri, 10 Dec 2021 09:06:34 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@kernel.org
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Fri, 10 Dec 2021 09:06:21 +0200
-Message-Id: <iwlwifi.20211210090244.3c851b93aef5.I346fa2e1d79220a6770496e773c6f87a2ad9e6c4@changeid>
+        Fri, 10 Dec 2021 03:23:02 -0500
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED617C061746
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Dec 2021 00:19:27 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id n15-20020a17090a160f00b001a75089daa3so8898895pja.1
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Dec 2021 00:19:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessos.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=fiJPYf6H6wZ8S6m4+bMfnKs750o6XkD8svvPAd3zlBI=;
+        b=dtzzcA8Xld4+Ox+XPzjrCw9psaAUni/Zg9OLuhMgHN4pyfHJGYcEn8KWWeybRA8MS4
+         4S+9zSVnlOMMV9/Bis8ylg7Zd9MWjwOWdx6aDFIlTt8W6OcnaU+3ahz0R5qg73drGObk
+         UaOxmjSwwoccde4fv0j+18WsQjSXVdU7dFPE1xP5N+gevxbsSr9ztIEHedeO84CCK/oe
+         K2D0IVoxH7vfKrLTQTMPJ1sXRBGo3Fh8mbQuMCjLGgVo96NzDbTWFUylbJrbJzaApmRW
+         fEG4OOQeJk8C7p+nbSDtuXhC8crJOa2UDjlYehEG8djP4in2OelBTllFbhweFGqERARV
+         pFYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=fiJPYf6H6wZ8S6m4+bMfnKs750o6XkD8svvPAd3zlBI=;
+        b=UvqMzk5+NoGHJlnv2gOz3E/6/P6YTyW50WPK6lRsuCtVdiLB2/Y6tivJ+2hT9W38za
+         bgKalZFMuGJgqQrdpTgqyitsNuaKss3N0GysUnJ51WeQoc0VCwXXglVWi7CgjqQY8Pzl
+         2eNpNfGkCr5zT5Bj3Mo735OO526I1MzmOA9xVg3qY962oKgYHUG8QW2/4mxgw3nNCujM
+         wuK+vGEltudl/lqdtgzKjKjOGFcTsQNkoEPD5nFNiGPGdmanLQ/Q12UT6eyC5se6yjvE
+         7B8fUbtd+XuSGboIhpVkfQ7U8yeyQ/7bwvw9yIBtWfoqaQIQlZn2cSxChpFpsfodS8jk
+         AiNQ==
+X-Gm-Message-State: AOAM530B2uuB6CCj0ZzTp4hlSsQUO5puwXMDh7PsDOpNktqD+oin5CaY
+        fUKBnjKj7apRYOff9m9PKr2e3uy2U9pJxw==
+X-Google-Smtp-Source: ABdhPJwAUYZ7yO9fwT+I0qQYkftVCpkpMn6gLkhPeLxKFAg1pZZsBil3vGxzFmubvPDBEMm9HInJZw==
+X-Received: by 2002:a17:902:d4cf:b0:141:d36c:78f6 with SMTP id o15-20020a170902d4cf00b00141d36c78f6mr73935087plg.56.1639124367495;
+        Fri, 10 Dec 2021 00:19:27 -0800 (PST)
+Received: from starnight.localdomain (123-204-46-122.static.seed.net.tw. [123.204.46.122])
+        by smtp.googlemail.com with ESMTPSA id 38sm1827099pgl.73.2021.12.10.00.19.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Dec 2021 00:19:27 -0800 (PST)
+From:   Jian-Hong Pan <jhp@endlessos.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@endlessos.org,
+        Jian-Hong Pan <jhp@endlessos.org>
+Subject: [PATCH] rtw88: 8821c: disable the ASPM of RTL8821CE
+Date:   Fri, 10 Dec 2021 16:17:01 +0800
+Message-Id: <20211210081659.4621-1-jhp@endlessos.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211210070621.236783-1-luca@coelho.fi>
-References: <20211210070621.236783-1-luca@coelho.fi>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 11/11] iwlwifi: mvm: Increase the scan timeout guard to 30 seconds
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+More and more laptops become frozen, due to the equipped RTL8821CE.
 
-With the introduction of 6GHz channels the scan guard timeout should
-be adjusted to account for the following extreme case:
+This patch follows the idea mentioned in commits 956c6d4f20c5 ("rtw88:
+add quirks to disable pci capabilities") and 1d4dcaf3db9bd ("rtw88: add
+quirk to disable pci caps on HP Pavilion 14-ce0xxx"), but disables its
+PCI ASPM capability of RTL8821CE directly, instead of checking DMI.
 
-- All 6GHz channels are scanned passively: 58 channels.
-- The scan is fragmented with the following parameters: 3 fragments,
-  95 TUs suspend time, 44 TUs maximal out of channel time.
-
-The above would result with scan time of more than 24 seconds. Thus,
-set the timeout to 30 seconds.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Buglink:https://bugzilla.kernel.org/show_bug.cgi?id=215239
+Fixes: 1d4dcaf3db9bd ("rtw88: add quirk to disable pci caps on HP Pavilion 14-ce0xxx")
+Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/main.h     |  3 ++
+ drivers/net/wireless/realtek/rtw88/pci.c      | 33 ++-----------------
+ drivers/net/wireless/realtek/rtw88/pci.h      |  5 +++
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |  3 ++
+ 4 files changed, 14 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 54ec5eb6c763..693afd78bc66 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -2513,7 +2513,7 @@ static int iwl_mvm_check_running_scans(struct iwl_mvm *mvm, int type)
- 	return -EIO;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index bbdd535b64e7..31cd427a0949 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -1259,6 +1259,9 @@ struct rtw_chip_info {
+ 	const struct rtw_hw_reg *btg_reg;
+ 	const struct rtw_reg_domain *coex_info_hw_regs;
+ 	u32 wl_fw_desired_ver;
++
++	/* quirk flags */
++	u32 pci_quirk_data;
+ };
+ 
+ enum rtw_coex_bt_state_cnt {
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index a7a6ebfaa203..0a858db2d515 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -1702,14 +1702,9 @@ static void rtw_pci_napi_deinit(struct rtw_dev *rtwdev)
+ 	netif_napi_del(&rtwpci->napi);
  }
  
--#define SCAN_TIMEOUT 20000
-+#define SCAN_TIMEOUT 30000
- 
- void iwl_mvm_scan_timeout_wk(struct work_struct *work)
+-enum rtw88_quirk_dis_pci_caps {
+-	QUIRK_DIS_PCI_CAP_MSI,
+-	QUIRK_DIS_PCI_CAP_ASPM,
+-};
+-
+-static int disable_pci_caps(const struct dmi_system_id *dmi)
++static int disable_pci_caps_by_chip(const struct rtw_chip_info *chip)
  {
+-	uintptr_t dis_caps = (uintptr_t)dmi->driver_data;
++	u32 dis_caps = chip->pci_quirk_data;
+ 
+ 	if (dis_caps & BIT(QUIRK_DIS_PCI_CAP_MSI))
+ 		rtw_disable_msi = true;
+@@ -1719,28 +1714,6 @@ static int disable_pci_caps(const struct dmi_system_id *dmi)
+ 	return 1;
+ }
+ 
+-static const struct dmi_system_id rtw88_pci_quirks[] = {
+-	{
+-		.callback = disable_pci_caps,
+-		.ident = "Protempo Ltd L116HTN6SPW",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Protempo Ltd"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "L116HTN6SPW"),
+-		},
+-		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
+-	},
+-	{
+-		.callback = disable_pci_caps,
+-		.ident = "HP HP Pavilion Laptop 14-ce0xxx",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion Laptop 14-ce0xxx"),
+-		},
+-		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
+-	},
+-	{}
+-};
+-
+ int rtw_pci_probe(struct pci_dev *pdev,
+ 		  const struct pci_device_id *id)
+ {
+@@ -1791,7 +1764,7 @@ int rtw_pci_probe(struct pci_dev *pdev,
+ 		goto err_destroy_pci;
+ 	}
+ 
+-	dmi_check_system(rtw88_pci_quirks);
++	disable_pci_caps_by_chip(rtwdev->chip);
+ 	rtw_pci_phy_cfg(rtwdev);
+ 
+ 	ret = rtw_register_hw(rtwdev, hw);
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.h b/drivers/net/wireless/realtek/rtw88/pci.h
+index 66f78eb7757c..f470387fbb9a 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.h
++++ b/drivers/net/wireless/realtek/rtw88/pci.h
+@@ -274,4 +274,9 @@ struct rtw_pci_tx_buffer_desc *get_tx_buffer_desc(struct rtw_pci_tx_ring *ring,
+ 	return (struct rtw_pci_tx_buffer_desc *)buf_desc;
+ }
+ 
++enum rtw88_quirk_dis_pci_caps {
++	QUIRK_DIS_PCI_CAP_MSI,
++	QUIRK_DIS_PCI_CAP_ASPM,
++};
++
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index 80a6f4da6acd..4d684534fa1e 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -15,6 +15,7 @@
+ #include "debug.h"
+ #include "bf.h"
+ #include "regd.h"
++#include "pci.h"
+ 
+ static const s8 lna_gain_table_0[8] = {22, 8, -6, -22, -31, -40, -46, -52};
+ static const s8 lna_gain_table_1[16] = {10, 6, 2, -2, -6, -10, -14, -17,
+@@ -1947,6 +1948,8 @@ struct rtw_chip_info rtw8821c_hw_spec = {
+ 
+ 	.coex_info_hw_regs_num = ARRAY_SIZE(coex_info_hw_regs_8821c),
+ 	.coex_info_hw_regs = coex_info_hw_regs_8821c,
++
++	.pci_quirk_data = BIT(QUIRK_DIS_PCI_CAP_ASPM),
+ };
+ EXPORT_SYMBOL(rtw8821c_hw_spec);
+ 
 -- 
 2.34.1
 
