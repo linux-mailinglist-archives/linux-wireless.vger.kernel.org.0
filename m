@@ -2,103 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6757846F7DE
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Dec 2021 01:09:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4033A46F952
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Dec 2021 03:47:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234814AbhLJAMq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Dec 2021 19:12:46 -0500
-Received: from relay027.a.hostedemail.com ([64.99.140.27]:39788 "EHLO
-        relay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229723AbhLJAMp (ORCPT
+        id S236130AbhLJCuq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Dec 2021 21:50:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37356 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231175AbhLJCup (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Dec 2021 19:12:45 -0500
-Received: from omf10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-        by unirelay11.hostedemail.com (Postfix) with ESMTP id 0C95B807F8;
-        Fri, 10 Dec 2021 00:09:11 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf10.hostedemail.com (Postfix) with ESMTPA id 4CA472F;
-        Fri, 10 Dec 2021 00:09:05 +0000 (UTC)
-Message-ID: <4446ca5bf0a8120a37f89cdb0f50d898636630a2.camel@perches.com>
-Subject: Re: [PATCH 1/2] ath11k: add dbring debug support
-From:   Joe Perches <joe@perches.com>
-To:     Venkateswara Naralasetty <quic_vnaralas@quicinc.com>,
-        ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 09 Dec 2021 16:09:04 -0800
-In-Reply-To: <1636439522-14509-1-git-send-email-quic_vnaralas@quicinc.com>
-References: <1636439522-14509-1-git-send-email-quic_vnaralas@quicinc.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.40.4-1ubuntu2 
+        Thu, 9 Dec 2021 21:50:45 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A364BC061746
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Dec 2021 18:47:11 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5D004B82644
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Dec 2021 02:47:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB433C004DD;
+        Fri, 10 Dec 2021 02:47:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639104428;
+        bh=h3kRVIWb4+T1yOuMZzsrfBPcunSuv9y36YP/NSEF9Y0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QkM0mDfslWQymBKRJqi/eHNDhuC14LLQL/Te22RnnCUh2OfNgPPSdwNcI20jTEa2O
+         9dFgGsJ3zLHyPlBwoM0BBnuwp1aw5DpL0lS/MT+Glz2HxGhz+IYOrWvD5x4G2PK3S5
+         yl1LxOKat//v6OrZ8cAm0Glxgr+WnrSqJb/qdZj4ZH9BwQjWRAyAvt0FQIizPBOIfW
+         XrKRvF3aNymjkKoCUvyRBPWIPrFjeGjEzk02575u5ytdPMXjNmQ2tGiEuKxGAPKhF5
+         IdhTzilIaFNf/Dbz4axFWRJI6Gw6nTLFPdOYUrAtNCCg+lKXrISybtCpbIjSpYyVlz
+         oUW6z5x4M2mbg==
+Date:   Thu, 9 Dec 2021 20:47:07 -0600
+From:   Seth Forshee <sforshee@kernel.org>
+To:     Sultan Alsawaf <sultan@kerneltoast.com>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wireless-regdb: Raise DFS TX power limit to 250 mW (24
+ dBm) for the US
+Message-ID: <YbK/qyUTu5Mj4nrj@ubuntu-x1>
+References: <20211206064520.11305-1-sultan@kerneltoast.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspamout07
-X-Rspamd-Queue-Id: 4CA472F
-X-Spam-Status: No, score=-4.11
-X-Stat-Signature: cwg8qj6swyif77ag6yqpc5cjdeyzoa7p
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX19Kw86AOTeybW33uD29/bmbVIk9l8MkLzg=
-X-HE-Tag: 1639094945-176582
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211206064520.11305-1-sultan@kerneltoast.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2021-11-09 at 12:02 +0530, Venkateswara Naralasetty wrote:
-> Target copies spectral report and CFR report through dbring to
-> host for further processing. This mechanism involves ring and
-> buffer management in the Host, FW, and uCode, where improper
-> tail pointer update issues are seen.
+On Sun, Dec 05, 2021 at 10:45:20PM -0800, Sultan Alsawaf wrote:
+> From: Sultan Alsawaf <sultan@kerneltoast.com>
 > 
-> This dbring debug support help to debug such issues by tracking
-> head and tail pointer movement along with the timestamp at which
-> each buffer is received and replenished.
+> According to 47 CFR § 15.407(a)(2), the U-NII-2A (5.25-5.35 GHz) and
+> U-NII-2C (5.47-5.725 GHz) DFS bands are subject to the following [1]:
+> "For the 5.25-5.35 GHz and 5.47-5.725 GHz bands, the maximum conducted
+>  output power over the frequency bands of operation shall not exceed
+>  the lesser of 250 mW or 11 dBm + 10 log B, where B is the 26 dB
+>  emission bandwidth in megahertz."
+> 
+> As such, increase the TX power limit for the U-NII-2A and U-NII-2C DFS
+> bands to 250 mW (24 dBm) to match the FCC's current rules. These power
+> limits have remained unchanged since the § 15.407 amendment by the FCC
+> in 2014 [2].
+> 
+> [1] https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-15/subpart-E/section-15.407#p-15.407(a)(2)
+> [2] https://www.federalregister.gov/d/2014-09279/p-131
+> 
+> Signed-off-by: Sultan Alsawaf <sultan@kerneltoast.com>
 
-> @@ -1068,6 +1107,166 @@ static const struct file_operations fops_simulate_radar = {
->  	.open = simple_open
->  };
->  
-> +static ssize_t ath11k_dbr_dump_debug_entries(struct file *file,
-> +					     char __user *user_buf,
-> +					     size_t count, loff_t *ppos)
-> +{
-> +	struct ath11k_db_ring_debug *db_ring_debug = file->private_data;
-> +	static const char * const event_id_to_string[] = {"empty", "Rx", "Replenish"};
-> +	int size = ATH11K_DBR_DEBUG_ENTRIES_MAX * 100;
-> +	char *buf;
-> +	int i, ret;
-> +	int len = 0;
-> +
-> +	buf = kzalloc(size, GFP_KERNEL);
-> +	if (!buf)
-> +		return -ENOMEM;
-> +
-> +	len += scnprintf(buf + len, size - len, "------------------------------------\n");
-> +	len += scnprintf(buf + len, size - len, "| idx | hp | tp | timestamp | event|\n");
-> +	len += scnprintf(buf + len, size - len, "------------------------------------\n");
-> +
-> +	spin_lock_bh(&db_ring_debug->lock);
-> +
-> +	for (i = 0; i < db_ring_debug->num_ring_debug_entries; i++) {
-> +		len += scnprintf(buf + len, size - len,
-> +				 "|%4u|%8u|%8u|%11llu|%8s|\n", i,
-> +				 db_ring_debug->entries[i].hp,
-> +				 db_ring_debug->entries[i].tp,
-> +				 db_ring_debug->entries[i].timestamp,
-> +				 event_id_to_string[db_ring_debug->entries[i].event]);
-> +	}
-
-I think this would look a lot nicer column aligned along the | boundaries
-
-	len += scnprintf(buf + len, size - len, "--------------------------------------------------------\n");
-	len += scnprintf(buf + len, size - len, "|  idx |    hp    |    tp    |  timestamp  |   event   |\n");
-	len += scnprintf(buf + len, size - len, "--------------------------------------------------------\n");
-
-	spin_lock_bh(&db_ring_debug->lock);
-
-	for (i = 0; i < db_ring_debug->num_ring_debug_entries; i++) {
-		len += scnprintf(buf + len, size - len,
-				 "| %4u | %8u | %8u | %11llu | %-9s |\n", i,
-				 db_ring_debug->entries[i].hp,
-				 db_ring_debug->entries[i].tp,
-				 db_ring_debug->entries[i].timestamp,
-				 event_id_to_string[db_ring_debug->entries[i].event]);
-
-
+Applied, thanks!
