@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6036946FD7D
+	by mail.lfdr.de (Postfix) with ESMTP id D762146FD7E
 	for <lists+linux-wireless@lfdr.de>; Fri, 10 Dec 2021 10:13:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239122AbhLJJQd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S239098AbhLJJQd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 10 Dec 2021 04:16:33 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:50908 "EHLO
+Received: from paleale.coelho.fi ([176.9.41.70]:50914 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S239107AbhLJJQc (ORCPT
+        with ESMTP id S234141AbhLJJQd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Dec 2021 04:16:32 -0500
+        Fri, 10 Dec 2021 04:16:33 -0500
 Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <luca@coelho.fi>)
-        id 1mvbxY-001FED-2R; Fri, 10 Dec 2021 11:12:56 +0200
+        id 1mvbxY-001FED-RR; Fri, 10 Dec 2021 11:12:57 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@kernel.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Fri, 10 Dec 2021 11:12:41 +0200
-Message-Id: <iwlwifi.20211210110539.84848da8067f.Ifb4f80c95d283ec62e495a7928069af711b5fee2@changeid>
+Date:   Fri, 10 Dec 2021 11:12:42 +0200
+Message-Id: <iwlwifi.20211210110539.1f742f0eb58a.I1315f22f6aa632d94ae2069f85e1bca5e734dce0@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211210091245.289008-1-luca@coelho.fi>
 References: <20211210091245.289008-1-luca@coelho.fi>
@@ -31,57 +31,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 06/10] iwlwifi: fix debug TLV parsing
+Subject: [PATCH 07/10] iwlwifi: fix leaks/bad data after failed firmware load
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Debug TLV parsing was missing size checks, so if a valid but
-too short TLV was encountered, it would attempt to read it.
-If the firmware file was arranged to be a multiple of pages
-long with this happening just before the end, it could crash
-reading out-of-bounds of a vmalloc area.
+If firmware load fails after having loaded some parts of the
+firmware, e.g. the IML image, then this would leak. For the
+host command list we'd end up running into a WARN on the next
+attempt to load another firmware image.
 
-Fix this by adding the relevant size check.
+Fix this by calling iwl_dealloc_ucode() on failures, and make
+that also clear the data so we start fresh on the next round.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index a8ebc26d1da1..c2fbda2ffe7e 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -300,14 +300,21 @@ static int (*dbg_tlv_alloc[])(struct iwl_trans *trans,
- void iwl_dbg_tlv_alloc(struct iwl_trans *trans, const struct iwl_ucode_tlv *tlv,
- 		       bool ext)
- {
--	const struct iwl_fw_ini_header *hdr = (const void *)&tlv->data[0];
--	u32 type = le32_to_cpu(tlv->type);
--	u32 tlv_idx = type - IWL_UCODE_TLV_DEBUG_BASE;
--	u32 domain = le32_to_cpu(hdr->domain);
- 	enum iwl_ini_cfg_state *cfg_state = ext ?
- 		&trans->dbg.external_ini_cfg : &trans->dbg.internal_ini_cfg;
-+	const struct iwl_fw_ini_header *hdr = (const void *)&tlv->data[0];
-+	u32 type;
-+	u32 tlv_idx;
-+	u32 domain;
- 	int ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 9652da2b8125..4dab1e88346d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -130,6 +130,9 @@ static void iwl_dealloc_ucode(struct iwl_drv *drv)
  
-+	if (le32_to_cpu(tlv->length) < sizeof(*hdr))
-+		return;
+ 	for (i = 0; i < IWL_UCODE_TYPE_MAX; i++)
+ 		iwl_free_fw_img(drv, drv->fw.img + i);
 +
-+	type = le32_to_cpu(tlv->type);
-+	tlv_idx = type - IWL_UCODE_TLV_DEBUG_BASE;
-+	domain = le32_to_cpu(hdr->domain);
++	/* clear the data for the aborted load case */
++	memset(&drv->fw, 0, sizeof(drv->fw));
+ }
+ 
+ static int iwl_alloc_fw_desc(struct iwl_drv *drv, struct fw_desc *desc,
+@@ -1426,6 +1429,7 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
+ 	int i;
+ 	bool load_module = false;
+ 	bool usniffer_images = false;
++	bool failure = true;
+ 
+ 	fw->ucode_capa.max_probe_length = IWL_DEFAULT_MAX_PROBE_LENGTH;
+ 	fw->ucode_capa.standard_phy_calibration_size =
+@@ -1695,6 +1699,7 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
+ 				op->name, err);
+ #endif
+ 	}
++	failure = false;
+ 	goto free;
+ 
+  try_again:
+@@ -1710,6 +1715,9 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
+ 	complete(&drv->request_firmware_complete);
+ 	device_release_driver(drv->trans->dev);
+  free:
++	if (failure)
++		iwl_dealloc_ucode(drv);
 +
- 	if (domain != IWL_FW_INI_DOMAIN_ALWAYS_ON &&
- 	    !(domain & trans->dbg.domains_bitmap)) {
- 		IWL_DEBUG_FW(trans,
+ 	if (pieces) {
+ 		for (i = 0; i < ARRAY_SIZE(pieces->img); i++)
+ 			kfree(pieces->img[i].sec);
 -- 
 2.34.1
 
