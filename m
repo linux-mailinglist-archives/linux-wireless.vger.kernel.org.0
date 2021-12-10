@@ -2,194 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4BFB46FC89
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Dec 2021 09:19:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 850A146FCB1
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Dec 2021 09:23:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238405AbhLJIXD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Dec 2021 03:23:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54302 "EHLO
+        id S233823AbhLJI0u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Dec 2021 03:26:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238393AbhLJIXC (ORCPT
+        with ESMTP id S230463AbhLJI0u (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Dec 2021 03:23:02 -0500
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED617C061746
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Dec 2021 00:19:27 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id n15-20020a17090a160f00b001a75089daa3so8898895pja.1
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Dec 2021 00:19:27 -0800 (PST)
+        Fri, 10 Dec 2021 03:26:50 -0500
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5435C061746
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Dec 2021 00:23:15 -0800 (PST)
+Received: by mail-yb1-xb4a.google.com with SMTP id e131-20020a25d389000000b005fb5e6eb757so15407858ybf.22
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Dec 2021 00:23:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessos.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fiJPYf6H6wZ8S6m4+bMfnKs750o6XkD8svvPAd3zlBI=;
-        b=dtzzcA8Xld4+Ox+XPzjrCw9psaAUni/Zg9OLuhMgHN4pyfHJGYcEn8KWWeybRA8MS4
-         4S+9zSVnlOMMV9/Bis8ylg7Zd9MWjwOWdx6aDFIlTt8W6OcnaU+3ahz0R5qg73drGObk
-         UaOxmjSwwoccde4fv0j+18WsQjSXVdU7dFPE1xP5N+gevxbsSr9ztIEHedeO84CCK/oe
-         K2D0IVoxH7vfKrLTQTMPJ1sXRBGo3Fh8mbQuMCjLGgVo96NzDbTWFUylbJrbJzaApmRW
-         fEG4OOQeJk8C7p+nbSDtuXhC8crJOa2UDjlYehEG8djP4in2OelBTllFbhweFGqERARV
-         pFYA==
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=m5w0obK8XpECrHwe6XhlaqtvTKCo56VwLWe/17hHP5w=;
+        b=W2QIjE051FGvUPlbVzwu8+TDwsJbys+QyI7+4v6rmg6eVwix7RJ16f3U2l9pmWuwQ2
+         aEZGD0N+3hRv0WHx/zbKkXAE+xye/J2o4/rn9q+EH/6Oa57nmqY68aLpHFMwdX6tfQd6
+         m8iEusC9qG2WeaDl6u8Rz7IXkZOlOfig5fXMe8EDDXpTBpKi/lFokdIEDrZEMk50kkB+
+         MyzSqWF4zYYMrY05e5P3bVwQ+8PSQdK6pSVGqg3hPRGB7b9flBvLMxa9eMzjQUAc3ICm
+         Cki1vxFHUgVBtrB9GNZM+AAYeRJfM098gY/qmM0OzQpf4+OR/KcgIFCAHIEf98ufnbxc
+         2jxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fiJPYf6H6wZ8S6m4+bMfnKs750o6XkD8svvPAd3zlBI=;
-        b=UvqMzk5+NoGHJlnv2gOz3E/6/P6YTyW50WPK6lRsuCtVdiLB2/Y6tivJ+2hT9W38za
-         bgKalZFMuGJgqQrdpTgqyitsNuaKss3N0GysUnJ51WeQoc0VCwXXglVWi7CgjqQY8Pzl
-         2eNpNfGkCr5zT5Bj3Mo735OO526I1MzmOA9xVg3qY962oKgYHUG8QW2/4mxgw3nNCujM
-         wuK+vGEltudl/lqdtgzKjKjOGFcTsQNkoEPD5nFNiGPGdmanLQ/Q12UT6eyC5se6yjvE
-         7B8fUbtd+XuSGboIhpVkfQ7U8yeyQ/7bwvw9yIBtWfoqaQIQlZn2cSxChpFpsfodS8jk
-         AiNQ==
-X-Gm-Message-State: AOAM530B2uuB6CCj0ZzTp4hlSsQUO5puwXMDh7PsDOpNktqD+oin5CaY
-        fUKBnjKj7apRYOff9m9PKr2e3uy2U9pJxw==
-X-Google-Smtp-Source: ABdhPJwAUYZ7yO9fwT+I0qQYkftVCpkpMn6gLkhPeLxKFAg1pZZsBil3vGxzFmubvPDBEMm9HInJZw==
-X-Received: by 2002:a17:902:d4cf:b0:141:d36c:78f6 with SMTP id o15-20020a170902d4cf00b00141d36c78f6mr73935087plg.56.1639124367495;
-        Fri, 10 Dec 2021 00:19:27 -0800 (PST)
-Received: from starnight.localdomain (123-204-46-122.static.seed.net.tw. [123.204.46.122])
-        by smtp.googlemail.com with ESMTPSA id 38sm1827099pgl.73.2021.12.10.00.19.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Dec 2021 00:19:27 -0800 (PST)
-From:   Jian-Hong Pan <jhp@endlessos.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@endlessos.org,
-        Jian-Hong Pan <jhp@endlessos.org>
-Subject: [PATCH] rtw88: 8821c: disable the ASPM of RTL8821CE
-Date:   Fri, 10 Dec 2021 16:17:01 +0800
-Message-Id: <20211210081659.4621-1-jhp@endlessos.org>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=m5w0obK8XpECrHwe6XhlaqtvTKCo56VwLWe/17hHP5w=;
+        b=1muGJTPQm299NKIgM0x1ws8ROJh9o8tEjHB+O6OXBbpZBL0kqehGCo5aO+DASXsE7a
+         ayBUEu5EuXFCdSJ6cqWXk4ftZ6f057I/xUMc1VeyG8XksLXRkj1njkita3cwARwshn+j
+         9uDhazDF1+DRYsRi1CGwpfPbRYnxPdO+9NuglF66rDx27wP9bV1oQGPhFJA8slYJEmAW
+         faaN44UXSDldCVQxgpQG0ALirDvlyN+6p2iW29pyr6NJsscuEBg5XQSbGocW5KNtNFW+
+         ASobzrSQIMHn569xt5wKMOzIwj6gfCHWsJLbdgLp8wO98veZqNln7icTwLIm6GQmXSyc
+         QQ5w==
+X-Gm-Message-State: AOAM533A/2l9JXBmtaBU8vof7H4gfObcowok+gTYHLvJPvEz9Jf0DnTG
+        FL6xzGryhfdtfQ3ZTjKxKQqpU9aikLhc
+X-Google-Smtp-Source: ABdhPJyhHAlYo0oWl5X+SXK54pI4d0XJ6M2S1VMZI3ZARevg8tX4lMUeQSC9jKmmfqK3xCmTy0NfgUpKe9pS
+X-Received: from tzungbi-z840.tpe.corp.google.com ([2401:fa00:1:10:7fdb:7edf:3c09:a8eb])
+ (user=tzungbi job=sendgmr) by 2002:a25:ade0:: with SMTP id
+ d32mr12483108ybe.510.1639124595078; Fri, 10 Dec 2021 00:23:15 -0800 (PST)
+Date:   Fri, 10 Dec 2021 16:22:47 +0800
+Message-Id: <20211210082247.977043-1-tzungbi@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.34.1.173.g76aa8bc2d0-goog
+Subject: [PATCH] mt76: mt7921: reduce log severity levels for informative messages
+From:   Tzung-Bi Shih <tzungbi@google.com>
+To:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        kvalo@codeaurora.org
+Cc:     shayne.chen@mediatek.com, sean.wang@mediatek.com,
+        linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, tzungbi@google.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-More and more laptops become frozen, due to the equipped RTL8821CE.
+"ASIC revision" and "Firmware init done" shouldn't be error messages.
+Reduces the severity level to info.
 
-This patch follows the idea mentioned in commits 956c6d4f20c5 ("rtw88:
-add quirks to disable pci capabilities") and 1d4dcaf3db9bd ("rtw88: add
-quirk to disable pci caps on HP Pavilion 14-ce0xxx"), but disables its
-PCI ASPM capability of RTL8821CE directly, instead of checking DMI.
-
-Buglink:https://bugzilla.kernel.org/show_bug.cgi?id=215239
-Fixes: 1d4dcaf3db9bd ("rtw88: add quirk to disable pci caps on HP Pavilion 14-ce0xxx")
-Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
+Signed-off-by: Tzung-Bi Shih <tzungbi@google.com>
 ---
- drivers/net/wireless/realtek/rtw88/main.h     |  3 ++
- drivers/net/wireless/realtek/rtw88/pci.c      | 33 ++-----------------
- drivers/net/wireless/realtek/rtw88/pci.h      |  5 +++
- drivers/net/wireless/realtek/rtw88/rtw8821c.c |  3 ++
- 4 files changed, 14 insertions(+), 30 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index bbdd535b64e7..31cd427a0949 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1259,6 +1259,9 @@ struct rtw_chip_info {
- 	const struct rtw_hw_reg *btg_reg;
- 	const struct rtw_reg_domain *coex_info_hw_regs;
- 	u32 wl_fw_desired_ver;
-+
-+	/* quirk flags */
-+	u32 pci_quirk_data;
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 6ada1ebe7d68..99b144fd8db5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -882,7 +882,7 @@ static int mt7921_load_firmware(struct mt7921_dev *dev)
+ 	dev->mt76.hw->wiphy->wowlan = &mt76_connac_wowlan_support;
+ #endif /* CONFIG_PM */
  
- enum rtw_coex_bt_state_cnt {
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index a7a6ebfaa203..0a858db2d515 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1702,14 +1702,9 @@ static void rtw_pci_napi_deinit(struct rtw_dev *rtwdev)
- 	netif_napi_del(&rtwpci->napi);
+-	dev_err(dev->mt76.dev, "Firmware init done\n");
++	dev_info(dev->mt76.dev, "Firmware init done\n");
+ 
+ 	return 0;
  }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 305b63fa1a8a..8c53e376aa4e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -188,7 +188,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 	tasklet_init(&dev->irq_tasklet, mt7921_irq_tasklet, (unsigned long)dev);
+ 	mdev->rev = (mt7921_l1_rr(dev, MT_HW_CHIPID) << 16) |
+ 		    (mt7921_l1_rr(dev, MT_HW_REV) & 0xff);
+-	dev_err(mdev->dev, "ASIC revision: %04x\n", mdev->rev);
++	dev_info(mdev->dev, "ASIC revision: %04x\n", mdev->rev);
  
--enum rtw88_quirk_dis_pci_caps {
--	QUIRK_DIS_PCI_CAP_MSI,
--	QUIRK_DIS_PCI_CAP_ASPM,
--};
--
--static int disable_pci_caps(const struct dmi_system_id *dmi)
-+static int disable_pci_caps_by_chip(const struct rtw_chip_info *chip)
- {
--	uintptr_t dis_caps = (uintptr_t)dmi->driver_data;
-+	u32 dis_caps = chip->pci_quirk_data;
- 
- 	if (dis_caps & BIT(QUIRK_DIS_PCI_CAP_MSI))
- 		rtw_disable_msi = true;
-@@ -1719,28 +1714,6 @@ static int disable_pci_caps(const struct dmi_system_id *dmi)
- 	return 1;
- }
- 
--static const struct dmi_system_id rtw88_pci_quirks[] = {
--	{
--		.callback = disable_pci_caps,
--		.ident = "Protempo Ltd L116HTN6SPW",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Protempo Ltd"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "L116HTN6SPW"),
--		},
--		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
--	},
--	{
--		.callback = disable_pci_caps,
--		.ident = "HP HP Pavilion Laptop 14-ce0xxx",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion Laptop 14-ce0xxx"),
--		},
--		.driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
--	},
--	{}
--};
--
- int rtw_pci_probe(struct pci_dev *pdev,
- 		  const struct pci_device_id *id)
- {
-@@ -1791,7 +1764,7 @@ int rtw_pci_probe(struct pci_dev *pdev,
- 		goto err_destroy_pci;
- 	}
- 
--	dmi_check_system(rtw88_pci_quirks);
-+	disable_pci_caps_by_chip(rtwdev->chip);
- 	rtw_pci_phy_cfg(rtwdev);
- 
- 	ret = rtw_register_hw(rtwdev, hw);
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.h b/drivers/net/wireless/realtek/rtw88/pci.h
-index 66f78eb7757c..f470387fbb9a 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.h
-+++ b/drivers/net/wireless/realtek/rtw88/pci.h
-@@ -274,4 +274,9 @@ struct rtw_pci_tx_buffer_desc *get_tx_buffer_desc(struct rtw_pci_tx_ring *ring,
- 	return (struct rtw_pci_tx_buffer_desc *)buf_desc;
- }
- 
-+enum rtw88_quirk_dis_pci_caps {
-+	QUIRK_DIS_PCI_CAP_MSI,
-+	QUIRK_DIS_PCI_CAP_ASPM,
-+};
-+
- #endif
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-index 80a6f4da6acd..4d684534fa1e 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -15,6 +15,7 @@
- #include "debug.h"
- #include "bf.h"
- #include "regd.h"
-+#include "pci.h"
- 
- static const s8 lna_gain_table_0[8] = {22, 8, -6, -22, -31, -40, -46, -52};
- static const s8 lna_gain_table_1[16] = {10, 6, 2, -2, -6, -10, -14, -17,
-@@ -1947,6 +1948,8 @@ struct rtw_chip_info rtw8821c_hw_spec = {
- 
- 	.coex_info_hw_regs_num = ARRAY_SIZE(coex_info_hw_regs_8821c),
- 	.coex_info_hw_regs = coex_info_hw_regs_8821c,
-+
-+	.pci_quirk_data = BIT(QUIRK_DIS_PCI_CAP_ASPM),
- };
- EXPORT_SYMBOL(rtw8821c_hw_spec);
+ 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
  
 -- 
-2.34.1
+2.34.1.173.g76aa8bc2d0-goog
 
