@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C2D546FD7F
+	by mail.lfdr.de (Postfix) with ESMTP id E0B3446FD80
 	for <lists+linux-wireless@lfdr.de>; Fri, 10 Dec 2021 10:13:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239130AbhLJJQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Dec 2021 04:16:34 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:50920 "EHLO
+        id S239151AbhLJJQf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Dec 2021 04:16:35 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:50926 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S239127AbhLJJQe (ORCPT
+        with ESMTP id S231529AbhLJJQf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Dec 2021 04:16:34 -0500
+        Fri, 10 Dec 2021 04:16:35 -0500
 Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <luca@coelho.fi>)
-        id 1mvbxZ-001FED-NE; Fri, 10 Dec 2021 11:12:58 +0200
+        id 1mvbxa-001FED-Ha; Fri, 10 Dec 2021 11:12:59 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@kernel.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Fri, 10 Dec 2021 11:12:43 +0200
-Message-Id: <iwlwifi.20211210110539.3dd63c381839.Id79b39f650103bb9b851e31ed6a0178e81988587@changeid>
+Date:   Fri, 10 Dec 2021 11:12:44 +0200
+Message-Id: <iwlwifi.20211210110539.796ae29c90d9.Icb2f07905bebd9ed4537ca4c453069211ea71799@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211210091245.289008-1-luca@coelho.fi>
 References: <20211210091245.289008-1-luca@coelho.fi>
@@ -31,95 +31,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 08/10] iwlwifi: mvm: add support for OCE scan
+Subject: [PATCH 09/10] iwlwifi: mvm: isolate offload assist (checksum) calculation
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-In case the fw supports OCE scan and one of the OCE feature flags
-are set in the scan request, set the corresponding flag in the
-firmware scan request.
-Note that new firmware that indicates OCE support does not support
-the probe deferral and suppression feature (which is optional).
+Isolate the entire calculation of the offload_assist field used
+for HW checksumming to the iwl_mvm_tx_csum function.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/scan.h  |  5 +++++
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 11 +++++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c     |  6 ++++++
- 3 files changed, 20 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 45 +++++++++------------
+ 1 file changed, 19 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-index 9aa7d0bbd64e..175e2ce3c82a 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-@@ -640,6 +640,10 @@ enum iwl_umac_scan_general_flags2 {
-  * @IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN_FILTER_IN: in case
-  *      &IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN is enabled and scan is
-  *      activated over 6GHz PSC channels, filter in beacons and probe responses.
-+ * @IWL_UMAC_SCAN_GEN_FLAGS_V2_OCE: if set, send probe requests in a minimum
-+ *      rate of 5.5Mpbs, filter in broadcast probe responses and set the max
-+ *      channel time indication field in the FILS request parameters element
-+ *      (if included by the driver in the probe request IEs).
-  */
- enum iwl_umac_scan_general_flags_v2 {
- 	IWL_UMAC_SCAN_GEN_FLAGS_V2_PERIODIC             = BIT(0),
-@@ -657,6 +661,7 @@ enum iwl_umac_scan_general_flags_v2 {
- 	IWL_UMAC_SCAN_GEN_FLAGS_V2_TRIGGER_UHB_SCAN     = BIT(12),
- 	IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN    = BIT(13),
- 	IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN_FILTER_IN = BIT(14),
-+	IWL_UMAC_SCAN_GEN_FLAGS_V2_OCE                  = BIT(15),
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 1883d98abb2f..6fb140ffd87c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -42,8 +42,9 @@ iwl_mvm_bar_check_trigger(struct iwl_mvm *mvm, const u8 *addr,
+ static u16 iwl_mvm_tx_csum(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 			   struct ieee80211_hdr *hdr,
+ 			   struct ieee80211_tx_info *info,
+-			   u16 offload_assist)
++			   bool amsdu)
+ {
++	u16 offload_assist = 0;
+ #if IS_ENABLED(CONFIG_INET)
+ 	u16 mh_len = ieee80211_hdrlen(hdr->frame_control);
+ 	u8 protocol = 0;
+@@ -106,8 +107,7 @@ static u16 iwl_mvm_tx_csum(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	offload_assist |= (4 << TX_CMD_OFFLD_IP_HDR);
  
- /**
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 08177e9b5d6b..d1ab166b6e91 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -641,14 +641,21 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 	/* Do IPv4 csum for AMSDU only (no IP csum for Ipv6) */
+-	if (skb->protocol == htons(ETH_P_IP) &&
+-	    (offload_assist & BIT(TX_CMD_OFFLD_AMSDU))) {
++	if (skb->protocol == htons(ETH_P_IP) && amsdu) {
+ 		ip_hdr(skb)->check = 0;
+ 		offload_assist |= BIT(TX_CMD_OFFLD_L3_EN);
  	}
+@@ -132,6 +132,12 @@ static u16 iwl_mvm_tx_csum(struct iwl_mvm *mvm, struct sk_buff *skb,
  
- 	if (iwl_mvm_is_oce_supported(mvm)) {
-+		u8 scan_ver = iwl_fw_lookup_cmd_ver(mvm->fw,
-+						    IWL_ALWAYS_LONG_GROUP,
-+						    SCAN_REQ_UMAC, 0);
+ out:
+ #endif
++	if (amsdu)
++		offload_assist |= BIT(TX_CMD_OFFLD_AMSDU);
++	else if (ieee80211_hdrlen(hdr->frame_control) % 4)
++		/* padding is inserted later in transport */
++		offload_assist |= BIT(TX_CMD_OFFLD_PAD);
 +
- 		wiphy_ext_feature_set(hw->wiphy,
- 			NL80211_EXT_FEATURE_ACCEPT_BCAST_PROBE_RESP);
- 		wiphy_ext_feature_set(hw->wiphy,
- 			NL80211_EXT_FEATURE_FILS_MAX_CHANNEL_TIME);
--		wiphy_ext_feature_set(hw->wiphy,
--			NL80211_EXT_FEATURE_OCE_PROBE_REQ_DEFERRAL_SUPPRESSION);
- 		wiphy_ext_feature_set(hw->wiphy,
- 			NL80211_EXT_FEATURE_OCE_PROBE_REQ_HIGH_TX_RATE);
-+
-+		/* Old firmware also supports probe deferral and suppression */
-+		if (scan_ver < 15)
-+			wiphy_ext_feature_set(hw->wiphy,
-+					      NL80211_EXT_FEATURE_OCE_PROBE_REQ_DEFERRAL_SUPPRESSION);
- 	}
- 
- 	if (mvm->nvm_data->sku_cap_11ax_enable &&
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 693afd78bc66..b401ab6d46a9 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -2037,6 +2037,12 @@ static u16 iwl_mvm_scan_umac_flags_v2(struct iwl_mvm *mvm,
- 	if (params->enable_6ghz_passive)
- 		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_6GHZ_PASSIVE_SCAN;
- 
-+	if (iwl_mvm_is_oce_supported(mvm) &&
-+	    (params->flags & (NL80211_SCAN_FLAG_ACCEPT_BCAST_PROBE_RESP |
-+			      NL80211_SCAN_FLAG_OCE_PROBE_REQ_HIGH_TX_RATE |
-+			      NL80211_SCAN_FLAG_FILS_MAX_CHANNEL_TIME)))
-+		flags |= IWL_UMAC_SCAN_GEN_FLAGS_V2_OCE;
-+
- 	return flags;
+ 	return offload_assist;
  }
  
+@@ -146,7 +152,7 @@ void iwl_mvm_set_tx_cmd(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	__le16 fc = hdr->frame_control;
+ 	u32 tx_flags = le32_to_cpu(tx_cmd->tx_flags);
+ 	u32 len = skb->len + FCS_LEN;
+-	u16 offload_assist = 0;
++	bool amsdu = false;
+ 	u8 ac;
+ 
+ 	if (!(info->flags & IEEE80211_TX_CTL_NO_ACK) ||
+@@ -166,8 +172,7 @@ void iwl_mvm_set_tx_cmd(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 		u8 *qc = ieee80211_get_qos_ctl(hdr);
+ 		tx_cmd->tid_tspec = qc[0] & 0xf;
+ 		tx_flags &= ~TX_CMD_FLG_SEQ_CTL;
+-		if (*qc & IEEE80211_QOS_CTL_A_MSDU_PRESENT)
+-			offload_assist |= BIT(TX_CMD_OFFLD_AMSDU);
++		amsdu = *qc & IEEE80211_QOS_CTL_A_MSDU_PRESENT;
+ 	} else if (ieee80211_is_back_req(fc)) {
+ 		struct ieee80211_bar *bar = (void *)skb->data;
+ 		u16 control = le16_to_cpu(bar->control);
+@@ -234,14 +239,8 @@ void iwl_mvm_set_tx_cmd(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	tx_cmd->life_time = cpu_to_le32(TX_CMD_LIFE_TIME_INFINITE);
+ 	tx_cmd->sta_id = sta_id;
+ 
+-	/* padding is inserted later in transport */
+-	if (ieee80211_hdrlen(fc) % 4 &&
+-	    !(offload_assist & BIT(TX_CMD_OFFLD_AMSDU)))
+-		offload_assist |= BIT(TX_CMD_OFFLD_PAD);
+-
+-	tx_cmd->offload_assist |=
+-		cpu_to_le16(iwl_mvm_tx_csum(mvm, skb, hdr, info,
+-					    offload_assist));
++	tx_cmd->offload_assist =
++		cpu_to_le16(iwl_mvm_tx_csum(mvm, skb, hdr, info, amsdu));
+ }
+ 
+ static u32 iwl_mvm_get_tx_ant(struct iwl_mvm *mvm,
+@@ -462,26 +461,20 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	dev_cmd->hdr.cmd = TX_CMD;
+ 
+ 	if (iwl_mvm_has_new_tx_api(mvm)) {
+-		u16 offload_assist = 0;
++		u16 offload_assist;
+ 		u32 rate_n_flags = 0;
+ 		u16 flags = 0;
+ 		struct iwl_mvm_sta *mvmsta = sta ?
+ 			iwl_mvm_sta_from_mac80211(sta) : NULL;
++		bool amsdu = false;
+ 
+ 		if (ieee80211_is_data_qos(hdr->frame_control)) {
+ 			u8 *qc = ieee80211_get_qos_ctl(hdr);
+ 
+-			if (*qc & IEEE80211_QOS_CTL_A_MSDU_PRESENT)
+-				offload_assist |= BIT(TX_CMD_OFFLD_AMSDU);
++			amsdu = *qc & IEEE80211_QOS_CTL_A_MSDU_PRESENT;
+ 		}
+ 
+-		offload_assist = iwl_mvm_tx_csum(mvm, skb, hdr, info,
+-						 offload_assist);
+-
+-		/* padding is inserted later in transport */
+-		if (ieee80211_hdrlen(hdr->frame_control) % 4 &&
+-		    !(offload_assist & BIT(TX_CMD_OFFLD_AMSDU)))
+-			offload_assist |= BIT(TX_CMD_OFFLD_PAD);
++		offload_assist = iwl_mvm_tx_csum(mvm, skb, hdr, info, amsdu);
+ 
+ 		if (!info->control.hw_key)
+ 			flags |= IWL_TX_FLAGS_ENCRYPT_DIS;
+@@ -503,7 +496,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 		    IWL_DEVICE_FAMILY_AX210) {
+ 			struct iwl_tx_cmd_gen3 *cmd = (void *)dev_cmd->payload;
+ 
+-			cmd->offload_assist |= cpu_to_le32(offload_assist);
++			cmd->offload_assist = cpu_to_le32(offload_assist);
+ 
+ 			/* Total # bytes to be transmitted */
+ 			cmd->len = cpu_to_le16((u16)skb->len);
+@@ -516,7 +509,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 		} else {
+ 			struct iwl_tx_cmd_gen2 *cmd = (void *)dev_cmd->payload;
+ 
+-			cmd->offload_assist |= cpu_to_le16(offload_assist);
++			cmd->offload_assist = cpu_to_le16(offload_assist);
+ 
+ 			/* Total # bytes to be transmitted */
+ 			cmd->len = cpu_to_le16((u16)skb->len);
 -- 
 2.34.1
 
