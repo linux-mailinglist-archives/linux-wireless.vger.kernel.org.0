@@ -2,78 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 435CC471015
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Dec 2021 03:00:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDC5E471223
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Dec 2021 07:31:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345583AbhLKCEP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Dec 2021 21:04:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47742 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244213AbhLKCEO (ORCPT
+        id S229787AbhLKGbS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Dec 2021 01:31:18 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:44300 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229779AbhLKGbS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Dec 2021 21:04:14 -0500
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 426CBC061B38
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Dec 2021 18:00:38 -0800 (PST)
-Received: by mail-lf1-x141.google.com with SMTP id k37so21209877lfv.3
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Dec 2021 18:00:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=UB8HPXfiFrSS8lJHVD9imqT8IM8lXgQeVTQMVTTdoew=;
-        b=JCsw4jOipMM2NQNMZXp6QizwJUHIwDzeO2Y8iQAOjp+Jha/m6XSK1Mp0rSo5X4xj5/
-         ra62wA9M29Kv3v26XdhtYfHl78HWfdHAzWZoawQBmD/f5HctnV3IDOhopHsfUEVKdc3U
-         zjgTs8kaP1GhoPoSSRRMs2H48YL4whQ07Q9gL+TKLR3Ej/+NXmB6gktiiQtCGROuxCip
-         azRcgSpJPEVAmzBSIGs8uTeu5gSEROUAGTlDnvAO293BRFtxBT6pH2u6lqSxSWYO1mdi
-         OgUvbMvACUi3QhA01V+Fa5ongtyngGSTsG3iTMSWnQqmHYynLlOpPl52O41EVB0FfiQa
-         lw2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=UB8HPXfiFrSS8lJHVD9imqT8IM8lXgQeVTQMVTTdoew=;
-        b=YO94U0hX9zT1FCqywWvBYHztLWk7ma8ZScoZz25aKD8QZLarIrFOEbl7n1QonMkl83
-         AFWudVhs/qdgqG+/1SyiB1tEnmpR6fpHecbVLIc6C6UFx2qpGxAz1uwr9Gzg+aLjpoUl
-         ufi4tAsv8ul4vjZVlbk1IYmebwoR4kskXmZ+UpKF57sl6uBQD3oPSGQMR5nRwula27di
-         hxUfvQg+Po/stnaIePdFYm/FV4oOQY/657Mp0VXWHx/Q8Zq8bw3RQuMHMFF4n/lThkNA
-         bfAqgN2AHycpXKCFxKOQDaSWFl5TNPOQmJnXIFJj9/93oLkFDz5lZ4sZHUxyG0mq4zCG
-         Nuiw==
-X-Gm-Message-State: AOAM533PlJYUgbTtrlKPoQ7a56K70zr4J8ibkXouwziECKjLv91B2c0s
-        5Qzw4jLJndheX6b4UAEUprWPZ+Qnlpzwo821BGU=
-X-Google-Smtp-Source: ABdhPJyhXjcWPQSJn2BIAWx1wPs1aT43EsGt8LpVsp+ZiGbG+YkA+4EsSistpTPGdfJjrWjDwUlXhweFa5fipF4Svk8=
-X-Received: by 2002:a05:6512:6cb:: with SMTP id u11mr15747983lff.626.1639188035818;
- Fri, 10 Dec 2021 18:00:35 -0800 (PST)
+        Sat, 11 Dec 2021 01:31:18 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BB6V20a8002517, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BB6V20a8002517
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Sat, 11 Dec 2021 14:31:02 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Sat, 11 Dec 2021 14:31:02 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Sat, 11 Dec 2021 14:31:02 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01]) by
+ RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01%5]) with mapi id
+ 15.01.2308.020; Sat, 11 Dec 2021 14:31:01 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Jian-Hong Pan <jhp@endlessos.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux@endlessos.org" <linux@endlessos.org>
+Subject: RE: [PATCH] rtw88: 8821c: disable the ASPM of RTL8821CE
+Thread-Topic: [PATCH] rtw88: 8821c: disable the ASPM of RTL8821CE
+Thread-Index: AQHX7Z6qoa2juW6HuEaQNtYEJNeW8KwrYzIg//+KwICAAAK8AIAB4vUw
+Date:   Sat, 11 Dec 2021 06:31:01 +0000
+Message-ID: <617008e3be9c4b5aa37b26f97daf9354@realtek.com>
+References: <20211210081659.4621-1-jhp@endlessos.org>
+ <6b0fcc8cf3bd4a77ad190dc6f72eb66f@realtek.com>
+ <CAAd53p66HPH9v0_hzOaQAydberd8JA4HthNVwpQ86xb-dSuUEA@mail.gmail.com>
+ <CAPpJ_efvmPWsCFsff35GHV8Q52YvQcFr_Hs=q3RtvbfVohY+4Q@mail.gmail.com>
+In-Reply-To: <CAPpJ_efvmPWsCFsff35GHV8Q52YvQcFr_Hs=q3RtvbfVohY+4Q@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzExIOS4iuWNiCAwNDozNTowMA==?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Received: by 2002:a05:6512:12c7:0:0:0:0 with HTTP; Fri, 10 Dec 2021 18:00:34
- -0800 (PST)
-Reply-To: internationallmonetary695@gmail.com
-From:   International Monetary fund <abubakarsadiq1297@gmail.com>
-Date:   Fri, 10 Dec 2021 18:00:34 -0800
-Message-ID: <CAHXNoSg31e+rkvOac1aWFWRjy_1TohUzLuRX4cOSGPtScWYE6w@mail.gmail.com>
-Subject: Dear Beneficiary,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
- I.M.F Head Office
-#1900 Pennsylvania Ave NW,
-Washington, DC 20431
-INTERNATIONAL MONETARY FUND.
-REF:-XVGNN82010
-internationallmonetary695@gmail.com
-Telephone : +12062785473
-
-This message is from International Monetary fund (IMF) I am Mr Bo Li
-deputy to  Kristalina Georgieva the current president of International
-  Monetary fund (IMF) We are aware of the stress you have been passing
-through and how you have lost your money trying to claim your fund ,
-you have to worry no more for the international monetary fund is fully
- in-charge of your fund now, contact  me for more info on how you will
-receive your fund( internationallmonetary695@gmail.com) or call me
-on-Telephone : +12062785473 for more info.
-
-Regards,
-Mr Bo Li
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEppYW4tSG9uZyBQYW4gPGpo
+cEBlbmRsZXNzb3Mub3JnPg0KPiBTZW50OiBGcmlkYXksIERlY2VtYmVyIDEwLCAyMDIxIDU6MzQg
+UE0NCj4gVG86IEthaS1IZW5nIEZlbmcgPGthaS5oZW5nLmZlbmdAY2Fub25pY2FsLmNvbT4NCj4g
+Q2M6IFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsgWWFuLUhzdWFuIENodWFuZyA8dG9ueTA2
+MjBlbW1hQGdtYWlsLmNvbT47IEthbGxlIFZhbG8NCj4gPGt2YWxvQGNvZGVhdXJvcmEub3JnPjsg
+bGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBuZXRkZXZAdmdlci5rZXJuZWwub3JnOw0K
+PiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBsaW51eEBlbmRsZXNzb3Mub3JnDQo+IFN1
+YmplY3Q6IFJlOiBbUEFUQ0hdIHJ0dzg4OiA4ODIxYzogZGlzYWJsZSB0aGUgQVNQTSBvZiBSVEw4
+ODIxQ0UNCj4gDQo+IEthaS1IZW5nIEZlbmcgPGthaS5oZW5nLmZlbmdAY2Fub25pY2FsLmNvbT4g
+5pa8IDIwMjHlubQxMuaciDEw5pelIOmAseS6lCDkuIvljYg1OjI05a+r6YGT77yaDQo+ID4NCj4g
+PiBPbiBGcmksIERlYyAxMCwgMjAyMSBhdCA1OjAwIFBNIFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsu
+Y29tPiB3cm90ZToNCj4gPiA+DQo+ID4gPiArS2FpLUhlbmcNCj4gPiA+DQo+ID4gPiA+IC0tLS0t
+T3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiA+IEZyb206IEppYW4tSG9uZyBQYW4gPGpocEBl
+bmRsZXNzb3Mub3JnPg0KPiA+ID4gPiBTZW50OiBGcmlkYXksIERlY2VtYmVyIDEwLCAyMDIxIDQ6
+MTcgUE0NCj4gPiA+ID4gVG86IFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsgWWFuLUhzdWFu
+IENodWFuZyA8dG9ueTA2MjBlbW1hQGdtYWlsLmNvbT47IEthbGxlIFZhbG8NCj4gPiA+ID4gPGt2
+YWxvQGNvZGVhdXJvcmEub3JnPg0KPiA+ID4gPiBDYzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJu
+ZWwub3JnOyBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
+b3JnOw0KPiA+ID4gPiBsaW51eEBlbmRsZXNzb3Mub3JnOyBKaWFuLUhvbmcgUGFuIDxqaHBAZW5k
+bGVzc29zLm9yZz4NCj4gPiA+ID4gU3ViamVjdDogW1BBVENIXSBydHc4ODogODgyMWM6IGRpc2Fi
+bGUgdGhlIEFTUE0gb2YgUlRMODgyMUNFDQo+ID4gPiA+DQo+ID4gPiA+IE1vcmUgYW5kIG1vcmUg
+bGFwdG9wcyBiZWNvbWUgZnJvemVuLCBkdWUgdG8gdGhlIGVxdWlwcGVkIFJUTDg4MjFDRS4NCj4g
+PiA+ID4NCj4gPiA+ID4gVGhpcyBwYXRjaCBmb2xsb3dzIHRoZSBpZGVhIG1lbnRpb25lZCBpbiBj
+b21taXRzIDk1NmM2ZDRmMjBjNSAoInJ0dzg4Og0KPiA+ID4gPiBhZGQgcXVpcmtzIHRvIGRpc2Fi
+bGUgcGNpIGNhcGFiaWxpdGllcyIpIGFuZCAxZDRkY2FmM2RiOWJkICgicnR3ODg6IGFkZA0KPiA+
+ID4gPiBxdWlyayB0byBkaXNhYmxlIHBjaSBjYXBzIG9uIEhQIFBhdmlsaW9uIDE0LWNlMHh4eCIp
+LCBidXQgZGlzYWJsZXMgaXRzDQo+ID4gPiA+IFBDSSBBU1BNIGNhcGFiaWxpdHkgb2YgUlRMODgy
+MUNFIGRpcmVjdGx5LCBpbnN0ZWFkIG9mIGNoZWNraW5nIERNSS4NCj4gPiA+ID4NCj4gPiA+ID4g
+QnVnbGluazpodHRwczovL2J1Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dpP2lkPTIxNTIz
+OQ0KPiA+ID4gPiBGaXhlczogMWQ0ZGNhZjNkYjliZCAoInJ0dzg4OiBhZGQgcXVpcmsgdG8gZGlz
+YWJsZSBwY2kgY2FwcyBvbiBIUCBQYXZpbGlvbiAxNC1jZTB4eHgiKQ0KPiA+ID4gPiBTaWduZWQt
+b2ZmLWJ5OiBKaWFuLUhvbmcgUGFuIDxqaHBAZW5kbGVzc29zLm9yZz4NCj4gPiA+DQo+ID4gPiBX
+ZSBhbHNvIGRpc2N1c3Mgc2ltaWxhciB0aGluZyBpbiB0aGlzIHRocmVhZDoNCj4gPiA+IGh0dHBz
+Oi8vYnVnemlsbGEua2VybmVsLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MjE1MTMxDQo+ID4gPg0KPiA+
+ID4gU2luY2Ugd2Ugc3RpbGwgd2FudCB0byB0dXJuIG9uIEFTUE0gdG8gc2F2ZSBtb3JlIHBvd2Vy
+LCBJIHdvdWxkIGxpa2UgdG8NCj4gPiA+IGVudW1lcmF0ZSB0aGUgYmxhY2tsaXN0LiBEb2VzIGl0
+IHdvcmsgdG8geW91Pw0KPiA+DQo+ID4gVG9vIG1hbnkgcGxhdGZvcm1zIGFyZSBhZmZlY3RlZCwg
+dGhlIGJsYWNrbGlzdCBtZXRob2Qgd29uJ3Qgc2NhbGUuDQo+IA0KPiBFeGFjdGx5IQ0KDQpHb3Qg
+aXQuDQoNCj4gDQo+ID4gUmlnaHQgbm93IGl0IHNlZW1zIGxpa2Ugb25seSBJbnRlbCBwbGF0Zm9y
+bXMgYXJlIGFmZmVjdGVkLCBzbyBjYW4gSQ0KPiA+IHByb3Bvc2UgYSBwYXRjaCB0byBkaXNhYmxl
+IEFTUE0gd2hlbiBpdHMgdXBzdHJlYW0gcG9ydCBpcyBJbnRlbD8NCj4gDQo+IEkgb25seSBoYXZl
+IGxhcHRvcHMgd2l0aCBJbnRlbCBjaGlwIG5vdy4gIFNvLCBJIGFtIG5vdCBzdXJlIHRoZSBzdGF0
+dXMNCj4gd2l0aCBBTUQgcGxhdGZvcm1zLg0KPiBJZiB0aGlzIGlzIHRydWUsIHRoZW4gImRpc2Fi
+bGUgQVNQTSB3aGVuIGl0cyB1cHN0cmVhbSBwb3J0IGlzIEludGVsIg0KPiBtaWdodCBiZSBhIGdv
+b2QgaWRlYS4NCj4gDQoNCkppYW4tSG9uZywgY291bGQgeW91IHRyeSBLYWktSGVuZydzIHdvcmth
+cm91bmQgdGhhdCBvbmx5IHR1cm4gb2ZmIEFTUE0NCmR1cmluZyBOQVBJIHBvbGwgZnVuY3Rpb24u
+IElmIGl0IGFsc28gd29ya3MgdG8geW91LCBJIHRoaW5rIGl0IGlzIG9rYXkNCnRvIGFwcGx5IHRo
+aXMgd29ya2Fyb3VuZCB0byBhbGwgSW50ZWwgcGxhdGZvcm0gd2l0aCBSVEw4ODIxQ0UgY2hpcHNl
+dC4NCkJlY2F1c2UgdGhpcyB3b3JrYXJvdW5kIGhhcyBsaXR0bGUgKGFsbW9zdCBubykgaW1wYWN0
+IG9mIHBvd2VyIGNvbnN1bXB0aW9uLg0KDQo+IA0KPiA+ID4gSWYgc28sIHBsZWFzZSBoZWxwIHRv
+IGFkZCBvbmUgcXVpcmsgZW50cnkgb2YgeW91ciBwbGF0Zm9ybS4NCj4gPiA+DQo+ID4gPiBBbm90
+aGVyIHRoaW5nIGlzIHRoYXQgImF0dGFjaG1lbnQgMjk5NzM1IiBpcyBhbm90aGVyIHdvcmthcm91
+bmQgZm9yIGNlcnRhaW4NCj4gPiA+IHBsYXRmb3JtLiBBbmQsIHdlIHBsYW4gdG8gYWRkIHF1aXJr
+IHRvIGVuYWJsZSB0aGlzIHdvcmthcm91bmQuDQo+ID4gPiBDb3VsZCB5b3UgdHJ5IGlmIGl0IHdv
+cmtzIHRvIHlvdT8NCj4gPg0KPiA+IFdoZW4gdGhlIGhhcmR3YXJlIGlzIGRvaW5nIERNQSwgaXQg
+c2hvdWxkIGluaXRpYXRlIGxlYXZpbmcgQVNQTSBMMSwNCj4gPiBjb3JyZWN0PyBTbyBpbiB0aGVv
+cnkgbXkgd29ya2Fyb3VuZCBzaG91bGQgYmUgYmVuaWduIGVub3VnaCBmb3IgbW9zdA0KPiA+IHBs
+YXRmb3Jtcy4NCg0KSSBkb24ndCBzZWUgYW5kIGtub3cgdGhlIGRldGFpbCBvZiBoYXJkd2FyZSB3
+YXZlZm9ybSwgYnV0IEkgdGhpbmsgeW91cg0KdW5kZXJzdGFuZGluZyBpcyBjb3JyZWN0Lg0KDQot
+LQ0KUGluZy1LZQ0KDQo=
