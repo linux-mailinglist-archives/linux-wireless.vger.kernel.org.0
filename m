@@ -2,143 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D96DC470BD7
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Dec 2021 21:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 435CC471015
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Dec 2021 03:00:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344194AbhLJUd7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Dec 2021 15:33:59 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:35858 "EHLO
-        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344184AbhLJUd6 (ORCPT
+        id S1345583AbhLKCEP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Dec 2021 21:04:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47742 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244213AbhLKCEO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Dec 2021 15:33:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-        h=from:subject:in-reply-to:references:mime-version:to:cc:
-        content-transfer-encoding:content-type;
-        s=sgd; bh=aOFq/ymrkhh+1xjIr5PEl78GKED6RbjTLdF1XyyvOAQ=;
-        b=HddRQb9yBMD7BdKblBFuweDKyWtmPR7adHhjd/tYZ2EtC7GPYNBDeMbpUaQX9zAixG2Y
-        ryQ7LPrOWZpa0626ybazgO0BYDjDNmq5raajd2MkbcGGPvXDYBlpJ86JsTAd7F+60EoZiJ
-        88+UxuSGI1Ls2Lxk6kAYe2HZd/k2quA0i0YD1mnKclzqatawMjNwoZ3u1hMNdI3V5x5c4z
-        KvTh8JsnYgjyZUJIJzYzTzRxGLOVfssVLQsHZtsOXy6xXMtifhcm3oZxu6os9QQH2vakCG
-        sCejPgJrHpnK5bpTDZ0OwimuMLNO03jgb8KNOHFQ2wC3n9A+zsJVfjwTzpzR04+w==
-Received: by filterdrecv-75ff7b5ffb-q2hvm with SMTP id filterdrecv-75ff7b5ffb-q2hvm-1-61B3B8DE-50
-        2021-12-10 20:30:22.354960945 +0000 UTC m=+8633406.199069630
-Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-4-1 (SG)
-        with ESMTP
-        id 5YVvpbITTEGQzGwPPsYsHA
-        Fri, 10 Dec 2021 20:30:22.226 +0000 (UTC)
-Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id B1E4E700922; Fri, 10 Dec 2021 13:30:21 -0700 (MST)
-From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 1/1] wilc1000: Improve WILC TX performance when power_save
- is off
-Date:   Fri, 10 Dec 2021 20:30:22 +0000 (UTC)
-Message-Id: <20211210203016.3680425-2-davidm@egauge.net>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211210203016.3680425-1-davidm@egauge.net>
-References: <20211210203016.3680425-1-davidm@egauge.net>
+        Fri, 10 Dec 2021 21:04:14 -0500
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 426CBC061B38
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Dec 2021 18:00:38 -0800 (PST)
+Received: by mail-lf1-x141.google.com with SMTP id k37so21209877lfv.3
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Dec 2021 18:00:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=UB8HPXfiFrSS8lJHVD9imqT8IM8lXgQeVTQMVTTdoew=;
+        b=JCsw4jOipMM2NQNMZXp6QizwJUHIwDzeO2Y8iQAOjp+Jha/m6XSK1Mp0rSo5X4xj5/
+         ra62wA9M29Kv3v26XdhtYfHl78HWfdHAzWZoawQBmD/f5HctnV3IDOhopHsfUEVKdc3U
+         zjgTs8kaP1GhoPoSSRRMs2H48YL4whQ07Q9gL+TKLR3Ej/+NXmB6gktiiQtCGROuxCip
+         azRcgSpJPEVAmzBSIGs8uTeu5gSEROUAGTlDnvAO293BRFtxBT6pH2u6lqSxSWYO1mdi
+         OgUvbMvACUi3QhA01V+Fa5ongtyngGSTsG3iTMSWnQqmHYynLlOpPl52O41EVB0FfiQa
+         lw2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=UB8HPXfiFrSS8lJHVD9imqT8IM8lXgQeVTQMVTTdoew=;
+        b=YO94U0hX9zT1FCqywWvBYHztLWk7ma8ZScoZz25aKD8QZLarIrFOEbl7n1QonMkl83
+         AFWudVhs/qdgqG+/1SyiB1tEnmpR6fpHecbVLIc6C6UFx2qpGxAz1uwr9Gzg+aLjpoUl
+         ufi4tAsv8ul4vjZVlbk1IYmebwoR4kskXmZ+UpKF57sl6uBQD3oPSGQMR5nRwula27di
+         hxUfvQg+Po/stnaIePdFYm/FV4oOQY/657Mp0VXWHx/Q8Zq8bw3RQuMHMFF4n/lThkNA
+         bfAqgN2AHycpXKCFxKOQDaSWFl5TNPOQmJnXIFJj9/93oLkFDz5lZ4sZHUxyG0mq4zCG
+         Nuiw==
+X-Gm-Message-State: AOAM533PlJYUgbTtrlKPoQ7a56K70zr4J8ibkXouwziECKjLv91B2c0s
+        5Qzw4jLJndheX6b4UAEUprWPZ+Qnlpzwo821BGU=
+X-Google-Smtp-Source: ABdhPJyhXjcWPQSJn2BIAWx1wPs1aT43EsGt8LpVsp+ZiGbG+YkA+4EsSistpTPGdfJjrWjDwUlXhweFa5fipF4Svk8=
+X-Received: by 2002:a05:6512:6cb:: with SMTP id u11mr15747983lff.626.1639188035818;
+ Fri, 10 Dec 2021 18:00:35 -0800 (PST)
 MIME-Version: 1.0
-X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvJ+c=2FU+9SC0L3N0eo?=
- =?us-ascii?Q?qpSQAh2SdcM3M=2FPj42+clWjkbmvlTK1A7FuifVZ?=
- =?us-ascii?Q?dVo72smJeqVTpSq9SenDW=2FPemXVKcWI=2F4v=2FcVWU?=
- =?us-ascii?Q?AKtnhFQTjlXsBU+H=2FSz5CTVcsreGbuLk=2FTHkaoj?=
- =?us-ascii?Q?MCZ7a7=2FDChAcfXIEFQP3rCHO4IVB3HBl4nawOc4?=
- =?us-ascii?Q?V3qhuJwKAjBJuquTDSjcA=3D=3D?=
-To:     Ajay Singh <ajay.kathat@microchip.com>
-Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org,
-        David Mosberger-Tang <davidm@egauge.net>
-X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=us-ascii
+Received: by 2002:a05:6512:12c7:0:0:0:0 with HTTP; Fri, 10 Dec 2021 18:00:34
+ -0800 (PST)
+Reply-To: internationallmonetary695@gmail.com
+From:   International Monetary fund <abubakarsadiq1297@gmail.com>
+Date:   Fri, 10 Dec 2021 18:00:34 -0800
+Message-ID: <CAHXNoSg31e+rkvOac1aWFWRjy_1TohUzLuRX4cOSGPtScWYE6w@mail.gmail.com>
+Subject: Dear Beneficiary,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The wakeup and sleep commands need to be sent to the WILC chip only
-when it is in power save mode (PSM, as controlled by "iw dev wlan0 set
-power_save on/off").  The commands are relatively costly, so it pays
-to skip them when possible.
-
-iperf3 without this patch (no significant different with PSM on/off):
-  TX   0.00-120.01 sec   140 MBytes  9.82 Mbits/sec
-  RX   0.00-120.69 sec   283 MBytes  19.6 Mbits/sec
-
-with this patch applied:
-
-PSM off (TX is 46% improved, RX slightly improved; may not be significant):
-  TX   0.00-120.00 sec   206 MBytes  14.4 Mbits/sec
-  RX   0.00-120.48 sec   322 MBytes  22.4 Mbits/sec
-
-PSM on (no significant change):
-  TX   0.00-120.00 sec   140 MBytes  9.78 Mbits/sec
-  RX   0.00-120.08 sec   257 MBytes  18.0 Mbits/sec
-
-Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
----
- drivers/net/wireless/microchip/wilc1000/hif.c    | 3 +++
- drivers/net/wireless/microchip/wilc1000/netdev.h | 1 +
- drivers/net/wireless/microchip/wilc1000/wlan.c   | 4 ++--
- 3 files changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
-index e69b9c7f3d31..29a42bc47017 100644
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -1929,6 +1929,7 @@ int wilc_edit_station(struct wilc_vif *vif, const u8 *mac,
- 
- int wilc_set_power_mgmt(struct wilc_vif *vif, bool enabled, u32 timeout)
- {
-+	struct wilc *wilc = vif->wilc;
- 	struct wid wid;
- 	int result;
- 	s8 power_mode;
-@@ -1944,6 +1945,8 @@ int wilc_set_power_mgmt(struct wilc_vif *vif, bool enabled, u32 timeout)
- 	result = wilc_send_config_pkt(vif, WILC_SET_CFG, &wid, 1);
- 	if (result)
- 		netdev_err(vif->ndev, "Failed to send power management\n");
-+	else
-+		wilc->power_save_mode = enabled;
- 
- 	return result;
- }
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net/wireless/microchip/wilc1000/netdev.h
-index b9a88b3e322f..6c0e634d0249 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.h
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
-@@ -212,6 +212,7 @@ struct wilc {
- 	s8 mac_status;
- 	struct clk *rtc_clk;
- 	bool initialized;
-+	bool power_save_mode;
- 	int dev_irq_num;
- 	int close;
- 	u8 vif_num;
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 82566544419a..c63219fc634b 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -20,13 +20,13 @@ static inline bool is_wilc1000(u32 id)
- static inline void acquire_bus(struct wilc *wilc, enum bus_acquire acquire)
- {
- 	mutex_lock(&wilc->hif_cs);
--	if (acquire == WILC_BUS_ACQUIRE_AND_WAKEUP)
-+	if (acquire == WILC_BUS_ACQUIRE_AND_WAKEUP && wilc->power_save_mode)
- 		chip_wakeup(wilc);
- }
- 
- static inline void release_bus(struct wilc *wilc, enum bus_release release)
- {
--	if (release == WILC_BUS_RELEASE_ALLOW_SLEEP)
-+	if (release == WILC_BUS_RELEASE_ALLOW_SLEEP && wilc->power_save_mode)
- 		chip_allow_sleep(wilc);
- 	mutex_unlock(&wilc->hif_cs);
- }
 -- 
-2.25.1
+ I.M.F Head Office
+#1900 Pennsylvania Ave NW,
+Washington, DC 20431
+INTERNATIONAL MONETARY FUND.
+REF:-XVGNN82010
+internationallmonetary695@gmail.com
+Telephone : +12062785473
 
+This message is from International Monetary fund (IMF) I am Mr Bo Li
+deputy to  Kristalina Georgieva the current president of International
+  Monetary fund (IMF) We are aware of the stress you have been passing
+through and how you have lost your money trying to claim your fund ,
+you have to worry no more for the international monetary fund is fully
+ in-charge of your fund now, contact  me for more info on how you will
+receive your fund( internationallmonetary695@gmail.com) or call me
+on-Telephone : +12062785473 for more info.
+
+Regards,
+Mr Bo Li
