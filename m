@@ -2,131 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDC5E471223
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Dec 2021 07:31:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B60364714BE
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Dec 2021 17:31:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229787AbhLKGbS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Dec 2021 01:31:18 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:44300 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbhLKGbS (ORCPT
+        id S231389AbhLKQbh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Dec 2021 11:31:37 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:59704 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229727AbhLKQbg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Dec 2021 01:31:18 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BB6V20a8002517, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BB6V20a8002517
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Sat, 11 Dec 2021 14:31:02 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Sat, 11 Dec 2021 14:31:02 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Sat, 11 Dec 2021 14:31:02 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01]) by
- RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01%5]) with mapi id
- 15.01.2308.020; Sat, 11 Dec 2021 14:31:01 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Jian-Hong Pan <jhp@endlessos.org>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>
-CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux@endlessos.org" <linux@endlessos.org>
-Subject: RE: [PATCH] rtw88: 8821c: disable the ASPM of RTL8821CE
-Thread-Topic: [PATCH] rtw88: 8821c: disable the ASPM of RTL8821CE
-Thread-Index: AQHX7Z6qoa2juW6HuEaQNtYEJNeW8KwrYzIg//+KwICAAAK8AIAB4vUw
-Date:   Sat, 11 Dec 2021 06:31:01 +0000
-Message-ID: <617008e3be9c4b5aa37b26f97daf9354@realtek.com>
-References: <20211210081659.4621-1-jhp@endlessos.org>
- <6b0fcc8cf3bd4a77ad190dc6f72eb66f@realtek.com>
- <CAAd53p66HPH9v0_hzOaQAydberd8JA4HthNVwpQ86xb-dSuUEA@mail.gmail.com>
- <CAPpJ_efvmPWsCFsff35GHV8Q52YvQcFr_Hs=q3RtvbfVohY+4Q@mail.gmail.com>
-In-Reply-To: <CAPpJ_efvmPWsCFsff35GHV8Q52YvQcFr_Hs=q3RtvbfVohY+4Q@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzExIOS4iuWNiCAwNDozNTowMA==?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Sat, 11 Dec 2021 11:31:36 -0500
+X-UUID: 7fbcde312a084355b23b2fd228ae96cc-20211212
+X-UUID: 7fbcde312a084355b23b2fd228ae96cc-20211212
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1899193929; Sun, 12 Dec 2021 00:31:34 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Sun, 12 Dec 2021 00:31:32 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sun, 12 Dec 2021 00:31:32 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
+        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH 1/2] mt76: mt7921s: make pm->suspended usage consistent
+Date:   Sun, 12 Dec 2021 00:31:29 +0800
+Message-ID: <87100999ebfd6e205e655a6355a3990ff89d3945.1639239996.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEppYW4tSG9uZyBQYW4gPGpo
-cEBlbmRsZXNzb3Mub3JnPg0KPiBTZW50OiBGcmlkYXksIERlY2VtYmVyIDEwLCAyMDIxIDU6MzQg
-UE0NCj4gVG86IEthaS1IZW5nIEZlbmcgPGthaS5oZW5nLmZlbmdAY2Fub25pY2FsLmNvbT4NCj4g
-Q2M6IFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsgWWFuLUhzdWFuIENodWFuZyA8dG9ueTA2
-MjBlbW1hQGdtYWlsLmNvbT47IEthbGxlIFZhbG8NCj4gPGt2YWxvQGNvZGVhdXJvcmEub3JnPjsg
-bGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBuZXRkZXZAdmdlci5rZXJuZWwub3JnOw0K
-PiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBsaW51eEBlbmRsZXNzb3Mub3JnDQo+IFN1
-YmplY3Q6IFJlOiBbUEFUQ0hdIHJ0dzg4OiA4ODIxYzogZGlzYWJsZSB0aGUgQVNQTSBvZiBSVEw4
-ODIxQ0UNCj4gDQo+IEthaS1IZW5nIEZlbmcgPGthaS5oZW5nLmZlbmdAY2Fub25pY2FsLmNvbT4g
-5pa8IDIwMjHlubQxMuaciDEw5pelIOmAseS6lCDkuIvljYg1OjI05a+r6YGT77yaDQo+ID4NCj4g
-PiBPbiBGcmksIERlYyAxMCwgMjAyMSBhdCA1OjAwIFBNIFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsu
-Y29tPiB3cm90ZToNCj4gPiA+DQo+ID4gPiArS2FpLUhlbmcNCj4gPiA+DQo+ID4gPiA+IC0tLS0t
-T3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiA+IEZyb206IEppYW4tSG9uZyBQYW4gPGpocEBl
-bmRsZXNzb3Mub3JnPg0KPiA+ID4gPiBTZW50OiBGcmlkYXksIERlY2VtYmVyIDEwLCAyMDIxIDQ6
-MTcgUE0NCj4gPiA+ID4gVG86IFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsgWWFuLUhzdWFu
-IENodWFuZyA8dG9ueTA2MjBlbW1hQGdtYWlsLmNvbT47IEthbGxlIFZhbG8NCj4gPiA+ID4gPGt2
-YWxvQGNvZGVhdXJvcmEub3JnPg0KPiA+ID4gPiBDYzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJu
-ZWwub3JnOyBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
-b3JnOw0KPiA+ID4gPiBsaW51eEBlbmRsZXNzb3Mub3JnOyBKaWFuLUhvbmcgUGFuIDxqaHBAZW5k
-bGVzc29zLm9yZz4NCj4gPiA+ID4gU3ViamVjdDogW1BBVENIXSBydHc4ODogODgyMWM6IGRpc2Fi
-bGUgdGhlIEFTUE0gb2YgUlRMODgyMUNFDQo+ID4gPiA+DQo+ID4gPiA+IE1vcmUgYW5kIG1vcmUg
-bGFwdG9wcyBiZWNvbWUgZnJvemVuLCBkdWUgdG8gdGhlIGVxdWlwcGVkIFJUTDg4MjFDRS4NCj4g
-PiA+ID4NCj4gPiA+ID4gVGhpcyBwYXRjaCBmb2xsb3dzIHRoZSBpZGVhIG1lbnRpb25lZCBpbiBj
-b21taXRzIDk1NmM2ZDRmMjBjNSAoInJ0dzg4Og0KPiA+ID4gPiBhZGQgcXVpcmtzIHRvIGRpc2Fi
-bGUgcGNpIGNhcGFiaWxpdGllcyIpIGFuZCAxZDRkY2FmM2RiOWJkICgicnR3ODg6IGFkZA0KPiA+
-ID4gPiBxdWlyayB0byBkaXNhYmxlIHBjaSBjYXBzIG9uIEhQIFBhdmlsaW9uIDE0LWNlMHh4eCIp
-LCBidXQgZGlzYWJsZXMgaXRzDQo+ID4gPiA+IFBDSSBBU1BNIGNhcGFiaWxpdHkgb2YgUlRMODgy
-MUNFIGRpcmVjdGx5LCBpbnN0ZWFkIG9mIGNoZWNraW5nIERNSS4NCj4gPiA+ID4NCj4gPiA+ID4g
-QnVnbGluazpodHRwczovL2J1Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dpP2lkPTIxNTIz
-OQ0KPiA+ID4gPiBGaXhlczogMWQ0ZGNhZjNkYjliZCAoInJ0dzg4OiBhZGQgcXVpcmsgdG8gZGlz
-YWJsZSBwY2kgY2FwcyBvbiBIUCBQYXZpbGlvbiAxNC1jZTB4eHgiKQ0KPiA+ID4gPiBTaWduZWQt
-b2ZmLWJ5OiBKaWFuLUhvbmcgUGFuIDxqaHBAZW5kbGVzc29zLm9yZz4NCj4gPiA+DQo+ID4gPiBX
-ZSBhbHNvIGRpc2N1c3Mgc2ltaWxhciB0aGluZyBpbiB0aGlzIHRocmVhZDoNCj4gPiA+IGh0dHBz
-Oi8vYnVnemlsbGEua2VybmVsLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MjE1MTMxDQo+ID4gPg0KPiA+
-ID4gU2luY2Ugd2Ugc3RpbGwgd2FudCB0byB0dXJuIG9uIEFTUE0gdG8gc2F2ZSBtb3JlIHBvd2Vy
-LCBJIHdvdWxkIGxpa2UgdG8NCj4gPiA+IGVudW1lcmF0ZSB0aGUgYmxhY2tsaXN0LiBEb2VzIGl0
-IHdvcmsgdG8geW91Pw0KPiA+DQo+ID4gVG9vIG1hbnkgcGxhdGZvcm1zIGFyZSBhZmZlY3RlZCwg
-dGhlIGJsYWNrbGlzdCBtZXRob2Qgd29uJ3Qgc2NhbGUuDQo+IA0KPiBFeGFjdGx5IQ0KDQpHb3Qg
-aXQuDQoNCj4gDQo+ID4gUmlnaHQgbm93IGl0IHNlZW1zIGxpa2Ugb25seSBJbnRlbCBwbGF0Zm9y
-bXMgYXJlIGFmZmVjdGVkLCBzbyBjYW4gSQ0KPiA+IHByb3Bvc2UgYSBwYXRjaCB0byBkaXNhYmxl
-IEFTUE0gd2hlbiBpdHMgdXBzdHJlYW0gcG9ydCBpcyBJbnRlbD8NCj4gDQo+IEkgb25seSBoYXZl
-IGxhcHRvcHMgd2l0aCBJbnRlbCBjaGlwIG5vdy4gIFNvLCBJIGFtIG5vdCBzdXJlIHRoZSBzdGF0
-dXMNCj4gd2l0aCBBTUQgcGxhdGZvcm1zLg0KPiBJZiB0aGlzIGlzIHRydWUsIHRoZW4gImRpc2Fi
-bGUgQVNQTSB3aGVuIGl0cyB1cHN0cmVhbSBwb3J0IGlzIEludGVsIg0KPiBtaWdodCBiZSBhIGdv
-b2QgaWRlYS4NCj4gDQoNCkppYW4tSG9uZywgY291bGQgeW91IHRyeSBLYWktSGVuZydzIHdvcmth
-cm91bmQgdGhhdCBvbmx5IHR1cm4gb2ZmIEFTUE0NCmR1cmluZyBOQVBJIHBvbGwgZnVuY3Rpb24u
-IElmIGl0IGFsc28gd29ya3MgdG8geW91LCBJIHRoaW5rIGl0IGlzIG9rYXkNCnRvIGFwcGx5IHRo
-aXMgd29ya2Fyb3VuZCB0byBhbGwgSW50ZWwgcGxhdGZvcm0gd2l0aCBSVEw4ODIxQ0UgY2hpcHNl
-dC4NCkJlY2F1c2UgdGhpcyB3b3JrYXJvdW5kIGhhcyBsaXR0bGUgKGFsbW9zdCBubykgaW1wYWN0
-IG9mIHBvd2VyIGNvbnN1bXB0aW9uLg0KDQo+IA0KPiA+ID4gSWYgc28sIHBsZWFzZSBoZWxwIHRv
-IGFkZCBvbmUgcXVpcmsgZW50cnkgb2YgeW91ciBwbGF0Zm9ybS4NCj4gPiA+DQo+ID4gPiBBbm90
-aGVyIHRoaW5nIGlzIHRoYXQgImF0dGFjaG1lbnQgMjk5NzM1IiBpcyBhbm90aGVyIHdvcmthcm91
-bmQgZm9yIGNlcnRhaW4NCj4gPiA+IHBsYXRmb3JtLiBBbmQsIHdlIHBsYW4gdG8gYWRkIHF1aXJr
-IHRvIGVuYWJsZSB0aGlzIHdvcmthcm91bmQuDQo+ID4gPiBDb3VsZCB5b3UgdHJ5IGlmIGl0IHdv
-cmtzIHRvIHlvdT8NCj4gPg0KPiA+IFdoZW4gdGhlIGhhcmR3YXJlIGlzIGRvaW5nIERNQSwgaXQg
-c2hvdWxkIGluaXRpYXRlIGxlYXZpbmcgQVNQTSBMMSwNCj4gPiBjb3JyZWN0PyBTbyBpbiB0aGVv
-cnkgbXkgd29ya2Fyb3VuZCBzaG91bGQgYmUgYmVuaWduIGVub3VnaCBmb3IgbW9zdA0KPiA+IHBs
-YXRmb3Jtcy4NCg0KSSBkb24ndCBzZWUgYW5kIGtub3cgdGhlIGRldGFpbCBvZiBoYXJkd2FyZSB3
-YXZlZm9ybSwgYnV0IEkgdGhpbmsgeW91cg0KdW5kZXJzdGFuZGluZyBpcyBjb3JyZWN0Lg0KDQot
-LQ0KUGluZy1LZQ0KDQo=
+From: Sean Wang <sean.wang@mediatek.com>
+
+Update pm->suspended usage to be consistent with mt7921e driver.
+
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index 84be229a899d..44ee9369f6bf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -278,7 +278,6 @@ static int mt7921s_resume(struct device *__dev)
+ 	struct mt76_dev *mdev = &dev->mt76;
+ 	int err;
+ 
+-	pm->suspended = false;
+ 	clear_bit(MT76_STATE_SUSPEND, &mdev->phy.state);
+ 
+ 	err = mt7921_mcu_drv_pmctrl(dev);
+@@ -294,7 +293,11 @@ static int mt7921s_resume(struct device *__dev)
+ 	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(mdev, false);
+ 
+-	return mt76_connac_mcu_set_hif_suspend(mdev, false);
++	err = mt76_connac_mcu_set_hif_suspend(mdev, false);
++
++	pm->suspended = false;
++
++	return err;
+ }
+ 
+ static const struct dev_pm_ops mt7921s_pm_ops = {
+-- 
+2.25.1
+
