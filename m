@@ -2,114 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 240224714E2
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Dec 2021 18:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5462C471588
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Dec 2021 20:10:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231539AbhLKROs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Dec 2021 12:14:48 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:41914 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231528AbhLKROs (ORCPT
+        id S231809AbhLKTKg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Dec 2021 14:10:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45452 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231765AbhLKTKe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Dec 2021 12:14:48 -0500
-X-UUID: 401d122145be4718b572b09505e262d0-20211212
-X-UUID: 401d122145be4718b572b09505e262d0-20211212
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1918031745; Sun, 12 Dec 2021 01:14:46 +0800
-Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Sun, 12 Dec 2021 01:14:45 +0800
-Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb01.mediatek.inc
- (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Sun, 12 Dec
- 2021 01:14:44 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas11.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sun, 12 Dec 2021 01:14:44 +0800
-From:   <sean.wang@mediatek.com>
-To:     <lorenzo.bianconi@redhat.com>
-CC:     <nbd@nbd.name>, <sean.wang@mediatek.com>,
-        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
-        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-        <Mark-YW.Chen@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
-        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
-        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
-        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
-        <steve.lee@mediatek.com>, <jsiuda@google.com>,
-        <frankgor@google.com>, <jemele@google.com>,
-        <abhishekpandit@google.com>, <shawnku@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH 1/2] mt76: mt7921s: make pm->suspended usage consistent
-Date:   Sun, 12 Dec 2021 01:14:42 +0800
-Message-ID: <1639242882-15796-1-git-send-email-sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <YbTU08hzeTSJPIsp@lore-desk--annotate>
-References: <YbTU08hzeTSJPIsp@lore-desk--annotate>
+        Sat, 11 Dec 2021 14:10:34 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B920C061714
+        for <linux-wireless@vger.kernel.org>; Sat, 11 Dec 2021 11:10:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=W2nz3ICbS6C34sTAaBEDxICfgIVjXgPO6P+j7o2yX6A=; t=1639249834; x=1640459434; 
+        b=l0hqlQyoFpHLPGjDCtnsCCaeSf8XYwj3Z2lYV31dT081KxaIS5lzHmBiBwTYp01bPCkljzQ8aiH
+        f8qZQrdHLmYQ7xsrtDCEtBMExzyxwwOlZrWMoztUi0WFvF8WL7SGsQ6brBmLpdetiDUioeXMyOERH
+        SFQoo7ucQLyp6BVOlC7IEKAxxxOOvhn5aYsu2VPopM4Mg9AQepZUUTXEDo7CrLl8SNXYHId2gGp4v
+        PhQlcYw67PIVwXMy875DxeSELs9MhhDBS9LaFOXKdaQkwtDZDs6Pm9+aUt2+dzXN/TgoPHYSAGjil
+        XdaIIeVvbysLvGjjmpxruSfTbdo1X4ilYgsQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mw7lO-00A0lz-AR;
+        Sat, 11 Dec 2021 20:10:30 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        syzbot+59bdff68edce82e393b6@syzkaller.appspotmail.com
+Subject: [PATCH] mac80211: validate extended element ID is present
+Date:   Sat, 11 Dec 2021 20:10:24 +0100
+Message-Id: <20211211201023.f30a1b128c07.I5cacc176da94ba316877c6e10fe3ceec8b4dbd7d@changeid>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
->> From: Sean Wang <sean.wang@mediatek.com>
->>
->> Update pm->suspended usage to be consistent with mt7921e driver.
->>
->> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
->> ---
->>  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c | 7 +++++--
->>  1 file changed, 5 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
->> index 84be229a899d..44ee9369f6bf 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
->> @@ -278,7 +278,6 @@ static int mt7921s_resume(struct device *__dev)
->>	struct mt76_dev *mdev = &dev->mt76;
->>	int err;
->>
->> -	pm->suspended = false;
->>	clear_bit(MT76_STATE_SUSPEND, &mdev->phy.state);
->>
->>	err = mt7921_mcu_drv_pmctrl(dev);
->> @@ -294,7 +293,11 @@ static int mt7921s_resume(struct device *__dev)
->>	if (!pm->ds_enable)
->>		mt76_connac_mcu_set_deep_sleep(mdev, false);
->>
->> -	return mt76_connac_mcu_set_hif_suspend(mdev, false);
->> +	err = mt76_connac_mcu_set_hif_suspend(mdev, false);
->
->should we check return value here? Something like:
->
->	if (err)
->		return err;
->
->	pm->suspended = false;
->	return 0;
->
->Or, is the chip up even if mt76_connac_mcu_set_hif_suspend() fails?
+Before attempting to parse an extended element, verify that
+the extended element ID is present.
 
-yes, chip is eventually up again by recovered with the following wifi reset
+Fixes: 41cbb0f5a295 ("mac80211: add support for HE")
+Reported-by: syzbot+59bdff68edce82e393b6@syzkaller.appspotmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/util.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-with current logic, if do so (not mark pm->suspended back as false to show suspend/resume is over),
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 43df2f0c5db9..6c2934854d3c 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -943,7 +943,12 @@ static void ieee80211_parse_extension_element(u32 *crc,
+ 					      struct ieee802_11_elems *elems)
+ {
+ 	const void *data = elem->data + 1;
+-	u8 len = elem->datalen - 1;
++	u8 len;
++
++	if (!elem->datalen)
++		return;
++
++	len = elem->datalen - 1;
+ 
+ 	switch (elem->data[0]) {
+ 	case WLAN_EID_EXT_HE_MU_EDCA:
+-- 
+2.33.1
 
-the pm runtime would not be enabled again after the wifi reset
-
->> +
->> +	pm->suspended = false;
->> +
->> +	return err;
->>  }
->>
->>  static const struct dev_pm_ops mt7921s_pm_ops = {
->> --
->> 2.25.1
->>
