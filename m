@@ -2,109 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77DEC4719D8
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Dec 2021 12:45:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F29471B3C
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Dec 2021 16:21:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230218AbhLLLpn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 12 Dec 2021 06:45:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34278 "EHLO
+        id S231211AbhLLPVQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 12 Dec 2021 10:21:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbhLLLpn (ORCPT
+        with ESMTP id S229468AbhLLPVP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 12 Dec 2021 06:45:43 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33671C061714
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Dec 2021 03:45:42 -0800 (PST)
-Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74] helo=[192.168.66.200]); authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1mwNIP-0000Nr-F3; Sun, 12 Dec 2021 12:45:38 +0100
-Message-ID: <b8cd1251-691c-a927-cff2-3476977667b1@leemhuis.info>
-Date:   Sun, 12 Dec 2021 12:45:37 +0100
+        Sun, 12 Dec 2021 10:21:15 -0500
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [IPv6:2001:67c:2050::465:102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15CF3C061714
+        for <linux-wireless@vger.kernel.org>; Sun, 12 Dec 2021 07:21:15 -0800 (PST)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [80.241.60.245])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4JBpJ83t34zQjbb;
+        Sun, 12 Dec 2021 16:21:12 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gorani.run; s=MBO0001;
+        t=1639322469;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1YgRBDBjY9b4H++filcUM1GBouPP5nwOcGLzw/oX3kU=;
+        b=xkKOhC+SAjZr6wtlboHXitofdhs+bUoQUVLZAZItqrtTwh2njsN54p6hBk9lJbk+Dpp5Z/
+        np0MeLj01vJpOTAWQuprNd9h88lpD123r2wAZkPdpI2t4rVLqoj0s/52en5PWJFcOkvjir
+        F9sXIdizC3U9jZ3SAaVab9iLGey9Hx21LvkDEpw1zm2VgDGKb9i5EL0oCodz2M1SV8v9DM
+        OcMBScnmkNeDheFJjfWrQZ5Jzz02oesHSyeZdAyk2NPv+nmoNPtgmqzrRBDxHh5C5oMpYe
+        b8WGKQr+pT0QacFseEZEOv/7iqwokkVtjMY1cfQXc/xWmr6bIMl+lG2xJsUZ0Q==
+From:   Sungbo Eo <mans0n@gorani.run>
+To:     sforshee@kernel.org
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Sungbo Eo <mans0n@gorani.run>
+Subject: [PATCH v3] wireless-regdb: Update regulatory rules for South Korea (KR)
+Date:   Mon, 13 Dec 2021 00:20:50 +0900
+Message-Id: <20211212152050.25962-1-mans0n@gorani.run>
+In-Reply-To: <20211024113821.51538-1-mans0n@gorani.run>
+References: <20211024113821.51538-1-mans0n@gorani.run>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH 5.16] mac80211: fix rate control for retransmitted frames
-Content-Language: en-BS
-To:     linux-wireless@vger.kernel.org, johannes@sipsolutions.net
-Cc:     aaro.koskinen@iki.fi, rwbugreport@lost-in-the-void.net,
-        ryder.lee@mediatek.com, Felix Fietkau <nbd@nbd.name>
-References: <20211122204323.9787-1-nbd@nbd.name>
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <20211122204323.9787-1-nbd@nbd.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1639309542;98cab9b0;
-X-HE-SMSGID: 1mwNIP-0000Nr-F3
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, this is your Linux kernel regression tracker speaking.
+This patch is based on MSIT Public Notification 2021-86 ("Unlicensed Radio
+Equipment Established Without Notice"), officially announced on 2021-11-29.
 
-Top-posting for once, to make this easy accessible to everyone.
+The PSD must not exceed 2.5 mW/MHz if the frequency range includes all or
+part of 5230-5250 MHz and the bandwidth is equal to or less than 40 MHz.
+This leads to the following:
+* 5230-5250 @ 20 -> 17 dBm
+* 5210-5250 @ 40 -> 20 dBm
+Here the power limits for 80/160 MHz bandwidth are also lowered to 17/20 dBm,
+as it's not possible to set different power limits for different bandwidths
+at the moment.
 
-What is talking below fix so long to get mainlined? The patch and the
-confirmation that it fixes the regressions was 19 days ago. The patch is
-also in linux-next for 12 days. From my point of view as regression
-tracker that seem "too long", as this is a regression that also affects
-a stable kernel.
+Extend the last 5 GHz frequency range to 5850 MHz.
 
-Or am I missing something?
+WiFi 6E is now allowed with the following restrictions:
+* Indoor: the full 1.2 GHz range, up to 160 MHz bandwidth and 2 dBm/MHz PSD
+* Outdoor: the lower 500 MHz range, up to 160 MHz bandwidth and 25 mW EIRP
+Here only the latter entry is added.
 
-Ciao, Thorsten
+And also update the regulatory source links.
 
-P.S.: As a Linux kernel regression tracker I'm getting a lot of reports
-on my table. I can only look briefly into most of them. Unfortunately
-therefore I sometimes will get things wrong or miss something important.
-I hope that's not the case here; if you think it is, don't hesitate to
-tell me about it in a public reply. That's in everyone's interest, as
-what I wrote above might be misleading to everyone reading this; any
-suggestion I gave thus might sent someone reading this down the wrong
-rabbit hole, which none of us wants.
+Signed-off-by: Sungbo Eo <mans0n@gorani.run>
+---
+v3:
+* update regulatory source to newer revision
+* replace "indoor only" 6E rule with "both indoor and outdoor" rule
+  as "indoor only" rule limits PSD instead of EIRP
 
-BTW, I have no personal interest in this issue, which is tracked using
-regzbot, my Linux kernel regression tracking bot
-(https://linux-regtracking.leemhuis.info/regzbot/). I'm only posting
-this mail to get things rolling again and hence don't need to be CC on
-all further activities wrt to this regression.
+v2:
+* split 5150-5250 MHz band rule to accommodate the PSD limit
+* remove AUTO-BW flag from 6 GHz band rule
+---
+ db.txt | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-#regzbot poke
-
-On 22.11.21 21:43, Felix Fietkau wrote:
-> Since retransmission clears info->control, rate control needs to be called
-> again, otherwise the driver might crash due to invalid rates.
-> 
-> Cc: stable@vger.kernel.org # 5.14+
-> Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Reported-by: Robert W <rwbugreport@lost-in-the-void.net>
-> Fixes: 03c3911d2d67 ("mac80211: call ieee80211_tx_h_rate_ctrl() when dequeue")
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> ---
->  net/mac80211/tx.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-> index 278945e3e08a..e19f6e246642 100644
-> --- a/net/mac80211/tx.c
-> +++ b/net/mac80211/tx.c
-> @@ -1822,15 +1822,15 @@ static int invoke_tx_handlers_late(struct ieee80211_tx_data *tx)
->  	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx->skb);
->  	ieee80211_tx_result res = TX_CONTINUE;
->  
-> +	if (!ieee80211_hw_check(&tx->local->hw, HAS_RATE_CONTROL))
-> +		CALL_TXH(ieee80211_tx_h_rate_ctrl);
-> +
->  	if (unlikely(info->flags & IEEE80211_TX_INTFL_RETRANSMISSION)) {
->  		__skb_queue_tail(&tx->skbs, tx->skb);
->  		tx->skb = NULL;
->  		goto txh_done;
->  	}
->  
-> -	if (!ieee80211_hw_check(&tx->local->hw, HAS_RATE_CONTROL))
-> -		CALL_TXH(ieee80211_tx_h_rate_ctrl);
-> -
->  	CALL_TXH(ieee80211_tx_h_michael_mic_add);
->  	CALL_TXH(ieee80211_tx_h_sequence);
->  	CALL_TXH(ieee80211_tx_h_fragment);
-> 
+diff --git a/db.txt b/db.txt
+index b898799..9be03ee 100644
+--- a/db.txt
++++ b/db.txt
+@@ -862,15 +862,22 @@ country KP: DFS-JP
+ 	(5490 - 5630 @ 20), (30), DFS
+ 	(5735 - 5815 @ 20), (30)
+ 
++# Source:
++# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000205195
++# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000205187
++# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000206568
+ country KR: DFS-JP
+-	# ref: https://www.rra.go.kr
+ 	(2400 - 2483.5 @ 40), (23)
+-	(5150 - 5250 @ 80), (23), AUTO-BW
++	(5150 - 5210 @ 40), (23), AUTO-BW
++	# max. PSD 2.5 mW/MHz in 5230-5250 MHz frequency range
++	(5210 - 5230 @ 20), (20), AUTO-BW
++	(5230 - 5250 @ 20), (17), AUTO-BW
+ 	(5250 - 5350 @ 80), (20), DFS, AUTO-BW
+ 	(5470 - 5725 @ 160), (20), DFS
+-	(5725 - 5835 @ 80), (23)
+-	# 60 GHz band channels 1-4,
+-	# ref: http://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/%EB%AC%B4%EC%84%A0%EC%84%A4%EB%B9%84%EA%B7%9C%EC%B9%99
++	(5725 - 5850 @ 80), (23)
++	# 6 GHz band
++	(5925 - 6425 @ 160), (14)
++	# 60 GHz band channels 1-4
+ 	(57000 - 66000 @ 2160), (43)
+ 
+ country KW: DFS-ETSI
+-- 
+2.34.1
 
