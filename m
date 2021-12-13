@@ -2,84 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4480471E3B
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Dec 2021 23:33:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BACA5471F9D
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 04:35:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbhLLWdz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 12 Dec 2021 17:33:55 -0500
-Received: from mail.wizzup.org ([95.217.97.174]:43916 "EHLO wizzup.org"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229838AbhLLWdy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 12 Dec 2021 17:33:54 -0500
-X-Greylist: delayed 1568 seconds by postgrey-1.27 at vger.kernel.org; Sun, 12 Dec 2021 17:33:53 EST
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
-        s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:
-        To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=Gn4QbhSu65M62ejQy1QWEFPPz4XhpZovxB+9NzFOVPg=; b=WGqbeFK/mVGaOu/ZeUQ1V5TL9P
-        RlFS34A21RMnTkWUk6pPDz81A52v3XSpqX2Ge6Pv7c7JHwa3uqa73l9TmHg0CA20mGlm2El1SnIOK
-        oHJUegfwF+O8JJE2cSODHOybM3B4vz+LwNgkTvITKlKSaVeLAW93ZfE/Gw0aAiM3Jdp2Rh2Lyz1R4
-        BXYzmVudcCYuyWkxrxGhDL9yjQzaRnFTX+fdhJ2Hbl+uccyUF83R612QMtC2G3qlKigmuulufq3zg
-        0eJXmGhjVqnYwlJd/kk2+onMsfSRJJharJlLm3/znLyLtpZ8lyN26jt6g6HYycG2HM5kx/dkUPPWt
-        lQd+rf9g==;
-Received: from [45.83.235.159] (helo=gentoo-x13.fritz.box)
-        by wizzup.org with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <merlijn@wizzup.org>)
-        id 1mwX0H-0001dD-U8; Sun, 12 Dec 2021 22:07:34 +0000
-From:   Merlijn Wajer <merlijn@wizzup.org>
-To:     merlijn@wizzup.org
-Cc:     Paul Fertser <fercerpav@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        id S231512AbhLMDfT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 12 Dec 2021 22:35:19 -0500
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:58148
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229483AbhLMDfT (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 12 Dec 2021 22:35:19 -0500
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id B588040265
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Dec 2021 03:35:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1639366514;
+        bh=WxXM4jyaAfim4In51kFlNAC+ZCUZPdZC2EcFP94mchw=;
+        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=O5bEm0WqqbO6tT44fcW+/U40Lk4ZDVbj3B4plkh+nSEB1tNuL6F0+VP5uS9Ix0sTE
+         F3dVTjuYv+nTEoxvYeRcKxRPzeF3MjhF2wF0X81PJpU4CvAUqtETusFmL/EAwjVadJ
+         vu98P+DKXii0K1NdkC/IokRi5PE5ApyRTLNnSP4UOUCPfKG0PPXX0RFdpzYhXqu0CJ
+         OR1jhPiV6fxfWQO56nKjhSXVgSoATiC6TO8jWQ1/itnyrRd4oLXGUyrxEAPH4tDYiu
+         kekLMnKXuBOqUWCIVDSULQLYYkS7UTWQBW+JN/NPpww1TKR4yYCxFsusHqUzITMrr+
+         uA49lyeDtwD5w==
+Received: by mail-ot1-f71.google.com with SMTP id z33-20020a9d24a4000000b00579320f89ecso5541856ota.12
+        for <linux-wireless@vger.kernel.org>; Sun, 12 Dec 2021 19:35:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WxXM4jyaAfim4In51kFlNAC+ZCUZPdZC2EcFP94mchw=;
+        b=umVChRzpQwdgO/QDnbzIu3cq4joe+AwmyQ8ucBGrN0xJYhPUMtoGuxcFbQA/jduQAL
+         VYKZ8LYslmB5DkhTp1CS+pckA0uKDSKuikDzrLJCVevjVotSoyO+Is5snGTWLX3F4EMp
+         S8KXmil3KyhwuPdjlZQpQQNDVTtng1Zuycp4+A1VAjx3mTtsBlXI1mWVYxyNMJEd/Zex
+         SsLuT4PwHLPGksVqR7CayN17+HGxlCGS89KUEBXNm9utdrFpklq0Oegxaf8PJnWCATMg
+         fuXYiJ4j6W4U3Cor0Q/56Wp0FW2nkx+2s/ZpiYDaWPA6yYu2jFwHc9j9ZgCiRvHh2aCL
+         CQPQ==
+X-Gm-Message-State: AOAM530Rt5jXPoC8ZhCfdcnkNbpjfEH1hsMPYoMfY7t4HTF+gSLBeM9t
+        KsNsnwXRqABodHSNrVk+STaiiBP7ufI1+6vme+/FwtNjHv+AYwAoipqb4b//mfEsEDIx8UXpL0i
+        +nZni6Na+BOYghBq8xQrXlMSaKAdKo3npykukTyO0+J8DEGl//g3AwIPdMa5d
+X-Received: by 2002:a05:6808:199c:: with SMTP id bj28mr26139369oib.98.1639366511548;
+        Sun, 12 Dec 2021 19:35:11 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJx2Jy7YvzKyAwTVwOJsnFzMt1E8Lv8cfRVZtR3ZcuTEDyo+hZ/52vVzx+j4rK67PXijH9rfcTzGJ2rLJTw2v+c=
+X-Received: by 2002:a05:6808:199c:: with SMTP id bj28mr26139358oib.98.1639366511305;
+ Sun, 12 Dec 2021 19:35:11 -0800 (PST)
+MIME-Version: 1.0
+References: <20211203020931.1419572-1-kai.heng.feng@canonical.com>
+In-Reply-To: <20211203020931.1419572-1-kai.heng.feng@canonical.com>
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date:   Mon, 13 Dec 2021 11:34:59 +0800
+Message-ID: <CAAd53p4v6BWSmd-4jNBs95y2Tf8TY1iedvgN=P_3nC3oa1_oTA@mail.gmail.com>
+Subject: Re: [PATCH] iwlwifi: Increase microcodes loading timeout
+To:     luciano.coelho@intel.com
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
+        Dror Moshe <drorx.moshe@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Abhishek Naik <abhishek.naik@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Ayala Barazani <ayala.barazani@intel.com>,
+        Harish Mitty <harish.mitty@intel.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] wl1251: specify max. IE length
-Date:   Sun, 12 Dec 2021 23:13:08 +0100
-Message-Id: <20211212221310.5453-1-merlijn@wizzup.org>
-X-Mailer: git-send-email 2.32.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This fix is similar to commit 77c91295ea53 ("wil6210: specify max. IE
-length").  Without the max IE length set, wpa_supplicant cannot operate
-using the nl80211 interface.
+On Fri, Dec 3, 2021 at 10:10 AM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+>
+> Intel AX201/AX211 device may not work at boot:
+> [    8.875307] iwlwifi 0000:00:14.3: SecBoot CPU1 Status: 0x7267, CPU2 Status: 0xb03
+> [    8.875418] iwlwifi 0000:00:14.3: UMAC PC: 0x80481126
+> [    8.875426] iwlwifi 0000:00:14.3: LMAC PC: 0x1541c
+> [    8.875430] iwlwifi 0000:00:14.3: WRT: Collecting data: ini trigger 13 fired (delay=0ms).
+> [    8.877906] iwlwifi 0000:00:14.3: Loaded firmware version: 64.97bbee0a.0 so-a0-gf-a0-64.ucode
+> ...
+> [    8.878997] iwlwifi 0000:00:14.3: Failed to start RT ucode: -110
+> [    8.878999] iwlwifi 0000:00:14.3: Failed to start RT ucode: -110
+>
+> Increase MVM_UCODE_ALIVE_TIMEOUT to 2 seconds can solve the issue.
+>
+> The PNVM loading can also fail:
+> [    5.159949] iwlwifi 0000:00:14.3: loaded PNVM version 4b50f925
+> [    5.414211] iwlwifi 0000:00:14.3: Timeout waiting for PNVM load!
+> [    5.414219] iwlwifi 0000:00:14.3: Failed to start RT ucode: -110
+> [    5.414224] iwlwifi 0000:00:14.3: WRT: Collecting data: ini trigger 13 fired (delay=0ms).
+> [    5.416618] iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
+> [    5.416619] iwlwifi 0000:00:14.3: Transport status: 0x00000042, valid: 6
+> [    5.416620] iwlwifi 0000:00:14.3: Loaded firmware version: 64.97bbee0a.0 so-a0-gf-a0-64.ucode
+> ...
+> [    5.914276] iwlwifi 0000:00:14.3: Failed to run INIT ucode: -110
+>
+> Trial and error shows that the MVM_UCODE_PNVM_TIMEOUT also needs to be
+> bumped to 2 seconds to fully eliminate the issue.
+>
+> The timeout values are verified by rebooting over 10k times.
+>
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-This patch is a workaround - the number 512 is taken from the wlcore
-driver, but note that per Paul Fertser:
+A gentle ping...
 
-    there's no correct number because the driver will ignore the data
-    passed in extra IEs.
-
-Suggested-by: Paul Fertser <fercerpav@gmail.com>
-Signed-off-by: Merlijn Wajer <merlijn@wizzup.org>
----
- drivers/net/wireless/ti/wl1251/main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/net/wireless/ti/wl1251/main.c b/drivers/net/wireless/ti/wl1251/main.c
-index 136a0d3b23c9..a25a6143e65f 100644
---- a/drivers/net/wireless/ti/wl1251/main.c
-+++ b/drivers/net/wireless/ti/wl1251/main.c
-@@ -1520,6 +1520,12 @@ int wl1251_init_ieee80211(struct wl1251 *wl)
- 	wl->hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
- 					 BIT(NL80211_IFTYPE_ADHOC);
- 	wl->hw->wiphy->max_scan_ssids = 1;
-+
-+	/* We set max_scan_ie_len to a random value to make wpa_supplicant scans not
-+	 * fail, as the driver will the ignore the extra passed IEs anyway
-+	 */
-+	wl->hw->wiphy->max_scan_ie_len = 512;
-+
- 	wl->hw->wiphy->bands[NL80211_BAND_2GHZ] = &wl1251_band_2ghz;
- 
- 	wl->hw->queues = 4;
--- 
-2.32.0
-
+> ---
+>  drivers/net/wireless/intel/iwlwifi/fw/pnvm.h | 2 +-
+>  drivers/net/wireless/intel/iwlwifi/mvm/fw.c  | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h
+> index 203c367dd4dee..b730330d8feac 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h
+> @@ -10,7 +10,7 @@
+>
+>  #include "fw/notif-wait.h"
+>
+> -#define MVM_UCODE_PNVM_TIMEOUT (HZ / 4)
+> +#define MVM_UCODE_PNVM_TIMEOUT (2 * HZ)
+>
+>  #define MAX_PNVM_NAME  64
+>
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> index 6ce78c03e51f7..0c5375f7baecf 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+> @@ -24,7 +24,7 @@
+>  #include "iwl-modparams.h"
+>  #include "iwl-nvm-parse.h"
+>
+> -#define MVM_UCODE_ALIVE_TIMEOUT        (HZ)
+> +#define MVM_UCODE_ALIVE_TIMEOUT        (2 * HZ)
+>  #define MVM_UCODE_CALIB_TIMEOUT        (2 * HZ)
+>
+>  #define UCODE_VALID_OK cpu_to_le32(0x1)
+> --
+> 2.32.0
+>
