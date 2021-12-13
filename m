@@ -2,147 +2,470 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BACA5471F9D
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 04:35:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F7D64720E5
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 07:03:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231512AbhLMDfT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 12 Dec 2021 22:35:19 -0500
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:58148
-        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229483AbhLMDfT (ORCPT
+        id S232048AbhLMGDQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Dec 2021 01:03:16 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:41026 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S230260AbhLMGDQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 12 Dec 2021 22:35:19 -0500
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id B588040265
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Dec 2021 03:35:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1639366514;
-        bh=WxXM4jyaAfim4In51kFlNAC+ZCUZPdZC2EcFP94mchw=;
-        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type;
-        b=O5bEm0WqqbO6tT44fcW+/U40Lk4ZDVbj3B4plkh+nSEB1tNuL6F0+VP5uS9Ix0sTE
-         F3dVTjuYv+nTEoxvYeRcKxRPzeF3MjhF2wF0X81PJpU4CvAUqtETusFmL/EAwjVadJ
-         vu98P+DKXii0K1NdkC/IokRi5PE5ApyRTLNnSP4UOUCPfKG0PPXX0RFdpzYhXqu0CJ
-         OR1jhPiV6fxfWQO56nKjhSXVgSoATiC6TO8jWQ1/itnyrRd4oLXGUyrxEAPH4tDYiu
-         kekLMnKXuBOqUWCIVDSULQLYYkS7UTWQBW+JN/NPpww1TKR4yYCxFsusHqUzITMrr+
-         uA49lyeDtwD5w==
-Received: by mail-ot1-f71.google.com with SMTP id z33-20020a9d24a4000000b00579320f89ecso5541856ota.12
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Dec 2021 19:35:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WxXM4jyaAfim4In51kFlNAC+ZCUZPdZC2EcFP94mchw=;
-        b=umVChRzpQwdgO/QDnbzIu3cq4joe+AwmyQ8ucBGrN0xJYhPUMtoGuxcFbQA/jduQAL
-         VYKZ8LYslmB5DkhTp1CS+pckA0uKDSKuikDzrLJCVevjVotSoyO+Is5snGTWLX3F4EMp
-         S8KXmil3KyhwuPdjlZQpQQNDVTtng1Zuycp4+A1VAjx3mTtsBlXI1mWVYxyNMJEd/Zex
-         SsLuT4PwHLPGksVqR7CayN17+HGxlCGS89KUEBXNm9utdrFpklq0Oegxaf8PJnWCATMg
-         fuXYiJ4j6W4U3Cor0Q/56Wp0FW2nkx+2s/ZpiYDaWPA6yYu2jFwHc9j9ZgCiRvHh2aCL
-         CQPQ==
-X-Gm-Message-State: AOAM530Rt5jXPoC8ZhCfdcnkNbpjfEH1hsMPYoMfY7t4HTF+gSLBeM9t
-        KsNsnwXRqABodHSNrVk+STaiiBP7ufI1+6vme+/FwtNjHv+AYwAoipqb4b//mfEsEDIx8UXpL0i
-        +nZni6Na+BOYghBq8xQrXlMSaKAdKo3npykukTyO0+J8DEGl//g3AwIPdMa5d
-X-Received: by 2002:a05:6808:199c:: with SMTP id bj28mr26139369oib.98.1639366511548;
-        Sun, 12 Dec 2021 19:35:11 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx2Jy7YvzKyAwTVwOJsnFzMt1E8Lv8cfRVZtR3ZcuTEDyo+hZ/52vVzx+j4rK67PXijH9rfcTzGJ2rLJTw2v+c=
-X-Received: by 2002:a05:6808:199c:: with SMTP id bj28mr26139358oib.98.1639366511305;
- Sun, 12 Dec 2021 19:35:11 -0800 (PST)
+        Mon, 13 Dec 2021 01:03:16 -0500
+X-UUID: c8466f7f831a4fc283afd5efde06522a-20211213
+X-UUID: c8466f7f831a4fc283afd5efde06522a-20211213
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <meichia.chiu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1965338154; Mon, 13 Dec 2021 14:03:13 +0800
+Received: from mtkexhb01.mediatek.inc (172.21.101.102) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 13 Dec 2021 14:03:12 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb01.mediatek.inc
+ (172.21.101.102) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 13 Dec
+ 2021 14:03:11 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 13 Dec 2021 14:03:11 +0800
+From:   MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Money Wang <Money.Wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        MeiChia Chiu <meichia.chiu@mediatek.com>
+Subject: [PATCH v3] mt76: mt7915: add mu-mimo and ofdma debugfs knobs
+Date:   Mon, 13 Dec 2021 14:03:09 +0800
+Message-ID: <20211213060309.28323-1-MeiChia.Chiu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <20211203020931.1419572-1-kai.heng.feng@canonical.com>
-In-Reply-To: <20211203020931.1419572-1-kai.heng.feng@canonical.com>
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date:   Mon, 13 Dec 2021 11:34:59 +0800
-Message-ID: <CAAd53p4v6BWSmd-4jNBs95y2Tf8TY1iedvgN=P_3nC3oa1_oTA@mail.gmail.com>
-Subject: Re: [PATCH] iwlwifi: Increase microcodes loading timeout
-To:     luciano.coelho@intel.com
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Dror Moshe <drorx.moshe@intel.com>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        Abhishek Naik <abhishek.naik@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Ayala Barazani <ayala.barazani@intel.com>,
-        Harish Mitty <harish.mitty@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Dec 3, 2021 at 10:10 AM Kai-Heng Feng
-<kai.heng.feng@canonical.com> wrote:
->
-> Intel AX201/AX211 device may not work at boot:
-> [    8.875307] iwlwifi 0000:00:14.3: SecBoot CPU1 Status: 0x7267, CPU2 Status: 0xb03
-> [    8.875418] iwlwifi 0000:00:14.3: UMAC PC: 0x80481126
-> [    8.875426] iwlwifi 0000:00:14.3: LMAC PC: 0x1541c
-> [    8.875430] iwlwifi 0000:00:14.3: WRT: Collecting data: ini trigger 13 fired (delay=0ms).
-> [    8.877906] iwlwifi 0000:00:14.3: Loaded firmware version: 64.97bbee0a.0 so-a0-gf-a0-64.ucode
-> ...
-> [    8.878997] iwlwifi 0000:00:14.3: Failed to start RT ucode: -110
-> [    8.878999] iwlwifi 0000:00:14.3: Failed to start RT ucode: -110
->
-> Increase MVM_UCODE_ALIVE_TIMEOUT to 2 seconds can solve the issue.
->
-> The PNVM loading can also fail:
-> [    5.159949] iwlwifi 0000:00:14.3: loaded PNVM version 4b50f925
-> [    5.414211] iwlwifi 0000:00:14.3: Timeout waiting for PNVM load!
-> [    5.414219] iwlwifi 0000:00:14.3: Failed to start RT ucode: -110
-> [    5.414224] iwlwifi 0000:00:14.3: WRT: Collecting data: ini trigger 13 fired (delay=0ms).
-> [    5.416618] iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
-> [    5.416619] iwlwifi 0000:00:14.3: Transport status: 0x00000042, valid: 6
-> [    5.416620] iwlwifi 0000:00:14.3: Loaded firmware version: 64.97bbee0a.0 so-a0-gf-a0-64.ucode
-> ...
-> [    5.914276] iwlwifi 0000:00:14.3: Failed to run INIT ucode: -110
->
-> Trial and error shows that the MVM_UCODE_PNVM_TIMEOUT also needs to be
-> bumped to 2 seconds to fully eliminate the issue.
->
-> The timeout values are verified by rebooting over 10k times.
->
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: MeiChia Chiu <meichia.chiu@mediatek.com>
 
-A gentle ping...
+Add mu-mimo and ofdma packet counters statistics.
+The statistics are clear on read.
 
-> ---
->  drivers/net/wireless/intel/iwlwifi/fw/pnvm.h | 2 +-
->  drivers/net/wireless/intel/iwlwifi/mvm/fw.c  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h
-> index 203c367dd4dee..b730330d8feac 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h
-> +++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.h
-> @@ -10,7 +10,7 @@
->
->  #include "fw/notif-wait.h"
->
-> -#define MVM_UCODE_PNVM_TIMEOUT (HZ / 4)
-> +#define MVM_UCODE_PNVM_TIMEOUT (2 * HZ)
->
->  #define MAX_PNVM_NAME  64
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> index 6ce78c03e51f7..0c5375f7baecf 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> @@ -24,7 +24,7 @@
->  #include "iwl-modparams.h"
->  #include "iwl-nvm-parse.h"
->
-> -#define MVM_UCODE_ALIVE_TIMEOUT        (HZ)
-> +#define MVM_UCODE_ALIVE_TIMEOUT        (2 * HZ)
->  #define MVM_UCODE_CALIB_TIMEOUT        (2 * HZ)
->
->  #define UCODE_VALID_OK cpu_to_le32(0x1)
-> --
-> 2.32.0
->
+Reviewed-by: Money.Wang <Money.Wang@mediatek.com>
+Reviewed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
+---
+v2:
+-use u64 total_ppdu_cnt to avoid overflow
+-update commit message
+v3:update printf format
+---
+ .../net/wireless/mediatek/mt76/mt7915/debugfs.c | 244 ++++++++++++++++++++++++++++++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c     |  41 ++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.h     |  45 +++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mt7915.h  |   3 +
+ 4 files changed, 332 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index a15aa256..a2594f4c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -81,6 +81,246 @@ mt7915_radar_trigger(void *data, u64 val)
+ DEFINE_DEBUGFS_ATTRIBUTE(fops_radar_trigger, NULL,
+ 			 mt7915_radar_trigger, "%lld\n");
+ 
++static int
++mt7915_muru_debug_set(void *data, u64 val)
++{
++	struct mt7915_dev *dev = data;
++
++	dev->muru_debug = val;
++	mt7915_mcu_muru_debug_set(dev, data);
++
++	return 0;
++}
++
++static int
++mt7915_muru_debug_get(void *data, u64 *val)
++{
++	struct mt7915_dev *dev = data;
++
++	*val = dev->muru_debug;
++
++	return 0;
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_muru_debug, mt7915_muru_debug_get,
++			 mt7915_muru_debug_set, "%lld\n");
++
++static int mt7915_muru_stat_show(struct seq_file *file, void *data)
++{
++	struct mt7915_phy *phy = file->private;
++	struct mt7915_dev *dev = phy->dev;
++	struct mt7915_mcu_muru_stats mu_stats = {};
++	static const char * const dl_non_he_type[] = {
++		"CCK", "OFDM", "HT MIX", "HT GF",
++		"VHT SU", "VHT 2MU", "VHT 3MU", "VHT 4MU"
++	};
++	static const char * const dl_he_type[] = {
++		"HE SU", "HE EXT", "HE 2MU", "HE 3MU", "HE 4MU",
++		"HE 2RU", "HE 3RU", "HE 4RU", "HE 5-8RU", "HE 9-16RU",
++		"HE >16RU"
++	};
++	static const char * const ul_he_type[] = {
++		"HE 2MU", "HE 3MU", "HE 4MU", "HE SU", "HE 2RU",
++		"HE 3RU", "HE 4RU", "HE 5-8RU", "HE 9-16RU", "HE >16RU"
++	};
++	int ret, i;
++	u64 total_ppdu_cnt;
++
++	if (!dev->muru_debug) {
++		seq_puts(file, "Please enable muru_debug first.\n");
++		return 0;
++	}
++
++	mutex_lock(&dev->mt76.mutex);
++
++	ret = mt7915_mcu_muru_debug_get(phy, &mu_stats);
++	if (ret)
++		goto exit;
++
++#define __ms_ratio(s)	(!total_ppdu_cnt ? 0 :			  \
++		le32_to_cpu(s) * 100 / total_ppdu_cnt)
++#define __dl_u32(s)	le32_to_cpu(mu_stats.dl.s)
++	/* Non-HE Downlink*/
++	total_ppdu_cnt = __dl_u32(cck_cnt) +
++		__dl_u32(ofdm_cnt) +
++		__dl_u32(htmix_cnt) +
++		__dl_u32(htgf_cnt) +
++		__dl_u32(vht_su_cnt) +
++		__dl_u32(vht_2mu_cnt) +
++		__dl_u32(vht_3mu_cnt) +
++		__dl_u32(vht_4mu_cnt);
++
++	seq_puts(file, "[Non-HE]\nDownlink\nData Type:  ");
++
++	for (i = 0; i < 5; i++)
++		seq_printf(file, "%8s | ", dl_non_he_type[i]);
++
++	seq_puts(file, "\nTotal Cnt:  ");
++	seq_printf(file, "%8u | %8u | %8u | %8u | %8u | ",
++		   __dl_u32(cck_cnt),
++		   __dl_u32(ofdm_cnt),
++		   __dl_u32(htmix_cnt),
++		   __dl_u32(htgf_cnt),
++		   __dl_u32(vht_su_cnt));
++
++	seq_puts(file, "\nRatio    :  ");
++	seq_printf(file, "%7lld%% | %7lld%% | %7lld%% | %7lld%% | %7lld%% | ",
++		   __ms_ratio(mu_stats.dl.cck_cnt),
++		   __ms_ratio(mu_stats.dl.ofdm_cnt),
++		   __ms_ratio(mu_stats.dl.htmix_cnt),
++		   __ms_ratio(mu_stats.dl.htgf_cnt),
++		   __ms_ratio(mu_stats.dl.vht_su_cnt));
++
++	seq_puts(file, "\nDownlink MU-MIMO\nData Type:  ");
++
++	for (i = 5; i < 8; i++)
++		seq_printf(file, "%8s | ", dl_non_he_type[i]);
++
++	seq_puts(file, "\nTotal Cnt:  ");
++	seq_printf(file, "%8u | %8u | %8u | ",
++		   __dl_u32(vht_2mu_cnt),
++		   __dl_u32(vht_3mu_cnt),
++		   __dl_u32(vht_4mu_cnt));
++
++	seq_puts(file, "\nRatio    :  ");
++	seq_printf(file, "%7lld%% | %7lld%% | %7lld%% | ",
++		   __ms_ratio(mu_stats.dl.vht_2mu_cnt),
++		   __ms_ratio(mu_stats.dl.vht_3mu_cnt),
++		   __ms_ratio(mu_stats.dl.vht_4mu_cnt));
++
++	/* HE Downlink */
++	total_ppdu_cnt = __dl_u32(he_su_cnt) +
++		__dl_u32(he_ext_su_cnt) +
++		__dl_u32(he_2mu_cnt) +
++		__dl_u32(he_3mu_cnt) +
++		__dl_u32(he_4mu_cnt) +
++		__dl_u32(he_2ru_cnt) +
++		__dl_u32(he_3ru_cnt) +
++		__dl_u32(he_4ru_cnt) +
++		__dl_u32(he_5to8ru_cnt) +
++		__dl_u32(he_9to16ru_cnt) +
++		__dl_u32(he_gtr16ru_cnt);
++
++	seq_puts(file, "\n\n[HE]\nDownlink\nData Type:  ");
++
++	for (i = 0; i < 2; i++)
++		seq_printf(file, "%8s | ", dl_he_type[i]);
++
++	seq_puts(file, "\nTotal Cnt:  ");
++	seq_printf(file, "%8u | %8u | ",
++		   __dl_u32(he_su_cnt),
++		   __dl_u32(he_ext_su_cnt));
++
++	seq_puts(file, "\nRatio    :  ");
++	seq_printf(file, "%7lld%% | %7lld%% | ",
++		   __ms_ratio(mu_stats.dl.he_su_cnt),
++		   __ms_ratio(mu_stats.dl.he_ext_su_cnt));
++
++	seq_puts(file, "\nDownlink MU-MIMO\nData Type:  ");
++
++	for (i = 2; i < 5; i++)
++		seq_printf(file, "%8s | ", dl_he_type[i]);
++
++	seq_puts(file, "\nTotal Cnt:  ");
++	seq_printf(file, "%8u | %8u | %8u | ",
++		   __dl_u32(he_2mu_cnt),
++		   __dl_u32(he_3mu_cnt),
++		   __dl_u32(he_4mu_cnt));
++
++	seq_puts(file, "\nRatio    :  ");
++	seq_printf(file, "%7lld%% | %7lld%% | %7lld%% | ",
++		   __ms_ratio(mu_stats.dl.he_2mu_cnt),
++		   __ms_ratio(mu_stats.dl.he_3mu_cnt),
++		   __ms_ratio(mu_stats.dl.he_4mu_cnt));
++
++	seq_puts(file, "\nDownlink OFDMA\nData Type:  ");
++
++	for (i = 5; i < 11; i++)
++		seq_printf(file, "%8s | ", dl_he_type[i]);
++
++	seq_puts(file, "\nTotal Cnt:  ");
++	seq_printf(file, "%8u | %8u | %8u | %8u | %9u | %8u | ",
++		   __dl_u32(he_2ru_cnt),
++		   __dl_u32(he_3ru_cnt),
++		   __dl_u32(he_4ru_cnt),
++		   __dl_u32(he_5to8ru_cnt),
++		   __dl_u32(he_9to16ru_cnt),
++		   __dl_u32(he_gtr16ru_cnt));
++#undef __dl_u32
++	seq_puts(file, "\nRatio    :  ");
++	seq_printf(file, "%7lld%% | %7lld%% | %7lld%% | %7lld%% | %8lld%% | %7lld%% | ",
++		   __ms_ratio(mu_stats.dl.he_2ru_cnt),
++		   __ms_ratio(mu_stats.dl.he_3ru_cnt),
++		   __ms_ratio(mu_stats.dl.he_4ru_cnt),
++		   __ms_ratio(mu_stats.dl.he_5to8ru_cnt),
++		   __ms_ratio(mu_stats.dl.he_9to16ru_cnt),
++		   __ms_ratio(mu_stats.dl.he_gtr16ru_cnt));
++
++#define __ul_u32(s)     le32_to_cpu(mu_stats.ul.s)
++	/* HE Uplink */
++	total_ppdu_cnt = __ul_u32(hetrig_2ru_cnt) +
++		__ul_u32(hetrig_3ru_cnt) +
++		__ul_u32(hetrig_4ru_cnt) +
++		__ul_u32(hetrig_5to8ru_cnt) +
++		__ul_u32(hetrig_9to16ru_cnt) +
++		__ul_u32(hetrig_gtr16ru_cnt) +
++		__ul_u32(hetrig_su_cnt) +
++		__ul_u32(hetrig_2mu_cnt) +
++		__ul_u32(hetrig_3mu_cnt) +
++		__ul_u32(hetrig_4mu_cnt);
++
++	seq_puts(file, "\n\nUplink\nData Type:  ");
++	seq_puts(file, "\nTrigger-based Uplink MU-MIMO\nData Type:  ");
++
++	for (i = 0; i < 3; i++)
++		seq_printf(file, "%8s | ", ul_he_type[i]);
++
++	seq_puts(file, "\nTotal Cnt:  ");
++	seq_printf(file, "%8u | %8u | %8u | ",
++		   __ul_u32(hetrig_2mu_cnt),
++		   __ul_u32(hetrig_3mu_cnt),
++		   __ul_u32(hetrig_4mu_cnt));
++
++	seq_puts(file, "\nRatio    :  ");
++	seq_printf(file, "%7lld%% | %7lld%% | %7lld%% | ",
++		   __ms_ratio(mu_stats.ul.hetrig_2mu_cnt),
++		   __ms_ratio(mu_stats.ul.hetrig_3mu_cnt),
++		   __ms_ratio(mu_stats.ul.hetrig_4mu_cnt));
++
++	seq_puts(file, "\nTrigger-based Uplink OFDMA\nData Type:  ");
++
++	for (i = 3; i < 10; i++)
++		seq_printf(file, "%8s | ", ul_he_type[i]);
++
++	seq_puts(file, "\nTotal Cnt:  ");
++	seq_printf(file, "%8u | %8u | %8u | %8u | %8u | %9u |  %7u | ",
++		   __ul_u32(hetrig_su_cnt),
++		   __ul_u32(hetrig_2ru_cnt),
++		   __ul_u32(hetrig_3ru_cnt),
++		   __ul_u32(hetrig_4ru_cnt),
++		   __ul_u32(hetrig_5to8ru_cnt),
++		   __ul_u32(hetrig_9to16ru_cnt),
++		   __ul_u32(hetrig_gtr16ru_cnt));
++#undef __ul_u32
++	seq_puts(file, "\nRatio    :  ");
++	seq_printf(file, "%7lld%% | %7lld%% | %7lld%% | %7lld%% |",
++		   __ms_ratio(mu_stats.ul.hetrig_su_cnt),
++		   __ms_ratio(mu_stats.ul.hetrig_2ru_cnt),
++		   __ms_ratio(mu_stats.ul.hetrig_3ru_cnt),
++		   __ms_ratio(mu_stats.ul.hetrig_4ru_cnt));
++	seq_printf(file, " %7lld%% |  %7lld%% | %7lld%% |\n",
++		   __ms_ratio(mu_stats.ul.hetrig_5to8ru_cnt),
++		   __ms_ratio(mu_stats.ul.hetrig_9to16ru_cnt),
++		   __ms_ratio(mu_stats.ul.hetrig_gtr16ru_cnt));
++#undef __ms_ratio
++
++exit:
++	mutex_unlock(&dev->mt76.mutex);
++
++	return ret;
++}
++DEFINE_SHOW_ATTRIBUTE(mt7915_muru_stat);
++
+ static int
+ mt7915_fw_debug_wm_set(void *data, u64 val)
+ {
+@@ -528,7 +768,9 @@ int mt7915_init_debugfs(struct mt7915_phy *phy)
+ 	dir = mt76_register_debugfs_fops(phy->mt76, NULL);
+ 	if (!dir)
+ 		return -ENOMEM;
+-
++	debugfs_create_file("muru_debug", 0600, dir, dev, &fops_muru_debug);
++	debugfs_create_file("muru_stat", 0400, dir, phy,
++			    &mt7915_muru_stat_fops);
+ 	debugfs_create_file("hw-queues", 0400, dir, phy,
+ 			    &mt7915_hw_queues_fops);
+ 	debugfs_create_file("xmit-queues", 0400, dir, phy,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 73a11448..a32d2199 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2993,6 +2993,47 @@ int mt7915_mcu_fw_dbg_ctrl(struct mt7915_dev *dev, u32 module, u8 level)
+ 				 sizeof(data), false);
+ }
+ 
++int mt7915_mcu_muru_debug_set(struct mt7915_dev *dev, bool enabled)
++{
++	struct {
++		__le32 cmd;
++		u8 enable;
++	} data = {
++		.cmd = cpu_to_le32(MURU_SET_TXC_TX_STATS_EN),
++		.enable = enabled,
++	};
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(MURU_CTRL), &data,
++				sizeof(data), false);
++}
++
++int mt7915_mcu_muru_debug_get(struct mt7915_phy *phy, void *ms)
++{
++	struct mt7915_dev *dev = phy->dev;
++	struct sk_buff *skb;
++	struct mt7915_mcu_muru_stats *mu_stats =
++				(struct mt7915_mcu_muru_stats *)ms;
++	int ret;
++
++	struct {
++		__le32 cmd;
++		u8 band_idx;
++	} req = {
++		.cmd = cpu_to_le32(MURU_GET_TXC_TX_STATS),
++		.band_idx = phy != &dev->phy,
++	};
++
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_CMD(MURU_CTRL),
++					&req, sizeof(req), true, &skb);
++	if (ret)
++		return ret;
++
++	memcpy(mu_stats, skb->data, sizeof(struct mt7915_mcu_muru_stats));
++	dev_kfree_skb(skb);
++
++	return 0;
++}
++
+ static int mt7915_mcu_set_mwds(struct mt7915_dev *dev, bool enabled)
+ {
+ 	struct {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index 4636b7dc..60b18457 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -44,6 +44,13 @@ enum {
+ 	MCU_EXT_EVENT_RDD_REPORT = 0x3a,
+ 	MCU_EXT_EVENT_CSA_NOTIFY = 0x4f,
+ 	MCU_EXT_EVENT_BCC_NOTIFY = 0x75,
++	MCU_EXT_EVENT_MURU_CTRL = 0x9f,
++};
++
++/* tx cmd tx statistics */
++enum {
++	MURU_SET_TXC_TX_STATS_EN = 150,
++	MURU_GET_TXC_TX_STATS = 151,
+ };
+ 
+ enum {
+@@ -206,6 +213,44 @@ struct mt7915_mcu_tx {
+ 	struct edca edca[IEEE80211_NUM_ACS];
+ } __packed;
+ 
++struct mt7915_mcu_muru_stats {
++	__le32 event_id;
++	struct {
++		__le32 cck_cnt;
++		__le32 ofdm_cnt;
++		__le32 htmix_cnt;
++		__le32 htgf_cnt;
++		__le32 vht_su_cnt;
++		__le32 vht_2mu_cnt;
++		__le32 vht_3mu_cnt;
++		__le32 vht_4mu_cnt;
++		__le32 he_su_cnt;
++		__le32 he_ext_su_cnt;
++		__le32 he_2ru_cnt;
++		__le32 he_2mu_cnt;
++		__le32 he_3ru_cnt;
++		__le32 he_3mu_cnt;
++		__le32 he_4ru_cnt;
++		__le32 he_4mu_cnt;
++		__le32 he_5to8ru_cnt;
++		__le32 he_9to16ru_cnt;
++		__le32 he_gtr16ru_cnt;
++	} dl;
++
++	struct {
++		__le32 hetrig_su_cnt;
++		__le32 hetrig_2ru_cnt;
++		__le32 hetrig_3ru_cnt;
++		__le32 hetrig_4ru_cnt;
++		__le32 hetrig_5to8ru_cnt;
++		__le32 hetrig_9to16ru_cnt;
++		__le32 hetrig_gtr16ru_cnt;
++		__le32 hetrig_2mu_cnt;
++		__le32 hetrig_3mu_cnt;
++		__le32 hetrig_4mu_cnt;
++	} ul;
++};
++
+ #define WMM_AIFS_SET		BIT(0)
+ #define WMM_CW_MIN_SET		BIT(1)
+ #define WMM_CW_MAX_SET		BIT(2)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index c6c846d1..81f1ab18 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -273,6 +273,7 @@ struct mt7915_dev {
+ 
+ 	bool dbdc_support;
+ 	bool flash_mode;
++	bool muru_debug;
+ 	bool ibf;
+ 	u8 fw_debug_wm;
+ 	u8 fw_debug_wa;
+@@ -526,6 +527,8 @@ int mt7915_dfs_init_radar_detector(struct mt7915_phy *phy);
+ void mt7915_set_stream_he_caps(struct mt7915_phy *phy);
+ void mt7915_set_stream_vht_txbf_caps(struct mt7915_phy *phy);
+ void mt7915_update_channel(struct mt76_phy *mphy);
++int mt7915_mcu_muru_debug_set(struct mt7915_dev *dev, bool enable);
++int mt7915_mcu_muru_debug_get(struct mt7915_phy *phy, void *ms);
+ int mt7915_init_debugfs(struct mt7915_phy *phy);
+ #ifdef CONFIG_MAC80211_DEBUGFS
+ void mt7915_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+-- 
+2.29.2
+
