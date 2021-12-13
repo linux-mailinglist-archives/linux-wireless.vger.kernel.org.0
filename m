@@ -2,84 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D18472FF2
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 16:00:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 371FD472FDE
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 15:58:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239810AbhLMPAT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Dec 2021 10:00:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47940 "EHLO
+        id S234501AbhLMO6a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Dec 2021 09:58:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239555AbhLMPAO (ORCPT
+        with ESMTP id S233382AbhLMO62 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Dec 2021 10:00:14 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1223C061574;
-        Mon, 13 Dec 2021 07:00:13 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3A52DB8113B;
-        Mon, 13 Dec 2021 15:00:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F3526C34611;
-        Mon, 13 Dec 2021 15:00:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639407611;
-        bh=WjcGELbu5JIKbGB4EMlOVci44ait6RcZ0lcliNjSfIA=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=psYdtPJZOEQQuzAu/yovjNacJXoUwfT9h2sMTh8oPH0Jf45yQlcUfxbC+3uiYqdS8
-         ePjf4HZhOZIBN4lIh4/i8m6yo9+ZcGptg15ajxDewsplStTINzNycAgDOhRlSpWXHM
-         dBz9f3KjkZPs29f/WPyuate7otj9zYpTqXoV3lvwxcp0KSYr0bAUQuf8w748pFitbw
-         HxIdShlgRuLvo52xBPL1BLObLnwk68393gpvcXPFqVyiNcQptIYdiBPlwaAMigJ3xt
-         mAixPmPLMddJtMgSZmV5SDlcJp+cojEyvn17IDJ+1saDTnAAPbELCW1cdZGJvPTFLz
-         SjZNMoTvw2Daw==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id D30D66098C;
-        Mon, 13 Dec 2021 15:00:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 13 Dec 2021 09:58:28 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2C9FC06173F
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Dec 2021 06:58:27 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id p27-20020a05600c1d9b00b0033bf8532855so11774019wms.3
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Dec 2021 06:58:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=j5M/FX/Lk4X9HZwjX8p17fTjxGhNIygu+8QxOAhLyoM=;
+        b=b/CBQ4fxNROPTE0ME9Egd/3S2vdUAyrp8KNXCeQcmshQZgBI6PR0CzLUOCcq2hHGXQ
+         QDI8UMRtjw1z4Agk72SlJszOdJeZyZnTX0DInLSLyXtfdjNlEjNujep6CTaGkN+loqNs
+         w8EYQKH4Jr6Y9uqOVVHGq/xtSf+XRau407NpgOCaWh8uQ8b3qb02TAG6MMHou/MmpHKH
+         HaEZnE9Kxy/3shIYFC6C39uFPEpFKDstcc6j6G8r8MiyzWPGcOCYce0w3OtciXEMFQWY
+         L0WDPXz63TzMzTjcCRnFqLD2XHLqdi/tKreZxqZXV19ESCcdkhixlTBS3m6BKAtMol11
+         6rxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=j5M/FX/Lk4X9HZwjX8p17fTjxGhNIygu+8QxOAhLyoM=;
+        b=F4MzgeUIEuRycA+4pfQzrgs91lwIh5CP63ECW85EtEbhT79YyeXxrcRmRUwyLfB7NQ
+         lI6w5+9lkyH93+R8pcRoGRiaky2736pCNpLjnaGExmnwp6zbk3koDLtCgcbJD4UVDzLX
+         LG0VClxngKc7fcOUM780hfU5KutPRqZiTwwDP+sza7mnQO2WppSZl1LXPKzzoAXW0sa2
+         ARa9105BzzIiG3MySvwyO80rgTZ2JB0UovNnB4A/CST8jN+PWxa2noulVMcRArgZgQxs
+         2/+ZVx43OmBIiGsuLBtgb2AivDWUfZIxvTSV2jF4OrWOjefyzO3D885XB2Fny50yqhUv
+         JDEQ==
+X-Gm-Message-State: AOAM533ZX/CAvHDOV08z5KLEp0cdGwdYhWxt0c0mNZmgZVBEOJsXcaPr
+        3Zv1KDIGVlNpGTjKi/pk2kb38A==
+X-Google-Smtp-Source: ABdhPJwR297FP0mIl5zLL+6hcBqhNKxghUSLppIoRe+jr45VJnSYuiBZnRJnWkaFL1qR8SJtFPigyQ==
+X-Received: by 2002:a1c:1b15:: with SMTP id b21mr38632625wmb.174.1639407506288;
+        Mon, 13 Dec 2021 06:58:26 -0800 (PST)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id o63sm7570112wme.2.2021.12.13.06.58.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Dec 2021 06:58:25 -0800 (PST)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        wcn36xx@lists.infradead.org, linux-arm-msm@vger.kernel.org
+Cc:     loic.poulain@linaro.org, benl@squareup.com,
+        bryan.odonoghue@linaro.org
+Subject: [PATCH v2 0/3] wcn36xx: Implement explicit beacon filter tables
+Date:   Mon, 13 Dec 2021 15:00:28 +0000
+Message-Id: <20211213150031.1707955-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH -next] mt76: remove variable set but not used
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <163940761085.26947.2175837807635652318.git-patchwork-notify@kernel.org>
-Date:   Mon, 13 Dec 2021 15:00:10 +0000
-References: <20211213095413.99456-1-yang.lee@linux.alibaba.com>
-In-Reply-To: <20211213095413.99456-1-yang.lee@linux.alibaba.com>
-To:     Yang Li <yang.lee@linux.alibaba.com>
-Cc:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org,
-        davem@davemloft.net, kuba@kernel.org, matthias.bgg@gmail.com,
-        nathan@kernel.org, ndesaulniers@google.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, abaci@linux.alibaba.com
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+V2:
+Removes duplicate defintion of mask field defines
 
-This patch was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
+V1:
+Downstream provides the ability to directly program the beacon filter
+tables. Currently in upstream we rely on whatever is the default filtration
+table in firmware.
 
-On Mon, 13 Dec 2021 17:54:13 +0800 you wrote:
-> The code that uses variable queued has been removed,
-> and "mt76_is_usb(dev) ? q->ndesc - q->queued : q->queued"
-> didn't do anything, so all they should be removed as well.
-> 
-> Eliminate the following clang warnings:
-> drivers/net/wireless/mediatek/mt76/debugfs.c:77:9: warning: variable
-> ‘queued’ set but not used.
-> 
-> [...]
+A trivial packing fixup is required for the SMD structure. The downstream
+filtration table from the Linux driver is applied but, we are not
+necessarily constrained to using this table forever.
 
-Here is the summary with links:
-  - [-next] mt76: remove variable set but not used
-    https://git.kernel.org/netdev/net-next/c/93d576f54e0f
+Tested on wcn3620 and wcn3680b.
 
-You are awesome, thank you!
+Bryan O'Donoghue (3):
+  wcn36xx: Fix beacon filter structure definitions
+  wcn36xx: Fix physical location of beacon filter comment
+  wcn36xx: Implement downstream compliant beacon filtering
+
+ drivers/net/wireless/ath/wcn36xx/hal.h  | 30 +++++++--
+ drivers/net/wireless/ath/wcn36xx/main.c |  1 +
+ drivers/net/wireless/ath/wcn36xx/smd.c  | 87 +++++++++++++++++++++++++
+ drivers/net/wireless/ath/wcn36xx/smd.h  |  3 +
+ 4 files changed, 115 insertions(+), 6 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.33.0
 
