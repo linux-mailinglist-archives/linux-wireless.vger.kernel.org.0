@@ -2,120 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5826B472D1E
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 14:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EDC9472DC5
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 14:49:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237374AbhLMNXv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Dec 2021 08:23:51 -0500
-Received: from mga02.intel.com ([134.134.136.20]:59917 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231676AbhLMNXu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Dec 2021 08:23:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639401830; x=1670937830;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NUaiRW8izVYY+jHItB+IlWmb+AOutAfJrsSjOPLwAo4=;
-  b=fsl1CHqyBr6HU1VLMTWSfPUkWEqN20SO60gvbKqjY0dL0pb0L+UJXT3f
-   opjapvx56mj1pB42ysMKKifZuj4ejUgpfh8AdhDpw7E1Nq64KNbpezRns
-   U7UrVtDzGV1cbmdAR6RzCuyHzq/pprvstq+XUyoQ5WSsihKBfexQKz06U
-   83JwM3EyXfH99uFayeXYW+j9khuhtunNuiGAI/BP0MjEL8U2CZ+ygh89c
-   JBgGV+a+3wUFHschYUxHSQeeOgcyJlpDEnvqI/SV+F3Xqszgs3qrgwRcT
-   5YhzmWimAjl6d3+S8CX9NpA95pl3rP8FE58uvCTLutzY5OgaPN1B/5AbM
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10196"; a="226006292"
-X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
-   d="scan'208";a="226006292"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 05:23:50 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
-   d="scan'208";a="613822560"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 13 Dec 2021 05:23:47 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mwlIw-0006hT-B3; Mon, 13 Dec 2021 13:23:46 +0000
-Date:   Mon, 13 Dec 2021 21:23:13 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     MeiChia Chiu <MeiChia.Chiu@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>
-Cc:     kbuild-all@lists.01.org,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Money Wang <Money.Wang@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        MeiChia Chiu <meichia.chiu@mediatek.com>
-Subject: Re: [PATCH v3] mt76: mt7915: add mu-mimo and ofdma debugfs knobs
-Message-ID: <202112132120.tRzeHzz5-lkp@intel.com>
-References: <20211213060309.28323-1-MeiChia.Chiu@mediatek.com>
+        id S233860AbhLMNtY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Dec 2021 08:49:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58412 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234610AbhLMNtX (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 Dec 2021 08:49:23 -0500
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A2C5C06173F
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Dec 2021 05:49:23 -0800 (PST)
+Received: by mail-wr1-x434.google.com with SMTP id o13so27085588wrs.12
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Dec 2021 05:49:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QECQ6kqhHviAQtdtRKaAbYshAGcjCs6cTEfH6Tz7Hwo=;
+        b=KzwC1FA5zu+86ujmBvGnpIVdk/Ci5O1hqkruifGFiHvYRWJ0vQPA9CEjOj/BJyWAug
+         YbFxIeh/nE79CSUJYEJAz7FvGBesjKYAVbQUtP7szPFJe2gQAMbOFIYDCyNgPUK+tusr
+         LHWBPbO8pS8uFMfUVgPeMUTRDggr+pNjsQKMbexc/xiwlzvn2uGlngVfCsWmImkLFT07
+         jeNDpcv4SXgB0MBCq5xAG9iBwqoOfn9L3cQPgg/WJ75IHLfjTWp+BStrXjw5BTeCsp9l
+         ZdmdsQ0FjvN3lYJ2DMaEqHyaNKPNK6/fcuE8nh70Ce9vp+MklkWJRTkq29Ot1u2i4fNm
+         ieug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QECQ6kqhHviAQtdtRKaAbYshAGcjCs6cTEfH6Tz7Hwo=;
+        b=xvo/1vrtT0PNPhHeK2hZrWgRerCl70bF5k6PbPXCFcX1s1W3NVC5MyisB0vSZXQydw
+         5st3c9iYnhEGGXlqxeH/iwwNVUM5DXJ5nPvmfBKz4Jr6ExvkOTJ/bpPQ5w5xdMGrP6D+
+         MYZCIcCqB4ekULZ3O3564pNWuGNz6zczU9+A4a6xZ/A/tqgDT8hBHrpj+QZIsGPGOc48
+         K+U116FwmfVT2vLSlQTKtr7G2/TkSn2YAStkapc3tR1RUyHpap17agy2iM7Vgdc9syfy
+         e5/qVFs9sJMwqFGoHE7VRz/D60GbaSFXal3avXQo+bBrz3T1UsJjomjootfgRkTCnAqQ
+         ZYDQ==
+X-Gm-Message-State: AOAM533IhPmGj7LWW8YQdoZ3sAhjKWsx0aGHQVe6499nR/Q3WyOx4uAB
+        VGPyqTgi4dhTBfqGBBy8qEYRaA==
+X-Google-Smtp-Source: ABdhPJxXiPHuwOEG2QN2S/5NByN4OIph8gXGV26HqIsalSKcPXhIFq71jLKc/T5LFynHe5foFfyXAg==
+X-Received: by 2002:a5d:59a2:: with SMTP id p2mr31987440wrr.252.1639403361952;
+        Mon, 13 Dec 2021 05:49:21 -0800 (PST)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id m9sm7366621wmq.1.2021.12.13.05.49.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Dec 2021 05:49:21 -0800 (PST)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        wcn36xx@lists.infradead.org, linux-arm-msm@vger.kernel.org
+Cc:     loic.poulain@linaro.org, benl@squareup.com,
+        bryan.odonoghue@linaro.org
+Subject: [PATCH 0/3] wcn36xx: Implement explicit beacon filter tables
+Date:   Mon, 13 Dec 2021 13:51:24 +0000
+Message-Id: <20211213135127.1656258-1-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211213060309.28323-1-MeiChia.Chiu@mediatek.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi MeiChia,
+Downstream provides the ability to directly program the beacon filter
+tables. Currently in upstream we rely on whatever is the default filtration
+table in firmware.
 
-Thank you for the patch! Yet something to improve:
+A trivial packing fixup is required for the SMD structure. The downstream
+filtration table from the Linux driver is applied but, we are not
+necessarily constrained to using this table forever.
 
-[auto build test ERROR on kvalo-wireless-drivers-next/master]
-[also build test ERROR on kvalo-wireless-drivers/master v5.16-rc5]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Tested on wcn3620 and wcn3680b.
 
-url:    https://github.com/0day-ci/linux/commits/MeiChia-Chiu/mt76-mt7915-add-mu-mimo-and-ofdma-debugfs-knobs/20211213-140356
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20211213/202112132120.tRzeHzz5-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/91cb277e37dbed42e6b6aee256694204ba8d9a7f
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review MeiChia-Chiu/mt76-mt7915-add-mu-mimo-and-ofdma-debugfs-knobs/20211213-140356
-        git checkout 91cb277e37dbed42e6b6aee256694204ba8d9a7f
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=mips SHELL=/bin/bash
+Bryan O'Donoghue (3):
+  wcn36xx: Fix beacon filter structure definitions
+  wcn36xx: Fix physical location of beacon filter comment
+  wcn36xx: Implement downstream compliant beacon filtering
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+ drivers/net/wireless/ath/wcn36xx/hal.h  |  29 +++++--
+ drivers/net/wireless/ath/wcn36xx/main.c |   1 +
+ drivers/net/wireless/ath/wcn36xx/smd.c  | 104 ++++++++++++++++++++++++
+ drivers/net/wireless/ath/wcn36xx/smd.h  |   3 +
+ 4 files changed, 131 insertions(+), 6 deletions(-)
 
-All errors (new ones prefixed by >>):
+-- 
+2.33.0
 
-   arch/mips/kernel/head.o: in function `kernel_entry':
-   (.ref.text+0xac): relocation truncated to fit: R_MIPS_26 against `start_kernel'
-   init/main.o: in function `set_reset_devices':
-   main.c:(.init.text+0x20): relocation truncated to fit: R_MIPS_26 against `_mcount'
-   main.c:(.init.text+0x30): relocation truncated to fit: R_MIPS_26 against `__sanitizer_cov_trace_pc'
-   init/main.o: in function `debug_kernel':
-   main.c:(.init.text+0xa4): relocation truncated to fit: R_MIPS_26 against `_mcount'
-   main.c:(.init.text+0xb4): relocation truncated to fit: R_MIPS_26 against `__sanitizer_cov_trace_pc'
-   init/main.o: in function `quiet_kernel':
-   main.c:(.init.text+0x128): relocation truncated to fit: R_MIPS_26 against `_mcount'
-   main.c:(.init.text+0x138): relocation truncated to fit: R_MIPS_26 against `__sanitizer_cov_trace_pc'
-   init/main.o: in function `warn_bootconfig':
-   main.c:(.init.text+0x1ac): relocation truncated to fit: R_MIPS_26 against `_mcount'
-   main.c:(.init.text+0x1bc): relocation truncated to fit: R_MIPS_26 against `__sanitizer_cov_trace_pc'
-   init/main.o: in function `init_setup':
-   main.c:(.init.text+0x238): relocation truncated to fit: R_MIPS_26 against `_mcount'
-   main.c:(.init.text+0x258): additional relocation overflows omitted from the output
-   mips-linux-ld: drivers/net/wireless/mediatek/mt76/mt7915/debugfs.o: in function `mt7915_muru_stat_show':
->> debugfs.c:(.text.mt7915_muru_stat_show+0x320): undefined reference to `__udivdi3'
->> mips-linux-ld: debugfs.c:(.text.mt7915_muru_stat_show+0x34c): undefined reference to `__udivdi3'
-   mips-linux-ld: debugfs.c:(.text.mt7915_muru_stat_show+0x37c): undefined reference to `__udivdi3'
-   mips-linux-ld: debugfs.c:(.text.mt7915_muru_stat_show+0x3ac): undefined reference to `__udivdi3'
-   mips-linux-ld: debugfs.c:(.text.mt7915_muru_stat_show+0x3dc): undefined reference to `__udivdi3'
-   mips-linux-ld: drivers/net/wireless/mediatek/mt76/mt7915/debugfs.o:debugfs.c:(.text.mt7915_muru_stat_show+0x4dc): more undefined references to `__udivdi3' follow
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
