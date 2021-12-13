@@ -2,156 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79EEE4728C6
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 11:15:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77C534726B9
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 10:57:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243802AbhLMKOm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Dec 2021 05:14:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32974 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240842AbhLMKCo (ORCPT
+        id S238631AbhLMJyF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Dec 2021 04:54:05 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:42666 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236330AbhLMJvt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Dec 2021 05:02:44 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F3D6C07E5C1
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Dec 2021 01:49:34 -0800 (PST)
+        Mon, 13 Dec 2021 04:51:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6E1E1B80E16
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Dec 2021 09:49:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F83C00446;
-        Mon, 13 Dec 2021 09:49:31 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id E0208CE0E80
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Dec 2021 09:51:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27958C341C5;
+        Mon, 13 Dec 2021 09:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639388972;
-        bh=ZAuXXhRRivDY+SR5zroPQoE2OpCCJQZznPmGkYEuTWw=;
+        s=k20201202; t=1639389106;
+        bh=yRm83xXxfcU/dQJ2h5jdDPCw/PVTMP6hBA7A7rEJzV4=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=B2WMD4fdcClodMh8rSnVgEsVFhKlQcdAhfaSy+Lp4C/+oUWLudwT54Pr17lTkc7Ot
-         DhTzlIXWDpHRjUvC8qYqzrtkgCHhLvZcrmoYIixgMVCmyZprVPMXfC5o9NGe/ZywAs
-         XpwC6at2YEhbCZgUymXxXeYd6P6xozPP9lQ2NJbvkWRyhoRGQTO/3Lp7APpdsjA93L
-         WPOvaOBa08i/TjtKpePnhP8D/nLsS1iogyH1jjO/zOcPzg4dy+37C6lqLP38SzFh1h
-         XELorOQpkH7LosMLOGuccHFwbFsxtNa6ZCUTSKzTag536GlRz0ZqJQgjZh2xQDNKMd
-         Q4PznPCyEMl5g==
+        b=TpMcaRGVQfj9GQNCtqhLOKgcWxD0I/XRAtuxhFbvAC/2zJ6Tg+TgKp/f2fDNEHuIF
+         h1AcWivp7kDKfhuZ+jPN5+iSO5XT/16NkxF/bbcpW5ucv3pXfcNX87geb9QlSlue0a
+         m85YPO2lUTFU+WMIRpW1t/ZOSfa1dHZ9gLcQao+5EyDPIS01WGUX3FGNijaYR4Aj0z
+         TCMZyWZhUkDKbJzEYXc6BfrHw3dYglzIAecegSWbPp1moTLxT8LOcCNHFbKJzzdz6+
+         8PZMmyF1cGbETAh4QrgNnZSc3LgWlmMwenkVr9czNDVmM4Xi543i7wUUMj/dKom1kZ
+         pdr7RJXpAx9tw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Avoid false DEADLOCK warning reported by lockdep
+Subject: Re: [PATCH] ath11k: Fix deleting uninitialized kernel timer during
+ fragment cache flush
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211209011949.151472-1-quic_bqiang@quicinc.com>
-References: <20211209011949.151472-1-quic_bqiang@quicinc.com>
-To:     Baochen Qiang <quic_bqiang@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+In-Reply-To: <1639071421-25078-1-git-send-email-quic_ramess@quicinc.com>
+References: <1639071421-25078-1-git-send-email-quic_ramess@quicinc.com>
+To:     Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Rameshkumar Sundaram <quic_ramess@quicinc.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163938896986.20609.1805294276865570934.kvalo@kernel.org>
-Date:   Mon, 13 Dec 2021 09:49:31 +0000 (UTC)
+Message-ID: <163938910316.20609.2975285660545540570.kvalo@kernel.org>
+Date:   Mon, 13 Dec 2021 09:51:44 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Baochen Qiang <quic_bqiang@quicinc.com> wrote:
+Rameshkumar Sundaram <quic_ramess@quicinc.com> wrote:
 
-> With CONFIG_LOCKDEP=y and CONFIG_DEBUG_SPINLOCK=y, lockdep reports
-> below warning:
+> frag_timer will be created & initialized for stations when
+> they associate and will be deleted during every key installation
+> while flushing old fragments.
 > 
-> [  166.059415] ============================================
-> [  166.059416] WARNING: possible recursive locking detected
-> [  166.059418] 5.15.0-wt-ath+ #10 Tainted: G        W  O
-> [  166.059420] --------------------------------------------
-> [  166.059421] kworker/0:2/116 is trying to acquire lock:
-> [  166.059423] ffff9905f2083160 (&srng->lock){+.-.}-{2:2}, at: ath11k_hal_reo_cmd_send+0x20/0x490 [ath11k]
-> [  166.059440]
->                but task is already holding lock:
-> [  166.059442] ffff9905f2083230 (&srng->lock){+.-.}-{2:2}, at: ath11k_dp_process_reo_status+0x95/0x2d0 [ath11k]
-> [  166.059491]
->                other info that might help us debug this:
-> [  166.059492]  Possible unsafe locking scenario:
+> For AP interface self peer will be created and Group keys
+> will be installed for this peer, but there will be no real
+> Station entry & hence frag_timer won't be created and
+> initialized, deleting such uninitialized kernel timers causes below
+> warnings and backtraces printed with CONFIG_DEBUG_OBJECTS_TIMERS
+> enabled.
 > 
-> [  166.059493]        CPU0
-> [  166.059494]        ----
-> [  166.059495]   lock(&srng->lock);
-> [  166.059498]   lock(&srng->lock);
-> [  166.059500]
->                 *** DEADLOCK ***
+> [ 177.828008] ODEBUG: assert_init not available (active state 0) object type: timer_list hint: 0x0
+> [ 177.836833] WARNING: CPU: 3 PID: 188 at lib/debugobjects.c:508 debug_print_object+0xb0/0xf0
+> [ 177.845185] Modules linked in: ath11k_pci ath11k qmi_helpers qrtr_mhi qrtr ns mhi
+> [ 177.852679] CPU: 3 PID: 188 Comm: hostapd Not tainted 5.14.0-rc3-32919-g4034139e1838-dirty #14
+> [ 177.865805] pstate: 60000005 (nZCv daif -PAN -UAO -TCO BTYPE=--)
+> [ 177.871804] pc : debug_print_object+0xb0/0xf0
+> [ 177.876155] lr : debug_print_object+0xb0/0xf0
+> [ 177.880505] sp : ffffffc01169b5a0
+> [ 177.883810] x29: ffffffc01169b5a0 x28: ffffff80081c2320 x27: ffffff80081c4078
+> [ 177.890942] x26: ffffff8003fe8f28 x25: ffffff8003de9890 x24: ffffffc01134d738
+> [ 177.898075] x23: ffffffc010948f20 x22: ffffffc010b2d2e0 x21: ffffffc01169b628
+> [ 177.905206] x20: ffffffc01134d700 x19: ffffffc010c80d98 x18: 00000000000003f6
+> [ 177.912339] x17: 203a657079742074 x16: 63656a626f202930 x15: 0000000000000152
+> [ 177.919471] x14: 0000000000000152 x13: 00000000ffffffea x12: ffffffc010d732e0
+> [ 177.926603] x11: 0000000000000003 x10: ffffffc010d432a0 x9 : ffffffc010d432f8
+> [ 177.933735] x8 : 000000000002ffe8 x7 : c0000000ffffdfff x6 : 0000000000000001
+> [ 177.940866] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 00000000ffffffff
+> [ 177.947997] x2 : ffffffc010c93240 x1 : ffffff80023624c0 x0 : 0000000000000054
+> [ 177.955130] Call trace:
+> [ 177.957567] debug_print_object+0xb0/0xf0
+> [ 177.961570] debug_object_assert_init+0x124/0x178
+> [ 177.966269] try_to_del_timer_sync+0x1c/0x70
+> [ 177.970536] del_timer_sync+0x30/0x50
+> [ 177.974192] ath11k_peer_frags_flush+0x34/0x68 [ath11k]
+> [ 177.979439] ath11k_mac_op_set_key+0x1e4/0x338 [ath11k]
+> [ 177.984673] ieee80211_key_enable_hw_accel+0xc8/0x3d0
+> [ 177.989722] ieee80211_key_replace+0x360/0x740
+> [ 177.994160] ieee80211_key_link+0x16c/0x210
+> [ 177.998337] ieee80211_add_key+0x138/0x338
+> [ 178.002426] nl80211_new_key+0xfc/0x258
+> [ 178.006257] genl_family_rcv_msg_doit.isra.17+0xd8/0x120
+> [ 178.011565] genl_rcv_msg+0xd8/0x1c8
+> [ 178.015134] netlink_rcv_skb+0x38/0xf8
+> [ 178.018877] genl_rcv+0x34/0x48
+> [ 178.022012] netlink_unicast+0x174/0x230
+> [ 178.025928] netlink_sendmsg+0x188/0x388
+> [ 178.029845] ____sys_sendmsg+0x218/0x250
+> [ 178.033763] ___sys_sendmsg+0x68/0x90
+> [ 178.037418] __sys_sendmsg+0x44/0x88
+> [ 178.040988] __arm64_sys_sendmsg+0x20/0x28
+> [ 178.045077] invoke_syscall.constprop.5+0x54/0xe0
+> [ 178.049776] do_el0_svc+0x74/0xc0
+> [ 178.053084] el0_svc+0x10/0x18
+> [ 178.056133] el0t_64_sync_handler+0x88/0xb0
+> [ 178.060310] el0t_64_sync+0x148/0x14c
+> [ 178.063966] ---[ end trace 8a5cf0bf9d34a058 ]---
 > 
-> [  166.059501]  May be due to missing lock nesting notation
+> Add changes to not to delete frag timer for peers during
+> group key installation.
 > 
-> [  166.059502] 3 locks held by kworker/0:2/116:
-> [  166.059504]  #0: ffff9905c0081548 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x1f6/0x660
-> [  166.059511]  #1: ffff9d2400a5fe68 ((debug_obj_work).work){+.+.}-{0:0}, at: process_one_work+0x1f6/0x660
-> [  166.059517]  #2: ffff9905f2083230 (&srng->lock){+.-.}-{2:2}, at: ath11k_dp_process_reo_status+0x95/0x2d0 [ath11k]
-> [  166.059532]
->                stack backtrace:
-> [  166.059534] CPU: 0 PID: 116 Comm: kworker/0:2 Kdump: loaded Tainted: G        W  O      5.15.0-wt-ath+ #10
-> [  166.059537] Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS HNKBLi70.86A.0059.2019.1112.1124 11/12/2019
-> [  166.059539] Workqueue: events free_obj_work
-> [  166.059543] Call Trace:
-> [  166.059545]  <IRQ>
-> [  166.059547]  dump_stack_lvl+0x56/0x7b
-> [  166.059552]  __lock_acquire+0xb9a/0x1a50
-> [  166.059556]  lock_acquire+0x1e2/0x330
-> [  166.059560]  ? ath11k_hal_reo_cmd_send+0x20/0x490 [ath11k]
-> [  166.059571]  _raw_spin_lock_bh+0x33/0x70
-> [  166.059574]  ? ath11k_hal_reo_cmd_send+0x20/0x490 [ath11k]
-> [  166.059584]  ath11k_hal_reo_cmd_send+0x20/0x490 [ath11k]
-> [  166.059594]  ath11k_dp_tx_send_reo_cmd+0x3f/0x130 [ath11k]
-> [  166.059605]  ath11k_dp_rx_tid_del_func+0x221/0x370 [ath11k]
-> [  166.059618]  ath11k_dp_process_reo_status+0x22f/0x2d0 [ath11k]
-> [  166.059632]  ? ath11k_dp_service_srng+0x2ea/0x2f0 [ath11k]
-> [  166.059643]  ath11k_dp_service_srng+0x2ea/0x2f0 [ath11k]
-> [  166.059655]  ath11k_pci_ext_grp_napi_poll+0x1c/0x70 [ath11k_pci]
-> [  166.059659]  __napi_poll+0x28/0x230
-> [  166.059664]  net_rx_action+0x285/0x310
-> [  166.059668]  __do_softirq+0xe6/0x4d2
-> [  166.059672]  irq_exit_rcu+0xd2/0xf0
-> [  166.059675]  common_interrupt+0xa5/0xc0
-> [  166.059678]  </IRQ>
-> [  166.059679]  <TASK>
-> [  166.059680]  asm_common_interrupt+0x1e/0x40
-> [  166.059683] RIP: 0010:_raw_spin_unlock_irqrestore+0x38/0x70
-> [  166.059686] Code: 83 c7 18 e8 2a 95 43 ff 48 89 ef e8 22 d2 43 ff 81 e3 00 02 00 00 75 25 9c 58 f6 c4 02 75 2d 48 85 db 74 01 fb bf 01 00 00 00 <e8> 63 2e 40 ff 65 8b 05 8c 59 97 5c 85 c0 74 0a 5b 5d c3 e8 00 6a
-> [  166.059689] RSP: 0018:ffff9d2400a5fca0 EFLAGS: 00000206
-> [  166.059692] RAX: 0000000000000002 RBX: 0000000000000200 RCX: 0000000000000006
-> [  166.059694] RDX: 0000000000000000 RSI: ffffffffa404879b RDI: 0000000000000001
-> [  166.059696] RBP: ffff9905c0053000 R08: 0000000000000001 R09: 0000000000000001
-> [  166.059698] R10: ffff9d2400a5fc50 R11: 0000000000000001 R12: ffffe186c41e2840
-> [  166.059700] R13: 0000000000000001 R14: ffff9905c78a1c68 R15: 0000000000000001
-> [  166.059704]  free_debug_processing+0x257/0x3d0
-> [  166.059708]  ? free_obj_work+0x1f5/0x250
-> [  166.059712]  __slab_free+0x374/0x5a0
-> [  166.059718]  ? kmem_cache_free+0x2e1/0x370
-> [  166.059721]  ? free_obj_work+0x1f5/0x250
-> [  166.059724]  kmem_cache_free+0x2e1/0x370
-> [  166.059727]  free_obj_work+0x1f5/0x250
-> [  166.059731]  process_one_work+0x28b/0x660
-> [  166.059735]  ? process_one_work+0x660/0x660
-> [  166.059738]  worker_thread+0x37/0x390
-> [  166.059741]  ? process_one_work+0x660/0x660
-> [  166.059743]  kthread+0x176/0x1a0
-> [  166.059746]  ? set_kthread_struct+0x40/0x40
-> [  166.059749]  ret_from_fork+0x22/0x30
-> [  166.059754]  </TASK>
+> Tested on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01092-QCAHKSWPL_SILICONZ-1
 > 
-> Since these two lockes are both initialized in ath11k_hal_srng_setup,
-> they are assigned with the same key. As a result lockdep suspects that
-> the task is trying to acquire the same lock (due to same key) while
-> already holding it, and thus reports the DEADLOCK warning. However as
-> they are different spinlock instances, the warning is false positive.
-> 
-> On the other hand, even no dead lock indeed, this is a major issue for
-> upstream regression testing as it disables lockdep functionality.
-> 
-> Fix it by assigning separate lock class key for each srng->lock.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> Fixes: c3944a562102 ("ath11k: Clear the fragment cache during key install")
+> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-767c94caf0ef ath11k: Avoid false DEADLOCK warning reported by lockdep
+ba53ee7f7f38 ath11k: Fix deleting uninitialized kernel timer during fragment cache flush
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211209011949.151472-1-quic_bqiang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/1639071421-25078-1-git-send-email-quic_ramess@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
