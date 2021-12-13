@@ -2,89 +2,220 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 520384732E3
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 18:25:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B107A47344D
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 19:47:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236079AbhLMRZf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Dec 2021 12:25:35 -0500
-Received: from dispatch1-us1.ppe-hosted.com ([148.163.129.52]:51988 "EHLO
-        dispatch1-us1.ppe-hosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235816AbhLMRZe (ORCPT
+        id S241991AbhLMSrg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Dec 2021 13:47:36 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:34902 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241994AbhLMSrf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Dec 2021 12:25:34 -0500
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mx1-us1.ppe-hosted.com (unknown [10.7.67.128])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id EB7E81C0071;
-        Mon, 13 Dec 2021 17:25:32 +0000 (UTC)
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2158A78008A;
-        Mon, 13 Dec 2021 17:25:32 +0000 (UTC)
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        Mon, 13 Dec 2021 13:47:35 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 88D5B13C2B3;
-        Mon, 13 Dec 2021 09:25:31 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 88D5B13C2B3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1639416331;
-        bh=nP/ES9vi1iyYepPZ3LsVzOzt9/DnbhAKP0SWqwHL148=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=dD3gXSWw5XEIDW/04LQr/eoWy0t/fx7sPMAiJhYgSbCPyZs0EG0yHP3hh6YAuH3h6
-         f0ksucUNYrdOpLkzi6gVtie80EkAsI2cLXQ6ytGfBig3C63A2i8WAtPlPQNtD/2miR
-         C/15vrRBZMsDmiau+qiKlpD9g3a9MLwJVVCP9W5w=
-Subject: Re: Frame injection on ath9k
-To:     Sven Eckelmann <sven@narfation.org>,
-        Roberto Riggio <roberto.riggio@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, sw@simonwunderlich.de
-References: <CAKkT90b_C+B-2RY2BDO9tiQJh_Vv8y95JuVGADhc+ML-bSqxmQ@mail.gmail.com>
- <4481549.kEIK8Ajiyv@ripper>
- <CAKkT90ZoMA-FYtMqqu9hm8W--g1Wj1RpkkxzT=OO4zE7VaVP=Q@mail.gmail.com>
- <3275297.oaIAGnzijj@sven-l14>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <f902b4cc-cf83-4848-fe16-6b1e061ad1fc@candelatech.com>
-Date:   Mon, 13 Dec 2021 09:25:31 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        by ams.source.kernel.org (Postfix) with ESMTPS id 53EACB8123D
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Dec 2021 18:47:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479FDC34602;
+        Mon, 13 Dec 2021 18:47:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639421253;
+        bh=AsT36GPIZexpgzXCgFzRZvV3iI9jKwbgGPjcJyiTbQo=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Q7dkFVTVJorrZiJxQtb5tGSZvzD4d4PSnOHxHe+HXZ5PYFX2oOKe4pwfkkNc7H+02
+         nRaCWFKG0FGwhtZquZGDvmTEzAuvT1gPFjxVrT7omBulGvuqXnj8+wLtTh4zASawxe
+         I0Ll56YDjLhNi6f2A1pIda35Bi8W0bx+ryvhEQV2IQfKM6d10EIZ/h9tGDqONA/ZUn
+         jNuEtmvWqBgmDw+eq5tqDQVWiSVRgeaDSaM+2A5YekrAFHtDzazionFbpXXO0OTL39
+         6MVucBveipm0OoqaDrhrS5wGq/HvpXSfg5WHdYz3hIlfyUdd8osq/7ktxY/IwANOCB
+         czlASjYBs9g4w==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <3275297.oaIAGnzijj@sven-l14>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-MDID: 1639416333-6MG6KsO87dey
+Subject: Re: pull request: mt76 2021-12-03
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <0f6dab1f-e892-7780-0c9b-545da9b8c04d@nbd.name>
+References: <0f6dab1f-e892-7780-0c9b-545da9b8c04d@nbd.name>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163942124954.6700.786144074860823802.kvalo@kernel.org>
+Date:   Mon, 13 Dec 2021 18:47:32 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/13/21 9:05 AM, Sven Eckelmann wrote:
-> On Monday, 13 December 2021 17:49:38 CET Roberto Riggio wrote:
->> Thanks Sven for the follow-up. Do you know if besides on the ath9k
->> driver the frame injection is supported also on the ath10k driver?
-> 
-> Yes, but not with rate selection.
-> 
-> There is support for this in ath10k-ct but I am not sure if this only
-> supported for specific ath10k-ct firmware variant - or if you just need to
-> have recent ath10k-ct firmware. The relevant feature is called
-> ATH10K_FW_FEATURE_HAS_TX_RC_CT and the relevant code is in ath10k-ct since
-> 2018.
+Felix Fietkau <nbd@nbd.name> wrote:
 
-Any relatively recent (last few years) ath10k-ct firmware should support this
-for wave-2.  wave-1 ath10k-ct has some slightly more limitted support for the same
-feature.  I think all variants would support this, but we test internally with the -htt-mgt
-version that pushes all the management frames over the data packet transport, so I suggest
-using that.
-
-Thanks,
-Ben
-
+> Hi Kalle,
 > 
-> Kind regards,
-> 	Sven
+> here's my first pull request for 5.17
 > 
+> - Felix
+> 
+> The following changes since commit 69831173fcbbfebb7aa2d76523deaf0b87b8eddd:
+> 
+>    rtlwifi: rtl8192de: Style clean-ups (2021-11-29 12:47:07 +0200)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-12-03
+> 
+> for you to fetch changes up to ba106bebc7429957ea9125639a4715ddd1b23171:
+> 
+>    mt76: mt7663: disable 4addr capability (2021-12-03 11:15:21 +0100)
+> 
+> ----------------------------------------------------------------
+> mt76 patches for 5.17
+> 
+> * decap offload fixes
+> * mt7915 fixes
+> * mt7921 fixes
+> * eeprom fixes
+> * powersave handling fixes
+> * SAR support
+> 
+> ----------------------------------------------------------------
+> Bo Jiao (1):
+>        mt76: fix the wiphy's available antennas to the correct value
+> 
+> Changcheng Deng (1):
+>        mt76: mt7921: fix boolreturn.cocci warning
+> 
+> Daniel Golle (1):
+>        mt76: eeprom: tolerate corrected bit-flips
+> 
+> Deren Wu (3):
+>        mt76: mt7921: add support for PCIe ID 0x0608/0x0616
+>        mt76: mt7921: introduce 160 MHz channel bandwidth support
+>        mt76: mt7921s: fix bus hang with wrong privilege
+> 
+> Felix Fietkau (7):
+>        mt76: mt7915: fix decap offload corner case with 4-addr VLAN frames
+>        mt76: mt7615: fix decap offload corner case with 4-addr VLAN frames
+>        mt76: mt7615: improve wmm index allocation
+>        mt76: mt7915: improve wmm index allocation
+>        mt76: clear sta powersave flag after notifying driver
+>        mt76: mt7603: improve reliability of tx powersave filtering
+>        mt76: mt7615: clear mcu error interrupt status on mt7663
+> 
+> Lorenzo Bianconi (15):
+>        mt76: mt7915: get rid of mt7915_mcu_set_fixed_rate routine
+>        mt76: debugfs: fix queue reporting for mt76-usb
+>        mt76: fix possible OOB issue in mt76_calculate_default_rate
+>        mt76: mt7921: fix possible NULL pointer dereference in mt7921_mac_write_txwi
+>        mt76: connac: fix a theoretical NULL pointer dereference in mt76_connac_get_phy_mode
+>        mt76: mt7615: remove dead code in get_omac_idx
+>        mt76: connac: remove PHY_MODE_AX_6G configuration in mt76_connac_get_phy_mode
+>        mt76: mt7921: honor mt76_connac_mcu_set_rate_txpower return value in mt7921_config
+>        mt76: move sar utilities to mt76-core module
+>        mt76: mt76x02: introduce SAR support
+>        mt76: mt7603: introduce SAR support
+>        mt76: mt7915: introduce SAR support
+>        mt76: connac: fix last_chan configuration in mt76_connac_mcu_rate_txpower_band
+>        mt76: move sar_capa configuration in common code
+>        mt76: mt7663: disable 4addr capability
+> 
+> MeiChia Chiu (1):
+>        mt76: mt7915: fix the wrong SMPS mode
+> 
+> Peter Chiu (1):
+>        mt76: mt7615: fix possible deadlock while mt7615_register_ext_phy()
+> 
+> Ryder Lee (3):
+>        mt76: mt7915: fix SMPS operation fail
+>        mt76: only set rx radiotap flag from within decoder functions
+>        mt76: only access ieee80211_hdr after mt76_insert_ccmp_hdr
+> 
+> Sean Wang (5):
+>        mt76: mt7921: drop offload_flags overwritten
+>        mt76: mt7921: fix MT7921E reset failure
+>        mt76: mt7921: move mt76_connac_mcu_set_hif_suspend to bus-related files
+>        mt76: mt7921s: fix the device cannot sleep deeply in suspend
+>        mt76: mt7921s: fix possible kernel crash due to invalid Rx count
+> 
+> Shayne Chen (5):
+>        mt76: mt7915: fix return condition in mt7915_tm_reg_backup_restore()
+>        mt76: mt7915: add default calibrated data support
+>        mt76: testmode: add support to set MAC
+>        mt76: mt7615: fix unused tx antenna mask in testmode
+>        mt76: mt7921: use correct iftype data on 6GHz cap init
+> 
+> Xing Song (2):
+>        mt76: reverse the first fragmented frame to 802.11
+>        mt76: do not pass the received frame with decryption error
+> 
+>   drivers/net/wireless/mediatek/mt76/debugfs.c         |   2 +-
+>   drivers/net/wireless/mediatek/mt76/eeprom.c          |   2 ++
+>   drivers/net/wireless/mediatek/mt76/mac80211.c        |  90 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------
+>   drivers/net/wireless/mediatek/mt76/mt76.h            |   8 +++++++-
+>   drivers/net/wireless/mediatek/mt76/mt7603/mac.c      |   9 +++++++--
+>   drivers/net/wireless/mediatek/mt76/mt7603/main.c     |  31 +++++++++++++++++++++++------
+>   drivers/net/wireless/mediatek/mt76/mt7603/mcu.c      |   4 ++--
+>   drivers/net/wireless/mediatek/mt76/mt7615/init.c     |   1 +
+>   drivers/net/wireless/mediatek/mt76/mt7615/mac.c      | 122 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------
+>   drivers/net/wireless/mediatek/mt76/mt7615/mac.h      |   2 ++
+>   drivers/net/wireless/mediatek/mt76/mt7615/main.c     |  11 +++--------
+>   drivers/net/wireless/mediatek/mt76/mt7615/mmio.c     |   1 +
+>   drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c |   8 ++++++--
+>   drivers/net/wireless/mediatek/mt76/mt7615/testmode.c |  21 ++++++++++----------
+>   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |  51 +++++++++++------------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h |   3 ++-
+>   drivers/net/wireless/mediatek/mt76/mt76x0/init.c     |   5 ++++-
+>   drivers/net/wireless/mediatek/mt76/mt76x0/main.c     |  34 ++++++++++++++++++++++++++++++--
+>   drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h   |   2 ++
+>   drivers/net/wireless/mediatek/mt76/mt76x0/pci.c      |   1 +
+>   drivers/net/wireless/mediatek/mt76/mt76x0/usb.c      |   1 +
+>   drivers/net/wireless/mediatek/mt76/mt76x02.h         |   2 +-
+>   drivers/net/wireless/mediatek/mt76/mt76x02_util.c    |   4 +++-
+>   drivers/net/wireless/mediatek/mt76/mt76x2/init.c     |  29 +++++++++++++++++++++++++++
+>   drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h   |   2 ++
+>   drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c |   5 +++--
+>   drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c |   7 ++++++-
+>   drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c |   4 +++-
+>   drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c |   9 +++++++--
+>   drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c   |  83 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------
+>   drivers/net/wireless/mediatek/mt76/mt7915/mac.c      | 163 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7915/main.c     |  31 ++++++++++++++++++++++++-----
+>   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      | 160 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------------------------------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7915/mcu.h      |   9 +++++++++
+>   drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h   |   4 ++++
+>   drivers/net/wireless/mediatek/mt76/mt7915/testmode.c |  17 ++++++++--------
+>   drivers/net/wireless/mediatek/mt76/mt7921/init.c     |  12 ++++-------
+>   drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 133 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/main.c     |  74 +++++++++++++++++++++++++-------------------------------------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/mcu.c      |  11 +++++++++++
+>   drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h   |   1 +
+>   drivers/net/wireless/mediatek/mt76/mt7921/pci.c      |  20 +++++++------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c  |   4 ++++
+>   drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c  |   2 +-
+>   drivers/net/wireless/mediatek/mt76/mt7921/sdio.c     |  48 ++++++++++++++++++++++++--------------------
+>   drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c |   2 +-
+>   drivers/net/wireless/mediatek/mt76/sdio.c            |   3 ++-
+>   drivers/net/wireless/mediatek/mt76/sdio_txrx.c       |   3 ++-
+>   drivers/net/wireless/mediatek/mt76/testmode.c        |  36 ++++++++++++++++++++++++++++++---
+>   drivers/net/wireless/mediatek/mt76/testmode.h        |   4 ++++
+>   50 files changed, 929 insertions(+), 362 deletions(-)
 
+Fixes tag problems:
+
+In commit
+
+  0edfc0255b0b ("mt76: mt7915: fix the wrong SMPS mode")
+
+Fixes tag
+
+  Fixes: 427b09cd6bfa ("mt76: mt7915: fix SMPS operation fail")
+
+has these problem(s):
+
+  - Target SHA1 does not exist
+
+Patch set to Changes Requested.
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+https://patchwork.kernel.org/project/linux-wireless/patch/0f6dab1f-e892-7780-0c9b-545da9b8c04d@nbd.name/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
