@@ -2,74 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD92F472AC8
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 12:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82D07472CF3
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Dec 2021 14:13:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232333AbhLMLAa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Dec 2021 06:00:30 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:51086 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231363AbhLMLAZ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Dec 2021 06:00:25 -0500
-Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=[192.168.100.150])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1mwj48-001H5Q-DN; Mon, 13 Dec 2021 13:00:21 +0200
-Message-ID: <9f7d720988c7aa113b70386bae80dbcd46b9b274.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 13 Dec 2021 13:00:19 +0200
-In-Reply-To: <87czm0kce3.fsf@codeaurora.org>
-References: <20211210091245.289008-1-luca@coelho.fi>
-         <iwlwifi.20211210110539.4b397e664d44.Ib98004ccd2c7a55fd883a8ea7eebd810f406dec6@changeid>
-         <87czm0kce3.fsf@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.2-1 
+        id S237259AbhLMNNu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Dec 2021 08:13:50 -0500
+Received: from mga11.intel.com ([192.55.52.93]:55324 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237237AbhLMNNt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 Dec 2021 08:13:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1639401229; x=1670937229;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fDvQIWLWTaRgRRLXSmGWq+oFnO4IwlflBxoU/HMSINU=;
+  b=DIrh19SaINptr+n8R+XQBkfxC4kmuXXIS3FBgNn6dyelz+yAyktfymzg
+   tVhr/uvYZJGGjFtJYqsCp9mkSh+KoZa5jeCTtTAiJdL0uRJIt+4sd7o3+
+   53DAtAe9aRNCd8WSImvKu/+cyFrhnReKrV1XCVo/IYLK+BYp7QgBFCoPM
+   OpookfTYy4qtqV5FHtKfOfNu2AG19A0+qGZukkXyRTcOT+zDyYrGUSlir
+   8l2n+aRQLX2gjLRi8cQby0KZmlCGeEdac1LmhAPHCYa76PMXPyfGx65ry
+   YsrbrNso+hfgFDZm3J/WWfbojBk3Gux/9pRqHpquUMmp2NcGb/gMqttz+
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10196"; a="236256930"
+X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
+   d="scan'208";a="236256930"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 05:13:49 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
+   d="scan'208";a="582910182"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by fmsmga004.fm.intel.com with ESMTP; 13 Dec 2021 05:13:46 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mwl9F-0006gS-Tj; Mon, 13 Dec 2021 13:13:45 +0000
+Date:   Mon, 13 Dec 2021 21:12:53 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     MeiChia Chiu <MeiChia.Chiu@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>
+Cc:     kbuild-all@lists.01.org,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Money Wang <Money.Wang@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        MeiChia Chiu <meichia.chiu@mediatek.com>
+Subject: Re: [PATCH v3] mt76: mt7915: add mu-mimo and ofdma debugfs knobs
+Message-ID: <202112132138.0tsPYnSZ-lkp@intel.com>
+References: <20211213060309.28323-1-MeiChia.Chiu@mediatek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: Re: [PATCH 05/10] iwlwifi: mvm: fix 32-bit build in FTM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211213060309.28323-1-MeiChia.Chiu@mediatek.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2021-12-13 at 12:49 +0200, Kalle Valo wrote:
-> Luca Coelho <luca@coelho.fi> writes:
-> 
-> > From: Johannes Berg <johannes.berg@intel.com>
-> > 
-> > On a 32-bit build, the division here needs to be done
-> > using do_div(), otherwise the compiler will try to call
-> > a function that doesn't exist, thus failing to build.
-> > 
-> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> 
-> Fixes tag? And should this go to wireless-drivers?
+Hi MeiChia,
 
-I just checked the patch that this claims to fix internally and it's
-rather old.  It went into v5.10:
+Thank you for the patch! Yet something to improve:
 
-commit b68bd2e3143adbcbc7afd2bc4974c1b988b87211
-Author:     Ilan Peer <ilan.peer@intel.com>
-AuthorDate: Wed Sep 30 16:31:12 2020 +0300
-Commit:     Luca Coelho <luciano.coelho@intel.com>
-CommitDate: Thu Oct 1 22:00:55 2020 +0300
+[auto build test ERROR on kvalo-wireless-drivers-next/master]
+[also build test ERROR on kvalo-wireless-drivers/master v5.16-rc5]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-    iwlwifi: mvm: Add FTM initiator RTT smoothing logic
+url:    https://github.com/0day-ci/linux/commits/MeiChia-Chiu/mt76-mt7915-add-mu-mimo-and-ofdma-debugfs-knobs/20211213-140356
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+config: mips-allmodconfig (https://download.01.org/0day-ci/archive/20211213/202112132138.0tsPYnSZ-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/91cb277e37dbed42e6b6aee256694204ba8d9a7f
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review MeiChia-Chiu/mt76-mt7915-add-mu-mimo-and-ofdma-debugfs-knobs/20211213-140356
+        git checkout 91cb277e37dbed42e6b6aee256694204ba8d9a7f
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=mips SHELL=/bin/bash
 
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-So, if nobody caught this before, I think neither a Fixes tag nor
-taking it to wireless-drivers is necessary.
+All errors (new ones prefixed by >>, old ones prefixed by <<):
 
-What do you think?
+ERROR: modpost: missing MODULE_LICENSE() in drivers/pci/controller/pcie-mt7621.o
+>> ERROR: modpost: "__udivdi3" [drivers/net/wireless/mediatek/mt76/mt7915/mt7915e.ko] undefined!
+>> ERROR: modpost: "__divdi3" [drivers/net/wireless/mediatek/mt76/mt7915/mt7915e.ko] undefined!
+ERROR: modpost: "mips_cm_unlock_other" [drivers/pci/controller/pcie-mt7621.ko] undefined!
+ERROR: modpost: "mips_cpc_base" [drivers/pci/controller/pcie-mt7621.ko] undefined!
+ERROR: modpost: "mips_cm_lock_other" [drivers/pci/controller/pcie-mt7621.ko] undefined!
+ERROR: modpost: "mips_cm_is64" [drivers/pci/controller/pcie-mt7621.ko] undefined!
+ERROR: modpost: "mips_gcr_base" [drivers/pci/controller/pcie-mt7621.ko] undefined!
 
---
-Cheers,
-Luca.
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
