@@ -2,177 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4539A473CF7
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 07:07:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FCBB473D17
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 07:17:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230321AbhLNGHC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Dec 2021 01:07:02 -0500
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:44690
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230323AbhLNGHC (ORCPT
+        id S230414AbhLNGRb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Dec 2021 01:17:31 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:60034 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230374AbhLNGRa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Dec 2021 01:07:02 -0500
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id CBBF63F1B3
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Dec 2021 06:07:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1639462020;
-        bh=atZu+sVRTQVv1ZgYIjaMF+4PZzut5XqBDnscKf83G9Y=;
-        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type;
-        b=dpBPhlsqH3xG/SRTJtpYM4KHpTZTxWh9Dd1B7rhCqcagIBCET7Xvv46b9BVw+nxB4
-         f/SHbXYN1CxfbLtyaZZT4MuThYUAUB+W+YKu+HPTZM55scQK22Oo5ieQc0+Oh3pWVg
-         zYV0veOcj6lN9JqJAZuTk+b8cz0t3TuYiIcqcPqrcPHoTZymHSWyuHGDNGLmqR6mzm
-         XowGema20HWYW1nxXfBjeGwqfrHOleIKEAHW4kbJj17luE7XqMu3lBWRK3wbV6dRzI
-         RnsHGtnXrSEcH40uMTgNfR/VLI4pHpc43y0LX2asJpPDydMRYTRCkmE3LlQZno/A10
-         XRkFzR1uFz9fQ==
-Received: by mail-oo1-f71.google.com with SMTP id x23-20020a4a4117000000b002c263f22601so12217360ooa.19
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Dec 2021 22:07:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=atZu+sVRTQVv1ZgYIjaMF+4PZzut5XqBDnscKf83G9Y=;
-        b=wYYmk66hKWGmGoYsq+Qqeh1ySGGeCaN0OhbTT67E7QY5Wdt3Q57/0Kl0uP7pL1kXPn
-         e1275tycTj5LfilCMUvuJbKatLzHKBldP/fs5Y2ZEyVxBTyWeXOHujX2qXjcq8fvmVVp
-         MvS2mnFK2E+6cPaeSH6Hx08M3IgCRMJsR1RPCFwFLLKgFPE5yB0xoakpEXYqy1MLReF6
-         ey0R6FA3mrTIeuC1fXkEYHhTyUK65juxbXjwt1AG/ccuiGRRnA/EQGeFCzKN7uiogO9p
-         im3wgoVpa1WcPoVOasU6fRp6pbywpri0gF/I3OB4KmVOd9ESGV7LptTT9VEtCzdf9wjr
-         LlkA==
-X-Gm-Message-State: AOAM5331M6ROZ18BImeNKJwVSeOT12g4xSV4RXG5AEGX21ZHkdijP2n6
-        waiiohxUeqa+X9pM4DRUvQjik1MfXkJHqROD/dGIQnsM4PPQemPNgnGqCabiEnisVLWvWB0L7kI
-        MfFzFDrStH5GV+UDYMfZ2BMqrsQd6T7lGKZlM7gp5o/k4Wn2hDSE+bDw6KU3G
-X-Received: by 2002:a05:6808:199c:: with SMTP id bj28mr32526449oib.98.1639462019851;
-        Mon, 13 Dec 2021 22:06:59 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxsAc54cDrgKi0kQyNgUnH00P5/F+C7RE8loyA+HLGHegRIVZXctcN4iFxDQ6tC3Y7RZ9TcuvP9dr/mbgjL40Y=
-X-Received: by 2002:a05:6808:199c:: with SMTP id bj28mr32526433oib.98.1639462019636;
- Mon, 13 Dec 2021 22:06:59 -0800 (PST)
-MIME-Version: 1.0
-References: <20211214053302.242222-1-kai.heng.feng@canonical.com> <4aaf5dd030004285a56bc55cc6b2731b@realtek.com>
-In-Reply-To: <4aaf5dd030004285a56bc55cc6b2731b@realtek.com>
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date:   Tue, 14 Dec 2021 14:06:48 +0800
-Message-ID: <CAAd53p6TWV=vciEPkM-_rPy4op1Nqpqye-UhHXnsUJ4MjoVk=w@mail.gmail.com>
-Subject: Re: [PATCH v2] rtw88: Disable PCIe ASPM while doing NAPI poll on 8821CE
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        Tue, 14 Dec 2021 01:17:30 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BE6H9d14009276, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BE6H9d14009276
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 14 Dec 2021 14:17:09 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Tue, 14 Dec 2021 14:17:09 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Tue, 14 Dec 2021 14:17:08 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01]) by
+ RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01%5]) with mapi id
+ 15.01.2308.020; Tue, 14 Dec 2021 14:17:08 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+CC:     "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
         "jian-hong@endlessm.com" <jhp@endlessos.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
+        "Jakub Kicinski" <kuba@kernel.org>,
         Bernie Huang <phhuang@realtek.com>,
         Brian Norris <briannorris@chromium.org>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: RE: [PATCH v2] rtw88: Disable PCIe ASPM while doing NAPI poll on 8821CE
+Thread-Topic: [PATCH v2] rtw88: Disable PCIe ASPM while doing NAPI poll on
+ 8821CE
+Thread-Index: AQHX8KxEGsnToIDXSUCJmFSUmWAcOawxeDaA//+B4wCAAIbGIA==
+Date:   Tue, 14 Dec 2021 06:17:08 +0000
+Message-ID: <db0e4a43a09f4618b0ed0ad191140e34@realtek.com>
+References: <20211214053302.242222-1-kai.heng.feng@canonical.com>
+ <4aaf5dd030004285a56bc55cc6b2731b@realtek.com>
+ <CAAd53p6TWV=vciEPkM-_rPy4op1Nqpqye-UhHXnsUJ4MjoVk=w@mail.gmail.com>
+In-Reply-To: <CAAd53p6TWV=vciEPkM-_rPy4op1Nqpqye-UhHXnsUJ4MjoVk=w@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzE0IOS4iuWNiCAwNDo0NzowMA==?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Dec 14, 2021 at 1:59 PM Pkshih <pkshih@realtek.com> wrote:
->
->
-> > -----Original Message-----
-> > From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > Sent: Tuesday, December 14, 2021 1:33 PM
-> > To: tony0620emma@gmail.com; Pkshih <pkshih@realtek.com>
-> > Cc: jian-hong@endlessm.com; Kai-Heng Feng <kai.heng.feng@canonical.com>; Kalle Valo
-> > <kvalo@codeaurora.org>; David S. Miller <davem@davemloft.net>; Jakub Kicinski <kuba@kernel.org>; Bernie
-> > Huang <phhuang@realtek.com>; Brian Norris <briannorris@chromium.org>; linux-wireless@vger.kernel.org;
-> > netdev@vger.kernel.org; linux-kernel@vger.kernel.org
-> > Subject: [PATCH v2] rtw88: Disable PCIe ASPM while doing NAPI poll on 8821CE
-> >
-> > Many Intel based platforms face system random freeze after commit
-> > 9e2fd29864c5 ("rtw88: add napi support").
-> >
-> > The commit itself shouldn't be the culprit. My guess is that the 8821CE
-> > only leaves ASPM L1 for a short period when IRQ is raised. Since IRQ is
-> > masked during NAPI polling, the PCIe link stays at L1 and makes RX DMA
-> > extremely slow. Eventually the RX ring becomes messed up:
-> > [ 1133.194697] rtw_8821ce 0000:02:00.0: pci bus timeout, check dma status
-> >
-> > Since the 8821CE hardware may fail to leave ASPM L1, manually do it in
-> > the driver to resolve the issue.
-> >
-> > Fixes: 9e2fd29864c5 ("rtw88: add napi support")
-> > Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=215131
-> > BugLink: https://bugs.launchpad.net/bugs/1927808
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > ---
-> > v2:
-> >  - Add default value for module parameter.
-> >
-> >  drivers/net/wireless/realtek/rtw88/pci.c | 74 ++++++++----------------
-> >  drivers/net/wireless/realtek/rtw88/pci.h |  1 +
-> >  2 files changed, 24 insertions(+), 51 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-> > index 3b367c9085eba..4ab75ac2500e9 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> > @@ -2,7 +2,6 @@
-> >  /* Copyright(c) 2018-2019  Realtek Corporation
-> >   */
-> >
-> > -#include <linux/dmi.h>
-> >  #include <linux/module.h>
-> >  #include <linux/pci.h>
-> >  #include "main.h"
-> > @@ -16,10 +15,13 @@
-> >
-> >  static bool rtw_disable_msi;
-> >  static bool rtw_pci_disable_aspm;
-> > +static int rtw_rx_aspm = -1;
-> >  module_param_named(disable_msi, rtw_disable_msi, bool, 0644);
-> >  module_param_named(disable_aspm, rtw_pci_disable_aspm, bool, 0644);
-> > +module_param_named(rx_aspm, rtw_rx_aspm, int, 0444);
-> >  MODULE_PARM_DESC(disable_msi, "Set Y to disable MSI interrupt support");
-> >  MODULE_PARM_DESC(disable_aspm, "Set Y to disable PCI ASPM support");
-> > +MODULE_PARM_DESC(rx_aspm, "Use PCIe ASPM for RX (0=disable, 1=enable, -1=default)");
-> >
-> >  static u32 rtw_pci_tx_queue_idx_addr[] = {
-> >       [RTW_TX_QUEUE_BK]       = RTK_PCI_TXBD_IDX_BKQ,
-> > @@ -1409,7 +1411,11 @@ static void rtw_pci_link_ps(struct rtw_dev *rtwdev, bool enter)
-> >        * throughput. This is probably because the ASPM behavior slightly
-> >        * varies from different SOC.
-> >        */
-> > -     if (rtwpci->link_ctrl & PCI_EXP_LNKCTL_ASPM_L1)
-> > +     if (!(rtwpci->link_ctrl & PCI_EXP_LNKCTL_ASPM_L1))
-> > +             return;
-> > +
-> > +     if ((enter && atomic_dec_return(&rtwpci->link_usage) == 0) ||
-> > +         (!enter && atomic_inc_return(&rtwpci->link_usage) == 1))
-> >               rtw_pci_aspm_set(rtwdev, enter);
-> >  }
-> >
->
-> I found calling pci_link_ps isn't always symmetric, so we need to reset
-> ref_cnt at pci_start() like below, or we can't enter rtw_pci_aspm_set()
-> anymore. The negative flow I face is
-> ifup -> connect AP -> ifdown -> ifup (ref_cnt isn't expected now).
-
-Is it expected to be asymmetric?
-If it's intended to be this way, I'll change where we set link_usage.
-Otherwise I think making it symmetric makes more sense.
-
-Kai-Heng
-
->
->
-> @@ -582,6 +582,8 @@ static int rtw_pci_start(struct rtw_dev *rtwdev)
->         rtw_pci_napi_start(rtwdev);
->
->         spin_lock_bh(&rtwpci->irq_lock);
-> +       atomic_set(&rtwpci->link_usage, 1);
->         rtwpci->running = true;
->         rtw_pci_enable_interrupt(rtwdev, rtwpci, false);
->         spin_unlock_bh(&rtwpci->irq_lock);
->
-> --
-> Ping-Ke
->
->
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEthaS1IZW5nIEZlbmcgPGth
+aS5oZW5nLmZlbmdAY2Fub25pY2FsLmNvbT4NCj4gU2VudDogVHVlc2RheSwgRGVjZW1iZXIgMTQs
+IDIwMjEgMjowNyBQTQ0KPiBUbzogUGtzaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+IENjOiB0
+b255MDYyMGVtbWFAZ21haWwuY29tOyBqaWFuLWhvbmdAZW5kbGVzc20uY29tIDxqaHBAZW5kbGVz
+c29zLm9yZz47IEthbGxlIFZhbG8gPGt2YWxvQGNvZGVhdXJvcmEub3JnPjsNCj4gRGF2aWQgUy4g
+TWlsbGVyIDxkYXZlbUBkYXZlbWxvZnQubmV0PjsgSmFrdWIgS2ljaW5za2kgPGt1YmFAa2VybmVs
+Lm9yZz47IEJlcm5pZSBIdWFuZw0KPiA8cGhodWFuZ0ByZWFsdGVrLmNvbT47IEJyaWFuIE5vcnJp
+cyA8YnJpYW5ub3JyaXNAY2hyb21pdW0ub3JnPjsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwu
+b3JnOw0KPiBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
+b3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjJdIHJ0dzg4OiBEaXNhYmxlIFBDSWUgQVNQTSB3
+aGlsZSBkb2luZyBOQVBJIHBvbGwgb24gODgyMUNFDQo+IA0KPiBPbiBUdWUsIERlYyAxNCwgMjAy
+MSBhdCAxOjU5IFBNIFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPiB3cm90ZToNCj4gPg0KPiA+
+DQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gRnJvbTogS2FpLUhlbmcg
+RmVuZyA8a2FpLmhlbmcuZmVuZ0BjYW5vbmljYWwuY29tPg0KPiA+ID4gU2VudDogVHVlc2RheSwg
+RGVjZW1iZXIgMTQsIDIwMjEgMTozMyBQTQ0KPiA+ID4gVG86IHRvbnkwNjIwZW1tYUBnbWFpbC5j
+b207IFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiA+ID4gQ2M6IGppYW4taG9uZ0BlbmRs
+ZXNzbS5jb207IEthaS1IZW5nIEZlbmcgPGthaS5oZW5nLmZlbmdAY2Fub25pY2FsLmNvbT47IEth
+bGxlIFZhbG8NCj4gPiA+IDxrdmFsb0Bjb2RlYXVyb3JhLm9yZz47IERhdmlkIFMuIE1pbGxlciA8
+ZGF2ZW1AZGF2ZW1sb2Z0Lm5ldD47IEpha3ViIEtpY2luc2tpIDxrdWJhQGtlcm5lbC5vcmc+OyBC
+ZXJuaWUNCj4gPiA+IEh1YW5nIDxwaGh1YW5nQHJlYWx0ZWsuY29tPjsgQnJpYW4gTm9ycmlzIDxi
+cmlhbm5vcnJpc0BjaHJvbWl1bS5vcmc+OyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7
+DQo+ID4gPiBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
+b3JnDQo+ID4gPiBTdWJqZWN0OiBbUEFUQ0ggdjJdIHJ0dzg4OiBEaXNhYmxlIFBDSWUgQVNQTSB3
+aGlsZSBkb2luZyBOQVBJIHBvbGwgb24gODgyMUNFDQo+ID4gPg0KPiA+ID4gTWFueSBJbnRlbCBi
+YXNlZCBwbGF0Zm9ybXMgZmFjZSBzeXN0ZW0gcmFuZG9tIGZyZWV6ZSBhZnRlciBjb21taXQNCj4g
+PiA+IDllMmZkMjk4NjRjNSAoInJ0dzg4OiBhZGQgbmFwaSBzdXBwb3J0IikuDQo+ID4gPg0KPiA+
+ID4gVGhlIGNvbW1pdCBpdHNlbGYgc2hvdWxkbid0IGJlIHRoZSBjdWxwcml0LiBNeSBndWVzcyBp
+cyB0aGF0IHRoZSA4ODIxQ0UNCj4gPiA+IG9ubHkgbGVhdmVzIEFTUE0gTDEgZm9yIGEgc2hvcnQg
+cGVyaW9kIHdoZW4gSVJRIGlzIHJhaXNlZC4gU2luY2UgSVJRIGlzDQo+ID4gPiBtYXNrZWQgZHVy
+aW5nIE5BUEkgcG9sbGluZywgdGhlIFBDSWUgbGluayBzdGF5cyBhdCBMMSBhbmQgbWFrZXMgUlgg
+RE1BDQo+ID4gPiBleHRyZW1lbHkgc2xvdy4gRXZlbnR1YWxseSB0aGUgUlggcmluZyBiZWNvbWVz
+IG1lc3NlZCB1cDoNCj4gPiA+IFsgMTEzMy4xOTQ2OTddIHJ0d184ODIxY2UgMDAwMDowMjowMC4w
+OiBwY2kgYnVzIHRpbWVvdXQsIGNoZWNrIGRtYSBzdGF0dXMNCj4gPiA+DQo+ID4gPiBTaW5jZSB0
+aGUgODgyMUNFIGhhcmR3YXJlIG1heSBmYWlsIHRvIGxlYXZlIEFTUE0gTDEsIG1hbnVhbGx5IGRv
+IGl0IGluDQo+ID4gPiB0aGUgZHJpdmVyIHRvIHJlc29sdmUgdGhlIGlzc3VlLg0KPiA+ID4NCj4g
+PiA+IEZpeGVzOiA5ZTJmZDI5ODY0YzUgKCJydHc4ODogYWRkIG5hcGkgc3VwcG9ydCIpDQo+ID4g
+PiBCdWd6aWxsYTogaHR0cHM6Ly9idWd6aWxsYS5rZXJuZWwub3JnL3Nob3dfYnVnLmNnaT9pZD0y
+MTUxMzENCj4gPiA+IEJ1Z0xpbms6IGh0dHBzOi8vYnVncy5sYXVuY2hwYWQubmV0L2J1Z3MvMTky
+NzgwOA0KPiA+ID4gU2lnbmVkLW9mZi1ieTogS2FpLUhlbmcgRmVuZyA8a2FpLmhlbmcuZmVuZ0Bj
+YW5vbmljYWwuY29tPg0KPiA+ID4gLS0tDQo+ID4gPiB2MjoNCj4gPiA+ICAtIEFkZCBkZWZhdWx0
+IHZhbHVlIGZvciBtb2R1bGUgcGFyYW1ldGVyLg0KPiA+ID4NCj4gPiA+ICBkcml2ZXJzL25ldC93
+aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jIHwgNzQgKysrKysrKystLS0tLS0tLS0tLS0tLS0t
+DQo+ID4gPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuaCB8ICAxICsN
+Cj4gPiA+ICAyIGZpbGVzIGNoYW5nZWQsIDI0IGluc2VydGlvbnMoKyksIDUxIGRlbGV0aW9ucygt
+KQ0KPiA+ID4NCj4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
+L3J0dzg4L3BjaS5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuYw0K
+PiA+ID4gaW5kZXggM2IzNjdjOTA4NWViYS4uNGFiNzVhYzI1MDBlOSAxMDA2NDQNCj4gPiA+IC0t
+LSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmMNCj4gPiA+ICsrKyBi
+L2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmMNCj4gPiA+IEBAIC0yLDcg
+KzIsNiBAQA0KPiA+ID4gIC8qIENvcHlyaWdodChjKSAyMDE4LTIwMTkgIFJlYWx0ZWsgQ29ycG9y
+YXRpb24NCj4gPiA+ICAgKi8NCj4gPiA+DQo+ID4gPiAtI2luY2x1ZGUgPGxpbnV4L2RtaS5oPg0K
+PiA+ID4gICNpbmNsdWRlIDxsaW51eC9tb2R1bGUuaD4NCj4gPiA+ICAjaW5jbHVkZSA8bGludXgv
+cGNpLmg+DQo+ID4gPiAgI2luY2x1ZGUgIm1haW4uaCINCj4gPiA+IEBAIC0xNiwxMCArMTUsMTMg
+QEANCj4gPiA+DQo+ID4gPiAgc3RhdGljIGJvb2wgcnR3X2Rpc2FibGVfbXNpOw0KPiA+ID4gIHN0
+YXRpYyBib29sIHJ0d19wY2lfZGlzYWJsZV9hc3BtOw0KPiA+ID4gK3N0YXRpYyBpbnQgcnR3X3J4
+X2FzcG0gPSAtMTsNCj4gPiA+ICBtb2R1bGVfcGFyYW1fbmFtZWQoZGlzYWJsZV9tc2ksIHJ0d19k
+aXNhYmxlX21zaSwgYm9vbCwgMDY0NCk7DQo+ID4gPiAgbW9kdWxlX3BhcmFtX25hbWVkKGRpc2Fi
+bGVfYXNwbSwgcnR3X3BjaV9kaXNhYmxlX2FzcG0sIGJvb2wsIDA2NDQpOw0KPiA+ID4gK21vZHVs
+ZV9wYXJhbV9uYW1lZChyeF9hc3BtLCBydHdfcnhfYXNwbSwgaW50LCAwNDQ0KTsNCj4gPiA+ICBN
+T0RVTEVfUEFSTV9ERVNDKGRpc2FibGVfbXNpLCAiU2V0IFkgdG8gZGlzYWJsZSBNU0kgaW50ZXJy
+dXB0IHN1cHBvcnQiKTsNCj4gPiA+ICBNT0RVTEVfUEFSTV9ERVNDKGRpc2FibGVfYXNwbSwgIlNl
+dCBZIHRvIGRpc2FibGUgUENJIEFTUE0gc3VwcG9ydCIpOw0KPiA+ID4gK01PRFVMRV9QQVJNX0RF
+U0MocnhfYXNwbSwgIlVzZSBQQ0llIEFTUE0gZm9yIFJYICgwPWRpc2FibGUsIDE9ZW5hYmxlLCAt
+MT1kZWZhdWx0KSIpOw0KPiA+ID4NCj4gPiA+ICBzdGF0aWMgdTMyIHJ0d19wY2lfdHhfcXVldWVf
+aWR4X2FkZHJbXSA9IHsNCj4gPiA+ICAgICAgIFtSVFdfVFhfUVVFVUVfQktdICAgICAgID0gUlRL
+X1BDSV9UWEJEX0lEWF9CS1EsDQo+ID4gPiBAQCAtMTQwOSw3ICsxNDExLDExIEBAIHN0YXRpYyB2
+b2lkIHJ0d19wY2lfbGlua19wcyhzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LCBib29sIGVudGVyKQ0K
+PiA+ID4gICAgICAgICogdGhyb3VnaHB1dC4gVGhpcyBpcyBwcm9iYWJseSBiZWNhdXNlIHRoZSBB
+U1BNIGJlaGF2aW9yIHNsaWdodGx5DQo+ID4gPiAgICAgICAgKiB2YXJpZXMgZnJvbSBkaWZmZXJl
+bnQgU09DLg0KPiA+ID4gICAgICAgICovDQo+ID4gPiAtICAgICBpZiAocnR3cGNpLT5saW5rX2N0
+cmwgJiBQQ0lfRVhQX0xOS0NUTF9BU1BNX0wxKQ0KPiA+ID4gKyAgICAgaWYgKCEocnR3cGNpLT5s
+aW5rX2N0cmwgJiBQQ0lfRVhQX0xOS0NUTF9BU1BNX0wxKSkNCj4gPiA+ICsgICAgICAgICAgICAg
+cmV0dXJuOw0KPiA+ID4gKw0KPiA+ID4gKyAgICAgaWYgKChlbnRlciAmJiBhdG9taWNfZGVjX3Jl
+dHVybigmcnR3cGNpLT5saW5rX3VzYWdlKSA9PSAwKSB8fA0KPiA+ID4gKyAgICAgICAgICghZW50
+ZXIgJiYgYXRvbWljX2luY19yZXR1cm4oJnJ0d3BjaS0+bGlua191c2FnZSkgPT0gMSkpDQo+ID4g
+PiAgICAgICAgICAgICAgIHJ0d19wY2lfYXNwbV9zZXQocnR3ZGV2LCBlbnRlcik7DQo+ID4gPiAg
+fQ0KPiA+ID4NCj4gPg0KPiA+IEkgZm91bmQgY2FsbGluZyBwY2lfbGlua19wcyBpc24ndCBhbHdh
+eXMgc3ltbWV0cmljLCBzbyB3ZSBuZWVkIHRvIHJlc2V0DQo+ID4gcmVmX2NudCBhdCBwY2lfc3Rh
+cnQoKSBsaWtlIGJlbG93LCBvciB3ZSBjYW4ndCBlbnRlciBydHdfcGNpX2FzcG1fc2V0KCkNCj4g
+PiBhbnltb3JlLiBUaGUgbmVnYXRpdmUgZmxvdyBJIGZhY2UgaXMNCj4gPiBpZnVwIC0+IGNvbm5l
+Y3QgQVAgLT4gaWZkb3duIC0+IGlmdXAgKHJlZl9jbnQgaXNuJ3QgZXhwZWN0ZWQgbm93KS4NCj4g
+DQo+IElzIGl0IGV4cGVjdGVkIHRvIGJlIGFzeW1tZXRyaWM/DQo+IElmIGl0J3MgaW50ZW5kZWQg
+dG8gYmUgdGhpcyB3YXksIEknbGwgY2hhbmdlIHdoZXJlIHdlIHNldCBsaW5rX3VzYWdlLg0KPiBP
+dGhlcndpc2UgSSB0aGluayBtYWtpbmcgaXQgc3ltbWV0cmljIG1ha2VzIG1vcmUgc2Vuc2UuDQoN
+CkFncmVlIHdpdGggeW91ciB0aG91Z2h0LCBidXQgSSBkb24ndCByZW1lbWJlciBjbGVhcmx5IHdo
+eSBpdCBlbnRlcnMgaWRsZSB0d2ljZQ0KaW4gYWJvdmUgZmxvdy4gU28sIHlvdSBtYXkgdXNlIHR3
+byBmbGFncyB0byBpbmRpY2F0ZSB0aGUgc3RhdGUgd2FudGVkIGJ5DQp0d28gY2FsbGVycy4NCg0K
+LS0NClBpbmctS2UNCg0KDQo=
