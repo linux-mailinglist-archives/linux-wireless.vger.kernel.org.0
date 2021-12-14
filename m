@@ -2,72 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71AEF474B06
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 19:36:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4FF3474B1C
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 19:43:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234511AbhLNSgo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Dec 2021 13:36:44 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:42102 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232082AbhLNSgn (ORCPT
+        id S237120AbhLNSnW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Dec 2021 13:43:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36610 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231756AbhLNSnW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Dec 2021 13:36:43 -0500
+        Tue, 14 Dec 2021 13:43:22 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE17C061574;
+        Tue, 14 Dec 2021 10:43:21 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 1D1F3CE19B6
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Dec 2021 18:36:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9E9C34600;
-        Tue, 14 Dec 2021 18:36:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 859A6B81667;
+        Tue, 14 Dec 2021 18:43:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33EFAC34600;
+        Tue, 14 Dec 2021 18:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639507000;
-        bh=t71wTHemX4hxcBdVIXsuipy4Hb/du5Gs1X3z89yoWAM=;
+        s=k20201202; t=1639507399;
+        bh=4/c30TeGsRt1sdafdllfkIcLMtvejPrg+IRiDVok5js=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=PWXC64cpnLETq/N8NDP6kfnOnssmoPYcNOgBNa1geKC/Y2NOCQS2CoNmMuQIXCeX4
-         lTGKFS1Zix3s8rtd4lZ0RQY/igFZdMn1UIFTy8NntEmJex4/9hN2Q0rfFNVgFupvLA
-         c7gRPR9C8JhMPJEcAwe0rDZ3VMhuQgWjtw7eC4208PnzbuaDDjSSJzCTLFdK0vsHHk
-         oVnHgF1I7ZNkdRxtESl8t337tjOFvVyGcQ/b/gRPHL/3p5XZWTRO3nB6Oxt3LRed0B
-         guu7RR0RivoAb4B/J8DXMWU0f8pXR7GCk7efdkru7VkP+vxIfnX84NtlJ858YN4C1u
-         6s50hNH1qS/Zg==
+        b=JoK5wUvJ4fprKjnAEEjFdxtRxak66ZIkEhOGY/FT0h8PRqXOaX9/QpYNSp2tkiPWX
+         M2kT9Sn3jMe6FaFZG1FwQQ2Fz6QQtzzq0U/Ne1x6EibJFuErgaW1FVTIAd8jrquSTI
+         6A8eMNP6y56fiFumj1pliBjcfuLLXBP5f80HpjCZvzA/kkLzNtaNjwJbjHP/MYoACq
+         90SSU4B9jjv5QeBsOZ28BNEGF5Wrabpo8nLC0f1Qmisi7w2P555HBcb1RNFDxGLg+0
+         x2mbCyO0Lw2kLPb4k12zlmyx7z1xE+K1rIHshmIMpQ9vM7L+KqH/LTaRMevefLYVLI
+         eRsUV1Y2wj6cQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/7] rtw89: coex: correct C2H header length
+Subject: Re: [PATCH 1/2] wilc1000: Fix copy-and-paste typo in
+ wilc_set_mac_address
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211209083229.10815-2-pkshih@realtek.com>
-References: <20211209083229.10815-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <kvalo@codeaurora.org>, <linux-wireless@vger.kernel.org>,
-        <ku920601@realtek.com>
+In-Reply-To: <20211206232709.3192856-2-davidm@egauge.net>
+References: <20211206232709.3192856-2-davidm@egauge.net>
+To:     David Mosberger-Tang <davidm@egauge.net>
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        David Mosberger-Tang <davidm@egauge.net>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163950699570.16030.6759547344807917270.kvalo@kernel.org>
-Date:   Tue, 14 Dec 2021 18:36:38 +0000 (UTC)
+Message-ID: <163950739524.16030.13578810412841462678.kvalo@kernel.org>
+Date:   Tue, 14 Dec 2021 18:43:17 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+David Mosberger-Tang <davidm@egauge.net> wrote:
 
-> From: Ching-Te Ku <ku920601@realtek.com>
+> The messages appears to have been copied from wilc_get_mac_address and
+> says "get" when it should say "set".
 > 
-> To resolve C2H handle length mismatch, or it will parse the c2h content
-> out of array.
-> 
-> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 
-7 patches applied to wireless-drivers-next.git, thanks.
+2 patches applied to wireless-drivers-next.git, thanks.
 
-b3131a41ac6f rtw89: coex: correct C2H header length
-f8028a9a92f2 rtw89: coex: Not to send H2C when WL not ready and count H2C
-8c7e9ceb5bac rtw89: coex: Add MAC API to get BT polluted counter
-2200ff3f0d1d rtw89: coex: Define LPS state for BTC using
-eb87d79911c6 rtw89: coex: Update BT counters while receiving report
-bd309c8b4965 rtw89: coex: Cancel PS leaving while C2H comes
-4c02043c5a52 rtw89: coex: Update COEX to 5.5.8
+f92b9f967463 wilc1000: Fix copy-and-paste typo in wilc_set_mac_address
+5ae660641db8 wilc1000: Fix missing newline in error message
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211209083229.10815-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211206232709.3192856-2-davidm@egauge.net/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
