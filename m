@@ -2,43 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80CED47409A
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 11:41:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E91A4740B3
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 11:45:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231272AbhLNKl0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Dec 2021 05:41:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36054 "EHLO
+        id S233196AbhLNKpp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Dec 2021 05:45:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233126AbhLNKlZ (ORCPT
+        with ESMTP id S233192AbhLNKpo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Dec 2021 05:41:25 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B7BDC061574
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Dec 2021 02:41:25 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CA0B613F1
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Dec 2021 10:41:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50387C34608;
-        Tue, 14 Dec 2021 10:41:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639478484;
-        bh=zBoxqt/Hs5dx6ZB3nxfdIfHiCjB0cfOy8DpnMrY0gI8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=uJ9I4HnO8cVcXnhnXGIBTO6Ls/XjkRi6dJZnXAeCzSLHx+Uh7KP6KM9YLP468znyD
-         LCeKciqQzMDKdS/tqQFtcuqXT2AVHK+KcBVb/bkgLGhULHbRS06wPFZ3RrkFL7Ap2O
-         ejXZsKS3RsGUVKhC1bBZIbeOl6OOhrNTLj4BnzdHAhcDcEpL/0ViErUK4yV74tsPrN
-         QhAtRND2MHjFejapkLKSTGt/gyRqRs57JRPhTdED+PIj4dB5vkFxNkMbyOFTpcE40e
-         PtpdE7HoTfAo0qmVEoxwpP67XuzbDZgwUrJbDmM7OwfQqvECmWhTsVWrRtEhPStBYU
-         P9gG3EXvXMWNg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com, evelyn.tsai@mediatek.com
-Subject: [PATCH] mt76: mt7915: introduce mt76_vif in mt7915_vif
-Date:   Tue, 14 Dec 2021 11:41:06 +0100
-Message-Id: <f70304f186987074dbeb66ff7dd7d5f7a235ec51.1639477867.git.lorenzo@kernel.org>
+        Tue, 14 Dec 2021 05:45:44 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 917B4C061574;
+        Tue, 14 Dec 2021 02:45:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=HTc0NEIwIfaemjmwtA9usH0K3xhOw0FIrPWzzLfx8YM=; t=1639478743; x=1640688343; 
+        b=Rp00jp/F7uTud7Ju79r8VEL4WKPXI1YbJwk3A2Xf2G7B+m+LIOoy4NJbdJvry0AM2o9EL1N2nEL
+        erO08rmnwu/vcRCjcjCvT/bepXaqCqV2v3TkyDFCwJdcd/lqBWmDvLD2PrY9rUx4CneEZJaTDxk5s
+        3E8T6Sekv1C2aveICprfCsRM51m+tOw7Nb8YbKpf5Qb2wEP9xHsqhtnCqEMecEXFvctEx66aqzoPM
+        qoKT2IEAjoWhJ63+dJ4+o1Wwf6d61xvgkNRgC+hB8MdkpM6eXCOMLveF66LTg7mwe+yZwtwM+iZpU
+        MYIHeBxHfwvfU3ed3VaJyoSAg+6prXh/l6Mg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mx5JU-00BDoR-Va;
+        Tue, 14 Dec 2021 11:45:41 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211 2021-12-14
+Date:   Tue, 14 Dec 2021 11:45:36 +0100
+Message-Id: <20211214104537.16995-1-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -46,399 +44,96 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Align mt7915_vif layout to mt7921_vif and mt7615_vif
+Hi,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../wireless/mediatek/mt76/mt7915/debugfs.c   |  4 +-
- .../net/wireless/mediatek/mt76/mt7915/mac.c   |  6 +--
- .../net/wireless/mediatek/mt76/mt7915/main.c  | 43 ++++++++--------
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 51 ++++++++++---------
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  5 +-
- 5 files changed, 55 insertions(+), 54 deletions(-)
+Sorry - I accumulated more stuff than I'd like due to
+various other competing priorities...
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index a15aa256d0cf..4c5a572cea92 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -355,8 +355,8 @@ mt7915_sta_hw_queue_read(void *data, struct ieee80211_sta *sta)
- 		qlen = mt76_get_field(dev, MT_PLE_BASE + MT_FL_Q3_CTRL,
- 				      GENMASK(11, 0));
- 		seq_printf(s, "\tSTA %pM wcid %d: AC%d%d queued:%d\n",
--			   sta->addr, msta->wcid.idx, msta->vif->wmm_idx,
--			   ac, qlen);
-+			   sta->addr, msta->wcid.idx,
-+			   msta->vif->mt76.wmm_idx, ac, qlen);
- 	}
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index a1556fe2f421..352d9e80e247 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1149,8 +1149,8 @@ void mt7915_mac_write_txwi(struct mt7915_dev *dev, __le32 *txwi,
- 	if (vif) {
- 		struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
- 
--		omac_idx = mvif->omac_idx;
--		wmm_idx = mvif->wmm_idx;
-+		omac_idx = mvif->mt76.omac_idx;
-+		wmm_idx = mvif->mt76.wmm_idx;
- 	}
- 
- 	if (ext_phy && dev->mt76.phy2)
-@@ -1286,7 +1286,7 @@ int mt7915_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	if (vif) {
- 		struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
- 
--		txp->bss_idx = mvif->idx;
-+		txp->bss_idx = mvif->mt76.idx;
- 	}
- 
- 	txp->token = cpu_to_le16(id);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 31fceeed1a72..8ac6f59af174 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -203,8 +203,8 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
- 	    is_zero_ether_addr(vif->addr))
- 		phy->monitor_vif = vif;
- 
--	mvif->idx = ffs(~dev->mt76.vif_mask) - 1;
--	if (mvif->idx >= MT7915_MAX_INTERFACES) {
-+	mvif->mt76.idx = ffs(~dev->mt76.vif_mask) - 1;
-+	if (mvif->mt76.idx >= MT7915_MAX_INTERFACES) {
- 		ret = -ENOSPC;
- 		goto out;
- 	}
-@@ -214,27 +214,27 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
- 		ret = -ENOSPC;
- 		goto out;
- 	}
--	mvif->omac_idx = idx;
-+	mvif->mt76.omac_idx = idx;
- 	mvif->phy = phy;
--	mvif->band_idx = ext_phy;
-+	mvif->mt76.band_idx = ext_phy;
- 
--	mvif->wmm_idx = vif->type != NL80211_IFTYPE_AP;
-+	mvif->mt76.wmm_idx = vif->type != NL80211_IFTYPE_AP;
- 	if (ext_phy)
--		mvif->wmm_idx += 2;
-+		mvif->mt76.wmm_idx += 2;
- 
- 	ret = mt7915_mcu_add_dev_info(phy, vif, true);
- 	if (ret)
- 		goto out;
- 
--	dev->mt76.vif_mask |= BIT(mvif->idx);
--	phy->omac_mask |= BIT_ULL(mvif->omac_idx);
-+	dev->mt76.vif_mask |= BIT(mvif->mt76.idx);
-+	phy->omac_mask |= BIT_ULL(mvif->mt76.omac_idx);
- 
--	idx = MT7915_WTBL_RESERVED - mvif->idx;
-+	idx = MT7915_WTBL_RESERVED - mvif->mt76.idx;
- 
- 	INIT_LIST_HEAD(&mvif->sta.rc_list);
- 	INIT_LIST_HEAD(&mvif->sta.poll_list);
- 	mvif->sta.wcid.idx = idx;
--	mvif->sta.wcid.ext_phy = mvif->band_idx;
-+	mvif->sta.wcid.ext_phy = mvif->mt76.band_idx;
- 	mvif->sta.wcid.hw_key_idx = -1;
- 	mvif->sta.wcid.tx_info |= MT_WCID_TX_INFO_SET;
- 	mt76_packet_id_init(&mvif->sta.wcid);
-@@ -249,7 +249,7 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
- 	}
- 
- 	if (vif->type != NL80211_IFTYPE_AP &&
--	    (!mvif->omac_idx || mvif->omac_idx > 3))
-+	    (!mvif->mt76.omac_idx || mvif->mt76.omac_idx > 3))
- 		vif->offload_flags = 0;
- 	vif->offload_flags |= IEEE80211_OFFLOAD_ENCAP_4ADDR;
- 
-@@ -286,8 +286,8 @@ static void mt7915_remove_interface(struct ieee80211_hw *hw,
- 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
- 
- 	mutex_lock(&dev->mt76.mutex);
--	dev->mt76.vif_mask &= ~BIT(mvif->idx);
--	phy->omac_mask &= ~BIT_ULL(mvif->omac_idx);
-+	dev->mt76.vif_mask &= ~BIT(mvif->mt76.idx);
-+	phy->omac_mask &= ~BIT_ULL(mvif->mt76.omac_idx);
- 	mutex_unlock(&dev->mt76.mutex);
- 
- 	spin_lock_bh(&dev->sta_poll_lock);
-@@ -576,7 +576,7 @@ mt7915_update_bss_color(struct ieee80211_hw *hw,
- 	case NL80211_IFTYPE_AP: {
- 		struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
- 
--		if (mvif->omac_idx > HW_BSSID_MAX)
-+		if (mvif->mt76.omac_idx > HW_BSSID_MAX)
- 			return;
- 		fallthrough;
- 	}
-@@ -675,7 +675,7 @@ int mt7915_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	msta->vif = mvif;
- 	msta->wcid.sta = 1;
- 	msta->wcid.idx = idx;
--	msta->wcid.ext_phy = mvif->band_idx;
-+	msta->wcid.ext_phy = mvif->mt76.band_idx;
- 	msta->wcid.tx_info |= MT_WCID_TX_INFO_SET;
- 	msta->jiffies = jiffies;
- 
-@@ -858,7 +858,8 @@ u64 __mt7915_get_tsf(struct ieee80211_hw *hw, struct mt7915_vif *mvif)
- 
- 	lockdep_assert_held(&dev->mt76.mutex);
- 
--	n = mvif->omac_idx > HW_BSSID_MAX ? HW_BSSID_0 : mvif->omac_idx;
-+	n = mvif->mt76.omac_idx > HW_BSSID_MAX ? HW_BSSID_0
-+					       : mvif->mt76.omac_idx;
- 	/* TSF software read */
- 	mt76_rmw(dev, MT_LPON_TCR(band, n), MT_LPON_TCR_SW_MODE,
- 		 MT_LPON_TCR_SW_READ);
-@@ -898,7 +899,8 @@ mt7915_set_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 
- 	mutex_lock(&dev->mt76.mutex);
- 
--	n = mvif->omac_idx > HW_BSSID_MAX ? HW_BSSID_0 : mvif->omac_idx;
-+	n = mvif->mt76.omac_idx > HW_BSSID_MAX ? HW_BSSID_0
-+					       : mvif->mt76.omac_idx;
- 	mt76_wr(dev, MT_LPON_UTTR0(band), tsf.t32[0]);
- 	mt76_wr(dev, MT_LPON_UTTR1(band), tsf.t32[1]);
- 	/* TSF software overwrite */
-@@ -924,7 +926,8 @@ mt7915_offset_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 
- 	mutex_lock(&dev->mt76.mutex);
- 
--	n = mvif->omac_idx > HW_BSSID_MAX ? HW_BSSID_0 : mvif->omac_idx;
-+	n = mvif->mt76.omac_idx > HW_BSSID_MAX ? HW_BSSID_0
-+					       : mvif->mt76.omac_idx;
- 	mt76_wr(dev, MT_LPON_UTTR0(band), tsf.t32[0]);
- 	mt76_wr(dev, MT_LPON_UTTR1(band), tsf.t32[1]);
- 	/* TSF software adjust*/
-@@ -1215,7 +1218,7 @@ static void mt7915_ethtool_worker(void *wi_data, struct ieee80211_sta *sta)
- 	struct mt76_ethtool_worker_info *wi = wi_data;
- 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
- 
--	if (msta->vif->idx != wi->idx)
-+	if (msta->vif->mt76.idx != wi->idx)
- 		return;
- 
- 	mt76_ethtool_worker(wi, &msta->stats);
-@@ -1231,7 +1234,7 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
- 	struct mt76_ethtool_worker_info wi = {
- 		.data = data,
--		.idx = mvif->idx,
-+		.idx = mvif->mt76.idx,
- 	};
- 	struct mib_stats *mib = &phy->mib;
- 	/* See mt7915_ampdu_stat_read_phy, etc */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 6f0f9925030a..403acfe7d314 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -582,10 +582,10 @@ mt7915_mcu_alloc_sta_req(struct mt7915_dev *dev, struct mt7915_vif *mvif,
- 			 struct mt7915_sta *msta, int len)
- {
- 	struct sta_req_hdr hdr = {
--		.bss_idx = mvif->idx,
-+		.bss_idx = mvif->mt76.idx,
- 		.wlan_idx_lo = msta ? to_wcid_lo(msta->wcid.idx) : 0,
- 		.wlan_idx_hi = msta ? to_wcid_hi(msta->wcid.idx) : 0,
--		.muar_idx = msta && msta->wcid.sta ? mvif->omac_idx : 0xe,
-+		.muar_idx = msta && msta->wcid.sta ? mvif->mt76.omac_idx : 0xe,
- 		.is_tlv_append = 1,
- 	};
- 	struct sk_buff *skb;
-@@ -725,7 +725,7 @@ mt7915_mcu_bss_basic_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
- 	bss->network_type = cpu_to_le32(type);
- 	bss->bmc_wcid_lo = to_wcid_lo(wlan_idx);
- 	bss->bmc_wcid_hi = to_wcid_hi(wlan_idx);
--	bss->wmm_idx = mvif->wmm_idx;
-+	bss->wmm_idx = mvif->mt76.wmm_idx;
- 	bss->active = enable;
- 
- 	if (vif->type != NL80211_IFTYPE_MONITOR) {
-@@ -769,10 +769,11 @@ mt7915_mcu_bss_omac_tlv(struct sk_buff *skb, struct ieee80211_vif *vif)
- 	}
- 
- 	omac = (struct bss_info_omac *)tlv;
--	idx = mvif->omac_idx > EXT_BSSID_START ? HW_BSSID_0 : mvif->omac_idx;
-+	idx = mvif->mt76.omac_idx > EXT_BSSID_START ? HW_BSSID_0
-+						    : mvif->mt76.omac_idx;
- 	omac->conn_type = cpu_to_le32(type);
--	omac->omac_idx = mvif->omac_idx;
--	omac->band_idx = mvif->band_idx;
-+	omac->omac_idx = mvif->mt76.omac_idx;
-+	omac->band_idx = mvif->mt76.band_idx;
- 	omac->hw_bss_idx = idx;
- }
- 
-@@ -937,7 +938,7 @@ mt7915_mcu_bss_ext_tlv(struct sk_buff *skb, struct mt7915_vif *mvif)
- 	int ext_bss_idx, tsf_offset;
- 	struct tlv *tlv;
- 
--	ext_bss_idx = mvif->omac_idx - EXT_BSSID_START;
-+	ext_bss_idx = mvif->mt76.omac_idx - EXT_BSSID_START;
- 	if (ext_bss_idx < 0)
- 		return;
- 
-@@ -973,7 +974,7 @@ mt7915_mcu_muar_config(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- {
- 	struct mt7915_dev *dev = phy->dev;
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
--	u32 idx = mvif->omac_idx - REPEATER_BSSID_START;
-+	u32 idx = mvif->mt76.omac_idx - REPEATER_BSSID_START;
- 	u32 mask = phy->omac_mask >> 32 & ~BIT(idx);
- 	const u8 *addr = vif->addr;
- 	struct {
-@@ -1011,7 +1012,7 @@ int mt7915_mcu_add_bss_info(struct mt7915_phy *phy,
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
- 	struct sk_buff *skb;
- 
--	if (mvif->omac_idx >= REPEATER_BSSID_START) {
-+	if (mvif->mt76.omac_idx >= REPEATER_BSSID_START) {
- 		mt7915_mcu_muar_config(phy, vif, false, enable);
- 		mt7915_mcu_muar_config(phy, vif, true, enable);
- 	}
-@@ -1039,8 +1040,8 @@ int mt7915_mcu_add_bss_info(struct mt7915_phy *phy,
- 		if (vif->bss_conf.he_support)
- 			mt7915_mcu_bss_he_tlv(skb, vif, phy);
- 
--		if (mvif->omac_idx >= EXT_BSSID_START &&
--		    mvif->omac_idx < REPEATER_BSSID_START)
-+		if (mvif->mt76.omac_idx >= EXT_BSSID_START &&
-+		    mvif->mt76.omac_idx < REPEATER_BSSID_START)
- 			mt7915_mcu_bss_ext_tlv(skb, mvif);
- 	}
- out:
-@@ -1265,7 +1266,7 @@ mt7915_mcu_wtbl_generic_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
- 	if (sta) {
- 		memcpy(generic->peer_addr, sta->addr, ETH_ALEN);
- 		generic->partial_aid = cpu_to_le16(sta->aid);
--		generic->muar_idx = mvif->omac_idx;
-+		generic->muar_idx = mvif->mt76.omac_idx;
- 		generic->qos = sta->wme;
- 	} else {
- 		/* use BSSID in station mode */
-@@ -1928,7 +1929,7 @@ mt7915_mcu_sta_bfer_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
- {
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
- 	struct mt7915_phy *phy =
--		mvif->band_idx ? mt7915_ext_phy(dev) : &dev->phy;
-+		mvif->mt76.band_idx ? mt7915_ext_phy(dev) : &dev->phy;
- 	int tx_ant = hweight8(phy->mt76->chainmask) - 1;
- 	struct sta_rec_bf *bf;
- 	struct tlv *tlv;
-@@ -1995,7 +1996,7 @@ mt7915_mcu_sta_bfee_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
- {
- 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
- 	struct mt7915_phy *phy =
--		mvif->band_idx ? mt7915_ext_phy(dev) : &dev->phy;
-+		mvif->mt76.band_idx ? mt7915_ext_phy(dev) : &dev->phy;
- 	int tx_ant = hweight8(phy->mt76->chainmask) - 1;
- 	struct sta_rec_bfee *bfee;
- 	struct tlv *tlv;
-@@ -2349,7 +2350,7 @@ mt7915_mcu_add_group(struct mt7915_dev *dev, struct ieee80211_vif *vif,
- 		u8 rsv1[8];
- 	} __packed req = {
- 		.action = cpu_to_le32(MT_STA_BSS_GROUP),
--		.val = cpu_to_le32(mvif->idx % 16),
-+		.val = cpu_to_le32(mvif->mt76.idx % 16),
- 	};
- 
- 	msta = sta ? (struct mt7915_sta *)sta->drv_priv : &mvif->sta;
-@@ -2437,8 +2438,8 @@ int mt7915_mcu_add_dev_info(struct mt7915_phy *phy,
- 		} __packed tlv;
- 	} data = {
- 		.hdr = {
--			.omac_idx = mvif->omac_idx,
--			.dbdc_idx = mvif->band_idx,
-+			.omac_idx = mvif->mt76.omac_idx,
-+			.dbdc_idx = mvif->mt76.band_idx,
- 			.tlv_num = cpu_to_le16(1),
- 			.is_tlv_append = 1,
- 		},
-@@ -2446,11 +2447,11 @@ int mt7915_mcu_add_dev_info(struct mt7915_phy *phy,
- 			.tag = cpu_to_le16(DEV_INFO_ACTIVE),
- 			.len = cpu_to_le16(sizeof(struct req_tlv)),
- 			.active = enable,
--			.dbdc_idx = mvif->band_idx,
-+			.dbdc_idx = mvif->mt76.band_idx,
- 		},
- 	};
- 
--	if (mvif->omac_idx >= REPEATER_BSSID_START)
-+	if (mvif->mt76.omac_idx >= REPEATER_BSSID_START)
- 		return mt7915_mcu_muar_config(phy, vif, false, enable);
- 
- 	memcpy(data.tlv.omac_addr, vif->addr, ETH_ALEN);
-@@ -2622,7 +2623,7 @@ int mt7915_mcu_add_beacon(struct ieee80211_hw *hw,
- 		return -EINVAL;
- 	}
- 
--	if (mvif->band_idx) {
-+	if (mvif->mt76.band_idx) {
- 		info = IEEE80211_SKB_CB(skb);
- 		info->hw_queue |= MT_TX_HW_QUEUE_EXT_PHY;
- 	}
-@@ -3243,7 +3244,7 @@ int mt7915_mcu_set_tx(struct mt7915_dev *dev, struct ieee80211_vif *vif)
- 		struct edca *e = &req.edca[ac];
- 
- 		e->set = WMM_PARAM_SET;
--		e->queue = ac + mvif->wmm_idx * MT7915_MAX_WMM_SETS;
-+		e->queue = ac + mvif->mt76.wmm_idx * MT7915_MAX_WMM_SETS;
- 		e->aifs = q->aifs;
- 		e->txop = cpu_to_le16(q->txop);
- 
-@@ -4048,7 +4049,7 @@ int mt7915_mcu_add_obss_spr(struct mt7915_dev *dev, struct ieee80211_vif *vif,
- 	} __packed req = {
- 		.action = MT_SPR_ENABLE,
- 		.arg_num = 1,
--		.band_idx = mvif->band_idx,
-+		.band_idx = mvif->mt76.band_idx,
- 		.val = cpu_to_le32(enable),
- 	};
- 
-@@ -4069,7 +4070,7 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- 		__le16 wcid;
- 	} __packed req = {
- 		.category = MCU_PHY_STATE_CONTENTION_RX_RATE,
--		.band = mvif->band_idx,
-+		.band = mvif->mt76.band_idx,
- 		.wcid = cpu_to_le16(msta->wcid.idx),
- 	};
- 	struct ieee80211_supported_band *sband;
-@@ -4209,11 +4210,11 @@ int mt7915_mcu_twt_agrt_update(struct mt7915_dev *dev,
- 	} __packed req = {
- 		.tbl_idx = flow->table_id,
- 		.cmd = cmd,
--		.own_mac_idx = mvif->omac_idx,
-+		.own_mac_idx = mvif->mt76.omac_idx,
- 		.flowid = flow->id,
- 		.peer_id = cpu_to_le16(flow->wcid),
- 		.duration = flow->duration,
--		.bss_idx = mvif->idx,
-+		.bss_idx = mvif->mt76.idx,
- 		.start_tsf = cpu_to_le64(flow->tsf),
- 		.mantissa = flow->mantissa,
- 		.exponent = flow->exp,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index d2fbe52772c9..cb564c74a8c5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -124,10 +124,7 @@ struct mt7915_vif_cap {
- };
- 
- struct mt7915_vif {
--	u16 idx;
--	u8 omac_idx;
--	u8 band_idx;
--	u8 wmm_idx;
-+	struct mt76_vif mt76; /* must be first */
- 
- 	struct mt7915_vif_cap cap;
- 	struct mt7915_sta sta;
--- 
-2.33.1
+Please pull and let me know if there's any problem.
+
+Thanks,
+johannes
+
+
+
+The following changes since commit 49573ff7830b1186011f5f2e9c08935ec5fc39b6:
+
+  Merge branch 'tls-splice_read-fixes' (2021-11-25 19:28:21 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2021-12-14
+
+for you to fetch changes up to 13dee10b30c058ee2c58c5da00339cc0d4201aa6:
+
+  mac80211: do drv_reconfig_complete() before restarting all (2021-12-14 11:22:20 +0100)
+
+----------------------------------------------------------------
+A fairly large number of fixes this time:
+ * fix a station info memory leak on insert collisions
+ * a rate control fix for retransmissions
+ * two aggregation setup fixes
+ * reload current regdomain when reloading database
+ * a locking fix in regulatory work
+ * a probe request allocation size fix in mac80211
+ * apply TCP vs. aggregation (sk pacing) on mesh
+ * fix ordering of channel context update vs. station
+   state
+ * set up skb->dev for mesh forwarding properly
+ * track QoS data frames only for admission control to
+   avoid out-of-bounds read (found by syzbot)
+ * validate extended element ID vs. existing data to
+   avoid out-of-bounds read (found by syzbot)
+ * fix locking in mac80211 aggregation TX setup
+ * fix traffic stall after HW restart when TXQs are used
+ * fix ordering of reconfig/restart after HW restart
+ * fix interface type for extended aggregation capability
+   lookup
+
+----------------------------------------------------------------
+Ahmed Zaki (1):
+      mac80211: fix a memory leak where sta_info is not freed
+
+Felix Fietkau (3):
+      mac80211: fix rate control for retransmitted frames
+      mac80211: fix regression in SSN handling of addba tx
+      mac80211: send ADDBA requests using the tid/queue of the aggregation session
+
+Finn Behrens (2):
+      nl80211: reset regdom when reloading regdb
+      nl80211: remove reload flag from regulatory_request
+
+Ilan Peer (2):
+      cfg80211: Acquire wiphy mutex on regulatory work
+      mac80211: Fix the size used for building probe request
+
+Johannes Berg (7):
+      mac80211: track only QoS data frames for admission control
+      mac80211: add docs for ssn in struct tid_ampdu_tx
+      mac80211: agg-tx: don't schedule_and_wake_txq() under sta->lock
+      mac80211: validate extended element ID is present
+      mac80211: fix lookup when adding AddBA extension element
+      mac80211: mark TX-during-stop for TX in in_reconfig
+      mac80211: do drv_reconfig_complete() before restarting all
+
+Maxime Bizon (1):
+      mac80211: fix TCP performance on mesh interface
+
+Mordechay Goodstein (1):
+      mac80211: update channel context before station state
+
+Xing Song (1):
+      mac80211: set up the fwd_skb->dev for mesh forwarding
+
+ net/mac80211/agg-rx.c     |  5 +++--
+ net/mac80211/agg-tx.c     | 16 +++++++++++-----
+ net/mac80211/driver-ops.h |  5 ++++-
+ net/mac80211/mlme.c       | 13 ++++++++++---
+ net/mac80211/rx.c         |  1 +
+ net/mac80211/sta_info.c   | 21 ++++++++++++---------
+ net/mac80211/sta_info.h   |  2 ++
+ net/mac80211/tx.c         | 10 +++++-----
+ net/mac80211/util.c       | 23 ++++++++++++++---------
+ net/wireless/reg.c        | 30 ++++++++++++++++++++++++++++--
+ 10 files changed, 90 insertions(+), 36 deletions(-)
 
