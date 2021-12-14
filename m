@@ -2,89 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6B9C4746BF
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 16:46:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C375D4747EA
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 17:24:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235405AbhLNPqj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Dec 2021 10:46:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50990 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234610AbhLNPqj (ORCPT
+        id S236559AbhLNQYo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Dec 2021 11:24:44 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:58186 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236098AbhLNQXt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Dec 2021 10:46:39 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 216C6C061574;
-        Tue, 14 Dec 2021 07:46:39 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B5EB9615A0;
-        Tue, 14 Dec 2021 15:46:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C84FC34606;
-        Tue, 14 Dec 2021 15:46:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639496798;
-        bh=lpMJyBaryDhU6pdFEk23SJlqLoV1mD69gh70IqL8reE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ruvvT96NLYiBGRmzeo6xh7E28uyoreQQvj/Z2GhwLnGcaUERCJuq7NdKw5qo4g/rY
-         MpRaakxm3iRBkfb04Psdeui91kK7BAgLsZd+uUtja6HVHDqv4Aan6I3e1rROmXRLMZ
-         w9g2scAyGEpu2X7NLKHdzfb4b5bwt6tLOGH4P6buaidGL/YSatjfZ5TQMKn5OGLO+X
-         ka53aY+PbWRCFuYikHRVp+CqbsRJbIVzrEzwL+zkl6wMeV0aoRj4p45+2+oPKbeVRo
-         RAPGspKzXPkIelQm5L+a7G1KEzxXxKckTHYw5CVtZ9n3lA1ABKbO6l20p4VO9CBOaj
-         37vHLyPDq5fKw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-hardening@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 08/17] ath11k: Use memset_startat() for clearing queue descriptors
-References: <20211213223331.135412-1-keescook@chromium.org>
-        <20211213223331.135412-9-keescook@chromium.org>
-        <87v8zriv1c.fsf@codeaurora.org>
-Date:   Tue, 14 Dec 2021 17:46:31 +0200
-In-Reply-To: <87v8zriv1c.fsf@codeaurora.org> (Kalle Valo's message of "Tue, 14
-        Dec 2021 08:02:07 +0200")
-Message-ID: <877dc7i3zc.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 14 Dec 2021 11:23:49 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1BEGMmuO025468;
+        Tue, 14 Dec 2021 10:22:48 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1639498968;
+        bh=j8vcNDlyu6rGGlbNXrHIPndlfNexrjOXKWOfEEIJnnk=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=xgTGUZkLvFa0MkQp65s/DUVAeZv9Jh6bDvETBxkkXt9kHUJh2S2ely6DWwhAEv7nE
+         9sCLwo7TGhPOwJHN4Tpl9RtuWpdVoaxfjasPPolvZWeFEwB03D/XW8/nuRUiuxjvP2
+         bQ7FHOHAdSfs79apWvV8d5LiB3urN2udwFKj+JSg=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1BEGMmM0085080
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 14 Dec 2021 10:22:48 -0600
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Tue, 14
+ Dec 2021 10:22:47 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Tue, 14 Dec 2021 10:22:47 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1BEGMllf122522;
+        Tue, 14 Dec 2021 10:22:47 -0600
+Date:   Tue, 14 Dec 2021 10:22:47 -0600
+From:   Nishanth Menon <nm@ti.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+CC:     LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Marc Zygnier <maz@kernel.org>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Megha Dey <megha.dey@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>, <linux-pci@vger.kernel.org>,
+        Cedric Le Goater <clg@kaod.org>,
+        Juergen Gross <jgross@suse.com>,
+        <xen-devel@lists.xenproject.org>, Arnd Bergmann <arnd@arndb.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        <linuxppc-dev@lists.ozlabs.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Stuart Yoder <stuyoder@gmail.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Vinod Koul <vkoul@kernel.org>, <dmaengine@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        <iommu@lists.linux-foundation.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Sinan Kaya <okaya@kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
+Message-ID: <20211214162247.ocjm7ihg5oi7uiuv@slider>
+References: <20211210221642.869015045@linutronix.de>
+ <20211213182958.ytj4m6gsg35u77cv@detonator>
+ <87fsqvttfv.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <87fsqvttfv.ffs@tglx>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+On 10:41-20211214, Thomas Gleixner wrote:
+> On Mon, Dec 13 2021 at 12:29, Nishanth Menon wrote:
+> > On 23:18-20211210, Thomas Gleixner wrote:
+> > Also while testing on TI K3 platforms, I noticed:
+> >
+> > msi_device_data_release/msi_device_destroy_sysfs in am64xx-evm / j7200
+> 
+> The warning complains about a device being released with MSI descriptors
+> still attached to the device. This was added by:
+> 
+>   5b012cede0f7 ("device: Add device::msi_data pointer and struct msi_device_data")
+> 
+> That's not a regression caused by this commit. The warning is just
+> exposing an already existing problem in the iwlwifi driver, which seems
+> to do:
+> 
+>    probe()
+>      setup_pci_msi[x]_interrupts()
+>      start_drv()
+>        if (try_to_load_firmware() == FAIL)
+>        	   device_release_driver()
+>                 ...
+>                 msi_device_data_release()
+>                     WARN()
+> 
 
-> Kees Cook <keescook@chromium.org> writes:
->
->> In preparation for FORTIFY_SOURCE performing compile-time and run-time
->> field bounds checking for memset(), avoid intentionally writing across
->> neighboring fields.
->>
->> Use memset_startat() so memset() doesn't get confused about writing
->> beyond the destination member that is intended to be the starting point
->> of zeroing through the end of the struct. Additionally split up a later
->> field-spanning memset() so that memset() can reason about the size.
->>
->> Cc: Kalle Valo <kvalo@codeaurora.org>
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: Jakub Kicinski <kuba@kernel.org>
->> Cc: ath11k@lists.infradead.org
->> Cc: linux-wireless@vger.kernel.org
->> Cc: netdev@vger.kernel.org
->> Signed-off-by: Kees Cook <keescook@chromium.org>
->
-> What's the plan for this patch? I would like to take this via my ath
-> tree to avoid conflicts.
+Agreed that the warning is fine, the null pointer exception that follows
+[1] [2] it however does'nt look right and it can be trivially fixed with the
+following fixup for ee90787487bc ("genirq/msi: Provide
+msi_device_populate/destroy_sysfs()") below, with that the log looks
+like [3] - the warn is good, the null pointer exception and resultant
+crash could be avoided (not saying this is the best solution):
 
-Actually this has been already applied:
+diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
+index ab5e83f41188..24edb870c66f 100644
+--- a/kernel/irq/msi.c
++++ b/kernel/irq/msi.c
+@@ -252,11 +252,14 @@ int msi_device_populate_sysfs(struct device *dev)
+  */
+ void msi_device_destroy_sysfs(struct device *dev)
+ {
+-	const struct attribute_group **msi_irq_groups = dev->msi.data->attrs;
++	const struct attribute_group **msi_irq_groups;
+ 	struct device_attribute *dev_attr;
+ 	struct attribute **msi_attrs;
+ 	int count = 0;
+ 
++	if (!dev->msi.data)
++		return;
++	msi_irq_groups = dev->msi.data->attrs;
+ 	dev->msi.data->attrs = NULL;
+ 	if (!msi_irq_groups)
+ 		return;
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=ath-next&id=d5549e9a6b86
+[1] https://gist.github.com/nmenon/36899c7819681026cfe1ef185fb95f33#file-am64xx-evm-txt-L1049
+[2] https://gist.github.com/nmenon/36899c7819681026cfe1ef185fb95f33#file-j7200-evm-txt-L1111
 
-Why are you submitting the same patch twice?
-
+[3] https://gist.github.com/nmenon/575afe7d04463026a7e420a76c2c1c5b
+	https://gist.github.com/nmenon/575afe7d04463026a7e420a76c2c1c5b#file-am64xx-evm-txt-L1018
+	https://gist.github.com/nmenon/575afe7d04463026a7e420a76c2c1c5b#file-j7200-evm-txt-L1053
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D)/Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
