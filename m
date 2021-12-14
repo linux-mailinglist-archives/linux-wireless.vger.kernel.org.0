@@ -2,118 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C0514748BF
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 18:03:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89BE44748D4
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 18:05:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236246AbhLNRDx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Dec 2021 12:03:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41208 "EHLO
+        id S236218AbhLNRFj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Dec 2021 12:05:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236244AbhLNRDw (ORCPT
+        with ESMTP id S231583AbhLNRFj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Dec 2021 12:03:52 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62854C061574;
-        Tue, 14 Dec 2021 09:03:52 -0800 (PST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639501430;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=RXDy+gEt+jM/GLA+wNxlJEuBnWYy8r3p2Ru1kkxGm4Q=;
-        b=4P9YNy0ES7591XCDm5PSWup8bN4QZP7lauZPNqzguglGF810Qx6tlHC+ni+cCTXT//bRrL
-        8sy8xtbBW2WNueS1zjqp8h8A0yb4naQSxUV7RBh2hqT1tsFq6begUYU0evqtkPzN01b278
-        fd9gHbaeywBmVDCmDPd2qQ/zpjMiaB9wQAqsRoE0OI6pkTd0Mdkr8wct9zyvWczqltcPfP
-        gVFurKQstARHhwA4cqkMjQuwW0a240akK7UOWCq2KqJXtL/Zk07hDvbDB6Geb3dHg82+ku
-        rQEa7JysFMGTutJcrfi+Bj+sn5C4cesBd4+iCf7oAFV+qmPbWW589QvaRwSxBw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639501430;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=RXDy+gEt+jM/GLA+wNxlJEuBnWYy8r3p2Ru1kkxGm4Q=;
-        b=NEaZQwUVupGSoHFBC83jQ5nykyNdZrjtpZRBFsQka5WyTgqzd9VoqFy4Lrz/ewIMzZW0fK
-        mYumgixv6qanTNBQ==
-To:     Nishanth Menon <nm@ti.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Marc Zygnier <maz@kernel.org>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Megha Dey <megha.dey@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>, linux-pci@vger.kernel.org,
-        Cedric Le Goater <clg@kaod.org>,
-        Juergen Gross <jgross@suse.com>,
-        xen-devel@lists.xenproject.org, Arnd Bergmann <arnd@arndb.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Stuart Yoder <stuyoder@gmail.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        iommu@lists.linux-foundation.org,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Sinan Kaya <okaya@kernel.org>, linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
-In-Reply-To: <87wnk7rvnz.ffs@tglx>
-References: <20211210221642.869015045@linutronix.de>
- <20211213182958.ytj4m6gsg35u77cv@detonator> <87fsqvttfv.ffs@tglx>
- <20211214162247.ocjm7ihg5oi7uiuv@slider> <87wnk7rvnz.ffs@tglx>
-Date:   Tue, 14 Dec 2021 18:03:50 +0100
-Message-ID: <87tufbrudl.ffs@tglx>
+        Tue, 14 Dec 2021 12:05:39 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 230ACC06173E
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Dec 2021 09:05:39 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id j6-20020a17090a588600b001a78a5ce46aso17738881pji.0
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Dec 2021 09:05:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=A6836gc0s76HSfL2ZiuDjKE+np84sI4oL8Iom/KwxZU=;
+        b=Il8Xs0i7yKcGaPdWUSDd/OkT3CZc4f7Sh+8OtZOHt5cw/LrudBWuKIHPYCZV3FTrUk
+         ZCxzlJ6YFhcdIDnKAZH3Iqz22CWaTY2lG178hVvPcNC1hDfdjqi6tv0VEcfafKKWKB8K
+         dnyvY9pIEtiiYdtB0dnO0Lz00on3mBZZYm2BQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=A6836gc0s76HSfL2ZiuDjKE+np84sI4oL8Iom/KwxZU=;
+        b=HQjZr5pNVSKApHgJKCjUbzOXTXSwMvBy5owldugRxjJuL1A8gR8UoY+r1clh71AObb
+         LmBgy/7HaTxop0+iRtnVBO+KJTHtzkHbD/OOrUniLRJll+4jQ94sE2TmbwKrDcVIYd+u
+         hinh2ALb8rnxEJQKwd4k3ax/nV6e0ujBlrEbeiIgqrrgmUVDlurHTTe/e7qAFbR/92mn
+         HTQiIL0MZZtdNB6EnzCSjE60+DoRpMWOH/PcP5LsVBQHx4MHw2j8umllRQSoMgIuR0gw
+         vg8xceu/Grn+VmaoGl0QBN82LmeCKh/lYsvnRCHbWciBUTo61xsypVUZflt0GtBqg9Kn
+         CsTg==
+X-Gm-Message-State: AOAM5332xOl3rQYDOK7KPkaDM9ZIQ3D0ACUYKoyyzbIcR2qe3s+5KBRb
+        jLsl4p9KGSJF7hrCA71vhZ+zoKq/ntMg+w==
+X-Google-Smtp-Source: ABdhPJyid4WvM6SF/FMb0ie7qooR8i+hL7xAAAtPkfmxyGyhk6umYMIjfNB8BB80oKo2BZX9lXr/IQ==
+X-Received: by 2002:a17:90b:19d4:: with SMTP id nm20mr2745434pjb.106.1639501538563;
+        Tue, 14 Dec 2021 09:05:38 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id l6sm436804pfc.30.2021.12.14.09.05.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Dec 2021 09:05:38 -0800 (PST)
+Date:   Tue, 14 Dec 2021 09:05:37 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-hardening@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 08/17] ath11k: Use memset_startat() for clearing queue
+ descriptors
+Message-ID: <202112140904.2D64E570@keescook>
+References: <20211213223331.135412-1-keescook@chromium.org>
+ <20211213223331.135412-9-keescook@chromium.org>
+ <87v8zriv1c.fsf@codeaurora.org>
+ <877dc7i3zc.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <877dc7i3zc.fsf@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Dec 14 2021 at 17:36, Thomas Gleixner wrote:
-> On Tue, Dec 14 2021 at 10:22, Nishanth Menon wrote:
->> On 10:41-20211214, Thomas Gleixner wrote:
-> [   13.478122] Call trace:
-> [   13.509042]  msi_device_destroy_sysfs+0x18/0x88
-> [   13.509058]  msi_domain_free_irqs+0x34/0x58
-> [   13.509064]  pci_msi_teardown_msi_irqs+0x30/0x3c
-> [   13.509072]  free_msi_irqs+0x78/0xd4
-> [   13.509077]  pci_disable_msix+0x138/0x164
-> [   13.529930]  pcim_release+0x70/0x238
-> [   13.529942]  devres_release_all+0x9c/0xfc
-> [   13.529951]  device_release_driver_internal+0x1a0/0x244
-> [   13.542725]  device_release_driver+0x18/0x24
-> [   13.542741]  iwl_req_fw_callback+0x1a28/0x1ddc [iwlwifi]
-> [   13.552308]  request_firmware_work_func+0x50/0x9c
-> [   13.552320]  process_one_work+0x194/0x25c
->
-> That's not a driver problem, that's an ordering issue vs. the devres
-> muck. Let me go back to the drawing board. Sigh...
+On Tue, Dec 14, 2021 at 05:46:31PM +0200, Kalle Valo wrote:
+> Kalle Valo <kvalo@kernel.org> writes:
+> 
+> > Kees Cook <keescook@chromium.org> writes:
+> >
+> >> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> >> field bounds checking for memset(), avoid intentionally writing across
+> >> neighboring fields.
+> >>
+> >> Use memset_startat() so memset() doesn't get confused about writing
+> >> beyond the destination member that is intended to be the starting point
+> >> of zeroing through the end of the struct. Additionally split up a later
+> >> field-spanning memset() so that memset() can reason about the size.
+> >>
+> >> Cc: Kalle Valo <kvalo@codeaurora.org>
+> >> Cc: "David S. Miller" <davem@davemloft.net>
+> >> Cc: Jakub Kicinski <kuba@kernel.org>
+> >> Cc: ath11k@lists.infradead.org
+> >> Cc: linux-wireless@vger.kernel.org
+> >> Cc: netdev@vger.kernel.org
+> >> Signed-off-by: Kees Cook <keescook@chromium.org>
+> >
+> > What's the plan for this patch? I would like to take this via my ath
+> > tree to avoid conflicts.
+> 
+> Actually this has been already applied:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=ath-next&id=d5549e9a6b86
+> 
+> Why are you submitting the same patch twice?
 
-Which is pretty obvious why:
+These are all part of a topic branch, and the cover letter mentioned
+that a set of them have already been taken but haven't appeared in -next
+(which was delayed).
 
-   pcim_enable_device()
-        devres_alloc(pcim_release...);
-        ...
-        pci_irq_alloc()
-          msi_setup_device_data()
-             devres_alloc(msi_device_data_release, ...)
+Sorry for the confusion!
 
-and once the device is released:
-
-    msi_device_data_release()
-    ...
-    pcim_release()
-       pci_disable_msi[x]()
-
-Groan....
+-- 
+Kees Cook
