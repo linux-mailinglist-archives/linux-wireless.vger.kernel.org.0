@@ -2,109 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 704D9474D29
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 22:20:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36622474DFC
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 23:41:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230512AbhLNVUC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Dec 2021 16:20:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43728 "EHLO
+        id S234166AbhLNWlY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Dec 2021 17:41:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229990AbhLNVUC (ORCPT
+        with ESMTP id S234060AbhLNWlX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Dec 2021 16:20:02 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C72FCC061574;
-        Tue, 14 Dec 2021 13:20:01 -0800 (PST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1639516798;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UY5SIbLiQJhNf3IcwLAaYT3af81CnBCUSA3qSWP4dj0=;
-        b=EzQFCHRvraOq6euqkQn1B+tUeoQ1uw1bo4mwk9Q+vKSF8S8PO4nMGeLKZ/WNHEDZ5eJhpq
-        mjggZFTuoIKEO/OrzzxxfitzasNIFFxeDKcRyrdk7DdmUaNmMFC1unLIMtUfaK38TWwXYn
-        h2orgm5VCZyrGWnjQirGszYr8438eZQal4q/1iuBvD2zWg9nOeapYD6mAyJQRKxCWoQSAd
-        enz2/bCSy9StMuvCnU8bbCEhKsc+iX17V3lbzwiD4WPpGEDgVUswHFbLH8z54QbwfbJl42
-        iPxl/XpXV7+3L/A3q2mlzAY6VVHUHz35mnJZ8s3Ze10jfDmKSXRCDaOkhFkkdQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1639516798;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UY5SIbLiQJhNf3IcwLAaYT3af81CnBCUSA3qSWP4dj0=;
-        b=lDR2zL85oMI4BdOLKEJ1Arl/dti0X9kWdevk0BKKPLGWBqf9hwgLOpBluOuP1fE4iBCR8Y
-        5fOFMFfQxW57zEAA==
-To:     Nishanth Menon <nm@ti.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Marc Zygnier <maz@kernel.org>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Megha Dey <megha.dey@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>, linux-pci@vger.kernel.org,
-        Cedric Le Goater <clg@kaod.org>,
-        Juergen Gross <jgross@suse.com>,
-        xen-devel@lists.xenproject.org, Arnd Bergmann <arnd@arndb.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Stuart Yoder <stuyoder@gmail.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        iommu@lists.linux-foundation.org,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Sinan Kaya <okaya@kernel.org>, linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
-In-Reply-To: <20211214205626.lrnddha6bd6d6es5@possibly>
-References: <20211210221642.869015045@linutronix.de>
- <20211213182958.ytj4m6gsg35u77cv@detonator> <87fsqvttfv.ffs@tglx>
- <20211214162247.ocjm7ihg5oi7uiuv@slider> <87wnk7rvnz.ffs@tglx>
- <87tufbrudl.ffs@tglx> <87mtl3rli1.ffs@tglx>
- <20211214205626.lrnddha6bd6d6es5@possibly>
-Date:   Tue, 14 Dec 2021 22:19:57 +0100
-Message-ID: <87h7basx36.ffs@tglx>
+        Tue, 14 Dec 2021 17:41:23 -0500
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B870DC06173E
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Dec 2021 14:41:23 -0800 (PST)
+Received: by mail-pg1-x52b.google.com with SMTP id r5so18477465pgi.6
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Dec 2021 14:41:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eDsV3k9UGAVfHIwefuiXTCNNU/bOVVB2dV1ONTQPwYs=;
+        b=YrT6Ax+RE1E9xOKx1/vSZs/CcExWra/gZCqKhlAVfclLv9T0FocQjL7NYCSEq+BTp9
+         OUt+/qXIW7v58IGs1LUkhOQ5/AmciYchCTpv68onhApcLvu1jzc4qCrWgaZ0n0AJ4HVg
+         MuGEEkGA7Wf2Mb+80scI4AkSBKWHENsY0LXbs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eDsV3k9UGAVfHIwefuiXTCNNU/bOVVB2dV1ONTQPwYs=;
+        b=bMCsDgcBbqHN3WvlNq1Aa3C5Gf1j2Y81Wkb8Kr0kCWzSAWLon2h5Hb9Nwb8v2PC/NS
+         3YiUpUE1r9R/3x6OcyeHDWD4g1wUSVj+37Q/o3Yg1uTUYOSc/FpKKYSm2+9mg5qpjoky
+         oVHli28HsYSqk2np2vvxZQjb+SjSoARiZuei9JQ8Jx71i9Q6h+n7pHA8K1bqUPvUlsDp
+         fZBsZxBRJ0UHQELjJ7qzoE7LUBrNGJkN5iZFIWxIsKhAeC20OHMalXBW6w+3iJB7WwTY
+         xHmuyHU79nOLM1+kEk3yo7ie3aq/wiYu1sT8nBkRIeMwLx2yylyanmk6/tHH98gwHMlx
+         mnZg==
+X-Gm-Message-State: AOAM532Zw0GtdosxUyn3vSiRvfN1JDJbF72cGB8chr7XIMESs5d8QjVo
+        6gpoaY+sHXV9dF5/WtZc5vFYyA==
+X-Google-Smtp-Source: ABdhPJz3uI/F6ZLy7YDpsYuhsITDzYb4JFBnxud7ZTVkuR/XKrsKVpLM26sB1yYVYIQSqCV82fsBGQ==
+X-Received: by 2002:a65:6819:: with SMTP id l25mr5622069pgt.506.1639521683205;
+        Tue, 14 Dec 2021 14:41:23 -0800 (PST)
+Received: from kuabhs-cdev.c.googlers.com.com (254.80.82.34.bc.googleusercontent.com. [34.82.80.254])
+        by smtp.gmail.com with ESMTPSA id g1sm122576pfv.19.2021.12.14.14.41.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Dec 2021 14:41:22 -0800 (PST)
+From:   Abhishek Kumar <kuabhs@chromium.org>
+To:     kvalo@codeaurora.org, briannorris@chromium.org
+Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        dianders@chromium.org, kuabhs@chromium.org, pillair@codeaurora.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath10k@lists.infradead.org,
+        netdev@vger.kernel.org
+Subject: [PATCH] ath10k: enable threaded napi on ath10k driver
+Date:   Tue, 14 Dec 2021 22:39:36 +0000
+Message-Id: <20211214223901.1.I777939e0ef1e89872d4ab65340f3fd756615a047@changeid>
+X-Mailer: git-send-email 2.34.1.173.g76aa8bc2d0-goog
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nishanth,
+NAPI poll can be done in threaded context along with soft irq
+context. Threaded context can be scheduled efficiently, thus
+creating less of bottleneck during Rx processing. This patch is
+to enable threaded NAPI on ath10k driver.
 
-On Tue, Dec 14 2021 at 14:56, Nishanth Menon wrote:
-> On 21:15-20211214, Thomas Gleixner wrote:
->> I think I managed to distangle this. Can you please give:
->> 
->>    git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git msi-v4-part-2
->
->
-> Umm.. I am not entirely sure what is going on.. but all kinds of weird
-> corruption seems to occur with msi-v4-part-2 that does'nt seem to be
-> present in v5.16-rc5. (I use NFS since ethernet in K3 platforms use
-> inta/intr and dma that is impacted by this series).
->
-> I will try and rebase your patches on v5.16-rc4 to be sure as well and
-> report back later today once i get some time.
->
-> [1] https://gist.github.com/nmenon/a66e022926c4c15313c45d44313d860c msi-v4-part-2
-> [2] https://gist.github.com/nmenon/43085664d69ad846d596e76a06ed0656  v5.16-rc5
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2-00696-QCAHLSWMTPL-1
+Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
+---
 
-thanks for trying. I'll have a look again with brain awake tomorrow
-morning.
+ drivers/net/wireless/ath/ath10k/pci.c  | 1 +
+ drivers/net/wireless/ath/ath10k/sdio.c | 1 +
+ drivers/net/wireless/ath/ath10k/snoc.c | 2 +-
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-Thanks,
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index 4d4e2f91e15c..584307574d99 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -1958,6 +1958,7 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
+ 
+ 	ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot hif start\n");
+ 
++	dev_set_threaded(&ar->napi_dev, true);
+ 	ath10k_core_napi_enable(ar);
+ 
+ 	ath10k_pci_irq_enable(ar);
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 63e1c2d783c5..52ef74d9811a 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -1862,6 +1862,7 @@ static int ath10k_sdio_hif_start(struct ath10k *ar)
+ 	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
+ 	int ret;
+ 
++	dev_set_threaded(&ar->napi_dev, true);
+ 	ath10k_core_napi_enable(ar);
+ 
+ 	/* Sleep 20 ms before HIF interrupts are disabled.
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 9513ab696fff..e7d12dbb3fa5 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -926,7 +926,7 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+ 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+ 
+ 	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
+-
++	dev_set_threaded(&ar->napi_dev, true);
+ 	ath10k_core_napi_enable(ar);
+ 	ath10k_snoc_irq_enable(ar);
+ 	ath10k_snoc_rx_post(ar);
+-- 
+2.34.1.173.g76aa8bc2d0-goog
 
-        tglx
