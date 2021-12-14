@@ -2,109 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3DD347482E
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 17:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80BD7474841
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 17:36:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235961AbhLNQdd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Dec 2021 11:33:33 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:25386 "EHLO
-        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235980AbhLNQdY (ORCPT
+        id S236076AbhLNQgE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Dec 2021 11:36:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34708 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234195AbhLNQgD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Dec 2021 11:33:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-        h=from:subject:in-reply-to:references:mime-version:to:cc:
-        content-transfer-encoding:content-type;
-        s=sgd; bh=yQXnRnX5mAV219nBVUMu6m7E3hTr67JRAHd87199Dpg=;
-        b=DXBRUXbnGdklKRKTxORhG97uAouv2hixXJA6lqRz1x7Q7c8ZgDKVlaA8tCIgpdHxxnaW
-        jP9wqIQP3WghJgM1CJWSHzstyp/dirsqbPcL3IqMyEwpawc06fX/wGZfJR2oTL9WrUAhZT
-        He22ZJFSEaMO43RqzlBrUbLfgvWNc19AAZuRk+rrAV2cPKMfnZoEFppgT0XAJ8kHJiPRt8
-        pIFqoR8+cJli0Jp2EUzUdu3yjbzYmJkMBW3JlSTyAUmRRrFVrqd7FRkSH4al6UXxQmYw+c
-        hLezr9NTY59CFUI77tnLr0Ql8d5qhbbudkO696BJi78zIDVcFmPDxj04apUrjhXw==
-Received: by filterdrecv-55446c4d49-ww7gg with SMTP id filterdrecv-55446c4d49-ww7gg-1-61B8C752-84
-        2021-12-14 16:33:22.516521248 +0000 UTC m=+8964793.130447238
-Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-1-0 (SG)
-        with ESMTP
-        id TK2IY_rHQcakZ4T_OtfL8Q
-        Tue, 14 Dec 2021 16:33:22.348 +0000 (UTC)
-Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 083CE700269; Tue, 14 Dec 2021 09:33:22 -0700 (MST)
-From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v4 2/2] wilc1000: Document enable-gpios and reset-gpios
- properties
-Date:   Tue, 14 Dec 2021 16:33:22 +0000 (UTC)
-Message-Id: <20211214163315.3769677-3-davidm@egauge.net>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211214163315.3769677-1-davidm@egauge.net>
-References: <20211214163315.3769677-1-davidm@egauge.net>
+        Tue, 14 Dec 2021 11:36:03 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB05C061574;
+        Tue, 14 Dec 2021 08:36:03 -0800 (PST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1639499761;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=jHkEiVG0BVT8V/9kbAcBq/GVsYt3jqgvF40FkGyKrlo=;
+        b=x+UREoz0tV0ByegvETONzIcJg/btHkYAeUTOB9Cwk6fF4WS4tcdqSKPZhosLY9Kw8fzkL2
+        iAO8dxlrohDcjOfDmK3UIx35hhe0gnfY1J6UUVxyO061FZZ9igOXoMxu0oZsfFw4GbgpYB
+        Q5rK3Ehp3GsvY/ZWFqOBDe34LxDsXDQAfeXwgAzwLGuRTF6/6fajjiB+l4faY58KyXYRd9
+        TRvQUMx4KhjpOhAQjyD53NZ44/KDHNZzen3o5CWSSmMuXJs7tSK49MGIkP5L/9Tw/0p3r8
+        ob+7BJIhXKuW4vpCWZYdUoDVrJaJ+Ar127CVhFKQjgeiplPgqNc0w3IVyPx/sg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1639499761;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=jHkEiVG0BVT8V/9kbAcBq/GVsYt3jqgvF40FkGyKrlo=;
+        b=JRPDqiMesD5qMuzHSYGkN8LOEMskH9IhyPnRCqMbSThsy+YATwXU6QDtFhGJhGuZcxfILm
+        UyvW8q3ctT/IqHDg==
+To:     Nishanth Menon <nm@ti.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Marc Zygnier <maz@kernel.org>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Megha Dey <megha.dey@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>, linux-pci@vger.kernel.org,
+        Cedric Le Goater <clg@kaod.org>,
+        Juergen Gross <jgross@suse.com>,
+        xen-devel@lists.xenproject.org, Arnd Bergmann <arnd@arndb.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Stuart Yoder <stuyoder@gmail.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Sinan Kaya <okaya@kernel.org>, linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
+In-Reply-To: <20211214162247.ocjm7ihg5oi7uiuv@slider>
+References: <20211210221642.869015045@linutronix.de>
+ <20211213182958.ytj4m6gsg35u77cv@detonator> <87fsqvttfv.ffs@tglx>
+ <20211214162247.ocjm7ihg5oi7uiuv@slider>
+Date:   Tue, 14 Dec 2021 17:36:00 +0100
+Message-ID: <87wnk7rvnz.ffs@tglx>
 MIME-Version: 1.0
-X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvH93Xhh=2FYR9spz2Bt?=
- =?us-ascii?Q?A5gO8dpXLqtzVT1vHEwdJSvMWZx2WdZTHyNXu1U?=
- =?us-ascii?Q?E5ARhbnTmdjbrbP9IjXyX8HUoKo0APkCDIeRRyV?=
- =?us-ascii?Q?ZxxsFRoR3FFi0p5BnlDn6lfwjL4iNkjO2n1FdBN?=
- =?us-ascii?Q?Xtkx1mi9C7raxqt49d00OxinZMZTkKVNyb6ezLE?=
- =?us-ascii?Q?J2P0lKE5TORkjQK7Ull3Q=3D=3D?=
-To:     Ajay Singh <ajay.kathat@microchip.com>
-Cc:     Adham Abozaeid <adham.abozaeid@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        David Mosberger-Tang <davidm@egauge.net>
-X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add documentation for the ENABLE and RESET GPIOs that may be needed by
-wilc1000-spi.
+On Tue, Dec 14 2021 at 10:22, Nishanth Menon wrote:
+> On 10:41-20211214, Thomas Gleixner wrote:
+> Agreed that the warning is fine, the null pointer exception that follows
+> [1] [2] it however does'nt look right and it can be trivially fixed with the
+> following fixup for ee90787487bc ("genirq/msi: Provide
+> msi_device_populate/destroy_sysfs()") below, with that the log looks
+> like [3] - the warn is good, the null pointer exception and resultant
+> crash could be avoided (not saying this is the best solution):
 
-Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
----
- .../net/wireless/microchip,wilc1000.yaml        | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Aaargh.
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-index 6c35682377e6..790a774a19ee 100644
---- a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-@@ -32,6 +32,21 @@ properties:
-   clock-names:
-     const: rtc
- 
-+  enable-gpios:
-+    maxItems: 1
-+    description: Used by wilc1000-spi to determine the GPIO line
-+      connected to the ENABLE line.  If specified, reset-gpios
-+      must be specified as well as otherwise the driver cannot
-+      ensure the timing required between asserting ENABLE
-+      and deasserting RESET.  This should be declared as an
-+      active-high signal.
-+
-+  reset-gpios:
-+    maxItems: 1
-+    description: Used by wilc1000-spi to determine the GPIO line
-+      connected to the RESET line.  This should be declared as an
-+      active-low signal.
-+
- required:
-   - compatible
-   - interrupts
-@@ -51,6 +66,8 @@ examples:
-         interrupts = <27 0>;
-         clocks = <&pck1>;
-         clock-names = "rtc";
-+        enable-gpios = <&pioA 5 GPIO_ACTIVE_HIGH>;
-+        reset-gpios = <&pioA 6 GPIO_ACTIVE_LOW>;
-       };
-     };
- 
--- 
-2.25.1
+[   13.478122] Call trace:
+[   13.509042]  msi_device_destroy_sysfs+0x18/0x88
+[   13.509058]  msi_domain_free_irqs+0x34/0x58
+[   13.509064]  pci_msi_teardown_msi_irqs+0x30/0x3c
+[   13.509072]  free_msi_irqs+0x78/0xd4
+[   13.509077]  pci_disable_msix+0x138/0x164
+[   13.529930]  pcim_release+0x70/0x238
+[   13.529942]  devres_release_all+0x9c/0xfc
+[   13.529951]  device_release_driver_internal+0x1a0/0x244
+[   13.542725]  device_release_driver+0x18/0x24
+[   13.542741]  iwl_req_fw_callback+0x1a28/0x1ddc [iwlwifi]
+[   13.552308]  request_firmware_work_func+0x50/0x9c
+[   13.552320]  process_one_work+0x194/0x25c
+
+That's not a driver problem, that's an ordering issue vs. the devres
+muck. Let me go back to the drawing board. Sigh...
+
+Thanks,
+
+        tglx
 
