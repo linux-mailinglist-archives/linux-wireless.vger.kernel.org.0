@@ -2,76 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A8BB474B29
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 19:47:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBD88474C71
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 21:04:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237147AbhLNSrC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Dec 2021 13:47:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37446 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230103AbhLNSrB (ORCPT
+        id S237571AbhLNUEz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Dec 2021 15:04:55 -0500
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:37384 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229959AbhLNUEy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Dec 2021 13:47:01 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F8C0C061574;
-        Tue, 14 Dec 2021 10:47:01 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 19972B815B1;
-        Tue, 14 Dec 2021 18:47:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD961C34600;
-        Tue, 14 Dec 2021 18:46:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639507618;
-        bh=/y3URU3ybZOaTzxWnYgazuNBxRzpiZ2eNPGd/nyB0WI=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=uXVweL9DJp2lNyMuvQRCujUU339aMCzMgkh9r3mgfvI4CKxw69epupNIlkrMlAy6/
-         OIr5PbINXlzb0CFCmP0mY2cy9x+2KWi3EZAk1t80h7SArYPX1/QitRFEeOG/qbUph2
-         fpC/oiS+VN3/66d0ARK3KxQ9buk+0WmxrZ1V5u5Ita1iDfVr9bAynl3mAYpdoU+HlN
-         ZGXDWJKGrH7JihgCldik49T4bGYJ+liRZ+VKMW4rl0MXNYSLeFWRNckF6BCqtKiZnD
-         3tIrUW5aRonCJdDUDRo2yKOp7hQjbf0O+YySq2HxAzcwfkNwuwslQGwZFswv6JrSBY
-         HxzHfOvGJvg3g==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/4] wilc1000: Rename SPI driver from "WILC_SPI" to
- "wilc1000_spi"
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211209044411.3482259-2-davidm@egauge.net>
-References: <20211209044411.3482259-2-davidm@egauge.net>
+        Tue, 14 Dec 2021 15:04:54 -0500
+Received: by mail-ot1-f45.google.com with SMTP id h19-20020a9d3e53000000b0056547b797b2so22149169otg.4;
+        Tue, 14 Dec 2021 12:04:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=ca/8UwhkKrIrm1GYEgOJKPRg9ilbjbbUc4xGIZnlUw0=;
+        b=OLlzFOuTYtQO63bi1btZdmCqs5Gxwnt7iwlgDfqWk0y8m0qvFnMlRbH4o/gcs1icHX
+         V/WmP+KIm5oa/bPHBSMO4fS1y2owMrIbld1tg3ZlJGHNe7+7IX2Nf1NXHdIyy+FWjXPD
+         ONmUb2Qo7UWB+3nGKhvg2OGcS2NVjP7FVkf1qvsqPVmYh75zzwBzsgSGMfduAQGIf74C
+         gO3de3f8DendgDa9BnNkerna3d+09ZkaXrPp7uODEVweHIdMLqURhuf0QWQWfoY9xaEj
+         z6uEUvSs2lz13tB790LpM68QdlCVyF1R/+cU5VisyVo/pdYLMwu2xZqQBz6TsIaJPPz4
+         jW/A==
+X-Gm-Message-State: AOAM53304+EdAx7LNd8RpAwircGtnBoZnSARuLPWbDr2MKHqAIdB3StR
+        PNskkdW45B94JR6pnmpTGc8nU7MYag==
+X-Google-Smtp-Source: ABdhPJxjjNMTn71D4902pz6s8UtNh8ftM5r6dHrAsXV2UWzK6nMfcRwddt9l/qf2loDIKyIicx2YlA==
+X-Received: by 2002:a05:6830:1688:: with SMTP id k8mr5951527otr.238.1639512293684;
+        Tue, 14 Dec 2021 12:04:53 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id r22sm171007oij.36.2021.12.14.12.04.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Dec 2021 12:04:52 -0800 (PST)
+Received: (nullmailer pid 3819897 invoked by uid 1000);
+        Tue, 14 Dec 2021 20:04:50 -0000
+From:   Rob Herring <robh@kernel.org>
 To:     David Mosberger-Tang <davidm@egauge.net>
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>, netdev@vger.kernel.org,
+        Adham Abozaeid <adham.abozaeid@microchip.com>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        David Mosberger-Tang <davidm@egauge.net>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163950761371.16030.5876652454276387048.kvalo@kernel.org>
-Date:   Tue, 14 Dec 2021 18:46:56 +0000 (UTC)
+        "David S. Miller" <davem@davemloft.net>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>
+In-Reply-To: <20211214163315.3769677-3-davidm@egauge.net>
+References: <20211214163315.3769677-1-davidm@egauge.net> <20211214163315.3769677-3-davidm@egauge.net>
+Subject: Re: [PATCH v4 2/2] wilc1000: Document enable-gpios and reset-gpios properties
+Date:   Tue, 14 Dec 2021 14:04:50 -0600
+Message-Id: <1639512290.330041.3819896.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-David Mosberger-Tang <davidm@egauge.net> wrote:
-
-> The name "wilc1000_spi" follows normal Linux conventions and also is
-> analogous to the SDIO driver, which uses "wilc1000_sdio".
+On Tue, 14 Dec 2021 16:33:22 +0000, David Mosberger-Tang wrote:
+> Add documentation for the ENABLE and RESET GPIOs that may be needed by
+> wilc1000-spi.
 > 
 > Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
+> ---
+>  .../net/wireless/microchip,wilc1000.yaml        | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
 
-4 patches applied to wireless-drivers-next.git, thanks.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-4347d34e6a76 wilc1000: Rename SPI driver from "WILC_SPI" to "wilc1000_spi"
-30e08bc0a94c wilc1000: Rename irq handler from "WILC_IRQ" to netdev name
-3cc23932ba2a wilc1000: Rename tx task from "K_TXQ_TASK" to NETDEV-tx
-09ed8bfc5215 wilc1000: Rename workqueue from "WILC_wq" to "NETDEV-wq"
+yamllint warnings/errors:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211209044411.3482259-2-davidm@egauge.net/
+dtschema/dtc warnings/errors:
+Error: Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.example.dts:30.37-38 syntax error
+FATAL ERROR: Unable to parse input tree
+make[1]: *** [scripts/Makefile.lib:373: Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.example.dt.yaml] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1413: dt_binding_check] Error 2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1567796
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 
