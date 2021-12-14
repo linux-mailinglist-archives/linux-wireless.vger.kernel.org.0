@@ -2,48 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04EAB473D7C
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 08:16:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0D6D473D7B
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Dec 2021 08:16:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231377AbhLNHQy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Dec 2021 02:16:54 -0500
-Received: from mga02.intel.com ([134.134.136.20]:54414 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231389AbhLNHQx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S231375AbhLNHQx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 14 Dec 2021 02:16:53 -0500
+Received: from mga04.intel.com ([192.55.52.120]:49487 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231387AbhLNHQw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 Dec 2021 02:16:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639466213; x=1671002213;
+  t=1639466212; x=1671002212;
   h=date:from:to:cc:subject:message-id:mime-version:
    content-transfer-encoding;
-  bh=uJwGW4QohfSD7saQtOWYOA32BpA7rwyHvD2i1dvFZIg=;
-  b=mOTKVJdqPOQ/1CfrpMQWLAQ3W0wPoBQh2mavBMkMZ9ffb88lPIsQk9Yd
-   U+HZzB5ndTkQbW2fca3IuFdNhe+BTCnqBYcBmkZm4jHChmR1PyoR6xr+d
-   n2tWr6J39p3vOzwElJXR+Y3ZRRD2t5ZQI8sf0PqVyOFsS9R87xD/p3+iH
-   rLi3D5pytjS00WAkIUdN/tEvr22I1XyrLCFmPukV9i4EBeuwq6E9OeDG2
-   j4v/2ICiYQvsqGC26LiXv5Jk8qVuIAveRzTSt/gS1UphtkSgma4DVeWcg
-   Eg4lvRk+HdAPIpmZriKXpwVYOm28TDVqDWTkiAShBW7SAxmuVyqgMuD4P
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10197"; a="226192668"
+  bh=up8vweh2eZKj6WOG5sA4GJo4npNc4Z24FrtkQ1EG9qM=;
+  b=nmLJBgskLGGpBHqnxjKdn7qMfU3lztg51xplckRuhhymYkDTZ9oySC3b
+   18LAO0wwtdRe+a4DpLsdQJvSLr0qMVA5+q2MzcZLu9T13adYk0+7rvvgW
+   qm/YUyHref5pEn5sLIWHebrlqr8Kd60ZxUFtG8TYDSmI55K5DLwM21aaf
+   vhUydT8QQBwZ8kX8t83WmhAOEjBLI45PR3g/0g72i9rsHLFe0lUlQFrRv
+   Mrw3COT+KIi6K3bafkeau4wLCRxxe5kva2TuqXhAtsHqgtCiusVa8HY7d
+   HgQSzNd7Ay4y/w3oZW3baZR/Kz6BSu56+u8CrVtnyzqQSHcRZ/H2UYQwU
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10197"; a="237653356"
 X-IronPort-AV: E=Sophos;i="5.88,204,1635231600"; 
-   d="scan'208";a="226192668"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 23:16:52 -0800
+   d="scan'208";a="237653356"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 23:16:52 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,204,1635231600"; 
-   d="scan'208";a="681946562"
+   d="scan'208";a="505255584"
 Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
-  by orsmga005.jf.intel.com with ESMTP; 13 Dec 2021 23:16:51 -0800
+  by orsmga007.jf.intel.com with ESMTP; 13 Dec 2021 23:16:51 -0800
 Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1mx23O-000027-Kz; Tue, 14 Dec 2021 07:16:50 +0000
-Date:   Tue, 14 Dec 2021 15:15:57 +0800
+        id 1mx23O-000024-KU; Tue, 14 Dec 2021 07:16:50 +0000
+Date:   Tue, 14 Dec 2021 15:16:00 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Kalle Valo <kvalo@kernel.org>
 Cc:     linux-wireless@vger.kernel.org
-Subject: [kvalo-wireless-drivers-next:master] BUILD SUCCESS
- 3db30b79028983179d3b720e367c898ce896516e
-Message-ID: <61b844ad.ctqSCIsGS/82aOkA%lkp@intel.com>
+Subject: [kvalo-wireless-drivers-next:pending] BUILD SUCCESS
+ db207592b74891fc45a89a62c0ec500e2abb8202
+Message-ID: <61b844b0.9kvkE1/FD3aZq8d6%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -52,12 +52,12 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-branch HEAD: 3db30b79028983179d3b720e367c898ce896516e  brcmfmac: Fix incorrect type assignments for keep-alive
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
+branch HEAD: db207592b74891fc45a89a62c0ec500e2abb8202  Merge tag 'mt76-for-kvalo-2021-12-03' of https://github.com/nbd168/wireless into pending
 
-elapsed time: 721m
+elapsed time: 720m
 
-configs tested: 146
+configs tested: 141
 configs skipped: 3
 
 The following configs have been built successfully.
@@ -70,11 +70,6 @@ arm64                               defconfig
 arm                              allyesconfig
 arm                              allmodconfig
 i386                 randconfig-c001-20211213
-sh                          landisk_defconfig
-powerpc                         wii_defconfig
-powerpc                      acadia_defconfig
-arm                        magician_defconfig
-arm                        oxnas_v6_defconfig
 arc                        vdk_hs38_defconfig
 powerpc                     pq2fads_defconfig
 arm                           h5000_defconfig
@@ -84,6 +79,7 @@ powerpc                   motionpro_defconfig
 arm                       imx_v6_v7_defconfig
 arm                         s5pv210_defconfig
 powerpc                     taishan_defconfig
+powerpc                      acadia_defconfig
 arm                          pxa3xx_defconfig
 sh                           se7722_defconfig
 arc                     haps_hs_smp_defconfig
@@ -117,7 +113,6 @@ mips                      pic32mzda_defconfig
 powerpc                     mpc512x_defconfig
 m68k                          multi_defconfig
 arm                  randconfig-c002-20211213
-arm                  randconfig-c002-20211214
 ia64                             allmodconfig
 ia64                                defconfig
 ia64                             allyesconfig
@@ -148,9 +143,9 @@ i386                   debian-10.3-kselftests
 i386                              debian-10.3
 mips                             allyesconfig
 mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
 powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
 i386                 randconfig-a001-20211214
 i386                 randconfig-a002-20211214
 i386                 randconfig-a005-20211214
@@ -205,8 +200,8 @@ x86_64               randconfig-a004-20211213
 i386                 randconfig-a001-20211213
 i386                 randconfig-a002-20211213
 i386                 randconfig-a003-20211213
-i386                 randconfig-a005-20211213
 i386                 randconfig-a004-20211213
+i386                 randconfig-a005-20211213
 i386                 randconfig-a006-20211213
 hexagon              randconfig-r045-20211213
 hexagon              randconfig-r041-20211213
