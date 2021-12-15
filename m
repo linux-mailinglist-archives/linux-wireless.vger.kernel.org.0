@@ -2,67 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83EC94759FA
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 14:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D163475A8B
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 15:19:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237571AbhLONwz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 08:52:55 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:36540 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237562AbhLONwy (ORCPT
+        id S237579AbhLOOSz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Dec 2021 09:18:55 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:50136 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234754AbhLOOSz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 08:52:54 -0500
+        Wed, 15 Dec 2021 09:18:55 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9453E61880
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 13:52:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBC5C34604;
-        Wed, 15 Dec 2021 13:52:52 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B937EB81F2A;
+        Wed, 15 Dec 2021 14:18:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040D3C34604;
+        Wed, 15 Dec 2021 14:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639576374;
-        bh=NV3q2MqvYdSxXeeChUgtthh2JLk07eza3y7g2kr9zS4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=K22GTaLzbVJxzfP2jrFot8STT3ZmR2u3QMZvrWWbCSC4MYyQzeHR0ohM4q9ZJ7C5s
-         Tg/MJYKckiVtzUiWwYGnfNDVZQiUcth8a8PkwO03L71a+6Gu3SMjfgSXKVJRqIHKO7
-         okCG6ekRI9//NOhR3X1VM302ufvm1b2HElMNLuuRWTWPXsFaO4zRaScmOqmc30tGce
-         rhUAMnLt9ih1WIPz/aLdDzrAAYRFkLJjTfgVLEABtydYySeauF/XYS5hDTsZxOUADX
-         gP3+tI6eDUcgLNOc2HlPgfwjfal11ufA50BimYjdCBUv8AH3OF3+tS82fzsG2iFGeB
-         jo482PYIVzQCA==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7921: remove dead definitions
-Date:   Wed, 15 Dec 2021 14:52:47 +0100
-Message-Id: <9ebfeafd3017719670a49fad7db7740b89a2276b.1639576316.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.33.1
+        s=k20201202; t=1639577932;
+        bh=frgeiBv6eu/KdNqtU+zCsKIIyZPfVonzlLQXT5ztlHI=;
+        h=From:Subject:To:Cc:Date:From;
+        b=GNA5Wnmq3PqzPsIMW1MZiBz9gl1kvuXTPojBgvYs9jSWZdOY4oOdYma6W6fBt0ZS9
+         QZOVCwaKFyVjBJGd3w8SZBicYj2nGFlHvcyzSB/A4zpvY/cdEmgWPU9rR+kyZxyiZN
+         Y9XBvDB1gDu6tBNUJX03M2Uyik/TcjDuueSNhCg7IPfvezZhK6011R9ljJL+6WLdJ6
+         g5J86dmMhn41eG+Jb9bVPl7sHEMhTv0F+IxdW0lkAWYcEyM+sL3vtWBBpxmjfMg5jz
+         /mr6Zt49yYdH3J8PytCZoew96OV5H5F0mGnwtnGJHBk0yE9VlHiAI+xXQ/iTn1lrJp
+         Eem1F9w8gBYUQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-drivers-2021-12-15
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20211215141852.040D3C34604@smtp.kernel.org>
+Date:   Wed, 15 Dec 2021 14:18:51 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-to_wcid_lo and to_wcid_hi are no longer used in mt7921/mcu.c
+Hi,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 3 ---
- 1 file changed, 3 deletions(-)
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index c4a8fe31197d..46470183057f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -93,9 +93,6 @@ struct mt7921_fw_region {
- #define PATCH_SEC_ENC_SCRAMBLE_INFO_MASK	GENMASK(15, 0)
- #define PATCH_SEC_ENC_AES_KEY_MASK		GENMASK(7, 0)
- 
--#define to_wcid_lo(id)			FIELD_GET(GENMASK(7, 0), (u16)id)
--#define to_wcid_hi(id)			FIELD_GET(GENMASK(9, 8), (u16)id)
--
- static enum mcu_cipher_type
- mt7921_mcu_get_cipher(int cipher)
- {
--- 
-2.33.1
+Kalle
 
+The following changes since commit 191587cd1a5f36852a0fc32cff2d5bc7680551db:
+
+  mt76: fix key pointer overwrite in mt7921s_write_txwi/mt7663_usb_sdio_write_txwi (2021-11-29 19:33:33 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-12-15
+
+for you to fetch changes up to f7d55d2e439fa4430755d69a5d7ad16d43a5ebe6:
+
+  mt76: mt7921: fix build regression (2021-12-08 20:17:07 +0200)
+
+----------------------------------------------------------------
+wireless-drivers fixes for v5.16
+
+Second set of fixes for v5.16, hopefully also the last one. I changed
+my email in MAINTAINERS, one crash fix in iwlwifi and some build
+problems fixed.
+
+iwlwifi
+
+* fix crash caused by a warning
+
+* fix LED linking problem
+
+brcmsmac
+
+* rework LED dependencies for being consistent with other drivers
+
+mt76
+
+* mt7921: fix build regression
+
+----------------------------------------------------------------
+Arnd Bergmann (3):
+      iwlwifi: fix LED dependencies
+      brcmsmac: rework LED dependencies
+      mt76: mt7921: fix build regression
+
+Johannes Berg (1):
+      iwlwifi: mvm: don't crash on invalid rate w/o STA
+
+Kalle Valo (1):
+      MAINTAINERS: update Kalle Valo's email
+
+ MAINTAINERS                                               | 12 ++++++------
+ drivers/net/wireless/broadcom/brcm80211/Kconfig           | 14 +++++++++-----
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/Makefile |  2 +-
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.h    |  2 +-
+ drivers/net/wireless/intel/iwlegacy/Kconfig               |  4 ++--
+ drivers/net/wireless/intel/iwlwifi/Kconfig                |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c               |  5 +++--
+ drivers/net/wireless/mediatek/mt76/Makefile               |  2 +-
+ 8 files changed, 24 insertions(+), 19 deletions(-)
