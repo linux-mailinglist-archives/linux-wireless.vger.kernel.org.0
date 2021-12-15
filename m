@@ -2,177 +2,310 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07789475232
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 06:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CCB24752DC
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 07:18:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233697AbhLOFhQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 00:37:16 -0500
-Received: from esa.microchip.iphmx.com ([68.232.153.233]:43391 "EHLO
-        esa.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233549AbhLOFhP (ORCPT
+        id S240171AbhLOGQS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Dec 2021 01:16:18 -0500
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:33677 "EHLO
+        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240136AbhLOGQQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 00:37:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1639546635; x=1671082635;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=daqW/E6FDbFOs5qDBeicHDRBQLKQUMvEfPh1y+8lo8c=;
-  b=Uno14IB5ZEcn9FgSIPy9pyVIcMp1Zyrriqmys5MYSYsfl5vERlTdVZTb
-   BMiOTifZmmoqfOxAOtWlFbb4cQgQBAWGELO0uPqn6WLXs5qnXqBBKGU2o
-   ieC3ZJCov1QiCYrNmVVfzcJksXVYbwiIiplszzJoOBkCCSCjCMOW8g9Zk
-   ez6+YAEZeSpYdxgolkjDS7BOc6xgIwnAU5d4ewAkpAwFK6K1qHtijmo/W
-   rRyOngIe3N3hRMca9olHr6b0XngJItYlOm65jOTl33cmqr27Xs2Qb3Njw
-   kZHzc0HONh5x4iuivXl2VwUFT8IO7FsRdXyuIM/QSTCbD8Csaaq2f97L1
-   g==;
-IronPort-SDR: azrIFRwfy2Al7NI5qPBflTRHPushdsVttmSGCqHCigfy0S4Rj33Fg8lwPMR/HHs8dTL6ihycm0
- 9cZ/yNMkUXkGLKt4VhMOHtf7kUz0Uqoips0Q5xL6NOqPoEvMelagXtuAADvmnwbFixIxkApVkv
- vQgtI1FxzRbQLjNEvUJq/NCzshMm6jp7qgemhwJBxqb4zmH3vU8zFUaFQlyvO4u4uHrK8SWeKs
- jUjtXioSEguV+SHLukwJw73oq7VkIaYxxmw80hjN9J0LTrXSPtc6kb38fCk3lQCwRxSo+WTA7h
- neIG03HYWFMLGqa4DwSy9Hcv
-X-IronPort-AV: E=Sophos;i="5.88,207,1635231600"; 
-   d="scan'208";a="147273847"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 14 Dec 2021 22:37:14 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Tue, 14 Dec 2021 22:37:13 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17 via Frontend
- Transport; Tue, 14 Dec 2021 22:37:13 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=anKiNboq1mVKNXw8Zgq5ngk0CzURtbCsc1ayvv7KMX+gNoWk75E/ahzndPHsY0jOZw7d9KWDFctZE9jLlVaW9daZOj9OEi322VEvBOb6UXQV1khnpd3IBeImTsa3EykgC4bRAcD/R5ZQQbD35BWu6HHtUJpcKwviosSer6s+9PWYaUlRkcwqkCGt3MR4fXYiXTd4H3aXz7WuOFJpSz0+hLQT0Xpbx0SyDb7cwayUCPMgy3Qk8kqTj4bZMTuSKBC1ssuWo/+Gjx+nSKvFScD8jdiG/ZosNZSZ8ASHeQ29Dl7tEpJZnmPoR+h2JXV7iGPsQ24tbKU8SGaWj9Cqk0TxBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=daqW/E6FDbFOs5qDBeicHDRBQLKQUMvEfPh1y+8lo8c=;
- b=Px9yeaBIWNB9irdcsxi1IcrABlSwVvhHHs5spRONyzCAWaJtCvsWYo1QtICTEzyNMh4TDIoOHdJ1xAQ3Q2/Kl1r0BsAOFAqPmOCpyGA2UFL5/UHAaEfyYv1VlPfQVhSr3LLDcp33HOO4yjTtiIBuWwmzUIohiiwA2cAbzCFwpV02oZh8Qfy+baelZr9GsvsW3IuB0/JoAUjMPYkIE7gIEkbfqT39tet1//fdOWpFKh9zgVsazHYama9BMYcImoQvA/UbzRFqv4BCC+dQ4dm0J0Mc+upekIced3m5pfXD3Vn7bW4rlUvNTkkUc3bsOAxHVRqJ7PKkPJlMxdBeD6YthQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+        Wed, 15 Dec 2021 01:16:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=daqW/E6FDbFOs5qDBeicHDRBQLKQUMvEfPh1y+8lo8c=;
- b=cGqpqSN6r4WjlzUD5QCKFEBz/4TvDH+Owhi5E3gZbDttAu/8b8mUlZYrG3ZUpWd2wsAW4uqUfUFzhte4YjugK+nlyVUXneKRXCPKqr+M7CiPf8CJHsComW3wk7JK8pMOk4exoRXl33qW6NQszNKcrEje8sFh2i6eVKTa6XRf3WQ=
-Received: from CO1PR11MB4769.namprd11.prod.outlook.com (2603:10b6:303:91::21)
- by MWHPR11MB1790.namprd11.prod.outlook.com (2603:10b6:300:10e::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.17; Wed, 15 Dec
- 2021 05:37:02 +0000
-Received: from CO1PR11MB4769.namprd11.prod.outlook.com
- ([fe80::bd93:cf07:ea77:3b50]) by CO1PR11MB4769.namprd11.prod.outlook.com
- ([fe80::bd93:cf07:ea77:3b50%7]) with mapi id 15.20.4778.018; Wed, 15 Dec 2021
- 05:37:02 +0000
-From:   <Claudiu.Beznea@microchip.com>
-To:     <davidm@egauge.net>, <Ajay.Kathat@microchip.com>
-CC:     <adham.abozaeid@microchip.com>, <davem@davemloft.net>,
-        <devicetree@vger.kernel.org>, <kuba@kernel.org>,
-        <kvalo@codeaurora.org>, <linux-kernel@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <robh+dt@kernel.org>
-Subject: Re: [PATCH v5 0/2] wilc1000: Add reset/enable GPIO support to SPI
- driver
-Thread-Topic: [PATCH v5 0/2] wilc1000: Add reset/enable GPIO support to SPI
- driver
-Thread-Index: AQHX8XXJtAFIKJMeMECxZ9XnkZfRHg==
-Date:   Wed, 15 Dec 2021 05:37:02 +0000
-Message-ID: <6f7ed239-a521-81f5-caaa-a24b537abcc0@microchip.com>
-References: <20211215030501.3779911-1-davidm@egauge.net>
-In-Reply-To: <20211215030501.3779911-1-davidm@egauge.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 1772e530-552c-4b51-f591-08d9bf8cec18
-x-ms-traffictypediagnostic: MWHPR11MB1790:EE_
-x-microsoft-antispam-prvs: <MWHPR11MB1790116470ED273DA3CCB19687769@MWHPR11MB1790.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6430;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: GZJalrHalGQEQR4WjQx8T5SKvuWuYJrdio77QziuwPH8BtxYJmTRGPrwYNPatn8KnZNNvb8etv4Eib5sOfRwqqGHJRKvMZQOXEpIKf2Sg4XgrCJCfWZ6qz81ereR6e9QEKbZRlW2HvR3aWv0c1/LtcgYqnmwUFL6aWSlByDtZarBFY/WNhEZUNFuu/bWn/S2UYsxgdj+nYsaT4Cbc7Z3KCquHKzcvWYhQRj39oO+sYyouiqj9EHaYWRau2rf8czmcQN6eesA6sGdttfMa5MscddXNCGpYT5+/xrr7Cv9t0fivv6lEDQhiknNyIlUiVJglwTSE9I/1xqo3Wg7EWj4sOquPhPDD/YYsuucfdjzggBvj2HA0hB/C9LOxx0AaO8NkunG1GFl+ZPYEr/Ss53XeEQR6zBMDw1G5pgBYMbDmFid2w6cHgUntF9cYNkf7SEcl0CkC0fpizjJxqnGo8xF4UPRULsEJ0TCEnldqPy18NVTU5ZMnJfF9LmL/eOS4SD5cv1OcI0i/h8RQSgG4ypFZn4yY/KdMBd4E+n13qQ4BEjgkUJfnZhZPZ7WlyitqZTP7C5ph84yBrxz/KR5defuQerVR4KqqiXoPuq1sNL246YMvOaEjJ9Yq71DqxDLwY09qcpihvGTBbz2fuDFbAJxpe1hcfA9FB8GX7hp7bGmlAyUvGjTIVfyhtsxvNXAsDHntOQXcwdgfDQlIymPcfBmf9Xq040E2Zd6EgIRP3qNxWK6HJrbcTqrZHixWz1gKPiec6QKkaCO7idL2TszUa+Qdg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4769.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(83380400001)(6506007)(8676002)(53546011)(186003)(316002)(26005)(31696002)(54906003)(4326008)(8936002)(110136005)(76116006)(31686004)(6486002)(508600001)(38100700002)(4744005)(71200400001)(66556008)(64756008)(2906002)(66946007)(5660300002)(86362001)(66476007)(36756003)(66446008)(91956017)(2616005)(38070700005)(6512007)(122000001)(6636002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NEdQRzhKV0RWSElGR1JDM1JOemdNODFucytYSW1wT2ZuZEhJRTNoZ2pkd1lP?=
- =?utf-8?B?NmJTQmp0dlVnZElNZlpJMUcvMkR2V3U5T3ZVMTh3clNpaWtrU28yRnl2TDlw?=
- =?utf-8?B?VUpXOTBiSDNqS2h2K29PbUM4Y2FJYWJHcjFIV2FBNkplUm93L0M3QnJqb0l2?=
- =?utf-8?B?UW41ZTRtanBUbStkUVpXRmNBcWF1cStUR2cyTThUbVIwOUVDRWlFRHlSbEl5?=
- =?utf-8?B?eDZIdmd3L3RKRkV3c0tXS1VkWTc5c3RISjJxbC9FcExJQzU1QWRLVndIVVlr?=
- =?utf-8?B?QkwrUml3MWZkRDVLYkFsNFN0Sm1HTkRibW55ODJlZE92RlJZa2d2dGovTjJt?=
- =?utf-8?B?eU1CV2NDbUFhbFRCb0dFNEZhR3AvOXdJZUZucnZ4djNtUWN0MVdrMFU0MG9K?=
- =?utf-8?B?SGVOWmU2aUZmRFRUZnNNZzdHcDZXTFRXWW1sT29CSFJyMlFpc09HcVBXUTQ3?=
- =?utf-8?B?MmtnODNQc28vZnMwc2doL0gvVXBMZW5jU016WGZ2QVptSXVVN3QrNitYREJG?=
- =?utf-8?B?akVoZGpIWGxoUDVteEJKVk5tZ0wzUFQ1QTA5M3h0Q3ZJUnBNSGpUenpGWGVD?=
- =?utf-8?B?eWQycGZPQTAwVTJCS0hNaTlVa2RySHpmMG5hVUpmdktJdDZkeWp5QzRCM2tW?=
- =?utf-8?B?VjBzTk03UGNyb0JsS2tEMVYxaHFZY0FZSmIwQ1dYczJhWTJFR01kUkZBUTJo?=
- =?utf-8?B?ai9CTkN5MmJTK2l3MUVtOTgxKzJQSDZyRmRTSXFFNkl4OVB5eFROa0xrYmNV?=
- =?utf-8?B?R1QvSmpnN2kwOUxESDZhdWxPVnFOREV3VTU1TCtlbVZvbGFkdUNxKzdUNHdL?=
- =?utf-8?B?VlZFS00yK2lDYkNMOXAvK3NINHliOXBHUG1VeGhma1NqRDF5VHlDUHpPSGpL?=
- =?utf-8?B?MW5VaG0xY2JKaTVuSXJBT3lzK0pUNWxGTWFVVlQvVkJYck8yL3NvWlFFNTRD?=
- =?utf-8?B?N3ZGeGRBQ0dwbTNHM0pXOGhyUktkTnlBcmYyNHA4Z2Q2SVBxc0FKaWF0VjhQ?=
- =?utf-8?B?TUxXNHJBelFkdW9KaUZvejFrMk11ZXZaZGNoVmNGQWtxVFRXM0VFSVdpZGUy?=
- =?utf-8?B?dEVhM1FBZzBlR3Y5ZThFWjBYanNmT082N3JFZTd5M051LzVYdGlXU3FKU3Vj?=
- =?utf-8?B?d1NuNDEveEZ0Tno1cHNiUElRYXQ5UExSVFJ5MWtLM1ErN2d3eWppVUg3ZzFI?=
- =?utf-8?B?NDRaQkoxVUpPbVJtNE9TYkVZRUtZdnR1djdITEovdWpjU1V2RytEWUwzTzNB?=
- =?utf-8?B?cEoxRGdib2hPL2FvN0RNbkUvSUNYbkNCRWduSi9JSXhtY0RaaTg0WnduSS9P?=
- =?utf-8?B?THRETy94TW5PQjdYUEgzN2RYN2FUVUVERFJmWnpBSXRPSXVzR0hWWmU5eXBz?=
- =?utf-8?B?TEtvd0hJdzhtck94NUF3bkw2RTJIR1EwbC9ndVhISjc2SmVLWjREd3g1a2Vo?=
- =?utf-8?B?MGEyTEFoSWFoQ09BT3dGU3V6WVBVZzNIeEtjcy9iTlo4blJ0L2N0NytjN1Mr?=
- =?utf-8?B?dHhsUURuSktSZlJaRCttNzZRM3c0bkpiN1UybldUZ1BOQXp4a1NwNXVNQnZK?=
- =?utf-8?B?MCtuTzE1djZmU0pSdjl0b3hsK3NBTFd3Y0lDMTllWGF2YU5FeFVPMEtBbFhr?=
- =?utf-8?B?MzhiT3k2aU9QLzNWUzY5cCt0dG9JY0JoNSs3a3pZM2dqMThrSE9UcGVqZHgw?=
- =?utf-8?B?QU5zU3Z0MzFZdHhqc2ppOGVPUWFBbWdsWGpaVDVLNTFYS2ZZUlJFMWlWQWd0?=
- =?utf-8?B?Yk11TDFJVVc2VkUwUTk3ckg2UysrdTR4RWZwTDdjT3kvcWl2OTNJTVo5S2tm?=
- =?utf-8?B?M2MvR0ZUeExSK2pPNUlzVUhHc2FxK1JDekRXaVUzTEduT1hRNXVxWk5GbEdM?=
- =?utf-8?B?ajZNRDJiTnhjRi9MdlpsMzlsYWxLU3JuTjFwcVBPTVNkVXdQbjlOaUJXQlQ0?=
- =?utf-8?B?a2k3RnJLUSt6ZU9oR0pJOGFoMUgxcGRHS3ZuRUc4NU53ZmZ3YkF2ZHgvRVJr?=
- =?utf-8?B?RUFjOThVanhlbCs5emhQTDZ1b045YjZENjZiRHgzMXBGd0szbEI1Tkxacmhk?=
- =?utf-8?B?MWk5Tmk4YkZkTTNEVlM1QytiaUs3OG1zajNzRk1KVU5ZUnBxK0ZPaDkyRkJW?=
- =?utf-8?B?UXJZdzdrQ2QzazJzK0Y5eFMycmZFVUt3ZmZuSXN6NnZIeFZLMWNHcFhnZWw5?=
- =?utf-8?B?ZVlMaGlKMEsrb3lYS1dpWU1Qcy9sVkxSY2poMndZZEdoYTdXTHdjbGhzRGFL?=
- =?utf-8?B?UTFDd1d5UTZpTHh4RnhXazRSRCt3PT0=?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1B3E01B665FB304FAB6955542505E859@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1639548976; x=1671084976;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+WS1f3jxdMhXkH6C9kt6XDDqjLHSND8uk2jzAmZpiyg=;
+  b=OhTJn5mttiCoeXfATAsxjsDpIdw/Oxhs8WfrIPkOjXMA6Ai09O0KnLKb
+   UZDw5oWP9L5V+XhAVaC2xUhOwtivzy09o4z5+Bfpg5frb91iDxgafHNrf
+   VDYUxmvDeweLeSMseEOthwQL7uTTSpV2D2+sbpOpr9sYh3ptVLvm6pko+
+   0=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 14 Dec 2021 22:16:15 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2021 22:16:13 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Tue, 14 Dec 2021 22:16:13 -0800
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Tue, 14 Dec 2021 22:16:11 -0800
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH v2] ath11k: add regdb.bin download for regdb offload
+Date:   Wed, 15 Dec 2021 01:15:56 -0500
+Message-ID: <20211215061556.14282-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4769.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1772e530-552c-4b51-f591-08d9bf8cec18
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Dec 2021 05:37:02.5358
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 2iXxFW6hJzYeoTNSChaSP7xt21826aZSLGfe833IIKyAdkQxe1wdVOLKLEQk3fQLLBYnTBPDIvsjALB34Plka/1wQhix1rRzECtNYnddZ1w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB1790
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gMTUuMTIuMjAyMSAwNTowNSwgRGF2aWQgTW9zYmVyZ2VyLVRhbmcgd3JvdGU6DQo+IEVYVEVS
-TkFMIEVNQUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3Mg
-eW91IGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPiANCj4gVGhlIG9ubHkgY2hhbmdlIGluIHRo
-aXMgdmVyc2lvbiBpcyB0byBmaXggYSBkdF9iaW5kaW5nX2NoZWNrIGVycm9yIGJ5DQo+IGluY2x1
-ZGluZyA8ZHQtYmluZGluZ3MvZ3Bpby9ncGlvLmg+IGluIG1pY3JvY2hpcCx3aWxjMTAwMC55YW1s
-Lg0KDQpGb3IgZnV0dXJlIHBhdGNoZXMsIGhlcmUgeW91IHNob3VsZCBoYXZlIHRoZSBmdWxsIGNo
-YW5nZWxvZyBiL3cgdmVyc2lvbiwNCnNvbWV0aGluZyBsaWtlOg0KDQpDaGFuZ2VzIGluIHY1Og0K
-LSB0aGlzDQotIHRoYXQNCi0gZXRjDQoNCkNoYW5nZXMgaW4gdjQ6DQotIHRoaXMsIHRoYXQNCg0K
-Li4uDQoNCkNoYW5nZXMgaW4gdjI6DQotIHRoaXMsIHRoYXQNCg0KPiANCj4gRGF2aWQgTW9zYmVy
-Z2VyLVRhbmcgKDIpOg0KPiAgIHdpbGMxMDAwOiBBZGQgcmVzZXQvZW5hYmxlIEdQSU8gc3VwcG9y
-dCB0byBTUEkgZHJpdmVyDQo+ICAgd2lsYzEwMDA6IERvY3VtZW50IGVuYWJsZS1ncGlvcyBhbmQg
-cmVzZXQtZ3Bpb3MgcHJvcGVydGllcw0KPiANCj4gIC4uLi9uZXQvd2lyZWxlc3MvbWljcm9jaGlw
-LHdpbGMxMDAwLnlhbWwgICAgICB8IDE5ICsrKysrKw0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWljcm9jaGlwL3dpbGMxMDAwL3NwaS5jIHwgNTggKysrKysrKysrKysrKysrKysrLQ0KPiAgLi4u
-L25ldC93aXJlbGVzcy9taWNyb2NoaXAvd2lsYzEwMDAvd2xhbi5jICAgIHwgIDIgKy0NCj4gIDMg
-ZmlsZXMgY2hhbmdlZCwgNzUgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkNCj4gDQo+IC0t
-DQo+IDIuMjUuMQ0KPiANCg0K
+The regdomain is self-managed type for ath11k, the regdomain info is
+reported from firmware, it is not from wireless regdb. Firmware fetch
+the regdomain info from board data file before. Currently most of the
+regdomain info has moved to another file regdb.bin from board data
+file for some chips such as QCA6390 and WCN6855, so the regdomain info
+left in board data file is not enough to support the feature which need
+more regdomain info.
+
+After download regdb.bin, firmware will fetch the regdomain info from
+regdb.bin instead of board data file and report to ath11k. If it does
+not have the file regdb.bin, it also can initialize wlan success and
+firmware then fetch regdomain info from board data file.
+
+Add download the regdb.bin before download board data for some specific
+chip which support supports_regdb in hardware parameters.
+
+download regdb.bin log:
+[430082.334162] ath11k_pci 0000:05:00.0: chip_id 0x2 chip_family 0xb board_id 0x106 soc_id 0x400c0200
+[430082.334169] ath11k_pci 0000:05:00.0: fw_version 0x110c8b4c fw_build_timestamp 2021-10-25 07:41 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HSP.1.1-02892-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+[430082.334414] ath11k_pci 0000:05:00.0: boot firmware request ath11k/WCN6855/hw2.0/regdb.bin size 24310
+
+output of "iw reg get"
+global
+country US: DFS-FCC
+        (2402 - 2472 @ 40), (N/A, 30), (N/A)
+        (5170 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
+        (5250 - 5330 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
+        (5490 - 5730 @ 160), (N/A, 23), (0 ms), DFS
+        (5735 - 5835 @ 80), (N/A, 30), (N/A)
+        (57240 - 63720 @ 2160), (N/A, 40), (N/A)
+
+phy#0 (self-managed)
+country US: DFS-FCC
+        (2402 - 2472 @ 40), (6, 30), (N/A)
+        (5170 - 5250 @ 80), (N/A, 24), (N/A), AUTO-BW
+        (5250 - 5330 @ 80), (N/A, 24), (0 ms), DFS, AUTO-BW
+        (5490 - 5730 @ 160), (N/A, 24), (0 ms), DFS, AUTO-BW
+        (5735 - 5895 @ 160), (N/A, 30), (N/A), AUTO-BW
+        (5945 - 7125 @ 160), (N/A, 24), (N/A), NO-OUTDOOR, AUTO-BW
+
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+---
+v2: 
+   1. rebased to ath.git ath-202112141538
+   2. add separate ath11k_core_fetch_regdb()
+   3. add supports_regdb=true for wcn6855 hw2.0 as well as qca6390 hw2.0/wcn6855 hw2.1
+   4. remove warning "qmi failed to fetch board file" if no regdb.bin
+
+ drivers/net/wireless/ath/ath11k/core.c | 28 ++++++++++++++++++++++----
+ drivers/net/wireless/ath/ath11k/core.h |  4 ++++
+ drivers/net/wireless/ath/ath11k/hw.h   |  2 ++
+ drivers/net/wireless/ath/ath11k/qmi.c  | 26 +++++++++++++++++-------
+ drivers/net/wireless/ath/ath11k/qmi.h  |  1 +
+ 5 files changed, 50 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 606e867c36ec..fa8769ac1c29 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -91,6 +91,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_dynamic_smps_6ghz = false,
+ 		.alloc_cacheable_memory = true,
+ 		.wakeup_mhi = false,
++		.supports_regdb = false,
+ 	},
+ 	{
+ 		.hw_rev = ATH11K_HW_IPQ6018_HW10,
+@@ -149,6 +150,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_dynamic_smps_6ghz = false,
+ 		.alloc_cacheable_memory = true,
+ 		.wakeup_mhi = false,
++		.supports_regdb = false,
+ 	},
+ 	{
+ 		.name = "qca6390 hw2.0",
+@@ -206,6 +208,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_dynamic_smps_6ghz = false,
+ 		.alloc_cacheable_memory = false,
+ 		.wakeup_mhi = true,
++		.supports_regdb = true,
+ 	},
+ 	{
+ 		.name = "qcn9074 hw1.0",
+@@ -263,6 +266,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_dynamic_smps_6ghz = true,
+ 		.alloc_cacheable_memory = true,
+ 		.wakeup_mhi = false,
++		.supports_regdb = false,
+ 	},
+ 	{
+ 		.name = "wcn6855 hw2.0",
+@@ -320,6 +324,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_dynamic_smps_6ghz = false,
+ 		.alloc_cacheable_memory = false,
+ 		.wakeup_mhi = true,
++		.supports_regdb = true,
+ 	},
+ 	{
+ 		.name = "wcn6855 hw2.1",
+@@ -376,6 +381,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_dynamic_smps_6ghz = false,
+ 		.alloc_cacheable_memory = false,
+ 		.wakeup_mhi = true,
++		.supports_regdb = true,
+ 	},
+ };
+ 
+@@ -736,10 +742,12 @@ static int ath11k_core_fetch_board_data_api_n(struct ath11k_base *ab,
+ 	return ret;
+ }
+ 
+-static int ath11k_core_fetch_board_data_api_1(struct ath11k_base *ab,
+-					      struct ath11k_board_data *bd)
++int ath11k_core_fetch_board_data_api_1(struct ath11k_base *ab,
++				       struct ath11k_board_data *bd,
++				       const char *name)
+ {
+-	bd->fw = ath11k_core_firmware_request(ab, ATH11K_DEFAULT_BOARD_FILE);
++	bd->fw = ath11k_core_firmware_request(ab, name);
++
+ 	if (IS_ERR(bd->fw))
+ 		return PTR_ERR(bd->fw);
+ 
+@@ -767,7 +775,7 @@ int ath11k_core_fetch_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd)
+ 		goto success;
+ 
+ 	ab->bd_api = 1;
+-	ret = ath11k_core_fetch_board_data_api_1(ab, bd);
++	ret = ath11k_core_fetch_board_data_api_1(ab, bd, ATH11K_DEFAULT_BOARD_FILE);
+ 	if (ret) {
+ 		ath11k_err(ab, "failed to fetch board-2.bin or board.bin from %s\n",
+ 			   ab->hw_params.fw.dir);
+@@ -779,6 +787,18 @@ int ath11k_core_fetch_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd)
+ 	return 0;
+ }
+ 
++int ath11k_core_fetch_regdb(struct ath11k_base *ab, struct ath11k_board_data *bd)
++{
++	int ret;
++
++	ret = ath11k_core_fetch_board_data_api_1(ab, bd, ATH11K_REGDB_FILE_NAME);
++	if (ret)
++		ath11k_dbg(ab, ATH11K_DBG_BOOT, "failed to fetch %s from %s\n",
++			   ATH11K_REGDB_FILE_NAME, ab->hw_params.fw.dir);
++
++	return ret;
++}
++
+ static void ath11k_core_stop(struct ath11k_base *ab)
+ {
+ 	if (!test_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags))
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index b4203fa0452e..7c8eacd0edf6 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -968,6 +968,10 @@ struct ath11k_base *ath11k_core_alloc(struct device *dev, size_t priv_size,
+ void ath11k_core_free(struct ath11k_base *ath11k);
+ int ath11k_core_fetch_bdf(struct ath11k_base *ath11k,
+ 			  struct ath11k_board_data *bd);
++int ath11k_core_fetch_regdb(struct ath11k_base *ab, struct ath11k_board_data *bd);
++int ath11k_core_fetch_board_data_api_1(struct ath11k_base *ab,
++				       struct ath11k_board_data *bd,
++				       const char *name);
+ void ath11k_core_free_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd);
+ int ath11k_core_check_dt(struct ath11k_base *ath11k);
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 23f3ce741636..cb4b952f0fbd 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -77,6 +77,7 @@
+ #define ATH11K_DEFAULT_CAL_FILE		"caldata.bin"
+ #define ATH11K_AMSS_FILE		"amss.bin"
+ #define ATH11K_M3_FILE			"m3.bin"
++#define ATH11K_REGDB_FILE_NAME		"regdb.bin"
+ 
+ enum ath11k_hw_rate_cck {
+ 	ATH11K_HW_RATE_CCK_LP_11M = 0,
+@@ -185,6 +186,7 @@ struct ath11k_hw_params {
+ 	bool supports_dynamic_smps_6ghz;
+ 	bool alloc_cacheable_memory;
+ 	bool wakeup_mhi;
++	bool supports_regdb;
+ };
+ 
+ struct ath11k_hw_ops {
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index b71781398fc4..d427c585ab3f 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -2115,7 +2115,8 @@ static int ath11k_qmi_load_file_target_mem(struct ath11k_base *ab,
+ 	return ret;
+ }
+ 
+-static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab)
++static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab,
++				   bool regdb)
+ {
+ 	struct device *dev = ab->dev;
+ 	char filename[ATH11K_QMI_MAX_BDF_FILE_NAME_SIZE];
+@@ -2126,13 +2127,21 @@ static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab)
+ 	const u8 *tmp;
+ 
+ 	memset(&bd, 0, sizeof(bd));
+-	ret = ath11k_core_fetch_bdf(ab, &bd);
+-	if (ret) {
+-		ath11k_warn(ab, "qmi failed to fetch board file: %d\n", ret);
+-		goto out;
++
++	if (regdb) {
++		ret = ath11k_core_fetch_regdb(ab, &bd);
++	} else {
++		ret = ath11k_core_fetch_bdf(ab, &bd);
++		if (ret)
++			ath11k_warn(ab, "qmi failed to fetch board file: %d\n", ret);
+ 	}
+ 
+-	if (bd.len >= SELFMAG && memcmp(bd.data, ELFMAG, SELFMAG) == 0)
++	if (ret)
++		goto out;
++
++	if (regdb)
++		bdf_type = ATH11K_QMI_BDF_TYPE_REGDB;
++	else if (bd.len >= SELFMAG && memcmp(bd.data, ELFMAG, SELFMAG) == 0)
+ 		bdf_type = ATH11K_QMI_BDF_TYPE_ELF;
+ 	else
+ 		bdf_type = ATH11K_QMI_BDF_TYPE_BIN;
+@@ -2580,7 +2589,10 @@ static int ath11k_qmi_event_load_bdf(struct ath11k_qmi *qmi)
+ 		return ret;
+ 	}
+ 
+-	ret = ath11k_qmi_load_bdf_qmi(ab);
++	if (ab->hw_params.supports_regdb)
++		ath11k_qmi_load_bdf_qmi(ab, true);
++
++	ret = ath11k_qmi_load_bdf_qmi(ab, false);
+ 	if (ret < 0) {
+ 		ath11k_warn(ab, "failed to load board data file: %d\n", ret);
+ 		return ret;
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
+index 49db39bf638c..b9b401704902 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.h
++++ b/drivers/net/wireless/ath/ath11k/qmi.h
+@@ -48,6 +48,7 @@ enum ath11k_qmi_file_type {
+ enum ath11k_qmi_bdf_type {
+ 	ATH11K_QMI_BDF_TYPE_BIN			= 0,
+ 	ATH11K_QMI_BDF_TYPE_ELF			= 1,
++	ATH11K_QMI_BDF_TYPE_REGDB		= 4,
+ };
+ 
+ enum ath11k_qmi_event_type {
+-- 
+2.31.1
+
