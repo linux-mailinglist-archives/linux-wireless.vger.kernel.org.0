@@ -2,267 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22CEC475834
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 12:54:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 854454758C8
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 13:23:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242219AbhLOLyA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 06:54:00 -0500
-Received: from mga01.intel.com ([192.55.52.88]:62413 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231334AbhLOLyA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 06:54:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639569240; x=1671105240;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=zOF975cIys87Fw3ViQmrt/F1uZJFAWVeQDnLIi0xbBs=;
-  b=Ypob3FQmoLzM09JmXlKQ9c4waxdRZqQeFvkFNyx7awcqLEKnMnBRTZbK
-   CwN5M+QZkb8NsoL4QEdhThNljIvp7xLS0cwslObaLBDcVggNv/DaYqHHf
-   qUuz/S4ey5NnllWELf+y152oGo+dfPDyUJZAHI5KUKhh3Txoz0djZ/QV+
-   m8CF2k6hvAKW3pflMxaKCEfztevEGqXU4/R1a1JZAxv7BKfW91EIaJeAd
-   Tbltgt2KY/EhHM1kL3r06Sqa4yP7coZsKoYIzRxuvWBayyt8jk9RDHJYJ
-   T+1Vi7x1/4DhkCUst59r86ud18yZtFYPLYFazhY2/kszHa+yWdzbhp/dZ
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10198"; a="263359511"
-X-IronPort-AV: E=Sophos;i="5.88,207,1635231600"; 
-   d="scan'208";a="263359511"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2021 03:54:00 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,207,1635231600"; 
-   d="scan'208";a="505766817"
-Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 15 Dec 2021 03:53:58 -0800
-Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mxSr7-0001hJ-Uh; Wed, 15 Dec 2021 11:53:57 +0000
-Date:   Wed, 15 Dec 2021 19:53:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [kvalo-wireless-drivers-next:master] BUILD SUCCESS
- 09ed8bfc5215ad5aac91c50008277b5586b9ef24
-Message-ID: <61b9d72a.JytrY+2aTa8Ldqd/%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S242427AbhLOMXd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Dec 2021 07:23:33 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:36813 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237111AbhLOMXc (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 15 Dec 2021 07:23:32 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BFCN88r8021830, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BFCN88r8021830
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 15 Dec 2021 20:23:08 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Wed, 15 Dec 2021 20:23:08 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Wed, 15 Dec 2021 20:23:07 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01]) by
+ RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01%5]) with mapi id
+ 15.01.2308.020; Wed, 15 Dec 2021 20:23:07 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "kai.heng.feng@canonical.com" <kai.heng.feng@canonical.com>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>
+CC:     "davem@davemloft.net" <davem@davemloft.net>,
+        "jian-hong@endlessm.com" <jian-hong@endlessm.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        Bernie Huang <phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "briannorris@chromium.org" <briannorris@chromium.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4] rtw88: Disable PCIe ASPM while doing NAPI poll on 8821CE
+Thread-Topic: [PATCH v4] rtw88: Disable PCIe ASPM while doing NAPI poll on
+ 8821CE
+Thread-Index: AQHX8amLQ1c7M9LrfUaQkh1Nis88KKwy82wA
+Date:   Wed, 15 Dec 2021 12:23:07 +0000
+Message-ID: <d2ddfaa035315ca91a2a05a8188810ff50db83c8.camel@realtek.com>
+References: <20211215114635.333767-1-kai.heng.feng@canonical.com>
+In-Reply-To: <20211215114635.333767-1-kai.heng.feng@canonical.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [114.26.206.138]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzE1IOS4iuWNiCAxMDo0NjowMA==?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BE14E3E86E3CFF46A962ED5D3DBCEDA6@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-branch HEAD: 09ed8bfc5215ad5aac91c50008277b5586b9ef24  wilc1000: Rename workqueue from "WILC_wq" to "NETDEV-wq"
-
-elapsed time: 723m
-
-configs tested: 193
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20211214
-mips                 randconfig-c004-20211214
-sh                 kfr2r09-romimage_defconfig
-xtensa                    xip_kc705_defconfig
-powerpc                    klondike_defconfig
-arm                      tct_hammer_defconfig
-m68k                          amiga_defconfig
-arm                          pcm027_defconfig
-sh                        apsh4ad0a_defconfig
-arm                         lpc32xx_defconfig
-powerpc                      tqm8xx_defconfig
-arm                          gemini_defconfig
-csky                             alldefconfig
-arm                        cerfcube_defconfig
-powerpc                        cell_defconfig
-powerpc                   motionpro_defconfig
-powerpc                 mpc834x_itx_defconfig
-sh                               alldefconfig
-arm                             mxs_defconfig
-nds32                             allnoconfig
-powerpc                      pasemi_defconfig
-powerpc                    gamecube_defconfig
-powerpc64                        alldefconfig
-s390                                defconfig
-mips                  cavium_octeon_defconfig
-arm                     eseries_pxa_defconfig
-arm                      footbridge_defconfig
-arm                          pxa168_defconfig
-riscv                            allmodconfig
-powerpc                          allyesconfig
-m68k                          sun3x_defconfig
-arm                         s5pv210_defconfig
-mips                         tb0226_defconfig
-powerpc                   lite5200b_defconfig
-powerpc                      acadia_defconfig
-arc                     nsimosci_hs_defconfig
-powerpc                 mpc85xx_cds_defconfig
-um                             i386_defconfig
-powerpc                        fsp2_defconfig
-mips                         mpc30x_defconfig
-arm                            dove_defconfig
-arm                        oxnas_v6_defconfig
-sh                          polaris_defconfig
-mips                     loongson2k_defconfig
-arc                 nsimosci_hs_smp_defconfig
-powerpc                 mpc834x_mds_defconfig
-powerpc                 mpc836x_mds_defconfig
-arm                         hackkit_defconfig
-mips                      malta_kvm_defconfig
-mips                           ci20_defconfig
-sh                          r7780mp_defconfig
-arm                   milbeaut_m10v_defconfig
-arm                  colibri_pxa270_defconfig
-powerpc                      makalu_defconfig
-arm                      jornada720_defconfig
-sh                          urquell_defconfig
-arm                           sama5_defconfig
-mips                            ar7_defconfig
-arm                       aspeed_g5_defconfig
-riscv             nommu_k210_sdcard_defconfig
-arm                       imx_v4_v5_defconfig
-powerpc                 mpc832x_rdb_defconfig
-arm                          lpd270_defconfig
-powerpc                     ppa8548_defconfig
-mips                      maltaaprp_defconfig
-arm                          imote2_defconfig
-sparc                               defconfig
-sh                         microdev_defconfig
-powerpc                     stx_gp3_defconfig
-i386                             alldefconfig
-mips                      bmips_stb_defconfig
-mips                           rs90_defconfig
-mips                    maltaup_xpa_defconfig
-sparc                       sparc32_defconfig
-h8300                               defconfig
-sh                      rts7751r2d1_defconfig
-openrisc                            defconfig
-powerpc                       ppc64_defconfig
-powerpc                      pmac32_defconfig
-m68k                             alldefconfig
-arm                            qcom_defconfig
-sh                           se7724_defconfig
-sparc64                             defconfig
-h8300                    h8300h-sim_defconfig
-arm                         socfpga_defconfig
-powerpc                      bamboo_defconfig
-ia64                         bigsur_defconfig
-arm                        multi_v5_defconfig
-mips                        workpad_defconfig
-mips                           jazz_defconfig
-arm                            mmp2_defconfig
-arm                         s3c2410_defconfig
-arm                        shmobile_defconfig
-arm                        magician_defconfig
-sh                                  defconfig
-powerpc                    mvme5100_defconfig
-arm                          moxart_defconfig
-sparc                            alldefconfig
-powerpc                     pseries_defconfig
-arm                      pxa255-idp_defconfig
-m68k                       bvme6000_defconfig
-powerpc                          g5_defconfig
-arm                           sama7_defconfig
-arm                  randconfig-c002-20211214
-arm                  randconfig-c002-20211215
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a006-20211214
-x86_64               randconfig-a005-20211214
-x86_64               randconfig-a001-20211214
-x86_64               randconfig-a002-20211214
-x86_64               randconfig-a003-20211214
-x86_64               randconfig-a004-20211214
-i386                 randconfig-a001-20211214
-i386                 randconfig-a002-20211214
-i386                 randconfig-a005-20211214
-i386                 randconfig-a003-20211214
-i386                 randconfig-a006-20211214
-i386                 randconfig-a004-20211214
-x86_64               randconfig-a011-20211215
-x86_64               randconfig-a014-20211215
-x86_64               randconfig-a012-20211215
-x86_64               randconfig-a013-20211215
-x86_64               randconfig-a016-20211215
-x86_64               randconfig-a015-20211215
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-
-clang tested configs:
-arm                  randconfig-c002-20211214
-x86_64               randconfig-c007-20211214
-riscv                randconfig-c006-20211214
-mips                 randconfig-c004-20211214
-i386                 randconfig-c001-20211214
-s390                 randconfig-c005-20211214
-powerpc              randconfig-c003-20211214
-x86_64               randconfig-a011-20211214
-x86_64               randconfig-a014-20211214
-x86_64               randconfig-a012-20211214
-x86_64               randconfig-a013-20211214
-x86_64               randconfig-a016-20211214
-x86_64               randconfig-a015-20211214
-i386                 randconfig-a013-20211214
-i386                 randconfig-a011-20211214
-i386                 randconfig-a016-20211214
-i386                 randconfig-a014-20211214
-i386                 randconfig-a015-20211214
-i386                 randconfig-a012-20211214
-hexagon              randconfig-r045-20211214
-s390                 randconfig-r044-20211214
-riscv                randconfig-r042-20211214
-hexagon              randconfig-r041-20211214
-hexagon              randconfig-r045-20211215
-hexagon              randconfig-r041-20211215
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+T24gV2VkLCAyMDIxLTEyLTE1IGF0IDE5OjQ2ICswODAwLCBLYWktSGVuZyBGZW5nIHdyb3RlOg0K
+PiBNYW55IEludGVsIGJhc2VkIHBsYXRmb3JtcyBmYWNlIHN5c3RlbSByYW5kb20gZnJlZXplIGFm
+dGVyIGNvbW1pdA0KPiA5ZTJmZDI5ODY0YzUgKCJydHc4ODogYWRkIG5hcGkgc3VwcG9ydCIpLg0K
+PiANCj4gVGhlIGNvbW1pdCBpdHNlbGYgc2hvdWxkbid0IGJlIHRoZSBjdWxwcml0LiBNeSBndWVz
+cyBpcyB0aGF0IHRoZSA4ODIxQ0UNCj4gb25seSBsZWF2ZXMgQVNQTSBMMSBmb3IgYSBzaG9ydCBw
+ZXJpb2Qgd2hlbiBJUlEgaXMgcmFpc2VkLiBTaW5jZSBJUlEgaXMNCj4gbWFza2VkIGR1cmluZyBO
+QVBJIHBvbGxpbmcsIHRoZSBQQ0llIGxpbmsgc3RheXMgYXQgTDEgYW5kIG1ha2VzIFJYIERNQQ0K
+PiBleHRyZW1lbHkgc2xvdy4gRXZlbnR1YWxseSB0aGUgUlggcmluZyBiZWNvbWVzIG1lc3NlZCB1
+cDoNCj4gWyAxMTMzLjE5NDY5N10gcnR3Xzg4MjFjZSAwMDAwOjAyOjAwLjA6IHBjaSBidXMgdGlt
+ZW91dCwgY2hlY2sgZG1hIHN0YXR1cw0KPiANCj4gU2luY2UgdGhlIDg4MjFDRSBoYXJkd2FyZSBt
+YXkgZmFpbCB0byBsZWF2ZSBBU1BNIEwxLCBtYW51YWxseSBkbyBpdCBpbg0KPiB0aGUgZHJpdmVy
+IHRvIHJlc29sdmUgdGhlIGlzc3VlLg0KPiANCj4gRml4ZXM6IDllMmZkMjk4NjRjNSAoInJ0dzg4
+OiBhZGQgbmFwaSBzdXBwb3J0IikNCj4gQnVnemlsbGE6IGh0dHBzOi8vYnVnemlsbGEua2VybmVs
+Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MjE1MTMxDQo+IEJ1Z0xpbms6IGh0dHBzOi8vYnVncy5sYXVu
+Y2hwYWQubmV0L2J1Z3MvMTkyNzgwOA0KPiBTaWduZWQtb2ZmLWJ5OiBLYWktSGVuZyBGZW5nIDxr
+YWkuaGVuZy5mZW5nQGNhbm9uaWNhbC5jb20+DQoNClJldmlld2VkLWFuZC1UZXN0ZWQtYnk6IFBp
+bmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KDQo+IC0tLQ0KPiB2NDoNCj4gIC0gUmVi
+YXNlIHRvIHRoZSByaWdodCB0cmVlLg0KPiANCj4gdjM6DQo+ICAtIE1vdmUgdGhlIG1vZHVsZSBw
+YXJhbWV0ZXIgdG8gYmUgcGFydCBvZiBwcml2YXRlIHN0cnVjdC4NCj4gIC0gRW5zdXJlIGxpbmtf
+dXNhZ2UgbmV2ZXIgZ29lcyBiZWxvdyB6ZXJvLg0KPiANCj4gdjI6DQo+ICAtIEFkZCBkZWZhdWx0
+IHZhbHVlIGZvciBtb2R1bGUgcGFyYW1ldGVyLg0KPiANCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODgvcGNpLmMgfCA3MCArKysrKysrLS0tLS0tLS0tLS0tLS0tLS0NCj4gIGRy
+aXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmggfCAgMiArDQo+ICAyIGZpbGVz
+IGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKyksIDUxIGRlbGV0aW9ucygtKQ0KPiANCj4gDQoNClsu
+Li5dDQoNCg0K
