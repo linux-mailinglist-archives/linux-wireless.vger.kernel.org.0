@@ -2,160 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C23AF475B42
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 15:59:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA646475C94
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 17:02:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230210AbhLOO72 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 09:59:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57246 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230005AbhLOO71 (ORCPT
+        id S243969AbhLOQBy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Dec 2021 11:01:54 -0500
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:61100 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242892AbhLOQBw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 09:59:27 -0500
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 008AFC06173F
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 06:59:27 -0800 (PST)
-Received: by mail-il1-x12e.google.com with SMTP id h16so19645390ila.4
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 06:59:26 -0800 (PST)
+        Wed, 15 Dec 2021 11:01:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=egauge.net; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :organization:user-agent:mime-version:content-transfer-encoding;
-        bh=FGUzSktIeEIDsFM8vyYCPEieWo/StazW6rU1WrCQ4Sc=;
-        b=X0s1Sl8WfdAvOXQqlGhOh24HfvJJ3OSaVj96SkWh09YHVwiKfY/yPCVVOJF26OBdFg
-         QtIR98y2KTv+W/cC6cxX0RZKWgxSJ88ScuWnb4+HzFeR8uBrOtHCeVeX/w6iXQGgUf8f
-         IaI8NhsxEBLFCtYJWzwpuqh/sDDRk1fVkHEs04l8I7vacetXVtot/8GsPPgZdC+PALhx
-         0vFG09L+UJ2zXlsUiXNcen53SYy16qg9FC21A+4oMS6ouR0TQZggUHIlD27A8BqbQNwZ
-         euA+tLdnegY5HO5BcaLCYRpqVTS8PYDr9XqG9YI+oMFbmCoiXQ2Xb0m1vXGnXOkcrfnT
-         Tf2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:organization:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=FGUzSktIeEIDsFM8vyYCPEieWo/StazW6rU1WrCQ4Sc=;
-        b=p5jrHaNo9H5F6hKNfpuXSNrjQ3iSZAwptQJZvQXbqFpVVavjkqbqCuR78IoFPLw/Rm
-         wFpaUs0iYbjf3d8+OGaj9LY6n025Dkxyf2+CFPUP/0MdOJ+hnRHl+0Yp6r37+lCsZmRq
-         cV8rxMMR4c7W0m79ZoMsEOPsQiRRqifqWY5ncWkPo+0I6UEriE+PU8wE7x0R9cncBCq8
-         xcWftCLucEE9Tn6YmNq2g+IquCHD68mnyEGHfAH7UmTt+tJiAcyv/JbUzSLxhLQ14kLI
-         yTM8MYo4Id45c/C3f9z+EvjwCqgeWr/FbTElyTRteQepw9G424tVlPUnjddewWlRgSwC
-         Af4w==
-X-Gm-Message-State: AOAM532qM0EVzC2RbqrGeWvTW0wys9oh2SojD3a0ysGAw4M2T9QVMvvx
-        iwsn1czTekdq67Ach+V2iKen
-X-Google-Smtp-Source: ABdhPJyr96cALkbCjBKoe8urBSmD4Rj9c9Bsxrk9TkZIYGeCPzjxC8N2fJsHIUld2UFGjLX3IVrBUQ==
-X-Received: by 2002:a05:6e02:1c85:: with SMTP id w5mr6640419ill.211.1639580366235;
-        Wed, 15 Dec 2021 06:59:26 -0800 (PST)
-Received: from ?IPv6:2601:281:8300:4e0:2ba9:697d:eeec:13b? ([2601:281:8300:4e0:2ba9:697d:eeec:13b])
-        by smtp.gmail.com with ESMTPSA id i1sm1086042ilv.54.2021.12.15.06.59.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Dec 2021 06:59:25 -0800 (PST)
-Message-ID: <9cfbcc99f8a70ba2c03a9ad99f273f12e237e09f.camel@egauge.net>
-Subject: Re: [PATCH v5 1/2] wilc1000: Add reset/enable GPIO support to SPI
- driver
-From:   David Mosberger-Tang <davidm@egauge.net>
-To:     Claudiu.Beznea@microchip.com, Ajay.Kathat@microchip.com
-Cc:     adham.abozaeid@microchip.com, davem@davemloft.net,
-        devicetree@vger.kernel.org, kuba@kernel.org, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, robh+dt@kernel.org
-Date:   Wed, 15 Dec 2021 07:59:05 -0700
-In-Reply-To: <d55a2558-b05d-5995-b0f0-f234cb3b50aa@microchip.com>
-References: <20211215030501.3779911-1-davidm@egauge.net>
-         <20211215030501.3779911-2-davidm@egauge.net>
-         <d55a2558-b05d-5995-b0f0-f234cb3b50aa@microchip.com>
-Organization: eGauge Systems LLC
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1639584112; x=1671120112;
+  h=from:to:cc:subject:date:message-id;
+  bh=15bGcXHcJu3WCJvPbXkCjwcOyaLQzF+aWi8duJRZ1SY=;
+  b=Apcb+0jnFFnVxSe+Cp/KW83dOhSYXYhhQb5BVzn4DTSQasxt8MEUvMDU
+   uSrSz4uEwOEpxzAlxUrsmeRv3Z1J8qNvUzn7xjUCIQLfHIBcOWhR0kA4P
+   7+2hcHwSlDCx41s7gxjtlEJf1d116KUIerJftgz7mHUYYnoeHaOBpJoaC
+   E=;
+Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
+  by alexa-out.qualcomm.com with ESMTP; 15 Dec 2021 08:01:51 -0800
+X-QCInternal: smtphost
+Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
+  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/AES256-SHA; 15 Dec 2021 08:01:50 -0800
+X-QCInternal: smtphost
+Received: from akalaise-linux.qualcomm.com ([10.201.26.157])
+  by ironmsg01-blr.qualcomm.com with ESMTP; 15 Dec 2021 21:31:44 +0530
+Received: by akalaise-linux.qualcomm.com (Postfix, from userid 2376239)
+        id 4ED9A221D3; Wed, 15 Dec 2021 21:31:43 +0530 (IST)
+From:   Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Subject: [PATCH v3] ath11k: fix destination monitor ring out of sync
+Date:   Wed, 15 Dec 2021 21:31:30 +0530
+Message-Id: <1639584090-13751-1-git-send-email-quic_kathirve@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-12-15 at 06:41 +0000, Claudiu.Beznea@microchip.com wrote:
-> On 15.12.2021 05:05, David Mosberger-Tang wrote:
-> > 
-> +static int wilc_parse_gpios(struct wilc *wilc)
-> > +{
-> > +       struct spi_device *spi = to_spi_device(wilc->dev);
-> > +       struct wilc_spi *spi_priv = wilc->bus_data;
-> > +       struct wilc_gpios *gpios = &spi_priv->gpios;
-> > +
-> > +       /* get ENABLE pin and deassert it (if it is defined): */
-> > +       gpios->enable = devm_gpiod_get_optional(&spi->dev,
-> > +                                               "enable", GPIOD_OUT_LOW);
-> > +       /* get RESET pin and assert it (if it is defined): */
-> > +       if (gpios->enable) {
-> > +               /* if enable pin exists, reset must exist as well */
-> > +               gpios->reset = devm_gpiod_get(&spi->dev,
-> > +                                             "reset", GPIOD_OUT_HIGH);
-> 
-> As far as I can tell form gpiolib code the difference b/w GPIOD_OUT_HIGH
-> and GPIOD_OUT_LOW in gpiolib is related to the initial value for the GPIO.
+More than 20000 PPDU id jumping causing status ring and destination
+ring processing not sync. The status ring is processed and the
+destination ring is not processed. Since destination is not reaped for
+so long, backpressure occurs at the destination ring.
 
-Yes.
+To address this issue update the PPDU id with the latest PPDU, this
+will allow the destination ring to be reaped and will prevent the
+rings from getting out of sync.
 
-> Did you used GPIOD_OUT_HIGH for reset to have the chip out of reset at this
-> point?
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1.r1-00026-QCAHKSWPL_SILICONZ-2
 
-No, ~RESET is an active-low signal.  GPIOD_OUT_LOW should really be
-called GPIOD_OUT_DEASSERTED or something like that.  The code ensures
-that the chip is in RESET and ~ENABLEd after parsing the GPIOs.
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+---
+v3:
+	Added Tested-on tag
+v2:
+	Corrected the signed off details
 
-> > +               if (IS_ERR(gpios->reset)) {
-> > +                       dev_err(&spi->dev, "missing reset gpio.\n");
-> > +                       return PTR_ERR(gpios->reset);
-> > +               }
-> > +       } else {
-> > +               gpios->reset = devm_gpiod_get_optional(&spi->dev,
-> > +                                                      "reset", GPIOD_OUT_HIGH);
-> > +       }
-> > +       return 0;
-> > +}
-> > +
-> > +static void wilc_wlan_power(struct wilc *wilc, bool on)
-> > +{
-> > +       struct wilc_spi *spi_priv = wilc->bus_data;
-> > +       struct wilc_gpios *gpios = &spi_priv->gpios;
-> > +
-> > +       if (on) {
-> > +               gpiod_set_value(gpios->enable, 1);      /* assert ENABLE */
-> > +               mdelay(5);
-> > +               gpiod_set_value(gpios->reset, 0);       /* deassert RESET */
-> 
-> From what I can tell from gpiolib code, requesting the pin from device tree
-> with:
-> 
-> +        reset-gpios = <&pioA 6 GPIO_ACTIVE_LOW>;
-> 
-> makes the value written with gpiod_set_value() to be negated, thus the 0
-> written here is translated to a 1 on the pin. Is there a reason you did it
-> like this?
+ drivers/net/wireless/ath/ath11k/dp.h    |  3 +++
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 42 ++++++++++++++++++++++++++++-----
+ 2 files changed, 39 insertions(+), 6 deletions(-)
 
-Yes, of course.  RESET is an active-low signal, as defined in the
-datasheet.
-
-> Would it have been simpler to have both pins requested with
-> GPIO_ACTIVE_HIGH and here to do gpiod_set_value(gpio, 1) for both of the
-> pin. In this way, at the first read of the code one one would have been
-> telling that it does what datasheet specifies: for power on toggle enable
-> and reset gpios from 0 to 1 with a delay in between.
-
-I think you're confusing 0 and 1 with low-voltage and high-voltage.  0
-means de-assert the signal, 1 means assert the signal.  Whether that
-translates to a low voltage or a high voltage depends on whether the
-signal a active-low or active-high.
-
-> 
-> 
-> > +       } else {
-> > +               gpiod_set_value(gpios->reset, 1);       /* assert RESET */
-> > +               gpiod_set_value(gpios->enable, 0);      /* deassert ENABLE */
-> 
-> I don't usually see comments near the code line in kernel. Maybe move them
-> before the actual code line or remove them at all as the code is impler enough?
-
-You're kidding, right?
-
-  --david
+diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
+index b0d0e7b..cc36b57 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.h
++++ b/drivers/net/wireless/ath/ath11k/dp.h
+@@ -101,6 +101,8 @@ struct ath11k_pdev_mon_stats {
+ 	u32 dest_mpdu_drop;
+ 	u32 dup_mon_linkdesc_cnt;
+ 	u32 dup_mon_buf_cnt;
++	u32 dest_mon_stuck;
++	u32 dest_mon_not_reaped;
+ };
+ 
+ struct dp_link_desc_bank {
+@@ -143,6 +145,7 @@ struct ath11k_mon_data {
+ 
+ struct ath11k_pdev_dp {
+ 	u32 mac_id;
++	u32 mon_dest_ring_stuck_cnt;
+ 	atomic_t num_tx_pending;
+ 	wait_queue_head_t tx_empty_waitq;
+ 	struct dp_rxdma_ring rx_refill_buf_ring;
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 3a9c362..d0b8829 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -4939,6 +4939,12 @@ static int ath11k_dp_rx_mon_deliver(struct ath11k *ar, u32 mac_id,
+ 	return -EINVAL;
+ }
+ 
++/* The destination ring processing is stuck if the destination is not
++ * moving while status ring moves 16 PPDU. The destination ring processing
++ * skips this destination ring PPDU as a workaround.
++ */
++#define MON_DEST_RING_STUCK_MAX_CNT 16
++
+ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
+ 					  u32 quota, struct napi_struct *napi)
+ {
+@@ -4951,6 +4957,7 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
+ 	u32 ring_id;
+ 	struct ath11k_pdev_mon_stats *rx_mon_stats;
+ 	u32	 npackets = 0;
++	u32 mpdu_rx_bufs_used;
+ 
+ 	if (ar->ab->hw_params.rxdma1_enable)
+ 		ring_id = dp->rxdma_mon_dst_ring.ring_id;
+@@ -4980,16 +4987,39 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
+ 		head_msdu = NULL;
+ 		tail_msdu = NULL;
+ 
+-		rx_bufs_used += ath11k_dp_rx_mon_mpdu_pop(ar, mac_id, ring_entry,
+-							  &head_msdu,
+-							  &tail_msdu,
+-							  &npackets, &ppdu_id);
++		mpdu_rx_bufs_used = ath11k_dp_rx_mon_mpdu_pop(ar, mac_id, ring_entry,
++							      &head_msdu,
++							      &tail_msdu,
++							      &npackets, &ppdu_id);
++
++		rx_bufs_used += mpdu_rx_bufs_used;
++
++		if (mpdu_rx_bufs_used) {
++			dp->mon_dest_ring_stuck_cnt = 0;
++		} else {
++			dp->mon_dest_ring_stuck_cnt++;
++			rx_mon_stats->dest_mon_not_reaped++;
++		}
++
++		if (dp->mon_dest_ring_stuck_cnt > MON_DEST_RING_STUCK_MAX_CNT) {
++			rx_mon_stats->dest_mon_stuck++;
++			ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
++				   "status ring ppdu_id=%d dest ring ppdu_id=%d mon_dest_ring_stuck_cnt=%d dest_mon_not_reaped=%u dest_mon_stuck=%u\n",
++				   pmon->mon_ppdu_info.ppdu_id, ppdu_id,
++				   dp->mon_dest_ring_stuck_cnt,
++				   rx_mon_stats->dest_mon_not_reaped,
++				   rx_mon_stats->dest_mon_stuck);
++			pmon->mon_ppdu_info.ppdu_id = ppdu_id;
++			continue;
++		}
+ 
+ 		if (ppdu_id != pmon->mon_ppdu_info.ppdu_id) {
+ 			pmon->mon_ppdu_status = DP_PPDU_STATUS_START;
+ 			ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
+-				   "dest_rx: new ppdu_id %x != status ppdu_id %x",
+-				   ppdu_id, pmon->mon_ppdu_info.ppdu_id);
++				   "dest_rx: new ppdu_id %x != status ppdu_id %x dest_mon_not_reaped = %u dest_mon_stuck = %u\n",
++				   ppdu_id, pmon->mon_ppdu_info.ppdu_id,
++				   rx_mon_stats->dest_mon_not_reaped,
++				   rx_mon_stats->dest_mon_stuck);
+ 			break;
+ 		}
+ 		if (head_msdu && tail_msdu) {
+-- 
+2.7.4
 
