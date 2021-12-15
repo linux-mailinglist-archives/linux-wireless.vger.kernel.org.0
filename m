@@ -2,104 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D163475A8B
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 15:19:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 715C0475A9B
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 15:23:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237579AbhLOOSz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 09:18:55 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:50136 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234754AbhLOOSz (ORCPT
+        id S237734AbhLOOX4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Dec 2021 09:23:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49062 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230188AbhLOOXz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 09:18:55 -0500
+        Wed, 15 Dec 2021 09:23:55 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63DE5C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 06:23:55 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B937EB81F2A;
-        Wed, 15 Dec 2021 14:18:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040D3C34604;
-        Wed, 15 Dec 2021 14:18:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA0E1618CF
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 14:23:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E637C34605;
+        Wed, 15 Dec 2021 14:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639577932;
-        bh=frgeiBv6eu/KdNqtU+zCsKIIyZPfVonzlLQXT5ztlHI=;
-        h=From:Subject:To:Cc:Date:From;
-        b=GNA5Wnmq3PqzPsIMW1MZiBz9gl1kvuXTPojBgvYs9jSWZdOY4oOdYma6W6fBt0ZS9
-         QZOVCwaKFyVjBJGd3w8SZBicYj2nGFlHvcyzSB/A4zpvY/cdEmgWPU9rR+kyZxyiZN
-         Y9XBvDB1gDu6tBNUJX03M2Uyik/TcjDuueSNhCg7IPfvezZhK6011R9ljJL+6WLdJ6
-         g5J86dmMhn41eG+Jb9bVPl7sHEMhTv0F+IxdW0lkAWYcEyM+sL3vtWBBpxmjfMg5jz
-         /mr6Zt49yYdH3J8PytCZoew96OV5H5F0mGnwtnGJHBk0yE9VlHiAI+xXQ/iTn1lrJp
-         Eem1F9w8gBYUQ==
+        s=k20201202; t=1639578234;
+        bh=+mgIa1Ig+dD5MXNt88Lj5gDCMpAT/wRrfP8VkfdF2PQ=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=pzMyPMY/38zmOYyrLt8/7UMig/0Y670jbem3MKZSR2ep6kG04DXKWA4QTBxAwbmiW
+         cY8OX/2CVkGqY/6vmcTRx3GFJCEUXLTb71PA2Id/vch9eupzUv7Qgvf1Ud+ge8fO3V
+         AJxNXXQGqkx3MeX2zvW3PRx/s0x2wn4Jh8PW/cBPPeetZP6aiB8E37N0QtVUWCsU7M
+         od4WgajLTpTfAudvsdqY5ws26wpedTRPgcBSF6CqSEBSVk+77q+ZilhFFQY8nSuJAt
+         28mAdpW2t161YRpoJAYhY85Rmw44FcBt35GjHF1+nQasm7PqNRXsvi84SGN6ijZ2vD
+         hVCnPwNXzndcA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] brcmfmac: add CYW43570 PCIE device
 From:   Kalle Valo <kvalo@kernel.org>
-Subject: pull-request: wireless-drivers-2021-12-15
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20211215141852.040D3C34604@smtp.kernel.org>
-Date:   Wed, 15 Dec 2021 14:18:51 +0000 (UTC)
+In-Reply-To: <bbd6262b-8055-9a2f-55c5-81d6527014cb@infineon.com>
+References: <bbd6262b-8055-9a2f-55c5-81d6527014cb@infineon.com>
+To:     "Lin Ian (CSSITB CSS ICW SW WFS / EE)" <ian.lin-ee@infineon.com>
+Cc:     <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        <Chi-Hsien.Lin@infineon.com>, <Wright.Feng@infineon.com>,
+        <Double.Lo@infineon.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163957823009.6130.17486515581645978504.kvalo@kernel.org>
+Date:   Wed, 15 Dec 2021 14:23:51 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+"Lin Ian (CSSITB CSS ICW SW WFS / EE)" <ian.lin-ee@infineon.com> wrote:
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+> From: Soontak Lee <soontak.lee@cypress.com>
+> 
+> CYW43570 is a 3-antenna, 2x2 MIMO,802.11a/b/g/n/ac, PCIe 3.0 for WLAN.
+> It is BT/WIFI combo.
+> 
+> Signed-off-by: Soontak Lee <soontak.lee@cypress.com>
+> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@infineon.com>
+> Signed-off-by: Ian Lin <ian.lin-ee@infineon.com>
 
-Kalle
+The indentation looks wrong and also the patch is corrupted. It looks like you
+used Mozilla to submit the patch so it's not surprising there are problems,
+see the wiki below for more information how to submit patches using git
+send-email.
 
-The following changes since commit 191587cd1a5f36852a0fc32cff2d5bc7680551db:
+error: corrupt patch at line 19
 
-  mt76: fix key pointer overwrite in mt7921s_write_txwi/mt7663_usb_sdio_write_txwi (2021-11-29 19:33:33 +0200)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/bbd6262b-8055-9a2f-55c5-81d6527014cb@infineon.com/
 
-are available in the Git repository at:
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2021-12-15
-
-for you to fetch changes up to f7d55d2e439fa4430755d69a5d7ad16d43a5ebe6:
-
-  mt76: mt7921: fix build regression (2021-12-08 20:17:07 +0200)
-
-----------------------------------------------------------------
-wireless-drivers fixes for v5.16
-
-Second set of fixes for v5.16, hopefully also the last one. I changed
-my email in MAINTAINERS, one crash fix in iwlwifi and some build
-problems fixed.
-
-iwlwifi
-
-* fix crash caused by a warning
-
-* fix LED linking problem
-
-brcmsmac
-
-* rework LED dependencies for being consistent with other drivers
-
-mt76
-
-* mt7921: fix build regression
-
-----------------------------------------------------------------
-Arnd Bergmann (3):
-      iwlwifi: fix LED dependencies
-      brcmsmac: rework LED dependencies
-      mt76: mt7921: fix build regression
-
-Johannes Berg (1):
-      iwlwifi: mvm: don't crash on invalid rate w/o STA
-
-Kalle Valo (1):
-      MAINTAINERS: update Kalle Valo's email
-
- MAINTAINERS                                               | 12 ++++++------
- drivers/net/wireless/broadcom/brcm80211/Kconfig           | 14 +++++++++-----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/Makefile |  2 +-
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.h    |  2 +-
- drivers/net/wireless/intel/iwlegacy/Kconfig               |  4 ++--
- drivers/net/wireless/intel/iwlwifi/Kconfig                |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c               |  5 +++--
- drivers/net/wireless/mediatek/mt76/Makefile               |  2 +-
- 8 files changed, 24 insertions(+), 19 deletions(-)
