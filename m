@@ -2,79 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74140475E6F
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 18:19:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D181475F7F
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 18:39:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245247AbhLORSr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 12:18:47 -0500
-Received: from p-impout007aa.msg.pkvw.co.charter.net ([47.43.26.138]:51033
-        "EHLO p-impout007.msg.pkvw.co.charter.net" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S235266AbhLORSq (ORCPT
+        id S234987AbhLORix (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Dec 2021 12:38:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39170 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234594AbhLORiw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 12:18:46 -0500
-X-Greylist: delayed 428 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 Dec 2021 12:18:46 EST
-Received: from localhost.localdomain ([24.31.246.181])
-        by cmsmtp with ESMTP
-        id xXoWmVObHtfLpxXoXmICun; Wed, 15 Dec 2021 17:11:37 +0000
-X-Authority-Analysis: v=2.4 cv=A+F/goaG c=1 sm=1 tr=0 ts=61ba21c9
- a=cAe/7qmlxnd6JlJqP68I9A==:117 a=cAe/7qmlxnd6JlJqP68I9A==:17 a=hSkVLCK3AAAA:8
- a=VwQbUJbxAAAA:8 a=yQdBAQUQAAAA:8 a=tY4FJJ6CfTjgVO9VqIUA:9
- a=cQPPKAXgyycSBL8etih5:22 a=AjGcO6oz07-iQ99wixmX:22 a=SzazLyfi1tnkUD6oumHU:22
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        syzbot+cce1ee31614c171f5595@syzkaller.appspotmail.com,
-        stable@vger.kernel.org
-Subject: [PATCH] rtlwifi: rtl8192cu: Fix WARNING when calling local_irq_restore() with interrupts enabled
-Date:   Wed, 15 Dec 2021 11:11:05 -0600
-Message-Id: <20211215171105.20623-1-Larry.Finger@lwfinger.net>
+        Wed, 15 Dec 2021 12:38:52 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1B41C06173E
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 09:38:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=PTtmBDxqnXiUaPJjsZlrf7O8JMGRO+xS/k9BBmp2hWY=; b=ARpHDG6dYVw92T/9hPJfpgdRUj
+        6J/E7FWcz9mHLAOOrhnCbV+mu2u13oJRrV1Q/TR98gmiu/vCjSbUazB/pnyf/bL9qdA99bxOMxas4
+        xyYdY8+I7g57VyrNICQ0RDnX1CTj1jBeusijMs5iCLr02dkLWTo7N5nz+XIh9XTHEE6o=;
+Received: from p54ae911a.dip0.t-ipconnect.de ([84.174.145.26] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1mxYEr-0000He-Dx
+        for linux-wireless@vger.kernel.org; Wed, 15 Dec 2021 18:38:49 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 1/3] mt76: allow drivers to drop rx packets early
+Date:   Wed, 15 Dec 2021 18:38:37 +0100
+Message-Id: <20211215173839.20853-1-nbd@nbd.name>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfLkNsLwfUnYG9J9RMJuoIpxGw5SYgcBLJWa15udU5lmKI6ID6vW6x+qxPAW9dpJjn0WPx5c2u+usecqpeiGtg/t2hJbiLv8+KDJCK4tgAzr0PFm0b6sO
- DAh/ycoJHdOxb/rEuWj0hVmBNy/dIQpmVYxQ+zU8gDFLdSo91D1pPg2FDbD0v8AlTF7zeFkPdPQV9m0KDO7L9Pz3diEi5O5tJUr9FU+P8KhC266TY/LrJ9G3
- RMofXy8Vbv0TetKlLs/6eJgql9lH9ekajs//iDgowzMsAJ3xwFefaZcxkLBqC6XDoCArxAjaxNUNyYKzbztVbNFJSBRwHqc2/9+xVzEGQS04vZsZYEsBd3FB
- oKNjHbzhrTPPi3RzLqVr2LAa3jdLuJrHmF21MXW2xcIehIpPWkM=
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Syzbot reports the following WARNING:
+This can be used to free received events without allocating an extra skb
 
-[200~raw_local_irq_restore() called with IRQs enabled
-WARNING: CPU: 1 PID: 1206 at kernel/locking/irqflag-debug.c:10
-   warn_bogus_irq_restore+0x1d/0x20 kernel/locking/irqflag-debug.c:10
-
-Hardware initialization for the rtl8188cu can run for as long as 350 ms,
-and the routine may be called with interrupts disabled. To avoid locking
-the machine for this long, the current routine saves the interrupt flags
-and enables local interrupts. The problem is that it restores the flags
-at the end without disabling local interrupts first.
-
-This patch fixes commit a53268be0cb9 ("rtlwifi: rtl8192cu: Fix too long
-disable of IRQs").
-
-Reported-by: syzbot+cce1ee31614c171f5595@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Fixes: a53268be0cb9 ("rtlwifi: rtl8192cu: Fix too long disable of IRQs")
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/dma.c  | 19 ++++++++++++-------
+ drivers/net/wireless/mediatek/mt76/mt76.h |  2 ++
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
-index 6312fddd9c00..eaba66113328 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
-@@ -1000,6 +1000,7 @@ int rtl92cu_hw_init(struct ieee80211_hw *hw)
- 	_initpabias(hw);
- 	rtl92c_dm_init(hw);
- exit:
-+	local_irq_disable();
- 	local_irq_restore(flags);
- 	return err;
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 5e1c1506a4c6..3a9af8931c35 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -572,9 +572,7 @@ mt76_dma_rx_process(struct mt76_dev *dev, struct mt76_queue *q, int budget)
+ 		if (data_len < len + q->buf_offset) {
+ 			dev_kfree_skb(q->rx_head);
+ 			q->rx_head = NULL;
+-
+-			skb_free_frag(data);
+-			continue;
++			goto free_frag;
+ 		}
+ 
+ 		if (q->rx_head) {
+@@ -582,11 +580,14 @@ mt76_dma_rx_process(struct mt76_dev *dev, struct mt76_queue *q, int budget)
+ 			continue;
+ 		}
+ 
++		if (!more && dev->drv->rx_check &&
++		    !(dev->drv->rx_check(dev, data, len)))
++			goto free_frag;
++
+ 		skb = build_skb(data, q->buf_size);
+-		if (!skb) {
+-			skb_free_frag(data);
+-			continue;
+-		}
++		if (!skb)
++			goto free_frag;
++
+ 		skb_reserve(skb, q->buf_offset);
+ 
+ 		if (q == &dev->q_rx[MT_RXQ_MCU]) {
+@@ -603,6 +604,10 @@ mt76_dma_rx_process(struct mt76_dev *dev, struct mt76_queue *q, int budget)
+ 		}
+ 
+ 		dev->drv->rx_skb(dev, q - dev->q_rx, skb);
++		continue;
++
++free_frag:
++		skb_free_frag(data);
+ 	}
+ 
+ 	mt76_dma_rx_fill(dev, q);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 239742112e16..8edbf42b4526 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -373,6 +373,8 @@ struct mt76_driver_ops {
+ 
+ 	bool (*tx_status_data)(struct mt76_dev *dev, u8 *update);
+ 
++	bool (*rx_check)(struct mt76_dev *dev, void *data, int len);
++
+ 	void (*rx_skb)(struct mt76_dev *dev, enum mt76_rxq_id q,
+ 		       struct sk_buff *skb);
+ 
 -- 
 2.34.1
 
