@@ -2,299 +2,280 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 935D6475300
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 07:35:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4415747530A
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Dec 2021 07:41:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233878AbhLOGe6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 01:34:58 -0500
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:6091 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233763AbhLOGe6 (ORCPT
+        id S235853AbhLOGl1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Dec 2021 01:41:27 -0500
+Received: from esa.microchip.iphmx.com ([68.232.153.233]:65486 "EHLO
+        esa.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233763AbhLOGl0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 01:34:58 -0500
+        Wed, 15 Dec 2021 01:41:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1639550487; x=1671086487;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=kuuTj+VukXBBJGex5LBU4ZYroGC+TcmfBl/rOVsMLrE=;
+  b=1bbzvJnqwX84hbwrHP67RBdcXwkOgcd5QbIRxxi6W14t12Yvk/bU5CgM
+   kfW6ihWx3qKOQATekccQQBDYw/i42Fu681l3171PZtW3TFqcG55gkTe3j
+   uW3P8wzF5w8jI3XzM6p03HP0FZMy4qVbXg2tfI+bB3Y7E+UewPRTMs/QB
+   8h/4ohG0wlt35F73eNJFbI7EXkA9YR4dNHVB/WrGf/Wb81YcZgwzpde2Z
+   xRmjYl2tKVplimZsdV699skgzrMWEmKvqtTrxhhr4lRA14VJ7FYp9xs3l
+   GHLqO42XWYoxNpLR11PVh+YFM3gJixUQWhoMWn0BKnNiuXUWxFa0jpglG
+   A==;
+IronPort-SDR: OlSCx5j+HU492xPFZ9rtGflnetsx7uL0TX6ZOA4f771w+uJaGA6xeMDxA0C75T02xmG//aJ69P
+ 6VM3NKDNx+a2nHN6Jyq/v9Tip57S7SRdzKE35YZYIr/0TGUrl005SghoMzAdHGpFJsWoSGVGm5
+ qxnEEYzk1EHJJKMt5LotXSQT+4sa7bqkKulWddk//J+/DVaeljo0BuXPLFIed20Bw3ANfjZK6k
+ kO/SQFi4PvS3oQpExLJdpHSHiJWYNmloy9kBdOSGySLTy68OFLyWEQx/8w8YwmQhn0Yypv2hUp
+ EnFBApjQemJ2m8ox3UgCbaF+
+X-IronPort-AV: E=Sophos;i="5.88,207,1635231600"; 
+   d="scan'208";a="146712778"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 14 Dec 2021 23:41:26 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Tue, 14 Dec 2021 23:41:25 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17 via Frontend Transport; Tue, 14 Dec 2021 23:41:25 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Dgj+jbucLLXRRBI0ueLlbzUyhrjrfwEWgQY9yd45wX9/9ERNSe0OQRS40sgt5frRT4SnlzMi4ZX4dNwaDK3E4aCvaICTTwsUB3jBqtPJWn2kBcAw0lJMM2KZaA9ktk+PStCRlIYGvakYbs83cO0fLotqQlmU/mO/yWi9bYzihbj/sNOmM3u2iW58mcn4Z+NV3oYzs4he/F12DBOCy6aOmrsjtC+CAgxBHUPrBqb17G1VFywxO55nzxLN1lf1Puy2lg/aNLWgyNL31MKjUxgRVTuJn6QdIK65/EG2LuXPteIrHQTbXAggkl13WGNUnGZKZD39VZ/ouxlRN1L21cvD2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kuuTj+VukXBBJGex5LBU4ZYroGC+TcmfBl/rOVsMLrE=;
+ b=EogK8N1fr/UtwayhPx1FOKbeegfyUlTXsgoVrPlyOZG1Nckg5jVbspuCouSzvn4sfG/t4ErRDKeImOGlCB9QVZiMymOQt82OkwECiXVQarXbm+Ki4kB0icsASPUQb+8VU9nkqlwEJ74JdDasyAYkswwdxMtzFXEjo3bxhCWBq5vLkpAFHMWhoA9y3LHk5u/WEukCLpOy05dBMsXGU5BtRlW21xyoSKM7WQXfEZuKCwabLYBCYtBNIJNXrJ58GR4MH40qQ68ZwfLBqvLybtGNPXKfn8ff4gioGI9A2dRoo2HMngBty07shktiXkqZC2Lv8NlXI14aQca5gkq+wpqz9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1639550097; x=1671086097;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=fK5apztIjAcABwBgtoQeftGQ5owVsa8pWNFdft9WH1c=;
-  b=V5xZFgozQQ0029ghpeEEX4BYhGu7Dq4sPDZQf1rUq4q5TbarnJDRyEkd
-   SbybK6die9wwDk2/Vl2gY/tGQ0cUaUvLEZ3oUoQ2PF2OeCwxcxE9BWLmv
-   vkdl9qLShTWIi3PdeoUKOD0tp+rd8jxKGBRv5N4hwQopnzH/IVYzxBpkx
-   k=;
-Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
-  by alexa-out.qualcomm.com with ESMTP; 14 Dec 2021 22:34:57 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2021 22:34:57 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 14 Dec 2021 22:34:57 -0800
-Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 14 Dec 2021 22:34:55 -0800
-From:   Wen Gong <quic_wgong@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
-Subject: [PATCH v2] ath11k: free peer for station when disconnect from AP for QCA6390/WCN6855
-Date:   Wed, 15 Dec 2021 01:34:42 -0500
-Message-ID: <20211215063442.15629-1-quic_wgong@quicinc.com>
-X-Mailer: git-send-email 2.31.1
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kuuTj+VukXBBJGex5LBU4ZYroGC+TcmfBl/rOVsMLrE=;
+ b=QIQkts2Jc3iKlc8uaru8uMp+3lco+MnNkf+gOkYDcIvMV4q4OPYK/yxGJk9JPmJJijBU+9eMz6+DsJcIJnFV3PmNuCErz94HDyHsfPZHJdCGQkQ9bO1jVm8gXksN2/wImuVtEOc8/iQ6f8BxNg0CGc4iZbWDFh3IjX8WSbRoZJ8=
+Received: from CO1PR11MB4769.namprd11.prod.outlook.com (2603:10b6:303:91::21)
+ by MWHPR11MB1486.namprd11.prod.outlook.com (2603:10b6:301:e::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.17; Wed, 15 Dec
+ 2021 06:41:22 +0000
+Received: from CO1PR11MB4769.namprd11.prod.outlook.com
+ ([fe80::bd93:cf07:ea77:3b50]) by CO1PR11MB4769.namprd11.prod.outlook.com
+ ([fe80::bd93:cf07:ea77:3b50%7]) with mapi id 15.20.4778.018; Wed, 15 Dec 2021
+ 06:41:22 +0000
+From:   <Claudiu.Beznea@microchip.com>
+To:     <davidm@egauge.net>, <Ajay.Kathat@microchip.com>
+CC:     <adham.abozaeid@microchip.com>, <davem@davemloft.net>,
+        <devicetree@vger.kernel.org>, <kuba@kernel.org>,
+        <kvalo@codeaurora.org>, <linux-kernel@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <robh+dt@kernel.org>
+Subject: Re: [PATCH v5 1/2] wilc1000: Add reset/enable GPIO support to SPI
+ driver
+Thread-Topic: [PATCH v5 1/2] wilc1000: Add reset/enable GPIO support to SPI
+ driver
+Thread-Index: AQHX8X7Fz1JXQBD6wEiVBWL5VPrTzg==
+Date:   Wed, 15 Dec 2021 06:41:22 +0000
+Message-ID: <d55a2558-b05d-5995-b0f0-f234cb3b50aa@microchip.com>
+References: <20211215030501.3779911-1-davidm@egauge.net>
+ <20211215030501.3779911-2-davidm@egauge.net>
+In-Reply-To: <20211215030501.3779911-2-davidm@egauge.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 6aef63f4-9817-4c49-c449-08d9bf95e8d3
+x-ms-traffictypediagnostic: MWHPR11MB1486:EE_
+x-microsoft-antispam-prvs: <MWHPR11MB14860EFF7449B20F76C01D3F87769@MWHPR11MB1486.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:298;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: JeVk+I0aH0sXu7F2upnZ6NTOweEHx9yendIJoFJlU0zIn7j8U/CMGfCkwixGZkPQUQI1lhpNOAy4czFUakh8nubHvVITwrIkgUIqCa5ncChB5y9LVeaEWpwl1+WB4O8ZYg/kS9h+UPHIfac4u483nbhbEdjFhyPIyTmjHvIkDC7sXERX14A2nBEkhmsGM+vL1gRUT/AwLYxLga5CXKcnTyhvmv/oEaJuUpewNueKIQf9SkDzoqPw6gAMKReuyDzJPCeSD2ULUgTmg64gvGLan23x+Dl+mG0+7WYg3B/IM1jGV6zF6zHBF1cplCCz3+dxnBeGDrRwO8entYHAqg0ZYz0s8TnZ5HfxFXZV6rmL7Ucg6MwtlRi/xM+Nug4QeDOc/gGN1aTcrjRyjx68d3YxYRXpA7EZDCLSC7x0ITGr5nbzp/JLr1HAm1r0/NOey8g7Z6z/tlAxobB+3jaIq0QAS6GN8HlcYyXRGQhO1sFMs7Ft6MzuLfw/pf4PGtE2WCeFK/fkgbHQP9QE1kek8U0paL3vlIR2sgQ0UEjn66KDfqB4gLZXgfDOWcRYaw4TLrA0Z/JncYlgHxvKCGrmS5rJgbtcocHvWMzTmtaR0zkjQGkhLbCRlsIttgUbDgqsBImU/Q8B64oFkn1pEXjOj65Y/NpmhI4sM6l9S7Y/FdyT6fbQ/Y7la2wuf+E84I7KlXCXCtifFUWMjItvUnUNGluqt04VwJfvVB8q7883czcVVAA3Z5BF0wLITMf1x3P96C0svKdRbkn3JxZSygTd3YWOOg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4769.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(6506007)(4326008)(71200400001)(6512007)(31696002)(8676002)(8936002)(186003)(110136005)(54906003)(2906002)(26005)(66476007)(6636002)(66446008)(83380400001)(508600001)(76116006)(86362001)(66556008)(91956017)(66946007)(64756008)(5660300002)(53546011)(122000001)(6486002)(36756003)(2616005)(38100700002)(316002)(31686004)(38070700005)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bTdYTHNVSnNaMU9HekIydXdyWmdlY2RVWG5NS2MyRkd3YnhFMmtOcGgyTllk?=
+ =?utf-8?B?MDM3d1liQzdKTTJRVFJRVTIzZG5za25FZzhSam5TZUJDNzlNYW9SRERiNWI4?=
+ =?utf-8?B?ckcwdWI5TnpFTEJ3N0Q3cTF1MERwT0hmNjJLNEdUVkJYY0JOSStNellxVVlU?=
+ =?utf-8?B?QzJPcldKVkw2RG5YVndNWEE4M0JaaHZWMTZDVklFN2dUTDhUbjFIR0tzREI1?=
+ =?utf-8?B?eDlySStPWk9Pd2k3TkR2bmtheGlWVG5zOWNnMDJxZ1NkZXBZS2V1OW1YTXFT?=
+ =?utf-8?B?UzdFZEhjdWthdGRTTTRRNWhCcGtVU1UxaE9OZnE2VVZxS0xBVkxDcUdOU3JZ?=
+ =?utf-8?B?ZlBWSFlsZWs0UHN2d3VyRmZpeXZ1ajNZWVdqTEp5VFJKckxnQVYyTzJsMW1D?=
+ =?utf-8?B?QXBPRWh4YVEzNzZzYWlFK2hUaWttckZZZEhGd2tFeVMwUTdNYmtFSGJsbVJQ?=
+ =?utf-8?B?T0gxQmR3NXNsbmNYY0FBUHErN294b2FYRmhjVTBxNDduanl1T29RTVhWdU5Z?=
+ =?utf-8?B?dnZnbU1iWFZ0T2pjeW5rWkw5M3N2M2FuaE8wL2MzZlV2NkI2elIyU2FHOEUx?=
+ =?utf-8?B?Z2JOdDZscTBXUUQ1a0NhLzRBRm0xeU9vNlhVUjRxdWRGSTVRU0NjOEdxRkox?=
+ =?utf-8?B?SnA4aFBaOUF0dUxFMlY0Z3hrZUhyUktlaUtOSWFWUDJqeDBmeVRWeXZVY0xw?=
+ =?utf-8?B?UzYzRnlHMjZxdVByUmZqLzllUXc4S3E2NXhySStGWGFHM0hUenJUbGJDTXJu?=
+ =?utf-8?B?QUdpNE5Sbll2ZnA4UXE4M1pOUFdjUUErRU83RVVBWWhsZFJNM01kdnErVGdF?=
+ =?utf-8?B?aU5rS1dOYVU2bzNDcGpSMWJkNHJ0M0NORHVSaVlEUWJjR2o4cnpCNVpNeWF0?=
+ =?utf-8?B?L0NpNC9DL0lQSlN4Z2xtRDRNOHlVdXMyYWV5MFR3US91YU1ZYUxZa3pUb3l3?=
+ =?utf-8?B?eTdxamY5NWJCWjBudEJEQzloQTZnZnBaQnBHWDhXN2k1SDRGcDRtYjhRaW9n?=
+ =?utf-8?B?NWRhZExKNFpVM09SUW1TQ3RzV0xQT3NRUCt3MStHS2pLeC95bkVESWhZSjVP?=
+ =?utf-8?B?cG10bVY4ZDlKMFdINUhlWGJ0VjFwSyt6Sms2NzhnVElwMVcyRmxPU2liV2hF?=
+ =?utf-8?B?aEVxdEY0blFmRGxaeVMzZkUxRERpZWEyc0pPa2pRdE01OXRJODV6MGJsKzF4?=
+ =?utf-8?B?MnZmRks5WU5pRktzeUpyYk5jNU1TYldLeVowNU1zSnpyckJYbVp3NFpEVTFj?=
+ =?utf-8?B?a200eUJzeTlXZXlqR2p0WmM1MmpKNVBvVVFiVGFPRjhOL3RYV3NjUDB4dXNF?=
+ =?utf-8?B?SEppeEwxKzBzNHNOVENNaC9Oelh6RXlFUURCRFNLK2RRQXZrOXlWQlRaV0R4?=
+ =?utf-8?B?eUZWSTg3bDhZcW5OUGJndGNrclpIaWlMSjlVREwxam9WWFNCS09HbnFPelRD?=
+ =?utf-8?B?WGltQW9qbmxBKzlrcVUvS25vUkcxUnVwMUQweDJ2bjNTcjJxSExrOFpxSThx?=
+ =?utf-8?B?WExmdkJkcDBMRVB6WHI4UEJxSEEwcjlpT09nTEVDYVZWaWdERnUraXMycUFY?=
+ =?utf-8?B?VU43b29NdUNLVlBOZXovMFNuSnJ5eW1yWUEzN0J4Tko0cHRrR1RGN0U0Mkgw?=
+ =?utf-8?B?TTFmVi9DTkdOMlUxY2xlbVJMZVg3UEp4ZzRhQ3p4YzFheTJoVE5oN09DNTNI?=
+ =?utf-8?B?aUJGcWUzUHRFaGtiQ3dZbGUvWjA2ZG50U3JWTjBsQjc5SnRPdVRWN1lXaUJz?=
+ =?utf-8?B?eEFKc21taVZ5K3ErZGI5R0VqRStHOHZ2WDV2cnExRU8vSENKQjl5L0xDb25F?=
+ =?utf-8?B?YjVEN2tGRzg3NklUQlh6Y0FOb095d2dKbUwrb0k5Y2FOR3RHc1U1YjY0eVFK?=
+ =?utf-8?B?Mjk3cWEvRzhrdkEzYUhyL0VtWXJCRERJdXFBOG9kSE9zV01haHkrdzlWRDFT?=
+ =?utf-8?B?MHBxVVpsVzNoZFZQU013UUFGdXlUVUFyTmtJYldJNGRseEhrMEZ3dVhmamV5?=
+ =?utf-8?B?dGlldm5xdWU1NVQrNXhlb2Qra0tMRlZUb2Z0Y3BPWk9vK1U3V1NGK3A3WTVi?=
+ =?utf-8?B?aGtHNTQvbmtrRDc4WFFxZTFJNWlRakRPN2JIdzdTbkVhZXQvcTdFU0dNMWpi?=
+ =?utf-8?B?RGNuMnlDN25VRVhxajFnYit5RHd2UVdzTitRbHZtdkc5K1lYYm9ROWF0SWcw?=
+ =?utf-8?B?VW13dE9MbTMzNi9vYTV0azc2UUpUWDN5UWRMaGozVmRzNzVjaTAzUWRJUVQv?=
+ =?utf-8?B?RVE0TzVQaHk0RENCcjJTR2gzSXNnPT0=?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <AF70B567262CEE4C9CE096ECBA9D66E7@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4769.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6aef63f4-9817-4c49-c449-08d9bf95e8d3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Dec 2021 06:41:22.5626
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: zk+ebFJCWk91gOFPovr2TUHHYZIiaPjrPEPUyfTG37t0fhOEkiPWVF5Yn6XG7AP0TexwY1YtwoQlJMqJYMSgTdMldpUsTTbZVFY6MBFVdmM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB1486
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit b4a0f54156ac ("ath11k: move peer delete after vdev stop of station
-for QCA6390 and WCN6855") is to fix firmware crash by changing the WMI
-command sequence, but actually skip all the peer delete operation, then
-it lead commit 58595c9874c6 ("ath11k: Fixing dangling pointer issue upon
-peer delete failure") not take effect, and then happened a use-after-free
-warning from KASAN. because the peer->sta is not set to NULL and then used
-later.
-
-Change to only skip the WMI_PEER_DELETE_CMDID for QCA6390/WCN6855.
-
-log of user-after-free:
-
-[  534.888665] BUG: KASAN: use-after-free in ath11k_dp_rx_update_peer_stats+0x912/0xc10 [ath11k]
-[  534.888696] Read of size 8 at addr ffff8881396bb1b8 by task rtcwake/2860
-
-[  534.888705] CPU: 4 PID: 2860 Comm: rtcwake Kdump: loaded Tainted: G        W         5.15.0-wt-ath+ #523
-[  534.888712] Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS HNKBLi70.86A.0067.2021.0528.1339 05/28/2021
-[  534.888716] Call Trace:
-[  534.888720]  <IRQ>
-[  534.888726]  dump_stack_lvl+0x57/0x7d
-[  534.888736]  print_address_description.constprop.0+0x1f/0x170
-[  534.888745]  ? ath11k_dp_rx_update_peer_stats+0x912/0xc10 [ath11k]
-[  534.888771]  kasan_report.cold+0x83/0xdf
-[  534.888783]  ? ath11k_dp_rx_update_peer_stats+0x912/0xc10 [ath11k]
-[  534.888810]  ath11k_dp_rx_update_peer_stats+0x912/0xc10 [ath11k]
-[  534.888840]  ath11k_dp_rx_process_mon_status+0x529/0xa70 [ath11k]
-[  534.888874]  ? ath11k_dp_rx_mon_status_bufs_replenish+0x3f0/0x3f0 [ath11k]
-[  534.888897]  ? check_prev_add+0x20f0/0x20f0
-[  534.888922]  ? __lock_acquire+0xb72/0x1870
-[  534.888937]  ? find_held_lock+0x33/0x110
-[  534.888954]  ath11k_dp_rx_process_mon_rings+0x297/0x520 [ath11k]
-[  534.888981]  ? rcu_read_unlock+0x40/0x40
-[  534.888990]  ? ath11k_dp_rx_pdev_alloc+0xd90/0xd90 [ath11k]
-[  534.889026]  ath11k_dp_service_mon_ring+0x67/0xe0 [ath11k]
-[  534.889053]  ? ath11k_dp_rx_process_mon_rings+0x520/0x520 [ath11k]
-[  534.889075]  call_timer_fn+0x167/0x4a0
-[  534.889084]  ? add_timer_on+0x3b0/0x3b0
-[  534.889103]  ? lockdep_hardirqs_on_prepare.part.0+0x18c/0x370
-[  534.889117]  __run_timers.part.0+0x539/0x8b0
-[  534.889123]  ? ath11k_dp_rx_process_mon_rings+0x520/0x520 [ath11k]
-[  534.889157]  ? call_timer_fn+0x4a0/0x4a0
-[  534.889164]  ? mark_lock_irq+0x1c30/0x1c30
-[  534.889173]  ? clockevents_program_event+0xdd/0x280
-[  534.889189]  ? mark_held_locks+0xa5/0xe0
-[  534.889203]  run_timer_softirq+0x97/0x180
-[  534.889213]  __do_softirq+0x276/0x86a
-[  534.889230]  __irq_exit_rcu+0x11c/0x180
-[  534.889238]  irq_exit_rcu+0x5/0x20
-[  534.889244]  sysvec_apic_timer_interrupt+0x8e/0xc0
-[  534.889251]  </IRQ>
-[  534.889254]  <TASK>
-[  534.889259]  asm_sysvec_apic_timer_interrupt+0x12/0x20
-[  534.889265] RIP: 0010:_raw_spin_unlock_irqrestore+0x38/0x70
-[  534.889271] Code: 74 24 10 e8 ea c2 bf fd 48 89 ef e8 12 53 c0 fd 81 e3 00 02 00 00 75 25 9c 58 f6 c4 02 75 2d 48 85 db 74 01 fb bf 01 00 00 00 <e8> 13 a7 b5 fd 65 8b 05 cc d9 9c 5e 85 c0 74 0a 5b 5d c3 e8 a0 ee
-[  534.889276] RSP: 0018:ffffc90002e5f880 EFLAGS: 00000206
-[  534.889284] RAX: 0000000000000006 RBX: 0000000000000200 RCX: ffffffff9f256f10
-[  534.889289] RDX: 0000000000000000 RSI: ffffffffa1c6e420 RDI: 0000000000000001
-[  534.889293] RBP: ffff8881095e6200 R08: 0000000000000001 R09: ffffffffa40d2b8f
-[  534.889298] R10: fffffbfff481a571 R11: 0000000000000001 R12: ffff8881095e6e68
-[  534.889302] R13: ffffc90002e5f908 R14: 0000000000000246 R15: 0000000000000000
-[  534.889316]  ? mark_lock+0xd0/0x14a0
-[  534.889332]  klist_next+0x1d4/0x450
-[  534.889340]  ? dpm_wait_for_subordinate+0x2d0/0x2d0
-[  534.889350]  device_for_each_child+0xa8/0x140
-[  534.889360]  ? device_remove_class_symlinks+0x1b0/0x1b0
-[  534.889370]  ? __lock_release+0x4bd/0x9f0
-[  534.889378]  ? dpm_suspend+0x26b/0x3f0
-[  534.889390]  dpm_wait_for_subordinate+0x82/0x2d0
-[  534.889400]  ? dpm_for_each_dev+0xa0/0xa0
-[  534.889410]  ? dpm_suspend+0x233/0x3f0
-[  534.889427]  __device_suspend+0xd4/0x10c0
-[  534.889440]  ? wait_for_completion_io+0x270/0x270
-[  534.889456]  ? async_suspend_late+0xe0/0xe0
-[  534.889463]  ? async_schedule_node_domain+0x468/0x640
-[  534.889482]  dpm_suspend+0x25a/0x3f0
-[  534.889491]  ? dpm_suspend_end+0x1a0/0x1a0
-[  534.889497]  ? ktime_get+0x214/0x2f0
-[  534.889502]  ? lockdep_hardirqs_on+0x79/0x100
-[  534.889509]  ? recalibrate_cpu_khz+0x10/0x10
-[  534.889516]  ? ktime_get+0x119/0x2f0
-[  534.889528]  dpm_suspend_start+0xab/0xc0
-[  534.889538]  suspend_devices_and_enter+0x1ca/0x350
-[  534.889546]  ? suspend_enter+0x850/0x850
-[  534.889566]  enter_state+0x27c/0x3d7
-[  534.889575]  pm_suspend.cold+0x42/0x189
-[  534.889583]  state_store+0xab/0x160
-[  534.889595]  ? sysfs_file_ops+0x160/0x160
-[  534.889601]  kernfs_fop_write_iter+0x2b5/0x450
-[  534.889615]  new_sync_write+0x36a/0x600
-[  534.889625]  ? new_sync_read+0x600/0x600
-[  534.889639]  ? rcu_read_unlock+0x40/0x40
-[  534.889668]  vfs_write+0x619/0x910
-[  534.889681]  ksys_write+0xf4/0x1d0
-[  534.889689]  ? __ia32_sys_read+0xa0/0xa0
-[  534.889699]  ? lockdep_hardirqs_on_prepare.part.0+0x18c/0x370
-[  534.889707]  ? syscall_enter_from_user_mode+0x1d/0x50
-[  534.889719]  do_syscall_64+0x3b/0x90
-[  534.889725]  entry_SYSCALL_64_after_hwframe+0x44/0xae
-[  534.889731] RIP: 0033:0x7f0b9bc931e7
-[  534.889736] Code: 64 89 02 48 c7 c0 ff ff ff ff eb bb 0f 1f 80 00 00 00 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
-[  534.889741] RSP: 002b:00007ffd9d34cc88 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[  534.889749] RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007f0b9bc931e7
-[  534.889753] RDX: 0000000000000004 RSI: 0000561cd023c5f0 RDI: 0000000000000004
-[  534.889757] RBP: 0000561cd023c5f0 R08: 0000000000000000 R09: 0000000000000004
-[  534.889761] R10: 0000561ccef842a6 R11: 0000000000000246 R12: 0000000000000004
-[  534.889765] R13: 0000561cd0239590 R14: 00007f0b9bd6f4a0 R15: 00007f0b9bd6e8a0
-[  534.889789]  </TASK>
-
-[  534.889796] Allocated by task 2711:
-[  534.889800]  kasan_save_stack+0x1b/0x40
-[  534.889805]  __kasan_kmalloc+0x7c/0x90
-[  534.889810]  sta_info_alloc+0x98/0x1ef0 [mac80211]
-[  534.889874]  ieee80211_prep_connection+0x30b/0x11e0 [mac80211]
-[  534.889950]  ieee80211_mgd_auth+0x529/0xe00 [mac80211]
-[  534.890024]  cfg80211_mlme_auth+0x332/0x6f0 [cfg80211]
-[  534.890090]  nl80211_authenticate+0x839/0xcf0 [cfg80211]
-[  534.890147]  genl_family_rcv_msg_doit+0x1f4/0x2f0
-[  534.890154]  genl_rcv_msg+0x280/0x500
-[  534.890160]  netlink_rcv_skb+0x11c/0x340
-[  534.890165]  genl_rcv+0x1f/0x30
-[  534.890170]  netlink_unicast+0x42b/0x700
-[  534.890176]  netlink_sendmsg+0x71b/0xc60
-[  534.890181]  sock_sendmsg+0xdf/0x110
-[  534.890187]  ____sys_sendmsg+0x5c0/0x850
-[  534.890192]  ___sys_sendmsg+0xe4/0x160
-[  534.890197]  __sys_sendmsg+0xb2/0x140
-[  534.890202]  do_syscall_64+0x3b/0x90
-[  534.890207]  entry_SYSCALL_64_after_hwframe+0x44/0xae
-
-[  534.890215] Freed by task 2825:
-[  534.890218]  kasan_save_stack+0x1b/0x40
-[  534.890223]  kasan_set_track+0x1c/0x30
-[  534.890227]  kasan_set_free_info+0x20/0x30
-[  534.890232]  __kasan_slab_free+0xce/0x100
-[  534.890237]  slab_free_freelist_hook+0xf0/0x1a0
-[  534.890242]  kfree+0xe5/0x370
-[  534.890248]  __sta_info_flush+0x333/0x4b0 [mac80211]
-[  534.890308]  ieee80211_set_disassoc+0x324/0xd20 [mac80211]
-[  534.890382]  ieee80211_mgd_deauth+0x537/0xee0 [mac80211]
-[  534.890472]  cfg80211_mlme_deauth+0x349/0x810 [cfg80211]
-[  534.890526]  cfg80211_mlme_down+0x1ce/0x270 [cfg80211]
-[  534.890578]  cfg80211_disconnect+0x4f5/0x7b0 [cfg80211]
-[  534.890631]  cfg80211_leave+0x24/0x40 [cfg80211]
-[  534.890677]  wiphy_suspend+0x23d/0x2f0 [cfg80211]
-[  534.890723]  dpm_run_callback+0xf4/0x1b0
-[  534.890728]  __device_suspend+0x648/0x10c0
-[  534.890733]  async_suspend+0x16/0xe0
-[  534.890737]  async_run_entry_fn+0x90/0x4f0
-[  534.890741]  process_one_work+0x866/0x1490
-[  534.890747]  worker_thread+0x596/0x1010
-[  534.890751]  kthread+0x35d/0x420
-[  534.890756]  ret_from_fork+0x22/0x30
-
-[  534.890763] The buggy address belongs to the object at ffff8881396ba000
-                which belongs to the cache kmalloc-8k of size 8192
-[  534.890767] The buggy address is located 4536 bytes inside of
-                8192-byte region [ffff8881396ba000, ffff8881396bc000)
-[  534.890772] The buggy address belongs to the page:
-[  534.890775] page:ffffea0004e5ae00 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1396b8
-[  534.890780] head:ffffea0004e5ae00 order:3 compound_mapcount:0 compound_pincount:0
-[  534.890784] flags: 0x200000000010200(slab|head|node=0|zone=2)
-[  534.890791] raw: 0200000000010200 ffffea000562be08 ffffea0004b04c08 ffff88810004e340
-[  534.890795] raw: 0000000000000000 0000000000010001 00000001ffffffff 0000000000000000
-[  534.890798] page dumped because: kasan: bad access detected
-
-[  534.890804] Memory state around the buggy address:
-[  534.890807]  ffff8881396bb080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  534.890811]  ffff8881396bb100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  534.890814] >ffff8881396bb180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  534.890817]                                         ^
-[  534.890821]  ffff8881396bb200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  534.890824]  ffff8881396bb280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  534.890827] ==================================================================
-[  534.890830] Disabling lock debugging due to kernel taint
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-
-Fixes: b4a0f54156ac ("ath11k: move peer delete after vdev stop of station for QCA6390 and WCN6855")
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
----
-v2:
-   1. rebased to ath.git ath-202112141538
-   2. remove label 'free' defined but not used
-   3. change warning "Found peer entry %pM n vdev %i after it was supposedly removed" to ath11k_dbg()
-
- drivers/net/wireless/ath/ath11k/mac.c | 30 ++++++++++++++-------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 2bc93456b34e..bb2c2042c7a7 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -4413,24 +4413,27 @@ static int ath11k_mac_op_sta_state(struct ieee80211_hw *hw,
- 		    new_state == IEEE80211_STA_NOTEXIST)) {
- 		ath11k_dp_peer_cleanup(ar, arvif->vdev_id, sta->addr);
- 
--		if (ar->ab->hw_params.vdev_start_delay &&
--		    vif->type == NL80211_IFTYPE_STATION)
--			goto free;
--
--		ret = ath11k_peer_delete(ar, arvif->vdev_id, sta->addr);
--		if (ret)
--			ath11k_warn(ar->ab, "Failed to delete peer: %pM for VDEV: %d\n",
--				    sta->addr, arvif->vdev_id);
--		else
--			ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "Removed peer: %pM for VDEV: %d\n",
--				   sta->addr, arvif->vdev_id);
-+		if (!(ar->ab->hw_params.vdev_start_delay &&
-+		      vif->type == NL80211_IFTYPE_STATION)) {
-+			ret = ath11k_peer_delete(ar, arvif->vdev_id, sta->addr);
-+			if (ret)
-+				ath11k_warn(ar->ab,
-+					    "Failed to delete peer: %pM for VDEV: %d\n",
-+					    sta->addr, arvif->vdev_id);
-+			else
-+				ath11k_dbg(ar->ab,
-+					   ATH11K_DBG_MAC,
-+					   "Removed peer: %pM for VDEV: %d\n",
-+					   sta->addr, arvif->vdev_id);
-+		}
- 
- 		ath11k_mac_dec_num_stations(arvif, sta);
- 		spin_lock_bh(&ar->ab->base_lock);
- 		peer = ath11k_peer_find(ar->ab, arvif->vdev_id, sta->addr);
- 		if (peer && peer->sta == sta) {
--			ath11k_warn(ar->ab, "Found peer entry %pM n vdev %i after it was supposedly removed\n",
--				    vif->addr, arvif->vdev_id);
-+			ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
-+				   "Found peer entry %pM n vdev %i after it was supposedly removed\n",
-+				   vif->addr, arvif->vdev_id);
- 			peer->sta = NULL;
- 			list_del(&peer->list);
- 			kfree(peer);
-@@ -4438,7 +4441,6 @@ static int ath11k_mac_op_sta_state(struct ieee80211_hw *hw,
- 		}
- 		spin_unlock_bh(&ar->ab->base_lock);
- 
--free:
- 		kfree(arsta->tx_stats);
- 		arsta->tx_stats = NULL;
- 
-
-base-commit: f21e9b6adc354bfa274d4510df602f081a08194e
--- 
-2.31.1
-
+T24gMTUuMTIuMjAyMSAwNTowNSwgRGF2aWQgTW9zYmVyZ2VyLVRhbmcgd3JvdGU6DQo+IEVYVEVS
+TkFMIEVNQUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3Mg
+eW91IGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPiANCj4gRm9yIHRoZSBTRElPIGRyaXZlciwg
+dGhlIFJFU0VUL0VOQUJMRSBwaW5zIG9mIFdJTEMxMDAwIGFyZSBjb250cm9sbGVkDQo+IHRocm91
+Z2ggdGhlIFNESU8gcG93ZXIgc2VxdWVuY2UgZHJpdmVyLiAgVGhpcyBjb21taXQgYWRkcyBhbmFs
+b2dvdXMNCj4gc3VwcG9ydCBmb3IgdGhlIFNQSSBkcml2ZXIuICBTcGVjaWZpY2FsbHksIGR1cmlu
+ZyBpbml0aWFsaXphdGlvbiwgdGhlDQo+IGNoaXAgd2lsbCBiZSBFTkFCTEVkIGFuZCB0YWtlbiBv
+dXQgb2YgUkVTRVQgYW5kIGR1cmluZw0KPiBkZWluaXRpYWxpemF0aW9uLCB0aGUgY2hpcCB3aWxs
+IGJlIHBsYWNlZCBiYWNrIGludG8gUkVTRVQgYW5kIGRpc2FibGVkDQo+IChib3RoIHRvIHJlZHVj
+ZSBwb3dlciBjb25zdW1wdGlvbiBhbmQgdG8gZW5zdXJlIHRoZSBXaUZpIHJhZGlvIGlzDQo+IG9m
+ZikuDQo+IA0KPiBCb3RoIFJFU0VUIGFuZCBFTkFCTEUgR1BJT3MgYXJlIG9wdGlvbmFsLiAgSG93
+ZXZlciwgaWYgdGhlIEVOQUJMRSBHUElPDQo+IGlzIHNwZWNpZmllZCwgdGhlbiB0aGUgUkVTRVQg
+R1BJTyBzaG91bGQgbm9ybWFsbHkgYWxzbyBiZSBzcGVjaWZpZWQgYXMNCj4gb3RoZXJ3aXNlIHRo
+ZXJlIGlzIG5vIHdheSB0byBlbnN1cmUgcHJvcGVyIHRpbWluZyBvZiB0aGUgRU5BQkxFL1JFU0VU
+DQo+IHNlcXVlbmNlLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogRGF2aWQgTW9zYmVyZ2VyLVRhbmcg
+PGRhdmlkbUBlZ2F1Z2UubmV0Pg0KPiAtLS0NCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21pY3Jv
+Y2hpcC93aWxjMTAwMC9zcGkuYyB8IDU4ICsrKysrKysrKysrKysrKysrKy0NCj4gIC4uLi9uZXQv
+d2lyZWxlc3MvbWljcm9jaGlwL3dpbGMxMDAwL3dsYW4uYyAgICB8ICAyICstDQo+ICAyIGZpbGVz
+IGNoYW5nZWQsIDU2IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlwL3dpbGMxMDAwL3NwaS5jIGIvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvbWljcm9jaGlwL3dpbGMxMDAwL3NwaS5jDQo+IGluZGV4IDZlN2Zk
+MThjMTRlNy4uMGI0NDI1ZTU2YmZhIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVz
+cy9taWNyb2NoaXAvd2lsYzEwMDAvc3BpLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+bWljcm9jaGlwL3dpbGMxMDAwL3NwaS5jDQo+IEBAIC04LDYgKzgsNyBAQA0KPiAgI2luY2x1ZGUg
+PGxpbnV4L3NwaS9zcGkuaD4NCj4gICNpbmNsdWRlIDxsaW51eC9jcmM3Lmg+DQo+ICAjaW5jbHVk
+ZSA8bGludXgvY3JjLWl0dS10Lmg+DQo+ICsjaW5jbHVkZSA8bGludXgvZ3Bpby9jb25zdW1lci5o
+Pg0KPiANCj4gICNpbmNsdWRlICJuZXRkZXYuaCINCj4gICNpbmNsdWRlICJjZmc4MDIxMS5oIg0K
+PiBAQCAtNDMsNiArNDQsMTAgQEAgc3RydWN0IHdpbGNfc3BpIHsNCj4gICAgICAgICBib29sIHBy
+b2JpbmdfY3JjOyAgICAgICAvKiB0cnVlIGlmIHdlJ3JlIHByb2JpbmcgY2hpcCdzIENSQyBjb25m
+aWcgKi8NCj4gICAgICAgICBib29sIGNyYzdfZW5hYmxlZDsgICAgICAvKiB0cnVlIGlmIGNyYzcg
+aXMgY3VycmVudGx5IGVuYWJsZWQgKi8NCj4gICAgICAgICBib29sIGNyYzE2X2VuYWJsZWQ7ICAg
+ICAvKiB0cnVlIGlmIGNyYzE2IGlzIGN1cnJlbnRseSBlbmFibGVkICovDQo+ICsgICAgICAgc3Ry
+dWN0IHdpbGNfZ3Bpb3Mgew0KPiArICAgICAgICAgICAgICAgc3RydWN0IGdwaW9fZGVzYyAqZW5h
+YmxlOyAgICAgICAvKiBFTkFCTEUgR1BJTyBvciBOVUxMICovDQo+ICsgICAgICAgICAgICAgICBz
+dHJ1Y3QgZ3Bpb19kZXNjICpyZXNldDsgICAgICAgIC8qIFJFU0VUIEdQSU8gb3IgTlVMTCAqLw0K
+PiArICAgICAgIH0gZ3Bpb3M7DQo+ICB9Ow0KPiANCj4gIHN0YXRpYyBjb25zdCBzdHJ1Y3Qgd2ls
+Y19oaWZfZnVuYyB3aWxjX2hpZl9zcGk7DQo+IEBAIC0xNTIsNiArMTU3LDQ2IEBAIHN0cnVjdCB3
+aWxjX3NwaV9zcGVjaWFsX2NtZF9yc3Agew0KPiAgICAgICAgIHU4IHN0YXR1czsNCj4gIH0gX19w
+YWNrZWQ7DQo+IA0KPiArc3RhdGljIGludCB3aWxjX3BhcnNlX2dwaW9zKHN0cnVjdCB3aWxjICp3
+aWxjKQ0KPiArew0KPiArICAgICAgIHN0cnVjdCBzcGlfZGV2aWNlICpzcGkgPSB0b19zcGlfZGV2
+aWNlKHdpbGMtPmRldik7DQo+ICsgICAgICAgc3RydWN0IHdpbGNfc3BpICpzcGlfcHJpdiA9IHdp
+bGMtPmJ1c19kYXRhOw0KPiArICAgICAgIHN0cnVjdCB3aWxjX2dwaW9zICpncGlvcyA9ICZzcGlf
+cHJpdi0+Z3Bpb3M7DQo+ICsNCj4gKyAgICAgICAvKiBnZXQgRU5BQkxFIHBpbiBhbmQgZGVhc3Nl
+cnQgaXQgKGlmIGl0IGlzIGRlZmluZWQpOiAqLw0KPiArICAgICAgIGdwaW9zLT5lbmFibGUgPSBk
+ZXZtX2dwaW9kX2dldF9vcHRpb25hbCgmc3BpLT5kZXYsDQo+ICsgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICJlbmFibGUiLCBHUElPRF9PVVRfTE9XKTsNCj4g
+KyAgICAgICAvKiBnZXQgUkVTRVQgcGluIGFuZCBhc3NlcnQgaXQgKGlmIGl0IGlzIGRlZmluZWQp
+OiAqLw0KPiArICAgICAgIGlmIChncGlvcy0+ZW5hYmxlKSB7DQo+ICsgICAgICAgICAgICAgICAv
+KiBpZiBlbmFibGUgcGluIGV4aXN0cywgcmVzZXQgbXVzdCBleGlzdCBhcyB3ZWxsICovDQo+ICsg
+ICAgICAgICAgICAgICBncGlvcy0+cmVzZXQgPSBkZXZtX2dwaW9kX2dldCgmc3BpLT5kZXYsDQo+
+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAicmVzZXQiLCBH
+UElPRF9PVVRfSElHSCk7DQoNCkFzIGZhciBhcyBJIGNhbiB0ZWxsIGZvcm0gZ3Bpb2xpYiBjb2Rl
+IHRoZSBkaWZmZXJlbmNlIGIvdyBHUElPRF9PVVRfSElHSA0KYW5kIEdQSU9EX09VVF9MT1cgaW4g
+Z3Bpb2xpYiBpcyByZWxhdGVkIHRvIHRoZSBpbml0aWFsIHZhbHVlIGZvciB0aGUgR1BJTy4NCkRp
+ZCB5b3UgdXNlZCBHUElPRF9PVVRfSElHSCBmb3IgcmVzZXQgdG8gaGF2ZSB0aGUgY2hpcCBvdXQg
+b2YgcmVzZXQgYXQgdGhpcw0KcG9pbnQ/DQoNCj4gKyAgICAgICAgICAgICAgIGlmIChJU19FUlIo
+Z3Bpb3MtPnJlc2V0KSkgew0KPiArICAgICAgICAgICAgICAgICAgICAgICBkZXZfZXJyKCZzcGkt
+PmRldiwgIm1pc3NpbmcgcmVzZXQgZ3Bpby5cbiIpOw0KPiArICAgICAgICAgICAgICAgICAgICAg
+ICByZXR1cm4gUFRSX0VSUihncGlvcy0+cmVzZXQpOw0KPiArICAgICAgICAgICAgICAgfQ0KPiAr
+ICAgICAgIH0gZWxzZSB7DQo+ICsgICAgICAgICAgICAgICBncGlvcy0+cmVzZXQgPSBkZXZtX2dw
+aW9kX2dldF9vcHRpb25hbCgmc3BpLT5kZXYsDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAicmVzZXQiLCBHUElPRF9PVVRfSElHSCk7DQo+
+ICsgICAgICAgfQ0KPiArICAgICAgIHJldHVybiAwOw0KPiArfQ0KPiArDQo+ICtzdGF0aWMgdm9p
+ZCB3aWxjX3dsYW5fcG93ZXIoc3RydWN0IHdpbGMgKndpbGMsIGJvb2wgb24pDQo+ICt7DQo+ICsg
+ICAgICAgc3RydWN0IHdpbGNfc3BpICpzcGlfcHJpdiA9IHdpbGMtPmJ1c19kYXRhOw0KPiArICAg
+ICAgIHN0cnVjdCB3aWxjX2dwaW9zICpncGlvcyA9ICZzcGlfcHJpdi0+Z3Bpb3M7DQo+ICsNCj4g
+KyAgICAgICBpZiAob24pIHsNCj4gKyAgICAgICAgICAgICAgIGdwaW9kX3NldF92YWx1ZShncGlv
+cy0+ZW5hYmxlLCAxKTsgICAgICAvKiBhc3NlcnQgRU5BQkxFICovDQo+ICsgICAgICAgICAgICAg
+ICBtZGVsYXkoNSk7DQo+ICsgICAgICAgICAgICAgICBncGlvZF9zZXRfdmFsdWUoZ3Bpb3MtPnJl
+c2V0LCAwKTsgICAgICAgLyogZGVhc3NlcnQgUkVTRVQgKi8NCg0KRnJvbSB3aGF0IEkgY2FuIHRl
+bGwgZnJvbSBncGlvbGliIGNvZGUsIHJlcXVlc3RpbmcgdGhlIHBpbiBmcm9tIGRldmljZSB0cmVl
+DQp3aXRoOg0KDQorICAgICAgICByZXNldC1ncGlvcyA9IDwmcGlvQSA2IEdQSU9fQUNUSVZFX0xP
+Vz47DQoNCm1ha2VzIHRoZSB2YWx1ZSB3cml0dGVuIHdpdGggZ3Bpb2Rfc2V0X3ZhbHVlKCkgdG8g
+YmUgbmVnYXRlZCwgdGh1cyB0aGUgMA0Kd3JpdHRlbiBoZXJlIGlzIHRyYW5zbGF0ZWQgdG8gYSAx
+IG9uIHRoZSBwaW4uIElzIHRoZXJlIGEgcmVhc29uIHlvdSBkaWQgaXQNCmxpa2UgdGhpcz8gV291
+bGQgaXQgaGF2ZSBiZWVuIHNpbXBsZXIgdG8gaGF2ZSBib3RoIHBpbnMgcmVxdWVzdGVkIHdpdGgN
+CkdQSU9fQUNUSVZFX0hJR0ggYW5kIGhlcmUgdG8gZG8gZ3Bpb2Rfc2V0X3ZhbHVlKGdwaW8sIDEp
+IGZvciBib3RoIG9mIHRoZQ0KcGluLiBJbiB0aGlzIHdheSwgYXQgdGhlIGZpcnN0IHJlYWQgb2Yg
+dGhlIGNvZGUgb25lIG9uZSB3b3VsZCBoYXZlIGJlZW4NCnRlbGxpbmcgdGhhdCBpdCBkb2VzIHdo
+YXQgZGF0YXNoZWV0IHNwZWNpZmllczogZm9yIHBvd2VyIG9uIHRvZ2dsZSBlbmFibGUNCmFuZCBy
+ZXNldCBncGlvcyBmcm9tIDAgdG8gMSB3aXRoIGEgZGVsYXkgaW4gYmV0d2Vlbi4NCg0KDQoNCj4g
+KyAgICAgICB9IGVsc2Ugew0KPiArICAgICAgICAgICAgICAgZ3Bpb2Rfc2V0X3ZhbHVlKGdwaW9z
+LT5yZXNldCwgMSk7ICAgICAgIC8qIGFzc2VydCBSRVNFVCAqLw0KPiArICAgICAgICAgICAgICAg
+Z3Bpb2Rfc2V0X3ZhbHVlKGdwaW9zLT5lbmFibGUsIDApOyAgICAgIC8qIGRlYXNzZXJ0IEVOQUJM
+RSAqLw0KDQpJIGRvbid0IHVzdWFsbHkgc2VlIGNvbW1lbnRzIG5lYXIgdGhlIGNvZGUgbGluZSBp
+biBrZXJuZWwuIE1heWJlIG1vdmUgdGhlbQ0KYmVmb3JlIHRoZSBhY3R1YWwgY29kZSBsaW5lIG9y
+IHJlbW92ZSB0aGVtIGF0IGFsbCBhcyB0aGUgY29kZSBpcyBpbXBsZXIgZW5vdWdoPw0KDQo+ICsg
+ICAgICAgfQ0KPiArfQ0KPiArDQo+ICBzdGF0aWMgaW50IHdpbGNfYnVzX3Byb2JlKHN0cnVjdCBz
+cGlfZGV2aWNlICpzcGkpDQo+ICB7DQo+ICAgICAgICAgaW50IHJldDsNCj4gQEAgLTE3MSw2ICsy
+MTYsMTAgQEAgc3RhdGljIGludCB3aWxjX2J1c19wcm9iZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3Bp
+KQ0KPiAgICAgICAgIHdpbGMtPmJ1c19kYXRhID0gc3BpX3ByaXY7DQo+ICAgICAgICAgd2lsYy0+
+ZGV2X2lycV9udW0gPSBzcGktPmlycTsNCj4gDQo+ICsgICAgICAgcmV0ID0gd2lsY19wYXJzZV9n
+cGlvcyh3aWxjKTsNCj4gKyAgICAgICBpZiAocmV0IDwgMCkNCj4gKyAgICAgICAgICAgICAgIGdv
+dG8gbmV0ZGV2X2NsZWFudXA7DQo+ICsNCj4gICAgICAgICB3aWxjLT5ydGNfY2xrID0gZGV2bV9j
+bGtfZ2V0X29wdGlvbmFsKCZzcGktPmRldiwgInJ0YyIpOw0KPiAgICAgICAgIGlmIChJU19FUlIo
+d2lsYy0+cnRjX2NsaykpIHsNCj4gICAgICAgICAgICAgICAgIHJldCA9IFBUUl9FUlIod2lsYy0+
+cnRjX2Nsayk7DQo+IEBAIC05ODQsOSArMTAzMywxMCBAQCBzdGF0aWMgaW50IHdpbGNfc3BpX3Jl
+c2V0KHN0cnVjdCB3aWxjICp3aWxjKQ0KPiANCj4gIHN0YXRpYyBpbnQgd2lsY19zcGlfZGVpbml0
+KHN0cnVjdCB3aWxjICp3aWxjKQ0KPiAgew0KPiAtICAgICAgIC8qDQo+IC0gICAgICAgICogVE9E
+TzoNCj4gLSAgICAgICAgKi8NCj4gKyAgICAgICBzdHJ1Y3Qgd2lsY19zcGkgKnNwaV9wcml2ID0g
+d2lsYy0+YnVzX2RhdGE7DQo+ICsNCj4gKyAgICAgICBzcGlfcHJpdi0+aXNpbml0ID0gZmFsc2U7
+DQo+ICsgICAgICAgd2lsY193bGFuX3Bvd2VyKHdpbGMsIGZhbHNlKTsNCj4gICAgICAgICByZXR1
+cm4gMDsNCj4gIH0NCj4gDQo+IEBAIC0xMDA3LDYgKzEwNTcsOCBAQCBzdGF0aWMgaW50IHdpbGNf
+c3BpX2luaXQoc3RydWN0IHdpbGMgKndpbGMsIGJvb2wgcmVzdW1lKQ0KPiAgICAgICAgICAgICAg
+ICAgZGV2X2Vycigmc3BpLT5kZXYsICJGYWlsIGNtZCByZWFkIGNoaXAgaWQuLi5cbiIpOw0KPiAg
+ICAgICAgIH0NCj4gDQo+ICsgICAgICAgd2lsY193bGFuX3Bvd2VyKHdpbGMsIHRydWUpOw0KPiAr
+DQo+ICAgICAgICAgLyoNCj4gICAgICAgICAgKiBjb25maWd1cmUgcHJvdG9jb2wNCj4gICAgICAg
+ICAgKi8NCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21pY3JvY2hpcC93aWxj
+MTAwMC93bGFuLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9taWNyb2NoaXAvd2lsYzEwMDAvd2xh
+bi5jDQo+IGluZGV4IDgyNTY2NTQ0NDE5YS4uZjFlNGFjM2EyYWQ1IDEwMDY0NA0KPiAtLS0gYS9k
+cml2ZXJzL25ldC93aXJlbGVzcy9taWNyb2NoaXAvd2lsYzEwMDAvd2xhbi5jDQo+ICsrKyBiL2Ry
+aXZlcnMvbmV0L3dpcmVsZXNzL21pY3JvY2hpcC93aWxjMTAwMC93bGFuLmMNCj4gQEAgLTEyNTMs
+NyArMTI1Myw3IEBAIHZvaWQgd2lsY193bGFuX2NsZWFudXAoc3RydWN0IG5ldF9kZXZpY2UgKmRl
+dikNCj4gICAgICAgICB3aWxjLT5yeF9idWZmZXIgPSBOVUxMOw0KPiAgICAgICAgIGtmcmVlKHdp
+bGMtPnR4X2J1ZmZlcik7DQo+ICAgICAgICAgd2lsYy0+dHhfYnVmZmVyID0gTlVMTDsNCj4gLSAg
+ICAgICB3aWxjLT5oaWZfZnVuYy0+aGlmX2RlaW5pdChOVUxMKTsNCj4gKyAgICAgICB3aWxjLT5o
+aWZfZnVuYy0+aGlmX2RlaW5pdCh3aWxjKTsNCj4gIH0NCj4gDQo+ICBzdGF0aWMgaW50IHdpbGNf
+d2xhbl9jZmdfY29tbWl0KHN0cnVjdCB3aWxjX3ZpZiAqdmlmLCBpbnQgdHlwZSwNCj4gLS0NCj4g
+Mi4yNS4xDQo+IA0KDQo=
