@@ -2,78 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F44047727C
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 14:00:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 437D1477303
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 14:19:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232228AbhLPNAT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Dec 2021 08:00:19 -0500
-Received: from mga12.intel.com ([192.55.52.136]:11214 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231903AbhLPNAS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Dec 2021 08:00:18 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10199"; a="219492415"
-X-IronPort-AV: E=Sophos;i="5.88,211,1635231600"; 
-   d="scan'208";a="219492415"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2021 05:00:18 -0800
-X-IronPort-AV: E=Sophos;i="5.88,211,1635231600"; 
-   d="scan'208";a="464664186"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2021 05:00:11 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mxqLr-0072QX-V0;
-        Thu, 16 Dec 2021 14:59:15 +0200
-Date:   Thu, 16 Dec 2021 14:59:15 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Ricardo Martinez <ricardo.martinez@linux.intel.com>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        dinesh.sharma@intel.com, eliot.lee@intel.com,
-        mika.westerberg@linux.intel.com, moises.veleta@intel.com,
-        pierre-louis.bossart@intel.com, muralidharan.sethuraman@intel.com,
-        Soumya.Prakash.Mishra@intel.com, sreehari.kancharla@intel.com,
-        suresh.nagaraj@intel.com
-Subject: Re: [PATCH net-next v3 05/12] net: wwan: t7xx: Add AT and MBIM WWAN
- ports
-Message-ID: <Ybs4I9U0Qnnr9m3T@smile.fi.intel.com>
-References: <20211207024711.2765-1-ricardo.martinez@linux.intel.com>
- <20211207024711.2765-6-ricardo.martinez@linux.intel.com>
- <66e09242-ee3e-f714-a9b9-d3ee80ef6596@linux.intel.com>
+        id S234609AbhLPNTU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Dec 2021 08:19:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55076 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234566AbhLPNTT (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Dec 2021 08:19:19 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18583C06173E
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 05:19:19 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id t18so44106582wrg.11
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 05:19:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=9BNP8+sIEFVb2MhSAcAnd1YOOpvRtAWkUcQgdcFFjnk=;
+        b=Vc5wpsVx8rqQbRmiDUFj2eUE0HD2OEbzGmuLfyEpoy+oP06LfrGkraYJUO+V9BNkmb
+         FLX74prDAUFDH6VwYhiNciuOtMfyaj+uOU5cJABzcM8OVhmTch82RIIs7/D/A0vSy0E7
+         idR9xyJ+1oeTmQlwjOPtS8jsxJrX61sAStVC+l3qLzE2H9p1fAZH+smgaTxPIXjpYOs9
+         m+rjl+4hUNzZcdpoujX/Vv03bBTG4kGtvMTRWLZo2/XLeg9QYDzkl1PNq9QJmrSw78Q7
+         wnHN0/WydbrFkaQL6nLeewMhXEXkZ5EZXDkuRkG09WO2UVucXUgCiuLFk1kqEFvPQHh5
+         J7ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=9BNP8+sIEFVb2MhSAcAnd1YOOpvRtAWkUcQgdcFFjnk=;
+        b=rkDaUABHI9WVVzyLQ6ZemXeh3rnzw8L3PD7GnBtJ+6kyLvza5wPP7X1LQRhQAus2n1
+         koDLwkpQ6usg3Vp20CUcoYPligqVgoO1hV5ogwMxJyEyPNB1XdaWqqjyJJSEk1+1Ua+2
+         gnWnRY1G/IlEp06ZxaFFpwtDbZjx1K6GcZuTeZLMFKPzbysheZn5wHYKbUw6FGjaQ6Pt
+         DJEoVqDvep1AuJ1nUqjp2LVUhYc9J5N7NLR0gNI5lL6I6Izt0vijhndZW2u5pdITrgsT
+         vV94eQjPNb1SXihwOd8LgDdfStlcdtbz35AoJUq4QxprdRwbLDBgjygb2BbYtoCx64wi
+         LNCQ==
+X-Gm-Message-State: AOAM533kcbXqWr4d//d32iotND1egXB2+0xbtncRIXJaxiuJSFuhO671
+        DNaYxKtD8TPZiwRwQnE0PxEtOg==
+X-Google-Smtp-Source: ABdhPJyrFqiEUnLJlHhmFkcfnGARIaAhHdD57tsX2NlwZdV/EbUIMFfb83xYvh/pU3dHZLfexm0PEw==
+X-Received: by 2002:adf:ef4f:: with SMTP id c15mr9022149wrp.226.1639660757671;
+        Thu, 16 Dec 2021 05:19:17 -0800 (PST)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id b10sm5506527wrt.36.2021.12.16.05.19.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Dec 2021 05:19:16 -0800 (PST)
+Message-ID: <425d1fee-f0f1-7548-2c2a-853e8f2e256b@linaro.org>
+Date:   Thu, 16 Dec 2021 13:21:23 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <66e09242-ee3e-f714-a9b9-d3ee80ef6596@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.1
+Subject: Re: [PATCH v3 3/3] wcn36xx: Implement downstream compliant beacon
+ filtering
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, loic.poulain@linaro.org,
+        benl@squareup.com
+References: <20211214134630.2214840-1-bryan.odonoghue@linaro.org>
+ <20211214134630.2214840-4-bryan.odonoghue@linaro.org>
+ <87ilvodenr.fsf@codeaurora.org>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <87ilvodenr.fsf@codeaurora.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Dec 16, 2021 at 02:25:47PM +0200, Ilpo Järvinen wrote:
-> On Mon, 6 Dec 2021, Ricardo Martinez wrote:
+On 16/12/2021 10:31, Kalle Valo wrote:
+> I don't think the term downstream is clear for everyone, I guess with
+> that you mean the prima driver? I would prefer to use "prima driver" in
+> commit logs, I can change it and no need to resend because of this.
 
-> > +		if (multi_packet == 1)
-> > +			return actual_count;
-> > +		else if (multi_packet == i + 1)
+OK np thanks for zapping the comments directly.
 
-On top of that redundant 'else' here.
+Noted for future reference :g/downstream/s//prima\ driver/g
 
-> > +			return count;
-> > +	}
-> 
-> I'd recommend renaming variables to make it clearer what they count:
-> - count -> bytes
-> - actual_count -> actual_bytes
-> - multi_packet -> packets
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+---
+bod
