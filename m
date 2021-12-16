@@ -2,160 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2FF94775EC
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 16:30:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D861F477607
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 16:34:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238538AbhLPPab (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Dec 2021 10:30:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58082 "EHLO
+        id S238574AbhLPPeI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Dec 2021 10:34:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235087AbhLPPab (ORCPT
+        with ESMTP id S235182AbhLPPeH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Dec 2021 10:30:31 -0500
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 035C1C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 07:30:31 -0800 (PST)
-Received: by mail-io1-xd2a.google.com with SMTP id 14so35499689ioe.2
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 07:30:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=egauge.net; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :organization:user-agent:mime-version:content-transfer-encoding;
-        bh=jGnQ+OPrwZnzJ8pyH0xcyxgi+zeh7zrbZx5puPpeqp0=;
-        b=QVklmRMQ0JGDggaCYuzwfz1eEj0x1VCMw8SWiA4SxuTg7pcKLnX1ZDEt12qAVXZB6x
-         cNL6PrMlUuJgbVvUDaE+pMbp6+fXmYgmJ11Fjo4lqDWj81gSjwurjg2k1rCLeDAPj7XG
-         66X5CKzvdT7SxpluJPG9/sfFU3zAFlVaT3ilubedOHkRJRZW5GCy8GuEvyVXL4KVsbS6
-         VaXpFl47Llvp6ZuaveGZpC3DqjaVC3TRv3MmcjV8Kv0h7bJ5DorpTY4dKDEQQQ8C4aLn
-         cnrW1ZiTmmS+WfoPBFRuPPpQ79p4XUIRynHaW4zkAnThOoTBAsfGgv4OTH5WTTvQyoMq
-         /K+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:organization:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=jGnQ+OPrwZnzJ8pyH0xcyxgi+zeh7zrbZx5puPpeqp0=;
-        b=DoX9+pTYClAP/vKGEiQ2Gv4GsE9mQM9NYy+3qUbA8SlHZG3q4Z14QhBgT4zyRvpsvs
-         KoMLKclpgCRsyu911XiiOJv5dMnL3cLsNSWd7h6cWKRGA7LoWQIe2c3BlnpYR/dpnYnd
-         Lfw83pTkAcFI4LTzsdhfWYt4iLmQXCsfFzhlcuAx/9kgJ6AqlurU1imRCRUZUi2IGChY
-         blqtOglCVFdd055W+yDOCbhIi4h09wi5zHGlsI07IVex1v0Juiuwq1S1MtQa0NbZtqhk
-         wsBSQ6E4h621SBkFLlzOArYWALUfuYqUl+brGPosqt5yDVxrKfYVUtUPfydBkWb1SzxU
-         KgPQ==
-X-Gm-Message-State: AOAM533CBMWGKKnW5+X4lpt/mGcrkerk/+o3z25NLWnWkyFXAo1QKzFu
-        PsP6OG4P0sx40l8E6vPrWijN
-X-Google-Smtp-Source: ABdhPJwSNxt4l43qiKVjKknNIohi54ACnOdcombw2k7cHxehnYilM+rc/JX0noSMD8O0Ufbh0WUvdw==
-X-Received: by 2002:a05:6602:27cc:: with SMTP id l12mr9797623ios.59.1639668630279;
-        Thu, 16 Dec 2021 07:30:30 -0800 (PST)
-Received: from bixby.lan (c-73-181-115-211.hsd1.co.comcast.net. [73.181.115.211])
-        by smtp.gmail.com with ESMTPSA id x11sm2829669iop.55.2021.12.16.07.30.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Dec 2021 07:30:29 -0800 (PST)
-Message-ID: <523698d845e0b235e4cbb2a0f3cfaa0f5ed98ec0.camel@egauge.net>
-Subject: Re: [PATCH] wilc1000: Allow setting power_save before driver is
- initialized
-From:   David Mosberger-Tang <davidm@egauge.net>
-To:     Ajay.Kathat@microchip.com
-Cc:     Claudiu.Beznea@microchip.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Thu, 16 Dec 2021 08:30:28 -0700
-In-Reply-To: <49a5456d-6a63-652e-d356-9678f6a9b266@microchip.com>
-References: <20211212011835.3719001-1-davidm@egauge.net>
-         <6fc9f00aa0b0867029fb6406a55c1e72d4c13af6.camel@egauge.net>
-         <5378e756-8173-4c63-1f0d-e5836b235a48@microchip.com>
-         <31d5e7447e4574d0fcfc46019d7ca96a3db4ecb6.camel@egauge.net>
-         <49a5456d-6a63-652e-d356-9678f6a9b266@microchip.com>
-Organization: eGauge Systems LLC
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        Thu, 16 Dec 2021 10:34:07 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D80C061574;
+        Thu, 16 Dec 2021 07:34:07 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A9C361E3C;
+        Thu, 16 Dec 2021 15:34:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216B0C36AE4;
+        Thu, 16 Dec 2021 15:34:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639668846;
+        bh=c9OVquxnCbPd7oE5qBrhnnxW3NX2Nl9yQXk5jMs/9Z4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=IvvBTsBqRVXkFpkBp8KpqvGhL1Tfb07SBOZgGe7x37FwVM5+hrvLc2Rn4Uv4Moecy
+         iWQA00vSWX0o/FdX0kglT+OXsWXtgKLW4GIbzB6hscfw2N7EwuCm8t35eKOuuelVsy
+         TpQdy281lEiXNMb6nSuJ5TpdOPw5QhhkBgZapmfDqdZ3K9iEr8DxT/NQXEV5bMZ8mt
+         w4YA7U8cQXWAGRnMOu03+DcQdfi0QBFsgYltFTtQqrHXhJ728yVuhG8SheU7DjEk0s
+         ndj/jYXsjLclOpyahtFtfHM8Z8kzzt12jwfL80gdNFKPOZPnuQ1ISP/0bSyvLR1QXX
+         8MZJtF3BpGpQA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v7 1/2] dt: bindings: add new DT entry for ath11k PCI
+ device
+ support
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <1638789319-2950-1-git-send-email-akolli@codeaurora.org>
+References: <1638789319-2950-1-git-send-email-akolli@codeaurora.org>
+To:     Anilkumar Kolli <akolli@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org, robh@kernel.org,
+        Anilkumar Kolli <akolli@codeaurora.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163966884345.4646.11460460661865754904.kvalo@kernel.org>
+Date:   Thu, 16 Dec 2021 15:34:04 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2021-12-16 at 13:01 +0000, Ajay.Kathat@microchip.com wrote:
-> On 16/12/21 11:07, David Mosberger-Tang wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> > 
-> > On Wed, 2021-12-15 at 13:01 +0000, Ajay.Kathat@microchip.com wrote:
-> > > On 13/12/21 02:50, David Mosberger-Tang wrote:
-> > > > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> > > > 
-> > > > Unfortunately, this patch doesn't seem to be sufficient.  From what I
-> > > > can tell, if power-save mode is turned on before a station is
-> > > > associated with an access-point, there is no actual power savings.  If
-> > > > I issue the command after the station is associated, it works perfectly
-> > > > fine.
-> > > > 
-> > > > Ajay, does this make sense to you?
-> > > 
-> > >   <snip>
-> > > Power-save mode is allowed to be enabled irrespective of station
-> > > association state. Before association, the power consumption should be
-> > > less with PSM enabled compared to PSM disabled. The WLAN automatic power
-> > > save delivery gets enabled after the association with AP.
-> > > 
-> > > To check the power measurement before association,  test without
-> > > wpa_supplicant.
-> > > 
-> > > 
-> > > Steps:
-> > > - load the module
-> > > - ifconfig wlan0 up
-> > > - iw dev wlan0 set power_save off (check the pwr measurement after PS
-> > > mode disabled)
-> > > - iw dev wlan0 set power_save on (check the pwr measurement after PS
-> > > mode enable)
-> > 
-> > It appears wpa_supplicant consistently renders PSM ineffective:
-> > 
-> >                                 (current draw, 1 min avg):
-> > ------------------------------  --------------------------
-> > - base case (no module loaded): 16.8 mA
-> > - module loaded & PSM on      : 16.8 mA
-> > - wpa_supplicant started      : 19.6 mA
-> > - PSM on                      : 19.6 mA (no change)
-> > - PSM off                     : 19.6 mA (no change)
-> > - PSM on                      : 15.4 mA
->  
-> From the above data, it looks like there is no difference with or without PSM
-> in your setup. I am not sure if the values are captured correctly. Did you use
-> power measurement ports in WILC extension for the current measurements.
+Anilkumar Kolli <akolli@codeaurora.org> wrote:
 
-Oh, no, not at all!  There is a nice power savings when PSM actually takes hold.
- Current drops from 19.6mA to 15.4mA as shown by the last two lines.
+> Ath11k driver supports PCI devices such as QCN9074/QCA6390.
+> Ath11k firmware uses host DDR memory, DT entry is used to
+> reserve host DDR memory regions, send these memory base
+> addresses using DT entries.
+> 
+> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-This is average current draw at 120V for the entire board, as my board is not
-set up to measure chip current draw alone.
+2 patches applied to ath-next branch of ath.git, thanks.
 
-> 
-> > What's strange is when I try this sequence a couple of times in a row,
-> > the device gets into a state where after starting wpa_supplicant, no
-> > amount of PSM on/off commands will get it to enter power-savings mode
-> > any more.  When in that state, only removing wilc1000-spi.ko and adding
-> > it back gets it out of that state.  A power-cycle does not.  Very
-> > confusing.
-> 
-> Btw, I did a quick test to verify current measurement with PS mode off/on and observed numbers like below
-> 
-> Tested by making the interface up(ifconfig wlan0 up) then issued 'iw' command to enable/disable PS mode. 
-> 
->                               (current draw)
-> ------------------------------------------------------
-> - PSM off                    : 75.5 mA
-> - PSM on                     : 1.28 mA
-> 
-> 
-> I have verified for SPI module with the setup mentioned in link[1] and used power debugger[2]
-> 
-> 1. https://ww1.microchip.com/downloads/en/Appnotes/ATWILC1000-Power-Measurement-for-Wi-Fi-Link-Controller-00002797A.pdf
-> 2. https://www.microchip.com/en-us/development-tool/ATPOWERDEBUGGER
+77a0a30bb507 dt: bindings: add new DT entry for ath11k PCI device support
+6ac04bdc5edb ath11k: Use reserved host DDR addresses from DT for PCI devices
 
-Sure, I assume your measurements are at 3.3V for the chip alone.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/1638789319-2950-1-git-send-email-akolli@codeaurora.org/
 
-But the question is: what happens once you start wpa_supplicant?
-
-  --david
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
