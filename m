@@ -2,123 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A11494769AD
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 06:38:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9DE2476A13
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 07:01:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233744AbhLPFiA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Dec 2021 00:38:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32772 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231410AbhLPFiA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Dec 2021 00:38:00 -0500
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5FB9C06173E
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 21:37:59 -0800 (PST)
-Received: by mail-io1-xd36.google.com with SMTP id x10so33659691ioj.9
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 21:37:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=egauge.net; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :organization:user-agent:mime-version:content-transfer-encoding;
-        bh=6ScHdtKJBGLpSH1WCw4x7edbvBY4BLhz9TD1CTHUesQ=;
-        b=Rh1PMORQrWW3aNlpNq0Dm8K/gqfuz9eVKKNKV9XJrSPwONwKc6wvmSCpga9KxTHtIF
-         0zDQRp6e8rMAEsJPfx741s7DnmOiBbsRW6YAwEvrSELddQ0gyRxldzbAKmnTO0Kb9YT8
-         6Kx2cyY3ga33KeHXyXdWjd1LfbSrm1VNQT9KpJU4rU01YrhOXfvEiNreKw/IH71FwRpx
-         dQ14wH+ka46Xrt2Is05w0nkCxr6kj4oh7q4DKZn5rtUWC+sheS73CS/qYMhogfpxDXgP
-         Mvrf78K602or907qFpG4PZCIM5sauwUzH09VJGPDH9GDmE3E1QtdNV1bghGbJYoBB2Vl
-         58AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:organization:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=6ScHdtKJBGLpSH1WCw4x7edbvBY4BLhz9TD1CTHUesQ=;
-        b=T3OmzIolxU27rHFxWPNm/2dSMKRXITNiug67dRC0HG2v+qE93/BsoYAC55gL6bFriH
-         VFT0FQ8+PTagYNwIMV8/jq8trFb5t4l1B93juKEziEdRwfB0NTP2+KbWDGr/oj2vMoUO
-         xuNf4T1jqIKvynC0VIAq/DsrdO8uoptbAXwlwCUI+jizz5fUyUJrdc1iBsllnUJ1JXZg
-         VTvLtSS5wcBAIYQH/W7YCUrFBxNi+HTsumiFxTioUMhUB0/40Jy+SmowZtNi/YqRkDGI
-         drq4/FexUiuhJKsG2AWPRGn60YfUxeKAQL7hOzAjdK7mlCzZezF5Kn6tE69aVqExANR+
-         A+uw==
-X-Gm-Message-State: AOAM530dyBaXWJaSehEtrMDa0hEIALraeb2iZmyRBlVBfGkOoqOY2W69
-        7Lgi3bK52MZ2PJF2V277PsNuzbQIEovFzbQ=
-X-Google-Smtp-Source: ABdhPJwbhQHP0Lg2aI7V08adPfvImhPuENbAA3IxvfP5uS1vgnq3nu6gVTlG7wLNi6vDhA77D5jRzg==
-X-Received: by 2002:a05:6638:38a6:: with SMTP id b38mr8269875jav.233.1639633079157;
-        Wed, 15 Dec 2021 21:37:59 -0800 (PST)
-Received: from ?IPv6:2601:281:8300:4e0:2ba9:697d:eeec:13b? ([2601:281:8300:4e0:2ba9:697d:eeec:13b])
-        by smtp.gmail.com with ESMTPSA id l12sm2263692iow.23.2021.12.15.21.37.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Dec 2021 21:37:58 -0800 (PST)
-Message-ID: <31d5e7447e4574d0fcfc46019d7ca96a3db4ecb6.camel@egauge.net>
-Subject: Re: [PATCH] wilc1000: Allow setting power_save before driver is
- initialized
-From:   David Mosberger-Tang <davidm@egauge.net>
-To:     Ajay.Kathat@microchip.com
-Cc:     Claudiu.Beznea@microchip.com, kvalo@codeaurora.org,
-        davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 15 Dec 2021 22:37:47 -0700
-In-Reply-To: <5378e756-8173-4c63-1f0d-e5836b235a48@microchip.com>
-References: <20211212011835.3719001-1-davidm@egauge.net>
-         <6fc9f00aa0b0867029fb6406a55c1e72d4c13af6.camel@egauge.net>
-         <5378e756-8173-4c63-1f0d-e5836b235a48@microchip.com>
-Organization: eGauge Systems LLC
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        id S233755AbhLPF7n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Dec 2021 00:59:43 -0500
+Received: from mga02.intel.com ([134.134.136.20]:30219 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231777AbhLPF7m (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Dec 2021 00:59:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1639634382; x=1671170382;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=F6uaKVsQxwcIoAmbKLgFr4zgPTXF5hIXj+IVTUF4XjU=;
+  b=ch7uFjjegqznd9y0MAmfsckJHHfHOmT5KV+v3a1jC1zOh4fKiQzLfDmT
+   pKHPgrknNHnwJt2yV/PVPvSX+DNMlLXUWnZNKBIbOSHqJhqDHP8jO+uDi
+   6nOtnz1kV3UaRBn5ZwIcYktSoFwVheUeZow4Feut8zrPCDlsk4AZPBSw/
+   pgDx0BgqLnXjo/MDraTMi97jlB74gKrSE49EUZtjBaWNsEfkIUHAeEiB0
+   kRZ8u4914JzB2IBlsczU24SI8PrUU/cYpZjRQT4CNGO17iZs/I5zesboQ
+   QGRot4QGLnSM3WxDm0J35mSJ75k/AIsjs+jliBzs4Wclnv09NQ5gj4Ol3
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10199"; a="226694064"
+X-IronPort-AV: E=Sophos;i="5.88,210,1635231600"; 
+   d="scan'208";a="226694064"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2021 21:59:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,210,1635231600"; 
+   d="scan'208";a="520157206"
+Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
+  by fmsmga007.fm.intel.com with ESMTP; 15 Dec 2021 21:59:40 -0800
+Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mxjnn-0002oW-I1; Thu, 16 Dec 2021 05:59:39 +0000
+Date:   Thu, 16 Dec 2021 13:58:52 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [kvalo-wireless-drivers-next:master] BUILD SUCCESS
+ 4d375c2e51d5b3227683e3a9a198a2f003959c76
+Message-ID: <61bad59c.yrlXHhtewCYwFrms%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-12-15 at 13:01 +0000, Ajay.Kathat@microchip.com wrote:
-> On 13/12/21 02:50, David Mosberger-Tang wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> > 
-> > Unfortunately, this patch doesn't seem to be sufficient.  From what I
-> > can tell, if power-save mode is turned on before a station is
-> > associated with an access-point, there is no actual power savings.  If
-> > I issue the command after the station is associated, it works perfectly
-> > fine.
-> > 
-> > Ajay, does this make sense to you?
->   <snip>
-> Power-save mode is allowed to be enabled irrespective of station 
-> association state. Before association, the power consumption should be 
-> less with PSM enabled compared to PSM disabled. The WLAN automatic power 
-> save delivery gets enabled after the association with AP.
-> 
-> To check the power measurement before association,  test without 
-> wpa_supplicant.
-> 
-> 
-> Steps:
-> - load the module
-> - ifconfig wlan0 up
-> - iw dev wlan0 set power_save off (check the pwr measurement after PS 
-> mode disabled)
-> - iw dev wlan0 set power_save on (check the pwr measurement after PS 
-> mode enable)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+branch HEAD: 4d375c2e51d5b3227683e3a9a198a2f003959c76  rsi: fix array out of bound
 
-It appears wpa_supplicant consistently renders PSM ineffective:
+elapsed time: 727m
 
-                                (current draw, 1 min avg):
-------------------------------  --------------------------
-- base case (no module loaded): 16.8 mA
-- module loaded & PSM on      : 16.8 mA
-- wpa_supplicant started      : 19.6 mA
-- PSM on                      : 19.6 mA (no change)
-- PSM off                     : 19.6 mA (no change)
-- PSM on                      : 15.4 mA
+configs tested: 147
+configs skipped: 3
 
-What's strange is when I try this sequence a couple of times in a row,
-the device gets into a state where after starting wpa_supplicant, no
-amount of PSM on/off commands will get it to enter power-savings mode
-any more.  When in that state, only removing wilc1000-spi.ko and adding
-it back gets it out of that state.  A power-cycle does not.  Very
-confusing.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-  --david
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm64                               defconfig
+arm                              allyesconfig
+mips                 randconfig-c004-20211214
+i386                 randconfig-c001-20211214
+m68k                          hp300_defconfig
+arm                        clps711x_defconfig
+arc                    vdk_hs38_smp_defconfig
+powerpc                     tqm8540_defconfig
+sh                          rsk7203_defconfig
+arm                          moxart_defconfig
+arm                      footbridge_defconfig
+mips                            gpr_defconfig
+sh                     magicpanelr2_defconfig
+arm                         s3c6400_defconfig
+arm                           stm32_defconfig
+powerpc                       ppc64_defconfig
+powerpc                 mpc837x_mds_defconfig
+arm                          lpd270_defconfig
+m68k                        mvme16x_defconfig
+arm                            hisi_defconfig
+powerpc                mpc7448_hpc2_defconfig
+arc                          axs103_defconfig
+powerpc                 mpc832x_rdb_defconfig
+sh                   sh7770_generic_defconfig
+arm                         palmz72_defconfig
+mips                          rb532_defconfig
+arm                          exynos_defconfig
+sh                         apsh4a3a_defconfig
+arm                        mvebu_v5_defconfig
+um                                  defconfig
+sh                                  defconfig
+sh                        edosk7760_defconfig
+mips                          ath79_defconfig
+arc                        vdk_hs38_defconfig
+powerpc                      pcm030_defconfig
+sh                             espt_defconfig
+mips                 decstation_r4k_defconfig
+sparc                               defconfig
+powerpc                      katmai_defconfig
+riscv             nommu_k210_sdcard_defconfig
+mips                           ci20_defconfig
+arm                              alldefconfig
+powerpc                      tqm8xx_defconfig
+arm                          gemini_defconfig
+mips                         tb0226_defconfig
+sh                              ul2_defconfig
+arm                            zeus_defconfig
+nios2                         10m50_defconfig
+powerpc                      arches_defconfig
+xtensa                              defconfig
+m68k                        stmark2_defconfig
+powerpc                 mpc836x_rdk_defconfig
+m68k                        m5407c3_defconfig
+powerpc                          g5_defconfig
+mips                     loongson1c_defconfig
+sh                   rts7751r2dplus_defconfig
+mips                         tb0287_defconfig
+powerpc                     powernv_defconfig
+arc                      axs103_smp_defconfig
+arm                         orion5x_defconfig
+sh                        edosk7705_defconfig
+sh                          lboxre2_defconfig
+arm                  randconfig-c002-20211214
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20211214
+x86_64               randconfig-a005-20211214
+x86_64               randconfig-a001-20211214
+x86_64               randconfig-a002-20211214
+x86_64               randconfig-a003-20211214
+x86_64               randconfig-a004-20211214
+i386                 randconfig-a001-20211214
+i386                 randconfig-a002-20211214
+i386                 randconfig-a005-20211214
+i386                 randconfig-a003-20211214
+i386                 randconfig-a006-20211214
+i386                 randconfig-a004-20211214
+x86_64               randconfig-a006-20211216
+x86_64               randconfig-a005-20211216
+x86_64               randconfig-a001-20211216
+x86_64               randconfig-a002-20211216
+x86_64               randconfig-a003-20211216
+x86_64               randconfig-a004-20211216
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
 
+clang tested configs:
+arm                  randconfig-c002-20211215
+x86_64               randconfig-c007-20211215
+riscv                randconfig-c006-20211215
+mips                 randconfig-c004-20211215
+i386                 randconfig-c001-20211215
+s390                 randconfig-c005-20211215
+powerpc              randconfig-c003-20211215
+hexagon              randconfig-r045-20211214
+s390                 randconfig-r044-20211214
+riscv                randconfig-r042-20211214
+hexagon              randconfig-r041-20211214
+hexagon              randconfig-r045-20211216
+s390                 randconfig-r044-20211216
+riscv                randconfig-r042-20211216
+hexagon              randconfig-r041-20211216
 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
