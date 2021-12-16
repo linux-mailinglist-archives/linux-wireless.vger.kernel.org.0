@@ -2,140 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EF43476725
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 01:54:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34BE347677E
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 02:46:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229545AbhLPAyi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 19:54:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54994 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbhLPAyi (ORCPT
+        id S232621AbhLPBqc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Dec 2021 20:46:32 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:45046 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229555AbhLPBqc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 19:54:38 -0500
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E20C3C061574
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 16:54:37 -0800 (PST)
-Received: by mail-io1-xd2c.google.com with SMTP id q72so32862984iod.12
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 16:54:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=egauge.net; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :organization:user-agent:mime-version:content-transfer-encoding;
-        bh=DxLv+nTj3iyF1XqRT921ana05xn+Hmmvy3irbfbMeUg=;
-        b=fgsGDeLK7ztcoYM+u3Hed1c7I8HlCgkuEnVF58UJruKy5AFxe8OGYQAL0t3+4W4rNG
-         OKwJEx5KXCDr00rPCnJhzN1VetNIFbawhVwXcghlozLrDHwFsabtyoXpvtevvl0HLNil
-         EZnGMlf5Bpu1IFJjV1kdszh67TxPhBguRmsJ0GH1SvI65otyTeBGiOSbmJiw6e6kJhQv
-         Vv6cAP/m3nehvw8dwKbgow9HoMqqQeYifAuVXHWDuzFuZq+GpsGJ8dMmeygxcUjt0CRo
-         xuDw3HI7E+JjuGdkdmygC/Z5HZoDmr8nOIjLdfWeuv2BLGZHtny5YBpW3VnfH715qCIE
-         Mp9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:organization:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=DxLv+nTj3iyF1XqRT921ana05xn+Hmmvy3irbfbMeUg=;
-        b=A3eTzi39uXrzwyzDLpf91PWBawWpUYxoZhwulowl3uD9kTEqh3v41eiFd8Yc3ImXq7
-         MIGob4U0xG70qAHvAjAbFG3Dg77uvdEjY+3X823EH/AdMFXvyPb7Tv2DmzHuD6gdcFcF
-         36TIqvOszKAz63pzhsu5CzWkbTmTPfUX+xqsVQX3Qm5Bgr+OpibLcQpUcK1SjrqGfrF4
-         7W1rgsmr2L1hakSN27YC3yKLRl4IlwoqKOsfkwwxQ1RkJ9YECleuI7aPWQcfRIX2sPG+
-         hexRERKQRBwBrAopupnRGcUA8du19M0Ctu1ZOMCK5KqTmP2ll2t1uD3NsO96LWvyr9vM
-         AODg==
-X-Gm-Message-State: AOAM5315rRTT5q8YKLi39IEN0i9zk2xiXyoHG4J6hTxrRU+3Co146L3X
-        9ro2VysjTCbLyo+ImyrV7x+v
-X-Google-Smtp-Source: ABdhPJxZWNK/+lFDVswO9ljLaEr02GFWsO0oX4D9//e7ZP8UsNLqpEEb6AZLxgePXkBviezTDdMDTA==
-X-Received: by 2002:a02:7053:: with SMTP id f80mr7596204jac.28.1639616077169;
-        Wed, 15 Dec 2021 16:54:37 -0800 (PST)
-Received: from ?IPv6:2601:281:8300:4e0:2ba9:697d:eeec:13b? ([2601:281:8300:4e0:2ba9:697d:eeec:13b])
-        by smtp.gmail.com with ESMTPSA id j6sm1715921ilc.8.2021.12.15.16.54.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Dec 2021 16:54:36 -0800 (PST)
-Message-ID: <8bca161b9689bf02f0620e3b59f5040c7e8b2db1.camel@egauge.net>
-Subject: Re: RFC: wilc1000: refactor TX path to use sk_buff queue
-From:   David Mosberger-Tang <davidm@egauge.net>
-To:     Ajay.Kathat@microchip.com, Claudiu.Beznea@microchip.com,
-        kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Date:   Wed, 15 Dec 2021 17:54:27 -0700
-In-Reply-To: <7a6956db-8710-4d6c-9bed-702ec1b7041e@microchip.com>
-References: <e3502ecffe0c4c01b263ada8deed814d5135c24c.camel@egauge.net>
-         <7a6956db-8710-4d6c-9bed-702ec1b7041e@microchip.com>
-Organization: eGauge Systems LLC
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        Wed, 15 Dec 2021 20:46:32 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1BG1jRfh031919;
+        Wed, 15 Dec 2021 19:45:27 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1639619127;
+        bh=x5y0W7NcQu8KFCCs6SOY3R1ieqDIaIpGqjfY0/mf1aE=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=J5phN9h68zO6NinAKtCP/hmHaPgLgmqEGVPSbOywTVyespzsahOYEMGicemzLRq2Y
+         21pPWpguPw6fDybn84tKdvQctjmv68Dr1n2Jr/sg63dZkF5qXYf/uErtLqrDj5vXPI
+         1ZEaLuHXnc4osJDl09QfWl3URXAzeFJSZ4FNP8zc=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1BG1jRfp012888
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 15 Dec 2021 19:45:27 -0600
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Wed, 15
+ Dec 2021 19:45:27 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Wed, 15 Dec 2021 19:45:27 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1BG1jRLZ081996;
+        Wed, 15 Dec 2021 19:45:27 -0600
+Date:   Wed, 15 Dec 2021 19:45:27 -0600
+From:   Nishanth Menon <nm@ti.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+CC:     LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Marc Zygnier <maz@kernel.org>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Megha Dey <megha.dey@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>, <linux-pci@vger.kernel.org>,
+        Cedric Le Goater <clg@kaod.org>,
+        Juergen Gross <jgross@suse.com>,
+        <xen-devel@lists.xenproject.org>, Arnd Bergmann <arnd@arndb.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        <linuxppc-dev@lists.ozlabs.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Stuart Yoder <stuyoder@gmail.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Vinod Koul <vkoul@kernel.org>, <dmaengine@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        <iommu@lists.linux-foundation.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Sinan Kaya <okaya@kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
+Message-ID: <20211216014527.5d3sqs2klrqjmm2k@lunacy>
+References: <20211213182958.ytj4m6gsg35u77cv@detonator>
+ <87fsqvttfv.ffs@tglx>
+ <20211214162247.ocjm7ihg5oi7uiuv@slider>
+ <87wnk7rvnz.ffs@tglx>
+ <87tufbrudl.ffs@tglx>
+ <87mtl3rli1.ffs@tglx>
+ <20211214205626.lrnddha6bd6d6es5@possibly>
+ <87h7basx36.ffs@tglx>
+ <87zgp1rge4.ffs@tglx>
+ <87wnk5rfkt.ffs@tglx>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <87wnk5rfkt.ffs@tglx>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-12-15 at 12:44 +0000, Ajay.Kathat@microchip.com wrote:
-> On 12/12/21 02:02, David Mosberger-Tang wrote:
-> > Notes:
-> > 
-> >   - Don't try to apply this patch as is.  There are two other small
-> >     but unrelated changes that this patch below depends on.
-> 
-> Btw what are the other two changes required to make it work. I believe 
-> the working flow shouldn't get impacted after the restructuring 
-> especially when code is refactor(replaced) using the existing solution.
+Hi Thomas,
 
-I'll start working on a patch series.  There are some before and some
-after the sk_buff refactor, but those are all pretty straight-forward
-in comparison.
+On 17:35-20211215, Thomas Gleixner wrote:
+>    git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git msi-v4.2-part-3
 
-> > 
-> > Thoughts and/or suggestions?
-> 
-> Using sk_buff queue is a good idea but the patch has other changes also. 
-> This patch should be splited into a few different logical related 
-> changes. Using a single patch for all these changes may not be easy to 
-> review and handle if there are any regressions.
-> 
-> One way to split the changes could be like:
-> 
->   - sk_buff handling for mgmt/data and config frames
->   - WID(config packets) functions refactoring
->   - Functions refactoring
->   - Rename related changes
+As you helped offline, summarizing the details on part3 of the series:
 
-Yeah, the WID refactoring and structure renaming can be split off
-easily, good suggestion.  Let me start working on that.
+I was seeing failure[1] of NFS(DMA) on all TI K3 platforms:
 
-> <snip>
-> 
-> >                  (*ac)++;
-> >          
-> > +static int wilc_wlan_cfg_apply_wid(struct wilc_vif *vif, int start, u16 wid,
-> > +                                  u8 *buffer, u32 buffer_size, int commit,
-> > +                                  u32 drv_handler, bool set)
-> >   {
-> > -       u32 offset;
-> >          int ret_size;
-> >          struct wilc *wilc = vif->wilc;
-> > 
-> >          mutex_lock(&wilc->cfg_cmd_lock);
-> > 
-> > -       if (start)
-> > -               wilc->cfg_frame_offset = 0;
-> > -
-> > -       offset = wilc->cfg_frame_offset;
-> > -       ret_size = wilc_wlan_cfg_set_wid(wilc->cfg_frame.frame, offset,
-> > -                                        wid, buffer, buffer_size);
-> > -       offset += ret_size;
-> > -       wilc->cfg_frame_offset = offset;
-> > -
-> > -       if (!commit) {
-> > -               mutex_unlock(&wilc->cfg_cmd_lock);
-> > -               return ret_size;
-> > +       if (start) {
-> > +               WARN_ON(wilc->cfg_skb);
-> > +               wilc->cfg_skb = alloc_cfg_skb(vif);
-> > +               if (!wilc->cfg_skb) {
-> 
-> 'cfg_cmd_lock' mutex unlock is missing.
+[    1.013258] ti-bcdma 485c0100.dma-controller: Number of rings: 68
+[    1.019963] ti-bcdma 485c0100.dma-controller: Failed to allocate IRQs -28
+[    1.026938] ti-bcdma 485c0100.dma-controller: Failed to allocate MSI interrupts
 
-Indeed, thanks for catching that!
+Rationale as you explained:
+"
+-28 is ENOSPC, which is returned when the interrupt allocation in the
+ MSI domain fails. Fix below.
+"
 
-  --david
+Which turned out to be the fixup[2] you suggested and I confirm that
+fixes the problem for me.
 
+With the fixup in place:
 
+Tested-by: Nishanth Menon <nm@ti.com>
+
+for part 3 of the series as well.
+
+Thanks once again for your help. Hope we can roll in the fixes for
+part3.
+
+[1] https://gist.github.com/nmenon/5971ab27aa626c022e276cc946e4b6c3
+[2]
+--- a/drivers/soc/ti/ti_sci_inta_msi.c
++++ b/drivers/soc/ti/ti_sci_inta_msi.c
+@@ -68,6 +68,7 @@ static int ti_sci_inta_msi_alloc_descs(s
+ 	int set, i, count = 0;
+ 
+ 	memset(&msi_desc, 0, sizeof(msi_desc));
++	msi_desc.nvec_used = 1;
+ 
+ 	for (set = 0; set < res->sets; set++) {
+ 		for (i = 0; i < res->desc[set].num; i++, count++) {
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D)/Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
