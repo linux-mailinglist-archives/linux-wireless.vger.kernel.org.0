@@ -2,94 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E7D6477368
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 14:44:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1C97477392
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 14:50:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237666AbhLPNop (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Dec 2021 08:44:45 -0500
-Received: from mga11.intel.com ([192.55.52.93]:12305 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237562AbhLPNoo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Dec 2021 08:44:44 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10199"; a="237032305"
-X-IronPort-AV: E=Sophos;i="5.88,211,1635231600"; 
-   d="scan'208";a="237032305"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2021 05:44:44 -0800
-X-IronPort-AV: E=Sophos;i="5.88,211,1635231600"; 
-   d="scan'208";a="519255307"
-Received: from jetten-mobl.ger.corp.intel.com ([10.252.36.24])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2021 05:44:36 -0800
-Date:   Thu, 16 Dec 2021 15:44:34 +0200 (EET)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Ricardo Martinez <ricardo.martinez@linux.intel.com>
-cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        kuba@kernel.org, davem@davemloft.net, johannes@sipsolutions.net,
-        ryazanov.s.a@gmail.com, loic.poulain@linaro.org,
-        m.chetan.kumar@intel.com, chandrashekar.devegowda@intel.com,
-        linuxwwan@intel.com, chiranjeevi.rapolu@linux.intel.com,
-        haijun.liu@mediatek.com, amir.hanania@intel.com,
-        andriy.shevchenko@linux.intel.com, dinesh.sharma@intel.com,
-        eliot.lee@intel.com, mika.westerberg@linux.intel.com,
-        moises.veleta@intel.com, pierre-louis.bossart@intel.com,
-        muralidharan.sethuraman@intel.com, Soumya.Prakash.Mishra@intel.com,
-        sreehari.kancharla@intel.com, suresh.nagaraj@intel.com
-Subject: Re: [PATCH net-next v3 04/12] net: wwan: t7xx: Add control port
-In-Reply-To: <20211207024711.2765-5-ricardo.martinez@linux.intel.com>
-Message-ID: <377f68a1-c642-d5da-51e7-624eac4eb911@linux.intel.com>
-References: <20211207024711.2765-1-ricardo.martinez@linux.intel.com> <20211207024711.2765-5-ricardo.martinez@linux.intel.com>
+        id S235929AbhLPNuq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Dec 2021 08:50:46 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:42256 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236139AbhLPNug (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Dec 2021 08:50:36 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6DEF3B8242A;
+        Thu, 16 Dec 2021 13:50:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714ACC36AE8;
+        Thu, 16 Dec 2021 13:50:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639662633;
+        bh=AbhvMEHMWIrh7e9CWfIY2JYFJ5gwFAB2jgOuFsthmyo=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=TKA/FRmozr/tU9ROOvxVLYg3DipKuXOctyxmMbr+Y00XEedVcaedz+AU3/dozv3sZ
+         q/M2W8KveteIB15BVbsnZLQ6iMY1tlu0jZWs9oQSP5GS5wJE9aMLirA8VC7YaohsLa
+         rH6wpHX2MzlsX0T1V5qucjcz0zP91IkE3JwYNgWOis9h3wBVm8qRhejoeolUgVIfDy
+         PcKZ0bByGv1gqQ23Cu+HhYblN5jtReKBHx9BIKLqwRXj17EKkW5WJsaHOYmSCyQEsr
+         XkXQuKDFrinrS6WR7DTFRLraLADZUOa5Prd6/wxzbNH9cYLsziwhiZA9bILnWhCl/r
+         /Dz/zMWeaYFDw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     linux-hardening@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 08/17] ath11k: Use memset_startat() for clearing queue descriptors
+References: <20211213223331.135412-1-keescook@chromium.org>
+        <20211213223331.135412-9-keescook@chromium.org>
+        <87v8zriv1c.fsf@codeaurora.org> <877dc7i3zc.fsf@codeaurora.org>
+        <202112140904.2D64E570@keescook>
+Date:   Thu, 16 Dec 2021 15:50:25 +0200
+In-Reply-To: <202112140904.2D64E570@keescook> (Kees Cook's message of "Tue, 14
+        Dec 2021 09:05:37 -0800")
+Message-ID: <875yrod5ge.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 6 Dec 2021, Ricardo Martinez wrote:
+Kees Cook <keescook@chromium.org> writes:
 
-> From: Haijun Liu <haijun.liu@mediatek.com>
-> 
-> Control Port implements driver control messages such as modem-host
-> handshaking, controls port enumeration, and handles exception messages.
-> 
-> The handshaking process between the driver and the modem happens during
-> the init sequence. The process involves the exchange of a list of
-> supported runtime features to make sure that modem and host are ready
-> to provide proper feature lists including port enumeration. Further
-> features can be enabled and controlled in this handshaking process.
-> 
-> Signed-off-by: Haijun Liu <haijun.liu@mediatek.com>
-> Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-> Co-developed-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
-> Signed-off-by: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+> On Tue, Dec 14, 2021 at 05:46:31PM +0200, Kalle Valo wrote:
+>> Kalle Valo <kvalo@kernel.org> writes:
+>> 
+>> > Kees Cook <keescook@chromium.org> writes:
+>> >
+>> >> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+>> >> field bounds checking for memset(), avoid intentionally writing across
+>> >> neighboring fields.
+>> >>
+>> >> Use memset_startat() so memset() doesn't get confused about writing
+>> >> beyond the destination member that is intended to be the starting point
+>> >> of zeroing through the end of the struct. Additionally split up a later
+>> >> field-spanning memset() so that memset() can reason about the size.
+>> >>
+>> >> Cc: Kalle Valo <kvalo@codeaurora.org>
+>> >> Cc: "David S. Miller" <davem@davemloft.net>
+>> >> Cc: Jakub Kicinski <kuba@kernel.org>
+>> >> Cc: ath11k@lists.infradead.org
+>> >> Cc: linux-wireless@vger.kernel.org
+>> >> Cc: netdev@vger.kernel.org
+>> >> Signed-off-by: Kees Cook <keescook@chromium.org>
+>> >
+>> > What's the plan for this patch? I would like to take this via my ath
+>> > tree to avoid conflicts.
+>> 
+>> Actually this has been already applied:
+>> 
+>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=ath-next&id=d5549e9a6b86
+>> 
+>> Why are you submitting the same patch twice?
+>
+> These are all part of a topic branch, and the cover letter mentioned
+> that a set of them have already been taken but haven't appeared in -next
+> (which was delayed).
 
-
-
-> +	ccci_h->packet_header = 0;
-> +	ccci_h->packet_len = cpu_to_le32(packet_size);
-> +	ccci_h->status &= cpu_to_le32(~HDR_FLD_CHN);
-> +	ccci_h->status |= cpu_to_le32(FIELD_PREP(HDR_FLD_CHN, port_static->tx_ch));
-> +	ccci_h->status &= cpu_to_le32(~HDR_FLD_SEQ);
-> +	ccci_h->ex_msg = 0;
-
-...
-
-> +		ccci_h->packet_header = cpu_to_le32(CCCI_HEADER_NO_DATA);
-> +		ccci_h->packet_len = cpu_to_le32(sizeof(*ctrl_msg_h) + CCCI_H_LEN);
-> +		ccci_h->status &= cpu_to_le32(~HDR_FLD_CHN);
-> +		ccci_h->status |= cpu_to_le32(FIELD_PREP(HDR_FLD_CHN, ch));
-> +		ccci_h->ex_msg = 0;
-
-...
-
-> +		ccci_h->packet_header = cpu_to_le32(CCCI_HEADER_NO_DATA);
-> +		ccci_h->packet_len = cpu_to_le32(msg);
-> +		ccci_h->status &= cpu_to_le32(~HDR_FLD_CHN);
-> +		ccci_h->status |= cpu_to_le32(FIELD_PREP(HDR_FLD_CHN, ch));
-> +		ccci_h->ex_msg = cpu_to_le32(ex_msg);
-
-A helper to handle the common part of ccci_h init would be useful.
-
+Do note that some wireless drivers (at least ath, mt76 and iwlwifi) are
+maintained in separate trees, so don't be surprised if it takes several
+weeks before they are visible in linux-next.
 
 -- 
- i.
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
