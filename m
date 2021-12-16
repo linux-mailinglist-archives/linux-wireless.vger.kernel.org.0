@@ -2,77 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF599477949
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 17:36:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FC43477968
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 17:40:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231455AbhLPQgK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Dec 2021 11:36:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46868 "EHLO
+        id S233351AbhLPQkZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Dec 2021 11:40:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229962AbhLPQgH (ORCPT
+        with ESMTP id S232241AbhLPQkY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Dec 2021 11:36:07 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C78B5C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 08:36:06 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8EB31B8249E
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 16:36:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95176C36AE4;
-        Thu, 16 Dec 2021 16:36:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639672564;
-        bh=7d992ORaxrkAOc/y1VyGbJc7x1y3M1BbCoqPtnd/NaY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=aXRn7d3iV3ODodkbKkja6HB1N2V8EhBBk1eSzSimrymBtYZEr/grKRDcYtJ8w4r1+
-         QccwPHXwjZN+xpB8/jCLvCAOBzXImPAG5FhiD4c8QXaP8fWuYjoFGm4pY8or9RpFG5
-         cyqctg93f7FRII2m2RSsPc2PNpPJBf7rfPSWdx4/JoM/7sp+vCcLNleJ9hpMmCazrb
-         HOl62Gaj1Erpu8zKfBJUU1l2hRgBuM+YqddecwXDNvvqaZhuu9jnxYUKNnZjO6bid7
-         lxPQBz7UKXaAJyf6jDuvbdLmTj7RMBKpGj2qsEh6igQcZvMmCAI+c+smE7x8YZ4/ed
-         2ryqK80I7OB3Q==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v3] ath11k: fix destination monitor ring out of sync
-References: <1639584090-13751-1-git-send-email-quic_kathirve@quicinc.com>
-Date:   Thu, 16 Dec 2021 18:35:59 +0200
-In-Reply-To: <1639584090-13751-1-git-send-email-quic_kathirve@quicinc.com>
-        (Karthikeyan Kathirvel's message of "Wed, 15 Dec 2021 21:31:30 +0530")
-Message-ID: <87o85gbj80.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 16 Dec 2021 11:40:24 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8523AC061574
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 08:40:24 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id a83-20020a1c9856000000b00344731e044bso5601229wme.1
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 08:40:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:content-language:from
+         :subject:to:cc:content-transfer-encoding;
+        bh=O213G8tA2rgP9YzFngr5KkM5rXv39EiiltzJe+1Bi50=;
+        b=pJDVOfPbzVZpRnOhjNwBX77QDgvAijOoGD6/8rKIIv5Zo4RajQOZQv7lDf9uhIhxwM
+         Iayr8nkGJWCIxkoS7RnC4mX6g9HaMfTcZpMaUmaEEyrtg8HVYp/pznQAyAViKKPMYtlP
+         He5ljU9j7igpdTgTWWu7cVooQgGZ8VFoSjH/dusugh2Q/EUbdqPTUKeLVYWr02iOW2iX
+         4ZALtxoXZI/edsyebdK3BfpxpZ9JXtt/OM2fg+8N/ZFi7ajhyal7ligqibd5tsn3TVWx
+         BEBtwJ/dPOwTNj7paxXg0Qde6fEUGuvheMgxcIUGcLRFjqxfEGD2206EiZt4swr7ebCp
+         6m2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent
+         :content-language:from:subject:to:cc:content-transfer-encoding;
+        bh=O213G8tA2rgP9YzFngr5KkM5rXv39EiiltzJe+1Bi50=;
+        b=qTWo0VmgQBc3nNeF89++ET3Kks6/OrtnMIFhrza8MnW7UhFXWodbMgp9LuUC+05UFH
+         XmrjlHnyxOcIdA6X8Ab90ESftz2BacKy8Fm7EXBMLNhXDEuW8tuNvSuLKd/ycJ2zUZAl
+         Dd2VWD3TqhYcAA7ImfAStRu98ve9LW1fILp/5MrBnH3ZBnnHyGll4ttAu6vx3imjTTPq
+         axi8FwRhfqAao4tXKtubR2eMTreFviCwXscrAg/gNiSbL0ZP9Dz65hArsSBIaCvWEdBq
+         CYt9iAyVcahMrEsLaepA2LPSAq+lQfZdaJSh2q0DcgWBjOl+0wr7LUS4BcAEENVYkBgD
+         fkyQ==
+X-Gm-Message-State: AOAM530uk7hlOgIZp/M9V4zciQYGvvuWTYJrELu9Jqab+9Rwe2ndyx4X
+        uAnlWSnHp3S8JZQwJvfDqA==
+X-Google-Smtp-Source: ABdhPJzVWCVo4tbUlmZhR9qgTJiVauL5NeFEKno9/DBc1ikOCrEizsO+1660OqDdEmCe3nm2/r6vKQ==
+X-Received: by 2002:a1c:a755:: with SMTP id q82mr5731401wme.157.1639672823118;
+        Thu, 16 Dec 2021 08:40:23 -0800 (PST)
+Received: from [192.168.25.160] (ip-176-198-222-94.hsi05.unitymediagroup.de. [176.198.222.94])
+        by smtp.googlemail.com with ESMTPSA id bg34sm9025764wmb.47.2021.12.16.08.40.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Dec 2021 08:40:22 -0800 (PST)
+Message-ID: <8a737c14-8d76-3a7c-a2d2-13742963463a@googlemail.com>
+Date:   Thu, 16 Dec 2021 17:39:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Content-Language: de-DE
+From:   =?UTF-8?Q?Frank_Sch=c3=a4fer?= <fschaefer.oss@googlemail.com>
+Subject: Problems with RTL8821CE device
+To:     tony0620emma@gmail.com
+Cc:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Karthikeyan Kathirvel <quic_kathirve@quicinc.com> writes:
+Hi,
 
-> More than 20000 PPDU id jumping causing status ring and destination
-> ring processing not sync. The status ring is processed and the
-> destination ring is not processed. Since destination is not reaped for
-> so long, backpressure occurs at the destination ring.
->
-> To address this issue update the PPDU id with the latest PPDU, this
-> will allow the destination ring to be reaped and will prevent the
-> rings from getting out of sync.
->
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1.r1-00026-QCAHKSWPL_SILICONZ-2
->
-> Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+the RTL8821CE (rfe 2) device in my HP notebook (AMD Ryzen 5500) is more 
+or less unusable.
+Association with the AP usually takes a long time (but finally succeeds) 
+and I'm very often getting site loading errors when surfing the internet.
+After having successfully started a large download (which may require 
+multiple attempts), it usually "gets running" and the performance isn't 
+too bad.
 
-Failed to apply:
+I've tested kernels 5.14 to 5.16-rc5, but there is no difference.
+However, since 5.16-rc dmesg shows some
 
-Applying: ath11k: fix destination monitor ring out of sync
-error: sha1 information is lacking or useless (drivers/net/wireless/ath/ath11k/dp.h).
-error: could not build fake ancestor
+    rtw_8821ce 0000:02:00.0: failed to get tx report from firmware
 
-Please rebase on top ath.git master branch. And remember to use --base,
-then it's easier for me to fix conflicts.
+messages.
+Apart from that, there are no errors in the log.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+I also tried module parameter disable_aspm=1 without success.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Please let me know what you need.
+
+Regards,
+Frank
+
