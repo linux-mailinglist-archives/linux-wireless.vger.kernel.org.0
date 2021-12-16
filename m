@@ -2,133 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8DF24768AB
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 04:27:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A11494769AD
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 06:38:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233355AbhLPD0c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 22:26:32 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:33732 "EHLO
-        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233335AbhLPD01 (ORCPT
+        id S233744AbhLPFiA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Dec 2021 00:38:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32772 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231410AbhLPFiA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 22:26:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-        h=from:subject:mime-version:to:cc:content-transfer-encoding:
-        content-type;
-        s=sgd; bh=KRpEVBdV5fyCa6LhCrnHan24UbFb7eiesIdyenFXa7Y=;
-        b=vrzxiOGv3LXZ9VKE49ikXabLbdri6NRpcRJNvESo8vdYblH205CB1m0Mb7T2DD3dKFZk
-        FJrtbsObpkQc6pjlxYePUR+M/GcOcveepG0hBQMs1z04zTNRtEd5gnbMRJpZ/BmC53kOcY
-        8OwswO3ATqxPbx2cnPB4IJLn9/K6/W7JDxGZHcuxCgchcCPt0lw0LjuMz/2babccmmHRac
-        k18ADIRXXntkkX4yJD02IecllySf8wOdSIaEfHGoAm+VwUnHkJVLSb8oI60yQRRa2Y+Q5R
-        hpGcX4QshnS/cJyPvTM3bvNsr4wqg/QdOnO8pa019rs/MW00PJ1Q45mW3t4Dh52w==
-Received: by filterdrecv-75ff7b5ffb-96rhp with SMTP id filterdrecv-75ff7b5ffb-96rhp-1-61BAB1E0-2B
-        2021-12-16 03:26:24.932642305 +0000 UTC m=+9090364.813149035
-Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-1-1 (SG)
-        with ESMTP
-        id nfkc_PERRVCbY_jCotLESg
-        Thu, 16 Dec 2021 03:26:24.779 +0000 (UTC)
-Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 03B46700E72; Wed, 15 Dec 2021 20:26:24 -0700 (MST)
+        Thu, 16 Dec 2021 00:38:00 -0500
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5FB9C06173E
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 21:37:59 -0800 (PST)
+Received: by mail-io1-xd36.google.com with SMTP id x10so33659691ioj.9
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 21:37:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=egauge.net; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :organization:user-agent:mime-version:content-transfer-encoding;
+        bh=6ScHdtKJBGLpSH1WCw4x7edbvBY4BLhz9TD1CTHUesQ=;
+        b=Rh1PMORQrWW3aNlpNq0Dm8K/gqfuz9eVKKNKV9XJrSPwONwKc6wvmSCpga9KxTHtIF
+         0zDQRp6e8rMAEsJPfx741s7DnmOiBbsRW6YAwEvrSELddQ0gyRxldzbAKmnTO0Kb9YT8
+         6Kx2cyY3ga33KeHXyXdWjd1LfbSrm1VNQT9KpJU4rU01YrhOXfvEiNreKw/IH71FwRpx
+         dQ14wH+ka46Xrt2Is05w0nkCxr6kj4oh7q4DKZn5rtUWC+sheS73CS/qYMhogfpxDXgP
+         Mvrf78K602or907qFpG4PZCIM5sauwUzH09VJGPDH9GDmE3E1QtdNV1bghGbJYoBB2Vl
+         58AA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:organization:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=6ScHdtKJBGLpSH1WCw4x7edbvBY4BLhz9TD1CTHUesQ=;
+        b=T3OmzIolxU27rHFxWPNm/2dSMKRXITNiug67dRC0HG2v+qE93/BsoYAC55gL6bFriH
+         VFT0FQ8+PTagYNwIMV8/jq8trFb5t4l1B93juKEziEdRwfB0NTP2+KbWDGr/oj2vMoUO
+         xuNf4T1jqIKvynC0VIAq/DsrdO8uoptbAXwlwCUI+jizz5fUyUJrdc1iBsllnUJ1JXZg
+         VTvLtSS5wcBAIYQH/W7YCUrFBxNi+HTsumiFxTioUMhUB0/40Jy+SmowZtNi/YqRkDGI
+         drq4/FexUiuhJKsG2AWPRGn60YfUxeKAQL7hOzAjdK7mlCzZezF5Kn6tE69aVqExANR+
+         A+uw==
+X-Gm-Message-State: AOAM530dyBaXWJaSehEtrMDa0hEIALraeb2iZmyRBlVBfGkOoqOY2W69
+        7Lgi3bK52MZ2PJF2V277PsNuzbQIEovFzbQ=
+X-Google-Smtp-Source: ABdhPJwbhQHP0Lg2aI7V08adPfvImhPuENbAA3IxvfP5uS1vgnq3nu6gVTlG7wLNi6vDhA77D5jRzg==
+X-Received: by 2002:a05:6638:38a6:: with SMTP id b38mr8269875jav.233.1639633079157;
+        Wed, 15 Dec 2021 21:37:59 -0800 (PST)
+Received: from ?IPv6:2601:281:8300:4e0:2ba9:697d:eeec:13b? ([2601:281:8300:4e0:2ba9:697d:eeec:13b])
+        by smtp.gmail.com with ESMTPSA id l12sm2263692iow.23.2021.12.15.21.37.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Dec 2021 21:37:58 -0800 (PST)
+Message-ID: <31d5e7447e4574d0fcfc46019d7ca96a3db4ecb6.camel@egauge.net>
+Subject: Re: [PATCH] wilc1000: Allow setting power_save before driver is
+ initialized
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH] wilc1000: Convert static "chipid" variable to device-local
- variable
-Date:   Thu, 16 Dec 2021 03:26:25 +0000 (UTC)
-Message-Id: <20211216032612.3798573-1-davidm@egauge.net>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvBvrXi7igiw3S+MCi?=
- =?us-ascii?Q?w8n5f20b4RWHzEw2hbU+cN3vLQB7L=2FZRmxUZZYa?=
- =?us-ascii?Q?ONJ7E9hp73OJnR2yp4FRhnQ=2FZ5xror6lESWmhGK?=
- =?us-ascii?Q?zNXNfqzKsnDz3iEON29mSpksdjLGhbvBx0WGtzd?=
- =?us-ascii?Q?Du8+HLn8gt0bNzhNcJ7h3kHI1A=2FduMew=2FJ1x7Wq?=
- =?us-ascii?Q?A0=2FI1Nh5ETW27h6ZPmpFg=3D=3D?=
-To:     Ajay Singh <ajay.kathat@microchip.com>
-Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
+To:     Ajay.Kathat@microchip.com
+Cc:     Claudiu.Beznea@microchip.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        David Mosberger-Tang <davidm@egauge.net>
-X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
+        linux-kernel@vger.kernel.org
+Date:   Wed, 15 Dec 2021 22:37:47 -0700
+In-Reply-To: <5378e756-8173-4c63-1f0d-e5836b235a48@microchip.com>
+References: <20211212011835.3719001-1-davidm@egauge.net>
+         <6fc9f00aa0b0867029fb6406a55c1e72d4c13af6.camel@egauge.net>
+         <5378e756-8173-4c63-1f0d-e5836b235a48@microchip.com>
+Organization: eGauge Systems LLC
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=us-ascii
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move "chipid" variable into the per-driver structure so the code
-doesn't break if more than one wilc1000 module is present.
+On Wed, 2021-12-15 at 13:01 +0000, Ajay.Kathat@microchip.com wrote:
+> On 13/12/21 02:50, David Mosberger-Tang wrote:
+> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+> > 
+> > Unfortunately, this patch doesn't seem to be sufficient.  From what I
+> > can tell, if power-save mode is turned on before a station is
+> > associated with an access-point, there is no actual power savings.  If
+> > I issue the command after the station is associated, it works perfectly
+> > fine.
+> > 
+> > Ajay, does this make sense to you?
+>   <snip>
+> Power-save mode is allowed to be enabled irrespective of station 
+> association state. Before association, the power consumption should be 
+> less with PSM enabled compared to PSM disabled. The WLAN automatic power 
+> save delivery gets enabled after the association with AP.
+> 
+> To check the power measurement before association,  test without 
+> wpa_supplicant.
+> 
+> 
+> Steps:
+> - load the module
+> - ifconfig wlan0 up
+> - iw dev wlan0 set power_save off (check the pwr measurement after PS 
+> mode disabled)
+> - iw dev wlan0 set power_save on (check the pwr measurement after PS 
+> mode enable)
 
-Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
----
- .../net/wireless/microchip/wilc1000/netdev.h  |  1 +
- .../net/wireless/microchip/wilc1000/wlan.c    | 27 +++++++++----------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+It appears wpa_supplicant consistently renders PSM ineffective:
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net/wireless/microchip/wilc1000/netdev.h
-index b9a88b3e322f..41a92a1368ab 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.h
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
-@@ -212,6 +212,7 @@ struct wilc {
- 	s8 mac_status;
- 	struct clk *rtc_clk;
- 	bool initialized;
-+	u32 chipid;
- 	int dev_irq_num;
- 	int close;
- 	u8 vif_num;
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 1aa4236a2fe4..c8e103500235 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -1443,31 +1443,30 @@ static int init_chip(struct net_device *dev)
- 
- u32 wilc_get_chipid(struct wilc *wilc, bool update)
- {
--	static u32 chipid;
--	u32 tempchipid = 0;
-+	u32 chipid = 0;
- 	u32 rfrevid = 0;
- 
--	if (chipid == 0 || update) {
--		wilc->hif_func->hif_read_reg(wilc, WILC_CHIPID, &tempchipid);
-+	if (wilc->chipid == 0 || update) {
-+		wilc->hif_func->hif_read_reg(wilc, WILC_CHIPID, &chipid);
- 		wilc->hif_func->hif_read_reg(wilc, WILC_RF_REVISION_ID,
- 					     &rfrevid);
--		if (!is_wilc1000(tempchipid)) {
--			chipid = 0;
--			return chipid;
-+		if (!is_wilc1000(chipid)) {
-+			wilc->chipid = 0;
-+			return wilc->chipid;
- 		}
--		if (tempchipid == WILC_1000_BASE_ID_2A) { /* 0x1002A0 */
-+		if (chipid == WILC_1000_BASE_ID_2A) { /* 0x1002A0 */
- 			if (rfrevid != 0x1)
--				tempchipid = WILC_1000_BASE_ID_2A_REV1;
--		} else if (tempchipid == WILC_1000_BASE_ID_2B) { /* 0x1002B0 */
-+				chipid = WILC_1000_BASE_ID_2A_REV1;
-+		} else if (chipid == WILC_1000_BASE_ID_2B) { /* 0x1002B0 */
- 			if (rfrevid == 0x4)
--				tempchipid = WILC_1000_BASE_ID_2B_REV1;
-+				chipid = WILC_1000_BASE_ID_2B_REV1;
- 			else if (rfrevid != 0x3)
--				tempchipid = WILC_1000_BASE_ID_2B_REV2;
-+				chipid = WILC_1000_BASE_ID_2B_REV2;
- 		}
- 
--		chipid = tempchipid;
-+		wilc->chipid = chipid;
- 	}
--	return chipid;
-+	return wilc->chipid;
- }
- 
- int wilc_wlan_init(struct net_device *dev)
--- 
-2.25.1
+                                (current draw, 1 min avg):
+------------------------------  --------------------------
+- base case (no module loaded): 16.8 mA
+- module loaded & PSM on      : 16.8 mA
+- wpa_supplicant started      : 19.6 mA
+- PSM on                      : 19.6 mA (no change)
+- PSM off                     : 19.6 mA (no change)
+- PSM on                      : 15.4 mA
+
+What's strange is when I try this sequence a couple of times in a row,
+the device gets into a state where after starting wpa_supplicant, no
+amount of PSM on/off commands will get it to enter power-savings mode
+any more.  When in that state, only removing wilc1000-spi.ko and adding
+it back gets it out of that state.  A power-cycle does not.  Very
+confusing.
+
+  --david
+
 
