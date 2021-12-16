@@ -2,117 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F76476848
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 03:46:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8DF24768AB
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 04:27:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233056AbhLPCqy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 21:46:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51844 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230151AbhLPCqx (ORCPT
+        id S233355AbhLPD0c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Dec 2021 22:26:32 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:33732 "EHLO
+        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233335AbhLPD01 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 21:46:53 -0500
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D01BC06173E
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 18:46:53 -0800 (PST)
-Received: by mail-oi1-x22f.google.com with SMTP id q25so34556863oiw.0
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 18:46:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessos.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=6bVzvpheVBBIcY1ce58sxKYXE1wOehY4K20Ojvv4pk0=;
-        b=tvP/tqXZ5k2rFm+NIJh9lCHtTQIfkuLu8y2SdXjslo1QUBihcxdowh5DV+3N0M/Nw0
-         Qsh1/jI485BGm0NMimK0uN1TdBOAW0Ey3iHemyd2lQJ6V6JXk47xhcEk+yRXq8fI4Sms
-         9sORp4pnRH4bn9D+F/KnXKL9NXCx21JHIsdPHtRxdqNrr3rgDVHkai9Zea9YBvqJUInL
-         lbw47ZgWf2FFJ73IoR0IM1Syozs9u5QFgwvgWsTMQeZdk6GdTah+QbMrYu9lEFgIEdLB
-         d0jjVtpWrwGBv6+CT5udoQDdnSxHLnp0X/RJqmjRIttmUR3DGUXTxdzAaWcS9dTC5CyU
-         AiSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=6bVzvpheVBBIcY1ce58sxKYXE1wOehY4K20Ojvv4pk0=;
-        b=SkeTRt68metu9hMsbeF3HnXAOxWJkgmCeYab7IhaKDRQhWh/14a04vRjV8B6aULI55
-         0oyGtcAHMbSQDtP1CHaSm4MkRKsAHTDQfm6NIAjGkOQofrV5UoOA0EOKX4wx7tl8DgcE
-         UHZeoWULiLMHa/N8IOIGVTWVRQDf4F7kLQ7J0QHCo/hn6HanQaq1ifWaoEha4L4zM120
-         02zN+F7nVRSb8sy9R8M0lE37zDWmTqHJUx4H/odRNalNNSQ/3dSRq/5IuANYLHM9CdYn
-         PVsTNXhIQW4L06k2r4LBAY9VNDOzawxDtupGBq9HHEvJGB2f7BJITlv4BMNYrhXKOr9z
-         1jdQ==
-X-Gm-Message-State: AOAM531Z+kl9Axf2q75ORE32SN1POsm3FWW8RUG/dqSoiG6gX2O3uhj+
-        4r+PTY2IYnuRLGcqqASVc4V1/yAJea5AVGGvDHsU3IMfj/Q=
-X-Google-Smtp-Source: ABdhPJy5KawtFidrvy0PFM5hXDFslMGNOj7QgkQ9XL5FdUUcGwFlx2VhiS+x0TXfg7Qx9As1kud+7KGGNqlKKDYU4EQ=
-X-Received: by 2002:a05:6808:d1:: with SMTP id t17mr2498324oic.161.1639622812691;
- Wed, 15 Dec 2021 18:46:52 -0800 (PST)
+        Wed, 15 Dec 2021 22:26:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
+        h=from:subject:mime-version:to:cc:content-transfer-encoding:
+        content-type;
+        s=sgd; bh=KRpEVBdV5fyCa6LhCrnHan24UbFb7eiesIdyenFXa7Y=;
+        b=vrzxiOGv3LXZ9VKE49ikXabLbdri6NRpcRJNvESo8vdYblH205CB1m0Mb7T2DD3dKFZk
+        FJrtbsObpkQc6pjlxYePUR+M/GcOcveepG0hBQMs1z04zTNRtEd5gnbMRJpZ/BmC53kOcY
+        8OwswO3ATqxPbx2cnPB4IJLn9/K6/W7JDxGZHcuxCgchcCPt0lw0LjuMz/2babccmmHRac
+        k18ADIRXXntkkX4yJD02IecllySf8wOdSIaEfHGoAm+VwUnHkJVLSb8oI60yQRRa2Y+Q5R
+        hpGcX4QshnS/cJyPvTM3bvNsr4wqg/QdOnO8pa019rs/MW00PJ1Q45mW3t4Dh52w==
+Received: by filterdrecv-75ff7b5ffb-96rhp with SMTP id filterdrecv-75ff7b5ffb-96rhp-1-61BAB1E0-2B
+        2021-12-16 03:26:24.932642305 +0000 UTC m=+9090364.813149035
+Received: from pearl.egauge.net (unknown)
+        by geopod-ismtpd-1-1 (SG)
+        with ESMTP
+        id nfkc_PERRVCbY_jCotLESg
+        Thu, 16 Dec 2021 03:26:24.779 +0000 (UTC)
+Received: by pearl.egauge.net (Postfix, from userid 1000)
+        id 03B46700E72; Wed, 15 Dec 2021 20:26:24 -0700 (MST)
+From:   David Mosberger-Tang <davidm@egauge.net>
+Subject: [PATCH] wilc1000: Convert static "chipid" variable to device-local
+ variable
+Date:   Thu, 16 Dec 2021 03:26:25 +0000 (UTC)
+Message-Id: <20211216032612.3798573-1-davidm@egauge.net>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20211215114635.333767-1-kai.heng.feng@canonical.com> <d2ddfaa035315ca91a2a05a8188810ff50db83c8.camel@realtek.com>
-In-Reply-To: <d2ddfaa035315ca91a2a05a8188810ff50db83c8.camel@realtek.com>
-From:   Jian-Hong Pan <jhp@endlessos.org>
-Date:   Thu, 16 Dec 2021 10:46:16 +0800
-Message-ID: <CAPpJ_ecgPDniiBWnZLfDuQSiW4rvHJ1f4++SsZ3=aTjy_B0Fjg@mail.gmail.com>
-Subject: Re: [PATCH v4] rtw88: Disable PCIe ASPM while doing NAPI poll on 8821CE
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "kai.heng.feng@canonical.com" <kai.heng.feng@canonical.com>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "jian-hong@endlessm.com" <jian-hong@endlessm.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        Bernie Huang <phhuang@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "briannorris@chromium.org" <briannorris@chromium.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux@endlessos.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvBvrXi7igiw3S+MCi?=
+ =?us-ascii?Q?w8n5f20b4RWHzEw2hbU+cN3vLQB7L=2FZRmxUZZYa?=
+ =?us-ascii?Q?ONJ7E9hp73OJnR2yp4FRhnQ=2FZ5xror6lESWmhGK?=
+ =?us-ascii?Q?zNXNfqzKsnDz3iEON29mSpksdjLGhbvBx0WGtzd?=
+ =?us-ascii?Q?Du8+HLn8gt0bNzhNcJ7h3kHI1A=2FduMew=2FJ1x7Wq?=
+ =?us-ascii?Q?A0=2FI1Nh5ETW27h6ZPmpFg=3D=3D?=
+To:     Ajay Singh <ajay.kathat@microchip.com>
+Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        David Mosberger-Tang <davidm@egauge.net>
+X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pkshih <pkshih@realtek.com> =E6=96=BC 2021=E5=B9=B412=E6=9C=8815=E6=97=A5 =
-=E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=888:23=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Wed, 2021-12-15 at 19:46 +0800, Kai-Heng Feng wrote:
-> > Many Intel based platforms face system random freeze after commit
-> > 9e2fd29864c5 ("rtw88: add napi support").
-> >
-> > The commit itself shouldn't be the culprit. My guess is that the 8821CE
-> > only leaves ASPM L1 for a short period when IRQ is raised. Since IRQ is
-> > masked during NAPI polling, the PCIe link stays at L1 and makes RX DMA
-> > extremely slow. Eventually the RX ring becomes messed up:
-> > [ 1133.194697] rtw_8821ce 0000:02:00.0: pci bus timeout, check dma stat=
-us
-> >
-> > Since the 8821CE hardware may fail to leave ASPM L1, manually do it in
-> > the driver to resolve the issue.
-> >
-> > Fixes: 9e2fd29864c5 ("rtw88: add napi support")
-> > Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=3D215131
-> > BugLink: https://bugs.launchpad.net/bugs/1927808
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
->
-> Reviewed-and-Tested-by: Ping-Ke Shih <pkshih@realtek.com>
+Move "chipid" variable into the per-driver structure so the code
+doesn't break if more than one wilc1000 module is present.
 
-Acked-by: Jian-Hong Pan <jhp@endlessos.org>
+Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
+---
+ .../net/wireless/microchip/wilc1000/netdev.h  |  1 +
+ .../net/wireless/microchip/wilc1000/wlan.c    | 27 +++++++++----------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-> > ---
-> > v4:
-> >  - Rebase to the right tree.
-> >
-> > v3:
-> >  - Move the module parameter to be part of private struct.
-> >  - Ensure link_usage never goes below zero.
-> >
-> > v2:
-> >  - Add default value for module parameter.
-> >
-> >  drivers/net/wireless/realtek/rtw88/pci.c | 70 +++++++-----------------
-> >  drivers/net/wireless/realtek/rtw88/pci.h |  2 +
-> >  2 files changed, 21 insertions(+), 51 deletions(-)
-> >
-> >
->
-> [...]
->
->
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net/wireless/microchip/wilc1000/netdev.h
+index b9a88b3e322f..41a92a1368ab 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.h
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
+@@ -212,6 +212,7 @@ struct wilc {
+ 	s8 mac_status;
+ 	struct clk *rtc_clk;
+ 	bool initialized;
++	u32 chipid;
+ 	int dev_irq_num;
+ 	int close;
+ 	u8 vif_num;
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index 1aa4236a2fe4..c8e103500235 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -1443,31 +1443,30 @@ static int init_chip(struct net_device *dev)
+ 
+ u32 wilc_get_chipid(struct wilc *wilc, bool update)
+ {
+-	static u32 chipid;
+-	u32 tempchipid = 0;
++	u32 chipid = 0;
+ 	u32 rfrevid = 0;
+ 
+-	if (chipid == 0 || update) {
+-		wilc->hif_func->hif_read_reg(wilc, WILC_CHIPID, &tempchipid);
++	if (wilc->chipid == 0 || update) {
++		wilc->hif_func->hif_read_reg(wilc, WILC_CHIPID, &chipid);
+ 		wilc->hif_func->hif_read_reg(wilc, WILC_RF_REVISION_ID,
+ 					     &rfrevid);
+-		if (!is_wilc1000(tempchipid)) {
+-			chipid = 0;
+-			return chipid;
++		if (!is_wilc1000(chipid)) {
++			wilc->chipid = 0;
++			return wilc->chipid;
+ 		}
+-		if (tempchipid == WILC_1000_BASE_ID_2A) { /* 0x1002A0 */
++		if (chipid == WILC_1000_BASE_ID_2A) { /* 0x1002A0 */
+ 			if (rfrevid != 0x1)
+-				tempchipid = WILC_1000_BASE_ID_2A_REV1;
+-		} else if (tempchipid == WILC_1000_BASE_ID_2B) { /* 0x1002B0 */
++				chipid = WILC_1000_BASE_ID_2A_REV1;
++		} else if (chipid == WILC_1000_BASE_ID_2B) { /* 0x1002B0 */
+ 			if (rfrevid == 0x4)
+-				tempchipid = WILC_1000_BASE_ID_2B_REV1;
++				chipid = WILC_1000_BASE_ID_2B_REV1;
+ 			else if (rfrevid != 0x3)
+-				tempchipid = WILC_1000_BASE_ID_2B_REV2;
++				chipid = WILC_1000_BASE_ID_2B_REV2;
+ 		}
+ 
+-		chipid = tempchipid;
++		wilc->chipid = chipid;
+ 	}
+-	return chipid;
++	return wilc->chipid;
+ }
+ 
+ int wilc_wlan_init(struct net_device *dev)
+-- 
+2.25.1
+
