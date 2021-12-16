@@ -2,142 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34BE347677E
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 02:46:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F76476848
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 03:46:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232621AbhLPBqc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 20:46:32 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:45046 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229555AbhLPBqc (ORCPT
+        id S233056AbhLPCqy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Dec 2021 21:46:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51844 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230151AbhLPCqx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 20:46:32 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1BG1jRfh031919;
-        Wed, 15 Dec 2021 19:45:27 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1639619127;
-        bh=x5y0W7NcQu8KFCCs6SOY3R1ieqDIaIpGqjfY0/mf1aE=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=J5phN9h68zO6NinAKtCP/hmHaPgLgmqEGVPSbOywTVyespzsahOYEMGicemzLRq2Y
-         21pPWpguPw6fDybn84tKdvQctjmv68Dr1n2Jr/sg63dZkF5qXYf/uErtLqrDj5vXPI
-         1ZEaLuHXnc4osJDl09QfWl3URXAzeFJSZ4FNP8zc=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1BG1jRfp012888
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 15 Dec 2021 19:45:27 -0600
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Wed, 15
- Dec 2021 19:45:27 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Wed, 15 Dec 2021 19:45:27 -0600
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1BG1jRLZ081996;
-        Wed, 15 Dec 2021 19:45:27 -0600
-Date:   Wed, 15 Dec 2021 19:45:27 -0600
-From:   Nishanth Menon <nm@ti.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-CC:     LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Marc Zygnier <maz@kernel.org>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Megha Dey <megha.dey@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>, <linux-pci@vger.kernel.org>,
-        Cedric Le Goater <clg@kaod.org>,
-        Juergen Gross <jgross@suse.com>,
-        <xen-devel@lists.xenproject.org>, Arnd Bergmann <arnd@arndb.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        <linuxppc-dev@lists.ozlabs.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Stuart Yoder <stuyoder@gmail.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Vinod Koul <vkoul@kernel.org>, <dmaengine@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        <iommu@lists.linux-foundation.org>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Sinan Kaya <okaya@kernel.org>,
-        <linux-wireless@vger.kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
-Message-ID: <20211216014527.5d3sqs2klrqjmm2k@lunacy>
-References: <20211213182958.ytj4m6gsg35u77cv@detonator>
- <87fsqvttfv.ffs@tglx>
- <20211214162247.ocjm7ihg5oi7uiuv@slider>
- <87wnk7rvnz.ffs@tglx>
- <87tufbrudl.ffs@tglx>
- <87mtl3rli1.ffs@tglx>
- <20211214205626.lrnddha6bd6d6es5@possibly>
- <87h7basx36.ffs@tglx>
- <87zgp1rge4.ffs@tglx>
- <87wnk5rfkt.ffs@tglx>
+        Wed, 15 Dec 2021 21:46:53 -0500
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D01BC06173E
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 18:46:53 -0800 (PST)
+Received: by mail-oi1-x22f.google.com with SMTP id q25so34556863oiw.0
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 18:46:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessos.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=6bVzvpheVBBIcY1ce58sxKYXE1wOehY4K20Ojvv4pk0=;
+        b=tvP/tqXZ5k2rFm+NIJh9lCHtTQIfkuLu8y2SdXjslo1QUBihcxdowh5DV+3N0M/Nw0
+         Qsh1/jI485BGm0NMimK0uN1TdBOAW0Ey3iHemyd2lQJ6V6JXk47xhcEk+yRXq8fI4Sms
+         9sORp4pnRH4bn9D+F/KnXKL9NXCx21JHIsdPHtRxdqNrr3rgDVHkai9Zea9YBvqJUInL
+         lbw47ZgWf2FFJ73IoR0IM1Syozs9u5QFgwvgWsTMQeZdk6GdTah+QbMrYu9lEFgIEdLB
+         d0jjVtpWrwGBv6+CT5udoQDdnSxHLnp0X/RJqmjRIttmUR3DGUXTxdzAaWcS9dTC5CyU
+         AiSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=6bVzvpheVBBIcY1ce58sxKYXE1wOehY4K20Ojvv4pk0=;
+        b=SkeTRt68metu9hMsbeF3HnXAOxWJkgmCeYab7IhaKDRQhWh/14a04vRjV8B6aULI55
+         0oyGtcAHMbSQDtP1CHaSm4MkRKsAHTDQfm6NIAjGkOQofrV5UoOA0EOKX4wx7tl8DgcE
+         UHZeoWULiLMHa/N8IOIGVTWVRQDf4F7kLQ7J0QHCo/hn6HanQaq1ifWaoEha4L4zM120
+         02zN+F7nVRSb8sy9R8M0lE37zDWmTqHJUx4H/odRNalNNSQ/3dSRq/5IuANYLHM9CdYn
+         PVsTNXhIQW4L06k2r4LBAY9VNDOzawxDtupGBq9HHEvJGB2f7BJITlv4BMNYrhXKOr9z
+         1jdQ==
+X-Gm-Message-State: AOAM531Z+kl9Axf2q75ORE32SN1POsm3FWW8RUG/dqSoiG6gX2O3uhj+
+        4r+PTY2IYnuRLGcqqASVc4V1/yAJea5AVGGvDHsU3IMfj/Q=
+X-Google-Smtp-Source: ABdhPJy5KawtFidrvy0PFM5hXDFslMGNOj7QgkQ9XL5FdUUcGwFlx2VhiS+x0TXfg7Qx9As1kud+7KGGNqlKKDYU4EQ=
+X-Received: by 2002:a05:6808:d1:: with SMTP id t17mr2498324oic.161.1639622812691;
+ Wed, 15 Dec 2021 18:46:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <87wnk5rfkt.ffs@tglx>
-User-Agent: NeoMutt/20171215
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20211215114635.333767-1-kai.heng.feng@canonical.com> <d2ddfaa035315ca91a2a05a8188810ff50db83c8.camel@realtek.com>
+In-Reply-To: <d2ddfaa035315ca91a2a05a8188810ff50db83c8.camel@realtek.com>
+From:   Jian-Hong Pan <jhp@endlessos.org>
+Date:   Thu, 16 Dec 2021 10:46:16 +0800
+Message-ID: <CAPpJ_ecgPDniiBWnZLfDuQSiW4rvHJ1f4++SsZ3=aTjy_B0Fjg@mail.gmail.com>
+Subject: Re: [PATCH v4] rtw88: Disable PCIe ASPM while doing NAPI poll on 8821CE
+To:     Pkshih <pkshih@realtek.com>
+Cc:     "kai.heng.feng@canonical.com" <kai.heng.feng@canonical.com>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "jian-hong@endlessm.com" <jian-hong@endlessm.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        Bernie Huang <phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "briannorris@chromium.org" <briannorris@chromium.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux@endlessos.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Thomas,
+Pkshih <pkshih@realtek.com> =E6=96=BC 2021=E5=B9=B412=E6=9C=8815=E6=97=A5 =
+=E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=888:23=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+> On Wed, 2021-12-15 at 19:46 +0800, Kai-Heng Feng wrote:
+> > Many Intel based platforms face system random freeze after commit
+> > 9e2fd29864c5 ("rtw88: add napi support").
+> >
+> > The commit itself shouldn't be the culprit. My guess is that the 8821CE
+> > only leaves ASPM L1 for a short period when IRQ is raised. Since IRQ is
+> > masked during NAPI polling, the PCIe link stays at L1 and makes RX DMA
+> > extremely slow. Eventually the RX ring becomes messed up:
+> > [ 1133.194697] rtw_8821ce 0000:02:00.0: pci bus timeout, check dma stat=
+us
+> >
+> > Since the 8821CE hardware may fail to leave ASPM L1, manually do it in
+> > the driver to resolve the issue.
+> >
+> > Fixes: 9e2fd29864c5 ("rtw88: add napi support")
+> > Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=3D215131
+> > BugLink: https://bugs.launchpad.net/bugs/1927808
+> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+>
+> Reviewed-and-Tested-by: Ping-Ke Shih <pkshih@realtek.com>
 
-On 17:35-20211215, Thomas Gleixner wrote:
->    git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git msi-v4.2-part-3
+Acked-by: Jian-Hong Pan <jhp@endlessos.org>
 
-As you helped offline, summarizing the details on part3 of the series:
-
-I was seeing failure[1] of NFS(DMA) on all TI K3 platforms:
-
-[    1.013258] ti-bcdma 485c0100.dma-controller: Number of rings: 68
-[    1.019963] ti-bcdma 485c0100.dma-controller: Failed to allocate IRQs -28
-[    1.026938] ti-bcdma 485c0100.dma-controller: Failed to allocate MSI interrupts
-
-Rationale as you explained:
-"
--28 is ENOSPC, which is returned when the interrupt allocation in the
- MSI domain fails. Fix below.
-"
-
-Which turned out to be the fixup[2] you suggested and I confirm that
-fixes the problem for me.
-
-With the fixup in place:
-
-Tested-by: Nishanth Menon <nm@ti.com>
-
-for part 3 of the series as well.
-
-Thanks once again for your help. Hope we can roll in the fixes for
-part3.
-
-[1] https://gist.github.com/nmenon/5971ab27aa626c022e276cc946e4b6c3
-[2]
---- a/drivers/soc/ti/ti_sci_inta_msi.c
-+++ b/drivers/soc/ti/ti_sci_inta_msi.c
-@@ -68,6 +68,7 @@ static int ti_sci_inta_msi_alloc_descs(s
- 	int set, i, count = 0;
- 
- 	memset(&msi_desc, 0, sizeof(msi_desc));
-+	msi_desc.nvec_used = 1;
- 
- 	for (set = 0; set < res->sets; set++) {
- 		for (i = 0; i < res->desc[set].num; i++, count++) {
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D)/Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+> > ---
+> > v4:
+> >  - Rebase to the right tree.
+> >
+> > v3:
+> >  - Move the module parameter to be part of private struct.
+> >  - Ensure link_usage never goes below zero.
+> >
+> > v2:
+> >  - Add default value for module parameter.
+> >
+> >  drivers/net/wireless/realtek/rtw88/pci.c | 70 +++++++-----------------
+> >  drivers/net/wireless/realtek/rtw88/pci.h |  2 +
+> >  2 files changed, 21 insertions(+), 51 deletions(-)
+> >
+> >
+>
+> [...]
+>
+>
