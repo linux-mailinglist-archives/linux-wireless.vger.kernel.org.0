@@ -2,89 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D380476BF2
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 09:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89B91476CA6
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 09:59:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232471AbhLPIae (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Dec 2021 03:30:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43432 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229612AbhLPIae (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Dec 2021 03:30:34 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1694CC061574
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 00:30:34 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA2D761C67
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 08:30:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597CEC36AE4;
-        Thu, 16 Dec 2021 08:30:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639643433;
-        bh=tUJahsqqCIeG/NMQ2Aq2LsEmQwCbqwNcp2Ew18cWq2s=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=KQplWeDHmSQ4fZ0/kJ3CeoTSUoeKTWtanbQh88q7UXZrvQtfVuYtr/NqD1b28teIt
-         Pjfgw9SrleQVCBOBdYZIFXhUOeNMapaogXELGV1hvLOjrLBCMgPBDb7yHpQAvFK1lp
-         A1ssk8+9IQUR2dfTehcfvJOHQqrP1MGk4UbXtOL2Dha+dp9Qfh3oS6yQUuANDqwK3q
-         gl3KJal7/7MXFTK6vZqdCLRAe105OSp+2BfciKU0NpZEaYGOoGfo43famCitC5b/cE
-         CAm8+c3yLtOljZJXWtpwwo49w5P0soWiIsfRfPTmAvgaVyFcm/32wcXYQ5NOF2LYEt
-         D3eAoMpMIDmnw==
-Content-Type: text/plain; charset="utf-8"
+        id S235259AbhLPI67 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Dec 2021 03:58:59 -0500
+Received: from smtpbg126.qq.com ([106.55.201.22]:44013 "EHLO smtpbg587.qq.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S235249AbhLPI6k (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Dec 2021 03:58:40 -0500
+X-QQ-mid: bizesmtp53t1639645085tcm67hr0
+Received: from wangx.lan (unknown [218.88.124.63])
+        by esmtp6.qq.com (ESMTP) with 
+        id ; Thu, 16 Dec 2021 16:57:58 +0800 (CST)
+X-QQ-SSF: 01000000002000B0C000B00A0000000
+X-QQ-FEAT: ZHWZeLXy+8ff8fu/Fx+nUICP+lBEnQne9UGNjNsge/rmbsQCgZfett1MDtfcE
+        HmnXUxW3Kog+ifBaTXPPwxSVm1H906TF0LjkmpsnsffthqXo4sFS/ZKtB4KFBZ6ywQlZx81
+        bGj/Bh1WUVAmemZdEqtsUgL5OvHQIr/5U1C6L56CQH3d0KBTEGBY12AOELyFVvce9CbfmeT
+        OqHdRHyAD7AEpj4BkYs0cJ2XusiIJHw3WOGSFeMqtM+JSYEd2dgRhnx85UMVZ5idVc1Slwy
+        zXo+odghONTCbSZC9ZEZx4n1NE6QgUvXzyIxo1pXgJkVwBIiN5K94Yj+M5puS3wK7LRGeIa
+        3dL2Os4k7lTjiuiqLIsDM4ZwBNLH0p+W5eU/Pc8
+X-QQ-GoodBg: 0
+From:   Xiang wangx <wangxiang@cdjrlc.com>
+To:     kvalo@codeaurora.org
+Cc:     luciano.coelho@intel.com, davem@davemloft.net, kuba@kernel.org,
+        ilan.peer@intel.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Xiang wangx <wangxiang@cdjrlc.com>
+Subject: [PATCH] iwlwifi: Fix syntax errors in comments
+Date:   Thu, 16 Dec 2021 16:57:56 +0800
+Message-Id: <20211216085756.11053-1-wangxiang@cdjrlc.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/1] wilc1000: Improve WILC TX performance when
- power_save
- is off
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211210203016.3680425-2-davidm@egauge.net>
-References: <20211210203016.3680425-2-davidm@egauge.net>
-To:     David Mosberger-Tang <davidm@egauge.net>
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org,
-        David Mosberger-Tang <davidm@egauge.net>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163964342720.18270.10262942260112362104.kvalo@kernel.org>
-Date:   Thu, 16 Dec 2021 08:30:31 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam2
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-David Mosberger-Tang <davidm@egauge.net> wrote:
+Delete the redundant word 'the'.
 
-> The wakeup and sleep commands need to be sent to the WILC chip only
-> when it is in power save mode (PSM, as controlled by "iw dev wlan0 set
-> power_save on/off").  The commands are relatively costly, so it pays
-> to skip them when possible.
-> 
-> iperf3 without this patch (no significant different with PSM on/off):
->   TX   0.00-120.01 sec   140 MBytes  9.82 Mbits/sec
->   RX   0.00-120.69 sec   283 MBytes  19.6 Mbits/sec
-> 
-> with this patch applied:
-> 
-> PSM off (TX is 46% improved, RX slightly improved; may not be significant):
->   TX   0.00-120.00 sec   206 MBytes  14.4 Mbits/sec
->   RX   0.00-120.48 sec   322 MBytes  22.4 Mbits/sec
-> 
-> PSM on (no significant change):
->   TX   0.00-120.00 sec   140 MBytes  9.78 Mbits/sec
->   RX   0.00-120.08 sec   257 MBytes  18.0 Mbits/sec
-> 
-> Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
+Signed-off-by: Xiang wangx <wangxiang@cdjrlc.com>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-b530d5f39c2f wilc1000: Improve WILC TX performance when power_save is off
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+index 14602d6d6699..119910d9bc6d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+@@ -1954,7 +1954,7 @@ irqreturn_t iwl_pcie_irq_handler(int irq, void *dev_id)
+ 				CSR_INT, CSR_INT_BIT_RX_PERIODIC);
+ 		}
+ 		/* Sending RX interrupt require many steps to be done in the
+-		 * the device:
++		 * device:
+ 		 * 1- write interrupt to current index in ICT table.
+ 		 * 2- dma RX frame.
+ 		 * 3- update RX shared data to indicate last write index.
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211210203016.3680425-2-davidm@egauge.net/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.20.1
 
