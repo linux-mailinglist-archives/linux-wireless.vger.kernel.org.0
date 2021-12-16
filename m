@@ -2,79 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCEA1476678
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 00:26:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF43476725
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 01:54:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231908AbhLOX0U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Dec 2021 18:26:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35370 "EHLO
+        id S229545AbhLPAyi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Dec 2021 19:54:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230062AbhLOX0U (ORCPT
+        with ESMTP id S229441AbhLPAyi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Dec 2021 18:26:20 -0500
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1AABC061574
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 15:26:19 -0800 (PST)
-Received: by mail-ed1-x543.google.com with SMTP id y12so79430791eda.12
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 15:26:19 -0800 (PST)
+        Wed, 15 Dec 2021 19:54:38 -0500
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E20C3C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 16:54:37 -0800 (PST)
+Received: by mail-io1-xd2c.google.com with SMTP id q72so32862984iod.12
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Dec 2021 16:54:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=IaRsgBlWgnx9GrfzJihqiqvA4PAdPnmSYdhUbhyhQsM=;
-        b=f+DEItmZtkAV6n8qvey9StHSJCYNGxxOcQBtyI62g+n2NfsiI6HZuAymcpCGzpHlDE
-         RfxOtBujHVJOksaXatVtEh1uz7isgjFxn6H7Ag75gs6LbQJBoRjwq765hKVLBNLpLSh5
-         zn8fQwmtJcCfePoMLMwYsntxVACK5GyVeeZ1i+BXh7Exn+4mf4vRoGYioKxE/KuCA1DQ
-         +6HSxOFeg4o3gz2H+OxLTXerlyxVmxrYYZjoUp5VBm1FCWSjjfOEJzzf8TXxY5TGSt1p
-         Pu+vfyi/KXy6SnV9mtbTLGckf8bvZpexY1SaJpMCzX1CJCMq11Gofxk7JRL06ATk3DXX
-         TqLw==
+        d=egauge.net; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :organization:user-agent:mime-version:content-transfer-encoding;
+        bh=DxLv+nTj3iyF1XqRT921ana05xn+Hmmvy3irbfbMeUg=;
+        b=fgsGDeLK7ztcoYM+u3Hed1c7I8HlCgkuEnVF58UJruKy5AFxe8OGYQAL0t3+4W4rNG
+         OKwJEx5KXCDr00rPCnJhzN1VetNIFbawhVwXcghlozLrDHwFsabtyoXpvtevvl0HLNil
+         EZnGMlf5Bpu1IFJjV1kdszh67TxPhBguRmsJ0GH1SvI65otyTeBGiOSbmJiw6e6kJhQv
+         Vv6cAP/m3nehvw8dwKbgow9HoMqqQeYifAuVXHWDuzFuZq+GpsGJ8dMmeygxcUjt0CRo
+         xuDw3HI7E+JjuGdkdmygC/Z5HZoDmr8nOIjLdfWeuv2BLGZHtny5YBpW3VnfH715qCIE
+         Mp9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=IaRsgBlWgnx9GrfzJihqiqvA4PAdPnmSYdhUbhyhQsM=;
-        b=IvT3F90bLTIB+kdAceuGVkTQNSUnTFqSsQ/OSPzi4q2VJX0RxYobPAY8iWU6QRzwsz
-         uU4ckbDRRJTM6sBwCt+wRAIB8+7VCDqnfhoVV+sTZPkSwwQT1T++YUfhYRsA/mrfOujg
-         3woKiNEH8zJmLARxw3AtcNZ98yXs8Et7iiY5IIdr+jz7v1yoD756tcoN3t2+IfT/SsEx
-         dvIsCeJzN9ufBASEaLRXcz6q6yG2DvL4Dt9Q/xtszp86yLufqdGF8rVBIOLuBC90fyk2
-         h9vNNCxBNnbTW45hBcdYqKNdMuo9WT3Ljfjtdbv50sjIykMSx+vqO33aEVZ7bOsyw0Re
-         O60A==
-X-Gm-Message-State: AOAM5336TjycRP6FF1UowV/qUYPrgei2uK3xip7Z4YWIKeUyv6YE+mA6
-        S3Ek3kAEiIe9YNXr6eNJKZGmiAh9VgtdUDMLCZ8=
-X-Google-Smtp-Source: ABdhPJxKzmoJ+X2RMH7i0KPIw6spJex3mtKYWDMIW2exKJWx7+yN91sl2v8RCBuKlqwW7Vx5wLMgzZL0+iRWZh7lEnI=
-X-Received: by 2002:a05:6402:2c4:: with SMTP id b4mr17011569edx.265.1639610778146;
- Wed, 15 Dec 2021 15:26:18 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a05:6402:11c9:0:0:0:0 with HTTP; Wed, 15 Dec 2021 15:26:17
- -0800 (PST)
-Reply-To: alahmedhassan5602@gmail.com
-From:   Mr Ahmed Hassan <drhajizongohz@gmail.com>
-Date:   Thu, 16 Dec 2021 00:26:17 +0100
-Message-ID: <CAMSrsH=AUfGy89bBUQWVrF_TB2vDGMMLiq9Nfwm0nG0xTf0dRA@mail.gmail.com>
-Subject: Please respond urgently
-To:     undisclosed-recipients:;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:organization:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=DxLv+nTj3iyF1XqRT921ana05xn+Hmmvy3irbfbMeUg=;
+        b=A3eTzi39uXrzwyzDLpf91PWBawWpUYxoZhwulowl3uD9kTEqh3v41eiFd8Yc3ImXq7
+         MIGob4U0xG70qAHvAjAbFG3Dg77uvdEjY+3X823EH/AdMFXvyPb7Tv2DmzHuD6gdcFcF
+         36TIqvOszKAz63pzhsu5CzWkbTmTPfUX+xqsVQX3Qm5Bgr+OpibLcQpUcK1SjrqGfrF4
+         7W1rgsmr2L1hakSN27YC3yKLRl4IlwoqKOsfkwwxQ1RkJ9YECleuI7aPWQcfRIX2sPG+
+         hexRERKQRBwBrAopupnRGcUA8du19M0Ctu1ZOMCK5KqTmP2ll2t1uD3NsO96LWvyr9vM
+         AODg==
+X-Gm-Message-State: AOAM5315rRTT5q8YKLi39IEN0i9zk2xiXyoHG4J6hTxrRU+3Co146L3X
+        9ro2VysjTCbLyo+ImyrV7x+v
+X-Google-Smtp-Source: ABdhPJxZWNK/+lFDVswO9ljLaEr02GFWsO0oX4D9//e7ZP8UsNLqpEEb6AZLxgePXkBviezTDdMDTA==
+X-Received: by 2002:a02:7053:: with SMTP id f80mr7596204jac.28.1639616077169;
+        Wed, 15 Dec 2021 16:54:37 -0800 (PST)
+Received: from ?IPv6:2601:281:8300:4e0:2ba9:697d:eeec:13b? ([2601:281:8300:4e0:2ba9:697d:eeec:13b])
+        by smtp.gmail.com with ESMTPSA id j6sm1715921ilc.8.2021.12.15.16.54.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Dec 2021 16:54:36 -0800 (PST)
+Message-ID: <8bca161b9689bf02f0620e3b59f5040c7e8b2db1.camel@egauge.net>
+Subject: Re: RFC: wilc1000: refactor TX path to use sk_buff queue
+From:   David Mosberger-Tang <davidm@egauge.net>
+To:     Ajay.Kathat@microchip.com, Claudiu.Beznea@microchip.com,
+        kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date:   Wed, 15 Dec 2021 17:54:27 -0700
+In-Reply-To: <7a6956db-8710-4d6c-9bed-702ec1b7041e@microchip.com>
+References: <e3502ecffe0c4c01b263ada8deed814d5135c24c.camel@egauge.net>
+         <7a6956db-8710-4d6c-9bed-702ec1b7041e@microchip.com>
+Organization: eGauge Systems LLC
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greetings,
+On Wed, 2021-12-15 at 12:44 +0000, Ajay.Kathat@microchip.com wrote:
+> On 12/12/21 02:02, David Mosberger-Tang wrote:
+> > Notes:
+> > 
+> >   - Don't try to apply this patch as is.  There are two other small
+> >     but unrelated changes that this patch below depends on.
+> 
+> Btw what are the other two changes required to make it work. I believe 
+> the working flow shouldn't get impacted after the restructuring 
+> especially when code is refactor(replaced) using the existing solution.
 
-I am contacting you independently of my investigation and no one is
-informed of this communication. I need your urgent assistance in
-transferring the sum of $11.3million immediately to your private
-account.The money has been here in our Bank lying dormant for years
-now without anybody coming for the claim of it.
+I'll start working on a patch series.  There are some before and some
+after the sk_buff refactor, but those are all pretty straight-forward
+in comparison.
 
-I want to release the money to you as the relative to our deceased
-customer (the account owner) who died a long with his supposed NEXT OF
-KIN since 16th October 2005. The Banking laws here does not allow such
-money to stay more than 17 years, because the money will be recalled
-to the Bank treasury account as unclaimed fund.
+> > 
+> > Thoughts and/or suggestions?
+> 
+> Using sk_buff queue is a good idea but the patch has other changes also. 
+> This patch should be splited into a few different logical related 
+> changes. Using a single patch for all these changes may not be easy to 
+> review and handle if there are any regressions.
+> 
+> One way to split the changes could be like:
+> 
+>   - sk_buff handling for mgmt/data and config frames
+>   - WID(config packets) functions refactoring
+>   - Functions refactoring
+>   - Rename related changes
 
-By indicating your interest I will send you the full details on how
-the business will be executed.
+Yeah, the WID refactoring and structure renaming can be split off
+easily, good suggestion.  Let me start working on that.
 
-Please respond urgently and delete if you are not interested.
+> <snip>
+> 
+> >                  (*ac)++;
+> >          
+> > +static int wilc_wlan_cfg_apply_wid(struct wilc_vif *vif, int start, u16 wid,
+> > +                                  u8 *buffer, u32 buffer_size, int commit,
+> > +                                  u32 drv_handler, bool set)
+> >   {
+> > -       u32 offset;
+> >          int ret_size;
+> >          struct wilc *wilc = vif->wilc;
+> > 
+> >          mutex_lock(&wilc->cfg_cmd_lock);
+> > 
+> > -       if (start)
+> > -               wilc->cfg_frame_offset = 0;
+> > -
+> > -       offset = wilc->cfg_frame_offset;
+> > -       ret_size = wilc_wlan_cfg_set_wid(wilc->cfg_frame.frame, offset,
+> > -                                        wid, buffer, buffer_size);
+> > -       offset += ret_size;
+> > -       wilc->cfg_frame_offset = offset;
+> > -
+> > -       if (!commit) {
+> > -               mutex_unlock(&wilc->cfg_cmd_lock);
+> > -               return ret_size;
+> > +       if (start) {
+> > +               WARN_ON(wilc->cfg_skb);
+> > +               wilc->cfg_skb = alloc_cfg_skb(vif);
+> > +               if (!wilc->cfg_skb) {
+> 
+> 'cfg_cmd_lock' mutex unlock is missing.
 
-Best Regards,
-Mr. Ahmed Hassan
+Indeed, thanks for catching that!
+
+  --david
+
+
