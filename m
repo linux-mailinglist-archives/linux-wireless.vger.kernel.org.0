@@ -2,134 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7AB14775EB
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 16:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2FF94775EC
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 16:30:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238532AbhLPPa2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Dec 2021 10:30:28 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:36388 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229868AbhLPPa2 (ORCPT
+        id S238538AbhLPPab (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Dec 2021 10:30:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58082 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235087AbhLPPab (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Dec 2021 10:30:28 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 828B561E3D;
-        Thu, 16 Dec 2021 15:30:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85519C36AE0;
-        Thu, 16 Dec 2021 15:30:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639668626;
-        bh=RDnK/K07NtTmO+k0mAmuN27towLm3zlyf2V+0+o0h1s=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=d/jNmwm5C/MkXK6E8htSzjZ2pD6aMFx3D8/e1AmU7vx1Sc0KMKSeaAL4TBsHcQB/A
-         Kz1ZSTWQ7CZSSVS2OUwtAfUNjvYRr/qXm5nbK7621yoRepcsGo9GIQa+MXgXYMMGmQ
-         nkVpYaUYSH4SOGdb3nlUoxw4+Ft1QKEfoClo7gPb0V9bA8Xg0hLlbCchaB0ONVM4qr
-         JP+L4LtunHIUD/lCfIub3v23kc2ZJmgcZUVEXXd4XpXttVWDphKYsKfMTbsplsOxtt
-         W9LhFZXfA4QbtFLd2hVdZfd7sK0gJbxf7lOKfumSw1/5kwyMfLIccMeNn1U6MK/xJL
-         z4L+g5SMmivyw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, loic.poulain@linaro.org,
-        benl@squareup.com
-Subject: Re: [PATCH v3 3/3] wcn36xx: Implement downstream compliant beacon filtering
-References: <20211214134630.2214840-1-bryan.odonoghue@linaro.org>
-        <20211214134630.2214840-4-bryan.odonoghue@linaro.org>
-Date:   Thu, 16 Dec 2021 17:30:22 +0200
-In-Reply-To: <20211214134630.2214840-4-bryan.odonoghue@linaro.org> (Bryan
-        O'Donoghue's message of "Tue, 14 Dec 2021 13:46:30 +0000")
-Message-ID: <87wnk4bm9d.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 16 Dec 2021 10:30:31 -0500
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 035C1C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 07:30:31 -0800 (PST)
+Received: by mail-io1-xd2a.google.com with SMTP id 14so35499689ioe.2
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 07:30:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=egauge.net; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :organization:user-agent:mime-version:content-transfer-encoding;
+        bh=jGnQ+OPrwZnzJ8pyH0xcyxgi+zeh7zrbZx5puPpeqp0=;
+        b=QVklmRMQ0JGDggaCYuzwfz1eEj0x1VCMw8SWiA4SxuTg7pcKLnX1ZDEt12qAVXZB6x
+         cNL6PrMlUuJgbVvUDaE+pMbp6+fXmYgmJ11Fjo4lqDWj81gSjwurjg2k1rCLeDAPj7XG
+         66X5CKzvdT7SxpluJPG9/sfFU3zAFlVaT3ilubedOHkRJRZW5GCy8GuEvyVXL4KVsbS6
+         VaXpFl47Llvp6ZuaveGZpC3DqjaVC3TRv3MmcjV8Kv0h7bJ5DorpTY4dKDEQQQ8C4aLn
+         cnrW1ZiTmmS+WfoPBFRuPPpQ79p4XUIRynHaW4zkAnThOoTBAsfGgv4OTH5WTTvQyoMq
+         /K+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:organization:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=jGnQ+OPrwZnzJ8pyH0xcyxgi+zeh7zrbZx5puPpeqp0=;
+        b=DoX9+pTYClAP/vKGEiQ2Gv4GsE9mQM9NYy+3qUbA8SlHZG3q4Z14QhBgT4zyRvpsvs
+         KoMLKclpgCRsyu911XiiOJv5dMnL3cLsNSWd7h6cWKRGA7LoWQIe2c3BlnpYR/dpnYnd
+         Lfw83pTkAcFI4LTzsdhfWYt4iLmQXCsfFzhlcuAx/9kgJ6AqlurU1imRCRUZUi2IGChY
+         blqtOglCVFdd055W+yDOCbhIi4h09wi5zHGlsI07IVex1v0Juiuwq1S1MtQa0NbZtqhk
+         wsBSQ6E4h621SBkFLlzOArYWALUfuYqUl+brGPosqt5yDVxrKfYVUtUPfydBkWb1SzxU
+         KgPQ==
+X-Gm-Message-State: AOAM533CBMWGKKnW5+X4lpt/mGcrkerk/+o3z25NLWnWkyFXAo1QKzFu
+        PsP6OG4P0sx40l8E6vPrWijN
+X-Google-Smtp-Source: ABdhPJwSNxt4l43qiKVjKknNIohi54ACnOdcombw2k7cHxehnYilM+rc/JX0noSMD8O0Ufbh0WUvdw==
+X-Received: by 2002:a05:6602:27cc:: with SMTP id l12mr9797623ios.59.1639668630279;
+        Thu, 16 Dec 2021 07:30:30 -0800 (PST)
+Received: from bixby.lan (c-73-181-115-211.hsd1.co.comcast.net. [73.181.115.211])
+        by smtp.gmail.com with ESMTPSA id x11sm2829669iop.55.2021.12.16.07.30.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Dec 2021 07:30:29 -0800 (PST)
+Message-ID: <523698d845e0b235e4cbb2a0f3cfaa0f5ed98ec0.camel@egauge.net>
+Subject: Re: [PATCH] wilc1000: Allow setting power_save before driver is
+ initialized
+From:   David Mosberger-Tang <davidm@egauge.net>
+To:     Ajay.Kathat@microchip.com
+Cc:     Claudiu.Beznea@microchip.com, kvalo@codeaurora.org,
+        davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 16 Dec 2021 08:30:28 -0700
+In-Reply-To: <49a5456d-6a63-652e-d356-9678f6a9b266@microchip.com>
+References: <20211212011835.3719001-1-davidm@egauge.net>
+         <6fc9f00aa0b0867029fb6406a55c1e72d4c13af6.camel@egauge.net>
+         <5378e756-8173-4c63-1f0d-e5836b235a48@microchip.com>
+         <31d5e7447e4574d0fcfc46019d7ca96a3db4ecb6.camel@egauge.net>
+         <49a5456d-6a63-652e-d356-9678f6a9b266@microchip.com>
+Organization: eGauge Systems LLC
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
+On Thu, 2021-12-16 at 13:01 +0000, Ajay.Kathat@microchip.com wrote:
+> On 16/12/21 11:07, David Mosberger-Tang wrote:
+> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+> > 
+> > On Wed, 2021-12-15 at 13:01 +0000, Ajay.Kathat@microchip.com wrote:
+> > > On 13/12/21 02:50, David Mosberger-Tang wrote:
+> > > > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+> > > > 
+> > > > Unfortunately, this patch doesn't seem to be sufficient.  From what I
+> > > > can tell, if power-save mode is turned on before a station is
+> > > > associated with an access-point, there is no actual power savings.  If
+> > > > I issue the command after the station is associated, it works perfectly
+> > > > fine.
+> > > > 
+> > > > Ajay, does this make sense to you?
+> > > 
+> > >   <snip>
+> > > Power-save mode is allowed to be enabled irrespective of station
+> > > association state. Before association, the power consumption should be
+> > > less with PSM enabled compared to PSM disabled. The WLAN automatic power
+> > > save delivery gets enabled after the association with AP.
+> > > 
+> > > To check the power measurement before association,  test without
+> > > wpa_supplicant.
+> > > 
+> > > 
+> > > Steps:
+> > > - load the module
+> > > - ifconfig wlan0 up
+> > > - iw dev wlan0 set power_save off (check the pwr measurement after PS
+> > > mode disabled)
+> > > - iw dev wlan0 set power_save on (check the pwr measurement after PS
+> > > mode enable)
+> > 
+> > It appears wpa_supplicant consistently renders PSM ineffective:
+> > 
+> >                                 (current draw, 1 min avg):
+> > ------------------------------  --------------------------
+> > - base case (no module loaded): 16.8 mA
+> > - module loaded & PSM on      : 16.8 mA
+> > - wpa_supplicant started      : 19.6 mA
+> > - PSM on                      : 19.6 mA (no change)
+> > - PSM off                     : 19.6 mA (no change)
+> > - PSM on                      : 15.4 mA
+>  
+> From the above data, it looks like there is no difference with or without PSM
+> in your setup. I am not sure if the values are captured correctly. Did you use
+> power measurement ports in WILC extension for the current measurements.
 
-> Downstream facilitates the direct programming of beacon filter tables via
-> SMD commands.
->
-> The purpose of beacon filters is quote:
->
-> /* When beacon filtering is enabled, firmware will
->  * analyze the selected beacons received during BMPS,
->  * and monitor any changes in the IEs as listed below.
->  * The format of the table is:
->  *    - EID
->  *    - Check for IE presence
->  *    - Byte offset
->  *    - Byte value
->  *    - Bit Mask
->  *    - Byte reference
->  */
->
-> The default downstream firmware filter table looks something like this:
-> tBeaconFilterIe gaBcnFilterTable[12] =
-> {
->   { WLAN_EID_DS_PARAMS, 0u, { 0u, 0u, 0u, 0u } },
->   { WLAN_EID_ERP_INFO, 0u, { 0u, 0u, 248u, 0u } },
->   { WLAN_EID_EDCA_PARAM_SET, 0u, { 0u, 0u, 240u, 0u } },
->   { WLAN_EID_QOS_CAPA, 0u, { 0u, 0u, 240u, 0u } },
->   { WLAN_EID_CHANNEL_SWITCH, 1u, { 0u, 0u, 0u, 0u } },
->   { WLAN_EID_QUIET, 1u, { 0u, 0u, 0u, 0u } },
->   { WLAN_EID_HT_OPERATION, 0u, { 0u, 0u, 0u, 0u } },
->   { WLAN_EID_HT_OPERATION, 0u, { 1u, 0u, 248u, 0u } },
->   { WLAN_EID_HT_OPERATION, 0u, { 2u, 0u, 235u, 0u } },
->   { WLAN_EID_HT_OPERATION, 0u, { 5u, 0u, 253u, 0u } },
->   { WLAN_EID_PWR_CONSTRAINT, 0u, { 0u, 0u, 0u, 0u } },
->   { WLAN_EID_OPMODE_NOTIF, 0u, { 0u, 0u, 0u, 0u } }
-> };
->
-> Add in an equivalent filter set as present in the downstream Linux driver.
-> For now omit the beacon filter "rem" command as downstream does not have an
-> explicit call to that SMD command. The filter mask should only count when
-> we are inside BMPS anyway.
->
-> Replicating the downstream ability to program the filter table gives us
-> scope to add and remove elements in future. For now though this patch
-> makes the rote-copy of the downstream Linux beacon filter table, which we
-> can tweak as desired from now on.
->
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Oh, no, not at all!  There is a nice power savings when PSM actually takes hold.
+ Current drops from 19.6mA to 15.4mA as shown by the last two lines.
 
-[...]
+This is average current draw at 120V for the entire board, as my board is not
+set up to measure chip current draw alone.
 
-> +static struct beacon_filter_ie bcn_filter_ies[] = {
-> +	BEACON_FILTER(WLAN_EID_DS_PARAMS, 0, 0, 0,
-> +		      WCN36XX_FILTER_IE_DS_CHANNEL_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_ERP_INFO, 0, 0, 0,
-> +		      WCN36XX_FILTER_IE_ERP_FILTER_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_EDCA_PARAM_SET, 0, 0, 0,
-> +		      WCN36XX_FILTER_IE_EDCA_FILTER_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_QOS_CAPA, 0, 0, 0,
-> +		      WCN36XX_FILTER_IE_QOS_FILTER_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_CHANNEL_SWITCH, 1, 0, 0,
-> +		      WCN36XX_FILTER_IE_CHANNEL_SWITCH_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_HT_OPERATION, 0, 0, 0,
-> +		      WCN36XX_FILTER_IE_HT_BYTE0_FILTER_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_HT_OPERATION, 0, 2, 0,
-> +		      WCN36XX_FILTER_IE_HT_BYTE2_FILTER_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_HT_OPERATION, 0, 5, 0,
-> +		      WCN36XX_FILTER_IE_HT_BYTE5_FILTER_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_PWR_CONSTRAINT, 0, 0, 0,
-> +		      WCN36XX_FILTER_IE_PWR_CONSTRAINT_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_OPMODE_NOTIF, 0, 0, 0,
-> +		      WCN36XX_FILTER_IE_OPMODE_NOTIF_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_VHT_OPERATION, 0, 0, 0,
-> +		      WCN36XX_FILTER_IE_VHTOP_CHWIDTH_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_RSN, 1, 0, 0,
-> +		      WCN36XX_FILTER_IE_RSN_MASK, 0),
-> +	BEACON_FILTER(WLAN_EID_VENDOR_SPECIFIC, 1, 0, 0,
-> +		      WCN36XX_FILTER_IE_VENDOR_MASK, 0),
-> +};
+> 
+> > What's strange is when I try this sequence a couple of times in a row,
+> > the device gets into a state where after starting wpa_supplicant, no
+> > amount of PSM on/off commands will get it to enter power-savings mode
+> > any more.  When in that state, only removing wilc1000-spi.ko and adding
+> > it back gets it out of that state.  A power-cycle does not.  Very
+> > confusing.
+> 
+> Btw, I did a quick test to verify current measurement with PS mode off/on and observed numbers like below
+> 
+> Tested by making the interface up(ifconfig wlan0 up) then issued 'iw' command to enable/disable PS mode. 
+> 
+>                               (current draw)
+> ------------------------------------------------------
+> - PSM off                    : 75.5 mA
+> - PSM on                     : 1.28 mA
+> 
+> 
+> I have verified for SPI module with the setup mentioned in link[1] and used power debugger[2]
+> 
+> 1. https://ww1.microchip.com/downloads/en/Appnotes/ATWILC1000-Power-Measurement-for-Wi-Fi-Link-Controller-00002797A.pdf
+> 2. https://www.microchip.com/en-us/development-tool/ATPOWERDEBUGGER
 
-All static variables should be const so I changed this to const as well.
+Sure, I assume your measurements are at 3.3V for the chip alone.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+But the question is: what happens once you start wpa_supplicant?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+  --david
+
+
