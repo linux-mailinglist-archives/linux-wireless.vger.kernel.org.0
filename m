@@ -2,98 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1C97477392
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 14:50:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC182477397
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 14:51:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235929AbhLPNuq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Dec 2021 08:50:46 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:42256 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236139AbhLPNug (ORCPT
+        id S236327AbhLPNvL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Dec 2021 08:51:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34570 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229453AbhLPNvL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Dec 2021 08:50:36 -0500
+        Thu, 16 Dec 2021 08:51:11 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB881C061574
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 05:51:10 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6DEF3B8242A;
-        Thu, 16 Dec 2021 13:50:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714ACC36AE8;
-        Thu, 16 Dec 2021 13:50:31 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7AB30B8242C
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 13:51:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894F2C36AE5;
+        Thu, 16 Dec 2021 13:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639662633;
-        bh=AbhvMEHMWIrh7e9CWfIY2JYFJ5gwFAB2jgOuFsthmyo=;
+        s=k20201202; t=1639662668;
+        bh=+Ui8+psUwSY1HhMnb2Pw+DoIUwFr/mdGbtqF2GV5jNo=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=TKA/FRmozr/tU9ROOvxVLYg3DipKuXOctyxmMbr+Y00XEedVcaedz+AU3/dozv3sZ
-         q/M2W8KveteIB15BVbsnZLQ6iMY1tlu0jZWs9oQSP5GS5wJE9aMLirA8VC7YaohsLa
-         rH6wpHX2MzlsX0T1V5qucjcz0zP91IkE3JwYNgWOis9h3wBVm8qRhejoeolUgVIfDy
-         PcKZ0bByGv1gqQ23Cu+HhYblN5jtReKBHx9BIKLqwRXj17EKkW5WJsaHOYmSCyQEsr
-         XkXQuKDFrinrS6WR7DTFRLraLADZUOa5Prd6/wxzbNH9cYLsziwhiZA9bILnWhCl/r
-         /Dz/zMWeaYFDw==
+        b=gvHmqy52RN3lK0rpKfJZzr+2f4dLjE1gFJLrOIH2kh1HheR53XZqi8nQ15JXjk/vZ
+         zt6GoVb76p1LaGIk2PtCW4LyMwHANi5sg9ja39TetofZYt0UwVe2fkG/OHNrqkpoBu
+         uC6JssAl4aMkr5DQrsKhW9bS7E4UqFH6ECRDqy+gisthxeWNCtEOKysU5Wym7nYIxS
+         LRyaVvTF64vP9lviqAvkTN1KxBo/pzA+Cws5IW59W7eDum0cimrjChYsgsKWt2paag
+         leljiGXqYBnor5WzV5fzHy0sGCZNUhoGoHghDDjN1e8QVMnJZz6fT3sxrC+k8VO86q
+         gQ9qFm3NASzsA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-hardening@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 08/17] ath11k: Use memset_startat() for clearing queue descriptors
-References: <20211213223331.135412-1-keescook@chromium.org>
-        <20211213223331.135412-9-keescook@chromium.org>
-        <87v8zriv1c.fsf@codeaurora.org> <877dc7i3zc.fsf@codeaurora.org>
-        <202112140904.2D64E570@keescook>
-Date:   Thu, 16 Dec 2021 15:50:25 +0200
-In-Reply-To: <202112140904.2D64E570@keescook> (Kees Cook's message of "Tue, 14
-        Dec 2021 09:05:37 -0800")
-Message-ID: <875yrod5ge.fsf@codeaurora.org>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2] ath11k: report tx bitrate for iw wlan station dump
+References: <20211213102723.4857-1-quic_wgong@quicinc.com>
+        <87y24ngjaa.fsf@codeaurora.org>
+        <2aecb0d6-6710-d460-4505-0594ae7a55a2@quicinc.com>
+Date:   Thu, 16 Dec 2021 15:51:05 +0200
+In-Reply-To: <2aecb0d6-6710-d460-4505-0594ae7a55a2@quicinc.com> (Wen Gong's
+        message of "Thu, 16 Dec 2021 18:41:55 +0800")
+Message-ID: <871r2cd5fa.fsf@codeaurora.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> writes:
+Wen Gong <quic_wgong@quicinc.com> writes:
 
-> On Tue, Dec 14, 2021 at 05:46:31PM +0200, Kalle Valo wrote:
->> Kalle Valo <kvalo@kernel.org> writes:
->> 
->> > Kees Cook <keescook@chromium.org> writes:
->> >
->> >> In preparation for FORTIFY_SOURCE performing compile-time and run-time
->> >> field bounds checking for memset(), avoid intentionally writing across
->> >> neighboring fields.
->> >>
->> >> Use memset_startat() so memset() doesn't get confused about writing
->> >> beyond the destination member that is intended to be the starting point
->> >> of zeroing through the end of the struct. Additionally split up a later
->> >> field-spanning memset() so that memset() can reason about the size.
->> >>
->> >> Cc: Kalle Valo <kvalo@codeaurora.org>
->> >> Cc: "David S. Miller" <davem@davemloft.net>
->> >> Cc: Jakub Kicinski <kuba@kernel.org>
->> >> Cc: ath11k@lists.infradead.org
->> >> Cc: linux-wireless@vger.kernel.org
->> >> Cc: netdev@vger.kernel.org
->> >> Signed-off-by: Kees Cook <keescook@chromium.org>
->> >
->> > What's the plan for this patch? I would like to take this via my ath
->> > tree to avoid conflicts.
->> 
->> Actually this has been already applied:
->> 
->> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=ath-next&id=d5549e9a6b86
->> 
->> Why are you submitting the same patch twice?
+> On 12/15/2021 1:58 AM, Kalle Valo wrote:
+>> Wen Gong <quic_wgong@quicinc.com> writes:
+> ...
+>> I briefly tested this and tx rate didn't look correct to me:
+>>
+>> $ iw wlan0 link
+>> Connected to xx (on wlan0)
+>> 	SSID: <censored>
+>> 	freq: 2442
+>> 	RX: 8838 bytes (80 packets)
+>> 	TX: 1551 bytes (15 packets)
+>> 	signal: -104 dBm
+>> 	rx bitrate: 39.0 MBit/s MCS 4
+>> 	tx bitrate: (unknown) MCS 253
+> Yes, I reproduced this strange tx bitrate value after try with 3 AP.
+> AP1: tx bitrate:=C2=A0=C2=A0=C2=A0=C2=A0 144.4 MBit/s VHT-MCS 7 short GI =
+VHT-NSS 2
+> AP2: tx bitrate:=C2=A0=C2=A0=C2=A0=C2=A0 286.7 MBit/s HE-MCS 11 HE-NSS 2 =
+HE-GI 0 HE-DCM 0
+> AP3: tx bitrate:=C2=A0=C2=A0=C2=A0=C2=A0 (unknown) MCS 254
+> I will check it.
+>>
+>> I guess the signal isn't correct either, are you planning to fix it also
+>> at some point?
+> I have sent patch to fix signal:
+> [v2] ath11k: add signal report to mac80211 for QCA6390 and WCN6855
+> https://patchwork.kernel.org/project/linux-wireless/patch/20211216070535.=
+31732-1-quic_wgong@quicinc.com/
 >
-> These are all part of a topic branch, and the cover letter mentioned
-> that a set of them have already been taken but haven't appeared in -next
-> (which was delayed).
+> The new signal value of "iw wlan station dump":
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 signal:=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 -50 [-51, -55] dBm
 
-Do note that some wireless drivers (at least ath, mt76 and iwlwifi) are
-maintained in separate trees, so don't be surprised if it takes several
-weeks before they are visible in linux-next.
+Great, thank you.
 
--- 
+--=20
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
