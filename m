@@ -2,100 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A0044775DF
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 16:26:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7AB14775EB
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 16:30:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230171AbhLPP01 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Dec 2021 10:26:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57114 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232844AbhLPP01 (ORCPT
+        id S238532AbhLPPa2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Dec 2021 10:30:28 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:36388 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229868AbhLPPa2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Dec 2021 10:26:27 -0500
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFC75C06173F
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 07:26:26 -0800 (PST)
-Received: by mail-io1-xd33.google.com with SMTP id b187so35594913iof.11
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 07:26:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=egauge.net; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :organization:user-agent:mime-version:content-transfer-encoding;
-        bh=67Vem47B3H5J53wS2N0qozARJFT1k4nkQO4G+jjqa7I=;
-        b=GObEAzKftb43qpUL73PButovyPOh9C5lB41PdNrBN/OTPkAwQ6lk/xd+y2ZzJNK0tI
-         iTj8rJlzlSOCC3VAZoIRa4dSS5DQOFhyIjwPeC8s5D2q1HIaIfUjdNTXuKnV4aft4+JR
-         GjiRSCau5rxjLrGdzjJTgvqpvNpV4IWnWzfoGhzp3Ycs5W8AY6zyxpNFnCS/h8bc9lw+
-         Ystm9naMQLwsCaIfQ0/WLgmXlaukLswdc5aP7a+S0QBo+T13YT+dIeFnPrE8FhEKUghI
-         6Hlt0nKKwvLiA9/H3wGhFlWgQW2VdsB/p8oRd9/egzsggwzVLFd+TwkYxg81hbnvZ/rp
-         ZUNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:organization:user-agent:mime-version
-         :content-transfer-encoding;
-        bh=67Vem47B3H5J53wS2N0qozARJFT1k4nkQO4G+jjqa7I=;
-        b=o33smLUakH9IPNUfWSmRnPFeZJAVPW6bwDIDSCnqsxTR5aZJ1f1taLDcrqHl2Zb88d
-         hjb8DWBOKhGOnyprKw+7325aiZzptc41d4RDz6Sooqw2qPMBjEpIYeY7j5cGuzFVda5o
-         M3RkfLwkLSHsy5lPHkGJfg4Yd2/+FdNh8t+XyecsRZGAQD8Eu4suaMj5dEGjisbo+bsk
-         +LxjxlOm99kwQc2N/ogIyCdHM9gfVGln7XfUJbOPzqX4dOSRRLJbZZRvoppPEQbuvE7n
-         9PzQbpO4AUZCHN5GUBRgLJZ4SCv6rsDtKSPhbau9ecsB0gwaVz3pc5Bs4M72uZmnARKv
-         IVSA==
-X-Gm-Message-State: AOAM531LJuvFQ1mhWLZgrpDrfqsmwfS68ZypW+yqHq1DJhjBXXqktVIQ
-        wS3HD+kEbt4ls4uSdDAUupUP
-X-Google-Smtp-Source: ABdhPJx2k0X5637koIrqrnqkX80APdsdYn245W/07/3XnqocWSxif/WrCZxIL+OW6N1iLXxJ2kSZxA==
-X-Received: by 2002:a05:6638:2183:: with SMTP id s3mr9640953jaj.297.1639668384768;
-        Thu, 16 Dec 2021 07:26:24 -0800 (PST)
-Received: from bixby.lan (c-73-181-115-211.hsd1.co.comcast.net. [73.181.115.211])
-        by smtp.gmail.com with ESMTPSA id d137sm2720024iof.16.2021.12.16.07.26.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Dec 2021 07:26:23 -0800 (PST)
-Message-ID: <938a54814087ca8c4b4011c2f418e773baf2b228.camel@egauge.net>
-Subject: Re: [PATCH v5 1/2] wilc1000: Add reset/enable GPIO support to SPI
- driver
-From:   David Mosberger-Tang <davidm@egauge.net>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Claudiu.Beznea@microchip.com, Ajay.Kathat@microchip.com,
-        adham.abozaeid@microchip.com, davem@davemloft.net,
-        devicetree@vger.kernel.org, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, robh+dt@kernel.org
-Date:   Thu, 16 Dec 2021 08:26:22 -0700
-In-Reply-To: <87zgp1c6lz.fsf@codeaurora.org>
-References: <20211215030501.3779911-1-davidm@egauge.net>
-         <20211215030501.3779911-2-davidm@egauge.net>
-         <d55a2558-b05d-5995-b0f0-f234cb3b50aa@microchip.com>
-         <9cfbcc99f8a70ba2c03a9ad99f273f12e237e09f.camel@egauge.net>
-         <87zgp1c6lz.fsf@codeaurora.org>
-Organization: eGauge Systems LLC
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        Thu, 16 Dec 2021 10:30:28 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 828B561E3D;
+        Thu, 16 Dec 2021 15:30:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85519C36AE0;
+        Thu, 16 Dec 2021 15:30:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639668626;
+        bh=RDnK/K07NtTmO+k0mAmuN27towLm3zlyf2V+0+o0h1s=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=d/jNmwm5C/MkXK6E8htSzjZ2pD6aMFx3D8/e1AmU7vx1Sc0KMKSeaAL4TBsHcQB/A
+         Kz1ZSTWQ7CZSSVS2OUwtAfUNjvYRr/qXm5nbK7621yoRepcsGo9GIQa+MXgXYMMGmQ
+         nkVpYaUYSH4SOGdb3nlUoxw4+Ft1QKEfoClo7gPb0V9bA8Xg0hLlbCchaB0ONVM4qr
+         JP+L4LtunHIUD/lCfIub3v23kc2ZJmgcZUVEXXd4XpXttVWDphKYsKfMTbsplsOxtt
+         W9LhFZXfA4QbtFLd2hVdZfd7sK0gJbxf7lOKfumSw1/5kwyMfLIccMeNn1U6MK/xJL
+         z4L+g5SMmivyw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, loic.poulain@linaro.org,
+        benl@squareup.com
+Subject: Re: [PATCH v3 3/3] wcn36xx: Implement downstream compliant beacon filtering
+References: <20211214134630.2214840-1-bryan.odonoghue@linaro.org>
+        <20211214134630.2214840-4-bryan.odonoghue@linaro.org>
+Date:   Thu, 16 Dec 2021 17:30:22 +0200
+In-Reply-To: <20211214134630.2214840-4-bryan.odonoghue@linaro.org> (Bryan
+        O'Donoghue's message of "Tue, 14 Dec 2021 13:46:30 +0000")
+Message-ID: <87wnk4bm9d.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2021-12-16 at 10:10 +0200, Kalle Valo wrote:
-> David Mosberger-Tang <davidm@egauge.net> writes:
-> 
-> > > > +       } else {
-> > > > +               gpiod_set_value(gpios->reset, 1);       /* assert RESET */
-> > > > +               gpiod_set_value(gpios->enable, 0);      /* deassert ENABLE */
-> > > 
-> > > I don't usually see comments near the code line in kernel. Maybe move them
-> > > before the actual code line or remove them at all as the code is impler enough?
-> > 
-> > You're kidding, right?
-> 
-> I agree with Claudiu, the comments are not really providing more
-> information from what can be seen from the code. And the style of having
-> the comment in the same line is not commonly used in upstream.
+Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
 
-The code is obvious if you think of 1 as "assert" and 0 as "deassert".  It looks
-utterly wrong if you think of 1 as outputting 3.3V and 0 as outputting 0V.
+> Downstream facilitates the direct programming of beacon filter tables via
+> SMD commands.
+>
+> The purpose of beacon filters is quote:
+>
+> /* When beacon filtering is enabled, firmware will
+>  * analyze the selected beacons received during BMPS,
+>  * and monitor any changes in the IEs as listed below.
+>  * The format of the table is:
+>  *    - EID
+>  *    - Check for IE presence
+>  *    - Byte offset
+>  *    - Byte value
+>  *    - Bit Mask
+>  *    - Byte reference
+>  */
+>
+> The default downstream firmware filter table looks something like this:
+> tBeaconFilterIe gaBcnFilterTable[12] =
+> {
+>   { WLAN_EID_DS_PARAMS, 0u, { 0u, 0u, 0u, 0u } },
+>   { WLAN_EID_ERP_INFO, 0u, { 0u, 0u, 248u, 0u } },
+>   { WLAN_EID_EDCA_PARAM_SET, 0u, { 0u, 0u, 240u, 0u } },
+>   { WLAN_EID_QOS_CAPA, 0u, { 0u, 0u, 240u, 0u } },
+>   { WLAN_EID_CHANNEL_SWITCH, 1u, { 0u, 0u, 0u, 0u } },
+>   { WLAN_EID_QUIET, 1u, { 0u, 0u, 0u, 0u } },
+>   { WLAN_EID_HT_OPERATION, 0u, { 0u, 0u, 0u, 0u } },
+>   { WLAN_EID_HT_OPERATION, 0u, { 1u, 0u, 248u, 0u } },
+>   { WLAN_EID_HT_OPERATION, 0u, { 2u, 0u, 235u, 0u } },
+>   { WLAN_EID_HT_OPERATION, 0u, { 5u, 0u, 253u, 0u } },
+>   { WLAN_EID_PWR_CONSTRAINT, 0u, { 0u, 0u, 0u, 0u } },
+>   { WLAN_EID_OPMODE_NOTIF, 0u, { 0u, 0u, 0u, 0u } }
+> };
+>
+> Add in an equivalent filter set as present in the downstream Linux driver.
+> For now omit the beacon filter "rem" command as downstream does not have an
+> explicit call to that SMD command. The filter mask should only count when
+> we are inside BMPS anyway.
+>
+> Replicating the downstream ability to program the filter table gives us
+> scope to add and remove elements in future. For now though this patch
+> makes the rote-copy of the downstream Linux beacon filter table, which we
+> can tweak as desired from now on.
+>
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-But if you insist, I'll remove the comments.
+[...]
 
-  --david
+> +static struct beacon_filter_ie bcn_filter_ies[] = {
+> +	BEACON_FILTER(WLAN_EID_DS_PARAMS, 0, 0, 0,
+> +		      WCN36XX_FILTER_IE_DS_CHANNEL_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_ERP_INFO, 0, 0, 0,
+> +		      WCN36XX_FILTER_IE_ERP_FILTER_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_EDCA_PARAM_SET, 0, 0, 0,
+> +		      WCN36XX_FILTER_IE_EDCA_FILTER_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_QOS_CAPA, 0, 0, 0,
+> +		      WCN36XX_FILTER_IE_QOS_FILTER_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_CHANNEL_SWITCH, 1, 0, 0,
+> +		      WCN36XX_FILTER_IE_CHANNEL_SWITCH_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_HT_OPERATION, 0, 0, 0,
+> +		      WCN36XX_FILTER_IE_HT_BYTE0_FILTER_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_HT_OPERATION, 0, 2, 0,
+> +		      WCN36XX_FILTER_IE_HT_BYTE2_FILTER_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_HT_OPERATION, 0, 5, 0,
+> +		      WCN36XX_FILTER_IE_HT_BYTE5_FILTER_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_PWR_CONSTRAINT, 0, 0, 0,
+> +		      WCN36XX_FILTER_IE_PWR_CONSTRAINT_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_OPMODE_NOTIF, 0, 0, 0,
+> +		      WCN36XX_FILTER_IE_OPMODE_NOTIF_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_VHT_OPERATION, 0, 0, 0,
+> +		      WCN36XX_FILTER_IE_VHTOP_CHWIDTH_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_RSN, 1, 0, 0,
+> +		      WCN36XX_FILTER_IE_RSN_MASK, 0),
+> +	BEACON_FILTER(WLAN_EID_VENDOR_SPECIFIC, 1, 0, 0,
+> +		      WCN36XX_FILTER_IE_VENDOR_MASK, 0),
+> +};
 
+All static variables should be const so I changed this to const as well.
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
