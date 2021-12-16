@@ -2,74 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 600A5476EE2
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 11:28:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AD30476EE9
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Dec 2021 11:31:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233442AbhLPK2q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Dec 2021 05:28:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42846 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231305AbhLPK2p (ORCPT
+        id S236087AbhLPKbo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Dec 2021 05:31:44 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:41884 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231292AbhLPKbo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Dec 2021 05:28:45 -0500
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A53C061574
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 02:28:45 -0800 (PST)
-Received: by mail-yb1-xb2b.google.com with SMTP id 131so63287133ybc.7
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 02:28:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessos.org; s=google;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=xbGmLs+CG51ud70h+gLhOyvJvni0hdnPDg+IG6Y+65M=;
-        b=aH52HWb+3rQSxxYejFIUh6VCdArYXaPNifE0dO5o0JtCJPXZT29FhaxcUzJmMSJlv9
-         3AISfpg7KnbpywUlaZJVNiLFz2hIw6vy63Xi4X6Pn0l4SFPhapAIzP4eeK+m+YmfyMRY
-         L9bJID2ThEIH7KJ9uXun+cLoRVPOW3/yxP92ML98w5ohW8nxmwhfE4RAehCqAyLyM6lt
-         ktRX67vqkMr6SeOPYVlKqGkg19/iLzG/Ba4uCUC0XZsoVpzwNc8elMTTlPEicPFWFko+
-         04aCwTLc4UkbO3pShLUrmaCXROZCWTchZN6mRAICK670uoC1UVBDMPljZEPH7ZpTYU57
-         19/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=xbGmLs+CG51ud70h+gLhOyvJvni0hdnPDg+IG6Y+65M=;
-        b=3Mcg3RjXNP1PQf3fHhyCH4IwvCfE9trKoSV2mWSn+cBniSMhdLzi/sbkwSp0C3OIHR
-         WuIXRqXNmYQ8yeH8XdWWqLlEHFrQzq9tR+VmxUCH+EKdUbTLA5i0M6U9acLIy4CtFvsj
-         Tc6VPzTQVdSClydzOuhCw3/0ovMrJl5PDMJmbFFZt7cw5xdo12osw8hwtOGtLtugIoM3
-         Xti+lIdsID5EviX4g26alOQJfSxN21yfegtAqllzuNG2z3fPLGCCFj1ViYoPG1QaoGo/
-         Xrx2hhrffzpVSB3A6n1AeMuJi44vICieg6oLmwdtkFe0kvduBqEdbh1sb/dLDcZOyvsQ
-         XoOQ==
-X-Gm-Message-State: AOAM533eNUlCxt3aaD7I0GHDeMygGPQnUntUG9M0VXEPjGK+wm7PAiaG
-        yCTpps598N60Xybup8Tuo9PhWl1Q5ejjuZLZRW5ojijnCKdDOpnq
-X-Google-Smtp-Source: ABdhPJxeD3hTJODTC9I+rNvmcQo3OWz63+j5LQKoX6FrdSAHBnSLdQNzI9pU6HpX2lIhzSkuEGLDZWd69/AFCAG5byE=
-X-Received: by 2002:a25:cecd:: with SMTP id x196mr13014162ybe.63.1639650524852;
- Thu, 16 Dec 2021 02:28:44 -0800 (PST)
+        Thu, 16 Dec 2021 05:31:44 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F14FAB82298;
+        Thu, 16 Dec 2021 10:31:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F778C36AE4;
+        Thu, 16 Dec 2021 10:31:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639650701;
+        bh=TQcw2ql4+y5jLFCLm01cff+8HCYL6rNOGX6idQHMBkE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=UNdQpZZi6vcYo1n773/a33uW4GS12Gtq8ksLCj8vJ/jGJO+UQxxCudv5H2tLMkvpJ
+         mUolIw/dvDbedOT9Vt/fz+0XtssNGYXLNOmLGgVoqfK8buiIvYBUHIfTd+a9cQDSMi
+         pfR815PC6mu6+jTqKKNVtLabSxKRcNDBhH/vKp4cLCCoOlAT5VYTTg9ywW4bcHFkaZ
+         z/M9SNyS2iOs8Kg1l9RrFajoil/C0KCFeVCcpidn3/HnrTLn0bytvhwGHGmxkFppXU
+         uEbuzzRjk7KNAA4XQjHhRi5H42izKG46lF5EJxTp/CRL0xiLxzAhjG9eZXIyW9aN6F
+         oB3a48OBYDgjQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, loic.poulain@linaro.org,
+        benl@squareup.com
+Subject: Re: [PATCH v3 3/3] wcn36xx: Implement downstream compliant beacon filtering
+References: <20211214134630.2214840-1-bryan.odonoghue@linaro.org>
+        <20211214134630.2214840-4-bryan.odonoghue@linaro.org>
+Date:   Thu, 16 Dec 2021 12:31:36 +0200
+In-Reply-To: <20211214134630.2214840-4-bryan.odonoghue@linaro.org> (Bryan
+        O'Donoghue's message of "Tue, 14 Dec 2021 13:46:30 +0000")
+Message-ID: <87ilvodenr.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-From:   Daniel Drake <drake@endlessos.org>
-Date:   Thu, 16 Dec 2021 10:28:34 +0000
-Message-ID: <CAD8Lp46BuhxA1XLWjBs4op0jzZ1k0HF=X22F29hB7nHgvnZftQ@mail.gmail.com>
-Subject: rtw88 support for USB devices such as RTL8723DU
-To:     Ping-Ke Shih <pkshih@realtek.com>, tony0620emma@gmail.com
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
 
-Thanks for the ongoing efforts around the upstream rtw88 driver and
-for your help on the ASPM issue over the last few days! Having such
-hardware support in mainline is of huge impact for individual users
-and organisations like ours.
+> Downstream facilitates the direct programming of beacon filter tables via
+> SMD commands.
 
-I am curious if there is a roadmap for RTL8723DU support in mainline
-too? Over the last week, 2 of our partners have inquired about this.
-It appears that this is a very attractive chipset for vendors and is
-being deployed in a wide range of products.
+I don't think the term downstream is clear for everyone, I guess with
+that you mean the prima driver? I would prefer to use "prima driver" in
+commit logs, I can change it and no need to resend because of this.
 
-I saw some community efforts for device support:
-https://github.com/ulli-kroll/rtw88-usb
-but we are unable to use non-mainline drivers for these projects.
+> --- a/drivers/net/wireless/ath/wcn36xx/hal.h
+> +++ b/drivers/net/wireless/ath/wcn36xx/hal.h
+> @@ -3468,6 +3468,23 @@ struct beacon_filter_ie {
+>  	u8 ref;
+>  } __packed;
+>  
+> +/* Downstream values for the bitmask field */
+> +#define WCN36XX_FILTER_CAPABILITY_MASK		0x73cf
+> +#define WCN36XX_FILTER_IE_DS_CHANNEL_MASK	0x00
+> +#define WCN36XX_FILTER_IE_ERP_FILTER_MASK	0xF8
+> +#define WCN36XX_FILTER_IE_EDCA_FILTER_MASK	0xF0
+> +#define WCN36XX_FILTER_IE_QOS_FILTER_MASK	0xF0
+> +#define WCN36XX_FILTER_IE_CHANNEL_SWITCH_MASK	0x00
+> +#define WCN36XX_FILTER_IE_HT_BYTE0_FILTER_MASK	0x00
+> +#define WCN36XX_FILTER_IE_HT_BYTE1_FILTER_MASK	0xF8
+> +#define WCN36XX_FILTER_IE_HT_BYTE2_FILTER_MASK	0xEB
+> +#define WCN36XX_FILTER_IE_HT_BYTE5_FILTER_MASK	0xFD
+> +#define WCN36XX_FILTER_IE_PWR_CONSTRAINT_MASK	0x00
+> +#define WCN36XX_FILTER_IE_OPMODE_NOTIF_MASK	0x00
+> +#define WCN36XX_FILTER_IE_VHTOP_CHWIDTH_MASK	0xFC
+> +#define WCN36XX_FILTER_IE_RSN_MASK		0x00
+> +#define WCN36XX_FILTER_IE_VENDOR_MASK		0x00
 
-Thanks,
-Daniel
+TBH I don't see much value in the comment, there's only one set of
+values, so I would like to remove it.
+
+> --- a/drivers/net/wireless/ath/wcn36xx/smd.c
+> +++ b/drivers/net/wireless/ath/wcn36xx/smd.c
+> @@ -3193,6 +3193,92 @@ int wcn36xx_smd_host_resume(struct wcn36xx *wcn)
+>  	return ret;
+>  }
+>  
+> +#define BEACON_FILTER(eid, presence, offs, val, mask, ref_val) \
+> +	{					\
+> +		.element_id = eid,		\
+> +		.check_ie_presence = presence,	\
+> +		.offset = offs,			\
+> +		.value = val,			\
+> +		.bitmask = mask,		\
+> +		.ref = ref_val,			\
+> +	}
+> +
+> +/* CORE/MAC/src/pe/lim/limSendMessages.c::beaconFilterTable[] */
+> +static struct beacon_filter_ie bcn_filter_ies[] = {
+
+I guess the comment refers to the prima driver, we shouldn't have that
+in upstream. I can remove it.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
