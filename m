@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FBD6478E02
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Dec 2021 15:41:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2903478E0E
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Dec 2021 15:42:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237404AbhLQOlb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Dec 2021 09:41:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45316 "EHLO
+        id S237412AbhLQOlc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Dec 2021 09:41:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237354AbhLQOla (ORCPT
+        with ESMTP id S237391AbhLQOlb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Dec 2021 09:41:30 -0500
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ADF0C06173E
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 06:41:30 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id b7so8651166edd.6
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 06:41:30 -0800 (PST)
+        Fri, 17 Dec 2021 09:41:31 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 681C7C06173E
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 06:41:31 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id y22so8715711edq.2
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 06:41:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=JWU5jrx8uzkoFd78Ys23ZOK1dm9ivQmIi4HaxP6dlv4=;
-        b=srPPgox/P4r9sfCVltI+UJtw85Ur7AFZ8AZRDLTGxMAk100H6kAK5Ftg3iXYEvXZQk
-         Me46k6XmXZC68vyWHLGa9eYmBrYBrmqoh08oeB5TnwfRLioU5Jf8IuHWIoZEVknT7TNT
-         wl8znefbBNhzi+k+7tkJr5SrnBd9N1cSNZ7V/0R0kV3bzZWMFolV32V4o/f85igw6MXu
-         AAqvxnAGLHnIqhX2zWHx2/cb1HBIVQZWTvpBUQidP79OmvLkjOnRbASsgGWsgwv9w4ni
-         hWoJ4MNsWDuKzeAjledCOt3f7M7bJEjcsvJtdj9scRpGPjFtQ0/vMt5YfG8xP0KSxsxz
-         5bAQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=uTnI2mJGzMXkNd6zD8dQtSYENNAOb/CaCe05utt5/js=;
+        b=PukQFC8eup6D+l6pr0MjTOfXAx16xG33X2KSSCGy0M7Tq5ZMk9GinknpZA0yEJ5qKW
+         tNuJrWNdhrtuCWbdRaBmGv5SlIwmqngx+ij1oUajyt5bWMZEMIXP2XaEr3y4021IaJ9X
+         f366koKI3RsE+0mP2votUFQw1JHe66y7gF7Q7dkL3Yue+BpEGLnrHBEIFadgByPcL7sb
+         jmsAMHzwcJRfBMXpdAKJiyJZQW1e5Y0GqTvI9aX/eVMeFzK2Duqk8zjBi1weVvkDPX/O
+         dKNIdsY8E/y1/AzW6GgIq0W3Hby6QkLKpDnaHXUe8CNvrqCWbc/ePGLDwYA2NcjqEmoe
+         7QIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=JWU5jrx8uzkoFd78Ys23ZOK1dm9ivQmIi4HaxP6dlv4=;
-        b=VNWaa1ncFz4lqX/52HzcCaUdGidrVcQm6IEFhQXbFEq7Es6/Bw8XME3N5gMribioN1
-         TKjVBnpT6TGH1v0rIqIYbdKlG57JvTHzC4LgyYHE8x9I4FkN6VaRJuxjUycKRiAlUTdN
-         9IuwN2dVvnmaWxF9iCp6LldEa3bO4rOf8LgbEuNDUqSf3mHXQwI/NsI9FAnh3Xeu3RZu
-         lANBnL6PzZ23pudX1hd8IWwzv/WXGWCaPec2tQm1rLp203LivB73AnCDqUyTcMUn/7/z
-         IYharl5R4D1Roe5rKcBURAbyaIKGASyrG2vpBhwZtYRmIbhFKQMmBztaiJ7B/n2tovs3
-         Z9pg==
-X-Gm-Message-State: AOAM5315y51FVomIl+UH0PlUHqq+t4ujMT2BNnGFkNZE1uVCQuNgpRiN
-        9gFajXwfA33AdVq4uJPj5OlqwA==
-X-Google-Smtp-Source: ABdhPJxtfTdSZePgXYvUJVdJibMGa/wzwmXarJ/4RQ28O0+SZzhzgxhTWq0yn7DSjpJVmywKNwTn4A==
-X-Received: by 2002:a50:fb98:: with SMTP id e24mr3196629edq.80.1639752088840;
-        Fri, 17 Dec 2021 06:41:28 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=uTnI2mJGzMXkNd6zD8dQtSYENNAOb/CaCe05utt5/js=;
+        b=v4ZZcAVh5btYaer2YRYl35D5nZ21/6UtTzuJrRr5Gk5SbwXToHw1+Oh0r7Av0Xueq9
+         G7QqjeaGZDU+rqV116I9keCW6lWBOhIFEAsD+Sp34aDsDa/0v8datw/JxBhyGq9BSsxJ
+         UpRV6oHfRdx8P2iS3szx/Ch0uqViXrD2GkkiwetoFF/gZfJwiTb9iFQTMHqrpziYrFfj
+         ATBnqg8rNcFM2fYjueUO4+7B49F2OV08ssnGVEAa2QPS/5JS9DTc/Isx8CZCqrXYxBrI
+         kjSKX+tt9rWpwxpW07SFnX/kT9dcIp9ABx5vm7qHphuetGFIwU74fKVY7CaLu/z2iEVg
+         3cxQ==
+X-Gm-Message-State: AOAM531sOpsonm+NQNjdgxUcm840/HqG4d4+fr1FdCs+GgQsl6HSV97/
+        Tzdp62norQHRWwF1sIB/WFOaNQ==
+X-Google-Smtp-Source: ABdhPJx5jidnmBk6Da67uNi/t5UdWsKGq7GOi1jst8jw+BtnuUuf9LmcEVZRHc8Jxr7q1+aWh1boHQ==
+X-Received: by 2002:a05:6402:14f:: with SMTP id s15mr3145035edu.118.1639752089832;
+        Fri, 17 Dec 2021 06:41:29 -0800 (PST)
 Received: from localhost (c-9b28e555.07-21-73746f28.bbcust.telenor.se. [85.229.40.155])
-        by smtp.gmail.com with ESMTPSA id c12sm3864770edx.80.2021.12.17.06.41.28
+        by smtp.gmail.com with ESMTPSA id o1sm2992009ejy.150.2021.12.17.06.41.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Dec 2021 06:41:28 -0800 (PST)
+        Fri, 17 Dec 2021 06:41:29 -0800 (PST)
 From:   Anders Roxell <anders.roxell@linaro.org>
 To:     stable@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, woojung.huh@microchip.com,
@@ -61,128 +61,61 @@ Cc:     linux-kernel@vger.kernel.org, woojung.huh@microchip.com,
         mingo@redhat.com, dmitry.torokhov@gmail.com,
         ndesaulniers@google.com, nathan@kernel.org,
         linux-input@vger.kernel.org,
+        Nathan Chancellor <natechancellor@gmail.com>,
         Anders Roxell <anders.roxell@linaro.org>
-Subject: [PATCH 4.19 0/6] fix warning and errors on arm built with clang
-Date:   Fri, 17 Dec 2021 15:41:13 +0100
-Message-Id: <20211217144119.2538175-1-anders.roxell@linaro.org>
+Subject: [PATCH 4.19 1/6] net: lan78xx: Avoid unnecessary self assignment
+Date:   Fri, 17 Dec 2021 15:41:14 +0100
+Message-Id: <20211217144119.2538175-2-anders.roxell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20211217144119.2538175-1-anders.roxell@linaro.org>
+References: <20211217144119.2538175-1-anders.roxell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Nathan Chancellor <natechancellor@gmail.com>
 
-Can this patchset be applied to linux-4.19.y. I've tried to build an arm
-kernel for these defconfigs:
+commit 94e7c844990f0db92418586b107be135b4963b66 upstream.
 
-mini2440_defconfig, mxs_defconfig, imx_v4_v5_defconfig,
-integrator_defconfig, lpc32xx_defconfig, s3c2410_defconfig,
-nhk8815_defconfig, imx_v6_v7_defconfig, at91_dt_defconfig,
-shmobile_defconfig, omap1_defconfig, multi_v5_defconfig,
-orion5x_defconfig, footbridge_defconfig, davinci_all_defconfig
+Clang warns when a variable is assigned to itself.
 
-Without this patchset these configs faild to build.
-Also I fixed a few warnings.
-
-There are still a few more warnings to fix.
-But this is a start.
-
-I built the kernel with tuxmake and this is the command:
-tuxmake --runtime podman --target-arch arm --toolchain clang-nightly --kconfig tinyconfig LLVM=1 LLVM_IAS=0
-
-Similar results with clang-13.
-
-
-Patch "net: lan78xx: Avoid unnecessary self assignment" fixes:
-
-drivers/net/usb/lan78xx.c:949:11: warning: explicitly assigning value of variable of type 'u32' (aka 'unsigned int') to itself [-Wself-assign]
+drivers/net/usb/lan78xx.c:940:11: warning: explicitly assigning value of
+variable of type 'u32' (aka 'unsigned int') to itself [-Wself-assign]
                         offset = offset;
                         ~~~~~~ ^ ~~~~~~
 1 warning generated.
 
+Reorder the if statement to acheive the same result and avoid a self
+assignment warning.
 
-Patch "ARM: 8805/2: remove unneeded naked function usage" fixes:
+Link: https://github.com/ClangBuiltLinux/linux/issues/129
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+---
+ drivers/net/usb/lan78xx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-arch/arm/mm/copypage-v4wb.c:47:9: error: parameter references not allowed in naked functions
-        : "r" (kto), "r" (kfrom), "I" (PAGE_SIZE / 64));
-               ^
-/builds/linux/arch/arm/mm/copypage-v4wb.c:25:13: note: attribute is here
-static void __naked
-            ^
-/builds/linux/include/linux/compiler_types.h:249:34: note: expanded from macro '__naked'
-#define __naked                 __attribute__((naked)) notrace
-                                               ^
-1 error generated.
-
-
-Patch "mwifiex: Remove unnecessary braces from HostCmd_SET_SEQ_NO_BSS_INFO" fixes:
-
-drivers/net/wireless/marvell/mwifiex/cmdevt.c:219:22: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
-        host_cmd->seq_num = cpu_to_le16(HostCmd_SET_SEQ_NO_BSS_INFO
-                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/builds/linux/include/linux/byteorder/generic.h:90:21: note: expanded from macro 'cpu_to_le16'
-#define cpu_to_le16 __cpu_to_le16
-                    ^
-
-
-Patch "Input: touchscreen - avoid bitwise vs logical OR warning" fixes:
-
-drivers/input/touchscreen/of_touchscreen.c:80:17: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
-        data_present = touchscreen_get_prop_u32(dev, "touchscreen-size-x",
-                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-Patch "ARM: 8788/1: ftrace: remove old mcount support" fixes:
-
-arch/arm/kernel/entry-ftrace.S:56:2: error: Ftrace requires CONFIG_FRAME_POINTER=y with GCC older than 4.4.0.
-#error Ftrace requires CONFIG_FRAME_POINTER=y with GCC older than 4.4.0.
- ^
-1 error generated.
-
-
-Patch "ARM: 8800/1: use choice for kernel unwinders" fixes the build
-error:
-
-clang: error: unknown argument: '-mapcs'
-clang: error: unknown argument: '-mno-sched-prolog'
-
-
-Cheers,
-Anders
-
-Nathan Chancellor (3):
-  net: lan78xx: Avoid unnecessary self assignment
-  mwifiex: Remove unnecessary braces from HostCmd_SET_SEQ_NO_BSS_INFO
-  Input: touchscreen - avoid bitwise vs logical OR warning
-
-Nicolas Pitre (1):
-  ARM: 8805/2: remove unneeded naked function usage
-
-Stefan Agner (2):
-  ARM: 8800/1: use choice for kernel unwinders
-  ARM: 8788/1: ftrace: remove old mcount support
-
- arch/arm/Kconfig.debug                        | 45 +++++----
- arch/arm/include/asm/ftrace.h                 |  3 -
- arch/arm/kernel/armksyms.c                    |  3 -
- arch/arm/kernel/entry-ftrace.S                | 75 +-------------
- arch/arm/kernel/ftrace.c                      | 51 ----------
- arch/arm/mm/copypage-fa.c                     | 35 ++++---
- arch/arm/mm/copypage-feroceon.c               | 98 +++++++++----------
- arch/arm/mm/copypage-v4mc.c                   | 19 ++--
- arch/arm/mm/copypage-v4wb.c                   | 41 ++++----
- arch/arm/mm/copypage-v4wt.c                   | 37 ++++---
- arch/arm/mm/copypage-xsc3.c                   | 71 ++++++--------
- arch/arm/mm/copypage-xscale.c                 | 71 +++++++-------
- drivers/input/touchscreen/of_touchscreen.c    | 18 ++--
- drivers/net/usb/lan78xx.c                     |  6 +-
- drivers/net/wireless/marvell/mwifiex/cmdevt.c |  4 +-
- drivers/net/wireless/marvell/mwifiex/fw.h     |  8 +-
- lib/Kconfig.debug                             |  6 +-
- 17 files changed, 228 insertions(+), 363 deletions(-)
-
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index b328207c0455..f438be83d259 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -945,11 +945,9 @@ static int lan78xx_read_otp(struct lan78xx_net *dev, u32 offset,
+ 	ret = lan78xx_read_raw_otp(dev, 0, 1, &sig);
+ 
+ 	if (ret == 0) {
+-		if (sig == OTP_INDICATOR_1)
+-			offset = offset;
+-		else if (sig == OTP_INDICATOR_2)
++		if (sig == OTP_INDICATOR_2)
+ 			offset += 0x100;
+-		else
++		else if (sig != OTP_INDICATOR_1)
+ 			ret = -EINVAL;
+ 		if (!ret)
+ 			ret = lan78xx_read_raw_otp(dev, offset, length, data);
 -- 
 2.34.1
 
