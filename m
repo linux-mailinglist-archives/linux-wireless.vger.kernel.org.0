@@ -2,69 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87A9E4783A7
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Dec 2021 04:29:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3953A478493
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Dec 2021 06:31:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231280AbhLQD3R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Dec 2021 22:29:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47514 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231970AbhLQD3Q (ORCPT
+        id S231703AbhLQFbM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Dec 2021 00:31:12 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:46346 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230106AbhLQFbM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Dec 2021 22:29:16 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F3F3C06173E
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 19:29:16 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id r11so2691524edd.9
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Dec 2021 19:29:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/hHgBKaozpyohhRsiYLOj0WZK8ScsciyYJn+ZRKFKfo=;
-        b=G+rd1FRwzzuC0aM0gFY4NWK5EfyNPK8GtCllH7kNKG54dS7dWZY5w8rVraYU14x6qQ
-         TPaJ8LME3SpcBXg+mTAXBOFeqFwnGYNZ5Ofd8Wub/N+u5d6GsrnIIgfuANp31rgynVo4
-         bHbsnQOfnFWOAiVt3vZMeAU8UDaMo14YpALLTJr9TKL6EvOm7HU5KixgO5hi+8haeN9M
-         Sj4SxBSNeV6AJkQBYNWScl+VOfwUGCWahYKG0RpVMeFgvp/c7E6MlQP27G7qL7ZKSExg
-         sp3XfIkyF7b6A4sQHomAfhwivJys9baxtkBgDMLgo0SRyREsgNX4dLDqqLIN49Es93jG
-         GrKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/hHgBKaozpyohhRsiYLOj0WZK8ScsciyYJn+ZRKFKfo=;
-        b=PMvq4e8zQ4mywfoKs3Dw017viVTo7r5ucqlATqNx4ERuP1boYb40oml+iQRlt8c0hh
-         ZXJm8vjZp+G8LtrXGuY6zPwmf08xmdgdPKxDKJQ7X9TTp9K3jg6jG332UzWCS9WRvYzv
-         hrMegmm+HyAR5erv6pQgdg2Crr/eDTBnEaZgHMXC0RnODeVDkxyV82yA0xnLAc9HREU4
-         581/JpnjQfJawC6Ps2XzvpDXpoBvxMRNmJ8sNOQ5+1mEZGhGXAX7RfiSmO2bcZxRUksG
-         8/nU1d2IRxKf+V6GWPyOY3t+WIGqGJt8+nbIk1K8EFvcGd4+uiMrNoCTm/7HIZCZ3VEi
-         J7jA==
-X-Gm-Message-State: AOAM530iWgRqVfqFUUEKQ+Vd+skkbcJ23h8s6iX4K4AUID9NzCY33FJN
-        tMfK/kVtdIlb6BVcwe5HeJNFN7DdoBFkZzeQRjo=
-X-Google-Smtp-Source: ABdhPJwdaOzFQ7D7UDEG9ad4P/gwEzu13pmOk5uB7YkOLnZkrQGnek/2FYkmctW+DZcgtdIK/P9yzJ122cnjmnRMpv4=
-X-Received: by 2002:a05:6402:41a:: with SMTP id q26mr958001edv.387.1639711754825;
- Thu, 16 Dec 2021 19:29:14 -0800 (PST)
+        Fri, 17 Dec 2021 00:31:12 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BH5V5hG4018832, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BH5V5hG4018832
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 17 Dec 2021 13:31:05 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Fri, 17 Dec 2021 13:31:05 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Fri, 17 Dec 2021 13:31:05 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01]) by
+ RTEXMBS04.realtek.com.tw ([fe80::65a3:1e23:d911:4b01%5]) with mapi id
+ 15.01.2308.020; Fri, 17 Dec 2021 13:31:05 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Daniel Drake <drake@endlessos.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
+Subject: RE: rtw88 support for USB devices such as RTL8723DU
+Thread-Topic: rtw88 support for USB devices such as RTL8723DU
+Thread-Index: AQHX8me96OwbbSNd50KqjrtoPH4DV6w2KCpQ
+Date:   Fri, 17 Dec 2021 05:31:05 +0000
+Message-ID: <36f4f4fe6f7848a7a7f4b274f494450a@realtek.com>
+References: <CAD8Lp46BuhxA1XLWjBs4op0jzZ1k0HF=X22F29hB7nHgvnZftQ@mail.gmail.com>
+In-Reply-To: <CAD8Lp46BuhxA1XLWjBs4op0jzZ1k0HF=X22F29hB7nHgvnZftQ@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzE3IOS4iuWNiCAwMzoxMjowMA==?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Received: by 2002:a54:2ecf:0:0:0:0:0 with HTTP; Thu, 16 Dec 2021 19:29:14
- -0800 (PST)
-Reply-To: lisshuuu1@gmail.com
-From:   MS LISA HUGH <olivier.folly0@gmail.com>
-Date:   Thu, 16 Dec 2021 19:29:14 -0800
-Message-ID: <CAG_GOAuTFotjwi1bA1xvnVO5_y-zxkTu6RtckJ5C6CamT-0rVg@mail.gmail.com>
-Subject: REPLY TO HAVE THE FULL DETAILS >>MS LISA HUGH.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear Friend,
-
-I am Ms Lisa Hugh accountant and files keeping by profession with the bank.
-
-I need your co-operation for the  transferring of ($4,500,000,00
-,U.S.DOLLARS)to your bank account for both of us benefit.
-
-Please send the follow below,
-1)AGE....2)TELEPHONE NUMBER,,,,,...,3)COUNTRY.....4)OCCUPATION......
-Thanks.
-Ms Lisa Hugh
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IERhbmllbCBEcmFrZSA8ZHJh
+a2VAZW5kbGVzc29zLm9yZz4NCj4gU2VudDogVGh1cnNkYXksIERlY2VtYmVyIDE2LCAyMDIxIDY6
+MjkgUE0NCj4gVG86IFBrc2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsgdG9ueTA2MjBlbW1hQGdt
+YWlsLmNvbQ0KPiBDYzogbGludXgtd2lyZWxlc3MgPGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVs
+Lm9yZz47IExpbnV4IFVwc3RyZWFtaW5nIFRlYW0gPGxpbnV4QGVuZGxlc3NtLmNvbT4NCj4gU3Vi
+amVjdDogcnR3ODggc3VwcG9ydCBmb3IgVVNCIGRldmljZXMgc3VjaCBhcyBSVEw4NzIzRFUNCj4g
+DQo+IEhpLA0KPiANCj4gVGhhbmtzIGZvciB0aGUgb25nb2luZyBlZmZvcnRzIGFyb3VuZCB0aGUg
+dXBzdHJlYW0gcnR3ODggZHJpdmVyIGFuZA0KPiBmb3IgeW91ciBoZWxwIG9uIHRoZSBBU1BNIGlz
+c3VlIG92ZXIgdGhlIGxhc3QgZmV3IGRheXMhIEhhdmluZyBzdWNoDQo+IGhhcmR3YXJlIHN1cHBv
+cnQgaW4gbWFpbmxpbmUgaXMgb2YgaHVnZSBpbXBhY3QgZm9yIGluZGl2aWR1YWwgdXNlcnMNCj4g
+YW5kIG9yZ2FuaXNhdGlvbnMgbGlrZSBvdXJzLg0KPiANCj4gSSBhbSBjdXJpb3VzIGlmIHRoZXJl
+IGlzIGEgcm9hZG1hcCBmb3IgUlRMODcyM0RVIHN1cHBvcnQgaW4gbWFpbmxpbmUNCj4gdG9vPyBP
+dmVyIHRoZSBsYXN0IHdlZWssIDIgb2Ygb3VyIHBhcnRuZXJzIGhhdmUgaW5xdWlyZWQgYWJvdXQg
+dGhpcy4NCj4gSXQgYXBwZWFycyB0aGF0IHRoaXMgaXMgYSB2ZXJ5IGF0dHJhY3RpdmUgY2hpcHNl
+dCBmb3IgdmVuZG9ycyBhbmQgaXMNCj4gYmVpbmcgZGVwbG95ZWQgaW4gYSB3aWRlIHJhbmdlIG9m
+IHByb2R1Y3RzLg0KPiANCj4gSSBzYXcgc29tZSBjb21tdW5pdHkgZWZmb3J0cyBmb3IgZGV2aWNl
+IHN1cHBvcnQ6DQo+IGh0dHBzOi8vZ2l0aHViLmNvbS91bGxpLWtyb2xsL3J0dzg4LXVzYg0KPiBi
+dXQgd2UgYXJlIHVuYWJsZSB0byB1c2Ugbm9uLW1haW5saW5lIGRyaXZlcnMgZm9yIHRoZXNlIHBy
+b2plY3RzLg0KPiANCg0KV2UgbW92ZSBtb3N0IG9mIG91ciByZXNvdXJjZSB0byBkZXZlbG9wIHJ0
+dzg5LCB3aWZpIDYgZHJpdmVyLCBzbyB3ZSBkb24ndA0KaGF2ZSBwbGFuIHRvIGRvIHRoaXMgeWV0
+LiBCdXQgSSBjYW4gaGVscCB0byByZXZpZXcgdGhlIHBhdGNoZXMgaWYgeW91IGNhbg0KaGVscCB0
+byBtYWtlIHBhdGNoZXMgZnJvbSBhYm92ZSBnaXRodWIgYW5kIHRlc3QgdXNiIGRvbmdsZXMuDQoN
+ClBpbmctS2UNCg0K
