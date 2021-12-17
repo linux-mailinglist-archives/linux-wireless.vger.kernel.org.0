@@ -2,125 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76A8B478C3C
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Dec 2021 14:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5012A478C56
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Dec 2021 14:31:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234088AbhLQNYd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Dec 2021 08:24:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55502 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232624AbhLQNYc (ORCPT
+        id S234181AbhLQNbV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Dec 2021 08:31:21 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:36582 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230331AbhLQNbU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Dec 2021 08:24:32 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7B8C061574
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 05:24:32 -0800 (PST)
+        Fri, 17 Dec 2021 08:31:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D3AE621DD
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 13:24:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755CAC36AE1;
-        Fri, 17 Dec 2021 13:24:30 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C3B70B8280B
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 13:31:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96569C36AE7;
+        Fri, 17 Dec 2021 13:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639747471;
-        bh=t6oLbhiwbKhPIPXhsGy+crhSAADTLaUa+GPxfLDqqsc=;
+        s=k20201202; t=1639747878;
+        bh=dO21G1S5TYGg8s1h33uOCeWOQqtYH+TK7gHEco/Z9iM=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ROzwkRPBlgFpJy50jl3UEF5B+59jgIl/x3IH12DlPMp+xYF1zyD4MIScbE0gY+LlO
-         mHS8tKs3yo5c468hz8trs3sgzxQnxRr0tJIxU0WBF3PcDXsUm43mvQ4AWLaFC4JVto
-         lgkR2ysU2SrMSFQ/fnvDyHN7MI9KJD+/bo45zMtQIZtiY0sVHvS+ObA4ZVaE7cdTVa
-         LLnFyZPupTpIf02NNi8SOo3vfSRTwDZhEtoUTPYr3LnJkT2ONPKkZ9M84IYtvIDtsV
-         bM7d6cBxz+rj4MKixa+ESEUdGQ/tWbUgo+snUjU63heVB2b7CDOfn+lj1sq0SVFkGx
-         dr1lct15CnbsA==
+        b=hnDA21dPsP6sON0JsCp+Tkcnb/XJjTM1/IIK6sjUMOBDaqeszz1qBxzMy/Hp0JGz0
+         qPoy+R/ARDOqRkXJnQgnnLV9vScNuAIp3SIKvulu2J2d3LNL6Ur8uJjew0/XWOgHIK
+         IjqQQLQHRxTeObh2N1fZpy/ivWp0fSyxfAEbpQLThRifNmBraJ6b+WZOi28eevgovE
+         VMA9ljAyoyB4hQEktOvVWBFJ7FEelzR796P7EZh61n9qrNfFDY0q7KQH0L+nqNRqIQ
+         TPB8LVhqr38h4cvzMPa8ltp6JrcopN/dqS6+6nHZuvcckfAeGYP8vZJq2im7kH1iY5
+         mUGbPVTBHWBTA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 1/2] ath11k: add fallback board name without variant
- while
- searching board-2.bin
+Subject: Re: [PATCH v2] ath11k: add regdb.bin download for regdb offload
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211208072327.19719-2-quic_wgong@quicinc.com>
-References: <20211208072327.19719-2-quic_wgong@quicinc.com>
+In-Reply-To: <20211215061556.14282-1-quic_wgong@quicinc.com>
+References: <20211215061556.14282-1-quic_wgong@quicinc.com>
 To:     Wen Gong <quic_wgong@quicinc.com>
 Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
         <quic_wgong@quicinc.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163974746775.27118.6803677219230814732.kvalo@kernel.org>
-Date:   Fri, 17 Dec 2021 13:24:30 +0000 (UTC)
+Message-ID: <163974786863.27118.8951264944041941308.kvalo@kernel.org>
+Date:   Fri, 17 Dec 2021 13:31:17 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Wen Gong <quic_wgong@quicinc.com> wrote:
 
-> Sometimes it has a variant value which read from DT or SMBIOS by
-> ath11k, and meanwhile it does not have the matched board name in
-> board-2.bin, then it will failed at boot up phase.
+> The regdomain is self-managed type for ath11k, the regdomain info is
+> reported from firmware, it is not from wireless regdb. Firmware fetch
+> the regdomain info from board data file before. Currently most of the
+> regdomain info has moved to another file regdb.bin from board data
+> file for some chips such as QCA6390 and WCN6855, so the regdomain info
+> left in board data file is not enough to support the feature which need
+> more regdomain info.
 > 
-> Add fallback board name which removed variant value and search again
-> in board-2.bin when failed with variant and try to load the board
-> data again to increase boot up success rate.
+> After download regdb.bin, firmware will fetch the regdomain info from
+> regdb.bin instead of board data file and report to ath11k. If it does
+> not have the file regdb.bin, it also can initialize wlan success and
+> firmware then fetch regdomain info from board data file.
 > 
-> dmesg log after this patch:
-> [169547.248472] ath11k_pci 0000:05:00.0: boot using board name 'bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262,variant=test'
-> [169547.248565] ath11k_pci 0000:05:00.0: boot firmware request ath11k/WCN6855/hw2.0/board-2.bin size 180324
-> [169547.248568] ath11k_pci 0000:05:00.0: board name
-> [169547.248570] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 76 65 6e 64 6f 72 3d 31  bus=pci,vendor=1
-> [169547.248571] ath11k_pci 0000:05:00.0: 00000010: 37 63 62 2c 64 65 76 69 63 65 3d 31 31 30 33 2c  7cb,device=1103,
-> [169547.248572] ath11k_pci 0000:05:00.0: 00000020: 73 75 62 73 79 73 74 65 6d 2d 76 65 6e 64 6f 72  subsystem-vendor
-> [169547.248574] ath11k_pci 0000:05:00.0: 00000030: 3d 31 37 63 62 2c 73 75 62 73 79 73 74 65 6d 2d  =17cb,subsystem-
-> [169547.248575] ath11k_pci 0000:05:00.0: 00000040: 64 65 76 69 63 65 3d 33 33 37 34 2c 71 6d 69 2d  device=3374,qmi-
-> [169547.248576] ath11k_pci 0000:05:00.0: 00000050: 63 68 69 70 2d 69 64 3d 32 2c 71 6d 69 2d 62 6f  chip-id=2,qmi-bo
-> [169547.248577] ath11k_pci 0000:05:00.0: 00000060: 61 72 64 2d 69 64 3d 32 36 32                    ard-id=262
-> [169547.248578] ath11k_pci 0000:05:00.0: board name
-> [169547.248579] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 76 65 6e 64 6f 72 3d 31  bus=pci,vendor=1
-> [169547.248581] ath11k_pci 0000:05:00.0: 00000010: 37 63 62 2c 64 65 76 69 63 65 3d 31 31 30 33 2c  7cb,device=1103,
-> [169547.248582] ath11k_pci 0000:05:00.0: 00000020: 73 75 62 73 79 73 74 65 6d 2d 76 65 6e 64 6f 72  subsystem-vendor
-> [169547.248583] ath11k_pci 0000:05:00.0: 00000030: 3d 31 37 63 62 2c 73 75 62 73 79 73 74 65 6d 2d  =17cb,subsystem-
-> [169547.248584] ath11k_pci 0000:05:00.0: 00000040: 64 65 76 69 63 65 3d 33 33 37 34 2c 71 6d 69 2d  device=3374,qmi-
-> [169547.248585] ath11k_pci 0000:05:00.0: 00000050: 63 68 69 70 2d 69 64 3d 32 2c 71 6d 69 2d 62 6f  chip-id=2,qmi-bo
-> [169547.248587] ath11k_pci 0000:05:00.0: 00000060: 61 72 64 2d 69 64 3d 32 36 36                    ard-id=266
-> [169547.248588] ath11k_pci 0000:05:00.0: board name
-> [169547.248589] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 76 65 6e 64 6f 72 3d 31  bus=pci,vendor=1
-> [169547.248590] ath11k_pci 0000:05:00.0: 00000010: 37 63 62 2c 64 65 76 69 63 65 3d 31 31 30 33 2c  7cb,device=1103,
-> [169547.248591] ath11k_pci 0000:05:00.0: 00000020: 73 75 62 73 79 73 74 65 6d 2d 76 65 6e 64 6f 72  subsystem-vendor
-> [169547.248592] ath11k_pci 0000:05:00.0: 00000030: 3d 31 37 63 62 2c 73 75 62 73 79 73 74 65 6d 2d  =17cb,subsystem-
-> [169547.248594] ath11k_pci 0000:05:00.0: 00000040: 64 65 76 69 63 65 3d 33 33 37 34 2c 71 6d 69 2d  device=3374,qmi-
-> [169547.248595] ath11k_pci 0000:05:00.0: 00000050: 63 68 69 70 2d 69 64 3d 31 38 2c 71 6d 69 2d 62  chip-id=18,qmi-b
-> [169547.248596] ath11k_pci 0000:05:00.0: 00000060: 6f 61 72 64 2d 69 64 3d 32 36 36                 oard-id=266
-> [169547.248597] ath11k_pci 0000:05:00.0: failed to fetch board data for bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262,variant=test from ath11k/WCN6855/hw2.0/board-2.bin
-> [169547.248476] ath11k_pci 0000:05:00.0: boot using board name 'bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262'
-> [169547.248634] ath11k_pci 0000:05:00.0: boot firmware request ath11k/WCN6855/hw2.0/board-2.bin size 180324
-> [169547.248636] ath11k_pci 0000:05:00.0: board name
-> [169547.248637] ath11k_pci 0000:05:00.0: 00000000: 62 75 73 3d 70 63 69 2c 76 65 6e 64 6f 72 3d 31  bus=pci,vendor=1
-> [169547.248638] ath11k_pci 0000:05:00.0: 00000010: 37 63 62 2c 64 65 76 69 63 65 3d 31 31 30 33 2c  7cb,device=1103,
-> [169547.248639] ath11k_pci 0000:05:00.0: 00000020: 73 75 62 73 79 73 74 65 6d 2d 76 65 6e 64 6f 72  subsystem-vendor
-> [169547.248641] ath11k_pci 0000:05:00.0: 00000030: 3d 31 37 63 62 2c 73 75 62 73 79 73 74 65 6d 2d  =17cb,subsystem-
-> [169547.248642] ath11k_pci 0000:05:00.0: 00000040: 64 65 76 69 63 65 3d 33 33 37 34 2c 71 6d 69 2d  device=3374,qmi-
-> [169547.248643] ath11k_pci 0000:05:00.0: 00000050: 63 68 69 70 2d 69 64 3d 32 2c 71 6d 69 2d 62 6f  chip-id=2,qmi-bo
-> [169547.248645] ath11k_pci 0000:05:00.0: 00000060: 61 72 64 2d 69 64 3d 32 36 32                    ard-id=262
-> [169547.248646] ath11k_pci 0000:05:00.0: boot found match for name 'bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262'
-> [169547.248647] ath11k_pci 0000:05:00.0: boot found board data for 'bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262'
-> [169547.248649] ath11k_pci 0000:05:00.0: using board api 2
+> Add download the regdb.bin before download board data for some specific
+> chip which support supports_regdb in hardware parameters.
 > 
+> download regdb.bin log:
+> [430082.334162] ath11k_pci 0000:05:00.0: chip_id 0x2 chip_family 0xb board_id 0x106 soc_id 0x400c0200
+> [430082.334169] ath11k_pci 0000:05:00.0: fw_version 0x110c8b4c fw_build_timestamp 2021-10-25 07:41 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HSP.1.1-02892-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+> [430082.334414] ath11k_pci 0000:05:00.0: boot firmware request ath11k/WCN6855/hw2.0/regdb.bin size 24310
+> 
+> output of "iw reg get"
+> global
+> country US: DFS-FCC
+>         (2402 - 2472 @ 40), (N/A, 30), (N/A)
+>         (5170 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
+>         (5250 - 5330 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
+>         (5490 - 5730 @ 160), (N/A, 23), (0 ms), DFS
+>         (5735 - 5835 @ 80), (N/A, 30), (N/A)
+>         (57240 - 63720 @ 2160), (N/A, 40), (N/A)
+> 
+> phy#0 (self-managed)
+> country US: DFS-FCC
+>         (2402 - 2472 @ 40), (6, 30), (N/A)
+>         (5170 - 5250 @ 80), (N/A, 24), (N/A), AUTO-BW
+>         (5250 - 5330 @ 80), (N/A, 24), (0 ms), DFS, AUTO-BW
+>         (5490 - 5730 @ 160), (N/A, 24), (0 ms), DFS, AUTO-BW
+>         (5735 - 5895 @ 160), (N/A, 30), (N/A), AUTO-BW
+>         (5945 - 7125 @ 160), (N/A, 24), (N/A), NO-OUTDOOR, AUTO-BW
+> 
+> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
 > Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
 > 
 > Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-On Dell XPS 13 9310 I see a new warning when testing the pending branch:
+With WCN6855 I see new warnings:
 
-[    2.471334] ath11k_pci 0000:72:00.0: chip_id 0x0 chip_family 0xb board_id 0xff soc_id 0xffffffff
-[    2.471339] ath11k_pci 0000:72:00.0: fw_version 0x101c06cc fw_build_timestamp 2020-06-24 19:50 fw_build_id 
-[    2.471761] ath11k_pci 0000:72:00.0: failed to fetch board data for bus=pci,qmi-chip-id=0,qmi-board-id=255,variant=DE_1901 from ath11k/QCA6390/hw2.0/board-2.bin
-[    2.513436] ath11k_pci 0000:72:00.0: leaving PCI ASPM disabled to avoid MHI M2 problems
-
-I suspect (but not sure!) it comes from this patchset.
+[12136.485140] ath11k_pci 0000:06:00.0: qmi failed to load CAL data file:cal-pci-0000:06:00.0.bin
+[12169.157236] ath11k_pci 0000:06:00.0: qmi failed to load CAL data file:cal-pci-0000:06:00.0.bin
 
 Patch set to Changes Requested.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211208072327.19719-2-quic_wgong@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211215061556.14282-1-quic_wgong@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
