@@ -2,155 +2,187 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88D78478CDE
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Dec 2021 14:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FBD6478E02
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Dec 2021 15:41:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236894AbhLQNyX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Dec 2021 08:54:23 -0500
-Received: from gate.crashing.org ([63.228.1.57]:60104 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231667AbhLQNyV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Dec 2021 08:54:21 -0500
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 1BHDZQmf021580;
-        Fri, 17 Dec 2021 07:35:26 -0600
-Received: (from segher@localhost)
-        by gate.crashing.org (8.14.1/8.14.1/Submit) id 1BHDZJZQ021573;
-        Fri, 17 Dec 2021 07:35:19 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date:   Fri, 17 Dec 2021 07:35:18 -0600
-From:   Segher Boessenkool <segher@kernel.crashing.org>
-To:     David Laight <David.Laight@aculab.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Rich Felker <dalias@libc.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "Richard Russon (FlatCap)" <ldm@flatcap.org>,
-        X86 ML <x86@kernel.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Paul Mackerras <paulus@samba.org>,
-        linux-m68k <linux-m68k@vger.kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "open list:SPARC + UltraSPARC (sparc/sparc64)" 
-        <sparclinux@vger.kernel.org>, Stafford Horne <shorne@gmail.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Yoshinori Sato <ysato@users.osdn.me>,
-        Russell King <linux@armlinux.org.uk>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Kees Cook <keescook@chromium.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@kernel.org>,
-        John Johansen <john.johansen@canonical.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-ntfs-dev@lists.sourceforge.net" 
-        <linux-ntfs-dev@lists.sourceforge.net>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        "open list:BPF JIT for MIPS (32-BIT AND 64-BIT)" 
-        <netdev@vger.kernel.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
-        <linuxppc-dev@lists.ozlabs.org>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>
-Subject: Re: [PATCH v2 00/13] Unify asm/unaligned.h around struct helper
-Message-ID: <20211217133518.GR614@gate.crashing.org>
-References: <20210514100106.3404011-1-arnd@kernel.org> <CAMj1kXG0CNomZ0aXxh_4094fT+g4bVWFCkrd7QwgTQgiqoxMWA@mail.gmail.com> <20211216185620.GP614@gate.crashing.org> <698cfc52a0d441f7b9f29424be82b2e8@AcuMS.aculab.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <698cfc52a0d441f7b9f29424be82b2e8@AcuMS.aculab.com>
-User-Agent: Mutt/1.4.2.3i
+        id S237404AbhLQOlb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Dec 2021 09:41:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45316 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237354AbhLQOla (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 17 Dec 2021 09:41:30 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ADF0C06173E
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 06:41:30 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id b7so8651166edd.6
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 06:41:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JWU5jrx8uzkoFd78Ys23ZOK1dm9ivQmIi4HaxP6dlv4=;
+        b=srPPgox/P4r9sfCVltI+UJtw85Ur7AFZ8AZRDLTGxMAk100H6kAK5Ftg3iXYEvXZQk
+         Me46k6XmXZC68vyWHLGa9eYmBrYBrmqoh08oeB5TnwfRLioU5Jf8IuHWIoZEVknT7TNT
+         wl8znefbBNhzi+k+7tkJr5SrnBd9N1cSNZ7V/0R0kV3bzZWMFolV32V4o/f85igw6MXu
+         AAqvxnAGLHnIqhX2zWHx2/cb1HBIVQZWTvpBUQidP79OmvLkjOnRbASsgGWsgwv9w4ni
+         hWoJ4MNsWDuKzeAjledCOt3f7M7bJEjcsvJtdj9scRpGPjFtQ0/vMt5YfG8xP0KSxsxz
+         5bAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JWU5jrx8uzkoFd78Ys23ZOK1dm9ivQmIi4HaxP6dlv4=;
+        b=VNWaa1ncFz4lqX/52HzcCaUdGidrVcQm6IEFhQXbFEq7Es6/Bw8XME3N5gMribioN1
+         TKjVBnpT6TGH1v0rIqIYbdKlG57JvTHzC4LgyYHE8x9I4FkN6VaRJuxjUycKRiAlUTdN
+         9IuwN2dVvnmaWxF9iCp6LldEa3bO4rOf8LgbEuNDUqSf3mHXQwI/NsI9FAnh3Xeu3RZu
+         lANBnL6PzZ23pudX1hd8IWwzv/WXGWCaPec2tQm1rLp203LivB73AnCDqUyTcMUn/7/z
+         IYharl5R4D1Roe5rKcBURAbyaIKGASyrG2vpBhwZtYRmIbhFKQMmBztaiJ7B/n2tovs3
+         Z9pg==
+X-Gm-Message-State: AOAM5315y51FVomIl+UH0PlUHqq+t4ujMT2BNnGFkNZE1uVCQuNgpRiN
+        9gFajXwfA33AdVq4uJPj5OlqwA==
+X-Google-Smtp-Source: ABdhPJxtfTdSZePgXYvUJVdJibMGa/wzwmXarJ/4RQ28O0+SZzhzgxhTWq0yn7DSjpJVmywKNwTn4A==
+X-Received: by 2002:a50:fb98:: with SMTP id e24mr3196629edq.80.1639752088840;
+        Fri, 17 Dec 2021 06:41:28 -0800 (PST)
+Received: from localhost (c-9b28e555.07-21-73746f28.bbcust.telenor.se. [85.229.40.155])
+        by smtp.gmail.com with ESMTPSA id c12sm3864770edx.80.2021.12.17.06.41.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Dec 2021 06:41:28 -0800 (PST)
+From:   Anders Roxell <anders.roxell@linaro.org>
+To:     stable@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, woojung.huh@microchip.com,
+        UNGLinuxDriver@microchip.com, davem@davemloft.net,
+        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+        clang-built-linux@googlegroups.com, ulli.kroll@googlemail.com,
+        linux@armlinux.org.uk, linux-arm-kernel@lists.infradead.org,
+        amitkarwar@gmail.com, nishants@marvell.com, gbhat@marvell.com,
+        huxinming820@gmail.com, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org, rostedt@goodmis.org,
+        mingo@redhat.com, dmitry.torokhov@gmail.com,
+        ndesaulniers@google.com, nathan@kernel.org,
+        linux-input@vger.kernel.org,
+        Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH 4.19 0/6] fix warning and errors on arm built with clang
+Date:   Fri, 17 Dec 2021 15:41:13 +0100
+Message-Id: <20211217144119.2538175-1-anders.roxell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Dec 17, 2021 at 12:34:53PM +0000, David Laight wrote:
-> From: Segher Boessenkool
-> > Sent: 16 December 2021 18:56
-> ...
-> > > The only remaining problem here is reinterpreting a char* pointer to a
-> > > u32*, e.g., for accessing the IP address in an Ethernet frame when
-> > > NET_IP_ALIGN == 2, which could suffer from the same UB problem again,
-> > > as I understand it.
-> > 
-> > The problem is never casting a pointer to pointer to character type, and
-> > then later back to an appriopriate pointer type.
-> > These things are both required to work.
-> 
-> I think that is true of 'void *', not 'char *'.
+Hi,
 
-No, see 6.3.2.3/7.  Both are allowed (and behave the same in fact).
+Can this patchset be applied to linux-4.19.y. I've tried to build an arm
+kernel for these defconfigs:
 
-> 'char' is special in that 'strict aliasing' doesn't apply to it.
-> (Which is actually a pain sometimes.)
+mini2440_defconfig, mxs_defconfig, imx_v4_v5_defconfig,
+integrator_defconfig, lpc32xx_defconfig, s3c2410_defconfig,
+nhk8815_defconfig, imx_v6_v7_defconfig, at91_dt_defconfig,
+shmobile_defconfig, omap1_defconfig, multi_v5_defconfig,
+orion5x_defconfig, footbridge_defconfig, davinci_all_defconfig
 
-That has nothing to do with it.  Yes, you can validly access any memory
-as a character type, but that has nothing to do with what pointer casts
-are allowed and which are not.
+Without this patchset these configs faild to build.
+Also I fixed a few warnings.
 
-> > The problem always is accessing something as if it
-> > was something of another type, which is not valid C.  This however is
-> > exactly what -fno-strict-aliasing allows, so that works as well.
-> 
-> IIRC the C language only allows you to have pointers to valid data items.
-> (Since they can only be generated by the & operator on a valid item.)
+There are still a few more warnings to fix.
+But this is a start.
 
-Not so.  For example you are explicitly allowed to have pointers one
-past the last element of an array (and do arithmetic on that!), and of
-course null pointers are a thing.
+I built the kernel with tuxmake and this is the command:
+tuxmake --runtime podman --target-arch arm --toolchain clang-nightly --kconfig tinyconfig LLVM=1 LLVM_IAS=0
 
-C allows you to make up pointers from integers as well.  This is
-perfectly fine to do.  Accessing anything via such pointers might well
-be not standard C, of course.
-
-> Indirecting any other pointer is probably UB!
-
-If a pointer points to an object, indirecting it gives an lvalue of that
-object.  It does not matter how you got that pointer, all that matters
-is that it points at a valid object.
-
-> This (sort of) allows the compiler to 'look through' casts to find
-> what the actual type is (or might be).
-> It can then use that information to make optimisation choices.
-> This has caused grief with memcpy() calls that are trying to copy
-> a structure that the coder knows is misaligned to an aligned buffer.
-
-This is 6.5/7.
-
-Alignment is 6.2.8 but it doesn't actually come into play at all here.
-
-> So while *(unaligned_ptr *)char_ptr probably has to work.
-
-Only if the original pointer points to an object that is correct
-(including correctly aligned) for such an lvalue.
-
-> If the compiler can see *(unaligned_ptr *)(char *)int_ptr it can
-> assume the alignment of the 'int_ptr' and do a single aligned access.
-
-It is undefined behaviour to have an address in int_ptr that is not
-correctly aligned for whatever type it points to.
+Similar results with clang-13.
 
 
-Segher
+Patch "net: lan78xx: Avoid unnecessary self assignment" fixes:
+
+drivers/net/usb/lan78xx.c:949:11: warning: explicitly assigning value of variable of type 'u32' (aka 'unsigned int') to itself [-Wself-assign]
+                        offset = offset;
+                        ~~~~~~ ^ ~~~~~~
+1 warning generated.
+
+
+Patch "ARM: 8805/2: remove unneeded naked function usage" fixes:
+
+arch/arm/mm/copypage-v4wb.c:47:9: error: parameter references not allowed in naked functions
+        : "r" (kto), "r" (kfrom), "I" (PAGE_SIZE / 64));
+               ^
+/builds/linux/arch/arm/mm/copypage-v4wb.c:25:13: note: attribute is here
+static void __naked
+            ^
+/builds/linux/include/linux/compiler_types.h:249:34: note: expanded from macro '__naked'
+#define __naked                 __attribute__((naked)) notrace
+                                               ^
+1 error generated.
+
+
+Patch "mwifiex: Remove unnecessary braces from HostCmd_SET_SEQ_NO_BSS_INFO" fixes:
+
+drivers/net/wireless/marvell/mwifiex/cmdevt.c:219:22: warning: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Wcompound-token-split-by-macro]
+        host_cmd->seq_num = cpu_to_le16(HostCmd_SET_SEQ_NO_BSS_INFO
+                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/builds/linux/include/linux/byteorder/generic.h:90:21: note: expanded from macro 'cpu_to_le16'
+#define cpu_to_le16 __cpu_to_le16
+                    ^
+
+
+Patch "Input: touchscreen - avoid bitwise vs logical OR warning" fixes:
+
+drivers/input/touchscreen/of_touchscreen.c:80:17: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
+        data_present = touchscreen_get_prop_u32(dev, "touchscreen-size-x",
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Patch "ARM: 8788/1: ftrace: remove old mcount support" fixes:
+
+arch/arm/kernel/entry-ftrace.S:56:2: error: Ftrace requires CONFIG_FRAME_POINTER=y with GCC older than 4.4.0.
+#error Ftrace requires CONFIG_FRAME_POINTER=y with GCC older than 4.4.0.
+ ^
+1 error generated.
+
+
+Patch "ARM: 8800/1: use choice for kernel unwinders" fixes the build
+error:
+
+clang: error: unknown argument: '-mapcs'
+clang: error: unknown argument: '-mno-sched-prolog'
+
+
+Cheers,
+Anders
+
+Nathan Chancellor (3):
+  net: lan78xx: Avoid unnecessary self assignment
+  mwifiex: Remove unnecessary braces from HostCmd_SET_SEQ_NO_BSS_INFO
+  Input: touchscreen - avoid bitwise vs logical OR warning
+
+Nicolas Pitre (1):
+  ARM: 8805/2: remove unneeded naked function usage
+
+Stefan Agner (2):
+  ARM: 8800/1: use choice for kernel unwinders
+  ARM: 8788/1: ftrace: remove old mcount support
+
+ arch/arm/Kconfig.debug                        | 45 +++++----
+ arch/arm/include/asm/ftrace.h                 |  3 -
+ arch/arm/kernel/armksyms.c                    |  3 -
+ arch/arm/kernel/entry-ftrace.S                | 75 +-------------
+ arch/arm/kernel/ftrace.c                      | 51 ----------
+ arch/arm/mm/copypage-fa.c                     | 35 ++++---
+ arch/arm/mm/copypage-feroceon.c               | 98 +++++++++----------
+ arch/arm/mm/copypage-v4mc.c                   | 19 ++--
+ arch/arm/mm/copypage-v4wb.c                   | 41 ++++----
+ arch/arm/mm/copypage-v4wt.c                   | 37 ++++---
+ arch/arm/mm/copypage-xsc3.c                   | 71 ++++++--------
+ arch/arm/mm/copypage-xscale.c                 | 71 +++++++-------
+ drivers/input/touchscreen/of_touchscreen.c    | 18 ++--
+ drivers/net/usb/lan78xx.c                     |  6 +-
+ drivers/net/wireless/marvell/mwifiex/cmdevt.c |  4 +-
+ drivers/net/wireless/marvell/mwifiex/fw.h     |  8 +-
+ lib/Kconfig.debug                             |  6 +-
+ 17 files changed, 228 insertions(+), 363 deletions(-)
+
+-- 
+2.34.1
+
