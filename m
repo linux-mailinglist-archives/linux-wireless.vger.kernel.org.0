@@ -2,359 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC66F4789E0
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Dec 2021 12:26:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 682FE478A43
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Dec 2021 12:43:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232167AbhLQL0e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Dec 2021 06:26:34 -0500
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:22874 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229503AbhLQL0d (ORCPT
+        id S235630AbhLQLnK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Dec 2021 06:43:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60366 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235627AbhLQLnJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Dec 2021 06:26:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1639740393; x=1671276393;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=xQHI8qkvGBUqrpLQoSf8lIf8WuLZpUK5H/P9FP0iIVc=;
-  b=Udx2+LkXvnnc8gs1IQs7Sd122N+7hzcHI0o2QIQm8l5mSJp66RHJHG3Q
-   V0l9NEwgDaCJ1ahSPOLjh40okjXV1PjUWE2YxbioxA/JEiZYn9wFv7eF9
-   f5eAa8ZY0QYnpiDCxZu/Shc34YT+WApjY13FyX+ZH0V4Aj+g5+tj7IH/5
-   o=;
-Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 17 Dec 2021 03:26:33 -0800
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2021 03:26:32 -0800
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Fri, 17 Dec 2021 03:26:33 -0800
-Received: from FUZHOU.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Fri, 17 Dec 2021 03:26:31 -0800
-From:   Cheng Wang <quic_chengwan@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <quic_chengwan@quicinc.com>
-Subject: [PATCH v2] ath11k: add support of firmware logging for WCN6855
-Date:   Fri, 17 Dec 2021 19:26:05 +0800
-Message-ID: <20211217112605.2823570-1-quic_chengwan@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 17 Dec 2021 06:43:09 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C532C061574
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 03:43:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=Yt68lu28p8qhSLxKJdX2Rb74vLM2/5YjejiNJAHF6zk=; b=gOWtmWg8RC94xOwGpaIA/1lJ53
+        /x85Ooz17cegyO5mJzgHrGwEFGqw4yoToph9uMF9e7ETs1VIfd5HTslwxOlvKaUKmUiX42qG7mO16
+        0oK3zK4IsU3o13ckh565X3nVjprY1UQO0T+dOQtqQseYP0IXK5jQPnlm5q021CNyoN0o=;
+Received: from p54ae911a.dip0.t-ipconnect.de ([84.174.145.26] helo=localhost.localdomain)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1myBdj-0007rY-L2; Fri, 17 Dec 2021 12:43:07 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, toke@redhat.com
+Subject: [PATCH] mac80211: use coarse boottime for airtime fairness code
+Date:   Fri, 17 Dec 2021 12:42:58 +0100
+Message-Id: <20211217114258.14619-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Host enables WMI firmware logging feature via QMI message.
-Host receives firmware logging messages on WMI_DIAG_EVENTID, then
-sends logging messages to user space via event tracing infrastructure.
+The time values used by the airtime fairness code only need to be accurate
+enough to cover station activity detection.
+Using ktime_get_coarse_boottime_ns instead of ktime_get_boottime_ns will
+drop the accuracy down to jiffies intervals, but at the same time saves
+a lot of CPU cycles in a hot path
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-
-Signed-off-by: Cheng Wang <quic_chengwan@quicinc.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
-v2: change per comments from Kalle
-    fails to apply, rebase.
+ net/mac80211/tx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
- drivers/net/wireless/ath/ath11k/core.c  |  6 ++
- drivers/net/wireless/ath/ath11k/hw.h    |  1 +
- drivers/net/wireless/ath/ath11k/qmi.c   | 94 +++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/qmi.h   | 12 ++++
- drivers/net/wireless/ath/ath11k/trace.h | 28 ++++++++
- drivers/net/wireless/ath/ath11k/wmi.c   | 10 +++
- 6 files changed, 151 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 606e867c36ec..c46cdd5ffffb 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -91,6 +91,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = true,
- 		.wakeup_mhi = false,
-+		.fw_wmi_diag_event = false,
- 	},
- 	{
- 		.hw_rev = ATH11K_HW_IPQ6018_HW10,
-@@ -149,6 +150,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = true,
- 		.wakeup_mhi = false,
-+		.fw_wmi_diag_event = false,
- 	},
- 	{
- 		.name = "qca6390 hw2.0",
-@@ -206,6 +208,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = false,
- 		.wakeup_mhi = true,
-+		.fw_wmi_diag_event = true,
- 	},
- 	{
- 		.name = "qcn9074 hw1.0",
-@@ -263,6 +266,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_dynamic_smps_6ghz = true,
- 		.alloc_cacheable_memory = true,
- 		.wakeup_mhi = false,
-+		.fw_wmi_diag_event = false,
- 	},
- 	{
- 		.name = "wcn6855 hw2.0",
-@@ -320,6 +324,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = false,
- 		.wakeup_mhi = true,
-+		.fw_wmi_diag_event = true,
- 	},
- 	{
- 		.name = "wcn6855 hw2.1",
-@@ -376,6 +381,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = false,
- 		.wakeup_mhi = true,
-+		.fw_wmi_diag_event = true,
- 	},
- };
- 
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index 23f3ce741636..4155dc98b851 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -185,6 +185,7 @@ struct ath11k_hw_params {
- 	bool supports_dynamic_smps_6ghz;
- 	bool alloc_cacheable_memory;
- 	bool wakeup_mhi;
-+	bool fw_wmi_diag_event;
- };
- 
- struct ath11k_hw_ops {
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 3b9ba0e03a66..88098d6c3fd4 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1584,6 +1584,50 @@ static struct qmi_elem_info qmi_wlanfw_cold_boot_cal_done_ind_msg_v01_ei[] = {
- 	},
- };
- 
-+static struct qmi_elem_info qmi_wlanfw_wlan_ini_req_msg_v01_ei[] = {
-+	{
-+		.data_type	= QMI_OPT_FLAG,
-+		.elem_len	= 1,
-+		.elem_size	= sizeof(u8),
-+		.array_type	= NO_ARRAY,
-+		.tlv_type	= 0x10,
-+		.offset		= offsetof(struct qmi_wlanfw_wlan_ini_req_msg_v01,
-+					   enablefwlog_valid),
-+	},
-+	{
-+		.data_type	= QMI_UNSIGNED_1_BYTE,
-+		.elem_len	= 1,
-+		.elem_size	= sizeof(u8),
-+		.array_type	= NO_ARRAY,
-+		.tlv_type	= 0x10,
-+		.offset		= offsetof(struct qmi_wlanfw_wlan_ini_req_msg_v01,
-+					   enablefwlog),
-+	},
-+	{
-+		.data_type	= QMI_EOTI,
-+		.array_type	= NO_ARRAY,
-+		.tlv_type	= QMI_COMMON_TLV_TYPE,
-+	},
-+};
-+
-+static struct qmi_elem_info qmi_wlanfw_wlan_ini_resp_msg_v01_ei[] = {
-+	{
-+		.data_type	= QMI_STRUCT,
-+		.elem_len	= 1,
-+		.elem_size	= sizeof(struct qmi_response_type_v01),
-+		.array_type	= NO_ARRAY,
-+		.tlv_type	= 0x02,
-+		.offset		= offsetof(struct qmi_wlanfw_wlan_ini_resp_msg_v01,
-+					   resp),
-+		.ei_array	= qmi_response_type_v01_ei,
-+	},
-+	{
-+		.data_type	= QMI_EOTI,
-+		.array_type	= NO_ARRAY,
-+		.tlv_type	= QMI_COMMON_TLV_TYPE,
-+	},
-+};
-+
- static int ath11k_qmi_host_cap_send(struct ath11k_base *ab)
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 278945e3e08a..cbe7d1d00a50 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3821,7 +3821,7 @@ struct ieee80211_txq *ieee80211_next_txq(struct ieee80211_hw *hw, u8 ac)
  {
- 	struct qmi_wlanfw_host_cap_req_msg_v01 req;
-@@ -2495,6 +2539,48 @@ static int ath11k_qmi_wlanfw_wlan_cfg_send(struct ath11k_base *ab)
- 	return ret;
- }
+ 	struct ieee80211_local *local = hw_to_local(hw);
+ 	struct airtime_sched_info *air_sched;
+-	u64 now = ktime_get_boottime_ns();
++	u64 now = ktime_get_coarse_boottime_ns();
+ 	struct ieee80211_txq *ret = NULL;
+ 	struct airtime_info *air_info;
+ 	struct txq_info *txqi = NULL;
+@@ -3948,7 +3948,7 @@ void ieee80211_update_airtime_weight(struct ieee80211_local *local,
+ 	u64 weight_sum = 0;
  
-+int ath11k_qmi_wlanfw_wlan_ini_send(struct ath11k_base *ab, bool enable)
-+{
-+	int ret;
-+	struct qmi_txn txn;
-+	struct qmi_wlanfw_wlan_ini_req_msg_v01 req = {};
-+	struct qmi_wlanfw_wlan_ini_resp_msg_v01 resp = {};
-+
-+	req.enablefwlog_valid = true;
-+	req.enablefwlog = enable ? 1 : 0;
-+
-+	ret = qmi_txn_init(&ab->qmi.handle, &txn,
-+			   qmi_wlanfw_wlan_ini_resp_msg_v01_ei, &resp);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = qmi_send_request(&ab->qmi.handle, NULL, &txn,
-+			       QMI_WLANFW_WLAN_INI_REQ_V01,
-+			       QMI_WLANFW_WLAN_INI_REQ_MSG_V01_MAX_LEN,
-+			       qmi_wlanfw_wlan_ini_req_msg_v01_ei, &req);
-+	if (ret < 0) {
-+		ath11k_warn(ab, "qmi failed to send wlan ini request, err = %d\n",
-+			    ret);
-+		qmi_txn_cancel(&txn);
-+		goto out;
-+	}
-+
-+	ret = qmi_txn_wait(&txn, msecs_to_jiffies(ATH11K_QMI_WLANFW_TIMEOUT_MS));
-+	if (ret < 0) {
-+		ath11k_warn(ab, "qmi failed wlan ini request, err = %d\n", ret);
-+		goto out;
-+	}
-+
-+	if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
-+		ath11k_warn(ab, "qmi wlan ini request failed, result: %d, err: %d\n",
-+			    resp.resp.result, resp.resp.error);
-+		ret = -EINVAL;
-+	}
-+
-+out:
-+	return ret;
-+}
-+
- void ath11k_qmi_firmware_stop(struct ath11k_base *ab)
- {
- 	int ret;
-@@ -2515,6 +2601,14 @@ int ath11k_qmi_firmware_start(struct ath11k_base *ab,
+ 	if (unlikely(!now))
+-		now = ktime_get_boottime_ns();
++		now = ktime_get_coarse_boottime_ns();
  
- 	ath11k_dbg(ab, ATH11K_DBG_QMI, "qmi firmware start\n");
+ 	lockdep_assert_held(&air_sched->lock);
  
-+	if (ab->hw_params.fw_wmi_diag_event) {
-+		ret = ath11k_qmi_wlanfw_wlan_ini_send(ab, true);
-+		if (ret < 0) {
-+			ath11k_warn(ab, "qmi failed to send wlan fw ini:%d\n", ret);
-+			return ret;
-+		}
-+	}
-+
- 	ret = ath11k_qmi_wlanfw_wlan_cfg_send(ab);
- 	if (ret < 0) {
- 		ath11k_warn(ab, "qmi failed to send wlan cfg: %d\n", ret);
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
-index a6fb7d47ee82..2c1cd1e9ad46 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.h
-+++ b/drivers/net/wireless/ath/ath11k/qmi.h
-@@ -427,10 +427,12 @@ struct qmi_wlanfw_m3_info_resp_msg_v01 {
- #define QMI_WLANFW_WLAN_MODE_RESP_MSG_V01_MAX_LEN	7
- #define QMI_WLANFW_WLAN_CFG_REQ_MSG_V01_MAX_LEN		803
- #define QMI_WLANFW_WLAN_CFG_RESP_MSG_V01_MAX_LEN	7
-+#define QMI_WLANFW_WLAN_INI_REQ_MSG_V01_MAX_LEN		4
- #define QMI_WLANFW_WLAN_MODE_REQ_V01			0x0022
- #define QMI_WLANFW_WLAN_MODE_RESP_V01			0x0022
- #define QMI_WLANFW_WLAN_CFG_REQ_V01			0x0023
- #define QMI_WLANFW_WLAN_CFG_RESP_V01			0x0023
-+#define QMI_WLANFW_WLAN_INI_REQ_V01			0x002F
- #define QMI_WLANFW_MAX_STR_LEN_V01			16
- #define QMI_WLANFW_MAX_NUM_CE_V01			12
- #define QMI_WLANFW_MAX_NUM_SVC_V01			24
-@@ -472,6 +474,16 @@ struct qmi_wlanfw_wlan_cfg_resp_msg_v01 {
- 	struct qmi_response_type_v01 resp;
- };
+@@ -3974,7 +3974,7 @@ void ieee80211_schedule_txq(struct ieee80211_hw *hw,
+ 	struct ieee80211_local *local = hw_to_local(hw);
+ 	struct txq_info *txqi = to_txq_info(txq);
+ 	struct airtime_sched_info *air_sched;
+-	u64 now = ktime_get_boottime_ns();
++	u64 now = ktime_get_coarse_boottime_ns();
+ 	struct airtime_info *air_info;
+ 	u8 ac = txq->ac;
+ 	bool was_active;
+@@ -4032,7 +4032,7 @@ static void __ieee80211_unschedule_txq(struct ieee80211_hw *hw,
  
-+struct qmi_wlanfw_wlan_ini_req_msg_v01 {
-+	/* Must be set to true if enablefwlog is being passed */
-+	u8 enablefwlog_valid;
-+	u8 enablefwlog;
-+};
-+
-+struct qmi_wlanfw_wlan_ini_resp_msg_v01 {
-+	struct qmi_response_type_v01 resp;
-+};
-+
- int ath11k_qmi_firmware_start(struct ath11k_base *ab,
- 			      u32 mode);
- void ath11k_qmi_firmware_stop(struct ath11k_base *ab);
-diff --git a/drivers/net/wireless/ath/ath11k/trace.h b/drivers/net/wireless/ath/ath11k/trace.h
-index 02003dc4207d..a02e54735e88 100644
---- a/drivers/net/wireless/ath/ath11k/trace.h
-+++ b/drivers/net/wireless/ath/ath11k/trace.h
-@@ -280,6 +280,34 @@ TRACE_EVENT(ath11k_log_dbg_dump,
- 		__get_str(msg)
- 	)
- );
-+
-+TRACE_EVENT(ath11k_wmi_diag,
-+	    TP_PROTO(struct ath11k_base *ab, const void *data, size_t len),
-+
-+	TP_ARGS(ab, data, len),
-+
-+	TP_STRUCT__entry(
-+		__string(device, dev_name(ab->dev))
-+		__string(driver, dev_driver_string(ab->dev))
-+		__field(u16, len)
-+		__dynamic_array(u8, data, len)
-+	),
-+
-+	TP_fast_assign(
-+		__assign_str(device, dev_name(ab->dev));
-+		__assign_str(driver, dev_driver_string(ab->dev));
-+		__entry->len = len;
-+		memcpy(__get_dynamic_array(data), data, len);
-+	),
-+
-+	TP_printk(
-+		"%s %s tlv diag len %d",
-+		__get_str(driver),
-+		__get_str(device),
-+		__entry->len
-+	)
-+);
-+
- #endif /* _TRACE_H_ || TRACE_HEADER_MULTI_READ*/
+ 	if (!purge)
+ 		airtime_set_active(air_sched, air_info,
+-				   ktime_get_boottime_ns());
++				   ktime_get_coarse_boottime_ns());
  
- /* we don't want to use include/trace/events */
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 2b4d27d807ab..60a96d1da771 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -7335,6 +7335,13 @@ static void ath11k_wmi_event_wow_wakeup_host(struct ath11k_base *ab, struct sk_b
- 	complete(&ab->wow.wakeup_completed);
- }
+ 	rb_erase_cached(&txqi->schedule_order,
+ 			&air_sched->active_txqs);
+@@ -4120,7 +4120,7 @@ bool ieee80211_txq_may_transmit(struct ieee80211_hw *hw,
+ 	if (RB_EMPTY_NODE(&txqi->schedule_order))
+ 		goto out;
  
-+static void
-+ath11k_wmi_diag_event(struct ath11k_base *ab,
-+		      struct sk_buff *skb)
-+{
-+	trace_ath11k_wmi_diag(ab, skb->data, skb->len);
-+}
-+
- static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- {
- 	struct wmi_cmd_hdr *cmd_hdr;
-@@ -7454,6 +7461,9 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- 	case WMI_11D_NEW_COUNTRY_EVENTID:
- 		ath11k_reg_11d_new_cc_event(ab, skb);
- 		break;
-+	case WMI_DIAG_EVENTID:
-+		ath11k_wmi_diag_event(ab, skb);
-+		break;
- 	/* TODO: Add remaining events */
- 	default:
- 		ath11k_dbg(ab, ATH11K_DBG_WMI, "Unknown eventid: 0x%x\n", id);
+-	now = ktime_get_boottime_ns();
++	now = ktime_get_coarse_boottime_ns();
+ 
+ 	/* Like in ieee80211_next_txq(), make sure the first station in the
+ 	 * scheduling order is eligible for transmission to avoid starvation.
 -- 
-2.25.1
+2.34.1
 
