@@ -2,154 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3AA9479974
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Dec 2021 08:39:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C7BC47996B
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Dec 2021 08:34:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232301AbhLRHj5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Dec 2021 02:39:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48140 "EHLO
+        id S232283AbhLRHe1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Dec 2021 02:34:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232292AbhLRHj5 (ORCPT
+        with ESMTP id S230506AbhLRHe0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Dec 2021 02:39:57 -0500
-X-Greylist: delayed 501 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Dec 2021 23:39:57 PST
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [IPv6:2001:67c:2050::465:103])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 011B7C061574
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 23:39:56 -0800 (PST)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:105:465:1:4:0])
+        Sat, 18 Dec 2021 02:34:26 -0500
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [IPv6:2001:67c:2050::465:102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41DDBC061574
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Dec 2021 23:34:26 -0800 (PST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4JGHbN3Nf5zQjg6;
-        Sat, 18 Dec 2021 08:31:28 +0100 (CET)
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4JGHfl0lpFzQk3V;
+        Sat, 18 Dec 2021 08:34:23 +0100 (CET)
 X-Virus-Scanned: amavisd-new at heinlein-support.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gorani.run; s=MBO0001;
-        t=1639812686;
+        t=1639812860;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=d6u0ICZ1Vq3Og20K+K5O3kr4+0ZawUseX4zVdNjgfGU=;
-        b=RL7x6atzXmGd8F04/B20CLYW3iKFS8VmI3WUVg10y9r6eMEqhWHd9x6spRP5E+DvLjO99B
-        K7MyduLCLy6tLPNoqINZx/qSACuDv+Lln0M6+4D4ULQdHyUyKzFO3+cE4TcO0n4rEz+GvJ
-        q2WhKBV1oyOJrgaEGaguT546QBSq/uiZzi5pmIAXAczJFbjJZ4JxHCJVnWovL6ABlNyJND
-        T09FRXHfD8lCbof5GXbCEKfIto8JxO+aQa122hB1zbm97FaFjptG4/AAK6I7Px/TxkK1s7
-        i9K4VHCE5fy4/1FKFavCFRSG3rHeyuAi7Ajtv5bZI4ZIYI4gkJTMXk8Bqiq02g==
-Message-ID: <b2288492-cdbd-0310-0951-cdee77fc3a79@gorani.run>
-Date:   Sat, 18 Dec 2021 16:31:17 +0900
+        bh=wfLZMS+LFEAxDKFFvLVwSlDstNXL+1AMVKuB3bV0N04=;
+        b=g4Bhm2fASkMQykq4JiiLfKHXxHJNf9PYylNyJAFQdw3rmwwwgVmnXotLXXRdYxFOmqwO3K
+        ThDSzKKTl0tClxZnNcjDaHLhiUTl0Lkrgi9ILKU8WFVP/r1ja9MPcYHYeD0Ij38RscseK7
+        8rQiT737Xde8VkYEFsw3/C2fzgHG9zvFb6K7xqH3noc0pDuBHNtl7hULFcjIFu6eQZBeAj
+        NyOn+/ftEWd7NzrLCc36iIK7PSMaXWUpbj3Gg2dZyxijMBqS1eo559Ps02YFmadNUNHZVI
+        ZKsOijh219CBpnvMI6cT3XVBCckauuDNwxtJNlhK7ns7g59lrUpfyXCSSTkC5Q==
+Message-ID: <3e599e1a-29cd-5c86-1f43-c4ce869909b3@gorani.run>
+Date:   Sat, 18 Dec 2021 16:34:13 +0900
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] wireless-regdb: Update regulatory rules for South
- Korea (KR)
-To:     Seth Forshee <sforshee@kernel.org>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <20210929172728.7512-1-mans0n@gorani.run>
- <20211024113821.51538-1-mans0n@gorani.run> <YXmVLUzVEgrAMLwL@ubuntu-x1>
- <4f05b6b1-084d-9046-4c63-6975c25d7615@gorani.run>
- <Yb0JAXsCnjnIQ9c9@ubuntu-x1>
+Subject: Re: [wireless-regdb] wireless-regdb: Update regulatory rules for the
+ US on 6 GHz band
+To:     "sforshee@kernel.org" <sforshee@kernel.org>,
+        "Asura Liu (asuliu)" <asuliu@cisco.com>
+Cc:     "wireless-regdb@lists.infradead.org" 
+        <wireless-regdb@lists.infradead.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <DM6PR11MB3116340921B7E66B0E4176A1D7749@DM6PR11MB3116.namprd11.prod.outlook.com>
+ <Yb0HabN+Js2iWnOH@ubuntu-x1>
 From:   Sungbo Eo <mans0n@gorani.run>
-In-Reply-To: <Yb0JAXsCnjnIQ9c9@ubuntu-x1>
+In-Reply-To: <Yb0HabN+Js2iWnOH@ubuntu-x1>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2021-12-18 07:02, Seth Forshee wrote:
-> On Sat, Oct 30, 2021 at 01:12:08AM +0900, Sungbo Eo wrote:
->> On 2021-10-28 03:06, Seth Forshee wrote:
->>> On Sun, Oct 24, 2021 at 08:38:21PM +0900, Sungbo Eo wrote:
->>>> This patch is based on MSIT Public Notification 2020-113 ("Unlicensed Radio
->>>> Equipment Established Without Notice"), officially announced on 2021-01-06.
->>>>
->>>> The PSD must not exceed 2.5 mW/MHz if the frequency range includes all or
->>>> part of 5230-5250 MHz and the bandwidth is equal to or less than 40 MHz.
->>>> This leads to the following:
->>>> * 5230-5250 @ 20 -> 17 dBm
->>>> * 5210-5250 @ 40 -> 20 dBm
->>>> Here the power limits for 80/160 MHz bandwidth are also lowered to 17 dBm,
->>>> as it's not possible to set different power limits for different bandwidths
->>>> at the moment.
->>>>
->>>> Extend the last 5 GHz frequency range to 5850 MHz.
->>>>
->>>> WiFi 6E is now allowed with the following restrictions:
->>>> * Indoor: the full 1.2 GHz range, up to 160 MHz bandwidth and 250mW EIRP
->>>> * Outdoor: the lower 500 MHz range, up to 160 MHz bandwidth and 25mW EIRP
->>>> Here only the former entry is added.
->>>>
->>>> And also update the regulatory source links.
->>>>
->>>> Signed-off-by: Sungbo Eo <mans0n@gorani.run>
->>>> ---
->>>> v2:
->>>> * split 5150-5250 MHz band rule to accommodate the PSD limit
->>>> * remove AUTO-BW flag from 6 GHz band rule
->>>> ---
->>>>    db.txt | 17 ++++++++++++-----
->>>>    1 file changed, 12 insertions(+), 5 deletions(-)
->>>>
->>>> diff --git a/db.txt b/db.txt
->>>> index 6e8dbef..387ac93 100644
->>>> --- a/db.txt
->>>> +++ b/db.txt
->>>> @@ -862,15 +862,22 @@ country KP: DFS-JP
->>>>    	(5490 - 5630 @ 20), (30), DFS
->>>>    	(5735 - 5815 @ 20), (30)
->>>> +# Source:
->>>> +# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196972
->>>> +# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196973
->>>> +# https://www.law.go.kr/LSW//admRulLsInfoP.do?chrClsCd=&admRulSeq=2100000196974
->>>>    country KR: DFS-JP
->>>> -	# ref: https://www.rra.go.kr
->>>>    	(2400 - 2483.5 @ 40), (23)
->>>> -	(5150 - 5250 @ 80), (23), AUTO-BW
->>>> +	(5150 - 5210 @ 40), (23), AUTO-BW
->>>> +	# max. PSD 2.5 mW/MHz in 5230-5250 MHz frequency range
->>>> +	(5210 - 5230 @ 20), (20), AUTO-BW
->>>> +	(5230 - 5250 @ 20), (17), AUTO-BW
->>>
->>> Even with 5210-5230 split out like this, 5210-5250 @ 40 still gets
->>> limited to 17 dBm by the 5230-5250 rule. So why do we need to split out
->>> 5210-5230 separate from 5150-5210?
+On 2021-12-18 06:55, sforshee@kernel.org wrote:
+> On Mon, Dec 13, 2021 at 09:19:50AM +0000, Asura Liu (asuliu) wrote:
+>>  From 3db25ea674232fea6a5efca292f6ed3fd8eba7a2 Mon Sep 17 00:00:00 2001
+>> From: Asura Liu <asuliu@cisco.com>
+>> Date: Mon, 13 Dec 2021 16:46:28 +0800
+>> Subject: [PATCH] wireless-regdb: Update regulatory rules for the US on 6 GHz
+>> band
+>> MIME-Version: 1.0
+>> Content-Type: text/plain; charset=UTF-8
+>> Content-Transfer-Encoding: 8bit
 >>
->> I did some tests with regdb and I found out that the rule to be applied
->> depends on the main 20 MHz channel. With the rules above, if I select
->> channel 48 (5230-5250) and enable VHT40, then the TX power is set to 17 dBm.
->> OTOH if I select channel 44 (5210–5230) and enable VHT40, then the TX power
->> is set to 20 dBm. I'm not sure whether my result is really correct, though.
+>> According to FCC 20-51, FCC adopts rules to unlicensed use of the 6 GHz band:
+>> "59. Third, the Commission limits the low-power indoor access points to lower power levels than the standard-power access points that operate under the control of an AFC. Consistent with the Commission's approach for the existing U-NII bands, the Commission specifies both a maximum power spectral density and an absolute maximum transmit power, both in terms of EIRP. Specifically, the Commission allows a maximum radiated power spectral density of 5 dBm per 1 megahertz and an absolute maximum radiated channel power of 30 dBm for the maximum permitted 320-megahertz channel (or 27 dBm for a 160-megahertz channel). In addition, to ensure that client devices remain in close proximity to the indoor access points, the Commission limits their PSD and maximum transmit power to 6 dB below the power permitted for the access points."
+>> See https://www.federalregister.gov/documents/2020/05/26/2020-11236/unlicensed-use-of-the-6-ghz-band
+>>
+>> And 47 CFR § 15.407 describe this as following:
+>> (a) (5) For an indoor access point operating in the 5.925-7.125 GHz band, the maximum power spectral density must not exceed 5 dBm e.i.r.p. in any 1-megahertz band. In addition, the maximum e.i.r.p. over the frequency band of operation must not exceed 30 dBm.
+>> (a) (8) For client devices operating under the control of an indoor access point in the 5.925-7.125 GHz bands, the maximum power spectral density must not exceed −1 dBm e.i.r.p. in any 1-megahertz band, and the maximum e.i.r.p. over the frequency band of operation must not exceed 24 dBm.
 > 
-> I'm sorry, when I saw the v3 patch I realized that I forgot to reply to
-> this email. I had wanted to take a look at the kernel source to try and
-> understand the behavior you described.
+> Thanks for the patch. A couple of quick notes about the patch
+> description. It's preferred to wrap lines in the body at around 75
+> characters, and it's required that you include a Signed-off-by tag
+> indicating your agreement to the DCO for your contribution (see
+> CONTRIBUTING).
 > 
-> I took a quick look, and from what I'm seeing the minimum of the power
-> limits for the two ranges should be used. This is the behavior I expect.
-> Can you provide more detail about how you're getting that result?
+> Additional comments below.
+> 
+>> ---
+>> db.txt | 6 ++++++
+>> 1 file changed, 6 insertions(+)
+>>
+>> diff --git a/db.txt b/db.txt
+>> index b898799..c6ef9b6 100644
+>> --- a/db.txt
+>> +++ b/db.txt
+>> @@ -1606,6 +1606,12 @@ country US: DFS-FCC
+>> 	# https://www.federalregister.gov/documents/2021/05/03/2021-08802/use-of-the-5850-5925-ghz-band
+>> 	# max. 33 dBm AP @ 20MHz, 36 dBm AP @ 40Mhz+, 6 dB less for clients
+>> 	(5850 - 5895 @ 40), (27), NO-OUTDOOR, AUTO-BW, NO-IR
+>> +	# 6ghz band
+>> +	# https://www.federalregister.gov/documents/2020/05/26/2020-11236/unlicensed-use-of-the-6-ghz-band
+>> +	# https://docs.fcc.gov/public/attachments/FCC-20-51A1_Rcd.pdf
+>> +	# max. 30 dBm AP @ 320MHz, 27 dBm AP @ 160MHz, 6 dB less for clients
+>> +	(5925 - 7125 @ 320), (30), NO-OUTDOOR, AUTO-BW
+>> +	(5925 - 7125 @ 320), (24), NO-OUTDOOR, AUTO-BW, NO-IR
+> 
+> The kernel doesn't currently support multiple rules with different flags
+> for the same range. This is an issue that's come up several times, but
+> so far nothing has been done about it.
+> 
+> Even ingoring that, I don't think these rules accomplish the intended
+> purpose. There's nothing that would require a client device to use the
+> NO-IR rule, so they could end up using the higher power limit and
+> transmitting before detecting transmission from an AP.
+> 
+> I also suspect that we should be able to express the AFC requirement in
+> the database before permitting AP operation in this range.
+> 
+> Currently I think the best we're able to do is to use the lowest common
+> denominator, which is the 24 dBm rule with NO-IR.
 > 
 > Thanks,
 > Seth
 
-I've got the result on MT7623+MT7615N AP with OpenWrt installed. (kernel 
-5.10)
-I set the channel and bandwidth in /etc/config/wireless (in 
-OpenWrt-standard way) and checked the tx power with `iw dev wlan0 info` 
-and Android WiFi Analyzer app.
+Hi, sorry for intruding.
 
-# channel 48, htmode VHT40
-type AP
-channel 48 (5240 MHz), width: 40 MHz, center1: 5230 MHz
-txpower 17.00 dBm
+I thought max EIRP rule for larger bandwidth also applies to smaller 
+bandwidth, that means we would use 24 dBm tx power with 20 MHz channel 
+as well. But the regulation limits PSD to -1 dBm/MHz and it leads to 12 
+dBm for 20 MHz. Shouldn't we use 12 dBm rule to fit the smallest bandwidth?
 
-# channel 44, htmode VHT40
-type AP
-channel 44 (5220 MHz), width: 40 MHz, center1: 5230 MHz
-txpower 20.00 dBm
-
-The WiFi Analyzer app also reported higher RSSI for the channel 44 case.
-
-I also had a quick look at net/wireless/reg.c and it seems you're right. 
-Perhaps my tests were bad, I do believe your comments more than my 
-result. ;)
+I still don't understand exactly how the rules work, my apologies if I 
+am mistaken.
 
 Regards,
 Sungbo
