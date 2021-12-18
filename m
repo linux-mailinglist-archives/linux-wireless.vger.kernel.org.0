@@ -2,50 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A54E2479E60
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 00:56:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD075479E54
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 00:56:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235304AbhLRXyz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Dec 2021 18:54:55 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:25506 "EHLO
+        id S234587AbhLRXy0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Dec 2021 18:54:26 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:25468 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234921AbhLRXyT (ORCPT
+        with ESMTP id S234901AbhLRXyT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sat, 18 Dec 2021 18:54:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=O3QMGZ1TvKipgmU3yhr6SELaovZiIL63KEeJdy55Z1k=;
-        b=OY4XOiqWy4g4NuCxzxUWsIERVRqtbR/Vsmg4r36Sf+uM67W98s5AHbI/LWZY+p1Vaibm
-        v2EZ5rNeFqe4C7ZKFeM4cWOLdbfIJn0ABqIWetPBr87iRzlUCxZn0KlamvzS8jEUqJKscn
-        k1IVkIpW6h6pJ1Fur1zZR802l8dBPcPoMsI3gQ9axYqgj6PqamX6h9ETwGvlgvRoYUGzY7
-        0aV2ed+QW7lUiIf8qWfWjCX6VpSkkxtBwmIOqOzhTPtXXjaKNrlvp2DcJtJbfC8dKdvy8o
-        wLh8wWL8L5vTAtGAuSO6JAlOjkb2eTuzKCzaLtYNvx8kpaA/cQhzGr3z7A26BLbw==
-Received: by filterdrecv-64fcb979b9-stcmh with SMTP id filterdrecv-64fcb979b9-stcmh-1-61BE74A8-22
-        2021-12-18 23:54:16.88213613 +0000 UTC m=+8294196.226541698
+        s=sgd; bh=QAh24Ex5HQMwz2LcHEFWDu0hjRaIliWenvyP2BPryNQ=;
+        b=RihxgcCN7Rp8Skq01adkqBvOMORTUxGQHEzj0nnhO+qYCB4gwzn1n2npuBBAIlD5K+0A
+        DFs90Fovz24xQE5DLDpVZwP6I4wOcWTbuNu0AzOLV0L0cOLe+cIqPWmH3oHb0uZc/Xo7gL
+        dBmUcK5n30roGWdlMOK7GZKOVkH58opBaYQtAgsGlQZ/k+kIJbSqrvlBhgnYRPo77WjRO3
+        DNSHkCwwiObZpiv4fZ+Ac9TXR1YfbJxnJA0ht31E23poKCCqC8bArqBK5rjwa1fz7STIdR
+        Hht4S8gtMn69vJB/NhqhxMq1wXokSdqEvyy8F8cFNuPcxkSWXZtY2pLoC5kchrmA==
+Received: by filterdrecv-656998cfdd-phncc with SMTP id filterdrecv-656998cfdd-phncc-1-61BE74A8-1D
+        2021-12-18 23:54:16.838337232 +0000 UTC m=+7604818.024584014
 Received: from pearl.egauge.net (unknown)
         by geopod-ismtpd-5-1 (SG)
         with ESMTP
-        id iu8-LAMbQYqFOg-98uBZbw
-        Sat, 18 Dec 2021 23:54:16.713 +0000 (UTC)
+        id MZ7uISucQJa4P7omMBWJmg
+        Sat, 18 Dec 2021 23:54:16.696 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 9C64B701006; Sat, 18 Dec 2021 16:54:15 -0700 (MST)
+        id 99A23700F78; Sat, 18 Dec 2021 16:54:15 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH 09/23] wilc1000: prepare wilc_wlan_tx_packet_done() for
- sk_buff changes
+Subject: [PATCH 08/23] wilc1000: fix management packet type inconsistency
 Date:   Sat, 18 Dec 2021 23:54:17 +0000 (UTC)
-Message-Id: <20211218235404.3963475-10-davidm@egauge.net>
+Message-Id: <20211218235404.3963475-9-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211218235404.3963475-1-davidm@egauge.net>
 References: <20211218235404.3963475-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvAfbdWDGErp6E4oqX?=
- =?us-ascii?Q?VKd+cceFveB6IDBKFu3rp69X9F2FiZ9fQfAqOO1?=
- =?us-ascii?Q?RbtdIA4+0CcRNBr4n6XptBkjISGTceoEcNv9fOY?=
- =?us-ascii?Q?=2FI9T0t4ZU0=2FGwpDp4Gcc47meHyTFgZZNqMasCxF?=
- =?us-ascii?Q?a3cw1Oo7L9cSxncQxhzlv0Ko=2FecFydapKRxxGDK?=
- =?us-ascii?Q?CJCDmrF4eYk=2FzoQ6g9Ydg=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvBgWXtrCB5OF5sDb1?=
+ =?us-ascii?Q?M3PEtEXGAnFYO34+OEM+j2yxQqTLIGNhi5Sbe1v?=
+ =?us-ascii?Q?3retJL1jACmWBuhInLXrqxzUtEf=2Fz7H8ANDeXBX?=
+ =?us-ascii?Q?pQ7=2Ft3BXfF+jgCJgN2LYyscpIBd5FY77AD11zOD?=
+ =?us-ascii?Q?2U2G8qy5QgPW=2FSm0fJnimgsBpQhtDYPOFZcT9A6?=
+ =?us-ascii?Q?3hHKGKv6vIBj3rEYWEHwA=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@codeaurora.org>,
@@ -61,36 +60,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch just adds some helper variables.  I suppose they improve
-readability, but the real reason for this patch is to make the
-forthcoming sk_buff rework patch shorter and more obvious.
+The queue type for management packets was initialized to AC_BE_Q
+(best-effort queue) but the packet was then actually added to the
+AC_VO_Q queue (voice, or highest-priority queue).  This fixes the
+inconsistency by setting the type to AC_VO_Q.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- drivers/net/wireless/microchip/wilc1000/wlan.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/wlan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index c72eb4244508c..eeb9961adfa34 100644
+index b85ceda8409e6..c72eb4244508c 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -192,11 +192,14 @@ static inline void tcp_process(struct net_device *dev, struct txq_entry_t *tqe)
- 
- static void wilc_wlan_tx_packet_done(struct txq_entry_t *tqe, int status)
- {
-+	struct wilc_vif *vif = tqe->vif;
-+	int ack_idx = tqe->ack_idx;
-+
- 	tqe->status = status;
- 	if (tqe->tx_complete_func)
- 		tqe->tx_complete_func(tqe->priv, tqe->status);
--	if (tqe->ack_idx != NOT_TCP_ACK && tqe->ack_idx < MAX_PENDING_ACKS)
--		tqe->vif->ack_filter.pending_acks[tqe->ack_idx].txqe = NULL;
-+	if (ack_idx != NOT_TCP_ACK && ack_idx < MAX_PENDING_ACKS)
-+		vif->ack_filter.pending_acks[ack_idx].txqe = NULL;
- 	kfree(tqe);
- }
- 
+@@ -507,7 +507,7 @@ int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, void *priv, u8 *buffer,
+ 	tqe->buffer_size = buffer_size;
+ 	tqe->tx_complete_func = tx_complete_fn;
+ 	tqe->priv = priv;
+-	tqe->q_num = AC_BE_Q;
++	tqe->q_num = AC_VO_Q;
+ 	tqe->ack_idx = NOT_TCP_ACK;
+ 	tqe->vif = vif;
+ 	wilc_wlan_txq_add_to_tail(dev, AC_VO_Q, tqe);
 -- 
 2.25.1
 
