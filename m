@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDCEB479E66
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 00:56:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E812B479E4A
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 00:54:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235373AbhLRXy7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Dec 2021 18:54:59 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:25734 "EHLO
+        id S234892AbhLRXyg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Dec 2021 18:54:36 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:25702 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234967AbhLRXyZ (ORCPT
+        with ESMTP id S234969AbhLRXy1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Dec 2021 18:54:25 -0500
+        Sat, 18 Dec 2021 18:54:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=L4jrxjI60V18U1KfdB6NjFsObHJc3K9dkEXY7jnJOIY=;
-        b=tCTjJY0CsCNWIqe8qw53n7lkhgCLfogkvYOGmNXDrF3CaQwIKc5sPLXDgRzteQLdtLLJ
-        2MEcjQS/tCHacgSE+TRdk0UT3+ESOy2REXFGqEfnDV2nkJXaVnnNL1oxYvUj1EKi49A2ZA
-        zSzBNlmPtzHtTP/KtxsmN6BHc3HyvtNiauspfX2EYVjSM6CE26kJbu5vfFq1wD+KkEuny+
-        CXY81bbSbEuZWPf6oGRpAP8RBufWqp+5YeOZIAEnoLDHfn7ta2zB9+kWkRucVACQziQ2hm
-        gHrHiVAbF6wkyO15w1LDyfhfFia9GfTEKWzcxxx8M1JO3otHQ8SQ+Rc4QJDcX9hg==
-Received: by filterdrecv-64fcb979b9-6sxlb with SMTP id filterdrecv-64fcb979b9-6sxlb-1-61BE74A9-9
-        2021-12-18 23:54:17.267529153 +0000 UTC m=+8294205.257723544
+        s=sgd; bh=5Pqwl63bHpqoLecNYX9M7YSYzft3PMq3Tp+Ku265mTY=;
+        b=R31qg4d/FC+Tyg4exwJVMuwogdfu/qX/5lV5bx4JCMnHIwRmt48WcjUmUj2VrH7YXatz
+        GQfZ0wOO6FQ+IS6W+ogSYfcpQHWbpm0Ef7wI9x4U6PLH0apkclP0Sn51G2vPzPl37IsRAx
+        Jt6cjEIB0F6GVITNC2vHYVEEke8x3e0ye7Hb/N1WM2228zUwnxAzqK1Q/+3+y9r7ucxTvB
+        hg8Bk0EAiSeVX4/8rUik1DqudIFFPHb8VAIeOoNiUTDnY4CxD3OhiRXlv9sVzZvsDnUdL3
+        n4EYIIY3o+8YUqBZ391bPCSRoF5lunwUUvdpnHAVz+MN5J3IcWtzOCD+mXyhkb/A==
+Received: by filterdrecv-75ff7b5ffb-wdd5z with SMTP id filterdrecv-75ff7b5ffb-wdd5z-1-61BE74A9-9
+        2021-12-18 23:54:17.132754881 +0000 UTC m=+9336865.234030658
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-6-0 (SG)
+        by geopod-ismtpd-1-1 (SG)
         with ESMTP
-        id uH6ySRw9RY6s7dhCBnIeqw
-        Sat, 18 Dec 2021 23:54:17.120 +0000 (UTC)
+        id 3JAEvuuJSgy3JFED5vCSbw
+        Sat, 18 Dec 2021 23:54:17.020 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id DDBC8701456; Sat, 18 Dec 2021 16:54:15 -0700 (MST)
+        id C770770141C; Sat, 18 Dec 2021 16:54:15 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH 22/23] wilc1000: minor syntax cleanup
+Subject: [PATCH 18/23] wilc1000: split huge tx handler into subfunctions
 Date:   Sat, 18 Dec 2021 23:54:17 +0000 (UTC)
-Message-Id: <20211218235404.3963475-23-davidm@egauge.net>
+Message-Id: <20211218235404.3963475-19-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211218235404.3963475-1-davidm@egauge.net>
 References: <20211218235404.3963475-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvOyBcWEdJk+6TgtIk?=
- =?us-ascii?Q?W4kHOENRwsRKyKvxEg1Xg4ZujUJ=2FQuiR6NhPsGd?=
- =?us-ascii?Q?Dm4hR4B807UtsqD+ucPQmTOnkdVodNtS3fTmKJi?=
- =?us-ascii?Q?N1=2FQDoMEaxSPGvBnlbNDhgk3aNrdOqm2Tt1yabg?=
- =?us-ascii?Q?GHngmnuMEp5vUW71Em3u8lT3Pgb02yqa3+sPnkJ?=
- =?us-ascii?Q?8acyDYn3CXKBNha=2FLW=2FTw=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvHfkfcXBPrp40SERT?=
+ =?us-ascii?Q?TQC6jUvlYfvdwJLiaQX72T07R=2FeSc78h7Dn=2F52c?=
+ =?us-ascii?Q?nt8CvTM7fOpBtB6jG4FkVTHXMaNV7JD1ysurm77?=
+ =?us-ascii?Q?PA0p6x3AaMF+O+7QZoZpVYwIo5WxR0XQiSqyaK5?=
+ =?us-ascii?Q?26DFxjHeqogg5YhTrqAQtwZSLzvRnXXyLMICzE6?=
+ =?us-ascii?Q?fVkfq2zumMv=2F0XHinySNg=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@codeaurora.org>,
@@ -60,54 +60,275 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove extraneous parentheses and braces.
+This makes the code easier to read and less error prone.  There are no
+functional changes in this patch.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- drivers/net/wireless/microchip/wilc1000/wlan.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ .../net/wireless/microchip/wilc1000/wlan.c    | 202 +++++++++++++-----
+ 1 file changed, 153 insertions(+), 49 deletions(-)
 
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index debed2f159215..4ec23b2b2da05 100644
+index 286bbf9392165..b7c8ff95b646a 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -653,10 +653,9 @@ static int fill_vmm_table(const struct wilc *wilc,
- 				continue;
+@@ -605,43 +605,40 @@ void host_sleep_notify(struct wilc *wilc)
+ }
+ EXPORT_SYMBOL_GPL(host_sleep_notify);
  
- 			ac_exist = 1;
--			for (k = 0; (k < num_pkts_to_add[ac]) && tqe_q[ac]; k++) {
--				if (i >= (WILC_VMM_TBL_SIZE - 1)) {
-+			for (k = 0; k < num_pkts_to_add[ac] && tqe_q[ac]; k++) {
-+				if (i >= WILC_VMM_TBL_SIZE - 1)
- 					goto out;
--				}
+-int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
++/**
++ * Fill VMM table with packets waiting to be sent.  The packets are
++ * added based on access category (priority) but also balanced to
++ * provide fairness.  Since this function peeks at the packet queues,
++ * the txq_add_to_head_cs mutex must be acquired before calling this
++ * function.
++ *
++ * @wilc - Pointer to the wilc structure.
++ * @ac_desired_ratio: First-round limit on number of packets to add from the
++ *	respective queue.
++ * @vmm_table: Pointer to the VMM table to fill.
++ * @vmm_entries_ac: Pointer to the queue-number table to fill.
++ *	For each packet added to the VMM table, this will be filled in
++ *	with the queue-number (access-category) that the packet is coming
++ *	from.
++ *
++ * @return
++ *	The number of VMM entries filled in.  The table is 0-terminated
++ *	so the returned number is at most WILC_VMM_TBL_SIZE-1.
++ */
++static int fill_vmm_table(const struct wilc *wilc,
++			  u8 ac_desired_ratio[NQUEUES],
++			  u32 vmm_table[WILC_VMM_TBL_SIZE],
++			  u8 vmm_entries_ac[WILC_VMM_TBL_SIZE])
+ {
+-	int i, entries = 0;
++	int i;
+ 	u8 k, ac;
+ 	u32 sum;
+-	u32 reg;
+-	u8 ac_desired_ratio[NQUEUES] = {0, 0, 0, 0};
+ 	u8 ac_preserve_ratio[NQUEUES] = {1, 1, 1, 1};
+ 	u8 *num_pkts_to_add;
+-	u8 vmm_entries_ac[WILC_VMM_TBL_SIZE];
+-	u32 offset = 0;
+ 	bool max_size_over = 0, ac_exist = 0;
+ 	int vmm_sz = 0;
+ 	struct sk_buff *tqe_q[NQUEUES];
+ 	struct wilc_skb_tx_cb *tx_cb;
+-	int ret = 0;
+-	int counter;
+-	int timeout;
+-	u32 vmm_table[WILC_VMM_TBL_SIZE];
+-	u8 ac_pkt_num_to_chip[NQUEUES] = {0, 0, 0, 0};
+-	const struct wilc_hif_func *func;
+-	int srcu_idx;
+-	u8 *txb = wilc->tx_buffer;
+-	struct wilc_vif *vif;
+-
+-	if (wilc->quit)
+-		goto out_update_cnt;
+-
+-	if (ac_balance(wilc, ac_desired_ratio))
+-		return -EINVAL;
+-
+-	mutex_lock(&wilc->txq_add_to_head_cs);
+-
+-	srcu_idx = srcu_read_lock(&wilc->srcu);
+-	list_for_each_entry_rcu(vif, &wilc->vif_list, list)
+-		wilc_wlan_txq_filter_dup_tcp_ack(vif->ndev);
+-	srcu_read_unlock(&wilc->srcu, srcu_idx);
  
- 				tx_cb = WILC_SKB_TX_CB(tqe_q[ac]);
- 				if (tx_cb->type == WILC_CFG_PKT)
-@@ -669,9 +668,8 @@ static int fill_vmm_table(const struct wilc *wilc,
- 				vmm_sz += tqe_q[ac]->len;
- 				vmm_sz = ALIGN(vmm_sz, 4);
+ 	for (ac = 0; ac < NQUEUES; ac++)
+ 		tqe_q[ac] = skb_peek(&wilc->txq[ac]);
+@@ -695,11 +692,28 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 		num_pkts_to_add = ac_preserve_ratio;
+ 	} while (!max_size_over && ac_exist);
  
--				if ((sum + vmm_sz) > WILC_TX_BUFF_SIZE) {
-+				if (sum + vmm_sz > WILC_TX_BUFF_SIZE)
- 					goto out;
--				}
- 				vmm_table[i] = vmm_sz / 4;
- 				if (tx_cb->type == WILC_CFG_PKT)
- 					vmm_table[i] |= BIT(10);
-@@ -735,10 +733,8 @@ static int send_vmm_table(struct wilc *wilc, int i, const u32 *vmm_table)
+-	if (i == 0)
+-		goto out_unlock;
+ 	vmm_table[i] = 0x0;
++	return i;
++}
++
++/**
++ * Send the VMM table to the chip and get back the number of entries
++ * that the chip can accept.  The bus must have been acquired before
++ * calling this function.
++ *
++ * @wilc: Pointer to the wilc structure.
++ * @i: The number of entries in the VMM table.
++ * @vmm_table: The VMM table to send.
++ *
++ * @return
++ *	The number of VMM table entries the chip can accept.
++ */
++static int send_vmm_table(struct wilc *wilc, int i, const u32 *vmm_table)
++{
++	const struct wilc_hif_func *func;
++	int ret, counter, entries, timeout;
++	u32 reg;
+ 
+-	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
+ 	counter = 0;
+ 	func = wilc->hif_func;
+ 	do {
+@@ -721,7 +735,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 	} while (!wilc->quit);
+ 
+ 	if (ret)
+-		goto out_release_bus;
++		return ret;
  
  	timeout = 200;
  	do {
--		ret = func->hif_block_tx(wilc,
--					 WILC_VMM_TBL_RX_SHADOW_BASE,
--					 (u8 *)vmm_table,
--					 ((i + 1) * 4));
-+		ret = func->hif_block_tx(wilc, WILC_VMM_TBL_RX_SHADOW_BASE,
-+					 (u8 *)vmm_table, (i + 1) * 4);
- 		if (ret)
- 			break;
+@@ -759,22 +773,36 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 				break;
+ 			reg &= ~BIT(0);
+ 			ret = func->hif_write_reg(wilc, WILC_HOST_TX_CTRL, reg);
++		} else {
++			ret = entries;
+ 		}
+ 	} while (0);
++	return ret;
++}
  
+-	if (ret)
+-		goto out_release_bus;
+-
+-	if (entries == 0) {
+-		/*
+-		 * No VMM space available in firmware so retry to transmit
+-		 * the packet from tx queue.
+-		 */
+-		ret = WILC_VMM_ENTRY_FULL_RETRY;
+-		goto out_release_bus;
+-	}
+-
+-	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
++/**
++ * Copy a set of packets to the transmit buffer.  The
++ * txq_add_to_head_cs mutex must still be held when calling this
++ * function.
++ *
++ * @wilc - Pointer to the wilc structure.
++ * @entries: The number of packets to send from the VMM table.
++ * @vmm_table: The VMM table to send.
++ * @vmm_entries_ac: Table index i contains the number of the queue to
++ *	take the i-th packet from.
++ *
++ * @return
++ *	Negative number on error, 0 on success.
++ */
++static int copy_packets(struct wilc *wilc, int entries, u32 *vmm_table,
++			u8 *vmm_entries_ac)
++{
++	u8 ac_pkt_num_to_chip[NQUEUES] = {0, 0, 0, 0};
++	struct wilc_skb_tx_cb *tx_cb;
++	u8 *txb = wilc->tx_buffer;
++	struct wilc_vif *vif;
++	int i, vmm_sz;
++	u32 offset;
+ 
+ 	offset = 0;
+ 	i = 0;
+@@ -829,16 +857,92 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 	} while (--entries);
+ 	for (i = 0; i < NQUEUES; i++)
+ 		wilc->fw[i].count += ac_pkt_num_to_chip[i];
++	return offset;
++}
+ 
+-	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
++/**
++ * Send the packets in the VMM table to the chip.  The bus must have
++ * been acquired.
++ *
++ * @wilc - Pointer to the wilc structure.
++ * @length: The length of the buffer containing the packets to be
++ *	sent to the chip.
++ *
++ * @return
++ *	Negative number on error, 0 on success.
++ */
++static int send_packets(struct wilc *wilc, int len)
++{
++	const struct wilc_hif_func *func = wilc->hif_func;
++	int ret;
++	u8 *txb = wilc->tx_buffer;
+ 
+ 	ret = func->hif_clear_int_ext(wilc, ENABLE_TX_VMM);
+ 	if (ret)
+-		goto out_release_bus;
++		return ret;
++
++	ret = func->hif_block_tx_ext(wilc, 0, txb, len);
++	return ret;
++}
++
++int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
++{
++	int i, entries, len;
++	u8 ac;
++	u8 ac_desired_ratio[NQUEUES] = {0, 0, 0, 0};
++	u8 vmm_entries_ac[WILC_VMM_TBL_SIZE];
++	struct sk_buff *tqe_q[NQUEUES];
++	int ret = 0;
++	u32 vmm_table[WILC_VMM_TBL_SIZE];
++	int srcu_idx;
++	struct wilc_vif *vif;
++
++	if (wilc->quit)
++		goto out_update_cnt;
++
++	if (ac_balance(wilc, ac_desired_ratio))
++		return -EINVAL;
++
++	mutex_lock(&wilc->txq_add_to_head_cs);
++
++	srcu_idx = srcu_read_lock(&wilc->srcu);
++	list_for_each_entry_rcu(vif, &wilc->vif_list, list)
++		wilc_wlan_txq_filter_dup_tcp_ack(vif->ndev);
++	srcu_read_unlock(&wilc->srcu, srcu_idx);
++
++	for (ac = 0; ac < NQUEUES; ac++)
++		tqe_q[ac] = skb_peek(&wilc->txq[ac]);
++
++	i = fill_vmm_table(wilc, ac_desired_ratio, vmm_table, vmm_entries_ac);
++	if (i == 0)
++		goto out_unlock;
++
++	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
++
++	ret = send_vmm_table(wilc, i, vmm_table);
++
++	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
++
++	if (ret < 0)
++		goto out_unlock;
++
++	entries = ret;
++	if (entries == 0) {
++		/* No VMM space available in firmware.  Inform caller
++		 * to retry later.
++		 */
++		ret = WILC_VMM_ENTRY_FULL_RETRY;
++		goto out_unlock;
++	}
++
++	len = copy_packets(wilc, entries, vmm_table, vmm_entries_ac);
++	if (len <= 0)
++		goto out_unlock;
++
++	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
+ 
+-	ret = func->hif_block_tx_ext(wilc, 0, txb, offset);
++	ret = send_packets(wilc, len);
+ 
+-out_release_bus:
+ 	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
+ 
+ out_unlock:
 -- 
 2.25.1
 
