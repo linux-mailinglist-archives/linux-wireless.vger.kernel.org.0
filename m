@@ -2,308 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A66F9479E31
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 00:51:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE86F479E35
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 00:54:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232516AbhLRXvI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Dec 2021 18:51:08 -0500
-Received: from mga07.intel.com ([134.134.136.100]:57238 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232124AbhLRXvH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Dec 2021 18:51:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639871467; x=1671407467;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bzS/lKY/19Ashq31CPFq5inwZJirLh/xY+8WhJbJ3SM=;
-  b=eaFhqB/pGq+nYCUNmUiL5NeJE1ABVm5tCCgSgtsaKLGDU7O6/8b3Nr1v
-   MxjLIxCWDljKBWkipbn76h611wf7cHZWQR/zO5BuwYBocntriuB14xpnj
-   41Uv/9/qsHMI5PT3WLNOYN3JnNktBPWutm+Tkc7S6p/zynzwoS6OOTTxv
-   D4WcFFFF8pSnMIoTZGyy8kLjWUJBBJ8elyXhjOs5jv4LGwz4IXi80TvdM
-   5bomWuGn5XQYDyMAb2sKrligmP1wvhbXOVr1QmbMhxPi/euwHmfq5uOPA
-   cWjyxHGZaNC6O0ugsDm/7Wrm44UYv+PQOmy1kniUZOLoPByvSx2gw+uTo
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10202"; a="303334038"
-X-IronPort-AV: E=Sophos;i="5.88,217,1635231600"; 
-   d="scan'208";a="303334038"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2021 15:51:07 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,217,1635231600"; 
-   d="scan'208";a="465519399"
-Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 18 Dec 2021 15:51:05 -0800
-Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1myjTk-0006WC-R9; Sat, 18 Dec 2021 23:51:04 +0000
-Date:   Sun, 19 Dec 2021 07:50:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
-Subject: [kvalo-wireless-drivers-next:master] BUILD SUCCESS
- f75c1d55ecbadce027fd650d3ca79e357afae0d9
-Message-ID: <61be73d7./E7ylLH8NSzuHdcB%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S234990AbhLRXyS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Dec 2021 18:54:18 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:25232 "EHLO
+        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232959AbhLRXyR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 18 Dec 2021 18:54:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
+        h=from:subject:mime-version:to:cc:content-transfer-encoding:
+        content-type;
+        s=sgd; bh=wzP9DgYMpXKgYWsfuD1dK/4zmX3SgTAGErInexoo/KQ=;
+        b=gDPysHXYB/iATmWtUO1Ybe9qnHorO8Mpvalz5DHQBs8vb/+sCcgwIUw5xfITPmcfAFT2
+        J2z9y6k1Y6qeahSmmU7jXfPd+338+8ZTP79cXhV7GrbxD9Ei+HwYZ1ePnsJHO0WjDNwJJc
+        7XEt2yswC09ewvicROZtZ68GdPMMckOMpRgg8vwNp7bLgsTFZSpTtqDDqrk88dq9xwZMsK
+        GgI4/TzckUxdwlC12ICjNWeuvXJdr27JGzmTbhD1aA/SQve585Bsja7uPSFqJZ3dTx8X3P
+        8bKDNFev5vLD8Nm0aplNR8lDMZddhkuLGucgbPjDa6BGDyMYRZ1oekTLtAx83pfw==
+Received: by filterdrecv-64fcb979b9-x2652 with SMTP id filterdrecv-64fcb979b9-x2652-1-61BE74A8-19
+        2021-12-18 23:54:16.475973623 +0000 UTC m=+8294249.160301187
+Received: from pearl.egauge.net (unknown)
+        by geopod-ismtpd-4-1 (SG)
+        with ESMTP
+        id r_NccQJDT_mpwXRgch3XiA
+        Sat, 18 Dec 2021 23:54:16.296 +0000 (UTC)
+Received: by pearl.egauge.net (Postfix, from userid 1000)
+        id 825627003AE; Sat, 18 Dec 2021 16:54:15 -0700 (MST)
+From:   David Mosberger-Tang <davidm@egauge.net>
+Subject: [PATCH 00/23] wilc1000: rework tx path to use sk_buffs throughout
+Date:   Sat, 18 Dec 2021 23:54:16 +0000 (UTC)
+Message-Id: <20211218235404.3963475-1-davidm@egauge.net>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvOFHE9PCYzQvZsVwd?=
+ =?us-ascii?Q?WSSZ+IiAKcuygXdhofy425Aqh2rrAOH9u05cT8w?=
+ =?us-ascii?Q?bhPNda82cAwYGzOSH4wb8=2FQsvubpKoLyM5U18UK?=
+ =?us-ascii?Q?PWlpzw6XnHoepA8=2FH=2FGjkRWQWDbDieWCUVdVgMw?=
+ =?us-ascii?Q?kTr4Q6aQWarCWf5uXOTNff4zfw0ELnU+HoUxDuY?=
+ =?us-ascii?Q?5DR7hLAZnZ88bXEu6Zj6Q=3D=3D?=
+To:     Ajay Singh <ajay.kathat@microchip.com>
+Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        David Mosberger-Tang <davidm@egauge.net>
+X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-branch HEAD: f75c1d55ecbadce027fd650d3ca79e357afae0d9  Merge tag 'wireless-drivers-next-2021-12-17' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next
+Based on the earlier discussion (RFC: wilc1000: refactor TX path to
+use sk_buff queue), here is the full patch series to clean up and
+simplify the TX path.
 
-elapsed time: 1794m
+The biggest patch is 0016, which is the one actually switching the
+queue data type, but I worked hard to minimize it to only direct
+changes due to the type changes.
 
-configs tested: 237
-configs skipped: 3
+There is no significant performance difference due to this patch.  I'd
+expect the new code to be slightly faster, but my WLAN
+test-environment is not sufficiently controlled to be sure of that.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+original iperf3 performance (duration 120 seconds):
 
-gcc tested configs:
-arm                              allyesconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allmodconfig
-arm                                 defconfig
-i386                 randconfig-c001-20211216
-mips                 randconfig-c004-20211218
-powerpc                       maple_defconfig
-nds32                               defconfig
-arm                          simpad_defconfig
-mips                        bcm63xx_defconfig
-sh                          rsk7203_defconfig
-powerpc                    amigaone_defconfig
-arm                            lart_defconfig
-arc                         haps_hs_defconfig
-sh                            titan_defconfig
-powerpc                   motionpro_defconfig
-powerpc                    socrates_defconfig
-powerpc                      arches_defconfig
-powerpc                          g5_defconfig
-powerpc                 canyonlands_defconfig
-arm                        trizeps4_defconfig
-powerpc                     mpc5200_defconfig
-mips                      bmips_stb_defconfig
-powerpc                     taishan_defconfig
-mips                          rb532_defconfig
-powerpc                      tqm8xx_defconfig
-powerpc                      chrp32_defconfig
-nios2                         10m50_defconfig
-parisc                              defconfig
-arm                          lpd270_defconfig
-powerpc                 mpc8315_rdb_defconfig
-mips                   sb1250_swarm_defconfig
-powerpc                    sam440ep_defconfig
-nios2                            alldefconfig
-powerpc                       ebony_defconfig
-mips                      malta_kvm_defconfig
-arm                           sama5_defconfig
-riscv                          rv32_defconfig
-mips                malta_qemu_32r6_defconfig
-mips                             allmodconfig
-powerpc                 mpc85xx_cds_defconfig
-powerpc                    ge_imp3a_defconfig
-alpha                            alldefconfig
-arc                        nsim_700_defconfig
-powerpc                 mpc837x_rdb_defconfig
-mips                            ar7_defconfig
-m68k                       bvme6000_defconfig
-powerpc                mpc7448_hpc2_defconfig
-arm                              alldefconfig
-powerpc                 mpc8560_ads_defconfig
-arc                                 defconfig
-sparc                               defconfig
-arm                       imx_v6_v7_defconfig
-powerpc                      cm5200_defconfig
-arm                   milbeaut_m10v_defconfig
-arm                        multi_v7_defconfig
-arm                      pxa255-idp_defconfig
-h8300                            alldefconfig
-arm                       spear13xx_defconfig
-mips                         cobalt_defconfig
-nds32                            alldefconfig
-m68k                       m5208evb_defconfig
-m68k                        m5407c3_defconfig
-arm                            hisi_defconfig
-sh                   rts7751r2dplus_defconfig
-arm                        clps711x_defconfig
-arm                            dove_defconfig
-m68k                       m5249evb_defconfig
-mips                        jmr3927_defconfig
-powerpc                     stx_gp3_defconfig
-sh                  sh7785lcr_32bit_defconfig
-i386                             alldefconfig
-m68k                         apollo_defconfig
-mips                       capcella_defconfig
-powerpc                     powernv_defconfig
-m68k                         amcore_defconfig
-mips                        bcm47xx_defconfig
-h8300                    h8300h-sim_defconfig
-mips                  cavium_octeon_defconfig
-mips                    maltaup_xpa_defconfig
-m68k                        stmark2_defconfig
-powerpc                      makalu_defconfig
-powerpc                 mpc832x_mds_defconfig
-arm                         shannon_defconfig
-sh                        sh7785lcr_defconfig
-arc                        vdk_hs38_defconfig
-arm                           stm32_defconfig
-arm                        neponset_defconfig
-h8300                       h8s-sim_defconfig
-mips                     cu1830-neo_defconfig
-arm                           u8500_defconfig
-m68k                        mvme147_defconfig
-ia64                         bigsur_defconfig
-arm                       aspeed_g4_defconfig
-sh                             espt_defconfig
-parisc                           allyesconfig
-powerpc               mpc834x_itxgp_defconfig
-powerpc                      walnut_defconfig
-mips                        omega2p_defconfig
-arm                         lubbock_defconfig
-arm                        magician_defconfig
-sh                           se7721_defconfig
-arc                     haps_hs_smp_defconfig
-sh                   sh7770_generic_defconfig
-sh                           se7724_defconfig
-powerpc                 linkstation_defconfig
-powerpc                        cell_defconfig
-arm                         axm55xx_defconfig
-m68k                          amiga_defconfig
-sh                        sh7757lcr_defconfig
-mips                         rt305x_defconfig
-parisc                           alldefconfig
-m68k                            mac_defconfig
-arc                     nsimosci_hs_defconfig
-arm                         s3c6400_defconfig
-mips                      pic32mzda_defconfig
-powerpc                    mvme5100_defconfig
-arm                          iop32x_defconfig
-arm                         vf610m4_defconfig
-arm                         assabet_defconfig
-arm                  randconfig-c002-20211216
-arm                  randconfig-c002-20211218
-arm                  randconfig-c002-20211219
-ia64                                defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                               defconfig
-nios2                            allyesconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-s390                             allmodconfig
-s390                             allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a006-20211216
-x86_64               randconfig-a005-20211216
-x86_64               randconfig-a001-20211216
-x86_64               randconfig-a002-20211216
-x86_64               randconfig-a003-20211216
-x86_64               randconfig-a004-20211216
-i386                 randconfig-a001-20211216
-i386                 randconfig-a005-20211216
-i386                 randconfig-a003-20211216
-i386                 randconfig-a006-20211216
-i386                 randconfig-a002-20211218
-i386                 randconfig-a005-20211218
-i386                 randconfig-a003-20211218
-i386                 randconfig-a006-20211218
-i386                 randconfig-a004-20211218
-x86_64               randconfig-a006-20211218
-x86_64               randconfig-a005-20211218
-x86_64               randconfig-a001-20211218
-x86_64               randconfig-a002-20211218
-x86_64               randconfig-a004-20211218
-x86_64               randconfig-a011-20211217
-x86_64               randconfig-a014-20211217
-x86_64               randconfig-a012-20211217
-x86_64               randconfig-a013-20211217
-x86_64               randconfig-a016-20211217
-x86_64               randconfig-a015-20211217
-x86_64               randconfig-a011-20211219
-x86_64               randconfig-a013-20211219
-x86_64               randconfig-a012-20211219
-x86_64               randconfig-a014-20211219
-x86_64               randconfig-a015-20211219
-x86_64               randconfig-a016-20211219
-i386                 randconfig-a011-20211219
-i386                 randconfig-a015-20211219
-i386                 randconfig-a012-20211219
-i386                 randconfig-a013-20211219
-i386                 randconfig-a014-20211219
-i386                 randconfig-a016-20211219
-arc                  randconfig-r043-20211216
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
+                TX [Mbps]	RX [Mbps]
+  PSM off:	14.8		18.9
+  PSM  on:	10.5		17.1
 
-clang tested configs:
-i386                 randconfig-a002-20211219
-i386                 randconfig-a001-20211219
-i386                 randconfig-a005-20211219
-i386                 randconfig-a003-20211219
-i386                 randconfig-a006-20211219
-i386                 randconfig-a004-20211219
-x86_64               randconfig-a006-20211219
-x86_64               randconfig-a005-20211219
-x86_64               randconfig-a001-20211219
-x86_64               randconfig-a003-20211219
-x86_64               randconfig-a002-20211219
-x86_64               randconfig-a004-20211219
-x86_64               randconfig-a011-20211218
-x86_64               randconfig-a015-20211218
-x86_64               randconfig-a016-20211218
-x86_64               randconfig-a011-20211216
-x86_64               randconfig-a012-20211216
-x86_64               randconfig-a013-20211216
-x86_64               randconfig-a016-20211216
-x86_64               randconfig-a015-20211216
-i386                 randconfig-a011-20211218
-i386                 randconfig-a014-20211218
-i386                 randconfig-a012-20211218
-i386                 randconfig-a013-20211218
-i386                 randconfig-a015-20211218
-i386                 randconfig-a016-20211218
-hexagon              randconfig-r045-20211216
-s390                 randconfig-r044-20211216
-riscv                randconfig-r042-20211216
-hexagon              randconfig-r041-20211216
-hexagon              randconfig-r045-20211219
-hexagon              randconfig-r041-20211219
+iperf3 performance with this patch-series applied:
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+		TX [Mbps]	RX [Mbps]
+  PSM off:	15.6		19.5
+  PSM  on:	11.2		17.7
+
+(PSM == power-save-mode; controlled by iw dev wlan0 set power_save on/off)
+
+David Mosberger-Tang (23):
+  wilc1000: don't hold txq_spinlock while initializing AC queue limits
+  wilc1000: switch txq_event from completion to waitqueue
+  wilc1000: move receive-queue stats from txq to wilc structure
+  wilc1000: factor common code in wilc_wlan_cfg_set() and wilc_wlan_cfg_get()
+  wilc1000: add wilc_wlan_tx_packet_done() function
+  wilc1000: move tx packet drop code into its own function
+  wilc1000: increment tx_dropped stat counter on tx packet drop
+  wilc1000: fix management packet type inconsistency
+  wilc1000: prepare wilc_wlan_tx_packet_done() for sk_buff changes
+  wilc1000: factor initialization of tx queue-specific packet fields
+  wilc1000: convert tqx_entries from "int" to "atomic_t"
+  wilc1000: refactor wilc_wlan_cfg_commit() a bit
+  wilc1000: sanitize config packet sequence number management a bit
+  wilc1000: if there is no tx packet, don't increment packets-sent counter
+  wilc1000: Add struct wilc_skb_tx_cb as an alias of struct txq_entry_t
+  wilc1000: switch tx queue to normal sk_buff entries
+  wilc1000: remove no longer used "vif" argument from init_txq_entry()
+  wilc1000: split huge tx handler into subfunctions
+  wilc1000: don't tell the chip to go to sleep while copying tx packets
+  wilc1000: eliminate "max_size_over" variable in fill_vmm_table
+  wilc1000: declare read-only ac_preserve_ratio as static and const
+  wilc1000: minor syntax cleanup
+  wilc1000: introduce symbolic names for two tx-related control bits
+
+ .../wireless/microchip/wilc1000/cfg80211.c    |  37 +-
+ drivers/net/wireless/microchip/wilc1000/mon.c |  36 +-
+ .../net/wireless/microchip/wilc1000/netdev.c  |  40 +-
+ .../net/wireless/microchip/wilc1000/netdev.h  |  13 +-
+ .../net/wireless/microchip/wilc1000/wlan.c    | 755 +++++++++---------
+ .../net/wireless/microchip/wilc1000/wlan.h    |  52 +-
+ 6 files changed, 442 insertions(+), 491 deletions(-)
+
+-- 
+2.25.1
+
