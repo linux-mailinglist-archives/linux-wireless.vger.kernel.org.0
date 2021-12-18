@@ -2,106 +2,228 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B5C4799F1
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Dec 2021 10:17:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E2D4479A6B
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Dec 2021 11:52:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232536AbhLRJRH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Dec 2021 04:17:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40936 "EHLO
+        id S232738AbhLRKwC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Dec 2021 05:52:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbhLRJRG (ORCPT
+        with ESMTP id S229775AbhLRKwC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Dec 2021 04:17:06 -0500
-Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DF72C061574
-        for <linux-wireless@vger.kernel.org>; Sat, 18 Dec 2021 01:17:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1639819022;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=SF02bACsOlKBBTjhK78ueYmpKRKGRba4v5mKU006x8g=;
-        b=GmGIbvW/gFj4ogrSfpdY8TLE4kVLY4FA0Zn6lTelRqDCgp+T9SLy80rVnztPLKwpEMrVb7
-        gZdSMJGZhVgxVI9851zzj+6R8dP79B0J0ZUNcrR2kEEcncmSWJm9+0UvZXpUdgMaJq5cgm
-        JcpeKtXGcrULF5u7kc8Z2f8szVBY7A0=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        quic_cjhuang@quicinc.com, Carl Huang <cjhuang@codeaurora.org>
-Subject: Re: [PATCH 6/6] ath11k: support GTK rekey offload
-Date:   Sat, 18 Dec 2021 10:16:59 +0100
-Message-ID: <2127318.8OWqheGOAS@sven-l14>
-In-Reply-To: <2102838.219ycuhFCz@sven-l14>
-References: <20211011193750.4891-1-cjhuang@codeaurora.org> <4f28496abae7743ab2a9fa7150c5d64c@codeaurora.org> <2102838.219ycuhFCz@sven-l14>
+        Sat, 18 Dec 2021 05:52:02 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9427AC061574
+        for <linux-wireless@vger.kernel.org>; Sat, 18 Dec 2021 02:52:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
+        MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=gVCyDIDEb9YbrDN/hKdYUIZa9NqzYVflg8EiYRtgOmU=; b=nRwEfzvUGu51VaVzIApYlj0yXq
+        kotpZhdkO6/rjZPiuH4hb9o2r69PadS27qhC2xVvPNgwA2FVJQaYuDPerM6DKK1wDDS/wH9aYgi4C
+        NSMowLZdLwX7Fhd60IjysHrqYVR95P91vXni5jdQQaK6nxzxTdmL9HJtWpS0koo1Ohrw=;
+Received: from p54ae911a.dip0.t-ipconnect.de ([84.174.145.26] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1myXJn-00035A-IJ; Sat, 18 Dec 2021 11:51:59 +0100
+Message-ID: <de61c750-8580-c453-4c33-c1b71d818a71@nbd.name>
+Date:   Sat, 18 Dec 2021 11:51:58 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2472807.WDt2SMqAfp"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.4.0
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: pull request: mt76 2021-12-18
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart2472807.WDt2SMqAfp
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org, quic_cjhuang@quicinc.com, Carl Huang <cjhuang@codeaurora.org>
-Subject: Re: [PATCH 6/6] ath11k: support GTK rekey offload
-Date: Sat, 18 Dec 2021 10:16:59 +0100
-Message-ID: <2127318.8OWqheGOAS@sven-l14>
-In-Reply-To: <2102838.219ycuhFCz@sven-l14>
-References: <20211011193750.4891-1-cjhuang@codeaurora.org> <4f28496abae7743ab2a9fa7150c5d64c@codeaurora.org> <2102838.219ycuhFCz@sven-l14>
+Hi Kalle,
 
-On Saturday, 18 December 2021 09:37:02 CET Sven Eckelmann wrote:
-> Why are you defining it as `u8 replay_counter[GTK_REPLAY_COUNTER_BYTES];` in 
-> the struct instead of using `__le64 replay_counter;`?
-> 
-> What ensures that this is value is 64 bit aligned in memory? Wouldn't it be 
-> more correct to (see above) use
-> 
->     replay_ctr = cpu_to_be64(get_unaligned_le64(ev->replay_counter));
-> 
+here's my updated pull request for 5.17
 
-Sorry for the noise, but the part of not knowing in which endianness the 
-firmware return multi-byte values is freaking me out. The above statements 
-assume that it is returning everything as little endian.
+- Felix
 
-If it is actually returns in host byte order (no idea how the firmware 
-determines this) then of course, the questions should be:
+The following changes since commit f75c1d55ecbadce027fd650d3ca79e357afae0d9:
 
-* Why are you defining it as `u8 replay_counter[GTK_REPLAY_COUNTER_BYTES];` in 
-  the struct instead of using `u64 replay_counter;`?
+   Merge tag 'wireless-drivers-next-2021-12-17' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next (2021-12-17 07:30:07 -0800)
 
-* What ensures that this is value is 64 bit aligned in memory? Wouldn't it be 
-  more correct (assuming it is a u64) to use
+are available in the Git repository at:
 
-    replay_ctr = cpu_to_be64(get_unaligned64(ev->replay_counter));
+   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-12-18
 
+for you to fetch changes up to a2a218b674cdbab132be5ed99cc2af06c4ff8cb8:
 
-Kind regards,
-	Sven
---nextPart2472807.WDt2SMqAfp
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+   mt76: mt7921s: fix cmd timeout in throughput test (2021-12-18 11:48:02 +0100)
 
------BEGIN PGP SIGNATURE-----
+----------------------------------------------------------------
+mt76 patches for 5.17
 
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmG9pwwACgkQXYcKB8Em
-e0auIQ/8CkFgbaoLmhL9m6AtlCC1vVLG84dopRi73TAhkmFO4ZZPHJ718cmcYiUh
-npz6aU7O5uZLaHtGYgZbXFyl6/K6Z9PIGPOmUqTuQSnv1GnMuMI5R92iBaaRmDvY
-vVShMx/0HQHB3PnIzBt7RMdqBXbVYU4Cl1/0Y6voPqHuFML4uTg7x0YhLE2BfPmc
-+ygNN7h286Y1REqh4oKHXQLwL70dWK0l4gV4ZlCAe0qWIE4S4FnDlbU9c0poIpKv
-CGlUjcV7JHfr3zTgLgvNIYR1pga9i2pv2gCNdKEplY3lZ7Nj92Zq87xBZbqhBIyR
-FXbnELW45L7AJhOy03/q4sgYYwSDBHjHxLcB0P/nYy5aSQnBXCNXYKwC+atIODIK
-3/ktur5QCB568YuH0KFlxnD5xFf9EOcZfwQEbgGaS3IpgFKJjvD9u7IeGzZs63Fs
-sCEwRnpsboLGbGOzZfvTz6TxFQur8vy+eij7TVBdKfv2Fb1phHNNfnWEzMICHIMl
-ZuxNN5kiiYnMjFdKqm/CXCX0Lau00vHpecSyib3VyUphcf2sbRR7Xp8HmnTEov26
-APE4H9sNKi1zPe3x/rD6sl23YMk1ib8rBcnDsWkxxVASsja9lA7H9uGDlzOf2HUP
-agxXtp2WCYeQcXiQsj110rupSWY0pJ1dyYzx7SUST09lTHu/1wk=
-=QbwG
------END PGP SIGNATURE-----
+* decap offload fixes
+* mt7915 fixes
+* mt7921 fixes
+* eeprom fixes
+* powersave handling fixes
+* SAR support
+* code cleanups
 
---nextPart2472807.WDt2SMqAfp--
+----------------------------------------------------------------
+Bo Jiao (1):
+       mt76: fix the wiphy's available antennas to the correct value
 
+Changcheng Deng (1):
+       mt76: mt7921: fix boolreturn.cocci warning
 
+Daniel Golle (1):
+       mt76: eeprom: tolerate corrected bit-flips
 
+Deren Wu (5):
+       mt76: mt7921: add support for PCIe ID 0x0608/0x0616
+       mt76: mt7921: introduce 160 MHz channel bandwidth support
+       mt76: mt7921s: fix bus hang with wrong privilege
+       mt76: mt7921: fix network buffer leak by txs missing
+       mt76: mt7921s: fix cmd timeout in throughput test
+
+Felix Fietkau (10):
+       mt76: mt7915: fix decap offload corner case with 4-addr VLAN frames
+       mt76: mt7615: fix decap offload corner case with 4-addr VLAN frames
+       mt76: mt7615: improve wmm index allocation
+       mt76: mt7915: improve wmm index allocation
+       mt76: clear sta powersave flag after notifying driver
+       mt76: mt7603: improve reliability of tx powersave filtering
+       mt76: mt7615: clear mcu error interrupt status on mt7663
+       mt76: allow drivers to drop rx packets early
+       mt76: mt7915: process txfree and txstatus without allocating skbs
+       mt76: mt7615: in debugfs queue stats, skip wmm index 3 on mt7663
+
+Lorenzo Bianconi (25):
+       mt76: mt7915: get rid of mt7915_mcu_set_fixed_rate routine
+       mt76: debugfs: fix queue reporting for mt76-usb
+       mt76: fix possible OOB issue in mt76_calculate_default_rate
+       mt76: mt7921: fix possible NULL pointer dereference in mt7921_mac_write_txwi
+       mt76: connac: fix a theoretical NULL pointer dereference in mt76_connac_get_phy_mode
+       mt76: mt7615: remove dead code in get_omac_idx
+       mt76: connac: remove PHY_MODE_AX_6G configuration in mt76_connac_get_phy_mode
+       mt76: mt7921: honor mt76_connac_mcu_set_rate_txpower return value in mt7921_config
+       mt76: move sar utilities to mt76-core module
+       mt76: mt76x02: introduce SAR support
+       mt76: mt7603: introduce SAR support
+       mt76: mt7915: introduce SAR support
+       mt76: connac: fix last_chan configuration in mt76_connac_mcu_rate_txpower_band
+       mt76: move sar_capa configuration in common code
+       mt76: mt7663: disable 4addr capability
+       mt76: connac: introduce MCU_EXT macros
+       mt76: connac: align MCU_EXT definitions with 7915 driver
+       mt76: connac: remove MCU_FW_PREFIX bit
+       mt76: connac: introduce MCU_UNI_CMD macro
+       mt76: connac: introduce MCU_CE_CMD macro
+       mt76: connac: rely on MCU_CMD macro
+       mt76: mt7915: rely on mt76_connac definitions
+       mt76: mt7915: introduce mt76_vif in mt7915_vif
+       mt76: mt7921: remove dead definitions
+       mt76: connac: rely on le16_add_cpu in mt76_connac_mcu_add_nested_tlv
+
+MeiChia Chiu (1):
+       mt76: mt7915: add mu-mimo and ofdma debugfs knobs
+
+Peter Chiu (1):
+       mt76: mt7615: fix possible deadlock while mt7615_register_ext_phy()
+
+Ryder Lee (3):
+       mt76: mt7915: fix SMPS operation fail
+       mt76: only set rx radiotap flag from within decoder functions
+       mt76: only access ieee80211_hdr after mt76_insert_ccmp_hdr
+
+Sean Wang (9):
+       mt76: mt7921: drop offload_flags overwritten
+       mt76: mt7921: fix MT7921E reset failure
+       mt76: mt7921: move mt76_connac_mcu_set_hif_suspend to bus-related files
+       mt76: mt7921s: fix the device cannot sleep deeply in suspend
+       mt76: mt7921s: fix possible kernel crash due to invalid Rx count
+       mt76: mt7921: clear pm->suspended in mt7921_mac_reset_work
+       mt76: mt7921: fix possible resume failure
+       mt76: mt7921s: make pm->suspended usage consistent
+       mt76: mt7921s: fix suspend error with enlarging mcu timeout value
+
+Shayne Chen (5):
+       mt76: mt7915: fix return condition in mt7915_tm_reg_backup_restore()
+       mt76: mt7915: add default calibrated data support
+       mt76: testmode: add support to set MAC
+       mt76: mt7615: fix unused tx antenna mask in testmode
+       mt76: mt7921: use correct iftype data on 6GHz cap init
+
+Tzung-Bi Shih (1):
+       mt76: mt7921: reduce log severity levels for informative messages
+
+Xing Song (2):
+       mt76: reverse the first fragmented frame to 802.11
+       mt76: do not pass the received frame with decryption error
+
+  drivers/net/wireless/mediatek/mt76/debugfs.c         |   2 +-
+  drivers/net/wireless/mediatek/mt76/dma.c             |  19 +-
+  drivers/net/wireless/mediatek/mt76/eeprom.c          |   2 +
+  drivers/net/wireless/mediatek/mt76/mac80211.c        |  90 ++++++++-
+  drivers/net/wireless/mediatek/mt76/mt76.h            |  12 +-
+  drivers/net/wireless/mediatek/mt76/mt7603/mac.c      |   9 +-
+  drivers/net/wireless/mediatek/mt76/mt7603/main.c     |  31 ++-
+  drivers/net/wireless/mediatek/mt76/mt7603/mcu.c      |   4 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c  |   3 +
+  drivers/net/wireless/mediatek/mt76/mt7615/init.c     |   1 +
+  drivers/net/wireless/mediatek/mt76/mt7615/mac.c      | 122 +++++++++++-
+  drivers/net/wireless/mediatek/mt76/mt7615/mac.h      |   2 +
+  drivers/net/wireless/mediatek/mt76/mt7615/main.c     |  15 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c      | 200 +++++++++----------
+  drivers/net/wireless/mediatek/mt76/mt7615/mcu.h      | 127 ------------
+  drivers/net/wireless/mediatek/mt76/mt7615/mmio.c     |   1 +
+  drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c |   8 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/testmode.c |  25 ++-
+  drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c  |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 169 +++++++---------
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 521 +++++++++++++++++++++++++++++++++++++++++++-----
+  drivers/net/wireless/mediatek/mt76/mt76x0/init.c     |   5 +-
+  drivers/net/wireless/mediatek/mt76/mt76x0/main.c     |  34 +++-
+  drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h   |   2 +
+  drivers/net/wireless/mediatek/mt76/mt76x0/pci.c      |   1 +
+  drivers/net/wireless/mediatek/mt76/mt76x0/usb.c      |   1 +
+  drivers/net/wireless/mediatek/mt76/mt76x02.h         |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt76x02_util.c    |   4 +-
+  drivers/net/wireless/mediatek/mt76/mt76x2/init.c     |  29 +++
+  drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h   |   2 +
+  drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c |   5 +-
+  drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c |   7 +-
+  drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c |   4 +-
+  drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c |   9 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c  | 227 ++++++++++++++++++++-
+  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c   |  83 ++++++--
+  drivers/net/wireless/mediatek/mt76/mt7915/mac.c      | 205 +++++++++++++++----
+  drivers/net/wireless/mediatek/mt76/mt7915/main.c     |  70 ++++---
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      | 267 ++++++++++++++-----------
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h      | 841 +++++------------------------------------------------------------------------
+  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h   |  27 +--
+  drivers/net/wireless/mediatek/mt76/mt7915/pci.c      |   1 +
+  drivers/net/wireless/mediatek/mt76/mt7915/testmode.c |  17 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/init.c     |  12 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 136 ++++++++++---
+  drivers/net/wireless/mediatek/mt76/mt7921/main.c     |  80 +++-----
+  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c      | 160 ++++++++-------
+  drivers/net/wireless/mediatek/mt76/mt7921/mcu.h      | 153 +++-----------
+  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h   |   2 +
+  drivers/net/wireless/mediatek/mt76/mt7921/pci.c      |  25 ++-
+  drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c  |   4 +
+  drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c  |   4 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c     |  51 +++--
+  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/testmode.c |   4 +-
+  drivers/net/wireless/mediatek/mt76/sdio.c            |  11 +-
+  drivers/net/wireless/mediatek/mt76/sdio_txrx.c       |   3 +-
+  drivers/net/wireless/mediatek/mt76/testmode.c        |  36 +++-
+  drivers/net/wireless/mediatek/mt76/testmode.h        |   4 +
+  60 files changed, 2093 insertions(+), 1804 deletions(-)
