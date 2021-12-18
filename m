@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E6E5479E38
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 00:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93D43479E34
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 00:54:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235011AbhLRXyW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Dec 2021 18:54:22 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:25282 "EHLO
+        id S234979AbhLRXyR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Dec 2021 18:54:17 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:25300 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234384AbhLRXyR (ORCPT
+        with ESMTP id S232124AbhLRXyR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sat, 18 Dec 2021 18:54:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=gY5sGuQPIVMDU44/2pC7gMhps+WU8nE0gGBCpIqOlgQ=;
-        b=Ws9w0O5N+di9y39ZKUstO9eSg7fNXIaykYmg0CiUV4T+13FiJ7jKldoWOumuMetdS8t9
-        mV/gIH2DuvmiBlDIyHrGswIR+GzI0Xd7uFUJiyck/o5gNqaPXGwitQCWH4R9R4EFxwqWJK
-        No0GFevUCnPwPZv8oI17cDDLpSCHJogiTmBqbyztvNF84Xh0UhPMcxzSjZ8r3f50xgoLcx
-        1A2jTvafUo1F9ZOBQqO0/gt0VTBRuF/cWQO7ewosdj1fqZcgFPFltJ6VC5PYpitxwCSbI3
-        42qFFTwyhjO/Gcn50LOUdieqnjS8uTM39q74BB4gcmW3m/JeIH/EvcYERHi5fPYQ==
-Received: by filterdrecv-75ff7b5ffb-bcbbj with SMTP id filterdrecv-75ff7b5ffb-bcbbj-1-61BE74A8-17
-        2021-12-18 23:54:16.475387188 +0000 UTC m=+9336800.790258411
+        s=sgd; bh=v7mhVC8oOz6jVz3FqzbpHDEQb0xvpcFgFAT/KNJ3tFk=;
+        b=WJFXWzdfsC+OIXaa1TNfd8VY4OQ2FWZf1DjV8liOWlGms/iixnxWf2IYxLyoeTwTp+3O
+        9ArahNQ+sZXvIjuDpwp2BK77RAnPBOtAh4Q8iYeR0wjBle+ocyLm3rbmSQ8i3zvyd3x8DN
+        t6UiHLThfQyfXQUnnLyfrMR/5AZlk9ohYmgOWXoCCm3P/h5gmEvPsWmIZ99IZo1B+Vcv4Z
+        PPwrz+2enC0XolwrrurT6wMwHAFks0NgwNgrJlc+gr08rGd4CDHrDaHTtzO+5iecG6B3rI
+        +tKFvlelVI7ACUX6HIPNYljIHcr4f5ZeZw2M9MBgAgq52dYHBFF2u9GC/R1B2d9g==
+Received: by filterdrecv-64fcb979b9-5m6bg with SMTP id filterdrecv-64fcb979b9-5m6bg-1-61BE74A8-15
+        2021-12-18 23:54:16.521131114 +0000 UTC m=+8294248.488193823
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-2-1 (SG)
+        by geopod-ismtpd-5-0 (SG)
         with ESMTP
-        id CRHLIZYzR-6quDBgjG8pYQ
-        Sat, 18 Dec 2021 23:54:16.302 +0000 (UTC)
+        id 9_004Y47RlWVNmE_OdvBYw
+        Sat, 18 Dec 2021 23:54:16.323 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 8422570054A; Sat, 18 Dec 2021 16:54:15 -0700 (MST)
+        id 89CAD700694; Sat, 18 Dec 2021 16:54:15 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH 01/23] wilc1000: don't hold txq_spinlock while initializing AC
- queue limits
+Subject: [PATCH 03/23] wilc1000: move receive-queue stats from txq to wilc
+ structure
 Date:   Sat, 18 Dec 2021 23:54:16 +0000 (UTC)
-Message-Id: <20211218235404.3963475-2-davidm@egauge.net>
+Message-Id: <20211218235404.3963475-4-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211218235404.3963475-1-davidm@egauge.net>
 References: <20211218235404.3963475-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvD47APGjFyEg=2F9qMg?=
- =?us-ascii?Q?vPPi1SQklD09yHMagrC+uTlKXz5TBABfx8jUJaf?=
- =?us-ascii?Q?CMbaOMKdvK0PKVlW4v9n1tSZ6MgedAC=2FnUrKT8t?=
- =?us-ascii?Q?EU4XWAIn2XfedCPZ+GIs5c=2FbutuVbfK0syQTJAv?=
- =?us-ascii?Q?pkxaB8ESZo4yXE=2FTynUrlMWePwGPGlCrvHwJw5b?=
- =?us-ascii?Q?msnYNQeaYiUqY6LhRGeAQ=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvOefZa1KROfX6WNE6?=
+ =?us-ascii?Q?WJTSIBXCw4Y8gXfoILR78bvyRBoeZwMCihyeVhc?=
+ =?us-ascii?Q?XVgjU00tWHB+j8HM7ZkWNzKPPFf4W9KOn+57a+3?=
+ =?us-ascii?Q?4yRWUsFRi7ZwnyRcMIEw=2F21aLUvpLOBi69LuA3F?=
+ =?us-ascii?Q?qVKyB9uoUyNq1n1fhpC6YhgPjp0alCtp5REcFYi?=
+ =?us-ascii?Q?5u1=2FXnjkyV5Z0OmNk=2FS6A=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@codeaurora.org>,
@@ -61,93 +61,100 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The wilc_tx_queue_status queue is relatively large and there is
-absolutely no need to initialize it while holding a spinlock.
+This is in preparation of switching the transmit queue to struct
+sk_buffs.  There is no functional change other than moving the
+location of the structure.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- .../net/wireless/microchip/wilc1000/netdev.h  |  1 -
- .../net/wireless/microchip/wilc1000/wlan.c    | 32 +++++++++++--------
- 2 files changed, 19 insertions(+), 14 deletions(-)
+ .../net/wireless/microchip/wilc1000/netdev.h  |  1 +
+ .../net/wireless/microchip/wilc1000/wlan.c    | 28 +++++++++----------
+ .../net/wireless/microchip/wilc1000/wlan.h    |  1 -
+ 3 files changed, 15 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net/wireless/microchip/wilc1000/netdev.h
-index b9a88b3e322f1..fd0cb01e538a2 100644
+index 65cf296a8689e..ce79bdcc28000 100644
 --- a/drivers/net/wireless/microchip/wilc1000/netdev.h
 +++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
-@@ -202,7 +202,6 @@ struct wilc_tx_queue_status {
- 	u16 end_index;
- 	u16 cnt[NQUEUES];
- 	u16 sum;
--	bool initialized;
- };
+@@ -254,6 +254,7 @@ struct wilc {
  
- struct wilc {
+ 	struct txq_handle txq[NQUEUES];
+ 	int txq_entries;
++	struct txq_fw_recv_queue_stat fw[NQUEUES];
+ 
+ 	struct wilc_tx_queue_status tx_q_limit;
+ 	struct rxq_entry_t rxq_head;
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 1aa4236a2fe41..721e6131125e8 100644
+index fafeabe2537a3..2d103131b2e93 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -12,6 +12,8 @@
+@@ -373,32 +373,32 @@ static inline int ac_balance(struct wilc *wl, u8 *ratio)
+ 		return -EINVAL;
  
- #define WAKE_UP_TRIAL_RETRY		10000
+ 	for (i = 0; i < NQUEUES; i++)
+-		if (wl->txq[i].fw.count > max_count)
+-			max_count = wl->txq[i].fw.count;
++		if (wl->fw[i].count > max_count)
++			max_count = wl->fw[i].count;
  
-+static const u8 factors[NQUEUES] = {1, 1, 1, 1};
-+
- static inline bool is_wilc1000(u32 id)
- {
- 	return (id & (~WILC_CHIP_REV_FIELD)) == WILC_1000_BASE_ID;
-@@ -283,10 +285,23 @@ static int wilc_wlan_txq_add_cfg_pkt(struct wilc_vif *vif, u8 *buffer,
- 	return 1;
+ 	for (i = 0; i < NQUEUES; i++)
+-		ratio[i] = max_count - wl->txq[i].fw.count;
++		ratio[i] = max_count - wl->fw[i].count;
+ 
+ 	return 0;
  }
  
-+static void init_q_limits(struct wilc *wl)
-+{
-+	struct wilc_tx_queue_status *q = &wl->tx_q_limit;
-+	int i;
-+
-+	for (i = 0; i < AC_BUFFER_SIZE; i++)
-+		q->buffer[i] = i % NQUEUES;
-+
-+	for (i = 0; i < NQUEUES; i++) {
-+		q->cnt[i] = AC_BUFFER_SIZE * factors[i] / NQUEUES;
-+		q->sum += q->cnt[i];
-+	}
-+	q->end_index = AC_BUFFER_SIZE - 1;
-+}
-+
- static bool is_ac_q_limit(struct wilc *wl, u8 q_num)
+ static inline void ac_update_fw_ac_pkt_info(struct wilc *wl, u32 reg)
  {
--	u8 factors[NQUEUES] = {1, 1, 1, 1};
--	u16 i;
- 	unsigned long flags;
- 	struct wilc_tx_queue_status *q = &wl->tx_q_limit;
- 	u8 end_index;
-@@ -294,17 +309,6 @@ static bool is_ac_q_limit(struct wilc *wl, u8 q_num)
- 	bool ret = false;
- 
- 	spin_lock_irqsave(&wl->txq_spinlock, flags);
--	if (!q->initialized) {
--		for (i = 0; i < AC_BUFFER_SIZE; i++)
--			q->buffer[i] = i % NQUEUES;
+-	wl->txq[AC_BK_Q].fw.count = FIELD_GET(BK_AC_COUNT_FIELD, reg);
+-	wl->txq[AC_BE_Q].fw.count = FIELD_GET(BE_AC_COUNT_FIELD, reg);
+-	wl->txq[AC_VI_Q].fw.count = FIELD_GET(VI_AC_COUNT_FIELD, reg);
+-	wl->txq[AC_VO_Q].fw.count = FIELD_GET(VO_AC_COUNT_FIELD, reg);
 -
--		for (i = 0; i < NQUEUES; i++) {
--			q->cnt[i] = AC_BUFFER_SIZE * factors[i] / NQUEUES;
--			q->sum += q->cnt[i];
--		}
--		q->end_index = AC_BUFFER_SIZE - 1;
--		q->initialized = 1;
--	}
- 
- 	end_index = q->end_index;
- 	q->cnt[q->buffer[end_index]] -= factors[q->buffer[end_index]];
-@@ -1485,6 +1489,8 @@ int wilc_wlan_init(struct net_device *dev)
- 		goto fail;
- 	}
- 
-+	init_q_limits(wilc);
+-	wl->txq[AC_BK_Q].fw.acm = FIELD_GET(BK_AC_ACM_STAT_FIELD, reg);
+-	wl->txq[AC_BE_Q].fw.acm = FIELD_GET(BE_AC_ACM_STAT_FIELD, reg);
+-	wl->txq[AC_VI_Q].fw.acm = FIELD_GET(VI_AC_ACM_STAT_FIELD, reg);
+-	wl->txq[AC_VO_Q].fw.acm = FIELD_GET(VO_AC_ACM_STAT_FIELD, reg);
++	wl->fw[AC_BK_Q].count = FIELD_GET(BK_AC_COUNT_FIELD, reg);
++	wl->fw[AC_BE_Q].count = FIELD_GET(BE_AC_COUNT_FIELD, reg);
++	wl->fw[AC_VI_Q].count = FIELD_GET(VI_AC_COUNT_FIELD, reg);
++	wl->fw[AC_VO_Q].count = FIELD_GET(VO_AC_COUNT_FIELD, reg);
 +
- 	if (!wilc->tx_buffer)
- 		wilc->tx_buffer = kmalloc(WILC_TX_BUFF_SIZE, GFP_KERNEL);
++	wl->fw[AC_BK_Q].acm = FIELD_GET(BK_AC_ACM_STAT_FIELD, reg);
++	wl->fw[AC_BE_Q].acm = FIELD_GET(BE_AC_ACM_STAT_FIELD, reg);
++	wl->fw[AC_VI_Q].acm = FIELD_GET(VI_AC_ACM_STAT_FIELD, reg);
++	wl->fw[AC_VO_Q].acm = FIELD_GET(VO_AC_ACM_STAT_FIELD, reg);
+ }
  
+ static inline u8 ac_change(struct wilc *wilc, u8 *ac)
+ {
+ 	do {
+-		if (wilc->txq[*ac].fw.acm == 0)
++		if (wilc->fw[*ac].acm == 0)
+ 			return 0;
+ 		(*ac)++;
+ 	} while (*ac < NQUEUES);
+@@ -920,7 +920,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 		kfree(tqe);
+ 	} while (--entries);
+ 	for (i = 0; i < NQUEUES; i++)
+-		wilc->txq[i].fw.count += ac_pkt_num_to_chip[i];
++		wilc->fw[i].count += ac_pkt_num_to_chip[i];
+ 
+ 	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
+ 
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
+index eb7978166d73e..9b33262909e2f 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.h
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
+@@ -341,7 +341,6 @@ struct txq_fw_recv_queue_stat {
+ struct txq_handle {
+ 	struct txq_entry_t txq_head;
+ 	u16 count;
+-	struct txq_fw_recv_queue_stat fw;
+ };
+ 
+ struct rxq_entry_t {
 -- 
 2.25.1
 
