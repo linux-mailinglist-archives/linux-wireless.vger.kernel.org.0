@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93D43479E34
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 00:54:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4537A479E3E
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 00:54:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234979AbhLRXyR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Dec 2021 18:54:17 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:25300 "EHLO
+        id S235042AbhLRXyZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Dec 2021 18:54:25 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:25336 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232124AbhLRXyR (ORCPT
+        with ESMTP id S234858AbhLRXyS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Dec 2021 18:54:17 -0500
+        Sat, 18 Dec 2021 18:54:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=v7mhVC8oOz6jVz3FqzbpHDEQb0xvpcFgFAT/KNJ3tFk=;
-        b=WJFXWzdfsC+OIXaa1TNfd8VY4OQ2FWZf1DjV8liOWlGms/iixnxWf2IYxLyoeTwTp+3O
-        9ArahNQ+sZXvIjuDpwp2BK77RAnPBOtAh4Q8iYeR0wjBle+ocyLm3rbmSQ8i3zvyd3x8DN
-        t6UiHLThfQyfXQUnnLyfrMR/5AZlk9ohYmgOWXoCCm3P/h5gmEvPsWmIZ99IZo1B+Vcv4Z
-        PPwrz+2enC0XolwrrurT6wMwHAFks0NgwNgrJlc+gr08rGd4CDHrDaHTtzO+5iecG6B3rI
-        +tKFvlelVI7ACUX6HIPNYljIHcr4f5ZeZw2M9MBgAgq52dYHBFF2u9GC/R1B2d9g==
-Received: by filterdrecv-64fcb979b9-5m6bg with SMTP id filterdrecv-64fcb979b9-5m6bg-1-61BE74A8-15
-        2021-12-18 23:54:16.521131114 +0000 UTC m=+8294248.488193823
+        s=sgd; bh=0hlvidBJdhIlrLaOHqRVQf+FcgIZ6mOxvt9oZ5jAdx0=;
+        b=vQ9EnhDfneo5BqECP/eh1ztxPZq24D5XUBEaQAsws/L7qQ1jRNwgl5i3Gt9LaGrt0Txq
+        p/bSHsC2I5KuElmBo/qIt/Da9Kx/KRpmMzXUT68KapI2JHMOmNGamups9cBzWd5R6DpEmC
+        97DzFXmAmYjTbOcY/ooOHab/jItIWv3rXLATYzeX7nwuvelkmWJRVAm8OOREo/F4jAhlnL
+        AflfqxNeopq11JwrY3EoJLKPZikm1H3vjW8sMw7Z7/xSK3BrmLxZGkmSiO99RmiwwNcswm
+        6PUqJmQTQaXL+9BZ0qhU45sZkiXpaPNMqhAEqPHaWDRfszCy5P1o+kcKLgrlT+hw==
+Received: by filterdrecv-75ff7b5ffb-wdd5z with SMTP id filterdrecv-75ff7b5ffb-wdd5z-1-61BE74A8-17
+        2021-12-18 23:54:16.568724745 +0000 UTC m=+9336864.670000613
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-5-0 (SG)
+        by geopod-ismtpd-1-1 (SG)
         with ESMTP
-        id 9_004Y47RlWVNmE_OdvBYw
-        Sat, 18 Dec 2021 23:54:16.323 +0000 (UTC)
+        id 6K7gRl6-Tv2qCxjFpmNq-A
+        Sat, 18 Dec 2021 23:54:16.367 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 89CAD700694; Sat, 18 Dec 2021 16:54:15 -0700 (MST)
+        id 8D75D70086E; Sat, 18 Dec 2021 16:54:15 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH 03/23] wilc1000: move receive-queue stats from txq to wilc
- structure
+Subject: [PATCH 04/23] wilc1000: factor common code in wilc_wlan_cfg_set() and
+ wilc_wlan_cfg_get()
 Date:   Sat, 18 Dec 2021 23:54:16 +0000 (UTC)
-Message-Id: <20211218235404.3963475-4-davidm@egauge.net>
+Message-Id: <20211218235404.3963475-5-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211218235404.3963475-1-davidm@egauge.net>
 References: <20211218235404.3963475-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvOefZa1KROfX6WNE6?=
- =?us-ascii?Q?WJTSIBXCw4Y8gXfoILR78bvyRBoeZwMCihyeVhc?=
- =?us-ascii?Q?XVgjU00tWHB+j8HM7ZkWNzKPPFf4W9KOn+57a+3?=
- =?us-ascii?Q?4yRWUsFRi7ZwnyRcMIEw=2F21aLUvpLOBi69LuA3F?=
- =?us-ascii?Q?qVKyB9uoUyNq1n1fhpC6YhgPjp0alCtp5REcFYi?=
- =?us-ascii?Q?5u1=2FXnjkyV5Z0OmNk=2FS6A=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvE+Fbp=2FMICLbrzIyn?=
+ =?us-ascii?Q?lqvh2mpwH=2F4CJ7Fl+jG2+wFUWQcq78AkswDBm0M?=
+ =?us-ascii?Q?GRp9lFxQYYmrW1+AHjdJjCedyCNvjiNb8nCXqQ7?=
+ =?us-ascii?Q?QUPbB6eefetRuWwuUEZ0WirGQdzlvZPjYxPQ9yG?=
+ =?us-ascii?Q?v8YzOIkZIEgSPuHnnp=2FSsFuMQCiHd0oz2KyfiAS?=
+ =?us-ascii?Q?jhlz2=2FucxjmhUYynDgurA=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@codeaurora.org>,
@@ -61,100 +61,115 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is in preparation of switching the transmit queue to struct
-sk_buffs.  There is no functional change other than moving the
-location of the structure.
+The functions are almost identical, so factor the common code into new
+function wilc_wlan_cfg_apply_wid().  No functional change.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- .../net/wireless/microchip/wilc1000/netdev.h  |  1 +
- .../net/wireless/microchip/wilc1000/wlan.c    | 28 +++++++++----------
- .../net/wireless/microchip/wilc1000/wlan.h    |  1 -
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ .../net/wireless/microchip/wilc1000/wlan.c    | 65 ++++++++-----------
+ 1 file changed, 27 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net/wireless/microchip/wilc1000/netdev.h
-index 65cf296a8689e..ce79bdcc28000 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.h
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
-@@ -254,6 +254,7 @@ struct wilc {
- 
- 	struct txq_handle txq[NQUEUES];
- 	int txq_entries;
-+	struct txq_fw_recv_queue_stat fw[NQUEUES];
- 
- 	struct wilc_tx_queue_status tx_q_limit;
- 	struct rxq_entry_t rxq_head;
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index fafeabe2537a3..2d103131b2e93 100644
+index 2d103131b2e93..1c487342c1a88 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -373,32 +373,32 @@ static inline int ac_balance(struct wilc *wl, u8 *ratio)
- 		return -EINVAL;
- 
- 	for (i = 0; i < NQUEUES; i++)
--		if (wl->txq[i].fw.count > max_count)
--			max_count = wl->txq[i].fw.count;
-+		if (wl->fw[i].count > max_count)
-+			max_count = wl->fw[i].count;
- 
- 	for (i = 0; i < NQUEUES; i++)
--		ratio[i] = max_count - wl->txq[i].fw.count;
-+		ratio[i] = max_count - wl->fw[i].count;
- 
+@@ -1276,8 +1276,14 @@ static int wilc_wlan_cfg_commit(struct wilc_vif *vif, int type,
  	return 0;
  }
  
- static inline void ac_update_fw_ac_pkt_info(struct wilc *wl, u32 reg)
+-int wilc_wlan_cfg_set(struct wilc_vif *vif, int start, u16 wid, u8 *buffer,
+-		      u32 buffer_size, int commit, u32 drv_handler)
++/**
++ * Add a WID set/query to the current config packet and optionally
++ * submit the resulting packet to the chip and wait for its reply.
++ * Returns 0 on failure, positive number on success.
++ */
++static int wilc_wlan_cfg_apply_wid(struct wilc_vif *vif, int start, u16 wid,
++				   u8 *buffer, u32 buffer_size, int commit,
++				   u32 drv_handler, bool set)
  {
--	wl->txq[AC_BK_Q].fw.count = FIELD_GET(BK_AC_COUNT_FIELD, reg);
--	wl->txq[AC_BE_Q].fw.count = FIELD_GET(BE_AC_COUNT_FIELD, reg);
--	wl->txq[AC_VI_Q].fw.count = FIELD_GET(VI_AC_COUNT_FIELD, reg);
--	wl->txq[AC_VO_Q].fw.count = FIELD_GET(VO_AC_COUNT_FIELD, reg);
--
--	wl->txq[AC_BK_Q].fw.acm = FIELD_GET(BK_AC_ACM_STAT_FIELD, reg);
--	wl->txq[AC_BE_Q].fw.acm = FIELD_GET(BE_AC_ACM_STAT_FIELD, reg);
--	wl->txq[AC_VI_Q].fw.acm = FIELD_GET(VI_AC_ACM_STAT_FIELD, reg);
--	wl->txq[AC_VO_Q].fw.acm = FIELD_GET(VO_AC_ACM_STAT_FIELD, reg);
-+	wl->fw[AC_BK_Q].count = FIELD_GET(BK_AC_COUNT_FIELD, reg);
-+	wl->fw[AC_BE_Q].count = FIELD_GET(BE_AC_COUNT_FIELD, reg);
-+	wl->fw[AC_VI_Q].count = FIELD_GET(VI_AC_COUNT_FIELD, reg);
-+	wl->fw[AC_VO_Q].count = FIELD_GET(VO_AC_COUNT_FIELD, reg);
-+
-+	wl->fw[AC_BK_Q].acm = FIELD_GET(BK_AC_ACM_STAT_FIELD, reg);
-+	wl->fw[AC_BE_Q].acm = FIELD_GET(BE_AC_ACM_STAT_FIELD, reg);
-+	wl->fw[AC_VI_Q].acm = FIELD_GET(VI_AC_ACM_STAT_FIELD, reg);
-+	wl->fw[AC_VO_Q].acm = FIELD_GET(VO_AC_ACM_STAT_FIELD, reg);
+ 	u32 offset;
+ 	int ret_size;
+@@ -1289,8 +1295,12 @@ int wilc_wlan_cfg_set(struct wilc_vif *vif, int start, u16 wid, u8 *buffer,
+ 		wilc->cfg_frame_offset = 0;
+ 
+ 	offset = wilc->cfg_frame_offset;
+-	ret_size = wilc_wlan_cfg_set_wid(wilc->cfg_frame.frame, offset,
+-					 wid, buffer, buffer_size);
++	if (set)
++		ret_size = wilc_wlan_cfg_set_wid(wilc->cfg_frame.frame, offset,
++						 wid, buffer, buffer_size);
++	else
++		ret_size = wilc_wlan_cfg_get_wid(wilc->cfg_frame.frame, offset,
++						 wid);
+ 	offset += ret_size;
+ 	wilc->cfg_frame_offset = offset;
+ 
+@@ -1299,9 +1309,11 @@ int wilc_wlan_cfg_set(struct wilc_vif *vif, int start, u16 wid, u8 *buffer,
+ 		return ret_size;
+ 	}
+ 
+-	netdev_dbg(vif->ndev, "%s: seqno[%d]\n", __func__, wilc->cfg_seq_no);
++	netdev_dbg(vif->ndev, "%s: %s seqno[%d]\n",
++		   __func__, set ? "set" : "get", wilc->cfg_seq_no);
+ 
+-	if (wilc_wlan_cfg_commit(vif, WILC_CFG_SET, drv_handler))
++	if (wilc_wlan_cfg_commit(vif, set ? WILC_CFG_SET : WILC_CFG_QUERY,
++				 drv_handler))
+ 		ret_size = 0;
+ 
+ 	if (!wait_for_completion_timeout(&wilc->cfg_event,
+@@ -1317,41 +1329,18 @@ int wilc_wlan_cfg_set(struct wilc_vif *vif, int start, u16 wid, u8 *buffer,
+ 	return ret_size;
  }
  
- static inline u8 ac_change(struct wilc *wilc, u8 *ac)
++int wilc_wlan_cfg_set(struct wilc_vif *vif, int start, u16 wid, u8 *buffer,
++		      u32 buffer_size, int commit, u32 drv_handler)
++{
++	return wilc_wlan_cfg_apply_wid(vif, start, wid, buffer, buffer_size,
++				       commit, drv_handler, true);
++}
++
+ int wilc_wlan_cfg_get(struct wilc_vif *vif, int start, u16 wid, int commit,
+ 		      u32 drv_handler)
  {
- 	do {
--		if (wilc->txq[*ac].fw.acm == 0)
-+		if (wilc->fw[*ac].acm == 0)
- 			return 0;
- 		(*ac)++;
- 	} while (*ac < NQUEUES);
-@@ -920,7 +920,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
- 		kfree(tqe);
- 	} while (--entries);
- 	for (i = 0; i < NQUEUES; i++)
--		wilc->txq[i].fw.count += ac_pkt_num_to_chip[i];
-+		wilc->fw[i].count += ac_pkt_num_to_chip[i];
+-	u32 offset;
+-	int ret_size;
+-	struct wilc *wilc = vif->wilc;
+-
+-	mutex_lock(&wilc->cfg_cmd_lock);
+-
+-	if (start)
+-		wilc->cfg_frame_offset = 0;
+-
+-	offset = wilc->cfg_frame_offset;
+-	ret_size = wilc_wlan_cfg_get_wid(wilc->cfg_frame.frame, offset, wid);
+-	offset += ret_size;
+-	wilc->cfg_frame_offset = offset;
+-
+-	if (!commit) {
+-		mutex_unlock(&wilc->cfg_cmd_lock);
+-		return ret_size;
+-	}
+-
+-	if (wilc_wlan_cfg_commit(vif, WILC_CFG_QUERY, drv_handler))
+-		ret_size = 0;
+-
+-	if (!wait_for_completion_timeout(&wilc->cfg_event,
+-					 WILC_CFG_PKTS_TIMEOUT)) {
+-		netdev_dbg(vif->ndev, "%s: Timed Out\n", __func__);
+-		ret_size = 0;
+-	}
+-	wilc->cfg_frame_offset = 0;
+-	wilc->cfg_seq_no += 1;
+-	mutex_unlock(&wilc->cfg_cmd_lock);
+-
+-	return ret_size;
++	return wilc_wlan_cfg_apply_wid(vif, start, wid, NULL, 0,
++				       commit, drv_handler, false);
+ }
  
- 	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
- 
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
-index eb7978166d73e..9b33262909e2f 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.h
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
-@@ -341,7 +341,6 @@ struct txq_fw_recv_queue_stat {
- struct txq_handle {
- 	struct txq_entry_t txq_head;
- 	u16 count;
--	struct txq_fw_recv_queue_stat fw;
- };
- 
- struct rxq_entry_t {
+ int wilc_send_config_pkt(struct wilc_vif *vif, u8 mode, struct wid *wids,
 -- 
 2.25.1
 
