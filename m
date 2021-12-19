@@ -2,91 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07DFC47A02C
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 11:18:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E80047A05A
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 12:28:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235575AbhLSKSh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Dec 2021 05:18:37 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:51394 "EHLO
+        id S235621AbhLSL2l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Dec 2021 06:28:41 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:51400 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S235597AbhLSKSg (ORCPT
+        with ESMTP id S235618AbhLSL2k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Dec 2021 05:18:36 -0500
+        Sun, 19 Dec 2021 06:28:40 -0500
 Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <luca@coelho.fi>)
-        id 1mytH0-001O3b-3I; Sun, 19 Dec 2021 12:18:34 +0200
+        id 1myuMo-001O73-1f; Sun, 19 Dec 2021 13:28:38 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@kernel.org
 Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Sun, 19 Dec 2021 12:18:20 +0200
-Message-Id: <iwlwifi.20211219121514.6d5c043372cf.I251dd5618a3f0b8febbcca788eb861f1cd6039bc@changeid>
+Date:   Sun, 19 Dec 2021 13:28:24 +0200
+Message-Id: <20211219112836.132859-1-luca@coelho.fi>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211219101820.85153-1-luca@coelho.fi>
-References: <20211219101820.85153-1-luca@coelho.fi>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 12/12] iwlwifi: mvm: perform 6GHz passive scan after suspend
+Subject: [PATCH 00/12] iwlwifi: updates intended for v5.17 2021-12-19 part 2
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Luca Coelho <luciano.coelho@intel.com>
 
-The 6GHz passive scan is performed only once every 50 minutes.
-However, in case of suspend/resume, the regulatory information
-is reset, so 6GHz channels may become disabled.
-Fix it by performing a 6GHz passive scan within 60 seconds after
-suspend/resume even if the 50 minutes timeout did not expire yet.
+Here's the seventh set of patches intended for v5.17.  It's the usual
+development, new features, cleanups and bugfixes.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Fixes: e8fe3b41c3a3 ("iwlwifi: mvm: Add support for 6GHz passive scan")
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 21 ++++++++-----------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+The changes are:
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index cad190fac9e3..68ee57790b17 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1925,22 +1925,19 @@ static void iwl_mvm_scan_6ghz_passive_scan(struct iwl_mvm *mvm,
- 	}
- 
- 	/*
--	 * 6GHz passive scan is allowed while associated in a defined time
--	 * interval following HW reset or resume flow
-+	 * 6GHz passive scan is allowed in a defined time interval following HW
-+	 * reset or resume flow, or while not associated and a large interval
-+	 * has passed since the last 6GHz passive scan.
- 	 */
--	if (vif->bss_conf.assoc &&
-+	if ((vif->bss_conf.assoc ||
-+	     time_after(mvm->last_6ghz_passive_scan_jiffies +
-+			(IWL_MVM_6GHZ_PASSIVE_SCAN_TIMEOUT * HZ), jiffies)) &&
- 	    (time_before(mvm->last_reset_or_resume_time_jiffies +
- 			 (IWL_MVM_6GHZ_PASSIVE_SCAN_ASSOC_TIMEOUT * HZ),
- 			 jiffies))) {
--		IWL_DEBUG_SCAN(mvm, "6GHz passive scan: associated\n");
--		return;
--	}
--
--	/* No need for 6GHz passive scan if not enough time elapsed */
--	if (time_after(mvm->last_6ghz_passive_scan_jiffies +
--		       (IWL_MVM_6GHZ_PASSIVE_SCAN_TIMEOUT * HZ), jiffies)) {
--		IWL_DEBUG_SCAN(mvm,
--			       "6GHz passive scan: timeout did not expire\n");
-+		IWL_DEBUG_SCAN(mvm, "6GHz passive scan: %s\n",
-+			       vif->bss_conf.assoc ? "associated" :
-+			       "timeout did not expire");
- 		return;
- 	}
- 
+* Some more fixes in 6 GHz scan;
+* Fix early restart crash;
+* Small fix in the debugging code;
+* Add new Killer device IDs;
+* Datapath updates for Bz family continues;
+* Some other small fixes, clean-ups and improvements.
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Avraham Stern (2):
+  iwlwifi: mvm: set protected flag only for NDP ranging
+  iwlwifi: mvm: fix AUX ROC removal
+
+Ayala Beker (1):
+  iwlwifi: mvm: correctly set schedule scan profiles
+
+Johannes Berg (4):
+  iwlwifi: mvm: support Bz TX checksum offload
+  iwlwifi: mvm: drop too short packets silently
+  iwlwifi: mvm: remove card state notification code
+  iwlwifi: fw: fix some scan kernel-doc
+
+Luca Coelho (1):
+  iwlwifi: pcie: make sure prph_info is set when treating wakeup IRQ
+
+Miri Korenblit (1):
+  iwlwifi: mvm: fix rfi get table vendor command handler
+
+Mordechay Goodstein (1):
+  iwlwifi: return op_mode only in case the failure is from MEI
+
+Mukesh Sisodiya (1):
+  iwlwifi: yoyo: fix issue with new DBGI_SRAM region read.
+
+Yaara Baruch (1):
+  iwlwifi: pcie: add killer devices to the driver
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |  2 +-
+ .../net/wireless/intel/iwlwifi/fw/api/alive.h |  9 ---
+ .../wireless/intel/iwlwifi/fw/api/commands.h  | 10 +--
+ .../net/wireless/intel/iwlwifi/fw/api/scan.h  | 40 +++++++++--
+ .../net/wireless/intel/iwlwifi/fw/api/tx.h    | 11 +++
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |  2 +-
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |  5 +-
+ .../intel/iwlwifi/mvm/ftm-initiator.c         |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 71 ++++++++++---------
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  4 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  | 22 +++---
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 12 +---
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c |  4 +-
+ .../wireless/intel/iwlwifi/mvm/time-event.c   |  9 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 65 ++++++++++++++---
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 18 ++++-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  7 +-
+ 18 files changed, 196 insertions(+), 100 deletions(-)
+
 -- 
 2.34.1
 
