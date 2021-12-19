@@ -2,111 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9838647A1F5
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 20:51:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A71C47A21E
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 21:50:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236477AbhLSTve (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Dec 2021 14:51:34 -0500
-Received: from mga18.intel.com ([134.134.136.126]:59967 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232253AbhLSTvd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Dec 2021 14:51:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639943493; x=1671479493;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=oQM4wczQUQSfif1dzoaLqK9/w2kPTZrz1OgmJeHRzYY=;
-  b=K7s+QR6GYy6nuYa2Ucy62b793EoVeQJedGz/IlbkMLZfSgCmae2Tqin9
-   dTTjkiFq/etmtl/xhyabkzgmF4+vx0Dq+k06XRddLCN2OGzf1fdwmw3Mt
-   cCrBewcsfjtBKMy5nRFY649YPMOBOFoB8W512ZBhBchPnc2WCC0HQeC4q
-   60cPjgVuxHQnekfb+jN981Q/1mU80i50VCXczDP3ETKaiLZ916bgvIX5f
-   9Ld4tKPIgmGYFKdScgeVyJrS2Txv+JU7m43b6BKYEZVNmeUWk+//ETS8D
-   tzzPZXNXixuu728ictOkxeHGWndhLG7E+JKHLBL7Zl2A1nPRw8DzxeZ2N
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10203"; a="226909314"
-X-IronPort-AV: E=Sophos;i="5.88,218,1635231600"; 
-   d="scan'208";a="226909314"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2021 11:51:33 -0800
-X-IronPort-AV: E=Sophos;i="5.88,218,1635231600"; 
-   d="scan'208";a="520530303"
-Received: from skriksze-mobl.ger.corp.intel.com (HELO egrumbac-mobl1.lan) ([10.255.194.106])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2021 11:51:31 -0800
-From:   Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH] rfkill: allow to get the software rfkill state
-Date:   Sun, 19 Dec 2021 21:51:24 +0200
-Message-Id: <20211219195124.125689-1-emmanuel.grumbach@intel.com>
-X-Mailer: git-send-email 2.25.1
+        id S233481AbhLSUu4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Dec 2021 15:50:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48882 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233463AbhLSUu4 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 19 Dec 2021 15:50:56 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC70CC061574
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Dec 2021 12:50:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=iISHwiWe9s52Un+4+6loa8GB+wEgyGflH4QjgaIMNrw=; b=Drfyz2pa3B/BCgCVe9nXYRDI22
+        tSubj9sESPlnvqACa0uBJdqNCi5bcNuzb4aARCyGrxtGG0z7Epo9X4OsjdqXYRONLAExIf9LnM+RG
+        bG1X9nf5TSsz2B1oiIG2ZGqpJHW5oVo/zjrbufnP20dhDshHxveJ1gW64ZioSXqg3wxY=;
+Received: from p54ae911a.dip0.t-ipconnect.de ([84.174.145.26] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1mz38q-0000tI-VJ; Sun, 19 Dec 2021 21:50:49 +0100
+Message-ID: <82bb897f-ef61-e7d8-44ca-0bbd825953d2@nbd.name>
+Date:   Sun, 19 Dec 2021 21:50:48 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.4.0
+Subject: Re: [PATCH v2 2/9] mt76: connac: fix broadcast muar_idx in
+ alloc_sta_req
+Content-Language: en-US
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com
+References: <cover.1639935477.git.lorenzo@kernel.org>
+ <fe60489b1aea76a7f3f61b2f42431ba424ceb9a1.1639935477.git.lorenzo@kernel.org>
+From:   Felix Fietkau <nbd@nbd.name>
+In-Reply-To: <fe60489b1aea76a7f3f61b2f42431ba424ceb9a1.1639935477.git.lorenzo@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-iwlwifi needs to be able to differentiate between the
-software rfkill state and the hardware rfkill state.
 
-The reason for this is that iwlwifi needs to notify any
-change in the software rfkill state even when it doesn't
-own the device (which means even when the hardware rfkill
-is asserted).
+On 2021-12-19 18:40, Lorenzo Bianconi wrote:
+> Set muar_idx for broadcast wcid to 0xe in mt76_connac_mcu_alloc_sta_req
+> routine.
+> 
+> Fixes: d0e274af2f2e4 ("mt76: mt76_connac: create mcu library")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> index 5664f119447b..b150c7f2f005 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> @@ -271,7 +271,7 @@ mt76_connac_mcu_alloc_sta_req(struct mt76_dev *dev, struct mt76_vif *mvif,
+>   {
+>   	struct sta_req_hdr hdr = {
+>   		.bss_idx = mvif->idx,
+> -		.muar_idx = wcid ? mvif->omac_idx : 0,
+> +		.muar_idx = wcid && wcid->sta ? mvif->omac_idx : 0xe,
+I took another look at the driver code, and I think this part is wrong.
+I think it should be like this instead:
+When deleting an entry (sta or vif wcid), we should set muar_idx to 0xe
+When not deleting, it should be mvif->omac_idx if we have a vif, and 0xe 
+otherwise.
 
-In order to be able to know the software rfkill when the
-host does not own the device, iwlwifi needs to be able to
-ask the state of the software rfkill ignoring the state
-of the hardware rfkill.
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
----
- include/linux/rfkill.h |  7 +++++++
- net/rfkill/core.c      | 12 ++++++++++++
- 2 files changed, 19 insertions(+)
-
-diff --git a/include/linux/rfkill.h b/include/linux/rfkill.h
-index 231e06b74b50..c35f3962dc4f 100644
---- a/include/linux/rfkill.h
-+++ b/include/linux/rfkill.h
-@@ -229,6 +229,13 @@ void rfkill_set_states(struct rfkill *rfkill, bool sw, bool hw);
-  */
- bool rfkill_blocked(struct rfkill *rfkill);
- 
-+/**
-+ * rfkill_soft_blocked - Query soft rfkill block state
-+ *
-+ * @rfkill: rfkill struct to query
-+ */
-+bool rfkill_soft_blocked(struct rfkill *rfkill);
-+
- /**
-  * rfkill_find_type - Helper for finding rfkill type by name
-  * @name: the name of the type
-diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-index ac15a944573f..5b1927d66f0d 100644
---- a/net/rfkill/core.c
-+++ b/net/rfkill/core.c
-@@ -946,6 +946,18 @@ bool rfkill_blocked(struct rfkill *rfkill)
- }
- EXPORT_SYMBOL(rfkill_blocked);
- 
-+bool rfkill_soft_blocked(struct rfkill *rfkill)
-+{
-+	unsigned long flags;
-+	u32 state;
-+
-+	spin_lock_irqsave(&rfkill->lock, flags);
-+	state = rfkill->state;
-+	spin_unlock_irqrestore(&rfkill->lock, flags);
-+
-+	return !!(state & RFKILL_BLOCK_SW);
-+}
-+EXPORT_SYMBOL(rfkill_soft_blocked);
- 
- struct rfkill * __must_check rfkill_alloc(const char *name,
- 					  struct device *parent,
--- 
-2.25.1
-
+- Felix
