@@ -2,83 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22F1A479FFE
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 10:10:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6680647A000
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 10:14:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235450AbhLSJJx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Dec 2021 04:09:53 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:51308 "EHLO
+        id S235437AbhLSJOW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Dec 2021 04:14:22 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:51314 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S235437AbhLSJJw (ORCPT
+        with ESMTP id S229585AbhLSJOW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Dec 2021 04:09:52 -0500
-Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=[192.168.100.150])
+        Sun, 19 Dec 2021 04:14:22 -0500
+Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=kveik.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <luca@coelho.fi>)
-        id 1mysCT-001O2D-AV; Sun, 19 Dec 2021 11:09:49 +0200
-Message-ID: <ad06fddfcc8bef222fecf69b8a9c7effd8cc9db5.camel@coelho.fi>
+        id 1mysGq-001O2N-7A; Sun, 19 Dec 2021 11:14:20 +0200
 From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Date:   Sun, 19 Dec 2021 11:09:47 +0200
-In-Reply-To: <CAMZdPi9eeVCakwQPnzvc-3BHo8ABv6=kb3VJj+FAXDZbz4R6bw@mail.gmail.com>
-References: <20211207144211.A9949C341C1@smtp.kernel.org>
-         <20211207211412.13c78ace@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <87tufjfrw0.fsf@codeaurora.org>
-         <20211208065025.7060225d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <87zgpb83uz.fsf@codeaurora.org>
-         <CAMZdPi9eeVCakwQPnzvc-3BHo8ABv6=kb3VJj+FAXDZbz4R6bw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.2-1 
+To:     kvalo@kernel.org
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+Date:   Sun, 19 Dec 2021 11:14:18 +0200
+Message-Id: <iwlwifi.20211219111352.e56cbf614a4d.Ib98004ccd2c7a55fd883a8ea7eebd810f406dec6@changeid>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <iwlwifi.20211210110539.4b397e664d44.Ib98004ccd2c7a55fd883a8ea7eebd810f406dec6@changeid>
+References: <iwlwifi.20211210110539.4b397e664d44.Ib98004ccd2c7a55fd883a8ea7eebd810f406dec6@changeid>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: Re: pull-request: wireless-drivers-next-2021-12-07
+Subject: [PATCH v2 05/10] iwlwifi: mvm: fix 32-bit build in FTM
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2021-12-08 at 17:58 +0100, Loic Poulain wrote:
-> Hi Kalle,
-> 
-> On Wed, 8 Dec 2021 at 17:21, Kalle Valo <kvalo@kernel.org> wrote:
-> > 
-> > Jakub Kicinski <kuba@kernel.org> writes:
-> > 
-> > > On Wed, 08 Dec 2021 10:00:15 +0200 Kalle Valo wrote:
-> > > > Jakub Kicinski <kuba@kernel.org> writes:
-> > > Yeah, scroll down, there is a diff of the old warnings vs new ones, and
-> > > a summary of which files have changed their warning count:
-> > > 
-> > > +      2 ../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> > > +      3 ../drivers/net/wireless/intel/iwlwifi/mei/main.c
-> > > -      1 ../drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-> > > +      2 ../drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-> > > -      2 ../drivers/net/wireless/microchip/wilc1000/wlan.c
-> > 
-> > Ah, that makes it easier.
-> > 
-> > > So presumably these are the warnings that were added:
-> > > 
-> > > drivers/net/wireless/intel/iwlwifi/mei/main.c:193: warning: cannot
-> > > understand function prototype: 'struct '
-> > > drivers/net/wireless/intel/iwlwifi/mei/main.c:1784: warning: Function
-> > > parameter or member 'cldev' not described in 'iwl_mei_probe'
-> > > drivers/net/wireless/intel/iwlwifi/mei/main.c:1784: warning: Function
-> > > parameter or member 'id' not described in 'iwl_mei_probe'
-> > 
-> > Luca, please take a look and send a patch. I'll then apply it directly
-> > to wireless-drivers-next.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Kalle, as we agreed, I sent 4 patches fixes this errors/warnings in
-iwlwifi.
+On a 32-bit build, the division here needs to be done
+using do_div(), otherwise the compiler will try to call
+a function that doesn't exist, thus failing to build.
 
---
-Cheers,
-Luca.
+Fixes: b68bd2e3143a ("iwlwifi: mvm: Add FTM initiator RTT smoothing logic")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+
+In v2:
+   * Add "Fixes:" tag.
+
+
+drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+index 949fb790f8fb..3e6c13fc74eb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+@@ -1066,7 +1066,8 @@ static void iwl_mvm_ftm_rtt_smoothing(struct iwl_mvm *mvm,
+ 	overshoot = IWL_MVM_FTM_INITIATOR_SMOOTH_OVERSHOOT;
+ 	alpha = IWL_MVM_FTM_INITIATOR_SMOOTH_ALPHA;
+ 
+-	rtt_avg = (alpha * rtt + (100 - alpha) * resp->rtt_avg) / 100;
++	rtt_avg = alpha * rtt + (100 - alpha) * resp->rtt_avg;
++	do_div(rtt_avg, 100);
+ 
+ 	IWL_DEBUG_INFO(mvm,
+ 		       "%pM: prev rtt_avg=%lld, new rtt_avg=%lld, rtt=%lld\n",
+-- 
+2.34.1
+
