@@ -2,64 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBDFB47A065
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 12:28:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79A1147A089
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 13:55:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235666AbhLSL2y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Dec 2021 06:28:54 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:51472 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S235650AbhLSL2x (ORCPT
+        id S231720AbhLSMzA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Dec 2021 07:55:00 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:49890 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231535AbhLSMzA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Dec 2021 06:28:53 -0500
-Received: from 91-156-5-105.elisa-laajakaista.fi ([91.156.5.105] helo=kveik.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1myuN1-001O73-7Y; Sun, 19 Dec 2021 13:28:51 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@kernel.org
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
-Date:   Sun, 19 Dec 2021 13:28:36 +0200
-Message-Id: <iwlwifi.20211219132536.55527214f8c9.I1748215ccb3fa20a3491a46a49b12e04eb560ac6@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211219112836.132859-1-luca@coelho.fi>
-References: <20211219112836.132859-1-luca@coelho.fi>
+        Sun, 19 Dec 2021 07:55:00 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9E050B80CE6
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Dec 2021 12:54:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25D9C36AE0;
+        Sun, 19 Dec 2021 12:54:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639918497;
+        bh=Y5kd+4SfpDfoxYFfH0CmbOJ6COreTl+8I3sV54F9TSc=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=nGEPN8AedNPHZ4u787jTmsDyJ6i82OZwSyIg5KwiANE8SBZE13gtqDET1G8eJeTkj
+         QdmL1Ks8PmVmzqDaRTPzu0O0lT4C49htHbQz+FWPRdeVcu+t0D9FpgcU0K2g9bpdOe
+         a0x5GEt2rWMpAZG7iDswyjXL1z6ML+o/7DuPGxflz1/L5oYOWjnwQXEWXeSdA942vA
+         kN67FIsV+7Bd8NwVY7gdEacbYP94MTpNzqO6gcJXn5oHqSlVjFqg+lb3IFf6awPfcs
+         u3Dr4q3dlUYsBGGp3xmyRqeN/2Qy0fUw9keV/98543jcIa3zrFPEr8KfY3Jd69zrHy
+         +uKAJ1wF1KdsQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: pull request: mt76 2021-12-18
+In-Reply-To: <de61c750-8580-c453-4c33-c1b71d818a71@nbd.name> (Felix Fietkau's
+        message of "Sat, 18 Dec 2021 11:51:58 +0100")
+References: <de61c750-8580-c453-4c33-c1b71d818a71@nbd.name>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Sun, 19 Dec 2021 14:54:52 +0200
+Message-ID: <87a6gwbvqb.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH 12/12] iwlwifi: yoyo: fix issue with new DBGI_SRAM region read.
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Felix Fietkau <nbd@nbd.name> writes:
 
-NIC has been grabbed for reading twice which is leading
-to NIC hang. Code correction are done for reading data with
-no grab function.
+> Hi Kalle,
+>
+> here's my updated pull request for 5.17
+>
+> - Felix
+>
+> The following changes since commit f75c1d55ecbadce027fd650d3ca79e357afae0d9:
+>
+>   Merge tag 'wireless-drivers-next-2021-12-17' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next (2021-12-17 07:30:07 -0800)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-12-18
+>
+> for you to fetch changes up to a2a218b674cdbab132be5ed99cc2af06c4ff8cb8:
+>
+>   mt76: mt7921s: fix cmd timeout in throughput test (2021-12-18 11:48:02 +0100)
+>
+> ----------------------------------------------------------------
+> mt76 patches for 5.17
+>
+> * decap offload fixes
+> * mt7915 fixes
+> * mt7921 fixes
+> * eeprom fixes
+> * powersave handling fixes
+> * SAR support
+> * code cleanups
+>
+> ----------------------------------------------------------------
 
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This fails to build:
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 35af228be3aa..7ad9cee925da 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1564,7 +1564,7 @@ iwl_dump_ini_dbgi_sram_iter(struct iwl_fw_runtime *fwrt,
- 	iwl_write_prph_no_grab(fwrt->trans, DBGI_SRAM_TARGET_ACCESS_CFG,
- 			       DBGI_SRAM_TARGET_ACCESS_CFG_RESET_ADDRESS_MSK);
- 	for (i = 0; i < (le32_to_cpu(reg->dev_addr.size) / 4); i++) {
--		prph_data = iwl_read_prph(fwrt->trans, (i % 2) ?
-+		prph_data = iwl_read_prph_no_grab(fwrt->trans, (i % 2) ?
- 					  DBGI_SRAM_TARGET_ACCESS_RDATA_MSB :
- 					  DBGI_SRAM_TARGET_ACCESS_RDATA_LSB);
- 		if (prph_data == 0x5a5a5a5a) {
+drivers/net/wireless/mediatek/mt76/debugfs.c: In function 'mt76_rx_queues_read':
+drivers/net/wireless/mediatek/mt76/debugfs.c:84:31: error: 'queued' undeclared (first use in this function)
+   84 |                            i, queued, q->head, q->tail);
+      |                               ^~~~~~
+
 -- 
-2.34.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
