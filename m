@@ -2,69 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2BB947A0A2
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 14:23:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7C6C47A0C0
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Dec 2021 14:59:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235770AbhLSNXS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Dec 2021 08:23:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36842 "EHLO
+        id S231808AbhLSN7K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Dec 2021 08:59:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235763AbhLSNXS (ORCPT
+        with ESMTP id S231822AbhLSN7J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Dec 2021 08:23:18 -0500
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2350C06173E
-        for <linux-wireless@vger.kernel.org>; Sun, 19 Dec 2021 05:23:17 -0800 (PST)
-Received: by mail-io1-xd35.google.com with SMTP id c3so9878255iob.6
-        for <linux-wireless@vger.kernel.org>; Sun, 19 Dec 2021 05:23:17 -0800 (PST)
+        Sun, 19 Dec 2021 08:59:09 -0500
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD1EFC06173F
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Dec 2021 05:59:09 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id b22so1666351pfb.5
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Dec 2021 05:59:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/hHgBKaozpyohhRsiYLOj0WZK8ScsciyYJn+ZRKFKfo=;
-        b=oAZdP48z7MaZ5EynPWqljltvTBepCYZ9CVYmgsCTyFS+nDQS1W8eyw+sBxT8G/0UWJ
-         fu4hFA/0S/upVBHsGt9NbGkxJ2vcNARgi7yTHAM5G3fQDM6TY5cf9cHCOr1vBTiFJBIa
-         qLKF3APmeRimGXr6kH90WZ5RfJHhpiLjZjmTlrJSmZyeEOcAps488e2fqtjgZDSIdinj
-         +xthKFAGrcp2JKaYLknESeCISy1KJh+r1dXlzIyVrGfTqkkBgdEm7tQxrQqResCSEKZs
-         C1+tUQk8BukgUgKPKGjmhsCGQlNYVuwL45rPyp3B/DcGBLtmHToaJ+L3jaNyxe3G8A27
-         xD9w==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=lfcbJbX5oTLP8SxjC643FL/N5klp3yLw7FLZvzxTOfM=;
+        b=WaXJtDgYFjvPSa7hxqO6BW9NEoHOGR5dw7jYWzchVPT9irI4aKdCfTZ5pYHDxvaj8Z
+         j/683i7z9S3UCFCGeqK/fFr+7PNhpv9Fq49plSz2f9zIYxy0YSlY4w81h4AObJt4M4cq
+         n0qCmFucWyU9bihevRhNEoS4dEQ5NMDgwPu2wlwzYCEtiurfPiP6OGVzr3Y7ipXtfZ1h
+         jeidtMebUTQcfcDT8KEJtwEssvIihcnlunacatcBz2Xif41PJ/ZSO+Fx03EmxX6pDW1D
+         7Qz9VItRcnUmHwzO/nrk3Grknt4CORPWf21OocPHbtCKbp4xBuS7OtyFWVLkUVBAYupP
+         l8sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/hHgBKaozpyohhRsiYLOj0WZK8ScsciyYJn+ZRKFKfo=;
-        b=xe4EYza1jsxJkV5HDn4PUZOLbQAMeBSaJpzX3w+Ehl2V5sAtu4xYPRQ6/2C8Nu3TXs
-         QU43jMgoKBgJ2flmHKqNrP67RLngX6afclhgchu9WyqxgBHYmmlO/Kuo9lNvmfT5DWSa
-         6kYAql1B/Z3pwkngS+L6zqgwCf49lcpZNLZsmm6y4AdWxK9WKkqDC/tW7bDbUOivw3p3
-         O4Q9BZ1EesaXr19iXmkd/gqE0ewqQ1zZJCj2wYAh7PhU00FzUpvA36/093kOyNrfM6qU
-         Ccw6L8uuyPHkbedOZuz2ckuQ+xgXpgf0z3OJANES6I3WAQqmerpF0cWW7bnv7SdqGOoE
-         tLRw==
-X-Gm-Message-State: AOAM531/CTzo/w/EOai3z0ogX6qMczS5TQIAP0duOnbznjZdP+e5ovgG
-        Kn5BwRyTxqJkB80nl7C/pLP3mbE17R2rP7QNGndR9/JSsWs=
-X-Google-Smtp-Source: ABdhPJzo7rev6CXFlbzzwd0qjBkSU7W1kuXGGsUck+X5XhG0g69b65p/RMVjYBxwu0GUEcdRxszIu8HM7H+1Exh8hUA=
-X-Received: by 2002:a02:cf23:: with SMTP id s3mr3198943jar.201.1639920197079;
- Sun, 19 Dec 2021 05:23:17 -0800 (PST)
+         :subject:to:content-transfer-encoding;
+        bh=lfcbJbX5oTLP8SxjC643FL/N5klp3yLw7FLZvzxTOfM=;
+        b=G660oO+F4oGJWF/UiEnteQ2E33N9O9AgwCH7oF9ZLt655A0f4Ge9Y6g8zumRCYHCt9
+         siB/h2Upgb7V1ANyQiZiYdKVEvpccI2NRgXJBw6FXLGO3wvjiuRlkX1gsECYLJZjcQzh
+         /nr39yhXonrlnnZHVUw7Hj3os+QfaObAl+x2cQiuf66JbWtIXqiKUlY3EoT8T6ZcMyUC
+         rF4sxrnYLJ1nEmTOxl8rIOoXzb991Nn/hRilPhZmx19lUto8e99LaOPW0bj+263CWhGc
+         l6NnxWy/jO3cd0jU3A/ySJ1oUGuj+AiigTsSAokNtaREOxUB4sWGoNcjZWnvgEsTkaNL
+         TlQw==
+X-Gm-Message-State: AOAM530cMzDRu3pRNrJQ//g1k0cbz+RrpOjxLoIJwSq9gqMZJcDefq70
+        RjDc2uZxUbR/5nkWG4XN11y+a9a8JGqH4Fwqwu8=
+X-Google-Smtp-Source: ABdhPJzu51s3Q+IR2eO92s0LhTueHcGX/Z5rekmMz1UppdXI3QqashE5wyj7Vz6WlWDtcSDy8c9NgMWk95UUF4Ckl7g=
+X-Received: by 2002:a63:7804:: with SMTP id t4mr10818952pgc.569.1639922348897;
+ Sun, 19 Dec 2021 05:59:08 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a02:c4d9:0:0:0:0:0 with HTTP; Sun, 19 Dec 2021 05:23:16
+Received: by 2002:a05:6a10:67cd:0:0:0:0 with HTTP; Sun, 19 Dec 2021 05:59:08
  -0800 (PST)
-Reply-To: lisshuuu1@gmail.com
-From:   LISA HUGH <mrssafi.kabore2@gmail.com>
-Date:   Sun, 19 Dec 2021 05:23:16 -0800
-Message-ID: <CACP6L_jxK_-EnbjSqmeQek7BvnMZ52TMGERrYYGv7nDip6ovLA@mail.gmail.com>
-Subject: YOU WILL HAVE THE DETAILS AS SOON I HEAR FROM YOU(Ms Lisa Hugh)
+Reply-To: jaberalya16@gmail.com
+From:   Alya <aubertannemarie693@gmail.com>
+Date:   Sun, 19 Dec 2021 14:59:08 +0100
+Message-ID: <CA+FtesWKkHmbVeAmv27QYgPdSak8oCpvn8jYbujQzKU2SuB12Q@mail.gmail.com>
+Subject: MESSAGGIO DELL'OSPEDALE / HOSPITAL MESSAGE
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear Friend,
+--=20
+I miei umili saluti
 
-I am Ms Lisa Hugh accountant and files keeping by profession with the bank.
+Mio buon amico, come stai, ho un fondo di beneficenza che doner=C3=B2 con
+il tuo aiuto. Prova a contattarmi per maggiori informazioni. Ti dir=C3=B2
+di pi=C3=B9 su di me e sui miei piani con questi soldi quando avr=C3=B2 tue
+notizie.
 
-I need your co-operation for the  transferring of ($4,500,000,00
-,U.S.DOLLARS)to your bank account for both of us benefit.
+Aspetto una tua risposta per darti maggiori dettagli.
 
-Please send the follow below,
-1)AGE....2)TELEPHONE NUMBER,,,,,...,3)COUNTRY.....4)OCCUPATION......
-Thanks.
-Ms Lisa Hugh
+
+----------------------------
+
+my humble regards,
+
+Dear friend how are you, I have a charitable donation fund that I want
+to donate by helping you. Please try to get back to me for more
+information. I will tell you more about myself and my plans with this
+money when I hear from you.
+
+Awaiting your reply to give me more details.
