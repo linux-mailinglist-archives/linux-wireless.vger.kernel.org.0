@@ -2,103 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 497C847A9CB
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 13:39:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB47A47AAC9
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 15:00:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230516AbhLTMjW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 07:39:22 -0500
-Received: from wnew3-smtp.messagingengine.com ([64.147.123.17]:43765 "EHLO
-        wnew3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229820AbhLTMjV (ORCPT
+        id S233236AbhLTOAp convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 09:00:45 -0500
+Received: from eu-smtp-delivery-151.mimecast.com ([185.58.85.151]:42229 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232258AbhLTOAo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 07:39:21 -0500
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.west.internal (Postfix) with ESMTP id D5FB92B000C1;
-        Mon, 20 Dec 2021 07:39:15 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Mon, 20 Dec 2021 07:39:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=UEKM6353gMtwbj5uogFb1YAwTYE
-        FzwELjSHU5Fnkdf8=; b=iIAdXOiq3/2RZ+MW8h/Q08xYleWGDB+LiyX4prk6Bv6
-        LzAdJhsSIbXe1+aSSuLNslV7ZMnraXfPYMBmotXtmpMuM0ydyS47oS7Fen84IBEv
-        +x1eaJbHzOPeWtLuv4C7HqUgpRj9VC1t3yEEo3eAEKPw7lyELdyXvhkgviWpZjsh
-        Kt+wEE3WkP5LZvXaZobaItNS+oI+v61c5VmTnoJ8sl3CXMbIRy9WTeqnYEPRuycs
-        fHymhPlOtzfUvt5/gIihvGHT44SrPEV3/8K8urCHwk7olWTqhaZGaicJxCeHEAl0
-        qovzHpXvpF76rxdBN5einCAHctLJ0PYItYqFNsr+hpw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=UEKM63
-        53gMtwbj5uogFb1YAwTYEFzwELjSHU5Fnkdf8=; b=RS+LveO7MG3CQJt2y+3Oz/
-        BjiLK8cdwJUuZ8DeYJjBHGJP6Vc5hsaVJxKV3Aqo1k+6uu2bZKXYD99EipOhXECG
-        AOhA+M81AgTERl0O1Iz2sUKN0gONuS0DgQ6bQS51k7ym5R+ncHfuqrsTeJAZE6O6
-        sbNfgsBwTDNo3AIT57xZQ/t7JxmJSCXsBSc4sDI5Ph+3Z8kSAn5qOfZuKrUCdIur
-        oefqk9ZpYSlu19V1fBsACVHpBTXQyjvEY8hEYxJHrMwLEflXg2/sOiNdRoceARuu
-        Aq6De7UCTQYTxqblVlGmhVsyppBkthMmncb2GmWPqJRNzYckds/WpfQAczPVE3Gw
-        ==
-X-ME-Sender: <xms:cnnAYVTeIaz3W5-lKbZ4QsA87-e6sD8tfg5PGWAHqjhq3EYe3wm00g>
-    <xme:cnnAYew9kc3u4P0-FYddHrmgoc9os6LHwxcc_KJXnR3w9NxqDgiaukqxP1WjsUcUG
-    _YGUSpuQ1-HFw>
-X-ME-Received: <xmr:cnnAYa29abms16yQYDwTh_a-91-y7pf82VjsGgm6RWnXfROpBD81CumwZc1Kh59i_t6Jlo6uoJx8PxkcVJRc4OtfXnfjWSzS>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddruddtvddggeegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeevueehje
-    fgfffgiedvudekvdektdelleelgefhleejieeugeegveeuuddukedvteenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
-    drtghomh
-X-ME-Proxy: <xmx:cnnAYdCczhiKrP_qvxqIJ8jUmnIPab60PWh-JHnYf84tTQ35kficzQ>
-    <xmx:cnnAYeho31zb2JpAAllfw_cj09IXVsNEW3D2Fo24788vXuTRIqbVfw>
-    <xmx:cnnAYRq3Jqp1UQOCwEsIbZucbJLIhMDV1bprGLNhNH_uaY_fwC2hyQ>
-    <xmx:c3nAYUIp5PIKsl0Pm2qQWT3hoGvd0E3V22bmR-HxIkwLrL9gAwEWKtQKyf4>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 20 Dec 2021 07:39:13 -0500 (EST)
-Date:   Mon, 20 Dec 2021 13:39:11 +0100
-From:   Greg KH <greg@kroah.com>
-To:     Anders Roxell <anders.roxell@linaro.org>
-Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        woojung.huh@microchip.com, UNGLinuxDriver@microchip.com,
-        davem@davemloft.net, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, clang-built-linux@googlegroups.com,
-        ulli.kroll@googlemail.com, linux@armlinux.org.uk,
-        linux-arm-kernel@lists.infradead.org, amitkarwar@gmail.com,
-        nishants@marvell.com, gbhat@marvell.com, huxinming820@gmail.com,
-        kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        rostedt@goodmis.org, mingo@redhat.com, dmitry.torokhov@gmail.com,
-        ndesaulniers@google.com, nathan@kernel.org,
-        linux-input@vger.kernel.org, Stefan Agner <stefan@agner.ch>,
-        Russell King <rmk+kernel@armlinux.org.uk>
-Subject: Re: [PATCH 4.14 5/6] ARM: 8788/1: ftrace: remove old mcount support
-Message-ID: <YcB5b65dVUIhzgIh@kroah.com>
-References: <20211220122506.3631672-1-anders.roxell@linaro.org>
- <20211220122506.3631672-6-anders.roxell@linaro.org>
+        Mon, 20 Dec 2021 09:00:44 -0500
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-106-ThBTv8hIOJK8PeJnyhEimg-1; Mon, 20 Dec 2021 14:00:42 +0000
+X-MC-Unique: ThBTv8hIOJK8PeJnyhEimg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.26; Mon, 20 Dec 2021 14:00:40 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.026; Mon, 20 Dec 2021 14:00:40 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Joe Perches' <joe@perches.com>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "woojung.huh@microchip.com" <woojung.huh@microchip.com>,
+        "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "clang-built-linux@googlegroups.com" 
+        <clang-built-linux@googlegroups.com>,
+        "ulli.kroll@googlemail.com" <ulli.kroll@googlemail.com>,
+        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "amitkarwar@gmail.com" <amitkarwar@gmail.com>,
+        "nishants@marvell.com" <nishants@marvell.com>,
+        "gbhat@marvell.com" <gbhat@marvell.com>,
+        "huxinming820@gmail.com" <huxinming820@gmail.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "rostedt@goodmis.org" <rostedt@goodmis.org>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "ndesaulniers@google.com" <ndesaulniers@google.com>,
+        "nathan@kernel.org" <nathan@kernel.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Andy Lavr <andy.lavr@gmail.com>
+Subject: RE: [PATCH 4.19 3/6] mwifiex: Remove unnecessary braces from
+ HostCmd_SET_SEQ_NO_BSS_INFO
+Thread-Topic: [PATCH 4.19 3/6] mwifiex: Remove unnecessary braces from
+ HostCmd_SET_SEQ_NO_BSS_INFO
+Thread-Index: AQHX9ZskhY8SD9NuYU2K0YFKH5iuIKw7ZcMg
+Date:   Mon, 20 Dec 2021 14:00:40 +0000
+Message-ID: <5797d1aff9034476afa6827af2bfbce7@AcuMS.aculab.com>
+References: <20211217144119.2538175-1-anders.roxell@linaro.org>
+         <20211217144119.2538175-4-anders.roxell@linaro.org>
+ <bc4a4ba7c07a4077b9790be883fb4205d401804e.camel@perches.com>
+In-Reply-To: <bc4a4ba7c07a4077b9790be883fb4205d401804e.camel@perches.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211220122506.3631672-6-anders.roxell@linaro.org>
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Dec 20, 2021 at 01:25:05PM +0100, Anders Roxell wrote:
-> From: Stefan Agner <stefan@agner.ch>
+From: Joe Perches
+> Sent: 20 December 2021 12:13
 > 
-> commit d3c61619568c88d48eccd5e74b4f84faa1440652 upstream.
+> On Fri, 2021-12-17 at 15:41 +0100, Anders Roxell wrote:
+> > From: Nathan Chancellor <natechancellor@gmail.com>
+> >
+> > commit 6a953dc4dbd1c7057fb765a24f37a5e953c85fb0 upstream.
+> >
+> > A new warning in clang points out when macro expansion might result in a
+> > GNU C statement expression. There is an instance of this in the mwifiex
+> > driver:
+> >
+> > drivers/net/wireless/marvell/mwifiex/cmdevt.c:217:34: warning: '}' and
+> > ')' tokens terminating statement expression appear in different macro
+> > expansion contexts [-Wcompound-token-split-by-macro]
+> >         host_cmd->seq_num = cpu_to_le16(HostCmd_SET_SEQ_NO_BSS_INFO
+> >                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+> []
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+> []
+> > @@ -512,10 +512,10 @@ enum mwifiex_channel_flags {
+> >
+> >  #define RF_ANTENNA_AUTO                 0xFFFF
+> >
+> > -#define HostCmd_SET_SEQ_NO_BSS_INFO(seq, num, type) {   \
+> > -	(((seq) & 0x00ff) |                             \
+> > -	 (((num) & 0x000f) << 8)) |                     \
+> > -	(((type) & 0x000f) << 12);                  }
+> > +#define HostCmd_SET_SEQ_NO_BSS_INFO(seq, num, type) \
+> > +	((((seq) & 0x00ff) |                        \
+> > +	 (((num) & 0x000f) << 8)) |                 \
+> > +	(((type) & 0x000f) << 12))
 > 
-> Commit cafa0010cd51 ("Raise the minimum required gcc version to 4.6")
+> Perhaps this would be better as a static inline
+> 
+> static inline u16 HostCmd_SET_SEQ_NO_BSS_INFO(u16 seq, u8 num, u8 type)
+> {
+> 	return (type & 0x000f) << 12 | (num & 0x000f) << 8 | (seq & 0x00ff);
+> }
 
-That commit is in 4.19, not 4.14.  So are you SURE this is ok for 4.14
-and older kernels?
+Just writing in on one line helps readability!
+It is also used exactly twice, both with a cpu_to_le16().
+I wonder how well the compiler handles that on BE?
+The #define is more likely to be handled better.
 
-> raised the minimum GCC version to 4.6. Old mcount is only required for
-> GCC versions older than 4.4.0. Hence old mcount support can be dropped
-> too.
+I've only made a cursory glance at the code, but I get splitting
+host_cmd->seq_num into two u8 fields would give better code!
 
-And as I asked on the 4.19 submission of this patch, what does this have
-to do with clang?
+	David
 
-thanks,
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
-greg k-h
