@@ -2,81 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62B5847A6BF
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 10:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2163247A6F4
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 10:27:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230482AbhLTJWv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 04:22:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43120 "EHLO
+        id S229630AbhLTJ07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 04:26:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbhLTJWv (ORCPT
+        with ESMTP id S229464AbhLTJ06 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 04:22:51 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A94EC061574;
-        Mon, 20 Dec 2021 01:22:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=58e2SN0o6X2CuxM+OfUP8YLLhaaSQn8qAvffw8Dsqsc=; t=1639992171; x=1641201771; 
-        b=MT9tgauQjUUoikPpEIrRILRVP94y2PFnVZh8vb/702JWlTWeV0hNBZPmDD7nw/WVi1GR9mW14A4
-        FsAq77jNMIaJpEqRdxMYQTGwHpargnQtr7OtptOQH1N1nkKvgPVxXsLvuCA6unMAVSiGCmaxmgl0G
-        b6csCy/X51gttshYGjUAWyzmb7z7Vq54qwTcz+3KanrIaT2ETA/rPhKtn9Akfg5KFmg9akcycTA2K
-        5+MOXfcGs1DwrINqSiXN/0BqRCPdhwb/M33armLw97Mpz2s85CytNqYRlKBrhdaGW33IrNUkjJmVZ
-        22pRAoyUgB4rSGk1ACpEA+s1CWcNdiW3rQUw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mzEsX-00E2hF-Mi;
-        Mon, 20 Dec 2021 10:22:45 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org,
-        syzbot+11c342e5e30e9539cabd@syzkaller.appspotmail.com
-Subject: [PATCH net] mac80211: fix locking in ieee80211_start_ap error path
-Date:   Mon, 20 Dec 2021 10:22:40 +0100
-Message-Id: <20211220092240.12768-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.33.1
+        Mon, 20 Dec 2021 04:26:58 -0500
+Received: from mail-ua1-x935.google.com (mail-ua1-x935.google.com [IPv6:2607:f8b0:4864:20::935])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A27AC061574
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 01:26:58 -0800 (PST)
+Received: by mail-ua1-x935.google.com with SMTP id p2so16458783uad.11
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 01:26:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=h8PSSRHrHL7EZamTJ1PmpoLIiZ6v+wZ4VV6s2+7PO3k=;
+        b=D51mQThfF5juDgaTEehi++Vi0PhHh5U1KvJcBRZLPYTwKisuob77I3ayPKp5LPoyRr
+         c8ELlNKQ1jKCtt04P/f/c2EQKqDt5f9mADyq4IHkC2ChxVm9oEOdFgsJSHd1nsNun/fS
+         zGfgpuBGmAkNTw4Jk7aWokPIvDhrqMSXDJdK0CRcWn/cel/R8QpGlFVarAVqjcT2y3br
+         57AKydK4osHET4UbZFeMTEPXaSXnacZst/FM6907pVGfxHXa97+cclKlB6mnC3A938hr
+         3DpCYRCfd3XW9j9lWmILY36f9m0VJ2HJafMu8GA2Ypl/12a3IFTF5wo1qPPnXzAjBrC/
+         ywFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=h8PSSRHrHL7EZamTJ1PmpoLIiZ6v+wZ4VV6s2+7PO3k=;
+        b=3GUKj5CKD2v1Du6ADMcm3C7Hn2CD3QprS296SzH8D6hixTEzJtwPhzk5sE4287kd2/
+         sKW/VxYI06cFDK3bh6aFK2mUGTd0PoJ4ThVZ18CJhNnU9ipWaA3gymzxtfa3cqTB3+Cq
+         agHTeouv9mSy+p4VX8NL+51uVxpgtvjjzl6Rxpoj/Ckn2aFKMLxO2/Oj1kR6SiakqlMM
+         /Cnuy6NUyvUtYGmWXJ+5Cpape+ik6977KqeWNrYjyTo6WqlgTU961JO8HWlPM6bwSWLq
+         DwCMl8fBMwBBoGK+71HPiC50ipYDBcOwj5MUBlOw/7I6WQV9VOatjkuLQVHTwS2NSFYs
+         8n/w==
+X-Gm-Message-State: AOAM530+HpHoqTXkjJWMiSbT+iwxoWRdP8zeBa7Mg7LcNLzvXfbad2k4
+        ySyTrDMUOfFCjjjVlXGJtYm8yH945UbH7EZMaKQ=
+X-Google-Smtp-Source: ABdhPJz1AOQ/RmWGoa6ZoPxoH8yppQDGRFIeXXOrRm6beOT77BBysz2igfsAgxz4ZU4O3DDIq+VutwquzmLDCRV5wO8=
+X-Received: by 2002:a67:d019:: with SMTP id r25mr997103vsi.84.1639992417718;
+ Mon, 20 Dec 2021 01:26:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ab0:7401:0:0:0:0:0 with HTTP; Mon, 20 Dec 2021 01:26:57
+ -0800 (PST)
+Reply-To: alahmedhassan5602@gmail.com
+From:   Mr Ahmed Hassan <drmusazongo11@gmail.com>
+Date:   Mon, 20 Dec 2021 10:26:57 +0100
+Message-ID: <CAGKduDyN6paqMjDNB5h0HjH-_Fdzys4Wa00pkUyEgGdqgX-qWg@mail.gmail.com>
+Subject: Please respond urgently
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Greetings,
 
-We need to hold the local->mtx to release the channel context,
-as even encoded by the lockdep_assert_held() there. Fix it.
+I am contacting you independently of my investigation and no one is
+informed of this communication. I need your urgent assistance in
+transferring the sum of $11.3million immediately to your private
+account.The money has been here in our Bank lying dormant for years
+now without anybody coming for the claim of it.
 
-Cc: stable@vger.kernel.org
-Fixes: 295b02c4be74 ("mac80211: Add FILS discovery support")
-Reported-and-tested-by: syzbot+11c342e5e30e9539cabd@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/20211220090836.cee3d59a1915.I36bba9b79dc2ff4d57c3c7aa30dff9a003fe8c5c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
-Jakub/Dave, could you please apply this directly? I have no
-other things pending for net at the moment. Thanks!
----
- net/mac80211/cfg.c | 3 +++
- 1 file changed, 3 insertions(+)
+I want to release the money to you as a relative to our deceased
+customer (the account owner) who died along with his supposed NEXT OF
+KIN on 16th October 2005. The Banking laws here do not allow such
+money to stay more than 17 years, because the money will be recalled
+to the Bank treasury account as unclaimed funds.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index bd3d3195097f..2d0dd69f9753 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1264,7 +1264,10 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 	return 0;
- 
- error:
-+	mutex_lock(&local->mtx);
- 	ieee80211_vif_release_channel(sdata);
-+	mutex_unlock(&local->mtx);
-+
- 	return err;
- }
- 
--- 
-2.33.1
+By indicating your interest I will send you the full details on how
+the business will be executed.
 
+Please respond urgently and delete if you are not interested.
+
+Best Regards,
+Mr. Ahmed Hassan
