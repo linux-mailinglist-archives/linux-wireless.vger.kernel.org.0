@@ -2,91 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB1BD47B2FF
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 19:39:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29A0B47B303
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 19:41:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240466AbhLTSjy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 13:39:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59458 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238773AbhLTSje (ORCPT
+        id S240481AbhLTSlq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 13:41:46 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:53096 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238773AbhLTSlp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 13:39:34 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6B42C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 10:39:33 -0800 (PST)
+        Mon, 20 Dec 2021 13:41:45 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6AC69B81082
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 18:39:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6BCC36AE8;
-        Mon, 20 Dec 2021 18:39:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33096612A8
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 18:41:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE29BC36AE8;
+        Mon, 20 Dec 2021 18:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640025571;
-        bh=IrE7StyS9P5oiN8AM78b7G0DKxcXBjR5pIRoDMQGIlU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Jzb8J+0xImGVkKzHc6O6+rx3p7CVXHqOPrmH8vZXaW1Bp6ujqoIzlemjyD5AxOnMS
-         2ssRBTHue6p4DmbamTIovNQANPCxOEFtjf7uMJRRtzIaw4up8yTZQ/CKH9DyMjQg0G
-         J+cIkT0BWg+7Xms9VDbCyWQV67CsedKTuLhwXZVgJ7S8gNnBX357Iw5itCUFqbex/S
-         w0TqgAEguvMMTspbP4nu4f65H4ERI7JaSKKUKGVLFBJfPhif79KDEe/Sb7a49r23Z/
-         IQPx9gU5Tibti0Ox0ldpHXPW+cHIYNkxcu7vvKCoIXzXZk4nHFWWRp2yL4OLPhUroF
-         cHDcfX1p66NDw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: pull request: mt76 2021-12-18 v2
-References: <de06ccae-1983-33bf-7cb2-908aee6b2412@nbd.name>
-Date:   Mon, 20 Dec 2021 20:39:27 +0200
-In-Reply-To: <de06ccae-1983-33bf-7cb2-908aee6b2412@nbd.name> (Felix Fietkau's
-        message of "Sun, 19 Dec 2021 15:27:32 +0100")
-Message-ID: <87mtkv9l40.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1640025704;
+        bh=y3tKkCdRua/UjtGIT3DesNCgK7f75ov7Wut2/OFGey0=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=XLP0NIMColOtqhv1uKt7CiB/7an81HYoOjX5BJ6K4UF8ZQEbFiKR98Nzpk864O9CS
+         4ALVue+ddhfuBFiTjG6Ds9CiFmDlcrLrV8a8/xoUAWs3lefN/rG1ZtPmudRtf1slys
+         RBdIw6k+7F8lnirkqhAo5wd5T8+K6FV9y+7OaA32OZeI39DGhznXjKBbIbS+T8pLLS
+         MNEgzkku3HzkOzDxFuuW1sxz0lf3XmQRaShHRcnr6ggdQMbVpbBMPFy1EwauVhl1C5
+         XruuhNnptUh/Ljj5cptT/WWdw/sex1ApAIEtqwE63sxXcOkaOmfZeL1P7B/93/wDdz
+         +HmybVGSeJ1hg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/4] iwlwifi: mei: fix W=1 warnings
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <iwlwifi.20211219110000.1ef2bb24771c.I6a59ad2d64f719d3e27398951c8f1b678b0b1092@changeid>
+References: <iwlwifi.20211219110000.1ef2bb24771c.I6a59ad2d64f719d3e27398951c8f1b678b0b1092@changeid>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <164002570215.16553.15153995532804423577.kvalo@kernel.org>
+Date:   Mon, 20 Dec 2021 18:41:43 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Luca Coelho <luca@coelho.fi> wrote:
 
-> Hi Kalle,
->
-> here's my updated pull request for 5.17 with a compile fix for rebase issue
->
-> - Felix
->
-> The following changes since commit f75c1d55ecbadce027fd650d3ca79e357afae0d9:
->
->   Merge tag 'wireless-drivers-next-2021-12-17' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next (2021-12-17 07:30:07 -0800)
->
-> are available in the Git repository at:
->
->   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2021-12-18
->
-> for you to fetch changes up to b1460bb4eadf4b0bf5afe79fb4d25b9d985f2879:
->
->   mt76: mt7921s: fix cmd timeout in throughput test (2021-12-19 15:24:05 +0100)
->
-> ----------------------------------------------------------------
-> mt76 patches for 5.17
->
-> * decap offload fixes
-> * mt7915 fixes
-> * mt7921 fixes
-> * eeprom fixes
-> * powersave handling fixes
-> * SAR support
-> * code cleanups
->
-> ----------------------------------------------------------------
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> There are a few warnings due to kernel-doc not understanding
+> the constructs the way they're done here, fix them.
+> 
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-Pulled, thanks.
+4 patches applied to wireless-drivers-next.git, thanks.
 
-I switched my email to kvalo@kernel.org and my codeaurora.org address
-will stop working soon, please update your address book and scripts.
+991bbbeccc24 iwlwifi: mei: fix W=1 warnings
+80cba44ff61b iwlwifi: mvm: add missing min_size to kernel-doc
+ab2c42618ab9 iwlwifi: mvm: add dbg_time_point to debugfs
+97c0979d0d72 iwlwifi: mvm: fix imbalanced locking in iwl_mvm_start_get_nvm()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/iwlwifi.20211219110000.1ef2bb24771c.I6a59ad2d64f719d3e27398951c8f1b678b0b1092@changeid/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
