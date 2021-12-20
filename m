@@ -2,118 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7607747A81A
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 11:59:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 160FA47A884
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 12:21:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230135AbhLTK7j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 05:59:39 -0500
-Received: from new3-smtp.messagingengine.com ([66.111.4.229]:37201 "EHLO
-        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229766AbhLTK7j (ORCPT
+        id S230459AbhLTLVl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 06:21:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42008 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230211AbhLTLVl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 05:59:39 -0500
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 6BD435806B0;
-        Mon, 20 Dec 2021 05:59:38 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Mon, 20 Dec 2021 05:59:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=ZmOBdzc5KRY0yb6PF129oWRTs4g
-        SGAWR2I8msz7i93s=; b=MSBvzVlQ2DOGpUNDbRq6TkOaiDbnOfj0iRpTi+bXrN/
-        lq/XBZ4nhbr0UrBaOXTDwu0dVMq92HIjoIZzGjXdoYyV/kw2/Zg0UcHMTCHwxxj6
-        yhPG9dW7AODlbQqzVG5T/zqTK0xQ77+BhPq1bbpGSgdwn2yZs9l9RWEeSWnp2ojN
-        IDEoBKg7NBkITsdDmhscAmuOyATsCdpfYN3Bw4b6SsAEfuCbivS286IjRKNJc9Pq
-        OjA/RK7gEFOIb3NUCwfLjgiKi028o8a0IImM+NAdvH3LcvopHLNFkeIlyV7i3gFz
-        IJ8zVeyZaF9XPoYDue8icl2zJSNlvr568ePFoGbeKKw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=ZmOBdz
-        c5KRY0yb6PF129oWRTs4gSGAWR2I8msz7i93s=; b=n69vDfmztBUE6+EiH/CRpa
-        F5A4Xy1MtFrftd2hORn5pM/MIJhqL/M85wz7tIDSW9wKJ2D0i63EJIv13jWMX0NR
-        R1xlK6Q2c1YQUxNs9sTuDmo8z+Gyz5sW4PPqcVpExt9d8xzDb7mRzyLTg/tCIhNU
-        58IhEdMU+e9SGCXYfXVjw2OJAwS+ZW9wE71UeHKP7Z2265K28J1sHobC+bmMuB1J
-        8q80F2hsrtdbSizZSgtvI2k9OoOiE/7Cd++5I2z2v6uedQX2GTtXXW1XGyfn13Pf
-        vyZ2EOxZULqLj74F8bmXd3K6JLnyIxwsg59bGc4Z5SqodEmspRnxEJZbX533EBYA
-        ==
-X-ME-Sender: <xms:GWLAYcofNXoLjYKFElsgwmNasPLfLJL7yNeGPsuDh2aC0EwhlzGm8A>
-    <xme:GWLAYSohXIVt6VREATy4BN9vZNqe-j2KfhxdkJIdiqfVB6hLDJuy9eeX-Ogr7m1xM
-    mBFpZNxcFj-2A>
-X-ME-Received: <xmr:GWLAYRMzHoR1nXOyoahqEYkOVxgWnaXAd11gUmHuxWKvm1cV742ePLX622tm0bL-hktukTS66gZBVY8-IYoNMmvXSVnpKYPi>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddruddtvddgvdefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeeuleeltd
-    ehkeeltefhleduuddvhfffuedvffduveegheekgeeiffevheegfeetgfenucffohhmrghi
-    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:GWLAYT49JjfvdmIGaLIcT5-qHjRE6EfmcmcH6zHalkpRA87qSi4WiQ>
-    <xmx:GWLAYb6LuUvzZlzhTjjijU-3XZ-rKLjQTazrPIRl2Uv0QmEGwzyhfQ>
-    <xmx:GWLAYTjQmwnWChH06Hs6taD9V1dASEmnmkBmKf1Clog6tNAk39W72g>
-    <xmx:GmLAYeJ8a8fACbvHaFpncbIAzOfQaCGbBGbVfpSJ9dGAyg1HSmtcBw>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 20 Dec 2021 05:59:36 -0500 (EST)
-Date:   Mon, 20 Dec 2021 11:59:34 +0100
-From:   Greg KH <greg@kroah.com>
-To:     Anders Roxell <anders.roxell@linaro.org>
-Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        woojung.huh@microchip.com, UNGLinuxDriver@microchip.com,
-        davem@davemloft.net, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, clang-built-linux@googlegroups.com,
-        ulli.kroll@googlemail.com, linux@armlinux.org.uk,
-        linux-arm-kernel@lists.infradead.org, amitkarwar@gmail.com,
-        nishants@marvell.com, gbhat@marvell.com, huxinming820@gmail.com,
-        kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        rostedt@goodmis.org, mingo@redhat.com, dmitry.torokhov@gmail.com,
-        ndesaulniers@google.com, nathan@kernel.org,
-        linux-input@vger.kernel.org
-Subject: Re: [PATCH 4.19 6/6] Input: touchscreen - avoid bitwise vs logical
- OR warning
-Message-ID: <YcBiFomrxSw1eEUB@kroah.com>
-References: <20211217144119.2538175-1-anders.roxell@linaro.org>
- <20211217144119.2538175-7-anders.roxell@linaro.org>
+        Mon, 20 Dec 2021 06:21:41 -0500
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C83BDC061574;
+        Mon, 20 Dec 2021 03:21:40 -0800 (PST)
+Received: by mail-qt1-x835.google.com with SMTP id t34so9370083qtc.7;
+        Mon, 20 Dec 2021 03:21:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MBczxJm3I08jjd/QHRuYvFh7bIEcTce0GBizMJSEP8c=;
+        b=d1gSa9qhkemwcKujwOGSI9dzt9WFOOqxeh34+7xeJrowWMfJVVYGDxUvaP/s1dXTde
+         WEcPWmAe83rq8rFEyyYCc6YoWWFFE/5X0pZJA3vYAnfeNrF6N35X6aJx//4G2p3qGxwO
+         ZU0sOO9ThRkOZm1LMc4pmmonXPEO9LsfXYD40aYL/htTXNbf4nTpCjycyS+djxW01mmp
+         /3dMO7BkFW3cxjmIHTMPSkqgbJwyYVVe9zCJrnTl0yHrIwH1C8juqbiAXRDuG4LOoTJ7
+         wWftqOiYGjzblReWdiwVDSA+wMFvDKI5ZOj8dyN8Y61aTtUnwVa57sAFFxOX2h8b3kLI
+         dNeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MBczxJm3I08jjd/QHRuYvFh7bIEcTce0GBizMJSEP8c=;
+        b=mqqkr4gMa+i/vDEyntNHolsahJYwLpXrhhompkw00K5o1ujdqvu1HEjlWmRZ9jGF7O
+         7onl6O4ryK3+73KN/ZMW9e5wI0rMgStFI6e0lVoVU1bmYvkhz5kh8RZ5ljAERn6iKvPd
+         Q6pZGFEUErAUkyCoy4ih25/9VXhhPCpMFapD/5cAVB3Zs2tSp4duSIKtzknYtELy/9Vk
+         vAyv4wHdt4NVxvbz74q36panu39P6Tq+JIe4TDjOsUWRXSqvrzGXj3jXqluAuDpUG+Iz
+         qRW2mGAxKUoTkTncO0Woa9Xjg1Y/WA5MXEq6j70+DCfZzgjt9R6B25B7+AjXWafY94wR
+         NaPQ==
+X-Gm-Message-State: AOAM530Q3yZ7YydMS3douYooILZRABGi+wBm8hHNS+WCNHf/xkPv1NjJ
+        9tS4DLWU0DoEkpwEW0NJ5sVWNjro3FU=
+X-Google-Smtp-Source: ABdhPJxiHawe3//spU8yo9RWOXKIfuZi4wTgQUI6t9d6+bgFUY8WNgGtZAIp8IuoiNwyWSV176A+3Q==
+X-Received: by 2002:a05:622a:170e:: with SMTP id h14mr1108255qtk.479.1639999299996;
+        Mon, 20 Dec 2021 03:21:39 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id o21sm14724301qta.89.2021.12.20.03.21.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Dec 2021 03:21:39 -0800 (PST)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: deng.changcheng@zte.com.cn
+To:     kvalo@kernel.org
+Cc:     davem@davemloft.net, kuba@kernel.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Changcheng Deng <deng.changcheng@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] ath11k: use min() to make code cleaner
+Date:   Mon, 20 Dec 2021 11:21:33 +0000
+Message-Id: <20211220112133.472472-1-deng.changcheng@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211217144119.2538175-7-anders.roxell@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Dec 17, 2021 at 03:41:19PM +0100, Anders Roxell wrote:
-> From: Nathan Chancellor <nathan@kernel.org>
-> 
-> commit a02dcde595f7cbd240ccd64de96034ad91cffc40 upstream.
-> 
-> A new warning in clang points out a few places in this driver where a
-> bitwise OR is being used with boolean types:
-> 
-> drivers/input/touchscreen.c:81:17: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
->         data_present = touchscreen_get_prop_u32(dev, "touchscreen-min-x",
->                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> This use of a bitwise OR is intentional, as bitwise operations do not
-> short circuit, which allows all the calls to touchscreen_get_prop_u32()
-> to happen so that the last parameter is initialized while coalescing the
-> results of the calls to make a decision after they are all evaluated.
-> 
-> To make this clearer to the compiler, use the '|=' operator to assign
-> the result of each touchscreen_get_prop_u32() call to data_present,
-> which keeps the meaning of the code the same but makes it obvious that
-> every one of these calls is expected to happen.
-> 
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-> Link: https://lore.kernel.org/r/20211014205757.3474635-1-nathan@kernel.org
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
-> ---
->  drivers/input/touchscreen/of_touchscreen.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+From: Changcheng Deng <deng.changcheng@zte.com.cn>
 
-Also needed in 5.10.y and 5.4.y.
+Use min() in order to make code cleaner.
 
-Please be more careful next time.
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Changcheng Deng <deng.changcheng@zte.com.cn>
+---
+ drivers/net/wireless/ath/ath11k/wmi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 2b4d27d807ab..083856034136 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -614,8 +614,7 @@ int ath11k_wmi_mgmt_send(struct ath11k *ar, u32 vdev_id, u32 buf_id,
+ 	u32 buf_len;
+ 	int ret, len;
+ 
+-	buf_len = frame->len < WMI_MGMT_SEND_DOWNLD_LEN ?
+-		  frame->len : WMI_MGMT_SEND_DOWNLD_LEN;
++	buf_len = min(frame->len, WMI_MGMT_SEND_DOWNLD_LEN);
+ 
+ 	len = sizeof(*cmd) + sizeof(*frame_tlv) + roundup(buf_len, 4);
+ 
+-- 
+2.25.1
+
