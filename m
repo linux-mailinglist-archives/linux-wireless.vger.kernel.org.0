@@ -2,84 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C94547B364
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 20:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63D4647B388
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 20:13:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234255AbhLTTFC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 14:05:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37030 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233780AbhLTTFC (ORCPT
+        id S240174AbhLTTNk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 14:13:40 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:36322 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234420AbhLTTNk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 14:05:02 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3CFC061574;
-        Mon, 20 Dec 2021 11:05:02 -0800 (PST)
+        Mon, 20 Dec 2021 14:13:40 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 99D4F61253;
-        Mon, 20 Dec 2021 19:05:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D444CC36AE2;
-        Mon, 20 Dec 2021 19:04:59 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C9DD8B8108B;
+        Mon, 20 Dec 2021 19:13:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA75C36AE7;
+        Mon, 20 Dec 2021 19:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640027101;
-        bh=wuGnwyqyW/rqFlCTHu1dqQDn2tLUmfEXuC5+uzA6klk=;
+        s=k20201202; t=1640027617;
+        bh=EndenUleLx912elQEAFNcLtwinpgdbihZMGxoV4946c=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=TW4+mMHwaYrsyZEc7B9aDNe99yIds6KugBOV/qwRTiMoQxleP18h0r5u9BZ2MVLIZ
-         1gX1eX25DoQf9DnHJu/7c94hQjr0KkAlI5Vge0uYTaNk3YhpO5SaG+XPgXszJHe1++
-         TF0n8X1m+ceIlYFG5y1qhPNPXTAlilkk5h7c9pJmaTMWOvEQiSxYy+R+RH6Omr1A3f
-         FZWZastMNjRWaKO73v5+6C1aZd3GJyIPXw3jhbND6xKZsTGFB1edQVCpXeWnytnurf
-         EO/FSSj4ML9aUXrP1mY3yAVGqHRZNSIyr4jVVU3C5I/hTqW648oyOXb4K/ErrvUtGP
-         wilLSs9cJds9w==
+        b=XyRWTZXIGt5vp6SSo6un1R2GXoFSUGbPOBVkA2i1CuMZat7FSTKFQScMBIXGltC7R
+         1kzi8RJf3C4M4goBsd/Y3+tdnoJSQOOCuA4dI2393ZoEschCuXp8UUiTd/PjyvRbSR
+         MXe0gJ+MS8ik9cTRl3rtbnr5werdQIekn3uM3Kws7fpBsbM2C5BIven/3CLZhdimfs
+         BbvDSZaw1XRkmRpA+AKvKzmJI1zLjb7kcDE7YJZvSmkkzGQAiafrQBtUUAnM/FPdVn
+         +IBMBc0I10rxUDlkjffCXatRoUtO80KQHNo7slLVZo9J55rzaBQdshK0GMloNs2Xbs
+         XTrSRm4Jz+dUg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtlwifi: rtl8192cu: Fix WARNING when calling
- local_irq_restore() with interrupts enabled
+Subject: Re: [PATCH 2/2] wireless: Initial driver submission for pureLiFi STA
+ devices
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211215171105.20623-1-Larry.Finger@lwfinger.net>
-References: <20211215171105.20623-1-Larry.Finger@lwfinger.net>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        syzbot+cce1ee31614c171f5595@syzkaller.appspotmail.com,
-        stable@vger.kernel.org
+In-Reply-To: <20211031131122.275386-3-srini.raju@purelifi.com>
+References: <20211031131122.275386-3-srini.raju@purelifi.com>
+To:     Srinivasan Raju <srini.raju@purelifi.com>
+Cc:     mostafa.afgani@purelifi.com,
+        Srinivasan Raju <srini.raju@purelifi.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-kernel@vger.kernel.org (open list),
+        linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+        netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164002709818.16553.13857001750113634649.kvalo@kernel.org>
-Date:   Mon, 20 Dec 2021 19:04:59 +0000 (UTC)
+Message-ID: <164002761326.16553.16032698017276446966.kvalo@kernel.org>
+Date:   Mon, 20 Dec 2021 19:13:35 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> wrote:
+Srinivasan Raju <srini.raju@purelifi.com> wrote:
 
-> Syzbot reports the following WARNING:
+> This driver implementation has been based on the zd1211rw driver
 > 
-> [200~raw_local_irq_restore() called with IRQs enabled
-> WARNING: CPU: 1 PID: 1206 at kernel/locking/irqflag-debug.c:10
->    warn_bogus_irq_restore+0x1d/0x20 kernel/locking/irqflag-debug.c:10
+> Driver is based on 802.11 softMAC Architecture and uses
+> native 802.11 for configuration and management
 > 
-> Hardware initialization for the rtl8188cu can run for as long as 350 ms,
-> and the routine may be called with interrupts disabled. To avoid locking
-> the machine for this long, the current routine saves the interrupt flags
-> and enables local interrupts. The problem is that it restores the flags
-> at the end without disabling local interrupts first.
+> The driver is compiled and tested in ARM, x86 architectures and
+> compiled in powerpc architecture
 > 
-> This patch fixes commit a53268be0cb9 ("rtlwifi: rtl8192cu: Fix too long
-> disable of IRQs").
-> 
-> Reported-by: syzbot+cce1ee31614c171f5595@syzkaller.appspotmail.com
-> Cc: stable@vger.kernel.org
-> Fixes: a53268be0cb9 ("rtlwifi: rtl8192cu: Fix too long disable of IRQs")
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> Signed-off-by: Srinivasan Raju <srini.raju@purelifi.com>
 
-Patch applied to wireless-drivers-next.git, thanks.
+I pushed this to the pending branch for build testing:
 
-8b144dedb928 rtlwifi: rtl8192cu: Fix WARNING when calling local_irq_restore() with interrupts enabled
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?h=pending&id=9d71991ef3e8e4c2e49063c8fee446b9d20f4c7d
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211215171105.20623-1-Larry.Finger@lwfinger.net/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211031131122.275386-3-srini.raju@purelifi.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
