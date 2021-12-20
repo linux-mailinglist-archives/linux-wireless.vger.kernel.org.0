@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5E3947A389
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 03:18:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D28647A38C
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 03:18:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237201AbhLTCSU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Dec 2021 21:18:20 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:50988 "EHLO
+        id S237207AbhLTCSW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Dec 2021 21:18:22 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:51060 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S237184AbhLTCST (ORCPT
+        with ESMTP id S237199AbhLTCSU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Dec 2021 21:18:19 -0500
-X-UUID: 045abe231b044df287c7142c7df351a8-20211220
-X-UUID: 045abe231b044df287c7142c7df351a8-20211220
+        Sun, 19 Dec 2021 21:18:20 -0500
+X-UUID: 821717083c7248698a33c40849c2cee2-20211220
+X-UUID: 821717083c7248698a33c40849c2cee2-20211220
 Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
         (envelope-from <bo.jiao@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 334422601; Mon, 20 Dec 2021 10:18:16 +0800
+        with ESMTP id 315119581; Mon, 20 Dec 2021 10:18:16 +0800
 Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
  mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Mon, 20 Dec 2021 10:18:15 +0800
+ 15.2.792.15; Mon, 20 Dec 2021 10:18:16 +0800
 Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
  (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 20 Dec
- 2021 10:18:13 +0800
+ 2021 10:18:14 +0800
 Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
  MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
  15.0.1497.2 via Frontend Transport; Mon, 20 Dec 2021 10:18:13 +0800
@@ -38,9 +38,9 @@ CC:     linux-wireless <linux-wireless@vger.kernel.org>,
         "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
         Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: [PATCH v4 07/12] mt76: mt7915: enlarge wcid size to 544
-Date:   Mon, 20 Dec 2021 10:17:59 +0800
-Message-ID: <867e7d9e80ab24dc2d9c62f33d5879edd8ae506a.1639965732.git.Bo.Jiao@mediatek.com>
+Subject: [PATCH v4 08/12] mt76: mt7915: add txfree event v3
+Date:   Mon, 20 Dec 2021 10:18:00 +0800
+Message-ID: <bf4a5a9c396484df1c7b68cc9db4cb6d1551f0ff.1639965732.git.Bo.Jiao@mediatek.com>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <cover.1639965732.git.Bo.Jiao@mediatek.com>
 References: <cover.1639965732.git.Bo.Jiao@mediatek.com>
@@ -53,7 +53,7 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Bo Jiao <Bo.Jiao@mediatek.com>
 
-The mt7916 can support up to 544 wcid entries.
+Update txfree v3 format.
 This is an intermediate patch to add mt7916 support.
 
 Co-developed-by: Sujuan Chen <sujuan.chen@mediatek.com>
@@ -61,79 +61,115 @@ Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
 Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
 Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h          |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/init.c   |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c    |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h | 10 ++++++++--
- 4 files changed, 11 insertions(+), 5 deletions(-)
+v4:
+- fix the code defect which may cause tx free event parse error.
+---
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 37 +++++++++++++------
+ .../net/wireless/mediatek/mt76/mt7915/mac.h   |  8 ++--
+ 2 files changed, 31 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 29bc381..4accfb5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -225,7 +225,7 @@ enum mt76_wcid_flags {
- 	MT_WCID_FLAG_HDR_TRANS,
- };
- 
--#define MT76_N_WCIDS 288
-+#define MT76_N_WCIDS 544
- 
- /* stored in ieee80211_tx_info::hw_queue */
- #define MT_TX_HW_QUEUE_EXT_PHY		BIT(3)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 00dce19..8bc88db 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -430,7 +430,7 @@ static void mt7915_mac_init(struct mt7915_dev *dev)
- 	/* enable hardware de-agg */
- 	mt76_set(dev, MT_MDP_DCR0, MT_MDP_DCR0_DAMSDU_EN);
- 
--	for (i = 0; i < MT7915_WTBL_SIZE; i++)
-+	for (i = 0; i < mt7915_wtbl_size(dev); i++)
- 		mt7915_mac_wtbl_update(dev, i,
- 				       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
- 	for (i = 0; i < 2; i++)
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 80db7b5..0be2e9f 100644
+index 0be2e9f..74ec7cd 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1598,7 +1598,7 @@ static void mt7915_mac_add_txs(struct mt7915_dev *dev, void *data)
- 	if (pid < MT_PACKET_ID_FIRST)
+@@ -1387,8 +1387,10 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 	LIST_HEAD(free_list);
+ 	struct sk_buff *skb, *tmp;
+ 	void *end = data + len;
+-	u8 i, count;
+-	bool wake = false;
++	bool v3, wake = false;
++	u16 total, count = 0;
++	u32 txd = le32_to_cpu(free->txd);
++	u32 *cur_info;
+ 
+ 	/* clean DMA queues and unmap buffers first */
+ 	mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[MT_TXQ_PSD], false);
+@@ -1403,12 +1405,14 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 	 * to the time ack is received or dropped by hw (air + hw queue time).
+ 	 * Should avoid accessing WTBL to get Tx airtime, and use it instead.
+ 	 */
+-	count = FIELD_GET(MT_TX_FREE_MSDU_CNT, le16_to_cpu(free->ctrl));
+-	if (WARN_ON_ONCE((void *)&free->info[count] > end))
++	total = FIELD_GET(MT_TX_FREE_MSDU_CNT, le16_to_cpu(free->ctrl));
++	v3 = (FIELD_GET(MT_TX_FREE_VER, txd) == 0x4);
++	if (WARN_ON_ONCE((void *)&free->info[total >> v3] > end))
  		return;
  
--	if (wcidx >= MT7915_WTBL_SIZE)
-+	if (wcidx >= mt7915_wtbl_size(dev))
- 		return;
+-	for (i = 0; i < count; i++) {
+-		u32 msdu, info = le32_to_cpu(free->info[i]);
++	for (cur_info = &free->info[0]; count < total; cur_info++) {
++		u32 msdu, info = le32_to_cpu(*cur_info);
++		u8 i;
  
- 	rcu_read_lock();
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 44702b8..0066776 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -12,8 +12,9 @@
- #define MT7915_MAX_INTERFACES		19
- #define MT7915_MAX_WMM_SETS		4
- #define MT7915_WTBL_SIZE		288
--#define MT7915_WTBL_RESERVED		(MT7915_WTBL_SIZE - 1)
--#define MT7915_WTBL_STA			(MT7915_WTBL_RESERVED -	\
-+#define MT7916_WTBL_SIZE		544
-+#define MT7915_WTBL_RESERVED		(mt7915_wtbl_size(dev) - 1)
-+#define MT7915_WTBL_STA			(MT7915_WTBL_RESERVED - \
- 					 MT7915_MAX_INTERFACES)
+ 		/*
+ 		 * 1'b1: new wcid pair.
+@@ -1419,7 +1423,6 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 			struct mt76_wcid *wcid;
+ 			u16 idx;
  
- #define MT7915_WATCHDOG_TIME		(HZ / 10)
-@@ -480,6 +481,11 @@ static inline bool is_mt7915(struct mt76_dev *dev)
- 	return mt76_chip(dev) == 0x7915;
- }
+-			count++;
+ 			idx = FIELD_GET(MT_TX_FREE_WLAN_ID, info);
+ 			wcid = rcu_dereference(dev->mt76.wcid[idx]);
+ 			sta = wcid_to_sta(wcid);
+@@ -1434,12 +1437,24 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 			continue;
+ 		}
  
-+static inline u16 mt7915_wtbl_size(struct mt7915_dev *dev)
-+{
-+	return is_mt7915(&dev->mt76) ? MT7915_WTBL_SIZE : MT7916_WTBL_SIZE;
-+}
+-		msdu = FIELD_GET(MT_TX_FREE_MSDU_ID, info);
+-		txwi = mt76_token_release(mdev, msdu, &wake);
+-		if (!txwi)
++		if (v3 && (info & MT_TX_FREE_MPDU_HEADER))
+ 			continue;
+ 
+-		mt7915_txwi_free(dev, txwi, sta, &free_list);
++		for (i = 0; i < 1 + v3; i++) {
++			if (v3) {
++				msdu = (info >> (15 * i)) & MT_TX_FREE_MSDU_ID_V3;
++				if (msdu == MT_TX_FREE_MSDU_ID_V3)
++					continue;
++			} else {
++				msdu = FIELD_GET(MT_TX_FREE_MSDU_ID, info);
++			}
++			count++;
++			txwi = mt76_token_release(mdev, msdu, &wake);
++			if (!txwi)
++				continue;
 +
- void mt7915_dual_hif_set_irq_mask(struct mt7915_dev *dev, bool write_reg,
- 				  u32 clear, u32 set);
++			mt7915_txwi_free(dev, txwi, sta, &free_list);
++		}
+ 	}
+ 
+ 	mt7915_mac_sta_poll(dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
+index 7a2c740..4504ebc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
+@@ -298,18 +298,20 @@ struct mt7915_txp {
+ struct mt7915_tx_free {
+ 	__le16 rx_byte_cnt;
+ 	__le16 ctrl;
+-	u8 txd_cnt;
+-	u8 rsv[3];
++	__le32 txd;
+ 	__le32 info[];
+ } __packed __aligned(4);
+ 
++#define MT_TX_FREE_VER			GENMASK(18, 16)
+ #define MT_TX_FREE_MSDU_CNT		GENMASK(9, 0)
+ #define MT_TX_FREE_WLAN_ID		GENMASK(23, 14)
+ #define MT_TX_FREE_LATENCY		GENMASK(12, 0)
+ /* 0: success, others: dropped */
+-#define MT_TX_FREE_STATUS		GENMASK(14, 13)
+ #define MT_TX_FREE_MSDU_ID		GENMASK(30, 16)
+ #define MT_TX_FREE_PAIR			BIT(31)
++#define MT_TX_FREE_MPDU_HEADER		BIT(30)
++#define MT_TX_FREE_MSDU_ID_V3		GENMASK(14, 0)
++
+ /* will support this field in further revision */
+ #define MT_TX_FREE_RATE			GENMASK(13, 0)
  
 -- 
 2.18.0
