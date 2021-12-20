@@ -2,118 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A946347B27D
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 19:03:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D898E47B2D7
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 19:29:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240316AbhLTSDn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 13:03:43 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:64054 "EHLO
-        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240160AbhLTSDm (ORCPT
+        id S233685AbhLTS3P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 13:29:15 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:46946 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236730AbhLTS3O (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 13:03:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-        h=from:subject:in-reply-to:references:mime-version:to:cc:
-        content-transfer-encoding:content-type;
-        s=sgd; bh=QWM9YsbpUa2tq7fJXkCMatPQQZnA34M+sSBg18iyfvg=;
-        b=qYfOqHWLIZDUm8S5CLejAgsPW3zvJ8r1g1/gJQEmxx7d+6jnvZP5qvnpKD0LZEi39lGI
-        Y8mht/gIMMIIQoFedepzsdIzz1NZ1i4yeP+sjHpxgH1XzsBlwkfJ1skUFBq5NrP0Dhz4LF
-        AHkqZUis3rxrkr7MRq+c16AQ83lXGkKrHhB0o7iGbdAx0XJXlLSj1MJKGWy3vqSE/on1pw
-        ubd8dCOxlxBZFAeAseRULqBx5XFOZUtIpMDlgiSSo5fO1LNPauUNLp2XTgIUAcAnHygIdO
-        qTOEOXsfKPoIYxg9cOh3e9wx+MC8r2v9AXuNMsiSv0HpTbosT92Xel3I+L6Oq3uA==
-Received: by filterdrecv-656998cfdd-bkftm with SMTP id filterdrecv-656998cfdd-bkftm-1-61C0C57A-8
-        2021-12-20 18:03:38.098190542 +0000 UTC m=+7756580.525339306
-Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-6-0 (SG)
-        with ESMTP
-        id 2IkVQ0rYSmmaaNjVrWXcYQ
-        Mon, 20 Dec 2021 18:03:37.905 +0000 (UTC)
-Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 52DB6700588; Mon, 20 Dec 2021 11:03:37 -0700 (MST)
-From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v6 2/2] wilc1000: Document enable-gpios and reset-gpios
- properties
-Date:   Mon, 20 Dec 2021 18:03:38 +0000 (UTC)
-Message-Id: <20211220180334.3990693-3-davidm@egauge.net>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211220180334.3990693-1-davidm@egauge.net>
-References: <20211220180334.3990693-1-davidm@egauge.net>
+        Mon, 20 Dec 2021 13:29:14 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D2DAFB8105D
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 18:29:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92642C36AEB;
+        Mon, 20 Dec 2021 18:29:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640024951;
+        bh=x2D/e90keyKyOypZN4KNCx5gAdnARqtaazKowqro98s=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=UnT1M3PF0TIz/nGR2rFLD5qHlqEFIw74L63SX7NuimIvbsQMW9MMIuRj6X9TDhcx0
+         SIAdOTfgrS9OHZ2RE+32+VoUofHiEJ90LCfRLMkndi77+PZNBXcJ6V0wK+Y9q+ma6j
+         xrRy98TEIAoOWDWAxgfxHkCgrIeRn7Zth1BrchNYOnMNlcwaCdJy0ju//94ZByFUlN
+         +Ho0x1+/0nUIAYckpXxzBTYO3ncrmEN1f4RylwX3d/buS4A+B1clnTE1RdjtHZ6Pby
+         pDRIOQqaZeWt37j/HaR1jx4KjX/5VxAgmBzjN/YLMqxY4beYh8k9jl+KoLgyaUGGa8
+         MQrL+6xq8JBNw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvCZJmChV6WiC1WWND?=
- =?us-ascii?Q?c1LMEiKwYZUaMMEg8c9SpxKE1fHLOQLhUvKxEMi?=
- =?us-ascii?Q?HPcK+WyZBnUilTDsUEOjbOMr6h6h1YuLHt29vOg?=
- =?us-ascii?Q?ScJp7vpTLyLTG5edGKPjMi3YKI0eo9kpXhsPCYK?=
- =?us-ascii?Q?oaFkRdZ7Rk8Kfe593jMNO5zuAIQkgF+0OHDjv9t?=
- =?us-ascii?Q?xzgcTfxVj4CeMaxjSmuJw=3D=3D?=
-To:     Ajay Singh <ajay.kathat@microchip.com>
-Cc:     Adham Abozaeid <adham.abozaeid@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        David Mosberger-Tang <davidm@egauge.net>
-X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=us-ascii
+Subject: Re: [PATCH v3] ath11k: report tx bitrate for iw wlan station dump
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20211217093722.5739-1-quic_wgong@quicinc.com>
+References: <20211217093722.5739-1-quic_wgong@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_wgong@quicinc.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <164002494893.8180.8615133352100294578.kvalo@kernel.org>
+Date:   Mon, 20 Dec 2021 18:29:10 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add documentation for the ENABLE and RESET GPIOs that may be needed by
-wilc1000-spi.
+Wen Gong <quic_wgong@quicinc.com> wrote:
 
-Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
----
- .../net/wireless/microchip,wilc1000.yaml      | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+> HTT_T2H_MSG_TYPE_PPDU_STATS_IND is a message which include the ppdu
+> info, currently it is not report from firmware for ath11k, then the
+> tx bitrate of "iw wlan0 station dump" always show an invalid value
+> "tx bitrate: 6.0 MBit/s".
+> 
+> To address the issue, this is to parse the info of tx complete report
+> from firmware and indicate the tx rate to mac80211.
+> 
+> After that, "iw wlan0 station dump" show the correct tx bit rate such
+> as:
+> tx bitrate: 78.0 MBit/s MCS 12
+> tx bitrate: 144.4 MBit/s VHT-MCS 7 short GI VHT-NSS 2
+> tx bitrate: 286.7 MBit/s HE-MCS 11 HE-NSS 2 HE-GI 0 HE-DCM 0
+> tx bitrate: 1921.5 MBit/s 160MHz HE-MCS 9 HE-NSS 2 HE-GI 0 HE-DCM 0
+> 
+> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+> 
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-index 6c35682377e6d..60de78f1bc7b9 100644
---- a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-@@ -32,6 +32,21 @@ properties:
-   clock-names:
-     const: rtc
- 
-+  enable-gpios:
-+    maxItems: 1
-+    description: Used by wilc1000-spi to determine the GPIO line
-+      connected to the ENABLE line.  If specified, reset-gpios
-+      must be specified as well as otherwise the driver cannot
-+      ensure the timing required between asserting ENABLE
-+      and deasserting RESET.  This should be declared as an
-+      active-high signal.
-+
-+  reset-gpios:
-+    maxItems: 1
-+    description: Used by wilc1000-spi to determine the GPIO line
-+      connected to the RESET line.  This should be declared as an
-+      active-low signal.
-+
- required:
-   - compatible
-   - interrupts
-@@ -40,6 +55,8 @@ additionalProperties: false
- 
- examples:
-   - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-     spi {
-       #address-cells = <1>;
-       #size-cells = <0>;
-@@ -51,6 +68,8 @@ examples:
-         interrupts = <27 0>;
-         clocks = <&pck1>;
-         clock-names = "rtc";
-+        enable-gpios = <&pioA 5 GPIO_ACTIVE_HIGH>;
-+        reset-gpios = <&pioA 6 GPIO_ACTIVE_LOW>;
-       };
-     };
- 
+Patch applied to ath-next branch of ath.git, thanks.
+
+1b8bb94c0612 ath11k: report tx bitrate for iw wlan station dump
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20211217093722.5739-1-quic_wgong@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
