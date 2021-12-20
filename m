@@ -2,133 +2,327 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0C5347A392
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 03:18:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51FEA47A4FD
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 07:25:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237222AbhLTCS0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Dec 2021 21:18:26 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:51130 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S237199AbhLTCSX (ORCPT
+        id S237556AbhLTGZv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 01:25:51 -0500
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:38963 "EHLO
+        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237555AbhLTGZv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Dec 2021 21:18:23 -0500
-X-UUID: 0d387a6de8fd4053a37ef79cd09e5d4d-20211220
-X-UUID: 0d387a6de8fd4053a37ef79cd09e5d4d-20211220
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <bo.jiao@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 796578949; Mon, 20 Dec 2021 10:18:19 +0800
-Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Mon, 20 Dec 2021 10:18:17 +0800
-Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
- (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 20 Dec
- 2021 10:18:16 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
- 15.0.1497.2 via Frontend Transport; Mon, 20 Dec 2021 10:18:16 +0800
-From:   Bo Jiao <bo.jiao@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Xing Song <xing.song@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: [PATCH v4 12/12] mt76: mt7915: add device id for mt7916
-Date:   Mon, 20 Dec 2021 10:18:04 +0800
-Message-ID: <a429b28bc8c7360733ba204bb9d52227ff517b94.1639965732.git.Bo.Jiao@mediatek.com>
-X-Mailer: git-send-email 2.17.0
-In-Reply-To: <cover.1639965732.git.Bo.Jiao@mediatek.com>
-References: <cover.1639965732.git.Bo.Jiao@mediatek.com>
+        Mon, 20 Dec 2021 01:25:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1639981550; x=1671517550;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1KNLNzHxxNJVMet4pVJV8X7eB6VOawovBafxxzoGAkQ=;
+  b=b/OJrHhSqRJeuQvbAXNlnQYWeoLM0WmRmsqkFfO9YLxeEMmVLGWHbXp5
+   b5YafqdnApBAbbPVeInRB9mFK/ASBw0800/WN7xDcV5YzJQurd4oLnHj7
+   lqWH8yqdG2ot8XOW3Ejfoedx9FKzD+p/CUIEKDKeDxDI43mOdrKwWlwH7
+   w=;
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 19 Dec 2021 22:25:50 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2021 22:25:50 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Sun, 19 Dec 2021 22:25:50 -0800
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Sun, 19 Dec 2021 22:25:48 -0800
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH v3] ath11k: add regdb.bin download for regdb offload
+Date:   Mon, 20 Dec 2021 01:23:55 -0500
+Message-ID: <20211220062355.17021-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-MTK:  N
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Bo Jiao <Bo.Jiao@mediatek.com>
+The regdomain is self-managed type for ath11k, the regdomain info is
+reported from firmware, it is not from wireless regdb. Firmware fetch
+the regdomain info from board data file before. Currently most of the
+regdomain info has moved to another file regdb.bin from board data
+file for some chips such as QCA6390 and WCN6855, so the regdomain info
+left in board data file is not enough to support the feature which need
+more regdomain info.
 
-Add pci_device_id to enable mt7916. Note that MT_HW_CHIPID is no
-longer used for further chips, so drop it accordingly.
+After download regdb.bin, firmware will fetch the regdomain info from
+regdb.bin instead of board data file and report to ath11k. If it does
+not have the file regdb.bin, it also can initialize wlan success and
+firmware then fetch regdomain info from board data file.
 
-Co-developed-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Add download the regdb.bin before download board data for some specific
+chip which support supports_regdb in hardware parameters.
+
+download regdb.bin log:
+[430082.334162] ath11k_pci 0000:05:00.0: chip_id 0x2 chip_family 0xb board_id 0x106 soc_id 0x400c0200
+[430082.334169] ath11k_pci 0000:05:00.0: fw_version 0x110c8b4c fw_build_timestamp 2021-10-25 07:41 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HSP.1.1-02892-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+[430082.334414] ath11k_pci 0000:05:00.0: boot firmware request ath11k/WCN6855/hw2.0/regdb.bin size 24310
+
+output of "iw reg get"
+global
+country US: DFS-FCC
+        (2402 - 2472 @ 40), (N/A, 30), (N/A)
+        (5170 - 5250 @ 80), (N/A, 23), (N/A), AUTO-BW
+        (5250 - 5330 @ 80), (N/A, 23), (0 ms), DFS, AUTO-BW
+        (5490 - 5730 @ 160), (N/A, 23), (0 ms), DFS
+        (5735 - 5835 @ 80), (N/A, 30), (N/A)
+        (57240 - 63720 @ 2160), (N/A, 40), (N/A)
+
+phy#0 (self-managed)
+country US: DFS-FCC
+        (2402 - 2472 @ 40), (6, 30), (N/A)
+        (5170 - 5250 @ 80), (N/A, 24), (N/A), AUTO-BW
+        (5250 - 5330 @ 80), (N/A, 24), (0 ms), DFS, AUTO-BW
+        (5490 - 5730 @ 160), (N/A, 24), (0 ms), DFS, AUTO-BW
+        (5735 - 5895 @ 160), (N/A, 30), (N/A), AUTO-BW
+        (5945 - 7125 @ 160), (N/A, 24), (N/A), NO-OUTDOOR, AUTO-BW
+
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-01720.1-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/pci.c  | 7 +++++--
- drivers/net/wireless/mediatek/mt76/mt7915/regs.h | 1 -
- 3 files changed, 6 insertions(+), 4 deletions(-)
+v3:
+   1. rebased to ath.git ath-202112161538
+   2. fix warning message "qmi failed to load CAL data file:cal-pci-0000:06:00.0.bin"
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index dfc975e..6500095 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -406,7 +406,7 @@ static int mt7915_mmio_init(struct mt76_dev *mdev,
- 	bus_ops->rmw = mt7915_rmw;
- 	dev->mt76.bus = bus_ops;
+v2:
+   1. rebased to ath.git ath-202112141538
+   2. add separate ath11k_core_fetch_regdb()
+   3. add supports_regdb=true for wcn6855 hw2.0 as well as qca6390 hw2.0/wcn6855 hw2.1
+   4. remove warning "qmi failed to fetch board file" if no regdb.bin
+
+ drivers/net/wireless/ath/ath11k/core.c | 28 ++++++++++++++++++++----
+ drivers/net/wireless/ath/ath11k/core.h |  4 ++++
+ drivers/net/wireless/ath/ath11k/hw.h   |  2 ++
+ drivers/net/wireless/ath/ath11k/qmi.c  | 30 ++++++++++++++++++--------
+ drivers/net/wireless/ath/ath11k/qmi.h  |  1 +
+ 5 files changed, 52 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 606e867c36ec..acdd4fab2515 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -84,6 +84,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.num_peers = 512,
+ 		.supports_suspend = false,
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_ipq8074),
++		.supports_regdb = false,
+ 		.fix_l1ss = true,
+ 		.credit_flow = false,
+ 		.max_tx_ring = DP_TCL_NUM_RING_MAX,
+@@ -142,6 +143,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.num_peers = 512,
+ 		.supports_suspend = false,
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_ipq8074),
++		.supports_regdb = false,
+ 		.fix_l1ss = true,
+ 		.credit_flow = false,
+ 		.max_tx_ring = DP_TCL_NUM_RING_MAX,
+@@ -199,6 +201,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.num_peers = 512,
+ 		.supports_suspend = true,
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_ipq8074),
++		.supports_regdb = true,
+ 		.fix_l1ss = true,
+ 		.credit_flow = true,
+ 		.max_tx_ring = DP_TCL_NUM_RING_MAX_QCA6390,
+@@ -256,6 +259,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.num_peers = 128,
+ 		.supports_suspend = false,
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_qcn9074),
++		.supports_regdb = false,
+ 		.fix_l1ss = true,
+ 		.credit_flow = false,
+ 		.max_tx_ring = DP_TCL_NUM_RING_MAX,
+@@ -313,6 +317,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.num_peers = 512,
+ 		.supports_suspend = true,
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_wcn6855),
++		.supports_regdb = true,
+ 		.fix_l1ss = false,
+ 		.credit_flow = true,
+ 		.max_tx_ring = DP_TCL_NUM_RING_MAX_QCA6390,
+@@ -369,6 +374,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.num_peers = 512,
+ 		.supports_suspend = true,
+ 		.hal_desc_sz = sizeof(struct hal_rx_desc_wcn6855),
++		.supports_regdb = true,
+ 		.fix_l1ss = false,
+ 		.credit_flow = true,
+ 		.max_tx_ring = DP_TCL_NUM_RING_MAX_QCA6390,
+@@ -736,10 +742,12 @@ static int ath11k_core_fetch_board_data_api_n(struct ath11k_base *ab,
+ 	return ret;
+ }
  
--	mdev->rev = (mt76_rr(dev, MT_HW_CHIPID) << 16) |
-+	mdev->rev = (device_id << 16) |
- 		    (mt76_rr(dev, MT_HW_REV) & 0xff);
- 	dev_dbg(mdev->dev, "ASIC revision: %04x\n", mdev->rev);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-index 5d6adcd..92f4b58 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
-@@ -18,11 +18,13 @@ static u32 hif_idx;
- 
- static const struct pci_device_id mt7915_pci_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7915) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7906) },
- 	{ },
- };
- 
- static const struct pci_device_id mt7915_hif_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7916) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x790a) },
- 	{ },
- };
- 
-@@ -61,7 +63,8 @@ static void mt7915_put_hif2(struct mt7915_hif *hif)
- static struct mt7915_hif *mt7915_pci_init_hif2(struct pci_dev *pdev)
+-static int ath11k_core_fetch_board_data_api_1(struct ath11k_base *ab,
+-					      struct ath11k_board_data *bd)
++int ath11k_core_fetch_board_data_api_1(struct ath11k_base *ab,
++				       struct ath11k_board_data *bd,
++				       const char *name)
  {
- 	hif_idx++;
--	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7916, NULL))
-+	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7916, NULL) &&
-+	    !pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x790a, NULL))
- 		return NULL;
+-	bd->fw = ath11k_core_firmware_request(ab, ATH11K_DEFAULT_BOARD_FILE);
++	bd->fw = ath11k_core_firmware_request(ab, name);
++
+ 	if (IS_ERR(bd->fw))
+ 		return PTR_ERR(bd->fw);
  
- 	writel(hif_idx | MT_PCIE_RECOG_ID_SEM,
-@@ -111,7 +114,7 @@ static int mt7915_pci_probe(struct pci_dev *pdev,
+@@ -767,7 +775,7 @@ int ath11k_core_fetch_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd)
+ 		goto success;
  
- 	mt76_pci_disable_aspm(pdev);
+ 	ab->bd_api = 1;
+-	ret = ath11k_core_fetch_board_data_api_1(ab, bd);
++	ret = ath11k_core_fetch_board_data_api_1(ab, bd, ATH11K_DEFAULT_BOARD_FILE);
+ 	if (ret) {
+ 		ath11k_err(ab, "failed to fetch board-2.bin or board.bin from %s\n",
+ 			   ab->hw_params.fw.dir);
+@@ -779,6 +787,18 @@ int ath11k_core_fetch_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd)
+ 	return 0;
+ }
  
--	if (id->device == 0x7916)
-+	if (id->device == 0x7916 || id->device == 0x790a)
- 		return mt7915_pci_hif2_probe(pdev);
++int ath11k_core_fetch_regdb(struct ath11k_base *ab, struct ath11k_board_data *bd)
++{
++	int ret;
++
++	ret = ath11k_core_fetch_board_data_api_1(ab, bd, ATH11K_REGDB_FILE_NAME);
++	if (ret)
++		ath11k_dbg(ab, ATH11K_DBG_BOOT, "failed to fetch %s from %s\n",
++			   ATH11K_REGDB_FILE_NAME, ab->hw_params.fw.dir);
++
++	return ret;
++}
++
+ static void ath11k_core_stop(struct ath11k_base *ab)
+ {
+ 	if (!test_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags))
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index bab3878a41a7..193ea719da2a 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -969,6 +969,10 @@ struct ath11k_base *ath11k_core_alloc(struct device *dev, size_t priv_size,
+ void ath11k_core_free(struct ath11k_base *ath11k);
+ int ath11k_core_fetch_bdf(struct ath11k_base *ath11k,
+ 			  struct ath11k_board_data *bd);
++int ath11k_core_fetch_regdb(struct ath11k_base *ab, struct ath11k_board_data *bd);
++int ath11k_core_fetch_board_data_api_1(struct ath11k_base *ab,
++				       struct ath11k_board_data *bd,
++				       const char *name);
+ void ath11k_core_free_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd);
+ int ath11k_core_check_dt(struct ath11k_base *ath11k);
  
- 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 1168a62..aa19e59 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -741,7 +741,6 @@ enum offs_rev {
- #define MT_TOP_MISC_FW_STATE		GENMASK(2, 0)
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 23f3ce741636..a99b521f5286 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -77,6 +77,7 @@
+ #define ATH11K_DEFAULT_CAL_FILE		"caldata.bin"
+ #define ATH11K_AMSS_FILE		"amss.bin"
+ #define ATH11K_M3_FILE			"m3.bin"
++#define ATH11K_REGDB_FILE_NAME		"regdb.bin"
  
- #define MT_HW_BOUND			0x70010020
--#define MT_HW_CHIPID			0x70010200
- #define MT_HW_REV			0x70010204
- #define MT_WF_SUBSYS_RST		0x70002600
+ enum ath11k_hw_rate_cck {
+ 	ATH11K_HW_RATE_CCK_LP_11M = 0,
+@@ -178,6 +179,7 @@ struct ath11k_hw_params {
+ 	u32 num_peers;
+ 	bool supports_suspend;
+ 	u32 hal_desc_sz;
++	bool supports_regdb;
+ 	bool fix_l1ss;
+ 	bool credit_flow;
+ 	u8 max_tx_ring;
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index 3b9ba0e03a66..4c21d488beda 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -2161,7 +2161,8 @@ static int ath11k_qmi_load_file_target_mem(struct ath11k_base *ab,
+ 	return ret;
+ }
  
+-static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab)
++static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab,
++				   bool regdb)
+ {
+ 	struct device *dev = ab->dev;
+ 	char filename[ATH11K_QMI_MAX_BDF_FILE_NAME_SIZE];
+@@ -2172,13 +2173,21 @@ static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab)
+ 	const u8 *tmp;
+ 
+ 	memset(&bd, 0, sizeof(bd));
+-	ret = ath11k_core_fetch_bdf(ab, &bd);
+-	if (ret) {
+-		ath11k_warn(ab, "qmi failed to fetch board file: %d\n", ret);
+-		goto out;
++
++	if (regdb) {
++		ret = ath11k_core_fetch_regdb(ab, &bd);
++	} else {
++		ret = ath11k_core_fetch_bdf(ab, &bd);
++		if (ret)
++			ath11k_warn(ab, "qmi failed to fetch board file: %d\n", ret);
+ 	}
+ 
+-	if (bd.len >= SELFMAG && memcmp(bd.data, ELFMAG, SELFMAG) == 0)
++	if (ret)
++		goto out;
++
++	if (regdb)
++		bdf_type = ATH11K_QMI_BDF_TYPE_REGDB;
++	else if (bd.len >= SELFMAG && memcmp(bd.data, ELFMAG, SELFMAG) == 0)
+ 		bdf_type = ATH11K_QMI_BDF_TYPE_ELF;
+ 	else
+ 		bdf_type = ATH11K_QMI_BDF_TYPE_BIN;
+@@ -2193,8 +2202,8 @@ static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab)
+ 		goto out;
+ 	}
+ 
+-	/* QCA6390 does not support cal data, skip it */
+-	if (bdf_type == ATH11K_QMI_BDF_TYPE_ELF)
++	/* QCA6390/WCN6855 does not support cal data, skip it */
++	if (bdf_type == ATH11K_QMI_BDF_TYPE_ELF || bdf_type == ATH11K_QMI_BDF_TYPE_REGDB)
+ 		goto out;
+ 
+ 	if (ab->qmi.target.eeprom_caldata) {
+@@ -2626,7 +2635,10 @@ static int ath11k_qmi_event_load_bdf(struct ath11k_qmi *qmi)
+ 		return ret;
+ 	}
+ 
+-	ret = ath11k_qmi_load_bdf_qmi(ab);
++	if (ab->hw_params.supports_regdb)
++		ath11k_qmi_load_bdf_qmi(ab, true);
++
++	ret = ath11k_qmi_load_bdf_qmi(ab, false);
+ 	if (ret < 0) {
+ 		ath11k_warn(ab, "failed to load board data file: %d\n", ret);
+ 		return ret;
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
+index a6fb7d47ee82..983b0b1480dc 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.h
++++ b/drivers/net/wireless/ath/ath11k/qmi.h
+@@ -48,6 +48,7 @@ enum ath11k_qmi_file_type {
+ enum ath11k_qmi_bdf_type {
+ 	ATH11K_QMI_BDF_TYPE_BIN			= 0,
+ 	ATH11K_QMI_BDF_TYPE_ELF			= 1,
++	ATH11K_QMI_BDF_TYPE_REGDB		= 4,
+ };
+ 
+ enum ath11k_qmi_event_type {
+
+base-commit: 12018ad8603a598d773e2cae12542a1981c94886
 -- 
-2.18.0
+2.31.1
 
