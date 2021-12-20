@@ -2,63 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC84E47A616
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 09:36:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5869A47A627
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 09:43:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237916AbhLTIgL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 03:36:11 -0500
-Received: from mail-io1-f72.google.com ([209.85.166.72]:39686 "EHLO
-        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234799AbhLTIgL (ORCPT
+        id S237811AbhLTInX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 03:43:23 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:58382 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234112AbhLTInV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 03:36:11 -0500
-Received: by mail-io1-f72.google.com with SMTP id m6-20020a0566022e8600b005ec18906edaso6650620iow.6
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 00:36:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=O3LXneiNH9IRbWHAKK3lrVYWgtCFvwj/GzY0w5gPzSA=;
-        b=nyea4QMuU5CucrNls8ft/itSSPPebgkNqu7Vq0EHrx/vtRLhTrUOB6ymGbzkDd1qRl
-         Q7cpoFaRzRl8Uy4QWkBiCUbQ/FkdQvzefbcDrUd/CLYU0MwpYXivDc4MT5If61lQjVIT
-         tHVVy/SWQawoSxUxfkbNbWT/wPA4Fl1JHB6bCQl0upD6B8BOyFp0xrfTVh3Ij+AsPV7N
-         ZODzwKPTDNLonqcoN9izoUtkmLm4E/0/Xy67FwgcMLbjQ0TlIY4ynsQPLOdRRL/k5lhO
-         jWOsEqB2NTd0qB/41ug4/v3bmnuOJoB9Xeumloh7qi+TYyJVFnBAUccko1xR0Htc5f4R
-         8q7g==
-X-Gm-Message-State: AOAM530o8qNJ00XPmc9L3ps9+3A8F5d+wPCDjRazUHEwD0Ti+4mf/v8C
-        EVNWSX0gkYtcg5MDA3K73fdhjmaLex/3QXD3gKCMa+V4Blus
-X-Google-Smtp-Source: ABdhPJwDzIY6BCSPt6NhocGT4u74Rfl+fDqzK2BHg2sNL8ykWf2a3GluAuPJNgfc8D5oS9lUEiWH1t820hqfmf5IFmT82jX2gq92
+        Mon, 20 Dec 2021 03:43:21 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B54C5B80E18;
+        Mon, 20 Dec 2021 08:43:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7E8C36AE8;
+        Mon, 20 Dec 2021 08:43:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639989799;
+        bh=Z56E0YLDJYfUOEbIoQ3dZsDFxNDXVpWns/OnVxMD5ls=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=JtgVt0xqu3Rl1M436E6YfK0mYOhHCffwMV9EvGazdC61Nqcb5i9UnrPIQdBVGvFCi
+         5M88YAytMwj5Fnja5g/mNFl0f0DTlIvDvPPZCm53up+yqk7XXzCB+lpmrKw5/QbeEV
+         YJr9HT87Kw0M+cn0w0LauvZTbq4Y/B6cseAVevDpkCabJueyw/ZvpnFO+KMgm/9vQv
+         aKoicz0w8NAfYNCqtu+BmTAHt2WLPVItndWcRDtQM6pn5YjC9FH66oApmcbsyE0n8b
+         JvuD/z69PM63060pPMxMAncpO+up1UV6ZVD7mwPbyLP/UKUmc6ggokz1KXR45W1Mr0
+         XRvVwmAL3vvwA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     David Mosberger-Tang <davidm@egauge.net>
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: RFC: wilc1000: refactor TX path to use sk_buff queue
+References: <e3502ecffe0c4c01b263ada8deed814d5135c24c.camel@egauge.net>
+        <8735mvhyvk.fsf@codeaurora.org>
+        <57d8cdfe5c22bf3df2727a18a6096026c59729da.camel@egauge.net>
+Date:   Mon, 20 Dec 2021 10:43:13 +0200
+In-Reply-To: <57d8cdfe5c22bf3df2727a18a6096026c59729da.camel@egauge.net>
+        (David Mosberger-Tang's message of "Tue, 14 Dec 2021 10:43:35 -0700")
+Message-ID: <87fsqnmztq.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:191c:: with SMTP id p28mr7354021jal.181.1639989370732;
- Mon, 20 Dec 2021 00:36:10 -0800 (PST)
-Date:   Mon, 20 Dec 2021 00:36:10 -0800
-In-Reply-To: <20211220090836.cee3d59a1915.I36bba9b79dc2ff4d57c3c7aa30dff9a003fe8c5c@changeid>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000e0c8fb05d38fc731@google.com>
-Subject: Re: [syzbot] WARNING in ieee80211_vif_release_channel (2)
-From:   syzbot <syzbot+11c342e5e30e9539cabd@syzkaller.appspotmail.com>
-To:     johannes.berg@intel.com, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+David Mosberger-Tang <davidm@egauge.net> writes:
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+> On Tue, 2021-12-14 at 19:36 +0200, Kalle Valo wrote:
+>> David Mosberger-Tang <davidm@egauge.net> writes:
+>> 
+>> > I'd like to propose to restructure the wilc1000 TX path to take
+>> > advantage of the existing sk_buff queuing and buffer operations rather
+>> > than using a driver-specific solution.  To me, the resulting code looks
+>> > simpler and the diffstat shows a fair amount of code-reduction:
+>> > 
+>> >  cfg80211.c |   35 ----
+>> >  mon.c      |   36 ----
+>> >  netdev.c   |   28 ---
+>> >  netdev.h   |   10 -
+>> >  wlan.c     |  499 ++++++++++++++++++++++++++-----------------------------------
+>> >  wlan.h     |   51 ++----
+>> >  6 files changed, 255 insertions(+), 404 deletions(-)
+>> 
+>> Looks like a very good cleanup.
+>
+> Thanks!
+>
+>> > +static void wilc_wlan_txq_drop_net_pkt(struct sk_buff *skb)
+>> > +{
+>> > +	struct wilc_vif *vif = netdev_priv(skb->dev);
+>> > +	struct wilc *wilc = vif->wilc;
+>> > +	struct wilc_skb_tx_cb *tx_cb = WILC_SKB_TX_CB(skb);
+>> > +
+>> > +	if ((u8)tx_cb->q_num >= NQUEUES) {
+>> > +		netdev_err(vif->ndev, "Invalid AC queue number %d",
+>> > +			   tx_cb->q_num);
+>> > +		return;
+>> > +	}
+>> 
+>> But why the cast here? Casting should be avoided as much as possible,
+>> they just create so many problems if used badly.
+>
+> tx_cb->q_num is declared as:
+>
+>        enum ip_pkt_priority q_num;     /* AC queue number */
+>
+> so the cast to (u8) is to protect against negative values (which, of
+> course, should never really be the case).  Would you rather have the
+> code check explicitly for negative numbers, i.e.:
+>
+>     if (tx_cb->q_num < 0 || tx_cb->q_num >= NQUEUES)
+>
+> ?
 
-Reported-and-tested-by: syzbot+11c342e5e30e9539cabd@syzkaller.appspotmail.com
+I don't have a good answer. IIRC I have never seen anyone doing anything
+like this either, so I'm not sure if it's even worth it? In general
+casting is a much bigger problem in upstream and I tend to check those
+carefully.
 
-Tested on:
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-commit:         60ec7fcf qlcnic: potential dereference null pointer of..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git master
-kernel config:  https://syzkaller.appspot.com/x/.config?x=fa556098924b78f0
-dashboard link: https://syzkaller.appspot.com/bug?extid=11c342e5e30e9539cabd
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=1412bd93b00000
-
-Note: testing is done by a robot and is best-effort only.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
