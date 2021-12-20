@@ -2,573 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49B7A47A732
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 10:37:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACB8847A767
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 10:48:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229680AbhLTJhI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 04:37:08 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:42061 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbhLTJhH (ORCPT
+        id S230155AbhLTJsQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 04:48:16 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:34028 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230139AbhLTJsQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 04:37:07 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BK9b01I1000821, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36504.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BK9b01I1000821
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 20 Dec 2021 17:37:01 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36504.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Mon, 20 Dec 2021 17:37:00 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 20 Dec
- 2021 17:37:00 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
-Subject: [PATCH] rtw88: support SAR via kernel common API
-Date:   Mon, 20 Dec 2021 17:36:56 +0800
-Message-ID: <20211220093656.65312-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 20 Dec 2021 04:48:16 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 16D2BB80C8D
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 09:48:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B2CC36AE8;
+        Mon, 20 Dec 2021 09:48:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639993693;
+        bh=EGvXXR0wahhfIVGCNTTyjkHtk1DIxOuQlGKKcFhrGdM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=O1BxTrEVahxTGVfebomk9MdzabMNqqEsqZUK/NmnXppRrlJsN+03zJZzPkygE0JIT
+         +le79pgjmJciQN9cZHEAbstrCUIh07nSuxRj3Vluy6H5/4UQ54uH+3e1wRrfVcJJad
+         0QST6UM3IFjmfANSpYBv/i6RLykMd9nXbJuKqePbntSqC1uFnVSSFSYt1ytpzl3x3N
+         F7hkdw7wOtbyUhS0C8a1bSJ86Tamv/jrSNIjagG8hV1gRk7kjg5jTTfrN2BowMDaO2
+         FPjNQfLHwz/iptk01C+P4HGwTEvue9ikK6h6bmx4LEFrT4ejwCPnVdqhnL8XHar0R5
+         ZUjqJjjkHVNFw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <kevin_yang@realtek.com>
+Subject: Re: [PATCH] rtw88: support SAR via kernel common API
+References: <20211220093656.65312-1-pkshih@realtek.com>
+Date:   Mon, 20 Dec 2021 11:48:04 +0200
+In-Reply-To: <20211220093656.65312-1-pkshih@realtek.com> (Ping-Ke Shih's
+        message of "Mon, 20 Dec 2021 17:36:56 +0800")
+Message-ID: <875yrjboa3.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 12/20/2021 09:14:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzIwIKRXpMggMDY6NDc6MDA=?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36504.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Register cfg80211_sar_capa with type NL80211_SAR_TYPE_POWER and four
-frequency ranges for configurations in unit of 0.25 dBm. And handle
-callback set_sar_specs.
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+>
+> Register cfg80211_sar_capa with type NL80211_SAR_TYPE_POWER and four
+> frequency ranges for configurations in unit of 0.25 dBm. And handle
+> callback set_sar_specs.
+>
+> Originally, TX power has three main parameters, i.e. power base,
+> power by rate, and power limit. The formula can be simply considered
+> as TX power = power base + min(power by rate, power limit). With the
+> support of SAR which can be treated as another power limit, there is
+> one more parameter for TX power. And the formula will evolve into
+> TX power = power base + min(power by rate, power limit, power sar).
+>
+> Besides, debugfs tx_pwr_tbl is also refined to show SAR information.
+> The following is an example for the difference.
+> Before supporting SAR,
+> -----------------------------------
+> ...
+> path rate       pwr       base      (byr  lmt ) rem
+>    A  CCK_1M     66(0x42)   78  -12 (  12  -12)    0
+>    A  CCK_2M     66(0x42)   78  -12 (   8  -12)    0
+> ...
+> -----------------------------------
+> After supporting SAR and making some configurations,
+> -----------------------------------
+> ...
+> path rate       pwr       base      (byr  lmt  sar ) rem
+>    A  CCK_1M     62(0x3e)   78  -16 (  12  -12  -16)    0
+>    A  CCK_2M     62(0x3e)   78  -16 (   8  -12  -16)    0
+> ...
+> -----------------------------------
+>
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Originally, TX power has three main parameters, i.e. power base,
-power by rate, and power limit. The formula can be simply considered
-as TX power = power base + min(power by rate, power limit). With the
-support of SAR which can be treated as another power limit, there is
-one more parameter for TX power. And the formula will evolve into
-TX power = power base + min(power by rate, power limit, power sar).
+I switched my email to kvalo@kernel.org and my codeaurora.org address
+will stop working soon, please update your address book and scripts.
 
-Besides, debugfs tx_pwr_tbl is also refined to show SAR information.
-The following is an example for the difference.
-Before supporting SAR,
------------------------------------
-...
-path rate       pwr       base      (byr  lmt ) rem
-   A  CCK_1M     66(0x42)   78  -12 (  12  -12)    0
-   A  CCK_2M     66(0x42)   78  -12 (   8  -12)    0
-...
------------------------------------
-After supporting SAR and making some configurations,
------------------------------------
-...
-path rate       pwr       base      (byr  lmt  sar ) rem
-   A  CCK_1M     62(0x3e)   78  -16 (  12  -12  -16)    0
-   A  CCK_2M     62(0x3e)   78  -16 (   8  -12  -16)    0
-...
------------------------------------
+No need to resend because of this.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-Note: This patch dpends on another sent patch "rtw88: 8822c: add ieee80211_ops::hw_scan"
----
- drivers/net/wireless/realtek/rtw88/Makefile   |   1 +
- drivers/net/wireless/realtek/rtw88/debug.c    |  12 +-
- drivers/net/wireless/realtek/rtw88/mac80211.c |  12 ++
- drivers/net/wireless/realtek/rtw88/main.c     |  22 ++++
- drivers/net/wireless/realtek/rtw88/main.h     |  30 +++++
- drivers/net/wireless/realtek/rtw88/phy.c      |  63 +++++++---
- drivers/net/wireless/realtek/rtw88/phy.h      |   1 +
- drivers/net/wireless/realtek/rtw88/sar.c      | 114 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/sar.h      |  22 ++++
- 9 files changed, 257 insertions(+), 20 deletions(-)
- create mode 100644 drivers/net/wireless/realtek/rtw88/sar.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/sar.h
-
-diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
-index 73d6807a8cdfb..834c66ec0af9e 100644
---- a/drivers/net/wireless/realtek/rtw88/Makefile
-+++ b/drivers/net/wireless/realtek/rtw88/Makefile
-@@ -15,6 +15,7 @@ rtw88_core-y += main.o \
- 	   ps.o \
- 	   sec.o \
- 	   bf.o \
-+	   sar.o \
- 	   regd.o
- 
- rtw88_core-$(CONFIG_PM) += wow.o
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index b863c74b51e6c..e429428232c15 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -634,8 +634,8 @@ static int rtw_debugfs_get_tx_pwr_tbl(struct seq_file *m, void *v)
- 	seq_printf(m, "channel: %u\n", ch);
- 	seq_printf(m, "bandwidth: %u\n", bw);
- 	seq_printf(m, "regulatory: %s\n", rtw_get_regd_string(regd));
--	seq_printf(m, "%-4s %-10s %-3s%6s %-4s %4s (%-4s %-4s) %-4s\n",
--		   "path", "rate", "pwr", "", "base", "", "byr", "lmt", "rem");
-+	seq_printf(m, "%-4s %-10s %-9s %-9s (%-4s %-4s %-4s) %-4s\n",
-+		   "path", "rate", "pwr", "base", "byr", "lmt", "sar", "rem");
- 
- 	mutex_lock(&hal->tx_power_mutex);
- 	for (path = RF_PATH_A; path <= RF_PATH_B; path++) {
-@@ -657,13 +657,15 @@ static int rtw_debugfs_get_tx_pwr_tbl(struct seq_file *m, void *v)
- 
- 			seq_printf(m, "%4c ", path + 'A');
- 			rtw_print_rate(m, rate);
--			seq_printf(m, " %3u(0x%02x) %4u %4d (%4d %4d) %4d\n",
-+			seq_printf(m, " %3u(0x%02x) %4u %4d (%4d %4d %4d) %4d\n",
- 				   hal->tx_pwr_tbl[path][rate],
- 				   hal->tx_pwr_tbl[path][rate],
- 				   pwr_param.pwr_base,
--				   min_t(s8, pwr_param.pwr_offset,
--					 pwr_param.pwr_limit),
-+				   min3(pwr_param.pwr_offset,
-+					pwr_param.pwr_limit,
-+					pwr_param.pwr_sar),
- 				   pwr_param.pwr_offset, pwr_param.pwr_limit,
-+				   pwr_param.pwr_sar,
- 				   pwr_param.pwr_remnant);
- 		}
- 	}
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index f16ef64181d7e..5ba94c05eb710 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -13,6 +13,7 @@
- #include "bf.h"
- #include "debug.h"
- #include "wow.h"
-+#include "sar.h"
- 
- static void rtw_ops_tx(struct ieee80211_hw *hw,
- 		       struct ieee80211_tx_control *control,
-@@ -835,6 +836,16 @@ static void rtw_ops_cancel_hw_scan(struct ieee80211_hw *hw,
- 	mutex_unlock(&rtwdev->mutex);
- }
- 
-+static int rtw_ops_set_sar_specs(struct ieee80211_hw *hw,
-+				 const struct cfg80211_sar_specs *sar)
-+{
-+	struct rtw_dev *rtwdev = hw->priv;
-+
-+	rtw_set_sar_specs(rtwdev, sar);
-+
-+	return 0;
-+}
-+
- const struct ieee80211_ops rtw_ops = {
- 	.tx			= rtw_ops_tx,
- 	.wake_tx_queue		= rtw_ops_wake_tx_queue,
-@@ -864,6 +875,7 @@ const struct ieee80211_ops rtw_ops = {
- 	.reconfig_complete	= rtw_reconfig_complete,
- 	.hw_scan		= rtw_ops_hw_scan,
- 	.cancel_hw_scan		= rtw_ops_cancel_hw_scan,
-+	.set_sar_specs          = rtw_ops_set_sar_specs,
- #ifdef CONFIG_PM
- 	.suspend		= rtw_ops_suspend,
- 	.resume			= rtw_ops_resume,
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 7c2836a4aca85..4955289de9be6 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -17,6 +17,7 @@
- #include "tx.h"
- #include "debug.h"
- #include "bf.h"
-+#include "sar.h"
- 
- bool rtw_disable_lps_deep_mode;
- EXPORT_SYMBOL(rtw_disable_lps_deep_mode);
-@@ -751,6 +752,25 @@ void rtw_set_channel(struct rtw_dev *rtwdev)
- 	hal->current_primary_channel_index = primary_chan_idx;
- 	hal->current_band_type = center_chan > 14 ? RTW_BAND_5G : RTW_BAND_2G;
- 
-+	switch (center_chan) {
-+	case 1 ... 14:
-+		hal->sar_band = RTW_SAR_BAND_0;
-+		break;
-+	case 36 ... 64:
-+		hal->sar_band = RTW_SAR_BAND_1;
-+		break;
-+	case 100 ... 144:
-+		hal->sar_band = RTW_SAR_BAND_3;
-+		break;
-+	case 149 ... 177:
-+		hal->sar_band = RTW_SAR_BAND_4;
-+		break;
-+	default:
-+		WARN(1, "unknown ch(%u) to SAR band\n", center_chan);
-+		hal->sar_band = RTW_SAR_BAND_0;
-+		break;
-+	}
-+
- 	for (i = RTW_CHANNEL_WIDTH_20; i <= RTW_MAX_CHANNEL_WIDTH; i++)
- 		hal->cch_by_bw[i] = ch_param.cch_by_bw[i];
- 
-@@ -2036,6 +2056,8 @@ int rtw_register_hw(struct rtw_dev *rtwdev, struct ieee80211_hw *hw)
- 	rtw_set_supported_band(hw, rtwdev->chip);
- 	SET_IEEE80211_PERM_ADDR(hw, rtwdev->efuse.addr);
- 
-+	hw->wiphy->sar_capa = &rtw_sar_capa;
-+
- 	ret = rtw_regd_init(rtwdev);
- 	if (ret) {
- 		rtw_err(rtwdev, "failed to init regd\n");
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index ff7570c28c4f1..dc1cd9bd4b8a3 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1813,6 +1813,33 @@ struct rtw_fw_state {
- 	u32 feature;
- };
- 
-+enum rtw_sar_sources {
-+	RTW_SAR_SOURCE_NONE,
-+	RTW_SAR_SOURCE_COMMON,
-+};
-+
-+enum rtw_sar_bands {
-+	RTW_SAR_BAND_0,
-+	RTW_SAR_BAND_1,
-+	/* RTW_SAR_BAND_2, not used now */
-+	RTW_SAR_BAND_3,
-+	RTW_SAR_BAND_4,
-+
-+	RTW_SAR_BAND_NR,
-+};
-+
-+/* the union is reserved for other knids of SAR sources
-+ * which might not re-use same format with array common.
-+ */
-+union rtw_sar_cfg {
-+	s8 common[RTW_SAR_BAND_NR];
-+};
-+
-+struct rtw_sar {
-+	enum rtw_sar_sources src;
-+	union rtw_sar_cfg cfg[RTW_RF_PATH_MAX][RTW_RATE_SECTION_MAX];
-+};
-+
- struct rtw_hal {
- 	u32 rcr;
- 
-@@ -1861,6 +1888,9 @@ struct rtw_hal {
- 			  [RTW_MAX_CHANNEL_NUM_5G];
- 	s8 tx_pwr_tbl[RTW_RF_PATH_MAX]
- 		     [DESC_RATE_MAX];
-+
-+	enum rtw_sar_bands sar_band;
-+	struct rtw_sar sar;
- };
- 
- struct rtw_path_div {
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index bfddfcbe63f55..e505d17f107e4 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -10,6 +10,7 @@
- #include "phy.h"
- #include "debug.h"
- #include "regd.h"
-+#include "sar.h"
- 
- struct phy_cfg_pair {
- 	u32 addr;
-@@ -2004,6 +2005,25 @@ static u8 rtw_phy_get_5g_tx_power_index(struct rtw_dev *rtwdev,
- 	return tx_power;
- }
- 
-+/* return RTW_RATE_SECTION_MAX to indicate rate is invalid */
-+static u8 rtw_phy_rate_to_rate_section(u8 rate)
-+{
-+	if (rate >= DESC_RATE1M && rate <= DESC_RATE11M)
-+		return RTW_RATE_SECTION_CCK;
-+	else if (rate >= DESC_RATE6M && rate <= DESC_RATE54M)
-+		return RTW_RATE_SECTION_OFDM;
-+	else if (rate >= DESC_RATEMCS0 && rate <= DESC_RATEMCS7)
-+		return RTW_RATE_SECTION_HT_1S;
-+	else if (rate >= DESC_RATEMCS8 && rate <= DESC_RATEMCS15)
-+		return RTW_RATE_SECTION_HT_2S;
-+	else if (rate >= DESC_RATEVHT1SS_MCS0 && rate <= DESC_RATEVHT1SS_MCS9)
-+		return RTW_RATE_SECTION_VHT_1S;
-+	else if (rate >= DESC_RATEVHT2SS_MCS0 && rate <= DESC_RATEVHT2SS_MCS9)
-+		return RTW_RATE_SECTION_VHT_2S;
-+	else
-+		return RTW_RATE_SECTION_MAX;
-+}
-+
- static s8 rtw_phy_get_tx_power_limit(struct rtw_dev *rtwdev, u8 band,
- 				     enum rtw_bandwidth bw, u8 rf_path,
- 				     u8 rate, u8 channel, u8 regd)
-@@ -2011,7 +2031,7 @@ static s8 rtw_phy_get_tx_power_limit(struct rtw_dev *rtwdev, u8 band,
- 	struct rtw_hal *hal = &rtwdev->hal;
- 	u8 *cch_by_bw = hal->cch_by_bw;
- 	s8 power_limit = (s8)rtwdev->chip->max_power_index;
--	u8 rs;
-+	u8 rs = rtw_phy_rate_to_rate_section(rate);
- 	int ch_idx;
- 	u8 cur_bw, cur_ch;
- 	s8 cur_lmt;
-@@ -2019,19 +2039,7 @@ static s8 rtw_phy_get_tx_power_limit(struct rtw_dev *rtwdev, u8 band,
- 	if (regd > RTW_REGD_WW)
- 		return power_limit;
- 
--	if (rate >= DESC_RATE1M && rate <= DESC_RATE11M)
--		rs = RTW_RATE_SECTION_CCK;
--	else if (rate >= DESC_RATE6M && rate <= DESC_RATE54M)
--		rs = RTW_RATE_SECTION_OFDM;
--	else if (rate >= DESC_RATEMCS0 && rate <= DESC_RATEMCS7)
--		rs = RTW_RATE_SECTION_HT_1S;
--	else if (rate >= DESC_RATEMCS8 && rate <= DESC_RATEMCS15)
--		rs = RTW_RATE_SECTION_HT_2S;
--	else if (rate >= DESC_RATEVHT1SS_MCS0 && rate <= DESC_RATEVHT1SS_MCS9)
--		rs = RTW_RATE_SECTION_VHT_1S;
--	else if (rate >= DESC_RATEVHT2SS_MCS0 && rate <= DESC_RATEVHT2SS_MCS9)
--		rs = RTW_RATE_SECTION_VHT_2S;
--	else
-+	if (rs == RTW_RATE_SECTION_MAX)
- 		goto err;
- 
- 	/* only 20M BW with cck and ofdm */
-@@ -2065,6 +2073,27 @@ static s8 rtw_phy_get_tx_power_limit(struct rtw_dev *rtwdev, u8 band,
- 	return (s8)rtwdev->chip->max_power_index;
- }
- 
-+static s8 rtw_phy_get_tx_power_sar(struct rtw_dev *rtwdev, u8 sar_band,
-+				   u8 rf_path, u8 rate)
-+{
-+	u8 rs = rtw_phy_rate_to_rate_section(rate);
-+	struct rtw_sar_arg arg = {
-+		.sar_band = sar_band,
-+		.path = rf_path,
-+		.rs = rs,
-+	};
-+
-+	if (rs == RTW_RATE_SECTION_MAX)
-+		goto err;
-+
-+	return rtw_query_sar(rtwdev, &arg);
-+
-+err:
-+	WARN(1, "invalid arguments, sar_band=%d, path=%d, rate=%d\n",
-+	     sar_band, rf_path, rate);
-+	return (s8)rtwdev->chip->max_power_index;
-+}
-+
- void rtw_get_tx_power_params(struct rtw_dev *rtwdev, u8 path, u8 rate, u8 bw,
- 			     u8 ch, u8 regd, struct rtw_power_params *pwr_param)
- {
-@@ -2076,6 +2105,7 @@ void rtw_get_tx_power_params(struct rtw_dev *rtwdev, u8 path, u8 rate, u8 bw,
- 	s8 *offset = &pwr_param->pwr_offset;
- 	s8 *limit = &pwr_param->pwr_limit;
- 	s8 *remnant = &pwr_param->pwr_remnant;
-+	s8 *sar = &pwr_param->pwr_sar;
- 
- 	pwr_idx = &rtwdev->efuse.txpwr_idx_table[path];
- 	group = rtw_get_channel_group(ch, rate);
-@@ -2099,6 +2129,7 @@ void rtw_get_tx_power_params(struct rtw_dev *rtwdev, u8 path, u8 rate, u8 bw,
- 					    rate, ch, regd);
- 	*remnant = (rate <= DESC_RATE11M ? dm_info->txagc_remnant_cck :
- 		    dm_info->txagc_remnant_ofdm);
-+	*sar = rtw_phy_get_tx_power_sar(rtwdev, hal->sar_band, path, rate);
- }
- 
- u8
-@@ -2113,7 +2144,9 @@ rtw_phy_get_tx_power_index(struct rtw_dev *rtwdev, u8 rf_path, u8 rate,
- 				channel, regd, &pwr_param);
- 
- 	tx_power = pwr_param.pwr_base;
--	offset = min_t(s8, pwr_param.pwr_offset, pwr_param.pwr_limit);
-+	offset = min3(pwr_param.pwr_offset,
-+		      pwr_param.pwr_limit,
-+		      pwr_param.pwr_sar);
- 
- 	if (rtwdev->chip->en_dis_dpd)
- 		offset += rtw_phy_get_dis_dpd_by_rate_diff(rtwdev, rate);
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.h b/drivers/net/wireless/realtek/rtw88/phy.h
-index 02d1ec47ffb19..b6c5ae60a4620 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.h
-+++ b/drivers/net/wireless/realtek/rtw88/phy.h
-@@ -148,6 +148,7 @@ struct rtw_power_params {
- 	s8 pwr_offset;
- 	s8 pwr_limit;
- 	s8 pwr_remnant;
-+	s8 pwr_sar;
- };
- 
- void
-diff --git a/drivers/net/wireless/realtek/rtw88/sar.c b/drivers/net/wireless/realtek/rtw88/sar.c
-new file mode 100644
-index 0000000000000..3383726c4d90f
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/sar.c
-@@ -0,0 +1,114 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright(c) 2018-2021  Realtek Corporation
-+ */
-+
-+#include "sar.h"
-+#include "phy.h"
-+#include "debug.h"
-+
-+s8 rtw_query_sar(struct rtw_dev *rtwdev, const struct rtw_sar_arg *arg)
-+{
-+	const struct rtw_hal *hal = &rtwdev->hal;
-+	const struct rtw_sar *sar = &hal->sar;
-+
-+	switch (sar->src) {
-+	default:
-+		rtw_warn(rtwdev, "unknown SAR source: %d\n", sar->src);
-+		fallthrough;
-+	case RTW_SAR_SOURCE_NONE:
-+		return (s8)rtwdev->chip->max_power_index;
-+	case RTW_SAR_SOURCE_COMMON:
-+		return sar->cfg[arg->path][arg->rs].common[arg->sar_band];
-+	}
-+}
-+
-+static int rtw_apply_sar(struct rtw_dev *rtwdev, const struct rtw_sar *new)
-+{
-+	struct rtw_hal *hal = &rtwdev->hal;
-+	struct rtw_sar *sar = &hal->sar;
-+
-+	if (sar->src != RTW_SAR_SOURCE_NONE && new->src != sar->src) {
-+		rtw_warn(rtwdev, "SAR source: %d is in use\n", sar->src);
-+		return -EBUSY;
-+	}
-+
-+	*sar = *new;
-+	rtw_phy_set_tx_power_level(rtwdev, hal->current_channel);
-+
-+	return 0;
-+}
-+
-+static s8 rtw_sar_to_phy(struct rtw_dev *rtwdev, u8 fct, s32 sar,
-+			 const struct rtw_sar_arg *arg)
-+{
-+	struct rtw_hal *hal = &rtwdev->hal;
-+	u8 txgi = rtwdev->chip->txgi_factor;
-+	u8 max = rtwdev->chip->max_power_index;
-+	s32 tmp;
-+	s8 base;
-+
-+	tmp = fct > txgi ? sar >> (fct - txgi) : sar << (txgi - fct);
-+	base = arg->sar_band == RTW_SAR_BAND_0 ?
-+	       hal->tx_pwr_by_rate_base_2g[arg->path][arg->rs] :
-+	       hal->tx_pwr_by_rate_base_5g[arg->path][arg->rs];
-+
-+	return (s8)clamp_t(s32, tmp, -max - 1, max) - base;
-+}
-+
-+static const struct cfg80211_sar_freq_ranges rtw_common_sar_freq_ranges[] = {
-+	[RTW_SAR_BAND_0] = { .start_freq = 2412, .end_freq = 2484, },
-+	[RTW_SAR_BAND_1] = { .start_freq = 5180, .end_freq = 5320, },
-+	[RTW_SAR_BAND_3] = { .start_freq = 5500, .end_freq = 5720, },
-+	[RTW_SAR_BAND_4] = { .start_freq = 5745, .end_freq = 5825, },
-+};
-+
-+static_assert(ARRAY_SIZE(rtw_common_sar_freq_ranges) == RTW_SAR_BAND_NR);
-+
-+const struct cfg80211_sar_capa rtw_sar_capa = {
-+	.type = NL80211_SAR_TYPE_POWER,
-+	.num_freq_ranges = RTW_SAR_BAND_NR,
-+	.freq_ranges = rtw_common_sar_freq_ranges,
-+};
-+
-+int rtw_set_sar_specs(struct rtw_dev *rtwdev,
-+		      const struct cfg80211_sar_specs *sar)
-+{
-+	struct rtw_sar_arg arg = {0};
-+	struct rtw_sar new = {0};
-+	u32 idx, i, j, k;
-+	s32 power;
-+	s8 val;
-+
-+	if (sar->type != NL80211_SAR_TYPE_POWER)
-+		return -EINVAL;
-+
-+	memset(&new, rtwdev->chip->max_power_index, sizeof(new));
-+	new.src = RTW_SAR_SOURCE_COMMON;
-+
-+	for (i = 0; i < sar->num_sub_specs; i++) {
-+		idx = sar->sub_specs[i].freq_range_index;
-+		if (idx >= RTW_SAR_BAND_NR)
-+			return -EINVAL;
-+
-+		power = sar->sub_specs[i].power;
-+		rtw_info(rtwdev, "On freq %u to %u, set SAR %d in 1/%lu dBm\n",
-+			 rtw_common_sar_freq_ranges[idx].start_freq,
-+			 rtw_common_sar_freq_ranges[idx].end_freq,
-+			 power, BIT(RTW_COMMON_SAR_FCT));
-+
-+		for (j = 0; j < RTW_RF_PATH_MAX; j++) {
-+			for (k = 0; k < RTW_RATE_SECTION_MAX; k++) {
-+				arg = (struct rtw_sar_arg){
-+					.sar_band = idx,
-+					.path = j,
-+					.rs = k,
-+				};
-+				val = rtw_sar_to_phy(rtwdev, RTW_COMMON_SAR_FCT,
-+						     power, &arg);
-+				new.cfg[j][k].common[idx] = val;
-+			}
-+		}
-+	}
-+
-+	return rtw_apply_sar(rtwdev, &new);
-+}
-diff --git a/drivers/net/wireless/realtek/rtw88/sar.h b/drivers/net/wireless/realtek/rtw88/sar.h
-new file mode 100644
-index 0000000000000..e01e7bb790b7a
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/sar.h
-@@ -0,0 +1,22 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
-+/* Copyright(c) 2018-2021  Realtek Corporation
-+ */
-+
-+#include "main.h"
-+
-+/* NL80211_SAR_TYPE_POWER means unit is in 0.25 dBm,
-+ * where 0.25 = 1/4 = 2^(-2), so make factor 2.
-+ */
-+#define RTW_COMMON_SAR_FCT 2
-+
-+struct rtw_sar_arg {
-+	u8 sar_band;
-+	u8 path;
-+	u8 rs;
-+};
-+
-+extern const struct cfg80211_sar_capa rtw_sar_capa;
-+
-+s8 rtw_query_sar(struct rtw_dev *rtwdev, const struct rtw_sar_arg *arg);
-+int rtw_set_sar_specs(struct rtw_dev *rtwdev,
-+		      const struct cfg80211_sar_specs *sar);
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
