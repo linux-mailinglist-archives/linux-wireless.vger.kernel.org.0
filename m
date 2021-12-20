@@ -2,75 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76D3E47B361
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 20:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C94547B364
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 20:05:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240658AbhLTTEO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 14:04:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36846 "EHLO
+        id S234255AbhLTTFC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 14:05:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235151AbhLTTEN (ORCPT
+        with ESMTP id S233780AbhLTTFC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 14:04:13 -0500
+        Mon, 20 Dec 2021 14:05:02 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C39CC061574;
-        Mon, 20 Dec 2021 11:04:13 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3CFC061574;
+        Mon, 20 Dec 2021 11:05:02 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E4D7612C8;
-        Mon, 20 Dec 2021 19:04:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67500C36AE7;
-        Mon, 20 Dec 2021 19:04:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99D4F61253;
+        Mon, 20 Dec 2021 19:05:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D444CC36AE2;
+        Mon, 20 Dec 2021 19:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640027052;
-        bh=TcpK9u8Z+5d6+oiBVnBxvQlRqM4lFld8cf67xDqD7MY=;
+        s=k20201202; t=1640027101;
+        bh=wuGnwyqyW/rqFlCTHu1dqQDn2tLUmfEXuC5+uzA6klk=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=qU6srJYklyy2gvRq0H/nlYf56OFU0Q5Y/14lK4w6D2gC9ZoUsqIT/N4284AutPjIt
-         MzWB1tOqw4Ycxu999x4ebJcrGXCqnqwTEK9BZnUr4UUnMEwNJ33BcJo5QX2nRl4rcW
-         DHyhmZZlOb2OLL7W7Yb3c0Ssq0WpbmchVxwqc3FiojJhkrE5XEHjec71rJ9OvVcekt
-         HIRcjf7blq9sQOd3t8GQshZLU0zUZweBT//IoN4o6G6inkM7p6j/0BvFbLETjQZBsj
-         K+Vs6+OeF9rfEriO98oQPWFe/PeVV6+u+AcxWjyFDquVAfvp8EOUFRO7O2+0bWZmQ0
-         lKpSm8K32qGmg==
+        b=TW4+mMHwaYrsyZEc7B9aDNe99yIds6KugBOV/qwRTiMoQxleP18h0r5u9BZ2MVLIZ
+         1gX1eX25DoQf9DnHJu/7c94hQjr0KkAlI5Vge0uYTaNk3YhpO5SaG+XPgXszJHe1++
+         TF0n8X1m+ceIlYFG5y1qhPNPXTAlilkk5h7c9pJmaTMWOvEQiSxYy+R+RH6Omr1A3f
+         FZWZastMNjRWaKO73v5+6C1aZd3GJyIPXw3jhbND6xKZsTGFB1edQVCpXeWnytnurf
+         EO/FSSj4ML9aUXrP1mY3yAVGqHRZNSIyr4jVVU3C5I/hTqW648oyOXb4K/ErrvUtGP
+         wilLSs9cJds9w==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] rtl8xxxu: Improve the A-MPDU retransmission rate with
- RTS/CTS protection
+Subject: Re: [PATCH] rtlwifi: rtl8192cu: Fix WARNING when calling
+ local_irq_restore() with interrupts enabled
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211215085819.729345-1-chris.chiu@canonical.com>
-References: <20211215085819.729345-1-chris.chiu@canonical.com>
-To:     Chris Chiu <chris.chiu@canonical.com>
-Cc:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net,
-        kuba@kernel.org, code@reto-schneider.ch,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chris Chiu <chris.chiu@canonical.com>
+In-Reply-To: <20211215171105.20623-1-Larry.Finger@lwfinger.net>
+References: <20211215171105.20623-1-Larry.Finger@lwfinger.net>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        syzbot+cce1ee31614c171f5595@syzkaller.appspotmail.com,
+        stable@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164002704874.16553.13864758889503854388.kvalo@kernel.org>
-Date:   Mon, 20 Dec 2021 19:04:10 +0000 (UTC)
+Message-ID: <164002709818.16553.13857001750113634649.kvalo@kernel.org>
+Date:   Mon, 20 Dec 2021 19:04:59 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Chris Chiu <chris.chiu@canonical.com> wrote:
+Larry Finger <Larry.Finger@lwfinger.net> wrote:
 
-> The A-MPDU TX retransmission rate is always high (> 20%) even in a very
-> clean environment. However, the vendor driver retransimission rate is
-> < 10% in the same test bed. The difference is the vendor driver starts
-> the A-MPDU TXOP with initial RTS/CTS handshake which is observed in the
-> air capture and the TX descriptor. Since the driver does not know how
-> many frames will be aggregated and the estimated duration, forcing the
-> RTS/CTS protection for A-MPDU helps to lower the retransmission rate
-> from > 20% to ~12% in the same test setup with the vendor driver.
+> Syzbot reports the following WARNING:
 > 
-> Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+> [200~raw_local_irq_restore() called with IRQs enabled
+> WARNING: CPU: 1 PID: 1206 at kernel/locking/irqflag-debug.c:10
+>    warn_bogus_irq_restore+0x1d/0x20 kernel/locking/irqflag-debug.c:10
+> 
+> Hardware initialization for the rtl8188cu can run for as long as 350 ms,
+> and the routine may be called with interrupts disabled. To avoid locking
+> the machine for this long, the current routine saves the interrupt flags
+> and enables local interrupts. The problem is that it restores the flags
+> at the end without disabling local interrupts first.
+> 
+> This patch fixes commit a53268be0cb9 ("rtlwifi: rtl8192cu: Fix too long
+> disable of IRQs").
+> 
+> Reported-by: syzbot+cce1ee31614c171f5595@syzkaller.appspotmail.com
+> Cc: stable@vger.kernel.org
+> Fixes: a53268be0cb9 ("rtlwifi: rtl8192cu: Fix too long disable of IRQs")
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-b250200e2ee4 rtl8xxxu: Improve the A-MPDU retransmission rate with RTS/CTS protection
+8b144dedb928 rtlwifi: rtl8192cu: Fix WARNING when calling local_irq_restore() with interrupts enabled
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211215085819.729345-1-chris.chiu@canonical.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211215171105.20623-1-Larry.Finger@lwfinger.net/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
