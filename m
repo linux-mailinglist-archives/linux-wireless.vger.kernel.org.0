@@ -2,136 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB47A47AAC9
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 15:00:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E9A47AEEF
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 16:06:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233236AbhLTOAp convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 09:00:45 -0500
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.85.151]:42229 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232258AbhLTOAo (ORCPT
+        id S240052AbhLTPGa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 10:06:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37328 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237256AbhLTPE3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 09:00:44 -0500
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-106-ThBTv8hIOJK8PeJnyhEimg-1; Mon, 20 Dec 2021 14:00:42 +0000
-X-MC-Unique: ThBTv8hIOJK8PeJnyhEimg-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.26; Mon, 20 Dec 2021 14:00:40 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.026; Mon, 20 Dec 2021 14:00:40 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Joe Perches' <joe@perches.com>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "woojung.huh@microchip.com" <woojung.huh@microchip.com>,
-        "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "clang-built-linux@googlegroups.com" 
-        <clang-built-linux@googlegroups.com>,
-        "ulli.kroll@googlemail.com" <ulli.kroll@googlemail.com>,
-        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "amitkarwar@gmail.com" <amitkarwar@gmail.com>,
-        "nishants@marvell.com" <nishants@marvell.com>,
-        "gbhat@marvell.com" <gbhat@marvell.com>,
-        "huxinming820@gmail.com" <huxinming820@gmail.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "ndesaulniers@google.com" <ndesaulniers@google.com>,
-        "nathan@kernel.org" <nathan@kernel.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Andy Lavr <andy.lavr@gmail.com>
-Subject: RE: [PATCH 4.19 3/6] mwifiex: Remove unnecessary braces from
- HostCmd_SET_SEQ_NO_BSS_INFO
-Thread-Topic: [PATCH 4.19 3/6] mwifiex: Remove unnecessary braces from
- HostCmd_SET_SEQ_NO_BSS_INFO
-Thread-Index: AQHX9ZskhY8SD9NuYU2K0YFKH5iuIKw7ZcMg
-Date:   Mon, 20 Dec 2021 14:00:40 +0000
-Message-ID: <5797d1aff9034476afa6827af2bfbce7@AcuMS.aculab.com>
-References: <20211217144119.2538175-1-anders.roxell@linaro.org>
-         <20211217144119.2538175-4-anders.roxell@linaro.org>
- <bc4a4ba7c07a4077b9790be883fb4205d401804e.camel@perches.com>
-In-Reply-To: <bc4a4ba7c07a4077b9790be883fb4205d401804e.camel@perches.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Mon, 20 Dec 2021 10:04:29 -0500
+Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D382C09B11D
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 06:52:44 -0800 (PST)
+Received: by mail-ua1-x92c.google.com with SMTP id 30so18050625uag.13
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 06:52:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=ck2LbSVzFlxDFFJSOM3VMy/ruCEjOcqp6LurfzZgFO0=;
+        b=MxpQiVuqPULOXA1z9gz9i8MO9hQqrVCHqPnyVXnDonWLNF5IcMLLTK/npmspVTEfuy
+         QiZxhCDLpkFW93GBtUNlHHqHfpWjVypo+XxwzF0MUmYYhlBJIWRv//3xPd5lVwEJT/p/
+         8sTcJ8QL1RkygNpdQRVhzyUytICp2SHFJXjFnggjNn7e+vklOETgLyM87RXEq+ANGCww
+         pVIQu54YPx6D0Mo5Dr4LpnTC1sH1uVX+EmiN8pyrkVrDllTuni2u4eQrjavs3aaK06MX
+         5aWpNwBEyVETOZ7bIN1VB/OSABbTRpEMVD7ogLwzn0H+PfElGOQD0dCXQ/OJsocYV/rA
+         uZ8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=ck2LbSVzFlxDFFJSOM3VMy/ruCEjOcqp6LurfzZgFO0=;
+        b=ii49mzOVPYzlEBmkGYS/mxj25KD8POVUJg0z9tNIp9ILmqOu0Hf5XIbn69Lxkr8Y1D
+         Aw7R2gy6cKVHApIzOWBZg5yhmEc0hLL4p7UkwVrcuJizTsPf0gQjy80ssZNRFfF/GMV7
+         z3VwA/yiJcUKZVOofl1o8qgRScKHCFKorOa4Zmh3+2oy3cp12mFmchUFOLOkJwxEIyU6
+         o51nFydlnCK5QwpF3EQavI/nw+IZSsE449yuIiaEhXxM1kL9Ldzhi9C5+C/HfiLRC06x
+         Jc4fakqJ8gdQ+uS3H48erl7Eok4BSlGDPOT7Rsvy9YpcydgOWmfKFqSPS1cV3CT3kL3J
+         TfsQ==
+X-Gm-Message-State: AOAM5313KKKAahXGSah/Cu2hv3Nx9E8Cd6C6V6INI8YJf1m2pGtQJboO
+        3ZxBcSTuE/81Gnw9hxO4vPw4h9GyrjI2R0J04Rk=
+X-Google-Smtp-Source: ABdhPJxG17I7OGr8xPfCvoIyegabrYdgm7RX2Rh9I9YKxcHE7WTSn+OUFRnWzTvBZAhf835mN0ZnPChQqMDp1ggVKf4=
+X-Received: by 2002:ab0:2899:: with SMTP id s25mr5288091uap.39.1640011963701;
+ Mon, 20 Dec 2021 06:52:43 -0800 (PST)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Received: by 2002:a05:6102:32d2:0:0:0:0 with HTTP; Mon, 20 Dec 2021 06:52:43
+ -0800 (PST)
+Reply-To: jane.lily84@aol.com
+From:   Jane Lily <jane.lilly84@gmail.com>
+Date:   Mon, 20 Dec 2021 06:52:43 -0800
+Message-ID: <CAFG_S24rj_WiEJWzn0Z4HopAGHSAbtDJ9Ly1RPV8mKU-uqAZ=Q@mail.gmail.com>
+Subject: Hello Dear, My Name is Mrs. Jane Lily from America, I read about you
+ in a website and I would love to employ you in assisting some of the Street
+ Children to protect themselves against spreading of coronavirus in your
+ country. Please reply this message via my private email address:
+ jane.lily84@aol.com so that I will tell you about myself and send you some
+ money to carry on with the humanitarian work. I wait for your immediate response.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Joe Perches
-> Sent: 20 December 2021 12:13
-> 
-> On Fri, 2021-12-17 at 15:41 +0100, Anders Roxell wrote:
-> > From: Nathan Chancellor <natechancellor@gmail.com>
-> >
-> > commit 6a953dc4dbd1c7057fb765a24f37a5e953c85fb0 upstream.
-> >
-> > A new warning in clang points out when macro expansion might result in a
-> > GNU C statement expression. There is an instance of this in the mwifiex
-> > driver:
-> >
-> > drivers/net/wireless/marvell/mwifiex/cmdevt.c:217:34: warning: '}' and
-> > ')' tokens terminating statement expression appear in different macro
-> > expansion contexts [-Wcompound-token-split-by-macro]
-> >         host_cmd->seq_num = cpu_to_le16(HostCmd_SET_SEQ_NO_BSS_INFO
-> >                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-> []
-> > diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-> []
-> > @@ -512,10 +512,10 @@ enum mwifiex_channel_flags {
-> >
-> >  #define RF_ANTENNA_AUTO                 0xFFFF
-> >
-> > -#define HostCmd_SET_SEQ_NO_BSS_INFO(seq, num, type) {   \
-> > -	(((seq) & 0x00ff) |                             \
-> > -	 (((num) & 0x000f) << 8)) |                     \
-> > -	(((type) & 0x000f) << 12);                  }
-> > +#define HostCmd_SET_SEQ_NO_BSS_INFO(seq, num, type) \
-> > +	((((seq) & 0x00ff) |                        \
-> > +	 (((num) & 0x000f) << 8)) |                 \
-> > +	(((type) & 0x000f) << 12))
-> 
-> Perhaps this would be better as a static inline
-> 
-> static inline u16 HostCmd_SET_SEQ_NO_BSS_INFO(u16 seq, u8 num, u8 type)
-> {
-> 	return (type & 0x000f) << 12 | (num & 0x000f) << 8 | (seq & 0x00ff);
-> }
+-- 
+Hello Dear,
+My Name is Mrs. Jane Lily from America, I read about you in a website
+and I would love to employ you in assisting some of the Street
+Children to protect themselves against spreading of coronavirus in
+your country. Please reply this message via my private email address:
+jane.lily84@aol.com so that I will tell you about myself and send you
+some money to carry on with the humanitarian work. I wait for your
+immediate response.
 
-Just writing in on one line helps readability!
-It is also used exactly twice, both with a cpu_to_le16().
-I wonder how well the compiler handles that on BE?
-The #define is more likely to be handled better.
-
-I've only made a cursory glance at the code, but I get splitting
-host_cmd->seq_num into two u8 fields would give better code!
-
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+Yours sincerely
+Mrs. Jane Lily
