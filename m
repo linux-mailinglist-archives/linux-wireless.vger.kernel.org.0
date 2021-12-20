@@ -2,75 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E9A47AEEF
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 16:06:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8D4547B095
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 16:48:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240052AbhLTPGa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 10:06:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237256AbhLTPE3 (ORCPT
+        id S231817AbhLTPsk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 10:48:40 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:43262 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230121AbhLTPsh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 10:04:29 -0500
-Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D382C09B11D
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 06:52:44 -0800 (PST)
-Received: by mail-ua1-x92c.google.com with SMTP id 30so18050625uag.13
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 06:52:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ck2LbSVzFlxDFFJSOM3VMy/ruCEjOcqp6LurfzZgFO0=;
-        b=MxpQiVuqPULOXA1z9gz9i8MO9hQqrVCHqPnyVXnDonWLNF5IcMLLTK/npmspVTEfuy
-         QiZxhCDLpkFW93GBtUNlHHqHfpWjVypo+XxwzF0MUmYYhlBJIWRv//3xPd5lVwEJT/p/
-         8sTcJ8QL1RkygNpdQRVhzyUytICp2SHFJXjFnggjNn7e+vklOETgLyM87RXEq+ANGCww
-         pVIQu54YPx6D0Mo5Dr4LpnTC1sH1uVX+EmiN8pyrkVrDllTuni2u4eQrjavs3aaK06MX
-         5aWpNwBEyVETOZ7bIN1VB/OSABbTRpEMVD7ogLwzn0H+PfElGOQD0dCXQ/OJsocYV/rA
-         uZ8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ck2LbSVzFlxDFFJSOM3VMy/ruCEjOcqp6LurfzZgFO0=;
-        b=ii49mzOVPYzlEBmkGYS/mxj25KD8POVUJg0z9tNIp9ILmqOu0Hf5XIbn69Lxkr8Y1D
-         Aw7R2gy6cKVHApIzOWBZg5yhmEc0hLL4p7UkwVrcuJizTsPf0gQjy80ssZNRFfF/GMV7
-         z3VwA/yiJcUKZVOofl1o8qgRScKHCFKorOa4Zmh3+2oy3cp12mFmchUFOLOkJwxEIyU6
-         o51nFydlnCK5QwpF3EQavI/nw+IZSsE449yuIiaEhXxM1kL9Ldzhi9C5+C/HfiLRC06x
-         Jc4fakqJ8gdQ+uS3H48erl7Eok4BSlGDPOT7Rsvy9YpcydgOWmfKFqSPS1cV3CT3kL3J
-         TfsQ==
-X-Gm-Message-State: AOAM5313KKKAahXGSah/Cu2hv3Nx9E8Cd6C6V6INI8YJf1m2pGtQJboO
-        3ZxBcSTuE/81Gnw9hxO4vPw4h9GyrjI2R0J04Rk=
-X-Google-Smtp-Source: ABdhPJxG17I7OGr8xPfCvoIyegabrYdgm7RX2Rh9I9YKxcHE7WTSn+OUFRnWzTvBZAhf835mN0ZnPChQqMDp1ggVKf4=
-X-Received: by 2002:ab0:2899:: with SMTP id s25mr5288091uap.39.1640011963701;
- Mon, 20 Dec 2021 06:52:43 -0800 (PST)
+        Mon, 20 Dec 2021 10:48:37 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89F6360F50
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 15:48:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51839C36AE7;
+        Mon, 20 Dec 2021 15:48:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640015317;
+        bh=Y4HF46EPFagsxHCUZX5N/6V5TZAyUpwfWvGAsXBz3c0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=MC/10Fnl78RtmSLt85/7ZjRZJ+O8ys90dqLyboN/6+mUhnpcFlmoLyflqZDW9APTk
+         cHrNjhfCyK2YnJdiQ1k/UFiLSquLUkHLwsIUhjDJp7yypYy2xszQ2237JQtVtQTH3s
+         eg15SUSAUIzr6ZFl0bQDPQZO1yGQ1MYBKv4sGqLqbh5/4CZnJOHiC4hEIeZd8FDy42
+         in3MzgcRNlQS3SaDdn7jSF8+5erIy93RMeziHEdj5vFQT/ck2qAXvbbco37SNIq0pq
+         fbYDD9Xa+ZfDfYsekR8lWknbA7PxRjzeKI0bkoW0gMDwJGaNs4AYtjFegHkxVp+cRt
+         mBpHa8cAF69kA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     j@w1.fi
+Cc:     hostap@lists.infradead.org, linux-wireless@vger.kernel.org,
+        nbd@nbd.name, ryder.lee@mediatek.com, evelyn.tsai@mediatek.com,
+        lorenzo.bianconi@redhat.com
+Subject: [PATCH 0/9] introduce background radar detection support
+Date:   Mon, 20 Dec 2021 16:48:15 +0100
+Message-Id: <cover.1640014128.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-Received: by 2002:a05:6102:32d2:0:0:0:0 with HTTP; Mon, 20 Dec 2021 06:52:43
- -0800 (PST)
-Reply-To: jane.lily84@aol.com
-From:   Jane Lily <jane.lilly84@gmail.com>
-Date:   Mon, 20 Dec 2021 06:52:43 -0800
-Message-ID: <CAFG_S24rj_WiEJWzn0Z4HopAGHSAbtDJ9Ly1RPV8mKU-uqAZ=Q@mail.gmail.com>
-Subject: Hello Dear, My Name is Mrs. Jane Lily from America, I read about you
- in a website and I would love to employ you in assisting some of the Street
- Children to protect themselves against spreading of coronavirus in your
- country. Please reply this message via my private email address:
- jane.lily84@aol.com so that I will tell you about myself and send you some
- money to carry on with the humanitarian work. I wait for your immediate response.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-Hello Dear,
-My Name is Mrs. Jane Lily from America, I read about you in a website
-and I would love to employ you in assisting some of the Street
-Children to protect themselves against spreading of coronavirus in
-your country. Please reply this message via my private email address:
-jane.lily84@aol.com so that I will tell you about myself and send you
-some money to carry on with the humanitarian work. I wait for your
-immediate response.
+Introduce background radar/CAC detection through a dedicated off-channel
+chain available on some hw (e.g. mt7915).
+Background radar/CAC detection allows to avoid the CAC downtime
+switching on a different channel during CAC detection on the selected
+radar channel.
 
-Yours sincerely
-Mrs. Jane Lily
+Lorenzo Bianconi (9):
+  Sync include/uapi/linux/nl80211.h with mac80211-next.git
+  DFS: introduce dfs_set_valid_channel utility routine
+  DFS: add capability select radar-only channels
+  nl80211: report background radar/cac detection capability
+  DFS: configure background radar/cac detection.
+  DFS: introduce hostapd_dfs_request_channel_switch routine
+  DFS: enable CSA for background radar detection
+  DFS: switch to background radar channel if available
+  DFS: introduce radar_background parameter to config file
+
+ hostapd/config_file.c              |   2 +
+ hostapd/hostapd.conf               |   7 +
+ src/ap/ap_config.h                 |   1 +
+ src/ap/ap_drv_ops.c                |   9 +-
+ src/ap/ap_drv_ops.h                |   3 +-
+ src/ap/dfs.c                       | 447 +++++++++++++++++++++--------
+ src/ap/hostapd.h                   |  15 +
+ src/drivers/driver.h               |   7 +
+ src/drivers/driver_nl80211.c       |   5 +
+ src/drivers/driver_nl80211_capa.c  |   4 +
+ src/drivers/driver_nl80211_event.c |   7 +
+ src/drivers/nl80211_copy.h         | 228 ++++++++++++++-
+ 12 files changed, 610 insertions(+), 125 deletions(-)
+
+-- 
+2.33.1
+
