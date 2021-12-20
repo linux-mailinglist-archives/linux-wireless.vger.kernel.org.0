@@ -2,67 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B46FF47A78B
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 11:02:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD2DA47A78D
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 11:03:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230368AbhLTKCC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 05:02:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52292 "EHLO
+        id S230376AbhLTKDU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 05:03:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230251AbhLTKCC (ORCPT
+        with ESMTP id S230251AbhLTKDT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 05:02:02 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 071F7C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 02:02:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=acER/jxD2dYeqtxBrweSWPe6DVMc51lEq/5660g8xSc=;
-        t=1639994522; x=1641204122; b=kv8GWD6JXlyIv8wTS7HqWI0xip9+dEO5wvxYQ4k9Gb4y+fB
-        05NbX5ypDEQ5VzBMDykNKWbKfEmesrGHG8VTQJDCQS0HGij0O9LzhJEKcOEdVP82jMJ14/D8kcfc6
-        A0MAyT4skJ+XWhBAWAI9C1+u6f/ogv2v6Y/0gDuvOd/jnVsbXQWRXfsqD2PurV7RfJ3UZhuks32pq
-        DkfePoSxc7EuxA45L3EFCctAs5V9NDQphOgLpdvmqQ49cyxgf5hZOb339lU0Mb7++DQ281t6mYQgP
-        1rn5V6TzEMPgs3jwTArsCc6mAhjvwa/w7XZehanD0Qv0Yl32aI/THV22VEswmpjw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mzFUW-00E3Tk-AB;
-        Mon, 20 Dec 2021 11:02:00 +0100
-Message-ID: <59896f7e6382ddb34a63e78b489b2ded7bb1e980.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] mac80211: disable BSS color collision detection in
- case of no free colors
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Lavanya Suresh <lavaks@codeaurora.org>
-Date:   Mon, 20 Dec 2021 11:01:59 +0100
-In-Reply-To: <1639307483-8055-1-git-send-email-quic_ramess@quicinc.com>
-References: <1639307483-8055-1-git-send-email-quic_ramess@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.2 (3.42.2-1.fc35) 
+        Mon, 20 Dec 2021 05:03:19 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46E84C061574
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 02:03:19 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 05DDBB80E05
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 10:03:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8EAC36AE8;
+        Mon, 20 Dec 2021 10:03:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639994596;
+        bh=7q960TtBQtLEjZcEsfDLduz3/FfWr8tXOE3lKEdXX1M=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=kuhhWJpb0b72RY1yt4eRHsBdWpf0jg2+81JpEB3EE4gMc/zov0YyuFsYEmlEQO8DT
+         leZU1W08uJJwH3gQdPflKmq0ppwnaTDuDhtlV9zDlEG5UDwcPKoPzwxQsTXa8MbXym
+         U4GnikOUrgpLacSKbe1KUnbqbDHF0TNzaLkiv3VvV5iWrTwrJLQPqAH4xu8ZzSJ9dy
+         QCE6dG+BFuoJ6Z3SSCDDQaNHDRRrjVtbrF5BuIIUhDoi79meuu1yfEgAxmiJJmMG7u
+         F0oVn1hPkdXsKT4Omu5ts7dHGGs5QF6fLIkf26UOFDeYL2yy7ZW1pQeuloxsi2cj5p
+         PagMjsMJf588A==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Sven Eckelmann <sven@narfation.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        quic_cjhuang@quicinc.com, Carl Huang <cjhuang@codeaurora.org>
+Subject: Re: [PATCH 6/6] ath11k: support GTK rekey offload
+References: <20211011193750.4891-1-cjhuang@codeaurora.org>
+        <87lf0tydad.fsf@codeaurora.org>
+        <4f28496abae7743ab2a9fa7150c5d64c@codeaurora.org>
+        <2102838.219ycuhFCz@sven-l14>
+Date:   Mon, 20 Dec 2021 12:03:08 +0200
+In-Reply-To: <2102838.219ycuhFCz@sven-l14> (Sven Eckelmann's message of "Sat,
+        18 Dec 2021 09:37:02 +0100")
+Message-ID: <871r27bnkz.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Sven Eckelmann <sven@narfation.org> writes:
 
+>> On Thursday, 9 December 2021 17:05:14 CET Kalle Valo wrote:
+>>> Isn't ath11k WMI commands and events supposed to be in CPU
+>>> endian and the firmware automatically translates them if CPU is little
+>>> or big endian? 
+> [...]
+> On Friday, 17 December 2021 12:04:45 CET Carl Huang wrote:
+>> Both cpu and firmware are supposed to be little endian in ath11k.
+>
+> I hope this statement is incorrect. But if it isn't:
+>
+> You cannot limit a non-architecture dependent driver to be only used by little 
+> endian CPUs. This would be grave bug in ath11k.
+>
+> If your firmware requires wmi messages and similar things in little endian 
+> then you have to mark types correctly as big/little endian. E.g. __le32 
+> instead of u32. And then you have to convert everything manually with 
+> cpu_to_le32 and so on. See the ath10k code for examples.
+>
+> Tools like sparse can assist you in your search for problematic places when 
+> your kernel has the __CHECK_ENDIAN__ related code activated. This is the 
+> default for kernels >= 4.10.
 
->  include/net/cfg80211.h |  28 +++++++------
->  net/mac80211/cfg.c     |  16 ++++++--
->  net/wireless/nl80211.c | 109 ++++++++++++++++++++++++-------------------------
->  3 files changed, 82 insertions(+), 71 deletions(-)
-> 
+This is what I would have preferred to do in ath11k as well but a lot of
+people preferred the firmware conversion method as the proprietary
+driver uses the same, so I yielded. ath11k should work on big endian
+cpus, but to my knowledge nobody has tested it so I do not know if it
+really works or not. If someone can test please do let me know, I am
+very curious to know if it really works.
 
-This is now a fairly big cfg80211 change, and not much mac80211. Can you
-please split it?
+ath11k enables the firmware swap feature like this:
 
-But you didn't really address why we need to do this via element change
-detection, rather than letting hostapd do this via the
-NL80211_ATTR_HE_BSS_COLOR attribute even in change_beacon?
+/* Host software's Copy Engine configuration. */
+#ifdef __BIG_ENDIAN
+#define CE_ATTR_FLAGS CE_ATTR_BYTE_SWAP_DATA
+#else
+#define CE_ATTR_FLAGS 0
+#endif
 
-johannes
+Also grep for BIG_ENDIAN, few functions have that.
+
+> If Kalle' statement is true that the firmware takes care of endianness 
+> translation of WMI messages to host endianness, then your code would still be 
+> questionable:
+>
+>>> +       /* supplicant expects big-endian replay counter */
+>>> +       replay_ctr = cpu_to_be64(le64_to_cpup((__le64 
+>>> *)ev->replay_counter));
+>
+> Why isn't the firmware taking care of the conversion at that place?
+>
+> Why are you defining it as `u8 replay_counter[GTK_REPLAY_COUNTER_BYTES];` in 
+> the struct instead of using `__le64 replay_counter;`?
+>
+> What ensures that this is value is 64 bit aligned in memory? Wouldn't it be 
+> more correct to (see above) use
+>
+>     replay_ctr = cpu_to_be64(get_unaligned_le64(ev->replay_counter));
+
+Yeah, if the host does the conversion we would use __le64. But at the
+moment the firmware does the conversion so I think we should use
+ath11k_ce_byte_swap():
+
+/* For Big Endian Host, Copy Engine byte_swap is enabled
+ * When Copy Engine does byte_swap, need to byte swap again for the
+ * Host to get/put buffer content in the correct byte order
+ */
+void ath11k_ce_byte_swap(void *mem, u32 len)
+{
+	int i;
+
+	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)) {
+		if (!mem)
+			return;
+
+		for (i = 0; i < (len / 4); i++) {
+			*(u32 *)mem = swab32(*(u32 *)mem);
+			mem += 4;
+		}
+	}
+}
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
