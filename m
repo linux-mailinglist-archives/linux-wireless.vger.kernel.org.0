@@ -2,73 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18FAE47A7F5
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 11:51:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 865D747A804
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 11:56:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbhLTKvy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 05:51:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35062 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229623AbhLTKvy (ORCPT
+        id S230000AbhLTK4n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 05:56:43 -0500
+Received: from new3-smtp.messagingengine.com ([66.111.4.229]:40161 "EHLO
+        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229619AbhLTK4m (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 05:51:54 -0500
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E296C061574
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 02:51:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=jvVQWIa1BM9mGG2/NfV2opxw5vIHZnV+OH75FVC/nXg=; b=NjNklhaQ6FLeUMPzxC66AqsC8y
-        M8NE/l74HNRZcGKJW4LL2vUGclr+7H5UguTHzgcUPQV68J+mvVF0Iyl0UZjjfMEyAifFmkrM5U1kt
-        D6OxROjRrRccnZV8Oc/rE7tbU3pN1wNiO8bVMcWKKaUgb9bf22m5EYwq4odwlLa2wxOU=;
-Received: from p54ae911a.dip0.t-ipconnect.de ([84.174.145.26] helo=localhost.localdomain)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1mzGGm-0004N2-He; Mon, 20 Dec 2021 11:51:52 +0100
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: [PATCH] nl80211: clarify comment for mesh PLINK_BLOCKED state
-Date:   Mon, 20 Dec 2021 11:51:47 +0100
-Message-Id: <20211220105147.88625-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.34.1
+        Mon, 20 Dec 2021 05:56:42 -0500
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 690E3580181;
+        Mon, 20 Dec 2021 05:56:41 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Mon, 20 Dec 2021 05:56:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm2; bh=9AcYE0yu0KZhD7v7tPxMpIY4EGh
+        I9m76hau90FdriAM=; b=HoCN2BIqhNywUybo+xIOXPLbX7P84T+CYEmLAZOIKJ9
+        c83H7+kqtlp3Nx3E+/deJu+Qjke34mCR78u6odtJbdUEvOoSoaAnKi3vUV3kpHuL
+        AY4Ead3yT/T1KRFXsgJn3mR1v5+z4Bx8IkYfoSGc9/BDfBvdihPBq18JeQmkXlyP
+        N1i7BO1m0cNOXYWAthpiMe/R9G09OjMeEJ7OgugAYpxEhs56PEUITrK/a7vWWbeJ
+        Oqp1qf2MLSHGLX74/Q7xtYUVUnZbFfn+SKw4mmN1AJWNQbYz732CzQGdw7tUnOiP
+        iM6KUNcjWxuE/Aq2NYKUGKCFvCbHN1LMFg863XUrq8g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=9AcYE0
+        yu0KZhD7v7tPxMpIY4EGhI9m76hau90FdriAM=; b=Rk5L5LcXg1bgmarW4jCPdP
+        rvyJnMYqy5LpgpCwgZgWG+hRL6ADmLR/MfWsD8k9aBB7RtImv55MqZ7Y4F8vuTx5
+        NKFLuVlWToNYl7gSC35eW9RMEKAE88tjPe86usCKxLW6K6TcEG8qL5RH5SPYBNAN
+        Y3dBGFLF7IpGyI14Iwa76M+pZh6J489SiYRD3O0rUIzH35eAQRczVTxfH3j1wW0t
+        +EHSji4uEIjYG1vbgdK5vVG0nTtOFgLvSI5vrRnC7JdFzjZg/DHTjH1CZwTpxaa/
+        vBd+6BIgtX79T3Bp162Fq9eZc+idLrkCYMH6vGqTRDDgG7jsW1DNRc4hDaLCInkw
+        ==
+X-ME-Sender: <xms:aGHAYWuAnwt8-6iZmqtmblceEtttJyfj92CG0GzMbRbyXeXkCrAcJw>
+    <xme:aGHAYbfr47SkUyvDrQo9_gECgXEi4dPlw-rESlyW-o9uuP_YXlkD4WDOLpbSHemvB
+    SR7V4cZ5mYieA>
+X-ME-Received: <xmr:aGHAYRwf5sCTwbQTX6thYMK_S7GkRBesT01DMSOfX7fHRZsYP8H7ZXij1wGNdwzRbAMGPKusDhIbFdNItta_qjsohErXp5Lq>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddruddtvddgvddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpefgteefff
+    etvdffledtgeduudetffdutdduveefvedtueegueeggfeiteehfeetfeenucffohhmrghi
+    nhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:aGHAYRPToRypfycYbanRoBLhJwYAQJO0JbIc7iP67zB2MZ6rZ7Hpfg>
+    <xmx:aGHAYW-1UeAtg5aEZ2_Kxybu-Xnu-1UNAuEfKEXuiNR7CIYlmAK6Yw>
+    <xmx:aGHAYZWWBvEkTnj_bDpbSQCkR1sle0t0uStglgypDBqeKTDguiB6OQ>
+    <xmx:aWHAYelmdg3AwCxbYeFPmPuPhpHnqIr955Hp_d_1FQcccQb4o6PVRQ>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 20 Dec 2021 05:56:40 -0500 (EST)
+Date:   Mon, 20 Dec 2021 11:56:37 +0100
+From:   Greg KH <greg@kroah.com>
+To:     Anders Roxell <anders.roxell@linaro.org>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        woojung.huh@microchip.com, UNGLinuxDriver@microchip.com,
+        davem@davemloft.net, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org, clang-built-linux@googlegroups.com,
+        ulli.kroll@googlemail.com, linux@armlinux.org.uk,
+        linux-arm-kernel@lists.infradead.org, amitkarwar@gmail.com,
+        nishants@marvell.com, gbhat@marvell.com, huxinming820@gmail.com,
+        kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        rostedt@goodmis.org, mingo@redhat.com, dmitry.torokhov@gmail.com,
+        ndesaulniers@google.com, nathan@kernel.org,
+        linux-input@vger.kernel.org,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Andy Lavr <andy.lavr@gmail.com>
+Subject: Re: [PATCH 4.19 3/6] mwifiex: Remove unnecessary braces from
+ HostCmd_SET_SEQ_NO_BSS_INFO
+Message-ID: <YcBhZdeTQfD0Sjtq@kroah.com>
+References: <20211217144119.2538175-1-anders.roxell@linaro.org>
+ <20211217144119.2538175-4-anders.roxell@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211217144119.2538175-4-anders.roxell@linaro.org>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When a mesh link is in blocked state, it is very useful to still allow
-auth requests from the peer to re-establish it.
-When a remote node is power cycled, the peer state can easily end up
-in blocked state if multiple auth attempts are performed. Since this
-can lead to several minutes of downtime, we should accept auth attempts
-of the peer after it has come back.
+On Fri, Dec 17, 2021 at 03:41:16PM +0100, Anders Roxell wrote:
+> From: Nathan Chancellor <natechancellor@gmail.com>
+> 
+> commit 6a953dc4dbd1c7057fb765a24f37a5e953c85fb0 upstream.
+> 
+> A new warning in clang points out when macro expansion might result in a
+> GNU C statement expression. There is an instance of this in the mwifiex
+> driver:
+> 
+> drivers/net/wireless/marvell/mwifiex/cmdevt.c:217:34: warning: '}' and
+> ')' tokens terminating statement expression appear in different macro
+> expansion contexts [-Wcompound-token-split-by-macro]
+>         host_cmd->seq_num = cpu_to_le16(HostCmd_SET_SEQ_NO_BSS_INFO
+>                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/marvell/mwifiex/fw.h:519:46: note: expanded from
+> macro 'HostCmd_SET_SEQ_NO_BSS_INFO'
+>         (((type) & 0x000f) << 12);                  }
+>                                                     ^
+> 
+> This does not appear to be a real issue. Removing the braces and
+> replacing them with parentheses will fix the warning and not change the
+> meaning of the code.
+> 
+> Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/1146
+> Reported-by: Andy Lavr <andy.lavr@gmail.com>
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/cmdevt.c | 4 ++--
+>  drivers/net/wireless/marvell/mwifiex/fw.h     | 8 ++++----
+>  2 files changed, 6 insertions(+), 6 deletions(-)
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
-I will also re-send a hostapd patch that changes the behavior accordingly
-
- include/uapi/linux/nl80211.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 61cab81e920d..0e703b463fac 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -5600,7 +5600,7 @@ enum nl80211_if_combination_attrs {
-  * @NL80211_PLINK_ESTAB: mesh peer link is established
-  * @NL80211_PLINK_HOLDING: mesh peer link is being closed or cancelled
-  * @NL80211_PLINK_BLOCKED: all frames transmitted from this mesh
-- *	plink are discarded
-+ *	plink are discarded, except for authentication frames
-  * @NUM_NL80211_PLINK_STATES: number of peer link states
-  * @MAX_NL80211_PLINK_STATES: highest numerical value of plink states
-  */
--- 
-2.34.1
-
+Also needed in 5.4.y, right?
