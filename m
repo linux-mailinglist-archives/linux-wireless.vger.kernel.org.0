@@ -2,94 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 160FA47A884
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 12:21:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6047E47A8DF
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 12:40:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230459AbhLTLVl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 06:21:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42008 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230211AbhLTLVl (ORCPT
+        id S231946AbhLTLkM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 06:40:12 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:57740 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231950AbhLTLkK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 06:21:41 -0500
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C83BDC061574;
-        Mon, 20 Dec 2021 03:21:40 -0800 (PST)
-Received: by mail-qt1-x835.google.com with SMTP id t34so9370083qtc.7;
-        Mon, 20 Dec 2021 03:21:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MBczxJm3I08jjd/QHRuYvFh7bIEcTce0GBizMJSEP8c=;
-        b=d1gSa9qhkemwcKujwOGSI9dzt9WFOOqxeh34+7xeJrowWMfJVVYGDxUvaP/s1dXTde
-         WEcPWmAe83rq8rFEyyYCc6YoWWFFE/5X0pZJA3vYAnfeNrF6N35X6aJx//4G2p3qGxwO
-         ZU0sOO9ThRkOZm1LMc4pmmonXPEO9LsfXYD40aYL/htTXNbf4nTpCjycyS+djxW01mmp
-         /3dMO7BkFW3cxjmIHTMPSkqgbJwyYVVe9zCJrnTl0yHrIwH1C8juqbiAXRDuG4LOoTJ7
-         wWftqOiYGjzblReWdiwVDSA+wMFvDKI5ZOj8dyN8Y61aTtUnwVa57sAFFxOX2h8b3kLI
-         dNeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MBczxJm3I08jjd/QHRuYvFh7bIEcTce0GBizMJSEP8c=;
-        b=mqqkr4gMa+i/vDEyntNHolsahJYwLpXrhhompkw00K5o1ujdqvu1HEjlWmRZ9jGF7O
-         7onl6O4ryK3+73KN/ZMW9e5wI0rMgStFI6e0lVoVU1bmYvkhz5kh8RZ5ljAERn6iKvPd
-         Q6pZGFEUErAUkyCoy4ih25/9VXhhPCpMFapD/5cAVB3Zs2tSp4duSIKtzknYtELy/9Vk
-         vAyv4wHdt4NVxvbz74q36panu39P6Tq+JIe4TDjOsUWRXSqvrzGXj3jXqluAuDpUG+Iz
-         qRW2mGAxKUoTkTncO0Woa9Xjg1Y/WA5MXEq6j70+DCfZzgjt9R6B25B7+AjXWafY94wR
-         NaPQ==
-X-Gm-Message-State: AOAM530Q3yZ7YydMS3douYooILZRABGi+wBm8hHNS+WCNHf/xkPv1NjJ
-        9tS4DLWU0DoEkpwEW0NJ5sVWNjro3FU=
-X-Google-Smtp-Source: ABdhPJxiHawe3//spU8yo9RWOXKIfuZi4wTgQUI6t9d6+bgFUY8WNgGtZAIp8IuoiNwyWSV176A+3Q==
-X-Received: by 2002:a05:622a:170e:: with SMTP id h14mr1108255qtk.479.1639999299996;
-        Mon, 20 Dec 2021 03:21:39 -0800 (PST)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id o21sm14724301qta.89.2021.12.20.03.21.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Dec 2021 03:21:39 -0800 (PST)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: deng.changcheng@zte.com.cn
-To:     kvalo@kernel.org
-Cc:     davem@davemloft.net, kuba@kernel.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Changcheng Deng <deng.changcheng@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] ath11k: use min() to make code cleaner
-Date:   Mon, 20 Dec 2021 11:21:33 +0000
-Message-Id: <20211220112133.472472-1-deng.changcheng@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        Mon, 20 Dec 2021 06:40:10 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D54260FF2;
+        Mon, 20 Dec 2021 11:40:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DA236C36AE8;
+        Mon, 20 Dec 2021 11:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640000409;
+        bh=xhQnf56bsaHJHJcBDmOwBiSBwGs6r1NJVkB3ZlKZuZU=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=ICMDWwgmY7NiCacD+7UnoSA3elMhtXyLoxU507xVudm5bWyqaEfRQfZZprC5WQ8te
+         Co6/79D/Q9Yg+NcterUvuKsPIof7Aws3UMltQ6SLo4P1mq6JFHZIAz0sv+tUED1rqA
+         hVSibgOLH6KGsWHqTO8uHBGOwUHMbKyHmusVvHapo/DopLz7P1iD8g9MvSFX2IgFvF
+         5KVpPxVOWaP2OEgOgpHnABkN0I2Geg1U+PezpJlBkxrKky4IEtgTdDna5DUxb1Ax8T
+         HSwjWY1A4jiloFmJJMA9Y/GISulDW4AgusV1wGHGrtwhlL6uPEAl017J/RLEvnhLnz
+         QeC6GARrDNuIA==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id B333960A6F;
+        Mon, 20 Dec 2021 11:40:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] mac80211: fix locking in ieee80211_start_ap error path
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <164000040972.26538.12878058842061474047.git-patchwork-notify@kernel.org>
+Date:   Mon, 20 Dec 2021 11:40:09 +0000
+References: <20211220092240.12768-1-johannes@sipsolutions.net>
+In-Reply-To: <20211220092240.12768-1-johannes@sipsolutions.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        johannes.berg@intel.com, stable@vger.kernel.org,
+        syzbot+11c342e5e30e9539cabd@syzkaller.appspotmail.com
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Changcheng Deng <deng.changcheng@zte.com.cn>
+Hello:
 
-Use min() in order to make code cleaner.
+This patch was applied to netdev/net.git (master)
+by David S. Miller <davem@davemloft.net>:
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Changcheng Deng <deng.changcheng@zte.com.cn>
----
- drivers/net/wireless/ath/ath11k/wmi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+On Mon, 20 Dec 2021 10:22:40 +0100 you wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> We need to hold the local->mtx to release the channel context,
+> as even encoded by the lockdep_assert_held() there. Fix it.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 295b02c4be74 ("mac80211: Add FILS discovery support")
+> Reported-and-tested-by: syzbot+11c342e5e30e9539cabd@syzkaller.appspotmail.com
+> Link: https://lore.kernel.org/r/20211220090836.cee3d59a1915.I36bba9b79dc2ff4d57c3c7aa30dff9a003fe8c5c@changeid
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> 
+> [...]
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 2b4d27d807ab..083856034136 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -614,8 +614,7 @@ int ath11k_wmi_mgmt_send(struct ath11k *ar, u32 vdev_id, u32 buf_id,
- 	u32 buf_len;
- 	int ret, len;
- 
--	buf_len = frame->len < WMI_MGMT_SEND_DOWNLD_LEN ?
--		  frame->len : WMI_MGMT_SEND_DOWNLD_LEN;
-+	buf_len = min(frame->len, WMI_MGMT_SEND_DOWNLD_LEN);
- 
- 	len = sizeof(*cmd) + sizeof(*frame_tlv) + roundup(buf_len, 4);
- 
+Here is the summary with links:
+  - [net] mac80211: fix locking in ieee80211_start_ap error path
+    https://git.kernel.org/netdev/net/c/87a270625a89
+
+You are awesome, thank you!
 -- 
-2.25.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
