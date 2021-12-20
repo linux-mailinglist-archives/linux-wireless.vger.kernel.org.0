@@ -2,162 +2,205 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AFB747B1E9
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 18:13:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B18F47B281
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 19:03:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240090AbhLTRNT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 12:13:19 -0500
-Received: from mga14.intel.com ([192.55.52.115]:37501 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233139AbhLTRNS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 12:13:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1640020398; x=1671556398;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MqkVzxr9XhGz20O9djEWhlXF6L01WiGy/1aPYksMFb0=;
-  b=dN1sxUPVYmyw7zfJVbsQXzU6valwlzy1fhNFp9nLJBe8PM7EW3CdM1R0
-   0Hs6spA8kq9QqM8/+46HYLHiVkAvy7WBNaZx5UZBuKHmJuaf6UWpkpOBj
-   g8ZVvjomdAc+tbzugfMa4G4J/yApfd+edfHSBjhaVsK+JfJ98OevnY0FS
-   M5rBxaY7qglapFixPO/TAiRIMvu7REc0gXrw45I8gygwtgGDdI2O0b4nA
-   DNTfFw0b6elfOwaXBrh9jh74ByX7q+3DepCS4q6paRfccPDXExiVttIvJ
-   m1/7qcOB/hV/V5CI8x8mWlvvDHwfMhoBmUt64T/mxUnk6GYSllDZo1gxx
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10203"; a="240449641"
-X-IronPort-AV: E=Sophos;i="5.88,221,1635231600"; 
-   d="scan'208";a="240449641"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2021 09:13:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,221,1635231600"; 
-   d="scan'208";a="569923728"
-Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
-  by fmsmga008.fm.intel.com with ESMTP; 20 Dec 2021 09:13:14 -0800
-Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mzMDp-00081r-I5; Mon, 20 Dec 2021 17:13:13 +0000
-Date:   Tue, 21 Dec 2021 01:12:15 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     cgel.zte@gmail.com, kvalo@kernel.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org, davem@davemloft.net,
-        kuba@kernel.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Changcheng Deng <deng.changcheng@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: Re: [PATCH] ath11k: use min() to make code cleaner
-Message-ID: <202112210104.cbWjNxoN-lkp@intel.com>
-References: <20211220112133.472472-1-deng.changcheng@zte.com.cn>
+        id S240330AbhLTSDr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 13:03:47 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:64278 "EHLO
+        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240253AbhLTSDo (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 Dec 2021 13:03:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
+        h=from:subject:in-reply-to:references:mime-version:to:cc:
+        content-transfer-encoding:content-type;
+        s=sgd; bh=rEVdNvgWeD7EJU5QWd6ZKNY49cq3YO2E87hcYg3Erhk=;
+        b=LKpmZTCK9SRaVzD9ne0wT7AzoIWBD27NDjN7zgOucRYq1qcfLAxDgdc2xJ2lH8Ad0+Op
+        vBmybIJHCxtgsHFm/kWNcNPFX7PndpRHZPiuCQr2xC/LSQMT08HpgZXnEfXQfzexQETj8w
+        HUwgZzCqrQ/dBd9zk8XRMxYK0kY3UplEE3Frn2Fe2krNtqDhtOISG0pJO4HO4DTUSkaSQK
+        75MM952dl1JCac4KeUdMUEdNMBEDwTc+4Gd/XLHJF/qQrTNxQQBE5pOTdt95WGkaJrhUKT
+        BNhUEkqwsHOjId857gI2YkKBvVyNlkXZpS6BGUlF8ERhe6WIgSG8n2+TuOqv3TRw==
+Received: by filterdrecv-75ff7b5ffb-qzg65 with SMTP id filterdrecv-75ff7b5ffb-qzg65-1-61C0C57A-F
+        2021-12-20 18:03:38.109442517 +0000 UTC m=+9488631.153303457
+Received: from pearl.egauge.net (unknown)
+        by geopod-ismtpd-2-1 (SG)
+        with ESMTP
+        id iU6UAb61TmuMrBt_TAn4Qg
+        Mon, 20 Dec 2021 18:03:37.909 +0000 (UTC)
+Received: by pearl.egauge.net (Postfix, from userid 1000)
+        id 4F3A07003E3; Mon, 20 Dec 2021 11:03:37 -0700 (MST)
+From:   David Mosberger-Tang <davidm@egauge.net>
+Subject: [PATCH v6 1/2] wilc1000: Add reset/enable GPIO support to SPI driver
+Date:   Mon, 20 Dec 2021 18:03:38 +0000 (UTC)
+Message-Id: <20211220180334.3990693-2-davidm@egauge.net>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20211220180334.3990693-1-davidm@egauge.net>
+References: <20211220180334.3990693-1-davidm@egauge.net>
 MIME-Version: 1.0
+X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvLMwJmK3I26VsBNxv?=
+ =?us-ascii?Q?+JgzTg4sKu22XvQsitODcchBCCPTAj7bxNuqvMu?=
+ =?us-ascii?Q?LRa8hdPIngwJDMROR4n2VN8VjpzSCckf7mzqzQT?=
+ =?us-ascii?Q?k1t5ZNyp04ZSctPBA4K6mHBZ1DGZWPOrSlYE02=2F?=
+ =?us-ascii?Q?3pSH3BHVFjQE0WGGz8VEF2BGD5WGo7JXsxnKKnU?=
+ =?us-ascii?Q?pyHw55Ejd2SoKx4nVq1tg=3D=3D?=
+To:     Ajay Singh <ajay.kathat@microchip.com>
+Cc:     Adham Abozaeid <adham.abozaeid@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        David Mosberger-Tang <davidm@egauge.net>
+X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
+Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211220112133.472472-1-deng.changcheng@zte.com.cn>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+For the SDIO driver, the RESET/ENABLE pins of WILC1000 are controlled
+through the SDIO power sequence driver.  This commit adds analogous
+support for the SPI driver.  Specifically, during initialization, the
+chip will be ENABLEd and taken out of RESET and during
+deinitialization, the chip will be placed back into RESET and disabled
+(both to reduce power consumption and to ensure the WiFi radio is
+off).
 
-Thank you for the patch! Perhaps something to improve:
+Both RESET and ENABLE GPIOs are optional.  However, if the ENABLE GPIO
+is specified, then the RESET GPIO should normally also be specified as
+otherwise there is no way to ensure proper timing of the ENABLE/RESET
+sequence.
 
-[auto build test WARNING on kvalo-ath/ath-next]
-[also build test WARNING on v5.16-rc6 next-20211220]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/0day-ci/linux/commits/cgel-zte-gmail-com/ath11k-use-min-to-make-code-cleaner/20211220-192326
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git ath-next
-config: hexagon-randconfig-r001-20211220 (https://download.01.org/0day-ci/archive/20211221/202112210104.cbWjNxoN-lkp@intel.com/config)
-compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project 555eacf75f21cd1dfc6363d73ad187b730349543)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/526b459a20794d7325764c3fea5fd3e0521d6084
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review cgel-zte-gmail-com/ath11k-use-min-to-make-code-cleaner/20211220-192326
-        git checkout 526b459a20794d7325764c3fea5fd3e0521d6084
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/net/wireless/ath/ath11k/
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
->> drivers/net/wireless/ath/ath11k/wmi.c:617:12: warning: comparison of distinct pointer types ('typeof (frame->len) *' (aka 'unsigned int *') and 'typeof (64) *' (aka 'int *')) [-Wcompare-distinct-pointer-types]
-           buf_len = min(frame->len, WMI_MGMT_SEND_DOWNLD_LEN);
-                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:45:19: note: expanded from macro 'min'
-   #define min(x, y)       __careful_cmp(x, y, <)
-                           ^~~~~~~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:36:24: note: expanded from macro '__careful_cmp'
-           __builtin_choose_expr(__safe_cmp(x, y), \
-                                 ^~~~~~~~~~~~~~~~
-   include/linux/minmax.h:26:4: note: expanded from macro '__safe_cmp'
-                   (__typecheck(x, y) && __no_side_effects(x, y))
-                    ^~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:20:28: note: expanded from macro '__typecheck'
-           (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
-                      ~~~~~~~~~~~~~~ ^  ~~~~~~~~~~~~~~
-   1 warning generated.
-
-
-vim +617 drivers/net/wireless/ath/ath11k/wmi.c
-
-   606	
-   607	int ath11k_wmi_mgmt_send(struct ath11k *ar, u32 vdev_id, u32 buf_id,
-   608				 struct sk_buff *frame)
-   609	{
-   610		struct ath11k_pdev_wmi *wmi = ar->wmi;
-   611		struct wmi_mgmt_send_cmd *cmd;
-   612		struct wmi_tlv *frame_tlv;
-   613		struct sk_buff *skb;
-   614		u32 buf_len;
-   615		int ret, len;
-   616	
- > 617		buf_len = min(frame->len, WMI_MGMT_SEND_DOWNLD_LEN);
-   618	
-   619		len = sizeof(*cmd) + sizeof(*frame_tlv) + roundup(buf_len, 4);
-   620	
-   621		skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, len);
-   622		if (!skb)
-   623			return -ENOMEM;
-   624	
-   625		cmd = (struct wmi_mgmt_send_cmd *)skb->data;
-   626		cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_MGMT_TX_SEND_CMD) |
-   627				  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
-   628		cmd->vdev_id = vdev_id;
-   629		cmd->desc_id = buf_id;
-   630		cmd->chanfreq = 0;
-   631		cmd->paddr_lo = lower_32_bits(ATH11K_SKB_CB(frame)->paddr);
-   632		cmd->paddr_hi = upper_32_bits(ATH11K_SKB_CB(frame)->paddr);
-   633		cmd->frame_len = frame->len;
-   634		cmd->buf_len = buf_len;
-   635		cmd->tx_params_valid = 0;
-   636	
-   637		frame_tlv = (struct wmi_tlv *)(skb->data + sizeof(*cmd));
-   638		frame_tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
-   639				    FIELD_PREP(WMI_TLV_LEN, buf_len);
-   640	
-   641		memcpy(frame_tlv->value, frame->data, buf_len);
-   642	
-   643		ath11k_ce_byte_swap(frame_tlv->value, buf_len);
-   644	
-   645		ret = ath11k_wmi_cmd_send(wmi, skb, WMI_MGMT_TX_SEND_CMDID);
-   646		if (ret) {
-   647			ath11k_warn(ar->ab,
-   648				    "failed to submit WMI_MGMT_TX_SEND_CMDID cmd\n");
-   649			dev_kfree_skb(skb);
-   650		}
-   651	
-   652		return ret;
-   653	}
-   654	
-
+Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/net/wireless/microchip/wilc1000/spi.c | 62 ++++++++++++++++++-
+ .../net/wireless/microchip/wilc1000/wlan.c    |  2 +-
+ 2 files changed, 60 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
+index e0871b89917dd..86233982120a8 100644
+--- a/drivers/net/wireless/microchip/wilc1000/spi.c
++++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+@@ -8,6 +8,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/crc7.h>
+ #include <linux/crc-itu-t.h>
++#include <linux/gpio/consumer.h>
+ 
+ #include "netdev.h"
+ #include "cfg80211.h"
+@@ -45,6 +46,10 @@ struct wilc_spi {
+ 	bool probing_crc;	/* true if we're probing chip's CRC config */
+ 	bool crc7_enabled;	/* true if crc7 is currently enabled */
+ 	bool crc16_enabled;	/* true if crc16 is currently enabled */
++	struct wilc_gpios {
++		struct gpio_desc *enable;	/* ENABLE GPIO or NULL */
++		struct gpio_desc *reset;	/* RESET GPIO or NULL */
++	} gpios;
+ };
+ 
+ static const struct wilc_hif_func wilc_hif_spi;
+@@ -152,6 +157,50 @@ struct wilc_spi_special_cmd_rsp {
+ 	u8 status;
+ } __packed;
+ 
++static int wilc_parse_gpios(struct wilc *wilc)
++{
++	struct spi_device *spi = to_spi_device(wilc->dev);
++	struct wilc_spi *spi_priv = wilc->bus_data;
++	struct wilc_gpios *gpios = &spi_priv->gpios;
++
++	/* get ENABLE pin and deassert it (if it is defined): */
++	gpios->enable = devm_gpiod_get_optional(&spi->dev,
++						"enable", GPIOD_OUT_LOW);
++	/* get RESET pin and assert it (if it is defined): */
++	if (gpios->enable) {
++		/* if enable pin exists, reset must exist as well */
++		gpios->reset = devm_gpiod_get(&spi->dev,
++					      "reset", GPIOD_OUT_HIGH);
++		if (IS_ERR(gpios->reset)) {
++			dev_err(&spi->dev, "missing reset gpio.\n");
++			return PTR_ERR(gpios->reset);
++		}
++	} else {
++		gpios->reset = devm_gpiod_get_optional(&spi->dev,
++						       "reset", GPIOD_OUT_HIGH);
++	}
++	return 0;
++}
++
++static void wilc_wlan_power(struct wilc *wilc, bool on)
++{
++	struct wilc_spi *spi_priv = wilc->bus_data;
++	struct wilc_gpios *gpios = &spi_priv->gpios;
++
++	if (on) {
++		/* assert ENABLE: */
++		gpiod_set_value(gpios->enable, 1);
++		mdelay(5);
++		/* deassert RESET: */
++		gpiod_set_value(gpios->reset, 0);
++	} else {
++		/* assert RESET: */
++		gpiod_set_value(gpios->reset, 1);
++		/* deassert ENABLE: */
++		gpiod_set_value(gpios->enable, 0);
++	}
++}
++
+ static int wilc_bus_probe(struct spi_device *spi)
+ {
+ 	int ret;
+@@ -171,6 +220,10 @@ static int wilc_bus_probe(struct spi_device *spi)
+ 	wilc->bus_data = spi_priv;
+ 	wilc->dev_irq_num = spi->irq;
+ 
++	ret = wilc_parse_gpios(wilc);
++	if (ret < 0)
++		goto netdev_cleanup;
++
+ 	wilc->rtc_clk = devm_clk_get_optional(&spi->dev, "rtc");
+ 	if (IS_ERR(wilc->rtc_clk)) {
+ 		ret = PTR_ERR(wilc->rtc_clk);
+@@ -981,9 +1034,10 @@ static int wilc_spi_reset(struct wilc *wilc)
+ 
+ static int wilc_spi_deinit(struct wilc *wilc)
+ {
+-	/*
+-	 * TODO:
+-	 */
++	struct wilc_spi *spi_priv = wilc->bus_data;
++
++	spi_priv->isinit = false;
++	wilc_wlan_power(wilc, false);
+ 	return 0;
+ }
+ 
+@@ -1004,6 +1058,8 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
+ 		dev_err(&spi->dev, "Fail cmd read chip id...\n");
+ 	}
+ 
++	wilc_wlan_power(wilc, true);
++
+ 	/*
+ 	 * configure protocol
+ 	 */
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index 4ab391b1dd8c7..227ed939c0e6b 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -1250,7 +1250,7 @@ void wilc_wlan_cleanup(struct net_device *dev)
+ 	wilc->rx_buffer = NULL;
+ 	kfree(wilc->tx_buffer);
+ 	wilc->tx_buffer = NULL;
+-	wilc->hif_func->hif_deinit(NULL);
++	wilc->hif_func->hif_deinit(wilc);
+ }
+ 
+ struct sk_buff *wilc_wlan_alloc_skb(struct wilc_vif *vif, size_t len)
+-- 
+2.25.1
+
