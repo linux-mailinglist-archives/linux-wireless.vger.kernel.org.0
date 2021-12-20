@@ -2,68 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29A0B47B303
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 19:41:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB3A947B314
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Dec 2021 19:44:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240481AbhLTSlq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 13:41:46 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:53096 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238773AbhLTSlp (ORCPT
+        id S240523AbhLTSoS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 13:44:18 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:52834 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231635AbhLTSoS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 13:41:45 -0500
+        Mon, 20 Dec 2021 13:44:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 33096612A8
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Dec 2021 18:41:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE29BC36AE8;
-        Mon, 20 Dec 2021 18:41:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 01C85B81084;
+        Mon, 20 Dec 2021 18:44:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0B7C36AE7;
+        Mon, 20 Dec 2021 18:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640025704;
-        bh=y3tKkCdRua/UjtGIT3DesNCgK7f75ov7Wut2/OFGey0=;
+        s=k20201202; t=1640025855;
+        bh=UMPDFKVS0LM0oehPWCcne4pGYk2PvYD9Oz8t3gyLsCo=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=XLP0NIMColOtqhv1uKt7CiB/7an81HYoOjX5BJ6K4UF8ZQEbFiKR98Nzpk864O9CS
-         4ALVue+ddhfuBFiTjG6Ds9CiFmDlcrLrV8a8/xoUAWs3lefN/rG1ZtPmudRtf1slys
-         RBdIw6k+7F8lnirkqhAo5wd5T8+K6FV9y+7OaA32OZeI39DGhznXjKBbIbS+T8pLLS
-         MNEgzkku3HzkOzDxFuuW1sxz0lf3XmQRaShHRcnr6ggdQMbVpbBMPFy1EwauVhl1C5
-         XruuhNnptUh/Ljj5cptT/WWdw/sex1ApAIEtqwE63sxXcOkaOmfZeL1P7B/93/wDdz
-         +HmybVGSeJ1hg==
+        b=aEfECKyNPAlhNgEJ8X5/J8/+AMxyuJNGbCmUg4xjwBI83QAu1jHd985RokLXg3gvN
+         jHm2YuNYKDdWCd8iV+oQ4UdYbsFPTQ2iULyuwZepYVG12T9e4G3zmf3IW0+MpCVzdC
+         QtGsuvCi/9c7g2gvtCEJtjQ7mlSAFulCag1XAWBI5UtfBN5Hlnn/Se8kMhDmWGmgov
+         nMwT9xeEINRmsUGS9KZvuwAuGIxR48GhTWk+bVn6mOenpEqPMxmOuFpDQ9YRec2s8G
+         P+vXZrR9EDHiYEyV//3v5pJQiEH/9IOxsx4wiaf+d0gXCT7f6UjXwzvNfh1kqR9ynq
+         t+AyUySNr2gIA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/4] iwlwifi: mei: fix W=1 warnings
+Subject: Re: [PATCH] wilc1000: fix double free error in probe()
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <iwlwifi.20211219110000.1ef2bb24771c.I6a59ad2d64f719d3e27398951c8f1b678b0b1092@changeid>
-References: <iwlwifi.20211219110000.1ef2bb24771c.I6a59ad2d64f719d3e27398951c8f1b678b0b1092@changeid>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     luca@coelho.fi, linux-wireless@vger.kernel.org
+In-Reply-To: <20211217150311.GC16611@kili>
+References: <20211217150311.GC16611@kili>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164002570215.16553.15153995532804423577.kvalo@kernel.org>
-Date:   Mon, 20 Dec 2021 18:41:43 +0000 (UTC)
+Message-ID: <164002585215.16553.7189611104055917408.kvalo@kernel.org>
+Date:   Mon, 20 Dec 2021 18:44:14 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> wrote:
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> From: Johannes Berg <johannes.berg@intel.com>
+> Smatch complains that there is a double free in probe:
 > 
-> There are a few warnings due to kernel-doc not understanding
-> the constructs the way they're done here, fix them.
+> drivers/net/wireless/microchip/wilc1000/spi.c:186 wilc_bus_probe() error: double free of 'spi_priv'
+> drivers/net/wireless/microchip/wilc1000/sdio.c:163 wilc_sdio_probe() error: double free of 'sdio_priv'
 > 
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> The problem is that wilc_netdev_cleanup() function frees "wilc->bus_data".
+> That's confusing and a layering violation.  Leave the frees in probe(),
+> delete the free in wilc_netdev_cleanup(), and add some new frees to the
+> remove() functions.
+> 
+> Fixes: dc8b338f3bcd ("wilc1000: use goto labels on error path")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Reviewed-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-4 patches applied to wireless-drivers-next.git, thanks.
+Patch applied to wireless-drivers-next.git, thanks.
 
-991bbbeccc24 iwlwifi: mei: fix W=1 warnings
-80cba44ff61b iwlwifi: mvm: add missing min_size to kernel-doc
-ab2c42618ab9 iwlwifi: mvm: add dbg_time_point to debugfs
-97c0979d0d72 iwlwifi: mvm: fix imbalanced locking in iwl_mvm_start_get_nvm()
+4894edacfa93 wilc1000: fix double free error in probe()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/iwlwifi.20211219110000.1ef2bb24771c.I6a59ad2d64f719d3e27398951c8f1b678b0b1092@changeid/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211217150311.GC16611@kili/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
