@@ -2,130 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0FEC47BFB8
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 13:31:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC76147C114
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 14:57:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237584AbhLUMbj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Dec 2021 07:31:39 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:60536 "EHLO
+        id S238306AbhLUN50 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Dec 2021 08:57:26 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:41494 "EHLO
         ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbhLUMbj (ORCPT
+        with ESMTP id S235373AbhLUN5Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Dec 2021 07:31:39 -0500
+        Tue, 21 Dec 2021 08:57:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 81582B8167A;
-        Tue, 21 Dec 2021 12:31:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67246C36AE2;
-        Tue, 21 Dec 2021 12:31:34 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5F3BCB811BE
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 13:57:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5960CC36AEA;
+        Tue, 21 Dec 2021 13:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640089896;
-        bh=aRJ72Tt/74M53TxT2OxpczsMwM+tVhnGCLhStYmdK/k=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=IJBirJBSycKfJ4lUKJrrxZxSzLZkwUAq0ACEDvV8ExcILnan4u+0BBUTcLn9TFkqq
-         ROWCarGa1JebcuK58DHn/YEufZ/E4Wvk60GE+N/+7258YhqIs47Y9GyLzRwe+45EhO
-         hRcVP7brTIM078SJo4/Na1e67bK4dsLsVwruz0cT1DtUbVXzXq7l29Yz+/uKkNsBH0
-         9UEm6LIdF8DzY2qNsw/aE93856Vgj/FzYgwozsJqaCxaE1mJN2cZ1nzFFJwr4f8mtB
-         qby1l/K1PxCO+er7akG6mgi98NKtiyeRJ0ze949WgytylPmphYNY0oovS+JNemufHu
-         jUQn26FZbEwjA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Wireless <linux-wireless@vger.kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Networking <netdev@vger.kernel.org>,
-        Wen Gong <quic_wgong@quicinc.com>,
-        Ayala Beker <ayala.beker@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: Re: linux-next: build failure after merge of the mac80211-next tree
-References: <20211221115004.1cd6b262@canb.auug.org.au>
-Date:   Tue, 21 Dec 2021 14:31:31 +0200
-In-Reply-To: <20211221115004.1cd6b262@canb.auug.org.au> (Stephen Rothwell's
-        message of "Tue, 21 Dec 2021 11:50:04 +1100")
-Message-ID: <8735mmm95o.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1640095043;
+        bh=HTGUh1wxK0aSCU501JaapdzxR6d52kkCl7yfWa55bJo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=t3aNN88rzVCEHbUELZ5jBNiSvMsJRiy5PxcEIY/I29Wt/yfqME9ec9qpjDj3OBY1D
+         a8WtWIErj9ZppCnku3BWMfnD7u9lzL1/UYP+6rA9MRmPQtxvBfedd94bTTEMr9R3Xa
+         ZB+ei1j5M/ofVsHJMrrr+QXqHaLvND46frSzDVvbQwEBdFELA3qSUlh0BOifMYjrtX
+         KRDecmZ61UioK00MmOfcoKobJLLrog5Dek318CgjtnInVW86Vzntar0LxCUWh7hnRk
+         ShNR/WAKWaWvE9rcGkT8H5pPqQ5cbjA0pfwsA7K7EMHqdTA0UzTq+/LAzEaYLfzr0e
+         OfWAvRMWPOP9w==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     kvalo@kernel.org
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, deren.wu@mediatek.com,
+        sean.wang@mediatek.com, sven@narfation.org
+Subject: [PATCH wireless-drivers] mt76: mt7921: fix a possible race enabling/disabling runtime-pm
+Date:   Tue, 21 Dec 2021 14:57:09 +0100
+Message-Id: <0f3e075a2033dc05f09dab4059e5be8cbdccc239.1640094847.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
+Fix a possible race enabling/disabling runtime-pm between
+mt7921_pm_set() and mt7921_poll_rx() since mt7921_pm_wake_work()
+always schedules rx-napi callback and it will trigger
+mt7921_pm_power_save_work routine putting chip to in low-power state
+during mt7921_pm_set processing.
 
-> Hi all,
->
-> After merging the mac80211-next tree, today's linux-next build (x86_64
-> allmodconfig) failed like this:
->
-> drivers/net/wireless/ath/ath10k/wmi.c: In function 'ath10k_wmi_event_mgmt_rx':
-> drivers/net/wireless/ath/ath10k/wmi.c:2626:12: error: too few
-> arguments to function 'cfg80211_get_ies_channel_number'
->  2626 |   ies_ch = cfg80211_get_ies_channel_number(mgmt->u.beacon.variable,
->       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> In file included from include/net/mac80211.h:21,
->                  from drivers/net/wireless/ath/ath10k/htt.h:16,
->                  from drivers/net/wireless/ath/ath10k/core.h:18,
->                  from drivers/net/wireless/ath/ath10k/wmi.c:11:
-> include/net/cfg80211.h:6421:5: note: declared here
->  6421 | int cfg80211_get_ies_channel_number(const u8 *ie, size_t ielen,
->       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->
-> Caused by commit
->
->   7f599aeccbd2 ("cfg80211: Use the HE operation IE to determine a 6GHz BSS channel")
->
-> interacting with commit
->
->   3bf2537ec2e3 ("ath10k: drop beacon and probe response which leak from other channel")
->
-> from the net-next tree.
->
-> I have applied the following merge fix patch for today (which, on
-> reflection, may not be correct, but builds).
->
-> From: Stephen Rothwell <sfr@canb.auug.org.au>
-> Date: Tue, 21 Dec 2021 11:40:49 +1100
-> Subject: [PATCH] fixup for "cfg80211: Use the HE operation IE to determine a 6GHz BSS channel"
->
-> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> ---
->  drivers/net/wireless/ath/ath10k/wmi.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-> index 4733fd7fb169..657bd6a32a36 100644
-> --- a/drivers/net/wireless/ath/ath10k/wmi.c
-> +++ b/drivers/net/wireless/ath/ath10k/wmi.c
-> @@ -2613,6 +2613,7 @@ int ath10k_wmi_event_mgmt_rx(struct ath10k *ar, struct sk_buff *skb)
->  	if (ieee80211_is_beacon(hdr->frame_control) ||
->  	    ieee80211_is_probe_resp(hdr->frame_control)) {
->  		struct ieee80211_mgmt *mgmt = (void *)skb->data;
-> +		enum cfg80211_bss_frame_type ftype;
->  		u8 *ies;
->  		int ies_ch;
->  
-> @@ -2623,9 +2624,14 @@ int ath10k_wmi_event_mgmt_rx(struct ath10k *ar, struct sk_buff *skb)
->  
->  		ies = mgmt->u.beacon.variable;
->  
-> +		if (ieee80211_is_beacon(mgmt->frame_control))
-> +			ftype = CFG80211_BSS_FTYPE_BEACON;
-> +		else /* if (ieee80211_is_probe_resp(mgmt->frame_control)) */
-> +			ftype = CFG80211_BSS_FTYPE_PRESP;
-> +
->  		ies_ch = cfg80211_get_ies_channel_number(mgmt->u.beacon.variable,
->  							 skb_tail_pointer(skb) - ies,
-> -							 sband->band);
-> +							 sband->band, ftype);
+Suggested-by: Deren Wu <deren.wu@mediatek.com>
+Tested-by: Deren Wu <deren.wu@mediatek.com>
+Fixes: 1d8efc741df8 ("mt76: mt7921: introduce Runtime PM support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |  3 ---
+ drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c  | 12 +++++++++---
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-I would remove the commented out code '/* if
-(ieee80211_is_probe_resp(mgmt->frame_control)) */', otherwise looks good
-to me.
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index af43bcb54578..306e9eaea917 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -7,9 +7,6 @@ int mt76_connac_pm_wake(struct mt76_phy *phy, struct mt76_connac_pm *pm)
+ {
+ 	struct mt76_dev *dev = phy->dev;
+ 
+-	if (!pm->enable)
+-		return 0;
+-
+ 	if (mt76_is_usb(dev))
+ 		return 0;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+index 7cdfdf83529f..86fd7292b229 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+@@ -276,7 +276,7 @@ mt7921_pm_set(void *data, u64 val)
+ 	struct mt7921_dev *dev = data;
+ 	struct mt76_connac_pm *pm = &dev->pm;
+ 
+-	mt7921_mutex_acquire(dev);
++	mutex_lock(&dev->mt76.mutex);
+ 
+ 	if (val == pm->enable)
+ 		goto out;
+@@ -285,7 +285,11 @@ mt7921_pm_set(void *data, u64 val)
+ 		pm->stats.last_wake_event = jiffies;
+ 		pm->stats.last_doze_event = jiffies;
+ 	}
+-	pm->enable = val;
++	/* make sure the chip is awake here and ps_work is scheduled
++	 * just at end of the this routine.
++	 */
++	pm->enable = false;
++	mt76_connac_pm_wake(&dev->mphy, pm);
+ 
+ 	ieee80211_iterate_active_interfaces(mt76_hw(dev),
+ 					    IEEE80211_IFACE_ITER_RESUME_ALL,
+@@ -293,8 +297,10 @@ mt7921_pm_set(void *data, u64 val)
+ 
+ 	mt76_connac_mcu_set_deep_sleep(&dev->mt76, pm->ds_enable);
+ 
++	pm->enable = val;
++	mt76_connac_power_save_sched(&dev->mphy, pm);
+ out:
+-	mt7921_mutex_release(dev);
++	mutex_unlock(&dev->mt76.mutex);
+ 
+ 	return 0;
+ }
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.33.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
