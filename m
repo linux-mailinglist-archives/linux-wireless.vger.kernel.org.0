@@ -2,82 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF48247BF00
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 12:34:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54F3447BFAB
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 13:25:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237163AbhLULeE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Dec 2021 06:34:04 -0500
-Received: from szxga02-in.huawei.com ([45.249.212.188]:16845 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230449AbhLULeD (ORCPT
+        id S237551AbhLUMYv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Dec 2021 07:24:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44962 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237531AbhLUMYu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Dec 2021 06:34:03 -0500
-Received: from dggpeml500024.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4JJDpw1Dhxz8yfQ;
-        Tue, 21 Dec 2021 19:33:12 +0800 (CST)
-Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
- dggpeml500024.china.huawei.com (7.185.36.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Tue, 21 Dec 2021 19:34:01 +0800
-Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
- (7.185.36.243) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Tue, 21 Dec
- 2021 19:34:01 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>
-CC:     <kvalo@kernel.org>, <akolli@codeaurora.org>
-Subject: [PATCH -next] ath11k: add missing of_node_put() to avoid leak
-Date:   Tue, 21 Dec 2021 19:40:03 +0800
-Message-ID: <20211221114003.335557-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 21 Dec 2021 07:24:50 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43A99C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 04:24:50 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id x15so51415172edv.1
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 04:24:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MoTPJgJK0kZOerSu3Jp9Zb+6CJ0WBkqc48qX6OzMzxM=;
+        b=AcXpAvYJL3+SogW72d+2cvTlPfSSLhUoTiSJYa5yyLkarMdsABl5w9RwhqH0iPoECC
+         4p4Q/mmwahrfYNtqZ12rTk4/hzDdYnB55guBF4Q44fZDtSe82RNItbEG9yOy+0b3Ot7G
+         qEJ2+P1ufHfLZti3MBwimSl/Xv7XCf8L4E1vk/mSyf5G5pW3ZNVxeQe6GCdBwFAv8cXO
+         Ha/XIeQUkHoCvCpoAFWSKHdRfSekatwAOQaOyBqL2oo32p4dX7sWGj5vkdnQrFCcxWHV
+         mRx7IzyAqKAOkfXnI9i/Gh5F0ZjhRjTSPnNljSTs/5BwuhtBlFmckI+QXGH5ohKnmIDo
+         b9/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MoTPJgJK0kZOerSu3Jp9Zb+6CJ0WBkqc48qX6OzMzxM=;
+        b=nsUzYSRSv+GYDii6nO/os36Zkf4RBCHZ/NgMgUf4e2AXDYUav+Vd9LrfH4PerULM2e
+         DpbKlwetvZwlc2CsOogh8hBo1yv49grfWQUC28S+ZlmrvkzQTpcPg7kg2CC5Zyfq8iC7
+         gMymCyd7XI+jVu7VoZwxFSFy/cdPXq3hbQ4pRZUHNZSlmNuPlRRjgtCLGmflVhZTJG4/
+         bRpUn1T6hyQi5BFo+Wq+R+FgYWCzIC1uP4bYldrEc2H3a7bwlPAniS4JGT7jq8o2/TEm
+         94HuA3ufeF4mtjAYGm+mx/QZebU5SfWOXNn5ar6rE3NzdfM80FZsKpRr/d85j8VIjYea
+         uvKg==
+X-Gm-Message-State: AOAM531wJnnEYZKq/gDPtWV+0f31zkrFhEi7VQKhLt7cZJx8AWqzMRmw
+        Wud5uxprlJ4yt4dkK6VIsRzCEarb8RElveytX+h9Hw==
+X-Google-Smtp-Source: ABdhPJyj+NVUeXk90XBlkTzieM83fRys2s8IsWREHaLZ7Vl5Sxqah7M8SCVRkQ/IZz/fkjggv7qm9GS6vSi+KHPu/y8=
+X-Received: by 2002:a17:906:4904:: with SMTP id b4mr2606178ejq.174.1640089488801;
+ Tue, 21 Dec 2021 04:24:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpeml500017.china.huawei.com (7.185.36.243)
-X-CFilter-Loop: Reflected
+References: <20211217144119.2538175-1-anders.roxell@linaro.org>
+ <20211217144119.2538175-7-anders.roxell@linaro.org> <YcBiFomrxSw1eEUB@kroah.com>
+In-Reply-To: <YcBiFomrxSw1eEUB@kroah.com>
+From:   Anders Roxell <anders.roxell@linaro.org>
+Date:   Tue, 21 Dec 2021 13:24:38 +0100
+Message-ID: <CADYN=9K8fD7sSdTy+mCY6dvjutabLnibs3BoAmv1W4sKcPLpXw@mail.gmail.com>
+Subject: Re: [PATCH 4.19 6/6] Input: touchscreen - avoid bitwise vs logical OR warning
+To:     Greg KH <greg@kroah.com>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        woojung.huh@microchip.com, UNGLinuxDriver@microchip.com,
+        davem@davemloft.net, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org, clang-built-linux@googlegroups.com,
+        ulli.kroll@googlemail.com, linux@armlinux.org.uk,
+        linux-arm-kernel@lists.infradead.org, amitkarwar@gmail.com,
+        nishants@marvell.com, gbhat@marvell.com, huxinming820@gmail.com,
+        kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
+        rostedt@goodmis.org, mingo@redhat.com, dmitry.torokhov@gmail.com,
+        ndesaulniers@google.com, nathan@kernel.org,
+        linux-input@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The node pointer is returned by of_find_node_by_type()
-or of_parse_phandle() with refcount incremented. Calling
-of_node_put() to aovid the refcount leak.
+On Mon, 20 Dec 2021 at 11:59, Greg KH <greg@kroah.com> wrote:
+>
+> On Fri, Dec 17, 2021 at 03:41:19PM +0100, Anders Roxell wrote:
+> > From: Nathan Chancellor <nathan@kernel.org>
+> >
+> > commit a02dcde595f7cbd240ccd64de96034ad91cffc40 upstream.
+> >
+> > A new warning in clang points out a few places in this driver where a
+> > bitwise OR is being used with boolean types:
+> >
+> > drivers/input/touchscreen.c:81:17: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
+> >         data_present = touchscreen_get_prop_u32(dev, "touchscreen-min-x",
+> >                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >
+> > This use of a bitwise OR is intentional, as bitwise operations do not
+> > short circuit, which allows all the calls to touchscreen_get_prop_u32()
+> > to happen so that the last parameter is initialized while coalescing the
+> > results of the calls to make a decision after they are all evaluated.
+> >
+> > To make this clearer to the compiler, use the '|=' operator to assign
+> > the result of each touchscreen_get_prop_u32() call to data_present,
+> > which keeps the meaning of the code the same but makes it obvious that
+> > every one of these calls is expected to happen.
+> >
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > Reported-by: Nick Desaulniers <ndesaulniers@google.com>
+> > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+> > Link: https://lore.kernel.org/r/20211014205757.3474635-1-nathan@kernel.org
+> > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> > Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+> > ---
+> >  drivers/input/touchscreen/of_touchscreen.c | 18 +++++++++---------
+> >  1 file changed, 9 insertions(+), 9 deletions(-)
+>
+> Also needed in 5.10.y and 5.4.y.
+>
+> Please be more careful next time.
 
-Fixes: 6ac04bdc5edb ("ath11k: Use reserved host DDR addresses from DT for PCI devices")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/net/wireless/ath/ath11k/mhi.c | 1 +
- drivers/net/wireless/ath/ath11k/qmi.c | 1 +
- 2 files changed, 2 insertions(+)
+Yes I will, I'm sorry.
 
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index e4250ba8dfee..cccaa348cf21 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -332,6 +332,7 @@ static int ath11k_mhi_read_addr_from_dt(struct mhi_controller *mhi_ctrl)
- 		return -ENOENT;
- 
- 	ret = of_address_to_resource(np, 0, &res);
-+	of_node_put(np);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 3b9ba0e03a66..2d46c0b07be3 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1892,6 +1892,7 @@ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
- 			}
- 
- 			ret = of_address_to_resource(hremote_node, 0, &res);
-+			of_node_put(hremote_node);
- 			if (ret) {
- 				ath11k_dbg(ab, ATH11K_DBG_QMI,
- 					   "qmi fail to get reg from hremote\n");
--- 
-2.25.1
-
+Cheers,
+Anders
