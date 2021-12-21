@@ -2,112 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54F3447BFAB
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 13:25:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F7C047BFB0
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 13:27:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237551AbhLUMYv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Dec 2021 07:24:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44962 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237531AbhLUMYu (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Dec 2021 07:24:50 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43A99C061574
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 04:24:50 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id x15so51415172edv.1
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 04:24:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MoTPJgJK0kZOerSu3Jp9Zb+6CJ0WBkqc48qX6OzMzxM=;
-        b=AcXpAvYJL3+SogW72d+2cvTlPfSSLhUoTiSJYa5yyLkarMdsABl5w9RwhqH0iPoECC
-         4p4Q/mmwahrfYNtqZ12rTk4/hzDdYnB55guBF4Q44fZDtSe82RNItbEG9yOy+0b3Ot7G
-         qEJ2+P1ufHfLZti3MBwimSl/Xv7XCf8L4E1vk/mSyf5G5pW3ZNVxeQe6GCdBwFAv8cXO
-         Ha/XIeQUkHoCvCpoAFWSKHdRfSekatwAOQaOyBqL2oo32p4dX7sWGj5vkdnQrFCcxWHV
-         mRx7IzyAqKAOkfXnI9i/Gh5F0ZjhRjTSPnNljSTs/5BwuhtBlFmckI+QXGH5ohKnmIDo
-         b9/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MoTPJgJK0kZOerSu3Jp9Zb+6CJ0WBkqc48qX6OzMzxM=;
-        b=nsUzYSRSv+GYDii6nO/os36Zkf4RBCHZ/NgMgUf4e2AXDYUav+Vd9LrfH4PerULM2e
-         DpbKlwetvZwlc2CsOogh8hBo1yv49grfWQUC28S+ZlmrvkzQTpcPg7kg2CC5Zyfq8iC7
-         gMymCyd7XI+jVu7VoZwxFSFy/cdPXq3hbQ4pRZUHNZSlmNuPlRRjgtCLGmflVhZTJG4/
-         bRpUn1T6hyQi5BFo+Wq+R+FgYWCzIC1uP4bYldrEc2H3a7bwlPAniS4JGT7jq8o2/TEm
-         94HuA3ufeF4mtjAYGm+mx/QZebU5SfWOXNn5ar6rE3NzdfM80FZsKpRr/d85j8VIjYea
-         uvKg==
-X-Gm-Message-State: AOAM531wJnnEYZKq/gDPtWV+0f31zkrFhEi7VQKhLt7cZJx8AWqzMRmw
-        Wud5uxprlJ4yt4dkK6VIsRzCEarb8RElveytX+h9Hw==
-X-Google-Smtp-Source: ABdhPJyj+NVUeXk90XBlkTzieM83fRys2s8IsWREHaLZ7Vl5Sxqah7M8SCVRkQ/IZz/fkjggv7qm9GS6vSi+KHPu/y8=
-X-Received: by 2002:a17:906:4904:: with SMTP id b4mr2606178ejq.174.1640089488801;
- Tue, 21 Dec 2021 04:24:48 -0800 (PST)
+        id S231254AbhLUM07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Dec 2021 07:26:59 -0500
+Received: from mga14.intel.com ([192.55.52.115]:43884 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229779AbhLUM06 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Dec 2021 07:26:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1640089618; x=1671625618;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Gp2R5l9urbw7cBEBxsOVgC4Yn0kXlzUbM69Iprin41Q=;
+  b=XGDbAQuiPV9G3XFIFepYc1z/fQ74zNw4jLnXQ+p2OktA/5rsPBX8da6x
+   64wSNZBxb+48HYK7NyDdxTMXywI0vH6bVCM5pVljZJ8169gF2NtrZthog
+   LRHlH5qLa1sDKHkgkTkO4EvVuOVHs5vD0CoyeIQPHft6iSRluC34cXL1K
+   6vxY/5v0+oT8T607XOchO8/TfbKIfClpBnPqLihveWQQ9nvUv16fv4miC
+   Se5cGaDj/SjK0JszoOkvPbTUvHQXSC/gV2y8u+W9ZVQNI4Kdjx5oN+JhK
+   Q+rQ7y4EolDjKmQvY4LIft6kmWWyZ0xjnYN96oZFT4LIZcaN9xNtjSxzU
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10204"; a="240607126"
+X-IronPort-AV: E=Sophos;i="5.88,223,1635231600"; 
+   d="scan'208";a="240607126"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 04:26:58 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,223,1635231600"; 
+   d="scan'208";a="467774183"
+Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 21 Dec 2021 04:26:56 -0800
+Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mzeEK-00095d-9y; Tue, 21 Dec 2021 12:26:56 +0000
+Date:   Tue, 21 Dec 2021 20:26:16 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [kvalo-wireless-drivers-next:master] BUILD SUCCESS
+ 8b144dedb928e4e2f433a328d58f44c3c098d63e
+Message-ID: <61c1c7e8.og72N70DGz5R9RBv%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20211217144119.2538175-1-anders.roxell@linaro.org>
- <20211217144119.2538175-7-anders.roxell@linaro.org> <YcBiFomrxSw1eEUB@kroah.com>
-In-Reply-To: <YcBiFomrxSw1eEUB@kroah.com>
-From:   Anders Roxell <anders.roxell@linaro.org>
-Date:   Tue, 21 Dec 2021 13:24:38 +0100
-Message-ID: <CADYN=9K8fD7sSdTy+mCY6dvjutabLnibs3BoAmv1W4sKcPLpXw@mail.gmail.com>
-Subject: Re: [PATCH 4.19 6/6] Input: touchscreen - avoid bitwise vs logical OR warning
-To:     Greg KH <greg@kroah.com>
-Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        woojung.huh@microchip.com, UNGLinuxDriver@microchip.com,
-        davem@davemloft.net, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, clang-built-linux@googlegroups.com,
-        ulli.kroll@googlemail.com, linux@armlinux.org.uk,
-        linux-arm-kernel@lists.infradead.org, amitkarwar@gmail.com,
-        nishants@marvell.com, gbhat@marvell.com, huxinming820@gmail.com,
-        kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        rostedt@goodmis.org, mingo@redhat.com, dmitry.torokhov@gmail.com,
-        ndesaulniers@google.com, nathan@kernel.org,
-        linux-input@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 20 Dec 2021 at 11:59, Greg KH <greg@kroah.com> wrote:
->
-> On Fri, Dec 17, 2021 at 03:41:19PM +0100, Anders Roxell wrote:
-> > From: Nathan Chancellor <nathan@kernel.org>
-> >
-> > commit a02dcde595f7cbd240ccd64de96034ad91cffc40 upstream.
-> >
-> > A new warning in clang points out a few places in this driver where a
-> > bitwise OR is being used with boolean types:
-> >
-> > drivers/input/touchscreen.c:81:17: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
-> >         data_present = touchscreen_get_prop_u32(dev, "touchscreen-min-x",
-> >                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >
-> > This use of a bitwise OR is intentional, as bitwise operations do not
-> > short circuit, which allows all the calls to touchscreen_get_prop_u32()
-> > to happen so that the last parameter is initialized while coalescing the
-> > results of the calls to make a decision after they are all evaluated.
-> >
-> > To make this clearer to the compiler, use the '|=' operator to assign
-> > the result of each touchscreen_get_prop_u32() call to data_present,
-> > which keeps the meaning of the code the same but makes it obvious that
-> > every one of these calls is expected to happen.
-> >
-> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-> > Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-> > Link: https://lore.kernel.org/r/20211014205757.3474635-1-nathan@kernel.org
-> > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
-> > ---
-> >  drivers/input/touchscreen/of_touchscreen.c | 18 +++++++++---------
-> >  1 file changed, 9 insertions(+), 9 deletions(-)
->
-> Also needed in 5.10.y and 5.4.y.
->
-> Please be more careful next time.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+branch HEAD: 8b144dedb928e4e2f433a328d58f44c3c098d63e  rtlwifi: rtl8192cu: Fix WARNING when calling local_irq_restore() with interrupts enabled
 
-Yes I will, I'm sorry.
+elapsed time: 912m
 
-Cheers,
-Anders
+configs tested: 101
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                              allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm64                               defconfig
+arm64                            allyesconfig
+arc                     haps_hs_smp_defconfig
+sh                ecovec24-romimage_defconfig
+ia64                        generic_defconfig
+powerpc                 mpc837x_rdb_defconfig
+sh                      rts7751r2d1_defconfig
+mips                           ip27_defconfig
+csky                             alldefconfig
+powerpc                       eiger_defconfig
+arm                           tegra_defconfig
+arm                           omap1_defconfig
+openrisc                  or1klitex_defconfig
+powerpc                     tqm5200_defconfig
+arm64                            alldefconfig
+arm                            pleb_defconfig
+arm                            xcep_defconfig
+sh                           se7722_defconfig
+mips                            ar7_defconfig
+arm                  randconfig-c002-20211220
+ia64                                defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+s390                             allyesconfig
+i386                             allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                              debian-10.3
+sparc                            allyesconfig
+i386                   debian-10.3-kselftests
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+i386                 randconfig-a002-20211220
+i386                 randconfig-a003-20211220
+i386                 randconfig-a001-20211220
+i386                 randconfig-a005-20211220
+i386                 randconfig-a006-20211220
+i386                 randconfig-a004-20211220
+x86_64               randconfig-a001-20211220
+x86_64               randconfig-a003-20211220
+x86_64               randconfig-a004-20211220
+x86_64               randconfig-a002-20211220
+x86_64               randconfig-a005-20211220
+x86_64               randconfig-a006-20211220
+arc                  randconfig-r043-20211220
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+
+clang tested configs:
+x86_64               randconfig-a013-20211220
+x86_64               randconfig-a015-20211220
+x86_64               randconfig-a014-20211220
+x86_64               randconfig-a012-20211220
+x86_64               randconfig-a011-20211220
+x86_64               randconfig-a016-20211220
+i386                 randconfig-a012-20211220
+i386                 randconfig-a011-20211220
+i386                 randconfig-a014-20211220
+i386                 randconfig-a016-20211220
+i386                 randconfig-a015-20211220
+i386                 randconfig-a013-20211220
+hexagon              randconfig-r041-20211220
+hexagon              randconfig-r045-20211220
+riscv                randconfig-r042-20211220
+s390                 randconfig-r044-20211220
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
