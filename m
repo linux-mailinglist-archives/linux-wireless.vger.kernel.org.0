@@ -2,164 +2,184 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 038CF47C796
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 20:39:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1979747C852
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 21:39:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241836AbhLUTjv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Dec 2021 14:39:51 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:46810 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237467AbhLUTjv (ORCPT
+        id S234397AbhLUUjX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Dec 2021 15:39:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47914 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230262AbhLUUjX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Dec 2021 14:39:51 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 16BECB81990;
-        Tue, 21 Dec 2021 19:39:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62828C36AEA;
-        Tue, 21 Dec 2021 19:39:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640115588;
-        bh=wRRFAUwQWksyjwTR4qA4+DrhT6T2cP/utpnaRghH37c=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r3TbihOgQMBsKPbw22G8Qpn+olIzOlxx31zDblcZum4j3m/fYirRsmpShmLOcH2jw
-         OvVXAmDnaNVzHxdVjn0KaXWkPKwY31WGfKlWygRJrB16tOOab3rr5JgFUjUtBxrMla
-         o67uAPYhVSI0CMqWAIapqtCxQuI+OxSIULSkA7xn2XHUiafqvloX6VHwI7q0rR52Cb
-         F0G5/5oOiW4QWg4jMvOg4iH7RAVdVjr3Ao/m/6tKjPfDgbeOgMXyxoU6NdfYlugbjj
-         NSrtoQg09lC9WGxkHt1fM0jzaeTzafwV8rZL0D3T6ThByaSx4ZICUKoBR6IJdDLL1h
-         xvtAwdyIUYZuA==
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     davem@davemloft.net
-Cc:     netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        kvalo@kernel.org, luciano.coelho@intel.com, nbd@nbd.name,
-        lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        shayne.chen@mediatek.com, sean.wang@mediatek.com,
-        johannes.berg@intel.com, emmanuel.grumbach@intel.com,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: [PATCH net-next 2/2] codel: remove unnecessary pkt_sched.h include
-Date:   Tue, 21 Dec 2021 11:39:41 -0800
-Message-Id: <20211221193941.3805147-2-kuba@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20211221193941.3805147-1-kuba@kernel.org>
-References: <20211221193941.3805147-1-kuba@kernel.org>
+        Tue, 21 Dec 2021 15:39:23 -0500
+Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A08C061574
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 12:39:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1640119159;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=dSM7HImYG6ODZB2Np83t2NXA/n8bA1WPtvKygXCkFbg=;
+        b=Lb+C/3L2aPfkg1XXQxknf4p4TCiiDZRxozsv+dhNW9jy71c1CFwhXjUE5W4toizAy1ISsF
+        qpS7nymcOk4EEjqwGJo783ccw6gdSlO6D3K2xK4prn7ClH0qO8FNlenj2UxTbHTstu31wa
+        LYjM7lrj6+pAoLyW0CatnibTqoX1Pts=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, quic_cjhuang@quicinc.com,
+        Carl Huang <cjhuang@codeaurora.org>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: Re: [PATCH 6/6] ath11k: support GTK rekey offload
+Date:   Tue, 21 Dec 2021 21:39:12 +0100
+Message-ID: <2860207.IQqrrufrRN@sven-l14>
+In-Reply-To: <87r1a66mju.fsf@kernel.org>
+References: <20211011193750.4891-1-cjhuang@codeaurora.org> <1934542.dmet8VCoWv@sven-l14> <87r1a66mju.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart13446456.hxzVf8W2Rg"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit d068ca2ae2e6 ("codel: split into multiple files") moved all
-Qdisc-related code to codel_qdisc.h, move the include of pkt_sched.h
-as well.
+--nextPart13446456.hxzVf8W2Rg
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, quic_cjhuang@quicinc.com, Carl Huang <cjhuang@codeaurora.org>, Kalle Valo <kvalo@kernel.org>
+Subject: Re: [PATCH 6/6] ath11k: support GTK rekey offload
+Date: Tue, 21 Dec 2021 21:39:12 +0100
+Message-ID: <2860207.IQqrrufrRN@sven-l14>
+In-Reply-To: <87r1a66mju.fsf@kernel.org>
+References: <20211011193750.4891-1-cjhuang@codeaurora.org> <1934542.dmet8VCoWv@sven-l14> <87r1a66mju.fsf@kernel.org>
 
-This is similar to the previous commit, although we don't care as
-much about incremental builds after pkt_sched.h was touched itself
-it is included by net/sch_generic.h which is modified ~20 times
-a year.
+On Tuesday, 21 December 2021 15:48:53 CET Kalle Valo wrote:
+> My understanding is that on little endian host it's (the number representing
+> the byte index):
+> 
+> 1 2 3 4 5 6 7 8
+> 
+> And on big endian host it's (as the firmware automatically swapped the
+> values):
+> 
+> 4 3 2 1 8 7 6 5
+> 
+> So for on big endian we need to use ath11k_ce_byte_swap() to get them
+> back to correct order. (Or to be exact we need to use
+> ath11k_ce_byte_swap() every time as it does nothing on a little endian
+> host.)
+> 
+> Completely untested, of course. I don't have a big endian system.
 
-This decreases the incremental build size after touching pkt_sched.h
-from 1592 to 617 objects.
+Ok, just to summarize: the value is 0x0807060504030201 -> which is is 
+correctly stored in memory as 0102030405060708 for little endian systems. Fine 
+with this part. So if there would only be little endian systems than following 
+code would be fine:
 
-Fix unmasked missing includes in WiFi drivers.
+     replay_ctr = cpu_to_be64(get_unaligned((u64 *)ev->replay_counter));
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: kvalo@kernel.org
-CC: luciano.coelho@intel.com
-CC: nbd@nbd.name
-CC: lorenzo.bianconi83@gmail.com
-CC: ryder.lee@mediatek.com
-CC: shayne.chen@mediatek.com
-CC: sean.wang@mediatek.com
-CC: johannes.berg@intel.com
-CC: emmanuel.grumbach@intel.com
-CC: ath11k@lists.infradead.org
-CC: linux-wireless@vger.kernel.org
----
- drivers/net/wireless/ath/ath11k/reg.c               | 2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c        | 1 +
- drivers/net/wireless/intel/iwlwifi/mvm/vendor-cmd.c | 1 +
- drivers/net/wireless/mediatek/mt76/testmode.h       | 2 ++
- include/net/codel.h                                 | 1 -
- include/net/codel_qdisc.h                           | 2 ++
- 6 files changed, 8 insertions(+), 1 deletion(-)
+According to the info from here, the memory from the firmware on big endian 
+systems is 0403020108070605. So after switching it with the ath11k swap 
+function, it is back to 0102030405060708 -> which is little endian again (and 
+not aligned in memory). We must take care of it by converting in from __le64 
+to a u64 before converting it to __be64. So we would end up with:
 
-diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/ath/ath11k/reg.c
-index 1f8a81987187..d6575feca5a2 100644
---- a/drivers/net/wireless/ath/ath11k/reg.c
-+++ b/drivers/net/wireless/ath/ath11k/reg.c
-@@ -2,6 +2,8 @@
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-  */
-+#include <linux/rtnetlink.h>
-+
- #include "core.h"
- #include "debug.h"
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index f12e571d3581..a3324c30af90 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -5,6 +5,7 @@
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
- #include <linux/module.h>
-+#include <linux/rtnetlink.h>
- #include <linux/vmalloc.h>
- #include <net/mac80211.h>
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/vendor-cmd.c b/drivers/net/wireless/intel/iwlwifi/mvm/vendor-cmd.c
-index f702ad85e609..78450366312b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/vendor-cmd.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/vendor-cmd.c
-@@ -4,6 +4,7 @@
-  */
- #include "mvm.h"
- #include <linux/nl80211-vnd-intel.h>
-+#include <net/netlink.h>
- 
- static const struct nla_policy
- iwl_mvm_vendor_attr_policy[NUM_IWL_MVM_VENDOR_ATTR] = {
-diff --git a/drivers/net/wireless/mediatek/mt76/testmode.h b/drivers/net/wireless/mediatek/mt76/testmode.h
-index d1f9c036dd1f..725973f1ca58 100644
---- a/drivers/net/wireless/mediatek/mt76/testmode.h
-+++ b/drivers/net/wireless/mediatek/mt76/testmode.h
-@@ -7,6 +7,8 @@
- 
- #define MT76_TM_TIMEOUT	10
- 
-+#include <net/netlink.h>
-+
- /**
-  * enum mt76_testmode_attr - testmode attributes inside NL80211_ATTR_TESTDATA
-  *
-diff --git a/include/net/codel.h b/include/net/codel.h
-index d74dd8fda54e..5fed2f16cb8d 100644
---- a/include/net/codel.h
-+++ b/include/net/codel.h
-@@ -44,7 +44,6 @@
- #include <linux/types.h>
- #include <linux/ktime.h>
- #include <linux/skbuff.h>
--#include <net/pkt_sched.h>
- 
- /* Controlling Queue Delay (CoDel) algorithm
-  * =========================================
-diff --git a/include/net/codel_qdisc.h b/include/net/codel_qdisc.h
-index 098630f83a55..58b6d0ebea10 100644
---- a/include/net/codel_qdisc.h
-+++ b/include/net/codel_qdisc.h
-@@ -49,6 +49,8 @@
-  * Implemented on linux by Dave Taht and Eric Dumazet
-  */
- 
-+#include <net/pkt_sched.h>
-+
- /* Qdiscs using codel plugin must use codel_skb_cb in their own cb[] */
- struct codel_skb_cb {
- 	codel_time_t enqueue_time;
--- 
-2.31.1
+    __le64 replay_ctr_le;
+    __be64 replay_ctr_be;
+    u64 replay_ctr;
+
+    /* TODO also swap bytes for (i)gt_key* back to little endian */
+    ath11k_ce_byte_swap(ev->replay_counter, sizeof(ev->replay_counter));
+
+    replay_ctr_le = get_unaligned((__le64 *)ev->replay_counter);
+    replay_ctr = le64_to_cpu(replay_ctr_le);
+    arvif->rekey_data.replay_ctr = replay_ctr;
+    replay_ctr_be = cpu_to_be64(replay_ctr);
+
+Of course, completely untested.
+
+
+Another idea would be to change wmi_gtk_offload_status_event->replay_counter 
+into two u32. In that case, it would be enough to do:
+
+   __be64 replay_ctr_be;
+    u64 replay_ctr;
+
+    replay_ctr = ev->replay_counter[1];
+    replay_ctr <<= 32;
+    replay_ctr |= ev->replay_counter[0];
+
+    arvif->rekey_data.replay_ctr = replay_ctr;
+    replay_ctr_be = cpu_to_be64(replay_ctr);
+
+replay_counter[1] could also be called replay_counter_upper - and 
+replay_counter[0] just replay_counter_lower.
+
+
+Which reminds me of that the memcpy from a u64 to
+wmi_gtk_rekey_offload_cmd->replay_ctrl in ath11k_wmi_gtk_rekey_offload. This 
+is of course also wrong. It must first be converted into a __le64 and the 
+bytes must be pre-swapped (see below).
+
+
+> So my understanding is that when CE_ATTR_BYTE_SWAP_DATA is enabled the
+> firmware automatically swaps the packets per every four bytes. That's
+> why all the fields in WMI commands and events are u32.
+[...]
+> The firmware interface should not have u16 or u8 fields. And for
+> anything larger ath11k_ce_byte_swap() should be used. Again, this is
+> just my recollection from discussions years back and I have not tested
+> this myself.
+
+Ok, so wmi_gtk_offload_status_event and wmi_gtk_rekey_offload_cmd are breaking 
+this assertion because they are full of u8's. :(
+
+Especially wmi_gtk_offload_status_event is problematic here because there are 
+now a lot of single u8's in it. The original code must therefore use 
+ath11k_ce_byte_swap on everything after
+wmi_gtk_offload_status_event->refresh_cnt before accessing any of the members.
+
+And ath11k_wmi_gtk_rekey_offload must perform the ath11k_ce_byte_swap on
+
+* wmi_gtk_rekey_offload_cmd->kek
+* wmi_gtk_rekey_offload_cmd->kck
+* wmi_gtk_rekey_offload_cmd->replay_ctr
+
+See also above why the memcpy to wmi_gtk_rekey_offload_cmd->replay_ctr is 
+wrong in this function.
+
+
+And it seems like wmi_obss_color_collision_event->obss_color_bitmap (see 
+ath11k_wmi_obss_color_collision_event) could suffer from a similar problem.
+Maybe key_rsc_counter in ath11k_wmi_vdev_install_key too - but this doesn't 
+have any producers yet.
+
+Kind regards,
+	Sven
+
+
+--nextPart13446456.hxzVf8W2Rg
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmHCO3AACgkQXYcKB8Em
+e0ZCLA//b2jwPHDfjNe7G4Q7ZG3uEjiBju+tMLw4KDQvRPIRhGmDUd6ziEK2wGaa
+H7cKhz9cXqr6PHYkuRLEYT4853R/v9mv0IeiMlOoX2BmmGMCGfKcvMc5+/8oEAor
+L2C8VLjs8MPnBqFwxzqPqT1grO7Piai/TOt1S/PJK3lOi43OCO61Ns9ip1tvFLv1
+zLh74sgHA7oMho5RGWwWA0reggkhHabxfsiHjyczcnV0TkoMJbyqd0L10dpw4gl7
+fFiF3x9YWTBu00C2kqRu41EMVqJ/tSEJCzWGdxkMPVj3hvERYtsduDm1GZgXZrDp
+xvDJffBXf1H2fo8grdG55BHOc59vF8vTj1391FZs9v65tEkD52PQDGJHSbQ2uH8R
+CYc9iTbW52Td1Ro2e7wbUE4Pg6CcJxDXT8PsFZ39PuMPfERTj0ULNZ9dTc+d0rSv
+lOjXmq0zp/PpVos7P2XnkPmbOaZw1h7DlKZNKpwD8indkn+L02EEKFNwBex/WEIm
+hCGOvpry+AjwFQTCDgawpRhFGWKJmIFvmvbXWj0fs4W9GVO422xzQK5i2G+Wr2cd
+j5rwS+QooU1QpPY6z+rsLOLYqBLJdfeIT4w0B4jrHeu8XZlCbIploHEOsD9N0/8F
+kFp8bupzpY8OW2EbwsHNeyBVsQeGpwVcRLgmoS3u19TfFe9iLO8=
+=F+GF
+-----END PGP SIGNATURE-----
+
+--nextPart13446456.hxzVf8W2Rg--
+
+
 
