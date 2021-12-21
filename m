@@ -2,79 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FB3F47C64D
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 19:19:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B2CD47C673
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 19:22:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236952AbhLUSTz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Dec 2021 13:19:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44302 "EHLO
+        id S241269AbhLUSW5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Dec 2021 13:22:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241250AbhLUSTi (ORCPT
+        with ESMTP id S241278AbhLUSWy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Dec 2021 13:19:38 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56A25C06175B
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 10:19:34 -0800 (PST)
+        Tue, 21 Dec 2021 13:22:54 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D78C2C061746
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 10:22:54 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id A7A20CE19C2
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 18:19:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2791BC36AE8;
-        Tue, 21 Dec 2021 18:19:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 78DA36172E
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 18:22:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E54C36AE9;
+        Tue, 21 Dec 2021 18:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640110771;
-        bh=BsYhhkwAvzDNK42Q4YGNtuYMDnT87y95xrNDg76jOB0=;
+        s=k20201202; t=1640110973;
+        bh=cIhZPKjYKDXS3bMxhXjOcwTd5YMKGiJgPKcNTPB2VzQ=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=GxCa57roPg4q0uoihYHa8piHbtotyYFcn1+RR9MsgO8QbOLX296J8msP45+xVV8IB
-         UJsByGp8dz0SSjHQKxa+WY+RH02qQP/Ok5n7QNhWH//Wl00hPKHWPR2OgHbW9buXoW
-         eCt99QwVjFb38fUs5kYn/hBQ1wBRjlxETV95W8nBDmlesE5LmmPjjsQjT7IVq4c+MZ
-         wcjvZfVN49q73m3Jox9lV/0QE2O876o5cpsm3mEX//+vGKIQNuFTaqEdcDpFzwJA8r
-         9fnTuCo9ILz202Yl9eUx3LFd4w04wbzI4KtuvxG7kWUFjLdODKS1BiabHNZ96dsCMw
-         1wveYunxesjDw==
+        b=muVdS2f671W/IoVgbgGIaJFy2UzoD4lPZEGkg3F5L8yjgaJ5MRIzxfO0VO6Lw0Xmr
+         fkhENyR7MxQY5ALMS3usP5l14Y+as76HuEUlZOIK1nd13CgUX743Qqr0rHZsgK3OcI
+         DCDEw5ULGmOztidSsp45+L08BI4NKu35sOOC+kVcxWIvZetp9bACFzq3h9pCk89NWx
+         Tcl7y0BbEbKI+TWIq6PfQ7/DYrRSJUg/bAsDgl0gM84ltrADW7XPSQHs2UhxeShb0y
+         rxcc5aUbDmCg5pasEUV1pzl9r+2R1JNjYP+3mefQqP6uesuuvUR/hk5gKsNGrN9JjG
+         YaH3ZgJggPfcw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3] rtw88: 8822c: add ieee80211_ops::hw_scan
+Subject: Re: [PATCH] rtw88: support SAR via kernel common API
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211221085010.39421-1-pkshih@realtek.com>
-References: <20211221085010.39421-1-pkshih@realtek.com>
+In-Reply-To: <20211220093656.65312-1-pkshih@realtek.com>
+References: <20211220093656.65312-1-pkshih@realtek.com>
 To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <phhuang@realtek.com>
+Cc:     <tony0620emma@gmail.com>, <kvalo@codeaurora.org>,
+        <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164011076594.31508.16370428097829988960.kvalo@kernel.org>
-Date:   Tue, 21 Dec 2021 18:19:29 +0000 (UTC)
+Message-ID: <164011097096.31508.14987641590578596100.kvalo@kernel.org>
+Date:   Tue, 21 Dec 2021 18:22:52 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Po-Hao Huang <phhuang@realtek.com>
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
 > 
-> Declare this function allows us to use customized scanning policy.
-> By doing so we can be more time efficient on each scan. In order to
-> make existing coex mechanism work as usual, firmware notifies driver
-> on each channel switch event, then decide antenna ownership based on
-> the current channel/band. Do note that this new mechanism affects
-> throughput more than the sw_scan we used to have, but the overall
-> average throughput is not affected since each scan take less time.
-> Since the firmware size is limited, we only support probe requests
-> with custom IEs length under 128 bytes for now, if any user space
-> tools requires more than that, we'll introduce related changes
-> afterwards. For backward compatibility, we fallback to sw_scan when
-> using older firmware that does not support this feature.
+> Register cfg80211_sar_capa with type NL80211_SAR_TYPE_POWER and four
+> frequency ranges for configurations in unit of 0.25 dBm. And handle
+> callback set_sar_specs.
 > 
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+> Originally, TX power has three main parameters, i.e. power base,
+> power by rate, and power limit. The formula can be simply considered
+> as TX power = power base + min(power by rate, power limit). With the
+> support of SAR which can be treated as another power limit, there is
+> one more parameter for TX power. And the formula will evolve into
+> TX power = power base + min(power by rate, power limit, power sar).
+> 
+> Besides, debugfs tx_pwr_tbl is also refined to show SAR information.
+> The following is an example for the difference.
+> Before supporting SAR,
+> -----------------------------------
+> ...
+> path rate       pwr       base      (byr  lmt ) rem
+>    A  CCK_1M     66(0x42)   78  -12 (  12  -12)    0
+>    A  CCK_2M     66(0x42)   78  -12 (   8  -12)    0
+> ...
+> -----------------------------------
+> After supporting SAR and making some configurations,
+> -----------------------------------
+> ...
+> path rate       pwr       base      (byr  lmt  sar ) rem
+>    A  CCK_1M     62(0x3e)   78  -16 (  12  -12  -16)    0
+>    A  CCK_2M     62(0x3e)   78  -16 (   8  -12  -16)    0
+> ...
+> -----------------------------------
+> 
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-10d162b2ed39 rtw88: 8822c: add ieee80211_ops::hw_scan
+8704d0befb59 rtw88: support SAR via kernel common API
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211221085010.39421-1-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211220093656.65312-1-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
