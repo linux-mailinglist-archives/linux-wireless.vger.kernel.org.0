@@ -2,45 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 993CA47C1DC
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 15:49:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B711F47C240
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 16:07:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238634AbhLUOtA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Dec 2021 09:49:00 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:40270 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233435AbhLUOs7 (ORCPT
+        id S238941AbhLUPHd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Dec 2021 10:07:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54850 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238939AbhLUPHd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Dec 2021 09:48:59 -0500
+        Tue, 21 Dec 2021 10:07:33 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F205C06173F
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 07:07:33 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 441A061570
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 14:48:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAFEC36AE8;
-        Tue, 21 Dec 2021 14:48:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 272A4B81097
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 15:07:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CF8C36AE9;
+        Tue, 21 Dec 2021 15:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640098138;
-        bh=8vHGnwhKlFVmRTByj0rA81VBFGKYpqyMdpDcm9Krgow=;
+        s=k20201202; t=1640099251;
+        bh=IXzXYGDuehgwGEY3XC2v7jGKpJXRNnYZq3o0JAZ3GUo=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=iTjRExKZJszmd3s+uyw0aSdNb189ohkoxTeopT8//nCa9iFxToY6IcyWsRKgiRWZs
-         uQlrskmzbQttFoOK8RWWogY01YxOJ0mP06WjeNBoXovw3NyN3V554DPaCxD8gmpGaA
-         2vB/mVjORhbd8IppkYrtRLni2nQ8+Fo+yKo2KCb5NyFCwEh7U2uozgz/xpB5/0V0L9
-         BG7oWVlSIoywzi6YvNU5Z78za73beWH+DbSLvpsks4gYQUi6IM+csYmC0f2kO7vz6w
-         JLQJ2RaFDVi9CVPsplXXaik0mQ+zXPEZU3QKWH57VO+UKmsHFE6kzeIHs2r7KksUS9
-         fkW94aXL+Mrkg==
+        b=oDhqhzUt2B0qG4Aw65JP+bXyh6Ybe1dU67fU9Jj5QgLt7h/vWmskRxoJvv3wmDQae
+         8SbToqakpEMggdW9zOYFUpA2jEn4KeNV7HWYbPslNgHfHxTkTdqS/UWgzErHVgQOi3
+         b0Rx6UhDJxoUP1XgSFF36FNmGcD/fpTWVhbteNnW8amCkz6F0cHpBd5/ekU+1Vc+xE
+         vaZ1xpwsV0hYXXAODvN388EHAKeiQj5k51pMjekgTPcmV6uD7lRVG0sJi/2i2JjNcf
+         Hq2AzeFQ0VRmB1MloFfWwYjYZ+gUCDtsEPLsrDECw7XMFZxGsCu7hupnXGECMDqPJU
+         YxSb85TmSdBRw==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Sven Eckelmann <sven@narfation.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        quic_cjhuang@quicinc.com, Carl Huang <cjhuang@codeaurora.org>
-Subject: Re: [PATCH 6/6] ath11k: support GTK rekey offload
-References: <20211011193750.4891-1-cjhuang@codeaurora.org>
-        <2102838.219ycuhFCz@sven-l14> <871r27bnkz.fsf@codeaurora.org>
-        <1934542.dmet8VCoWv@sven-l14>
-Date:   Tue, 21 Dec 2021 16:48:53 +0200
-In-Reply-To: <1934542.dmet8VCoWv@sven-l14> (Sven Eckelmann's message of "Mon,
-        20 Dec 2021 12:50:55 +0100")
-Message-ID: <87r1a66mju.fsf@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org, deren.wu@mediatek.com,
+        sean.wang@mediatek.com, sven@narfation.org
+Subject: Re: [PATCH wireless-drivers] mt76: mt7921: fix a possible race enabling/disabling runtime-pm
+References: <0f3e075a2033dc05f09dab4059e5be8cbdccc239.1640094847.git.lorenzo@kernel.org>
+Date:   Tue, 21 Dec 2021 17:07:25 +0200
+In-Reply-To: <0f3e075a2033dc05f09dab4059e5be8cbdccc239.1640094847.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Tue, 21 Dec 2021 14:57:09 +0100")
+Message-ID: <878rwe6loy.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -48,87 +50,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sven Eckelmann <sven@narfation.org> writes:
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-> On Monday, 20 December 2021 11:03:08 CET Kalle Valo wrote:
-> [...]
+> Fix a possible race enabling/disabling runtime-pm between
+> mt7921_pm_set() and mt7921_poll_rx() since mt7921_pm_wake_work()
+> always schedules rx-napi callback and it will trigger
+> mt7921_pm_power_save_work routine putting chip to in low-power state
+> during mt7921_pm_set processing.
 >
-> Thanks for all the explanation and pointers. I will try to use this to more 
-> clearly formulate my concern.
+> Suggested-by: Deren Wu <deren.wu@mediatek.com>
+> Tested-by: Deren Wu <deren.wu@mediatek.com>
+> Fixes: 1d8efc741df8 ("mt76: mt7921: introduce Runtime PM support")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Good idea, this is too complex.
+We are in -rc6 already, so I would prefer to take this to
+wireless-drivers-next instead. Is that ok?
 
-> If I understood it correctly then ev->replay_counter is:
->
-> * __le64 on little endian systems
-> * __be64 on big endian systems
->
-> Or in short: it is just an u64.
-
-My understanding is that on little endian host it's (the number representing
-the byte index):
-
-1 2 3 4 5 6 7 8
-
-And on big endian host it's (as the firmware automatically swapped the
-values):
-
-4 3 2 1 8 7 6 5
-
-So for on big endian we need to use ath11k_ce_byte_swap() to get them
-back to correct order. (Or to be exact we need to use
-ath11k_ce_byte_swap() every time as it does nothing on a little endian
-host.)
-
-Completely untested, of course. I don't have a big endian system.
-
->> Yeah, if the host does the conversion we would use __le64. But at the
->> moment the firmware does the conversion so I think we should use
->> ath11k_ce_byte_swap():
->> 
->> /* For Big Endian Host, Copy Engine byte_swap is enabled
->>  * When Copy Engine does byte_swap, need to byte swap again for the
->>  * Host to get/put buffer content in the correct byte order
->>  */
->> void ath11k_ce_byte_swap(void *mem, u32 len)
->> {
->> 	int i;
->> 
->> 	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)) {
->> 		if (!mem)
->> 			return;
->> 
->> 		for (i = 0; i < (len / 4); i++) {
->> 			*(u32 *)mem = swab32(*(u32 *)mem);
->> 			mem += 4;
->> 		}
->> 	}
->> }
->
-> This function doesn't work for 64 bit values (if they are actually in big 
-> endian). It just rearranges (len / 4) u32s to host byte order - so the upper 
-> and lower 32 bit values for an u64 would still be swapped.
->
-> Unless I misunderstood what CE_ATTR_BYTE_SWAP_DATA is supposed to do. Maybe it 
-> is not causing returned data to be in big/little endian but causes for one of 
-> the host endianess' that the data for 64-bit values in mixed
-> endianness.
-
-So my understanding is that when CE_ATTR_BYTE_SWAP_DATA is enabled the
-firmware automatically swaps the packets per every four bytes. That's
-why all the fields in WMI commands and events are u32.
-
-> And if the function would operate on a struct with 16 bit or 8 bit values then 
-> we have something which we call here Kuddelmuddel [1].
-
-Heh, need to remember that word :)
-
-> But if the value is an u64, then the code in the patch is wrong:
-
-The firmware interface should not have u16 or u8 fields. And for
-anything larger ath11k_ce_byte_swap() should be used. Again, this is
-just my recollection from discussions years back and I have not tested
-this myself.
+Felix, ack?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
