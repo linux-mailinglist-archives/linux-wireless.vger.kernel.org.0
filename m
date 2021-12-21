@@ -2,91 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 972B847B86C
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 03:40:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AD1747B875
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 03:48:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233116AbhLUCk5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 21:40:57 -0500
-Received: from mailgw01.mediatek.com ([60.244.123.138]:45504 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231833AbhLUCk4 (ORCPT
+        id S232605AbhLUCsL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 21:48:11 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:56039 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231833AbhLUCsL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 21:40:56 -0500
-X-UUID: ce6cbfe5366f4689a35296cec46a932e-20211221
-X-UUID: ce6cbfe5366f4689a35296cec46a932e-20211221
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
-        (envelope-from <bo.jiao@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1972157130; Tue, 21 Dec 2021 10:40:50 +0800
-Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
- mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 21 Dec 2021 10:40:49 +0800
-Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
- (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 21 Dec
- 2021 10:40:46 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
- 15.0.1497.2 via Frontend Transport; Tue, 21 Dec 2021 10:40:46 +0800
-From:   Bo Jiao <bo.jiao@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Xing Song <xing.song@mediatek.com>,
-        Sujuan Chen <sujuan.chen@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: [PATCH] mt76: mt7915: fix kernel build warning
-Date:   Tue, 21 Dec 2021 10:40:41 +0800
-Message-ID: <ac714fe3ce1f74bec7adb971f6145a05aa0554eb.1640054337.git.Bo.Jiao@mediatek.com>
-X-Mailer: git-send-email 2.17.0
+        Mon, 20 Dec 2021 21:48:11 -0500
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BL2m5hG5017799, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BL2m5hG5017799
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 21 Dec 2021 10:48:05 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Tue, 21 Dec 2021 10:48:05 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Tue, 21 Dec
+ 2021 10:48:04 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>, <hsuan8331@realtek.com>
+Subject: [PATCH] rtw89: 8852a: correct bit definition of dfs_en
+Date:   Tue, 21 Dec 2021 10:48:00 +0800
+Message-ID: <20211221024800.23814-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: trusted connection
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 12/21/2021 02:27:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzIxIKRXpMggMTI6MTk6MDA=?=
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Bo Jiao <Bo.Jiao@mediatek.com>
+From: Chung-Hsuan Hung <hsuan8331@realtek.com>
 
-remove the unused variable 'legacy' and 'v1'.
+Since there are other protections in the set channel flow, fortunately old
+wrong setting won't affect the performance.
 
-Fixes: d2cf90e432b3 ("mt76: mt7915: update rx rate reporting for mt7916")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Signed-off-by: Chung-Hsuan Hung <hsuan8331@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/reg.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index e16df04..ee4535a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -468,14 +468,12 @@ mt7915_mac_fill_rx_rate(struct mt7915_dev *dev,
- 			struct ieee80211_supported_band *sband,
- 			__le32 *rxv)
- {
--	u32 v0, v1, v2;
--	u16 legacy;
-+	u32 v0, v2;
- 	u8 flags, stbc, gi, bw, dcm, mode, nss;
- 	int i, idx;
- 	bool cck = false;
- 
- 	v0 = le32_to_cpu(rxv[0]);
--	v1 = le32_to_cpu(rxv[1]);
- 	v2 = le32_to_cpu(rxv[2]);
- 
- 	idx = i = FIELD_GET(MT_PRXV_TX_RATE, v0);
-@@ -501,7 +499,6 @@ mt7915_mac_fill_rx_rate(struct mt7915_dev *dev,
- 		fallthrough;
- 	case MT_PHY_TYPE_OFDM:
- 		i = mt76_get_rate(&dev->mt76, sband, i, cck);
--		legacy = sband->bitrates[i].bitrate;
- 		break;
- 	case MT_PHY_TYPE_HT_GF:
- 	case MT_PHY_TYPE_HT:
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index b6049009f183b..e0a416d37d0e8 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -1658,7 +1658,7 @@
+ #define R_RSTB_WATCH_DOG 0x000C
+ #define B_P0_RSTB_WATCH_DOG BIT(0)
+ #define B_P1_RSTB_WATCH_DOG BIT(1)
+-#define B_UPD_P0_EN BIT(30)
++#define B_UPD_P0_EN BIT(31)
+ #define R_ANAPAR_PW15 0x030C
+ #define B_ANAPAR_PW15 GENMASK(31, 24)
+ #define B_ANAPAR_PW15_H GENMASK(27, 24)
 -- 
-2.18.0
+2.25.1
 
