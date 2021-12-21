@@ -2,70 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3409747C37D
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 17:07:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7FC847C388
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 17:10:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239492AbhLUQHD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Dec 2021 11:07:03 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:46556 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239480AbhLUQHC (ORCPT
+        id S239543AbhLUQKZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Dec 2021 11:10:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41856 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239532AbhLUQKZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Dec 2021 11:07:02 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 526A361677;
-        Tue, 21 Dec 2021 16:07:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14B8C36AE9;
-        Tue, 21 Dec 2021 16:07:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640102821;
-        bh=+A5CotCYMy5/wBS++iRFQtujLaoDsilscRyY3Hv42uU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qlyKK+eUAcQw2XAn1lMfe8QzOAVEIkac7xtJhiGt+tjCjyAECzBkNBAhCdmGEXEpl
-         yWKHlDmsDcEnwCQFjD1AtquAPG/2Dmc2OB1UCHwkMMdrFDk17x1SHW0lES3Xe7v6MN
-         ecE4PGJ/634d5wpTXlBSTzGQAQwv7rTcQpehFNO3nS9YxnAgtPuZkYsxf/Rg3BxPRe
-         gsCzeBleCSW9ssKMd4ftHqGBhwkL2CuVrxGzDde1e/RFIN36c4Yeyjkp9T3HhZlE8f
-         gFblTOwxpAonvUMMt1IDPwwyH7C/CgRQRNJoS3TqjNW/oMzqIFuMgfSx6M/exo7TXT
-         w8GyuiJviZhJQ==
-Date:   Tue, 21 Dec 2021 08:07:00 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+        Tue, 21 Dec 2021 11:10:25 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA99C061574;
+        Tue, 21 Dec 2021 08:10:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=bICMg/jGREnxSL2NhCs04DnCL90eeKDc3sev2BLi86A=;
+        t=1640103025; x=1641312625; b=dkFWgvbLK2U8mfXmjV7b8rLHHpNRbmqaZKqhfCHxBTvkU9w
+        7Jjd/vnJaj+FI/EEGyxcycm5Zv5BhuHnUhBgDqR1ey0HD4IAk6M1Ob+w+rc6yKxdSqlaGUnfVMhhq
+        gK6bIzsBuhRwb6IK8EK3UmNuBrlDYoTOIuIleJf0IKT+v/TG8KvTf3ShQkeVR3EFEXsWQlOR4Oqkr
+        IZ+NAjGXED4imOMYk+MwAx2uSAORlewhMbpFa4mVe0FkSFZL7eNqWcI3Y5AzG7gmkrj2uag+rqiKZ
+        cxFNeCpeCxdA8bo/frZ+PbicSAbAfooxLVNbiONStMhom+qIOKcql9x0xCFLoYrg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mzhiY-00Edp9-HB;
+        Tue, 21 Dec 2021 17:10:22 +0100
+Message-ID: <d20c7377a6f22c82c0e61f7916f454f13bbea15b.camel@sipsolutions.net>
 Subject: Re: pull-request: mac80211-next 2021-12-21
-Message-ID: <20211221080700.3554579d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20211221112532.28708-1-johannes@sipsolutions.net>
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Date:   Tue, 21 Dec 2021 17:10:21 +0100
+In-Reply-To: <20211221080700.3554579d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 References: <20211221112532.28708-1-johannes@sipsolutions.net>
+         <20211221080700.3554579d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.2 (3.42.2-1.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 21 Dec 2021 12:25:31 +0100 Johannes Berg wrote:
-> We have a couple more changes in the wireless stack,
-> and in part I'm asking you to pull them in order to
-> fix linux-next.
+On Tue, 2021-12-21 at 08:07 -0800, Jakub Kicinski wrote:
 > 
-> Note that there are two merge conflicts with net-next:
+> Thanks for the links, pulled.
 > 
->  1) There's a merge conflict in net/wireless/reg.c,
->     which is pretty simple, but you can see a sample
->     resolution from Stephen here:
->     https://lore.kernel.org/r/20211221111950.57ecc6a7@canb.auug.org.au
-> 
->  2) There's an API change in mac80211-next that affects
->     code I didn't yet have, a change for ath10k is needed,
->     again from Stephen we have a sample here:
->     https://lore.kernel.org/r/20211221115004.1cd6b262@canb.auug.org.au
-> 
-> If you prefer I pull back net-next and fix these first,
-> I can do that as well, just let me know.
+Thanks.
 
-Thanks for the links, pulled.
+> > Please pull and let me know if there's any (further) problem.
+> 
+> There was one faulty Fixes tag in there, FWIW.
+> 
+Hmm. Indeed, I see, sorry about that! I guess I must've done something
+stupid with that, not really sure now, apparently I applied that
+original commit bc2dfc02836b ("cfg80211: implement APIs for dedicated
+radar detection HW") about a month ago. Sorry.
 
-> Please pull and let me know if there's any (further) problem.
+johannes
 
-There was one faulty Fixes tag in there, FWIW.
