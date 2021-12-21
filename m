@@ -2,98 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F75947C249
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 16:10:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C779747C267
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 16:13:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238973AbhLUPKz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Dec 2021 10:10:55 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:50488 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234814AbhLUPKy (ORCPT
+        id S239076AbhLUPM6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Dec 2021 10:12:58 -0500
+Received: from mail-qt1-f171.google.com ([209.85.160.171]:43521 "EHLO
+        mail-qt1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239083AbhLUPMx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Dec 2021 10:10:54 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 59FA761638
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Dec 2021 15:10:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C415C36AE8;
-        Tue, 21 Dec 2021 15:10:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640099453;
-        bh=mQw0U2pIEF6pkJ8dtV2bWUpTP8D955s0WVx1lO+OXdM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=i9Xh9VV7OBM4hTLkQBk7ob9aSZm1G8d6DuYUPQUsd7GtYIxxsq/K4e/z4Rmq+ujNg
-         TTuR+deBTz4Jda2h6cQZxnMN7MKfaJpdezliirqmwmcxlZfnxjUqPMDqfv1HBcKCG+
-         o3k0dpm63BzJTbR4gbpAIqea+uvD2yFMk0+96+/UkXbh/JWSQeh4YWajpSXybd4zoD
-         vU0QBCBOrCDVL/cMMvowZ2n4kpYuoL7llCzIEcppnAg5InxkkRrKfPpbzcENI31Wl6
-         OfUxbFvmpDr9YnMHgL/1fSyBfIK2OInq3j9k+EEZ2OYGP64+QM4idUQd/fT+KWqTW6
-         lQ1iRZ6B6Vzsw==
-Date:   Tue, 21 Dec 2021 16:10:49 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
-        linux-wireless@vger.kernel.org, deren.wu@mediatek.com,
-        sean.wang@mediatek.com, sven@narfation.org
-Subject: Re: [PATCH wireless-drivers] mt76: mt7921: fix a possible race
- enabling/disabling runtime-pm
-Message-ID: <YcHueZZ01sMuG0Cz@lore-desk>
-References: <0f3e075a2033dc05f09dab4059e5be8cbdccc239.1640094847.git.lorenzo@kernel.org>
- <878rwe6loy.fsf@kernel.org>
+        Tue, 21 Dec 2021 10:12:53 -0500
+Received: by mail-qt1-f171.google.com with SMTP id q14so13084781qtx.10;
+        Tue, 21 Dec 2021 07:12:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=+IafIC2V8+I0Hhvac9VMHU6UeR8wAMvvd/ODcVaMRss=;
+        b=fwOo+dm72ZpIOC5exR28z0Ncm21j7OfO8m3jmRSDXdpIv54Kk//CZ5XTQ+1Aoxd9Mk
+         6yNpXBg6Ti+d9qRWpTQrvkd5AI0FvkKYUq7b1tuEh70nppj2oBWmPMXZJe42fDCHkSRF
+         9D4R8lQAjAWMFFmi9xzx05ae5wh/Bq5ozOhQb5ccdqGIeCR0sC4ju0P45hFGyRg5O5v7
+         v3asziH8/QjSU43T+pxuLqb3wno39YSQttU0lqgcuhXbHP8bCWCKIdD52nK5yw1v9hrK
+         wMfIGCrsp8Y37m+pHt3dXPwI1XkaqxD2p0hF7BejkAWQmiOgXKeRvR42z+gcpScdErXB
+         1QtQ==
+X-Gm-Message-State: AOAM531jplGmFUG9nwDL/cY++QfJ5sR8i+QlrpQatMwq15AoedV/zUzV
+        SYc8GbRCkVxEZ2eUphXsOQ==
+X-Google-Smtp-Source: ABdhPJyINjn8JyGssNu3VoFciVEkg+e+SVR8AusCwCyOBxbNiehdjx/uid1/aRb1yTupp5iRFKlAWg==
+X-Received: by 2002:ac8:7f15:: with SMTP id f21mr2566111qtk.392.1640099572633;
+        Tue, 21 Dec 2021 07:12:52 -0800 (PST)
+Received: from robh.at.kernel.org ([24.55.105.145])
+        by smtp.gmail.com with ESMTPSA id h9sm14190852qkp.106.2021.12.21.07.12.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Dec 2021 07:12:52 -0800 (PST)
+Received: (nullmailer pid 1426512 invoked by uid 1000);
+        Tue, 21 Dec 2021 15:12:50 -0000
+Date:   Tue, 21 Dec 2021 11:12:50 -0400
+From:   Rob Herring <robh@kernel.org>
+To:     David Mosberger-Tang <davidm@egauge.net>
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Adham Abozaeid <adham.abozaeid@microchip.com>
+Subject: Re: [PATCH v6 2/2] wilc1000: Document enable-gpios and reset-gpios
+ properties
+Message-ID: <YcHu8qkzguAPZcKx@robh.at.kernel.org>
+References: <20211220180334.3990693-1-davidm@egauge.net>
+ <20211220180334.3990693-3-davidm@egauge.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="VnL6r0eOIvJw5UI0"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <878rwe6loy.fsf@kernel.org>
+In-Reply-To: <20211220180334.3990693-3-davidm@egauge.net>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Mon, 20 Dec 2021 18:03:38 +0000, David Mosberger-Tang wrote:
+> Add documentation for the ENABLE and RESET GPIOs that may be needed by
+> wilc1000-spi.
+> 
+> Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
+> ---
+>  .../net/wireless/microchip,wilc1000.yaml      | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+> 
 
---VnL6r0eOIvJw5UI0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->=20
-> > Fix a possible race enabling/disabling runtime-pm between
-> > mt7921_pm_set() and mt7921_poll_rx() since mt7921_pm_wake_work()
-> > always schedules rx-napi callback and it will trigger
-> > mt7921_pm_power_save_work routine putting chip to in low-power state
-> > during mt7921_pm_set processing.
-> >
-> > Suggested-by: Deren Wu <deren.wu@mediatek.com>
-> > Tested-by: Deren Wu <deren.wu@mediatek.com>
-> > Fixes: 1d8efc741df8 ("mt76: mt7921: introduce Runtime PM support")
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->=20
-> We are in -rc6 already, so I would prefer to take this to
-> wireless-drivers-next instead. Is that ok?
+Please add Acked-by/Reviewed-by tags when posting new versions. However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for acks received on the version they apply.
 
-I think wireless-drivers-next is fine since the bug is not so critical.
+If a tag was not added on purpose, please state why and what changed.
 
-Regards,
-Lorenzo
-
->=20
-> Felix, ack?
->=20
-> --=20
-> https://patchwork.kernel.org/project/linux-wireless/list/
->=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
-
---VnL6r0eOIvJw5UI0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYcHueQAKCRA6cBh0uS2t
-rErJAPwPFijAghlCo6CikMY2WOMja9Z+JBLbYqPw41YgUhy3cwEA1uR3n/fvVtyL
-F17Y7eNolVj3CGy4Cq+d0wpLyuZk7gY=
-=zYZa
------END PGP SIGNATURE-----
-
---VnL6r0eOIvJw5UI0--
