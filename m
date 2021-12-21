@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AD1747B875
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 03:48:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B652B47B8C4
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 03:58:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232605AbhLUCsL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 21:48:11 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:56039 "EHLO
+        id S234248AbhLUC6n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 21:58:43 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:57251 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231833AbhLUCsL (ORCPT
+        with ESMTP id S232763AbhLUC6n (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 21:48:11 -0500
+        Mon, 20 Dec 2021 21:58:43 -0500
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BL2m5hG5017799, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BL2wXfQ5020166, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BL2m5hG5017799
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BL2wXfQ5020166
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 21 Dec 2021 10:48:05 +0800
+        Tue, 21 Dec 2021 10:58:33 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Tue, 21 Dec 2021 10:48:05 +0800
+ 15.1.2375.17; Tue, 21 Dec 2021 10:58:32 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Tue, 21 Dec
- 2021 10:48:04 +0800
+ 2021 10:58:32 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <hsuan8331@realtek.com>
-Subject: [PATCH] rtw89: 8852a: correct bit definition of dfs_en
-Date:   Tue, 21 Dec 2021 10:48:00 +0800
-Message-ID: <20211221024800.23814-1-pkshih@realtek.com>
+CC:     <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>
+Subject: [PATCH] rtw89: extract modules by chipset
+Date:   Tue, 21 Dec 2021 10:58:28 +0800
+Message-ID: <20211221025828.25092-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -44,7 +44,7 @@ X-KSE-AntiSpam-Interceptor-Info: trusted connection
 X-KSE-Antiphishing-Info: Clean
 X-KSE-Antiphishing-ScanningType: Deterministic
 X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 12/21/2021 02:27:00
+X-KSE-Antiphishing-Bases: 12/21/2021 02:41:00
 X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
  rules found
 X-KSE-Antivirus-Interceptor-Info: scan successful
@@ -58,30 +58,597 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chung-Hsuan Hung <hsuan8331@realtek.com>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Since there are other protections in the set channel flow, fortunately old
-wrong setting won't affect the performance.
+We are planning to support more chipsets, e.g. 8852C. Before that, we
+consider architecutre to handle multiple kinds of chipsets. Obviosuly,
+based on original design, rtw89_core module will have large size even
+if there is only one chipset under running. It is because all chipset
+related things are put in rtw89_core now. To reduce such overhead, we
+extract modules of rtw89 and adjust dependencies between modules.
 
-Signed-off-by: Chung-Hsuan Hung <hsuan8331@realtek.com>
+The following assumes that 8852AE, 8852AU, and 8852CE are all supported,
+we describe the difference before and after extraction.
+
+[Before extraction]
+                                             -------------
+       |------------------------------------ | rtw89_usb |
+       V                                     -------------
+---------------------------------------      -------------
+| rtw89_core (including 8852A, 8852C) | <--- | rtw89_pci |
+---------------------------------------      -------------
+The data of 8852A and 8852C are built in rtw89_core.
+And rtw89_pci is the entry of 8852AE and 8852CE.
+And rtw89_usb is the entry of 8852AU.
+
+[After extraction]
+                    -------------           ----------------
+       |----------- | rtw89_usb | <-------- | rtw89_8852au |
+       |            -------------           ----------------
+       V            ---------------                |
+--------------      |             | <---------------
+| rtw89_core | <--- | rtw89_8852a |
+--------------      |             | <---------------
+   ^   ^            ---------------                |
+   |   |            -------------           ----------------
+   |   |            |           | <-------- | rtw89_8852ae |
+   |   |----------- | rtw89_pci |           ----------------
+   |                |           | <-----------------
+   |                -------------                  |
+   |                ---------------         ----------------
+   |--------------- | rtw89_8852c | <------ | rtw89_8852ce |
+                    ---------------         ----------------
+The data of 8852A/8852C is extracted to rtw89_8852a/rtw89_8852c.
+And rtw89_pci/rtw89_usb handles only common flow of pci/usb bus.
+Finally, 8852AE, 8852AU, and 8852CE have individual entry modules,
+i.e. rtw89_8852ae, rtw89_8852au, and rtw89_8852ce correspondingly.
+
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/reg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/Kconfig    |  4 ++
+ drivers/net/wireless/realtek/rtw89/Makefile   | 13 +++++--
+ drivers/net/wireless/realtek/rtw89/coex.c     |  1 +
+ drivers/net/wireless/realtek/rtw89/core.h     |  8 ++--
+ drivers/net/wireless/realtek/rtw89/mac.c      | 35 ++++++++++++-----
+ drivers/net/wireless/realtek/rtw89/mac.h      | 20 +++++-----
+ drivers/net/wireless/realtek/rtw89/pci.c      | 33 ++++------------
+ drivers/net/wireless/realtek/rtw89/pci.h      |  5 +++
+ drivers/net/wireless/realtek/rtw89/phy.c      | 10 +++++
+ drivers/net/wireless/realtek/rtw89/phy.h      |  3 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c | 18 ++++++---
+ drivers/net/wireless/realtek/rtw89/rtw8852a.h |  2 +
+ .../net/wireless/realtek/rtw89/rtw8852ae.c    | 39 +++++++++++++++++++
+ 13 files changed, 131 insertions(+), 60 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852ae.c
 
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index b6049009f183b..e0a416d37d0e8 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -1658,7 +1658,7 @@
- #define R_RSTB_WATCH_DOG 0x000C
- #define B_P0_RSTB_WATCH_DOG BIT(0)
- #define B_P1_RSTB_WATCH_DOG BIT(1)
--#define B_UPD_P0_EN BIT(30)
-+#define B_UPD_P0_EN BIT(31)
- #define R_ANAPAR_PW15 0x030C
- #define B_ANAPAR_PW15 GENMASK(31, 24)
- #define B_ANAPAR_PW15_H GENMASK(27, 24)
+diff --git a/drivers/net/wireless/realtek/rtw89/Kconfig b/drivers/net/wireless/realtek/rtw89/Kconfig
+index 37e5def24d9fd..dd02b6a6790e3 100644
+--- a/drivers/net/wireless/realtek/rtw89/Kconfig
++++ b/drivers/net/wireless/realtek/rtw89/Kconfig
+@@ -16,11 +16,15 @@ config RTW89_CORE
+ config RTW89_PCI
+ 	tristate
+ 
++config RTW89_8852A
++	tristate
++
+ config RTW89_8852AE
+ 	tristate "Realtek 8852AE PCI wireless network adapter"
+ 	depends on PCI
+ 	select RTW89_CORE
+ 	select RTW89_PCI
++	select RTW89_8852A
+ 	help
+ 	  Select this option will enable support for 8852AE chipset
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/Makefile b/drivers/net/wireless/realtek/rtw89/Makefile
+index 077e8fe23f604..012ae60c0b811 100644
+--- a/drivers/net/wireless/realtek/rtw89/Makefile
++++ b/drivers/net/wireless/realtek/rtw89/Makefile
+@@ -6,10 +6,6 @@ rtw89_core-y += core.o \
+ 		mac.o \
+ 		phy.o \
+ 		fw.o \
+-		rtw8852a.o \
+-		rtw8852a_table.o \
+-		rtw8852a_rfk.o \
+-		rtw8852a_rfk_table.o \
+ 		cam.o \
+ 		efuse.o \
+ 		regd.o \
+@@ -18,6 +14,15 @@ rtw89_core-y += core.o \
+ 		ps.o \
+ 		ser.o
+ 
++obj-$(CONFIG_RTW89_8852A) += rtw89_8852a.o
++rtw89_8852a-objs := rtw8852a.o \
++		    rtw8852a_table.o \
++		    rtw8852a_rfk.o \
++		    rtw8852a_rfk_table.o
++
++obj-$(CONFIG_RTW89_8852AE) += rtw89_8852ae.o
++rtw89_8852ae-objs := rtw8852ae.o
++
+ rtw89_core-$(CONFIG_RTW89_DEBUG) += debug.o
+ 
+ obj-$(CONFIG_RTW89_PCI) += rtw89_pci.o
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+index 9f7d4f8d0c56f..31da0eea67be7 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.c
++++ b/drivers/net/wireless/realtek/rtw89/coex.c
+@@ -4370,6 +4370,7 @@ void rtw89_btc_ntfy_wl_rfk(struct rtw89_dev *rtwdev, u8 phy_map,
+ 		rtwdev->is_bt_iqk_timeout = true;
+ 	}
+ }
++EXPORT_SYMBOL(rtw89_btc_ntfy_wl_rfk);
+ 
+ struct rtw89_btc_wl_sta_iter_data {
+ 	struct rtw89_dev *rtwdev;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 7c84556ec4ada..0758e1b580700 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -15,7 +15,6 @@
+ struct rtw89_dev;
+ 
+ extern const struct ieee80211_ops rtw89_ops;
+-extern const struct rtw89_chip_info rtw8852a_chip_info;
+ 
+ #define MASKBYTE0 0xff
+ #define MASKBYTE1 0xff00
+@@ -421,9 +420,6 @@ enum rtw89_regulation_type {
+ 	RTW89_REGD_NUM,
+ };
+ 
+-extern const u8 rtw89_rs_idx_max[RTW89_RS_MAX];
+-extern const u8 rtw89_rs_nss_max[RTW89_RS_MAX];
+-
+ struct rtw89_txpwr_byrate {
+ 	s8 cck[RTW89_RATE_CCK_MAX];
+ 	s8 ofdm[RTW89_RATE_OFDM_MAX];
+@@ -2247,6 +2243,10 @@ struct rtw89_chip_info {
+ 	u8 ps_mode_supported;
+ };
+ 
++struct rtw89_driver_info {
++	const struct rtw89_chip_info *chip;
++};
++
+ enum rtw89_hcifc_mode {
+ 	RTW89_HCIFC_POH = 0,
+ 	RTW89_HCIFC_STF = 1,
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index b98c47e9ecfe3..e73f5cc0138ca 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -481,9 +481,10 @@ int rtw89_mac_set_err_status(struct rtw89_dev *rtwdev, u32 err)
+ }
+ EXPORT_SYMBOL(rtw89_mac_set_err_status);
+ 
+-const struct rtw89_hfc_prec_cfg rtw_hfc_preccfg_pcie = {
++const struct rtw89_hfc_prec_cfg rtw89_hfc_preccfg_pcie = {
+ 	2, 40, 0, 0, 1, 0, 0, 0
+ };
++EXPORT_SYMBOL(rtw89_hfc_preccfg_pcie);
+ 
+ static int hfc_reset_param(struct rtw89_dev *rtwdev)
+ {
+@@ -1136,49 +1137,58 @@ static int rtw89_mac_sys_init(struct rtw89_dev *rtwdev)
+ }
+ 
+ /* PCIE 64 */
+-const struct rtw89_dle_size wde_size0 = {
++const struct rtw89_dle_size rtw89_wde_size0 = {
+ 	RTW89_WDE_PG_64, 4095, 1,
+ };
++EXPORT_SYMBOL(rtw89_wde_size0);
+ 
+ /* DLFW */
+-const struct rtw89_dle_size wde_size4 = {
++const struct rtw89_dle_size rtw89_wde_size4 = {
+ 	RTW89_WDE_PG_64, 0, 4096,
+ };
++EXPORT_SYMBOL(rtw89_wde_size4);
+ 
+ /* PCIE */
+-const struct rtw89_dle_size ple_size0 = {
++const struct rtw89_dle_size rtw89_ple_size0 = {
+ 	RTW89_PLE_PG_128, 1520, 16,
+ };
++EXPORT_SYMBOL(rtw89_ple_size0);
+ 
+ /* DLFW */
+-const struct rtw89_dle_size ple_size4 = {
++const struct rtw89_dle_size rtw89_ple_size4 = {
+ 	RTW89_PLE_PG_128, 64, 1472,
+ };
++EXPORT_SYMBOL(rtw89_ple_size4);
+ 
+ /* PCIE 64 */
+-const struct rtw89_wde_quota wde_qt0 = {
++const struct rtw89_wde_quota rtw89_wde_qt0 = {
+ 	3792, 196, 0, 107,
+ };
++EXPORT_SYMBOL(rtw89_wde_qt0);
+ 
+ /* DLFW */
+-const struct rtw89_wde_quota wde_qt4 = {
++const struct rtw89_wde_quota rtw89_wde_qt4 = {
+ 	0, 0, 0, 0,
+ };
++EXPORT_SYMBOL(rtw89_wde_qt4);
+ 
+ /* PCIE SCC */
+-const struct rtw89_ple_quota ple_qt4 = {
++const struct rtw89_ple_quota rtw89_ple_qt4 = {
+ 	264, 0, 16, 20, 26, 13, 356, 0, 32, 40, 8,
+ };
++EXPORT_SYMBOL(rtw89_ple_qt4);
+ 
+ /* PCIE SCC */
+-const struct rtw89_ple_quota ple_qt5 = {
++const struct rtw89_ple_quota rtw89_ple_qt5 = {
+ 	264, 0, 32, 20, 64, 13, 1101, 0, 64, 128, 120,
+ };
++EXPORT_SYMBOL(rtw89_ple_qt5);
+ 
+ /* DLFW */
+-const struct rtw89_ple_quota ple_qt13 = {
++const struct rtw89_ple_quota rtw89_ple_qt13 = {
+ 	0, 0, 16, 48, 0, 0, 0, 0, 0, 0, 0
+ };
++EXPORT_SYMBOL(rtw89_ple_qt13);
+ 
+ static const struct rtw89_dle_mem *get_dle_mem_cfg(struct rtw89_dev *rtwdev,
+ 						   enum rtw89_qta_mode mode)
+@@ -2116,6 +2126,7 @@ int rtw89_mac_stop_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL(rtw89_mac_stop_sch_tx);
+ 
+ int rtw89_mac_resume_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx, u16 tx_en)
+ {
+@@ -2127,6 +2138,7 @@ int rtw89_mac_resume_sch_tx(struct rtw89_dev *rtwdev, u8 mac_idx, u16 tx_en)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL(rtw89_mac_resume_sch_tx);
+ 
+ static u16 rtw89_mac_dle_buf_req(struct rtw89_dev *rtwdev, u16 buf_len,
+ 				 bool wd)
+@@ -3192,6 +3204,7 @@ bool rtw89_mac_get_txpwr_cr(struct rtw89_dev *rtwdev,
+ 
+ 	return false;
+ }
++EXPORT_SYMBOL(rtw89_mac_get_txpwr_cr);
+ 
+ int rtw89_mac_cfg_ppdu_status(struct rtw89_dev *rtwdev, u8 mac_idx, bool enable)
+ {
+@@ -3216,6 +3229,7 @@ int rtw89_mac_cfg_ppdu_status(struct rtw89_dev *rtwdev, u8 mac_idx, bool enable)
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL(rtw89_mac_cfg_ppdu_status);
+ 
+ void rtw89_mac_update_rts_threshold(struct rtw89_dev *rtwdev, u8 mac_idx)
+ {
+@@ -3349,6 +3363,7 @@ int rtw89_mac_coex_init(struct rtw89_dev *rtwdev, const struct rtw89_mac_ax_coex
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL(rtw89_mac_coex_init);
+ 
+ int rtw89_mac_cfg_gnt(struct rtw89_dev *rtwdev,
+ 		      const struct rtw89_mac_ax_coex_gnt *gnt_cfg)
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index b7d13edf7dd19..75d41db53e517 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -670,16 +670,16 @@ enum mac_ax_err_info {
+ 	MAC_AX_SET_ERR_MAX,
+ };
+ 
+-extern const struct rtw89_hfc_prec_cfg rtw_hfc_preccfg_pcie;
+-extern const struct rtw89_dle_size wde_size0;
+-extern const struct rtw89_dle_size wde_size4;
+-extern const struct rtw89_dle_size ple_size0;
+-extern const struct rtw89_dle_size ple_size4;
+-extern const struct rtw89_wde_quota wde_qt0;
+-extern const struct rtw89_wde_quota wde_qt4;
+-extern const struct rtw89_ple_quota ple_qt4;
+-extern const struct rtw89_ple_quota ple_qt5;
+-extern const struct rtw89_ple_quota ple_qt13;
++extern const struct rtw89_hfc_prec_cfg rtw89_hfc_preccfg_pcie;
++extern const struct rtw89_dle_size rtw89_wde_size0;
++extern const struct rtw89_dle_size rtw89_wde_size4;
++extern const struct rtw89_dle_size rtw89_ple_size0;
++extern const struct rtw89_dle_size rtw89_ple_size4;
++extern const struct rtw89_wde_quota rtw89_wde_qt0;
++extern const struct rtw89_wde_quota rtw89_wde_qt4;
++extern const struct rtw89_ple_quota rtw89_ple_qt4;
++extern const struct rtw89_ple_quota rtw89_ple_qt5;
++extern const struct rtw89_ple_quota rtw89_ple_qt13;
+ 
+ static inline u32 rtw89_mac_reg_by_idx(u32 reg_base, u8 band)
+ {
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 2c94762e4f930..f4d121ccddada 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -2932,11 +2932,11 @@ static const struct rtw89_hci_ops rtw89_pci_ops = {
+ 	.napi_poll	= rtw89_pci_napi_poll,
+ };
+ 
+-static int rtw89_pci_probe(struct pci_dev *pdev,
+-			   const struct pci_device_id *id)
++int rtw89_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	struct ieee80211_hw *hw;
+ 	struct rtw89_dev *rtwdev;
++	const struct rtw89_driver_info *info;
+ 	int driver_data_size;
+ 	int ret;
+ 
+@@ -2957,13 +2957,8 @@ static int rtw89_pci_probe(struct pci_dev *pdev,
+ 
+ 	SET_IEEE80211_DEV(rtwdev->hw, &pdev->dev);
+ 
+-	switch (id->driver_data) {
+-	case RTL8852A:
+-		rtwdev->chip = &rtw8852a_chip_info;
+-		break;
+-	default:
+-		return -ENOENT;
+-	}
++	info = (const struct rtw89_driver_info *)id->driver_data;
++	rtwdev->chip = info->chip;
+ 
+ 	ret = rtw89_core_init(rtwdev);
+ 	if (ret) {
+@@ -3022,8 +3017,9 @@ static int rtw89_pci_probe(struct pci_dev *pdev,
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL(rtw89_pci_probe);
+ 
+-static void rtw89_pci_remove(struct pci_dev *pdev)
++void rtw89_pci_remove(struct pci_dev *pdev)
+ {
+ 	struct ieee80211_hw *hw = pci_get_drvdata(pdev);
+ 	struct rtw89_dev *rtwdev;
+@@ -3038,22 +3034,7 @@ static void rtw89_pci_remove(struct pci_dev *pdev)
+ 	rtw89_core_deinit(rtwdev);
+ 	ieee80211_free_hw(hw);
+ }
+-
+-static const struct pci_device_id rtw89_pci_id_table[] = {
+-	{ PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0x8852), .driver_data = RTL8852A },
+-	{ PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xa85a), .driver_data = RTL8852A },
+-	{},
+-};
+-MODULE_DEVICE_TABLE(pci, rtw89_pci_id_table);
+-
+-static struct pci_driver rtw89_pci_driver = {
+-	.name		= "rtw89_pci",
+-	.id_table	= rtw89_pci_id_table,
+-	.probe		= rtw89_pci_probe,
+-	.remove		= rtw89_pci_remove,
+-	.driver.pm	= &rtw89_pm_ops,
+-};
+-module_pci_driver(rtw89_pci_driver);
++EXPORT_SYMBOL(rtw89_pci_remove);
+ 
+ MODULE_AUTHOR("Realtek Corporation");
+ MODULE_DESCRIPTION("Realtek 802.11ax wireless PCI driver");
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
+index 20e6767ea5c4b..7f1ee1544688d 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -627,4 +627,9 @@ static inline bool rtw89_pci_ltr_is_err_reg_val(u32 val)
+ 
+ extern const struct dev_pm_ops rtw89_pm_ops;
+ 
++struct pci_device_id;
++
++int rtw89_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id);
++void rtw89_pci_remove(struct pci_dev *pdev);
++
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 147009888de04..f807c18d2c4cd 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -568,6 +568,7 @@ u8 rtw89_phy_get_txsc(struct rtw89_dev *rtwdev,
+ 
+ 	return txsc_idx;
+ }
++EXPORT_SYMBOL(rtw89_phy_get_txsc);
+ 
+ u32 rtw89_phy_read_rf(struct rtw89_dev *rtwdev, enum rtw89_rf_path rf_path,
+ 		      u32 addr, u32 mask)
+@@ -972,6 +973,7 @@ void rtw89_phy_write32_idx(struct rtw89_dev *rtwdev, u32 addr, u32 mask,
+ 		addr += rtw89_phy0_phy1_offset(rtwdev, addr);
+ 	rtw89_phy_write32_mask(rtwdev, addr, mask, data);
+ }
++EXPORT_SYMBOL(rtw89_phy_write32_idx);
+ 
+ void rtw89_phy_set_phy_regs(struct rtw89_dev *rtwdev, u32 addr, u32 mask,
+ 			    u32 val)
+@@ -995,6 +997,7 @@ void rtw89_phy_write_reg3_tbl(struct rtw89_dev *rtwdev,
+ 		rtw89_phy_write32_mask(rtwdev, reg3->addr, reg3->mask, reg3->data);
+ 	}
+ }
++EXPORT_SYMBOL(rtw89_phy_write_reg3_tbl);
+ 
+ const u8 rtw89_rs_idx_max[] = {
+ 	[RTW89_RS_CCK] = RTW89_RATE_CCK_MAX,
+@@ -1003,6 +1006,7 @@ const u8 rtw89_rs_idx_max[] = {
+ 	[RTW89_RS_HEDCM] = RTW89_RATE_HEDCM_MAX,
+ 	[RTW89_RS_OFFSET] = RTW89_RATE_OFFSET_MAX,
+ };
++EXPORT_SYMBOL(rtw89_rs_idx_max);
+ 
+ const u8 rtw89_rs_nss_max[] = {
+ 	[RTW89_RS_CCK] = 1,
+@@ -1011,6 +1015,7 @@ const u8 rtw89_rs_nss_max[] = {
+ 	[RTW89_RS_HEDCM] = RTW89_NSS_HEDCM_MAX,
+ 	[RTW89_RS_OFFSET] = 1,
+ };
++EXPORT_SYMBOL(rtw89_rs_nss_max);
+ 
+ static const u8 _byr_of_rs[] = {
+ 	[RTW89_RS_CCK] = offsetof(struct rtw89_txpwr_byrate, cck),
+@@ -1044,6 +1049,7 @@ void rtw89_phy_load_txpwr_byrate(struct rtw89_dev *rtwdev,
+ 		}
+ 	}
+ }
++EXPORT_SYMBOL(rtw89_phy_load_txpwr_byrate);
+ 
+ #define _phy_txpwr_rf_to_mac(rtwdev, txpwr_rf)				\
+ ({									\
+@@ -1074,6 +1080,7 @@ s8 rtw89_phy_read_txpwr_byrate(struct rtw89_dev *rtwdev,
+ 
+ 	return _phy_txpwr_rf_to_mac(rtwdev, byr[idx]);
+ }
++EXPORT_SYMBOL(rtw89_phy_read_txpwr_byrate);
+ 
+ static u8 rtw89_channel_to_idx(struct rtw89_dev *rtwdev, u8 channel)
+ {
+@@ -1124,6 +1131,7 @@ s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev,
+ 
+ 	return min(lmt, sar);
+ }
++EXPORT_SYMBOL(rtw89_phy_read_txpwr_limit);
+ 
+ #define __fill_txpwr_limit_nonbf_bf(ptr, bw, ntx, rs, ch)		\
+ 	do {								\
+@@ -1222,6 +1230,7 @@ void rtw89_phy_fill_txpwr_limit(struct rtw89_dev *rtwdev,
+ 		break;
+ 	}
+ }
++EXPORT_SYMBOL(rtw89_phy_fill_txpwr_limit);
+ 
+ static s8 rtw89_phy_read_txpwr_limit_ru(struct rtw89_dev *rtwdev,
+ 					u8 ru, u8 ntx, u8 ch)
+@@ -1340,6 +1349,7 @@ void rtw89_phy_fill_txpwr_limit_ru(struct rtw89_dev *rtwdev,
+ 		break;
+ 	}
+ }
++EXPORT_SYMBOL(rtw89_phy_fill_txpwr_limit_ru);
+ 
+ struct rtw89_phy_iter_ra_data {
+ 	struct rtw89_dev *rtwdev;
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
+index b1f059b725a10..09580f19814e0 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -265,6 +265,9 @@ const struct rtw89_phy_reg3_tbl _name ## _tbl = {	\
+ 	.size = ARRAY_SIZE(_name),			\
+ }
+ 
++extern const u8 rtw89_rs_idx_max[RTW89_RS_MAX];
++extern const u8 rtw89_rs_nss_max[RTW89_RS_MAX];
++
+ static inline void rtw89_phy_write8(struct rtw89_dev *rtwdev,
+ 				    u32 addr, u8 data)
+ {
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 6b75e4bc73523..0822bca72f473 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -36,16 +36,19 @@ static const struct rtw89_hfc_pub_cfg rtw8852a_hfc_pubcfg_pcie = {
+ 
+ static const struct rtw89_hfc_param_ini rtw8852a_hfc_param_ini_pcie[] = {
+ 	[RTW89_QTA_SCC] = {rtw8852a_hfc_chcfg_pcie, &rtw8852a_hfc_pubcfg_pcie,
+-			   &rtw_hfc_preccfg_pcie, RTW89_HCIFC_POH},
+-	[RTW89_QTA_DLFW] = {NULL, NULL, &rtw_hfc_preccfg_pcie, RTW89_HCIFC_POH},
++			   &rtw89_hfc_preccfg_pcie, RTW89_HCIFC_POH},
++	[RTW89_QTA_DLFW] = {NULL, NULL, &rtw89_hfc_preccfg_pcie,
++			    RTW89_HCIFC_POH},
+ 	[RTW89_QTA_INVALID] = {NULL},
+ };
+ 
+ static const struct rtw89_dle_mem rtw8852a_dle_mem_pcie[] = {
+-	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &wde_size0, &ple_size0, &wde_qt0,
+-			    &wde_qt0, &ple_qt4, &ple_qt5},
+-	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &wde_size4, &ple_size4,
+-			    &wde_qt4, &wde_qt4, &ple_qt13, &ple_qt13},
++	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_wde_size0, &rtw89_ple_size0,
++			   &rtw89_wde_qt0, &rtw89_wde_qt0, &rtw89_ple_qt4,
++			   &rtw89_ple_qt5},
++	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &rtw89_wde_size4, &rtw89_ple_size4,
++			    &rtw89_wde_qt4, &rtw89_wde_qt4, &rtw89_ple_qt13,
++			    &rtw89_ple_qt13},
+ 	[RTW89_QTA_INVALID] = {RTW89_QTA_INVALID, NULL, NULL, NULL, NULL, NULL,
+ 			       NULL},
+ };
+@@ -2053,3 +2056,6 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
+ EXPORT_SYMBOL(rtw8852a_chip_info);
+ 
+ MODULE_FIRMWARE("rtw89/rtw8852a_fw.bin");
++MODULE_AUTHOR("Realtek Corporation");
++MODULE_DESCRIPTION("Realtek 802.11ax wireless 8852A driver");
++MODULE_LICENSE("Dual BSD/GPL");
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.h b/drivers/net/wireless/realtek/rtw89/rtw8852a.h
+index 633384374de05..fcff1194c0096 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.h
+@@ -93,6 +93,8 @@ struct rtw8852a_bb_pmac_info {
+ 	u8 duty_cycle;
+ };
+ 
++extern const struct rtw89_chip_info rtw8852a_chip_info;
++
+ void rtw8852a_bb_set_plcp_tx(struct rtw89_dev *rtwdev);
+ void rtw8852a_bb_set_pmac_tx(struct rtw89_dev *rtwdev,
+ 			     struct rtw8852a_bb_pmac_info *tx_info,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
+new file mode 100644
+index 0000000000000..de93280e0f697
+--- /dev/null
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
+@@ -0,0 +1,39 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/* Copyright(c) 2020-2021  Realtek Corporation
++ */
++
++#include <linux/module.h>
++#include <linux/pci.h>
++
++#include "pci.h"
++#include "rtw8852a.h"
++
++static const struct rtw89_driver_info rtw89_8852ae_info = {
++	.chip = &rtw8852a_chip_info,
++};
++
++static const struct pci_device_id rtw89_8852ae_id_table[] = {
++	{
++		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0x8852),
++		.driver_data = (kernel_ulong_t)&rtw89_8852ae_info,
++	},
++	{
++		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xa85a),
++		.driver_data = (kernel_ulong_t)&rtw89_8852ae_info,
++	},
++	{},
++};
++MODULE_DEVICE_TABLE(pci, rtw89_8852ae_id_table);
++
++static struct pci_driver rtw89_8852ae_driver = {
++	.name		= "rtw89_8852ae",
++	.id_table	= rtw89_8852ae_id_table,
++	.probe		= rtw89_pci_probe,
++	.remove		= rtw89_pci_remove,
++	.driver.pm	= &rtw89_pm_ops,
++};
++module_pci_driver(rtw89_8852ae_driver);
++
++MODULE_AUTHOR("Realtek Corporation");
++MODULE_DESCRIPTION("Realtek 802.11ax wireless 8852AE driver");
++MODULE_LICENSE("Dual BSD/GPL");
 -- 
 2.25.1
 
