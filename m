@@ -2,149 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F07547B81F
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 03:06:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 972B847B86C
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 03:40:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233810AbhLUCEV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Dec 2021 21:04:21 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:49474 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233419AbhLUCCm (ORCPT
+        id S233116AbhLUCk5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Dec 2021 21:40:57 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:45504 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231833AbhLUCk4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Dec 2021 21:02:42 -0500
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 1BL22YyF4006213, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 1BL22YyF4006213
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 21 Dec 2021 10:02:34 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Tue, 21 Dec 2021 10:02:34 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Tue, 21 Dec
- 2021 10:02:33 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <timlee@realtek.com>
-Subject: [PATCH] rtw88: don't consider deep PS mode when transmitting packet
-Date:   Tue, 21 Dec 2021 10:02:30 +0800
-Message-ID: <20211221020230.20764-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Mon, 20 Dec 2021 21:40:56 -0500
+X-UUID: ce6cbfe5366f4689a35296cec46a932e-20211221
+X-UUID: ce6cbfe5366f4689a35296cec46a932e-20211221
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
+        (envelope-from <bo.jiao@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1972157130; Tue, 21 Dec 2021 10:40:50 +0800
+Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 21 Dec 2021 10:40:49 +0800
+Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
+ (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 21 Dec
+ 2021 10:40:46 +0800
+Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
+ MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
+ 15.0.1497.2 via Frontend Transport; Tue, 21 Dec 2021 10:40:46 +0800
+From:   Bo Jiao <bo.jiao@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Xing Song <xing.song@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix kernel build warning
+Date:   Tue, 21 Dec 2021 10:40:41 +0800
+Message-ID: <ac714fe3ce1f74bec7adb971f6145a05aa0554eb.1640054337.git.Bo.Jiao@mediatek.com>
+X-Mailer: git-send-email 2.17.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 12/21/2021 01:51:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEyLzIxIKRXpMggMTI6MTk6MDA=?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chin-Yen Lee <timlee@realtek.com>
+From: Bo Jiao <Bo.Jiao@mediatek.com>
 
-In original flow, driver needs to ensure chip leave deep ps mode
-before transmitting any packet, and don't enter deep ps mode beofre
-PCIE DMA is finished. Now with the support of 8822ce's hardware
-setting and firmware after v9.9.11, these limits are removed.
+remove the unused variable 'legacy' and 'v1'.
 
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Fixes: d2cf90e432b3 ("mt76: mt7915: update rx rate reporting for mt7916")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
 ---
- drivers/net/wireless/realtek/rtw88/fw.h  | 1 +
- drivers/net/wireless/realtek/rtw88/pci.c | 8 ++++++--
- drivers/net/wireless/realtek/rtw88/ps.c  | 3 +++
- drivers/net/wireless/realtek/rtw88/ps.h  | 1 +
- 4 files changed, 11 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
-index 09c7afb99e631..3d1ba29b8c869 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.h
-+++ b/drivers/net/wireless/realtek/rtw88/fw.h
-@@ -98,6 +98,7 @@ enum rtw_fw_feature {
- 	FW_FEATURE_LPS_C2H = BIT(1),
- 	FW_FEATURE_LCLK = BIT(2),
- 	FW_FEATURE_PG = BIT(3),
-+	FW_FEATURE_TX_WAKE = BIT(4),
- 	FW_FEATURE_BCN_FILTER = BIT(5),
- 	FW_FEATURE_NOTIFY_SCAN = BIT(6),
- 	FW_FEATURE_ADAPTIVITY = BIT(7),
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 08cf66141889b..a0991d3f15c01 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -611,6 +611,9 @@ static void rtw_pci_deep_ps_enter(struct rtw_dev *rtwdev)
- 	bool tx_empty = true;
- 	u8 queue;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index e16df04..ee4535a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -468,14 +468,12 @@ mt7915_mac_fill_rx_rate(struct mt7915_dev *dev,
+ 			struct ieee80211_supported_band *sband,
+ 			__le32 *rxv)
+ {
+-	u32 v0, v1, v2;
+-	u16 legacy;
++	u32 v0, v2;
+ 	u8 flags, stbc, gi, bw, dcm, mode, nss;
+ 	int i, idx;
+ 	bool cck = false;
  
-+	if (rtw_fw_feature_check(&rtwdev->fw, FW_FEATURE_TX_WAKE))
-+		goto enter_deep_ps;
-+
- 	lockdep_assert_held(&rtwpci->irq_lock);
+ 	v0 = le32_to_cpu(rxv[0]);
+-	v1 = le32_to_cpu(rxv[1]);
+ 	v2 = le32_to_cpu(rxv[2]);
  
- 	/* Deep PS state is not allowed to TX-DMA */
-@@ -636,7 +639,7 @@ static void rtw_pci_deep_ps_enter(struct rtw_dev *rtwdev)
- 			"TX path not empty, cannot enter deep power save state\n");
- 		return;
- 	}
--
-+enter_deep_ps:
- 	set_bit(RTW_FLAG_LEISURE_PS_DEEP, rtwdev->flags);
- 	rtw_power_mode_change(rtwdev, true);
- }
-@@ -807,7 +810,8 @@ static void rtw_pci_tx_kick_off_queue(struct rtw_dev *rtwdev, u8 queue)
- 	bd_idx = rtw_pci_tx_queue_idx_addr[queue];
- 
- 	spin_lock_bh(&rtwpci->irq_lock);
--	rtw_pci_deep_ps_leave(rtwdev);
-+	if (!rtw_fw_feature_check(&rtwdev->fw, FW_FEATURE_TX_WAKE))
-+		rtw_pci_deep_ps_leave(rtwdev);
- 	rtw_write16(rtwdev, bd_idx, ring->r.wp & TRX_BD_IDX_MASK);
- 	spin_unlock_bh(&rtwpci->irq_lock);
- }
-diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
-index 3f0ac33156d6a..bfa64c038f5f0 100644
---- a/drivers/net/wireless/realtek/rtw88/ps.c
-+++ b/drivers/net/wireless/realtek/rtw88/ps.c
-@@ -83,6 +83,9 @@ void rtw_power_mode_change(struct rtw_dev *rtwdev, bool enter)
- 	/* Each request require an ack from firmware */
- 	request |= POWER_MODE_ACK;
- 
-+	if (rtw_fw_feature_check(&rtwdev->fw, FW_FEATURE_TX_WAKE))
-+		request |= POWER_TX_WAKE;
-+
- 	rtw_write8(rtwdev, rtwdev->hci.rpwm_addr, request);
- 
- 	/* Check firmware get the power requset and ack via cpwm register */
-diff --git a/drivers/net/wireless/realtek/rtw88/ps.h b/drivers/net/wireless/realtek/rtw88/ps.h
-index 7819391c86638..c194386f6db53 100644
---- a/drivers/net/wireless/realtek/rtw88/ps.h
-+++ b/drivers/net/wireless/realtek/rtw88/ps.h
-@@ -9,6 +9,7 @@
- 
- #define POWER_MODE_ACK		BIT(6)
- #define POWER_MODE_PG		BIT(4)
-+#define POWER_TX_WAKE		BIT(1)
- #define POWER_MODE_LCLK		BIT(0)
- 
- #define LEAVE_LPS_TRY_CNT	5
+ 	idx = i = FIELD_GET(MT_PRXV_TX_RATE, v0);
+@@ -501,7 +499,6 @@ mt7915_mac_fill_rx_rate(struct mt7915_dev *dev,
+ 		fallthrough;
+ 	case MT_PHY_TYPE_OFDM:
+ 		i = mt76_get_rate(&dev->mt76, sband, i, cck);
+-		legacy = sband->bitrates[i].bitrate;
+ 		break;
+ 	case MT_PHY_TYPE_HT_GF:
+ 	case MT_PHY_TYPE_HT:
 -- 
-2.25.1
+2.18.0
 
