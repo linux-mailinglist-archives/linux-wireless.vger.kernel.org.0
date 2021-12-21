@@ -2,172 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F7C047BFB0
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 13:27:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0FEC47BFB8
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 13:31:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231254AbhLUM07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Dec 2021 07:26:59 -0500
-Received: from mga14.intel.com ([192.55.52.115]:43884 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229779AbhLUM06 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Dec 2021 07:26:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1640089618; x=1671625618;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Gp2R5l9urbw7cBEBxsOVgC4Yn0kXlzUbM69Iprin41Q=;
-  b=XGDbAQuiPV9G3XFIFepYc1z/fQ74zNw4jLnXQ+p2OktA/5rsPBX8da6x
-   64wSNZBxb+48HYK7NyDdxTMXywI0vH6bVCM5pVljZJ8169gF2NtrZthog
-   LRHlH5qLa1sDKHkgkTkO4EvVuOVHs5vD0CoyeIQPHft6iSRluC34cXL1K
-   6vxY/5v0+oT8T607XOchO8/TfbKIfClpBnPqLihveWQQ9nvUv16fv4miC
-   Se5cGaDj/SjK0JszoOkvPbTUvHQXSC/gV2y8u+W9ZVQNI4Kdjx5oN+JhK
-   Q+rQ7y4EolDjKmQvY4LIft6kmWWyZ0xjnYN96oZFT4LIZcaN9xNtjSxzU
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10204"; a="240607126"
-X-IronPort-AV: E=Sophos;i="5.88,223,1635231600"; 
-   d="scan'208";a="240607126"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 04:26:58 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,223,1635231600"; 
-   d="scan'208";a="467774183"
-Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
-  by orsmga006.jf.intel.com with ESMTP; 21 Dec 2021 04:26:56 -0800
-Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mzeEK-00095d-9y; Tue, 21 Dec 2021 12:26:56 +0000
-Date:   Tue, 21 Dec 2021 20:26:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [kvalo-wireless-drivers-next:master] BUILD SUCCESS
- 8b144dedb928e4e2f433a328d58f44c3c098d63e
-Message-ID: <61c1c7e8.og72N70DGz5R9RBv%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S237584AbhLUMbj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Dec 2021 07:31:39 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:60536 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229779AbhLUMbj (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Dec 2021 07:31:39 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 81582B8167A;
+        Tue, 21 Dec 2021 12:31:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67246C36AE2;
+        Tue, 21 Dec 2021 12:31:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640089896;
+        bh=aRJ72Tt/74M53TxT2OxpczsMwM+tVhnGCLhStYmdK/k=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=IJBirJBSycKfJ4lUKJrrxZxSzLZkwUAq0ACEDvV8ExcILnan4u+0BBUTcLn9TFkqq
+         ROWCarGa1JebcuK58DHn/YEufZ/E4Wvk60GE+N/+7258YhqIs47Y9GyLzRwe+45EhO
+         hRcVP7brTIM078SJo4/Na1e67bK4dsLsVwruz0cT1DtUbVXzXq7l29Yz+/uKkNsBH0
+         9UEm6LIdF8DzY2qNsw/aE93856Vgj/FzYgwozsJqaCxaE1mJN2cZ1nzFFJwr4f8mtB
+         qby1l/K1PxCO+er7akG6mgi98NKtiyeRJ0ze949WgytylPmphYNY0oovS+JNemufHu
+         jUQn26FZbEwjA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Wireless <linux-wireless@vger.kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Networking <netdev@vger.kernel.org>,
+        Wen Gong <quic_wgong@quicinc.com>,
+        Ayala Beker <ayala.beker@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: Re: linux-next: build failure after merge of the mac80211-next tree
+References: <20211221115004.1cd6b262@canb.auug.org.au>
+Date:   Tue, 21 Dec 2021 14:31:31 +0200
+In-Reply-To: <20211221115004.1cd6b262@canb.auug.org.au> (Stephen Rothwell's
+        message of "Tue, 21 Dec 2021 11:50:04 +1100")
+Message-ID: <8735mmm95o.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
-branch HEAD: 8b144dedb928e4e2f433a328d58f44c3c098d63e  rtlwifi: rtl8192cu: Fix WARNING when calling local_irq_restore() with interrupts enabled
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
 
-elapsed time: 912m
+> Hi all,
+>
+> After merging the mac80211-next tree, today's linux-next build (x86_64
+> allmodconfig) failed like this:
+>
+> drivers/net/wireless/ath/ath10k/wmi.c: In function 'ath10k_wmi_event_mgmt_rx':
+> drivers/net/wireless/ath/ath10k/wmi.c:2626:12: error: too few
+> arguments to function 'cfg80211_get_ies_channel_number'
+>  2626 |   ies_ch = cfg80211_get_ies_channel_number(mgmt->u.beacon.variable,
+>       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> In file included from include/net/mac80211.h:21,
+>                  from drivers/net/wireless/ath/ath10k/htt.h:16,
+>                  from drivers/net/wireless/ath/ath10k/core.h:18,
+>                  from drivers/net/wireless/ath/ath10k/wmi.c:11:
+> include/net/cfg80211.h:6421:5: note: declared here
+>  6421 | int cfg80211_get_ies_channel_number(const u8 *ie, size_t ielen,
+>       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> Caused by commit
+>
+>   7f599aeccbd2 ("cfg80211: Use the HE operation IE to determine a 6GHz BSS channel")
+>
+> interacting with commit
+>
+>   3bf2537ec2e3 ("ath10k: drop beacon and probe response which leak from other channel")
+>
+> from the net-next tree.
+>
+> I have applied the following merge fix patch for today (which, on
+> reflection, may not be correct, but builds).
+>
+> From: Stephen Rothwell <sfr@canb.auug.org.au>
+> Date: Tue, 21 Dec 2021 11:40:49 +1100
+> Subject: [PATCH] fixup for "cfg80211: Use the HE operation IE to determine a 6GHz BSS channel"
+>
+> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> ---
+>  drivers/net/wireless/ath/ath10k/wmi.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+> index 4733fd7fb169..657bd6a32a36 100644
+> --- a/drivers/net/wireless/ath/ath10k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/wmi.c
+> @@ -2613,6 +2613,7 @@ int ath10k_wmi_event_mgmt_rx(struct ath10k *ar, struct sk_buff *skb)
+>  	if (ieee80211_is_beacon(hdr->frame_control) ||
+>  	    ieee80211_is_probe_resp(hdr->frame_control)) {
+>  		struct ieee80211_mgmt *mgmt = (void *)skb->data;
+> +		enum cfg80211_bss_frame_type ftype;
+>  		u8 *ies;
+>  		int ies_ch;
+>  
+> @@ -2623,9 +2624,14 @@ int ath10k_wmi_event_mgmt_rx(struct ath10k *ar, struct sk_buff *skb)
+>  
+>  		ies = mgmt->u.beacon.variable;
+>  
+> +		if (ieee80211_is_beacon(mgmt->frame_control))
+> +			ftype = CFG80211_BSS_FTYPE_BEACON;
+> +		else /* if (ieee80211_is_probe_resp(mgmt->frame_control)) */
+> +			ftype = CFG80211_BSS_FTYPE_PRESP;
+> +
+>  		ies_ch = cfg80211_get_ies_channel_number(mgmt->u.beacon.variable,
+>  							 skb_tail_pointer(skb) - ies,
+> -							 sband->band);
+> +							 sband->band, ftype);
 
-configs tested: 101
-configs skipped: 3
+I would remove the commented out code '/* if
+(ieee80211_is_probe_resp(mgmt->frame_control)) */', otherwise looks good
+to me.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-gcc tested configs:
-arm                              allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm64                               defconfig
-arm64                            allyesconfig
-arc                     haps_hs_smp_defconfig
-sh                ecovec24-romimage_defconfig
-ia64                        generic_defconfig
-powerpc                 mpc837x_rdb_defconfig
-sh                      rts7751r2d1_defconfig
-mips                           ip27_defconfig
-csky                             alldefconfig
-powerpc                       eiger_defconfig
-arm                           tegra_defconfig
-arm                           omap1_defconfig
-openrisc                  or1klitex_defconfig
-powerpc                     tqm5200_defconfig
-arm64                            alldefconfig
-arm                            pleb_defconfig
-arm                            xcep_defconfig
-sh                           se7722_defconfig
-mips                            ar7_defconfig
-arm                  randconfig-c002-20211220
-ia64                                defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-nds32                             allnoconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-parisc                              defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-s390                             allyesconfig
-i386                             allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                              debian-10.3
-sparc                            allyesconfig
-i386                   debian-10.3-kselftests
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-i386                 randconfig-a002-20211220
-i386                 randconfig-a003-20211220
-i386                 randconfig-a001-20211220
-i386                 randconfig-a005-20211220
-i386                 randconfig-a006-20211220
-i386                 randconfig-a004-20211220
-x86_64               randconfig-a001-20211220
-x86_64               randconfig-a003-20211220
-x86_64               randconfig-a004-20211220
-x86_64               randconfig-a002-20211220
-x86_64               randconfig-a005-20211220
-x86_64               randconfig-a006-20211220
-arc                  randconfig-r043-20211220
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                                  kexec
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-
-clang tested configs:
-x86_64               randconfig-a013-20211220
-x86_64               randconfig-a015-20211220
-x86_64               randconfig-a014-20211220
-x86_64               randconfig-a012-20211220
-x86_64               randconfig-a011-20211220
-x86_64               randconfig-a016-20211220
-i386                 randconfig-a012-20211220
-i386                 randconfig-a011-20211220
-i386                 randconfig-a014-20211220
-i386                 randconfig-a016-20211220
-i386                 randconfig-a015-20211220
-i386                 randconfig-a013-20211220
-hexagon              randconfig-r041-20211220
-hexagon              randconfig-r045-20211220
-riscv                randconfig-r042-20211220
-s390                 randconfig-r044-20211220
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
