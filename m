@@ -2,120 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6546B47C8C9
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Dec 2021 22:25:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3338047CAE5
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 02:46:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236475AbhLUVZn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Dec 2021 16:25:43 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:46308 "EHLO
-        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236492AbhLUVZg (ORCPT
+        id S241162AbhLVBqC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Dec 2021 20:46:02 -0500
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:28989 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234316AbhLVBqB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Dec 2021 16:25:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-        h=from:subject:in-reply-to:references:mime-version:to:cc:
-        content-transfer-encoding:content-type;
-        s=sgd; bh=HO3cs/bAxWQRthzU1+hg6bvoy48ikxmGEMUA2a7K9+w=;
-        b=XPKv87IqusJyRBZnCbyca+lIIiq5h7/v3a6+RxyOUMNdV4eKK2q81hAZ1i7H0YolOL3Y
-        e0dR1to8dlZyvuREOjYPNX3Ycyydb9a0FYKopLtmLMOl5ukwdekgRD1uUkD3kYX9tjUkal
-        ZZINs1qJ57Vnpu4DITTFqhWTqpfNks2X0vAu5E6NROaxdg7rJ9WnYr7YitRyqjJlcAAe2l
-        OJj0jROJBW8EDLEgwbAJPUE03GHwRNo2FMg84ZSSFnkvvekghd46Y8T+jxRYu+DO4cYHSu
-        EFpR9tWh6qYF2PhEhVDXrP3kPQnJAeDrCG69zngAuta3TDaMgDlT1aijqifp8s5A==
-Received: by filterdrecv-75ff7b5ffb-ktk29 with SMTP id filterdrecv-75ff7b5ffb-ktk29-1-61C2464E-50
-        2021-12-21 21:25:34.665138902 +0000 UTC m=+9587099.899018923
-Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-1-1 (SG)
-        with ESMTP
-        id q1v2zsc-RY6pU-ZMXq5ZTQ
-        Tue, 21 Dec 2021 21:25:34.472 +0000 (UTC)
-Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id BBA4A7003AA; Tue, 21 Dec 2021 14:25:33 -0700 (MST)
-From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v7 2/2] wilc1000: Document enable-gpios and reset-gpios
- properties
-Date:   Tue, 21 Dec 2021 21:25:34 +0000 (UTC)
-Message-Id: <20211221212531.4011609-3-davidm@egauge.net>
+        Tue, 21 Dec 2021 20:46:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1640137561; x=1671673561;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=VuWM9ykE02hxTRoiyiu1KAiRry+PZiBiSgTc27wTvqM=;
+  b=nmpf0eXGRVlNdCkMj2B7YBMVpnlp/Vwkg3vBwUyGDuXeBhJtWb4rQ9jo
+   CZphbew6S+aIWCOsclJGS9W+d7Z3cXIjpNfKv1wGaNEi8GhGN7Zya5lgs
+   pblq+S9PS/x9PK97lmMSXml23NQDLmGXQq+VtEHGyZJyWlyPeueL4oo2D
+   0=;
+Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
+  by alexa-out.qualcomm.com with ESMTP; 21 Dec 2021 17:46:01 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 17:46:01 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Tue, 21 Dec 2021 17:46:00 -0800
+Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Tue, 21 Dec 2021 17:45:59 -0800
+From:   Baochen Qiang <quic_bqiang@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] ath11k: Fix unexpected return buffer manager error for QCA6390
+Date:   Wed, 22 Dec 2021 09:35:35 +0800
+Message-ID: <20211222013536.582527-1-quic_bqiang@quicinc.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211221212531.4011609-1-davidm@egauge.net>
-References: <20211221212531.4011609-1-davidm@egauge.net>
 MIME-Version: 1.0
-X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvNkxAMBqlRWJnXBiC?=
- =?us-ascii?Q?dBWzv9OKWVEpA8riEnI5pBRHA1T77DKWuv8JL15?=
- =?us-ascii?Q?yLKrmob=2Fypa=2F=2FDem0v1MT4R9+fBmqTs=2FrRf3xVL?=
- =?us-ascii?Q?mtVBaUJufRcrwY0Ul+SgYVWVl6NfDqe9n83xdLH?=
- =?us-ascii?Q?qLTj3+BW41q6h=2F2iuTWWm+z34oERx3RdCq=2FllAz?=
- =?us-ascii?Q?l9ywHjsTjSWIuEgLYCfvw=3D=3D?=
-To:     Ajay Singh <ajay.kathat@microchip.com>
-Cc:     Adham Abozaeid <adham.abozaeid@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        David Mosberger-Tang <davidm@egauge.net>,
-        Rob Herring <robh@kernel.org>
-X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add documentation for the ENABLE and RESET GPIOs that may be needed by
-wilc1000-spi.
+We are seeing below error on QCA6390:
+...
+[70211.671189] ath11k_pci 0000:72:00.0: failed to parse rx error in wbm_rel ring desc -22
+[70212.696154] ath11k_pci 0000:72:00.0: failed to parse rx error in wbm_rel ring desc -22
+[70213.092941] ath11k_pci 0000:72:00.0: failed to parse rx error in wbm_rel ring desc -22
+...
 
-Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
-Reviewed-by: Rob Herring <robh@kernel.org>
+The reason is that, with commit 734223d78428 ("ath11k: change return
+buffer manager for QCA6390"), ath11k expects the return buffer manager
+(RBM) field of descriptor configured as HAL_RX_BUF_RBM_SW1_BM when
+parsing error frames from WBM2SW3_RELEASE ring. This is a wrong change
+cause the RBM field is set as HAL_RX_BUF_RBM_SW3_BM.
+
+The same issue also applies to REO2TCL ring though we have not got any
+error reported.
+
+Fix it by changing RBM from HAL_RX_BUF_RBM_SW1_BM to HAL_RX_BUF_RBM_SW3_BM
+for these two rings.
+
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+
+Fixes: 734223d78428 ("ath11k: change return buffer manager for QCA6390")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 ---
- .../net/wireless/microchip,wilc1000.yaml      | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/net/wireless/ath/ath11k/dp_rx.c  | 2 +-
+ drivers/net/wireless/ath/ath11k/hal_rx.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-index 6c35682377e6d..60de78f1bc7b9 100644
---- a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
-@@ -32,6 +32,21 @@ properties:
-   clock-names:
-     const: rtc
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 38eeb6e7c6b6..2127ed89956b 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -3847,7 +3847,7 @@ int ath11k_dp_process_rx_err(struct ath11k_base *ab, struct napi_struct *napi,
+ 		ath11k_hal_rx_msdu_link_info_get(link_desc_va, &num_msdus, msdu_cookies,
+ 						 &rbm);
+ 		if (rbm != HAL_RX_BUF_RBM_WBM_IDLE_DESC_LIST &&
+-		    rbm != ab->hw_params.hal_params->rx_buf_rbm) {
++		    rbm != HAL_RX_BUF_RBM_SW3_BM) {
+ 			ab->soc_stats.invalid_rbm++;
+ 			ath11k_warn(ab, "invalid return buffer manager %d\n", rbm);
+ 			ath11k_dp_rx_link_desc_return(ab, desc,
+diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.c b/drivers/net/wireless/ath/ath11k/hal_rx.c
+index 1e279e99baa8..d5a497369b5f 100644
+--- a/drivers/net/wireless/ath/ath11k/hal_rx.c
++++ b/drivers/net/wireless/ath/ath11k/hal_rx.c
+@@ -371,7 +371,7 @@ int ath11k_hal_wbm_desc_parse_err(struct ath11k_base *ab, void *desc,
  
-+  enable-gpios:
-+    maxItems: 1
-+    description: Used by wilc1000-spi to determine the GPIO line
-+      connected to the ENABLE line.  If specified, reset-gpios
-+      must be specified as well as otherwise the driver cannot
-+      ensure the timing required between asserting ENABLE
-+      and deasserting RESET.  This should be declared as an
-+      active-high signal.
-+
-+  reset-gpios:
-+    maxItems: 1
-+    description: Used by wilc1000-spi to determine the GPIO line
-+      connected to the RESET line.  This should be declared as an
-+      active-low signal.
-+
- required:
-   - compatible
-   - interrupts
-@@ -40,6 +55,8 @@ additionalProperties: false
- 
- examples:
-   - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-     spi {
-       #address-cells = <1>;
-       #size-cells = <0>;
-@@ -51,6 +68,8 @@ examples:
-         interrupts = <27 0>;
-         clocks = <&pck1>;
-         clock-names = "rtc";
-+        enable-gpios = <&pioA 5 GPIO_ACTIVE_HIGH>;
-+        reset-gpios = <&pioA 6 GPIO_ACTIVE_LOW>;
-       };
-     };
- 
+ 	ret_buf_mgr = FIELD_GET(BUFFER_ADDR_INFO1_RET_BUF_MGR,
+ 				wbm_desc->buf_addr_info.info1);
+-	if (ret_buf_mgr != ab->hw_params.hal_params->rx_buf_rbm) {
++	if (ret_buf_mgr != HAL_RX_BUF_RBM_SW3_BM) {
+ 		ab->soc_stats.invalid_rbm++;
+ 		return -EINVAL;
+ 	}
 -- 
 2.25.1
 
