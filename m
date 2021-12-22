@@ -2,170 +2,203 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B078A47CF8B
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 10:49:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED99547D0B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 12:16:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239854AbhLVJtl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 04:49:41 -0500
-Received: from mga09.intel.com ([134.134.136.24]:20921 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232246AbhLVJtl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 04:49:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1640166581; x=1671702581;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=sVhwY6EjhmMGaJPZRAMu4mZ1NEUBEbHRaCBNMu74B7E=;
-  b=js0n4fs8AWeEmazb+kC/MbkB28oDVbBXq4/QugjpJ37XnLfiR6Do1rdT
-   a/vKoc12pq+2XcjczuBlIIksWCQdsM7RT5hXhaubAP57Ih1Ss2k1+nVLo
-   gtEEt9cWHKFvUXrXF7eg8beDi0YxTqYkK+sln35IfRo/qXjKUY5qVtYLt
-   bQABuUiYoVsye11ZOSA4Hu69oDYGQqY0RcUe8AYlPwJaZCFyvOn4TJ5Sm
-   tooh5IXUgNxOEbiWWLFou42NCioxKDaxjA2yUfoGT7SbCB010zIYq0luF
-   vwRaEo3zWqGtiRiNjy2UlfHx4z0HnT/JFI4J3ycAztp2+W+hW50RZcAuL
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10205"; a="240393289"
-X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
-   d="scan'208";a="240393289"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2021 01:49:40 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
-   d="scan'208";a="684970928"
-Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 22 Dec 2021 01:49:39 -0800
-Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mzyFe-0000KP-Si; Wed, 22 Dec 2021 09:49:38 +0000
-Date:   Wed, 22 Dec 2021 17:49:13 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [kvalo-wireless-drivers-next:pending] BUILD SUCCESS
- d5cc49a4d7db42e7a8ca2e2f6fae6af334d5abb6
-Message-ID: <61c2f499.HvhznlWjAZ2ZZ1pD%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S240249AbhLVLQi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 06:16:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:45522 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S244514AbhLVLQh (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 22 Dec 2021 06:16:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1640171795;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/vCKBX4ztR/l36gQ5MyV9nvdNnkC/8nxLd8Fi4Qr088=;
+        b=gV4NurcBkmvpuXWg60JFktgB3goFwe19x37qXoKBOcHrFGjNfJPZoTEerF5UzY4sccOUAY
+        GBSTJ0DLLB/ZfOwDYhWiKfqE8amPhpGIn1RwJ/PTWMz951rRbLmkG2utd2v4rvL83jq3zn
+        zNI/sUkpR4GeppoWhfYnILRALuXab2c=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-56-LDp3iopOMuej_L7Oqp0sng-1; Wed, 22 Dec 2021 06:16:33 -0500
+X-MC-Unique: LDp3iopOMuej_L7Oqp0sng-1
+Received: by mail-qk1-f199.google.com with SMTP id h10-20020a05620a284a00b0047649c94bc7so129230qkp.20
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Dec 2021 03:16:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=/vCKBX4ztR/l36gQ5MyV9nvdNnkC/8nxLd8Fi4Qr088=;
+        b=xoeZAFa813U2F6BJuUY/g9Ef+2AIU7PlaMomQszlA5X7FTH5oPNt5flEw/I7IDHVVC
+         0oz6WxLizBHsGA//7DJWahTCGwVAQpWAQDnTMXxaLLLC5nAlNuf9O8JYAH7DRAF0I4w4
+         9JqDZMudFhoAwH2pkXHbjJEPScwQu0eOHvJCn+9mLuLUYhN1gu/fZgRQofLjYDAAbzrw
+         AFtckt8sFz5OKpQWpgCquVdtrTaTCYb2dJJIERMD0frP4gsAGsw8fJejt5qfSYgch6ar
+         fnR55MwQhgilHqE+i9vhYvd5XVhv5AIj5fVepFqYeV74CW2heHF0+cM7qZgzWmF4Zwar
+         RLMA==
+X-Gm-Message-State: AOAM533L4if9ZCGh7zfOrGMByivwRokWVkXfoH9AXkBL9uO8de3vY48l
+        Rv6ovFKTPuIfbz0O+fqfYTgvt/TW9BABtzx7v8biBeeT1ACoOe2e2JTbT9fjmAyzzN+iaE6ObKF
+        ZfS6SBnlKN7OYF8ehVJS0nTGrHTo=
+X-Received: by 2002:a05:622a:19a3:: with SMTP id u35mr1078604qtc.303.1640171793177;
+        Wed, 22 Dec 2021 03:16:33 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJw9nbq7aKZd3kohuuTe+I5dL9pVTLs8N1Hma9aa1hhv0rCqLy6tawJcGG7mJz2Q1h/poCUepQ==
+X-Received: by 2002:a05:622a:19a3:: with SMTP id u35mr1078570qtc.303.1640171792935;
+        Wed, 22 Dec 2021 03:16:32 -0800 (PST)
+Received: from localhost (net-93-146-37-237.cust.vodafonedsl.it. [93.146.37.237])
+        by smtp.gmail.com with ESMTPSA id u16sm1462731qke.127.2021.12.22.03.16.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Dec 2021 03:16:32 -0800 (PST)
+Date:   Wed, 22 Dec 2021 12:16:29 +0100
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     sean.wang@mediatek.com
+Cc:     nbd@nbd.name, Soul.Huang@mediatek.com, YN.Chen@mediatek.com,
+        Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
+        Mark-YW.Chen@mediatek.com, Deren.Wu@mediatek.com,
+        km.lin@mediatek.com, jenhao.yang@mediatek.com,
+        robin.chiu@mediatek.com, Eddie.Chen@mediatek.com,
+        ch.yeh@mediatek.com, posh.sun@mediatek.com, ted.huang@mediatek.com,
+        Eric.Liang@mediatek.com, Stella.Chang@mediatek.com,
+        Tom.Chou@mediatek.com, steve.lee@mediatek.com, jsiuda@google.com,
+        frankgor@google.com, jemele@google.com, abhishekpandit@google.com,
+        shawnku@google.com, linux-wireless@vger.kernel.org,
+        linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] mt76: sdio: lock sdio when it is needed
+Message-ID: <YcMJDdDrDVIT0Y55@lore-desk>
+References: <7aaf68bc8073c4f1cef063d1e0989e5402ac358c.1640151426.git.objelf@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="QoOniBAhkIvv76Ai"
+Content-Disposition: inline
+In-Reply-To: <7aaf68bc8073c4f1cef063d1e0989e5402ac358c.1640151426.git.objelf@gmail.com>
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git pending
-branch HEAD: d5cc49a4d7db42e7a8ca2e2f6fae6af334d5abb6  Merge tag 'iwlwifi-next-for-kalle-2021-12-21-v2' of git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next into pending
 
-elapsed time: 1224m
+--QoOniBAhkIvv76Ai
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-configs tested: 99
-configs skipped: 3
+> From: Sean Wang <sean.wang@mediatek.com>
+>=20
+> Acquire the SDIO as needed as possible because either MT7663S or MT7921S
+> is a multiple-function device that always includes Bluetooth that would
+> share with the same SDIO bus. So not to avoid breaking Bluetooth pairing,
+> audio, and HID such kind of time critical application on that, we only
+> lock sdio bus when it is necessary in WiFi driver.
+>=20
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7615/sdio.c | 3 +++
+>  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c | 3 +++
+>  drivers/net/wireless/mediatek/mt76/sdio_txrx.c   | 8 ++++++++
+>  3 files changed, 14 insertions(+)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7615/sdio.c
+> index 31c4a76b7f91..71162befdae8 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+> @@ -56,7 +56,10 @@ static int mt7663s_parse_intr(struct mt76_dev *dev, st=
+ruct mt76s_intr *intr)
+>  	struct mt7663s_intr *irq_data =3D sdio->intr_data;
+>  	int i, err;
+> =20
+> +	sdio_claim_host(sdio->func);
+>  	err =3D sdio_readsb(sdio->func, irq_data, MCR_WHISR, sizeof(*irq_data));
+> +	sdio_release_host(sdio->func);
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I guess you can move this in mt76s_rx_handler() and remove the duplicated c=
+ode
+in mt7921_sdio.c
 
-gcc tested configs:
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm64                               defconfig
-arm64                            allyesconfig
-i386                             alldefconfig
-arm                      footbridge_defconfig
-powerpc                 mpc8315_rdb_defconfig
-sh                           se7705_defconfig
-arm                  colibri_pxa270_defconfig
-arc                     nsimosci_hs_defconfig
-powerpc                    mvme5100_defconfig
-riscv                               defconfig
-arm                           u8500_defconfig
-arm                        mvebu_v7_defconfig
-ia64                             alldefconfig
-arm                  randconfig-c002-20211220
-arm                  randconfig-c002-20211222
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-nds32                             allnoconfig
-nios2                               defconfig
-arc                              allyesconfig
-parisc                              defconfig
-s390                             allmodconfig
-s390                                defconfig
-parisc                           allyesconfig
-s390                             allyesconfig
-i386                             allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-sparc                            allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-i386                 randconfig-a002-20211220
-i386                 randconfig-a003-20211220
-i386                 randconfig-a001-20211220
-i386                 randconfig-a004-20211220
-i386                 randconfig-a005-20211220
-i386                 randconfig-a006-20211220
-arc                  randconfig-r043-20211220
-x86_64               randconfig-a001-20211220
-x86_64               randconfig-a003-20211220
-x86_64               randconfig-a002-20211220
-x86_64               randconfig-a004-20211220
-x86_64               randconfig-a006-20211220
-x86_64               randconfig-a005-20211220
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                          rv32_defconfig
-riscv                            allyesconfig
-riscv                            allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-x86_64                    rhel-8.3-kselftests
+Regards,
+Lorenzo
 
-clang tested configs:
-x86_64               randconfig-a013-20211220
-x86_64               randconfig-a015-20211220
-x86_64               randconfig-a014-20211220
-x86_64               randconfig-a012-20211220
-x86_64               randconfig-a011-20211220
-x86_64               randconfig-a016-20211220
-i386                 randconfig-a012-20211220
-i386                 randconfig-a011-20211220
-i386                 randconfig-a013-20211220
-i386                 randconfig-a014-20211220
-i386                 randconfig-a016-20211220
-i386                 randconfig-a015-20211220
-hexagon              randconfig-r041-20211220
-hexagon              randconfig-r045-20211220
-s390                 randconfig-r044-20211220
-riscv                randconfig-r042-20211220
-hexagon              randconfig-r041-20211222
-hexagon              randconfig-r045-20211222
-riscv                randconfig-r042-20211222
-s390                 randconfig-r044-20211222
+> +
+>  	if (err)
+>  		return err;
+> =20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7921/sdio.c
+> index 65d693902c22..743b63f66efa 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+> @@ -58,7 +58,10 @@ static int mt7921s_parse_intr(struct mt76_dev *dev, st=
+ruct mt76s_intr *intr)
+>  	struct mt7921_sdio_intr *irq_data =3D sdio->intr_data;
+>  	int i, err;
+> =20
+> +	sdio_claim_host(sdio->func);
+>  	err =3D sdio_readsb(sdio->func, irq_data, MCR_WHISR, sizeof(*irq_data));
+> +	sdio_release_host(sdio->func);
+> +
+>  	if (err < 0)
+>  		return err;
+> =20
+> diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c b/drivers/net=
+/wireless/mediatek/mt76/sdio_txrx.c
+> index 801590a0a334..f2b46975d831 100644
+> --- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+> +++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+> @@ -102,7 +102,10 @@ mt76s_rx_run_queue(struct mt76_dev *dev, enum mt76_r=
+xq_id qid,
+> =20
+>  	buf =3D page_address(page);
+> =20
+> +	sdio_claim_host(sdio->func);
+>  	err =3D sdio_readsb(sdio->func, buf, MCR_WRDR(qid), len);
+> +	sdio_release_host(sdio->func);
+> +
+>  	if (err < 0) {
+>  		dev_err(dev->dev, "sdio read data failed:%d\n", err);
+>  		put_page(page);
+> @@ -214,7 +217,10 @@ static int __mt76s_xmit_queue(struct mt76_dev *dev, =
+u8 *data, int len)
+>  	if (len > sdio->func->cur_blksize)
+>  		len =3D roundup(len, sdio->func->cur_blksize);
+> =20
+> +	sdio_claim_host(sdio->func);
+>  	err =3D sdio_writesb(sdio->func, MCR_WTDR1, data, len);
+> +	sdio_release_host(sdio->func);
+> +
+>  	if (err)
+>  		dev_err(dev->dev, "sdio write failed: %d\n", err);
+> =20
+> @@ -298,6 +304,7 @@ void mt76s_txrx_worker(struct mt76_sdio *sdio)
+>  	/* disable interrupt */
+>  	sdio_claim_host(sdio->func);
+>  	sdio_writel(sdio->func, WHLPCR_INT_EN_CLR, MCR_WHLPCR, NULL);
+> +	sdio_release_host(sdio->func);
+> =20
+>  	do {
+>  		nframes =3D 0;
+> @@ -327,6 +334,7 @@ void mt76s_txrx_worker(struct mt76_sdio *sdio)
+>  	} while (nframes > 0);
+> =20
+>  	/* enable interrupt */
+> +	sdio_claim_host(sdio->func);
+>  	sdio_writel(sdio->func, WHLPCR_INT_EN_SET, MCR_WHLPCR, NULL);
+>  	sdio_release_host(sdio->func);
+>  }
+> --=20
+> 2.25.1
+>=20
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+--QoOniBAhkIvv76Ai
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYcMJDQAKCRA6cBh0uS2t
+rNBHAP90xJ+Mada+OCDe3sgAR7bOZEJiGQbcCDVAyv0qDwuBdwD7B2xzkTpTv7Tk
+p/MUb4rB7hR+2QQQfaJbmPXIH3Jd6QQ=
+=J2gf
+-----END PGP SIGNATURE-----
+
+--QoOniBAhkIvv76Ai--
+
