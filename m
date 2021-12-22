@@ -2,98 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20ED847D5FF
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 18:48:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5815547D601
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 18:49:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344399AbhLVRs3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 12:48:29 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:57104 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234375AbhLVRs2 (ORCPT
+        id S1344407AbhLVRtH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 12:49:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50966 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234375AbhLVRtG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 12:48:28 -0500
+        Wed, 22 Dec 2021 12:49:06 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A65C061574
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Dec 2021 09:49:06 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C1293B81DCA
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Dec 2021 17:48:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA20C36AE8;
-        Wed, 22 Dec 2021 17:48:23 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 54F8FB81D65
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Dec 2021 17:49:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260E4C36AE5;
+        Wed, 22 Dec 2021 17:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640195306;
-        bh=LeZIZwE1uSLlmis8PEu2mDdAeWhhcfQxzx9alF+szkI=;
+        s=k20201202; t=1640195344;
+        bh=IdiyFtZp5dpmPN0e3xgmQIROwfji5HDlI43ZohBHWiA=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=PvbuazDDxbOKNKdJqu7Cdpvm+jiEdfoEfvzg+tHxyJdZ9L2reKlQezN4ZRuQfUkie
-         WksA6EURpqbMq0+Rv+O8MFlYQ9+RbjtgzldZf9XVWWhJc3NaYd+0T55viQRQnI9O7F
-         1udst9TMGHGUvgHs1ScfjCcU/MI2Y4utA0HsKyZhf3gdbzurWtTsjICYvkcDHHX3Jv
-         z28el+r2LB1DC53SzGRi6MraQ/47rDekhr5FxgAoQo5zYvi8DhUnxOz8E2i/F/P/1T
-         aB7PW4dDX7c8AG4eaM96b41Vo7pd0+rhzByB+qDc55qeOIocWMCCaUwSUVO4/N+xcT
-         15uSFN3guGAmw==
+        b=mIk+1GVjptgUIm/NRP02dwKZaKGIZbTWJgVtnImZFXLNKDEwVa5RKOAPK3NvF0OE9
+         dNKq4LcKF2WxxBY6WEUrExEV7yptV75LJbCysWO5YYipRkCkyFxzKjytseweByf5is
+         rKQfLfLpKUMYnYdJanj6yoeUM3gIaP0fGzkYDwDlXpEjtC8ATELd9NwaTuvgh2tC09
+         FhxAF298JXxZqVifN7m7d6j4t5X4d63NabASYEpTITg8JkRO2ibif7asqucQ1U8+wx
+         gZBqzMuQnRZzbvdh0uD6lP3tj3THrfZTmxYi5HmHiX6FmUEjg9JrTO1QwKICm43Es9
+         1qMQKiukaHfUw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] brcmfmac: use ISO3166 country code and 0 rev as fallback
- on
- some devices
+Subject: Re: [PATCH] rtw88: don't consider deep PS mode when transmitting
+ packet
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20211218185643.158182-1-hdegoede@redhat.com>
-References: <20211218185643.158182-1-hdegoede@redhat.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Chi-Hsien Lin <chi-hsien.lin@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, Shawn Guo <shawn.guo@linaro.org>,
-        Soeren Moch <smoch@web.de>,
-        Fabio Aiuto <fabioaiuto83@gmail.com>
+In-Reply-To: <20211221020230.20764-1-pkshih@realtek.com>
+References: <20211221020230.20764-1-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <tony0620emma@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <timlee@realtek.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164019530057.12144.15683892767137900754.kvalo@kernel.org>
-Date:   Wed, 22 Dec 2021 17:48:23 +0000 (UTC)
+Message-ID: <164019534149.12144.14671570576275907686.kvalo@kernel.org>
+Date:   Wed, 22 Dec 2021 17:49:02 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hans de Goede <hdegoede@redhat.com> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> This is a second attempt at honering the country code send out by access
-> points. This was first added in commit b0b524f079a2 ("brcmfmac: use
-> ISO3166 country code and 0 rev as fallback").
+> From: Chin-Yen Lee <timlee@realtek.com>
 > 
-> Subsequently this was reverted in commit 151a7c12c4fc ("Revert "brcmfmac:
-> use ISO3166 country code and 0 rev as fallback""), because it was causing
-> issues with AP mode on some brcmfmac models (specifically on BCM4359/9).
+> In original flow, driver needs to ensure chip leave deep ps mode
+> before transmitting any packet, and don't enter deep ps mode beofre
+> PCIE DMA is finished. Now with the support of 8822ce's hardware
+> setting and firmware after v9.9.11, these limits are removed.
 > 
-> Many devices ship with a nvram ccode value of X2/XT/XU/XV/ALL which are
-> all special world-wide compatibility ccode-s. Most of these world-wide
-> ccode-s allow passive scan mode only for 2.4GHz channels 12-14,
-> only enabling them when an AP is seen on them.
-> 
-> But at least on brcmfmac43455 devices this is not working correctly, these
-> do not see accesspoints on channels 12-14 unless the ccode is changes to
-> a country where these channels are allowed.
-> 
-> Translating received country codes to an ISO3166 country code and 0 rev
-> ccreq fixes devices using a brcmfmac43455 with a X2/XT/XU/XV/ALL ccode
-> not seeing accesspoints on channels 12-14.
-> 
-> To avoid this causing issues on other brcmfmac models again, the
-> fallback is limited to only brcmfmac4345* chips this time.
-> 
-> Cc: Shawn Guo <shawn.guo@linaro.org>
-> Cc: Soeren Moch <smoch@web.de>
-> Cc: Fabio Aiuto <fabioaiuto83@gmail.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Arend, can you take a look?
+Patch applied to wireless-drivers-next.git, thanks.
+
+5d5d68bcff1f rtw88: don't consider deep PS mode when transmitting packet
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20211218185643.158182-1-hdegoede@redhat.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20211221020230.20764-1-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
