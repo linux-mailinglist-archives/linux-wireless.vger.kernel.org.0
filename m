@@ -2,74 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E19AC47D622
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 18:54:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3ACB47D7AB
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 20:27:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344451AbhLVRyK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 12:54:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52172 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234640AbhLVRyK (ORCPT
+        id S1345181AbhLVT1h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 14:27:37 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:43154 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S237755AbhLVT1f (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 12:54:10 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8BDCC061574
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Dec 2021 09:54:09 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9C4B4B81DCC
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Dec 2021 17:54:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBAADC36AE8;
-        Wed, 22 Dec 2021 17:54:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640195647;
-        bh=8SSppL4Bk0CNHeP44VSZdYQO2VFk0zYSmSyF4odmUaw=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=O6X3nI0mFU6HWr/N9RItHMdcL8MW4INs71QIqi9E50h517IbTIpg3wh46VhGnRd8l
-         9oJFPpzimWhZfsN0VONmh3C3dDQ5qPITlHLmoW1z3LalXjwjlVaTMyEC9Z4/BzGJoo
-         HGytSNFZ97x1BuUH6ZXKabkmREG2T/nPKLqe9rIgWhIBVfnLlz70rYxdQZtVRKZ8ff
-         SaY4HoMJMP6uQq5A6ujzKVnMY/PS5M6tDEl/IC+2GmR8GPyUoVrZUqmYJlrJAazZLm
-         06OMNdDvJuyImFJCXnmHcbPXayvw7En5cf0TH2KGVUAum0wSu2NQMac2tg+rXuoIFD
-         bjnpXada3xTIQ==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 22 Dec 2021 14:27:35 -0500
+X-UUID: 81adc15f65384902bccb2eb2f2dd2c61-20211223
+X-UUID: 81adc15f65384902bccb2eb2f2dd2c61-20211223
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 377665507; Thu, 23 Dec 2021 03:27:30 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Thu, 23 Dec 2021 03:27:29 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 23 Dec 2021 03:27:29 +0800
+From:   <sean.wang@mediatek.com>
+To:     <lorenzo.bianconi@redhat.com>
+CC:     <nbd@nbd.name>, <sean.wang@mediatek.com>,
+        <Soul.Huang@mediatek.com>, <YN.Chen@mediatek.com>,
+        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+        <Mark-YW.Chen@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <jenhao.yang@mediatek.com>,
+        <robin.chiu@mediatek.com>, <Eddie.Chen@mediatek.com>,
+        <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+        <ted.huang@mediatek.com>, <Eric.Liang@mediatek.com>,
+        <Stella.Chang@mediatek.com>, <Tom.Chou@mediatek.com>,
+        <steve.lee@mediatek.com>, <jsiuda@google.com>,
+        <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH] mt76: sdio: lock sdio when it is needed
+Date:   Thu, 23 Dec 2021 03:27:28 +0800
+Message-ID: <1640201248-14901-1-git-send-email-sean.wang@mediatek.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <YcMJDdDrDVIT0Y55@lore-desk--annotate>
+References: <YcMJDdDrDVIT0Y55@lore-desk--annotate>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH wireless-drivers] mt76: mt7921: fix a possible race
- enabling/disabling runtime-pm
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <0f3e075a2033dc05f09dab4059e5be8cbdccc239.1640094847.git.lorenzo@kernel.org>
-References: <0f3e075a2033dc05f09dab4059e5be8cbdccc239.1640094847.git.lorenzo@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
-        linux-wireless@vger.kernel.org, deren.wu@mediatek.com,
-        sean.wang@mediatek.com, sven@narfation.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <164019564392.8004.5312965285903271643.kvalo@kernel.org>
-Date:   Wed, 22 Dec 2021 17:54:05 +0000 (UTC)
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+From: Sean Wang <sean.wang@mediatek.com>
 
-> Fix a possible race enabling/disabling runtime-pm between
-> mt7921_pm_set() and mt7921_poll_rx() since mt7921_pm_wake_work()
-> always schedules rx-napi callback and it will trigger
-> mt7921_pm_power_save_work routine putting chip to in low-power state
-> during mt7921_pm_set processing.
-> 
-> Suggested-by: Deren Wu <deren.wu@mediatek.com>
-> Tested-by: Deren Wu <deren.wu@mediatek.com>
-> Fixes: 1d8efc741df8 ("mt76: mt7921: introduce Runtime PM support")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>> From: Sean Wang <sean.wang@mediatek.com>
+>>
+>> Acquire the SDIO as needed as possible because either MT7663S or
+>> MT7921S is a multiple-function device that always includes Bluetooth
+>> that would share with the same SDIO bus. So not to avoid breaking
+>> Bluetooth pairing, audio, and HID such kind of time critical
+>> application on that, we only lock sdio bus when it is necessary in WiFi driver.
+>>
+>> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+>> ---
+>>  drivers/net/wireless/mediatek/mt76/mt7615/sdio.c | 3 +++
+>> drivers/net/wireless/mediatek/mt76/mt7921/sdio.c | 3 +++
+>>  drivers/net/wireless/mediatek/mt76/sdio_txrx.c   | 8 ++++++++
+>>  3 files changed, 14 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+>> b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+>> index 31c4a76b7f91..71162befdae8 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+>> @@ -56,7 +56,10 @@ static int mt7663s_parse_intr(struct mt76_dev *dev, struct mt76s_intr *intr)
+>>	struct mt7663s_intr *irq_data = sdio->intr_data;
+>>	int i, err;
+>>
+>> +	sdio_claim_host(sdio->func);
+>>	err = sdio_readsb(sdio->func, irq_data, MCR_WHISR,
+>> sizeof(*irq_data));
+>> +	sdio_release_host(sdio->func);
+>
+>I guess you can move this in mt76s_rx_handler() and remove the duplicated code in mt7921_sdio.c
+>
 
-Patch applied to wireless-drivers-next.git, thanks.
+I got your point, but I still prefer we can release sdio lock as early as possible when WiFi driver doesn't need it
+to allow BT driver has the chance to get the lock quickly.
 
-d430dffbe9dd mt76: mt7921: fix a possible race enabling/disabling runtime-pm
+>Regards,
+>Lorenzo
+>
+>> +
+>>	if (err)
+>>		return err;
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/0f3e075a2033dc05f09dab4059e5be8cbdccc239.1640094847.git.lorenzo@kernel.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+<snip>
