@@ -2,77 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 257E747D14E
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 12:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C9AB47D1AF
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 13:29:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239384AbhLVLwe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 06:52:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54552 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239086AbhLVLwd (ORCPT
+        id S244876AbhLVM3K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 07:29:10 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:34284 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S244860AbhLVM3K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 06:52:33 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC1D3C06173F
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Dec 2021 03:52:32 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B7D67B81BC8
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Dec 2021 11:52:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A10C36AEA;
-        Wed, 22 Dec 2021 11:52:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640173950;
-        bh=21NhSvRv7+HMjSRF8OZg9KtzgafWBytJEjFs25vu1lQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=HHLM76TS7Wp3I4hkf3vCEwRGe6Z+tCtiFh3CTdchuS40E8GVHEJaxxHMdMbm3ryxL
-         2ILxvltGn/hsja15g38fTI12/qWtvJaCLIh68/fc6X4zHdD5urU5epK5S0VPnSbG2x
-         LAaLH0a/qoloAEKZ3WJIbmJem0Sut9mEm4B3HsL/wRLlLmdXDfznx0+Eej9WTcyXoc
-         GKZn/4kSRcB0OFfbsHck43hK3n8dxsjC7lKLk9T/IDQiUCw5xgfhvduD8p0fQmQbxS
-         zFFNrfdW9IHQfTiMBtuf1mbw2fqmZf5fFIJp5poryG4/0TWY1Y2WA4W6b20Ix9KL4l
-         8StjHK2YrhurQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com
-Subject: [PATCH] mt76: mt7915: use proper aid value in mt7915_mcu_wtbl_generic_tlv in sta mode
-Date:   Wed, 22 Dec 2021 12:52:17 +0100
-Message-Id: <7ca692b291bec98229befe677ed5ff2af0c70088.1640173873.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.33.1
+        Wed, 22 Dec 2021 07:29:10 -0500
+X-UUID: 21c0e82648b1463e97e184a1734a3a62-20211222
+X-UUID: 21c0e82648b1463e97e184a1734a3a62-20211222
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        (envelope-from <bo.jiao@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 813653017; Wed, 22 Dec 2021 20:29:05 +0800
+Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Wed, 22 Dec 2021 20:29:04 +0800
+Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
+ (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 22 Dec
+ 2021 20:29:04 +0800
+Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
+ MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
+ 15.0.1497.2 via Frontend Transport; Wed, 22 Dec 2021 20:29:03 +0800
+From:   Bo Jiao <bo.jiao@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Xing Song <xing.song@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix code defect
+Date:   Wed, 22 Dec 2021 20:29:00 +0800
+Message-ID: <5806e90f8e0cf9eba7f5432082a4c0f1e9e15636.1640173851.git.Bo.Jiao@mediatek.com>
+X-Mailer: git-send-email 2.17.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mac80211 provides aid in vif->bss_conf.aid for sta mode and not in
-sta->aid. Fix mt7915_mcu_wtbl_generic_tlv routine using proper value for
-aid in sta mode.
+From: Bo Jiao <Bo.Jiao@mediatek.com>
 
-Fixes: e57b7901469fc ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+fix code defect, variable 'val' is used without initialization
+in mt7915_wfsys_reset().
+
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 13 +++++--------
+ drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 14 ++++++--------
+ 2 files changed, 11 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 1985240c0083..a1d50bbdece2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -988,8 +988,11 @@ mt7915_mcu_wtbl_generic_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
- 	generic = (struct wtbl_generic *)tlv;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 7557429..b4ff3d1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -541,11 +541,12 @@ static void mt7915_init_work(struct work_struct *work)
  
- 	if (sta) {
-+		if (vif->type == NL80211_IFTYPE_STATION)
-+			generic->partial_aid = cpu_to_le16(vif->bss_conf.aid);
-+		else
-+			generic->partial_aid = cpu_to_le16(sta->aid);
- 		memcpy(generic->peer_addr, sta->addr, ETH_ALEN);
--		generic->partial_aid = cpu_to_le16(sta->aid);
- 		generic->muar_idx = mvif->mt76.omac_idx;
- 		generic->qos = sta->wme;
+ static void mt7915_wfsys_reset(struct mt7915_dev *dev)
+ {
+-	u32 val;
+-
+ #define MT_MCU_DUMMY_RANDOM	GENMASK(15, 0)
+ #define MT_MCU_DUMMY_DEFAULT	GENMASK(31, 16)
++
+ 	if (is_mt7915(&dev->mt76)) {
++		u32 val = MT_TOP_PWR_KEY | MT_TOP_PWR_SW_PWR_ON | MT_TOP_PWR_PWR_ON;
++
+ 		mt76_wr(dev, MT_MCU_WFDMA0_DUMMY_CR, MT_MCU_DUMMY_RANDOM);
+ 
+ 		/* change to software control */
+@@ -578,14 +579,10 @@ static void mt7915_wfsys_reset(struct mt7915_dev *dev)
+ 
+ 		msleep(100);
  	} else {
+-		val = mt76_rr(dev, MT_WF_SUBSYS_RST);
+-
+-		val |= 0x1;
+-		mt76_wr(dev, MT_WF_SUBSYS_RST, val);
++		mt76_set(dev, MT_WF_SUBSYS_RST, 0x1);
+ 		msleep(20);
+ 
+-		val &= ~0x1;
+-		mt76_wr(dev, MT_WF_SUBSYS_RST, val);
++		mt76_clear(dev, MT_WF_SUBSYS_RST, 0x1);
+ 		msleep(20);
+ 	}
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index 6500095..a6dd33f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -271,7 +271,7 @@ static u32 mt7915_reg_map_l1(struct mt7915_dev *dev, u32 addr)
+ 
+ 	dev->bus_ops->rmw(&dev->mt76, l1_remap,
+ 			  MT_HIF_REMAP_L1_MASK,
+-		FIELD_PREP(MT_HIF_REMAP_L1_MASK, base));
++			  FIELD_PREP(MT_HIF_REMAP_L1_MASK, base));
+ 	/* use read to push write */
+ 	dev->bus_ops->rr(&dev->mt76, l1_remap);
+ 
+@@ -575,17 +575,15 @@ int mt7915_mmio_probe(struct device *pdev,
+ 	if (ret)
+ 		goto error;
+ 
+-	if (hif2) {
++	if (hif2 && dev_is_pci(pdev)) {
+ 		dev->hif2 = hif2;
+ 
+ 		mt76_wr(dev, MT_INT1_MASK_CSR, 0);
+ 		/* master switch of PCIe tnterrupt enable */
+-		if (dev_is_pci(pdev)) {
+-			if (is_mt7915(mdev))
+-				mt76_wr(dev, MT_PCIE1_MAC_INT_ENABLE, 0xff);
+-			else
+-				mt76_wr(dev, MT_PCIE1_MAC_INT_ENABLE_MT7916, 0xff);
+-		}
++		if (is_mt7915(mdev))
++			mt76_wr(dev, MT_PCIE1_MAC_INT_ENABLE, 0xff);
++		else
++			mt76_wr(dev, MT_PCIE1_MAC_INT_ENABLE_MT7916, 0xff);
+ 
+ 		ret = devm_request_irq(mdev->dev, dev->hif2->irq,
+ 				       mt7915_irq_handler, IRQF_SHARED,
 -- 
-2.33.1
+2.18.0
 
