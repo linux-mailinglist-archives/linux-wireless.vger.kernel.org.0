@@ -2,87 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02CE847CCB6
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 06:56:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2E6A47CCB8
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 06:56:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242607AbhLVF4L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 00:56:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58530 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232036AbhLVF4L (ORCPT
+        id S242610AbhLVF4f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 00:56:35 -0500
+Received: from mailgw02.mediatek.com ([210.61.82.184]:51062 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232036AbhLVF4e (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 00:56:11 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C67A5C061574;
-        Tue, 21 Dec 2021 21:56:10 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 49734617F2;
-        Wed, 22 Dec 2021 05:56:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE69C36AE5;
-        Wed, 22 Dec 2021 05:56:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640152568;
-        bh=cyCADuhN6VA0Ec892gswnFOQNtzdUG7PQdTXJYthN9s=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=fKWxZJR7Iwpj6QLIt4pVH22h8WM5P4xcTXLVr16r1n4VjBjBsa6eN51MP1Jf+uT8r
-         NldzEtK/aJfnb6P6bPBB68p5bvzUqY3CXYMV+6BwRw88kc9dzEyYLo7ufceT2p+t/l
-         auIgIEh0+CKlTC2VwDNGFrJQ2oYVtZNepgNrQWyaBT/GF1mX5WQbjjD57r4ygZjysv
-         qOWd9XAA0l4IMRXXQ0k+gtP7Y/HSYMsqZ3rUEGA6tO9MTLRtvz/t/mk9g0hLx0QFKp
-         19hTq/DeUkgB7+uRc/nX7nFBWEc0YJBVBqfqyU+4Y4yBo34p6xMsRMPvXVanJwsSk2
-         LTQcHKXtC865w==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, pkshih@realtek.com,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH net-next 1/2] codel: remove unnecessary sock.h include
-References: <20211221193941.3805147-1-kuba@kernel.org>
-Date:   Wed, 22 Dec 2021 07:56:05 +0200
-In-Reply-To: <20211221193941.3805147-1-kuba@kernel.org> (Jakub Kicinski's
-        message of "Tue, 21 Dec 2021 11:39:40 -0800")
-Message-ID: <87sful2ney.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 22 Dec 2021 00:56:34 -0500
+X-UUID: 8b73f4f79f804d138c78c542d009aa19-20211222
+X-UUID: 8b73f4f79f804d138c78c542d009aa19-20211222
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1231233857; Wed, 22 Dec 2021 13:56:31 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs07n2.mediatek.inc (172.21.101.141) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 22 Dec 2021 13:56:29 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 22 Dec
+ 2021 13:56:29 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 22 Dec 2021 13:56:28 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Mark-YW.Chen@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
+        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
+        <posh.sun@mediatek.com>, <ted.huang@mediatek.com>,
+        <Eric.Liang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <jemele@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH] mt76: sdio: lock sdio when it is needed
+Date:   Wed, 22 Dec 2021 13:56:28 +0800
+Message-ID: <7aaf68bc8073c4f1cef063d1e0989e5402ac358c.1640151426.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
 Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
+From: Sean Wang <sean.wang@mediatek.com>
 
-> Since sock.h is modified relatively often (60 times in the last
-> 12 months) it seems worthwhile to decrease the incremental build
-> work.
->
-> CoDel's header includes net/inet_ecn.h which in turn includes net/sock.h.
-> codel.h is itself included by mac80211 which is included by much of
-> the WiFi stack and drivers. Removing the net/inet_ecn.h include from
-> CoDel breaks the dependecy between WiFi and sock.h.
->
-> Commit d068ca2ae2e6 ("codel: split into multiple files") moved all
-> the code which actually needs ECN helpers out to net/codel_impl.h,
-> the include can be moved there as well.
->
-> This decreases the incremental build size after touching sock.h
-> from 4999 objects to 4051 objects.
->
-> Fix unmasked missing includes in WiFi drivers.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: kvalo@kernel.org
-> CC: pkshih@realtek.com
-> CC: ath11k@lists.infradead.org
-> CC: linux-wireless@vger.kernel.org
-> ---
->  drivers/net/wireless/ath/ath11k/debugfs.c  | 2 ++
->  drivers/net/wireless/realtek/rtw89/core.c  | 2 ++
->  drivers/net/wireless/realtek/rtw89/debug.c | 2 ++
+Acquire the SDIO as needed as possible because either MT7663S or MT7921S
+is a multiple-function device that always includes Bluetooth that would
+share with the same SDIO bus. So not to avoid breaking Bluetooth pairing,
+audio, and HID such kind of time critical application on that, we only
+lock sdio bus when it is necessary in WiFi driver.
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/sdio.c | 3 +++
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio.c | 3 +++
+ drivers/net/wireless/mediatek/mt76/sdio_txrx.c   | 8 ++++++++
+ 3 files changed, 14 insertions(+)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+index 31c4a76b7f91..71162befdae8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+@@ -56,7 +56,10 @@ static int mt7663s_parse_intr(struct mt76_dev *dev, struct mt76s_intr *intr)
+ 	struct mt7663s_intr *irq_data = sdio->intr_data;
+ 	int i, err;
+ 
++	sdio_claim_host(sdio->func);
+ 	err = sdio_readsb(sdio->func, irq_data, MCR_WHISR, sizeof(*irq_data));
++	sdio_release_host(sdio->func);
++
+ 	if (err)
+ 		return err;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index 65d693902c22..743b63f66efa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -58,7 +58,10 @@ static int mt7921s_parse_intr(struct mt76_dev *dev, struct mt76s_intr *intr)
+ 	struct mt7921_sdio_intr *irq_data = sdio->intr_data;
+ 	int i, err;
+ 
++	sdio_claim_host(sdio->func);
+ 	err = sdio_readsb(sdio->func, irq_data, MCR_WHISR, sizeof(*irq_data));
++	sdio_release_host(sdio->func);
++
+ 	if (err < 0)
+ 		return err;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+index 801590a0a334..f2b46975d831 100644
+--- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
++++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+@@ -102,7 +102,10 @@ mt76s_rx_run_queue(struct mt76_dev *dev, enum mt76_rxq_id qid,
+ 
+ 	buf = page_address(page);
+ 
++	sdio_claim_host(sdio->func);
+ 	err = sdio_readsb(sdio->func, buf, MCR_WRDR(qid), len);
++	sdio_release_host(sdio->func);
++
+ 	if (err < 0) {
+ 		dev_err(dev->dev, "sdio read data failed:%d\n", err);
+ 		put_page(page);
+@@ -214,7 +217,10 @@ static int __mt76s_xmit_queue(struct mt76_dev *dev, u8 *data, int len)
+ 	if (len > sdio->func->cur_blksize)
+ 		len = roundup(len, sdio->func->cur_blksize);
+ 
++	sdio_claim_host(sdio->func);
+ 	err = sdio_writesb(sdio->func, MCR_WTDR1, data, len);
++	sdio_release_host(sdio->func);
++
+ 	if (err)
+ 		dev_err(dev->dev, "sdio write failed: %d\n", err);
+ 
+@@ -298,6 +304,7 @@ void mt76s_txrx_worker(struct mt76_sdio *sdio)
+ 	/* disable interrupt */
+ 	sdio_claim_host(sdio->func);
+ 	sdio_writel(sdio->func, WHLPCR_INT_EN_CLR, MCR_WHLPCR, NULL);
++	sdio_release_host(sdio->func);
+ 
+ 	do {
+ 		nframes = 0;
+@@ -327,6 +334,7 @@ void mt76s_txrx_worker(struct mt76_sdio *sdio)
+ 	} while (nframes > 0);
+ 
+ 	/* enable interrupt */
++	sdio_claim_host(sdio->func);
+ 	sdio_writel(sdio->func, WHLPCR_INT_EN_SET, MCR_WHLPCR, NULL);
+ 	sdio_release_host(sdio->func);
+ }
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
