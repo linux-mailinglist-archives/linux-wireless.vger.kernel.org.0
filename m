@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB58047CB85
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 04:10:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0656B47CB91
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Dec 2021 04:14:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242049AbhLVDKg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Dec 2021 22:10:36 -0500
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:24332 "EHLO
+        id S238724AbhLVDOG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Dec 2021 22:14:06 -0500
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:2312 "EHLO
         alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229741AbhLVDKg (ORCPT
+        by vger.kernel.org with ESMTP id S238645AbhLVDOG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Dec 2021 22:10:36 -0500
+        Tue, 21 Dec 2021 22:14:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1640142636; x=1671678636;
+  t=1640142846; x=1671678846;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
   bh=lr7dSi0ciTW50dtMQlXvbGVLDghbk0BFwT8nf4lV/Aw=;
-  b=OO7L8h04fOwy9f0KALgWcBhunDmvwgsYhfHbrAqLU7deGG97K7MGI1nN
-   OecyHWvlyoeECpLlHIAcli1YUVYkxyIk2rnO6r4MmIgf4mUF5unhhw2j8
-   NSMhpW52Sj93NxposPINxW+hPk6seQP9kbDnQvGJM8qH4CzQSwUeawa8b
-   M=;
-Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 21 Dec 2021 19:10:36 -0800
+  b=uMZK+J954Vl/w7MA/HKubaghiwotkuXFprTchPg1xPRsHRYc3BntEGRX
+   0P758yHohOT1TmJktHrJPb5WKBj15aX7jmAlqKH9XW86ILjNSPaF+FlRc
+   oCMPovl6AoJvrsW9YnpohIGOAQuU3t+pg0/EUfskvnqQyxs1iJQuztW/F
+   g=;
+Received: from unknown (HELO ironmsg03-sd.qualcomm.com) ([10.53.140.143])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 21 Dec 2021 19:14:06 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg01-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 19:10:35 -0800
+  by ironmsg03-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 19:14:05 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 21 Dec 2021 19:10:35 -0800
+ 15.2.922.19; Tue, 21 Dec 2021 19:14:05 -0800
 Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Tue, 21 Dec 2021 19:10:34 -0800
+ 15.2.922.19; Tue, 21 Dec 2021 19:14:04 -0800
 From:   Wen Gong <quic_wgong@quicinc.com>
-To:     <ath11k@lists.infradead.org>
+To:     <ath10k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
 Subject: [PATCH] ath10k: fix memory overwrite of the WoWLAN wakeup packet pattern
-Date:   Tue, 21 Dec 2021 22:10:20 -0500
-Message-ID: <20211222031020.25382-1-quic_wgong@quicinc.com>
+Date:   Tue, 21 Dec 2021 22:13:47 -0500
+Message-ID: <20211222031347.25463-1-quic_wgong@quicinc.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
