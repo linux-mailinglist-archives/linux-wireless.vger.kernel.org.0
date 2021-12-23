@@ -2,74 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49AC947E605
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 16:50:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6355947E65C
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 17:29:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244302AbhLWPuD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Dec 2021 10:50:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36156 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244269AbhLWPuB (ORCPT
+        id S1349036AbhLWQ3B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Dec 2021 11:29:01 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:57796 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240046AbhLWQ3A (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Dec 2021 10:50:01 -0500
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21757C061757;
-        Thu, 23 Dec 2021 07:50:01 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id y70so7661076iof.2;
-        Thu, 23 Dec 2021 07:50:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=62a8WqCVCfLtKcBuPYIIPd3ieisksyyskCcARTtW33c=;
-        b=N+ENe7/Sg0yz+UQJF0BcJ05vwJhcPh2IrxxSASrH29AvgzimI23igkrL5cFygzqExW
-         FV5IvR/w+OXFWvbbRldc51dUm2xbRXJ9jdUoU5DfWSSXjtqDutonMDjtNTqL2nYeSP1a
-         P+g6+P9huB/mz8A0j5XXPaziZBiugm8n09euRa1RsdXMd1P0gO0Nxpoth1jAV8wewtZn
-         LSJPFtyC8DKOxSFThmvjKKkojq9Rltd5Jm38PHbdyNThKRzXrcis0ltNDZVMaQLIGTLI
-         bz9WmPkrEJP4uzxmhWHZT/TgyfrOeOQE56eFpytrOx4v0rGfqza8TYNEjbT1S07r9BGH
-         +klw==
+        Thu, 23 Dec 2021 11:29:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1640276939;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=uJOgwGjirTFzn7tlsminzBCCoKOlNNhzzWyCm3307/w=;
+        b=edD64RghMPskuFlRlIv/3LnRyC96f5U4ZbFWILq8sG7yxXRG+8+F3uLCVZCHlWC7q4ImP7
+        YXpeOLft81iETApWAX/LR46KeHEmWxDo3Vq9XC0BWe3gZsnlx0d0Cq6ID+VLhDRu+B4/S1
+        TzBKlS6Jc6DEHWFP0kMewhejKDodaE8=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-660-qSelDCP6OV6Hc6Oh_I5CxQ-1; Thu, 23 Dec 2021 11:28:58 -0500
+X-MC-Unique: qSelDCP6OV6Hc6Oh_I5CxQ-1
+Received: by mail-qv1-f70.google.com with SMTP id ib7-20020a0562141c8700b0040812bc4425so4973351qvb.16
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Dec 2021 08:28:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=62a8WqCVCfLtKcBuPYIIPd3ieisksyyskCcARTtW33c=;
-        b=s0fp+bFl+1/Hh3s69nj29rGeIJiADOpINtb2N7+oND3f1vaGGjOeKhywo0Ahgu7KcE
-         fGPoRctAZ5krJwhFtG91CLkR5pobot39iu7NfeSdc9Qu7f86fjTwiQpPSQi6KDuNwSdc
-         vNcAjpl2sDeCd+nRXEflK7GNZZMhaNNNsZU0u+qmFQ2QRgZVNPJUvkpM/L72ee0mAw+Q
-         3Qvfz1AYVrq+mdXTHJRyaiZ5Ya+D/xCgtzi8N4JLRf8WSirfl4oqBjL5NLZ6bFQavA2m
-         NoJ/iAsuWx82AxgwI0xGe3RDcjeKN3yrpJlu6m2h50GTpiWEa+Jad4E+fWjB9CP4pVfB
-         pUPw==
-X-Gm-Message-State: AOAM5337G6N7pmTSPR6pLJN4bbso/UsqFNq0uYPArCf1OUJuRItkEMHy
-        Bsm9jhZldYDlNpvs21fmtvnDLMEOpsXpMXVhb3U=
-X-Google-Smtp-Source: ABdhPJwEbqd7uZYcmlny31sQLctCH/pTjM8DqTv5mP5ne+ZG4nSoE+qxJfsYeEGP+lBa9W3471ggxfnncPuM/ikFRVc=
-X-Received: by 2002:a05:6602:2a4d:: with SMTP id k13mr1407242iov.133.1640274600493;
- Thu, 23 Dec 2021 07:50:00 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=uJOgwGjirTFzn7tlsminzBCCoKOlNNhzzWyCm3307/w=;
+        b=kjXdsRDrzey6PiXU+Us7rmc9OGOGd7i/f8nSh+J9aif+lXHVXCblSkIz1g5HhUXyNS
+         UX3XN8aTDYVFb05NbN44wCe/sPrjbCM1IXh3D5pZJTPyvFLtQnRGECU2GMbsX5CM75Jd
+         qARCoIt0eD4w1+yFZWsDA6tqYBrMigE6WT6x7ow4iRqrIMve5SnEbgNr0QuMjsuFm7RH
+         Xl74xcWspe4nWJEKl+J206vAr4kA9RNhk7bBx//4WL9P5rKlJ09Gq82miUS7IJEcUBPI
+         V3dIPalkTo9PhRQYFwtIWvtOYqX3nIgpK/OVjdVXNPUoDPPRb1JWMbFH21ij+3rqN7M2
+         qFRg==
+X-Gm-Message-State: AOAM531s2a3X9PpZ2rCUi7TS5pXyzUk0zV1mLZ3X+TlP5p1MjJsHDslA
+        g5FAEWK1xMNfpeee/ieITq52SuqtymfcFoN/SLjwXOKA8DSdyL1iRWlZUY/FVQbzKaY09WmBS2x
+        +me60zmSvjdF3VKKsHmSUgLkDgH0=
+X-Received: by 2002:a37:a8cc:: with SMTP id r195mr1907019qke.480.1640276938440;
+        Thu, 23 Dec 2021 08:28:58 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwzpz9zm2A3nxoNm6dr+ZZ7zHfR2tVjNN8kjrl0r7RnwHfLx6ohxoG8UtvwJHnYzNd5uok2bw==
+X-Received: by 2002:a37:a8cc:: with SMTP id r195mr1906996qke.480.1640276938135;
+        Thu, 23 Dec 2021 08:28:58 -0800 (PST)
+Received: from localhost.localdomain.com (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id u11sm4743795qtw.29.2021.12.23.08.28.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Dec 2021 08:28:57 -0800 (PST)
+From:   trix@redhat.com
+To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
+        nathan@kernel.org, ndesaulniers@google.com, linville@tuxdriver.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] mac80211: initialize variable have_higher_than_11mbit
+Date:   Thu, 23 Dec 2021 08:28:48 -0800
+Message-Id: <20211223162848.3243702-1-trix@redhat.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-References: <20211214223901.1.I777939e0ef1e89872d4ab65340f3fd756615a047@changeid>
- <c156c75f-5797-917c-a8f7-ad7620903bf1@nbd.name>
-In-Reply-To: <c156c75f-5797-917c-a8f7-ad7620903bf1@nbd.name>
-From:   Dave Taht <dave.taht@gmail.com>
-Date:   Thu, 23 Dec 2021 07:49:48 -0800
-Message-ID: <CAA93jw7iF6SD+qbASxNspxvydNOz71GirmGqref-3uOmbRvMBw@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: enable threaded napi on ath10k driver
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Abhishek Kumar <kuabhs@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>, briannorris@chromium.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        dianders@chromium.org, pillair@codeaurora.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        Linux Kernel Network Developers <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-what is your definition "Good results"? I would really love it if I
-could get back more flent benchmarks like this one:
+From: Tom Rix <trix@redhat.com>
 
-https://forum.openwrt.org/t/aql-and-the-ath10k-is-lovely/59002
+Clang static analysis reports this warnings
 
-As the ath10k has cost me more hair and time than I care to think about.
+mlme.c:5332:7: warning: Branch condition evaluates to a
+  garbage value
+    have_higher_than_11mbit)
+    ^~~~~~~~~~~~~~~~~~~~~~~
+
+have_higher_than_11mbit is only set to true some of the time in
+ieee80211_get_rates() but is checked all of the time.  So
+have_higher_than_11mbit needs to be initialized to false.
+
+Fixes: 5d6a1b069b7f ("mac80211: set basic rates earlier")
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ net/mac80211/mlme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 51f55c4ee3c6e..766cbbc9c3a72 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5279,7 +5279,7 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 	 */
+ 	if (new_sta) {
+ 		u32 rates = 0, basic_rates = 0;
+-		bool have_higher_than_11mbit;
++		bool have_higher_than_11mbit = false;
+ 		int min_rate = INT_MAX, min_rate_index = -1;
+ 		const struct cfg80211_bss_ies *ies;
+ 		int shift = ieee80211_vif_get_shift(&sdata->vif);
+-- 
+2.26.3
+
