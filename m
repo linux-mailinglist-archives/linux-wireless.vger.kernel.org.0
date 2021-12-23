@@ -2,89 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E892D47DF21
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 07:41:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0333F47DF39
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 07:58:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346651AbhLWGli (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Dec 2021 01:41:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54464 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232194AbhLWGlh (ORCPT
+        id S1346670AbhLWG60 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Dec 2021 01:58:26 -0500
+Received: from mailgw01.mediatek.com ([60.244.123.138]:48610 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1346667AbhLWG6Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Dec 2021 01:41:37 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A66F9C061401;
-        Wed, 22 Dec 2021 22:41:37 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A64A261DDF;
-        Thu, 23 Dec 2021 06:41:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1E7C36AE5;
-        Thu, 23 Dec 2021 06:41:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640241696;
-        bh=3pHRiHTLFloKW3FWxmNCBEl0jnX9gsNiH0b3CVJmuMM=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=YTB8gLXS7QmvKsOO/qXPp4xLAOAo3fmKkGg1gsdru+gMo1y/4y3tlGs5p1ifo0s3+
-         LVpuDsrtiXKL5BBHcFCGferJ74jKaTpVH21Kmu8OlJHQC3EUdu8fu/8TrPNfKv+dmO
-         nRDUvMwkUsRavXtzBBtqyrfIO4j4DmTbXz02VYvNBouOdKSo0BuIigeYZETcuMYS45
-         srnlaFEKwqQxlajnGaOzh0RTwkOlTQSkdow55MShmQJN3HZAadp04xine4nihuOI44
-         3uIx2p9jyHw0aRYHGr0n/ayobwiPu6RCzq4l9ttJb5MRZ9BZ3lRLMBoG06MDOay74k
-         K10VF2NNnPvhA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     <Ajay.Kathat@microchip.com>
-Cc:     <davidm@egauge.net>, <Claudiu.Beznea@microchip.com>,
-        <davem@davemloft.net>, <kuba@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 00/50] wilc1000: rework tx path to use sk_buffs throughout
-References: <20211223011358.4031459-1-davidm@egauge.net>
-        <adce9591-0cf2-f771-25b9-2eebea05f1bc@microchip.com>
-Date:   Thu, 23 Dec 2021 08:41:30 +0200
-In-Reply-To: <adce9591-0cf2-f771-25b9-2eebea05f1bc@microchip.com> (Ajay
-        Kathat's message of "Thu, 23 Dec 2021 06:16:17 +0000")
-Message-ID: <87a6grx1ph.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 23 Dec 2021 01:58:25 -0500
+X-UUID: 231ebd87142148f8a848e05db827f0fd-20211223
+X-UUID: 231ebd87142148f8a848e05db827f0fd-20211223
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
+        (envelope-from <bo.jiao@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 239927267; Thu, 23 Dec 2021 14:58:21 +0800
+Received: from MTKMBS34N1.mediatek.inc (172.27.4.172) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Thu, 23 Dec 2021 14:58:20 +0800
+Received: from MTKCAS32.mediatek.inc (172.27.4.184) by MTKMBS34N1.mediatek.inc
+ (172.27.4.172) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 23 Dec
+ 2021 14:58:19 +0800
+Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
+ MTKCAS32.mediatek.inc (172.27.4.170) with Microsoft SMTP Server id
+ 15.0.1497.2 via Frontend Transport; Thu, 23 Dec 2021 14:58:18 +0800
+From:   Bo Jiao <bo.jiao@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Xing Song <xing.song@mediatek.com>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix warning: variable 'base' is used uninitialized
+Date:   Thu, 23 Dec 2021 14:58:16 +0800
+Message-ID: <20211223065816.94847-1-bo.jiao@mediatek.com>
+X-Mailer: git-send-email 2.17.0
 MIME-Version: 1.0
 Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<Ajay.Kathat@microchip.com> writes:
+From: Bo Jiao <Bo.Jiao@mediatek.com>
 
-> On 23/12/21 06:44, David Mosberger-Tang wrote:
->> EXTERNAL EMAIL: Do not click links or open attachments unless you
->> know the content is safe
->>
->> OK, so I'm nervous about such a large patch series, but it took a lot
->> of work to break things down into atomic changes.  This should be it
->> for the transmit path as far as I'm concerned.
->
->
-> Thanks David for the efforts to break down the changes. I am still 
-> reviewing and testing the previous series and found some inconsistent 
-> results. I am not sure about the cause of the difference. For some 
-> tests, the throughput is improved(~1Mbps) but for some CI tests, the 
-> throughput is less compared(~1Mbps in same range) to the previous. 
-> Though not observed much difference.
->
-> Now the new patches are added to the same series so it is difficult to 
-> review them in one go.
->
-> I have a request, incase there are new patches please include them in 
-> separate series. Breaking down the patch helps to identify the non 
-> related changes which can go in separate series. The patches(change) may 
-> be related to TX path flow but can go in separate series.
+fix warning: variable 'base' is used uninitialized
 
-Yeah, a thumb of rule is to have around 10-12 patches per patchset. Then
-it's still pretty easy to review them and get them accepted. Of course
-it's not a hard rule, for smaller patches (like here) having more than
-12 is still doable. An also the opposite, with big patches even 10
-patches is too much. But 50 patches is just pure pain for the reviewers :)
+Fixes: 22c2fb9495d3 ("mt76: mt7915: rework dma.c to adapt mt7916 changes")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+index 4106d73..2dc2d6b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+@@ -83,7 +83,7 @@ static void mt7915_dma_config(struct mt7915_dev *dev)
+ static void __mt7915_dma_prefetch(struct mt7915_dev *dev, u32 ofs)
+ {
+ #define PREFETCH(_base, _depth)	((_base) << 16 | (_depth))
+-	u32 base;
++	u32 base = 0;
+ 
+ 	/* prefetch SRAM wrapping boundary for tx/rx ring. */
+ 	mt76_wr(dev, MT_MCUQ_EXT_CTRL(MT_MCUQ_FWDL) + ofs, PREFETCH(0x0, 0x4));
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.18.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
