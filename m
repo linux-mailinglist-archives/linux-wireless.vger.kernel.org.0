@@ -2,49 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1714447DCFA
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:15:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF2C47DCD3
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:15:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346429AbhLWBPW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 20:15:22 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27200 "EHLO
+        id S241991AbhLWBOV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:14:21 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:18272 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346217AbhLWBOo (ORCPT
+        with ESMTP id S1345694AbhLWBON (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 20:14:44 -0500
+        Wed, 22 Dec 2021 20:14:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=yVIQwUE9JRNbIa/ZfSEZSItfnS3OUxif3uKX0p0Ts4Q=;
-        b=rImcg9Iom5wm2dvirQ5mQuphAMZvnGxdeOhd39ze3yjq4jLPi/gxhVf0fOgBnqVwiR2N
-        Qos7mDvDdO1g0HDa6zLKJTwsRBVjLHtZzfdlnDr6lYcP7NZ1ly11vtTxmFsNPyvoWbFHKA
-        vfAdL9L1lUTbIPmJOkyJ0o2Ctt57qfaWDiBMXRxjJcjS7KbhyfbKXxUljMbpDfNV8nd3Zo
-        RIzpiJgXE2zsjf0i/VuLQCOngjIDnhdRhz6SzXHbybtvnxmSmYTRt+Apx0zq8vLhJg7ToJ
-        x8p4hZLjgs9mJpHzl5N1rvFtTSH22JBUsWT40BraJy1Cw0CIQvROShStiVgt1E0w==
-Received: by filterdrecv-75ff7b5ffb-bcbbj with SMTP id filterdrecv-75ff7b5ffb-bcbbj-1-61C3CD5E-1A
-        2021-12-23 01:14:06.714544574 +0000 UTC m=+9687191.029415880
+        s=sgd; bh=8dwPvDwhfyU5dMZPpdOsVTnb3/1u+mRXqp7YaVTNdGU=;
+        b=R3yiLGLs1uZQGXBA5TY6+EOguEXdgO+NFMS9YERcdysDiQ74J09QGW0gtwwaBTwIb3lP
+        14/s3VZ0MrU9V1Esh6nxwkFlnkeAu3oeTqnb0+GCprOZ2Df8Hl+HIRdfh93KlGnbickV4r
+        1rZLqvK+Ryd+uNTMUH0qyT4sXyAUeny5SIYKZWoBM3zVFvoDr62sOI5L3QZ6OSDyNDTNii
+        +jSXr56RBOU3/8NPVBHcv6KWTgdql3C6HQ5pKMM1C2a9ZhBW0ayYJ4xgu3ka1nT/lNMthz
+        wryFmVZf8EqOks5TDp/IJXqehiHzMHQEUeON2RlHmpY5/db5fYfDIguaWdaah8tw==
+Received: by filterdrecv-656998cfdd-mht2v with SMTP id filterdrecv-656998cfdd-mht2v-1-61C3CD5E-18
+        2021-12-23 01:14:06.608787935 +0000 UTC m=+7955208.093419968
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-3-0 (SG)
+        by geopod-ismtpd-5-1 (SG)
         with ESMTP
-        id 2tIlyEXETV22Sdh0w6UE5A
-        Thu, 23 Dec 2021 01:14:06.581 +0000 (UTC)
+        id vPbHODG4Sse8dQwPEkefYg
+        Thu, 23 Dec 2021 01:14:06.453 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 7CD5B7014A3; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
+        id 443A8701397; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 28/50] wilc1000: improve send_packets() a bit
+Subject: [PATCH v2 20/50] wilc1000: eliminate "max_size_over" variable in
+ fill_vmm_table
 Date:   Thu, 23 Dec 2021 01:14:06 +0000 (UTC)
-Message-Id: <20211223011358.4031459-29-davidm@egauge.net>
+Message-Id: <20211223011358.4031459-21-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
 References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvH7VqQfef+8M9fWl+?=
- =?us-ascii?Q?BgjYTNO1iE732BTkQPVhTFQ+A1qQ3TSiRj3VpHa?=
- =?us-ascii?Q?EhNKjRi77SgeRSGIId18kL=2FiLTtApC6YIGYHrDq?=
- =?us-ascii?Q?Cwize2Abcs0LMjt+JU3X0tkPFgv+0SPbyNVd9PH?=
- =?us-ascii?Q?fevK5=2Ff20NZrTOYwsC71kf+k8GJ9ff7JqIi55IT?=
- =?us-ascii?Q?XpVsRQ4+7NefnsnauziXw=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvBovVGGUqsKDfRdCL?=
+ =?us-ascii?Q?g1PJA3t8foKn9E0eDBioSfxjXTPS=2FqEtvMwuU7e?=
+ =?us-ascii?Q?ykaxv403jcXR8Nu5mfoqIItxiNmkjMVxhl4hBfk?=
+ =?us-ascii?Q?qmC0XIYwOtnLhWYccdH5ZTNO9Sl4YHoQfF18jJk?=
+ =?us-ascii?Q?yZOYbbp6ce3kYK9woDOQpgAguuyh73F=2FZA02ZoQ?=
+ =?us-ascii?Q?+ynW4=2FgUiNcP6K4eQZwlA=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -60,52 +61,71 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Improve the documentation and simplify the code a bit.
+This makes the code tighter and easier to understand.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- drivers/net/wireless/microchip/wilc1000/wlan.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/wlan.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 287c0843ba152..033979cc85b43 100644
+index a6064a85140b4..dc6608390591c 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -858,29 +858,26 @@ static int copy_packets(struct wilc *wilc, int entries, u32 *vmm_table,
+@@ -638,7 +638,7 @@ static int fill_vmm_table(const struct wilc *wilc,
+ 	u32 sum;
+ 	u8 ac_preserve_ratio[NQUEUES] = {1, 1, 1, 1};
+ 	u8 *num_pkts_to_add;
+-	bool max_size_over = 0, ac_exist = 0;
++	bool ac_exist = 0;
+ 	int vmm_sz = 0;
+ 	struct sk_buff *tqe_q[NQUEUES];
+ 	struct wilc_skb_tx_cb *tx_cb;
+@@ -648,20 +648,17 @@ static int fill_vmm_table(const struct wilc *wilc,
+ 
+ 	i = 0;
+ 	sum = 0;
+-	max_size_over = 0;
+ 	num_pkts_to_add = ac_desired_ratio;
+ 	do {
+ 		ac_exist = 0;
+-		for (ac = 0; (ac < NQUEUES) && (!max_size_over); ac++) {
++		for (ac = 0; ac < NQUEUES; ac++) {
+ 			if (!tqe_q[ac])
+ 				continue;
+ 
+ 			ac_exist = 1;
+-			for (k = 0; (k < num_pkts_to_add[ac]) &&
+-			     (!max_size_over) && tqe_q[ac]; k++) {
++			for (k = 0; (k < num_pkts_to_add[ac]) && tqe_q[ac]; k++) {
+ 				if (i >= (WILC_VMM_TBL_SIZE - 1)) {
+-					max_size_over = 1;
+-					break;
++					goto out;
+ 				}
+ 
+ 				tx_cb = WILC_SKB_TX_CB(tqe_q[ac]);
+@@ -676,8 +673,7 @@ static int fill_vmm_table(const struct wilc *wilc,
+ 				vmm_sz = ALIGN(vmm_sz, 4);
+ 
+ 				if ((sum + vmm_sz) > WILC_TX_BUFF_SIZE) {
+-					max_size_over = 1;
+-					break;
++					goto out;
+ 				}
+ 				vmm_table[i] = vmm_sz / 4;
+ 				if (tx_cb->type == WILC_CFG_PKT)
+@@ -693,8 +689,8 @@ static int fill_vmm_table(const struct wilc *wilc,
+ 			}
+ 		}
+ 		num_pkts_to_add = ac_preserve_ratio;
+-	} while (!max_size_over && ac_exist);
+-
++	} while (ac_exist);
++out:
+ 	vmm_table[i] = 0x0;
+ 	return i;
  }
- 
- /**
-- * send_packets() - Send packets to the chip
-+ * send_packets() - send the transmit buffer to the chip
-  * @wilc: Pointer to the wilc structure.
-- * @len: The length of the buffer containing the packets to be sent to
-- *	the chip.
-+ * @len: The length of the buffer containing the packets to be to the chip.
-  *
-- * Send the packets in the VMM table to the chip.
-+ * Send the packets in the transmit buffer to the chip.
-  *
-  * Context: The bus must have been acquired.
-  *
-- * Return:
-- *	Negative number on error, 0 on success.
-+ * Return: Negative number on error, 0 on success.
-  */
- static int send_packets(struct wilc *wilc, int len)
- {
- 	const struct wilc_hif_func *func = wilc->hif_func;
- 	int ret;
--	u8 *txb = wilc->tx_buffer;
- 
- 	ret = func->hif_clear_int_ext(wilc, ENABLE_TX_VMM);
- 	if (ret)
- 		return ret;
- 
--	return func->hif_block_tx_ext(wilc, 0, txb, len);
-+	return func->hif_block_tx_ext(wilc, 0, wilc->tx_buffer, len);
- }
- 
- int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
 -- 
 2.25.1
 
