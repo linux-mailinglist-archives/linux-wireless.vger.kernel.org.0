@@ -2,49 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B70EC47DD0B
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB7CC47DCF4
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:15:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345935AbhLWBPj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 20:15:39 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27522 "EHLO
+        id S1346285AbhLWBPQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:15:16 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27186 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346278AbhLWBOz (ORCPT
+        with ESMTP id S1346212AbhLWBOj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 20:14:55 -0500
+        Wed, 22 Dec 2021 20:14:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=K3gvUb3OfxsaOhe9tlq0tGnjjw1iUXxBhXljWscLEpA=;
-        b=EyL6nlfgr9jVdtVhMT6au8qt34Za+LdjzKKipZCKpqlgz6G1wl5F3+25Hbw0xEDLe2wu
-        FrihvBjOH6zXmTgA3DRnJftUG5FCjuj5rCxeHcC251pZQuyGFJCwfV5v7gDc1e/y/avUCB
-        0UO1lhho1nSvG87xayM8xWqixfBePLN9481Ei9NJQ53z6p07N2K4bk1XHoWIKjhnDSnikd
-        6bOlQ5ulnfrVrLW5DvvVKo4ESFryeS2RHRZcYuHoU/LyoDffXjFEEavVG+/Ri/6snSR7Ul
-        NGt1Q+S0RbMcoGGgtYpyydfsRRVmyTHAieajpg3t3EgvBkqMFC0e4bMSQph529TA==
-Received: by filterdrecv-75ff7b5ffb-ndqvq with SMTP id filterdrecv-75ff7b5ffb-ndqvq-1-61C3CD5F-F
-        2021-12-23 01:14:07.170941284 +0000 UTC m=+9687225.771336929
+        s=sgd; bh=6N7dj4qJUKtMM/lJa8tbpsQXTpV3hh508uNFMCeLTmw=;
+        b=vr+cyHY2pvPEH42hDN8WIQdKRBy7fQiQTie0z7EgQ7iJcIbs1LSTZYR7mEUfwFqWDZDh
+        5eh39xKSQJsPmXg0qm9SZecMP4+N2M3Dsp4XOZI2ureZ36yZWB1L4zPYkQBy/FIabKx85L
+        WhAbvaYhcxqjFoUA6Ig/vFhMhvANjYyAoNnQjaqctzadT252UF1LaXebuRIj3dtOt3jU4y
+        sTPETVrmyUPUDm2UDsUewXIa4bqSiZoVm/LnZcQiqsfCiIGH4mydq+a9v6GhInK6h8K6dA
+        oGM7H7iq6m9YlvrN9ndnefOeUCQExmMlHsHa0kGZvOn4g0oWBiFMo3zSggd5ZCTg==
+Received: by filterdrecv-64fcb979b9-4vrtk with SMTP id filterdrecv-64fcb979b9-4vrtk-1-61C3CD5E-33
+        2021-12-23 01:14:06.639603191 +0000 UTC m=+8644640.706394453
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-2-0 (SG)
+        by geopod-ismtpd-4-1 (SG)
         with ESMTP
-        id IA6WsOnwRGSzJ75Zl9-9BQ
-        Thu, 23 Dec 2021 01:14:07.020 +0000 (UTC)
+        id XtinkhGEQb2hIYycvpVgXQ
+        Thu, 23 Dec 2021 01:14:06.505 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id EE86B70152F; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
+        id 6AE00701474; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 46/50] wilc1000: remove duplicate CRC calculation code
+Subject: [PATCH v2 26/50] wilc1000: reduce amount of time ack_filter_lock is
+ held
 Date:   Thu, 23 Dec 2021 01:14:07 +0000 (UTC)
-Message-Id: <20211223011358.4031459-47-davidm@egauge.net>
+Message-Id: <20211223011358.4031459-27-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
 References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvCNKwj+DYMFZnlIhP?=
- =?us-ascii?Q?R3K1iY1ejP=2F1ZZy1gRWB3YD8=2FXZCKVGtzkSucLw?=
- =?us-ascii?Q?WRtW7fomsuWltgqRjiEBKbxvD+9e=2Fp3SVxfMklN?=
- =?us-ascii?Q?vxmp5HYNKcSfaHCVGYdDwC5PyAQ4OxlyPw5qSPD?=
- =?us-ascii?Q?Kq2fDOn07kQOK5eo2M3g9WgUc4R6bC+VPaYPKgG?=
- =?us-ascii?Q?GGujWFBIHi6A2pTvhh5Cw=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvGGquUt9ycIje3WqF?=
+ =?us-ascii?Q?lCafr+1TG2O9DDHkxjFYdcB99nE90QGpbToWeya?=
+ =?us-ascii?Q?nt9YrHssVEPslyq=2FMdXIm7BTKB7tj7ax2jMM05S?=
+ =?us-ascii?Q?LIi0LcpA=2FSxe1vAx+zbi8Eyes=2FzaGoUKc0SUoFl?=
+ =?us-ascii?Q?uThxFZqYvSHKB7zUWXTBCOsTnba0bAg+4MhPYs8?=
+ =?us-ascii?Q?2C88KBx8wO0SBtGd8K9Mg=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -60,55 +61,59 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Factor two copies of the same calculation into a single instance.
+In tcp_process(), only hold the ack_filter_lock while accessing the
+ack_filter state.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- drivers/net/wireless/microchip/wilc1000/spi.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/wlan.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index 5f73b3d2d2112..189907580d921 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -658,7 +658,7 @@ static int wilc_spi_dma_rw(struct wilc *wilc, u8 cmd, u32 adr, u8 *b, u32 sz)
- 	u8 wb[32], rb[32];
- 	int cmd_len, resp_len;
- 	int retry, ix = 0;
--	u8 crc[2];
-+	u8 crc[2], *crc7;
- 	struct wilc_spi_cmd *c;
- 	struct wilc_spi_rsp_data *r;
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index 81180b2f9f4e1..5ea9129b36925 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -130,15 +130,13 @@ static inline void tcp_process(struct net_device *dev, struct sk_buff *tqe)
+ 	const struct tcphdr *tcp_hdr_ptr;
+ 	u32 ihl, total_length, data_offset;
  
-@@ -673,8 +673,6 @@ static int wilc_spi_dma_rw(struct wilc *wilc, u8 cmd, u32 adr, u8 *b, u32 sz)
- 		c->u.dma_cmd.size[0] = sz >> 8;
- 		c->u.dma_cmd.size[1] = sz;
- 		cmd_len = offsetof(struct wilc_spi_cmd, u.dma_cmd.crc);
--		if (spi_priv->crc7_enabled)
--			c->u.dma_cmd.crc[0] = wilc_get_crc7(wb, cmd_len);
- 	} else if (cmd == CMD_DMA_EXT_WRITE || cmd == CMD_DMA_EXT_READ) {
- 		c->u.dma_cmd_ext.addr[0] = adr >> 16;
- 		c->u.dma_cmd_ext.addr[1] = adr >> 8;
-@@ -683,15 +681,16 @@ static int wilc_spi_dma_rw(struct wilc *wilc, u8 cmd, u32 adr, u8 *b, u32 sz)
- 		c->u.dma_cmd_ext.size[1] = sz >> 8;
- 		c->u.dma_cmd_ext.size[2] = sz;
- 		cmd_len = offsetof(struct wilc_spi_cmd, u.dma_cmd_ext.crc);
--		if (spi_priv->crc7_enabled)
--			c->u.dma_cmd_ext.crc[0] = wilc_get_crc7(wb, cmd_len);
- 	} else {
- 		dev_err(&spi->dev, "dma read write cmd [%x] not supported\n",
- 			cmd);
- 		return -EINVAL;
- 	}
--	if (spi_priv->crc7_enabled)
-+	if (spi_priv->crc7_enabled) {
-+		crc7 = wb + cmd_len;
-+		*crc7 = wilc_get_crc7(wb, cmd_len);
- 		cmd_len += 1;
+-	mutex_lock(&vif->ack_filter_lock);
+-
+ 	if (eth_hdr_ptr->h_proto != htons(ETH_P_IP))
+-		goto out;
++		return;
+ 
+ 	ip_hdr_ptr = buffer + ETH_HLEN;
+ 
+ 	if (ip_hdr_ptr->protocol != IPPROTO_TCP)
+-		goto out;
++		return;
+ 
+ 	ihl = ip_hdr_ptr->ihl << 2;
+ 	tcp_hdr_ptr = buffer + ETH_HLEN + ihl;
+@@ -150,6 +148,9 @@ static inline void tcp_process(struct net_device *dev, struct sk_buff *tqe)
+ 
+ 		seq_no = ntohl(tcp_hdr_ptr->seq);
+ 		ack_no = ntohl(tcp_hdr_ptr->ack_seq);
++
++		mutex_lock(&vif->ack_filter_lock);
++
+ 		for (i = 0; i < f->tcp_session; i++) {
+ 			u32 j = f->ack_session_info[i].seq_num;
+ 
+@@ -163,10 +164,9 @@ static inline void tcp_process(struct net_device *dev, struct sk_buff *tqe)
+ 			add_tcp_session(vif, 0, 0, seq_no);
+ 
+ 		add_tcp_pending_ack(vif, ack_no, i, tqe);
+-	}
+ 
+-out:
+-	mutex_unlock(&vif->ack_filter_lock);
++		mutex_unlock(&vif->ack_filter_lock);
 +	}
+ }
  
- 	resp_len = sizeof(*r);
- 
+ static void wilc_wlan_tx_packet_done(struct sk_buff *tqe, int status)
 -- 
 2.25.1
 
