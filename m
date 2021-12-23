@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EC4647DD3A
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B51547DCF2
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:15:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346014AbhLWBQi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 20:16:38 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:18696 "EHLO
+        id S1346313AbhLWBPP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:15:15 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27138 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345838AbhLWBOX (ORCPT
+        with ESMTP id S1346204AbhLWBOh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 20:14:23 -0500
+        Wed, 22 Dec 2021 20:14:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=yps8dWzMUKU9RpPhjdHxIE2MYXvMyKmHNVpEu8C+Av8=;
-        b=YDmkak+OJEFHYXe/bj0Hi6XL2ELKUc4fCQN0z5nFM2oYV6GPyJxBnSq9OPl6vD1wKRHA
-        cOcYfPSCr3Eckn5sQ4WMg/PwZIf6yjIPG9KgH8qSbL3TfcKGTfo3mIrcm/KuaUg+Fww3ch
-        M03YDD0sBTbfHuCZFpFHard5V3ByPZK66/6RACPSdLgc6lgNBuBOu38VdUbEfrIUR4jNXc
-        WVC+ivPgLdV6s7LL1FPa1EHQ5Pu05r+Ry5C7lBNumIwlMeHLccJ7hl0A1x2uon7n6DF4ZP
-        vlRBywOeK3Atj11UpaYoWdlKgueDtgXMsgbDFpwAzU9oVNjYWTRd9iiBK9jUQG2Q==
-Received: by filterdrecv-656998cfdd-phncc with SMTP id filterdrecv-656998cfdd-phncc-1-61C3CD5F-4
-        2021-12-23 01:14:07.130091855 +0000 UTC m=+7955208.316338637
+        s=sgd; bh=/EyEEryj91qJLUiXheTiSQXnfpShGhTXZyiF3Fj6NOE=;
+        b=q/ktgvMgsfoIZL1oIY5FDcoHRa952fgBF/tSQCzetaW6A6iSaECMJBZjNeNkj2K3OeMP
+        nEW33KEzv4pfCdNxtFl7i+KCLMPH2usx8VFOH7uGiFc8MOMwVNJRqlOpSMgSljRda9t5fF
+        ulq7AzGlvmrw75pKEuGZTRhlxn+//l3Ay0JbDTQ2O+hDJCDgNMKIOsgLTQpj/Tc2IKOTEV
+        oZyYAt/d/fL7x61CNKA8SAFggJJ8pjcyDcImy1wO91cMO+pBd+kkzmjlds1WxsxCsUFfv9
+        Lqn0BQ+8JRP15/3fokjqzAmKPrTIJ01RWskrvTm9Ycdj6tATTfz8Hl+83X6xAKXQ==
+Received: by filterdrecv-64fcb979b9-zwvj5 with SMTP id filterdrecv-64fcb979b9-zwvj5-1-61C3CD5E-30
+        2021-12-23 01:14:06.829827724 +0000 UTC m=+8644582.987173852
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-6-0 (SG)
+        by geopod-ismtpd-5-1 (SG)
         with ESMTP
-        id cnVlM2Y7Qw-Hv8JFSNpx_A
-        Thu, 23 Dec 2021 01:14:06.990 +0000 (UTC)
+        id NjOZgUDzQ4eb6TiIrCXIPw
+        Thu, 23 Dec 2021 01:14:06.686 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 20C9E700BFC; Wed, 22 Dec 2021 18:14:06 -0700 (MST)
+        id B08E5700394; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 50/50] wilc1000: add module parameter
- "disable_zero_copy_tx" to SPI driver
+Subject: [PATCH v2 34/50] wilc1000: restructure wilc-wlan_handle_txq() for
+ clarity
 Date:   Thu, 23 Dec 2021 01:14:07 +0000 (UTC)
-Message-Id: <20211223011358.4031459-51-davidm@egauge.net>
+Message-Id: <20211223011358.4031459-35-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
 References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvNU=2FAiSwPXGwNeF4R?=
- =?us-ascii?Q?8pktv6qIQV9=2FvaYSYgd73qzUc+WcF+3KTLAn0Dz?=
- =?us-ascii?Q?BHXeSqbDC7G4R7ZfYu1EAHyy3Sq2tG4eerFoLwP?=
- =?us-ascii?Q?WgQBlB4hho+sXfAoa07rJ+kJnUztYPjGRmA0wp=2F?=
- =?us-ascii?Q?JGqfOozcJ7djVy2VWuSHpeE4jDG+RBqGPUIpD5o?=
- =?us-ascii?Q?+1b5h5OMzvrxVFltrvutA=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvPrUup0j1uxIpwHi0?=
+ =?us-ascii?Q?Qdt824iAYJZBYYzjLIm4TfOHHZ+R40nsdoqq+2g?=
+ =?us-ascii?Q?FdQlY5Su9zFVWJ0l69QnER98Ee0W5Awk9UqVX3U?=
+ =?us-ascii?Q?0fDlmKgeieJZYRO=2Fsn8zFdtba5bzgSuJaUgD3G8?=
+ =?us-ascii?Q?Tc1LGc2TnRWsWYSaWyFzd3Pg=2FFeJbCl7dse0pcF?=
+ =?us-ascii?Q?2D+u6Ag4CRsnGelT1QuPA=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -61,66 +61,85 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add a module parameter to disable the zero-copy transmit path.  This
-is useful for testing and performance measurement, for example.
+This restructures the function to make it much clearer how the bus
+hand-off works.  The patch is unfortunately a bit difficult to read,
+but the final code is clearer and eliminates some gotos.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- drivers/net/wireless/microchip/wilc1000/spi.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ .../net/wireless/microchip/wilc1000/wlan.c    | 43 ++++++++-----------
+ 1 file changed, 19 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index 8d94f111ffc49..588cec326a74b 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -31,6 +31,11 @@ MODULE_PARM_DESC(enable_crc16,
- 		 "\t\t\tData transfers can be large and the CPU-cycle cost\n"
- 		 "\t\t\tof enabling this may be substantial.");
- 
-+static bool disable_zero_copy_tx;
-+module_param(disable_zero_copy_tx, bool, 0644);
-+MODULE_PARM_DESC(disable_zero_copy_tx,
-+		 "Disable zero-copy when sending packets.");
-+
- /*
-  * For CMD_SINGLE_READ and CMD_INTERNAL_READ, WILC may insert one or
-  * more zero bytes between the command response and the DATA Start tag
-@@ -41,7 +46,7 @@ MODULE_PARM_DESC(enable_crc16,
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index 64497754a36b1..803d35b18d2e0 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -818,8 +818,8 @@ static int send_vmm_table(struct wilc *wilc,
+  * Context: The txq_add_to_head_cs mutex must still be held when
+  * calling this function.
+  *
+- * Return:
+- *	Negative number on error, 0 on success.
++ * Return: Number of bytes copied to the transmit buffer (always
++ *	non-negative).
   */
- #define WILC_SPI_RSP_HDR_EXTRA_DATA	8
+ static int copy_packets(struct wilc *wilc, int entries, u32 *vmm_table,
+ 			u8 *vmm_entries_ac)
+@@ -908,7 +908,7 @@ static int send_packets(struct wilc *wilc, int len)
  
--static const struct wilc_hif_func wilc_hif_spi;
-+static struct wilc_hif_func wilc_hif_spi;
+ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ {
+-	int vmm_table_len, entries, len;
++	int vmm_table_len, entries;
+ 	u8 vmm_entries_ac[WILC_VMM_TBL_SIZE];
+ 	int ret = 0;
+ 	u32 vmm_table[WILC_VMM_TBL_SIZE];
+@@ -931,29 +931,24 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
  
- static int wilc_spi_reset(struct wilc *wilc);
- static int wilc_spi_write_sk_buffs(struct wilc *wilc, u32 addr,
-@@ -254,6 +259,9 @@ static int wilc_bus_probe(struct spi_device *spi)
- 	if (!spi_priv)
- 		return -ENOMEM;
+ 	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
  
-+	if (!disable_zero_copy_tx)
-+		wilc_hif_spi.hif_sk_buffs_tx = wilc_spi_write_sk_buffs;
-+
- 	ret = wilc_cfg80211_init(&wilc, &spi->dev, WILC_HIF_SPI, &wilc_hif_spi);
- 	if (ret)
- 		goto free;
-@@ -1424,7 +1432,7 @@ static int wilc_spi_sync_ext(struct wilc *wilc, int nint)
- }
+-	ret = send_vmm_table(wilc, vmm_table_len, vmm_table);
+-	if (ret <= 0) {
+-		if (ret == 0)
+-			/* No VMM space available in firmware.  Inform
+-			 * caller to retry later.
+-			 */
+-			ret = WILC_VMM_ENTRY_FULL_RETRY;
+-		goto out_release_bus;
+-	}
+-
+-	release_bus(wilc, WILC_BUS_RELEASE_ONLY);
+-
+-	entries = ret;
+-	len = copy_packets(wilc, entries, vmm_table, vmm_entries_ac);
+-	if (len <= 0)
+-		goto out_unlock;
+-
+-	acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
++	entries = send_vmm_table(wilc, vmm_table_len, vmm_table);
  
- /* Global spi HIF function table */
--static const struct wilc_hif_func wilc_hif_spi = {
-+static struct wilc_hif_func wilc_hif_spi = {
- 	.hif_init = wilc_spi_init,
- 	.hif_deinit = wilc_spi_deinit,
- 	.hif_read_reg = wilc_spi_read_reg,
-@@ -1436,7 +1444,6 @@ static const struct wilc_hif_func wilc_hif_spi = {
- 	.hif_read_size = wilc_spi_read_size,
- 	.hif_block_tx_ext = wilc_spi_write,
- 	.hif_block_rx_ext = wilc_spi_read,
--	.hif_sk_buffs_tx = wilc_spi_write_sk_buffs,
- 	.hif_sync_ext = wilc_spi_sync_ext,
- 	.hif_reset = wilc_spi_reset,
- };
+-	ret = send_packets(wilc, len);
++	release_bus(wilc, (entries > 0 ?
++			   WILC_BUS_RELEASE_ONLY :
++			   WILC_BUS_RELEASE_ALLOW_SLEEP));
+ 
+-out_release_bus:
+-	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
++	if (entries <= 0) {
++		ret = entries;
++	} else {
++		ret = copy_packets(wilc, entries, vmm_table, vmm_entries_ac);
++		if (ret > 0) {
++			acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
++			ret = send_packets(wilc, ret);
++			release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
++		}
++	}
++	if (ret >= 0 && entries < vmm_table_len)
++		ret = WILC_VMM_ENTRY_FULL_RETRY;
+ 
+ out_unlock:
+ 	mutex_unlock(&wilc->txq_add_to_head_cs);
 -- 
 2.25.1
 
