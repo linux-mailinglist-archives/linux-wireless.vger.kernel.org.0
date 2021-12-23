@@ -2,82 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D493F47DC5A
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 01:50:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE25647DD04
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238456AbhLWAuM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 19:50:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33340 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238150AbhLWAuM (ORCPT
+        id S1345848AbhLWBOH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:14:07 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:17728 "EHLO
+        o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235345AbhLWBOG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 19:50:12 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A6A6C061574;
-        Wed, 22 Dec 2021 16:50:12 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 02B7CB81F47;
-        Thu, 23 Dec 2021 00:50:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BABEAC36AEA;
-        Thu, 23 Dec 2021 00:50:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640220609;
-        bh=hMkExGW3xLUwd0qRah6sMhBW5wuhCL8RWHxF+ccCF70=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=NBUjKFQXLUuCjL1uYrahsFFsYUJPqklyF0sahvX26hIwC7tzLcHtdvhxOU1Ic0iS1
-         +5KPZB79VkNJZTdeoe6AoIqF6xDaNTMs6yGd7mj3KFVaNLZtReKYP+mdSBCdG/VHPg
-         R2dB/nDodJ1CA9eSlgJv31MrjfJe0GGbnW3tOZoCr1PYED7T0XfCmjDQoDs8qBlUOk
-         Ep+tsGfVAFGfDmwRjJQAZ+lO5F/0kGm14UqEFEqDKXnI9r7UYWBS7hxzSDDdTPWYv8
-         6qz16BAaCVifHDIu/J2PH5ZwezynzuBwIdNs28+83gkwrrGZ5n1f5Hugon+IpZzJ5s
-         4+g4zMwnELTrQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A2E8BFE55A6;
-        Thu, 23 Dec 2021 00:50:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Wed, 22 Dec 2021 20:14:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
+        h=from:subject:in-reply-to:references:mime-version:to:cc:
+        content-transfer-encoding:content-type;
+        s=sgd; bh=SmrKBnVEuSa1Juw5SAAEJzj60ijmoTkRxcpcsF5nTSA=;
+        b=YzSVNjRk+pvvM/BP2KyqNRbFcAtzJzqrV6h52ohmxR9Ww55s/6LALy6sVHvjEUv4TYMD
+        fQ4LVwp3Ly2gngrVfmzWb+ZGvO4MCjEzzPo9HB2XHuQocnkPkqtu88vpwBo6iImkLrFttH
+        OhTrn4ii0s2x1DSGx5pRCs2qRwMvNGeZ/ODXAuRw8sdB8GxHJzUft8kDY5V0IJwp8jz8a0
+        hiMNwVZplJdRMiq0TMyz9k4i7tAHzrNatBuuO2HlRCQmOkNBlHygcafhBxxIdZ8deNw/Nk
+        towjwgWcVKCKpvwD0X8DIpWpEaR03lizF0ufxN49H9g7NE8iVQ1IpCYQbL1ks2+Q==
+Received: by filterdrecv-64fcb979b9-tjknx with SMTP id filterdrecv-64fcb979b9-tjknx-1-61C3CD5D-25
+        2021-12-23 01:14:05.75681832 +0000 UTC m=+8644588.560336792
+Received: from pearl.egauge.net (unknown)
+        by geopod-ismtpd-4-0 (SG)
+        with ESMTP
+        id s_DzTIWtT-iUGkJKJ4u1tg
+        Thu, 23 Dec 2021 01:14:05.581 +0000 (UTC)
+Received: by pearl.egauge.net (Postfix, from userid 1000)
+        id D188C70054A; Wed, 22 Dec 2021 18:14:04 -0700 (MST)
+From:   David Mosberger-Tang <davidm@egauge.net>
+Subject: [PATCH v2 01/50] wilc1000: don't hold txq_spinlock while initializing
+ AC queue limits
+Date:   Thu, 23 Dec 2021 01:14:05 +0000 (UTC)
+Message-Id: <20211223011358.4031459-2-davidm@egauge.net>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
+References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 1/2] codel: remove unnecessary sock.h include
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <164022060966.21673.3814438675172430394.git-patchwork-notify@kernel.org>
-Date:   Thu, 23 Dec 2021 00:50:09 +0000
-References: <20211221193941.3805147-1-kuba@kernel.org>
-In-Reply-To: <20211221193941.3805147-1-kuba@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, kvalo@kernel.org,
-        pkshih@realtek.com, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
+X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvFFgikHEO6TrfMipf?=
+ =?us-ascii?Q?R5df56socHUWL2usMYlQYxi9mNZe3jUS8vaJZg3?=
+ =?us-ascii?Q?E+EW8ovRMMV2T=2Fwpc1krcS5fB6jrNH91fVEvmXw?=
+ =?us-ascii?Q?fCFc0qA2xa4gl+xAx7Wqx7j3CAOPc89Afa7aXeG?=
+ =?us-ascii?Q?rR+8sjKRZQz0+yuTZPgQw3hxhyDUgwCV+6pg6+b?=
+ =?us-ascii?Q?JWCAvPelpJDy4p8jwAnBg=3D=3D?=
+To:     Ajay Singh <ajay.kathat@microchip.com>
+Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        David Mosberger-Tang <davidm@egauge.net>
+X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+The wilc_tx_queue_status queue is relatively large and there is
+absolutely no need to initialize it while holding a spinlock.
 
-This series was applied to netdev/net-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
+---
+ .../net/wireless/microchip/wilc1000/netdev.h  |  1 -
+ .../net/wireless/microchip/wilc1000/wlan.c    | 32 +++++++++++--------
+ 2 files changed, 19 insertions(+), 14 deletions(-)
 
-On Tue, 21 Dec 2021 11:39:40 -0800 you wrote:
-> Since sock.h is modified relatively often (60 times in the last
-> 12 months) it seems worthwhile to decrease the incremental build
-> work.
-> 
-> CoDel's header includes net/inet_ecn.h which in turn includes net/sock.h.
-> codel.h is itself included by mac80211 which is included by much of
-> the WiFi stack and drivers. Removing the net/inet_ecn.h include from
-> CoDel breaks the dependecy between WiFi and sock.h.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,1/2] codel: remove unnecessary sock.h include
-    https://git.kernel.org/netdev/net-next/c/15fcb1031178
-  - [net-next,2/2] codel: remove unnecessary pkt_sched.h include
-    https://git.kernel.org/netdev/net-next/c/e6e590445581
-
-You are awesome, thank you!
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net/wireless/microchip/wilc1000/netdev.h
+index a067274c20144..f4fc2cc392bd0 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.h
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
+@@ -202,7 +202,6 @@ struct wilc_tx_queue_status {
+ 	u16 end_index;
+ 	u16 cnt[NQUEUES];
+ 	u16 sum;
+-	bool initialized;
+ };
+ 
+ struct wilc {
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index fb5633a05fd51..c4da14147dd04 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -12,6 +12,8 @@
+ 
+ #define WAKE_UP_TRIAL_RETRY		10000
+ 
++static const u8 factors[NQUEUES] = {1, 1, 1, 1};
++
+ static inline bool is_wilc1000(u32 id)
+ {
+ 	return (id & (~WILC_CHIP_REV_FIELD)) == WILC_1000_BASE_ID;
+@@ -283,10 +285,23 @@ static int wilc_wlan_txq_add_cfg_pkt(struct wilc_vif *vif, u8 *buffer,
+ 	return 1;
+ }
+ 
++static void init_q_limits(struct wilc *wl)
++{
++	struct wilc_tx_queue_status *q = &wl->tx_q_limit;
++	int i;
++
++	for (i = 0; i < AC_BUFFER_SIZE; i++)
++		q->buffer[i] = i % NQUEUES;
++
++	for (i = 0; i < NQUEUES; i++) {
++		q->cnt[i] = AC_BUFFER_SIZE * factors[i] / NQUEUES;
++		q->sum += q->cnt[i];
++	}
++	q->end_index = AC_BUFFER_SIZE - 1;
++}
++
+ static bool is_ac_q_limit(struct wilc *wl, u8 q_num)
+ {
+-	u8 factors[NQUEUES] = {1, 1, 1, 1};
+-	u16 i;
+ 	unsigned long flags;
+ 	struct wilc_tx_queue_status *q = &wl->tx_q_limit;
+ 	u8 end_index;
+@@ -294,17 +309,6 @@ static bool is_ac_q_limit(struct wilc *wl, u8 q_num)
+ 	bool ret = false;
+ 
+ 	spin_lock_irqsave(&wl->txq_spinlock, flags);
+-	if (!q->initialized) {
+-		for (i = 0; i < AC_BUFFER_SIZE; i++)
+-			q->buffer[i] = i % NQUEUES;
+-
+-		for (i = 0; i < NQUEUES; i++) {
+-			q->cnt[i] = AC_BUFFER_SIZE * factors[i] / NQUEUES;
+-			q->sum += q->cnt[i];
+-		}
+-		q->end_index = AC_BUFFER_SIZE - 1;
+-		q->initialized = 1;
+-	}
+ 
+ 	end_index = q->end_index;
+ 	q->cnt[q->buffer[end_index]] -= factors[q->buffer[end_index]];
+@@ -1484,6 +1488,8 @@ int wilc_wlan_init(struct net_device *dev)
+ 		goto fail;
+ 	}
+ 
++	init_q_limits(wilc);
++
+ 	if (!wilc->tx_buffer)
+ 		wilc->tx_buffer = kmalloc(WILC_TX_BUFF_SIZE, GFP_KERNEL);
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 
