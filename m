@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB97647DD40
+	by mail.lfdr.de (Postfix) with ESMTP id 28A1447DD3E
 	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346100AbhLWBQn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 20:16:43 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:18428 "EHLO
+        id S240022AbhLWBQl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:16:41 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:18430 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345807AbhLWBOV (ORCPT
+        with ESMTP id S1345830AbhLWBOW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 20:14:21 -0500
+        Wed, 22 Dec 2021 20:14:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=9GhperGdLp5mSs2oGPGWX3vVh6QZlgVmNWU2J8h4eJY=;
-        b=LDUXjoktAgidrqd0DknbCqj+Cq40xD+T0dA+omHvM5a/4tAsOr8lu85ZnBVyl117D4T1
-        FF/7RavN0zfbhSOk65PFCRePblFoKBm7YovjdXl36Irqi5OE0cZerC77CMMg778yvMHGOA
-        4LQvwb8c/Sa5XuP3gfzg0bWBOzGIC4GeFNSiViaBFUloEd1urrYLDtOBRa8VKL3ZJjDrPe
-        HBXWnwHuUWJxbf9WKQZS2ZbRYEtdF9hZLmGCSMNC9oNE7TvGuLp41zLzEMZkmjB3UaN17Q
-        vAIQJ6EZkyay17ZVb9Lr0l2llKMvaffc9QCNvyD8Ah15pv21Nq8rtulondgJF2Nw==
-Received: by filterdrecv-656998cfdd-vtnvg with SMTP id filterdrecv-656998cfdd-vtnvg-1-61C3CD5E-1E
-        2021-12-23 01:14:06.716473164 +0000 UTC m=+7955207.766253174
+        s=sgd; bh=f9xzkdOgmpl7Kp4IqvxccUyOsVwln+nUuQ3GXq4ZqFs=;
+        b=ppHdJXk/AG+5xPHnjDps7NgVXLNfN05WI955waa9m12R5zEWDTXDH1dmFrExgZCir0Du
+        Cb1J0XotgzBo8MDC/A0NxgAhJcGk/dLmMEJ1DkkS5CYahcbwq2WhSGn9REnASMdBC6MHLW
+        vvXXDSOnMd4zYH6YiZP85cc8BxjTav9VZRJyuT343UPcKnmBRibGqyZh+3xJz9uNUxR1PZ
+        Y1Vo5aWOg2L2RKdVMK/yh7I8EwNOjQ8gR1Uh9awypLmgajX2iJsH9KVAWaQH16HDPt3AZV
+        D9tivbIVPuwxhvSmSwVtiPRXCNKSVPbjQPoR/DDoDJDYgHPqv16+uMDGiW2Qs8tg==
+Received: by filterdrecv-7bf5c69d5-w55fp with SMTP id filterdrecv-7bf5c69d5-w55fp-1-61C3CD5E-34
+        2021-12-23 01:14:06.708063961 +0000 UTC m=+9687231.867084891
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-4-0 (SG)
+        by geopod-ismtpd-3-0 (SG)
         with ESMTP
-        id FZOMOdXcTZSqSpHTHFO7eA
-        Thu, 23 Dec 2021 01:14:06.545 +0000 (UTC)
+        id KTvvbw4FRUKHwSCk21U2EQ
+        Thu, 23 Dec 2021 01:14:06.577 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 3DED070133A; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
+        id 85DB07014A9; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 19/50] wilc1000: don't tell the chip to go to sleep while
- copying tx packets
+Subject: [PATCH v2 29/50] wilc1000: factor header length calculation into a
+ new function
 Date:   Thu, 23 Dec 2021 01:14:06 +0000 (UTC)
-Message-Id: <20211223011358.4031459-20-davidm@egauge.net>
+Message-Id: <20211223011358.4031459-30-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
 References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvP9gs2xqRpyIBtGYR?=
- =?us-ascii?Q?lDavY3uO9Y96GusEhphEvR8U2Or9IV1GN9AtCEU?=
- =?us-ascii?Q?roMXcil4bWWz0vBANOAMeohSevp9gTXvyUMIATv?=
- =?us-ascii?Q?1RdH+nd5xkzLSLN5y=2FX21psbKKk3gVo1z303Rgz?=
- =?us-ascii?Q?0VCC8csbnJLJ1naS=2FJqTtOjlf=2FHx6B4=2FfN31hgf?=
- =?us-ascii?Q?ZiFTADVolu+57qdFW5PxQ=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvM=2F6RLlPQwh+26vUz?=
+ =?us-ascii?Q?xaeDWE8+d=2Fa7XnYxrlWl0eXZNjUWX3Z2JuNdED8?=
+ =?us-ascii?Q?I4ROcRQK=2F8Fck6bIRHcj+2h31fZd5shc45iBxYz?=
+ =?us-ascii?Q?MY7RRjeg8HDoHy8s3TUv2LDmqZzPOiZecGGsbdQ?=
+ =?us-ascii?Q?5dHFFVFE4NZMTbQR5a6Qt83h3pkkvMTXTL1hJcf?=
+ =?us-ascii?Q?bdMt=2F8bGk0HS+cGXBOSrA=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -61,60 +61,87 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Putting the chip to sleep and waking it up again is relatively slow,
-so there is no point to put the chip to sleep for the short time it
-takes to copy a couple of packets.
+Add a helper function to calculate header length instead of using the
+same open code twice.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- .../net/wireless/microchip/wilc1000/wlan.c    | 24 +++++++++----------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ .../net/wireless/microchip/wilc1000/wlan.c    | 43 +++++++++++++------
+ 1 file changed, 30 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 54dfb2b9f3524..a6064a85140b4 100644
+index 033979cc85b43..1cd9a7761343a 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -924,29 +924,27 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
- 	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
+@@ -602,6 +602,33 @@ void host_sleep_notify(struct wilc *wilc)
+ }
+ EXPORT_SYMBOL_GPL(host_sleep_notify);
  
- 	ret = send_vmm_table(wilc, i, vmm_table);
-+	if (ret <= 0) {
-+		if (ret == 0)
-+			/* No VMM space available in firmware.  Inform
-+			 * caller to retry later.
-+			 */
-+			ret = WILC_VMM_ENTRY_FULL_RETRY;
-+		goto out_release_bus;
++/**
++ * tx_hdr_len() - calculate tx packet header length
++ * @type: The packet type for which to return the header length.
++ *
++ * Calculate the total header size for a given packet type.  This size
++ * includes the 4 bytes required to hold the VMM header.
++ *
++ * Return: The total size of the header in bytes.
++ */
++static u32 tx_hdr_len(u8 type)
++{
++	switch (type) {
++	case WILC_NET_PKT:
++		return ETH_ETHERNET_HDR_OFFSET;
++
++	case WILC_CFG_PKT:
++		return ETH_CONFIG_PKT_HDR_OFFSET;
++
++	case WILC_MGMT_PKT:
++		return HOST_HDR_OFFSET;
++
++	default:
++		pr_err("%s: Invalid packet type %d.", __func__, type);
++		return 4;
 +	}
++}
++
+ /**
+  * fill_vmm_table() - Fill VMM table with packets to be sent
+  * @wilc: Pointer to the wilc structure.
+@@ -658,13 +685,7 @@ static int fill_vmm_table(const struct wilc *wilc,
+ 					goto out;
  
--	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
+ 				tx_cb = WILC_SKB_TX_CB(tqe_q[ac]);
+-				if (tx_cb->type == WILC_CFG_PKT)
+-					vmm_sz = ETH_CONFIG_PKT_HDR_OFFSET;
+-				else if (tx_cb->type == WILC_NET_PKT)
+-					vmm_sz = ETH_ETHERNET_HDR_OFFSET;
+-				else
+-					vmm_sz = HOST_HDR_OFFSET;
 -
--	if (ret < 0)
--		goto out_unlock;
-+	release_bus(wilc, WILC_BUS_RELEASE_ONLY);
++				vmm_sz = tx_hdr_len(tx_cb->type);
+ 				vmm_sz += tqe_q[ac]->len;
+ 				vmm_sz = ALIGN(vmm_sz, 4);
  
- 	entries = ret;
--	if (entries == 0) {
--		/* No VMM space available in firmware.  Inform caller
--		 * to retry later.
--		 */
--		ret = WILC_VMM_ENTRY_FULL_RETRY;
--		goto out_unlock;
--	}
--
- 	len = copy_packets(wilc, entries, vmm_table, vmm_entries_ac);
- 	if (len <= 0)
- 		goto out_unlock;
+@@ -834,17 +855,13 @@ static int copy_packets(struct wilc *wilc, int entries, u32 *vmm_table,
  
--	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
-+	acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
+ 		cpu_to_le32s(&header);
+ 		memcpy(&txb[offset], &header, 4);
+-		if (tx_cb->type == WILC_CFG_PKT) {
+-			buffer_offset = ETH_CONFIG_PKT_HDR_OFFSET;
+-		} else if (tx_cb->type == WILC_NET_PKT) {
++		buffer_offset = tx_hdr_len(tx_cb->type);
++		if (tx_cb->type == WILC_NET_PKT) {
+ 			int prio = tx_cb->q_num;
  
- 	ret = send_packets(wilc, len);
+ 			bssid = vif->bssid;
+-			buffer_offset = ETH_ETHERNET_HDR_OFFSET;
+ 			memcpy(&txb[offset + 4], &prio, sizeof(prio));
+ 			memcpy(&txb[offset + 8], bssid, 6);
+-		} else {
+-			buffer_offset = HOST_HDR_OFFSET;
+ 		}
  
-+out_release_bus:
- 	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
- 
- out_unlock:
+ 		memcpy(&txb[offset + buffer_offset], tqe->data, tqe->len);
 -- 
 2.25.1
 
