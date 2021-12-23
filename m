@@ -2,73 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6520347E741
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 18:51:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF8F147E77E
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 19:10:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244673AbhLWRvY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Dec 2021 12:51:24 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:58722 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229962AbhLWRvU (ORCPT
+        id S1349759AbhLWSKW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Dec 2021 13:10:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39276 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349748AbhLWSKU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Dec 2021 12:51:20 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: usama.anjum)
-        with ESMTPSA id 61C811F45B43
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1640281879;
-        bh=vSHHzM172vviSgHfuy9G5kDiYvUz/KyNzVxzK+d+55s=;
-        h=Date:From:To:Cc:Subject:From;
-        b=Z96U0ih/lxwTzQ1z7q++gg8g8D9E3t56qzlFhKGr0wSnqorf543tJ0xXHwwq97fIv
-         Zpzd5b9Vfh+oLhXniDkqQQ/xrPDZKcicbCJ5vXk4vbBoBCJ2G/HKoS3clPPkUPqo1L
-         oLCCF6dRi2Fft3ejIw9fST/QYms1yiqlGSVmd4SBU1Ll0jWtl7Zf40zl9Bled4Xsep
-         b5UNblnXF+A+Y6x9ZOJ8OF2egs999+KC4QaBd2Jyl0X1eWaMLbY+uab0/19uTyVvE6
-         X6qr0BJRvcetA/Lf3x4IbXpEmtTFMT0BE4O48dbiCQzDDUJoXUr+xsCVDKbJQWCtgs
-         azxWIRkHDUj/A==
-Date:   Thu, 23 Dec 2021 22:51:11 +0500
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-To:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Po-Hao Huang <phhuang@realtek.com>,
-        "open list:REALTEK WIRELESS DRIVER (rtw88)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Cc:     usama.anjum@collabora.com, kernel@collabora.com
-Subject: [PATCH] rtw88: check for validity before using pointer
-Message-ID: <YcS3D2lwMd0Kox3z@debian-BULLSEYE-live-builder-AMD64>
+        Thu, 23 Dec 2021 13:10:20 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC792C061401;
+        Thu, 23 Dec 2021 10:10:19 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82F4E61F52;
+        Thu, 23 Dec 2021 18:10:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E55B9C36AEA;
+        Thu, 23 Dec 2021 18:10:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640283018;
+        bh=l1VYt0dzWvTkqVXXbwnBc6loid1o5kfkD+eVvAXrUw8=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=W/OqEC+mlluOuqvDpoti/9geShuuGN6RPAHoNe+2biuKDPcrgOiKPz3tV1x7ZC4N6
+         9gfOZ8ON8+gTwc+X7CyC68zwVnYPzwJtavuToqlEwIuEo3Wj+QgjbIGjNqnJRFkwbX
+         408SaCGL0WI6xgZUgheMNgxpZGnql8wxEFfJ2Tw2Q9Mw+xPrkKjFY+TCJhx5oi7GV7
+         4ZNCTzfSWMMLOxB+Jrz0zC4TpnHg/Y9qD00v3m66htaHev8+sSpicoHv9AEvvoF+bW
+         FJpclzbputHLfeM0M1e9ZwK3exG/T5wUxvbHAr+ah4wOCY/zMKpPI31HNoLyu1LSnU
+         PrgU0b5zA5Kog==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D1DD8EAC065;
+        Thu, 23 Dec 2021 18:10:18 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-drivers-next-2021-12-23
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <164028301885.27483.18038691334165573863.git-patchwork-notify@kernel.org>
+Date:   Thu, 23 Dec 2021 18:10:18 +0000
+References: <20211223141108.78808C36AE9@smtp.kernel.org>
+In-Reply-To: <20211223141108.78808C36AE9@smtp.kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ieee80211_probereq_get() can return NULL. Pointer skb should be checked
-for validty before use.
+Hello:
 
-Fixes: 10d162b2ed39 ("rtw88: 8822c: add ieee80211_ops::hw_scan")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
----
- drivers/net/wireless/realtek/rtw88/fw.c | 2 ++
- 1 file changed, 2 insertions(+)
+This pull request was applied to netdev/net-next.git (master)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 2f7c036f9022..0fc05a810d05 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -1866,6 +1866,8 @@ static int rtw_hw_scan_update_probe_req(struct rtw_dev *rtwdev,
- 					     req->ssids[i].ssid,
- 					     req->ssids[i].ssid_len,
- 					     req->ie_len);
-+		if (!skb)
-+			return -ENOMEM;
- 		rtw_append_probe_req_ie(rtwdev, skb, &list, rtwvif);
- 		kfree_skb(skb);
- 	}
+On Thu, 23 Dec 2021 14:11:08 +0000 (UTC) you wrote:
+> Hi,
+> 
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
+> 
+> Kalle
+> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: wireless-drivers-next-2021-12-23
+    https://git.kernel.org/netdev/net-next/c/f2b551fad8d8
+
+You are awesome, thank you!
 -- 
-2.30.2
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
