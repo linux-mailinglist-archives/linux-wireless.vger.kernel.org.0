@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C76247DCE8
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:15:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB97647DD40
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242106AbhLWBPF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 20:15:05 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:18364 "EHLO
+        id S1346100AbhLWBQn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:16:43 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:18428 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345768AbhLWBOR (ORCPT
+        with ESMTP id S1345807AbhLWBOV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 20:14:17 -0500
+        Wed, 22 Dec 2021 20:14:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=agTBrbbxmaBcZhOGntoYkSTH1oRQbQIq4v8g5Df83lg=;
-        b=I2OSv7f6dUAIVuLK4ihQ3KNlGLeVSixiSC1ql98qZVBthRWB7JnPTtICS+BBenpgi0Ur
-        pBWh4OmTFgslu/CmiIJmGzYNtP2jX4ccbaIyHkS8PhFu1eBeqq/YC0XAkZjV3XjUx+iHKW
-        Om2N7QV4YcvT0XDqmWeAo5NGXQchWWQmAYuRNNCGQsy4ZLC5Stbp8Gio5S3kixoygLnl2W
-        3gB5jFdQvmm0FShsB+bB10wSXFeiWVfo8q0XrXXBeE0D1mPBjXFt+f0f5yyQAsCF81/D4Q
-        Xeyzx/sSQO4VztoksmNoSe9LpJsnTDWCNRjJkUwk99E+2WdRpprCLHXKhv/lxNdQ==
-Received: by filterdrecv-656998cfdd-phncc with SMTP id filterdrecv-656998cfdd-phncc-1-61C3CD5E-38
-        2021-12-23 01:14:06.64426236 +0000 UTC m=+7955207.830509139
+        s=sgd; bh=9GhperGdLp5mSs2oGPGWX3vVh6QZlgVmNWU2J8h4eJY=;
+        b=LDUXjoktAgidrqd0DknbCqj+Cq40xD+T0dA+omHvM5a/4tAsOr8lu85ZnBVyl117D4T1
+        FF/7RavN0zfbhSOk65PFCRePblFoKBm7YovjdXl36Irqi5OE0cZerC77CMMg778yvMHGOA
+        4LQvwb8c/Sa5XuP3gfzg0bWBOzGIC4GeFNSiViaBFUloEd1urrYLDtOBRa8VKL3ZJjDrPe
+        HBXWnwHuUWJxbf9WKQZS2ZbRYEtdF9hZLmGCSMNC9oNE7TvGuLp41zLzEMZkmjB3UaN17Q
+        vAIQJ6EZkyay17ZVb9Lr0l2llKMvaffc9QCNvyD8Ah15pv21Nq8rtulondgJF2Nw==
+Received: by filterdrecv-656998cfdd-vtnvg with SMTP id filterdrecv-656998cfdd-vtnvg-1-61C3CD5E-1E
+        2021-12-23 01:14:06.716473164 +0000 UTC m=+7955207.766253174
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-4-1 (SG)
+        by geopod-ismtpd-4-0 (SG)
         with ESMTP
-        id 71zB2wfxQ3agYG4UQ8ZiVg
-        Thu, 23 Dec 2021 01:14:06.494 +0000 (UTC)
+        id FZOMOdXcTZSqSpHTHFO7eA
+        Thu, 23 Dec 2021 01:14:06.545 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 649E9701463; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
+        id 3DED070133A; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 25/50] wilc1000: replace txq_spinlock with ack_filter_lock
- mutex
+Subject: [PATCH v2 19/50] wilc1000: don't tell the chip to go to sleep while
+ copying tx packets
 Date:   Thu, 23 Dec 2021 01:14:06 +0000 (UTC)
-Message-Id: <20211223011358.4031459-26-davidm@egauge.net>
+Message-Id: <20211223011358.4031459-20-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
 References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvLFGvaKITknzkke94?=
- =?us-ascii?Q?9=2F7j63eSgfYeyP9v+L3+fNZ9QLqBEqZkdjJa3QD?=
- =?us-ascii?Q?7To2KHUS8OZft9cQsvjJ4hJp2PT8yyX1jXqwZvj?=
- =?us-ascii?Q?ZA0Ak=2FaPuNRgQtCmuhAoddoLrgmmLK5qV1qCMV0?=
- =?us-ascii?Q?eEXEbfcw25oKVsSYt0vWrkpJPvJyjZBFBDKz9Cx?=
- =?us-ascii?Q?wDOECNCJGH=2FK=2FiHZR=2Fx3A=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvP9gs2xqRpyIBtGYR?=
+ =?us-ascii?Q?lDavY3uO9Y96GusEhphEvR8U2Or9IV1GN9AtCEU?=
+ =?us-ascii?Q?roMXcil4bWWz0vBANOAMeohSevp9gTXvyUMIATv?=
+ =?us-ascii?Q?1RdH+nd5xkzLSLN5y=2FX21psbKKk3gVo1z303Rgz?=
+ =?us-ascii?Q?0VCC8csbnJLJ1naS=2FJqTtOjlf=2FHx6B4=2FfN31hgf?=
+ =?us-ascii?Q?ZiFTADVolu+57qdFW5PxQ=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -61,127 +61,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The only purpose left for txq_spinlock is to protect the ack_filter.
-The ack_filter is only updated by the tx queue writers and the tx
-queue consumer, so interrupts don't have to be disabled and sleeping
-is OK.  In other words, we can use a mutex instead of a spinlock.
+Putting the chip to sleep and waking it up again is relatively slow,
+so there is no point to put the chip to sleep for the short time it
+takes to copy a couple of packets.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- drivers/net/wireless/microchip/wilc1000/cfg80211.c |  1 -
- drivers/net/wireless/microchip/wilc1000/netdev.c   |  2 ++
- drivers/net/wireless/microchip/wilc1000/netdev.h   |  5 ++---
- drivers/net/wireless/microchip/wilc1000/wlan.c     | 12 ++++--------
- 4 files changed, 8 insertions(+), 12 deletions(-)
+ .../net/wireless/microchip/wilc1000/wlan.c    | 24 +++++++++----------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-index 0fcc064254f1e..6f19dee813f2a 100644
---- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-+++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-@@ -1670,7 +1670,6 @@ static void wlan_init_locks(struct wilc *wl)
- 	mutex_init(&wl->vif_mutex);
- 	mutex_init(&wl->deinit_lock);
- 
--	spin_lock_init(&wl->txq_spinlock);
- 	mutex_init(&wl->txq_add_to_head_cs);
- 	mutex_init(&wl->tx_q_limit_lock);
- 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 999933532c2de..71cb15f042cdd 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -863,6 +863,7 @@ void wilc_netdev_cleanup(struct wilc *wilc)
- 
- 	srcu_idx = srcu_read_lock(&wilc->srcu);
- 	list_for_each_entry_rcu(vif, &wilc->vif_list, list) {
-+		mutex_destroy(&vif->ack_filter_lock);
- 		if (vif->ndev)
- 			unregister_netdev(vif->ndev);
- 	}
-@@ -929,6 +930,7 @@ struct wilc_vif *wilc_netdev_ifc_init(struct wilc *wl, const char *name,
- 	vif->wilc = wl;
- 	vif->ndev = ndev;
- 	ndev->ml_priv = vif;
-+	mutex_init(&vif->ack_filter_lock);
- 
- 	ndev->netdev_ops = &wilc_netdev_ops;
- 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net/wireless/microchip/wilc1000/netdev.h
-index e247f92a409e0..82f38a0e20214 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.h
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
-@@ -190,6 +190,8 @@ struct wilc_vif {
- 	struct timer_list during_ip_timer;
- 	struct timer_list periodic_rssi;
- 	struct rf_info periodic_stat;
-+	/* protect ack_filter */
-+	struct mutex ack_filter_lock;
- 	struct tcp_ack_filter ack_filter;
- 	bool connecting;
- 	struct wilc_priv priv;
-@@ -226,9 +228,6 @@ struct wilc {
- 	/* protect head of transmit queue */
- 	struct mutex txq_add_to_head_cs;
- 
--	/* protect txq_entry_t transmit queue */
--	spinlock_t txq_spinlock;
--
- 	/* protect rxq_entry_t receiver queue */
- 	struct mutex rxq_cs;
- 
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 9b6605e9df296..81180b2f9f4e1 100644
+index 54dfb2b9f3524..a6064a85140b4 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -124,15 +124,13 @@ static inline void tcp_process(struct net_device *dev, struct sk_buff *tqe)
- 	void *buffer = tqe->data;
- 	const struct ethhdr *eth_hdr_ptr = buffer;
- 	int i;
--	unsigned long flags;
- 	struct wilc_vif *vif = netdev_priv(dev);
--	struct wilc *wilc = vif->wilc;
- 	struct tcp_ack_filter *f = &vif->ack_filter;
- 	const struct iphdr *ip_hdr_ptr;
- 	const struct tcphdr *tcp_hdr_ptr;
- 	u32 ihl, total_length, data_offset;
+@@ -924,29 +924,27 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
  
--	spin_lock_irqsave(&wilc->txq_spinlock, flags);
-+	mutex_lock(&vif->ack_filter_lock);
+ 	ret = send_vmm_table(wilc, i, vmm_table);
++	if (ret <= 0) {
++		if (ret == 0)
++			/* No VMM space available in firmware.  Inform
++			 * caller to retry later.
++			 */
++			ret = WILC_VMM_ENTRY_FULL_RETRY;
++		goto out_release_bus;
++	}
  
- 	if (eth_hdr_ptr->h_proto != htons(ETH_P_IP))
- 		goto out;
-@@ -168,7 +166,7 @@ static inline void tcp_process(struct net_device *dev, struct sk_buff *tqe)
- 	}
+-	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
+-
+-	if (ret < 0)
+-		goto out_unlock;
++	release_bus(wilc, WILC_BUS_RELEASE_ONLY);
  
- out:
--	spin_unlock_irqrestore(&wilc->txq_spinlock, flags);
-+	mutex_unlock(&vif->ack_filter_lock);
- }
+ 	entries = ret;
+-	if (entries == 0) {
+-		/* No VMM space available in firmware.  Inform caller
+-		 * to retry later.
+-		 */
+-		ret = WILC_VMM_ENTRY_FULL_RETRY;
+-		goto out_unlock;
+-	}
+-
+ 	len = copy_packets(wilc, entries, vmm_table, vmm_entries_ac);
+ 	if (len <= 0)
+ 		goto out_unlock;
  
- static void wilc_wlan_tx_packet_done(struct sk_buff *tqe, int status)
-@@ -201,12 +199,10 @@ static void wilc_wlan_txq_drop_net_pkt(struct sk_buff *tqe)
- static void wilc_wlan_txq_filter_dup_tcp_ack(struct net_device *dev)
- {
- 	struct wilc_vif *vif = netdev_priv(dev);
--	struct wilc *wilc = vif->wilc;
- 	struct tcp_ack_filter *f = &vif->ack_filter;
- 	u32 i = 0;
--	unsigned long flags;
+-	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
++	acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
  
--	spin_lock_irqsave(&wilc->txq_spinlock, flags);
-+	mutex_lock(&vif->ack_filter_lock);
- 	for (i = f->pending_base;
- 	     i < (f->pending_base + f->pending_acks_idx); i++) {
- 		u32 index;
-@@ -238,7 +234,7 @@ static void wilc_wlan_txq_filter_dup_tcp_ack(struct net_device *dev)
- 	else
- 		f->pending_base = 0;
+ 	ret = send_packets(wilc, len);
  
--	spin_unlock_irqrestore(&wilc->txq_spinlock, flags);
-+	mutex_unlock(&vif->ack_filter_lock);
- }
++out_release_bus:
+ 	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
  
- void wilc_enable_tcp_ack_filter(struct wilc_vif *vif, bool value)
+ out_unlock:
 -- 
 2.25.1
 
