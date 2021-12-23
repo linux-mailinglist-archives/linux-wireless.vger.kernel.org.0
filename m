@@ -2,49 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0A6847DD1E
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BAF047DCF6
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:15:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346696AbhLWBQB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 20:16:01 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27394 "EHLO
+        id S242188AbhLWBPT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:15:19 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27308 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346253AbhLWBOs (ORCPT
+        with ESMTP id S1346230AbhLWBOm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 20:14:48 -0500
+        Wed, 22 Dec 2021 20:14:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=GoRCB1qp+NT2deD6O9F/OqL86QNfyIxkoZDwvyfsbMo=;
-        b=lFqhO/+PNUc/uADkjVfHwOdQFkGTAjnHitQFjZGkikHzAXCIZE87fwv0ZgPt4pTmm+/H
-        GN6K/yYa6m+WN168nBItYqvn+jF3U67cf/1453LvM9bY5PCIH0m4IiNUWz2TvYGSRhZdup
-        JSFFiBrIKkTSLwQ2AikuTMms+3tUCTF7LlKJSSG2iE0vDVUzx8+kUAlZqFza0n3VsFmspT
-        XMiKp3JHjVLR0ii+k3OB2Si42NReWF3wr7PDChcr5CV1ptFvhpug5H+6EOsVaPY65ZG3CZ
-        9ZBjf7viyaOJBawFKsTbFBO1NLr6upwsB4GMAGpETcZssOhqPE+R7xRm8c36q6Vw==
-Received: by filterdrecv-75ff7b5ffb-bdt5z with SMTP id filterdrecv-75ff7b5ffb-bdt5z-1-61C3CD5E-4A
-        2021-12-23 01:14:06.973210454 +0000 UTC m=+9687191.495886346
+        s=sgd; bh=DlCBRu7J1bxJ3/LQJt36l7jN/7IIPnFkxtrjOj9W9fc=;
+        b=RktnbaWJYD0OqoDLrEerbGVsR3Dr+51Mjfx2woNob8Pdz3cneHipQRZwJrRZc9OyHBzE
+        MgABOY16CKah7tXtvTk16MJ9LRGXQozIf5v/FmnVO2Ti5BuQd+O4BRde1v5RNHplHDALrK
+        WB4T6PAIuG9B/Xepe/qA2bXxlj9MIC4KJRxKMOICp8cjmrv50TKxmL3yDurQNlb5MVNBfK
+        /DLnSsSTEJo+OvFrKXvZZmVydSU+9qeSR2AS5yDabnb/i7/wfJksS9Ko7pO3w8I2+Ln8Xj
+        R+bQT+YvCL/u7yJ8I7F7k49zY6AN6aUiXVAjyCvsvnX671Y8fZ4afb4Vx6O0Bljg==
+Received: by filterdrecv-656998cfdd-5st9z with SMTP id filterdrecv-656998cfdd-5st9z-1-61C3CD5F-2
+        2021-12-23 01:14:07.066588987 +0000 UTC m=+7955191.029031746
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-2-0 (SG)
+        by geopod-ismtpd-5-1 (SG)
         with ESMTP
-        id j9HPaFX1RKqwFyYUORk8dQ
-        Thu, 23 Dec 2021 01:14:06.858 +0000 (UTC)
+        id LkEsxIgnSluBVp_O0u0jcw
+        Thu, 23 Dec 2021 01:14:06.903 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id B9D61700BB0; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
+        id D1C3570150D; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 37/50] wilc1000: introduce set_header() function
+Subject: [PATCH v2 43/50] wilc1000: add support for zero-copy transmit of tx
+ packets
 Date:   Thu, 23 Dec 2021 01:14:07 +0000 (UTC)
-Message-Id: <20211223011358.4031459-38-davidm@egauge.net>
+Message-Id: <20211223011358.4031459-44-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
 References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvN1V65Kxvy8FSt8Tq?=
- =?us-ascii?Q?vXxPJ4NYhhzW59EiQOJdXjEbKiDG1I=2FgLb8fMJL?=
- =?us-ascii?Q?j1arpTJuPbRzYLx7qBu=2FkxTrwwnlEmsgaTlsibD?=
- =?us-ascii?Q?9j0f9aJXflSf3kpIYsjyyj=2FV3mMbbxshzIFPjuF?=
- =?us-ascii?Q?r7tGG6Rpldy2W8gu46v4qZJf=2Fq=2Fvuoo7Rfgd4qp?=
- =?us-ascii?Q?a9Pfklnt4=2FZEjvuGvB0Pg=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvCpc2ftgM2qu67NNB?=
+ =?us-ascii?Q?uHZcfjZzUnbiHUNZbafQh3Mqs3rJrxKIhGH79qo?=
+ =?us-ascii?Q?89Du1mpWVV3Bd5CTB5MIKKbipe9JjI=2FzK3=2Fl4Nb?=
+ =?us-ascii?Q?HghbcmPkBseDHeZARrYfMRwCrz5cQwICK031Q4P?=
+ =?us-ascii?Q?nuLnRe9QY5X5acKT63TsvYOIKk7H+jfDPp344pl?=
+ =?us-ascii?Q?J1Z9VKWgk0lD3WmvF5B1w=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -60,110 +61,90 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Refactor the transmit packet header initialization into its own
-set_header() function.
+Add the infrastructure to enable zero-copy transmits.  This is
+currently a no-op as the SPI or SDIO drivers will need to implement
+hif_sk_buffs_tx to take advantage of this.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- .../net/wireless/microchip/wilc1000/wlan.c    | 56 +++++++++++--------
- 1 file changed, 33 insertions(+), 23 deletions(-)
+ .../net/wireless/microchip/wilc1000/wlan.c    | 43 ++++++++++++++++++-
+ .../net/wireless/microchip/wilc1000/wlan.h    |  2 +
+ 2 files changed, 44 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index c3802a34defed..86b945e5ee076 100644
+index 08f3e96bf72cf..d96a7e2a0bd59 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -640,6 +640,37 @@ static u32 vmm_table_entry(struct sk_buff *tqe, u32 vmm_sz)
- 	return cpu_to_le32(entry);
+@@ -935,6 +935,44 @@ static int copy_and_send_packets(struct wilc *wilc, int entries)
+ 	return ret;
  }
  
 +/**
-+ * set_header() - set WILC-specific header
++ * zero_copy_send_packets() - send packets to the chip (copy-free).
 + * @wilc: Pointer to the wilc structure.
-+ * @tqe: The packet to add to the chip queue.
-+ * @vmm_sz: The final size of the packet, including VMM header and padding.
-+ * @hdr: Pointer to the header to set
++ * @entries: The number of packets to send from the VMM table.
++ *
++ * Zero-copy version of sending the packets in the VMM table to the
++ * chip.
++ *
++ * Context: The wilc1000 bus must have been released but the chip
++ *	must be awake.
++ *
++ * Return: Negative number on error, 0 on success.
 + */
-+static void set_header(struct wilc *wilc, struct sk_buff *tqe,
-+		       u32 vmm_sz, void *hdr)
++static int zero_copy_send_packets(struct wilc *wilc, int entries)
 +{
-+	struct wilc_skb_tx_cb *tx_cb = WILC_SKB_TX_CB(tqe);
-+	u32 mgmt_pkt = 0, vmm_hdr, prio, data_len = tqe->len;
-+	struct wilc_vif *vif;
++	const struct wilc_hif_func *func = wilc->hif_func;
++	struct wilc_skb_tx_cb *tx_cb;
++	struct sk_buff *tqe;
++	int ret, i = 0;
 +
-+	/* add the VMM header word: */
-+	if (tx_cb->type == WILC_MGMT_PKT)
-+		mgmt_pkt = FIELD_PREP(WILC_VMM_HDR_MGMT_FIELD, 1);
-+	vmm_hdr = cpu_to_le32(mgmt_pkt |
-+			      FIELD_PREP(WILC_VMM_HDR_TYPE, tx_cb->type) |
-+			      FIELD_PREP(WILC_VMM_HDR_PKT_SIZE, data_len) |
-+			      FIELD_PREP(WILC_VMM_HDR_BUFF_SIZE, vmm_sz));
-+	memcpy(hdr, &vmm_hdr, 4);
++	acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
 +
-+	if (tx_cb->type == WILC_NET_PKT) {
-+		vif = netdev_priv(tqe->dev);
-+		prio = cpu_to_le32(tx_cb->q_num);
-+		memcpy(hdr + 4, &prio, sizeof(prio));
-+		memcpy(hdr + 8, vif->bssid, ETH_ALEN);
++	ret = func->hif_clear_int_ext(wilc, ENABLE_TX_VMM);
++	if (ret == 0)
++		ret = func->hif_sk_buffs_tx(wilc, 0, entries, &wilc->chipq);
++
++	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
++
++	for (i = 0; i < entries; ++i) {
++		tqe = __skb_dequeue(&wilc->chipq);
++		tx_cb = WILC_SKB_TX_CB(tqe);
++		wilc->fw[tx_cb->q_num].count++;
++		wilc->chipq_bytes -= tqe->len;
++		wilc_wlan_tx_packet_done(tqe, ret == 0);
 +	}
++	return ret;
 +}
 +
- /**
-  * fill_vmm_table() - Fill VMM table with packets to be sent
-  * @wilc: Pointer to the wilc structure.
-@@ -827,7 +858,6 @@ static int copy_packets(struct wilc *wilc, int entries, u32 *vmm_table,
- 	u8 ac_pkt_num_to_chip[NQUEUES] = {0, 0, 0, 0};
- 	struct wilc_skb_tx_cb *tx_cb;
- 	u8 *txb = wilc->tx_buffer;
--	struct wilc_vif *vif;
- 	int i, vmm_sz;
- 	u32 offset;
- 
-@@ -835,9 +865,7 @@ static int copy_packets(struct wilc *wilc, int entries, u32 *vmm_table,
- 	i = 0;
- 	do {
- 		struct sk_buff *tqe;
--		u32 header, buffer_offset;
--		char *bssid;
--		u8 mgmt_ptk = 0;
-+		u32 buffer_offset;
- 
- 		tqe = skb_dequeue(&wilc->txq[vmm_entries_ac[i]]);
- 		if (!tqe)
-@@ -845,7 +873,6 @@ static int copy_packets(struct wilc *wilc, int entries, u32 *vmm_table,
- 
- 		atomic_dec(&wilc->txq_entries);
- 		ac_pkt_num_to_chip[vmm_entries_ac[i]]++;
--		vif = netdev_priv(tqe->dev);
- 		tx_cb = WILC_SKB_TX_CB(tqe);
- 		if (vmm_table[i] == 0)
- 			break;
-@@ -854,25 +881,8 @@ static int copy_packets(struct wilc *wilc, int entries, u32 *vmm_table,
- 		vmm_sz = FIELD_GET(WILC_VMM_BUFFER_SIZE, vmm_table[i]);
- 		vmm_sz *= 4;
- 
--		if (tx_cb->type == WILC_MGMT_PKT)
--			mgmt_ptk = 1;
--
--		header = (FIELD_PREP(WILC_VMM_HDR_TYPE, tx_cb->type) |
--			  FIELD_PREP(WILC_VMM_HDR_MGMT_FIELD, mgmt_ptk) |
--			  FIELD_PREP(WILC_VMM_HDR_PKT_SIZE, tqe->len) |
--			  FIELD_PREP(WILC_VMM_HDR_BUFF_SIZE, vmm_sz));
--
--		cpu_to_le32s(&header);
--		memcpy(&txb[offset], &header, 4);
- 		buffer_offset = tx_hdr_len(tx_cb->type);
--		if (tx_cb->type == WILC_NET_PKT) {
--			int prio = tx_cb->q_num;
--
--			bssid = vif->bssid;
--			memcpy(&txb[offset + 4], &prio, sizeof(prio));
--			memcpy(&txb[offset + 8], bssid, 6);
--		}
--
-+		set_header(wilc, tqe, vmm_sz, txb + offset);
- 		memcpy(&txb[offset + buffer_offset], tqe->data, tqe->len);
- 		offset += vmm_sz;
- 		i++;
+ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ {
+ 	int vmm_table_len, entries;
+@@ -966,7 +1004,10 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 	if (entries <= 0) {
+ 		ret = entries;
+ 	} else {
+-		ret = copy_and_send_packets(wilc, entries);
++		if (wilc->hif_func->hif_sk_buffs_tx)
++			ret = zero_copy_send_packets(wilc, entries);
++		else
++			ret = copy_and_send_packets(wilc, entries);
+ 	}
+ 	if (ret >= 0 && entries < vmm_table_len)
+ 		ret = WILC_VMM_ENTRY_FULL_RETRY;
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
+index 11a54320ffd05..bda31f0970bda 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.h
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
+@@ -367,6 +367,8 @@ struct wilc_hif_func {
+ 	int (*hif_read_size)(struct wilc *wilc, u32 *size);
+ 	int (*hif_block_tx_ext)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
+ 	int (*hif_block_rx_ext)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
++	int (*hif_sk_buffs_tx)(struct wilc *wilc, u32 addr,
++			       size_t num_skbs, struct sk_buff_head *skbs);
+ 	int (*hif_sync_ext)(struct wilc *wilc, int nint);
+ 	int (*enable_interrupt)(struct wilc *nic);
+ 	void (*disable_interrupt)(struct wilc *nic);
 -- 
 2.25.1
 
