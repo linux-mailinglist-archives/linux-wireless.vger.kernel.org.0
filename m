@@ -2,49 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA5AF47DCDA
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:15:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FB2847DCE5
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:15:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346104AbhLWBOb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 20:14:31 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:18432 "EHLO
+        id S242123AbhLWBPD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:15:03 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:18392 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345811AbhLWBOV (ORCPT
+        with ESMTP id S1345778AbhLWBOS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 20:14:21 -0500
+        Wed, 22 Dec 2021 20:14:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=3vwCxlA4ciJJxDou6+Vb/H7rVta8Jut/SEU831ryMNU=;
-        b=aMLSvbfJFTCyE2NGkfucRE4R2mGDyxR2qAeqVCy6M7NHL3w51yP2L9P0O3/PTJnM4eHm
-        z9fxAMb8WcWmmQaKjB1qMlY3etdM94RthIavutZLG+DkZIzLPrh/ge0ma0beOYgO6Tr2xc
-        06puuOtJMBVm8MAWTdWj16TVWy1fvqTo4SuV9g5lhhpvIIahxEpkW/yLoS0a/gSGrTQsIH
-        MrdM19HrPlWfNs/kEaIEUYhXvxYi5Lfdi7GRD67kZ+OVUCOc09TcsUJsffvQe/U0BwIl38
-        rASRv8uHr9/B5lQabJ5+GwxiVqvpLAquD39u7rYgGNbA2tHrAM0F76iPDtawz5TA==
-Received: by filterdrecv-64fcb979b9-st7n5 with SMTP id filterdrecv-64fcb979b9-st7n5-1-61C3CD5E-3C
-        2021-12-23 01:14:06.739937721 +0000 UTC m=+8644640.723524771
+        s=sgd; bh=eTCBwwd712xb7qk5FJKt9s2SPN4iZ3evhxEvhrmqVG0=;
+        b=qFAobek2GlJ0Bkyz99qu4u/sbAGwfA94iQP2eQnx6F0l3ZQqMGl3V9ATyVBFo5tka1ys
+        VDLmw83n7hy/5Lcij+pLHuzMeMVrRa9bEMmsIgMz80r/r5NOAyfO9T7AXoruljLkCQEioR
+        sJ7zyntVMAYNMTtus9Vil6m9tF7Ke9sEHpFmRm66WRyGArWbXZP+9OCn1P9kMTifTBhSX/
+        06ScxdAJPbPv5adpoAxV6AzGPSj/eTH1Rsuij9VLmJsdgZB7sBUp7UdoC9Yqf8X8k0z1aK
+        ePO/7TH5YcNLE/q/Zl+/h8mhvNEYUu8dH0CUJgiLYALRYVFWlh/BtYsO1CHcVOuw==
+Received: by filterdrecv-64fcb979b9-tjknx with SMTP id filterdrecv-64fcb979b9-tjknx-1-61C3CD5E-1D
+        2021-12-23 01:14:06.570345309 +0000 UTC m=+8644589.373863885
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-5-0 (SG)
+        by geopod-ismtpd-4-0 (SG)
         with ESMTP
-        id dhLYRvACTEmHBYzBDu_11g
-        Thu, 23 Dec 2021 01:14:06.600 +0000 (UTC)
+        id Ix1XkgGqSFi8py498O2p_g
+        Thu, 23 Dec 2021 01:14:06.429 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id 8F3127014AD; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
+        id 2F9327012D2; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 30/50] wilc1000: use more descriptive variable names
+Subject: [PATCH v2 17/50] wilc1000: remove no longer used "vif" argument from
+ init_txq_entry()
 Date:   Thu, 23 Dec 2021 01:14:06 +0000 (UTC)
-Message-Id: <20211223011358.4031459-31-davidm@egauge.net>
+Message-Id: <20211223011358.4031459-18-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
 References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvFxBP+gfd73CXFX+b?=
- =?us-ascii?Q?N=2FzdCv1aaMpRvyqQ7QMMfTi3rjMRuYumSNBl00O?=
- =?us-ascii?Q?AOZq92YF2soepP4nF+7m7Rwi9ECmoO6=2FsPoqcZl?=
- =?us-ascii?Q?89IzVOjzCSW=2FEHiPM+K1YU9sVPiqwe7BPUaxdnq?=
- =?us-ascii?Q?5DQPNRrZvRcZLeHoUnnvV80jNqNkIa06iiWku0u?=
- =?us-ascii?Q?sF5twDM3qLpzTjaeH=2FwoA=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvF57zItUWDc68Njwz?=
+ =?us-ascii?Q?om2zBXkmJEYQhgSnJ3Qik1UqW8tfJqfcvcHJvYK?=
+ =?us-ascii?Q?bKbeuYAkOQbStMz=2Fkx2DZvHrec6MDTSXoPeHfQ3?=
+ =?us-ascii?Q?0Jn64mYapEM6cFSVZC5yNLKFMy+3asG+BKmETyD?=
+ =?us-ascii?Q?aaibIk2a63mfIXzpD9nAkTOmhI2kX6=2Fo=2FKBEOma?=
+ =?us-ascii?Q?jhd11D9h2kJw2g1q8bM1w=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -60,80 +61,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rename "i" to "vmm_table_len" to improve readability and update
-kernel-doc for send_vmm_table() as well.
+With the tx-path switched to sk_buffs, there is no longer any need for
+the "vif" argument in init_txq_entry().
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- .../net/wireless/microchip/wilc1000/wlan.c    | 21 ++++++++++---------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/wlan.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 1cd9a7761343a..a4523b0860878 100644
+index a970ddf43edf0..8bff1d8050b11 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -712,9 +712,9 @@ static int fill_vmm_table(const struct wilc *wilc,
+@@ -37,7 +37,7 @@ static inline void release_bus(struct wilc *wilc, enum bus_release release)
+ 	mutex_unlock(&wilc->hif_cs);
  }
  
- /**
-- * send_vmm_table() - Send the VMM table to the chip
-+ * send_vmm_table() - send the VMM table to the chip
-  * @wilc: Pointer to the wilc structure.
-- * @i: The number of entries in the VMM table.
-+ * @vmm_table_len: The number of entries in the VMM table.
-  * @vmm_table: The VMM table to send.
-  *
-  * Send the VMM table to the chip and get back the number of entries
-@@ -723,10 +723,10 @@ static int fill_vmm_table(const struct wilc *wilc,
-  * Context: The bus must have been acquired before calling this
-  * function.
-  *
-- * Return:
-- *	The number of VMM table entries the chip can accept.
-+ * Return: The number of VMM table entries the chip can accept.
-  */
--static int send_vmm_table(struct wilc *wilc, int i, const u32 *vmm_table)
-+static int send_vmm_table(struct wilc *wilc,
-+			  int vmm_table_len, const u32 *vmm_table)
+-static void init_txq_entry(struct sk_buff *tqe, struct wilc_vif *vif,
++static void init_txq_entry(struct sk_buff *tqe,
+ 			   u8 type, enum ip_pkt_priority q_num)
  {
- 	const struct wilc_hif_func *func;
- 	int ret, counter, entries, timeout;
-@@ -758,7 +758,8 @@ static int send_vmm_table(struct wilc *wilc, int i, const u32 *vmm_table)
- 	timeout = 200;
- 	do {
- 		ret = func->hif_block_tx(wilc, WILC_VMM_TBL_RX_SHADOW_BASE,
--					 (u8 *)vmm_table, (i + 1) * 4);
-+					 (u8 *)vmm_table,
-+					 (vmm_table_len + 1) * 4);
- 		if (ret)
- 			break;
+ 	struct wilc_skb_tx_cb *tx_cb = WILC_SKB_TX_CB(tqe);
+@@ -53,7 +53,7 @@ static void wilc_wlan_txq_add_to_tail(struct net_device *dev, u8 type, u8 q_num,
+ 	struct wilc_vif *vif = netdev_priv(dev);
+ 	struct wilc *wilc = vif->wilc;
  
-@@ -899,7 +900,7 @@ static int send_packets(struct wilc *wilc, int len)
+-	init_txq_entry(tqe, vif, type, q_num);
++	init_txq_entry(tqe, type, q_num);
+ 	if (type == WILC_NET_PKT && vif->ack_filter.enabled)
+ 		tcp_process(dev, tqe);
  
- int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+@@ -68,7 +68,7 @@ static void wilc_wlan_txq_add_to_head(struct wilc_vif *vif, u8 type, u8 q_num,
  {
--	int i, entries, len;
-+	int vmm_table_len, entries, len;
- 	u8 ac_desired_ratio[NQUEUES] = {0, 0, 0, 0};
- 	u8 vmm_entries_ac[WILC_VMM_TBL_SIZE];
- 	int ret = 0;
-@@ -919,13 +920,13 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
- 		wilc_wlan_txq_filter_dup_tcp_ack(vif->ndev);
- 	srcu_read_unlock(&wilc->srcu, srcu_idx);
+ 	struct wilc *wilc = vif->wilc;
  
--	i = fill_vmm_table(wilc, ac_desired_ratio, vmm_table, vmm_entries_ac);
--	if (i == 0)
-+	vmm_table_len = fill_vmm_table(wilc, ac_desired_ratio, vmm_table, vmm_entries_ac);
-+	if (vmm_table_len == 0)
- 		goto out_unlock;
+-	init_txq_entry(tqe, vif, type, q_num);
++	init_txq_entry(tqe, type, q_num);
  
- 	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
+ 	mutex_lock(&wilc->txq_add_to_head_cs);
  
--	ret = send_vmm_table(wilc, i, vmm_table);
-+	ret = send_vmm_table(wilc, vmm_table_len, vmm_table);
- 	if (ret <= 0) {
- 		if (ret == 0)
- 			/* No VMM space available in firmware.  Inform
 -- 
 2.25.1
 
