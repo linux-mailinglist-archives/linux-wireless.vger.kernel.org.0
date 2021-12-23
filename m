@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACF8447DCFC
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:15:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F25547DD20
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346460AbhLWBPY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 20:15:24 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27374 "EHLO
+        id S1346704AbhLWBQC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:16:02 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27382 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346246AbhLWBOp (ORCPT
+        with ESMTP id S1346252AbhLWBOr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 20:14:45 -0500
+        Wed, 22 Dec 2021 20:14:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=O3ZizfkdwvjAFL0IllFWvZYbWlz/CPB//NPk13szDnA=;
-        b=XTCcYYMiXOfOO8UZtTG2f4+h7DnLy2umVMF+CdELsqaDItfv4WYfrK+AW4TM2ZY7Wiz5
-        hc3RNIYrxa5LoCQedwb+b4jaEdcBZJYqBWbR4RQ8qhU01QPzbUblFv4RAINGa0R6UPBXr6
-        accQA7xeA371StT45tuT9cpy/iWPU8Cc1EdmRZPoG56rEypnktm6AM3IilMihvm75KNBEl
-        IYvFNEPcfLHWEJxS/lqNTlroQHVDUvrDRGPQMaB1D4AHnh2U4hQjkmVZ5g0sJmVEvTrB2J
-        bH8gzmyLyFuYSgzbupsRv9Fozsi72vtPL1ZnYAQrsXhBhPwVXMFITMWAGBNyENTg==
-Received: by filterdrecv-64fcb979b9-6vbpf with SMTP id filterdrecv-64fcb979b9-6vbpf-1-61C3CD5F-5
-        2021-12-23 01:14:07.110980273 +0000 UTC m=+8644638.115216542
+        s=sgd; bh=ZdHnC/ICI6OpSU7qfH1VoVrAfvudFBK6XDLPwhLw7Ms=;
+        b=HGyIzW+DINtndUkhBAmxAdHPUVDc57ZO/oYi2UkXxu85I8JQtt34MYLD0NMZHPIVckkZ
+        V7mYn94sr8w/cP+YtXDXPNcVzMrkgLaAaDqYFR+fqyYNPZNjxxNtJUNIDDNxoackTk7K8t
+        dc1Ly+m7uL9IYpvHvk6R8i8ySCXwslfqWUzV/ElsloVn07YhUc0gGgfvGh217fnlYAJNDn
+        K/8wyk8Aj5O7JBfM6/W7T7Nnjq9TOIG3pmSZlNKwLdNj0a8qvOs3MXc/HxFsjHy/wY2QZt
+        qDAMgE9BMfAxJFyLMJXVbVQewcjVqharPb5gPCbHExXbcv4Wj/HXu7KhtFY81KOQ==
+Received: by filterdrecv-7bf5c69d5-plqrp with SMTP id filterdrecv-7bf5c69d5-plqrp-1-61C3CD5E-4E
+        2021-12-23 01:14:07.00162435 +0000 UTC m=+9687195.598538133
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-5-1 (SG)
+        by geopod-ismtpd-2-1 (SG)
         with ESMTP
-        id TsQv68ysQ0ubKGaRoRZ4qw
-        Thu, 23 Dec 2021 01:14:06.927 +0000 (UTC)
+        id _HdNEz2_QZ6cJ9OC_17EnQ
+        Thu, 23 Dec 2021 01:14:06.873 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id E53EE701518; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
+        id BFD7D7014F5; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 45/50] wilc1000: move struct wilc_spi declaration
+Subject: [PATCH v2 39/50] wilc1000: eliminate txq_add_to_head_cs mutex
 Date:   Thu, 23 Dec 2021 01:14:07 +0000 (UTC)
-Message-Id: <20211223011358.4031459-46-davidm@egauge.net>
+Message-Id: <20211223011358.4031459-40-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
 References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvH9Cvv=2F5ehKJw4467?=
- =?us-ascii?Q?7quhFIAFUnbiUWmbmmTg6+hqXGuYJ3ieEzuxpbm?=
- =?us-ascii?Q?7Je+yt+BbiVHKqzw5OrYGLhvWgBHh5inoafnrrp?=
- =?us-ascii?Q?EK2yRyGTt4dr+D3eA=2FRVVzGhrnebnHKHHnIn3Ov?=
- =?us-ascii?Q?3VO0iiNdKKUz1jxWdRA+H1AbU8ylwJAHEoXqPxT?=
- =?us-ascii?Q?maYro4siN6gYujA+J0kpg=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvMTg55MYAqxjZd=2FNY?=
+ =?us-ascii?Q?MBupDVuLv7j=2F03Wcbcz16=2FVnnLJEBfaOIbI=2FU3u?=
+ =?us-ascii?Q?bx1XABWR3g1bZkHu+ef6gWQG5mjxORQb6Hfrq+s?=
+ =?us-ascii?Q?dCdyc5M95tHQdN50gsf9B0UqR2KGOQsP5ooW52H?=
+ =?us-ascii?Q?+OU+MMFjRvosNRMcNSN6DuCHof3YunBTk7B8qCO?=
+ =?us-ascii?Q?GI9fLSxQ6xq8eH=2FpRZKYg=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -60,54 +60,105 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Just move the structure down by a few lines so that a later patch can
-be understood more easily.  No functional change.
+Since the tx queue handler is no longer peeking at the transmit
+queues, we don't need this mutex anymore.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- drivers/net/wireless/microchip/wilc1000/spi.c | 22 +++++++++----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c |  2 --
+ drivers/net/wireless/microchip/wilc1000/netdev.h   |  3 ---
+ drivers/net/wireless/microchip/wilc1000/wlan.c     | 13 +------------
+ 3 files changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index 2c2ed4b09efd5..5f73b3d2d2112 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -41,17 +41,6 @@ MODULE_PARM_DESC(enable_crc16,
-  */
- #define WILC_SPI_RSP_HDR_EXTRA_DATA	8
+diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+index 6d3635864569f..d87358ca71cf9 100644
+--- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
++++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+@@ -1670,7 +1670,6 @@ static void wlan_init_locks(struct wilc *wl)
+ 	mutex_init(&wl->vif_mutex);
+ 	mutex_init(&wl->deinit_lock);
  
--struct wilc_spi {
--	bool isinit;		/* true if SPI protocol has been configured */
--	bool probing_crc;	/* true if we're probing chip's CRC config */
--	bool crc7_enabled;	/* true if crc7 is currently enabled */
--	bool crc16_enabled;	/* true if crc16 is currently enabled */
--	struct wilc_gpios {
--		struct gpio_desc *enable;	/* ENABLE GPIO or NULL */
--		struct gpio_desc *reset;	/* RESET GPIO or NULL */
--	} gpios;
--};
+-	mutex_init(&wl->txq_add_to_head_cs);
+ 	mutex_init(&wl->tx_q_limit_lock);
+ 
+ 	init_waitqueue_head(&wl->txq_event);
+@@ -1685,7 +1684,6 @@ void wlan_deinit_locks(struct wilc *wilc)
+ 	mutex_destroy(&wilc->hif_cs);
+ 	mutex_destroy(&wilc->rxq_cs);
+ 	mutex_destroy(&wilc->cfg_cmd_lock);
+-	mutex_destroy(&wilc->txq_add_to_head_cs);
+ 	mutex_destroy(&wilc->vif_mutex);
+ 	mutex_destroy(&wilc->deinit_lock);
+ 	mutex_destroy(&wilc->tx_q_limit_lock);
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net/wireless/microchip/wilc1000/netdev.h
+index e168f8644c678..086b9273bb117 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.h
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
+@@ -225,9 +225,6 @@ struct wilc {
+ 	struct srcu_struct srcu;
+ 	u8 open_ifcs;
+ 
+-	/* protect head of transmit queue */
+-	struct mutex txq_add_to_head_cs;
 -
- static const struct wilc_hif_func wilc_hif_spi;
+ 	/* protect rxq_entry_t receiver queue */
+ 	struct mutex rxq_cs;
  
- static int wilc_spi_reset(struct wilc *wilc);
-@@ -109,6 +98,17 @@ static int wilc_spi_reset(struct wilc *wilc);
- #define WILC_SPI_COMMAND_STAT_SUCCESS		0
- #define WILC_GET_RESP_HDR_START(h)		(((h) >> 4) & 0xf)
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index eefc0d18c1b5c..67f5293370d35 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -70,12 +70,9 @@ static void wilc_wlan_txq_add_to_head(struct wilc_vif *vif, u8 type, u8 q_num,
  
-+struct wilc_spi {
-+	bool isinit;		/* true if SPI protocol has been configured */
-+	bool probing_crc;	/* true if we're probing chip's CRC config */
-+	bool crc7_enabled;	/* true if crc7 is currently enabled */
-+	bool crc16_enabled;	/* true if crc16 is currently enabled */
-+	struct wilc_gpios {
-+		struct gpio_desc *enable;	/* ENABLE GPIO or NULL */
-+		struct gpio_desc *reset;	/* RESET GPIO or NULL */
-+	} gpios;
-+};
-+
- struct wilc_spi_cmd {
- 	u8 cmd_type;
- 	union {
+ 	init_txq_entry(tqe, type, q_num);
+ 
+-	mutex_lock(&wilc->txq_add_to_head_cs);
+-
+ 	skb_queue_head(&wilc->txq[q_num], tqe);
+ 	atomic_inc(&wilc->txq_entries);
+ 
+-	mutex_unlock(&wilc->txq_add_to_head_cs);
+ 	wake_up_interruptible(&wilc->txq_event);
+ }
+ 
+@@ -848,9 +845,6 @@ static int send_vmm_table(struct wilc *wilc,
+  *
+  * Copy a number of packets to the transmit buffer.
+  *
+- * Context: The txq_add_to_head_cs mutex must still be held when
+- * calling this function.
+- *
+  * Return: Number of bytes copied to the transmit buffer (always
+  *	non-negative).
+  */
+@@ -940,8 +934,6 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 	if (wilc->quit)
+ 		goto out_update_cnt;
+ 
+-	mutex_lock(&wilc->txq_add_to_head_cs);
+-
+ 	srcu_idx = srcu_read_lock(&wilc->srcu);
+ 	list_for_each_entry_rcu(vif, &wilc->vif_list, list)
+ 		wilc_wlan_txq_filter_dup_tcp_ack(vif->ndev);
+@@ -949,7 +941,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 
+ 	vmm_table_len = fill_vmm_table(wilc, vmm_table);
+ 	if (vmm_table_len == 0)
+-		goto out_unlock;
++		goto out_update_cnt;
+ 
+ 	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
+ 
+@@ -967,9 +959,6 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 	if (ret >= 0 && entries < vmm_table_len)
+ 		ret = WILC_VMM_ENTRY_FULL_RETRY;
+ 
+-out_unlock:
+-	mutex_unlock(&wilc->txq_add_to_head_cs);
+-
+ out_update_cnt:
+ 	*txq_count = atomic_read(&wilc->txq_entries);
+ 	return ret;
 -- 
 2.25.1
 
