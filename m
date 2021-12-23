@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25F7A47DD2B
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17FDA47DD0F
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346327AbhLWBQR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 20:16:17 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27338 "EHLO
+        id S1346623AbhLWBPo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:15:44 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27476 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346241AbhLWBOq (ORCPT
+        with ESMTP id S1346271AbhLWBOy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 20:14:46 -0500
+        Wed, 22 Dec 2021 20:14:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=dfBeb34NhlQx9kSnwdfVLwJrGwUjal6SLB3oVtZbo4E=;
-        b=TWgM3B+/1zIiBki4SbXmfYuLUWEujlY5xWduxlkRk2mazS4YvgyERmULCarpZ/CbweMb
-        EViiHe2U3LSwRagfjO1Ump67NEbfkNwbDekK9wuO1FN189EB45sF1UUSJSd7JusKGsZyE+
-        RFgm2gYF8U8OLo5V9sPcfAR1SqZNVfT9f56BqGV2s0AcYYncjS2pw6qqUZizGr+B+asNci
-        P/4Xnogo9K6IinHEnNQwT1oeTKjyo01jxo32kpk/mnV4WWijqTDVnAg6Y2VvyyY2LwGnGP
-        ZTRCYWn9YNr10qS7Cr5Gz3zgU9Ad2BXbQS6AZeJtYaWpeGyyY344yGXfJdu5mzjw==
-Received: by filterdrecv-64fcb979b9-ds7qn with SMTP id filterdrecv-64fcb979b9-ds7qn-1-61C3CD5E-32
-        2021-12-23 01:14:07.03458828 +0000 UTC m=+8644641.963188758
+        s=sgd; bh=xddQg0IvMbQSPuAc5H694hthTJIRjKrXhZw1xq1hEks=;
+        b=Wrmx8l0su8dp9ndnFNO6sOW5lBaz+uiSFn7IMZNva52x3OVqh2+M/sZoOYrQVQTYyRs8
+        Md/+jjaQSKOr8aoFyr6TuKZsXSXEMia5qHZsgwWiDmnGAen0fPe1z+f3jjOQArqNr1dsT5
+        FnGMg9TlUXC3+VHoFrFYzpd7WxFc1I1umCcCnBPmcCXIMxJhmn7CJPF6Lcv9DJz0MfbSr9
+        1ZD5xWt5xk86qtbENBu5Oz6SogHrZ1GNfgSqsYi9Ntw+gnUg3xB3K7VIRXMRHOycOwW5Kk
+        Yh9HSkAtrTOkCyIHSAztMVeWqXQvdI7AEJTRYhkXwph7WSPBrZK3FGmz4I9fxNag==
+Received: by filterdrecv-7bf5c69d5-5zdgz with SMTP id filterdrecv-7bf5c69d5-5zdgz-1-61C3CD5F-9
+        2021-12-23 01:14:07.092312815 +0000 UTC m=+9687226.301035880
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-6-0 (SG)
+        by geopod-ismtpd-2-0 (SG)
         with ESMTP
-        id -51l937fQTCZaa8cFnq3Fw
-        Thu, 23 Dec 2021 01:14:06.874 +0000 (UTC)
+        id VtsPa1YnRSSp8kNi4WOeEw
+        Thu, 23 Dec 2021 01:14:06.971 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id C7CF770150C; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
+        id 03A30701537; Wed, 22 Dec 2021 18:14:06 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 42/50] wilc1000: simplify code by adding header/padding to
- skb
+Subject: [PATCH v2 47/50] wilc1000: factor SPI DMA command initialization code
+ into a function
 Date:   Thu, 23 Dec 2021 01:14:07 +0000 (UTC)
-Message-Id: <20211223011358.4031459-43-davidm@egauge.net>
+Message-Id: <20211223011358.4031459-48-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
 References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvJwCYg8sr53xntpFM?=
- =?us-ascii?Q?RamCYBsHW6iylotlCCb9egN=2FBBDuQ1z=2FxYKvh6c?=
- =?us-ascii?Q?ntcV6X5h9Sln5AMVFLh=2FTmorjPALjoSh4bEL1Ft?=
- =?us-ascii?Q?n4KzEHNHaBFqzHshHzhj+1jVHdMspyWAt7YlB5z?=
- =?us-ascii?Q?kA+Fujc6MPDP4jusopUbYzo3up2+iUzyrM6O9bz?=
- =?us-ascii?Q?7WBMB6ivQDB4nhy9s14rg=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvANxWyaBzmrT8i6kB?=
+ =?us-ascii?Q?IwcOApodCCbwNMcx6CCkJweUuGfzFJsSRyTzgz3?=
+ =?us-ascii?Q?Qq5GQeAeySg3GXqJwB66FAOqWelVjAjBnKZ+u4K?=
+ =?us-ascii?Q?zlAW2T5A5im3WD+xBUlH5RQuG8zgX7WiE7mT87k?=
+ =?us-ascii?Q?fJwlJa6F7wI+r3qNdPCAohl5raYMAlrb2D1Ci7M?=
+ =?us-ascii?Q?DJYf2euPJ=2FCB5V0ZdcZtw=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -61,178 +61,79 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When a packet is moved to the chip queue, push the header and add
-necessary padding to the socket-buffer directly.
+Introduce wilc_spi_dma_init_cmd() as a helper function as this will
+come in handy later.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- .../net/wireless/microchip/wilc1000/netdev.c  |  4 ++
- .../net/wireless/microchip/wilc1000/wlan.c    | 65 +++++++++----------
- 2 files changed, 33 insertions(+), 36 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/spi.c | 41 +++++++++++++------
+ 1 file changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 71cb15f042cdd..d9fbff4bfcd30 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -924,6 +924,10 @@ struct wilc_vif *wilc_netdev_ifc_init(struct wilc *wl, const char *name,
- 	if (!ndev)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
+index 189907580d921..3e2022b43ee70 100644
+--- a/drivers/net/wireless/microchip/wilc1000/spi.c
++++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+@@ -650,21 +650,14 @@ static int wilc_spi_write_cmd(struct wilc *wilc, u8 cmd, u32 adr, u32 data,
+ 	return 0;
+ }
  
-+	ndev->needed_headroom = ETH_CONFIG_PKT_HDR_OFFSET;
-+	/* we may need up to 3 bytes of padding: */
-+	ndev->needed_tailroom = 3;
-+
- 	vif = netdev_priv(ndev);
- 	ndev->ieee80211_ptr = &vif->priv.wdev;
- 	strcpy(ndev->name, name);
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index f89ea4839aa61..08f3e96bf72cf 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -626,30 +626,39 @@ static u32 tx_hdr_len(u8 type)
+-static int wilc_spi_dma_rw(struct wilc *wilc, u8 cmd, u32 adr, u8 *b, u32 sz)
++static int wilc_spi_dma_init_cmd(struct wilc *wilc, struct wilc_spi_cmd *c,
++				 u8 cmd, u32 adr, u32 sz)
+ {
+ 	struct spi_device *spi = to_spi_device(wilc->dev);
+ 	struct wilc_spi *spi_priv = wilc->bus_data;
+-	u16 crc_recv, crc_calc;
+-	u8 wb[32], rb[32];
+-	int cmd_len, resp_len;
+-	int retry, ix = 0;
+-	u8 crc[2], *crc7;
+-	struct wilc_spi_cmd *c;
+-	struct wilc_spi_rsp_data *r;
++	int cmd_len;
++	u8 *crc7;
+ 
+-	memset(wb, 0x0, sizeof(wb));
+-	memset(rb, 0x0, sizeof(rb));
+-	c = (struct wilc_spi_cmd *)wb;
+ 	c->cmd_type = cmd;
+ 	if (cmd == CMD_DMA_WRITE || cmd == CMD_DMA_READ) {
+ 		c->u.dma_cmd.addr[0] = adr >> 16;
+@@ -687,10 +680,32 @@ static int wilc_spi_dma_rw(struct wilc *wilc, u8 cmd, u32 adr, u8 *b, u32 sz)
+ 		return -EINVAL;
  	}
- }
- 
--static u32 vmm_table_entry(struct sk_buff *tqe, u32 vmm_sz)
-+static u32 vmm_table_entry(struct sk_buff *tqe)
- {
- 	struct wilc_skb_tx_cb *tx_cb = WILC_SKB_TX_CB(tqe);
- 	u32 entry;
- 
--	entry = vmm_sz / 4;
-+	entry = tqe->len / 4;
- 	if (tx_cb->type == WILC_CFG_PKT)
- 		entry |= WILC_VMM_CFG_PKT;
- 	return cpu_to_le32(entry);
- }
- 
- /**
-- * set_header() - set WILC-specific header
-+ * add_hdr_and_pad() - prepare a packet for the chip queue
-  * @wilc: Pointer to the wilc structure.
-  * @tqe: The packet to add to the chip queue.
-+ * @hdr_len: The size of the header to add.
-  * @vmm_sz: The final size of the packet, including VMM header and padding.
-- * @hdr: Pointer to the header to set
-+ *
-+ * Bring a packet into the form required by the chip by adding a
-+ * header and padding as needed.
-  */
--static void set_header(struct wilc *wilc, struct sk_buff *tqe,
--		       u32 vmm_sz, void *hdr)
-+static void add_hdr_and_pad(struct wilc *wilc, struct sk_buff *tqe,
-+			    u32 hdr_len, u32 vmm_sz)
- {
- 	struct wilc_skb_tx_cb *tx_cb = WILC_SKB_TX_CB(tqe);
- 	u32 mgmt_pkt = 0, vmm_hdr, prio, data_len = tqe->len;
- 	struct wilc_vif *vif;
-+	void *hdr;
+ 	if (spi_priv->crc7_enabled) {
+-		crc7 = wb + cmd_len;
+-		*crc7 = wilc_get_crc7(wb, cmd_len);
++		crc7 = (u8 *)c + cmd_len;
++		*crc7 = wilc_get_crc7((u8 *)c, cmd_len);
+ 		cmd_len += 1;
+ 	}
++	return cmd_len;
++}
 +
-+	/* grow skb with header and pad bytes, all initialized to 0: */
-+	hdr = skb_push(tqe, hdr_len);
-+	if (vmm_sz > tqe->len)
-+		skb_put(tqe, vmm_sz - tqe->len);
- 
- 	/* add the VMM header word: */
- 	if (tx_cb->type == WILC_MGMT_PKT)
-@@ -687,8 +696,8 @@ static int schedule_packets(struct wilc *wilc,
- 	static const u8 ac_preserve_ratio[NQUEUES] = {1, 1, 1, 1};
- 	u8 ac_desired_ratio[NQUEUES];
- 	const u8 *num_pkts_to_add;
-+	u32 vmm_sz, hdr_len;
- 	bool ac_exist = 0;
--	int vmm_sz = 0;
- 	struct sk_buff *tqe;
- 	struct wilc_skb_tx_cb *tx_cb;
- 
-@@ -710,8 +719,8 @@ static int schedule_packets(struct wilc *wilc,
- 					continue;
- 
- 				tx_cb = WILC_SKB_TX_CB(tqe);
--				vmm_sz = tx_hdr_len(tx_cb->type);
--				vmm_sz += tqe->len;
-+				hdr_len = tx_hdr_len(tx_cb->type);
-+				vmm_sz = hdr_len + tqe->len;
- 				vmm_sz = ALIGN(vmm_sz, 4);
- 
- 				if (wilc->chipq_bytes + vmm_sz > WILC_TX_BUFF_SIZE) {
-@@ -721,12 +730,13 @@ static int schedule_packets(struct wilc *wilc,
- 				}
- 				atomic_dec(&wilc->txq_entries);
- 
-+				add_hdr_and_pad(wilc, tqe, hdr_len, vmm_sz);
++static int wilc_spi_dma_rw(struct wilc *wilc, u8 cmd, u32 adr, u8 *b, u32 sz)
++{
++	struct spi_device *spi = to_spi_device(wilc->dev);
++	struct wilc_spi *spi_priv = wilc->bus_data;
++	u16 crc_recv, crc_calc;
++	u8 wb[32], rb[32];
++	int cmd_len, resp_len;
++	int retry, ix = 0;
++	u8 crc[2];
++	struct wilc_spi_cmd *c;
++	struct wilc_spi_rsp_data *r;
 +
- 				__skb_queue_tail(&wilc->chipq, tqe);
- 				wilc->chipq_bytes += tqe->len;
++	memset(wb, 0x0, sizeof(wb));
++	memset(rb, 0x0, sizeof(rb));
++	c = (struct wilc_spi_cmd *)wb;
++
++	cmd_len = wilc_spi_dma_init_cmd(wilc, c, cmd, adr, sz);
++	if (cmd_len < 0)
++		return -EINVAL;
  
--				vmm_table[vmm_table_len] = vmm_table_entry(tqe, vmm_sz);
-+				vmm_table[vmm_table_len] = vmm_table_entry(tqe);
- 				vmm_table_len++;
--
- 			}
- 		}
- 		num_pkts_to_add = ac_preserve_ratio;
-@@ -747,20 +757,13 @@ static int schedule_packets(struct wilc *wilc,
-  */
- static int fill_vmm_table(struct wilc *wilc, u32 vmm_table[WILC_VMM_TBL_SIZE])
- {
--	int vmm_table_len = 0, vmm_sz = 0;
-+	int vmm_table_len = 0;
- 	struct sk_buff *tqe;
--	struct wilc_skb_tx_cb *tx_cb;
+ 	resp_len = sizeof(*r);
  
--	if (unlikely(wilc->chipq_bytes > 0)) {
-+	if (unlikely(wilc->chipq_bytes > 0))
- 		/* fill in packets that are already on the chipq: */
--		skb_queue_walk(&wilc->chipq, tqe) {
--			tx_cb = WILC_SKB_TX_CB(tqe);
--			vmm_sz = tx_hdr_len(tx_cb->type);
--			vmm_sz += tqe->len;
--			vmm_sz = ALIGN(vmm_sz, 4);
--			vmm_table[vmm_table_len++] = vmm_table_entry(tqe, vmm_sz);
--		}
--	}
-+		skb_queue_walk(&wilc->chipq, tqe)
-+			vmm_table[vmm_table_len++] = vmm_table_entry(tqe);
- 
- 	vmm_table_len = schedule_packets(wilc, vmm_table_len, vmm_table);
- 	if (vmm_table_len > 0) {
-@@ -872,15 +875,12 @@ static int copy_packets(struct wilc *wilc, int entries)
- 	u8 ac_pkt_num_to_chip[NQUEUES] = {0, 0, 0, 0};
- 	struct wilc_skb_tx_cb *tx_cb;
- 	u8 *txb = wilc->tx_buffer;
--	int i, vmm_sz;
-+	int i;
-+	struct sk_buff *tqe;
- 	u32 offset;
- 
- 	offset = 0;
--	i = 0;
- 	do {
--		struct sk_buff *tqe;
--		u32 buffer_offset;
--
- 		tqe = __skb_dequeue(&wilc->chipq);
- 		if (WARN_ON(!tqe))
- 			break;
-@@ -889,15 +889,8 @@ static int copy_packets(struct wilc *wilc, int entries)
- 		tx_cb = WILC_SKB_TX_CB(tqe);
- 		ac_pkt_num_to_chip[tx_cb->q_num]++;
- 
--		buffer_offset = tx_hdr_len(tx_cb->type);
--		vmm_sz = buffer_offset;
--		vmm_sz += tqe->len;
--		vmm_sz = ALIGN(vmm_sz, 4);
--
--		set_header(wilc, tqe, vmm_sz, txb + offset);
--		memcpy(&txb[offset + buffer_offset], tqe->data, tqe->len);
--		offset += vmm_sz;
--		i++;
-+		memcpy(&txb[offset], tqe->data, tqe->len);
-+		offset += tqe->len;
- 		wilc_wlan_tx_packet_done(tqe, 1);
- 	} while (--entries);
- 	for (i = 0; i < NQUEUES; i++)
 -- 
 2.25.1
 
