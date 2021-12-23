@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3846B47DD29
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EC4647DD3A
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346767AbhLWBQQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 20:16:16 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27260 "EHLO
+        id S1346014AbhLWBQi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:16:38 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:18696 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346222AbhLWBOq (ORCPT
+        with ESMTP id S1345838AbhLWBOX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 20:14:46 -0500
+        Wed, 22 Dec 2021 20:14:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=rJXQOqUi7Z+t6XaVH9q545zE1/vlk/+8IKkDxm7FsTA=;
-        b=Jq09PeTp4tmdjzejIOn7GRnC8UQC9IhgNf/MfNPwBoqpbYRwFJtGIfqa6r2xAD0hyGmo
-        qUeXV00uwMEkb+EBMYhzu7YgoYrmkruDeMJkoZxKeoTJcnboQeJrEw4B2M1FGAvlJkbiaU
-        WB/+71VeYb3IykMHEHb2bcS8avWSq7PTbPWCksOS36o0zT7DhgudGZA6GnBiYrF1nLHWSV
-        S9NhShvSMR9CQcj9crOZ/p8MSIUZ0tYtKwHEEcuosNiS7sJ0d5U+798B3MQZY/CZFmiBJ5
-        YnsnbZCm1pOPWeRE86KFDMaJXU5nVe/TvRhIzIjDPQEtai2E4zUlIxm471YQNmEg==
-Received: by filterdrecv-75ff7b5ffb-v6hzv with SMTP id filterdrecv-75ff7b5ffb-v6hzv-1-61C3CD5E-45
-        2021-12-23 01:14:06.791119181 +0000 UTC m=+9687188.981580391
+        s=sgd; bh=yps8dWzMUKU9RpPhjdHxIE2MYXvMyKmHNVpEu8C+Av8=;
+        b=YDmkak+OJEFHYXe/bj0Hi6XL2ELKUc4fCQN0z5nFM2oYV6GPyJxBnSq9OPl6vD1wKRHA
+        cOcYfPSCr3Eckn5sQ4WMg/PwZIf6yjIPG9KgH8qSbL3TfcKGTfo3mIrcm/KuaUg+Fww3ch
+        M03YDD0sBTbfHuCZFpFHard5V3ByPZK66/6RACPSdLgc6lgNBuBOu38VdUbEfrIUR4jNXc
+        WVC+ivPgLdV6s7LL1FPa1EHQ5Pu05r+Ry5C7lBNumIwlMeHLccJ7hl0A1x2uon7n6DF4ZP
+        vlRBywOeK3Atj11UpaYoWdlKgueDtgXMsgbDFpwAzU9oVNjYWTRd9iiBK9jUQG2Q==
+Received: by filterdrecv-656998cfdd-phncc with SMTP id filterdrecv-656998cfdd-phncc-1-61C3CD5F-4
+        2021-12-23 01:14:07.130091855 +0000 UTC m=+7955208.316338637
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-3-1 (SG)
+        by geopod-ismtpd-6-0 (SG)
         with ESMTP
-        id W-w5aYJ6SZyvTvooy91cCw
-        Thu, 23 Dec 2021 01:14:06.662 +0000 (UTC)
+        id cnVlM2Y7Qw-Hv8JFSNpx_A
+        Thu, 23 Dec 2021 01:14:06.990 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id AB1DB70054A; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
+        id 20C9E700BFC; Wed, 22 Dec 2021 18:14:06 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 33/50] wilc1000: move ac_desired_ratio calculation to where
- its needed
+Subject: [PATCH v2 50/50] wilc1000: add module parameter
+ "disable_zero_copy_tx" to SPI driver
 Date:   Thu, 23 Dec 2021 01:14:07 +0000 (UTC)
-Message-Id: <20211223011358.4031459-34-davidm@egauge.net>
+Message-Id: <20211223011358.4031459-51-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
 References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvO2CLe60Vy4lC9UTY?=
- =?us-ascii?Q?Ro5Pro2bUgGjRcBWEHwUu4+dWi6YKfFFjN5hIcG?=
- =?us-ascii?Q?IpVl0qlV=2FIHf4fP0BO1pHkp5BWIRRkiT8lUTgPj?=
- =?us-ascii?Q?mNZHnta4b4OHkq4N5OmKY7Jp+BTZjJqKwuyPWMs?=
- =?us-ascii?Q?CSEWPS=2FNXR7Q1Ww6+68zzy6CQbyGP+JDOxRZho1?=
- =?us-ascii?Q?CiJfoaLCFqxWEzBvHQkjg=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvNU=2FAiSwPXGwNeF4R?=
+ =?us-ascii?Q?8pktv6qIQV9=2FvaYSYgd73qzUc+WcF+3KTLAn0Dz?=
+ =?us-ascii?Q?BHXeSqbDC7G4R7ZfYu1EAHyy3Sq2tG4eerFoLwP?=
+ =?us-ascii?Q?WgQBlB4hho+sXfAoa07rJ+kJnUztYPjGRmA0wp=2F?=
+ =?us-ascii?Q?JGqfOozcJ7djVy2VWuSHpeE4jDG+RBqGPUIpD5o?=
+ =?us-ascii?Q?+1b5h5OMzvrxVFltrvutA=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -61,79 +61,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move ac_desired_ratio calculation to fill_vmm_table() since that's the
-only place that needs it.  Note that it is unnecessary to initialize
-the array since ac_balance() is guaranteed to fill it in.
+Add a module parameter to disable the zero-copy transmit path.  This
+is useful for testing and performance measurement, for example.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- drivers/net/wireless/microchip/wilc1000/wlan.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/spi.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 5939ed5b2db68..64497754a36b1 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -643,8 +643,6 @@ static u32 vmm_table_entry(struct sk_buff *tqe, u32 vmm_sz)
- /**
-  * fill_vmm_table() - Fill VMM table with packets to be sent
-  * @wilc: Pointer to the wilc structure.
-- * @ac_desired_ratio: First-round limit on number of packets to add from the
-- *	respective queue.
-  * @vmm_table: Pointer to the VMM table to fill.
-  * @vmm_entries_ac: Pointer to the queue-number table to fill.
-  *	For each packet added to the VMM table, this will be filled in
-@@ -664,7 +662,6 @@ static u32 vmm_table_entry(struct sk_buff *tqe, u32 vmm_sz)
-  *	so the returned number is at most WILC_VMM_TBL_SIZE-1.
-  */
- static int fill_vmm_table(const struct wilc *wilc,
--			  u8 ac_desired_ratio[NQUEUES],
- 			  u32 vmm_table[WILC_VMM_TBL_SIZE],
- 			  u8 vmm_entries_ac[WILC_VMM_TBL_SIZE])
- {
-@@ -672,6 +669,7 @@ static int fill_vmm_table(const struct wilc *wilc,
- 	u8 k, ac;
- 	u32 sum;
- 	static const u8 ac_preserve_ratio[NQUEUES] = {1, 1, 1, 1};
-+	u8 ac_desired_ratio[NQUEUES];
- 	const u8 *num_pkts_to_add;
- 	bool ac_exist = 0;
- 	int vmm_sz = 0;
-@@ -683,6 +681,8 @@ static int fill_vmm_table(const struct wilc *wilc,
+diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
+index 8d94f111ffc49..588cec326a74b 100644
+--- a/drivers/net/wireless/microchip/wilc1000/spi.c
++++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+@@ -31,6 +31,11 @@ MODULE_PARM_DESC(enable_crc16,
+ 		 "\t\t\tData transfers can be large and the CPU-cycle cost\n"
+ 		 "\t\t\tof enabling this may be substantial.");
  
- 	i = 0;
- 	sum = 0;
++static bool disable_zero_copy_tx;
++module_param(disable_zero_copy_tx, bool, 0644);
++MODULE_PARM_DESC(disable_zero_copy_tx,
++		 "Disable zero-copy when sending packets.");
 +
-+	ac_balance(wilc, ac_desired_ratio);
- 	num_pkts_to_add = ac_desired_ratio;
- 	do {
- 		ac_exist = 0;
-@@ -909,7 +909,6 @@ static int send_packets(struct wilc *wilc, int len)
- int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
- {
- 	int vmm_table_len, entries, len;
--	u8 ac_desired_ratio[NQUEUES] = {0, 0, 0, 0};
- 	u8 vmm_entries_ac[WILC_VMM_TBL_SIZE];
- 	int ret = 0;
- 	u32 vmm_table[WILC_VMM_TBL_SIZE];
-@@ -919,8 +918,6 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
- 	if (wilc->quit)
- 		goto out_update_cnt;
+ /*
+  * For CMD_SINGLE_READ and CMD_INTERNAL_READ, WILC may insert one or
+  * more zero bytes between the command response and the DATA Start tag
+@@ -41,7 +46,7 @@ MODULE_PARM_DESC(enable_crc16,
+  */
+ #define WILC_SPI_RSP_HDR_EXTRA_DATA	8
  
--	ac_balance(wilc, ac_desired_ratio);
--
- 	mutex_lock(&wilc->txq_add_to_head_cs);
+-static const struct wilc_hif_func wilc_hif_spi;
++static struct wilc_hif_func wilc_hif_spi;
  
- 	srcu_idx = srcu_read_lock(&wilc->srcu);
-@@ -928,7 +925,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
- 		wilc_wlan_txq_filter_dup_tcp_ack(vif->ndev);
- 	srcu_read_unlock(&wilc->srcu, srcu_idx);
+ static int wilc_spi_reset(struct wilc *wilc);
+ static int wilc_spi_write_sk_buffs(struct wilc *wilc, u32 addr,
+@@ -254,6 +259,9 @@ static int wilc_bus_probe(struct spi_device *spi)
+ 	if (!spi_priv)
+ 		return -ENOMEM;
  
--	vmm_table_len = fill_vmm_table(wilc, ac_desired_ratio, vmm_table, vmm_entries_ac);
-+	vmm_table_len = fill_vmm_table(wilc, vmm_table, vmm_entries_ac);
- 	if (vmm_table_len == 0)
- 		goto out_unlock;
++	if (!disable_zero_copy_tx)
++		wilc_hif_spi.hif_sk_buffs_tx = wilc_spi_write_sk_buffs;
++
+ 	ret = wilc_cfg80211_init(&wilc, &spi->dev, WILC_HIF_SPI, &wilc_hif_spi);
+ 	if (ret)
+ 		goto free;
+@@ -1424,7 +1432,7 @@ static int wilc_spi_sync_ext(struct wilc *wilc, int nint)
+ }
  
+ /* Global spi HIF function table */
+-static const struct wilc_hif_func wilc_hif_spi = {
++static struct wilc_hif_func wilc_hif_spi = {
+ 	.hif_init = wilc_spi_init,
+ 	.hif_deinit = wilc_spi_deinit,
+ 	.hif_read_reg = wilc_spi_read_reg,
+@@ -1436,7 +1444,6 @@ static const struct wilc_hif_func wilc_hif_spi = {
+ 	.hif_read_size = wilc_spi_read_size,
+ 	.hif_block_tx_ext = wilc_spi_write,
+ 	.hif_block_rx_ext = wilc_spi_read,
+-	.hif_sk_buffs_tx = wilc_spi_write_sk_buffs,
+ 	.hif_sync_ext = wilc_spi_sync_ext,
+ 	.hif_reset = wilc_spi_reset,
+ };
 -- 
 2.25.1
 
