@@ -2,50 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 416D947DCF5
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:15:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D187347DD11
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Dec 2021 02:18:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346284AbhLWBPR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Dec 2021 20:15:17 -0500
-Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27248 "EHLO
+        id S1346629AbhLWBPq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Dec 2021 20:15:46 -0500
+Received: from o1.ptr2625.egauge.net ([167.89.112.53]:27468 "EHLO
         o1.ptr2625.egauge.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231618AbhLWBOj (ORCPT
+        with ESMTP id S1346270AbhLWBOy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Dec 2021 20:14:39 -0500
+        Wed, 22 Dec 2021 20:14:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
         h=from:subject:in-reply-to:references:mime-version:to:cc:
         content-transfer-encoding:content-type;
-        s=sgd; bh=xzFPhXZu131S24WhCZubllRraK0h+X09hgsH4auEmW4=;
-        b=djZrXPvzTA+tenvtDns76GrrGFaM7cWDR9tozlDMHoxIqe9+LXIVtdvJsz1hf4d0k6Ic
-        YJ6lIA4aCMpnalQrDHzf5+6jM9osn6cMu+Gz49FiGyOyEroePgKxdMK/M8za14oNvOTPzI
-        35C4sU2LeBk0my/7AP1m6dUEoZnufrbbvAjf8oLshnggyRuZWuJDCz0GmOzzzMaKs1clDX
-        xXCbvW5H3RgfFVwRshdqYrEPEGjx5OtBCLhYVCdRgo0My2C/yVfCEHz3lO9I2EQfyqjFRw
-        p2rTJSiFtpD7FDpAr+39knzavoySljUyGYoNRq+z2ehO8gPB2QpHPS+/nOfxJ9Hw==
-Received: by filterdrecv-64fcb979b9-tjknx with SMTP id filterdrecv-64fcb979b9-tjknx-1-61C3CD5E-38
-        2021-12-23 01:14:06.990457231 +0000 UTC m=+8644589.793975669
+        s=sgd; bh=Hgcvux2x80iJNHTT8Ywl3SP3JaAxVpVY4jdADVtyp24=;
+        b=Zxb6E2yywaTqNbgdk7xF0Hb7M6bZBGfSj3ue71HXm4EUzTfmYCieKc5YrGHzJivzvITU
+        2jjwWex4r8C0OEf36dCqam1wf463/NKRRF9WVkndExYOdxJqUngipCu0twbUaT3ISfBFf7
+        q1+FWbqsZOvxOo1IhHi5uehOOd2NY8lx6/jz6LDTB49CrLLlO3omRSuO+wX48ggI28hcf3
+        X4DQKtvgpP9Q+hJSvn5nuRSy5seVlrXDm8n/C6Rv3V0RK1sBARuARnz8WjnSHbjY8VWMwQ
+        1fbdWTSv3g9oDNr/YFMFuS11NrbVdTR8CU868BHcJCva9Jlkj50HxtaYkYIzAaPA==
+Received: by filterdrecv-7bf5c69d5-n84ln with SMTP id filterdrecv-7bf5c69d5-n84ln-1-61C3CD5E-B
+        2021-12-23 01:14:06.168607769 +0000 UTC m=+9687225.761254579
 Received: from pearl.egauge.net (unknown)
-        by geopod-ismtpd-6-1 (SG)
+        by geopod-ismtpd-1-1 (SG)
         with ESMTP
-        id FG5k7M4MSAKXB0gV8TRNhQ
-        Thu, 23 Dec 2021 01:14:06.823 +0000 (UTC)
+        id SbsXXKDTRbKHV6cqEM3tPw
+        Thu, 23 Dec 2021 01:14:06.029 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-        id B4878700604; Wed, 22 Dec 2021 18:14:05 -0700 (MST)
+        id E32C1700BFC; Wed, 22 Dec 2021 18:14:04 -0700 (MST)
 From:   David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v2 35/50] wilc1000: introduce copy_and_send_packets() helper
- function
+Subject: [PATCH v2 05/50] wilc1000: add wilc_wlan_tx_packet_done() function
 Date:   Thu, 23 Dec 2021 01:14:07 +0000 (UTC)
-Message-Id: <20211223011358.4031459-36-davidm@egauge.net>
+Message-Id: <20211223011358.4031459-6-davidm@egauge.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211223011358.4031459-1-davidm@egauge.net>
 References: <20211223011358.4031459-1-davidm@egauge.net>
 MIME-Version: 1.0
 X-SG-EID: =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvBiV+jvdVngOyqcOk?=
- =?us-ascii?Q?0VU2J+4m=2FBmK9woiA=2Fsth2gm5SOmvaIqU3Ea+Es?=
- =?us-ascii?Q?=2F+ATfy2JI9lP0biBgmaDlwfMwwY0thaiIbAb=2FyQ?=
- =?us-ascii?Q?GQYwnFcA3l56fc=2FIjdfskOg2IBJkmj39KTKu4nU?=
- =?us-ascii?Q?RlS0ScqqOxIihMbeumzuRlmpzi6lWtpobbFZKla?=
- =?us-ascii?Q?f3KTcUnZHAxcnuWii6T+A=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvCKFafSZUZYOu1P05?=
+ =?us-ascii?Q?CEj+Zsb9CK5JKRSqsrljNdImB023LgVhJEGXKH0?=
+ =?us-ascii?Q?RMK5+rzygP7Kr=2FZNSpO4YzuYBgPGjO6yc2LKBDT?=
+ =?us-ascii?Q?r7yb9UlyMnNUywGeQc90+SCr5T5+Dm4KakrmZ5I?=
+ =?us-ascii?Q?jG6vTZ4E3Eg1Aww2XHbHyLCzySlK+WJCrzBfJXs?=
+ =?us-ascii?Q?s5zZvn0gQj6KXHjFICusg=3D=3D?=
 To:     Ajay Singh <ajay.kathat@microchip.com>
 Cc:     Claudiu Beznea <claudiu.beznea@microchip.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -61,55 +60,76 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Continuing the quest of simplifying the txq handler, factor the code
-to copy and send packets into its own function.
+Factor common tx packet-done handling code into a function.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
- .../net/wireless/microchip/wilc1000/wlan.c    | 23 ++++++++++++++-----
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ .../net/wireless/microchip/wilc1000/wlan.c    | 31 +++++++++----------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 803d35b18d2e0..18b1e7fad4d71 100644
+index 97624f758cbe4..7b7ee6ee9f849 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -906,6 +906,22 @@ static int send_packets(struct wilc *wilc, int len)
- 	return func->hif_block_tx_ext(wilc, 0, wilc->tx_buffer, len);
+@@ -190,6 +190,16 @@ static inline void tcp_process(struct net_device *dev, struct txq_entry_t *tqe)
+ 	spin_unlock_irqrestore(&wilc->txq_spinlock, flags);
  }
  
-+static int copy_and_send_packets(struct wilc *wilc, int entries,
-+				 u32 vmm_table[WILC_VMM_TBL_SIZE],
-+				 u8 vmm_entries_ac[WILC_VMM_TBL_SIZE])
++static void wilc_wlan_tx_packet_done(struct txq_entry_t *tqe, int status)
 +{
-+	int len, ret;
-+
-+	len = copy_packets(wilc, entries, vmm_table, vmm_entries_ac);
-+	if (len <= 0)
-+		return len;
-+
-+	acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
-+	ret = send_packets(wilc, len);
-+	release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
-+	return ret;
++	tqe->status = status;
++	if (tqe->tx_complete_func)
++		tqe->tx_complete_func(tqe->priv, tqe->status);
++	if (tqe->ack_idx != NOT_TCP_ACK && tqe->ack_idx < MAX_PENDING_ACKS)
++		tqe->vif->ack_filter.pending_acks[tqe->ack_idx].txqe = NULL;
++	kfree(tqe);
 +}
 +
- int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ static void wilc_wlan_txq_filter_dup_tcp_ack(struct net_device *dev)
  {
- 	int vmm_table_len, entries;
-@@ -940,12 +956,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
- 	if (entries <= 0) {
- 		ret = entries;
- 	} else {
--		ret = copy_packets(wilc, entries, vmm_table, vmm_entries_ac);
--		if (ret > 0) {
--			acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
--			ret = send_packets(wilc, ret);
--			release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
--		}
-+		ret = copy_and_send_packets(wilc, entries, vmm_table, vmm_entries_ac);
+ 	struct wilc_vif *vif = netdev_priv(dev);
+@@ -220,11 +230,7 @@ static void wilc_wlan_txq_filter_dup_tcp_ack(struct net_device *dev)
+ 			tqe = f->pending_acks[i].txqe;
+ 			if (tqe) {
+ 				wilc_wlan_txq_remove(wilc, tqe->q_num, tqe);
+-				tqe->status = 1;
+-				if (tqe->tx_complete_func)
+-					tqe->tx_complete_func(tqe->priv,
+-							      tqe->status);
+-				kfree(tqe);
++				wilc_wlan_tx_packet_done(tqe, 1);
+ 			}
+ 		}
  	}
- 	if (ret >= 0 && entries < vmm_table_len)
- 		ret = WILC_VMM_ENTRY_FULL_RETRY;
+@@ -911,13 +917,7 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 		       tqe->buffer, tqe->buffer_size);
+ 		offset += vmm_sz;
+ 		i++;
+-		tqe->status = 1;
+-		if (tqe->tx_complete_func)
+-			tqe->tx_complete_func(tqe->priv, tqe->status);
+-		if (tqe->ack_idx != NOT_TCP_ACK &&
+-		    tqe->ack_idx < MAX_PENDING_ACKS)
+-			vif->ack_filter.pending_acks[tqe->ack_idx].txqe = NULL;
+-		kfree(tqe);
++		wilc_wlan_tx_packet_done(tqe, 1);
+ 	} while (--entries);
+ 	for (i = 0; i < NQUEUES; i++)
+ 		wilc->fw[i].count += ac_pkt_num_to_chip[i];
+@@ -1236,11 +1236,8 @@ void wilc_wlan_cleanup(struct net_device *dev)
+ 
+ 	wilc->quit = 1;
+ 	for (ac = 0; ac < NQUEUES; ac++) {
+-		while ((tqe = wilc_wlan_txq_remove_from_head(wilc, ac))) {
+-			if (tqe->tx_complete_func)
+-				tqe->tx_complete_func(tqe->priv, 0);
+-			kfree(tqe);
+-		}
++		while ((tqe = wilc_wlan_txq_remove_from_head(wilc, ac)))
++			wilc_wlan_tx_packet_done(tqe, 0);
+ 	}
+ 
+ 	while ((rqe = wilc_wlan_rxq_remove(wilc)))
 -- 
 2.25.1
 
